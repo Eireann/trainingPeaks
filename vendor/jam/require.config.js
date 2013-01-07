@@ -26,6 +26,11 @@ var jam = {
             "main": "hbt.js"
         },
         {
+            "name": "jed",
+            "location": "../vendor/jam/jed",
+            "main": "./jed"
+        },
+        {
             "name": "jquery",
             "location": "../vendor/jam/jquery",
             "main": "jquery.js"
@@ -87,6 +92,11 @@ if (typeof require !== "undefined" && require.config) {
             "main": "hbt.js"
         },
         {
+            "name": "jed",
+            "location": "../vendor/jam/jed",
+            "main": "./jed"
+        },
+        {
             "name": "jquery",
             "location": "../vendor/jam/jquery",
             "main": "jquery.js"
@@ -145,6 +155,11 @@ else {
             "name": "hbt",
             "location": "../vendor/jam/hbt",
             "main": "hbt.js"
+        },
+        {
+            "name": "jed",
+            "location": "../vendor/jam/jed",
+            "main": "./jed"
         },
         {
             "name": "jquery",

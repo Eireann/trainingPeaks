@@ -1,8 +1,9 @@
 define(
 [
-    "backbone"
+    "backbone",
+    "controllers/sampleController"
 ],
-function (Backbone)
+function (Backbone, SampleController)
 {
     var Router = Backbone.Router.extend(
     {
@@ -13,6 +14,7 @@ function (Backbone)
 
         index: function()
         {
+            (new SampleController()).load();
         }
     });
 

@@ -1,16 +1,22 @@
 // Set the require.js configuration for your application.
-require.config({
+require.config(
+{
+    deps: ["../vendor/jam/require.config", "main"],
 
-  // Initialize the application with the main application file and the JamJS
-  // generated configuration file.
-  deps: ["../vendor/jam/require.config", "main"],
+    paths:
+    {
+        "models": "scripts/models",
+        "views": "scripts/views",
+        "controllers": "scripts/controllers"
+    },
 
-  paths: {
-    // Put paths here.
-  },
+    shim:
+    {
+                
+    },
 
-  shim: {
-    // Put shims here.
-  }
-
+    hbt:
+    {
+        extension: "html"
+    }
 });
