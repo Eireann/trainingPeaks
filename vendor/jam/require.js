@@ -2048,11 +2048,6 @@ var jam = {
             "main": "backbone.js"
         },
         {
-            "name": "backbone.layoutmanager",
-            "location": "../vendor/jam/backbone.layoutmanager",
-            "main": "backbone.layoutmanager.js"
-        },
-        {
             "name": "Backbone.Marionette",
             "location": "../vendor/jam/Backbone.Marionette",
             "main": "lib/amd/backbone.marionette.js"
@@ -2101,14 +2096,6 @@ var jam = {
                 "lodash"
             ],
             "exports": "Backbone"
-        },
-        "backbone.layoutmanager": {
-            "deps": [
-                "jquery",
-                "backbone",
-                "lodash"
-            ],
-            "exports": "Backbone.LayoutManager"
         }
     }
 };
@@ -2122,11 +2109,6 @@ if (typeof require !== "undefined" && require.config) {
             "main": "backbone.js"
         },
         {
-            "name": "backbone.layoutmanager",
-            "location": "../vendor/jam/backbone.layoutmanager",
-            "main": "backbone.layoutmanager.js"
-        },
-        {
             "name": "Backbone.Marionette",
             "location": "../vendor/jam/Backbone.Marionette",
             "main": "lib/amd/backbone.marionette.js"
@@ -2174,14 +2156,6 @@ if (typeof require !== "undefined" && require.config) {
                 "lodash"
             ],
             "exports": "Backbone"
-        },
-        "backbone.layoutmanager": {
-            "deps": [
-                "jquery",
-                "backbone",
-                "lodash"
-            ],
-            "exports": "Backbone.LayoutManager"
         }
     }
 });
@@ -2195,11 +2169,6 @@ else {
             "main": "backbone.js"
         },
         {
-            "name": "backbone.layoutmanager",
-            "location": "../vendor/jam/backbone.layoutmanager",
-            "main": "backbone.layoutmanager.js"
-        },
-        {
             "name": "Backbone.Marionette",
             "location": "../vendor/jam/Backbone.Marionette",
             "main": "lib/amd/backbone.marionette.js"
@@ -2247,14 +2216,6 @@ else {
                 "lodash"
             ],
             "exports": "Backbone"
-        },
-        "backbone.layoutmanager": {
-            "deps": [
-                "jquery",
-                "backbone",
-                "lodash"
-            ],
-            "exports": "Backbone.LayoutManager"
         }
     }
 };
