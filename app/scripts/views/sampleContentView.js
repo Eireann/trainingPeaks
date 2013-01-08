@@ -1,6 +1,6 @@
 define(
 [
-    "hbt!templates/sampleContent",
+    "hbs!templates/sampleContent",
     
     "Backbone.Marionette"
 ],

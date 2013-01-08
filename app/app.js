@@ -2,9 +2,9 @@ define(
 [
     "Backbone.Marionette"
 ],
-function ()
+function (Marionette)
 {
-    var theApp = new Backbone.Marionette.Application();
+    var theApp = new Marionette.Application();
 
     theApp.addRegions(
     {
@@ -19,6 +19,6 @@ function ()
     {      
     });
 
-    theApp.root = "";
+    theApp.root = "/Mars";
     return theApp;
 });

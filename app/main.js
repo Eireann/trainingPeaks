@@ -1,9 +1,11 @@
 require(
 [
     "app",
-    "router"
+    "router",
+    
+    "backbone"
 ],
-function (app, Router)
+function (app, Router, Backbone)
 {
     app.router = new Router();
     Backbone.history.start({ pushState: true, root: app.root });

@@ -3,7 +3,6 @@
 // https://github.com/cowboy/grunt/blob/master/docs/configuring.md
 module.exports = function(grunt)
 {
-
     grunt.initConfig(
     {
         // The lint task will run the build configuration and the application
@@ -27,21 +26,6 @@ module.exports = function(grunt)
             {
                 scripturl: true
             }
-        },
-
-        // The jst task compiles all application templates into JavaScript
-        // functions with the underscore.js template function from 1.2.4.  You can
-        // change the namespace and the template options, by reading this:
-        // https://github.com/gruntjs/grunt-contrib/blob/master/docs/jst.md
-        //
-        // The concat task depends on this file to exist, so if you decide to
-        // remove this, ensure concat is updated accordingly.
-        jst:
-        {
-            "dist/debug/templates.js":
-            [
-                "app/templates/**/*.html"
-            ]
         },
 
         // This task simplifies working with CSS inside Backbone Boilerplate
@@ -76,7 +60,7 @@ module.exports = function(grunt)
             mainConfigFile: "app/config.js",
 
             // Also include the JamJS configuration file.
-            jamConfig: "/vendor/jam/require.config.js",
+            jamConfig: "vendor/jam/require.config.js",
 
             // Output file.
             out: "dist/debug/require.js",
@@ -99,7 +83,7 @@ module.exports = function(grunt)
                 src:
                 [
                     "vendor/js/libs/almond.js",
-                    "dist/debug/templates.js",
+                    //"vendor/js/libs/require.js",
                     "dist/debug/require.js"
                 ],
 
@@ -253,7 +237,7 @@ module.exports = function(grunt)
     // dist/debug/templates.js, compile all the application code into
     // dist/debug/require.js, and then concatenate the require/define shim
     // almond.js and dist/debug/templates.js into the require.js file.
-    grunt.registerTask("debug", "clean lint jst requirejs concat styles");
+    grunt.registerTask("debug", "clean requirejs concat styles");
 
     // The release task will run the debug tasks and then minify the
     // dist/debug/require.js file and CSS files.
