@@ -1,6 +1,6 @@
 define(
 [
-    "Backbone.Marionette"
+    "backbone.marionette"
 ],
 function (Marionette)
 {

@@ -1,9 +1,8 @@
 ﻿define(
 [
     "app",
-    
     "views/sampleContentView",
-    "Backbone.Marionette"
+    "backbone.marionette"
 ],
 function (App, SampleContentView, Marionette)
 {

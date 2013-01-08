@@ -231,7 +231,7 @@ module.exports = function(grunt)
         //  }
         //}
     });
-
+    
     // The debug task will remove all contents inside the dist/ folder, lint
     // all your code, precompile all the underscore templates into
     // dist/debug/templates.js, compile all the application code into

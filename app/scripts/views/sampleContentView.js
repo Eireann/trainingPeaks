@@ -1,18 +1,17 @@
 define(
 [
-    "hbs!templates/sampleContent",
-    
-    "Backbone.Marionette"
+    "backbone.marionette",
+    "Backbone.Marionette.Handlebars",
+    "hbs!templates/sampleContent"
 ],
-function (SampleContentTemplate, Marionette)
+function (Marionette, MarionetteHandlebars, SampleContentTemplate)
 {
-    return Marionette.View.extend(
+    return Marionette.ItemView.extend(
     {
-        render: function()
+        template:
         {
-            var html = SampleContentTemplate({ Name: "Bernardo" });
-            $(this.el).html(html);
-            return this;
+            type: "handlebars",
+            template: SampleContentTemplate
         }
     });
 });
