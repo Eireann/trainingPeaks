@@ -4,8 +4,13 @@ require.config(
     deps: ["../vendor/jam/require.config", "main"],
     paths:
     {
+        "jquery": "../vendor/jam/jquery/jquery",
+        "lodash": "../vendor/jam/lodash/lodash",
+        "underscore": "../vendor/jam/lodash/lodash",
+        
         "backbone": "../vendor/js/libs/backbone",
         "backbone.marionette": "../vendor/js/libs/backbone.marionette",
+        "Backbone.Marionette.Handlebars": "../vendor/jam/Backbone.Marionette.Handlebars/backbone.marionette.handlebars",
         
         "models": "scripts/models",
         "views": "scripts/views",

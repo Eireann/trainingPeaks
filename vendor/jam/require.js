@@ -2043,34 +2043,9 @@ var requirejs, require, define;
 var jam = {
     "packages": [
         {
-            "name": "backbone",
-            "location": "../vendor/jam/backbone",
-            "main": "backbone.js"
-        },
-        {
-            "name": "Backbone.Marionette",
-            "location": "../vendor/jam/Backbone.Marionette",
-            "main": "lib/amd/backbone.marionette.js"
-        },
-        {
             "name": "Backbone.Marionette.Handlebars",
             "location": "../vendor/jam/Backbone.Marionette.Handlebars",
             "main": "backbone.marionette.handlebars.js"
-        },
-        {
-            "name": "handlebars",
-            "location": "../vendor/jam/handlebars",
-            "main": "handlebars.js"
-        },
-        {
-            "name": "hbt",
-            "location": "../vendor/jam/hbt",
-            "main": "hbt.js"
-        },
-        {
-            "name": "jed",
-            "location": "../vendor/jam/jed",
-            "main": "./jed"
         },
         {
             "name": "jquery",
@@ -2094,49 +2069,16 @@ var jam = {
         }
     ],
     "version": "0.2.12",
-    "shim": {
-        "backbone": {
-            "deps": [
-                "jquery",
-                "lodash"
-            ],
-            "exports": "Backbone"
-        }
-    }
+    "shim": {}
 };
 
 if (typeof require !== "undefined" && require.config) {
     require.config({
     "packages": [
         {
-            "name": "backbone",
-            "location": "../vendor/jam/backbone",
-            "main": "backbone.js"
-        },
-        {
-            "name": "Backbone.Marionette",
-            "location": "../vendor/jam/Backbone.Marionette",
-            "main": "lib/amd/backbone.marionette.js"
-        },
-        {
             "name": "Backbone.Marionette.Handlebars",
             "location": "../vendor/jam/Backbone.Marionette.Handlebars",
             "main": "backbone.marionette.handlebars.js"
-        },
-        {
-            "name": "handlebars",
-            "location": "../vendor/jam/handlebars",
-            "main": "handlebars.js"
-        },
-        {
-            "name": "hbt",
-            "location": "../vendor/jam/hbt",
-            "main": "hbt.js"
-        },
-        {
-            "name": "jed",
-            "location": "../vendor/jam/jed",
-            "main": "./jed"
         },
         {
             "name": "jquery",
@@ -2159,49 +2101,16 @@ if (typeof require !== "undefined" && require.config) {
             "main": "underscore.js"
         }
     ],
-    "shim": {
-        "backbone": {
-            "deps": [
-                "jquery",
-                "lodash"
-            ],
-            "exports": "Backbone"
-        }
-    }
+    "shim": {}
 });
 }
 else {
     var require = {
     "packages": [
         {
-            "name": "backbone",
-            "location": "../vendor/jam/backbone",
-            "main": "backbone.js"
-        },
-        {
-            "name": "Backbone.Marionette",
-            "location": "../vendor/jam/Backbone.Marionette",
-            "main": "lib/amd/backbone.marionette.js"
-        },
-        {
             "name": "Backbone.Marionette.Handlebars",
             "location": "../vendor/jam/Backbone.Marionette.Handlebars",
             "main": "backbone.marionette.handlebars.js"
-        },
-        {
-            "name": "handlebars",
-            "location": "../vendor/jam/handlebars",
-            "main": "handlebars.js"
-        },
-        {
-            "name": "hbt",
-            "location": "../vendor/jam/hbt",
-            "main": "hbt.js"
-        },
-        {
-            "name": "jed",
-            "location": "../vendor/jam/jed",
-            "main": "./jed"
         },
         {
             "name": "jquery",
@@ -2224,15 +2133,7 @@ else {
             "main": "underscore.js"
         }
     ],
-    "shim": {
-        "backbone": {
-            "deps": [
-                "jquery",
-                "lodash"
-            ],
-            "exports": "Backbone"
-        }
-    }
+    "shim": {}
 };
 }
 

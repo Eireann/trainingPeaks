@@ -1,15 +1,16 @@
 {
   "name": "Mars",
   "version": "0.1.0",
-
   "jam": {
     "packageDir": "./vendor/jam",
     "baseUrl": "./app",
-
     "dependencies": {
       "backbone": "0.9.2",
       "jquery": "1.8.3",
       "lodash": "0.9.2"
     }
+  },
+  "devDependencies": {
+    "grunt-contrib-requirejs": "~0.3.4"
   }
 }
