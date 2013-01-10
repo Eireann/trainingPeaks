@@ -10,15 +10,15 @@
   <!-- Application styles. -->
 
   <!--(if target dummy)><!-->
-  <link rel="stylesheet" href="./app/styles/index.css">
+  <link rel="stylesheet" href="build/debug/app/css/app.css">
   <!--<!(endif)-->
 
   <!--(if target release)>
-  <link rel="stylesheet" href="index.css">
+  <link rel="stylesheet" href="css/app.css">
   <!(endif)-->
 
   <!--(if target debug)>
-  <link rel="stylesheet" href="index.css">
+  <link rel="stylesheet" href="css/app.css">
   <!(endif)-->
 </head>
 
@@ -30,15 +30,15 @@
   <!-- Application source. -->
 
   <!--(if target dummy)><!-->
-  <!--<script data-main="./app/config" src="./vendor/js/libs/require.js"></script>-->
+  <script data-main="./app/config" src="./vendor/js/libs/require.js"></script>
   <!--<!(endif)-->
 
-  <!--(if target release)>-->
-  <script src="./dist/debug/single.js"></script>
+  <!--(if target debug)>-->
+  <!--<script src="./build/debug/single.js"></script>-->
   <!--(endif)-->
 
-  <!--(if target debug)>
-  <script src="single.js"></script>
+  <!--(if target release)>
+  <script src="single.min.js"></script>
   <!(endif)-->
 </body>
 </html>

@@ -1,2 +1,4 @@
 /dist/
 /*.v11.suo
+/.sass-cache/
+/build/

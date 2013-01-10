@@ -14,22 +14,32 @@ module.exports = function(grunt)
                 browser: true
             }
         },
-
-        /*
-        sass:
+       
+        compass:
         {
-            dist:
+            debug:
             {
-                "dist/debug/index.css":
+                options:
                 {
-                    src: "app/styles/index.css",
-                    paths: ["app/styles"],
-                    prefix: "app/styles/",
-                    additional: []
+                    sassDir: "app/scss",
+                    cssDir: "build/debug/app/css",
+                    outputStyle: "expanded",
+                    require: "zurb-foundation",
+                    imagesDir: "app/images"
+                }
+            },
+            release:
+            {
+                options:
+                {
+                    sassDir: "app/scss",
+                    cssDir: "build/release/app/css",
+                    outputStyle: "compressed",
+                    require: "zurb-foundation",
+                    imagesDir: "app/images"
                 }
             }
         },
-        */
 
         requirejs:
         {
@@ -39,7 +49,7 @@ module.exports = function(grunt)
                 {
                     mainConfigFile: "app/config.js",
                     jamConfig: "vendor/jam/require.config.js",
-                    out: "dist/debug/single.js",
+                    out: "build/debug/single.js",
                     name: "config",
                     wrap: false,
                     optimize: "none"
@@ -55,21 +65,13 @@ module.exports = function(grunt)
                 [
                     // We include AlmondJS + the compiled unified app.js file.
                     "vendor/js/libs/almond.js",
-                    "dist/debug/single.js"
+                    "build/debug/single.js"
                 ],
 
-                dest: "dist/debug/single.js",
+                dest: "build/debug/single.js",
 
                 separator: ";"
             }
-        },
-
-        mincss:
-        {
-            "dist/release/index.css":
-            [
-                "dist/debug/index.css"
-            ]
         },
 
         /*
@@ -77,44 +79,10 @@ module.exports = function(grunt)
          */
         uglify:
         {
-            "dist/release/single.min.js":
+            "build/release/single.min.js":
             [
-                "dist/debug/single.js"
+                "build/debug/single.js"
             ]
-        },
-
-        server:
-        {
-            // Ensure the favicon is mapped correctly.
-            files: { "favicon.ico": "favicon.ico" },
-
-            prefix: "app/styles/",
-
-            debug:
-            {
-                files: "<config:server.files>",
-
-                folders:
-                {
-                    "app": "dist/debug",
-                    "vendor/js/libs": "dist/debug",
-                    "app/styles": "dist/debug"
-                }
-            },
-
-            release:
-            {
-                host: "0.0.0.0",
-
-                files: "<config:server.files>",
-
-                folders:
-                {
-                    "app": "dist/release",
-                    "vendor/js/libs": "dist/release",
-                    "app/styles": "dist/release"
-                }
-            }
         },
 
         jasmine:
@@ -124,48 +92,49 @@ module.exports = function(grunt)
 
         watch:
         {
-            files: ["Gruntfile.js", "vendor/**/*", "app/**/*"],
-            tasks: "styles"
+            files: ["Gruntfile.js", "app/scss/*.scss"],
+            tasks: "compass"
         },
 
         clean:
         [
-            "dist/"
+            "build/"
         ],
 
-        // If you want to generate targeted `index.html` builds into the `dist/`
-        // folders, uncomment the following configuration block and use the
-        // conditionals inside `index.html`.
-        //targethtml: {
-        //  debug: {
-        //    src: "index.html",
-        //    dest: "dist/debug/index.html"
-        //  },
-        //
-        //  release: {
-        //    src: "index.html",
-        //    dest: "dist/release/index.html"
-        //  }
-        //},
+        targethtml:
+        {
+            debug:
+            {
+                src: "index.html",
+                dest: "build/debug/index.html"
+            },
+            release:
+            {
+                src: "index.html",
+                dest: "build/release/index.html"
+            }
+        },
 
-        // This task will copy assets into your build directory,
-        // automatically.  This makes an entirely encapsulated build into
-        // each directory.
-        //copy: {
-        //  debug: {
-        //    files: {
-        //      "dist/debug/app/": "app/**",
-        //      "dist/debug/vendor/": "vendor/**"
-        //    }
-        //  },
+        copy:
+        {
+            debug:
+            {
+                files:
+                {
+                  "build/debug/app/images/": "app/images/**",
+                  "build/debug/vendor/": "vendor/**"
+                }
+            },
 
-        //  release: {
-        //    files: {
-        //      "dist/release/app/": "app/**",
-        //      "dist/release/vendor/": "vendor/**"
-        //    }
-        //  }
-        //}
+            release:
+            {
+                files:
+                {
+                    "build/release/app/images/": "app/images/**",
+                    "build/release/vendor/": "vendor/**"
+                }
+            }
+        }
     });
     
     /*
@@ -174,14 +143,16 @@ module.exports = function(grunt)
      * npm-tasks like this:
      */
     grunt.loadNpmTasks("grunt-contrib-clean");
+    grunt.loadNpmTasks("grunt-contrib-compass");
+    grunt.loadNpmTasks("grunt-contrib-copy");
     grunt.loadNpmTasks("grunt-contrib-jshint");
     grunt.loadNpmTasks("grunt-contrib-concat");
     grunt.loadNpmTasks("grunt-contrib-uglify");
-    grunt.loadNpmTasks("grunt-contrib-mincss");
-    grunt.loadNpmTasks("grunt-contrib-sass");
     grunt.loadNpmTasks("grunt-contrib-requirejs");
+    grunt.loadNpmTasks("grunt-contrib-watch");
+    //TODO BROKEN BUT NEEDED: grunt.loadNpmTasks("grunt-targethtml");
     
-    grunt.registerTask("debug", [ "clean", "requirejs", "concat" ]);
-    grunt.registerTask("release", [ "debug", "uglify" ]);
-
+    grunt.registerTask("debug", [ "clean", "requirejs", "compass:debug", "concat", "copy:debug" ]);
+    grunt.registerTask("release", [ "clean", "requirejs", "compass:release", "concat", "uglify", "copy:release" ]);
+    grunt.registerTask("default", "debug");
 };
