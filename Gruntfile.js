@@ -15,7 +15,7 @@ module.exports = function(grunt)
             }
         },
        
-        compass:
+        compass: //SASS/SCSS
         {
             debug:
             {
@@ -84,12 +84,7 @@ module.exports = function(grunt)
                 "build/debug/single.js"
             ]
         },
-
-        jasmine:
-        {
-            all: ["test/jasmine/*.html"]
-        },
-
+        
         watch:
         {
             files: ["Gruntfile.js", "app/scss/*.scss"],
@@ -134,6 +129,14 @@ module.exports = function(grunt)
                     "build/release/vendor/": "vendor/**"
                 }
             }
+        },
+        
+        testacularServer:
+        {
+            unit:
+            {
+                configFile: "testacular.conf.js"
+            }
         }
     });
     
@@ -150,7 +153,13 @@ module.exports = function(grunt)
     grunt.loadNpmTasks("grunt-contrib-uglify");
     grunt.loadNpmTasks("grunt-contrib-requirejs");
     grunt.loadNpmTasks("grunt-contrib-watch");
+    grunt.loadNpmTasks("grunt-testacular");
     //TODO BROKEN BUT NEEDED: grunt.loadNpmTasks("grunt-targethtml");
+
+    grunt.registerTask("test", "Run Jasmine Tests", function()
+    {
+
+    });
     
     grunt.registerTask("debug", [ "clean", "requirejs", "compass:debug", "concat", "copy:debug" ]);
     grunt.registerTask("release", [ "clean", "requirejs", "compass:release", "concat", "uglify", "copy:release" ]);
