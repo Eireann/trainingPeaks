@@ -135,7 +135,7 @@ module.exports = function(grunt)
         {
             unit:
             {
-                configFile: "testacular.conf.js"
+                configFile: "test/testacular.conf.js"
             }
         }
     });

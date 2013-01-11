@@ -15,8 +15,16 @@ files =
     "vendor/js/libs/backbone.js",
     "vendor/js/libs/backbone.marionette.js",
 
-    "app/*.js",
-"app/scripts/**/*.js"
+    // PATHS CONFIG
+    { pattern: "", included: false },
+    
+    // SOURCE AND TEST MODULES
+    { pattern: "app/*.js", included: false },
+    { pattern: "app/scripts/**/*.js", included: false },
+    { pattern: "test/specs/*.spec.js", included: false},
+    
+    "test/main.js"
+
 ];
 
 // list of files to exclude
