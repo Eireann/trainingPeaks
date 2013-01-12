@@ -1,13 +1,15 @@
 define(
 [
+    "controllers/sampleController"
 ],
-function()
+function(SampleController)
 {
     describe("View Test", function()
     {
         it("should be a tautology", function()
         {
-            expect("true").toBe("true");
+            var controller = new SampleController();
+            expect(typeof controller.initialize).toBe("function");
         });
     });
 });

@@ -12,19 +12,22 @@ files =
     JASMINE_ADAPTER,
     
     //SHIM STUFF
-    "vendor/js/libs/backbone.js",
-    "vendor/js/libs/backbone.marionette.js",
+    "../vendor/jam/jquery/jquery.js",
+    "../vendor/jam/lodash/lodash.underscore.min.js",
+    "../vendor/js/libs/backbone.js",
+    "../vendor/js/libs/backbone.marionette.js",
 
     // PATHS CONFIG
-    { pattern: "", included: false },
+    { pattern: "../vendor/js/libs/*.js", included: false },
+    { pattern: "../vendor/jam/*.js", included: false },
+    { pattern: "../vendor/jam/**/*.js", included: false },
     
     // SOURCE AND TEST MODULES
-    { pattern: "app/*.js", included: false },
-    { pattern: "app/scripts/**/*.js", included: false },
-    { pattern: "test/specs/*.spec.js", included: false},
+    { pattern: "../app/*.js", included: false },
+    { pattern: "../app/scripts/**/*.js", included: false },
+    { pattern: "../test/specs/*.spec.js", included: false},
     
-    "test/main.js"
-
+    "main.js"
 ];
 
 // list of files to exclude
@@ -35,13 +38,14 @@ exclude =
 
 preprocessors =
 {
-    "app/scripts/**/*.js": "coverage"
-}
+    // "../app/scripts/**/*.js": "coverage"
+};
 
 // test results reporter to use
 // possible values: dots || progress
-reporter = 'progress';
+reporter = "progress";
 
+/*
 reporters =
 [
     "coverage"
@@ -50,8 +54,9 @@ reporters =
 coverageReporter =
 {
     type: "html",
-    dir: "build/coverage/"
+    dir: "../build/coverage/"
 };
+*/
 
 // web server port
 port = process.env.PORT || 8000;
@@ -64,7 +69,7 @@ colors = true;
 
 // level of logging
 // possible values: LOG_DISABLE || LOG_ERROR || LOG_WARN || LOG_INFO || LOG_DEBUG
-logLevel = LOG_INFO;
+logLevel = LOG_DEBUG;
 
 // enable / disable watching file and executing tests whenever any file changes
 autoWatch = false;
@@ -76,7 +81,7 @@ autoWatch = false;
 // - Opera
 // - Safari
 // - PhantomJS
-browsers = ["PhantomJS"];
+browsers = [ "Chrome" ];
 
 // Continuous Integration mode
 // if true, it capture browsers, run tests and exit

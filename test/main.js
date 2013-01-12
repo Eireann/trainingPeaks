@@ -1,18 +1,22 @@
 var tests = Object.keys(window.__testacular__.files).filter(function (file)
 {
-    return /\.test\.js$/.test(file);
+    return /\.spec\.js$/.test(file);
 });
 
 require(
 {
 
     // !! Testacular serves files from '/base'
-    baseUrl: '/base/src',
+    baseUrl: "../",
     paths:
     {
-        require: '../vendor/js/libs/require',
-        text: '../lib/text'
-    },
+        app: "app/app",
+        views: "app/scripts/views",
+        controllers: "app/scripts/controllers",
+        models: "app/scripts/models",
+        
+        require: 'vendor/js/libs/require'
+    }
 },
 tests,
 function()

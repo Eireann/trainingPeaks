@@ -129,14 +129,6 @@ module.exports = function(grunt)
                     "build/release/vendor/": "vendor/**"
                 }
             }
-        },
-        
-        testacularServer:
-        {
-            unit:
-            {
-                configFile: "test/testacular.conf.js"
-            }
         }
     });
     
@@ -153,15 +145,20 @@ module.exports = function(grunt)
     grunt.loadNpmTasks("grunt-contrib-uglify");
     grunt.loadNpmTasks("grunt-contrib-requirejs");
     grunt.loadNpmTasks("grunt-contrib-watch");
-    grunt.loadNpmTasks("grunt-testacular");
     //TODO BROKEN BUT NEEDED: grunt.loadNpmTasks("grunt-targethtml");
 
     grunt.registerTask("test", "Run Jasmine Tests", function()
     {
+        var done = this.async();
+        require("child_process").exec("testacular start test/testacular.conf.js --single-run", function(err, stdout)
+        {
+            grunt.log.write(stdout);
+            done(err);
+        });
 
     });
     
     grunt.registerTask("debug", [ "clean", "requirejs", "compass:debug", "concat", "copy:debug" ]);
-    grunt.registerTask("release", [ "clean", "requirejs", "compass:release", "concat", "uglify", "copy:release" ]);
-    grunt.registerTask("default", "debug");
+    grunt.registerTask("release", [ "clean", "requirejs", "compass:release", "concat", "uglify", "copy:release", "test" ]);
+    grunt.registerTask("default", [ "debug", "test" ]);
 };
