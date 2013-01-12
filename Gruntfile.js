@@ -92,10 +92,16 @@ module.exports = function(grunt)
         },
 
         clean:
-        [
-            "build/"
-        ],
-
+        {
+            debug:
+            {
+                src: [ "build" ]
+            },
+            release:
+            {
+                src: [ "build" ]
+            }
+        },
         targethtml:
         {
             debug:
