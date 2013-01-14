@@ -11,7 +11,6 @@ function(Marionette, MarionetteHandlebars, CalendarTemplate, CalendarDayTemplate
     {
         initialize: function(options)
         {
-            
         },
         
         injectWorkouts: function(workouts)
