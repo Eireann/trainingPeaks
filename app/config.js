@@ -37,6 +37,6 @@ require.config(
     hbs:
     {
         templateExtension: "html",
-        i18nDirectory: "../../templates/i18n/"
+        i18nDirectory: "templates/i18n/"
     }
 });

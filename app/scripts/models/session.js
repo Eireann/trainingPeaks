@@ -6,12 +6,11 @@ define(
 ],
 function ($, _, Backbone)
 {
-    'use strict';
+    "use strict";
 
     var Session = Backbone.Model.extend(
     {
-        //url: "https://api.trainingpeaks.com/OAuthAuthorizationServer/OAuth/Token",
-        url: "http://localhost:8900/OAuthAuthorizationServer/OAuth/Token",
+        url: "https://apideploy.trainingpeaks.com/OAuthAuthorizationServer/OAuth/Token",
         
         defaults:
         {
@@ -40,7 +39,8 @@ function ($, _, Backbone)
         
         authenticate: function (options)
         {
-            var data = {
+            var data =
+            {
                 grant_type: "password",
                 client_id: "tpconsumer",
                 client_secret: "tpsecret",

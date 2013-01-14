@@ -1,20 +1,42 @@
 define(
 [
+    "app",
     "backbone",
-    "controllers/sampleController"
+    "controllers/calendarController",
+    "views/loginView",
+    "models/session"
 ],
-function (Backbone, SampleController)
+function (App, Backbone, CalendarController, LoginView, TheSession)
 {
     var Router = Backbone.Router.extend(
     {
+        initialize: function()
+        {
+            _.bindAll(this);
+            App.on("api:unauthorized", this.login);
+        },
+        
         routes:
         {
-            "": "index"
+            "home": "home",
+            "calendar": "calendar"
+            
         },
 
-        index: function()
+        home: function()
         {
-            (new SampleController()).load();
+            console.log("home");
+        },
+        
+        calendar: function()
+        {
+            App.regionMain.show((new CalendarController()).display());
+        },
+        
+        login: function()
+        {
+            var view = new LoginView({ model: TheSession });
+            App.regionMain.show(view);
         }
     });
 
