@@ -176,7 +176,8 @@ grunt.registerTask("testacular_test", "Run Jasmine Tests", function () {
 });
 
 grunt.registerTask("test", ["jshint", "jasmine_node"]);
-grunt.registerTask("debug", ["clean", "requirejs", "compass:debug", "concat", "copy:debug"]);
+grunt.registerTask("debug", ["clean", "requirejs", "compass:debug", "concat"]);
+//grunt.registerTask("debug", ["clean", "requirejs", "compass:debug", "concat", "copy:debug"]);
 grunt.registerTask("release", ["clean", "requirejs", "compass:release", "concat", "uglify", "copy:release", "test"]);
 grunt.registerTask("default", ["debug", "test"]);
 };
