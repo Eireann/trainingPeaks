@@ -33,16 +33,16 @@
   "devDependencies": {
     "grunt": "~0.4",
     "grunt-contrib-compass": "~0.1.0",
-    "grunt-contrib-concat": "~0.1.1",
+    "grunt-contrib-concat": "~0.1.2rc5",
     "grunt-contrib-connect": "~0.1.0",
-    "grunt-contrib-copy": "~0.3.2",
+    "grunt-contrib-copy": "~0.4.0",
     "grunt-contrib-jshint": "~0.1.0",
     "grunt-contrib-requirejs": "~0.3.4",
     "grunt-contrib-sass": "~0.2.1",
     "grunt-contrib-uglify": "~0.1.0",
     "grunt-contrib-watch": "~0.1.4",
     "testacular": "~0.5.6",
-    "grunt-contrib-clean": "~0.4.0a"
+    "grunt-contrib-clean": "~0.4.0rc5"
   },
   "preferGlobal": "false"
 }
