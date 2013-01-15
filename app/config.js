@@ -2,6 +2,7 @@
 require.config(
 {
     //deps: ["../vendor/jam/require.config", "main"],
+    deps: ["main"],
     paths:
     {
         "jquery": "../vendor/js/libs/jquery/jquery",

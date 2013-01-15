@@ -1,4 +1,3 @@
-
 var requirejs = require('requirejs');
 var define = requirejs.define;
 
@@ -40,4 +39,23 @@ requirejs.config(
         templateExtension: "html",
         i18nDirectory: "templates/i18n/"
     }
+});
+
+
+/*
+
+Testing some specific dependencies for CalendarDayView 
+to see if our Marionette, Handlebars, hbs, and templates will load
+shouldn't need to do this for any other views/controllers, 
+this is just a sanity check to see if our test environment requirejs is working right
+*/
+
+// use requirejs() instead of define() here, to keep jasmine test runner happy
+requirejs(
+[
+    "hbs!templates/views/calendarDay"
+],
+function (CalendarDayTemplate) {
+    console.log(CalendarDayTemplate);
+    console.log(CalendarDayTemplate({ date: "today", workout: "rest day" }));
 });

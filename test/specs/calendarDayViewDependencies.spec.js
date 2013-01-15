@@ -15,6 +15,7 @@ requirejs(
     "hbs!templates/views/calendarDay"
 ],
 function (Marionette, MarionetteHandlebars, hbs, CalendarDayTemplate) {
+
     return describe("Dependencies", function () {
 
         describe("Marionette", function () {
