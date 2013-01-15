@@ -2,14 +2,12 @@ define(
 [
     "backbone.marionette",
     "Backbone.Marionette.Handlebars",
-    "models/calendarDay",
     "hbs!templates/views/calendarDay"
 ],
-function(Marionette, MaironetteHandlebars, CalendarDayModel, CalendarDayTemplate)
+function(Marionette, MaironetteHandlebars, CalendarDayTemplate)
 {
     return Marionette.ItemView.extend(
     {
-        model: CalendarDayModel,
         template:
         {
             type: "handlebars",

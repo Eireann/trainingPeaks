@@ -2,30 +2,35 @@
 [
     "backbone.marionette",
     "Backbone.Marionette.Handlebars",
-    "hbs!templates/views/calendar",
-    "hbs!templates/views/calendarDay"
+    "models/calendarDay",
+    "views/calendarDayView",
+    "hbs!templates/views/calendar"
 ],
-function(Marionette, MarionetteHandlebars, CalendarTemplate, CalendarDayTemplate)
+function(Marionette, MarionetteHandlebars, CalendarDayModel, CalendarDayView, CalendarTemplate)
 {
     return Marionette.View.extend(
     {
+        days:
+        {
+            
+        },
+        
         initialize: function(options)
         {
         },
         
         injectWorkouts: function(workouts)
         {
-            this.$(".day").each(function()
+            for (var i = 0; i < workouts.length; ++i)
             {
-                var i = 0;
-                for (; i < workouts.length; ++i)
+                var date = workouts.at(i).get("WorkoutDay");
+                date = date.substr(0, date.indexOf("T"));
+                
+                if (this.days[date])
                 {
-                    console.log(workouts.at(i).get("WorkoutDay"));
-                    if (workouts.at(i).get("WorkoutDay") === 123)
-                        console.log("la");
+                    this.days[date].model.set("workout", workouts.at(i));
                 }
-
-            });
+            }
         },
         
         render: function()
@@ -34,13 +39,23 @@ function(Marionette, MarionetteHandlebars, CalendarTemplate, CalendarDayTemplate
             $(this.el).html(html);
 
             var i = 0;
-            var today = new Date();
+            var today = new Date(2012, 5, 1);
+            var that = this;
+            
             this.$(".day").each(function()
             {
                 var date = new Date(today.getTime() + (i++ * 24 * 60 * 60 * 1000));
-                $(this).html(CalendarDayTemplate({ date: date.toLocaleDateString() }));
-            });
+                var dayModel = new CalendarDayModel({ date: date.toLocaleDateString() });
+                var dayView = new CalendarDayView({ el: this, model: dayModel, collection: new Backbone.Collection() });
 
+                var dayViewsHashKey = date.toJSON();
+                dayViewsHashKey = dayViewsHashKey.substr(0, dayViewsHashKey.indexOf("T"));
+                
+                that.days[dayViewsHashKey] = dayView;
+
+                dayView.render();
+            });
+            
             return this;
         }
     });
