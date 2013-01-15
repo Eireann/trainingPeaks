@@ -30,13 +30,14 @@ function (App, Backbone, CalendarController, LoginView, TheSession)
         
         calendar: function()
         {
-            App.regionMain.show((new CalendarController()).display());
+            var controller = new CalendarController();
+            App.appLayout.calendarRegion.show(controller.display());
         },
         
         login: function()
         {
             var view = new LoginView({ model: TheSession });
-            App.regionMain.show(view);
+            App.appLayout.loginRegion.show(view);
         }
     });
 

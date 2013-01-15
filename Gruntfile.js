@@ -3,7 +3,11 @@ module.exports = function(grunt)
 
     grunt.initConfig(
     {
-
+        localization:
+        {
+            supportedLocales: [ "en_US", "en_UK", "de_GE", "it_IT" ]
+        },
+        
         jshint:
         {
             all: [ "Gruntfile.js", "app/*.js", "app/scripts/**/*.js" ],
@@ -116,8 +120,9 @@ module.exports = function(grunt)
                 src: "index.html",
                 dest: "build/release/index.html"
             }
-        },
+        }
 
+        /*
         copy:
         {
             debug:
@@ -138,6 +143,7 @@ module.exports = function(grunt)
                 }
             }
         }
+        */
     });
     
     /*
@@ -147,7 +153,7 @@ module.exports = function(grunt)
      */
     grunt.loadNpmTasks("grunt-contrib-clean");
     grunt.loadNpmTasks("grunt-contrib-compass");
-    grunt.loadNpmTasks("grunt-contrib-copy");
+    // grunt.loadNpmTasks("grunt-contrib-copy");
     grunt.loadNpmTasks("grunt-contrib-jshint");
     grunt.loadNpmTasks("grunt-contrib-concat");
     grunt.loadNpmTasks("grunt-contrib-uglify");
@@ -166,7 +172,7 @@ module.exports = function(grunt)
 
     });
     
-    grunt.registerTask("debug", [ "clean", "requirejs", "compass:debug", "concat", "copy:debug" ]);
-    grunt.registerTask("release", [ "clean", "requirejs", "compass:release", "concat", "uglify", "copy:release", "test" ]);
+    grunt.registerTask("debug", [ "clean", "requirejs", "compass:debug", "concat" ]);
+    grunt.registerTask("release", [ "clean", "requirejs", "compass:release", "concat", "uglify", "test" ]);
     grunt.registerTask("default", [ "debug", "test" ]);
 };

@@ -29,12 +29,8 @@ function (Marionette, DefaultLayoutTemplate)
 
     theApp.addRegions(
     {
-        regionMain: "#main"
-    });
-
-    theApp.addInitializer(function()
-    {
-        this.initAppLayout();
+        regionMain: "#main",
+        regionCalendar: "#calendar"
     });
 
     theApp.on("initialize:before", function ()
@@ -49,17 +45,23 @@ function (Marionette, DefaultLayoutTemplate)
     {
         var AppLayout = Backbone.Marionette.Layout.extend(
         {
-            template: DefaultLayoutTemplate,
+            template:
+            {
+                type: "handlebars",
+                template: DefaultLayoutTemplate
+            },
             regions:
             {
-                mainRegion: "#content"
+                loginRegion: "#login",
+                calendarRegion: "#calendar"
             }
         });
-
         this.appLayout = new AppLayout();
-        theApp.regionMain.show(this.AppLayout);
+        theApp.regionMain.show(this.appLayout);
     };
 
+    theApp.initAppLayout();
     theApp.root = "/Mars";
+
     return theApp;
 });

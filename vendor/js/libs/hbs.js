@@ -66,7 +66,6 @@ define([
             var xhr = getXhr();
             xhr.open('GET', url, true);
             xhr.onreadystatechange = function (evt) {
-                console.log(xhr);
                 //Do not explicitly handle errors, those should be
                 //visible via console output in the browser.
                 if (xhr.readyState === 4) {

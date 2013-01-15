@@ -11,16 +11,14 @@ function(Backbone, WorkoutModel)
         url: function()
         {
             if (!(this.startDate && this.endDate))
-                throw new Exception("startDate & endDate needed for WorkoutsCollection");
-            
-            var start = this.startDate.toJSON();
-            var end = this.endDate.toJSON();
+                throw "startDate & endDate needed for WorkoutsCollection";
 
-            start = start.substr(0, start.indexOf("T"));
-            end = end.substr(0, end.indexOf("T"));
-            
+            var start = this.startDate.format("YYYY-MM-DD");
+            var end = this.endDate.format("YYYY-MM-DD");
+
             //return "http://localhost:8900/WebApiServer/Fitness/V1/workouts/" + start + "/" + end;
-            return "http://apideploy.trainingpeaks.com/WebApiServer/Fitness/V1/workouts/" + start + "/" + end;
+            //return "http://apideploy.trainingpeaks.com/WebApiServer/Fitness/V1/workouts/" + start + "/" + end;
+            return "http://apidev.trainingpeaks.com/WebApiServer/Fitness/V1/workouts/" + start + "/" + end;
         },
         initialize: function(options)
         {

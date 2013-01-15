@@ -5,6 +5,7 @@ require.config(
     paths:
     {
         "jquery": "../vendor/jam/jquery/jquery",
+        "jquery.mousewheel": "../vendor/js/libs/jquery.mousewheel",
         "lodash": "../vendor/jam/lodash/lodash",
         "underscore": "../vendor/jam/lodash/lodash",
         
@@ -18,7 +19,9 @@ require.config(
         
         "i18nprecompile": "../vendor/js/libs/i18nprecompile",
         "json2": "../vendor/js/libs/json2",
-        "hbs": "../vendor/js/libs/hbs"
+        "hbs": "../vendor/js/libs/hbs",
+        
+        "moment": "../vendor/js/libs/moment"
     },
     
     shim:
@@ -32,6 +35,11 @@ require.config(
         {
             deps: [ "backbone" ],
             exports: "Marionette"
+        },
+        "jquery.mousewheel":
+        {
+            deps: ["jquery"],
+            exports: "jquery"
         }
     },
     hbs:

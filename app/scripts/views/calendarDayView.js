@@ -8,10 +8,16 @@ function(Marionette, MaironetteHandlebars, CalendarDayTemplate)
 {
     return Marionette.ItemView.extend(
     {
+        tagName: "div",
+        className: "two columns",
         template:
         {
             type: "handlebars",
             template: CalendarDayTemplate
+        },
+        modelEvents:
+        {
+            "change": "render"
         }
     });
 });

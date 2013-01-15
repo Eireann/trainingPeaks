@@ -10,7 +10,9 @@ function ($, _, Backbone)
 
     var Session = Backbone.Model.extend(
     {
-        url: "https://apideploy.trainingpeaks.com/OAuthAuthorizationServer/OAuth/Token",
+        //url: "https://apideploy.trainingpeaks.com/OAuthAuthorizationServer/OAuth/Token",
+        url: "http://apidev.trainingpeaks.com/OAuthAuthorizationServer/OAuth/Token",
+        //url: "http://localhost:8900/OAuthAuthorizationServer/OAuth/Token",
         
         defaults:
         {
