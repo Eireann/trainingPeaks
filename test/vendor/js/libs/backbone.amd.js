@@ -1,3 +1,5 @@
+// MODIFIED BY MICAH = add 'window' as a requirement to define, so we get our jsdom document/window
+
 //     Backbone.js 0.9.9 (modified to add AMD registration)
 
 //     (c) 2010-2012 Jeremy Ashkenas, DocumentCloud Inc.
@@ -12,7 +14,7 @@
     factory(root, exports, require('underscore'));
   } else if (typeof define === 'function' && define.amd) {
     // AMD
-    define(['underscore', 'jquery', 'exports'], function(_, $, exports) {
+    define(['window', 'underscore', 'jquery', 'exports'], function(window, _, $, exports) {
       // Export global even in AMD case in case this script is loaded with
       // others that may still expect a global Backbone.
       root.Backbone = factory(root, exports, _, $);

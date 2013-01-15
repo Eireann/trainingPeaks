@@ -1,16 +1,11 @@
-module.exports = function(grunt)
-{
+module.exports = function (grunt) {
 
     grunt.initConfig(
     {
-        localization:
-        {
-            supportedLocales: [ "en_US", "en_UK", "de_GE", "it_IT" ]
-        },
-        
+
         jshint:
         {
-            all: [ "Gruntfile.js", "app/*.js", "app/scripts/**/*.js" ],
+            all: ["Gruntfile.js", "app/*.js", "app/scripts/**/*.js", "!app/Handlebars.js"],
             options:
             {
                 scripturl: true,
@@ -20,10 +15,10 @@ module.exports = function(grunt)
                 browser: true
             }
         },
-       
+
         compass: //SASS/SCSS
         {
-            debug:
+        debug:
             {
                 options:
                 {
@@ -34,7 +29,7 @@ module.exports = function(grunt)
                     imagesDir: "app/images"
                 }
             },
-            release:
+        release:
             {
                 options:
                 {
@@ -45,9 +40,9 @@ module.exports = function(grunt)
                     imagesDir: "app/images"
                 }
             }
-        },
+    },
 
-        requirejs:
+    requirejs:
         {
             compile:
             {
@@ -63,13 +58,13 @@ module.exports = function(grunt)
             }
         },
 
-        concat:
+    concat:
         {
             dist:
             {
                 src:
                 [
-                    // We include AlmondJS + the compiled unified app.js file.
+                // We include AlmondJS + the compiled unified app.js file.
                     "vendor/js/libs/almond.js",
                     "build/debug/single.js"
                 ],
@@ -80,35 +75,35 @@ module.exports = function(grunt)
             }
         },
 
-        /*
-         * The minification task uses the uglify library.
-         */
-        uglify:
+    /*
+    * The minification task uses the uglify library.
+    */
+    uglify:
         {
             "build/release/single.min.js":
             [
                 "build/debug/single.js"
             ]
         },
-        
-        watch:
+
+    watch:
         {
             files: ["Gruntfile.js", "app/scss/*.scss"],
             tasks: "compass"
         },
 
-        clean:
+    clean:
         {
             debug:
             {
-                src: [ "build" ]
+                src: ["build"]
             },
             release:
             {
-                src: [ "build" ]
+                src: ["build"]
             }
         },
-        targethtml:
+    targethtml:
         {
             debug:
             {
@@ -120,17 +115,16 @@ module.exports = function(grunt)
                 src: "index.html",
                 dest: "build/release/index.html"
             }
-        }
+        },
 
-        /*
-        copy:
+    copy:
         {
             debug:
             {
                 files:
                 {
-                  "build/debug/app/images/": "app/images/**",
-                  "build/debug/vendor/": "vendor/**"
+                    "build/debug/app/images/": "app/images/**",
+                    "build/debug/vendor/": "vendor/**"
                 }
             },
 
@@ -142,37 +136,48 @@ module.exports = function(grunt)
                     "build/release/vendor/": "vendor/**"
                 }
             }
-        }
-        */
-    });
-    
-    /*
-     * With the new version of Grunt (>= 0.4) we need to install all the
-     * "default" tasks manually using NPM and then need to include tem as
-     * npm-tasks like this:
-     */
-    grunt.loadNpmTasks("grunt-contrib-clean");
-    grunt.loadNpmTasks("grunt-contrib-compass");
-    // grunt.loadNpmTasks("grunt-contrib-copy");
-    grunt.loadNpmTasks("grunt-contrib-jshint");
-    grunt.loadNpmTasks("grunt-contrib-concat");
-    grunt.loadNpmTasks("grunt-contrib-uglify");
-    grunt.loadNpmTasks("grunt-contrib-requirejs");
-    grunt.loadNpmTasks("grunt-contrib-watch");
-    //TODO BROKEN BUT NEEDED: grunt.loadNpmTasks("grunt-targethtml");
+        },
 
-    grunt.registerTask("test", "Run Jasmine Tests", function()
-    {
-        var done = this.async();
-        require("child_process").exec("testacular start testacular.conf.js --single-run", function(err, stdout)
-        {
-            grunt.log.write(stdout);
-            done(err);
-        });
+    // jasmine testsuites
+    jasmine_node: {
+        specNameMatcher: ".spec",
+        projectRoot: ".",
+        requirejs: './test/jasmine_requirejs_config.js',
+        forceExit: true,
+        watchfiles: ['app/**/*.js', 'test/specs/**/*.js', 'app/**/*.html']
+    }
 
+});
+
+/*
+* With the new version of Grunt (>= 0.4) we need to install all the
+* "default" tasks manually using NPM and then need to include tem as
+* npm-tasks like this:
+*/
+grunt.loadNpmTasks("grunt-contrib-clean");
+grunt.loadNpmTasks("grunt-contrib-compass");
+//grunt.loadNpmTasks("grunt-contrib-copy");
+grunt.loadNpmTasks("grunt-contrib-jshint");
+grunt.loadNpmTasks("grunt-contrib-concat");
+grunt.loadNpmTasks("grunt-contrib-uglify");
+grunt.loadNpmTasks("grunt-contrib-requirejs");
+grunt.loadNpmTasks("grunt-contrib-watch");
+//grunt.loadNpmTasks("grunt-targethtml");
+grunt.loadNpmTasks('grunt-jasmine-node');
+
+// testacular test runner - failing on hbs template imports, gives cryptic error messages
+grunt.registerTask("testacular_test", "Run Jasmine Tests", function () {
+    var done = this.async();
+    require("child_process").exec("testacular start testacular.conf.js --single-run", function (err, stdout) {
+        grunt.log.write(stdout);
+        done(err);
     });
-    
-    grunt.registerTask("debug", [ "clean", "requirejs", "compass:debug", "concat" ]);
-    grunt.registerTask("release", [ "clean", "requirejs", "compass:release", "concat", "uglify", "test" ]);
-    grunt.registerTask("default", [ "debug", "test" ]);
+
+});
+
+grunt.registerTask("test", ["jshint", "jasmine_node"]);
+grunt.registerTask("debug", ["clean", "requirejs", "compass:debug", "concat"]);
+//grunt.registerTask("debug", ["clean", "requirejs", "compass:debug", "concat", "copy:debug"]);
+grunt.registerTask("release", ["clean", "requirejs", "compass:release", "concat", "uglify", "copy:release", "test"]);
+grunt.registerTask("default", ["debug", "test"]);
 };

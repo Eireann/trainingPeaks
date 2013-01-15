@@ -1,17 +1,18 @@
 // Set the require.js configuration for your application.
 require.config(
 {
-    deps: ["../vendor/jam/require.config", "main"],
+    //deps: ["../vendor/jam/require.config", "main"],
+    deps: ["main"],
     paths:
     {
-        "jquery": "../vendor/jam/jquery/jquery",
+        "jquery": "../vendor/js/libs/jquery/jquery",
         "jquery.mousewheel": "../vendor/js/libs/jquery.mousewheel",
-        "lodash": "../vendor/jam/lodash/lodash",
-        "underscore": "../vendor/jam/lodash/lodash",
+        "lodash": "../vendor/js/libs/lodash/lodash",
+        "underscore": "../vendor/js/libs/lodash/lodash",
         
         "backbone": "../vendor/js/libs/backbone",
         "backbone.marionette": "../vendor/js/libs/backbone.marionette",
-        "Backbone.Marionette.Handlebars": "../vendor/jam/Backbone.Marionette.Handlebars/backbone.marionette.handlebars",
+        "Backbone.Marionette.Handlebars": "../vendor/js/libs/Backbone.Marionette.Handlebars/backbone.marionette.handlebars",
 
         "models": "scripts/models",
         "views": "scripts/views",
