@@ -1,7 +1,9 @@
 module.exports = function(grunt)
 {
+
     grunt.initConfig(
     {
+
         jshint:
         {
             all: [ "Gruntfile.js", "app/*.js", "app/scripts/**/*.js" ],
@@ -156,7 +158,7 @@ module.exports = function(grunt)
     grunt.registerTask("test", "Run Jasmine Tests", function()
     {
         var done = this.async();
-        require("child_process").exec("testacular start test/testacular.conf.js --single-run", function(err, stdout)
+        require("child_process").exec("testacular start testacular.conf.js --single-run", function(err, stdout)
         {
             grunt.log.write(stdout);
             done(err);

@@ -2,3 +2,8 @@
 /*.v11.suo
 /.sass-cache/
 /build/
+/node_modules/
+/bin/
+/obj/
+*.csproj*
+*.suo

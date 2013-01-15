@@ -1,7 +1,8 @@
 // Set the require.js configuration for your application.
 require.config(
 {
-    deps: ["../vendor/jam/require.config", "main"],
+    // Do we need this? 
+    //deps: ["../vendor/jam/require.config", "main"],
     paths:
     {
         "jquery": "../vendor/jam/jquery/jquery",
@@ -11,7 +12,8 @@ require.config(
         "backbone": "../vendor/js/libs/backbone",
         "backbone.marionette": "../vendor/js/libs/backbone.marionette",
         "Backbone.Marionette.Handlebars": "../vendor/jam/Backbone.Marionette.Handlebars/backbone.marionette.handlebars",
-        
+        "handlebars": "../vendor/jam/Backbone.Marionette.Handlebars/backbone.marionette.handlebars",       
+
         "models": "scripts/models",
         "views": "scripts/views",
         "controllers": "scripts/controllers",
