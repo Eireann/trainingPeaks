@@ -2,3 +2,7 @@
 /*.v11.suo
 /.sass-cache/
 /build/
+/bin/
+/obj/
+*.csproj*
+*.suo

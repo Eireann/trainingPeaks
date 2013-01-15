@@ -12,22 +12,22 @@ files =
     JASMINE_ADAPTER,
     
     //SHIM STUFF
-    "../vendor/jam/jquery/jquery.js",
-    "../vendor/jam/lodash/lodash.underscore.min.js",
-    "../vendor/js/libs/backbone.js",
-    "../vendor/js/libs/backbone.marionette.js",
+    "vendor/jam/jquery/jquery.js",
+    "vendor/jam/lodash/lodash.underscore.min.js",
+    "vendor/js/libs/backbone.js",
+    "vendor/js/libs/backbone.marionette.js",
 
     // PATHS CONFIG
-    { pattern: "../vendor/js/libs/*.js", included: false },
-    { pattern: "../vendor/jam/*.js", included: false },
-    { pattern: "../vendor/jam/**/*.js", included: false },
+    { pattern: "vendor/js/libs/*.js", included: false },
+    { pattern: "vendor/jam/*.js", included: false },
+    { pattern: "vendor/jam/**/*.js", included: false },
     
     // SOURCE AND TEST MODULES
-    { pattern: "../app/*.js", included: false },
-    { pattern: "../app/scripts/**/*.js", included: false },
-    { pattern: "../test/specs/*.spec.js", included: false},
+    { pattern: "app/*.js", included: false },
+    { pattern: "app/scripts/**/*.js", included: false },
+    { pattern: "test/specs/*.spec.js", included: false},
     
-    "main.js"
+    "test/main.js"
 ];
 
 // list of files to exclude
@@ -38,7 +38,7 @@ exclude =
 
 preprocessors =
 {
-    // "../app/scripts/**/*.js": "coverage"
+    // "app/scripts/**/*.js": "coverage"
 };
 
 // test results reporter to use
@@ -54,7 +54,7 @@ reporters =
 coverageReporter =
 {
     type: "html",
-    dir: "../build/coverage/"
+    dir: "build/coverage/"
 };
 */
 
