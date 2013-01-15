@@ -5,7 +5,7 @@ module.exports = function (grunt) {
 
         jshint:
         {
-            all: ["Gruntfile.js", "app/*.js", "app/scripts/**/*.js"],
+            all: ["Gruntfile.js", "app/*.js", "app/scripts/**/*.js", "!app/Handlebars.js"],
             options:
             {
                 scripturl: true,
@@ -144,7 +144,7 @@ module.exports = function (grunt) {
         projectRoot: ".",
         requirejs: './test/jasmine_requirejs_config.js',
         forceExit: true,
-        watchfiles: ['app/**/*.js', 'app/**/*.html']
+        watchfiles: ['app/**/*.js', 'test/specs/**/*.js', 'app/**/*.html']
     }
 
 });
@@ -175,7 +175,7 @@ grunt.registerTask("testacular_test", "Run Jasmine Tests", function () {
 
 });
 
-grunt.registerTask("test", ["jasmine_node"]);
+grunt.registerTask("test", ["jshint", "jasmine_node"]);
 grunt.registerTask("debug", ["clean", "requirejs", "compass:debug", "concat", "copy:debug"]);
 grunt.registerTask("release", ["clean", "requirejs", "compass:release", "concat", "uglify", "copy:release", "test"]);
 grunt.registerTask("default", ["debug", "test"]);

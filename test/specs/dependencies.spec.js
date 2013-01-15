@@ -10,9 +10,12 @@ requirejs(
     "jquery",
     "backbone",
     "backbone.marionette",
+    "Backbone.Marionette.Handlebars",
+    "i18nprecompile",
+    "json2",
     "hbs"
 ],
-function (document, window, jquery, Backbone, Marionette, hbs) {
+function (document, window, jquery, Backbone, Marionette, MarionetteHandlebars, precompile, json2, hbs) {
     return describe("Dependencies", function () {
 
         describe("document", function () {
@@ -46,12 +49,29 @@ function (document, window, jquery, Backbone, Marionette, hbs) {
             });
         });
 
+        describe("MarionetteHandlebars", function () {
+            it("should be loaded as a module", function () {
+                expect(MarionetteHandlebars).toBeDefined();
+            });
+        });
+
         describe("hbs", function () {
             it("should be loaded as a module", function () {
                 expect(hbs).toBeDefined();
             });
         });
 
+        describe("precompile", function () {
+            it("should be loaded as a module", function () {
+                expect(precompile).toBeDefined();
+            });
+        });
+
+        describe("json2", function () {
+            it("should be loaded as a module", function () {
+                expect(json2).toBeDefined();
+            });
+        });
     });
 
 });
