@@ -10,10 +10,9 @@ requirejs(
     "jquery",
     "backbone",
     "backbone.marionette",
-    "hbs",
-    "controllers/calendarController"
+    "hbs"
 ],
-function (document, window, jquery, Backbone, Marionette, hbs, CalendarController) {
+function (document, window, jquery, Backbone, Marionette, hbs) {
     return describe("Dependencies", function () {
 
         describe("document", function () {
@@ -50,12 +49,6 @@ function (document, window, jquery, Backbone, Marionette, hbs, CalendarControlle
         describe("hbs", function () {
             it("should be loaded as a module", function () {
                 expect(hbs).toBeDefined();
-            });
-        });
-
-        describe("CalendarController should load if all of the dependencies load", function () {
-            it("should be loaded as a module", function () {
-                expect(CalendarController).toBeDefined();
             });
         });
 
