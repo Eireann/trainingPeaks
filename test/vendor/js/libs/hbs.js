@@ -132,6 +132,19 @@ define([
         version: '0.4.0',
 
         load: function (name, parentRequire, load, config) {
+            /*
+            console.log("In hbs! plugin, loading: ");
+            console.log('name: ' + name);
+            console.log('req: ' + parentRequire);
+            console.log('onLoad: ' + load);
+            console.log('config: ');
+            console.log(config);
+            console.log('caller: ');
+            console.log(arguments.callee.caller.toString());
+            */
+            //console.log('isBuild? 145' + config.isBuild);
+
+
             //>>excludeStart('excludeHbs', pragmas.excludeHbs)
             var compiledName = name + customNameExtension,
                 disableI18n = (config.hbs && config.hbs.disableI18n),
@@ -344,6 +357,7 @@ define([
                                     });
                                 }
                                 else if (config.isBuild) {
+
                                     (function () {
                                         var fs = require.nodeRequire('fs'),
                                 str = _(metaObj.styles).map(function (style) {
@@ -395,6 +409,9 @@ define([
 
                     //Hold on to the transformed text if a build.
                     if (config.isBuild) {
+                        //console.log('isBuild? 414' + config.isBuild);
+                        //console.log(compiledName);
+                        //console.log(text);
                         buildMap[compiledName] = text;
                     }
 
@@ -412,6 +429,7 @@ define([
                         }
                     }
 
+
                     if (!config.isBuild) {
                         require(deps, function () {
                             load.fromText(text);
@@ -425,12 +443,19 @@ define([
                         });
                     }
                     else {
+                        //console.log("Line 446, calling load.fromText");
+                        //console.log(name);
+                        //console.log(text);
                         load.fromText(name, text);
 
                         //Give result to load. Need to wait until the module
                         //is fully parse, which will happen after this
                         //execution.
+                        //console.log('parentRequire: ');
+                        //console.log(parentRequire);
                         parentRequire([name], function (value) {
+                            //console.log('inside parentRequire callback: ');
+                            //console.log(value);
                             load(value);
                         });
                     }

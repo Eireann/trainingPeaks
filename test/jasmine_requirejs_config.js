@@ -1,4 +1,3 @@
-
 var requirejs = require('requirejs');
 var define = requirejs.define;
 
@@ -7,7 +6,10 @@ var rootJsDir = __dirname.substring(0,__dirname.indexOf("/test"));
 
 requirejs.config(
 {
+    // isBuild is used by hbs to load more synchronously, but still not completely synchronous :-(
+    isBuild: true,
     baseUrl: rootJsDir,
+    //deps: ["hbs!templates/views/calendarDay", "test/specs/calendarDayViewDependencies.spec"],
     paths:
     {
         "lodash": "vendor/jam/lodash/lodash",
@@ -32,12 +34,15 @@ requirejs.config(
         "handlebars": "vendor/js/libs/Handlebars",
         "i18nprecompile": "vendor/js/libs/i18nprecompile",
         "json2": "vendor/js/libs/json2",
-        "hbs": "vendor/js/libs/hbs"
+        "hbs": "test/vendor/js/libs/hbs",
+        "text": "test/vendor/js/libs/text"
     },
 
     hbs:
     {
         templateExtension: "html",
         i18nDirectory: "templates/i18n/"
-    }
+    },
+
 });
+
