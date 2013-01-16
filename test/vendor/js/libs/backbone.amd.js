@@ -14,16 +14,16 @@
     factory(root, exports, require('underscore'));
   } else if (typeof define === 'function' && define.amd) {
     // AMD
-    define(['window', 'underscore', 'jquery', 'exports'], function(window, _, $, exports) {
+    define(['window', 'underscore', 'jquery', 'exports', 'document'], function(window, _, $, exports, document) {
       // Export global even in AMD case in case this script is loaded with
       // others that may still expect a global Backbone.
-      root.Backbone = factory(root, exports, _, $);
+      root.Backbone = factory(root, exports, _, $, document);
     });
   } else {
     // Browser globals
     root.Backbone = factory(root, {}, root._, (root.jQuery || root.Zepto || root.ender));
   }
-}(this, function(root, Backbone, _, $) {
+}(this, function(root, Backbone, _, $, document) {
 
   // Initial Setup
   // -------------

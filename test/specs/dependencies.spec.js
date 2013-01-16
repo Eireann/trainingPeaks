@@ -1,6 +1,6 @@
-describe("Wait for callback to happen", function () {
+describe("Backbone/Marionette Dependencies", function () {
 
-    it("Should wait for done to be called", function (done) {
+    it("Should be able to load a full Backbone/Marionette environment in node.js", function (done) {
 
         /**
         Test to make sure we can load all of the dependencies we need for backbone and marionette,
@@ -79,7 +79,6 @@ describe("Wait for callback to happen", function () {
 
             });
 
-            console.log("Done in dependencies.spec");
             done();
         });
 
