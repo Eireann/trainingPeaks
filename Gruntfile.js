@@ -166,7 +166,7 @@ grunt.loadNpmTasks("grunt-contrib-watch");
 grunt.loadNpmTasks('grunt-jasmine-node');
 
 // testacular test runner - failing on hbs template imports, gives cryptic error messages
-grunt.registerTask("testacular_test", "Run Jasmine Tests", function () {
+grunt.registerTask("testacular", "Run Jasmine Tests", function () {
     var done = this.async();
     require("child_process").exec("testacular start testacular.conf.js --single-run", function (err, stdout) {
         grunt.log.write(stdout);

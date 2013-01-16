@@ -5,12 +5,11 @@ describe("Calendar Day View", function () {
         // use requirejs() instead of define() here, to keep jasmine test runner happy
         requirejs(
         [
-            "document",
             "views/calendarDayView"
         ],
-        function (document, CalendarDayView) {
+        function (CalendarDayView) {
 
-            describe("CalendarDayView", function () {
+            describe("CalendarDayView ", function () {
                 it("should be loaded as a module", function () {
                     expect(CalendarDayView).toBeDefined();
                 });
@@ -18,9 +17,6 @@ describe("Calendar Day View", function () {
                     var c = new CalendarDayView();
                     expect(c.render).toBeDefined();
                     expect(typeof c.render).toEqual("function");
-                });
-                it("should fail", function () {
-                    expect(false).toBe(true);
                 });
             });
 

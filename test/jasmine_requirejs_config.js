@@ -7,7 +7,7 @@ var rootJsDir = __dirname.substring(0,__dirname.indexOf("/test"));
 requirejs.config(
 {
     // isBuild is used by hbs to load more synchronously, but still not completely synchronous :-(
-    isBuild: true,
+    //isBuild: true,
     baseUrl: rootJsDir,
     //deps: ["hbs!templates/views/calendarDay", "test/specs/calendarDayViewDependencies.spec"],
     paths:

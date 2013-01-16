@@ -25,7 +25,7 @@ files =
     // SOURCE AND TEST MODULES
     { pattern: "app/*.js", included: false },
     { pattern: "app/scripts/**/*.js", included: false },
-    { pattern: "test/specs/*.spec.js", included: false},
+    { pattern: "test/specs/**/*.spec.js", included: false},
     
     "test/main.js"
 ];

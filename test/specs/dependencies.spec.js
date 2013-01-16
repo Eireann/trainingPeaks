@@ -76,7 +76,6 @@ describe("Backbone/Marionette Dependencies", function () {
                         expect(json2).toBeDefined();
                     });
                 });
-
             });
 
             done();
