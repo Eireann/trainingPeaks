@@ -171,7 +171,7 @@ grunt.loadNpmTasks("grunt-contrib-concat");
 grunt.loadNpmTasks("grunt-contrib-uglify");
 grunt.loadNpmTasks("grunt-contrib-requirejs");
 grunt.loadNpmTasks("grunt-contrib-watch");
-grunt.loadNpmTasks("grunt-targethtml");
+//grunt.loadNpmTasks("grunt-targethtml");
 grunt.loadNpmTasks('grunt-jasmine-node');
 
 
@@ -267,7 +267,7 @@ grunt.registerMultiTask('copy', 'Copy files.', function () {
                         fs.mkdirSync(dir);
                     }
                 }
-            // copy
+                // copy
             } else if (fs.statSync(srcPath).isFile()) {
                 grunt.log.writeln("Copy " + srcPath + " to " + destPath);
                 fs.createReadStream(srcPath).pipe(fs.createWriteStream(destPath));
@@ -277,9 +277,50 @@ grunt.registerMultiTask('copy', 'Copy files.', function () {
 });
 // END COPY FILES
 
+// TARGETHTML - copied and modified from grunt-targethtml
+grunt.registerMultiTask('targethtml', 'Produces html-output depending on grunt release version', function () {
+
+    // The source files to be processed. The "nonull" option is used
+    // to retain invalid files/patterns so they can be warned about.
+
+    //var files = grunt.file.expand({ nonull: true }, this.file.srcRaw);
+
+    // Warn if a source file/pattern was invalid.
+    var invalidSrc = this.files.some(function (filepath) {
+        if (!grunt.file.exists(filepath)) {
+            grunt.log.error('Source file "' + filepath + '" not found.');
+            return true;
+        }
+    });
+    if (invalidSrc) { return false; }
+
+    // Process files
+    var target = this.target;
+    _.each(this.files, function (file) {
+        var dest = file.dest;
+        var src = file.src[0];
+        var contents = grunt.file.read(src);
+        console.log("SRC: " + src);
+        console.log("DEST: " + dest);
+        console.log("TARGET: " + target);
+        if (contents) {
+            contents = contents.replace(new RegExp('<!--[\\[\\(]if target ' + target + '[\\]\\)]>(<!-->)?([\\s\\S]*?)(<!--)?<![\\[\\(]endif[\\]\\)]-->', 'g'), '$2');
+            contents = contents.replace(new RegExp('^[\\s\\t]+<!--[\\[\\(]if target .*?[\\]\\)]>(<!-->)?([\\s\\S]*?)(<!--)?<![\\[\\(]endif[\\]\\)]-->[\r\n]*', 'gm'), '');
+            contents = contents.replace(new RegExp('<!--[\\[\\(]if target .*?[\\]\\)]>(<!-->)?([\\s\\S]*?)(<!--)?<![\\[\\(]endif[\\]\\)]-->[\r\n]*', 'g'), '');
+            grunt.file.write(dest, contents);
+        }
+
+        // Otherwise, print a success message.
+        grunt.log.ok('File "' + dest + '" created.');
+    });
+
+
+});
+// END TARGETHTML
+
 grunt.registerTask("test", ["jshint", "jasmine_node"]);
-grunt.registerTask("debug", ["i18n_config", "clean", "requirejs", "compass:debug", "targethtml:debug", "concat", "copy:debug"]);
-grunt.registerTask("release", ["i18n_config", "clean", "requirejs", "compass:release", "concat", "uglify", "copy:release", "test"]);
+grunt.registerTask("debug", ["test", "i18n_config", "clean", "requirejs", "compass:debug", "targethtml:debug", "concat", "copy:debug"]);
+grunt.registerTask("release", ["test", "i18n_config", "clean", "requirejs", "compass:release", "concat", "uglify", "copy:release"]);
 grunt.registerTask("default", ["debug", "test"]);
 
 /* DISABLED TESTACULAR - doesn't run some of our async tests 
