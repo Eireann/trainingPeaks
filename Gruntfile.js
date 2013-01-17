@@ -1,4 +1,6 @@
 var _ = require("underscore");
+var path = require("path");
+var fs = require("fs");
 
 module.exports = function (grunt) {
 
@@ -132,8 +134,7 @@ module.exports = function (grunt) {
             {
                 files:
                 {
-                    "build/debug/app/images/": "app/images/**",
-                    "build/debug/vendor/": "vendor/**"
+                    "build/debug": ["app/images/**", "vendor/**"]
                 }
             },
 
@@ -141,8 +142,7 @@ module.exports = function (grunt) {
             {
                 files:
                 {
-                    "build/release/app/images/": "app/images/**",
-                    "build/release/vendor/": "vendor/**"
+                    "build/release": ["app/images/**", "vendor/**"]
                 }
             }
         },
@@ -171,10 +171,11 @@ grunt.loadNpmTasks("grunt-contrib-concat");
 grunt.loadNpmTasks("grunt-contrib-uglify");
 grunt.loadNpmTasks("grunt-contrib-requirejs");
 grunt.loadNpmTasks("grunt-contrib-watch");
-//grunt.loadNpmTasks("grunt-targethtml");
+grunt.loadNpmTasks("grunt-targethtml");
 grunt.loadNpmTasks('grunt-jasmine-node');
 
 
+// INTERNATIONALIZATION
 grunt.registerTask("i18n_config", "Compile one single.js file for each supported language", function () {
 
     // modify properties of the requirejs grunt config
@@ -241,17 +242,48 @@ grunt.registerTask("i18n_config", "Compile one single.js file for each supported
     });
 
 });
+// END INTERNATIONALIZATION
 
-grunt.registerTask("i18n", ["i18n_config", "debug", "compass:release", "concat"]);
+// FILE COPYING - a highly simplified version grunt-contrib-copy
+grunt.registerMultiTask('copy', 'Copy files.', function () {
+
+    _.each(this.files, function (file) {
+
+        var destFolder = path.normalize(file.dest);
+
+        _.each(file.src, function (srcFile) {
+            var srcPath = path.normalize(srcFile);
+            var destPath = path.join(destFolder, srcFile);
+            // mkdir
+            if (fs.statSync(srcPath).isDirectory() && !fs.existsSync(destPath)) {
+
+                //console.log("mkdir: " + destPath);
+                var pathParts = destPath.split(path.sep);
+                var dir = "";
+                while (pathParts.length > 0) {
+                    dir = path.join(dir, pathParts.shift());
+                    grunt.log.writeln("Mkdir " + dir);
+                    if (!fs.existsSync(dir)) {
+                        fs.mkdirSync(dir);
+                    }
+                }
+            // copy
+            } else if (fs.statSync(srcPath).isFile()) {
+                grunt.log.writeln("Copy " + srcPath + " to " + destPath);
+                fs.createReadStream(srcPath).pipe(fs.createWriteStream(destPath));
+            }
+        });
+    });
+});
+// END COPY FILES
+
 grunt.registerTask("test", ["jshint", "jasmine_node"]);
-grunt.registerTask("debug", ["clean", "requirejs", "compass:debug", "concat"]);
-//@TODO copy:debug - grunt.registerTask("debug", ["clean", "requirejs", "compass:debug", "concat", "copy:debug"]);
-grunt.registerTask("release", ["clean", "requirejs", "compass:release", "concat", "uglify", "copy:release", "test"]);
+grunt.registerTask("debug", ["i18n_config", "clean", "requirejs", "compass:debug", "targethtml:debug", "concat", "copy:debug"]);
+grunt.registerTask("release", ["i18n_config", "clean", "requirejs", "compass:release", "concat", "uglify", "copy:release", "test"]);
 grunt.registerTask("default", ["debug", "test"]);
 
-/* DISABLED TESTACULAR
+/* DISABLED TESTACULAR - doesn't run some of our async tests 
 //"testacular": "~0.5.6"
-// testacular test runner - failing on hbs template imports, gives cryptic error messages
 grunt.registerTask("testacular", "Run Jasmine Tests", function () {
 var done = this.async();
 require("child_process").exec("testacular start testacular.conf.js --single-run", function (err, stdout) {
