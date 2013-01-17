@@ -234,7 +234,7 @@ grunt.registerTask("i18n_config", "Compile one single.js file for each supported
 
     // build options for each locale - set the single.js filename and the locale
     _.each(locales, function (localeName) {
-        var localeSingleFile = "build/debug/single_" + localeName + ".js";
+        var localeSingleFile = "build/debug/locale/" + localeName + "/single.js";
         addLocaleToRequirejs(localeName, localeSingleFile);
         addLocaleToConcat(localeName, localeSingleFile);
         addLocaleToUglify(localeName, localeSingleFile);
