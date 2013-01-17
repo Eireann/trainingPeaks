@@ -9,7 +9,14 @@ module.exports = function (grunt) {
 
         jshint:
         {
-            all: ["Gruntfile.js", "!app/test/*.js", "app/*.js", "app/scripts/**/*.js", "!app/Handlebars.js"],
+            all: [
+            "Gruntfile.js",
+            "test/handlebars_requirejs_config.js",
+            "test/specs/**/*.js",
+            "app/*.js",
+            "app/scripts/**/*.js",
+            "!app/Handlebars.js"
+            ],
             options:
             {
                 scripturl: true,
