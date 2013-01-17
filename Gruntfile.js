@@ -1,3 +1,5 @@
+var _ = require("underscore");
+
 module.exports = function (grunt) {
 
     grunt.initConfig(
@@ -80,10 +82,17 @@ module.exports = function (grunt) {
     */
     uglify:
         {
-            "build/release/single.min.js":
-            [
-                "build/debug/single.js"
-            ]
+            release:
+            {
+                files:
+                {
+                    "build/release/single.min.js":
+                        [
+                            "build/debug/single.js"
+                        ]
+                }
+            }
+
         },
 
     watch:
@@ -165,19 +174,92 @@ grunt.loadNpmTasks("grunt-contrib-watch");
 //grunt.loadNpmTasks("grunt-targethtml");
 grunt.loadNpmTasks('grunt-jasmine-node');
 
-// testacular test runner - failing on hbs template imports, gives cryptic error messages
-grunt.registerTask("testacular", "Run Jasmine Tests", function () {
-    var done = this.async();
-    require("child_process").exec("testacular start testacular.conf.js --single-run", function (err, stdout) {
-        grunt.log.write(stdout);
-        done(err);
+
+grunt.registerTask("i18n_config", "Compile one single.js file for each supported language", function () {
+
+    // modify properties of the requirejs grunt config
+    function addLocaleToRequirejs(localeName, localeSingleFile) {
+
+        // get the requirejs config so we can modify it 
+        var requireJsOptions = grunt.config.get('requirejs');
+
+        // clone the default 'compile' options
+        var localeOptions = _.clone(requireJsOptions.compile.options);
+
+        // add locale specific details
+        localeOptions.out = localeSingleFile;
+        localeOptions.locale = localeName;
+
+        // add it into the requirejs options
+        requireJsOptions[localeName] = { options: localeOptions };
+
+        // update grunt config with the new values
+        grunt.config.set('requirejs', requireJsOptions);
+
+    }
+
+    // modify properties of concat grunt config
+    function addLocaleToConcat(localeName, localeSingleFile) {
+        // get the concat config so we can modify it 
+        var concatOptions = grunt.config.get('concat');
+
+        // clone the default 'dist' options
+        var localeOptions = _.clone(concatOptions.dist);
+
+        // add locale specific details
+        localeOptions.dest = localeSingleFile;
+        localeOptions.src = _.clone(concatOptions.dist.src);
+        localeOptions.src[1] = localeSingleFile;
+
+        // add it into the requirejs options
+        concatOptions[localeName] = localeOptions;
+
+        // update grunt config with the new values
+        grunt.config.set('concat', concatOptions);
+    }
+
+    // modify properties of uglify grunt config
+    function addLocaleToUglify(localeName, localeSingleFile) {
+        var uglifyOptions = grunt.config.get('uglify');
+        var localeOptions = _.clone(uglifyOptions.release);
+        var minFile = localeSingleFile.replace("debug", "release").replace(".js", ".min.js");
+        localeOptions.files = {};
+        localeOptions.files[minFile] = [localeSingleFile];
+        uglifyOptions[localeName] = localeOptions;
+        grunt.config.set('uglify', uglifyOptions);
+    }
+
+    // this needs to be in a config file
+    var locales = ["en_us", "fr_fr", "it_it"];
+
+    // build options for each locale - set the single.js filename and the locale
+    _.each(locales, function (localeName) {
+        var localeSingleFile = "build/debug/single_" + localeName + ".js";
+        addLocaleToRequirejs(localeName, localeSingleFile);
+        addLocaleToConcat(localeName, localeSingleFile);
+        addLocaleToUglify(localeName, localeSingleFile);
     });
 
 });
 
+grunt.registerTask("i18n", ["i18n_config", "debug", "compass:release", "concat"]);
 grunt.registerTask("test", ["jshint", "jasmine_node"]);
 grunt.registerTask("debug", ["clean", "requirejs", "compass:debug", "concat"]);
-//grunt.registerTask("debug", ["clean", "requirejs", "compass:debug", "concat", "copy:debug"]);
+//@TODO copy:debug - grunt.registerTask("debug", ["clean", "requirejs", "compass:debug", "concat", "copy:debug"]);
 grunt.registerTask("release", ["clean", "requirejs", "compass:release", "concat", "uglify", "copy:release", "test"]);
 grunt.registerTask("default", ["debug", "test"]);
+
+/* DISABLED TESTACULAR
+//"testacular": "~0.5.6"
+// testacular test runner - failing on hbs template imports, gives cryptic error messages
+grunt.registerTask("testacular", "Run Jasmine Tests", function () {
+var done = this.async();
+require("child_process").exec("testacular start testacular.conf.js --single-run", function (err, stdout) {
+grunt.log.write(stdout);
+done(err);
+});
+
+});
+*/
+
 };
