@@ -1,28 +1,31 @@
 requirejs(
-    ["commonRequirejsConfig"],
-    function (commonConfig) {
-        requirejs.config(commonConfig);
-        requirejs.config(
+["commonRequirejsConfig"],
+function (commonConfig) {
+
+    requirejs.config(commonConfig);
+
+    requirejs.config(
+    {
+        deps: ["main", "Backbone.Marionette.Handlebars"],
+        shim:
         {
-            deps: ["main", "Backbone.Marionette.Handlebars"],
-            shim:
+            "backbone":
             {
-                "backbone":
-                {
-                    deps: ["jquery", "underscore"],
-                    exports: "Backbone"
-                },
-                "backbone.marionette":
-                {
-                    deps: ["backbone"],
-                    exports: "Marionette"
-                },
-                "jquery.mousewheel":
-                {
-                    deps: ["jquery"],
-                    exports: "jquery"
-                }
+                deps: ["jquery", "underscore"],
+                exports: "Backbone"
+            },
+            "backbone.marionette":
+            {
+                deps: ["backbone"],
+                exports: "Marionette"
+            },
+            "jquery.mousewheel":
+            {
+                deps: ["jquery"],
+                exports: "jquery"
             }
         }
-        );
+    });
+
+
 });

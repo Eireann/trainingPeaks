@@ -1,4 +1,3 @@
-
 // setup some common config, and then make it available via commonJS or amdrequire
 // in the browser it loads as amdrequire via requirejs,
 // but on node.js it uses commonJS format so we can get it directly instead of async
@@ -37,16 +36,16 @@
         }
     };
 
-
     // exports for commonJS format, or define for amd format
     if (typeof exports === 'object') {
         module.exports = commonConfig;
     } else if (typeof define === 'function' && define.amd) {
         define([], function () {
-            console.log('in common config');
             return commonConfig;
         });
     }
+
+    return commonConfig;
 } ());
 
 

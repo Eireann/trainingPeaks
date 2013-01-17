@@ -1,6 +1,7 @@
 var _ = require("underscore");
 var path = require("path");
 var fs = require("fs");
+//var requirejs = require("requirejs");
 
 module.exports = function (grunt) {
 
@@ -11,7 +12,7 @@ module.exports = function (grunt) {
         {
             all: [
             "Gruntfile.js",
-            "test/handlebars_requirejs_config.js",
+            "test/jasmine_requirejs_config.js",
             "test/specs/**/*.js",
             "app/*.js",
             "app/scripts/**/*.js",
@@ -59,10 +60,11 @@ module.exports = function (grunt) {
             {
                 options:
                 {
-                    mainConfigFile: "app/config.js",
+                    baseUrl: "app",
                     jamConfig: "vendor/jam/require.config.js",
                     out: "build/debug/single.js",
                     name: "config",
+                    deps: ["commonRequirejsConfig", "config"],
                     wrap: false,
                     optimize: "none"
                 }
@@ -183,6 +185,14 @@ grunt.loadNpmTasks("grunt-contrib-watch");
 //grunt.loadNpmTasks("grunt-targethtml");
 grunt.loadNpmTasks('grunt-jasmine-node');
 
+// CONFIG FOR REQUIREJS
+grunt.registerTask("requirejs_config", "Configure for requirejs build", function() {
+    var gruntRequirejsSettings = require("./grunt_requirejs_config");
+    var requireJsOptions = grunt.config.get('requirejs');
+    _.extend(requireJsOptions.compile.options, gruntRequirejsSettings);
+    grunt.config.set('requirejs', requireJsOptions);
+    //console.log(grunt.config.get('requirejs')); 
+});
 
 // INTERNATIONALIZATION
 grunt.registerTask("i18n_config", "Compile one single.js file for each supported language", function () {
@@ -328,8 +338,9 @@ grunt.registerMultiTask('targethtml', 'Produces html-output depending on grunt r
 // END TARGETHTML
 
 grunt.registerTask("test", ["jshint", "jasmine_node"]);
-grunt.registerTask("debug", ["i18n_config", "clean", "requirejs", "compass:debug", "targethtml:debug", "concat", "copy:debug"]);
-grunt.registerTask("release", ["test", "i18n_config", "clean", "requirejs", "compass:release", "concat", "uglify", "copy:release"]);
+grunt.registerTask("update_grunt_config", ["i18n_config", "requirejs_config"]);
+grunt.registerTask("debug", ["clean", "update_grunt_config", "requirejs", "compass:debug", "targethtml:debug", "concat", "copy:debug"]);
+grunt.registerTask("release", ["clean", "update_grunt_config", "requirejs", "compass:release", "concat", "uglify", "copy:release", "test"]);
 grunt.registerTask("default", ["debug", "test"]);
 
 /* DISABLED TESTACULAR - doesn't run some of our async tests 
