@@ -9,7 +9,7 @@ module.exports = function (grunt) {
 
         jshint:
         {
-            all: ["Gruntfile.js", "app/*.js", "app/scripts/**/*.js", "!app/Handlebars.js"],
+            all: ["Gruntfile.js", "!app/test/*.js", "app/*.js", "app/scripts/**/*.js", "!app/Handlebars.js"],
             options:
             {
                 scripturl: true,
@@ -99,8 +99,10 @@ module.exports = function (grunt) {
 
     watch:
         {
-            files: ["Gruntfile.js", "app/scss/*.scss"],
-            tasks: "compass"
+            compass: {
+                files: ["Gruntfile.js", "app/scss/*.scss"],
+                tasks: "compass"
+            }
         },
 
     clean:
@@ -319,7 +321,7 @@ grunt.registerMultiTask('targethtml', 'Produces html-output depending on grunt r
 // END TARGETHTML
 
 grunt.registerTask("test", ["jshint", "jasmine_node"]);
-grunt.registerTask("debug", ["test", "i18n_config", "clean", "requirejs", "compass:debug", "targethtml:debug", "concat", "copy:debug"]);
+grunt.registerTask("debug", ["i18n_config", "clean", "requirejs", "compass:debug", "targethtml:debug", "concat", "copy:debug"]);
 grunt.registerTask("release", ["test", "i18n_config", "clean", "requirejs", "compass:release", "concat", "uglify", "copy:release"]);
 grunt.registerTask("default", ["debug", "test"]);
 
