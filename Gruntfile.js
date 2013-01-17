@@ -13,7 +13,7 @@ module.exports = function (grunt) {
             options:
             {
                 scripturl: true,
-                curly: true,
+                curly: false,
                 eqeqeq: true,
                 eqnull: true,
                 browser: true
