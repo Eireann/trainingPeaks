@@ -1,8 +1,6 @@
-// Set the require.js configuration for your application.
 require.config(
 {
-    //deps: ["../vendor/jam/require.config", "main"],
-    deps: ["main"],
+    deps: [ "main", "Backbone.Marionette.Handlebars" ],
     paths:
     {
         "jquery": "../vendor/js/libs/jquery/jquery",
@@ -46,6 +44,10 @@ require.config(
     hbs:
     {
         templateExtension: "html",
-        i18nDirectory: "templates/i18n/"
+        i18nDirectory: "templates/i18n/",
+        helperPathCallback: function(name)
+        {
+            return "scripts/helpers/" + name;
+        }
     }
 });

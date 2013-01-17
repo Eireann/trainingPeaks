@@ -20,7 +20,6 @@ function (App, Backbone, CalendarController, LoginView, TheSession)
         {
             "home": "home",
             "calendar": "calendar"
-            
         },
 
         home: function()
@@ -30,6 +29,7 @@ function (App, Backbone, CalendarController, LoginView, TheSession)
         
         calendar: function()
         {
+            // Create Calendar Layout, Calendar controller, bind & display
             var controller = new CalendarController();
             App.appLayout.calendarRegion.show(controller.display());
         },

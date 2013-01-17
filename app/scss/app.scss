@@ -1,10 +1,13 @@
 @import "settings";
 @import "foundation";
 
-#calendar
+#calendarContainer
 {
-    height: 600px;
-    overflow-y: scroll;
+    .scrollable
+    {
+        height: 600px;
+        overflow-y: scroll;
+    }
 }
 
 .day

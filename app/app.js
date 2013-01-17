@@ -29,8 +29,7 @@ function (Marionette, DefaultLayoutTemplate)
 
     theApp.addRegions(
     {
-        regionMain: "#main",
-        regionCalendar: "#calendar"
+        regionMain: "#main"
     });
 
     theApp.on("initialize:before", function ()
@@ -53,7 +52,7 @@ function (Marionette, DefaultLayoutTemplate)
             regions:
             {
                 loginRegion: "#login",
-                calendarRegion: "#calendar"
+                calendarRegion: "#calendarContainer"
             }
         });
         this.appLayout = new AppLayout();
