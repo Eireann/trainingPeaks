@@ -2,7 +2,7 @@ var path = require("path");
 var rootJsDir = __dirname.substring(0, __dirname.indexOf("/test"));
 
 // get our common requirejs config - shared with browser app
-var commonConfig = require(path.join(rootJsDir,"app/commonRequirejsConfig"));
+var commonConfig = require(path.join(rootJsDir,"app/config/commonRequirejsConfig"));
 
 // load this after we load commonConfig, so it loads in commonJS format instead of amd
 var requirejs = require('requirejs');

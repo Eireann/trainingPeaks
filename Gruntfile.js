@@ -11,7 +11,6 @@ module.exports = function (grunt) {
         {
             all: [
             "Gruntfile.js",
-            "test/jasmine_requirejs_config.js",
             "test/specs/**/*.js",
             "app/*.js",
             "app/scripts/**/*.js",
@@ -63,7 +62,6 @@ module.exports = function (grunt) {
                     jamConfig: "vendor/jam/require.config.js",
                     out: "build/debug/single.js",
                     name: "main",
-                    deps: ["Backbone.Marionette.Handlebars"],
                     wrap: false,
                     optimize: "none"
                 }
@@ -144,7 +142,7 @@ module.exports = function (grunt) {
             {
                 files:
                 {
-                    "build/debug": ["app/images/**", "vendor/**"]
+                    "build/debug": ["app/images/**"]
                 }
             },
 
@@ -152,7 +150,7 @@ module.exports = function (grunt) {
             {
                 files:
                 {
-                    "build/release": ["app/images/**", "vendor/**"]
+                    "build/release": ["app/images/**"]
                 }
             }
         },
@@ -161,7 +159,7 @@ module.exports = function (grunt) {
     jasmine_node: {
         specNameMatcher: ".spec",
         projectRoot: ".",
-        requirejs: './test/jasmine_requirejs_config.js',
+        requirejs: './app/config/jasmine_requirejs_config.js',
         forceExit: true,
         watchfiles: ['app/**/*.js', 'test/specs/**/*.js', 'app/**/*.html']
     }
@@ -186,7 +184,7 @@ grunt.loadNpmTasks('grunt-jasmine-node');
 
 // CONFIG FOR REQUIREJS
 grunt.registerTask("requirejs_config", "Configure for requirejs build", function () {
-    var gruntRequirejsSettings = require("./grunt_requirejs_config");
+    var gruntRequirejsSettings = require("./app/config/grunt_requirejs_config");
     var requireJsOptions = grunt.config.get('requirejs');
     _.extend(requireJsOptions.compile.options, gruntRequirejsSettings);
     grunt.config.set('requirejs', requireJsOptions);

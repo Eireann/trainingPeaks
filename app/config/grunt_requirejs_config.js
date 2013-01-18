@@ -1,10 +1,8 @@
 var _ = require("underscore");
 
 // get our common requirejs config - shared with browser app
-var commonConfig = require("./app/commonRequirejsConfig");
-
+var commonConfig = require("./commonRequirejsConfig");
 _.extend(commonConfig, {
-    deps: ["main", "Backbone.Marionette.Handlebars"],
     shim:
     {
         "backbone":
@@ -24,5 +22,4 @@ _.extend(commonConfig, {
         }
     }
 });
-
 module.exports = commonConfig;
