@@ -9,7 +9,7 @@ function(Marionette, MaironetteHandlebars, CalendarDayTemplate)
     return Marionette.ItemView.extend(
     {
         tagName: "div",
-        className: "two columns day",
+        className: "day",
         template:
         {
             type: "handlebars",

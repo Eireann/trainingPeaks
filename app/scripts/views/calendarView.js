@@ -20,17 +20,18 @@ function (Marionette, CalendarDayView, CalendarWeekTemplate)
 
         onscroll: function (event)
         {
-            var howMuchIHave = $(this.el)[0].scrollHeight;
-            var howMuchIsVisible = $(this.el).height();
+            var howMuchIHave = this.$el[0].scrollHeight;
+            var howMuchIsVisible = this.$el.height();
             var hidden = howMuchIHave - howMuchIsVisible;
-            var thresholdInPx = 150;
+            var scrollDownThresholdInPx = 150;
+            var scrollUpThresholdInPx = 100;
 
-            if ($(this.el).scrollTop() <= thresholdInPx)
+            if (this.$el.scrollTop() <= scrollUpThresholdInPx)
             {
                 // Within the threshold at the TOP. Add row & request data.
                 this.trigger("prepend");
             }
-            else if ($(this.el).scrollTop() >= (hidden - thresholdInPx))
+            else if (this.$el.scrollTop() >= (hidden - scrollDownThresholdInPx))
             {
                 // Within the threshold at the BOTTOM. Add row & request data.
                 this.trigger("append");
@@ -40,7 +41,7 @@ function (Marionette, CalendarDayView, CalendarWeekTemplate)
         },
 
         numWeeks: 0,
-        numDaysLeftForWeek: 1,
+        numDaysLeftForWeek: 0,
 
         appendHtml: function (collectionView, itemView, index)
         {
@@ -53,7 +54,7 @@ function (Marionette, CalendarDayView, CalendarWeekTemplate)
                 insertRowFunctionName = 'append';
                 findRowFunctionName = 'last';
             }
-            if (--this.numDaysLeftForWeek === 0)
+            if (this.numDaysLeftForWeek === 0)
             {
                 this.numDaysLeftForWeek = 7;
                 ++this.numWeeks;
@@ -61,7 +62,9 @@ function (Marionette, CalendarDayView, CalendarWeekTemplate)
                 var weekHtml = CalendarWeekTemplate({});
                 collectionView.$el[insertRowFunctionName](weekHtml);
             }
-            collectionView.$(".row")[findRowFunctionName]().append(itemView.el);
+
+            this.numDaysLeftForWeek--;
+            collectionView.$(".week")[findRowFunctionName]().append(itemView.el);
 
         }
     });

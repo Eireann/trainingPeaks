@@ -8,32 +8,34 @@ define(
     "views/calendarView",
     "models/workoutsCollection"
 ],
-function(Backbone, Marionette, moment, CalendarLayout, CalendarDayModel, CalendarView, WorkoutsCollection)
+function (Backbone, Marionette, moment, CalendarLayout, CalendarDayModel, CalendarView, WorkoutsCollection)
 {
     return Marionette.Controller.extend(
     {
         layout: new CalendarLayout(),
-        
+
         views: {},
         daysCollection: null,
         daysHash: {},
 
-       show: function()
+        show: function ()
         {
             this.layout.mainRegion.show(this.views.calendar);
         },
-        
-        initialize: function()
+
+        initialize: function ()
         {
             _.bindAll(this);
 
-            this.startDate = moment().subtract("days", 40);
-            this.endDate = moment().add("days", 30);
+            // start on a Sunday
+            var lastSunday = moment().day(0);
+            this.startDate = moment(lastSunday).subtract("weeks", 6);
+            this.endDate = moment(lastSunday).add("weeks", 4);
 
             this.initializeCalendar();
             this.requestWorkouts(this.startDate, this.endDate);
         },
-        
+
         initializeCalendar: function ()
         {
             this.daysCollection = this.createCollectionOfDays(moment(this.startDate), moment(this.endDate));
@@ -88,7 +90,7 @@ function(Backbone, Marionette, moment, CalendarLayout, CalendarDayModel, Calenda
 
         appendWeekToCalendar: function ()
         {
-            var startDate = moment(this.endDate).add("days", 1);
+            var startDate = moment(this.endDate).subtract("days", 1);
             var endDate = moment(this.endDate).add("days", 7);
             this.endDate = moment(endDate);
 
@@ -106,10 +108,7 @@ function(Backbone, Marionette, moment, CalendarLayout, CalendarDayModel, Calenda
             this.startDate = moment(startDate);
 
             this.requestWorkouts(startDate, endDate);
-
-            // @TODO: the api endpoint returns a date range that includes startDate, but not endDate
-            // so for now just adjusting here to ask for one day later
-            var newDays = this.createCollectionOfDays(startDate, moment(endDate).add("days",1));
+            var newDays = this.createCollectionOfDays(startDate, endDate);
 
             // unshift doesn't accept a collection, but add does, using the 'at' option for index
             this.daysCollection.add(newDays.models, { index: 0, at: 0 });

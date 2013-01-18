@@ -13,12 +13,12 @@ function ($, _, Backbone)
         //url: "https://apideploy.trainingpeaks.com/OAuthAuthorizationServer/OAuth/Token",
         url: "http://apidev.trainingpeaks.com/OAuthAuthorizationServer/OAuth/Token",
         //url: "http://localhost:8900/OAuthAuthorizationServer/OAuth/Token",
-        
+
         defaults:
         {
-            username: null      
+            username: null
         },
-        
+
         initialize: function ()
         {
             _.bindAll(this);
@@ -33,12 +33,12 @@ function ($, _, Backbone)
                 }
             }
         },
-        
+
         isAuthenticated: function ()
         {
             return this.get("access_token") && this.get("access_token").length > 0;
         },
-        
+
         authenticate: function (options)
         {
             var data =
@@ -60,7 +60,6 @@ function ($, _, Backbone)
                 var expiresOn = Number(self.get("expires_in")) + Number((new Date()).getTime() / 1000);
                 sessionStorage.setItem("access_token", self.get("access_token"));
                 sessionStorage.setItem("expires_on", expiresOn);
-
                 self.trigger("api:authorized");
             });
         }
