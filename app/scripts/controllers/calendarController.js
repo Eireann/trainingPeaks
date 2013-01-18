@@ -3,21 +3,12 @@ define(
     "backbone",
     "backbone.marionette",
     "moment",
-<<<<<<< HEAD
-
-=======
-    
     "layouts/calendarLayout",
->>>>>>> e8ce1ff8cd92b00f061c203941b70724ab126b89
     "models/calendarDay",
     "views/calendarView",
     "models/workoutsCollection"
 ],
-<<<<<<< HEAD
-function (Backbone, Marionette, moment, CalendarDayModel, CalendarView, WorkoutsCollection)
-=======
 function(Backbone, Marionette, moment, CalendarLayout, CalendarDayModel, CalendarView, WorkoutsCollection)
->>>>>>> e8ce1ff8cd92b00f061c203941b70724ab126b89
 {
     return Marionette.Controller.extend(
     {
@@ -26,39 +17,24 @@ function(Backbone, Marionette, moment, CalendarLayout, CalendarDayModel, Calenda
         views: {},
         daysCollection: null,
         daysHash: {},
-<<<<<<< HEAD
 
-        initialize: function ()
-=======
-        
-        show: function()
+       show: function()
         {
             this.layout.mainRegion.show(this.views.calendar);
         },
         
         initialize: function()
->>>>>>> e8ce1ff8cd92b00f061c203941b70724ab126b89
         {
             _.bindAll(this);
 
             this.startDate = moment().subtract("days", 40);
             this.endDate = moment().add("days", 30);
-<<<<<<< HEAD
-            console.log(this.startDate.format());
-            console.log(this.endDate.format());
-            this.initializeCalendarView();
-            this.requestWorkouts(this.startDate, this.endDate);
-        },
 
-        initializeCalendarView: function ()
-=======
-           
             this.initializeCalendar();
             this.requestWorkouts(this.startDate, this.endDate);
         },
         
         initializeCalendar: function ()
->>>>>>> e8ce1ff8cd92b00f061c203941b70724ab126b89
         {
             this.daysCollection = this.createCollectionOfDays(moment(this.startDate), moment(this.endDate));
 

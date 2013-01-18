@@ -22,7 +22,8 @@ module.exports = function (grunt) {
                 curly: false,
                 eqeqeq: true,
                 eqnull: true,
-                browser: true
+                browser: true,
+                devel: true
             }
         },
 

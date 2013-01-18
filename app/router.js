@@ -1,15 +1,14 @@
 define(
 [
+    "underscore",
     "app",
     "backbone",
-    
     "controllers/calendarController",
-    
     "layouts/loginLayout",
     "views/loginView",
     "models/session"
 ],
-function (theApp, Backbone, CalendarController, LoginLayout, LoginView, theSession)
+function (_, theApp, Backbone, CalendarController, LoginLayout, LoginView, theSession)
 {
     "use strict";
     
@@ -25,7 +24,7 @@ function (theApp, Backbone, CalendarController, LoginLayout, LoginView, theSessi
         {
             "home": "home",
             "login": "login",
-            "calendar": "calendar",
+            "calendar": "calendar"
         },
 
         home: function()

@@ -1,8 +1,8 @@
 define(
 [
-    "backbone.marionette"
+    "jquery", "backbone.marionette"
 ],
-function (Marionette)
+function ($, Marionette)
 {
     "use strict";
     
