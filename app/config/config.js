@@ -4,7 +4,7 @@ function (commonConfig) {
     requirejs.config(commonConfig);
     requirejs.config(
     {
-        baseUrl: '../app',
+        baseUrl: './app',
         deps: ["main", "Backbone.Marionette.Handlebars"],
         shim:
         {

@@ -10,15 +10,15 @@ function (Marionette, CalendarDayView, CalendarWeekTemplate)
     {
         tagName: "div",
         className: "scrollable",
-        
+
         itemView: CalendarDayView,
 
         events:
         {
             "scroll": "onscroll"
         },
-        
-        onscroll: function(event)
+
+        onscroll: function (event)
         {
             var howMuchIHave = $(this.el)[0].scrollHeight;
             var howMuchIsVisible = $(this.el).height();
@@ -38,21 +38,31 @@ function (Marionette, CalendarDayView, CalendarWeekTemplate)
 
             return;
         },
-        
+
         numWeeks: 0,
         numDaysLeftForWeek: 1,
-        
-        appendHtml: function(collectionView, itemView, index)
+
+        appendHtml: function (collectionView, itemView, index)
         {
+            if (index === 0 && this.numWeeks > 0)
+            {
+                insertRowFunctionName = 'prepend';
+                findRowFunctionName = 'first';
+            } else
+            {
+                insertRowFunctionName = 'append';
+                findRowFunctionName = 'last';
+            }
             if (--this.numDaysLeftForWeek === 0)
             {
                 this.numDaysLeftForWeek = 7;
                 ++this.numWeeks;
 
                 var weekHtml = CalendarWeekTemplate({});
-                collectionView.$el.append(weekHtml);
+                collectionView.$el[insertRowFunctionName](weekHtml);
             }
-            collectionView.$(".row").last().append(itemView.el);
+            collectionView.$(".row")[findRowFunctionName]().append(itemView.el);
+
         }
     });
 });
