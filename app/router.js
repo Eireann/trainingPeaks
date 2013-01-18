@@ -2,24 +2,30 @@ define(
 [
     "app",
     "backbone",
+    
     "controllers/calendarController",
+    
+    "layouts/loginLayout",
     "views/loginView",
     "models/session"
 ],
-function (App, Backbone, CalendarController, LoginView, TheSession)
+function (theApp, Backbone, CalendarController, LoginLayout, LoginView, theSession)
 {
-    var Router = Backbone.Router.extend(
+    "use strict";
+    
+    return Backbone.Router.extend(
     {
         initialize: function()
         {
             _.bindAll(this);
-            App.on("api:unauthorized", this.login);
+            theApp.on("api:unauthorized", this.login);
         },
         
         routes:
         {
             "home": "home",
-            "calendar": "calendar"
+            "login": "login",
+            "calendar": "calendar",
         },
 
         home: function()
@@ -31,15 +37,24 @@ function (App, Backbone, CalendarController, LoginView, TheSession)
         {
             // Create Calendar Layout, Calendar controller, bind & display
             var controller = new CalendarController();
-            App.appLayout.calendarRegion.show(controller.display());
+            theApp.mainRegion.show(controller.layout);
+            controller.show();
         },
         
-        login: function()
+        login: function(origin)
         {
-            var view = new LoginView({ model: TheSession });
-            App.appLayout.loginRegion.show(view);
+            var self = this;
+            
+            var loginLayout = new LoginLayout();
+            var loginView = new LoginView({ model: theSession });
+
+            theSession.on("api:authorized", function()
+            {
+                self.navigate("calendar", { trigger: true } );
+            });
+
+            theApp.mainRegion.show(loginLayout);
+            loginLayout.mainRegion.show(loginView);
         }
     });
-
-    return Router;
 });

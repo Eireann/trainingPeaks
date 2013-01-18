@@ -2,7 +2,7 @@
 [
     "underscore",
     "backbone.marionette",
-    "hbs!templates/views/login"
+    "hbs!templates/views/loginView"
 ],
 function (_, Marionette, loginViewTemplate)
 {
@@ -16,6 +16,11 @@ function (_, Marionette, loginViewTemplate)
             template: loginViewTemplate
         },
         
+        /*
+         * Marionette specific way to bind DOM elements to JS "ui" elements.
+         * The DOM element selected with the selector on the rightside of the
+         * equation will be associated with the ui element named this.ui.NAME
+         */
         ui:
         {
             "usernameInput": "input[name=username]",
@@ -26,11 +31,9 @@ function (_, Marionette, loginViewTemplate)
         initialize: function ()
         {
             _.bindAll(this);
-            this.on("authenticate", this.authenticate);
-            this.model.bind("change", this.checkAuthResponse);
         },
             
-        triggers:
+        events:
         {
             "click input[name=Submit]": "authenticate"
         },
@@ -41,12 +44,6 @@ function (_, Marionette, loginViewTemplate)
             var password = this.ui.passwordInput.val();
 
             this.model.authenticate({ username: username, password: password });
-        },
-            
-        checkAuthResponse: function ()
-        {
-            if (this.model.get("access_token"))
-                this.trigger("authenticated");
         }
     });
 });

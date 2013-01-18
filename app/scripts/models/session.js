@@ -60,6 +60,8 @@ function ($, _, Backbone)
                 var expiresOn = Number(self.get("expires_in")) + Number((new Date()).getTime() / 1000);
                 sessionStorage.setItem("access_token", self.get("access_token"));
                 sessionStorage.setItem("expires_on", expiresOn);
+
+                self.trigger("api:authorized");
             });
         }
     });

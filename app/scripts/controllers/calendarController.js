@@ -4,17 +4,25 @@ define(
     "backbone.marionette",
     "moment",
     
+    "layouts/calendarLayout",
     "models/calendarDay",
     "views/calendarView",
     "models/workoutsCollection"
 ],
-function(Backbone, Marionette, moment, CalendarDayModel, CalendarView, WorkoutsCollection)
+function(Backbone, Marionette, moment, CalendarLayout, CalendarDayModel, CalendarView, WorkoutsCollection)
 {
     return Marionette.Controller.extend(
     {
+        layout: new CalendarLayout(),
+        
         views: {},
         daysCollection: null,
         daysHash: {},
+        
+        show: function()
+        {
+            this.layout.mainRegion.show(this.views.calendar);
+        },
         
         initialize: function()
         {
@@ -23,11 +31,11 @@ function(Backbone, Marionette, moment, CalendarDayModel, CalendarView, WorkoutsC
             this.startDate = moment().subtract("days", 40);
             this.endDate = moment().add("days", 30);
            
-            this.initializeCalendarView();
+            this.initializeCalendar();
             this.requestWorkouts(this.startDate, this.endDate);
         },
         
-        initializeCalendarView: function ()
+        initializeCalendar: function ()
         {
             this.daysCollection = this.createCollectionOfDays(moment(this.startDate), moment(this.endDate));
             
@@ -99,11 +107,6 @@ function(Backbone, Marionette, moment, CalendarDayModel, CalendarView, WorkoutsC
 
             var newDays = this.createCollectionOfDays(this.startDate, moment(endDate));
             this.daysCollection.unshift(newDays.models);
-        },
-        
-        display: function()
-        {
-            return this.views.calendar;
         }
     });
 });

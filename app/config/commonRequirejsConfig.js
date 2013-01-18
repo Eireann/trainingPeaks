@@ -18,6 +18,7 @@
             "models": "scripts/models",
             "views": "scripts/views",
             "controllers": "scripts/controllers",
+            "layouts": "scripts/layouts",
 
             "i18nprecompile": "../vendor/js/libs/i18nprecompile",
             "json2": "../vendor/js/libs/json2",
