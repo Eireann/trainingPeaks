@@ -352,9 +352,9 @@ grunt.registerMultiTask('targethtml', 'Produces html-output depending on grunt r
 
 grunt.registerTask("test", ["jshint", "jasmine_node"]);
 grunt.registerTask("update_grunt_config", ["requirejs_config", "i18n_config"]);
-grunt.registerTask("debug", ["clean", "update_grunt_config", "requirejs", "compass:debug", "targethtml:debug", "concat", "copy:debug"]);
-grunt.registerTask("release", ["clean", "update_grunt_config", "requirejs", "compass:release", "targethtml:release", "concat", "uglify", "copy:release", "test"]);
-grunt.registerTask("default", ["debug", "test"]);
+grunt.registerTask("debug", ["test", "clean", "update_grunt_config", "requirejs", "compass:debug", "targethtml:debug", "concat", "copy:debug"]);
+grunt.registerTask("release", ["test", "debug", "compass:release", "targethtml:release", "uglify", "copy:release"]);
+grunt.registerTask("default", ["debug"]);
 
 /* DISABLED TESTACULAR - doesn't run some of our async tests 
 //"testacular": "~0.5.6"
