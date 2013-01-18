@@ -65,8 +65,8 @@ function(Backbone, Marionette, moment, CalendarDayModel, CalendarView, WorkoutsC
             {
                 workouts.each(function(workout)
                 {
-                    var workoutDay;
-                    if (workoutDay = workout.get("WorkoutDay"))
+                    var workoutDay = workout.get("WorkoutDay");
+                    if (workoutDay)
                     {
                         workoutDay = workoutDay.substr(0, workoutDay.indexOf("T"));
                         if (that.daysHash[workoutDay])
