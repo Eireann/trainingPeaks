@@ -28,9 +28,12 @@ function (Backbone, Marionette, moment, CalendarLayout, CalendarDayModel, Calend
             _.bindAll(this);
 
             // start on a Sunday
-            var lastSunday = moment().day(0);
-            this.startDate = moment(lastSunday).subtract("weeks", 6);
-            this.endDate = moment(lastSunday).add("weeks", 4);
+            this.startDate = moment().day(0).subtract("weeks", 4);
+
+            // end on a Saturday
+            this.endDate = moment().day(6).add("weeks", 6);
+
+            var formatstring = "dddd YYYY-MM-DD";
 
             this.initializeCalendar();
             this.requestWorkouts(this.startDate, this.endDate);
@@ -39,7 +42,6 @@ function (Backbone, Marionette, moment, CalendarLayout, CalendarDayModel, Calend
         initializeCalendar: function ()
         {
             this.daysCollection = this.createCollectionOfDays(moment(this.startDate), moment(this.endDate));
-
             this.views.calendar = new CalendarView({ collection: this.daysCollection });
 
             this.views.calendar.bind("prepend", this.prependWeekToCalendar);
@@ -48,7 +50,9 @@ function (Backbone, Marionette, moment, CalendarLayout, CalendarDayModel, Calend
 
         createCollectionOfDays: function (startDate, endDate)
         {
-            var numOfDaysToShow = endDate.diff(startDate, "days");
+
+            // add one to endDate.diff, to include endDate itself
+            var numOfDaysToShow = endDate.diff(startDate, "days") + 1;
 
             var daysCollection = new Backbone.Collection();
 
@@ -65,7 +69,7 @@ function (Backbone, Marionette, moment, CalendarLayout, CalendarDayModel, Calend
 
         requestWorkouts: function (startDate, endDate)
         {
-            var workouts = new WorkoutsCollection({ startDate: startDate, endDate: endDate });
+            var workouts = new WorkoutsCollection({ startDate: moment(startDate), endDate: moment(endDate) });
 
             var waiting = workouts.fetch();
             var that = this;
@@ -90,8 +94,8 @@ function (Backbone, Marionette, moment, CalendarLayout, CalendarDayModel, Calend
 
         appendWeekToCalendar: function ()
         {
-            var startDate = moment(this.endDate).subtract("days", 1);
-            var endDate = moment(this.endDate).add("days", 7);
+            var startDate = moment(this.endDate).add("days", 1);
+            var endDate = moment(startDate).add("days", 6);
             this.endDate = moment(endDate);
 
             this.requestWorkouts(startDate, endDate);
@@ -104,7 +108,7 @@ function (Backbone, Marionette, moment, CalendarLayout, CalendarDayModel, Calend
         prependWeekToCalendar: function ()
         {
             var endDate = moment(this.startDate).subtract("days", 1);
-            var startDate = moment(this.startDate).subtract("days", 7);
+            var startDate = moment(endDate).subtract("days", 6);
             this.startDate = moment(startDate);
 
             this.requestWorkouts(startDate, endDate);

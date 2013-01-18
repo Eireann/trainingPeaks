@@ -61,9 +61,11 @@ function (Marionette, CalendarDayView, CalendarWeekTemplate)
 
                 var weekHtml = CalendarWeekTemplate({});
                 collectionView.$el[insertRowFunctionName](weekHtml);
+                //console.log(insertRowFunctionName + "ing a week row");
             }
 
             this.numDaysLeftForWeek--;
+            //console.log("Appending a day to the " + findRowFunctionName + " row, " + this.numDaysLeftForWeek + " days left");
             collectionView.$(".week")[findRowFunctionName]().append(itemView.el);
 
         }
