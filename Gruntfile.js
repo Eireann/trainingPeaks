@@ -1,7 +1,6 @@
 var _ = require("underscore");
 var path = require("path");
 var fs = require("fs");
-//var requirejs = require("requirejs");
 
 module.exports = function (grunt) {
 
@@ -63,8 +62,8 @@ module.exports = function (grunt) {
                     baseUrl: "app",
                     jamConfig: "vendor/jam/require.config.js",
                     out: "build/debug/single.js",
-                    name: "config",
-                    deps: ["commonRequirejsConfig", "config"],
+                    name: "main",
+                    deps: ["Backbone.Marionette.Handlebars"],
                     wrap: false,
                     optimize: "none"
                 }
@@ -186,12 +185,12 @@ grunt.loadNpmTasks("grunt-contrib-watch");
 grunt.loadNpmTasks('grunt-jasmine-node');
 
 // CONFIG FOR REQUIREJS
-grunt.registerTask("requirejs_config", "Configure for requirejs build", function() {
+grunt.registerTask("requirejs_config", "Configure for requirejs build", function () {
     var gruntRequirejsSettings = require("./grunt_requirejs_config");
     var requireJsOptions = grunt.config.get('requirejs');
     _.extend(requireJsOptions.compile.options, gruntRequirejsSettings);
     grunt.config.set('requirejs', requireJsOptions);
-    //console.log(grunt.config.get('requirejs')); 
+    //console.log(grunt.config.get('requirejs').compile.options.shim); 
 });
 
 // INTERNATIONALIZATION
@@ -265,7 +264,22 @@ grunt.registerTask("i18n_config", "Compile one single.js file for each supported
 
 // FILE COPYING - a highly simplified version grunt-contrib-copy
 grunt.registerMultiTask('copy', 'Copy files.', function () {
-
+    var copyFileSync = function (srcFile, destFile) {
+        var BUF_LENGTH, buff, bytesRead, fdr, fdw, pos;
+        BUF_LENGTH = 64 * 1024;
+        buff = new Buffer(BUF_LENGTH);
+        fdr = fs.openSync(srcFile, 'r');
+        fdw = fs.openSync(destFile, 'w');
+        bytesRead = 1;
+        pos = 0;
+        while (bytesRead > 0) {
+            bytesRead = fs.readSync(fdr, buff, 0, BUF_LENGTH, pos);
+            fs.writeSync(fdw, buff, 0, bytesRead);
+            pos += bytesRead;
+        }
+        fs.closeSync(fdr);
+        return fs.closeSync(fdw);
+    };
     _.each(this.files, function (file) {
 
         var destFolder = path.normalize(file.dest);
@@ -289,7 +303,8 @@ grunt.registerMultiTask('copy', 'Copy files.', function () {
                 // copy
             } else if (fs.statSync(srcPath).isFile()) {
                 grunt.log.writeln("Copy " + srcPath + " to " + destPath);
-                fs.createReadStream(srcPath).pipe(fs.createWriteStream(destPath));
+                copyFileSync(srcPath, destPath);
+                //fs.createReadStream(srcPath).pipe(fs.createWriteStream(destPath));
             }
         });
     });
@@ -338,9 +353,9 @@ grunt.registerMultiTask('targethtml', 'Produces html-output depending on grunt r
 // END TARGETHTML
 
 grunt.registerTask("test", ["jshint", "jasmine_node"]);
-grunt.registerTask("update_grunt_config", ["i18n_config", "requirejs_config"]);
+grunt.registerTask("update_grunt_config", ["requirejs_config", "i18n_config"]);
 grunt.registerTask("debug", ["clean", "update_grunt_config", "requirejs", "compass:debug", "targethtml:debug", "concat", "copy:debug"]);
-grunt.registerTask("release", ["clean", "update_grunt_config", "requirejs", "compass:release", "concat", "uglify", "copy:release", "test"]);
+grunt.registerTask("release", ["clean", "update_grunt_config", "requirejs", "compass:release", "targethtml:release", "concat", "uglify", "copy:release", "test"]);
 grunt.registerTask("default", ["debug", "test"]);
 
 /* DISABLED TESTACULAR - doesn't run some of our async tests 

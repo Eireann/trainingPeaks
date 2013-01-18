@@ -1,12 +1,13 @@
-require(
+define(
 [
     "backbone",
     "app",
     "router",
     "models/session"
 ],
-function (Backbone, app, Router, TheSession)
+function (Backbone, app, Router, TheSession) 
 {
+
     app.router = new Router();
     app.session = TheSession;
     Backbone.history.start({ pushState: false, root: app.root });

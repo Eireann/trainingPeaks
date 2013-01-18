@@ -3,26 +3,23 @@ define(
     "backbone.marionette",
     "hbs!templates/layouts/default"
 ],
-function (Marionette, DefaultLayoutTemplate)
-{
+function (Marionette, DefaultLayoutTemplate) {
     var theApp = new Marionette.Application();
-    
+
     /*
-     * jQuery OAuth Authentication Hack
-     * Need to figure out a better place to inject this into jQuery
-     * but can't easily make it a separate plugin because I need access to the
-     * Router for clean re-routing
-     */
+    * jQuery OAuth Authentication Hack
+    * Need to figure out a better place to inject this into jQuery
+    * but can't easily make it a separate plugin because I need access to the
+    * Router for clean re-routing
+    */
     //**********************************************************************
-    $(document).ajaxSend(function (event, xhr)
-    {
+    $(document).ajaxSend(function (event, xhr) {
         var authToken = theApp.session.get("access_token");
         if (authToken)
             xhr.setRequestHeader("Authorization", "Bearer " + authToken);
     });
 
-    $(document).ajaxError(function (event, xhr)
-    {
+    $(document).ajaxError(function (event, xhr) {
         if (xhr.status === 401)
             theApp.trigger("api:unauthorized");
     });
@@ -32,16 +29,13 @@ function (Marionette, DefaultLayoutTemplate)
         regionMain: "#main"
     });
 
-    theApp.on("initialize:before", function ()
-    {
+    theApp.on("initialize:before", function () {
     });
 
-    theApp.on("initialzie:after", function()
-    {      
+    theApp.on("initialzie:after", function () {
     });
-    
-    theApp.initAppLayout = function ()
-    {
+
+    theApp.initAppLayout = function () {
         var AppLayout = Backbone.Marionette.Layout.extend(
         {
             template:

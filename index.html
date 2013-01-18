@@ -14,11 +14,11 @@
   <!--<!(endif)-->
 
   <!--(if target release)>
-  <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="app/css/app.css">
   <!(endif)-->
 
   <!--(if target debug)>
-  <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="app/css/app.css">
   <!(endif)-->
 </head>
 
@@ -35,10 +35,22 @@
 
   <!--(if target debug)>
   <script src="single.js"></script>
+  <script>
+      requirejs(
+        ["Backbone.Marionette.Handlebars", "main"],
+        function (handlebars, main) {}
+      );
+  </script>
   <!(endif)-->
 
   <!--(if target release)>
   <script src="single.min.js"></script>
+  <script>
+      requirejs(
+        ["Backbone.Marionette.Handlebars", "main"],
+        function (handlebars, main) {}
+      );
+  </script>
   <!(endif)-->
 </body>
 </html>
