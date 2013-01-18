@@ -1,9 +1,11 @@
 define(
 [
-    "backbone.marionette",
-    "hbs!templates/layouts/default"
+    "backbone.marionette"
 ],
-function (Marionette, DefaultLayoutTemplate) {
+function (Marionette)
+{
+    "use strict";
+    
     var theApp = new Marionette.Application();
 
     /*
@@ -13,47 +15,31 @@ function (Marionette, DefaultLayoutTemplate) {
     * Router for clean re-routing
     */
     //**********************************************************************
-    $(document).ajaxSend(function (event, xhr) {
-        var authToken = theApp.session.get("access_token");
-        if (authToken)
-            xhr.setRequestHeader("Authorization", "Bearer " + authToken);
+    $(document).ajaxSend(function (event, xhr)
+    {
+        if (theApp.session.isAuthenticated())
+            xhr.setRequestHeader("Authorization", "Bearer " + theApp.session.get("access_token"));
     });
 
-    $(document).ajaxError(function (event, xhr) {
+    $(document).ajaxError(function (event, xhr)
+    {
         if (xhr.status === 401)
             theApp.trigger("api:unauthorized");
     });
 
     theApp.addRegions(
     {
-        regionMain: "#main"
+        mainRegion: "#main"
     });
 
-    theApp.on("initialize:before", function () {
+    theApp.on("initialize:before", function ()
+    {
     });
 
-    theApp.on("initialzie:after", function () {
+    theApp.on("initialzie:after", function ()
+    {
     });
 
-    theApp.initAppLayout = function () {
-        var AppLayout = Backbone.Marionette.Layout.extend(
-        {
-            template:
-            {
-                type: "handlebars",
-                template: DefaultLayoutTemplate
-            },
-            regions:
-            {
-                loginRegion: "#login",
-                calendarRegion: "#calendarContainer"
-            }
-        });
-        this.appLayout = new AppLayout();
-        theApp.regionMain.show(this.appLayout);
-    };
-
-    theApp.initAppLayout();
     theApp.root = "/Mars";
 
     return theApp;
