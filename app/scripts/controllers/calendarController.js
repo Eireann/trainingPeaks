@@ -33,8 +33,6 @@ function(Backbone, Marionette, moment, CalendarLayout, CalendarDayModel, Calenda
             // end on a Saturday
             this.endDate = moment().day(6).add("weeks", 6);
 
-            var formatstring = "dddd YYYY-MM-DD";
-
             this.initializeCalendar();
             this.requestWorkouts(this.startDate, this.endDate);
         },
