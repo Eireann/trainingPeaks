@@ -2,9 +2,10 @@ define(
 [
     "backbone.marionette",
     "Backbone.Marionette.Handlebars",
+    "views/calendarWorkoutView",
     "hbs!templates/views/calendarDay"
 ],
-function(Marionette, MaironetteHandlebars, CalendarDayTemplate)
+function(Marionette, MaironetteHandlebars, CalendarWorkoutView, CalendarDayTemplate)
 {
     return Marionette.ItemView.extend(
     {
@@ -18,6 +19,17 @@ function(Marionette, MaironetteHandlebars, CalendarDayTemplate)
         modelEvents:
         {
             "change": "render"
+        },
+        onRender: function()
+        {
+            var workout = this.model.get("workout");
+            if (workout)
+            {
+                var workoutView = new CalendarWorkoutView({ model: workout });
+                workoutView.render();
+                this.$el.append(workoutView.el);
+            };
         }
+
     });
 });

@@ -8,7 +8,7 @@ define(
     "views/calendarView",
     "models/workoutsCollection"
 ],
-function (Backbone, Marionette, moment, CalendarLayout, CalendarDayModel, CalendarView, WorkoutsCollection)
+function(Backbone, Marionette, moment, CalendarLayout, CalendarDayModel, CalendarView, WorkoutsCollection)
 {
     return Marionette.Controller.extend(
     {
@@ -18,12 +18,12 @@ function (Backbone, Marionette, moment, CalendarLayout, CalendarDayModel, Calend
         daysCollection: null,
         daysHash: {},
 
-        show: function ()
+        show: function()
         {
             this.layout.mainRegion.show(this.views.calendar);
         },
 
-        initialize: function ()
+        initialize: function()
         {
             _.bindAll(this);
 
@@ -39,7 +39,7 @@ function (Backbone, Marionette, moment, CalendarLayout, CalendarDayModel, Calend
             this.requestWorkouts(this.startDate, this.endDate);
         },
 
-        initializeCalendar: function ()
+        initializeCalendar: function()
         {
             this.daysCollection = this.createCollectionOfDays(moment(this.startDate), moment(this.endDate));
             this.views.calendar = new CalendarView({ collection: this.daysCollection });
@@ -48,7 +48,7 @@ function (Backbone, Marionette, moment, CalendarLayout, CalendarDayModel, Calend
             this.views.calendar.bind("append", this.appendWeekToCalendar);
         },
 
-        createCollectionOfDays: function (startDate, endDate)
+        createCollectionOfDays: function(startDate, endDate)
         {
 
             // add one to endDate.diff, to include endDate itself
@@ -67,16 +67,16 @@ function (Backbone, Marionette, moment, CalendarLayout, CalendarDayModel, Calend
             return daysCollection;
         },
 
-        requestWorkouts: function (startDate, endDate)
+        requestWorkouts: function(startDate, endDate)
         {
             var workouts = new WorkoutsCollection({ startDate: moment(startDate), endDate: moment(endDate) });
 
             var waiting = workouts.fetch();
             var that = this;
 
-            waiting.done(function ()
+            waiting.done(function()
             {
-                workouts.each(function (workout)
+                workouts.each(function(workout)
                 {
                     var workoutDay = workout.get("WorkoutDay");
                     if (workoutDay)
@@ -84,15 +84,14 @@ function (Backbone, Marionette, moment, CalendarLayout, CalendarDayModel, Calend
                         workoutDay = workoutDay.substr(0, workoutDay.indexOf("T"));
                         if (that.daysHash[workoutDay])
                         {
-                            that.daysHash[workoutDay].set("workoutId", workout.get("WorkoutId"));
-                            that.daysHash[workoutDay].set("workoutDay", workout.get("WorkoutDay"));
+                            that.daysHash[workoutDay].setWorkout(workout);
                         }
                     }
                 });
             });
         },
 
-        appendWeekToCalendar: function ()
+        appendWeekToCalendar: function()
         {
             var startDate = moment(this.endDate).add("days", 1);
             var endDate = moment(startDate).add("days", 6);
@@ -105,7 +104,7 @@ function (Backbone, Marionette, moment, CalendarLayout, CalendarDayModel, Calend
             this.daysCollection.add(newDays.models, { index: this.daysCollection.length });
         },
 
-        prependWeekToCalendar: function ()
+        prependWeekToCalendar: function()
         {
             var endDate = moment(this.startDate).subtract("days", 1);
             var startDate = moment(endDate).subtract("days", 6);
