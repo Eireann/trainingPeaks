@@ -18,9 +18,10 @@ requirejs.config({baseUrl: path.join(rootJsDir, "app")});
 requirejs.config(
 {
     paths: {
-
-        "document": "../test/vendor/js/libs/document_jsdom",
-        "window": "../test/vendor/js/libs/window_jsdom",
+        "document": "../test/js_global_dependencies/document_jsdom",
+        "window": "../test/js_global_dependencies/window_jsdom",
+        "localStorage": "../test/js_global_dependencies/localStorage",
+        "browserEnvironment": "../test/js_global_dependencies/browserEnvironment",
         "jquery": "../test/vendor/js/libs/jquery_jsdom",
         "backbone": "../test/vendor/js/libs/backbone.amd",
         "backbone.eventbinder": "../test/vendor/js/libs/backbone.eventbinder.amd",
@@ -28,8 +29,36 @@ requirejs.config(
         "backbone.wreqr": "../test/vendor/js/libs/backbone.wreqr.amd",
         "backbone.marionette": "../test/vendor/js/libs/backbone.marionette.amd",
         "Backbone.Marionette.Handlebars": "../test/vendor/js/libs/backbone.marionette.handlebars.amd",
-        "hbs": "../test/vendor/js/libs/hbs",
-        "text": "../test/vendor/js/libs/text"
+        "hbs": "../test/vendor/js/libs/hbs"
+    },
+
+    shim:
+    {
+        "backbone":
+        {
+            deps: ["jquery", "underscore"],
+            exports: "Backbone"
+        },
+        "backbone.marionette":
+        {
+            deps: ["backbone"],
+            exports: "Marionette"
+        },
+        "jquery.mousewheel":
+        {
+            deps: ["jquery"],
+            exports: "jquery"
+        }
     }
 }
 );
+
+// do we need some fake browser environment?
+if (typeof global !== 'undefined' && typeof window === 'undefined')
+{
+    requirejs.config(
+    {
+        deps: ["browserEnvironment"]
+    });
+}
+
