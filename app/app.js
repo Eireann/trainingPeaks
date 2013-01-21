@@ -1,6 +1,8 @@
 define(
 [
-    "jquery", "backbone.marionette"
+    "jquery",
+    "backbone.marionette",
+    "marionette.faderegion"
 ],
 function ($, Marionette)
 {
