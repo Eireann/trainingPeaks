@@ -31,15 +31,32 @@ function (_, Marionette, loginViewTemplate)
         initialize: function ()
         {
             _.bindAll(this);
+            
+            this.model.on("api:authorization:success", this.onLoginSuccess);
+            this.model.on("api:authorization:failure", this.onLoginFailure);
         },
             
         events:
         {
             "click input[name=Submit]": "authenticate"
         },
+        
+        onLoginSuccess: function()
+        {
+            this.trigger("login:success");
+        },
+        
+        onLoginFailure: function()
+        {
+            this.$("#loginInProgressLabel").hide();
+            this.$("#loginFailedLabel").show();
+        },
             
         authenticate: function ()
         {
+            this.$("#loginFailedLabel").hide();
+            this.$("#loginInProgressLabel").show();
+            
             var username = this.ui.usernameInput.val();
             var password = this.ui.passwordInput.val();
 
