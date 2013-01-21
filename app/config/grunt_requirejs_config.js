@@ -22,4 +22,9 @@ _.extend(commonConfig, {
         }
     }
 });
+
+_.extend(commonConfig.paths, {
+    "marionette.faderegion": "scripts/plugins/marionette.faderegion"   
+});
+
 module.exports = commonConfig;
