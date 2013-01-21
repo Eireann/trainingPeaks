@@ -20,7 +20,7 @@ function(moment, Backbone, theApp, WorkoutModel)
 
             return theApp.apiRoot + "/WebApiServer/Fitness/V1/workouts/" + start + "/" + end;
         },
-        initialize: function(options)
+        initialize: function(models, options)
         {
             this.startDate = options.startDate;
             this.endDate = options.endDate;
