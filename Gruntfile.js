@@ -63,6 +63,7 @@ module.exports = function (grunt) {
                     jamConfig: "vendor/jam/require.config.js",
                     out: "build/debug/single.js",
                     name: "main",
+                    include: ["Backbone.Marionette.Handlebars"],
                     wrap: false,
                     optimize: "none"
                 }
