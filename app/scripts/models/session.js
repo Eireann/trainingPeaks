@@ -55,8 +55,8 @@ function ($, _, Backbone)
             this.fetch({ data: data, type: "POST", contentType: "application/x-www-form-urlencoded" }).done(function ()
             {
                 var expiresOn = Number(self.get("expires_in")) + Number((new Date()).getTime() / 1000);
-                this.storageLocation.setItem("access_token", self.get("access_token"));
-                this.storageLocation.setItem("expires_on", expiresOn);
+                self.storageLocation.setItem("access_token", self.get("access_token"));
+                self.storageLocation.setItem("expires_on", expiresOn);
                 self.trigger("api:authorized");
             });
         }

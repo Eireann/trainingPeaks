@@ -14,6 +14,8 @@
             "backbone": "../vendor/js/libs/backbone",
             "backbone.marionette": "../vendor/js/libs/backbone.marionette",
             "Backbone.Marionette.Handlebars": "../vendor/js/libs/Backbone.Marionette.Handlebars/backbone.marionette.handlebars",
+            
+            "marionette.faderegion": "scripts/plugins/marionette.faderegion",
 
             "models": "scripts/models",
             "views": "scripts/views",
