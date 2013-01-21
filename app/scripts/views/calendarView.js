@@ -85,6 +85,7 @@ function(Marionette, CalendarDayView, CalendarWeekTemplate)
             this.numDaysLeftForWeek--;
         },
 
+        // onShow instead of onRender, because in onRender we may not be visible in document yet, no offsets calculated
         onShow: function()
         {
             this.scrollToToday();
