@@ -14,18 +14,15 @@ function ($, _, Backbone)
         url: "http://apidev.trainingpeaks.com/OAuthAuthorizationServer/OAuth/Token",
         //url: "http://localhost:8900/OAuthAuthorizationServer/OAuth/Token",
 
-        defaults:
-        {
-            username: null
-        },
+        storageLocation: localStorage,
 
         initialize: function ()
         {
             _.bindAll(this);
-            var accessToken = sessionStorage.getItem("access_token");
+            var accessToken = this.storageLocation.getItem("access_token");
             if (accessToken)
             {
-                var expiresOn = sessionStorage.getItem("expires_on");
+                var expiresOn = this.storageLocation.getItem("expires_on");
                 var now = (new Date()).getTime() / 1000;
                 if (now < expiresOn)
                 {
@@ -58,8 +55,8 @@ function ($, _, Backbone)
             this.fetch({ data: data, type: "POST", contentType: "application/x-www-form-urlencoded" }).done(function ()
             {
                 var expiresOn = Number(self.get("expires_in")) + Number((new Date()).getTime() / 1000);
-                sessionStorage.setItem("access_token", self.get("access_token"));
-                sessionStorage.setItem("expires_on", expiresOn);
+                this.storageLocation.setItem("access_token", self.get("access_token"));
+                this.storageLocation.setItem("expires_on", expiresOn);
                 self.trigger("api:authorized");
             });
         }
