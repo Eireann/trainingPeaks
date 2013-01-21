@@ -28,7 +28,7 @@ function(Marionette, MaironetteHandlebars, CalendarWorkoutView, CalendarDayTempl
                 var workoutView = new CalendarWorkoutView({ model: workout });
                 workoutView.render();
                 this.$el.append(workoutView.el);
-            };
+            }
         }
 
     });
