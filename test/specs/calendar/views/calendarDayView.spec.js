@@ -1,6 +1,6 @@
 describe("Calendar Day View", function () {
 
-    it("Calling via requirejs", function (done) {
+    it("Using requirejs to load tests ...", function (done) {
 
         // use requirejs() instead of define() here, to keep jasmine test runner happy
         requirejs(
