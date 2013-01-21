@@ -70,23 +70,25 @@ function(Backbone, Marionette, moment, CalendarLayout, CalendarDayModel, Calenda
             var workouts = new WorkoutsCollection({ startDate: moment(startDate), endDate: moment(endDate) });
 
             var waiting = workouts.fetch();
-            var that = this;
+            var controller = this;
 
             waiting.done(function()
             {
-                workouts.each(function(workout)
-                {
-                    var workoutDay = workout.get("WorkoutDay");
-                    if (workoutDay)
-                    {
-                        workoutDay = workoutDay.substr(0, workoutDay.indexOf("T"));
-                        if (that.daysHash[workoutDay])
-                        {
-                            that.daysHash[workoutDay].setWorkout(workout);
-                        }
-                    }
-                });
+                workouts.each(function(workout) { controller.addWorkoutToCalendarDay(workout); });
             });
+        },
+
+        addWorkoutToCalendarDay: function(workout)
+        {
+            var workoutDay = workout.get("WorkoutDay");
+            if (workoutDay)
+            {
+                workoutDay = workoutDay.substr(0, workoutDay.indexOf("T"));
+                if (this.daysHash[workoutDay])
+                {
+                    this.daysHash[workoutDay].setWorkout(workout);
+                }
+            }
         },
 
         appendWeekToCalendar: function()
