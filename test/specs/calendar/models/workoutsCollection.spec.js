@@ -13,7 +13,6 @@ describe("Workouts Collection spec", function()
         {
             describe("Workouts Collection", function()
             {
-
                 it("should load as a module", function()
                 {
                     expect(WorkoutsCollection).toBeDefined();

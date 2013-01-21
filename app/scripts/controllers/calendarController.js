@@ -67,7 +67,7 @@ function(Backbone, Marionette, moment, CalendarLayout, CalendarDayModel, Calenda
 
         requestWorkouts: function(startDate, endDate)
         {
-            var workouts = new WorkoutsCollection({ startDate: moment(startDate), endDate: moment(endDate) });
+            var workouts = new WorkoutsCollection([], { startDate: moment(startDate), endDate: moment(endDate) });
 
             var waiting = workouts.fetch();
             var controller = this;
