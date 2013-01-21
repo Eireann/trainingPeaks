@@ -1,10 +1,9 @@
 define(
 [
     "backbone.marionette",
-    "Backbone.Marionette.Handlebars",
     "hbs!templates/views/calendarWorkout"
 ],
-function(Marionette, MaironetteHandlebars, CalendarWorkoutTemplate)
+function(Marionette, CalendarWorkoutTemplate)
 {
     return Marionette.ItemView.extend(
     {
