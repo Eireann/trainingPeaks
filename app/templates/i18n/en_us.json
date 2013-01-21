@@ -1,5 +1,18 @@
 {
     "Sample Content": "This is some sample content translated to english",
     "Date": "Date",
-    "Day": "Day"
+    "Day": "Day",
+
+	"LogOut": "Log Out",
+	"Messages": "Messages",
+	"Settings": "Settings",
+	"GoPremium": "Go Premium",
+	"Home": "Home",
+	"Calendar": "Calendar",
+	"Dashboard": "Dashboard",
+	"Routes": "Routes",
+	"Plans": "Plans",
+	"Friends": "Friends",
+	"AnnualTrainingPlan": "Annual Training Plan",
+	"VirtualCoach": "Virtual Coach"
 }

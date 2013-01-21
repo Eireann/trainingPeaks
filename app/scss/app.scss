@@ -1,6 +1,11 @@
 @import "settings";
 @import "foundation";
 
+$black: #000000;
+$white: #ffffff;
+$grey: #d5d4d4;
+$TPBlue: #005695;
+
 #calendarContainer
 {
     .scrollable
@@ -48,4 +53,39 @@
         font-family: 'Courier New', Courier, 'Nimbus Mono L', monospace;
         font-size: 10px;
     }
+}
+
+#marsPersonalHeader
+{
+	height: 30px;
+	background-color: $black;
+
+	.personHeaderLogo
+	{
+		float: left;
+		padding: 5px;
+		padding-left: 40px;
+	}
+
+	.personHeaderButtons
+	{
+		padding-top: 10px;
+		height: 30px;
+		text-align: center;
+		&:hover { background-color: $TPBlue; }
+		&:hover label {color: $white;}
+		label
+		{
+			font-family: Arial, 'DejaVu Sans', 'Liberation Sans', Freesans, sans-serif;
+			font-size: 10px;
+			color: $grey;
+		}
+
+	}
+}
+
+#marsNavigation
+{
+	height: 50px;
+	background-color: $grey; 
 }
