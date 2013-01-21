@@ -2,17 +2,19 @@ define(
 [
     "jquery",
     "underscore",
-    "backbone"
+    "backbone",
+    "app"
 ],
-function ($, _, Backbone)
+function ($, _, Backbone, theApp)
 {
     "use strict";
 
     var Session = Backbone.Model.extend(
     {
-        //url: "https://apideploy.trainingpeaks.com/OAuthAuthorizationServer/OAuth/Token",
-        url: "http://apidev.trainingpeaks.com/OAuthAuthorizationServer/OAuth/Token",
-        //url: "http://localhost:8900/OAuthAuthorizationServer/OAuth/Token",
+        url: function()
+        {
+            return theApp.apiRoot + "/OAuthAuthorizationServer/OAuth/Token";
+        },
 
         storageLocation: localStorage,
 

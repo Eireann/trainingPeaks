@@ -34,15 +34,16 @@ function ($, Marionette)
         mainRegion: "#main"
     });
 
-    theApp.on("initialize:before", function ()
+    var apiRoots =
     {
-    });
-
-    theApp.on("initialzie:after", function ()
-    {
-    });
+        live: "https://api.trainingpeaks.com",
+        deploy: "https://apideploy.trainingpeaks.com",
+        dev: "http://apidev.trainingpeaks.com",
+        local: "http://localhost:8900"
+    };
 
     theApp.root = "/Mars";
+    theApp.apiRoot = apiRoots.dev;
 
     return theApp;
 });

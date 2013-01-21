@@ -2,9 +2,10 @@ define(
 [
     "moment",
     "backbone",
+    "app",
     "models/workoutModel"
 ],
-function(moment, Backbone, WorkoutModel)
+function(moment, Backbone, theApp, WorkoutModel)
 {
     return Backbone.Collection.extend(
     {
@@ -17,9 +18,7 @@ function(moment, Backbone, WorkoutModel)
             var start = this.startDate.format("YYYY-MM-DD");
             var end = moment(this.endDate).format("YYYY-MM-DD");
 
-            //return "http://localhost:8900/WebApiServer/Fitness/V1/workouts/" + start + "/" + end;
-            //return "http://apideploy.trainingpeaks.com/WebApiServer/Fitness/V1/workouts/" + start + "/" + end;
-            return "http://apidev.trainingpeaks.com/WebApiServer/Fitness/V1/workouts/" + start + "/" + end;
+            return theApp.apiRoot + "/WebApiServer/Fitness/V1/workouts/" + start + "/" + end;
         },
         initialize: function(options)
         {
