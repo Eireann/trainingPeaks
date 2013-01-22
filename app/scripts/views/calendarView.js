@@ -10,8 +10,9 @@ function(Marionette, CalendarDayView, CalendarWeekTemplate)
     {
         tagName: "div",
         className: "scrollable",
-
         itemView: CalendarDayView,
+        numWeeks: 0,
+        numDaysLeftForWeek: 0,
 
         events:
         {
@@ -20,7 +21,7 @@ function(Marionette, CalendarDayView, CalendarWeekTemplate)
 
         onscroll: function(event)
         {
-            var howMuchIHave = this.$el[0].scrollHeight;
+            var howMuchIHave = this.el.scrollHeight;
             var howMuchIsVisible = this.$el.height();
             var hidden = howMuchIHave - howMuchIsVisible;
             var scrollDownThresholdInPx = 150;
@@ -39,9 +40,6 @@ function(Marionette, CalendarDayView, CalendarWeekTemplate)
 
             return;
         },
-
-        numWeeks: 0,
-        numDaysLeftForWeek: 0,
 
         appendHtml: function(collectionView, itemView, index)
         {
@@ -94,8 +92,14 @@ function(Marionette, CalendarDayView, CalendarWeekTemplate)
         scrollToToday: function()
         {
             // scroll so that the week before is visible
-            var lastWeek = this.$el.find('.today').parent().prev();
-            this.$el.scrollTop(lastWeek.offset().top - this.$el.offset().top);
+            var today = this.$el.find('.today');
+            if (today.length > 0)
+            {
+                var thisWeek = today.parent();
+                var lastWeek = thisWeek.prev();
+                var weekTop = lastWeek && lastWeek.offset() ? lastWeek.offset().top : thisWeek.offset().top;
+                this.$el.scrollTop(weekTop - this.$el.offset().top);
+            }
         }
 
     });
