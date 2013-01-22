@@ -14,9 +14,9 @@ function(Backbone, Marionette, moment, CalendarLayout, CalendarDayModel, Calenda
     {
         layout: new CalendarLayout(),
 
-        views: {},
+        views: null,
         daysCollection: null,
-        daysHash: {},
+        daysHash: null,
 
         show: function()
         {
@@ -26,6 +26,9 @@ function(Backbone, Marionette, moment, CalendarLayout, CalendarDayModel, Calenda
         initialize: function()
         {
             _.bindAll(this);
+
+            this.views = {};
+            this.daysHash = {};
 
             // start on a Sunday
             this.startDate = moment().day(0).subtract("weeks", 4);
