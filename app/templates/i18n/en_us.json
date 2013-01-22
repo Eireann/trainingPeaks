@@ -14,5 +14,12 @@
 	"Plans": "Plans",
 	"Friends": "Friends",
 	"AnnualTrainingPlan": "Annual Training Plan",
-	"VirtualCoach": "Virtual Coach"
+	"VirtualCoach": "Virtual Coach",
+
+    "Login": "Login",
+    "Username": "Username",
+    "Password": "Password",
+    "LoggingIn": "Logging in...",
+    "LoginFailed": "Login Failed!",
+    "Submit": "Submit"
 }
