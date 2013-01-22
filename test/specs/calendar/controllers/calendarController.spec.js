@@ -11,53 +11,63 @@ describe("Calendar Controller spec", function()
         [
         "moment",
         "jquery",
+        "underscore",
+        "backbone",
         "controllers/calendarController",
         "models/workoutModel",
         "models/workoutsCollection",
         "views/calendarView"],
-        function(moment, $, CalendarController, WorkoutModel, WorkoutsCollection, CalendarView)
+        function(moment, $, _, Backbone, CalendarController, WorkoutModel, WorkoutsCollection, CalendarView)
         {
 
             describe("Calendar Controller", function()
             {
 
-                it("should load successfully as a module", function()
+                it("Should load successfully as a module", function()
                 {
                     expect(CalendarController).toBeDefined();
                 });
 
-                it("should have a layout", function()
-                {
-                    var controller = new CalendarController();
-                    expect(controller.layout).toBeDefined();
-                });
-
                 describe("Initialize controller", function()
                 {
-                    it("should have a startDate", function()
+
+                    it("Should have a layout", function()
+                    {
+                        var controller = new CalendarController();
+                        expect(controller.layout).toBeDefined();
+                    });
+
+                    it("Should have a daysHash", function()
+                    {
+                        var controller = new CalendarController();
+                        expect(controller.daysHash).toBeDefined();
+                        expect(controller.daysHash).not.toBeNull();
+                    });
+
+                    it("Should have a daysCollection", function()
+                    {
+                        var controller = new CalendarController();
+                        expect(controller.daysCollection).toBeDefined();
+                        expect(controller.daysCollection).not.toBeNull();
+                    });
+
+                    it("Should have a startDate", function()
                     {
                         var controller = new CalendarController();
                         expect(controller.startDate).toBeDefined();
                     });
 
-                    it("should have an endDate", function()
+                    it("Should have an endDate", function()
                     {
                         var controller = new CalendarController();
                         expect(controller.endDate).toBeDefined();
                     });
 
-                    it("should fetch some workouts", function()
+                    it("Should call requestWorkouts", function()
                     {
-                        spyOn(WorkoutsCollection.__super__, "fetch").andCallThrough();
+                        spyOn(CalendarController.prototype, "requestWorkouts").andCallThrough();
                         var controller = new CalendarController();
-                        expect(WorkoutsCollection.__super__.fetch).toHaveBeenCalled();
-                    });
-
-                    it("should create a CalendarView", function()
-                    {
-                        spyOn(CalendarView.__super__, "initialize").andCallThrough();
-                        var controller = new CalendarController();
-                        expect(CalendarView.__super__.initialize).toHaveBeenCalled();
+                        expect(CalendarController.prototype.requestWorkouts).toHaveBeenCalled();
                     });
 
                     it("Should call initializeCalendar", function()
@@ -67,6 +77,33 @@ describe("Calendar Controller spec", function()
                         expect(CalendarController.prototype.initializeCalendar).toHaveBeenCalled();
                     });
 
+                });
+
+                describe("initialize calendar", function()
+                {
+                    it("Should create a CalendarView", function()
+                    {
+                        var controller = new CalendarController();
+                        spyOn(CalendarView.__super__, "initialize").andCallThrough();
+                        controller.initializeCalendar();
+                        expect(CalendarView.__super__.initialize).toHaveBeenCalled();
+                    });
+
+                    it("Should bind to calendar view prepend", function()
+                    {
+                        var controller = new CalendarController();
+                        spyOn(CalendarView.__super__, "bind").andCallThrough();
+                        controller.initializeCalendar();
+                        expect(CalendarView.__super__.bind).toHaveBeenCalledWith("prepend", controller.prependWeekToCalendar);
+                    });
+
+                    it("Should bind to calendar view append", function()
+                    {
+                        var controller = new CalendarController();
+                        spyOn(CalendarView.__super__, "bind").andCallThrough();
+                        controller.initializeCalendar();
+                        expect(CalendarView.__super__.bind).toHaveBeenCalledWith("append", controller.appendWeekToCalendar);
+                    });
                 });
 
                 describe("Create collection of days", function()
@@ -97,16 +134,60 @@ describe("Calendar Controller spec", function()
 
                     it("Should create a workout collection with the correct date range", function()
                     {
-                        spyOn(WorkoutsCollection.__super__, "fetch").andCallThrough();
+                        spyOn(WorkoutsCollection.prototype, "initialize").andCallThrough();
                         var controller = new CalendarController();
                         var startDate = moment("2013-01-07");
                         var endDate = moment("2013-01-13");
                         controller.requestWorkouts(startDate, endDate);
-                        expect(WorkoutsCollection.__super__.fetch).toHaveBeenCalled();
-                        expect(WorkoutsCollection.__super__.fetch.mostRecentCall.object.startDate.format()).toEqual(startDate.format());
-                        expect(WorkoutsCollection.__super__.fetch.mostRecentCall.object.endDate.format()).toEqual(endDate.format());
+                        expect(WorkoutsCollection.prototype.initialize).toHaveBeenCalled();
+                        expect(WorkoutsCollection.prototype.initialize.mostRecentCall.args[1].startDate.format()).toEqual(startDate.format());
+                        expect(WorkoutsCollection.prototype.initialize.mostRecentCall.args[1].endDate.format()).toEqual(endDate.format());
                     });
 
+                    it("Should call CalendarController.addWorkoutToCalendarDay for each workout returned", function()
+                    {
+                        var controller = new CalendarController();
+
+                        // fake workout collection fetcher
+                        var workouts = [
+                                new WorkoutModel({ WorkoutDay: moment().add("days", 1).format(), WorkoutId: '1234' }),
+                                new WorkoutModel({ WorkoutDay: moment().add("days", 2).format(), WorkoutId: '2345' }),
+                                new WorkoutModel({ WorkoutDay: moment().add("days", 3).format(), WorkoutId: '3456' })
+                        ];
+
+                        spyOn(WorkoutsCollection.__super__, "fetch").andCallFake(
+                            function()
+                            {
+                                // make some workouts
+                                this.models = workouts;
+
+                                // return a deferred that immediately calls callback
+                                return {
+                                    done: function(callback)
+                                    {
+                                        callback();
+                                    }
+                                };
+                            }
+                        );
+
+                        spyOn(controller, "addWorkoutToCalendarDay");
+                        var startDate = moment();
+                        var endDate = moment().add("days", 3);
+                        controller.requestWorkouts(startDate, endDate);
+                        expect(controller.addWorkoutToCalendarDay).toHaveBeenCalled();
+
+                        _.each(workouts, function(workout)
+                        {
+                            expect(controller.addWorkoutToCalendarDay).toHaveBeenCalledWith(workout);
+                        });
+
+                    });
+
+                });
+
+                describe("Add workout to calendar day", function()
+                {
                     it("Should add Workout model to CalendarDay model if the date matches", function()
                     {
                         var controller = new CalendarController();
@@ -119,16 +200,116 @@ describe("Calendar Controller spec", function()
 
                 });
 
-
                 describe("Prepend a week to the calendar", function()
                 {
 
-                    it("Should bind prepend event on initialize", function()
-                    {
+                    var controller;
+                    var expectedStartDate;
+                    var expectedEndDate;
+                    var dateFormat = "YYYY-MM-DD";
 
-                        spyOn(CalendarView.prototype, "bind");
-                        var controller = new CalendarController();
-                        expect(CalendarView.prototype.bind).toHaveBeenCalled();
+                    beforeEach(function()
+                    {
+                        controller = new CalendarController();
+                        expectedEndDate = moment(controller.startDate).subtract("days", 1);
+                        expectedStartDate = moment(expectedEndDate).subtract("days", 6);
+                    });
+
+                    it("Should request workouts with the appropriate dates", function()
+                    {
+                        spyOn(controller, "requestWorkouts");
+                        controller.prependWeekToCalendar();
+                        expect(controller.requestWorkouts).toHaveBeenCalled();
+                        var lastCall = controller.requestWorkouts.mostRecentCall;
+                        expect(lastCall.args[0].format(dateFormat)).toEqual(expectedStartDate.format(dateFormat));
+                        expect(lastCall.args[1].format(dateFormat)).toEqual(expectedEndDate.format(dateFormat));
+                    });
+
+                    it("Should create collection of days the appropriate dates", function()
+                    {
+                        spyOn(controller, "createCollectionOfDays").andCallThrough();
+                        controller.prependWeekToCalendar();
+                        expect(controller.createCollectionOfDays).toHaveBeenCalled();
+                        var lastCall = controller.createCollectionOfDays.mostRecentCall;
+                        expect(lastCall.args[0].format(dateFormat)).toEqual(expectedStartDate.format(dateFormat));
+                        expect(lastCall.args[1].format(dateFormat)).toEqual(expectedEndDate.format(dateFormat));
+                    });
+
+                    it("Should add seven days to the daysCollection", function()
+                    {
+                        spyOn(controller.daysCollection, "add").andCallThrough();
+                        controller.prependWeekToCalendar();
+                        expect(controller.daysCollection.add).toHaveBeenCalled();
+                        var lastCall = controller.daysCollection.add.mostRecentCall;
+                        expect(lastCall.args[0].length).toEqual(7);
+                    });
+
+                    it("Should call daysCollection.add with index:0 and at:0 options", function()
+                    {
+                        spyOn(controller.daysCollection, "add").andCallThrough();
+                        controller.prependWeekToCalendar();
+                        expect(controller.daysCollection.add).toHaveBeenCalled();
+                        var lastCall = controller.daysCollection.add.mostRecentCall;
+                        expect(lastCall.args[1].at).toBeDefined();
+                        expect(lastCall.args[1].at).toEqual(0);
+                        expect(lastCall.args[1].index).toBeDefined();
+                        expect(lastCall.args[1].index).toEqual(0);
+                    });
+                });
+
+                describe("Append a week to the calendar", function()
+                {
+
+                    var controller;
+                    var expectedStartDate;
+                    var expectedEndDate;
+                    var dateFormat = "YYYY-MM-DD";
+
+                    beforeEach(function()
+                    {
+                        controller = new CalendarController();
+                        expectedStartDate = moment(controller.endDate).add("days", 1);
+                        expectedEndDate = moment(expectedStartDate).add("days", 6);
+                    });
+
+                    it("Should request workouts with the appropriate dates", function()
+                    {
+                        spyOn(controller, "requestWorkouts");
+                        controller.appendWeekToCalendar();
+                        expect(controller.requestWorkouts).toHaveBeenCalled();
+                        var lastCall = controller.requestWorkouts.mostRecentCall;
+                        expect(lastCall.args[0].format(dateFormat)).toEqual(expectedStartDate.format(dateFormat));
+                        expect(lastCall.args[1].format(dateFormat)).toEqual(expectedEndDate.format(dateFormat));
+                    });
+
+                    it("Should create collection of days the appropriate dates", function()
+                    {
+                        spyOn(controller, "createCollectionOfDays").andCallThrough();
+                        controller.appendWeekToCalendar();
+                        expect(controller.createCollectionOfDays).toHaveBeenCalled();
+                        var lastCall = controller.createCollectionOfDays.mostRecentCall;
+                        expect(lastCall.args[0].format(dateFormat)).toEqual(expectedStartDate.format(dateFormat));
+                        expect(lastCall.args[1].format(dateFormat)).toEqual(expectedEndDate.format(dateFormat));
+                    });
+
+                    it("Should add seven days to the daysCollection", function()
+                    {
+                        spyOn(controller.daysCollection, "add").andCallThrough();
+                        controller.appendWeekToCalendar();
+                        expect(controller.daysCollection.add).toHaveBeenCalled();
+                        var lastCall = controller.daysCollection.add.mostRecentCall;
+                        expect(lastCall.args[0].length).toEqual(7);
+                    });
+
+                    it("Should call daysCollection.add with correct index option", function()
+                    {
+                        spyOn(controller.daysCollection, "add").andCallThrough();
+                        var lengthBeforeAppending = controller.daysCollection.length;
+                        controller.appendWeekToCalendar();
+                        expect(controller.daysCollection.add).toHaveBeenCalled();
+                        var lastCall = controller.daysCollection.add.mostRecentCall;
+                        expect(lastCall.args[1].index).toBeDefined();
+                        expect(lastCall.args[1].index).toEqual(lengthBeforeAppending);
                     });
                 });
 
