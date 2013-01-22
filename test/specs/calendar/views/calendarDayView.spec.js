@@ -81,7 +81,7 @@ describe("Calendar Day View", function()
                             dayModel.setWorkout(workoutModel);
                             var dayView = new CalendarDayView({ model: dayModel });
 
-                            spyOn(CalendarWorkoutView.prototype, "render");
+                            spyOn(CalendarWorkoutView.prototype, "render").andCallThrough();
                             dayView.render();
                             expect(CalendarWorkoutView.prototype.render).toHaveBeenCalled();
 
