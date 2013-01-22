@@ -3,5 +3,23 @@
     "Date": "Data",
     "Day": "Giorno",
 
-	"LogOut": "Uscita"
+	"LogOut": "Uscita",
+	"Messages": "Messaggi",
+	"Settings": "Impostazioni",
+	"GoPremium": "Compra Premium",
+	"Home": "Home",
+	"Calendar": "Calendario",
+	"Dashboard": "Pannello",
+	"Routes": "Percorsi",
+	"Plans": "Piani",
+	"Friends": "Amici",
+	"AnnualTrainingPlan": "Piano Annuale Allenamenti",
+	"VirtualCoach": "Allenatore Virtuale",
+
+    "Login": "Accesso",
+    "Username": "Nome Utente",
+    "Password": "Parola d'Ordine",
+    "LoggingIn": "Accesso in corso...",
+    "LoginFailed": "Accesso fallito!",
+    "Submit": "Accedi"
 }

@@ -21,6 +21,7 @@ function ($, _, Backbone, theApp)
         initialize: function ()
         {
             _.bindAll(this);
+            
             var accessToken = this.storageLocation.getItem("access_token");
             if (accessToken)
             {
@@ -35,7 +36,8 @@ function ($, _, Backbone, theApp)
 
         isAuthenticated: function ()
         {
-            return this.get("access_token") && this.get("access_token").length > 0;
+            var token = this.get("access_token");
+            return !!token && (token.length > 0);
         },
 
         authenticate: function (options)
@@ -54,12 +56,18 @@ function ($, _, Backbone, theApp)
             this.username = options.username;
 
             var self = this;
-            this.fetch({ data: data, type: "POST", contentType: "application/x-www-form-urlencoded" }).done(function ()
+            this.fetch(
+            {
+                data: data, type: "POST", contentType: "application/x-www-form-urlencoded"
+            }).done(function ()
             {
                 var expiresOn = Number(self.get("expires_in")) + Number((new Date()).getTime() / 1000);
                 self.storageLocation.setItem("access_token", self.get("access_token"));
                 self.storageLocation.setItem("expires_on", expiresOn);
-                self.trigger("api:authorized");
+                self.trigger("api:authorization:success");
+            }).error(function()
+            {
+                self.trigger("api:authorization:failure");
             });
         }
     });

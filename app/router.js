@@ -17,6 +17,7 @@ function (_, theApp, Backbone, CalendarController, LoginLayout, LoginView, theSe
         initialize: function ()
         {
             _.bindAll(this);
+            
             theApp.on("api:unauthorized", this.login);
         },
 
@@ -24,12 +25,12 @@ function (_, theApp, Backbone, CalendarController, LoginLayout, LoginView, theSe
         {
             "home": "home",
             "login": "login",
-            "calendar": "calendar"
+            "calendar": "calendar",
+            "": "calendar"  
         },
 
         home: function ()
         {
-            console.log("home");
         },
 
         calendar: function ()
@@ -46,8 +47,8 @@ function (_, theApp, Backbone, CalendarController, LoginLayout, LoginView, theSe
 
             var loginLayout = new LoginLayout();
             var loginView = new LoginView({ model: theSession });
-
-            theSession.on("api:authorized", function ()
+            
+            loginView.on("login:success", function ()
             {
                 self.navigate("calendar", { trigger: true });
             });
