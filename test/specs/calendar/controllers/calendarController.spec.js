@@ -23,6 +23,21 @@ describe("Calendar Controller spec", function()
             describe("Calendar Controller", function()
             {
 
+                beforeEach(function()
+                {
+                    // let's not make any remote server calls, just testing object interactions here
+                    spyOn($, "ajax").andCallFake(function()
+                    {
+                        //console.log(arguments[0]);
+                        return {
+                            done: function(callback)
+                            {
+                                callback();
+                            }
+                        };
+                    });
+                });
+
                 it("Should load successfully as a module", function()
                 {
                     expect(CalendarController).toBeDefined();
