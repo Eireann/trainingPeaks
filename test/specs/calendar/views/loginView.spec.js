@@ -65,6 +65,42 @@
                     fakeSessionModel.trigger("api:authorization:success");
                     expect(fakeController.fakeSuccessHandler).toHaveBeenCalled();
                 });
+
+                it("subscribes to the click event on the Submit button in the DOM after it renders itself", function()
+                {                  
+                    var fakeSessionModel = new Backbone.Model();
+                    fakeSessionModel.authenticate = function()
+                    {
+                    };
+                    spyOn(fakeSessionModel, "authenticate");
+                    
+                    var view = new loginView({ el: $("body"), model: fakeSessionModel });
+
+                    view.render();
+
+                    $("input[name=Submit]").click();
+
+                    expect(fakeSessionModel.authenticate).toHaveBeenCalled();
+                });
+
+                it("binds the username and password DOM input fields to its ui object", function()
+                {
+                    var fakeSessionModel = new Backbone.Model();
+                    fakeSessionModel.authenticate = function ()
+                    {
+                    };
+                    spyOn(fakeSessionModel, "authenticate");
+
+                    var view = new loginView({ el: $("body"), model: fakeSessionModel });
+
+                    view.render();
+
+                    $("input[name=username]").val("testusername");
+                    expect(view.ui.usernameInput.val()).toBe("testusername");
+                    
+                    $("input[name=password]").val("testpassword");
+                    expect(view.ui.passwordInput.val()).toBe("testpassword");
+                });
             });
 
             done();
