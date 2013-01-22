@@ -15,6 +15,12 @@ function(moment, Marionette, CalendarWorkoutView, CalendarDayTemplate)
         tagName: "div",
         className: "day",
 
+        initialize: function(options)
+        {
+            if (!this.model)
+                throw "CalendarDayView needs a CalendarDayModel instance!";
+        },
+
         template:
         {
             type: "handlebars",
@@ -32,8 +38,8 @@ function(moment, Marionette, CalendarWorkoutView, CalendarDayTemplate)
             this.setTodayCss();
         },
 
-        appendWorkoutElement: function() {
-
+        appendWorkoutElement: function()
+        {
             var workout = this.model.get("workout");
             if (workout)
             {
@@ -43,7 +49,8 @@ function(moment, Marionette, CalendarWorkoutView, CalendarDayTemplate)
             }
         },
 
-        setTodayCss: function() {
+        setTodayCss: function()
+        {
             // so we can style today or scroll to it
             var daysAgo = this.model.get("date").diff(today, "days");
             if (daysAgo === 0)
