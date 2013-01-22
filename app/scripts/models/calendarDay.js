@@ -9,6 +9,11 @@ function(Backbone)
         setWorkout: function(workout)
         {
             this.set("workout", workout);
+        },
+
+        getWorkout: function(workout)
+        {
+            return this.get("workout");
         }
     });
 });
