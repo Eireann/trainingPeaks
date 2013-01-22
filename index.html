@@ -29,29 +29,81 @@
         <div class="personHeaderLogo three columns">
             <img src="app/images/foundation/orbit/logo-trainingpeaks-rev-horz.png" />
         </div>
-        <div class="five columns offset-by-four">
-            <div class="personHeaderButtons three column">
-                <label>{{username}}</label>
-            </div>
-            <div class="personHeaderButtons three column">
-                <label>{{$ "Messages"}}</label>
-            </div>
-            <div class="personHeaderButtons two column">
-                <label>{{$ "Settings"}}</label>
-            </div>
-            <div class="personHeaderButtons three column">
-                <label>{{$ "GoPremium"}}</label>
-            </div>
-            <div class="personHeaderButtons three column">
-                <label>{{$ "LogOut"}}</label>
-            </div>
+        <div class="six columns offset-by-five">
+            <a>
+                <span class="personHeaderButtons three column">
+                    <label>{{username}}</label>
+                </span>
+            </a>
+            <label class="headerPipe">|</label>
+            <a>
+                <span class="personHeaderButtons three column">
+                    <label>{{$ "Messages"}}</label>
+                </span>
+            </a>
+            <label class="headerPipe">|</label>
+            <a>
+                <span class="personHeaderButtons two column">
+                    <label>{{$ "Settings"}}</label>
+                </span>
+            </a>
+            <label class="headerPipe">|</label>
+            <a>
+                <span class="personHeaderButtons three column">
+                    <label>{{$ "GoPremium"}}</label>
+                </span>
+            </a>
+            <label class="headerPipe">|</label>
+            <a>
+                <span class="personHeaderButtons two column">
+                    <label>{{$ "LogOut"}}</label>
+                </span>
+            </a>
         </div>
 	</div>
     <div class="row" id="marsNavigation">
-        <div class="eight columns offset-by-one">
-            <div class="mainNavigationButtons">
-                <label>{{$ "Home"}}</label>
-            </div>
+        <div class=" appNavigation eleven columns">
+            <a>
+                <span class="mainNavigationButtons one column">
+                    <label>{{$ "Home"}}</label>
+                </span>
+            </a>
+            <a>
+                <span class="mainNavigationButtons one column">
+                    <label>{{$ "Calendar"}}</label>
+                </span>
+            </a>
+            <a>
+                <span class="mainNavigationButtons one column">
+                    <label>{{$ "Dashboard"}}</label>
+                </span>
+            </a>
+            <a>
+                <span class="mainNavigationButtons one column">
+                    <label>{{$ "Routes"}}</label>
+                </span>
+            </a>
+            <a>
+                <span class="mainNavigationButtons one column">
+                    <label>{{$ "Plans"}}</label>
+                </span>
+            </a>
+            <a>
+                <span class="mainNavigationButtons one column">
+                    <label>{{$ "Friends"}}</label>
+                </span>
+            </a>
+            <a>
+                <span class="mainNavigationButtons two column">
+                    <label>{{$ "AnnualTrainingPlan"}}</label>
+                </span>
+            </a>
+            <a>
+                <span class="mainNavigationButtons two column" >
+                    <label>{{$ "VirtualCoach"}}</label>
+              
+                </span>
+            </a>
         </div>
 	</div>
     <main role="main" id="main"></main>

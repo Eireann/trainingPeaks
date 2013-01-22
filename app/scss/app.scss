@@ -6,6 +6,9 @@ $white: #ffffff;
 $grey: #d5d4d4;
 $TPBlue: #005695;
 
+$navigationFontFamily: Arial, 'DejaVu Sans', 'Liberation Sans', Freesans, sans-serif;
+$navigationFontSize: 10px;
+
 #calendarContainer
 {
     .scrollable
@@ -67,17 +70,26 @@ $TPBlue: #005695;
 		padding-left: 40px;
 	}
 
+	.headerPipe
+	{
+		float: left;
+		height: 30px;
+		padding-top: 10px;
+		font-size: $navigationFontSize;
+		color: $grey;
+	}
+
 	.personHeaderButtons
 	{
-		padding-top: 10px;
+		padding-top: 9px;
 		height: 30px;
 		text-align: center;
 		&:hover { background-color: $TPBlue; }
-		&:hover label {color: $white;}
+		&:hover label{color: $white;}
 		label
 		{
-			font-family: Arial, 'DejaVu Sans', 'Liberation Sans', Freesans, sans-serif;
-			font-size: 10px;
+			font-family: $navigationFontFamily;
+			font-size: $navigationFontSize;
 			color: $grey;
 		}
 
@@ -87,5 +99,35 @@ $TPBlue: #005695;
 #marsNavigation
 {
 	height: 50px;
-	background-color: $grey; 
+	background-color: $grey;
+
+	.appNavigation
+	{
+
+		span
+		{
+			float: left;
+			height: 45px;
+			text-align: center;
+			padding-top: 20px;
+			&:hover label{color: $TPBlue; }
+
+		}
+
+		label
+		{
+			font-family: $navigationFontFamily;
+			font-size: $navigationFontSize;
+			color: $black;
+			font-weight: bold;
+		}
+
+	}
+
+	
+}
+
+#calendarHeader
+{
+	height: 100px;
 }
