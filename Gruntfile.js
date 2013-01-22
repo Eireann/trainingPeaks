@@ -60,7 +60,6 @@ module.exports = function (grunt) {
                 options:
                 {
                     baseUrl: "app",
-                    jamConfig: "vendor/jam/require.config.js",
                     out: "build/debug/single.js",
                     name: "main",
                     include: ["Backbone.Marionette.Handlebars"],
@@ -76,7 +75,7 @@ module.exports = function (grunt) {
             {
                 src:
                 [
-                // We include AlmondJS + the compiled unified app.js file.
+                    // We include AlmondJS + the compiled unified app.js file.
                     "vendor/js/libs/almond.js",
                     "build/debug/single.js"
                 ],

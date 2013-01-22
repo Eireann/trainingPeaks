@@ -31,6 +31,9 @@ function (_, Marionette, loginViewTemplate)
         initialize: function ()
         {
             _.bindAll(this);
+
+            if (!this.model)
+                throw "loginView requires a SessionModel. Aborting";
             
             this.model.on("api:authorization:success", this.onLoginSuccess);
             this.model.on("api:authorization:failure", this.onLoginFailure);
