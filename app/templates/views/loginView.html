@@ -1,10 +1,26 @@
-﻿<form method="GET" accept-charset='UTF-8'>
+﻿<style type="text/css">
+#loginInProgressLabel
+{
+    display: none;
+    color: #005695;
+}
+
+#loginFailedLabel
+{
+    display: none;
+    color: #AA0000;
+}
+</style>
+
+<form method="GET" accept-charset='UTF-8'>
     <fieldset>
         <legend>Login</legend>
         <label for='username' >UserName*:</label>
         <input type='text' name='username' id='username'  maxlength="50" />
         <label for='password' >Password*:</label>
         <input type='password' name='password' id='password' maxlength="50" />
+        <label for="Submit" id="loginInProgressLabel">Logging in...</label>
+        <label for="Submit" id="loginFailedLabel">Login failed!</label>
         <input type='button' name='Submit' value="Submit"/>
     </fieldset>
 </form>
