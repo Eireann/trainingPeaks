@@ -31,6 +31,7 @@ function ($, Marionette)
 
     theApp.addRegions(
     {
+        navRegion: "#navigation",
         mainRegion: "#main"
     });
 

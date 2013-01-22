@@ -58,7 +58,7 @@ $navigationFontSize: 10px;
     }
 }
 
-#marsPersonalHeader
+#userControlsContainer
 {
 	height: 30px;
 	background-color: $black;
@@ -96,14 +96,13 @@ $navigationFontSize: 10px;
 	}
 }
 
-#marsNavigation
+#navigationContainer
 {
 	height: 50px;
 	background-color: $grey;
 
 	.appNavigation
 	{
-
 		span
 		{
 			float: left;
@@ -111,7 +110,6 @@ $navigationFontSize: 10px;
 			text-align: center;
 			padding-top: 20px;
 			&:hover label{color: $TPBlue; }
-
 		}
 
 		label
@@ -121,10 +119,7 @@ $navigationFontSize: 10px;
 			color: $black;
 			font-weight: bold;
 		}
-
 	}
-
-	
 }
 
 #calendarHeader

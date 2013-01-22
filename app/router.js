@@ -3,22 +3,29 @@ define(
     "underscore",
     "app",
     "backbone",
+    "controllers/navigationController",
     "controllers/calendarController",
     "layouts/loginLayout",
     "views/loginView",
     "models/session"
 ],
-function (_, theApp, Backbone, CalendarController, LoginLayout, LoginView, theSession)
+function (_, theApp, Backbone, NavigationController, CalendarController, LoginLayout, LoginView, theSession)
 {
     "use strict";
 
     return Backbone.Router.extend(
     {
+        controllers: {},
+        
         initialize: function ()
         {
             _.bindAll(this);
             
             theApp.on("api:unauthorized", this.login);
+
+            this.controllers.navigationController = new NavigationController();
+            theApp.navRegion.show(this.controllers.navigationController.layout);
+            this.controllers.navigationController.show();
         },
 
         routes:

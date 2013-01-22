@@ -30,6 +30,7 @@ function ($, _, Backbone, theApp)
                 if (now < expiresOn)
                 {
                     this.set("access_token", accessToken);
+                    this.set("username", this.storageLocation.getItem("username"));
                 }
             }
         },
@@ -62,8 +63,13 @@ function ($, _, Backbone, theApp)
             }).done(function ()
             {
                 var expiresOn = Number(self.get("expires_in")) + Number((new Date()).getTime() / 1000);
+                
                 self.storageLocation.setItem("access_token", self.get("access_token"));
                 self.storageLocation.setItem("expires_on", expiresOn);
+                self.storageLocation.setItem("username", self.username);
+                
+                self.set("username", self.username);
+                
                 self.trigger("api:authorization:success");
             }).error(function()
             {
