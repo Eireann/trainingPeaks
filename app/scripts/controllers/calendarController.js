@@ -12,11 +12,10 @@ function(Backbone, Marionette, moment, CalendarLayout, CalendarDayModel, Calenda
 {
     return Marionette.Controller.extend(
     {
-        layout: new CalendarLayout(),
-
-        views: {},
+        layout: null,
+        views: null,
         daysCollection: null,
-        daysHash: {},
+        daysHash: null,
 
         show: function()
         {
@@ -26,6 +25,11 @@ function(Backbone, Marionette, moment, CalendarLayout, CalendarDayModel, Calenda
         initialize: function()
         {
             _.bindAll(this);
+
+            // initialize these here instead of in extend, otherwise they become members of the prototype
+            this.layout = new CalendarLayout();
+            this.views = {};
+            this.daysHash = {};
 
             // start on a Sunday
             this.startDate = moment().day(0).subtract("weeks", 4);
@@ -49,6 +53,9 @@ function(Backbone, Marionette, moment, CalendarLayout, CalendarDayModel, Calenda
         createCollectionOfDays: function(startDate, endDate)
         {
 
+            // so we don't modify a caller's date
+            startDate = moment(startDate);
+
             // add one to endDate.diff, to include endDate itself
             var numOfDaysToShow = endDate.diff(startDate, "days") + 1;
 
@@ -67,6 +74,7 @@ function(Backbone, Marionette, moment, CalendarLayout, CalendarDayModel, Calenda
 
         requestWorkouts: function(startDate, endDate)
         {
+
             var workouts = new WorkoutsCollection([], { startDate: moment(startDate), endDate: moment(endDate) });
 
             var waiting = workouts.fetch();
@@ -100,7 +108,7 @@ function(Backbone, Marionette, moment, CalendarLayout, CalendarDayModel, Calenda
             this.requestWorkouts(startDate, endDate);
             var newDays = this.createCollectionOfDays(startDate, endDate);
 
-            // index option tells view whether we're appending or prepending
+            // index option tells calendarView whether we're appending or prepending
             this.daysCollection.add(newDays.models, { index: this.daysCollection.length });
         },
 
@@ -114,6 +122,7 @@ function(Backbone, Marionette, moment, CalendarLayout, CalendarDayModel, Calenda
             var newDays = this.createCollectionOfDays(startDate, endDate);
 
             // unshift doesn't accept a collection, but add does, using the 'at' option for index
+            // and our calendarView needs the index option to append or prepend
             this.daysCollection.add(newDays.models, { index: 0, at: 0 });
         }
     });
