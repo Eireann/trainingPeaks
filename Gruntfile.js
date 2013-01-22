@@ -163,7 +163,13 @@ module.exports = function(grunt)
             projectRoot: ".",
             requirejs: './app/config/jasmine_requirejs_config.js',
             forceExit: true,
-            watchfiles: ['app/**/*.js', 'test/specs/**/*.js', 'app/**/*.html']
+            watchfiles: ['app/**/*.js', 'test/specs/**/*.js', 'app/**/*.html'],
+            jUnit: {
+                report: true,
+                savePath: "./junit_jasmine",
+                useDotNotation: true,
+                consolidate: true
+            }
         }
     });
 

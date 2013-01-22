@@ -8,9 +8,10 @@ describe("Calendar View", function()
         requirejs(
         [
             "jquery",
-            "views/calendarView"
+            "views/calendarView",
+            "hbs!templates/views/calendarWeek"
         ],
-        function($, CalendarView)
+        function($, CalendarView, CalendarWeekTemplate)
         {
 
             describe("CalendarView ", function()
@@ -97,6 +98,14 @@ describe("Calendar View", function()
                         expect(calendarView.scrollToToday).toHaveBeenCalled();
                     });
 
+                });
+
+                describe("Calendar Week Template", function () {
+
+                    it("Should have a .week class", function () {
+                        var weekHtml = CalendarWeekTemplate({});
+                        expect($(weekHtml).hasClass("week")).toBeTruthy();
+                    });
                 });
 
             });
