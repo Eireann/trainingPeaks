@@ -27,6 +27,10 @@ describe("Backbone/Marionette Dependencies", function()
             describe("Dependencies", function()
             {
 
+                it("Should fail on purpose", function () {
+                    expect(false).toBe(true);
+                });
+
                 describe("document", function()
                 {
                     it("should be loaded as a module", function()
