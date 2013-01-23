@@ -4,6 +4,9 @@ var fs = require("fs");
 
 module.exports = function(grunt)
 {
+
+    grunt.loadTasks("grunt/tasks");
+
     grunt.initConfig(
     {
         jshint:
@@ -164,10 +167,11 @@ module.exports = function(grunt)
             requirejs: './app/config/jasmine_requirejs_config.js',
             forceExit: true,
             watchfiles: ['app/**/*.js', 'test/specs/**/*.js', 'app/**/*.html'],
+            teamcity: true,
             jUnit: {
                 report: true,
-                savePath: "./junit_jasmine",
-                useDotNotation: true,
+                savePath: "./reports/",
+                useDotNotation: false,
                 consolidate: true
             }
         }
@@ -185,7 +189,7 @@ module.exports = function(grunt)
     grunt.loadNpmTasks("grunt-contrib-uglify");
     grunt.loadNpmTasks("grunt-contrib-requirejs");
     grunt.loadNpmTasks("grunt-contrib-watch");
-    grunt.loadNpmTasks('grunt-jasmine-node');
+    //grunt.loadNpmTasks('grunt-jasmine-node');
 
     // CONFIG FOR REQUIREJS
     grunt.registerTask("requirejs_config", "Configure for requirejs build", function()
