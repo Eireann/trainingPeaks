@@ -2,7 +2,7 @@
 /*.v11.suo
 /.sass-cache/
 /build/
-/reports/
+/junit_reports/*.xml
 /node_modules/
 /bin/
 /obj/

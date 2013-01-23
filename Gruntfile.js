@@ -168,8 +168,8 @@ module.exports = function(grunt)
             forceExit: true,
             watchfiles: ['app/**/*.js', 'test/specs/**/*.js', 'app/**/*.html'],
             jUnit: {
-                report: true,
-                savePath: "./reports/",
+                report: false,
+                savePath: "./junit_reports/",
                 useDotNotation: false,
                 consolidate: true
             }

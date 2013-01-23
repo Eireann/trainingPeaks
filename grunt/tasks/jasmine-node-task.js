@@ -93,6 +93,7 @@ module.exports = function (grunt) {
                 //console.log("Running tests, here is the config: ");
                 //console.log(options);
                 if (options.teamcity) {
+                    options.junitreport.report = true;
                     jasmine.getEnv().addReporter(new jasmine.TeamcityReporter());
                 }
                 jasmine.executeSpecsInFolder(options);
