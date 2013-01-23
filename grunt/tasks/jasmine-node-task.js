@@ -1,8 +1,18 @@
+/*
+Copied and modified from grunt-jasmine-node/tasks
+the teamcity and junit settings weren't quite right
+
+Also, in jasmine-node/lib/jasmine-node/index.js, it uses jasmineNode.TerminalReporter instead of jasmine.TeamcityReporter, not sure why,
+so replaced one with the other here. problem solved ...
+*/
+
+require('jasmine-node');
+
 module.exports = function (grunt) {
     'use strict';
 
     grunt.registerTask("jasmine_node", "Runs jasmine-node.", function () {
-        var jasmine = require('jasmine-node');
+
         var util;
         // TODO: ditch this when grunt v0.4 is released
         grunt.util = grunt.util || grunt.utils;
@@ -78,6 +88,12 @@ module.exports = function (grunt) {
             junitreport: jUnit
         };
 
+        // teamcity?
+        if (options.teamcity) {
+            var jasmineNode = require('../../node_modules/jasmine-node/lib/jasmine-node/reporter').jasmineNode;
+            jasmineNode.TerminalReporter = jasmine.TeamcityReporter;
+        }
+
         // order is preserved in node.js
         var legacyArguments = Object.keys(options).map(function (key) {
             return options[key];
@@ -90,12 +106,6 @@ module.exports = function (grunt) {
         catch (e) {
             try {
                 // since jasmine-node@1.0.28 an options object need to be passed
-                //console.log("Running tests, here is the config: ");
-                //console.log(options);
-                if (options.teamcity) {
-                    options.junitreport.report = true;
-                    jasmine.getEnv().addReporter(new jasmine.TeamcityReporter());
-                }
                 jasmine.executeSpecsInFolder(options);
             } catch (e) {
                 console.log('Failed to execute "jasmine.executeSpecsInFolder": ' + e.stack);
@@ -103,3 +113,4 @@ module.exports = function (grunt) {
         }
     });
 };
+
