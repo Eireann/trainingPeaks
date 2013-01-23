@@ -162,7 +162,7 @@ module.exports = function(grunt)
             specNameMatcher: ".spec",
             projectRoot: ".",
             requirejs: './app/config/jasmine_requirejs_config.js',
-            forceExit: true,
+            forceExit: false,
             watchfiles: ['app/**/*.js', 'test/specs/**/*.js', 'app/**/*.html'],
             jUnit: {
                 report: true,
@@ -382,8 +382,8 @@ module.exports = function(grunt)
 
     grunt.registerTask("test", ["jshint", "jasmine_node"]);
     grunt.registerTask("update_grunt_config", ["requirejs_config", "i18n_config"]);
-    grunt.registerTask("debug", ["test", "clean", "update_grunt_config", "requirejs", "compass:debug", "targethtml:debug", "concat", "copy:debug"]);
-    grunt.registerTask("release", ["test", "debug", "compass:release", "targethtml:release", "uglify", "copy:release"]);
+    grunt.registerTask("debug", ["clean", "update_grunt_config", "requirejs", "compass:debug", "targethtml:debug", "concat", "copy:debug"]);
+    grunt.registerTask("release", ["debug", "compass:release", "targethtml:release", "uglify", "copy:release"]);
     grunt.registerTask("default", ["debug"]);
 
     /* DISABLED TESTACULAR - doesn't run some of our async tests 
