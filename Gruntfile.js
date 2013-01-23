@@ -167,7 +167,6 @@ module.exports = function(grunt)
             requirejs: './app/config/jasmine_requirejs_config.js',
             forceExit: true,
             watchfiles: ['app/**/*.js', 'test/specs/**/*.js', 'app/**/*.html'],
-            teamcity: true,
             jUnit: {
                 report: true,
                 savePath: "./reports/",
