@@ -162,7 +162,7 @@ module.exports = function(grunt)
             specNameMatcher: ".spec",
             projectRoot: ".",
             requirejs: './app/config/jasmine_requirejs_config.js',
-            forceExit: false,
+            forceExit: true,
             watchfiles: ['app/**/*.js', 'test/specs/**/*.js', 'app/**/*.html'],
             jUnit: {
                 report: true,
