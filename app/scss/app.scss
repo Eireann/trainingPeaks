@@ -4,6 +4,7 @@
 $black: #000000;
 $white: #ffffff;
 $grey: #d5d4d4;
+$lightGrey: #ebebeb;
 $TPBlue: #005695;
 
 $navigationFontFamily: Arial, 'DejaVu Sans', 'Liberation Sans', Freesans, sans-serif;
@@ -24,7 +25,8 @@ $navigationFontSize: 10px;
     .day {
         @include column(2);
         height: 150px;
-        border: 1px solid #000000;
+        border: 2px solid $white;
+		background-color: $lightGrey;
         padding: 5px;
         overflow: auto;
         .workout {
@@ -34,7 +36,7 @@ $navigationFontSize: 10px;
     }
 
     .today {
-        background-color: #CCCCFF;
+        background-color: $TPBlue;
     }
 }
 
@@ -44,7 +46,7 @@ $navigationFontSize: 10px;
 
     span
     {
-        font-family: Arial, 'DejaVu Sans', 'Liberation Sans', Freesans, sans-serif;
+        font-family: $navigationFontFamily;
         font-size: 24px;
     }
 }
@@ -125,4 +127,27 @@ $navigationFontSize: 10px;
 #calendarHeader
 {
 	height: 100px;
+	.calendarMonthLabel
+	{
+		label
+		{
+			padding-top: 10px;
+			font-family: $navigationFontFamily;
+			font-size: 36px;
+			color:$TPBlue;
+		}
+	}
+
+	.dayOfWeek
+	{
+		padding-left: 20px;
+		label
+		{
+			padding-top: 20px;
+			padding_bottom: 0px;
+			font-Family: $navigationFontFamily;
+			font-size: $navigationFontSize;
+			color: $grey;
+		}
+	}
 }
