@@ -120,6 +120,8 @@ $navigationFontSize: 10px;
 			font-size: $navigationFontSize;
 			color: $black;
 			font-weight: bold;
+			cursor: default;
+
 		}
 	}
 }
@@ -135,6 +137,7 @@ $navigationFontSize: 10px;
 			font-family: $navigationFontFamily;
 			font-size: 36px;
 			color:$TPBlue;
+			cursor: default;
 		}
 	}
 
@@ -148,6 +151,7 @@ $navigationFontSize: 10px;
 			font-Family: $navigationFontFamily;
 			font-size: $navigationFontSize;
 			color: $grey;
+			cursor: default;
 		}
 	}
 }
