@@ -2,37 +2,55 @@
 [
     "backbone.marionette",
     "views/calendarDayView",
+    "hbs!templates/views/calendar",
     "hbs!templates/views/calendarWeek"
 ],
-function(Marionette, CalendarDayView, CalendarWeekTemplate)
+function(Marionette, CalendarDayView, CalendarTemplate, CalendarWeekTemplate)
 {
-    return Marionette.CollectionView.extend(
+    return Marionette.CompositeView.extend(
     {
-        tagName: "div",
-        className: "scrollable",
+        tagName: 'div',
         itemView: CalendarDayView,
+        itemViewContainer: "#weeksContainer",
         numWeeks: 0,
         numDaysLeftForWeek: 0,
+        $weeksContainer: null,
+
+        template:
+        {
+            type: "handlebars",
+            template: CalendarTemplate
+        },
+
+        ui:
+        {
+            "weeksContainer": "#weeksContainer"
+        },
 
         events:
         {
             "scroll": "onscroll"
         },
 
+        onRender: function()
+        {
+            this.initWeeksContainer();
+        },
+
         onscroll: function(event)
         {
             var howMuchIHave = this.el.scrollHeight;
-            var howMuchIsVisible = this.$el.height();
+            var howMuchIsVisible = this.$weeksContainer.height();
             var hidden = howMuchIHave - howMuchIsVisible;
             var scrollDownThresholdInPx = 150;
             var scrollUpThresholdInPx = 100;
 
-            if (this.$el.scrollTop() <= scrollUpThresholdInPx)
+            if (this.$weeksContainer.scrollTop() <= scrollUpThresholdInPx)
             {
                 // Within the threshold at the TOP. Add row & request data.
                 this.trigger("prepend");
             }
-            else if (this.$el.scrollTop() >= (hidden - scrollDownThresholdInPx))
+            else if (this.$weeksContainer.scrollTop() >= (hidden - scrollDownThresholdInPx))
             {
                 // Within the threshold at the BOTTOM. Add row & request data.
                 this.trigger("append");
@@ -41,8 +59,19 @@ function(Marionette, CalendarDayView, CalendarWeekTemplate)
             return;
         },
 
+        initWeeksContainer: function() {
+            if (!this.$weeksContainer)
+            {
+                this.$weeksContainer = this.$(this.ui.weeksContainer);
+                _.bindAll(this, 'onscroll');
+                this.$weeksContainer.scroll(this.onscroll);
+            }
+            return this.$weeksContainer;
+        },
+
         appendHtml: function(collectionView, itemView, index)
         {
+            this.initWeeksContainer();
 
             var prepend = false;
 
@@ -68,16 +97,16 @@ function(Marionette, CalendarDayView, CalendarWeekTemplate)
                 ++this.numWeeks;
 
                 var weekHtml = CalendarWeekTemplate({});
-                collectionView.$el[insertRowFunctionName](weekHtml);
+                this.$weeksContainer[insertRowFunctionName](weekHtml);
             }
 
 
-            collectionView.$(".week")[findRowFunctionName]().append(itemView.el);
+            this.$weeksContainer.find(".week")[findRowFunctionName]().append(itemView.el);
 
             // when we prepend a new week, adjust scrollTop accordingly
             if (prepend && this.numDaysLeftForWeek === 7)
             {
-                this.$el.scrollTop(this.$el.scrollTop() + itemView.$el.height());
+                this.$weeksContainer.scrollTop(this.$weeksContainer.scrollTop() + itemView.$el.height());
             }
 
             this.numDaysLeftForWeek--;
@@ -92,13 +121,13 @@ function(Marionette, CalendarDayView, CalendarWeekTemplate)
         scrollToToday: function()
         {
             // scroll so that the week before is visible
-            var today = this.$el.find('.today');
+            var today = this.$weeksContainer.find('.today');
             if (today.length > 0)
             {
                 var thisWeek = today.parent();
                 var lastWeek = thisWeek.prev();
                 var weekTop = lastWeek && lastWeek.offset() ? lastWeek.offset().top : thisWeek.offset().top;
-                this.$el.scrollTop(weekTop - this.$el.offset().top);
+                this.$weeksContainer.scrollTop(weekTop - this.$weeksContainer.offset().top);
             }
         }
 

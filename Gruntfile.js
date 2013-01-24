@@ -4,6 +4,9 @@ var fs = require("fs");
 
 module.exports = function(grunt)
 {
+
+    grunt.loadTasks("grunt/tasks");
+
     grunt.initConfig(
     {
         jshint:
@@ -166,8 +169,8 @@ module.exports = function(grunt)
             watchfiles: ['app/**/*.js', 'test/specs/**/*.js', 'app/**/*.html'],
             jUnit: {
                 report: true,
-                savePath: "./junit_jasmine",
-                useDotNotation: true,
+                savePath: "./junit_reports/",
+                useDotNotation: false,
                 consolidate: true
             }
         }
@@ -185,7 +188,7 @@ module.exports = function(grunt)
     grunt.loadNpmTasks("grunt-contrib-uglify");
     grunt.loadNpmTasks("grunt-contrib-requirejs");
     grunt.loadNpmTasks("grunt-contrib-watch");
-    grunt.loadNpmTasks('grunt-jasmine-node');
+    //grunt.loadNpmTasks('grunt-jasmine-node');
 
     // CONFIG FOR REQUIREJS
     grunt.registerTask("requirejs_config", "Configure for requirejs build", function()
@@ -225,7 +228,6 @@ module.exports = function(grunt)
         }
 
         // modify properties of concat grunt config
-
         function addLocaleToConcat(localeName, localeSingleFile)
         {
             // get the concat config so we can modify it 
@@ -234,10 +236,29 @@ module.exports = function(grunt)
             // clone the default 'dist' options
             var localeOptions = _.clone(concatOptions.dist);
 
-            // add locale specific details
+            // add locale specific single.js file
             localeOptions.dest = localeSingleFile;
             localeOptions.src = _.clone(concatOptions.dist.src);
             localeOptions.src[1] = localeSingleFile;
+
+            // add the moment.js translation
+            var momentLangDir = "vendor/js/libs/moment/lang/";
+            var momentLocaleFile = momentLangDir + localeName.replace("_", "-") + ".js";
+            var momentLangFile = momentLangDir + localeName.split("_")[0] + ".js";
+            if (fs.existsSync(momentLocaleFile))
+            {
+                localeOptions.src.push("vendor/js/libs/moment/dotDotMoment.js");
+                localeOptions.src.push(momentLocaleFile);
+                //grunt.log.writeln("Adding " + momentLocaleFile);
+            } else if (fs.existsSync(momentLangFile))
+            {
+                localeOptions.src.push("vendor/js/libs/moment/dotDotMoment.js");
+                localeOptions.src.push(momentLangFile);
+                //grunt.log.writeln("Adding " + momentLangFile);
+            } else
+            {
+                //grunt.log.writeln("No language file found for moment.js: " + momentLangFile);
+            }
 
             // add it into the requirejs options
             concatOptions[localeName] = localeOptions;
@@ -382,8 +403,8 @@ module.exports = function(grunt)
 
     grunt.registerTask("test", ["jshint", "jasmine_node"]);
     grunt.registerTask("update_grunt_config", ["requirejs_config", "i18n_config"]);
-    grunt.registerTask("debug", ["test", "clean", "update_grunt_config", "requirejs", "compass:debug", "targethtml:debug", "concat", "copy:debug"]);
-    grunt.registerTask("release", ["test", "debug", "compass:release", "targethtml:release", "uglify", "copy:release"]);
+    grunt.registerTask("debug", ["clean", "update_grunt_config", "requirejs", "compass:debug", "targethtml:debug", "concat", "copy:debug"]);
+    grunt.registerTask("release", ["debug", "compass:release", "targethtml:release", "uglify", "copy:release"]);
     grunt.registerTask("default", ["debug"]);
 
     /* DISABLED TESTACULAR - doesn't run some of our async tests 
