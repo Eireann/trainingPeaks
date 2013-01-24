@@ -42,9 +42,9 @@ function($, CalendarView, CalendarWeekTemplate)
                 var appendSpy = jasmine.createSpy("onAppend");
                 calendarView.on("append", appendSpy);
                 calendarView.render();
-                calendarView.$el.height(1000);
+                calendarView.ui.weeksContainer.height(1000);
                 calendarView.el.scrollHeight = 4000;
-                calendarView.$el.scrollTop(2000);
+                calendarView.ui.weeksContainer.scrollTop(2000);
                 calendarView.onscroll();
                 expect(prependSpy).not.toHaveBeenCalled();
                 expect(appendSpy).not.toHaveBeenCalled();
@@ -58,9 +58,9 @@ function($, CalendarView, CalendarWeekTemplate)
                 var appendSpy = jasmine.createSpy("onAppend");
                 calendarView.on("append", appendSpy);
                 calendarView.render();
-                calendarView.$el.height(1000);
+                calendarView.ui.weeksContainer.height(1000);
                 calendarView.el.scrollHeight = 4000;
-                calendarView.$el.scrollTop(3000);
+                calendarView.ui.weeksContainer.scrollTop(3000);
                 calendarView.onscroll();
                 expect(prependSpy).not.toHaveBeenCalled();
                 expect(appendSpy).toHaveBeenCalled();
@@ -74,7 +74,7 @@ function($, CalendarView, CalendarWeekTemplate)
                 var appendSpy = jasmine.createSpy("onAppend");
                 calendarView.on("append", appendSpy);
                 calendarView.render();
-                calendarView.$el.height(1000);
+                calendarView.ui.weeksContainer.height(1000);
                 calendarView.el.scrollHeight = 4000;
                 calendarView.onscroll();
                 expect(prependSpy).toHaveBeenCalled();

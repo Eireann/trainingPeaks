@@ -12,32 +12,53 @@ $navigationFontSize: 10px;
 
 #calendarContainer
 {
+
     .scrollable
     {
         height: 600px;
         overflow-y: scroll;
     }
 
-    .week {
+    .week
+    {
         @include outerRow();
     }
 
-    .day {
+    .day
+    {
         @include column(2);
         height: 150px;
         border: 2px solid $white;
 		background-color: $lightGrey;
         padding: 5px;
         overflow: auto;
-        .workout {
+        .workout
+        {
             border: 1px solid green;
             padding:0px;
         }
     }
 
-    .today {
+    .today
+    {
         background-color: $TPBlue;
     }
+
+    .daysOfWeek
+    {
+        @include outerRow();
+
+        div
+		{
+            @include column(2);
+			padding-top: 20px;
+			padding_bottom: 0px;
+			font-Family: $navigationFontFamily;
+			font-size: $navigationFontSize + 5;
+			color: $grey;
+		}
+    }
+
 }
 
 #loginHeader, #calendarHeader
@@ -138,16 +159,4 @@ $navigationFontSize: 10px;
 		}
 	}
 
-	.dayOfWeek
-	{
-		padding-left: 20px;
-		label
-		{
-			padding-top: 20px;
-			padding_bottom: 0px;
-			font-Family: $navigationFontFamily;
-			font-size: $navigationFontSize;
-			color: $grey;
-		}
-	}
 }

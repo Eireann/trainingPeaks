@@ -18,14 +18,14 @@ files =
     "vendor/js/libs/backbone.marionette.js",
 
     // PATHS CONFIG
-    { pattern: "vendor/js/libs/*.js", included: false },
-    { pattern: "vendor/jam/*.js", included: false },
-    { pattern: "vendor/jam/**/*.js", included: false },
+    //{ pattern: "vendor/js/libs/*.js", included: false },
+    //{ pattern: "vendor/jam/*.js", included: false },
+    //{ pattern: "vendor/jam/**/*.js", included: false },
     
     // SOURCE AND TEST MODULES
-    { pattern: "app/*.js", included: false },
-    { pattern: "app/scripts/**/*.js", included: false },
-    { pattern: "test/specs/**/*.spec.js", included: false},
+    //{ pattern: "app/*.js", included: false },
+    //{ pattern: "app/scripts/**/*.js", included: false },
+    { pattern: "test/specs/**/*.spec.js", included: false },
     
     "test/main.js"
 ];

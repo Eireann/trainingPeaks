@@ -26,14 +26,15 @@
             "json2": "../vendor/js/libs/json2",
             "hbs": "../vendor/js/libs/hbs",
 
-            "moment": "../vendor/js/libs/moment"
+            "moment": "../vendor/js/libs/moment/moment"
         },
 
         hbs:
         {
             templateExtension: "html",
             i18nDirectory: "templates/i18n/",
-            helperPathCallback: function (name) {
+            helperPathCallback: function(name)
+            {
                 return "scripts/helpers/" + name;
             }
         }

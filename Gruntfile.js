@@ -228,7 +228,6 @@ module.exports = function(grunt)
         }
 
         // modify properties of concat grunt config
-
         function addLocaleToConcat(localeName, localeSingleFile)
         {
             // get the concat config so we can modify it 
@@ -237,10 +236,29 @@ module.exports = function(grunt)
             // clone the default 'dist' options
             var localeOptions = _.clone(concatOptions.dist);
 
-            // add locale specific details
+            // add locale specific single.js file
             localeOptions.dest = localeSingleFile;
             localeOptions.src = _.clone(concatOptions.dist.src);
             localeOptions.src[1] = localeSingleFile;
+
+            // add the moment.js translation
+            var momentLangDir = "vendor/js/libs/moment/lang/";
+            var momentLocaleFile = momentLangDir + localeName.replace("_", "-") + ".js";
+            var momentLangFile = momentLangDir + localeName.split("_")[0] + ".js";
+            if (fs.existsSync(momentLocaleFile))
+            {
+                localeOptions.src.push("vendor/js/libs/moment/dotDotMoment.js");
+                localeOptions.src.push(momentLocaleFile);
+                //grunt.log.writeln("Adding " + momentLocaleFile);
+            } else if (fs.existsSync(momentLangFile))
+            {
+                localeOptions.src.push("vendor/js/libs/moment/dotDotMoment.js");
+                localeOptions.src.push(momentLangFile);
+                //grunt.log.writeln("Adding " + momentLangFile);
+            } else
+            {
+                //grunt.log.writeln("No language file found for moment.js: " + momentLangFile);
+            }
 
             // add it into the requirejs options
             concatOptions[localeName] = localeOptions;
