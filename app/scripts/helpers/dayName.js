@@ -29,8 +29,7 @@ function(Handlebars, moment, printDate)
             theDay = moment(dateOrDayNumber);
         }
 
-        var output = printDate(theDay, formatString);
-        return output;
+        return printDate(theDay, formatString);
 
     };
 

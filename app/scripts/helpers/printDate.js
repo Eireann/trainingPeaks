@@ -11,13 +11,13 @@ function(Handlebars, moment)
 {
     var printDate = function(dateAsLongEpoch, formatString)
     {
+
         if (!formatString || typeof formatString !== "string")
         {
             formatString = "L";
         }
 
-        var output = moment(dateAsLongEpoch).format(formatString);
-        return output;
+        return moment(dateAsLongEpoch).format(formatString);
     };
 
     Handlebars.registerHelper("printDate", printDate);
