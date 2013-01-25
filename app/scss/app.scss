@@ -49,6 +49,7 @@ $navigationFontSize: 10px;
     .today
     {
         background-color: $TPBlue;
+		p{color: $grey;}
     }
 
     .daysOfWeek
@@ -168,4 +169,14 @@ $navigationFontSize: 10px;
 		}
 	}
 
+}
+
+#calendarDate
+{
+	font-Family: $navigationFontFamily;
+	font-size: $navigationFontSize + 5;
+	color: $darkGrey;
+	font-weight: bold;
+	text-align: right;
+	float:right;
 }

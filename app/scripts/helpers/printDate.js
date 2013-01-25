@@ -14,7 +14,7 @@ function(Handlebars, moment)
 
         if (!formatString || typeof formatString !== "string")
         {
-            formatString = "L";
+            formatString = "DD";
         }
 
         return moment(dateAsLongEpoch).format(formatString);

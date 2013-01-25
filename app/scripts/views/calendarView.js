@@ -39,7 +39,7 @@ function(Marionette, CalendarDayView, CalendarTemplate, CalendarWeekTemplate)
 
         onscroll: function(event)
         {
-            var howMuchIHave = this.el.scrollHeight;
+            var howMuchIHave = this.$weeksContainer[0].scrollHeight;
             var howMuchIsVisible = this.$weeksContainer.height();
             var hidden = howMuchIHave - howMuchIsVisible;
             var scrollDownThresholdInPx = 150;

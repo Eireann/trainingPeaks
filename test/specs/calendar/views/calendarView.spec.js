@@ -43,7 +43,7 @@ function($, CalendarView, CalendarWeekTemplate)
                 calendarView.on("append", appendSpy);
                 calendarView.render();
                 calendarView.ui.weeksContainer.height(1000);
-                calendarView.el.scrollHeight = 4000;
+                calendarView.$weeksContainer[0].scrollHeight = 4000;
                 calendarView.ui.weeksContainer.scrollTop(2000);
                 calendarView.onscroll();
                 expect(prependSpy).not.toHaveBeenCalled();
@@ -59,7 +59,7 @@ function($, CalendarView, CalendarWeekTemplate)
                 calendarView.on("append", appendSpy);
                 calendarView.render();
                 calendarView.ui.weeksContainer.height(1000);
-                calendarView.el.scrollHeight = 4000;
+                calendarView.$weeksContainer[0].scrollHeight = 4000;
                 calendarView.ui.weeksContainer.scrollTop(3000);
                 calendarView.onscroll();
                 expect(prependSpy).not.toHaveBeenCalled();
@@ -75,7 +75,7 @@ function($, CalendarView, CalendarWeekTemplate)
                 calendarView.on("append", appendSpy);
                 calendarView.render();
                 calendarView.ui.weeksContainer.height(1000);
-                calendarView.el.scrollHeight = 4000;
+                calendarView.$weeksContainer[0].scrollHeight = 4000;
                 calendarView.onscroll();
                 expect(prependSpy).toHaveBeenCalled();
                 expect(appendSpy).not.toHaveBeenCalled();
