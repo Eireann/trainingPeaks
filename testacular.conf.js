@@ -8,16 +8,17 @@ basePath = "./";
 // list of files / patterns to load in the browser
 files = 
 [
-    REQUIRE,
-    REQUIRE_ADAPTER,
+    //REQUIRE,
+    //REQUIRE_ADAPTER,
     JASMINE,
     JASMINE_ADAPTER,
 
     //SHIM STUFF
-    "vendor/js/libs/jquery/jquery.js",
-    "vendor/js/libs/lodash/lodash.js",
-    "vendor/js/libs/backbone.js",
-    "vendor/js/libs/backbone.marionette.js",
+    "build/debug/single.js"
+    //"vendor/js/libs/jquery/jquery.js",
+    //"vendor/js/libs/lodash/lodash.js",
+    //"vendor/js/libs/backbone.js",
+    //"vendor/js/libs/backbone.marionette.js",
 ];
 
 // this tells testacular server what files it's allowed to serve - if it's not in this list and we require() it, test runner will fail
@@ -27,13 +28,13 @@ function addFileToList(file, included)
     files.push({ pattern: file, included: included ? true : false });
 };
 
-var appFiles = glob.sync("app/**/*.js");
-var vendorFiles = glob.sync("vendor/js/libs/**/*.js");
+//var appFiles = glob.sync("app/**/*.js");
+//var vendorFiles = glob.sync("vendor/js/libs/**/*.js");
 var testFiles = glob.sync("test/specs/**/*spec.js");
 
-_.each(appFiles, function(file) { addFileToList(file, true); });
-_.each(vendorFiles, function(file) { addFileToList(file, true); });
-_.each(testFiles, function(file) { addFileToList(file, false); });
+//_.each(appFiles, function(file) { addFileToList(file, true); });
+//_.each(vendorFiles, function(file) { addFileToList(file, true); });
+_.each(testFiles, function(file) { addFileToList(file, true); });
 
 files.push("test/main.js");
 

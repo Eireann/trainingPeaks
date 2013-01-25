@@ -5,10 +5,7 @@ for use in a node.js environment
 // use requirejs() instead of define() here, to keep jasmine test runner happy
 requirejs(
 [
-    "document",
-    "window",
     "jquery",
-    "localStorage",
     "backbone",
     "backbone.marionette",
     "Backbone.Marionette.Handlebars",
@@ -16,26 +13,10 @@ requirejs(
     "json2",
     "hbs"
 ],
-function(document, window, jquery, localStorage, Backbone, Marionette, MarionetteHandlebars, precompile, json2, hbs)
+function(jquery, Backbone, Marionette, MarionetteHandlebars, precompile, json2, hbs)
 {
     describe("Dependencies", function()
     {
-
-        describe("document", function()
-        {
-            it("should be loaded as a module", function()
-            {
-                expect(document).toBeDefined();
-            });
-        });
-
-        describe("window", function()
-        {
-            it("should be loaded as a module", function()
-            {
-                expect(window).toBeDefined();
-            });
-        });
 
         describe("jquery", function()
         {
@@ -94,49 +75,6 @@ function(document, window, jquery, localStorage, Backbone, Marionette, Marionett
             });
         });
 
-        describe("localStorage", function()
-        {
-            it("Should be defined", function()
-            {
-                expect(localStorage).toBeDefined();
-            });
-
-            it("Should have a setItem", function()
-            {
-                expect(typeof localStorage.setItem).toBe("function");
-            });
-
-            it("Should have a getItem", function()
-            {
-                expect(typeof localStorage.getItem).toBe("function");
-            });
-
-            it("Should get and set a key", function()
-            {
-                var theValue = "I AM THE VALUE";
-                var theKey = "I AM THE KEY";
-                localStorage.setItem(theKey, theValue);
-                expect(localStorage.getItem(theKey)).toBe(theValue);
-            });
-
-            it("Should have a removeItem", function()
-            {
-                expect(typeof localStorage.removeItem).toBe("function");
-            });
-
-            it("Should remove an item", function()
-            {
-                var myKey = "My Key";
-                localStorage.setItem(myKey, "My Value");
-                localStorage.removeItem(myKey);
-                expect(localStorage.getItem(myKey)).toBeNull();
-            });
-
-            it("Should return null for undefined key", function()
-            {
-                expect(localStorage.getItem("some useless key")).toBeNull();
-            });
-        });
     });
 
 });

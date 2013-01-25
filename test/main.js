@@ -2,7 +2,7 @@ var tests = Object.keys(window.__testacular__.files).filter(function (file)
 {
     return /\.spec\.js$/.test(file);
 });
-
+/*
 requirejs.config({
 
     // !! Testacular serves files from '/base'
@@ -36,6 +36,7 @@ requirejs.config({
         template: "app/templates" // hbs looks for templates in /template/i18n
     }
 });
+*/
 //require: 'vendor/js/libs/require',
 theSpecLoader = {
     registry: {},
@@ -89,14 +90,32 @@ requirejs.config = function () {
     return originalRequireJs.config.apply(originalRequireJs, arguments);
 };
 
+describe("Waiting for everything to load", function(done)
+{
+    it("Should run when all specs have loaded", function()
+    {
+        waitsFor(function()
+        {
+            return theSpecLoader.isFinished();
+        }, "Spec loader never finished", 10000);
+
+        runs(function()
+        {
+            expect(true).toBe(true);
+        });
+    });
+});
 requirejs(
 tests,
 function()
 {
+    console.log("In the callback");
+    /*
     function whenReady()
     {
         if (theSpecLoader.isFinished())
         {
+            console.log("Starting tests");
             window.__testacular__.start();
         } else
         {
@@ -106,4 +125,5 @@ function()
     }
 
     whenReady();
+    */
 });
