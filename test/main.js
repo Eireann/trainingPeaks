@@ -1,7 +1,5 @@
-var tests = Object.keys(window.__testacular__.files).filter(function (file)
-{
-    return /\.spec\.js$/.test(file);
-});
+console.log("Starting main");
+console.log(require);
 /*
 requirejs.config({
 
@@ -42,13 +40,19 @@ theSpecLoader = {
     registry: {},
     register: function(name)
     {
-        console.log('registering: ' + name);
-        this.registry[name] = false;
+        if (!this.registry.hasOwnProperty(name))
+        {
+            console.log('registering: ' + name);
+            this.registry[name] = false;
+        }
     },
     completed: function(name)
     {
-        console.log('completed: ' + name);
-        this.registry[name] = true;
+        if (this.registry.hasOwnProperty(name) && !this.registry[name])
+        {
+            console.log('completed: ' + name);
+            this.registry[name] = true;
+        }
     },
     isFinished: function()
     {
@@ -59,6 +63,7 @@ theSpecLoader = {
             hasKeys = true;
             if (!this.registry[key])
             {
+                //console.log("Still waiting for " + key);
                 return false;
             }
         }
@@ -72,58 +77,88 @@ var require = requirejs = function(dependencies, callback)
 {
     function registerDependencies(dependencies)
     {
-        for(var i = 0;i<dependencies.length;i++) {
-            var modulePath = dependencies[i];
-            theSpecLoader.register(modulePath);
-            originalRequireJs([modulePath], function(completedDependency)
+        for (var i = 0; i < dependencies.length; i++)
+        {
+            (function(j)
             {
-                theSpecLoader.completed(modulePath);
-            });
+                var modulePath = dependencies[j];
+                theSpecLoader.register(modulePath);
+                originalRequireJs([modulePath], function(completedDependency)
+                {
+                    theSpecLoader.completed(modulePath);
+                });
+            }(i));
         }
     }
 
     registerDependencies(dependencies);
     originalRequireJs.apply(originalRequireJs, arguments);
 };
+/*
+var originalDefine = define;
+var define = function()
+{
+    var name;
+    var dependencies;
+    var callback;
+
+    if (arguments.length === 3)
+    {
+        name = arguments[0];
+        dependencies = arguments[1];
+        callback = arguments[2];
+    } else
+    {
+        name = '';
+        dependencies = arguments[0];
+        callback = arguments[1];
+    }
+
+    function registerDefineDependencies(dependencies)
+    {
+        for(var i = 0;i<dependencies.length;i++) {
+            theSpecLoader.register(modulePath);
+            requirejs([modulePath], function(completedDependency)
+            {
+                theSpecLoader.completed(modulePath);
+            });
+        }
+    }
+
+    registerDefineDependencies(dependencies);
+    originalDefine.apply(originalDefine, arguments);
+};*/
 
 requirejs.config = function () {
     return originalRequireJs.config.apply(originalRequireJs, arguments);
 };
 
+var specFiles = Object.keys(window.__testacular__.files).filter(function(file)
+{
+    return /\.spec\.js$/.test(file);
+});
+
 describe("Waiting for everything to load", function(done)
 {
     it("Should run when all specs have loaded", function()
     {
+        //requirejs(['jquery', 'underscore'], function($, _) { console.log("Got jquery and underscore"); });
+        for (var i = 0; i < specFiles.length; i++)
+        {
+            var specFile = specFiles[i];
+            specFile = specFile.replace("/base/", "");
+            console.log("Loading specs " + specFile);
+            requirejs([specFile], function(specModule) { console.log("Loaded " + specFile); });
+        }
+
         waitsFor(function()
         {
             return theSpecLoader.isFinished();
-        }, "Spec loader never finished", 10000);
+        }, "Spec loader never finished", 5000);
 
         runs(function()
         {
             expect(true).toBe(true);
         });
     });
-});
-requirejs(
-tests,
-function()
-{
-    console.log("In the callback");
-    /*
-    function whenReady()
-    {
-        if (theSpecLoader.isFinished())
-        {
-            console.log("Starting tests");
-            window.__testacular__.start();
-        } else
-        {
-            console.log("Specs not yet loaded, waiting");
-            setTimeout(whenReady, 100);
-        }
-    }
-
-    whenReady();
-    */
 });

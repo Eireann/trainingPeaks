@@ -14,7 +14,9 @@ files =
     JASMINE_ADAPTER,
 
     //SHIM STUFF
-    "build/debug/single.js"
+    //"build/debug/single.js",
+    "build/debug/specs.js",
+    "test/main.js"
     //"vendor/js/libs/jquery/jquery.js",
     //"vendor/js/libs/lodash/lodash.js",
     //"vendor/js/libs/backbone.js",
@@ -34,9 +36,10 @@ var testFiles = glob.sync("test/specs/**/*spec.js");
 
 //_.each(appFiles, function(file) { addFileToList(file, true); });
 //_.each(vendorFiles, function(file) { addFileToList(file, true); });
-_.each(testFiles, function(file) { addFileToList(file, true); });
-
-files.push("test/main.js");
+//_.each(testFiles, function(file) { files.push(file); });
+//_.each(testFiles, function(file) { addFileToList(file, false); });
+//addFileToList("test/specs/dependencies.spec.js", false);
+//files.push("test/main.js");
 
 // list of files to exclude
 exclude =
@@ -89,7 +92,7 @@ autoWatch = false;
 // - Opera
 // - Safari
 // - PhantomJS
-browsers = [ "Chrome" ];
+browsers = ["Chrome"];
 
 // Continuous Integration mode
 // if true, it capture browsers, run tests and exit
