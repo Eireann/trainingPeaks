@@ -1,26 +1,40 @@
+/*
+dayName accepts either a day number 0-6 (0 is sunday),
+or any object/string that is parseable by moment.js,
+plus a moment.js compatible formatString (defaults to 'ddd', day name abbreviation)
+*/
+
 define(
 [
     "handlebars",
-    "moment"
+    "moment",
+    "./printDate"
 ],
-function(Handlebars, moment)
+function(Handlebars, moment, printDate)
 {
-    var dayName = function(date, format)
+    var dayName = function(dateOrDayNumber, formatString)
     {
-        if (typeof format !== 'string')
+
+        console.log(dateOrDayNumber);
+        console.log(formatString);
+
+        if (!formatString || typeof formatString !== "string")
         {
-            format = "ddd";
+            formatString = "ddd";
         }
 
-        if (typeof date === 'number')
+        var theDay;
+        if (typeof dateOrDayNumber === 'number')
         {
-            theMoment = moment().day(date);
+            theDay = moment().day(dateOrDayNumber);
         } else
         {
-            theMoment = moment(date);
+            theDay = moment(dateOrDayNumber);
         }
 
-        return theMoment.format(format);
+        var output = printDate(theDay, formatString);
+        console.log(output);
+        return output;
 
     };
 
