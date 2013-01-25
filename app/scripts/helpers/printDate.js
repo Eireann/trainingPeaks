@@ -16,11 +16,7 @@ function(Handlebars, moment)
             formatString = "L";
         }
 
-        console.log(dateAsLongEpoch);
-        console.log(formatString);
-
         var output = moment(dateAsLongEpoch).format(formatString);
-        console.log(output);
         return output;
     };
 

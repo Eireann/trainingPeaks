@@ -3,42 +3,107 @@ var tests = Object.keys(window.__testacular__.files).filter(function (file)
     return /\.spec\.js$/.test(file);
 });
 
-require(
-{
+requirejs.config({
 
     // !! Testacular serves files from '/base'
-    baseUrl: "../",
+    baseUrl: "/base",
     paths:
     {
-        
-        "jquery": "base/vendor/jam/jquery/jquery",
-        "lodash": "base/vendor/jam/lodash/lodash",
-        "underscore": "base/vendor/jam/lodash/lodash",
-        "handlebars": "base/vendor/js/libs/Handlebars",
 
-        "backbone": "base/test/vendor/js/libs/backbone.amd",
-        "backbone.eventbinder": "base/test/vendor/js/libs/backbone.eventbinder.amd",
-        "backbone.babysitter": "base/test/vendor/js/libs/backbone.babysitter.amd",
-        "backbone.wreqr": "base/test/vendor/js/libs/backbone.wreqr.amd",
-        "backbone.marionette": "base/test/vendor/js/libs/backbone.marionette.amd",
-        "Backbone.Marionette.Handlebars": "base/vendor/jam/Backbone.Marionette.Handlebars/backbone.marionette.handlebars",
+        "jquery": "vendor/js/libs/jquery/jquery",
+        "lodash": "vendor/js/libs/lodash/lodash",
+        "underscore": "vendor/js/libs/lodash/lodash",
+        "handlebars": "vendor/js/libs/Handlebars",
 
-        "i18nprecompile": "base/vendor/js/libs/i18nprecompile",
-        "json2": "base/vendor/js/libs/json2",
-        "hbs": "base/vendor/js/libs/hbs",
+        "backbone": "test/vendor/js/libs/backbone.amd",
+        "backbone.eventbinder": "test/vendor/js/libs/backbone.eventbinder.amd",
+        "backbone.babysitter": "test/vendor/js/libs/backbone.babysitter.amd",
+        "backbone.wreqr": "test/vendor/js/libs/backbone.wreqr.amd",
+        "backbone.marionette": "test/vendor/js/libs/backbone.marionette.amd",
+        "Backbone.Marionette.Handlebars": "vendor/js/libs/Backbone.Marionette.Handlebars/backbone.marionette.handlebars",
 
-        require: 'base/base/vendor/js/libs/require',
+        "i18nprecompile": "vendor/js/libs/i18nprecompile",
+        "json2": "vendor/js/libs/json2",
+        "hbs": "vendor/js/libs/hbs",
 
-        app: "base/app/app",
-        views: "base/app/scripts/views",
-        controllers: "base/app/scripts/controllers",
-        models: "base/app/scripts/models",
-        templates: "base/app/templates",
-        template: "base/app/templates" // hbs looks for templates in /template/i18n
+
+        app: "app/app",
+        views: "app/scripts/views",
+        controllers: "app/scripts/controllers",
+        models: "app/scripts/models",
+        templates: "app/templates",
+        scripts: "app/scripts",
+        template: "app/templates" // hbs looks for templates in /template/i18n
     }
-},
+});
+//require: 'vendor/js/libs/require',
+theSpecLoader = {
+    registry: {},
+    register: function(name)
+    {
+        console.log('registering: ' + name);
+        this.registry[name] = false;
+    },
+    completed: function(name)
+    {
+        console.log('completed: ' + name);
+        this.registry[name] = true;
+    },
+    isFinished: function()
+    {
+        var self = this;
+        var hasKeys = false;
+        for (var key in this.registry)
+        {
+            hasKeys = true;
+            if (!this.registry[key])
+            {
+                return false;
+            }
+        }
+        return hasKeys;
+    }
+};
+
+// override requirejs, so we call the spec loader's register/complete functions
+var originalRequireJs = requirejs;
+var require = requirejs = function(dependencies, callback)
+{
+    function registerDependencies(dependencies)
+    {
+        for(var i = 0;i<dependencies.length;i++) {
+            var modulePath = dependencies[i];
+            theSpecLoader.register(modulePath);
+            originalRequireJs([modulePath], function(completedDependency)
+            {
+                theSpecLoader.completed(modulePath);
+            });
+        }
+    }
+
+    registerDependencies(dependencies);
+    originalRequireJs.apply(originalRequireJs, arguments);
+};
+
+requirejs.config = function () {
+    return originalRequireJs.config.apply(originalRequireJs, arguments);
+};
+
+requirejs(
 tests,
 function()
 {
-    window.__testacular__.start();
+    function whenReady()
+    {
+        if (theSpecLoader.isFinished())
+        {
+            window.__testacular__.start();
+        } else
+        {
+            console.log("Specs not yet loaded, waiting");
+            setTimeout(whenReady, 100);
+        }
+    }
+
+    whenReady();
 });

@@ -1,7 +1,9 @@
 // Testacular configuration
+var _ = require('underscore');
+var glob = require("glob");
 
 // base path, that will be used to resolve files and exclude
-basePath = '';
+basePath = "./";
 
 // list of files / patterns to load in the browser
 files = 
@@ -10,25 +12,30 @@ files =
     REQUIRE_ADAPTER,
     JASMINE,
     JASMINE_ADAPTER,
-    
+
     //SHIM STUFF
-    "vendor/jam/jquery/jquery.js",
-    "vendor/jam/lodash/lodash.underscore.min.js",
+    "vendor/js/libs/jquery/jquery.js",
+    "vendor/js/libs/lodash/lodash.js",
     "vendor/js/libs/backbone.js",
     "vendor/js/libs/backbone.marionette.js",
-
-    // PATHS CONFIG
-    //{ pattern: "vendor/js/libs/*.js", included: false },
-    //{ pattern: "vendor/jam/*.js", included: false },
-    //{ pattern: "vendor/jam/**/*.js", included: false },
-    
-    // SOURCE AND TEST MODULES
-    //{ pattern: "app/*.js", included: false },
-    //{ pattern: "app/scripts/**/*.js", included: false },
-    { pattern: "test/specs/**/*.spec.js", included: false },
-    
-    "test/main.js"
 ];
+
+// this tells testacular server what files it's allowed to serve - if it's not in this list and we require() it, test runner will fail
+// using this instead of the built in glob matching in testacular files, because it was giving some errors
+function addFileToList(file, included)
+{
+    files.push({ pattern: file, included: included ? true : false });
+};
+
+var appFiles = glob.sync("app/**/*.js");
+var vendorFiles = glob.sync("vendor/js/libs/**/*.js");
+var testFiles = glob.sync("test/specs/**/*spec.js");
+
+_.each(appFiles, function(file) { addFileToList(file, true); });
+_.each(vendorFiles, function(file) { addFileToList(file, true); });
+_.each(testFiles, function(file) { addFileToList(file, false); });
+
+files.push("test/main.js");
 
 // list of files to exclude
 exclude =
