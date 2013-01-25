@@ -15,9 +15,6 @@ function(Handlebars, moment, printDate)
     var dayName = function(dateOrDayNumber, formatString)
     {
 
-        console.log(dateOrDayNumber);
-        console.log(formatString);
-
         if (!formatString || typeof formatString !== "string")
         {
             formatString = "ddd";
@@ -33,7 +30,6 @@ function(Handlebars, moment, printDate)
         }
 
         var output = printDate(theDay, formatString);
-        console.log(output);
         return output;
 
     };
