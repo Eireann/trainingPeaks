@@ -1,4 +1,10 @@
 {{#if WorkoutId}}
-    <p>WorkoutID: {{WorkoutId}}</p>
-    <p>{{$ "Day"}}: {{WorkoutDay}}</p>
+
+    {{#if WorkoutTypeValueId}}
+       <div class="workoutDiv">
+           <p> <img src="app/images/workoutTypeImages/run.png" /> Run</p>
+       </div>
+    {{/if}}
+    <!--<p>WorkoutID: {{WorkoutId}}</p>
+    <p>{{$ "Day"}}: {{WorkoutDay}}</p>-->
 {{/if}}

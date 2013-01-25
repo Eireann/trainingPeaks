@@ -5,6 +5,7 @@ $black: #000000;
 $white: #ffffff;
 $grey: #d5d4d4;
 $lightGrey: #ebebeb;
+$darkGrey: #4b4b4b;
 $TPBlue: #005695;
 
 $navigationFontFamily: Arial, 'DejaVu Sans', 'Liberation Sans', Freesans, sans-serif;
@@ -34,8 +35,14 @@ $navigationFontSize: 10px;
         overflow: auto;
         .workout
         {
-            border: 1px solid green;
-            padding:0px;
+			p
+			{
+				font-family: $navigationFontFamily;
+				font-size: 12px;
+				color:$darkGrey;
+				font-weight: bold;
+			}
+            
         }
     }
 
@@ -51,11 +58,13 @@ $navigationFontSize: 10px;
         div
 		{
             @include column(2);
-			padding-top: 20px;
-			padding_bottom: 0px;
+			padding-bottom: 0px;
 			font-Family: $navigationFontFamily;
 			font-size: $navigationFontSize + 5;
 			color: $grey;
+			font-weight: bold;
+			text-align: right;
+			height: 15px;
 		}
     }
 
@@ -147,7 +156,7 @@ $navigationFontSize: 10px;
 
 #calendarHeader
 {
-	height: 100px;
+	height: 80px;
 	.calendarMonthLabel
 	{
 		label
