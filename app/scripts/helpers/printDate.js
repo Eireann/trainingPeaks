@@ -13,8 +13,10 @@ function(Handlebars, moment)
     {
         if (!formatString || typeof formatString !== "string")
         {
-            formatString = "L";
+            //formatString = "L";
+            formatString = "DD";
         }
+
 
         console.log(dateAsLongEpoch);
         console.log(formatString);
