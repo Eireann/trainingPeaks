@@ -1,14 +1,14 @@
 define(
 [
     "jquery",
-    "backbone.marionette",
+    "TP",
     "marionette.faderegion"
 ],
-function ($, Marionette)
+function($, TP)
 {
     "use strict";
     
-    var theApp = new Marionette.Application();
+    var theApp = new TP.Application();
 
     /*
     * jQuery OAuth Authentication Hack

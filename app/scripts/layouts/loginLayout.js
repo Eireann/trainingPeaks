@@ -1,13 +1,13 @@
 ﻿define(
 [
-    "backbone.marionette",
+    "TP",
     "hbs!templates/layouts/loginLayout"
 ],
-function(Marionette, LoginLayoutTemplate)
+function(TP, LoginLayoutTemplate)
 {
     "use strict";
-    
-    return Marionette.Layout.extend(
+
+    return TP.Layout.extend(
     {
         fadeIn: function(callback)
         {

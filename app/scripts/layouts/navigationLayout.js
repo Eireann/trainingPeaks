@@ -1,13 +1,13 @@
 ﻿define(
 [
-    "backbone.marionette",
+    "TP",
     "hbs!templates/layouts/navigationLayout"
 ],
-function(Marionette, NavigationLayoutTemplate)
+function(TP, NavigationLayoutTemplate)
 {
     "use strict";
-    
-    return Marionette.Layout.extend(
+
+    return TP.Layout.extend(
     {
         template:
         {

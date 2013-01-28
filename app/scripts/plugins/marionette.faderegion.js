@@ -1,11 +1,11 @@
 ﻿define(
 [
-    "backbone.marionette",
+    "TP",
     "jquery"
 ],
-function(Marionette, $)
+function(TP, $)
 {
-    Marionette.Region.prototype.show = function(view)
+    TP.Region.prototype.show = function(view)
     {
         this.ensureEl();
         view.render();
@@ -33,7 +33,7 @@ function(Marionette, $)
 
     };
 
-    Marionette.Region.prototype.close = function(cb)
+    TP.Region.prototype.close = function(cb)
     {
         var view = this.currentView;
         delete this.currentView;
@@ -69,7 +69,7 @@ function(Marionette, $)
             view.fadeOut(closeView);
     };
 
-    Marionette.Region.prototype.open = function(view, callback)
+    TP.Region.prototype.open = function(view, callback)
     {
         var that = this;
 

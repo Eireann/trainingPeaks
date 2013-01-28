@@ -1,14 +1,14 @@
 ﻿define(
 [
     "underscore",
-    "backbone.marionette",
+    "TP",
     "hbs!templates/views/navigation"
 ],
-function (_, Marionette, navigationViewTemplate)
+function(_, TP, navigationViewTemplate)
 {
     "use strict";
 
-    return Marionette.ItemView.extend(
+    return TP.ItemView.extend(
     {
         template:
         {

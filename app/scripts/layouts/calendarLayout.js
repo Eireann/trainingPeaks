@@ -1,13 +1,13 @@
 ﻿define(
 [
-    "backbone.marionette",
+    "TP",
     "hbs!templates/layouts/calendarLayout"
 ],
-function(Marionette, calendarLayoutTemplate)
+function(TP, calendarLayoutTemplate)
 {
     "use strict";
-    
-    return Marionette.Layout.extend(
+
+    return TP.Layout.extend(
     {
         fadeIn: function (callback)
         {

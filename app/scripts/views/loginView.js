@@ -1,14 +1,14 @@
 ﻿define(
 [
     "underscore",
-    "backbone.marionette",
+    "TP",
     "hbs!templates/views/loginView"
 ],
-function (_, Marionette, loginViewTemplate)
+function (_, TP, loginViewTemplate)
 {
     "use strict";
     
-    return Marionette.ItemView.extend(
+    return TP.ItemView.extend(
     {
         template:
         {
@@ -17,7 +17,7 @@ function (_, Marionette, loginViewTemplate)
         },
         
         /*
-         * Marionette specific way to bind DOM elements to JS "ui" elements.
+         * TP specific way to bind DOM elements to JS "ui" elements.
          * The DOM element selected with the selector on the rightside of the
          * equation will be associated with the ui element named this.ui.NAME
          */

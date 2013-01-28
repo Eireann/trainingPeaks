@@ -2,14 +2,14 @@ define(
 [
     "jquery",
     "underscore",
-    "backbone",
+    "TP",
     "app"
 ],
-function ($, _, Backbone, theApp)
+function ($, _, TP, theApp)
 {
     "use strict";
 
-    var Session = Backbone.Model.extend(
+    var Session = TP.Model.extend(
     {
         url: function()
         {

@@ -1,11 +1,11 @@
 define(
 [
-    "backbone.marionette",
+    "TP",
     "hbs!templates/views/calendarWorkout"
 ],
-function(Marionette, CalendarWorkoutTemplate)
+function(TP, CalendarWorkoutTemplate)
 {
-    return Marionette.ItemView.extend(
+    return TP.ItemView.extend(
     {
         tagName: "div",
         className: "workout",

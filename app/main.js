@@ -1,16 +1,16 @@
 define(
 [
-    "backbone",
+    "TP",
     "app",
     "router",
     "models/session"
 ],
-function (Backbone, app, Router, TheSession) 
+function(TP, app, Router, TheSession)
 {
 
     app.router = new Router();
     app.session = TheSession;
-    Backbone.history.start({ pushState: false, root: app.root });
+    TP.history.start({ pushState: false, root: app.root });
     
     //**********************************************************************
 
@@ -31,10 +31,10 @@ function (Backbone, app, Router, TheSession)
             // refresh.
             evt.preventDefault();
 
-            // `Backbone.history.navigate` is sufficient for all Routers and will
+            // `TP.history.navigate` is sufficient for all Routers and will
             // trigger the correct events. The Router's internal `navigate` method
             // calls this anyways.  The fragment is sliced from the root.
-            Backbone.history.navigate(href.attr, true);
+            TP.history.navigate(href.attr, true);
         }
     });
 });

@@ -1,16 +1,15 @@
 define(
 [
-    "backbone",
-    "backbone.marionette",
     "moment",
+    "TP",
     "layouts/calendarLayout",
     "models/calendarDay",
     "views/calendarView",
     "models/workoutsCollection"
 ],
-function(Backbone, Marionette, moment, CalendarLayout, CalendarDayModel, CalendarView, WorkoutsCollection)
+function(moment, TP, CalendarLayout, CalendarDayModel, CalendarView, WorkoutsCollection)
 {
-    return Marionette.Controller.extend(
+    return TP.Controller.extend(
     {
         layout: null,
         views: null,
@@ -59,7 +58,7 @@ function(Backbone, Marionette, moment, CalendarLayout, CalendarDayModel, Calenda
             // add one to endDate.diff, to include endDate itself
             var numOfDaysToShow = endDate.diff(startDate, "days") + 1;
 
-            var daysCollection = new Backbone.Collection();
+            var daysCollection = new TP.Collection();
 
             for (var dayOffset = 0; dayOffset < numOfDaysToShow; ++dayOffset)
             {

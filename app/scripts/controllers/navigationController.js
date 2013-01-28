@@ -1,16 +1,15 @@
 ﻿define(
 [
-    "backbone.marionette",
-    
+    "TP",
     "layouts/navigationLayout",
     "views/userControlsView",
     "views/navigationView",
     
     "models/session"
 ],
-function(Marionette, NavigationLayout, UserControlsView, NavigationView, theSession)
+function(TP, NavigationLayout, UserControlsView, NavigationView, theSession)
 {
-    return Marionette.Controller.extend(
+    return TP.Controller.extend(
     {
         views: {},
         

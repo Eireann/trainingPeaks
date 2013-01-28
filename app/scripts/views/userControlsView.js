@@ -1,14 +1,14 @@
 ﻿define(
 [
     "underscore",
-    "backbone.marionette",
+    "TP",
     "hbs!templates/views/userControls"
 ],
-function (_, Marionette, userControlsTemplate)
+function (_, TP, userControlsTemplate)
 {
     "use strict";
 
-    return Marionette.ItemView.extend(
+    return TP.ItemView.extend(
     {
         template:
         {

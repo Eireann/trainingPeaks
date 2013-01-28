@@ -2,18 +2,18 @@ define(
 [
     "underscore",
     "app",
-    "backbone",
+    "TP",
     "controllers/navigationController",
     "controllers/calendarController",
     "layouts/loginLayout",
     "views/loginView",
     "models/session"
 ],
-function (_, theApp, Backbone, NavigationController, CalendarController, LoginLayout, LoginView, theSession)
+function (_, theApp, TP, NavigationController, CalendarController, LoginLayout, LoginView, theSession)
 {
     "use strict";
 
-    return Backbone.Router.extend(
+    return TP.Router.extend(
     {
         controllers: {},
         

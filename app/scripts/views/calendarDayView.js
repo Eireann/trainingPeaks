@@ -1,16 +1,16 @@
 define(
 [
     "moment",
-    "backbone.marionette",
+    "TP",
     "views/calendarWorkoutView",
     "hbs!templates/views/calendarDay"
 ],
-function(moment, Marionette, CalendarWorkoutView, CalendarDayTemplate)
+function(moment, TP, CalendarWorkoutView, CalendarDayTemplate)
 {
 
     var today = moment();
 
-    return Marionette.ItemView.extend(
+    return TP.ItemView.extend(
     {
         tagName: "div",
         className: "day",

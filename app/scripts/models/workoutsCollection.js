@@ -1,13 +1,13 @@
 define(
 [
     "moment",
-    "backbone",
+    "TP",
     "app",
     "models/workoutModel"
 ],
-function(moment, Backbone, theApp, WorkoutModel)
+function(moment, TP, theApp, WorkoutModel)
 {
-    return Backbone.Collection.extend(
+    return TP.Collection.extend(
     {
         model: WorkoutModel,
         url: function()

@@ -1,13 +1,13 @@
 ﻿define(
 [
-    "backbone.marionette",
+    "TP",
     "views/calendarDayView",
     "hbs!templates/views/calendar",
     "hbs!templates/views/calendarWeek"
 ],
-function(Marionette, CalendarDayView, CalendarTemplate, CalendarWeekTemplate)
+function(TP, CalendarDayView, CalendarTemplate, CalendarWeekTemplate)
 {
-    return Marionette.CompositeView.extend(
+    return TP.CompositeView.extend(
     {
         tagName: 'div',
         itemView: CalendarDayView,

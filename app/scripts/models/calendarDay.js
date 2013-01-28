@@ -1,10 +1,10 @@
 ﻿define(
 [
-    "backbone"
+    "TP"
 ],
-function(Backbone)
+function(TP)
 {
-    return Backbone.Model.extend(
+    return TP.Model.extend(
     {
         setWorkout: function(workout)
         {

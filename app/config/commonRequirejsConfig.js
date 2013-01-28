@@ -14,9 +14,10 @@
             "backbone": "../vendor/js/libs/backbone",
             "backbone.marionette": "../vendor/js/libs/backbone.marionette",
             "Backbone.Marionette.Handlebars": "../vendor/js/libs/Backbone.Marionette.Handlebars/backbone.marionette.handlebars",
-            
+
             "marionette.faderegion": "scripts/plugins/marionette.faderegion",
 
+            "TP": "scripts/framework/TP",
             "models": "scripts/models",
             "views": "scripts/views",
             "controllers": "scripts/controllers",
@@ -27,6 +28,7 @@
             "hbs": "../vendor/js/libs/hbs",
 
             "moment": "../vendor/js/libs/moment/moment"
+
         },
 
         hbs:
@@ -37,7 +39,9 @@
             {
                 return "scripts/helpers/" + name;
             }
-        }
+        },
+
+
     };
 
     // exports for commonJS format, or define for amd format
