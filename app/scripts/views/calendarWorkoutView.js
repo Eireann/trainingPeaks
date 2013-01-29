@@ -26,12 +26,17 @@ function(draggable, TP, CalendarWorkoutTemplate)
 
         initialize: function(options)
         {
-            this.attributes["data-WorkoutId"] = this.model.get("WorkoutId");
+            if (this.model)
+            {
+                this.attributes["data-WorkoutId"] = this.model.id;
+                this.attributes.title = this.model.id + " - " + this.model.get("WorkoutDay");
+            }
         },
 
         onRender: function()
-        {   
-            this.$el.draggable({appendTo:'body', helper:'clone', cursor:'move', opacity:.7, revert:true});
+        {
+            //, revert: true 
+            this.$el.draggable({ appendTo: 'body', helper: 'clone', cursor: 'move', opacity: 0.7 });
         }
                                                         
 

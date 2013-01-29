@@ -3,18 +3,18 @@ define(
     "moment",
     "TP",
     "layouts/calendarLayout",
+    "models/calendarDaysCollection",
     "models/calendarDay",
     "views/calendarView",
     "models/workoutsCollection"
 ],
-function(moment, TP, CalendarLayout, CalendarDayModel, CalendarView, WorkoutsCollection)
+function(moment, TP, CalendarLayout, CalendarDaysCollection, CalendarDayModel, CalendarView, WorkoutsCollection)
 {
     return TP.Controller.extend(
     {
         layout: null,
         views: null,
         daysCollection: null,
-        daysHash: null,
         workoutsCollection: null,
 
         show: function()
@@ -29,7 +29,6 @@ function(moment, TP, CalendarLayout, CalendarDayModel, CalendarView, WorkoutsCol
             // initialize these here instead of in extend, otherwise they become members of the prototype
             this.layout = new CalendarLayout();
             this.views = {};
-            this.daysHash = {};
             this.workoutsCollection = new WorkoutsCollection();
 
             // start on a Sunday
@@ -62,12 +61,11 @@ function(moment, TP, CalendarLayout, CalendarDayModel, CalendarView, WorkoutsCol
             // add one to endDate.diff, to include endDate itself
             var numOfDaysToShow = endDate.diff(startDate, "days") + 1;
 
-            var daysCollection = new TP.Collection();
+            var daysCollection = new CalendarDaysCollection();
 
             for (var dayOffset = 0; dayOffset < numOfDaysToShow; ++dayOffset)
             {
                 var day = new CalendarDayModel({ date: moment(startDate) });
-                this.daysHash[startDate.format("YYYY-MM-DD")] = day;
                 daysCollection.add(day);
                 startDate.add("days", 1);
             }
@@ -95,13 +93,19 @@ function(moment, TP, CalendarLayout, CalendarDayModel, CalendarView, WorkoutsCol
 
         addWorkoutToCalendarDay: function(workout)
         {
-            var workoutDay = workout.get("WorkoutDay");
+            var workoutDay = workout.getCalendarDate();
             if (workoutDay)
             {
-                workoutDay = workoutDay.substr(0, workoutDay.indexOf("T"));
-                if (this.daysHash[workoutDay])
+                var dayModel = this.daysCollection.get(workoutDay);
+                if (dayModel)
                 {
-                    this.daysHash[workoutDay].setWorkout(workout);
+                    var debugMsg = "Adding workout " + workout.id + " - " + workout.get("WorkoutDay") + " to day " + dayModel.id;
+                    console.log(debugMsg);
+                    if (moment(workout.get("WorkoutDay")).format("YYYY-MM-DD") !== dayModel.id)
+                    {
+                        throw "Adding workout to wrong day!\n" + debugMsg;
+                    }
+                    dayModel.addWorkout(workout);
                 }
             }
         },
@@ -133,11 +137,22 @@ function(moment, TP, CalendarLayout, CalendarDayModel, CalendarView, WorkoutsCol
             this.daysCollection.add(newDays.models, { index: 0, at: 0 });
         },
 
-        onWorkoutMoved: function (workoutid, calendarDayModel)
+        onWorkoutMoved: function(workoutid, destinationCalendarDayModel)
         {
+
+            // get the workout
             var workout = this.workoutsCollection.get(workoutid);
-            var toDate = calendarDayModel.get("date");
-            calendarDayModel.setWorkout(workout);
+
+            // remove it from the current day
+            var workoutDay = workout.getCalendarDate();
+            var sourceCalendarDayModel = this.daysCollection.get(workoutDay);
+            sourceCalendarDayModel.removeWorkout(workout);
+
+            // add it to the new day
+            destinationCalendarDayModel.addWorkout(workout);
+
+            // update the workout date
+            //alert('FINISH ME');
         }
     });
 });

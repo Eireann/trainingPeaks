@@ -20,7 +20,6 @@ function(moment, $, _, Backbone, CalendarController, WorkoutModel, WorkoutsColle
             // let's not make any remote server calls, just testing object interactions here
             spyOn($, "ajax").andCallFake(function()
             {
-                //console.log(arguments[0]);
                 return {
                     done: function(callback)
                     {
@@ -44,13 +43,6 @@ function(moment, $, _, Backbone, CalendarController, WorkoutModel, WorkoutsColle
                 expect(controller.layout).toBeDefined();
             });
 
-            it("Should have a daysHash", function()
-            {
-                var controller = new CalendarController();
-                expect(controller.daysHash).toBeDefined();
-                expect(controller.daysHash).not.toBeNull();
-            });
-
             it("Should have a daysCollection", function()
             {
                 var controller = new CalendarController();
@@ -68,6 +60,13 @@ function(moment, $, _, Backbone, CalendarController, WorkoutModel, WorkoutsColle
             {
                 var controller = new CalendarController();
                 expect(controller.endDate).toBeDefined();
+            });
+
+            it("Should have a workoutsCollection", function()
+            {
+                var controller = new CalendarController();
+                expect(controller.workoutsCollection).toBeDefined();
+                expect(controller.workoutsCollection).not.toBeNull();
             });
 
             it("Should call requestWorkouts", function()
@@ -91,9 +90,9 @@ function(moment, $, _, Backbone, CalendarController, WorkoutModel, WorkoutsColle
             it("Should create a CalendarView", function()
             {
                 var controller = new CalendarController();
-                spyOn(CalendarView.__super__, "initialize").andCallThrough();
+                spyOn(CalendarView.prototype, "initialize").andCallThrough();
                 controller.initializeCalendar();
-                expect(CalendarView.__super__.initialize).toHaveBeenCalled();
+                expect(CalendarView.prototype.initialize).toHaveBeenCalled();
             });
 
             it("Should bind to calendar view prepend", function()
@@ -125,15 +124,18 @@ function(moment, $, _, Backbone, CalendarController, WorkoutModel, WorkoutsColle
                 expect(days.length).toEqual(10);
             });
 
-            it("Should add the days to daysHash", function()
+            it("Should add the days to daysCollection", function()
             {
                 var startDate = moment("2013-01-01");
                 var endDate = moment("2013-01-02");
                 var controller = new CalendarController();
                 var days = controller.createCollectionOfDays(startDate, endDate);
-                expect(controller.daysHash['2013-01-01']).toBe(days.models[0]);
-                expect(controller.daysHash['2013-01-02']).toBe(days.models[1]);
+                expect(days.get('2013-01-01')).toBeDefined();
+                expect(days.get('2013-01-01')).not.toBeNull();
+                expect(days.get('2013-01-02')).toBeDefined();
+                expect(days.get('2013-01-02')).not.toBeNull();
             });
+
         });
 
         describe("Request workouts", function()
@@ -198,11 +200,13 @@ function(moment, $, _, Backbone, CalendarController, WorkoutModel, WorkoutsColle
             it("Should add Workout model to CalendarDay model if the date matches", function()
             {
                 var controller = new CalendarController();
-                var todayCalendarDay = controller.daysHash[moment().format("YYYY-MM-DD")];
-                spyOn(todayCalendarDay, "setWorkout");
+                var todayCalendarDay = controller.daysCollection.get(moment().format("YYYY-MM-DD"));
+                expect(todayCalendarDay).toBeDefined();
+                expect(todayCalendarDay).not.toBeNull();
+                spyOn(todayCalendarDay, "addWorkout");
                 var workout = new WorkoutModel({ WorkoutDay: moment().format() });
                 controller.addWorkoutToCalendarDay(workout);
-                expect(todayCalendarDay.setWorkout).toHaveBeenCalledWith(workout);
+                expect(todayCalendarDay.addWorkout).toHaveBeenCalledWith(workout);
             });
 
         });
@@ -319,7 +323,6 @@ function(moment, $, _, Backbone, CalendarController, WorkoutModel, WorkoutsColle
                 expect(lastCall.args[1].index).toEqual(lengthBeforeAppending);
             });
         });
-
 
     });
 

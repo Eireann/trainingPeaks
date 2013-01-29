@@ -72,7 +72,7 @@ function(moment, printDate, CalendarDayModel, WorkoutModel, CalendarWorkoutView,
                     var today = moment();
                     var workoutModel = new WorkoutModel({ WorkoutId: '12345', WorkoutDay: today.format() });
                     var dayModel = new CalendarDayModel({ date: today });
-                    dayModel.setWorkout(workoutModel);
+                    dayModel.addWorkout(workoutModel);
                     var dayView = new CalendarDayView({ model: dayModel });
 
                     spyOn(CalendarWorkoutView.prototype, "render").andCallThrough();
@@ -81,6 +81,7 @@ function(moment, printDate, CalendarDayModel, WorkoutModel, CalendarWorkoutView,
 
                     var workoutView = new CalendarWorkoutView({ model: workoutModel });
                     workoutView.render();
+
                     expect(dayView.$el.html()).toContain(workoutView.el.outerHTML);
                 });
             });

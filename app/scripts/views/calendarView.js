@@ -140,7 +140,6 @@ function(_, TP, CalendarDayView, CalendarTemplate, CalendarWeekTemplate)
 
         onWorkoutMoved: function (workoutid, calendarDayModel)
         {
-            console.log("calendarView");
             this.trigger("workoutMoved", workoutid, calendarDayModel);
         }
 

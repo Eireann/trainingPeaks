@@ -37,16 +37,16 @@ function(droppable, _, moment, TP, CalendarWorkoutView, CalendarDayTemplate)
 
         onRender: function()
         {
-            this.appendWorkoutElement();
+            this.appendWorkoutElements();
             this.setTodayCss();
             this.setUpDroppable();
         },
 
-        appendWorkoutElement: function()
+        appendWorkoutElements: function()
         {
-            var workout = this.model.get("workout");
-            if (workout)
-            {
+            var workouts = this.model.get("workouts");
+            for(var i = 0;i<workouts.length;i++) {
+                var workout = workouts.at(i);
                 var workoutView = new CalendarWorkoutView({ model: workout });
                 workoutView.render();
                 this.$el.append(workoutView.el);
@@ -63,12 +63,13 @@ function(droppable, _, moment, TP, CalendarWorkoutView, CalendarDayTemplate)
             }
         },
 
-        setUpDroppable: function () {
-            this.$el.droppable({ drop: this.onDrop })
+        setUpDroppable: function()
+        {
+            this.$el.droppable({ drop: this.onDrop });
         },
 
-        onDrop: function (event, ui) {
-            console.log("dayView");
+        onDrop: function(event, ui)
+        {
             this.trigger("workoutMoved", ui.draggable.data("workoutid"), this.model);
         }
 
