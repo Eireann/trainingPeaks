@@ -5,5 +5,8 @@ function(document, window, localStorage)
     global.window = window;
     global.localStorage = localStorage;
     window.localStorage = localStorage;
+    global.navigator = {
+        userAgent: 'Grunt'
+    };
     return global;
 });
