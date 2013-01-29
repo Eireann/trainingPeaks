@@ -1,9 +1,10 @@
 ﻿define(
 [
+    "moment",
     "TP",
     "app"
 ],
-function(TP, theApp)
+function(moment, TP, theApp)
 {
     return TP.Model.extend(
     {
@@ -19,6 +20,18 @@ function(TP, theApp)
         {
             var workoutDay = this.get("WorkoutDay");
             return workoutDay.substr(0, workoutDay.indexOf("T"));
+        },
+
+        moveToDay: function(newDate)
+        {
+            var newDay = moment(newDate);
+            var workoutDate = moment(this.get("WorkoutDay"));
+            workoutDate.year(newDay.year());
+            workoutDate.month(newDay.month());
+            workoutDate.date(newDay.date());
+            this.set("WorkoutDay", workoutDate.format("YYYY-MM-DDThh:mm:ss"));
+            var onSave = this.save();
+            onSave.done(function() { alert('saved'); });
         }
 
     });

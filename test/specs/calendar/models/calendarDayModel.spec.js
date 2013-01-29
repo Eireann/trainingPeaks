@@ -27,18 +27,29 @@ function(WorkoutModel, CalendarDaysCollection, CalendarDay)
             it("Should allow to add and retrieve a workout", function()
             {
                 var calendarDay = new CalendarDay({ date: "2011-03-02" });
-                var workout = new WorkoutModel();
+                var workout = new WorkoutModel({ WorkoutDay: "2011-03-02T00:00:00" });
                 calendarDay.addWorkout(workout);
                 var workouts = calendarDay.getWorkouts();
                 expect(workouts).not.toBeNull();
                 expect(calendarDay.getWorkouts().at(0)).toBe(workout);
             });
 
+            it("Should not allow to add a workout if the date doesn't match", function()
+            {
+                var calendarDay = new CalendarDay({ date: "2011-03-02" });
+                var workout = new WorkoutModel({ WorkoutDay: "2011-03-12T00:00:00" });
+                var addBadWorkout = function()
+                {
+                    calendarDay.addWorkout(workout);
+                };
+                expect(addBadWorkout).toThrow();
+            });
+
             it("Should trigger a change event on add workout", function()
             {
                 var changeSpy = jasmine.createSpy("change spy");
-                var calendarDay = new CalendarDay({ date: "2011-03-02" });
-                var workout = new WorkoutModel();
+                var calendarDay = new CalendarDay({ date: "2011-03-22" });
+                var workout = new WorkoutModel({ WorkoutDay: "2011-03-22T00:00:00" });
 
                 calendarDay.bind("change", changeSpy);
                 calendarDay.addWorkout(workout);

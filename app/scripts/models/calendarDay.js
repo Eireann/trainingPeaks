@@ -11,6 +11,8 @@ function(_, moment, TP, WorkoutsCollection)
     {
 
         idAttribute: 'dateString',
+        dateFormat: "YYYY-MM-DD",
+        workouts: null,
 
         initialize: function()
         {
@@ -30,27 +32,31 @@ function(_, moment, TP, WorkoutsCollection)
             }
 
             // formatted date for id in collection 
-            this.set("dateString", moment(date).format("YYYY-MM-DD"));
+            this.set("dateString", moment(date).format(this.dateFormat));
 
             // empty collection to store our workouts
-            this.set("workouts", new WorkoutsCollection());
+            this.workouts = new WorkoutsCollection();
         },
 
         addWorkout: function(workout)
         {
-            this.get("workouts").add(workout);
+            var workoutDate = moment(workout.get("WorkoutDay")).format(this.dateFormat);
+            if(workoutDate !== this.id) {
+                throw "Cannot add workout dated " + workoutDate + " to calendarDay " + this.id;
+            }
+            this.workouts.add(workout);
             this.trigger("change");
         },
 
         removeWorkout: function(workout)
         {
-            this.get("workouts").remove(workout);
+            this.workouts.remove(workout);
             this.trigger("change");
         },
 
         getWorkouts: function()
         {
-            return this.get("workouts");
+            return this.workouts;
         }
     });
 });

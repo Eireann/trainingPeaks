@@ -99,12 +99,6 @@ function(moment, TP, CalendarLayout, CalendarDaysCollection, CalendarDayModel, C
                 var dayModel = this.daysCollection.get(workoutDay);
                 if (dayModel)
                 {
-                    var debugMsg = "Adding workout " + workout.id + " - " + workout.get("WorkoutDay") + " to day " + dayModel.id;
-                    console.log(debugMsg);
-                    if (moment(workout.get("WorkoutDay")).format("YYYY-MM-DD") !== dayModel.id)
-                    {
-                        throw "Adding workout to wrong day!\n" + debugMsg;
-                    }
                     dayModel.addWorkout(workout);
                 }
             }
@@ -142,14 +136,22 @@ function(moment, TP, CalendarLayout, CalendarDaysCollection, CalendarDayModel, C
 
             // get the workout
             var workout = this.workoutsCollection.get(workoutid);
+            var oldWorkoutDay = workout.getCalendarDate();
+            var newWorkoutDay = destinationCalendarDayModel.id;
 
-            // remove it from the current day
-            var workoutDay = workout.getCalendarDate();
-            var sourceCalendarDayModel = this.daysCollection.get(workoutDay);
-            sourceCalendarDayModel.removeWorkout(workout);
 
-            // add it to the new day
-            destinationCalendarDayModel.addWorkout(workout);
+            if (oldWorkoutDay !== newWorkoutDay)
+            {
+                // remove it from the current day
+                var sourceCalendarDayModel = this.daysCollection.get(oldWorkoutDay);
+                sourceCalendarDayModel.removeWorkout(workout);
+
+                // set the date
+                workout.moveToDay(newWorkoutDay);
+
+                // add it to the new day
+                destinationCalendarDayModel.addWorkout(workout);
+            }
 
             // update the workout date
             //alert('FINISH ME');
