@@ -19,21 +19,6 @@ function(draggable, TP, CalendarWorkoutTemplate)
             template: CalendarWorkoutTemplate
         },
 
-        events:
-        {
-            "click": "updateWorkoutDate"
-        },
-
-        updateWorkoutDate: function()
-        {
-            var newDate = prompt("Change Workout Date", this.model.get("WorkoutDay"));
-            if (newDate)
-            {
-                this.model.set("WorkoutDay", newDate);
-                //this.model.sync();
-            }
-        },
-
         modelEvents:
         {
             "change": "render"
