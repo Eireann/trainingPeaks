@@ -15,6 +15,7 @@ function(moment, TP, CalendarLayout, CalendarDayModel, CalendarView, WorkoutsCol
         views: null,
         daysCollection: null,
         daysHash: null,
+        workoutsCollection: null,
 
         show: function()
         {
@@ -29,6 +30,7 @@ function(moment, TP, CalendarLayout, CalendarDayModel, CalendarView, WorkoutsCol
             this.layout = new CalendarLayout();
             this.views = {};
             this.daysHash = {};
+            this.workoutsCollection = new WorkoutsCollection();
 
             // start on a Sunday
             this.startDate = moment().day(0).subtract("weeks", 4);
@@ -47,6 +49,8 @@ function(moment, TP, CalendarLayout, CalendarDayModel, CalendarView, WorkoutsCol
 
             this.views.calendar.bind("prepend", this.prependWeekToCalendar);
             this.views.calendar.bind("append", this.appendWeekToCalendar);
+           this.views.calendar.bind("workoutMoved", this.onWorkoutMoved);
+            
         },
 
         createCollectionOfDays: function(startDate, endDate)
@@ -81,7 +85,11 @@ function(moment, TP, CalendarLayout, CalendarDayModel, CalendarView, WorkoutsCol
 
             waiting.done(function()
             {
-                workouts.each(function(workout) { controller.addWorkoutToCalendarDay(workout); });
+                workouts.each(function (workout)
+                {
+                    controller.addWorkoutToCalendarDay(workout);
+                    controller.workoutsCollection.add(workout);
+                });
             });
         },
 
@@ -123,6 +131,12 @@ function(moment, TP, CalendarLayout, CalendarDayModel, CalendarView, WorkoutsCol
             // unshift doesn't accept a collection, but add does, using the 'at' option for index
             // and our calendarView needs the index option to append or prepend
             this.daysCollection.add(newDays.models, { index: 0, at: 0 });
+        },
+
+        onWorkoutMoved: function (workoutid, calendarDayModel)
+        {
+            var workout = this.workoutsCollection.get(workoutid);
+           // console.log(workout);
         }
     });
 });

@@ -1,11 +1,13 @@
 define(
 [
+    "jqueryui/droppable",
+    "underscore",
     "moment",
     "TP",
     "views/calendarWorkoutView",
     "hbs!templates/views/calendarDay"
 ],
-function(moment, TP, CalendarWorkoutView, CalendarDayTemplate)
+function(droppable, _, moment, TP, CalendarWorkoutView, CalendarDayTemplate)
 {
 
     var today = moment();
@@ -36,6 +38,7 @@ function(moment, TP, CalendarWorkoutView, CalendarDayTemplate)
         {
             this.appendWorkoutElement();
             this.setTodayCss();
+            this.setUpDroppable();
         },
 
         appendWorkoutElement: function()
@@ -57,6 +60,16 @@ function(moment, TP, CalendarWorkoutView, CalendarDayTemplate)
             {
                 this.$el.addClass("today");
             }
+        },
+
+        setUpDroppable: function () {
+            _.bindAll(this, "onDrop");
+            this.$el.droppable({ drop: this.onDrop })
+        },
+
+        onDrop: function (event, ui) {
+            console.log("dayView");
+            this.trigger("workoutMoved", ui.draggable.data("workoutid"), this.model);
         }
 
     });

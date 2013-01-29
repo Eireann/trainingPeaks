@@ -22,8 +22,11 @@ function(moment, TP, theApp, WorkoutModel)
         },
         initialize: function(models, options)
         {
-            this.startDate = options.startDate;
-            this.endDate = options.endDate;
+            if(options)
+            {
+                this.startDate = options.startDate;
+                this.endDate = options.endDate;
+            }
         }
     });
 });

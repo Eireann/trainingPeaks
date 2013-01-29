@@ -1,11 +1,12 @@
 ﻿define(
 [
+    "underscore",
     "TP",
     "views/calendarDayView",
     "hbs!templates/views/calendar",
     "hbs!templates/views/calendarWeek"
 ],
-function(TP, CalendarDayView, CalendarTemplate, CalendarWeekTemplate)
+function(_, TP, CalendarDayView, CalendarTemplate, CalendarWeekTemplate)
 {
     return TP.CompositeView.extend(
     {
@@ -35,6 +36,7 @@ function(TP, CalendarDayView, CalendarTemplate, CalendarWeekTemplate)
         onRender: function()
         {
             this.initWeeksContainer();
+            _.bind(this, "onWorkoutMoved");
         },
 
         onscroll: function(event)
@@ -110,6 +112,8 @@ function(TP, CalendarDayView, CalendarTemplate, CalendarWeekTemplate)
             }
 
             this.numDaysLeftForWeek--;
+
+            itemView.bind("workoutMoved", this.onWorkoutMoved);
         },
 
         // onShow instead of onRender, because in onRender we may not be visible in document yet, no offsets calculated
@@ -129,6 +133,12 @@ function(TP, CalendarDayView, CalendarTemplate, CalendarWeekTemplate)
                 var weekTop = lastWeek && lastWeek.offset() ? lastWeek.offset().top : thisWeek.offset().top;
                 this.$weeksContainer.scrollTop(weekTop - this.$weeksContainer.offset().top);
             }
+        },
+
+        onWorkoutMoved: function (workoutid, calendarDayModel)
+        {
+            console.log("calendarView");
+            this.trigger("workoutMoved", workoutid, calendarDayModel);
         }
 
     });

@@ -11,7 +11,9 @@ function(TP, theApp)
         url: function()
         {
             return theApp.apiRoot + "/WebApiServer/Fitness/V1/workouts";
-        }
+        },
+
+        idAttribute: "WorkoutId"
 
     });
 });
