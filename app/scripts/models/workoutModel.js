@@ -30,8 +30,7 @@ function(moment, TP, theApp)
             workoutDate.month(newDay.month());
             workoutDate.date(newDay.date());
             this.set("WorkoutDay", workoutDate.format("YYYY-MM-DDThh:mm:ss"));
-            var onSave = this.save();
-            onSave.done(function() { alert('saved'); });
+            this.save();
         }
 
     });
