@@ -17,6 +17,11 @@ function(_, TP, CalendarDayView, CalendarTemplate, CalendarWeekTemplate)
         numDaysLeftForWeek: 0,
         $weeksContainer: null,
 
+        initialize: function()
+        {
+            _.bindAll(this);
+        },
+
         template:
         {
             type: "handlebars",
@@ -36,7 +41,6 @@ function(_, TP, CalendarDayView, CalendarTemplate, CalendarWeekTemplate)
         onRender: function()
         {
             this.initWeeksContainer();
-            _.bind(this, "onWorkoutMoved");
         },
 
         onscroll: function(event)
@@ -65,7 +69,6 @@ function(_, TP, CalendarDayView, CalendarTemplate, CalendarWeekTemplate)
             if (!this.$weeksContainer)
             {
                 this.$weeksContainer = this.$(this.ui.weeksContainer);
-                _.bindAll(this, 'onscroll');
                 this.$weeksContainer.scroll(this.onscroll);
             }
             return this.$weeksContainer;

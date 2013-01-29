@@ -19,6 +19,7 @@ function(droppable, _, moment, TP, CalendarWorkoutView, CalendarDayTemplate)
 
         initialize: function(options)
         {
+            _.bindAll(this);
             if (!this.model)
                 throw "CalendarDayView needs a CalendarDayModel instance!";
         },
@@ -63,7 +64,6 @@ function(droppable, _, moment, TP, CalendarWorkoutView, CalendarDayTemplate)
         },
 
         setUpDroppable: function () {
-            _.bindAll(this, "onDrop");
             this.$el.droppable({ drop: this.onDrop })
         },
 

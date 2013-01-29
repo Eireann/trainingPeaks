@@ -49,7 +49,7 @@ function(moment, TP, CalendarLayout, CalendarDayModel, CalendarView, WorkoutsCol
 
             this.views.calendar.bind("prepend", this.prependWeekToCalendar);
             this.views.calendar.bind("append", this.appendWeekToCalendar);
-           this.views.calendar.bind("workoutMoved", this.onWorkoutMoved);
+            this.views.calendar.bind("workoutMoved", this.onWorkoutMoved);
             
         },
 
@@ -136,7 +136,8 @@ function(moment, TP, CalendarLayout, CalendarDayModel, CalendarView, WorkoutsCol
         onWorkoutMoved: function (workoutid, calendarDayModel)
         {
             var workout = this.workoutsCollection.get(workoutid);
-           // console.log(workout);
+            var toDate = calendarDayModel.get("date");
+            calendarDayModel.setWorkout(workout);
         }
     });
 });
