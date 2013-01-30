@@ -21,6 +21,11 @@ $navigationFontSize: 10px;
     cursor: move;
 }
 
+.waiting:after
+{
+    content:'i am waiting';
+}
+
 #calendarContainer
 {
 

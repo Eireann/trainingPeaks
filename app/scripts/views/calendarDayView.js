@@ -16,12 +16,26 @@ function(droppable, _, moment, TP, CalendarWorkoutView, CalendarDayTemplate)
     {
         tagName: "div",
         className: "day",
+        workoutViewEvents: null,
 
         initialize: function(options)
         {
             _.bindAll(this);
             if (!this.model)
                 throw "CalendarDayView needs a CalendarDayModel instance!";
+            this.workoutViewEvents = [];
+        },
+
+        onWaitStart: function()
+        {
+            this.trigger("waitStart");
+            this.$el.addClass('waiting');
+        },
+
+        onWaitStop: function()
+        {
+            this.trigger("waitStop");
+            this.$el.removeClass('waiting');
         },
 
         template:
@@ -37,14 +51,25 @@ function(droppable, _, moment, TP, CalendarWorkoutView, CalendarDayTemplate)
 
         onRender: function()
         {
+            this.cleanupWorkoutViewBindings();
             this.appendWorkoutElements();
             this.setTodayCss();
             this.setUpDroppable();
         },
 
+        cleanupWorkoutViewBindings: function() {
+            var dayView = this;
+            _.each(this.workoutViewEvents, function(workoutViewEvent)
+            {
+                //dayView.unbindFrom(workoutViewEvent);
+            });
+            this.workoutViewEvents = [];
+        },
+
         appendWorkoutElements: function()
         {
-            var workouts = this.model.getWorkouts();
+
+           var workouts = this.model.getWorkouts();
             for(var i = 0;i<workouts.length;i++) {
                 var workout = workouts.at(i);
                 var workoutDate = moment(workout.get("WorkoutDay")).format("YYYY-MM-DD");
@@ -55,6 +80,8 @@ function(droppable, _, moment, TP, CalendarWorkoutView, CalendarDayTemplate)
                 }
 
                 var workoutView = new CalendarWorkoutView({ model: workout });
+                this.workoutViewEvents.push(this.bindTo(workoutView, "waitStart", this.onWaitStart));
+                this.workoutViewEvents.push(this.bindTo(workoutView, "waitStop", this.onWaitStop));
                 workoutView.render();
                 this.$el.append(workoutView.el);
             }
