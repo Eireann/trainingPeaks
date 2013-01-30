@@ -138,9 +138,9 @@ function(_, TP, CalendarDayView, CalendarTemplate, CalendarWeekTemplate)
             }
         },
 
-        onWorkoutMoved: function (workoutid, calendarDayModel)
+        onWorkoutMoved: function(workoutId, calendarDayModel)
         {
-            this.trigger("workoutMoved", workoutid, calendarDayModel);
+            this.trigger("workoutMoved", workoutId, calendarDayModel);
         }
 
     });

@@ -102,6 +102,28 @@ function($, CalendarView, CalendarWeekTemplate)
             });
         });
 
+        describe("Workout drag and drop", function()
+        {
+
+            it("Should bind to itemView workoutMoved event", function()
+            {
+                var calendarView = new CalendarView();
+                var itemView = jasmine.createSpyObj('itemView spy', ['bind']);
+                calendarView.appendHtml({}, itemView, 0);
+                expect(itemView.bind).toHaveBeenCalledWith("workoutMoved", calendarView.onWorkoutMoved);
+            });
+
+            it("Should trigger workoutMoved event", function()
+            {
+                var calendarView = new CalendarView();
+                var calendarDayModel = {};
+                var workoutId = "12345";
+                spyOn(calendarView, "trigger");
+                calendarView.onWorkoutMoved(workoutId, calendarDayModel);
+                expect(calendarView.trigger).toHaveBeenCalledWith("workoutMoved", workoutId, calendarDayModel);
+            });
+        });
+
     });
 
 });

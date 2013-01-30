@@ -153,8 +153,6 @@ function(moment, TP, CalendarLayout, CalendarDaysCollection, CalendarDayModel, C
                 destinationCalendarDayModel.addWorkout(workout);
             }
 
-            // update the workout date
-            //alert('FINISH ME');
         }
     });
 });

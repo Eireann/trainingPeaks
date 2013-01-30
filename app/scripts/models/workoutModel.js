@@ -10,6 +10,8 @@ function(moment, TP, theApp)
     {
 
         idAttribute: "WorkoutId",
+        shortDateFormat: "YYYY-MM-DD",
+        dateFormat: "YYYY-MM-DDThh:mm:ss",
 
         url: function()
         {
@@ -18,18 +20,15 @@ function(moment, TP, theApp)
 
         getCalendarDate: function()
         {
-            var workoutDay = this.get("WorkoutDay");
-            return workoutDay.substr(0, workoutDay.indexOf("T"));
+            return moment(this.get("WorkoutDay")).format(this.shortDateFormat);
         },
 
         moveToDay: function(newDate)
         {
-            var newDay = moment(newDate);
+            newDate = moment(newDate);
             var workoutDate = moment(this.get("WorkoutDay"));
-            workoutDate.year(newDay.year());
-            workoutDate.month(newDay.month());
-            workoutDate.date(newDay.date());
-            this.set("WorkoutDay", workoutDate.format("YYYY-MM-DDThh:mm:ss"));
+            workoutDate.add("days", newDate.diff(workoutDate, "days"));
+            this.set("WorkoutDay", workoutDate.format(this.dateFormat));
             this.save();
         }
 

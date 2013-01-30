@@ -72,10 +72,10 @@ function(droppable, _, moment, TP, CalendarWorkoutView, CalendarDayTemplate)
 
         setUpDroppable: function()
         {
-            this.$el.droppable({ drop: this.onDrop });
+            this.$el.droppable({ drop: this.onDropWorkout });
         },
 
-        onDrop: function(event, ui)
+        onDropWorkout: function(event, ui)
         {
             this.trigger("workoutMoved", ui.draggable.data("workoutid"), this.model);
         }

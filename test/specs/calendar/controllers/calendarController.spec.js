@@ -110,6 +110,14 @@ function(moment, $, _, Backbone, CalendarController, WorkoutModel, WorkoutsColle
                 controller.initializeCalendar();
                 expect(CalendarView.__super__.bind).toHaveBeenCalledWith("append", controller.appendWeekToCalendar);
             });
+
+            it("Should bind to calendar view workoutMoved", function()
+            {
+                var controller = new CalendarController();
+                spyOn(CalendarView.__super__, "bind").andCallThrough();
+                controller.initializeCalendar();
+                expect(CalendarView.__super__.bind).toHaveBeenCalledWith("workoutMoved", controller.onWorkoutMoved);
+            });
         });
 
         describe("Create collection of days", function()
@@ -181,6 +189,7 @@ function(moment, $, _, Backbone, CalendarController, WorkoutModel, WorkoutsColle
                 );
 
                 spyOn(controller, "addWorkoutToCalendarDay");
+                spyOn(controller.workoutsCollection, "add");
                 var startDate = moment();
                 var endDate = moment().add("days", 3);
                 controller.requestWorkouts(startDate, endDate);
@@ -189,6 +198,7 @@ function(moment, $, _, Backbone, CalendarController, WorkoutModel, WorkoutsColle
                 _.each(workouts, function(workout)
                 {
                     expect(controller.addWorkoutToCalendarDay).toHaveBeenCalledWith(workout);
+                    expect(controller.workoutsCollection.add).toHaveBeenCalledWith(workout);
                 });
 
             });
@@ -321,6 +331,49 @@ function(moment, $, _, Backbone, CalendarController, WorkoutModel, WorkoutsColle
                 var lastCall = controller.daysCollection.add.mostRecentCall;
                 expect(lastCall.args[1].index).toBeDefined();
                 expect(lastCall.args[1].index).toEqual(lengthBeforeAppending);
+            });
+        });
+
+        describe("onWorkoutMoved", function()
+        {
+
+            var yesterday = moment().subtract("days", 1).format("YYYY-MM-DD");
+            var tomorrow = moment().add("days", 1).format("YYYY-MM-DD");
+            var workoutId = "12345678";
+            var controller;
+            var workout;
+            var yesterdayCalendarDay;
+            var tomorrowCalendarDay;
+
+            beforeEach(function()
+            {
+                controller = new CalendarController();
+                workout = new WorkoutModel({ WorkoutDay: yesterday + "T00:00:00", WorkoutId: workoutId });
+                controller.addWorkoutToCalendarDay(workout);
+                controller.workoutsCollection.add(workout);
+                yesterdayCalendarDay = controller.daysCollection.get(yesterday);
+                tomorrowCalendarDay = controller.daysCollection.get(tomorrow);
+            });
+
+            it("Should call removeWorkout on yesterday's calendarDay model", function()
+            {
+                spyOn(yesterdayCalendarDay, "removeWorkout");
+                controller.onWorkoutMoved(workoutId, tomorrowCalendarDay);
+                expect(yesterdayCalendarDay.removeWorkout).toHaveBeenCalledWith(workout);
+            });
+
+            it("Should call addWorkout on tomorrow's calendarDay model", function()
+            {
+                spyOn(tomorrowCalendarDay, "addWorkout");
+                controller.onWorkoutMoved(workoutId, tomorrowCalendarDay);
+                expect(tomorrowCalendarDay.addWorkout).toHaveBeenCalledWith(workout);
+            });
+
+            it("Should call moveToDay on workout", function()
+            {
+                spyOn(workout, "moveToDay").andCallThrough();
+                controller.onWorkoutMoved(workoutId, tomorrowCalendarDay);
+                expect(workout.moveToDay).toHaveBeenCalledWith(tomorrow);
             });
         });
 
