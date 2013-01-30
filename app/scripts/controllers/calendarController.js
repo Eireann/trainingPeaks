@@ -152,7 +152,8 @@ function (moment, TP, CalendarLayout, CalendarWeekCollection, CalendarDayModel, 
             var workout = this.workoutsCollection.get(options.workoutId);
             var oldWorkoutDay = workout.getCalendarDate();
             var newWorkoutDay = options.destinationCalendarDayModel.id;
-
+			var controller = this;
+			
 
             if (oldWorkoutDay !== newWorkoutDay)
             {
@@ -173,6 +174,7 @@ function (moment, TP, CalendarLayout, CalendarWeekCollection, CalendarDayModel, 
                     // if it fails, move it back
                     sourceCalendarDayModel.addWorkout(workout);
                     options.destinationCalendarDayModel.removeWorkout(workout);
+                    controller.onError('Server Error: Unable to move workout');
                 });
 
                 // add it to the new day

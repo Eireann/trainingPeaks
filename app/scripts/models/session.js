@@ -18,7 +18,7 @@ function ($, _, TP, theApp)
 
         storageLocation: localStorage,
 
-        initialize: function ()
+        initialize: function()
         {
             _.bindAll(this);
             

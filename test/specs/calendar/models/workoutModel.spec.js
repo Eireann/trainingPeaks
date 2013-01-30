@@ -40,14 +40,20 @@ function(moment, $, WorkoutModel)
             beforeEach(function()
             {
                 workout = new WorkoutModel({ WorkoutId: "12345", WorkoutDay: originalDate });
+                spyOn(workout, "save").andReturn($.Deferred());
             });
 
             it("Should update WorkoutDay and call save", function()
             {
-                spyOn(workout, "save").andReturn($.Deferred());
-                var newDate = moment().add("days", 4);
+                var newDate = moment("2012-07-19");
                 workout.moveToDay(newDate);
                 expect(workout.getCalendarDate()).toEqual(newDate.format(WorkoutModel.prototype.shortDateFormat));
+            });
+
+            it("Should call save", function()
+            {
+                var newDate = moment("2019-03-21");
+                workout.moveToDay(newDate);
                 expect(workout.save).toHaveBeenCalled();
             });
         });
