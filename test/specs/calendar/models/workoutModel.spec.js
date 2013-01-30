@@ -1,8 +1,9 @@
 // use requirejs() here, not define(), for jasmine compatibility
 requirejs(
     ["moment",
+    "jquery",
     "models/workoutModel"],
-function(moment, WorkoutModel)
+function(moment, $, WorkoutModel)
 {
     describe("Workout Model", function()
     {
@@ -43,7 +44,7 @@ function(moment, WorkoutModel)
 
             it("Should update WorkoutDay and call save", function()
             {
-                spyOn(workout, "save");
+                spyOn(workout, "save").andReturn($.Deferred());
                 var newDate = moment().add("days", 4);
                 workout.moveToDay(newDate);
                 expect(workout.getCalendarDate()).toEqual(newDate.format(WorkoutModel.prototype.shortDateFormat));

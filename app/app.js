@@ -44,7 +44,7 @@ function($, TP)
     };
 
     theApp.root = "/Mars";
-    theApp.apiRoot = apiRoots.dev;
+    theApp.apiRoot = apiRoots.local;
 
     return theApp;
 });

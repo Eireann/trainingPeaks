@@ -144,10 +144,20 @@ function(moment, TP, CalendarLayout, CalendarDaysCollection, CalendarDayModel, C
             {
                 // remove it from the current day
                 var sourceCalendarDayModel = this.daysCollection.get(oldWorkoutDay);
+
+                // set the date, and move back if failed
                 sourceCalendarDayModel.removeWorkout(workout);
 
                 // set the date
-                workout.moveToDay(newWorkoutDay);
+                workout.moveToDay(newWorkoutDay).fail(
+
+                    // if it fails, move it back
+                    function()
+                    {
+                        sourceCalendarDayModel.addWorkout(workout);
+                        destinationCalendarDayModel.removeWorkout(workout);
+                    }
+                );
 
                 // add it to the new day
                 destinationCalendarDayModel.addWorkout(workout);

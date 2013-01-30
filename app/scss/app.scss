@@ -11,6 +11,16 @@ $TPBlue: #005695;
 $navigationFontFamily: Arial, 'DejaVu Sans', 'Liberation Sans', Freesans, sans-serif;
 $navigationFontSize: 10px;
 
+.ui-draggable
+{
+    cursor: pointer;
+}
+
+.ui-draggable-dragging
+{
+    cursor: move;
+}
+
 #calendarContainer
 {
 

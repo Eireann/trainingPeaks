@@ -20,12 +20,7 @@ function(moment, $, _, Backbone, CalendarController, WorkoutModel, WorkoutsColle
             // let's not make any remote server calls, just testing object interactions here
             spyOn($, "ajax").andCallFake(function()
             {
-                return {
-                    done: function(callback)
-                    {
-                        callback();
-                    }
-                };
+                return $.Deferred();
             });
         });
 
@@ -375,6 +370,28 @@ function(moment, $, _, Backbone, CalendarController, WorkoutModel, WorkoutsColle
                 controller.onWorkoutMoved(workoutId, tomorrowCalendarDay);
                 expect(workout.moveToDay).toHaveBeenCalledWith(tomorrow);
             });
+
+            it("Should move workout back if save fails", function()
+            {
+                var deferred = $.Deferred();
+                spyOn(workout, "save").andReturn(deferred);
+                spyOn(tomorrowCalendarDay, "addWorkout");
+                spyOn(tomorrowCalendarDay, "removeWorkout");
+                spyOn(yesterdayCalendarDay, "addWorkout");
+                spyOn(yesterdayCalendarDay, "removeWorkout");
+
+                // move it ...
+                controller.onWorkoutMoved(workoutId, tomorrowCalendarDay);
+                expect(tomorrowCalendarDay.addWorkout).toHaveBeenCalledWith(workout);
+                expect(yesterdayCalendarDay.removeWorkout).toHaveBeenCalledWith(workout);
+
+                // fail - should move back
+                deferred.reject();
+                expect(tomorrowCalendarDay.removeWorkout).toHaveBeenCalledWith(workout);
+                expect(yesterdayCalendarDay.addWorkout).toHaveBeenCalledWith(workout);
+
+            });
+
         });
 
     });

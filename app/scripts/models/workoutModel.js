@@ -26,10 +26,19 @@ function(moment, TP, theApp)
         moveToDay: function(newDate)
         {
             newDate = moment(newDate);
-            var workoutDate = moment(this.get("WorkoutDay"));
+            var originalDate = this.get("WorkoutDay");
+            var workoutDate = moment(originalDate);
             workoutDate.add("days", newDate.diff(workoutDate, "days"));
+
+            var theWorkout = this;
             this.set("WorkoutDay", workoutDate.format(this.dateFormat));
-            this.save();
+
+            // on fail, return to old date
+            return this.save().fail(function()
+            {
+                theWorkout.set("WorkoutDay", originalDate);
+            });
+            
         }
 
     });
