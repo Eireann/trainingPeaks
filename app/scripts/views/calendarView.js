@@ -1,33 +1,21 @@
 ﻿define(
 [
-    "underscore",
     "TP",
-    "views/calendarDayView",
-    "hbs!templates/views/calendar",
-    "hbs!templates/views/calendarWeek"
+    "views/calendarWeekView",
+    "hbs!templates/views/customCalendar"
 ],
-function(_, TP, CalendarDayView, CalendarTemplate, CalendarWeekTemplate)
+function(TP, CalendarWeekView, customCalendarTemplate)
 {
-    return TP.CompositeView.extend(
+    return TP.ItemView.extend(
     {
-        tagName: 'div',
-        itemView: CalendarDayView,
-        itemViewContainer: "#weeksContainer",
-        numWeeks: 0,
-        numDaysLeftForWeek: 0,
-        firstTimeThrough: true,
-        insertWeekSummary: false,
         $weeksContainer: null,
-
-        initialize: function()
-        {
-            _.bindAll(this);
-        },
-
+        
+        children: [],
+        
         template:
         {
             type: "handlebars",
-            template: CalendarTemplate
+            template: customCalendarTemplate
         },
 
         ui:
@@ -35,17 +23,65 @@ function(_, TP, CalendarDayView, CalendarTemplate, CalendarWeekTemplate)
             "weeksContainer": "#weeksContainer"
         },
 
-        events:
+        modelEvents:
         {
-            "scroll": "onscroll"
+            "change": "render"
         },
 
-        onRender: function()
+        collectionEvents:
         {
-            this.initWeeksContainer();
+            "add": "onAddWeek",
+            "reset": "render"
+        },
+        
+        initialize: function(options)
+        {
+            _.bindAll(this);
         },
 
-        onscroll: function(event)
+        onAddWeek: function(model)
+        {
+            var weekCollection = model.get("week");
+            this.addWeek({ collection: weekCollection, append: arguments[2].append });
+        },
+
+        addWeek: function(options)
+        {
+            var weekView = new CalendarWeekView({ collection: options.collection });
+            weekView.bind("itemview:workoutMoved", this.onWorkoutMoved);
+            
+            if (options.append)
+                this.$weeksContainer.append(weekView.render().el);
+            else
+            {
+                this.$weeksContainer.prepend(weekView.render().el);
+
+                //TODO set scrollTop() value to avoid scrolling when prepending.
+            }
+
+            //TODO Bind any possible CalendarWeekView events here
+            this.children.push(weekView);
+        },
+
+        onRender: function ()
+        {
+            if (!this.collection)
+                throw "CalendarView needs a Collection!";
+
+            this.$weeksContainer = this.$(this.ui.weeksContainer);
+            this.$weeksContainer.scroll(this.onScroll);
+
+            var numWeeks = this.collection.length;
+            var i = 0;
+
+            for (; i < numWeeks; i++)
+            {
+                var weekCollection = this.collection.at(i).get("week");
+                this.addWeek({ collection: weekCollection, append: true });
+            }
+        },
+        
+        onScroll: function()
         {
             var howMuchIHave = this.$weeksContainer[0].scrollHeight;
             var howMuchIsVisible = this.$weeksContainer.height();
@@ -66,88 +102,10 @@ function(_, TP, CalendarDayView, CalendarTemplate, CalendarWeekTemplate)
 
             return;
         },
-
-        initWeeksContainer: function ()
+        
+        onWorkoutMoved: function(itemView, options)
         {
-            if (!this.$weeksContainer)
-            {
-                this.$weeksContainer = this.$(this.ui.weeksContainer);
-                this.$weeksContainer.scroll(this.onscroll);
-            }
-            return this.$weeksContainer;
-        },
-
-        appendHtml: function(collectionView, itemView, index)
-        {
-            this.initWeeksContainer();
-
-            var prepend = false;
-
-            if (index === 0 && this.numWeeks > 0)
-                prepend = true;
-
-            var insertRowFunctionName;
-            var findRowFunctionName;
-
-            if (prepend)
-            {
-                insertRowFunctionName = 'prepend';
-                findRowFunctionName = 'first';
-            }
-            else
-            {
-                insertRowFunctionName = 'append';
-                findRowFunctionName = 'last';
-            }
-
-            if (this.numDaysLeftForWeek === 0)
-            {
-
-                // Continue displaying days
-                this.numDaysLeftForWeek = 7;
-                ++this.numWeeks;
-
-                var weekHtml = CalendarWeekTemplate({});
-                this.$weeksContainer[insertRowFunctionName](weekHtml);
-
-                if (this.numWeeks > 1)
-                    this.$weeksContainer.find(".week")[findRowFunctionName]().append("<div class='weekSummary'>Week Summary</div>");
-            }
-
-            this.$weeksContainer.find(".week")[findRowFunctionName]().append(itemView.el);
-
-            // when we prepend a new week, adjust scrollTop accordingly
-            if (prepend && this.numDaysLeftForWeek === 7)
-                this.$weeksContainer.scrollTop(this.$weeksContainer.scrollTop() + itemView.$el.height());
-
-            this.numDaysLeftForWeek--;
-
-            itemView.bind("workoutMoved", this.onWorkoutMoved);
-        },
-
-        // onShow instead of onRender, because in onRender we may not be visible in document yet, no offsets calculated
-        onShow: function()
-        {
-            this.scrollToToday();
-        },
-
-        scrollToToday: function()
-        {
-            // scroll so that the week before is visible
-            var today = this.$weeksContainer.find('.today');
-            if (today.length > 0)
-            {
-                var thisWeek = today.parent();
-                var lastWeek = thisWeek.prev();
-                var weekTop = lastWeek && lastWeek.offset() ? lastWeek.offset().top : thisWeek.offset().top;
-                this.$weeksContainer.scrollTop(weekTop - this.$weeksContainer.offset().top);
-            }
-        },
-
-        onWorkoutMoved: function(workoutId, calendarDayModel)
-        {
-            this.trigger("workoutMoved", workoutId, calendarDayModel);
+            this.trigger("workoutMoved", options);
         }
-
     });
 });

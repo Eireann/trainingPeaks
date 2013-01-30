@@ -1,21 +1,23 @@
 define(
-[
+    [
     "moment",
     "TP",
     "layouts/calendarLayout",
-    "models/calendarDaysCollection",
+    "models/calendarWeekCollection",
     "models/calendarDay",
-    "views/customCalendarView",
+    "views/calendarView",
     "models/workoutsCollection"
-],
-function(moment, TP, CalendarLayout, CalendarDaysCollection, CalendarDayModel, CalendarView, WorkoutsCollection)
+    ],
+function (moment, TP, CalendarLayout, CalendarWeekCollection, CalendarDayModel, CalendarView, WorkoutsCollection)
 {
     return TP.Controller.extend(
     {
         layout: null,
         views: null,
-        daysCollection: null,
+        weeksCollection: null,
         workoutsCollection: null,
+
+        startOfWeekDayIndex: 0,
 
         show: function()
         {
@@ -30,12 +32,13 @@ function(moment, TP, CalendarLayout, CalendarDaysCollection, CalendarDayModel, C
             this.layout = new CalendarLayout();
             this.views = {};
             this.workoutsCollection = new WorkoutsCollection();
+            this.collectionOfWeeks = new TP.Collection();
 
             // start on a Sunday
-            this.startDate = moment().day(0).subtract("weeks", 4);
+            this.startDate = moment().day(this.startOfWeekDayIndex).subtract("weeks", 4);
 
             // end on a Saturday
-            this.endDate = moment().day(6).add("weeks", 6);
+            this.endDate = moment().day(6 + this.startOfWeekDayIndex).add("weeks", 6);
 
             this.initializeCalendar();
             this.requestWorkouts(this.startDate, this.endDate);
@@ -43,9 +46,21 @@ function(moment, TP, CalendarLayout, CalendarDaysCollection, CalendarDayModel, C
 
         initializeCalendar: function()
         {
-            var weekDaysModel = new Backbone.Model({ weekDays: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"] });
-            this.daysCollection = this.createCollectionOfDays(moment(this.startDate), moment(this.endDate));
-            this.views.calendar = new CalendarView({ model: weekDaysModel, collection: this.daysCollection });
+            var weekDaysModel = new TP.Model({ weekDays: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"] });
+
+            var numOfWeeksToShow = (this.endDate.diff(this.startDate, "days") + 1) / 7;
+            var i;
+            
+            for (i = 0; i < numOfWeeksToShow; i++)
+            {
+                var weekStartDate = moment(this.startDate).add("weeks", i);
+
+                // Get a CalendarWeekCollection and wrap it inside a model, with its matching ID, to be able to add it to a parent collection
+                var weekModel = new TP.Model({ id: weekStartDate.format("YYYY-MM-DD"), week: this.createWeekCollectionStartingOn(weekStartDate) });
+                this.collectionOfWeeks.add(weekModel, { silent: true });
+            }
+
+            this.views.calendar = new CalendarView({ model: weekDaysModel, collection: this.collectionOfWeeks });
 
             this.views.calendar.bind("prepend", this.prependWeekToCalendar);
             this.views.calendar.bind("append", this.appendWeekToCalendar);
@@ -53,41 +68,36 @@ function(moment, TP, CalendarLayout, CalendarDaysCollection, CalendarDayModel, C
             
         },
 
-        createCollectionOfDays: function(startDate, endDate)
+        createWeekCollectionStartingOn: function(startDate)
         {
+            // This method return an actual Backbone.Collection.
+            // Later, if we want to be able to insert it into another Backbone.Collection,
+            // we need to wrap it inside a Backbone.Model.
+            var weekCollection = new CalendarWeekCollection();
 
-            // so we don't modify a caller's date
-            startDate = moment(startDate);
-
-            // add one to endDate.diff, to include endDate itself
-            var numOfDaysToShow = endDate.diff(startDate, "days") + 1;
-
-            var daysCollection = new CalendarDaysCollection();
-
-            for (var dayOffset = 0; dayOffset < numOfDaysToShow; ++dayOffset)
+            for (var dayOffset = 0; dayOffset < 7; ++dayOffset)
             {
                 var day = new CalendarDayModel({ date: moment(startDate) });
-                daysCollection.add(day);
+                weekCollection.add(day);
                 startDate.add("days", 1);
             }
 
-            return daysCollection;
+            return weekCollection;
         },
 
-        requestWorkouts: function(startDate, endDate)
+        requestWorkouts: function (startDate, endDate)
         {
-
             var workouts = new WorkoutsCollection([], { startDate: moment(startDate), endDate: moment(endDate) });
 
             var waiting = workouts.fetch();
-            var controller = this;
+            var self = this;
 
-            waiting.done(function()
+            waiting.done(function ()
             {
                 workouts.each(function (workout)
                 {
-                    controller.addWorkoutToCalendarDay(workout);
-                    controller.workoutsCollection.add(workout);
+                    self.addWorkoutToCalendarDay(workout);
+                    self.workoutsCollection.add(workout);
                 });
             });
         },
@@ -97,11 +107,15 @@ function(moment, TP, CalendarLayout, CalendarDaysCollection, CalendarDayModel, C
             var workoutDay = workout.getCalendarDate();
             if (workoutDay)
             {
-                var dayModel = this.daysCollection.get(workoutDay);
-                if (dayModel)
-                {
-                    dayModel.addWorkout(workout);
-                }
+                var weekModel = this.collectionOfWeeks.get(moment(workoutDay).day(this.startOfWeekDayIndex).format("YYYY-MM-DD"));
+                if (!weekModel)
+                    return;
+                
+                var dayModel = weekModel.get("week").get(workoutDay);
+                if (!dayModel)
+                    return;
+                
+                dayModel.addWorkout(workout);
             }
         },
 
@@ -112,10 +126,10 @@ function(moment, TP, CalendarLayout, CalendarDaysCollection, CalendarDayModel, C
             this.endDate = moment(endDate);
 
             this.requestWorkouts(startDate, endDate);
-            var newDays = this.createCollectionOfDays(startDate, endDate);
+            var newWeekCollection = this.createWeekCollectionStartingOn(moment(startDate));
+            var newWeekModel = new TP.Model({ id: startDate.format("YYYY-MM-DD"), week: newWeekCollection });
 
-            // index option tells calendarView whether we're appending or prepending
-            this.daysCollection.add(newDays.models, { index: this.daysCollection.length });
+            this.collectionOfWeeks.add(newWeekModel, { append: true });
         },
 
         prependWeekToCalendar: function()
@@ -125,43 +139,44 @@ function(moment, TP, CalendarLayout, CalendarDaysCollection, CalendarDayModel, C
             this.startDate = moment(startDate);
 
             this.requestWorkouts(startDate, endDate);
-            var newDays = this.createCollectionOfDays(startDate, endDate);
+            var newWeekCollection = this.createWeekCollectionStartingOn(startDate);
+            var newWeekModel = new TP.Model({ id: startDate.format("YYYY-MM-DD"), week: newWeekCollection });
 
-            // unshift doesn't accept a collection, but add does, using the 'at' option for index
-            // and our calendarView needs the index option to append or prepend
-            this.daysCollection.add(newDays.models, { index: 0, at: 0 });
+            this.collectionOfWeeks.add(newWeekModel, { at: 0, append: false });
         },
 
-        onWorkoutMoved: function(workoutid, destinationCalendarDayModel)
+        onWorkoutMoved: function (options)
         {
 
             // get the workout
-            var workout = this.workoutsCollection.get(workoutid);
+            var workout = this.workoutsCollection.get(options.workoutId);
             var oldWorkoutDay = workout.getCalendarDate();
-            var newWorkoutDay = destinationCalendarDayModel.id;
+            var newWorkoutDay = options.destinationCalendarDayModel.id;
 
 
             if (oldWorkoutDay !== newWorkoutDay)
             {
                 // remove it from the current day
-                var sourceCalendarDayModel = this.daysCollection.get(oldWorkoutDay);
+                var oldWorkoutWeek = moment(oldWorkoutDay).day(this.startOfWeekDayIndex);
+
+                if (!this.collectionOfWeeks.get(oldWorkoutWeek.format("YYYY-MM-DD")))
+                    throw "Could not find week for source day";
+                
+                var sourceCalendarDayModel = this.collectionOfWeeks.get(oldWorkoutWeek.format("YYYY-MM-DD")).get("week").get(oldWorkoutDay);
 
                 // set the date, and move back if failed
                 sourceCalendarDayModel.removeWorkout(workout);
 
                 // set the date
-                workout.moveToDay(newWorkoutDay).fail(
-
+                workout.moveToDay(newWorkoutDay).fail(function()
+                {
                     // if it fails, move it back
-                    function()
-                    {
-                        sourceCalendarDayModel.addWorkout(workout);
-                        destinationCalendarDayModel.removeWorkout(workout);
-                    }
-                );
+                    sourceCalendarDayModel.addWorkout(workout);
+                    options.destinationCalendarDayModel.removeWorkout(workout);
+                });
 
                 // add it to the new day
-                destinationCalendarDayModel.addWorkout(workout);
+                options.destinationCalendarDayModel.addWorkout(workout);
             }
 
         }
