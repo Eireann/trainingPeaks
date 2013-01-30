@@ -14,12 +14,12 @@ function(moment, printDate, CalendarDayModel, WorkoutModel, CalendarWorkoutView,
     describe("CalendarDayView ", function()
     {
 
-        it("should be loaded as a module", function()
+        it("Should be loaded as a module", function()
         {
             expect(CalendarDayView).toBeDefined();
         });
 
-        it("should watch for model change events", function()
+        it("Should watch for model change events", function()
         {
             expect(CalendarDayView.prototype.modelEvents.change).toBeDefined();
             expect(CalendarDayView.prototype.modelEvents.change).toEqual("render");
@@ -72,7 +72,7 @@ function(moment, printDate, CalendarDayModel, WorkoutModel, CalendarWorkoutView,
                     var today = moment();
                     var workoutModel = new WorkoutModel({ WorkoutId: '12345', WorkoutDay: today.format() });
                     var dayModel = new CalendarDayModel({ date: today });
-                    dayModel.setWorkout(workoutModel);
+                    dayModel.addWorkout(workoutModel);
                     var dayView = new CalendarDayView({ model: dayModel });
 
                     spyOn(CalendarWorkoutView.prototype, "render").andCallThrough();
@@ -81,8 +81,39 @@ function(moment, printDate, CalendarDayModel, WorkoutModel, CalendarWorkoutView,
 
                     var workoutView = new CalendarWorkoutView({ model: workoutModel });
                     workoutView.render();
+
                     expect(dayView.$el.html()).toContain(workoutView.el.outerHTML);
                 });
+            });
+
+            describe("Drag and drop", function()
+            {
+
+                it("Should make $el a droppable target", function()
+                {
+                    var dayModel = new CalendarDayModel({ date: moment() });
+                    var dayView = new CalendarDayView({ model: dayModel });
+                    spyOn(dayView.$el, "droppable");
+                    dayView.setUpDroppable();
+                    expect(dayView.$el.droppable).toHaveBeenCalledWith({ drop: dayView.onDropWorkout });
+                });
+
+                it("Should trigger a workoutMoved event", function()
+                {
+                    var dayModel = new CalendarDayModel({ date: moment() });
+                    var dayView = new CalendarDayView({ model: dayModel });
+                    var uiMock = {
+                        draggable: {
+                            data: function() {
+                                return "12345";
+                            }
+                        }
+                    };
+                    spyOn(dayView, "trigger");
+                    dayView.onDropWorkout({}, uiMock);
+                    expect(dayView.trigger).toHaveBeenCalledWith("workoutMoved", "12345", dayModel);
+                });
+
             });
 
         });

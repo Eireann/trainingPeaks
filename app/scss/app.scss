@@ -11,6 +11,16 @@ $TPBlue: #005695;
 $navigationFontFamily: Arial, 'DejaVu Sans', 'Liberation Sans', Freesans, sans-serif;
 $navigationFontSize: 10px;
 
+.ui-draggable
+{
+    cursor: pointer;
+}
+
+.ui-draggable-dragging
+{
+    cursor: move;
+}
+
 #calendarContainer
 {
 
@@ -28,11 +38,13 @@ $navigationFontSize: 10px;
     .day
     {
         @include column(2);
-        height: 150px;
+        min-height: 150px;
+        max-height: 450px;
         border: 2px solid $white;
 		background-color: $lightGrey;
         padding: 5px;
-        overflow: auto;
+        overflow-x: auto;
+        overflow-y: visible;
         .workout
         {
 			p

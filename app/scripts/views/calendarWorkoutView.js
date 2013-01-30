@@ -11,7 +11,13 @@ function(draggable, TP, CalendarWorkoutTemplate)
 
         tagName: "div",
         className: "workout",
-        attributes: {},
+
+        attributes: function()
+        {
+            var attributes = {};
+            attributes["data-WorkoutId"] = this.model.id;
+            return attributes;
+        },
 
         template:
         {
@@ -26,12 +32,15 @@ function(draggable, TP, CalendarWorkoutTemplate)
 
         initialize: function(options)
         {
-            this.attributes["data-WorkoutId"] = this.model.get("WorkoutId");
+            if (!this.model)
+            {
+                throw "Cannot have a CalendarWorkoutView without a model";
+            }
         },
 
         onRender: function()
-        {   
-            this.$el.draggable({appendTo:'body', helper:'clone', cursor:'move', opacity:.7, revert:true});
+        {
+            this.$el.draggable({ appendTo: 'body', helper: 'clone', opacity: 0.7 });
         }
                                                         
 

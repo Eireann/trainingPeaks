@@ -15,14 +15,14 @@ specLoader.defineLoader(requirejs);
 // fake registry until the spec loader module loads
 fakeRegistry = {};
 theSpecLoader = {
-    register: function (name) {
-        //console.log('fake registering: ' + name);
+    register: function(name)
+    {
         fakeRegistry[name] = false;
-  },
-    completed: function (name) {
-        //console.log('fake completed: ' + name);
+    },
+    completed: function(name)
+    {
         fakeRegistry[name] = true;
-  }
+    }
 };
 
 // get the loader and update it with any of our fake registry values
