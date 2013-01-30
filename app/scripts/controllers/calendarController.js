@@ -4,7 +4,7 @@ define(
     "TP",
     "layouts/calendarLayout",
     "models/calendarDay",
-    "views/calendarView",
+    "views/customCalendarView",
     "models/workoutsCollection"
 ],
 function(moment, TP, CalendarLayout, CalendarDayModel, CalendarView, WorkoutsCollection)
@@ -44,8 +44,9 @@ function(moment, TP, CalendarLayout, CalendarDayModel, CalendarView, WorkoutsCol
 
         initializeCalendar: function()
         {
+            var weekDaysModel = new Backbone.Model({ weekDays: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"] });
             this.daysCollection = this.createCollectionOfDays(moment(this.startDate), moment(this.endDate));
-            this.views.calendar = new CalendarView({ collection: this.daysCollection });
+            this.views.calendar = new CalendarView({ model: weekDaysModel, collection: this.daysCollection });
 
             this.views.calendar.bind("prepend", this.prependWeekToCalendar);
             this.views.calendar.bind("append", this.appendWeekToCalendar);
@@ -63,7 +64,7 @@ function(moment, TP, CalendarLayout, CalendarDayModel, CalendarView, WorkoutsCol
             var numOfDaysToShow = endDate.diff(startDate, "days") + 1;
 
             var daysCollection = new TP.Collection();
-
+            
             for (var dayOffset = 0; dayOffset < numOfDaysToShow; ++dayOffset)
             {
                 var day = new CalendarDayModel({ date: moment(startDate) });

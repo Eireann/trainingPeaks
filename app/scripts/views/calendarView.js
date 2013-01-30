@@ -15,6 +15,8 @@ function(_, TP, CalendarDayView, CalendarTemplate, CalendarWeekTemplate)
         itemViewContainer: "#weeksContainer",
         numWeeks: 0,
         numDaysLeftForWeek: 0,
+        firstTimeThrough: true,
+        insertWeekSummary: false,
         $weeksContainer: null,
 
         initialize: function()
@@ -65,7 +67,8 @@ function(_, TP, CalendarDayView, CalendarTemplate, CalendarWeekTemplate)
             return;
         },
 
-        initWeeksContainer: function() {
+        initWeeksContainer: function ()
+        {
             if (!this.$weeksContainer)
             {
                 this.$weeksContainer = this.$(this.ui.weeksContainer);
@@ -81,16 +84,17 @@ function(_, TP, CalendarDayView, CalendarTemplate, CalendarWeekTemplate)
             var prepend = false;
 
             if (index === 0 && this.numWeeks > 0)
-            {
                 prepend = true;
-            }
 
+            var insertRowFunctionName;
+            var findRowFunctionName;
 
             if (prepend)
             {
                 insertRowFunctionName = 'prepend';
                 findRowFunctionName = 'first';
-            } else
+            }
+            else
             {
                 insertRowFunctionName = 'append';
                 findRowFunctionName = 'last';
@@ -98,21 +102,23 @@ function(_, TP, CalendarDayView, CalendarTemplate, CalendarWeekTemplate)
 
             if (this.numDaysLeftForWeek === 0)
             {
+
+                // Continue displaying days
                 this.numDaysLeftForWeek = 7;
                 ++this.numWeeks;
 
                 var weekHtml = CalendarWeekTemplate({});
                 this.$weeksContainer[insertRowFunctionName](weekHtml);
-            }
 
+                if (this.numWeeks > 1)
+                    this.$weeksContainer.find(".week")[findRowFunctionName]().append("<div class='weekSummary'>Week Summary</div>");
+            }
 
             this.$weeksContainer.find(".week")[findRowFunctionName]().append(itemView.el);
 
             // when we prepend a new week, adjust scrollTop accordingly
             if (prepend && this.numDaysLeftForWeek === 7)
-            {
                 this.$weeksContainer.scrollTop(this.$weeksContainer.scrollTop() + itemView.$el.height());
-            }
 
             this.numDaysLeftForWeek--;
 
