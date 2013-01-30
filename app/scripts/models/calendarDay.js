@@ -28,11 +28,11 @@ function(_, moment, TP, WorkoutsCollection)
             if (!moment.isMoment(date))
             {
                 date = moment(date);
-                this.set("date", date);
+                this.set("date", date, { silent: true });
             }
 
             // formatted date for id in collection 
-            this.set("dateString", moment(date).format(this.dateFormat));
+            this.set("dateString", moment(date).format(this.dateFormat), { silent: true });
 
             // empty collection to store our workouts
             this.workouts = new WorkoutsCollection();

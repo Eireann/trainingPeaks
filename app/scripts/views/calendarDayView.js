@@ -68,16 +68,15 @@ function(droppable, _, moment, TP, CalendarWorkoutView, CalendarDayTemplate)
 
         appendWorkoutElements: function()
         {
-
-           var workouts = this.model.getWorkouts();
-            for(var i = 0;i<workouts.length;i++) {
+            var workouts = this.model.getWorkouts();
+            for (var i = 0; i < workouts.length; i++)
+            {
                 var workout = workouts.at(i);
                 var workoutDate = moment(workout.get("WorkoutDay")).format("YYYY-MM-DD");
                 var modelDate = this.model.id;
+                
                 if (workoutDate !== modelDate)
-                {
                     throw "Cannot render workout dated " + workoutDate + " to calendarDayView " + modelDate;
-                }
 
                 var workoutView = new CalendarWorkoutView({ model: workout });
                 this.workoutViewEvents.push(this.bindTo(workoutView, "waitStart", this.onWaitStart));
@@ -104,7 +103,7 @@ function(droppable, _, moment, TP, CalendarWorkoutView, CalendarDayTemplate)
 
         onDropWorkout: function(event, ui)
         {
-            this.trigger("workoutMoved", ui.draggable.data("workoutid"), this.model);
+            this.trigger("workoutMoved", { workoutId: ui.draggable.data("workoutid"), destinationCalendarDayModel: this.model });
         }
 
     });

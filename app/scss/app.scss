@@ -63,6 +63,16 @@ $navigationFontSize: 10px;
         }
     }
 
+    .weekSummary
+    {
+        @include column(2);
+        height: 150px;
+        border: 2px solid $white;
+        background-color: $darkGrey;
+        padding: 5px;
+        overflow: hidden;
+    }
+
     .today
     {
         background-color: $TPBlue;
