@@ -28,11 +28,13 @@ $navigationFontSize: 10px;
     .day
     {
         @include column(2);
-        height: 150px;
+        min-height: 150px;
+        max-height: 450px;
         border: 2px solid $white;
 		background-color: $lightGrey;
         padding: 5px;
-        overflow: auto;
+        overflow-x: auto;
+        overflow-y: visible;
         .workout
         {
 			p
