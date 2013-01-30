@@ -8,3 +8,4 @@
 /obj/
 *.csproj*
 *.suo
+/*.sln.DotSettings.user
