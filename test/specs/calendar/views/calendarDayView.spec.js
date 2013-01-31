@@ -86,7 +86,7 @@ function(moment, printDate, CalendarDayModel, WorkoutModel, CalendarWorkoutView,
                 });
             });
 
-            describe("Drag and drop", function()
+            xdescribe("Drag and drop", function()
             {
 
                 it("Should make $el a droppable target", function()

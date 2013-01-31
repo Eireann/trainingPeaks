@@ -6,5 +6,7 @@
 /node_modules/
 /bin/
 /obj/
+/test/webApiJson/
 *.csproj*
 *.suo
+/*.sln.DotSettings.user

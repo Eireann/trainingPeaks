@@ -16,12 +16,26 @@ function(droppable, _, moment, TP, CalendarWorkoutView, CalendarDayTemplate)
     {
         tagName: "div",
         className: "day",
+        workoutViews: null,
 
         initialize: function(options)
         {
             _.bindAll(this);
             if (!this.model)
                 throw "CalendarDayView needs a CalendarDayModel instance!";
+            this.workoutViews = [];
+        },
+
+        onWaitStart: function()
+        {
+            this.trigger("waitStart");
+            this.$el.addClass('waiting');
+        },
+
+        onWaitStop: function()
+        {
+            this.trigger("waitStop");
+            this.$el.removeClass('waiting');
         },
 
         template:
@@ -32,29 +46,41 @@ function(droppable, _, moment, TP, CalendarWorkoutView, CalendarDayTemplate)
 
         modelEvents:
         {
-            "change": "render"
+            "change": "render",
+            "waitStart": "onWaitStart",
+            "waitStop": "onWaitStop"
         },
 
         onRender: function()
         {
+            this.cleanupWorkoutViewBindings();
             this.appendWorkoutElements();
             this.setTodayCss();
             this.setUpDroppable();
         },
 
+        cleanupWorkoutViewBindings: function()
+        {
+            _.each(this.workoutViews, function(workoutView)
+            {
+                workoutView.close();
+            });
+            this.workoutViews = [];
+        },
+
         appendWorkoutElements: function()
         {
             var workouts = this.model.getWorkouts();
-            for(var i = 0;i<workouts.length;i++) {
+            for (var i = 0; i < workouts.length; i++)
+            {
                 var workout = workouts.at(i);
                 var workoutDate = moment(workout.get("WorkoutDay")).format("YYYY-MM-DD");
                 var modelDate = this.model.id;
-                if (workoutDate !== modelDate)
-                {
-                    throw "Cannot render workout dated " + workoutDate + " to calendarDayView " + modelDate;
-                }
 
                 var workoutView = new CalendarWorkoutView({ model: workout });
+                workoutView.on("waitStart", this.onWaitStart);
+                workoutView.on("waitStop", this.onWaitStop);
+                this.workoutViews.push(workoutView);
                 workoutView.render();
                 this.$el.append(workoutView.el);
             }
@@ -77,7 +103,7 @@ function(droppable, _, moment, TP, CalendarWorkoutView, CalendarDayTemplate)
 
         onDropWorkout: function(event, ui)
         {
-            this.trigger("workoutMoved", ui.draggable.data("workoutid"), this.model);
+            this.trigger("workoutMoved", { workoutId: ui.draggable.data("workoutid"), destinationCalendarDayModel: this.model });
         }
 
     });

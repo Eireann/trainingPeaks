@@ -21,6 +21,21 @@ $navigationFontSize: 10px;
     cursor: move;
 }
 
+.waiting:before
+{
+    content: ' ';
+    display: block;
+    position:absolute;
+    height: 90%;
+    width: 90%;
+    top:5%;
+    left:5%;
+    background-color:transparent;
+    background-image: url(../images/throbber.gif);
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
 #calendarContainer
 {
 
@@ -56,6 +71,16 @@ $navigationFontSize: 10px;
 			}
             
         }
+    }
+
+    .weekSummary
+    {
+        @include column(2);
+        height: 150px;
+        border: 2px solid $white;
+        background-color: $darkGrey;
+        padding: 5px;
+        overflow: hidden;
     }
 
     .today

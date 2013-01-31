@@ -6,16 +6,22 @@ Wraps and extends core backbone and marionette functionality
 define(
 [
     "backbone",
-    "backbone.marionette"
+    "backbone.marionette",
+    "framework/APIModel"
 ],
-function(Backbone, Marionette)
+function(Backbone, Marionette, APIModel)
 {
 
     var TP = {};
 
     // Marionette stuff
     TP.Application = Marionette.Application.extend({});
-    TP.Controller = Marionette.Controller.extend({});
+    TP.Controller = Marionette.Controller.extend({
+        onError: function(msg)
+        {
+            alert(msg);
+        }
+    });
     TP.Layout = Marionette.Layout.extend({});
     TP.Region = Marionette.Region;
     TP.ItemView = Marionette.ItemView.extend({});
@@ -26,6 +32,7 @@ function(Backbone, Marionette)
     TP.history = Backbone.history;
     TP.Collection = Backbone.Collection.extend({});
     TP.Model = Backbone.Model.extend({});
+    TP.APIModel = APIModel;
     TP.Router = Backbone.Router.extend({});
 
     return TP;

@@ -19,6 +19,7 @@
             "marionette.faderegion": "scripts/plugins/marionette.faderegion",
 
             "TP": "scripts/framework/TP",
+            "framework": "scripts/framework",
             "models": "scripts/models",
             "views": "scripts/views",
             "controllers": "scripts/controllers",
