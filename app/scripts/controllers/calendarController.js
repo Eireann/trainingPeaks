@@ -75,6 +75,7 @@ function (_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollect
             // This method return an actual Backbone.Collection.
             // Later, if we want to be able to insert it into another Backbone.Collection,
             // we need to wrap it inside a Backbone.Model.
+            startDate = moment(startDate);
             var weekCollection = new CalendarWeekCollection();
 
             for (var dayOffset = 0; dayOffset < 7; ++dayOffset)

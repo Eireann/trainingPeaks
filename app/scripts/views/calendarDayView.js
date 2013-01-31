@@ -33,35 +33,11 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDayTe
             Workout: CalendarWorkoutView
         },
 
-        modelEvents: {
-            "request": "onWaitStart",
-            "sync": "onWaitStop",
-            "error": "onWaitStop",
-            "all": "bubbleUpEvent"
-        },
-
         initialize: function()
         {
             _.bindAll(this);
             this.collection = this.model.collection;
             this.on("after:item:added", this.makeDraggable);
-        },
-
-        bubbleUpEvent: function(event)
-        {
-            this.trigger.apply(this, arguments);
-        },
-
-        onWaitStart: function()
-        {
-            this.trigger("waitStart");
-            this.$el.addClass('waiting');
-        },
-
-        onWaitStop: function()
-        {
-            this.trigger("waitStop");
-            this.$el.removeClass('waiting');
         },
 
         getItemView: function(item)
@@ -92,11 +68,8 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDayTe
 
         onRender: function()
         {
-            //this.cleanupWorkoutViewBindings();
-            //this.appendWorkoutElements();
             this.setTodayCss();
             this.setUpDroppable();
-            //this.setUpDraggables();
         },
 
         setTodayCss: function()

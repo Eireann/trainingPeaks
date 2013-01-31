@@ -45,7 +45,7 @@ function(moment, $, WorkoutModel)
 
             it("Should update WorkoutDay and call save", function()
             {
-                var newDate = moment("2012-07-19");
+                var newDate = moment("2013-01-19");
                 workout.moveToDay(newDate);
                 expect(workout.getCalendarDay()).toEqual(newDate.format(WorkoutModel.prototype.shortDateFormat));
             });
