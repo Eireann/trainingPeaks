@@ -16,6 +16,7 @@ function (moment, TP, CalendarLayout, CalendarWeekCollection, CalendarDayModel, 
         views: null,
         weeksCollection: null,
         workoutsCollection: null,
+        dateFormat: "YYYY-MM-DD",
 
         startOfWeekDayIndex: 0,
 
@@ -56,7 +57,7 @@ function (moment, TP, CalendarLayout, CalendarWeekCollection, CalendarDayModel, 
                 var weekStartDate = moment(this.startDate).add("weeks", i);
 
                 // Get a CalendarWeekCollection and wrap it inside a model, with its matching ID, to be able to add it to a parent collection
-                var weekModel = new TP.Model({ id: weekStartDate.format("YYYY-MM-DD"), week: this.createWeekCollectionStartingOn(weekStartDate) });
+                var weekModel = new TP.Model({ id: weekStartDate.format(this.dateFormat), week: this.createWeekCollectionStartingOn(weekStartDate) });
                 this.collectionOfWeeks.add(weekModel, { silent: true });
             }
 
@@ -107,7 +108,7 @@ function (moment, TP, CalendarLayout, CalendarWeekCollection, CalendarDayModel, 
             var workoutDay = workout.getCalendarDate();
             if (workoutDay)
             {
-                var weekModel = this.collectionOfWeeks.get(moment(workoutDay).day(this.startOfWeekDayIndex).format("YYYY-MM-DD"));
+                var weekModel = this.collectionOfWeeks.get(moment(workoutDay).day(this.startOfWeekDayIndex).format(this.dateFormat));
                 if (!weekModel)
                     return;
                 
@@ -127,7 +128,7 @@ function (moment, TP, CalendarLayout, CalendarWeekCollection, CalendarDayModel, 
 
             this.requestWorkouts(startDate, endDate);
             var newWeekCollection = this.createWeekCollectionStartingOn(moment(startDate));
-            var newWeekModel = new TP.Model({ id: startDate.format("YYYY-MM-DD"), week: newWeekCollection });
+            var newWeekModel = new TP.Model({ id: startDate.format(this.dateFormat), week: newWeekCollection });
 
             this.collectionOfWeeks.add(newWeekModel, { append: true });
         },
@@ -140,9 +141,20 @@ function (moment, TP, CalendarLayout, CalendarWeekCollection, CalendarDayModel, 
 
             this.requestWorkouts(startDate, endDate);
             var newWeekCollection = this.createWeekCollectionStartingOn(startDate);
-            var newWeekModel = new TP.Model({ id: startDate.format("YYYY-MM-DD"), week: newWeekCollection });
+            var newWeekModel = new TP.Model({ id: startDate.format(this.dateFormat), week: newWeekCollection });
 
             this.collectionOfWeeks.add(newWeekModel, { at: 0, append: false });
+        },
+
+        getDayModel: function(date) {
+            var weekStartDate = moment(date).day(this.startOfWeekDayIndex).format(this.dateFormat);
+            var week = this.collectionOfWeeks.get(weekStartDate);
+            if (!week)
+                throw "Could not find week for day model";
+            var dayModel = week.get("week").get(moment(date).format(this.dateFormat));
+            if (!dayModel)
+                throw "Could not find day in week";
+            return dayModel;
         },
 
         onWorkoutMoved: function (options)
@@ -152,18 +164,12 @@ function (moment, TP, CalendarLayout, CalendarWeekCollection, CalendarDayModel, 
             var workout = this.workoutsCollection.get(options.workoutId);
             var oldWorkoutDay = workout.getCalendarDate();
             var newWorkoutDay = options.destinationCalendarDayModel.id;
-			var controller = this;
-			
+            var controller = this;
 
             if (oldWorkoutDay !== newWorkoutDay)
             {
-                // remove it from the current day
-                var oldWorkoutWeek = moment(oldWorkoutDay).day(this.startOfWeekDayIndex);
 
-                if (!this.collectionOfWeeks.get(oldWorkoutWeek.format("YYYY-MM-DD")))
-                    throw "Could not find week for source day";
-                
-                var sourceCalendarDayModel = this.collectionOfWeeks.get(oldWorkoutWeek.format("YYYY-MM-DD")).get("week").get(oldWorkoutDay);
+                var sourceCalendarDayModel = this.getDayModel(newWorkoutDay);
 
                 var onFail = function()
                 {
