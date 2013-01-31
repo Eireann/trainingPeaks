@@ -19,12 +19,6 @@ function(moment, printDate, CalendarDayModel, WorkoutModel, CalendarWorkoutView,
             expect(CalendarDayView).toBeDefined();
         });
 
-        it("Should watch for model change events", function()
-        {
-            expect(CalendarDayView.prototype.modelEvents.change).toBeDefined();
-            expect(CalendarDayView.prototype.modelEvents.change).toEqual("render");
-        });
-
         describe("render", function()
         {
 
@@ -62,28 +56,6 @@ function(moment, printDate, CalendarDayModel, WorkoutModel, CalendarWorkoutView,
                 var dayView = new CalendarDayView({ model: dayModel });
                 dayView.render();
                 expect(dayView.$el.html()).toContain(printDate(today));
-            });
-
-            describe("Render workout", function()
-            {
-
-                it("Should render a calendarWorkoutView if it has a workout", function()
-                {
-                    var today = moment();
-                    var workoutModel = new WorkoutModel({ WorkoutId: '12345', WorkoutDay: today.format() });
-                    var dayModel = new CalendarDayModel({ date: today });
-                    dayModel.addWorkout(workoutModel);
-                    var dayView = new CalendarDayView({ model: dayModel });
-
-                    spyOn(CalendarWorkoutView.prototype, "render").andCallThrough();
-                    dayView.render();
-                    expect(CalendarWorkoutView.prototype.render).toHaveBeenCalled();
-
-                    var workoutView = new CalendarWorkoutView({ model: workoutModel });
-                    workoutView.render();
-
-                    expect(dayView.$el.html()).toContain(workoutView.el.outerHTML);
-                });
             });
 
             xdescribe("Drag and drop", function()

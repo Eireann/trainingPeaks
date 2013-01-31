@@ -76,7 +76,7 @@ function(moment, TP, theApp)
             return theApp.apiRoot + "/WebApiServer/Fitness/V1/workouts";
         },
 
-        getCalendarDate: function()
+        getCalendarDay: function()
         {
             return moment(this.get("WorkoutDay")).format(this.shortDateFormat);
         },

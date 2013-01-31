@@ -48,7 +48,7 @@ function(TP, CalendarWeekView, customCalendarTemplate)
         addWeek: function(options)
         {
             var weekView = new CalendarWeekView({ collection: options.collection });
-            weekView.bind("itemview:workoutMoved", this.onWorkoutMoved);
+            weekView.bind("itemview:itemMoved", this.onItemMoved);
             
             if (options.append)
                 this.$weeksContainer.append(weekView.render().el);
@@ -102,10 +102,10 @@ function(TP, CalendarWeekView, customCalendarTemplate)
 
             return;
         },
-        
-        onWorkoutMoved: function(itemView, options)
+
+        onItemMoved: function(itemView, options)
         {
-            this.trigger("workoutMoved", options);
+            this.trigger("itemMoved", options);
         }
     });
 });

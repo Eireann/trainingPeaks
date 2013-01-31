@@ -26,10 +26,10 @@ function(moment, $, WorkoutModel)
             var today = moment().format(WorkoutModel.prototype.dateFormat);
             var workoutId = "098765";
             var workout = new WorkoutModel({ WorkoutDay: today, WorkoutId: workoutId });
-            expect(workout.getCalendarDate()).toEqual(moment().format(WorkoutModel.prototype.shortDateFormat));
+            expect(workout.getCalendarDay()).toEqual(moment().format(WorkoutModel.prototype.shortDateFormat));
 
             workout = new WorkoutModel({ WorkoutDay: moment(), WorkoutId: workoutId });
-            expect(workout.getCalendarDate()).toEqual(moment().format("YYYY-MM-DD"));
+            expect(workout.getCalendarDay()).toEqual(moment().format("YYYY-MM-DD"));
         });
 
         describe("moveToDay", function()
@@ -47,7 +47,7 @@ function(moment, $, WorkoutModel)
             {
                 var newDate = moment("2012-07-19");
                 workout.moveToDay(newDate);
-                expect(workout.getCalendarDate()).toEqual(newDate.format(WorkoutModel.prototype.shortDateFormat));
+                expect(workout.getCalendarDay()).toEqual(newDate.format(WorkoutModel.prototype.shortDateFormat));
             });
 
             it("Should call save", function()

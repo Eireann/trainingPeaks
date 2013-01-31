@@ -1,29 +1,55 @@
 define(
 [
-    "jqueryui/droppable",
+
     "underscore",
+    "jqueryui/draggable",
+    "jqueryui/droppable",
     "moment",
+
     "TP",
     "views/calendarWorkoutView",
     "hbs!templates/views/calendarDay"
 ],
-function(droppable, _, moment, TP, CalendarWorkoutView, CalendarDayTemplate)
+function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDayTemplate)
 {
 
     var today = moment();
 
-    return TP.ItemView.extend(
+    var CalendarDayLabelView = TP.ItemView.extend({
+        template:
+        {
+            type: "handlebars",
+            template: CalendarDayTemplate
+        }
+    });
+
+    return TP.CollectionView.extend(
     {
         tagName: "div",
         className: "day",
-        workoutViews: null,
 
-        initialize: function(options)
+        modelViews: {
+            Label: CalendarDayLabelView,
+            Workout: CalendarWorkoutView
+        },
+
+        modelEvents: {
+            "request": "onWaitStart",
+            "sync": "onWaitStop",
+            "error": "onWaitStop",
+            "all": "bubbleUpEvent"
+        },
+
+        initialize: function()
         {
             _.bindAll(this);
-            if (!this.model)
-                throw "CalendarDayView needs a CalendarDayModel instance!";
-            this.workoutViews = [];
+            this.collection = this.model.collection;
+            this.on("after:item:added", this.makeDraggable);
+        },
+
+        bubbleUpEvent: function(event)
+        {
+            this.trigger.apply(this, arguments);
         },
 
         onWaitStart: function()
@@ -38,52 +64,39 @@ function(droppable, _, moment, TP, CalendarWorkoutView, CalendarDayTemplate)
             this.$el.removeClass('waiting');
         },
 
-        template:
+        getItemView: function(item)
         {
-            type: "handlebars",
-            template: CalendarDayTemplate
+            var modelName = this.getModelName(item);
+            if (!this.modelViews.hasOwnProperty(modelName))
+            {
+                throw "Item has no defined view in CalendarDayView: " + item;
+            }
+            return this.modelViews[modelName];
         },
 
-        modelEvents:
+        getModelName: function(item) {
+            if (item.isDateLabel)
+                return "Label";
+            else if (typeof item.webAPIModelName !== 'undefined')
+                return item.webAPIModelName;
+            else
+                return null;
+        },
+
+        attributes: function()
         {
-            "change": "render",
-            "waitStart": "onWaitStart",
-            "waitStop": "onWaitStop"
+            return {
+                "data-date": this.model.id
+            };
         },
 
         onRender: function()
         {
-            this.cleanupWorkoutViewBindings();
-            this.appendWorkoutElements();
+            //this.cleanupWorkoutViewBindings();
+            //this.appendWorkoutElements();
             this.setTodayCss();
             this.setUpDroppable();
-        },
-
-        cleanupWorkoutViewBindings: function()
-        {
-            _.each(this.workoutViews, function(workoutView)
-            {
-                workoutView.close();
-            });
-            this.workoutViews = [];
-        },
-
-        appendWorkoutElements: function()
-        {
-            var workouts = this.model.getWorkouts();
-            for (var i = 0; i < workouts.length; i++)
-            {
-                var workout = workouts.at(i);
-                var workoutDate = moment(workout.get("WorkoutDay")).format("YYYY-MM-DD");
-                var modelDate = this.model.id;
-
-                var workoutView = new CalendarWorkoutView({ model: workout });
-                workoutView.on("waitStart", this.onWaitStart);
-                workoutView.on("waitStop", this.onWaitStop);
-                this.workoutViews.push(workoutView);
-                workoutView.render();
-                this.$el.append(workoutView.el);
-            }
+            //this.setUpDraggables();
         },
 
         setTodayCss: function()
@@ -96,14 +109,24 @@ function(droppable, _, moment, TP, CalendarWorkoutView, CalendarDayTemplate)
             }
         },
 
-        setUpDroppable: function()
+        makeDraggable: function(childView)
         {
-            this.$el.droppable({ drop: this.onDropWorkout });
+            var modelName = this.getModelName(childView.model);
+            if (modelName !== "Label")
+            {
+                childView.$el.data("ItemId", childView.model.id);
+                childView.$el.draggable({ appendTo: 'body', helper: 'clone', opacity: 0.7 });
+            }
         },
 
-        onDropWorkout: function(event, ui)
+        setUpDroppable: function()
         {
-            this.trigger("workoutMoved", { workoutId: ui.draggable.data("workoutid"), destinationCalendarDayModel: this.model });
+            this.$el.droppable({ drop: this.onDropItem });
+        },
+
+        onDropItem: function(event, ui)
+        {
+            this.trigger("itemMoved", { itemId: ui.draggable.data("ItemId"), destinationCalendarDayModel: this.model });
         }
 
     });

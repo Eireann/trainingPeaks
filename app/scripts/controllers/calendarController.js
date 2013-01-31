@@ -1,5 +1,6 @@
 define(
     [
+    "underscore",
     "moment",
     "TP",
     "layouts/calendarLayout",
@@ -8,7 +9,7 @@ define(
     "views/calendarView",
     "models/workoutsCollection"
     ],
-function (moment, TP, CalendarLayout, CalendarWeekCollection, CalendarDayModel, CalendarView, WorkoutsCollection)
+function (_, moment, TP, CalendarLayout, CalendarWeekCollection, CalendarDayModel, CalendarView, WorkoutsCollection)
 {
     return TP.Controller.extend(
     {
@@ -65,8 +66,7 @@ function (moment, TP, CalendarLayout, CalendarWeekCollection, CalendarDayModel, 
 
             this.views.calendar.bind("prepend", this.prependWeekToCalendar);
             this.views.calendar.bind("append", this.appendWeekToCalendar);
-            this.views.calendar.bind("workoutMoved", this.onWorkoutMoved);
-            
+            this.views.calendar.bind("itemMoved", this.onItemMoved);
         },
 
         createWeekCollectionStartingOn: function(startDate)
@@ -105,7 +105,7 @@ function (moment, TP, CalendarLayout, CalendarWeekCollection, CalendarDayModel, 
 
         addWorkoutToCalendarDay: function(workout)
         {
-            var workoutDay = workout.getCalendarDate();
+            var workoutDay = workout.getCalendarDay();
             if (workoutDay)
             {
                 var weekModel = this.collectionOfWeeks.get(moment(workoutDay).day(this.startOfWeekDayIndex).format(this.dateFormat));
@@ -116,7 +116,7 @@ function (moment, TP, CalendarLayout, CalendarWeekCollection, CalendarDayModel, 
                 if (!dayModel)
                     return;
                 
-                dayModel.addWorkout(workout);
+                dayModel.add(workout);
             }
         },
 
@@ -157,32 +157,37 @@ function (moment, TP, CalendarLayout, CalendarWeekCollection, CalendarDayModel, 
             return dayModel;
         },
 
-        onWorkoutMoved: function (options)
+        onItemMoved: function (options)
         {
 
-            // get the workout
-            var workout = this.workoutsCollection.get(options.workoutId);
-            var oldWorkoutDay = workout.getCalendarDate();
-            var newWorkoutDay = options.destinationCalendarDayModel.id;
-            var controller = this;
+            // get the item
+            var item = this.workoutsCollection.get(options.itemId);
 
-            if (oldWorkoutDay !== newWorkoutDay)
+            // if it has a getCalendarDay and moveToDay then we can move it
+            if (_.isFunction(item.getCalendarDay) && _.isFunction(item.moveToDay))
             {
+                var oldCalendarDay = item.getCalendarDay();
+                var newCalendarDay = options.destinationCalendarDayModel.id;
+                var controller = this;
 
-                var sourceCalendarDayModel = this.getDayModel(oldWorkoutDay);
-
-                var onFail = function()
+                if (oldCalendarDay !== newCalendarDay)
                 {
-                    // if it fails, move it back
-                    sourceCalendarDayModel.addWorkout(workout);
-                    options.destinationCalendarDayModel.removeWorkout(workout);
-                    controller.onError('Server Error: Unable to move workout');
-                };
 
-                // move it
-                sourceCalendarDayModel.removeWorkout(workout);
-                options.destinationCalendarDayModel.addWorkout(workout);
-                workout.moveToDay(newWorkoutDay).fail(onFail);
+                    var sourceCalendarDayModel = this.getDayModel(oldCalendarDay);
+
+                    var onFail = function()
+                    {
+                        // if it fails, move it back
+                        sourceCalendarDayModel.add(item);
+                        options.destinationCalendarDayModel.remove(item);
+                        controller.onError('Server Error: Unable to move item');
+                    };
+
+                    // move it
+                    sourceCalendarDayModel.remove(item);
+                    options.destinationCalendarDayModel.add(item);
+                    item.moveToDay(newCalendarDay).fail(onFail);
+                }
             }
 
         }
