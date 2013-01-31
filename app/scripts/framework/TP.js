@@ -24,9 +24,39 @@ function(Backbone, Marionette, APIModel)
     });
     TP.Layout = Marionette.Layout.extend({});
     TP.Region = Marionette.Region;
-    TP.ItemView = Marionette.ItemView.extend({});
-    TP.CollectionView = Marionette.CollectionView.extend({});
-    TP.CompositeView = Marionette.CompositeView.extend({});
+
+    // Give all views waiting indicators and event bubblers
+    var commonViewFunctions = {
+
+        modelEvents: {
+            "request": "onWaitStart",
+            "sync": "onWaitStop",
+            "error": "onWaitStop",
+            "all": "bubbleUpEvent"
+        },
+
+        onWaitStart: function()
+        {
+            this.trigger("waitStart");
+            this.$el.addClass('waiting');
+        },
+
+        onWaitStop: function()
+        {
+            this.trigger("waitStop");
+            this.$el.removeClass('waiting');
+        },
+
+        bubbleUpEvent: function(event)
+        {
+            this.trigger.apply(this, arguments);
+        }
+
+    };
+
+    TP.ItemView = Marionette.ItemView.extend(commonViewFunctions);
+    TP.CollectionView = Marionette.CollectionView.extend(commonViewFunctions);
+    TP.CompositeView = Marionette.CompositeView.extend(commonViewFunctions);
 
     // Backbone stuff
     TP.history = Backbone.history;
