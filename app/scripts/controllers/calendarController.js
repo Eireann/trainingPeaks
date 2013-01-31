@@ -4,20 +4,21 @@ define(
     "moment",
     "TP",
     "layouts/calendarLayout",
+    "models/calendarCollection",
     "models/calendarWeekCollection",
     "models/calendarDay",
     "views/calendarView",
     "models/workoutsCollection"
     ],
-function (_, moment, TP, CalendarLayout, CalendarWeekCollection, CalendarDayModel, CalendarView, WorkoutsCollection)
+function (_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollection, CalendarDayModel, CalendarView, WorkoutsCollection)
 {
     return TP.Controller.extend(
     {
+        dateFormat: "YYYY-MM-DD",
         layout: null,
         views: null,
         weeksCollection: null,
         workoutsCollection: null,
-        dateFormat: "YYYY-MM-DD",
 
         startOfWeekDayIndex: 0,
 
@@ -34,7 +35,7 @@ function (_, moment, TP, CalendarLayout, CalendarWeekCollection, CalendarDayMode
             this.layout = new CalendarLayout();
             this.views = {};
             this.workoutsCollection = new WorkoutsCollection();
-            this.collectionOfWeeks = new TP.Collection();
+            this.collectionOfWeeks = new CalendarCollection();
 
             // start on a Sunday
             this.startDate = moment().day(this.startOfWeekDayIndex).subtract("weeks", 4);
@@ -108,14 +109,7 @@ function (_, moment, TP, CalendarLayout, CalendarWeekCollection, CalendarDayMode
             var workoutDay = workout.getCalendarDay();
             if (workoutDay)
             {
-                var weekModel = this.collectionOfWeeks.get(moment(workoutDay).day(this.startOfWeekDayIndex).format(this.dateFormat));
-                if (!weekModel)
-                    return;
-                
-                var dayModel = weekModel.get("week").get(workoutDay);
-                if (!dayModel)
-                    return;
-                
+                var dayModel = this.collectionOfWeeks.getDayModel(workoutDay, this.startOfWeekDayIndex);
                 dayModel.add(workout);
             }
         },
@@ -145,21 +139,9 @@ function (_, moment, TP, CalendarLayout, CalendarWeekCollection, CalendarDayMode
 
             this.collectionOfWeeks.add(newWeekModel, { at: 0, append: false });
         },
-
-        getDayModel: function(date) {
-            var weekStartDate = moment(date).day(this.startOfWeekDayIndex).format(this.dateFormat);
-            var week = this.collectionOfWeeks.get(weekStartDate);
-            if (!week)
-                throw "Could not find week for day model";
-            var dayModel = week.get("week").get(moment(date).format(this.dateFormat));
-            if (!dayModel)
-                throw "Could not find day in week";
-            return dayModel;
-        },
-
+        
         onItemMoved: function (options)
         {
-
             // get the item
             var item = this.workoutsCollection.get(options.itemId);
 
@@ -173,8 +155,8 @@ function (_, moment, TP, CalendarLayout, CalendarWeekCollection, CalendarDayMode
                 if (oldCalendarDay !== newCalendarDay)
                 {
 
-                    var sourceCalendarDayModel = this.getDayModel(oldCalendarDay);
-
+                    var sourceCalendarDayModel = this.collectionOfWeeks.getDayModel(oldCalendarDay, this.startOfWeekDayIndex);
+                    
                     var onFail = function()
                     {
                         // if it fails, move it back

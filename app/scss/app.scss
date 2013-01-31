@@ -54,12 +54,12 @@ $navigationFontSize: 10px;
     {
         @include column(2);
         min-height: 150px;
-        max-height: 450px;
+        max-height: 150px;
         border: 2px solid $white;
 		background-color: $lightGrey;
         padding: 5px;
-        overflow-x: auto;
-        overflow-y: visible;
+        overflow-y: scroll;
+
         .workout
         {
 			p
