@@ -169,7 +169,7 @@ function (moment, TP, CalendarLayout, CalendarWeekCollection, CalendarDayModel, 
             if (oldWorkoutDay !== newWorkoutDay)
             {
 
-                var sourceCalendarDayModel = this.getDayModel(newWorkoutDay);
+                var sourceCalendarDayModel = this.getDayModel(oldWorkoutDay);
 
                 var onFail = function()
                 {
