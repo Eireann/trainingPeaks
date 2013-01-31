@@ -2,10 +2,9 @@
 requirejs(
 [
     "models/workoutModel",
-    "models/calendarDaysCollection",
     "models/calendarDay"
 ],
-function(WorkoutModel, CalendarDaysCollection, CalendarDay)
+function(WorkoutModel, CalendarDay)
 {
     describe("Calendar Day Model", function()
     {
@@ -34,16 +33,6 @@ function(WorkoutModel, CalendarDaysCollection, CalendarDay)
                 expect(calendarDay.getWorkouts().at(0)).toBe(workout);
             });
 
-            it("Should not allow to add a workout if the date doesn't match", function()
-            {
-                var calendarDay = new CalendarDay({ date: "2011-03-02" });
-                var workout = new WorkoutModel({ WorkoutDay: "2011-03-12T00:00:00" });
-                var addBadWorkout = function()
-                {
-                    calendarDay.addWorkout(workout);
-                };
-                expect(addBadWorkout).toThrow();
-            });
 
             it("Should trigger a change event on add workout", function()
             {
@@ -57,18 +46,6 @@ function(WorkoutModel, CalendarDaysCollection, CalendarDay)
             });
 
 
-        });
-
-        describe("Collection of days", function()
-        {
-            it("Should be able to get a day", function()
-            {
-                var theDay = '2012-12-01';
-                var calendarDay = new CalendarDay({ date: theDay });
-                var daysCollection = new CalendarDaysCollection();
-                daysCollection.add(calendarDay);
-                expect(daysCollection.get(theDay)).toBe(calendarDay);
-            });
         });
 
     });

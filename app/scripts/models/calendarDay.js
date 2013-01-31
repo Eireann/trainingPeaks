@@ -40,10 +40,6 @@ function(_, moment, TP, WorkoutsCollection)
 
         addWorkout: function(workout)
         {
-            var workoutDate = moment(workout.get("WorkoutDay")).format(this.dateFormat);
-            if(workoutDate !== this.id) {
-                throw "Cannot add workout dated " + workoutDate + " to calendarDay " + this.id;
-            }
             this.workouts.add(workout);
             this.trigger("change");
         },

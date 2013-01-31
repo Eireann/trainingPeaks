@@ -165,20 +165,18 @@ function (moment, TP, CalendarLayout, CalendarWeekCollection, CalendarDayModel, 
                 
                 var sourceCalendarDayModel = this.collectionOfWeeks.get(oldWorkoutWeek.format("YYYY-MM-DD")).get("week").get(oldWorkoutDay);
 
-                // set the date, and move back if failed
-                sourceCalendarDayModel.removeWorkout(workout);
-
-                // set the date
-                workout.moveToDay(newWorkoutDay).fail(function()
+                var onFail = function()
                 {
                     // if it fails, move it back
                     sourceCalendarDayModel.addWorkout(workout);
                     options.destinationCalendarDayModel.removeWorkout(workout);
                     controller.onError('Server Error: Unable to move workout');
-                });
+                };
 
-                // add it to the new day
+                // move it
+                sourceCalendarDayModel.removeWorkout(workout);
                 options.destinationCalendarDayModel.addWorkout(workout);
+                workout.moveToDay(newWorkoutDay).fail(onFail);
             }
 
         }

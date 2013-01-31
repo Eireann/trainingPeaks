@@ -27,7 +27,11 @@ function(draggable, TP, CalendarWorkoutTemplate)
 
         modelEvents:
         {
-            "change": "render"
+            "change": "render",
+            "request": "onWaitStart",
+            "sync": "onWaitStop",
+            "error": "onWaitStop"
+
         },
 
         initialize: function(options)
@@ -37,14 +41,10 @@ function(draggable, TP, CalendarWorkoutTemplate)
             {
                 throw "Cannot have a CalendarWorkoutView without a model";
             }
-            this.model.on("request", this.onWaitStart);
-            this.model.on("sync", this.onWaitStop);
-            this.model.on("error", this.onWaitStop);
         },
 
         onWaitStart: function()
         {
-            console.log('wait start');
             this.trigger("waitStart");
         },
 
