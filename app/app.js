@@ -39,12 +39,12 @@ function($, TP)
     {
         live: "https://api.trainingpeaks.com",
         deploy: "https://apideploy.trainingpeaks.com",
-        dev: "http://api.dev.trainingpeaks.com",
+        dev: "http://apidev.trainingpeaks.com",
         local: "http://localhost:8900"
     };
 
     theApp.root = "/Mars";
-    theApp.apiRoot = apiRoots.local;
+    theApp.apiRoot = apiRoots.dev;
 
     return theApp;
 });
