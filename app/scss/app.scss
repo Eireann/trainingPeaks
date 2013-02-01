@@ -3,13 +3,18 @@
 
 $black: #000000;
 $white: #ffffff;
-$grey: #d5d4d4;
-$lightGrey: #ebebeb;
-$darkGrey: #4b4b4b;
 $TPBlue: #005695;
+$TPPurple: #873794;
 
-$navigationFontFamily: Arial, 'DejaVu Sans', 'Liberation Sans', Freesans, sans-serif;
-$navigationFontSize: 10px;
+$TPGrey1: #dad9d7;
+$TPGrey2: #c8c8c8;
+$TPGrey3: #b2b2b2;
+$TPGrey4: #636569;
+
+
+$navigationFontFamilyLight: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", "Lucida Grande", "sans-serif";
+$navigationFontFamilyRegular: "HelveticaNeue", "Helvetica Neue", "HelveticaNeueRoman", "HelveticaNeue-Roman", "Helvetica Neue Roman", 'TeXGyreHerosRegular', "Helvetica", "Tahoma", "Geneva", "Arial", "sans-serif";
+$navigationFontSize: 14px;
 
 @mixin throbber {
     background-color:transparent;
@@ -43,6 +48,7 @@ $navigationFontSize: 10px;
 
 #calendarContainer
 {
+	background-color: $TPGrey1;
 
     .scrollable
     {
@@ -59,19 +65,19 @@ $navigationFontSize: 10px;
     {
         @include column(2);
         min-height: 150px;
-        max-height: 150px;
-        border: 2px solid $white;
-		background-color: $lightGrey;
+        max-height: 450px;
+        border: 1px solid $white;
+		background-color: $TPGrey2;
         padding: 5px;
-        overflow-y: scroll;
-
+        overflow-x: auto;
+        overflow-y: visible;
         .workout
         {
 			p
 			{
-				font-family: $navigationFontFamily;
+				font-family: $navigationFontFamilyLight;
 				font-size: 12px;
-				color:$darkGrey;
+				color:$TPGrey4;
 				font-weight: bold;
 			}
             
@@ -83,15 +89,15 @@ $navigationFontSize: 10px;
         @include column(2);
         height: 150px;
         border: 2px solid $white;
-        background-color: $darkGrey;
+        background-color: $TPGrey4;
         padding: 5px;
         overflow: hidden;
     }
 
     .today
     {
-        background-color: $TPBlue;
-		p{color: $grey;}
+        background-color: $white;
+		p{color: $TPGrey1;}
     }
 
     .daysOfWeek
@@ -102,11 +108,10 @@ $navigationFontSize: 10px;
 		{
             @include column(2);
 			padding-bottom: 0px;
-			font-Family: $navigationFontFamily;
-			font-size: $navigationFontSize + 5;
-			color: $grey;
-			font-weight: bold;
-			text-align: right;
+			font-Family: $navigationFontFamilyLight;
+			font-size: 12;
+			color: $TPGrey4;
+			text-align: center;
 			height: 15px;
 		}
     }
@@ -119,9 +124,11 @@ $navigationFontSize: 10px;
 
     span
     {
-        font-family: $navigationFontFamily;
+        font-family: $navigationFontFamilyRegular;
         font-size: 24px;
     }
+
+	
 }
 
 #loginFooter, #calendarFooter
@@ -135,14 +142,13 @@ $navigationFontSize: 10px;
 
 #userControlsContainer
 {
-	height: 30px;
+	height: 35px;
 	background-color: $black;
 
 	.personHeaderLogo
 	{
 		float: left;
-		padding: 5px;
-		padding-left: 40px;
+		min-width: 375px;
 	}
 
 	.headerPipe
@@ -151,30 +157,37 @@ $navigationFontSize: 10px;
 		height: 30px;
 		padding-top: 10px;
 		font-size: $navigationFontSize;
-		color: $grey;
+		color: $TPGrey4;
 	}
 
 	.personHeaderButtons
 	{
-		padding-top: 9px;
+		padding-top: 12px;
 		height: 35px;
 		text-align: center;
 		&:hover { background-color: $TPBlue; }
 		&:hover label{color: $white;}
 		label
 		{
-			font-family: $navigationFontFamily;
+			font-family: $navigationFontFamilyRegular;
 			font-size: $navigationFontSize;
-			color: $grey;
+			color: $TPGrey4;
 		}
 
+	}
+
+	.personHeaderMailIcon
+	{
+		padding-top: 12px;
+		margin-right: -20px;
+		&:hover{cursor: pointer;}
 	}
 }
 
 #navigationContainer
 {
-	height: 50px;
-	background-color: $grey;
+	height: 75px;
+	background-color: $white;
 
 	.appNavigation
 	{
@@ -184,15 +197,16 @@ $navigationFontSize: 10px;
 			height: 45px;
 			text-align: center;
 			padding-top: 20px;
-			&:hover label{color: $TPBlue; }
+			&:hover label{color: $TPPurple; }
+			&:hover label{border-bottom-style:solid; border-bottom-width:1px; border-color:$TPPurple;}
+			
 		}
 
 		label
 		{
-			font-family: $navigationFontFamily;
+			font-family: $navigationFontFamilyRegular;
 			font-size: $navigationFontSize;
-			color: $black;
-			font-weight: bold;
+			color: $TPGrey4;
 		}
 	}
 }
@@ -200,14 +214,53 @@ $navigationFontSize: 10px;
 #calendarHeader
 {
 	height: 80px;
+	float:left;
 	.calendarMonthLabel
 	{
 		label
 		{
 			padding-top: 10px;
-			font-family: $navigationFontFamily;
+			font-family: $navigationFontFamilyRegular;
 			font-size: 36px;
 			color:$TPBlue;
+		}
+	}
+
+	.navigation
+	{
+		float:left;
+		margin-left: -50px;
+		padding-top: 12px;
+		button
+		{
+			min-width: 36px;
+			min-height: 25px;
+			float:left;
+			font-family:$navigationFontFamilyRegular;
+			font-size:$navigationFontSize;
+		}
+	}
+
+	.calendarNavigation
+	{
+		float:left;
+		button
+		{
+			min-width: 36px;
+			min-height: 25px;
+			float:left;
+			font-family:$navigationFontFamilyRegular;
+			font-size:$navigationFontSize;
+			margin-left: -5px;
+		}
+	}
+
+	.calendarView
+	{
+		select
+		{
+			margin-top: 2px;
+			height: 25px;
 		}
 	}
 
@@ -215,10 +268,9 @@ $navigationFontSize: 10px;
 
 #calendarDate
 {
-	font-Family: $navigationFontFamily;
-	font-size: $navigationFontSize + 5;
-	color: $darkGrey;
-	font-weight: bold;
+	font-Family: $navigationFontFamilyRegular;
+	font-size: $navigationFontSize;
+	color: $TPGrey4;
 	text-align: right;
 	float:right;
 }
