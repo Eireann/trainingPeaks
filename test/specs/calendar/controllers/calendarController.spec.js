@@ -90,28 +90,28 @@ function(moment, $, _, Backbone, CalendarController, WorkoutModel, WorkoutsColle
                 expect(CalendarView.prototype.initialize).toHaveBeenCalled();
             });
 
-            it("Should bind to calendar view prepend", function()
+            it("Should on to calendar view prepend", function()
             {
                 var controller = new CalendarController();
-                spyOn(CalendarView.__super__, "bind").andCallThrough();
+                spyOn(CalendarView.__super__, "on").andCallThrough();
                 controller.initializeCalendar();
-                expect(CalendarView.__super__.bind).toHaveBeenCalledWith("prepend", controller.prependWeekToCalendar);
+                expect(CalendarView.__super__.on).toHaveBeenCalledWith("prepend", controller.prependWeekToCalendar, controller);
             });
 
-            it("Should bind to calendar view append", function()
+            it("Should on to calendar view append", function()
             {
                 var controller = new CalendarController();
-                spyOn(CalendarView.__super__, "bind").andCallThrough();
+                spyOn(CalendarView.__super__, "on").andCallThrough();
                 controller.initializeCalendar();
-                expect(CalendarView.__super__.bind).toHaveBeenCalledWith("append", controller.appendWeekToCalendar);
+                expect(CalendarView.__super__.on).toHaveBeenCalledWith("append", controller.appendWeekToCalendar, controller);
             });
 
-            it("Should bind to calendar view itemMoved", function()
+            it("Should on to calendar view itemMoved", function()
             {
                 var controller = new CalendarController();
-                spyOn(CalendarView.__super__, "bind").andCallThrough();
+                spyOn(CalendarView.__super__, "on").andCallThrough();
                 controller.initializeCalendar();
-                expect(CalendarView.__super__.bind).toHaveBeenCalledWith("itemMoved", controller.onItemMoved);
+                expect(CalendarView.__super__.on).toHaveBeenCalledWith("itemMoved", controller.onItemMoved, controller);
             });
         });
 
