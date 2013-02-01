@@ -33,13 +33,8 @@ function(TP, CalendarWeekView, customCalendarTemplate)
             "add": "onAddWeek",
             "reset": "render"
         },
-        
-        initialize: function(options)
-        {
-            _.bindAll(this);
-        },
 
-        onAddWeek: function(model)
+        onAddWeek: function (model)
         {
             var weekCollection = model.get("week");
             this.addWeek({ collection: weekCollection, append: arguments[2].append });
@@ -48,7 +43,7 @@ function(TP, CalendarWeekView, customCalendarTemplate)
         addWeek: function(options)
         {
             var weekView = new CalendarWeekView({ collection: options.collection });
-            weekView.bind("itemview:itemMoved", this.onItemMoved);
+            weekView.on("itemview:itemMoved", this.onItemMoved, this);
             
             if (options.append)
                 this.ui.weeksContainer.append(weekView.render().el);
@@ -68,6 +63,7 @@ function(TP, CalendarWeekView, customCalendarTemplate)
             if (!this.collection)
                 throw "CalendarView needs a Collection!";
 
+            _.bindAll(this, "onScroll");
             this.ui.weeksContainer.scroll(this.onScroll);
 
             var numWeeks = this.collection.length;

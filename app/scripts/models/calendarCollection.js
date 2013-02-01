@@ -7,12 +7,6 @@ function (TP)
     return TP.Collection.extend(
     {
         dateFormat: "YYYY-MM-DD",
-
-        initialize: function ()
-        {
-            _.bindAll(this);
-        },
-
         getDayModel: function (date, startOfWeekDayIndex)
         {
             var weekStartDate = moment(date).day(startOfWeekDayIndex).format(this.dateFormat);

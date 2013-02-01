@@ -19,9 +19,7 @@ function (_, theApp, TP, NavigationController, CalendarController, LoginLayout, 
         
         initialize: function ()
         {
-            _.bindAll(this);
-            
-            theApp.on("api:unauthorized", this.login);
+            theApp.on("api:unauthorized", this.login, this);
 
             this.controllers.navigationController = new NavigationController();
             theApp.navRegion.show(this.controllers.navigationController.layout);

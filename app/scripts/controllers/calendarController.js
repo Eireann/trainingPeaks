@@ -22,6 +22,24 @@ function (_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollect
 
         startOfWeekDayIndex: 0,
 
+        open: function()
+        {
+            // view.render();
+        },
+        
+        hide: function()
+        {
+            // view.hide();
+        },
+        
+        close: function()
+        {
+            // view.close();
+            // destroy data
+            // unbind explicit event bindings
+            // delete this;
+        },
+
         show: function()
         {
             this.layout.mainRegion.show(this.views.calendar);
@@ -29,8 +47,6 @@ function (_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollect
 
         initialize: function()
         {
-            _.bindAll(this);
-
             // initialize these here instead of in extend, otherwise they become members of the prototype
             this.layout = new CalendarLayout();
             this.views = {};
@@ -65,9 +81,9 @@ function (_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollect
 
             this.views.calendar = new CalendarView({ model: weekDaysModel, collection: this.collectionOfWeeks });
 
-            this.views.calendar.bind("prepend", this.prependWeekToCalendar);
-            this.views.calendar.bind("append", this.appendWeekToCalendar);
-            this.views.calendar.bind("itemMoved", this.onItemMoved);
+            this.views.calendar.on("prepend", this.prependWeekToCalendar, this);
+            this.views.calendar.on("append", this.appendWeekToCalendar, this);
+            this.views.calendar.on("itemMoved", this.onItemMoved, this);
         },
 
         createWeekCollectionStartingOn: function(startDate)

@@ -5,11 +5,10 @@ define(
     "router",
     "models/session"
 ],
-function(TP, app, Router, TheSession)
+function(TP, app, Router, theSession)
 {
-
     app.router = new Router();
-    app.session = TheSession;
+    app.session = theSession;
     TP.history.start({ pushState: false, root: app.root });
     
     //**********************************************************************

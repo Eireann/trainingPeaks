@@ -10,11 +10,6 @@ function(TP, weekSummaryTemplate)
         tagName: "div",
         className: "weekSummary",
 
-        initialize: function(options)
-        {
-            _.bindAll(this);
-        },
-
         template:
         {
             type: "handlebars",

@@ -24,11 +24,8 @@ function(TP, CalendarWorkoutTemplate)
 
         initialize: function(options)
         {
-            _.bindAll(this);
             if (!this.model)
-            {
                 throw "Cannot have a CalendarWorkoutView without a model";
-            }
         }
 
     });

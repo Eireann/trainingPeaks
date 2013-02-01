@@ -15,8 +15,6 @@ function(TP, NavigationLayout, UserControlsView, NavigationView, theSession)
         
         initialize: function(options)
         {
-            _.bindAll(this);
-
             this.layout = new NavigationLayout();
 
             this.views.userControlsView = new UserControlsView({ model: theSession });

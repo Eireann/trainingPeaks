@@ -15,7 +15,8 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDayTe
 
     var today = moment();
 
-    var CalendarDayLabelView = TP.ItemView.extend({
+    var CalendarDayLabelView = TP.ItemView.extend(
+    {
         template:
         {
             type: "handlebars",
@@ -28,16 +29,16 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDayTe
         tagName: "div",
         className: "day",
 
-        modelViews: {
+        modelViews:
+        {
             Label: CalendarDayLabelView,
             Workout: CalendarWorkoutView
         },
 
         initialize: function()
         {
-            _.bindAll(this);
             this.collection = this.model.collection;
-            this.on("after:item:added", this.makeDraggable);
+            this.on("after:item:added", this.makeDraggable, this);
         },
 
         getItemView: function(item)
@@ -50,7 +51,8 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDayTe
             return this.modelViews[modelName];
         },
 
-        getModelName: function(item) {
+        getModelName: function (item)
+        {
             if (item.isDateLabel)
                 return "Label";
             else if (typeof item.webAPIModelName !== 'undefined')
@@ -59,7 +61,7 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDayTe
                 return null;
         },
 
-        attributes: function()
+        attributes: function ()
         {
             return {
                 "data-date": this.model.id
@@ -94,6 +96,7 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDayTe
 
         setUpDroppable: function()
         {
+            _.bindAll(this, "onDropItem");
             this.$el.droppable({ drop: this.onDropItem });
         },
 

@@ -15,7 +15,8 @@ function(moment, TP, theApp)
         timeFormat: "Thh:mm:ss",
         longDateFormat: "YYYY-MM-DDThh:mm:ss",
 
-        defaults: {
+        defaults:
+        {
             "WorkoutId": 0,
             "PersonId": null,
             "Title": null,
