@@ -31,8 +31,7 @@ function(Backbone, Marionette, APIModel)
         modelEvents: {
             "request": "onWaitStart",
             "sync": "onWaitStop",
-            "error": "onWaitStop",
-            "all": "bubbleUpEvent"
+            "error": "onWaitStop"
         },
 
         onWaitStart: function()
@@ -45,11 +44,6 @@ function(Backbone, Marionette, APIModel)
         {
             this.trigger("waitStop");
             this.$el.removeClass('waiting');
-        },
-
-        bubbleUpEvent: function(event)
-        {
-            this.trigger.apply(this, arguments);
         }
 
     };

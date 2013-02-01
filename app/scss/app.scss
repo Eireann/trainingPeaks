@@ -16,8 +16,9 @@ $navigationFontFamilyLight: "HelveticaNeue-Light", "Helvetica Neue Light", "Helv
 $navigationFontFamilyRegular: "HelveticaNeue", "Helvetica Neue", "HelveticaNeueRoman", "HelveticaNeue-Roman", "Helvetica Neue Roman", 'TeXGyreHerosRegular', "Helvetica", "Tahoma", "Geneva", "Arial", "sans-serif";
 $navigationFontSize: 14px;
 
-@mixin throbber {
-    background-color:transparent;
+@mixin throbber($backgroundColor: $TPGrey1) {
+    background-color:$backgroundColor;
+    opacity:0.7;
     background-image: url(../images/throbber.gif);
     background-repeat: no-repeat;
     background-position: center;

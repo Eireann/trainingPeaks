@@ -37,12 +37,12 @@ function(TP, CalendarWeekView, customCalendarTemplate)
         onAddWeek: function (model)
         {
             var weekCollection = model.get("week");
-            this.addWeek({ collection: weekCollection, append: arguments[2].append });
+            this.addWeek({ model: model, collection: weekCollection, append: arguments[2].append });
         },
 
         addWeek: function(options)
         {
-            var weekView = new CalendarWeekView({ collection: options.collection });
+            var weekView = new CalendarWeekView({ collection: options.collection, model: options.model });
             weekView.on("itemview:itemMoved", this.onItemMoved, this);
             
             if (options.append)
@@ -54,7 +54,9 @@ function(TP, CalendarWeekView, customCalendarTemplate)
                 //TODO set scrollTop() value to avoid scrolling when prepending.
             }
 
-            //TODO Bind any possible CalendarWeekView events here
+            // display waiting indicator, then once controller loads the models they will turn off via sync event
+            weekView.onWaitStart();
+
             this.children.push(weekView);
         },
 
@@ -71,8 +73,8 @@ function(TP, CalendarWeekView, customCalendarTemplate)
 
             for (; i < numWeeks; i++)
             {
-                var weekCollection = this.collection.at(i).get("week");
-                this.addWeek({ collection: weekCollection, append: true });
+                var weekModel = this.collection.at(i);
+                this.addWeek({ model: weekModel, collection: weekModel.get("week"), append: true });
             }
 
         },

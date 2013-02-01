@@ -20,32 +20,30 @@ function (TP, CalendarDayView, WeekSummaryView)
                 return CalendarDayView;
         },
 
-        modelEvents: {
-            "all": "logEvent"
-        },
-
-        logEvent: function(eventName)
-        {
-            console.log("Received event: " + eventName);
-        },
-
-        // override some of the default throbber functionality
+        // override some of the default waiting functionality, because of the way css:before behaves,
+        // we want the pseudo element to be containd inside the week div instead of in it's parent
         initialize: function()
         {
-            this.throbber = $('<div class="waiting"> </div>');
+            if (!this.model)
+                throw "CalendarWeekView requires a model";
+
+            if (!this.collection)
+                throw "CalendarWeekView requires a collection";
+
+            this.waiting = $('<div class="waiting"> </div>');
         },
 
         onWaitStart: function()
         {
             this.trigger("waitStart");
             this.$el.css("position", "relative");
-            this.$el.append(this.throbber);
+            this.$el.append(this.waiting);
         },
 
         onWaitStop: function()
         {
             this.trigger("waitStop");
-            this.$el.remove('.waiting');
+            this.$el.find('.waiting').remove('.waiting');
         }
 
     });

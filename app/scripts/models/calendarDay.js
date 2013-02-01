@@ -50,7 +50,7 @@ function(_, moment, TP)
             dayLabel.isDateLabel = true;
             this.collection.add(dayLabel);
 
-            // watch for changes
+            // watch for changes on collection
             this.collection.on("add", this.change, this);
             this.collection.on("remove", this.change, this);
         },
@@ -58,11 +58,6 @@ function(_, moment, TP)
         bubbleUpEvent: function(event)
         {
             this.trigger.apply(this, arguments);
-        },
-
-        change: function()
-        {
-            this.trigger("change");
         },
 
         add: function(item)

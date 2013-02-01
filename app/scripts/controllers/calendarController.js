@@ -106,41 +106,34 @@ function (_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollect
 
         requestWorkouts: function (startDate, endDate)
         {
-            this.startWeeksWaiting(startDate, endDate);
             var workouts = new WorkoutsCollection([], { startDate: moment(startDate), endDate: moment(endDate) });
 
             var waiting = workouts.fetch();
             var self = this;
 
+            // we trigger a sync event on each week model - whether they have workouts or not - to remove the waiting throbber
+            // but we don't trigger the request event here to show the throbber, because the week model is not yet bound to a view,
+            // so calendarView does that
             waiting.done(function ()
             {
-                self.stopWeeksWaiting(startDate, endDate);
                 workouts.each(function (workout)
                 {
                     self.addWorkoutToCalendarDay(workout);
                     self.workoutsCollection.add(workout);
                 });
-            });
-        },
-
-        startWeeksWaiting: function(startDate, endDate)
-        {
-            this.collectionOfWeeks.forEach(function(weekModel)
-            {
-                var weekDate = moment(weekModel.id);
-                if (weekDate >= startDate && weekDate <= endDate)
-                {
-                    weekModel.trigger("request");
-                }
+                self.stopWeeksWaiting(moment(startDate), moment(endDate));
             });
         },
 
         stopWeeksWaiting: function(startDate, endDate)
         {
+            startDate = startDate.format(this.dateFormat);
+            endDate = endDate.format(this.dateFormat);
             this.collectionOfWeeks.forEach(function(weekModel)
             {
-                var weekDate = moment(weekModel.id);
-                if(weekDate >= startDate && weekDate <= endDate) {
+                var weekDate = weekModel.id;
+                if (weekDate >= startDate && weekDate <= endDate)
+                {
                     weekModel.trigger("sync");
                 }
             });
