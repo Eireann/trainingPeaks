@@ -106,6 +106,7 @@ function (_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollect
 
         requestWorkouts: function (startDate, endDate)
         {
+            this.startWeeksWaiting(startDate, endDate);
             var workouts = new WorkoutsCollection([], { startDate: moment(startDate), endDate: moment(endDate) });
 
             var waiting = workouts.fetch();
@@ -113,11 +114,35 @@ function (_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollect
 
             waiting.done(function ()
             {
+                self.stopWeeksWaiting(startDate, endDate);
                 workouts.each(function (workout)
                 {
                     self.addWorkoutToCalendarDay(workout);
                     self.workoutsCollection.add(workout);
                 });
+            });
+        },
+
+        startWeeksWaiting: function(startDate, endDate)
+        {
+            this.collectionOfWeeks.forEach(function(weekModel)
+            {
+                var weekDate = moment(weekModel.id);
+                if (weekDate >= startDate && weekDate <= endDate)
+                {
+                    weekModel.trigger("request");
+                }
+            });
+        },
+
+        stopWeeksWaiting: function(startDate, endDate)
+        {
+            this.collectionOfWeeks.forEach(function(weekModel)
+            {
+                var weekDate = moment(weekModel.id);
+                if(weekDate >= startDate && weekDate <= endDate) {
+                    weekModel.trigger("sync");
+                }
             });
         },
 

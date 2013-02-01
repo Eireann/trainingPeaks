@@ -18,8 +18,10 @@ function(moment, WorkoutModel, CalendarWorkoutView)
 
         it("should watch for model change events", function()
         {
-            expect(CalendarWorkoutView.prototype.modelEvents.change).toBeDefined();
-            expect(CalendarWorkoutView.prototype.modelEvents.change).toEqual("render");
+            var workoutModel = new WorkoutModel({ WorkoutDay: "2012-01-01", WorkoutId: "7373737" });
+            var workoutView = new CalendarWorkoutView({ model: workoutModel });
+            expect(workoutView.modelEvents.change).toBeDefined();
+            expect(workoutView.modelEvents.change).toEqual("render");
         });
 
     });

@@ -17,15 +17,13 @@ function(TP, CalendarWorkoutTemplate)
             template: CalendarWorkoutTemplate
         },
 
-        modelEvents:
-        {
-            "change": "render"
-        },
-
         initialize: function(options)
         {
             if (!this.model)
                 throw "Cannot have a CalendarWorkoutView without a model";
+
+            // extend events here so we inherit the TP.ItemView defaults
+            _.extend(this.modelEvents, { "change": "render" });
         }
 
     });
