@@ -13,6 +13,7 @@ function(Backbone)
     return Backbone.Model.extend({
 
         webAPIModelName: null,
+        idAttribute: null,
 
         get: function(key)
         {
@@ -23,7 +24,23 @@ function(Backbone)
         validate: function(attrs, options)
         {
             this.validateWebAPIModelName();
+            this.validateIdAttribute(attrs);
             this.validateAgainstDefaultValues(attrs);
+        },
+
+        validateIdAttribute: function(attrs) {
+            if (!this.idAttribute)
+            {
+                throw this.webAPIModelName + ": TP Web API Models must have an idAttribute";
+            }
+            if (!this.defaults.hasOwnProperty(this.idAttribute))
+            {
+                throw this.webAPIModelName + ": TP Web API Model - idAttribute " + this.idAttribute + " is not included in the defaults list";
+            }
+            if (!attrs.hasOwnProperty(this.idAttribute))
+            {
+                throw this.webAPIModelName + ": idAttribute (" + this.idAttribute + ") required, but is '" + attrs[this.idAttribute] + "'";
+            }
         },
 
         validateWebAPIModelName: function() {
@@ -44,12 +61,12 @@ function(Backbone)
         validateKeyExistsInDefaults: function(key) {
             if (!this.defaults)
             {
-                throw "TP Web API Models must have default values (this.defaults) defined";
+                throw this.webAPIModelName + ": TP Web API Models must have default values (this.defaults) defined";
             }
 
             if (!this.defaults.hasOwnProperty(key))
             {
-                throw "Cannot access key '" + key + "' because it is not in model defaults";
+                throw this.webAPIModelName + ": Cannot access key '" + key + "' because it is not in model defaults";
             }
         }
 

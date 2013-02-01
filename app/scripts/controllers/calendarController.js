@@ -1,24 +1,44 @@
 define(
     [
+    "underscore",
     "moment",
     "TP",
     "layouts/calendarLayout",
+    "models/calendarCollection",
     "models/calendarWeekCollection",
     "models/calendarDay",
     "views/calendarView",
     "models/workoutsCollection"
     ],
-function (moment, TP, CalendarLayout, CalendarWeekCollection, CalendarDayModel, CalendarView, WorkoutsCollection)
+function (_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollection, CalendarDayModel, CalendarView, WorkoutsCollection)
 {
     return TP.Controller.extend(
     {
+        dateFormat: "YYYY-MM-DD",
         layout: null,
         views: null,
         weeksCollection: null,
         workoutsCollection: null,
-        dateFormat: "YYYY-MM-DD",
 
         startOfWeekDayIndex: 0,
+
+        open: function()
+        {
+            // view.render();
+        },
+        
+        hide: function()
+        {
+            // view.hide();
+        },
+        
+        close: function()
+        {
+            // view.close();
+            // destroy data
+            // unbind explicit event bindings
+            // delete this;
+        },
 
         show: function()
         {
@@ -27,13 +47,11 @@ function (moment, TP, CalendarLayout, CalendarWeekCollection, CalendarDayModel, 
 
         initialize: function()
         {
-            _.bindAll(this);
-
             // initialize these here instead of in extend, otherwise they become members of the prototype
             this.layout = new CalendarLayout();
             this.views = {};
             this.workoutsCollection = new WorkoutsCollection();
-            this.collectionOfWeeks = new TP.Collection();
+            this.collectionOfWeeks = new CalendarCollection();
 
             // start on a Sunday
             this.startDate = moment().day(this.startOfWeekDayIndex).subtract("weeks", 4);
@@ -63,10 +81,9 @@ function (moment, TP, CalendarLayout, CalendarWeekCollection, CalendarDayModel, 
 
             this.views.calendar = new CalendarView({ model: weekDaysModel, collection: this.collectionOfWeeks });
 
-            this.views.calendar.bind("prepend", this.prependWeekToCalendar);
-            this.views.calendar.bind("append", this.appendWeekToCalendar);
-            this.views.calendar.bind("workoutMoved", this.onWorkoutMoved);
-            
+            this.views.calendar.on("prepend", this.prependWeekToCalendar, this);
+            this.views.calendar.on("append", this.appendWeekToCalendar, this);
+            this.views.calendar.on("itemMoved", this.onItemMoved, this);
         },
 
         createWeekCollectionStartingOn: function(startDate)
@@ -74,6 +91,7 @@ function (moment, TP, CalendarLayout, CalendarWeekCollection, CalendarDayModel, 
             // This method return an actual Backbone.Collection.
             // Later, if we want to be able to insert it into another Backbone.Collection,
             // we need to wrap it inside a Backbone.Model.
+            startDate = moment(startDate);
             var weekCollection = new CalendarWeekCollection();
 
             for (var dayOffset = 0; dayOffset < 7; ++dayOffset)
@@ -105,18 +123,11 @@ function (moment, TP, CalendarLayout, CalendarWeekCollection, CalendarDayModel, 
 
         addWorkoutToCalendarDay: function(workout)
         {
-            var workoutDay = workout.getCalendarDate();
+            var workoutDay = workout.getCalendarDay();
             if (workoutDay)
             {
-                var weekModel = this.collectionOfWeeks.get(moment(workoutDay).day(this.startOfWeekDayIndex).format(this.dateFormat));
-                if (!weekModel)
-                    return;
-                
-                var dayModel = weekModel.get("week").get(workoutDay);
-                if (!dayModel)
-                    return;
-                
-                dayModel.addWorkout(workout);
+                var dayModel = this.collectionOfWeeks.getDayModel(workoutDay, this.startOfWeekDayIndex);
+                dayModel.add(workout);
             }
         },
 
@@ -145,44 +156,37 @@ function (moment, TP, CalendarLayout, CalendarWeekCollection, CalendarDayModel, 
 
             this.collectionOfWeeks.add(newWeekModel, { at: 0, append: false });
         },
-
-        getDayModel: function(date) {
-            var weekStartDate = moment(date).day(this.startOfWeekDayIndex).format(this.dateFormat);
-            var week = this.collectionOfWeeks.get(weekStartDate);
-            if (!week)
-                throw "Could not find week for day model";
-            var dayModel = week.get("week").get(moment(date).format(this.dateFormat));
-            if (!dayModel)
-                throw "Could not find day in week";
-            return dayModel;
-        },
-
-        onWorkoutMoved: function (options)
+        
+        onItemMoved: function (options)
         {
+            // get the item
+            var item = this.workoutsCollection.get(options.itemId);
 
-            // get the workout
-            var workout = this.workoutsCollection.get(options.workoutId);
-            var oldWorkoutDay = workout.getCalendarDate();
-            var newWorkoutDay = options.destinationCalendarDayModel.id;
-            var controller = this;
-
-            if (oldWorkoutDay !== newWorkoutDay)
+            // if it has a getCalendarDay and moveToDay then we can move it
+            if (_.isFunction(item.getCalendarDay) && _.isFunction(item.moveToDay))
             {
+                var oldCalendarDay = item.getCalendarDay();
+                var newCalendarDay = options.destinationCalendarDayModel.id;
+                var controller = this;
 
-                var sourceCalendarDayModel = this.getDayModel(oldWorkoutDay);
-
-                var onFail = function()
+                if (oldCalendarDay !== newCalendarDay)
                 {
-                    // if it fails, move it back
-                    sourceCalendarDayModel.addWorkout(workout);
-                    options.destinationCalendarDayModel.removeWorkout(workout);
-                    controller.onError('Server Error: Unable to move workout');
-                };
 
-                // move it
-                sourceCalendarDayModel.removeWorkout(workout);
-                options.destinationCalendarDayModel.addWorkout(workout);
-                workout.moveToDay(newWorkoutDay).fail(onFail);
+                    var sourceCalendarDayModel = this.collectionOfWeeks.getDayModel(oldCalendarDay, this.startOfWeekDayIndex);
+                    
+                    var onFail = function()
+                    {
+                        // if it fails, move it back
+                        sourceCalendarDayModel.add(item);
+                        options.destinationCalendarDayModel.remove(item);
+                        controller.onError('Server Error: Unable to move item');
+                    };
+
+                    // move it
+                    sourceCalendarDayModel.remove(item);
+                    options.destinationCalendarDayModel.add(item);
+                    item.moveToDay(newCalendarDay).fail(onFail);
+                }
             }
 
         }

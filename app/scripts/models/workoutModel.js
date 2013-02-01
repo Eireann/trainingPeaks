@@ -12,9 +12,11 @@ function(moment, TP, theApp)
         webAPIModelName: "Workout",
         idAttribute: "WorkoutId",
         shortDateFormat: "YYYY-MM-DD",
-        dateFormat: "YYYY-MM-DDThh:mm:ss",
+        timeFormat: "Thh:mm:ss",
+        longDateFormat: "YYYY-MM-DDThh:mm:ss",
 
-        defaults: {
+        defaults:
+        {
             "WorkoutId": 0,
             "PersonId": null,
             "Title": null,
@@ -76,23 +78,20 @@ function(moment, TP, theApp)
             return theApp.apiRoot + "/WebApiServer/Fitness/V1/workouts";
         },
 
-        getCalendarDate: function()
+        getCalendarDay: function()
         {
             return moment(this.get("WorkoutDay")).format(this.shortDateFormat);
         },
 
         moveToDay: function(newDate)
         {
-            newDate = moment(newDate);
-            var originalDate = this.get("WorkoutDay");
-            var workoutDate = moment(originalDate);
-            workoutDate.add("days", newDate.diff(workoutDate, "days"));
 
-            var theWorkout = this;
-            this.set("WorkoutDay", workoutDate.format(this.dateFormat));
+            var originalDate = moment(this.get("WorkoutDay"));
+            this.set("WorkoutDay", moment(newDate).format(this.longDateFormat));
 
             // on fail, return to old date,
             // return a deferred
+            var theWorkout = this;
             return this.save().fail(function()
             {
                 theWorkout.set("WorkoutDay", originalDate);

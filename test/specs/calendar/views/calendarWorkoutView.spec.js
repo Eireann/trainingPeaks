@@ -22,20 +22,6 @@ function(moment, WorkoutModel, CalendarWorkoutView)
             expect(CalendarWorkoutView.prototype.modelEvents.change).toEqual("render");
         });
 
-        describe("render", function()
-        {
-
-            it("Should render a calendarWorkoutView if it has a workout", function()
-            {
-                var today = moment();
-                var workoutId = '12345';
-                var workoutModel = new WorkoutModel({ WorkoutId: workoutId, WorkoutDay: today.format() });
-                var workoutView = new CalendarWorkoutView({ model: workoutModel });
-                workoutView.render();
-                expect(workoutView.$el.html()).toContain(workoutId);
-            });
-
-        });
     });
 
 });

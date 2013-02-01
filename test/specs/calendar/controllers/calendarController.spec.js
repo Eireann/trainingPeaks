@@ -90,28 +90,28 @@ function(moment, $, _, Backbone, CalendarController, WorkoutModel, WorkoutsColle
                 expect(CalendarView.prototype.initialize).toHaveBeenCalled();
             });
 
-            it("Should bind to calendar view prepend", function()
+            it("Should on to calendar view prepend", function()
             {
                 var controller = new CalendarController();
-                spyOn(CalendarView.__super__, "bind").andCallThrough();
+                spyOn(CalendarView.__super__, "on").andCallThrough();
                 controller.initializeCalendar();
-                expect(CalendarView.__super__.bind).toHaveBeenCalledWith("prepend", controller.prependWeekToCalendar);
+                expect(CalendarView.__super__.on).toHaveBeenCalledWith("prepend", controller.prependWeekToCalendar, controller);
             });
 
-            it("Should bind to calendar view append", function()
+            it("Should on to calendar view append", function()
             {
                 var controller = new CalendarController();
-                spyOn(CalendarView.__super__, "bind").andCallThrough();
+                spyOn(CalendarView.__super__, "on").andCallThrough();
                 controller.initializeCalendar();
-                expect(CalendarView.__super__.bind).toHaveBeenCalledWith("append", controller.appendWeekToCalendar);
+                expect(CalendarView.__super__.on).toHaveBeenCalledWith("append", controller.appendWeekToCalendar, controller);
             });
 
-            it("Should bind to calendar view workoutMoved", function()
+            it("Should on to calendar view itemMoved", function()
             {
                 var controller = new CalendarController();
-                spyOn(CalendarView.__super__, "bind").andCallThrough();
+                spyOn(CalendarView.__super__, "on").andCallThrough();
                 controller.initializeCalendar();
-                expect(CalendarView.__super__.bind).toHaveBeenCalledWith("workoutMoved", controller.onWorkoutMoved);
+                expect(CalendarView.__super__.on).toHaveBeenCalledWith("itemMoved", controller.onItemMoved, controller);
             });
         });
 
@@ -209,7 +209,7 @@ function(moment, $, _, Backbone, CalendarController, WorkoutModel, WorkoutsColle
                 expect(todayCalendarDay).toBeDefined();
                 expect(todayCalendarDay).not.toBeNull();
                 spyOn(todayCalendarDay, "addWorkout");
-                var workout = new WorkoutModel({ WorkoutDay: moment().format() });
+                var workout = new WorkoutModel({ WorkoutDay: moment().format(), WorkoutId: "12345" });
                 controller.addWorkoutToCalendarDay(workout);
                 expect(todayCalendarDay.addWorkout).toHaveBeenCalledWith(workout);
             });
@@ -329,7 +329,7 @@ function(moment, $, _, Backbone, CalendarController, WorkoutModel, WorkoutsColle
             });
         });
 
-        xdescribe("onWorkoutMoved", function()
+        xdescribe("onItemMoved", function()
         {
 
             var yesterday = moment().subtract("days", 1).format("YYYY-MM-DD");
@@ -353,21 +353,21 @@ function(moment, $, _, Backbone, CalendarController, WorkoutModel, WorkoutsColle
             it("Should call removeWorkout on yesterday's calendarDay model", function()
             {
                 spyOn(yesterdayCalendarDay, "removeWorkout");
-                controller.onWorkoutMoved({ workoutId: workoutId, destinationCalendarDayModel: tomorrowCalendarDay });
+                controller.onItemMoved({ workoutId: workoutId, destinationCalendarDayModel: tomorrowCalendarDay });
                 expect(yesterdayCalendarDay.removeWorkout).toHaveBeenCalledWith(workout);
             });
 
             it("Should call addWorkout on tomorrow's calendarDay model", function()
             {
                 spyOn(tomorrowCalendarDay, "addWorkout");
-                controller.onWorkoutMoved({ workoutId: workoutId, destinationCalendarDayModel: tomorrowCalendarDay });
+                controller.onItemMoved({ workoutId: workoutId, destinationCalendarDayModel: tomorrowCalendarDay });
                 expect(tomorrowCalendarDay.addWorkout).toHaveBeenCalledWith(workout);
             });
 
             it("Should call moveToDay on workout", function()
             {
                 spyOn(workout, "moveToDay").andCallThrough();
-                controller.onWorkoutMoved({ workoutId: workoutId, destinationCalendarDayModel: tomorrowCalendarDay });
+                controller.onItemMoved({ workoutId: workoutId, destinationCalendarDayModel: tomorrowCalendarDay });
                 expect(workout.moveToDay).toHaveBeenCalledWith(tomorrow);
             });
 
@@ -381,7 +381,7 @@ function(moment, $, _, Backbone, CalendarController, WorkoutModel, WorkoutsColle
                 spyOn(yesterdayCalendarDay, "removeWorkout");
 
                 // move it ...
-                controller.onWorkoutMoved({ workoutId: workoutId, destinationCalendarDayModel: tomorrowCalendarDay });
+                controller.onItemMoved({ workoutId: workoutId, destinationCalendarDayModel: tomorrowCalendarDay });
                 expect(tomorrowCalendarDay.addWorkout).toHaveBeenCalledWith(workout);
                 expect(yesterdayCalendarDay.removeWorkout).toHaveBeenCalledWith(workout);
 

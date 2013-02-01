@@ -30,8 +30,6 @@ function (_, TP, loginViewTemplate)
             
         initialize: function ()
         {
-            _.bindAll(this);
-
             if (!this.model)
                 throw "loginView requires a SessionModel. Aborting";
             

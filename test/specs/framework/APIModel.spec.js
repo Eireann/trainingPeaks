@@ -15,8 +15,10 @@ function(TP)
         {
             var TestModel = TP.APIModel.extend({
                 webAPIModelName: "TestModel",
+                idAttribute: "idkey",
                 defaults: {
-                    goodkey: "SomeDefaultValue"
+                    goodkey: "SomeDefaultValue",
+                    idkey: "ThisIsMyId"
                 }
             });
 
@@ -40,8 +42,10 @@ function(TP)
         {
             var TestModel = TP.APIModel.extend({
                 webAPIModelName: "TestModel",
+                idAttribute: "idkey",
                 defaults: {
-                    goodkey: "SomeDefaultValue"
+                    goodkey: "SomeDefaultValue",
+                    idkey: "ThisIsMyId"
                 }
             });
 

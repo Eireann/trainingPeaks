@@ -26,11 +26,11 @@ function(WorkoutModel, CalendarDay)
             it("Should allow to add and retrieve a workout", function()
             {
                 var calendarDay = new CalendarDay({ date: "2011-03-02" });
-                var workout = new WorkoutModel({ WorkoutDay: "2011-03-02T00:00:00" });
-                calendarDay.addWorkout(workout);
-                var workouts = calendarDay.getWorkouts();
+                var workout = new WorkoutModel({ WorkoutDay: "2011-03-02T00:00:00", WorkoutId: "12345" });
+                calendarDay.add(workout);
+                var workouts = calendarDay.collection;
                 expect(workouts).not.toBeNull();
-                expect(calendarDay.getWorkouts().at(0)).toBe(workout);
+                expect(workouts.get(workout.id)).toBe(workout);
             });
 
 
@@ -38,10 +38,10 @@ function(WorkoutModel, CalendarDay)
             {
                 var changeSpy = jasmine.createSpy("change spy");
                 var calendarDay = new CalendarDay({ date: "2011-03-22" });
-                var workout = new WorkoutModel({ WorkoutDay: "2011-03-22T00:00:00" });
+                var workout = new WorkoutModel({ WorkoutDay: "2011-03-22T00:00:00", WorkoutId: "12345" });
 
                 calendarDay.bind("change", changeSpy);
-                calendarDay.addWorkout(workout);
+                calendarDay.add(workout);
                 expect(changeSpy).toHaveBeenCalled();
             });
 

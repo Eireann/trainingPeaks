@@ -20,8 +20,6 @@ function ($, _, TP, theApp)
 
         initialize: function()
         {
-            _.bindAll(this);
-            
             var accessToken = this.storageLocation.getItem("access_token");
             if (accessToken)
             {
@@ -56,26 +54,34 @@ function ($, _, TP, theApp)
 
             this.username = options.username;
 
-            var self = this;
+            _.bindAll(this, "onAuthenticationSuccess", "onAuthenticationFailure");
+
             this.fetch(
             {
-                data: data, type: "POST", contentType: "application/x-www-form-urlencoded"
-            }).done(function ()
-            {
-                var expiresOn = Number(self.get("expires_in")) + Number((new Date()).getTime() / 1000);
-                
-                self.storageLocation.setItem("access_token", self.get("access_token"));
-                self.storageLocation.setItem("expires_on", expiresOn);
-                self.storageLocation.setItem("username", self.username);
-                
-                self.set("username", self.username);
-                
-                self.trigger("api:authorization:success");
-            }).error(function()
-            {
-                self.trigger("api:authorization:failure");
-            });
+                data: data,
+                type: "POST",
+                contentType: "application/x-www-form-urlencoded"
+            }).done(this.onAuthenticationSuccess).error(this.onAuthenticationFailure);
+        },
+        
+        onAuthenticationSuccess: function()
+        {
+            var expiresOn = parseInt(this.get("expires_in"), 10) + parseInt((+new Date()) / 1000, 10);
+
+            this.storageLocation.setItem("access_token", this.get("access_token"));
+            this.storageLocation.setItem("expires_on", expiresOn);
+            this.storageLocation.setItem("username", this.username);
+
+            this.set("username", this.username);
+
+            this.trigger("api:authorization:success");
+        },
+        
+        onAuthenticationFailure: function()
+        {
+            this.trigger("api:authorization:failure");
         }
+
     });
 
     return new Session();
