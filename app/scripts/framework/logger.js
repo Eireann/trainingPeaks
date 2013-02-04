@@ -4,7 +4,7 @@
     {
         function Logger(myConsole)
         {
-            this.logLevel = this.logLevels.DEBUG;
+            this.logLevel = this.logLevels.ERROR;
             this.console = typeof myConsole !== 'undefined' ? myConsole : console;
         }
 
