@@ -1,4 +1,4 @@
-define(['jquery','jqueryui/datepicker'], function (jQuery) {
+define(['jqueryui/datepicker'], function () {
 /* Faroese initialisation for the jQuery UI date picker plugin */
 /* Written by Sverri Mohr Olsen, sverrimo@gmail.com */
 jQuery(function($){

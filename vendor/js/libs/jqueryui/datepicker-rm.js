@@ -1,4 +1,4 @@
-define(['jquery','jqueryui/datepicker'], function (jQuery) {
+define(['jqueryui/datepicker'], function () {
 /* Romansh initialisation for the jQuery UI date picker plugin. */
 /* Written by Yvonne Gienal (yvonne.gienal@educa.ch). */
 jQuery(function($){

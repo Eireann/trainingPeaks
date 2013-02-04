@@ -1,4 +1,4 @@
-define(['jquery'], function (jQuery) {
+define([], function () {
 /*!
  * jQuery UI Position 1.10.0
  * http://jqueryui.com

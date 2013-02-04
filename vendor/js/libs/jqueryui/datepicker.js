@@ -1,4 +1,4 @@
-define(['jquery','./core'], function (jQuery) {
+define(['./core'], function () {
 /*!
  * jQuery UI Datepicker 1.10.0
  * http://jqueryui.com

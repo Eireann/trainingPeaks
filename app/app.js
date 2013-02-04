@@ -41,7 +41,7 @@ function(TP, Session, NavigationController, LoginController, CalendarController,
     };
 
     theApp.root = "/Mars";
-    theApp.apiRoot = apiRoots.deploy;
+    theApp.apiRoot = apiRoots.local;
 
     window.theMarsApp = theApp;
 

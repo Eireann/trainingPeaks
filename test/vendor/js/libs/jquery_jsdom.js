@@ -5,7 +5,7 @@ function (document, window) {
       if(window == null ) {
         window = require('jsdom').jsdom().createWindow();
         // assume window is a jsdom instance...
-        // jsdom includes an incomplete version of XMLHttpRequest
+          // jsdom includes an incomplete version of XMLHttpRequest
         window.XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
         // trick jQuery into thinking CORS is supported (should be in node-XMLHttpRequest)
         window.XMLHttpRequest.prototype.withCredentials = false;
@@ -9476,8 +9476,9 @@ function (document, window) {
             };
         });
     });
-    // Expose jQuery to the global object
+        // Expose jQuery to the global object
     window.jQuery = window.$ = jQuery;
+    global.jQuery = global.$ = jQuery;
 
     // Expose jQuery as an AMD module, but only for AMD loaders that
     // understand the issues with loading multiple versions of jQuery

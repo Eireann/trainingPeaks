@@ -73,7 +73,7 @@ if (typeof global !== 'undefined' && typeof window === 'undefined')
 {
     requirejs.config(
     {
-        deps: ["browserEnvironment"]
+        deps: ["browserEnvironment", "jquery"]
     });
 }
 

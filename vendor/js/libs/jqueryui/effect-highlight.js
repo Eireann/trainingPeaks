@@ -1,4 +1,4 @@
-define(['jquery','./effect'], function (jQuery) {
+define(['./effect'], function () {
 /*!
  * jQuery UI Effects Highlight 1.10.0
  * http://jqueryui.com

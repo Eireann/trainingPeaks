@@ -1,4 +1,4 @@
-define(['jquery','./core','./widget','./position'], function (jQuery) {
+define(['./core','./widget','./position'], function () {
 /*!
  * jQuery UI Tooltip 1.10.0
  * http://jqueryui.com

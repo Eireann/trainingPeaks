@@ -70,6 +70,7 @@ module.exports = function(grunt)
                     out: "build/debug/single.js",
                     name: "main",
                     include: ["Backbone.Marionette.Handlebars"],
+                    exclude: ["hbs", "Handlebars"],
                     wrap: false,
                     optimize: "none"
                 }
@@ -84,6 +85,8 @@ module.exports = function(grunt)
                 [
                     // We include AlmondJS + the compiled unified app.js file.
                     "vendor/js/libs/almond.js",
+                    "vendor/js/libs/lodash/lodash.amd.js",
+                    "vendor/js/libs/HandlebarsRuntime.js",
                     "build/debug/single.js"
                 ],
 

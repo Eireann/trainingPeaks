@@ -1,4 +1,4 @@
-define(['jquery','./core','./widget','./position','./menu'], function (jQuery) {
+define(['./core','./widget','./position','./menu'], function () {
 /*!
  * jQuery UI Autocomplete 1.10.0
  * http://jqueryui.com

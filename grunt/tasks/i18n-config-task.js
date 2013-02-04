@@ -42,7 +42,7 @@ module.exports = function (grunt) {
             // add locale specific single.js file
             localeOptions.dest = localeSingleFile;
             localeOptions.src = _.clone(concatOptions.dist.src);
-            localeOptions.src[1] = localeSingleFile;
+            localeOptions.src[3] = localeSingleFile;
 
             // add the moment.js translation
             var momentLangDir = "vendor/js/libs/moment/lang/";
@@ -94,6 +94,9 @@ module.exports = function (grunt) {
             addLocaleToConcat(localeName, localeSingleFile);
             addLocaleToUglify(localeName, localeSingleFile);
         });
+
+        console.log(grunt.config.get("requirejs").en_us.options);
+        console.log(grunt.config.get("concat"));
 
     });
 

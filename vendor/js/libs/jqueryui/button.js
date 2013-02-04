@@ -1,4 +1,4 @@
-define(['jquery','./core','./widget'], function (jQuery) {
+define(['./core','./widget'], function () {
 /*!
  * jQuery UI Button 1.10.0
  * http://jqueryui.com
