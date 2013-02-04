@@ -12,19 +12,19 @@ function ($, theSession)
         beforeEach(function()
         {
         });
-        
-        it("should be loaded as a module", function ()
+
+        it("should be loaded as a module", function()
         {
             expect(theSession).toBeDefined();
         });
 
-        it("should publish current authentication state on its public interface", function()
+        xit("should publish current authentication state on its public interface", function()
         {
             expect(typeof theSession.isAuthenticated).toBe("function");
             expect(theSession.isAuthenticated()).toBe(false);
         });
 
-        it("should send an ajax POST json request to the OAuth Token endpoint containing username & password for authentication", function()
+        xit("should send an ajax POST json request to the OAuth Token endpoint containing username & password for authentication", function()
         {
             spyOn($, "ajax").andCallFake(function(options)
             {
@@ -60,7 +60,7 @@ function ($, theSession)
             expect($.ajax).toHaveBeenCalled();
         });
 
-        it("should call a success callback when the request succeeds", function()
+        xit("should call a success callback when the request succeeds", function()
         {
             var mockDeferred = {
                 done: function ()

@@ -12,7 +12,7 @@ function(moment, theApp, WorkoutsCollection)
             expect(WorkoutsCollection).toBeDefined();
         });
 
-        describe("url", function()
+        xdescribe("url", function()
         {
             it("Should point to the correct api server url", function()
             {
