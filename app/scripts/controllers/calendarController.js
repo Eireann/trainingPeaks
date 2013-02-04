@@ -17,10 +17,10 @@ function (_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollect
         views: {},
 
         startOfWeekDayIndex: 0,
+        summaryViewEnabled: true,
 
         show: function()
         {
-            console.log("show calendar");
             this.initializeCalendar();
             this.requestWorkouts(this.startDate, this.endDate);
             this.layout.mainRegion.show(this.views.calendar);
@@ -79,11 +79,22 @@ function (_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollect
             startDate = moment(startDate);
             var weekCollection = new CalendarWeekCollection();
 
+            var CalendarSummaryModel = TP.Model.extend(
+            {
+                isSummary: true
+            });
+
             for (var dayOffset = 0; dayOffset < 7; ++dayOffset)
             {
                 var day = new CalendarDayModel({ date: moment(startDate) });
                 weekCollection.add(day);
                 startDate.add("days", 1);
+
+                if (dayOffset === 6 && this.summaryViewEnabled)
+                {
+                    var summary = new CalendarSummaryModel();
+                    weekCollection.add(summary);
+                }
             }
 
             return weekCollection;

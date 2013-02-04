@@ -11,10 +11,9 @@ function (TP, CalendarDayView, WeekSummaryView)
     {
         tagName: "div",
         className: "week",
-        itemView: CalendarDayView,
         getItemView: function(item)
         {
-            if (item.isWeekSummary)
+            if (item.isSummary)
                 return WeekSummaryView;
             else
                 return CalendarDayView;

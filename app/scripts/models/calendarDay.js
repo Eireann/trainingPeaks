@@ -24,9 +24,8 @@ function(_, moment, TP)
         {
             // we need a date
             var date = this.get("date");
-            if(!date) {
+            if(!date)
                 throw "CalendarDay requires a date";
-            }
 
             // date must be a moment
             if (!moment.isMoment(date))
