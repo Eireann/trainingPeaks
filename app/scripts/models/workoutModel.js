@@ -1,10 +1,9 @@
 ﻿define(
 [
     "moment",
-    "TP",
-    "app"
+    "TP"
 ],
-function(moment, TP, theApp)
+function (moment, TP)
 {
     return TP.APIModel.extend(
     {
@@ -72,10 +71,10 @@ function(moment, TP, theApp)
             "CadenceAverage": null,
             "CadenceMaximum": null
         },
-
+        
         url: function()
         {
-            return theApp.apiRoot + "/WebApiServer/Fitness/V1/workouts";
+            return theMarsApp.apiRoot + "/WebApiServer/Fitness/V1/workouts";
         },
 
         getCalendarDay: function()

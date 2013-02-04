@@ -33,8 +33,8 @@ function (_, TP, loginViewTemplate)
             if (!this.model)
                 throw "loginView requires a SessionModel. Aborting";
             
-            this.model.on("api:authorization:success", this.onLoginSuccess);
-            this.model.on("api:authorization:failure", this.onLoginFailure);
+            this.model.on("api:authorization:success", this.onLoginSuccess, this);
+            this.model.on("api:authorization:failure", this.onLoginFailure, this);
         },
             
         events:

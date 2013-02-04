@@ -1,11 +1,9 @@
 define(
 [
-    "jquery",
     "underscore",
-    "TP",
-    "app"
+    "TP"
 ],
-function ($, _, TP, theApp)
+function (_, TP)
 {
     "use strict";
 
@@ -13,7 +11,7 @@ function ($, _, TP, theApp)
     {
         url: function()
         {
-            return theApp.apiRoot + "/OAuthAuthorizationServer/OAuth/Token";
+            return theMarsApp.apiRoot + "/OAuthAuthorizationServer/OAuth/Token";
         },
 
         storageLocation: localStorage,
@@ -84,5 +82,5 @@ function ($, _, TP, theApp)
 
     });
 
-    return new Session();
+    return Session;
 });

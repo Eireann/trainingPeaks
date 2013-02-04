@@ -3,21 +3,20 @@
     "TP",
     "layouts/navigationLayout",
     "views/userControlsView",
-    "views/navigationView",
-    
-    "models/session"
+    "views/navigationView"
 ],
-function(TP, NavigationLayout, UserControlsView, NavigationView, theSession)
+function(TP, NavigationLayout, UserControlsView, NavigationView)
 {
     return TP.Controller.extend(
     {
         views: {},
         
-        initialize: function(options)
+        initialize: function()
         {
             this.layout = new NavigationLayout();
+            this.layout.on("show", this.show, this);
 
-            this.views.userControlsView = new UserControlsView({ model: theSession });
+            this.views.userControlsView = new UserControlsView({ model: theMarsApp.session });
             this.views.navigationView = new NavigationView();
         },
         

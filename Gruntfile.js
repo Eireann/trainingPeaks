@@ -26,7 +26,11 @@ module.exports = function(grunt)
                 eqeqeq: true,
                 eqnull: true,
                 browser: true,
-                devel: true
+                devel: true,
+                globals:
+                {
+                    "theMarsApp": true
+                }
             }
         },
 

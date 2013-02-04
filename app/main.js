@@ -1,16 +1,29 @@
 define(
 [
     "TP",
-    "app",
-    "router",
-    "models/session"
+    "app"
 ],
-function(TP, app, Router, theSession)
+function(TP, theApp)
 {
-    app.router = new Router();
-    app.session = theSession;
-    TP.history.start({ pushState: false, root: app.root });
-    
+    /*
+    * jQuery OAuth Authentication Hack
+    * Need to figure out a better place to inject this into jQuery
+    * but can't easily make it a separate plugin because I need access to the
+    * Router for clean re-routing
+    */
+    //**********************************************************************
+    $(document).ajaxSend(function (event, xhr)
+    {
+        if (theApp.session.isAuthenticated())
+            xhr.setRequestHeader("Authorization", "Bearer " + theApp.session.get("access_token"));
+    });
+
+    $(document).ajaxError(function (event, xhr)
+    {
+        if (xhr.status === 401)
+            theApp.trigger("api:unauthorized");
+    });
+
     //**********************************************************************
 
     // All navigation that is relative should be passed through the navigate
@@ -21,7 +34,7 @@ function(TP, app, Router, theSession)
         // Get the absolute anchor href.
         var href = { prop: $(this).prop("href"), attr: $(this).attr("href") };
         // Get the absolute root.
-        var root = location.protocol + "//" + location.host + app.root;
+        var root = location.protocol + "//" + location.host + theApp.root;
 
         // Ensure the root is part of the anchor href, meaning it's relative.
         if (href.prop.slice(0, root.length) === root)
@@ -36,4 +49,7 @@ function(TP, app, Router, theSession)
             TP.history.navigate(href.attr, true);
         }
     });
+
+    theApp.start();
+    TP.history.start({ pushState: false, root: theApp.root });
 });

@@ -1,38 +1,35 @@
 define(
 [
-    "jquery",
     "TP",
+    "models/session",
+    "controllers/navigationController",
+    "controllers/loginController",
+    "controllers/calendarController",
+    "router",
     "marionette.faderegion"
 ],
-function($, TP)
+function(TP, Session, NavigationController, LoginController, CalendarController, Router)
 {
-    "use strict";
-    
     var theApp = new TP.Application();
-
-    /*
-    * jQuery OAuth Authentication Hack
-    * Need to figure out a better place to inject this into jQuery
-    * but can't easily make it a separate plugin because I need access to the
-    * Router for clean re-routing
-    */
-    //**********************************************************************
-    $(document).ajaxSend(function (event, xhr)
-    {
-        if (theApp.session.isAuthenticated())
-            xhr.setRequestHeader("Authorization", "Bearer " + theApp.session.get("access_token"));
-    });
-
-    $(document).ajaxError(function (event, xhr)
-    {
-        if (xhr.status === 401)
-            theApp.trigger("api:unauthorized");
-    });
 
     theApp.addRegions(
     {
         navRegion: "#navigation",
         mainRegion: "#main"
+    });
+
+    theApp.addInitializer(function()
+    {
+        theApp.session = new Session({ app: this });
+
+        // Set up controllers container and eagerly load all the required Controllers.
+        this.controllers = {};
+
+        this.controllers.navigationController = new NavigationController();
+        this.controllers.loginController = new LoginController();
+        this.controllers.calendarController = new CalendarController();
+
+        this.router = new Router();
     });
 
     var apiRoots =
@@ -44,7 +41,9 @@ function($, TP)
     };
 
     theApp.root = "/Mars";
-    theApp.apiRoot = apiRoots.local;
+    theApp.apiRoot = apiRoots.deploy;
+
+    window.theMarsApp = theApp;
 
     return theApp;
 });

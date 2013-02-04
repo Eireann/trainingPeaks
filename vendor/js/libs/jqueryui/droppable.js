@@ -1,4 +1,4 @@
-define(['jquery','./core','./widget','./mouse','./draggable'], function (jQuery) {
+define(['./core','./widget','./mouse','./draggable'], function () {
 /*!
  * jQuery UI Droppable 1.10.0
  * http://jqueryui.com

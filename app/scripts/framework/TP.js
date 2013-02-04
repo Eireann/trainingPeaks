@@ -11,18 +11,25 @@ define(
 ],
 function(Backbone, Marionette, APIModel)
 {
-
     var TP = {};
 
     // Marionette stuff
     TP.Application = Marionette.Application.extend({});
-    TP.Controller = Marionette.Controller.extend({
+    TP.Controller = Marionette.Controller.extend(
+    {
+        getLayout: function()
+        {
+            return this.layout;
+        },
+        
         onError: function(msg)
         {
             alert(msg);
         }
     });
-    TP.Layout = Marionette.Layout.extend({});
+    TP.Layout = Marionette.Layout.extend(
+    {
+    });
     TP.Region = Marionette.Region;
 
     // Give all views waiting indicators and event bubblers
@@ -48,6 +55,7 @@ function(Backbone, Marionette, APIModel)
 
     };
 
+    TP.View = Backbone.View.extend();
     TP.ItemView = Marionette.ItemView.extend(commonViewFunctions);
     TP.CollectionView = Marionette.CollectionView.extend(commonViewFunctions);
     TP.CompositeView = Marionette.CompositeView.extend(commonViewFunctions);
@@ -60,5 +68,4 @@ function(Backbone, Marionette, APIModel)
     TP.Router = Backbone.Router.extend({});
 
     return TP;
-
 });

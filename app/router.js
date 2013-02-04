@@ -1,29 +1,26 @@
 define(
 [
     "underscore",
-    "app",
-    "TP",
-    "controllers/navigationController",
-    "controllers/calendarController",
-    "layouts/loginLayout",
-    "views/loginView",
-    "models/session"
+    "TP"
 ],
-function (_, theApp, TP, NavigationController, CalendarController, LoginLayout, LoginView, theSession)
+function (_, TP)
 {
-    "use strict";
-
     return TP.Router.extend(
     {
         controllers: {},
-        
+
         initialize: function ()
         {
-            theApp.on("api:unauthorized", this.login, this);
+            theMarsApp.on("api:unauthorized", this.login, this);
 
-            this.controllers.navigationController = new NavigationController();
-            theApp.navRegion.show(this.controllers.navigationController.layout);
-            this.controllers.navigationController.show();
+            theMarsApp.navRegion.show(theMarsApp.controllers.navigationController.layout);
+
+            var self = this;
+            theMarsApp.controllers.loginController.on("login:success",
+            function()
+            {
+                self.navigate("calendar", { trigger: true });
+            });
         },
 
         routes:
@@ -36,30 +33,23 @@ function (_, theApp, TP, NavigationController, CalendarController, LoginLayout, 
 
         home: function ()
         {
+            console.log("ROUTE: home");
+            var homeview = new TP.View();
+            theMarsApp.mainRegion.show(homeview);
         },
 
         calendar: function ()
         {
-            // Create Calendar Layout, Calendar controller, bind & display
-            var controller = new CalendarController();
-            theApp.mainRegion.show(controller.layout);
-            controller.show();
+            console.log("ROUTE: calendar");
+
+            theMarsApp.mainRegion.show(theMarsApp.controllers.calendarController.getLayout());
         },
 
         login: function (origin)
         {
-            var self = this;
+            console.log("ROUTE: login");
 
-            var loginLayout = new LoginLayout();
-            var loginView = new LoginView({ model: theSession });
-            
-            loginView.on("login:success", function ()
-            {
-                self.navigate("calendar", { trigger: true });
-            });
-
-            theApp.mainRegion.show(loginLayout);
-            loginLayout.mainRegion.show(loginView);
+            theMarsApp.mainRegion.show(theMarsApp.controllers.loginController.getLayout());
         }
     });
 });

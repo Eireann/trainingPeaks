@@ -6,9 +6,7 @@
     var commonConfig = {
         paths:
         {
-            "jquery": "../vendor/js/libs/jquery/jquery",
             "jqueryui": "../vendor/js/libs/jqueryui",
-            "jquery.mousewheel": "../vendor/js/libs/jquery.mousewheel",
             "lodash": "../vendor/js/libs/lodash/lodash",
             "underscore": "../vendor/js/libs/lodash/lodash",
 

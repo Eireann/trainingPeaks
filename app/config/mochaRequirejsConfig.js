@@ -25,18 +25,13 @@ module.exports = {
     {
         "backbone":
         {
-            deps: ["jquery", "underscore"],
+            deps: ["underscore"],
             exports: "Backbone"
         },
         "backbone.marionette":
         {
             deps: ["backbone"],
             exports: "Marionette"
-        },
-        "jquery.mousewheel":
-        {
-            deps: ["jquery"],
-            exports: "jquery"
         }
     }
 };

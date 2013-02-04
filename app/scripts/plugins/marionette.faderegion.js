@@ -1,9 +1,8 @@
 ﻿define(
 [
-    "TP",
-    "jquery"
+    "TP"
 ],
-function(TP, $)
+function(TP)
 {
     TP.Region.prototype.show = function(view)
     {

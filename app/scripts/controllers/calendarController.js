@@ -14,42 +14,24 @@ function (_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollect
 {
     return TP.Controller.extend(
     {
-        dateFormat: "YYYY-MM-DD",
-        layout: null,
-        views: null,
-        weeksCollection: null,
-        workoutsCollection: null,
+        views: {},
 
         startOfWeekDayIndex: 0,
 
-        open: function()
-        {
-            // view.render();
-        },
-        
-        hide: function()
-        {
-            // view.hide();
-        },
-        
-        close: function()
-        {
-            // view.close();
-            // destroy data
-            // unbind explicit event bindings
-            // delete this;
-        },
-
         show: function()
         {
+            console.log("show calendar");
+            this.initializeCalendar();
+            this.requestWorkouts(this.startDate, this.endDate);
             this.layout.mainRegion.show(this.views.calendar);
         },
 
-        initialize: function()
+        initialize: function ()
         {
-            // initialize these here instead of in extend, otherwise they become members of the prototype
             this.layout = new CalendarLayout();
-            this.views = {};
+            this.layout.on("show", this.show, this);
+
+            this.dateFormat = "YYYY-MM-DD";
             this.workoutsCollection = new WorkoutsCollection();
             this.collectionOfWeeks = new CalendarCollection();
 
@@ -58,9 +40,6 @@ function (_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollect
 
             // end on a Saturday
             this.endDate = moment().day(6 + this.startOfWeekDayIndex).add("weeks", 6);
-
-            this.initializeCalendar();
-            this.requestWorkouts(this.startDate, this.endDate);
         },
 
         initializeCalendar: function()
@@ -69,16 +48,22 @@ function (_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollect
 
             var numOfWeeksToShow = (this.endDate.diff(this.startDate, "days") + 1) / 7;
             var i;
-            
-            for (i = 0; i < numOfWeeksToShow; i++)
-            {
-                var weekStartDate = moment(this.startDate).add("weeks", i);
 
-                // Get a CalendarWeekCollection and wrap it inside a model, with its matching ID, to be able to add it to a parent collection
-                var weekModel = new TP.Model({ id: weekStartDate.format(this.dateFormat), week: this.createWeekCollectionStartingOn(weekStartDate) });
-                this.collectionOfWeeks.add(weekModel, { silent: true });
+            if (this.collectionOfWeeks.length === 0)
+            {
+                for (i = 0; i < numOfWeeksToShow; i++)
+                {
+                    var weekStartDate = moment(this.startDate).add("weeks", i);
+
+                    // Get a CalendarWeekCollection and wrap it inside a model, with its matching ID, to be able to add it to a parent collection
+                    var weekModel = new TP.Model({ id: weekStartDate.format(this.dateFormat), week: this.createWeekCollectionStartingOn(weekStartDate) });
+                    this.collectionOfWeeks.add(weekModel, { silent: true });
+                }
             }
 
+            if (this.views.calendar)
+                this.views.calendar.close();
+            
             this.views.calendar = new CalendarView({ model: weekDaysModel, collection: this.collectionOfWeeks });
 
             this.views.calendar.on("prepend", this.prependWeekToCalendar, this);
@@ -151,6 +136,8 @@ function (_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollect
 
         appendWeekToCalendar: function()
         {
+            console.log("append");
+            
             var startDate = moment(this.endDate).add("days", 1);
             var endDate = moment(startDate).add("days", 6);
             this.endDate = moment(endDate);
@@ -164,6 +151,8 @@ function (_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollect
 
         prependWeekToCalendar: function()
         {
+            console.log("prepend");
+            
             var endDate = moment(this.startDate).subtract("days", 1);
             var startDate = moment(endDate).subtract("days", 6);
             this.startDate = moment(startDate);

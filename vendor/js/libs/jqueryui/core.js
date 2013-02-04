@@ -1,4 +1,4 @@
-define(['jquery'], function (jQuery) {
+define([], function () {
 /*!
  * jQuery UI Core 1.10.0
  * http://jqueryui.com
