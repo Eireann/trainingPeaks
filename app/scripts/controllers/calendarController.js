@@ -118,7 +118,6 @@ function (_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollect
                     self.workoutsCollection.add(workout);
                 });
                 self.stopWeeksWaiting(moment(startDate), moment(endDate));
-                theMarsApp.clientEvents.logEvent({ Event: "Loaded Workouts" });
             });
         },
 
