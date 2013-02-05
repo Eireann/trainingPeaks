@@ -62,7 +62,7 @@ function(TP, Session, ClientEventsCollection, NavigationController, LoginControl
         live: "https://api.trainingpeaks.com",
         deploy: "https://apideploy.trainingpeaks.com",
         dev: "http://api.dev.trainingpeaks.com",
-        local: "http://localhost:8900"
+        local: "http://localhost"
     };
 
     theApp.root = "/Mars";
