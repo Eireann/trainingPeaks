@@ -18,7 +18,7 @@ function(moment, TP, WorkoutModel)
             var start = this.startDate.format("YYYY-MM-DD");
             var end = moment(this.endDate).format("YYYY-MM-DD");
 
-            return window.theMarsApp.apiRoot + "/WebApiServer/Fitness/V1/workouts/" + start + "/" + end;
+            return theMarsApp.apiRoot + "/WebApiServer/Fitness/V1/workouts/" + start + "/" + end;
         },
 
         initialize: function(models, options)

@@ -36,7 +36,7 @@ function(TP, Session, NavigationController, LoginController, CalendarController,
     {
         live: "https://api.trainingpeaks.com",
         deploy: "https://apideploy.trainingpeaks.com",
-        dev: "http://apidev.trainingpeaks.com",
+        dev: "http://api.dev.trainingpeaks.com",
         local: "http://localhost:8900"
     };
 
@@ -44,6 +44,11 @@ function(TP, Session, NavigationController, LoginController, CalendarController,
     theApp.apiRoot = apiRoots.local;
 
     window.theMarsApp = theApp;
+
+    if (typeof global !== 'undefined')
+    {
+        global.theMarsApp = theApp;
+    }
 
     return theApp;
 });

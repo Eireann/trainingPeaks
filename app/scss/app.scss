@@ -77,13 +77,11 @@ $navigationFontSize: 14px;
     .week
     {
         @include outerRow();
-        @include flexboxParent();
     }
 
     .day
     {
         @include column(2);
-        @include flexboxChild();
         min-height:150px;
         border: 1px solid $white;
 		background-color: $TPGrey2;
@@ -106,7 +104,6 @@ $navigationFontSize: 14px;
     .weekSummary
     {
         @include column(2);
-        @include flexboxChild();
         min-height: 150px;
         border: 1px solid $white;
         background-color: $TPGrey4;
