@@ -3,16 +3,6 @@
  "framework/logger"],
  function(TP, Logger)
  {
-    
-     describe("TP Application", function()
-     {
-         it("Should have a logger", function()
-         {
-             var myApp = new TP.Application();
-             expect(myApp.logger).toBeDefined();
-         });
-     });
-
      describe("Logger", function()
      {
          var logger;

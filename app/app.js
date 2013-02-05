@@ -2,13 +2,14 @@ define(
 [
     "TP",
     "models/session",
+    "models/clientEventsCollection",
     "controllers/navigationController",
     "controllers/loginController",
     "controllers/calendarController",
     "router",
     "marionette.faderegion"
 ],
-function(TP, Session, NavigationController, LoginController, CalendarController, Router)
+function(TP, Session, ClientEventsCollection, NavigationController, LoginController, CalendarController, Router)
 {
     var theApp = new TP.Application();
 
@@ -18,10 +19,29 @@ function(TP, Session, NavigationController, LoginController, CalendarController,
         mainRegion: "#main"
     });
 
-    theApp.addInitializer(function()
+    theApp.addInitializer(function initSession()
     {
-        theApp.session = new Session({ app: this });
+        this.session = new Session({ app: this });
+    });
 
+    theApp.addInitializer(function initLogging() {
+        this.logger = new TP.Logger();
+        if (this.apiRoot.indexOf('local') > 0 || this.apiRoot.indexOf('dev') > 0)
+        {
+            this.logger.setLogLevel(this.logger.logLevels.DEBUG);
+        } else
+        {
+            this.logger.setLogLevel(this.logger.logLevels.ERROR);
+        }
+    });
+
+    theApp.addInitializer(function initClientEventTracker()
+    {
+        this.clientEvents = new ClientEventsCollection();
+    });
+
+    theApp.addInitializer(function initControllers()
+    {
         // Set up controllers container and eagerly load all the required Controllers.
         this.controllers = {};
 
