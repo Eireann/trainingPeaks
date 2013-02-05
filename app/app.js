@@ -19,11 +19,13 @@ function(TP, Session, ClientEventsCollection, NavigationController, LoginControl
         mainRegion: "#main"
     });
 
+    // add a session
     theApp.addInitializer(function initSession()
     {
         this.session = new Session({ app: this });
     });
 
+    // add logging
     theApp.addInitializer(function initLogging() {
         this.logger = new TP.Logger();
         if (this.apiRoot.indexOf('local') > 0 || this.apiRoot.indexOf('dev') > 0)
@@ -35,11 +37,13 @@ function(TP, Session, ClientEventsCollection, NavigationController, LoginControl
         }
     });
 
+    // add event tracking
     theApp.addInitializer(function initClientEventTracker()
     {
         this.clientEvents = new ClientEventsCollection();
     });
 
+    // add controllers
     theApp.addInitializer(function initControllers()
     {
         // Set up controllers container and eagerly load all the required Controllers.
