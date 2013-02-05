@@ -87,7 +87,6 @@ function(_, TP, CalendarWeekView, customCalendarTemplate)
         
         onScroll: function()
         {
-            theMarsApp.logger.debug("onScroll ...");
             var howMuchIHave = this.ui.weeksContainer[0].scrollHeight;
             var howMuchIsVisible = this.ui.weeksContainer.height();
             var hidden = howMuchIHave - howMuchIsVisible;

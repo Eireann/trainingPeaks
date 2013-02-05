@@ -26,7 +26,8 @@ function(TP, Session, ClientEventsCollection, NavigationController, LoginControl
     });
 
     // add logging
-    theApp.addInitializer(function initLogging() {
+    theApp.addInitializer(function initLogging()
+    {
         this.logger = new TP.Logger();
         if (this.apiRoot.indexOf('local') > 0 || this.apiRoot.indexOf('dev') > 0)
         {
@@ -65,7 +66,7 @@ function(TP, Session, ClientEventsCollection, NavigationController, LoginControl
     };
 
     theApp.root = "/Mars";
-    theApp.apiRoot = apiRoots.local;
+    theApp.apiRoot = apiRoots.dev;
 
     window.theMarsApp = theApp;
 

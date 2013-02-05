@@ -65,5 +65,36 @@ function(TP)
             expect(getBadKey).toThrow();
         });
 
+        it("Should also work with a defaults function", function()
+        {
+            var TestModel = TP.APIModel.extend({
+                webAPIModelName: "TestModel",
+                idAttribute: "idkey",
+                defaults: function()
+                {
+                    return {
+                        goodkey: "SomeDefaultValue",
+                        idkey: "ThisIsMyId"
+                    };
+                }
+            });
+
+            function setGoodKey()
+            {
+                var model = new TestModel();
+                model.set("goodkey", "SomeValue");
+            }
+
+            function setBadKey()
+            {
+                var model = new TestModel();
+                model.set("badkey", "SomeValue");
+            }
+
+            expect(setGoodKey).not.toThrow();
+            expect(setBadKey).toThrow();
+        });
+
+
     });
 });

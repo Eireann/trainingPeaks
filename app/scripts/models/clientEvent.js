@@ -22,6 +22,14 @@ function (moment, TP)
                 Host: null,
                 Event: null
             };
+        },
+
+        initialize: function()
+        {
+            if (!this.has('Event') || !this.get('Event'))
+            {
+                throw "ClientEvent must have Event attribute";
+            }
         }
 
     });

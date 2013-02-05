@@ -11,7 +11,7 @@ function (TP, ClientEvent)
 
         url: function()
         {
-            return theMarsApp.apiRoot + "/ClientEvents/V1/Event";
+            return theMarsApp.apiRoot + "/WebApiServer/ClientEvents/V1/Event";
         }
 
     });
