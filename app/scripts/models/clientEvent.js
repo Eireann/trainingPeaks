@@ -30,6 +30,7 @@ function (moment, TP)
             {
                 throw "ClientEvent must have Event attribute";
             }
+
         }
 
     });

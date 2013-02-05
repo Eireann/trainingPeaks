@@ -12,6 +12,12 @@ function (TP, ClientEvent)
         url: function()
         {
             return theMarsApp.apiRoot + "/WebApiServer/ClientEvents/V1/Event";
+        },
+
+        logEvent: function(eventData)
+        {
+            this.create(eventData);
+            theMarsApp.logger.debug("Logged event: " + JSON.stringify(eventData));
         }
 
     });
