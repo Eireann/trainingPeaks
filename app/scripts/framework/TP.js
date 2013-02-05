@@ -7,14 +7,18 @@ define(
 [
     "backbone",
     "backbone.marionette",
-    "framework/APIModel"
+    "framework/APIModel",
+    "framework/logger"
 ],
-function(Backbone, Marionette, APIModel)
+function(Backbone, Marionette, APIModel, Logger)
 {
     var TP = {};
 
     // Marionette stuff
-    TP.Application = Marionette.Application.extend({});
+    TP.Application = Marionette.Application.extend({
+        logger: new Logger()
+    });
+
     TP.Controller = Marionette.Controller.extend(
     {
         getLayout: function()

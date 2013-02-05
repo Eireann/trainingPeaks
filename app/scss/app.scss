@@ -19,6 +19,23 @@
     display: block;
 }
 
+@mixin flexboxParent() {
+    display: -webkit-box;
+    -webkit-box-orient: horizontal;
+
+    display: -moz-box;
+    -moz-box-orient: horizontal;
+
+    display: box;
+    box-orient: horizontal;
+}
+
+@mixin flexboxChild() {
+    -webkit-box-flex: 1;
+    -moz-box-flex: 1;
+    box-flex: 1;
+}
+
 // works for some places, but some places conflicts with foundation :before elements
 .waiting:before
 {
@@ -48,13 +65,14 @@
     .week
     {
         @include outerRow();
+        @include flexboxParent();
     }
 
     .day
     {
         @include column(2);
-        min-height: 150px;
-        max-height: 450px;
+        @include flexboxChild();
+        min-height:150px;
         border: 1px solid $white;
 		background-color: $TPGrey2;
         padding: 5px;
@@ -76,8 +94,9 @@
     .weekSummary
     {
         @include column(2);
-        height: 150px;
-        border: 2px solid $white;
+        @include flexboxChild();
+        min-height: 150px;
+        border: 1px solid $white;
         background-color: $TPGrey4;
         padding: 5px;
         overflow: hidden;

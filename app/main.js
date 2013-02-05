@@ -50,6 +50,15 @@ function(TP, theApp)
         }
     });
 
+    // set log level for environment
+    if (theApp.apiRoot.indexOf('local') > 0 || theApp.apiRoot.indexOf('dev') > 0)
+    {
+        theApp.logger.setLogLevel(theApp.logger.logLevels.DEBUG);
+    } else
+    {
+        theApp.logger.setLogLevel(theApp.logger.logLevels.ERROR);
+    }
+
     theApp.start();
     TP.history.start({ pushState: false, root: theApp.root });
 });

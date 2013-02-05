@@ -3,7 +3,7 @@ requirejs(
 ["moment",
 "app",
 "models/workoutsCollection"],
-function(moment, theApp, WorkoutsCollection)
+function(moment, theMarsApp, WorkoutsCollection)
 {
     describe("Workouts Collection", function()
     {
@@ -24,7 +24,7 @@ function(moment, theApp, WorkoutsCollection)
                     endDate.format(dateFormat);
                 var workouts = new WorkoutsCollection([], { startDate: startDate, endDate: endDate });
                 expect(workouts.url()).toContain(expectedUrl);
-                expect(workouts.url()).toContain(theApp.apiRoot);
+                expect(workouts.url()).toContain(theMarsApp.apiRoot);
             });
         });
 

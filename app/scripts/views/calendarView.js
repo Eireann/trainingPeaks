@@ -1,10 +1,11 @@
 ﻿define(
 [
+    "underscore",
     "TP",
     "views/calendarWeekView",
     "hbs!templates/views/customCalendar"
 ],
-function(TP, CalendarWeekView, customCalendarTemplate)
+function(_, TP, CalendarWeekView, customCalendarTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -50,8 +51,7 @@ function(TP, CalendarWeekView, customCalendarTemplate)
             else
             {
                 this.ui.weeksContainer.prepend(weekView.render().el);
-
-                //TODO set scrollTop() value to avoid scrolling when prepending.
+                this.ui.weeksContainer.scrollTop(this.ui.weeksContainer.scrollTop() + weekView.$el.height());
             }
 
             // display waiting indicator, then once controller loads the models they will turn off via sync event
@@ -66,7 +66,7 @@ function(TP, CalendarWeekView, customCalendarTemplate)
                 throw "CalendarView needs a Collection!";
 
             _.bindAll(this, "onScroll");
-            this.ui.weeksContainer.scroll(this.onScroll);
+            this.ui.weeksContainer.scroll(_.debounce(this.onScroll, 30));
 
             var numWeeks = this.collection.length;
             var i = 0;
@@ -87,6 +87,7 @@ function(TP, CalendarWeekView, customCalendarTemplate)
         
         onScroll: function()
         {
+            window.theMarsApp.logger.debug("onScroll ...");
             var howMuchIHave = this.ui.weeksContainer[0].scrollHeight;
             var howMuchIsVisible = this.ui.weeksContainer.height();
             var hidden = howMuchIHave - howMuchIsVisible;

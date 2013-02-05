@@ -14,11 +14,7 @@ function(TP, weekSummaryTemplate)
         {
             type: "handlebars",
             template: weekSummaryTemplate
-        },
-
-        modelEvents:
-        {
-            "change": "render"
         }
+
     });
 });
