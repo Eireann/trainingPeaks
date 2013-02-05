@@ -1,60 +1,49 @@
 define(
 [
-    "backbone.marionette",
-    "hbs!templates/layouts/default"
+    "TP",
+    "models/session",
+    "controllers/navigationController",
+    "controllers/loginController",
+    "controllers/calendarController",
+    "router",
+    "marionette.faderegion"
 ],
-function (Marionette, DefaultLayoutTemplate) {
-    var theApp = new Marionette.Application();
-
-    /*
-    * jQuery OAuth Authentication Hack
-    * Need to figure out a better place to inject this into jQuery
-    * but can't easily make it a separate plugin because I need access to the
-    * Router for clean re-routing
-    */
-    //**********************************************************************
-    $(document).ajaxSend(function (event, xhr) {
-        var authToken = theApp.session.get("access_token");
-        if (authToken)
-            xhr.setRequestHeader("Authorization", "Bearer " + authToken);
-    });
-
-    $(document).ajaxError(function (event, xhr) {
-        if (xhr.status === 401)
-            theApp.trigger("api:unauthorized");
-    });
+function(TP, Session, NavigationController, LoginController, CalendarController, Router)
+{
+    var theApp = new TP.Application();
 
     theApp.addRegions(
     {
-        regionMain: "#main"
+        navRegion: "#navigation",
+        mainRegion: "#main"
     });
 
-    theApp.on("initialize:before", function () {
+    theApp.addInitializer(function()
+    {
+        theApp.session = new Session({ app: this });
+
+        // Set up controllers container and eagerly load all the required Controllers.
+        this.controllers = {};
+
+        this.controllers.navigationController = new NavigationController();
+        this.controllers.loginController = new LoginController();
+        this.controllers.calendarController = new CalendarController();
+
+        this.router = new Router();
     });
 
-    theApp.on("initialzie:after", function () {
-    });
-
-    theApp.initAppLayout = function () {
-        var AppLayout = Backbone.Marionette.Layout.extend(
-        {
-            template:
-            {
-                type: "handlebars",
-                template: DefaultLayoutTemplate
-            },
-            regions:
-            {
-                loginRegion: "#login",
-                calendarRegion: "#calendarContainer"
-            }
-        });
-        this.appLayout = new AppLayout();
-        theApp.regionMain.show(this.appLayout);
+    var apiRoots =
+    {
+        live: "https://api.trainingpeaks.com",
+        deploy: "https://apideploy.trainingpeaks.com",
+        dev: "http://apidev.trainingpeaks.com",
+        local: "http://localhost:8900"
     };
 
-    theApp.initAppLayout();
     theApp.root = "/Mars";
+    theApp.apiRoot = apiRoots.local;
+
+    window.theMarsApp = theApp;
 
     return theApp;
 });

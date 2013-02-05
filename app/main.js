@@ -1,17 +1,29 @@
 define(
 [
-    "backbone",
-    "app",
-    "router",
-    "models/session"
+    "TP",
+    "app"
 ],
-function (Backbone, app, Router, TheSession) 
+function(TP, theApp)
 {
+    /*
+    * jQuery OAuth Authentication Hack
+    * Need to figure out a better place to inject this into jQuery
+    * but can't easily make it a separate plugin because I need access to the
+    * Router for clean re-routing
+    */
+    //**********************************************************************
+    $(document).ajaxSend(function (event, xhr)
+    {
+        if (theApp.session.isAuthenticated())
+            xhr.setRequestHeader("Authorization", "Bearer " + theApp.session.get("access_token"));
+    });
 
-    app.router = new Router();
-    app.session = TheSession;
-    Backbone.history.start({ pushState: false, root: app.root });
-    
+    $(document).ajaxError(function (event, xhr)
+    {
+        if (xhr.status === 401)
+            theApp.trigger("api:unauthorized");
+    });
+
     //**********************************************************************
 
     // All navigation that is relative should be passed through the navigate
@@ -22,7 +34,7 @@ function (Backbone, app, Router, TheSession)
         // Get the absolute anchor href.
         var href = { prop: $(this).prop("href"), attr: $(this).attr("href") };
         // Get the absolute root.
-        var root = location.protocol + "//" + location.host + app.root;
+        var root = location.protocol + "//" + location.host + theApp.root;
 
         // Ensure the root is part of the anchor href, meaning it's relative.
         if (href.prop.slice(0, root.length) === root)
@@ -31,10 +43,22 @@ function (Backbone, app, Router, TheSession)
             // refresh.
             evt.preventDefault();
 
-            // `Backbone.history.navigate` is sufficient for all Routers and will
+            // `TP.history.navigate` is sufficient for all Routers and will
             // trigger the correct events. The Router's internal `navigate` method
             // calls this anyways.  The fragment is sliced from the root.
-            Backbone.history.navigate(href.attr, true);
+            TP.history.navigate(href.attr, true);
         }
     });
+
+    // set log level for environment
+    if (theApp.apiRoot.indexOf('local') > 0 || theApp.apiRoot.indexOf('dev') > 0)
+    {
+        theApp.logger.setLogLevel(theApp.logger.logLevels.DEBUG);
+    } else
+    {
+        theApp.logger.setLogLevel(theApp.logger.logLevels.ERROR);
+    }
+
+    theApp.start();
+    TP.history.start({ pushState: false, root: theApp.root });
 });

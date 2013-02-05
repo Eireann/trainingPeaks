@@ -4,24 +4,19 @@ function (commonConfig) {
     requirejs.config(commonConfig);
     requirejs.config(
     {
-        baseUrl: '../app',
+        baseUrl: './app',
         deps: ["main", "Backbone.Marionette.Handlebars"],
         shim:
         {
             "backbone":
             {
-                deps: ["jquery", "underscore"],
+                deps: ["underscore"],
                 exports: "Backbone"
             },
             "backbone.marionette":
             {
                 deps: ["backbone"],
                 exports: "Marionette"
-            },
-            "jquery.mousewheel":
-            {
-                deps: ["jquery"],
-                exports: "jquery"
             }
         }
     });

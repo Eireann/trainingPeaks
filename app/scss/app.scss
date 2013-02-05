@@ -1,18 +1,151 @@
 @import "settings";
 @import "foundation";
 
+@import "header";
+@import "tpstylesheet";
+
+@mixin throbber($backgroundColor: $TPGrey1) {
+    background-color:$backgroundColor;
+    opacity:0.7;
+    background-image: url(../images/throbber.gif);
+    background-repeat: no-repeat;
+    background-position: center;
+    position:absolute;
+    height: 90%;
+    width: 90%;
+    top:5%;
+    left:5%;
+    content: ' ';
+    display: block;
+}
+
+@mixin flexboxParent() {
+    display: -webkit-box;
+    -webkit-box-orient: horizontal;
+
+    display: -moz-box;
+    -moz-box-orient: horizontal;
+
+    display: box;
+    box-orient: horizontal;
+}
+
+@mixin flexboxChild() {
+    -webkit-box-flex: 1;
+    -moz-box-flex: 1;
+    box-flex: 1;
+}
+
+// works for some places, but some places conflicts with foundation :before elements
+.waiting:before
+{
+    @include throbber;
+}
+
+.ui-draggable
+{
+    cursor: pointer;
+}
+
+.ui-draggable-dragging
+{
+    cursor: move;
+}
+
 #calendarContainer
 {
+	background-color: $TPGrey1;
+
     .scrollable
     {
         height: 600px;
         overflow-y: scroll;
     }
+
+    .week
+    {
+        @include outerRow();
+        @include flexboxParent();
+    }
+
+    .day
+    {
+        @include column(2);
+        @include flexboxChild();
+        min-height:150px;
+        border: 1px solid $white;
+		background-color: $TPGrey2;
+        padding: 5px;
+        overflow-x: auto;
+        overflow-y: visible;
+        .workout
+        {
+			p
+			{
+				font-family: $navigationFontFamilyLight;
+				font-size: 12px;
+				color:$TPGrey4;
+				font-weight: bold;
+			}
+            
+        }
+    }
+
+    .weekSummary
+    {
+        @include column(2);
+        @include flexboxChild();
+        min-height: 150px;
+        border: 1px solid $white;
+        background-color: $TPGrey4;
+        padding: 5px;
+        overflow: hidden;
+    }
+
+    .today
+    {
+        background-color: $white;
+		p{color: $TPGrey1;}
+    }
+
+    .daysOfWeek
+    {
+        @include outerRow();
+
+        div
+		{
+            @include column(2);
+			padding-bottom: 0px;
+			font-Family: $navigationFontFamilyLight;
+			font-size: 12;
+			color: $TPGrey4;
+			text-align: center;
+			height: 15px;
+		}
+    }
+
 }
 
-.day
+#loginHeader, #calendarHeader
 {
-    height: 150px;
-    border: 1px solid #000000;
-    padding: 5px;
-}  
+    padding-top: 20px;
+
+    span
+    {
+        font-family: $navigationFontFamilyRegular;
+        font-size: 24px;
+    }
+
+	
+}
+
+#loginFooter, #calendarFooter
+{
+    span
+    {
+        font-family: 'Courier New', Courier, 'Nimbus Mono L', monospace;
+        font-size: 10px;
+    }
+}
+
+

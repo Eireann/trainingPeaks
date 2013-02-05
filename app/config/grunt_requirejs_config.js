@@ -7,19 +7,19 @@ _.extend(commonConfig, {
     {
         "backbone":
         {
-            deps: ["jquery", "underscore"],
+            deps: ["underscore"],
             exports: "Backbone"
         },
         "backbone.marionette":
         {
             deps: ["backbone"],
             exports: "Marionette"
-        },
-        "jquery.mousewheel":
-        {
-            deps: ["jquery"],
-            exports: "jquery"
         }
     }
 });
+
+_.extend(commonConfig.paths, {
+    "marionette.faderegion": "scripts/plugins/marionette.faderegion"
+});
+
 module.exports = commonConfig;

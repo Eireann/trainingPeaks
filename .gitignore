@@ -2,8 +2,11 @@
 /*.v11.suo
 /.sass-cache/
 /build/
+/junit_reports/
 /node_modules/
 /bin/
 /obj/
+/test/webApiJson/
 *.csproj*
 *.suo
+/*.sln.DotSettings.user
