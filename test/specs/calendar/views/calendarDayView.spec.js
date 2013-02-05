@@ -58,7 +58,7 @@ function(moment, printDate, CalendarDayModel, WorkoutModel, CalendarWorkoutView,
                 expect(dayView.$el.html()).toContain(printDate(today));
             });
 
-            xdescribe("Drag and drop", function()
+            describe("Drag and drop", function()
             {
 
                 it("Should make $el a droppable target", function()
@@ -67,7 +67,7 @@ function(moment, printDate, CalendarDayModel, WorkoutModel, CalendarWorkoutView,
                     var dayView = new CalendarDayView({ model: dayModel });
                     spyOn(dayView.$el, "droppable");
                     dayView.setUpDroppable();
-                    expect(dayView.$el.droppable).toHaveBeenCalledWith({ drop: dayView.onDropWorkout });
+                    expect(dayView.$el.droppable).toHaveBeenCalledWith({ drop: dayView.onDropItem });
                 });
 
                 it("Should trigger a workoutMoved event", function()
@@ -82,8 +82,9 @@ function(moment, printDate, CalendarDayModel, WorkoutModel, CalendarWorkoutView,
                         }
                     };
                     spyOn(dayView, "trigger");
-                    dayView.onDropWorkout({}, uiMock);
-                    expect(dayView.trigger).toHaveBeenCalledWith("workoutMoved", "12345", dayModel);
+                    dayView.onDropItem({}, uiMock);
+                    eventOptions = { itemId: "12345", destinationCalendarDayModel: dayModel };
+                    expect(dayView.trigger).toHaveBeenCalledWith("itemMoved", eventOptions);
                 });
 
             });
