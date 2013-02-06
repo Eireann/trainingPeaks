@@ -2,13 +2,14 @@ define(
 [
     "TP",
     "models/session",
+    "models/clientEventsCollection",
     "controllers/navigationController",
     "controllers/loginController",
     "controllers/calendarController",
     "router",
     "marionette.faderegion"
 ],
-function(TP, Session, NavigationController, LoginController, CalendarController, Router)
+function(TP, Session, ClientEventsCollection, NavigationController, LoginController, CalendarController, Router)
 {
     var theApp = new TP.Application();
 
@@ -18,10 +19,34 @@ function(TP, Session, NavigationController, LoginController, CalendarController,
         mainRegion: "#main"
     });
 
-    theApp.addInitializer(function()
+    // add a session
+    theApp.addInitializer(function initSession()
     {
-        theApp.session = new Session({ app: this });
+        this.session = new Session({ app: this });
+    });
 
+    // add logging
+    theApp.addInitializer(function initLogging()
+    {
+        this.logger = new TP.Logger();
+        if (this.apiRoot.indexOf('local') > 0 || this.apiRoot.indexOf('dev') > 0)
+        {
+            this.logger.setLogLevel(this.logger.logLevels.DEBUG);
+        } else
+        {
+            this.logger.setLogLevel(this.logger.logLevels.ERROR);
+        }
+    });
+
+    // add event tracking
+    theApp.addInitializer(function initClientEventTracker()
+    {
+        this.clientEvents = new ClientEventsCollection();
+    });
+
+    // add controllers
+    theApp.addInitializer(function initControllers()
+    {
         // Set up controllers container and eagerly load all the required Controllers.
         this.controllers = {};
 
@@ -36,14 +61,19 @@ function(TP, Session, NavigationController, LoginController, CalendarController,
     {
         live: "https://api.trainingpeaks.com",
         deploy: "https://apideploy.trainingpeaks.com",
-        dev: "http://apidev.trainingpeaks.com",
-        local: "http://localhost:8900"
+        dev: "http://api.dev.trainingpeaks.com",
+        local: "http://localhost"
     };
 
     theApp.root = "/Mars";
     theApp.apiRoot = apiRoots.local;
 
     window.theMarsApp = theApp;
+
+    if (typeof global !== 'undefined')
+    {
+        global.theMarsApp = theApp;
+    }
 
     return theApp;
 });

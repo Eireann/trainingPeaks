@@ -5,9 +5,10 @@ Wraps and extends core backbone and marionette functionality
 
 define(
 [
+    "underscore",
     "backbone"
 ],
-function(Backbone)
+function(_, Backbone)
 {
 
     return Backbone.Model.extend({
@@ -33,7 +34,8 @@ function(Backbone)
             {
                 throw this.webAPIModelName + ": TP Web API Models must have an idAttribute";
             }
-            if (!this.defaults.hasOwnProperty(this.idAttribute))
+            var defaults = _.result(this, 'defaults');
+            if (!defaults.hasOwnProperty(this.idAttribute))
             {
                 throw this.webAPIModelName + ": TP Web API Model - idAttribute " + this.idAttribute + " is not included in the defaults list";
             }
@@ -63,8 +65,8 @@ function(Backbone)
             {
                 throw this.webAPIModelName + ": TP Web API Models must have default values (this.defaults) defined";
             }
-
-            if (!this.defaults.hasOwnProperty(key))
+            var defaults = _.result(this, 'defaults');
+            if (!defaults.hasOwnProperty(key))
             {
                 throw this.webAPIModelName + ": Cannot access key '" + key + "' because it is not in model defaults";
             }
