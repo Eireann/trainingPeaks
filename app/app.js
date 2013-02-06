@@ -66,7 +66,7 @@ function(TP, Session, ClientEventsCollection, NavigationController, LoginControl
     };
 
     theApp.root = "/Mars";
-    theApp.apiRoot = apiRoots.local;
+    theApp.apiRoot = apiRoots.dev;
 
     window.theMarsApp = theApp;
 
