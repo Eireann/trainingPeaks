@@ -29,7 +29,9 @@ function(TP, Session, ClientEventsCollection, NavigationController, LoginControl
     theApp.addInitializer(function initLogging()
     {
         this.logger = new TP.Logger();
-        if (this.apiRoot.indexOf('local') > 0 || this.apiRoot.indexOf('dev') > 0)
+
+        // in local environment, and not in test mode? set log level to debug
+        if ((this.apiRoot.indexOf('local') > 0 || this.apiRoot.indexOf('dev') > 0) && typeof global === 'undefined')
         {
             this.logger.setLogLevel(this.logger.logLevels.DEBUG);
         } else

@@ -147,8 +147,6 @@ function (_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollect
 
         appendWeekToCalendar: function()
         {
-            theMarsApp.logger.debug("append");
-            
             var startDate = moment(this.endDate).add("days", 1);
             var endDate = moment(startDate).add("days", 6);
             this.endDate = moment(endDate);
@@ -162,8 +160,6 @@ function (_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollect
 
         prependWeekToCalendar: function()
         {
-            theMarsApp.logger.debug("prepend");
-            
             var endDate = moment(this.startDate).subtract("days", 1);
             var startDate = moment(endDate).subtract("days", 6);
             this.startDate = moment(startDate);
