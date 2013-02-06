@@ -5,7 +5,6 @@
 @import "tpstylesheet";
 
 @mixin throbber($backgroundColor: $TPGrey1) {
-    background-color:$backgroundColor;
     opacity:0.7;
     background-image: url(../images/throbber.gif);
     background-repeat: no-repeat;
