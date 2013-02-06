@@ -39,8 +39,7 @@
             {
                 return "scripts/helpers/" + name;
             }
-        },
-
+        }
 
     };
 
