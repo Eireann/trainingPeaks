@@ -12,10 +12,13 @@ function(TP, theApp)
     * Router for clean re-routing
     */
     //**********************************************************************
-    $(document).ajaxSend(function (event, xhr)
+    $(document).ajaxSend(function (event, xhr, settings)
     {
         if (theApp.session.isAuthenticated())
             xhr.setRequestHeader("Authorization", "Bearer " + theApp.session.get("access_token"));
+
+        if (!theApp.isLive())
+            window.lastAjaxRequest = { settings: settings, xhr: xhr };
     });
 
     $(document).ajaxError(function (event, xhr)

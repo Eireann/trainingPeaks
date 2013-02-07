@@ -34,10 +34,12 @@
   <!-- Application source. -->
 
   <!--(if target dummy)><!-->
+  <script>window.apiRoot = "local";</script>
   <script data-main="./app/config/config" src="./vendor/js/libs/require.js"></script>
   <!--<!(endif)-->
 
   <!--(if target debug)>
+  <script>window.apiRoot = "dev";</script>
   <script src="single.js"></script>
   <script>
       requirejs(
@@ -48,6 +50,7 @@
   <!(endif)-->
 
   <!--(if target release)>
+  <script>window.apiRoot = "live";</script>
   <script src="single.min.js"></script>
   <script>
       requirejs(

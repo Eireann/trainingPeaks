@@ -31,7 +31,7 @@ function(TP, Session, ClientEventsCollection, NavigationController, LoginControl
         this.logger = new TP.Logger();
 
         // in local environment, and not in test mode? set log level to debug
-        if ((this.apiRoot.indexOf('local') > 0 || this.apiRoot.indexOf('dev') > 0) && typeof global === 'undefined')
+        if (!this.isLive())
         {
             this.logger.setLogLevel(this.logger.logLevels.DEBUG);
         } else
@@ -59,6 +59,16 @@ function(TP, Session, ClientEventsCollection, NavigationController, LoginControl
         this.router = new Router();
     });
 
+    theApp.isLive = function()
+    {
+        // if we're in local or dev mode, use DEBUG log level etc
+        // but if we have a 'global', then we're testing with node/jasmine, so don't output debug messages to clutter test output
+        if ((this.apiRoot.indexOf('local') > 0 || this.apiRoot.indexOf('dev') > 0) && typeof global === 'undefined')
+            return false;
+
+        return true;
+    };
+
     var apiRoots =
     {
         live: "https://api.trainingpeaks.com",
@@ -67,8 +77,20 @@ function(TP, Session, ClientEventsCollection, NavigationController, LoginControl
         local: "http://localhost"
     };
 
-    theApp.root = "/Mars";
-    theApp.apiRoot = apiRoots.dev;
+    // get environment name from index.html build target
+    var apiRootName = window.hasOwnProperty('apiRoot') ? window.apiRoot : 'dev';
+
+    // point to appropriate api server
+    theApp.apiRoot = apiRoots[apiRootName];
+
+    // app root for router and history
+    if (apiRootName !== 'live')
+    {
+        theApp.root = "/Mars";
+    } else
+    {
+        theApp.root = '';
+    }
 
     window.theMarsApp = theApp;
 
