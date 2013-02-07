@@ -15,7 +15,8 @@
 	.rightNavigation
 	{
 		float:right;
-		width:300px;
+		width:350px;
+		padding-right: 35px;
 
 		.headerPipe
 		{
@@ -45,6 +46,7 @@
 				font-size: $navigationFontSize;
 				color: $TPGrey4;
 				display:block;
+				width: 100%;
 			}
 
 		}
@@ -52,7 +54,7 @@
 		.personHeaderMailIcon
 		{
 			padding-top: 12px;
-			margin-right: -20px;
+			padding-right: 10px;
 			&:hover{cursor: pointer;}
 			float:left;
 		}
@@ -88,15 +90,20 @@
 
 #calendarHeader
 {
-	height: 80px;
+	height: 60px;
 	float:left;
+	background-color: $white;
 	.calendarMonthLabel
 	{
+		width: 175px;
+		float: left;
+		padding-left: 10px;
+
 		label
 		{
-			padding-top: 10px;
+			padding-top: 13px;
 			font-family: $navigationFontFamilyRegular;
-			font-size: 36px;
+			font-size: 25px;
 			color:$TPBlue;
 		}
 	}
@@ -104,48 +111,77 @@
 	.navigation
 	{
 		float:left;
-		margin-left: -50px;
 		padding-top: 12px;
+		width: 600px;
+		
 		button
 		{
 			min-width: 36px;
-			min-height: 25px;
-			float:left;
-			font-family:$navigationFontFamilyRegular;
-			font-size:$navigationFontSize;
+			min-height: 20px;
+			float: left;
+			font-family: $navigationFontFamilyRegular;
+			font-size: $navigationFontSize;
 		}
-	}
 
-	.calendarNavigation
-	{
-		float:left;
-		button
+		.calendarNavigation
 		{
-			min-width: 36px;
-			min-height: 25px;
 			float:left;
-			font-family:$navigationFontFamilyRegular;
-			font-size:$navigationFontSize;
-			margin-left: -5px;
+			padding-right: 15px;
+			button
+			{
+				min-width: 36px;
+				min-height: 20px;
+				float: left;
+				font-family: $navigationFontFamilyRegular;
+				font-size: $navigationFontSize;
+				margin-left: -5px;
+			}
+			
 		}
-	}
 
-	.calendarView
-	{
-		select
+		.calendarViewSelectionBox
 		{
-			margin-top: 2px;
-			height: 25px;
+			width: 150px;
+			padding-left: 20px;
+			float: left;
+			select
+			{
+				margin-top: 3px;
+				height: 20px;
+			}
+		}
+
+		.printRefreshButtons
+		{
+			float:left;
+			padding-left: 10px;
+			button
+			{
+				min-width: 36px;
+				min-height: 20px;
+				float: left;
+				font-family: $navigationFontFamilyRegular;
+				font-size: $navigationFontSize;
+				margin-left: 20px
+			}
 		}
 	}
 
 }
 
-#calendarDate
+.mainNavigationButtons
 {
-	font-Family: $navigationFontFamilyRegular;
-	font-size: $navigationFontSize;
-	color: $TPGrey4;
-	text-align: right;
-	float:right;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+#loginHeader, #calendarHeader
+{
+    span
+    {
+        font-family: $navigationFontFamilyRegular;
+        font-size: 24px;
+    }
+
+	
 }
