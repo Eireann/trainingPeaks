@@ -20,18 +20,27 @@ function (moment, TP)
                 DateCreated: moment().unix(),
                 PersonId: theMarsApp.session.has("PersonId") ? theMarsApp.session.get("PersonId") : 0,
                 Host: null,
-                Event: null
+                Event: {
+                    Label: "",
+                    Type: "",
+                    AppContext: "",
+                    EventContext: ""
+                }
             };
         },
 
         initialize: function()
         {
-            if (!this.has('Event') || !this.get('Event'))
-            {
+            if (!this.has('Event') || !this.get('Event')) {
                 throw "ClientEvent must have Event attribute";
             }
+            else {
 
+                var event = this.get('Event');
+
+                if (!event.Label || !event.Type || !event.AppContext)
+                    throw "ClientEvent doesn't have all attributes of Event defined";
+            }
         }
-
     });
 });
