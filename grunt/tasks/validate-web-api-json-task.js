@@ -62,10 +62,10 @@ module.exports = function (grunt) {
                 }
 
                 // not validating date default values because they won't be handled the same
-                if (expectedValues[key] !== defaultValues[key] && key.indexOf('Date') < 0 && key.indexOf('Time') < 0)
-                {
-                    fail("Model default value '" + defaultValues[key] + "' for key " + key + " does not match server model value '" + expectedValues[key] + "'");
-                }
+                //if (expectedValues[key] !== defaultValues[key] && key.indexOf('Date') < 0 && key.indexOf('Time') < 0)
+                //{
+                //    fail("Model default value '" + defaultValues[key] + "' for key " + key + " does not match server model value '" + expectedValues[key] + "'");
+                //}
             });
 
             // is everything in defaults in expected?
@@ -77,10 +77,10 @@ module.exports = function (grunt) {
                 }
 
                 // not validating date default values because they won't be handled the same
-                if (expectedValues[key] !== defaultValues[key] && key.indexOf('Date') < 0 && key.indexOf('Time') < 0)
-                {
-                    fail("Model default value '" + defaultValues[key] + "' for key " + key + " does not match server model value '" + expectedValues[key] + "'");
-                }
+                //if (expectedValues[key] !== defaultValues[key] && key.indexOf('Date') < 0 && key.indexOf('Time') < 0)
+                //{
+                //    fail("Model default value '" + defaultValues[key] + "' for key " + key + " does not match server model value '" + expectedValues[key] + "'");
+                //}
             });
 
             return success;
