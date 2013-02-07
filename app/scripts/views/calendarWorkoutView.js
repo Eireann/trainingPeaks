@@ -11,6 +11,13 @@ function(TP, CalendarWorkoutTemplate)
         tagName: "div",
         className: "workout",
 
+        attributes: function()
+        {
+            return {
+                "data-WorkoutId": this.model.id
+            }
+        },
+
         template:
         {
             type: "handlebars",
