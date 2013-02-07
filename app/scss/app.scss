@@ -122,18 +122,6 @@
 
 }
 
-#loginHeader, #calendarHeader
-{
-    padding-top: 20px;
-
-    span
-    {
-        font-family: $navigationFontFamilyRegular;
-        font-size: 24px;
-    }
-
-	
-}
 
 #loginFooter, #calendarFooter
 {
@@ -142,6 +130,15 @@
         font-family: 'Courier New', Courier, 'Nimbus Mono L', monospace;
         font-size: 10px;
     }
+}
+
+#calendarDate
+{
+	font-Family: $navigationFontFamilyRegular;
+	font-size: $navigationFontSize;
+	color: $TPGrey4;
+	text-align: right;
+	float:right;
 }
 
 
