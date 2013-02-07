@@ -15,7 +15,7 @@ function(TP, CalendarWorkoutTemplate)
         {
             return {
                 "data-WorkoutId": this.model.id
-            }
+            };
         },
 
         template:
