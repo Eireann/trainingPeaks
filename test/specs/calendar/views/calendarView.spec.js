@@ -10,7 +10,6 @@ requirejs(
 function($, TP, theMarsApp, CalendarView, CalendarWeekTemplate)
 {
 
-
     describe("CalendarView ", function()
     {
 

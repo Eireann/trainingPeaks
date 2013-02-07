@@ -6,6 +6,7 @@
         {
             this.logLevel = this.logLevels.ERROR;
             this.console = typeof myConsole !== 'undefined' ? myConsole : console;
+            this.timers = {};
         }
 
         Logger.prototype.logLevels = {
@@ -72,6 +73,36 @@
         };
 
 
+        Logger.prototype.startTimer = function(timerName, msg)
+        {
+            msg = msg || "Started Timer";
+            this.timers[timerName] = +new Date();
+            this.logTimer(timerName, msg);
+        };
+
+        Logger.prototype.logTimer = function(timerName, msg)
+        {
+            if (!this.timers.hasOwnProperty(timerName))
+            {
+                throw "Invalid timer name: " + timerName;
+            }
+            msg = "TIMER: " + timerName + " " + msg + " at " + (+new Date() - this.timers[timerName]) + "ms";
+            this.write(this.logLevels.DEBUG, msg);
+        };
+
+        Logger.prototype.waitAndLogTimer = function(timerName, msg)
+        {
+            this.logTimer(timerName, "Begin waiting for browser to render");
+            var waitStartTime = +new Date();
+            var theLogger = this;
+            setTimeout(
+                function logIt()
+                {
+                    var msgWithTime = msg + " (" + (+new Date() - waitStartTime) + " ms)";
+                    theLogger.logTimer(timerName, msgWithTime);
+                }, 1
+            );
+        };
 
         return Logger;
     }

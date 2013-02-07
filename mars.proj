@@ -20,7 +20,7 @@
 		<Exec Command="$(GruntCmd) test" />
 	</Target>
 
-	<Target Name="Package" > <!-- DependsOnTargets="Build"> -->
+	<Target Name="Package" DependsOnTargets="Build">
 		<ItemGroup>
 			<Content Include="$(OutputDir)\**\*.*" />
 		</ItemGroup>
@@ -58,7 +58,7 @@
 			Condition=" $(msdeploy) == '' " />
 	</Target>
 
-	<Target Name="Deploy">
+	<Target Name="Deploy" DependsOnTargets="Package" >
 
 		<MSBuild Projects="$(MSBuildProjectFile)" Targets="MSDeploy-Deploy" 
 			Properties="PackageSource=$([System.IO.Path]::GetFullPath($(OutputDir)\Mars.MSDeploy.zip))"
@@ -89,6 +89,7 @@
 			<DeployCmd>$(DeployCmd) -dest:contentPath='$(DeployIisAppPath)',computerName=$(MsDeployServiceUrl)?site=$(DeployIisAppPath),username='$(UserName)',password='$(Password)',authType='basic'</DeployCmd>
 		</PropertyGroup>
 
+		
 		<Message Text="MSDeploy-Deploy MSDeploy: $(MSDeploy)" />
 		<Message Text="MSDeploy-Deploy PackageSource: $(PackageSource)" />
 		<Message Text="MSDeploy-Deploy Cmd: $(DeployCmd)" />

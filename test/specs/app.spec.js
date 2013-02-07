@@ -1,19 +1,18 @@
 // use requirejs() here, not define(), for jasmine compatibility
 requirejs(
 [
-
-    "window",
     "underscore",
     "app"
 ],
-function(window, _, theApp)
+function( _, theApp)
 {
     describe("The Mars App", function()
     {
 
         it("Should exist globally", function()
         {
-            expect(window.theMarsApp).toBe(theApp);
+            var globalNamespace = typeof window !== 'undefined' ? window : jasmine.getGlobal();
+            expect(_.keys(globalNamespace)).toContain('theMarsApp');
         });
 
         describe("App Initializers", function()

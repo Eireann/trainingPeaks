@@ -34,6 +34,14 @@ module.exports = function(grunt)
             }
         },
 
+        plato: {
+            app: {
+                files: {
+                    'plato': ['app/**/!(Handlebars).js']
+                }
+            }
+        },
+
         compass: //SASS/SCSS
         {
             debug:
@@ -186,7 +194,7 @@ module.exports = function(grunt)
             forceExit: true,
             watchfiles: ['app/**/*.js', 'test/specs/**/*.js', 'app/**/*.html'],
             jUnit: {
-                report: true,
+                report: false,
                 savePath: "./junit_reports/",
                 useDotNotation: false,
                 consolidate: true

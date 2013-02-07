@@ -6,6 +6,7 @@
 /node_modules/
 /bin/
 /obj/
+/plato/
 /test/webApiJson/
 *.csproj*
 *.suo
