@@ -1,5 +1,28 @@
 ﻿@import "tpstylesheet";
 
+@mixin headerButtons($marginLeft)
+{
+	button
+	{
+		min-width: 36px;
+		min-height: 20px;
+		float: left;
+		font-family: $navigationFontFamilyRegular;
+		font-size: $navigationFontSize;
+		margin-left: $marginLeft;
+	}
+}
+
+@mixin labels($fontFamily, $fontSize, $fontColor)
+{
+	label
+	{
+		font-family: $fontFamily;
+		font-size: $fontSize;
+		color: $fontColor;
+	}
+}
+
 #userControlsContainer
 {
 	height: 35px;
@@ -20,13 +43,12 @@
 
 		.headerPipe
 		{
-		float: left;
-		height: 30px;
-		padding-top: 10px;
-		padding-right: 10px;
-
-		font-size: $navigationFontSize;
-		color: $TPGrey4;
+			float: left;
+			height: 30px;
+			padding-top: 10px;
+			padding-right: 10px;
+			font-size: $navigationFontSize;
+			color: $TPGrey4;
 		}
 
 		.personHeaderButtons
@@ -40,14 +62,7 @@
 			&:hover label{color: $white;}
 			float:left;
 
-			label
-			{
-				font-family: $navigationFontFamilyRegular;
-				font-size: $navigationFontSize;
-				color: $TPGrey4;
-				display:block;
-				width: 100%;
-			}
+			@include labels($navigationFontFamilyRegular, $navigationFontSize, $TPGrey4);
 
 		}
 
@@ -63,7 +78,7 @@
 
 #navigationContainer
 {
-	height: 75px;
+	height: 65px;
 	background-color: $white;
 
 	.appNavigation
@@ -79,12 +94,7 @@
 			
 		}
 
-		label
-		{
-			font-family: $navigationFontFamilyRegular;
-			font-size: $navigationFontSize;
-			color: $TPGrey4;
-		}
+		@include labels($navigationFontFamilyRegular, $navigationFontSize, $TPGrey4);
 	}
 }
 
@@ -98,14 +108,9 @@
 		width: 175px;
 		float: left;
 		padding-left: 10px;
+		padding-top: 13px;
 
-		label
-		{
-			padding-top: 13px;
-			font-family: $navigationFontFamilyRegular;
-			font-size: 25px;
-			color:$TPBlue;
-		}
+		@include labels($navigationFontFamilyRegular, 25px, $TPBlue);
 	}
 
 	.navigation
@@ -114,28 +119,13 @@
 		padding-top: 12px;
 		width: 600px;
 		
-		button
-		{
-			min-width: 36px;
-			min-height: 20px;
-			float: left;
-			font-family: $navigationFontFamilyRegular;
-			font-size: $navigationFontSize;
-		}
+		@include headerButtons(0px);
 
 		.calendarNavigation
 		{
 			float:left;
 			padding-right: 15px;
-			button
-			{
-				min-width: 36px;
-				min-height: 20px;
-				float: left;
-				font-family: $navigationFontFamilyRegular;
-				font-size: $navigationFontSize;
-				margin-left: -5px;
-			}
+			@include headerButtons(-5px);
 			
 		}
 
@@ -155,15 +145,7 @@
 		{
 			float:left;
 			padding-left: 10px;
-			button
-			{
-				min-width: 36px;
-				min-height: 20px;
-				float: left;
-				font-family: $navigationFontFamilyRegular;
-				font-size: $navigationFontSize;
-				margin-left: 20px
-			}
+			@include headerButtons(20px);
 		}
 	}
 
@@ -182,6 +164,4 @@
         font-family: $navigationFontFamilyRegular;
         font-size: 24px;
     }
-
-	
 }
