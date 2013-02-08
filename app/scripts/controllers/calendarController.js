@@ -50,9 +50,14 @@ function (_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollect
             
             this.views.calendar = new CalendarView({ model: weekDaysModel, collection: this.weeksCollection });
 
-            this.views.calendar.on("prepend", this.prependWeekToCalendar, this);
-            this.views.calendar.on("append", this.appendWeekToCalendar, this);
-            this.views.calendar.on("itemMoved", this.weeksCollection.onItemMoved, this.weeksCollection);
+            this.bindToCalendarViewEvents(this.views.calendar);
+
+        },
+
+        bindToCalendarViewEvents: function(calendarView) {
+            calendarView.on("prepend", this.prependWeekToCalendar, this);
+            calendarView.on("append", this.appendWeekToCalendar, this);
+            calendarView.on("itemMoved", this.weeksCollection.onItemMoved, this.weeksCollection);
         },
 
         appendWeekToCalendar: function ()

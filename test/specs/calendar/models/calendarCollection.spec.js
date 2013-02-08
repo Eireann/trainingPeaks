@@ -3,10 +3,11 @@ requirejs(
 [
     "TP",
     "moment",
-    "models/calendarCollection",
-    "controllers/calendarController"
+    "models/workoutModel",
+    "models/workoutsCollection",
+    "models/calendarCollection"
 ],
-function(TP, moment, CalendarCollection, CalendarController)
+function(TP, moment, WorkoutModel, WorkoutsCollection, CalendarCollection)
 {
     describe("CalendarCollection ", function()
     {
@@ -80,6 +81,87 @@ function(TP, moment, CalendarCollection, CalendarController)
                 collection.addWorkoutToCalendarDay(workout);
                 expect(dayModel.add).toHaveBeenCalledWith(workout);
             });
+        });
+
+        describe("createWeekCollectionStartingOn", function()
+        {
+            it("Should create a Backbone.Collection with seven DayModels without WeekSummary", function()
+            {
+                var startDate = moment();
+
+                var context = { summaryViewEnabled: false, daysCollection: new TP.Collection() };
+                var weekCollection = CalendarCollection.prototype.createWeekCollectionStartingOn.call(context, moment(startDate));
+
+                expect(weekCollection.length).toBe(7);
+                expect(weekCollection.at(0).get("date").format("YYYY-MM-DD")).toBe(startDate.format("YYYY-MM-DD"));
+                expect(weekCollection.at(6).get("date").format("YYYY-MM-DD")).toBe(startDate.add("days", 6).format("YYYY-MM-DD"));
+                
+               
+            });
+
+            it("Should create a Backbone.Collection with seven DayModels and one WeekSummaryModel", function()
+            {
+                var startDate = moment();
+
+                var contextWithSummary = { summaryViewEnabled: true, daysCollection: new TP.Collection() };
+                var weekCollectionWithSummary = CalendarCollection.prototype.createWeekCollectionStartingOn.call(contextWithSummary, moment(startDate));
+
+                expect(weekCollectionWithSummary.length).toBe(8);
+                expect(weekCollectionWithSummary.at(0).get("date").format("YYYY-MM-DD")).toBe(startDate.format("YYYY-MM-DD"));
+                expect(weekCollectionWithSummary.at(6).get("date").format("YYYY-MM-DD")).toBe(startDate.add("days", 6).format("YYYY-MM-DD"));
+                expect(weekCollectionWithSummary.at(7).isSummary).toBe(true);
+            });
+        });
+
+        describe("Request workouts", function()
+        {
+            it("Should call CalendarCollection.addWorkoutToCalendarDay for each workout returned", function()
+            {
+
+                var collection = new CalendarCollection([], {
+                    startDate: moment().day(0),
+                    endDate: moment().day(6).add("weeks", 2)
+                });
+
+                // fake workout collection fetcher
+                var workouts =
+                [
+                        new WorkoutModel({ WorkoutDay: moment().add("days", 1).format(), WorkoutId: '1234' }),
+                        new WorkoutModel({ WorkoutDay: moment().add("days", 2).format(), WorkoutId: '2345' }),
+                        new WorkoutModel({ WorkoutDay: moment().add("days", 3).format(), WorkoutId: '3456' })
+                ];
+
+                spyOn(WorkoutsCollection.__super__, "fetch").andCallFake(function()
+                {
+                    // make some workouts
+                    this.models = workouts;
+
+                    // return a deferred that immediately calls callback
+                    return {
+                        done: function(callback)
+                        {
+                            callback();
+                        }
+                    };
+                });
+
+                spyOn(collection, "addWorkoutToCalendarDay");
+                spyOn(collection.workoutsCollection, "add");
+
+                var startDate = moment();
+                var endDate = moment().add("days", 3);
+                collection.requestWorkouts(startDate, endDate);
+
+                expect(collection.addWorkoutToCalendarDay).toHaveBeenCalled();
+
+                _.each(workouts, function(workout)
+                {
+                    expect(collection.addWorkoutToCalendarDay).toHaveBeenCalledWith(workout);
+                    expect(collection.workoutsCollection.add).toHaveBeenCalledWith(workout);
+                });
+
+            });
+
         });
     });
 

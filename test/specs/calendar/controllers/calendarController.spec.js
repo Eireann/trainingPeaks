@@ -67,7 +67,7 @@ function(moment, $, _, Backbone, CalendarController, WorkoutModel, WorkoutsColle
             });
         });
 
-        xdescribe("initializeCalendar", function()
+        describe("initializeCalendar", function()
         {
             it("Should create a CalendarView", function()
             {
@@ -77,107 +77,55 @@ function(moment, $, _, Backbone, CalendarController, WorkoutModel, WorkoutsColle
                 expect(CalendarView.prototype.initialize).toHaveBeenCalled();
             });
 
-            it("Should bind to calendar view 'prepend' event", function()
+            it("Should bind to CalendarView events", function()
             {
                 var controller = new CalendarController();
-                spyOn(CalendarView.__super__, "on").andCallThrough();
+                spyOn(controller, "bindToCalendarViewEvents");
                 controller.initializeCalendar();
-                expect(CalendarView.__super__.on).toHaveBeenCalledWith("prepend", controller.prependWeekToCalendar, controller);
+                expect(controller.bindToCalendarViewEvents).toHaveBeenCalledWith(controller.views.calendar);
+            });
+
+        });
+
+        describe("Bind to CalendarView events", function()
+        {
+
+            var context = {
+                prependWeekToCalendar: function(){},
+                appendWeekToCalendar: function(){},
+                weeksCollection: {
+                    onItemMoved: function(){}
+                }
+            };
+
+                        
+            var calendarView;
+
+            beforeEach(function() {
+                calendarView = jasmine.createSpyObj("CalendarView spy", ["on"]);
+            });
+
+            it("Should bind to calendar view 'prepend' event", function()
+            {
+                CalendarController.prototype.bindToCalendarViewEvents.call(context, calendarView);
+                expect(calendarView.on).toHaveBeenCalledWith("prepend", context.prependWeekToCalendar, context);
             });
 
             it("Should bind to calendar view 'append' event", function()
             {
-                var controller = new CalendarController();
-                spyOn(CalendarView.__super__, "on").andCallThrough();
-                controller.initializeCalendar();
-                expect(CalendarView.__super__.on).toHaveBeenCalledWith("append", controller.appendWeekToCalendar, controller);
+                CalendarController.prototype.bindToCalendarViewEvents.call(context, calendarView);
+                expect(calendarView.on).toHaveBeenCalledWith("append", context.appendWeekToCalendar, context);
             });
 
             it("Should bind to calendar view 'itemMoved' event", function()
             {
-                var controller = new CalendarController();
-                spyOn(CalendarView.__super__, "on").andCallThrough();
-                controller.initializeCalendar();
-                expect(CalendarView.__super__.on).toHaveBeenCalledWith("itemMoved", controller.onItemMoved, controller);
+                CalendarController.prototype.bindToCalendarViewEvents.call(context, calendarView);
+                expect(calendarView.on).toHaveBeenCalledWith("append", context.appendWeekToCalendar, context);
+                expect(calendarView.on).toHaveBeenCalledWith("itemMoved", context.weeksCollection.onItemMoved, context.weeksCollection);
             });
         });
 
-        xdescribe("createWeekCollectionStartingOn", function()
-        {
-            it("Should create a Backbone.Collection with seven DayModels without WeekSummary", function()
-            {
-                var startDate = moment();
 
-                var context = { summaryViewEnabled: false };
-                var weekCollection = CalendarController.prototype.createWeekCollectionStartingOn.call(context, moment(startDate));
-
-                expect(weekCollection.length).toBe(7);
-                expect(weekCollection.at(0).get("date").format("YYYY-MM-DD")).toBe(startDate.format("YYYY-MM-DD"));
-                expect(weekCollection.at(6).get("date").format("YYYY-MM-DD")).toBe(startDate.add("days", 6).format("YYYY-MM-DD"));
-                
-               
-            });
-
-            it("Should create a Backbone.Collection with seven DayModels and one WeekSummaryModel", function()
-            {
-                var startDate = moment();
-
-                var contextiWithSummary = { summaryViewEnabled: true };
-                var weekCollectionWithSummary = CalendarController.prototype.createWeekCollectionStartingOn.call(contextiWithSummary, moment(startDate));
-
-                expect(weekCollectionWithSummary.length).toBe(8);
-                expect(weekCollectionWithSummary.at(0).get("date").format("YYYY-MM-DD")).toBe(startDate.format("YYYY-MM-DD"));
-                expect(weekCollectionWithSummary.at(6).get("date").format("YYYY-MM-DD")).toBe(startDate.add("days", 6).format("YYYY-MM-DD"));
-                expect(weekCollectionWithSummary.at(7).isSummary).toBe(true);
-            });
-        });
-
-        xdescribe("Request workouts", function()
-        {
-            it("Should call CalendarController.weeksCollection.addWorkoutToCalendarDay for each workout returned", function()
-            {
-                var controller = new CalendarController();
-
-                // fake workout collection fetcher
-                var workouts =
-                [
-                        new WorkoutModel({ WorkoutDay: moment().add("days", 1).format(), WorkoutId: '1234' }),
-                        new WorkoutModel({ WorkoutDay: moment().add("days", 2).format(), WorkoutId: '2345' }),
-                        new WorkoutModel({ WorkoutDay: moment().add("days", 3).format(), WorkoutId: '3456' })
-                ];
-
-                spyOn(WorkoutsCollection.__super__, "fetch").andCallFake(function()
-                {
-                    // make some workouts
-                    this.models = workouts;
-
-                    // return a deferred that immediately calls callback
-                    return {
-                        done: function(callback)
-                        {
-                            callback();
-                        }
-                    };
-                });
-
-                spyOn(controller.weeksCollection, "addWorkoutToCalendarDay");
-                spyOn(controller.workoutsCollection, "add");
-
-                var startDate = moment();
-                var endDate = moment().add("days", 3);
-                controller.requestWorkouts(startDate, endDate);
-
-                expect(controller.weeksCollection.addWorkoutToCalendarDay).toHaveBeenCalled();
-
-                _.each(workouts, function(workout)
-                {
-                    expect(controller.weeksCollection.addWorkoutToCalendarDay).toHaveBeenCalledWith(workout);
-                    expect(controller.weeksCollection.workoutsCollection.add).toHaveBeenCalledWith(workout);
-                });
-
-            });
-
-        });
 
         xdescribe("Prepend a week to the calendar", function()
         {

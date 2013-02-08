@@ -5,7 +5,7 @@ requirejs(
     "backbone",
     "views/loginView"
 ],
-function ($, Backbone, loginView)
+function ($, Backbone, LoginView)
 {
     describe("Login View", function ()
     {
@@ -16,38 +16,30 @@ function ($, Backbone, loginView)
         it("requires a session model at construction", function()
         {
             var fakeSessionModel = new Backbone.Model();
-            
-            expect(function() { var tmp = new loginView(); }).toThrow();
-            expect(function() { var tmp = new loginView({ model: fakeSessionModel }); }).not.toThrow();
+
+            expect(function() { var tmp = new LoginView(); }).toThrow();
+            expect(function() { var tmp = new LoginView({ model: fakeSessionModel }); }).not.toThrow();
         });
 
-        xit("subscribes to the model's success & failure events", function()
+        it("subscribes to the model's success & failure events", function()
         {
-            var fakeSessionModel = new Backbone.Model();
-            
-            spyOn(loginView.prototype, "onLoginSuccess");
-            spyOn(loginView.prototype, "onLoginFailure");
+            var fakeSessionModel = jasmine.createSpyObj("SessionModel spy", ["on"]);
 
-            spyOn(fakeSessionModel, "on").andCallThrough();
+            var context = {
+                onLoginSuccess: function() { },
+                onLoginFailure: function() { },
+                model: fakeSessionModel
+            };
 
-            var view = new loginView({ model: fakeSessionModel });
-
-            expect(fakeSessionModel.on).toHaveBeenCalledWith("api:authorization:success", view.onLoginSuccess);
-            expect(fakeSessionModel.on).toHaveBeenCalledWith("api:authorization:failure", view.onLoginFailure);
-
-            fakeSessionModel.trigger("api:authorization:failure");
-
-            expect(loginView.prototype.onLoginSuccess).not.toHaveBeenCalled();
-            expect(loginView.prototype.onLoginFailure).toHaveBeenCalled();
-
-            fakeSessionModel.trigger("api:authorization:success");
-            expect(loginView.prototype.onLoginSuccess).toHaveBeenCalled();
+            LoginView.prototype.initialize.apply(context);
+            expect(fakeSessionModel.on).toHaveBeenCalledWith("api:authorization:success", context.onLoginSuccess, context);
+            expect(fakeSessionModel.on).toHaveBeenCalledWith("api:authorization:failure", context.onLoginFailure, context);
         });
 
         it("triggers a login:success event when the model successfully authenticates", function()
         {
             var fakeSessionModel = new Backbone.Model();
-            var view = new loginView({ model: fakeSessionModel });
+            var view = new LoginView({ model: fakeSessionModel });
             var fakeController =
             {
                 fakeSuccessHandler: function()
@@ -68,7 +60,7 @@ function ($, Backbone, loginView)
             };
             spyOn(fakeSessionModel, "authenticate");
             
-            var view = new loginView({ el: $("body"), model: fakeSessionModel });
+            var view = new LoginView({ el: $("body"), model: fakeSessionModel });
 
             view.render();
 
@@ -85,7 +77,7 @@ function ($, Backbone, loginView)
             };
             spyOn(fakeSessionModel, "authenticate");
 
-            var view = new loginView({ el: $("body"), model: fakeSessionModel });
+            var view = new LoginView({ el: $("body"), model: fakeSessionModel });
 
             view.render();
 
