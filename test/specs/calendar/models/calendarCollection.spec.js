@@ -1,13 +1,14 @@
 // use requirejs() here, not define(), for jasmine compatibility
 requirejs(
 [
+    "jquery",
     "TP",
     "moment",
     "models/workoutModel",
     "models/workoutsCollection",
     "models/calendarCollection"
 ],
-function(TP, moment, WorkoutModel, WorkoutsCollection, CalendarCollection)
+function($, TP, moment, WorkoutModel, WorkoutsCollection, CalendarCollection)
 {
     describe("CalendarCollection ", function()
     {
@@ -34,7 +35,7 @@ function(TP, moment, WorkoutModel, WorkoutsCollection, CalendarCollection)
 
             expect(function() { collection.getDayModel(dayInsideOfWeek); }).not.toThrow();
             expect(collection.getDayModel(dayInsideOfWeek)).toBeDefined();
-            expect(collection.getDayModel(dayInsideOfWeek).get("date").unix()).toBe(dayInsideOfWeek.unix());
+            expect(collection.getDayModel(dayInsideOfWeek).get("date").format("YYYY-MM-DD")).toBe(dayInsideOfWeek.format("YYYY-MM-DD"));
         });
 
         it("should have a method to retrieve a specific day inside a Week by the day's date, when the week starts on a Monday", function()
@@ -51,7 +52,7 @@ function(TP, moment, WorkoutModel, WorkoutsCollection, CalendarCollection)
 
             expect(function() { collection.getDayModel(dayInsideOfWeek); }).not.toThrow();
             expect(collection.getDayModel(dayInsideOfWeek)).toBeDefined();
-            expect(collection.getDayModel(dayInsideOfWeek).get("date").unix()).toBe(dayInsideOfWeek.unix());
+            expect(collection.getDayModel(dayInsideOfWeek).get("date").format("YYYY-MM-DD")).toBe(dayInsideOfWeek.format("YYYY-MM-DD"));
 
         });
 
@@ -111,6 +112,18 @@ function(TP, moment, WorkoutModel, WorkoutsCollection, CalendarCollection)
                 expect(weekCollectionWithSummary.at(6).get("date").format("YYYY-MM-DD")).toBe(startDate.add("days", 6).format("YYYY-MM-DD"));
                 expect(weekCollectionWithSummary.at(7).isSummary).toBe(true);
             });
+
+            it("Should add seven days to the daysCollection", function()
+            {
+                var startDate = moment();
+
+                var daysSpy = jasmine.createSpyObj("DaysCollection spy", ["add"]);
+                var context = { summaryViewEnabled: false, daysCollection: daysSpy };
+                var weekCollection = CalendarCollection.prototype.createWeekCollectionStartingOn.call(context, moment(startDate));
+                expect(daysSpy.add).toHaveBeenCalled();
+                expect(daysSpy.add.calls.length).toEqual(7);
+            });
+
         });
 
         describe("Request workouts", function()
@@ -159,6 +172,155 @@ function(TP, moment, WorkoutModel, WorkoutsCollection, CalendarCollection)
                     expect(collection.addWorkoutToCalendarDay).toHaveBeenCalledWith(workout);
                     expect(collection.workoutsCollection.add).toHaveBeenCalledWith(workout);
                 });
+
+            });
+
+        });
+
+        describe("Prepend a week to the calendar", function()
+        {
+
+            var collection;
+            var expectedStartDate;
+            var expectedEndDate;
+            var dateFormat = "YYYY-MM-DD";
+
+            beforeEach(function()
+            {
+                collection = new CalendarCollection([], {
+                    startDate: moment().day(0),
+                    endDate: moment().day(6).add("weeks", 2)
+                });
+
+                expectedEndDate = moment(collection.startDate).subtract("days", 1);
+                expectedStartDate = moment(expectedEndDate).subtract("days", 6);
+            });
+
+            it("Should create collection of days the appropriate dates", function()
+            {
+                spyOn(collection, "createWeekCollectionStartingOn").andCallThrough();
+                collection.prependWeek(expectedStartDate);
+                expect(collection.createWeekCollectionStartingOn).toHaveBeenCalled();
+                var lastCall = collection.createWeekCollectionStartingOn.mostRecentCall;
+                expect(lastCall.args[0].format(dateFormat)).toEqual(expectedStartDate.format(dateFormat));
+            });
+
+
+            it("Should call collection.add with at:0 and append:false options", function()
+            {
+                spyOn(collection, "add").andCallThrough();
+                collection.prependWeek(expectedStartDate);
+                expect(collection.add).toHaveBeenCalled();
+                var lastCall = collection.add.mostRecentCall;
+                expect(lastCall.args[1].at).toBeDefined();
+                expect(lastCall.args[1].at).toEqual(0);
+                expect(lastCall.args[1].append).toBeDefined();
+                expect(lastCall.args[1].append).toBe(false);
+            });
+        });
+
+        describe("Append a week to the calendar", function()
+        {
+
+            var collection;
+            var expectedStartDate;
+            var expectedEndDate;
+            var dateFormat = "YYYY-MM-DD";
+
+            beforeEach(function()
+            {
+                collection = new CalendarCollection([], {
+                    startDate: moment().day(0),
+                    endDate: moment().day(6).add("weeks", 2)
+                });
+
+                expectedStartDate = moment(collection.endDate).add("days", 1);
+                expectedEndDate = moment(expectedStartDate).add("days", 6);
+            });
+
+
+            it("Should create collection of days the appropriate dates", function()
+            {
+                spyOn(collection, "createWeekCollectionStartingOn").andCallThrough();
+                collection.appendWeek(expectedStartDate);
+                expect(collection.createWeekCollectionStartingOn).toHaveBeenCalled();
+                var lastCall = collection.createWeekCollectionStartingOn.mostRecentCall;
+                expect(lastCall.args[0].format(dateFormat)).toEqual(expectedStartDate.format(dateFormat));
+            });
+
+            it("Should call collection.add with append option", function()
+            {
+                spyOn(collection, "add").andCallThrough();
+                collection.appendWeek(expectedStartDate);
+                expect(collection.add).toHaveBeenCalled();
+                var lastCall = collection.add.mostRecentCall;
+                expect(lastCall.args[1].append).toBeDefined();
+                expect(lastCall.args[1].append).toBe(true);
+            });
+        });
+
+        describe("onItemMoved", function()
+        {
+            var yesterday = moment().subtract("days", 1).format("YYYY-MM-DD");
+            var tomorrow = moment().add("days", 1).format("YYYY-MM-DD");
+            var workoutId = "12345678";
+            var collection;
+            var workout;
+            var yesterdayCalendarDay;
+            var tomorrowCalendarDay;
+
+            beforeEach(function()
+            {
+                collection = new CalendarCollection([], {
+                    startDate: moment().day(0),
+                    endDate: moment().day(6).add("weeks", 2)
+                });
+                workout = new WorkoutModel({ WorkoutDay: yesterday + "T00:00:00", WorkoutId: workoutId });
+                collection.addWorkoutToCalendarDay(workout);
+                collection.workoutsCollection.add(workout);
+                yesterdayCalendarDay = collection.getDayModel(yesterday);
+                tomorrowCalendarDay = collection.getDayModel(tomorrow);
+            });
+
+            it("Should call remove on yesterday's calendarDay model", function()
+            {
+                spyOn(yesterdayCalendarDay, "remove");
+                collection.onItemMoved({ itemId: workoutId, destinationCalendarDayModel: tomorrowCalendarDay });
+                expect(yesterdayCalendarDay.remove).toHaveBeenCalledWith(workout);
+            });
+
+            it("Should call add on tomorrow's calendarDay model", function()
+            {
+                spyOn(tomorrowCalendarDay, "add");
+                collection.onItemMoved({ itemId: workoutId, destinationCalendarDayModel: tomorrowCalendarDay });
+                expect(tomorrowCalendarDay.add).toHaveBeenCalledWith(workout);
+            });
+
+            it("Should call moveToDay on workout", function()
+            {
+                spyOn(workout, "moveToDay").andCallThrough();
+                collection.onItemMoved({ itemId: workoutId, destinationCalendarDayModel: tomorrowCalendarDay });
+                expect(workout.moveToDay).toHaveBeenCalledWith(tomorrow);
+            });
+
+            it("Should move workout back if save fails", function()
+            {
+                var deferred = $.Deferred();
+                spyOn(workout, "save").andReturn(deferred);
+                spyOn(tomorrowCalendarDay, "add");
+                spyOn(tomorrowCalendarDay, "remove");
+                spyOn(yesterdayCalendarDay, "add");
+                spyOn(yesterdayCalendarDay, "remove");
+
+                // move it ...
+                collection.onItemMoved({ itemId: workoutId, destinationCalendarDayModel: tomorrowCalendarDay });
+                expect(tomorrowCalendarDay.add).toHaveBeenCalledWith(workout);
+                expect(yesterdayCalendarDay.remove).toHaveBeenCalledWith(workout);
+
+                // fail - should move back
+                deferred.reject();
+                expect(tomorrowCalendarDay.remove).toHaveBeenCalledWith(workout);
+                expect(yesterdayCalendarDay.add).toHaveBeenCalledWith(workout);
 
             });
 
