@@ -17,9 +17,10 @@ function (moment, TP)
         defaults: function()
         {
             return {
-                DateCreated: moment().unix(),
-                PersonId: theMarsApp.session.has("PersonId") ? theMarsApp.session.get("PersonId") : 0,
-                Host: null,
+                DateCreatedEpoch: moment().unix(),
+                UserPersonId: theMarsApp.session.has("PersonId") ? theMarsApp.session.get("PersonId") : 0,
+                UserHost: null,
+                UserAgent: null,
                 Event: {
                     Label: "",
                     Type: "",
