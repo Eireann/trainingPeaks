@@ -11,3 +11,5 @@
 *.csproj*
 *.suo
 /*.sln.DotSettings.user
+
+JSLintOptions.xml

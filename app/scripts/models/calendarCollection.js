@@ -11,14 +11,23 @@ function (TP, WorkoutsCollection, CalendarWeekCollection, CalendarDayModel)
     {
         dateFormat: "YYYY-MM-DD",
         startOfWeekDayIndex: null,
+        summaryViewEnabled: false,
 
         initialize: function(models, options)
         {
+            if (!options.hasOwnProperty('startDate'))
+                throw "CalendarCollection requires a start date";
+
+            if (!options.hasOwnProperty('endDate'))
+                throw "CalendarCollection requires an end date";
+
             this.startDate = options.startDate;
             this.endDate = options.endDate;
-            
-            this.startOfWeekDayIndex = options.startOfWeekDayIndex;
+
+            this.startOfWeekDayIndex = options.hasOwnProperty("startOfWeekDayIndex") ? options.startOfWeekDayIndex : 0;
             this.workoutsCollection = new WorkoutsCollection();
+            this.daysCollection = new TP.Collection();
+            this.summaryViewEnabled = options.hasOwnProperty("summaryViewEnabled") ? options.summaryViewEnabled : false;
 
             var numOfWeeksToShow = (this.endDate.diff(this.startDate, "days") + 1) / 7;
             var i;
@@ -53,6 +62,7 @@ function (TP, WorkoutsCollection, CalendarWeekCollection, CalendarDayModel)
             {
                 var day = new CalendarDayModel({ date: moment(startDate) });
                 weekCollection.add(day);
+                this.daysCollection.add(day);
                 startDate.add("days", 1);
 
                 if (dayOffset === 6 && this.summaryViewEnabled)
@@ -64,8 +74,8 @@ function (TP, WorkoutsCollection, CalendarWeekCollection, CalendarDayModel)
 
             return weekCollection;
         },
-        
-        requestWorkouts: function (startDate, endDate)
+
+        requestWorkouts: function(startDate, endDate)
         {
             var workouts = new WorkoutsCollection([], { startDate: moment(startDate), endDate: moment(endDate) });
 
@@ -101,19 +111,14 @@ function (TP, WorkoutsCollection, CalendarWeekCollection, CalendarDayModel)
 
             this.add(newWeekModel, { at: 0, append: false });
         },
-        
+
         getDayModel: function(date)
         {
-            var weekStartDate = moment(date).day(this.startOfWeekDayIndex).format(this.dateFormat);
-            var week = this.get(weekStartDate);
-
-            if (!week)
-                throw "Could not find week for day model";
-
-            var dayModel = week.get("week").get(moment(date).format(this.dateFormat));
+            var formattedDate = moment(date).format(this.dateFormat);
+            var dayModel = this.daysCollection.get(formattedDate);
 
             if (!dayModel)
-                throw "Could not find day in week";
+                throw "Could not find day in days collection";
 
             return dayModel;
         },
@@ -123,7 +128,7 @@ function (TP, WorkoutsCollection, CalendarWeekCollection, CalendarDayModel)
             var workoutDay = workout.getCalendarDay();
             if (workoutDay)
             {
-                var dayModel = this.getDayModel(workoutDay, this.startOfWeekDayIndex);
+                var dayModel = this.getDayModel(workoutDay);
                 dayModel.add(workout);
             }
         },
@@ -156,7 +161,7 @@ function (TP, WorkoutsCollection, CalendarWeekCollection, CalendarDayModel)
                 if (oldCalendarDay !== newCalendarDay)
                 {
 
-                    var sourceCalendarDayModel = this.getDayModel(oldCalendarDay, this.startOfWeekDayIndex);
+                    var sourceCalendarDayModel = this.getDayModel(oldCalendarDay);
 
                     var onFail = function ()
                     {

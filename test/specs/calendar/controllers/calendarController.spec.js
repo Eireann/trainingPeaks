@@ -47,7 +47,7 @@ function(moment, $, _, Backbone, CalendarController, WorkoutModel, WorkoutsColle
                 expect(controller.startDate).toBeDefined();
 
                 var expectedStartDate = moment().day(0).subtract("weeks", 4);
-                expect(controller.startDate.unix()).toBe(expectedStartDate.unix());
+                expect(controller.startDate.format("YYYY-MM-DD")).toBe(expectedStartDate.format("YYYY-MM-DD"));
             });
 
             it("Should have an endDate set to the end of the week six weeks from now", function()
@@ -56,7 +56,7 @@ function(moment, $, _, Backbone, CalendarController, WorkoutModel, WorkoutsColle
                 expect(controller.endDate).toBeDefined();
 
                 var expectedEndDate = moment().day(6).add("weeks", 6);
-                expect(controller.endDate.unix()).toBe(expectedEndDate.unix());
+                expect(controller.endDate.format("YYYY-MM-DD")).toBe(expectedEndDate.format("YYYY-MM-DD"));
             });
 
             it("Should have a weeksCollection", function()
@@ -112,8 +112,8 @@ function(moment, $, _, Backbone, CalendarController, WorkoutModel, WorkoutsColle
                 var weekCollection = CalendarController.prototype.createWeekCollectionStartingOn.call(context, moment(startDate));
 
                 expect(weekCollection.length).toBe(7);
-                expect(weekCollection.at(0).get("date").unix()).toBe(startDate.unix());
-                expect(weekCollection.at(6).get("date").unix()).toBe(startDate.add("days", 6).unix());
+                expect(weekCollection.at(0).get("date").format("YYYY-MM-DD")).toBe(startDate.format("YYYY-MM-DD"));
+                expect(weekCollection.at(6).get("date").format("YYYY-MM-DD")).toBe(startDate.add("days", 6).format("YYYY-MM-DD"));
                 
                
             });
@@ -126,8 +126,8 @@ function(moment, $, _, Backbone, CalendarController, WorkoutModel, WorkoutsColle
                 var weekCollectionWithSummary = CalendarController.prototype.createWeekCollectionStartingOn.call(contextiWithSummary, moment(startDate));
 
                 expect(weekCollectionWithSummary.length).toBe(8);
-                expect(weekCollectionWithSummary.at(0).get("date").unix()).toBe(startDate.unix());
-                expect(weekCollectionWithSummary.at(6).get("date").unix()).toBe(startDate.add("days", 6).unix());
+                expect(weekCollectionWithSummary.at(0).get("date").format("YYYY-MM-DD")).toBe(startDate.format("YYYY-MM-DD"));
+                expect(weekCollectionWithSummary.at(6).get("date").format("YYYY-MM-DD")).toBe(startDate.add("days", 6).format("YYYY-MM-DD"));
                 expect(weekCollectionWithSummary.at(7).isSummary).toBe(true);
             });
         });

@@ -24,39 +24,34 @@ function(TP, moment, CalendarCollection, CalendarController)
         {
             var weekStartDate = moment().day(0);
 
-            var context = new TP.Collection();
-            context.startOfWeekDayIndex = 0;
-            context.summaryViewEnabled = false;
-            
-            var weekCollection = CalendarCollection.prototype.createWeekCollectionStartingOn.apply(context, weekStartDate);
-            var weekWrapperModel = new TP.Model({ id: weekStartDate.format("YYYY-MM-DD"), week: weekCollection });
+            var collection = new CalendarCollection([], {
+                startDate: weekStartDate,
+                endDate: moment().day(6).add("weeks", 2)
+            });
 
-            context.add(weekWrapperModel);
-            
             var dayInsideOfWeek = moment().day(3);
 
-            expect(function() { CalendarCollection.prototype.getDayModel.apply(context, dayInsideOfWeek); }).not.toThrow();
-            expect(CalendarCollection.prototype.getDayModel.apply(context, dayInsideOfWeek, 0)).toBeDefined();
-            expect(CalendarCollection.prototype.getDayModel.apply(context, dayInsideOfWeek, 0).get("date").unix()).toBe(dayInsideOfWeek.unix());
+            expect(function() { collection.getDayModel(dayInsideOfWeek); }).not.toThrow();
+            expect(collection.getDayModel(dayInsideOfWeek)).toBeDefined();
+            expect(collection.getDayModel(dayInsideOfWeek).get("date").unix()).toBe(dayInsideOfWeek.unix());
         });
-        
-        xit("should have a method to retrieve a specific day inside a Week by the day's date, when the week starts on a Monday", function()
+
+        it("should have a method to retrieve a specific day inside a Week by the day's date, when the week starts on a Monday", function()
         {
-            var today = moment();
-            var weekStartDate = moment(today).day(1);
 
-            var context = { summaryViewEnabled: false };
-            var weekCollection = CalendarController.prototype.createWeekCollectionStartingOn.call(context, weekStartDate);
-            
-            var dayInsideOfWeek = moment(today).day(2);
-            var weekWrapperModel = new TP.Model({ id: weekStartDate.format("YYYY-MM-DD"), week: weekCollection });
+            var weekStartDate = moment().day(1);
 
-            var calendarCollection = new CalendarCollection();
-            calendarCollection.add(weekWrapperModel);
+            var collection = new CalendarCollection([], {
+                startDate: weekStartDate,
+                endDate: moment().day(7).add("weeks", 2)
+            });
 
-            expect(function() { calendarCollection.getDayModel(dayInsideOfWeek, 1); }).not.toThrow();
-            expect(calendarCollection.getDayModel(dayInsideOfWeek, 0)).toBeDefined();
-            expect(calendarCollection.getDayModel(dayInsideOfWeek, 0).get("date").unix()).toBe(dayInsideOfWeek.unix());
+            var dayInsideOfWeek = moment().day(3);
+
+            expect(function() { collection.getDayModel(dayInsideOfWeek); }).not.toThrow();
+            expect(collection.getDayModel(dayInsideOfWeek)).toBeDefined();
+            expect(collection.getDayModel(dayInsideOfWeek).get("date").unix()).toBe(dayInsideOfWeek.unix());
+
         });
 
         it("should have a method to add a workout to a day in the collection", function()
@@ -64,12 +59,26 @@ function(TP, moment, CalendarCollection, CalendarController)
             expect(typeof CalendarCollection.prototype.addWorkoutToCalendarDay).toBe("function");
         });
 
-        xdescribe("addWorkoutToCalendarDay", function()
+        describe("addWorkoutToCalendarDay", function()
         {
             it("should add a workout (with a workoutDate inside the collection's date range) to the correct day", function()
             {
+                var collection = new CalendarCollection([], {
+                    startDate: moment().day(1),
+                    endDate: moment().day(7).add("weeks", 2)
+                });
 
+                var workoutDate = moment().day(4).format("YYYY-MM-DD");
+                var workoutId = 'workout1';
+                var workout = {
+                    getCalendarDay: function() { return workoutDate; },
+                    id: workoutId
+                };
 
+                var dayModel = collection.getDayModel(workoutDate);
+                spyOn(dayModel, "add").andCallThrough();
+                collection.addWorkoutToCalendarDay(workout);
+                expect(dayModel.add).toHaveBeenCalledWith(workout);
             });
         });
     });

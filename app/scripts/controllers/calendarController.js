@@ -38,7 +38,7 @@ function (_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollect
             // end on a Saturday
             this.endDate = moment().day(6 + this.startOfWeekDayIndex).add("weeks", 6);
 
-            this.weeksCollection = new CalendarCollection(null, { startDate: moment(this.startDate), endDate: moment(this.endDate), startOfWeekDayIndex: this.startOfWeekDayIndex });
+            this.weeksCollection = new CalendarCollection(null, { startDate: moment(this.startDate), endDate: moment(this.endDate), startOfWeekDayIndex: this.startOfWeekDayIndex, summaryViewEnabled: this.summaryViewEnabled });
         },
 
         initializeCalendar: function()
