@@ -52,7 +52,7 @@ module.exports = function(grunt)
                     cssDir: "build/debug/app/css",
                     outputStyle: "expanded",
                     require: "zurb-foundation",
-                    imagesDir: "app/images"
+                    imagesDir: "assets/images"
                 }
             },
             release:
@@ -63,7 +63,7 @@ module.exports = function(grunt)
                     cssDir: "build/release/app/css",
                     outputStyle: "compressed",
                     require: "zurb-foundation",
-                    imagesDir: "app/images"
+                    imagesDir: "assets/images"
                 }
             }
         },
@@ -161,7 +161,7 @@ module.exports = function(grunt)
             {
                 files:
                 {
-                    "build/debug": ["app/images/**"]
+                    "build/debug": ["assets/images/**"]
                 }
             },
 
@@ -169,7 +169,7 @@ module.exports = function(grunt)
             {
                 files:
                 {
-                    "build/release": ["app/images/**"]
+                    "build/release": ["assets/images/**"]
                 }
             }
         },
