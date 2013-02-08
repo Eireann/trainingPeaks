@@ -7,17 +7,19 @@ function (_, TP)
 {
     return TP.Router.extend(
     {
-        controllers: {},
-
         initialize: function ()
         {
-            theMarsApp.on("api:unauthorized", this.login, this);
 
             theMarsApp.navRegion.show(theMarsApp.controllers.navigationController.getLayout());
 
             var self = this;
-            theMarsApp.controllers.loginController.on("login:success",
-            function()
+
+            theMarsApp.on("api:unauthorized", function()
+            {
+                self.navigate("login", { trigger: true });
+            });
+
+            theMarsApp.controllers.loginController.on("login:success", function()
             {
                 self.navigate("calendar", { trigger: true });
             });
