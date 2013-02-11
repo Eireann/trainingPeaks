@@ -35,9 +35,14 @@ module.exports = function(grunt)
         },
 
         plato: {
-            app: {
+            dummy: {
                 files: {
                     'plato': ['app/**/!(Handlebars).js']
+                }
+            },
+            debug: {
+                files: {
+                    'build/debug/plato': ['app/**/!(Handlebars).js']
                 }
             }
         },
@@ -269,12 +274,15 @@ module.exports = function(grunt)
     grunt.registerTask("test", ["clean:coverage", "jshint", "validate_models", "jasmine_node"]);
     grunt.registerTask("validate_models", ["validate-webapi-models"]);
     grunt.registerTask("update_grunt_config", ["requirejs_config", "i18n_config"]);
-    grunt.registerTask("debug", ["clean", "update_grunt_config", "requirejs", "compass:debug", "targethtml:debug", "concat", "copy:debug"]);
+    grunt.registerTask("debug", ["clean", "coverage", "update_grunt_config", "requirejs", "compass:debug", "targethtml:debug", "concat", "copy:debug", 'copy:debug_coverage', "plato"]);
     grunt.registerTask("release", ["debug", "compass:release", "targethtml:release", "uglify", "copy:release"]);
     grunt.registerTask("default", ["debug"]);
 
     // makes reports available at localhost/Mars/coverage/lcov-report/index.html,
     // and at build/debug/coverage/lcov-report/index.html
-    grunt.registerTask('coverage', ['clean:coverage', 'copy:pre_instrument', 'instrument', 'copy:post_instrument', 'jasmine_node_coverage_config', 'jasmine_node', 'storeCoverage', 'makeReport', 'copy:debug_coverage']);
+    grunt.registerTask('coverage', ['clean:coverage', 'copy:pre_instrument', 'instrument', 'copy:post_instrument', 'jasmine_node_coverage_config', 'jasmine_node', 'storeCoverage', 'makeReport']);
+
+    // grunt debug && grunt coverage && grunt plato
+    // for some reason putting debug and coverage into the same task results in some
 
 };
