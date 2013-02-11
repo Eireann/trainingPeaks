@@ -95,8 +95,8 @@ module.exports = function (grunt) {
             addLocaleToUglify(localeName, localeSingleFile);
         });
 
-        console.log(grunt.config.get("requirejs").en_us.options);
-        console.log(grunt.config.get("concat"));
+        //console.log(grunt.config.get("requirejs").en_us.options);
+        //console.log(grunt.config.get("concat"));
 
     });
 
