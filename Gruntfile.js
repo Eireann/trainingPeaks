@@ -275,9 +275,9 @@ module.exports = function(grunt)
     grunt.registerTask("validate_models", ["validate-webapi-models"]);
     grunt.registerTask("update_grunt_config", ["requirejs_config", "i18n_config"]);
     //grunt.registerTask("debug", ["clean", "coverage", "update_grunt_config", "requirejs", "compass:debug", "targethtml:debug", "concat", "copy:debug", 'copy:debug_coverage', "plato"]);
-    grunt.registerTask("debug", ["clean", "update_grunt_config", "requirejs", "compass:debug", "targethtml:debug", "concat", "copy:debug", 'copy:debug_coverage']);
+    grunt.registerTask("debug", ["clean", "update_grunt_config", "requirejs", "compass:debug", "targethtml:debug", "concat", "copy:debug", "copy-i18n-files"]);
 
-    grunt.registerTask("release", ["debug", "compass:release", "targethtml:release", "uglify", "copy:release"]);
+    grunt.registerTask("release", ["debug", "compass:release", "targethtml:release", "uglify", "copy:release", "copy-i18n-files"]);
     grunt.registerTask("default", ["debug"]);
 
     // makes reports available at localhost/Mars/coverage/lcov-report/index.html,
