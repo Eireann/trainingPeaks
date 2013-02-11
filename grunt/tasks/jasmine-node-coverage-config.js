@@ -1,7 +1,5 @@
 module.exports = function(grunt)
 {
-    'use strict';
-
     var _ = require('underscore');
 
     // CONFIG FOR JASMINE WITH COVERAGE

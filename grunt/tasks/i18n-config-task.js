@@ -1,14 +1,21 @@
 module.exports = function (grunt) {
-    'use strict';
+
     var _ = require('underscore');
     var fs = require('fs');
+
+    // this needs to be in a config file
+    var locales = ["en_us", "fr_fr", "it_it"];
+
+    function getLocalePath(target, localeName)
+    {
+        return "build/" + target + "/" + localeName;
+    }
 
     // INTERNATIONALIZATION
     grunt.registerTask("i18n_config", "Compile one single.js file for each supported language", function()
     {
 
         // modify properties of the requirejs grunt config
-
         function addLocaleToRequirejs(localeName, localeSingleFile)
         {
 
@@ -83,23 +90,63 @@ module.exports = function (grunt) {
             grunt.config.set('uglify', uglifyOptions);
         }
 
-        // this needs to be in a config file
-        var locales = ["en_us", "fr_fr", "it_it"];
-
         // build options for each locale - set the single.js filename and the locale
         _.each(locales, function(localeName)
         {
-            var localeSingleFile = "build/debug/locale/" + localeName + "/single.js";
+            var localeFolder = getLocalePath('debug', localeName);
+            var localeSingleFile = localeFolder + "/single.js";
             addLocaleToRequirejs(localeName, localeSingleFile);
             addLocaleToConcat(localeName, localeSingleFile);
             addLocaleToUglify(localeName, localeSingleFile);
         });
 
-        //console.log(grunt.config.get("requirejs").en_us.options);
+        //console.log(grunt.config.get("compass"));
         //console.log(grunt.config.get("concat"));
 
     });
 
+    // Copies css, assets, index.html files into locale folders
+    grunt.registerTask("copy_i18n_files", "Copy i18n app files", function()
+    {
+        function copyFileSync(srcFile, destFile)
+        {
+            var BUF_LENGTH, buff, bytesRead, fdr, fdw, pos;
+            BUF_LENGTH = 64 * 1024;
+            buff = new Buffer(BUF_LENGTH);
+            fdr = fs.openSync(srcFile, 'r');
+            fdw = fs.openSync(destFile, 'w');
+            bytesRead = 1;
+            pos = 0;
+            while (bytesRead > 0)
+            {
+                bytesRead = fs.readSync(fdr, buff, 0, BUF_LENGTH, pos);
+                fs.writeSync(fdw, buff, 0, bytesRead);
+                pos += bytesRead;
+            }
+            fs.closeSync(fdr);
+            return fs.closeSync(fdw);
+        };
 
+        var targets = ['debug', 'release'];
+        var filesToCopy = ['app/css', 'assets', 'index.html'];
+        // build options for each locale - set the single.js filename and the locale
+        _.each(locales, function(localeName)
+        {
+            _.each(targets, function(targetName)
+            {
+                var localeFolder = getLocalePath(targetName, localeName);
+
+                _.each(filesToCopy, function(fileName)
+                {
+                    var srcPath = "build/" + targetName + "/" + fileName;
+                    var destPath = "build/" + targetName + "/" + localeName + "/" + fileName;
+                });
+
+            });
+
+        });
+
+
+    });
 };
 

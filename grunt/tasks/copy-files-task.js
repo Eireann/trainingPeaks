@@ -1,5 +1,5 @@
-module.exports = function (grunt) {
-    'use strict';
+module.exports = function(grunt)
+{
 
     var _ = require('underscore');
     var path = require('path');
@@ -33,32 +33,7 @@ module.exports = function (grunt) {
 
             _.each(file.src, function(srcFile)
             {
-                var srcPath = path.normalize(srcFile);
-                var destPath = path.join(destFolder, srcFile);
-                // mkdir
-                if (fs.statSync(srcPath).isDirectory() && !fs.existsSync(destPath))
-                {
-
-                    //console.log("mkdir: " + destPath);
-                    var pathParts = destPath.split(path.sep);
-                    var dir = "";
-                    while (pathParts.length > 0)
-                    {
-                        dir = path.join(dir, pathParts.shift());
-                        grunt.log.writeln("Mkdir " + dir);
-                        if (!fs.existsSync(dir))
-                        {
-                            fs.mkdirSync(dir);
-                        }
-                    }
-                    // copy
-                }
-                else if (fs.statSync(srcPath).isFile())
-                {
-                    grunt.log.writeln("Copy " + srcPath + " to " + destPath);
-                    copyFileSync(srcPath, destPath);
-                    //fs.createReadStream(srcPath).pipe(fs.createWriteStream(destPath));
-                }
+                
             });
         });
     });

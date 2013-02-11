@@ -274,7 +274,7 @@ module.exports = function(grunt)
     grunt.registerTask("test", ["clean:coverage", "jshint", "validate_models", "jasmine_node"]);
     grunt.registerTask("validate_models", ["validate-webapi-models"]);
     grunt.registerTask("update_grunt_config", ["requirejs_config", "i18n_config"]);
-    grunt.registerTask("debug", ["clean", "coverage", "update_grunt_config", "requirejs", "compass:debug", "targethtml:debug", "concat", "copy:debug", 'copy:debug_coverage', "plato"]);
+    grunt.registerTask("debug", ["clean", "coverage", "update_grunt_config", "requirejs", "compass", "targethtml:debug", "concat", "copy:debug", "copy:debug_coverage", "plato"]);
     grunt.registerTask("release", ["debug", "compass:release", "targethtml:release", "uglify", "copy:release"]);
     grunt.registerTask("default", ["debug"]);
 

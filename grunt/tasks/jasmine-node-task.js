@@ -8,8 +8,8 @@ so replaced one with the other here. problem solved ...
 
 require('jasmine-node');
 
-module.exports = function (grunt) {
-    'use strict';
+module.exports = function(grunt)
+{
 
     grunt.registerTask("jasmine_node", "Runs jasmine-node.", function () {
 

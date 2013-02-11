@@ -2,9 +2,8 @@
  * copied and modified from grunt-plato
  */
 
-'use strict';
-
-module.exports = function(grunt) {
+module.exports = function(grunt)
+{
 
     var plato = require('plato');
     var _ = require("underscore");
