@@ -1,9 +1,10 @@
 define(
 [
     "TP",
+    "views/workoutQuickView",
     "hbs!templates/views/calendarWorkout"
 ],
-function(TP, CalendarWorkoutTemplate)
+function(TP, WorkoutQuickView, CalendarWorkoutTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -28,7 +29,15 @@ function(TP, CalendarWorkoutTemplate)
         {
             if (!this.model)
                 throw "Cannot have a CalendarWorkoutView without a model";
-        }
+        },
 
+        events: { click: "workoutClicked" },
+
+        workoutClicked: function () 
+        {
+            var view = new WorkoutQuickView({ model: this.model, el: "#workoutQuickView" });
+            view.render();
+
+        }
     });
 });
