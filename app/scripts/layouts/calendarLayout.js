@@ -24,10 +24,12 @@ function(TP, calendarLayoutTemplate)
             type: "handlebars",
             template: calendarLayoutTemplate
         },
+
         regions:
         {
             headerRegion: "#calendarHeader",
-            mainRegion: "#calendarContainer",
+            libraryRegion: "#libraryContainer",
+            calendarRegion: "#calendarContainer",
             footerRegion: "#calendarFooter"
         }
     });

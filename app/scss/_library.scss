@@ -2,13 +2,46 @@
 
 #libraryContainer
 {
+
+    margin-top:15px;
+        
     &.open
     {
         @include column(4);
+        
+        #activeLibraryContainer
+        {
+            display:block;
+        }
+
     }
 
     &.closed
     {
         @include column(1);
+        
+        #activeLibraryContainer
+        {
+            display:none;
+        }
     }
+
+    #tabs
+    {
+        width: 100px;
+        float:left;
+
+        div
+        {
+            background-color: $TPBlue;
+            color: $white;
+            border:1px solid $white;
+        }
+    }
+
+    #activeLibraryContainer
+    {
+    }
+
+
 }
