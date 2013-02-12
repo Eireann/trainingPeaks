@@ -21,11 +21,4 @@ function (commonConfig) {
         }
     });
 
-    if ('live' !== window.apiRoot)
-    {
-        requirejs.config({
-            urlArgs: "ts=" + (new Date()).getTime()
-        });
-    }
-
 });
