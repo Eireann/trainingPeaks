@@ -30,7 +30,9 @@ function(TP, dialog, workoutQuickView)
             this.$el.dialog(
             {
                 autoOpen: false,
-                modal:true
+                modal: true,
+                width: 800,
+                height: 600
             });
         },
 
