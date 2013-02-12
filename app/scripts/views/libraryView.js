@@ -24,7 +24,7 @@ function(_, TP, WorkoutLibraryView, MealLibraryView, libraryTemplate)
                 mealLibrary: new MealLibraryView()
             };
 
-            this.activeLibrary = this.views.workoutLibrary;
+            this.activeLibrary = null;
         },
 
         ui:
@@ -48,10 +48,18 @@ function(_, TP, WorkoutLibraryView, MealLibraryView, libraryTemplate)
             var newLibrary = this.views[libraryName];
             if (newLibrary !== this.activeLibrary)
             {
-                this.activeLibrary.close();
+                if (this.activeLibrary)
+                {
+                    this.activeLibrary.close();
+                }
                 this.activeLibrary = newLibrary;
-                this.render();
-                this.showLibrary();
+                var view = this;
+                function callback()
+                {
+                    view.renderActiveLibrary();
+                    view.showLibrary();
+                }
+                this.ui.activeLibraryContainer.fadeOut(300, callback);
             } else
             {
                 this.toggleLibrary();
@@ -60,12 +68,18 @@ function(_, TP, WorkoutLibraryView, MealLibraryView, libraryTemplate)
 
         showLibrary: function()
         {
+            this.ui.activeLibraryContainer.fadeIn(600);
             this.$el.parent().removeClass("closed").addClass("open");
         },
 
         hideLibrary: function()
         {
-            this.$el.parent().removeClass("open").addClass("closed");
+            var container = this.$el.parent();
+            function callback()
+            {
+                container.removeClass("open").addClass("closed");
+            }
+            this.ui.activeLibraryContainer.fadeOut(300, callback);
         },
 
         toggleLibrary: function()
@@ -81,7 +95,7 @@ function(_, TP, WorkoutLibraryView, MealLibraryView, libraryTemplate)
 
         onRender: function()
         {
-            this.renderActiveLibrary();
+            //this.renderActiveLibrary();
         },
 
         renderActiveLibrary: function()
