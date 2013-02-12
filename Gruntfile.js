@@ -35,9 +35,14 @@ module.exports = function(grunt)
         },
 
         plato: {
-            app: {
+            dummy: {
                 files: {
                     'plato': ['app/**/!(Handlebars).js']
+                }
+            },
+            debug: {
+                files: {
+                    'build/debug/plato': ['app/**/!(Handlebars).js']
                 }
             }
         },
@@ -138,6 +143,10 @@ module.exports = function(grunt)
             release:
             {
                 src: ["build"]
+            },
+            coverage:
+            {
+                src: ["coverage"]
             }
         },
         
@@ -171,6 +180,30 @@ module.exports = function(grunt)
                 {
                     "build/release": ["assets/images/**"]
                 }
+            },
+
+            pre_instrument:
+            {
+                files:
+                {
+                    "coverage": ["test/**", "vendor/**", "app/**"]
+                }
+            },
+
+            post_instrument:
+            {
+                files:
+                {
+                    "coverage": ["app/Handlebars.js", "app/config/**"]
+                }
+            },
+
+            debug_coverage:
+            {
+                files:
+                {
+                    "build/debug": ["coverage/lcov-report/**"]
+                }
             }
         },
 
@@ -199,7 +232,29 @@ module.exports = function(grunt)
                 useDotNotation: false,
                 consolidate: true
             }
+        },
+
+        instrument: {
+          files: "app/**/!(Handlebars).js",
+          options: {
+              basePath: 'coverage'
+          }
+        },
+
+        storeCoverage : {
+            options: {
+                dir: 'coverage/coverage'
+          }
+        },
+
+        makeReport: {
+            src: 'coverage/coverage/**/*.json',
+          options : {
+              type: 'lcov',
+              dir: 'coverage'
+          }
         }
+
     });
 
     /*
@@ -214,24 +269,22 @@ module.exports = function(grunt)
     grunt.loadNpmTasks("grunt-contrib-uglify");
     grunt.loadNpmTasks("grunt-contrib-requirejs");
     grunt.loadNpmTasks("grunt-contrib-watch");
+    grunt.loadNpmTasks("grunt-istanbul");
 
-    grunt.registerTask("test", ["jshint", "validate_models", "jasmine_node"]);
+    grunt.registerTask("test", ["clean:coverage", "jshint", "validate_models", "jasmine_node"]);
     grunt.registerTask("validate_models", ["validate-webapi-models"]);
     grunt.registerTask("update_grunt_config", ["requirejs_config", "i18n_config"]);
-    grunt.registerTask("debug", ["clean", "update_grunt_config", "requirejs", "compass:debug", "targethtml:debug", "concat", "copy:debug"]);
-    grunt.registerTask("release", ["debug", "compass:release", "targethtml:release", "uglify", "copy:release"]);
+    //grunt.registerTask("debug", ["clean", "coverage", "update_grunt_config", "requirejs", "compass:debug", "targethtml:debug", "concat", "copy:debug", 'copy:debug_coverage', "plato"]);
+    grunt.registerTask("debug", ["clean", "coverage", "update_grunt_config", "requirejs", "compass:debug", "targethtml:debug", "concat", "copy:debug", "copy-i18n-files", "copy:debug_coverage", "plato"]);
+
+    grunt.registerTask("release", ["debug", "compass:release", "targethtml:release", "uglify", "copy:release", "copy-i18n-files"]);
     grunt.registerTask("default", ["debug"]);
 
-    /* DISABLED TESTACULAR - doesn't run some of our async tests 
-    //"testacular": "~0.5.6"
-    grunt.registerTask("testacular", "Run Jasmine Tests", function () {
-    var done = this.async();
-    require("child_process").exec("testacular start testacular.conf.js --single-run", function (err, stdout) {
-    grunt.log.write(stdout);
-    done(err);
-    });
-    
-    });
-    */
+    // makes reports available at localhost/Mars/coverage/lcov-report/index.html,
+    // and at build/debug/coverage/lcov-report/index.html
+    grunt.registerTask('coverage', ['clean:coverage', 'copy:pre_instrument', 'instrument', 'copy:post_instrument', 'jasmine_node_coverage_config', 'jasmine_node', 'storeCoverage', 'makeReport']);
+
+    // grunt debug && grunt coverage && grunt plato
+    // for some reason putting debug and coverage into the same task results in some
 
 };

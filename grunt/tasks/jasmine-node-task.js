@@ -8,8 +8,8 @@ so replaced one with the other here. problem solved ...
 
 require('jasmine-node');
 
-module.exports = function (grunt) {
-    'use strict';
+module.exports = function(grunt)
+{
 
     grunt.registerTask("jasmine_node", "Runs jasmine-node.", function () {
 
@@ -29,6 +29,11 @@ module.exports = function (grunt) {
         var source = grunt.config("jasmine_node.source") || "src";
         var specNameMatcher = grunt.config("jasmine_node.specNameMatcher") || "spec";
         var teamcity = process.env.TEAMCITY_PROJECT_NAME || grunt.config("jasmine_node.teamcity") || false;
+        if (grunt.config("jasmine_node").hasOwnProperty("teamcity"))
+        {
+            teamcity = grunt.config("jasmine_node.teamcity");
+        }
+
         var useRequireJs = grunt.config("jasmine_node.requirejs") || false;
         var extensions = grunt.config("jasmine_node.extensions") || "js";
         var match = grunt.config("jasmine_node.match") || ".";

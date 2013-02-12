@@ -1,5 +1,5 @@
-module.exports = function (grunt) {
-    'use strict';
+module.exports = function(grunt)
+{
 
     var _ = require('underscore');
     var path = require('path');
@@ -26,6 +26,7 @@ module.exports = function (grunt) {
             fs.closeSync(fdr);
             return fs.closeSync(fdw);
         };
+
         _.each(this.files, function(file)
         {
 

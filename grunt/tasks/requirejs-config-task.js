@@ -1,5 +1,5 @@
-module.exports = function (grunt) {
-    'use strict';
+module.exports = function(grunt)
+{
 
     var _ = require('underscore');
 
