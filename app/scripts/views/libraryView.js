@@ -40,46 +40,86 @@ function(_, TP, WorkoutLibraryView, MealLibraryView, libraryTemplate)
         onTabClick: function(e)
         {
             var libraryName = $(e.target).data("library");
-            this.switchLibrary(libraryName);
+            if (libraryName)
+            {
+                this.switchLibrary(libraryName);
+            }
         },
 
         switchLibrary: function(libraryName)
         {
-            var newLibrary = this.views[libraryName];
+            var newLibrary = this.views.hasOwnProperty(libraryName) ? this.views[libraryName] : this.activeLibrary;
             if (newLibrary !== this.activeLibrary)
             {
                 if (this.activeLibrary)
                 {
                     this.activeLibrary.close();
+                    this.turnOffTab(this.activeLibrary.libraryName);
                 }
                 this.activeLibrary = newLibrary;
+
                 var view = this;
-                function callback()
+                function showAfterHide()
                 {
-                    view.renderActiveLibrary();
-                    view.showLibrary();
+                    setTimeout(
+                        function()
+                        {
+                            view.renderActiveLibrary();
+                            view.showLibrary();
+                        },
+                        300
+                    );
                 }
-                this.ui.activeLibraryContainer.fadeOut(300, callback);
+                this.hideLibrary(showAfterHide);
+                
             } else
             {
                 this.toggleLibrary();
             }
         },
 
-        showLibrary: function()
+        turnOffTab: function(tabName)
         {
-            this.ui.activeLibraryContainer.fadeIn(600);
-            this.$el.parent().removeClass("closed").addClass("open");
+            this.$("#tabs [data-library=" + tabName + "]").removeClass("active");
         },
 
-        hideLibrary: function()
+        turnOnTab: function(tabName)
         {
-            var container = this.$el.parent();
-            function callback()
+            this.$("#tabs [data-library=" + tabName + "]").addClass("active");
+        },
+
+        showLibrary: function()
+        {
+            if (!this.$el.parent().hasClass("open"))
             {
-                container.removeClass("open").addClass("closed");
+                this.ui.activeLibraryContainer.fadeIn(600);
+                this.$el.parent().removeClass("closed").addClass("open");
             }
-            this.ui.activeLibraryContainer.fadeOut(300, callback);
+            this.turnOnTab(this.activeLibrary.libraryName);
+        },
+
+        hideLibrary: function(afterHide)
+        {
+            if (this.$el.parent().hasClass("open"))
+            {
+                var container = this.$el.parent();
+                var view = this;
+                function callbackAfterHide()
+                {
+                    view.turnOffTab(view.activeLibrary.libraryName);
+                    container.removeClass("open").addClass("closed");
+                    if (typeof afterHide === 'function')
+                    {
+                        afterHide();
+                    }
+                }
+                this.ui.activeLibraryContainer.fadeOut(300, callbackAfterHide);
+            } else if (typeof afterHide === 'function')
+            {
+
+                this.turnOffTab(this.activeLibrary.libraryName);
+                afterHide();
+            }
         },
 
         toggleLibrary: function()
@@ -91,11 +131,6 @@ function(_, TP, WorkoutLibraryView, MealLibraryView, libraryTemplate)
             {
                 this.showLibrary();
             }
-        },
-
-        onRender: function()
-        {
-            //this.renderActiveLibrary();
         },
 
         renderActiveLibrary: function()

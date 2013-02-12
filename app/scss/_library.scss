@@ -61,9 +61,14 @@
         {
             width:80px;
             padding:10px;
-            background-color: $TPBlue;
             color: $white;
             border:1px solid $white;
+            background-color: $TPGrey2;
+        }
+
+        div.active
+        {
+            background-color: $TPBlue;
         }
     }
 
