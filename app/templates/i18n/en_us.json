@@ -37,5 +37,16 @@
 	"Thursday": "THURSDAY",
 	"Friday": "FRIDAY",
 	"Saturday": "SATURDAY",
-	"Sunday": "SUNDAY"
+	"Sunday": "SUNDAY",
+
+    "UserSettings": "User Settings",
+    "FirstName": "First Name",
+    "LastName": "Last Name",
+    "Birthday": "Birthday",
+    "City": "City",
+    "State": "State",
+    "Country": "Country",
+    "Units": "Units",
+    "ImperialUnits": "English",
+    "MetricUnits": "Metric"
 }

@@ -6,11 +6,12 @@ Wraps and extends core backbone and marionette functionality
 define(
 [
     "backbone",
+    "backbone.stickit",
     "backbone.marionette",
     "framework/APIModel",
     "framework/Logger"
 ],
-function(Backbone, Marionette, APIModel, Logger)
+function(Backbone, BackboneStickit, Marionette, APIModel, Logger)
 {
     var TP = {};
 

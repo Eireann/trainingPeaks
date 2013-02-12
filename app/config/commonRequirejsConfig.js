@@ -13,6 +13,7 @@
             "backbone": "../vendor/js/libs/backbone",
             "backbone.marionette": "../vendor/js/libs/backbone.marionette",
             "Backbone.Marionette.Handlebars": "../vendor/js/libs/Backbone.Marionette.Handlebars/backbone.marionette.handlebars",
+            "backbone.stickit": "../vendor/js/libs/backbone.stickit",
 
             "marionette.faderegion": "scripts/plugins/marionette.faderegion",
 
@@ -27,7 +28,9 @@
             "json2": "../vendor/js/libs/json2",
             "hbs": "../vendor/js/libs/hbs",
 
-            "moment": "../vendor/js/libs/moment/moment"
+            "moment": "../vendor/js/libs/moment/moment",
+            
+            "helpers": "scripts/helpers"
 
         },
 

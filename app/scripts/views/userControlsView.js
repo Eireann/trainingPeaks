@@ -17,8 +17,7 @@ function (_, TP, UserSettingsView, userControlsTemplate)
 
         ui:
         {
-            "settingsButton": "#usernameLabel",
-            "settingsWrapper": "#settingsContainer"
+            "settingsButton": "#usernameLabel"
         },
         
         events:
@@ -33,7 +32,7 @@ function (_, TP, UserSettingsView, userControlsTemplate)
         
         onUsernameLabelClicked: function()
         {
-            var userSettingsView = new UserSettingsView({ el: this.ui.settingsWrapper, model: this.model });
+            var userSettingsView = new UserSettingsView({ model: this.model });
             userSettingsView.render();
         }
     });

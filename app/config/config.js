@@ -17,6 +17,11 @@ function (commonConfig) {
             {
                 deps: ["backbone"],
                 exports: "Marionette"
+            },
+            "backbone.stickit":
+            {
+                deps: ["backbone"],
+                exports: "Backbone"
             }
         }
     });

@@ -21,5 +21,14 @@
     "Password": "Parola d'Ordine",
     "LoggingIn": "Accesso in corso...",
     "LoginFailed": "Accesso fallito!",
-    "Submit": "Accedi"
+    "Submit": "Accedi",
+
+    "UserSettings": "Impostazioni Utente",
+    "FirstName": "Nome",
+    "LastName": "Cognome",
+    "Birthday": "Data di Nascita",
+    "City": "Citta`",
+    "State": "Provincia",
+    "Country": "Stato",
+    "Units": "Unita` di Misura"
 }

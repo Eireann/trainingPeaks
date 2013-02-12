@@ -36,7 +36,8 @@ function(TP, Session, UserModel, ClientEventsCollection, NavigationController, L
         if (!this.isLive())
         {
             this.logger.setLogLevel(this.logger.logLevels.DEBUG);
-        } else
+        }
+        else
         {
             this.logger.setLogLevel(this.logger.logLevels.ERROR);
         }

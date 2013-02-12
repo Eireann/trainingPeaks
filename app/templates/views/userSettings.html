@@ -1,3 +1,30 @@
-﻿<p>User Settings</p>
+﻿<fieldset>
+    <legend>{{$ "UserSettings"}}</legend>
 
-<label>Name:</label><label>Bernardo</label>
+    <label for='firstName' >{{$ "FirstName"}}*:</label>
+    <input type='text' name='firstName' id='firstName' />
+
+    <label for='lastName' >{{$ "LastName"}}*:</label>
+    <input type='text' name='lastName' id='lastName' />
+
+    <label for='userName' >{{$ "Username"}}*:</label>
+    <input type='text' name='userName' id='userName' />
+
+    <label for='birthday' >{{$ "Birthday"}}*:</label>
+    <input type='text' name='birthday' id='birthday' />
+
+    <label for='city' >{{$ "City"}}*:</label>
+    <input type='text' name='city' id='city' />
+
+    <label for='state' >{{$ "State"}}*:</label>
+    <input type='text' name='state' id='state' />
+
+    <label for='country' >{{$ "Country"}}*:</label>
+    <input type='text' name='country' id='country' />
+
+    <label for='units' >{{$ "Units"}}*:</label>
+    <select id="units" name="units">
+        <option value="0">{{ImperialUnits}}</option>
+        <option value="1">{{MetricUnits}}</option>
+    </select>
+</fieldset>

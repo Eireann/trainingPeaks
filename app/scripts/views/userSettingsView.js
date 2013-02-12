@@ -2,9 +2,10 @@
 [
     "TP",
     "jqueryui/dialog",
+    "helpers/printUnitsValue",
     "hbs!templates/views/userSettings"
 ],
-function (TP, jqueryuiDialog, userSettingsTemplate)
+function (TP, jqueryuiDialog, printUnitsValue, userSettingsTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -14,23 +15,62 @@ function (TP, jqueryuiDialog, userSettingsTemplate)
             template: userSettingsTemplate
         },
 
-        ui:
+        bindings:
         {
-        },
-        
-        events:
-        {
-        },
-
-        modelEvents:
-        {
-            "change": "render"
+            "#firstName":
+            {
+                observe: "FirstName",
+                eventsOverride: [ "blur" ]
+            },
+            "#lastName":
+            {
+                observe: "LastName",
+                eventsOverride: [ "blur" ]
+            },
+            "#userName":
+            {
+                observe: "Username",
+                eventsOverride: [ "blur" ]
+            },
+            "#birthday":
+            {
+                observe: "Birthday",
+                eventsOverride: [ "blur" ]
+            },
+            "#city":
+            {
+                observe: "City",
+                eventsOverride: [ "blur" ]
+            },
+            "#state":
+            {
+                observe: "State",
+                eventsOverride: [ "blur" ]
+            },
+            "#country":
+            {
+                observe: "Country",
+                eventsOverride: [ "blur" ]
+            },
+            "select#units":
+            {
+                observe: "UnitsValue",
+                selectOptions:
+                {
+                    collection: function()
+                    {
+                        return [{ unitEnum: 0, name: "English" }, { unitEnum: 1, name: "Metric" }];
+                    },
+                    labelPath: "name",
+                    valuePath: "unitEnum"
+                }
+            }
         },
         
         onBeforeRender: function()
         {
             var self = this;
-            $(this.el).dialog(
+            this.$el.dialog(
             {
                 autoOpen: false,
                 height: 400,
@@ -46,12 +86,14 @@ function (TP, jqueryuiDialog, userSettingsTemplate)
                     "Save": function()
                     {
                         self.saveSettings();
-                        $(this).dialog("close");
+                        self.$el.dialog("close");
+                        self.close();
                     },
                     "Cancel": function()
                     {
                         self.resetSettings();
-                        $(this).dialog("close");
+                        self.$el.dialog("close");
+                        self.close();
                     }
                 }
             });
@@ -59,7 +101,8 @@ function (TP, jqueryuiDialog, userSettingsTemplate)
         
         onRender: function()
         {
-            $(this.el).dialog("open");
+            this.stickit();
+            this.$el.dialog("open");
         },
         
         saveSettings: function()
