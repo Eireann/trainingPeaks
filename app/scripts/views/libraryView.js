@@ -67,7 +67,7 @@ function(_, TP, WorkoutLibraryView, MealLibraryView, libraryTemplate)
                             view.renderActiveLibrary();
                             view.showLibrary();
                         },
-                        300
+                        400
                     );
                 };
                 this.hideLibrary(showAfterHide);
