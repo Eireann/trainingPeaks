@@ -8,8 +8,10 @@ requirejs(
 "controllers/calendarController",
 "models/workoutModel",
 "models/workoutsCollection",
-"views/calendarView"],
-function(moment, $, _, Backbone, CalendarController, WorkoutModel, WorkoutsCollection, CalendarView)
+"views/calendarView",
+"views/libraryView"
+],
+function(moment, $, _, Backbone, CalendarController, WorkoutModel, WorkoutsCollection, CalendarView, LibraryView)
 {
 
     describe("Calendar Controller", function()
@@ -125,7 +127,25 @@ function(moment, $, _, Backbone, CalendarController, WorkoutModel, WorkoutsColle
             });
         });
 
+        describe("initializeLibrary", function()
+        {
+            it("Should create a LibraryView", function()
+            {
+                var controller = new CalendarController();
+                spyOn(LibraryView.prototype, "initialize").andCallThrough();
+                controller.initializeLibrary();
+                expect(LibraryView.prototype.initialize).toHaveBeenCalled();
+            });
 
+            it("Should bind to LibraryView events", function()
+            {
+                var controller = new CalendarController();
+                spyOn(controller, "bindToLibraryViewEvents");
+                controller.initializeLibrary();
+                expect(controller.bindToLibraryViewEvents).toHaveBeenCalledWith(controller.views.library);
+            });
+
+        });
 
         describe("Prepend a week to the calendar", function()
         {

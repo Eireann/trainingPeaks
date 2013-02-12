@@ -5,9 +5,7 @@ define(
 ],
 function (_, TP)
 {
-    "use strict";
-
-    var Session = TP.Model.extend(
+    return TP.Model.extend(
     {
         url: function()
         {
@@ -19,14 +17,14 @@ function (_, TP)
         initialize: function()
         {
             var accessToken = this.storageLocation.getItem("access_token");
+
             if (accessToken)
             {
                 var expiresOn = this.storageLocation.getItem("expires_on");
-                var now = (new Date()).getTime() / 1000;
+                var now = parseInt(+new Date(), 10) / 1000;
                 if (now < expiresOn)
                 {
                     this.set("access_token", accessToken);
-                    this.set("username", this.storageLocation.getItem("username"));
                 }
             }
         },
@@ -68,9 +66,6 @@ function (_, TP)
 
             this.storageLocation.setItem("access_token", this.get("access_token"));
             this.storageLocation.setItem("expires_on", expiresOn);
-            this.storageLocation.setItem("username", this.username);
-
-            this.set("username", this.username);
 
             this.trigger("api:authorization:success");
         },
@@ -81,6 +76,4 @@ function (_, TP)
         }
 
     });
-
-    return Session;
 });

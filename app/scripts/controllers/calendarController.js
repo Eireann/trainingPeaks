@@ -7,9 +7,10 @@ define(
     "models/calendarCollection",
     "models/calendarWeekCollection",
     "models/calendarDay",
-    "views/calendarView"
+    "views/calendarView",
+    "views/libraryView"
     ],
-function (_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollection, CalendarDayModel, CalendarView)
+function(_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollection, CalendarDayModel, CalendarView, LibraryView)
 {
     return TP.Controller.extend(
     {
@@ -19,8 +20,10 @@ function (_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollect
         show: function()
         {
             this.initializeCalendar();
+            this.initializeLibrary();
             this.weeksCollection.requestWorkouts(this.startDate, this.endDate);
-            this.layout.mainRegion.show(this.views.calendar);
+            this.layout.calendarRegion.show(this.views.calendar);
+            this.layout.libraryRegion.show(this.views.library);
         },
 
         initialize: function ()
@@ -58,6 +61,21 @@ function (_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollect
             calendarView.on("prepend", this.prependWeekToCalendar, this);
             calendarView.on("append", this.appendWeekToCalendar, this);
             calendarView.on("itemMoved", this.weeksCollection.onItemMoved, this.weeksCollection);
+        },
+
+        initializeLibrary: function()
+        {
+            if (this.views.library)
+                this.views.library.close();
+            
+            this.views.library = new LibraryView({ });
+
+            this.bindToLibraryViewEvents(this.views.library);
+        },
+
+        bindToLibraryViewEvents: function(libraryView)
+        {
+
         },
 
         appendWeekToCalendar: function ()
