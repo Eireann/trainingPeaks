@@ -59,7 +59,7 @@ function(_, TP, WorkoutLibraryView, MealLibraryView, libraryTemplate)
                 this.activeLibrary = newLibrary;
 
                 var view = this;
-                function showAfterHide()
+                var showAfterHide = function()
                 {
                     setTimeout(
                         function()
@@ -69,9 +69,9 @@ function(_, TP, WorkoutLibraryView, MealLibraryView, libraryTemplate)
                         },
                         300
                     );
-                }
+                };
                 this.hideLibrary(showAfterHide);
-                
+
             } else
             {
                 this.toggleLibrary();
@@ -104,7 +104,7 @@ function(_, TP, WorkoutLibraryView, MealLibraryView, libraryTemplate)
             {
                 var container = this.$el.parent();
                 var view = this;
-                function callbackAfterHide()
+                var callbackAfterHide = function()
                 {
                     view.turnOffTab(view.activeLibrary.libraryName);
                     container.removeClass("open").addClass("closed");
@@ -112,7 +112,7 @@ function(_, TP, WorkoutLibraryView, MealLibraryView, libraryTemplate)
                     {
                         afterHide();
                     }
-                }
+                };
                 this.ui.activeLibraryContainer.fadeOut(300, callbackAfterHide);
             } else if (typeof afterHide === 'function')
             {
