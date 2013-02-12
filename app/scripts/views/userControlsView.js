@@ -2,12 +2,11 @@
 [
     "underscore",
     "TP",
+    "views/userSettingsView",
     "hbs!templates/views/userControls"
 ],
-function (_, TP, userControlsTemplate)
+function (_, TP, UserSettingsView, userControlsTemplate)
 {
-    "use strict";
-
     return TP.ItemView.extend(
     {
         template:
@@ -18,15 +17,24 @@ function (_, TP, userControlsTemplate)
 
         ui:
         {
+            "settingsButton": "#usernameLabel",
+            "settingsWrapper": "#settingsContainer"
         },
         
         events:
         {
+            "click #usernameLabel": "onUsernameLabelClicked"
         },
 
         modelEvents:
         {
             "change": "render"
+        },
+        
+        onUsernameLabelClicked: function()
+        {
+            var userSettingsView = new UserSettingsView({ el: this.ui.settingsWrapper, model: this.model });
+            userSettingsView.render();
         }
     });
 });
