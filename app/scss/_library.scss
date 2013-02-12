@@ -1,0 +1,14 @@
+﻿@import "tpstylesheet";
+
+#libraryContainer
+{
+    &.open
+    {
+        @include column(4);
+    }
+
+    &.closed
+    {
+        @include column(1);
+    }
+}

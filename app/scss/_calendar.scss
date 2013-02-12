@@ -1,8 +1,24 @@
 ﻿@import "tpstylesheet";
 
+#calendarWrapper
+{
+    @include outerRow();
+	background-color: $TPGrey1;
+}
+
+
 #calendarContainer
 {
-	background-color: $TPGrey1;
+    
+    #libraryContainer.open + &
+    {
+        @include column(12);
+    }
+
+    #libraryContainer.closed + &
+    {
+        @include column(15);
+    }
 
     .scrollable
     {
