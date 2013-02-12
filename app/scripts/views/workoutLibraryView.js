@@ -9,6 +9,8 @@ function(_, TP, workoutLibraryTemplate)
     return TP.ItemView.extend(
     {
 
+        libraryName: 'workoutLibrary',
+
         template:
         {
             type: "handlebars",

@@ -4,14 +4,30 @@
 {
 
     margin-top:15px;
-        
+
+    #libraries
+    {
+        @include outerRow(); 
+    }
+             
     &.open
     {
         @include column(4);
-        
+        @include transition-property(width);
+        @include transition-duration(400ms);
+
+        #tabs
+        {
+            @include column(4);
+        }
+
         #activeLibraryContainer
         {
-            display:block;
+            @include column(12);
+            visibility:visible;
+            @include transition-property(width);
+            @include transition-property(visibility);
+            @include transition-duration(400ms);
         }
 
     }
@@ -19,23 +35,40 @@
     &.closed
     {
         @include column(1);
-        
+        @include transition-property(width);
+        @include transition-duration(400ms);
+
+        #tabs
+        {
+            @include column(16);
+        }
+
         #activeLibraryContainer
         {
-            display:none;
+            @include column(0);
+            visibility:hidden;
+            @include transition-property(width);
+            @include transition-property(visibility);
+            @include transition-duration(400ms);
         }
     }
 
     #tabs
     {
-        width: 100px;
         float:left;
 
         div
         {
-            background-color: $TPBlue;
+            width:80px;
+            padding:10px;
             color: $white;
             border:1px solid $white;
+            background-color: $TPGrey2;
+        }
+
+        div.active
+        {
+            background-color: $TPBlue;
         }
     }
 

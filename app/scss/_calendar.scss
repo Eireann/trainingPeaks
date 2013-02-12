@@ -13,11 +13,15 @@
     #libraryContainer.open + &
     {
         @include column(12);
+        @include transition-property(width);
+        @include transition-duration(400ms);
     }
 
     #libraryContainer.closed + &
     {
         @include column(15);
+        @include transition-property(width);
+        @include transition-duration(400ms);
     }
 
     .scrollable
