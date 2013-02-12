@@ -2,6 +2,7 @@ define(
 [
     "TP",
     "models/session",
+    "models/userModel",
     "models/clientEventsCollection",
     "controllers/navigationController",
     "controllers/loginController",
@@ -9,7 +10,7 @@ define(
     "router",
     "marionette.faderegion"
 ],
-function(TP, Session, ClientEventsCollection, NavigationController, LoginController, CalendarController, Router)
+function(TP, Session, UserModel, ClientEventsCollection, NavigationController, LoginController, CalendarController, Router)
 {
     var theApp = new TP.Application();
 
@@ -23,6 +24,7 @@ function(TP, Session, ClientEventsCollection, NavigationController, LoginControl
     theApp.addInitializer(function initSession()
     {
         this.session = new Session({ app: this });
+        this.user = new UserModel();
     });
 
     // add logging

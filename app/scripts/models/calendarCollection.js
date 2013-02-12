@@ -153,7 +153,7 @@ function (TP, WorkoutsCollection, CalendarWeekCollection, CalendarDayModel)
             var item = this.workoutsCollection.get(options.itemId);
 
             // if it has a getCalendarDay and moveToDay then we can move it
-            if (_.isFunction(item.getCalendarDay) && _.isFunction(item.moveToDay))
+            if (item && _.isFunction(item.getCalendarDay) && _.isFunction(item.moveToDay))
             {
                 var oldCalendarDay = item.getCalendarDay();
                 var newCalendarDay = options.destinationCalendarDayModel.id;
