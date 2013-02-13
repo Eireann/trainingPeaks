@@ -29,7 +29,8 @@ module.exports = function(grunt)
                 devel: true,
                 globals:
                 {
-                    "theMarsApp": true
+                    "theMarsApp": true,
+                    "$": true
                 }
             }
         },

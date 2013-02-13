@@ -71,15 +71,15 @@ function(TP, dialog, workoutQuickView)
                                                 "Calories",
                                                 "ElevationGain",
                                                 "ElevationLoss",
-	                                            "TSS",
+                                                "TSS",
                                                 "IF",
                                                 "Energy"
             ];
 
             if (workoutStatsPlannedCompleted.length > 0)
             {
-                $("<div/>", { class: "plannedCompletedHeader" }).append($("<label/>", { class: "plannedCompletedLabel", text: "Planned" })).append($("<label/>", { class: "plannedCompletedLabel", text: "Completed" })).appendTo("#workoutPlannedCompletedStats")
-            };
+                $("<div/>", { "class": "plannedCompletedHeader" }).append($("<label/>", { "class": "plannedCompletedLabel", text: "Planned" })).append($("<label/>", { "class": "plannedCompletedLabel", text: "Completed" })).appendTo("#workoutPlannedCompletedStats");
+            }
 
             for (var i = 0; i < workoutStatsPlannedCompleted.length; i++)
             {
@@ -91,12 +91,12 @@ function(TP, dialog, workoutQuickView)
 
         setupMinMaxAvgView: function()
         {
-            var workoutStatsMinMaxAvg = ["NormalizedPower", "Power", "Torque", "Elevation", "Cadence", "Speed", "Pace", "HeartRate", "Temp"]
+            var workoutStatsMinMaxAvg = ["NormalizedPower", "Power", "Torque", "Elevation", "Cadence", "Speed", "Pace", "HeartRate", "Temp"];
 
             if (workoutStatsMinMaxAvg.length > 0)
             {
-                $("<div/>", { class: "minMaxAvgHeader" }).append($("<label/>", { class: "minMaxAvg", text: "Min" })).append($("<label/>", { class: "minMaxAvg", text: "Avg" })).append($("<label/>", { class: "minMaxAvg", text: "Max" })).appendTo("#workoutMinMaxAvgStats")
-            };
+                $("<div/>", { "class": "minMaxAvgHeader" }).append($("<label/>", { "class": "minMaxAvg", text: "Min" })).append($("<label/>", { "class": "minMaxAvg", text: "Avg" })).append($("<label/>", { "class": "minMaxAvg", text: "Max" })).appendTo("#workoutMinMaxAvgStats");
+            }
 
             for (var i = 0; i < workoutStatsMinMaxAvg.length; i++)
             {
