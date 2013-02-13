@@ -7,7 +7,7 @@ module.exports = function(grunt)
     {
         var jasmineOptions = grunt.config.get('jasmine_node');
         jasmineOptions.projectRoot = "./coverage";
-        jasmineOptions.requirejs = './coverage/app/config/jasmine_requirejs_config.js';
+        jasmineOptions.requirejs = './coverage/app/config/jasmineRequirejsConfig.js';
         jasmineOptions.teamcity = false;
         grunt.config.set('jasmine_node', jasmineOptions);
     });

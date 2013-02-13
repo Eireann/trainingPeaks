@@ -57,17 +57,7 @@ requirejs.config = function () {
 };
 
 // customize paths for testing
-//requirejs.config({baseUrl: path.join(rootJsDir, "app")});
 requirejs.config(nodeConfig);
-//requirejs.config({ deps: ["browserEnvironment", "jquery", "Backbone.Marionette.Handlebars"] });
 
-// do we need some fake browser environment?
-/*
-if (typeof global !== 'undefined' && typeof window === 'undefined')
-{
-    requirejs.config(
-    {
-        deps: ["browserEnvironment", "jquery"]
-    });
-}
-*/
+// set baseUrl here, even though we have it in nodeConfig, or else code coverage doesn't work
+requirejs.config({ baseUrl: path.join(rootJsDir, "app") });
