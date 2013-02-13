@@ -60,7 +60,7 @@ function(Backbone, BackboneStickit, Marionette, APIModel, Logger)
 
     TP.Events = Backbone.Events;
 
-    TP.View = Backbone.View.extend();
+    TP.View = Marionette.View.extend();
     TP.ItemView = Marionette.ItemView.extend(commonViewFunctions);
     TP.CollectionView = Marionette.CollectionView.extend(commonViewFunctions);
     TP.CompositeView = Marionette.CompositeView.extend(commonViewFunctions);

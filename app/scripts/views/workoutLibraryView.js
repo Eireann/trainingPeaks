@@ -3,10 +3,11 @@
     "underscore",
     "TP",
     "views/libraryWorkoutItemView",
+    "views/workoutLibraryAddView",
     "models/libraryWorkoutsCollection",
     "hbs!templates/views/workoutLibrary"
 ],
-function(_, TP, LibraryWorkoutItemView, LibraryWorkoutsCollection, workoutLibraryTemplate)
+function(_, TP, LibraryWorkoutItemView, WorkoutLibraryAddView, LibraryWorkoutsCollection, workoutLibraryTemplate)
 {
     return TP.CompositeView.extend(
     {
@@ -43,6 +44,17 @@ function(_, TP, LibraryWorkoutItemView, LibraryWorkoutsCollection, workoutLibrar
         {
             type: "handlebars",
             template: workoutLibraryTemplate
+        },
+
+        events:
+        {
+            "click button#add": "addToLibrary"
+        },
+
+        addToLibrary: function()
+        {
+            var view = new WorkoutLibraryAddView({ el: "#workoutLibraryAddView" });
+            view.render();
         }
 
     });
