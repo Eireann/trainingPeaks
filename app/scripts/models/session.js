@@ -16,6 +16,8 @@ function (_, TP)
 
         initialize: function()
         {
+            this.authPromise = new $.Deferred();
+
             var accessToken = this.storageLocation.getItem("access_token");
 
             if (accessToken)
@@ -25,6 +27,7 @@ function (_, TP)
                 if (now < expiresOn)
                 {
                     this.set("access_token", accessToken);
+                    this.authPromise.resolve();
                 }
             }
         },
@@ -45,7 +48,7 @@ function (_, TP)
                 username: options.username,
                 password: options.password,
                 response_type: "token",
-                scope: "Fitness ClientEvents"
+                scope: "Fitness ClientEvents Users"
             };
 
             this.username = options.username;
@@ -58,6 +61,7 @@ function (_, TP)
                 type: "POST",
                 contentType: "application/x-www-form-urlencoded"
             }).done(this.onAuthenticationSuccess).error(this.onAuthenticationFailure);
+
         },
         
         onAuthenticationSuccess: function()
@@ -67,11 +71,13 @@ function (_, TP)
             this.storageLocation.setItem("access_token", this.get("access_token"));
             this.storageLocation.setItem("expires_on", expiresOn);
 
+            this.authPromise.resolve();
             this.trigger("api:authorization:success");
         },
         
         onAuthenticationFailure: function()
         {
+            this.authPromise.reject();
             this.trigger("api:authorization:failure");
         }
 

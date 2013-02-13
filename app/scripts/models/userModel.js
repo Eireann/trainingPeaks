@@ -48,13 +48,7 @@ function (moment, TP)
         
         url: function()
         {
-            //return theMarsApp.apiRoot + "/WebApiServer/User";
-            return "user.json";
-        },
-        
-        initialize: function()
-        {
-            this.fetch();
+            return theMarsApp.apiRoot + "/WebApiServer/Users/V1/User";
         }
     });
 });
