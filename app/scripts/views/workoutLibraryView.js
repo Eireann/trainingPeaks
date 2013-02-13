@@ -53,7 +53,7 @@ function(_, TP, LibraryWorkoutItemView, WorkoutLibraryAddView, LibraryWorkoutsCo
 
         addToLibrary: function()
         {
-            var view = new WorkoutLibraryAddView({ el: "#workoutLibraryAddView" });
+            var view = new WorkoutLibraryAddView({});
             view.render();
         }
 

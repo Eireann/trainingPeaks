@@ -79,6 +79,7 @@ function(_, TP, WorkoutLibraryView, MealLibraryView, libraryTemplate)
             } else
             {
                 this.toggleLibrary();
+                this.onWaitStop();
             }
         },
 
@@ -145,7 +146,11 @@ function(_, TP, WorkoutLibraryView, MealLibraryView, libraryTemplate)
         renderActiveLibrary: function()
         {
             this.ui.activeLibraryContainer.html("");
+
+            // reattach events that may have been removed on close ...
+            this.activeLibrary.delegateEvents();
             this.activeLibrary.render();
+
             this.ui.activeLibraryContainer.append(this.activeLibrary.$el);
         },
 
