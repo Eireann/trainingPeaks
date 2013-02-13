@@ -13,7 +13,7 @@ function (TP)
         defaults: {
             WorkoutId: null,
             Title: "",
-            Description: ""
+            Sport: ""
         }
 
     });

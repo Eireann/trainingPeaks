@@ -2,24 +2,47 @@
 [
     "underscore",
     "TP",
+    "views/libraryWorkoutItemView",
+    "models/libraryWorkoutsCollection",
     "hbs!templates/views/workoutLibrary"
 ],
-function(_, TP, workoutLibraryTemplate)
+function(_, TP, LibraryWorkoutItemView, LibraryWorkoutsCollection, workoutLibraryTemplate)
 {
-    return TP.ItemView.extend(
+    return TP.CompositeView.extend(
     {
-
         libraryName: 'workoutLibrary',
+        tagName: "div",
+        className: "workouts",
 
-        template:
+        getItemView: function(item)
         {
-            type: "handlebars",
-            template: workoutLibraryTemplate
+            if (item)
+            {
+                return LibraryWorkoutItemView;
+            } else
+            {
+                return TP.ItemView;
+            }
+        },
+
+        initialize: function()
+        {
+            if (!this.collection)
+            {
+                this.collection = new LibraryWorkoutsCollection();
+            }
+
         },
 
         collectionEvents:
         {
             "reset": "render"
+        },
+
+        template:
+        {
+            type: "handlebars",
+            template: workoutLibraryTemplate
         }
 
     });

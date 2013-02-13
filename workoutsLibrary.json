@@ -1,1 +1,1 @@
-[{"WorkoutId":1,"Title":"Speed Workout","Description":"Makes you faster"},{"WorkoutId":2,"Title":"WeightWorkout","Description":"Makes you stronger"},{"WorkoutId":3,"Title":"RestDay","Description":"Makes you lazier"}]
+[{"WorkoutId":1,"Title":"Speed Workout","Sport":"Running"},{"WorkoutId":2,"Title":"Weight Workout","Sport":"Strength"},{"WorkoutId":3,"Title":"Rest Day","Sport":"None"}]

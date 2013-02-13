@@ -1,1 +1,12 @@
-<label>{{$ "Workout Library" }}</label>
+<div class="libraryNavigation">
+<label>{{$ "Workout Library" }}</label> <button>+</button> <button>=</button>
+</div>
+<div class="librarySearch">
+    <input type="text" name="search" id="search" value="{{$ "Search" }}" />
+    <select name="librarySelect" id="librarySelect">
+        <option value="">{{$ "Library" }}</option>
+    </select>
+</div>
+<div class="helpText">
+    <p>{{$ "Drag workouts to calendar" }}</p>
+</div>
