@@ -22,7 +22,6 @@ function ($, Backbone, UserControlsView)
         {
             var view = new UserControlsView();
             expect(view.ui.settingsButton).toBeDefined();
-            expect(view.ui.settingsWrapper).toBeDefined();
         });
 
         it("Renders the UserSettings view when the usernameLabel is clicked", function()
