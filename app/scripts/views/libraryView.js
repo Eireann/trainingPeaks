@@ -39,7 +39,7 @@ function(_, TP, WorkoutLibraryView, MealLibraryView, libraryTemplate)
 
         onTabClick: function(e)
         {
-            var libraryName = $(e.target).data("library");
+            var libraryName = e.target.id;
             if (libraryName)
             {
                 this.switchLibrary(libraryName);
@@ -80,12 +80,12 @@ function(_, TP, WorkoutLibraryView, MealLibraryView, libraryTemplate)
 
         turnOffTab: function(tabName)
         {
-            this.$("#tabs [data-library=" + tabName + "]").removeClass("active");
+            this.$("#tabs #" + tabName).removeClass("active");
         },
 
         turnOnTab: function(tabName)
         {
-            this.$("#tabs [data-library=" + tabName + "]").addClass("active");
+            this.$("#tabs #" + tabName).addClass("active");
         },
 
         showLibrary: function()

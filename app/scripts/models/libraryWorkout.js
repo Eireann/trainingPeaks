@@ -4,12 +4,16 @@
 ],
 function (TP)
 {
-    return TP.Model.extend(
+    return TP.APIModel.extend(
     {
 
+        webAPIModelName: "LibraryWorkout",
+        idAttribute: "WorkoutId",
+
         defaults: {
-            title: "Speed Workout",
-            description: "Makes you faster"
+            WorkoutId: null,
+            Title: "",
+            Description: ""
         }
 
     });
