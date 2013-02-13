@@ -23,8 +23,14 @@ function(TP, Session, UserModel, ClientEventsCollection, NavigationController, L
     // add a session
     theApp.addInitializer(function initSession()
     {
-        this.session = new Session({ app: this });
+        var self = this;
+
         this.user = new UserModel();
+        this.session = new Session({ app: this });
+        this.session.authPromise.done(function()
+        {
+            self.user.fetch();
+        });
     });
 
     // add logging
