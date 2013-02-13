@@ -10,15 +10,11 @@ module.exports = function(grunt)
     grunt.registerMultiTask('validate-webapi-models', 'Validate default values of Web API Models', function()
     {
 
+
         // setup requirejs
         var basePath = path.join(__dirname, "../..");
-        var appPath = path.join(basePath, "app");
-        var commonConfig = require(path.join(appPath, "config/commonRequirejsConfig"));
-        var nodeConfig = require(path.join(appPath, "config/nodeRequirejsConfig"));
-        requirejs.config(commonConfig);
+        var nodeConfig = require(path.join(basePath, "app/config/nodeRequirejsConfig"));
         requirejs.config(nodeConfig);
-        requirejs.config({ baseUrl: appPath });
-        requirejs.config({ deps: ["browserEnvironment", "jquery", "Backbone.Marionette.Handlebars"] });
 
         // mark as async so we can load modules via requirejs
         var onDone = this.async();
@@ -96,6 +92,7 @@ module.exports = function(grunt)
                     ["app", modelPath],
                     function(theMarsApp, ModelConstructor)
                     {
+
                         theMarsApp.start();
                         if (_.isFunction(ModelConstructor) && ModelConstructor.prototype.hasOwnProperty('webAPIModelName'))
                         {

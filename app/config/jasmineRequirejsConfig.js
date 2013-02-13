@@ -2,10 +2,9 @@ var path = require("path");
 var rootJsDir = __dirname.substring(0, __dirname.indexOf("/test"));
 var _ = require('underscore');
 
-// get our common requirejs config - shared with browser app
-var commonConfig = require(path.join(rootJsDir, "app/config/commonRequirejsConfig"));
+var nodeConfig = require(path.join(rootJsDir, "app/config/nodeRequirejsConfig"));
+// load this after we load nodeConfig, so it loads in node's commonJS format instead of amd
 
-// load this after we load commonConfig, so it loads in commonJS format instead of amd
 var requirejs = require('requirejs');
 var define = requirejs.define;
 
@@ -57,18 +56,13 @@ requirejs.config = function () {
     return originalRequireJs.config.apply(originalRequireJs, arguments);
 };
 
-
-// use common config
-requirejs.config(commonConfig);
-
-// set base url get out of spec dir and into /app, from whatever spec subfolder we're in
-requirejs.config({baseUrl: path.join(rootJsDir, "app")});
-
 // customize paths for testing
-var nodeConfig = require(path.join(rootJsDir, "app/config/nodeRequirejsConfig"));
+//requirejs.config({baseUrl: path.join(rootJsDir, "app")});
 requirejs.config(nodeConfig);
+//requirejs.config({ deps: ["browserEnvironment", "jquery", "Backbone.Marionette.Handlebars"] });
 
 // do we need some fake browser environment?
+/*
 if (typeof global !== 'undefined' && typeof window === 'undefined')
 {
     requirejs.config(
@@ -76,4 +70,4 @@ if (typeof global !== 'undefined' && typeof window === 'undefined')
         deps: ["browserEnvironment", "jquery"]
     });
 }
-
+*/

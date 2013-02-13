@@ -1,9 +1,18 @@
-// setup some common config, and then make it available via commonJS or amdrequire
-// in the browser it loads as amdrequire via requirejs,
-// but on node.js it uses commonJS format so we can get it directly instead of async
-(function () {
-    var nodeConfig = {
-        paths: {
+(function()
+{
+
+    /*
+    extend common config with some paths for testing
+    */
+    var _ = require('underscore');
+
+    // get our common requirejs config - shared with browser app
+    var path = require('path');
+    var commonConfig = require("./commonRequirejsConfig");
+    var rootJsDir = __dirname.substring(0, __dirname.indexOf("/test"));
+    commonConfig.baseUrl = path.join(rootJsDir, "app");
+    _.extend(commonConfig.paths,
+        {
             "document": "../test/js_global_dependencies/document_jsdom",
             "window": "../test/js_global_dependencies/window_jsdom",
             "localStorage": "../test/js_global_dependencies/localStorage",
@@ -16,39 +25,20 @@
             "backbone.marionette": "../test/vendor/js/libs/backbone.marionette.amd",
             "Backbone.Marionette.Handlebars": "../test/vendor/js/libs/backbone.marionette.handlebars.amd",
             "hbs": "../test/vendor/js/libs/hbs"
-        },
-
-        shim:
-        {
-            "backbone":
-            {
-                deps: ["jquery", "underscore"],
-                exports: "Backbone"
-            },
-            "backbone.marionette":
-            {
-                deps: ["backbone"],
-                exports: "Marionette"
-            },
-            "jquery.mousewheel":
-            {
-                deps: ["jquery"],
-                exports: "jquery"
-            }
         }
-    };
+    );
+
+    commonConfig.deps = ["browserEnvironment", "jquery", "Backbone.Marionette.Handlebars"];
 
     // exports for commonJS format, or define for amd format
     if (typeof exports === 'object') {
-        module.exports = nodeConfig;
+        module.exports = commonConfig;
     } else if (typeof define === 'function' && define.amd) {
         define([], function () {
-            return nodeConfig;
+            return commonConfig;
         });
     }
 
-    return nodeConfig;
-} ());
+    return commonConfig;
 
-
-
+}());

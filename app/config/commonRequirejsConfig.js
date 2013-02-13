@@ -42,6 +42,25 @@
             {
                 return "scripts/helpers/" + name;
             }
+        },
+
+        shim:
+        {
+            "backbone":
+            {
+                deps: ["underscore"],
+                exports: "Backbone"
+            },
+            "backbone.marionette":
+            {
+                deps: ["backbone"],
+                exports: "Marionette"
+            },
+            "backbone.stickit":
+            {
+                deps: ["backbone"],
+                exports: "Backbone"
+            }
         }
 
     };
