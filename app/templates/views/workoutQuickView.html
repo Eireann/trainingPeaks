@@ -3,17 +3,29 @@
         <div id="thumbNailImage">
             <img src="assets/images/QVImages/workoutPlaceHolder.png" />
         </div>
-        <div>
-            <input type="text" name="workoutTitle" class="workoutTitle"/>
+        <div class="workoutTitleDiv">
+            <input type="text" name="workoutTitle" class="workoutTitle" placeholder="Workout Title"/>
             <label class="workoutDate">Thursday Jan 14, 2013 @2pm</label>
         </div>
-        <div id="workoutStats" class="row">
-            <label class="headerWorkoutValue">112</label>
-            <label class="headerWorkoutValueLabel">DST</label>
-            <label class="headerWorkoutValue">3:22:14</label>
-            <label class="headerWorkoutValueLabel">DUR</label>
-            <label class="headerWorkoutValue">155</label>
-            <label class="headerWorkoutValueLabel">TSS</label>
+        <div id="workoutHeaderStats" class="row">
+            <div class="headerWorkoutValue">
+                <label>112</label>
+            </div>
+            <div class="headerWorkoutValueLabel">
+                <label>DST</label>
+            </div>
+            <div class="headerWorkoutValue">
+                <label>3:22:14</label>
+            </div>
+            <div class="headerWorkoutValueLabel">
+                <label>DUR</label>
+            </div>
+            <div class="headerWorkoutValue">
+                <label>155</label>
+            </div>
+            <div class="headerWorkoutValueLabel">
+                <label>TSS</label>
+            </div>
         </div>
 
         <div>
@@ -24,10 +36,12 @@
                 <button>></button>
             </div>
         </div>
-
-
     </div>
 
+    <!-- planned and completed fields load dynamically here-->
+    <div id="workoutPlannedCompletedStats"/>
 
-
+    <!-- min/max/avg fields load dynamically here-->
+    <div id="workoutMinMaxAvgStats"/>
+        
 </div>

@@ -5,6 +5,12 @@
     display:none;
 }
 
+#thumbNailImage
+{
+	float: left;
+	padding-right: 10px;
+}
+
 .forwardBackbuttons
 {
 	float:left;
@@ -12,10 +18,32 @@
 	@include headerButtons(-5px);
 }
 
-.workoutTitle
+.workoutTitleDiv
 {
 	input
 	{
-		
+		width: 400px;
+		height: 50px;
+		font-family: $navigationFontFamilyRegular;
+		font-size: 30px;
+		color: $TPBlue;
+		border-style:none;
+	}
+}
+
+#workoutHeaderStats
+{
+	float: left;
+	.headerWorkoutValue
+	{
+		@include labels($navigationFontFamilyRegular, 24, $TPGrey4);
+		width: 20px;
+
+	}
+
+	.headerWorkoutValuelabel
+	{
+		width: 20px;
+		@include labels($navigationFontFamilyRegular, 18, $TPGrey4);
 	}
 }

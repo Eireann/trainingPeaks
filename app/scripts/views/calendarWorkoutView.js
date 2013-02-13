@@ -35,9 +35,8 @@ function(TP, WorkoutQuickView, CalendarWorkoutTemplate)
 
         workoutClicked: function () 
         {
-            var view = new WorkoutQuickView({ model: this.model, el: "#workoutQuickView" });
+            var view = new WorkoutQuickView({ model: this.model });
             view.render();
-
         }
     });
 });
