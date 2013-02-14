@@ -3,6 +3,7 @@ define(
     "TP",
     "models/session",
     "models/userModel",
+    "models/userSettingsModel",
     "models/clientEventsCollection",
     "controllers/navigationController",
     "controllers/loginController",
@@ -10,7 +11,7 @@ define(
     "router",
     "marionette.faderegion"
 ],
-function(TP, Session, UserModel, ClientEventsCollection, NavigationController, LoginController, CalendarController, Router)
+function(TP, Session, UserModel, UserSettingsModel, ClientEventsCollection, NavigationController, LoginController, CalendarController, Router)
 {
     var theApp = new TP.Application();
 
@@ -26,10 +27,16 @@ function(TP, Session, UserModel, ClientEventsCollection, NavigationController, L
         var self = this;
 
         this.user = new UserModel();
+        this.userSettings = new UserSettingsModel();
+        
         this.session = new Session({ app: this });
         this.session.authPromise.done(function()
         {
-            self.user.fetch();
+            self.user.fetch().done(function()
+            {
+                self.userSettings.set("personId", self.user.get("personId"));
+                self.userSettings.fetch();
+            });
         });
     });
 
@@ -83,7 +90,7 @@ function(TP, Session, UserModel, ClientEventsCollection, NavigationController, L
         live: "https://api.trainingpeaks.com",
         deploy: "https://apideploy.trainingpeaks.com",
         dev: "http://api.dev.trainingpeaks.com",
-        local: "http://localhost"
+        local: "http://localhost:8900"
     };
 
     // get environment name from index.html build target
