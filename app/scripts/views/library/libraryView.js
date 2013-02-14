@@ -2,11 +2,11 @@
 [
     "underscore",
     "TP",
-    "views/library/workoutLibraryView",
+    "views/library/exerciseLibraryView",
     "views/library/mealLibraryView",
     "hbs!templates/views/library/libraryView"
 ],
-function(_, TP, WorkoutLibraryView, MealLibraryView, libraryTemplate)
+function(_, TP, ExerciseLibraryView, MealLibraryView, libraryTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -20,7 +20,7 @@ function(_, TP, WorkoutLibraryView, MealLibraryView, libraryTemplate)
         initialize: function()
         {
             this.views = {
-                workoutLibrary: new WorkoutLibraryView(),
+                exerciseLibrary: new ExerciseLibraryView(),
                 mealLibrary: new MealLibraryView()
             };
 

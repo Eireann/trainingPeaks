@@ -2,15 +2,15 @@ define(
 [
     "TP",
     "jqueryui/draggable",
-    "hbs!templates/views/library/libraryWorkoutItem"
+    "hbs!templates/views/library/libraryExerciseView"
 ],
-function(TP, draggable, LibraryWorkoutItemTemplate)
+function(TP, draggable, LibraryExerciseViewTemplate)
 {
     return TP.ItemView.extend(
     {
 
         tagName: "div",
-        className: "workout",
+        className: "exercise",
 
         attributes: function()
         {
@@ -20,20 +20,20 @@ function(TP, draggable, LibraryWorkoutItemTemplate)
             }
 
             return {
-                "data-WorkoutId": this.model.id
+                "data-ExerciseId": this.model.id
             };
         },
 
         template:
         {
             type: "handlebars",
-            template: LibraryWorkoutItemTemplate
+            template: LibraryExerciseViewTemplate
         },
 
         initialize: function(options)
         {
             if (!this.model)
-                throw "Cannot have a LibraryWorkoutItemView without a model";
+                throw "Cannot have a LibraryExerciseItemView without a model";
         },
 
         onRender: function()

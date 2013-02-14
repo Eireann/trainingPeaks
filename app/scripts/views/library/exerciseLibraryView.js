@@ -2,24 +2,24 @@
 [
     "underscore",
     "TP",
-    "views/library/libraryWorkoutItemView",
-    "views/library/workoutLibraryAddView",
-    "models/library/libraryWorkoutsCollection",
-    "hbs!templates/views/library/workoutLibrary"
+    "views/library/libraryExerciseView",
+    "views/library/exerciseLibraryAddView",
+    "models/library/libraryExercisesCollection",
+    "hbs!templates/views/library/exerciseLibraryView"
 ],
-function(_, TP, LibraryWorkoutItemView, WorkoutLibraryAddView, LibraryWorkoutsCollection, workoutLibraryTemplate)
+function(_, TP, LibraryExerciseView, ExerciseLibraryAddView, LibraryExercisesCollection, exerciseLibraryViewTemplate)
 {
     return TP.CompositeView.extend(
     {
-        libraryName: 'workoutLibrary',
+        libraryName: 'exerciseLibrary',
         tagName: "div",
-        className: "workouts",
+        className: "exercises",
 
         getItemView: function(item)
         {
             if (item)
             {
-                return LibraryWorkoutItemView;
+                return LibraryExerciseView;
             } else
             {
                 return TP.ItemView;
@@ -30,7 +30,7 @@ function(_, TP, LibraryWorkoutItemView, WorkoutLibraryAddView, LibraryWorkoutsCo
         {
             if (!this.collection)
             {
-                this.collection = new LibraryWorkoutsCollection();
+                this.collection = new LibraryExercisesCollection();
             }
 
         },
@@ -43,7 +43,7 @@ function(_, TP, LibraryWorkoutItemView, WorkoutLibraryAddView, LibraryWorkoutsCo
         template:
         {
             type: "handlebars",
-            template: workoutLibraryTemplate
+            template: exerciseLibraryViewTemplate
         },
 
         events:
@@ -53,7 +53,7 @@ function(_, TP, LibraryWorkoutItemView, WorkoutLibraryAddView, LibraryWorkoutsCo
 
         addToLibrary: function()
         {
-            var view = new WorkoutLibraryAddView({});
+            var view = new ExerciseLibraryAddView({});
             view.render();
         }
 

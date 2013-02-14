@@ -2,9 +2,9 @@
 [
     "underscore",
     "TP",
-    "hbs!templates/views/library/mealLibrary"
+    "hbs!templates/views/library/mealLibraryView"
 ],
-function(_, TP, mealLibraryTemplate)
+function(_, TP, mealLibraryViewTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -14,7 +14,7 @@ function(_, TP, mealLibraryTemplate)
         template:
         {
             type: "handlebars",
-            template: mealLibraryTemplate
+            template: mealLibraryViewTemplate
         },
 
         collectionEvents:

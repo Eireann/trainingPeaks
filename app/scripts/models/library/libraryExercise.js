@@ -7,11 +7,11 @@ function (TP)
     return TP.APIModel.extend(
     {
 
-        webAPIModelName: "LibraryWorkout",
-        idAttribute: "WorkoutId",
+        webAPIModelName: "LibraryExercise",
+        idAttribute: "ExerciseId",
 
         defaults: {
-            WorkoutId: null,
+            ExerciseId: null,
             Title: "",
             Sport: ""
         }

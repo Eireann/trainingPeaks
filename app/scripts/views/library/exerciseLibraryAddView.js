@@ -2,10 +2,10 @@
 [
     "TP",
     "jqueryui/dialog",
-    "hbs!templates/views/library/workoutLibraryAddView"
+    "hbs!templates/views/library/exerciseLibraryAddView"
 
 ],
-function(TP, dialog, workoutLibraryAddView)
+function(TP, dialog, exerciseLibraryAddView)
 {
     "use strict";
 
@@ -14,13 +14,13 @@ function(TP, dialog, workoutLibraryAddView)
 
         attributes:
         {
-            id: "workoutLibraryAddView"
+            id: "exerciseLibraryAddView"
         },
 
         template:
         {
             type: "handlebars",
-            template: workoutLibraryAddView
+            template: exerciseLibraryAddView
         },
 
         events:
@@ -41,7 +41,7 @@ function(TP, dialog, workoutLibraryAddView)
                 position: {
                     my: "left top",
                     at: "left bottom",
-                    of: "#workoutLibrary button#add"
+                    of: "#exerciseLibrary button#add"
                 },
                 resizable: false,
                 draggable: false
