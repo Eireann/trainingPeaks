@@ -82,7 +82,7 @@ function(TP, Session, UserModel, ClientEventsCollection, NavigationController, L
     {
         live: "https://api.trainingpeaks.com",
         deploy: "https://apideploy.trainingpeaks.com",
-        dev: "https://api.dev.trainingpeaks.com",
+        dev: "http://api.dev.trainingpeaks.com",
         local: "http://localhost"
     };
 
