@@ -2,30 +2,222 @@
 [
     "TP",
     "jqueryui/dialog",
-    "hbs!templates/views/workoutQuickView"
+    "hbs!templates/views/workoutQuickView",
+    "hbs!templates/views/quickView/workoutStatsRow",
+    "hbs!templates/views/quickView/workoutStatsRowMinMaxAvg"
 
 ],
-function(TP, dialog, workoutQuickView)
+function(TP, dialog, workoutQuickViewTemplate, workoutStatsRowTemplate, workoutStatsRowMinMavAvgTemplate)
 {
-    "use strict";
-
-    var PlannedCompletedLabelText;
-    var minMaxAvgLabelText;
-
     return TP.ItemView.extend(
     {
         template:
         {
             type: "handlebars",
-            template: workoutQuickView
+            template: workoutQuickViewTemplate
         },
 
-        ui:
+        bindings:
+            
         {
-        },
-        
-        events:
-        {
+            "#workoutTitleField":
+            {
+                observe: "Title",
+                eventsOverride: [ "blur" ]
+            },
+            "#distanceCompletedField":
+            {
+                observe: "Distance",
+                eventsOverride: [ "blur" ]
+            },
+            "#distancePlannedField":
+            {
+                observe: "DistancePlanned",
+                eventsOverride: ["blur"]
+            },
+            "#TSSPlannedField":
+            {
+                observe: "TSSPlanned",
+                eventsOverride: ["blur"]
+            },
+            "#TSSCompletedField":
+            {
+                observe: "TSSActual",
+                eventsOverride: ["blur"]
+            },
+            "#normalizedPacePlannedField":
+            {
+                observe: "NormalizedSpeedActual",
+                eventsOverride: ["blur"]
+            },
+            "#averagePacePlannedField":
+            {
+                observe: "VelocityPlanned",
+                eventsOverride: ["blur"]
+            },
+            "#averagePaceCompletedField":
+            {
+                observe: "VelocityAverage",
+                eventsOverride: ["blur"]
+            },
+            "#averageSpeedPlannedField":
+            {
+                observe: "VelocityPlanned",
+                eventsOverride: ["blur"]
+            },
+            "#averageSpeedCompletedField":
+            {
+                observe: "VelocityAverage",
+                eventsOverride: ["blur"]
+            },
+            "#caloriesPlannedField":
+            {
+                observe: "CaloriesPlanned",
+                eventsOverride: ["blur"]
+            },
+            "#caloriesCompletedField":
+            {
+                observe: "Calories",
+                eventsOverride: ["blur"]
+            },
+            "#elevationGainPlannedField":
+            {
+                observe: "ElevationGainPlanned",
+                eventsOverride: ["blur"]
+            },
+            "#elevationGainCompletedField":
+            {
+                observe: "ElevationGain",
+                eventsOverride: ["blur"]
+            },
+            "#elevationLossCompletedField":
+            {
+                observe: "ElevationLoss",
+                eventsOverride: ["blur"]
+            },
+            "#IFPlannedField":
+            {
+                observe: "IFPlanned",
+                eventsOverride: ["blur"]
+            },
+            "#IFCompletedField":
+            {
+                observe: "IF",
+                eventsOverride: ["blur"]
+            },
+            "#energyPlannedField":
+            {
+                observe: "EnergyPlanned",
+                eventsOverride: ["blur"]
+            },
+            "#energyCompletedField":
+            {
+                observe: "Energy",
+                eventsOverride: ["blur"]
+            },
+
+            //min/max/avg
+            "#powerAvgField":
+            {
+                observe: "PowerAverage",
+                eventsOverride: ["blur"]
+            },
+            "#powerMaxField":
+            {
+                observe: "PowerMaximum",
+                eventsOverride: ["blur"]
+            },
+            "#torqueAvgField":
+            {
+                observe: "TorqueAverage",
+                eventsOverride: ["blur"]
+            },
+            "#torqueMaxField":
+            {
+                observe: "TorqueMaximum",
+                eventsOverride: ["blur"]
+            },
+            "#elevationMinField":
+            {
+                observe: "ElevationMinimum",
+                eventsOverride: ["blur"]
+            },
+            "#elevationAvgField":
+            {
+                observe: "ElevationAverage",
+                eventsOverride: ["blur"]
+            },
+            "#elevationMaxField":
+            {
+                observe: "ElevationMaximum",
+                eventsOverride: ["blur"]
+            },
+            "#cadenceAvgField":
+            {
+                observe: "CadenceAverage",
+                eventsOverride: ["blur"]
+            },
+            "#cadenceMaxField":
+            {
+                observe: "CadenceMaximum",
+                eventsOverride: ["blur"]
+            },
+            "#speedAvgField":
+            {
+                observe: "VelocityAverage",
+                eventsOverride: ["blur"]
+            },
+            "#speedMaxField":
+            {
+                observe: "VelocityMaximum",
+                eventsOverride: ["blur"]
+            },
+            "#paceMinField":
+            {
+                observe: "IF",
+                eventsOverride: ["blur"]
+            },
+            "#paceAvgField":
+            {
+                observe: "VelocityAverage",
+                eventsOverride: ["blur"]
+            },
+            "#paceMaxField":
+            {
+                observe: "VelocityMaximum",
+                eventsOverride: ["blur"]
+            },
+            "#heartRateMinField":
+            {
+                observe: "HeartRateMinimum",
+                eventsOverride: ["blur"]
+            },
+            "#heartRateAvgField":
+            {
+                observe: "HeartRateAverage",
+                eventsOverride: ["blur"]
+            },
+            "#heartRateMaxField":
+            {
+                observe: "HeartRateMaximum",
+                eventsOverride: ["blur"]
+            },
+            "#TempMin":
+            {
+                observe: "TempMin",
+                eventsOverride: ["blur"]
+            },
+            "#tempAvgField":
+            {
+                observe: "TempAvg",
+                eventsOverride: ["blur"]
+            },
+            "#tempMaxField":
+            {
+                observe: "TempMax",
+                eventsOverride: ["blur"]
+            }
+
         },
 
         onBeforeRender: function ()
@@ -58,89 +250,95 @@ function(TP, dialog, workoutQuickView)
         onRender: function ()
         {
             this.$el.dialog("open");
+
             this.setupPlannedCompletedView();
             this.setupMinMaxAvgView();
+
+            this.stickit();
         },
 
         setupPlannedCompletedView: function()
         {
-            var workoutStatsPlannedCompleted = ["Distance",
-                                                "NormalizedPace",
-                                                "AveragePace",
-                                                "AverageSpeed",
-                                                "Calories",
-                                                "ElevationGain",
-                                                "ElevationLoss",
-                                                "TSS",
-                                                "IF",
-                                                "Energy"
+            var workoutStatsPlannedCompleted =
+            [
+                "distance",
+                "normalizedPace",
+                "averagePace",
+                "averageSpeed",
+                "calories",
+                "elevationGain",
+                "elevationLoss",
+                "TSS",
+                "IF",
+                "energy"
             ];
 
-            if (workoutStatsPlannedCompleted.length > 0)
-            {
-                $("<div/>", { "class": "plannedCompletedHeader" }).append($("<label/>", { "class": "plannedCompletedLabel", text: "Planned" })).append($("<label/>", { "class": "plannedCompletedLabel", text: "Completed" })).appendTo("#workoutPlannedCompletedStats");
-            }
-
+            var workoutStatsHtml = "";
             for (var i = 0; i < workoutStatsPlannedCompleted.length; i++)
             {
-                this.getPlannedCompletedLabel(i);
-                $("<div/>", { id: workoutStatsPlannedCompleted[i] }).append($("<label/>", { id: workoutStatsPlannedCompleted[i] + "Label", text: PlannedCompletedLabelText })).append($("<input/>", { type: "text", id: workoutStatsPlannedCompleted[i] + "Planned" })).append($("<input/>", { type: "text", id: workoutStatsPlannedCompleted[i] + "completed" })).appendTo("#workoutPlannedCompletedStats");
-
+                workoutStatsHtml += workoutStatsRowTemplate({ statName: workoutStatsPlannedCompleted[i], workoutStatsLabel: this.workoutStatLabel(i), workoutStatsUnitLabel: "" });
             }
+            this.$("#workoutPlannedCompletedStats").html(workoutStatsHtml);
         },
 
         setupMinMaxAvgView: function()
         {
-            var workoutStatsMinMaxAvg = ["NormalizedPower", "Power", "Torque", "Elevation", "Cadence", "Speed", "Pace", "HeartRate", "Temp"];
+            var workoutStatsMinMaxAvg =
+            [
+                "power",
+                "torque",
+                "elevation",
+                "cadence",
+                "speed",
+                "pace",
+                "heartRate",
+                "temp"];
 
-            if (workoutStatsMinMaxAvg.length > 0)
-            {
-                $("<div/>", { "class": "minMaxAvgHeader" }).append($("<label/>", { "class": "minMaxAvg", text: "Min" })).append($("<label/>", { "class": "minMaxAvg", text: "Avg" })).append($("<label/>", { "class": "minMaxAvg", text: "Max" })).appendTo("#workoutMinMaxAvgStats");
-            }
-
+            var workoutStatsHtml = "";
             for (var i = 0; i < workoutStatsMinMaxAvg.length; i++)
             {
-                this.getMinMaxAvgLabel(i);
-                $("<div/>", { id: workoutStatsMinMaxAvg[i] }).append($("<label/>", { id: workoutStatsMinMaxAvg[i] + "Label", text: minMaxAvgLabelText })).append($("<input/>", { type: "text", id: workoutStatsMinMaxAvg[i] + "Min" })).append($("<input/>", { type: "text", id: workoutStatsMinMaxAvg[i] + "Max" })).append($("<input/>", { type: "text", id: workoutStatsMinMaxAvg[i] + "Avg" })).appendTo("#workoutMinMaxAvgStats");
-
+                workoutStatsHtml += workoutStatsRowMinMavAvgTemplate({ statName:workoutStatsMinMaxAvg[i], minMaxAvgLabel: workoutStatsMinMaxAvg[i], minMaxAvgUnitsLabel: "lightyears" });
             }
+            this.$("#workoutMinMaxAvgStats").html(workoutStatsHtml);
         },
 
-        getPlannedCompletedLabel: function (i)
+        workoutStatLabel: function (i)
         {
+            var label = "";
             switch (i)
             {
                 case 0:
-                    PlannedCompletedLabelText = "Distance";
+                    label = "Distance";
                     break;
                 case 1:
-                    PlannedCompletedLabelText = "Normalized Pace";
+                    label = "Normalized Pace";
                     break;
                 case 2:
-                    PlannedCompletedLabelText = "Average Pace";
+                    label = "Average Pace";
                     break;
                 case 3:
-                    PlannedCompletedLabelText = "Average Speed";
+                    label = "Average Speed";
                     break;
                 case 4:
-                    PlannedCompletedLabelText = "Calories";
+                    label = "Calories";
                     break;
                 case 5:
-                    PlannedCompletedLabelText = "Elevation Gain";
+                    label = "Elevation Gain";
                     break;
                 case 6:
-                    PlannedCompletedLabelText = "Elevation Loss";
+                    label = "Elevation Loss";
                     break;
                 case 7:
-                    PlannedCompletedLabelText = "TSS";
+                    label = "TSS";
                     break;
                 case 8:
-                    PlannedCompletedLabelText = "IF";
+                    label = "IF";
                     break;
                 case 9:
-                    PlannedCompletedLabelText = "Energy";
+                    label = "Energy";
                     break;
             }
+            return label;
         },
 
         getMinMaxAvgLabel: function (i)

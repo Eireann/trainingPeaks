@@ -4,24 +4,24 @@
             <img src="assets/images/QVImages/workoutPlaceHolder.png" />
         </div>
         <div class="workoutTitleDiv">
-            <input type="text" name="workoutTitle" class="workoutTitle" placeholder="Workout Title"/>
-            <label class="workoutDate">Thursday Jan 14, 2013 @2pm</label>
+            <input type="text" name="workoutTitle" class="workoutTitle" placeholder="Workout Title" id="workoutTitleField" />
+            <label class="workoutDate">{{WorkoutDay}}</label>
         </div>
         <div id="workoutHeaderStats" class="row">
             <div class="headerWorkoutValue">
-                <label>112</label>
+                <label>{{Distance}}</label>
             </div>
             <div class="headerWorkoutValueLabel">
                 <label>DST</label>
             </div>
             <div class="headerWorkoutValue">
-                <label>3:22:14</label>
+                <label>{{TotalTime}}</label>
             </div>
             <div class="headerWorkoutValueLabel">
                 <label>DUR</label>
             </div>
             <div class="headerWorkoutValue">
-                <label>155</label>
+                <label>{{TSSActual}}</label>
             </div>
             <div class="headerWorkoutValueLabel">
                 <label>TSS</label>
@@ -39,7 +39,10 @@
     </div>
 
     <!-- planned and completed fields load dynamically here-->
-    <div id="workoutPlannedCompletedStats"/>
+    <div id="workoutPlannedCompletedStats">
+        <label>{{$ "Planned"}}</label>
+        <label>{{$ "Completed"}}</label>
+    </div>
 
     <!-- min/max/avg fields load dynamically here-->
     <div id="workoutMinMaxAvgStats"/>

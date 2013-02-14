@@ -47,3 +47,8 @@
 		@include labels($navigationFontFamilyRegular, 18, $TPGrey4);
 	}
 }
+
+.workoutStatsRow
+{
+	@include row();
+}
