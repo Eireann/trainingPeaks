@@ -18,10 +18,13 @@ function (moment, TP)
         {
             return {
                 DateCreatedEpoch: moment().unix(),
-                UserPersonId: theMarsApp.session.has("PersonId") ? theMarsApp.session.get("PersonId") : 0,
-                UserHost: null,
-                UserAgent: null,
-                Event: {
+                UserPersonId: theMarsApp.user.has("personId") ? theMarsApp.user.get("personId") : 0,
+                UserHost: "",
+                UserAgent: "",
+                Application: "",
+                AppVersion: "",
+                Event:
+                {
                     Label: "",
                     Type: "",
                     AppContext: "",

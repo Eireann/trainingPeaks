@@ -19,42 +19,37 @@ function (TP, jqueryuiDialog, printUnitsValue, userSettingsTemplate)
         {
             "#firstName":
             {
-                observe: "FirstName",
-                eventsOverride: [ "blur" ]
+                observe: "firstName",
+                eventsOverride: ["blur"]
             },
             "#lastName":
             {
-                observe: "LastName",
+                observe: "lastName",
                 eventsOverride: [ "blur" ]
             },
             "#userName":
             {
-                observe: "Username",
-                eventsOverride: [ "blur" ]
-            },
-            "#birthday":
-            {
-                observe: "Birthday",
+                observe: "userName",
                 eventsOverride: [ "blur" ]
             },
             "#city":
             {
-                observe: "City",
+                observe: "city",
                 eventsOverride: [ "blur" ]
             },
             "#state":
             {
-                observe: "State",
+                observe: "state",
                 eventsOverride: [ "blur" ]
             },
             "#country":
             {
-                observe: "Country",
+                observe: "country",
                 eventsOverride: [ "blur" ]
             },
             "select#units":
             {
-                observe: "UnitsValue",
+                observe: "unitsValue",
                 selectOptions:
                 {
                     collection: function()
@@ -73,25 +68,22 @@ function (TP, jqueryuiDialog, printUnitsValue, userSettingsTemplate)
             this.$el.dialog(
             {
                 autoOpen: false,
-                height: 400,
+                height: 700,
                 width: 600,
                 modal: true,
-                show:
-                {
-                    effect: "fade",
-                    duration: 400
-                },
+                resizable: false,
+                overlay: { opacity: 0.5 },
                 buttons:
                 {
-                    "Save": function()
+                    "Reset": function()
                     {
-                        self.saveSettings();
+                        self.resetSettings();
                         self.$el.dialog("close");
                         self.close();
                     },
-                    "Cancel": function()
+                    "Close": function()
                     {
-                        self.resetSettings();
+                        self.saveSettings();
                         self.$el.dialog("close");
                         self.close();
                     }
@@ -107,12 +99,11 @@ function (TP, jqueryuiDialog, printUnitsValue, userSettingsTemplate)
         
         saveSettings: function()
         {
-            
+            this.model.save();
         },
         
         resetSettings: function()
         {
-            
         }
     });
 });
