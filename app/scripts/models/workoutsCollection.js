@@ -1,29 +1,33 @@
 define(
 [
-    "backbone",
+    "moment",
+    "TP",
     "models/workoutModel"
 ],
-function(Backbone, WorkoutModel)
+function(moment, TP, WorkoutModel)
 {
-    return Backbone.Collection.extend(
+    return TP.Collection.extend(
     {
         model: WorkoutModel,
+
         url: function()
         {
             if (!(this.startDate && this.endDate))
                 throw "startDate & endDate needed for WorkoutsCollection";
 
             var start = this.startDate.format("YYYY-MM-DD");
-            var end = this.endDate.format("YYYY-MM-DD");
+            var end = moment(this.endDate).format("YYYY-MM-DD");
 
-            //return "http://localhost:8900/WebApiServer/Fitness/V1/workouts/" + start + "/" + end;
-            //return "http://apideploy.trainingpeaks.com/WebApiServer/Fitness/V1/workouts/" + start + "/" + end;
-            return "http://apidev.trainingpeaks.com/WebApiServer/Fitness/V1/workouts/" + start + "/" + end;
+            return theMarsApp.apiRoot + "/WebApiServer/Fitness/V1/workouts/" + start + "/" + end;
         },
-        initialize: function(options)
+
+        initialize: function(models, options)
         {
-            this.startDate = options.startDate;
-            this.endDate = options.endDate;
+            if (options)
+            {
+                this.startDate = options.startDate;
+                this.endDate = options.endDate;
+            }
         }
     });
 });

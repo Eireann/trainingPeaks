@@ -1,0 +1,144 @@
+﻿@import "tpstylesheet";
+
+#userControlsContainer
+{
+	height: 35px;
+	background-color: $black;
+
+	.personHeaderLogo
+	{
+		float: left;
+		min-width: 375px;
+		padding-left: 120px;
+	}
+
+	.rightNavigation
+	{
+		float:right;
+		width:350px;
+		padding-right: 35px;
+
+		.headerPipe
+		{
+			float: left;
+			height: 30px;
+			padding-top: 10px;
+			padding-right: 10px;
+			font-size: $navigationFontSize;
+			color: $TPGrey4;
+		}
+
+		.personHeaderButtons
+		{
+			padding-top: 12px;
+			padding-right: 10px;
+
+			height: 35px;
+			text-align: center;
+			&:hover { background-color: $TPBlue; }
+			&:hover label{color: $white;}
+			float:left;
+
+			@include labels($navigationFontFamilyRegular, $navigationFontSize, $TPGrey4);
+
+		}
+
+		.personHeaderMailIcon
+		{
+			padding-top: 12px;
+			padding-right: 10px;
+			&:hover{cursor: pointer;}
+			float:left;
+		}
+	}
+}
+
+#navigationContainer
+{
+	height: 65px;
+	background-color: $white;
+
+	.appNavigation
+	{
+		span
+		{
+			float: left;
+			height: 45px;
+			text-align: center;
+			padding-top: 20px;
+			&:hover label{color: $TPPurple; }
+			&:hover label{border-bottom-style:solid; border-bottom-width:1px; border-color:$TPPurple;}
+			
+		}
+
+		@include labels($navigationFontFamilyRegular, $navigationFontSize, $TPGrey4);
+	}
+}
+
+#calendarHeader
+{
+	height: 60px;
+	float:left;
+	background-color: $white;
+	.calendarMonthLabel
+	{
+		width: 175px;
+		float: left;
+		padding-left: 10px;
+		padding-top: 13px;
+
+		@include labels($navigationFontFamilyRegular, 25px, $TPBlue);
+	}
+
+	.navigation
+	{
+		float:left;
+		padding-top: 12px;
+		width: 600px;
+		
+		@include headerButtons(0px);
+
+		.calendarNavigation
+		{
+			float:left;
+			padding-right: 15px;
+			@include headerButtons(-5px);
+			
+		}
+
+		.calendarViewSelectionBox
+		{
+			width: 150px;
+			padding-left: 20px;
+			float: left;
+			select
+			{
+				margin-top: 3px;
+				height: 20px;
+			}
+		}
+
+		.printRefreshButtons
+		{
+			float:left;
+			padding-left: 10px;
+			@include headerButtons(20px);
+		}
+	}
+
+}
+
+.mainNavigationButtons
+{
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+#loginHeader, #calendarHeader
+{
+    span
+    {
+        font-family: $navigationFontFamilyRegular;
+        font-size: 24px;
+    }
+}

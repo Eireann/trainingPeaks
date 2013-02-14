@@ -1,45 +1,52 @@
 define(
 [
-    "app",
-    "backbone",
-    "controllers/calendarController",
-    "views/loginView",
-    "models/session"
+    "underscore",
+    "TP"
 ],
-function (App, Backbone, CalendarController, LoginView, TheSession)
+function (_, TP)
 {
-    var Router = Backbone.Router.extend(
+    return TP.Router.extend(
     {
-        initialize: function()
+        initialize: function ()
         {
-            _.bindAll(this);
-            App.on("api:unauthorized", this.login);
+
+            theMarsApp.navRegion.show(theMarsApp.controllers.navigationController.getLayout());
+
+            var self = this;
+
+            theMarsApp.on("api:unauthorized", function()
+            {
+                self.navigate("login", { trigger: true });
+            });
+
+            theMarsApp.controllers.loginController.on("login:success", function()
+            {
+                self.navigate("calendar", { trigger: true });
+            });
         },
-        
+
         routes:
         {
             "home": "home",
-            "calendar": "calendar"
+            "login": "login",
+            "calendar": "calendar",
+            "": "calendar"  
         },
 
-        home: function()
+        home: function ()
         {
-            console.log("home");
+            var homeview = new TP.View();
+            theMarsApp.mainRegion.show(homeview);
         },
-        
-        calendar: function()
+
+        calendar: function ()
         {
-            // Create Calendar Layout, Calendar controller, bind & display
-            var controller = new CalendarController();
-            App.appLayout.calendarRegion.show(controller.display());
+            theMarsApp.mainRegion.show(theMarsApp.controllers.calendarController.getLayout());
         },
-        
-        login: function()
+
+        login: function (origin)
         {
-            var view = new LoginView({ model: TheSession });
-            App.appLayout.loginRegion.show(view);
+            theMarsApp.mainRegion.show(theMarsApp.controllers.loginController.getLayout());
         }
     });
-
-    return Router;
 });

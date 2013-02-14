@@ -1,44 +1,43 @@
 define(
 [
-    "jquery",
     "underscore",
-    "backbone"
+    "TP"
 ],
-function ($, _, Backbone)
+function (_, TP)
 {
-    "use strict";
-
-    var Session = Backbone.Model.extend(
+    return TP.Model.extend(
     {
-        //url: "https://apideploy.trainingpeaks.com/OAuthAuthorizationServer/OAuth/Token",
-        url: "http://apidev.trainingpeaks.com/OAuthAuthorizationServer/OAuth/Token",
-        //url: "http://localhost:8900/OAuthAuthorizationServer/OAuth/Token",
-        
-        defaults:
+        url: function()
         {
-            username: null      
+            return theMarsApp.apiRoot + "/OAuthAuthorizationServer/OAuth/Token";
         },
-        
-        initialize: function ()
+
+        storageLocation: localStorage,
+
+        initialize: function()
         {
-            _.bindAll(this);
-            var accessToken = sessionStorage.getItem("access_token");
+            this.authPromise = new $.Deferred();
+
+            var accessToken = this.storageLocation.getItem("access_token");
+
             if (accessToken)
             {
-                var expiresOn = sessionStorage.getItem("expires_on");
-                var now = (new Date()).getTime() / 1000;
+                var expiresOn = this.storageLocation.getItem("expires_on");
+                var now = parseInt(+new Date(), 10) / 1000;
                 if (now < expiresOn)
                 {
                     this.set("access_token", accessToken);
+                    this.authPromise.resolve();
                 }
             }
         },
-        
+
         isAuthenticated: function ()
         {
-            return this.get("access_token") && this.get("access_token").length > 0;
+            var token = this.get("access_token");
+            return !!token && (token.length > 0);
         },
-        
+
         authenticate: function (options)
         {
             var data =
@@ -49,20 +48,38 @@ function ($, _, Backbone)
                 username: options.username,
                 password: options.password,
                 response_type: "token",
-                scope: "Fitness"
+                scope: "Fitness ClientEvents Users"
             };
 
             this.username = options.username;
 
-            var self = this;
-            this.fetch({ data: data, type: "POST", contentType: "application/x-www-form-urlencoded" }).done(function ()
-            {
-                var expiresOn = Number(self.get("expires_in")) + Number((new Date()).getTime() / 1000);
-                sessionStorage.setItem("access_token", self.get("access_token"));
-                sessionStorage.setItem("expires_on", expiresOn);
-            });
-        }
-    });
+            _.bindAll(this, "onAuthenticationSuccess", "onAuthenticationFailure");
 
-    return new Session();
+            this.fetch(
+            {
+                data: data,
+                type: "POST",
+                contentType: "application/x-www-form-urlencoded"
+            }).done(this.onAuthenticationSuccess).error(this.onAuthenticationFailure);
+
+        },
+        
+        onAuthenticationSuccess: function()
+        {
+            var expiresOn = parseInt(this.get("expires_in"), 10) + parseInt((+new Date()) / 1000, 10);
+
+            this.storageLocation.setItem("access_token", this.get("access_token"));
+            this.storageLocation.setItem("expires_on", expiresOn);
+
+            this.authPromise.resolve();
+            this.trigger("api:authorization:success");
+        },
+        
+        onAuthenticationFailure: function()
+        {
+            this.authPromise.reject();
+            this.trigger("api:authorization:failure");
+        }
+
+    });
 });

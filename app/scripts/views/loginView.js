@@ -1,14 +1,14 @@
 ﻿define(
 [
     "underscore",
-    "backbone.marionette",
-    "hbs!templates/views/login"
+    "TP",
+    "hbs!templates/views/loginView"
 ],
-function (_, Marionette, loginViewTemplate)
+function (_, TP, loginViewTemplate)
 {
     "use strict";
     
-    return Marionette.ItemView.extend(
+    return TP.ItemView.extend(
     {
         template:
         {
@@ -16,6 +16,11 @@ function (_, Marionette, loginViewTemplate)
             template: loginViewTemplate
         },
         
+        /*
+         * TP specific way to bind DOM elements to JS "ui" elements.
+         * The DOM element selected with the selector on the rightside of the
+         * equation will be associated with the ui element named this.ui.NAME
+         */
         ui:
         {
             "usernameInput": "input[name=username]",
@@ -25,28 +30,38 @@ function (_, Marionette, loginViewTemplate)
             
         initialize: function ()
         {
-            _.bindAll(this);
-            this.on("authenticate", this.authenticate);
-            this.model.bind("change", this.checkAuthResponse);
+            if (!this.model)
+                throw "loginView requires a SessionModel. Aborting";
+            
+            this.model.on("api:authorization:success", this.onLoginSuccess, this);
+            this.model.on("api:authorization:failure", this.onLoginFailure, this);
         },
             
-        triggers:
+        events:
         {
             "click input[name=Submit]": "authenticate"
+        },
+        
+        onLoginSuccess: function()
+        {
+            this.trigger("login:success");
+        },
+        
+        onLoginFailure: function()
+        {
+            this.$("#loginInProgressLabel").hide();
+            this.$("#loginFailedLabel").show();
         },
             
         authenticate: function ()
         {
+            this.$("#loginFailedLabel").hide();
+            this.$("#loginInProgressLabel").show();
+            
             var username = this.ui.usernameInput.val();
             var password = this.ui.passwordInput.val();
 
             this.model.authenticate({ username: username, password: password });
-        },
-            
-        checkAuthResponse: function ()
-        {
-            if (this.model.get("access_token"))
-                this.trigger("authenticated");
         }
     });
 });

@@ -1,3 +1,34 @@
 {
-    "Sample Content": "Contenuto esemplare in italiano. Che bello"
+    "Sample Content": "Contenuto esemplare in italiano. Che bello",
+    "Date": "Data",
+    "Day": "Giorno",
+
+	"LogOut": "Uscita",
+	"Messages": "Messaggi",
+	"Settings": "Impostazioni",
+	"GoPremium": "Compra Premium",
+	"Home": "Home",
+	"Calendar": "Calendario",
+	"Dashboard": "Pannello",
+	"Routes": "Percorsi",
+	"Plans": "Piani",
+	"Friends": "Amici",
+	"AnnualTrainingPlan": "Piano Annuale Allenamenti",
+	"VirtualCoach": "Allenatore Virtuale",
+
+    "Login": "Accesso",
+    "Username": "Nome Utente",
+    "Password": "Parola d'Ordine",
+    "LoggingIn": "Accesso in corso...",
+    "LoginFailed": "Accesso fallito!",
+    "Submit": "Accedi",
+
+    "UserSettings": "Impostazioni Utente",
+    "FirstName": "Nome",
+    "LastName": "Cognome",
+    "Birthday": "Data di Nascita",
+    "City": "Citta`",
+    "State": "Provincia",
+    "Country": "Stato",
+    "Units": "Unita` di Misura"
 }

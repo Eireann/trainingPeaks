@@ -1,0 +1,107 @@
+﻿@import "tpstylesheet";
+
+#calendarWrapper
+{
+    @include outerRow();
+	background-color: $TPGrey1;
+}
+
+
+#calendarContainer
+{
+    
+    #libraryContainer.open + &
+    {
+        @include column(12);
+        @include transition-property(width);
+        @include transition-duration(400ms);
+        padding-left:0px;
+    }
+
+    #libraryContainer.closed + &
+    {
+        @include column(15);
+        @include transition-property(width);
+        @include transition-duration(400ms);
+    }
+
+    .scrollable
+    {
+        height: 600px;
+        overflow-y: scroll;
+    }
+
+    .week
+    {
+        @include outerRow();
+    }
+
+    .day
+    {
+        @include column(2);
+        min-height:150px;
+        border: 1px solid $white;
+		background-color: $TPGrey2;
+        padding: 5px;
+        overflow-x: auto;
+        overflow-y: visible;
+        .workout
+        {
+			p
+			{
+				font-family: $navigationFontFamilyLight;
+				font-size: 12px;
+				color:$TPGrey4;
+				font-weight: bold;
+			}
+            
+        }
+    }
+
+    .weekSummary
+    {
+        @include column(2);
+        min-height: 150px;
+        border: 1px solid $white;
+        background-color: $TPGrey4;
+        padding: 5px;
+        overflow: hidden;
+    }
+
+    .today
+    {
+        background-color: $white;
+		p{color: $TPGrey1;}
+    }
+
+    .daysOfWeek
+    {
+        @include outerRow();
+
+        div
+		{
+            @include column(2);
+			padding-bottom: 0px;
+			font-Family: $navigationFontFamilyLight;
+			font-size: 12;
+			color: $TPGrey4;
+			text-align: center;
+			height: 15px;
+		}
+    }
+
+}
+
+#calendarDate
+{
+	font-Family: $navigationFontFamilyRegular;
+	font-size: $navigationFontSize;
+	color: $TPGrey4;
+	text-align: right;
+	float:right;
+}
+
+#workoutQuickView
+{
+	display:none;
+}

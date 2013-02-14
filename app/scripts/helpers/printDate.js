@@ -1,3 +1,7 @@
+/*
+printDate accepts any object/string that is parseable by moment.js,
+plus a moment.js compatible formatString (defaults to 'L')
+*/
 define(
 [
     "handlebars",
@@ -5,9 +9,15 @@ define(
 ],
 function(Handlebars, moment)
 {
-    var printDate = function(dateAsLongEpoch)
+    var printDate = function(dateAsLongEpoch, formatString)
     {
-        return moment(dateAsLongEpoch).format("L");
+
+        if (!formatString || typeof formatString !== "string")
+        {
+            formatString = "DD";
+        }
+
+        return moment(dateAsLongEpoch).format(formatString);
     };
 
     Handlebars.registerHelper("printDate", printDate);

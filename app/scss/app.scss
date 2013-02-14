@@ -1,18 +1,68 @@
 @import "settings";
 @import "foundation";
 
-#calendarContainer
+@import "tpstylesheet";
+@import "mixIn";
+
+@import "header";
+@import "calendar";
+@import "library";
+@import "quickView";
+
+@mixin throbber($backgroundColor: $TPGrey1) {
+    opacity:0.7;
+    background-image: url(../../assets/images/throbber.gif);
+    background-repeat: no-repeat;
+    background-position: center;
+    position:absolute;
+    height: 90%;
+    width: 90%;
+    top:5%;
+    left:5%;
+    content: ' ';
+    display: block;
+}
+
+@mixin flexboxParent() {
+    display: -webkit-box;
+    -webkit-box-orient: horizontal;
+
+    display: -moz-box;
+    -moz-box-orient: horizontal;
+
+    display: box;
+    box-orient: horizontal;
+}
+
+@mixin flexboxChild() {
+    -webkit-box-flex: 1;
+    -moz-box-flex: 1;
+    box-flex: 1;
+}
+
+// works for some places, but some places conflicts with foundation :before elements
+.waiting:before
 {
-    .scrollable
+    @include throbber;
+}
+
+.ui-draggable
+{
+    cursor: pointer;
+}
+
+.ui-draggable-dragging
+{
+    cursor: move;
+}
+
+
+#loginFooter, #calendarFooter
+{
+    span
     {
-        height: 600px;
-        overflow-y: scroll;
+        font-family: 'Courier New', Courier, 'Nimbus Mono L', monospace;
+        font-size: 10px;
     }
 }
 
-.day
-{
-    height: 150px;
-    border: 1px solid #000000;
-    padding: 5px;
-}  

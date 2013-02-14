@@ -1,109 +1,101 @@
 define(
-[
-    "backbone",
-    "backbone.marionette",
+    [
+    "underscore",
     "moment",
-    
+    "TP",
+    "layouts/calendarLayout",
+    "models/calendarCollection",
+    "models/calendarWeekCollection",
     "models/calendarDay",
     "views/calendarView",
-    "models/workoutsCollection"
-],
-function(Backbone, Marionette, moment, CalendarDayModel, CalendarView, WorkoutsCollection)
+    "views/libraryView"
+    ],
+function(_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollection, CalendarDayModel, CalendarView, LibraryView)
 {
-    return Marionette.Controller.extend(
+    return TP.Controller.extend(
     {
-        views: {},
-        daysCollection: null,
-        daysHash: {},
-        
-        initialize: function()
-        {
-            _.bindAll(this);
-            
-            this.startDate = moment().subtract("days", 40);
-            this.endDate = moment().add("days", 30);
-           
-            this.initializeCalendarView();
-            this.requestWorkouts(this.startDate, this.endDate);
-        },
-        
-        initializeCalendarView: function ()
-        {
-            this.daysCollection = this.createCollectionOfDays(moment(this.startDate), moment(this.endDate));
-            
-            this.views.calendar = new CalendarView({ collection: this.daysCollection });
-            
-            this.views.calendar.bind("prepend", this.prependWeekToCalendar);
-            this.views.calendar.bind("append", this.appendWeekToCalendar);
-        },
-        
-        createCollectionOfDays: function(startDate, endDate)
-        {
-            var numOfDaysToShow = endDate.diff(startDate, "days");
+        startOfWeekDayIndex: 0,
+        summaryViewEnabled: true,
 
-            var daysCollection = new Backbone.Collection();
-
-            for (var dayOffset = 0; dayOffset < numOfDaysToShow; ++dayOffset)
-            {
-                var day = new CalendarDayModel({ date: moment(startDate) });
-                this.daysHash[startDate.format("YYYY-MM-DD")] = day;
-                daysCollection.add(day);
-                startDate.add("days", 1);
-            }
-            
-            return daysCollection;
-        },
-        
-        requestWorkouts: function(startDate, endDate)
+        show: function()
         {
-            var workouts = new WorkoutsCollection({ startDate: startDate, endDate: endDate });
-            
-            var waiting = workouts.fetch();
-            var that = this;
-
-            waiting.done(function ()
-            {
-                workouts.each(function(workout)
-                {
-                    var workoutDay = workout.get("WorkoutDay");
-                    if (workoutDay)
-                    {
-                        workoutDay = workoutDay.substr(0, workoutDay.indexOf("T"));
-                        if (that.daysHash[workoutDay])
-                        {
-                            that.daysHash[workoutDay].set("workoutId", workout.get("WorkoutId"));
-                            that.daysHash[workoutDay].set("workoutDay", workout.get("WorkoutDay"));
-                        }
-                    }
-                });
-            });
+            this.initializeCalendar();
+            this.initializeLibrary();
+            this.weeksCollection.requestWorkouts(this.startDate, this.endDate);
+            this.layout.calendarRegion.show(this.views.calendar);
+            this.layout.libraryRegion.show(this.views.library);
         },
-        
-        appendWeekToCalendar: function()
+
+        initialize: function ()
+        {
+            this.views = {};
+            
+            this.layout = new CalendarLayout();
+            this.layout.on("show", this.show, this);
+
+            this.dateFormat = "YYYY-MM-DD";
+
+            // start on a Sunday
+            this.startDate = moment().day(this.startOfWeekDayIndex).subtract("weeks", 4);
+
+            // end on a Saturday
+            this.endDate = moment().day(6 + this.startOfWeekDayIndex).add("weeks", 6);
+
+            this.weeksCollection = new CalendarCollection(null, { startDate: moment(this.startDate), endDate: moment(this.endDate), startOfWeekDayIndex: this.startOfWeekDayIndex, summaryViewEnabled: this.summaryViewEnabled });
+        },
+
+        initializeCalendar: function()
+        {
+            var weekDaysModel = new TP.Model({ weekDays: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"] });
+
+            if (this.views.calendar)
+                this.views.calendar.close();
+            
+            this.views.calendar = new CalendarView({ model: weekDaysModel, collection: this.weeksCollection });
+
+            this.bindToCalendarViewEvents(this.views.calendar);
+
+        },
+
+        bindToCalendarViewEvents: function(calendarView) {
+            calendarView.on("prepend", this.prependWeekToCalendar, this);
+            calendarView.on("append", this.appendWeekToCalendar, this);
+            calendarView.on("itemMoved", this.weeksCollection.onItemMoved, this.weeksCollection);
+        },
+
+        initializeLibrary: function()
+        {
+            if (this.views.library)
+                this.views.library.close();
+            
+            this.views.library = new LibraryView({ });
+
+            this.bindToLibraryViewEvents(this.views.library);
+        },
+
+        bindToLibraryViewEvents: function(libraryView)
+        {
+
+        },
+
+        appendWeekToCalendar: function ()
         {
             var startDate = moment(this.endDate).add("days", 1);
-            this.endDate = moment(startDate).add("days", 6);
+            var endDate = moment(startDate).add("days", 6);
+            this.endDate = moment(endDate);
 
-            this.requestWorkouts(startDate, moment(this.endDate));
-
-            var newDays = this.createCollectionOfDays(startDate, moment(this.endDate));
-            this.daysCollection.add(newDays.models);
+            this.weeksCollection.requestWorkouts(startDate, endDate);
+            this.weeksCollection.appendWeek(startDate);
         },
-        
-        prependWeekToCalendar: function ()
+
+        prependWeekToCalendar: function()
         {
             var endDate = moment(this.startDate).subtract("days", 1);
-            this.startDate = moment(this.startDate).subtract("days", 6);
+            var startDate = moment(endDate).subtract("days", 6);
+            this.startDate = moment(startDate);
 
-            this.requestWorkouts(this.startDate, moment(endDate));
-
-            var newDays = this.createCollectionOfDays(this.startDate, moment(endDate));
-            this.daysCollection.unshift(newDays.models);
-        },
-        
-        display: function()
-        {
-            return this.views.calendar;
+            this.weeksCollection.requestWorkouts(startDate, endDate);
+            this.weeksCollection.prependWeek(startDate);
         }
     });
 });
