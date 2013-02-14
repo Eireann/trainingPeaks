@@ -11,8 +11,8 @@ function(TP, LibraryExerciseModel)
 
         url: function()
         {
-            //return theMarsApp.apiRoot + "/WebApiServer/ExercisesLibrary";
-            return "exercisesLibrary.json";
+            return theMarsApp.apiRoot + "/WebApiServer/ExerciseLibrary/V1/LibraryItems";
+            //return "exercisesLibrary.json";
         },
         
         initialize: function()
