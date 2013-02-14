@@ -86,7 +86,7 @@ module.exports = function(grunt)
         {
             _.each(file.src, function(srcFile)
             {
-                var modelPath = "models/" + path.basename(srcFile, '.js');
+                var modelPath = srcFile.replace("app/scripts/", "").replace(".js", "");
                 waitFor(modelPath);
                 requirejs(
                     ["app", modelPath],
