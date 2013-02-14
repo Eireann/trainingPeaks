@@ -8,7 +8,7 @@ define(
     "models/calendarWeekCollection",
     "models/calendarDay",
     "views/calendarView",
-    "views/libraryView"
+    "views/library/libraryView"
     ],
 function(_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollection, CalendarDayModel, CalendarView, LibraryView)
 {
