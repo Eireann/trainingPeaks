@@ -20,6 +20,7 @@ function (moment, TP)
             lastName: "",
             personId: "",
             userName: "",
+            athleteType: "",
             city: "",
             state: "",
             country: "",

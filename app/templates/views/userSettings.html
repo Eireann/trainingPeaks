@@ -1,5 +1,5 @@
 ﻿<fieldset>
-    <legend>{{$ "UserSettings"}}</legend>
+    <legend>{{$ "PersonalInfo"}}</legend>
 
     <label for='firstName' >{{$ "FirstName"}}*:</label>
     <input type='text' name='firstName' id='firstName' />
@@ -39,4 +39,46 @@
 
     <label for='phone' >{{$ "Phone"}}*:</label>
     <input type='text' name='phone' id='phone' />
+</fieldset>
+
+<fieldset>
+    <legend>{{$ "AccountSettings"}}</legend>
+
+    <label for='firstName' >{{$ "Account"}}: {{accountType}}</label>
+
+    <label for='settingsUnits' >{{$ "Units"}}:</label>
+    <input type="radio" name='settingsUnits' id='settingsUnits'></input> 
+
+    <label for='settingsDateFormat' >{{$ "DateFormat"}}*:</label>
+    <input type='radio' name='settingsDateFormat' id='settingsDateFormat' />
+
+    <label for='settingsTimeZone' >{{$ "TimeZone"}}*:</label>
+    <select name='settingsTimeZone' id='settingsTimeZone'></select> 
+
+    <label for='birthday' >{{$ "Birthday"}}*:</label>
+    <input type='text' name='birthday' id='Text4' />
+
+    <label for='gender' >{{$ "Gender"}}*:</label>
+    <input type='text' name='gender' id='Text5' />
+    
+    <label for='email' >{{$ "Email"}}*:</label>
+    <input type='text' name='email' id='Text6' />
+
+    <label for='address' >{{$ "Address"}}*:</label>
+    <input type='text' name='address' id='Text7' />
+
+    <label for='address2' >{{$ "Address"}}*:</label>
+    <input type='text' name='address2' id='Text8' />
+
+    <label for='city' >{{$ "City"}}*:</label>
+    <input type='text' name='city' id='Text9' />
+
+    <label for='state' >{{$ "State"}}*:</label>
+    <select name='state' id='Select2'></select>
+
+    <label for='country' >{{$ "Country"}}*:</label>
+    <select name='country' id='Select3'></select>
+
+    <label for='phone' >{{$ "Phone"}}*:</label>
+    <input type='text' name='phone' id='Text10' />
 </fieldset>
