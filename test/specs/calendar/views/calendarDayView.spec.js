@@ -77,13 +77,17 @@ function(moment, printDate, CalendarDayModel, WorkoutModel, CalendarWorkoutView,
                     var uiMock = {
                         draggable: {
                             data: function() {
-                                return "12345";
+                                return {
+                                    ItemId: "12345",
+                                    ItemType: "Workout",
+                                    DropEvent: "itemMoved"
+                                };
                             }
                         }
                     };
                     spyOn(dayView, "trigger");
                     dayView.onDropItem({}, uiMock);
-                    eventOptions = { itemId: "12345", dropEvent: "12345", destinationCalendarDayModel: dayModel };
+                    eventOptions = { ItemId: "12345", DropEvent: "itemMoved", ItemType: "Workout", destinationCalendarDayModel: dayModel };
                     expect(dayView.trigger).toHaveBeenCalledWith("itemDropped", eventOptions);
                 });
 

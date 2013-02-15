@@ -13,11 +13,7 @@ function(TP, LibraryExerciseModel)
         {
             return theMarsApp.apiRoot + "/WebApiServer/ExerciseLibrary/V1/LibraryItems";
             //return "exercisesLibrary.json";
-        },
-        
-        initialize: function()
-        {
-            this.fetch();
         }
+
     });
 });

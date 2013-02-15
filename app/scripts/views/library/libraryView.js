@@ -17,10 +17,13 @@ function(_, TP, ExerciseLibraryView, MealLibraryView, libraryTemplate)
             template: libraryTemplate
         },
 
-        initialize: function()
+        initialize: function(options)
         {
             this.views = {
-                exerciseLibrary: new ExerciseLibraryView(),
+                exerciseLibrary: new ExerciseLibraryView({
+                    collection: options && options.collections && options.collections.exerciseLibrary ?
+                        options.collections.exerciseLibrary : new TP.Collection()
+                }),
                 mealLibrary: new MealLibraryView()
             };
 

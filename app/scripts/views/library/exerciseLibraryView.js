@@ -5,10 +5,9 @@
     "TP",
     "views/library/exerciseLibraryItemView",
     "views/library/exerciseLibraryAddItemView",
-    "models/library/libraryExercisesCollection",
     "hbs!templates/views/library/exerciseLibraryView"
 ],
-function(_, Marionette, TP, ExerciseLibraryItemView, ExerciseLibraryAddItemView, LibraryExercisesCollection, exerciseLibraryViewTemplate)
+function(_, Marionette, TP, ExerciseLibraryItemView, ExerciseLibraryAddItemView, exerciseLibraryViewTemplate)
 {
     return TP.CompositeView.extend(
     {
@@ -25,17 +24,6 @@ function(_, Marionette, TP, ExerciseLibraryItemView, ExerciseLibraryAddItemView,
             {
                 return TP.ItemView;
             }
-        },
-
-        initialize: function()
-        {
-            if (!this.collection)
-            {
-                this.onWaitStart();
-                this.collection = new LibraryExercisesCollection();
-                Marionette.bindEntityEvents(this, this.collection, this.collectionEvents);
-            }
-
         },
 
         template:

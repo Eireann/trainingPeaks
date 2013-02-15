@@ -149,8 +149,15 @@ function (TP, WorkoutsCollection, CalendarWeekCollection, CalendarDayModel)
 
         onItemMoved: function(options)
         {
+            if (!options.hasOwnProperty('ItemId') || !options.ItemId ||
+                !options.hasOwnProperty('destinationCalendarDayModel') || !options.destinationCalendarDayModel)
+            {
+                theMarsApp.logger.debug("CalendarCollection.onItemMoved: missing ItemId or destinationCalendarDayModel attribute?");
+                return;
+            }
+
             // get the item
-            var item = this.workoutsCollection.get(options.itemId);
+            var item = this.workoutsCollection.get(options.ItemId);
 
             // if it has a getCalendarDay and moveToDay then we can move it
             if (item && _.isFunction(item.getCalendarDay) && _.isFunction(item.moveToDay))

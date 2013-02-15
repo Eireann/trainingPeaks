@@ -134,14 +134,6 @@ function(moment, $, _, Backbone, CalendarController, WorkoutModel, WorkoutsColle
                 expect(LibraryView.prototype.initialize).toHaveBeenCalled();
             });
 
-            it("Should bind to LibraryView events", function()
-            {
-                var controller = new CalendarController();
-                spyOn(controller, "bindToLibraryViewEvents");
-                controller.initializeLibrary();
-                expect(controller.bindToLibraryViewEvents).toHaveBeenCalledWith(controller.views.library);
-            });
-
         });
 
         describe("Prepend a week to the calendar", function()

@@ -7,10 +7,11 @@ define(
     "models/calendarCollection",
     "models/calendarWeekCollection",
     "models/calendarDay",
+    "models/library/libraryExercisesCollection",
     "views/calendarView",
     "views/library/libraryView"
     ],
-function(_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollection, CalendarDayModel, CalendarView, LibraryView)
+function(_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollection, CalendarDayModel, LibraryExercisesCollection, CalendarView, LibraryView)
 {
     return TP.Controller.extend(
     {
@@ -65,7 +66,7 @@ function(_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollecti
 
         onItemDropped: function(options)
         {
-            if(options.dropEvent === "itemMoved")
+            if (options.DropEvent === "itemMoved")
             {
                 this.weeksCollection.onItemMoved(options);        
             }
@@ -73,18 +74,22 @@ function(_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollecti
 
         initializeLibrary: function()
         {
+            this.libraryCollections = {
+                exerciseLibrary: new LibraryExercisesCollection()
+            };
+
             if (this.views.library)
                 this.views.library.close();
-            
-            this.views.library = new LibraryView({ });
 
-            this.bindToLibraryViewEvents(this.views.library);
+            this.views.library = new LibraryView({ collections: this.libraryCollections });
+
+            var controller = this;
+            _.each(_.keys(this.libraryCollections), function(libraryName)
+            {
+                controller.libraryCollections[libraryName].fetch();
+            });
         },
 
-        bindToLibraryViewEvents: function(libraryView)
-        {
-
-        },
 
         appendWeekToCalendar: function ()
         {

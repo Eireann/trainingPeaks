@@ -285,21 +285,21 @@ function($, TP, moment, WorkoutModel, WorkoutsCollection, CalendarCollection)
             it("Should call remove on yesterday's calendarDay model", function()
             {
                 spyOn(yesterdayCalendarDay, "remove");
-                collection.onItemMoved({ itemId: workoutId, destinationCalendarDayModel: tomorrowCalendarDay });
+                collection.onItemMoved({ ItemId: workoutId, destinationCalendarDayModel: tomorrowCalendarDay });
                 expect(yesterdayCalendarDay.remove).toHaveBeenCalledWith(workout);
             });
 
             it("Should call add on tomorrow's calendarDay model", function()
             {
                 spyOn(tomorrowCalendarDay, "add");
-                collection.onItemMoved({ itemId: workoutId, destinationCalendarDayModel: tomorrowCalendarDay });
+                collection.onItemMoved({ ItemId: workoutId, destinationCalendarDayModel: tomorrowCalendarDay });
                 expect(tomorrowCalendarDay.add).toHaveBeenCalledWith(workout);
             });
 
             it("Should call moveToDay on workout", function()
             {
                 spyOn(workout, "moveToDay").andCallThrough();
-                collection.onItemMoved({ itemId: workoutId, destinationCalendarDayModel: tomorrowCalendarDay });
+                collection.onItemMoved({ ItemId: workoutId, destinationCalendarDayModel: tomorrowCalendarDay });
                 expect(workout.moveToDay).toHaveBeenCalledWith(tomorrow);
             });
 
@@ -313,7 +313,7 @@ function($, TP, moment, WorkoutModel, WorkoutsCollection, CalendarCollection)
                 spyOn(yesterdayCalendarDay, "remove");
 
                 // move it ...
-                collection.onItemMoved({ itemId: workoutId, destinationCalendarDayModel: tomorrowCalendarDay });
+                collection.onItemMoved({ ItemId: workoutId, destinationCalendarDayModel: tomorrowCalendarDay });
                 expect(tomorrowCalendarDay.add).toHaveBeenCalledWith(workout);
                 expect(yesterdayCalendarDay.remove).toHaveBeenCalledWith(workout);
 
