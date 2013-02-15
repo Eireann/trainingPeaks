@@ -26,9 +26,14 @@
     "UserSettings": "Impostazioni Utente",
     "FirstName": "Nome",
     "LastName": "Cognome",
+    "AthleteType": "Tipo Atleta",
     "Birthday": "Data di Nascita",
+    "Gender": "Sesso",
+    "Email": "E-Mail",
+    "Address": "Indirizzo",
     "City": "Citta`",
     "State": "Provincia",
     "Country": "Stato",
+    "Phone": "Telefono",
     "Units": "Unita` di Misura"
 }

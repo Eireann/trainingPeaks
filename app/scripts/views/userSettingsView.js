@@ -32,6 +32,20 @@ function (TP, jqueryuiDialog, printUnitsValue, userSettingsTemplate)
                 observe: "userName",
                 eventsOverride: [ "blur" ]
             },
+            /*
+            "#athleteType":
+            {
+                observe: "athleteType",
+                selectOptions:
+                {
+                    collection: function()
+                    {
+                        return [{ label: "Run", value: 0 }, { label: "Tri", value: 1 }]
+                    },
+                    labelPath: "label",
+                    valuePath: "value"
+                }
+            },*/
             "#city":
             {
                 observe: "city",
@@ -39,25 +53,28 @@ function (TP, jqueryuiDialog, printUnitsValue, userSettingsTemplate)
             },
             "#state":
             {
-                observe: "state",
-                eventsOverride: [ "blur" ]
-            },
-            "#country":
-            {
-                observe: "country",
-                eventsOverride: [ "blur" ]
-            },
-            "select#units":
-            {
-                observe: "unitsValue",
+                observe: "state", 
                 selectOptions:
                 {
                     collection: function()
                     {
-                        return [{ unitEnum: 0, name: "English" }, { unitEnum: 1, name: "Metric" }];
+                        return [{ label: "Colorado", value: 0 }, { label: "New York", value: 1 }];
                     },
-                    labelPath: "name",
-                    valuePath: "unitEnum"
+                    labelPath: "label",
+                    valuePath: "value"
+                } 
+            },
+            "#country":
+            {
+                observe: "country",
+                selectOptions:
+                {
+                    collection: function()
+                    {
+                        return [{ label: "USA", value: 0 }, { label: "Italy", value: 1 }];
+                    },
+                    labelPath: "label",
+                    valuePath: "value"
                 }
             }
         },
