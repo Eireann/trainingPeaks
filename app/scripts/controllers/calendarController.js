@@ -8,10 +8,12 @@ define(
     "models/calendarWeekCollection",
     "models/calendarDay",
     "models/library/libraryExercisesCollection",
+    "models/workoutModel",
     "views/calendarView",
     "views/library/libraryView"
     ],
-function(_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollection, CalendarDayModel, LibraryExercisesCollection, CalendarView, LibraryView)
+function(_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollection,
+    CalendarDayModel, LibraryExercisesCollection, WorkoutModel, CalendarView, LibraryView)
 {
     return TP.Controller.extend(
     {
@@ -69,6 +71,18 @@ function(_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollecti
             if (options.DropEvent === "itemMoved")
             {
                 this.weeksCollection.onItemMoved(options);        
+            } else if (options.DropEvent === "addExerciseFromLibrary")
+            {
+                var exerciseLibraryItem = this.libraryCollections.exerciseLibrary.get(options.ItemId);
+                var workout = new WorkoutModel({
+                    PersonId: theMarsApp.user.get("personId"),
+                    WorkoutDay: options.destinationCalendarDayModel.id,
+                    Title: exerciseLibraryItem.get("ItemName"),
+                    WorkoutTypeValueId: exerciseLibraryItem.get("WorkoutTypeId")
+                });
+                this.weeksCollection.addWorkout(workout);
+                console.log(workout);
+                workout.save();
             }
         },
 

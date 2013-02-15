@@ -89,8 +89,7 @@ function (TP, WorkoutsCollection, CalendarWeekCollection, CalendarDayModel)
             {
                 workouts.each(function (workout)
                 {
-                    self.addWorkoutToCalendarDay(workout);
-                    self.workoutsCollection.add(workout);
+                    self.addWorkout(workout);
                 });
                 self.stopWeeksWaiting(moment(startDate), moment(endDate));
             });
@@ -121,6 +120,12 @@ function (TP, WorkoutsCollection, CalendarWeekCollection, CalendarDayModel)
                 throw "Could not find day in days collection";
 
             return dayModel;
+        },
+
+        addWorkout: function(workout)
+        {
+            this.workoutsCollection.add(workout);
+            this.addWorkoutToCalendarDay(workout);
         },
 
         addWorkoutToCalendarDay: function(workout)

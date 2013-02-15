@@ -16,7 +16,7 @@ function (moment, TP)
 
         defaults:
         {
-            "WorkoutId": 0,
+            "WorkoutId": null,
             "PersonId": null,
             "Title": null,
             "WorkoutTypeValueId": null,
