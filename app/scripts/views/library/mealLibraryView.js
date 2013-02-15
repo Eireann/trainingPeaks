@@ -15,11 +15,6 @@ function(_, TP, mealLibraryViewTemplate)
         {
             type: "handlebars",
             template: mealLibraryViewTemplate
-        },
-
-        collectionEvents:
-        {
-            "reset": "render"
         }
 
     });

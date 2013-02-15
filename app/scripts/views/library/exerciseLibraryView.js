@@ -1,13 +1,14 @@
 ﻿define(
 [
     "underscore",
+    "backbone.marionette",
     "TP",
     "views/library/exerciseLibraryItemView",
     "views/library/exerciseLibraryAddItemView",
     "models/library/libraryExercisesCollection",
     "hbs!templates/views/library/exerciseLibraryView"
 ],
-function(_, TP, ExerciseLibraryItemView, ExerciseLibraryAddItemView, LibraryExercisesCollection, exerciseLibraryViewTemplate)
+function(_, Marionette, TP, ExerciseLibraryItemView, ExerciseLibraryAddItemView, LibraryExercisesCollection, exerciseLibraryViewTemplate)
 {
     return TP.CompositeView.extend(
     {
@@ -30,14 +31,11 @@ function(_, TP, ExerciseLibraryItemView, ExerciseLibraryAddItemView, LibraryExer
         {
             if (!this.collection)
             {
+                this.onWaitStart();
                 this.collection = new LibraryExercisesCollection();
+                Marionette.bindEntityEvents(this, this.collection, this.collectionEvents);
             }
 
-        },
-
-        collectionEvents:
-        {
-            "reset": "render"
         },
 
         template:
@@ -55,7 +53,22 @@ function(_, TP, ExerciseLibraryItemView, ExerciseLibraryAddItemView, LibraryExer
         {
             var view = new ExerciseLibraryAddItemView({});
             view.render();
+        },
+
+        onWaitStart: function()
+        {
+            this.trigger("waitStart");
+            this.$el.addClass('waiting');
+        },
+
+        onWaitStop: function()
+        {
+            this.trigger("waitStop");
+            this.$el.removeClass('waiting');
         }
 
+
     });
+
+
 });

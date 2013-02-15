@@ -44,6 +44,13 @@ function(Backbone, BackboneStickit, Marionette, APIModel, Logger)
             "error": "onWaitStop"
         },
 
+        collectionEvents: {
+            "request": "onWaitStart",
+            "sync": "onWaitStop",
+            "error": "onWaitStop",
+            "refresh": "render"
+        },
+
         onWaitStart: function()
         {
             this.trigger("waitStart");

@@ -14,11 +14,6 @@ function(TP, draggable, ExerciseLibraryItemViewTemplate)
 
         attributes: function()
         {
-            if (!this.model)
-            {
-                return {};
-            }
-
             return {
                 "data-ExerciseId": this.model.id
             };
