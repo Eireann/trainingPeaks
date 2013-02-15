@@ -5,50 +5,111 @@
     display:none;
 }
 
-#thumbNailImage
+.QVHeader
 {
-	float: left;
-	padding-right: 10px;
-}
+	width: 100%;
+	height: 100px;
 
-.forwardBackbuttons
-{
-	float:left;
-	padding-right: 15px;
-	@include headerButtons(-5px);
-}
-
-.workoutTitleDiv
-{
-	input
+	#thumbNailImage
 	{
-		width: 400px;
-		height: 50px;
-		font-family: $navigationFontFamilyRegular;
-		font-size: 30px;
-		color: $TPBlue;
-		border-style:none;
+		float: left;
+		padding-right: 10px;
+	}
+
+	.forwardBackbuttons
+	{
+		float:left;
+		padding-right: 15px;
+		@include headerButtons(-5px);
+	}
+
+	.workoutTitleDiv
+	{
+		input
+		{
+			width: 400px;
+			height: 35px;
+			font-family: $navigationFontFamilyRegular;
+			font-size: 26px;
+			color: $TPBlue;
+			border: 1px solid white;
+		}
+
+		@include labels($navigationFontFamilyRegular, 14px, $TPGrey3);
+		label
+		{
+			margin-top: -10px;
+		}
+	}
+
+	#workoutHeaderStats
+	{
+		float: left;
+		padding-right: 15px;
+		min-width: 500px;
+
+		.headerWorkoutValue
+		{
+			float: left;
+			width: 50px;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			@include labels($navigationFontFamilyRegular, 20px, $TPGrey3);
+
+		}
+
+		.headerWorkoutValueLabel
+		{
+			float:left;
+			padding-top: 5px;
+			@include labels($navigationFontFamilyRegular, 14px, $TPGrey3);
+		}
+
+		.middleValues
+		{
+			padding-left: 15px;
+		}
+	}
+
+	.quickviewNavigation
+	{
+		width: 130px;
+		float: right;
+		margin-top:-20px;
+		margin-right: -20px;
 	}
 }
 
-#workoutHeaderStats
-{
-	float: left;
-	.headerWorkoutValue
-	{
-		@include labels($navigationFontFamilyRegular, 24, $TPGrey4);
-		width: 20px;
-
-	}
-
-	.headerWorkoutValuelabel
-	{
-		width: 20px;
-		@include labels($navigationFontFamilyRegular, 18, $TPGrey4);
-	}
-}
 
 .workoutStatsRow
 {
 	@include innerRow();
+	padding-left: 20px;
+	background-color: $TPGrey1;
+
+	.workoutStatsColumn
+	{
+		float:left;
+	}
+
+	input
+	{
+		width: 75px;
+		height: 20px;
+	}
+
+	@include labels($navigationFontFamilyRegular, 12px, $TPGrey4);
 }
+
+.columnLabels
+{
+	padding-left: 10px;
+
+	@include labels($navigationFontFamilyRegular, 12px, $TPGrey4);
+	label
+	{
+		float: left;
+		padding-left: 10px;
+	}
+}
+
