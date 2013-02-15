@@ -60,7 +60,15 @@ function(_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollecti
         bindToCalendarViewEvents: function(calendarView) {
             calendarView.on("prepend", this.prependWeekToCalendar, this);
             calendarView.on("append", this.appendWeekToCalendar, this);
-            calendarView.on("itemMoved", this.weeksCollection.onItemMoved, this.weeksCollection);
+            calendarView.on("itemDropped", this.onItemDropped, this);
+        },
+
+        onItemDropped: function(options)
+        {
+            if(options.dropEvent === "itemMoved")
+            {
+                this.weeksCollection.onItemMoved(options);        
+            }
         },
 
         initializeLibrary: function()

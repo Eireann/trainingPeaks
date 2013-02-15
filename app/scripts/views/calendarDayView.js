@@ -90,6 +90,7 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDayTe
             if (modelName !== "Label")
             {
                 childView.$el.data("ItemId", childView.model.id);
+                childView.$el.data("DropEvent", "itemMoved");
                 childView.$el.draggable({ appendTo: 'body', helper: 'clone', opacity: 0.7 });
             }
         },
@@ -102,8 +103,12 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDayTe
 
         onDropItem: function(event, ui)
         {
-            this.trigger("itemMoved", { itemId: ui.draggable.data("ItemId"), destinationCalendarDayModel: this.model });
+            var dropEvent = ui.draggable.data("DropEvent");
+            if (!dropEvent)
+            {
+                throw "CalendarDayView.onDropItem: ui.draggable should have a DropEvent data attribute";
+            }
+            this.trigger("itemDropped", { dropEvent: dropEvent, itemId: ui.draggable.data("ItemId"), destinationCalendarDayModel: this.model });
         }
-
     });
 });

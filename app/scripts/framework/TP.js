@@ -35,8 +35,10 @@ function(Backbone, BackboneStickit, Marionette, APIModel, Logger)
     });
     TP.Region = Marionette.Region;
 
-    // Give all views waiting indicators and event bubblers
+    // Give all views optional waiting indicators
     var commonViewFunctions = {
+
+        showThrobbers: true,
 
         modelEvents: {
             "request": "onWaitStart",
@@ -53,13 +55,14 @@ function(Backbone, BackboneStickit, Marionette, APIModel, Logger)
 
         onWaitStart: function()
         {
-            this.trigger("waitStart");
-            this.$el.addClass('waiting');
+            if (this.showThrobbers)
+            {
+                this.$el.addClass('waiting');
+            }
         },
 
         onWaitStop: function()
         {
-            this.trigger("waitStop");
             this.$el.removeClass('waiting');
         }
 

@@ -93,11 +93,9 @@ function(moment, $, _, Backbone, CalendarController, WorkoutModel, WorkoutsColle
         {
 
             var context = {
-                prependWeekToCalendar: function(){},
-                appendWeekToCalendar: function(){},
-                weeksCollection: {
-                    onItemMoved: function(){}
-                }
+                prependWeekToCalendar: function() { },
+                appendWeekToCalendar: function() { },
+                onItemDropped: function() { }
             };
 
                         
@@ -119,11 +117,10 @@ function(moment, $, _, Backbone, CalendarController, WorkoutModel, WorkoutsColle
                 expect(calendarView.on).toHaveBeenCalledWith("append", context.appendWeekToCalendar, context);
             });
 
-            it("Should bind to calendar view 'itemMoved' event", function()
+            it("Should bind to calendar view 'itemDropped' event", function()
             {
                 CalendarController.prototype.bindToCalendarViewEvents.call(context, calendarView);
-                expect(calendarView.on).toHaveBeenCalledWith("append", context.appendWeekToCalendar, context);
-                expect(calendarView.on).toHaveBeenCalledWith("itemMoved", context.weeksCollection.onItemMoved, context.weeksCollection);
+                expect(calendarView.on).toHaveBeenCalledWith("itemDropped", context.onItemDropped, context);
             });
         });
 

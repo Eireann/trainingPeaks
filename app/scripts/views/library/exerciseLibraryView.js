@@ -53,20 +53,7 @@ function(_, Marionette, TP, ExerciseLibraryItemView, ExerciseLibraryAddItemView,
         {
             var view = new ExerciseLibraryAddItemView({});
             view.render();
-        },
-
-        onWaitStart: function()
-        {
-            this.trigger("waitStart");
-            this.$el.addClass('waiting');
-        },
-
-        onWaitStop: function()
-        {
-            this.trigger("waitStop");
-            this.$el.removeClass('waiting');
         }
-
 
     });
 

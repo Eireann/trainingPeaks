@@ -48,7 +48,7 @@ function(_, TP, CalendarWeekView, customCalendarTemplate)
         {
 
             var weekView = new CalendarWeekView({ collection: options.collection, model: options.model });
-            weekView.on("itemview:itemMoved", this.onItemMoved, this);
+            weekView.on("itemview:itemDropped", this.onItemDropped, this);
             if (options.append)
                 this.ui.weeksContainer.append(weekView.render().el);
             else
@@ -121,9 +121,9 @@ function(_, TP, CalendarWeekView, customCalendarTemplate)
             this.ui.weeksContainer.scrollTop(lastWeekOffset - weeksContainerOffset);
         },
 
-        onItemMoved: function(itemView, options)
+        onItemDropped: function(itemView, options)
         {
-            this.trigger("itemMoved", options);
+            this.trigger("itemDropped", options);
         }
     });
 });

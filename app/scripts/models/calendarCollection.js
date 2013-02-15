@@ -147,7 +147,7 @@ function (TP, WorkoutsCollection, CalendarWeekCollection, CalendarDayModel)
             });
         },
 
-        onItemMoved: function (options)
+        onItemMoved: function(options)
         {
             // get the item
             var item = this.workoutsCollection.get(options.itemId);

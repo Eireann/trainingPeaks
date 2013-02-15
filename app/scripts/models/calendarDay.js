@@ -42,7 +42,6 @@ function(_, moment, TP)
         {
             // empty collection to store our collection
             this.collection = new TP.Collection();
-            this.collection.on("all", this.bubbleUpEvent, this);
 
             // add a model to hold our label
             var dayLabel = new TP.Model({ date: this.get("date") });
@@ -52,11 +51,6 @@ function(_, moment, TP)
             // watch for changes on collection
             this.collection.on("add", this.change, this);
             this.collection.on("remove", this.change, this);
-        },
-
-        bubbleUpEvent: function(event)
-        {
-            this.trigger.apply(this, arguments);
         },
 
         add: function(item)

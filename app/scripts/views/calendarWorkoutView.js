@@ -9,6 +9,7 @@ function(TP, WorkoutQuickView, CalendarWorkoutTemplate)
     return TP.ItemView.extend(
     {
 
+        showThrobbers: false,
         tagName: "div",
         className: "workout",
 

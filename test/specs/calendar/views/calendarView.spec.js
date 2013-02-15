@@ -94,14 +94,14 @@ function($, TP, theMarsApp, CalendarView, CalendarWeekTemplate)
         describe("Workout drag and drop", function()
         {
 
-            it("Should trigger itemMoved event", function()
+            it("Should trigger itemDropped event", function()
             {
                 var calendarView = new CalendarView({ collection: new TP.Collection() });
                 var itemView = {};
                 var options = {};
                 spyOn(calendarView, "trigger");
-                calendarView.onItemMoved(itemView, options);
-                expect(calendarView.trigger).toHaveBeenCalledWith("itemMoved", options);
+                calendarView.onItemDropped(itemView, options);
+                expect(calendarView.trigger).toHaveBeenCalledWith("itemDropped", options);
             });
         });
 
