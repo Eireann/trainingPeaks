@@ -2,12 +2,12 @@
 [
     "underscore",
     "TP",
-    "views/library/libraryExerciseView",
-    "views/library/exerciseLibraryAddView",
+    "views/library/exerciseLibraryItemView",
+    "views/library/exerciseLibraryAddItemView",
     "models/library/libraryExercisesCollection",
     "hbs!templates/views/library/exerciseLibraryView"
 ],
-function(_, TP, LibraryExerciseView, ExerciseLibraryAddView, LibraryExercisesCollection, exerciseLibraryViewTemplate)
+function(_, TP, ExerciseLibraryItemView, ExerciseLibraryAddItemView, LibraryExercisesCollection, exerciseLibraryViewTemplate)
 {
     return TP.CompositeView.extend(
     {
@@ -19,7 +19,7 @@ function(_, TP, LibraryExerciseView, ExerciseLibraryAddView, LibraryExercisesCol
         {
             if (item)
             {
-                return LibraryExerciseView;
+                return ExerciseLibraryItemView;
             } else
             {
                 return TP.ItemView;
@@ -53,7 +53,7 @@ function(_, TP, LibraryExerciseView, ExerciseLibraryAddView, LibraryExercisesCol
 
         addToLibrary: function()
         {
-            var view = new ExerciseLibraryAddView({});
+            var view = new ExerciseLibraryAddItemView({});
             view.render();
         }
 

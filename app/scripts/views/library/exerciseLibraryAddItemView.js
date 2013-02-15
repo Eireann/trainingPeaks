@@ -2,10 +2,10 @@
 [
     "TP",
     "jqueryui/dialog",
-    "hbs!templates/views/library/exerciseLibraryAddView"
+    "hbs!templates/views/library/exerciseLibraryAddItemView"
 
 ],
-function(TP, dialog, exerciseLibraryAddView)
+function(TP, dialog, exerciseLibraryAddItemView)
 {
     "use strict";
 
@@ -14,13 +14,13 @@ function(TP, dialog, exerciseLibraryAddView)
 
         attributes:
         {
-            id: "exerciseLibraryAddView"
+            id: "exerciseLibraryAddItemView"
         },
 
         template:
         {
             type: "handlebars",
-            template: exerciseLibraryAddView
+            template: exerciseLibraryAddItemView
         },
 
         events:

@@ -11,6 +11,15 @@ function(theMarsApp, LibraryExercisesCollection)
         {
             expect(LibraryExercisesCollection).toBeDefined();
         });
+
+        it("Should have a valid url", function()
+        {
+
+            var url = LibraryExercisesCollection.prototype.url();
+            expect(url).toContain(theMarsApp.apiRoot);
+            expect(url).toContain("/WebApiServer/ExerciseLibrary/V1/LibraryItems");
+
+        });
     });
 
 });

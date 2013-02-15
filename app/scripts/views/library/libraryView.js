@@ -93,6 +93,11 @@ function(_, TP, ExerciseLibraryView, MealLibraryView, libraryTemplate)
             this.$("#tabs #" + tabName).addClass("active");
         },
 
+        isOpen: function()
+        {
+            return this.$el.parent().hasClass("open");
+        },
+
         showLibrary: function()
         {
             if (!this.isOpen())
@@ -103,14 +108,9 @@ function(_, TP, ExerciseLibraryView, MealLibraryView, libraryTemplate)
             this.turnOnTab(this.activeLibrary.libraryName);
         },
 
-        isOpen: function()
-        {
-            return this.$el.parent().hasClass("open");
-        },
-
         hideLibrary: function(afterHide)
         {
-            if (this.$el.parent().hasClass("open"))
+            if (this.isOpen())
             {
                 var container = this.$el.parent();
                 var view = this;
@@ -124,17 +124,19 @@ function(_, TP, ExerciseLibraryView, MealLibraryView, libraryTemplate)
                     }
                 };
                 this.ui.activeLibraryContainer.fadeOut(300, callbackAfterHide);
-            } else if (typeof afterHide === 'function')
+            } else
             {
-
                 this.turnOffTab(this.activeLibrary.libraryName);
-                afterHide();
+                if (typeof afterHide === 'function')
+                {
+                    afterHide();
+                }
             }
         },
 
         toggleLibrary: function()
         {
-            if (this.$el.parent().hasClass("open"))
+            if (this.isOpen())
             {
                 this.hideLibrary();
             } else

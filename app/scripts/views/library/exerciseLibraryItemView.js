@@ -2,9 +2,9 @@ define(
 [
     "TP",
     "jqueryui/draggable",
-    "hbs!templates/views/library/libraryExerciseView"
+    "hbs!templates/views/library/exerciseLibraryItemView"
 ],
-function(TP, draggable, LibraryExerciseViewTemplate)
+function(TP, draggable, ExerciseLibraryItemViewTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -27,7 +27,7 @@ function(TP, draggable, LibraryExerciseViewTemplate)
         template:
         {
             type: "handlebars",
-            template: LibraryExerciseViewTemplate
+            template: ExerciseLibraryItemViewTemplate
         },
 
         initialize: function(options)
