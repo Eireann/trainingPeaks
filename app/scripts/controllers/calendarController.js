@@ -63,27 +63,31 @@ function(_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollecti
         bindToCalendarViewEvents: function(calendarView) {
             calendarView.on("prepend", this.prependWeekToCalendar, this);
             calendarView.on("append", this.appendWeekToCalendar, this);
-            calendarView.on("itemDropped", this.onItemDropped, this);
+            calendarView.on("itemDropped", this.onDropItem, this);
         },
 
-        onItemDropped: function(options)
+        onDropItem: function(options)
         {
             if (options.DropEvent === "itemMoved")
             {
                 this.weeksCollection.onItemMoved(options);        
             } else if (options.DropEvent === "addExerciseFromLibrary")
             {
-                var exerciseLibraryItem = this.libraryCollections.exerciseLibrary.get(options.ItemId);
-                var workout = new WorkoutModel({
-                    PersonId: theMarsApp.user.get("personId"),
-                    WorkoutDay: options.destinationCalendarDayModel.id,
-                    Title: exerciseLibraryItem.get("ItemName"),
-                    WorkoutTypeValueId: exerciseLibraryItem.get("WorkoutTypeId")
-                });
+                var workout = this.createNewWorkoutFromExerciseLibraryItem(options.ItemId);
                 this.weeksCollection.addWorkout(workout);
-                console.log(workout);
                 workout.save();
             }
+        },
+
+        createNewWorkoutFromExerciseLibraryItem: function(exerciseLibraryItemId)
+        {
+            var exerciseLibraryItem = this.libraryCollections.exerciseLibrary.get(exerciseLibraryItemId);
+            return new WorkoutModel({
+                PersonId: theMarsApp.user.get("personId"),
+                WorkoutDay: options.destinationCalendarDayModel.id,
+                Title: exerciseLibraryItem.get("ItemName"),
+                WorkoutTypeValueId: exerciseLibraryItem.get("WorkoutTypeId")
+            });
         },
 
         initializeLibrary: function()
