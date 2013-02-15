@@ -58,7 +58,7 @@ function (TP, jqueryuiDialog, printUnitsValue, userSettingsTemplate)
                 {
                     collection: function()
                     {
-                        return [{ label: "Colorado", value: 0 }, { label: "New York", value: 1 }]
+                        return [{ label: "Colorado", value: 0 }, { label: "New York", value: 1 }];
                     },
                     labelPath: "label",
                     valuePath: "value"
@@ -71,7 +71,7 @@ function (TP, jqueryuiDialog, printUnitsValue, userSettingsTemplate)
                 {
                     collection: function()
                     {
-                        return [{ label: "USA", value: 0 }, { label: "Italy", value: 1 }]
+                        return [{ label: "USA", value: 0 }, { label: "Italy", value: 1 }];
                     },
                     labelPath: "label",
                     valuePath: "value"
