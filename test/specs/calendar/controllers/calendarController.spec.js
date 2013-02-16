@@ -154,14 +154,17 @@ function(moment, $, _, Backbone, CalendarController, WorkoutModel, WorkoutsColle
             {
                 var eventOptions = {
                     DropEvent: "addExerciseFromLibrary",
-                    ItemId: 5432
+                    ItemId: 5432,
+                    destinationCalendarDayModel: {
+                        id: '2012-01-01'
+                    }
                 };
                 var controller = new CalendarController();
                 var workout = jasmine.createSpyObj("Workout spy", ["save"]);
                 spyOn(controller.weeksCollection, "addWorkout");
                 spyOn(controller, "createNewWorkoutFromExerciseLibraryItem").andReturn(workout);
                 controller.onDropItem(eventOptions);
-                expect(controller.createNewWorkoutFromExerciseLibraryItem).toHaveBeenCalledWith(eventOptions.ItemId);
+                expect(controller.createNewWorkoutFromExerciseLibraryItem).toHaveBeenCalledWith(eventOptions.ItemId, eventOptions.destinationCalendarDayModel.id);
                 expect(controller.weeksCollection.addWorkout).toHaveBeenCalledWith(workout);
                 expect(workout.save).toHaveBeenCalled();
             });

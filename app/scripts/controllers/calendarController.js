@@ -73,18 +73,18 @@ function(_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollecti
                 this.weeksCollection.onItemMoved(options);        
             } else if (options.DropEvent === "addExerciseFromLibrary")
             {
-                var workout = this.createNewWorkoutFromExerciseLibraryItem(options.ItemId);
+                var workout = this.createNewWorkoutFromExerciseLibraryItem(options.ItemId, options.destinationCalendarDayModel.id);
                 this.weeksCollection.addWorkout(workout);
                 workout.save();
             }
         },
 
-        createNewWorkoutFromExerciseLibraryItem: function(exerciseLibraryItemId)
+        createNewWorkoutFromExerciseLibraryItem: function(exerciseLibraryItemId, workoutDate)
         {
             var exerciseLibraryItem = this.libraryCollections.exerciseLibrary.get(exerciseLibraryItemId);
             return new WorkoutModel({
                 PersonId: theMarsApp.user.get("personId"),
-                WorkoutDay: options.destinationCalendarDayModel.id,
+                WorkoutDay: workoutDate,
                 Title: exerciseLibraryItem.get("ItemName"),
                 WorkoutTypeValueId: exerciseLibraryItem.get("WorkoutTypeId")
             });
