@@ -56,7 +56,24 @@
         </div>
         <!-- min/max/avg fields load dynamically here-->
         <div id="workoutMinMaxAvgStats"/>
-    </div>   
+    </div> 
+    
+    <div class="comments">
+        <div >
+            <label>{{$ "Description"}}</label>
+            <input id="descriptionInput" type="text" />
+        </div> 
+
+        <div>
+            <label>{{$ "PreActivityComments"}}</label>
+            <input id="preActivityCommentsInput" class="activityComments" type="text" />
+        </div>
+
+        <div>
+            <label>{{$ "PostActivityComments"}}</label>
+            <input id="postActivityCommentsInput" class="activityComments" type="text" />
+        </div>
+    </div> 
 
 
 </div>

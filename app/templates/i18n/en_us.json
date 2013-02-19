@@ -101,5 +101,10 @@
 	"Completed": "Completed",
 	"Min": "Min",
 	"Max": "Max",
-	"Avg": "Avg"
+	"Avg": "Avg",
+
+	"Description": "Description",
+	"PreActivityComments": "Pre-activity comments",
+	"PostActivityComments": "Post-activity comments"
+
 }
