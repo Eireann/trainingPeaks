@@ -48,9 +48,9 @@ function(_, moment, TP)
             dayLabel.isDateLabel = true;
             this.collection.add(dayLabel);
 
-            // watch for changes on collection
-            this.collection.on("add", this.change, this);
-            this.collection.on("remove", this.change, this);
+            // watch for changes on collection?
+            //this.collection.on("add", this.change, this);
+            //this.collection.on("remove", this.change, this);
         },
 
         add: function(item)

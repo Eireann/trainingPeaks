@@ -10,6 +10,11 @@ function(moment, TP, WorkoutModel)
     {
         model: WorkoutModel,
 
+        urlRoot: function()
+        {
+            return theMarsApp.apiRoot + "/WebApiServer/Fitness/V1/workouts";
+        },
+
         url: function()
         {
             if (!(this.startDate && this.endDate))
@@ -18,7 +23,7 @@ function(moment, TP, WorkoutModel)
             var start = this.startDate.format("YYYY-MM-DD");
             var end = moment(this.endDate).format("YYYY-MM-DD");
 
-            return theMarsApp.apiRoot + "/WebApiServer/Fitness/V1/workouts/" + start + "/" + end;
+            return this.urlRoot() + "/" + start + "/" + end;
         },
 
         initialize: function(models, options)
