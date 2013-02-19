@@ -43,7 +43,8 @@ function(Backbone, BackboneStickit, Marionette, APIModel, Logger)
         modelEvents: {
             "request": "onWaitStart",
             "sync": "onWaitStop",
-            "error": "onWaitStop"
+            "error": "onWaitStop",
+            "change": "render"
         },
 
         collectionEvents: {

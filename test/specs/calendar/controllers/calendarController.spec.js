@@ -95,7 +95,7 @@ function(moment, $, _, Backbone, CalendarController, WorkoutModel, WorkoutsColle
             var context = {
                 prependWeekToCalendar: function() { },
                 appendWeekToCalendar: function() { },
-                onItemDropped: function() { }
+                onDropItem: function() { }
             };
 
                         
@@ -120,7 +120,7 @@ function(moment, $, _, Backbone, CalendarController, WorkoutModel, WorkoutsColle
             it("Should bind to calendar view 'itemDropped' event", function()
             {
                 CalendarController.prototype.bindToCalendarViewEvents.call(context, calendarView);
-                expect(calendarView.on).toHaveBeenCalledWith("itemDropped", context.onItemDropped, context);
+                expect(calendarView.on).toHaveBeenCalledWith("itemDropped", context.onDropItem, context);
             });
         });
 
@@ -134,6 +134,40 @@ function(moment, $, _, Backbone, CalendarController, WorkoutModel, WorkoutsColle
                 expect(LibraryView.prototype.initialize).toHaveBeenCalled();
             });
 
+        });
+
+        describe("Drag and drop items", function()
+        {
+
+            describe("Drag an existing workout to a new date", function()
+            {
+                var eventOptions = {
+                    DropEvent: "itemMoved"
+                };
+                var controller = new CalendarController();
+                spyOn(controller.weeksCollection, "onItemMoved");
+                controller.onDropItem(eventOptions);
+                expect(controller.weeksCollection.onItemMoved).toHaveBeenCalledWith(eventOptions);
+            });
+
+            describe("Drag a new workout from library", function()
+            {
+                var eventOptions = {
+                    DropEvent: "addExerciseFromLibrary",
+                    ItemId: 5432,
+                    destinationCalendarDayModel: {
+                        id: '2012-01-01'
+                    }
+                };
+                var controller = new CalendarController();
+                var workout = jasmine.createSpyObj("Workout spy", ["save"]);
+                spyOn(controller.weeksCollection, "addWorkout");
+                spyOn(controller, "createNewWorkoutFromExerciseLibraryItem").andReturn(workout);
+                controller.onDropItem(eventOptions);
+                expect(controller.createNewWorkoutFromExerciseLibraryItem).toHaveBeenCalledWith(eventOptions.ItemId, eventOptions.destinationCalendarDayModel.id);
+                expect(controller.weeksCollection.addWorkout).toHaveBeenCalledWith(workout);
+                expect(workout.save).toHaveBeenCalled();
+            });
         });
 
         describe("Prepend a week to the calendar", function()

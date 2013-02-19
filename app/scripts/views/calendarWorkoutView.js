@@ -38,6 +38,14 @@ function(TP, WorkoutQuickView, CalendarWorkoutTemplate)
         {
             var view = new WorkoutQuickView({ model: this.model });
             view.render();
+        },
+
+        onRender: function()
+        {
+            if (!this.$el.data('WorkoutId'))
+            {
+                this.$el.attr(this.attributes());
+            }
         }
     });
 });
