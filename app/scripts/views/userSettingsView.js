@@ -17,41 +17,65 @@ function (TP, jqueryuiDialog, printUnitsValue, userSettingsTemplate)
 
         bindings:
         {
-            "#firstName":
+            "#firstNameSettingField":
             {
                 observe: "firstName",
                 eventsOverride: ["blur"]
             },
-            "#lastName":
+            "#lastNameSettingField":
             {
                 observe: "lastName",
                 eventsOverride: [ "blur" ]
             },
-            "#userName":
+            "#userNameSettingField":
             {
                 observe: "userName",
                 eventsOverride: [ "blur" ]
             },
-            /*
-            "#athleteType":
+            "#athleteTypeSettingField":
             {
                 observe: "athleteType",
                 selectOptions:
                 {
                     collection: function()
                     {
-                        return [{ label: "Run", value: 0 }, { label: "Tri", value: 1 }]
+                        return [{ label: "Duathlete", value: 0 }, { label: "Triathlete", value: 1 }];
                     },
                     labelPath: "label",
                     valuePath: "value"
                 }
-            },*/
-            "#city":
+            },
+            "#birthdaySettingField":
+            {
+                observe: "birthday",
+                eventsOverride: [ "blur" ]
+            },
+            "#genderSettingField":
+            {
+                observe: "gender",
+                eventsOverride: [ "blur" ]
+            },
+            "#emailSettingField":
+            {
+                observe: "email",
+                eventsOverride: [ "blur" ]
+            },
+            "#addressSettingField":
+            {
+                observe: "address",
+                eventsOverride: ["blur"]
+            },
+            "#address2SettingField":
+            {
+                observe: "address2",
+                eventsOverride: [ "blur" ]
+            },
+            "#citySettingField":
             {
                 observe: "city",
                 eventsOverride: [ "blur" ]
             },
-            "#state":
+            "#stateSettingField":
             {
                 observe: "state", 
                 selectOptions:
@@ -64,7 +88,12 @@ function (TP, jqueryuiDialog, printUnitsValue, userSettingsTemplate)
                     valuePath: "value"
                 } 
             },
-            "#country":
+            "#zipCodeSettingField":
+            {
+                observe: "zipCode",
+                eventsOverride: [ "blur" ]
+            },
+            "#countrySettingField":
             {
                 observe: "country",
                 selectOptions:
@@ -76,12 +105,34 @@ function (TP, jqueryuiDialog, printUnitsValue, userSettingsTemplate)
                     labelPath: "label",
                     valuePath: "value"
                 }
-            }
+            },
+            "#phoneSettingField":
+            {
+                observe: "phone",
+                eventsOverride: [ "blur" ]
+            },
+            "#cellPhoneSettingField":
+            {
+                observe: "cellPhone",
+                eventsOverride: [ "blur" ]
+            },
+            "input[name=unitsSettingField]":
+            {
+                observe: "unitsValue"
+            },
+            "input[name=dateFormatSettingField]":
+            {
+                observe: "dateFormat"
+            },
+            "input[name=emailPMNotificationSettingField]": "enablePrivateMessageNotifications",
+            "input[name=postActivityNotificationSettingField]": "enablePrivateMessageNotifications",
+            "input[name=newsletterNotificationSettingField]": "allowMarketingEmails",
+            "#accountExpiresSettingField": "expireDate"
         },
         
         onBeforeRender: function()
         {
-            var self = this;
+            _.bindAll(this, "onResetSettings", "onClose");
             this.$el.dialog(
             {
                 autoOpen: false,
@@ -92,18 +143,8 @@ function (TP, jqueryuiDialog, printUnitsValue, userSettingsTemplate)
                 overlay: { opacity: 0.5 },
                 buttons:
                 {
-                    "Reset": function()
-                    {
-                        self.resetSettings();
-                        self.$el.dialog("close");
-                        self.close();
-                    },
-                    "Close": function()
-                    {
-                        self.saveSettings();
-                        self.$el.dialog("close");
-                        self.close();
-                    }
+                    "Reset": this.onResetSettings,
+                    "Close": this.onClose
                 }
             });
         },
@@ -111,16 +152,40 @@ function (TP, jqueryuiDialog, printUnitsValue, userSettingsTemplate)
         onRender: function()
         {
             this.stickit();
+            this.model.checkpoint();
+            this.model.on("change", this.saveSettings, this);
             this.$el.dialog("open");
+
+            this.$("#profileImageSettingField").attr("src", "http://www.trainingpeaks.com/" + this.model.get("profilePhotoUrl"));
         },
-        
+
         saveSettings: function()
         {
+            /*
+            var changed = false;
+            for (var prop in this.model.changed)
+            {
+                if (this.model.changed.hasOwnProperty(prop))
+                {
+                    changed = true;
+                    break;
+                }
+            }
+
+            if(changed)
+            */
             this.model.save();
         },
-        
-        resetSettings: function()
+
+        onClose: function ()
         {
+            this.model.off();
+            this.close();
+        },
+
+        onResetSettings: function()
+        {
+            this.model.revert();
         }
     });
 });

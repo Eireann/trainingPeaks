@@ -39,7 +39,15 @@ function (_, TP, loginViewTemplate)
             
         events:
         {
-            "click input[name=Submit]": "authenticate"
+            "click input[name=Submit]": "authenticate",
+            "keypress input[name=username]": "checkForEnter",
+            "keypress input[name=password]": "checkForEnter"
+        },
+
+        checkForEnter: function(e)
+        {
+            if (e.KeyCode === 13)
+                this.authenticate();
         },
         
         onLoginSuccess: function()
