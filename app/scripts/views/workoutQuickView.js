@@ -5,11 +5,10 @@
     "helpers/printUnitLabel",
     "helpers/convertToViewUnits",
     "helpers/convertToModelUnits",
-    "hbs!templates/views/workoutQuickView",
-    "hbs!templates/views/quickView/workoutStatsRowMinMaxAvg"
+    "hbs!templates/views/workoutQuickView"
 
 ],
-function(TP, dialog, printUnitLabel, convertToViewUnits, convertToModelUnits, workoutQuickViewTemplate, workoutStatsRowMinMavAvgTemplate)
+function(TP, dialog, printUnitLabel, convertToViewUnits, convertToModelUnits, workoutQuickViewTemplate)
 {
     return TP.ItemView.extend(
     {
