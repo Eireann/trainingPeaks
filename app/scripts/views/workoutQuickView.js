@@ -298,12 +298,26 @@ function(TP, dialog, printUnitLabel, convertToViewUnits, convertToModelUnits, wo
                     {
                         self.$el.dialog("close");
                         self.close();
+                    },
+                    "Delete": function ()
+                    {
+                        self.deleteWorkout();
                     }
+
                 }
             });
-
-            
+ 
         },
+
+        deleteWorkout: function ()
+        {
+            this.$el.dialog("close");
+            this.close();
+            // pass wait here so it won't actually remove the model until the server call returns,
+            // which will then remove the view and the waiting indicator
+            this.model.destroy({ wait: true });
+        },
+
         onRender: function ()
         {
             this.$el.dialog("open");

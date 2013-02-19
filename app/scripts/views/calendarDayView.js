@@ -87,12 +87,9 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDayTe
         makeDraggable: function(childView)
         {
             var modelName = this.getModelName(childView.model);
-            if (modelName !== "Label")
+            if (modelName !== "Label" && typeof childView.makeDraggable === 'function')
             {
-                childView.$el.data("ItemId", childView.model.id);
-                childView.$el.data("ItemType", childView.model.webAPIModelName);
-                childView.$el.data("DropEvent", "itemMoved");
-                childView.$el.draggable({ appendTo: 'body', helper: 'clone', opacity: 0.7 });
+                childView.makeDraggable();
             }
         },
 

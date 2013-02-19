@@ -33,19 +33,6 @@ function(WorkoutModel, CalendarDay)
                 expect(workouts.get(workout.id)).toBe(workout);
             });
 
-
-            it("Should trigger a change event on add workout", function()
-            {
-                var changeSpy = jasmine.createSpy("change spy");
-                var calendarDay = new CalendarDay({ date: "2011-03-22" });
-                var workout = new WorkoutModel({ WorkoutDay: "2011-03-22T00:00:00", WorkoutId: "12345" });
-
-                calendarDay.bind("change", changeSpy);
-                calendarDay.add(workout);
-                expect(changeSpy).toHaveBeenCalled();
-            });
-
-
         });
 
     });

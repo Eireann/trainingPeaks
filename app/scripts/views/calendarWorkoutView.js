@@ -46,6 +46,16 @@ function(TP, WorkoutQuickView, CalendarWorkoutTemplate)
             {
                 this.$el.attr(this.attributes());
             }
+
+            this.makeDraggable();
+        },
+
+        makeDraggable: function()
+        {
+            this.$el.data("ItemId", this.model.id);
+            this.$el.data("ItemType", this.model.webAPIModelName);
+            this.$el.data("DropEvent", "itemMoved");
+            this.$el.draggable({ appendTo: 'body', helper: 'clone', opacity: 0.7 });
         }
     });
 });

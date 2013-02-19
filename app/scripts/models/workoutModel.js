@@ -14,6 +14,11 @@ function (moment, TP)
         timeFormat: "Thh:mm:ss",
         longDateFormat: "YYYY-MM-DDThh:mm:ss",
 
+        urlRoot: function()
+        {
+            return theMarsApp.apiRoot + "/WebApiServer/Fitness/V1/workouts";
+        },
+
         defaults:
         {
             "WorkoutId": null,
@@ -70,11 +75,6 @@ function (moment, TP)
             "TempMax": null,
             "CadenceAverage": null,
             "CadenceMaximum": null
-        },
-        
-        url: function()
-        {
-            return theMarsApp.apiRoot + "/WebApiServer/Fitness/V1/workouts";
         },
 
         getCalendarDay: function()

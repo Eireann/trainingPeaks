@@ -44,14 +44,16 @@ function(Backbone, BackboneStickit, Marionette, APIModel, Logger)
             "request": "onWaitStart",
             "sync": "onWaitStop",
             "error": "onWaitStop",
-            "change": "render"
+            "change": "render",
+            "destroy": "onWaitStop"
         },
 
         collectionEvents: {
             "request": "onWaitStart",
             "sync": "onWaitStop",
             "error": "onWaitStop",
-            "refresh": "render"
+            "refresh": "render",
+            "destroy": "onWaitStop"
         },
 
         onWaitStart: function()

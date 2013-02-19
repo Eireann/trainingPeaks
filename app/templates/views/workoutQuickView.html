@@ -42,7 +42,7 @@
     </div>
 
     <div class="stats">
-        <div class="columnLabels">
+        <div class="columnLabelsPlannedCompleted">
             <label>{{$ "Planned"}}</label>
             <label>{{$ "Completed"}}</label>
         </div>
@@ -229,12 +229,11 @@
             </div>  
         </div>
 
-        <div class="columnLabels">
+        <div class="columnLabelsMinMaxAvg">
             <label>{{$ "Min"}}</label>
             <label>{{$ "Avg"}}</label>
             <label>{{$ "Max"}}</label>
         </div>
-
         <div id="workoutMinMaxAvgStats">
             <div class="workoutStatsRow">
                 <div class="workoutStatsColumn workoutStatsMinMaxAvgLabel">
@@ -391,4 +390,20 @@
             </div>
         </div>
     </div>   
+    <div class="comments">
+        <div >
+            <label>{{$ "Description"}}</label>
+            <input id="descriptionInput" type="text" />
+        </div> 
+
+        <div>
+            <label>{{$ "PreActivityComments"}}</label>
+            <input id="preActivityCommentsInput" class="activityComments" type="text" />
+        </div>
+
+        <div>
+            <label>{{$ "PostActivityComments"}}</label>
+            <input id="postActivityCommentsInput" class="activityComments" type="text" />
+        </div>
+    </div> 
 </div>
