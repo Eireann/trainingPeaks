@@ -241,7 +241,13 @@ function(TP, dialog, workoutQuickViewTemplate, workoutStatsRowTemplate, workoutS
                     {
                         self.$el.dialog("close");
                         self.close();
+                    },
+                    "Delete": function ()
+                    {
+                        self.$el.dialog("close");
+                        self.close();
                     }
+
                 }
             });
 
