@@ -4,9 +4,8 @@ define(
 ],
 function(Handlebars)
 {
-
-
-    var workoutTypes = {
+    var workoutTypes =
+    {
         1: "Swim",
         2: "Bike",
         3: "Run",
@@ -25,7 +24,6 @@ function(Handlebars)
 
     var workoutTypeName = function(workoutTypeId)
     {
-
         return workoutTypes.hasOwnProperty(workoutTypeId) ? workoutTypes[workoutTypeId] : "Unknown";
     };
 

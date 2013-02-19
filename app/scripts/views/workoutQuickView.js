@@ -2,12 +2,14 @@
 [
     "TP",
     "jqueryui/dialog",
+    "helpers/printUnitLabel",
+    "helpers/convertToViewUnits",
+    "helpers/convertToModelUnits",
     "hbs!templates/views/workoutQuickView",
-    "hbs!templates/views/quickView/workoutStatsRow",
     "hbs!templates/views/quickView/workoutStatsRowMinMaxAvg"
 
 ],
-function(TP, dialog, workoutQuickViewTemplate, workoutStatsRowTemplate, workoutStatsRowMinMavAvgTemplate)
+function(TP, dialog, printUnitLabel, convertToViewUnits, convertToModelUnits, workoutQuickViewTemplate, workoutStatsRowMinMavAvgTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -17,8 +19,47 @@ function(TP, dialog, workoutQuickViewTemplate, workoutStatsRowTemplate, workoutS
             template: workoutQuickViewTemplate
         },
 
+        getDistance: function(value, options)
+        {
+            return convertToViewUnits(value, "distance");
+        },
+        
+        setDistance: function(value, options)
+        {
+            return convertToModelUnits(value, "distance");
+        },
+
+        getPace: function(value, options)
+        {
+            return convertToViewUnits(value, "pace");
+        },
+        
+        setPace: function(value, options)
+        {
+            return convertToModelUnits(value, "pace");
+        },
+
+        getSpeed: function(value, options)
+        {
+            return convertToViewUnits(value, "speed");
+        },
+        
+        setSpeed: function(value, options)
+        {
+            return convertToModelUnits(value, "speed");
+        },
+        
+        getElevation: function(value, options)
+        {
+            return convertToViewUnits(value, "elevation");
+        },
+        
+        setElevation: function(value, options)
+        {
+            return convertToModelUnits(value, "elevation");
+        },
+        
         bindings:
-            
         {
             "#workoutTitleField":
             {
@@ -28,19 +69,23 @@ function(TP, dialog, workoutQuickViewTemplate, workoutStatsRowTemplate, workoutS
             "#distanceCompletedField":
             {
                 observe: "Distance",
-                eventsOverride: [ "blur" ]
+                eventsOverride: [ "blur" ],
+                onGet: "getDistance",
+                onSet: "setDistance"
             },
             "#distancePlannedField":
             {
                 observe: "DistancePlanned",
-                eventsOverride: ["blur"]
+                eventsOverride: ["blur"],
+                onGet: "getDistance",
+                onSet: "setDistance"
             },
-            "#TSSPlannedField":
+            "#tssPlannedField":
             {
                 observe: "TSSPlanned",
                 eventsOverride: ["blur"]
             },
-            "#TSSCompletedField":
+            "#tssCompletedField":
             {
                 observe: "TSSActual",
                 eventsOverride: ["blur"]
@@ -48,27 +93,37 @@ function(TP, dialog, workoutQuickViewTemplate, workoutStatsRowTemplate, workoutS
             "#normalizedPacePlannedField":
             {
                 observe: "NormalizedSpeedActual",
-                eventsOverride: ["blur"]
+                eventsOverride: ["blur"],
+                onGet: "getPace",
+                onSet: "setPace"
             },
             "#averagePacePlannedField":
             {
                 observe: "VelocityPlanned",
-                eventsOverride: ["blur"]
+                eventsOverride: ["blur"],
+                onGet: "getPace",
+                onSet: "setPace"
             },
             "#averagePaceCompletedField":
             {
                 observe: "VelocityAverage",
-                eventsOverride: ["blur"]
+                eventsOverride: ["blur"],
+                onGet: "getPace",
+                onSet: "setPace"
             },
             "#averageSpeedPlannedField":
             {
                 observe: "VelocityPlanned",
-                eventsOverride: ["blur"]
+                eventsOverride: ["blur"],
+                onGet: "getSpeed",
+                onSet: "setSpeed"
             },
             "#averageSpeedCompletedField":
             {
                 observe: "VelocityAverage",
-                eventsOverride: ["blur"]
+                eventsOverride: ["blur"],
+                onGet: "getSpeed",
+                onSet: "setSpeed"
             },
             "#caloriesPlannedField":
             {
@@ -83,24 +138,30 @@ function(TP, dialog, workoutQuickViewTemplate, workoutStatsRowTemplate, workoutS
             "#elevationGainPlannedField":
             {
                 observe: "ElevationGainPlanned",
-                eventsOverride: ["blur"]
+                eventsOverride: ["blur"],
+                onGet: "getElevation",
+                onSet: "setElevation"
             },
             "#elevationGainCompletedField":
             {
                 observe: "ElevationGain",
-                eventsOverride: ["blur"]
+                eventsOverride: ["blur"],
+                onGet: "getElevation",
+                onSet: "setElevation"
             },
             "#elevationLossCompletedField":
             {
                 observe: "ElevationLoss",
-                eventsOverride: ["blur"]
+                eventsOverride: ["blur"],
+                onGet: "getElevation",
+                onSet: "setElevation"
             },
-            "#IFPlannedField":
+            "#ifPlannedField":
             {
                 observe: "IFPlanned",
                 eventsOverride: ["blur"]
             },
-            "#IFCompletedField":
+            "#ifCompletedField":
             {
                 observe: "IF",
                 eventsOverride: ["blur"]
@@ -115,8 +176,6 @@ function(TP, dialog, workoutQuickViewTemplate, workoutStatsRowTemplate, workoutS
                 observe: "Energy",
                 eventsOverride: ["blur"]
             },
-
-            //min/max/avg
             "#powerAvgField":
             {
                 observe: "PowerAverage",
@@ -187,22 +246,22 @@ function(TP, dialog, workoutQuickViewTemplate, workoutStatsRowTemplate, workoutS
                 observe: "VelocityMaximum",
                 eventsOverride: ["blur"]
             },
-            "#heartRateMinField":
+            "#hrMinField":
             {
                 observe: "HeartRateMinimum",
                 eventsOverride: ["blur"]
             },
-            "#heartRateAvgField":
+            "#hrAvgField":
             {
                 observe: "HeartRateAverage",
                 eventsOverride: ["blur"]
             },
-            "#heartRateMaxField":
+            "#hrMaxField":
             {
                 observe: "HeartRateMaximum",
                 eventsOverride: ["blur"]
             },
-            "#TempMin":
+            "#tempMinField":
             {
                 observe: "TempMin",
                 eventsOverride: ["blur"]
@@ -217,7 +276,6 @@ function(TP, dialog, workoutQuickViewTemplate, workoutStatsRowTemplate, workoutS
                 observe: "TempMax",
                 eventsOverride: ["blur"]
             }
-
         },
 
         onBeforeRender: function ()
@@ -250,130 +308,7 @@ function(TP, dialog, workoutQuickViewTemplate, workoutStatsRowTemplate, workoutS
         onRender: function ()
         {
             this.$el.dialog("open");
-
-            this.setupPlannedCompletedView();
-            this.setupMinMaxAvgView();
-
             this.stickit();
-        },
-
-        setupPlannedCompletedView: function()
-        {
-            var workoutStatsPlannedCompleted =
-            [
-                "distance",
-                "normalizedPace",
-                "averagePace",
-                "averageSpeed",
-                "calories",
-                "elevationGain",
-                "elevationLoss",
-                "TSS",
-                "IF",
-                "energy"
-            ];
-
-            var workoutStatsHtml = "";
-            for (var i = 0; i < workoutStatsPlannedCompleted.length; i++)
-            {
-                workoutStatsHtml += workoutStatsRowTemplate({ statName: workoutStatsPlannedCompleted[i], workoutStatsLabel: this.workoutStatLabel(i), workoutStatsUnitLabel: "" });
-            }
-            this.$("#workoutPlannedCompletedStats").html(workoutStatsHtml);
-        },
-
-        setupMinMaxAvgView: function()
-        {
-            var workoutStatsMinMaxAvg =
-            [
-                "power",
-                "torque",
-                "elevation",
-                "cadence",
-                "speed",
-                "pace",
-                "heartRate",
-                "temp"];
-
-            var workoutStatsHtml = "";
-            for (var i = 0; i < workoutStatsMinMaxAvg.length; i++)
-            {
-                workoutStatsHtml += workoutStatsRowMinMavAvgTemplate({ statName:workoutStatsMinMaxAvg[i], minMaxAvgLabel: workoutStatsMinMaxAvg[i], minMaxAvgUnitsLabel: "lightyears" });
-            }
-            this.$("#workoutMinMaxAvgStats").html(workoutStatsHtml);
-        },
-
-        workoutStatLabel: function (i)
-        {
-            var label = "";
-            switch (i)
-            {
-                case 0:
-                    label = "Distance";
-                    break;
-                case 1:
-                    label = "Normalized Pace";
-                    break;
-                case 2:
-                    label = "Average Pace";
-                    break;
-                case 3:
-                    label = "Average Speed";
-                    break;
-                case 4:
-                    label = "Calories";
-                    break;
-                case 5:
-                    label = "Elevation Gain";
-                    break;
-                case 6:
-                    label = "Elevation Loss";
-                    break;
-                case 7:
-                    label = "TSS";
-                    break;
-                case 8:
-                    label = "IF";
-                    break;
-                case 9:
-                    label = "Energy";
-                    break;
-            }
-            return label;
-        },
-
-        getMinMaxAvgLabel: function (i)
-        {
-            switch (i)
-            {
-                case 0:
-                    minMaxAvgLabelText = "Normalized Power";
-                    break;
-                case 1:
-                    minMaxAvgLabelText = "Power";
-                    break;
-                case 2:
-                    minMaxAvgLabelText = "Torque";
-                    break;
-                case 3:
-                    minMaxAvgLabelText = "Elevation";
-                    break;
-                case 4:
-                    minMaxAvgLabelText = "Cadence";
-                    break;
-                case 5:
-                    minMaxAvgLabelText = "Speed";
-                    break;
-                case 6:
-                    minMaxAvgLabelText = "Pace";
-                    break;
-                case 7:
-                    minMaxAvgLabelText = "HeartRate";
-                    break;
-                case 8:
-                    minMaxAvgLabelText = "Temp";
-                    break;
-            }
         }
-
     });
 });
