@@ -38,6 +38,7 @@ function(TP, WorkoutQuickView, CalendarWorkoutTemplate)
         {
             var view = new WorkoutQuickView({ model: this.model });
             view.render();
+            
         },
 
         onRender: function()

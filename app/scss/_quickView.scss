@@ -3,7 +3,14 @@
 .ui-dialog-titlebar
 {
     display:none;
+	
 }
+
+#workOutQuickView
+{
+	overflow:hidden;
+}
+
 
 .QVHeader
 {
@@ -14,7 +21,7 @@
 	#thumbNailImage
 	{
 		float: left;
-		padding-right: 10px;
+		padding-left: 10px;
 	}
 
 	.forwardBackbuttons
@@ -23,6 +30,18 @@
 		padding-right: 15px;
 		@include headerButtons(-5px);
 	}
+
+	.headerIcons
+	{
+		padding-left: 30px;
+
+		.icon
+		{
+		float: left;
+		}
+	}
+
+	
 
 	.workoutTitleDiv
 	{
@@ -77,121 +96,124 @@
 		width: 130px;
 		float: right;
 		margin-top:-20px;
-		margin-right: -20px;
+		margin-right: -15px;
 	}
 }
 
-.stats
+.quickViewContent
 {
-	padding-left: 20px;
-	padding-right: 40px;
-	background-color: $TPGrey1;
-	float: left;
-}
-.workoutStatsRow
-{
-	@include innerRow();
-	
-	clear: both;
+	height: 400px;
+	overflow-y:scroll; 
+	overflow-x:hidden;
+	background-color:  $TPGrey1;
 
-	.workoutStatsColumn
+	.stats
 	{
-		float:left;
-		input
+		padding-left: 20px;
+		padding-right: 40px;
+		background-color: $TPGrey1;
+		float: left;
+	}
+	.workoutStatsRow
+	{
+		@include innerRow();
+	
+		clear: both;
+
+		.workoutStatsColumn
 		{
-			width: 85px;
-			height: 20px;
+			float:left;
+			@include inputs(85px, 20px, 12px, $navigationFontFamilyRegular)
 		}
-	}
 
 	
 
-	.workoutStatsColumnMinMaxAvg
-	{
-		float:left;
-		input
+		.workoutStatsColumnMinMaxAvg
 		{
-			width: 56px;
-			height: 20px;
+			float:left;
+			@include inputs(56px, 20px, 12px, $navigationFontFamilyRegular)
 		}
-	}
 
-	label
-	{
-		text-align: right;
-		width: 100px;
-		padding-top: 5px;
-		padding-right: 5px;
-	}
-	
-	@include labels($navigationFontFamilyRegular, 12px, $TPGrey4);
-
-	.workoutStatsUnitLabel
-	{
 		label
 		{
-			text-align: left;
-			width: 45px;
+			text-align: right;
+			width: 100px;
 			padding-top: 5px;
-			padding-left: 5px;
+			padding-right: 5px;
 		}
-	}
+	
+		@include labels($navigationFontFamilyRegular, 12px, $TPGrey4);
+
+		.workoutStatsUnitLabel
+		{
+			label
+			{
+				text-align: left;
+				width: 45px;
+				padding-top: 5px;
+				padding-left: 5px;
+			}
+		}
 	
 
 	
-}
+	}
 
-.columnLabelsPlannedCompleted
-{
-	padding-left: 105px;
-	padding-top: 10px;
-	width: 100%;
-	height: 15px;
-	background-color: $TPGrey1;
+	.columnLabelsPlannedCompleted
+	{
+		padding-left: 105px;
+		padding-top: 10px;
+		width: 100%;
+		height: 15px;
+		background-color: $TPGrey1;
 
-	@include labels($navigationFontFamilyRegular, 12px, $TPGrey4);
-	label
+		@include labels($navigationFontFamilyRegular, 12px, $TPGrey4);
+		label
+		{
+			float: left;
+			width: 75px;
+		}
+
+	}
+
+	.columnLabelsMinMaxAvg
+	{
+		padding-left: 105px;
+		width: 100%;
+		height: 15px;
+		background-color: $TPGrey1;
+
+		@include labels($navigationFontFamilyRegular, 12px, $TPGrey4);
+		label
+		{
+			float: left;
+			width: 56px;
+		}
+
+	}
+
+	.comments
 	{
 		float: left;
-		width: 75px;
-	}
+		background-color: $TPGrey1;
+		padding-top: 10px;
+		@include labels($navigationFontFamilyRegular, 12px, $TPGrey4);
+		min-width: 400px;
+		max-width: 400px;
+		height: 100%;
 
-}
+		#descriptionInput
+		{
+			width: 360px;
+			min-height: 100px; 
+			resize: vertical;
+		}
 
-.columnLabelsMinMaxAvg
-{
-	padding-left: 105px;
-	width: 100%;
-	height: 15px;
-	background-color: $TPGrey1;
-
-	@include labels($navigationFontFamilyRegular, 12px, $TPGrey4);
-	label
-	{
-		float: left;
-		width: 56px;
-	}
-
-}
-
-.comments
-{
-	float: left;
-	background-color: $TPGrey1;
-	padding-top: 10px;
-	@include labels($navigationFontFamilyRegular, 12px, $TPGrey4);
-	min-width: 400px;
-	height: 100%;
-
-	#descriptionInput
-	{
-		width: 360px;
-		min-height: 100px; 
-	}
-
-	.activityComments
-	{
-		width: 360px;
-		min-height: 65px; 
+		.activityComments
+		{
+			width: 360px;
+			min-height: 65px;
+			resize: vertical; 
+		}
 	}
 }

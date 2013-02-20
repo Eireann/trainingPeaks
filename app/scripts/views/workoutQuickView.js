@@ -12,10 +12,35 @@ function(TP, dialog, printUnitLabel, convertToViewUnits, convertToModelUnits, wo
 {
     return TP.ItemView.extend(
     {
+        events:
+        {
+            "click #breakThrough": "onbreakThroughClicked"
+        },
+
         template:
         {
             type: "handlebars",
             template: workoutQuickViewTemplate
+        },
+
+        onbreakThroughClicked: function()
+        {
+            var description = this.model.get("Description");
+
+            if (!description)
+                description = "";
+
+            if(description.indexOf("BT: ") !== 0)
+            {
+                this.model.set("Description", "BT: " + description);
+                this.$("#breakThrough img").attr("src", "assets/images/QVImages/breakthroughClicked.jpg");
+            }
+            else
+            {
+                this.$("#breakThrough img").attr("src", "assets/images/QVImages/breakthrough.jpg");
+                description = description.replace(/BT: /, "");
+                this.model.set("Description", description);
+            }
         },
 
         getDistance: function(value, options)
@@ -274,6 +299,11 @@ function(TP, dialog, printUnitLabel, convertToViewUnits, convertToModelUnits, wo
             {
                 observe: "TempMax",
                 eventsOverride: ["blur"]
+            },
+            "#descriptionInput":
+            {
+                observe: "Description",
+                eventsOverride: [ "blur" ]
             }
         },
 
@@ -287,6 +317,8 @@ function(TP, dialog, printUnitLabel, convertToViewUnits, convertToModelUnits, wo
                 modal: true,
                 width: 800,
                 height: 600,
+                resizable: false,
+
                 buttons:
                 {
                     "Save": function ()
