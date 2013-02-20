@@ -30,8 +30,9 @@
 
             "moment": "../vendor/js/libs/moment/moment",
             
-            "helpers": "scripts/helpers"
-
+            "helpers": "scripts/helpers",
+            "utilities": "scripts/utilities"
+            
         },
 
         hbs:
