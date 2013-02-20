@@ -22,3 +22,14 @@
 		color: $fontColor;
 	}
 }
+
+@mixin inputs($width, $height, $fontSize, $fontFamily) 
+{
+	input
+	{
+		width: $width;
+		height: $height;
+		font-size: $fontSize;
+		font-family: $fontFamily
+	}
+}
