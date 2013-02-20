@@ -78,8 +78,8 @@ function(Handlebars)
         },
         cadence:
         {
-            "0": "spm",
-            "1": "spm"
+            "0": "rpm",
+            "1": "rpm"
         },
         torque:
         {

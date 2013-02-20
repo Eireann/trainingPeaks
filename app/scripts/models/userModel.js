@@ -55,6 +55,7 @@ function (moment, TP)
             story: "",
             userTypeValue: 0,
 
+            settings: {},
             accountSettings: {},
             workoutSettings: [],
             athletes: [] 

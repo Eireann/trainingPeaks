@@ -20,11 +20,13 @@ function(TP, dialog, printUnitLabel, convertToViewUnits, convertToModelUnits, wo
 
         getDistance: function(value, options)
         {
+            console.log("Distance from model: " + value);
             return convertToViewUnits(value, "distance");
         },
         
         setDistance: function(value, options)
         {
+            console.log("Distance from view: " + value);
             return convertToModelUnits(value, "distance");
         },
 
