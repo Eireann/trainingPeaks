@@ -151,12 +151,17 @@ function (TP, jqueryuiDialog, printUnitsValue, userSettingsTemplate)
         
         onRender: function()
         {
-            this.stickit();
-            this.model.checkpoint();
-            this.model.on("change", this.saveSettings, this);
-            this.$el.dialog("open");
+            if (this.stickitInitialized)
+            {
+                this.model.off("change");
+                this.stickit();
+                this.model.checkpoint();
+                this.model.on("change", this.saveSettings, this);
+                this.$el.dialog("open");
+                this.$("#profileImageSettingField").attr("src", "http://www.trainingpeaks.com/" + this.model.get("profilePhotoUrl"));
 
-            this.$("#profileImageSettingField").attr("src", "http://www.trainingpeaks.com/" + this.model.get("profilePhotoUrl"));
+                this.stickitInitialized = true;
+            }
         },
 
         saveSettings: function()
