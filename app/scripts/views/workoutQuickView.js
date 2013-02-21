@@ -45,13 +45,11 @@ function(TP, dialog, printUnitLabel, convertToViewUnits, convertToModelUnits, wo
 
         getDistance: function(value, options)
         {
-            console.log("Distance from model: " + value);
             return convertToViewUnits(value, "distance");
         },
         
         setDistance: function(value, options)
         {
-            console.log("Distance from view: " + value);
             return convertToModelUnits(value, "distance");
         },
 
@@ -89,222 +87,223 @@ function(TP, dialog, printUnitLabel, convertToViewUnits, convertToModelUnits, wo
         {
             "#workoutTitleField":
             {
-                observe: "Title",
-                eventsOverride: [ "blur" ]
+                observe: "title",
+                eventsOverride: ["blur"]
             },
             "#distanceCompletedField":
             {
-                observe: "Distance",
+                observe: "distance",
                 eventsOverride: [ "blur" ],
                 onGet: "getDistance",
                 onSet: "setDistance"
             },
             "#distancePlannedField":
             {
-                observe: "DistancePlanned",
+                observe: "distancePlanned",
                 eventsOverride: ["blur"],
                 onGet: "getDistance",
                 onSet: "setDistance"
             },
             "#tssPlannedField":
             {
-                observe: "TSSPlanned",
+                observe: "tssPlanned",
                 eventsOverride: ["blur"]
             },
             "#tssCompletedField":
             {
-                observe: "TSSActual",
+                observe: "tssActual",
                 eventsOverride: ["blur"]
             },
             "#normalizedPacePlannedField":
             {
-                observe: "NormalizedSpeedActual",
+                observe: "normalizedSpeedActual",
                 eventsOverride: ["blur"],
                 onGet: "getPace",
                 onSet: "setPace"
             },
             "#averagePacePlannedField":
             {
-                observe: "VelocityPlanned",
+                observe: "velocityPlanned",
                 eventsOverride: ["blur"],
                 onGet: "getPace",
                 onSet: "setPace"
             },
             "#averagePaceCompletedField":
             {
-                observe: "VelocityAverage",
+                observe: "velocityAverage",
                 eventsOverride: ["blur"],
                 onGet: "getPace",
                 onSet: "setPace"
             },
             "#averageSpeedPlannedField":
             {
-                observe: "VelocityPlanned",
+                observe: "velocityPlanned",
                 eventsOverride: ["blur"],
                 onGet: "getSpeed",
                 onSet: "setSpeed"
             },
             "#averageSpeedCompletedField":
             {
-                observe: "VelocityAverage",
+                observe: "velocityAverage",
                 eventsOverride: ["blur"],
                 onGet: "getSpeed",
                 onSet: "setSpeed"
             },
             "#caloriesPlannedField":
             {
-                observe: "CaloriesPlanned",
+                observe: "caloriesPlanned",
                 eventsOverride: ["blur"]
             },
             "#caloriesCompletedField":
             {
-                observe: "Calories",
+                observe: "calories",
                 eventsOverride: ["blur"]
             },
             "#elevationGainPlannedField":
             {
-                observe: "ElevationGainPlanned",
+                observe: "elevationGainPlanned",
                 eventsOverride: ["blur"],
                 onGet: "getElevation",
                 onSet: "setElevation"
             },
             "#elevationGainCompletedField":
             {
-                observe: "ElevationGain",
+                observe: "elevationGain",
                 eventsOverride: ["blur"],
                 onGet: "getElevation",
                 onSet: "setElevation"
             },
             "#elevationLossCompletedField":
             {
-                observe: "ElevationLoss",
+                observe: "elevationLoss",
                 eventsOverride: ["blur"],
                 onGet: "getElevation",
                 onSet: "setElevation"
             },
             "#ifPlannedField":
             {
-                observe: "IFPlanned",
+                observe: "ifPlanned",
                 eventsOverride: ["blur"]
             },
             "#ifCompletedField":
             {
-                observe: "IF",
+                observe: "if",
                 eventsOverride: ["blur"]
             },
             "#energyPlannedField":
             {
-                observe: "EnergyPlanned",
+                observe: "energyPlanned",
                 eventsOverride: ["blur"]
             },
             "#energyCompletedField":
             {
-                observe: "Energy",
+                observe: "energy",
                 eventsOverride: ["blur"]
             },
             "#powerAvgField":
             {
-                observe: "PowerAverage",
+                observe: "powerAverage",
                 eventsOverride: ["blur"]
             },
             "#powerMaxField":
             {
-                observe: "PowerMaximum",
+                observe: "powerMaximum",
                 eventsOverride: ["blur"]
             },
             "#torqueAvgField":
             {
-                observe: "TorqueAverage",
+                observe: "torqueAverage",
                 eventsOverride: ["blur"]
             },
             "#torqueMaxField":
             {
-                observe: "TorqueMaximum",
+                observe: "torqueMaximum",
                 eventsOverride: ["blur"]
             },
             "#elevationMinField":
             {
-                observe: "ElevationMinimum",
+                observe: "elevationMinimum",
                 eventsOverride: ["blur"]
             },
             "#elevationAvgField":
             {
-                observe: "ElevationAverage",
+                observe: "elevationAverage",
                 eventsOverride: ["blur"]
             },
             "#elevationMaxField":
             {
-                observe: "ElevationMaximum",
+                observe: "elevationMaximum",
                 eventsOverride: ["blur"]
             },
             "#cadenceAvgField":
             {
-                observe: "CadenceAverage",
+                observe: "cadenceAverage",
                 eventsOverride: ["blur"]
             },
             "#cadenceMaxField":
             {
-                observe: "CadenceMaximum",
+                observe: "cadenceMaximum",
                 eventsOverride: ["blur"]
             },
             "#speedAvgField":
             {
-                observe: "VelocityAverage",
+                observe: "velocityAverage",
                 eventsOverride: ["blur"]
             },
             "#speedMaxField":
             {
-                observe: "VelocityMaximum",
+                observe: "velocityMaximum",
                 eventsOverride: ["blur"]
             },
             "#paceMinField":
             {
-                observe: "IF",
+                //TODO Find the right field to observe
+                observe: "velocityAverage",
                 eventsOverride: ["blur"]
             },
             "#paceAvgField":
             {
-                observe: "VelocityAverage",
+                observe: "velocityAverage",
                 eventsOverride: ["blur"]
             },
             "#paceMaxField":
             {
-                observe: "VelocityMaximum",
+                observe: "velocityMaximum",
                 eventsOverride: ["blur"]
             },
             "#hrMinField":
             {
-                observe: "HeartRateMinimum",
+                observe: "heartRateMinimum",
                 eventsOverride: ["blur"]
             },
             "#hrAvgField":
             {
-                observe: "HeartRateAverage",
+                observe: "heartRateAverage",
                 eventsOverride: ["blur"]
             },
             "#hrMaxField":
             {
-                observe: "HeartRateMaximum",
+                observe: "heartRateMaximum",
                 eventsOverride: ["blur"]
             },
             "#tempMinField":
             {
-                observe: "TempMin",
+                observe: "tempMin",
                 eventsOverride: ["blur"]
             },
             "#tempAvgField":
             {
-                observe: "TempAvg",
+                observe: "tempAvg",
                 eventsOverride: ["blur"]
             },
             "#tempMaxField":
             {
-                observe: "TempMax",
+                observe: "tempMax",
                 eventsOverride: ["blur"]
             },
             "#descriptionInput":
             {
-                observe: "Description",
+                observe: "description",
                 eventsOverride: [ "blur" ]
             }
         },
