@@ -9,8 +9,6 @@ function(_, TP, mealLibraryViewTemplate)
     return TP.ItemView.extend(
     {
 
-        libraryName: 'mealLibrary',
-
         template:
         {
             type: "handlebars",

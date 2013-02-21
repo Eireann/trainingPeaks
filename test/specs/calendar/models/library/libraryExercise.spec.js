@@ -11,10 +11,10 @@ function(LibraryExerciseModel)
             expect(LibraryExerciseModel).toBeDefined();
         });
 
-        it("Should use ExerciseLibraryItemId as model id", function()
+        it("Should use exerciseLibraryItemId as model id", function()
         {
             var exerciseId = "098765";
-            var exercise = new LibraryExerciseModel({ ExerciseLibraryItemId: exerciseId });
+            var exercise = new LibraryExerciseModel({ exerciseLibraryItemId: exerciseId });
             expect(exercise.id).toEqual(exerciseId);
         });
 

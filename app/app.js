@@ -29,7 +29,7 @@ function(TP, Session, UserModel, UserSettingsModel, ClientEventsCollection, Navi
         this.user = new UserModel();
         this.userSettings = new UserSettingsModel();
         
-        this.session = new Session({ app: this });
+        this.session = new Session();
         this.session.authPromise.done(function()
         {
             self.user.fetch().done(function()

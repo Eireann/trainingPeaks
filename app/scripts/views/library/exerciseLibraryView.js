@@ -11,7 +11,6 @@ function(_, Marionette, TP, ExerciseLibraryItemView, ExerciseLibraryAddItemView,
 {
     return TP.CompositeView.extend(
     {
-        libraryName: 'exerciseLibrary',
         tagName: "div",
         className: "exercises",
 

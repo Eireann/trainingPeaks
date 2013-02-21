@@ -83,10 +83,10 @@ function(_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollecti
         {
             var exerciseLibraryItem = this.libraryCollections.exerciseLibrary.get(exerciseLibraryItemId);
             return new WorkoutModel({
-                PersonId: theMarsApp.user.get("personId"),
-                WorkoutDay: workoutDate,
-                Title: exerciseLibraryItem.get("ItemName"),
-                WorkoutTypeValueId: exerciseLibraryItem.get("WorkoutTypeId")
+                personId: theMarsApp.user.get("userId"),
+                workoutDay: workoutDate,
+                title: exerciseLibraryItem.get("itemName"),
+                workoutTypeValueId: exerciseLibraryItem.get("workoutTypeId")
             });
         },
 
