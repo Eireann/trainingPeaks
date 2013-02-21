@@ -5,7 +5,7 @@
         </div>
         <div class="workoutTitleDiv">
             <input type="text" name="workoutTitle" class="workoutTitle" placeholder="Workout Title" id="workoutTitleField" />
-            <label>{{WorkoutDay}}</label>
+            <label>{{workoutDay}}</label>
         </div>
 
         <div class="quickviewNavigation">
@@ -31,19 +31,19 @@
         
         <div id="workoutHeaderStats">
             <div class="headerWorkoutValue">
-                <label>{{Distance}}</label>
+                <label>{{distance}}</label>
             </div>
             <div class="headerWorkoutValueLabel">
                 <label>DST</label>
             </div>
             <div class="headerWorkoutValue middleValues">
-                <label>{{TotalTime}}</label>
+                <label>{{totalTime}}</label>
             </div>
             <div class="headerWorkoutValueLabel">
                 <label>DUR</label>
             </div>
             <div class="headerWorkoutValue middleValues">
-                <label>{{TSSActual}}</label>
+                <label>{{tssActual}}</label>
             </div>
             <div class="headerWorkoutValueLabel">
                 <label>TSS</label>
@@ -399,6 +399,17 @@
                         <label>{{printUnitLabel "temperature"}}</label>
                     </div>
                 </div>
+            </div>
+
+            <div class="calendarViewSelectionBox">
+                <select>
+                    <option value="Route" selected>{{$ "Route"}}</option>
+                </select>
+            </div>
+            <div class="calendarViewSelectionBox">
+                <select>
+                    <option value="Route" selected>{{$ "Equipment"}}</option>
+                </select>
             </div>
         </div>   
         <div class="comments">

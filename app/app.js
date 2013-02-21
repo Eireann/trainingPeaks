@@ -32,16 +32,12 @@ function(TP, Session, UserModel, UserSettingsModel, ClientEventsCollection, Navi
         this.session = new Session();
         this.session.authPromise.done(function()
         {
-            self.user.fetch().done(function()
-            {
-                self.userSettings.set("personId", self.user.get("personId"));
-                self.userSettings.fetch();
-            });
+            self.user.fetch();
         });
     });
 
     // add logging
-    theApp.addInitializer(function initLogging()
+    theApp.addInitializer(function()
     {
         this.logger = new TP.Logger();
 
@@ -57,13 +53,13 @@ function(TP, Session, UserModel, UserSettingsModel, ClientEventsCollection, Navi
     });
 
     // add event tracking
-    theApp.addInitializer(function initClientEventTracker()
+    theApp.addInitializer(function()
     {
         this.clientEvents = new ClientEventsCollection();
     });
 
     // add controllers
-    theApp.addInitializer(function initControllers()
+    theApp.addInitializer(function()
     {
         // Set up controllers container and eagerly load all the required Controllers.
         this.controllers = {};

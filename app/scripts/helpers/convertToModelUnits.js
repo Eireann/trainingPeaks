@@ -33,8 +33,19 @@ function(Handlebars)
         if (pace <= 0.01)
             return "99:99";
 
-        var speed;
+        pace = pace.split(":");
 
+        if (pace.length !== 2)
+            return 0;
+
+        var minutes = parseInt(pace[0], 10);
+        var seconds = parseInt(pace[1], 10);
+        var fractionOfMinute = seconds / 60;
+        minutes += fractionOfMinute;
+
+        var conversion = modelToViewConversionFactors.speed[unitSystem];
+        var speed = 60 / minutes / conversion;
+        
         return speed;
     };
     

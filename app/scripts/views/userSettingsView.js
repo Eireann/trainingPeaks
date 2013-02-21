@@ -127,7 +127,7 @@ function (TP, jqueryuiDialog, printUnitsValue, userSettingsTemplate)
             "input[name=emailPMNotificationSettingField]": "enablePrivateMessageNotifications",
             "input[name=postActivityNotificationSettingField]": "enablePrivateMessageNotifications",
             "input[name=newsletterNotificationSettingField]": "allowMarketingEmails",
-            "#accountExpiresSettingField": "expireDate"
+            "#accountExpiresSettingField": "expirationDate"
         },
         
         onBeforeRender: function()
@@ -174,11 +174,13 @@ function (TP, jqueryuiDialog, printUnitsValue, userSettingsTemplate)
 
             if(changed)
             */
-            this.model.save();
+
+            //this.model.save();
         },
 
         onClose: function ()
         {
+            this.unstickModel();
             this.model.off();
             this.close();
         },
