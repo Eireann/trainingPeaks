@@ -17,7 +17,7 @@
              
     &.open
     {
-        @include column(4);
+        @include column(3);
         @include transition-property(width);
         @include transition-duration(400ms);
         padding-right:2px;
@@ -81,12 +81,18 @@
         top:0px;
         bottom:0px;
         left:50px;
-        right: 0px;
+        right:0px;
         overflow-y:auto;
         padding:15px;
+        width: 110%;
+        z-index:1;
+        white-space: nowrap;
 
         background-color:$white;
         border-left:2px solid $TPBlue;
+        border-bottom:2px solid $TPBlue;
+
+        @include box-shadow(5px 5px 5px $TPGrey4);
 
         @include labels($navigationFontFamilyRegular, 20px, $TPBlue);
         label

@@ -41,7 +41,7 @@ function(TP, draggable, ExerciseLibraryItemViewTemplate)
             this.$el.data("ItemId", this.model.id);
             this.$el.data("ItemType", this.model.webAPIModelName);
             this.$el.data("DropEvent", "addExerciseFromLibrary");
-            this.$el.draggable({ appendTo: 'body', helper: 'clone', opacity: 0.7 });
+            this.$el.draggable({ appendTo: 'body', helper: 'clone', opacity: 0.7, 'z-index': 100 });
         }
 
     });

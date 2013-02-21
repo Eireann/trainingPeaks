@@ -8,14 +8,14 @@ function (TP)
     {
 
         webAPIModelName: "ExerciseLibraryItem",
-        idAttribute: "ExerciseLibraryItemId",
+        idAttribute: "exerciseLibraryItemId",
 
         defaults: {
-            "ExerciseLibraryId": 0,
-            "ExerciseLibraryItemId": 0,
-            "ItemName": null,
-            "ItemType": 0,
-            "WorkoutTypeId": 0
+            "exerciseLibraryId": 0,
+            "exerciseLibraryItemId": 0,
+            "itemName": null,
+            "itemType": 0,
+            "workoutTypeId": 0
         }
 
     });

@@ -16,7 +16,7 @@ function(TP, WorkoutQuickView, CalendarWorkoutTemplate)
         attributes: function()
         {
             return {
-                "data-WorkoutId": this.model.id
+                "data-workoutId": this.model.id
             };
         },
 
@@ -43,7 +43,7 @@ function(TP, WorkoutQuickView, CalendarWorkoutTemplate)
 
         onRender: function()
         {
-            if (!this.$el.data('WorkoutId'))
+            if (!this.$el.data('workoutId'))
             {
                 this.$el.attr(this.attributes());
             }

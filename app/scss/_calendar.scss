@@ -6,13 +6,12 @@
 	background-color: $TPGrey1;
 }
 
-
 #calendarContainer
 {
     
     #libraryContainer.open + &
     {
-        @include column(12);
+        @include column(13);
         @include transition-property(width);
         @include transition-duration(400ms);
         padding-left:0px;

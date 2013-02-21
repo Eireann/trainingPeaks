@@ -27,7 +27,7 @@ function(_, TP, ExerciseLibraryView, MealLibraryView, libraryTemplate)
                 mealLibrary: new MealLibraryView()
             };
 
-            this.activeLibrary = null;
+            this.activeLibraryName = null;
         },
 
         ui:
@@ -42,47 +42,38 @@ function(_, TP, ExerciseLibraryView, MealLibraryView, libraryTemplate)
 
         onTabClick: function(e)
         {
-            var libraryName = e.target.id;
-            if (libraryName)
+            this.toggleLibrary(e.target.id);
+        },
+
+        toggleLibrary: function(newLibraryName)
+        {
+            if (newLibraryName !== this.activeLibraryName)
             {
-                this.switchLibrary(libraryName);
+                this.switchLibrary(newLibraryName);
+            } else
+            {
+                if (this.isOpen())
+                {
+                    this.hideLibrary();
+                } else
+                {
+                    this.showLibrary();
+                }
             }
         },
 
-        switchLibrary: function(libraryName)
+        switchLibrary: function(newLibraryName)
         {
-
-            this.onWaitStart();
-
-            var newLibrary = this.views.hasOwnProperty(libraryName) ? this.views[libraryName] : this.activeLibrary;
-            if (newLibrary !== this.activeLibrary)
+            if (newLibraryName && this.views.hasOwnProperty(newLibraryName))
             {
-
-                // setup the new library
-                var view = this;
-                var showNewLibrary = function()
+                this.onWaitStart();
+                if (this.activeLibraryName && newLibraryName !== this.activeLibraryName)
                 {
-                    view.activeLibrary = newLibrary;
-                    view.renderActiveLibrary();
-                    view.showLibrary();
-                    view.onWaitStop();
-                };
-
-                // detach the old library if needed
-                if (this.activeLibrary)
-                {
-                    this.activeLibrary.close();
-                    this.hideLibrary(showNewLibrary);
-                } else
-                {
-                    showNewLibrary();
+                    this.views[this.activeLibraryName].$el.hide(200);
+                    this.turnOffTab(this.activeLibraryName);
                 }
-
-
-            } else
-            {
-                this.toggleLibrary();
-                this.onWaitStop();
+                this.activeLibraryName = newLibraryName;
+                this.showLibrary();
             }
         },
 
@@ -103,60 +94,30 @@ function(_, TP, ExerciseLibraryView, MealLibraryView, libraryTemplate)
 
         showLibrary: function()
         {
-            if (!this.isOpen())
-            {
-                this.ui.activeLibraryContainer.fadeIn(600);
-                this.$el.parent().removeClass("closed").addClass("open");
-            }
-            this.turnOnTab(this.activeLibrary.libraryName);
-        },
 
-        hideLibrary: function(afterHide)
-        {
-            if (this.isOpen())
+            this.onWaitStart();
+            for (var libraryName in this.views)
             {
-                var container = this.$el.parent();
-                var view = this;
-                var callbackAfterHide = function()
+                if (libraryName != this.activeLibraryName)
                 {
-                    view.turnOffTab(view.activeLibrary.libraryName);
-                    container.removeClass("open").addClass("closed");
-                    if (typeof afterHide === 'function')
-                    {
-                        afterHide();
-                    }
-                };
-                this.ui.activeLibraryContainer.fadeOut(300, callbackAfterHide);
-            } else
-            {
-                this.turnOffTab(this.activeLibrary.libraryName);
-                if (typeof afterHide === 'function')
-                {
-                    afterHide();
+                    this.views[libraryName].$el.hide();
                 }
             }
+
+            var parent = this;
+            this.views[this.activeLibraryName].$el.show(200, function() { parent.onWaitStop(); });
+            this.$el.parent().removeClass("closed").addClass("open");
+            this.turnOnTab(this.activeLibraryName);
         },
 
-        toggleLibrary: function()
+        hideLibrary: function()
         {
-            if (this.isOpen())
+            this.$el.parent().removeClass("open").addClass("closed");
+            if (this.activeLibraryName)
             {
-                this.hideLibrary();
-            } else
-            {
-                this.showLibrary();
+                this.views[this.activeLibraryName].$el.hide(200);
+                this.turnOffTab(this.activeLibraryName);
             }
-        },
-
-        renderActiveLibrary: function()
-        {
-            this.ui.activeLibraryContainer.html("");
-
-            // reattach events that may have been removed on close ...
-            this.activeLibrary.delegateEvents();
-            this.activeLibrary.render();
-
-            this.ui.activeLibraryContainer.append(this.activeLibrary.$el);
         },
 
         onWaitStart: function()
@@ -169,6 +130,17 @@ function(_, TP, ExerciseLibraryView, MealLibraryView, libraryTemplate)
         {
             this.trigger("waitStop");
             this.ui.activeLibraryContainer.removeClass('waiting');
+        },
+
+        onRender: function()
+        {
+            for (var libraryName in this.views)
+            {
+                var library = this.views[libraryName];
+                library.render();
+                this.ui.activeLibraryContainer.append(library.$el);
+                library.$el.hide();
+            }
         }
 
     });
