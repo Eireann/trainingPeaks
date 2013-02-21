@@ -81,15 +81,6 @@ function(LibraryView, ExerciseLibraryView, LibraryTemplate)
             describe("Switch Library", function()
             {
 
-                it("Should show a waiting indicator", function()
-                {
-                    var library = new LibraryView();
-                    library.render();
-                    spyOn(library, "onWaitStart");
-                    library.switchLibrary('exerciseLibrary');
-                    expect(library.onWaitStart).toHaveBeenCalled();
-                });
-
                 it("Should set the active library", function()
                 {
                     var library = new LibraryView();

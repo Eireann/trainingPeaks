@@ -66,7 +66,6 @@ function(_, TP, ExerciseLibraryView, MealLibraryView, libraryTemplate)
         {
             if (newLibraryName && this.views.hasOwnProperty(newLibraryName))
             {
-                this.onWaitStart();
                 if (this.activeLibraryName && newLibraryName !== this.activeLibraryName)
                 {
                     this.views[this.activeLibraryName].$el.hide(200);
@@ -95,7 +94,6 @@ function(_, TP, ExerciseLibraryView, MealLibraryView, libraryTemplate)
         showLibrary: function()
         {
 
-            this.onWaitStart();
             for (var libraryName in this.views)
             {
                 if (libraryName !== this.activeLibraryName)
@@ -104,8 +102,7 @@ function(_, TP, ExerciseLibraryView, MealLibraryView, libraryTemplate)
                 }
             }
 
-            var parent = this;
-            this.views[this.activeLibraryName].$el.show(200, function() { parent.onWaitStop(); });
+            this.views[this.activeLibraryName].$el.show(200);
             this.$el.parent().removeClass("closed").addClass("open");
             this.turnOnTab(this.activeLibraryName);
         },

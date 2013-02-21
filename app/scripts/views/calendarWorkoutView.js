@@ -2,16 +2,20 @@ define(
 [
     "TP",
     "views/workoutQuickView",
+    "utilities/workoutTypeName",
     "hbs!templates/views/calendarWorkout"
 ],
-function(TP, WorkoutQuickView, CalendarWorkoutTemplate)
+function(TP, WorkoutQuickView, workoutTypeName, CalendarWorkoutTemplate)
 {
     return TP.ItemView.extend(
     {
 
         showThrobbers: false,
         tagName: "div",
-        className: "workout",
+        //className: "workout",
+        className: function () {
+            return "workout " + workoutTypeName(this.model.get("WorkoutTypeValueId")) + " ComplianceWarn";
+        },
 
         attributes: function()
         {

@@ -1,0 +1,20 @@
+﻿@import "tpstylesheet";
+
+
+
+#weeksContainer
+{
+    &.colorByWorkoutType {
+        .workout.Run 
+        {
+            background-color: $clrRun
+        }
+    }
+     
+    &.colorByCompliance {
+        .workout.ComplianceWarn 
+        {
+            background-color: $clrComplianceWarn
+        }
+    }
+}
