@@ -25,7 +25,7 @@ function(TP, dialog, printUnitLabel, convertToViewUnits, convertToModelUnits, wo
 
         onbreakThroughClicked: function()
         {
-            var description = this.model.get("Description");
+            var description = this.model.get("description");
 
             if (!description)
                 description = "";
@@ -39,7 +39,7 @@ function(TP, dialog, printUnitLabel, convertToViewUnits, convertToModelUnits, wo
             {
                 this.$("#breakThrough img").attr("src", "assets/images/QVImages/breakthrough.jpg");
                 description = description.replace(/BT: /, "");
-                this.model.set("Description", description);
+                this.model.set("description", description);
             }
         },
 
@@ -353,8 +353,14 @@ function(TP, dialog, printUnitLabel, convertToViewUnits, convertToModelUnits, wo
 
         onRender: function ()
         {
-            this.$el.dialog("open");
-            this.stickit();
+            if (!this.stickitInitialized)
+            {
+                theMarsApp.user.on("change:unitsValue", this.render, this);
+                this.$el.dialog("open");
+
+                this.stickit();
+                this.stickitInitialized = true;
+            }
         }
     });
 });
