@@ -105,6 +105,8 @@
 
 	"Description": "Description",
 	"PreActivityComments": "Pre-activity comments",
-	"PostActivityComments": "Post-activity comments"
+	"PostActivityComments": "Post-activity comments",
+	"Route": "Route",
+	"Equipment": "Equipment"
 
 }
