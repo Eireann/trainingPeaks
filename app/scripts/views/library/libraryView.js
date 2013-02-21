@@ -98,7 +98,7 @@ function(_, TP, ExerciseLibraryView, MealLibraryView, libraryTemplate)
             this.onWaitStart();
             for (var libraryName in this.views)
             {
-                if (libraryName != this.activeLibraryName)
+                if (libraryName !== this.activeLibraryName)
                 {
                     this.views[libraryName].$el.hide();
                 }

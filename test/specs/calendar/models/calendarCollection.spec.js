@@ -139,9 +139,9 @@ function($, TP, moment, WorkoutModel, WorkoutsCollection, CalendarCollection)
                 // fake workout collection fetcher
                 var workouts =
                 [
-                        new WorkoutModel({ WorkoutDay: moment().add("days", 1).format(), WorkoutId: '1234' }),
-                        new WorkoutModel({ WorkoutDay: moment().add("days", 2).format(), WorkoutId: '2345' }),
-                        new WorkoutModel({ WorkoutDay: moment().add("days", 3).format(), WorkoutId: '3456' })
+                        new WorkoutModel({ workoutDay: moment().add("days", 1).format(), workoutId: '1234' }),
+                        new WorkoutModel({ workoutDay: moment().add("days", 2).format(), workoutId: '2345' }),
+                        new WorkoutModel({ workoutDay: moment().add("days", 3).format(), workoutId: '3456' })
                 ];
 
                 spyOn(WorkoutsCollection.__super__, "fetch").andCallFake(function()
@@ -275,7 +275,7 @@ function($, TP, moment, WorkoutModel, WorkoutsCollection, CalendarCollection)
                     startDate: moment().day(0),
                     endDate: moment().day(6).add("weeks", 2)
                 });
-                workout = new WorkoutModel({ WorkoutDay: yesterday + "T00:00:00", WorkoutId: workoutId });
+                workout = new WorkoutModel({ workoutDay: yesterday + "T00:00:00", workoutId: workoutId });
                 collection.addWorkoutToCalendarDay(workout);
                 collection.workoutsCollection.add(workout);
                 yesterdayCalendarDay = collection.getDayModel(yesterday);

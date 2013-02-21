@@ -9,7 +9,7 @@ function (moment, TP)
     {
 
         webAPIModelName: "User",
-        idAttribute: "personId",
+        idAttribute: "userId",
         shortDateFormat: "YYYY-MM-DD",
         timeFormat: "Thh:mm:ss",
         longDateFormat: "YYYY-MM-DDThh:mm:ss",
@@ -36,7 +36,8 @@ function (moment, TP)
             cellPhone: "",
             profilePhotoUrl: "",
             age: null,
-            
+
+            units: 0,
             unitsValue: 0,
             dateFormat: "",
             timeZone: "",
@@ -45,7 +46,7 @@ function (moment, TP)
             colorizeWorkouts: false,
             couponCode: "",
             enablePrivateMessageNotifications: false,
-            expireDate: "",
+            expirationDate: "",
             isAthlete: false,
             isEmailVerified: false,
             language: "",
@@ -54,7 +55,8 @@ function (moment, TP)
             longitude: "",
             numberOfVisits: 0,
             story: "",
-            userTypeValue: 0,
+            userType: 0,
+            workoutLayout: "",
 
             settings: {},
             accountSettings: {},
