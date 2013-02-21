@@ -35,7 +35,7 @@ function(Handlebars)
 
         pace = pace.split(":");
 
-        if (pace.length != 2)
+        if (pace.length !== 2)
             return 0;
 
         var minutes = parseInt(pace[0], 10);
