@@ -13,8 +13,9 @@ function(TP, WorkoutQuickView, workoutTypeName, CalendarWorkoutTemplate)
         showThrobbers: false,
         tagName: "div",
         //className: "workout",
-        className: function () {
-            return "workout " + workoutTypeName(this.model.get("WorkoutTypeValueId")) + " ComplianceWarn";
+        className: function()
+        {
+            return "workout " + workoutTypeName(this.model.get("workoutTypeValueId")) + " ComplianceWarn";
         },
 
         attributes: function()
