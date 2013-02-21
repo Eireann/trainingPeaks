@@ -1,21 +1,51 @@
 define(
 [
+    "moment",
     "TP",
     "views/workoutQuickView",
     "utilities/workoutTypeName",
     "hbs!templates/views/calendarWorkout"
 ],
-function(TP, WorkoutQuickView, workoutTypeName, CalendarWorkoutTemplate)
+function(moment, TP, WorkoutQuickView, workoutTypeName, CalendarWorkoutTemplate)
 {
     return TP.ItemView.extend(
     {
 
         showThrobbers: false,
         tagName: "div",
-        //className: "workout",
+       
+        today: moment().format("YYYY-MM-DD"),
+
         className: function()
         {
-            return "workout " + workoutTypeName(this.model.get("workoutTypeValueId")) + " ComplianceWarn";
+            return "workout " +
+                this.getWorkoutTypeCssClassName() + " " +
+                this.getComplianceCssClassName() + " " +
+                this.getPastOrCompletedCssClassName();
+        },
+
+        getWorkoutTypeCssClassName: function()
+        {
+            return workoutTypeName(this.model.get("workoutTypeValueId"));
+        },
+
+        getComplianceCssClassName: function()
+        {
+            return "ComplianceWarn";
+        },
+
+        getPastOrCompletedCssClassName: function()
+        {
+            if (this.model.get("totalTime"))
+            {
+                return "past";
+            } else if (this.model.getCalendarDay() < this.today)
+            {
+                return "past";
+            } else
+            {
+                return "future";
+            }
         },
 
         attributes: function()

@@ -1,20 +1,39 @@
-﻿@import "tpstylesheet";
+﻿@import "mixIn";
 
 
 
 #weeksContainer
 {
-    &.colorByWorkoutType {
-        .workout.Run 
+    &.colorByWorkoutType
+    {
+        .workout
         {
-            background-color: $clrRun
+            @include workoutColorsByType; 
+        }
+    }
+
+
+    &.colorByComplianceAndWorkoutType
+    {
+        .workout.future
+        {
+             @include workoutColorsByType;           
         }
     }
      
-    &.colorByCompliance {
-        .workout.ComplianceWarn 
+    &.colorByCompliance
+    {
+        .workout
         {
-            background-color: $clrComplianceWarn
+             @include workoutColorsByCompliance;           
+        }
+    }
+     
+    &.colorByComplianceAndWorkoutType
+    {
+        .workout.past
+        {
+              @include workoutColorsByCompliance; 
         }
     }
 }

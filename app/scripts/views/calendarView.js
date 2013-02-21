@@ -12,7 +12,13 @@ function(_, TP, CalendarWeekView, customCalendarTemplate)
         $weeksContainer: null,
         
         children: [],
-        
+        colorizationClassNames: [
+                "colorizationOff",
+                "colorByWorkoutType",
+                "colorByCompliance",
+                "colorByComplianceAndWorkoutType"
+        ],
+
         template:
         {
             type: "handlebars",
@@ -33,6 +39,30 @@ function(_, TP, CalendarWeekView, customCalendarTemplate)
         {
             "add": "onAddWeek",
             "reset": "render"
+        },
+
+        initialize: function()
+        {
+            theMarsApp.user.on("change", this.setWorkoutColorization, this);
+        },
+
+        setWorkoutColorization: function()
+        {
+            var colorizationCode = theMarsApp.user.get("settings").calendar.workoutColorization;
+            var colorizationClassName = this.colorizationClassNames[colorizationCode];
+
+            if (!this.ui.weeksContainer.hasClass(colorizationClassName))
+            {
+                var view = this;
+                _.each(this.colorizationClassNames, function(className)
+                {
+                    view.ui.weeksContainer.removeClass(className);
+                });
+                if (colorizationCode > 0)
+                {
+                    this.ui.weeksContainer.addClass(colorizationClassName);
+                }
+            }
         },
 
         onAddWeek: function (model)

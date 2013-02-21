@@ -33,3 +33,19 @@
 		font-family: $fontFamily
 	}
 }
+
+@mixin workoutColorsByType()
+{
+     &.Run
+    {
+        background-color: $clrRun
+    }
+}
+
+@mixin workoutColorsByCompliance()
+{
+    &.ComplianceWarn 
+    {
+        background-color: $clrComplianceWarn
+    }
+}
