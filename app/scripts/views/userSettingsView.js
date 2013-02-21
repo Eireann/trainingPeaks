@@ -151,7 +151,7 @@ function (TP, jqueryuiDialog, printUnitsValue, userSettingsTemplate)
         
         onRender: function()
         {
-            if (this.stickitInitialized)
+            if (!this.stickitInitialized)
             {
                 this.model.off("change");
                 this.stickit();
