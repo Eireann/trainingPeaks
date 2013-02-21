@@ -17,6 +17,7 @@ function (moment, TP)
         defaults:
         {
             personId: "",
+            userId: "",
 
             firstName: "",
             lastName: "",
@@ -58,7 +59,7 @@ function (moment, TP)
             settings: {},
             accountSettings: {},
             workoutSettings: [],
-            athletes: [] 
+            athletes: []
         },
         
         url: function()
