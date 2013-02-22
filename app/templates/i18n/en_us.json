@@ -102,6 +102,7 @@
 	"Min": "Min",
 	"Max": "Max",
 	"Avg": "Avg",
+	"Temperature": "Temperature",
 
 	"Description": "Description",
 	"PreActivityComments": "Pre-activity comments",
