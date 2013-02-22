@@ -115,7 +115,8 @@
 	"Link": "Link",
 	"Delete": "Delete",
 	"Apply": "Apply",
-	"SaveClose": "Save & Close",
+	"Close": "Close",
+    "SaveClose": "Save & Close",
 	"Reset": "Reset"
 
 }

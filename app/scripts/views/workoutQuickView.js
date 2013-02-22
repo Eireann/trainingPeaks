@@ -6,7 +6,6 @@
     "helpers/convertToViewUnits",
     "helpers/convertToModelUnits",
     "hbs!templates/views/workoutQuickView"
-
 ],
 function(TP, dialog, printUnitLabel, convertToViewUnits, convertToModelUnits, workoutQuickViewTemplate)
 {
@@ -14,8 +13,8 @@ function(TP, dialog, printUnitLabel, convertToViewUnits, convertToModelUnits, wo
     {
         events:
         {
-            "click #breakThrough": "onbreakThroughClicked",
-            "click #delete": "deleteWorkout",
+            "click #breakThrough": "onBreakThroughClicked",
+            "click #delete": "onDeleteWorkout",
             "click #apply": "onApplyClicked",
             "click #saveClose": "onSaveClosedClicked"
         },
@@ -26,28 +25,7 @@ function(TP, dialog, printUnitLabel, convertToViewUnits, convertToModelUnits, wo
             template: workoutQuickViewTemplate
         },
 
-        onbreakThroughClicked: function()
-        {
-            var description = this.model.get("description");
-
-            if (!description)
-                description = "";
-
-            if(description.indexOf("BT: ") !== 0)
-            {
-                this.model.set("description", "BT: " + description);
-                this.$("#breakThrough img").attr("src", "assets/images/QVImages/breakthroughClicked.jpg");
-            }
-            else
-            {
-                this.$("#breakThrough img").attr("src", "assets/images/QVImages/breakthrough.jpg");
-                description = description.replace(/BT: /, "");
-                this.model.set("description", description);
-            }
-        },
-
-
-        getDistance: function(value, options)
+        getDistance: function (value, options)
         {
             return convertToViewUnits(value, "distance");
         },
@@ -323,64 +301,49 @@ function(TP, dialog, printUnitLabel, convertToViewUnits, convertToModelUnits, wo
                 width: 800,
                 height: 600,
                 resizable: false,
-
-                "delete": function ()
-                {
-                    self.deleteWorkout();
-                },
-                "apply": function ()
-                {
-                    self.$el.dialog("close");
-                    self.close();
-                },
-                "saveClose": function ()
-                {
-                    self.$el.dialog("close");
-                    self.close();
-                }
-
-              /*  buttons:
-                {
-                    "Delete": function ()
-                    {
-                        self.deleteWorkout();
-                    },
-                    "Apply": function ()
-                    {
-                        self.$el.dialog("close");
-                        self.close();
-                    },
-                    "Save & Close": function ()
-                    {
-                        self.$el.dialog("close");
-                        self.close();
-                    },
-                    
-
-                }*/
             });
 
         },
 
         onApplyClicked: function ()
         {
-            this.$el.dialog("close");
-            this.close();
+            this.model.save();
         },
 
         onSaveClosedClicked: function ()
         {
+            this.model.save();
             this.$el.dialog("close");
             this.close();
         },
 
-        deleteWorkout: function ()
+        onDeleteWorkout: function ()
         {
             this.$el.dialog("close");
             this.close();
             // pass wait here so it won't actually remove the model until the server call returns,
             // which will then remove the view and the waiting indicator
             this.model.destroy({ wait: true });
+        },
+
+        onBreakThroughClicked: function ()
+        {
+            var description = this.model.get("description");
+
+            if (!description)
+                description = "";
+
+            if (description.indexOf("BT: ") !== 0)
+            {
+                this.model.set("description", "BT: " + description);
+                this.$("#breakThrough img").attr("src", "assets/images/QVImages/breakthroughClicked.jpg");
+            }
+            else
+            {
+                this.$("#breakThrough img").attr("src", "assets/images/QVImages/breakthrough.jpg");
+                description = description.replace(/BT: /, "");
+                this.model.set("description", description);
+            }
         },
 
         onRender: function ()

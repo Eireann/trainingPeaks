@@ -14,23 +14,16 @@ function(Handlebars, moment, printDate)
 {
     var dayName = function(dateOrDayNumber, formatString)
     {
-
         if (!formatString || typeof formatString !== "string")
-        {
             formatString = "ddd";
-        }
 
         var theDay;
         if (typeof dateOrDayNumber === 'number')
-        {
             theDay = moment().day(dateOrDayNumber);
-        } else
-        {
+        else
             theDay = moment(dateOrDayNumber);
-        }
 
         return printDate(theDay, formatString);
-
     };
 
     Handlebars.registerHelper("dayName", dayName);
