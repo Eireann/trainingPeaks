@@ -292,8 +292,6 @@ function(TP, dialog, printUnitLabel, convertToViewUnits, convertToModelUnits, wo
 
         onBeforeRender: function ()
         {
-            var self = this;
-           
             this.$el.dialog(
             {
                 autoOpen: false,
@@ -302,7 +300,6 @@ function(TP, dialog, printUnitLabel, convertToViewUnits, convertToModelUnits, wo
                 height: 600,
                 resizable: false
             });
-
         },
 
         onApplyClicked: function ()
