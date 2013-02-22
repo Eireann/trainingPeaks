@@ -300,7 +300,7 @@ function(TP, dialog, printUnitLabel, convertToViewUnits, convertToModelUnits, wo
                 modal: true,
                 width: 800,
                 height: 600,
-                resizable: false,
+                resizable: false
             });
 
         },
