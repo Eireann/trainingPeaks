@@ -11,7 +11,7 @@
     
     #libraryContainer.open + &
     {
-        @include column(13);
+        @include column(12);
         @include transition-property(width);
         @include transition-duration(400ms);
         padding-left:0px;
