@@ -17,8 +17,8 @@ function (TP, jqueryuiDialog, printUnitsValue, userSettingsTemplate)
 
         events:
         {
-            "click .userSettingsReset": "onResetSettings",
-            "click .userSettingsSaveClose": "onClose"
+            "click button.userSettingsReset": "onResetSettings",
+            "click button.userSettingsSaveClose": "onClose"
         },
 
         bindings:
@@ -146,12 +146,7 @@ function (TP, jqueryuiDialog, printUnitsValue, userSettingsTemplate)
                 width: 600,
                 modal: true,
                 resizable: false,
-                overlay: { opacity: 0.5 },
-                buttons:
-                {
-                    "Reset": this.onResetSettings,
-                    "Close": this.onClose
-                }
+                overlay: { opacity: 0.5 }
             });
         },
         
