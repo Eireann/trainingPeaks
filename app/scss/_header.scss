@@ -110,11 +110,7 @@
 			width: 150px;
 			padding-left: 20px;
 			float: left;
-			select
-			{
-				margin-top: 3px;
-				height: 20px;
-			}
+			@include selectionBox(150px);
 		}
 
 		.printRefreshButtons

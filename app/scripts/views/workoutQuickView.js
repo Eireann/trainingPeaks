@@ -14,7 +14,11 @@ function(TP, dialog, printUnitLabel, convertToViewUnits, convertToModelUnits, wo
     {
         events:
         {
-            "click #breakThrough": "onbreakThroughClicked"
+            "click #breakThrough": "onbreakThroughClicked",
+            "click #delete": "deleteWorkout",
+            "click #apply": "onApplyClicked",
+            "click #saveClose": "onSaveClosedClicked",
+
         },
 
         template:
@@ -32,7 +36,7 @@ function(TP, dialog, printUnitLabel, convertToViewUnits, convertToModelUnits, wo
 
             if(description.indexOf("BT: ") !== 0)
             {
-                this.model.set("Description", "BT: " + description);
+                this.model.set("description", "BT: " + description);
                 this.$("#breakThrough img").attr("src", "assets/images/QVImages/breakthroughClicked.jpg");
             }
             else
@@ -42,6 +46,7 @@ function(TP, dialog, printUnitLabel, convertToViewUnits, convertToModelUnits, wo
                 this.model.set("description", description);
             }
         },
+
 
         getDistance: function(value, options)
         {
@@ -320,26 +325,54 @@ function(TP, dialog, printUnitLabel, convertToViewUnits, convertToModelUnits, wo
                 height: 600,
                 resizable: false,
 
-                buttons:
+                "delete": function ()
                 {
-                    "Save": function ()
-                    {
-                        self.$el.dialog("close");
-                        self.close();
-                    },
-                    "Cancel": function ()
-                    {
-                        self.$el.dialog("close");
-                        self.close();
-                    },
+                    self.deleteWorkout();
+                },
+                "apply": function ()
+                {
+                    self.$el.dialog("close");
+                    self.close();
+                },
+                "saveClose": function ()
+                {
+                    self.$el.dialog("close");
+                    self.close();
+                },
+
+              /*  buttons:
+                {
                     "Delete": function ()
                     {
                         self.deleteWorkout();
-                    }
+                    },
+                    "Apply": function ()
+                    {
+                        self.$el.dialog("close");
+                        self.close();
+                    },
+                    "Save & Close": function ()
+                    {
+                        self.$el.dialog("close");
+                        self.close();
+                    },
+                    
 
-                }
+                }*/
             });
  
+        },
+
+        onApplyClicked: function ()
+        {
+            this.$el.dialog("close");
+            this.close();
+        },
+
+        onSaveClosedClicked: function ()
+        {
+            this.$el.dialog("close");
+            this.close();
         },
 
         deleteWorkout: function ()

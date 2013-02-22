@@ -43,7 +43,7 @@
 }
 
 @mixin workoutColorsByCompliance()
-{
+	{
     &.ComplianceWarn 
     {
         background-color: $clrComplianceWarn
