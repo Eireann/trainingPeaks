@@ -28,6 +28,7 @@
     {
         height: 600px;
         overflow-y: scroll;
+        @include nice-scrollbar;
     }
 
     .week
