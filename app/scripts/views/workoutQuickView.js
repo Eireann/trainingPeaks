@@ -337,7 +337,7 @@ function(TP, dialog, printUnitLabel, convertToViewUnits, convertToModelUnits, wo
                 {
                     self.$el.dialog("close");
                     self.close();
-                },
+                }
 
               /*  buttons:
                 {
@@ -359,7 +359,7 @@ function(TP, dialog, printUnitLabel, convertToViewUnits, convertToModelUnits, wo
 
                 }*/
             });
- 
+
         },
 
         onApplyClicked: function ()

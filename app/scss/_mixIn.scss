@@ -40,13 +40,31 @@
     {
         background-color: $clrRun
     }
+     &.Bike
+    {
+        background-color: $clrBike
+    }
+     &.Swim
+    {
+        background-color: $clrSwim
+    }
 }
 
 @mixin workoutColorsByCompliance()
-	{
-    &.ComplianceWarn 
+{
+    &.ComplianceYellow
     {
-        background-color: $clrComplianceWarn
+        background-color: $clrComplianceYellow
+    }
+
+    &.ComplianceRed
+    {
+        background-color: $clrComplianceRed
+    }
+
+    &.ComplianceGreen
+    {
+        background-color: $clrComplianceGreen
     }
 }
 

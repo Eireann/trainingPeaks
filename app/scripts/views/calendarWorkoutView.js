@@ -31,7 +31,22 @@ function(moment, TP, WorkoutQuickView, workoutTypeName, CalendarWorkoutTemplate)
 
         getComplianceCssClassName: function()
         {
-            return "ComplianceWarn";
+
+            var totalTimePlanned = this.model.get("totalTimePlanned") ? this.model.get("totalTimePlanned") : 0;
+            var totalTime = this.model.get("totalTime") ? this.model.get("totalTime") : 0;
+
+            if ((totalTimePlanned * 0.8) <= totalTime && totalTime <= (totalTimePlanned * 1.2))
+            {
+                return "ComplianceGreen";
+            }
+            else if ((totalTimePlanned * 0.5) <= totalTime && totalTime <= (totalTimePlanned * 1.5))
+            {
+                return "ComplianceYellow";
+            }
+            else
+            {
+                return "ComplianceRed";
+            }
         },
 
         getPastOrCompletedCssClassName: function()
