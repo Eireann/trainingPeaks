@@ -22,6 +22,8 @@
 	"Month": "Month",
 	"Week": "Week",
 	"Day": "Day",
+	"hms": "h:m:s",
+	"Duration": "Duration",
 
     "Workout Library": "Workout Library",
     "Meal Library": "Meal Library",

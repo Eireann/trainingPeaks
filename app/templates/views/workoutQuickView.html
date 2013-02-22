@@ -80,7 +80,25 @@
                     <div class="workoutStatsColumn workoutStatsUnitLabel">
                        <label>{{printUnitLabel "distance"}}</label>
                     </div>
-                </div>     
+                </div>   
+
+                <div class="workoutStatsRow">
+                    <div class="workoutStatsColumn workoutStatsLabel">
+                            <label>{{$ "Duration"}}</label>
+                    </div>
+
+                    <div class="workoutStatsColumn workoutStatsPlanned">
+                        <input type="text" id="durationPlannedField" />
+                    </div>
+
+                    <div class="workoutStatsColumn workoutStatsCompleted">
+                        <input type="text" id="durationCompletedField" />
+                    </div>
+
+                    <div class="workoutStatsColumn workoutStatsUnitLabel">
+                        <label>{{$ "hms"}}</label>
+                    </div>
+                </div>   
             
                 <div class="workoutStatsRow">
                     <div class="workoutStatsColumn workoutStatsLabel">
