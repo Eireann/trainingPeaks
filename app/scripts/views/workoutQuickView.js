@@ -17,7 +17,7 @@ function(TP, dialog, printUnitLabel, convertToViewUnits, convertToModelUnits, wo
             "click #breakThrough": "onbreakThroughClicked",
             "click #delete": "deleteWorkout",
             "click #apply": "onApplyClicked",
-            "click #saveClose": "onSaveClosedClicked",
+            "click #saveClose": "onSaveClosedClicked"
 
         },
 
@@ -338,7 +338,7 @@ function(TP, dialog, printUnitLabel, convertToViewUnits, convertToModelUnits, wo
                 {
                     self.$el.dialog("close");
                     self.close();
-                },
+                }
 
               /*  buttons:
                 {
@@ -360,7 +360,7 @@ function(TP, dialog, printUnitLabel, convertToViewUnits, convertToModelUnits, wo
 
                 }*/
             });
- 
+
         },
 
         onApplyClicked: function ()
