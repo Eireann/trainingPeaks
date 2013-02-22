@@ -67,3 +67,15 @@
         background-color: $clrComplianceGreen
     }
 }
+
+@mixin selectionBox($width)
+{
+	select
+	{
+		margin-top: 3px;
+		height: 20px;
+		width: $width;
+		font-size: 12px;
+		font-family: $navigationFontFamilyRegular;
+	}
+}

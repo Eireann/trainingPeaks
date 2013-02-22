@@ -401,12 +401,12 @@
                 </div>
             </div>
 
-            <div class="calendarViewSelectionBox">
+            <div class="selectionBox">
                 <select>
                     <option value="Route" selected>{{$ "Route"}}</option>
                 </select>
             </div>
-            <div class="calendarViewSelectionBox">
+            <div class="selectionBox">
                 <select>
                     <option value="Route" selected>{{$ "Equipment"}}</option>
                 </select>
@@ -428,5 +428,22 @@
                 <textarea id="postActivityCommentsInput" class="activityComments" />
             </div>
         </div> 
+    </div>
+    <div class="quickviewFooter">
+        <div class="selectionBox">
+            <select>
+                <option value="Share" selected>{{$ "Share"}}</option>
+                <option value="Facebook">{{$ "Facebook"}}</option>
+                <option value="Twitter">{{$ "Twitter"}}</option>
+                <option value="Email">{{$ "Email"}}</option>
+                <option value="Link">{{$ "Link"}}</option>
+            </select>
+        </div>
+        <div class="saveCloseButtons">
+            <button id="delete">{{$ "Delete"}}</button>
+            <button id="apply">{{$ "Apply"}}</button>
+            <button id="saveClose">{{$ "SaveClose"}}</button>
+
+        </div>
     </div>
 </div>

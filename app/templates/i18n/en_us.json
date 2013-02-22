@@ -107,6 +107,14 @@
 	"PreActivityComments": "Pre-activity comments",
 	"PostActivityComments": "Post-activity comments",
 	"Route": "Route",
-	"Equipment": "Equipment"
+	"Equipment": "Equipment",
+	"Share": "Share",
+	"Facebook": "Facebook",
+	"Twitter": "Twitter",
+	"Email": "Email",
+	"Link": "Link",
+	"Delete": "Delete",
+	"Apply": "Apply",
+	"SaveClose": "Save & Close"
 
 }
