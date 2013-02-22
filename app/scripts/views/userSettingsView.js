@@ -153,7 +153,7 @@ function (TP, jqueryuiDialog, printUnitsValue, userSettingsTemplate)
         {
             if (!this.stickitInitialized)
             {
-                this.model.off("change");
+                this.model.off("change", this.render);
                 this.stickit();
                 this.model.checkpoint();
                 this.model.on("change", this.saveSettings, this);
@@ -166,21 +166,7 @@ function (TP, jqueryuiDialog, printUnitsValue, userSettingsTemplate)
 
         saveSettings: function()
         {
-            /*
-            var changed = false;
-            for (var prop in this.model.changed)
-            {
-                if (this.model.changed.hasOwnProperty(prop))
-                {
-                    changed = true;
-                    break;
-                }
-            }
-
-            if(changed)
-            */
-
-            //this.model.save();
+            this.model.save();
         },
 
         onClose: function ()

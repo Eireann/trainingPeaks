@@ -17,8 +17,7 @@ function(TP, dialog, printUnitLabel, convertToViewUnits, convertToModelUnits, wo
             "click #breakThrough": "onbreakThroughClicked",
             "click #delete": "deleteWorkout",
             "click #apply": "onApplyClicked",
-            "click #saveClose": "onSaveClosedClicked",
-
+            "click #saveClose": "onSaveClosedClicked"
         },
 
         template:
@@ -388,7 +387,9 @@ function(TP, dialog, printUnitLabel, convertToViewUnits, convertToModelUnits, wo
         {
             if (!this.stickitInitialized)
             {
-                theMarsApp.user.on("change:unitsValue", this.render, this);
+                this.model.off("change", this.render);
+                this.model.on("change", this.saveWorkout, this);
+
                 this.$el.dialog("open");
 
                 this.stickit();
