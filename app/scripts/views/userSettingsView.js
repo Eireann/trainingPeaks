@@ -15,6 +15,12 @@ function (TP, jqueryuiDialog, printUnitsValue, userSettingsTemplate)
             template: userSettingsTemplate
         },
 
+        events:
+        {
+            "click .userSettingsReset": "onResetSettings",
+            "click .userSettingsSaveClose": "onClose"
+        },
+
         bindings:
         {
             "#firstNameSettingField":
