@@ -48,19 +48,23 @@ function(_, TP, CalendarWeekView, customCalendarTemplate)
 
         setWorkoutColorization: function()
         {
-            var colorizationCode = theMarsApp.user.get("settings").calendar.workoutColorization;
-            var colorizationClassName = this.colorizationClassNames[colorizationCode];
-
-            if (!this.ui.weeksContainer.hasClass(colorizationClassName))
+            var settings = theMarsApp.user.get("settings");
+            if (settings && settings.calendar)
             {
-                var view = this;
-                _.each(this.colorizationClassNames, function(className)
+                var colorizationCode = settings.calendar.workoutColorization;
+                var colorizationClassName = this.colorizationClassNames[colorizationCode];
+
+                if (!this.ui.weeksContainer.hasClass(colorizationClassName))
                 {
-                    view.ui.weeksContainer.removeClass(className);
-                });
-                if (colorizationCode > 0)
-                {
-                    this.ui.weeksContainer.addClass(colorizationClassName);
+                    var view = this;
+                    _.each(this.colorizationClassNames, function(className)
+                    {
+                        view.ui.weeksContainer.removeClass(className);
+                    });
+                    if (colorizationCode > 0)
+                    {
+                        this.ui.weeksContainer.addClass(colorizationClassName);
+                    }
                 }
             }
         },
@@ -98,6 +102,8 @@ function(_, TP, CalendarWeekView, customCalendarTemplate)
             if (!this.collection)
                 throw "CalendarView needs a Collection!";
 
+            this.setWorkoutColorization();
+
             _.bindAll(this, "onScroll");
             //debounce doesn't seem to help - it's not our function that's slow, it's the browser repainting
             //this.ui.weeksContainer.scroll(_.debounce(this.onScroll, 30));
@@ -112,6 +118,8 @@ function(_, TP, CalendarWeekView, customCalendarTemplate)
                 var weekModel = this.collection.at(i);
                 this.addWeek({ model: weekModel, collection: weekModel.get("week"), append: true });
             }
+
+
             theMarsApp.logger.logTimer("CalendarView.onRender", "Finished rendering weeks (but before the browser displays them)");
             theMarsApp.logger.waitAndLogTimer("CalendarView.onRender", "Browser has now rendered the weeks");
         },
