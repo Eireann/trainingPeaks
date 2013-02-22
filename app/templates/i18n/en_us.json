@@ -22,6 +22,8 @@
 	"Month": "Month",
 	"Week": "Week",
 	"Day": "Day",
+	"hms": "h:m:s",
+	"Duration": "Duration",
 
     "Workout Library": "Workout Library",
     "Meal Library": "Meal Library",
@@ -102,6 +104,7 @@
 	"Min": "Min",
 	"Max": "Max",
 	"Avg": "Avg",
+	"Temperature": "Temperature",
 
 	"Description": "Description",
 	"PreActivityComments": "Pre-activity comments",
