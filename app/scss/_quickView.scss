@@ -263,14 +263,18 @@
 		width: 300px;
 		button
 		{
-			font-color:$white;
+			color:$white;
 			font-family: $navigationFontFamilyRegular;
 			font-size: $navigationFontSize;
-			width: 75px;
+			width: 77px;
+			height: 21px;
+			background: url('../../../../assets/images/QVImages/buttonBackground77px.png') no-repeat;
+			border: 0px;
 		}
 		#saveClose
 		{
-			width: 110px;
+			width: 107px;
+			background: url('../../../../assets/images/QVImages/buttonBackground107px.png') no-repeat;
 		}
 	}
 }
