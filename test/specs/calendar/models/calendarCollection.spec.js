@@ -35,7 +35,7 @@ function($, TP, moment, WorkoutModel, WorkoutsCollection, CalendarCollection)
 
             expect(function() { collection.getDayModel(dayInsideOfWeek); }).not.toThrow();
             expect(collection.getDayModel(dayInsideOfWeek)).toBeDefined();
-            expect(collection.getDayModel(dayInsideOfWeek).get("date").format("YYYY-MM-DD")).toBe(dayInsideOfWeek.format("YYYY-MM-DD"));
+            expect(collection.getDayModel(dayInsideOfWeek).get("date")).toBe(dayInsideOfWeek.format("YYYY-MM-DD"));
         });
 
         it("should have a method to retrieve a specific day inside a Week by the day's date, when the week starts on a Monday", function()
@@ -52,7 +52,7 @@ function($, TP, moment, WorkoutModel, WorkoutsCollection, CalendarCollection)
 
             expect(function() { collection.getDayModel(dayInsideOfWeek); }).not.toThrow();
             expect(collection.getDayModel(dayInsideOfWeek)).toBeDefined();
-            expect(collection.getDayModel(dayInsideOfWeek).get("date").format("YYYY-MM-DD")).toBe(dayInsideOfWeek.format("YYYY-MM-DD"));
+            expect(collection.getDayModel(dayInsideOfWeek).get("date")).toBe(dayInsideOfWeek.format("YYYY-MM-DD"));
 
         });
 
@@ -94,8 +94,8 @@ function($, TP, moment, WorkoutModel, WorkoutsCollection, CalendarCollection)
                 var weekCollection = CalendarCollection.prototype.createWeekCollectionStartingOn.call(context, moment(startDate));
 
                 expect(weekCollection.length).toBe(7);
-                expect(weekCollection.at(0).get("date").format("YYYY-MM-DD")).toBe(startDate.format("YYYY-MM-DD"));
-                expect(weekCollection.at(6).get("date").format("YYYY-MM-DD")).toBe(startDate.add("days", 6).format("YYYY-MM-DD"));
+                expect(weekCollection.at(0).get("date")).toBe(startDate.format("YYYY-MM-DD"));
+                expect(weekCollection.at(6).get("date")).toBe(startDate.add("days", 6).format("YYYY-MM-DD"));
                 
                
             });
@@ -108,8 +108,8 @@ function($, TP, moment, WorkoutModel, WorkoutsCollection, CalendarCollection)
                 var weekCollectionWithSummary = CalendarCollection.prototype.createWeekCollectionStartingOn.call(contextWithSummary, moment(startDate));
 
                 expect(weekCollectionWithSummary.length).toBe(8);
-                expect(weekCollectionWithSummary.at(0).get("date").format("YYYY-MM-DD")).toBe(startDate.format("YYYY-MM-DD"));
-                expect(weekCollectionWithSummary.at(6).get("date").format("YYYY-MM-DD")).toBe(startDate.add("days", 6).format("YYYY-MM-DD"));
+                expect(weekCollectionWithSummary.at(0).get("date")).toBe(startDate.format("YYYY-MM-DD"));
+                expect(weekCollectionWithSummary.at(6).get("date")).toBe(startDate.add("days", 6).format("YYYY-MM-DD"));
                 expect(weekCollectionWithSummary.at(7).isSummary).toBe(true);
             });
 

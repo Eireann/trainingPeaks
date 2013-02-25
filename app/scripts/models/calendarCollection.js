@@ -5,7 +5,7 @@
     "models/calendarWeekCollection",
     "models/calendarDay"
 ],
-function (TP, WorkoutsCollection, CalendarWeekCollection, CalendarDayModel)
+function(TP, WorkoutsCollection, CalendarWeekCollection, CalendarDayModel)
 {
     return TP.Collection.extend(
     {

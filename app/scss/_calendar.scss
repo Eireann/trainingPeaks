@@ -8,10 +8,12 @@
 
 #calendarContainer
 {
-    
+   
+    @include column(15);
+     
     #libraryContainer.open + &
     {
-        @include column(12);
+        width:80%;
         @include transition-property(width);
         @include transition-duration(400ms);
         padding-left:0px;
@@ -19,7 +21,7 @@
 
     #libraryContainer.closed + &
     {
-        @include column(15);
+        width:96%;
         @include transition-property(width);
         @include transition-duration(400ms);
     }

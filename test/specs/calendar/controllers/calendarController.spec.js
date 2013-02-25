@@ -139,7 +139,7 @@ function(moment, $, _, Backbone, CalendarController, WorkoutModel, WorkoutsColle
         describe("Drag and drop items", function()
         {
 
-            describe("Drag an existing workout to a new date", function()
+            it("Should drag an existing workout to a new date", function()
             {
                 var eventOptions = {
                     DropEvent: "itemMoved"
@@ -150,7 +150,7 @@ function(moment, $, _, Backbone, CalendarController, WorkoutModel, WorkoutsColle
                 expect(controller.weeksCollection.onItemMoved).toHaveBeenCalledWith(eventOptions);
             });
 
-            describe("Drag a new workout from library", function()
+            it("Should drag a new workout from library", function()
             {
                 var eventOptions = {
                     DropEvent: "addExerciseFromLibrary",

@@ -1,9 +1,8 @@
 ﻿define(
 [
-    "moment",
     "TP"
 ],
-function (moment, TP)
+function(TP)
 {
     return TP.APIModel.extend(
     {

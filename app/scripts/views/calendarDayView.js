@@ -13,7 +13,7 @@ define(
 function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDayTemplate)
 {
 
-    var today = moment();
+    var today = moment().format("YYYY-MM-DD");
 
     var CalendarDayLabelView = TP.ItemView.extend(
     {
@@ -77,8 +77,7 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDayTe
         setTodayCss: function()
         {
             // so we can style today or scroll to it
-            var daysAgo = this.model.get("date").diff(today, "days");
-            if (daysAgo === 0)
+            if (this.model.get("date") === today)
             {
                 this.$el.addClass("today");
             }

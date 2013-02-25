@@ -4,6 +4,7 @@
 {
 
     margin-top:15px;
+    @include column(1);
 
     #libraries
     {
@@ -17,7 +18,7 @@
              
     &.open
     {
-        @include column(4);
+        width:20%;
         @include transition-property(width);
         @include transition-duration(400ms);
         padding-right:2px;
@@ -31,7 +32,6 @@
 
     &.closed
     {
-        @include column(1);
         width:51px;
         text-align:right;
         @include transition-property(width);
