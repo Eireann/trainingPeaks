@@ -10,7 +10,7 @@ function(_, moment, TP)
     return TP.Model.extend(
     {
 
-        idAttribute: 'dateString',
+        idAttribute: 'date',
         dateFormat: "YYYY-MM-DD",
         collection: null,
 
@@ -27,15 +27,8 @@ function(_, moment, TP)
             if(!date)
                 throw "CalendarDay requires a date";
 
-            // date must be a moment
-            if (!moment.isMoment(date))
-            {
-                date = moment(date);
-                this.set("date", date, { silent: true });
-            }
-
-            // formatted date for id in collection 
-            this.set("dateString", moment(date).format(this.dateFormat), { silent: true });
+            // use a formatted string for date attribute and for calendar id
+            this.set("date", moment(date).format(this.dateFormat), { silent: true });
         },
 
         configureCollection: function()

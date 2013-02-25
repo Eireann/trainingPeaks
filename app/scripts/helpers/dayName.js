@@ -18,7 +18,8 @@ function(Handlebars, moment, printDate)
             formatString = "ddd";
 
         var theDay;
-        if (typeof dateOrDayNumber === 'number')
+        // 0-7 day index, but if we get a larger number assume it's a timestamp
+        if (typeof dateOrDayNumber === 'number' && dateOrDayNumber <= 7)
             theDay = moment().day(dateOrDayNumber);
         else
             theDay = moment(dateOrDayNumber);
