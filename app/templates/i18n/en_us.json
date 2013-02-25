@@ -120,6 +120,12 @@
 	"Apply": "Apply",
 	"Close": "Close",
     "SaveClose": "Save & Close",
-	"Reset": "Reset"
+	"Reset": "Reset",
 
+    "CalendarSettings": "Calendar Settings",
+    "WorkoutColorization": "Workout Colorization",
+    "Off": "Off",
+    "ByWorkoutType": "By Workout Type",
+    "ByCompliance": "By Compliance",
+    "Hybrid": "Hybrid"
 }

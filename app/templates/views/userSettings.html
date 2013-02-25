@@ -68,6 +68,16 @@
 </fieldset>
 
 <fieldset>
+    <legend>{{$ "CalendarSettings"}}</legend>
+    
+    <label for="colorizationSettingField">{{$ "WorkoutColorization"}}</label>
+    <input type="radio" name="colorizationSettingField" value="0"/>{{$ "Off"}}<br/>
+    <input type="radio" name="colorizationSettingField" value="1"/>{{$ "ByWorkoutType"}}<br/>
+    <input type="radio" name="colorizationSettingField" value="2"/>{{$ "ByCompliance"}}<br/> 
+    <input type="radio" name="colorizationSettingField" value="3"/>{{$ "Hybrid"}}<br/> 
+</fieldset>
+
+<fieldset>
     <legend>{{$ "Payments"}}</legend>
     
     <label>{{$ "AccountExpires"}}</label><label id="accountExpiresSettingField"></label>

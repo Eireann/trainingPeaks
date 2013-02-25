@@ -16,51 +16,42 @@ function (moment, TP)
 
         defaults:
         {
-            personId: "",
-            userId: "",
-
-            firstName: "",
-            lastName: "",
-            userName: "",
-            athleteType: "",
-            birthday: "",
-            gender: "",
-            email: "",
             address: "",
             address2: "",
-            city: "",
-            state: "",
-            country: "",
-            zipCode: "",
-            phone: "",
-            cellPhone: "",
-            profilePhotoUrl: "",
-            age: null,
-
-            units: 0,
-            unitsValue: 0,
-            dateFormat: "",
-            timeZone: "",
-            affiliadeId: null,
+            affiliateId: 0,
+            age: 0,
             allowMarketingEmails: false,
+            birthday: "",
+            cellPhone: "",
+            city: "",
             colorizeWorkouts: false,
-            couponCode: "",
+            country: "",
+            dateFormat: "",
+            email: "",
             enablePrivateMessageNotifications: false,
             expirationDate: "",
-            isAthlete: false,
+            firstName: "",
+            gender: null,
+            isAthlete: true,
             isEmailVerified: false,
             language: "",
             lastLogon: "",
-            latitude: "",
-            longitude: "",
+            lastName: "",
+            latitude: null,
+            longitude: null,
             numberOfVisits: 0,
+            phone: "",
+            profilePhotoUrl: "",
+            state: "",
             story: "",
+            timeZone: "",
+            units: 0,
+            userId: 0,
+            userName: "",
             userType: 0,
-            workoutLayout: "",
+            zipCode: "",
 
             settings: {},
-            accountSettings: {},
-            workoutSettings: [],
             athletes: []
         },
         
@@ -68,7 +59,7 @@ function (moment, TP)
         {
             return theMarsApp.apiRoot + "/WebApiServer/Users/V1/User";
         },
-        
+
         initialize: function(options)
         {
             Backbone.Model.prototype.initialize.apply(this, arguments);

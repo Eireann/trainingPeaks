@@ -13,6 +13,7 @@
             "backbone": "../vendor/js/libs/backbone",
             "backbone.marionette": "../vendor/js/libs/backbone.marionette",
             "Backbone.Marionette.Handlebars": "../vendor/js/libs/Backbone.Marionette.Handlebars/backbone.marionette.handlebars",
+            "backbone.deepmodel": "../vendor/js/libs/backbone.deepmodel",
             "backbone.stickit": "../vendor/js/libs/backbone.stickit",
 
             "marionette.faderegion": "scripts/plugins/marionette.faderegion",
@@ -58,6 +59,11 @@
                 exports: "Marionette"
             },
             "backbone.stickit":
+            {
+                deps: ["backbone"],
+                exports: "Backbone"
+            },
+            "backbone.deepmodel":
             {
                 deps: ["backbone"],
                 exports: "Backbone"

@@ -6,7 +6,8 @@ Wraps and extends core backbone and marionette functionality
 define(
 [
     "underscore",
-    "backbone"
+    "backbone",
+    "backbone.deepmodel"
 ],
 function(_, Backbone)
 {

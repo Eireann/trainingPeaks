@@ -6,12 +6,13 @@ Wraps and extends core backbone and marionette functionality
 define(
 [
     "backbone",
+    "backbone.deepmodel",
     "backbone.stickit",
     "backbone.marionette",
     "framework/APIModel",
     "framework/Logger"
 ],
-function(Backbone, BackboneStickit, Marionette, APIModel, Logger)
+function(Backbone, BackboneDeepModel, BackboneStickit, Marionette, APIModel, Logger)
 {
     var TP = {};
 
@@ -81,7 +82,7 @@ function(Backbone, BackboneStickit, Marionette, APIModel, Logger)
     // Backbone stuff
     TP.history = Backbone.history;
     TP.Collection = Backbone.Collection.extend({});
-    TP.Model = Backbone.Model.extend({});
+    TP.Model = Backbone.DeepModel.extend({});
     TP.APIModel = APIModel;
     TP.Router = Backbone.Router.extend({});
 
