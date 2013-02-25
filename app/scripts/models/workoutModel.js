@@ -7,7 +7,6 @@ function (moment, TP)
 {
     return TP.APIModel.extend(
     {
-
         webAPIModelName: "Workout",
         idAttribute: "workoutId",
         shortDateFormat: "YYYY-MM-DD",

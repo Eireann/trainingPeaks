@@ -23,13 +23,10 @@ function(moment, $, WorkoutModel)
 
         it("Should return correct calendar date", function()
         {
-            var today = moment().format(WorkoutModel.prototype.dateFormat);
+            var today = moment().format(WorkoutModel.prototype.shortDateFormat);
             var workoutId = "098765";
             var workout = new WorkoutModel({ workoutDay: today, workoutId: workoutId });
             expect(workout.getCalendarDay()).toEqual(moment().format(WorkoutModel.prototype.shortDateFormat));
-
-            workout = new WorkoutModel({ workoutDay: moment(), workoutId: workoutId });
-            expect(workout.getCalendarDay()).toEqual(moment().format("YYYY-MM-DD"));
         });
 
         describe("moveToDay", function()
