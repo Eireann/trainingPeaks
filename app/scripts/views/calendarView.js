@@ -43,7 +43,7 @@ function(_, TP, CalendarWeekView, customCalendarTemplate)
 
         initialize: function()
         {
-            theMarsApp.user.on("change", this.setWorkoutColorization, this);
+            theMarsApp.user.on("change:settings.calendar.workoutColorization", this.setWorkoutColorization, this);
         },
 
         setWorkoutColorization: function()
