@@ -48,7 +48,6 @@ function autoCompleteRequireHandlebarsHelpers()
     {
         if (modulesToAutoComplete[moduleName] === false)
         {
-            throw "FAILED TO LOAD: " + moduleName;
             theSpecLoader.completed(moduleName);
         }
     }
@@ -67,7 +66,6 @@ var requirejs = function(dependencies, callback)
             theSpecLoader.register(modulePath);
             if (modulePath.indexOf("helpers") > 0)
             {
-                debugger;
                 modulesToAutoComplete[modulePath] = false;
             }
             originalRequireJs([modulePath], function(completedDependency)
