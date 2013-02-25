@@ -9,14 +9,14 @@ function (moment, TP)
     {
 
         webAPIModelName: "UserSettings",
-        idAttribute: "personId",
+        idAttribute: "userId",
         shortDateFormat: "YYYY-MM-DD",
         timeFormat: "Thh:mm:ss",
         longDateFormat: "YYYY-MM-DDThh:mm:ss",
 
         defaults:
         {
-            personId: ""
+            userId: ""
         },
 
         parse: function(response)

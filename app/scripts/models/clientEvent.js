@@ -18,7 +18,7 @@ function (moment, TP)
         {
             return {
                 DateCreatedEpoch: moment().unix(),
-                UserPersonId: theMarsApp.user.has("personId") ? theMarsApp.user.get("personId") : 0,
+                UserPersonId: theMarsApp.user.has("userId") ? theMarsApp.user.get("userId") : 0,
                 UserHost: "",
                 UserAgent: "",
                 Application: "",

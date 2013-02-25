@@ -27,7 +27,7 @@ function(Handlebars, modelToViewConversionFactors)
         if (!_.isNumber(value))
             return "";
         
-        var currentUnits = theMarsApp.user.get("unitsValue");
+        var currentUnits = theMarsApp.user.get("units");
         
         switch(fieldType)
         {

@@ -28,7 +28,7 @@ function(Handlebars, modelToViewConversionFactors)
     
     var convertToModelUnits = function (value, fieldType, workoutType)
     {
-        var currentUnits = theMarsApp.user.get("unitsValue");
+        var currentUnits = theMarsApp.user.get("units");
 
         switch (fieldType)
         {

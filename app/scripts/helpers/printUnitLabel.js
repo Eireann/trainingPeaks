@@ -100,7 +100,7 @@ function(Handlebars)
     
     var printUnitLabel = function(fieldName, sportType)
     {
-        var currentUnits = theMarsApp.user.get("unitsValue");
+        var currentUnits = theMarsApp.user.get("units");
 
         if (!unitsHash.hasOwnProperty(fieldName))
             throw "Unknown field type for unit label";

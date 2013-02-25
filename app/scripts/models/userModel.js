@@ -6,7 +6,6 @@ function(TP)
 {
     return TP.APIModel.extend(
     {
-
         webAPIModelName: "User",
         idAttribute: "userId",
         shortDateFormat: "YYYY-MM-DD",
@@ -53,7 +52,7 @@ function(TP)
             settings: {},
             athletes: []
         },
-        
+
         url: function()
         {
             return theMarsApp.apiRoot + "/WebApiServer/Users/V1/User";

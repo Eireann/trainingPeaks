@@ -40,7 +40,7 @@ function (TP, jqueryuiDialog, printUnitsValue, userSettingsTemplate)
             },
             "#athleteTypeSettingField":
             {
-                observe: "athletes",
+                observe: "athletes.0.athleteType",
                 selectOptions:
                 {
                     collection: function()
@@ -133,9 +133,17 @@ function (TP, jqueryuiDialog, printUnitsValue, userSettingsTemplate)
             "input[name=emailPMNotificationSettingField]": "enablePrivateMessageNotifications",
             "input[name=postActivityNotificationSettingField]": "enablePrivateMessageNotifications",
             "input[name=newsletterNotificationSettingField]": "allowMarketingEmails",
-            "input[name=workoutColorizationSettingsField]":
+            "input[name=workoutColorizationSettingField]":
             {
-                observe: "settings"
+                observe: "settings.calendar.workoutColorization",
+                onGet: function(value, options)
+                {
+                    return value;
+                },
+                onSet: function(value, options)
+                {
+                    return value;
+                }
             },
             "#accountExpiresSettingField": "expirationDate"
         },
