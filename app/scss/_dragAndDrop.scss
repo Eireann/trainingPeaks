@@ -1,0 +1,11 @@
+﻿.ui-draggable
+{
+    cursor: pointer;
+}
+
+.ui-draggable-dragging
+{
+    cursor: move;
+    // z-index so the dragged clone floats above any other z-indexed layers we may have
+    z-index: 10;
+}
