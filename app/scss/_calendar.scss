@@ -13,7 +13,7 @@
      
     #libraryContainer.open + &
     {
-        width:80%;
+        width:75%;
         @include transition-property(width);
         @include transition-duration(400ms);
         padding-left:0px;
@@ -22,7 +22,7 @@
     #libraryContainer.closed + &
     {
 
-        @include calc(width, "100% - 51px"); 
+        @include calc(width, "100% - 50px"); 
         @include transition-property(width);
         @include transition-duration(400ms);
     }
