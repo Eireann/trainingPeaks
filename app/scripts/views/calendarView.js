@@ -46,7 +46,7 @@ function(_, TP, CalendarWeekView, customCalendarTemplate)
         {
             theMarsApp.user.on("change", this.setWorkoutColorization, this);
 
-            $(window).on("resize", this.resizeContext)
+            $(window).on("resize", this.resizeContext);
         },
 
         resizeContext: function (event)
