@@ -30,7 +30,9 @@
 		width: $width;
 		height: $height;
 		font-size: $fontSize;
-		font-family: $fontFamily
+		font-family: $fontFamily;
+		padding-top: 0px;
+		padding-bottom: 0px;
 	}
 }
 
