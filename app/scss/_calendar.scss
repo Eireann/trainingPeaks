@@ -21,7 +21,8 @@
 
     #libraryContainer.closed + &
     {
-        width:96%;
+
+        @include calc(width, "100% - 51px"); 
         @include transition-property(width);
         @include transition-duration(400ms);
     }
