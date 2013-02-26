@@ -69,14 +69,12 @@
 		{
 			float: left;
 			width: 400px;
+
+			@include inputs(400px, 35px, 26px, $navigationFontFamilyRegular);
 			input
 			{
-				width: 400px;
-				height: 35px;
-				font-family: $navigationFontFamilyRegular;
-				font-size: 26px;
 				color: $TPBlue;
-				border: 1px solid white;
+				border: 0px;
 			}
 		}
 
