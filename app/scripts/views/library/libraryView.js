@@ -28,6 +28,8 @@ function(_, TP, ExerciseLibraryView, MealLibraryView, libraryTemplate)
             };
 
             this.activeLibraryName = null;
+
+            $(window).on("resize", this.resizeContext)
         },
 
         ui:
@@ -138,7 +140,21 @@ function(_, TP, ExerciseLibraryView, MealLibraryView, libraryTemplate)
                 this.ui.activeLibraryContainer.append(library.$el);
                 library.$el.hide();
             }
-        }
+        },
+
+        onShow: function()
+        {
+            this.resizeContext();
+        },
+
+        resizeContext: function (event)
+        {
+            var headerHeight = $("#navigation").height();
+            var windowHeight = $(window).height();
+            var libraryHeight = windowHeight - headerHeight - 75 + 'px';
+            this.$("#tabs").css({ height: libraryHeight });
+            this.$("#activeLibraryContainer").css({ height: libraryHeight });
+        },
 
     });
 });

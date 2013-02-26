@@ -28,6 +28,7 @@ function(_, TP, CalendarWeekView, customCalendarTemplate)
         ui:
         {
             "weeksContainer": "#weeksContainer"
+
         },
 
         modelEvents:
@@ -43,7 +44,16 @@ function(_, TP, CalendarWeekView, customCalendarTemplate)
 
         initialize: function()
         {
-            theMarsApp.user.on("change:settings.calendar.workoutColorization", this.setWorkoutColorization, this);
+            theMarsApp.user.on("change", this.setWorkoutColorization, this);
+
+            $(window).on("resize", this.resizeContext)
+        },
+
+        resizeContext: function (event)
+        {
+            var headerHeight = $("#navigation").height();
+            var windowHeight = $(window).height();
+            this.$(".scrollable").css({ height: windowHeight - headerHeight - 75 +'px' });
         },
 
         setWorkoutColorization: function()
@@ -128,6 +138,8 @@ function(_, TP, CalendarWeekView, customCalendarTemplate)
         onShow: function()
         {
             this.scrollToToday();
+
+             this.resizeContext();
         },
         
         onScroll: function()
@@ -163,5 +175,6 @@ function(_, TP, CalendarWeekView, customCalendarTemplate)
         {
             this.trigger("itemDropped", options);
         }
+
     });
 });
