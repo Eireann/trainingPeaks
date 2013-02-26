@@ -1,5 +1,20 @@
 ﻿@import "tpstylesheet";
 
+.ui-dialog
+{
+	padding: 0px;
+	border: 0px;
+
+	 @include box-shadow(5px 5px 5px $TPGrey4);
+
+	.ui-dialog-content
+	{
+		padding: 0px;
+	}
+}
+
+
+
 .ui-dialog-titlebar
 {
     display:none;
@@ -10,9 +25,6 @@
 {
 	display:none;
 }
-
-
-
 
 #workOutQuickView
 {
@@ -122,7 +134,7 @@
 
 .quickViewContent
 {
-	height: 425px;
+	height: 450px;
 	overflow-y:scroll; 
 	overflow-x:hidden;
     @include nice-scrollbar;
