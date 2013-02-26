@@ -87,11 +87,8 @@
         white-space: nowrap;
 
         background-color:$white;
-        opacity: 0.8;
         border-left:2px solid $TPBlue;
         border-bottom:2px solid $TPBlue;
-
-        @include box-shadow(5px 5px 5px $TPGrey4);
 
         @include labels($navigationFontFamilyRegular, 20px, $TPBlue);
         label
