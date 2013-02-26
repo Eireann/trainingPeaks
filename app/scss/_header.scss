@@ -5,6 +5,11 @@
 	height: 35px;
 	background-color: $black;
 
+	.row
+	{
+		width: 100%;
+	}
+
 	.personHeaderLogo
 	{
 		float: left;
@@ -56,6 +61,11 @@
 {
 	height: 65px;
 	background-color: $white;
+
+	.row
+	{
+		width: 100%;
+	}
 
 	.appNavigation
 	{
