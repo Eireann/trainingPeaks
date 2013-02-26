@@ -29,7 +29,7 @@ function(_, TP, ExerciseLibraryView, MealLibraryView, libraryTemplate)
 
             this.activeLibraryName = null;
 
-            $(window).on("resize", this.resizeContext)
+            $(window).on("resize", this.resizeContext);
         },
 
         ui:
@@ -154,7 +154,7 @@ function(_, TP, ExerciseLibraryView, MealLibraryView, libraryTemplate)
             var libraryHeight = windowHeight - headerHeight - 75 + 'px';
             this.$("#tabs").css({ height: libraryHeight });
             this.$("#activeLibraryContainer").css({ height: libraryHeight });
-        },
+        }
 
     });
 });
