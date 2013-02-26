@@ -7,26 +7,10 @@ plus a moment.js compatible formatString (defaults to 'ddd', day name abbreviati
 define(
 [
     "handlebars",
-    "moment",
-    "./printDate"
+    "utilities/dayName"
 ],
-function(Handlebars, moment, printDate)
+function(Handlebars, dayName)
 {
-    var dayName = function(dateOrDayNumber, formatString)
-    {
-        if (!formatString || typeof formatString !== "string")
-            formatString = "ddd";
-
-        var theDay;
-        // 0-7 day index, but if we get a larger number assume it's a timestamp
-        if (typeof dateOrDayNumber === 'number' && dateOrDayNumber <= 7)
-            theDay = moment().day(dateOrDayNumber);
-        else
-            theDay = moment(dateOrDayNumber);
-
-        return printDate(theDay, formatString);
-    };
-
     Handlebars.registerHelper("dayName", dayName);
     return dayName;
 });

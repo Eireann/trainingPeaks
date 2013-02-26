@@ -1,5 +1,5 @@
 requirejs(
-["scripts/helpers/dayName"],
+["utilities/dayName"],
 function(dayName)
 {
     describe("dayName template helper", function()

@@ -279,6 +279,7 @@ module.exports = function(grunt)
 
     grunt.registerTask("release", ["debug", "compass:release", "targethtml:release", "uglify", "copy:release", "copy-i18n-files"]);
     grunt.registerTask("default", ["debug"]);
+    grunt.registerTask("dev", ["compass:debug", "copy:debug"]);
 
     // makes reports available at localhost/Mars/coverage/lcov-report/index.html,
     // and at build/debug/coverage/lcov-report/index.html

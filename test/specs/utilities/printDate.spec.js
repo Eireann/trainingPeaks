@@ -1,5 +1,5 @@
 requirejs(
-["scripts/helpers/printDate"],
+["utilities/printDate"],
 function(printDate)
 {
     describe("printDate template helper", function()

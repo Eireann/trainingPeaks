@@ -1,8 +1,6 @@
 define(
-[
-    "handlebars"
-],
-function(Handlebars)
+[],
+function()
 {
     var printUnitsValue = function(value)
     {
@@ -11,7 +9,6 @@ function(Handlebars)
         else
             return "Metric";
     };
-    
-    Handlebars.registerHelper("printUnitsValue", printUnitsValue);
+
     return printUnitsValue;
 });

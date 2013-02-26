@@ -1,7 +1,6 @@
 var path = require("path");
 var rootJsDir = __dirname.substring(0, __dirname.indexOf("/test"));
 var _ = require('underscore');
-var timers = require('timers');
 
 var nodeConfig = require(path.join(rootJsDir, "app/config/nodeRequirejsConfig"));
 // load this after we load nodeConfig, so it loads in node's commonJS format instead of amd
@@ -39,22 +38,6 @@ requirejs(['jasmine-spec-loader'], function (loader) {
     });
 });
 
-// Some handlebars helpers get loaded via hbs, outside of our require/registry process, so just flag them as complete after some time
-// it's a hack, but it forces the tests to finish running instead of timing out
-var modulesToAutoComplete = {};
-function autoCompleteRequireHandlebarsHelpers()
-{
-    for (var moduleName in modulesToAutoComplete)
-    {
-        if (modulesToAutoComplete[moduleName] === false)
-        {
-            theSpecLoader.completed(moduleName);
-        }
-    }
-}
-timers.setTimeout(autoCompleteRequireHandlebarsHelpers, 5000);
-
-
 // override requirejs, so we call the spec loader's register/complete functions
 var originalRequireJs = requirejs;
 var requirejs = function(dependencies, callback)
@@ -64,14 +47,9 @@ var requirejs = function(dependencies, callback)
         _.each(dependencies, function(modulePath)
         {
             theSpecLoader.register(modulePath);
-            if (modulePath.indexOf("helpers") > 0)
-            {
-                modulesToAutoComplete[modulePath] = false;
-            }
             originalRequireJs([modulePath], function(completedDependency)
             {
                 theSpecLoader.completed(modulePath);
-                modulesToAutoComplete[modulePath] = true;
             });
         });
     }

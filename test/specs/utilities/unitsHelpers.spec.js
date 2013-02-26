@@ -1,11 +1,11 @@
 requirejs(
 [
-    "scripts/helpers/printUnitLabel",
-    "scripts/helpers/convertToViewUnits"
+    "utilities/printUnitLabel",
+    "utilities/convertToViewUnits"
 ],
 function(printUnitLabel, convertToViewUnits)
 {
-    describe("units related helpers, english units", function()
+    describe("units related utilities, english units", function()
     {
         var theMarsApp =
         {

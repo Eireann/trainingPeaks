@@ -179,7 +179,8 @@ define([
                 }
                 return "{}";
             }
-            function composeParts(parts) {
+            function composeParts(parts)
+            {
                 if (!parts) {
                     return [];
                 }
@@ -223,11 +224,18 @@ define([
                         var paramsWithoutParts = ['this', '.', '..', './..', '../..', '../../..'];
 
                         // grab the params
-                        if (statement.params) {
-                            _(statement.params).forEach(function (param) {
-                                if (_(paramsWithoutParts).contains(param.original)) {
-                                    helpersres.push(statement.id.string);
-                                }
+                        if (statement.params && typeof Handlebars.helpers[statement.id.string] === 'undefined' && statement.id.string !== "$")
+                        {
+                            _(statement.params).forEach(function(param) {
+                              if ( _(paramsWithoutParts).contains(param.original)
+                                 || param instanceof Handlebars.AST.StringNode
+                                || param instanceof Handlebars.AST.IntegerNode
+                                || param instanceof Handlebars.AST.BooleanNode
+                                )
+                              {
+                                helpersres.push(statement.id.string);
+                              }
+
 
                                 parts = composeParts(param.parts);
 

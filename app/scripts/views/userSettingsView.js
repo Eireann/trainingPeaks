@@ -2,7 +2,7 @@
 [
     "TP",
     "jqueryui/dialog",
-    "helpers/printUnitsValue",
+    "utilities/printUnitsValue",
     "hbs!templates/views/userSettings"
 ],
 function (TP, jqueryuiDialog, printUnitsValue, userSettingsTemplate)

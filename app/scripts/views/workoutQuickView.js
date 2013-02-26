@@ -2,15 +2,16 @@
 [
     "TP",
     "jqueryui/dialog",
-    "helpers/printUnitLabel",
-    "helpers/convertToViewUnits",
-    "helpers/convertToModelUnits",
+    "utilities/printUnitLabel",
+    "utilities/convertToViewUnits",
+    "utilities/convertToModelUnits",
     "hbs!templates/views/workoutQuickView"
 ],
 function(TP, dialog, printUnitLabel, convertToViewUnits, convertToModelUnits, workoutQuickViewTemplate)
 {
     return TP.ItemView.extend(
     {
+
         events:
         {
             "click #breakThrough": "onBreakThroughClicked",

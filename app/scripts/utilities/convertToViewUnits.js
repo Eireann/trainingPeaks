@@ -1,9 +1,8 @@
 define(
 [
-    "handlebars",
     "utilities/modelToViewConversionFactors"
 ],
-function(Handlebars, modelToViewConversionFactors)
+function(modelToViewConversionFactors)
 {
     var convertToPaceFromSpeed = function(speed, unitSystem)
     {
@@ -43,6 +42,5 @@ function(Handlebars, modelToViewConversionFactors)
         }
     };
 
-    Handlebars.registerHelper("convertToViewUnits", convertToViewUnits);
     return convertToViewUnits;
 });
