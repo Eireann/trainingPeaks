@@ -137,9 +137,8 @@ function(_, TP, CalendarWeekView, customCalendarTemplate)
         // onShow happens after render finishes and dom has updated ...
         onShow: function()
         {
+            this.resizeContext();
             this.scrollToToday();
-
-             this.resizeContext();
         },
         
         onScroll: function()
