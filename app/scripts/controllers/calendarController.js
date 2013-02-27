@@ -1,5 +1,5 @@
 define(
-    [
+[
     "underscore",
     "moment",
     "TP",
@@ -9,11 +9,13 @@ define(
     "models/calendarDay",
     "models/library/libraryExercisesCollection",
     "models/workoutModel",
-    "views/calendarView",
-    "views/library/libraryView"
-    ],
+    "views/calendarContainerView",
+    "views/library/libraryView",
+    "hbs!templates/views/calendarHeader"
+],
 function(_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollection,
-    CalendarDayModel, LibraryExercisesCollection, WorkoutModel, CalendarView, LibraryView)
+         CalendarDayModel, LibraryExercisesCollection, WorkoutModel, CalendarContainerView, LibraryView,
+         calendarHeaderTemplate)
 {
     return TP.Controller.extend(
     {
@@ -22,15 +24,20 @@ function(_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollecti
 
         show: function()
         {
+            this.initializeHeader();
             this.initializeCalendar();
             this.initializeLibrary();
+
             this.weeksCollection.requestWorkouts(this.startDate, this.endDate);
+
+            this.layout.headerRegion.show(this.views.header);
             this.layout.calendarRegion.show(this.views.calendar);
             this.layout.libraryRegion.show(this.views.library);
         },
 
         initialize: function ()
         {
+            this.models = {};
             this.views = {};
             
             this.layout = new CalendarLayout();
@@ -44,23 +51,34 @@ function(_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollecti
             // end on a Saturday
             this.endDate = moment().day(6 + this.startOfWeekDayIndex).add("weeks", 6);
 
+            // Set the currentMonthModel to be displayed in the Calendar Header (and for other use)
+            this.models.currentMonthModel = new TP.Model({ month: moment().format("MMMM") });
+
             this.weeksCollection = new CalendarCollection(null, { startDate: moment(this.startDate), endDate: moment(this.endDate), startOfWeekDayIndex: this.startOfWeekDayIndex, summaryViewEnabled: this.summaryViewEnabled });
+        },
+
+        initializeHeader: function()
+        {
+            if (this.views.header)
+                this.views.header.close();
+
+            this.views.header = new Marionette.ItemView({ template: { type: "handlebars", template: calendarHeaderTemplate }, model: this.models.currentMonthModel });
         },
 
         initializeCalendar: function()
         {
-            var weekDaysModel = new TP.Model({ weekDays: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"] });
-
+            var weekDaysModel = new TP.Model({ startOfWeekDayIndex: this.startOfWeekDayIndex });
+            
             if (this.views.calendar)
                 this.views.calendar.close();
             
-            this.views.calendar = new CalendarView({ model: weekDaysModel, collection: this.weeksCollection });
+            this.views.calendar = new CalendarContainerView({ model: weekDaysModel, collection: this.weeksCollection });
 
             this.bindToCalendarViewEvents(this.views.calendar);
-
         },
 
-        bindToCalendarViewEvents: function(calendarView) {
+        bindToCalendarViewEvents: function (calendarView)
+        {
             calendarView.on("prepend", this.prependWeekToCalendar, this);
             calendarView.on("append", this.appendWeekToCalendar, this);
             calendarView.on("itemDropped", this.onDropItem, this);
@@ -71,7 +89,8 @@ function(_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollecti
             if (options.DropEvent === "itemMoved")
             {
                 this.weeksCollection.onItemMoved(options);        
-            } else if (options.DropEvent === "addExerciseFromLibrary")
+            }
+            else if (options.DropEvent === "addExerciseFromLibrary")
             {
                 var workout = this.createNewWorkoutFromExerciseLibraryItem(options.ItemId, options.destinationCalendarDayModel.id);
                 this.weeksCollection.addWorkout(workout);

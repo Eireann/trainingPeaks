@@ -1,7 +1,6 @@
 ﻿define(
 [
     "TP",
-
     "views/calendarDayView",
     "views/weekSummaryView"
 ],
@@ -30,6 +29,10 @@ function (TP, CalendarDayView, WeekSummaryView)
                 throw "CalendarWeekView requires a collection";
 
             this.waiting = $('<div class="waiting"> </div>');
+        },
+
+        onRender: function()
+        {
         },
 
         onWaitStart: function()
