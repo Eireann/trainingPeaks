@@ -28,6 +28,17 @@ function(_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollecti
             this.initializeCalendar();
             this.initializeLibrary();
 
+            this.views.calendar.on("show", this.loadCalendarData, this);
+            this.views.library.on("show", this.loadLibraryData, this);
+
+            this.layout.headerRegion.show(this.views.header);
+            this.layout.calendarRegion.show(this.views.calendar);
+            this.layout.libraryRegion.show(this.views.library);
+        },
+
+        loadCalendarData: function()
+        {
+            // don't make requests until after we display, or else localStorage cache synchronous read blocks browser rendering
             var diff = this.endDate.diff(this.startDate, "weeks");
             for (var i = 0; i < diff; i++)
             {
@@ -35,10 +46,14 @@ function(_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollecti
                 var endDate = moment(startDate).add("days", 7);
                 this.weeksCollection.requestWorkouts(startDate, endDate);
             }
+        },
 
-            this.layout.headerRegion.show(this.views.header);
-            this.layout.calendarRegion.show(this.views.calendar);
-            this.layout.libraryRegion.show(this.views.library);
+        loadLibraryData: function()
+        {
+            for (var libraryName in this.libraryCollections)
+            {
+                this.libraryCollections[libraryName].fetch();
+            }
         },
 
         initialize: function ()
@@ -126,11 +141,6 @@ function(_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollecti
 
             this.views.library = new LibraryView({ collections: this.libraryCollections });
 
-            var controller = this;
-            _.each(_.keys(this.libraryCollections), function(libraryName)
-            {
-                controller.libraryCollections[libraryName].fetch();
-            });
         },
 
 
