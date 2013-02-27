@@ -45,6 +45,8 @@ function(_, TP, CalendarWeekView, calendarContainerView)
 
         initialize: function()
         {
+            _.bindAll(this, "checkForElementAppearance");
+            
             theMarsApp.user.on("change", this.setWorkoutColorization, this);
 
             //TODO Possibly move this into app.js in some initializer, instead of here?
@@ -92,7 +94,6 @@ function(_, TP, CalendarWeekView, calendarContainerView)
 
         addWeek: function(options)
         {
-
             var weekView = new CalendarWeekView({ collection: options.collection, model: options.model });
             weekView.on("itemview:itemDropped", this.onItemDropped, this);
 
@@ -103,6 +104,12 @@ function(_, TP, CalendarWeekView, calendarContainerView)
                 this.ui.weeksContainer.prepend(weekView.render().el);
                 this.ui.weeksContainer.scrollTop(this.ui.weeksContainer.scrollTop() + weekView.$el.height());
             }
+
+            weekView.$el.on("appear", function()
+            {
+                console.log(weekView.model.id);
+            });
+
             // display waiting indicator, then once controller loads the models they will turn off via sync event
             weekView.onWaitStart();
 
@@ -114,6 +121,27 @@ function(_, TP, CalendarWeekView, calendarContainerView)
             if (!this.collection)
                 throw "CalendarView needs a Collection!";
 
+            var self = this;
+            
+            $.expr[':'].appeared = function (element)
+            {
+                var $element = $(element);
+
+                if (!$element.is(':visible'))
+                    return false;
+
+                var containerTop = self.ui.weeksContainer.scrollTop();
+                var containerHeight = self.ui.weeksContainer.height();
+                var offset = $element.offset();
+                var top = offset.top;
+
+                if (top + $element.height() >= containerTop &&
+                    top <= containerTop + containerHeight)
+                    return true;
+                else
+                    return false;
+            };
+            
             this.setWorkoutColorization();
 
             _.bindAll(this, "onScroll");
@@ -131,7 +159,6 @@ function(_, TP, CalendarWeekView, calendarContainerView)
                 this.addWeek({ model: weekModel, collection: weekModel.get("week"), append: true });
             }
 
-
             theMarsApp.logger.logTimer("CalendarView.onRender", "Finished rendering weeks (but before the browser displays them)");
             theMarsApp.logger.waitAndLogTimer("CalendarView.onRender", "Browser has now rendered the weeks");
         },
@@ -143,8 +170,33 @@ function(_, TP, CalendarWeekView, calendarContainerView)
             this.scrollToToday();
         },
         
+        checkForElementAppearance: function()
+        {
+            this.checkingForAppearance = false;
+            var $appeared = this.ui.weeksContainer.find(".week").filter(function ()
+            {
+                return $(this).is(":appeared");
+            });
+
+            $appeared.trigger("appear", [$appeared]);
+
+            if (this.$priorAppeared)
+            {
+                var $disappeared = this.$priorAppeared.not($appeared);
+                $disappeared.trigger("disappear", [$disappeared]);
+            }
+
+            this.$priorAppeared = $appeared;
+        },
+        
         onScroll: function()
         {
+            if (!this.checkingForAppearance)
+            {
+                setTimeout(this.checkForElementAppearance, 250);
+                this.checkingForAppearance = true;
+            }
+            
             var howMuchIHave = this.ui.weeksContainer[0].scrollHeight;
             var howMuchIsVisible = this.ui.weeksContainer.height();
             var hidden = howMuchIHave - howMuchIsVisible;

@@ -28,7 +28,13 @@ function(_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollecti
             this.initializeCalendar();
             this.initializeLibrary();
 
-            this.weeksCollection.requestWorkouts(this.startDate, this.endDate);
+            var diff = this.endDate.diff(this.startDate, "weeks");
+            for (var i = 0; i < diff; i++)
+            {
+                var startDate = moment(this.startDate).add("weeks", i);
+                var endDate = moment(startDate).add("days", 7);
+                this.weeksCollection.requestWorkouts(startDate, endDate);
+            }
 
             this.layout.headerRegion.show(this.views.header);
             this.layout.calendarRegion.show(this.views.calendar);

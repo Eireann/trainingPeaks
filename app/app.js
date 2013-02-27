@@ -1,6 +1,8 @@
 define(
 [
     "TP",
+    "framework/ajaxAuth",
+    "framework/ajaxCaching",
     "models/session",
     "models/userModel",
     "models/userSettingsModel",
@@ -11,7 +13,7 @@ define(
     "router",
     "marionette.faderegion"
 ],
-function(TP, Session, UserModel, UserSettingsModel, ClientEventsCollection, NavigationController, LoginController, CalendarController, Router)
+function(TP, initializeAjaxAuth, initializeAjaxCaching, Session, UserModel, UserSettingsModel, ClientEventsCollection, NavigationController, LoginController, CalendarController, Router)
 {
     var theApp = new TP.Application();
 
@@ -21,6 +23,12 @@ function(TP, Session, UserModel, UserSettingsModel, ClientEventsCollection, Navi
         mainRegion: "#main"
     });
 
+    theApp.addInitializer(function()
+    {
+        initializeAjaxAuth(this);
+        initializeAjaxCaching(this);
+    });
+    
     // add a session
     theApp.addInitializer(function initSession()
     {
