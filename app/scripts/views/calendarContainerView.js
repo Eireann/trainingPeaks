@@ -3,16 +3,17 @@
     "underscore",
     "TP",
     "views/calendarWeekView",
-    "hbs!templates/views/customCalendar"
+    "hbs!templates/views/calendarContainerView"
 ],
-function(_, TP, CalendarWeekView, customCalendarTemplate)
+function(_, TP, CalendarWeekView, calendarContainerView)
 {
     return TP.ItemView.extend(
     {
         $weeksContainer: null,
         
         children: [],
-        colorizationClassNames: [
+        colorizationClassNames:
+        [
                 "colorizationOff",
                 "colorByWorkoutType",
                 "colorByCompliance",
@@ -22,7 +23,7 @@ function(_, TP, CalendarWeekView, customCalendarTemplate)
         template:
         {
             type: "handlebars",
-            template: customCalendarTemplate
+            template: calendarContainerView 
         },
 
         ui:
@@ -46,6 +47,7 @@ function(_, TP, CalendarWeekView, customCalendarTemplate)
         {
             theMarsApp.user.on("change", this.setWorkoutColorization, this);
 
+            //TODO Possibly move this into app.js in some initializer, instead of here?
             $(window).on("resize", this.resizeContext);
         },
 
@@ -93,6 +95,7 @@ function(_, TP, CalendarWeekView, customCalendarTemplate)
 
             var weekView = new CalendarWeekView({ collection: options.collection, model: options.model });
             weekView.on("itemview:itemDropped", this.onItemDropped, this);
+
             if (options.append)
                 this.ui.weeksContainer.append(weekView.render().el);
             else
@@ -104,7 +107,6 @@ function(_, TP, CalendarWeekView, customCalendarTemplate)
             weekView.onWaitStart();
 
             this.children.push(weekView);
-
         },
 
         onRender: function()

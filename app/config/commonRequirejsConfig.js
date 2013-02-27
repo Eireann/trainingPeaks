@@ -6,10 +6,14 @@
     var commonConfig = {
         paths:
         {
+            // jQuery related
             "jqueryui": "../vendor/js/libs/jqueryui",
+
+            // Underscore & Lodash (provided by Lodash)
             "lodash": "../vendor/js/libs/lodash/lodash",
             "underscore": "../vendor/js/libs/lodash/lodash",
 
+            // Backbone and plugins
             "backbone": "../vendor/js/libs/backbone",
             "backbone.marionette": "../vendor/js/libs/backbone.marionette",
             "Backbone.Marionette.Handlebars": "../vendor/js/libs/Backbone.Marionette.Handlebars/backbone.marionette.handlebars",

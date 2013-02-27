@@ -4,7 +4,7 @@ requirejs(
     "jquery",
     "TP",
     "app",
-    "views/calendarView",
+    "views/calendarContainerView",
     "hbs!templates/views/calendarWeek"
 ],
 function($, TP, theMarsApp, CalendarView, CalendarWeekTemplate)

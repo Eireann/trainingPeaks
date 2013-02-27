@@ -27,7 +27,7 @@ function(TP, calendarLayoutTemplate)
 
         regions:
         {
-            headerRegion: "#calendarHeader",
+            headerRegion: "#calendarMonthLabel",
             libraryRegion: "#libraryContainer",
             calendarRegion: "#calendarContainer",
             footerRegion: "#calendarFooter"
