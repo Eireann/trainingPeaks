@@ -61,7 +61,7 @@ function (moment, TP, CalendarDayView, WeekSummaryView)
             {
                 this.$el.addClass("thisWeek");
             }
-        },
+        }
 
     });
 });
