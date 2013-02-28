@@ -5,9 +5,10 @@
     "utilities/printUnitLabel",
     "utilities/convertToViewUnits",
     "utilities/convertToModelUnits",
+    "utilities/printTimeFromDecimalHours",
     "hbs!templates/views/workoutQuickView"
 ],
-function(TP, dialog, printUnitLabel, convertToViewUnits, convertToModelUnits, workoutQuickViewTemplate)
+function(TP, dialog, printUnitLabel, convertToViewUnits, convertToModelUnits, printTimeFromDecimalHours, workoutQuickViewTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -26,7 +27,7 @@ function(TP, dialog, printUnitLabel, convertToViewUnits, convertToModelUnits, wo
             template: workoutQuickViewTemplate
         },
 
-        getDistance: function (value, options)
+        getDistance: function(value, options)
         {
             return convertToViewUnits(value, "distance");
         },
@@ -36,6 +37,16 @@ function(TP, dialog, printUnitLabel, convertToViewUnits, convertToModelUnits, wo
             return convertToModelUnits(value, "distance");
         },
 
+        getTime: function(value, options)
+        {
+            return printTimeFromDecimalHours(value);
+        },
+        
+        setTime: function(value, options)
+        {
+            //return convertToModelUnits(value, "distance");
+            return value;
+        },
         getPace: function(value, options)
         {
             return convertToViewUnits(value, "pace");
@@ -86,6 +97,20 @@ function(TP, dialog, printUnitLabel, convertToViewUnits, convertToModelUnits, wo
                 eventsOverride: ["blur"],
                 onGet: "getDistance",
                 onSet: "setDistance"
+            },
+            "#totalTimeCompletedField":
+            {
+                observe: "totalTime",
+                eventsOverride: ["blur"],
+                onGet: "getTime",
+                onSet: "setTime"
+            },
+            "#totalTimePlannedField":
+            {
+                observe: "totalTimePlanned",
+                eventsOverride: ["blur"],
+                onGet: "getTime",
+                onSet: "setTime"
             },
             "#tssPlannedField":
             {
