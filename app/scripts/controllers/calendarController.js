@@ -21,23 +21,43 @@ function(_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollecti
     {
         startOfWeekDayIndex: 0,
         summaryViewEnabled: true,
+        calendarDataLoaded: false,
+        libraryDataLoaded: false,
 
         show: function()
         {
+
+            theMarsApp.logger.startTimer("CalendarController", "begin show");
             this.initializeHeader();
             this.initializeCalendar();
             this.initializeLibrary();
 
+            /*
+            // this method still is effectively synchronous - read and parse local storage, then repaint
             this.views.calendar.on("show", this.loadCalendarData, this);
             this.views.library.on("show", this.loadLibraryData, this);
+            */
 
             this.layout.headerRegion.show(this.views.header);
             this.layout.calendarRegion.show(this.views.calendar);
             this.layout.libraryRegion.show(this.views.library);
+
+            // next tick - let the browser paint, then request our data
+            var controller = this;
+            setTimeout(function()
+            {
+                controller.loadCalendarData();
+                controller.loadLibraryData();
+            }, 1);
+
+            theMarsApp.logger.logTimer("CalendarController", "finished show");
         },
 
         loadCalendarData: function()
         {
+            if (this.calendarDataLoaded)
+                return;
+            theMarsApp.logger.startTimer("CalendarController", "begin request calendar data");
             // don't make requests until after we display, or else localStorage cache synchronous read blocks browser rendering
             var diff = this.endDate.diff(this.startDate, "weeks");
             for (var i = 0; i < diff; i++)
@@ -46,14 +66,21 @@ function(_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollecti
                 var endDate = moment(startDate).add("days", 7);
                 this.weeksCollection.requestWorkouts(startDate, endDate);
             }
+            this.calendarDataLoaded = true;
+            theMarsApp.logger.logTimer("CalendarController", "finished request calendar data");
         },
 
         loadLibraryData: function()
         {
+            if (this.libraryDataLoaded)
+                return;
+
             for (var libraryName in this.libraryCollections)
             {
                 this.libraryCollections[libraryName].fetch();
             }
+
+            this.libraryDataLoaded = true;
         },
 
         initialize: function ()
