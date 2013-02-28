@@ -21,8 +21,6 @@ function(_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollecti
     {
         startOfWeekDayIndex: 0,
         summaryViewEnabled: true,
-        calendarDataLoaded: false,
-        libraryDataLoaded: false,
 
         show: function()
         {
@@ -55,8 +53,6 @@ function(_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollecti
 
         loadCalendarData: function()
         {
-            if (this.calendarDataLoaded)
-                return;
             theMarsApp.logger.startTimer("CalendarController", "begin request calendar data");
             // don't make requests until after we display, or else localStorage cache synchronous read blocks browser rendering
             var diff = this.endDate.diff(this.startDate, "weeks");
@@ -66,24 +62,20 @@ function(_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollecti
                 var endDate = moment(startDate).add("days", 6);
                 this.weeksCollection.requestWorkouts(startDate, endDate);
             }
-            this.calendarDataLoaded = true;
             theMarsApp.logger.logTimer("CalendarController", "finished request calendar data");
         },
 
         loadLibraryData: function()
         {
-            if (this.libraryDataLoaded)
-                return;
 
             for (var libraryName in this.libraryCollections)
             {
                 this.libraryCollections[libraryName].fetch();
             }
 
-            this.libraryDataLoaded = true;
         },
 
-        initialize: function ()
+        initialize: function()
         {
             this.models = {};
             this.views = {};
