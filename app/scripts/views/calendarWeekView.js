@@ -32,10 +32,6 @@ function (moment, TP, CalendarDayView, WeekSummaryView)
             this.waiting = $('<div class="waiting"> </div>');
         },
 
-        onRender: function()
-        {
-        },
-
         onWaitStart: function()
         {
             this.trigger("waitStart");
