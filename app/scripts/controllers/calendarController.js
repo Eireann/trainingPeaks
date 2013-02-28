@@ -177,8 +177,8 @@ function(_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollecti
             var endDate = moment(startDate).add("days", 6);
             this.endDate = moment(endDate);
 
-            this.weeksCollection.requestWorkouts(startDate, endDate);
             this.weeksCollection.appendWeek(startDate);
+            this.weeksCollection.requestWorkouts(startDate, endDate);
         },
 
         prependWeekToCalendar: function()
@@ -187,8 +187,8 @@ function(_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollecti
             var startDate = moment(endDate).subtract("days", 6);
             this.startDate = moment(startDate);
 
-            this.weeksCollection.requestWorkouts(startDate, endDate);
             this.weeksCollection.prependWeek(startDate);
+            this.weeksCollection.requestWorkouts(startDate, endDate);
         }
     });
 });

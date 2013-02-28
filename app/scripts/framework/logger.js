@@ -7,6 +7,7 @@
             this.logLevel = this.logLevels.ERROR;
             this.console = typeof myConsole !== 'undefined' ? myConsole : console;
             this.timers = {};
+            this.filterText = null;
         }
 
         Logger.prototype.logLevels = {
@@ -23,14 +24,22 @@
             this.logLevel = logLevel;
         };
 
+        Logger.prototype.filter = function(filterText)
+        {
+            this.filterText = filterText;
+        };
+
         Logger.prototype.write = function(logLevel, message)
         {
             if (logLevel >= this.logLevel)
             {
-                this.console.log(message);
-                if (this.logLevel === this.logLevels.TRACE)
+                if (!this.filterText || message.indexOf(this.filterText) >= 0)
                 {
-                    this.console.trace();
+                    this.console.log(message);
+                    if (this.logLevel === this.logLevels.TRACE)
+                    {
+                        this.console.trace();
+                    }
                 }
             }
         };

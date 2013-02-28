@@ -29,17 +29,28 @@ function()
                 var methodName = deferredFunctionNames[i];
                 var originalJqMethod = jqXhr[methodName];
                 var ajaxDeferredMethod = settings.ajaxCachingDeferred[methodName];
-                jqXhr[methodName] = function()
-                {
-                    // apply on our cached data first
-                    ajaxDeferredMethod.apply(settings.ajaxCachingDeferred, arguments);
-
-                    // then apply on our server data
-                    originalJqMethod.apply(jqXhr, arguments);
-                };
+                jqXhr[methodName] = this.makeDeferredFunction(methodName, jqXhr, originalJqMethod, settings.ajaxCachingDeferred, ajaxDeferredMethod);
             }
 
             return jqXhr;
+        },
+
+        makeDeferredFunction: function(methodName, originalDeferredInstance, originalDeferredMethod, newDeferredInstance, newDeferredMethod)
+        {
+
+            //originalDeferredInstance[methodName](function() { theMarsApp.logger.debug("AjaxCaching Calling " + methodName + " on original deferred"); });
+            //newDeferredInstance[methodName](function() { theMarsApp.logger.debug("AjaxCaching Calling " + methodName + " on new deferred"); });
+
+            return function()
+            {
+                // apply on our cached data first
+                newDeferredMethod.apply(newDeferredInstance, arguments);
+
+                // then apply on our server data
+                originalDeferredMethod.apply(originalDeferredInstance, arguments);
+
+            };
+
         },
 
         buildSuccessHandler: function(settings)
