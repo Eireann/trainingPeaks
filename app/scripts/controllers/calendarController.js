@@ -63,7 +63,7 @@ function(_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollecti
             for (var i = 0; i < diff; i++)
             {
                 var startDate = moment(this.startDate).add("weeks", i);
-                var endDate = moment(startDate).add("days", 7);
+                var endDate = moment(startDate).add("days", 6);
                 this.weeksCollection.requestWorkouts(startDate, endDate);
             }
             this.calendarDataLoaded = true;

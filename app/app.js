@@ -13,7 +13,7 @@ define(
     "router",
     "marionette.faderegion"
 ],
-function(TP, initializeAjaxAuth, initializeAjaxCaching, Session, UserModel, UserSettingsModel, ClientEventsCollection, NavigationController, LoginController, CalendarController, Router)
+function(TP, initializeAjaxAuth, ajaxCaching, Session, UserModel, UserSettingsModel, ClientEventsCollection, NavigationController, LoginController, CalendarController, Router)
 {
     var theApp = new TP.Application();
 
@@ -23,10 +23,27 @@ function(TP, initializeAjaxAuth, initializeAjaxCaching, Session, UserModel, User
         mainRegion: "#main"
     });
 
+    // add logging first
     theApp.addInitializer(function()
     {
+        this.logger = new TP.Logger();
+
+        // in local environment, and not in test mode? set log level to debug
+        if (!this.isLive())
+        {
+            this.logger.setLogLevel(this.logger.logLevels.DEBUG);
+        }
+        else
+        {
+            this.logger.setLogLevel(this.logger.logLevels.ERROR);
+        }
+    });
+
+    // setup ajax auth and caching
+    theApp.addInitializer(function initAjax()
+    {
         initializeAjaxAuth(this);
-        initializeAjaxCaching(this);
+        ajaxCaching.initialize(this);
     });
     
     // add a session
@@ -42,22 +59,6 @@ function(TP, initializeAjaxAuth, initializeAjaxCaching, Session, UserModel, User
         {
             self.user.fetch();
         });
-    });
-
-    // add logging
-    theApp.addInitializer(function()
-    {
-        this.logger = new TP.Logger();
-
-        // in local environment, and not in test mode? set log level to debug
-        if (!this.isLive())
-        {
-            this.logger.setLogLevel(this.logger.logLevels.DEBUG);
-        }
-        else
-        {
-            this.logger.setLogLevel(this.logger.logLevels.ERROR);
-        }
     });
 
     // add event tracking
