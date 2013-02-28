@@ -6,12 +6,12 @@ function()
 
     return {
 
-        originalAjax: null,
+        originalJQueryAjax: null,
 
         ajaxWithCaching: function(settings)
         {
             if (settings.type !== "GET")
-                return this.originalAjax(settings);
+                return this.originalJQueryAjax(settings);
 
             settings.success = this.buildSuccessHandler(settings);
             return this.addCachingDeferred(settings);
@@ -20,17 +20,24 @@ function()
         addCachingDeferred: function(settings)
         {
             settings.ajaxCachingDeferred = new $.Deferred();
-            var jqXhr = this.originalAjax(settings);
+            var jqXhr = this.originalJQueryAjax(settings);
 
-            jqXhr.jqXhrDone = jqXhr.done;
-            jqXhr.done = function()
+            var deferredFunctionNames = ["always", "done", "fail", "pipe", "progress", "then"];
+
+            for (var i in deferredFunctionNames)
             {
-                // apply on our cached data first
-                settings.ajaxCachingDeferred.done.apply(this.ajaxCachingDeferred, arguments);
+                var methodName = deferredFunctionNames[i];
+                var originalJqMethod = jqXhr[methodName];
+                var ajaxDeferredMethod = settings.ajaxCachingDeferred[methodName];
+                jqXhr[methodName] = function()
+                {
+                    // apply on our cached data first
+                    ajaxDeferredMethod.apply(settings.ajaxCachingDeferred, arguments);
 
-                // then apply on our server data
-                this.jqXhrDone.apply(jqXhr, arguments);
-            };
+                    // then apply on our server data
+                    originalJqMethod.apply(jqXhr, arguments);
+                };
+            }
 
             return jqXhr;
         },
@@ -113,7 +120,7 @@ function()
 
         initialize: function(app)
         {
-            this.originalAjax = $.ajax;
+            this.originalJQueryAjax = $.ajax;
             _.bindAll(this, "ajaxWithCaching", "checkCacheOnAjaxSend");
             $.ajax = this.ajaxWithCaching;
             $(document).ajaxSend(this.checkCacheOnAjaxSend);
