@@ -74,7 +74,8 @@ function (moment, TP)
             "tempAvg": null,
             "tempMax": null,
             "cadenceAverage": null,
-            "cadenceMaximum": null
+            "cadenceMaximum": null,
+            "lastModifiedDate": null
         },
 
         getCalendarDay: function()
