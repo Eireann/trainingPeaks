@@ -185,7 +185,7 @@ function (TP, jqueryuiDialog, printUnitsValue, userSettingsTemplate)
         onClose: function ()
         {
             this.unstickModel();
-            this.model.off();
+            this.model.off("change", this.saveSettings);
             this.close();
         },
 

@@ -36,19 +36,22 @@
     .week
     {
         @include outerRow();
+		background-color: $white;
     }
 
     .day
     {
         @include column(2);
         min-height:150px;
-        border: 1px solid $white;
-		background-color: $TPGrey2;
-        padding: 5px;
+		background-color: $white;
+        padding: 0px 0px 5px;
         overflow-x: auto;
         overflow-y: visible;
+
         .workout
         {
+			margin-left: 2px;
+			margin-right: 2px;
 			p
 			{
 				font-family: $navigationFontFamilyLight;
@@ -60,6 +63,28 @@
         }
     }
 
+	.dayHeader
+	{
+		background-color: $TPGrey2;
+		width: 100%;
+		height: 27px;
+		margin-bottom: 2px;
+		border-bottom: 1px;
+		border-bottom-color: #000000;
+		border-bottom-style: solid;
+		padding-left: 5px;
+
+
+		#calendarDate
+		{
+			font-Family: $navigationFontFamilyRegular;
+			font-size: $navigationFontSize;
+			color: $TPGrey4;
+			text-align: right;
+			float:left;
+		}
+	}
+
     .weekSummary
     {
         @include column(2);
@@ -70,15 +95,31 @@
         overflow: hidden;
     }
 
-    .today
+
+	.thisWeek
+	{
+		.dayHeader
+		{
+			background-color: #74a3d5;
+		}
+
+		.today
     {
         background-color: $white;
 		p{color: $TPGrey1;}
-    }
+
+		.dayHeader
+		{
+		background-color: #bfd3e9;
+		}
+	}
+	}
 
     .daysOfWeek
     {
         @include outerRow();
+		height: 27px;
+		padding-top: 7px;
 
         div
 		{
@@ -92,15 +133,6 @@
 		}
     }
 
-}
-
-#calendarDate
-{
-	font-Family: $navigationFontFamilyRegular;
-	font-size: $navigationFontSize;
-	color: $TPGrey4;
-	text-align: right;
-	float:right;
 }
 
 #workoutQuickView

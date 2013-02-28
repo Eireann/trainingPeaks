@@ -1,10 +1,11 @@
 ﻿define(
 [
+    "moment",
     "TP",
     "views/calendarDayView",
     "views/weekSummaryView"
 ],
-function (TP, CalendarDayView, WeekSummaryView)
+function (moment, TP, CalendarDayView, WeekSummaryView)
 {
     return TP.CollectionView.extend(
     {
@@ -46,6 +47,20 @@ function (TP, CalendarDayView, WeekSummaryView)
         {
             this.trigger("waitStop");
             this.$el.find('.waiting').remove('.waiting');
+        },
+
+        onRender: function()
+        {
+            this.setThisWeekCss();    
+        },
+
+        setThisWeekCss: function ()
+        {
+            // so we can style today or scroll to it
+            if (moment(this.model.id).day(1).diff(moment(), "weeks") === 0)
+            {
+                this.$el.addClass("thisWeek");
+            }
         }
 
     });
