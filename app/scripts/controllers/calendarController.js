@@ -9,13 +9,12 @@ define(
     "models/calendarDay",
     "models/library/libraryExercisesCollection",
     "models/workoutModel",
+    "views/calendarHeaderView",
     "views/calendarContainerView",
-    "views/library/libraryView",
-    "hbs!templates/views/calendarHeader"
+    "views/library/libraryView"
 ],
-function(_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollection,
-         CalendarDayModel, LibraryExercisesCollection, WorkoutModel, CalendarContainerView, LibraryView,
-         calendarHeaderTemplate)
+function (_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollection,
+         CalendarDayModel, LibraryExercisesCollection, WorkoutModel, CalendarHeaderView, CalendarContainerView, LibraryView)
 {
     return TP.Controller.extend(
     {
@@ -24,7 +23,6 @@ function(_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollecti
 
         show: function()
         {
-
             theMarsApp.logger.startTimer("CalendarController", "begin show");
             this.initializeHeader();
             this.initializeCalendar();
@@ -62,12 +60,8 @@ function(_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollecti
 
         loadLibraryData: function()
         {
-
             for (var libraryName in this.libraryCollections)
-            {
                 this.libraryCollections[libraryName].fetch();
-            }
-
         },
 
         initialize: function()
@@ -86,18 +80,63 @@ function(_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollecti
             // end on a Saturday
             this.endDate = moment().day(6 + this.startOfWeekDayIndex).add("weeks", 6);
 
-            // Set the currentMonthModel to be displayed in the Calendar Header (and for other use)
-            this.models.currentMonthModel = new TP.Model({ month: moment().format("MMMM") });
-
-            this.weeksCollection = new CalendarCollection(null, { startDate: moment(this.startDate), endDate: moment(this.endDate), startOfWeekDayIndex: this.startOfWeekDayIndex, summaryViewEnabled: this.summaryViewEnabled });
+            this.createWeeksCollection(moment(this.startDate), moment(this.endDate));
+        },
+        
+        createWeeksCollection: function(startDate, endDate)
+        {
+            this.weeksCollection = new CalendarCollection(null,
+            {
+                startDate: startDate,
+                endDate: endDate,
+                startOfWeekDayIndex: this.startOfWeekDayIndex,
+                summaryViewEnabled: this.summaryViewEnabled
+            });
         },
 
-        initializeHeader: function()
+        reset: function(startDate, endDate)
+        {
+            this.startDate = moment(startDate);
+            this.endDate = moment(endDate);
+            this.createWeeksCollection(this.startDate, this.endDate);
+        },
+
+        renderDate: function(dateAsMoment)
+        {
+            if (!dateAsMoment)
+                return;
+            
+            if (dateAsMoment.unix() >= this.startDate.unix() && dateAsMoment.unix() <= this.endDate.unix())
+            {
+                // The requested date is within the currently rendered weeks.
+                // Let's scroll straight to it.
+
+                this.views.calendar.scrollToDate(dateAsMoment);
+            }
+            else if (dateAsMoment.diff(this.startDate, "weeks") <= 8 ||
+                     dateAsMoment.difF(this.endDate, "weeks" <= 8))
+            {
+                // The requested date is within 8 weeks of the currently rendered weeks.
+                // Let's render all the weeks in between, and scroll to the requested date.
+
+
+            }
+            else
+            {
+                // The requested date is too far outside the currently rendered weeks.
+                // Fade out the calendar, rerender centered on the requested date, and fade in.
+                
+
+            }
+        },
+
+        initializeHeader: function ()
         {
             if (this.views.header)
                 this.views.header.close();
 
-            this.views.header = new Marionette.ItemView({ template: { type: "handlebars", template: calendarHeaderTemplate }, model: this.models.currentMonthModel });
+            this.models.calendarHeaderModel = new TP.Model();
+            this.views.header = new CalendarHeaderView({ model: this.models.calendarHeaderModel });
         },
 
         initializeCalendar: function()
@@ -107,7 +146,7 @@ function(_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollecti
             if (this.views.calendar)
                 this.views.calendar.close();
             
-            this.views.calendar = new CalendarContainerView({ model: weekDaysModel, collection: this.weeksCollection });
+            this.views.calendar = new CalendarContainerView({ model: weekDaysModel, collection: this.weeksCollection, calendarHeaderModel: this.models.calendarHeaderModel });
 
             this.bindToCalendarViewEvents(this.views.calendar);
         },
@@ -156,7 +195,6 @@ function(_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollecti
             this.views.library = new LibraryView({ collections: this.libraryCollections });
 
         },
-
 
         appendWeekToCalendar: function ()
         {

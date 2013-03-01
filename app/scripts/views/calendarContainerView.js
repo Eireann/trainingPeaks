@@ -42,15 +42,17 @@ function(_, TP, CalendarWeekView, calendarContainerView)
             "add": "onAddWeek",
             "reset": "render"
         },
-
-        initialize: function()
+        
+        initialize: function(options)
         {
-            _.bindAll(this, "checkForElementAppearance");
+            _.bindAll(this, "checkCurrentScrollPosition");
             
             theMarsApp.user.on("change", this.setWorkoutColorization, this);
 
-            //TODO Possibly move this into app.js in some initializer, instead of here?
             $(window).on("resize", this.resizeContext);
+
+            this.calendarHeaderModel = options.calendarHeaderModel;
+            this.throttledCheckForPosition = _.throttle(this.checkCurrentScrollPosition, 250);
         },
 
         resizeContext: function (event)
@@ -107,7 +109,12 @@ function(_, TP, CalendarWeekView, calendarContainerView)
 
             weekView.$el.on("appear", function()
             {
-                console.log(weekView.model.id);
+                console.debug("APPEAR: " + weekView.model.id);
+            });
+
+            weekView.$el.on("disappear", function()
+            {
+                console.debug("DISAPPEAR: " + weekView.model.id);
             });
 
             // display waiting indicator, then once controller loads the models they will turn off via sync event
@@ -121,32 +128,9 @@ function(_, TP, CalendarWeekView, calendarContainerView)
             if (!this.collection)
                 throw "CalendarView needs a Collection!";
 
-            var self = this;
-            
-            $.expr[':'].appeared = function (element)
-            {
-                var $element = $(element);
-
-                if (!$element.is(':visible'))
-                    return false;
-
-                var containerTop = self.ui.weeksContainer.scrollTop();
-                var containerHeight = self.ui.weeksContainer.height();
-                var offset = $element.offset();
-                var top = offset.top;
-
-                if (top + $element.height() >= containerTop &&
-                    top <= containerTop + containerHeight)
-                    return true;
-                else
-                    return false;
-            };
-            
             this.setWorkoutColorization();
 
             _.bindAll(this, "onScroll");
-            //debounce doesn't seem to help - it's not our function that's slow, it's the browser repainting
-            //this.ui.weeksContainer.scroll(_.debounce(this.onScroll, 30));
             this.ui.weeksContainer.scroll(this.onScroll);
 
             theMarsApp.logger.startTimer("CalendarView.onRender", "Begin rendering weeks");
@@ -168,35 +152,11 @@ function(_, TP, CalendarWeekView, calendarContainerView)
         {
             this.resizeContext();
             this.scrollToToday();
-        },
-        
-        checkForElementAppearance: function()
-        {
-            this.checkingForAppearance = false;
-            var $appeared = this.ui.weeksContainer.find(".week").filter(function ()
-            {
-                return $(this).is(":appeared");
-            });
-
-            $appeared.trigger("appear", [$appeared]);
-
-            if (this.$priorAppeared)
-            {
-                var $disappeared = this.$priorAppeared.not($appeared);
-                $disappeared.trigger("disappear", [$disappeared]);
-            }
-
-            this.$priorAppeared = $appeared;
+            this.checkCurrentScrollPosition();
         },
         
         onScroll: function()
         {
-            if (!this.checkingForAppearance)
-            {
-                setTimeout(this.checkForElementAppearance, 250);
-                this.checkingForAppearance = true;
-            }
-            
             var howMuchIHave = this.ui.weeksContainer[0].scrollHeight;
             var howMuchIsVisible = this.ui.weeksContainer.height();
             var hidden = howMuchIHave - howMuchIsVisible;
@@ -214,20 +174,61 @@ function(_, TP, CalendarWeekView, calendarContainerView)
                 this.trigger("append");
             }
 
+            this.throttledCheckForPosition();
+            
             return;
         },
 
         scrollToToday: function()
         {
+            /*
             var lastWeekOffset = this.$('.today').parent().prev().offset().top;
             var weeksContainerOffset = this.ui.weeksContainer.offset().top;
             this.ui.weeksContainer.scrollTop(lastWeekOffset - weeksContainerOffset);
+            */
+
+            var scrollToOffset = this.ui.weeksContainer.find(".today").parent().prev().offset().top - this.ui.weeksContainer.offset().top;
+            console.debug("ScrollToOffset: " + scrollToOffset);
+            this.ui.weeksContainer.animate(
+            {
+                scrollTop: scrollToOffset
+            }, 500);
         },
 
         onItemDropped: function(itemView, options)
         {
             this.trigger("itemDropped", options);
-        }
+        },
 
+        checkCurrentScrollPosition: function ()
+        {
+            if (!document.elementFromPoint)
+                return;
+            
+            var $element = $(document.elementFromPoint($(window).width() - 300, 250));
+
+            // Tree traversal if not $element.is(".day")
+            var $dayElement = $element;
+            //while (!$dayElement.is(".day"))
+            //    $dayElement = $dayElement.parent();
+
+            this.setCurrentDateFromDayElement($dayElement);
+        },
+
+        setCurrentDateFromDayElement: function($dayElement)
+        {
+            if($dayElement.data("date"))
+                this.calendarHeaderModel.set("date", $dayElement.data("date"));
+        },
+        
+        scrollToDate: function(dateAsMoment)
+        {
+            var dateAsString = dateAsMoment.format("YYYY-MM-DD");
+            var scrollToOffset = this.ui.weeksContainer.find('*[data-date="' + dateAsString + '"]').parent().prev().offset().top - this.ui.weeksContainer.offset().top;
+            this.ui.weeksContainer.animate(
+            {
+                scrollTop: scrollToOffset
+            }, 2000);
+        }
     });
 });
