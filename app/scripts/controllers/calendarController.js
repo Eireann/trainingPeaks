@@ -28,12 +28,6 @@ function (_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollect
             this.initializeCalendar();
             this.initializeLibrary();
 
-            /*
-            // this method still is effectively synchronous - read and parse local storage, then repaint
-            this.views.calendar.on("show", this.loadCalendarData, this);
-            this.views.library.on("show", this.loadLibraryData, this);
-            */
-
             this.layout.headerRegion.show(this.views.header);
             this.layout.calendarRegion.show(this.views.calendar);
             this.layout.libraryRegion.show(this.views.library);
@@ -81,6 +75,7 @@ function (_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollect
             this.endDate = moment().day(6 + this.startOfWeekDayIndex).add("weeks", 6);
 
             this.createWeeksCollection(moment(this.startDate), moment(this.endDate));
+
         },
         
         createWeeksCollection: function(startDate, endDate)
