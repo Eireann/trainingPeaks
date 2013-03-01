@@ -42,13 +42,17 @@ function(_, TP, CalendarWeekView, calendarContainerView)
             "add": "onAddWeek",
             "reset": "render"
         },
-
-        initialize: function()
+        
+        initialize: function(options)
         {
+            _.bindAll(this, "checkCurrentScrollPosition");
+            
             theMarsApp.user.on("change", this.setWorkoutColorization, this);
 
-            //TODO Possibly move this into app.js in some initializer, instead of here?
             $(window).on("resize", this.resizeContext);
+
+            this.calendarHeaderModel = options.calendarHeaderModel;
+            this.throttledCheckForPosition = _.throttle(this.checkCurrentScrollPosition, 250);
         },
 
         resizeContext: function (event)
@@ -92,7 +96,6 @@ function(_, TP, CalendarWeekView, calendarContainerView)
 
         addWeek: function(options)
         {
-
             var weekView = new CalendarWeekView({ collection: options.collection, model: options.model });
             weekView.on("itemview:itemDropped", this.onItemDropped, this);
 
@@ -103,6 +106,17 @@ function(_, TP, CalendarWeekView, calendarContainerView)
                 this.ui.weeksContainer.prepend(weekView.render().el);
                 this.ui.weeksContainer.scrollTop(this.ui.weeksContainer.scrollTop() + weekView.$el.height());
             }
+
+            weekView.$el.on("appear", function()
+            {
+                console.debug("APPEAR: " + weekView.model.id);
+            });
+
+            weekView.$el.on("disappear", function()
+            {
+                console.debug("DISAPPEAR: " + weekView.model.id);
+            });
+
             // display waiting indicator, then once controller loads the models they will turn off via sync event
             weekView.onWaitStart();
 
@@ -117,8 +131,6 @@ function(_, TP, CalendarWeekView, calendarContainerView)
             this.setWorkoutColorization();
 
             _.bindAll(this, "onScroll");
-            //debounce doesn't seem to help - it's not our function that's slow, it's the browser repainting
-            //this.ui.weeksContainer.scroll(_.debounce(this.onScroll, 30));
             this.ui.weeksContainer.scroll(this.onScroll);
 
             theMarsApp.logger.startTimer("CalendarView.onRender", "Begin rendering weeks");
@@ -131,7 +143,6 @@ function(_, TP, CalendarWeekView, calendarContainerView)
                 this.addWeek({ model: weekModel, collection: weekModel.get("week"), append: true });
             }
 
-
             theMarsApp.logger.logTimer("CalendarView.onRender", "Finished rendering weeks (but before the browser displays them)");
             theMarsApp.logger.waitAndLogTimer("CalendarView.onRender", "Browser has now rendered the weeks");
         },
@@ -141,6 +152,7 @@ function(_, TP, CalendarWeekView, calendarContainerView)
         {
             this.resizeContext();
             this.scrollToToday();
+            this.checkCurrentScrollPosition();
         },
         
         onScroll: function()
@@ -162,20 +174,63 @@ function(_, TP, CalendarWeekView, calendarContainerView)
                 this.trigger("append");
             }
 
+            this.throttledCheckForPosition();
+            
             return;
         },
+        
+        scrollToSelector: function (selector, animationTimeout)
+        {
+            var requestedElementOffsetFromContainer = this.ui.weeksContainer.find(selector).parent().position().top;
+            var scrollToOffset = this.ui.weeksContainer.scrollTop() + requestedElementOffsetFromContainer - this.ui.weeksContainer.position().top;
 
+            if (requestedElementOffsetFromContainer < 300)
+                animationTimeout = 500;
+            else if (requestedElementOffsetFromContainer > 1500)
+                animationTimeout = 2000;
+
+            this.ui.weeksContainer.animate(
+            {
+                scrollTop: scrollToOffset
+            }, animationTimeout);
+        },
+
+        scrollToDate: function (dateAsMoment)
+        {
+            var dateAsString = dateAsMoment.format("YYYY-MM-DD");
+            var selector = '*[data-date="' + dateAsString + '"]';
+            this.scrollToSelector(selector, 2000);
+        },
+        
         scrollToToday: function()
         {
-            var lastWeekOffset = this.$('.today').parent().prev().offset().top;
-            var weeksContainerOffset = this.ui.weeksContainer.offset().top;
-            this.ui.weeksContainer.scrollTop(lastWeekOffset - weeksContainerOffset);
+            this.scrollToSelector(".today", 500);
         },
 
         onItemDropped: function(itemView, options)
         {
             this.trigger("itemDropped", options);
-        }
+        },
 
+        checkCurrentScrollPosition: function ()
+        {
+            if (!document.elementFromPoint)
+                return;
+            
+            var $element = $(document.elementFromPoint($(window).width() - 300, 250));
+
+            // Tree traversal if not $element.is(".day")
+            var $dayElement = $element;
+            //while (!$dayElement.is(".day"))
+            //    $dayElement = $dayElement.parent();
+
+            this.setCurrentDateFromDayElement($dayElement);
+        },
+
+        setCurrentDateFromDayElement: function($dayElement)
+        {
+            if($dayElement.data("date"))
+                this.calendarHeaderModel.set("date", $dayElement.data("date"));
+        }
     });
 });

@@ -1,6 +1,8 @@
 define(
 [
     "TP",
+    "framework/ajaxAuth",
+    "framework/ajaxCaching",
     "models/session",
     "models/userModel",
     "models/userSettingsModel",
@@ -11,7 +13,7 @@ define(
     "router",
     "marionette.faderegion"
 ],
-function(TP, Session, UserModel, UserSettingsModel, ClientEventsCollection, NavigationController, LoginController, CalendarController, Router)
+function(TP, initializeAjaxAuth, ajaxCaching, Session, UserModel, UserSettingsModel, ClientEventsCollection, NavigationController, LoginController, CalendarController, Router)
 {
     var theApp = new TP.Application();
 
@@ -21,22 +23,7 @@ function(TP, Session, UserModel, UserSettingsModel, ClientEventsCollection, Navi
         mainRegion: "#main"
     });
 
-    // add a session
-    theApp.addInitializer(function initSession()
-    {
-        var self = this;
-
-        this.user = new UserModel();
-        this.userSettings = new UserSettingsModel();
-        
-        this.session = new Session();
-        this.session.authPromise.done(function()
-        {
-            self.user.fetch();
-        });
-    });
-
-    // add logging
+    // add logging first
     theApp.addInitializer(function()
     {
         this.logger = new TP.Logger();
@@ -50,6 +37,28 @@ function(TP, Session, UserModel, UserSettingsModel, ClientEventsCollection, Navi
         {
             this.logger.setLogLevel(this.logger.logLevels.ERROR);
         }
+    });
+
+    // setup ajax auth and caching
+    theApp.addInitializer(function initAjax()
+    {
+        initializeAjaxAuth(this);
+        ajaxCaching.initialize(this);
+    });
+    
+    // add a session
+    theApp.addInitializer(function initSession()
+    {
+        var self = this;
+
+        this.user = new UserModel();
+        this.userSettings = new UserSettingsModel();
+        
+        this.session = new Session();
+        this.session.authPromise.done(function()
+        {
+            self.user.fetch();
+        });
     });
 
     // add event tracking

@@ -9,13 +9,12 @@ define(
     "models/calendarDay",
     "models/library/libraryExercisesCollection",
     "models/workoutModel",
+    "views/calendarHeaderView",
     "views/calendarContainerView",
-    "views/library/libraryView",
-    "hbs!templates/views/calendarHeader"
+    "views/library/libraryView"
 ],
-function(_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollection,
-         CalendarDayModel, LibraryExercisesCollection, WorkoutModel, CalendarContainerView, LibraryView,
-         calendarHeaderTemplate)
+function (_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollection,
+         CalendarDayModel, LibraryExercisesCollection, WorkoutModel, CalendarHeaderView, CalendarContainerView, LibraryView)
 {
     return TP.Controller.extend(
     {
@@ -24,18 +23,42 @@ function(_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollecti
 
         show: function()
         {
+            theMarsApp.logger.startTimer("CalendarController", "begin show");
             this.initializeHeader();
             this.initializeCalendar();
             this.initializeLibrary();
 
-            this.weeksCollection.requestWorkouts(this.startDate, this.endDate);
-
             this.layout.headerRegion.show(this.views.header);
             this.layout.calendarRegion.show(this.views.calendar);
             this.layout.libraryRegion.show(this.views.library);
+
+            this.loadCalendarData();
+            this.loadLibraryData();
+
+            theMarsApp.logger.logTimer("CalendarController", "finished show");
         },
 
-        initialize: function ()
+        loadCalendarData: function()
+        {
+            theMarsApp.logger.startTimer("CalendarController", "begin request calendar data");
+            // don't make requests until after we display, or else localStorage cache synchronous read blocks browser rendering
+            var diff = this.endDate.diff(this.startDate, "weeks");
+            for (var i = 0; i < diff; i++)
+            {
+                var startDate = moment(this.startDate).add("weeks", i);
+                var endDate = moment(startDate).add("days", 6);
+                this.weeksCollection.requestWorkouts(startDate, endDate);
+            }
+            theMarsApp.logger.logTimer("CalendarController", "finished request calendar data");
+        },
+
+        loadLibraryData: function()
+        {
+            for (var libraryName in this.libraryCollections)
+                this.libraryCollections[libraryName].fetch();
+        },
+
+        initialize: function()
         {
             this.models = {};
             this.views = {};
@@ -51,18 +74,54 @@ function(_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollecti
             // end on a Saturday
             this.endDate = moment().day(6 + this.startOfWeekDayIndex).add("weeks", 6);
 
-            // Set the currentMonthModel to be displayed in the Calendar Header (and for other use)
-            this.models.currentMonthModel = new TP.Model({ month: moment().format("MMMM") });
-
-            this.weeksCollection = new CalendarCollection(null, { startDate: moment(this.startDate), endDate: moment(this.endDate), startOfWeekDayIndex: this.startOfWeekDayIndex, summaryViewEnabled: this.summaryViewEnabled });
+            this.weeksCollection = new CalendarCollection(null,
+            {
+                startOfWeekDayIndex: this.startOfWeekDayIndex,
+                summaryViewEnabled: this.summaryViewEnabled,
+                startDate: moment(this.startDate),
+                endDate: moment(this.endDate)
+            });
+        },
+        
+        reset: function(startDate, endDate)
+        {
+            this.startDate = moment(startDate);
+            this.endDate = moment(endDate);
+            this.weeksCollection.resetToDates(moment(this.startDate), moment(this.endDate));
+            this.loadCalendarData();
         },
 
-        initializeHeader: function()
+        showDate: function(dateAsMoment)
+        {
+            if (!dateAsMoment)
+                return;
+            
+            if (dateAsMoment.unix() >= this.startDate.unix() && dateAsMoment.unix() <= this.endDate.unix())
+            {
+                // The requested date is within the currently rendered weeks.
+                // Let's scroll straight to it.
+
+                this.views.calendar.scrollToDate(dateAsMoment);
+            }
+            else if(dateAsMoment.diff(this.endDate, "weeks") >= 8 || dateAsMoment.diff(this.startDate, "weeks") <= -8)
+            {
+                // The requested date is too far outside the currently rendered weeks.
+                // Fade out the calendar, rerender centered on the requested date, and fade in.
+
+                var newStartDate = moment(dateAsMoment).day(this.startOfWeekDayIndex).subtract("weeks", 4);
+                var newEndDate = moment(dateAsMoment).day(6 + this.startOfWeekDayIndex).add("weeks", 6);
+                this.reset(newStartDate, newEndDate);
+                this.views.calendar.scrollToDate(dateAsMoment);
+            }
+        },
+
+        initializeHeader: function ()
         {
             if (this.views.header)
                 this.views.header.close();
 
-            this.views.header = new Marionette.ItemView({ template: { type: "handlebars", template: calendarHeaderTemplate }, model: this.models.currentMonthModel });
+            this.models.calendarHeaderModel = new TP.Model();
+            this.views.header = new CalendarHeaderView({ model: this.models.calendarHeaderModel });
         },
 
         initializeCalendar: function()
@@ -72,7 +131,7 @@ function(_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollecti
             if (this.views.calendar)
                 this.views.calendar.close();
             
-            this.views.calendar = new CalendarContainerView({ model: weekDaysModel, collection: this.weeksCollection });
+            this.views.calendar = new CalendarContainerView({ model: weekDaysModel, collection: this.weeksCollection, calendarHeaderModel: this.models.calendarHeaderModel });
 
             this.bindToCalendarViewEvents(this.views.calendar);
         },
@@ -120,13 +179,7 @@ function(_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollecti
 
             this.views.library = new LibraryView({ collections: this.libraryCollections });
 
-            var controller = this;
-            _.each(_.keys(this.libraryCollections), function(libraryName)
-            {
-                controller.libraryCollections[libraryName].fetch();
-            });
         },
-
 
         appendWeekToCalendar: function ()
         {
@@ -134,8 +187,8 @@ function(_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollecti
             var endDate = moment(startDate).add("days", 6);
             this.endDate = moment(endDate);
 
-            this.weeksCollection.requestWorkouts(startDate, endDate);
             this.weeksCollection.appendWeek(startDate);
+            this.weeksCollection.requestWorkouts(startDate, endDate);
         },
 
         prependWeekToCalendar: function()
@@ -144,8 +197,8 @@ function(_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollecti
             var startDate = moment(endDate).subtract("days", 6);
             this.startDate = moment(startDate);
 
-            this.weeksCollection.requestWorkouts(startDate, endDate);
             this.weeksCollection.prependWeek(startDate);
+            this.weeksCollection.requestWorkouts(startDate, endDate);
         }
     });
 });

@@ -16,39 +16,14 @@ if (!cookiesAreEnabled())
     document.location.href = "http://howenablecookies.com/";
 } else
 {
-
-
     define(
     [
         "TP",
-        "app"
+        "app",
+        "framework/ajaxCaching"
     ],
     function(TP, theApp)
     {
-
-
-        /*
-        * jQuery OAuth Authentication Hack
-        * Need to figure out a better place to inject this into jQuery
-        * but can't easily make it a separate plugin because I need access to the
-        * Router for clean re-routing
-        */
-        //**********************************************************************
-        $(document).ajaxSend(function(event, xhr, settings)
-        {
-            if (theApp.session.isAuthenticated())
-                xhr.setRequestHeader("Authorization", "Bearer " + theApp.session.get("access_token"));
-
-            if (!theApp.isLive())
-                window.lastAjaxRequest = { settings: settings, xhr: xhr };
-        });
-
-        $(document).ajaxError(function(event, xhr)
-        {
-            if (xhr.status === 401)
-                theApp.trigger("api:unauthorized");
-        });
-
         //**********************************************************************
 
         // All navigation that is relative should be passed through the navigate
