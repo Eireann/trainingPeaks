@@ -53,7 +53,7 @@ function (moment, TP, CalendarDayView, WeekSummaryView)
         setThisWeekCss: function ()
         {
             // so we can style today or scroll to it
-            if (moment(this.model.id).day(1).diff(moment(), "weeks") === 0)
+            if (moment(this.model.id).week() === moment().week())
             {
                 this.$el.addClass("thisWeek");
             }
