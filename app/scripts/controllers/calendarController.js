@@ -74,29 +74,24 @@ function (_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollect
             // end on a Saturday
             this.endDate = moment().day(6 + this.startOfWeekDayIndex).add("weeks", 6);
 
-            this.createWeeksCollection(moment(this.startDate), moment(this.endDate));
-
-        },
-        
-        createWeeksCollection: function(startDate, endDate)
-        {
             this.weeksCollection = new CalendarCollection(null,
             {
-                startDate: startDate,
-                endDate: endDate,
                 startOfWeekDayIndex: this.startOfWeekDayIndex,
-                summaryViewEnabled: this.summaryViewEnabled
+                summaryViewEnabled: this.summaryViewEnabled,
+                startDate: moment(this.startDate),
+                endDate: moment(this.endDate)
             });
         },
-
+        
         reset: function(startDate, endDate)
         {
             this.startDate = moment(startDate);
             this.endDate = moment(endDate);
-            this.createWeeksCollection(this.startDate, this.endDate);
+            this.weeksCollection.resetToDates(moment(this.startDate), moment(this.endDate));
+            this.loadCalendarData();
         },
 
-        renderDate: function(dateAsMoment)
+        showDate: function(dateAsMoment)
         {
             if (!dateAsMoment)
                 return;
@@ -108,20 +103,15 @@ function (_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollect
 
                 this.views.calendar.scrollToDate(dateAsMoment);
             }
-            else if (dateAsMoment.diff(this.startDate, "weeks") <= 8 ||
-                     dateAsMoment.difF(this.endDate, "weeks" <= 8))
-            {
-                // The requested date is within 8 weeks of the currently rendered weeks.
-                // Let's render all the weeks in between, and scroll to the requested date.
-
-
-            }
-            else
+            else if(dateAsMoment.diff(this.endDate, "weeks") >= 8 || dateAsMoment.diff(this.startDate, "weeks") <= -8)
             {
                 // The requested date is too far outside the currently rendered weeks.
                 // Fade out the calendar, rerender centered on the requested date, and fade in.
-                
 
+                var newStartDate = moment(dateAsMoment).day(this.startOfWeekDayIndex).subtract("weeks", 4);
+                var newEndDate = moment(dateAsMoment).day(6 + this.startOfWeekDayIndex).add("weeks", 6);
+                this.reset(newStartDate, newEndDate);
+                this.views.calendar.scrollToDate(dateAsMoment);
             }
         },
 
