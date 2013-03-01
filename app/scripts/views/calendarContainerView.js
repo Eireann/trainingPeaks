@@ -52,7 +52,7 @@ function(_, TP, CalendarWeekView, calendarContainerView)
             $(window).on("resize", this.resizeContext);
 
             this.calendarHeaderModel = options.calendarHeaderModel;
-            this.throttledCheckForPosition = _.throttle(this.checkCurrentScrollPosition, 250);
+            this.throttledCheckForPosition = _.throttle(this.checkCurrentScrollPosition, 100);
         },
 
         resizeContext: function (event)
@@ -132,8 +132,9 @@ function(_, TP, CalendarWeekView, calendarContainerView)
 
             _.bindAll(this, "onScroll");
             this.ui.weeksContainer.scroll(this.onScroll);
-
+            
             theMarsApp.logger.startTimer("CalendarView.onRender", "Begin rendering weeks");
+
             var numWeeks = this.collection.length;
             var i = 0;
 
@@ -145,14 +146,15 @@ function(_, TP, CalendarWeekView, calendarContainerView)
 
             theMarsApp.logger.logTimer("CalendarView.onRender", "Finished rendering weeks (but before the browser displays them)");
             theMarsApp.logger.waitAndLogTimer("CalendarView.onRender", "Browser has now rendered the weeks");
+
+            this.resizeContext();
+            this.checkCurrentScrollPosition();
         },
 
         // onShow happens after render finishes and dom has updated ...
         onShow: function()
         {
-            this.resizeContext();
-            this.scrollToToday();
-            this.checkCurrentScrollPosition();
+            this.scrollToSelector(".today");
         },
         
         onScroll: function()
@@ -197,16 +199,12 @@ function(_, TP, CalendarWeekView, calendarContainerView)
 
         scrollToDate: function (dateAsMoment)
         {
+            console.debug(dateAsMoment.format("YYYY-MM-DD"));
             var dateAsString = dateAsMoment.format("YYYY-MM-DD");
             var selector = '*[data-date="' + dateAsString + '"]';
             this.scrollToSelector(selector, 2000);
         },
         
-        scrollToToday: function()
-        {
-            this.scrollToSelector(".today", 500);
-        },
-
         onItemDropped: function(itemView, options)
         {
             this.trigger("itemDropped", options);
@@ -219,12 +217,18 @@ function(_, TP, CalendarWeekView, calendarContainerView)
             
             var $element = $(document.elementFromPoint($(window).width() - 300, 250));
 
-            // Tree traversal if not $element.is(".day")
-            var $dayElement = $element;
-            //while (!$dayElement.is(".day"))
-            //    $dayElement = $dayElement.parent();
+            if (!$element.is(".day"))
+            {
+                if ($element.is(".week"))
+                    $element = $element.children().last();
+                else if ($element.is("p") || ($element.is(".dayHeader")))
+                {
+                    while (!$element.is(".day"))
+                        $element = $element.parent();
+                }
+            }
 
-            this.setCurrentDateFromDayElement($dayElement);
+            this.setCurrentDateFromDayElement($element);
         },
 
         setCurrentDateFromDayElement: function($dayElement)

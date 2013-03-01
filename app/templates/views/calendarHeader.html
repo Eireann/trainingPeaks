@@ -1,1 +1,23 @@
-<label>{{printDate date "MMMM YYYY"}}</label>
+<div id="calendarMonthLabel" class="calendarMonthLabel">
+    <label>{{printDate date "MMMM YYYY"}}</label>
+</div>
+<div class="navigation">
+    <div class="calendarNavigation">
+        <button><</button>
+        <button>></button>
+    </div>
+    <div class="today">
+        <button id="goToTodayButton">{{$ "Today"}}</button>
+    </div>
+    <div class="calendarViewSelectionBox">
+        <select>
+            <option value="Month" selected>{{$ "Month"}}</option>
+            <option value="Week">{{$ "Week"}}</option>
+            <option value="Day">{{$ "Day"}}</option>
+        </select>
+    </div>
+    <div class="printRefreshButtons">
+        <button><img src="assets/images/calendarImages/printIcon.png"/></button>
+        <button><img src="assets/images/calendarImages/refreshIcon.png"/></button>
+    </div>
+</div>

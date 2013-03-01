@@ -74,10 +74,10 @@ function($, TP, theMarsApp, CalendarView, CalendarWeekTemplate)
             it("Should scroll to today on show", function()
             {
                 var calendarView = new CalendarView({ collection: new TP.Collection() });
-                spyOn(calendarView, "scrollToToday");
+                spyOn(calendarView, "scrollToSelector");
                 calendarView.render();
                 calendarView.onShow();
-                expect(calendarView.scrollToToday).toHaveBeenCalled();
+                expect(calendarView.scrollToSelector).toHaveBeenCalledWith(".today");
             });
 
         });
