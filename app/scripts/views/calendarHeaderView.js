@@ -13,6 +13,11 @@ function(TP, calendarHeaderTemplate)
             template: calendarHeaderTemplate
         },
 
+        events:
+        {
+            "click #goToTodayButton": "onGoToTodayButtonClicked"  
+        },
+
         initialize: function()
         {
             if (!this.model)
@@ -21,6 +26,11 @@ function(TP, calendarHeaderTemplate)
 
         onRender: function()
         {
+        },
+        
+        onGoToTodayButtonClicked: function()
+        {
+            this.trigger("request:today");
         }
     });
 });

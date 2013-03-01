@@ -85,10 +85,12 @@ function (_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollect
         
         reset: function(startDate, endDate)
         {
+            this.views.calendar.$el.fadeOut({ duration: 800 });
             this.startDate = moment(startDate);
             this.endDate = moment(endDate);
             this.weeksCollection.resetToDates(moment(this.startDate), moment(this.endDate));
             this.loadCalendarData();
+            this.views.calendar.$el.fadeIn({ duration: 800 });
         },
 
         showDate: function(dateAsMoment)
@@ -122,6 +124,11 @@ function (_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollect
 
             this.models.calendarHeaderModel = new TP.Model();
             this.views.header = new CalendarHeaderView({ model: this.models.calendarHeaderModel });
+            var self = this;
+            this.views.header.on("request:today", function()
+            {
+                self.showDate(moment());
+            });
         },
 
         initializeCalendar: function()
