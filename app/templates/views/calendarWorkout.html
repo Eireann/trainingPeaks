@@ -1,3 +1,16 @@
 <div class="workoutDiv" title="{{ title }}">
-   <p> <img src="assets/images/workoutTypeImages/{{ workoutTypeImageName workoutTypeValueId }}.png"/> {{ workoutTypeName workoutTypeValueId }}</p>
+    <div class="workoutHeader">
+        <div class="workoutIcon">
+            <!-- <img src="assets/images/workoutTypeImages/{{ workoutTypeImageName workoutTypeValueId }}.png"/> -->
+        </div>
+        <div class="workoutDistanceTime">
+            <label>{{workoutDistanceOrTime this}}</label>
+        </div>
+    </div>
+    <div class="workoutBody">
+        <label>{{title}}</label>
+        <p>{{description}}</p>
+
+    </div>
+   <!-- <p>  {{ workoutTypeName workoutTypeValueId }}</p> -->
 </div>
