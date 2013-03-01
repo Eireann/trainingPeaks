@@ -8,15 +8,14 @@ define(
 ],
 function(moment)
 {
-    var printDate = function(dateAsLongEpoch, formatString)
+    var printDate = function(momentParseableDate, formatString)
     {
-
         if (!formatString || typeof formatString !== "string")
         {
             formatString = "DD";
         }
 
-        return moment(dateAsLongEpoch).format(formatString);
+        return moment(momentParseableDate).format(formatString);
     };
 
     return printDate;
