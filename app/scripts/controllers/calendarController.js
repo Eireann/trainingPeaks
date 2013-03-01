@@ -40,13 +40,8 @@ function(_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollecti
             this.layout.calendarRegion.show(this.views.calendar);
             this.layout.libraryRegion.show(this.views.library);
 
-            // next tick - let the browser paint, then request our data
-            var controller = this;
-            setTimeout(function()
-            {
-                controller.loadCalendarData();
-                controller.loadLibraryData();
-            }, 1);
+            this.loadCalendarData();
+            this.loadLibraryData();
 
             theMarsApp.logger.logTimer("CalendarController", "finished show");
         },
