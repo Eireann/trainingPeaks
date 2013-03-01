@@ -4,7 +4,11 @@
             <!-- <img src="assets/images/workoutTypeImages/{{ workoutTypeImageName workoutTypeValueId }}.png"/> -->
         </div>
         <div class="workoutDistanceTime">
-            <label>{{workoutDistanceOrTime this}}</label>
+        {{#if distance}}
+            <label>{{convertToViewUnits distance "distance"}} {{printUnitLabel "distance"}}</label>
+        {{else}}
+            <label>{{totalTime}}</label>
+        {{/if}}
         </div>
     </div>
     <div class="workoutBody">
