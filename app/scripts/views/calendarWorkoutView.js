@@ -99,6 +99,8 @@ function(moment, TP, WorkoutQuickView, workoutTypeName, CalendarWorkoutTemplate)
             }
 
             this.makeDraggable();
+
+            this.$el.attr("class", this.className());
         },
 
         makeDraggable: function()
