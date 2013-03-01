@@ -4,36 +4,16 @@
 
 #weeksContainer
 {
-    &.colorByWorkoutType
-    {
-        .workout
-        {
-            @include workoutColorsByType; 
-        }
-    }
 
-
-    &.colorByComplianceAndWorkoutType
+    
+    .workout.future
     {
-        .workout.future
-        {
-             @include workoutColorsByType;           
-        }
+		background-color: $TPGrey2;
+                     
     }
-     
-    &.colorByCompliance
+   
+    .workout.past
     {
-        .workout
-        {
-             @include workoutColorsByCompliance;           
-        }
-    }
-     
-    &.colorByComplianceAndWorkoutType
-    {
-        .workout.past
-        {
-              @include workoutColorsByCompliance; 
-        }
+            @include workoutColorsByCompliance; 
     }
 }

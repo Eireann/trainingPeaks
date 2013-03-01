@@ -47,7 +47,7 @@ function(_, TP, CalendarWeekView, calendarContainerView)
         {
             _.bindAll(this, "checkCurrentScrollPosition");
             
-            theMarsApp.user.on("change", this.setWorkoutColorization, this);
+           // theMarsApp.user.on("change", this.setWorkoutColorization, this);
 
             $(window).on("resize", this.resizeContext);
 
@@ -128,7 +128,7 @@ function(_, TP, CalendarWeekView, calendarContainerView)
             if (!this.collection)
                 throw "CalendarView needs a Collection!";
 
-            this.setWorkoutColorization();
+            //this.setWorkoutColorization();
 
             _.bindAll(this, "onScroll");
             this.ui.weeksContainer.scroll(this.onScroll);
