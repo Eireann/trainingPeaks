@@ -1,78 +1,99 @@
 ﻿define(
 [
+    "underscore",
     "backbone"
 ],
-function(Backbone)
+function(_, Backbone)
 {
 
     return {
 
-        initialize: function(app)
+        // does nothing, just makes this testable while i refactor ...
+        backboneSync: function()
         {
-            Backbone.ajax = _.bind(this.ajax, this);
-            $(document).ajaxSend(_.bind(this.checkCache, this));
+            return new $.Deferred();
         },
 
-        ajax: function(settings)
+        initialize: function(app)
         {
-            if (settings.type !== "GET")
-                return $.ajax(settings);
+            this.backboneSync = Backbone.sync;
+            Backbone.sync = _.bind(this.sync, this);
+        },
 
-            var ajaxDeferred = this.addCachingDeferred(settings, $.ajax);
+        sync: function(method, model, options)
+        {
+            if (!model.cacheable)
+                return this.backboneSync(method, model, options);
+
+            if (method !== "read")
+                return this.backboneSync(method, model, options);
+
+            // if no url was passed in, build one from the model
+            if (!options.url)
+                options.url = _.result(model, 'url');
+
+            // fire backbone sync to get a jquery xhr deferred, and wrap it with our own deferred
+            var ajaxDeferred = this.addCachingDeferred(method, model, options, this.backboneSync);
 
             // this is what actually triggers Backbone models/collections to sync,
             // and is added in Backbone.sync
-            ajaxDeferred.done(settings.success);
+            if(options.success)
+                ajaxDeferred.done(options.success);
+
+            // check cache
+            this.checkCache(ajaxDeferred, options);
 
             return ajaxDeferred;
         },
 
-        addCachingDeferred: function(settings, jqueryAjax)
+        addCachingDeferred: function(method, model, options, backboneSync)
         {
-            settings.ajaxCachingDeferred = new $.Deferred();
-            var jqXhr = jqueryAjax(settings);
+            options.ajaxCachingDeferred = new $.Deferred();
+            var jqXhr = backboneSync(method, model, options);
 
             // save response to local storage only on xhr resolution, not on resolution from cache
             var ajaxCaching = this;
             jqXhr.done(function(data, status, xhr)
             {
-                ajaxCaching.saveResponseToLocalStorage(data, status, xhr, settings);
+                ajaxCaching.saveResponseToLocalStorage(data, status, xhr, options);
             });
 
             var deferredFunctionNames = ["always", "done", "fail", "pipe", "progress", "then"];
 
             _.each(deferredFunctionNames, function(methodName) {
                 var originalJqMethod = jqXhr[methodName];
-                var ajaxDeferredMethod = settings.ajaxCachingDeferred[methodName];
+                var ajaxDeferredMethod = options.ajaxCachingDeferred[methodName];
                 jqXhr[methodName] = function()
                 {
                     // apply on our cached data first
-                    ajaxDeferredMethod.apply(settings.ajaxCachingDeferred, arguments);
+                    ajaxDeferredMethod.apply(options.ajaxCachingDeferred, arguments);
 
                     // then apply on our server data
                     originalJqMethod.apply(jqXhr, arguments);
+
+                    return this;
                 };
             }, this);
 
             return jqXhr;
         },
 
-        saveResponseToLocalStorage: function(response, status, xhr, settings)
+        saveResponseToLocalStorage: function(response, status, xhr, options)
         {
             if (status === "notmodified")
             {
-                //theMarsApp.logger.debug("AjaxCaching Not Modified: " + settings.url);
+                //theMarsApp.logger.debug("AjaxCaching Not Modified: " + options.url);
                 return;
             }
 
             if (status !== "success")
             {
-                //theMarsApp.logger.debug("AjaxCaching Invalid Response Status: " + status + ", " + settings.url);
+                //theMarsApp.logger.debug("AjaxCaching Invalid Response Status: " + status + ", " + options.url);
                 return;
             }
 
             var lastModifiedDate = xhr.getResponseHeader("Last-Modified");
-            var objectKey = this.getCacheKey(settings.url);
+            var objectKey = this.getCacheKey(options.url);
             var objectToStore =
             {
                 storageDate: +new Date(),
@@ -82,7 +103,7 @@ function(Backbone)
 
             localStorage.setItem(objectKey, JSON.stringify(objectToStore));
 
-            theMarsApp.logger.debug("AjaxCaching Loaded from server: " + settings.url);
+            theMarsApp.logger.debug("AjaxCaching Loaded from server: " + options.url);
         },
 
         getCacheKey: function(url)
@@ -90,38 +111,36 @@ function(Backbone)
             return theMarsApp.session.get("access_token") + url;
         },
 
-        checkCache: function(event, xhr, settings)
+        checkCache: function(xhr, options)
         {
-            if (settings.type !== "GET")
-                return;
 
             var ajaxCaching = this;
 
             // Check localStorage for cached object
             // Use REQUEST URI + OAUTH Token as storage key.
-            var key = ajaxCaching.getCacheKey(settings.url);
+            var key = ajaxCaching.getCacheKey(options.url);
             var cachedObject = localStorage.getItem(key);
 
             if (cachedObject)
             {
                 cachedObject = JSON.parse(cachedObject);
 
-                ajaxCaching.resolveRequestWithCachedAjaxData(xhr, settings, cachedObject.data);
+                ajaxCaching.resolveRequestWithCachedData(xhr, options, cachedObject.data);
                 ajaxCaching.addRequestCacheHeaders(xhr, cachedObject.lastModified);
             }
         },
 
-        resolveRequestWithCachedAjaxData: function(xhr, settings, cachedData)
+        resolveRequestWithCachedData: function(xhr, options, cachedData)
         {
             var status = "success";
-            if (settings.ajaxCachingDeferred)
+            if (options.ajaxCachingDeferred)
             {
 
                 // start it in a 'nextTick', so the browser can finish painting the results of this thread first
                 setTimeout(function()
                 {
-                    settings.ajaxCachingDeferred.resolveWith(settings, [cachedData, status, xhr]);
-                    theMarsApp.logger.debug("AjaxCaching Loaded from cache: " + settings.url);
+                    options.ajaxCachingDeferred.resolveWith(options, [cachedData, status, xhr]);
+                    theMarsApp.logger.debug("AjaxCaching Loaded from cache: " + options.url);
                 }, 1);
             }
         },
