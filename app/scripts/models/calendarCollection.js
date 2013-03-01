@@ -21,13 +21,21 @@ function(TP, WorkoutsCollection, CalendarWeekCollection, CalendarDayModel)
             if (!options.hasOwnProperty('endDate'))
                 throw "CalendarCollection requires an end date";
 
-            this.startDate = options.startDate;
-            this.endDate = options.endDate;
-
             this.startOfWeekDayIndex = options.hasOwnProperty("startOfWeekDayIndex") ? options.startOfWeekDayIndex : 0;
+            this.summaryViewEnabled = options.hasOwnProperty("summaryViewEnabled") ? options.summaryViewEnabled : false;
+
             this.workoutsCollection = new WorkoutsCollection();
             this.daysCollection = new TP.Collection();
-            this.summaryViewEnabled = options.hasOwnProperty("summaryViewEnabled") ? options.summaryViewEnabled : false;
+
+            this.setUpWeeks(options.startDate, options.endDate);
+        },
+
+        setUpWeeks: function(startDate, endDate)
+        {            this.startDate = startDate;
+            this.endDate = endDate;
+
+            this.workoutsCollection.reset();
+            this.daysCollection.reset();
 
             var numOfWeeksToShow = (this.endDate.diff(this.startDate, "days") + 1) / 7;
             var i;
@@ -40,15 +48,21 @@ function(TP, WorkoutsCollection, CalendarWeekCollection, CalendarDayModel)
 
                     // Get a CalendarWeekCollection and wrap it inside a model, with its matching ID, to be able to add it to a parent collection
                     var weekModel = new TP.Model({ id: weekStartDate.format(this.dateFormat), week: this.createWeekCollectionStartingOn(weekStartDate) });
-                    this.add(weekModel, { silent: true });
+                    this.add(weekModel, { silent: false });
                 }
             }
+        },
+
+        resetToDates: function(startDate, endDate)
+        {
+            this.reset();
+            this.setUpWeeks(startDate, endDate);
         },
         
         createWeekCollectionStartingOn: function (startDate)
         {
             // This method return an actual Backbone.Collection.
-            // Later, if we want to be able to insert it into another Backbone.Collection,
+            // Outside of here, if we want to be able to insert it into another Backbone.Collection,
             // we need to wrap it inside a Backbone.Model.
             startDate = moment(startDate);
             var weekCollection = new CalendarWeekCollection();

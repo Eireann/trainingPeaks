@@ -178,21 +178,33 @@ function(_, TP, CalendarWeekView, calendarContainerView)
             
             return;
         },
-
-        scrollToToday: function()
+        
+        scrollToSelector: function (selector, animationTimeout)
         {
-            /*
-            var lastWeekOffset = this.$('.today').parent().prev().offset().top;
-            var weeksContainerOffset = this.ui.weeksContainer.offset().top;
-            this.ui.weeksContainer.scrollTop(lastWeekOffset - weeksContainerOffset);
-            */
+            var requestedElementOffsetFromContainer = this.ui.weeksContainer.find(selector).parent().position().top;
+            var scrollToOffset = this.ui.weeksContainer.scrollTop() + requestedElementOffsetFromContainer - this.ui.weeksContainer.position().top;
 
-            var scrollToOffset = this.ui.weeksContainer.find(".today").parent().prev().offset().top - this.ui.weeksContainer.offset().top;
-            console.debug("ScrollToOffset: " + scrollToOffset);
+            if (requestedElementOffsetFromContainer < 300)
+                animationTimeout = 500;
+            else if (requestedElementOffsetFromContainer > 1500)
+                animationTimeout = 2000;
+
             this.ui.weeksContainer.animate(
             {
                 scrollTop: scrollToOffset
-            }, 500);
+            }, animationTimeout);
+        },
+
+        scrollToDate: function (dateAsMoment)
+        {
+            var dateAsString = dateAsMoment.format("YYYY-MM-DD");
+            var selector = '*[data-date="' + dateAsString + '"]';
+            this.scrollToSelector(selector, 2000);
+        },
+        
+        scrollToToday: function()
+        {
+            this.scrollToSelector(".today", 500);
         },
 
         onItemDropped: function(itemView, options)
@@ -219,16 +231,6 @@ function(_, TP, CalendarWeekView, calendarContainerView)
         {
             if($dayElement.data("date"))
                 this.calendarHeaderModel.set("date", $dayElement.data("date"));
-        },
-        
-        scrollToDate: function(dateAsMoment)
-        {
-            var dateAsString = dateAsMoment.format("YYYY-MM-DD");
-            var scrollToOffset = this.ui.weeksContainer.find('*[data-date="' + dateAsString + '"]').parent().prev().offset().top - this.ui.weeksContainer.offset().top;
-            this.ui.weeksContainer.animate(
-            {
-                scrollTop: scrollToOffset
-            }, 2000);
         }
     });
 });
