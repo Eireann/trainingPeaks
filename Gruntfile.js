@@ -61,6 +61,17 @@ module.exports = function(grunt)
                     imagesDir: "assets/images"
                 }
             },
+            "dev-deploy":
+            {
+                options:
+                {
+                    sassDir: "app/scss",
+                    cssDir: "build/dev-deploy/app/css",
+                    outputStyle: "expanded",
+                    require: "zurb-foundation",
+                    imagesDir: "assets/images"
+                }
+            },
             release:
             {
                 options:
@@ -107,6 +118,18 @@ module.exports = function(grunt)
                 dest: "build/debug/single.js",
 
                 separator: ";"
+            },
+
+            "dev-deploy":
+            {
+                src:
+                [
+                    "build/debug/single.js"
+                ],
+
+                dest: "build/dev-deploy/single.js",
+
+                separator: ";"
             }
         },
 
@@ -145,12 +168,16 @@ module.exports = function(grunt)
             {
                 src: ["build"]
             },
+            "dev-deploy":
+            {
+                src: ["build"]
+            },
             coverage:
             {
                 src: ["coverage"]
             }
         },
-        
+
         targethtml:
         {
             debug:
@@ -162,6 +189,11 @@ module.exports = function(grunt)
             {
                 src: "index.html",
                 dest: "build/release/index.html"
+            },
+            "dev-deploy":
+            {
+                src: "index.html",
+                dest: "build/dev-deploy/index.html"
             }
         },
 
@@ -180,6 +212,14 @@ module.exports = function(grunt)
                 files:
                 {
                     "build/release": ["assets/images/**"]
+                }
+            },
+
+            "dev-deploy":
+            {
+                files:
+                {
+                    "build/dev-deploy": ["assets/images/**"]
                 }
             },
 
@@ -278,6 +318,7 @@ module.exports = function(grunt)
     grunt.registerTask("debug", ["clean", "coverage", "update_grunt_config", "requirejs", "compass:debug", "targethtml:debug", "concat", "copy:debug", "copy-i18n-files", "copy:debug_coverage", "plato"]);
 
     grunt.registerTask("release", ["debug", "compass:release", "targethtml:release", "uglify", "copy:release", "copy-i18n-files"]);
+    grunt.registerTask("dev-deploy", ["debug", "compass:dev-deploy", "targethtml:dev-deploy", "concat:dev-deploy", "copy:dev-deploy"]);
     grunt.registerTask("default", ["debug"]);
     grunt.registerTask("dev", ["compass:debug", "copy:debug"]);
 

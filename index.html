@@ -28,6 +28,12 @@
   <link rel="stylesheet" href="app/css/app.css">
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.js"></script>
   <!(endif)-->
+
+  <!--(if target dev-deploy)>
+  <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.0/themes/base/jquery-ui.css" />
+  <link rel="stylesheet" href="app/css/app.css">
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.js"></script>
+  <!(endif)-->
 </head>
 
 <body>
@@ -45,6 +51,17 @@
 
   <!--(if target debug)>
   <script>window.apiRoot = "dev";</script>
+  <script src="single.js"></script>
+  <script>
+      requirejs(
+        ["Backbone.Marionette.Handlebars", "main"],
+        function (handlebars, main) {}
+      );
+  </script>
+  <!(endif)-->
+
+  <!--(if target dev-deploy)>
+  <script>window.apiRoot = "dev-deploy";</script>
   <script src="single.js"></script>
   <script>
       requirejs(

@@ -95,6 +95,7 @@ function(TP, initializeAjaxAuth, ajaxCaching, Session, UserModel, UserSettingsMo
         live: "https://api.trainingpeaks.com",
         deploy: "https://apideploy.trainingpeaks.com",
         dev: "http://api.dev.trainingpeaks.com",
+        "dev-deploy": "http://api-deploy.dev.trainingpeaks.com",
         local: "http://localhost:8900"
     };
 
