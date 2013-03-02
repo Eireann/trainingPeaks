@@ -6,6 +6,17 @@
     var commonConfig = {
         paths:
         {
+
+            // Our TP code
+            "TP": "scripts/framework/TP",
+            "framework": "scripts/framework",
+            "models": "scripts/models",
+            "views": "scripts/views",
+            "controllers": "scripts/controllers",
+            "layouts": "scripts/layouts",
+            "helpers": "scripts/helpers",
+            "utilities": "scripts/utilities",
+ 
             // jQuery related
             "jqueryui": "../vendor/js/libs/jqueryui",
 
@@ -20,23 +31,20 @@
             "backbone.deepmodel": "../vendor/js/libs/backbone.deepmodel",
             "backbone.stickit": "../vendor/js/libs/backbone.stickit",
 
+            // Marionette plugins
             "marionette.faderegion": "scripts/plugins/marionette.faderegion",
 
-            "TP": "scripts/framework/TP",
-            "framework": "scripts/framework",
-            "models": "scripts/models",
-            "views": "scripts/views",
-            "controllers": "scripts/controllers",
-            "layouts": "scripts/layouts",
-
+            // Handlebars plugins
             "i18nprecompile": "../vendor/js/libs/i18nprecompile",
             "json2": "../vendor/js/libs/json2",
             "hbs": "../vendor/js/libs/hbs",
 
+            // date utilities
             "moment": "../vendor/js/libs/moment/moment",
-            
-            "helpers": "scripts/helpers",
-            "utilities": "scripts/utilities"
+
+            // lawnchair - for localStorage
+            "lawnchair": "../vendor/js/libs/lawnchair"
+ 
             
         },
 
@@ -71,6 +79,10 @@
             {
                 deps: ["backbone"],
                 exports: "Backbone"
+            },
+            "lawnchair":
+            {
+                exports: "Lawnchair"
             }
         }
 

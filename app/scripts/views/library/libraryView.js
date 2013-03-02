@@ -107,6 +107,7 @@ function(_, TP, ExerciseLibraryView, MealLibraryView, libraryTemplate)
             this.views[this.activeLibraryName].$el.show(200);
             this.$el.parent().removeClass("closed").addClass("open");
             this.turnOnTab(this.activeLibraryName);
+            this.resizeContext();
         },
 
         hideLibrary: function()
@@ -140,6 +141,7 @@ function(_, TP, ExerciseLibraryView, MealLibraryView, libraryTemplate)
                 this.ui.activeLibraryContainer.append(library.$el);
                 library.$el.hide();
             }
+            this.resizeContext();
         },
 
         onShow: function()
@@ -147,7 +149,7 @@ function(_, TP, ExerciseLibraryView, MealLibraryView, libraryTemplate)
             this.resizeContext();
         },
 
-        resizeContext: function (event)
+        resizeContext: function(event)
         {
             var headerHeight = $("#navigation").height();
             var windowHeight = $(window).height();

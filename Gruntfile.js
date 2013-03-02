@@ -177,7 +177,7 @@ module.exports = function(grunt)
         {
             compass: {
                 files: ["Gruntfile.js", "app/scss/*.scss"],
-                tasks: "compass"
+                tasks: "compass:debug"
             }
         },
 

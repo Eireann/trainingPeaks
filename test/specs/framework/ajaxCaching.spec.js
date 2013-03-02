@@ -1,6 +1,6 @@
 ﻿requirejs(
-["jquery", "localStorage", "framework/ajaxCaching"],
-function($, localStorage, ajaxCaching)
+["jquery", "framework/ajaxCaching"],
+function($, ajaxCaching)
 {
 
     describe("Sync Caching", function()
@@ -56,7 +56,8 @@ function($, localStorage, ajaxCaching)
                 {
                     var method = 'read';
                     var model = {
-                        cacheable: true
+                        cacheable: true,
+                        url: 'some/url'
                     };
                     var settings = {};
                     ajaxCaching.sync(method, model, settings);
@@ -67,7 +68,9 @@ function($, localStorage, ajaxCaching)
                 {
                     var method = 'read';
                     var model = {
-                        cacheable: true
+                        cacheable: true,
+                        url: 'some/url'
+
                     };
                     var settings = {
                         success: function() { }
@@ -80,7 +83,8 @@ function($, localStorage, ajaxCaching)
                 {
                     var method = 'read';
                     var model = {
-                        cacheable: true
+                        cacheable: true,
+                        url: 'some/url'
                     };
                     var settings = {};
                     var returnedValue = ajaxCaching.sync(method, model, settings);
@@ -113,7 +117,8 @@ function($, localStorage, ajaxCaching)
             {
                 var method = 'read';
                 var model = {
-                    cacheable: true
+                    cacheable: true,
+                    url: 'some/url'
                 };
                 var settings = {};
                 var ret = ajaxCaching.addCachingDeferred(method, model, settings, ajaxCaching.backboneSync);
@@ -144,7 +149,8 @@ function($, localStorage, ajaxCaching)
             {
                 var method = 'read';
                 var model = {
-                    cacheable: true
+                    cacheable: true,
+                    url: 'some/url'
                 };
                 var settings = {};
                 ajaxCaching.addCachingDeferred(method, model, settings, ajaxCaching.backboneSync);
@@ -156,7 +162,8 @@ function($, localStorage, ajaxCaching)
             {
                 var method = 'read';
                 var model = {
-                    cacheable: true
+                    cacheable: true,
+                    url: 'some/url'
                 };
                 var settings = {};
                 var deferredFunctionNames = ["done", "fail", "progress", "then"];
@@ -183,40 +190,40 @@ function($, localStorage, ajaxCaching)
             beforeEach(function()
             {
                 xhr = jasmine.createSpyObj("XHR Response Spy", ["getResponseHeader"]);
-                spyOn(localStorage, "setItem");
+                spyOn(ajaxCaching.lawnchair, "save");
             });
 
-            it("Should not call localStorage.setItem if status is notmodified", function()
+            it("Should not call ajaxCaching.lawnchair.save if status is notmodified", function()
             {
                 ajaxCaching.saveResponseToLocalStorage("", "notmodified", xhr, settings);
-                expect(localStorage.setItem).not.toHaveBeenCalled();
+                expect(ajaxCaching.lawnchair.save).not.toHaveBeenCalled();
             });
 
-            it("Should not call localStorage.setItem if status is not success", function()
+            it("Should not call ajaxCaching.lawnchair.save if status is not success", function()
             {
                 ajaxCaching.saveResponseToLocalStorage("", "notfound", xhr, settings);
-                expect(localStorage.setItem).not.toHaveBeenCalled();
+                expect(ajaxCaching.lawnchair.save).not.toHaveBeenCalled();
             });
 
-            it("Should call localStorage.setItem if status is success", function()
+            it("Should call ajaxCaching.lawnchair.save if status is success", function()
             {
                 ajaxCaching.saveResponseToLocalStorage("", "success", xhr, settings);
-                expect(localStorage.setItem).toHaveBeenCalled();
+                expect(ajaxCaching.lawnchair.save).toHaveBeenCalled();
             });
 
             it("Should include the request url in the cache key", function()
             {
                 ajaxCaching.saveResponseToLocalStorage("something", "success", xhr, settings);
-                expect(localStorage.setItem).toHaveBeenCalled();
-                expect(localStorage.setItem.mostRecentCall.args[0].indexOf(settings.url) >= 0).toBe(true);
+                expect(ajaxCaching.lawnchair.save).toHaveBeenCalled();
+                expect(ajaxCaching.lawnchair.save.mostRecentCall.args[0].key.indexOf(settings.url) >= 0).toBe(true);
             });
 
             it("Should include the response data in cached object", function()
             {
                 var response = "{some: 'json data'}";
                 ajaxCaching.saveResponseToLocalStorage(response, "success", xhr, settings);
-                expect(localStorage.setItem).toHaveBeenCalled();
-                expect(localStorage.setItem.mostRecentCall.args[1].indexOf(response)).toBeGreaterThan(0);
+                expect(ajaxCaching.lawnchair.save).toHaveBeenCalled();
+                expect(ajaxCaching.lawnchair.save.mostRecentCall.args[0].data).toBe(response);
             });
 
             it("Should include the last modified date in cached object", function()
@@ -224,8 +231,8 @@ function($, localStorage, ajaxCaching)
                 var lastModified = "2013-01-01T00:00:00";
                 xhr.getResponseHeader.andReturn(lastModified);
                 ajaxCaching.saveResponseToLocalStorage("", "success", xhr, settings);
-                expect(localStorage.setItem).toHaveBeenCalled();
-                expect(localStorage.setItem.mostRecentCall.args[1].indexOf(lastModified)).toBeGreaterThan(0);
+                expect(ajaxCaching.lawnchair.save).toHaveBeenCalled();
+                expect(ajaxCaching.lawnchair.save.mostRecentCall.args[0].lastModifiedDate).toBe(lastModified);
             });
 
         });
@@ -251,23 +258,30 @@ function($, localStorage, ajaxCaching)
                 spyOn(ajaxCaching, "addRequestCacheHeaders");
             });
 
-            it("Should check localStorage", function()
+            it("Should check ajaxCaching.lawnchair", function()
             {
-                spyOn(localStorage, "getItem").andReturn(null);
+                spyOn(ajaxCaching.lawnchair, "get").andCallFake(function(record, callback){
+                    callback.call(ajaxCaching.lawnchair);
+                });
                 ajaxCaching.checkCache(xhr, settings);
-                expect(localStorage.getItem).toHaveBeenCalled();
+                expect(ajaxCaching.lawnchair.get).toHaveBeenCalled();
             });
 
             it("Should resolve request if we have cached data", function()
             {
-                spyOn(localStorage, "getItem").andReturn(JSON.stringify(cachedObject));
+                spyOn(ajaxCaching.lawnchair, "get").andCallFake(function(record, callback){
+                    callback.call(ajaxCaching.lawnchair, cachedObject);
+                });
                 ajaxCaching.checkCache(xhr, settings);
                 expect(ajaxCaching.resolveRequestWithCachedData).toHaveBeenCalledWith(xhr, settings, cachedObject.data);
             });
 
             it("Should add request headers if we have cached data", function()
             {
-                spyOn(localStorage, "getItem").andReturn(JSON.stringify(cachedObject));
+                spyOn(ajaxCaching.lawnchair, "get").andCallFake(function(record, callback)
+                {
+                    callback.call(ajaxCaching.lawnchair, cachedObject);
+                });
                 ajaxCaching.checkCache(xhr, settings);
                 expect(ajaxCaching.addRequestCacheHeaders).toHaveBeenCalledWith(xhr, cachedObject.lastModified);
             });
@@ -333,7 +347,8 @@ function($, localStorage, ajaxCaching)
             {
                 var method = 'read';
                 var model = {
-                    cacheable: true
+                    cacheable: true,
+                    url: 'some/url'
                 };
                 var settings = {};
                 var ret = ajaxCaching.addCachingDeferred(method, model, settings, ajaxCaching.backboneSync);
@@ -352,7 +367,8 @@ function($, localStorage, ajaxCaching)
             {
                 var method = 'read';
                 var model = {
-                    cacheable: true
+                    cacheable: true,
+                    url: 'some/url'
                 };
                 var settings = {};
                 var ret = ajaxCaching.addCachingDeferred(method, model, settings, ajaxCaching.backboneSync);
