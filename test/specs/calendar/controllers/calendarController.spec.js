@@ -48,7 +48,7 @@ function(moment, $, _, Backbone, CalendarController, WorkoutModel, WorkoutsColle
                 var controller = new CalendarController();
                 expect(controller.startDate).toBeDefined();
 
-                var expectedStartDate = moment().day(0).subtract("weeks", 4);
+                var expectedStartDate = moment().day(controller.startOfWeekDayIndex).subtract("weeks", 4);
                 expect(controller.startDate.format("YYYY-MM-DD")).toBe(expectedStartDate.format("YYYY-MM-DD"));
             });
 
@@ -57,7 +57,7 @@ function(moment, $, _, Backbone, CalendarController, WorkoutModel, WorkoutsColle
                 var controller = new CalendarController();
                 expect(controller.endDate).toBeDefined();
 
-                var expectedEndDate = moment().day(6).add("weeks", 6);
+                var expectedEndDate = moment().day(6 + controller.startOfWeekDayIndex).add("weeks", 6);
                 expect(controller.endDate.format("YYYY-MM-DD")).toBe(expectedEndDate.format("YYYY-MM-DD"));
             });
 

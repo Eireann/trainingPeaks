@@ -18,7 +18,6 @@ function (_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollect
 {
     return TP.Controller.extend(
     {
-        startOfWeekDayIndex: 0,
         summaryViewEnabled: true,
 
         show: function()
@@ -62,21 +61,19 @@ function (_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollect
         {
             this.models = {};
             this.views = {};
+
+            this.startOfWeekDayIndex = 1;
             
             this.layout = new CalendarLayout();
             this.layout.on("show", this.show, this);
 
             this.dateFormat = "YYYY-MM-DD";
 
-            // start on a Sunday
             this.startDate = moment().day(this.startOfWeekDayIndex).subtract("weeks", 4);
-
-            // end on a Saturday
             this.endDate = moment().day(6 + this.startOfWeekDayIndex).add("weeks", 6);
 
             this.weeksCollection = new CalendarCollection(null,
             {
-                startOfWeekDayIndex: this.startOfWeekDayIndex,
                 summaryViewEnabled: this.summaryViewEnabled,
                 startDate: moment(this.startDate),
                 endDate: moment(this.endDate)
@@ -111,7 +108,7 @@ function (_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollect
                 // Fade out the calendar, rerender centered on the requested date, and fade in.
 
                 var newStartDate = moment(dateAsMoment).day(this.startOfWeekDayIndex).subtract("weeks", 4);
-                var newEndDate = moment(dateAsMoment).day(6 + this.startOfWeekDayIndex).add("weeks", 6);
+                var newEndDate = moment(dateAsMoment).day().add("weeks", 6);
                 this.reset(newStartDate, newEndDate);
                 this.views.calendar.scrollToDate(dateAsMoment);
             }
