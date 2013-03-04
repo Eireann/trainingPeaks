@@ -6,6 +6,8 @@ function(TP)
 {
     return TP.APIModel.extend(
     {
+        cacheable: true,
+
         webAPIModelName: "User",
         idAttribute: "userId",
         shortDateFormat: "YYYY-MM-DD",

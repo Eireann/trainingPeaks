@@ -10,6 +10,8 @@ function(moment, TP, WorkoutModel)
     {
         model: WorkoutModel,
 
+        cacheable: true,
+
         urlRoot: function()
         {
             return theMarsApp.apiRoot + "/WebApiServer/Fitness/V1/workouts";

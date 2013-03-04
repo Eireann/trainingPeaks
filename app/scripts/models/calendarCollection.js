@@ -10,8 +10,6 @@ function(TP, WorkoutsCollection, CalendarWeekCollection, CalendarDayModel)
     return TP.Collection.extend(
     {
         dateFormat: "YYYY-MM-DD",
-        startOfWeekDayIndex: null,
-        summaryViewEnabled: false,
 
         initialize: function(models, options)
         {
@@ -21,7 +19,6 @@ function(TP, WorkoutsCollection, CalendarWeekCollection, CalendarDayModel)
             if (!options.hasOwnProperty('endDate'))
                 throw "CalendarCollection requires an end date";
 
-            this.startOfWeekDayIndex = options.hasOwnProperty("startOfWeekDayIndex") ? options.startOfWeekDayIndex : 0;
             this.summaryViewEnabled = options.hasOwnProperty("summaryViewEnabled") ? options.summaryViewEnabled : false;
 
             this.workoutsCollection = new WorkoutsCollection();

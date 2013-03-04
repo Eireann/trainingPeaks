@@ -61,6 +61,17 @@ module.exports = function(grunt)
                     imagesDir: "assets/images"
                 }
             },
+            dev:
+            {
+                options:
+                {
+                    sassDir: "app/scss",
+                    cssDir: "build/dev/app/css",
+                    outputStyle: "expanded",
+                    require: "zurb-foundation",
+                    imagesDir: "assets/images"
+                }
+            },
             "dev-deploy":
             {
                 options:
@@ -130,6 +141,18 @@ module.exports = function(grunt)
                 dest: "build/dev-deploy/single.js",
 
                 separator: ";"
+            },
+
+            dev:
+            {
+                src:
+                [
+                    "build/debug/single.js"
+                ],
+
+                dest: "build/dev/single.js",
+
+                separator: ";"
             }
         },
 
@@ -154,7 +177,7 @@ module.exports = function(grunt)
         {
             compass: {
                 files: ["Gruntfile.js", "app/scss/*.scss"],
-                tasks: "compass"
+                tasks: "compass:debug"
             }
         },
 
@@ -165,6 +188,10 @@ module.exports = function(grunt)
                 src: ["build"]
             },
             release:
+            {
+                src: ["build"]
+            },
+            dev:
             {
                 src: ["build"]
             },
@@ -194,6 +221,11 @@ module.exports = function(grunt)
             {
                 src: "index.html",
                 dest: "build/dev-deploy/index.html"
+            },
+            dev:
+            {
+                src: "index.html",
+                dest: "build/dev/index.html"
             }
         },
 
@@ -220,6 +252,14 @@ module.exports = function(grunt)
                 files:
                 {
                     "build/dev-deploy": ["assets/images/**"]
+                }
+            },
+
+            dev:
+            {
+                files:
+                {
+                    "build/dev": ["assets/images/**"]
                 }
             },
 
@@ -316,11 +356,10 @@ module.exports = function(grunt)
     grunt.registerTask("validate_models", ["validate-webapi-models"]);
     grunt.registerTask("update_grunt_config", ["requirejs_config", "i18n_config"]);
     grunt.registerTask("debug", ["clean", "coverage", "update_grunt_config", "requirejs", "compass:debug", "targethtml:debug", "concat", "copy:debug", "copy-i18n-files", "copy:debug_coverage", "plato"]);
-
-    grunt.registerTask("release", ["debug", "compass:release", "targethtml:release", "uglify", "copy:release", "copy-i18n-files"]);
+    grunt.registerTask("dev", ["debug", "compass:dev", "targethtml:dev", "concat:dev", "copy:dev"]);
     grunt.registerTask("dev-deploy", ["debug", "compass:dev-deploy", "targethtml:dev-deploy", "concat:dev-deploy", "copy:dev-deploy"]);
+    grunt.registerTask("release", ["debug", "compass:release", "targethtml:release", "uglify", "copy:release", "copy-i18n-files"]);
     grunt.registerTask("default", ["debug"]);
-    grunt.registerTask("dev", ["compass:debug", "copy:debug"]);
 
     // makes reports available at localhost/Mars/coverage/lcov-report/index.html,
     // and at build/debug/coverage/lcov-report/index.html
