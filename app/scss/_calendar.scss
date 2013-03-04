@@ -1,4 +1,5 @@
 ﻿@import "tpstylesheet";
+@import "workoutColor";
 
 #calendarWrapper
 {
@@ -45,7 +46,8 @@
         min-height:150px;
 		background-color: $white;
         padding: 0px 0px 5px;
-        overflow-x: auto;
+
+        overflow-x: hidden;
         overflow-y: visible;
 
         .workout
@@ -64,7 +66,7 @@
 
 				.workoutHeader
 				{
-					padding: 5px 5px 5px 5px;
+					padding: 0px 5px 5px 5px;
 					height: 27px;
 					.workoutIcon
 					{
@@ -72,13 +74,27 @@
 						height: 25px;
 						background-color: $white;
 						float: left;
+						margin-top: 5px;
 					}
 
 					.workoutDistanceTime
 					{
-						padding: 5px 0px 0px 30px;
+						padding: 10px 0px 0px 30px;
 
 						@include labels($navigationFontFamilyRegular, 17px, $TPGrey4);
+					}
+
+					.settings
+					{
+						float: right;
+						button
+						{	
+							background: transparent;
+							border: none;
+							padding: 0px;
+							width: 15px;
+							
+						}
 					}
 				}
 				.workoutBody
@@ -165,4 +181,54 @@
 #workoutQuickView
 {
 	display:none;
+}
+
+#workoutHoverDiv
+{
+    z-index:99;
+    position:absolute;
+    min-width: 120px;
+
+    .border
+    {   
+
+        background-color:white;
+        width:100%;
+        border: 1px solid $TPGrey4;
+        border-bottom-width:3px;
+        opacity: 0.9;
+
+        // force it to stack above the triangle arrow
+        position:relative;
+        z-index:3;
+
+        .details
+        {
+            padding:10px;
+        }
+
+    }
+
+    .shadowbar
+    {
+        width:100%;
+        height:10px;
+        @include transform(translateY(-10px));
+        @include box-shadow(0px 3px 3px $TPGrey4);
+        z-index:1;
+    }
+
+    .arrow
+    {
+        @include box-shadow(3px 3px 3px $TPGrey4);
+        @include transform(translateY(-22px) rotate(45deg));
+        width:20px;
+        height:20px;
+        margin-left:20px;
+
+        // force it to stack below the main border div
+        position:relative;
+        z-index:2;
+    }
+
 }

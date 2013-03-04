@@ -325,6 +325,36 @@ function($, TP, moment, WorkoutModel, WorkoutsCollection, CalendarCollection)
             });
 
         });
-    });
 
+        it("Sets up the weeks based on a start and end date ", function ()
+        {
+            expect(CalendarCollection.prototype.setUpWeeks).toBeDefined();
+            expect(typeof CalendarCollection.prototype.setUpWeeks).toBe("function");
+
+            var i = 0;
+            var context =
+            {
+                workoutsCollection: new TP.Collection(),
+                daysCollection: new TP.Collection(),
+                add: function ()
+                {
+                    i++;
+                },
+                createWeekCollectionStartingOn: function() {}                
+            };
+            
+            spyOn(context.workoutsCollection, "reset");
+            spyOn(context.daysCollection, "reset");
+
+            var startDate = moment("2013-01-01");
+            var endDate = moment("2013-03-01");
+            CalendarCollection.prototype.setUpWeeks.call(context, startDate, endDate);
+
+            expect(context.startDate.unix()).toBe(startDate.unix());
+            expect(context.endDate.unix()).toBe(endDate.unix());
+            expect(context.workoutsCollection.reset).toHaveBeenCalled();
+            expect(context.daysCollection.reset).toHaveBeenCalled();
+            expect(i).toBe(9);
+        });
+    });
 });

@@ -1,11 +1,44 @@
-﻿@import "mixIn";
+﻿@import "tpstylesheet";
+
+@mixin workoutColorsByType($property:background-color)
+{
+     &.Run
+    {
+        #{$property}: $clrRun;
+    }
+     &.Bike
+    {
+        #{$property}: $clrBike;
+    }
+     &.Swim
+    {
+        #{$property}: $clrSwim;
+    }
+}
+
+@mixin workoutColorsByCompliance($property:background-color, $childSelector:'')
+{
+    &.ComplianceYellow #{$childSelector}
+    {
+        #{$property}: $clrComplianceYellow;
+    }
+
+    &.ComplianceRed #{$childSelector}
+    {
+        #{$property}: $clrComplianceRed;
+    }
+
+    &.ComplianceGreen #{$childSelector}
+    {
+        #{$property}: $clrComplianceGreen;
+    }
+}
 
 
-
+// background colors of workouts
 #weeksContainer
 {
 
-    
     .workout.future
     {
 		background-color: $TPGrey2;
@@ -14,6 +47,13 @@
    
     .workout.past
     {
-            @include workoutColorsByCompliance; 
+        @include workoutColorsByCompliance("background-color"); 
     }
+}
+
+// arrow/border color of workout hover
+#workoutHoverDiv.past
+{
+    @include workoutColorsByCompliance("border-bottom-color", ".border"); 
+    @include workoutColorsByCompliance("background-color", ".arrow"); 
 }
