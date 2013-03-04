@@ -40,8 +40,10 @@ function(TP, CalendarWorkoutHoverTemplate)
         onRender: function()
         {
             $('body').append(this.$el);
-            this.$el.css("left", this.posX - 20).css("top", this.posY - this.$el.height());
-        }
+            // git rid of the overflow that was caused by css triangle and shadows, or else it messes up our mouseover
+            this.$el.height(this.$('.details').height());
+            this.$el.css("left", this.posX - 20).css("top", this.posY - this.$el.height() - 50);
+        },
 
     });
 });
