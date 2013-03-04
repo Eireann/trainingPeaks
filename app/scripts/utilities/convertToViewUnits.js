@@ -21,10 +21,10 @@ function(modelToViewConversionFactors)
         return (minutes + ":" + seconds);
     };
     
-    var convertToViewUnits = function(value, fieldType, workoutType)
+    var convertToViewUnits = function(value, fieldType, workoutType, defaultValue)
     {
         if (!_.isNumber(value))
-            return "";
+            return typeof defaultValue !== 'undefined' ? defaultValue : "";
         
         var currentUnits = theMarsApp.user.get("units");
         

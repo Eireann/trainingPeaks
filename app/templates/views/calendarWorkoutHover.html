@@ -9,15 +9,15 @@
     <div>
         <label>{{$ "Distance" }}</label>
         <div>
-            <span class="planned">{{ convertToViewUnits distancePlanned "distance" }}</span>
-            <span class="completed">/ {{ convertToViewUnits distance "distance" }}</span>
+            <span class="planned">{{ convertToViewUnits distancePlanned "distance" workoutTypeValueId "0" }}</span>
+            <span class="completed">/ {{ convertToViewUnits distance "distance" workoutTypeValueId "0" }}</span>
         </div>
     </div>
     <div>
         <label>{{$ "TSS" }}</label>
         <div>
-            <span class="planned">{{ tssPlanned }}</span>
-            <span class="completed">/ {{ tssActual }}</span>
+            <span class="planned">{{ defaultValue tssPlanned 0 }}</span>
+            <span class="completed">/ {{ defaultValue tssActual 0 }}</span>
         </div>
     </div>
 </div>

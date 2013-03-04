@@ -186,6 +186,9 @@
     position:absolute;
     background-color:transparent;
     opacity: 0.8;
+    border: 1px solid $TPGrey4;
+    margin: 10px;
+    min-width: 120px;
 
     .details
     {

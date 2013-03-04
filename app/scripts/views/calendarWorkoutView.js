@@ -94,8 +94,11 @@ function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, workoutTypeName
             "mouseout .workoutIcon": "workoutHoverHide"
         },
 
-        workoutClicked: function () 
+        workoutClicked: function (e) 
         {
+            if (e.isDefaultPrevented())
+                return;
+
             var view = new WorkoutQuickView({ model: this.model });
             view.render();
             
