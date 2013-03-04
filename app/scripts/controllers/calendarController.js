@@ -23,6 +23,7 @@ function (_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollect
         show: function()
         {
             theMarsApp.logger.startTimer("CalendarController", "begin show");
+            
             this.initializeHeader();
             this.initializeCalendar();
             this.initializeLibrary();
@@ -90,7 +91,7 @@ function (_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollect
             this.views.calendar.$el.fadeIn({ duration: 800 });
         },
 
-        showDate: function(dateAsMoment)
+        showDate: function(dateAsMoment, effectDuration)
         {
             if (!dateAsMoment)
                 return;
@@ -110,7 +111,7 @@ function (_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollect
                 var newStartDate = moment(dateAsMoment).day(this.startOfWeekDayIndex).subtract("weeks", 4);
                 var newEndDate = moment(dateAsMoment).day().add("weeks", 6);
                 this.reset(newStartDate, newEndDate);
-                this.views.calendar.scrollToDate(dateAsMoment);
+                this.views.calendar.scrollToDate(dateAsMoment, effectDuration);
             }
         },
 
@@ -120,11 +121,23 @@ function (_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollect
                 this.views.header.close();
 
             this.models.calendarHeaderModel = new TP.Model();
+
             this.views.header = new CalendarHeaderView({ model: this.models.calendarHeaderModel });
+
             var self = this;
             this.views.header.on("request:today", function()
             {
                 self.showDate(moment());
+            });
+
+            this.views.header.on("request:nextweek", function(model)
+            {
+                self.showDate(moment(model.get("date")).add("weeks", 1), 200);
+            });
+
+            this.views.header.on("request:lastweek", function(model)
+            {
+                self.showDate(moment(model.get("date")).subtract("weeks", 1), 200);
             });
         },
 

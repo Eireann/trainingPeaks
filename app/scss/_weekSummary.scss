@@ -1,0 +1,33 @@
+﻿@import "tpstylesheet";
+
+.weekSummary
+{
+    @include
+    column(2);
+    min-height: 150px;
+    background-color: $white;
+    padding: 5px;
+    overflow: hidden;
+    margin-bottom: 10px;
+
+    th
+    {
+        font-size: 10px;
+        text-align: right;
+    }
+    
+    td
+    {
+        &.weekSummaryValue
+        {
+            font-size: 10px;
+            text-align: right;
+        }
+
+        &.weekSummaryRowLabel
+        {
+            text-align: left;
+            font-size: 8px;
+        }
+    }
+}

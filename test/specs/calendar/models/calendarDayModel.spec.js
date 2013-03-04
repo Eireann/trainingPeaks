@@ -28,7 +28,7 @@ function(WorkoutModel, CalendarDay)
                 var calendarDay = new CalendarDay({ date: "2011-03-02" });
                 var workout = new WorkoutModel({ workoutDay: "2011-03-02T00:00:00", workoutId: "12345" });
                 calendarDay.add(workout);
-                var workouts = calendarDay.collection;
+                var workouts = calendarDay.itemsCollection;
                 expect(workouts).not.toBeNull();
                 expect(workouts.get(workout.id)).toBe(workout);
             });

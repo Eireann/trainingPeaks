@@ -4,6 +4,9 @@ function()
 {
     var printTimeFromDecimalHours = function(hours)
     {
+        if (!hours || hours <= 0.0166)
+            return "00:00";
+
         var fullHours = Math.floor(hours);
         var partialHours = hours % 1;
         var minutes = partialHours * 60;
@@ -16,9 +19,9 @@ function()
             time = "" + fullHours;
 
         if (minutes > 10)
-            time += ":0" + minutes;
-        else
             time += ":" + minutes;
+        else
+            time += ":0" + minutes;
 
         return time;
     };

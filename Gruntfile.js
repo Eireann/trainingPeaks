@@ -27,6 +27,7 @@ module.exports = function(grunt)
                 eqnull: true,
                 browser: true,
                 devel: true,
+                sub: true,
                 globals:
                 {
                     "theMarsApp": true,
@@ -35,14 +36,19 @@ module.exports = function(grunt)
             }
         },
 
-        plato: {
-            dummy: {
-                files: {
+        plato:
+        {
+            dummy:
+            {
+                files:
+                {
                     'plato': ['app/**/!(Handlebars).js']
                 }
             },
-            debug: {
-                files: {
+            debug:
+            {
+                files:
+                {
                     'build/debug/plato': ['app/**/!(Handlebars).js']
                 }
             }
