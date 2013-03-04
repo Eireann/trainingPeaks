@@ -6,12 +6,16 @@
     column(2);
     min-height: 150px;
     background-color: $white;
-    padding: 5px;
     overflow: hidden;
     margin-bottom: 10px;
 
+    table
+    {
+    }
+
     th
     {
+        background-color: $white;
         font-size: 10px;
         text-align: right;
     }
