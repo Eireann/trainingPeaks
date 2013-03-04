@@ -1,9 +1,10 @@
 define(
 [
     "TP",
+    "utilities/workoutTypeEnum",
     "hbs!templates/views/weekSummary"
 ],
-function(TP, weekSummaryTemplate)
+function(TP, workoutTypeEnum, weekSummaryTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -21,6 +22,8 @@ function(TP, weekSummaryTemplate)
             if (!this.model || !this.model.collection)
                 throw "WeekSummaryView requires a WeekSummaryModel which in turn needs to be inside a WeekCollection";
 
+            theMarsApp.user.on("change", this.render, this);
+            
             var self = this;
             this.model.collection.each(function(item)
             {
@@ -35,8 +38,6 @@ function(TP, weekSummaryTemplate)
 
         onBeforeRender: function()
         {
-            var workoutTypes = ["", "swim", "bike", "run", "brick", "xTrain", "race", "dayOff", "mtb", "strength"];
-            
             var totalTimeCompleted = 0;
             var totalTimePlanned = 0;
             var completedValues =
@@ -61,11 +62,29 @@ function(TP, weekSummaryTemplate)
 
                 item.itemsCollection.each(function(workout)
                 {
+                    if (workout.has("totalTime") && workout.get("totalTime") !== null)
+                        totalTimeCompleted += workout.get("totalTime");
+  
+                    if (workout.has("totalTimePlanned") && workout.get("totalTimePlanned") !== null)
+                        totalTimePlanned += workout.get("totalTimePlanned");
+
+                    if (workout.has("tssPlanned") && workout.get("tssPlanned") !== null)
+                        plannedValues.cumulativeTss += workout.get("tssPlanned");
+
+                    if (workout.has("tssActual") && workout.get("tssActual") !== null)
+                        completedValues.cumulativeTss += workout.get("tssActual");
+                    
                     var workoutType = workout.get("workoutTypeValueId");
 
-                    if (!workoutType)
+                    // Always aggregate total time independently of workoutType
+                    // Only aggregate specifics for Swim, Bike, Run, Strength
+                    if (!workoutType ||
+                        workoutType !== workoutTypeEnum["Swim"] ||
+                        workoutType !== workoutTypeEnum["Bike"] ||
+                        workoutType !== workoutTypeEnum["Run"] ||
+                        workoutType !== workoutTypeEnum["Strength"])
                         return;
-                    
+
                     if (workout.has("distance") && workout.get("distance") !== null)
                         completedValues.distanceByWorkoutType[workoutType] += workout.get("distance");
 
@@ -73,41 +92,29 @@ function(TP, weekSummaryTemplate)
                         plannedValues.distanceByWorkoutType[workoutType] += workout.get("distancePlanned");
 
                     if (workout.has("totalTime") && workout.get("totalTime") !== null)
-                    {
-                        totalTimeCompleted += workout.get("totalTime");
                         completedValues.durationByWorkoutType[workoutType] += workout.get("totalTime");
-                    }
 
                     if (workout.has("totalTimePlanned") && workout.get("totalTimePlanned") !== null)
-                    {
-                        totalTimePlanned += workout.get("totalTimePlanned");
                         plannedValues.durationByWorkoutType[workoutType] += workout.get("totalTimePlanned");
-                    }
-                    
-                    if (workout.has("tssPlanned") && workout.get("tssPlanned") !== null)
-                        plannedValues.cumulativeTss += workout.get("tssPlanned");
-
-                    if (workout.has("tssActual") && workout.get("tssActual") !== null)
-                        completedValues.cumulativeTss += workout.get("tssActual");
                 });
             });
 
             this.model.set(
-                {
-                    totalTimePlanned: plannedValues.totalTime,
-                    totalTimeCompleted: completedValues.totalTime,
-                    bikeDistancePlanned: plannedValues.distanceByWorkoutType[2],
-                    bikeDistanceCompleted: completedValues.distanceByWorkoutType[2],
-                    runDistancePlanned: plannedValues.distanceByWorkoutType[3],
-                    runDistanceCompleted: completedValues.distanceByWorkoutType[3],
-                    swimDistancePlanned: plannedValues.distanceByWorkoutType[1],
-                    swimDistanceCompleted: completedValues.distanceByWorkoutType[1],
-                    strengthTimePlanned: plannedValues.durationByWorkoutType[9],
-                    strengthTimeCompleted: completedValues.durationByWorkoutType[9],
-                    tssPlanned: plannedValues.cumulativeTss,
-                    tssCompleted: completedValues.cumulativeTss
-                },
-                { silent: true });
+            {
+                totalTimePlanned: plannedValues.totalTime,
+                totalTimeCompleted: completedValues.totalTime,
+                bikeDistancePlanned: plannedValues.distanceByWorkoutType[workoutTypeEnum["Bike"]],
+                bikeDistanceCompleted: completedValues.distanceByWorkoutType[workoutTypeEnum["Bike"]],
+                runDistancePlanned: plannedValues.distanceByWorkoutType[workoutTypeEnum["Run"]],
+                runDistanceCompleted: completedValues.distanceByWorkoutType[workoutTypeEnum["Run"]],
+                swimDistancePlanned: plannedValues.distanceByWorkoutType[workoutTypeEnum["Swim"]],
+                swimDistanceCompleted: completedValues.distanceByWorkoutType[workoutTypeEnum["Swim"]],
+                strengthTimePlanned: plannedValues.durationByWorkoutType[workoutTypeEnum["Strength"]],
+                strengthTimeCompleted: completedValues.durationByWorkoutType[workoutTypeEnum["Strength"]],
+                tssPlanned: plannedValues.cumulativeTss,
+                tssCompleted: completedValues.cumulativeTss
+            },
+            { silent: true });
         }
     });
 });

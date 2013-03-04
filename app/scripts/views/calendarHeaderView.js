@@ -15,7 +15,9 @@ function(TP, calendarHeaderTemplate)
 
         events:
         {
-            "click #goToTodayButton": "onGoToTodayButtonClicked"  
+            "click #goToTodayButton": "onGoToTodayButtonClicked",
+            "click #goToNextWeekButton": "onGoToNextWeekButtonClicked",
+            "click #goToLastWeekButton": "onGoToLastWeekButtonClicked"
         },
 
         initialize: function()
@@ -24,13 +26,19 @@ function(TP, calendarHeaderTemplate)
                 throw "Cannot have a CalendarHeaderView without a model";
         },
 
-        onRender: function()
-        {
-        },
-        
         onGoToTodayButtonClicked: function()
         {
             this.trigger("request:today");
+        },
+        
+        onGoToNextWeekButtonClicked: function()
+        {
+            this.trigger("request:nextweek", this.model);
+        },
+        
+        onGoToLastWeekButtonClicked: function()
+        {
+            this.trigger("request:lastweek", this.model);
         }
     });
 });
