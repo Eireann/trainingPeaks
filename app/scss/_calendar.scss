@@ -123,17 +123,6 @@
 		}
 	}
 
-    .weekSummary
-    {
-        @include column(2);
-        min-height: 150px;
-        border: 1px solid $white;
-        background-color: $TPGrey4;
-        padding: 5px;
-        overflow: hidden;
-    }
-
-
 	.thisWeek
 	{
 		.dayHeader
@@ -142,15 +131,15 @@
 		}
 
 		.today
-    {
-        background-color: $white;
-		p{color: $TPGrey1;}
+        {
+            background-color: $white;
+    	    p{color: $TPGrey1;}
 
-		.dayHeader
-		{
-		background-color: $todayBlue;
-		}
-	}
+		    .dayHeader
+		    {
+                background-color: $todayBlue;
+        	}
+	    }
 	}
 
     .daysOfWeek

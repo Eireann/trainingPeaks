@@ -37,7 +37,7 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDayTe
 
         initialize: function()
         {
-            this.collection = this.model.collection;
+            this.collection = this.model.itemsCollection;
             this.on("after:item:added", this.makeDraggable, this);
         },
 

@@ -12,7 +12,6 @@ function(_, moment, TP)
 
         idAttribute: 'date',
         dateFormat: "YYYY-MM-DD",
-        collection: null,
 
         initialize: function()
         {
@@ -34,12 +33,12 @@ function(_, moment, TP)
         configureCollection: function()
         {
             // empty collection to store our collection
-            this.collection = new TP.Collection();
+            this.itemsCollection = new TP.Collection();
 
             // add a model to hold our label
             var dayLabel = new TP.Model({ date: this.get("date") });
             dayLabel.isDateLabel = true;
-            this.collection.add(dayLabel);
+            this.itemsCollection.add(dayLabel);
 
             // watch for changes on collection?
             //this.collection.on("add", this.change, this);
@@ -48,12 +47,12 @@ function(_, moment, TP)
 
         add: function(item)
         {
-            this.collection.add(item);
+            this.itemsCollection.add(item);
         },
 
         remove: function(item)
         {
-            this.collection.remove(item);
+            this.itemsCollection.remove(item);
         }
 
     });

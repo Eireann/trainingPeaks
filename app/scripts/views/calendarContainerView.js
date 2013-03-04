@@ -107,16 +107,6 @@ function(_, TP, CalendarWeekView, calendarContainerView)
                 this.ui.weeksContainer.scrollTop(this.ui.weeksContainer.scrollTop() + weekView.$el.height());
             }
 
-            weekView.$el.on("appear", function()
-            {
-                console.debug("APPEAR: " + weekView.model.id);
-            });
-
-            weekView.$el.on("disappear", function()
-            {
-                console.debug("DISAPPEAR: " + weekView.model.id);
-            });
-
             // display waiting indicator, then once controller loads the models they will turn off via sync event
             weekView.onWaitStart();
 
@@ -199,7 +189,6 @@ function(_, TP, CalendarWeekView, calendarContainerView)
 
         scrollToDate: function (dateAsMoment)
         {
-            console.debug(dateAsMoment.format("YYYY-MM-DD"));
             var dateAsString = dateAsMoment.format("YYYY-MM-DD");
             var selector = '*[data-date="' + dateAsString + '"]';
             this.scrollToSelector(selector, 2000);
@@ -249,8 +238,6 @@ function(_, TP, CalendarWeekView, calendarContainerView)
                         return $(this).data("date") !== undefined;
                     }).last();
                 }
-                else
-                    console.debug($element);
             }
 
             this.setCurrentDateFromDayElement($element);

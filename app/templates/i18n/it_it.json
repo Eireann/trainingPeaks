@@ -126,5 +126,7 @@
     "Off": "Spento",
     "ByWorkoutType": "Tipo Allenamento",
     "ByCompliance": "Conformita` Allenamento",
-    "Hybrid": "Ibrido"
+    "Hybrid": "Ibrido",
+
+    "hr": "ore"
 }

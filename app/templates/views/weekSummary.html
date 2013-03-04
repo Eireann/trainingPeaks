@@ -1,1 +1,54 @@
-<p>Week Summary!</p>
+<table>
+    <thead>
+        <th></th>
+        <th>Planned</th>
+        <th>Completed</th>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="weekSummaryRowLabel">Total Time</td>
+            <td class="weekSummaryValue">{{printTimeFromDecimalHours totalTimePlanned}}</td>
+            <td class="weekSummaryValue">{{printTimeFromDecimalHours totalTimeCompleted}}</td>
+        </tr>
+        <tr>
+            <td class="weekSummaryRowLabel">Bike Dis</td>
+            <td class="weekSummaryValue">{{convertToViewUnits bikeDistancePlanned "distance"}}</td>
+            <td class="weekSummaryValue">{{convertToViewUnits bikeDistanceCompleted "distance"}} {{printUnitLabel "distance"}}</td>
+        </tr>
+        <tr>
+            <td class="weekSummaryRowLabel">Run Dis</td>
+            <td class="weekSummaryValue">{{convertToViewUnits runDistancePlanned "distance"}}</td>
+            <td class="weekSummaryValue">{{convertToViewUnits runDistanceCompleted "distance"}} {{printUnitLabel "distance"}}</td>
+        </tr>
+        <tr>
+            <td class="weekSummaryRowLabel">Swim Dis</td>
+            <td class="weekSummaryValue">{{convertToViewUnits swimDistancePlanned "distance"}}</td>
+            <td class="weekSummaryValue">{{convertToViewUnits swimDistanceCompleted "distance"}} {{printUnitLabel "distance"}}</td>
+        </tr>
+        <tr>
+            <td class="weekSummaryRowLabel">Bike Dur</td>
+            <td class="weekSummaryValue">{{printTimeFromDecimalHours bikeDurationPlanned}}</td>
+            <td class="weekSummaryValue">{{printTimeFromDecimalHours bikeDurationCompleted}}{{$ "hr"}}</td>
+        </tr>
+        <tr>
+            <td class="weekSummaryRowLabel">Run Dur</td>
+            <td class="weekSummaryValue">{{printTimeFromDecimalHours runDurationPlanned}}</td>
+            <td class="weekSummaryValue">{{printTimeFromDecimalHours runDurationCompleted}}{{$ "hr"}}</td>
+        </tr>
+        <tr>
+            <td class="weekSummaryRowLabel">Swim Dur</td>
+            <td class="weekSummaryValue">{{printTimeFromDecimalHours swimDurationPlanned}}</td>
+            <td class="weekSummaryValue">{{printTimeFromDecimalHours swimDurationCompleted}}{{$ "hr"}}</td>
+        </tr>
+        <tr>
+            <td class="weekSummaryRowLabel">Strength Dur</td>
+            <td class="weekSummaryValue">{{printTimeFromDecimalHours strengthDurationPlanned}}</td>
+            <td class="weekSummaryValue">{{printTimeFromDecimalHours strengthDurationCompleted}}{{$ "hr"}}</td>
+        </tr>
+        <tr>
+            <td class="weekSummaryRowLabel">TSS</td>
+            <td class="weekSummaryValue">{{tssPlanned}}</td>
+            <td class="weekSummaryValue">{{tssCompleted}}</td>
+        </tr>
+    </tbody>
+</table>
