@@ -40,8 +40,7 @@ function(TP, CalendarWorkoutHoverTemplate)
         onRender: function()
         {
             $('body').append(this.$el);
-            this.$el.attr("class", this.$el.attr("class") + " " + this.inheritedClassNames);
-            this.$el.css("left", this.posX - Math.round(this.$el.width() / 2)).css("top", this.posY - this.$el.height());
+            this.$el.css("left", this.posX - 20).css("top", this.posY - this.$el.height());
         }
 
     });

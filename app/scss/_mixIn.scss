@@ -115,3 +115,10 @@
   #{$property}: -webkit-calc(#{$expression}); 
   #{$property}: calc(#{$expression}); 
 } 
+
+@mixin transform($expression) {
+    -ms-transform: #{$expression};
+    -moz-transform: #{$expression};
+    -webkit-transform: #{$expression};
+    -o-transform: #{$expression};
+}

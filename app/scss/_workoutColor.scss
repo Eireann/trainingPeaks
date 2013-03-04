@@ -35,10 +35,10 @@
 }
 
 
+// background colors of workouts
 #weeksContainer
 {
 
-    
     .workout.future
     {
 		background-color: $TPGrey2;
@@ -48,13 +48,12 @@
     .workout.past
     {
         @include workoutColorsByCompliance("background-color"); 
-        @include workoutColorsByCompliance("border-bottom-color", "#workoutHoverDiv .details"); 
-        @include workoutColorsByCompliance("border-top-color", "#workoutHoverDiv .arrow"); 
     }
 }
 
+// arrow/border color of workout hover
 #workoutHoverDiv.past
 {
-    @include workoutColorsByCompliance("border-bottom-color", ".details"); 
-    @include workoutColorsByCompliance("border-top-color", ".arrow"); 
+    @include workoutColorsByCompliance("border-bottom-color", ".border"); 
+    @include workoutColorsByCompliance("background-color", ".arrow"); 
 }

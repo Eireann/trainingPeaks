@@ -198,28 +198,48 @@
 {
     z-index:99;
     position:absolute;
-    background-color:transparent;
-    opacity: 0.8;
-    border: 1px solid $TPGrey4;
-    margin: 10px;
     min-width: 120px;
 
-    .details
-    {
+    .border
+    {   
+
         background-color:white;
-        border-bottom-style:solid;
-        border-bottom-width:5px;
-        @include box-shadow(3px 3px 3px $TPGrey4);
+        width:100%;
+        border: 1px solid $TPGrey4;
+        border-bottom-width:3px;
+        opacity: 0.9;
+
+        // force it to stack above the triangle arrow
+        position:relative;
+        z-index:3;
+
+        .details
+        {
+            padding:10px;
+        }
+
+    }
+
+    .shadowbar
+    {
+        width:100%;
+        height:10px;
+        @include transform(translateY(-10px));
+        @include box-shadow(0px 3px 3px $TPGrey4);
+        z-index:1;
     }
 
     .arrow
     {
+        @include box-shadow(3px 3px 3px $TPGrey4);
+        @include transform(translateY(-22px) rotate(45deg));
+        width:20px;
+        height:20px;
         margin-left:20px;
-        width:0px;
-        height:0px;
-        border-bottom:none;
-        border-style: solid;
-        border-width: 10px;
-        border-color:transparent;
+
+        // force it to stack below the main border div
+        position:relative;
+        z-index:2;
     }
+
 }
