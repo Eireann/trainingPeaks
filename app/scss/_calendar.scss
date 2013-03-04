@@ -1,4 +1,5 @@
 ﻿@import "tpstylesheet";
+@import "workoutColor";
 
 #calendarWrapper
 {
@@ -45,7 +46,8 @@
         min-height:150px;
 		background-color: $white;
         padding: 0px 0px 5px;
-        overflow-x: auto;
+
+        overflow-x: hidden;
         overflow-y: visible;
 
         .workout
@@ -176,4 +178,31 @@
 #workoutQuickView
 {
 	display:none;
+}
+
+#workoutHoverDiv
+{
+    z-index:99;
+    position:absolute;
+    background-color:transparent;
+    opacity: 0.8;
+
+    .details
+    {
+        background-color:white;
+        border-bottom-style:solid;
+        border-bottom-width:5px;
+        @include box-shadow(3px 3px 3px $TPGrey4);
+    }
+
+    .arrow
+    {
+        margin-left:20px;
+        width:0px;
+        height:0px;
+        border-bottom:none;
+        border-style: solid;
+        border-width: 10px;
+        border-color:transparent;
+    }
 }

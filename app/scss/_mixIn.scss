@@ -36,40 +36,6 @@
 	}
 }
 
-@mixin workoutColorsByType()
-{
-     &.Run
-    {
-        background-color: $clrRun
-    }
-     &.Bike
-    {
-        background-color: $clrBike
-    }
-     &.Swim
-    {
-        background-color: $clrSwim
-    }
-}
-
-@mixin workoutColorsByCompliance()
-{
-    &.ComplianceYellow
-    {
-        background-color: $clrComplianceYellow
-    }
-
-    &.ComplianceRed
-    {
-        background-color: $clrComplianceRed
-    }
-
-    &.ComplianceGreen
-    {
-        background-color: $clrComplianceGreen
-    }
-}
-
 @mixin selectionBox($width)
 {
 	select

@@ -1,0 +1,24 @@
+<div class="details">
+    <div>
+        <label>{{$ "Duration" }}</label>
+        <div>
+            <span class="planned">{{ printTimeFromDecimalHours totalTimePlanned }}</span>
+            <span class="completed">/ {{ printTimeFromDecimalHours totalTime }}</span>
+        </div>
+    </div>
+    <div>
+        <label>{{$ "Distance" }}</label>
+        <div>
+            <span class="planned">{{ convertToViewUnits distancePlanned "distance" }}</span>
+            <span class="completed">/ {{ convertToViewUnits distance "distance" }}</span>
+        </div>
+    </div>
+    <div>
+        <label>{{$ "TSS" }}</label>
+        <div>
+            <span class="planned">{{ tssPlanned }}</span>
+            <span class="completed">/ {{ tssActual }}</span>
+        </div>
+    </div>
+</div>
+<div class="arrow"></div>

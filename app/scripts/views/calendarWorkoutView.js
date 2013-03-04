@@ -3,23 +3,29 @@ define(
     "moment",
     "TP",
     "views/workoutQuickView",
+    "views/calendarWorkoutHoverView",
     "utilities/workoutTypeName",
     "hbs!templates/views/calendarWorkout"
 ],
-function(moment, TP, WorkoutQuickView, workoutTypeName, CalendarWorkoutTemplate)
+function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, workoutTypeName, CalendarWorkoutTemplate)
 {
     return TP.ItemView.extend(
     {
 
         showThrobbers: false,
         tagName: "div",
-       
+
         today: moment().format("YYYY-MM-DD"),
 
         className: function()
         {
             return "workout " +
-                this.getWorkoutTypeCssClassName() + " " +
+                this.getDynamicCssClassNames();
+        },
+
+        getDynamicCssClassNames: function()
+        {
+            return this.getWorkoutTypeCssClassName() + " " +
                 this.getComplianceCssClassName() + " " +
                 this.getPastOrCompletedCssClassName();
         },
@@ -82,13 +88,32 @@ function(moment, TP, WorkoutQuickView, workoutTypeName, CalendarWorkoutTemplate)
                 throw "Cannot have a CalendarWorkoutView without a model";
         },
 
-        events: { click: "workoutClicked" },
+        events: {
+            click: "workoutClicked",
+            "mouseover .workoutIcon": "workoutHoverShow",
+            "mouseout .workoutIcon": "workoutHoverHide"
+        },
 
         workoutClicked: function () 
         {
             var view = new WorkoutQuickView({ model: this.model });
             view.render();
             
+        },
+
+        workoutHoverShow: function(e)
+        {
+            this.workoutHoverView = new CalendarWorkoutHoverView({ model: this.model, className: this.getDynamicCssClassNames(), top: e.pageY, left: e.pageX });
+            this.workoutHoverView.render();
+        },
+
+        workoutHoverHide: function()
+        {
+            if (this.workoutHoverView)
+            {
+                this.workoutHoverView.close();
+                delete this.workoutHoverView;
+            }
         },
 
         onRender: function()
