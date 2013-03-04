@@ -187,11 +187,11 @@ function(_, TP, CalendarWeekView, calendarContainerView)
             }, animationTimeout);
         },
 
-        scrollToDate: function (dateAsMoment)
+        scrollToDate: function (dateAsMoment, effectDuration)
         {
             var dateAsString = dateAsMoment.format("YYYY-MM-DD");
             var selector = '*[data-date="' + dateAsString + '"]';
-            this.scrollToSelector(selector, 2000);
+            this.scrollToSelector(selector, effectDuration || 500);
         },
         
         onItemDropped: function(itemView, options)
