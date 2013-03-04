@@ -57,3 +57,16 @@
     @include workoutColorsByCompliance("border-bottom-color", ".border"); 
     @include workoutColorsByCompliance("background-color", ".arrow"); 
 }
+
+#workoutHoverDiv.future
+{
+    .border
+    {
+        border-bottom-color: $TPGrey2;
+    }
+
+    .arrow
+    {
+        background-color: $TPGrey2;
+    }
+}

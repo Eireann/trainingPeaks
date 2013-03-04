@@ -192,11 +192,10 @@
     .border
     {   
 
-        background-color:white;
+        background-image: -webkit-linear-gradient(bottom, rgb(255, 255, 255), rgba(255, 255, 255, 0.9));
         width:100%;
         border: 1px solid $TPGrey4;
         border-bottom-width:3px;
-        opacity: 0.9;
 
         // force it to stack above the triangle arrow
         position:relative;
@@ -205,6 +204,24 @@
         .details
         {
             padding:10px;
+
+    		@include labels($navigationFontFamilyRegular, 12px, $black);
+
+            label
+            {
+                font-weight:bold;
+                margin-top:5px;
+            }
+
+            .planned
+            {
+                color: $plannedBlue ;
+            }
+
+            .completed
+            {
+                color: $completedBlue;
+            }
         }
 
     }

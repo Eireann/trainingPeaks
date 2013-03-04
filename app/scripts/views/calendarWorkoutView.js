@@ -90,8 +90,8 @@ function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, workoutTypeName
 
         events: {
             click: "workoutClicked",
-            "mouseover .workoutIcon": "workoutHoverShow",
-            "mouseout .workoutIcon": "workoutHoverHide"
+            "mouseenter .workoutIcon": "workoutHoverShow",
+            "mouseleave .workoutIcon": "workoutHoverHide"
         },
 
         workoutClicked: function (e) 
@@ -106,11 +106,14 @@ function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, workoutTypeName
 
         workoutHoverShow: function(e)
         {
-            this.workoutHoverView = new CalendarWorkoutHoverView({ model: this.model, className: this.getDynamicCssClassNames(), top: e.pageY, left: e.pageX });
-            this.workoutHoverView.render();
+            if (!this.workoutHoverView)
+            {
+                this.workoutHoverView = new CalendarWorkoutHoverView({ model: this.model, className: this.getDynamicCssClassNames(), top: e.pageY, left: e.pageX });
+                this.workoutHoverView.render();
+            }
         },
 
-        workoutHoverHide: function()
+        workoutHoverHide: function(e)
         {
             if (this.workoutHoverView)
             {
