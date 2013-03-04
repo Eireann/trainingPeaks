@@ -28,7 +28,8 @@ function(TP, WorkoutsCollection, CalendarWeekCollection, CalendarDayModel)
         },
 
         setUpWeeks: function(startDate, endDate)
-        {            this.startDate = startDate;
+        {
+            this.startDate = startDate;
             this.endDate = endDate;
 
             this.workoutsCollection.reset();
