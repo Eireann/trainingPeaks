@@ -215,17 +215,42 @@ function(_, TP, CalendarWeekView, calendarContainerView)
             if (!document.elementFromPoint)
                 return;
             
-            var $element = $(document.elementFromPoint($(window).width() - 300, 250));
+            var $element = $(document.elementFromPoint($(window).width() - 300, this.ui.weeksContainer.offset().top + 50));
 
+            // Wrong element, page still rendering or something went really wrong.
+            if ($element.is("html"))
+                return;
+            
+            // If the element is not a .day div, start digging/dom-traversal to find the right div to determine the date
             if (!$element.is(".day"))
             {
                 if ($element.is(".week"))
-                    $element = $element.children().last();
-                else if ($element.is("p") || ($element.is(".dayHeader")))
+                {
+                    $element = $element.children().filter(function()
+                    {
+                        return $(this).data("date") !== undefined;
+                    }).last();
+                }
+                else if ($element.is("p") ||
+                         $element.is(".dayHeader") ||
+                         $element.is(".workoutHeader") ||
+                         $element.is("label") ||
+                         $element.is(".workoutBody") ||
+                         $element.is(".workoutDistanceTime") ||
+                         $element.is(".workoutDiv"))
                 {
                     while (!$element.is(".day"))
                         $element = $element.parent();
                 }
+                else if ($element.is(".waiting"))
+                {
+                    $element = $element.parent().children().filter(function()
+                    {
+                        return $(this).data("date") !== undefined;
+                    }).last();
+                }
+                else
+                    console.debug($element);
             }
 
             this.setCurrentDateFromDayElement($element);
