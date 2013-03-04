@@ -40,16 +40,13 @@ function(TP, WorkoutsCollection, CalendarWeekCollection, CalendarDayModel)
             var numOfWeeksToShow = (this.endDate.diff(this.startDate, "days") + 1) / 7;
             var i;
 
-            if (this.length === 0)
+            for (i = 0; i < numOfWeeksToShow; i++)
             {
-                for (i = 0; i < numOfWeeksToShow; i++)
-                {
-                    var weekStartDate = moment(this.startDate).add("weeks", i);
+                var weekStartDate = moment(this.startDate).add("weeks", i);
 
-                    // Get a CalendarWeekCollection and wrap it inside a model, with its matching ID, to be able to add it to a parent collection
-                    var weekModel = new TP.Model({ id: weekStartDate.format(this.dateFormat), week: this.createWeekCollectionStartingOn(weekStartDate) });
-                    this.add(weekModel, { silent: false });
-                }
+                // Get a CalendarWeekCollection and wrap it inside a model, with its matching ID, to be able to add it to a parent collection
+                var weekModel = new TP.Model({ id: weekStartDate.format(this.dateFormat), week: this.createWeekCollectionStartingOn(weekStartDate) });
+                this.add(weekModel, { silent: false });
             }
         },
 
