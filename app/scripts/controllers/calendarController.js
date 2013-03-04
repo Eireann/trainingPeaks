@@ -124,21 +124,9 @@ function (_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollect
 
             this.views.header = new CalendarHeaderView({ model: this.models.calendarHeaderModel });
 
-            var self = this;
-            this.views.header.on("request:today", function()
-            {
-                self.showDate(moment());
-            });
-
-            this.views.header.on("request:nextweek", function(model)
-            {
-                self.showDate(moment(model.get("date")).add("weeks", 1), 200);
-            });
-
-            this.views.header.on("request:lastweek", function(model)
-            {
-                self.showDate(moment(model.get("date")).subtract("weeks", 1), 200);
-            });
+            this.views.header.on("request:today", this.onRequestToday, this);
+            this.views.header.on("request:nextweek", this.onRequestNextWeek, this);
+            this.views.header.on("request:lastweek", this.onRequestLastWeek, this);
         },
 
         initializeCalendar: function()
@@ -151,6 +139,21 @@ function (_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollect
             this.views.calendar = new CalendarContainerView({ model: weekDaysModel, collection: this.weeksCollection, calendarHeaderModel: this.models.calendarHeaderModel });
 
             this.bindToCalendarViewEvents(this.views.calendar);
+        },
+
+        onRequestToday: function()
+        {
+            this.showDate(moment());
+        },
+        
+        onRequestLastWeek: function(currentWeekModel)
+        {
+            this.showDate(moment(currentWeekModel.get("date")).subtract("weeks", 1), 200);
+        },
+        
+        onRequestNextWeek: function(currentWeekModel)
+        {
+            this.showDate(moment(currentWeekModel.get("date")).add("weeks", 1), 200);
         },
 
         bindToCalendarViewEvents: function (calendarView)
