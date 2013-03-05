@@ -191,14 +191,14 @@
 
     .details
     {
-        font-size:14px;
+        font-size:15px;
         min-width: 120px;
 
         @include labels($navigationFontFamilyRegular, 12px, $TPGrey4);
 
         label
         {
-            font-weight:bold;
+            font-weight:0.7;
             margin-top:10px;
             margin-bottom:2px;
         }
@@ -213,6 +213,11 @@
             color: $thisWeekBlue;
         }
 
+    }
+
+    .arrow
+    {
+        margin-left:20px;
     }
 
 }

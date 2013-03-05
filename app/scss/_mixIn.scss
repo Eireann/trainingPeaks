@@ -123,10 +123,10 @@
     -o-transform: #{$expression};
 }
 
-@mixin gradient()
+@mixin linearGradient($position, $color1, $color2)
 {
-	background: -webkit-linear-gradient(bottom, rgb(255, 255, 255), rgba(255, 255, 255, 0.9));
-	background: -moz-linear-gradient(bottom, rgb(255, 255, 255), rgba(255, 255, 255, 0.9));
-	background: -ms-linear-gradient(bottom, rgb(255, 255, 255), rgba(255, 255, 255, 0.9));
-	background: -o-linear-gradient(bottom, rgb(255, 255, 255), rgba(255, 255, 255, 0.9));
+    background-image: -webkit-linear-gradient($position, $color1, $color2);
+    background-image: -moz-linear-gradient($position, $color1, $color2);
+    background-image: -ms-linear-gradient($position, $color1, $color2);
+    background-image: linear-gradient($position, $color1, $color2);
 }

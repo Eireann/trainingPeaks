@@ -96,7 +96,7 @@ function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkout
 
             "mouseenter .workoutIcon": "workoutHoverShow",
             "mouseleave .workoutIcon": "workoutHoverHide",
-            "mouseenter .workoutSettings": "workoutSettingsHover"
+            "mouseleave .workoutIcon": "workoutHoverHide"
 
         },
 
@@ -131,15 +131,19 @@ function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkout
             
         },
 
-        workoutHoverShow: function(e)
+        workoutHoverShow: function()
         {
-            this.workoutHoverView = new CalendarWorkoutHoverView({ model: this.model, className: this.getDynamicCssClassNames(), top: e.pageY, left: e.pageX });
-            this.workoutHoverView.render();
+            if (!this.workoutHoverView || this.workoutHoverView.isClosed)
+            {
+                var iconOffset = this.$('.workoutIcon').offset();
+                this.workoutHoverView = new CalendarWorkoutHoverView({ model: this.model, className: this.getDynamicCssClassNames(), top: iconOffset.top, left: iconOffset.left });
+                this.workoutHoverView.render();
+            }
         },
 
         workoutHoverHide: function(e)
         {
-            if (this.workoutHoverView)
+            if (this.workoutHoverView && !$(e.toElement).is(".hoverBox"))
             {
                 this.workoutHoverView.close();
                 delete this.workoutHoverView;
