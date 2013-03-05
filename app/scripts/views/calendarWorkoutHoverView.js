@@ -31,6 +31,21 @@ function(TP, CalendarWorkoutHoverTemplate)
             };
         },
 
+        events:
+        {
+            mouseleave: "workoutHoverHide"
+        },
+
+        workoutHoverHide: function(e)
+        {
+            if (!$(e.toElement).is(".workoutIcon"))
+            {
+                this.close();
+                delete this.workoutHoverView;
+            }
+        },
+
+
         template:
         {
             type: "handlebars",
@@ -40,7 +55,7 @@ function(TP, CalendarWorkoutHoverTemplate)
         onRender: function()
         {
             $('body').append(this.$el);
-            this.$el.css("left", this.posX - Math.round(this.$el.width() / 2)).css("top", this.posY - this.$el.height() - 5);
+            this.$el.css("left", this.posX - 17).css("top", this.posY - this.$el.height() + 5);
         }
 
     });

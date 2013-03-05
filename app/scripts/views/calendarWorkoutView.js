@@ -104,18 +104,19 @@ function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, workoutTypeName
             
         },
 
-        workoutHoverShow: function(e)
+        workoutHoverShow: function()
         {
-            if (!this.workoutHoverView)
+            if (!this.workoutHoverView || this.workoutHoverView.isClosed)
             {
-                this.workoutHoverView = new CalendarWorkoutHoverView({ model: this.model, className: this.getDynamicCssClassNames(), top: e.pageY, left: e.pageX });
+                var iconOffset = this.$('.workoutIcon').offset();
+                this.workoutHoverView = new CalendarWorkoutHoverView({ model: this.model, className: this.getDynamicCssClassNames(), top: iconOffset.top, left: iconOffset.left });
                 this.workoutHoverView.render();
             }
         },
 
         workoutHoverHide: function(e)
         {
-            if (this.workoutHoverView)
+            if (this.workoutHoverView && !$(e.toElement).is(".hoverBox"))
             {
                 this.workoutHoverView.close();
                 delete this.workoutHoverView;
