@@ -13,7 +13,7 @@ define(
     "views/calendarContainerView",
     "views/library/libraryView"
 ],
-function (_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollection,
+function(_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollection,
          CalendarDayModel, LibraryExercisesCollection, WorkoutModel, CalendarHeaderView, CalendarContainerView, LibraryView)
 {
     return TP.Controller.extend(
@@ -32,7 +32,13 @@ function (_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollect
             this.layout.calendarRegion.show(this.views.calendar);
             this.layout.libraryRegion.show(this.views.library);
 
-            this.loadCalendarData();
+            // load the calendar, and aggregate all of the deferreds from each workout request
+            var calendarDeferreds = this.loadCalendarData();
+
+            // once all of the data has loaded, set a timeout to allow repainting, then scroll to today
+            var calendarView = this.views.calendar;
+            $.when.apply($, calendarDeferreds).then(function() { setTimeout(function() { calendarView.scrollToSelector(".today", 1000); }, 1); });
+
             this.loadLibraryData();
 
             theMarsApp.logger.logTimer("CalendarController", "finished show");
@@ -43,13 +49,17 @@ function (_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollect
             theMarsApp.logger.startTimer("CalendarController", "begin request calendar data");
             // don't make requests until after we display, or else localStorage cache synchronous read blocks browser rendering
             var diff = this.endDate.diff(this.startDate, "weeks");
+            var deferreds = [];
             for (var i = 0; i < diff; i++)
             {
                 var startDate = moment(this.startDate).add("weeks", i);
                 var endDate = moment(startDate).add("days", 6);
-                this.weeksCollection.requestWorkouts(startDate, endDate);
+                var deferred = this.weeksCollection.requestWorkouts(startDate, endDate);
+                deferreds.push(deferred);
             }
+
             theMarsApp.logger.logTimer("CalendarController", "finished request calendar data");
+            return deferreds;
         },
 
         loadLibraryData: function()
