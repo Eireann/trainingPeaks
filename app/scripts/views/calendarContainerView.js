@@ -189,6 +189,7 @@ function(_, TP, CalendarWeekView, calendarContainerView)
 
         scrollToDate: function (dateAsMoment, effectDuration)
         {
+            theMarsApp.logger.debug(dateAsMoment.format("YYYY-MM-DD"));
             var dateAsString = dateAsMoment.format("YYYY-MM-DD");
             var selector = '*[data-date="' + dateAsString + '"]';
             this.scrollToSelector(selector, effectDuration || 500);

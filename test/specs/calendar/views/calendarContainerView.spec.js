@@ -1,13 +1,15 @@
 // use requirejs() instead of define() here, to keep jasmine test runner happy
 requirejs(
 [
+    "document",
     "jquery",
     "TP",
+    "moment",
     "app",
     "views/calendarContainerView",
     "hbs!templates/views/calendarWeek"
 ],
-function($, TP, theMarsApp, CalendarView, CalendarWeekTemplate)
+function(document, $, TP, moment, theMarsApp, CalendarView, CalendarWeekTemplate)
 {
 
     describe("CalendarView ", function()
@@ -80,6 +82,26 @@ function($, TP, theMarsApp, CalendarView, CalendarWeekTemplate)
                 expect(calendarView.scrollToSelector).toHaveBeenCalledWith(".today");
             });
 
+            it("Should scroll to a given selector", function ()
+            {
+                expect(CalendarView.prototype.scrollToSelector).toBeDefined();
+                expect(typeof CalendarView.prototype.scrollToSelector).toBe("function");
+                
+                //TODO: More testing here
+            });
+
+            it("Should scroll to a given date", function ()
+            {
+                expect(CalendarView.prototype.scrollToDate).toBeDefined();
+                expect(typeof CalendarView.prototype.scrollToDate).toBe("function");
+                
+                var calendarContainerView = new CalendarView({calendarHeaderModel: new TP.Model()});
+
+                spyOn(calendarContainerView, "scrollToSelector");
+
+                calendarContainerView.scrollToDate(moment("2013-01-01"));
+            });
+
         });
 
         describe("Calendar Week Template", function()
@@ -104,6 +126,20 @@ function($, TP, theMarsApp, CalendarView, CalendarWeekTemplate)
                 expect(calendarView.trigger).toHaveBeenCalledWith("itemDropped", options);
             });
         });
+
+        //it("Should be able to check current scroll position", function()
+        //{
+        //    var calendarView = new CalendarView({ collection: new TP.Collection() });
+        //    document.elementFromPoint = function()
+        //    {
+        //        return $("<div data-date='2013-02-04' class='day ui-droppable'><div><div class='dayHeader'><p id='calendarDate'> <span class='show-for-small'>Mon</span>04</p></div></div></div>");
+        //    };
+            
+        //    spyOn(calendarView, "checkCurrentScrollPosition").andCallThrough();
+        //    spyOn(calendarView.ui.weeksContainer, "offset").andReturn({ left: 50, top: 50 });
+
+        //    calendarView.checkCurrentScrollPosition();
+        //});
 
     });
 
