@@ -106,11 +106,8 @@ function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, workoutTypeName
 
         workoutHoverShow: function(e)
         {
-            if (!this.workoutHoverView)
-            {
-                this.workoutHoverView = new CalendarWorkoutHoverView({ model: this.model, className: this.getDynamicCssClassNames(), top: e.pageY, left: e.pageX });
-                this.workoutHoverView.render();
-            }
+            this.workoutHoverView = new CalendarWorkoutHoverView({ model: this.model, className: this.getDynamicCssClassNames(), top: e.pageY, left: e.pageX });
+            this.workoutHoverView.render();
         },
 
         workoutHoverHide: function(e)

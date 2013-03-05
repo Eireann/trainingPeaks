@@ -122,3 +122,11 @@
     -webkit-transform: #{$expression};
     -o-transform: #{$expression};
 }
+
+@mixin gradient()
+{
+	background: -webkit-linear-gradient(bottom, rgb(255, 255, 255), rgba(255, 255, 255, 0.9));
+	background: -moz-linear-gradient(bottom, rgb(255, 255, 255), rgba(255, 255, 255, 0.9));
+	background: -ms-linear-gradient(bottom, rgb(255, 255, 255), rgba(255, 255, 255, 0.9));
+	background: -o-linear-gradient(bottom, rgb(255, 255, 255), rgba(255, 255, 255, 0.9));
+}
