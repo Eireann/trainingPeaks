@@ -78,12 +78,12 @@ module.exports = function(grunt)
                     imagesDir: "assets/images"
                 }
             },
-            "dev-deploy":
+            "uat":
             {
                 options:
                 {
                     sassDir: "app/scss",
-                    cssDir: "build/dev-deploy/app/css",
+                    cssDir: "build/uat/app/css",
                     outputStyle: "expanded",
                     require: "zurb-foundation",
                     imagesDir: "assets/images"
@@ -137,14 +137,14 @@ module.exports = function(grunt)
                 separator: ";"
             },
 
-            "dev-deploy":
+            "uat":
             {
                 src:
                 [
                     "build/debug/single.js"
                 ],
 
-                dest: "build/dev-deploy/single.js",
+                dest: "build/uat/single.js",
 
                 separator: ";"
             },
@@ -201,7 +201,7 @@ module.exports = function(grunt)
             {
                 src: ["build"]
             },
-            "dev-deploy":
+            "uat":
             {
                 src: ["build"]
             },
@@ -223,10 +223,10 @@ module.exports = function(grunt)
                 src: "index.html",
                 dest: "build/release/index.html"
             },
-            "dev-deploy":
+            "uat":
             {
                 src: "index.html",
-                dest: "build/dev-deploy/index.html"
+                dest: "build/uat/index.html"
             },
             dev:
             {
@@ -253,11 +253,11 @@ module.exports = function(grunt)
                 }
             },
 
-            "dev-deploy":
+            "uat":
             {
                 files:
                 {
-                    "build/dev-deploy": ["assets/images/**"]
+                    "build/uat": ["assets/images/**"]
                 }
             },
 
@@ -363,7 +363,7 @@ module.exports = function(grunt)
     grunt.registerTask("update_grunt_config", ["requirejs_config", "i18n_config"]);
     grunt.registerTask("debug", ["clean", "coverage", "update_grunt_config", "requirejs", "compass:debug", "targethtml:debug", "concat", "copy:debug", "copy-i18n-files", "copy:debug_coverage", "plato"]);
     grunt.registerTask("dev", ["debug", "compass:dev", "targethtml:dev", "concat:dev", "copy:dev"]);
-    grunt.registerTask("dev-deploy", ["debug", "compass:dev-deploy", "targethtml:dev-deploy", "concat:dev-deploy", "copy:dev-deploy"]);
+    grunt.registerTask("uat", ["debug", "compass:uat", "targethtml:uat", "concat:uat", "copy:uat"]);
     grunt.registerTask("release", ["debug", "compass:release", "targethtml:release", "uglify", "copy:release", "copy-i18n-files"]);
     grunt.registerTask("default", ["debug"]);
 

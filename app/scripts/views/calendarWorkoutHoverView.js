@@ -31,6 +31,21 @@ function(TP, CalendarWorkoutHoverTemplate)
             };
         },
 
+        events:
+        {
+            mouseleave: "workoutHoverHide"
+        },
+
+        workoutHoverHide: function(e)
+        {
+            if (!$(e.toElement).is(".workoutIcon"))
+            {
+                this.close();
+                delete this.workoutHoverView;
+            }
+        },
+
+
         template:
         {
             type: "handlebars",
@@ -40,9 +55,7 @@ function(TP, CalendarWorkoutHoverTemplate)
         onRender: function()
         {
             $('body').append(this.$el);
-            // git rid of the overflow that was caused by css triangle and shadows, or else it messes up our mouseover
-            this.$el.height(this.$('.details').height());
-            this.$el.css("left", this.posX - 20).css("top", this.posY - this.$el.height() - 50);
+            this.$el.css("left", this.posX - 17).css("top", this.posY - this.$el.height() + 5);
         }
 
     });

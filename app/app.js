@@ -93,7 +93,7 @@ function(TP, initializeAjaxAuth, ajaxCaching, Session, UserModel, UserSettingsMo
     var apiRoots =
     {
         live: "https://api.trainingpeaks.com",
-        uat: "https://api.uat.trainingpeaks.com",
+        uat: "http://api.uat.trainingpeaks.com",
         dev: "http://api.dev.trainingpeaks.com",
         local: "http://localhost:8900"
     };

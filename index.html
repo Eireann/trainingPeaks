@@ -33,7 +33,7 @@
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.js"></script>
   <!(endif)-->
 
-  <!--(if target dev-deploy)>
+  <!--(if target uat)>
   <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.0/themes/base/jquery-ui.css" />
   <link rel="stylesheet" href="app/css/app.css">
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.js"></script>
@@ -75,8 +75,8 @@
   </script>
   <!(endif)-->
 
-  <!--(if target dev-deploy)>
-  <script>window.apiRoot = "dev-deploy";</script>
+  <!--(if target uat)>
+  <script>window.apiRoot = "uat";</script>
   <script src="single.js"></script>
   <script>
       requirejs(

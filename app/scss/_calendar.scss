@@ -187,65 +187,36 @@
 {
     z-index:99;
     position:absolute;
-    min-width: 120px;
 
-    .border
-    {   
+    .details
+    {
+        font-size:15px;
+        min-width: 120px;
 
-        background-image: -webkit-linear-gradient(bottom, rgb(255, 255, 255), rgba(255, 255, 255, 0.9));
-        width:100%;
-        border: 1px solid $TPGrey4;
-        border-bottom-width:3px;
+        @include labels($navigationFontFamilyRegular, 11px, $TPGrey4);
 
-        // force it to stack above the triangle arrow
-        position:relative;
-        z-index:3;
-
-        .details
+        label
         {
-            padding:10px;
+            font-weight:0.7;
+            margin-top:10px;
+            margin-bottom:2px;
+        }
 
-    		@include labels($navigationFontFamilyRegular, 12px, $black);
+        .planned
+        {
+            color: $todayBlue ;
+        }
 
-            label
-            {
-                font-weight:bold;
-                margin-top:5px;
-            }
-
-            .planned
-            {
-                color: $plannedBlue ;
-            }
-
-            .completed
-            {
-                color: $completedBlue;
-            }
+        .completed
+        {
+            color: $thisWeekBlue;
         }
 
     }
 
-    .shadowbar
-    {
-        width:100%;
-        height:10px;
-        @include transform(translateY(-10px));
-        @include box-shadow(0px 3px 3px $TPGrey4);
-        z-index:1;
-    }
-
     .arrow
     {
-        @include box-shadow(3px 3px 3px $TPGrey4);
-        @include transform(translateY(-22px) rotate(45deg));
-        width:20px;
-        height:20px;
         margin-left:20px;
-
-        // force it to stack below the main border div
-        position:relative;
-        z-index:2;
     }
 
 }
