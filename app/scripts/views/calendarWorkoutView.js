@@ -95,7 +95,6 @@ function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkout
             mouseleave: "removeSettingsButton",
 
             "mouseenter .workoutIcon": "workoutHoverShow",
-            "mouseleave .workoutIcon": "workoutHoverHide",
             "mouseleave .workoutIcon": "workoutHoverHide"
 
         },
