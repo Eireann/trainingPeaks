@@ -192,10 +192,10 @@
     .border
     {   
 
-        background-image: -webkit-linear-gradient(bottom, rgb(255, 255, 255), rgba(255, 255, 255, 0.9));
         width:100%;
-        border: 1px solid $TPGrey4;
+        border: 1px solid $TPGrey3;
         border-bottom-width:3px;
+        background-image: -webkit-linear-gradient(bottom, rgb(255, 255, 255), rgba(255, 255, 255, 0.95));
 
         // force it to stack above the triangle arrow
         position:relative;
@@ -204,24 +204,39 @@
         .details
         {
             padding:10px;
+            padding-top:5px;
+            font-size:14px;
 
-    		@include labels($navigationFontFamilyRegular, 12px, $black);
+    		@include labels($navigationFontFamilyRegular, 11px, $TPGrey4);
 
             label
             {
                 font-weight:bold;
-                margin-top:5px;
+                margin-top:10px;
+                margin-bottom:2px;
             }
 
             .planned
             {
-                color: $plannedBlue ;
+                color: $todayBlue ;
             }
 
             .completed
             {
-                color: $completedBlue;
+                color: $thisWeekBlue;
             }
+
+        }
+
+        .shadow
+        {
+            position:absolute;
+            top:0px;
+            left:0px;
+            bottom:0px;
+            right:0px;
+            @include box-shadow(0px 0px 3px 1px $TPGrey3);
+            z-index:-1;
         }
 
     }
@@ -230,14 +245,14 @@
     {
         width:100%;
         height:10px;
-        @include transform(translateY(-10px));
-        @include box-shadow(0px 3px 3px $TPGrey4);
+        @include transform(translateY(-9px));
+        @include box-shadow(0px 0px 3px 1px $TPGrey3);
         z-index:1;
     }
 
     .arrow
     {
-        @include box-shadow(3px 3px 3px $TPGrey4);
+        @include box-shadow(0px 0px 3px 1px $TPGrey3);
         @include transform(translateY(-22px) rotate(45deg));
         width:20px;
         height:20px;
