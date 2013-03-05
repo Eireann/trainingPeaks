@@ -1,0 +1,75 @@
+﻿@import "tpstylesheet";
+@import "mixIn";
+
+.hoverBox
+{
+
+    position:relative;
+
+    .hoverBoxContents
+    {
+        position:relative;
+        z-index: 3;
+        margin-bottom: 3px; 
+        padding: 10px;
+        @include linearGradient(bottom, rgb(255,255,255), rgba(255,255,255,0.90)); 
+    }
+
+    // this is what gives the top and side shadows
+    .mainShadow
+    {
+        position:absolute;
+        z-index: 1;
+        top: 0px;
+        left: 0px;
+        right: 0px;
+
+        // the bottom will be covered by the bottom bar and arrow
+        bottom: 20px;
+
+        @include box-shadow(0px 0px 4px 1px #888888);
+    }
+
+    // bottom shadow, except for the arrow
+    .bottomShadow
+    {
+        position: absolute;
+        z-index: 0;
+        left: 0px;
+        right: 0px;
+        bottom: 19px;
+        
+        height: 0px;
+       
+        // the shadow and border look much lighter than these colors, because they are layered to the back 
+        @include box-shadow(0px 0px 5px 1px #333333);
+        border-bottom: 1px solid #555555;
+    }
+
+    .arrow
+    {
+        position:relative;
+        z-index: 2;
+        width: 20px;
+        height: 20px;
+        @include transform(translateY(-10px) rotate(45deg));
+        @include calc(margin-left, "50% - 14px");
+        @include box-shadow(0px 0px 5px 2px #666666);
+    }
+
+    .colorBar
+    {
+        position: absolute;
+        z-index: 4;
+        left: 0px;
+        right: 0px;
+        bottom: 20px;
+        height: 3px;
+    }
+
+    // the arrow and the colorBar are .colored, so we can easily override color for some popups
+    .colored
+    {
+        background-color: $TPGrey2;
+    }
+}
