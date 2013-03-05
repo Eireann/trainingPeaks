@@ -41,7 +41,6 @@ function(TP, CalendarWorkoutHoverTemplate)
             if (!$(e.toElement).is(".workoutIcon"))
             {
                 this.close();
-                delete this.workoutHoverView;
             }
         },
 

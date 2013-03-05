@@ -95,7 +95,6 @@ function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkout
             mouseleave: "removeSettingsButton",
 
             "mouseenter .workoutIcon": "workoutHoverShow",
-            "mouseleave .workoutIcon": "workoutHoverHide",
             "mouseleave .workoutIcon": "workoutHoverHide"
 
         },
@@ -116,7 +115,7 @@ function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkout
         workoutSettingsHover: function (e)
         {
             var offset = $(e.currentTarget).offset();
-            this.workoutSettings = new CalendarWorkoutSettingsHover({ model: this.model, top: offset.top + 10, left:offset.left + 5 });
+            this.workoutSettings = new CalendarWorkoutSettingsHover({ model: this.model, top: offset.top + 10, left: offset.left + 5 });
             this.workoutSettings.render();
 
         },
