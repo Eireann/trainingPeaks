@@ -38,8 +38,6 @@ function(TP, workoutTypeEnum, weekSummaryTemplate)
 
         onBeforeRender: function()
         {
-            var totalTimeCompleted = 0;
-            var totalTimePlanned = 0;
             var completedValues =
             {
                 totalTime: 0,
@@ -55,33 +53,36 @@ function(TP, workoutTypeEnum, weekSummaryTemplate)
                 cumulativeTss: 0
             };
             
+            //iterate over calendarDayModels for the current week (associated with this weekSummaryView)
             this.model.collection.each(function(item)
             {
+                //exclude if item is a weekSummaryModel instead of calendarDayModel 
                 if (!item.itemsCollection)
                     return;
-
+                
+                //iterate over items (workouts, meals, metrics) for the current day
                 item.itemsCollection.each(function(workout)
                 {
                     if (workout.has("totalTime") && workout.get("totalTime") !== null)
-                        totalTimeCompleted += workout.get("totalTime");
+                        completedValues.totalTime += workout.get("totalTime");
   
                     if (workout.has("totalTimePlanned") && workout.get("totalTimePlanned") !== null)
-                        totalTimePlanned += workout.get("totalTimePlanned");
+                        plannedValues.totalTime += workout.get("totalTimePlanned");
+                    
+                    if (workout.has("tssActual") && workout.get("tssActual") !== null)
+                        completedValues.cumulativeTss += workout.get("tssActual");
 
                     if (workout.has("tssPlanned") && workout.get("tssPlanned") !== null)
                         plannedValues.cumulativeTss += workout.get("tssPlanned");
 
-                    if (workout.has("tssActual") && workout.get("tssActual") !== null)
-                        completedValues.cumulativeTss += workout.get("tssActual");
-                    
                     var workoutType = workout.get("workoutTypeValueId");
 
                     // Always aggregate total time independently of workoutType
                     // Only aggregate specifics for Swim, Bike, Run, Strength
-                    if (!workoutType ||
-                        workoutType !== workoutTypeEnum["Swim"] ||
-                        workoutType !== workoutTypeEnum["Bike"] ||
-                        workoutType !== workoutTypeEnum["Run"] ||
+                    if (!workoutType || 
+                        workoutType !== workoutTypeEnum["Swim"] &&
+                        workoutType !== workoutTypeEnum["Bike"] &&
+                        workoutType !== workoutTypeEnum["Run"] &&
                         workoutType !== workoutTypeEnum["Strength"])
                         return;
 

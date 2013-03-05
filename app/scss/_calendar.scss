@@ -9,7 +9,7 @@
 
 #calendarContainer
 {
-   
+
     @include column(15);
      
     #libraryContainer.open + &
@@ -84,8 +84,9 @@
 						@include labels($navigationFontFamilyRegular, 17px, $TPGrey4);
 					}
 
-					.settings
+					.workoutSettings
 					{
+						display: none;
 						float: right;
 						button
 						{	
@@ -193,7 +194,7 @@
         font-size:15px;
         min-width: 120px;
 
-        @include labels($navigationFontFamilyRegular, 11px, $TPGrey4);
+        @include labels($navigationFontFamilyRegular, 12px, $TPGrey4);
 
         label
         {
@@ -217,6 +218,43 @@
     .arrow
     {
         margin-left:20px;
+    }
+
+}
+
+
+
+
+#workoutSettingsDiv
+{
+    z-index:99;
+    position:absolute;
+    min-width: 75px;
+	padding-left: 10px;
+	padding-bottom: 10px;
+
+	@include labels($navigationFontFamilyRegular, 12px, $TPGrey4);
+	label
+	{
+		padding-top: 2px;
+	}
+
+	.arrow
+    {
+        width: 15px;
+        height: 15px;
+        @include transform(translateY(-7px) rotate(45deg));
+        @include calc(margin-left, "50% - 20");
+    }
+
+	.colorBar
+    {
+        bottom: 15px;
+    }
+
+	.bottomShadow
+    {
+        bottom: 14px;
     }
 
 }
