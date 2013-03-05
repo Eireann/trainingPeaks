@@ -16,7 +16,7 @@ function (TP, calendarWorkoutSettingsHover)
 
         events:
         {
-            mouseout: "hideWorkoutSettings"
+            mouseleave: "hideWorkoutSettings"
         },
 
         hideWorkoutSettings: function ()

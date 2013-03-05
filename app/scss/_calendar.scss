@@ -9,7 +9,7 @@
 
 #calendarContainer
 {
-   
+
     @include column(15);
      
     #libraryContainer.open + &
@@ -86,6 +86,7 @@
 
 					.workoutSettings
 					{
+						display: none;
 						float: right;
 						button
 						{	
@@ -193,7 +194,7 @@
         font-size:14px;
         min-width: 120px;
 
-        @include labels($navigationFontFamilyRegular, 11px, $TPGrey4);
+        @include labels($navigationFontFamilyRegular, 12px, $TPGrey4);
 
         label
         {
@@ -225,48 +226,30 @@
     position:absolute;
     min-width: 75px;
 	padding-left: 10px;
+	padding-bottom: 10px;
 
-    .border
-    {   
-		
-       @include gradient;
-        width:100%;
-        border: 1px solid $TPGrey4;
-        border-bottom-width:3px;
+	@include labels($navigationFontFamilyRegular, 12px, $TPGrey4);
+	label
+	{
+		padding-top: 2px;
+	}
 
-        // force it to stack above the triangle arrow
-        position:relative;
-        z-index:3;
-
-        .details
-        {
-            padding:10px;
-        }
-
+	.arrow
+    {
+        width: 15px;
+        height: 15px;
+        @include transform(translateY(-7px) rotate(45deg));
+        @include calc(margin-left, "50% - 20");
     }
 
-    .shadowbar
+	.colorBar
     {
-        width:100%;
-        height:10px;
-		color: $TPGrey4;
-        @include transform(translateY(-10px));
-        @include box-shadow(0px 3px 3px $TPGrey4);
-        z-index:1;
+        bottom: 15px;
     }
 
-    .arrow
+	.bottomShadow
     {
-        @include box-shadow(3px 3px 3px $TPGrey4);
-        @include transform(translateY(-22px) rotate(45deg));
-        width:20px;
-        height:20px;
-        margin-left:15px;
-
-        // force it to stack below the main border div
-        position:relative;
-        z-index:2;
-		background-color: $TPGrey4;
+        bottom: 14px;
     }
 
 }

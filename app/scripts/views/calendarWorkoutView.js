@@ -4,10 +4,11 @@ define(
     "TP",
     "views/workoutQuickView",
     "views/calendarWorkoutHoverView",
+    "views/calendarWorkoutSettings",
     "utilities/workoutTypeName",
     "hbs!templates/views/calendarWorkout"
 ],
-function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, workoutTypeName, CalendarWorkoutTemplate)
+function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkoutSettingsHover, workoutTypeName, CalendarWorkoutTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -90,8 +91,34 @@ function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, workoutTypeName
 
         events: {
             click: "workoutClicked",
+            mouseenter: "showSettingsButton",
+            mouseleave: "removeSettingsButton",
+
             "mouseenter .workoutIcon": "workoutHoverShow",
-            "mouseleave .workoutIcon": "workoutHoverHide"
+            "mouseleave .workoutIcon": "workoutHoverHide",
+            "mouseenter .workoutSettings": "workoutSettingsHover"
+
+        },
+
+        showSettingsButton: function()
+        {
+            this.$(".workoutSettings").css('display', "block");
+        },
+
+        removeSettingsButton: function (e)
+        {
+            if (!$(e.toElement).is(".workoutSettings") && !$(e.toElement).is("#workoutSettingsDiv"))
+            {
+                this.$(".workoutSettings").css('display', "none");
+            }
+        },
+
+        workoutSettingsHover: function (e)
+        {
+            var offset = $(e.currentTarget).offset();
+            this.workoutSettings = new CalendarWorkoutSettingsHover({ model: this.model, top: offset.top + 10, left:offset.left + 5 });
+            this.workoutSettings.render();
+
         },
 
         workoutClicked: function (e) 
