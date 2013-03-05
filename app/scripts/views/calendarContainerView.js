@@ -170,15 +170,15 @@ function(_, TP, CalendarWeekView, calendarContainerView)
             
             return;
         },
-        
-        scrollToSelector: function (selector, animationTimeout)
+
+        scrollToSelector: function(selector, animationTimeout)
         {
             var requestedElementOffsetFromContainer = this.ui.weeksContainer.find(selector).parent().position().top;
             var scrollToOffset = this.ui.weeksContainer.scrollTop() + requestedElementOffsetFromContainer - this.ui.weeksContainer.position().top;
 
-            if (requestedElementOffsetFromContainer < 300)
+            if (!animationTimeout && requestedElementOffsetFromContainer < 300)
                 animationTimeout = 500;
-            else if (requestedElementOffsetFromContainer > 1500)
+            else if (!animationTimeout && requestedElementOffsetFromContainer > 1500)
                 animationTimeout = 2000;
 
             this.ui.weeksContainer.animate(

@@ -102,6 +102,9 @@ function(TP, WorkoutsCollection, CalendarWeekCollection, CalendarDayModel)
                 });
                 self.stopWeeksWaiting(moment(startDate), moment(endDate));
             });
+
+            // return the deferred so caller can use it
+            return waiting;
         },
 
         appendWeek: function(startDate)
