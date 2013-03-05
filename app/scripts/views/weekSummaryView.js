@@ -55,11 +55,14 @@ function(TP, workoutTypeEnum, weekSummaryTemplate)
                 cumulativeTss: 0
             };
             
+            //iterate over calendarDayModels for the current week (associated with this weekSummaryView)
             this.model.collection.each(function(item)
             {
+                //exclude if item is a weekSummaryModel instead of calendarDayModel 
                 if (!item.itemsCollection)
                     return;
-
+                
+                //iterate over items (workouts, meals, metrics) for the current day
                 item.itemsCollection.each(function(workout)
                 {
                     if (workout.has("totalTime") && workout.get("totalTime") !== null)
