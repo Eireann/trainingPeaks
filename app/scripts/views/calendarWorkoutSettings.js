@@ -22,7 +22,7 @@ function (TP, calendarWorkoutSettingsHover)
         hideWorkoutSettings: function ()
         {
             this.close();
-            delete this;
+            //delete this;
         },
 
         initialize: function(options)
