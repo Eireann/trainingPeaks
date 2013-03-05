@@ -54,19 +54,16 @@
 // arrow/border color of workout hover
 #workoutHoverDiv.past
 {
-    @include workoutColorsByCompliance("border-bottom-color", ".border"); 
-    @include workoutColorsByCompliance("background-color", ".arrow"); 
+    @include workoutColorsByCompliance("background-color", ".hoverBox .colored"); 
 }
 
 #workoutHoverDiv.future
 {
-    .border
+    .hoverBox
     {
-        border-bottom-color: $TPGrey2;
-    }
-
-    .arrow
-    {
-        background-color: $TPGrey2;
+        .colored
+        {
+            background-color: $TPGrey2;
+        }
     }
 }
