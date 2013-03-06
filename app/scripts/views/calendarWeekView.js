@@ -1,11 +1,12 @@
 ﻿define(
 [
     "moment",
+    "setImmediate",
     "TP",
     "views/calendarDayView",
     "views/weekSummaryView"
 ],
-function (moment, TP, CalendarDayView, WeekSummaryView)
+function(moment, setImmediate, TP, CalendarDayView, WeekSummaryView)
 {
     return TP.CollectionView.extend(
     {
@@ -39,10 +40,10 @@ function (moment, TP, CalendarDayView, WeekSummaryView)
         {
             // as a timeout, because on the initial render of weeksummary, and probably some other elements, height is not calculated until it's painted,
             var theView = this;
-            setTimeout(function()
+            setImmediate(function()
             {
                 theView.updateDayCellHeights();
-            }, 1);
+            });
         },
 
         updateDayCellHeights: function()

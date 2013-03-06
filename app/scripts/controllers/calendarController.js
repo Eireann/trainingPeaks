@@ -2,6 +2,7 @@ define(
 [
     "underscore",
     "moment",
+    "setImmediate",
     "TP",
     "layouts/calendarLayout",
     "models/calendarCollection",
@@ -13,7 +14,7 @@ define(
     "views/calendarContainerView",
     "views/library/libraryView"
 ],
-function(_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollection,
+function(_, moment, setImmediate, TP, CalendarLayout, CalendarCollection, CalendarWeekCollection,
          CalendarDayModel, LibraryExercisesCollection, WorkoutModel, CalendarHeaderView, CalendarContainerView, LibraryView)
 {
     return TP.Controller.extend(
@@ -34,14 +35,42 @@ function(_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollecti
 
             // load the calendar, and aggregate all of the deferreds from each workout request
             var calendarDeferreds = this.loadCalendarData();
-
-            // once all of the data has loaded, set a timeout to allow repainting, then scroll to today
-            var calendarView = this.views.calendar;
-            $.when.apply($, calendarDeferreds).then(function() { setTimeout(function() { calendarView.scrollToSelector(".today", 1000); }, 1); });
+            this.setupScrollToToday(calendarDeferreds);
 
             this.loadLibraryData();
 
             //theMarsApp.logger.logTimer("CalendarController", "finished show");
+        },
+
+        setupScrollToToday: function(deferreds)
+        {
+            var ajaxCachingDeferreds = [];
+            _.each(deferreds, function(deferred)
+            {
+                if (deferred.hasOwnProperty("ajaxCachingDeferred"))
+                {
+                    ajaxCachingDeferreds.push(deferred.ajaxCachingDeferred);
+                }
+            });
+
+            // once all of the data has loaded, set a timeout to allow repainting, then scroll to today
+            var calendarView = this.views.calendar;
+            calendarView.wasScrolled = false;
+            var scrollIt = function()
+            {
+                if (!calendarView.wasScrolled)
+                {
+                    setImmediate(function() { calendarView.scrollToSelector(".today", 500); calendarView.wasScrolled = true; });
+                }
+            };
+
+            if (ajaxCachingDeferreds.length > 0)
+            {
+                $.when.apply($, ajaxCachingDeferreds).then(scrollIt);
+            }
+
+            $.when.apply($, deferreds).then(scrollIt);
+
         },
 
         loadCalendarData: function()

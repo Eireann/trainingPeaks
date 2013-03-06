@@ -122,6 +122,10 @@ function(_, TP, CalendarWeekView, calendarContainerView)
 
             _.bindAll(this, "onScroll");
             this.ui.weeksContainer.scroll(this.onScroll);
+
+            _.bindAll(this, "onScrollStop");
+            var debouncedScrollStop = _.debounce(this.onScrollStop, 200);
+            this.ui.weeksContainer.scroll(debouncedScrollStop);
             
             //theMarsApp.logger.startTimer("CalendarView.onRender", "Begin rendering weeks");
 
@@ -146,7 +150,27 @@ function(_, TP, CalendarWeekView, calendarContainerView)
         {
             this.scrollToSelector(".today");
         },
-        
+
+        onScrollStop: function()
+        {
+            var uiOffset = this.ui.weeksContainer.offset();
+            var currentWeek = $(document.elementFromPoint(uiOffset.left, uiOffset.top)).closest(".week");
+            var nextWeek = currentWeek.next(".week");
+
+            var weeksContainerTop = uiOffset.top;
+            var currentWeekOffset = Math.abs(currentWeek.offset().top - weeksContainerTop);
+            var nextWeekOffset = Math.abs(nextWeek.offset().top - weeksContainerTop);
+
+            var threshhold = 100;
+            if (currentWeekOffset > 0 && currentWeekOffset <= threshhold)
+            {
+                this.scrollToElement(currentWeek, 100);
+            } else if (nextWeekOffset > 0 && nextWeekOffset <= threshhold)
+            {
+                this.scrollToElement(nextWeek, 100);
+            }
+        },
+
         onScroll: function()
         {
             var howMuchIHave = this.ui.weeksContainer[0].scrollHeight;
@@ -173,7 +197,19 @@ function(_, TP, CalendarWeekView, calendarContainerView)
 
         scrollToSelector: function(selector, animationTimeout)
         {
-            var requestedElementOffsetFromContainer = this.ui.weeksContainer.find(selector).parent().position().top;
+            return this.scrollToElement(this.ui.weeksContainer.find(selector), animationTimeout);
+        },
+
+        scrollToElement: function(element, animationTimeout)
+        {
+            var $element = $(element);
+            if ($element.is(".day"))
+                $element = $element.parent();
+
+            if (!$element.is(".week"))
+                throw "Invalid scroll element - must be a .day or .week (" + $element.attr("class") + ")";
+
+            var requestedElementOffsetFromContainer = $element.position().top;
             var scrollToOffset = this.ui.weeksContainer.scrollTop() + requestedElementOffsetFromContainer - this.ui.weeksContainer.position().top;
 
             if (!animationTimeout && requestedElementOffsetFromContainer < 300)

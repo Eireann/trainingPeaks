@@ -10,12 +10,18 @@ function(moment)
 {
     var printDate = function(momentParseableDate, formatString)
     {
+        var momentDate = moment(momentParseableDate);
         if (!formatString || typeof formatString !== "string")
         {
-            formatString = "DD";
+            if (momentDate.dayOfYear() === 1) // firstday of year
+                formatString = "MMM DD YYYY";
+            else if (momentDate.date() === 1) // firstday of month
+                formatString = "MMM DD";
+            else
+                formatString = "DD";
         }
 
-        return moment(momentParseableDate).format(formatString);
+        return momentDate.format(formatString);
     };
 
     return printDate;

@@ -191,26 +191,31 @@
 
     .details
     {
-        font-size:16px;
-        min-width: 120px;
+        min-width: 100px;
 
-        @include labels($navigationFontFamilyRegular, 12px, $TPGrey4);
+        @include labels($navigationFontFamilyRegular, 11px, $TPGrey4);
 
         label
         {
-            font-weight:0.8;
             margin-top:10px;
             margin-bottom:2px;
+        }
+
+        label:first
+        {
+            margin-top:0px;
         }
 
         .planned
         {
             color: $todayBlue ;
+            font-size:16px;
         }
 
         .completed
         {
             color: $thisWeekBlue;
+            font-size:16px;
         }
 
     }

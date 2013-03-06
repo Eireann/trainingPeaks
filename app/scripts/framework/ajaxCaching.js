@@ -1,9 +1,10 @@
 ﻿define(
 [
     "underscore",
-    "backbone"
+    "backbone",
+    "setImmediate"
 ],
-function(_, Backbone)
+function(_, Backbone, setImmediate)
 {
 
     return {
@@ -62,13 +63,14 @@ function(_, Backbone)
                     localStorage.removeItem(key);
                 }
             });
-            theMarsApp.logger.debug("AjaxCaching: Cleared Cache");
+            //theMarsApp.logger.debug("AjaxCaching: Cleared Cache");
         },
 
         addCachingDeferred: function(method, model, options, backboneSync)
         {
             options.ajaxCachingDeferred = new $.Deferred();
             var jqXhr = backboneSync(method, model, options);
+            jqXhr.ajaxCachingDeferred = options.ajaxCachingDeferred;
 
             // save response to local storage only on xhr resolution, not on resolution from cache
             var ajaxCaching = this;
@@ -101,13 +103,13 @@ function(_, Backbone)
         {
             if (status === "notmodified")
             {
-                theMarsApp.logger.debug("AjaxCaching Not Modified: " + options.url);
+                //theMarsApp.logger.debug("AjaxCaching Not Modified: " + options.url);
                 return;
             }
 
             if (status !== "success")
             {
-                theMarsApp.logger.debug("AjaxCaching Invalid Response Status: " + status + ", " + options.url);
+                //theMarsApp.logger.debug("AjaxCaching Invalid Response Status: " + status + ", " + options.url);
                 return;
             }
 
@@ -124,7 +126,7 @@ function(_, Backbone)
             this.writeCache(objectKey, objectToStore);
             //this.lawnchair.save(objectToStore);
 
-            theMarsApp.logger.debug("AjaxCaching Loaded from server: " + options.url);
+            //theMarsApp.logger.debug("AjaxCaching Loaded from server: " + options.url);
         },
 
         writeCache: function(key, value)
@@ -134,7 +136,7 @@ function(_, Backbone)
                 localStorage.setItem(key, typeof value !== "string" ? JSON.stringify(value) : value);
             } catch (err)
             {
-                theMarsApp.logger.debug(err);
+                //theMarsApp.logger.debug(err);
                 this.clearCache();
             }
         },
@@ -183,11 +185,11 @@ function(_, Backbone)
             {
 
                 // start it in a 'nextTick', so the browser can finish painting the results of this thread first
-                setTimeout(function()
+                setImmediate(function()
                 {
                     options.ajaxCachingDeferred.resolveWith(options, [cachedData, status, xhr]);
-                    theMarsApp.logger.debug("AjaxCaching Loaded from cache: " + options.url);
-                }, 1);
+                    //theMarsApp.logger.debug("AjaxCaching Loaded from cache: " + options.url);
+                });
             }
         },
 

@@ -43,6 +43,9 @@
             // date utilities
             "moment": "../vendor/js/libs/moment/moment",
 
+            // thread utilities
+            "setImmediate": "../vendor/js/libs/setImmediate"
+
             // lawnchair - for localStorage
             "lawnchair": "../vendor/js/libs/lawnchair"
  
@@ -88,6 +91,10 @@
             "jqueryOutside":
             {
                 exports: ""
+            },
+            "setImmediate":
+            {
+                exports: "setImmediate"
             }
 
 

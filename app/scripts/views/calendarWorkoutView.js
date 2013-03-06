@@ -8,7 +8,7 @@ define(
     "utilities/workoutTypeName",
     "hbs!templates/views/calendarWorkout"
 ],
-function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkoutSettingsHover, workoutTypeName, CalendarWorkoutTemplate)
+function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkoutSettingsHover, workoutTypeName, determineCompletedWorkout, CalendarWorkoutTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -36,12 +36,26 @@ function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkout
             return workoutTypeName(this.model.get("workoutTypeValueId"));
         },
 
-        getComplianceCssClassName: function()
+        getComplianceCssClassName: function ()
         {
 
-            var totalTimePlanned = this.model.get("totalTimePlanned") ? this.model.get("totalTimePlanned") : 0;
-            var totalTime = this.model.get("totalTime") ? this.model.get("totalTime") : 0;
+            var complianceAttributeNames = {
+                distance: "distancePlanned",
+                totalTime: "totalTimePlanned",
+                tssActual: "tssPlanned"
+            };
 
+            var workout = this.model;
+
+            for (var key in complianceAttributeNames)
+            {
+                var plannedValueAttributeName = complianceAttributeNames[key];
+                var completedValueAttributeName = key;
+                var plannedValue = this.model.get(plannedValueAttributeName) ? this.model.get(plannedValueAttributeName) : 0;
+                var completedValue = this.model.get(completedValueAttributeName) ? this.model.get(completedValueAttributeName) : 0;
+
+                if (plannedValue)
+                {
             if ((totalTimePlanned * 0.8) <= totalTime && totalTime <= (totalTimePlanned * 1.2))
             {
                 return "ComplianceGreen";
@@ -97,7 +111,6 @@ function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkout
 
             "mouseenter .workoutIcon": "showWorkoutSummaryHover",
             "mouseleave .workoutIcon": "hideWorkoutSummaryHover",
-            "mouseup .workoutSettings": "workoutSettingsClicked"
 
         },
 
@@ -135,8 +148,8 @@ function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkout
 
         workoutSettingsClicked: function (e)
         {
-            e.preventDefault()
-            this.hideWorkoutSummaryHover(e);
+            e.preventDefault();
+
             var offset = $(e.currentTarget).offset();
             this.workoutSettings = new CalendarWorkoutSettingsHover({ model: this.model, top: offset.top + 10, left: offset.left + 5 });
             this.workoutSettings.render();
@@ -160,18 +173,14 @@ function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkout
                 var iconOffset = this.$('.workoutIcon').offset();
                 this.workoutHoverView = new CalendarWorkoutHoverView({ model: this.model, className: this.getDynamicCssClassNames(), top: iconOffset.top, left: iconOffset.left });
                 this.workoutHoverView.render();
-                this.workoutHoverView.on("mouseleave", this.onMouseLeave, this);
+                this.workoutHoverView.on("mouseleave", this.hideWorkoutSummaryHover, this);
             }
         },
 
         hideWorkoutSummaryHover: function(e)
         {
-            var toElement = $(document.elementFromPoint(e.pageX, e.pageY));
-            if (this.workoutHoverView && !toElement.is(".hoverBox"))
-            {
-                this.workoutHoverView.close();
-                delete this.workoutHoverView;
-            }
+            this.workoutHoverView.close();
+            delete this.workoutHoverView;
         },
 
         onRender: function()

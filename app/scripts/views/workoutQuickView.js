@@ -6,9 +6,10 @@
     "utilities/convertToViewUnits",
     "utilities/convertToModelUnits",
     "utilities/printTimeFromDecimalHours",
+    "utilities/convertTimeHoursToDecimal",
     "hbs!templates/views/workoutQuickView"
 ],
-function(TP, dialog, printUnitLabel, convertToViewUnits, convertToModelUnits, printTimeFromDecimalHours, workoutQuickViewTemplate)
+function(TP, dialog, printUnitLabel, convertToViewUnits, convertToModelUnits, printTimeFromDecimalHours, convertTimeHoursToDecimal, workoutQuickViewTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -41,12 +42,12 @@ function(TP, dialog, printUnitLabel, convertToViewUnits, convertToModelUnits, pr
         {
             return printTimeFromDecimalHours(value);
         },
-        
+
         setTime: function(value, options)
         {
-            //return convertToModelUnits(value, "distance");
-            return value;
+            return convertTimeHoursToDecimal(value);
         },
+
         getPace: function(value, options)
         {
             return convertToViewUnits(value, "pace");
