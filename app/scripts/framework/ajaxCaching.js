@@ -63,7 +63,7 @@ function(_, Backbone, setImmediate)
                     localStorage.removeItem(key);
                 }
             });
-            theMarsApp.logger.debug("AjaxCaching: Cleared Cache");
+            //theMarsApp.logger.debug("AjaxCaching: Cleared Cache");
         },
 
         addCachingDeferred: function(method, model, options, backboneSync)
@@ -103,13 +103,13 @@ function(_, Backbone, setImmediate)
         {
             if (status === "notmodified")
             {
-                theMarsApp.logger.debug("AjaxCaching Not Modified: " + options.url);
+                //theMarsApp.logger.debug("AjaxCaching Not Modified: " + options.url);
                 return;
             }
 
             if (status !== "success")
             {
-                theMarsApp.logger.debug("AjaxCaching Invalid Response Status: " + status + ", " + options.url);
+                //theMarsApp.logger.debug("AjaxCaching Invalid Response Status: " + status + ", " + options.url);
                 return;
             }
 
@@ -126,7 +126,7 @@ function(_, Backbone, setImmediate)
             this.writeCache(objectKey, objectToStore);
             //this.lawnchair.save(objectToStore);
 
-            theMarsApp.logger.debug("AjaxCaching Loaded from server: " + options.url);
+            //theMarsApp.logger.debug("AjaxCaching Loaded from server: " + options.url);
         },
 
         writeCache: function(key, value)
@@ -136,7 +136,7 @@ function(_, Backbone, setImmediate)
                 localStorage.setItem(key, typeof value !== "string" ? JSON.stringify(value) : value);
             } catch (err)
             {
-                theMarsApp.logger.debug(err);
+                //theMarsApp.logger.debug(err);
                 this.clearCache();
             }
         },
@@ -188,7 +188,7 @@ function(_, Backbone, setImmediate)
                 setImmediate(function()
                 {
                     options.ajaxCachingDeferred.resolveWith(options, [cachedData, status, xhr]);
-                    theMarsApp.logger.debug("AjaxCaching Loaded from cache: " + options.url);
+                    //theMarsApp.logger.debug("AjaxCaching Loaded from cache: " + options.url);
                 });
             }
         },
