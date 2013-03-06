@@ -37,7 +37,11 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDayTe
 
         initialize: function()
         {
+            if (theMarsApp)
+                theMarsApp.user.on("change", this.render, this);
+            
             this.collection = this.model.itemsCollection;
+            
             this.on("after:item:added", this.makeDraggable, this);
         },
 
