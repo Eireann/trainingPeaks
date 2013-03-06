@@ -95,6 +95,8 @@ function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkout
             mouseenter: "onMouseEnter",
             mouseleave: "onMouseLeave",
 
+            "mouseenter .workoutIcon": "showWorkoutSummaryHover",
+            "mouseleave .workoutIcon": "hideWorkoutSummaryHover",
             "mouseenter .workoutSettings": "workoutSettingsHover"
 
         },
@@ -102,7 +104,7 @@ function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkout
         onMouseEnter: function(e)
         {
             this.showSettingsButton(e);
-            this.showWorkoutSummaryHover(e);
+            //this.showWorkoutSummaryHover(e);
         },
 
         onMouseLeave: function(e)

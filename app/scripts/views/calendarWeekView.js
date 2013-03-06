@@ -30,6 +30,38 @@ function (moment, TP, CalendarDayView, WeekSummaryView)
                 throw "CalendarWeekView requires a collection";
 
             this.waiting = $('<div class="waiting"> </div>');
+
+            // when any of our child views update, recalculate all of their heights
+            this.height = 0;
+            this.on("itemview:render", this.scheduleUpdateDayCellHeights, this);
+        },
+
+        scheduleUpdateDayCellHeights: function()
+        {
+            var theView = this;
+            setTimeout(function()
+            {
+                theView.updateDayCellHeights();
+            }, 1);
+        },
+
+        updateDayCellHeights: function()
+        {
+            var myHeight = this.$el.height();
+            if (myHeight !== this.height)
+            {
+                this.height = myHeight;
+                if (myHeight > 150)
+                {
+                    // use min-height instead of height, or else some days get scrollbars?
+                    this.$(".day").css("min-height", myHeight);
+                } else
+                {
+                    this.$(".day").css("min-height", 150);
+                }
+            }
+
+            console.log(this.$el.height() + ", " + this.$('.weekSummary').height());
         },
 
         onWaitStart: function()
@@ -47,7 +79,7 @@ function (moment, TP, CalendarDayView, WeekSummaryView)
 
         onRender: function()
         {
-            this.setThisWeekCss();    
+            this.setThisWeekCss();
         },
 
         setThisWeekCss: function ()

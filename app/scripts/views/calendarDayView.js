@@ -95,7 +95,7 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDayTe
         setUpDroppable: function()
         {
             _.bindAll(this, "onDropItem");
-            this.$el.droppable({ drop: this.onDropItem });
+            this.$el.droppable({ drop: this.onDropItem, tolerance: 'pointer' });
         },
 
         onDropItem: function(event, ui)

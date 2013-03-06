@@ -67,7 +67,7 @@ function(moment, printDate, CalendarDayModel, WorkoutModel, CalendarWorkoutView,
                     var dayView = new CalendarDayView({ model: dayModel });
                     spyOn(dayView.$el, "droppable");
                     dayView.setUpDroppable();
-                    expect(dayView.$el.droppable).toHaveBeenCalledWith({ drop: dayView.onDropItem });
+                    expect(dayView.$el.droppable).toHaveBeenCalledWith({ drop: dayView.onDropItem, tolerance: 'pointer' });
                 });
 
                 it("Should trigger an itemDropped event", function()
