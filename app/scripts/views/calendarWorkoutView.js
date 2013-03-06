@@ -8,7 +8,7 @@ define(
     "utilities/workoutTypeName",
     "hbs!templates/views/calendarWorkout"
 ],
-function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkoutSettingsHover, workoutTypeName, determineCompletedWorkout, CalendarWorkoutTemplate)
+function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkoutSettingsHover, workoutTypeName, CalendarWorkoutTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -38,17 +38,19 @@ function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkout
 
         getComplianceCssClassName: function ()
         {
+            var complianceAttributeNames =
+            {
 
-            var complianceAttributeNames = {
-                distance: "distancePlanned",
                 totalTime: "totalTimePlanned",
+                distance: "distancePlanned",
                 tssActual: "tssPlanned"
-            };
 
+            };
             var workout = this.model;
 
             for (var key in complianceAttributeNames)
             {
+
                 var plannedValueAttributeName = complianceAttributeNames[key];
                 var completedValueAttributeName = key;
                 var plannedValue = this.model.get(plannedValueAttributeName) ? this.model.get(plannedValueAttributeName) : 0;
@@ -56,18 +58,25 @@ function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkout
 
                 if (plannedValue)
                 {
-            if ((totalTimePlanned * 0.8) <= totalTime && totalTime <= (totalTimePlanned * 1.2))
-            {
-                return "ComplianceGreen";
+                    if ((plannedValue * 0.8) <= completedValue && completedValue <= (plannedValue * 1.2))
+                    {
+                        return "ComplianceGreen";
+                    }
+                    else if ((plannedValue * 0.5) <= completedValue && completedValue <= (plannedValue * 1.5))
+                    {
+                        return "ComplianceYellow";
+                    }
+                    else
+                    {
+                        return "ComplianceRed";
+                    }
+                }
             }
-            else if ((totalTimePlanned * 0.5) <= totalTime && totalTime <= (totalTimePlanned * 1.5))
-            {
-                return "ComplianceYellow";
-            }
-            else
-            {
-                return "ComplianceRed";
-            }
+
+
+            // if nothing was planned, we can't fail to complete it properly ...
+
+            return "ComplianceGreen";
         },
 
         getPastOrCompletedCssClassName: function()
@@ -103,14 +112,15 @@ function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkout
                 throw "Cannot have a CalendarWorkoutView without a model";
         },
 
-        events: {
+        events:
+        {
             mouseup: "workoutClicked",
 
             mouseenter: "onMouseEnter",
             mouseleave: "onMouseLeave",
 
             "mouseenter .workoutIcon": "showWorkoutSummaryHover",
-            "mouseleave .workoutIcon": "hideWorkoutSummaryHover",
+            "mouseleave .workoutIcon": "hideWorkoutSummaryHover"
 
         },
 

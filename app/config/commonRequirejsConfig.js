@@ -47,7 +47,7 @@
             "setImmediate": "../vendor/js/libs/setImmediate"
 
             // lawnchair - for localStorage
-            "lawnchair": "../vendor/js/libs/lawnchair"
+           // "lawnchair": "../vendor/js/libs/lawnchair"
  
             
         },
