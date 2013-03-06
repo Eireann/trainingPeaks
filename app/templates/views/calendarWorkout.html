@@ -7,11 +7,7 @@
             <button><img src="assets/images/calendarImages/workoutSettingsButton.png"/></button>
         </div>
         <div class="workoutDistanceTime">
-        {{#if distance}}
-            <label>{{convertToViewUnits distance "distance"}} {{printUnitLabel "distance"}}</label>
-        {{else}}
-            <label>{{totalTime}}</label>
-        {{/if}}
+            <label>{{workoutDistanceOrTime this}}</label>
         </div>
     </div>
     <div class="workoutBody">
