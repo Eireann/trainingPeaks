@@ -6,9 +6,10 @@ define(
     "views/calendarWorkoutHoverView",
     "views/calendarWorkoutSettings",
     "utilities/workoutTypeName",
+    "utilities/determineCompletedWorkout",
     "hbs!templates/views/calendarWorkout"
 ],
-function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkoutSettingsHover, workoutTypeName, CalendarWorkoutTemplate)
+function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkoutSettingsHover, workoutTypeName, determineCompletedWorkout, CalendarWorkoutTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -39,26 +40,46 @@ function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkout
         getComplianceCssClassName: function()
         {
 
-            var totalTimePlanned = this.model.get("totalTimePlanned") ? this.model.get("totalTimePlanned") : 0;
-            var totalTime = this.model.get("totalTime") ? this.model.get("totalTime") : 0;
+            var complianceAttributeNames = {
+                totalTime: "totalTimePlanned",
+                distance: "distancePlanned",
+                tssActual: "tssPlanned"
+            };
 
-            if ((totalTimePlanned * 0.8) <= totalTime && totalTime <= (totalTimePlanned * 1.2))
+            var workout = this.model;
+
+            for (var key in complianceAttributeNames)
             {
-                return "ComplianceGreen";
+                var plannedValueAttributeName = complianceAttributeNames[key];
+                var completedValueAttributeName = key;
+                var plannedValue = this.model.get(plannedValueAttributeName) ? this.model.get(plannedValueAttributeName) : 0 ;
+                var completedValue = this.model.get(completedValueAttributeName) ? this.model.get(completedValueAttributeName) : 0;
+
+                if (plannedValue)
+                {
+                    if ((plannedValue * 0.8) <= completedValue && completedValue <= (plannedValue * 1.2))
+                    {
+                        return "ComplianceGreen";
+                    }
+                    else if ((plannedValue * 0.5) <= completedValue && completedValue <= (plannedValue * 1.5))
+                    {
+                        return "ComplianceYellow";
+                    }
+                    else
+                    {
+                        return "ComplianceRed";
+                    }
+                }
             }
-            else if ((totalTimePlanned * 0.5) <= totalTime && totalTime <= (totalTimePlanned * 1.5))
-            {
-                return "ComplianceYellow";
-            }
-            else
-            {
-                return "ComplianceRed";
-            }
+
+            // if nothing was planned, we can't fail to complete it properly ...
+            return "ComplianceGreen";
+
         },
 
         getPastOrCompletedCssClassName: function()
         {
-            if (this.model.get("totalTime"))
+            if (determineCompletedWorkout(this.model.attributes))
             {
                 return "past";
             } else if (this.model.getCalendarDay() < this.today)
@@ -92,31 +113,13 @@ function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkout
         events: {
             click: "workoutClicked",
 
-            mouseenter: "onMouseEnter",
-            mouseleave: "onMouseLeave",
+            mouseenter: "showSettingsButton",
+            mouseleave: "removeSettingsButton",
 
             "mouseenter .workoutIcon": "showWorkoutSummaryHover",
             "mouseleave .workoutIcon": "hideWorkoutSummaryHover",
-            "mouseenter .workoutSettings": "workoutSettingsHover"
+            "click .workoutSettings": "workoutSettingsHover"
 
-        },
-
-        onMouseEnter: function(e)
-        {
-            this.showSettingsButton(e);
-            //this.showWorkoutSummaryHover(e);
-        },
-
-        onMouseLeave: function(e)
-        {
-            var toElement = document.elementFromPoint(e.pageX, e.pageY);
-            if (e.toElement === this.el)
-            {
-                return;
-            }
-
-            this.removeSettingsButton(e);
-            this.hideWorkoutSummaryHover(e);
         },
 
         showSettingsButton: function()
@@ -127,7 +130,7 @@ function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkout
         removeSettingsButton: function (e)
         {
             var toElement = $(document.elementFromPoint(e.pageX, e.pageY));
-            if (!toElement.is(".workoutSettings") && !toElement.is("#workoutSettingsDiv") && !toElement.is(".hoverBox"))
+            if (!toElement.is(".workoutSettings") && !toElement.is("#workoutSettingsDiv"))
             {
                 this.$(".workoutSettings").css('display', "none");
             }
@@ -135,7 +138,7 @@ function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkout
 
         workoutSettingsHover: function (e)
         {
-            this.hideWorkoutSummaryHover(e);
+            e.preventDefault();
             var offset = $(e.currentTarget).offset();
             this.workoutSettings = new CalendarWorkoutSettingsHover({ model: this.model, top: offset.top + 10, left: offset.left + 5 });
             this.workoutSettings.render();
@@ -159,18 +162,14 @@ function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkout
                 var iconOffset = this.$('.workoutIcon').offset();
                 this.workoutHoverView = new CalendarWorkoutHoverView({ model: this.model, className: this.getDynamicCssClassNames(), top: iconOffset.top, left: iconOffset.left });
                 this.workoutHoverView.render();
-                this.workoutHoverView.on("mouseleave", this.onMouseLeave, this);
+                this.workoutHoverView.on("mouseleave", this.hideWorkoutSummaryHover, this);
             }
         },
 
         hideWorkoutSummaryHover: function(e)
         {
-            var toElement = $(document.elementFromPoint(e.pageX, e.pageY));
-            if (this.workoutHoverView && !toElement.is(".hoverBox"))
-            {
-                this.workoutHoverView.close();
-                delete this.workoutHoverView;
-            }
+            this.workoutHoverView.close();
+            delete this.workoutHoverView;
         },
 
         onRender: function()

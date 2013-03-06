@@ -1,11 +1,12 @@
 ﻿define(
 [
     "moment",
+    "setImmediate",
     "TP",
     "views/calendarDayView",
     "views/weekSummaryView"
 ],
-function (moment, TP, CalendarDayView, WeekSummaryView)
+function(moment, setImmediate, TP, CalendarDayView, WeekSummaryView)
 {
     return TP.CollectionView.extend(
     {
@@ -32,36 +33,31 @@ function (moment, TP, CalendarDayView, WeekSummaryView)
             this.waiting = $('<div class="waiting"> </div>');
 
             // when any of our child views update, recalculate all of their heights
-            this.height = 0;
             this.on("itemview:render", this.scheduleUpdateDayCellHeights, this);
         },
 
         scheduleUpdateDayCellHeights: function()
         {
+            // as a timeout, because on the initial render of weeksummary, and probably some other elements, height is not calculated until it's painted,
             var theView = this;
-            setTimeout(function()
+            setImmediate(function()
             {
                 theView.updateDayCellHeights();
-            }, 1);
+            });
         },
 
         updateDayCellHeights: function()
         {
-            var myHeight = this.$el.height();
-            if (myHeight !== this.height)
-            {
-                this.height = myHeight;
-                if (myHeight > 150)
-                {
-                    // use min-height instead of height, or else some days get scrollbars?
-                    this.$(".day").css("min-height", myHeight);
-                } else
-                {
-                    this.$(".day").css("min-height", 150);
-                }
-            }
+            // start by resetting to min-height 150 in case cell height needs to shrink because we removed content
+            this.$(".day").css("min-height", 150);
 
-            console.log(this.$el.height() + ", " + this.$('.weekSummary').height());
+            // then check if actual height of week div is taller, and stretch days to fit
+            var myHeight = this.$el.height();
+            if (myHeight > 150)
+            {
+               // use min-height instead of height, or else some days get scrollbars?
+                this.$(".day").css("min-height", myHeight);
+            }
         },
 
         onWaitStart: function()
