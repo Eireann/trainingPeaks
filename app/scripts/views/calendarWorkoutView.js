@@ -82,10 +82,10 @@ function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkout
 
         getPastOrCompletedCssClassName: function()
         {
-            if (determineCompletedWorkout(this.model.attributes))
+             if (this.model.getCalendarDay() < this.today)
             {
-                return "past";
-            } else if (this.model.getCalendarDay() < this.today)
+                 return "past";
+            } else if (this.model.getCalendarDay() === this.today && determineCompletedWorkout(this.model.attributes))
             {
                 return "past";
             } else
