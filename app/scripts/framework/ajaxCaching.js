@@ -1,10 +1,9 @@
 ﻿define(
 [
     "underscore",
-    "lawnchair",
     "backbone"
 ],
-function(_, lawnchair, Backbone)
+function(_, Backbone)
 {
 
     return {
@@ -16,7 +15,7 @@ function(_, lawnchair, Backbone)
         },
 
         // Lawnchair cache in localStorage 
-        lawnchair: lawnchair({adapter: 'dom'}, function() { }),
+        //lawnchair: lawnchair({ adapter: 'dom' }, function() { }),
 
         initialize: function(app)
         {
@@ -57,8 +56,13 @@ function(_, lawnchair, Backbone)
 
         clearCache: function()
         {
-            this.lawnchair.each(function(record) { this.remove(record); });
-            theMarsApp.logger.debug("AjaxCaching: Deleted cache");
+            _.each(_.keys(localStorage), function(key)
+            {
+                if(key.indexOf("ajaxCache") === 0) {
+                    localStorage.removeItem(key);
+                }
+            });
+            theMarsApp.logger.debug("AjaxCaching: Cleared Cache");
         },
 
         addCachingDeferred: function(method, model, options, backboneSync)
@@ -117,15 +121,32 @@ function(_, lawnchair, Backbone)
                 data: response
             };
 
-            //localStorage.setItem(objectKey, JSON.stringify(objectToStore));
-            this.lawnchair.save(objectToStore);
+            this.writeCache(objectKey, objectToStore);
+            //this.lawnchair.save(objectToStore);
 
             theMarsApp.logger.debug("AjaxCaching Loaded from server: " + options.url);
         },
 
+        writeCache: function(key, value)
+        {
+            try
+            {
+                localStorage.setItem(key, typeof value !== "string" ? JSON.stringify(value) : value);
+            } catch (err)
+            {
+                theMarsApp.logger.debug(err);
+                this.clearCache();
+            }
+        },
+
+        readCache: function(key)
+        {
+            return JSON.parse(localStorage.getItem(key));
+        },
+
         getCacheKey: function(url)
         {
-            return theMarsApp.session.get("access_token") + url.replace(theMarsApp.apiRoot, '');
+            return "ajaxCache_" + theMarsApp.session.get("access_token") + "_" + url.replace(theMarsApp.apiRoot, '');
         },
 
         checkCache: function(xhr, options)
@@ -136,17 +157,14 @@ function(_, lawnchair, Backbone)
             // Check localStorage for cached object
             // Use REQUEST URI + OAUTH Token as storage key.
             var key = ajaxCaching.getCacheKey(options.url);
-            /*
-            var cachedObject = localStorage.getItem(key);
+            var cachedObject = this.readCache(key);
 
             if (cachedObject)
             {
-                cachedObject = JSON.parse(cachedObject);
-
                 ajaxCaching.resolveRequestWithCachedData(xhr, options, cachedObject.data);
                 ajaxCaching.addRequestCacheHeaders(xhr, cachedObject.lastModified);
             }
-            */
+            /*
             this.lawnchair.get(key, function(cachedObject)
             {
                 if (cachedObject)
@@ -155,6 +173,7 @@ function(_, lawnchair, Backbone)
                     ajaxCaching.addRequestCacheHeaders(xhr, cachedObject.lastModified);
                 }
             });
+            */
         },
 
         resolveRequestWithCachedData: function(xhr, options, cachedData)

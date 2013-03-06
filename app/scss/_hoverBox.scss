@@ -52,8 +52,8 @@
         z-index: 2;
         width: 20px;
         height: 20px;
+        margin-left:20px;
         @include transform(translateY(-10px) rotate(45deg));
-        @include calc(margin-left, "50% - 14px");
         @include box-shadow(0px 0px 5px 2px #666666);
     }
 

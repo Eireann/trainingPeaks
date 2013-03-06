@@ -22,7 +22,7 @@ function(_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollecti
 
         show: function()
         {
-            theMarsApp.logger.startTimer("CalendarController", "begin show");
+            //theMarsApp.logger.startTimer("CalendarController", "begin show");
             
             this.initializeHeader();
             this.initializeCalendar();
@@ -41,12 +41,12 @@ function(_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollecti
 
             this.loadLibraryData();
 
-            theMarsApp.logger.logTimer("CalendarController", "finished show");
+            //theMarsApp.logger.logTimer("CalendarController", "finished show");
         },
 
         loadCalendarData: function()
         {
-            theMarsApp.logger.startTimer("CalendarController", "begin request calendar data");
+            //theMarsApp.logger.startTimer("CalendarController", "begin request calendar data");
             // don't make requests until after we display, or else localStorage cache synchronous read blocks browser rendering
             var diff = this.endDate.diff(this.startDate, "weeks");
             var deferreds = [];
@@ -58,7 +58,7 @@ function(_, moment, TP, CalendarLayout, CalendarCollection, CalendarWeekCollecti
                 deferreds.push(deferred);
             }
 
-            theMarsApp.logger.logTimer("CalendarController", "finished request calendar data");
+            //theMarsApp.logger.logTimer("CalendarController", "finished request calendar data");
             return deferreds;
         },
 

@@ -190,40 +190,40 @@ function($, ajaxCaching)
             beforeEach(function()
             {
                 xhr = jasmine.createSpyObj("XHR Response Spy", ["getResponseHeader"]);
-                spyOn(ajaxCaching.lawnchair, "save");
+                spyOn(ajaxCaching, "writeCache");
             });
 
-            it("Should not call ajaxCaching.lawnchair.save if status is notmodified", function()
+            it("Should not call ajaxCaching.writeCache if status is notmodified", function()
             {
                 ajaxCaching.saveResponseToLocalStorage("", "notmodified", xhr, settings);
-                expect(ajaxCaching.lawnchair.save).not.toHaveBeenCalled();
+                expect(ajaxCaching.writeCache).not.toHaveBeenCalled();
             });
 
-            it("Should not call ajaxCaching.lawnchair.save if status is not success", function()
+            it("Should not call ajaxCaching.writeCache if status is not success", function()
             {
                 ajaxCaching.saveResponseToLocalStorage("", "notfound", xhr, settings);
-                expect(ajaxCaching.lawnchair.save).not.toHaveBeenCalled();
+                expect(ajaxCaching.writeCache).not.toHaveBeenCalled();
             });
 
-            it("Should call ajaxCaching.lawnchair.save if status is success", function()
+            it("Should call ajaxCaching.writeCache if status is success", function()
             {
                 ajaxCaching.saveResponseToLocalStorage("", "success", xhr, settings);
-                expect(ajaxCaching.lawnchair.save).toHaveBeenCalled();
+                expect(ajaxCaching.writeCache).toHaveBeenCalled();
             });
 
             it("Should include the request url in the cache key", function()
             {
                 ajaxCaching.saveResponseToLocalStorage("something", "success", xhr, settings);
-                expect(ajaxCaching.lawnchair.save).toHaveBeenCalled();
-                expect(ajaxCaching.lawnchair.save.mostRecentCall.args[0].key.indexOf(settings.url) >= 0).toBe(true);
+                expect(ajaxCaching.writeCache).toHaveBeenCalled();
+                expect(ajaxCaching.writeCache.mostRecentCall.args[0].indexOf(settings.url) >= 0).toBe(true);
             });
 
             it("Should include the response data in cached object", function()
             {
                 var response = "{some: 'json data'}";
                 ajaxCaching.saveResponseToLocalStorage(response, "success", xhr, settings);
-                expect(ajaxCaching.lawnchair.save).toHaveBeenCalled();
-                expect(ajaxCaching.lawnchair.save.mostRecentCall.args[0].data).toBe(response);
+                expect(ajaxCaching.writeCache).toHaveBeenCalled();
+                expect(ajaxCaching.writeCache.mostRecentCall.args[1].data).toBe(response);
             });
 
             it("Should include the last modified date in cached object", function()
@@ -231,8 +231,8 @@ function($, ajaxCaching)
                 var lastModified = "2013-01-01T00:00:00";
                 xhr.getResponseHeader.andReturn(lastModified);
                 ajaxCaching.saveResponseToLocalStorage("", "success", xhr, settings);
-                expect(ajaxCaching.lawnchair.save).toHaveBeenCalled();
-                expect(ajaxCaching.lawnchair.save.mostRecentCall.args[0].lastModifiedDate).toBe(lastModified);
+                expect(ajaxCaching.writeCache).toHaveBeenCalled();
+                expect(ajaxCaching.writeCache.mostRecentCall.args[1].lastModifiedDate).toBe(lastModified);
             });
 
         });
@@ -258,30 +258,23 @@ function($, ajaxCaching)
                 spyOn(ajaxCaching, "addRequestCacheHeaders");
             });
 
-            it("Should check ajaxCaching.lawnchair", function()
+            it("Should check cache", function()
             {
-                spyOn(ajaxCaching.lawnchair, "get").andCallFake(function(record, callback){
-                    callback.call(ajaxCaching.lawnchair);
-                });
+                spyOn(ajaxCaching, "readCache");
                 ajaxCaching.checkCache(xhr, settings);
-                expect(ajaxCaching.lawnchair.get).toHaveBeenCalled();
+                expect(ajaxCaching.readCache).toHaveBeenCalled();
             });
 
             it("Should resolve request if we have cached data", function()
             {
-                spyOn(ajaxCaching.lawnchair, "get").andCallFake(function(record, callback){
-                    callback.call(ajaxCaching.lawnchair, cachedObject);
-                });
+                spyOn(ajaxCaching, "readCache").andReturn(cachedObject);
                 ajaxCaching.checkCache(xhr, settings);
                 expect(ajaxCaching.resolveRequestWithCachedData).toHaveBeenCalledWith(xhr, settings, cachedObject.data);
             });
 
             it("Should add request headers if we have cached data", function()
             {
-                spyOn(ajaxCaching.lawnchair, "get").andCallFake(function(record, callback)
-                {
-                    callback.call(ajaxCaching.lawnchair, cachedObject);
-                });
+                spyOn(ajaxCaching, "readCache").andReturn(cachedObject);
                 ajaxCaching.checkCache(xhr, settings);
                 expect(ajaxCaching.addRequestCacheHeaders).toHaveBeenCalledWith(xhr, cachedObject.lastModified);
             });

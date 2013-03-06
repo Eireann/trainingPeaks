@@ -87,11 +87,11 @@ function(_, TP, CalendarWeekView, calendarContainerView)
 
         onAddWeek: function (model)
         {
-            theMarsApp.logger.startTimer("CalendarView.onAddWeek", "Before adding a week");
+            //theMarsApp.logger.startTimer("CalendarView.onAddWeek", "Before adding a week");
             var weekCollection = model.get("week");
             this.addWeek({ model: model, collection: weekCollection, append: arguments[2].append });
-            theMarsApp.logger.logTimer("CalendarView.onAddWeek", "Finished adding a week (but before the browser displays it)");
-            theMarsApp.logger.waitAndLogTimer("CalendarView.onAddWeek", "Browser has now displayed the week");
+            //theMarsApp.logger.logTimer("CalendarView.onAddWeek", "Finished adding a week (but before the browser displays it)");
+            //theMarsApp.logger.waitAndLogTimer("CalendarView.onAddWeek", "Browser has now displayed the week");
         },
 
         addWeek: function(options)
@@ -123,7 +123,7 @@ function(_, TP, CalendarWeekView, calendarContainerView)
             _.bindAll(this, "onScroll");
             this.ui.weeksContainer.scroll(this.onScroll);
             
-            theMarsApp.logger.startTimer("CalendarView.onRender", "Begin rendering weeks");
+            //theMarsApp.logger.startTimer("CalendarView.onRender", "Begin rendering weeks");
 
             var numWeeks = this.collection.length;
             var i = 0;
@@ -134,8 +134,8 @@ function(_, TP, CalendarWeekView, calendarContainerView)
                 this.addWeek({ model: weekModel, collection: weekModel.get("week"), append: true });
             }
 
-            theMarsApp.logger.logTimer("CalendarView.onRender", "Finished rendering weeks (but before the browser displays them)");
-            theMarsApp.logger.waitAndLogTimer("CalendarView.onRender", "Browser has now rendered the weeks");
+            //theMarsApp.logger.logTimer("CalendarView.onRender", "Finished rendering weeks (but before the browser displays them)");
+            //theMarsApp.logger.waitAndLogTimer("CalendarView.onRender", "Browser has now rendered the weeks");
 
             this.resizeContext();
             this.checkCurrentScrollPosition();
@@ -189,7 +189,7 @@ function(_, TP, CalendarWeekView, calendarContainerView)
 
         scrollToDate: function (dateAsMoment, effectDuration)
         {
-            theMarsApp.logger.debug(dateAsMoment.format("YYYY-MM-DD"));
+            //theMarsApp.logger.debug(dateAsMoment.format("YYYY-MM-DD"));
             var dateAsString = dateAsMoment.format("YYYY-MM-DD");
             var selector = '*[data-date="' + dateAsString + '"]';
             this.scrollToSelector(selector, effectDuration || 500);

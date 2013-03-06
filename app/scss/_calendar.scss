@@ -14,7 +14,7 @@
      
     #libraryContainer.open + &
     {
-        width:75%;
+        width:80%;
         @include transition-property(width);
         @include transition-duration(400ms);
         padding-left:0px;
@@ -191,14 +191,14 @@
 
     .details
     {
-        font-size:15px;
+        font-size:16px;
         min-width: 120px;
 
         @include labels($navigationFontFamilyRegular, 12px, $TPGrey4);
 
         label
         {
-            font-weight:0.7;
+            font-weight:0.8;
             margin-top:10px;
             margin-bottom:2px;
         }
@@ -215,15 +215,7 @@
 
     }
 
-    .arrow
-    {
-        margin-left:20px;
-    }
-
 }
-
-
-
 
 #workoutSettingsDiv
 {

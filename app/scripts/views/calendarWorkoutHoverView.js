@@ -33,15 +33,12 @@ function(TP, CalendarWorkoutHoverTemplate)
 
         events:
         {
-            mouseleave: "workoutHoverHide"
+            mouseleave: "onMouseLeave"
         },
 
-        workoutHoverHide: function(e)
+        onMouseLeave: function(e)
         {
-            if (!$(e.toElement).is(".workoutIcon"))
-            {
-                this.close();
-            }
+            this.trigger("mouseleave", e);
         },
 
 
