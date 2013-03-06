@@ -107,6 +107,7 @@ function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkout
 
         onMouseLeave: function(e)
         {
+            var toElement = document.elementFromPoint(e.pageX, e.pageY);
             if (e.toElement === this.el)
             {
                 return;
@@ -123,7 +124,8 @@ function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkout
 
         removeSettingsButton: function (e)
         {
-            if (!$(e.toElement).is(".workoutSettings") && !$(e.toElement).is("#workoutSettingsDiv") && !$(e.toElement).is(".hoverBox"))
+            var toElement = $(document.elementFromPoint(e.pageX, e.pageY));
+            if (!toElement.is(".workoutSettings") && !toElement.is("#workoutSettingsDiv") && !toElement.is(".hoverBox"))
             {
                 this.$(".workoutSettings").css('display', "none");
             }
@@ -161,7 +163,8 @@ function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkout
 
         hideWorkoutSummaryHover: function(e)
         {
-            if (this.workoutHoverView && !$(e.toElement).is(".hoverBox"))
+            var toElement = $(document.elementFromPoint(e.pageX, e.pageY));
+            if (this.workoutHoverView && !toElement.is(".hoverBox"))
             {
                 this.workoutHoverView.close();
                 delete this.workoutHoverView;
