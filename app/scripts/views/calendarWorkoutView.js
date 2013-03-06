@@ -41,8 +41,8 @@ function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkout
         {
 
             var complianceAttributeNames = {
-                totalTime: "totalTimePlanned",
                 distance: "distancePlanned",
+                totalTime: "totalTimePlanned",
                 tssActual: "tssPlanned"
             };
 

@@ -9,7 +9,7 @@ function()
 
         var fullHours = Math.floor(hours);
         var partialHours = hours % 1;
-        var minutes = partialHours * 60;
+        var minutes = Math.round(partialHours * 60);
 
         var time;
 
@@ -23,6 +23,7 @@ function()
         else
             time += ":0" + minutes;
 
+        console.log(hours + "  = " + time);
         return time;
     };
 
