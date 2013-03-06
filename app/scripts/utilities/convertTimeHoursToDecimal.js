@@ -19,7 +19,6 @@ function()
         hours += parts[1] / 60;
         hours += parts[2] / 3600;
 
-        console.log(timeString + " = " + hours);
         return hours;
     };
 

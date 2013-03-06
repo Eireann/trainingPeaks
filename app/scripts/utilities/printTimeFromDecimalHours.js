@@ -23,7 +23,6 @@ function()
         else
             time += ":0" + minutes;
 
-        console.log(hours + "  = " + time);
         return time;
     };
 
