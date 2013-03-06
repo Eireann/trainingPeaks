@@ -1,9 +1,10 @@
 define(
 [
     "TP",
+    "jqueryOutside",
     "hbs!templates/views/calendarWorkoutSettingsHover"
 ],
-function (TP, calendarWorkoutSettingsHover)
+function (TP, jqueryOutside, calendarWorkoutSettingsHover)
 {
     return TP.ItemView.extend(
     {
@@ -16,13 +17,13 @@ function (TP, calendarWorkoutSettingsHover)
 
         events:
         {
-            mouseleave: "hideWorkoutSettings"
+           // mouseleave: "hideWorkoutSettings"
         },
 
         hideWorkoutSettings: function (e)
         {
             this.close();
-            this.trigger("mouseleave", e);
+            //this.trigger("mouseleave", e);
             //delete this;
         },
 
@@ -51,6 +52,17 @@ function (TP, calendarWorkoutSettingsHover)
         onRender: function()
         {
             $('body').append(this.$el);
+            this.$el.dialog({
+                modal: true,
+                position:
+                {
+                    my: "center bottom",
+                    at: "center bottom",
+                    of: ".workoutSettings"
+                }
+            });
+            _.bindAll(this, "hideWorkoutSettings");
+            this.$el.bind("clickoutside", this.hideWorkoutSettings);
             //this.$el.attr("class", this.$el.attr("class") + " " + this.inheritedClassNames);
             this.$el.css("left", this.posX - Math.round(this.$el.width() / 2)).css("top", this.posY - this.$el.height());
         }

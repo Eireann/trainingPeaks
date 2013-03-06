@@ -223,7 +223,7 @@
     position:absolute;
     min-width: 75px;
 	padding-left: 10px;
-	padding-bottom: 10px;
+	padding-bottom: 20px;
 
 	@include labels($navigationFontFamilyRegular, 12px, $TPGrey4);
 	label
