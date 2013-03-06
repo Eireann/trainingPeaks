@@ -17,7 +17,7 @@
              
     &.open
     {
-        width: 25%;
+        width: 20%;
         @include transition-property(width);
         @include transition-duration(400ms);
         padding-right:2px;

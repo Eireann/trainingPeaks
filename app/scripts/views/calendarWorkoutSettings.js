@@ -19,9 +19,10 @@ function (TP, calendarWorkoutSettingsHover)
             mouseleave: "hideWorkoutSettings"
         },
 
-        hideWorkoutSettings: function ()
+        hideWorkoutSettings: function (e)
         {
             this.close();
+            this.trigger("mouseleave", e);
             //delete this;
         },
 

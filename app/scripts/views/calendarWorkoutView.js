@@ -91,14 +91,29 @@ function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkout
 
         events: {
             click: "workoutClicked",
-            mouseenter: "showSettingsButton",
-            mouseleave: "removeSettingsButton",
 
-            "mouseenter .workoutIcon": "workoutHoverShow",
-            "mouseleave .workoutIcon": "workoutHoverHide",
+            mouseenter: "onMouseEnter",
+            mouseleave: "onMouseLeave",
 
             "mouseenter .workoutSettings": "workoutSettingsHover"
 
+        },
+
+        onMouseEnter: function(e)
+        {
+            this.showSettingsButton(e);
+            this.showWorkoutSummaryHover(e);
+        },
+
+        onMouseLeave: function(e)
+        {
+            if (e.toElement === this.el)
+            {
+                return;
+            }
+
+            this.removeSettingsButton(e);
+            this.hideWorkoutSummaryHover(e);
         },
 
         showSettingsButton: function()
@@ -108,7 +123,7 @@ function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkout
 
         removeSettingsButton: function (e)
         {
-            if (!$(e.toElement).is(".workoutSettings") && !$(e.toElement).is("#workoutSettingsDiv"))
+            if (!$(e.toElement).is(".workoutSettings") && !$(e.toElement).is("#workoutSettingsDiv") && !$(e.toElement).is(".hoverBox"))
             {
                 this.$(".workoutSettings").css('display', "none");
             }
@@ -116,10 +131,11 @@ function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkout
 
         workoutSettingsHover: function (e)
         {
+            this.hideWorkoutSummaryHover(e);
             var offset = $(e.currentTarget).offset();
             this.workoutSettings = new CalendarWorkoutSettingsHover({ model: this.model, top: offset.top + 10, left: offset.left + 5 });
             this.workoutSettings.render();
-
+            this.workoutSettings.on("mouseleave", this.onMouseLeave, this);
         },
 
         workoutClicked: function (e) 
@@ -132,17 +148,18 @@ function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkout
             
         },
 
-        workoutHoverShow: function()
+        showWorkoutSummaryHover: function()
         {
             if (!this.workoutHoverView || this.workoutHoverView.isClosed)
             {
                 var iconOffset = this.$('.workoutIcon').offset();
                 this.workoutHoverView = new CalendarWorkoutHoverView({ model: this.model, className: this.getDynamicCssClassNames(), top: iconOffset.top, left: iconOffset.left });
                 this.workoutHoverView.render();
+                this.workoutHoverView.on("mouseleave", this.onMouseLeave, this);
             }
         },
 
-        workoutHoverHide: function(e)
+        hideWorkoutSummaryHover: function(e)
         {
             if (this.workoutHoverView && !$(e.toElement).is(".hoverBox"))
             {

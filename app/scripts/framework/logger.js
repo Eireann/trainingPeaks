@@ -29,13 +29,14 @@
             this.filterText = filterText;
         };
 
-        Logger.prototype.write = function(logLevel, message)
+        Logger.prototype.write = function(logLevel, message, method)
         {
             if (logLevel >= this.logLevel)
             {
                 if (!this.filterText || message.indexOf(this.filterText) >= 0)
                 {
-                    this.console.log(message);
+                    var consoleMethod = method && this.console[method] ? this.console[method] : this.console.log;
+                    consoleMethod.call(this.console, message);
                     if (this.logLevel === this.logLevels.TRACE)
                     {
                         this.console.trace();
@@ -63,22 +64,22 @@
 
         Logger.prototype.debug = function(message)
         {
-            this.write(this.logLevels.DEBUG, 'DEBUG: ' + message);
+            this.write(this.logLevels.DEBUG, message, "debug");
         };
 
         Logger.prototype.info = function(message)
         {
-            this.write(this.logLevels.INFO, 'INFO: ' + message);
+            this.write(this.logLevels.INFO, message, "info");
         };
 
         Logger.prototype.warn = function(message)
         {
-            this.write(this.logLevels.WARN, 'WARN: ' + message);
+            this.write(this.logLevels.WARN, message, "warn");
         };
 
         Logger.prototype.error = function(message)
         {
-            this.write(this.logLevels.ERROR, 'ERROR: ' + message);
+            this.write(this.logLevels.ERROR, message, "error");
         };
 
 
@@ -96,7 +97,7 @@
                 throw "Invalid timer name: " + timerName;
             }
             msg = "TIMER: " + timerName + " " + msg + " at " + (+new Date() - this.timers[timerName]) + "ms";
-            this.write(this.logLevels.DEBUG, msg);
+            this.debug(msg);
         };
 
         Logger.prototype.waitAndLogTimer = function(timerName, msg)
