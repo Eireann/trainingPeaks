@@ -1,9 +1,10 @@
 ﻿define(
 [
     "underscore",
-    "backbone"
+    "backbone",
+    "setImmediate"
 ],
-function(_, Backbone)
+function(_, Backbone, setImmediate)
 {
 
     return {
@@ -69,6 +70,7 @@ function(_, Backbone)
         {
             options.ajaxCachingDeferred = new $.Deferred();
             var jqXhr = backboneSync(method, model, options);
+            jqXhr.ajaxCachingDeferred = options.ajaxCachingDeferred;
 
             // save response to local storage only on xhr resolution, not on resolution from cache
             var ajaxCaching = this;
@@ -183,11 +185,11 @@ function(_, Backbone)
             {
 
                 // start it in a 'nextTick', so the browser can finish painting the results of this thread first
-                setTimeout(function()
+                setImmediate(function()
                 {
                     options.ajaxCachingDeferred.resolveWith(options, [cachedData, status, xhr]);
                     theMarsApp.logger.debug("AjaxCaching Loaded from cache: " + options.url);
-                }, 1);
+                });
             }
         },
 

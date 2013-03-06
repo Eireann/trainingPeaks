@@ -1,6 +1,6 @@
 ﻿define(
-    [],
-    function()
+    ["setImmediate"],
+    function(setImmediate)
     {
         function Logger(myConsole)
         {
@@ -105,12 +105,12 @@
             this.logTimer(timerName, "Begin waiting for browser to render");
             var waitStartTime = +new Date();
             var theLogger = this;
-            setTimeout(
+            setImmediate(
                 function logIt()
                 {
                     var msgWithTime = msg + " (" + (+new Date() - waitStartTime) + " ms)";
                     theLogger.logTimer(timerName, msgWithTime);
-                }, 1
+                }
             );
         };
 
