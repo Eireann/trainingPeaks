@@ -41,12 +41,12 @@ function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkout
         {
             var complianceAttributeNames =
             {
-
-                totalTime: "totalTimePlanned",
+                totalTime: "totalTimePlanned"
+            };
+            /*
                 distance: "distancePlanned",
                 tssActual: "tssPlanned"
-
-            };
+            */
             var workout = this.model;
 
             for (var key in complianceAttributeNames)
@@ -115,7 +115,7 @@ function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkout
 
         events:
         {
-            mouseup: "workoutClicked",
+            click: "workoutClicked",
 
             mouseenter: "onMouseEnter",
             mouseleave: "onMouseLeave",
@@ -123,7 +123,7 @@ function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkout
             "mouseenter .workoutIcon": "showWorkoutSummaryHover",
             "mouseleave .workoutIcon": "hideWorkoutSummaryHover",
 
-            "mouseup .workoutSettings": "workoutSettingsClicked"
+            "click .workoutSettings": "workoutSettingsClicked"
 
         },
 

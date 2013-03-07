@@ -24,7 +24,7 @@ function(_, moment, setImmediate, TP, CalendarLayout, CalendarCollection, Calend
         show: function()
         {
             //theMarsApp.logger.startTimer("CalendarController", "begin show");
-            
+            theMarsApp.logger.startTimer("CalendarController.loadCalendarData", "Begin showing calendar");
             this.initializeHeader();
             this.initializeCalendar();
             this.initializeLibrary();
@@ -34,6 +34,7 @@ function(_, moment, setImmediate, TP, CalendarLayout, CalendarCollection, Calend
             this.layout.libraryRegion.show(this.views.library);
 
             // load the calendar, and aggregate all of the deferreds from each workout request
+            theMarsApp.logger.logTimer("CalendarController.loadCalendarData", "Before requesting calendar data");
             var calendarDeferreds = this.loadCalendarData();
             this.setupScrollToToday(calendarDeferreds);
 
@@ -60,7 +61,10 @@ function(_, moment, setImmediate, TP, CalendarLayout, CalendarCollection, Calend
             {
                 if (!calendarView.wasScrolled)
                 {
-                    setImmediate(function() { calendarView.scrollToSelector(".today", 500); calendarView.wasScrolled = true; });
+                    calendarView.wasScrolled = true;
+                    theMarsApp.logger.logTimer("CalendarController.loadCalendarData", "Calendar data has loaded");
+                    theMarsApp.logger.waitAndLogTimer("CalendarController.loadCalendarData", "Calendar data has rendered");
+                    setImmediate(function() { calendarView.scrollToSelector(".today", 500); });
                 }
             };
 

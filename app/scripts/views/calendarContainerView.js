@@ -124,7 +124,7 @@ function(_, TP, CalendarWeekView, calendarContainerView)
             this.ui.weeksContainer.scroll(this.onScroll);
 
             _.bindAll(this, "onScrollStop");
-            var debouncedScrollStop = _.debounce(this.onScrollStop, 200);
+            var debouncedScrollStop = _.debounce(this.onScrollStop, 300);
             this.ui.weeksContainer.scroll(debouncedScrollStop);
             
             //theMarsApp.logger.startTimer("CalendarView.onRender", "Begin rendering weeks");
@@ -162,12 +162,13 @@ function(_, TP, CalendarWeekView, calendarContainerView)
             var nextWeekOffset = Math.abs(nextWeek.offset().top - weeksContainerTop);
 
             var threshhold = 100;
+            var animationTimeout = 300;
             if (currentWeekOffset > 0 && currentWeekOffset <= threshhold)
             {
-                this.scrollToElement(currentWeek, 100);
+                this.scrollToElement(currentWeek, animationTimeout);
             } else if (nextWeekOffset > 0 && nextWeekOffset <= threshhold)
             {
-                this.scrollToElement(nextWeek, 100);
+                this.scrollToElement(nextWeek, animationTimeout);
             }
         },
 

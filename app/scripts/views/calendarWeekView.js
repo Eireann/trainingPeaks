@@ -30,7 +30,7 @@ function(moment, setImmediate, TP, CalendarDayView, WeekSummaryView)
             if (!this.collection)
                 throw "CalendarWeekView requires a collection";
 
-            this.waiting = $('<div class="waiting"> </div>');
+            this.waiting = $('<div class="calendarWeekView waiting"> </div>');
 
             // when any of our child views update, recalculate all of their heights
             this.on("itemview:render", this.scheduleUpdateDayCellHeights, this);
@@ -70,7 +70,7 @@ function(moment, setImmediate, TP, CalendarDayView, WeekSummaryView)
         onWaitStop: function()
         {
             this.trigger("waitStop");
-            this.$el.find('.waiting').remove('.waiting');
+            this.$el.find('.calendarWeekView.waiting').remove('.waiting');
         },
 
         onRender: function()
