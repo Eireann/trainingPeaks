@@ -14,7 +14,7 @@
 	{
 		float: left;
 		min-width: 375px;
-		padding-left: 120px;
+		padding-left: 80px;
 	}
 
 	.rightNavigation
@@ -93,7 +93,7 @@
 	{
 		width: 175px;
 		float: left;
-		padding-left: 10px;
+		padding-left: 60px;
 		padding-top: 13px;
 
 		@include labels($navigationFontFamilyRegular, 25px, $TPBlue);
