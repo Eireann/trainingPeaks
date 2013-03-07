@@ -41,12 +41,12 @@ function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkout
         {
             var complianceAttributeNames =
             {
-
-                totalTime: "totalTimePlanned",
+                totalTime: "totalTimePlanned"
+            };
+            /*
                 distance: "distancePlanned",
                 tssActual: "tssPlanned"
-
-            };
+            */
             var workout = this.model;
 
             for (var key in complianceAttributeNames)
