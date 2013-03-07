@@ -1,12 +1,13 @@
 ﻿define(
 [
     "underscore",
+    "jqueryOutside",
     "TP",
     "views/library/exerciseLibraryView",
     "views/library/mealLibraryView",
     "hbs!templates/views/library/libraryView"
 ],
-function(_, TP, ExerciseLibraryView, MealLibraryView, libraryTemplate)
+function(_, jqueryOutside, TP, ExerciseLibraryView, MealLibraryView, libraryTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -142,6 +143,14 @@ function(_, TP, ExerciseLibraryView, MealLibraryView, libraryTemplate)
                 library.$el.hide();
             }
             this.resizeContext();
+
+            this.hideOnClickOutside();
+        },
+
+        hideOnClickOutside: function()
+        {
+            _.bindAll(this, "hideLibrary");
+            this.$el.bind("clickoutside", this.hideLibrary);
         },
 
         onShow: function()

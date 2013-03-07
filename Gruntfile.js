@@ -144,7 +144,7 @@ module.exports = function(grunt)
                     "build/debug/single.js"
                 ],
 
-                dest: "build/uat/single.js",
+                dest: "build/uat/single.min.js",
 
                 separator: ";"
             },
@@ -167,6 +167,16 @@ module.exports = function(grunt)
          */
         uglify:
         {
+            uat:
+            {
+                files:
+                {
+                    "build/uat/single.min.js":
+                    [
+                        "build/debug/single.js"
+                    ]
+                }
+            },
             release:
             {
                 files:

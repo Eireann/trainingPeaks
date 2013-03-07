@@ -1,38 +1,47 @@
-﻿@import "tpstylesheet";
+@import "tpstylesheet";
 
 .weekSummary
 {
-    @include
-    column(2);
+    @include column(3);
     min-height: 150px;
     background-color: $white;
     overflow: hidden;
     margin-bottom: 10px;
-	padding: 0px;
 
-    table
-    {
-    }
+    padding: 0px;
 
-    th
+    .weekSummaryTableContainer
     {
-        background-color: $white;
-        font-size: 10px;
-        text-align: right;
-    }
-    
-    td
-    {
-        &.weekSummaryValue
+        margin: 0 5px 0 3px;
+
+        .weekSummaryTable
         {
-            font-size: 10px;
-            text-align: right;
-        }
+            width: 100%;
 
-        &.weekSummaryRowLabel
-        {
-            text-align: left;
-            font-size: 8px;
+            th
+            {
+                padding: 0;
+                background-color: $white;
+                font-size: 10px;
+                text-align: right;
+            }
+            
+            td
+            {
+                padding: 5px 0 0 5px;
+
+                &.weekSummaryValue
+                {
+                    font-size: 12px;
+                    text-align: right;
+                }
+
+                &.weekSummaryRowLabel
+                {
+                    text-align: left;
+                    font-size: 12px;
+                }
+            }
         }
     }
 }

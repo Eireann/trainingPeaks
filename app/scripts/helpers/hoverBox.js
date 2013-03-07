@@ -1,16 +1,16 @@
 define(
 [
     "handlebars",
+    "utilities/wrapTemplate",
     "hbs!templates/helpers/hoverBox"
 ],
-function(Handlebars, hoverBoxTemplate)
+function(Handlebars, wrapTemplate, hoverBoxTemplate)
 {
-
     function hoverBox(context, options)
     {
-        var innerHtml = options.fn(context);
-        return hoverBoxTemplate({ innerHtml: innerHtml });
+        return wrapTemplate(context, options.fn, hoverBoxTemplate, "innerHtml");
     }
+
     Handlebars.registerHelper("hoverBox", hoverBox);
     return hoverBox;
 });
