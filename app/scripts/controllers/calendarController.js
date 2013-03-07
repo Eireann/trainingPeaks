@@ -23,27 +23,29 @@ function(_, moment, setImmediate, TP, CalendarLayout, CalendarCollection, Calend
 
         show: function()
         {
-            //theMarsApp.logger.startTimer("CalendarController", "begin show");
-            theMarsApp.logger.startTimer("CalendarController.loadCalendarData", "Begin showing calendar");
             this.initializeHeader();
             this.initializeCalendar();
             this.initializeLibrary();
 
-            this.layout.headerRegion.show(this.views.header);
-            this.layout.calendarRegion.show(this.views.calendar);
-            this.layout.libraryRegion.show(this.views.library);
+            this.showViewsInRegions();
 
             // load the calendar, and aggregate all of the deferreds from each workout request
-            theMarsApp.logger.logTimer("CalendarController.loadCalendarData", "Before requesting calendar data");
+            this.showDate(moment());
             var calendarDeferreds = this.loadCalendarData();
-            this.setupScrollToToday(calendarDeferreds);
+            this.scrollToTodayAfterLoad(calendarDeferreds);
 
             this.loadLibraryData();
 
-            //theMarsApp.logger.logTimer("CalendarController", "finished show");
         },
 
-        setupScrollToToday: function(deferreds)
+        showViewsInRegions: function()
+        {
+            this.layout.headerRegion.show(this.views.header);
+            this.layout.calendarRegion.show(this.views.calendar);
+            this.layout.libraryRegion.show(this.views.library);
+        },
+
+        scrollToTodayAfterLoad: function(deferreds)
         {
             var ajaxCachingDeferreds = [];
             _.each(deferreds, function(deferred)
@@ -55,16 +57,14 @@ function(_, moment, setImmediate, TP, CalendarLayout, CalendarCollection, Calend
             });
 
             // once all of the data has loaded, set a timeout to allow repainting, then scroll to today
-            var calendarView = this.views.calendar;
-            calendarView.wasScrolled = false;
+            var calendarController = this;
+            calendarController.wasScrolled = false;
             var scrollIt = function()
             {
-                if (!calendarView.wasScrolled)
+                if (!calendarController.wasScrolled)
                 {
-                    calendarView.wasScrolled = true;
-                    theMarsApp.logger.logTimer("CalendarController.loadCalendarData", "Calendar data has loaded");
-                    theMarsApp.logger.waitAndLogTimer("CalendarController.loadCalendarData", "Calendar data has rendered");
-                    setImmediate(function() { calendarView.scrollToSelector(".today", 500); });
+                    calendarController.wasScrolled = true;
+                    setImmediate(function() { calendarController.showDate(moment(), 500); });
                 }
             };
 
@@ -79,6 +79,7 @@ function(_, moment, setImmediate, TP, CalendarLayout, CalendarCollection, Calend
 
         loadCalendarData: function()
         {
+
             //theMarsApp.logger.startTimer("CalendarController", "begin request calendar data");
             // don't make requests until after we display, or else localStorage cache synchronous read blocks browser rendering
             var diff = this.endDate.diff(this.startDate, "weeks");
@@ -101,6 +102,18 @@ function(_, moment, setImmediate, TP, CalendarLayout, CalendarCollection, Calend
                 this.libraryCollections[libraryName].fetch();
         },
 
+        createStartDay: function(startDate)
+        {
+            var startMoment = startDate ? moment(startDate) : moment();
+            return startMoment.day(this.startOfWeekDayIndex);
+        },
+
+        createEndDay: function(endDate)
+        {
+            var endMoment = endDate ? moment(endDate) : moment();
+            return endMoment.day(6 + this.startOfWeekDayIndex);
+        },
+
         initialize: function()
         {
             this.models = {};
@@ -113,8 +126,8 @@ function(_, moment, setImmediate, TP, CalendarLayout, CalendarCollection, Calend
 
             this.dateFormat = "YYYY-MM-DD";
 
-            this.startDate = moment().day(this.startOfWeekDayIndex).subtract("weeks", 4);
-            this.endDate = moment().day(6 + this.startOfWeekDayIndex).add("weeks", 6);
+            this.startDate = this.createStartDay().subtract("weeks", 4);
+            this.endDate = this.createEndDay().add("weeks", 6);
 
             this.weeksCollection = new CalendarCollection(null,
             {
@@ -123,39 +136,74 @@ function(_, moment, setImmediate, TP, CalendarLayout, CalendarCollection, Calend
                 endDate: moment(this.endDate)
             });
         },
-        
+
         reset: function(startDate, endDate)
         {
-            this.views.calendar.$el.fadeOut({ duration: 800 });
+            this.views.calendar.fadeOut(800);
             this.startDate = moment(startDate);
             this.endDate = moment(endDate);
             this.weeksCollection.resetToDates(moment(this.startDate), moment(this.endDate));
             this.loadCalendarData();
-            this.views.calendar.$el.fadeIn({ duration: 800 });
+            this.views.calendar.fadeIn(800);
         },
 
         showDate: function(dateAsMoment, effectDuration)
         {
             if (!dateAsMoment)
                 return;
-            
+
+
+            var calendarView = this.views.calendar;
+            var i;
+
+            if (dateAsMoment.day() !== this.startOfWeekDayIndex)
+            {
+                var newDateAsMoment = this.createStartDay(dateAsMoment);
+                if (newDateAsMoment.format(this.dateFormat) > dateAsMoment.format(this.dateFormat))
+                {
+                    newDateAsMoment.subtract("weeks", 1);
+                }
+                dateAsMoment = newDateAsMoment;
+                //dateAsMoment = weekStartDay > dateAsMoment ? weekStartDay.subtract("weeks", 1) : weekStartDay;
+            }
+
             if (dateAsMoment.unix() >= this.startDate.unix() && dateAsMoment.unix() <= this.endDate.unix())
             {
                 // The requested date is within the currently rendered weeks.
                 // Let's scroll straight to it.
-
-                this.views.calendar.scrollToDate(dateAsMoment);
+                calendarView.scrollToDate(dateAsMoment);
+                return;
             }
             else if(dateAsMoment.diff(this.endDate, "weeks") >= 8 || dateAsMoment.diff(this.startDate, "weeks") <= -8)
             {
                 // The requested date is too far outside the currently rendered weeks.
                 // Fade out the calendar, rerender centered on the requested date, and fade in.
-
-                var newStartDate = moment(dateAsMoment).day(this.startOfWeekDayIndex).subtract("weeks", 4);
-                var newEndDate = moment(dateAsMoment).day().add("weeks", 6);
+                var newStartDate = this.createStartDay(dateAsMoment).subtract("weeks", 4);
+                var newEndDate = this.createEndDay(dateAsMoment).add("weeks", 6);
                 this.reset(newStartDate, newEndDate);
-                this.views.calendar.scrollToDate(dateAsMoment, effectDuration);
+            } else if(dateAsMoment < this.startDate)
+            {
+                var weeksToPrepend = this.startDate.diff(dateAsMoment, "weeks") + 2;
+                for(i = 0;i<weeksToPrepend;i++)
+                {
+                    this.prependWeekToCalendar();
+                }
+                calendarView.scrollToDate(dateAsMoment);
+            } else if(dateAsMoment > this.endDate)
+            {
+                var weeksToAppend = dateAsMoment.diff(this.endDate, "weeks") + 2;
+                for (i = 0; i < weeksToAppend; i++)
+                {
+                    this.appendWeekToCalendar();
+                }
+                calendarView.scrollToDate(dateAsMoment);
             }
+
+            setImmediate(function()
+            {
+                calendarView.scrollToDate(dateAsMoment);
+            });
+
         },
 
         initializeHeader: function ()
@@ -178,7 +226,7 @@ function(_, moment, setImmediate, TP, CalendarLayout, CalendarCollection, Calend
             
             if (this.views.calendar)
                 this.views.calendar.close();
-            
+
             this.views.calendar = new CalendarContainerView({ model: weekDaysModel, collection: this.weeksCollection, calendarHeaderModel: this.models.calendarHeaderModel });
 
             this.bindToCalendarViewEvents(this.views.calendar);
@@ -191,12 +239,14 @@ function(_, moment, setImmediate, TP, CalendarLayout, CalendarCollection, Calend
         
         onRequestLastWeek: function(currentWeekModel)
         {
-            this.showDate(moment(currentWeekModel.get("date")).subtract("weeks", 1), 200);
+            // header has end of week, our showDate wants start of week ...
+            this.showDate(moment(currentWeekModel.get("date")).subtract("days",6).subtract("weeks", 1), 200);
         },
         
         onRequestNextWeek: function(currentWeekModel)
         {
-            this.showDate(moment(currentWeekModel.get("date")).add("weeks", 1), 200);
+            // header has end of week, our showDate wants start of week ...
+            this.showDate(moment(currentWeekModel.get("date")).add("days", 1), 200);
         },
 
         bindToCalendarViewEvents: function (calendarView)

@@ -44,7 +44,7 @@ function(TP, WorkoutsCollection, CalendarWeekCollection, CalendarDayModel)
 
                 // Get a CalendarWeekCollection and wrap it inside a model, with its matching ID, to be able to add it to a parent collection
                 var weekModel = new TP.Model({ id: weekStartDate.format(this.dateFormat), week: this.createWeekCollectionStartingOn(weekStartDate) });
-                this.add(weekModel, { silent: false });
+                this.add(weekModel, { silent: false, append: true });
             }
         },
 

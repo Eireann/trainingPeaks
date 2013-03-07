@@ -69,6 +69,67 @@ function(moment, $, _, Backbone, CalendarController, WorkoutModel, WorkoutsColle
             });
         });
 
+        describe("Show calendar", function()
+        {
+            var controller;
+
+            beforeEach(function()
+            {
+                controller = new CalendarController();
+                spyOn(controller, "showViewsInRegions");
+                spyOn(controller, "scrollToTodayAfterLoad");
+                spyOn(controller, "showDate");
+            });
+
+            it("Should initialize the header", function()
+            {
+                spyOn(controller, "initializeHeader");
+                controller.show();
+                expect(controller.initializeHeader).toHaveBeenCalled();
+            });
+
+            it("Should initialize the calendar", function()
+            {
+                spyOn(controller, "initializeCalendar");
+                controller.show();
+                expect(controller.initializeCalendar).toHaveBeenCalled();
+            });
+
+            it("Should initialize the library", function()
+            {
+                spyOn(controller, "initializeLibrary");
+                controller.show();
+                expect(controller.initializeLibrary).toHaveBeenCalled();
+            });
+
+            it("Should display the views in their regioins", function()
+            {
+                controller.show();
+                expect(controller.showViewsInRegions).toHaveBeenCalled();
+            });
+
+            it("Should load the library data", function()
+            {
+                spyOn(controller, "loadLibraryData");
+                controller.show();
+                expect(controller.loadLibraryData).toHaveBeenCalled();
+            });
+
+            it("Should load the calendar data", function()
+            {
+                spyOn(controller, "loadCalendarData");
+                controller.show();
+                expect(controller.loadCalendarData).toHaveBeenCalled();
+            });
+
+            it("Should scroll to today after loading", function()
+            {
+                controller.show();
+                expect(controller.scrollToTodayAfterLoad).toHaveBeenCalled();
+            });
+
+        });
+
         describe("initializeCalendar", function()
         {
             it("Should create a CalendarView", function()
@@ -87,6 +148,46 @@ function(moment, $, _, Backbone, CalendarController, WorkoutModel, WorkoutsColle
                 expect(controller.bindToCalendarViewEvents).toHaveBeenCalledWith(controller.views.calendar);
             });
 
+        });
+
+        describe("Load calendar data", function()
+        {
+
+            it("Should call requestWorkouts once for each week", function()
+            {
+                var controller = new CalendarController();
+                controller.startDate = moment().day(0);
+                controller.endDate = moment().day(0).add("weeks", 20);
+                spyOn(controller.weeksCollection, "requestWorkouts");
+                controller.loadCalendarData();
+                expect(controller.weeksCollection.requestWorkouts).toHaveBeenCalled();
+                expect(controller.weeksCollection.requestWorkouts.callCount).toEqual(20);
+            });
+
+        });
+
+        describe("Load library data", function()
+        {
+
+            describe("Initialize library", function()
+            {
+                it("Should create an exerciseLibrary", function()
+                {
+                    var controller = new CalendarController();
+                    controller.initializeLibrary();
+                    expect(controller.libraryCollections.exerciseLibrary).toBeDefined();
+                });
+                
+            });
+
+            it("Should fetch the exercise library", function()
+            {
+                var controller = new CalendarController();
+                controller.initializeLibrary();
+                spyOn(controller.libraryCollections.exerciseLibrary, "fetch");
+                controller.loadLibraryData();
+                expect(controller.libraryCollections.exerciseLibrary.fetch).toHaveBeenCalled();
+            });
         });
 
         describe("Bind to CalendarView events", function()
@@ -238,6 +339,62 @@ function(moment, $, _, Backbone, CalendarController, WorkoutModel, WorkoutsColle
                 expect(controller.weeksCollection.appendWeek).toHaveBeenCalled();
                 var lastCall = controller.weeksCollection.appendWeek.mostRecentCall;
                 expect(lastCall.args[0].format(dateFormat)).toEqual(expectedStartDate.format(dateFormat));
+            });
+        });
+
+
+        describe("Reset", function()
+        {
+
+            var controller, endDate, startDate;
+
+            beforeEach(function()
+            {
+                startDate = moment().day(0);
+                endDate = moment().day(0).add("weeks",4);
+                controller = new CalendarController();
+                controller.initializeCalendar();
+                spyOn(controller.weeksCollection, "resetToDates");
+            });
+
+            it("Should set the correct start and end dates", function()
+            {
+                controller.reset(startDate, endDate);
+                expect(controller.startDate.unix()).toEqual(startDate.unix());
+                expect(controller.endDate.unix()).toEqual(endDate.unix());
+            });
+
+            it("Should reset the weeks collection to the correct dates", function()
+            {
+                controller.reset(startDate, endDate);
+                expect(controller.weeksCollection.resetToDates).toHaveBeenCalledWith(startDate, endDate);
+            });
+
+        });
+
+        describe("showDate", function()
+        {
+
+            var controller;
+            
+            beforeEach(function()
+            {
+                controller = new CalendarController();
+                spyOn(controller, "reset");
+                controller.initializeCalendar();
+                controller.views.calendar = jasmine.createSpyObj("calendar view spy", ["scrollToDate"]);
+            });
+
+            it("Should scroll to date, but not reset, if within current date range", function()
+            {
+                
+                controller.startDate = moment().day(0);
+                controller.endDate = moment().day(0).add("weeks", 3);
+                var showDate = moment().day(3).add("weeks", 1);
+                controller.showDate(showDate);
+                expect(controller.reset).not.toHaveBeenCalled();
+                expect(controller.views.calendar.scrollToDate).toHaveBeenCalled();
+
             });
         });
 

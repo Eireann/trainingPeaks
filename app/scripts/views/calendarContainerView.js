@@ -47,7 +47,7 @@ function(_, TP, CalendarWeekView, calendarContainerView)
         {
             _.bindAll(this, "checkCurrentScrollPosition");
             
-           // theMarsApp.user.on("change", this.setWorkoutColorization, this);
+            // theMarsApp.user.on("change", this.setWorkoutColorization, this);
 
             $(window).on("resize", this.resizeContext);
 
@@ -198,7 +198,14 @@ function(_, TP, CalendarWeekView, calendarContainerView)
 
         scrollToSelector: function(selector, animationTimeout)
         {
-            return this.scrollToElement(this.ui.weeksContainer.find(selector), animationTimeout);
+            var elements = this.ui.weeksContainer.find(selector);
+            if (elements && elements.length)
+            {
+                return this.scrollToElement(elements[0], animationTimeout);
+            } else
+            {
+                theMarsApp.logger.debug("ScollTo Selector not found: " + selector);
+            }
         },
 
         scrollToElement: function(element, animationTimeout)
@@ -224,11 +231,11 @@ function(_, TP, CalendarWeekView, calendarContainerView)
             }, animationTimeout);
         },
 
-        scrollToDate: function (dateAsMoment, effectDuration)
+        scrollToDate: function(dateAsMoment, effectDuration)
         {
             //theMarsApp.logger.debug(dateAsMoment.format("YYYY-MM-DD"));
             var dateAsString = dateAsMoment.format("YYYY-MM-DD");
-            var selector = '*[data-date="' + dateAsString + '"]';
+            var selector = '.day[data-date="' + dateAsString + '"]';
             this.scrollToSelector(selector, effectDuration || 500);
         },
         
@@ -283,8 +290,25 @@ function(_, TP, CalendarWeekView, calendarContainerView)
 
         setCurrentDateFromDayElement: function($dayElement)
         {
-            if($dayElement.data("date"))
+            if ($dayElement.data("date"))
                 this.calendarHeaderModel.set("date", $dayElement.data("date"));
+        },
+
+        fadeOut: function(duration)
+        {
+            if(this.$el)
+            {
+                this.$el.fadeOut({ duration: duration });
+            }
+        },
+
+        fadeIn: function(duration)
+        {
+            if(this.$el)
+            {
+                this.$el.fadeIn({ duration: duration });
+            }
         }
+
     });
 });
