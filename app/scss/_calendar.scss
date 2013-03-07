@@ -14,7 +14,7 @@
      
     #libraryContainer.open + &
     {
-        width:80%;
+        width:75%;
         @include transition-property(width);
         @include transition-duration(400ms);
         padding-left:0px;
