@@ -6,9 +6,10 @@ define(
     "views/calendarWorkoutHoverView",
     "views/calendarWorkoutSettings",
     "utilities/workoutTypeName",
+    "utilities/determineCompletedWorkout",
     "hbs!templates/views/calendarWorkout"
 ],
-function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkoutSettingsHover, workoutTypeName, CalendarWorkoutTemplate)
+function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkoutSettingsHover, workoutTypeName, determineCompletedWorkout, CalendarWorkoutTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -81,10 +82,10 @@ function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkout
 
         getPastOrCompletedCssClassName: function()
         {
-            if (this.model.get("totalTime"))
+             if (this.model.getCalendarDay() < this.today)
             {
-                return "past";
-            } else if (this.model.getCalendarDay() < this.today)
+                 return "past";
+            } else if (this.model.getCalendarDay() === this.today && determineCompletedWorkout(this.model.attributes))
             {
                 return "past";
             } else
@@ -141,7 +142,7 @@ function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkout
             }
 
             this.removeSettingsButton(e);
-            this.hideWorkoutSummaryHover(e);
+            //this.hideWorkoutSummaryHover(e);
         },
 
         showSettingsButton: function()
