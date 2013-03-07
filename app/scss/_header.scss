@@ -91,7 +91,7 @@
 	background-color: $white;
 	.calendarMonthLabel
 	{
-		width: 175px;
+		width: 265px;
 		float: left;
 		padding-left: 60px;
 		padding-top: 13px;
@@ -105,29 +105,38 @@
 		padding-top: 12px;
 		width: 600px;
 		
-		@include headerButtons(0px);
+		@include headerButtons(0px, 35px, 20px);
 
 		.calendarNavigation
 		{
 			float:left;
-			padding-right: 15px;
-			@include headerButtons(-5px);
+			padding-right: 8px;
+			padding-top: 3px;
+			@include headerButtons(0px, 35px, 20px);
 			
 		}
 
-		.calendarViewSelectionBox
+		.today
 		{
-			width: 150px;
-			padding-left: 20px;
-			float: left;
-			@include selectionBox(150px);
+			float:left;
+			padding-top: 3px;
+			@include headerButtons(0px, 71px, 20px);
 		}
 
 		.printRefreshButtons
 		{
 			float:left;
-			padding-left: 10px;
-			@include headerButtons(20px);
+			padding-top: 3px;
+			@include headerButtons(20px, 40px, 20px);
+			margin-left: -12px;
+			.refreshButton
+			{
+				margin-left: 8px;
+			}
+			.settingsButton
+			{
+				margin-left: 8px;
+			}
 		}
 	}
 
