@@ -47,7 +47,7 @@
 	{
 		float:left;
 		padding-right: 15px;
-		@include headerButtons(-5px);
+		@include headerButtons(-5px, 35px, 20px);
 	}
 
 	.headerIcons

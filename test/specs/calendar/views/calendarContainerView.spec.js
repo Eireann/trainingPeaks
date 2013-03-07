@@ -20,6 +20,59 @@ function(document, $, TP, moment, theMarsApp, CalendarView, CalendarWeekTemplate
             expect(CalendarView).toBeDefined();
         });
 
+        it("Should be able to add a week", function()
+        {
+            expect(CalendarView.prototype.addWeek).toBeDefined();
+            expect(typeof CalendarView.prototype.addWeek).toBe("function");
+
+            var context =
+            {
+                onItemDropped: function ()
+                {
+                },
+                ui:
+                {
+                    weeksContainer:
+                    {
+                        append: function()
+                        {
+                        },
+                        prepend: function()
+                        {
+                        },
+                        scrollTop: function()
+                        {
+                        }
+                    }
+                },
+                children:
+                {
+                    push: function()
+                    {
+                        
+                    }
+                }
+            };
+
+            var options =
+            {
+                collection: new TP.Collection(),
+                model: new TP.Model()
+            };
+
+            expect(function()
+            {
+                CalendarView.prototype.addWeek.call(context, options);
+            }).not.toThrow();
+            
+            options.append = true;
+            
+            expect(function ()
+            {
+                CalendarView.prototype.addWeek.call(context, options);
+            }).not.toThrow();
+        });
+
 
         describe("scrolling", function()
         {
@@ -126,21 +179,5 @@ function(document, $, TP, moment, theMarsApp, CalendarView, CalendarWeekTemplate
                 expect(calendarView.trigger).toHaveBeenCalledWith("itemDropped", options);
             });
         });
-
-        //it("Should be able to check current scroll position", function()
-        //{
-        //    var calendarView = new CalendarView({ collection: new TP.Collection() });
-        //    document.elementFromPoint = function()
-        //    {
-        //        return $("<div data-date='2013-02-04' class='day ui-droppable'><div><div class='dayHeader'><p id='calendarDate'> <span class='show-for-small'>Mon</span>04</p></div></div></div>");
-        //    };
-            
-        //    spyOn(calendarView, "checkCurrentScrollPosition").andCallThrough();
-        //    spyOn(calendarView.ui.weeksContainer, "offset").andReturn({ left: 50, top: 50 });
-
-        //    calendarView.checkCurrentScrollPosition();
-        //});
-
     });
-
 });
