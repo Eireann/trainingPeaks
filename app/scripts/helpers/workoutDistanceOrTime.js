@@ -1,62 +1,10 @@
 define(
 [
     "handlebars",
-    "utilities/determineCompletedWorkout",
-    "utilities/convertToViewUnits",
-    "utilities/printUnitLabel",
-    "utilities/printTimeFromDecimalHours"
-    
+    "utilities/workoutDistanceOrTime"
 ],
-function (Handlebars, determineCompletedWorkout, convertToViewUnits, printUnitLabel, printTimeFromDecimalHours)
+function (Handlebars, workoutDistanceOrTime)
 {
-
-    function workoutDistanceOrTime(workout)
-    {
-        var wdt = " ";
-
-        if (determineCompletedWorkout(workout))
-        {
-            if (workout.distance)
-            {
-                wdt = convertToViewUnits(workout.distance, "distance") + " " + printUnitLabel("distance");
-            }
-            else if (workout.totalTime)
-            {
-                wdt = printTimeFromDecimalHours(workout.totalTime);
-            }
-            else if (workout.tssActual)
-            {
-                wdt = workout.tssActual + " tss";
-            }
-            else
-            {
-                wdt = "";
-            }
-        }
-        else
-        {
-            if (workout.distancePlanned)
-            {
-                wdt = convertToViewUnits(workout.distancePlanned, "distance") + " " + printUnitLabel("distance");
-            }
-            else if(workout.totalTimePlanned)
-            {
-                wdt = printTimeFromDecimalHours(workout.totalTimePlanned);
-            }
-            else if (workout.tssPlanned)
-            {
-                wdt = workout.tssPlanned + " tss";
-            }
-            else
-            {
-                wdt = "";
-            }
-        }
-
-        return wdt;
-    }
-
-
     Handlebars.registerHelper("workoutDistanceOrTime", workoutDistanceOrTime);
     return workoutDistanceOrTime;
 });
