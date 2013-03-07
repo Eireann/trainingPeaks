@@ -120,7 +120,9 @@ function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkout
             mouseleave: "onMouseLeave",
 
             "mouseenter .workoutIcon": "showWorkoutSummaryHover",
-            "mouseleave .workoutIcon": "hideWorkoutSummaryHover"
+            "mouseleave .workoutIcon": "hideWorkoutSummaryHover",
+
+            "mouseup .workoutSettings": "workoutSettingsClicked"
 
         },
 
