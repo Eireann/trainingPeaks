@@ -52,9 +52,7 @@
 
         .workout
         {
-			margin-left: 2px;
-			margin-right: 2px;
-			margin-bottom: 4px;
+			margin: 5px 2px 4px 2px;
 			@include box-shadow(2px 0px 3px $TPGrey4);
 
 			.workoutDiv
@@ -81,7 +79,7 @@
 					{
 						padding: 10px 0px 0px 30px;
 
-						@include labels($navigationFontFamilyRegular, 17px, $TPGrey4);
+						@include labels($navigationFontFamilyRegular, 17px, $black);
 					}
 
 					.workoutSettings
@@ -150,9 +148,6 @@
 
 		.today
         {
-            background-color: $white;
-    	    p{color: $TPGrey1;}
-
 		    .dayHeader
 		    {
                 background-color: $todayBlue;
