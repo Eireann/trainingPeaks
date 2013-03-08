@@ -30,10 +30,6 @@ function (determineCompletedWorkout, convertToViewUnits, printUnitLabel, printTi
             {
                 wdt = workout.tssActual + " tss";
             }
-            else
-            {
-                wdt = "";
-            }
         }
         else
         {

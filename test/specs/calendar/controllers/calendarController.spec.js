@@ -381,13 +381,14 @@ function(moment, $, _, Backbone, CalendarController, WorkoutModel, WorkoutsColle
             {
                 controller = new CalendarController();
                 spyOn(controller, "reset");
+                spyOn(controller, "prependWeekToCalendar");
+                spyOn(controller, "appendWeekToCalendar");
                 controller.initializeCalendar();
                 controller.views.calendar = jasmine.createSpyObj("calendar view spy", ["scrollToDate"]);
             });
 
             it("Should scroll to date, but not reset, if within current date range", function()
             {
-                
                 controller.startDate = moment().day(0);
                 controller.endDate = moment().day(0).add("weeks", 3);
                 var showDate = moment().day(3).add("weeks", 1);
@@ -395,6 +396,35 @@ function(moment, $, _, Backbone, CalendarController, WorkoutModel, WorkoutsColle
                 expect(controller.reset).not.toHaveBeenCalled();
                 expect(controller.views.calendar.scrollToDate).toHaveBeenCalled();
 
+            });
+
+            it("Should reset if requested date is more than 8 weeks outside current range", function()
+            {
+                controller.startDate = moment().day(0);
+                controller.endDate = moment().day(0).add("weeks", 3);
+                var showDate = moment().day(3).add("weeks", 16);
+                controller.showDate(showDate);
+                expect(controller.reset).toHaveBeenCalled();
+            });
+
+            it("Should prepend week if date is before current range", function()
+            {
+                controller.startDate = moment().day(0);
+                controller.endDate = moment().day(0).add("weeks", 3);
+                var showDate = moment().day(3).subtract("weeks", 5);
+                controller.showDate(showDate);
+                expect(controller.reset).not.toHaveBeenCalled();
+                expect(controller.prependWeekToCalendar).toHaveBeenCalled();
+            });
+
+            it("Should append week if date is before current range", function()
+            {
+                controller.startDate = moment().day(0);
+                controller.endDate = moment().day(0).add("weeks", 3);
+                var showDate = moment().day(3).add("weeks", 6);
+                controller.showDate(showDate);
+                expect(controller.reset).not.toHaveBeenCalled();
+                expect(controller.appendWeekToCalendar).toHaveBeenCalled();
             });
         });
 

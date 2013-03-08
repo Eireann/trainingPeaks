@@ -1,5 +1,4 @@
 ﻿@import "tpstylesheet";
-@import "workoutColor";
 
 #calendarWrapper
 {
@@ -22,10 +21,7 @@
 
     #libraryContainer.closed + &
     {
-
         @include calc(width, "100% - 50px"); 
-        @include transition-property(width);
-        @include transition-duration(400ms);
     }
 
     .scrollable
@@ -50,70 +46,6 @@
         overflow-x: hidden;
         overflow-y: visible;
 
-        .workout
-        {
-			margin: 5px 2px 4px 2px;
-			@include box-shadow(2px 0px 3px $TPGrey4);
-
-			.workoutDiv
-			{
-				min-height: 35px;
-				border-bottom: black;
-				border-bottom-width: 1px;
-				border-bottom-style: solid;
-
-				.workoutHeader
-				{
-					padding: 0px 5px 5px 5px;
-					height: 27px;
-					.workoutIcon
-					{
-						width: 25px;
-						height: 25px;
-						background-color: $white;
-						float: left;
-						margin-top: 5px;
-					}
-
-					.workoutDistanceTime
-					{
-						padding: 10px 0px 0px 30px;
-
-						@include labels($navigationFontFamilyRegular, 17px, $black);
-					}
-
-					.workoutSettings
-					{
-						display: none;
-						float: right;
-
-						button
-						{	
-							background: transparent;
-							border: none;
-							padding: 0px;
-							width: 15px;
-							
-						}
-					}
-				}
-				.workoutBody
-				{
-					padding: 10px 5px 5px 5px;
-					@include labels($navigationFontFamilyRegular, 10px, $black);
-					label{font-weight: bold;}
-					
-					p
-					{
-						margin-bottom: 0px;
-						font-size: 10px;
-						font-color: $black;
-						font-family: $navigationFontFamilyRegular;
-						text-align: left;
-					}
-				}
-			}
-        }
     }
 
 	.dayHeader
@@ -180,88 +112,6 @@
 			//margin-left: -1px;
 		}
 
-    }
-
-}
-
-#workoutQuickView
-{
-	display:none;
-}
-
-#workoutHoverDiv
-{
-    z-index:99;
-    position:absolute;
-
-    .details
-    {
-        min-width: 100px;
-
-        @include labels($navigationFontFamilyRegular, 11px, $TPGrey4);
-
-        label
-        {
-            margin-top:10px;
-            margin-bottom:2px;
-        }
-
-        label:first
-        {
-            margin-top:0px;
-        }
-
-        .planned
-        {
-            color: $todayBlue ;
-            font-size:16px;
-        }
-
-        .completed
-        {
-            color: $thisWeekBlue;
-            font-size:16px;
-        }
-
-        .slash
-        {
-            color: $thisWeekBlue;
-            font-size:16px;
-        }
-    }
-
-}
-
-#workoutSettingsDiv
-{
-    z-index:99;
-    position:absolute;
-    min-width: 75px;
-	padding-left: 10px;
-	padding-bottom: 20px;
-
-	@include labels($navigationFontFamilyRegular, 12px, $TPGrey4);
-	label
-	{
-		padding-top: 2px;
-	}
-
-	.arrow
-    {
-        width: 15px;
-        height: 15px;
-        @include transform(translateY(-7px) rotate(45deg));
-        @include calc(margin-left, "50% - 20");
-    }
-
-	.colorBar
-    {
-        bottom: 15px;
-    }
-
-	.bottomShadow
-    {
-        bottom: 14px;
     }
 
 }
