@@ -33,16 +33,22 @@
 
 		.personHeaderButtons
 		{
-			padding: 12px 10px 0px 10px;
+			padding: 11px 10px 0px 10px;
 			margin: 0px -10px 0px -10px;
 			height: 35px;
 			text-align: center;
-			&:hover { background-color: $TPBlue; }
+			//&:hover { background-color: $TPBlue; }
 			&:hover label{color: $white;}
 			float:left;
 
 			@include labels($navigationFontFamilyRegular, $navigationFontSize, $TPGrey4);
 
+		}
+
+		.upgradeButton
+		{
+			background-color: $TPBlue;
+			label{color: $white;}
 		}
 
 		.personHeaderMailIcon
@@ -115,14 +121,14 @@
 		float:left;
 		padding-top: 12px;
 		
-		@include headerButtons(0px, 35px, 20px);
+		@include headerButtons(0px, 35px, 20px, $navigationFontSize);
 
 		.calendarNavigation
 		{
 			float:left;
 			padding-right: 8px;
 			padding-top: 3px;
-			@include headerButtons(0px, 35px, 20px);
+			@include headerButtons(0px, 35px, 20px, 12px);
 			
 		}
 
@@ -130,14 +136,14 @@
 		{
 			float:left;
 			padding-top: 3px;
-			@include headerButtons(0px, 71px, 20px);
+			@include headerButtons(0px, 71px, 20px, 12px);
 		}
 
 		.printRefreshButtons
 		{
 			float:left;
 			padding-top: 3px;
-			@include headerButtons(20px, 40px, 20px);
+			@include headerButtons(20px, 40px, 20px, $navigationFontSize);
 			margin-left: -12px;
 			.refreshButton
 			{
