@@ -6,21 +6,11 @@ plus a moment.js compatible formatString (defaults to 'ddd', day name abbreviati
 
 define(
 [
-    "handlebars"
+    "handlebars",
+    "utilities/defaultValue"
 ],
-function(Handlebars)
+function(Handlebars, getDefaultValue)
 {
-    function getDefaultValue(value, defaultValue)
-    {
-        if (typeof value === "undefined" || value === null)
-        {
-            return defaultValue;
-        } else
-        {
-            return value;
-        }
-    }
-
     Handlebars.registerHelper("defaultValue", getDefaultValue);
     return getDefaultValue;
 });
