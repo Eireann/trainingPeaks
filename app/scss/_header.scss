@@ -26,17 +26,15 @@
 		{
 			float: left;
 			height: 30px;
-			padding-top: 10px;
-			padding-right: 10px;
+			padding: 10px 10px 0px 10px;
 			font-size: $navigationFontSize;
 			color: $TPGrey4;
 		}
 
 		.personHeaderButtons
 		{
-			padding-top: 12px;
-			padding-right: 10px;
-
+			padding: 12px 10px 0px 10px;
+			margin: 0px -10px 0px -10px;
 			height: 35px;
 			text-align: center;
 			&:hover { background-color: $TPBlue; }
@@ -75,12 +73,16 @@
 			height: 45px;
 			text-align: center;
 			padding-top: 20px;
-			&:hover label{color: $TPPurple; }
-			&:hover label{border-bottom-style:solid; border-bottom-width:1px; border-color:$TPPurple;}
+			&:hover label{color: $TPBlue; }
+			&:hover label{border-bottom-style:solid; border-bottom-width:2px; border-color:$TPBlue;}
 			
 		}
 
 		@include labels($navigationFontFamilyRegular, $navigationFontSize, $TPGrey4);
+		label
+		{
+			padding: 0px 7px 7px 7px;
+		}	
 	}
 }
 
@@ -93,17 +95,25 @@
 	{
 		width: 265px;
 		float: left;
-		padding-left: 60px;
+		padding-left: 65px;
 		padding-top: 13px;
-
 		@include labels($navigationFontFamilyRegular, 25px, $TPBlue);
+		label
+		{
+			float: left;
+			padding-right: 10px;
+			
+		}
+		.headerYear
+		{
+			font-family: $navigationFontFamilyLight;
+		}
 	}
 
 	.navigation
 	{
 		float:left;
 		padding-top: 12px;
-		width: 600px;
 		
 		@include headerButtons(0px, 35px, 20px);
 
@@ -144,8 +154,8 @@
 
 .mainNavigationButtons
 {
-	padding-left: 10px;
-	padding-right: 10px;
+	padding-left: 6px;
+	padding-right: 6px;
 }
 
 #loginHeader, #calendarHeader
