@@ -7,7 +7,7 @@ requirejs(
 ],
 function ($, Backbone, LoginView)
 {
-    describe("Login View", function ()
+    describe("Login View", function()
     {
         beforeEach(function ()
         {
@@ -59,12 +59,12 @@ function ($, Backbone, LoginView)
             {
             };
             spyOn(fakeSessionModel, "authenticate");
-            
-            var view = new LoginView({ el: $("body"), model: fakeSessionModel });
+
+            var view = new LoginView({ el: $("<body></body>"), model: fakeSessionModel });
 
             view.render();
 
-            $("input[name=Submit]").click();
+            view.$("input[name=Submit]").click();
 
             expect(fakeSessionModel.authenticate).toHaveBeenCalled();
         });
@@ -77,14 +77,14 @@ function ($, Backbone, LoginView)
             };
             spyOn(fakeSessionModel, "authenticate");
 
-            var view = new LoginView({ el: $("body"), model: fakeSessionModel });
+            var view = new LoginView({ el: $("<body></body>"), model: fakeSessionModel });
 
             view.render();
 
-            $("input[name=username]").val("testusername");
+            view.$("input[name=username]").val("testusername");
             expect(view.ui.usernameInput.val()).toBe("testusername");
             
-            $("input[name=password]").val("testpassword");
+            view.$("input[name=password]").val("testpassword");
             expect(view.ui.passwordInput.val()).toBe("testpassword");
         });
     });

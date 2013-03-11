@@ -13,4 +13,5 @@
 *.suo
 /*.sln.DotSettings.user
 
+test/specsList.js
 JSLintOptions.xml
