@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+
+    <title>MARS test runner</title>
+
+    <!-- load some utilities -->
+    <script src="vendor/js/libs/require.js"></script>
+    <script src="vendor/js/libs/jquery/jquery.js"></script>
+    <script>
+        define("jquery", [], function() { return $; });
+    </script>
+
+    <!-- load jasmine stuff -->
+    <link rel="stylesheet" type="text/css" href="vendor/js/libs/jasmine/lib/jasmine.css">
+    <script type="text/javascript" src="vendor/js/libs/jasmine/lib/jasmine.js"></script>
+    <script type="text/javascript" src="vendor/js/libs/jasmine/lib/jasmine-html.js"></script>
+    <script type="text/javascript">
+    (function() {
+      var jasmineEnv = jasmine.getEnv();
+      jasmineEnv.updateInterval = 1000;
+
+      var htmlReporter = new jasmine.HtmlReporter();
+
+      jasmineEnv.addReporter(htmlReporter);
+
+      jasmineEnv.specFilter = function(spec) {
+        return htmlReporter.specFilter(spec);
+      };
+
+      var currentWindowOnload = window.onload;
+
+      window.onload = function() {
+        if (currentWindowOnload) {
+          currentWindowOnload();
+        }
+
+        $.ajax = function()
+        {
+            return new $.Deferred();
+        }
+        execJasmine(jasmineEnv);
+      };
+    })();
+    </script>
+
+    <!-- load and run our tests -->
+    <script>
+    function execJasmine(jasmineEnv)
+    {
+        requirejs(["test/specsList"], function(specsToRun)
+        {
+            requirejs(["app/config/jasmineHtmlConfig"], function(config)
+            {
+                requirejs.config(config);
+                requirejs(specsToRun, function()
+                {
+                    // hack - set a timeout so all requirejs dependencies load before running our tests
+                    // it's not foolproof, but easier than overriding requirejs
+                    setTimeout(function() { jasmineEnv.execute(); }, 500);
+                });
+            });
+        });
+
+    }
+    </script>
+
+</head>
+
+<body>
+</body>
+</html>

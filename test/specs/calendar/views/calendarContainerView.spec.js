@@ -1,7 +1,6 @@
 // use requirejs() instead of define() here, to keep jasmine test runner happy
 requirejs(
 [
-    "document",
     "jquery",
     "TP",
     "moment",
@@ -9,7 +8,7 @@ requirejs(
     "views/calendarContainerView",
     "hbs!templates/views/calendarWeek"
 ],
-function(document, $, TP, moment, theMarsApp, CalendarView, CalendarWeekTemplate)
+function($, TP, moment, theMarsApp, CalendarView, CalendarWeekTemplate)
 {
 
     describe("CalendarView ", function()
