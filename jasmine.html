@@ -18,7 +18,7 @@
     <script type="text/javascript">
     (function() {
       var jasmineEnv = jasmine.getEnv();
-      jasmineEnv.updateInterval = 1000;
+      jasmineEnv.updateInterval = 500;
 
       var htmlReporter = new jasmine.HtmlReporter();
 
@@ -57,7 +57,7 @@
                 {
                     // hack - set a timeout so all requirejs dependencies load before running our tests
                     // it's not foolproof, but easier than overriding requirejs
-                    setTimeout(function() { jasmineEnv.execute(); }, 500);
+                    setTimeout(function() { jasmineEnv.execute(); }, 1000);
                 });
             });
         });
