@@ -50,7 +50,6 @@ function(TP)
             });
             return pastedDays;
         }
-
     });
 
     return CalendarWeekCollection;

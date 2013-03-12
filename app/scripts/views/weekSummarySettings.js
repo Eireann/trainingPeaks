@@ -3,9 +3,10 @@ define(
     "TP",
     "setImmediate",
     "jqueryOutside",
+    "views/deleteConfirmationView",
     "hbs!templates/views/calendarWeekSummarySettings"
 ],
-function (TP, setImmediate, jqueryOutside, calendarWeekSummarySettings)
+function (TP, setImmediate, jqueryOutside, DeleteConfirmationView, calendarWeekSummarySettings)
 {
     return TP.ItemView.extend(
     {
@@ -18,7 +19,7 @@ function (TP, setImmediate, jqueryOutside, calendarWeekSummarySettings)
 
         events:
         {
-         
+            "click #calendarWeekSummarySettingsDeleteLabel": "onDeleteClicked"
         },
 
         hideSettings: function (e)
@@ -70,6 +71,20 @@ function (TP, setImmediate, jqueryOutside, calendarWeekSummarySettings)
             {
                 this.$el.find(".hoverBox").addClass("thisWeek");
             }
+        },
+        
+        onDeleteClicked: function()
+        {
+            this.close();
+            
+            this.deleteConfirmationView = new DeleteConfirmationView();
+            this.deleteConfirmationView.render();
+            this.deleteConfirmationView.on("deleteConfirmed", this.onDeleteDayConfirmed, this);
+        },
+        
+        onDeleteDayConfirmed: function()
+        {
+            this.model.collection.deleteWeekItems();
         }
     });
 });
