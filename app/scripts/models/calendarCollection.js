@@ -109,7 +109,11 @@ function(TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, CalendarDayM
 
             var CalendarSummaryModel = TP.Model.extend(
             {
-                isSummary: true
+                isSummary: true,
+                defaults:
+                {
+                    date: null
+                }
             });
 
             for (var dayOffset = 0; dayOffset < 7; ++dayOffset)
@@ -121,7 +125,7 @@ function(TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, CalendarDayM
 
                 if (dayOffset === 6 && this.summaryViewEnabled)
                 {
-                    var summary = new CalendarSummaryModel();
+                    var summary = new CalendarSummaryModel({ date: startDate });
                     weekCollection.add(summary);
                 }
             }
