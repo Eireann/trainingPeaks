@@ -3,9 +3,10 @@ define(
     "TP",
     "setImmediate",
     "jqueryOutside",
+    "views/deleteConfirmationView",
     "hbs!templates/views/calendarDaySettings"
 ],
-function (TP, setImmediate, jqueryOutside, calendarDaySettingsTemplate)
+function (TP, setImmediate, jqueryOutside, DeleteConfirmationView, calendarDaySettingsTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -16,7 +17,8 @@ function (TP, setImmediate, jqueryOutside, calendarDaySettingsTemplate)
         
         events:
         {
-            "click #calendarDaySettingsAddLabel": "onAddClicked"  
+            //"click #calendarDaySettingsAddLabel": "onAddClicked",
+            "click #calendarDaySettingsDeleteLabel": "onDeleteClicked"
         },
 
         hideSettings: function (e)
@@ -64,7 +66,20 @@ function (TP, setImmediate, jqueryOutside, calendarDaySettingsTemplate)
 
             if (weekDate.week() === today.week() && weekDate.year() === today.year())
                 this.$el.find(".hoverBox").addClass("thisWeek");
+        },
+        
+        onDeleteClicked: function()
+        {
+            this.close();
+            
+            this.deleteConfirmationView = new DeleteConfirmationView();
+            this.deleteConfirmationView.render();
+            this.deleteConfirmationView.on("deleteConfirmed", this.onDeleteDayConfirmed, this);
+        },
+        
+        onDeleteDayConfirmed: function()
+        {
+            this.model.deleteDayItems();
         }
-
     });
 });

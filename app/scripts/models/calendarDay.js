@@ -53,7 +53,15 @@ function(_, moment, TP)
         remove: function(item)
         {
             this.itemsCollection.remove(item);
+        },
+        
+        deleteDayItems: function()
+        {
+            this.itemsCollection.each(function(item)
+            {
+                if (!item.isDateLabel)
+                    item.destroy({ wait:true });
+            });
         }
-
     });
 });
