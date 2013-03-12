@@ -16,7 +16,7 @@ function (TP, setImmediate, jqueryOutside, calendarDaySettingsTemplate)
         
         events:
         {
-            "click #calendarDaySettingsAddLabel": "onAddClicked"  
+           // "click #calendarDaySettingsAddLabel": "onAddClicked"  
         },
 
         hideSettings: function (e)
