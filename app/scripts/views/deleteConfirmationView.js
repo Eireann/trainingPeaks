@@ -40,6 +40,6 @@ function (TP, deleteConfirmationView)
         onDeleteCancelled: function()
         {
             this.close();
-        },
+        }
     });
 });
