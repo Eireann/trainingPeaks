@@ -7,7 +7,7 @@
 function(_, moment, TP)
 {
 
-    return TP.Model.extend(
+    var CalendarDay = TP.Model.extend(
     {
 
         idAttribute: 'date',
@@ -34,18 +34,23 @@ function(_, moment, TP)
         {
             // empty collection to store our collection
             this.itemsCollection = new TP.Collection();
-
-            // add a model to hold our label
-            var dayLabel = new TP.Model({ date: this.get("date") });
-            dayLabel.isDateLabel = true;
-            this.itemsCollection.add(dayLabel);
-
-            // watch for changes on collection?
-            //this.collection.on("add", this.change, this);
-            //this.collection.on("remove", this.change, this);
         },
 
-        add: function(item)
+        // gets called via onBeforeRender of calendarDayView - only add a label if we need it for render,
+        // but not for copy/paste etc
+        configureDayLabel: function()
+        {
+            if (!this.hasLabel)
+            {
+                // add a model to hold our label
+                var dayLabel = new TP.Model({ date: this.get("date") });
+                dayLabel.isDateLabel = true;
+                this.itemsCollection.unshift(dayLabel);
+                this.hasLabel = true;
+            }
+        },
+
+        add: function(item, noParentReference)
         {
             this.itemsCollection.add(item);
         },
@@ -62,6 +67,49 @@ function(_, moment, TP)
                 if (!item.isDateLabel)
                     item.destroy({ wait:true });
             });
+        },
+
+        copyToClipboard: function()
+        {
+            var calendarDay = new CalendarDay({ date: this.get("date") });
+            this.itemsCollection.each(function(item)
+            {
+                if (typeof item.copyToClipboard === "function")
+                    calendarDay.add(item.copyToClipboard());
+            });
+            return calendarDay;
+        },
+        
+        cutToClipboard: function()
+        {
+            var calendarDay = new CalendarDay({ date: this.get("date") });
+            this.itemsCollection.each(function (item)
+            {
+                if (typeof item.cutToClipboard === "function")
+                    calendarDay.add(item.cutToClipboard());
+            });
+            return calendarDay;
+        },
+        
+        onPaste: function(dateToPasteTo)
+        {
+            var pastedItems = [];
+            this.itemsCollection.each(function(item)
+            {
+                if (typeof item.onPaste === "function")
+                {
+                    pastedItems.push(item.onPaste(dateToPasteTo));
+                }
+            });
+            return pastedItems;
+        },
+
+        length: function()
+        {
+            return this.itemsCollection.length;
         }
-    });
+
+    }, { hasLabel: false });
+
+    return CalendarDay;
 });

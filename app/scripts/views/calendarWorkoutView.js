@@ -166,7 +166,20 @@ function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkout
             var offset = $(e.currentTarget).offset();
             this.workoutSettings = new CalendarWorkoutSettingsHover({ model: this.model, top: offset.top + 10, left: offset.left + 5 });
             this.workoutSettings.render();
+            
             this.workoutSettings.on("mouseleave", this.onMouseLeave, this);
+            this.workoutSettings.on("workout:copy", this.onWorkoutCopy, this);
+            this.workoutSettings.on("workout:cut", this.onWorkoutCut, this);
+        },
+        
+        onWorkoutCopy: function()
+        {
+            this.model.trigger("workout:copy", this.model);
+        },
+        
+        onWorkoutCut: function()
+        {
+            this.model.trigger("workout:cut", this.model);
         },
 
         workoutClicked: function (e) 

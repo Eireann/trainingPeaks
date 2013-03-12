@@ -20,7 +20,19 @@ function (TP, setImmediate, jqueryOutside, DeleteConfirmationView, calendarWorko
         events:
         {
             // mouseleave: "hideWorkoutSettings"
-            "click #workoutSettingsLabelDelete" : "onDelete"
+            "click #workoutSettingsLabelDelete": "onDelete",
+            "click #workoutSettingsLabelCopy": "onCopyClicked",
+            "click #workoutSettingsLabelCut": "onCutClicked"
+        },
+        
+        onCopyClicked: function()
+        {
+            this.trigger("workout:copy");
+        },
+        
+        onCutClicked: function()
+        {
+            this.trigger("workout:cut");
         },
 
         hideWorkoutSettings: function (e)
