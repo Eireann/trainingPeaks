@@ -2,9 +2,10 @@ define(
 [
     "TP",
     "utilities/workoutTypeEnum",
+    "views/weekSummarySettings",
     "hbs!templates/views/weekSummary"
 ],
-function(TP, workoutTypeEnum, weekSummaryTemplate)
+function(TP, workoutTypeEnum, weekSummarySettings, weekSummaryTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -15,6 +16,14 @@ function(TP, workoutTypeEnum, weekSummaryTemplate)
         {
             type: "handlebars",
             template: weekSummaryTemplate
+        },
+
+        events:
+        {
+            mouseenter: "onMouseEnter",
+            mouseleave: "onMouseLeave",
+
+            "click .summarySettings": "summarySettingsClicked"
         },
 
         initialize: function()
@@ -116,6 +125,42 @@ function(TP, workoutTypeEnum, weekSummaryTemplate)
                 tssCompleted: completedValues.cumulativeTss
             },
             { silent: true });
+        },
+
+        onMouseEnter: function (e)
+        {
+            this.showSettingsButton(e);
+        },
+
+        onMouseLeave: function (e)
+        {
+            var toElement = document.elementFromPoint(e.pageX, e.pageY);
+            if (e.toElement === this.el)
+                return;
+
+            this.removeSettingsButton(e);
+        },
+
+        showSettingsButton: function ()
+        {
+            this.$(".summarySettings").css('display', "block");
+        },
+
+        removeSettingsButton: function (e)
+        {
+            var toElement = $(document.elementFromPoint(e.pageX, e.pageY));
+            if (!toElement.is(".summarySettings") && !toElement.is("#summarySettingsDiv") && !toElement.is(".hoverBox"))
+                this.$(".summarySettings").css('display', "none");
+        },
+
+        summarySettingsClicked: function (e)
+        {
+            e.preventDefault();
+
+            var offset = $(e.currentTarget).offset();
+            this.summarySettings = new weekSummarySettings({ model: this.model, top: offset.top + 10, left: offset.left + 5 });
+            this.summarySettings.render();
+            this.summarySettings.on("mouseleave", this.onMouseLeave, this);
         }
     });
 });
