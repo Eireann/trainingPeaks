@@ -1,0 +1,29 @@
+﻿@import "tpstylesheet";
+
+#newItemViewContainer
+{
+}
+
+#newItemViewContainer
+{
+    .addItemHeader
+    {
+        color: $TPBlue;
+        font-weight: bold;
+        background-color: $white;
+        padding: 20px 20px 20px 20px;
+    }
+
+    .addItemButtonsContainer
+    {
+        background-color: $TPGrey1;
+        padding: 20px 20px 20px 20px;
+    }
+
+    .addItemSectionHeader
+    {
+        color: $TPBlue;
+        font-weight: bold;
+
+    }
+}

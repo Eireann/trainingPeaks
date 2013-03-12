@@ -149,5 +149,21 @@
 
     "Cancel" : "Cancel",
 
-    "ConfirmDelete" : "Are you sure you want to delete this workout? This cannot be undone!"
+    "ConfirmDelete" : "Are you sure you want to delete this workout? This cannot be undone!",
+
+    "NewWorkout": "New Workout",
+    "Run": "Run",
+    "Bike": "Bike",
+    "Swim": "Swim",
+    "Brick": "Brick",
+    "Crosstrain": "Crosstrain",
+    "Race": "Race",
+    "Dayoff": "Day off",
+    "MtnBike": "Mtn Bike",
+    "Strength": "Strength",
+    "Custom": "Custom",
+    "XCSki": "XC-Ski",
+    "Rowing": "Rowing",
+    "Other": "Other",
+    "Walk": "Walk"
 }
