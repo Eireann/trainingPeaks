@@ -276,57 +276,21 @@ function($, TP, moment, WorkoutModel, WorkoutsCollection, CalendarCollection)
                     endDate: moment().day(6).add("weeks", 2)
                 });
                 workout = new WorkoutModel({ workoutDay: yesterday + "T00:00:00", workoutId: workoutId });
-                collection.addWorkoutToCalendarDay(workout);
-                collection.workoutsCollection.add(workout);
+                collection.addWorkout(workout);
                 yesterdayCalendarDay = collection.getDayModel(yesterday);
                 tomorrowCalendarDay = collection.getDayModel(tomorrow);
             });
 
-            it("Should call remove on yesterday's calendarDay model", function()
-            {
-                spyOn(yesterdayCalendarDay, "remove");
-                collection.onItemMoved({ ItemId: workoutId, destinationCalendarDayModel: tomorrowCalendarDay });
-                expect(yesterdayCalendarDay.remove).toHaveBeenCalledWith(workout);
-            });
-
-            it("Should call add on tomorrow's calendarDay model", function()
-            {
-                spyOn(tomorrowCalendarDay, "add");
-                collection.onItemMoved({ ItemId: workoutId, destinationCalendarDayModel: tomorrowCalendarDay });
-                expect(tomorrowCalendarDay.add).toHaveBeenCalledWith(workout);
-            });
-
             it("Should call moveToDay on workout", function()
             {
-                spyOn(workout, "moveToDay").andCallThrough();
+                spyOn(workout, "moveToDay");
                 collection.onItemMoved({ ItemId: workoutId, destinationCalendarDayModel: tomorrowCalendarDay });
-                expect(workout.moveToDay).toHaveBeenCalledWith(tomorrow);
-            });
-
-            it("Should move workout back if save fails", function()
-            {
-                var deferred = $.Deferred();
-                spyOn(workout, "save").andReturn(deferred);
-                spyOn(tomorrowCalendarDay, "add");
-                spyOn(tomorrowCalendarDay, "remove");
-                spyOn(yesterdayCalendarDay, "add");
-                spyOn(yesterdayCalendarDay, "remove");
-
-                // move it ...
-                collection.onItemMoved({ ItemId: workoutId, destinationCalendarDayModel: tomorrowCalendarDay });
-                expect(tomorrowCalendarDay.add).toHaveBeenCalledWith(workout);
-                expect(yesterdayCalendarDay.remove).toHaveBeenCalledWith(workout);
-
-                // fail - should move back
-                deferred.reject();
-                expect(tomorrowCalendarDay.remove).toHaveBeenCalledWith(workout);
-                expect(yesterdayCalendarDay.add).toHaveBeenCalledWith(workout);
-
+                expect(workout.moveToDay).toHaveBeenCalledWith(tomorrow, tomorrowCalendarDay);
             });
 
         });
 
-        it("Sets up the weeks based on a start and end date ", function ()
+        it("Sets up the weeks based on a start and end date ", function()
         {
             expect(CalendarCollection.prototype.setUpWeeks).toBeDefined();
             expect(typeof CalendarCollection.prototype.setUpWeeks).toBe("function");
