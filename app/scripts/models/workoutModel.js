@@ -94,26 +94,25 @@ function (moment, TP)
             var originalCollection = self.dayCollection;
 
             this.set("workoutDay", moment(newDate).format(this.longDateFormat));
-
-            var removeFromSourceCollectionOnSuccess = function()
+            if (newCollection)
             {
-                if (originalCollection)
-                    originalCollection.remove(self);
-            };
+                newCollection.add(this);
+            }
+            if (originalCollection)
+            {
+                originalCollection.remove(this);
+            }
 
             var revertOnFailure = function()
             {
                 self.set("workoutDay", originalDate.format(this.longDateFormat));
                 if (newCollection)
                     newCollection.remove(self);
+                if (originalCollection)
+                    originalCollection.add(self);
             };
 
-            if (newCollection)
-            {
-                newCollection.add(this);
-            }
-
-            return this.save().done(removeFromSourceCollectionOnSuccess).fail(revertOnFailure);
+            return this.save().fail(revertOnFailure);
         },
         
         copyToClipboard: function()

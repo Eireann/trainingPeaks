@@ -34,7 +34,6 @@ function(moment, $, WorkoutModel)
             var workout;
             var originalDate = moment().format(WorkoutModel.prototype.dateFormat);
             var tomorrow = moment().add("days", 1).format(WorkoutModel.prototype.dateFormat);
-            var workout;
             var originalCollection;
             var newCollection;
 
@@ -62,16 +61,10 @@ function(moment, $, WorkoutModel)
                 expect(workout.save).toHaveBeenCalled();
             });
 
-            it("Should remove from original collection on success", function()
-            {
-                workout.moveToDay(tomorrow).resolve();
-                expect(originalCollection.remove).toHaveBeenCalledWith(workout);
-            });
-
-            it("Should not remove from original collection until success", function()
+            it("Should remove from original collection", function()
             {
                 workout.moveToDay(tomorrow);
-                expect(originalCollection.remove).not.toHaveBeenCalledWith(workout);
+                expect(originalCollection.remove).toHaveBeenCalledWith(workout);
             });
 
             it("Should add to new collection", function()
@@ -85,6 +78,7 @@ function(moment, $, WorkoutModel)
                 spyOn(workout, "set").andCallThrough();
                 workout.moveToDay(tomorrow, newCollection).reject();
                 expect(newCollection.remove).toHaveBeenCalledWith(workout);
+                expect(originalCollection.add).toHaveBeenCalledWith(workout);
                 expect(workout.set).toHaveBeenCalledWith("workoutDay", originalDate);
             });
         });
