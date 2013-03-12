@@ -21,7 +21,10 @@
 
     #libraryContainer.closed + &
     {
-        @include calc(width, "100% - 50px"); 
+        width:97%;
+        @include transition-property(width);
+        @include transition-duration(400ms);
+        //@include calc(width, "100% - 50px"); 
     }
 
     .scrollable

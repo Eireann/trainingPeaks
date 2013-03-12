@@ -31,7 +31,7 @@
 
     &.closed
     {
-        width: 50px;
+        width: 3%;
         text-align:right;
         @include transition-property(width);
         @include transition-duration(400ms);

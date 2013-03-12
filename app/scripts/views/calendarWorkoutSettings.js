@@ -3,9 +3,10 @@ define(
     "TP",
     "setImmediate",
     "jqueryOutside",
+    "views/deleteConfirmationView",
     "hbs!templates/views/calendarWorkoutSettingsHover"
 ],
-function (TP, setImmediate, jqueryOutside, calendarWorkoutSettingsHover)
+function (TP, setImmediate, jqueryOutside, DeleteConfirmationView, calendarWorkoutSettingsHover)
 {
     return TP.ItemView.extend(
     {
@@ -18,7 +19,8 @@ function (TP, setImmediate, jqueryOutside, calendarWorkoutSettingsHover)
 
         events:
         {
-           // mouseleave: "hideWorkoutSettings"
+            // mouseleave: "hideWorkoutSettings"
+            "click #workoutSettingsLabelDelete" : "onDelete"
         },
 
         hideWorkoutSettings: function (e)
@@ -67,7 +69,16 @@ function (TP, setImmediate, jqueryOutside, calendarWorkoutSettingsHover)
             setImmediate(function() { theView.$el.bind("clickoutside", theView.hideWorkoutSettings); });
             //this.$el.attr("class", this.$el.attr("class") + " " + this.inheritedClassNames);
             this.$el.css("left", this.posX - Math.round(this.$el.width() / 2)).css("top", this.posY - this.$el.height());
+        },
+        
+        onDelete: function()
+        {
+            this.close();
+            
+            this.deleteConfirmationView = new DeleteConfirmationView();
+            this.deleteConfirmationView.render();
+            var self = this;
+            this.deleteConfirmationView.on("deleteConfirmed", function () { self.model.destroy({ wait: true }); });
         }
-
     });
 });

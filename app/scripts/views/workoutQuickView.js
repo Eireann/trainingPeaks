@@ -7,9 +7,10 @@
     "utilities/convertToModelUnits",
     "utilities/printTimeFromDecimalHours",
     "utilities/convertTimeHoursToDecimal",
+    "views/deleteConfirmationView",
     "hbs!templates/views/workoutQuickView"
 ],
-function(TP, dialog, printUnitLabel, convertToViewUnits, convertToModelUnits, printTimeFromDecimalHours, convertTimeHoursToDecimal, workoutQuickViewTemplate)
+function (TP, dialog, printUnitLabel, convertToViewUnits, convertToModelUnits, printTimeFromDecimalHours, convertTimeHoursToDecimal, DeleteConfirmationView, workoutQuickViewTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -342,6 +343,13 @@ function(TP, dialog, printUnitLabel, convertToViewUnits, convertToModelUnits, pr
         },
 
         onDeleteWorkout: function ()
+        {
+            this.deleteConfirmationView = new DeleteConfirmationView();
+            this.deleteConfirmationView.render();
+            this.deleteConfirmationView.on("deleteConfirmed", this.onDeleteWorkoutConfirmed, this);    
+        },
+        
+        onDeleteWorkoutConfirmed: function()
         {
             this.$el.dialog("close");
             this.close();
