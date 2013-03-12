@@ -134,3 +134,17 @@
     }
 
 }
+
+body.clipboardEmpty {
+    .paste
+    {
+        color:$TPGrey2;
+    }
+}
+
+body.clipboardFull {
+    .paste
+    {
+        //color:green;
+    }
+}

@@ -40,6 +40,8 @@ function(TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, CalendarDayM
             this.daysCollection.on("day:copy", this.onItemsCopy, this);
             this.daysCollection.on("day:cut", this.onItemsCut, this);
             this.daysCollection.on("day:paste", this.onPaste, this);
+
+            this.clipboard.on("change", this.onClipboardStateChange, this);
         },
         
         onItemsCopy: function(model)
@@ -69,7 +71,18 @@ function(TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, CalendarDayM
             if (this.clipboard.getAction() === "cut")
                 this.clipboard.empty();
         },
-        
+       
+        onClipboardStateChange: function()
+        {
+            if (this.clipboard.hasData())
+            {
+                this.trigger("clipboard:full");
+            } else
+            {
+                this.trigger("clipboard:empty");
+            }
+        },
+
         setUpWeeks: function(startDate, endDate)
         {
             this.startDate = startDate;

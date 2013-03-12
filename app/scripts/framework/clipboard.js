@@ -1,8 +1,9 @@
 ﻿define(
 [
-    "underscore"
+    "underscore",
+    "backbone"
 ],
-function(_)
+function(_, Backbone)
 {
     var Clipboard = function ()
     {
@@ -29,24 +30,33 @@ function(_)
                 action: action,
                 value: value
             };
+
+            this.trigger("change");
         },
+
         getAction: function()
         {
             return this.data.action;
         },
+
         getValue: function ()
         {
             return this.data.value;
         },
+
         hasData: function ()
         {
             return this.data.value ? true : false;
         },
+
         empty: function()
         {
             this.data = { value: null, action: null };
+            this.trigger("change");
         }
     };
+
+    _.extend(Clipboard.prototype, Backbone.Events);
 
     return Clipboard;
 });

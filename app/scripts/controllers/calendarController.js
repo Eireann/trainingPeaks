@@ -36,7 +36,8 @@ function(_, moment, setImmediate, TP, CalendarLayout, CalendarCollection, Calend
 
             this.loadLibraryData();
 
-        },
+            this.watchClipboard();
+        }, 
 
         showViewsInRegions: function()
         {
@@ -100,6 +101,23 @@ function(_, moment, setImmediate, TP, CalendarLayout, CalendarCollection, Calend
         {
             for (var libraryName in this.libraryCollections)
                 this.libraryCollections[libraryName].fetch();
+        },
+
+        watchClipboard: function()
+        {
+            this.weeksCollection.on("clipboard:full", this.onClipboardFull, this);
+            this.weeksCollection.on("clipboard:empty", this.onClipboardEmpty, this);
+            this.onClipboardEmpty();
+        },
+
+        onClipboardFull: function()
+        {
+            $('body').removeClass('clipboardEmpty').addClass('clipboardFull');
+        },
+
+        onClipboardEmpty: function()
+        {
+            $('body').removeClass('clipboardFull').addClass('clipboardEmpty');
         },
 
         createStartDay: function(startDate)
