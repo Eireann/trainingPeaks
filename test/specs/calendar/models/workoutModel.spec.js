@@ -55,6 +55,25 @@ function(moment, $, WorkoutModel)
             });
         });
 
+        it("Should implement a copyToClipboard method that copies the groomed workout to the clipboard", function()
+        {
+            expect(WorkoutModel.prototype.copyToClipboard).toBeDefined();
+            expect(typeof WorkoutModel.prototype.copyToClipboard).toBe("function");
+            
+            var workout = new WorkoutModel({ workoutId: "12345", workoutDay: moment().format(WorkoutModel.prototype.dateFormat) });
+
+            expect(workout.copyToClipboard()).toBeDefined();
+        });
+
+        it("Should implement a cutToClipboard method that puts a reference to iteself onto the clipboard", function()
+        {
+            expect(WorkoutModel.prototype.cutToClipboard).toBeDefined();
+            expect(typeof WorkoutModel.prototype.cutToClipboard).toBe("function");
+
+            var workout = new WorkoutModel({ workoutId: "12345", workoutDay: moment().format(WorkoutModel.prototype.dateFormat) });
+
+            expect(workout.cutToClipboard()).toBe(workout);
+        });
     });
 
 });

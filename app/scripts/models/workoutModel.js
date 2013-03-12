@@ -5,7 +5,7 @@
 ],
 function (moment, TP)
 {
-    return TP.APIModel.extend(
+    var WorkoutModel = TP.APIModel.extend(
     {
 
         cacheable: true,
@@ -88,19 +88,52 @@ function (moment, TP)
 
         moveToDay: function(newDate)
         {
-
             var originalDate = moment(this.get("workoutDay"));
             this.set("workoutDay", moment(newDate).format(this.longDateFormat));
 
             // on fail, return to old date,
             // return a deferred
-            var theWorkout = this;
-            return this.save().fail(function()
+            var self = this;
+            return this.save().done(function()
             {
-                theWorkout.set("workoutDay", originalDate);
+                self.dayCollection.remove(self);
+            }).fail(function ()
+            {
+                self.set("workoutDay", originalDate);
             });
-            
-        }
+        },
+        
+        copyToClipboard: function()
+        {
+            var copiedModelAttributes = _.clone(this.attributes, true);
 
+            copiedModelAttributes.workoutId = null;
+            //TODO: Finish grooming for copy
+            
+            return new WorkoutModel(copiedModelAttributes);
+        },
+        
+        cutToClipboard: function ()
+        {
+            return this;
+        },
+        
+        onPaste: function (dateToPasteTo)
+        {
+            if (this.id)
+            {
+                this.moveToDay(dateToPasteTo);
+                return this;
+            }
+            else
+            {
+                var newWorkout = new WorkoutModel(_.clone(this.attributes, true));
+                newWorkout.set("workoutDay", dateToPasteTo.format(this.longDateFormat));
+                newWorkout.save();
+                return newWorkout;
+            }
+        }
     });
+
+    return WorkoutModel;
 });

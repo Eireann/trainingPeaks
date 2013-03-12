@@ -7,7 +7,7 @@
 function(_, moment, TP)
 {
 
-    return TP.Model.extend(
+    var CalendarDay = TP.Model.extend(
     {
 
         idAttribute: 'date',
@@ -47,13 +47,43 @@ function(_, moment, TP)
 
         add: function(item)
         {
+            item.dayCollection = this;
             this.itemsCollection.add(item);
         },
 
         remove: function(item)
         {
             this.itemsCollection.remove(item);
+        },
+        
+        copyToClipboard: function()
+        {
+            var calendarDay = new CalendarDay();
+            this.itemsCollection.each(function(item)
+            {
+                calendarDay.add(item.copyToClipboard());
+            });
+            return calendarDay;
+        },
+        
+        cutToClipboard: function()
+        {
+            var calendarDay = new CalendarDay();
+            this.itemsCollection.each(function (item)
+            {
+                calendarDay.add(item.cutToClipboard());
+            });
+            return calendarDay;
+        },
+        
+        onPaste: function(dateToPasteTo)
+        {
+            this.itemsCollection.each(function(item)
+            {
+                item.onPaste(dateToPasteTo);
+            });
         }
-
     });
+
+    return CalendarDay;
 });
