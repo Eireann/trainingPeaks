@@ -16,10 +16,10 @@ function(TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, CalendarDayM
         {
             this.clipboard = new Clipboard();
             
-            if (!options.hasOwnProperty('startDate'))
+            if (!options || !options.hasOwnProperty('startDate'))
                 throw "CalendarCollection requires a start date";
 
-            if (!options.hasOwnProperty('endDate'))
+            if (!options || !options.hasOwnProperty('endDate'))
                 throw "CalendarCollection requires an end date";
 
             this.summaryViewEnabled = options.hasOwnProperty("summaryViewEnabled") ? options.summaryViewEnabled : false;
@@ -27,20 +27,25 @@ function(TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, CalendarDayM
             this.workoutsCollection = new WorkoutsCollection();
             this.daysCollection = new TP.Collection();
 
+            this.subscribeToCopyPasteEvents();
+
+            this.setUpWeeks(options.startDate, options.endDate);
+        },
+
+        subscribeToCopyPasteEvents: function()
+        {
             this.workoutsCollection.on("workout:copy", this.onItemsCopy, this);
             this.workoutsCollection.on("workout:cut", this.onItemsCut, this);
 
             this.daysCollection.on("day:copy", this.onItemsCopy, this);
             this.daysCollection.on("day:cut", this.onItemsCut, this);
             this.daysCollection.on("day:paste", this.onPaste, this);
-
-            this.setUpWeeks(options.startDate, options.endDate);
         },
         
         onItemsCopy: function(model)
         {
             if (!model || !model.copyToClipboard)
-                return;
+                throw "Invalid copy event argument: " + model;
             
             this.clipboard.set(model.copyToClipboard(), "copy");
         },
@@ -48,25 +53,18 @@ function(TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, CalendarDayM
         onItemsCut: function (model)
         {
             if (!model || !model.cutToClipboard)
-                return;
+                throw "Invalid cut event argument: " + model;
             
             this.clipboard.set(model.cutToClipboard(), "cut");
         },
         
         onPaste: function(dateToPasteTo)
         {
-            var self = this;
-            var pastedItems = this.clipboard.getValue().onPaste(dateToPasteTo);
+            if (!this.clipboard.hasData())
+                return;
 
-            if (pastedItems.length)
-            {
-                _.each(pastedItems, function(item)
-                {
-                    self.addWorkout(item);
-                });
-            }
-            else
-                this.addWorkout(pastedItems);
+            var pastedItems = this.clipboard.getValue().onPaste(dateToPasteTo);
+            this.addItems(pastedItems);
 
             if (this.clipboard.getAction() === "cut")
                 this.clipboard.empty();
@@ -177,6 +175,38 @@ function(TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, CalendarDayM
                 throw "Could not find day in days collection";
 
             return dayModel;
+        },
+
+        addItem: function(item)
+        {
+            this.addWorkout(item);
+        },
+
+        addItems: function(items)
+        {
+            var self = this;
+            if (!items)
+            {
+                return;
+            }
+            else if (items.each && typeof items.each === "function")
+            {
+                items.each(function(item)
+                {
+                    self.addItem(item);
+                });
+            }
+            else if (items.length && items.length > 0)
+            {
+                _.each(items, function(item)
+                {
+                    self.addItem(item);
+                });
+            }
+            else
+            {
+                this.addItem(items);
+            }
         },
 
         addWorkout: function(workout)
