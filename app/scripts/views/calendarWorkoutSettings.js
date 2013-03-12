@@ -24,15 +24,17 @@ function (TP, setImmediate, jqueryOutside, DeleteConfirmationView, calendarWorko
             "click #workoutSettingsLabelCopy": "onCopyClicked",
             "click #workoutSettingsLabelCut": "onCutClicked"
         },
-        
+
         onCopyClicked: function()
         {
-            this.trigger("workout:copy");
+            this.model.trigger("workout:copy", this.model);
+            this.close();
         },
         
         onCutClicked: function()
         {
-            this.trigger("workout:cut");
+            this.model.trigger("workout:cut", this.model);
+            this.close();
         },
 
         hideWorkoutSettings: function (e)
@@ -82,7 +84,7 @@ function (TP, setImmediate, jqueryOutside, DeleteConfirmationView, calendarWorko
             //this.$el.attr("class", this.$el.attr("class") + " " + this.inheritedClassNames);
             this.$el.css("left", this.posX - Math.round(this.$el.width() / 2)).css("top", this.posY - this.$el.height());
         },
-        
+
         onDelete: function()
         {
             this.close();
