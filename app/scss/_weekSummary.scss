@@ -10,6 +10,43 @@
     
     padding: 0px;
 
+	.summarySettings
+    {
+        display: none;
+        float: right;
+		padding: 2px 5px 0px 0px;
+        button
+        {	
+            background: transparent;
+            border: none;
+            padding: 0px;
+            width: 15px;
+			cursor: pointer;
+                        
+        }
+	}
+
+	.weekSummarySettings
+	{
+		.arrow
+		{
+			width: 15px;
+			height: 15px;
+			@include transform(translateY(100px) rotate(45deg));
+			@include calc(margin-left, "50%");
+		}
+
+		.colorBar
+		{
+			bottom: 15px;
+		}
+
+		.bottomShadow
+		{
+			bottom: 14px;
+		}
+    }
+
     .weekSummaryTableContainer
     {
         margin: 0 5px 0 3px;
