@@ -135,5 +135,7 @@
 	"Delete": "Delete",
 	"Paste": "Paste",
 	"Move": "Move",
-	"Print": "Print"
+	"Print": "Print",
+	"Add": "Add",
+	"Shift": "Shift"
 }

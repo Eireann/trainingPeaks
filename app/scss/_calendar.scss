@@ -69,6 +69,22 @@
 			float:left;
 			margin: 0px;
 		}
+
+		.daySettings
+                {
+                    display: none;
+                    float: right;
+					padding: 2px 5px 0px 0px;
+                    button
+                    {	
+                        background: transparent;
+                        border: none;
+                        padding: 0px;
+                        width: 15px;
+						cursor: pointer;
+                        
+                    }
+                }
 	}
 
 	.thisWeek

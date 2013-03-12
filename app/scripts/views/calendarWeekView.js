@@ -86,6 +86,7 @@ function(moment, setImmediate, TP, CalendarDayView, WeekSummaryView)
             if (weekDate.week() === today.week() && weekDate.year() === today.year())
             {
                 this.$el.addClass("thisWeek");
+         
             }
         }
 

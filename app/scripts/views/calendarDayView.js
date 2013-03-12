@@ -8,9 +8,10 @@ define(
 
     "TP",
     "views/calendarWorkoutView",
+    "views/calendarDaySettings",
     "hbs!templates/views/calendarDay"
 ],
-function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDayTemplate)
+function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySettings, CalendarDayTemplate)
 {
 
     var today = moment().format("YYYY-MM-DD");
@@ -43,6 +44,14 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDayTe
             this.collection = this.model.itemsCollection;
             
             this.on("after:item:added", this.makeDraggable, this);
+        },
+
+        events: 
+        {
+            mouseenter: "onMouseEnter",
+            mouseleave: "onMouseLeave",
+
+            "click .daySettings": "daySettingsClicked"
         },
 
         getItemView: function(item)
@@ -111,6 +120,59 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDayTe
             }
             options.destinationCalendarDayModel = this.model;
             this.trigger("itemDropped", options);
+        },
+
+        onMouseEnter: function (e)
+        {
+            this.showSettingsButton(e);
+            //this.showWorkoutSummaryHover(e);
+        },
+
+        onMouseLeave: function (e)
+        {
+            var toElement = document.elementFromPoint(e.pageX, e.pageY);
+            if (e.toElement === this.el)
+            {
+                return;
+            }
+
+            this.removeSettingsButton(e);
+            //this.hideWorkoutSummaryHover(e);
+        },
+
+        showSettingsButton: function ()
+        {
+            this.$(".daySettings").css('display', "block");
+        },
+
+        removeSettingsButton: function (e)
+        {
+            var toElement = $(document.elementFromPoint(e.pageX, e.pageY));
+            if (!toElement.is(".daySettings") && !toElement.is("#daySettingsDiv") && !toElement.is(".hoverBox"))
+            {
+                this.$(".daySettings").css('display', "none");
+            }
+        },
+
+        daySettingsClicked: function (e)
+        {
+            e.preventDefault();
+
+            var offset = $(e.currentTarget).offset();
+            this.daySettings = new CalendarDaySettings({ model: this.model, top: offset.top + 10, left: offset.left + 5 });
+            this.daySettings.render();
+            this.daySettings.on("mouseleave", this.onMouseLeave, this);
+        },
+
+        onMouseLeave: function (e)
+        {
+            var toElement = document.elementFromPoint(e.pageX, e.pageY);
+            if (e.toElement === this.el)
+            {
+                return;
+            }
+
+            this.removeSettingsButton(e);
         }
     });
 });

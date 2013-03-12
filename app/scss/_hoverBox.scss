@@ -6,6 +6,14 @@
 
     position:relative;
 
+	&.thisWeek
+	{
+		.colored
+		{
+			background-color: $TPBlue;
+		}
+	}
+
     .hoverBoxContents
     {
         position:relative;
