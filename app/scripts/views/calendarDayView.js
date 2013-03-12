@@ -72,6 +72,11 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDayTe
             };
         },
 
+        onBeforeRender: function()
+        {
+            this.model.configureDayLabel();
+        },
+
         onRender: function()
         {
             this.setTodayCss();

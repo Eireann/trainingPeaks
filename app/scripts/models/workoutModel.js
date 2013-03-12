@@ -1,9 +1,10 @@
 ﻿define(
 [
+    "underscore",
     "moment",
     "TP"
 ],
-function (moment, TP)
+function (_, moment, TP)
 {
     var WorkoutModel = TP.APIModel.extend(
     {
@@ -91,12 +92,13 @@ function (moment, TP)
 
             var self = this;
             var originalDate = moment(this.get("workoutDay"));
-            var originalCollection = self.dayCollection;
+            var originalCollection = this.dayCollection;
 
             this.set("workoutDay", moment(newDate).format(this.longDateFormat));
             if (newCollection)
             {
                 newCollection.add(this);
+                this.dayCollection = newCollection;
             }
             if (originalCollection)
             {
@@ -108,8 +110,10 @@ function (moment, TP)
                 self.set("workoutDay", originalDate.format(this.longDateFormat));
                 if (newCollection)
                     newCollection.remove(self);
-                if (originalCollection)
+                if (originalCollection) {
                     originalCollection.add(self);
+                    self.dayCollection = originalCollection;
+                }
             };
 
             return this.save().fail(revertOnFailure);
@@ -117,11 +121,30 @@ function (moment, TP)
         
         copyToClipboard: function()
         {
-            var copiedModelAttributes = _.clone(this.attributes, true);
+            var attributesToCopy = [
+                "personId",
+                "title",
+                "workoutTypeValueId",
+                "workoutDay",
+                "isItAnOr",
+                "description",
+                "distancePlanned",
+                "totalTimePlanned",
+                "caloriesPlanned",
+                "tssPlanned",
+                "ifPlanned",
+                "velocityPlanned",
+                "energyPlanned",
+                "elevationGainPlanned"
+            ];
 
-            copiedModelAttributes.workoutId = null;
-            //TODO: Finish grooming for copy
-            
+            var copiedModelAttributes = {};
+            var self = this;
+            _.each(attributesToCopy, function(attributeName)
+            {
+                copiedModelAttributes[attributeName] = self.get(attributeName);
+            });
+
             return new WorkoutModel(copiedModelAttributes);
         },
         
@@ -140,7 +163,7 @@ function (moment, TP)
             else
             {
                 var newWorkout = new WorkoutModel(_.clone(this.attributes, true));
-                newWorkout.set("workoutDay", dateToPasteTo.format(this.longDateFormat));
+                newWorkout.set("workoutDay", moment(dateToPasteTo).format(this.longDateFormat));
                 newWorkout.save();
                 return newWorkout;
             }

@@ -191,6 +191,9 @@ function(TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, CalendarDayM
             {
                 var dayModel = this.getDayModel(workoutDay);
                 dayModel.add(workout);
+
+                // so that if we move the workout, it knows which date to remove itself from
+                workout.dayCollection = dayModel;
             }
         },
 
