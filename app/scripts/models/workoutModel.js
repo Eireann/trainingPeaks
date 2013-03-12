@@ -86,21 +86,34 @@ function (moment, TP)
             return moment(this.get("workoutDay")).format(this.shortDateFormat);
         },
 
-        moveToDay: function(newDate)
+        moveToDay: function(newDate, newCollection)
         {
+
+            var self = this;
             var originalDate = moment(this.get("workoutDay"));
+            var originalCollection = self.dayCollection;
+
             this.set("workoutDay", moment(newDate).format(this.longDateFormat));
 
-            // on fail, return to old date,
-            // return a deferred
-            var self = this;
-            return this.save().done(function()
+            var removeFromSourceCollectionOnSuccess = function()
             {
-                self.dayCollection.remove(self);
-            }).fail(function ()
+                if (originalCollection)
+                    originalCollection.remove(self);
+            };
+
+            var revertOnFailure = function()
             {
-                self.set("workoutDay", originalDate);
-            });
+                self.set("workoutDay", originalDate.format(this.longDateFormat));
+                if (newCollection)
+                    newCollection.remove(self);
+            };
+
+            if (newCollection)
+            {
+                newCollection.add(this);
+            }
+
+            return this.save().done(removeFromSourceCollectionOnSuccess).fail(revertOnFailure);
         },
         
         copyToClipboard: function()

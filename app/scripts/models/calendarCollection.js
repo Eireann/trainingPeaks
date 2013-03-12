@@ -191,7 +191,6 @@ function(TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, CalendarDayM
             {
                 var dayModel = this.getDayModel(workoutDay);
                 dayModel.add(workout);
-                dayModel.add(workout);
             }
         },
 
@@ -231,17 +230,7 @@ function(TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, CalendarDayM
                 {
 
                     var sourceCalendarDayModel = this.getDayModel(oldCalendarDay);
-
-                    var onFail = function ()
-                    {
-                        // if it fails, move it back
-                        options.destinationCalendarDayModel.remove(item);
-                        //TODO controller.onError('Server Error: Unable to move item');
-                    };
-
-                    // move it
-                    item.moveToDay(newCalendarDay).fail(onFail);
-                    options.destinationCalendarDayModel.add(item);
+                    item.moveToDay(newCalendarDay, options.destinationCalendarDayModel);
                 }
             }
 

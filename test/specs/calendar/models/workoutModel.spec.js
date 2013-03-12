@@ -33,10 +33,18 @@ function(moment, $, WorkoutModel)
         {
             var workout;
             var originalDate = moment().format(WorkoutModel.prototype.dateFormat);
+            var tomorrow = moment().add("days", 1).format(WorkoutModel.prototype.dateFormat);
+            var workout;
+            var originalCollection;
+            var newCollection;
 
             beforeEach(function()
             {
+                originalCollection = jasmine.createSpyObj("Original Collection", ["add", "remove"]);
+                newCollection = jasmine.createSpyObj("New Collection", ["add", "remove"]);
+
                 workout = new WorkoutModel({ workoutId: "12345", workoutDay: originalDate });
+                workout.dayCollection = originalCollection;
                 spyOn(workout, "save").andReturn($.Deferred());
             });
 
@@ -52,6 +60,32 @@ function(moment, $, WorkoutModel)
                 var newDate = moment("2019-03-21");
                 workout.moveToDay(newDate);
                 expect(workout.save).toHaveBeenCalled();
+            });
+
+            it("Should remove from original collection on success", function()
+            {
+                workout.moveToDay(tomorrow).resolve();
+                expect(originalCollection.remove).toHaveBeenCalledWith(workout);
+            });
+
+            it("Should not remove from original collection until success", function()
+            {
+                workout.moveToDay(tomorrow);
+                expect(originalCollection.remove).not.toHaveBeenCalledWith(workout);
+            });
+
+            it("Should add to new collection", function()
+            {
+                workout.moveToDay(tomorrow, newCollection);
+                expect(newCollection.add).toHaveBeenCalledWith(workout);
+            });
+
+            it("Should move workout back if save fails", function()
+            {
+                spyOn(workout, "set").andCallThrough();
+                workout.moveToDay(tomorrow, newCollection).reject();
+                expect(newCollection.remove).toHaveBeenCalledWith(workout);
+                expect(workout.set).toHaveBeenCalledWith("workoutDay", originalDate);
             });
         });
 
