@@ -162,17 +162,6 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySe
             this.daySettings = new CalendarDaySettings({ model: this.model, top: offset.top + 10, left: offset.left + 5 });
             this.daySettings.render();
             this.daySettings.on("mouseleave", this.onMouseLeave, this);
-        },
-
-        onMouseLeave: function (e)
-        {
-            var toElement = document.elementFromPoint(e.pageX, e.pageY);
-            if (e.toElement === this.el)
-            {
-                return;
-            }
-
-            this.removeSettingsButton(e);
         }
     });
 });
