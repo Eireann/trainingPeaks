@@ -11,7 +11,7 @@ define(
     "views/calendarDaySettings",
     "hbs!templates/views/calendarDay"
 ],
-function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySettings, CalendarDayTemplate)
+function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySettingsView, CalendarDayTemplate)
 {
 
     var today = moment().format("YYYY-MM-DD");
@@ -125,19 +125,15 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySe
         onMouseEnter: function (e)
         {
             this.showSettingsButton(e);
-            //this.showWorkoutSummaryHover(e);
         },
 
         onMouseLeave: function (e)
         {
             var toElement = document.elementFromPoint(e.pageX, e.pageY);
             if (e.toElement === this.el)
-            {
                 return;
-            }
 
             this.removeSettingsButton(e);
-            //this.hideWorkoutSummaryHover(e);
         },
 
         showSettingsButton: function ()
@@ -149,9 +145,7 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySe
         {
             var toElement = $(document.elementFromPoint(e.pageX, e.pageY));
             if (!toElement.is(".daySettings") && !toElement.is("#daySettingsDiv") && !toElement.is(".hoverBox"))
-            {
                 this.$(".daySettings").css('display', "none");
-            }
         },
 
         daySettingsClicked: function (e)
@@ -159,7 +153,7 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySe
             e.preventDefault();
 
             var offset = $(e.currentTarget).offset();
-            this.daySettings = new CalendarDaySettings({ model: this.model, top: offset.top + 10, left: offset.left + 5 });
+            this.daySettings = new CalendarDaySettingsView({ model: this.model, top: offset.top + 10, left: offset.left + 5 });
             this.daySettings.render();
             this.daySettings.on("mouseleave", this.onMouseLeave, this);
         }
