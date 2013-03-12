@@ -59,12 +59,13 @@ function (TP, setImmediate, jqueryOutside, calendarWeekSummarySettings)
             var self = this;
             setImmediate(function () { self.$el.bind("clickoutside", self.hideSettings); });
 
-            this.$el.css("width", "100px");
+            this.$el.css("width", "105px");
             this.$el.css("z-index", 99).css("position", "absolute");
             this.$el.css("left", this.posX - Math.round(this.$el.width() / 2 + 20)).css("top", this.posY - this.$el.height());
+            this.$el.find(".arrow").css("margin-left", "65px");
 
             var today = moment();
-            var weekDate = moment(this.model.id);
+            var weekDate = moment(this.model.get("date"));
 
             if (weekDate.week() === today.week() && weekDate.year() === today.year())
             {
