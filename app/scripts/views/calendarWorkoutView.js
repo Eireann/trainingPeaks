@@ -168,18 +168,6 @@ function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkout
             this.workoutSettings.render();
             
             this.workoutSettings.on("mouseleave", this.onMouseLeave, this);
-            this.workoutSettings.on("workout:copy", this.onWorkoutCopy, this);
-            this.workoutSettings.on("workout:cut", this.onWorkoutCut, this);
-        },
-        
-        onWorkoutCopy: function()
-        {
-            this.model.trigger("workout:copy", this.model);
-        },
-        
-        onWorkoutCut: function()
-        {
-            this.model.trigger("workout:cut", this.model);
         },
 
         workoutClicked: function (e) 

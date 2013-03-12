@@ -32,6 +32,7 @@ function(TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, CalendarDayM
 
             this.daysCollection.on("day:copy", this.onItemsCopy, this);
             this.daysCollection.on("day:cut", this.onItemsCut, this);
+            this.daysCollection.on("day:paste", this.onPaste, this);
 
             this.setUpWeeks(options.startDate, options.endDate);
         },
