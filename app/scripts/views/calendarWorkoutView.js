@@ -177,7 +177,6 @@ function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkout
 
             var view = new WorkoutQuickView({ model: this.model });
             view.render();
-            
         },
 
         showWorkoutSummaryHover: function()

@@ -3,10 +3,11 @@ define(
     "TP",
     "setImmediate",
     "jqueryOutside",
+    "views/newItemView",
     "views/deleteConfirmationView",
     "hbs!templates/views/calendarDaySettings"
 ],
-function (TP, setImmediate, jqueryOutside, DeleteConfirmationView, calendarDaySettingsTemplate)
+function (TP, setImmediate, jqueryOutside, NewItemView, DeleteConfirmationView, calendarDaySettingsTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -17,11 +18,17 @@ function (TP, setImmediate, jqueryOutside, DeleteConfirmationView, calendarDaySe
         
         events:
         {
-            //"click #calendarDaySettingsAddLabel": "onAddClicked",
+            "click #calendarDaySettingsAddLabel": "onAddClicked",
             "click #calendarDaySettingsDeleteLabel": "onDeleteClicked",
             "click #calendarDaySettingsCutLabel": "onCutClicked",
             "click #calendarDaySettingsCopyLabel": "onCopyClicked",
             "click #calendarDaySettingsPasteLabel": "onPasteClicked"
+        },
+        
+        onAddClicked: function()
+        {
+            var newItemView = new NewItemView({ date: this.model.id });
+            newItemView.render();
         },
 
         hideSettings: function (e)

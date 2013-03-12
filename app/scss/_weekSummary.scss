@@ -1,4 +1,5 @@
 @import "tpstylesheet";
+@import "hoverBox";
 
 .weekSummary
 {
@@ -25,27 +26,6 @@
                         
         }
 	}
-
-	.weekSummarySettings
-	{
-		.arrow
-		{
-			width: 15px;
-			height: 15px;
-			@include transform(translateY(100px) rotate(45deg));
-			@include calc(margin-left, "50%");
-		}
-
-		.colorBar
-		{
-			bottom: 15px;
-		}
-
-		.bottomShadow
-		{
-			bottom: 14px;
-		}
-    }
 
     .weekSummaryTableContainer
     {
