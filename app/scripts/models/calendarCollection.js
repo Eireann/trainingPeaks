@@ -1,11 +1,12 @@
 ﻿define(
 [
     "TP",
+    "framework/clipboard",
     "models/workoutsCollection",
     "models/calendarWeekCollection",
     "models/calendarDay"
 ],
-function(TP, WorkoutsCollection, CalendarWeekCollection, CalendarDayModel)
+function(TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, CalendarDayModel)
 {
     return TP.Collection.extend(
     {
@@ -13,6 +14,8 @@ function(TP, WorkoutsCollection, CalendarWeekCollection, CalendarDayModel)
 
         initialize: function(models, options)
         {
+            this.clipboard = new Clipboard();
+            
             if (!options.hasOwnProperty('startDate'))
                 throw "CalendarCollection requires a start date";
 
@@ -24,9 +27,51 @@ function(TP, WorkoutsCollection, CalendarWeekCollection, CalendarDayModel)
             this.workoutsCollection = new WorkoutsCollection();
             this.daysCollection = new TP.Collection();
 
+            this.workoutsCollection.on("workout:copy", this.onItemsCopy, this);
+            this.workoutsCollection.on("workout:cut", this.onItemsCut, this);
+
+            this.daysCollection.on("day:copy", this.onItemsCopy, this);
+            this.daysCollection.on("day:cut", this.onItemsCut, this);
+            this.daysCollection.on("day:paste", this.onPaste, this);
+
             this.setUpWeeks(options.startDate, options.endDate);
         },
+        
+        onItemsCopy: function(model)
+        {
+            if (!model || !model.copyToClipboard)
+                return;
+            
+            this.clipboard.set(model.copyToClipboard(), "copy");
+        },
 
+        onItemsCut: function (model)
+        {
+            if (!model || !model.cutToClipboard)
+                return;
+            
+            this.clipboard.set(model.cutToClipboard(), "cut");
+        },
+        
+        onPaste: function(dateToPasteTo)
+        {
+            var self = this;
+            var pastedItems = this.clipboard.getValue().onPaste(dateToPasteTo);
+
+            if (pastedItems.length)
+            {
+                _.each(pastedItems, function(item)
+                {
+                    self.addWorkout(item);
+                });
+            }
+            else
+                this.addWorkout(pastedItems);
+
+            if (this.clipboard.getAction() === "cut")
+                this.clipboard.empty();
+        },
+        
         setUpWeeks: function(startDate, endDate)
         {
             this.startDate = startDate;
@@ -147,6 +192,9 @@ function(TP, WorkoutsCollection, CalendarWeekCollection, CalendarDayModel)
             {
                 var dayModel = this.getDayModel(workoutDay);
                 dayModel.add(workout);
+
+                // so that if we move the workout, it knows which date to remove itself from
+                workout.dayCollection = dayModel;
             }
         },
 
@@ -186,19 +234,7 @@ function(TP, WorkoutsCollection, CalendarWeekCollection, CalendarDayModel)
                 {
 
                     var sourceCalendarDayModel = this.getDayModel(oldCalendarDay);
-
-                    var onFail = function ()
-                    {
-                        // if it fails, move it back
-                        sourceCalendarDayModel.add(item);
-                        options.destinationCalendarDayModel.remove(item);
-                        //TODO controller.onError('Server Error: Unable to move item');
-                    };
-
-                    // move it
-                    sourceCalendarDayModel.remove(item);
-                    options.destinationCalendarDayModel.add(item);
-                    item.moveToDay(newCalendarDay).fail(onFail);
+                    item.moveToDay(newCalendarDay, options.destinationCalendarDayModel);
                 }
             }
 

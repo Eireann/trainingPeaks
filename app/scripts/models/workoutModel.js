@@ -1,11 +1,12 @@
 ﻿define(
 [
+    "underscore",
     "moment",
     "TP"
 ],
-function (moment, TP)
+function (_, moment, TP)
 {
-    return TP.APIModel.extend(
+    var WorkoutModel = TP.APIModel.extend(
     {
 
         cacheable: true,
@@ -86,21 +87,88 @@ function (moment, TP)
             return moment(this.get("workoutDay")).format(this.shortDateFormat);
         },
 
-        moveToDay: function(newDate)
+        moveToDay: function(newDate, newCollection)
         {
 
+            var self = this;
             var originalDate = moment(this.get("workoutDay"));
+            var originalCollection = this.dayCollection;
+
             this.set("workoutDay", moment(newDate).format(this.longDateFormat));
-
-            // on fail, return to old date,
-            // return a deferred
-            var theWorkout = this;
-            return this.save().fail(function()
+            if (newCollection)
             {
-                theWorkout.set("workoutDay", originalDate);
-            });
-            
-        }
+                newCollection.add(this);
+                this.dayCollection = newCollection;
+            }
+            if (originalCollection)
+            {
+                originalCollection.remove(this);
+            }
 
+            var revertOnFailure = function()
+            {
+                self.set("workoutDay", originalDate.format(this.longDateFormat));
+                if (newCollection)
+                    newCollection.remove(self);
+                if (originalCollection) {
+                    originalCollection.add(self);
+                    self.dayCollection = originalCollection;
+                }
+            };
+
+            return this.save().fail(revertOnFailure);
+        },
+        
+        copyToClipboard: function()
+        {
+            var attributesToCopy = [
+                "personId",
+                "title",
+                "workoutTypeValueId",
+                "workoutDay",
+                "isItAnOr",
+                "description",
+                "distancePlanned",
+                "totalTimePlanned",
+                "caloriesPlanned",
+                "tssPlanned",
+                "ifPlanned",
+                "velocityPlanned",
+                "energyPlanned",
+                "elevationGainPlanned"
+            ];
+
+            var copiedModelAttributes = {};
+            var self = this;
+            _.each(attributesToCopy, function(attributeName)
+            {
+                copiedModelAttributes[attributeName] = self.get(attributeName);
+            });
+
+            return new WorkoutModel(copiedModelAttributes);
+        },
+        
+        cutToClipboard: function ()
+        {
+            return this;
+        },
+        
+        onPaste: function (dateToPasteTo)
+        {
+            if (this.id)
+            {
+                this.moveToDay(dateToPasteTo);
+                return this;
+            }
+            else
+            {
+                var newWorkout = new WorkoutModel(_.clone(this.attributes, true));
+                newWorkout.set("workoutDay", moment(dateToPasteTo).format(this.longDateFormat));
+                newWorkout.save();
+                return newWorkout;
+            }
+        }
     });
+
+    return WorkoutModel;
 });

@@ -18,7 +18,10 @@ function (TP, setImmediate, jqueryOutside, DeleteConfirmationView, calendarDaySe
         events:
         {
             //"click #calendarDaySettingsAddLabel": "onAddClicked",
-            "click #calendarDaySettingsDeleteLabel": "onDeleteClicked"
+            "click #calendarDaySettingsDeleteLabel": "onDeleteClicked",
+            "click #calendarDaySettingsCutLabel": "onCutClicked",
+            "click #calendarDaySettingsCopyLabel": "onCopyClicked",
+            "click #calendarDaySettingsPasteLabel": "onPasteClicked"
         },
 
         hideSettings: function (e)
@@ -67,7 +70,7 @@ function (TP, setImmediate, jqueryOutside, DeleteConfirmationView, calendarDaySe
             if (weekDate.week() === today.week() && weekDate.year() === today.year())
                 this.$el.find(".hoverBox").addClass("thisWeek");
         },
-        
+
         onDeleteClicked: function()
         {
             this.close();
@@ -80,6 +83,25 @@ function (TP, setImmediate, jqueryOutside, DeleteConfirmationView, calendarDaySe
         onDeleteDayConfirmed: function()
         {
             this.model.deleteDayItems();
+        },
+
+        onCopyClicked: function()
+        {
+            this.model.trigger("day:copy", this.model);
+            this.close();
+        },
+        
+        onCutClicked: function()
+        {
+            this.model.trigger("day:cut", this.model);
+            this.close();
+        },
+
+        onPasteClicked: function()
+        {
+            this.model.trigger("day:paste", this.model.id);
+            this.close();
         }
+
     });
 });

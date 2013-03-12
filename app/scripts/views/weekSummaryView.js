@@ -5,7 +5,7 @@ define(
     "views/weekSummarySettings",
     "hbs!templates/views/weekSummary"
 ],
-function(TP, workoutTypeEnum, weekSummarySettings, weekSummaryTemplate)
+function(TP, workoutTypeEnum, WeekSummarySettings, weekSummaryTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -158,7 +158,7 @@ function(TP, workoutTypeEnum, weekSummarySettings, weekSummaryTemplate)
             e.preventDefault();
 
             var offset = $(e.currentTarget).offset();
-            this.summarySettings = new weekSummarySettings({ model: this.model, top: offset.top + 10, left: offset.left + 5 });
+            this.summarySettings = new WeekSummarySettings({ model: this.model, top: offset.top + 10, left: offset.left + 5 });
             this.summarySettings.render();
             this.summarySettings.on("mouseleave", this.onMouseLeave, this);
         }
