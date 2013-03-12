@@ -141,6 +141,11 @@
 	"Print": "Print",
 	"Add": "Add",
 	"Shift": "Shift",
+	"CopyWeek": "Copy Week",
+	"CutWeek": "Cut Week",
+	"DeleteWeek": "Delete Week",
+	"PasteItems": "Paste Items",
+	"ShiftItems": "Shift Items",
 
     "Cancel" : "Cancel",
 
