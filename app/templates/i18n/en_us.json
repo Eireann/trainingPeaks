@@ -135,5 +135,8 @@
 	"Delete": "Delete",
 	"Paste": "Paste",
 	"Move": "Move",
-	"Print": "Print"
+	"Print": "Print",
+    "Cancel" : "Cancel",
+
+    "ConfirmDelete" : "Are you sure you want to delete this workout? This cannot be undone!"
 }
