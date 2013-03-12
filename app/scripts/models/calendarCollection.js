@@ -57,7 +57,7 @@ function(TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, CalendarDayM
             var self = this;
             var pastedItems = this.clipboard.getValue().onPaste(dateToPasteTo);
 
-            if (pastedItems.length && pastedItems.length > 1)
+            if (pastedItems.length)
             {
                 _.each(pastedItems, function(item)
                 {
