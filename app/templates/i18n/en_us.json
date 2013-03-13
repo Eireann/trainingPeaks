@@ -4,7 +4,6 @@
 
     "Sample Content": "This is some sample content translated to english",
     "Date": "Date",
-    "Day": "Day",
 
 	"LogOut": "Log Out",
 	"Messages": "Messages",
@@ -117,7 +116,6 @@
 	"Share": "Share",
 	"Facebook": "Facebook",
 	"Twitter": "Twitter",
-	"Email": "Email",
 	"Link": "Link",
 	"Delete": "Delete",
 	"Apply": "Apply",
@@ -136,7 +134,6 @@
     "hr": "hr",
 	"Copy": "Copy",
 	"Cut": "Cut",
-	"Delete": "Delete",
 	"Paste": "Paste",
 	"Move": "Move",
 	"Print": "Print",
@@ -171,8 +168,7 @@
     "Other": "Other",
     "Walk": "Walk",
     "UploadDeviceFile": "Upload Device File",
-	"ShiftItems": "Shift Items",
-	"ShiftString": What types of items do you want to shift?,
+	"ShiftString": "What types of items do you want to shift?",
 	"Workouts": "Workouts",
 	"Meals": "Meals",
 	"SelectShiftItemsString": "Select the items you want to move.",

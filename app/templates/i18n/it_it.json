@@ -20,7 +20,6 @@
 	"Today": "Oggi",
 	"Month": "Mese",
 	"Week": "Settimana",
-	"Day": "Giorno",
 	"hms": "h:m:s",
 	"Duration": "Durata",
 
@@ -40,11 +39,11 @@
     "LoginFailed": "Accesso fallito!",
     "Submit": "Accedi",
 
-  	"Monday": "LUNEDI`",
-	"Tuesday": "MARTEDI`",
-	"Wednesday": "MERCOLEDI`",
-	"Thursday": "GIOVEDI`",
-	"Friday": "VENERDI`",
+    "Monday": "LUNEDI",
+	"Tuesday": "MARTEDI",
+	"Wednesday": "MERCOLEDI",
+	"Thursday": "GIOVEDI",
+	"Friday": "VENERDI",
 	"Saturday": "SABATO",
 	"Sunday": "DOMENICA",
 
@@ -113,7 +112,6 @@
 	"Share": "Condividi",
 	"Facebook": "Facebook",
 	"Twitter": "Twitter",
-	"Email": "Email",
 	"Link": "Link",
 	"Delete": "Cancella",
 	"Apply": "Applica",
