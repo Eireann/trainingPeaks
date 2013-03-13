@@ -105,7 +105,8 @@ function(_, jqueryOutside, TP, ExerciseLibraryView, MealLibraryView, libraryTemp
                 }
             }
 
-            this.views[this.activeLibraryName].$el.show(200);
+            var self = this;
+            this.views[this.activeLibraryName].$el.show(300, function() { self.trigger("showLibrary"); });
             this.$el.parent().removeClass("closed").addClass("open");
             this.turnOnTab(this.activeLibraryName);
             this.resizeContext();
@@ -116,7 +117,8 @@ function(_, jqueryOutside, TP, ExerciseLibraryView, MealLibraryView, libraryTemp
             this.$el.parent().removeClass("open").addClass("closed");
             if (this.activeLibraryName)
             {
-                this.views[this.activeLibraryName].$el.hide(200);
+                var self = this;
+                this.views[this.activeLibraryName].$el.hide(300, function() { self.trigger("hideLibrary"); });
                 this.turnOffTab(this.activeLibraryName);
             }
         },

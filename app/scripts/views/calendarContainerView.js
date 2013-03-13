@@ -171,9 +171,17 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, calendarContainerVi
             if (currentWeekOffset > 0 && currentWeekOffset <= threshhold)
             {
                 this.scrollToElement(currentWeek, animationTimeout);
+                this.snappedToWeekHeader = true;
             } else if (nextWeekOffset > 0 && nextWeekOffset <= threshhold)
             {
                 this.scrollToElement(nextWeek, animationTimeout);
+                this.snappedToWeekHeader = true;
+            } else if (nextWeekOffset === 0 || currentWeekOffset === 0)
+            {
+                this.snappedToWeekHeader = true;
+            } else
+            {
+                this.snappedToWeekHeader = false;
             }
         },
 
@@ -242,6 +250,7 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, calendarContainerVi
             var dateAsString = dateAsMoment.format("YYYY-MM-DD");
             var selector = '.day[data-date="' + dateAsString + '"]';
             this.scrollToSelector(selector, effectDuration || 500);
+            this.snappedToWeekHeader = true;
         },
         
         onItemDropped: function(itemView, options)
@@ -249,21 +258,35 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, calendarContainerVi
             this.trigger("itemDropped", options);
         },
 
-        checkCurrentScrollPosition: function()
+        getCurrentScrollDate: function()
         {
             if (!document.elementFromPoint)
-                return;
+                return null;
 
             var uiOffset = this.ui.weeksContainer.offset();
-            var currentWeek = $(document.elementFromPoint(uiOffset.left, uiOffset.top)).closest(".week");
-            var lastDayOfWeek = currentWeek.find(".day:last");
-            this.setCurrentDateFromDayElement(lastDayOfWeek);
+            var $currentWeek = $(document.elementFromPoint(uiOffset.left, uiOffset.top)).closest(".week");
+            var $lastDayOfWeek = $currentWeek.find(".day:last");
+            if ($lastDayOfWeek.data("date"))
+            {
+                return $lastDayOfWeek.data("date");
+            } else
+            {
+                return null;
+            }
         },
 
-        setCurrentDateFromDayElement: function($dayElement)
+        checkCurrentScrollPosition: function()
         {
-            if ($dayElement.data("date"))
-                this.calendarHeaderModel.set("date", $dayElement.data("date"));
+            var scrollDate = this.getCurrentScrollDate();
+            if (!scrollDate)
+                return;
+            this.setCurrentDate(scrollDate);
+        },
+
+        setCurrentDate: function(currentDate)
+        {
+            if (currentDate)
+                this.calendarHeaderModel.set("date", currentDate);
         },
 
         fadeOut: function(duration)
@@ -286,6 +309,24 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, calendarContainerVi
         {
             var rangeSettingsView = new SelectedRangeSettingsView({ left: e.pageX, top: e.pageY, collection: rangeSelection });
             rangeSettingsView.render();
+        },
+
+        onLibraryShow: function()
+        {
+            this.snapToHeaderDate();
+        },
+
+        onLibraryHide: function()
+        {
+            this.snapToHeaderDate();
+        },
+
+        snapToHeaderDate: function()
+        {
+            if (this.snappedToWeekHeader)
+            {
+                this.scrollToDate(moment(this.calendarHeaderModel.get("date")), 100);
+            }
         }
 
     });
