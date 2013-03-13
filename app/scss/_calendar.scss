@@ -18,7 +18,7 @@
     {
         width:75%;
         @include transition-property(width);
-        @include transition-duration(400ms);
+        @include transition-duration(300ms);
         padding-left:0px;
     }
 
@@ -26,7 +26,7 @@
     {
         width:97%;
         @include transition-property(width);
-        @include transition-duration(400ms);
+        @include transition-duration(300ms);
         //@include calc(width, "100% - 50px"); 
     }
 

@@ -17,7 +17,8 @@ module.exports = function(grunt)
                 "test/specs/**/*.js",
                 "app/*.js",
                 "app/scripts/**/*.js",
-                "!app/Handlebars.js"
+                "!app/Handlebars.js",
+                "app/templates/**/*.json"
             ],
             options:
             {

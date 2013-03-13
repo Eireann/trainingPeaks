@@ -4,7 +4,6 @@
 
     "Sample Content": "This is some sample content translated to english",
     "Date": "Date",
-    "Day": "Day",
 
 	"LogOut": "Log Out",
 	"Messages": "Messages",
@@ -117,7 +116,6 @@
 	"Share": "Share",
 	"Facebook": "Facebook",
 	"Twitter": "Twitter",
-	"Email": "Email",
 	"Link": "Link",
 	"Delete": "Delete",
 	"Apply": "Apply",
@@ -136,7 +134,6 @@
     "hr": "hr",
 	"Copy": "Copy",
 	"Cut": "Cut",
-	"Delete": "Delete",
 	"Paste": "Paste",
 	"Move": "Move",
 	"Print": "Print",
@@ -171,5 +168,21 @@
     "Rowing": "Rowing",
     "Other": "Other",
     "Walk": "Walk",
-    "UploadDeviceFile": "Upload Device File"
+    "UploadDeviceFile": "Upload Device File",
+	"ShiftString": "What types of items do you want to shift?",
+	"Workouts": "Workouts",
+	"Meals": "Meals",
+	"SelectShiftItemsString": "Select the items you want to move.",
+	"ItemsOnAllSelectedDays": "Items on all selected days",
+	"ItemsWithinSpecifiedDateRange": "Items within a specified date range",
+	"ItemsOnAfterSpecifiedStartDate": "items on and after specified start date",
+	"SelectDateRange": "Select date range",
+	"From": "From",
+	"To": "To",
+	"HowDoYouWantToShiftItems": "How do you want to shift these items",
+	"MoveNewStartDate": "Move to new start date",
+	"MoveBySpecifiedNumberOfDays": "Move by a specified number of days",
+	"MoveBySpecifiedNumberOfWeeks": "Move by a specified number of weeks",
+	"SelectNewStartDate": "Select new start date"
+
 }
