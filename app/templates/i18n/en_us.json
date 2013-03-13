@@ -150,7 +150,7 @@
 
     "Cancel" : "Cancel",
 
-    "ConfirmDelete" : "Are you sure you want to delete this workout? This cannot be undone!",
+    "ConfirmDelete" : "Are you sure you want to delete? This cannot be undone!",
 
     "NewWorkout": "New Workout",
     "Run": "Run",

@@ -483,6 +483,21 @@ function($, TP, moment, WorkoutModel, WorkoutsCollection, CalendarCollection)
                 });
             });
 
+            it("Should work with nested arrays", function()
+            {
+                var nestedWorkouts = [[], []];
+                for (var i = 0; i < workouts.length; i++)
+                {
+                    var nestedIndex = i % 2 === 0 ? 0 : 1;
+                    nestedWorkouts[nestedIndex].push(workouts[i]);
+                }
+                collection.addItems(nestedWorkouts);
+                _.each(workouts, function(workout)
+                {
+                    expect(collection.addItem).toHaveBeenCalledWith(workout);
+                });
+            });
+
         });
 
     });

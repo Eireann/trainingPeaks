@@ -1,8 +1,9 @@
 define(
 [
+    "moment",
     "TP"
 ],
-function(TP)
+function(moment, TP)
 {
     var CalendarWeekCollection = TP.Collection.extend(
     {
@@ -41,12 +42,14 @@ function(TP)
         onPaste: function(dateToPasteTo)
         {
             var pastedDays = [];
+            dateToPasteTo = moment(dateToPasteTo);
             this.each(function(day)
             {
                 if (typeof day.onPaste === "function")
                 {
-                    pastedDays.push(day.onPaste(dateToPasteTo));
+                    pastedDays.push(day.onPaste(moment(dateToPasteTo)));
                 }
+                dateToPasteTo.add("days", 1);
             });
             return pastedDays;
         }

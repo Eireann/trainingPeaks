@@ -110,7 +110,7 @@ function(moment, CalendarDay, CalendarWeek)
                     expect(pastedItems.length).toEqual(days.length);
                 });
 
-                it("Should call onPaste on each of the copied days", function()
+                it("Should call onPaste on each of the copied days, incrementing the date", function()
                 {
                     var dateToPasteTo = "2030-12-25";
                     var copiedItems = calendarWeek.copyToClipboard();
@@ -119,9 +119,12 @@ function(moment, CalendarDay, CalendarWeek)
                         spyOn(day, "onPaste").andCallThrough();
                     });
                     var pastedItems = copiedItems.onPaste(dateToPasteTo);
+                    dateToPasteTo = moment(dateToPasteTo);
                     copiedItems.each(function(day)
                     {
-                        expect(day.onPaste).toHaveBeenCalledWith(dateToPasteTo);
+                        expect(day.onPaste).toHaveBeenCalled();
+                        expect(day.onPaste.mostRecentCall.args[0].format("YYYY-MM-DD")).toBe(dateToPasteTo.format("YYYY-MM-DD"));
+                        dateToPasteTo.add("days", 1);
                     });
                 });
 

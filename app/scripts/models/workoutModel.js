@@ -153,8 +153,8 @@ function (_, moment, TP)
         {
             return this;
         },
-        
-        onPaste: function (dateToPasteTo)
+
+        onPaste: function(dateToPasteTo)
         {
             if (this.id)
             {
@@ -164,7 +164,9 @@ function (_, moment, TP)
             else
             {
                 var newWorkout = new WorkoutModel(_.clone(this.attributes, true));
-                newWorkout.set("workoutDay", moment(dateToPasteTo).format(this.longDateFormat));
+                var workoutDateMoment = moment(dateToPasteTo);
+                var formattedWorkoutDate = workoutDateMoment.format(this.longDateFormat);
+                newWorkout.set("workoutDay", formattedWorkoutDate);
                 newWorkout.save();
                 return newWorkout;
             }

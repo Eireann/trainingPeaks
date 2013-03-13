@@ -1,12 +1,13 @@
 ﻿define(
 [
+    "underscore",
     "TP",
     "framework/clipboard",
     "models/workoutsCollection",
     "models/calendarWeekCollection",
     "models/calendarDay"
 ],
-function(TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, CalendarDayModel)
+function(_, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, CalendarDayModel)
 {
     return TP.Collection.extend(
     {
@@ -116,6 +117,7 @@ function(TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, CalendarDayM
             // Outside of here, if we want to be able to insert it into another Backbone.Collection,
             // we need to wrap it inside a Backbone.Model.
             startDate = moment(startDate);
+            var weekStartDate = moment(startDate);
             var weekCollection = new CalendarWeekCollection();
 
             var CalendarSummaryModel = TP.Model.extend(
@@ -136,10 +138,14 @@ function(TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, CalendarDayM
 
                 if (dayOffset === 6 && this.summaryViewEnabled)
                 {
-                    var summary = new CalendarSummaryModel({ date: startDate });
+                    var summary = new CalendarSummaryModel({ date: weekStartDate.format(this.dateFormat) });
                     weekCollection.add(summary);
                 }
             }
+
+            weekCollection.on("week:copy", this.onItemsCopy, this);
+            weekCollection.on("week:cut", this.onItemsCut, this);
+            weekCollection.on("week:paste", this.onPaste, this);
 
             return weekCollection;
         },
@@ -210,14 +216,16 @@ function(TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, CalendarDayM
             {
                 items.each(function(item)
                 {
-                    self.addItem(item);
+                    // in case of nested collections, use addItems instead of addItem
+                    self.addItems(item);
                 });
             }
-            else if (items.length && items.length > 0)
+            else if (_.isArray(items))
             {
                 _.each(items, function(item)
                 {
-                    self.addItem(item);
+                    // in case of nested arrays, use addItems instead of addItem
+                    self.addItems(item);
                 });
             }
             else
