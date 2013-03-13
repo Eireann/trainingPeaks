@@ -158,8 +158,14 @@ function (_, moment, TP)
         {
             if (this.id)
             {
-                this.moveToDay(dateToPasteTo);
-                return this;
+                if (moment(dateToPasteTo).format(this.shortDateFormat) !== this.getCalendarDay())
+                {
+                    this.moveToDay(dateToPasteTo);
+                    return this;
+                } else
+                {
+                    return null;
+                }
             }
             else
             {
