@@ -27,7 +27,7 @@ function (TP, setImmediate, jqueryOutside, NewItemView, DeleteConfirmationView, 
         
         onAddClicked: function()
         {
-            var newItemView = new NewItemView({ date: this.model.id });
+            var newItemView = new NewItemView({ model: this.model });
             newItemView.render();
         },
 

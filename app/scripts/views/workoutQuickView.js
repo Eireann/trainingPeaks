@@ -19,7 +19,7 @@ function (TP, dialog, printUnitLabel, convertToViewUnits, convertToModelUnits, p
         {
             "click #breakThrough": "onBreakThroughClicked",
             "click #delete": "onDeleteWorkout",
-            "click #apply": "onApplyClicked",
+            "click #discard": "onDiscardClicked",
             "click #saveClose": "onSaveClosedClicked"
         },
 
@@ -330,15 +330,18 @@ function (TP, dialog, printUnitLabel, convertToViewUnits, convertToModelUnits, p
             });
         },
 
-        onApplyClicked: function ()
+        onDiscardClicked: function ()
         {
-            this.model.save();
+            this.$el.dialog("close");
+            this.trigger("discard");
+            this.close();
         },
 
         onSaveClosedClicked: function ()
         {
             this.model.save();
             this.$el.dialog("close");
+            this.trigger("saveandclose");
             this.close();
         },
 
