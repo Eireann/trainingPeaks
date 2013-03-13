@@ -58,6 +58,17 @@
         }
     }
 
+	.daySelected
+	{
+		display: none;
+		background-color: white;
+		left: 0px;
+		right: 0px;
+		height: 100%;
+		position: absolute;
+		opacity: .35;
+	}
+
 	.dayHeader
 	{
 		background-color: $TPGrey2;

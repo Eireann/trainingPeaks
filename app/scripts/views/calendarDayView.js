@@ -161,9 +161,11 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySe
             e.preventDefault();
 
             var offset = $(e.currentTarget).offset();
-            this.daySettings = new CalendarDaySettingsView({ model: this.model, top: offset.top + 10, left: offset.left + 5 });
+            this.daySettings = new CalendarDaySettingsView({ model: this.model, top: offset.top + 10, left: offset.left + 5, parentEl:this.$el });
             this.daySettings.render();
             this.daySettings.on("mouseleave", this.onMouseLeave, this);
+            this.$(".daySelected").css("display", "block");
+            this.model.trigger("day:click", this.model, e);
         },
 
         onDayClicked: function(e)
