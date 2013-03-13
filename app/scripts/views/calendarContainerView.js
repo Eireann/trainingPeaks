@@ -313,19 +313,23 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, calendarContainerVi
 
         onLibraryShow: function()
         {
-            this.snapToHeaderDate();
+            this.scrollToLastViewedDate();
         },
 
         onLibraryHide: function()
         {
-            this.snapToHeaderDate();
+            this.snapToLastViewedDate();
         },
 
-        snapToHeaderDate: function()
+        // if we un-snapped from the week header because of text wrapping on library show/hide,
+        // or if we scrolled into a different week, snap back to the correct week
+        snapToLastViewedDate: function()
         {
-            if (this.snappedToWeekHeader)
+            var headerDate = this.calendarHeaderModel.get("date");
+            var scrollDate = this.getCurrentScrollDate();
+            if (this.snappedToWeekHeader || headerDate !== scrollDate)
             {
-                this.scrollToDate(moment(this.calendarHeaderModel.get("date")), 100);
+                this.scrollToDate(moment(headerDate), 100);
             }
         }
 
