@@ -137,7 +137,6 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySe
 
         onMouseLeave: function (e)
         {
-            var toElement = document.elementFromPoint(e.pageX, e.pageY);
             if (e.toElement === this.el)
                 return;
 

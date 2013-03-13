@@ -19,7 +19,6 @@ function (TP, setImmediate, jqueryOutside, DeleteConfirmationView, calendarWorko
 
         events:
         {
-            // mouseleave: "hideWorkoutSettings"
             "click #workoutSettingsLabelDelete": "onDelete",
             "click #workoutSettingsLabelCopy": "onCopyClicked",
             "click #workoutSettingsLabelCut": "onCutClicked"

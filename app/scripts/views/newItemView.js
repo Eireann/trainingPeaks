@@ -42,7 +42,7 @@ function (TP, dialog, WorkoutModel, WorkoutQuickView, newItemViewTemplate)
 
         initialize: function ()
         {
-            _.bindAll(this, "onUploadDone", "onUploadFail");
+            _.bindAll(this, "onUploadDone", "onUploadFail", "close");
         },
 
         onNewWorkoutClicked: function (e)
@@ -90,7 +90,7 @@ function (TP, dialog, WorkoutModel, WorkoutQuickView, newItemViewTemplate)
 
                 var data = new Uint8Array(event.target.result);
                 var dataAsString = btoa(uint8ToString(data));
-                self.uploadedFileDataModel = new WorkoutFileData({ Data: dataAsString });
+                self.uploadedFileDataModel = new WorkoutFileData({ date: moment(self.model.get("date")).unix(), Data: dataAsString });
                 self.uploadedFileDataModel.save().done(self.onUploadDone).fail(self.onUploadFail);
             };
 
@@ -135,8 +135,10 @@ function (TP, dialog, WorkoutModel, WorkoutQuickView, newItemViewTemplate)
 
         onRender: function ()
         {
+            var self = this;
             this.$el.dialog("open");
             this.$el.css("overflow", "hidden");
+            setImmediate(function () { self.$el.bind("clickoutside", self.close); });
         }
     });
 });

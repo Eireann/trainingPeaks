@@ -38,6 +38,8 @@
             }
         }
 
+        @include headerButtons(0px, 50px, 20px, $navigationFontSize);
+
         button
         {
             width: 100px;

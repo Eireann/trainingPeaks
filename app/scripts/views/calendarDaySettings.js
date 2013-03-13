@@ -25,10 +25,11 @@ function (TP, setImmediate, jqueryOutside, NewItemView, DeleteConfirmationView, 
             "click #calendarDaySettingsPasteLabel": "onPasteClicked"
         },
         
-        onAddClicked: function()
+        onAddClicked: function(e)
         {
             var newItemView = new NewItemView({ model: this.model });
             newItemView.render();
+            this.hideSettings(e);
         },
 
         hideSettings: function (e)
@@ -40,6 +41,8 @@ function (TP, setImmediate, jqueryOutside, NewItemView, DeleteConfirmationView, 
 
         initialize: function(options)
         {
+            _.bindAll(this, "hideSettings");
+            
             this.posX = options.left;
             this.posY = options.top;
             this.parentEl = options.parentEl;
@@ -96,22 +99,22 @@ function (TP, setImmediate, jqueryOutside, NewItemView, DeleteConfirmationView, 
             this.model.deleteDayItems();
         },
 
-        onCopyClicked: function()
+        onCopyClicked: function(e)
         {
             this.model.trigger("day:copy", this.model);
-            this.close();
+            this.hideSettings(e);
         },
         
-        onCutClicked: function()
+        onCutClicked: function(e)
         {
             this.model.trigger("day:cut", this.model);
-            this.close();
+            this.hideSettings(e);
         },
 
-        onPasteClicked: function()
+        onPasteClicked: function(e)
         {
             this.model.trigger("day:paste", this.model.id);
-            this.close();
+            this.hideSettings(e);
         }
 
     });
