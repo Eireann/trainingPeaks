@@ -121,6 +121,7 @@
 	"Link": "Link",
 	"Delete": "Delete",
 	"Apply": "Apply",
+    "Discard": "Discard",
 	"Close": "Close",
     "SaveClose": "Save & Close",
 	"Reset": "Reset",
@@ -165,5 +166,6 @@
     "XCSki": "XC-Ski",
     "Rowing": "Rowing",
     "Other": "Other",
-    "Walk": "Walk"
+    "Walk": "Walk",
+    "UploadDeviceFile": "Upload Device File"
 }
