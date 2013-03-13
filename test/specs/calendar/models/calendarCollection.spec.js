@@ -320,5 +320,170 @@ function($, TP, moment, WorkoutModel, WorkoutsCollection, CalendarCollection)
             expect(context.daysCollection.reset).toHaveBeenCalled();
             expect(i).toBe(9);
         });
+
+        describe("Cut, Copy, Paste", function()
+        {
+            var collection;
+            var copySpy;
+            var cutSpy;
+            var fakeData;
+            var dateToPasteTo;
+
+            beforeEach(function()
+            {
+                collection = new CalendarCollection([], {
+                    startDate: moment().day(0),
+                    endDate: moment().day(6).add("weeks", 2)
+                });
+                fakeData = {'some':'junk'};
+                dateToPasteTo = moment().format("YYYY-MM-DD");
+                copySpy = jasmine.createSpyObj("Copy Spy", ["copyToClipboard", "cutToClipboard", "onPaste"]);
+                copySpy.copyToClipboard.andReturn(fakeData);
+                copySpy.cutToClipboard.andReturn(fakeData);
+                copySpy.onPaste.andReturn(null);
+            });
+
+            it("Should call subscribeToCopyPasteEvents", function()
+            {
+                spyOn(CalendarCollection.prototype, "subscribeToCopyPasteEvents");
+                var collection = new CalendarCollection([], {
+                    startDate: moment().day(0),
+                    endDate: moment().day(6).add("weeks", 2)
+                });
+                expect(CalendarCollection.prototype.subscribeToCopyPasteEvents).toHaveBeenCalled();
+            });
+
+            describe("onItemsCopy", function()
+            {
+                it("Should call copyToClipboard", function()
+                {
+                    collection.onItemsCopy(copySpy);
+                    expect(copySpy.copyToClipboard).toHaveBeenCalled();
+                });
+
+                it("Should copy to clipboard", function()
+                {
+                    spyOn(collection.clipboard, "set").andCallThrough();
+                    collection.onItemsCopy(copySpy);
+                    expect(collection.clipboard.set).toHaveBeenCalledWith(fakeData, "copy");
+                });
+            });
+
+            describe("onItemsCut", function()
+            {
+                it("Should call cutToClipboard", function()
+                {
+                    collection.onItemsCut(copySpy);
+                    expect(copySpy.cutToClipboard).toHaveBeenCalled();
+                });
+
+                it("Should cut to clipboard", function()
+                {
+                    spyOn(collection.clipboard, "set").andCallThrough();
+                    collection.onItemsCut(copySpy);
+                    expect(collection.clipboard.set).toHaveBeenCalledWith(fakeData, "cut");
+                });
+            });
+
+            describe("onPaste", function()
+            {
+                it("Should check whether clipboard is empty", function()
+                {
+                    spyOn(collection.clipboard, "hasData").andReturn(false);
+                    collection.onPaste(dateToPasteTo);
+                    expect(collection.clipboard.hasData).toHaveBeenCalled();
+                });
+
+                it("Should call onPaste of clipboard data", function()
+                {
+                    collection.clipboard.set(copySpy, "copy");
+                    collection.onPaste(dateToPasteTo);
+                    expect(copySpy.onPaste).toHaveBeenCalledWith(dateToPasteTo);
+                });
+
+                it("Should call addItems", function()
+                {
+                    var fakeItem = {};
+                    spyOn(collection, "addItems");
+                    collection.clipboard.set(copySpy, "copy");
+                    copySpy.onPaste.andReturn(fakeItem);
+                    collection.onPaste(dateToPasteTo);
+                    expect(collection.addItems).toHaveBeenCalledWith(fakeItem);
+                });
+
+                it("Should empty the clipboard after pasting a cut", function()
+                {
+                    collection.clipboard.set(copySpy, "cut");
+                    spyOn(collection.clipboard, "empty");
+                    collection.onPaste(dateToPasteTo);
+                    expect(collection.clipboard.empty).toHaveBeenCalled();
+                });
+
+                it("Should empty the clipboard after pasting a copy", function()
+                {
+                    collection.clipboard.set(copySpy, "copy");
+                    spyOn(collection.clipboard, "empty");
+                    collection.onPaste(dateToPasteTo);
+                    expect(collection.clipboard.empty).not.toHaveBeenCalled();
+                });
+            });
+
+        });
+
+        describe("addItems", function()
+        {
+
+            var collection;
+            var workouts;
+
+            beforeEach(function()
+            {
+                collection = new CalendarCollection([], {
+                    startDate: moment().day(0),
+                    endDate: moment().day(6).add("weeks", 2)
+                });
+
+                workouts = [];
+                for (var i = 0; i < 5; i++)
+                {
+                    workouts.push(new TP.Model());
+                }
+
+                spyOn(collection, "addItem");
+            });
+
+            it("Should work with empty values", function()
+            {
+                collection.addItems(null);
+                expect(collection.addItem).not.toHaveBeenCalled();
+            });
+
+            it("Should work with single items", function()
+            {
+                var workout = new TP.Model();
+                collection.addItems(workout);
+                expect(collection.addItem).toHaveBeenCalledWith(workout);
+            });
+
+            it("Should work with collections", function()
+            {
+                collection.addItems(new TP.Collection(workouts));
+                _.each(workouts, function(workout)
+                {
+                    expect(collection.addItem).toHaveBeenCalledWith(workout);
+                });
+            });
+
+            it("Should work with arrays", function()
+            {
+                collection.addItems(workouts);
+                _.each(workouts, function(workout)
+                {
+                    expect(collection.addItem).toHaveBeenCalledWith(workout);
+                });
+            });
+
+        });
+
     });
 });
