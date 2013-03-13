@@ -16,6 +16,8 @@
 @import "workoutColor";
 @import "hoverBox";
 
+@import "deleteConfirmation";
+
 body
 {
     @include nice-scrollbar;
