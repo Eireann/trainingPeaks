@@ -35,6 +35,7 @@ function (TP, setImmediate, jqueryOutside, NewItemView, DeleteConfirmationView, 
         {
             this.close();
             this.trigger("mouseleave", e);
+            this.parentEl.find(".daySelected").css("display", "none");
         },
 
         initialize: function(options)
@@ -65,7 +66,10 @@ function (TP, setImmediate, jqueryOutside, NewItemView, DeleteConfirmationView, 
 
             $('body').append(this.$el);
             var self = this;
-            setImmediate(function () { self.$el.bind("clickoutside", self.hideSettings); });
+            setImmediate(function ()
+            {
+                self.$el.bind("clickoutside", self.hideSettings);
+            });
 
             this.$el.css("width", "75px");
             this.$el.css("z-index", 99).css("position", "absolute");
