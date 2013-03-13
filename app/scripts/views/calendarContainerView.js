@@ -314,13 +314,11 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, calendarContainerVi
         onLibraryShow: function()
         {
             this.scrollToLastViewedDate();
-            this.checkCurrentScrollPosition();
         },
 
         onLibraryHide: function()
         {
             this.scrollToLastViewedDate();
-            this.checkCurrentScrollPosition();
         },
 
         // if we un-snapped from the week header because of text wrapping on library show/hide,
