@@ -3,9 +3,10 @@
     "underscore",
     "TP",
     "views/calendarWeekView",
+    "views/selectedRangeSettings",
     "hbs!templates/views/calendarContainerView"
 ],
-function(_, TP, CalendarWeekView, calendarContainerView)
+function(_, TP, CalendarWeekView, SelectedRangeSettingsView, calendarContainerView)
 {
     return TP.ItemView.extend(
     {
@@ -42,7 +43,7 @@ function(_, TP, CalendarWeekView, calendarContainerView)
             "add": "onAddWeek",
             "reset": "render"
         },
-        
+
         initialize: function(options)
         {
             _.bindAll(this, "checkCurrentScrollPosition");
@@ -53,6 +54,7 @@ function(_, TP, CalendarWeekView, calendarContainerView)
 
             this.calendarHeaderModel = options.calendarHeaderModel;
             this.throttledCheckForPosition = _.throttle(this.checkCurrentScrollPosition, 100);
+
         },
 
         resizeContext: function (event)
@@ -126,6 +128,7 @@ function(_, TP, CalendarWeekView, calendarContainerView)
             _.bindAll(this, "onScrollStop");
             var debouncedScrollStop = _.debounce(this.onScrollStop, 300);
             this.ui.weeksContainer.scroll(debouncedScrollStop);
+
             
             //theMarsApp.logger.startTimer("CalendarView.onRender", "Begin rendering weeks");
 
@@ -143,6 +146,8 @@ function(_, TP, CalendarWeekView, calendarContainerView)
 
             this.resizeContext();
             this.checkCurrentScrollPosition();
+
+            this.collection.on("rangeselect", this.onRangeSelect, this);
         },
 
         // onShow happens after render finishes and dom has updated ...
@@ -275,6 +280,12 @@ function(_, TP, CalendarWeekView, calendarContainerView)
             {
                 this.$el.fadeIn({ duration: duration });
             }
+        },
+
+        onRangeSelect: function(rangeSelection, e)
+        {
+            var rangeSettingsView = new SelectedRangeSettingsView({ left: e.pageX, top: e.pageY, collection: rangeSelection });
+            rangeSettingsView.render();
         }
 
     });
