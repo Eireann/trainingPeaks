@@ -129,6 +129,9 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, calendarContainerVi
             var debouncedScrollStop = _.debounce(this.onScrollStop, 300);
             this.ui.weeksContainer.scroll(debouncedScrollStop);
 
+            // keyup, because keypress doesn't seem to register with ctrl key
+            _.bindAll(this, "onKeyPress");
+            $(document).on('keyup', this.onKeyPress);
             
             //theMarsApp.logger.startTimer("CalendarView.onRender", "Begin rendering weeks");
 
@@ -331,6 +334,36 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, calendarContainerVi
             {
                 this.scrollToDate(moment(headerDate), 100);
             }
+        },
+
+        onKeyPress: function(e)
+        {
+            if (e.isDefaultPrevented())
+                return;
+
+            if (!e.ctrlKey && !e.metaKey)
+                return;
+
+            var whichKey = String.fromCharCode(e.keyCode);
+
+            console.log(e);
+
+            switch(whichKey)
+            {
+                case "C":
+                    this.collection.onKeypressCopy(e);
+                    break;
+
+                case "X":
+                    this.collection.onKeypressCut(e);
+                    break;
+
+                case "V":
+                    this.collection.onKeypressPaste(e);
+                    break;
+
+            }
+
         }
 
     });

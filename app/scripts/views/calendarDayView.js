@@ -54,7 +54,14 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySe
             mouseleave: "onMouseLeave",
             "click .dayHeader": "onDayClicked",
 
-            "click .daySettings": "daySettingsClicked"
+            "click .daySettings": "daySettingsClicked",
+
+            "keypress": "onKeyPress"
+        },
+
+        onKeyPress: function(e)
+        {
+            console.debug(e);
         },
 
         getItemView: function(item)

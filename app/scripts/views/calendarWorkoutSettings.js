@@ -68,6 +68,7 @@ function (TP, setImmediate, jqueryOutside, DeleteConfirmationView, calendarWorko
         onRender: function()
         {
             $('body').append(this.$el);
+            /*
             this.$el.dialog({
                 modal: true,
                 position:
@@ -76,7 +77,7 @@ function (TP, setImmediate, jqueryOutside, DeleteConfirmationView, calendarWorko
                     at: "center bottom",
                     of: ".workoutSettings"
                 }
-            });
+            });*/
             _.bindAll(this, "hideWorkoutSettings");
             var theView = this;
             setImmediate(function() { theView.$el.bind("clickoutside", theView.hideWorkoutSettings); });
