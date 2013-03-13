@@ -90,7 +90,7 @@ function (TP, dialog, WorkoutModel, WorkoutQuickView, newItemViewTemplate)
 
                 var data = new Uint8Array(event.target.result);
                 var dataAsString = btoa(uint8ToString(data));
-                self.uploadedFileDataModel = new WorkoutFileData({ date: moment(self.model.get("date")).unix(), Data: dataAsString });
+                self.uploadedFileDataModel = new WorkoutFileData({ dateEpoch: moment(self.model.get("date")).unix(), data: dataAsString });
                 self.uploadedFileDataModel.save().done(self.onUploadDone).fail(self.onUploadFail);
             };
 
@@ -100,7 +100,13 @@ function (TP, dialog, WorkoutModel, WorkoutQuickView, newItemViewTemplate)
 
         onUploadDone: function ()
         {
-            console.debug(this.uploadedFileDataModel.get("workoutModel"));
+            var workoutModelJson = this.uploadedFileDataModel.get("workoutModel");
+            var newModel = new WorkoutModel(workoutModelJson);
+            this.model.add(newModel);
+            var quickView = new WorkoutQuickView({ model: newModel });
+            quickView.render();
+            this.$el.dialog("close");
+            this.close();
         },
 
         onUploadFail: function ()

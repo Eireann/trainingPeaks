@@ -131,7 +131,7 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, calendarContainerVi
 
             // keyup, because keypress doesn't seem to register with ctrl key
             _.bindAll(this, "onKeyPress");
-            $(document).on('keyup', this.onKeyPress);
+            $("body").on('keyup', this.onKeyPress);
             
             //theMarsApp.logger.startTimer("CalendarView.onRender", "Begin rendering weeks");
 
@@ -342,6 +342,10 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, calendarContainerVi
                 return;
 
             if (!e.ctrlKey && !e.metaKey)
+                return;
+
+            // if we're not on the body, we're probably on something else we don't want to listen to
+            if (!$(e.target).is("body"))
                 return;
 
             var whichKey = String.fromCharCode(e.keyCode);

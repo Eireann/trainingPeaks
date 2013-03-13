@@ -9,9 +9,10 @@ define(
     "TP",
     "views/calendarWorkoutView",
     "views/calendarDaySettings",
+    "views/newItemView",
     "hbs!templates/views/calendarDay"
 ],
-function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySettingsView, CalendarDayTemplate)
+function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySettingsView, NewItemView, CalendarDayTemplate)
 {
 
     var today = moment().format("YYYY-MM-DD");
@@ -54,14 +55,8 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySe
             mouseleave: "onMouseLeave",
             "click .dayHeader": "onDayClicked",
 
-            "click .daySettings": "daySettingsClicked",
-
-            "keypress": "onKeyPress"
-        },
-
-        onKeyPress: function(e)
-        {
-            console.debug(e);
+            "click": "onWhitespaceDayClicked",
+            "click .daySettings": "daySettingsClicked"
         },
 
         getItemView: function(item)
@@ -179,7 +174,20 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySe
             if (e.isDefaultPrevented())
                 return;
 
+            e.preventDefault();
+
             this.model.trigger("day:click", this.model, e);
+        },
+        
+        onWhitespaceDayClicked: function(e)
+        {
+            if (e.isDefaultPrevented())
+                return;
+
+            e.preventDefault();
+
+            var newItemView = new NewItemView({ model: this.model });
+            newItemView.render();
         },
 
         select: function()

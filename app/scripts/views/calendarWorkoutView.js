@@ -115,10 +115,10 @@ function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkout
 
         events:
         {
-            click: "workoutClicked",
+            "click": "workoutClicked",
 
-            mouseenter: "onMouseEnter",
-            mouseleave: "onMouseLeave",
+            "mouseenter": "onMouseEnter",
+            "mouseleave": "onMouseLeave",
 
             "mouseenter .workoutIcon": "showWorkoutSummaryHover",
             "mouseleave .workoutIcon": "hideWorkoutSummaryHover",
@@ -174,6 +174,8 @@ function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkout
         {
             if (e.isDefaultPrevented())
                 return;
+
+            e.preventDefault();
 
             var view = new WorkoutQuickView({ model: this.model });
             view.render();

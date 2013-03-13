@@ -32,3 +32,8 @@ body
     }
 }
 
+.ui-widget-overlay
+{
+   opacity: .00%;
+   filter: Alpha(Opacity=0);
+}
