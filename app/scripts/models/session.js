@@ -48,7 +48,7 @@ function (_, TP)
                 username: options.username,
                 password: options.password,
                 response_type: "token",
-                scope: "Fitness ClientEvents Users Athletes ExerciseLibrary"
+                scope: "fitness clientevents users athletes exerciselibrary"
             };
 
             this.username = options.username;
