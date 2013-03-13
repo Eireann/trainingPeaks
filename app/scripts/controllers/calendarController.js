@@ -309,7 +309,8 @@ function(_, moment, setImmediate, TP, CalendarLayout, CalendarCollection, Calend
                 this.views.library.close();
 
             this.views.library = new LibraryView({ collections: this.libraryCollections });
-
+            this.views.library.on("showLibrary", this.onLibraryShow, this);
+            this.views.library.on("hideLibrary", this.onLibraryHide, this);
         },
 
         appendWeekToCalendar: function ()
@@ -330,6 +331,24 @@ function(_, moment, setImmediate, TP, CalendarLayout, CalendarCollection, Calend
 
             this.weeksCollection.prependWeek(startDate);
             this.weeksCollection.requestWorkouts(startDate, endDate);
+        },
+
+        onLibraryShow: function()
+        {
+            var self = this;
+            setImmediate(function()
+            {
+                self.views.calendar.onLibraryShow();
+            });
+        },
+
+        onLibraryHide: function()
+        {
+            var self = this;
+            setImmediate(function()
+            {
+                self.views.calendar.onLibraryHide();
+            });
         }
     });
 });

@@ -145,6 +145,9 @@
 	"CopyWeek": "Copy Week",
 	"CutWeek": "Cut Week",
 	"DeleteWeek": "Delete Week",
+	"CopyItems": "Copy Items",
+	"CutItems": "Cut Items",
+	"DeleteItems": "Delete Items",
 	"PasteItems": "Paste Items",
 	"ShiftItems": "Shift Items",
 

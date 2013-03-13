@@ -19,7 +19,7 @@
     {
         width: 25%;
         @include transition-property(width);
-        @include transition-duration(400ms);
+        @include transition-duration(300ms);
         padding-right:2px;
 
         #activeLibraryContainer
@@ -34,7 +34,7 @@
         width: 3%;
         text-align:right;
         @include transition-property(width);
-        @include transition-duration(400ms);
+        @include transition-duration(300ms);
 
         #libraries
         {

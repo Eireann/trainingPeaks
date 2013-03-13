@@ -10,12 +10,15 @@
 {
 
     @include column(15);
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
      
     #libraryContainer.open + &
     {
         width:75%;
         @include transition-property(width);
-        @include transition-duration(400ms);
+        @include transition-duration(300ms);
         padding-left:0px;
     }
 
@@ -23,7 +26,7 @@
     {
         width:97%;
         @include transition-property(width);
-        @include transition-duration(400ms);
+        @include transition-duration(300ms);
         //@include calc(width, "100% - 50px"); 
     }
 
@@ -49,6 +52,10 @@
         overflow-x: hidden;
         overflow-y: visible;
 
+        &.selected
+        {
+            background-color: $selectedDay;
+        }
     }
 
 	.daySelected
@@ -146,16 +153,29 @@
 
 }
 
-body.clipboardEmpty {
+body.clipboardEmpty
+{
     .paste
     {
         color:$TPGrey2;
     }
 }
 
-body.clipboardFull {
+body.clipboardFull
+{
     .paste
     {
         //color:green;
+    }
+}
+
+#selectedRangeSettingsDiv
+{
+    position:absolute;
+    z-index:100;
+
+    .colored
+    {
+        background-color: $selectedDay;
     }
 }

@@ -52,7 +52,24 @@ function(moment, TP)
                 dateToPasteTo.add("days", 1);
             });
             return pastedDays;
+        },
+
+        select: function()
+        {
+            this.each(function(model)
+            {
+                model.trigger("day:select");
+            });
+        },
+
+        unselect: function()
+        {
+            this.each(function(model)
+            {
+                model.trigger("day:unselect");
+            });
         }
+
     });
 
     return CalendarWeekCollection;
