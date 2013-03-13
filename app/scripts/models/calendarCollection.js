@@ -108,13 +108,15 @@ function(_, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, CalendarD
             }
 
             // create/extend a range if shift key
-            if (this.selectedDay && e.shiftKey)
+            if (this.selectedDay && dayModel !== this.selectedDay && e.shiftKey)
             {
                 this.selectedRange = this.createRangeOfDays(this.selectedDay.id, dayModel.id);
                 this.selectedRange.select();
 
                 // cancel default text selection behavior - also prevented through css on #calendarContainer
                 document.getSelection().removeAllRanges();
+
+                this.trigger("rangeselect", this.selectedRange, e);
 
                 return;
             }
@@ -135,6 +137,9 @@ function(_, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, CalendarD
                 collectionOfDays.push(this.getDayModel(currentDay));
                 currentDay.add("days", 1);
             }
+
+            collectionOfDays.on("week:copy", this.onItemsCopy, this);
+            collectionOfDays.on("week:cut", this.onItemsCut, this);
             return collectionOfDays;
         },
 

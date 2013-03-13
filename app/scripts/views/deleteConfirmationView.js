@@ -39,6 +39,7 @@ function (TP, deleteConfirmationView)
         
         onDeleteCancelled: function()
         {
+            this.trigger("deleteCancelled");
             this.close();
         }
     });

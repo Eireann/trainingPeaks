@@ -142,16 +142,29 @@
 
 }
 
-body.clipboardEmpty {
+body.clipboardEmpty
+{
     .paste
     {
         color:$TPGrey2;
     }
 }
 
-body.clipboardFull {
+body.clipboardFull
+{
     .paste
     {
         //color:green;
+    }
+}
+
+#selectedRangeSettingsDiv
+{
+    position:absolute;
+    z-index:100;
+
+    .colored
+    {
+        background-color: $selectedDay;
     }
 }
