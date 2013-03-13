@@ -167,5 +167,22 @@
     "Rowing": "Rowing",
     "Other": "Other",
     "Walk": "Walk",
-    "UploadDeviceFile": "Upload Device File"
+    "UploadDeviceFile": "Upload Device File",
+	"ShiftItems": "Shift Items",
+	"ShiftString": What types of items do you want to shift?,
+	"Workouts": "Workouts",
+	"Meals": "Meals",
+	"SelectShiftItemsString": "Select the items you want to move.",
+	"ItemsOnAllSelectedDays": "Items on all selected days",
+	"ItemsWithinSpecifiedDateRange": "Items within a specified date range",
+	"ItemsOnAfterSpecifiedStartDate": "items on and after specified start date",
+	"SelectDateRange": "Select date range",
+	"From": "From",
+	"To": "To",
+	"HowDoYouWantToShiftItems": "How do you want to shift these items",
+	"MoveNewStartDate": "Move to new start date",
+	"MoveBySpecifiedNumberOfDays": "Move by a specified number of days",
+	"MoveBySpecifiedNumberOfWeeks": "Move by a specified number of weeks",
+	"SelectNewStartDate": "Select new start date"
+
 }
