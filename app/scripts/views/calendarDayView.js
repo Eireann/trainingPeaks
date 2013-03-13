@@ -52,7 +52,7 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySe
         {
             mouseenter: "onMouseEnter",
             mouseleave: "onMouseLeave",
-            "click": "onDayClicked",
+            "click .dayHeader": "onDayClicked",
 
             "click .daySettings": "daySettingsClicked"
         },
