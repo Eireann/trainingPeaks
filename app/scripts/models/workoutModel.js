@@ -45,7 +45,6 @@ function (_, moment, TP)
             "distancePlanned": null,
             "distanceCustomized": null,
             "distanceUnitsCustomized": null,
-            "startTime": null,
             "totalTime": 0,
             "totalTimePlanned": 0,
             "heartRateMinimum": null,
@@ -80,7 +79,8 @@ function (_, moment, TP)
             "tempMax": null,
             "cadenceAverage": null,
             "cadenceMaximum": null,
-            "lastModifiedDate": null
+            "lastModifiedDate": null,
+            "startTime": null
         },
 
         getCalendarDay: function()
