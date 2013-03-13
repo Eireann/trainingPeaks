@@ -44,12 +44,15 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySe
             this.collection = this.model.itemsCollection;
             
             this.on("after:item:added", this.makeDraggable, this);
+            this.model.on("day:select", this.select, this);
+            this.model.on("day:unselect", this.unselect, this);
         },
 
-        events: 
+        events:
         {
             mouseenter: "onMouseEnter",
             mouseleave: "onMouseLeave",
+            "click": "onDayClicked",
 
             "click .daySettings": "daySettingsClicked"
         },
@@ -127,7 +130,7 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySe
             this.trigger("itemDropped", options);
         },
 
-        onMouseEnter: function (e)
+        onMouseEnter: function(e)
         {
             this.showSettingsButton(e);
         },
@@ -161,6 +164,26 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySe
             this.daySettings = new CalendarDaySettingsView({ model: this.model, top: offset.top + 10, left: offset.left + 5 });
             this.daySettings.render();
             this.daySettings.on("mouseleave", this.onMouseLeave, this);
+        },
+
+        onDayClicked: function(e)
+        {
+            if (e.isDefaultPrevented())
+                return;
+
+            this.model.trigger("day:click", this.model, e);
+        },
+
+        select: function()
+        {
+            this.selected = true;
+            this.$el.addClass("selected");
+        },
+
+        unselect: function()
+        {
+            this.selected = false;
+            this.$el.removeClass("selected");
         }
     });
 });

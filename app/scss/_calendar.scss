@@ -10,6 +10,9 @@
 {
 
     @include column(15);
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
      
     #libraryContainer.open + &
     {
@@ -49,6 +52,10 @@
         overflow-x: hidden;
         overflow-y: visible;
 
+        &.selected
+        {
+            background-color: $selectedDay;
+        }
     }
 
 	.dayHeader

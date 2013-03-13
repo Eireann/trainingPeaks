@@ -29,6 +29,7 @@ function(_, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, CalendarD
             this.daysCollection = new TP.Collection();
 
             this.subscribeToCopyPasteEvents();
+            this.subscribeToSelectEvents();
 
             this.setUpWeeks(options.startDate, options.endDate);
         },
@@ -43,6 +44,11 @@ function(_, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, CalendarD
             this.daysCollection.on("day:paste", this.onPaste, this);
 
             this.clipboard.on("change", this.onClipboardStateChange, this);
+        },
+
+        subscribeToSelectEvents: function()
+        {
+            this.daysCollection.on("day:click", this.onDayClicked, this);
         },
         
         onItemsCopy: function(model)
@@ -72,7 +78,7 @@ function(_, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, CalendarD
             if (this.clipboard.getAction() === "cut")
                 this.clipboard.empty();
         },
-       
+
         onClipboardStateChange: function()
         {
             if (this.clipboard.hasData())
@@ -82,6 +88,54 @@ function(_, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, CalendarD
             {
                 this.trigger("clipboard:empty");
             }
+        },
+
+        onDayClicked: function(dayModel, e)
+        {
+
+            // do we already have a selected range? unselect it and continue
+            if(this.selectedRange)
+            {
+                this.selectedRange.unselect();
+                this.selectedRange = null;
+            }
+
+            // unselect the selected day and continue, unless we're trying to select a range
+            if (this.selectedDay && !e.shiftKey)
+            {
+                this.selectedDay.trigger("day:unselect");
+                this.selectedDay = null;
+            }
+
+            // create/extend a range if shift key
+            if (this.selectedDay && e.shiftKey)
+            {
+                this.selectedRange = this.createRangeOfDays(this.selectedDay.id, dayModel.id);
+                this.selectedRange.select();
+
+                // cancel default text selection behavior - also prevented through css on #calendarContainer
+                document.getSelection().removeAllRanges();
+
+                return;
+            }
+
+            // select it
+            this.selectedDay = dayModel;
+            dayModel.trigger("day:select");
+        },
+
+        createRangeOfDays: function(selectionStartDay, selectionEndDay)
+        {
+            var startDay = selectionEndDay < selectionStartDay ? moment(selectionEndDay) : moment(selectionStartDay);
+            var endDay = selectionStartDay > selectionEndDay ? moment(selectionStartDay) : moment(selectionEndDay);
+            var currentDay = moment(startDay);
+            var collectionOfDays = new CalendarWeekCollection();
+            while (endDay.diff(currentDay, "days") >= 0)
+            {
+                collectionOfDays.push(this.getDayModel(currentDay));
+                currentDay.add("days", 1);
+            }
+            return collectionOfDays;
         },
 
         setUpWeeks: function(startDate, endDate)
