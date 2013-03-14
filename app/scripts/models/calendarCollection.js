@@ -142,6 +142,9 @@ function(_, moment, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, C
                 this.selectedDay.trigger("day:copy", this.selectedDay);
                 //theMarsApp.logger.debug("Copy from selected day");
             }
+
+            // update paste status
+            this.onPasteMenuOpen();
         
         },
 
@@ -160,6 +163,9 @@ function(_, moment, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, C
                 this.selectedDay.trigger("day:cut", this.selectedDay);
                 //theMarsApp.logger.debug("Cut from selected day");
             }
+
+            // update paste status
+            this.onPasteMenuOpen();
         },
 
         onKeypressPaste: function(e)
@@ -173,10 +179,24 @@ function(_, moment, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, C
                 this.onPaste(this.selectedDay.id);
                 //theMarsApp.logger.debug("Paste on selected day");
             }
+
+            // update paste status
+            this.onPasteMenuOpen();
         },
 
         onPasteMenuOpen: function(dateToPasteTo)
         {
+            if (dateToPasteTo)
+            {
+                this.pasteMenuDate = dateToPasteTo;
+            } else if (this.pasteMenuDate)
+            {
+                dateToPasteTo = this.pasteMenuDate;
+            } else
+            {
+                return;
+            }
+
             if (this.canPasteTo(dateToPasteTo))
             {
                 this.trigger("paste:enable");
