@@ -1,9 +1,30 @@
-﻿<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <title></title>
-</head>
-<body>
-
-</body>
-</html>
+﻿<div id="shiftItems">
+    <div class="header">
+        <label>{{$ "ShiftItems"}}</label>
+    </div>
+    <div class="shiftItemsBody">
+        <label>{{$ "SelectShiftItemsString"}}</label>
+        <form name="selectShiftItems">
+           <label><input type="checkbox" value="workouts" />{{$ "Workouts"}}</label>
+           <label><input type="checkbox" value="meals" />{{$ "Meals"}}</label>
+        </form>
+        <label>{{$ "SelectShiftItemsString"}}</label>
+        <form>
+            <label><input type="radio" value="itemsOnAllSelectedDays" />{{$ "ItemsOnAllSelectedDays"}}</label>
+            <label><input type="radio" value="ItemsWithinSpecifiedDateRange" />{{$ "ItemsWithinSpecifiedDateRange"}}</label>
+            <label><input type="radio" value="ItemsOnAfterSpecifiedStartDate" />{{$ "ItemsOnAfterSpecifiedStartDate"}}</label>
+        </form>
+        <label>{{$ "SelectDateRange"}}</label>
+        <form>
+            <label><input type="text" value="fromDate" />{{$ "From"}}</label>
+            <label><input type="text" value="toDate" />{{$ "To"}}</label>
+        </form>
+        <label>{{$ HowDoYouWantToShiftItems}}</label>
+        <form>
+            <label><input type="radio" value="MoveNewStartDate" />{{$ "MoveNewStartDate"}}</label>
+            <label><input type="radio" value="MoveBySpecifiedNumberOfDays" />{{$ "MoveBySpecifiedNumberOfDays"}}</label>
+            <label><input type="radio" value="MoveBySpecifiedNumberOfWeeks" />{{$ "MoveBySpecifiedNumberOfWeeks"}}</label>
+            <label><input type="text" value="SelectNewStartDate" />{{$ "SelectNewStartDate"}}</label>
+        </form>
+    </div>
+</div>
