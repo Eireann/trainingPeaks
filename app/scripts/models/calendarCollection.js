@@ -1,13 +1,14 @@
 ﻿define(
 [
     "underscore",
+    "moment",
     "TP",
     "framework/clipboard",
     "models/workoutsCollection",
     "models/calendarWeekCollection",
     "models/calendarDay"
 ],
-function(_, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, CalendarDayModel)
+function(_, moment, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, CalendarDayModel)
 {
     return TP.Collection.extend(
     {
@@ -44,8 +45,7 @@ function(_, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, CalendarD
             this.daysCollection.on("day:copy", this.onItemsCopy, this);
             this.daysCollection.on("day:cut", this.onItemsCut, this);
             this.daysCollection.on("day:paste", this.onPaste, this);
-
-            this.clipboard.on("change", this.onClipboardStateChange, this);
+            this.daysCollection.on("day:pasteMenu", this.onPasteMenuOpen, this);
         },
 
         subscribeToSelectEvents: function()
@@ -69,9 +69,40 @@ function(_, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, CalendarD
             this.clipboard.set(model.cutToClipboard(), "cut");
         },
 
+        canPasteTo: function(dateToPasteTo)
+        {
+            // no data? can't paste
+            if (!this.clipboard.hasData())
+                return false;
+
+            // copied data? paste anywhere
+            if (this.clipboard.getAction() === "copy")
+                return true;
+
+
+            var cutData = this.clipboard.getValue();
+            dateToPasteTo = moment(dateToPasteTo).format("YYYY-MM-DD");
+
+            // can't paste a day back to itself
+            if (cutData instanceof CalendarDayModel && dateToPasteTo === cutData.get("date"))
+                return false;
+
+            // can't paste a week/range back to same start day
+            if (cutData instanceof CalendarWeekCollection && dateToPasteTo === cutData.models[0].get("date"))
+                return false;
+
+            // can't paste a workout onto the same day
+            if (typeof cutData.getCalendarDay === "function" && dateToPasteTo === cutData.getCalendarDay())
+                return false;
+
+            // ok to paste
+            return true;
+            
+        },
+
         onPaste: function(dateToPasteTo)
         {
-            if (!this.clipboard.hasData())
+            if (!this.canPasteTo(dateToPasteTo))
                 return;
 
             var pastedItems = this.clipboard.getValue().onPaste(dateToPasteTo);
@@ -81,45 +112,77 @@ function(_, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, CalendarD
                 this.clipboard.empty();
         },
 
+        onWeekSelected: function(selectedWeek)
+        {
+            this.selectedWeek = selectedWeek;
+            //theMarsApp.logger.debug("Selected week: " + selectedWeek.get("date"));
+        },
+
+        onWeekUnselected: function(selectedWeek)
+        {
+            if (this.selectedWeek === selectedWeek)
+            {
+                this.selectedWeek = null;
+                //theMarsApp.logger.debug("UnSelected week: " + selectedWeek.get("date"));
+            }
+        },
+
         onKeypressCopy: function(e)
         {
-            if(this.selectedRange)
+            if (this.selectedWeek)
+            {
+                this.selectedWeek.collection.trigger("week:copy", this.selectedWeek.collection);
+                //theMarsApp.logger.debug("Copy from selected week");
+            } else if(this.selectedRange)
             {
                 this.selectedRange.trigger("week:copy", this.selectedRange);
-            } else if(this.selectedDay)
+                //theMarsApp.logger.debug("Copy from selected range");
+            } else if (this.selectedDay)
             {
                 this.selectedDay.trigger("day:copy", this.selectedDay);
+                //theMarsApp.logger.debug("Copy from selected day");
             }
         
         },
 
         onKeypressCut: function(e)
         {
-            if(this.selectedRange)
+            if (this.selectedWeek)
+            {
+                this.selectedWeek.collection.trigger("week:cut", this.selectedWeek.collection);
+                //theMarsApp.logger.debug("Cut from selected week");
+            } else if(this.selectedRange)
             {
                 this.selectedRange.trigger("week:cut", this.selectedRange);
+                //theMarsApp.logger.debug("Cut from selected week");
             } else if(this.selectedDay)
             {
                 this.selectedDay.trigger("day:cut", this.selectedDay);
+                //theMarsApp.logger.debug("Cut from selected day");
             }
         },
 
         onKeypressPaste: function(e)
         {
-            if (this.selectedDay)
+            if (this.selectedWeek)
+            {
+                this.onPaste(this.selectedWeek.get("date"));
+                //theMarsApp.logger.debug("Paste on selected week");
+            } else if (this.selectedDay)
             {
                 this.onPaste(this.selectedDay.id);
+                //theMarsApp.logger.debug("Paste on selected day");
             }
         },
 
-        onClipboardStateChange: function()
+        onPasteMenuOpen: function(dateToPasteTo)
         {
-            if (this.clipboard.hasData())
+            if (this.canPasteTo(dateToPasteTo))
             {
-                this.trigger("clipboard:full");
+                this.trigger("paste:enable");
             } else
             {
-                this.trigger("clipboard:empty");
+                this.trigger("paste:disable");
             }
         },
 
@@ -238,6 +301,9 @@ function(_, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, CalendarD
             weekCollection.on("week:copy", this.onItemsCopy, this);
             weekCollection.on("week:cut", this.onItemsCut, this);
             weekCollection.on("week:paste", this.onPaste, this);
+            weekCollection.on("week:pasteMenu", this.onPasteMenuOpen, this);
+            weekCollection.on("week:select", this.onWeekSelected, this);
+            weekCollection.on("week:unselect", this.onWeekUnselected, this);
 
             return weekCollection;
         },

@@ -350,9 +350,7 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, calendarContainerVi
 
             var whichKey = String.fromCharCode(e.keyCode);
 
-            console.log(e);
-
-            switch(whichKey)
+            switch (whichKey)
             {
                 case "C":
                     this.collection.onKeypressCopy(e);

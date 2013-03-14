@@ -105,19 +105,19 @@ function(_, moment, setImmediate, TP, CalendarLayout, CalendarCollection, Calend
 
         watchClipboard: function()
         {
-            this.weeksCollection.on("clipboard:full", this.onClipboardFull, this);
-            this.weeksCollection.on("clipboard:empty", this.onClipboardEmpty, this);
-            this.onClipboardEmpty();
+            this.weeksCollection.on("paste:enable", this.onPasteEnabled, this);
+            this.weeksCollection.on("paste:disable", this.onPasteDisabled, this);
+            this.onPasteDisabled();
         },
 
-        onClipboardFull: function()
+        onPasteEnabled: function()
         {
-            $('body').removeClass('clipboardEmpty').addClass('clipboardFull');
+            $('body').removeClass('pasteDisabled').addClass('pasteEnabled');
         },
 
-        onClipboardEmpty: function()
+        onPasteDisabled: function()
         {
-            $('body').removeClass('clipboardFull').addClass('clipboardEmpty');
+            $('body').removeClass('pasteEnabled').addClass('pasteDisabled');
         },
 
         createStartDay: function(startDate)
