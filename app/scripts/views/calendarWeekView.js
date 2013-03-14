@@ -4,21 +4,30 @@
     "setImmediate",
     "TP",
     "views/calendarDayView",
-    "views/weekSummaryView"
+    "views/weekSummaryView",
+    "hbs!templates/views/calendarWeek"
 ],
-function(moment, setImmediate, TP, CalendarDayView, WeekSummaryView)
+function(moment, setImmediate, TP, CalendarDayView, WeekSummaryView, CalendarWeek)
 {
-    return TP.CollectionView.extend(
+    return TP.CompositeView.extend(
     {
         tagName: "div",
         className: "week",
         getItemView: function(item)
         {
+            if (!item)
+                return TP.ItemView;
             if (item.isSummary)
                 return WeekSummaryView;
             else
                 return CalendarDayView;
         },
+
+        template:
+       {
+           type: "handlebars",
+           template: CalendarWeek
+       },
 
         // override some of the default waiting functionality, because of the way css:before behaves,
         // we want the pseudo element to be containd inside the week div instead of in it's parent

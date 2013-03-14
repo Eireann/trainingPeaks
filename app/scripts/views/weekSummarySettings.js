@@ -29,6 +29,7 @@ function (TP, setImmediate, jqueryOutside, DeleteConfirmationView, calendarWeekS
         {
             this.close();
             this.trigger("mouseleave", e);
+            this.trigger("settingsClosed");
             this.model.collection.trigger("week:unselect", this.model);
         },
 
