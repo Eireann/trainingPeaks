@@ -87,6 +87,10 @@ function(_, moment, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, C
             if (cutData instanceof CalendarDayModel && dateToPasteTo === cutData.get("date"))
                 return false;
 
+            // can't paste a week/range back to same start day
+            if (cutData instanceof CalendarWeekCollection && dateToPasteTo === cutData.models[0].get("date"))
+                return false;
+
             // can't paste a workout onto the same day
             if (typeof cutData.getCalendarDay === "function" && dateToPasteTo === cutData.getCalendarDay())
                 return false;
@@ -173,12 +177,12 @@ function(_, moment, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, C
 
         onPasteMenuOpen: function(dateToPasteTo)
         {
-            if (this.clipboard.hasData())
+            if (this.canPasteTo(dateToPasteTo))
             {
-                this.trigger("paste:enabled");
+                this.trigger("paste:enable");
             } else
             {
-                this.trigger("paste:disabled");
+                this.trigger("paste:disable");
             }
         },
 
