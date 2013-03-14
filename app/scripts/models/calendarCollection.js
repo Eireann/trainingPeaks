@@ -28,6 +28,8 @@ function(_, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, CalendarD
             this.workoutsCollection = new WorkoutsCollection();
             this.daysCollection = new TP.Collection();
 
+            this.daysCollection.on("workout:added", this.addItem, this);
+
             this.subscribeToCopyPasteEvents();
             this.subscribeToSelectEvents();
 
@@ -66,7 +68,7 @@ function(_, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, CalendarD
             
             this.clipboard.set(model.cutToClipboard(), "cut");
         },
-        
+
         onPaste: function(dateToPasteTo)
         {
             if (!this.clipboard.hasData())
@@ -77,6 +79,37 @@ function(_, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, CalendarD
 
             if (this.clipboard.getAction() === "cut")
                 this.clipboard.empty();
+        },
+
+        onKeypressCopy: function(e)
+        {
+            if(this.selectedRange)
+            {
+                this.selectedRange.trigger("week:copy", this.selectedRange);
+            } else if(this.selectedDay)
+            {
+                this.selectedDay.trigger("day:copy", this.selectedDay);
+            }
+        
+        },
+
+        onKeypressCut: function(e)
+        {
+            if(this.selectedRange)
+            {
+                this.selectedRange.trigger("week:cut", this.selectedRange);
+            } else if(this.selectedDay)
+            {
+                this.selectedDay.trigger("day:cut", this.selectedDay);
+            }
+        },
+
+        onKeypressPaste: function(e)
+        {
+            if (this.selectedDay)
+            {
+                this.onPaste(this.selectedDay.id);
+            }
         },
 
         onClipboardStateChange: function()

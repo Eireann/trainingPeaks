@@ -129,6 +129,9 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, calendarContainerVi
             var debouncedScrollStop = _.debounce(this.onScrollStop, 300);
             this.ui.weeksContainer.scroll(debouncedScrollStop);
 
+            // keyup, because keypress doesn't seem to register with ctrl key
+            _.bindAll(this, "onKeyPress");
+            $("body").on('keyup', this.onKeyPress);
             
             //theMarsApp.logger.startTimer("CalendarView.onRender", "Begin rendering weeks");
 
@@ -314,13 +317,11 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, calendarContainerVi
         onLibraryShow: function()
         {
             this.scrollToLastViewedDate();
-            this.checkCurrentScrollPosition();
         },
 
         onLibraryHide: function()
         {
             this.scrollToLastViewedDate();
-            this.checkCurrentScrollPosition();
         },
 
         // if we un-snapped from the week header because of text wrapping on library show/hide,
@@ -333,6 +334,40 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, calendarContainerVi
             {
                 this.scrollToDate(moment(headerDate), 100);
             }
+        },
+
+        onKeyPress: function(e)
+        {
+            if (e.isDefaultPrevented())
+                return;
+
+            if (!e.ctrlKey && !e.metaKey)
+                return;
+
+            // if we're not on the body, we're probably on something else we don't want to listen to
+            if (!$(e.target).is("body"))
+                return;
+
+            var whichKey = String.fromCharCode(e.keyCode);
+
+            console.log(e);
+
+            switch(whichKey)
+            {
+                case "C":
+                    this.collection.onKeypressCopy(e);
+                    break;
+
+                case "X":
+                    this.collection.onKeypressCut(e);
+                    break;
+
+                case "V":
+                    this.collection.onKeypressPaste(e);
+                    break;
+
+            }
+
         }
 
     });

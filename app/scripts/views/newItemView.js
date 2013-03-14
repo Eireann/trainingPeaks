@@ -70,10 +70,13 @@ function (TP, dialog, WorkoutModel, WorkoutQuickView, newItemViewTemplate)
 
         onFileSelected: function ()
         {
+            this.$el.addClass("waiting");
+            
             var self = this;
             var fileList = this.ui.fileinput[0].files;
 
             var file = fileList[0];
+
             var reader = new FileReader();
 
             reader.onload = function (event)
@@ -90,22 +93,29 @@ function (TP, dialog, WorkoutModel, WorkoutQuickView, newItemViewTemplate)
 
                 var data = new Uint8Array(event.target.result);
                 var dataAsString = btoa(uint8ToString(data));
-                self.uploadedFileDataModel = new WorkoutFileData({ date: moment(self.model.get("date")).unix(), Data: dataAsString });
+                self.uploadedFileDataModel = new WorkoutFileData({ dateEpoch: moment(self.model.get("date")).unix(), data: dataAsString });
                 self.uploadedFileDataModel.save().done(self.onUploadDone).fail(self.onUploadFail);
             };
 
             reader.readAsArrayBuffer(file);
-
         },
 
         onUploadDone: function ()
         {
-            console.debug(this.uploadedFileDataModel.get("workoutModel"));
+            this.$el.removeClass("waiting");
+            
+            var workoutModelJson = this.uploadedFileDataModel.get("workoutModel");
+            var newModel = new WorkoutModel(workoutModelJson);
+            this.model.trigger("workout:added", newModel);
+            var quickView = new WorkoutQuickView({ model: newModel });
+            quickView.render();
+            this.$el.dialog("close");
+            this.close();
         },
 
         onUploadFail: function ()
         {
-
+            this.$el.removeClass("waiting");
         },
 
         onNewWorkoutDiscarded: function ()
@@ -116,7 +126,7 @@ function (TP, dialog, WorkoutModel, WorkoutQuickView, newItemViewTemplate)
         onNewWorkoutSaved: function ()
         {
             // The QuickView already saved the model to the server, let's update our local collections to reflect the change.
-            this.model.add(this.newWorkout);
+            this.model.trigger("workout:added", this.newWorkout);
             this.$el.dialog("close");
             this.close();
         },
