@@ -150,7 +150,9 @@ function(TP, workoutTypeEnum, WeekSummarySettings, weekSummaryTemplate)
         {
             var toElement = $(document.elementFromPoint(e.pageX, e.pageY));
             if (!toElement.is(".summarySettings") && !toElement.is("#summarySettingsDiv") && !toElement.is(".hoverBox"))
+            {
                 this.$(".summarySettings").css('display', "none");
+            }
         },
 
         summarySettingsClicked: function (e)
@@ -161,6 +163,13 @@ function(TP, workoutTypeEnum, WeekSummarySettings, weekSummaryTemplate)
             this.summarySettings = new WeekSummarySettings({ model: this.model, top: offset.top + 10, left: offset.left + 5 });
             this.summarySettings.render();
             this.summarySettings.on("mouseleave", this.onMouseLeave, this);
+            this.summarySettings.on("settingsClosed", this.settingsClosed, this);
+            this.$el.closest(".week").find(".weekSelected").css("display", "block");
+        },
+
+        settingsClosed: function ()
+        {
+            this.$el.closest(".week").find(".weekSelected").css("display", "none");
         }
     });
 });
