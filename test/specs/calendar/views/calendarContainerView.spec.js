@@ -5,10 +5,9 @@ requirejs(
     "TP",
     "moment",
     "app",
-    "views/calendarContainerView",
-    "hbs!templates/views/calendarWeek"
+    "views/calendarContainerView"
 ],
-function($, TP, moment, theMarsApp, CalendarView, CalendarWeekTemplate)
+function($, TP, moment, theMarsApp, CalendarView)
 {
 
     describe("CalendarView ", function()
@@ -156,14 +155,6 @@ function($, TP, moment, theMarsApp, CalendarView, CalendarWeekTemplate)
 
         });
 
-        describe("Calendar Week Template", function()
-        {
-
-            it("Should have a .week class", function () {
-                var weekHtml = CalendarWeekTemplate({});
-                expect($(weekHtml).hasClass("week")).toBeTruthy();
-            });
-        });
 
         describe("Workout drag and drop", function()
         {

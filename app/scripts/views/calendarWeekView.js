@@ -16,7 +16,7 @@ function(moment, setImmediate, TP, CalendarDayView, WeekSummaryView, CalendarWee
         getItemView: function(item)
         {
             if (!item)
-                return TP.ItemView
+                return TP.ItemView;
             if (item.isSummary)
                 return WeekSummaryView;
             else
