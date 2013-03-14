@@ -44,8 +44,7 @@ function(TP, initializeAjaxAuth, ajaxCaching, initializeAjaxTimezone, Session, U
     theApp.addInitializer(function()
     {
         initializeAjaxAuth(this);
-        //FIXME: disabled until webapi header options is pushed ... 
-        //initializeAjaxTimezone();
+        initializeAjaxTimezone();
         ajaxCaching.initialize(this);
     });
     
