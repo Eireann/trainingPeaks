@@ -28,6 +28,8 @@ function(_, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, CalendarD
             this.workoutsCollection = new WorkoutsCollection();
             this.daysCollection = new TP.Collection();
 
+            this.daysCollection.on("workout:added", this.addItem, this);
+
             this.subscribeToCopyPasteEvents();
             this.subscribeToSelectEvents();
 
@@ -44,8 +46,6 @@ function(_, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, CalendarD
             this.daysCollection.on("day:paste", this.onPaste, this);
 
             this.clipboard.on("change", this.onClipboardStateChange, this);
-
-
         },
 
         subscribeToSelectEvents: function()

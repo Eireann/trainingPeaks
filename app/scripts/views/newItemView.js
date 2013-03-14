@@ -70,10 +70,13 @@ function (TP, dialog, WorkoutModel, WorkoutQuickView, newItemViewTemplate)
 
         onFileSelected: function ()
         {
+            this.$el.addClass("waiting");
+            
             var self = this;
             var fileList = this.ui.fileinput[0].files;
 
             var file = fileList[0];
+
             var reader = new FileReader();
 
             reader.onload = function (event)
@@ -95,14 +98,15 @@ function (TP, dialog, WorkoutModel, WorkoutQuickView, newItemViewTemplate)
             };
 
             reader.readAsArrayBuffer(file);
-
         },
 
         onUploadDone: function ()
         {
+            this.$el.removeClass("waiting");
+            
             var workoutModelJson = this.uploadedFileDataModel.get("workoutModel");
             var newModel = new WorkoutModel(workoutModelJson);
-            this.model.add(newModel);
+            this.model.trigger("workout:added", newModel);
             var quickView = new WorkoutQuickView({ model: newModel });
             quickView.render();
             this.$el.dialog("close");
@@ -111,7 +115,7 @@ function (TP, dialog, WorkoutModel, WorkoutQuickView, newItemViewTemplate)
 
         onUploadFail: function ()
         {
-
+            this.$el.removeClass("waiting");
         },
 
         onNewWorkoutDiscarded: function ()
@@ -122,7 +126,7 @@ function (TP, dialog, WorkoutModel, WorkoutQuickView, newItemViewTemplate)
         onNewWorkoutSaved: function ()
         {
             // The QuickView already saved the model to the server, let's update our local collections to reflect the change.
-            this.model.add(this.newWorkout);
+            this.model.trigger("workout:added", this.newWorkout);
             this.$el.dialog("close");
             this.close();
         },
