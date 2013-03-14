@@ -25,11 +25,11 @@ function (TP, setImmediate, jqueryOutside, DeleteConfirmationView, calendarWeekS
             "click #calendarWeekSummarySettingsPasteLabel": "onPasteClicked"
         },
 
-        hideSettings: function (e)
+        hideSettings: function(e)
         {
             this.close();
             this.trigger("mouseleave", e);
-            //delete this;
+            this.model.collection.trigger("week:unselect", this.model);
         },
 
         initialize: function(options)
@@ -58,7 +58,6 @@ function (TP, setImmediate, jqueryOutside, DeleteConfirmationView, calendarWeekS
         {
             _.bindAll(this, "hideSettings");
 
-
             $('body').append(this.$el);
             var self = this;
             setImmediate(function () { self.$el.bind("clickoutside", self.hideSettings); });
@@ -75,11 +74,13 @@ function (TP, setImmediate, jqueryOutside, DeleteConfirmationView, calendarWeekS
             {
                 this.$el.find(".hoverBox").addClass("thisWeek");
             }
+
+            this.model.collection.trigger("week:select", this.model);
         },
 
-        onDeleteClicked: function()
+        onDeleteClicked: function(e)
         {
-            this.close();
+            this.hideSettings(e);
             
             this.deleteConfirmationView = new DeleteConfirmationView();
             this.deleteConfirmationView.render();
@@ -91,22 +92,26 @@ function (TP, setImmediate, jqueryOutside, DeleteConfirmationView, calendarWeekS
             this.model.collection.deleteWeekItems();
         },
 
-        onCopyClicked: function()
+        onCopyClicked: function(e)
         {
-            this.model.trigger("week:copy", this.model.collection);
-            this.close();
+            this.model.collection.trigger("week:copy", this.model.collection);
+            //theMarsApp.logger.debug("Copy from week");
+            this.hideSettings(e);
         },
 
-        onCutClicked: function()
+        onCutClicked: function(e)
         {
             this.model.trigger("week:cut", this.model.collection);
-            this.close();
+            //theMarsApp.logger.debug("Cut from week");
+            this.hideSettings(e);
         },
 
-        onPasteClicked: function()
+        onPasteClicked: function(e)
         {
             this.model.trigger("week:paste", this.model.get("date"));
-            this.close();
+            //theMarsApp.logger.debug("Paste from week");
+            this.hideSettings(e);
         }
+
     });
 });

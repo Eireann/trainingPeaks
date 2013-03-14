@@ -45,7 +45,6 @@ function(_, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, CalendarD
 
             this.clipboard.on("change", this.onClipboardStateChange, this);
 
-
         },
 
         subscribeToSelectEvents: function()
@@ -81,34 +80,66 @@ function(_, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, CalendarD
                 this.clipboard.empty();
         },
 
+        onWeekSelected: function(selectedWeek)
+        {
+            this.selectedWeek = selectedWeek;
+            //theMarsApp.logger.debug("Selected week: " + selectedWeek.get("date"));
+        },
+
+        onWeekUnselected: function(selectedWeek)
+        {
+            if (this.selectedWeek === selectedWeek)
+            {
+                this.selectedWeek = null;
+                //theMarsApp.logger.debug("UnSelected week: " + selectedWeek.get("date"));
+            }
+        },
+
         onKeypressCopy: function(e)
         {
-            if(this.selectedRange)
+            if (this.selectedWeek)
+            {
+                this.selectedWeek.collection.trigger("week:copy", this.selectedWeek.collection);
+                //theMarsApp.logger.debug("Copy from selected week");
+            } else if(this.selectedRange)
             {
                 this.selectedRange.trigger("week:copy", this.selectedRange);
-            } else if(this.selectedDay)
+                //theMarsApp.logger.debug("Copy from selected range");
+            } else if (this.selectedDay)
             {
                 this.selectedDay.trigger("day:copy", this.selectedDay);
+                //theMarsApp.logger.debug("Copy from selected day");
             }
         
         },
 
         onKeypressCut: function(e)
         {
-            if(this.selectedRange)
+            if (this.selectedWeek)
+            {
+                this.selectedWeek.collection.trigger("week:cut", this.selectedWeek.collection);
+                //theMarsApp.logger.debug("Cut from selected week");
+            } else if(this.selectedRange)
             {
                 this.selectedRange.trigger("week:cut", this.selectedRange);
+                //theMarsApp.logger.debug("Cut from selected week");
             } else if(this.selectedDay)
             {
                 this.selectedDay.trigger("day:cut", this.selectedDay);
+                //theMarsApp.logger.debug("Cut from selected day");
             }
         },
 
         onKeypressPaste: function(e)
         {
-            if (this.selectedDay)
+            if (this.selectedWeek)
+            {
+                this.onPaste(this.selectedWeek.get("date"));
+                //theMarsApp.logger.debug("Paste on selected week");
+            } else if (this.selectedDay)
             {
                 this.onPaste(this.selectedDay.id);
+                //theMarsApp.logger.debug("Paste on selected day");
             }
         },
 
@@ -238,6 +269,8 @@ function(_, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, CalendarD
             weekCollection.on("week:copy", this.onItemsCopy, this);
             weekCollection.on("week:cut", this.onItemsCut, this);
             weekCollection.on("week:paste", this.onPaste, this);
+            weekCollection.on("week:select", this.onWeekSelected, this);
+            weekCollection.on("week:unselect", this.onWeekUnselected, this);
 
             return weekCollection;
         },
