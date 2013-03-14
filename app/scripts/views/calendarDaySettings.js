@@ -64,8 +64,6 @@ function (TP, setImmediate, jqueryOutside, NewItemView, DeleteConfirmationView, 
 
         onRender: function()
         {
-            _.bindAll(this, "hideSettings");
-
 
             $('body').append(this.$el);
             var self = this;
@@ -88,9 +86,9 @@ function (TP, setImmediate, jqueryOutside, NewItemView, DeleteConfirmationView, 
             this.updatePasteAvailability();
         },
 
-        onDeleteClicked: function()
+        onDeleteClicked: function(e)
         {
-            this.close();
+            this.hideSettings(e);
             
             this.deleteConfirmationView = new DeleteConfirmationView();
             this.deleteConfirmationView.render();

@@ -130,9 +130,13 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, calendarContainerVi
             this.ui.weeksContainer.scroll(debouncedScrollStop);
 
             // keydown, because keypress doesn't seem to register with ctrl key, and keyup doesn't register command key in chrome on mac
-            _.bindAll(this, "onKeyPress");
-            $(document).on('keydown', this.onKeyPress);
-            
+            _.bindAll(this, "onKeyDown");
+            $(document).on('keydown', this.onKeyDown);
+
+            // prevent autorepeat keydown
+             _.bindAll(this, "onKeyUp");
+             $(document).on('keyup', this.onKeyUp);
+
             //theMarsApp.logger.startTimer("CalendarView.onRender", "Begin rendering weeks");
 
             var numWeeks = this.collection.length;
@@ -336,8 +340,13 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, calendarContainerVi
             }
         },
 
-        onKeyPress: function(e)
+        onKeyDown: function(e)
         {
+
+            // prevent autorepeat
+            if (this.keyDownWasProcessed)
+                return;
+
             if (e.isDefaultPrevented())
                 return;
 
@@ -354,19 +363,27 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, calendarContainerVi
             switch (whichKey)
             {
                 case "C":
+                    this.keyDownWasProcessed = true;
                     this.collection.onKeypressCopy(e);
                     break;
 
                 case "X":
+                    this.keyDownWasProcessed = true;
                     this.collection.onKeypressCut(e);
                     break;
 
                 case "V":
+                    this.keyDownWasProcessed = true;
                     this.collection.onKeypressPaste(e);
                     break;
 
             }
 
+        },
+
+        onKeyUp: function()
+        {
+            this.keyDownWasProcessed = false;
         }
 
     });
