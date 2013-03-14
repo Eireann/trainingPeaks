@@ -173,6 +173,14 @@ body.clipboardEmpty
     }
 }
 
+body.pasteDisabled
+{
+    .paste
+    {
+        color:$TPGrey2;
+    }
+}
+
 body.clipboardFull
 {
     .paste

@@ -83,6 +83,9 @@ function (TP, setImmediate, jqueryOutside, NewItemView, DeleteConfirmationView, 
 
             if (weekDate.week() === today.week() && weekDate.year() === today.year())
                 this.$el.find(".hoverBox").addClass("thisWeek");
+
+            this.model.trigger("day:pasteMenu", this.model.id);
+            this.updatePasteAvailability();
         },
 
         onDeleteClicked: function()
@@ -102,12 +105,14 @@ function (TP, setImmediate, jqueryOutside, NewItemView, DeleteConfirmationView, 
         onCopyClicked: function(e)
         {
             this.model.trigger("day:copy", this.model);
+            this.updatePasteAvailability();
             this.hideSettings(e);
         },
         
         onCutClicked: function(e)
         {
             this.model.trigger("day:cut", this.model);
+            this.updatePasteAvailability();
             this.hideSettings(e);
         },
 
@@ -115,6 +120,11 @@ function (TP, setImmediate, jqueryOutside, NewItemView, DeleteConfirmationView, 
         {
             this.model.trigger("day:paste", this.model.id);
             this.hideSettings(e);
+        },
+
+        updatePasteAvailability: function()
+        {
+            this.model.trigger("week:pasteMenu", this.model.get("date"));
         }
 
     });

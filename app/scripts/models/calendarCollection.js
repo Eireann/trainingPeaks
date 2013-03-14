@@ -1,13 +1,14 @@
 ﻿define(
 [
     "underscore",
+    "moment",
     "TP",
     "framework/clipboard",
     "models/workoutsCollection",
     "models/calendarWeekCollection",
     "models/calendarDay"
 ],
-function(_, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, CalendarDayModel)
+function(_, moment, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, CalendarDayModel)
 {
     return TP.Collection.extend(
     {
@@ -44,8 +45,7 @@ function(_, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, CalendarD
             this.daysCollection.on("day:copy", this.onItemsCopy, this);
             this.daysCollection.on("day:cut", this.onItemsCut, this);
             this.daysCollection.on("day:paste", this.onPaste, this);
-
-            this.clipboard.on("change", this.onClipboardStateChange, this);
+            this.daysCollection.on("day:pasteMenu", this.onPasteMenuOpen, this);
         },
 
         subscribeToSelectEvents: function()
@@ -69,9 +69,36 @@ function(_, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, CalendarD
             this.clipboard.set(model.cutToClipboard(), "cut");
         },
 
+        canPasteTo: function(dateToPasteTo)
+        {
+            // no data? can't paste
+            if (!this.clipboard.hasData())
+                return false;
+
+            // copied data? paste anywhere
+            if (this.clipboard.getAction() === "copy")
+                return true;
+
+
+            var cutData = this.clipboard.getValue();
+            dateToPasteTo = moment(dateToPasteTo).format("YYYY-MM-DD");
+
+            // can't paste a day back to itself
+            if (cutData instanceof CalendarDayModel && dateToPasteTo === cutData.get("date"))
+                return false;
+
+            // can't paste a workout onto the same day
+            if (typeof cutData.getCalendarDay === "function" && dateToPasteTo === cutData.getCalendarDay())
+                return false;
+
+            // ok to paste
+            return true;
+            
+        },
+
         onPaste: function(dateToPasteTo)
         {
-            if (!this.clipboard.hasData())
+            if (!this.canPasteTo(dateToPasteTo))
                 return;
 
             var pastedItems = this.clipboard.getValue().onPaste(dateToPasteTo);
@@ -144,14 +171,14 @@ function(_, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, CalendarD
             }
         },
 
-        onClipboardStateChange: function()
+        onPasteMenuOpen: function(dateToPasteTo)
         {
             if (this.clipboard.hasData())
             {
-                this.trigger("clipboard:full");
+                this.trigger("paste:enabled");
             } else
             {
-                this.trigger("clipboard:empty");
+                this.trigger("paste:disabled");
             }
         },
 
@@ -270,6 +297,7 @@ function(_, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, CalendarD
             weekCollection.on("week:copy", this.onItemsCopy, this);
             weekCollection.on("week:cut", this.onItemsCut, this);
             weekCollection.on("week:paste", this.onPaste, this);
+            weekCollection.on("week:pasteMenu", this.onPasteMenuOpen, this);
             weekCollection.on("week:select", this.onWeekSelected, this);
             weekCollection.on("week:unselect", this.onWeekUnselected, this);
 

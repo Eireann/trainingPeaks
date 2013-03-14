@@ -77,6 +77,7 @@ function (TP, setImmediate, jqueryOutside, DeleteConfirmationView, calendarWeekS
             }
 
             this.model.collection.trigger("week:select", this.model);
+            this.updatePasteAvailability();
         },
 
         onDeleteClicked: function(e)
@@ -96,6 +97,7 @@ function (TP, setImmediate, jqueryOutside, DeleteConfirmationView, calendarWeekS
         onCopyClicked: function(e)
         {
             this.model.collection.trigger("week:copy", this.model.collection);
+            this.updatePasteAvailability();
             //theMarsApp.logger.debug("Copy from week");
             this.hideSettings(e);
         },
@@ -103,6 +105,7 @@ function (TP, setImmediate, jqueryOutside, DeleteConfirmationView, calendarWeekS
         onCutClicked: function(e)
         {
             this.model.trigger("week:cut", this.model.collection);
+            this.updatePasteAvailability();
             //theMarsApp.logger.debug("Cut from week");
             this.hideSettings(e);
         },
@@ -112,6 +115,11 @@ function (TP, setImmediate, jqueryOutside, DeleteConfirmationView, calendarWeekS
             this.model.trigger("week:paste", this.model.get("date"));
             //theMarsApp.logger.debug("Paste from week");
             this.hideSettings(e);
+        },
+
+        updatePasteAvailability: function()
+        {
+            this.model.trigger("week:pasteMenu", this.model.get("date"));
         }
 
     });
