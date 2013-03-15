@@ -43,7 +43,7 @@
 			&:hover label{color: $white;}
 			float:left;
 
-			@include labels($navigationFontFamilyRegular, $navigationFontSize, $TPGrey4);
+			@include labels($navigationFontFamilyRegular, $navigationFontSize, $TPGrey4, normal);
 
 		}
 
@@ -88,7 +88,7 @@
 			
 		}
 
-		@include labels($navigationFontFamilyRegular, $navigationFontSize, $TPGrey4);
+		@include labels($navigationFontFamilyRegular, $navigationFontSize, $TPGrey4, normal);
 		label
 		{
 			padding: 0px 7px 7px 7px;
@@ -107,7 +107,7 @@
 		float: left;
 		padding-left: 65px;
 		padding-top: 13px;
-		@include labels($navigationFontFamilyRegular, 25px, $TPBlue);
+		@include labels($navigationFontFamilyRegular, 25px, $TPBlue, normal);
 		label
 		{
 			float: left;

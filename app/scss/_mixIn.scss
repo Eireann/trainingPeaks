@@ -22,13 +22,14 @@
 	}
 }
 
-@mixin labels($fontFamily, $fontSize, $fontColor)
+@mixin labels($fontFamily, $fontSize, $fontColor, $fontWeight)
 {
 	label
 	{
 		font-family: $fontFamily;
 		font-size: $fontSize;
 		color: $fontColor;
+		font-weight: $fontWeight;
 	}
 }
 

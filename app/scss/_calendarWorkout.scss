@@ -33,7 +33,7 @@
                 {
                     padding: 10px 0px 0px 30px;
 
-                    @include labels($navigationFontFamilyRegular, 17px, $black);
+                    @include labels($navigationFontFamilyRegular, 17px, $black, normal);
                 }
 
                 .workoutSettings
@@ -53,7 +53,7 @@
             .workoutBody
             {
                 padding: 10px 5px 5px 5px;
-                @include labels($navigationFontFamilyRegular, 10px, $black);
+                @include labels($navigationFontFamilyRegular, 10px, $black, normal);
                 label{font-weight: bold;}
                 
                 p
@@ -81,7 +81,7 @@
     {
         min-width: 100px;
 
-        @include labels($navigationFontFamilyRegular, 11px, $TPGrey4);
+        @include labels($navigationFontFamilyRegular, 11px, $TPGrey4, normal);
 
         label
         {
@@ -123,7 +123,7 @@
 	padding-left: 10px;
 	padding-bottom: 20px;
 
-	@include labels($navigationFontFamilyRegular, 12px, $TPGrey4);
+	@include labels($navigationFontFamilyRegular, 12px, $TPGrey4, normal);
 	label
 	{
 		padding-top: 2px;

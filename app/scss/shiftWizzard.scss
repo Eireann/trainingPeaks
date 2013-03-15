@@ -1,0 +1,14 @@
+﻿@import "tpstylesheet";
+
+#shiftItems
+{
+	width: 400px;
+	padding: 10px;
+
+	@include labels($navigationFontFamilyRegular, 12, $TPGrey4, normal);
+
+	.bold
+	{
+		font-weight: bold;
+	}
+}

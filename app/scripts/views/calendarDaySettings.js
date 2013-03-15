@@ -5,9 +5,10 @@ define(
     "jqueryOutside",
     "views/newItemView",
     "views/deleteConfirmationView",
+    "views/shiftWizzardView",
     "hbs!templates/views/calendarDaySettings"
 ],
-function (TP, setImmediate, jqueryOutside, NewItemView, DeleteConfirmationView, calendarDaySettingsTemplate)
+function (TP, setImmediate, jqueryOutside, NewItemView, DeleteConfirmationView, ShiftWizzardView, calendarDaySettingsTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -22,7 +23,8 @@ function (TP, setImmediate, jqueryOutside, NewItemView, DeleteConfirmationView, 
             "click #calendarDaySettingsDeleteLabel": "onDeleteClicked",
             "click #calendarDaySettingsCutLabel": "onCutClicked",
             "click #calendarDaySettingsCopyLabel": "onCopyClicked",
-            "click #calendarDaySettingsPasteLabel": "onPasteClicked"
+            "click #calendarDaySettingsPasteLabel": "onPasteClicked",
+            "click #calendarDaySettingsShiftLabel": "onShiftClicked"
         },
         
         onAddClicked: function(e)
@@ -64,6 +66,8 @@ function (TP, setImmediate, jqueryOutside, NewItemView, DeleteConfirmationView, 
 
         onRender: function()
         {
+            _.bindAll(this, "hideSettings");
+
 
             $('body').append(this.$el);
             var self = this;
@@ -81,14 +85,11 @@ function (TP, setImmediate, jqueryOutside, NewItemView, DeleteConfirmationView, 
 
             if (weekDate.week() === today.week() && weekDate.year() === today.year())
                 this.$el.find(".hoverBox").addClass("thisWeek");
-
-            this.model.trigger("day:pasteMenu", this.model.id);
-            this.updatePasteAvailability();
         },
 
-        onDeleteClicked: function(e)
+        onDeleteClicked: function()
         {
-            this.hideSettings(e);
+            this.close();
             
             this.deleteConfirmationView = new DeleteConfirmationView();
             this.deleteConfirmationView.render();
@@ -103,14 +104,12 @@ function (TP, setImmediate, jqueryOutside, NewItemView, DeleteConfirmationView, 
         onCopyClicked: function(e)
         {
             this.model.trigger("day:copy", this.model);
-            this.updatePasteAvailability();
             this.hideSettings(e);
         },
         
         onCutClicked: function(e)
         {
             this.model.trigger("day:cut", this.model);
-            this.updatePasteAvailability();
             this.hideSettings(e);
         },
 
@@ -120,9 +119,11 @@ function (TP, setImmediate, jqueryOutside, NewItemView, DeleteConfirmationView, 
             this.hideSettings(e);
         },
 
-        updatePasteAvailability: function()
+        onShiftClicked: function ()
         {
-            this.model.trigger("week:pasteMenu", this.model.get("date"));
+            this.close();
+            this.shiftWizzardView = new ShiftWizzardView();
+            this.shiftWizzardView.render();
         }
 
     });
