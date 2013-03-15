@@ -57,8 +57,8 @@ function (TP, dialog, WorkoutModel, WorkoutQuickView, newItemViewTemplate)
                 this.newWorkout = new WorkoutModel(
                 {
                     personId: theMarsApp.user.get("userId"),
-                    workoutDay: moment(self.model.get("date")).format("YYYY-MM-DDThh:mm:ss"),
-                    startTime: moment(self.model.get("date")).add("hours", 6).format("YYYY-MM-DDThh:mm:ss"),
+                    workoutDay: moment(this.model.get("date")).format("YYYY-MM-DDThh:mm:ss"),
+                    startTime: moment(this.model.get("date")).add("hours", 6).format("YYYY-MM-DDThh:mm:ss"),
                     title: "",
                     workoutTypeValueId: workoutTypeId
                 });
