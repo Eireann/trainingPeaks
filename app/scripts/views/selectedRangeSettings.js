@@ -62,6 +62,8 @@ function(TP, setImmediate, jqueryOutside, DeleteConfirmationView, selectedRangeS
             setImmediate(function() { self.$el.bind("clickoutside", self.hideSettings); });
 
             this.$el.css("left", this.posX - 30).css("top", this.posY - this.$el.height());
+
+            this.updatePasteAvailability();
         },
 
         onDeleteClicked: function()
@@ -80,12 +82,14 @@ function(TP, setImmediate, jqueryOutside, DeleteConfirmationView, selectedRangeS
         onCopyClicked: function()
         {
             this.selectedRangeCollection.trigger("week:copy", this.selectedRangeCollection);
+            this.updatePasteAvailability();
             this.close();
         },
 
         onCutClicked: function()
         {
             this.selectedRangeCollection.trigger("week:cut", this.selectedRangeCollection);
+            this.updatePasteAvailability();
             this.close();
         },
 
@@ -93,6 +97,11 @@ function(TP, setImmediate, jqueryOutside, DeleteConfirmationView, selectedRangeS
         {
             this.selectedRangeCollection.trigger("range:shiftwizard");
             this.close();
+        },
+
+        updatePasteAvailability: function()
+        {
+            this.selectedRangeCollection.trigger("week:pasteMenu", this.selectedRangeCollection.models[0].id);
         }
     });
 });
