@@ -57,8 +57,9 @@ function(_, moment, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, C
         {
             if (!model || !model.copyToClipboard)
                 throw "Invalid copy event argument: " + model;
-            
+
             this.clipboard.set(model.copyToClipboard(), "copy");
+            console.log('copied');
         },
 
         onItemsCut: function (model)
@@ -110,6 +111,8 @@ function(_, moment, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, C
 
             if (this.clipboard.getAction() === "cut")
                 this.clipboard.empty();
+
+            console.log('pasted: ' + (pastedItems && pastedItems.length ? pastedItems.length : 1) + ' items');
         },
 
         onWeekSelected: function(selectedWeek)
@@ -142,6 +145,9 @@ function(_, moment, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, C
                 this.selectedDay.trigger("day:copy", this.selectedDay);
                 //theMarsApp.logger.debug("Copy from selected day");
             }
+
+            // update paste status
+            this.onPasteMenuOpen();
         
         },
 
@@ -160,6 +166,9 @@ function(_, moment, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, C
                 this.selectedDay.trigger("day:cut", this.selectedDay);
                 //theMarsApp.logger.debug("Cut from selected day");
             }
+
+            // update paste status
+            this.onPasteMenuOpen();
         },
 
         onKeypressPaste: function(e)
@@ -173,10 +182,24 @@ function(_, moment, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, C
                 this.onPaste(this.selectedDay.id);
                 //theMarsApp.logger.debug("Paste on selected day");
             }
+
+            // update paste status
+            this.onPasteMenuOpen();
         },
 
         onPasteMenuOpen: function(dateToPasteTo)
         {
+            if (dateToPasteTo)
+            {
+                this.pasteMenuDate = dateToPasteTo;
+            } else if (this.pasteMenuDate)
+            {
+                dateToPasteTo = this.pasteMenuDate;
+            } else
+            {
+                return;
+            }
+
             if (this.canPasteTo(dateToPasteTo))
             {
                 this.trigger("paste:enable");

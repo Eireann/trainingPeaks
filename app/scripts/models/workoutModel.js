@@ -87,6 +87,11 @@ function (_, moment, TP)
         {
             return moment(this.get("workoutDay")).format(this.shortDateFormat);
         },
+        
+        //setCalendarDay: function (date)
+        //{
+        //    this.set("workoutDay", moment(date).format(this.longDateFormat));
+        //},
 
         moveToDay: function(newDate, newCollection)
         {

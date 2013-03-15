@@ -90,7 +90,7 @@
         border-left:2px solid $TPBlue;
         border-bottom:2px solid $TPBlue;
 
-        @include labels($navigationFontFamilyRegular, 20px, $TPBlue);
+        @include labels($navigationFontFamilyRegular, 20px, $TPBlue, normal);
         label
         {
             display: inline-block;

@@ -128,7 +128,7 @@ function (TP, dialog, WorkoutModel, WorkoutQuickView, newItemViewTemplate)
         {
             // The QuickView already saved the model to the server, let's update our local collections to reflect the change.
             this.model.trigger("workout:added", this.newWorkout);
-            this.$el.dialog("close");
+            //this.$el.dialog("close");
             this.close();
         },
 

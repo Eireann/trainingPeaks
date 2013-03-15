@@ -129,10 +129,14 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, calendarContainerVi
             var debouncedScrollStop = _.debounce(this.onScrollStop, 300);
             this.ui.weeksContainer.scroll(debouncedScrollStop);
 
-            // keyup, because keypress doesn't seem to register with ctrl key
-            _.bindAll(this, "onKeyPress");
-            $("body").on('keyup', this.onKeyPress);
-            
+            // keydown, because keypress doesn't seem to register with ctrl key, and keyup doesn't register command key in chrome on mac
+            _.bindAll(this, "onKeyDown");
+            $(document).on('keydown', this.onKeyDown);
+
+            // prevent autorepeat keydown
+             _.bindAll(this, "onKeyUp");
+             $(document).on('keyup', this.onKeyUp);
+
             //theMarsApp.logger.startTimer("CalendarView.onRender", "Begin rendering weeks");
 
             var numWeeks = this.collection.length;
@@ -336,16 +340,22 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, calendarContainerVi
             }
         },
 
-        onKeyPress: function(e)
+        onKeyDown: function(e)
         {
+
+            // prevent autorepeat
+            if (this.keyDownWasProcessed)
+                return;
+
             if (e.isDefaultPrevented())
                 return;
 
             if (!e.ctrlKey && !e.metaKey)
                 return;
 
-            // if we're not on the body, we're probably on something else we don't want to listen to
-            if (!$(e.target).is("body"))
+            // if we're in input or textarea, ignore keypress
+            var $target = $(e.target);
+            if ($target.is("input") || $target.is("textarea"))
                 return;
 
             var whichKey = String.fromCharCode(e.keyCode);
@@ -353,19 +363,27 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, calendarContainerVi
             switch (whichKey)
             {
                 case "C":
+                    this.keyDownWasProcessed = true;
                     this.collection.onKeypressCopy(e);
                     break;
 
                 case "X":
+                    this.keyDownWasProcessed = true;
                     this.collection.onKeypressCut(e);
                     break;
 
                 case "V":
+                    this.keyDownWasProcessed = true;
                     this.collection.onKeypressPaste(e);
                     break;
 
             }
 
+        },
+
+        onKeyUp: function()
+        {
+            this.keyDownWasProcessed = false;
         }
 
     });
