@@ -1,10 +1,10 @@
 ﻿@import "tpstylesheet";
 
-@mixin headerButtons($marginLeft, $button, $height, $fontSize)
+@mixin headerButtons($marginLeft, $width, $height, $fontSize)
 {
 	button
 	{
-		width: $button;
+		width: $width;
 		height: $height;
 		float: left;
 		font-family: $navigationFontFamilyLight;

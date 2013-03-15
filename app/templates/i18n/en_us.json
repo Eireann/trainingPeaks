@@ -149,6 +149,7 @@
 	"ShiftItems": "Shift Items",
 
     "Cancel" : "Cancel",
+	"OK": "OK",
 
     "ConfirmDelete" : "Are you sure you want to delete? This cannot be undone!",
 
