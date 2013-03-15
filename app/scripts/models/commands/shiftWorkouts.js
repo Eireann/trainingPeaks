@@ -9,6 +9,11 @@ function(moment, TP)
     return TP.Model.extend(
     {
 
+        urlRoot: function()
+        {
+            return theMarsApp.apiRoot + "/WebApiServer/Fitness/V1/commands/shiftworkouts";
+        },
+
         defaults: function()
         {
             return {

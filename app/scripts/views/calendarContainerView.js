@@ -393,7 +393,19 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, c
         onShiftWizardOpen: function()
         {
             this.shiftWizzardView = new ShiftWizzardView();
+            this.shiftWizzardView.on("shifted", this.onShiftWizardShifted, this);
             this.shiftWizzardView.render();
+        },
+
+        onShiftWizardShifted: function(shiftCommandResult)
+        {
+            _.bindAll(this, "afterWorkoutsShifted");
+            shiftCommandResult.done(this.afterWorkoutsShifted);
+        },
+
+        afterWorkoutsShifted: function(shiftCommand)
+        {
+            this.trigger("workoutsShifted", shiftCommand);
         }
 
     });

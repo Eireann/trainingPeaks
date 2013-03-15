@@ -274,11 +274,12 @@ function(_, moment, setImmediate, TP, CalendarLayout, CalendarCollection, Calend
             this.showDate(moment(currentWeekModel.get("date")).add("days", 1), 200);
         },
 
-        bindToCalendarViewEvents: function (calendarView)
+        bindToCalendarViewEvents: function(calendarView)
         {
             calendarView.on("prepend", this.prependWeekToCalendar, this);
             calendarView.on("append", this.appendWeekToCalendar, this);
             calendarView.on("itemDropped", this.onDropItem, this);
+            calendarView.on("workoutsShifted", this.onShiftItems, this);
         },
 
         onDropItem: function(options)
@@ -293,6 +294,13 @@ function(_, moment, setImmediate, TP, CalendarLayout, CalendarCollection, Calend
                 this.weeksCollection.addWorkout(workout);
                 workout.save();
             }
+        },
+
+        onShiftItems: function(shiftCommand)
+        {
+            console.log("Items Shifted: ");
+            console.log(shiftCommand);
+            this.clearCacheAndRefresh();
         },
 
         createNewWorkoutFromExerciseLibraryItem: function(exerciseLibraryItemId, workoutDate)
