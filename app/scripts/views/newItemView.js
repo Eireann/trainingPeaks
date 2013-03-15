@@ -57,7 +57,8 @@ function (TP, dialog, WorkoutModel, WorkoutQuickView, newItemViewTemplate)
                 this.newWorkout = new WorkoutModel(
                 {
                     personId: theMarsApp.user.get("userId"),
-                    workoutDay: this.model.get("date"),
+                    workoutDay: moment(self.model.get("date")).format("YYYY-MM-DDThh:mm:ss"),
+                    startTime: moment(self.model.get("date")).add("hours", 6).format("YYYY-MM-DDThh:mm:ss"),
                     title: "",
                     workoutTypeValueId: workoutTypeId
                 });
@@ -93,7 +94,7 @@ function (TP, dialog, WorkoutModel, WorkoutQuickView, newItemViewTemplate)
 
                 var data = new Uint8Array(event.target.result);
                 var dataAsString = btoa(uint8ToString(data));
-                self.uploadedFileDataModel = new WorkoutFileData({ dateEpoch: moment(self.model.get("date")).unix(), data: dataAsString });
+                self.uploadedFileDataModel = new WorkoutFileData({ workoutDay: moment(self.model.get("date")).format("YYYY-MM-DDThh:mm:ss"), startTime: moment(self.model.get("date")).add("hours", 6).format("YYYY-MM-DDThh:mm:ss"), data: dataAsString });
                 self.uploadedFileDataModel.save().done(self.onUploadDone).fail(self.onUploadFail);
             };
 
