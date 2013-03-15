@@ -45,7 +45,7 @@ function(TP, initializeAjaxAuth, ajaxCaching, initializeAjaxTimezone, Session, U
     {
         initializeAjaxAuth(this);
         initializeAjaxTimezone();
-        ajaxCaching.initialize(this);
+        this.ajaxCaching = ajaxCaching.initialize(this);
     });
     
     // add a session

@@ -89,9 +89,9 @@ function(TP, setImmediate, jqueryOutside, DeleteConfirmationView, selectedRangeS
             this.close();
         },
 
-        onShiftClicked: function()
+        onShiftClicked: function(e)
         {
-            alert("Shift is not implemented");
+            this.selectedRangeCollection.trigger("range:shiftwizard");
             this.close();
         }
     });

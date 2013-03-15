@@ -22,7 +22,8 @@ function (TP, setImmediate, jqueryOutside, DeleteConfirmationView, calendarWeekS
             "click #calendarWeekSummarySettingsDeleteLabel": "onDeleteClicked",
             "click #calendarWeekSummarySettingsCutLabel": "onCutClicked",
             "click #calendarWeekSummarySettingsCopyLabel": "onCopyClicked",
-            "click #calendarWeekSummarySettingsPasteLabel": "onPasteClicked"
+            "click #calendarWeekSummarySettingsPasteLabel": "onPasteClicked",
+            "click #calendarWeekSummarySettingsShiftLabel": "onShiftClicked"
         },
 
         hideSettings: function(e)
@@ -120,6 +121,12 @@ function (TP, setImmediate, jqueryOutside, DeleteConfirmationView, calendarWeekS
         updatePasteAvailability: function()
         {
             this.model.trigger("week:pasteMenu", this.model.get("date"));
+        },
+
+        onShiftClicked: function (e)
+        {
+            this.hideSettings(e);
+            this.model.trigger("week:shiftwizard");
         }
 
     });

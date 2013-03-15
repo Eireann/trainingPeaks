@@ -216,6 +216,7 @@ function(_, moment, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, C
             if(this.selectedRange)
             {
                 this.selectedRange.unselect();
+                this.selectedRange.off("range:shiftwizard", this.onShiftWizardOpen, this);
                 this.selectedRange = null;
             }
 
@@ -223,6 +224,7 @@ function(_, moment, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, C
             if (this.selectedDay && !e.shiftKey)
             {
                 this.selectedDay.trigger("day:unselect");
+                this.selectedDay.off("day:shiftwizard", this.onShiftWizardOpen, this);
                 this.selectedDay = null;
             }
 
@@ -231,6 +233,7 @@ function(_, moment, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, C
             {
                 this.selectedRange = this.createRangeOfDays(this.selectedDay.id, dayModel.id);
                 this.selectedRange.select();
+                this.selectedRange.on("range:shiftwizard", this.onShiftWizardOpen, this);
 
                 // cancel default text selection behavior - also prevented through css on #calendarContainer
                 document.getSelection().removeAllRanges();
@@ -242,6 +245,7 @@ function(_, moment, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, C
 
             // select it
             this.selectedDay = dayModel;
+            this.selectedDay.on("day:shiftwizard", this.onShiftWizardOpen, this);
             dayModel.trigger("day:select");
         },
 
@@ -286,6 +290,7 @@ function(_, moment, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, C
         resetToDates: function(startDate, endDate)
         {
             this.reset();
+            this.selectedDay = this.selectedWeek = this.selectedRange = null;
             this.setUpWeeks(startDate, endDate);
         },
         
@@ -327,6 +332,7 @@ function(_, moment, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, C
             weekCollection.on("week:pasteMenu", this.onPasteMenuOpen, this);
             weekCollection.on("week:select", this.onWeekSelected, this);
             weekCollection.on("week:unselect", this.onWeekUnselected, this);
+            weekCollection.on("week:shiftwizard", this.onShiftWizardOpen, this);
 
             return weekCollection;
         },
@@ -474,6 +480,11 @@ function(_, moment, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, C
                 }
             }
 
+        },
+
+        onShiftWizardOpen: function()
+        {
+            this.trigger("shiftwizard");
         }
     });
 });

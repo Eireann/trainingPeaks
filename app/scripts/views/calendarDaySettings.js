@@ -5,10 +5,9 @@ define(
     "jqueryOutside",
     "views/newItemView",
     "views/deleteConfirmationView",
-    "views/shiftWizzardView",
     "hbs!templates/views/calendarDaySettings"
 ],
-function (TP, setImmediate, jqueryOutside, NewItemView, DeleteConfirmationView, ShiftWizzardView, calendarDaySettingsTemplate)
+function(TP, setImmediate, jqueryOutside, NewItemView, DeleteConfirmationView, calendarDaySettingsTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -119,11 +118,10 @@ function (TP, setImmediate, jqueryOutside, NewItemView, DeleteConfirmationView, 
             this.hideSettings(e);
         },
 
-        onShiftClicked: function ()
+        onShiftClicked: function (e)
         {
-            this.close();
-            this.shiftWizzardView = new ShiftWizzardView();
-            this.shiftWizzardView.render();
+            this.hideSettings(e);
+            this.model.trigger("day:shiftwizard");
         }
 
     });

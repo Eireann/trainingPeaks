@@ -165,6 +165,13 @@ function(_, moment, setImmediate, TP, CalendarLayout, CalendarCollection, Calend
             this.views.calendar.fadeIn(800);
         },
 
+        clearCacheAndRefresh: function()
+        {
+            theMarsApp.ajaxCaching.clearCache();
+            this.weeksCollection.resetToDates(moment(this.startDate), moment(this.endDate));
+            this.loadCalendarData();
+        },
+
         showDate: function(dateAsMoment, effectDuration)
         {
             if (!dateAsMoment)

@@ -4,9 +4,10 @@
     "TP",
     "views/calendarWeekView",
     "views/selectedRangeSettings",
+    "views/shiftWizzardView",
     "hbs!templates/views/calendarContainerView"
 ],
-function(_, TP, CalendarWeekView, SelectedRangeSettingsView, calendarContainerView)
+function(_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, calendarContainerView)
 {
     return TP.ItemView.extend(
     {
@@ -55,6 +56,7 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, calendarContainerVi
             this.calendarHeaderModel = options.calendarHeaderModel;
             this.throttledCheckForPosition = _.throttle(this.checkCurrentScrollPosition, 100);
 
+            this.collection.on("shiftwizard", this.onShiftWizardOpen, this);
         },
 
         resizeContext: function (event)
@@ -384,6 +386,12 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, calendarContainerVi
         onKeyUp: function()
         {
             this.keyDownWasProcessed = false;
+        },
+
+        onShiftWizardOpen: function()
+        {
+            this.shiftWizzardView = new ShiftWizzardView();
+            this.shiftWizzardView.render();
         }
 
     });
