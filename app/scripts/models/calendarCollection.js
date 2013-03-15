@@ -484,7 +484,7 @@ function(_, moment, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, C
 
         onShiftWizardOpen: function()
         {
-            this.trigger("shiftwizard");
+            this.trigger("shiftwizard:open");
         }
     });
 });

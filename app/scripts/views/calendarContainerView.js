@@ -47,6 +47,10 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, c
 
         initialize: function(options)
         {
+
+            if (!this.collection)
+                throw "CalendarView needs a Collection!";
+
             _.bindAll(this, "checkCurrentScrollPosition");
             
             // theMarsApp.user.on("change", this.setWorkoutColorization, this);
@@ -56,7 +60,7 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, c
             this.calendarHeaderModel = options.calendarHeaderModel;
             this.throttledCheckForPosition = _.throttle(this.checkCurrentScrollPosition, 100);
 
-            this.collection.on("shiftwizard", this.onShiftWizardOpen, this);
+            this.collection.on("shiftwizard:open", this.onShiftWizardOpen, this);
         },
 
         resizeContext: function (event)
@@ -119,8 +123,6 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, c
 
         onRender: function()
         {
-            if (!this.collection)
-                throw "CalendarView needs a Collection!";
 
             //this.setWorkoutColorization();
 
