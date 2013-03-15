@@ -72,6 +72,7 @@ function (TP, dialog, WorkoutModel, WorkoutQuickView, newItemViewTemplate)
         onFileSelected: function ()
         {
             this.$el.addClass("waiting");
+            this.$("#uploadingNotification").css("display", "block");
             
             var self = this;
             var fileList = this.ui.fileinput[0].files;
