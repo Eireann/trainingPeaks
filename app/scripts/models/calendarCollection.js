@@ -118,16 +118,12 @@ function(_, moment, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, C
         onWeekSelected: function(selectedWeek)
         {
             this.selectedWeek = selectedWeek;
-            //theMarsApp.logger.debug("Selected week: " + selectedWeek.get("date"));
         },
 
         onWeekUnselected: function(selectedWeek)
         {
             if (this.selectedWeek === selectedWeek)
-            {
                 this.selectedWeek = null;
-                //theMarsApp.logger.debug("UnSelected week: " + selectedWeek.get("date"));
-            }
         },
 
         onKeypressCopy: function(e)
@@ -209,9 +205,8 @@ function(_, moment, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, C
             }
         },
 
-        onDayClicked: function(dayModel, e)
+        onDayClicked: function (dayModel, e)
         {
-
             // do we already have a selected range? unselect it and continue
             if(this.selectedRange)
             {
@@ -247,6 +242,28 @@ function(_, moment, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, C
             this.selectedDay = dayModel;
             this.selectedDay.on("day:shiftwizard", this.onShiftWizardOpen, this);
             dayModel.trigger("day:select");
+        },
+
+        onWeekSummarySettingsOpened: function(weekCollection, e)
+        {
+            if (!weekCollection)
+                return;
+
+            var firstDay = weekCollection.at(0);
+            var lastDay = weekCollection.at(6);
+
+            if (!firstDay || !lastDay)
+                return;
+            
+            this.selectedRange = this.createRangeOfDays(moment(firstDay.get("date")), moment(lastDay.get("date")));
+            this.selectedRange.select();
+            this.trigger("rangeselect", this.selectedRange, e);
+        },
+
+        onWeekSummarySettingsClosed: function(weekCollection, e)
+        {
+            this.selectedRange.unselect();
+            this.selectedRange = null;
         },
 
         createRangeOfDays: function(selectionStartDay, selectionEndDay)
@@ -333,6 +350,8 @@ function(_, moment, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, C
             weekCollection.on("week:select", this.onWeekSelected, this);
             weekCollection.on("week:unselect", this.onWeekUnselected, this);
             weekCollection.on("week:shiftwizard", this.onShiftWizardOpen, this);
+            weekCollection.on("weeksummary:settings:open", this.onWeekSummarySettingsOpened, this);
+            weekCollection.on("weeksummary:settings:close", this.onWeekSummarySettingsClosed, this);
 
             return weekCollection;
         },

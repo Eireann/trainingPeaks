@@ -184,10 +184,12 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySe
         
         onWhitespaceDayClicked: function(e)
         {
-            if (e.isDefaultPrevented())
+            if (e.isDefaultPrevented() || theMarsApp.isBlurred)
                 return;
 
             e.preventDefault();
+
+            this.model.trigger("day:click", this.model, e);
 
             var newItemView = new NewItemView({ model: this.model });
             newItemView.render();

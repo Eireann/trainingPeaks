@@ -79,9 +79,25 @@ function(TP, initializeAjaxAuth, ajaxCaching, initializeAjaxTimezone, Session, U
         this.controllers.loginController = new LoginController();
         this.controllers.calendarController = new CalendarController();
 
+        var self = this;
         this.router = new Router();
     });
 
+    // Set up global Blur/Focus handling to avoid clicks when regaining focus on the entire app.
+    theApp.addInitializer(function()
+    {
+        this.isBlurred = false;
+        $(window).blur(function(e)
+        {
+            self.isBlurred = true;
+        });
+
+        $(window).focus(function(e)
+        {
+            setTimeout(function() { self.isBlurred = false; }, 200);
+        });
+    });
+    
     theApp.isLive = function()
     {
         // if we're in local or dev mode, use DEBUG log level etc
