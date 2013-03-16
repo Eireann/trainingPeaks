@@ -12,7 +12,8 @@ define(
     "controllers/loginController",
     "controllers/calendarController",
     "router",
-    "marionette.faderegion"
+    "marionette.faderegion",
+    "jqueryui/tooltip"
 ],
 function(TP, initializeAjaxAuth, ajaxCaching, initializeAjaxTimezone, Session, UserModel, UserSettingsModel, ClientEventsCollection, NavigationController, LoginController, CalendarController, Router)
 {
@@ -95,6 +96,28 @@ function(TP, initializeAjaxAuth, ajaxCaching, initializeAjaxTimezone, Session, U
         $(window).focus(function(e)
         {
             setTimeout(function() { self.isBlurred = false; }, 200);
+        });
+    });
+
+    // Set up jQuery UI Tooltips
+    theApp.addInitializer(function()
+    {
+        $(document).tooltip(
+        {
+            position:
+            {
+                my: "center bottom-20",
+                at: "center top",
+                using: function (position, feedback)
+                {
+                    $(this).css(position);
+                    $("<div>")
+                      .addClass("arrow")
+                      .addClass(feedback.vertical)
+                      .addClass(feedback.horizontal)
+                      .appendTo(this);
+                }
+            }
         });
     });
     
