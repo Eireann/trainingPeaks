@@ -63,9 +63,15 @@
 			}
 		}
 
-		.cancelOkButtons
-		{
-			padding: 0px 0px 10px 250px;
-		}
+		
 	}
+
+	.cancelOkButtons
+		{
+			height: 35px;
+			width: 100%;
+			padding: 8px 0px 10px 250px;
+			background-color: $TPGrey1;
+
+		}
 }
