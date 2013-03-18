@@ -2,11 +2,12 @@
 [
     "moment",
     "jqueryui/datepicker",
+    "jqueryui/spinner",
     "TP",
     "models/commands/ShiftWorkouts",
     "hbs!templates/views/shiftWizzard"
 ],
-function (moment, datepicker, TP, ShiftWorkoutsCommand, shiftWizzard)
+function(moment, datepicker, spinner, TP, ShiftWorkoutsCommand, shiftWizzard)
 {
 
     var ShiftWizardModel = TP.Model.extend(
@@ -92,7 +93,10 @@ function (moment, datepicker, TP, ShiftWorkoutsCommand, shiftWizzard)
             this.model.on("change:shiftBy", this.updateShiftByOptions, this);
 
             // date picker
-            this.$(".datepicker").datepicker();
+            this.$(".datepicker").datepicker({ dateFormat: "yy-mm-dd" });
+
+            // number picker, and make sure it fires a change event
+            this.$(".numberpicker").spinner().on("spinstop", function(event, ui) { $(this).trigger("change", event, ui); });
 
             // put it in the body since it's modal
             $('body').append(this.$el);
