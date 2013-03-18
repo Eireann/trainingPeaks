@@ -28,7 +28,8 @@ function (TP, ShiftWorkoutsCommand, shiftWizzard)
         {
             $('body').append(this.$el);
             this.$el.dialog({
-                modal: true
+                modal: true,
+                width: 400,
             });
         },
 
