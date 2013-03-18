@@ -15,19 +15,21 @@
             <label><input type="radio" value="ItemsOnAfterSpecifiedStartDate" name="selectItems" id="selectItemsAfterStartDate"/>{{$ "ItemsOnAfterSpecifiedStartDate"}}</label>
         </form>
         <label class="bold">{{$ "SelectDateRange"}}</label>
-        <form>
-            <label><input type="text" id="fromDate"/>{{$ "From"}}</label>
-            <label><input type="text" id="toDate" />{{$ "To"}}</label>
+        <form class="toAndFromDateRange">
+            <label><span>{{$ "From"}}</span><input type="text" id="fromDate" class="textInput"/></label>
+            <label><span>{{$ "To"}}</span><input type="text" id="toDate" /></label>
         </form>
         <label class="bold">{{$ "HowDoYouWantToShiftItems"}}</label>
         <form>
             <label><input type="radio" value="MoveNewStartDate" name="shiftBy"/>{{$ "MoveNewStartDate"}}</label>
             <label><input type="radio" value="MoveBySpecifiedNumberOfDays" name="shiftBy"/>{{$ "MoveBySpecifiedNumberOfDays"}}</label>
             <label><input type="radio" value="MoveBySpecifiedNumberOfWeeks" name="shiftBy"/>{{$ "MoveBySpecifiedNumberOfWeeks"}}</label>
-            <label><input type="text" id="SelectNewStartDate" name="SelectNewStartDate"/>{{$ "SelectNewStartDate"}}</label>
+            <div class="selectNewStartDateInput">
+                <label>{{$ "SelectNewStartDate"}}<input type="text" id="SelectNewStartDate" name="SelectNewStartDate"/></label>
+            </div>
         </form>
 
-        <div>
+        <div class="cancelOkButtons">
             <button id="cancel">{{$ "Cancel"}}</button>
             <button id="ok">{{$ "OK"}}</button>
         </div>
