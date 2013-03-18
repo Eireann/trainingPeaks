@@ -2,29 +2,44 @@
     <div class="header">
         <label class="bold">{{$ "ShiftItems"}}</label>
     </div>
-    <div class="shiftItemsBody">
+    <div class="shiftItemsBody"><!--
         <label class="bold">{{$ "SelectShiftItemsString"}}</label>
         <form name="selectShiftItems">
-           <label><input type="checkbox" value="workouts" />{{$ "Workouts"}}</label>
-           <label><input type="checkbox" value="meals" />{{$ "Meals"}}</label>
+           <label><input type="checkbox" id="workouts" checked />{{$ "Workouts"}}</label>
+           <label><input type="checkbox" id="meals" />{{$ "Meals"}}</label>
         </form>
+        -->
         <label class="bold">{{$ "SelectShiftItemsString"}}</label>
         <form>
-            <label><input type="radio" value="itemsOnAllSelectedDays" name="selectItems"/>{{$ "ItemsOnAllSelectedDays"}}</label>
-            <label><input type="radio" value="ItemsWithinSpecifiedDateRange" name="selectItems"/>{{$ "ItemsWithinSpecifiedDateRange"}}</label>
-            <label><input type="radio" value="ItemsOnAfterSpecifiedStartDate" name="selectItems"/>{{$ "ItemsOnAfterSpecifiedStartDate"}}</label>
+            <label><input type="radio" value="itemsOnAllSelectedDays" name="selectItems" id="selectItemsOnSelectedDays"/>{{$ "ItemsOnAllSelectedDays"}}</label>
+            <label><input type="radio" value="ItemsWithinSpecifiedDateRange" name="selectItems" id="selectItemsWithinDateRange"/>{{$ "ItemsWithinSpecifiedDateRange"}}</label>
+            <label><input type="radio" value="ItemsOnAfterSpecifiedStartDate" name="selectItems" id="selectItemsAfterStartDate"/>{{$ "ItemsOnAfterSpecifiedStartDate"}}</label>
         </form>
         <label class="bold">{{$ "SelectDateRange"}}</label>
         <form>
-            <label><input type="text" value="fromDate" />{{$ "From"}}</label>
-            <label><input type="text" value="toDate" />{{$ "To"}}</label>
+            <label><input type="text" id="fromDate" class="datepicker" value="{{ selectionStartDate }}"/>{{$ "From"}}</label>
+            <label><input type="text" id="toDate" class="datepicker" value="{{ selectionEndDate }}"/>{{$ "To"}}</label>
         </form>
         <label class="bold">{{$ "HowDoYouWantToShiftItems"}}</label>
         <form>
-            <label><input type="radio" value="MoveNewStartDate" name="shiftBy"/>{{$ "MoveNewStartDate"}}</label>
+            <label><input type="radio" value="MoveToNewStartDate" name="shiftBy"/>{{$ "MoveNewStartDate"}}</label>
             <label><input type="radio" value="MoveBySpecifiedNumberOfDays" name="shiftBy"/>{{$ "MoveBySpecifiedNumberOfDays"}}</label>
             <label><input type="radio" value="MoveBySpecifiedNumberOfWeeks" name="shiftBy"/>{{$ "MoveBySpecifiedNumberOfWeeks"}}</label>
-            <label><input type="text" value="SelectNewStartDate" name="shiftBy"/>{{$ "SelectNewStartDate"}}</label>
+
+            <div id="MoveToNewStartDate">
+                <label for="moveToStartDate">{{$ "SelectNewStartDate"}}</label>
+                <input type="text" id="moveToStartDate" class="datepicker"/>
+            </div>
+
+            <div id="MoveBySpecifiedNumberOfDays">
+                <label for="moveByNumberOfDays">{{$ "SelectNumberOfDays"}}</label>
+                <input type="number" id="moveByNumberOfDays" class="numberpicker"/>
+            </div>
+
+            <div id="MoveBySpecifiedNumberOfWeeks">
+                <label for="moveByNumberOfWeeks">{{$ "SelectNumberOfWeeks"}}</label>
+                <input type="number" id="moveByNumberOfWeeks" class="numberpicker"/>
+            </div>
         </form>
 
         <div>

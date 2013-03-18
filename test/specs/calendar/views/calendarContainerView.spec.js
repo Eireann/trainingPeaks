@@ -145,8 +145,8 @@ function($, TP, moment, theMarsApp, CalendarView)
             {
                 expect(CalendarView.prototype.scrollToDate).toBeDefined();
                 expect(typeof CalendarView.prototype.scrollToDate).toBe("function");
-                
-                var calendarContainerView = new CalendarView({calendarHeaderModel: new TP.Model()});
+
+                var calendarContainerView = new CalendarView({ calendarHeaderModel: new TP.Model(), collection: new TP.Collection() });
 
                 spyOn(calendarContainerView, "scrollToSelector");
 

@@ -4,9 +4,10 @@
     "TP",
     "views/calendarWeekView",
     "views/selectedRangeSettings",
+    "views/shiftWizzardView",
     "hbs!templates/views/calendarContainerView"
 ],
-function(_, TP, CalendarWeekView, SelectedRangeSettingsView, calendarContainerView)
+function(_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, calendarContainerView)
 {
     return TP.ItemView.extend(
     {
@@ -46,6 +47,10 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, calendarContainerVi
 
         initialize: function(options)
         {
+
+            if (!this.collection)
+                throw "CalendarView needs a Collection!";
+
             _.bindAll(this, "checkCurrentScrollPosition");
             
             // theMarsApp.user.on("change", this.setWorkoutColorization, this);
@@ -55,6 +60,7 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, calendarContainerVi
             this.calendarHeaderModel = options.calendarHeaderModel;
             this.throttledCheckForPosition = _.throttle(this.checkCurrentScrollPosition, 100);
 
+            this.collection.on("shiftwizard:open", this.onShiftWizardOpen, this);
         },
 
         resizeContext: function (event)
@@ -117,11 +123,7 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, calendarContainerVi
 
         onRender: function()
         {
-            if (!this.collection)
-                throw "CalendarView needs a Collection!";
-
             //this.setWorkoutColorization();
-
             _.bindAll(this, "onScroll");
             this.ui.weeksContainer.scroll(this.onScroll);
 
@@ -332,12 +334,17 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, calendarContainerVi
         // or if we scrolled into a different week, snap back to the correct week
         scrollToLastViewedDate: function()
         {
-            var headerDate = this.calendarHeaderModel.get("date");
+            var headerDate = this.getHeaderDate();
             var scrollDate = this.getCurrentScrollDate();
             if (this.snappedToWeekHeader || headerDate !== scrollDate)
             {
                 this.scrollToDate(moment(headerDate), 100);
             }
+        },
+
+        getHeaderDate: function()
+        {
+            return this.calendarHeaderModel.get("date");
         },
 
         onKeyDown: function(e)
@@ -384,6 +391,24 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, calendarContainerVi
         onKeyUp: function()
         {
             this.keyDownWasProcessed = false;
+        },
+
+        onShiftWizardOpen: function()
+        {
+            this.shiftWizzardView = new ShiftWizzardView({ selectionStartDate: this.collection.getSelectionStartDate(), selectionEndDate: this.collection.getSelectionEndDate() });
+            this.shiftWizzardView.on("shifted", this.onShiftWizardShifted, this);
+            this.shiftWizzardView.render();
+        },
+
+        onShiftWizardShifted: function(shiftCommandResult)
+        {
+            _.bindAll(this, "afterWorkoutsShifted");
+            shiftCommandResult.done(this.afterWorkoutsShifted);
+        },
+
+        afterWorkoutsShifted: function(shiftCommand)
+        {
+            this.trigger("workoutsShifted", shiftCommand);
         }
 
     });

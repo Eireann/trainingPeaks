@@ -6,7 +6,8 @@
     //background-color: #dedede;
     text-align: center;
     font-family: $navigationFontFamilyRegular;
-    @include headerButtons(0px, 60px, 20px, $navigationFontSize);
+    @include headerButtons(0px, 60px, $navigationFontSize);
+
 
     button
     {

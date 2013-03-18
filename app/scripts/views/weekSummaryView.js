@@ -20,9 +20,8 @@ function(TP, workoutTypeEnum, WeekSummarySettings, weekSummaryTemplate)
 
         events:
         {
-            mouseenter: "onMouseEnter",
-            mouseleave: "onMouseLeave",
-
+            "mouseenter": "onMouseEnter",
+            "mouseleave": "onMouseLeave",
             "click .summarySettings": "summarySettingsClicked"
         },
 
@@ -160,16 +159,21 @@ function(TP, workoutTypeEnum, WeekSummarySettings, weekSummaryTemplate)
             e.preventDefault();
 
             var offset = $(e.currentTarget).offset();
+
             this.summarySettings = new WeekSummarySettings({ model: this.model, top: offset.top + 10, left: offset.left + 5 });
             this.summarySettings.render();
             this.summarySettings.on("mouseleave", this.onMouseLeave, this);
             this.summarySettings.on("settingsClosed", this.settingsClosed, this);
+
             this.$el.closest(".week").find(".weekSelected").css("display", "block");
+
+            //this.model.trigger("weeksummary:settings:open", this.model.collection);
         },
 
         settingsClosed: function ()
         {
             this.$el.closest(".week").find(".weekSelected").css("display", "none");
+            //this.model.trigger("weeksummary:settings:close", this.model.collection);
         }
     });
 });

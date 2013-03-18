@@ -22,6 +22,7 @@ function(_, Backbone, setImmediate)
         {
             this.backboneSync = Backbone.sync;
             Backbone.sync = _.bind(this.sync, this);
+            return this;
         },
 
         sync: function(method, model, options)

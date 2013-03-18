@@ -5,10 +5,9 @@ define(
     "jqueryOutside",
     "views/newItemView",
     "views/deleteConfirmationView",
-    "views/shiftWizzardView",
     "hbs!templates/views/calendarDaySettings"
 ],
-function (TP, setImmediate, jqueryOutside, NewItemView, DeleteConfirmationView, ShiftWizzardView, calendarDaySettingsTemplate)
+function(TP, setImmediate, jqueryOutside, NewItemView, DeleteConfirmationView, calendarDaySettingsTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -85,11 +84,13 @@ function (TP, setImmediate, jqueryOutside, NewItemView, DeleteConfirmationView, 
 
             if (weekDate.week() === today.week() && weekDate.year() === today.year())
                 this.$el.find(".hoverBox").addClass("thisWeek");
+
+            this.updatePasteAvailability();
         },
 
-        onDeleteClicked: function()
+        onDeleteClicked: function(e)
         {
-            this.close();
+            this.hideSettings(e);
             
             this.deleteConfirmationView = new DeleteConfirmationView();
             this.deleteConfirmationView.render();
@@ -104,12 +105,14 @@ function (TP, setImmediate, jqueryOutside, NewItemView, DeleteConfirmationView, 
         onCopyClicked: function(e)
         {
             this.model.trigger("day:copy", this.model);
+            this.updatePasteAvailability();
             this.hideSettings(e);
         },
         
         onCutClicked: function(e)
         {
             this.model.trigger("day:cut", this.model);
+            this.updatePasteAvailability();
             this.hideSettings(e);
         },
 
@@ -119,11 +122,15 @@ function (TP, setImmediate, jqueryOutside, NewItemView, DeleteConfirmationView, 
             this.hideSettings(e);
         },
 
-        onShiftClicked: function ()
+        onShiftClicked: function (e)
         {
-            this.close();
-            this.shiftWizzardView = new ShiftWizzardView();
-            this.shiftWizzardView.render();
+            this.hideSettings(e);
+            this.model.trigger("day:shiftwizard");
+        },
+
+        updatePasteAvailability: function()
+        {
+            this.model.trigger("day:pasteMenu", this.model.id);
         }
 
     });

@@ -159,6 +159,9 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySe
 
         daySettingsClicked: function (e)
         {
+            if (e.shiftKey)
+                return;
+
             e.preventDefault();
 
             var offset = $(e.currentTarget).offset();
@@ -181,10 +184,12 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySe
         
         onWhitespaceDayClicked: function(e)
         {
-            if (e.isDefaultPrevented())
+            if (theMarsApp.isBlurred || e.isDefaultPrevented())
                 return;
 
             e.preventDefault();
+
+            this.model.trigger("day:click", this.model, e);
 
             var newItemView = new NewItemView({ model: this.model });
             newItemView.render();

@@ -22,7 +22,8 @@ function (TP, setImmediate, jqueryOutside, DeleteConfirmationView, calendarWeekS
             "click #calendarWeekSummarySettingsDeleteLabel": "onDeleteClicked",
             "click #calendarWeekSummarySettingsCutLabel": "onCutClicked",
             "click #calendarWeekSummarySettingsCopyLabel": "onCopyClicked",
-            "click #calendarWeekSummarySettingsPasteLabel": "onPasteClicked"
+            "click #calendarWeekSummarySettingsPasteLabel": "onPasteClicked",
+            "click #calendarWeekSummarySettingsShiftLabel": "onShiftClicked"
         },
 
         hideSettings: function(e)
@@ -30,7 +31,7 @@ function (TP, setImmediate, jqueryOutside, DeleteConfirmationView, calendarWeekS
             this.close();
             this.trigger("mouseleave", e);
             this.trigger("settingsClosed");
-            this.model.collection.trigger("week:unselect", this.model);
+            //this.model.collection.trigger("week:unselect", this.model.collection);
         },
 
         initialize: function(options)
@@ -76,7 +77,7 @@ function (TP, setImmediate, jqueryOutside, DeleteConfirmationView, calendarWeekS
                 this.$el.find(".hoverBox").addClass("thisWeek");
             }
 
-            this.model.collection.trigger("week:select", this.model);
+            this.model.collection.trigger("week:select", this.model.collection);
             this.updatePasteAvailability();
         },
 
@@ -120,6 +121,12 @@ function (TP, setImmediate, jqueryOutside, DeleteConfirmationView, calendarWeekS
         updatePasteAvailability: function()
         {
             this.model.trigger("week:pasteMenu", this.model.get("date"));
+        },
+
+        onShiftClicked: function (e)
+        {
+            this.hideSettings(e);
+            this.model.trigger("week:shiftwizard");
         }
 
     });

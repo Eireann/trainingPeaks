@@ -117,16 +117,19 @@ function(_, moment, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, C
 
         onWeekSelected: function(selectedWeek)
         {
+            if (this.selectedWeek)
+                this.selectedWeek.unselect();
+
             this.selectedWeek = selectedWeek;
-            //theMarsApp.logger.debug("Selected week: " + selectedWeek.get("date"));
+            this.selectedWeek.select();
         },
 
         onWeekUnselected: function(selectedWeek)
         {
             if (this.selectedWeek === selectedWeek)
             {
+                this.selectedWeek.unselect();
                 this.selectedWeek = null;
-                //theMarsApp.logger.debug("UnSelected week: " + selectedWeek.get("date"));
             }
         },
 
@@ -134,9 +137,9 @@ function(_, moment, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, C
         {
             if (this.selectedWeek)
             {
-                this.selectedWeek.collection.trigger("week:copy", this.selectedWeek.collection);
+                this.selectedWeek.trigger("week:copy", this.selectedWeek);
                 //theMarsApp.logger.debug("Copy from selected week");
-            } else if(this.selectedRange)
+            } else if (this.selectedRange)
             {
                 this.selectedRange.trigger("week:copy", this.selectedRange);
                 //theMarsApp.logger.debug("Copy from selected range");
@@ -151,11 +154,49 @@ function(_, moment, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, C
         
         },
 
+        getSelection: function()
+        {
+            if (this.selectedWeek)
+            {
+                return this.selectedWeek;
+            } else if(this.selectedRange)
+            {
+                return this.selectedRange;
+            } else if (this.selectedDay)
+            {
+                var collectionOfDays = new CalendarWeekCollection();
+                collectionOfDays.push(this.selectedDay);
+                return collectionOfDays;
+            }
+
+            return null;
+        },
+
+        getSelectionStartDate: function()
+        {
+            var selection = this.getSelection();
+            if (selection && selection.length)
+            {
+                return selection.getStartDate();
+            }
+            return null;
+        },
+
+        getSelectionEndDate: function()
+        {
+            var selection = this.getSelection();
+            if (selection && selection.length)
+            {
+                return selection.getEndDate();
+            }
+            return null;
+        },
+
         onKeypressCut: function(e)
         {
             if (this.selectedWeek)
             {
-                this.selectedWeek.collection.trigger("week:cut", this.selectedWeek.collection);
+                this.selectedWeek.trigger("week:cut", this.selectedWeek);
                 //theMarsApp.logger.debug("Cut from selected week");
             } else if(this.selectedRange)
             {
@@ -175,7 +216,7 @@ function(_, moment, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, C
         {
             if (this.selectedWeek)
             {
-                this.onPaste(this.selectedWeek.get("date"));
+                this.onPaste(this.selectedWeek.models[0].id);
                 //theMarsApp.logger.debug("Paste on selected week");
             } else if (this.selectedDay)
             {
@@ -209,20 +250,28 @@ function(_, moment, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, C
             }
         },
 
-        onDayClicked: function(dayModel, e)
+        onDayClicked: function (dayModel, e)
         {
-
             // do we already have a selected range? unselect it and continue
             if(this.selectedRange)
             {
                 this.selectedRange.unselect();
+                this.selectedRange.off("range:shiftwizard", this.onShiftWizardOpen, this);
                 this.selectedRange = null;
+            }
+
+            // do we already have a selected week? unselect it and continue
+            if(this.selectedWeek)
+            {
+                this.selectedWeek.unselect();
+                this.selectedWeek = null;
             }
 
             // unselect the selected day and continue, unless we're trying to select a range
             if (this.selectedDay && !e.shiftKey)
             {
                 this.selectedDay.trigger("day:unselect");
+                this.selectedDay.off("day:shiftwizard", this.onShiftWizardOpen, this);
                 this.selectedDay = null;
             }
 
@@ -231,6 +280,7 @@ function(_, moment, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, C
             {
                 this.selectedRange = this.createRangeOfDays(this.selectedDay.id, dayModel.id);
                 this.selectedRange.select();
+                this.selectedRange.on("range:shiftwizard", this.onShiftWizardOpen, this);
 
                 // cancel default text selection behavior - also prevented through css on #calendarContainer
                 document.getSelection().removeAllRanges();
@@ -242,6 +292,7 @@ function(_, moment, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, C
 
             // select it
             this.selectedDay = dayModel;
+            this.selectedDay.on("day:shiftwizard", this.onShiftWizardOpen, this);
             dayModel.trigger("day:select");
         },
 
@@ -286,6 +337,7 @@ function(_, moment, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, C
         resetToDates: function(startDate, endDate)
         {
             this.reset();
+            this.selectedDay = this.selectedWeek = this.selectedRange = null;
             this.setUpWeeks(startDate, endDate);
         },
         
@@ -327,6 +379,7 @@ function(_, moment, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, C
             weekCollection.on("week:pasteMenu", this.onPasteMenuOpen, this);
             weekCollection.on("week:select", this.onWeekSelected, this);
             weekCollection.on("week:unselect", this.onWeekUnselected, this);
+            weekCollection.on("week:shiftwizard", this.onShiftWizardOpen, this);
 
             return weekCollection;
         },
@@ -474,6 +527,11 @@ function(_, moment, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, C
                 }
             }
 
+        },
+
+        onShiftWizardOpen: function()
+        {
+            this.trigger("shiftwizard:open");
         }
     });
 });

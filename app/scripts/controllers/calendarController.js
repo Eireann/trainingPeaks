@@ -30,9 +30,14 @@ function(_, moment, setImmediate, TP, CalendarLayout, CalendarCollection, Calend
             this.showViewsInRegions();
 
             // load the calendar, and aggregate all of the deferreds from each workout request
-            this.showDate(moment());
-            var calendarDeferreds = this.loadCalendarData();
-            this.scrollToTodayAfterLoad(calendarDeferreds);
+            var today = moment();
+            this.showDate(today);
+            var self = this;
+            var onLoad = function(deferreds)
+            {
+                self.scrollToDateAfterLoad(deferreds, today);
+            };
+            this.loadCalendarData(onLoad);
 
             this.loadLibraryData();
 
@@ -46,7 +51,7 @@ function(_, moment, setImmediate, TP, CalendarLayout, CalendarCollection, Calend
             this.layout.libraryRegion.show(this.views.library);
         },
 
-        scrollToTodayAfterLoad: function(deferreds)
+        scrollToDateAfterLoad: function(deferreds, dateToScrollTo, each)
         {
             var ajaxCachingDeferreds = [];
             _.each(deferreds, function(deferred)
@@ -57,28 +62,48 @@ function(_, moment, setImmediate, TP, CalendarLayout, CalendarCollection, Calend
                 }
             });
 
-            // once all of the data has loaded, set a timeout to allow repainting, then scroll to today
             var calendarController = this;
-            calendarController.wasScrolled = false;
-            var scrollIt = function()
+            // check after each week loads
+            if (each)
             {
-                if (!calendarController.wasScrolled)
+                var scrollItEachTime = function()
                 {
-                    calendarController.wasScrolled = true;
-                    setImmediate(function() { calendarController.showDate(moment(), 500); });
-                }
-            };
+                    setImmediate(function() { calendarController.showDate(moment(dateToScrollTo), 10); });
+                };
+                _.each(ajaxCachingDeferreds, function(deferred)
+                {
+                    deferred.done(scrollItEachTime);
+                });
+                _.each(deferreds, function(deferred)
+                {
+                    deferred.done(scrollItEachTime);
+                });
 
-            if (ajaxCachingDeferreds.length > 0)
+                // check after they all load
+            } else
             {
-                $.when.apply($, ajaxCachingDeferreds).then(scrollIt);
+                // once all of the data has loaded, set a timeout to allow repainting, then scroll to today
+                calendarController.wasScrolled = false;
+                var scrollItOnce = function()
+                {
+                    if (!calendarController.wasScrolled)
+                    {
+                        calendarController.wasScrolled = true;
+                        setImmediate(function() { calendarController.showDate(moment(dateToScrollTo), 500); });
+                    }
+                };
+                if (ajaxCachingDeferreds.length > 0)
+                {
+                    $.when.apply($, ajaxCachingDeferreds).then(scrollItOnce);
+                }
+
+                $.when.apply($, deferreds).then(scrollItOnce);
             }
 
-            $.when.apply($, deferreds).then(scrollIt);
 
         },
 
-        loadCalendarData: function()
+        loadCalendarData: function(callback)
         {
 
             //theMarsApp.logger.startTimer("CalendarController", "begin request calendar data");
@@ -94,6 +119,9 @@ function(_, moment, setImmediate, TP, CalendarLayout, CalendarCollection, Calend
             }
 
             //theMarsApp.logger.logTimer("CalendarController", "finished request calendar data");
+            if (callback)
+                callback(deferreds);
+
             return deferreds;
         },
 
@@ -163,6 +191,20 @@ function(_, moment, setImmediate, TP, CalendarLayout, CalendarCollection, Calend
             this.weeksCollection.resetToDates(moment(this.startDate), moment(this.endDate));
             this.loadCalendarData();
             this.views.calendar.fadeIn(800);
+        },
+
+        clearCacheAndRefresh: function()
+        {
+            theMarsApp.ajaxCaching.clearCache();
+            this.weeksCollection.resetToDates(moment(this.startDate), moment(this.endDate));
+            this.views.calendar.scrollToLastViewedDate();
+            var headerDate = this.views.calendar.getHeaderDate();
+            var self = this;
+            var onLoad = function(deferreds)
+            {
+                return self.scrollToDateAfterLoad(deferreds, headerDate);
+            };
+            this.loadCalendarData(onLoad);
         },
 
         showDate: function(dateAsMoment, effectDuration)
@@ -267,11 +309,12 @@ function(_, moment, setImmediate, TP, CalendarLayout, CalendarCollection, Calend
             this.showDate(moment(currentWeekModel.get("date")).add("days", 1), 200);
         },
 
-        bindToCalendarViewEvents: function (calendarView)
+        bindToCalendarViewEvents: function(calendarView)
         {
             calendarView.on("prepend", this.prependWeekToCalendar, this);
             calendarView.on("append", this.appendWeekToCalendar, this);
             calendarView.on("itemDropped", this.onDropItem, this);
+            calendarView.on("workoutsShifted", this.onShiftItems, this);
         },
 
         onDropItem: function(options)
@@ -286,6 +329,11 @@ function(_, moment, setImmediate, TP, CalendarLayout, CalendarCollection, Calend
                 this.weeksCollection.addWorkout(workout);
                 workout.save();
             }
+        },
+
+        onShiftItems: function(shiftCommand)
+        {
+            this.clearCacheAndRefresh();
         },
 
         createNewWorkoutFromExerciseLibraryItem: function(exerciseLibraryItemId, workoutDate)

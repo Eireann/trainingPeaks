@@ -12,7 +12,8 @@ define(
     "controllers/loginController",
     "controllers/calendarController",
     "router",
-    "marionette.faderegion"
+    "marionette.faderegion",
+    "jqueryui/tooltip"
 ],
 function(TP, initializeAjaxAuth, ajaxCaching, initializeAjaxTimezone, Session, UserModel, UserSettingsModel, ClientEventsCollection, NavigationController, LoginController, CalendarController, Router)
 {
@@ -45,7 +46,7 @@ function(TP, initializeAjaxAuth, ajaxCaching, initializeAjaxTimezone, Session, U
     {
         initializeAjaxAuth(this);
         initializeAjaxTimezone();
-        ajaxCaching.initialize(this);
+        this.ajaxCaching = ajaxCaching.initialize(this);
     });
     
     // add a session
@@ -82,6 +83,47 @@ function(TP, initializeAjaxAuth, ajaxCaching, initializeAjaxTimezone, Session, U
         this.router = new Router();
     });
 
+    // Set up jQuery UI Tooltips
+    theApp.addInitializer(function()
+    {
+        $(document).tooltip(
+        {
+            position:
+            {
+                my: "center bottom-20",
+                at: "center top",
+                using: function (position, feedback)
+                {
+                    $(this).css(position);
+                    $("<div>")
+                      .addClass("arrow")
+                      .addClass(feedback.vertical)
+                      .addClass(feedback.horizontal)
+                      .appendTo(this);
+                }
+            }
+        });
+    });
+
+
+    theApp.addInitializer(function()
+    {
+        var self = this;
+        self.isBlurred = false;
+        $(window).focus(function()
+        {
+            setTimeout(function()
+            {
+                self.isBlurred = false;
+            }, 1000);
+        });
+
+        $(window).blur(function()
+        {
+            self.isBlurred = true;
+        });
+    });
+    
     theApp.isLive = function()
     {
         // if we're in local or dev mode, use DEBUG log level etc
