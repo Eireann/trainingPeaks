@@ -167,13 +167,13 @@ function(TP, workoutTypeEnum, WeekSummarySettings, weekSummaryTemplate)
 
             this.$el.closest(".week").find(".weekSelected").css("display", "block");
 
-            this.model.trigger("weeksummary:settings:open", this.model.collection);
+            //this.model.trigger("weeksummary:settings:open", this.model.collection);
         },
 
         settingsClosed: function ()
         {
             this.$el.closest(".week").find(".weekSelected").css("display", "none");
-            this.model.trigger("weeksummary:settings:close", this.model.collection);
+            //this.model.trigger("weeksummary:settings:close", this.model.collection);
         }
     });
 });

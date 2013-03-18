@@ -1,9 +1,10 @@
 define(
 [
     "moment",
-    "TP"
+    "TP",
+    "models/calendarDay"
 ],
-function(moment, TP)
+function(moment, TP, CalendarDayModel)
 {
     var CalendarWeekCollection = TP.Collection.extend(
     {
@@ -68,6 +69,26 @@ function(moment, TP)
             {
                 model.trigger("day:unselect");
             });
+        },
+
+        getStartDate: function()
+        {
+            for (var i = 0; i < this.length; i++)
+            {
+                if (this.models[i] instanceof CalendarDayModel)
+                    return this.models[i].id;
+            }
+            return null;
+        },
+
+        getEndDate: function()
+        {
+            for (var i = this.length - 1; i >= 0; i--)
+            {
+                if (this.models[i] instanceof CalendarDayModel)
+                    return this.models[i].id;
+            }
+            return null;
         }
 
     });

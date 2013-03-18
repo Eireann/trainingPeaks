@@ -51,7 +51,7 @@ function(_, moment, setImmediate, TP, CalendarLayout, CalendarCollection, Calend
             this.layout.libraryRegion.show(this.views.library);
         },
 
-        scrollToDateAfterLoad: function(deferreds, dateToScrollTo)
+        scrollToDateAfterLoad: function(deferreds, dateToScrollTo, each)
         {
             var ajaxCachingDeferreds = [];
             _.each(deferreds, function(deferred)
@@ -62,24 +62,44 @@ function(_, moment, setImmediate, TP, CalendarLayout, CalendarCollection, Calend
                 }
             });
 
-            // once all of the data has loaded, set a timeout to allow repainting, then scroll to today
             var calendarController = this;
-            calendarController.wasScrolled = false;
-            var scrollIt = function()
+            // check after each week loads
+            if (each)
             {
-                if (!calendarController.wasScrolled)
+                var scrollItEachTime = function()
                 {
-                    calendarController.wasScrolled = true;
-                    setImmediate(function() { calendarController.showDate(moment(dateToScrollTo), 500); });
-                }
-            };
+                    setImmediate(function() { calendarController.showDate(moment(dateToScrollTo), 10); });
+                };
+                _.each(ajaxCachingDeferreds, function(deferred)
+                {
+                    deferred.done(scrollItEachTime);
+                });
+                _.each(deferreds, function(deferred)
+                {
+                    deferred.done(scrollItEachTime);
+                });
 
-            if (ajaxCachingDeferreds.length > 0)
+                // check after they all load
+            } else
             {
-                $.when.apply($, ajaxCachingDeferreds).then(scrollIt);
+                // once all of the data has loaded, set a timeout to allow repainting, then scroll to today
+                calendarController.wasScrolled = false;
+                var scrollItOnce = function()
+                {
+                    if (!calendarController.wasScrolled)
+                    {
+                        calendarController.wasScrolled = true;
+                        setImmediate(function() { calendarController.showDate(moment(dateToScrollTo), 500); });
+                    }
+                };
+                if (ajaxCachingDeferreds.length > 0)
+                {
+                    $.when.apply($, ajaxCachingDeferreds).then(scrollItOnce);
+                }
+
+                $.when.apply($, deferreds).then(scrollItOnce);
             }
 
-            $.when.apply($, deferreds).then(scrollIt);
 
         },
 
