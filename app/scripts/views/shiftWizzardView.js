@@ -15,7 +15,7 @@ function (TP, ShiftWorkoutsCommand, shiftWizzard)
         events:
         {
             "click button#cancel": "close",
-            "click button#ok": "doFakeOk"
+            "click button#ok": "onOkClicked"
         },
 
         template:
@@ -24,15 +24,25 @@ function (TP, ShiftWorkoutsCommand, shiftWizzard)
             template: shiftWizzard
         },
 
+        initialize: function(options)
+        {
+            this.selectionStartDate = options.selectionStartDate;
+            this.selectionEndDate = options.selectionEndDate;
+        },
+
         onRender: function ()
         {
+            if (this.selectionStartDate)
+            {
+                this.$("#selectItemsOnSelectedDays").attr("checked", "checked");
+            }
             $('body').append(this.$el);
             this.$el.dialog({
                 modal: true
             });
         },
 
-        doFakeOk: function()
+        onOkClicked: function()
         {
 
             // show throbber
@@ -40,9 +50,9 @@ function (TP, ShiftWorkoutsCommand, shiftWizzard)
 
             // seutp shift command
             var shiftCommand = new ShiftWorkoutsCommand();
-            shiftCommand.set("startDate", moment(prompt("Start Date YYYY-MM-DD")).format("YYYY-MM-DD"));
-            shiftCommand.set("endDate", moment(prompt("End Date YYYY-MM-DD")).format("YYYY-MM-DD"));
-            shiftCommand.set("days", prompt("How many days?", 2));
+            shiftCommand.set("startDate", this.selectionStartDate);
+            shiftCommand.set("endDate", this.selectionEndDate);
+            shiftCommand.set("days", this.$("#SelectNewStartDate").val());
 
             // execute = send it to server
             var deferred = shiftCommand.execute();

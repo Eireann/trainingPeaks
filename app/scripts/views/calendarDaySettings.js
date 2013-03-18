@@ -88,9 +88,9 @@ function(TP, setImmediate, jqueryOutside, NewItemView, DeleteConfirmationView, c
             this.updatePasteAvailability();
         },
 
-        onDeleteClicked: function()
+        onDeleteClicked: function(e)
         {
-            this.close();
+            this.hideSettings(e);
             
             this.deleteConfirmationView = new DeleteConfirmationView();
             this.deleteConfirmationView.render();

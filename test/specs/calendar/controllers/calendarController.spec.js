@@ -77,7 +77,7 @@ function(moment, $, _, Backbone, CalendarController, WorkoutModel, WorkoutsColle
             {
                 controller = new CalendarController();
                 spyOn(controller, "showViewsInRegions");
-                spyOn(controller, "scrollToTodayAfterLoad");
+                spyOn(controller, "scrollToDateAfterLoad");
                 spyOn(controller, "showDate");
             });
 
@@ -125,7 +125,7 @@ function(moment, $, _, Backbone, CalendarController, WorkoutModel, WorkoutsColle
             it("Should scroll to today after loading", function()
             {
                 controller.show();
-                expect(controller.scrollToTodayAfterLoad).toHaveBeenCalled();
+                expect(controller.scrollToDateAfterLoad).toHaveBeenCalled();
             });
 
         });
