@@ -334,12 +334,17 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, c
         // or if we scrolled into a different week, snap back to the correct week
         scrollToLastViewedDate: function()
         {
-            var headerDate = this.calendarHeaderModel.get("date");
+            var headerDate = this.getHeaderDate();
             var scrollDate = this.getCurrentScrollDate();
             if (this.snappedToWeekHeader || headerDate !== scrollDate)
             {
                 this.scrollToDate(moment(headerDate), 100);
             }
+        },
+
+        getHeaderDate: function()
+        {
+            return this.calendarHeaderModel.get("date");
         },
 
         onKeyDown: function(e)
@@ -390,7 +395,7 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, c
 
         onShiftWizardOpen: function()
         {
-            this.shiftWizzardView = new ShiftWizzardView();
+            this.shiftWizzardView = new ShiftWizzardView({ selectionStartDate: this.collection.getSelectionStartDate(), selectionEndDate: this.collection.getSelectionEndDate() });
             this.shiftWizzardView.on("shifted", this.onShiftWizardShifted, this);
             this.shiftWizzardView.render();
         },

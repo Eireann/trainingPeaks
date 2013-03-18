@@ -132,7 +132,7 @@ function(_, moment, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, C
             {
                 this.selectedWeek.collection.trigger("week:copy", this.selectedWeek.collection);
                 //theMarsApp.logger.debug("Copy from selected week");
-            } else if(this.selectedRange)
+            } else if (this.selectedRange)
             {
                 this.selectedRange.trigger("week:copy", this.selectedRange);
                 //theMarsApp.logger.debug("Copy from selected range");
@@ -145,6 +145,44 @@ function(_, moment, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, C
             // update paste status
             this.onPasteMenuOpen();
         
+        },
+
+        getSelection: function()
+        {
+            if (this.selectedWeek)
+            {
+                return this.selectedWeek;
+            } else if(this.selectedRange)
+            {
+                return this.selectedRange;
+            } else if (this.selectedDay)
+            {
+                var collectionOfDays = new CalendarWeekCollection();
+                collectionOfDays.push(this.selectedDay);
+                return collectionOfDays;
+            }
+
+            return null;
+        },
+
+        getSelectionStartDate: function()
+        {
+            var selection = this.getSelection();
+            if (selection && selection.length)
+            {
+                return selection.models[0].id;
+            }
+            return null;
+        },
+
+        getSelectionEndDate: function()
+        {
+            var selection = this.getSelection();
+            if (selection && selection.length)
+            {
+                return selection.models[selection.models.length - 1].id;
+            }
+            return null;
         },
 
         onKeypressCut: function(e)
@@ -254,7 +292,7 @@ function(_, moment, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, C
 
             if (!firstDay || !lastDay)
                 return;
-            
+
             this.selectedRange = this.createRangeOfDays(moment(firstDay.get("date")), moment(lastDay.get("date")));
             this.selectedRange.select();
             this.trigger("rangeselect", this.selectedRange, e);
