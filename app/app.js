@@ -80,23 +80,7 @@ function(TP, initializeAjaxAuth, ajaxCaching, initializeAjaxTimezone, Session, U
         this.controllers.loginController = new LoginController();
         this.controllers.calendarController = new CalendarController();
 
-        var self = this;
         this.router = new Router();
-    });
-
-    // Set up global Blur/Focus handling to avoid clicks when regaining focus on the entire app.
-    theApp.addInitializer(function()
-    {
-        this.isBlurred = false;
-        $(window).blur(function(e)
-        {
-            self.isBlurred = true;
-        });
-
-        $(window).focus(function(e)
-        {
-            setTimeout(function() { self.isBlurred = false; }, 200);
-        });
     });
 
     // Set up jQuery UI Tooltips
@@ -118,6 +102,25 @@ function(TP, initializeAjaxAuth, ajaxCaching, initializeAjaxTimezone, Session, U
                       .appendTo(this);
                 }
             }
+        });
+    });
+
+
+    theApp.addInitializer(function()
+    {
+        var self = this;
+        self.isBlurred = false;
+        $(window).focus(function()
+        {
+            setTimeout(function()
+            {
+                self.isBlurred = false;
+            }, 1000);
+        });
+
+        $(window).blur(function()
+        {
+            self.isBlurred = true;
         });
     });
     
