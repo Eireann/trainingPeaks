@@ -12,7 +12,8 @@ define(
     "controllers/loginController",
     "controllers/calendarController",
     "router",
-    "marionette.faderegion"
+    "marionette.faderegion",
+    "jqueryui/tooltip"
 ],
 function(TP, initializeAjaxAuth, ajaxCaching, initializeAjaxTimezone, Session, UserModel, UserSettingsModel, ClientEventsCollection, NavigationController, LoginController, CalendarController, Router)
 {
@@ -79,22 +80,47 @@ function(TP, initializeAjaxAuth, ajaxCaching, initializeAjaxTimezone, Session, U
         this.controllers.loginController = new LoginController();
         this.controllers.calendarController = new CalendarController();
 
-        var self = this;
         this.router = new Router();
     });
 
-    // Set up global Blur/Focus handling to avoid clicks when regaining focus on the entire app.
+    // Set up jQuery UI Tooltips
     theApp.addInitializer(function()
     {
-        this.isBlurred = false;
-        $(window).blur(function(e)
+        $(document).tooltip(
         {
-            self.isBlurred = true;
+            position:
+            {
+                my: "center bottom-20",
+                at: "center top",
+                using: function (position, feedback)
+                {
+                    $(this).css(position);
+                    $("<div>")
+                      .addClass("arrow")
+                      .addClass(feedback.vertical)
+                      .addClass(feedback.horizontal)
+                      .appendTo(this);
+                }
+            }
+        });
+    });
+
+
+    theApp.addInitializer(function()
+    {
+        var self = this;
+        self.isBlurred = false;
+        $(window).focus(function()
+        {
+            setTimeout(function()
+            {
+                self.isBlurred = false;
+            }, 1000);
         });
 
-        $(window).focus(function(e)
+        $(window).blur(function()
         {
-            setTimeout(function() { self.isBlurred = false; }, 200);
+            self.isBlurred = true;
         });
     });
     

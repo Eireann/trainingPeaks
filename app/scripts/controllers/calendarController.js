@@ -30,9 +30,14 @@ function(_, moment, setImmediate, TP, CalendarLayout, CalendarCollection, Calend
             this.showViewsInRegions();
 
             // load the calendar, and aggregate all of the deferreds from each workout request
-            this.showDate(moment());
-            var calendarDeferreds = this.loadCalendarData();
-            this.scrollToTodayAfterLoad(calendarDeferreds);
+            var today = moment();
+            this.showDate(today);
+            var self = this;
+            var onLoad = function(deferreds)
+            {
+                self.scrollToDateAfterLoad(deferreds, today);
+            };
+            this.loadCalendarData(onLoad);
 
             this.loadLibraryData();
 
@@ -46,7 +51,7 @@ function(_, moment, setImmediate, TP, CalendarLayout, CalendarCollection, Calend
             this.layout.libraryRegion.show(this.views.library);
         },
 
-        scrollToTodayAfterLoad: function(deferreds)
+        scrollToDateAfterLoad: function(deferreds, dateToScrollTo)
         {
             var ajaxCachingDeferreds = [];
             _.each(deferreds, function(deferred)
@@ -65,7 +70,7 @@ function(_, moment, setImmediate, TP, CalendarLayout, CalendarCollection, Calend
                 if (!calendarController.wasScrolled)
                 {
                     calendarController.wasScrolled = true;
-                    setImmediate(function() { calendarController.showDate(moment(), 500); });
+                    setImmediate(function() { calendarController.showDate(moment(dateToScrollTo), 500); });
                 }
             };
 
@@ -78,7 +83,7 @@ function(_, moment, setImmediate, TP, CalendarLayout, CalendarCollection, Calend
 
         },
 
-        loadCalendarData: function()
+        loadCalendarData: function(callback)
         {
 
             //theMarsApp.logger.startTimer("CalendarController", "begin request calendar data");
@@ -94,6 +99,9 @@ function(_, moment, setImmediate, TP, CalendarLayout, CalendarCollection, Calend
             }
 
             //theMarsApp.logger.logTimer("CalendarController", "finished request calendar data");
+            if (callback)
+                callback(deferreds);
+
             return deferreds;
         },
 
@@ -169,7 +177,14 @@ function(_, moment, setImmediate, TP, CalendarLayout, CalendarCollection, Calend
         {
             theMarsApp.ajaxCaching.clearCache();
             this.weeksCollection.resetToDates(moment(this.startDate), moment(this.endDate));
-            this.loadCalendarData();
+            this.views.calendar.scrollToLastViewedDate();
+            var headerDate = this.views.calendar.getHeaderDate();
+            var self = this;
+            var onLoad = function(deferreds)
+            {
+                return self.scrollToDateAfterLoad(deferreds, headerDate);
+            };
+            this.loadCalendarData(onLoad);
         },
 
         showDate: function(dateAsMoment, effectDuration)
@@ -298,8 +313,6 @@ function(_, moment, setImmediate, TP, CalendarLayout, CalendarCollection, Calend
 
         onShiftItems: function(shiftCommand)
         {
-            console.log("Items Shifted: ");
-            console.log(shiftCommand);
             this.clearCacheAndRefresh();
         },
 
