@@ -31,7 +31,7 @@ function (TP, setImmediate, jqueryOutside, DeleteConfirmationView, calendarWeekS
             this.close();
             this.trigger("mouseleave", e);
             this.trigger("settingsClosed");
-            this.model.collection.trigger("week:unselect", this.model);
+            //this.model.collection.trigger("week:unselect", this.model.collection);
         },
 
         initialize: function(options)
@@ -77,7 +77,7 @@ function (TP, setImmediate, jqueryOutside, DeleteConfirmationView, calendarWeekS
                 this.$el.find(".hoverBox").addClass("thisWeek");
             }
 
-            this.model.collection.trigger("week:select", this.model);
+            this.model.collection.trigger("week:select", this.model.collection);
             this.updatePasteAvailability();
         },
 

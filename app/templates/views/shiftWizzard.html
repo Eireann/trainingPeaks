@@ -24,8 +24,20 @@
             <label><input type="radio" value="MoveNewStartDate" name="shiftBy"/>{{$ "MoveNewStartDate"}}</label>
             <label><input type="radio" value="MoveBySpecifiedNumberOfDays" name="shiftBy"/>{{$ "MoveBySpecifiedNumberOfDays"}}</label>
             <label><input type="radio" value="MoveBySpecifiedNumberOfWeeks" name="shiftBy"/>{{$ "MoveBySpecifiedNumberOfWeeks"}}</label>
+
             <div class="selectNewStartDateInput">
                 <label>{{$ "SelectNewStartDate"}}<input type="text" id="SelectNewStartDate" name="SelectNewStartDate"/></label>
+                <input type="text" id="moveToStartDate" class="datepicker"/>
+            </div>
+
+            <div id="MoveBySpecifiedNumberOfDays">
+                <label for="moveByNumberOfDays">{{$ "SelectNumberOfDays"}}</label>
+                <input type="number" id="moveByNumberOfDays" class="numberpicker"/>
+            </div>
+
+            <div id="MoveBySpecifiedNumberOfWeeks">
+                <label for="moveByNumberOfWeeks">{{$ "SelectNumberOfWeeks"}}</label>
+                <input type="number" id="moveByNumberOfWeeks" class="numberpicker"/>
             </div>
         </form>
 

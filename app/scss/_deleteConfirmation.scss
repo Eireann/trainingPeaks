@@ -2,14 +2,35 @@
 
 #deleteConfirmationDialog 
 {
+    //background-color: $TPGrey2;
+    //background-color: #dedede;
     text-align: center;
     font-family: $navigationFontFamilyRegular;
-    padding: 20px;
-    padding-top: 40px;
-    @include headerButtons(0px, 35px, $navigationFontSize);
+    @include headerButtons(0px, 60px, $navigationFontSize);
+
 
     button
     {
         float: center; 
+
+        .deleteConfirmationCancel 
+        {
+            margin-right: 20px
+        }
     }
+
+    .titleBar
+    {
+        text-align: left;
+        padding: 8px;
+        padding-left:16px;
+        border-bottom:1px solid;
+        //background-color: $TPGrey1;
+    }
+}
+
+.confirmDeleteContent
+{
+    padding: 20px;
+    padding-top: 30px;
 }

@@ -1,0 +1,29 @@
+﻿@import "tpstylesheet";
+
+#shiftItems
+{
+	width: 400px;
+	padding: 10px;
+
+	@include labels($navigationFontFamilyRegular, 12, $TPGrey4, normal);
+	@include headerButtons(0, 60px, 12px);
+
+	.bold
+	{
+		font-weight: bold;
+	}
+
+    input.numberpicker
+    {
+        border:none;
+        outline:none;
+        padding:0px;
+        margin:0px;
+        margin-left:5px;
+
+        &:focus
+        {
+           outline:none;
+        } 
+    }
+}
