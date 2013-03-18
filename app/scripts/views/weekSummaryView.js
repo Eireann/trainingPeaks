@@ -147,8 +147,15 @@ function(TP, workoutTypeEnum, WeekSummarySettings, weekSummaryTemplate)
 
         removeSettingsButton: function (e)
         {
+
+            if (!e)
+            {
+                this.$(".summarySettings").css('display', "none");
+                return;
+            }
+
             var toElement = $(document.elementFromPoint(e.pageX, e.pageY));
-            if (!toElement.is(".summarySettings") && !toElement.is("#summarySettingsDiv") && !toElement.is(".hoverBox"))
+            if (!toElement.is(".summarySettings") && !toElement.is("#summarySettingsDiv") && !toElement.is(".hoverBox") && !toElement.is(".modal") && !toElement.is(".modalOverlay"))
             {
                 this.$(".summarySettings").css('display', "none");
             }
@@ -160,18 +167,18 @@ function(TP, workoutTypeEnum, WeekSummarySettings, weekSummaryTemplate)
 
             var offset = $(e.currentTarget).offset();
 
-            this.summarySettings = new WeekSummarySettings({ model: this.model, top: offset.top + 10, left: offset.left + 5 });
-            this.summarySettings.render();
-            this.summarySettings.on("mouseleave", this.onMouseLeave, this);
-            this.summarySettings.on("settingsClosed", this.settingsClosed, this);
+            this.summarySettings = new WeekSummarySettings({ model: this.model });
+            this.summarySettings.render().center(offset.left + 5).bottom(offset.top + 10);
+            this.summarySettings.on("close", this.settingsClosed, this);
 
             this.$el.closest(".week").find(".weekSelected").css("display", "block");
 
             //this.model.trigger("weeksummary:settings:open", this.model.collection);
         },
 
-        settingsClosed: function ()
+        settingsClosed: function (e)
         {
+            this.removeSettingsButton(e);
             this.$el.closest(".week").find(".weekSelected").css("display", "none");
             //this.model.trigger("weeksummary:settings:close", this.model.collection);
         }

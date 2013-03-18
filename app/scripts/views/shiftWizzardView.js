@@ -28,8 +28,11 @@ function(moment, datepicker, spinner, TP, ShiftWorkoutsCommand, shiftWizzard)
 
     return TP.ItemView.extend(
     {
+        modal: {
+            mask: true,
+            shadow: true
+        },
 
-        modal: true,
         tagName: "div",
         className: "shiftWizzard",
 

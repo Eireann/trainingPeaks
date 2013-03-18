@@ -2,12 +2,13 @@
 
 #deleteConfirmationDialog 
 {
-    //background-color: $TPGrey2;
+
+    background-color: $white;
+
     //background-color: #dedede;
     text-align: center;
     font-family: $navigationFontFamilyRegular;
     @include headerButtons(0px, 60px, $navigationFontSize);
-
 
     button
     {

@@ -191,9 +191,6 @@ body.clipboardFull
 
 #selectedRangeSettingsDiv
 {
-    position:absolute;
-    z-index:100;
-
     .colored
     {
         background-color: $selectedDay;

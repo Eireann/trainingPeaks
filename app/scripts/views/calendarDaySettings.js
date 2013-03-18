@@ -41,9 +41,6 @@ function(TP, setImmediate, jqueryOutside, NewItemView, DeleteConfirmationView, c
 
             if (!this.closed)
                 this.close();
-
-            if(e)
-                this.trigger("mouseleave", e);
         },
 
         initialize: function(options)

@@ -153,19 +153,19 @@ function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkout
         removeSettingsButton: function (e)
         {
             var toElement = $(document.elementFromPoint(e.pageX, e.pageY));
-            if (!toElement.is(".workoutSettings") && !toElement.is("#workoutSettingsDiv") && !toElement.is(".hoverBox"))
+            if (!toElement.is(".workoutSettings") && !toElement.is("#workoutSettingsDiv") && !toElement.is(".hoverBox") && !toElement.is(".modal") && !toElement.is(".modalOverlay"))
             {
                 this.$(".workoutSettings").css('display', "none");
             }
         },
 
-        workoutSettingsClicked: function (e)
+        workoutSettingsClicked: function(e)
         {
             e.preventDefault();
 
             var offset = $(e.currentTarget).offset();
-            this.workoutSettings = new CalendarWorkoutSettingsHover({ model: this.model, top: offset.top + 10, left: offset.left + 5 });
-            this.workoutSettings.render();
+            this.workoutSettings = new CalendarWorkoutSettingsHover({ model: this.model });
+            this.workoutSettings.render().bottom(offset.top + 10).center(offset.left + 5);
             
             this.workoutSettings.on("mouseleave", this.onMouseLeave, this);
         },

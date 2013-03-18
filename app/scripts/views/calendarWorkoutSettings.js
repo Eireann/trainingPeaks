@@ -11,10 +11,9 @@ function (TP, setImmediate, jqueryOutside, DeleteConfirmationView, calendarWorko
     return TP.ItemView.extend(
     {
 
+        modal: true,
         showThrobbers: false,
         tagName: "div",
-       
-
         className: "workoutSettingsHover",
 
         events:
@@ -63,26 +62,6 @@ function (TP, setImmediate, jqueryOutside, DeleteConfirmationView, calendarWorko
         {
             type: "handlebars",
             template: calendarWorkoutSettingsHover
-        },
-
-        onRender: function()
-        {
-            $('body').append(this.$el);
-            /*
-            this.$el.dialog({
-                modal: true,
-                position:
-                {
-                    my: "center bottom",
-                    at: "center bottom",
-                    of: ".workoutSettings"
-                }
-            });*/
-            _.bindAll(this, "hideWorkoutSettings");
-            var theView = this;
-            setImmediate(function() { theView.$el.bind("clickoutside", theView.hideWorkoutSettings); });
-            //this.$el.attr("class", this.$el.attr("class") + " " + this.inheritedClassNames);
-            this.$el.css("left", this.posX - Math.round(this.$el.width() / 2)).css("top", this.posY - this.$el.height());
         },
 
         onDelete: function()

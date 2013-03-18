@@ -1,14 +1,15 @@
 ﻿define(
 [
     "TP",
-    "jqueryui/dialog",
     "utilities/printUnitsValue",
     "hbs!templates/views/userSettings"
 ],
-function (TP, jqueryuiDialog, printUnitsValue, userSettingsTemplate)
+function(TP, printUnitsValue, userSettingsTemplate)
 {
     return TP.ItemView.extend(
     {
+        modal: true,
+
         template:
         {
             type: "handlebars",
@@ -151,15 +152,6 @@ function (TP, jqueryuiDialog, printUnitsValue, userSettingsTemplate)
         onBeforeRender: function()
         {
             _.bindAll(this, "onResetSettings", "onClose");
-            this.$el.dialog(
-            {
-                autoOpen: false,
-                height: 700,
-                width: 600,
-                modal: true,
-                resizable: false,
-                overlay: { opacity: 0.5 }
-            });
         },
         
         onRender: function()
@@ -170,7 +162,6 @@ function (TP, jqueryuiDialog, printUnitsValue, userSettingsTemplate)
                 this.stickit();
                 this.model.checkpoint();
                 this.model.on("change", this.saveSettings, this);
-                this.$el.dialog("open");
                 this.$("#profileImageSettingField").attr("src", "http://www.trainingpeaks.com/" + this.model.get("profilePhotoUrl"));
 
                 this.stickitInitialized = true;

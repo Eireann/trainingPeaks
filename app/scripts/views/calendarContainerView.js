@@ -316,8 +316,8 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, c
 
         onRangeSelect: function(rangeSelection, e)
         {
-            var rangeSettingsView = new SelectedRangeSettingsView({ left: e.pageX, top: e.pageY, collection: rangeSelection });
-            rangeSettingsView.render();
+            var rangeSettingsView = new SelectedRangeSettingsView({ collection: rangeSelection });
+            rangeSettingsView.render().left(e.pageX - 30).bottom(e.pageY);
         },
 
         onLibraryShow: function()

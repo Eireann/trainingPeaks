@@ -97,10 +97,18 @@ function(Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmediate,
             this.$overlay.addClass("modalOverlay");
             this.$overlay.addClass(this.className + "ModalOverlay");
             this.$overlay.on("click", function() { self.close(); });
+
+            if (this.modal.mask)
+                this.$overlay.addClass("modalOverlayMask");
+
             $('body').append(this.$overlay);
 
             // make $el absolute and put it on the body
             this.$el.addClass("modal");
+
+            if (this.modal.shadow)
+                this.$el.addClass("modalShadow");
+
             $('body').append(this.$el);
 
             this.left(($(window).width() - this.$el.width()) / 2).top(($(window).height() - this.$el.height()) / 2);

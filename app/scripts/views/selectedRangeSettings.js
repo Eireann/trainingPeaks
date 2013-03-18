@@ -11,6 +11,7 @@ function(TP, setImmediate, jqueryOutside, DeleteConfirmationView, selectedRangeS
     return TP.ItemView.extend(
     {
 
+        modal: true,
         showThrobbers: false,
         tagName: "div",
        
@@ -25,20 +26,8 @@ function(TP, setImmediate, jqueryOutside, DeleteConfirmationView, selectedRangeS
             "click #selectedRangeSettingsShiftLabel": "onShiftClicked"
         },
 
-        hideSettings: function (e)
-        {
-            if (e.isDefaultPrevented())
-                return;
-
-            this.close();
-            this.trigger("mouseleave", e);
-            //delete this;
-        },
-
         initialize: function(options)
         {
-            this.posX = options.left;
-            this.posY = options.top;
             this.selectedRangeCollection = options.collection;
         },
 
@@ -55,14 +44,6 @@ function(TP, setImmediate, jqueryOutside, DeleteConfirmationView, selectedRangeS
 
         onRender: function()
         {
-            _.bindAll(this, "hideSettings");
-
-            $('body').append(this.$el);
-            var self = this;
-            setImmediate(function() { self.$el.bind("clickoutside", self.hideSettings); });
-
-            this.$el.css("left", this.posX - 30).css("top", this.posY - this.$el.height());
-
             this.updatePasteAvailability();
         },
 
