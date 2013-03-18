@@ -185,6 +185,7 @@
 	"MoveBySpecifiedNumberOfDays": "Move by a specified number of days",
 	"MoveBySpecifiedNumberOfWeeks": "Move by a specified number of weeks",
 	"SelectNewStartDate": "Select new start date",
+    "Confirmation" : "Confirmation",
 	"SelectNumberOfDays": "Select number of days",
 	"SelectNumberOfWeeks": "Select number of weeks"
 }
