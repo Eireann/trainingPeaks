@@ -98,7 +98,7 @@ function (moment, datepicker, TP, ShiftWorkoutsCommand, shiftWizzard)
             $('body').append(this.$el);
             this.$el.dialog({
                 modal: true,
-                width: 400,
+                width: 400
             });
         },
 
