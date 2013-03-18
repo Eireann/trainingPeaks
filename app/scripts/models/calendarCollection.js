@@ -59,7 +59,6 @@ function(_, moment, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, C
                 throw "Invalid copy event argument: " + model;
 
             this.clipboard.set(model.copyToClipboard(), "copy");
-            console.log('copied');
         },
 
         onItemsCut: function (model)
@@ -112,7 +111,6 @@ function(_, moment, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, C
             if (this.clipboard.getAction() === "cut")
                 this.clipboard.empty();
 
-            console.log('pasted: ' + (pastedItems && pastedItems.length ? pastedItems.length : 1) + ' items');
         },
 
         onWeekSelected: function(selectedWeek)

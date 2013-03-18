@@ -12,6 +12,7 @@ function(moment, datepicker, spinner, TP, ShiftWorkoutsCommand, shiftWizzard)
 
     var ShiftWizardModel = TP.Model.extend(
     {
+
         defaults: {
             selectionStartDate: "",
             selectionEndDate: "",
@@ -28,8 +29,9 @@ function(moment, datepicker, spinner, TP, ShiftWorkoutsCommand, shiftWizzard)
     return TP.ItemView.extend(
     {
 
-        showThrobbers: true,
+        modal: true,
         tagName: "div",
+        className: "shiftWizzard",
 
         events:
         {
@@ -97,13 +99,6 @@ function(moment, datepicker, spinner, TP, ShiftWorkoutsCommand, shiftWizzard)
 
             // number picker, and make sure it fires a change event
             this.$(".numberpicker").spinner().on("spinstop", function(event, ui) { $(this).trigger("change", event, ui); });
-
-            // put it in the body since it's modal
-            $('body').append(this.$el);
-            this.$el.dialog({
-                modal: true,
-                width: 400
-            });
         },
 
         updateSelectItemsOptions: function()

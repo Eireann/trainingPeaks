@@ -1,5 +1,16 @@
 ﻿@import "tpstylesheet";
 
+.shiftWizzard
+{
+    @include box-shadow(0px 0px 4px 1px #888888);
+}
+
+.shiftWizzardModalOverlay
+{
+    background-color: $TPGrey4;
+    opacity: 0.3;
+}
+
 #shiftItems
 {
 	width: 400px;
@@ -12,20 +23,6 @@
 		font-weight: bold;
 	}
 
-	input.numberpicker
-    {
-        border:none;
-        outline:none;
-        padding:0px;
-        margin:0px;
-        margin-left:5px;
-
-        &:focus
-        {
-           outline:none;
-        } 
-    }
-
 	.header
 	{
 		height: 25px;
@@ -35,7 +32,6 @@
 		border-bottom: $TPGrey3;
 		border-bottom-style: solid;
 		border-bottom-width: 1px;
-		@include box-shadow(0px 0px 4px 1px #888888);
 	}
 
 	.shiftItemsBody
@@ -63,7 +59,22 @@
 			}
 		}
 
-		
+        input.numberpicker
+        {
+            border:none;
+            outline:none;
+            padding:0px;
+            margin:0px;
+            margin-left:5px;
+            width:100px;
+            height:32px;
+
+            &:focus
+            {
+               outline:none;
+            } 
+        }
+            
 	}
 
 	.cancelOkButtons
