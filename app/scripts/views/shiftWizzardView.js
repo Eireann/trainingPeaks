@@ -97,7 +97,8 @@ function (moment, datepicker, TP, ShiftWorkoutsCommand, shiftWizzard)
             // put it in the body since it's modal
             $('body').append(this.$el);
             this.$el.dialog({
-                modal: true
+                modal: true,
+                width: 400,
             });
         },
 

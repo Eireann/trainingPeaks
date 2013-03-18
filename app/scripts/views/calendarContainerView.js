@@ -123,9 +123,7 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, c
 
         onRender: function()
         {
-
             //this.setWorkoutColorization();
-
             _.bindAll(this, "onScroll");
             this.ui.weeksContainer.scroll(this.onScroll);
 

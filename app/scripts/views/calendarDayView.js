@@ -184,7 +184,7 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySe
         
         onWhitespaceDayClicked: function(e)
         {
-            if (e.isDefaultPrevented() || theMarsApp.isBlurred)
+            if (theMarsApp.isBlurred || e.isDefaultPrevented())
                 return;
 
             e.preventDefault();

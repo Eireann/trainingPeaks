@@ -3,7 +3,7 @@
 #libraryContainer
 {
 
-    margin-top:27px;
+    margin-top:0px;
     @include column(1);
 
     #libraries
@@ -13,7 +13,6 @@
         position:relative;
         background-color:$white;
     }
-
              
     &.open
     {
@@ -26,7 +25,6 @@
         {
             visibility:visible;
         }
-
     }
 
     &.closed
