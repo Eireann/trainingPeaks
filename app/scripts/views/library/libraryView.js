@@ -110,10 +110,13 @@ function(_, jqueryOutside, TP, ExerciseLibraryView, MealLibraryView, libraryTemp
             this.$el.parent().removeClass("closed").addClass("open");
             this.turnOnTab(this.activeLibraryName);
             this.resizeContext();
+
+            this.hideOnClickOutside();
         },
 
         hideLibrary: function()
         {
+            this.$el.off("clickoutside", this.hideLibrary);
             this.$el.parent().removeClass("open").addClass("closed");
             if (this.activeLibraryName)
             {
@@ -145,14 +148,12 @@ function(_, jqueryOutside, TP, ExerciseLibraryView, MealLibraryView, libraryTemp
                 library.$el.hide();
             }
             this.resizeContext();
-
-            this.hideOnClickOutside();
         },
 
         hideOnClickOutside: function()
         {
             _.bindAll(this, "hideLibrary");
-            this.$el.bind("clickoutside", this.hideLibrary);
+            this.$el.on("clickoutside", this.hideLibrary);
         },
 
         onShow: function()
