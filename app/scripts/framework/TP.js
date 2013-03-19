@@ -155,6 +155,10 @@ function(Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmediate,
             {
                 if (left < 0)
                     left = 0;
+
+                if (left + this.$el.width() > $(window).width())
+                    left = $(window).width() - this.$el.width() - 10;
+
                 this.$el.css("left", left);
             }
 
