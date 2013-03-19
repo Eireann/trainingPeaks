@@ -6,6 +6,12 @@ define(
 ],
 function(Handlebars, wrapTemplate, hoverBoxTemplate)
 {
+    /*
+    Wraps your template content in templates/helpers/hoverBox.html
+    usage:
+    {{#hoverBox this }}<div>my inner content</div>{{/hoverBox}} == hover box with a bottom arrow
+    {{#hoverBox this "uparrow" }}<div>my inner content</div>{{/hoverBox}} == hover box with a top arrow
+    */
     function hoverBox()
     {
         var uparrow = false;
