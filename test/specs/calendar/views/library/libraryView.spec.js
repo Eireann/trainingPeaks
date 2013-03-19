@@ -140,7 +140,7 @@ function(LibraryView, ExerciseLibraryView, LibraryTemplate)
 
                     it("Should turn off tab", function()
                     {
-                        spyOn(libraryView, "isOpen").andReturn(false);
+                        spyOn(libraryView, "isOpen").andReturn(true);
                         spyOn(libraryView, "turnOffTab");
                         libraryView.hideLibrary();
                         expect(libraryView.turnOffTab).toHaveBeenCalledWith("exerciseLibrary");

@@ -110,6 +110,7 @@ function(TP, initializeAjaxAuth, ajaxCaching, initializeAjaxTimezone, Session, U
     {
         var self = this;
         self.isBlurred = false;
+        
         $(window).focus(function()
         {
             setTimeout(function()
