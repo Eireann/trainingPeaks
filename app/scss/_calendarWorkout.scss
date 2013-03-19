@@ -6,10 +6,15 @@
     margin: 5px 2px 4px 2px;
     @include box-shadow(2px 0px 3px $TPGrey4);
 
-    &.dragging
+    &.dragHelper
     {
         opacity: 0.6;
         min-width: 150px;
+    }
+
+    &.dragging
+    {
+        opacity:0.8;
     }
 
     .workoutDiv

@@ -39,20 +39,28 @@ function(TP, draggable, ExerciseLibraryItemViewTemplate, ExerciseLibraryItemView
 
         makeDraggable: function()
         {
-            _.bindAll(this, "draggableHelper");
+            _.bindAll(this, "draggableHelper", "onDragStart", "onDragStop");
             this.$el.data("ItemId", this.model.id);
             this.$el.data("ItemType", this.model.webAPIModelName);
             this.$el.data("DropEvent", "addExerciseFromLibrary");
-            this.$el.draggable({ appendTo: 'body', 'z-index': 100, cursorAt: { top: 15, left: 25 }, helper: this.draggableHelper });
-            
+            this.$el.draggable({ appendTo: 'body', 'z-index': 100, cursorAt: { top: 15, left: 25 }, helper: this.draggableHelper, start: this.onDragStart, stop: this.onDragStop });
         },
 
         draggableHelper: function()
         {
-            console.log(this.model.attributes);
             var $helperEl = $(ExerciseLibraryItemViewTemplateDragState(this.serializeData()));
             $helperEl.addClass(this.className);
             return $helperEl;
+        },
+
+        onDragStart: function()
+        {
+            this.$el.addClass("dragging");
+        },
+
+        onDragStop: function()
+        {
+            this.$el.removeClass("dragging");
         }
 
     });

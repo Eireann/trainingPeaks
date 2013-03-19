@@ -213,11 +213,11 @@ function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkout
 
         makeDraggable: function()
         {
-            _.bindAll(this, "draggableHelper");
+            _.bindAll(this, "draggableHelper", "onDragStart", "onDragStop");
             this.$el.data("ItemId", this.model.id);
             this.$el.data("ItemType", this.model.webAPIModelName);
             this.$el.data("DropEvent", "itemMoved");
-            this.$el.draggable({ appendTo: 'body', cursorAt: { top: 15, left: 25 }, helper: this.draggableHelper });
+            this.$el.draggable({ appendTo: 'body', cursorAt: { top: 15, left: 25 }, helper: this.draggableHelper, start: this.onDragStart, stop: this.onDragStop });
         },
 
         draggableHelper: function()
@@ -229,6 +229,16 @@ function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkout
                 $helperEl.addClass(className);
             });
             return $helperEl;
+        },
+
+        onDragStart: function()
+        {
+            this.$el.addClass("dragging");
+        },
+
+        onDragStop: function()
+        {
+            this.$el.removeClass("dragging");
         }
     });
 });

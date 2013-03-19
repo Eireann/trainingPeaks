@@ -133,10 +133,15 @@
     @include box-shadow(2px 0px 3px $TPGrey4);
     background-color: $TPGrey2;
 
-    &.dragging
+    &.dragHelper
     {
         opacity: 0.6;
         min-width: 150px;
+    }
+
+    &.dragging
+    {
+        opacity: 0.8;
     }
 
     color: $TPGrey3;
