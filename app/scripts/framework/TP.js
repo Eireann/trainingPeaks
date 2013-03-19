@@ -111,7 +111,14 @@ function(Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmediate,
 
             $('body').append(this.$el);
 
-            this.left(($(window).width() - this.$el.width()) / 2).top(($(window).height() - this.$el.height()) / 2);
+            var $window = $(window);
+            if (this.$el.height() > $window.height())
+                this.$el.height($window.height() - 10);
+
+            if (this.$el.width() > $window.width())
+                this.$el.width($window.width() - 10);
+
+            this.left(($window.width() - this.$el.width()) / 2).top(($window.height() - this.$el.height()) / 2);
 
             return this;
         },
@@ -126,6 +133,8 @@ function(Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmediate,
         {
             if (this.modal && this.$el)
             {
+                if (left < 0)
+                    left = 0;
                 this.$el.css("left", left);
             }
 
@@ -136,7 +145,7 @@ function(Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmediate,
         {
             if (this.modal && this.$el)
             {
-                this.$el.css("left", center - (this.$el.width() / 2));
+                this.left(center - (this.$el.width() / 2));
             }
 
             return this;
@@ -146,6 +155,8 @@ function(Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmediate,
         {
             if (this.modal && this.$el)
             {
+                if (top < 0)
+                    top = 0;
                 this.$el.css("top", top);
             }
 
@@ -156,7 +167,7 @@ function(Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmediate,
         {
             if (this.modal && this.$el)
             {
-                this.$el.css("top", bottom - this.$el.height());
+                this.top(bottom - this.$el.height());
             }
 
             return this;

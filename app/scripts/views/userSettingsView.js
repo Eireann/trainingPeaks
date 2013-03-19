@@ -8,7 +8,14 @@ function(TP, printUnitsValue, userSettingsTemplate)
 {
     return TP.ItemView.extend(
     {
-        modal: true,
+
+        tagName: "div",
+        className: "userSettings",
+
+        modal: {
+            mask: true,
+            shadow: true
+        },
 
         template:
         {

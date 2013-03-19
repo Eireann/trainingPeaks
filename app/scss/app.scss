@@ -34,8 +34,9 @@ body
     }
 }
 
-.ui-widget-overlay
+.userSettings
 {
-   opacity: .00%;
-   filter: Alpha(Opacity=0);
+    background-color: $white;
+    overflow-x:visible;
+    overflow-y:auto;
 }
