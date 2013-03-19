@@ -1,0 +1,25 @@
+<div class="libraryExercise dragging">
+    <div class="workoutHeader">
+        <div class="workoutIcon">
+            <!-- <img src="assets/images/workoutTypeImages/{{ workoutTypeImageName workoutTypeValueId }}.png"/>  -->
+        </div>
+        <div class="workoutDistanceTime">
+            <label>
+                {{#if distancePlanned }}
+                {{ convertToViewUnits distancePlanned}} {{printUnitLabel "distance"}}
+                {{/if}}
+           
+                {{#if totalTimePlanned}} 
+                {{ printTimeFromDecimalHours totalTimePlanned }}
+                {{/if}}
+           
+                {{#if tssPlanned}} 
+                {{ tssPlanned}} tss
+                {{/if}}
+            </label>
+        </div>
+    </div>
+    <div class="workoutBody">
+        <label>{{itemName}}</label>
+    </div>
+</div>
