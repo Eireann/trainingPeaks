@@ -6,8 +6,18 @@ define(
 ],
 function(Handlebars, wrapTemplate, hoverBoxTemplate)
 {
-    function hoverBox(context, options)
+    function hoverBox()
     {
+        var uparrow = false;
+        var context = arguments[0];
+        var options = arguments[1];
+        if (arguments.length === 3)
+        {
+            options = arguments[2];
+            uparrow = (arguments[1] === "uparrow") ? true : false;
+        }
+
+        context.uparrow = uparrow;
         return wrapTemplate(context, options.fn, hoverBoxTemplate, "innerHtml");
     }
 
