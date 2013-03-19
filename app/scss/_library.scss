@@ -10,16 +10,18 @@
     #libraries
     {
         @include outerRow();
-        min-width: 50px;
+        min-width: 35px;
         position:relative;
         background-color:$white;
     }
              
     &.open
     {
+        /*
         width: 25%;
         @include transition-property(width);
         @include transition-duration(300ms);
+        */
         padding-right:2px;
 
         #activeLibraryContainer
@@ -32,8 +34,10 @@
     {
         width: 35px;
         text-align:right;
+        /*
         @include transition-property(width);
         @include transition-duration(300ms);
+        */
 
         #libraries
         {
