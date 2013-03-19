@@ -11,9 +11,8 @@ function(_, jqueryOutside, TP, ExerciseLibraryView, MealLibraryView, libraryTemp
 {
     return TP.ItemView.extend(
     {
-
         widthClosed: 35,
-        widthOpen: 300,
+        widthOpen: 350,
 
         template:
         {
@@ -23,8 +22,10 @@ function(_, jqueryOutside, TP, ExerciseLibraryView, MealLibraryView, libraryTemp
 
         initialize: function(options)
         {
-            this.views = {
-                exerciseLibrary: new ExerciseLibraryView({
+            this.views =
+            {
+                exerciseLibrary: new ExerciseLibraryView(
+                {
                     collection: options && options.collections && options.collections.exerciseLibrary ?
                         options.collections.exerciseLibrary : new TP.Collection()
                 }),
@@ -56,12 +57,14 @@ function(_, jqueryOutside, TP, ExerciseLibraryView, MealLibraryView, libraryTemp
             if (newLibraryName !== this.activeLibraryName)
             {
                 this.switchLibrary(newLibraryName);
-            } else
+            }
+            else
             {
                 if (this.isOpen())
                 {
                     this.hideLibrary();
-                } else
+                }
+                else
                 {
                     this.showLibrary();
                 }
@@ -99,7 +102,6 @@ function(_, jqueryOutside, TP, ExerciseLibraryView, MealLibraryView, libraryTemp
 
         showLibrary: function()
         {
-
             for (var libraryName in this.views)
             {
                 if (libraryName !== this.activeLibraryName)
@@ -122,6 +124,9 @@ function(_, jqueryOutside, TP, ExerciseLibraryView, MealLibraryView, libraryTemp
         hideLibrary: function()
         {
             //this.$el.off("clickoutside", this.hideLibrary);
+            if (!this.isOpen())
+                return;
+
             this.$el.parent().removeClass("open").addClass("closed");
             this.animate({ width: this.widthClosed });
             if (this.activeLibraryName)
