@@ -1,31 +1,5 @@
 ﻿@import "tpstylesheet";
 
-.ui-dialog
-{
-	padding: 0px;
-	border: 0px;
-
-	 @include box-shadow(5px 5px 5px $TPGrey4);
-
-	.ui-dialog-content
-	{
-		padding: 0px;
-	}
-}
-
-
-
-.ui-dialog-titlebar
-{
-    display:none;
-	
-}
-
-.ui-dialog-buttonpane
-{
-	display:none;
-}
-
 #workOutQuickView
 {
 	overflow:hidden;
@@ -47,7 +21,7 @@
 	{
 		float:left;
 		padding-right: 15px;
-		@include headerButtons(-5px, 35px, 20px, 12px);
+		@include headerButtons(-5px, 35px, 12px);
 	}
 
 	.headerIcons

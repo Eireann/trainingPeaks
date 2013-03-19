@@ -7,9 +7,10 @@ define(
     "views/calendarWorkoutSettings",
     "utilities/workoutTypeName",
     "utilities/determineCompletedWorkout",
-    "hbs!templates/views/calendarWorkout"
+    "hbs!templates/views/calendarWorkout",
+    "hbs!templates/views/calendarWorkoutDragState"
 ],
-function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkoutSettingsHover, workoutTypeName, determineCompletedWorkout, CalendarWorkoutTemplate)
+function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkoutSettingsHover, workoutTypeName, determineCompletedWorkout, CalendarWorkoutTemplate, CalendarWorkoutTemplateDragState)
 {
     return TP.ItemView.extend(
     {
@@ -153,19 +154,19 @@ function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkout
         removeSettingsButton: function (e)
         {
             var toElement = $(document.elementFromPoint(e.pageX, e.pageY));
-            if (!toElement.is(".workoutSettings") && !toElement.is("#workoutSettingsDiv") && !toElement.is(".hoverBox"))
+            if (!toElement.is(".workoutSettings") && !toElement.is("#workoutSettingsDiv") && !toElement.is(".hoverBox") && !toElement.is(".modal") && !toElement.is(".modalOverlay"))
             {
                 this.$(".workoutSettings").css('display', "none");
             }
         },
 
-        workoutSettingsClicked: function (e)
+        workoutSettingsClicked: function(e)
         {
             e.preventDefault();
 
             var offset = $(e.currentTarget).offset();
-            this.workoutSettings = new CalendarWorkoutSettingsHover({ model: this.model, top: offset.top + 10, left: offset.left + 5 });
-            this.workoutSettings.render();
+            this.workoutSettings = new CalendarWorkoutSettingsHover({ model: this.model });
+            this.workoutSettings.render().bottom(offset.top + 10).center(offset.left + 5);
             
             this.workoutSettings.on("mouseleave", this.onMouseLeave, this);
         },
@@ -212,10 +213,32 @@ function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkout
 
         makeDraggable: function()
         {
+            _.bindAll(this, "draggableHelper", "onDragStart", "onDragStop");
             this.$el.data("ItemId", this.model.id);
             this.$el.data("ItemType", this.model.webAPIModelName);
             this.$el.data("DropEvent", "itemMoved");
-            this.$el.draggable({ appendTo: 'body', helper: 'clone', opacity: 0.7 });
+            this.$el.draggable({ appendTo: 'body', cursorAt: { top: 15, left: 25 }, helper: this.draggableHelper, start: this.onDragStart, stop: this.onDragStop });
+        },
+
+        draggableHelper: function()
+        {
+            var $helperEl = $(CalendarWorkoutTemplateDragState(this.serializeData()));
+            var classNames = this.className().split(" ");
+            _.each(classNames, function(className)
+            {
+                $helperEl.addClass(className);
+            });
+            return $helperEl;
+        },
+
+        onDragStart: function()
+        {
+            this.$el.addClass("dragging");
+        },
+
+        onDragStop: function()
+        {
+            this.$el.removeClass("dragging");
         }
     });
 });

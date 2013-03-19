@@ -1,12 +1,11 @@
 ﻿define(
 [
     "TP",
-    "jqueryui/dialog",
     "models/workoutModel",
     "views/workoutQuickView",
     "hbs!templates/views/newItemView"
 ],
-function (TP, dialog, WorkoutModel, WorkoutQuickView, newItemViewTemplate)
+function (TP, WorkoutModel, WorkoutQuickView, newItemViewTemplate)
 {
     var WorkoutFileData = TP.Model.extend(
     {
@@ -23,6 +22,14 @@ function (TP, dialog, WorkoutModel, WorkoutQuickView, newItemViewTemplate)
 
     return TP.ItemView.extend(
     {
+
+        modal: {
+            mask: true,
+            shadow: true
+        },
+
+        className: "newItemView",
+
         events:
         {
             "change input[type='file']": "onFileSelected",
@@ -111,7 +118,6 @@ function (TP, dialog, WorkoutModel, WorkoutQuickView, newItemViewTemplate)
             this.model.trigger("workout:added", newModel);
             var quickView = new WorkoutQuickView({ model: newModel });
             quickView.render();
-            this.$el.dialog("close");
             this.close();
         },
 
@@ -129,28 +135,7 @@ function (TP, dialog, WorkoutModel, WorkoutQuickView, newItemViewTemplate)
         {
             // The QuickView already saved the model to the server, let's update our local collections to reflect the change.
             this.model.trigger("workout:added", this.newWorkout);
-            //this.$el.dialog("close");
             this.close();
-        },
-
-        onBeforeRender: function ()
-        {
-            this.$el.dialog(
-            {
-                autoOpen: false,
-                modal: true,
-                width: 800,
-                height: 250,
-                resizable: false
-            });
-        },
-
-        onRender: function ()
-        {
-            var self = this;
-            this.$el.dialog("open");
-            this.$el.css("overflow", "hidden");
-            setImmediate(function () { self.$el.bind("clickoutside", self.close); });
         }
     });
 });

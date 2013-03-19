@@ -1,0 +1,77 @@
+﻿@import "tpstylesheet";
+
+#shiftItems
+{
+	width: 400px;
+
+	@include labels($navigationFontFamilyRegular, 12, $TPGrey4, normal);
+	@include headerButtons(0, 60px, 12px);
+
+	.bold
+	{
+		font-weight: bold;
+	}
+
+	.header
+	{
+		height: 25px;
+		width: 100%;
+		background-color: $TPGrey1;
+		padding: 5px 0px 0 5px;
+		border-bottom: $TPGrey3;
+		border-bottom-style: solid;
+		border-bottom-width: 1px;
+	}
+
+	.shiftItemsBody
+	{
+		background-color: $TPGrey2;
+		padding: 10px 10px 20px 10px;
+		@include inputs(13px, 13px, 12px, $navigationFontFamilyRegular);
+		.toAndFromDateRange
+		{
+			display: -webkit-box;
+			@include inputs(100px, 25px, 12px, $navigationFontFamilyRegular);
+			input
+			{
+				display: inline;
+			}
+		}
+
+		.selectNewStartDateInput
+		{
+			display: -webkit-box;
+			@include inputs(100px, 25px, 12px, $navigationFontFamilyRegular);
+			input
+			{
+				display: inline;
+			}
+		}
+
+        input.numberpicker
+        {
+            border:none;
+            outline:none;
+            padding:0px;
+            margin:0px;
+            margin-left:5px;
+            width:100px;
+            height:32px;
+
+            &:focus
+            {
+               outline:none;
+            } 
+        }
+            
+	}
+
+	.cancelOkButtons
+		{
+			height: 35px;
+			width: 100%;
+			padding: 8px 0px 10px 250px;
+			background-color: $TPGrey1;
+
+		}
+}

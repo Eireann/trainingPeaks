@@ -1,7 +1,6 @@
 ﻿define(
 [
     "TP",
-    "jqueryui/dialog",
     "utilities/printUnitLabel",
     "utilities/convertToViewUnits",
     "utilities/convertToModelUnits",
@@ -10,10 +9,17 @@
     "views/deleteConfirmationView",
     "hbs!templates/views/workoutQuickView"
 ],
-function (TP, dialog, printUnitLabel, convertToViewUnits, convertToModelUnits, printTimeFromDecimalHours, convertTimeHoursToDecimal, DeleteConfirmationView, workoutQuickViewTemplate)
+function (TP, printUnitLabel, convertToViewUnits, convertToModelUnits, printTimeFromDecimalHours, convertTimeHoursToDecimal, DeleteConfirmationView, workoutQuickViewTemplate)
 {
     return TP.ItemView.extend(
     {
+
+        modal: {
+            mask: true,
+            shadow: true
+        },
+
+        className: "workoutQuickView",
 
         events:
         {
@@ -318,21 +324,8 @@ function (TP, dialog, printUnitLabel, convertToViewUnits, convertToModelUnits, p
             }
         },
 
-        onBeforeRender: function ()
-        {
-            this.$el.dialog(
-            {
-                autoOpen: false,
-                modal: true,
-                width: 800,
-                height: 600,
-                resizable: false
-            });
-        },
-
         onDiscardClicked: function ()
         {
-            this.$el.dialog("close");
             this.trigger("discard");
             this.close();
         },
@@ -340,7 +333,6 @@ function (TP, dialog, printUnitLabel, convertToViewUnits, convertToModelUnits, p
         onSaveClosedClicked: function ()
         {
             this.model.save();
-            this.$el.dialog("close");
             this.trigger("saveandclose");
             this.close();
         },
@@ -354,7 +346,6 @@ function (TP, dialog, printUnitLabel, convertToViewUnits, convertToModelUnits, p
         
         onDeleteWorkoutConfirmed: function()
         {
-            this.$el.dialog("close");
             this.close();
             // pass wait here so it won't actually remove the model until the server call returns,
             // which will then remove the view and the waiting indicator
@@ -387,8 +378,6 @@ function (TP, dialog, printUnitLabel, convertToViewUnits, convertToModelUnits, p
             {
                 this.model.off("change", this.render);
                 this.model.on("change", this.saveWorkout, this);
-
-                this.$el.dialog("open");
 
                 this.stickit();
                 this.stickitInitialized = true;

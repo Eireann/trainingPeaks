@@ -1,6 +1,7 @@
 ﻿@import "tpstylesheet";
 @import "mixIn";
 
+// default is arrow at the bottom, see &.uparrow below for arrow at the top
 .hoverBox
 {
 
@@ -79,5 +80,55 @@
     .colored
     {
         background-color: $TPGrey4;
+    }
+
+    &.uparrow
+    {
+
+        .hoverBoxContents
+        {
+            margin-bottom: 0px;
+            margin-top:3px;
+            @include linearGradient(top, rgb(255,255,255), rgba(255,255,255,0.90)); 
+        }
+
+        // this is what gives the top and side shadows
+        .mainShadow
+        {
+            top: 20px;
+            bottom:0px;
+            @include box-shadow(0px 2px 4px 1px #888888);
+        }
+
+        // top shadow, except for the arrow
+        /*
+        .topShadow
+        {
+            position:absolute;
+            bottom: 0px;
+            top: 19px;
+            height: 0px;
+            left: 0px;
+            right: 0px;
+            border-bottom: none;
+            border-top: 1px solid #555555;
+           @include box-shadow(0px -1px 5px 1px #333333);
+        }
+        */
+
+        .arrow
+        {
+            position:relative;
+            top:0px;
+            @include transform(translateY(12px) rotate(45deg));
+            @include box-shadow(0px 0px 8px 1px #999999);
+        }
+
+        .colorBar
+        {
+            bottom: 0px;
+            top: 20px;
+            height: 3px;
+        }
     }
 }

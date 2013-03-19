@@ -12,6 +12,7 @@ function(TP, setImmediate, jqueryOutside, NewItemView, DeleteConfirmationView, c
     return TP.ItemView.extend(
     {
 
+        modal: true,
         showThrobbers: false,
         tagName: "div",
         className: "calendarDaySettings",
@@ -35,17 +36,17 @@ function(TP, setImmediate, jqueryOutside, NewItemView, DeleteConfirmationView, c
 
         hideSettings: function (e)
         {
-            this.close();
-            this.trigger("mouseleave", e);
+
             this.parentEl.find(".daySelected").css("display", "none");
+
+            if (!this.closed)
+                this.close();
         },
 
         initialize: function(options)
         {
             _.bindAll(this, "hideSettings");
-            
-            this.posX = options.left;
-            this.posY = options.top;
+
             this.parentEl = options.parentEl;
             this.inheritedClassNames = options.className;
         },
@@ -65,20 +66,9 @@ function(TP, setImmediate, jqueryOutside, NewItemView, DeleteConfirmationView, c
 
         onRender: function()
         {
-            _.bindAll(this, "hideSettings");
+            this.on("close", this.hideSettings, this);
 
-
-            $('body').append(this.$el);
-            var self = this;
-            setImmediate(function ()
-            {
-                self.$el.bind("clickoutside", self.hideSettings);
-            });
-
-            this.$el.css("width", "75px");
-            this.$el.css("z-index", 99).css("position", "absolute");
-            this.$el.css("left", this.posX - Math.round(this.$el.width() / 2 - 10)).css("top", this.posY - this.$el.height());
-
+            // highlight the day
             var today = moment();
             var weekDate = moment(this.model.id);
 

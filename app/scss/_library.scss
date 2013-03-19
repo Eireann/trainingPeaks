@@ -4,6 +4,7 @@
 {
 
     margin-top:0px;
+	padding: 0 5px;
     @include column(1);
 
     #libraries
@@ -29,7 +30,7 @@
 
     &.closed
     {
-        width: 3%;
+        width: 35px;
         text-align:right;
         @include transition-property(width);
         @include transition-duration(300ms);
@@ -50,13 +51,13 @@
         position:absolute;
         left:0px;
         top:0px;
-        background-color:$TPGrey1;
-        width:50px;
+        background-color: white;
+        width:38px;
 
         div
         {
-            width: 50px;
-            height:50px;
+            width: 33px;
+            height:33px;
             color: $white;
             border-bottom:2px solid $TPGrey1;
             border-right:2px solid $TPGrey1;
@@ -88,11 +89,14 @@
         border-left:2px solid $TPBlue;
         border-bottom:2px solid $TPBlue;
 
-        @include labels($navigationFontFamilyRegular, 20px, $TPBlue, normal);
-        label
+        .libraryNavigation
         {
-            display: inline-block;
-            margin-right: 15px;
+            @include labels($navigationFontFamilyRegular, 20px, $TPBlue, normal);
+            label
+            {
+                display: inline-block;
+                margin-right: 15px;
+            }
         }
 
         .librarySearch
@@ -109,20 +113,6 @@
             font-style: italic;
         }
 
-        .exercise
-        {
-
-            color: $TPGrey3;
-            margin-top:10px;
-
-            .title
-            {
-                font-size:15px;
-                font-weight:bold;
-                color:$TPGrey4;
-            }
-
-        }
     }
 
 }
@@ -136,5 +126,53 @@
     div
     {
         margin-top:10px;
+    }
+}
+
+.libraryExercise
+{
+    @include box-shadow(2px 0px 3px $TPGrey4);
+    background-color: $TPGrey2;
+
+    &.dragHelper
+    {
+        opacity: 0.6;
+        min-width: 150px;
+    }
+
+    &.dragging
+    {
+        opacity: 0.8;
+    }
+
+    color: $TPGrey3;
+    margin-top:10px;
+
+    .workoutHeader
+    {
+        padding: 0px 5px 5px 5px;
+        height: 27px;
+
+        .workoutIcon
+        {
+            width: 25px;
+            height: 25px;
+            background-color: $white;
+            float: left;
+            margin-top: 5px;
+        }
+
+        .workoutDistanceTime
+        {
+            padding: 10px 0px 0px 30px;
+
+            @include labels($navigationFontFamilyRegular, 17px, $black, normal);
+        }
+    }
+    .workoutBody
+    {
+        padding: 10px 5px 5px 5px;
+        @include labels($navigationFontFamilyRegular, 10px, $black, normal);
+        label{font-weight: bold;}
     }
 }

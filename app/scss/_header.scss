@@ -125,14 +125,14 @@
 		float:left;
 		padding-top: 12px;
 		
-		@include headerButtons(0px, 35px, 20px, $navigationFontSize);
+		@include headerButtons(0px, 35px, $navigationFontSize);
 
 		.calendarNavigation
 		{
 			float:left;
 			padding-right: 8px;
 			padding-top: 3px;
-			@include headerButtons(0px, 35px, 20px, 12px);
+			@include headerButtons(0px, 35px, 12px);
 			
 		}
 
@@ -140,14 +140,14 @@
 		{
 			float:left;
 			padding-top: 3px;
-			@include headerButtons(0px, 71px, 20px, 12px);
+			@include headerButtons(0px, 71px, 12px);
 		}
 
 		.printRefreshButtons
 		{
 			float:left;
 			padding-top: 3px;
-			@include headerButtons(20px, 40px, 20px, $navigationFontSize);
+			@include headerButtons(20px, 40px, $navigationFontSize);
 			margin-left: -12px;
 			.refreshButton
 			{

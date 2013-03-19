@@ -7,9 +7,14 @@ function (TP, deleteConfirmationView)
 {
     return TP.ItemView.extend(
     {
+        modal: {
+            mask: false,
+            shadow: true
+        },
 
         showThrobbers: false,
         tagName: "div",
+        className: "deleteConfirmation",
 
         events:
         {
@@ -23,14 +28,6 @@ function (TP, deleteConfirmationView)
             template: deleteConfirmationView
         },
 
-        onRender: function ()
-        {
-            $('body').append(this.$el);
-            this.$el.dialog({
-                modal: true
-            });
-        },
-        
         onDeleteConfirmed: function()
         {
             this.trigger("deleteConfirmed");

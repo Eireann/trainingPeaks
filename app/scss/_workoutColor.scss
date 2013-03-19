@@ -36,19 +36,15 @@
 
 
 // background colors of workouts
-#weeksContainer
+.workout.future
 {
+    background-color: $TPGrey2;
+                 
+}
 
-    .workout.future
-    {
-		background-color: $TPGrey2;
-                     
-    }
-   
-    .workout.past
-    {
-        @include workoutColorsByCompliance("background-color"); 
-    }
+.workout.past
+{
+    @include workoutColorsByCompliance("background-color"); 
 }
 
 // arrow/border color of workout hover

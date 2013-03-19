@@ -2,10 +2,7 @@
 
 #newItemViewContainer
 {
-}
 
-#newItemViewContainer
-{
     .addItemHeader
     {
         color: $TPBlue;
@@ -38,7 +35,7 @@
             }
         }
 
-        @include headerButtons(0px, 50px, 20px, $navigationFontSize);
+        @include headerButtons(0px, 50px, $navigationFontSize);
 
         button
         {
