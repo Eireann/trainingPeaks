@@ -3,7 +3,7 @@
 #calendarWrapper
 {
     @include outerRow();
-	background-color: $TPGrey1;
+	background-color: white;
 }
 
 #calendarContainer
@@ -13,18 +13,20 @@
     user-select: none;
     -moz-user-select: none;
     -webkit-user-select: none;
+	padding: 0 5px;
+	background-color: white;
+
      
     #libraryContainer.open + &
     {
         width:75%;
         @include transition-property(width);
         @include transition-duration(300ms);
-        padding-left:0px;
     }
 
     #libraryContainer.closed + &
     {
-        width:97%;
+        width: 97%;
         @include transition-property(width);
         @include transition-duration(300ms);
         //@include calc(width, "100% - 50px"); 
@@ -46,7 +48,7 @@
     {
         @include column(2);
         min-height:150px;
-		background-color: $white;
+		background-color: $TPGrey1;
         padding: 0px 0px 5px;
 
         overflow-x: hidden;
@@ -139,12 +141,20 @@
     .daysOfWeek
     {
         @include outerRow();
-        @include calc(width, "100% - 12px"); 
+        @include calc(width, "100%"); 
+		background-color: $TPGrey1;
 		height: 27px;
 		padding-top: 7px;
+		padding-right: 12px;
 		//margin-left: -8px;
         margin-left: 0px;
-        margin-right:12px;
+        //margin-right:12px;
+		border: $TPGrey2;
+		border-style: solid;
+		border-width: 1px;
+		@include box-shadow(0px 3px 8px -4px $TPGrey3);
+		position: relative;
+		z-index: 1;
 
 
         div
@@ -159,6 +169,7 @@
 			text-align: left;
 			height: 15px;
 			//margin-left: -1px;
+			
 		}
 
     }
