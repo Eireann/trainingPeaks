@@ -120,11 +120,31 @@ function(Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmediate,
 
             this.left(($window.width() - this.$el.width()) / 2).top(($window.height() - this.$el.height()) / 2);
 
+            this.enableEscapeKey();
+
             return this;
+        },
+
+        enableEscapeKey: function()
+        {
+            _.bindAll(this, "onEscapeKey");
+            $(document).on("keyup", this.onEscapeKey);
+        },
+
+        disableEscapeKey: function()
+        {
+            $(document).off("keyup", this.onEscapeKey);
+        },
+
+        onEscapeKey: function(e)
+        {
+            if (e.which === 27)
+                this.close();
         },
 
         closeModal: function()
         {
+            this.disableEscapeKey();
             if (this.modal && this.$overlay)
                 this.$overlay.hide().remove();
         },

@@ -7,9 +7,10 @@ define(
     "views/calendarWorkoutSettings",
     "utilities/workoutTypeName",
     "utilities/determineCompletedWorkout",
-    "hbs!templates/views/calendarWorkout"
+    "hbs!templates/views/calendarWorkout",
+    "hbs!templates/views/calendarWorkoutDragState"
 ],
-function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkoutSettingsHover, workoutTypeName, determineCompletedWorkout, CalendarWorkoutTemplate)
+function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkoutSettingsHover, workoutTypeName, determineCompletedWorkout, CalendarWorkoutTemplate, CalendarWorkoutTemplateDragState)
 {
     return TP.ItemView.extend(
     {
@@ -212,10 +213,32 @@ function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkout
 
         makeDraggable: function()
         {
+            _.bindAll(this, "draggableHelper", "onDragStart", "onDragStop");
             this.$el.data("ItemId", this.model.id);
             this.$el.data("ItemType", this.model.webAPIModelName);
             this.$el.data("DropEvent", "itemMoved");
-            this.$el.draggable({ appendTo: 'body', helper: 'clone', opacity: 0.7 });
+            this.$el.draggable({ appendTo: 'body', cursorAt: { top: 15, left: 25 }, helper: this.draggableHelper, start: this.onDragStart, stop: this.onDragStop });
+        },
+
+        draggableHelper: function()
+        {
+            var $helperEl = $(CalendarWorkoutTemplateDragState(this.serializeData()));
+            var classNames = this.className().split(" ");
+            _.each(classNames, function(className)
+            {
+                $helperEl.addClass(className);
+            });
+            return $helperEl;
+        },
+
+        onDragStart: function()
+        {
+            this.$el.addClass("dragging");
+        },
+
+        onDragStop: function()
+        {
+            this.$el.removeClass("dragging");
         }
     });
 });

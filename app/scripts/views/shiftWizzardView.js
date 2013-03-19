@@ -22,7 +22,9 @@ function(moment, datepicker, spinner, TP, ShiftWorkoutsCommand, shiftWizzard)
             toDate: "",
             moveToStartDate: "",
             moveByNumberOfDays: 1,
-            moveByNumberOfWeeks: 1 
+            moveByNumberOfWeeks: 1,
+            meals: "",
+            workouts: ""
         }
     });
 
@@ -56,7 +58,9 @@ function(moment, datepicker, spinner, TP, ShiftWorkoutsCommand, shiftWizzard)
             "#toDate": "toDate",
             "#moveToStartDate": "moveToStartDate",
             "#moveByNumberOfDays": "moveByNumberOfDays",
-            "#moveByNumberOfWeeks": "moveByNumberOfWeeks"
+            "#moveByNumberOfWeeks": "moveByNumberOfWeeks",
+            "#meals": "meals",
+            "#workouts": "workouts"
         },
 
         ui:
@@ -166,17 +170,24 @@ function(moment, datepicker, spinner, TP, ShiftWorkoutsCommand, shiftWizzard)
             this.onWaitStart();
 
             // setup shift command
-            var shiftCommand = this.setupShiftCommand();
+            if (this.model.get("workouts"))
+            {
+                var shiftCommand = new ShiftWorkoutsCommand();
+                this.configureShiftCommand(shiftCommand);
 
-            // execute = send it to server
-            var deferred = shiftCommand.execute();
+                // execute = send it to server
+                var deferred = shiftCommand.execute();
 
-            // close this view when remote command finishes
-            var self = this;
-            deferred.always(function() { self.onClose(); });
+                // close this view when remote command finishes
+                var self = this;
+                deferred.always(function() { self.onClose(); });
 
-            // pass the deferred on through an event so CalendarContainerView can act on it
-            this.trigger("shifted", deferred);
+                // pass the deferred on through an event so CalendarContainerView can act on it
+                this.trigger("shifted", deferred);
+            } else
+            {
+                this.onClose();
+            }
         },
 
         onClose: function()
@@ -185,9 +196,8 @@ function(moment, datepicker, spinner, TP, ShiftWorkoutsCommand, shiftWizzard)
             this.close();
         },
 
-        setupShiftCommand: function()
+        configureShiftCommand: function(shiftCommand)
         {
-            var shiftCommand = new ShiftWorkoutsCommand();
 
             // how to move
             switch (this.model.get("selectItems"))
@@ -224,7 +234,6 @@ function(moment, datepicker, spinner, TP, ShiftWorkoutsCommand, shiftWizzard)
                     break;
             }
 
-            return shiftCommand;
         }
     });
 });
