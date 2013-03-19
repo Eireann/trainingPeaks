@@ -55,7 +55,8 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, c
             
             // theMarsApp.user.on("change", this.setWorkoutColorization, this);
 
-            $(window).on("resize", this.resizeContext);
+            _.bindAll(this, "resizeContainer");
+            $(window).on("resize", this.resizeContainer);
 
             this.calendarHeaderModel = options.calendarHeaderModel;
             this.throttledCheckForPosition = _.throttle(this.checkCurrentScrollPosition, 100);
@@ -63,11 +64,21 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, c
             this.collection.on("shiftwizard:open", this.onShiftWizardOpen, this);
         },
 
-        resizeContext: function (event)
+        resizeContainer: function(event)
         {
             var headerHeight = $("#navigation").height();
             var windowHeight = $(window).height();
-            this.$(".scrollable").css({ height: windowHeight - headerHeight - 75 +'px' });
+            this.$(".scrollable").css({ height: windowHeight - headerHeight - 75 + 'px' });
+
+            // make sure we still fit in window
+            var wrapper = this.$el.closest("#calendarWrapper");
+            var library = wrapper.find("#libraryContainer");
+            var calendarContainer = this.$el.closest("#calendarContainer");
+
+            setImmediate(function()
+            {
+                calendarContainer.width($(window).width() - library.width());
+            });
         },
 
         setWorkoutColorization: function()
@@ -153,7 +164,7 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, c
             //theMarsApp.logger.logTimer("CalendarView.onRender", "Finished rendering weeks (but before the browser displays them)");
             //theMarsApp.logger.waitAndLogTimer("CalendarView.onRender", "Browser has now rendered the weeks");
 
-            this.resizeContext();
+            this.resizeContainer();
             this.checkCurrentScrollPosition();
 
             this.collection.on("rangeselect", this.onRangeSelect, this);
@@ -242,9 +253,9 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, c
             var requestedElementOffsetFromContainer = $element.position().top;
             var scrollToOffset = this.ui.weeksContainer.scrollTop() + requestedElementOffsetFromContainer - this.ui.weeksContainer.position().top;
 
-            if (!animationTimeout && requestedElementOffsetFromContainer < 300)
+            if (typeof animationTimeout === "undefined" && requestedElementOffsetFromContainer < 300)
                 animationTimeout = 500;
-            else if (!animationTimeout && requestedElementOffsetFromContainer > 1500)
+            else if (typeof animationTimeout === "undefined" && requestedElementOffsetFromContainer > 1500)
                 animationTimeout = 2000;
 
             this.ui.weeksContainer.animate(
@@ -255,10 +266,13 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, c
 
         scrollToDate: function(dateAsMoment, effectDuration)
         {
+            if (typeof effectDuration === "undefined")
+                effectDuration = 500;
+            
             //theMarsApp.logger.debug(dateAsMoment.format("YYYY-MM-DD"));
             var dateAsString = dateAsMoment.format("YYYY-MM-DD");
             var selector = '.day[data-date="' + dateAsString + '"]';
-            this.scrollToSelector(selector, effectDuration || 500);
+            this.scrollToSelector(selector, effectDuration);
             this.snappedToWeekHeader = true;
         },
         
@@ -320,25 +334,35 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, c
             rangeSettingsView.render().left(e.pageX - 30).bottom(e.pageY);
         },
 
-        onLibraryShow: function()
+        onLibraryAnimate: function(libraryAnimationCssAttributes)
         {
-            this.scrollToLastViewedDate();
+            var libraryWidth = libraryAnimationCssAttributes.width;
+            var wrapperWidth = this.$el.closest("#calendarWrapper").width();
+            var calendarWidth = wrapperWidth - libraryWidth;
+            var calendarContainer = this.$el.closest("#calendarContainer");
+            var cssAttributes = { width: calendarWidth };
+
+            _.bindAll(this, "onLibraryAnimateProgress");
+            calendarContainer.animate(cssAttributes, { progress: this.onLibraryAnimateProgress });
         },
 
-        onLibraryHide: function()
+        onLibraryAnimateProgress: function()
         {
-            this.scrollToLastViewedDate();
+            this.scrollToLastViewedDate(0);
         },
 
         // if we un-snapped from the week header because of text wrapping on library show/hide,
         // or if we scrolled into a different week, snap back to the correct week
-        scrollToLastViewedDate: function()
+        scrollToLastViewedDate: function(duration)
         {
+            if (typeof duration === "undefined")
+                duration = 100;
+
             var headerDate = this.getHeaderDate();
             var scrollDate = this.getCurrentScrollDate();
             if (this.snappedToWeekHeader || headerDate !== scrollDate)
             {
-                this.scrollToDate(moment(headerDate), 100);
+                this.scrollToDate(moment(headerDate), duration);
             }
         },
 

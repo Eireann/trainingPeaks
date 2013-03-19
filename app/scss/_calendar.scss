@@ -16,7 +16,8 @@
 	padding: 0 5px;
 	background-color: white;
 
-     
+    @include calc(width, "100% - 35px"); 
+    /*
     #libraryContainer.open + &
     {
         width:75%;
@@ -31,6 +32,7 @@
         @include transition-duration(300ms);
         //@include calc(width, "100% - 50px"); 
     }
+    */
 
     .scrollable
     {

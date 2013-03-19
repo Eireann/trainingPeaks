@@ -11,6 +11,9 @@ function(_, jqueryOutside, TP, ExerciseLibraryView, MealLibraryView, libraryTemp
 {
     return TP.ItemView.extend(
     {
+        widthClosed: 35,
+        widthOpen: 350,
+
         template:
         {
             type: "handlebars",
@@ -108,27 +111,40 @@ function(_, jqueryOutside, TP, ExerciseLibraryView, MealLibraryView, libraryTemp
             }
 
             var self = this;
-            this.views[this.activeLibraryName].$el.show(300, function() { self.trigger("showLibrary"); });
+            this.views[this.activeLibraryName].$el.show(100);
+
+            this.animate({ width: this.widthOpen });
             this.$el.parent().removeClass("closed").addClass("open");
             this.turnOnTab(this.activeLibraryName);
             this.resizeContext();
 
-            this.hideOnClickOutside();
+            //this.hideOnClickOutside();
         },
 
         hideLibrary: function()
         {
+            //this.$el.off("clickoutside", this.hideLibrary);
             if (!this.isOpen())
                 return;
-            
-            this.$el.off("clickoutside", this.hideLibrary);
+
             this.$el.parent().removeClass("open").addClass("closed");
+            this.animate({ width: this.widthClosed });
             if (this.activeLibraryName)
             {
                 var self = this;
-                this.views[this.activeLibraryName].$el.hide(300, function() { self.trigger("hideLibrary"); });
+                this.views[this.activeLibraryName].$el.hide(100);
                 this.turnOffTab(this.activeLibraryName);
             }
+        },
+
+        animate: function(cssAttributes)
+        {
+
+            // allow the calendar or other listeners to hook into our animation
+            this.trigger("animate", cssAttributes);
+
+            // run the animation
+            this.$el.closest("#libraryContainer").animate(cssAttributes);
         },
 
         onWaitStart: function()
@@ -157,8 +173,8 @@ function(_, jqueryOutside, TP, ExerciseLibraryView, MealLibraryView, libraryTemp
 
         hideOnClickOutside: function()
         {
-            _.bindAll(this, "hideLibrary");
-            this.$el.on("clickoutside", this.hideLibrary);
+            //_.bindAll(this, "hideLibrary");
+            //this.$el.on("clickoutside", this.hideLibrary);
         },
 
         onShow: function()
