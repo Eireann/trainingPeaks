@@ -380,9 +380,9 @@ function(_, moment, setImmediate, TP, CalendarLayout, CalendarCollection, Calend
             this.weeksCollection.requestWorkouts(startDate, endDate);
         },
 
-        onLibraryAnimate: function(cssAttributes)
+        onLibraryAnimate: function(cssAttributes, duration)
         {
-            this.views.calendar.onLibraryAnimate(cssAttributes);
+            this.views.calendar.onLibraryAnimate(cssAttributes, duration);
         }
     });
 });

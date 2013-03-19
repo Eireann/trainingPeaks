@@ -64,21 +64,29 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, c
             this.collection.on("shiftwizard:open", this.onShiftWizardOpen, this);
         },
 
+        resizeHeight: function()
+        {
+            var $window = $(window);
+            var headerHeight = $("#navigation").height();
+            var windowHeight = $window.height();
+            this.$(".scrollable").css({ height: windowHeight - headerHeight - 75 + 'px' });
+        },
+
         resizeContainer: function(event)
         {
-            var headerHeight = $("#navigation").height();
-            var windowHeight = $(window).height();
-            this.$(".scrollable").css({ height: windowHeight - headerHeight - 75 + 'px' });
+            this.resizeHeight();
 
             // make sure we still fit in window
+            var $window = $(window);
             var wrapper = this.$el.closest("#calendarWrapper");
             var library = wrapper.find("#libraryContainer");
             var calendarContainer = this.$el.closest("#calendarContainer");
+            var parentWidth = wrapper.width() < $window.width() ? wrapper.width() : $window.width();
 
-            setImmediate(function()
-            {
-                calendarContainer.width($(window).width() - library.width());
-            });
+            // account for library padding
+            var padding = library.outerWidth() - library.width();
+            var calendarWidth = parentWidth - library.outerWidth() - padding;
+            calendarContainer.width(calendarWidth);
         },
 
         setWorkoutColorization: function()
@@ -163,8 +171,8 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, c
 
             //theMarsApp.logger.logTimer("CalendarView.onRender", "Finished rendering weeks (but before the browser displays them)");
             //theMarsApp.logger.waitAndLogTimer("CalendarView.onRender", "Browser has now rendered the weeks");
+            this.resizeHeight();
 
-            this.resizeContainer();
             this.checkCurrentScrollPosition();
 
             this.collection.on("rangeselect", this.onRangeSelect, this);
@@ -334,7 +342,7 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, c
             rangeSettingsView.render().left(e.pageX - 30).bottom(e.pageY);
         },
 
-        onLibraryAnimate: function(libraryAnimationCssAttributes)
+        onLibraryAnimate: function(libraryAnimationCssAttributes, duration)
         {
             var libraryWidth = libraryAnimationCssAttributes.width;
             var wrapperWidth = this.$el.closest("#calendarWrapper").width();
@@ -343,7 +351,7 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, c
             var cssAttributes = { width: calendarWidth };
 
             _.bindAll(this, "onLibraryAnimateProgress");
-            calendarContainer.animate(cssAttributes, { progress: this.onLibraryAnimateProgress });
+            calendarContainer.animate(cssAttributes, { progress: this.onLibraryAnimateProgress, duration: duration });
         },
 
         onLibraryAnimateProgress: function()

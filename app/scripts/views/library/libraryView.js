@@ -77,7 +77,7 @@ function(_, jqueryOutside, TP, ExerciseLibraryView, MealLibraryView, libraryTemp
             {
                 if (this.activeLibraryName && newLibraryName !== this.activeLibraryName)
                 {
-                    this.views[this.activeLibraryName].$el.hide(200);
+                    this.views[this.activeLibraryName].$el.hide();
                     this.turnOffTab(this.activeLibraryName);
                 }
                 this.activeLibraryName = newLibraryName;
@@ -111,10 +111,10 @@ function(_, jqueryOutside, TP, ExerciseLibraryView, MealLibraryView, libraryTemp
             }
 
             var self = this;
-            this.views[this.activeLibraryName].$el.show(100);
+            this.views[this.activeLibraryName].$el.show();
 
-            this.animate({ width: this.widthOpen });
             this.$el.parent().removeClass("closed").addClass("open");
+            this.animate({ width: this.widthOpen });
             this.turnOnTab(this.activeLibraryName);
             this.resizeContext();
 
@@ -132,7 +132,7 @@ function(_, jqueryOutside, TP, ExerciseLibraryView, MealLibraryView, libraryTemp
             if (this.activeLibraryName)
             {
                 var self = this;
-                this.views[this.activeLibraryName].$el.hide(100);
+                this.views[this.activeLibraryName].$el.hide(200);
                 this.turnOffTab(this.activeLibraryName);
             }
         },
@@ -141,10 +141,11 @@ function(_, jqueryOutside, TP, ExerciseLibraryView, MealLibraryView, libraryTemp
         {
 
             // allow the calendar or other listeners to hook into our animation
-            this.trigger("animate", cssAttributes);
+            var duration = 300;
+            this.trigger("animate", cssAttributes, duration);
 
             // run the animation
-            this.$el.closest("#libraryContainer").animate(cssAttributes);
+            this.$el.closest("#libraryContainer").animate(cssAttributes, { duration: duration });
         },
 
         onWaitStart: function()

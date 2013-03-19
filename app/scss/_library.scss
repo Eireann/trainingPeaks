@@ -6,6 +6,7 @@
     margin-top:0px;
 	padding: 0 5px;
     @include column(1);
+    width: 35px;
 
     #libraries
     {
@@ -17,11 +18,6 @@
              
     &.open
     {
-        /*
-        width: 25%;
-        @include transition-property(width);
-        @include transition-duration(300ms);
-        */
         padding-right:2px;
 
         #activeLibraryContainer
@@ -32,12 +28,7 @@
 
     &.closed
     {
-        width: 35px;
         text-align:right;
-        /*
-        @include transition-property(width);
-        @include transition-duration(300ms);
-        */
 
         #libraries
         {
