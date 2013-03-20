@@ -72,16 +72,16 @@ function(TP, workoutTypeEnum, WeekSummarySettings, weekSummaryTemplate)
                 item.itemsCollection.each(function(workout)
                 {
                     if (workout.has("totalTime") && workout.get("totalTime") !== null)
-                        completedValues.totalTime += workout.get("totalTime");
+                        completedValues.totalTime += Number(workout.get("totalTime"));
   
                     if (workout.has("totalTimePlanned") && workout.get("totalTimePlanned") !== null)
-                        plannedValues.totalTime += workout.get("totalTimePlanned");
+                        plannedValues.totalTime += Number(workout.get("totalTimePlanned"));
                     
                     if (workout.has("tssActual") && workout.get("tssActual") !== null)
-                        completedValues.cumulativeTss += workout.get("tssActual");
+                        completedValues.cumulativeTss += Number(workout.get("tssActual"));
 
                     if (workout.has("tssPlanned") && workout.get("tssPlanned") !== null)
-                        plannedValues.cumulativeTss += workout.get("tssPlanned");
+                        plannedValues.cumulativeTss += Number(workout.get("tssPlanned"));
 
                     var workoutType = workout.get("workoutTypeValueId");
 
@@ -95,16 +95,16 @@ function(TP, workoutTypeEnum, WeekSummarySettings, weekSummaryTemplate)
                         return;
 
                     if (workout.has("distance") && workout.get("distance") !== null)
-                        completedValues.distanceByWorkoutType[workoutType] += workout.get("distance");
+                        completedValues.distanceByWorkoutType[workoutType] += Number(workout.get("distance"));
 
                     if (workout.has("distancePlanned") && workout.get("distancePlanned") !== null)
-                        plannedValues.distanceByWorkoutType[workoutType] += workout.get("distancePlanned");
+                        plannedValues.distanceByWorkoutType[workoutType] += Number(workout.get("distancePlanned"));
 
                     if (workout.has("totalTime") && workout.get("totalTime") !== null)
-                        completedValues.durationByWorkoutType[workoutType] += workout.get("totalTime");
+                        completedValues.durationByWorkoutType[workoutType] += Number(workout.get("totalTime"));
 
                     if (workout.has("totalTimePlanned") && workout.get("totalTimePlanned") !== null)
-                        plannedValues.durationByWorkoutType[workoutType] += workout.get("totalTimePlanned");
+                        plannedValues.durationByWorkoutType[workoutType] += Number(workout.get("totalTimePlanned"));
                 });
             });
 
@@ -118,8 +118,14 @@ function(TP, workoutTypeEnum, WeekSummarySettings, weekSummaryTemplate)
                 runDistanceCompleted: completedValues.distanceByWorkoutType[workoutTypeEnum["Run"]],
                 swimDistancePlanned: plannedValues.distanceByWorkoutType[workoutTypeEnum["Swim"]],
                 swimDistanceCompleted: completedValues.distanceByWorkoutType[workoutTypeEnum["Swim"]],
-                strengthTimePlanned: plannedValues.durationByWorkoutType[workoutTypeEnum["Strength"]],
-                strengthTimeCompleted: completedValues.durationByWorkoutType[workoutTypeEnum["Strength"]],
+                bikeDurationPlanned: plannedValues.durationByWorkoutType[workoutTypeEnum["Bike"]],
+                bikeDurationCompleted: completedValues.durationByWorkoutType[workoutTypeEnum["Bike"]],
+                runDurationPlanned: plannedValues.durationByWorkoutType[workoutTypeEnum["Run"]],
+                runDurationCompleted: completedValues.durationByWorkoutType[workoutTypeEnum["Run"]],
+                swimDurationPlanned: plannedValues.durationByWorkoutType[workoutTypeEnum["Swim"]],
+                swimDurationCompleted: completedValues.durationByWorkoutType[workoutTypeEnum["Swim"]],
+                strengthDurationPlanned: plannedValues.durationByWorkoutType[workoutTypeEnum["Strength"]],
+                strengthDurationCompleted: completedValues.durationByWorkoutType[workoutTypeEnum["Strength"]],
                 tssPlanned: plannedValues.cumulativeTss,
                 tssCompleted: completedValues.cumulativeTss
             },
