@@ -365,7 +365,21 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, c
             var cssAttributes = { width: calendarWidth };
 
             _.bindAll(this, "onLibraryAnimateProgress");
-            calendarContainer.animate(cssAttributes, { progress: this.onLibraryAnimateProgress, duration: duration });
+
+            var self = this;
+            var onComplete = function()
+            {
+                self.updateWeekHeights();
+            }
+            calendarContainer.animate(cssAttributes, { progress: this.onLibraryAnimateProgress, duration: duration, complete: onComplete });
+        },
+
+        updateWeekHeights: function()
+        {
+            this.collection.each(function(model)
+            {
+                model.trigger("library:resize");
+            });
         },
 
         onLibraryAnimateProgress: function()
