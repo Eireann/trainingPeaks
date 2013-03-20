@@ -46,7 +46,7 @@ function (_, TP, loginViewTemplate)
 
         checkForEnter: function(e)
         {
-            if (e.KeyCode === 13)
+            if (e.keyCode === 13)
                 this.authenticate();
         },
         
