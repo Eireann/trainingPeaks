@@ -11,7 +11,13 @@ function(TP, exerciseLibraryAddItemView)
     return TP.ItemView.extend(
     {
 
-        modal: true,
+        modal: {
+            mask: true,
+            shadow: true
+        },
+
+        tagName: "div",
+        className: "exerciseLibraryAddItemView",
 
         attributes:
         {
