@@ -37,6 +37,7 @@ function(TP, LoginLayout, LoginView)
 
         onLogout: function()
         {
+            theMarsApp.router.navigate("login");
             window.location.reload();
         }
         
