@@ -3,11 +3,14 @@
         <label class="bold">{{$ "ShiftItems"}}</label>
     </div>
     <div class="shiftItemsBody">
+        {{! hide checkboxes for now ... }}
+        {{#if false}}
         <label class="bold">{{$ "SelectShiftItemsString"}}</label>
         <form name="selectShiftItems">
            <label><input type="checkbox" id="workouts" value="workouts"/>{{$ "Workouts"}}</label>
            <label><input type="checkbox" id="meals" value="meals"/>{{$ "Meals"}}</label>
         </form>
+        {{/if}}
         <label class="bold">{{$ "SelectShiftItemsString"}}</label>
         <form>
             <label><input type="radio" value="itemsOnAllSelectedDays" name="selectItems" id="selectItemsOnSelectedDays"/>{{$ "ItemsOnAllSelectedDays"}}</label>

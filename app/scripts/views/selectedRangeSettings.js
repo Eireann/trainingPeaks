@@ -76,8 +76,8 @@ function(TP, setImmediate, jqueryOutside, DeleteConfirmationView, selectedRangeS
 
         onShiftClicked: function(e)
         {
-            this.selectedRangeCollection.trigger("range:shiftwizard");
             this.close();
+            this.selectedRangeCollection.trigger("range:shiftwizard");
         },
 
         updatePasteAvailability: function()
