@@ -228,6 +228,7 @@ function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkout
             {
                 $helperEl.addClass(className);
             });
+            $helperEl.width(this.$el.width());
             return $helperEl;
         },
 

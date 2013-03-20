@@ -152,8 +152,8 @@ function (TP, WeekSummaryView, workoutTypeEnum)
             expect(view.model.get("runDistancePlanned")).toBe(0);
             expect(view.model.get("swimDistanceCompleted")).toBe(0);
             expect(view.model.get("swimDistancePlanned")).toBe(0);
-            expect(view.model.get("strengthTimeCompleted")).toBe(0);
-            expect(view.model.get("strengthTimePlanned")).toBe(0);
+            expect(view.model.get("strengthDurationCompleted")).toBe(0);
+            expect(view.model.get("strengthDurationPlanned")).toBe(0);
 
             dayModel1.itemsCollection.add(bike1);
             dayModel1.itemsCollection.add(run1);
@@ -175,8 +175,8 @@ function (TP, WeekSummaryView, workoutTypeEnum)
             expect(view.model.get("runDistancePlanned")).toBe(14);
             expect(view.model.get("swimDistanceCompleted")).toBe(3);
             expect(view.model.get("swimDistancePlanned")).toBe(6);
-            expect(view.model.get("strengthTimeCompleted")).toBe(7);
-            expect(view.model.get("strengthTimePlanned")).toBe(14);
+            expect(view.model.get("strengthDurationCompleted")).toBe(7);
+            expect(view.model.get("strengthDurationPlanned")).toBe(14);
         });
     });
 });
