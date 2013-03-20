@@ -79,7 +79,13 @@ function (_, TP)
         {
             this.authPromise.reject();
             this.trigger("api:authorization:failure");
+        },
+        
+        logout: function()
+        {
+            this.storageLocation.removeItem("access_token");
+            //this.authPromise = null;
+            theMarsApp.router.navigate("login", {trigger: true});
         }
-
     });
 });

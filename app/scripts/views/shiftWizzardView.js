@@ -24,7 +24,7 @@ function(moment, datepicker, spinner, TP, ShiftWorkoutsCommand, shiftWizzard)
             moveByNumberOfDays: 1,
             moveByNumberOfWeeks: 1,
             meals: "",
-            workouts: ""
+            workouts: "workouts"
         }
     });
 
