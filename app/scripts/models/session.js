@@ -84,8 +84,7 @@ function (_, TP)
         logout: function()
         {
             this.storageLocation.removeItem("access_token");
-            //this.authPromise = null;
-            theMarsApp.router.navigate("login", {trigger: true});
+            this.trigger("logout");
         }
     });
 });

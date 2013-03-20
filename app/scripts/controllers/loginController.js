@@ -14,6 +14,7 @@ function(TP, LoginLayout, LoginView)
         {
             this.layout = new LoginLayout();
             this.layout.on("show", this.show, this);
+            theMarsApp.session.on("logout", this.onLogout, this);
         },
         
         show: function()
@@ -32,6 +33,11 @@ function(TP, LoginLayout, LoginView)
         onLoginSuccess: function () {
             this.trigger("login:success");
             theMarsApp.clientEvents.logEvent({ Event: { Type: "Login", Label: "Login", AppContext: "Login" } });
+        },
+
+        onLogout: function()
+        {
+            window.location.reload();
         }
         
     });
