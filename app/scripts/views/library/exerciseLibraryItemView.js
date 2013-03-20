@@ -50,6 +50,7 @@ function(TP, draggable, ExerciseLibraryItemViewTemplate, ExerciseLibraryItemView
         {
             var $helperEl = $(ExerciseLibraryItemViewTemplateDragState(this.serializeData()));
             $helperEl.addClass(this.className);
+            $helperEl.width(this.$el.width());
             return $helperEl;
         },
 
