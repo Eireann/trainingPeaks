@@ -20,7 +20,6 @@
             // jQuery related
             "jqueryui": "../vendor/js/libs/jqueryui",
             "jqueryOutside": "../vendor/js/libs/jquery/jquery.ba-outside-events",
-            "jqueryAnimateShadow": "../vendor/js/libs/jquery/jquery.animate-shadow",
 
             // Underscore & Lodash (provided by Lodash)
             "lodash": "../vendor/js/libs/lodash/lodash",

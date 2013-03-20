@@ -5,8 +5,7 @@
     "views/calendarWeekView",
     "views/selectedRangeSettings",
     "views/shiftWizzardView",
-    "hbs!templates/views/calendarContainerView",
-    "jqueryAnimateShadow"
+    "hbs!templates/views/calendarContainerView"
 ],
 function(_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, calendarContainerView)
 {
@@ -188,6 +187,7 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, c
         onScrollStop: function()
         {
             this.scrolling = false;
+            this.$el.find(".daysOfWeek").removeClass("scrollInProgress");
             
             var uiOffset = this.ui.weeksContainer.offset();
             var currentWeek = $(document.elementFromPoint(uiOffset.left, uiOffset.top)).closest(".week");
@@ -217,21 +217,13 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, c
             {
                 this.snappedToWeekHeader = false;
             }
-
-            $(".daysOfWeek").animate(
-            {
-                "boxShadow": "0 0 0 0"
-            }, 200);
         },
 
         onScroll: function()
         {
             if (!this.scrolling)
             {
-                $(".daysOfWeek").animate(
-                {
-                    "boxShadow": "0 3px 8px -4px #636569"
-                }, 200);
+                this.$el.find(".daysOfWeek").addClass("scrollInProgress");
                 this.scrolling = true;
             }
 
