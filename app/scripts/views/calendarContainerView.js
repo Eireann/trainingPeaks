@@ -155,8 +155,8 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, c
             $(document).on('keydown', this.onKeyDown);
 
             // prevent autorepeat keydown
-             _.bindAll(this, "onKeyUp");
-             $(document).on('keyup', this.onKeyUp);
+            _.bindAll(this, "onKeyUp");
+            $(document).on('keyup', this.onKeyUp);
 
             //theMarsApp.logger.startTimer("CalendarView.onRender", "Begin rendering weeks");
 
@@ -186,6 +186,9 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, c
 
         onScrollStop: function()
         {
+            this.scrolling = false;
+            this.$el.find(".daysOfWeek").removeClass("scrollInProgress");
+            
             var uiOffset = this.ui.weeksContainer.offset();
             var currentWeek = $(document.elementFromPoint(uiOffset.left, uiOffset.top)).closest(".week");
             var nextWeek = currentWeek.next(".week");
@@ -200,14 +203,17 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, c
             {
                 this.scrollToElement(currentWeek, animationTimeout);
                 this.snappedToWeekHeader = true;
-            } else if (nextWeekOffset > 0 && nextWeekOffset <= threshhold)
+            }
+            else if (nextWeekOffset > 0 && nextWeekOffset <= threshhold)
             {
                 this.scrollToElement(nextWeek, animationTimeout);
                 this.snappedToWeekHeader = true;
-            } else if (nextWeekOffset === 0 || currentWeekOffset === 0)
+            }
+            else if (nextWeekOffset === 0 || currentWeekOffset === 0)
             {
                 this.snappedToWeekHeader = true;
-            } else
+            }
+            else
             {
                 this.snappedToWeekHeader = false;
             }
@@ -215,6 +221,12 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, c
 
         onScroll: function()
         {
+            if (!this.scrolling)
+            {
+                this.$el.find(".daysOfWeek").addClass("scrollInProgress");
+                this.scrolling = true;
+            }
+
             var howMuchIHave = this.ui.weeksContainer[0].scrollHeight;
             var howMuchIsVisible = this.ui.weeksContainer.height();
             var hidden = howMuchIHave - howMuchIsVisible;
