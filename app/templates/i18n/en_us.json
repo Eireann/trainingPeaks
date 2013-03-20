@@ -187,5 +187,6 @@
 	"SelectNewStartDate": "Select new start date",
     "Confirmation" : "Confirmation",
 	"SelectNumberOfDays": "Select number of days",
-	"SelectNumberOfWeeks": "Select number of weeks"
+	"SelectNumberOfWeeks": "Select number of weeks",
+	"Summary": "Summary"
 }

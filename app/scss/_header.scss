@@ -29,30 +29,42 @@
 			float: left;
 			height: 30px;
 			padding: 10px 10px 0px 10px;
-			font-size: $navigationFontSize;
-			color: $TPGrey4;
+			font-size: 14;
+			color: $TPGrey3;
 		}
 
 		.personHeaderButtons
 		{
-			padding: 11px 0px 0px 10px;
+			padding: 12px 0px 0px 10px;
 			margin: 0px 0px 0px -10px;
 			height: 35px;
 			text-align: center;
 			//&:hover { background-color: $TPBlue; }
-			&:hover label{color: $white;}
 			float:left;
+			@include labels($navigationFontFamilyRegular, 12px, $TPGrey3, normal);
 
-			@include labels($navigationFontFamilyRegular, $navigationFontSize, $TPGrey4, normal);
+		}
 
+		.headerRollOver
+		{
+			&:hover label
+			{
+				color: $white;
+				cursor: pointer;
+			}
 		}
 
 		.upgradeButton
 		{
 			margin: 0px 0px 0px 10px;
 			padding: 11px 25px 0px 25px;
-			background-color: $TPBlue;
-			label{color: $white;}
+			@include linearGradient(bottom, rgb(34,97,143), rgba(59,125,193, 1)); 
+			cursor: pointer;
+			label
+			{
+				color: $white;
+				cursor: pointer;
+			}
 		}
 
 		.personHeaderMailIcon
@@ -80,9 +92,8 @@
 		span
 		{
 			float: left;
-			height: 45px;
+			height: 20px;
 			text-align: center;
-			padding-top: 20px;
 			&:hover label{color: $TPBlue; }
 			&:hover label{border-bottom-style:solid; border-bottom-width:2px; border-color:$TPBlue;}
 			

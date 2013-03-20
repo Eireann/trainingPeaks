@@ -27,7 +27,7 @@
     .week
     {
         @include outerRow();
-		background-color: $white;
+		background-color: $TPGrey1;
     }
 
     .day
@@ -69,7 +69,7 @@
 		z-index: 99;
 	}
 
-	.dayHeader
+	.dayHeader 
 	{
 		background-color: $TPGrey2;
 		width: 100%;
@@ -89,6 +89,7 @@
 			text-align: right;
 			float:left;
 			margin: 0px;
+			padding-top: 2px;
 		}
 
 		.daySettings
@@ -122,6 +123,17 @@
                 background-color: $todayBlue;
         	}
 	    }
+		.summaryHeader
+		{
+			background-color: #206193;
+			#calendarDate{color: white;}
+		}
+	}
+
+	.summaryHeader
+	{
+		background-color: $TPGrey3;
+		#calendarDate{color: white;}
 	}
 
     .daysOfWeek
