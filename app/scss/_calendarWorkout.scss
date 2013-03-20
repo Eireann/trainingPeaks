@@ -4,7 +4,7 @@
 .workout
 {
     margin: 5px 2px 4px 2px;
-    @include box-shadow(2px 0px 3px $TPGrey4);
+    @include box-shadow(0px 3px 8px -3px $TPGrey4);
 
     &.dragHelper
     {
@@ -21,7 +21,7 @@
     {
 
         min-height: 35px;
-        border-bottom: black;
+        border-bottom: $TPGrey3;
         border-bottom-width: 1px;
         border-bottom-style: solid;
 
