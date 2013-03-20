@@ -284,8 +284,10 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, c
             }, animationTimeout, this.checkCurrentScrollPosition);
         },
 
-        scrollToDate: function(dateAsMoment, effectDuration)
+        scrollToDate: function(targetDate, effectDuration)
         {
+            var dateAsMoment = moment(targetDate);
+
             if (typeof effectDuration === "undefined")
                 effectDuration = 500;
             

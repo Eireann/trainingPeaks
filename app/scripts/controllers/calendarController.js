@@ -325,8 +325,10 @@ function(_, moment, setImmediate, TP, CalendarLayout, CalendarCollection, Calend
             }
             else if (options.DropEvent === "addExerciseFromLibrary")
             {
-                var workout = this.createNewWorkoutFromExerciseLibraryItem(options.ItemId, options.destinationCalendarDayModel.id);
+                var destinationDate = options.destinationCalendarDayModel.id;
+                var workout = this.createNewWorkoutFromExerciseLibraryItem(options.ItemId, destinationDate);
                 this.weeksCollection.addWorkout(workout);
+                this.views.calendar.scrollToDate(destinationDate);
                 workout.save();
             }
         },

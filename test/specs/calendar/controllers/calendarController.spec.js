@@ -261,6 +261,8 @@ function(moment, $, _, Backbone, CalendarController, WorkoutModel, WorkoutsColle
                     }
                 };
                 var controller = new CalendarController();
+                controller.initializeCalendar();
+                spyOn(controller.views.calendar, "scrollToDate");
                 var workout = jasmine.createSpyObj("Workout spy", ["save"]);
                 spyOn(controller.weeksCollection, "addWorkout");
                 spyOn(controller, "createNewWorkoutFromExerciseLibraryItem").andReturn(workout);
