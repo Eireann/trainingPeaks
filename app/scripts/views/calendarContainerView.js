@@ -370,7 +370,7 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, c
             var onComplete = function()
             {
                 self.updateWeekHeights();
-            }
+            };
             calendarContainer.animate(cssAttributes, { progress: this.onLibraryAnimateProgress, duration: duration, complete: onComplete });
         },
 
