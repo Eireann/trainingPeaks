@@ -72,6 +72,7 @@ function (TP, WorkoutModel, WorkoutQuickView, newItemViewTemplate)
                 var quickView = new WorkoutQuickView({ model: this.newWorkout });
                 quickView.on("discard", this.onNewWorkoutDiscarded, this);
                 quickView.on("saveandclose", this.onNewWorkoutSaved, this);
+                this.close();
                 quickView.render();
             }
         },
@@ -117,8 +118,8 @@ function (TP, WorkoutModel, WorkoutQuickView, newItemViewTemplate)
             var newModel = new WorkoutModel(workoutModelJson);
             this.model.trigger("workout:added", newModel);
             var quickView = new WorkoutQuickView({ model: newModel });
-            quickView.render();
             this.close();
+            quickView.render();
         },
 
         onUploadFail: function ()
@@ -135,7 +136,6 @@ function (TP, WorkoutModel, WorkoutQuickView, newItemViewTemplate)
         {
             // The QuickView already saved the model to the server, let's update our local collections to reflect the change.
             this.model.trigger("workout:added", this.newWorkout);
-            this.close();
         }
     });
 });
