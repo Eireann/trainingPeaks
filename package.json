@@ -32,7 +32,6 @@
   },
   "devDependencies": {
     "grunt": "~0.4",
-    "grunt-contrib-compass": "~0.1.0",
     "grunt-contrib-concat": "~0.1.2rc5",
     "grunt-contrib-connect": "~0.1.0",
     "grunt-contrib-jshint": "~0.1.0",
@@ -42,6 +41,8 @@
     "grunt-contrib-watch": "~0.1.4",
     "grunt-contrib-clean": "~0.4.0rc5",
     "grunt-istanbul": "https://github.com/taichi/grunt-istanbul/tarball/master",
+    "grunt-lib-contrib": "~0.5.2",
+    "tmp": "0.0.16",
     "plato":"~0.4.4",
     "jasmine-node": "~1.0.28",
     "jsdom": "~0.3.4",
