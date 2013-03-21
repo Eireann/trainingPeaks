@@ -23,14 +23,15 @@
 body
 {
     @include nice-scrollbar;
+    font-size: $baseFontSize;
 }
 
 #loginFooter, #calendarFooter
 {
     span
     {
-        font-family: 'Courier New', Courier, 'Nimbus Mono L', monospace;
-        font-size: 10px;
+        font-family: $footerFontFamily;
+        font-size: $fontSizeXSmall;
     }
 }
 
@@ -39,9 +40,4 @@ body
     background-color: $white;
     overflow-x:visible;
     overflow-y:auto;
-}
-
-.weekSummaryUnitLabelWhiteSpace
-{
-    font-size: 2px;
 }

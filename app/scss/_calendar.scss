@@ -84,7 +84,7 @@
 		#calendarDate
 		{
 			font-Family: $navigationFontFamilyRegular;
-			font-size: $navigationFontSize;
+			font-size: $fontSizeMedium;
 			color: $TPGrey4;
 			text-align: right;
 			float:left;
@@ -154,19 +154,18 @@
 		z-index: 1;
 
         div
-	{
-            @include column(2);
-			padding-bottom: 0px;
-            padding-left: 5px;
-            padding-right: 0px;
-			font-Family: $navigationFontFamilyLight;
-			font-size: 12;
-			color: $TPGrey4;
-			text-align: left;
-			height: 15px;
-			//margin-left: -1px;
-			
-	}
+        {
+                @include column(2);
+                padding-bottom: 0px;
+                padding-left: 5px;
+                padding-right: 0px;
+                font-Family: $navigationFontFamilyLight;
+                color: $TPGrey4;
+                text-align: left;
+                height: 15px;
+                //margin-left: -1px;
+                
+        }
     }
     
 .scrollInProgress

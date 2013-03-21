@@ -86,7 +86,7 @@
 
         .libraryNavigation
         {
-            @include labels($navigationFontFamilyRegular, 20px, $TPBlue, normal);
+            @include labels($navigationFontFamilyRegular, $fontSizeXLarge, $TPBlue, normal);
             label
             {
                 display: inline-block;
@@ -162,13 +162,13 @@
         {
             padding: 10px 0px 0px 30px;
 
-            @include labels($navigationFontFamilyRegular, 17px, $black, normal);
+            @include labels($navigationFontFamilyRegular, $fontSizeXLarge, $black, normal);
         }
     }
     .workoutBody
     {
         padding: 10px 5px 5px 5px;
-        @include labels($navigationFontFamilyRegular, 10px, $black, normal);
+        @include labels($navigationFontFamilyRegular, $fontSizeXSmall, $black, normal);
         label{font-weight: bold;}
     }
 }

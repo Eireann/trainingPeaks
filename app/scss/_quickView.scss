@@ -52,7 +52,7 @@
 			}
 		}
 
-		@include labels($navigationFontFamilyRegular, 14px, $TPGrey3, normal);
+		@include labels($navigationFontFamilyRegular, $fontSizeMedium, $TPGrey3, normal);
 		label
 		{
 			margin-top: -10px;
@@ -78,7 +78,7 @@
 			width: 50px;
 			overflow: hidden;
 			text-overflow: ellipsis;
-			@include labels($navigationFontFamilyRegular, 20px, $TPGrey3, normal);
+			@include labels($navigationFontFamilyRegular, $fontSizeXLarge, $TPGrey3, normal);
 
 		}
 
@@ -86,7 +86,7 @@
 		{
 			float:left;
 			padding-top: 5px;
-			@include labels($navigationFontFamilyRegular, 14px, $TPGrey3, normal);
+			@include labels($navigationFontFamilyRegular, $fontSizeMedium, $TPGrey3, normal);
 		}
 
 		.middleValues
@@ -153,7 +153,7 @@
 			padding-right: 5px;
 		}
 	
-		@include labels($navigationFontFamilyRegular, 12px, $TPGrey4, normal);
+		@include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey4, normal);
 
 		.workoutStatsUnitLabel
 		{
@@ -175,7 +175,7 @@
 		height: 15px;
 		background-color: $TPGrey1;
 
-		@include labels($navigationFontFamilyRegular, 12px, $TPGrey4, normal);
+		@include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey4, normal);
 		label
 		{
 			float: left;
@@ -191,7 +191,7 @@
 		height: 15px;
 		background-color: $TPGrey1;
 
-		@include labels($navigationFontFamilyRegular, 12px, $TPGrey4, normal);
+		@include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey4, normal);
 		label
 		{
 			float: left;
@@ -205,7 +205,7 @@
 		float: left;
 		background-color: $TPGrey1;
 		padding-top: 10px;
-		@include labels($navigationFontFamilyRegular, 12px, $TPGrey4, normal);
+		@include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey4, normal);
 		min-width: 400px;
 		max-width: 400px;
 		height: 100%;
@@ -249,7 +249,7 @@
 		{
 			color:$white;
 			font-family: $navigationFontFamilyRegular;
-			font-size: $navigationFontSize;
+			font-size: $fontSizeSmall;
 			width: 77px;
 			height: 21px;
 			background: url('../../../../assets/images/QVImages/buttonBackground77px.png') no-repeat;

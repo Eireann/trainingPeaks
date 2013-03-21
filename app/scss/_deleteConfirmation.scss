@@ -5,7 +5,7 @@
     text-align: center;
     min-width: 400px;
     font-family: $navigationFontFamilyRegular;
-    @include headerButtons(0px, 60px, $navigationFontSize);
+    @include headerButtons(0px, 60px, $fontSizeMedium);
 
     button
     {
