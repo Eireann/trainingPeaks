@@ -35,7 +35,7 @@ function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkout
 
         getWorkoutTypeCssClassName: function()
         {
-            return workoutTypeName(this.model.get("workoutTypeValueId"));
+            return workoutTypeName(this.model.get("workoutTypeValueId")).replace(/ /g, "");
         },
 
         getComplianceCssClassName: function ()
