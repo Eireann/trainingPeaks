@@ -8,7 +8,7 @@ function (TP, deleteConfirmationView)
     return TP.ItemView.extend(
     {
         modal: {
-            mask: false,
+            mask: true,
             shadow: true
         },
 

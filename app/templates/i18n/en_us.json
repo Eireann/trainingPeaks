@@ -151,7 +151,7 @@
     "Cancel" : "Cancel",
 	"OK": "OK",
 
-    "ConfirmDelete" : "Are you sure you want to delete? This cannot be undone!",
+    "ConfirmDelete" : "Are you sure you want to delete? <br/> This cannot be undone!",
 
     "AddToCalendar": "Add To Calendar",
     "NewWorkout": "New Workout",
