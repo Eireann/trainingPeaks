@@ -17,7 +17,7 @@ function(moment, TP)
         defaults: function()
         {
             return {
-                personId: theMarsApp.user.has("userId") ? theMarsApp.user.get("userId") : 0,
+                athleteId: theMarsApp.user.has("userId") ? theMarsApp.user.get("userId") : 0,
                 startDate: null,
                 endDate: null,
                 days: null,
