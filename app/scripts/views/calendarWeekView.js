@@ -43,6 +43,7 @@ function(moment, setImmediate, TP, CalendarDayView, WeekSummaryView, CalendarWee
 
             // when any of our child views update, recalculate all of their heights
             this.on("itemview:render", this.scheduleUpdateDayCellHeights, this);
+            this.model.on("library:resize", this.updateDayCellHeights, this);
         },
 
         scheduleUpdateDayCellHeights: function()

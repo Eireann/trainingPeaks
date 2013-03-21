@@ -217,17 +217,30 @@ function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkout
             this.$el.data("ItemId", this.model.id);
             this.$el.data("ItemType", this.model.webAPIModelName);
             this.$el.data("DropEvent", "itemMoved");
-            this.$el.draggable({ appendTo: 'body', cursorAt: { top: 15, left: 25 }, helper: this.draggableHelper, start: this.onDragStart, stop: this.onDragStop });
+            this.draggableOptions = { appendTo: 'body', helper: this.draggableHelper, start: this.onDragStart, stop: this.onDragStop };
+            this.$el.draggable(this.draggableOptions);
         },
 
-        draggableHelper: function()
+        draggableHelper: function(e)
         {
+
             var $helperEl = $(CalendarWorkoutTemplateDragState(this.serializeData()));
             var classNames = this.className().split(" ");
             _.each(classNames, function(className)
             {
                 $helperEl.addClass(className);
             });
+            $helperEl.width(this.$el.width());
+
+
+            // if they clicked further down on a long workout, set a specific cursor offset for the draggable,
+            // else let jqueryui handle it automagically
+            var offset = this.$el.offset();
+            if ((e.pageY - offset.top) > 50)
+            {
+                this.$el.data("ui-draggable").options.cursorAt = { top: 45, left: e.pageX - offset.left };
+            }
+
             return $helperEl;
         },
 
