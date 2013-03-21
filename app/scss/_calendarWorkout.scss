@@ -43,6 +43,12 @@
                 padding: 10px 0px 0px 30px;
 
                 @include labels($navigationFontFamilyRegular, 17px, $black, normal);
+
+                .units
+                {
+                    font-size: 15px;
+                    margin-left: 2px;
+                }
             }
 
             .workoutSettings
