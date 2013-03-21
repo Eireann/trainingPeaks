@@ -30,7 +30,8 @@ function(TP, LoginLayout, LoginView)
             this.layout.mainRegion.show(this.views.loginView);
         },
 
-        onLoginSuccess: function () {
+        onLoginSuccess: function ()
+        {
             this.trigger("login:success");
             theMarsApp.clientEvents.logEvent({ Event: { Type: "Login", Label: "Login", AppContext: "Login" } });
         },
