@@ -92,7 +92,7 @@
                 margin-right: 15px;
             }
 
-            @include headerButtons(0px, 35px, $navigationFontSize);
+            @include headerButtons(0px, 35px, $fontSizeMedium);
             button
             {
                 float: right;
@@ -103,13 +103,13 @@
         .librarySearch
         {
             margin-top: 10px;
-            @include inputs(100%, 20px, $navigationFontSize, $navigationFontFamilyRegular);
+            @include inputs(100%, 20px, $fontSizeMedium, $navigationFontFamilyRegular);
 
             select
             {
                 margin-top: -5px;
-                font-size: $navigationFontSize;
                 font-family: $navigationFontFamilyRegular;
+                font-size: $fontSizeMedium;
             }
         }
 
