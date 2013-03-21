@@ -13,7 +13,7 @@
         @include outerRow();
         min-width: 35px;
         position:relative;
-        background-color:$white;
+        background-color:$TPGrey1;
     }
              
     &.open
@@ -73,16 +73,15 @@
         position:absolute;
         top:0px;
         bottom:0px;
-        left:50px;
+        left:35px;
         right:0px;
         overflow-y:auto;
-        padding:15px;
-        @include calc(width, "100% - 50px"); 
+        padding: 5px;
+        @include calc(width, "100% - 35px"); 
         white-space: nowrap;
 
-        background-color:$white;
-        border-left:2px solid $TPBlue;
-        border-bottom:2px solid $TPBlue;
+        background-color: $TPGrey1;
+        border-left: 3px solid $TPBlue;
 
         .libraryNavigation
         {
@@ -92,18 +91,31 @@
                 display: inline-block;
                 margin-right: 15px;
             }
+
+            @include headerButtons(0px, 35px, $navigationFontSize);
+            button
+            {
+                float: right;
+                margin-left: 5px;
+            }
         }
 
         .librarySearch
         {
-            input#search
+            margin-top: 10px;
+            @include inputs(100%, 20px, $navigationFontSize, $navigationFontFamilyRegular);
+
+            select
             {
-                margin-top:10px;
+                margin-top: -5px;
+                font-size: $navigationFontSize;
+                font-family: $navigationFontFamilyRegular;
             }
         }
 
         .helpText
         {
+            padding-left: 10px;
             color: $TPGrey3;
             font-style: italic;
         }
@@ -127,8 +139,8 @@
 
 .libraryExercise
 {
-    @include box-shadow(2px 0px 3px $TPGrey4);
-    background-color: $TPGrey2;
+   @include box-shadow(0px 3px 4px -3px $TPGrey4);
+    background-color: #e1e2e2;
 
     &.dragHelper
     {
@@ -142,7 +154,7 @@
     }
 
     color: $TPGrey3;
-    margin-top:10px;
+    margin-top: 4px;
 
     .workoutHeader
     {
