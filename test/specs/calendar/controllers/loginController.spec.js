@@ -37,10 +37,5 @@ function (_, theApp, LoginController)
             LoginController.prototype.onLogout.call();
             expect(theApp.router.navigate).toHaveBeenCalledWith("login");
         });
-
-        it("Should create a new loginview and subscribe to login success", function ()
-        {
-            LoginController.prototype.show.call();
-        });
     });
 });
