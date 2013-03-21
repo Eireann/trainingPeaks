@@ -67,15 +67,22 @@
                     font-size: 12px;
                     text-align: right;
 
-                    &.planned
+                    .planned
                     {
                         color: $TPGrey3;
                     }
 
-                    &.completed
+                    .completed
                     {
                         color: $thisWeekBlue;
                     }
+
+                    .units
+                    {
+                        color: $thisWeekBlue;
+                        margin-left: 2px;
+                    }
+
                 }
 
                 &.weekSummaryRowLabel

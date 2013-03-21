@@ -1,57 +1,56 @@
 define(
 [
     "utilities/determineCompletedWorkout",
-    "utilities/convertToViewUnits",
-    "utilities/printTimeFromDecimalHours"
+    "utilities/printUnitLabel"
 ],
-function(determineCompletedWorkout, convertToViewUnits, printTimeFromDecimalHours)
+function (determineCompletedWorkout, printUnitLabel)
 {
 
-    function printKeyStat(workout)
+    function printKeyStatUnits(workout)
     {
         // we might have a Backbone workoutModel, or we might have a raw JSON object ...
         if (workout.hasOwnProperty('attributes') && workout.attributes.hasOwnProperty('distance'))
             workout = workout.attributes;
 
-        var wdt = " ";
+        var units = " ";
 
         if (determineCompletedWorkout(workout))
         {
             if (workout.distance)
             {
-                wdt = convertToViewUnits(workout.distance, "distance");
+                units = printUnitLabel("distance");
             }
             else if (workout.totalTime)
             {
-                wdt = printTimeFromDecimalHours(workout.totalTime);
+                units = "hr";
             }
             else if (workout.tssActual)
             {
-                wdt = workout.tssActual;
+                units = "tss";
             }
         }
         else
         {
             if (workout.distancePlanned)
             {
-                wdt = convertToViewUnits(workout.distancePlanned, "distance");
+                units = printUnitLabel("distance");
             }
             else if(workout.totalTimePlanned)
             {
-                wdt = printTimeFromDecimalHours(workout.totalTimePlanned);
+                units = "hr";
             }
             else if (workout.tssPlanned)
             {
-                wdt = workout.tssPlanned;
+                units = "tss";
             }
             else
             {
-                wdt = "";
+                units = "";
             }
         }
 
-        return wdt;
+        return units;
     }
 
-    return printKeyStat;
+    return printKeyStatUnits;
 });
