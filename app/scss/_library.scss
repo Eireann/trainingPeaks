@@ -62,10 +62,10 @@
                 position:relative;
                 display:none;
                 z-index: 0;
-                width: 15px;
-                height: 15px;
+                width: 17px;
+                height: 17px;
                 background-color: $TPBlue;
-                left: 30px;
+                left: 37px;
                 @include transform(translateY(10px) rotate(45deg));
             }
         }
@@ -90,8 +90,8 @@
         position:absolute;
         top:0px;
         bottom:0px;
-        left:35px;
-        right:0px;
+        left: 42px;
+        right: 0px;
         overflow-y:auto;
         padding: 5px;
         @include calc(width, "100% - 35px"); 
