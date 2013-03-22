@@ -188,6 +188,7 @@ function(_, jqueryOutside, TP, ExerciseLibraryView, MealLibraryView, libraryTemp
             var headerHeight = $("#navigation").height();
             var windowHeight = $(window).height();
             var libraryHeight = windowHeight - headerHeight - 75 + 'px';
+            this.$el.height(libraryHeight);
             this.$("#tabs").css({ height: libraryHeight });
             this.$("#activeLibraryContainer").css({ height: libraryHeight });
         }
