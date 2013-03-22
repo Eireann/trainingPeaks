@@ -42,12 +42,16 @@
             {
                 padding: 10px 0px 0px 30px;
 
-                @include labels($navigationFontFamilyRegular, 17px, $black, normal);
+                label
+                {
+                    display:inline-block;
+                }
 
+                @include labels($navigationFontFamilyRegular, $fontSizeXLarge, $black, normal);
                 .units
                 {
-                    font-size: 15px;
-                    margin-left: 2px;
+                    font-size: 0.88em;
+                    margin-left: 0.15em;
                 }
             }
 
@@ -68,13 +72,13 @@
         .workoutBody
         {
             padding: 10px 5px 5px 5px;
-            @include labels($navigationFontFamilyRegular, 10px, $black, normal);
+            @include labels($navigationFontFamilyRegular, $fontSizeXSmall, $black, normal);
             label{font-weight: bold;}
             
             p
             {
                 margin-bottom: 0px;
-                font-size: 10px;
+                font-size: $fontSizeXSmall;
                 font-color: $black;
                 font-family: $navigationFontFamilyRegular;
                 text-align: left;
@@ -95,7 +99,7 @@
     {
         min-width: 100px;
 
-        @include labels($navigationFontFamilyRegular, 11px, $TPGrey4, normal);
+        @include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey4, normal);
 
         label
         {
@@ -111,19 +115,19 @@
         .planned
         {
             color: $todayBlue ;
-            font-size:16px;
+            font-size:$fontSizeLarge;
         }
 
         .completed
         {
             color: $thisWeekBlue;
-            font-size:16px;
+            font-size:$fontSizeLarge;
         }
 
         .slash
         {
             color: $thisWeekBlue;
-            font-size:16px;
+            font-size:$fontSizeLarge;
         }
     }
 
@@ -135,7 +139,7 @@
 	padding-left: 10px;
 	padding-bottom: 20px;
 
-	@include labels($navigationFontFamilyRegular, 12px, $TPGrey4, normal);
+	@include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey4, normal);
 	label
 	{
 		padding-top: 2px;

@@ -22,9 +22,9 @@
 	}
 }
 
-@mixin labels($fontFamily, $fontSize, $fontColor, $fontWeight)
+@mixin labels($fontFamily, $fontSize, $fontColor, $fontWeight, $selector: label)
 {
-	label
+	#{$selector}
 	{
 		font-family: $fontFamily;
 		font-size: $fontSize;
@@ -54,7 +54,7 @@
 		margin-top: 3px;
 		height: 20px;
 		width: $width;
-		font-size: 12px;
+		font-size: $fontSizeMedium;
 		font-family: $navigationFontFamilyRegular;
 	}
 }

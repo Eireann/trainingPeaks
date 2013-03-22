@@ -29,7 +29,7 @@
 			float: left;
 			height: 30px;
 			padding: 10px 10px 0px 10px;
-			font-size: 14;
+			font-size: $fontSizeMedium;
 			color: $TPGrey3;
 		}
 
@@ -41,7 +41,7 @@
 			text-align: center;
 			//&:hover { background-color: $TPBlue; }
 			float:left;
-			@include labels($navigationFontFamilyRegular, 12px, $TPGrey3, normal);
+			@include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey3, normal);
 
 		}
 
@@ -99,7 +99,7 @@
 			
 		}
 
-		@include labels($navigationFontFamilyRegular, $navigationFontSize, $TPGrey4, normal);
+		@include labels($navigationFontFamilyRegular, $fontSizeMedium, $TPGrey4, normal);
 		label
 		{
 			padding: 0px 7px 7px 7px;
@@ -118,7 +118,7 @@
 		float: left;
 		padding-left: 65px;
 		padding-top: 13px;
-		@include labels($navigationFontFamilyRegular, 25px, $TPBlue, normal);
+		@include labels($navigationFontFamilyRegular, $fontSizeHeader, $TPBlue, normal);
 		label
 		{
 			float: left;
@@ -136,7 +136,7 @@
 		float:left;
 		padding-top: 12px;
 		
-		@include headerButtons(0px, 35px, $navigationFontSize);
+		@include headerButtons(0px, 35px, $fontSizeMedium);
 
 		.calendarNavigation
 		{
@@ -158,7 +158,7 @@
 		{
 			float:left;
 			padding-top: 3px;
-			@include headerButtons(20px, 40px, $navigationFontSize);
+			@include headerButtons(20px, 40px, $fontSizeMedium);
 			margin-left: -12px;
 			.refreshButton
 			{
@@ -184,6 +184,6 @@
     span
     {
         font-family: $navigationFontFamilyRegular;
-        font-size: 24px;
+        font-size: $fontSizeHeader;
     }
 }

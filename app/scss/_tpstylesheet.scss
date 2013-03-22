@@ -1,4 +1,5 @@
 ﻿
+// TP Color Scheme
 $black: #000000;
 $white: #ffffff;
 $TPBlue: #005695;
@@ -9,19 +10,49 @@ $TPGrey2: #cccccc;
 $TPGrey3: #636569;
 $TPGrey4: #303030;
 
+// calendar colors
 $thisWeekBlue: #8eb2d8;
 $todayBlue: #bfd3e9;
-
 $selectedDay: $todayBlue;
 
+// all other sizes are relative to this
+$baseFontSize: 14px;
+
+// 25px
+$fontSizeHeader: 1.786em;
+
+// 17px
+$fontSizeXLarge: 1.214em;
+
+// 16px
+$fontSizeLarge: 1.143em;
+
+// 14px
+$fontSizeMedium: 1em;
+
+// 12px
+$fontSizeSmall: .857em;
+
+// 10px
+$fontSizeXSmall: .714em;
+
+$fontWeightBold: 700;
+$fontWeightMedium: 600;
+
+// footer fonts
+$footerFontFamily: 'Courier New', Courier, 'Nimbus Mono L', monospace;
+
+
+// navigation fonts
 $navigationFontFamilyLight: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", "Lucida Grande", "sans-serif";
 $navigationFontFamilyRegular: "HelveticaNeue", "Helvetica Neue", "HelveticaNeueRoman", "HelveticaNeue-Roman", "Helvetica Neue Roman", 'TeXGyreHerosRegular', "Helvetica", "Tahoma", "Geneva", "Arial", "sans-serif";
-$navigationFontSize: 14px;
 
+// colors by workout type
 $clrRun: LightPink;
 $clrBike: LightGreen;
 $clrSwim: LightBlue;
 
+// colors by compliance
 $clrComplianceGreen: #80c159;
 $clrComplianceYellow: #e7c406;
 $clrComplianceRed: #eb7754;

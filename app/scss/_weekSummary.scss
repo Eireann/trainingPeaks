@@ -41,7 +41,7 @@
             {
                 padding: 8px 5px 0 5px;
                 background-color: $white;
-                font-size: 10px;
+                font-size: $fontSizeXSmall;
                 text-align: right;
             }
 
@@ -64,7 +64,7 @@
 
                 &.weekSummaryValue
                 {
-                    font-size: 12px;
+                    font-size: $fontSizeSmall;
                     text-align: right;
 
                     .planned
@@ -80,7 +80,7 @@
                     .units
                     {
                         color: $thisWeekBlue;
-                        margin-left: 2px;
+                        margin-left: 0.2em;
                     }
 
                 }
@@ -89,7 +89,7 @@
                 {
                     padding-left: 10px;
                     text-align: left;
-                    font-size: 12px;
+                    font-size: $fontSizeSmall;
                 }
             }
         }
