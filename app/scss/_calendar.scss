@@ -13,11 +13,11 @@
     user-select: none;
     -moz-user-select: none;
     -webkit-user-select: none;
-    margin-left: 45px;
+    //margin-left: 45px;
 	padding: 0 2px;
 	background-color: white;
 
-    @include calc(width, "100% - 40px"); 
+    @include calc(width, "100% - 45px"); 
 
     .scrollable
     {
