@@ -1,47 +1,45 @@
 ﻿<div id="newItemViewContainer" class="dialog">
     <div class="titleBar">{{printDate date "dddd, MMMM D"}}: {{$ "AddToCalendar"}}</div>
-    <div class="addItemButtonsContainer">
-        <table>
-            <tr>
-                <td class="dialogHeader">{{$ "NewWorkout"}}</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-            </tr>
-            <tr>
-                <td><button type="button" data-workoutid="3">{{$ "Run"}}</button></td>
-                <td><button type="button" data-workoutid="2">{{$ "Bike"}}</button></td>
-                <td><button type="button" data-workoutid="1">{{$ "Swim"}}</button></td>
-                <td><button type="button" data-workoutid="4">{{$ "Brick"}}</button></td>
-                <td><button type="button" data-workoutid="5">{{$ "Crosstrain"}}</button></td>
-                <td><button type="button" data-workoutid="6">{{$ "Race"}}</button></td>
-            </tr>
-            <tr>
-                <td><button type="button" data-workoutid="7">{{$ "Dayoff"}}</button></td>
-                <td><button type="button" data-workoutid="8">{{$ "MtnBike"}}</button></td>
-                <td><button type="button" data-workoutid="9">{{$ "Strength"}}</button></td>
-                <td><button type="button" data-workoutid="10">{{$ "Custom"}}</button></td>
-                <td><button type="button" data-workoutid="11">{{$ "XCSki"}}</button></td>
-                <td><button type="button" data-workoutid="12">{{$ "Rowing"}}</button></td>                
-            </tr>    
-            <tr>
-                <td><button type="button" data-workoutid="14">{{$ "Other"}}</button></td>
-                <td><button type="button" data-workoutid="13">{{$ "Walk"}}</button></td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-            </tr>
-            <tr>
-                <td colspan="2"><button type="button" name="uploadDeviceFile">{{$ "UploadDeviceFile"}}</button></td>
-                <td><input style="display: none" type="file"/></td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-            </tr>
-        </table>
+    <div class="addItemButtonsContainer dialogContent">
+            <table>
+                <tr>
+                    <td colspan="6" class="dialogHeader">{{$ "NewWorkout"}}</td>
+                </tr>
+                <tr>
+                    <td><button type="button" data-workoutid="3">{{$ "Run"}}</button></td>
+                    <td><button type="button" data-workoutid="2">{{$ "Bike"}}</button></td>
+                    <td><button type="button" data-workoutid="1">{{$ "Swim"}}</button></td>
+                    <td><button type="button" data-workoutid="4">{{$ "Brick"}}</button></td>
+                    <td><button type="button" data-workoutid="5">{{$ "Crosstrain"}}</button></td>
+                    <td><button type="button" data-workoutid="6">{{$ "Race"}}</button></td>
+                </tr>
+                <tr>
+                    <td><button type="button" data-workoutid="7">{{$ "Dayoff"}}</button></td>
+                    <td><button type="button" data-workoutid="8">{{$ "MtnBike"}}</button></td>
+                    <td><button type="button" data-workoutid="9">{{$ "Strength"}}</button></td>
+                    <td><button type="button" data-workoutid="10">{{$ "Custom"}}</button></td>
+                    <td><button type="button" data-workoutid="11">{{$ "XCSki"}}</button></td>
+                    <td><button type="button" data-workoutid="12">{{$ "Rowing"}}</button></td>                
+                </tr>    
+                <tr>
+                    <td><button type="button" data-workoutid="14">{{$ "Other"}}</button></td>
+                    <td><button type="button" data-workoutid="13">{{$ "Walk"}}</button></td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
+                    <td colspan="6">
+                        <fieldset>
+                            <legend>or</legend>
+                            <button type="button" name="uploadDeviceFile" title="{{$ "FileUploadTooltip" }}" >{{$ "UploadDeviceFile"}}</button>
+                            <a href="#" class="helpText">{{$ "FileUploadHelp" }} &rsaquo;</a>
+                            <input style="display: none" type="file"/>
+                        </fieldset>
+                    </td>
+                </tr>
+            </table>
     </div>
     <div id="uploadingNotification" style="display:none">
         Uploading...

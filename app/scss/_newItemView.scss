@@ -5,17 +5,26 @@
 
     .addItemButtonsContainer
     {
-        background-color: $TPGrey1;
         padding: 10px 20px 20px 30px;
+        font-weight: normal;
+
+        legend
+        {
+            font-weight: normal;
+            background-color: transparent;
+            padding-left: 15px;
+            font-style: italic;
+        }
 
         table
         {
             border: 0;
             border-collapse: collapse;
+            background-color: transparent;
 
             tr
             {
-                background-color: $TPGrey1;
+            background-color: transparent;
 
                 td
                 {
@@ -23,13 +32,7 @@
                     padding: 5px 5px 5px 5px;
                     border: 0 0 0 0;
                     cell-spacing: 0 0 0 0;
-
-                    &:first
-                    {
-                        padding-left:0px;
-                    }
-
-
+                    background-color: transparent;
                 }
             }
         }
@@ -38,12 +41,19 @@
 
         button
         {
-            width: 100px;
+            font-weight:normal;
+            margin-right: 0px;
+            color: $TPGrey3;
+            width: 100%;
+            padding-left: 20px;
+            padding-right: 20px;
+            min-width: 110px;
         }
 
         button[name="uploadDeviceFile"]
         {
             width: 150px;
+            margin-right: 1em;
         }
     }
 

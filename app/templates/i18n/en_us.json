@@ -170,6 +170,8 @@
     "Other": "Other",
     "Walk": "Walk",
     "UploadDeviceFile": "Upload Device File",
+    "FileUploadHelp": "Learn more about device file upload options",
+    "FileUploadTooltip": "Upload a file on your computer (.fit, .tcx, .pwx, .wko, .csv, .hrm).",
 	"ShiftString": "What types of items do you want to shift?",
 	"Workouts": "Workouts",
 	"Meals": "Meals",
