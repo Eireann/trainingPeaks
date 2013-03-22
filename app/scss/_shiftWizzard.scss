@@ -4,30 +4,30 @@
 {
 	width: 400px;
 
-	@include labels($navigationFontFamilyRegular, $fontSizeMedium, $TPGrey4, normal);
-	@include headerButtons(0, 60px, 12px);
+	@include buttons(0, 60px, 12px);
+    
+    button
+    {
+        margin-right: 0.5em;
+    }
 
 	.bold
 	{
 		font-weight: bold;
 	}
 
-	.header
-	{
-		height: 25px;
-		width: 100%;
-		background-color: $TPGrey1;
-		padding: 5px 0px 0 5px;
-		border-bottom: $TPGrey3;
-		border-bottom-style: solid;
-		border-bottom-width: 1px;
-	}
-
 	.shiftItemsBody
 	{
-		background-color: $TPGrey2;
-		padding: 10px 10px 20px 10px;
+        text-align: left;
+		padding: 10px 15px 15px 15px;
 		@include inputs(13px, 13px, 12px, $navigationFontFamilyRegular);
+
+        input[type=text]
+        {
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+
 		.toAndFromDateRange
 		{
 			display: -webkit-box;
@@ -63,15 +63,12 @@
                outline:none;
             } 
         }
+
+        .dialogHeader
+        {
+            margin-bottom: 0.25px;
+        }
             
 	}
 
-	.cancelOkButtons
-		{
-			height: 35px;
-			width: 100%;
-			padding: 8px 0px 10px 250px;
-			background-color: $TPGrey1;
-
-		}
 }

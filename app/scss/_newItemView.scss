@@ -5,8 +5,8 @@
 
     .addItemButtonsContainer
     {
-        background-color: $TPGrey1;
         padding: 10px 20px 20px 30px;
+        font-weight: normal;
 
         legend
         {
@@ -20,10 +20,11 @@
         {
             border: 0;
             border-collapse: collapse;
+            background-color: transparent;
 
             tr
             {
-                background-color: $TPGrey1;
+            background-color: transparent;
 
                 td
                 {
@@ -31,7 +32,7 @@
                     padding: 5px 5px 5px 5px;
                     border: 0 0 0 0;
                     cell-spacing: 0 0 0 0;
-
+                    background-color: transparent;
                 }
             }
         }

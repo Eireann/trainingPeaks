@@ -28,7 +28,7 @@
         padding: 8px;
         padding-left:16px;
         background-color: #eaebec;
-        @include box-shadow(0px 3px 8px -3px $TPGrey4);
+        @include box-shadow(0px 2px 3px -2px $TPGrey4);
         position: relative; 
         z-index: 99;
         font-size: $fontSizeSmall;
