@@ -14,7 +14,7 @@ function (TP, deleteConfirmationView)
 
         showThrobbers: false,
         tagName: "div",
-        className: "deleteConfirmation dialog",
+        className: "deleteConfirmation",
 
         events:
         {

@@ -37,6 +37,13 @@
     }
 }
 
+.dialogHeader
+{
+    font-weight: $fontWeightMedium;
+    color: $TPGrey4;
+    text-align: left;
+}
+
 .dialogContent
 {
     min-height: 150px;
