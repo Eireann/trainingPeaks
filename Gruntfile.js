@@ -52,6 +52,13 @@ module.exports = function(grunt)
                 {
                     'build/debug/plato': ['app/**/!(Handlebars).js']
                 }
+            },
+            dev:
+            {
+                files:
+                {
+                    'build/dev/plato': ['app/**/!(Handlebars).js']
+                }
             }
         },
 
@@ -302,6 +309,14 @@ module.exports = function(grunt)
                 {
                     "build/debug": ["coverage/lcov-report/**"]
                 }
+            },
+            
+            dev_coverage:
+            {
+                files:
+                {
+                    "build/dev": ["coverage/lcov-report/**"]
+                }
             }
         },
 
@@ -371,8 +386,8 @@ module.exports = function(grunt)
     grunt.registerTask("test", ["clean:coverage", "jshint", "setup-spec-list", "validate_models", "jasmine_node"]);
     grunt.registerTask("validate_models", ["validate-webapi-models"]);
     grunt.registerTask("update_grunt_config", ["requirejs_config", "i18n_config"]);
-    grunt.registerTask("debug", ["clean", "coverage", "update_grunt_config", "requirejs", "compass:debug", "targethtml:debug", "concat", "copy:debug", "copy-i18n-files", "copy:debug_coverage", "plato"]);
-    grunt.registerTask("dev", ["debug", "compass:dev", "targethtml:dev", "concat:dev", "copy:dev"]);
+    grunt.registerTask("debug", ["clean", "coverage", "update_grunt_config", "requirejs", "compass:debug", "targethtml:debug", "concat", "copy:debug", "copy-i18n-files", "copy:debug_coverage", "plato:debug"]);
+    grunt.registerTask("dev", ["debug", "compass:dev", "targethtml:dev", "concat:dev", "copy:dev", "copy:dev_coverage", "plato:dev"]);
     grunt.registerTask("uat", ["debug", "compass:uat", "targethtml:uat", "concat:uat", "copy:uat"]);
     grunt.registerTask("release", ["debug", "compass:release", "targethtml:release", "uglify", "copy:release", "copy-i18n-files"]);
     grunt.registerTask("default", ["debug"]);
