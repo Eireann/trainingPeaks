@@ -34,7 +34,7 @@ function(_, jqueryOutside, TP, ExerciseLibraryView, MealLibraryView, libraryTemp
 
             this.activeLibraryName = null;
 
-            $(window).on("resize", this.resizeContext);
+            $(window).on("resize", this.resizeContainerHeight);
         },
 
         ui:
@@ -116,7 +116,7 @@ function(_, jqueryOutside, TP, ExerciseLibraryView, MealLibraryView, libraryTemp
             this.$el.parent().removeClass("closed").addClass("open");
             this.animate({ width: this.widthOpen });
             this.turnOnTab(this.activeLibraryName);
-            this.resizeContext();
+            this.resizeContainerHeight();
 
             //this.hideOnClickOutside();
         },
@@ -169,7 +169,7 @@ function(_, jqueryOutside, TP, ExerciseLibraryView, MealLibraryView, libraryTemp
                 this.ui.activeLibraryContainer.append(library.$el);
                 library.$el.hide();
             }
-            this.resizeContext();
+            this.resizeContainerHeight();
         },
 
         hideOnClickOutside: function()
@@ -180,15 +180,18 @@ function(_, jqueryOutside, TP, ExerciseLibraryView, MealLibraryView, libraryTemp
 
         onShow: function()
         {
-            this.resizeContext();
+            this.resizeContainerHeight();
         },
 
-        resizeContext: function(event)
+        resizeContainerHeight: function(event)
         {
             var headerHeight = $("#navigation").height();
             var windowHeight = $(window).height();
             var libraryHeight = windowHeight - headerHeight - 75 + 'px';
-            this.$el.height(libraryHeight);
+            if (this.$el)
+            {
+                this.$el.height(libraryHeight);
+            }
             this.$("#tabs").css({ height: libraryHeight });
             this.$("#activeLibraryContainer").css({ height: libraryHeight });
         }

@@ -48,6 +48,9 @@
     <script>
     function execJasmine(jasmineEnv)
     {
+        // clear localStorage to start with fresh state ...
+        localStorage.clear();
+
         requirejs(["test/specsList"], function(specsToRun)
         {
             requirejs(["app/config/jasmineHtmlConfig"], function(config)
@@ -55,9 +58,10 @@
                 requirejs.config(config);
                 requirejs(specsToRun, function()
                 {
-                    // hack - set a timeout so all requirejs dependencies load before running our tests
+                    // this is a hack - set a timeout so all requirejs dependencies load before running our tests
+                    // we need to let requirejs load all of our tests, and then let jasmine parse all of the tests, before we run jasmine
                     // it's not foolproof, but easier than overriding requirejs
-                    setTimeout(function() { jasmineEnv.execute(); }, 1000);
+                    setTimeout(function() { jasmineEnv.execute(); }, 1500);
                 });
             });
         });
