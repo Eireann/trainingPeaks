@@ -1,6 +1,6 @@
 ﻿requirejs(
-["jquery", "framework/ajaxCaching"],
-function($, ajaxCaching)
+["jquery", "app", "framework/ajaxCaching"],
+function($, theMarsApp, ajaxCaching)
 {
 
     describe("Sync Caching", function()
