@@ -1,5 +1,6 @@
 ﻿define(
 [
+    "jqueryui/datepicker",
     "TP",
     "utilities/printUnitLabel",
     "utilities/convertToViewUnits",
@@ -9,7 +10,7 @@
     "views/deleteConfirmationView",
     "hbs!templates/views/workoutQuickView"
 ],
-function (TP, printUnitLabel, convertToViewUnits, convertToModelUnits, printTimeFromDecimalHours, convertTimeHoursToDecimal, DeleteConfirmationView, workoutQuickViewTemplate)
+function(datepicker, TP, printUnitLabel, convertToViewUnits, convertToModelUnits, printTimeFromDecimalHours, convertTimeHoursToDecimal, DeleteConfirmationView, workoutQuickViewTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -26,7 +27,8 @@ function (TP, printUnitLabel, convertToViewUnits, convertToModelUnits, printTime
             "click #breakThrough": "onBreakThroughClicked",
             "click #delete": "onDeleteWorkout",
             "click #discard": "onDiscardClicked",
-            "click #saveClose": "onSaveClosedClicked"
+            "click #saveClose": "onSaveClosedClicked",
+            "click #date": "onDateClicked"
         },
 
         template:
@@ -382,6 +384,11 @@ function (TP, printUnitLabel, convertToViewUnits, convertToModelUnits, printTime
                 this.stickit();
                 this.stickitInitialized = true;
             }
+        },
+
+        onDateClicked: function()
+        {
+
         }
     });
 });
