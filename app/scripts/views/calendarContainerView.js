@@ -61,7 +61,7 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, c
 
             this.calendarHeaderModel = options.calendarHeaderModel;
             this.throttledCheckForPosition = _.throttle(this.checkCurrentScrollPosition, 100);
-
+            this.startOfWeekDayIndex = options.startOfWeekDayIndex ? options.startOfWeekDayIndex : 0;
             this.collection.on("shiftwizard:open", this.onShiftWizardOpen, this);
         },
 
@@ -295,11 +295,12 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, c
 
             if (typeof effectDuration === "undefined")
                 effectDuration = 500;
-            
+
             //theMarsApp.logger.debug(dateAsMoment.format("YYYY-MM-DD"));
             var dateAsString = dateAsMoment.format("YYYY-MM-DD");
             var selector = '.day[data-date="' + dateAsString + '"]';
             this.scrollToSelector(selector, effectDuration);
+            this.setCurrentDate(targetDate);
             this.snappedToWeekHeader = true;
         },
         
@@ -319,9 +320,10 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, c
                 return null;
 
             var uiOffset = this.ui.weeksContainer.offset();
-            var $currentWeek = $(document.elementFromPoint(uiOffset.left, uiOffset.top)).closest(".week");
+            var $currentElement = $(document.elementFromPoint(uiOffset.left, uiOffset.top));
+            var $currentWeek = $currentElement.closest(".week");
             var $lastDayOfWeek = $currentWeek.find(".day:last");
-            if ($lastDayOfWeek.data("date"))
+            if ($currentWeek && $lastDayOfWeek && $lastDayOfWeek.data("date"))
             {
                 return $lastDayOfWeek.data("date");
             } else
@@ -340,8 +342,13 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, c
 
         setCurrentDate: function(currentDate)
         {
+            var dateAsMoment = moment(currentDate);
+            var endOfWeek = this.startOfWeekDayIndex === 0 ? 6 : 0;
+            if (dateAsMoment.day() !== endOfWeek)
+                dateAsMoment.day(this.startOfWeekDayIndex + 6);
+
             if (currentDate)
-                this.calendarHeaderModel.set("date", currentDate);
+                this.calendarHeaderModel.set("date", dateAsMoment.format("YYYY-MM-DD"));
         },
 
         fadeOut: function(duration)

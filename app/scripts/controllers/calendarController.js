@@ -301,7 +301,11 @@ function(_, moment, setImmediate, TP, CalendarLayout, CalendarCollection, Calend
             if (this.views.calendar)
                 this.views.calendar.close();
 
-            this.views.calendar = new CalendarContainerView({ model: weekDaysModel, collection: this.weeksCollection, calendarHeaderModel: this.models.calendarHeaderModel });
+            this.views.calendar = new CalendarContainerView({
+                model: weekDaysModel, collection: this.weeksCollection,
+                calendarHeaderModel: this.models.calendarHeaderModel,
+                startOfWeekDayIndex: this.startOfWeekDayIndex
+            });
 
             this.bindToCalendarViewEvents(this.views.calendar);
         },
