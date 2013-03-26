@@ -2,24 +2,12 @@
 [
     "TP",
     "models/workoutModel",
+    "models/workoutFileData",
     "views/workoutQuickView",
     "hbs!templates/views/newItemView"
 ],
-function (TP, WorkoutModel, WorkoutQuickView, newItemViewTemplate)
+function (TP, WorkoutModel, WorkoutFileData, WorkoutQuickView, newItemViewTemplate)
 {
-    var WorkoutFileData = TP.Model.extend(
-    {
-        url: function ()
-        {
-            return theMarsApp.apiRoot + "/WebApiServer/Fitness/V1/workouts/filedata";
-        },
-
-        parse: function (response)
-        {
-            return { workoutModel: response };
-        }
-    });
-
     return TP.ItemView.extend(
     {
 
