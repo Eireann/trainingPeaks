@@ -60,6 +60,7 @@ function (TP, WorkoutModel, WorkoutFileData, WorkoutQuickView, newItemViewTempla
                 var quickView = new WorkoutQuickView({ model: this.newWorkout });
                 quickView.on("discard", this.onNewWorkoutDiscarded, this);
                 quickView.on("saveandclose", this.onNewWorkoutSaved, this);
+                quickView.on("saved", this.onNewWorkoutSaved, this);
                 this.close();
                 quickView.render();
             }

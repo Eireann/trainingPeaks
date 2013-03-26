@@ -459,10 +459,11 @@ function(datepicker, _, moment, TP, printDate, printUnitLabel, convertToViewUnit
         
         onFileSelected: function()
         {
+            
             this.$el.addClass("waiting");
-            var self = this;
-
             this.isNew = this.model.get("workoutId") ? false : true;
+
+            var self = this;
 
             this.model.save().done(function()
             {
@@ -473,6 +474,7 @@ function(datepicker, _, moment, TP, printDate, printUnitLabel, convertToViewUnit
                         clearInterval(interval);
                         self.uploadedFileDataModel = new WorkoutFileData({ workoutId: self.model.get("workoutId"), workoutDay: self.model.get("workoutDay"), startTime: self.model.get("startTime"), data: self.dataAsString });
                         self.uploadedFileDataModel.save().done(self.onUploadDone).fail(self.onUploadFail);
+                        self.$el.addClass("waiting"); //temporary
                     }
                 }, 100);
             });
@@ -508,7 +510,7 @@ function(datepicker, _, moment, TP, printDate, printUnitLabel, convertToViewUnit
 
             this.model.set(this.uploadedFileDataModel.get("workoutModel"));
             if (this.isNew)
-                this.model.trigger("workout:added", this.model);
+                this.trigger("saved");
         },
 
         onUploadFail: function ()
