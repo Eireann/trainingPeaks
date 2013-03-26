@@ -19,6 +19,7 @@ function(datepicker, timepicker, _, moment, TP,
     printDate, printUnitLabel,
     convertToViewUnits, convertToModelUnits,
     printTimeFromDecimalHours, convertTimeHoursToDecimal,
+    WorkoutFileData,
     DeleteConfirmationView, workoutQuickViewTemplate)
 {
     return TP.ItemView.extend(
@@ -495,7 +496,7 @@ function(datepicker, timepicker, _, moment, TP,
         
         onFileSelected: function()
         {
-            
+
             this.$el.addClass("waiting");
             this.isNew = this.model.get("workoutId") ? false : true;
 
@@ -552,7 +553,7 @@ function(datepicker, timepicker, _, moment, TP,
         onUploadFail: function ()
         {
             this.$el.removeClass("waiting");
-        },
+        }
 
     });
 });
