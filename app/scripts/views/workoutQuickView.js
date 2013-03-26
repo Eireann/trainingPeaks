@@ -76,7 +76,7 @@ function(datepicker, timepicker, _, moment, TP,
         {
             try
             {
-                return moment(value, "HH:mm").format("h:mm a");
+                return moment(value).format("h:mm a");
             } catch (e)
             {
                 return value;
@@ -87,7 +87,7 @@ function(datepicker, timepicker, _, moment, TP,
         {
             try
             {
-                return moment(value, "h:mm a").format("HH:mm");
+                return this.model.getCalendarDay() + "T" + moment(value, "h:mm a").format("HH:mm");
             } catch(e)
             {
                 return value;
