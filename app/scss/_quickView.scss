@@ -3,105 +3,104 @@
 #workOutQuickView
 {
 	overflow:hidden;
+    width: 690px;
+    height: 530px;
 }
 
 .QVHeader
 {
 	width: 100%;
-	height: 100px;
-	background-color: $white;
+	height: 125px;
+	background-color: $TPGrey1;
+    padding: 15px 0px 0px 18px;
 
-	#thumbNailImage
-	{
-		float: left;
-		padding-left: 10px;
-	}
+    .dateAndTime
+    {
+        
 
-	.forwardBackbuttons
-	{
-		float:left;
-		padding-right: 15px;
-		@include headerButtons(-5px, 35px, 12px);
-	}
+        #dayName
+        {
+            font-family: $navigationFontFamilyRegular;
+            font-size:$fontSizeMedium;
+            color: $TPGrey3;
+            padding-right: 14px;
+            text-transform:uppercase;
+        }
 
-	.headerIcons
-	{
-		padding-left: 30px;
+        #calendarDate
+        {
+            font-family: $navigationFontFamilyRegular;
+            font-size:$fontSizeSmall;
+            color: $TPGrey3;
+            padding-right: 14px;
+        }
 
-		.icon
-		{
-		float: left;
-		}
-	}
+        #time
+        {
+            font-family: $navigationFontFamilyRegular;
+            font-size:$fontSizeSmall;
+            color: $TPGrey3;
+            font-style: italic;
+        }
+    }
 
-	
+    .grayHeader
+    {
+        width: 570px;
+        height: 80px;
+        padding: 5px 0px 5px 5px;
+        background-color: $TPGrey2;
 
-	.workoutTitleDiv
-	{
-		margin-top: 10px;
-		.title
-		{
-			float: left;
-			width: 400px;
+        .workoutIcon
+        {
+            width: 70px;
+            height: 70px;
+            background-color: white;
+            float: left;
+        }
 
-			@include inputs(400px, 35px, 26px, $navigationFontFamilyRegular);
-			input
-			{
-				color: $TPBlue;
-				border: 0px;
-			}
-		}
+        .workoutHeaderStats
+        {
+            float: left;
+            width: 490px;
 
-		@include labels($navigationFontFamilyRegular, $fontSizeMedium, $TPGrey3, normal);
-		label
-		{
-			margin-top: -10px;
-			width: 250px;
-			padding-left: 105px;
-		}
+            .headerWorkoutValue
+            {
+                float: left;
+                padding: 20px 0px 0px 20px;
+                label
+                {
+                    font-size: $fontSizeQVHeader;
+                    font-family: $navigationFontFamilyRegular;
+                    color: $TPGrey4;
+                }
+            }
+            .headerWorkoutValueLabel
+            {
+                float: left;
+                padding: 28px 0px 0px 0px;
+                label
+                {
+                    font-family: $navigationFontFamilyRegular;
+                    font-size: $fontSizeXXLarge;
+                    color: $TPGrey4;
+                }
+            }
 
-		.fullScreen
-		{
-			float:right;
-		}
-	}
+            .title
+            {
+                padding-left: 15px;
+                @include inputs(100%, 20px, $fontSizeLarge, $navigationFontFamilyRegular);
+                input
+                {
+                    background:transparent;
+                    outline: none;
+                    box-shadow: inset 0 0px 0px rgba(0, 0, 0, 0.0);
+                }
+            }
+        }
+    }
 
-	#workoutHeaderStats
-	{
-		float: left;
-		padding-right: 15px;
-		min-width: 500px;
-
-		.headerWorkoutValue
-		{
-			float: left;
-			width: 50px;
-			overflow: hidden;
-			text-overflow: ellipsis;
-			@include labels($navigationFontFamilyRegular, $fontSizeXLarge, $TPGrey3, normal);
-
-		}
-
-		.headerWorkoutValueLabel
-		{
-			float:left;
-			padding-top: 5px;
-			@include labels($navigationFontFamilyRegular, $fontSizeMedium, $TPGrey3, normal);
-		}
-
-		.middleValues
-		{
-			padding-left: 15px;
-		}
-	}
-
-	.quickviewNavigation
-	{
-		width: 130px;
-		float: right;
-		margin-top:-20px;
-		margin-right: -15px;
-	}
 }
 
 .quickViewContent

@@ -533,19 +533,30 @@ function(_, moment, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, C
 
                     var sourceCalendarDayModel = this.getDayModel(oldCalendarDay);
                     var deferredResult;
+
+                    // in a date range we already have?
                     try {
                         var destinationCalendarDayModel = this.getDayModel(newCalendarDay);
                         deferredResult = item.moveToDay(newCalendarDay, destinationCalendarDayModel);
+                        this.trigger("item:move", item, destinationDay, deferredResult);
                     } catch (e)
                     {
+                        // else add it to a new date range so our quick view still works
                         deferredResult = item.moveToDay(newCalendarDay);
+
+                        // let other stuff happen on the deferred result ...
+                        this.trigger("item:move", item, destinationDay, deferredResult);
+
+                        // then, add this same workout model instance back to the appropriate calendar day,
+                        // replacing a different instance of the same workout, and keeping our currently open quick view intact ...
                         var self = this;
                         var callback = function()
                         {
                             self.addItem(item);
                         };
+                        deferredResult.done(callback);
                     }
-                    this.trigger("item:move", item, destinationDay, deferredResult);
+
                 }
             }
 

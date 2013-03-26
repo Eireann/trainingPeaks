@@ -112,6 +112,9 @@ function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkout
         {
             if (!this.model)
                 throw "Cannot have a CalendarWorkoutView without a model";
+
+            //this.model.on("view", this.workoutClicked, this);
+            //console.log("Watching the model: " + this.model.id);
         },
 
         events:
@@ -171,7 +174,7 @@ function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkout
             this.workoutSettings.on("mouseleave", this.onMouseLeave, this);
         },
 
-        workoutClicked: function (e) 
+        workoutClicked: function(e)
         {
             if (e)
             {
@@ -221,11 +224,13 @@ function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkout
 
         },
 
+        /*
         onClose: function()
         {
             // unbind this since it's not in modelEvents
             this.model.off("view", this.workoutClicked, this);
         },
+        */
 
         makeDraggable: function()
         {
