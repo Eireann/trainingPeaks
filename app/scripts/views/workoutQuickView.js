@@ -3,6 +3,7 @@
     "jqueryui/datepicker",
     "jqueryTimepicker",
     "underscore",
+    "moment",
     "TP",
     "utilities/printDate",
     "utilities/printUnitLabel",
@@ -10,10 +11,15 @@
     "utilities/convertToModelUnits",
     "utilities/printTimeFromDecimalHours",
     "utilities/convertTimeHoursToDecimal",
+    "models/workoutFileData",
     "views/deleteConfirmationView",
     "hbs!templates/views/workoutQuickView"
 ],
-function(datepicker, timepicker, _, TP, printDate, printUnitLabel, convertToViewUnits, convertToModelUnits, printTimeFromDecimalHours, convertTimeHoursToDecimal, DeleteConfirmationView, workoutQuickViewTemplate)
+function(datepicker, timepicker, _, moment, TP,
+    printDate, printUnitLabel,
+    convertToViewUnits, convertToModelUnits,
+    printTimeFromDecimalHours, convertTimeHoursToDecimal,
+    DeleteConfirmationView, workoutQuickViewTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -33,12 +39,20 @@ function(datepicker, timepicker, _, TP, printDate, printUnitLabel, convertToView
             "click #delete": "onDeleteWorkout",
             "click #discard": "onDiscardClicked",
             "click #saveClose": "onSaveClosedClicked",
-            "click #date": "onDateClicked"
+            "click #date": "onDateClicked",
+            "click #quickViewFileUploadDiv": "onUploadFileClicked",
+            "change input[type='file']": "onFileSelected"
         },
 
         ui:
         {
-            "date": "#date"
+            "date": "#date",
+            "fileinput": "input[type='file']"
+        },
+        
+        initialize: function()
+        {
+            _.bindAll(this, "onUploadDone", "onUploadFail");
         },
 
         template:
@@ -423,11 +437,11 @@ function(datepicker, timepicker, _, TP, printDate, printUnitLabel, convertToView
             if (description.indexOf("BT: ") !== 0)
             {
                 this.model.set("description", "BT: " + description);
-                this.$("#breakThrough img").attr("src", "assets/images/QVImages/breakthroughClicked.jpg");
+                this.$("#breakThrough img").attr("src", "assets/images/QVImages/breakThroughFullOpac.png");
             }
             else
             {
-                this.$("#breakThrough img").attr("src", "assets/images/QVImages/breakthrough.jpg");
+                this.$("#breakThrough img").attr("src", "assets/images/QVImages/breakthrough.png");
                 description = description.replace(/BT: /, "");
                 this.model.set("description", description);
             }
@@ -472,6 +486,73 @@ function(datepicker, timepicker, _, TP, printDate, printUnitLabel, convertToView
                 var workout = this.model;
                 workout.trigger("workout:move", this.model, newDay);
             }
-        }
+        },
+        
+        onUploadFileClicked: function()
+        {
+            this.ui.fileinput.click();
+        },
+        
+        onFileSelected: function()
+        {
+            
+            this.$el.addClass("waiting");
+            this.isNew = this.model.get("workoutId") ? false : true;
+
+            var self = this;
+
+            this.model.save().done(function()
+            {
+                var interval = setInterval(function()
+                {
+                    if (self.dataAsString)
+                    {
+                        clearInterval(interval);
+                        self.uploadedFileDataModel = new WorkoutFileData({ workoutId: self.model.get("workoutId"), workoutDay: self.model.get("workoutDay"), startTime: self.model.get("startTime"), data: self.dataAsString });
+                        self.uploadedFileDataModel.save().done(self.onUploadDone).fail(self.onUploadFail);
+                        self.$el.addClass("waiting"); //temporary
+                    }
+                }, 100);
+            });
+            
+            var fileList = this.ui.fileinput[0].files;
+
+            var file = fileList[0];
+
+            var reader = new FileReader();
+
+            reader.onload = function (event)
+            {
+                function uint8ToString(buf)
+                {
+                    var i, length, out = '';
+                    for (i = 0, length = buf.length; i < length; i += 1)
+                    {
+                        out += String.fromCharCode(buf[i]);
+                    }
+                    return out;
+                }
+
+                var data = new Uint8Array(event.target.result);
+                self.dataAsString = btoa(uint8ToString(data));
+            };
+
+            reader.readAsArrayBuffer(file);
+        },
+        
+        onUploadDone: function ()
+        {
+            this.$el.removeClass("waiting");
+
+            this.model.set(this.uploadedFileDataModel.get("workoutModel"));
+            if (this.isNew)
+                this.trigger("saved");
+        },
+
+        onUploadFail: function ()
+        {
+            this.$el.removeClass("waiting");
+        },
+
     });
 });

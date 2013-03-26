@@ -55,6 +55,8 @@
         padding: 5px 0px 5px 5px;
         background-color: $TPGrey2;
 
+        @include box-shadow(3px 3px 2px -1px $TPGrey3);
+
         .workoutIcon
         {
             width: 70px;
@@ -68,27 +70,35 @@
             float: left;
             width: 490px;
 
+            .headerIcons
+            {
+                float: right;
+                margin-top: -7px;
+
+                .icon
+                {
+                    float: left;
+                    padding-right: 5px;
+                }
+
+                .addAttachment
+                {
+                    margin-top: -1px;
+                }
+        
+            }
+
             .headerWorkoutValue
             {
                 float: left;
                 padding: 20px 0px 0px 20px;
-                label
-                {
-                    font-size: $fontSizeQVHeader;
-                    font-family: $navigationFontFamilyRegular;
-                    color: $TPGrey4;
-                }
+                @include labels($navigationFontFamilyRegular, $fontSizeQVHeader, $TPGrey4, normal);
             }
             .headerWorkoutValueLabel
             {
                 float: left;
                 padding: 28px 0px 0px 0px;
-                label
-                {
-                    font-family: $navigationFontFamilyRegular;
-                    font-size: $fontSizeXXLarge;
-                    color: $TPGrey4;
-                }
+                @include labels($navigationFontFamilyRegular, $fontSizeXXLarge, $TPGrey4, normal);
             }
 
             .title
@@ -105,6 +115,14 @@
         }
     }
 
+    .uploadButton
+    {
+        width: 80px;
+        height: 80px;
+        float: left;
+        @include box-shadow(3px 3px 2px -1px $TPGrey3);
+        @include labels($navigationFontFamilyRegular, $fontSizeLarge, $TPGrey4, normal);
+    }
 }
 
 .quickViewContent
