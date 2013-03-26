@@ -17,7 +17,6 @@
     .dateAndTime
     {
         
-
         #dayName
         {
             font-family: $navigationFontFamilyRegular;
@@ -34,13 +33,18 @@
             color: $TPGrey3;
             padding-right: 14px;
         }
-
-        #time
+        
+        @include inputs(100%, 20px, $fontSizeSmall, $navigationFontFamilyRegular);
+        input#startTimeInput
         {
-            font-family: $navigationFontFamilyRegular;
-            font-size:$fontSizeSmall;
+            background:transparent;
             color: $TPGrey3;
             font-style: italic;
+            width: 200px;
+            display: inline-block;
+            outline: none;
+            @include box-shadow(none);
+            border: none;
         }
     }
 

@@ -1,6 +1,7 @@
 ﻿define(
 [
     "jqueryui/datepicker",
+    "jqueryTimepicker",
     "underscore",
     "TP",
     "utilities/printDate",
@@ -12,7 +13,7 @@
     "views/deleteConfirmationView",
     "hbs!templates/views/workoutQuickView"
 ],
-function(datepicker, _, TP, printDate, printUnitLabel, convertToViewUnits, convertToModelUnits, printTimeFromDecimalHours, convertTimeHoursToDecimal, DeleteConfirmationView, workoutQuickViewTemplate)
+function(datepicker, timepicker, _, TP, printDate, printUnitLabel, convertToViewUnits, convertToModelUnits, printTimeFromDecimalHours, convertTimeHoursToDecimal, DeleteConfirmationView, workoutQuickViewTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -54,6 +55,28 @@ function(datepicker, _, TP, printDate, printUnitLabel, convertToViewUnits, conve
         getCalendarDate: function(value, options)
         {
             return printDate(value, "MMM DD, YYYY");
+        },
+
+        getStartTime: function(value, options)
+        {
+            try
+            {
+                return moment(value, "HH:mm").format("h:mm a");
+            } catch (e)
+            {
+                return value;
+            }
+        },
+
+        setStartTime: function(value, options)
+        {
+            try
+            {
+                return moment(value, "h:mm a").format("HH:mm");
+            } catch(e)
+            {
+                return value;
+            }
         },
 
         getDistance: function(value, options)
@@ -352,6 +375,13 @@ function(datepicker, _, TP, printDate, printUnitLabel, convertToViewUnits, conve
             {
                 observe: "description",
                 eventsOverride: [ "blur" ]
+            },
+            "#startTimeInput":
+            {
+                observe: "startTime",
+                eventsOverride: ["changeTime"],
+                onGet: "getStartTime",
+                onSet: "setStartTime"
             }
         },
 
@@ -414,6 +444,8 @@ function(datepicker, _, TP, printDate, printUnitLabel, convertToViewUnits, conve
 
                 this.stickit();
                 this.stickitInitialized = true;
+
+                this.$("#startTimeInput").timepicker({ appendTo: this.$el, 'timeFormat': 'g:i a' });
 
             }
 

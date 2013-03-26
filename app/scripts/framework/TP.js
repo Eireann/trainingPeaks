@@ -71,7 +71,10 @@ function(Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmediate,
 
         onWaitStop: function()
         {
-            this.$el.removeClass('waiting');
+            if (this.showThrobbers)
+            {
+                this.$el.removeClass('waiting');
+            }
         }
 
     });
