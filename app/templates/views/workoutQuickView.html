@@ -11,6 +11,14 @@
 
             </div>
             <div class="workoutHeaderStats">
+                <div class="headerIcons">
+                    <div id="breakThrough" class="icon">
+                        <img src="assets/images/QVImages/breakthrough.png"/>
+                    </div>
+                    <div class="icon addAttachment">
+                        <img src="assets/images/QVImages/paperClip.png"/>
+                    </div>
+                </div>
                 <div class="headerWorkoutValue middleValues">
                     <label>{{printTimeFromDecimalHours totalTime}}</label>
                 </div>
@@ -18,7 +26,7 @@
                     <label>{{distance}}</label>
                 </div>
                 <div class="headerWorkoutValueLabel">
-                    <label>DST</label>
+                    <label>{{printUnitLabel "distance" }}</label>
                 </div>
                 <div class="headerWorkoutValue middleValues">
                     <label>{{tssActual}}</label>
@@ -32,6 +40,14 @@
             </div>
         </div>
 
+        <div id="quickViewFileUploadDiv" class="uploadButton">
+            <label>Upload</label>
+        </div>
+        <input style="display: none" type="file"/>
+
+
+        
+
 
         <!--<div id="thumbNailImage">
             <img src="assets/images/QVImages/workoutPlaceHolder.png" />
@@ -39,17 +55,10 @@
         
 
         <div class="quickviewNavigation">
-            <div class="headerIcons">
-                <div id="breakThrough" class="icon">
-                    <img src="assets/images/QVImages/breakthrough.jpg"/>
-                </div>
+            
                 <div class="icon">
                     <img src="assets/images/QVImages/lightningbolt.jpg"/>
                 </div>
-                <div id="quickViewFileUploadDiv"class="icon">
-                    <img alt="Upload" src="assets/images/QVImages/paper.jpg"/>
-                </div>
-                <input style="display: none" type="file"/>
             </div>
             <div class="forwardBackbuttons">
                 <button><</button>
