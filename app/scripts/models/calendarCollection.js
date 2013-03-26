@@ -41,6 +41,7 @@ function(_, moment, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, C
         {
             this.workoutsCollection.on("workout:copy", this.onItemsCopy, this);
             this.workoutsCollection.on("workout:cut", this.onItemsCut, this);
+            this.workoutsCollection.on("workout:move", this.onWorkoutDateChange, this);
 
             this.daysCollection.on("day:copy", this.onItemsCopy, this);
             this.daysCollection.on("day:cut", this.onItemsCut, this);
@@ -499,6 +500,11 @@ function(_, moment, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, C
             });
         },
 
+        onWorkoutDateChange: function(workoutModel, destinationDate, callback)
+        {
+            this.moveItem(workoutModel, destinationDate, callback);
+        },
+
         onItemMoved: function(options)
         {
             if (!options.hasOwnProperty('ItemId') || !options.ItemId ||
@@ -510,18 +516,28 @@ function(_, moment, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, C
 
             // get the item
             var item = this.workoutsCollection.get(options.ItemId);
+            this.moveItem(item, options.destinationCalendarDayModel.id);
+        },
+
+        moveItem: function(item, destinationDay, callback)
+        {
 
             // if it has a getCalendarDay and moveToDay then we can move it
             if (item && _.isFunction(item.getCalendarDay) && _.isFunction(item.moveToDay))
             {
                 var oldCalendarDay = item.getCalendarDay();
-                var newCalendarDay = options.destinationCalendarDayModel.id;
+                var newCalendarDay = destinationDay;
 
                 if (oldCalendarDay !== newCalendarDay)
                 {
 
                     var sourceCalendarDayModel = this.getDayModel(oldCalendarDay);
-                    item.moveToDay(newCalendarDay, options.destinationCalendarDayModel);
+                    var destinationCalendarDayModel = this.getDayModel(newCalendarDay);
+                    var deferredResult = item.moveToDay(newCalendarDay, destinationCalendarDayModel);
+                    if (callback)
+                    {
+                        deferredResult.done(callback);
+                    }
                 }
             }
 

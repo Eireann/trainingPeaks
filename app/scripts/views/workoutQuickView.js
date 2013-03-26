@@ -1,6 +1,7 @@
 ﻿define(
 [
     "jqueryui/datepicker",
+    "underscore",
     "TP",
     "utilities/printUnitLabel",
     "utilities/convertToViewUnits",
@@ -10,7 +11,7 @@
     "views/deleteConfirmationView",
     "hbs!templates/views/workoutQuickView"
 ],
-function(datepicker, TP, printUnitLabel, convertToViewUnits, convertToModelUnits, printTimeFromDecimalHours, convertTimeHoursToDecimal, DeleteConfirmationView, workoutQuickViewTemplate)
+function(datepicker, _, TP, printUnitLabel, convertToViewUnits, convertToModelUnits, printTimeFromDecimalHours, convertTimeHoursToDecimal, DeleteConfirmationView, workoutQuickViewTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -29,6 +30,11 @@ function(datepicker, TP, printUnitLabel, convertToViewUnits, convertToModelUnits
             "click #discard": "onDiscardClicked",
             "click #saveClose": "onSaveClosedClicked",
             "click #date": "onDateClicked"
+        },
+
+        ui:
+        {
+            "date": "#date"
         },
 
         template:
@@ -374,21 +380,50 @@ function(datepicker, TP, printUnitLabel, convertToViewUnits, convertToModelUnits
             }
         },
 
-        onRender: function ()
+        onRender: function()
         {
             if (!this.stickitInitialized)
             {
                 this.model.off("change", this.render);
-                this.model.on("change", this.saveWorkout, this);
+
+                // there is no saveWorkout method ...
+                //this.model.on("change", this.saveWorkout, this);
 
                 this.stickit();
                 this.stickitInitialized = true;
+
             }
+
         },
 
-        onDateClicked: function()
+        onDateClicked: function(e)
         {
+            _.bindAll(this, "onDateChanged");
+            var position = [this.ui.date.offset().left, this.ui.date.offset().top + this.ui.date.height()];
+            var settings = {};
+            var widget = this.ui.date.datepicker("dialog", this.model.getCalendarDay(), this.onDateChanged, settings, position).datepicker("widget");
 
+            // because jqueryui sets useless values for these ...
+            widget.css("z-index", Number(this.$el.css("z-index") + 1)).css("opacity", 1);
+        },
+
+        onDateChanged: function(newDate)
+        {
+            var newDay = moment(newDate).format(this.model.shortDateFormat);
+            this.ui.date.datepicker("hide");
+            var oldDay = this.model.getCalendarDay();
+            if (newDay !== oldDay)
+            {
+                var workout = this.model;
+
+                // once it moves, open a new quickview
+                var callback = function()
+                {
+                    workout.trigger("view");
+                };
+                workout.trigger("workout:move", this.model, newDay, callback);
+                this.close();
+            }
         }
     });
 });

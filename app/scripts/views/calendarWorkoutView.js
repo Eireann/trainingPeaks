@@ -173,10 +173,13 @@ function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkout
 
         workoutClicked: function (e) 
         {
-            if (e.isDefaultPrevented())
-                return;
+            if (e)
+            {
+                if(e.isDefaultPrevented())
+                    return;
 
-            e.preventDefault();
+                e.preventDefault();
+            }
 
             var view = new WorkoutQuickView({ model: this.model });
             view.render();
@@ -201,14 +204,27 @@ function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkout
 
         onRender: function()
         {
+            // we may not have a workout id yet at first render if it was just added from library
             if (!this.$el.data('workoutId'))
             {
                 this.$el.attr(this.attributes());
             }
 
+            // set up drag and drop
             this.makeDraggable();
 
+            // setup dynamic class names
             this.$el.attr("class", this.className());
+
+            // allow to open quick view by triggering click on the model
+            this.model.on("view", this.workoutClicked, this);
+
+        },
+
+        onClose: function()
+        {
+            // unbind this since it's not in modelEvents
+            this.model.off("view", this.workoutClicked, this);
         },
 
         makeDraggable: function()
