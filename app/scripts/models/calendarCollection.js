@@ -500,9 +500,9 @@ function(_, moment, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, C
             });
         },
 
-        onWorkoutDateChange: function(workoutModel, destinationDate, callback)
+        onWorkoutDateChange: function(workoutModel, destinationDate)
         {
-            this.moveItem(workoutModel, destinationDate, callback);
+            this.moveItem(workoutModel, destinationDate);
         },
 
         onItemMoved: function(options)
@@ -519,7 +519,7 @@ function(_, moment, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, C
             this.moveItem(item, options.destinationCalendarDayModel.id);
         },
 
-        moveItem: function(item, destinationDay, callback)
+        moveItem: function(item, destinationDay)
         {
 
             // if it has a getCalendarDay and moveToDay then we can move it
@@ -532,12 +532,20 @@ function(_, moment, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, C
                 {
 
                     var sourceCalendarDayModel = this.getDayModel(oldCalendarDay);
-                    var destinationCalendarDayModel = this.getDayModel(newCalendarDay);
-                    var deferredResult = item.moveToDay(newCalendarDay, destinationCalendarDayModel);
-                    if (callback)
+                    var deferredResult;
+                    try {
+                        var destinationCalendarDayModel = this.getDayModel(newCalendarDay);
+                        deferredResult = item.moveToDay(newCalendarDay, destinationCalendarDayModel);
+                    } catch (e)
                     {
-                        deferredResult.done(callback);
+                        deferredResult = item.moveToDay(newCalendarDay);
+                        var self = this;
+                        var callback = function()
+                        {
+                            self.addItem(item);
+                        };
                     }
+                    this.trigger("item:move", item, destinationDay, deferredResult);
                 }
             }
 

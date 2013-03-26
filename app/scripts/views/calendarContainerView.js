@@ -42,7 +42,8 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, c
         collectionEvents:
         {
             "add": "onAddWeek",
-            "reset": "render"
+            "reset": "render",
+            "item:move": "onItemMoved"
         },
 
         initialize: function(options)
@@ -194,6 +195,10 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, c
             var nextWeek = currentWeek.next(".week");
 
             var weeksContainerTop = uiOffset.top;
+
+            if (!currentWeek || !currentWeek.offset())
+                return;
+
             var currentWeekOffset = Math.abs(currentWeek.offset().top - weeksContainerTop);
             var nextWeekOffset = Math.abs(nextWeek.offset().top - weeksContainerTop);
 
@@ -301,6 +306,11 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, c
         onItemDropped: function(itemView, options)
         {
             this.trigger("itemDropped", options);
+        },
+
+        onItemMoved: function(item, movedToDate, deferredResult)
+        {
+            this.trigger("itemMoved", item, movedToDate, deferredResult);
         },
 
         getCurrentScrollDate: function()

@@ -183,13 +183,25 @@ function(_, moment, setImmediate, TP, CalendarLayout, CalendarCollection, Calend
             });
         },
 
-        reset: function(startDate, endDate)
+        reset: function(startDate, endDate, scrollToDate)
         {
             this.views.calendar.fadeOut(800);
             this.startDate = moment(startDate);
             this.endDate = moment(endDate);
             this.weeksCollection.resetToDates(moment(this.startDate), moment(this.endDate));
-            this.loadCalendarData();
+
+            if (scrollToDate)
+            {
+                var self = this;
+                var onLoad = function(deferreds)
+                {
+                    return self.scrollToDateAfterLoad(deferreds, scrollToDate);
+                };
+                this.loadCalendarData(onLoad);
+            } else
+            {
+                this.loadCalendarData();
+            }
             this.views.calendar.fadeIn(800);
         },
 
@@ -212,6 +224,8 @@ function(_, moment, setImmediate, TP, CalendarLayout, CalendarCollection, Calend
             if (!dateAsMoment)
                 return;
 
+            if (!moment.isMoment(dateAsMoment))
+                dateAsMoment = moment(dateAsMoment);
 
             var calendarView = this.views.calendar;
             var i;
@@ -240,7 +254,7 @@ function(_, moment, setImmediate, TP, CalendarLayout, CalendarCollection, Calend
                 // Fade out the calendar, rerender centered on the requested date, and fade in.
                 var newStartDate = this.createStartDay(dateAsMoment).subtract("weeks", 4);
                 var newEndDate = this.createEndDay(dateAsMoment).add("weeks", 6);
-                this.reset(newStartDate, newEndDate);
+                this.reset(newStartDate, newEndDate, dateAsMoment);
             } else if(dateAsMoment < this.startDate)
             {
                 var weeksToPrepend = this.startDate.diff(dateAsMoment, "weeks") + 2;
@@ -315,6 +329,7 @@ function(_, moment, setImmediate, TP, CalendarLayout, CalendarCollection, Calend
             calendarView.on("append", this.appendWeekToCalendar, this);
             calendarView.on("itemDropped", this.onDropItem, this);
             calendarView.on("workoutsShifted", this.onShiftItems, this);
+            calendarView.on("itemMoved", this.onItemMoved, this);
         },
 
         onDropItem: function(options)
@@ -385,6 +400,16 @@ function(_, moment, setImmediate, TP, CalendarLayout, CalendarCollection, Calend
         onLibraryAnimate: function(cssAttributes, duration)
         {
             this.views.calendar.onLibraryAnimate(cssAttributes, duration);
+        },
+
+        onItemMoved: function(item, movedToDate, deferredResult)
+        {
+            var self = this;
+            var callback = function()
+            {
+                self.showDate(movedToDate);
+            };
+            deferredResult.done(callback);
         }
     });
 });

@@ -217,7 +217,7 @@ function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkout
             this.$el.attr("class", this.className());
 
             // allow to open quick view by triggering click on the model
-            this.model.on("view", this.workoutClicked, this);
+            //this.model.on("view", this.workoutClicked, this);
 
         },
 

@@ -87,8 +87,13 @@ function(Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmediate,
         // view.render().left(x).top(y) == modal and positioned at x,y
         renderModal: function()
         {
+            // not a modal view ...
             if (!this.modal)
                 return this;
+
+            // already rendered ...
+            if (this.$overlay)
+                return;
 
             // make an overlay
             _.bindAll(this, "close");
@@ -146,7 +151,10 @@ function(Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmediate,
         {
             this.disableEscapeKey();
             if (this.modal && this.$overlay)
+            {
                 this.$overlay.hide().remove();
+                this.$overlay = null;
+            }
         },
 
         left: function(left)

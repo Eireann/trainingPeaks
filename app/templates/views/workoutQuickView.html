@@ -4,7 +4,7 @@
             <img src="assets/images/QVImages/workoutPlaceHolder.png" />
         </div>
         <div class="workoutTitleDiv">
-            <div class="dateAndTime"><span id="date"><span class="dayName">{{printDate workoutDay "dddd"}}</span> {{printDate workoutDay "MMM DD, YYYY"}}</span> <span id="time">{{ defaultValue startTime "Enter time" }}</span></div>
+            <div class="dateAndTime"><span id="date"><span id="dayName">{{printDate workoutDay "dddd"}}</span> <span id="calendarDate">{{printDate workoutDay "MMM DD, YYYY"}}</span></span> <span id="time">{{ defaultValue startTime "Enter time" }}</span></div>
             <div class="title">
                 <input type="text" name="workoutTitle" class="workoutTitle" placeholder="Workout Title" id="workoutTitleField" />
             </div>

@@ -3,6 +3,7 @@
     "jqueryui/datepicker",
     "underscore",
     "TP",
+    "utilities/printDate",
     "utilities/printUnitLabel",
     "utilities/convertToViewUnits",
     "utilities/convertToModelUnits",
@@ -11,7 +12,7 @@
     "views/deleteConfirmationView",
     "hbs!templates/views/workoutQuickView"
 ],
-function(datepicker, _, TP, printUnitLabel, convertToViewUnits, convertToModelUnits, printTimeFromDecimalHours, convertTimeHoursToDecimal, DeleteConfirmationView, workoutQuickViewTemplate)
+function(datepicker, _, TP, printDate, printUnitLabel, convertToViewUnits, convertToModelUnits, printTimeFromDecimalHours, convertTimeHoursToDecimal, DeleteConfirmationView, workoutQuickViewTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -22,6 +23,8 @@ function(datepicker, _, TP, printUnitLabel, convertToViewUnits, convertToModelUn
         },
 
         className: "workoutQuickView",
+
+        showThrobbers: false,
 
         events:
         {
@@ -41,6 +44,16 @@ function(datepicker, _, TP, printUnitLabel, convertToViewUnits, convertToModelUn
         {
             type: "handlebars",
             template: workoutQuickViewTemplate
+        },
+
+        getDayName: function(value, options)
+        {
+            return printDate(value, "dddd");
+        },
+
+        getCalendarDate: function(value, options)
+        {
+            return printDate(value, "MMM DD, YYYY");
         },
 
         getDistance: function(value, options)
@@ -92,13 +105,23 @@ function(datepicker, _, TP, printUnitLabel, convertToViewUnits, convertToModelUn
         {
             return convertToModelUnits(value, "elevation");
         },
-        
-        bindings:
+
+    bindings:
         {
             "#workoutTitleField":
             {
                 observe: "title",
                 eventsOverride: ["blur"]
+            },
+            "#dayName":
+            {
+                observe: "workoutDay",
+                onGet: "getDayName"
+            },
+            "#calendarDate":
+            {
+                observe: "workoutDay",
+                onGet: "getCalendarDate"
             },
             "#distanceCompletedField":
             {
@@ -400,7 +423,7 @@ function(datepicker, _, TP, printUnitLabel, convertToViewUnits, convertToModelUn
         {
             _.bindAll(this, "onDateChanged");
             var position = [this.ui.date.offset().left, this.ui.date.offset().top + this.ui.date.height()];
-            var settings = {};
+            var settings = { dateFormat: "yy-mm-dd" };
             var widget = this.ui.date.datepicker("dialog", this.model.getCalendarDay(), this.onDateChanged, settings, position).datepicker("widget");
 
             // because jqueryui sets useless values for these ...
@@ -415,14 +438,7 @@ function(datepicker, _, TP, printUnitLabel, convertToViewUnits, convertToModelUn
             if (newDay !== oldDay)
             {
                 var workout = this.model;
-
-                // once it moves, open a new quickview
-                var callback = function()
-                {
-                    workout.trigger("view");
-                };
-                workout.trigger("workout:move", this.model, newDay, callback);
-                this.close();
+                workout.trigger("workout:move", this.model, newDay);
             }
         }
     });
