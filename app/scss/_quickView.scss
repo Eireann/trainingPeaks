@@ -43,13 +43,14 @@
             font-style: italic;
         }
     }
-
+  
     .grayHeader
     {
         width: 570px;
         height: 80px;
         padding: 5px 0px 5px 5px;
         background-color: $TPGrey2;
+        float: left;
 
         @include box-shadow(3px 3px 2px -1px $TPGrey3);
 
@@ -118,6 +119,10 @@
         float: left;
         @include box-shadow(3px 3px 2px -1px $TPGrey3);
         @include labels($navigationFontFamilyRegular, $fontSizeLarge, $TPGrey4, normal);
+        margin-left: 10px;
+        @include linearGradient(top, #fefefe, #e0dddd);
+        text-align: center;
+        padding-top: 30px;
     }
 }
 
