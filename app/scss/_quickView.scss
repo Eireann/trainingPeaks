@@ -37,17 +37,18 @@
             padding-right: 14px;
         }
 
+        @include inputs(200px, 20px, $fontSizeSmall, $navigationFontFamilyRegular);
         input#startTimeInput
         {
-            font-family: $navigationFontFamilyRegular;
-            font-size:$fontSizeSmall;
             color: $TPGrey3;
             font-style: italic;
-            width: 200px;
             display: inline-block;
             outline: none;
             @include box-shadow(none);
             border: none;
+            background-color: transparent;
+            margin: 0px;
+            padding: 0px;
         }
     }
 
@@ -301,4 +302,46 @@
 			background: url('../../../../assets/images/QVImages/buttonBackground107px.png') no-repeat;
 		}
 	}
+}
+
+.workoutTypeMenuModalOverlay
+{
+    z-index: 102;
+}
+
+.workoutTypeMenu
+{
+    z-index: 103;
+
+    .hoverBox
+    {
+        .colorBar
+        {
+            top: 0px;
+            bottom: 0px;
+            right: 0px;
+            left: calc(100% - 3px);
+            width: 3px;
+            height: 100%;
+        }
+
+        .bottomShadow
+        {
+            display:none;
+        }
+
+        .arrow
+        {
+            position: absolute;
+            top: 25px;
+            right: 0px;
+            @include transform(translateX(8px) rotate(45deg));
+            @include linearGradient(135deg, $TPGrey4 100%, $white 70%); 
+        }
+
+        .colored
+        {
+            background-color: $TPGrey3;
+        }
+    }
 }
