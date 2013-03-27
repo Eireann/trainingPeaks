@@ -1,11 +1,18 @@
 ﻿<div id="workOutQuickView">
     <div class="QVHeader">
         <div class="dateAndTime">
-            <span id="date"><span id="dayName">{{printDate workoutDay "dddd"}}</span> 
-            <span id="calendarDate">{{printDate workoutDay "MMMM DD, YYYY"}}</span>
-            </span> <span id="time">{{ defaultValue startTime "Enter time" }}</span>
+            <span id="date">
+                <span id="dayName">{{printDate workoutDay "dddd"}}</span> 
+                <span id="calendarDate">{{printDate workoutDay "MMMM DD, YYYY"}}</span>
+            </span> 
+            <span id="time">{{ defaultValue startTime "Enter time" }}</span>
+        </div>
+        <div class="closeAndSettings">
+            <span><img src="assets/images/calendarImages/settingsIcon.png"/></span>
+            <span><img src="assets/images/QVImages/closeX.png"/></span>
         </div>
 
+        <div>
         <div class="grayHeader">
             <div class="workoutIcon">
 
@@ -40,10 +47,12 @@
             </div>
         </div>
 
-        <div id="quickViewFileUploadDiv" class="uploadButton">
-            <label>Upload</label>
+        <div class="uploadButton">
+                <label>Upload</label>
         </div>
         <input style="display: none" type="file"/>
+        </div>
+    </div>
 
 
         
@@ -89,7 +98,7 @@
                 <label>TSS</label>
             </div> 
         </div> -->
-    </div>
+
 
     <div class="quickViewContent">
         <div class="stats">

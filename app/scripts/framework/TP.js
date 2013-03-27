@@ -71,7 +71,10 @@ function(Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmediate,
 
         onWaitStop: function()
         {
-            this.$el.removeClass('waiting');
+            if (this.showThrobbers)
+            {
+                this.$el.removeClass('waiting');
+            }
         }
 
     });
@@ -178,6 +181,16 @@ function(Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmediate,
             if (this.modal && this.$el)
             {
                 this.left(center - (this.$el.width() / 2));
+            }
+
+            return this;
+        },
+
+        right: function(right)
+        {
+            if (this.modal && this.$el)
+            {
+                this.left(right - this.$el.width());
             }
 
             return this;

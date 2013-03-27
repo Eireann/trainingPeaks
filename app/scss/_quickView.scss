@@ -13,11 +13,13 @@
 	height: 125px;
 	background-color: $TPGrey1;
     padding: 15px 0px 0px 18px;
+    @include box-shadow(2px 0px 7px 0px $TPGrey3);
+    position: relative;
 
     .dateAndTime
     {
+        float: left;
         
-
         #dayName
         {
             font-family: $navigationFontFamilyRegular;
@@ -35,23 +37,40 @@
             padding-right: 14px;
         }
 
-        #time
+        @include inputs(200px, 20px, $fontSizeSmall, $navigationFontFamilyRegular);
+        input#startTimeInput
         {
-            font-family: $navigationFontFamilyRegular;
-            font-size:$fontSizeSmall;
             color: $TPGrey3;
             font-style: italic;
+            display: inline-block;
+            outline: none;
+            @include box-shadow(none);
+            border: none;
+            background-color: transparent;
+            margin: 0px;
+            padding: 0px;
         }
     }
 
+    .closeAndSettings
+    {
+        float: right;
+        margin: -10px 5px 0px 0px;
+        span
+        {
+            padding-left: 5px;
+        }
+    }
+  
     .grayHeader
     {
         width: 570px;
         height: 80px;
         padding: 5px 0px 5px 5px;
         background-color: $TPGrey2;
+        float: left;
 
-        @include box-shadow(3px 3px 2px -1px $TPGrey3);
+        @include box-shadow(0px 5px 6px -4px $TPGrey3);
 
         .workoutIcon
         {
@@ -116,8 +135,12 @@
         width: 80px;
         height: 80px;
         float: left;
-        @include box-shadow(3px 3px 2px -1px $TPGrey3);
+        @include box-shadow(0px 5px 6px -4px $TPGrey3);
         @include labels($navigationFontFamilyRegular, $fontSizeLarge, $TPGrey4, normal);
+        margin-left: 10px;
+        @include linearGradient(top, #fefefe, #e0dddd);
+        text-align: center;
+        padding-top: 30px;
     }
 }
 
@@ -128,6 +151,7 @@
 	overflow-x:hidden;
     @include nice-scrollbar;
 	background-color:  $TPGrey1;
+    width: 100%;
 
 	.stats
 	{
@@ -278,4 +302,74 @@
 			background: url('../../../../assets/images/QVImages/buttonBackground107px.png') no-repeat;
 		}
 	}
+}
+
+.workoutTypeMenuModalOverlay
+{
+    z-index: 102;
+}
+
+.workoutTypeMenu
+{
+    z-index: 103;
+
+    .hoverBox
+    {
+        .colorBar
+        {
+            top: 0px;
+            bottom: 0px;
+            right: 0px;
+            left: calc(100% - 4px);
+            width: 4px;
+            height: 100%;
+        }
+
+        .bottomShadow
+        {
+            display:none;
+        }
+
+        .arrow
+        {
+            position: absolute;
+            top: 40px;
+            right: 0px;
+            @include transform(translateX(8px) rotate(45deg));
+        }
+
+        .colored
+        {
+            background-color: $TPGrey3;
+        }
+
+        .hoverBoxContents
+        {
+            @include linearGradient(right, rgb(255,255,255), rgba(255,255,255,0.95)); 
+            padding: 20px;
+            padding-right: 30px;
+            min-width: 150px;
+
+            label
+            {
+                margin-bottom: 8px;
+
+                &.selected
+                {
+                    font-weight: bold;
+                }
+
+                &:hover
+                {
+                    font-weight: bold;
+                }
+            }
+        }
+
+        .mainShadow
+        {
+            bottom: 0px;
+            @include box-shadow(0px 3px 3px -2px $TPGrey4);
+        }
+    }
 }

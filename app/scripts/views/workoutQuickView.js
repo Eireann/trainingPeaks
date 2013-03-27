@@ -1,6 +1,7 @@
 ﻿define(
 [
     "jqueryui/datepicker",
+    "jqueryTimepicker",
     "underscore",
     "moment",
     "TP",
@@ -13,9 +14,26 @@
     "models/workoutFileData",
     "views/deleteConfirmationView",
     "utilities/workoutFileReader",
+    "views/workoutTypeMenuView",
     "hbs!templates/views/workoutQuickView"
 ],
-function(datepicker, _, moment, TP, printDate, printUnitLabel, convertToViewUnits, convertToModelUnits, printTimeFromDecimalHours, convertTimeHoursToDecimal, WorkoutFileData, DeleteConfirmationView, WorkoutFileReader, workoutQuickViewTemplate)
+function (
+    datepicker,
+    timepicker,
+    _,
+    moment,
+    TP,
+    printDate,
+    printUnitLabel,
+    convertToViewUnits,
+    convertToModelUnits,
+    printTimeFromDecimalHours,
+    convertTimeHoursToDecimal,
+    WorkoutFileData,
+    DeleteConfirmationView,
+    WorkoutFileReader,
+    WorkoutTypeMenuView,
+    workoutQuickViewTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -37,7 +55,8 @@ function(datepicker, _, moment, TP, printDate, printUnitLabel, convertToViewUnit
             "click #saveClose": "onSaveClosedClicked",
             "click #date": "onDateClicked",
             "click #quickViewFileUploadDiv": "onUploadFileClicked",
-            "change input[type='file']": "onFileSelected"
+            "change input[type='file']": "onFileSelected",
+            "click .workoutIcon": "onWorkoutIconClicked"
         },
 
         ui:
@@ -65,6 +84,28 @@ function(datepicker, _, moment, TP, printDate, printUnitLabel, convertToViewUnit
         getCalendarDate: function(value, options)
         {
             return printDate(value, "MMM DD, YYYY");
+        },
+
+        getStartTime: function(value, options)
+        {
+            try
+            {
+                return moment(value).format("h:mm a");
+            } catch (e)
+            {
+                return value;
+            }
+        },
+
+        setStartTime: function(value, options)
+        {
+            try
+            {
+                return this.model.getCalendarDay() + "T" + moment(value, "h:mm a").format("HH:mm");
+            } catch(e)
+            {
+                return value;
+            }
         },
 
         getDistance: function(value, options)
@@ -363,6 +404,13 @@ function(datepicker, _, moment, TP, printDate, printUnitLabel, convertToViewUnit
             {
                 observe: "description",
                 eventsOverride: [ "blur" ]
+            },
+            "#startTimeInput":
+            {
+                observe: "startTime",
+                eventsOverride: ["changeTime"],
+                onGet: "getStartTime",
+                onSet: "setStartTime"
             }
         },
 
@@ -426,6 +474,8 @@ function(datepicker, _, moment, TP, printDate, printUnitLabel, convertToViewUnit
                 this.stickit();
                 this.stickitInitialized = true;
 
+                this.$("#startTimeInput").timepicker({ appendTo: this.$el, 'timeFormat': 'g:i a' });
+
             }
 
         },
@@ -460,7 +510,7 @@ function(datepicker, _, moment, TP, printDate, printUnitLabel, convertToViewUnit
         
         onFileSelected: function()
         {
-            
+
             this.$el.addClass("waiting");
             this.isNew = this.model.get("workoutId") ? false : true;
 
@@ -504,6 +554,19 @@ function(datepicker, _, moment, TP, printDate, printUnitLabel, convertToViewUnit
         {
             this.$el.removeClass("waiting");
         },
+
+        onWorkoutIconClicked: function()
+        {
+            var offset = this.$(".workoutIcon").offset();
+            var typesMenu = new WorkoutTypeMenuView({ workoutTypeId: this.model.get("workoutTypeValueId") });
+            typesMenu.on("selectWorkoutType", this.onSelectWorkoutType, this);
+            typesMenu.render().right(offset.left - 5).top(offset.top - 15);
+        },
+
+        onSelectWorkoutType: function(workoutTypeId)
+        {
+            this.model.set("workoutTypeValueId", workoutTypeId);
+        }
 
     });
 });

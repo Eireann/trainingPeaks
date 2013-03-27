@@ -20,6 +20,7 @@
             // jQuery related
             "jqueryui": "../vendor/js/libs/jqueryui",
             "jqueryOutside": "../vendor/js/libs/jquery/jquery.ba-outside-events",
+            "jqueryTimepicker": "../vendor/js/libs/jquery-timepicker/jquery.timepicker",
 
             // Underscore & Lodash (provided by Lodash)
             "lodash": "../vendor/js/libs/lodash/lodash",
@@ -96,7 +97,6 @@
             {
                 exports: "setImmediate"
             }
-
 
         }
 
