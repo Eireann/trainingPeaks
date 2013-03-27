@@ -5,7 +5,7 @@
                 <span id="dayName">{{printDate workoutDay "dddd"}}</span> 
                 <span id="calendarDate">{{printDate workoutDay "MMMM DD, YYYY"}}</span>
             </span> 
-            <span id="time">{{ defaultValue startTime "Enter time" }}</span>
+            <input type="text" id="startTimeInput" value="{{ startTime }}" placeholder="Enter Time" />
         </div>
         <div class="closeAndSettings">
             <span><img src="assets/images/calendarImages/settingsIcon.png"/></span>
@@ -47,7 +47,7 @@
             </div>
         </div>
 
-        <div class="uploadButton">
+        <div class="uploadButton" id="quickViewFileUploadDiv">
                 <label>Upload</label>
         </div>
         <input style="display: none" type="file"/>
@@ -141,7 +141,7 @@
                     </div>
 
                     <div class="workoutStatsColumn workoutStatsCompleted">
-                        <input type="text" id="averagePaceCompletedField"" />
+                        <input type="text" id="averagePaceCompletedField" />
                     </div>
 
                     <div class="workoutStatsColumn workoutStatsUnitLabel">

@@ -4,9 +4,10 @@
     "models/workoutModel",
     "models/workoutFileData",
     "views/workoutQuickView",
+    "utilities/workoutFileReader",
     "hbs!templates/views/newItemView"
 ],
-function (TP, WorkoutModel, WorkoutFileData, WorkoutQuickView, newItemViewTemplate)
+function (TP, WorkoutModel, WorkoutFileData, WorkoutQuickView, WorkoutFileReader, newItemViewTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -74,29 +75,14 @@ function (TP, WorkoutModel, WorkoutFileData, WorkoutQuickView, newItemViewTempla
             var self = this;
             var fileList = this.ui.fileinput[0].files;
 
-            var file = fileList[0];
+            var workoutReader = new WorkoutFileReader(fileList[0]);
+            var deferred = workoutReader.readFile();
 
-            var reader = new FileReader();
-
-            reader.onload = function (event)
+            deferred.done(function(dataAsString)
             {
-                function uint8ToString(buf)
-                {
-                    var i, length, out = '';
-                    for (i = 0, length = buf.length; i < length; i += 1)
-                    {
-                        out += String.fromCharCode(buf[i]);
-                    }
-                    return out;
-                }
-
-                var data = new Uint8Array(event.target.result);
-                var dataAsString = btoa(uint8ToString(data));
                 self.uploadedFileDataModel = new WorkoutFileData({ workoutDay: moment(self.model.get("date")).format("YYYY-MM-DDThh:mm:ss"), startTime: moment(self.model.get("date")).add("hours", 6).format("YYYY-MM-DDThh:mm:ss"), data: dataAsString });
                 self.uploadedFileDataModel.save().done(self.onUploadDone).fail(self.onUploadFail);
-            };
-
-            reader.readAsArrayBuffer(file);
+            });
         },
 
         onUploadDone: function ()
