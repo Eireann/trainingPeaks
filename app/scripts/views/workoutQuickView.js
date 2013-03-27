@@ -12,9 +12,10 @@
     "utilities/convertTimeHoursToDecimal",
     "models/workoutFileData",
     "views/deleteConfirmationView",
+    "utilities/workoutFileReader",
     "hbs!templates/views/workoutQuickView"
 ],
-function(datepicker, _, moment, TP, printDate, printUnitLabel, convertToViewUnits, convertToModelUnits, printTimeFromDecimalHours, convertTimeHoursToDecimal, WorkoutFileData, DeleteConfirmationView, workoutQuickViewTemplate)
+function(datepicker, _, moment, TP, printDate, printUnitLabel, convertToViewUnits, convertToModelUnits, printTimeFromDecimalHours, convertTimeHoursToDecimal, WorkoutFileData, DeleteConfirmationView, WorkoutFileReader, workoutQuickViewTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -481,27 +482,13 @@ function(datepicker, _, moment, TP, printDate, printUnitLabel, convertToViewUnit
             
             var fileList = this.ui.fileinput[0].files;
 
-            var file = fileList[0];
-
-            var reader = new FileReader();
-
-            reader.onload = function (event)
+            var workoutReader = new WorkoutFileReader(fileList[0]);
+            var deferred = workoutReader.readFile();
+            
+            deferred.done(function (dataAsString)
             {
-                function uint8ToString(buf)
-                {
-                    var i, length, out = '';
-                    for (i = 0, length = buf.length; i < length; i += 1)
-                    {
-                        out += String.fromCharCode(buf[i]);
-                    }
-                    return out;
-                }
-
-                var data = new Uint8Array(event.target.result);
-                self.dataAsString = btoa(uint8ToString(data));
-            };
-
-            reader.readAsArrayBuffer(file);
+                self.dataAsString = dataAsString;
+            });
         },
         
         onUploadDone: function ()
