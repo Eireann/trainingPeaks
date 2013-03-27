@@ -167,7 +167,40 @@
         height: 100%;
         float: left;
         background-color: $TPGrey5;
-        padding: 12px 0px 0px 11px;
+        padding: 0px 0px 0px 0px;
+
+        .summaryTab
+        {
+            padding: 12px 0px 10px 11px;
+            background-color: $TPGrey6;
+        }
+
+        .heartrateTab
+        {
+            padding: 10px 0px 10px 10px;
+            img
+            {
+                opacity: 0.4;
+            }
+        }
+
+        .powerTab
+        {
+            padding: 10px 0px 10px 13px;
+            img
+            {
+                opacity: 0.4;
+            }
+        }
+
+        .paceTab
+        {
+            padding: 10px 0px 10px 7px;
+            img
+            {
+                opacity: 0.4;
+            }
+        }
     }
 
 	.stats
@@ -264,21 +297,20 @@
 		background: transparent;
 		padding-top: 10px;
 		@include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey4, normal);
-		min-width: 400px;
-		max-width: 400px;
+		min-width: 275px;
 		height: 100%;
 
 		#descriptionInput
 		{
-			width: 360px;
-			min-height: 100px; 
+			width: 275px;
+			height: 22px; 
 			resize: vertical;
 		}
 
 		.activityComments
 		{
-			width: 360px;
-			min-height: 65px;
+			width: 275px;
+			height: 22px;
 			resize: vertical; 
 		}
 	}
