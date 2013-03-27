@@ -22,17 +22,22 @@ function(underscore, TP, workoutTypeEnum, workoutTypeMenuTemplate)
         
         onTypeClicked: function(e)
         {
+            var $label = $(e.target);
+            var workoutTypeId = $label.data("workouttypeid");
+            this.trigger("selectWorkoutType", workoutTypeId);
+            this.close();
         },
 
         initialize: function(options)
         {
             this.model = new TP.Model();
-          
+
             var types = [];
             _.each(_.keys(workoutTypeEnum), function(typeName)
             {
                 var typeId = workoutTypeEnum[typeName];
-                types.push({ typeName: typeName, typeId: typeId });
+                var selected = typeId === options.workoutTypeId ? true : false;
+                types.push({ typeName: typeName, typeId: typeId, selected: selected});
             });
             this.model.set("workoutTypes", types);
         },
