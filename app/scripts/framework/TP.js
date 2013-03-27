@@ -186,6 +186,16 @@ function(Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmediate,
             return this;
         },
 
+        right: function(right)
+        {
+            if (this.modal && this.$el)
+            {
+                this.left(right - this.$el.width());
+            }
+
+            return this;
+        },
+
         top: function(top)
         {
             if (this.modal && this.$el)

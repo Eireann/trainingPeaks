@@ -13,14 +13,24 @@
     "utilities/convertTimeHoursToDecimal",
     "models/workoutFileData",
     "views/deleteConfirmationView",
+    "views/workoutTypeMenuView",
     "hbs!templates/views/workoutQuickView"
 ],
-function(datepicker, timepicker, _, moment, TP,
-    printDate, printUnitLabel,
-    convertToViewUnits, convertToModelUnits,
-    printTimeFromDecimalHours, convertTimeHoursToDecimal,
+function(datepicker,
+    timepicker,
+    _,
+    moment,
+    TP,
+    printDate,
+    printUnitLabel,
+    convertToViewUnits,
+    convertToModelUnits,
+    printTimeFromDecimalHours,
+    convertTimeHoursToDecimal,
     WorkoutFileData,
-    DeleteConfirmationView, workoutQuickViewTemplate)
+    DeleteConfirmationView,
+    WorkoutTypeMenuView,
+    workoutQuickViewTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -42,7 +52,8 @@ function(datepicker, timepicker, _, moment, TP,
             "click #saveClose": "onSaveClosedClicked",
             "click #date": "onDateClicked",
             "click #quickViewFileUploadDiv": "onUploadFileClicked",
-            "change input[type='file']": "onFileSelected"
+            "change input[type='file']": "onFileSelected",
+            "click .workoutIcon": "onWorkoutIconClicked"
         },
 
         ui:
@@ -553,6 +564,13 @@ function(datepicker, timepicker, _, moment, TP,
         onUploadFail: function ()
         {
             this.$el.removeClass("waiting");
+        },
+
+        onWorkoutIconClicked: function()
+        {
+            var offset = this.$(".workoutIcon").offset();
+            var typesMenu = new WorkoutTypeMenuView();
+            typesMenu.render().right(offset.left - 5).top(offset.top);
         }
 
     });
