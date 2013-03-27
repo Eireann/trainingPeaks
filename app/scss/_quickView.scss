@@ -34,17 +34,18 @@
             padding-right: 14px;
         }
 
+        @include inputs(200px, 20px, $fontSizeSmall, $navigationFontFamilyRegular);
         input#startTimeInput
         {
-            font-family: $navigationFontFamilyRegular;
-            font-size:$fontSizeSmall;
             color: $TPGrey3;
             font-style: italic;
-            width: 200px;
             display: inline-block;
             outline: none;
             @include box-shadow(none);
             border: none;
+            background-color: transparent;
+            margin: 0px;
+            padding: 0px;
         }
     }
   
