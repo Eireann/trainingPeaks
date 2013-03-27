@@ -5,6 +5,8 @@
             <span id="calendarDate">{{printDate workoutDay "MMMM DD, YYYY"}}</span>
             </span> <span id="time">{{ defaultValue startTime "Enter time" }}</span>
         </div>
+
+        <div>
         <div class="grayHeader">
             <div class="workoutIcon">
 
@@ -42,6 +44,8 @@
         <div class="uploadButton">
                 <label>Upload</label>
         </div>
+        <input style="display: none" type="file"/>
+        </div>
     </div>
 
 
@@ -58,7 +62,6 @@
                 <div class="icon">
                     <img src="assets/images/QVImages/lightningbolt.jpg"/>
                 </div>
-                
             </div>
             <div class="forwardBackbuttons">
                 <button><</button>
