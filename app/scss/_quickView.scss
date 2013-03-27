@@ -33,11 +33,11 @@
             color: $TPGrey3;
             padding-right: 14px;
         }
-        
-        @include inputs(100%, 20px, $fontSizeSmall, $navigationFontFamilyRegular);
+
         input#startTimeInput
         {
-            background:transparent;
+            font-family: $navigationFontFamilyRegular;
+            font-size:$fontSizeSmall;
             color: $TPGrey3;
             font-style: italic;
             width: 200px;
@@ -47,14 +47,14 @@
             border: none;
         }
     }
-
+  
     .grayHeader
     {
         width: 570px;
         height: 80px;
         padding: 5px 0px 5px 5px;
         background-color: $TPGrey2;
-        float:left;
+        float: left;
 
         @include box-shadow(3px 3px 2px -1px $TPGrey3);
 
@@ -123,12 +123,16 @@
         float: left;
         @include box-shadow(3px 3px 2px -1px $TPGrey3);
         @include labels($navigationFontFamilyRegular, $fontSizeLarge, $TPGrey4, normal);
+        margin-left: 10px;
+        @include linearGradient(top, #fefefe, #e0dddd);
+        text-align: center;
+        padding-top: 30px;
     }
 }
 
 .quickViewContent
 {
-	height: 350px;
+	height: 450px;
 	overflow-y:scroll; 
 	overflow-x:hidden;
     @include nice-scrollbar;
