@@ -570,7 +570,7 @@ function(datepicker,
         {
             var offset = this.$(".workoutIcon").offset();
             var typesMenu = new WorkoutTypeMenuView();
-            typesMenu.render().right(offset.left - 5).top(offset.top);
+            typesMenu.render().right(offset.left - 5).top(offset.top - 15);
         }
 
     });
