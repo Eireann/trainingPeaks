@@ -12,6 +12,7 @@
     "utilities/printTimeFromDecimalHours",
     "utilities/convertTimeHoursToDecimal",
     "models/workoutFileData",
+    "models/workoutFileAttachment",
     "views/deleteConfirmationView",
     "utilities/workoutFileReader",
     "views/workoutTypeMenuView",
@@ -30,6 +31,7 @@ function (
     printTimeFromDecimalHours,
     convertTimeHoursToDecimal,
     WorkoutFileData,
+    WorkoutFileAttachment,
     DeleteConfirmationView,
     WorkoutFileReader,
     WorkoutTypeMenuView,
@@ -55,14 +57,17 @@ function (
             "click #saveClose": "onSaveClosedClicked",
             "click #date": "onDateClicked",
             "click #quickViewFileUploadDiv": "onUploadFileClicked",
-            "change input[type='file']": "onFileSelected",
-            "click .workoutIcon": "onWorkoutIconClicked"
+            "change input[type='file']#fileUpload": "onFileSelected",
+            "change input[type='file']#attachment": "onAttachmentFileSelected",
+            "click .workoutIcon": "onWorkoutIconClicked",
+            "click .addAttachment": "onAddAttachmentClicked"
         },
 
         ui:
         {
             "date": "#date",
-            "fileinput": "input[type='file']"
+            "fileinput": "input[type='file']#fileUpload",
+            "attachmentinput": "input[type='file']#attachment"
         },
 
         initialize: function ()
@@ -508,7 +513,7 @@ function (
             this.ui.fileinput.click();
         },
 
-        onFileSelected: function ()
+        onFileSelected: function()
         {
 
             this.$el.addClass("waiting");
@@ -554,7 +559,44 @@ function (
         onSelectWorkoutType: function (workoutTypeId)
         {
             this.model.set("workoutTypeValueId", workoutTypeId);
+        },
+
+        onAddAttachmentClicked: function()
+        {
+            this.ui.attachmentinput.click();
+        },
+
+        onAttachmentFileSelected: function()
+        {
+            _.bindAll(this, "uploadAttachment");
+            this.$el.addClass("waiting");
+            var file = this.ui.attachmentinput[0].files[0];
+            var workoutReader = new WorkoutFileReader(file);
+            var readDeferral = workoutReader.readFile();
+
+            var self = this;
+            readDeferral.done(function(fileContentsEncoded)
+            {
+                self.uploadAttachment(file.name, fileContentsEncoded);
+            });
+        },
+
+        uploadAttachment: function(fileName, data)
+        {
+            var attachment = new WorkoutFileAttachment({
+                fileName: fileName,
+                description: fileName,
+                data: data,
+                workoutId: this.model.id
+            });
+
+            var self = this;
+            attachment.save().done(function()
+            {
+                self.$el.removeClass("waiting");
+            });
         }
+
 
     });
 });
