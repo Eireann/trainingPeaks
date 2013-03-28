@@ -171,7 +171,7 @@
     "Walk": "Walk",
     "UploadDeviceFile": "Upload Device File",
     "FileUploadHelp": "Learn more about device file upload options",
-    "FileUploadTooltip": "Upload a file on your computer (.fit, .tcx, .pwx, .wko, .csv, .hrm).",
+    "FileUploadTooltip": "Choose a file on your computer\n(.fit, .tcx, .pwx, .wko, .csv, .hrm).",
 	"ShiftString": "What types of items do you want to shift?",
 	"Workouts": "Workouts",
 	"Meals": "Meals",
@@ -190,5 +190,9 @@
     "Confirmation" : "Confirmation",
 	"SelectNumberOfDays": "Select number of days",
 	"SelectNumberOfWeeks": "Select number of weeks",
-	"Summary": "Summary"
+	"Summary": "Summary",
+
+    "BreakthroughTooltip": "Breakthrough workout",
+    "UploadAttachmentTooltip": "Upload attachment",
+    "SetTitleTooltip": "Click to set title"
 }
