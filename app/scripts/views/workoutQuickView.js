@@ -67,7 +67,9 @@ function (
         {
             "date": "#date",
             "fileinput": "input[type='file']#fileUpload",
-            "attachmentinput": "input[type='file']#attachment"
+            "attachmentinput": "input[type='file']#attachment",
+            "plannedFields": ".workoutStatsRow .workoutStatsPlanned",
+            "completedFields": ".workoutStatsRow .workoutStatsCompleted"
         },
 
         initialize: function ()
@@ -469,6 +471,9 @@ function (
 
         onRender: function ()
         {
+            this.ui.plannedFields.removeClass("hide");
+            this.ui.completedFields.removeClass("hide");
+            
             if (!this.stickitInitialized)
             {
                 this.model.off("change", this.render);
