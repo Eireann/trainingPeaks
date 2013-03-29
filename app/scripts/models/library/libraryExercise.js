@@ -6,7 +6,7 @@ function (TP)
 {
     return TP.APIModel.extend(
     {
-
+        cacheable: true,
         webAPIModelName: "ExerciseLibraryItem",
         idAttribute: "exerciseLibraryItemId",
 

@@ -7,7 +7,9 @@
     <div class="librarySearch">
         <input type="text" name="search" id="search" value="{{$ "Search" }}" />
         <select name="librarySelect" id="librarySelect">
-            <option value="">{{$ "Library" }}</option>
+            {{#each libraries}}
+            <option value="{{ exerciseLibraryId }}" {{#if selected}}selected{{/if}}>{{ libraryName }}</option>
+            {{/each}}
         </select>
     </div>
     <div class="helpText">
