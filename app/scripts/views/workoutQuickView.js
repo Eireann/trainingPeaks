@@ -16,6 +16,7 @@
     "views/deleteConfirmationView",
     "utilities/workoutFileReader",
     "views/workoutTypeMenuView",
+    "views/workoutQuickViewMenu",
     "hbs!templates/views/workoutQuickView"
 ],
 function (
@@ -35,6 +36,7 @@ function (
     DeleteConfirmationView,
     WorkoutFileReader,
     WorkoutTypeMenuView,
+    WorkoutQuickViewMenu,
     workoutQuickViewTemplate)
 {
     return TP.ItemView.extend(
@@ -60,7 +62,9 @@ function (
             "change input[type='file']#fileUpload": "onFileSelected",
             "change input[type='file']#attachment": "onAttachmentFileSelected",
             "click .workoutIcon": "onWorkoutIconClicked",
-            "click .addAttachment": "onAddAttachmentClicked"
+            "click .addAttachment": "onAddAttachmentClicked",
+            "click #menuIcon": "onMenuIconClicked",
+            "click #closeIcon": "close"
         },
 
         ui:
@@ -516,7 +520,7 @@ function (
         onFileSelected: function()
         {
 
-            this.$el.addClass("waiting");
+            this.waitingOn();
             this.isNew = this.model.get("workoutId") ? false : true;
 
             var self = this;
@@ -536,7 +540,7 @@ function (
 
         onUploadDone: function ()
         {
-            this.$el.removeClass("waiting");
+            this.waitingOff();
 
             this.model.set(this.uploadedFileDataModel.get("workoutModel"));
             if (this.isNew)
@@ -545,7 +549,7 @@ function (
 
         onUploadFail: function ()
         {
-            this.$el.removeClass("waiting");
+            this.waitingOff();
         },
 
         onWorkoutIconClicked: function ()
@@ -569,7 +573,7 @@ function (
         onAttachmentFileSelected: function()
         {
             _.bindAll(this, "uploadAttachment");
-            this.$el.addClass("waiting");
+            this.waitingOn();
             var file = this.ui.attachmentinput[0].files[0];
             var workoutReader = new WorkoutFileReader(file);
             var readDeferral = workoutReader.readFile();
@@ -593,10 +597,31 @@ function (
             var self = this;
             attachment.save().done(function()
             {
-                self.$el.removeClass("waiting");
+                self.waitingOff();
             });
-        }
+        },
 
+        onMenuIconClicked: function()
+        {
+            var offset = this.$("#menuIcon").offset();
+            var menu = new WorkoutQuickViewMenu({ model: this.model });
+            menu.on("delete", this.onDelete, this);
+            menu.on("cut", this.close, this);
+            menu.on("copy", this.close, this);
+            menu.render().bottom(offset.top).left(offset.left - 20);
+        },
+
+        onDelete: function()
+        {
+            this.waitingOn();
+            var self = this;
+            var callback = function()
+            {
+                self.close();
+            };
+
+            this.model.destroy({ wait: true }).done(callback);
+        }
 
     });
 });

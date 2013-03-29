@@ -123,6 +123,9 @@
 	"Close": "Close",
     "SaveClose": "Save & Close",
 	"Reset": "Reset",
+    "Configure": "Configure",
+    "SaveToLibrary": "Save to library",
+
 
     "CalendarSettings": "Calendar Settings",
     "WorkoutColorization": "Workout Colorization",
