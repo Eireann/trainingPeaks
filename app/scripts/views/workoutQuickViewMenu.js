@@ -71,7 +71,7 @@ function(TP, DeleteConfirmationView, SaveToLibraryConfirmationView, WorkoutQuick
         onSaveToLibraryClicked: function()
         {
             this.close();
-            this.saveToLibraryConfirmationView = new SaveToLibraryConfirmationView();
+            this.saveToLibraryConfirmationView = new SaveToLibraryConfirmationView({ model: this.model });
             this.saveToLibraryConfirmationView.render();
         },
 

@@ -441,16 +441,39 @@
 .saveWorkoutToLibraryConfirmation
 {
     z-index: 103;
+    min-width: 450px;
 
-    @include labels($navigationFontFamilyRegular, $fontSizeMedium, $TPGrey4, $fontWeightBold);
+    .labels
+    {
+        text-align: right;
+        width: 35%;
+        display: inline-block;
+        margin-right: 10px;
+        margin-left: 20px;
+    }
+
+    .values
+    {
+        text-align: left;
+        width: 45%;
+        display: inline-block;
+        margin-right: 20px;
+    }
+
     label
     {
-        display:inline;
+        display:inline-block;
+        font-weight: bold;
     }
 
     select
     {
-        width: auto;
+        width: 200px;
+    }
+
+    input
+    {
+        width: 200px;
     }
 
     .dialogButtons
