@@ -45,7 +45,7 @@ function(_, Marionette, TP, ExerciseLibraryItemView, ExerciseLibraryAddItemView,
 
         initialize: function(options)
         {
-            this.libraries = options.exerciseLibraries;
+            this.libraries = options && options.exerciseLibraries ? options.exerciseLibraries : new TP.Collection();
             this.libraries.on('reset', this.loadAllExercises, this);
         },
 
