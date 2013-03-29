@@ -2,9 +2,10 @@ define(
 [
     "TP",
     "views/deleteConfirmationView",
+    "views/saveWorkoutToLibraryConfirmationView",
     "hbs!templates/views/workoutQuickViewMenu"
 ],
-function(TP, DeleteConfirmationView, WorkoutQuickViewMenuTemplate)
+function(TP, DeleteConfirmationView, SaveToLibraryConfirmationView, WorkoutQuickViewMenuTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -69,7 +70,9 @@ function(TP, DeleteConfirmationView, WorkoutQuickViewMenuTemplate)
 
         onSaveToLibraryClicked: function()
         {
-            alert('fixme');
+            this.close();
+            this.saveToLibraryConfirmationView = new SaveToLibraryConfirmationView();
+            this.saveToLibraryConfirmationView.render();
         },
 
         onConfigureClicked: function()

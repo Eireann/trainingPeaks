@@ -432,3 +432,29 @@
 {
     z-index: 103;
 }
+
+.saveWorkoutToLibraryConfirmationModalOverlay
+{
+    z-index: 102;
+}
+
+.saveWorkoutToLibraryConfirmation
+{
+    z-index: 103;
+
+    @include labels($navigationFontFamilyRegular, $fontSizeMedium, $TPGrey4, $fontWeightBold);
+    label
+    {
+        display:inline;
+    }
+
+    select
+    {
+        width: auto;
+    }
+
+    .dialogButtons
+    {
+        margin-top: 20px;
+    }
+}
