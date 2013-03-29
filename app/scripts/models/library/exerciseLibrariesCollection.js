@@ -8,6 +8,7 @@ function(TP, ExerciseLibraryModel)
     return TP.Collection.extend(
     {
         model: ExerciseLibraryModel,
+        cacheable: true,
 
         url: function()
         {

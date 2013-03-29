@@ -416,6 +416,12 @@ function(_, moment, setImmediate, TP, CalendarLayout, CalendarCollection, Calend
                 self.showDate(movedToDate);
             };
             deferredResult.done(callback);
+        },
+
+        getExerciseLibraries: function()
+        {
+            return this.libraryCollections.exerciseLibraries;
         }
+
     });
 });

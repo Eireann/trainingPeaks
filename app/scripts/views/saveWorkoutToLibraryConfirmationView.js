@@ -36,6 +36,27 @@ function(TP, saveWorkoutToLibraryTemplate)
         onCancel: function()
         {
             this.close();
+        },
+
+        initialize: function(options)
+        {
+            this.libraries = options && options.libraries ? options.libraries : new TP.Collection();
+        },
+
+        serializeData: function()
+        {
+            var data = {
+                libraries: []
+            };
+
+            var self = this;
+            this.libraries.each(function(library)
+            {
+                var libraryData = library.toJSON();
+                data.libraries.push(libraryData);
+            });
+
+            return data;
         }
 
     });

@@ -11,6 +11,9 @@
             <div class="labels"><label for="selectLibrary">{{$ "SelectLibrary" }}:</label></div>
             <div class="values"><select name="selectLibrary" id="selectLibrary">
                 <option>{{$ "SelectLibrary" }}</option>
+                {{#each libraries}}
+                <option value="{{ exerciseLibraryId }}" {{#if selected}}selected{{/if}}>{{ libraryName }}</option>
+                {{/each}}
             </select></div>
         </div>
 
