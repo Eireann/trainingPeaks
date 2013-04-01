@@ -1,0 +1,362 @@
+﻿define(
+[
+    "jqueryui/datepicker",
+    "jqueryTimepicker",
+    "jqueryTextAreaResize",
+    "underscore",
+    "moment",
+    "TP",
+    "utilities/printDate",
+    "utilities/printUnitLabel",
+    "utilities/convertToViewUnits",
+    "utilities/convertToModelUnits",
+    "utilities/printTimeFromDecimalHours",
+    "utilities/convertTimeHoursToDecimal",
+    "models/workoutFileData",
+    "models/workoutFileAttachment",
+    "views/deleteConfirmationView",
+    "utilities/workoutFileReader",
+    "utilities/workoutLayoutFormatter",
+    "views/quickView/workoutTypeMenuView",
+    "views/quickView/workoutQuickViewMenu",
+    "views/quickView/summaryView",
+    "hbs!templates/views/quickView/workoutQuickView"
+],
+function (
+    datepicker,
+    timepicker,
+    textAreaResize,
+    _,
+    moment,
+    TP,
+    printDate,
+    printUnitLabel,
+    convertToViewUnits,
+    convertToModelUnits,
+    printTimeFromDecimalHours,
+    convertTimeHoursToDecimal,
+    WorkoutFileData,
+    WorkoutFileAttachment,
+    DeleteConfirmationView,
+    WorkoutFileReader,
+    workoutLayoutFormatter,
+    WorkoutTypeMenuView,
+    WorkoutQuickViewMenu,
+    WorkoutQuickViewSummary,
+    workoutQuickViewTemplate)
+{
+    return TP.ItemView.extend(
+    {
+        modal: {
+            mask: true,
+            shadow: true
+        },
+        
+        today: moment().format("YYYY-MM-DD"),
+
+        className: "workoutQuickView",
+
+        showThrobbers: false,
+
+        events:
+        {
+            "click #breakThrough": "onBreakThroughClicked",
+            "click #delete": "onDeleteWorkout",
+            "click #discard": "onDiscardClicked",
+            "click #saveClose": "onSaveClosedClicked",
+            "click #date": "onDateClicked",
+            "click #quickViewFileUploadDiv": "onUploadFileClicked",
+            "change input[type='file']#fileUpload": "onFileSelected",
+            "change input[type='file']#attachment": "onAttachmentFileSelected",
+            "click .workoutIcon": "onWorkoutIconClicked",
+            "click .addAttachment": "onAddAttachmentClicked",
+            "click #menuIcon": "onMenuIconClicked",
+            "click #closeIcon": "close"
+        },
+
+        ui:
+        {
+            "date": "#date",
+            "fileinput": "input[type='file']#fileUpload",
+            "attachmentinput": "input[type='file']#attachment",
+            "quickViewContent": "#quickViewContent"
+        },
+
+        initialize: function()
+        {
+            _.bindAll(this, "onUploadDone", "onUploadFail");
+            
+            this.views =
+            {
+                workoutQuickViewSummary: new WorkoutQuickViewSummary({model: this.model})
+            };
+
+            this.activeTabName = null;
+        },
+
+        template:
+        {
+            type: "handlebars",
+            template: workoutQuickViewTemplate
+        },
+
+        getDayName: function(value, options)
+        {
+            return printDate(value, "dddd");
+        },
+
+        getCalendarDate: function(value, options)
+        {
+            return printDate(value, "MMM DD, YYYY");
+        },
+
+        getStartTime: function(value, options)
+        {
+            try
+            {
+                return moment(value).format("h:mm a");
+            } catch(e)
+            {
+                return value;
+            }
+        },
+
+        setStartTime: function(value, options)
+        {
+            try
+            {
+                return this.model.getCalendarDay() + "T" + moment(value, "h:mm a").format("HH:mm");
+            } catch(e)
+            {
+                return value;
+            }
+        },
+
+
+        onDiscardClicked: function()
+        {
+            this.trigger("discard");
+            this.close();
+        },
+
+        onSaveClosedClicked: function()
+        {
+            this.model.save();
+            this.trigger("saveandclose");
+            this.close();
+        },
+
+        onDeleteWorkout: function()
+        {
+            this.deleteConfirmationView = new DeleteConfirmationView();
+            this.deleteConfirmationView.render();
+            this.deleteConfirmationView.on("deleteConfirmed", this.onDeleteWorkoutConfirmed, this);
+        },
+
+        onDeleteWorkoutConfirmed: function()
+        {
+            this.close();
+            // pass wait here so it won't actually remove the model until the server call returns,
+            // which will then remove the view and the waiting indicator
+            this.model.destroy({ wait: true });
+        },
+
+        onBreakThroughClicked: function()
+        {
+            var description = this.model.get("description");
+
+            if (!description)
+                description = "";
+
+            if (description.indexOf("BT: ") !== 0)
+            {
+                this.model.set("description", "BT: " + description);
+                this.$("#breakThrough img").attr("src", "assets/images/QVImages/breakThroughFullOpac.png");
+            } else
+            {
+                this.$("#breakThrough img").attr("src", "assets/images/QVImages/breakthrough.png");
+                description = description.replace(/BT: /, "");
+                this.model.set("description", description);
+            }
+        },
+
+        onRender: function()
+        {
+            this.applyUICustomization();
+
+            if (!this.stickitInitialized)
+            {
+                this.model.off("change", this.render);
+
+                // there is no saveWorkout method ...
+                //this.model.on("change", this.saveWorkout, this);
+
+                this.stickit();
+                this.stickitInitialized = true;
+
+                this.$("#startTimeInput").timepicker({ appendTo: this.$el, 'timeFormat': 'g:i a' });
+
+            }
+
+            for (var tabName in this.views)
+            {
+                var tab = this.views[tabName];
+                tab.render();
+                this.ui.quickViewContent.append(tab.$el);
+                //tab.$el.hide();
+            }
+        },
+
+        applyUICustomization: function()
+        {
+            if (this.model.getCalendarDay() > this.today)
+            {
+                $(".workoutStatsCompleted input").attr("disabled", true);
+                $("#workoutMinMaxAvgStats input").attr("disabled", true);
+                //apply ghost css attribute
+                //this all needs refactored
+                $("label.workoutStatsCompleted").addClass("ghosted");
+                $(".columnLabelsMinMaxAvg label").addClass("ghosted");
+                $("#workoutMinMaxAvgStats label").addClass("ghosted");
+                $("#workoutMinMaxAvgStats").addClass("ghosted");
+            }
+            
+            //var userWorkoutSettings = theMarsApp.user.get("settings").workout;
+        },
+        
+        onDateClicked: function (e)
+        {
+            _.bindAll(this, "onDateChanged");
+            var position = [this.ui.date.offset().left, this.ui.date.offset().top + this.ui.date.height()];
+            var settings = { dateFormat: "yy-mm-dd", firstDay: theMarsApp.controllers.calendarController.startOfWeekDayIndex };
+            var widget = this.ui.date.datepicker("dialog", this.model.getCalendarDay(), this.onDateChanged, settings, position).datepicker("widget");
+
+            // because jqueryui sets useless values for these ...
+            widget.css("z-index", Number(this.$el.css("z-index") + 1)).css("opacity", 1);
+        },
+
+        onDateChanged: function (newDate)
+        {
+            var newDay = moment(newDate).format(this.model.shortDateFormat);
+            this.ui.date.datepicker("hide");
+            var oldDay = this.model.getCalendarDay();
+            if (newDay !== oldDay)
+            {
+                var workout = this.model;
+                workout.trigger("workout:move", this.model, newDay);
+            }
+        },
+
+        onUploadFileClicked: function ()
+        {
+            this.ui.fileinput.click();
+        },
+
+        onFileSelected: function()
+        {
+
+            this.waitingOn();
+            this.isNew = this.model.get("workoutId") ? false : true;
+
+            var self = this;
+            var saveDeferral = this.model.save();
+
+            var fileList = this.ui.fileinput[0].files;
+
+            var workoutReader = new WorkoutFileReader(fileList[0]);
+            var readDeferral = workoutReader.readFile();
+            $.when(saveDeferral, readDeferral).done(function (saveArgs, readArgs)
+            {
+                var dataAsString = readArgs;
+                self.uploadedFileDataModel = new WorkoutFileData({ workoutId: self.model.get("workoutId"), workoutDay: self.model.get("workoutDay"), startTime: self.model.get("startTime"), data: dataAsString });
+                self.uploadedFileDataModel.save().done(self.onUploadDone).fail(self.onUploadFail);
+            });
+        },
+
+        onUploadDone: function ()
+        {
+            this.waitingOff();
+
+            this.model.set(this.uploadedFileDataModel.get("workoutModel"));
+            if (this.isNew)
+                this.trigger("saved");
+        },
+
+        onUploadFail: function ()
+        {
+            this.waitingOff();
+        },
+
+        onWorkoutIconClicked: function ()
+        {
+            var offset = this.$(".workoutIcon").offset();
+            var typesMenu = new WorkoutTypeMenuView({ workoutTypeId: this.model.get("workoutTypeValueId") });
+            typesMenu.on("selectWorkoutType", this.onSelectWorkoutType, this);
+            typesMenu.render().right(offset.left - 5).top(offset.top - 15);
+        },
+
+        onSelectWorkoutType: function (workoutTypeId)
+        {
+            this.model.set("workoutTypeValueId", workoutTypeId);
+        },
+
+        onAddAttachmentClicked: function()
+        {
+            this.ui.attachmentinput.click();
+        },
+
+        onAttachmentFileSelected: function()
+        {
+            _.bindAll(this, "uploadAttachment");
+            this.waitingOn();
+            var file = this.ui.attachmentinput[0].files[0];
+            var workoutReader = new WorkoutFileReader(file);
+            var readDeferral = workoutReader.readFile();
+
+            var self = this;
+            readDeferral.done(function(fileContentsEncoded)
+            {
+                self.uploadAttachment(file.name, fileContentsEncoded);
+            });
+        },
+
+        uploadAttachment: function(fileName, data)
+        {
+            var attachment = new WorkoutFileAttachment({
+                fileName: fileName,
+                description: fileName,
+                data: data,
+                workoutId: this.model.id
+            });
+
+            var self = this;
+            attachment.save().done(function()
+            {
+                self.waitingOff();
+            });
+        },
+
+        onMenuIconClicked: function()
+        {
+            var offset = this.$("#menuIcon").offset();
+            var menu = new WorkoutQuickViewMenu({ model: this.model });
+            menu.on("delete", this.onDelete, this);
+            menu.on("cut", this.close, this);
+            menu.on("copy", this.close, this);
+            menu.render().bottom(offset.top).left(offset.left - 20);
+        },
+
+        onDelete: function()
+        {
+            this.waitingOn();
+            var self = this;
+            var callback = function()
+            {
+                self.close();
+            };
+
+            this.model.destroy({ wait: true }).done(callback);
+        }
+
+    });
+});

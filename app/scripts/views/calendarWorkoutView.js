@@ -2,7 +2,7 @@ define(
 [
     "moment",
     "TP",
-    "views/workoutQuickView",
+    "views/quickView/workoutQuickView",
     "views/calendarWorkoutHoverView",
     "views/calendarWorkoutSettings",
     "utilities/workoutTypeName",

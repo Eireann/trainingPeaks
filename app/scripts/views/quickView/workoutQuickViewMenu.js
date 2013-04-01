@@ -3,7 +3,7 @@ define(
     "TP",
     "views/deleteConfirmationView",
     "views/saveWorkoutToLibraryConfirmationView",
-    "hbs!templates/views/workoutQuickViewMenu"
+    "hbs!templates/views/quickView/workoutQuickViewMenu"
 ],
 function(TP, DeleteConfirmationView, SaveToLibraryConfirmationView, WorkoutQuickViewMenuTemplate)
 {

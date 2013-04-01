@@ -3,7 +3,7 @@
     "TP",
     "models/workoutModel",
     "models/workoutFileData",
-    "views/workoutQuickView",
+    "views/quickView/workoutQuickView",
     "utilities/workoutFileReader",
     "hbs!templates/views/newItemView"
 ],

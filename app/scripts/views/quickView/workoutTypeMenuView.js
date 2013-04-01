@@ -3,7 +3,7 @@ define(
     "underscore",
     "TP",
     "utilities/workoutTypeEnum",
-    "hbs!templates/views/workoutTypeMenu"
+    "hbs!templates/views/quickView/workoutTypeMenu"
 ],
 function(underscore, TP, workoutTypeEnum, workoutTypeMenuTemplate)
 {
