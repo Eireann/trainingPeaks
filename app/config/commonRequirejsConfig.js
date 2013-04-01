@@ -21,6 +21,7 @@
             "jqueryui": "../vendor/js/libs/jqueryui",
             "jqueryOutside": "../vendor/js/libs/jquery/jquery.ba-outside-events",
             "jqueryTimepicker": "../vendor/js/libs/jquery-timepicker/jquery.timepicker",
+            "jqueryTextAreaResize": "../vendor/js/libs/jquery/jquery.autosize",
 
             // Underscore & Lodash (provided by Lodash)
             "lodash": "../vendor/js/libs/lodash/lodash",
@@ -96,7 +97,14 @@
             "setImmediate":
             {
                 exports: "setImmediate"
+            },
+            "jqueryTextAreaResize":
+            {
+                exports: ""
             }
+
+
+
 
         }
 
