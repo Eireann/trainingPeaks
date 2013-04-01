@@ -8,6 +8,7 @@ define(
     "models/calendarCollection",
     "models/calendarWeekCollection",
     "models/calendarDay",
+    "models/library/exerciseLibrariesCollection",
     "models/library/libraryExercisesCollection",
     "models/workoutModel",
     "views/calendarHeaderView",
@@ -15,7 +16,8 @@ define(
     "views/library/libraryView"
 ],
 function(_, moment, setImmediate, TP, CalendarLayout, CalendarCollection, CalendarWeekCollection,
-         CalendarDayModel, LibraryExercisesCollection, WorkoutModel, CalendarHeaderView, CalendarContainerView, LibraryView)
+         CalendarDayModel, ExerciseLibrariesCollection, LibraryExercisesCollection, WorkoutModel,
+         CalendarHeaderView, CalendarContainerView, LibraryView)
 {
     return TP.Controller.extend(
     {
@@ -345,7 +347,7 @@ function(_, moment, setImmediate, TP, CalendarLayout, CalendarCollection, Calend
             else if (options.DropEvent === "addExerciseFromLibrary")
             {
                 var destinationDate = options.destinationCalendarDayModel.id;
-                var workout = this.createNewWorkoutFromExerciseLibraryItem(options.ItemId, destinationDate);
+                var workout = this.createNewWorkoutFromExerciseLibraryItem(options.LibraryId, options.ItemId, destinationDate);
                 this.weeksCollection.addWorkout(workout);
                 this.views.calendar.scrollToDate(destinationDate);
                 workout.save();
@@ -357,9 +359,9 @@ function(_, moment, setImmediate, TP, CalendarLayout, CalendarCollection, Calend
             this.clearCacheAndRefresh();
         },
 
-        createNewWorkoutFromExerciseLibraryItem: function(exerciseLibraryItemId, workoutDate)
+        createNewWorkoutFromExerciseLibraryItem: function(exerciseLibraryId, exerciseLibraryItemId, workoutDate)
         {
-            var exerciseLibraryItem = this.libraryCollections.exerciseLibrary.get(exerciseLibraryItemId);
+            var exerciseLibraryItem = this.libraryCollections.exerciseLibraries.get(exerciseLibraryId).exercises.get(exerciseLibraryItemId);
             return new WorkoutModel({
                 personId: theMarsApp.user.get("userId"),
                 workoutDay: workoutDate,
@@ -371,7 +373,7 @@ function(_, moment, setImmediate, TP, CalendarLayout, CalendarCollection, Calend
         initializeLibrary: function()
         {
             this.libraryCollections = {
-                exerciseLibrary: new LibraryExercisesCollection()
+                exerciseLibraries: new ExerciseLibrariesCollection()
             };
 
             if (this.views.library)

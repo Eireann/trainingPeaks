@@ -40,6 +40,7 @@ function(TP, draggable, ExerciseLibraryItemViewTemplate, ExerciseLibraryItemView
         makeDraggable: function()
         {
             _.bindAll(this, "draggableHelper", "onDragStart", "onDragStop");
+            this.$el.data("LibraryId", this.model.get("exerciseLibraryId"));
             this.$el.data("ItemId", this.model.id);
             this.$el.data("ItemType", this.model.webAPIModelName);
             this.$el.data("DropEvent", "addExerciseFromLibrary");

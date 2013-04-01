@@ -11,9 +11,18 @@ function(TP, LibraryExerciseModel)
 
         url: function()
         {
-            return theMarsApp.apiRoot + "/WebApiServer/ExerciseLibrary/V1/LibraryItems";
-            //return "exercisesLibrary.json";
+            var libraryUrl = theMarsApp.apiRoot + "/WebApiServer/ExerciseLibrary/V1/LibraryItems";
+            if (this.exerciseLibraryId)
+            {
+                libraryUrl += "/" + this.exerciseLibraryId;
+            }
+            return libraryUrl;
+        },
+
+        initialize: function(models, options)
+        {
+            this.exerciseLibraryId = options && options.exerciseLibraryId ? options.exerciseLibraryId : null;
         }
 
-    });
+    }, { exerciseLibraryId: null });
 });

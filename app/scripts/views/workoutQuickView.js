@@ -16,6 +16,7 @@
     "models/workoutFileAttachment",
     "views/deleteConfirmationView",
     "utilities/workoutFileReader",
+    "utilities/workoutLayoutFormatter",
     "views/workoutTypeMenuView",
     "views/workoutQuickViewMenu",
     "hbs!templates/views/workoutQuickView"
@@ -37,17 +38,19 @@ function (
     WorkoutFileAttachment,
     DeleteConfirmationView,
     WorkoutFileReader,
+    workoutLayoutFormatter,
     WorkoutTypeMenuView,
     WorkoutQuickViewMenu,
     workoutQuickViewTemplate)
 {
     return TP.ItemView.extend(
     {
-
         modal: {
             mask: true,
             shadow: true
         },
+        
+        today: moment().format("YYYY-MM-DD"),
 
         className: "workoutQuickView",
 
@@ -76,7 +79,7 @@ function (
             "attachmentinput": "input[type='file']#attachment"
         },
 
-        initialize: function ()
+        initialize: function()
         {
             _.bindAll(this, "onUploadDone", "onUploadFail");
         },
@@ -87,365 +90,365 @@ function (
             template: workoutQuickViewTemplate
         },
 
-        getDayName: function (value, options)
+        getDayName: function(value, options)
         {
             return printDate(value, "dddd");
         },
 
-        getCalendarDate: function (value, options)
+        getCalendarDate: function(value, options)
         {
             return printDate(value, "MMM DD, YYYY");
         },
 
-        getStartTime: function (value, options)
+        getStartTime: function(value, options)
         {
             try
             {
                 return moment(value).format("h:mm a");
-            } catch (e)
+            } catch(e)
             {
                 return value;
             }
         },
 
-        setStartTime: function (value, options)
+        setStartTime: function(value, options)
         {
             try
             {
                 return this.model.getCalendarDay() + "T" + moment(value, "h:mm a").format("HH:mm");
-            } catch (e)
+            } catch(e)
             {
                 return value;
             }
         },
 
-        getDistance: function (value, options)
+        getDistance: function(value, options)
         {
             return convertToViewUnits(value, "distance");
         },
 
-        setDistance: function (value, options)
+        setDistance: function(value, options)
         {
             return convertToModelUnits(value, "distance");
         },
 
-        getTime: function (value, options)
+        getTime: function(value, options)
         {
             return printTimeFromDecimalHours(value);
         },
 
-        setTime: function (value, options)
+        setTime: function(value, options)
         {
             return convertTimeHoursToDecimal(value);
         },
 
-        getPace: function (value, options)
+        getPace: function(value, options)
         {
             return convertToViewUnits(value, "pace");
         },
 
-        setPace: function (value, options)
+        setPace: function(value, options)
         {
             return convertToModelUnits(value, "pace");
         },
 
-        getSpeed: function (value, options)
+        getSpeed: function(value, options)
         {
             return convertToViewUnits(value, "speed");
         },
 
-        setSpeed: function (value, options)
+        setSpeed: function(value, options)
         {
             return convertToModelUnits(value, "speed");
         },
 
-        getElevation: function (value, options)
+        getElevation: function(value, options)
         {
             return convertToViewUnits(value, "elevation");
         },
 
-        setElevation: function (value, options)
+        setElevation: function(value, options)
         {
             return convertToModelUnits(value, "elevation");
         },
 
         bindings:
+        {
+            "#workoutTitleField":
             {
-                "#workoutTitleField":
-                {
-                    observe: "title",
-                    eventsOverride: ["blur"]
-                },
-                "#dayName":
-                {
-                    observe: "workoutDay",
-                    onGet: "getDayName"
-                },
-                "#calendarDate":
-                {
-                    observe: "workoutDay",
-                    onGet: "getCalendarDate"
-                },
-                "#distanceCompletedField":
-                {
-                    observe: "distance",
-                    eventsOverride: ["blur"],
-                    onGet: "getDistance",
-                    onSet: "setDistance"
-                },
-                "#distancePlannedField":
-                {
-                    observe: "distancePlanned",
-                    eventsOverride: ["blur"],
-                    onGet: "getDistance",
-                    onSet: "setDistance"
-                },
-                "#totalTimeCompletedField":
-                {
-                    observe: "totalTime",
-                    eventsOverride: ["blur"],
-                    onGet: "getTime",
-                    onSet: "setTime"
-                },
-                "#totalTimePlannedField":
-                {
-                    observe: "totalTimePlanned",
-                    eventsOverride: ["blur"],
-                    onGet: "getTime",
-                    onSet: "setTime"
-                },
-                "#tssPlannedField":
-                {
-                    observe: "tssPlanned",
-                    eventsOverride: ["blur"]
-                },
-                "#tssCompletedField":
-                {
-                    observe: "tssActual",
-                    eventsOverride: ["blur"]
-                },
-                "#normalizedPacePlannedField":
-                {
-                    observe: "normalizedSpeedActual",
-                    eventsOverride: ["blur"],
-                    onGet: "getPace",
-                    onSet: "setPace"
-                },
-                "#averagePacePlannedField":
-                {
-                    observe: "velocityPlanned",
-                    eventsOverride: ["blur"],
-                    onGet: "getPace",
-                    onSet: "setPace"
-                },
-                "#averagePaceCompletedField":
-                {
-                    observe: "velocityAverage",
-                    eventsOverride: ["blur"],
-                    onGet: "getPace",
-                    onSet: "setPace"
-                },
-                "#averageSpeedPlannedField":
-                {
-                    observe: "velocityPlanned",
-                    eventsOverride: ["blur"],
-                    onGet: "getSpeed",
-                    onSet: "setSpeed"
-                },
-                "#averageSpeedCompletedField":
-                {
-                    observe: "velocityAverage",
-                    eventsOverride: ["blur"],
-                    onGet: "getSpeed",
-                    onSet: "setSpeed"
-                },
-                "#caloriesPlannedField":
-                {
-                    observe: "caloriesPlanned",
-                    eventsOverride: ["blur"]
-                },
-                "#caloriesCompletedField":
-                {
-                    observe: "calories",
-                    eventsOverride: ["blur"]
-                },
-                "#elevationGainPlannedField":
-                {
-                    observe: "elevationGainPlanned",
-                    eventsOverride: ["blur"],
-                    onGet: "getElevation",
-                    onSet: "setElevation"
-                },
-                "#elevationGainCompletedField":
-                {
-                    observe: "elevationGain",
-                    eventsOverride: ["blur"],
-                    onGet: "getElevation",
-                    onSet: "setElevation"
-                },
-                "#elevationLossCompletedField":
-                {
-                    observe: "elevationLoss",
-                    eventsOverride: ["blur"],
-                    onGet: "getElevation",
-                    onSet: "setElevation"
-                },
-                "#ifPlannedField":
-                {
-                    observe: "ifPlanned",
-                    eventsOverride: ["blur"]
-                },
-                "#ifCompletedField":
-                {
-                    observe: "if",
-                    eventsOverride: ["blur"]
-                },
-                "#energyPlannedField":
-                {
-                    observe: "energyPlanned",
-                    eventsOverride: ["blur"]
-                },
-                "#energyCompletedField":
-                {
-                    observe: "energy",
-                    eventsOverride: ["blur"]
-                },
-                "#powerAvgField":
-                {
-                    observe: "powerAverage",
-                    eventsOverride: ["blur"]
-                },
-                "#powerMaxField":
-                {
-                    observe: "powerMaximum",
-                    eventsOverride: ["blur"]
-                },
-                "#torqueAvgField":
-                {
-                    observe: "torqueAverage",
-                    eventsOverride: ["blur"]
-                },
-                "#torqueMaxField":
-                {
-                    observe: "torqueMaximum",
-                    eventsOverride: ["blur"]
-                },
-                "#elevationMinField":
-                {
-                    observe: "elevationMinimum",
-                    eventsOverride: ["blur"]
-                },
-                "#elevationAvgField":
-                {
-                    observe: "elevationAverage",
-                    eventsOverride: ["blur"]
-                },
-                "#elevationMaxField":
-                {
-                    observe: "elevationMaximum",
-                    eventsOverride: ["blur"]
-                },
-                "#cadenceAvgField":
-                {
-                    observe: "cadenceAverage",
-                    eventsOverride: ["blur"]
-                },
-                "#cadenceMaxField":
-                {
-                    observe: "cadenceMaximum",
-                    eventsOverride: ["blur"]
-                },
-                "#speedAvgField":
-                {
-                    observe: "velocityAverage",
-                    eventsOverride: ["blur"]
-                },
-                "#speedMaxField":
-                {
-                    observe: "velocityMaximum",
-                    eventsOverride: ["blur"]
-                },
-                "#paceMinField":
-                {
-                    //TODO Find the right field to observe
-                    observe: "velocityAverage",
-                    eventsOverride: ["blur"]
-                },
-                "#paceAvgField":
-                {
-                    observe: "velocityAverage",
-                    eventsOverride: ["blur"]
-                },
-                "#paceMaxField":
-                {
-                    observe: "velocityMaximum",
-                    eventsOverride: ["blur"]
-                },
-                "#hrMinField":
-                {
-                    observe: "heartRateMinimum",
-                    eventsOverride: ["blur"]
-                },
-                "#hrAvgField":
-                {
-                    observe: "heartRateAverage",
-                    eventsOverride: ["blur"]
-                },
-                "#hrMaxField":
-                {
-                    observe: "heartRateMaximum",
-                    eventsOverride: ["blur"]
-                },
-                "#tempMinField":
-                {
-                    observe: "tempMin",
-                    eventsOverride: ["blur"]
-                },
-                "#tempAvgField":
-                {
-                    observe: "tempAvg",
-                    eventsOverride: ["blur"]
-                },
-                "#tempMaxField":
-                {
-                    observe: "tempMax",
-                    eventsOverride: ["blur"]
-                },
-                "#descriptionInput":
-                {
-                    observe: "description",
-                    eventsOverride: ["blur"]
-                },
-                "#startTimeInput":
-                {
-                    observe: "startTime",
-                    eventsOverride: ["changeTime"],
-                    onGet: "getStartTime",
-                    onSet: "setStartTime"
-                }
+                observe: "title",
+                eventsOverride: ["blur"]
             },
+            "#dayName":
+            {
+                observe: "workoutDay",
+                onGet: "getDayName"
+            },
+            "#calendarDate":
+            {
+                observe: "workoutDay",
+                onGet: "getCalendarDate"
+            },
+            "#distanceCompletedField":
+            {
+                observe: "distance",
+                eventsOverride: ["blur"],
+                onGet: "getDistance",
+                onSet: "setDistance"
+            },
+            "#distancePlannedField":
+            {
+                observe: "distancePlanned",
+                eventsOverride: ["blur"],
+                onGet: "getDistance",
+                onSet: "setDistance"
+            },
+            "#totalTimeCompletedField":
+            {
+                observe: "totalTime",
+                eventsOverride: ["blur"],
+                onGet: "getTime",
+                onSet: "setTime"
+            },
+            "#totalTimePlannedField":
+            {
+                observe: "totalTimePlanned",
+                eventsOverride: ["blur"],
+                onGet: "getTime",
+                onSet: "setTime"
+            },
+            "#tssPlannedField":
+            {
+                observe: "tssPlanned",
+                eventsOverride: ["blur"]
+            },
+            "#tssCompletedField":
+            {
+                observe: "tssActual",
+                eventsOverride: ["blur"]
+            },
+            "#normalizedPacePlannedField":
+            {
+                observe: "normalizedSpeedActual",
+                eventsOverride: ["blur"],
+                onGet: "getPace",
+                onSet: "setPace"
+            },
+            "#averagePacePlannedField":
+            {
+                observe: "velocityPlanned",
+                eventsOverride: ["blur"],
+                onGet: "getPace",
+                onSet: "setPace"
+            },
+            "#averagePaceCompletedField":
+            {
+                observe: "velocityAverage",
+                eventsOverride: ["blur"],
+                onGet: "getPace",
+                onSet: "setPace"
+            },
+            "#averageSpeedPlannedField":
+            {
+                observe: "velocityPlanned",
+                eventsOverride: ["blur"],
+                onGet: "getSpeed",
+                onSet: "setSpeed"
+            },
+            "#averageSpeedCompletedField":
+            {
+                observe: "velocityAverage",
+                eventsOverride: ["blur"],
+                onGet: "getSpeed",
+                onSet: "setSpeed"
+            },
+            "#caloriesPlannedField":
+            {
+                observe: "caloriesPlanned",
+                eventsOverride: ["blur"]
+            },
+            "#caloriesCompletedField":
+            {
+                observe: "calories",
+                eventsOverride: ["blur"]
+            },
+            "#elevationGainPlannedField":
+            {
+                observe: "elevationGainPlanned",
+                eventsOverride: ["blur"],
+                onGet: "getElevation",
+                onSet: "setElevation"
+            },
+            "#elevationGainCompletedField":
+            {
+                observe: "elevationGain",
+                eventsOverride: ["blur"],
+                onGet: "getElevation",
+                onSet: "setElevation"
+            },
+            "#elevationLossCompletedField":
+            {
+                observe: "elevationLoss",
+                eventsOverride: ["blur"],
+                onGet: "getElevation",
+                onSet: "setElevation"
+            },
+            "#ifPlannedField":
+            {
+                observe: "ifPlanned",
+                eventsOverride: ["blur"]
+            },
+            "#ifCompletedField":
+            {
+                observe: "if",
+                eventsOverride: ["blur"]
+            },
+            "#energyPlannedField":
+            {
+                observe: "energyPlanned",
+                eventsOverride: ["blur"]
+            },
+            "#energyCompletedField":
+            {
+                observe: "energy",
+                eventsOverride: ["blur"]
+            },
+            "#powerAvgField":
+            {
+                observe: "powerAverage",
+                eventsOverride: ["blur"]
+            },
+            "#powerMaxField":
+            {
+                observe: "powerMaximum",
+                eventsOverride: ["blur"]
+            },
+            "#torqueAvgField":
+            {
+                observe: "torqueAverage",
+                eventsOverride: ["blur"]
+            },
+            "#torqueMaxField":
+            {
+                observe: "torqueMaximum",
+                eventsOverride: ["blur"]
+            },
+            "#elevationMinField":
+            {
+                observe: "elevationMinimum",
+                eventsOverride: ["blur"]
+            },
+            "#elevationAvgField":
+            {
+                observe: "elevationAverage",
+                eventsOverride: ["blur"]
+            },
+            "#elevationMaxField":
+            {
+                observe: "elevationMaximum",
+                eventsOverride: ["blur"]
+            },
+            "#cadenceAvgField":
+            {
+                observe: "cadenceAverage",
+                eventsOverride: ["blur"]
+            },
+            "#cadenceMaxField":
+            {
+                observe: "cadenceMaximum",
+                eventsOverride: ["blur"]
+            },
+            "#speedAvgField":
+            {
+                observe: "velocityAverage",
+                eventsOverride: ["blur"]
+            },
+            "#speedMaxField":
+            {
+                observe: "velocityMaximum",
+                eventsOverride: ["blur"]
+            },
+            "#paceMinField":
+            {
+                //TODO Find the right field to observe
+                observe: "velocityAverage",
+                eventsOverride: ["blur"]
+            },
+            "#paceAvgField":
+            {
+                observe: "velocityAverage",
+                eventsOverride: ["blur"]
+            },
+            "#paceMaxField":
+            {
+                observe: "velocityMaximum",
+                eventsOverride: ["blur"]
+            },
+            "#hrMinField":
+            {
+                observe: "heartRateMinimum",
+                eventsOverride: ["blur"]
+            },
+            "#hrAvgField":
+            {
+                observe: "heartRateAverage",
+                eventsOverride: ["blur"]
+            },
+            "#hrMaxField":
+            {
+                observe: "heartRateMaximum",
+                eventsOverride: ["blur"]
+            },
+            "#tempMinField":
+            {
+                observe: "tempMin",
+                eventsOverride: ["blur"]
+            },
+            "#tempAvgField":
+            {
+                observe: "tempAvg",
+                eventsOverride: ["blur"]
+            },
+            "#tempMaxField":
+            {
+                observe: "tempMax",
+                eventsOverride: ["blur"]
+            },
+            "#descriptionInput":
+            {
+                observe: "description",
+                eventsOverride: ["blur"]
+            },
+            "#startTimeInput":
+            {
+                observe: "startTime",
+                eventsOverride: ["changeTime"],
+                onGet: "getStartTime",
+                onSet: "setStartTime"
+            }
+        },
 
-        onDiscardClicked: function ()
+        onDiscardClicked: function()
         {
             this.trigger("discard");
             this.close();
         },
 
-        onSaveClosedClicked: function ()
+        onSaveClosedClicked: function()
         {
             this.model.save();
             this.trigger("saveandclose");
             this.close();
         },
 
-        onDeleteWorkout: function ()
+        onDeleteWorkout: function()
         {
             this.deleteConfirmationView = new DeleteConfirmationView();
             this.deleteConfirmationView.render();
             this.deleteConfirmationView.on("deleteConfirmed", this.onDeleteWorkoutConfirmed, this);
         },
 
-        onDeleteWorkoutConfirmed: function ()
+        onDeleteWorkoutConfirmed: function()
         {
             this.close();
             // pass wait here so it won't actually remove the model until the server call returns,
@@ -453,7 +456,7 @@ function (
             this.model.destroy({ wait: true });
         },
 
-        onBreakThroughClicked: function ()
+        onBreakThroughClicked: function()
         {
             var description = this.model.get("description");
 
@@ -464,8 +467,7 @@ function (
             {
                 this.model.set("description", "BT: " + description);
                 this.$("#breakThrough img").attr("src", "assets/images/QVImages/breakThroughFullOpac.png");
-            }
-            else
+            } else
             {
                 this.$("#breakThrough img").attr("src", "assets/images/QVImages/breakthrough.png");
                 description = description.replace(/BT: /, "");
@@ -473,8 +475,10 @@ function (
             }
         },
 
-        onRender: function ()
+        onRender: function()
         {
+            this.applyUICustomization();
+
             if (!this.stickitInitialized)
             {
                 this.model.off("change", this.render);
@@ -492,6 +496,20 @@ function (
             this.$("textarea").autosize();
         },
 
+        applyUICustomization: function()
+        {
+            if (this.model.getCalendarDay() > this.today)
+            {
+                $(".workoutStatsCompleted input").attr("disabled", true);
+                $("#workoutMinMaxAvgStats input").attr("disabled", true);
+                //apply ghost css attribute
+                $("label.workoutStatsCompleted").addClass("ghosted");
+                $(".columnLabelsMinMaxAvg label").addClass("ghosted");
+            }
+            
+            //var userWorkoutSettings = theMarsApp.user.get("settings").workout;
+        },
+        
         onDateClicked: function (e)
         {
             _.bindAll(this, "onDateChanged");

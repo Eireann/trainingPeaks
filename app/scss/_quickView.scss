@@ -225,7 +225,12 @@
 		.workoutStatsColumn
 		{
 			float:left;
-			@include inputs(85px, 20px, 12px, $navigationFontFamilyRegular)
+			@include inputs(85px, 20px, 12px, $navigationFontFamilyRegular);
+
+            .hide
+            {
+                display:none;
+            }
 		}
 
 	
@@ -233,7 +238,7 @@
 		.workoutStatsColumnMinMaxAvg
 		{
 			float:left;
-			@include inputs(56px, 20px, 12px, $navigationFontFamilyRegular)
+			@include inputs(56px, 20px, 12px, $navigationFontFamilyRegular);
 		}
 
 		label
