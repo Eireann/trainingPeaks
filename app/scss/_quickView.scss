@@ -7,6 +7,11 @@
     height: 530px;
 }
 
+input[disabled='disabled'] {
+    color:#933;
+    border:none;
+}
+
 .QVHeader
 {
 	width: 100%;
