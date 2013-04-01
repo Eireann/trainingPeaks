@@ -198,7 +198,7 @@ input[disabled='disabled'] {
     }
 }
 
-.quickViewContent
+#quickViewContent
 {
 	height: 360px;
 	overflow-y:scroll; 
@@ -207,137 +207,135 @@ input[disabled='disabled'] {
 	@include radialGradient(#e6e4e4, #dedcdc);
     width: 653px;
     padding-bottom: 20px;
+}
 
-    
+.stats
+{
+	padding-left: 20px;
+	padding-right: 40px;
+	background: transparent;
+	float: left;
 
-	.stats
+	.selectionBox
 	{
-		padding-left: 20px;
-		padding-right: 40px;
-		background: transparent;
-		float: left;
-
-		.selectionBox
-		{
-			padding-left: 85px;
-			@include selectionBox(170px);
-		}
+		padding-left: 85px;
+		@include selectionBox(170px);
 	}
-	.workoutStatsRow
+}
+.workoutStatsRow
+{
+	@include innerRow();
+	
+	clear: both;
+
+	.workoutStatsColumn
 	{
-		@include innerRow();
-	
-		clear: both;
+		float:left;
+		@include inputs(85px, 20px, 12px, $navigationFontFamilyRegular);
 
-		.workoutStatsColumn
-		{
-			float:left;
-			@include inputs(85px, 20px, 12px, $navigationFontFamilyRegular);
-
-            .hide
-            {
-                display:none;
-            }
-		}
+        .hide
+        {
+            display:none;
+        }
+	}
 
 	
 
-		.workoutStatsColumnMinMaxAvg
-		{
-			float:left;
-			@include inputs(56px, 20px, 12px, $navigationFontFamilyRegular);
-		}
+	.workoutStatsColumnMinMaxAvg
+	{
+		float:left;
+		@include inputs(56px, 20px, 12px, $navigationFontFamilyRegular);
+	}
 
+	label
+	{
+		text-align: right;
+		width: 100px;
+		padding-top: 5px;
+		padding-right: 5px;
+
+        &.ghosted
+        {
+            color: $TPGrey7;
+        }
+
+	}
+	
+	@include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey4, normal);
+
+	.workoutStatsUnitLabel
+	{
 		label
 		{
-			text-align: right;
-			width: 100px;
+			text-align: left;
+			width: 45px;
 			padding-top: 5px;
-			padding-right: 5px;
-
-            &.ghosted
-            {
-                color: $TPGrey7;
-            }
-
-		}
-	
-		@include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey4, normal);
-
-		.workoutStatsUnitLabel
-		{
-			label
-			{
-				text-align: left;
-				width: 45px;
-				padding-top: 5px;
-				padding-left: 5px;
-			}
+			padding-left: 5px;
 		}
 	}
+}
 
-	.columnLabelsPlannedCompleted
-	{
-		padding-left: 105px;
-		padding-top: 10px;
-		width: 100%;
-		height: 15px;
-		background: transparent;
+.columnLabelsPlannedCompleted
+{
+	padding-left: 105px;
+	padding-top: 10px;
+	width: 100%;
+	height: 15px;
+	background: transparent;
 
-		@include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey4, normal);
-		label
-		{
-			float: left;
-			width: 75px;
-
-            &.ghosted
-            {
-                color: $TPGrey7;
-            }
-		}
-
-	}
-
-	.columnLabelsMinMaxAvg
-	{
-		padding-left: 105px;
-		width: 100%;
-		height: 15px;
-		background: transparent;
-
-		@include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey4, normal);
-		label
-		{
-			float: left;
-			width: 56px;
-            
-            &.ghosted
-            {
-                color: $TPGrey7;
-            }
-		}
-	}
-
-	.comments
+	@include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey4, normal);
+	label
 	{
 		float: left;
-		background: transparent;
-		padding-top: 10px;
-		@include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey4, normal);
-		min-width: 275px;
-		height: 100%;
+		width: 75px;
 
-		#descriptionInput
-		{
-			width: 275px;
-			resize: vertical;
-		}
+        &.ghosted
+        {
+            color: $TPGrey7;
+        }
+	}
 
-		.activityComments
-		{
-			width: 275px;
-			resize: vertical; 
-		}
+}
+
+.columnLabelsMinMaxAvg
+{
+	padding-left: 105px;
+	width: 100%;
+	height: 15px;
+	background: transparent;
+
+	@include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey4, normal);
+	label
+	{
+		float: left;
+		width: 56px;
+            
+        &.ghosted
+        {
+            color: $TPGrey7;
+        }
+	}
+}
+
+.comments
+{
+	float: left;
+	background: transparent;
+	padding-top: 10px;
+	@include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey4, normal);
+	min-width: 275px;
+	height: 100%;
+
+	#descriptionInput
+	{
+		width: 275px;
+		resize: none;
+	}
+
+	.activityComments
+	{
+		width: 275px;
+		resize: none; 
 	}
 }
 
@@ -345,35 +343,24 @@ input[disabled='disabled'] {
 {
 	height:50px;
 	background-color: $TPGrey5;
-	padding-top: 12px;
+	padding-top: 9px;
 
 	.selectionBox
 	{
-		padding-left: 50px;
+		padding-left: 55px;
 		width: 130px;
 		float:left;
 		@include selectionBox(130px);
 	}
-
 	.saveCloseButtons
 	{
 		float: right;
 		width: 300px;
 		padding-top: 5px;
-		button
-		{
-			color:$white;
-			font-family: $navigationFontFamilyRegular;
-			font-size: $fontSizeSmall;
-			width: 77px;
-			height: 21px;
-			background: url('../../../../assets/images/QVImages/buttonBackground77px.png') no-repeat;
-			border: 0px;
-		}
+        @include buttons(0, 77px, $fontSizeSmall);
 		#saveClose
 		{
 			width: 107px;
-			background: url('../../../../assets/images/QVImages/buttonBackground107px.png') no-repeat;
 		}
 	}
 }
