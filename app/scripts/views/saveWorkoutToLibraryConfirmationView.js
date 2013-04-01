@@ -1,9 +1,10 @@
 ﻿define(
 [
     "TP",
+    "models/commands/saveWorkoutToExerciseLibrary",
     "hbs!templates/views/saveWorkoutToLibraryConfirmationView"
 ],
-function(TP, saveWorkoutToLibraryTemplate)
+function(TP, SaveWorkoutToLibraryCommand, saveWorkoutToLibraryTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -30,7 +31,26 @@ function(TP, saveWorkoutToLibraryTemplate)
 
         onOk: function()
         {
-            alert('fixme');
+            var libraryId = this.$("#selectLibrary").val();
+            var saveToLibraryCommand = new SaveWorkoutToLibraryCommand({
+                exerciseName: this.$("#exerciseTitle").val(),
+                exerciseLibraryId: libraryId,
+                workoutId: this.model.id
+            });
+
+            this.waitingOn();
+            var deferred = saveToLibraryCommand.execute();
+            var self = this;
+
+            deferred.done(function()
+            {
+                self.libraries.get(libraryId).fetchExercises();
+            });
+
+            deferred.always(function()
+            {
+                self.close();
+            });
         },
 
         onCancel: function()
@@ -45,9 +65,8 @@ function(TP, saveWorkoutToLibraryTemplate)
 
         serializeData: function()
         {
-            var data = {
-                libraries: []
-            };
+            var data = this.model.toJSON();
+            data.libraries = [];
 
             var self = this;
             this.libraries.each(function(library)
