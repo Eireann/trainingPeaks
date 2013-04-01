@@ -247,6 +247,12 @@
 			width: 100px;
 			padding-top: 5px;
 			padding-right: 5px;
+
+            &.ghosted
+            {
+                color: $TPGrey7;
+            }
+
 		}
 	
 		@include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey4, normal);
@@ -276,6 +282,11 @@
 		{
 			float: left;
 			width: 75px;
+
+            &.ghosted
+            {
+                color: $TPGrey7;
+            }
 		}
 
 	}
@@ -292,8 +303,12 @@
 		{
 			float: left;
 			width: 56px;
+            
+            &.ghosted
+            {
+                color: $TPGrey7;
+            }
 		}
-
 	}
 
 	.comments

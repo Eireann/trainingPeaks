@@ -503,8 +503,11 @@ function (
                 $(".workoutStatsCompleted input").attr("disabled", true);
                 $("#workoutMinMaxAvgStats input").attr("disabled", true);
                 //apply ghost css attribute
+                //this all needs refactored
                 $("label.workoutStatsCompleted").addClass("ghosted");
                 $(".columnLabelsMinMaxAvg label").addClass("ghosted");
+                $("#workoutMinMaxAvgStats label").addClass("ghosted");
+                $("#workoutMinMaxAvgStats").addClass("ghosted");
             }
             
             //var userWorkoutSettings = theMarsApp.user.get("settings").workout;
