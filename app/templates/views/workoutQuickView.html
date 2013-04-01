@@ -73,8 +73,8 @@
         </div>
         <div class="stats">
             <div class="columnLabelsPlannedCompleted">
-                <label>{{$ "Planned"}}</label>
-                <label>{{$ "Completed"}}</label>
+                <label class="workoutStatsPlanned">{{$ "Planned"}}</label>
+                <label class="workoutStatsCompleted">{{$ "Completed"}}</label>
             </div>
             <!-- planned and completed fields load dynamically here-->
             <div id="workoutPlannedCompletedStats">
@@ -83,11 +83,11 @@
                         <label>{{$ "Distance"}}</label>
                     </div>
 
-                    <div class="workoutStatsColumn workoutStatsPlanned hide">
+                    <div class="workoutStatsColumn workoutStatsPlanned">
                         <input type="text" id="distancePlannedField" />
                     </div>
 
-                    <div class="workoutStatsColumn workoutStatsCompleted hide">
+                    <div class="workoutStatsColumn workoutStatsCompleted">
                         <input type="text" id="distanceCompletedField" />
                     </div>
 
@@ -101,11 +101,11 @@
                             <label>{{$ "Duration"}}</label>
                     </div>
 
-                    <div class="workoutStatsColumn workoutStatsPlanned hide">
+                    <div class="workoutStatsColumn workoutStatsPlanned">
                         <input type="text" id="totalTimePlannedField" />
                     </div>
 
-                    <div class="workoutStatsColumn workoutStatsCompleted hide">
+                    <div class="workoutStatsColumn workoutStatsCompleted">
                         <input type="text" id="totalTimeCompletedField" />
                     </div>
 
@@ -119,11 +119,11 @@
                         <label>{{$ "NormalizedPace"}}</label>
                     </div>
 
-                    <div class="workoutStatsColumn workoutStatsPlanned hide">
+                    <div class="workoutStatsColumn workoutStatsPlanned">
                         <input type="text" id="normalizedPacePlannedField" />
                     </div>
 
-                    <div class="workoutStatsColumn workoutStatsCompleted hide">
+                    <div class="workoutStatsColumn workoutStatsCompleted">
                         <input type="text" id="normalizedPaceCompletedField" />
                     </div>
 
@@ -137,11 +137,11 @@
                         <label>{{$ "AveragePace"}}</label>
                     </div>
 
-                    <div class="workoutStatsColumn workoutStatsPlanned hide">
+                    <div class="workoutStatsColumn workoutStatsPlanned">
                         <input type="text" id="averagePacePlannedField" />
                     </div>
 
-                    <div class="workoutStatsColumn workoutStatsCompleted hide">
+                    <div class="workoutStatsColumn workoutStatsCompleted">
                         <input type="text" id="averagePaceCompletedField" />
                     </div>
 
@@ -155,11 +155,11 @@
                         <label>{{$ "AverageSpeed"}}</label>
                     </div>
 
-                    <div class="workoutStatsColumn workoutStatsPlanned hide">
+                    <div class="workoutStatsColumn workoutStatsPlanned">
                         <input type="text" id="averageSpeedPlannedField" />
                     </div>
 
-                    <div class="workoutStatsColumn workoutStatsCompleted hide">
+                    <div class="workoutStatsColumn workoutStatsCompleted">
                         <input type="text" id="averageSpeedCompletedField" />
                     </div>
 
@@ -173,11 +173,11 @@
                         <label>{{$ "Calories"}}</label>
                     </div>
 
-                    <div class="workoutStatsColumn workoutStatsPlanned hide">
+                    <div class="workoutStatsColumn workoutStatsPlanned">
                         <input type="text" id="caloriesPlannedField" />
                     </div>
 
-                    <div class="workoutStatsColumn workoutStatsCompleted hide">
+                    <div class="workoutStatsColumn workoutStatsCompleted">
                         <input type="text" id="caloriesCompletedField" />
                     </div>
 
@@ -191,11 +191,11 @@
                         <label>{{$ "ElevationGain"}}</label>
                     </div>
 
-                    <div class="workoutStatsColumn workoutStatsPlanned hide">
+                    <div class="workoutStatsColumn workoutStatsPlanned">
                         <input type="text" id="elevationGainPlannedField" />
                     </div>
 
-                    <div class="workoutStatsColumn workoutStatsCompleted hide">
+                    <div class="workoutStatsColumn workoutStatsCompleted">
                         <input type="text" id="elevationGainCompletedField" />
                     </div>
 
@@ -209,11 +209,11 @@
                         <label>{{$ "ElevationLoss"}}</label>
                     </div>
 
-                    <div class="workoutStatsColumn workoutStatsPlanned hide">
+                    <div class="workoutStatsColumn workoutStatsPlanned">
                         <input type="text" id="elevationLossPlannedField" />
                     </div>
 
-                    <div class="workoutStatsColumn workoutStatsCompleted hide">
+                    <div class="workoutStatsColumn workoutStatsCompleted">
                         <input type="text" id="elevationLossCompletedField" />
                     </div>
 
@@ -227,11 +227,11 @@
                         <label>{{$ "TSS"}}</label>
                     </div>
 
-                    <div class="workoutStatsColumn workoutStatsPlanned hide">
+                    <div class="workoutStatsColumn workoutStatsPlanned">
                         <input type="text" id="tssPlannedField" />
                     </div>
 
-                    <div class="workoutStatsColumn workoutStatsCompleted hide">
+                    <div class="workoutStatsColumn workoutStatsCompleted">
                         <input type="text" id="tssCompletedField" />
                     </div>
 
@@ -245,11 +245,11 @@
                         <label>{{$ "IF"}}</label>
                     </div>
 
-                    <div class="workoutStatsColumn workoutStatsPlanned hide">
+                    <div class="workoutStatsColumn workoutStatsPlanned">
                         <input type="text" id="ifPlannedField" />
                     </div>
 
-                    <div class="workoutStatsColumn workoutStatsCompleted hide">
+                    <div class="workoutStatsColumn workoutStatsCompleted">
                         <input type="text" id="ifCompletedField" />
                     </div>
 
@@ -263,11 +263,11 @@
                         <label>{{$ "Energy"}}</label>
                     </div>
 
-                    <div class="workoutStatsColumn workoutStatsPlanned hide">
+                    <div class="workoutStatsColumn workoutStatsPlanned">
                         <input type="text" id="energyPlannedField" />
                     </div>
 
-                    <div class="workoutStatsColumn workoutStatsCompleted hide">
+                    <div class="workoutStatsColumn workoutStatsCompleted">
                         <input type="text" id="energyCompletedField" />
                     </div>
 
