@@ -152,6 +152,48 @@
     }
 }
 
+.tabNavigation
+{
+    width: 37px;
+    height: 360px;
+    float: left;
+    background-color: $TPGrey5;
+    padding: 0px 0px 0px 0px;
+
+    .summaryTab
+    {
+        padding: 12px 0px 10px 11px;
+        background-color: $TPGrey6;
+    }
+
+    .heartrateTab
+    {
+        padding: 10px 0px 10px 10px;
+        img
+        {
+            opacity: 0.4;
+        }
+    }
+
+    .powerTab
+    {
+        padding: 10px 0px 10px 13px;
+        img
+        {
+            opacity: 0.4;
+        }
+    }
+
+    .paceTab
+    {
+        padding: 10px 0px 10px 7px;
+        img
+        {
+            opacity: 0.4;
+        }
+    }
+}
+
 .quickViewContent
 {
 	height: 360px;
@@ -159,49 +201,10 @@
 	overflow-x:hidden;
     @include nice-scrollbar;
 	@include radialGradient(#e6e4e4, #dedcdc);
-    width: 100%;
+    width: 653px;
+    padding-bottom: 20px;
 
-    .tabNavigation
-    {
-        width: 37px;
-        height: 100%;
-        float: left;
-        background-color: $TPGrey5;
-        padding: 0px 0px 0px 0px;
-
-        .summaryTab
-        {
-            padding: 12px 0px 10px 11px;
-            background-color: $TPGrey6;
-        }
-
-        .heartrateTab
-        {
-            padding: 10px 0px 10px 10px;
-            img
-            {
-                opacity: 0.4;
-            }
-        }
-
-        .powerTab
-        {
-            padding: 10px 0px 10px 13px;
-            img
-            {
-                opacity: 0.4;
-            }
-        }
-
-        .paceTab
-        {
-            padding: 10px 0px 10px 7px;
-            img
-            {
-                opacity: 0.4;
-            }
-        }
-    }
+    
 
 	.stats
 	{
@@ -308,14 +311,12 @@
 		#descriptionInput
 		{
 			width: 275px;
-			height: 22px; 
 			resize: vertical;
 		}
 
 		.activityComments
 		{
 			width: 275px;
-			height: 22px;
 			resize: vertical; 
 		}
 	}
@@ -324,12 +325,12 @@
 .quickviewFooter
 {
 	height:50px;
-	background-color: $TPGrey3;
+	background-color: $TPGrey5;
 	padding-top: 12px;
 
 	.selectionBox
 	{
-		padding-left: 10px;
+		padding-left: 50px;
 		width: 130px;
 		float:left;
 		@include selectionBox(130px);
