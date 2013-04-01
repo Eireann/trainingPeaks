@@ -36,6 +36,9 @@ function (TP, LibraryExercisesCollection)
 
         fetchExercises: function()
         {
+            if (this.exercises && this.exercises.length)
+                return;
+
             if (this.has("exerciseLibraryId"))
             {
                 this.exercises.exerciseLibraryId = this.get("exerciseLibraryId");
