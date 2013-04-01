@@ -8,8 +8,7 @@
 }
 
 input[disabled='disabled'] {
-    color:#933;
-    border:none;
+    @include box-shadow(none);
 }
 
 .QVHeader
