@@ -2,6 +2,7 @@
 [
     "jqueryui/datepicker",
     "jqueryTimepicker",
+    "jqueryTextAreaResize",
     "underscore",
     "moment",
     "TP",
@@ -22,6 +23,7 @@
 function (
     datepicker,
     timepicker,
+    textAreaResize,
     _,
     moment,
     TP,
@@ -487,6 +489,7 @@ function (
 
             }
 
+            this.$("textarea").autosize();
         },
 
         onDateClicked: function (e)
