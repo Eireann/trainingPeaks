@@ -86,22 +86,41 @@ function(TP, initializeAjaxAuth, ajaxCaching, initializeAjaxTimezone, Session, U
     // Set up jQuery UI Tooltips
     theApp.addInitializer(function()
     {
+        var tooltipPositioner = function(position, feedback)
+        {
+
+            var self = feedback.element.element;
+
+            // add an arrow
+            if (self.find(".arrow").length === 0)
+            {
+                var arrow = $("<div>").addClass("arrow");
+                self.append(arrow);
+                self.html(self.html().replace(/\n/g, "<br />"));
+                self.addClass(position.top >= (self.height() + 30) ? "above" : "below");
+            }
+
+            // position it
+            position.left -= (self.width() / 2);
+            if (self.hasClass("above"))
+            {
+                position.top -= (self.height() + 20);
+            }
+            self.css(position);
+
+
+        };
+
         $(document).tooltip(
         {
             position:
             {
-                my: "center bottom-20",
-                at: "center top",
-                using: function (position, feedback)
-                {
-                    $(this).css(position);
-                    $("<div>")
-                      .addClass("arrow")
-                      .addClass(feedback.vertical)
-                      .addClass(feedback.horizontal)
-                      .appendTo(this);
-                }
-            }
+                //my: "center bottom-8",
+                //at: "center top",
+                using: tooltipPositioner
+            },
+
+            track: true
         });
     });
 

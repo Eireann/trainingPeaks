@@ -1,0 +1,22 @@
+﻿<div class="dialog">
+    <div class="titleBar">{{$ "AddToLibraryConfirmationTitle" }}</div>
+    <div class="dialogContent">
+
+        <div>
+            <div class="labels"><label for="exerciseTitle">{{$ "Title" }}:</label></div>
+            <div class="values"><input type="text" name="exerciseTitle" id="exerciseTitle" value="{{ title }}"/></div>
+        </div>
+
+        <div>
+            <div class="labels"><label for="selectLibrary">{{$ "SelectLibrary" }}:</label></div>
+            <div class="values"><select name="selectLibrary" id="selectLibrary">
+                <option>{{$ "SelectLibrary" }}</option>
+            </select></div>
+        </div>
+
+        <div class="dialogButtons">
+            <button id="confirmationOk">{{$ "Ok" }}</button>
+            <button id="confirmationCancel">{{$ "Cancel" }}</button>
+        </div>
+    </div>
+</div>

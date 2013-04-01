@@ -123,6 +123,9 @@
 	"Close": "Close",
     "SaveClose": "Save & Close",
 	"Reset": "Reset",
+    "Configure": "Configure",
+    "SaveToLibrary": "Save to library",
+
 
     "CalendarSettings": "Calendar Settings",
     "WorkoutColorization": "Workout Colorization",
@@ -148,6 +151,7 @@
 	"PasteItems": "Paste Items",
 	"ShiftItems": "Shift Items",
 
+    "Ok" : "Ok",
     "Cancel" : "Cancel",
 	"OK": "OK",
 
@@ -171,7 +175,7 @@
     "Walk": "Walk",
     "UploadDeviceFile": "Upload Device File",
     "FileUploadHelp": "Learn more about device file upload options",
-    "FileUploadTooltip": "Upload a file on your computer (.fit, .tcx, .pwx, .wko, .csv, .hrm).",
+    "FileUploadTooltip": "Choose a file on your computer\n(.fit, .tcx, .pwx, .wko, .csv, .hrm).",
 	"ShiftString": "What types of items do you want to shift?",
 	"Workouts": "Workouts",
 	"Meals": "Meals",
@@ -190,5 +194,14 @@
     "Confirmation" : "Confirmation",
 	"SelectNumberOfDays": "Select number of days",
 	"SelectNumberOfWeeks": "Select number of weeks",
-	"Summary": "Summary"
+	"Summary": "Summary",
+
+    "BreakthroughTooltip": "Breakthrough workout",
+    "UploadAttachmentTooltip": "Upload attachment",
+    "SetTitleTooltip": "Click to set title",
+
+    "AddToLibraryConfirmationTitle": "Add a new workout, routine, or exercise to your library",
+    "SelectLibrary": "Select Library",
+
+    "Title": "Title"
 }

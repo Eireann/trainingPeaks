@@ -171,11 +171,11 @@ function(moment, $, _, Backbone, CalendarController, WorkoutModel, WorkoutsColle
 
             describe("Initialize library", function()
             {
-                it("Should create an exerciseLibrary", function()
+                it("Should create an exerciseLibraries", function()
                 {
                     var controller = new CalendarController();
                     controller.initializeLibrary();
-                    expect(controller.libraryCollections.exerciseLibrary).toBeDefined();
+                    expect(controller.libraryCollections.exerciseLibraries).toBeDefined();
                 });
                 
             });
@@ -184,9 +184,9 @@ function(moment, $, _, Backbone, CalendarController, WorkoutModel, WorkoutsColle
             {
                 var controller = new CalendarController();
                 controller.initializeLibrary();
-                spyOn(controller.libraryCollections.exerciseLibrary, "fetch");
+                spyOn(controller.libraryCollections.exerciseLibraries, "fetch");
                 controller.loadLibraryData();
-                expect(controller.libraryCollections.exerciseLibrary.fetch).toHaveBeenCalled();
+                expect(controller.libraryCollections.exerciseLibraries.fetch).toHaveBeenCalled();
             });
         });
 
@@ -255,6 +255,7 @@ function(moment, $, _, Backbone, CalendarController, WorkoutModel, WorkoutsColle
             {
                 var eventOptions = {
                     DropEvent: "addExerciseFromLibrary",
+                    LibraryId: 1234,
                     ItemId: 5432,
                     destinationCalendarDayModel: {
                         id: '2012-01-01'
@@ -267,7 +268,7 @@ function(moment, $, _, Backbone, CalendarController, WorkoutModel, WorkoutsColle
                 spyOn(controller.weeksCollection, "addWorkout");
                 spyOn(controller, "createNewWorkoutFromExerciseLibraryItem").andReturn(workout);
                 controller.onDropItem(eventOptions);
-                expect(controller.createNewWorkoutFromExerciseLibraryItem).toHaveBeenCalledWith(eventOptions.ItemId, eventOptions.destinationCalendarDayModel.id);
+                expect(controller.createNewWorkoutFromExerciseLibraryItem).toHaveBeenCalledWith(eventOptions.LibraryId, eventOptions.ItemId, eventOptions.destinationCalendarDayModel.id);
                 expect(controller.weeksCollection.addWorkout).toHaveBeenCalledWith(workout);
                 expect(workout.save).toHaveBeenCalled();
             });

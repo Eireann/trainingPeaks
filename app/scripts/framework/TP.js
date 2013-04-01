@@ -65,16 +65,26 @@ function(Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmediate,
         {
             if (this.showThrobbers)
             {
-                this.$el.addClass('waiting');
+                this.waitingOn();
             }
+        },
+
+        waitingOn: function()
+        {
+            this.$el.addClass('waiting');
         },
 
         onWaitStop: function()
         {
             if (this.showThrobbers)
             {
-                this.$el.removeClass('waiting');
+                this.waitingOff();
             }
+        },
+
+        waitingOff: function()
+        {
+            this.$el.removeClass('waiting');
         }
 
     });

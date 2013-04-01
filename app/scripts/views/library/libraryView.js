@@ -26,8 +26,8 @@ function(_, jqueryOutside, TP, ExerciseLibraryView, MealLibraryView, libraryTemp
             {
                 exerciseLibrary: new ExerciseLibraryView(
                 {
-                    collection: options && options.collections && options.collections.exerciseLibrary ?
-                        options.collections.exerciseLibrary : new TP.Collection()
+                    exerciseLibraries: options && options.collections && options.collections.exerciseLibraries ?
+                        options.collections.exerciseLibraries : new TP.Collection()
                 }),
                 mealLibrary: new MealLibraryView()
             };

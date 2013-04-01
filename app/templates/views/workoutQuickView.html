@@ -8,8 +8,8 @@
             <input type="text" id="startTimeInput" value="{{ startTime }}" placeholder="Enter Time" />
         </div>
         <div class="closeAndSettings">
-            <span><img src="assets/images/calendarImages/settingsIcon.png"/></span>
-            <span><img src="assets/images/QVImages/closeX.png"/></span>
+            <span><img id="menuIcon" src="assets/images/calendarImages/settingsIcon.png"/></span>
+            <span><img id="closeIcon" src="assets/images/QVImages/closeX.png"/></span>
         </div>
 
         <div>
@@ -19,10 +19,10 @@
             </div>
             <div class="workoutHeaderStats">
                 <div class="headerIcons">
-                    <div id="breakThrough" class="icon">
+                    <div id="breakThrough" class="icon" title="{{$ "BreakthroughTooltip" }}">
                         <img src="assets/images/QVImages/breakthrough.png"/>
                     </div>
-                    <div class="icon addAttachment">
+                    <div class="icon addAttachment" title="{{$ "UploadAttachmentTooltip" }}">
                         <img src="assets/images/QVImages/paperClip.png"/>
                     </div>
                     <input id="attachment" style="display: none" type="file"/>
@@ -43,12 +43,12 @@
                     <label>TSS</label>
                 </div> 
                 <div class="title">
-                    <input type="text" name="workoutTitle" class="workoutTitle" placeholder="Untitled Workout" id="workoutTitleField" />
+                    <input type="text" name="workoutTitle" class="workoutTitle" placeholder="Untitled Workout" id="workoutTitleField" title="{{$ "SetTitleTooltip" }}" />
                 </div>
             </div>
         </div>
 
-        <div class="uploadButton" id="quickViewFileUploadDiv">
+        <div class="uploadButton" id="quickViewFileUploadDiv" title="{{$ "FileUploadTooltip" }}">
                 <label>Upload</label>
         </div>
         <input id="fileUploadInput" style="display: none" type="file"/>

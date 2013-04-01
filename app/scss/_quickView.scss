@@ -427,3 +427,62 @@
         }
     }
 }
+
+.workoutQuickViewMenuModalOverlay
+{
+    z-index: 102;
+}
+
+.workoutQuickViewMenu
+{
+    z-index: 103;
+}
+
+.saveWorkoutToLibraryConfirmationModalOverlay
+{
+    z-index: 102;
+}
+
+.saveWorkoutToLibraryConfirmation
+{
+    z-index: 103;
+    min-width: 450px;
+
+    .labels
+    {
+        text-align: right;
+        width: 35%;
+        display: inline-block;
+        margin-right: 10px;
+        margin-left: 20px;
+    }
+
+    .values
+    {
+        text-align: left;
+        width: 45%;
+        display: inline-block;
+        margin-right: 20px;
+    }
+
+    label
+    {
+        display:inline-block;
+        font-weight: bold;
+    }
+
+    select
+    {
+        width: 200px;
+    }
+
+    input
+    {
+        width: 200px;
+    }
+
+    .dialogButtons
+    {
+        margin-top: 20px;
+    }
+}
