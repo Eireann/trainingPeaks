@@ -4,6 +4,7 @@
     "underscore",
     "moment",
     "TP",
+    "setImmediate",
     "utilities/printUnitLabel",
     "utilities/convertToViewUnits",
     "utilities/convertToModelUnits",
@@ -17,6 +18,7 @@ function (
     _,
     moment,
     TP,
+    setImmediate,
     printUnitLabel,
     convertToViewUnits,
     convertToModelUnits,
@@ -48,8 +50,12 @@ function (
 
         onRender: function()
         {
-            this.$("textarea").autosize({ resize: "none" });
+
+            var self = this;
+            this.$("textarea").autosize();
             this.applyUICustomization();
+
+            setImmediate(function () { self.setTextArea(); });
 
             if (!this.stickitInitialized)
             {
@@ -60,6 +66,24 @@ function (
 
                 this.stickit();
                 this.stickitInitialized = true;
+            }
+        },
+
+        setTextArea: function()
+        {
+            if (this.$("#descriptionInput").val())
+            {
+                this.$("#descriptionInput").height(this.$("#descriptionInput")[0].scrollHeight);
+            }
+
+            if (this.$("#preActivityCommentsInput").val())
+            {
+                this.$("#preActivityCommentsInput").height(this.$("#preActivityCommentsInput")[0].scrollHeight);
+            }
+
+            if (this.$("#descriptionInput").val())
+            {
+                this.$("#postActivityCommentsInput").height(this.$("#postActivityCommentsInput")[0].scrollHeight);
             }
         },
 
