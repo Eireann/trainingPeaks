@@ -4,6 +4,7 @@
     "underscore",
     "moment",
     "TP",
+    "setImmediate",
     "utilities/printUnitLabel",
     "utilities/convertToViewUnits",
     "utilities/convertToModelUnits",
@@ -17,6 +18,7 @@ function (
     _,
     moment,
     TP,
+    setImmediate,
     printUnitLabel,
     convertToViewUnits,
     convertToModelUnits,
@@ -33,7 +35,6 @@ function (
 
         showThrobbers: false,
 
-
         events:
         {
            
@@ -48,8 +49,12 @@ function (
 
         onRender: function()
         {
-            this.$("textarea").autosize({ resize: "none" });
+
+            var self = this;
+            this.$("textarea").autosize();
             this.applyUICustomization();
+
+            setImmediate(function () { self.setTextArea(); });
 
             if (!this.stickitInitialized)
             {
@@ -63,7 +68,32 @@ function (
             }
         },
 
+        setTextArea: function()
+        {
+            if (this.$("#descriptionInput").val())
+            {
+                this.$("#descriptionInput").height(this.$("#descriptionInput")[0].scrollHeight);
+            }
+
+            if (this.$("#preActivityCommentsInput").val())
+            {
+                this.$("#preActivityCommentsInput").height(this.$("#preActivityCommentsInput")[0].scrollHeight);
+            }
+
+            if (this.$("#descriptionInput").val())
+            {
+                this.$("#postActivityCommentsInput").height(this.$("#postActivityCommentsInput")[0].scrollHeight);
+            }
+        },
+
         applyUICustomization: function ()
+        {
+            this.applyGhostingForFuture();
+            this.applyUserPreferences();
+
+        },
+
+        applyGhostingForFuture: function ()
         {
             if (this.model.getCalendarDay() > this.today)
             {
@@ -76,8 +106,72 @@ function (
                 this.$("#workoutMinMaxAvgStats label").addClass("ghosted");
                 this.$("#workoutMinMaxAvgStats").addClass("ghosted");
             }
+        },
+        
+        applyUserPreferences: function ()
+        {
+            var statsTree = this.$("#workoutPlannedCompletedStats");
+            var summaryTree = this.$("#workoutMinMaxAvgStats");
 
-            //var userWorkoutSettings = theMarsApp.user.get("settings").workout;
+            var statsTreeClone = statsTree.clone();
+            var summaryTreeClone = summaryTree.clone();
+
+            this.applyPreferencesSort(statsTreeClone, summaryTreeClone);
+            this.applyPlannedFieldOverrides(statsTreeClone);
+
+            statsTree.replaceWith(statsTreeClone);
+            summaryTree.replaceWith(summaryTreeClone);
+        },
+
+        applyPreferencesSort: function (statsTree, summaryTree)
+        {
+            var workoutOrderPreferences = theMarsApp.user.get("settings").workout.layout[this.model.get("workoutTypeValueId")];
+
+            //Process stats and summary order area
+            var statsAnchor = statsTree.find("#workoutStatsAnchor");
+            var summaryAnchor = summaryTree.find("#workoutSummaryAnchor");
+            for (var index = 0; index < workoutOrderPreferences.length; index++)
+            {
+                var stat = workoutLayoutFormatter[workoutOrderPreferences[index]];
+                var statRow = statsTree.find("." + stat + "StatsRow");
+
+                if (statRow !== [])
+                {
+                    statRow.insertBefore(statsAnchor);
+                    statRow.removeClass("hide");
+                }
+
+                var summaryRow = summaryTree.find("." + stat + "SummaryRow");
+                var summaryRowCount = 0;
+                if (summaryRow !== [])
+                {
+                    summaryRow.insertBefore(summaryAnchor);
+                    summaryRow.removeClass("hide");
+                    summaryRowCount++;
+                }
+
+                if (summaryRowCount === 0)
+                    this.$(".columnLabelsMinMaxAvg").addClass("hide");
+            }
+        },
+
+        applyPlannedFieldOverrides: function (statsTree)
+        {
+            var inputsStillHidden = statsTree.find(".workoutStatsRow.hide .workoutStatsPlanned input");
+
+            var self = this;
+            inputsStillHidden.each(function ()
+            {
+                var binding = self.bindings["#" + this.id];
+                if (binding)
+                {
+                    var modelValue = self.model.get(binding.observe);
+                    if (modelValue)
+                    {
+                        $(this).closest(".workoutStatsRow").removeClass("hide");
+                    }
+                }
+            });
         },
 
         getDistance: function (value, options)
