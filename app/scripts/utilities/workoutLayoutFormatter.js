@@ -24,7 +24,7 @@ function()
         "17" : "cadence",
         "18" : "speed",
         "19" : "pace",
-        "20" : "temperature",
+        "20" : "temperature"
     };
 
     return layoutDefinitions;

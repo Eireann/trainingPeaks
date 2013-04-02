@@ -348,6 +348,6 @@ function (
                 onGet: "getStartTime",
                 onSet: "setStartTime"
             }
-    },
+        }
     });
 });
