@@ -83,6 +83,23 @@ function (_, moment, TP)
             "startTime": null
         },
 
+        initialize: function()
+        {
+            TP.APIModel.prototype.initialize.apply(this, arguments);
+            _.bindAll(this, "checkpoint", "revert");
+        },
+        
+        checkpoint: function()
+        {
+            this.checkpointAttributes = _.clone(this.attributes);
+        },
+        
+        revert: function()
+        {
+            if(this.checkpointAttributes)
+                this.set(this.checkpointAttributes);
+        },
+        
         getCalendarDay: function()
         {
             return moment(this.get("workoutDay")).format(this.shortDateFormat);

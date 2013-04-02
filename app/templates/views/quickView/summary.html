@@ -26,7 +26,7 @@
 
                 <div class="workoutStatsRow">
                     <div class="workoutStatsColumn workoutStatsLabel">
-                            <label>{{$ "Duration"}}</label>
+                        <label>{{$ "Duration"}}</label>
                     </div>
 
                     <div class="workoutStatsColumn workoutStatsPlanned">
@@ -167,6 +167,21 @@
                        <label>{{printUnitLabel "tss"}}</label>
                     </div>
                 </div>  
+
+                <div class="workoutStatsRow">
+                    <div class="workoutStatsColumn workoutStatsLabel">
+                        <label>{{$ "NormalizedPower"}}</label>
+                    </div>
+                    <div class="workoutStatsColumn workoutStatsPlanned">
+                        <input type="text" id="normalizedPowerPlanned"/>
+                    </div>
+                    <div class="workoutStatsColumn workoutStatsCompleted">
+                        <input type="text" id="normalizedPowerCompleted"/>
+                    </div>
+                    <div class="workoutStatsColumn workoutStatsUnitLabel">
+                        <label>{{printUnitLabel "power"}}</label>
+                    </div>
+                </div>
             
                 <div class="workoutStatsRow">
                     <div class="workoutStatsColumn workoutStatsLabel">
@@ -211,23 +226,6 @@
                 <label>{{$ "Max"}}</label>
             </div>
             <div id="workoutMinMaxAvgStats">
-                <div class="workoutStatsRow">
-                    <div class="workoutStatsColumn workoutStatsMinMaxAvgLabel">
-                        <label>{{$ "NormalizedPower"}}</label>
-                    </div>
-                    <div class="workoutStatsColumnMinMaxAvg workoutStatsMin">
-                        <input type="text" id="normalizedPowerMinField"/>
-                    </div>
-                    <div class="workoutStatsColumnMinMaxAvg workoutStatsAvg">
-                        <input type="text" id="normalizedPowerAvgField"/>
-                    </div>
-                    <div class="workoutStatsColumnMinMaxAvg workoutStatsMax">
-                        <input type="text" id="normalizedPowerMaxField"/>
-                    </div>
-                    <div class="workoutStatsColumn workoutStatsUnitLabel">
-                        <label>{{printUnitLabel "power"}}</label>
-                    </div>
-                </div>
                 <div class="workoutStatsRow">
                     <div class="workoutStatsColumn workoutStatsMinMaxAvgLabel">
                         <label>{{$ "Power"}}</label>

@@ -20,6 +20,7 @@
     "views/quickView/workoutTypeMenuView",
     "views/quickView/workoutQuickViewMenu",
     "views/quickView/summaryView",
+    "utilities/determineCompletedWorkout",
     "hbs!templates/views/quickView/workoutQuickView"
 ],
 function (
@@ -43,6 +44,7 @@ function (
     WorkoutTypeMenuView,
     WorkoutQuickViewMenu,
     WorkoutQuickViewSummary,
+    determineCompletedWorkout,
     workoutQuickViewTemplate)
 {
     return TP.ItemView.extend(
@@ -98,6 +100,68 @@ function (
         {
             type: "handlebars",
             template: workoutQuickViewTemplate
+        },
+
+        bindings:
+        {
+            "#workoutTitleField":
+            {
+                observe: "title",
+                eventsOverride: ["blur"]
+            },
+            "#dayName":
+            {
+                observe: "workoutDay",
+                onGet: "getDayName"
+            },
+            "#calendarDate":
+            {
+                observe: "workoutDay",
+                onGet: "getCalendarDate"
+            }
+        },
+
+        getComplianceCssClassName: function ()
+        {
+            var complianceAttributeNames =
+            {
+                totalTime: "totalTimePlanned"
+            };
+            /*
+                distance: "distancePlanned",
+                tssActual: "tssPlanned"
+            */
+            var workout = this.model;
+
+            for (var key in complianceAttributeNames)
+            {
+
+                var plannedValueAttributeName = complianceAttributeNames[key];
+                var completedValueAttributeName = key;
+                var plannedValue = this.model.get(plannedValueAttributeName) ? this.model.get(plannedValueAttributeName) : 0;
+                var completedValue = this.model.get(completedValueAttributeName) ? this.model.get(completedValueAttributeName) : 0;
+
+                if (plannedValue)
+                {
+                    if ((plannedValue * 0.8) <= completedValue && completedValue <= (plannedValue * 1.2))
+                    {
+                        return "ComplianceGreen";
+                    }
+                    else if ((plannedValue * 0.5) <= completedValue && completedValue <= (plannedValue * 1.5))
+                    {
+                        return "ComplianceYellow";
+                    }
+                    else
+                    {
+                        return "ComplianceRed";
+                    }
+                }
+            }
+
+
+            // if nothing was planned, we can't fail to complete it properly ...
+
+            return "ComplianceGreen";
         },
 
         getDayName: function(value, options)
@@ -182,8 +246,6 @@ function (
 
         onRender: function()
         {
-            this.applyUICustomization();
-
             if (!this.stickitInitialized)
             {
                 this.model.off("change", this.render);
@@ -205,24 +267,26 @@ function (
                 this.ui.quickViewContent.append(tab.$el);
                 //tab.$el.hide();
             }
+
+            this.$(".grayHeader").addClass(this.getComplianceCssClassName());
+            this.$(".grayHeader").addClass(this.getPastOrCompletedCssClassName());
         },
 
-        applyUICustomization: function()
+        getPastOrCompletedCssClassName: function ()
         {
-            if (this.model.getCalendarDay() > this.today)
+            if (this.model.getCalendarDay() < this.today)
             {
-                $(".workoutStatsCompleted input").attr("disabled", true);
-                $("#workoutMinMaxAvgStats input").attr("disabled", true);
-                //apply ghost css attribute
-                //this all needs refactored
-                $("label.workoutStatsCompleted").addClass("ghosted");
-                $(".columnLabelsMinMaxAvg label").addClass("ghosted");
-                $("#workoutMinMaxAvgStats label").addClass("ghosted");
-                $("#workoutMinMaxAvgStats").addClass("ghosted");
+                return "past";
+            } else if (this.model.getCalendarDay() === this.today && determineCompletedWorkout(this.model.attributes))
+            {
+                return "past";
+            } else
+            {
+                return "future";
             }
-            
-            //var userWorkoutSettings = theMarsApp.user.get("settings").workout;
         },
+
+        
         
         onDateClicked: function (e)
         {
