@@ -118,12 +118,16 @@ function (
                 }
 
                 var summaryRow = summaryTree.find("." + stat + "SummaryRow");
-
+                var summaryRowCount = 0;
                 if (summaryRow !== [])
                 {
                     summaryRow.insertBefore(summaryAnchor);
                     summaryRow.removeClass("hide");
+                    summaryRowCount++;
                 }
+
+                if (summaryRowCount === 0)
+                    this.$(".columnLabelsMinMaxAvg").addClass("hide");
             }
         },
 
