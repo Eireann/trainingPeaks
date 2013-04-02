@@ -329,13 +329,13 @@ input[disabled='disabled'] {
 	#descriptionInput
 	{
 		width: 275px;
-		resize: none;
+        max-width: 275px
 	}
 
 	.activityComments
 	{
 		width: 275px;
-		resize: none; 
+        max-width: 275px
 	}
 }
 

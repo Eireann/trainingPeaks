@@ -100,6 +100,25 @@ function (
             template: workoutQuickViewTemplate
         },
 
+        bindings:
+        {
+            "#workoutTitleField":
+            {
+                observe: "title",
+                eventsOverride: ["blur"]
+            },
+            "#dayName":
+            {
+                observe: "workoutDay",
+                onGet: "getDayName"
+            },
+            "#calendarDate":
+            {
+                observe: "workoutDay",
+                onGet: "getCalendarDate"
+            }
+        },
+
         getDayName: function(value, options)
         {
             return printDate(value, "dddd");
