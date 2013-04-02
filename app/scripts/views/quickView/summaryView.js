@@ -29,7 +29,10 @@ function (
     {
         className: "summary",
 
+        today: moment().format("YYYY-MM-DD"),
+
         showThrobbers: false,
+
 
         events:
         {
@@ -46,6 +49,7 @@ function (
         onRender: function()
         {
             this.$("textarea").autosize({ resize: "none" });
+            this.applyUICustomization();
 
             if (!this.stickitInitialized)
             {
@@ -57,6 +61,23 @@ function (
                 this.stickit();
                 this.stickitInitialized = true;
             }
+        },
+
+        applyUICustomization: function ()
+        {
+            if (this.model.getCalendarDay() > this.today)
+            {
+                this.$(".workoutStatsCompleted input").attr("disabled", true);
+                this.$("#workoutMinMaxAvgStats input").attr("disabled", true);
+                //apply ghost css attribute
+                //this all needs refactored
+                this.$("label.workoutStatsCompleted").addClass("ghosted");
+                this.$(".columnLabelsMinMaxAvg label").addClass("ghosted");
+                this.$("#workoutMinMaxAvgStats label").addClass("ghosted");
+                this.$("#workoutMinMaxAvgStats").addClass("ghosted");
+            }
+
+            //var userWorkoutSettings = theMarsApp.user.get("settings").workout;
         },
 
         getDistance: function (value, options)

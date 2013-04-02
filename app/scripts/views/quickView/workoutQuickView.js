@@ -201,8 +201,6 @@ function (
 
         onRender: function()
         {
-            this.applyUICustomization();
-
             if (!this.stickitInitialized)
             {
                 this.model.off("change", this.render);
@@ -226,22 +224,7 @@ function (
             }
         },
 
-        applyUICustomization: function()
-        {
-            if (this.model.getCalendarDay() > this.today)
-            {
-                $(".workoutStatsCompleted input").attr("disabled", true);
-                $("#workoutMinMaxAvgStats input").attr("disabled", true);
-                //apply ghost css attribute
-                //this all needs refactored
-                $("label.workoutStatsCompleted").addClass("ghosted");
-                $(".columnLabelsMinMaxAvg label").addClass("ghosted");
-                $("#workoutMinMaxAvgStats label").addClass("ghosted");
-                $("#workoutMinMaxAvgStats").addClass("ghosted");
-            }
-            
-            //var userWorkoutSettings = theMarsApp.user.get("settings").workout;
-        },
+        
         
         onDateClicked: function (e)
         {
