@@ -33,7 +33,6 @@ function (
 
         showThrobbers: false,
 
-
         events:
         {
            
@@ -65,6 +64,13 @@ function (
 
         applyUICustomization: function ()
         {
+            this.applyGhostingForFuture();
+            this.applyUserPreferences();
+
+        },
+
+        applyGhostingForFuture: function ()
+        {
             if (this.model.getCalendarDay() > this.today)
             {
                 this.$(".workoutStatsCompleted input").attr("disabled", true);
@@ -76,8 +82,68 @@ function (
                 this.$("#workoutMinMaxAvgStats label").addClass("ghosted");
                 this.$("#workoutMinMaxAvgStats").addClass("ghosted");
             }
+        },
+        
+        applyUserPreferences: function ()
+        {
+            var statsTree = this.$("#workoutPlannedCompletedStats");
+            var summaryTree = this.$("#workoutMinMaxAvgStats");
 
-            //var userWorkoutSettings = theMarsApp.user.get("settings").workout;
+            var statsTreeClone = statsTree.clone();
+            var summaryTreeClone = summaryTree.clone();
+
+            this.applyPreferencesSort(statsTreeClone, summaryTreeClone);
+            this.applyPlannedFieldOverrides(statsTreeClone);
+
+            statsTree.replaceWith(statsTreeClone);
+            summaryTree.replaceWith(summaryTreeClone);
+        },
+
+        applyPreferencesSort: function (statsTree, summaryTree)
+        {
+            var workoutOrderPreferences = theMarsApp.user.get("settings").workout.layout[this.model.get("workoutTypeValueId")];
+
+            //Process stats and summary order area
+            var statsAnchor = statsTree.find("#workoutStatsAnchor");
+            var summaryAnchor = summaryTree.find("#workoutSummaryAnchor");
+            for (var index = 0; index < workoutOrderPreferences.length; index++)
+            {
+                var stat = workoutLayoutFormatter[workoutOrderPreferences[index]];
+                var statRow = statsTree.find("." + stat + "StatsRow");
+
+                if (statRow !== [])
+                {
+                    statRow.insertBefore(statsAnchor);
+                    statRow.removeClass("hide");
+                }
+
+                var summaryRow = summaryTree.find("." + stat + "SummaryRow");
+
+                if (summaryRow !== [])
+                {
+                    summaryRow.insertBefore(summaryAnchor);
+                    summaryRow.removeClass("hide");
+                }
+            }
+        },
+
+        applyPlannedFieldOverrides: function (statsTree)
+        {
+            var inputsStillHidden = statsTree.find(".workoutStatsRow.hide .workoutStatsPlanned input");
+
+            var self = this;
+            inputsStillHidden.each(function ()
+            {
+                var binding = self.bindings["#" + this.id];
+                if (binding)
+                {
+                    var modelValue = self.model.get(binding.observe);
+                    if (modelValue)
+                    {
+                        $(this).closest(".workoutStatsRow").removeClass("hide");
+                    }
+                }
+            });
         },
 
         getDistance: function (value, options)
