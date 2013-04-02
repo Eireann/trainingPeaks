@@ -1,394 +1,394 @@
 ﻿<div class="summary">
-        <div class="stats">
-            <div class="columnLabelsPlannedCompleted">
-                <label class="workoutStatsPlanned">{{$ "Planned"}}</label>
-                <label class="workoutStatsCompleted">{{$ "Completed"}}</label>
+    <div class="stats">
+        <div class="columnLabelsPlannedCompleted">
+            <label class="workoutStatsPlanned">{{$ "Planned"}}</label>
+            <label class="workoutStatsCompleted">{{$ "Completed"}}</label>
+        </div>
+        <!-- planned and completed fields load dynamically here-->
+        <div id="workoutPlannedCompletedStats">
+            <div id="workoutStatsAnchor" style="display:none;" />
+            <div class="workoutStatsRow hide distanceStatsRow">
+                <div class="workoutStatsColumn workoutStatsLabel">
+                    <label>{{$ "Distance"}}</label>
+                </div>
+
+                <div class="workoutStatsColumn workoutStatsPlanned">
+                    <input type="text" id="distancePlannedField" />
+                </div>
+
+                <div class="workoutStatsColumn workoutStatsCompleted">
+                    <input type="text" id="distanceCompletedField" />
+                </div>
+
+                <div class="workoutStatsColumn workoutStatsUnitLabel">
+                    <label>{{printUnitLabel "distance" }}</label>
+                </div>
+            </div>   
+
+            <div class="workoutStatsRow hide durationStatsRow">
+                <div class="workoutStatsColumn workoutStatsLabel">
+                    <label>{{$ "Duration"}}</label>
+                </div>
+
+                <div class="workoutStatsColumn workoutStatsPlanned">
+                    <input type="text" id="totalTimePlannedField" />
+                </div>
+
+                <div class="workoutStatsColumn workoutStatsCompleted">
+                    <input type="text" id="totalTimeCompletedField" />
+                </div>
+
+                <div class="workoutStatsColumn workoutStatsUnitLabel">
+                    <label>{{$ "hms"}}</label>
+                </div>
+            </div>   
+            
+            <div class="workoutStatsRow hide normalizedPaceStatsRow">
+                <div class="workoutStatsColumn workoutStatsLabel">
+                    <label>{{$ "NormalizedPace"}}</label>
+                </div>
+
+                <div class="workoutStatsColumn workoutStatsPlanned">
+                    <input type="text" id="normalizedPacePlannedField" />
+                </div>
+
+                <div class="workoutStatsColumn workoutStatsCompleted">
+                    <input type="text" id="normalizedPaceCompletedField" />
+                </div>
+
+                <div class="workoutStatsColumn workoutStatsUnitLabel">
+                    <label>{{printUnitLabel "normalizedPace"}}</label>
+                </div>
+            </div>   
+            
+            <div class="workoutStatsRow hide averagePaceStatsRow">
+                <div class="workoutStatsColumn workoutStatsLabel">
+                    <label>{{$ "AveragePace"}}</label>
+                </div>
+
+                <div class="workoutStatsColumn workoutStatsPlanned">
+                    <input type="text" id="averagePacePlannedField" />
+                </div>
+
+                <div class="workoutStatsColumn workoutStatsCompleted">
+                    <input type="text" id="averagePaceCompletedField" />
+                </div>
+
+                <div class="workoutStatsColumn workoutStatsUnitLabel">
+                    <label>{{printUnitLabel "averagePace"}}</label>
+                </div>
+            </div>  
+            
+            <div class="workoutStatsRow hide averageSpeedStatsRow">
+                <div class="workoutStatsColumn workoutStatsLabel">
+                    <label>{{$ "AverageSpeed"}}</label>
+                </div>
+
+                <div class="workoutStatsColumn workoutStatsPlanned">
+                    <input type="text" id="averageSpeedPlannedField" />
+                </div>
+
+                <div class="workoutStatsColumn workoutStatsCompleted">
+                    <input type="text" id="averageSpeedCompletedField" />
+                </div>
+
+                <div class="workoutStatsColumn workoutStatsUnitLabel">
+                    <label>{{printUnitLabel "averageSpeed"}}</label>
+                </div>
+            </div>  
+            
+            <div class="workoutStatsRow hide caloriesStatsRow">
+                <div class="workoutStatsColumn workoutStatsLabel">
+                    <label>{{$ "Calories"}}</label>
+                </div>
+
+                <div class="workoutStatsColumn workoutStatsPlanned">
+                    <input type="text" id="caloriesPlannedField" />
+                </div>
+
+                <div class="workoutStatsColumn workoutStatsCompleted">
+                    <input type="text" id="caloriesCompletedField" />
+                </div>
+
+                <div class="workoutStatsColumn workoutStatsUnitLabel">
+                    <label>{{printUnitLabel "calories"}}</label>
+                </div>
+            </div>  
+            
+            <div class="workoutStatsRow hide elevationGainStatsRow">
+                <div class="workoutStatsColumn workoutStatsLabel">
+                    <label>{{$ "ElevationGain"}}</label>
+                </div>
+
+                <div class="workoutStatsColumn workoutStatsPlanned">
+                    <input type="text" id="elevationGainPlannedField" />
+                </div>
+
+                <div class="workoutStatsColumn workoutStatsCompleted">
+                    <input type="text" id="elevationGainCompletedField" />
+                </div>
+
+                <div class="workoutStatsColumn workoutStatsUnitLabel">
+                    <label>{{printUnitLabel "elevationGain"}}</label>
+                </div>
+            </div>  
+            
+            <div class="workoutStatsRow hide elevationLossStatsRow">
+                <div class="workoutStatsColumn workoutStatsLabel">
+                    <label>{{$ "ElevationLoss"}}</label>
+                </div>
+
+                <div class="workoutStatsColumn workoutStatsPlanned">
+                    <input type="text" id="elevationLossPlannedField" />
+                </div>
+
+                <div class="workoutStatsColumn workoutStatsCompleted">
+                    <input type="text" id="elevationLossCompletedField" />
+                </div>
+
+                <div class="workoutStatsColumn workoutStatsUnitLabel">
+                    <label>{{printUnitLabel "elevationLoss"}}</label>
+                </div>
+            </div>  
+            
+            <div class="workoutStatsRow hide TSSStatsRow">
+                <div class="workoutStatsColumn workoutStatsLabel">
+                    <label>{{$ "TSS"}}</label>
+                </div>
+
+                <div class="workoutStatsColumn workoutStatsPlanned">
+                    <input type="text" id="tssPlannedField" />
+                </div>
+
+                <div class="workoutStatsColumn workoutStatsCompleted">
+                    <input type="text" id="tssCompletedField" />
+                </div>
+
+                <div class="workoutStatsColumn workoutStatsUnitLabel">
+                    <label>{{printUnitLabel "tss"}}</label>
+                </div>
+            </div>  
+            <div class="workoutStatsRow hide normalizedPowerStatsRow">
+	            <div class="workoutStatsColumn workoutStatsLabel">
+		            <label>{{$ "NormalizedPower"}}</label>
+	            </div>
+	            <div class="workoutStatsColumn workoutStatsPlanned">
+		            <input type="text" id="normalizedPowerPlanned"/>
+	            </div>
+	            <div class="workoutStatsColumn workoutStatsCompleted">
+		            <input type="text" id="normalizedPowerCompleted"/>
+	            </div>
+	            <div class="workoutStatsColumn workoutStatsUnitLabel">
+		            <label>{{printUnitLabel "power"}}</label>
+	            </div>
             </div>
-            <!-- planned and completed fields load dynamically here-->
-            <div id="workoutPlannedCompletedStats">
-                <div class="workoutStatsRow">
-                    <div class="workoutStatsColumn workoutStatsLabel">
-                        <label>{{$ "Distance"}}</label>
-                    </div>
-
-                    <div class="workoutStatsColumn workoutStatsPlanned">
-                        <input type="text" id="distancePlannedField" />
-                    </div>
-
-                    <div class="workoutStatsColumn workoutStatsCompleted">
-                        <input type="text" id="distanceCompletedField" />
-                    </div>
-
-                    <div class="workoutStatsColumn workoutStatsUnitLabel">
-                       <label>{{printUnitLabel "distance" }}</label>
-                    </div>
-                </div>   
-
-                <div class="workoutStatsRow">
-                    <div class="workoutStatsColumn workoutStatsLabel">
-                        <label>{{$ "Duration"}}</label>
-                    </div>
-
-                    <div class="workoutStatsColumn workoutStatsPlanned">
-                        <input type="text" id="totalTimePlannedField" />
-                    </div>
-
-                    <div class="workoutStatsColumn workoutStatsCompleted">
-                        <input type="text" id="totalTimeCompletedField" />
-                    </div>
-
-                    <div class="workoutStatsColumn workoutStatsUnitLabel">
-                        <label>{{$ "hms"}}</label>
-                    </div>
-                </div>   
-            
-                <div class="workoutStatsRow">
-                    <div class="workoutStatsColumn workoutStatsLabel">
-                        <label>{{$ "NormalizedPace"}}</label>
-                    </div>
-
-                    <div class="workoutStatsColumn workoutStatsPlanned">
-                        <input type="text" id="normalizedPacePlannedField" />
-                    </div>
-
-                    <div class="workoutStatsColumn workoutStatsCompleted">
-                        <input type="text" id="normalizedPaceCompletedField" />
-                    </div>
-
-                    <div class="workoutStatsColumn workoutStatsUnitLabel">
-                       <label>{{printUnitLabel "normalizedPace"}}</label>
-                    </div>
-                </div>   
-            
-                <div class="workoutStatsRow">
-                    <div class="workoutStatsColumn workoutStatsLabel">
-                        <label>{{$ "AveragePace"}}</label>
-                    </div>
-
-                    <div class="workoutStatsColumn workoutStatsPlanned">
-                        <input type="text" id="averagePacePlannedField" />
-                    </div>
-
-                    <div class="workoutStatsColumn workoutStatsCompleted">
-                        <input type="text" id="averagePaceCompletedField" />
-                    </div>
-
-                    <div class="workoutStatsColumn workoutStatsUnitLabel">
-                       <label>{{printUnitLabel "averagePace"}}</label>
-                    </div>
-                </div>  
-            
-                <div class="workoutStatsRow">
-                    <div class="workoutStatsColumn workoutStatsLabel">
-                        <label>{{$ "AverageSpeed"}}</label>
-                    </div>
-
-                    <div class="workoutStatsColumn workoutStatsPlanned">
-                        <input type="text" id="averageSpeedPlannedField" />
-                    </div>
-
-                    <div class="workoutStatsColumn workoutStatsCompleted">
-                        <input type="text" id="averageSpeedCompletedField" />
-                    </div>
-
-                    <div class="workoutStatsColumn workoutStatsUnitLabel">
-                       <label>{{printUnitLabel "averageSpeed"}}</label>
-                    </div>
-                </div>  
-            
-                <div class="workoutStatsRow">
-                    <div class="workoutStatsColumn workoutStatsLabel">
-                        <label>{{$ "Calories"}}</label>
-                    </div>
-
-                    <div class="workoutStatsColumn workoutStatsPlanned">
-                        <input type="text" id="caloriesPlannedField" />
-                    </div>
-
-                    <div class="workoutStatsColumn workoutStatsCompleted">
-                        <input type="text" id="caloriesCompletedField" />
-                    </div>
-
-                    <div class="workoutStatsColumn workoutStatsUnitLabel">
-                       <label>{{printUnitLabel "calories"}}</label>
-                    </div>
-                </div>  
-            
-                <div class="workoutStatsRow">
-                    <div class="workoutStatsColumn workoutStatsLabel">
-                        <label>{{$ "ElevationGain"}}</label>
-                    </div>
-
-                    <div class="workoutStatsColumn workoutStatsPlanned">
-                        <input type="text" id="elevationGainPlannedField" />
-                    </div>
-
-                    <div class="workoutStatsColumn workoutStatsCompleted">
-                        <input type="text" id="elevationGainCompletedField" />
-                    </div>
-
-                    <div class="workoutStatsColumn workoutStatsUnitLabel">
-                       <label>{{printUnitLabel "elevationGain"}}</label>
-                    </div>
-                </div>  
-            
-                <div class="workoutStatsRow">
-                    <div class="workoutStatsColumn workoutStatsLabel">
-                        <label>{{$ "ElevationLoss"}}</label>
-                    </div>
-
-                    <div class="workoutStatsColumn workoutStatsPlanned">
-                        <input type="text" id="elevationLossPlannedField" />
-                    </div>
-
-                    <div class="workoutStatsColumn workoutStatsCompleted">
-                        <input type="text" id="elevationLossCompletedField" />
-                    </div>
-
-                    <div class="workoutStatsColumn workoutStatsUnitLabel">
-                       <label>{{printUnitLabel "elevationLoss"}}</label>
-                    </div>
-                </div>  
-            
-                <div class="workoutStatsRow">
-                    <div class="workoutStatsColumn workoutStatsLabel">
-                        <label>{{$ "TSS"}}</label>
-                    </div>
-
-                    <div class="workoutStatsColumn workoutStatsPlanned">
-                        <input type="text" id="tssPlannedField" />
-                    </div>
-
-                    <div class="workoutStatsColumn workoutStatsCompleted">
-                        <input type="text" id="tssCompletedField" />
-                    </div>
-
-                    <div class="workoutStatsColumn workoutStatsUnitLabel">
-                       <label>{{printUnitLabel "tss"}}</label>
-                    </div>
-                </div>  
-
-                <div class="workoutStatsRow">
-                    <div class="workoutStatsColumn workoutStatsLabel">
-                        <label>{{$ "NormalizedPower"}}</label>
-                    </div>
-                    <div class="workoutStatsColumn workoutStatsPlanned">
-                        <input type="text" id="normalizedPowerPlanned"/>
-                    </div>
-                    <div class="workoutStatsColumn workoutStatsCompleted">
-                        <input type="text" id="normalizedPowerCompleted"/>
-                    </div>
-                    <div class="workoutStatsColumn workoutStatsUnitLabel">
-                        <label>{{printUnitLabel "power"}}</label>
-                    </div>
+            <div class="workoutStatsRow hide IFStatsRow">
+                <div class="workoutStatsColumn workoutStatsLabel">
+                    <label>{{$ "IF"}}</label>
                 </div>
+
+                <div class="workoutStatsColumn workoutStatsPlanned">
+                    <input type="text" id="ifPlannedField" />
+                </div>
+
+                <div class="workoutStatsColumn workoutStatsCompleted">
+                    <input type="text" id="ifCompletedField" />
+                </div>
+
+                <div class="workoutStatsColumn workoutStatsUnitLabel">
+                    <label>{{printUnitLabel "if"}}</label>
+                </div>
+            </div>  
             
-                <div class="workoutStatsRow">
-                    <div class="workoutStatsColumn workoutStatsLabel">
-                        <label>{{$ "IF"}}</label>
-                    </div>
-
-                    <div class="workoutStatsColumn workoutStatsPlanned">
-                        <input type="text" id="ifPlannedField" />
-                    </div>
-
-                    <div class="workoutStatsColumn workoutStatsCompleted">
-                        <input type="text" id="ifCompletedField" />
-                    </div>
-
-                    <div class="workoutStatsColumn workoutStatsUnitLabel">
-                       <label>{{printUnitLabel "if"}}</label>
-                    </div>
-                </div>  
-            
-                <div class="workoutStatsRow">
-                    <div class="workoutStatsColumn workoutStatsLabel">
-                        <label>{{$ "Energy"}}</label>
-                    </div>
-
-                    <div class="workoutStatsColumn workoutStatsPlanned">
-                        <input type="text" id="energyPlannedField" />
-                    </div>
-
-                    <div class="workoutStatsColumn workoutStatsCompleted">
-                        <input type="text" id="energyCompletedField" />
-                    </div>
-
-                    <div class="workoutStatsColumn workoutStatsUnitLabel">
-                       <label>{{printUnitLabel "energy"}}</label>
-                    </div>
-                </div>  
-            </div>
-
-            <div class="columnLabelsMinMaxAvg">
-                <label>{{$ "Min"}}</label>
-                <label>{{$ "Avg"}}</label>
-                <label>{{$ "Max"}}</label>
-            </div>
-            <div id="workoutMinMaxAvgStats">
-                <div class="workoutStatsRow">
-                    <div class="workoutStatsColumn workoutStatsMinMaxAvgLabel">
-                        <label>{{$ "Power"}}</label>
-                    </div>
-                    <div class="workoutStatsColumnMinMaxAvg workoutStatsMin">
-                        <input type="text" id="powerMinField"/>
-                    </div>
-                    <div class="workoutStatsColumnMinMaxAvg workoutStatsAvg">
-                        <input type="text" id="powerAvgField"/>
-                    </div>
-                    <div class="workoutStatsColumnMinMaxAvg workoutStatsMax">
-                        <input type="text" id="powerMaxField"/>
-                    </div>
-                    <div class="workoutStatsColumn workoutStatsUnitLabel">
-                        <label>{{printUnitLabel "power"}}</label>
-                    </div>
+            <div class="workoutStatsRow hide energyStatsRow">
+                <div class="workoutStatsColumn workoutStatsLabel">
+                    <label>{{$ "Energy"}}</label>
                 </div>
-                <div class="workoutStatsRow">
-                    <div class="workoutStatsColumn workoutStatsMinMaxAvgLabel">
-                        <label>{{$ "Torque"}}</label>
-                    </div>
-                    <div class="workoutStatsColumnMinMaxAvg workoutStatsMin">
-                        <input type="text" id="torqueMinField"/>
-                    </div>
-                    <div class="workoutStatsColumnMinMaxAvg workoutStatsAvg">
-                        <input type="text" id="torqueAvgField"/>
-                    </div>
-                    <div class="workoutStatsColumnMinMaxAvg workoutStatsMax">
-                        <input type="text" id="torqueMaxField"/>
-                    </div>
-                    <div class="workoutStatsColumn workoutStatsUnitLabel">
-                        <label>{{printUnitLabel "torque"}}</label>
-                    </div>
+
+                <div class="workoutStatsColumn workoutStatsPlanned">
+                    <input type="text" id="energyPlannedField" />
                 </div>
-                <div class="workoutStatsRow">
-                    <div class="workoutStatsColumn workoutStatsMinMaxAvgLabel">
-                        <label>{{$ "Elevation"}}</label>
-                    </div>
-                    <div class="workoutStatsColumnMinMaxAvg workoutStatsMin">
-                        <input type="text" id="elevationMinField"/>
-                    </div>
-                    <div class="workoutStatsColumnMinMaxAvg workoutStatsAvg">
-                        <input type="text" id="elevationAvgField"/>
-                    </div>
-                    <div class="workoutStatsColumnMinMaxAvg workoutStatsMax">
-                        <input type="text" id="elevationMaxField"/>
-                    </div>
-                    <div class="workoutStatsColumn workoutStatsUnitLabel">
-                        <label>{{printUnitLabel "elevation"}}</label>
-                    </div>
+
+                <div class="workoutStatsColumn workoutStatsCompleted">
+                    <input type="text" id="energyCompletedField" />
                 </div>
-                <div class="workoutStatsRow">
-                    <div class="workoutStatsColumn workoutStatsMinMaxAvgLabel">
-                        <label>{{$ "Cadence"}}</label>
-                    </div>
-                    <div class="workoutStatsColumnMinMaxAvg workoutStatsMin">
-                        <input type="text" id="cadenceMinField"/>
-                    </div>
-                    <div class="workoutStatsColumnMinMaxAvg workoutStatsAvg">
-                        <input type="text" id="cadenceAvgField"/>
-                    </div>
-                    <div class="workoutStatsColumnMinMaxAvg workoutStatsMax">
-                        <input type="text" id="cadenceMaxField"/>
-                    </div>
-                    <div class="workoutStatsColumn workoutStatsUnitLabel">
-                        <label>{{printUnitLabel "cadence"}}</label>
-                    </div>
+
+                <div class="workoutStatsColumn workoutStatsUnitLabel">
+                    <label>{{printUnitLabel "energy"}}</label>
                 </div>
-                <div class="workoutStatsRow">
-                    <div class="workoutStatsColumn workoutStatsMinMaxAvgLabel">
-                        <label>{{$ "Speed"}}</label>
-                    </div>
-                    <div class="workoutStatsColumnMinMaxAvg workoutStatsMin">
-                        <input type="text" id="speedMinField"/>
-                    </div>
-                    <div class="workoutStatsColumnMinMaxAvg workoutStatsAvg">
-                        <input type="text" id="speedAvgField"/>
-                    </div>
-                    <div class="workoutStatsColumnMinMaxAvg workoutStatsMax">
-                        <input type="text" id="speedMaxField"/>
-                    </div>
-                    <div class="workoutStatsColumn workoutStatsUnitLabel">
-                        <label>{{printUnitLabel "speed"}}</label>
-                    </div>
+            </div>  
+        </div>
+
+        <div class="columnLabelsMinMaxAvg">
+            <label>{{$ "Min"}}</label>
+            <label>{{$ "Avg"}}</label>
+            <label>{{$ "Max"}}</label>
+        </div>
+        <div id="workoutMinMaxAvgStats">
+            <div id="workoutSummaryAnchor"/>
+            <div class="workoutStatsRow hide powerSummaryRow">
+                <div class="workoutStatsColumn workoutStatsMinMaxAvgLabel">
+                    <label>{{$ "Power"}}</label>
                 </div>
-                <div class="workoutStatsRow">
-                    <div class="workoutStatsColumn workoutStatsMinMaxAvgLabel">
-                        <label>{{$ "Pace"}}</label>
-                    </div>
-                    <div class="workoutStatsColumnMinMaxAvg workoutStatsMin">
-                        <input type="text" id="paceMinField"/>
-                    </div>
-                    <div class="workoutStatsColumnMinMaxAvg workoutStatsAvg">
-                        <input type="text" id="paceAvgField"/>
-                    </div>
-                    <div class="workoutStatsColumnMinMaxAvg workoutStatsMax">
-                        <input type="text" id="paceMaxField"/>
-                    </div>
-                    <div class="workoutStatsColumn workoutStatsUnitLabel">
-                        <label>{{printUnitLabel "pace"}}</label>
-                    </div>
+                <div class="workoutStatsColumnMinMaxAvg workoutStatsMin">
+                    <input type="text" id="powerMinField"/>
                 </div>
-                <div class="workoutStatsRow">
-                    <div class="workoutStatsColumn workoutStatsMinMaxAvgLabel">
-                        <label>{{$ "HeartRate"}}</label>
-                    </div>
-                    <div class="workoutStatsColumnMinMaxAvg workoutStatsMin">
-                        <input type="text" id="hrMinField"/>
-                    </div>
-                    <div class="workoutStatsColumnMinMaxAvg workoutStatsAvg">
-                        <input type="text" id="hrAvgField"/>
-                    </div>
-                    <div class="workoutStatsColumnMinMaxAvg workoutStatsMax">
-                        <input type="text" id="hrMaxField"/>
-                    </div>
-                    <div class="workoutStatsColumn workoutStatsUnitLabel">
-                        <label>{{printUnitLabel "heartrate"}}</label>
-                    </div>
+                <div class="workoutStatsColumnMinMaxAvg workoutStatsAvg">
+                    <input type="text" id="powerAvgField"/>
                 </div>
-                <div class="workoutStatsRow">
-                    <div class="workoutStatsColumn workoutStatsMinMaxAvgLabel">
-                        <label>{{$ "Temperature"}}</label>
-                    </div>
-                    <div class="workoutStatsColumnMinMaxAvg workoutStatsMin">
-                        <input type="text" id="tempMinField"/>
-                    </div>
-                    <div class="workoutStatsColumnMinMaxAvg workoutStatsAvg">
-                        <input type="text" id="tempAvgField"/>
-                    </div>
-                    <div class="workoutStatsColumnMinMaxAvg workoutStatsMax">
-                        <input type="text" id="tempMaxField"/>
-                    </div>
-                    <div class="workoutStatsColumn workoutStatsUnitLabel">
-                        <label>{{printUnitLabel "temperature"}}</label>
-                    </div>
+                <div class="workoutStatsColumnMinMaxAvg workoutStatsMax">
+                    <input type="text" id="powerMaxField"/>
+                </div>
+                <div class="workoutStatsColumn workoutStatsUnitLabel">
+                    <label>{{printUnitLabel "power"}}</label>
                 </div>
             </div>
+            <div class="workoutStatsRow hide torqueSummaryRow">
+                <div class="workoutStatsColumn workoutStatsMinMaxAvgLabel">
+                    <label>{{$ "Torque"}}</label>
+                </div>
+                <div class="workoutStatsColumnMinMaxAvg workoutStatsMin">
+                    <input type="text" id="torqueMinField"/>
+                </div>
+                <div class="workoutStatsColumnMinMaxAvg workoutStatsAvg">
+                    <input type="text" id="torqueAvgField"/>
+                </div>
+                <div class="workoutStatsColumnMinMaxAvg workoutStatsMax">
+                    <input type="text" id="torqueMaxField"/>
+                </div>
+                <div class="workoutStatsColumn workoutStatsUnitLabel">
+                    <label>{{printUnitLabel "torque"}}</label>
+                </div>
+            </div>
+            <div class="workoutStatsRow hide elevationSummaryRow">
+                <div class="workoutStatsColumn workoutStatsMinMaxAvgLabel">
+                    <label>{{$ "Elevation"}}</label>
+                </div>
+                <div class="workoutStatsColumnMinMaxAvg workoutStatsMin">
+                    <input type="text" id="elevationMinField"/>
+                </div>
+                <div class="workoutStatsColumnMinMaxAvg workoutStatsAvg">
+                    <input type="text" id="elevationAvgField"/>
+                </div>
+                <div class="workoutStatsColumnMinMaxAvg workoutStatsMax">
+                    <input type="text" id="elevationMaxField"/>
+                </div>
+                <div class="workoutStatsColumn workoutStatsUnitLabel">
+                    <label>{{printUnitLabel "elevation"}}</label>
+                </div>
+            </div>
+            <div class="workoutStatsRow hide cadenceSummaryRow">
+                <div class="workoutStatsColumn workoutStatsMinMaxAvgLabel">
+                    <label>{{$ "Cadence"}}</label>
+                </div>
+                <div class="workoutStatsColumnMinMaxAvg workoutStatsMin">
+                    <input type="text" id="cadenceMinField"/>
+                </div>
+                <div class="workoutStatsColumnMinMaxAvg workoutStatsAvg">
+                    <input type="text" id="cadenceAvgField"/>
+                </div>
+                <div class="workoutStatsColumnMinMaxAvg workoutStatsMax">
+                    <input type="text" id="cadenceMaxField"/>
+                </div>
+                <div class="workoutStatsColumn workoutStatsUnitLabel">
+                    <label>{{printUnitLabel "cadence"}}</label>
+                </div>
+            </div>
+            <div class="workoutStatsRow hide speedSummaryRow">
+                <div class="workoutStatsColumn workoutStatsMinMaxAvgLabel">
+                    <label>{{$ "Speed"}}</label>
+                </div>
+                <div class="workoutStatsColumnMinMaxAvg workoutStatsMin">
+                    <input type="text" id="speedMinField"/>
+                </div>
+                <div class="workoutStatsColumnMinMaxAvg workoutStatsAvg">
+                    <input type="text" id="speedAvgField"/>
+                </div>
+                <div class="workoutStatsColumnMinMaxAvg workoutStatsMax">
+                    <input type="text" id="speedMaxField"/>
+                </div>
+                <div class="workoutStatsColumn workoutStatsUnitLabel">
+                    <label>{{printUnitLabel "speed"}}</label>
+                </div>
+            </div>
+            <div class="workoutStatsRow hide paceSummaryRow">
+                <div class="workoutStatsColumn workoutStatsMinMaxAvgLabel">
+                    <label>{{$ "Pace"}}</label>
+                </div>
+                <div class="workoutStatsColumnMinMaxAvg workoutStatsMin">
+                    <input type="text" id="paceMinField"/>
+                </div>
+                <div class="workoutStatsColumnMinMaxAvg workoutStatsAvg">
+                    <input type="text" id="paceAvgField"/>
+                </div>
+                <div class="workoutStatsColumnMinMaxAvg workoutStatsMax">
+                    <input type="text" id="paceMaxField"/>
+                </div>
+                <div class="workoutStatsColumn workoutStatsUnitLabel">
+                    <label>{{printUnitLabel "pace"}}</label>
+                </div>
+            </div>
+            <div class="workoutStatsRow hide heartRateSummaryRow">
+                <div class="workoutStatsColumn workoutStatsMinMaxAvgLabel">
+                    <label>{{$ "HeartRate"}}</label>
+                </div>
+                <div class="workoutStatsColumnMinMaxAvg workoutStatsMin">
+                    <input type="text" id="hrMinField"/>
+                </div>
+                <div class="workoutStatsColumnMinMaxAvg workoutStatsAvg">
+                    <input type="text" id="hrAvgField"/>
+                </div>
+                <div class="workoutStatsColumnMinMaxAvg workoutStatsMax">
+                    <input type="text" id="hrMaxField"/>
+                </div>
+                <div class="workoutStatsColumn workoutStatsUnitLabel">
+                    <label>{{printUnitLabel "heartrate"}}</label>
+                </div>
+            </div>
+            <div class="workoutStatsRow hide temperatureSummaryRow">
+                <div class="workoutStatsColumn workoutStatsMinMaxAvgLabel">
+                    <label>{{$ "Temperature"}}</label>
+                </div>
+                <div class="workoutStatsColumnMinMaxAvg workoutStatsMin">
+                    <input type="text" id="tempMinField"/>
+                </div>
+                <div class="workoutStatsColumnMinMaxAvg workoutStatsAvg">
+                    <input type="text" id="tempAvgField"/>
+                </div>
+                <div class="workoutStatsColumnMinMaxAvg workoutStatsMax">
+                    <input type="text" id="tempMaxField"/>
+                </div>
+                <div class="workoutStatsColumn workoutStatsUnitLabel">
+                    <label>{{printUnitLabel "temperature"}}</label>
+                </div>
+            </div>
+        </div>
 
-            <div class="selectionBox">
-                <select>
-                    <option value="Route" selected>{{$ "Route"}}</option>
-                </select>
-            </div>
-            <div class="selectionBox">
-                <select>
-                    <option value="Route" selected>{{$ "Equipment"}}</option>
-                </select>
-            </div>
-        </div>   
-        <div class="comments">
-            <div >
-                <label>{{$ "Description"}}</label>
-                <textarea id="descriptionInput" />
-            </div> 
-
-            <div>
-                <label>{{$ "PreActivityComments"}}</label>
-                <textarea id="preActivityCommentsInput" class="activityComments" />
-            </div>
-
-            <div>
-                <label>{{$ "PostActivityComments"}}</label>
-                <textarea id="postActivityCommentsInput" class="activityComments" />
-            </div>
+        <div class="selectionBox">
+            <select>
+                <option value="Route" selected>{{$ "Route"}}</option>
+            </select>
+        </div>
+        <div class="selectionBox">
+            <select>
+                <option value="Route" selected>{{$ "Equipment"}}</option>
+            </select>
+        </div>
+    </div>   
+    <div class="comments">
+        <div >
+            <label>{{$ "Description"}}</label>
+            <textarea id="descriptionInput" />
         </div> 
-    </div>
+
+        <div>
+            <label>{{$ "PreActivityComments"}}</label>
+            <textarea id="preActivityCommentsInput" class="activityComments" />
+        </div>
+
+        <div>
+            <label>{{$ "PostActivityComments"}}</label>
+            <textarea id="postActivityCommentsInput" class="activityComments" />
+        </div>
+    </div> 
+</div>
