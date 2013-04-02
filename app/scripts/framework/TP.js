@@ -17,6 +17,19 @@ function(Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmediate,
 {
     var TP = {};
 
+    // Override default "input" handling
+    Backbone.Stickit.addHandler(
+    {
+        selector: "input",
+        events: ["blur"]
+    });
+
+    Backbone.Stickit.addHandler(
+    {
+        selector: "textarea",
+        events: [ "blur" ]
+    });
+
     // Marionette stuff
     TP.Application = Marionette.Application.extend({});
 
