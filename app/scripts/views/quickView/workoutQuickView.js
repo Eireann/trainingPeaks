@@ -92,8 +92,6 @@ function (
             {
                 workoutQuickViewSummary: new WorkoutQuickViewSummary({model: this.model})
             };
-            
-            this.model.on("change:workoutDay change:workoutTypeValueId", this.views.workoutQuickViewSummary.render, this.views.workoutQuickViewSummary);
 
             this.activeTabName = null;
         },
@@ -125,6 +123,13 @@ function (
             {
                 observe: "workoutDay",
                 onGet: "getCalendarDate"
+            },
+            "#startTimeInput":
+            {
+                observe: "startTime",
+                eventsOverride: ["changeTime"],
+                onGet: "getStartTime",
+                onSet: "setStartTime"
             }
         },
 
@@ -253,30 +258,46 @@ function (
 
         onRender: function()
         {
-            if (!this.stickitInitialized)
+
+            if (!this.renderInitialized)
             {
                 this.model.off("change", this.render);
+                this.model.on("change", this.updateHeaderClass, this);
 
                 // there is no saveWorkout method ...
                 //this.model.on("change", this.saveWorkout, this);
 
                 this.stickit();
-                this.stickitInitialized = true;
+                this.renderInitialized = true;
 
                 this.$("#startTimeInput").timepicker({ appendTo: this.$el, 'timeFormat': 'g:i a' });
 
+
+                for (var tabName in this.views)
+                {
+                    var tab = this.views[tabName];
+                    tab.render();
+                    this.ui.quickViewContent.append(tab.$el);
+                    //tab.$el.hide();
+                }
+
             }
 
-            for (var tabName in this.views)
+            this.updateHeaderClass();
+        },
+
+        updateHeaderClass: function()
+        {
+            // first calculate it, then reset if needed
+            var tmpElement = $("<div></div>").addClass("grayHeader").addClass("workout");
+            tmpElement.addClass(this.getComplianceCssClassName());
+            tmpElement.addClass(this.getPastOrCompletedCssClassName());
+
+            var header = this.$(".grayHeader");
+            if (header.attr("class") !== tmpElement.attr("class"))
             {
-                var tab = this.views[tabName];
-                tab.render();
-                this.ui.quickViewContent.append(tab.$el);
-                //tab.$el.hide();
+                header.attr("class", tmpElement.attr("class"));
             }
-
-            this.$(".grayHeader").addClass(this.getComplianceCssClassName());
-            this.$(".grayHeader").addClass(this.getPastOrCompletedCssClassName());
         },
 
         getPastOrCompletedCssClassName: function ()

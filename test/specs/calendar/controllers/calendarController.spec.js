@@ -270,7 +270,6 @@ function(moment, $, _, Backbone, CalendarController, WorkoutModel, WorkoutsColle
                 controller.onDropItem(eventOptions);
                 expect(controller.createNewWorkoutFromExerciseLibraryItem).toHaveBeenCalledWith(eventOptions.LibraryId, eventOptions.ItemId, eventOptions.destinationCalendarDayModel.id);
                 expect(controller.weeksCollection.addWorkout).toHaveBeenCalledWith(workout);
-                expect(workout.save).toHaveBeenCalled();
             });
         });
 

@@ -15,7 +15,8 @@ function (TP)
             "exerciseLibraryItemId": 0,
             "itemName": null,
             "itemType": 0,
-            "workoutTypeId": 0
+            "workoutTypeId": 0,
+            "exerciseLibraryItemFilters": null
         }
 
     });

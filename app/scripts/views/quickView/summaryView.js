@@ -34,41 +34,48 @@ function (
         today: moment().format("YYYY-MM-DD"),
 
         showThrobbers: false,
-        
-        events:
-        {
-           
-          
-        },
 
         template:
         {
             type: "handlebars",
             template: workoutQuickViewSummaryTemplate
         },
-        
+
+        initialize: function()
+        {
+            this.model.on("change:workoutDay change:workoutTypeValueId", this.updateUICustomization, this);
+        },
+
         onRender: function()
         {
 
-            var self = this;
-            this.$("textarea").autosize();
-            this.applyUICustomization();
-
-            setImmediate(function () { self.setTextArea(); });
-
-            if (!this.stickitInitialized)
+            if (!this.renderInitialized)
             {
                 this.model.off("change", this.render);
 
-                // there is no saveWorkout method ...
-                //this.model.on("change", this.saveWorkout, this);
+                // do this before stickit or we lose our bindings ...
+                this.applyUICustomization();
+                this.setTextAreaHeight();
 
+                // now set stickit bindings
                 this.stickit();
-                this.stickitInitialized = true;
+                this.renderInitialized = true;
+
             }
+
+            var self = this;
+            this.$("textarea").autosize();
+            setImmediate(function() { self.setTextAreaHeight(); });
         },
 
-        setTextArea: function()
+        updateUICustomization: function()
+        {
+            this.unstickit();
+            this.applyUICustomization();
+            this.stickit();
+        },
+
+        setTextAreaHeight: function()
         {
             if (this.$("#descriptionInput").val())
             {
@@ -86,11 +93,10 @@ function (
             }
         },
 
-        applyUICustomization: function ()
+        applyUICustomization: function()
         {
             this.applyGhostingForFuture();
             this.applyUserPreferences();
-
         },
 
         applyGhostingForFuture: function ()
@@ -105,10 +111,20 @@ function (
                 this.$(".columnLabelsMinMaxAvg label").addClass("ghosted");
                 this.$("#workoutMinMaxAvgStats label").addClass("ghosted");
                 this.$("#workoutMinMaxAvgStats").addClass("ghosted");
+            } else
+            {
+                this.$(".workoutStatsCompleted input").attr("disabled", false);
+                this.$("#workoutMinMaxAvgStats input").attr("disabled", false);
+                //apply ghost css attribute
+                //this all needs refactored
+                this.$("label.workoutStatsCompleted").removeClass("ghosted");
+                this.$(".columnLabelsMinMaxAvg label").removeClass("ghosted");
+                this.$("#workoutMinMaxAvgStats label").removeClass("ghosted");
+                this.$("#workoutMinMaxAvgStats").removeClass("ghosted");
             }
         },
-        
-        applyUserPreferences: function ()
+
+        applyUserPreferences: function()
         {
             var statsTree = this.$("#workoutPlannedCompletedStats");
             var summaryTree = this.$("#workoutMinMaxAvgStats");
@@ -179,7 +195,7 @@ function (
             return convertToViewUnits(value, "distance");
         },
 
-        setDistance: function (value, options)
+        setDistance: function(value, options)
         {
             return convertToModelUnits(value, "distance");
         },
@@ -455,13 +471,6 @@ function (
             {
                 observe: "description",
                 eventsOverride: ["blur"]
-            },
-            "#startTimeInput":
-            {
-                observe: "startTime",
-                eventsOverride: ["changeTime"],
-                onGet: "getStartTime",
-                onSet: "setStartTime"
             }
         }
     });
