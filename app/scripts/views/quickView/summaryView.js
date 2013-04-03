@@ -32,7 +32,7 @@ function (
         today: moment().format("YYYY-MM-DD"),
 
         showThrobbers: false,
-
+        
         events:
         {
            
@@ -44,7 +44,7 @@ function (
             type: "handlebars",
             template: workoutQuickViewSummaryTemplate
         },
-
+        
         onRender: function()
         {
             this.$("textarea").autosize({ resize: "none" });

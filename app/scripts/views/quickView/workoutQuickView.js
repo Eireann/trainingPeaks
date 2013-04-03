@@ -87,11 +87,13 @@ function (
         initialize: function()
         {
             _.bindAll(this, "onUploadDone", "onUploadFail");
-            
+
             this.views =
             {
                 workoutQuickViewSummary: new WorkoutQuickViewSummary({model: this.model})
             };
+            
+            this.model.on("change:workoutDay change:workoutTypeValueId", this.views.workoutQuickViewSummary.render, this.views.workoutQuickViewSummary);
 
             this.activeTabName = null;
         },
