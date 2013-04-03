@@ -11,7 +11,7 @@
     "utilities/printTimeFromDecimalHours",
     "utilities/convertTimeHoursToDecimal",
     "utilities/workoutLayoutFormatter",
-    "hbs!templates/views/quickView/summary"
+    "hbs!templates/views/quickView/summaryView"
 ],
 function (
     textAreaResize,
