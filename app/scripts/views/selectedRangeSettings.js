@@ -16,7 +16,7 @@ function(TP, setImmediate, jqueryOutside, DeleteConfirmationView, selectedRangeS
         tagName: "div",
        
 
-        className: "weekSummarySettings",
+        className: "selectedRangeSettings",
 
         events:
         {
