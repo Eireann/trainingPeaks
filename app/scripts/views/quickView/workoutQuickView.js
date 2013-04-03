@@ -125,6 +125,13 @@ function (
             {
                 observe: "workoutDay",
                 onGet: "getCalendarDate"
+            },
+            "#startTimeInput":
+            {
+                observe: "startTime",
+                eventsOverride: ["changeTime"],
+                onGet: "getStartTime",
+                onSet: "setStartTime"
             }
         },
 
@@ -256,6 +263,7 @@ function (
             if (!this.stickitInitialized)
             {
                 this.model.off("change", this.render);
+                this.model.on("change", this.updateHeaderClass, this);
 
                 // there is no saveWorkout method ...
                 //this.model.on("change", this.saveWorkout, this);
@@ -275,8 +283,21 @@ function (
                 //tab.$el.hide();
             }
 
-            this.$(".grayHeader").addClass(this.getComplianceCssClassName());
-            this.$(".grayHeader").addClass(this.getPastOrCompletedCssClassName());
+            this.updateHeaderClass();
+        },
+
+        updateHeaderClass: function()
+        {
+            // first calculate it, then reset if needed
+            var tmpElement = $("<div></div>").addClass("grayHeader").addClass("workout");
+            tmpElement.addClass(this.getComplianceCssClassName());
+            tmpElement.addClass(this.getPastOrCompletedCssClassName());
+
+            var header = this.$(".grayHeader");
+            if (header.attr("class") !== tmpElement.attr("class"))
+            {
+                header.attr("class", tmpElement.attr("class"));
+            }
         },
 
         getPastOrCompletedCssClassName: function ()

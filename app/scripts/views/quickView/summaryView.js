@@ -455,13 +455,6 @@ function (
             {
                 observe: "description",
                 eventsOverride: ["blur"]
-            },
-            "#startTimeInput":
-            {
-                observe: "startTime",
-                eventsOverride: ["changeTime"],
-                onGet: "getStartTime",
-                onSet: "setStartTime"
             }
         }
     });
