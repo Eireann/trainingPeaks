@@ -52,7 +52,7 @@ function(printUnitLabel, convertToViewUnits, convertToModelUnits)
 
             it("should print the unit label for calories", function()
             {
-                expect(printUnitLabel("calories")).toBe("cal");
+                expect(printUnitLabel("calories")).toBe("kcal");
             });
 
             it("should print the unit label for elevation gain", function()

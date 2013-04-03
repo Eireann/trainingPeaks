@@ -2,14 +2,27 @@ define(
 [],
 function()
 {
-    var printTimeFromDecimalHours = function(hours)
+    var printTimeFromDecimalHours = function(hours, showSeconds)
     {
-        if (!hours || hours <= 0.0166)
-            return "00:00";
+        if (!hours || hours <= 0.00001)
+        {
+            var displayTime = (showSeconds === true) ? "00:00:00" : "00:00";
+            return displayTime;
+        }
 
         var fullHours = Math.floor(hours);
-        var partialHours = hours % 1;
-        var minutes = Math.round(partialHours * 60);
+        var exactMinutes = (hours % 1) * 60;
+        var exactSeconds = (exactMinutes % 1) * 60;
+        var fullMinutes;
+        var fullSeconds;
+
+        if (showSeconds === true)
+        {
+            fullMinutes = Math.floor(exactMinutes);
+            fullSeconds = Math.round(exactSeconds);
+        }
+        else
+            fullMinutes = Math.round(exactMinutes);
 
         var time;
 
@@ -18,10 +31,19 @@ function()
         else
             time = "" + fullHours;
 
-        if (minutes > 10)
-            time += ":" + minutes;
+        if (fullMinutes > 10)
+            time += ":" + fullMinutes;
         else
-            time += ":0" + minutes;
+            time += ":0" + fullMinutes;
+        
+        if (showSeconds === true)
+        {
+            if (fullSeconds > 10)
+                time += ":" + fullSeconds;
+            else
+                time += ":0" + fullSeconds;
+
+        }
 
         return time;
     };
