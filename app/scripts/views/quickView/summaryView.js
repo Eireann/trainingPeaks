@@ -43,7 +43,7 @@ function (
 
         initialize: function()
         {
-            this.model.on("change:workoutDay change:workoutTypeValueId", this.applyGhostingForFuture, this);
+            this.model.on("change:workoutDay change:workoutTypeValueId", this.updateUICustomization, this);
         },
 
         onRender: function()
@@ -66,6 +66,13 @@ function (
             var self = this;
             this.$("textarea").autosize();
             setImmediate(function() { self.setTextAreaHeight(); });
+        },
+
+        updateUICustomization: function()
+        {
+            this.unstickit();
+            this.applyUICustomization();
+            this.stickit();
         },
 
         setTextAreaHeight: function()
