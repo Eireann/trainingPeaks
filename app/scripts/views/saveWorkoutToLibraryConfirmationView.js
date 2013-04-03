@@ -44,7 +44,7 @@ function(TP, SaveWorkoutToLibraryCommand, saveWorkoutToLibraryTemplate)
 
             deferred.done(function()
             {
-                self.libraries.get(libraryId).fetchExercises();
+                self.libraries.get(libraryId).fetchExercises(true);
             });
 
             deferred.always(function()
