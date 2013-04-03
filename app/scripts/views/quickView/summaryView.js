@@ -202,7 +202,7 @@ function (
 
         getTime: function (value, options)
         {
-            return printTimeFromDecimalHours(value);
+            return printTimeFromDecimalHours(value, true);
         },
 
         setTime: function (value, options)
