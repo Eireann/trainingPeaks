@@ -92,8 +92,6 @@ function (
             {
                 workoutQuickViewSummary: new WorkoutQuickViewSummary({model: this.model})
             };
-            
-            this.model.on("change:workoutDay change:workoutTypeValueId", this.views.workoutQuickViewSummary.render, this.views.workoutQuickViewSummary);
 
             this.activeTabName = null;
         },
@@ -260,7 +258,8 @@ function (
 
         onRender: function()
         {
-            if (!this.stickitInitialized)
+
+            if (!this.renderInitialized)
             {
                 this.model.off("change", this.render);
                 this.model.on("change", this.updateHeaderClass, this);
@@ -269,18 +268,19 @@ function (
                 //this.model.on("change", this.saveWorkout, this);
 
                 this.stickit();
-                this.stickitInitialized = true;
+                this.renderInitialized = true;
 
                 this.$("#startTimeInput").timepicker({ appendTo: this.$el, 'timeFormat': 'g:i a' });
 
-            }
 
-            for (var tabName in this.views)
-            {
-                var tab = this.views[tabName];
-                tab.render();
-                this.ui.quickViewContent.append(tab.$el);
-                //tab.$el.hide();
+                for (var tabName in this.views)
+                {
+                    var tab = this.views[tabName];
+                    tab.render();
+                    this.ui.quickViewContent.append(tab.$el);
+                    //tab.$el.hide();
+                }
+
             }
 
             this.updateHeaderClass();
