@@ -3,8 +3,8 @@ define(
     "handlebars",
     "utilities/printTimeFromDecimalHours"
 ],
-function(Handlebars, printTimeFromDecimalHours, showSeconds)
+function(Handlebars, printTimeFromDecimalHours)
 {
-    Handlebars.registerHelper("printTimeFromDecimalHours", printTimeFromDecimalHours, showSeconds);
+    Handlebars.registerHelper("printTimeFromDecimalHours", printTimeFromDecimalHours);
     return printTimeFromDecimalHours;
 });

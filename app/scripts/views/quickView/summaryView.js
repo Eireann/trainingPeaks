@@ -143,6 +143,10 @@ function (
         {
             var workoutOrderPreferences = theMarsApp.user.get("settings").workout.layout[this.model.get("workoutTypeValueId")];
 
+            //Reset visibility
+            statsTree.find(".workoutStatsRow").each(function() { $(this).addClass('hide'); });
+            summaryTree.find(".workoutStatsRow").each(function() { $(this).addClass('hide'); });
+
             //Process stats and summary order area
             var statsAnchor = statsTree.find("#workoutStatsAnchor");
             var summaryAnchor = summaryTree.find("#workoutSummaryAnchor");
