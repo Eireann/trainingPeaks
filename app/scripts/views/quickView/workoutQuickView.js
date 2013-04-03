@@ -98,6 +98,11 @@ function (
             this.activeTabName = null;
         },
 
+        onShow: function()
+        {
+
+        },
+
         template:
         {
             type: "handlebars",
