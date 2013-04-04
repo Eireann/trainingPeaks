@@ -242,9 +242,8 @@ function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkout
             this.$el.draggable(this.draggableOptions);
         },
 
-        draggableHelper: function(e)
+        makeDraggableHelperElement: function()
         {
-
             var $helperEl = $(CalendarWorkoutTemplateDragState(this.serializeData()));
             var classNames = this.className().split(" ");
             _.each(classNames, function(className)
@@ -252,7 +251,12 @@ function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkout
                 $helperEl.addClass(className);
             });
             $helperEl.width(this.$el.width());
+            return $helperEl;
+        },
 
+        draggableHelper: function(e)
+        {
+            var $helperEl = this.makeDraggableHelperElement();
 
             // if they clicked further down on a long workout, set a specific cursor offset for the draggable,
             // else let jqueryui handle it automagically

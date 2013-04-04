@@ -132,7 +132,28 @@ function (
                 eventsOverride: ["changeTime"],
                 onGet: "getStartTime",
                 onSet: "setStartTime"
-            }
+            },
+            "#qv-header-distance":
+            {
+                observe: "distance",
+                onGet: "getDistance"
+            },
+            "#qv-header-totaltime":
+            {
+                observe: "totalTime",
+                onGet: "getTime"
+            },
+            "#qv-header-tssactual": "tssActual"
+        },
+        
+        getTime: function (value, options)
+        {
+            return printTimeFromDecimalHours(value, true);
+        },
+
+        getDistance: function (value, options)
+        {
+            return convertToViewUnits(value, "distance");
         },
 
         getComplianceCssClassName: function ()
