@@ -60,19 +60,33 @@ function (
 
             setImmediate(function () { self.setTextArea(); });
 
-            if (!this.stickitInitialized)
+            if (!this.renderInitialized)
             {
                 this.model.off("change", this.render);
 
-                // there is no saveWorkout method ...
-                //this.model.on("change", this.saveWorkout, this);
+                // do this before stickit or we lose our bindings ...
+                this.applyUICustomization();
+                this.setTextAreaHeight();
 
+                // now set stickit bindings
                 this.stickit();
-                this.stickitInitialized = true;
+                this.renderInitialized = true;
+
             }
+
+            var self = this;
+            this.$("textarea").autosize();
+            setImmediate(function() { self.setTextAreaHeight(); });
         },
 
-        setTextArea: function()
+        updateUICustomization: function()
+        {
+            this.unstickit();
+            this.applyUICustomization();
+            this.stickit();
+        },
+
+        setTextAreaHeight: function()
         {
             if (this.$("#descriptionInput").val())
             {
@@ -92,11 +106,10 @@ function (
             //this.$(".chosenSelect").chosen();
         },
 
-        applyUICustomization: function ()
+        applyUICustomization: function()
         {
             this.applyGhostingForFuture();
             this.applyUserPreferences();
-
         },
 
         applyGhostingForFuture: function ()
@@ -111,10 +124,20 @@ function (
                 this.$(".columnLabelsMinMaxAvg label").addClass("ghosted");
                 this.$("#workoutMinMaxAvgStats label").addClass("ghosted");
                 this.$("#workoutMinMaxAvgStats").addClass("ghosted");
+            } else
+            {
+                this.$(".workoutStatsCompleted input").attr("disabled", false);
+                this.$("#workoutMinMaxAvgStats input").attr("disabled", false);
+                //apply ghost css attribute
+                //this all needs refactored
+                this.$("label.workoutStatsCompleted").removeClass("ghosted");
+                this.$(".columnLabelsMinMaxAvg label").removeClass("ghosted");
+                this.$("#workoutMinMaxAvgStats label").removeClass("ghosted");
+                this.$("#workoutMinMaxAvgStats").removeClass("ghosted");
             }
         },
-        
-        applyUserPreferences: function ()
+
+        applyUserPreferences: function()
         {
             var statsTree = this.$("#workoutPlannedCompletedStats");
             var summaryTree = this.$("#workoutMinMaxAvgStats");
@@ -132,6 +155,10 @@ function (
         applyPreferencesSort: function (statsTree, summaryTree)
         {
             var workoutOrderPreferences = theMarsApp.user.get("settings").workout.layout[this.model.get("workoutTypeValueId")];
+
+            //Reset visibility
+            statsTree.find(".workoutStatsRow").each(function() { $(this).addClass('hide'); });
+            summaryTree.find(".workoutStatsRow").each(function() { $(this).addClass('hide'); });
 
             //Process stats and summary order area
             var statsAnchor = statsTree.find("#workoutStatsAnchor");
@@ -185,14 +212,14 @@ function (
             return convertToViewUnits(value, "distance");
         },
 
-        setDistance: function (value, options)
+        setDistance: function(value, options)
         {
             return convertToModelUnits(value, "distance");
         },
 
         getTime: function (value, options)
         {
-            return printTimeFromDecimalHours(value);
+            return printTimeFromDecimalHours(value, true);
         },
 
         setTime: function (value, options)
@@ -461,13 +488,6 @@ function (
             {
                 observe: "description",
                 eventsOverride: ["blur"]
-            },
-            "#startTimeInput":
-            {
-                observe: "startTime",
-                eventsOverride: ["changeTime"],
-                onGet: "getStartTime",
-                onSet: "setStartTime"
             }
         }
     });

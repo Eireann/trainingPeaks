@@ -26,8 +26,9 @@ function()
         },
         calories:
         {
-            "0": "cal",
-            "1": "kCal"
+            //"0": "Cal", //1 Cal(orie) = 1kcal
+            "0": "kcal", //We currently only show kcal in flex app
+            "1": "kcal"
         },
         elevationGain:
         {

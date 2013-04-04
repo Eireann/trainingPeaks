@@ -70,7 +70,7 @@ function (
             "click #saveClose": "onSaveClosedClicked",
             "click #date": "onDateClicked",
             "click #quickViewFileUploadDiv": "onUploadFileClicked",
-            "change input[type='file']#fileUpload": "onFileSelected",
+            "change input[type='file']#fileUploadInput": "onFileSelected",
             "change input[type='file']#attachment": "onAttachmentFileSelected",
             "click .workoutIcon": "onWorkoutIconClicked",
             "click .addAttachment": "onAddAttachmentClicked",
@@ -81,7 +81,7 @@ function (
         ui:
         {
             "date": "#date",
-            "fileinput": "input[type='file']#fileUpload",
+            "fileinput": "input[type='file']#fileUploadInput",
             "attachmentinput": "input[type='file']#attachment",
             "quickViewContent": "#quickViewContent"
         },
@@ -94,8 +94,6 @@ function (
             {
                 workoutQuickViewSummary: new WorkoutQuickViewSummary({model: this.model})
             };
-            
-            this.model.on("change:workoutDay change:workoutTypeValueId", this.views.workoutQuickViewSummary.render, this.views.workoutQuickViewSummary);
 
             this.activeTabName = null;
         },
@@ -127,6 +125,13 @@ function (
             {
                 observe: "workoutDay",
                 onGet: "getCalendarDate"
+            },
+            "#startTimeInput":
+            {
+                observe: "startTime",
+                eventsOverride: ["changeTime"],
+                onGet: "getStartTime",
+                onSet: "setStartTime"
             }
         },
 
@@ -255,19 +260,20 @@ function (
 
         onRender: function()
         {
-            if (!this.stickitInitialized)
+
+            if (!this.renderInitialized)
             {
                 this.model.off("change", this.render);
+                this.model.on("change", this.updateHeaderClass, this);
 
                 // there is no saveWorkout method ...
                 //this.model.on("change", this.saveWorkout, this);
 
                 this.stickit();
-                this.stickitInitialized = true;
+                this.renderInitialized = true;
 
                 this.$("#startTimeInput").timepicker({ appendTo: this.$el, 'timeFormat': 'g:i a' });
 
-            }
 
             for (var tabName in this.views)
             {
@@ -277,6 +283,23 @@ function (
                 //tab.$el.hide();
             }
 
+            }
+
+            this.updateHeaderClass();
+        },
+
+        updateHeaderClass: function()
+        {
+            // first calculate it, then reset if needed
+            var tmpElement = $("<div></div>").addClass("grayHeader").addClass("workout");
+            tmpElement.addClass(this.getComplianceCssClassName());
+            tmpElement.addClass(this.getPastOrCompletedCssClassName());
+
+            var header = this.$(".grayHeader");
+            if (header.attr("class") !== tmpElement.attr("class"))
+            {
+                header.attr("class", tmpElement.attr("class"));
+            }
             this.$(".grayHeader").addClass(this.getComplianceCssClassName());
             this.$(".grayHeader").addClass(this.getPastOrCompletedCssClassName());
 
