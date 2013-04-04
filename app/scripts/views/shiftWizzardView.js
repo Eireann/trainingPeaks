@@ -52,15 +52,22 @@ function(moment, datepicker, spinner, TP, ShiftWorkoutsCommand, shiftWizzard)
 
         bindings:
         {
-            "input[name=selectItems]": "selectItems",
-            "input[name=shiftBy]": "shiftBy",
+            "input[name=selectItems]":
+            {
+                observe: "selectItems",
+                events: ["change"]
+            },
+            "input[name=shiftBy]":
+            {
+                observe: "shiftBy",
+                events: ["change"]
+            },
+
             "#fromDate": "fromDate",
             "#toDate": "toDate",
             "#moveToStartDate": "moveToStartDate",
             "#moveByNumberOfDays": "moveByNumberOfDays",
-            "#moveByNumberOfWeeks": "moveByNumberOfWeeks",
-            "#meals": "meals",
-            "#workouts": "workouts"
+            "#moveByNumberOfWeeks": "moveByNumberOfWeeks"
         },
 
         ui:
