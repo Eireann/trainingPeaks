@@ -345,6 +345,10 @@ function(_, moment, setImmediate, TP, CalendarLayout, CalendarCollection, Calend
             {
                 this.weeksCollection.onItemMoved(options);        
             }
+            else if (options.DropEvent === "dayMoved")
+            {
+                this.weeksCollection.onDayMoved(options);
+            }
             else if (options.DropEvent === "addExerciseFromLibrary")
             {
                 var destinationDate = options.destinationCalendarDayModel.id;
@@ -356,7 +360,7 @@ function(_, moment, setImmediate, TP, CalendarLayout, CalendarCollection, Calend
                 this.weeksCollection.addWorkout(workout);
                 this.views.calendar.scrollToDate(destinationDate);
                 
-            }
+            } 
         },
 
         onShiftItems: function(shiftCommand)
