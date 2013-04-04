@@ -243,8 +243,8 @@ input[disabled='disabled'] {
 
 	.selectionBox
 	{
-		padding-left: 85px;
-		@include selectionBox(170px);
+		padding-left: 87px;
+		@include selectionBox(168px);
 	}
 }
 .workoutStatsRow
@@ -252,11 +252,14 @@ input[disabled='disabled'] {
 	@include innerRow();
 	
 	clear: both;
+    height: 23px;
 
 	.workoutStatsColumn
 	{
 		float:left;
-		@include inputs(85px, 20px, 12px, $navigationFontFamilyRegular);
+        height: 23px;
+		@include inputs(83.5px, 20px, 12px, $navigationFontFamilyRegular);
+        padding-right: 2px;
 
         .hide
         {
@@ -269,7 +272,9 @@ input[disabled='disabled'] {
 	.workoutStatsColumnMinMaxAvg
 	{
 		float:left;
-		@include inputs(56px, 20px, 12px, $navigationFontFamilyRegular);
+        height: 23px;
+		@include inputs(55px, 20px, 12px, $navigationFontFamilyRegular);
+        padding-right: 2px;
 	}
 
 	label
@@ -279,6 +284,7 @@ input[disabled='disabled'] {
 		padding-top: 5px;
 		padding-right: 5px;
 
+
         &.ghosted
         {
             color: $TPGrey7;
@@ -286,7 +292,7 @@ input[disabled='disabled'] {
 
 	}
 	
-	@include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey4, normal);
+	@include labels($navigationFontFamilyRegular, 0.82em, $TPGrey4, normal);
 
 	.workoutStatsUnitLabel
 	{
@@ -313,6 +319,7 @@ input[disabled='disabled'] {
 	{
 		float: left;
 		width: 75px;
+        font-weight: bold;
 
         &.ghosted
         {
@@ -326,14 +333,16 @@ input[disabled='disabled'] {
 {
 	padding-left: 105px;
 	width: 100%;
-	height: 15px;
+	height: 23px;
 	background: transparent;
+    padding-top: 10px;
 
 	@include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey4, normal);
 	label
 	{
 		float: left;
 		width: 56px;
+        font-weight: bold;
             
         &.ghosted
         {
@@ -350,6 +359,11 @@ input[disabled='disabled'] {
 	@include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey4, normal);
 	min-width: 275px;
 	height: 100%;
+
+    label
+    {
+        font-weight: bold;
+    }
 
 	#descriptionInput
 	{
