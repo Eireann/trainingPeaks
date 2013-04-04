@@ -14,7 +14,7 @@ function(TP, printKeyStat)
             expect(printKeyStat(workout)).toBe("0.01");
 
             workout.set("distance", null);
-            expect(printKeyStat(workout)).toBe("01:00");
+            expect(printKeyStat(workout)).toBe("1:00:00");
             
             workout.set("totalTime", null);
             expect(printKeyStat(workout)).toBe(100);
@@ -23,14 +23,14 @@ function(TP, printKeyStat)
             expect(printKeyStat(workout)).toBe("0.01");
 
             workout.set("distancePlanned", null);
-            expect(printKeyStat(workout)).toBe("01:00");
+            expect(printKeyStat(workout)).toBe("1:00:00");
 
             workout.set("totalTimePlanned", null);
             expect(printKeyStat(workout)).toBe(100);
 
             workout.set("tssPlanned", null);
             expect(printKeyStat(workout)).toBe("");
-            
+ 
 
         });
         

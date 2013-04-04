@@ -22,7 +22,7 @@ function (determineCompletedWorkout, printUnitLabel)
             }
             else if (workout.totalTime)
             {
-                units = "hr";
+                units = "";
             }
             else if (workout.tssActual)
             {
@@ -37,7 +37,7 @@ function (determineCompletedWorkout, printUnitLabel)
             }
             else if(workout.totalTimePlanned)
             {
-                units = "hr";
+                units = "";
             }
             else if (workout.tssPlanned)
             {

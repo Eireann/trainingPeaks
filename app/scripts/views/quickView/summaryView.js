@@ -204,7 +204,7 @@ function (
 
         getDistance: function (value, options)
         {
-            return convertToViewUnits(value, "distance");
+            return convertToViewUnits(value, "distance", null, null, 2);
         },
 
         setDistance: function(value, options)
