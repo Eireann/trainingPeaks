@@ -519,6 +519,29 @@ function(_, moment, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, C
             this.moveItem(item, options.destinationCalendarDayModel.id);
         },
 
+        onDayMoved: function(options)
+        {
+            if (!options.hasOwnProperty('ItemId') || !options.ItemId ||
+                !options.hasOwnProperty('destinationCalendarDayModel') || !options.destinationCalendarDayModel)
+            {
+                theMarsApp.logger.debug("CalendarCollection.onItemMoved: missing ItemId or destinationCalendarDayModel attribute?");
+                return;
+            }
+
+            // get the item
+            var sourceDayModel = this.getDayModel(options.ItemId);
+            var item = null;
+
+            // first model is day label ...
+            while (sourceDayModel.itemsCollection.length > 1)
+            {
+                var item = sourceDayModel.itemsCollection.pop();
+                this.moveItem(item, options.destinationCalendarDayModel.id);
+            }
+
+            options.destinationCalendarDayModel.trigger("day:click", options.destinationCalendarDayModel, $.Event());
+        },
+
         moveItem: function(item, destinationDay)
         {
 

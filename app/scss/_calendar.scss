@@ -207,3 +207,19 @@ body.clipboardFull
         background-color: $selectedDay;
     }
 }
+
+.dragHelper
+{
+   &.day
+   {
+        background-color: $selectedDay;
+        opacity: 0.8;
+        min-height: 350px;
+       
+        .dayHeader
+        {
+            background-color: transparent; 
+            height: 27px;
+        } 
+   }  
+}

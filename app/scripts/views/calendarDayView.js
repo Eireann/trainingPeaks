@@ -10,9 +10,10 @@ define(
     "views/calendarWorkoutView",
     "views/calendarDaySettings",
     "views/newItemView",
+    "views/calendarDayDragStateView",
     "hbs!templates/views/calendarDay"
 ],
-function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySettingsView, NewItemView, CalendarDayTemplate)
+function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySettingsView, NewItemView, CalendarDayDragStateView, CalendarDayTemplate)
 {
 
     var today = moment().format("YYYY-MM-DD");
@@ -43,8 +44,8 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySe
                 theMarsApp.user.on("change", this.render, this);
             
             this.collection = this.model.itemsCollection;
-            
-            this.on("after:item:added", this.makeDraggable, this);
+
+            this.on("after:item:added", this.makeItemsDraggable, this);
             this.model.on("day:select", this.select, this);
             this.model.on("day:unselect", this.unselect, this);
         },
@@ -53,6 +54,7 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySe
         {
             mouseenter: "onMouseEnter",
             mouseleave: "onMouseLeave",
+            "mousedown .dayHeader": "onDayClicked",
             "click .dayHeader": "onDayClicked",
 
             "click": "onWhitespaceDayClicked",
@@ -94,6 +96,7 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySe
         onRender: function()
         {
             this.setTodayCss();
+            this.makeDayDraggable();
             this.setUpDroppable();
         },
 
@@ -106,7 +109,7 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySe
             }
         },
 
-        makeDraggable: function(childView)
+        makeItemsDraggable: function(childView)
         {
             var modelName = this.getModelName(childView.model);
             if (modelName !== "Label" && typeof childView.makeDraggable === 'function')
@@ -211,6 +214,45 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySe
         {
             this.selected = false;
             this.$el.removeClass("selected");
+        },
+
+        makeDayDraggable: function()
+        {
+            _.bindAll(this, "draggableHelper", "onDragStart", "onDragStop");
+            this.$el.data("ItemId", this.model.id);
+            this.$el.data("ItemType", "CalendarDay");
+            this.$el.data("DropEvent", "dayMoved");
+            this.draggableOptions = { appendTo: 'body', helper: this.draggableHelper, start: this.onDragStart, stop: this.onDragStop };
+            this.$el.draggable(this.draggableOptions);
+        },
+
+        draggableHelper: function(e)
+        {
+            // get a day view, with all items in drag state
+            var helperView = new CalendarDayDragStateView({ model: this.model });
+            helperView.render();
+            var $helperViewEl = helperView.$el;
+            $helperViewEl.width(this.$el.width());
+            //$helperViewEl.height(this.$el.height());
+
+            // wrap it in a week of the appropriate class
+            var $helperEl = $("<div></div>");
+            $helperEl.attr("class", this.$el.closest(".week").attr("class"));
+            $helperEl.append($helperViewEl);
+
+
+            return $helperEl;
+        },
+
+        onDragStart: function(e)
+        {
+            this.$el.addClass("dragging");
+        },
+
+        onDragStop: function()
+        {
+            this.$el.removeClass("dragging");
         }
+
     });
 });
