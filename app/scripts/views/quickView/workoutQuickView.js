@@ -68,7 +68,7 @@ function (
             "click #saveClose": "onSaveClosedClicked",
             "click #date": "onDateClicked",
             "click #quickViewFileUploadDiv": "onUploadFileClicked",
-            "change input[type='file']#fileUpload": "onFileSelected",
+            "change input[type='file']#fileUploadInput": "onFileSelected",
             "change input[type='file']#attachment": "onAttachmentFileSelected",
             "click .workoutIcon": "onWorkoutIconClicked",
             "click .addAttachment": "onAddAttachmentClicked",
@@ -79,7 +79,7 @@ function (
         ui:
         {
             "date": "#date",
-            "fileinput": "input[type='file']#fileUpload",
+            "fileinput": "input[type='file']#fileUploadInput",
             "attachmentinput": "input[type='file']#attachment",
             "quickViewContent": "#quickViewContent"
         },
