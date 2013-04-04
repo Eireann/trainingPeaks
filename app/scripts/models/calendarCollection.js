@@ -535,7 +535,7 @@ function(_, moment, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, C
             // first model is day label ...
             while (sourceDayModel.itemsCollection.length > 1)
             {
-                var item = sourceDayModel.itemsCollection.pop();
+                item = sourceDayModel.itemsCollection.pop();
                 this.moveItem(item, options.destinationCalendarDayModel.id);
             }
 
