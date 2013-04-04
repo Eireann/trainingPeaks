@@ -143,17 +143,26 @@ function (
                 observe: "totalTime",
                 onGet: "getTime"
             },
-            "#qv-header-tssactual": "tssActual"
+            "#qv-header-tssactual":
+            {
+                observe: "tssActual",
+                onGet: "getTss"
+            }
         },
-        
-        getTime: function (value, options)
+
+        getTime: function(value, options)
         {
             return printTimeFromDecimalHours(value, true);
         },
 
-        getDistance: function (value, options)
+        getTss: function(value, options)
         {
-            return convertToViewUnits(value, "distance");
+            return value ? value : 0;
+        },
+
+        getDistance: function(value, options)
+        {
+            return convertToViewUnits(value, "distance", null, 0);
         },
 
         getComplianceCssClassName: function ()

@@ -4,9 +4,14 @@ function()
 {
     var printTimeFromDecimalHours = function(hours, showSeconds)
     {
+        if (typeof showSeconds !== 'boolean')
+        {
+            showSeconds = true;
+        }
+
         if (!hours || hours <= 0.00001)
         {
-            var displayTime = (showSeconds === true) ? "00:00:00" : "00:00";
+            var displayTime = (showSeconds === true) ? "0:00:00" : "00:00";
             return displayTime;
         }
 
@@ -26,10 +31,13 @@ function()
 
         var time;
 
+        /*
         if (fullHours < 10)
             time = "0" + fullHours;
         else
             time = "" + fullHours;
+            */
+        time = "" + fullHours;
 
         if (fullMinutes > 10)
             time += ":" + fullMinutes;

@@ -138,7 +138,7 @@ function(printUnitLabel, convertToViewUnits, convertToModelUnits)
                 expect(convertToViewUnits(0, "distance")).toBe("0.00");
                 expect(convertToViewUnits(1609, "distance")).toBe("1.00");
                 expect(convertToViewUnits(3218, "distance")).toBe("2.00");
-                expect(convertToViewUnits(1234567890, "distance")).toBe("767124.68");
+                expect(convertToViewUnits(1234567890, "distance")).toBe("767124.7");
                 expect(convertToViewUnits("notANumber", "distance")).toBe("");
                 expect(convertToViewUnits(-1609, "distance")).toBe("-1.00");
             });

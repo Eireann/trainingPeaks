@@ -182,7 +182,7 @@ function(TP, printUnitsValue, userSettingsTemplate)
 
         onClose: function ()
         {
-            this.unstickModel();
+            this.unstickit();
             this.model.off("change", this.saveSettings);
             this.close();
         },
