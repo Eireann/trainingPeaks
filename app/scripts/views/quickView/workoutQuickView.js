@@ -1,5 +1,6 @@
 ﻿define(
 [
+    "jquerySelectBox",
     "jqueryui/datepicker",
     "jqueryTimepicker",
     "jqueryTextAreaResize",
@@ -24,6 +25,7 @@
     "hbs!templates/views/quickView/workoutQuickView"
 ],
 function (
+    selectBox,
     datepicker,
     timepicker,
     textAreaResize,
@@ -68,7 +70,7 @@ function (
             "click #saveClose": "onSaveClosedClicked",
             "click #date": "onDateClicked",
             "click #quickViewFileUploadDiv": "onUploadFileClicked",
-            "change input[type='file']#fileUpload": "onFileSelected",
+            "change input[type='file']#fileUploadInput": "onFileSelected",
             "change input[type='file']#attachment": "onAttachmentFileSelected",
             "click .workoutIcon": "onWorkoutIconClicked",
             "click .addAttachment": "onAddAttachmentClicked",
@@ -79,7 +81,7 @@ function (
         ui:
         {
             "date": "#date",
-            "fileinput": "input[type='file']#fileUpload",
+            "fileinput": "input[type='file']#fileUploadInput",
             "attachmentinput": "input[type='file']#attachment",
             "quickViewContent": "#quickViewContent"
         },
@@ -273,13 +275,13 @@ function (
                 this.$("#startTimeInput").timepicker({ appendTo: this.$el, 'timeFormat': 'g:i a' });
 
 
-                for (var tabName in this.views)
-                {
-                    var tab = this.views[tabName];
-                    tab.render();
-                    this.ui.quickViewContent.append(tab.$el);
-                    //tab.$el.hide();
-                }
+            for (var tabName in this.views)
+            {
+                var tab = this.views[tabName];
+                tab.render();
+                this.ui.quickViewContent.append(tab.$el);
+                //tab.$el.hide();
+            }
 
             }
 
@@ -298,6 +300,18 @@ function (
             {
                 header.attr("class", tmpElement.attr("class"));
             }
+            this.$(".grayHeader").addClass(this.getComplianceCssClassName());
+            this.$(".grayHeader").addClass(this.getPastOrCompletedCssClassName());
+
+            self = this;
+            //setImmediate(function () { self.callLater(); });
+            this.$(".chzn-select").chosen();
+            
+        },
+
+        callLater: function()
+        {
+            this.$(".chosenSelect").chosen();
         },
 
         getPastOrCompletedCssClassName: function ()

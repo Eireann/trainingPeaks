@@ -18,6 +18,10 @@
 		border:1px solid $TPGrey2;
 		display:inline-block;
 		text-decoration:none;
+
+        outline-width: 1px;
+        outline-style: solid;
+        outline-color: $TPGrey3;
 	}
 }
 
