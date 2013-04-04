@@ -199,7 +199,7 @@ function(moment, datepicker, spinner, TP, ShiftWorkoutsCommand, shiftWizzard)
 
         onClose: function()
         {
-            this.unstickModel();
+            this.unstickit();
             this.close();
         },
 
