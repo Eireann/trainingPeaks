@@ -17,7 +17,7 @@ function(TP, printKeyStatUnits)
             expect(printKeyStatUnits(workout)).toBe("");
 
             workout.set("totalTime", null);
-            expect(printKeyStatUnits(workout)).toBe("tss");
+            expect(printKeyStatUnits(workout)).toBe("TSS");
             
             workout.set("tssActual", null);
             expect(printKeyStatUnits(workout)).toBe("mi");
@@ -26,7 +26,7 @@ function(TP, printKeyStatUnits)
             expect(printKeyStatUnits(workout)).toBe("");
 
             workout.set("totalTimePlanned", null);
-            expect(printKeyStatUnits(workout)).toBe("tss");
+            expect(printKeyStatUnits(workout)).toBe("TSS");
 
             workout.set("tssPlanned", null);
             expect(printKeyStatUnits(workout)).toBe("");
