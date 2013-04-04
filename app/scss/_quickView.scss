@@ -16,13 +16,14 @@ input[disabled='disabled'] {
 	width: 100%;
 	height: 125px;
 	background-color: $TPGrey1;
-    padding: 15px 0px 0px 18px;
+    padding: 12px 0px 0px 12px;
     @include box-shadow(2px 0px 7px 0px $TPGrey3);
     position: relative;
 
     .dateAndTime
     {
         float: left;
+        padding-left: 2px;
         
         #dayName
         {
@@ -67,7 +68,7 @@ input[disabled='disabled'] {
     .closeAndSettings
     {
         float: right;
-        margin: -10px 5px 0px 0px;
+        margin: -7px 7px 0px 0px;
         span
         {
             padding-left: 5px;
@@ -83,7 +84,7 @@ input[disabled='disabled'] {
         float: left;
         margin-top: 0px;
 
-        @include box-shadow(0px 5px 6px -4px $TPGrey3);
+        @include box-shadow(0px 5px 2px -3px $TPGrey3);
 
         .workoutIcon
         {
@@ -119,19 +120,19 @@ input[disabled='disabled'] {
             .headerWorkoutValue
             {
                 float: left;
-                padding: 20px 0px 0px 20px;
+                padding: 10px 0px 0px 10px;
                 @include labels($navigationFontFamilyRegular, $fontSizeQVHeader, $TPGrey4, normal);
             }
             .headerWorkoutValueLabel
             {
                 float: left;
-                padding: 28px 0px 0px 0px;
+                padding: 18px 0px 0px 0px;
                 @include labels($navigationFontFamilyRegular, $fontSizeXXLarge, $TPGrey4, normal);
             }
 
             .title
             {
-                padding-left: 15px;
+                padding-left: 5px;
                 @include inputs(100%, 20px, $fontSizeLarge, $navigationFontFamilyRegular);
                 input
                 {
@@ -139,7 +140,8 @@ input[disabled='disabled'] {
                     outline: none;
                     border: none;
                     box-shadow: inset 0 0px 0px rgba(0, 0, 0, 0.0);
-                    font-style: italic;
+                    color: $TPGrey4;
+                    display: inline;
                 }
             }
         }
@@ -150,7 +152,7 @@ input[disabled='disabled'] {
         width: 80px;
         height: 80px;
         float: left;
-        @include box-shadow(0px 5px 6px -4px $TPGrey3);
+        @include box-shadow(0px 5px 2px -3px $TPGrey3);
         @include labels($navigationFontFamilyRegular, $fontSizeLarge, $TPGrey4, normal);
         margin-left: 10px;
         @include linearGradient(top, #fefefe, #e0dddd);
@@ -182,6 +184,10 @@ input[disabled='disabled'] {
     float: left;
     background-color: $TPGrey5;
     padding: 0px 0px 0px 0px;
+    border-bottom: $TPGrey7;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+
 
     .summaryTab
     {
@@ -381,6 +387,10 @@ input[disabled='disabled'] {
 		{
 			width: 107px;
 		}
+        button
+        {
+            margin-right: 8px;
+        }
 	}
 }
 

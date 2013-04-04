@@ -1,5 +1,6 @@
 ﻿define(
 [
+    "jquerySelectBox",
     "jqueryTextAreaResize",
     "underscore",
     "moment",
@@ -14,6 +15,7 @@
     "hbs!templates/views/quickView/summaryView"
 ],
 function (
+    selectBox,
     textAreaResize,
     _,
     moment,
@@ -34,20 +36,25 @@ function (
         today: moment().format("YYYY-MM-DD"),
 
         showThrobbers: false,
+        
+        events:
+        {
+           
+          
+        },
 
         template:
         {
             type: "handlebars",
             template: workoutQuickViewSummaryTemplate
         },
-
-        initialize: function()
-        {
-            this.model.on("change:workoutDay change:workoutTypeValueId", this.updateUICustomization, this);
-        },
-
+        
         onRender: function()
         {
+
+            var self = this;
+            this.$("textarea").autosize();
+            this.applyUICustomization();
 
             if (!this.renderInitialized)
             {
@@ -63,7 +70,6 @@ function (
 
             }
 
-            var self = this;
             this.$("textarea").autosize();
             setImmediate(function() { self.setTextAreaHeight(); });
         },
@@ -91,6 +97,8 @@ function (
             {
                 this.$("#postActivityCommentsInput").height(this.$("#postActivityCommentsInput")[0].scrollHeight);
             }
+
+            //this.$(".chosenSelect").chosen();
         },
 
         applyUICustomization: function()
