@@ -1,5 +1,6 @@
 ﻿define(
 [
+    "jquerySelectBox",
     "jqueryui/datepicker",
     "jqueryTimepicker",
     "jqueryTextAreaResize",
@@ -24,6 +25,7 @@
     "hbs!templates/views/quickView/workoutQuickView"
 ],
 function (
+    selectBox,
     datepicker,
     timepicker,
     textAreaResize,
@@ -277,6 +279,16 @@ function (
 
             this.$(".grayHeader").addClass(this.getComplianceCssClassName());
             this.$(".grayHeader").addClass(this.getPastOrCompletedCssClassName());
+
+            self = this;
+            //setImmediate(function () { self.callLater(); });
+            this.$(".chzn-select").chosen();
+            
+        },
+
+        callLater: function()
+        {
+            this.$(".chosenSelect").chosen();
         },
 
         getPastOrCompletedCssClassName: function ()

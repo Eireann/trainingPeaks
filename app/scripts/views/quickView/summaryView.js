@@ -1,5 +1,6 @@
 ﻿define(
 [
+    "jquerySelectBox",
     "jqueryTextAreaResize",
     "underscore",
     "moment",
@@ -11,9 +12,10 @@
     "utilities/printTimeFromDecimalHours",
     "utilities/convertTimeHoursToDecimal",
     "utilities/workoutLayoutFormatter",
-    "hbs!templates/views/quickView/summary"
+    "hbs!templates/views/quickView/summaryView"
 ],
 function (
+    selectBox,
     textAreaResize,
     _,
     moment,
@@ -54,6 +56,8 @@ function (
             this.$("textarea").autosize();
             this.applyUICustomization();
 
+            
+
             setImmediate(function () { self.setTextArea(); });
 
             if (!this.stickitInitialized)
@@ -84,6 +88,8 @@ function (
             {
                 this.$("#postActivityCommentsInput").height(this.$("#postActivityCommentsInput")[0].scrollHeight);
             }
+
+            //this.$(".chosenSelect").chosen();
         },
 
         applyUICustomization: function ()
