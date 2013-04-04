@@ -94,7 +94,7 @@ function (
             {
                 workoutQuickViewSummary: new WorkoutQuickViewSummary({model: this.model})
             };
-
+            
             this.activeTabName = null;
         },
 

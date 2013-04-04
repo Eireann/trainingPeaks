@@ -49,6 +49,11 @@ function (
             template: workoutQuickViewSummaryTemplate
         },
         
+        initialize: function ()
+        {
+            this.model.on("change:workoutDay change:workoutTypeValueId", this.updateUICustomization, this);
+        },
+        
         onRender: function()
         {
 
