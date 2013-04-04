@@ -89,7 +89,9 @@ function(TP, initializeAjaxAuth, ajaxCaching, initializeAjaxTimezone, Session, U
         var tooltipPositioner = function(position, feedback)
         {
 
-            var self = feedback.element.element;
+            var self = $(this);
+            var targetElement = $(feedback.target.element);
+            position = targetElement.offset();
 
             // add an arrow
             if (self.find(".arrow").length === 0)
@@ -97,30 +99,45 @@ function(TP, initializeAjaxAuth, ajaxCaching, initializeAjaxTimezone, Session, U
                 var arrow = $("<div>").addClass("arrow");
                 self.append(arrow);
                 self.html(self.html().replace(/\n/g, "<br />"));
-                self.addClass(position.top >= (self.height() + 30) ? "above" : "below");
+                self.addClass(position.top >= (self.outerHeight() + 30) ? "above" : "below");
             }
 
             // position it
+            /*
             position.left -= (self.width() / 2);
             if (self.hasClass("above"))
             {
                 position.top -= (self.height() + 20);
             }
+            */
+
+            position.left = position.left - (self.outerWidth() / 2) + (targetElement.outerWidth() / 2);
+            //position.left = position.left - (self.outerWidth() / 2);
+            if (self.hasClass("above"))
+            {
+                position.top -= self.outerHeight();
+            } else
+            {
+                position.top += targetElement.outerHeight();
+                //position.top += self.outerHeight();
+            }
+
             self.css(position);
-
-
         };
 
         $(document).tooltip(
         {
             position:
             {
-                //my: "center bottom-8",
-                //at: "center top",
                 using: tooltipPositioner
             },
 
-            track: true
+            show:
+            {
+                delay: 500
+            },
+
+            track: false
         });
     });
 

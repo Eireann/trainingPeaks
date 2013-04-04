@@ -26,7 +26,7 @@ function (determineCompletedWorkout, printUnitLabel)
             }
             else if (workout.tssActual)
             {
-                units = "tss";
+                units = "TSS";
             }
         }
         else
@@ -41,7 +41,7 @@ function (determineCompletedWorkout, printUnitLabel)
             }
             else if (workout.tssPlanned)
             {
-                units = "tss";
+                units = "TSS";
             }
             else
             {
