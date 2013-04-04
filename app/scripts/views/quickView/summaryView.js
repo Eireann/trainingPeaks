@@ -56,10 +56,6 @@ function (
             this.$("textarea").autosize();
             this.applyUICustomization();
 
-            
-
-            setImmediate(function () { self.setTextArea(); });
-
             if (!this.renderInitialized)
             {
                 this.model.off("change", this.render);
@@ -74,7 +70,6 @@ function (
 
             }
 
-            var self = this;
             this.$("textarea").autosize();
             setImmediate(function() { self.setTextAreaHeight(); });
         },
