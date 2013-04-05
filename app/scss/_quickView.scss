@@ -146,6 +146,28 @@ input[disabled='disabled'] {
                 }
             }
         }
+
+        &.past
+        {
+            .headerWorkoutValue
+            {
+                .planned
+                {
+                   display:none;
+                }
+            }
+        } 
+
+        &.future
+        {
+            .headerWorkoutValue
+            {
+                .actual
+                {
+                   display:none;
+                }
+            }
+        } 
     }
 
     .uploadButton
