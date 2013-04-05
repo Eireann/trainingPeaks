@@ -2,9 +2,10 @@
 [
     "TP",
     "models/commands/saveWorkoutToExerciseLibrary",
+    "views/saveWorkoutToLibraryAfterSaveMessageView",
     "hbs!templates/views/saveWorkoutToLibraryConfirmationView"
 ],
-function(TP, SaveWorkoutToLibraryCommand, saveWorkoutToLibraryTemplate)
+function(TP, SaveWorkoutToLibraryCommand, AfterSaveView, saveWorkoutToLibraryTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -45,9 +46,11 @@ function(TP, SaveWorkoutToLibraryCommand, saveWorkoutToLibraryTemplate)
             deferred.done(function()
             {
                 self.libraries.get(libraryId).fetchExercises(true);
+                self.close();
+                self.showConfirmation();
             });
 
-            deferred.always(function()
+            deferred.fail(function()
             {
                 self.close();
             });
@@ -76,6 +79,12 @@ function(TP, SaveWorkoutToLibraryCommand, saveWorkoutToLibraryTemplate)
             });
 
             return data;
+        },
+
+        showConfirmation: function()
+        {
+            var okView = new AfterSaveView();
+            okView.render();
         }
 
     });

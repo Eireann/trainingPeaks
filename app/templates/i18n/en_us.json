@@ -203,5 +203,7 @@
     "AddToLibraryConfirmationTitle": "Add a new workout, routine, or exercise to your library",
     "SelectLibrary": "Select Library",
 
-    "Title": "Title"
+    "Title": "Title",
+
+    "WorkoutAddedToLibrary": "The workout has been added to your workout library. Click on 'Workouts' to access it."
 }
