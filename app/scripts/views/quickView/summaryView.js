@@ -281,7 +281,9 @@ function (
             var currentViewValue = this[options.onGet](currentModelValue);
 
             // DO coerce type in this situation, since we only care about truthy/falsy'ness.
+            /*jslint eqeq: true*/
             return (currentViewValue == val) ? false : true;
+            /*jsline eqeq: false*/
         },
 
         bindings:
