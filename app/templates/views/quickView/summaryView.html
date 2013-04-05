@@ -388,6 +388,18 @@
 
         <div>
             <label>{{$ "PostActivityComments"}}</label>
+
+            {{#each workoutComments}}
+            <div class="comment">
+                <div class="commentHeader">
+                    <div class="name">{{ firstName }} {{ lastName }}</div>
+                    <div class="date">{{ printDate dateCreated }}</div>
+                </div>
+                <div class="commentBody">
+                    {{ comment }}
+                </div>
+            </div>
+            {{/each}}
             <textarea id="postActivityCommentsInput" class="activityComments" />
         </div>
     </div> 

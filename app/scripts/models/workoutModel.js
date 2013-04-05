@@ -87,6 +87,7 @@ function (_, moment, TP)
         {
             TP.APIModel.prototype.initialize.apply(this, arguments);
             _.bindAll(this, "checkpoint", "revert");
+            //this.on("save", this.removeNewComment, this);
         },
         
         checkpoint: function()
