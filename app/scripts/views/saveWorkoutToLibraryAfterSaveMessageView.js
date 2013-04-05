@@ -18,7 +18,7 @@ function (TP, afterSaveMessageTemplate)
 
         events:
         {
-            "click #ok": "onOk",
+            "click #ok": "onOk"
         },
 
         template:
