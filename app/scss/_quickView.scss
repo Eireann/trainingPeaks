@@ -380,7 +380,7 @@ input[disabled='disabled'] {
 	background: transparent;
 	padding-top: 10px;
 	@include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey4, normal);
-	min-width: 275px;
+	width: 275px;
 	height: 100%;
 
     label
@@ -557,5 +557,32 @@ input[disabled='disabled'] {
     .dialogButtons
     {
         margin-top: 20px;
+    }
+}
+
+.workoutComments
+{
+    .comment
+    {
+
+        margin-top:10px;
+        margin-bottom:10px;
+
+        .commentHeader
+        {
+            padding: 5px;
+            font-size: $fontSizeSmall;
+            background-color: $TPGrey5;
+
+            .name
+            {
+                margin-right: 20px;
+            }
+        }
+
+        .commentBody
+        {
+            padding: 5px;
+        }
     }
 }

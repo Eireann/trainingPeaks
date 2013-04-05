@@ -12,6 +12,7 @@
     "utilities/printTimeFromDecimalHours",
     "utilities/convertTimeHoursToDecimal",
     "utilities/workoutLayoutFormatter",
+    "hbs!templates/views/quickView/workoutComments",
     "hbs!templates/views/quickView/summaryView"
 ],
 function (
@@ -27,6 +28,7 @@ function (
     printTimeFromDecimalHours,
     convertTimeHoursToDecimal,
     workoutLayoutFormatter,
+    workoutCommentsTemplate,
     workoutQuickViewSummaryTemplate)
 {
     return TP.ItemView.extend(
@@ -274,6 +276,12 @@ function (
         {
             return convertToModelUnits(parseInt(value, 10), "temperature");
         },
+
+        getFormattedWorkoutComments: function(value, options)
+        {
+            var commentsHTML = workoutCommentsTemplate({ workoutComments: value });
+            return commentsHTML;
+        },
         
         updateModel: function(val, options)
         {
@@ -394,7 +402,6 @@ function (
                 onSet: "setElevation",
                 updateModel: "updateModel"
             },
-            "#postActivityCommentsInput": "newComment",
             "#ifPlannedField":
             {
                 observe: "ifPlanned",
@@ -567,6 +574,16 @@ function (
             "#descriptionInput":
             {
                 observe: "description"
+            },
+            "#postActivityCommentsInput": 
+            {
+                observe: "newComment"
+            },
+            "#postActivityCommentsList":
+            {
+                observe: "workoutComments",
+                onGet: "getFormattedWorkoutComments",
+                updateMethod: "html"
             }
         }
     });
