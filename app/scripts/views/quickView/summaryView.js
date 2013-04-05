@@ -47,10 +47,14 @@ function (
         {
             this.model.on("change:workoutDay change:workoutTypeValueId", this.updateUICustomization, this);
         },
+
+        onClose: function()
+        {
+            this.model.off("change:workoutDay change:workoutTypeValueId", this.updateUICustomization);
+        },
         
         onRender: function()
         {
-
             var self = this;
             this.$("textarea").autosize();
             this.applyUICustomization();
@@ -82,21 +86,13 @@ function (
         setTextAreaHeight: function()
         {
             if (this.$("#descriptionInput").val())
-            {
                 this.$("#descriptionInput").height(this.$("#descriptionInput")[0].scrollHeight);
-            }
 
             if (this.$("#preActivityCommentsInput").val())
-            {
                 this.$("#preActivityCommentsInput").height(this.$("#preActivityCommentsInput")[0].scrollHeight);
-            }
 
             if (this.$("#descriptionInput").val())
-            {
                 this.$("#postActivityCommentsInput").height(this.$("#postActivityCommentsInput")[0].scrollHeight);
-            }
-
-            //this.$(".chosenSelect").chosen();
         },
 
         applyUICustomization: function()
@@ -117,7 +113,8 @@ function (
                 this.$(".columnLabelsMinMaxAvg label").addClass("ghosted");
                 this.$("#workoutMinMaxAvgStats label").addClass("ghosted");
                 this.$("#workoutMinMaxAvgStats").addClass("ghosted");
-            } else
+            }
+            else
             {
                 this.$(".workoutStatsCompleted input").attr("disabled", false);
                 this.$("#workoutMinMaxAvgStats input:not(.alwaysDisabled)").attr("disabled", false);
@@ -282,8 +279,16 @@ function (
 
             // DO coerce type in this situation, since we only care about truthy/falsy'ness.
             /*jslint eqeq: true*/
-            return (currentViewValue == val) ? false : true;
+            var doUpdateModel = (currentViewValue == val) ? false : true;
             /*jsline eqeq: false*/
+
+            if (doUpdateModel)
+            {
+                
+                return true;
+            }
+
+            return false;
         },
 
         bindings:
@@ -503,14 +508,6 @@ function (
                 observe: "velocityMaximum",
                 onGet: "getSpeed",
                 onSet: "setSpeed",
-                updateModel: "updateModel"
-            },
-            "#paceMinField":
-            {
-                //TODO Find the right field to observe
-                observe: "velocityAverage",
-                onGet: "getPace",
-                onSet: "setPace",
                 updateModel: "updateModel"
             },
             "#paceAvgField":

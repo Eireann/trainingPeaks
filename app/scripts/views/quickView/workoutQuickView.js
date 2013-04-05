@@ -259,17 +259,23 @@ function (
             this.updateHeaderClass();
             
             if (!_.isEmpty(this.model.changed))
+            {
+                this.enableDiscardButton();
                 this.model.save();
+            }
+        },
+
+        enableDiscardButton: function()
+        {
+            this.$("button#discard").removeAttr("disabled");
+            this.$("button#discard").css("color", this.discardButtonColor);
         },
         
         onDiscardClicked: function()
         {
             // Only discard changes and save if we already have an id (if the workout is not new)
             if (this.model.id)
-            {
                 this.model.revert();
-                this.model.save();
-            }
 
             this.trigger("discard");
             this.close();
@@ -319,7 +325,6 @@ function (
 
         onRender: function()
         {
-
             if (!this.renderInitialized)
             {
                 this.model.checkpoint();
@@ -339,6 +344,8 @@ function (
                     this.ui.quickViewContent.append(tab.$el);
                 }
 
+                this.discardButtonColor = this.$("button#discard").css("color");
+                this.$("button#discard").css("color", "grey");
             }
 
             this.updateHeaderClass();
@@ -364,15 +371,8 @@ function (
             this.$(".grayHeader").addClass(this.getComplianceCssClassName());
             this.$(".grayHeader").addClass(this.getPastOrCompletedCssClassName());
 
-            self = this;
-            //setImmediate(function () { self.callLater(); });
             this.$(".chzn-select").chosen();
             
-        },
-
-        callLater: function()
-        {
-            this.$(".chosenSelect").chosen();
         },
 
         getPastOrCompletedCssClassName: function ()
@@ -388,8 +388,6 @@ function (
                 return "future";
             }
         },
-
-        
         
         onDateClicked: function (e)
         {
