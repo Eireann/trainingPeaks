@@ -38,6 +38,11 @@ function(modelToViewConversionFactors)
                 return convertedValue >= 100 && !decimalPlaces ? convertedValue.toFixed(1) : convertedValue.toFixed(2);
             case "pace":
                 return convertToPaceFromSpeed(value, currentUnits);
+            case "temperature":
+            {
+                var convertedVal = currentUnits === "0" ? 9 / 5 * value + 32 : value;
+                return decimalPlaces !== null ? convertedVal.toFixed(decimalPlaces) : convertedVal.toFixed(0);
+            }
             default:
                 throw "Unknown field type for unit conversion";
         }

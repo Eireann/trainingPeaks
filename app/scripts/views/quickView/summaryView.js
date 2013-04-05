@@ -252,13 +252,12 @@ function (
 
         getNumber: function(value, options)
         {
-            
-            return (value === null ? "" : +value);
+            return ((value === null || value === 0) ? "" : +value);
         },
         
         setInteger: function(value, options)
         {
-            return (value === "" ? null : parseInt(value, 10));
+            return ((value === "" || value === "0") ? null : parseInt(value, 10));
         },
         
         setFloat: function(value, options)
@@ -278,9 +277,11 @@ function (
         
         updateModel: function(val, options)
         {
-            console.log("model: " + this.model.get(options.observe));
-            console.log("val: " + val);
-            return (this.model.get(options.observe) == val) ? false : true;
+            var currentModelValue = this.model.get(options.observe);
+            var currentViewValue = this[options.onGet](currentModelValue);
+
+            // DO coerce type in this situation, since we only care about truthy/falsy'ness.
+            return (currentViewValue == val) ? false : true;
         },
 
         bindings:

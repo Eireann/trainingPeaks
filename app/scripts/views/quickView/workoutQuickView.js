@@ -259,10 +259,7 @@ function (
             this.updateHeaderClass();
             
             if (!_.isEmpty(this.model.changed))
-            {
-                console.log(this.model.changed);
                 this.model.save();
-            }
         },
         
         onDiscardClicked: function()
