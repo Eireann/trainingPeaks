@@ -25,6 +25,13 @@ function()
         {
             fullMinutes = Math.floor(exactMinutes);
             fullSeconds = Math.round(exactSeconds);
+
+            // math precision error? 1:20 becomes 1:19:60, 2:40 becomes 2:39:60, etc
+            if(fullSeconds === 60)
+            {
+                fullMinutes += 1;
+                fullSeconds = 0;
+            }
         }
         else
             fullMinutes = Math.round(exactMinutes);

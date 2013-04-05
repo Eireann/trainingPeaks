@@ -146,6 +146,21 @@ function (
             {
                 observe: "tssActual",
                 onGet: "getTss"
+            },
+            "#qv-header-distancePlanned":
+            {
+                observe: "distancePlanned",
+                onGet: "getDistance"
+            },
+            "#qv-header-totaltimePlanned":
+            {
+                observe: "totalTimePlanned",
+                onGet: "getTime"
+            },
+            "#qv-header-tssPlanned":
+            {
+                observe: "tssPlanned",
+                onGet: "getTss"
             }
         },
 
