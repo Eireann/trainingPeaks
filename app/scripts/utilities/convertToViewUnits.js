@@ -24,7 +24,7 @@ function(modelToViewConversionFactors)
     var convertToViewUnits = function(value, fieldType, workoutType, defaultValue, decimalPlaces)
     {
         if (!_.isNumber(value))
-            return typeof defaultValue !== 'undefined' ? defaultValue : "";
+            return typeof defaultValue !== 'undefined' ? defaultValue : ""; 
         
         var currentUnits = theMarsApp.user.get("units");
         
@@ -38,6 +38,12 @@ function(modelToViewConversionFactors)
                 return convertedValue >= 100 && !decimalPlaces ? convertedValue.toFixed(1) : convertedValue.toFixed(2);
             case "pace":
                 return convertToPaceFromSpeed(value, currentUnits);
+            case "temperature":
+                {
+                    var convertedVal = currentUnits === "0" ? 9 / 5 * value + 32 : value;
+                    return decimalPlaces !== null ? convertedVal.toFixed(decimalPlaces) : convertedVal.toFixed(0);
+                }
+                break;
             default:
                 throw "Unknown field type for unit conversion";
         }

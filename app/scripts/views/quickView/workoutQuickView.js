@@ -67,7 +67,7 @@ function (
             "click #breakThrough": "onBreakThroughClicked",
             "click #delete": "onDeleteWorkout",
             "click #discard": "onDiscardClicked",
-            "click #saveClose": "onSaveClosedClicked",
+            "click #close": "onCloseClicked",
             "click #date": "onDateClicked",
             "click #quickViewFileUploadDiv": "onUploadFileClicked",
             "change input[type='file']#fileUploadInput": "onFileSelected",
@@ -75,7 +75,7 @@ function (
             "click .workoutIcon": "onWorkoutIconClicked",
             "click .addAttachment": "onAddAttachmentClicked",
             "click #menuIcon": "onMenuIconClicked",
-            "click #closeIcon": "close"
+            "click #closeIcon": "onCloseClicked"
         },
 
         ui:
@@ -113,8 +113,7 @@ function (
         {
             "#workoutTitleField":
             {
-                observe: "title",
-                eventsOverride: ["blur"]
+                observe: "title"
             },
             "#dayName":
             {
@@ -255,17 +254,32 @@ function (
             }
         },
 
-
+        onModelChanged: function()
+        {
+            this.updateHeaderClass();
+            
+            if (!_.isEmpty(this.model.changed))
+                this.model.save();
+        },
+        
         onDiscardClicked: function()
         {
+            // Only discard changes and save if we already have an id (if the workout is not new)
+            if (this.model.id)
+            {
+                this.model.revert();
+                this.model.save();
+            }
+
             this.trigger("discard");
             this.close();
         },
 
-        onSaveClosedClicked: function()
+        onCloseClicked: function()
         {
             this.model.save();
             this.trigger("saveandclose");
+            
             this.close();
         },
 
@@ -308,32 +322,34 @@ function (
 
             if (!this.renderInitialized)
             {
+                this.model.checkpoint();
+                
                 this.model.off("change", this.render);
-                this.model.on("change", this.updateHeaderClass, this);
-
-                // there is no saveWorkout method ...
-                //this.model.on("change", this.saveWorkout, this);
+                this.model.on("change", this.onModelChanged, this);
 
                 this.stickit();
                 this.renderInitialized = true;
 
                 this.$("#startTimeInput").timepicker({ appendTo: this.$el, 'timeFormat': 'g:i a' });
 
-
-            for (var tabName in this.views)
-            {
-                var tab = this.views[tabName];
-                tab.render();
-                this.ui.quickViewContent.append(tab.$el);
-                //tab.$el.hide();
-            }
+                for (var tabName in this.views)
+                {
+                    var tab = this.views[tabName];
+                    tab.render();
+                    this.ui.quickViewContent.append(tab.$el);
+                }
 
             }
 
             this.updateHeaderClass();
         },
 
-        updateHeaderClass: function()
+        onClose: function()
+        {
+            this.model.off("change", this.onModelChanged);
+        },
+        
+        updateHeaderClass: function ()
         {
             // first calculate it, then reset if needed
             var tmpElement = $("<div></div>").addClass("grayHeader").addClass("workout");

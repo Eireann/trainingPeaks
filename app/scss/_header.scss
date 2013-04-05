@@ -160,6 +160,13 @@
 			padding-top: 3px;
 			@include headerButtons(20px, 40px, $fontSizeMedium);
 			margin-left: -12px;
+            button
+            {
+                img
+                {
+                    margin-top: -2px;
+                }
+            }
 			.refreshButton
 			{
 				margin-left: 8px;
