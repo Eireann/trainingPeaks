@@ -36,12 +36,6 @@ function (
         today: moment().format("YYYY-MM-DD"),
 
         showThrobbers: false,
-        
-        events:
-        {
-           
-          
-        },
 
         template:
         {
@@ -72,7 +66,6 @@ function (
                 // now set stickit bindings
                 this.stickit();
                 this.renderInitialized = true;
-
             }
 
             this.$("textarea").autosize();
@@ -209,12 +202,12 @@ function (
 
         getDistance: function (value, options)
         {
-            return convertToViewUnits(value, "distance", null, null, 2);
+            return +convertToViewUnits(value, "distance", null, null, 2);
         },
 
         setDistance: function(value, options)
         {
-            return convertToModelUnits(value, "distance");
+            return convertToModelUnits(parseFloat(value), "distance");
         },
 
         getTime: function (value, options)
@@ -239,22 +232,58 @@ function (
 
         getSpeed: function (value, options)
         {
-            return convertToViewUnits(value, "speed");
+            return +convertToViewUnits(value, "speed");
         },
 
         setSpeed: function (value, options)
         {
-            return convertToModelUnits(value, "speed");
+            return convertToModelUnits(parseFloat(value), "speed");
         },
 
         getElevation: function (value, options)
         {
-            return convertToViewUnits(value, "elevation");
+            return +convertToViewUnits(value, "elevation");
         },
 
         setElevation: function (value, options)
         {
-            return convertToModelUnits(value, "elevation");
+            return convertToModelUnits(parseInt(value, 10), "elevation");
+        },
+
+        getNumber: function(value, options)
+        {
+            return ((value === null || value === 0) ? "" : +value);
+        },
+        
+        setInteger: function(value, options)
+        {
+            return ((value === "" || value === "0") ? null : parseInt(value, 10));
+        },
+        
+        setFloat: function(value, options)
+        {
+            return (value === "" ? null : parseFloat(value));
+        },
+        
+        getTemperature: function(value, options)
+        {
+            return +convertToViewUnits(value, "temperature");
+        },
+        
+        setTemperature: function(value, options)
+        {
+            return convertToModelUnits(parseInt(value, 10), "temperature");
+        },
+        
+        updateModel: function(val, options)
+        {
+            var currentModelValue = this.model.get(options.observe);
+            var currentViewValue = this[options.onGet](currentModelValue);
+
+            // DO coerce type in this situation, since we only care about truthy/falsy'ness.
+            /*jslint eqeq: true*/
+            return (currentViewValue == val) ? false : true;
+            /*jsline eqeq: false*/
         },
 
         bindings:
@@ -262,232 +291,287 @@ function (
             "#distanceCompletedField":
             {
                 observe: "distance",
-                eventsOverride: ["blur"],
                 onGet: "getDistance",
-                onSet: "setDistance"
+                onSet: "setDistance",
+                updateModel: "updateModel"
             },
             "#distancePlannedField":
             {
                 observe: "distancePlanned",
-                eventsOverride: ["blur"],
                 onGet: "getDistance",
-                onSet: "setDistance"
+                onSet: "setDistance",
+                updateModel: "updateModel"
             },
             "#totalTimeCompletedField":
             {
                 observe: "totalTime",
-                eventsOverride: ["blur"],
                 onGet: "getTime",
-                onSet: "setTime"
+                onSet: "setTime",
+                updateModel: "updateModel"
             },
             "#totalTimePlannedField":
             {
                 observe: "totalTimePlanned",
-                eventsOverride: ["blur"],
                 onGet: "getTime",
-                onSet: "setTime"
+                onSet: "setTime",
+                updateModel: "updateModel"
             },
             "#tssPlannedField":
             {
                 observe: "tssPlanned",
-                eventsOverride: ["blur"]
+                onGet: "getNumber",
+                onSet: "setFloat",
+                updateModel: "updateModel"
             },
             "#tssCompletedField":
             {
                 observe: "tssActual",
-                eventsOverride: ["blur"]
+                onGet: "getNumber",
+                onSet: "setFloat",
+                updateModel: "updateModel"
             },
             "#normalizedPacePlannedField":
             {
                 observe: "normalizedSpeedActual",
-                eventsOverride: ["blur"],
                 onGet: "getPace",
-                onSet: "setPace"
+                onSet: "setPace",
+                updateModel: "updateModel"
             },
             "#averagePacePlannedField":
             {
                 observe: "velocityPlanned",
-                eventsOverride: ["blur"],
                 onGet: "getPace",
-                onSet: "setPace"
+                onSet: "setPace",
+                updateModel: "updateModel"
             },
             "#averagePaceCompletedField":
             {
                 observe: "velocityAverage",
-                eventsOverride: ["blur"],
                 onGet: "getPace",
-                onSet: "setPace"
+                onSet: "setPace",
+                updateModel: "updateModel"
             },
             "#averageSpeedPlannedField":
             {
                 observe: "velocityPlanned",
-                eventsOverride: ["blur"],
                 onGet: "getSpeed",
-                onSet: "setSpeed"
+                onSet: "setSpeed",
+                updateModel: "updateModel"
             },
             "#averageSpeedCompletedField":
             {
                 observe: "velocityAverage",
-                eventsOverride: ["blur"],
                 onGet: "getSpeed",
-                onSet: "setSpeed"
+                onSet: "setSpeed",
+                updateModel: "updateModel"
             },
             "#caloriesPlannedField":
             {
                 observe: "caloriesPlanned",
-                eventsOverride: ["blur"]
+                onGet: "getNumber",
+                onSet: "setInteger",
+                updateModel: "updateModel"
             },
             "#caloriesCompletedField":
             {
                 observe: "calories",
-                eventsOverride: ["blur"]
+                onGet: "getNumber",
+                onSet: "setInteger",
+                updateModel: "updateModel"
             },
             "#elevationGainPlannedField":
             {
                 observe: "elevationGainPlanned",
-                eventsOverride: ["blur"],
                 onGet: "getElevation",
-                onSet: "setElevation"
+                onSet: "setElevation",
+                updateModel: "updateModel"
             },
             "#elevationGainCompletedField":
             {
                 observe: "elevationGain",
-                eventsOverride: ["blur"],
                 onGet: "getElevation",
-                onSet: "setElevation"
+                onSet: "setElevation",
+                updateModel: "updateModel"
             },
             "#elevationLossCompletedField":
             {
                 observe: "elevationLoss",
-                eventsOverride: ["blur"],
                 onGet: "getElevation",
-                onSet: "setElevation"
+                onSet: "setElevation",
+                updateModel: "updateModel"
             },
             "#ifPlannedField":
             {
                 observe: "ifPlanned",
-                eventsOverride: ["blur"]
+                onGet: "getNumber",
+                onSet: "setInteger",
+                updateModel: "updateModel"
             },
             "#ifCompletedField":
             {
                 observe: "if",
-                eventsOverride: ["blur"]
+                onGet: "getNumber",
+                onSet: "setFloat",
+                updateModel: "updateModel"
             },
             "#energyPlannedField":
             {
                 observe: "energyPlanned",
-                eventsOverride: ["blur"]
+                onGet: "getNumber",
+                onSet: "setInteger",
+                updateModel: "updateModel"
             },
             "#energyCompletedField":
             {
                 observe: "energy",
-                eventsOverride: ["blur"]
+                onGet: "getNumber",
+                onSet: "setInteger",
+                updateModel: "updateModel"
             },
             "#powerAvgField":
             {
                 observe: "powerAverage",
-                eventsOverride: ["blur"]
+                onGet: "getNumber",
+                onSet: "setFloat",
+                updateModel: "updateModel"
             },
             "#powerMaxField":
             {
                 observe: "powerMaximum",
-                eventsOverride: ["blur"]
+                onGet: "getNumber",
+                onSet: "setFloat",
+                updateModel: "updateModel"
             },
             "#torqueAvgField":
             {
                 observe: "torqueAverage",
-                eventsOverride: ["blur"]
+                onGet: "getNumber",
+                onSet: "setFloat",
+                updateModel: "updateModel"
             },
             "#torqueMaxField":
             {
                 observe: "torqueMaximum",
-                eventsOverride: ["blur"]
+                onGet: "getNumber",
+                onSet: "setFloat",
+                updateModel: "updateModel"
             },
             "#elevationMinField":
             {
                 observe: "elevationMinimum",
-                eventsOverride: ["blur"]
+                onGet: "getElevation",
+                onSet: "setElevation",
+                updateModel: "updateModel"
             },
             "#elevationAvgField":
             {
                 observe: "elevationAverage",
-                eventsOverride: ["blur"]
+                onGet: "getElevation",
+                onSet: "setElevation",
+                updateModel: "updateModel"
             },
             "#elevationMaxField":
             {
                 observe: "elevationMaximum",
-                eventsOverride: ["blur"]
+                onGet: "getElevation",
+                onSet: "setElevation",
+                updateModel: "updateModel"
             },
             "#cadenceAvgField":
             {
                 observe: "cadenceAverage",
-                eventsOverride: ["blur"]
+                onGet: "getNumber",
+                onSet: "setInteger",
+                updateModel: "updateModel"
             },
             "#cadenceMaxField":
             {
                 observe: "cadenceMaximum",
-                eventsOverride: ["blur"]
+                onGet: "getNumber",
+                onSet: "setInteger",
+                updateModel: "updateModel"
             },
             "#speedAvgField":
             {
                 observe: "velocityAverage",
-                eventsOverride: ["blur"]
+                onGet: "getSpeed",
+                onSet: "setSpeed",
+                updateModel: "updateModel"
             },
             "#speedMaxField":
             {
                 observe: "velocityMaximum",
-                eventsOverride: ["blur"]
+                onGet: "getSpeed",
+                onSet: "setSpeed",
+                updateModel: "updateModel"
             },
             "#paceMinField":
             {
                 //TODO Find the right field to observe
                 observe: "velocityAverage",
-                eventsOverride: ["blur"]
+                onGet: "getPace",
+                onSet: "setPace",
+                updateModel: "updateModel"
             },
             "#paceAvgField":
             {
                 observe: "velocityAverage",
-                eventsOverride: ["blur"]
+                onGet: "getPace",
+                onSet: "setPace",
+                updateModel: "updateModel"
             },
             "#paceMaxField":
             {
                 observe: "velocityMaximum",
-                eventsOverride: ["blur"]
+                onGet: "getPace",
+                onSet: "setPace",
+                updateModel: "updateModel"
             },
             "#hrMinField":
             {
                 observe: "heartRateMinimum",
-                eventsOverride: ["blur"]
+                onGet: "getNumber",
+                onSet: "setInteger",
+                updateModel: "updateModel"
             },
             "#hrAvgField":
             {
                 observe: "heartRateAverage",
-                eventsOverride: ["blur"]
+                onGet: "getNumber",
+                onSet: "setInteger",
+                updateModel: "updateModel"
             },
             "#hrMaxField":
             {
                 observe: "heartRateMaximum",
-                eventsOverride: ["blur"]
+                onGet: "getNumber",
+                onSet: "setInteger",
+                updateModel: "updateModel"
             },
             "#tempMinField":
             {
                 observe: "tempMin",
-                eventsOverride: ["blur"]
+                onGet: "getTemperature",
+                onSet: "setTemperature",
+                updateModel: "updateModel"
             },
             "#tempAvgField":
             {
                 observe: "tempAvg",
-                eventsOverride: ["blur"]
+                onGet: "getTemperature",
+                onSet: "setTemperature",
+                updateModel: "updateModel"
             },
             "#tempMaxField":
             {
                 observe: "tempMax",
-                eventsOverride: ["blur"]
+                onGet: "getTemperature",
+                onSet: "setTemperature",
+                updateModel: "updateModel"
             },
             "#descriptionInput":
             {
-                observe: "description",
-                eventsOverride: ["blur"]
+                observe: "description"
             }
         }
     });

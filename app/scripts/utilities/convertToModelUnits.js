@@ -38,6 +38,8 @@ function(modelToViewConversionFactors)
                 return (+value / modelToViewConversionFactors[fieldType][currentUnits]);
             case "pace":
                 return convertToSpeedFromPace(value, currentUnits);
+            case "temperature":
+                return currentUnits === "0" ? 5 / 9 * (value - 32) : value;
             default:
                 throw "Unknown field type for unit conversion";
         }
