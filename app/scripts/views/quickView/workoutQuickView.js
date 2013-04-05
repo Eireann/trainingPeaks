@@ -15,14 +15,16 @@
     "utilities/convertTimeHoursToDecimal",
     "models/workoutFileData",
     "models/workoutFileAttachment",
-    "views/deleteConfirmationView",
+    "views/userConfirmationView",
     "utilities/workoutFileReader",
     "utilities/workoutLayoutFormatter",
     "views/quickView/workoutTypeMenuView",
     "views/quickView/workoutQuickViewMenu",
     "views/quickView/summaryView",
     "utilities/determineCompletedWorkout",
-    "hbs!templates/views/quickView/workoutQuickView"
+    "hbs!templates/views/quickView/workoutQuickView",
+    "hbs!templates/views/deleteConfirmationView",
+    "hbs!templates/views/discardConfirmationView"
 ],
 function (
     selectBox,
@@ -40,14 +42,16 @@ function (
     convertTimeHoursToDecimal,
     WorkoutFileData,
     WorkoutFileAttachment,
-    DeleteConfirmationView,
+    UserConfirmationView,
     WorkoutFileReader,
     workoutLayoutFormatter,
     WorkoutTypeMenuView,
     WorkoutQuickViewMenu,
     WorkoutQuickViewSummary,
     determineCompletedWorkout,
-    workoutQuickViewTemplate)
+    workoutQuickViewTemplate,
+    deleteConfirmationTemplate,
+    discardConfirmationTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -273,6 +277,13 @@ function (
         
         onDiscardClicked: function()
         {
+            this.discardConfirmation = new UserConfirmationView({ template: discardConfirmationTemplate });
+            this.discardConfirmation.render();
+            this.discardConfirmation.on("userConfirmed", this.onDiscardChangesConfirmed, this);
+        },
+        
+        onDiscardChangesConfirmed: function()
+        {
             // Only discard changes and save if we already have an id (if the workout is not new)
             if (this.model.id)
                 this.model.revert();
@@ -291,9 +302,9 @@ function (
 
         onDeleteWorkout: function()
         {
-            this.deleteConfirmationView = new DeleteConfirmationView();
+            this.deleteConfirmationView = new UserConfirmationView({ template: deleteConfirmationTemplate });
             this.deleteConfirmationView.render();
-            this.deleteConfirmationView.on("deleteConfirmed", this.onDeleteWorkoutConfirmed, this);
+            this.deleteConfirmationView.on("userConfirmed", this.onDeleteWorkoutConfirmed, this);
         },
 
         onDeleteWorkoutConfirmed: function()

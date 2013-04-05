@@ -3,10 +3,11 @@ define(
     "TP",
     "setImmediate",
     "jqueryOutside",
-    "views/deleteConfirmationView",
-    "hbs!templates/views/selectedRangeSettings"
+    "views/userConfirmationView",
+    "hbs!templates/views/selectedRangeSettings",
+    "hbs!templates/views/deleteConfirmationView"
 ],
-function(TP, setImmediate, jqueryOutside, DeleteConfirmationView, selectedRangeSettingsTemplate)
+function(TP, setImmediate, jqueryOutside, UserConfirmationView, selectedRangeSettingsTemplate, deleteConfirmationTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -49,9 +50,9 @@ function(TP, setImmediate, jqueryOutside, DeleteConfirmationView, selectedRangeS
 
         onDeleteClicked: function()
         {
-            this.deleteConfirmationView = new DeleteConfirmationView();
+            this.deleteConfirmationView = new UserConfirmationView({ template: deleteConfirmationTemplate });
             this.deleteConfirmationView.render();
-            this.deleteConfirmationView.on("deleteConfirmed", this.onDeleteRangeConfirmed, this);
+            this.deleteConfirmationView.on("userConfirmed", this.onDeleteRangeConfirmed, this);
         },
         
         onDeleteRangeConfirmed: function()

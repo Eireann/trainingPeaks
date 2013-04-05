@@ -3,10 +3,11 @@ define(
     "TP",
     "setImmediate",
     "jqueryOutside",
-    "views/deleteConfirmationView",
-    "hbs!templates/views/calendarWorkoutSettingsHover"
+    "views/userConfirmationView",
+    "hbs!templates/views/calendarWorkoutSettingsHover",
+    "hbs!templates/views/deleteConfirmationView"
 ],
-function (TP, setImmediate, jqueryOutside, DeleteConfirmationView, calendarWorkoutSettingsHover)
+function (TP, setImmediate, jqueryOutside, UserConfirmationView, calendarWorkoutSettingsHover, deleteConfirmationTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -68,10 +69,10 @@ function (TP, setImmediate, jqueryOutside, DeleteConfirmationView, calendarWorko
         {
             this.close();
             
-            this.deleteConfirmationView = new DeleteConfirmationView();
+            this.deleteConfirmationView = new UserConfirmationView({ template: deleteConfirmationTemplate });
             this.deleteConfirmationView.render();
             var self = this;
-            this.deleteConfirmationView.on("deleteConfirmed", function () { self.model.destroy({ wait: true }); });
+            this.deleteConfirmationView.on("userConfirmed", function () { self.model.destroy({ wait: true }); });
         }
     });
 });
