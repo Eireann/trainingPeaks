@@ -127,7 +127,7 @@ function (
             } else
             {
                 this.$(".workoutStatsCompleted input").attr("disabled", false);
-                this.$("#workoutMinMaxAvgStats input").attr("disabled", false);
+                this.$("#workoutMinMaxAvgStats input:not(.alwaysDisabled)").attr("disabled", false);
                 //apply ghost css attribute
                 //this all needs refactored
                 this.$("label.workoutStatsCompleted").removeClass("ghosted");
