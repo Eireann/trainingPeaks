@@ -15,14 +15,16 @@
     "utilities/convertTimeHoursToDecimal",
     "models/workoutFileData",
     "models/workoutFileAttachment",
-    "views/deleteConfirmationView",
+    "views/userConfirmationView",
     "utilities/workoutFileReader",
     "utilities/workoutLayoutFormatter",
     "views/quickView/workoutTypeMenuView",
     "views/quickView/workoutQuickViewMenu",
     "views/quickView/summaryView",
     "utilities/determineCompletedWorkout",
-    "hbs!templates/views/quickView/workoutQuickView"
+    "hbs!templates/views/quickView/workoutQuickView",
+    "hbs!templates/views/deleteConfirmationView",
+    "hbs!templates/views/discardConfirmationView"
 ],
 function (
     selectBox,
@@ -40,14 +42,16 @@ function (
     convertTimeHoursToDecimal,
     WorkoutFileData,
     WorkoutFileAttachment,
-    DeleteConfirmationView,
+    UserConfirmationView,
     WorkoutFileReader,
     workoutLayoutFormatter,
     WorkoutTypeMenuView,
     WorkoutQuickViewMenu,
     WorkoutQuickViewSummary,
     determineCompletedWorkout,
-    workoutQuickViewTemplate)
+    workoutQuickViewTemplate,
+    deleteConfirmationTemplate,
+    discardConfirmationTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -259,17 +263,30 @@ function (
             this.updateHeaderClass();
             
             if (!_.isEmpty(this.model.changed))
+            {
+                this.enableDiscardButton();
                 this.model.save();
+            }
+        },
+
+        enableDiscardButton: function()
+        {
+            this.$("button#discard").removeAttr("disabled");
+            this.$("button#discard").css("color", this.discardButtonColor);
         },
         
         onDiscardClicked: function()
         {
+            this.discardConfirmation = new UserConfirmationView({ template: discardConfirmationTemplate });
+            this.discardConfirmation.render();
+            this.discardConfirmation.on("userConfirmed", this.onDiscardChangesConfirmed, this);
+        },
+        
+        onDiscardChangesConfirmed: function()
+        {
             // Only discard changes and save if we already have an id (if the workout is not new)
             if (this.model.id)
-            {
                 this.model.revert();
-                this.model.save();
-            }
 
             this.trigger("discard");
             this.close();
@@ -285,9 +302,9 @@ function (
 
         onDeleteWorkout: function()
         {
-            this.deleteConfirmationView = new DeleteConfirmationView();
+            this.deleteConfirmationView = new UserConfirmationView({ template: deleteConfirmationTemplate });
             this.deleteConfirmationView.render();
-            this.deleteConfirmationView.on("deleteConfirmed", this.onDeleteWorkoutConfirmed, this);
+            this.deleteConfirmationView.on("userConfirmed", this.onDeleteWorkoutConfirmed, this);
         },
 
         onDeleteWorkoutConfirmed: function()
@@ -319,7 +336,6 @@ function (
 
         onRender: function()
         {
-
             if (!this.renderInitialized)
             {
                 this.model.checkpoint();
@@ -339,6 +355,8 @@ function (
                     this.ui.quickViewContent.append(tab.$el);
                 }
 
+                this.discardButtonColor = this.$("button#discard").css("color");
+                this.$("button#discard").css("color", "grey");
             }
 
             this.updateHeaderClass();
@@ -364,15 +382,8 @@ function (
             this.$(".grayHeader").addClass(this.getComplianceCssClassName());
             this.$(".grayHeader").addClass(this.getPastOrCompletedCssClassName());
 
-            self = this;
-            //setImmediate(function () { self.callLater(); });
             this.$(".chzn-select").chosen();
             
-        },
-
-        callLater: function()
-        {
-            this.$(".chosenSelect").chosen();
         },
 
         getPastOrCompletedCssClassName: function ()
@@ -388,8 +399,6 @@ function (
                 return "future";
             }
         },
-
-        
         
         onDateClicked: function (e)
         {
