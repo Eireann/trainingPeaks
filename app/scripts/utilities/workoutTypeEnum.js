@@ -17,7 +17,7 @@ function()
         "XC-Ski": 11,
         "Rowing": 12,
         "Walk": 13,
-        "Other": 14
+        "Other": 100
     };
 
     return workoutTypeNameToIdLUT;
