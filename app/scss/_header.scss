@@ -47,10 +47,12 @@
 
 		.headerRollOver
 		{
+            cursor: pointer;
+
 			&:hover label
 			{
 				color: $white;
-				cursor: pointer;
+                cursor: pointer;
 			}
 		}
 
