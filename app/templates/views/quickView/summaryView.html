@@ -67,7 +67,7 @@
                 </div>
 
                 <div class="workoutStatsColumn workoutStatsPlanned">
-                    <input type="text" id="averagePacePlannedField" />
+                    <input type="text" id="averagePacePlannedField" disabled="disabled"/>
                 </div>
 
                 <div class="workoutStatsColumn workoutStatsCompleted">
@@ -388,6 +388,7 @@
 
         <div>
             <label>{{$ "PostActivityComments"}}</label>
+            <div class="workoutComments" id="postActivityCommentsList"></div> 
             <textarea id="postActivityCommentsInput" class="activityComments" />
         </div>
     </div> 

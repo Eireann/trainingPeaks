@@ -4,10 +4,11 @@ define(
     "setImmediate",
     "jqueryOutside",
     "views/newItemView",
-    "views/deleteConfirmationView",
-    "hbs!templates/views/calendarDaySettings"
+    "views/userConfirmationView",
+    "hbs!templates/views/calendarDaySettings",
+    "hbs!templates/views/deleteConfirmationView"
 ],
-function(TP, setImmediate, jqueryOutside, NewItemView, DeleteConfirmationView, calendarDaySettingsTemplate)
+function(TP, setImmediate, jqueryOutside, NewItemView, UserConfirmationView, calendarDaySettingsTemplate, deleteConfirmationView)
 {
     return TP.ItemView.extend(
     {
@@ -81,10 +82,10 @@ function(TP, setImmediate, jqueryOutside, NewItemView, DeleteConfirmationView, c
         onDeleteClicked: function(e)
         {
             this.hideSettings(e);
-            
-            this.deleteConfirmationView = new DeleteConfirmationView();
+
+            this.deleteConfirmationView = new UserConfirmationView({ template: deleteConfirmationView });
             this.deleteConfirmationView.render();
-            this.deleteConfirmationView.on("deleteConfirmed", this.onDeleteDayConfirmed, this);
+            this.deleteConfirmationView.on("userConfirmed", this.onDeleteDayConfirmed, this);
         },
         
         onDeleteDayConfirmed: function()

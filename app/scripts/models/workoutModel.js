@@ -87,6 +87,7 @@ function (_, moment, TP)
         {
             TP.APIModel.prototype.initialize.apply(this, arguments);
             _.bindAll(this, "checkpoint", "revert");
+            //this.on("save", this.removeNewComment, this);
         },
         
         checkpoint: function()
@@ -96,8 +97,11 @@ function (_, moment, TP)
         
         revert: function()
         {
-            if(this.checkpointAttributes)
+            if (this.checkpointAttributes && !_.isEmpty(this.checkpointAttributes) && !_.isEqual(this.attributes, this.checkpointAttributes))
+            {
                 this.set(this.checkpointAttributes);
+                this.save();
+            }
         },
         
         getCalendarDay: function()

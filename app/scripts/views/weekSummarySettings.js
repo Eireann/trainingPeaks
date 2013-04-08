@@ -1,10 +1,11 @@
 define(
 [
     "TP",
-    "views/deleteConfirmationView",
-    "hbs!templates/views/calendarWeekSummarySettings"
+    "views/userConfirmationView",
+    "hbs!templates/views/calendarWeekSummarySettings",
+    "hbs!templates/views/deleteConfirmationView"
 ],
-function(TP, DeleteConfirmationView, calendarWeekSummarySettings)
+function(TP, UserConfirmationView, calendarWeekSummarySettings, deleteConfirmationTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -68,9 +69,9 @@ function(TP, DeleteConfirmationView, calendarWeekSummarySettings)
         {
             this.hideSettings(e);
             
-            this.deleteConfirmationView = new DeleteConfirmationView();
+            this.deleteConfirmationView = new UserConfirmationView({ template: deleteConfirmationTemplate });
             this.deleteConfirmationView.render();
-            this.deleteConfirmationView.on("deleteConfirmed", this.onDeleteDayConfirmed, this);
+            this.deleteConfirmationView.on("userConfirmed", this.onDeleteDayConfirmed, this);
         },
         
         onDeleteDayConfirmed: function()

@@ -12,6 +12,7 @@
     "utilities/printTimeFromDecimalHours",
     "utilities/convertTimeHoursToDecimal",
     "utilities/workoutLayoutFormatter",
+    "hbs!templates/views/quickView/workoutComments",
     "hbs!templates/views/quickView/summaryView"
 ],
 function (
@@ -27,6 +28,7 @@ function (
     printTimeFromDecimalHours,
     convertTimeHoursToDecimal,
     workoutLayoutFormatter,
+    workoutCommentsTemplate,
     workoutQuickViewSummaryTemplate)
 {
     return TP.ItemView.extend(
@@ -46,11 +48,22 @@ function (
         initialize: function ()
         {
             this.model.on("change:workoutDay change:workoutTypeValueId", this.updateUICustomization, this);
+
+            this.bindingsLUT = {};
+            
+            _.each(this.bindings, function(value, key)
+            {
+                this.bindingsLUT[value.observe] = key;
+            }, this);
+        },
+
+        onClose: function()
+        {
+            this.model.off("change:workoutDay change:workoutTypeValueId", this.updateUICustomization);
         },
         
         onRender: function()
         {
-
             var self = this;
             this.$("textarea").autosize();
             this.applyUICustomization();
@@ -82,21 +95,13 @@ function (
         setTextAreaHeight: function()
         {
             if (this.$("#descriptionInput").val())
-            {
                 this.$("#descriptionInput").height(this.$("#descriptionInput")[0].scrollHeight);
-            }
 
             if (this.$("#preActivityCommentsInput").val())
-            {
                 this.$("#preActivityCommentsInput").height(this.$("#preActivityCommentsInput")[0].scrollHeight);
-            }
 
             if (this.$("#descriptionInput").val())
-            {
                 this.$("#postActivityCommentsInput").height(this.$("#postActivityCommentsInput")[0].scrollHeight);
-            }
-
-            //this.$(".chosenSelect").chosen();
         },
 
         applyUICustomization: function()
@@ -117,7 +122,8 @@ function (
                 this.$(".columnLabelsMinMaxAvg label").addClass("ghosted");
                 this.$("#workoutMinMaxAvgStats label").addClass("ghosted");
                 this.$("#workoutMinMaxAvgStats").addClass("ghosted");
-            } else
+            }
+            else
             {
                 this.$(".workoutStatsCompleted input").attr("disabled", false);
                 this.$("#workoutMinMaxAvgStats input:not(.alwaysDisabled)").attr("disabled", false);
@@ -274,16 +280,53 @@ function (
         {
             return convertToModelUnits(parseInt(value, 10), "temperature");
         },
+
+        getFormattedWorkoutComments: function(value, options)
+        {
+            var commentsHTML = workoutCommentsTemplate({ workoutComments: value });
+            return commentsHTML;
+        },
         
-        updateModel: function(val, options)
+        updateModel: function(newViewValue, options)
         {
             var currentModelValue = this.model.get(options.observe);
             var currentViewValue = this[options.onGet](currentModelValue);
 
             // DO coerce type in this situation, since we only care about truthy/falsy'ness.
             /*jslint eqeq: true*/
-            return (currentViewValue == val) ? false : true;
+            var doUpdateModel = (currentViewValue == newViewValue) ? false : true;
             /*jsline eqeq: false*/
+
+            if (doUpdateModel)
+            {
+                var self = this;
+                var $input = this.$(this.bindingsLUT[options.observe]);
+                var $overlay = $("<div>updating...</div>").width($input.width()).height($input.height()).offset($input.offset());
+                $("body").append($overlay);
+                
+                //Add progress overlay
+                
+                
+                // Do the save!
+                var newModelValue = this[options.onSet](newViewValue);
+                this.model.set(options.observe, newModelValue);
+                var modelUpdatePromise = this.model.save();
+
+                modelUpdatePromise.done(function()
+                {
+                    //Add success overlay
+                    $overlay.html("success!");
+                    
+                    setTimeout(function()
+                    {
+                        //Remove success overlay
+                        $overlay.remove();
+                        
+                    }, 5000);
+                });
+            }
+
+            return false;
         },
 
         bindings:
@@ -318,10 +361,7 @@ function (
             },
             "#tssPlannedField":
             {
-                observe: "tssPlanned",
-                onGet: "getNumber",
-                onSet: "setFloat",
-                updateModel: "updateModel"
+                observe: "tssPlanned"
             },
             "#tssCompletedField":
             {
@@ -367,10 +407,7 @@ function (
             },
             "#caloriesPlannedField":
             {
-                observe: "caloriesPlanned",
-                onGet: "getNumber",
-                onSet: "setInteger",
-                updateModel: "updateModel"
+                observe: "caloriesPlanned"
             },
             "#caloriesCompletedField":
             {
@@ -505,14 +542,6 @@ function (
                 onSet: "setSpeed",
                 updateModel: "updateModel"
             },
-            "#paceMinField":
-            {
-                //TODO Find the right field to observe
-                observe: "velocityAverage",
-                onGet: "getPace",
-                onSet: "setPace",
-                updateModel: "updateModel"
-            },
             "#paceAvgField":
             {
                 observe: "velocityAverage",
@@ -572,6 +601,16 @@ function (
             "#descriptionInput":
             {
                 observe: "description"
+            },
+            "#postActivityCommentsInput": 
+            {
+                observe: "newComment"
+            },
+            "#postActivityCommentsList":
+            {
+                observe: "workoutComments",
+                onGet: "getFormattedWorkoutComments",
+                updateMethod: "html"
             }
         }
     });

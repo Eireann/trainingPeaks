@@ -7,7 +7,8 @@
     height: 530px;
 }
 
-input[disabled='disabled'] {
+input[disabled='disabled']
+{
     @include box-shadow(none);
 }
 
@@ -380,7 +381,7 @@ input[disabled='disabled'] {
 	background: transparent;
 	padding-top: 10px;
 	@include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey4, normal);
-	min-width: 275px;
+	width: 275px;
 	height: 100%;
 
     label
@@ -558,4 +559,40 @@ input[disabled='disabled'] {
     {
         margin-top: 20px;
     }
+}
+
+.workoutComments
+{
+    .comment
+    {
+
+        margin-top:10px;
+        margin-bottom:10px;
+
+        .commentHeader
+        {
+            padding: 5px;
+            font-size: $fontSizeSmall;
+            background-color: $TPGrey5;
+
+            .name
+            {
+                margin-right: 20px;
+            }
+        }
+
+        .commentBody
+        {
+            padding: 5px;
+        }
+    }
+}
+.updatingModel
+{
+	color: red;
+}
+
+.modelUpdateSuccess
+{
+	color: green;
 }

@@ -1,11 +1,12 @@
 define(
 [
     "TP",
-    "views/deleteConfirmationView",
+    "views/userConfirmationView",
     "views/saveWorkoutToLibraryConfirmationView",
-    "hbs!templates/views/quickView/workoutQuickViewMenu"
+    "hbs!templates/views/quickView/workoutQuickViewMenu",
+    "hbs!templates/views/deleteConfirmationView"
 ],
-function(TP, DeleteConfirmationView, SaveToLibraryConfirmationView, WorkoutQuickViewMenuTemplate)
+function(TP, UserConfirmationView, SaveToLibraryConfirmationView, WorkoutQuickViewMenuTemplate, deleteConfirmationTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -43,9 +44,9 @@ function(TP, DeleteConfirmationView, SaveToLibraryConfirmationView, WorkoutQuick
         onDeleteClicked: function(e)
         {
             this.close();
-            this.deleteConfirmationView = new DeleteConfirmationView();
+            this.deleteConfirmationView = new DeleteConfirmationView({ template: deleteConfirmationTemplate });
             this.deleteConfirmationView.render();
-            this.deleteConfirmationView.on("deleteConfirmed", this.onDeleteConfirmed, this);
+            this.deleteConfirmationView.on("userConfirmed", this.onDeleteConfirmed, this);
         },
 
         onDeleteConfirmed: function()

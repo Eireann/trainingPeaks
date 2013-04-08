@@ -2,27 +2,28 @@
 requirejs(
 [
     "jquery",
-    "views/deleteConfirmationView"
+    "views/userConfirmationView",
+    "hbs!templates/views/deleteConfirmationView"
 ],
-function ($, DeleteConfirmationView)
+function ($, UserConfirmationView, deleteConfirmationTemplate)
 {
-    describe("DeleteConfirmationView", function ()
+    describe("UserConfirmationView", function ()
     {
         it("Should close on cancel", function ()
         {
-            var deleteConfirmationView = new DeleteConfirmationView();
+            var deleteConfirmationView = new UserConfirmationView({ template: deleteConfirmationTemplate });
             spyOn(deleteConfirmationView, "close");
-            deleteConfirmationView.onDeleteCancelled();
+            deleteConfirmationView.onCancelled();
             expect(deleteConfirmationView.close).toHaveBeenCalled();
         });
         
-        it("Should trigger event 'deleteConfirmed' and close", function()
+        it("Should trigger event 'userConfirmed' and close", function()
         {
-            var deleteConfirmationView = new DeleteConfirmationView();
+            var deleteConfirmationView = new UserConfirmationView({ template: deleteConfirmationTemplate });
             spyOn(deleteConfirmationView, "trigger");
             spyOn(deleteConfirmationView, "close");
-            deleteConfirmationView.onDeleteConfirmed();
-            expect(deleteConfirmationView.trigger).toHaveBeenCalledWith("deleteConfirmed");
+            deleteConfirmationView.onConfirmed();
+            expect(deleteConfirmationView.trigger).toHaveBeenCalledWith("userConfirmed");
             expect(deleteConfirmationView.close).toHaveBeenCalled();
         });
     });

@@ -19,7 +19,7 @@
 	"VirtualCoach": "Virtual Coach",
 	"BasicEdition": "Basic Edition",
 	"Upgrade": "UPGRADE",
-	"Planning": "Planning",
+	"Planning": "Tools",
 	"Today": "Today",
 	"Month": "Month",
 	"Week": "Week",
@@ -156,6 +156,7 @@
 	"OK": "OK",
 
     "ConfirmDelete" : "Are you sure you want to delete? <br/> This cannot be undone!",
+    "ConfirmDiscard": "Are you sure you want to discard changes? <br/> This cannot be undone!",
 
     "AddToCalendar": "Add To Calendar",
     "NewWorkout": "New Workout",
