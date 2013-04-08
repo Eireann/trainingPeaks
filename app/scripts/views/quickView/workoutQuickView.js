@@ -98,7 +98,7 @@ function (
             {
                 workoutQuickViewSummary: new WorkoutQuickViewSummary({model: this.model})
             };
-            
+
             this.activeTabName = null;
         },
 
@@ -252,7 +252,8 @@ function (
             try
             {
                 return this.model.getCalendarDay() + "T" + moment(value, "h:mm a").format("HH:mm");
-            } catch(e)
+            }
+            catch (e)
             {
                 return value;
             }
@@ -265,7 +266,13 @@ function (
             if (!_.isEmpty(this.model.changed))
             {
                 this.enableDiscardButton();
-                this.model.save();
+
+                if (_.has(this.model.changed, "description") || _.has(this.model.changed, "title") ||
+                    _.has(this.model.changed, "coachComments") || _.has(this.model.changed, "workoutComment") ||
+                    _.has(this.model.changed, "newComment"))
+                {
+                    this.model.save();
+                }
             }
         },
 
@@ -294,9 +301,7 @@ function (
 
         onCloseClicked: function()
         {
-            this.model.save();
-            this.trigger("saveandclose");
-            
+            this.trigger("close");
             this.close();
         },
 
@@ -454,6 +459,7 @@ function (
             this.waitingOff();
 
             this.model.set(this.uploadedFileDataModel.get("workoutModel"));
+
             if (this.isNew)
                 this.trigger("saved");
         },

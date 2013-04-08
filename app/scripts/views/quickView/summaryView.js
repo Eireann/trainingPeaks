@@ -48,6 +48,13 @@ function (
         initialize: function ()
         {
             this.model.on("change:workoutDay change:workoutTypeValueId", this.updateUICustomization, this);
+
+            this.bindingsLUT = {};
+            
+            _.each(this.bindings, function(value, key)
+            {
+                this.bindingsLUT[value.observe] = key;
+            }, this);
         },
 
         onClose: function()
@@ -280,20 +287,43 @@ function (
             return commentsHTML;
         },
         
-        updateModel: function(val, options)
+        updateModel: function(newViewValue, options)
         {
             var currentModelValue = this.model.get(options.observe);
             var currentViewValue = this[options.onGet](currentModelValue);
 
             // DO coerce type in this situation, since we only care about truthy/falsy'ness.
             /*jslint eqeq: true*/
-            var doUpdateModel = (currentViewValue == val) ? false : true;
+            var doUpdateModel = (currentViewValue == newViewValue) ? false : true;
             /*jsline eqeq: false*/
 
             if (doUpdateModel)
             {
+                var self = this;
+                var $input = this.$(this.bindingsLUT[options.observe]);
+                var $overlay = $("<div>updating...</div>").width($input.width()).height($input.height()).offset($input.offset());
+                $("body").append($overlay);
                 
-                return true;
+                //Add progress overlay
+                
+                
+                // Do the save!
+                var newModelValue = this[options.onSet](newViewValue);
+                this.model.set(options.observe, newModelValue);
+                var modelUpdatePromise = this.model.save();
+
+                modelUpdatePromise.done(function()
+                {
+                    //Add success overlay
+                    $overlay.html("success!");
+                    
+                    setTimeout(function()
+                    {
+                        //Remove success overlay
+                        $overlay.remove();
+                        
+                    }, 5000);
+                });
             }
 
             return false;
