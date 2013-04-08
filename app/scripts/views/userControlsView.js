@@ -17,12 +17,12 @@ function (_, TP, AccountMenuView, userControlsTemplate)
 
         ui:
         {
-            "settingsButton": "#usernameLabel"
+            "settingsButton": "#userName"
         },
         
         events:
         {
-            "click #usernameLabel": "onUsernameLabelClicked"
+            "click #userName": "onUsernameLabelClicked"
         },
 
         modelEvents:
