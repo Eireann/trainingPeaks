@@ -22,7 +22,8 @@ function (TP, WorkoutModel, WorkoutFileData, WorkoutQuickView, WorkoutFileReader
         events:
         {
             "change input[type='file']": "onFileSelected",
-            "click button": "onNewWorkoutClicked"
+            "click button": "onNewWorkoutClicked",
+            "click #closeIcon": "onCloseClicked"
         },
 
         template:
@@ -112,6 +113,13 @@ function (TP, WorkoutModel, WorkoutFileData, WorkoutQuickView, WorkoutFileReader
             // The QuickView already saved the model to the server, let's update our local collections to reflect the change.
             this.newWorkout.save();
             this.model.trigger("workout:added", this.newWorkout);
+        },
+
+        onCloseClicked: function ()
+        {
+            this.trigger("close");
+            this.close();
         }
+
     });
 });

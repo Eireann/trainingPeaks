@@ -2,6 +2,18 @@
 
 #newItemViewContainer
 {
+    .titleBar
+    {
+        .close
+        {
+            float: right;
+
+            img
+            {
+                cursor: pointer;
+            }
+        }
+    }
 
     .addItemButtonsContainer
     {
@@ -61,6 +73,11 @@
     {
         color: $TPBlue;
         font-weight: bold;
+    }
+
+    .helpText
+    {
+        font-style: italic;
     }
 }
 
