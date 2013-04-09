@@ -4,7 +4,7 @@
     "utilities/convertToViewUnits",
     "utilities/convertToModelUnits",
     "utilities/printTimeFromDecimalHours",
-    "utilities/convertTimeHoursToDecimal",
+    "utilities/conversion",
     "hbs!templates/views/quickView/workoutComments"
 ],
 function(
@@ -12,7 +12,7 @@ function(
     convertToViewUnits,
     convertToModelUnits,
     printTimeFromDecimalHours,
-    convertTimeHoursToDecimal,
+    conversion,
     workoutCommentsTemplate
 )
 {
@@ -349,7 +349,7 @@ function(
 
         setTime: function (value, options)
         {
-            return convertTimeHoursToDecimal(value);
+            return conversion.convertTimeHoursToDecimal(value);
         },
 
         getPace: function (value, options)

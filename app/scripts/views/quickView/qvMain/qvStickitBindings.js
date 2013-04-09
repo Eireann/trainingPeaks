@@ -5,7 +5,7 @@
     "utilities/convertToViewUnits",
     "utilities/convertToModelUnits",
     "utilities/printTimeFromDecimalHours",
-    "utilities/convertTimeHoursToDecimal"
+    "utilities/conversion"
 ],
 function (
     printDate,
@@ -13,7 +13,7 @@ function (
     convertToViewUnits,
     convertToModelUnits,
     printTimeFromDecimalHours,
-    convertTimeHoursToDecimal
+    conversion
 )
 {
     var workoutQuickViewStickitBindings = {

@@ -1,15 +1,15 @@
 requirejs(
 [
-    "utilities/convertTimeHoursToDecimal"
+    "utilities/conversion"
 ],
-function(convertTimeHoursToDecimal)
+function(conversion)
 {
     describe("convertTimeHoursToDecimal", function()
     {
 
         it("Should return 0 for invalid numbers", function()
         {
-            expect(convertTimeHoursToDecimal("x")).toBe(0);
+            expect(conversion.convertTimeHoursToDecimal("x")).toBe(0);
         });
 
         it("Should return valid times", function()
@@ -23,7 +23,7 @@ function(convertTimeHoursToDecimal)
 
             for (var timeString in times)
             {
-                expect(convertTimeHoursToDecimal(timeString)).toEqual(times[timeString]);
+                expect(conversion.convertTimeHoursToDecimal(timeString)).toEqual(times[timeString]);
             }
 
         });
