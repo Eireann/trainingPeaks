@@ -3,7 +3,7 @@ requirejs(
 [
     "jquery",
     "backbone",
-    "views/userControlsView"
+    "views/userControls/userControlsView"
 ],
 function ($, Backbone, UserControlsView)
 {
