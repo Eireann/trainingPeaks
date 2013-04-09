@@ -3,7 +3,11 @@
 #userControlsContainer
 {
 	height: 35px;
-	background-color: $black;
+
+    #userControlsBackground
+    {
+    	background-color: $black;
+    }
 
 	.row
 	{
