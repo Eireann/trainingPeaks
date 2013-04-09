@@ -2,84 +2,97 @@
 
 #userControlsContainer
 {
-	height: 35px;
 
     #userControlsBackground
     {
+
+	    height: 35px;
     	background-color: $black;
-    }
 
-	.row
-	{
-		width: 100%;
-	}
+        &.coachBanner
+        {
+            height: 61px;
 
-	.personHeaderLogo
-	{
-		float: left;
-		min-width: 375px;
-		padding-left: 80px;
-		position:absolute;
-		z-index: 99;
-	}
+            .rightNavigation
+            {
+                margin-top: 13px;
+                margin-right: 20px;
+            }
+        }
+        
 
-	.rightNavigation
-	{
-		float: right;
-		padding-right: 12px;
+        .row
+        {
+            width: 100%;
+        }
 
-		.headerPipe
-		{
-			float: left;
-			height: 30px;
-			padding: 10px 10px 0px 10px;
-			font-size: $fontSizeMedium;
-			color: $TPGrey3;
-		}
+        .personHeaderLogo
+        {
+            float: left;
+            min-width: 375px;
+            padding-left: 80px;
+            position:absolute;
+            z-index: 99;
+        }
 
-		.personHeaderButtons
-		{
-			padding: 12px 0px 0px 10px;
-			margin: 0px 0px 0px -10px;
-			height: 35px;
-			text-align: center;
-			//&:hover { background-color: $TPBlue; }
-			float:left;
-			@include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey3, normal);
+        .rightNavigation
+        {
+            float: right;
+            padding-right: 12px;
 
-		}
+            .headerPipe
+            {
+                float: left;
+                height: 30px;
+                padding: 10px 10px 0px 10px;
+                font-size: $fontSizeMedium;
+                color: $TPGrey3;
+            }
 
-		.headerRollOver
-		{
-            cursor: pointer;
+            .personHeaderButtons
+            {
+                padding: 12px 0px 0px 10px;
+                margin: 0px 0px 0px -10px;
+                height: 35px;
+                text-align: center;
+                //&:hover { background-color: $TPBlue; }
+                float:left;
+                @include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey3, normal);
 
-			&:hover label
-			{
-				color: $white;
+            }
+
+            .headerRollOver
+            {
                 cursor: pointer;
-			}
-		}
 
-		.upgradeButton
-		{
-			margin: 0px 0px 0px 10px;
-			padding: 11px 25px 0px 25px;
-			@include linearGradient(bottom, rgb(34,97,143), rgba(59,125,193, 1)); 
-			cursor: pointer;
-			label
-			{
-				color: $white;
-				cursor: pointer;
-			}
-		}
+                &:hover label
+                {
+                    color: $white;
+                    cursor: pointer;
+                }
+            }
 
-		.personHeaderMailIcon
-		{
-			padding-top: 12px;
-			padding-right: 13px;
-			&:hover{cursor: pointer;}
-			float:left;
-		}
+            .upgradeButton
+            {
+                margin: 0px 0px 0px 10px;
+                padding: 11px 25px 0px 25px;
+                @include linearGradient(bottom, rgb(34,97,143), rgba(59,125,193, 1)); 
+                cursor: pointer;
+                label
+                {
+                    color: $white;
+                    cursor: pointer;
+                }
+            }
+
+            .personHeaderMailIcon
+            {
+                padding-top: 12px;
+                padding-right: 13px;
+                &:hover{cursor: pointer;}
+                float:left;
+            }
+        }
 	}
 }
 

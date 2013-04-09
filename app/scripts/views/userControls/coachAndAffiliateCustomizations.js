@@ -3,70 +3,81 @@
     "underscore",
     "utilities/color"
 ],
-function (_, colorUtils)
+function(_, colorUtils)
 {
     var coachAndAffiliateCustomizations =
     {
 
         initializeCoachAndAffiliateCustomizations: function()
         {
-            this.on("render", this.updateHeaderColorFromLogoOnLoad, this);
+            _.bindAll(this, "updateHeaderColorsFromLogo", "getImageData");
+            this.on("render", this.setupHeaderLogo, this);
         },
 
-        updateHeaderColorFromLogoOnLoad: function()
+        setupHeaderLogo: function()
         {
-            // only for coaches / affiliates - how?
-            _.bindAll(this, "updateHeaderColorsFromLogo");
-            this.$("#topLogo").on("load", this.updateHeaderColorsFromLogo);
+            var headerImageUrl = theMarsApp.user.get("settings.account.headerImageUrl");
+            if (headerImageUrl)
+            {
+                var $logo = this.$("#topLogo");
+
+                var logoUrl = headerImageUrl.indexOf("http") == 0 ? headerImageUrl : theMarsApp.wwwRoot + headerImageUrl;
+                if($logo.attr("src") !== logoUrl)
+                {
+                    $logo.attr("src", logoUrl);
+                }
+
+                $logo.on("load", this.updateHeaderColorsFromLogo);
+            }
         },
 
         updateHeaderColorsFromLogo: function()
         {
-            var imageColor = this.getLogoColor();
-            this.updateHeaderColors(imageColor);
-        },
-
-        updateHeaderColors: function(colorData)
-        {
-            this.setBackgroundColors(colorData);
-            this.setTextColors(colorData);
-        },
-
-        getLogoColor: function()
-        {
             var logoImg = this.$("#topLogo")[0];
-            return colorUtils.getImageColorAtRightEdge(logoImg);
+            var imageColor = colorUtils.getImageColorAtRightEdge(logoImg);
+            this.updateHeaderColors(imageColor, logoImg.height);
         },
 
-        setBackgroundColors: function(colorData)
+        updateHeaderColors: function(colorValues, height)
         {
-            var bgColor = colorData.rgb;
+            this.setBackgroundColors(colorValues);
+            this.setTextColors(colorValues);
+        },
+
+        setBackgroundColors: function(colorValues)
+        {
+            var bgColor = colorValues.rgb;
 
             // set the top bar
+            this.$("#userControlsBackground").addClass("coachBanner");
             this.$("#userControlsBackground").css("background-color", bgColor);
 
             // set the menu arrow. since it comes and goes we need a class instead of setting it directly
-            var cssRule = ".accountSettings .hoverBox .colored { background-color: " + bgColor + "; }";
+            // usually make it a little darker than the bg, unless the bg is already pretty dark
+            var valueMultiplier = colorValues.gray <= 32 ? 1.2 : 0.8;
+            var arrowBgColor = colorUtils.darkenOrLighten(colorValues, valueMultiplier);
+            var cssRule = ".accountSettings .hoverBox .colored { background-color: " + arrowBgColor.rgb + "; }";
             $("<style>").prop("type", "text/css").html(cssRule).appendTo("head");
         },
 
-        setTextColors: function(colorData)
+        setTextColors: function(colorValues)
         {
-            var grayscaleBackground = colorData.gray;
-            var normalGrayValue = 180;
-            var normalGrayOpacity = 0.75;
+            var grayscaleBackground = colorValues.gray;
+            var normalGrayValue = 192;
+            var normalGrayOpacity = 0.80;
             var hoverGrayValue = 255;
             var hoverGrayOpacity = 0.8;
 
             if (grayscaleBackground > 128)
             {
                 hoverGrayValue = 0;
-                normalGrayValue = 128;
+                normalGrayValue = 64;
             }
 
             // text color value of username label
             var normalTextColor = "rgba(" + normalGrayValue + "," + normalGrayValue + "," + normalGrayValue + "," + normalGrayOpacity + ")";
-            this.$(".rightNavigation .personHeaderButtons label").css("color", normalTextColor);
+            this.$(".personHeaderButtons:not(.upgradeButton) label").css("color", normalTextColor);
+            this.$(".headerPipe").css("color", normalTextColor);
 
             // hover state of username label
             var hoverTextColor = "rgba(" + hoverGrayValue + "," + hoverGrayValue + "," + hoverGrayValue + "," + hoverGrayOpacity + ")";

@@ -1,7 +1,6 @@
 ﻿define(
 [
-
-], function ()
+], function()
 {
     var colorUtils = {
 
@@ -18,7 +17,7 @@
 
         getImageColorAtRightEdge: function(img)
         {
-            xOffset = img.width;
+            xOffset = img.width - 1;
             yOffset = Math.round(img.height / 2);
             return this.getImageColor(img, xOffset, yOffset);
         },
@@ -45,7 +44,30 @@
         */
         colorToGrayscale: function(R, G, B)
         {
-            return (0.2126 * R) + (0.7152 * G) + (0.0722 * B);
+            return Math.round((0.2126 * R) + (0.7152 * G) + (0.0722 * B));
+        },
+
+        darkenOrLighten: function(originalColorValues, percent)
+        {
+            var r = this.limitRange(Math.round(originalColorValues.r * percent));
+            var g = this.limitRange(Math.round(originalColorValues.g * percent));
+            var b = this.limitRange(Math.round(originalColorValues.b * percent));
+            return new this.ColorValues(r, g, b, originalColorValues.a);
+        },
+
+        limitRange: function(intValue)
+        {
+            if(intValue < 0)
+            {
+                return 0;
+            }
+
+            if(intValue > 255)
+            {
+                return 255;
+            }
+
+            return intValue;
         }
 
     };

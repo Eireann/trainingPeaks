@@ -184,6 +184,7 @@ function(TP, initializeAjaxAuth, ajaxCaching, initializeAjaxTimezone, Session, U
 
     // point to appropriate api server
     theApp.apiRoot = apiRoots[apiRootName];
+    theApp.wwwRoot = "http://www.trainingpeaks.com";
 
     // app root for router and history
     if (apiRootName !== 'live')
