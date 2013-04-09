@@ -45,7 +45,7 @@ function(_, colorUtils, ImageData)
                 {
                     self.updateHeaderColorsFromImageData(this);
                 });
-            }
+            };
             imageData.getImageData().done(onDataLoaded);
         },
 
