@@ -3,7 +3,6 @@
     "utilities/printDate",
     "utilities/printUnitLabel",
     "utilities/convertToViewUnits",
-    "utilities/convertToModelUnits",
     "utilities/printTimeFromDecimalHours",
     "utilities/conversion"
 ],
@@ -11,7 +10,6 @@ function (
     printDate,
     printUnitLabel,
     convertToViewUnits,
-    convertToModelUnits,
     printTimeFromDecimalHours,
     conversion
 )

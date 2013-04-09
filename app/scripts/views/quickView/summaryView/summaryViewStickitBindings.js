@@ -2,7 +2,6 @@
 [
     "utilities/printUnitLabel",
     "utilities/convertToViewUnits",
-    "utilities/convertToModelUnits",
     "utilities/printTimeFromDecimalHours",
     "utilities/conversion",
     "hbs!templates/views/quickView/workoutComments"
@@ -10,7 +9,6 @@
 function(
     printUnitLabel,
     convertToViewUnits,
-    convertToModelUnits,
     printTimeFromDecimalHours,
     conversion,
     workoutCommentsTemplate
@@ -339,7 +337,7 @@ function(
 
         setDistance: function(value, options)
         {
-            return convertToModelUnits(parseFloat(value), "distance");
+            return conversion.convertToModelUnits(parseFloat(value), "distance");
         },
 
         getTime: function (value, options)
@@ -359,7 +357,7 @@ function(
 
         setPace: function (value, options)
         {
-            return convertToModelUnits(value, "pace");
+            return conversion.convertToModelUnits(value, "pace");
         },
 
         getSpeed: function (value, options)
@@ -369,7 +367,7 @@ function(
 
         setSpeed: function (value, options)
         {
-            return convertToModelUnits(parseFloat(value), "speed");
+            return conversion.convertToModelUnits(parseFloat(value), "speed");
         },
 
         getElevation: function (value, options)
@@ -379,7 +377,7 @@ function(
 
         setElevation: function (value, options)
         {
-            return convertToModelUnits(parseInt(value, 10), "elevation");
+            return conversion.convertToModelUnits(parseInt(value, 10), "elevation");
         },
 
         getNumber: function(value, options)
@@ -404,7 +402,7 @@ function(
         
         setTemperature: function(value, options)
         {
-            return convertToModelUnits(parseInt(value, 10), "temperature");
+            return conversion.convertToModelUnits(parseInt(value, 10), "temperature");
         },
 
         getFormattedWorkoutComments: function(value, options)

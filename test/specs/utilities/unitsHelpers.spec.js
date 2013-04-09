@@ -2,9 +2,9 @@ requirejs(
 [
     "utilities/printUnitLabel",
     "utilities/convertToViewUnits",
-    "utilities/convertToModelUnits"
+    "utilities/conversion"
 ],
-function(printUnitLabel, convertToViewUnits, convertToModelUnits)
+function(printUnitLabel, convertToViewUnits, conversion)
 {
     describe("units related utilities, english units", function()
     {
@@ -165,31 +165,31 @@ function(printUnitLabel, convertToViewUnits, convertToModelUnits)
         {
             it("should throw an exception when trying to convert for an unknown value type", function ()
             {
-                expect(function () { convertToModelUnits(1234, "unknownType"); }).toThrow();
+                expect(function () { conversion.convertToModelUnits(1234, "unknownType"); }).toThrow();
             });
 
             it("should convert a distance in miles to meters", function ()
             {
-                expect(convertToModelUnits(0, "distance")).toBe(0);
-                expect(convertToModelUnits(1, "distance")).toBeCloseTo(1609, 0);
-                expect(convertToModelUnits(2, "distance")).toBeCloseTo(3218.689, 4);
-                expect(convertToModelUnits(767124.68, "distance")).toBeCloseTo(1234567883, 0);
-                expect(convertToModelUnits(-1, "distance")).toBeCloseTo(-1609, 0);
+                expect(conversion.convertToModelUnits(0, "distance")).toBe(0);
+                expect(conversion.convertToModelUnits(1, "distance")).toBeCloseTo(1609, 0);
+                expect(conversion.convertToModelUnits(2, "distance")).toBeCloseTo(3218.689, 4);
+                expect(conversion.convertToModelUnits(767124.68, "distance")).toBeCloseTo(1234567883, 0);
+                expect(conversion.convertToModelUnits(-1, "distance")).toBeCloseTo(-1609, 0);
             });
             
             it("should convert an elevation in ft to meters", function ()
             {
-                expect(convertToModelUnits(0, "elevation")).toBe(0);
-                expect(convertToModelUnits(3281, "elevation")).toBeCloseTo(1000, 0);
-                expect(convertToModelUnits(3280840, "elevation")).toBeCloseTo(1000000, 0);
-                expect(convertToModelUnits(-3281, "elevation")).toBeCloseTo(-1000, 0);
+                expect(conversion.convertToModelUnits(0, "elevation")).toBe(0);
+                expect(conversion.convertToModelUnits(3281, "elevation")).toBeCloseTo(1000, 0);
+                expect(conversion.convertToModelUnits(3280840, "elevation")).toBeCloseTo(1000000, 0);
+                expect(conversion.convertToModelUnits(-3281, "elevation")).toBeCloseTo(-1000, 0);
             });
 
             it("should convert a pace value in min/mile to meters per second", function ()
             {
-                expect(convertToModelUnits("26:49", "pace")).toBeCloseTo(1);
-                expect(convertToModelUnits("08:56", "pace")).toBeCloseTo(3, 0);
-                expect(convertToModelUnits("99:99", "pace")).toBeCloseTo(0.266, 3);
+                expect(conversion.convertToModelUnits("26:49", "pace")).toBeCloseTo(1);
+                expect(conversion.convertToModelUnits("08:56", "pace")).toBeCloseTo(3, 0);
+                expect(conversion.convertToModelUnits("99:99", "pace")).toBeCloseTo(0.266, 3);
             });
             
         });
