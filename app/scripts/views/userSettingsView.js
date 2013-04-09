@@ -138,9 +138,8 @@ function(TP, printUnitsValue, userSettingsTemplate)
             {
                 observe: "dateFormat"
             },
-            "input[name=emailPMNotificationSettingField]": "enablePrivateMessageNotifications",
-            "input[name=postActivityNotificationSettingField]": "enablePrivateMessageNotifications",
-            "input[name=newsletterNotificationSettingField]": "allowMarketingEmails",
+            "input[name=emailPMNotificationSettingField]": "settings.account.enablePrivateMessageNotifications",
+            "input[name=newsletterNotificationSettingField]": "settings.account.allowMarketingEmails",
             "input[name=workoutColorizationSettingField]":
             {
                 observe: "settings.calendar.workoutColorization",
@@ -153,7 +152,7 @@ function(TP, printUnitsValue, userSettingsTemplate)
                     return value;
                 }
             },
-            "#accountExpiresSettingField": "expirationDate"
+            "#accountExpiresSettingField": "settings.account.expirationDate"
         },
         
         onBeforeRender: function()
