@@ -1,8 +1,8 @@
 ﻿define(
 [
-    "utilities/convertTimeHoursToDecimal",
-    "utilities/convertToModelUnits",
-    "utilities/convertToViewUnits"
+    "utilities/conversion/convertTimeHoursToDecimal",
+    "utilities/conversion/convertToModelUnits",
+    "utilities/conversion/convertToViewUnits"
 ], function (convertTimeHoursToDecimal, convertToModelUnits, convertToViewUnits)
 {
     return {

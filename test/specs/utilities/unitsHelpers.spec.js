@@ -1,10 +1,9 @@
 requirejs(
 [
     "utilities/printUnitLabel",
-    "utilities/convertToViewUnits",
-    "utilities/convertToModelUnits"
+    "utilities/conversion"
 ],
-function(printUnitLabel, convertToViewUnits, convertToModelUnits)
+function(printUnitLabel, conversion)
 {
     describe("units related utilities, english units", function()
     {
@@ -130,34 +129,34 @@ function(printUnitLabel, convertToViewUnits, convertToModelUnits)
         {
             it("should throw an exception when trying to convert for an unknown value type", function()
             {
-                expect(function() { convertToViewUnits(1234, "unknownType"); }).toThrow();
+                expect(function() { conversion.convertToViewUnits(1234, "unknownType"); }).toThrow();
             });
             
             it("should convert a distance in meters to miles and cut off after 2 decimal places", function()
             {
-                expect(convertToViewUnits(0, "distance")).toBe("0.00");
-                expect(convertToViewUnits(1609, "distance")).toBe("1.00");
-                expect(convertToViewUnits(3218, "distance")).toBe("2.00");
-                expect(convertToViewUnits(1234567890, "distance")).toBe("767124.7");
-                expect(convertToViewUnits("notANumber", "distance")).toBe("");
-                expect(convertToViewUnits(-1609, "distance")).toBe("-1.00");
+                expect(conversion.convertToViewUnits(0, "distance")).toBe("0.00");
+                expect(conversion.convertToViewUnits(1609, "distance")).toBe("1.00");
+                expect(conversion.convertToViewUnits(3218, "distance")).toBe("2.00");
+                expect(conversion.convertToViewUnits(1234567890, "distance")).toBe("767124.7");
+                expect(conversion.convertToViewUnits("notANumber", "distance")).toBe("");
+                expect(conversion.convertToViewUnits(-1609, "distance")).toBe("-1.00");
             });
 
             it("should convert an elevation in meters to ft and cut off after 2 decimal places", function()
             {
-                expect(convertToViewUnits(0, "elevation")).toBe("0");
-                expect(convertToViewUnits(1000, "elevation")).toBe("3281");
-                expect(convertToViewUnits(1000000, "elevation")).toBe("3280840");
-                expect(convertToViewUnits(-1000, "elevation")).toBe("-3281");
+                expect(conversion.convertToViewUnits(0, "elevation")).toBe("0");
+                expect(conversion.convertToViewUnits(1000, "elevation")).toBe("3281");
+                expect(conversion.convertToViewUnits(1000000, "elevation")).toBe("3280840");
+                expect(conversion.convertToViewUnits(-1000, "elevation")).toBe("-3281");
             });
 
             it("should convert a pace value in meters per second to min/mile, properly formated", function()
             {
-                expect(convertToViewUnits(1, "pace")).toBe("26:49");
-                expect(convertToViewUnits(3, "pace")).toBe("08:56");
-                expect(convertToViewUnits("notAnumber", "pace")).toBe("");
-                expect(convertToViewUnits(0.005, "pace")).toBe("99:99");
-                expect(convertToViewUnits(-1, "pace")).toBe("99:99");
+                expect(conversion.convertToViewUnits(1, "pace")).toBe("26:49");
+                expect(conversion.convertToViewUnits(3, "pace")).toBe("08:56");
+                expect(conversion.convertToViewUnits("notAnumber", "pace")).toBe("");
+                expect(conversion.convertToViewUnits(0.005, "pace")).toBe("99:99");
+                expect(conversion.convertToViewUnits(-1, "pace")).toBe("99:99");
             });
         });
         
@@ -165,31 +164,31 @@ function(printUnitLabel, convertToViewUnits, convertToModelUnits)
         {
             it("should throw an exception when trying to convert for an unknown value type", function ()
             {
-                expect(function () { convertToModelUnits(1234, "unknownType"); }).toThrow();
+                expect(function () { conversion.convertToModelUnits(1234, "unknownType"); }).toThrow();
             });
 
             it("should convert a distance in miles to meters", function ()
             {
-                expect(convertToModelUnits(0, "distance")).toBe(0);
-                expect(convertToModelUnits(1, "distance")).toBeCloseTo(1609, 0);
-                expect(convertToModelUnits(2, "distance")).toBeCloseTo(3218.689, 4);
-                expect(convertToModelUnits(767124.68, "distance")).toBeCloseTo(1234567883, 0);
-                expect(convertToModelUnits(-1, "distance")).toBeCloseTo(-1609, 0);
+                expect(conversion.convertToModelUnits(0, "distance")).toBe(0);
+                expect(conversion.convertToModelUnits(1, "distance")).toBeCloseTo(1609, 0);
+                expect(conversion.convertToModelUnits(2, "distance")).toBeCloseTo(3218.689, 4);
+                expect(conversion.convertToModelUnits(767124.68, "distance")).toBeCloseTo(1234567883, 0);
+                expect(conversion.convertToModelUnits(-1, "distance")).toBeCloseTo(-1609, 0);
             });
             
             it("should convert an elevation in ft to meters", function ()
             {
-                expect(convertToModelUnits(0, "elevation")).toBe(0);
-                expect(convertToModelUnits(3281, "elevation")).toBeCloseTo(1000, 0);
-                expect(convertToModelUnits(3280840, "elevation")).toBeCloseTo(1000000, 0);
-                expect(convertToModelUnits(-3281, "elevation")).toBeCloseTo(-1000, 0);
+                expect(conversion.convertToModelUnits(0, "elevation")).toBe(0);
+                expect(conversion.convertToModelUnits(3281, "elevation")).toBeCloseTo(1000, 0);
+                expect(conversion.convertToModelUnits(3280840, "elevation")).toBeCloseTo(1000000, 0);
+                expect(conversion.convertToModelUnits(-3281, "elevation")).toBeCloseTo(-1000, 0);
             });
 
             it("should convert a pace value in min/mile to meters per second", function ()
             {
-                expect(convertToModelUnits("26:49", "pace")).toBeCloseTo(1);
-                expect(convertToModelUnits("08:56", "pace")).toBeCloseTo(3, 0);
-                expect(convertToModelUnits("99:99", "pace")).toBeCloseTo(0.266, 3);
+                expect(conversion.convertToModelUnits("26:49", "pace")).toBeCloseTo(1);
+                expect(conversion.convertToModelUnits("08:56", "pace")).toBeCloseTo(3, 0);
+                expect(conversion.convertToModelUnits("99:99", "pace")).toBeCloseTo(0.266, 3);
             });
             
         });

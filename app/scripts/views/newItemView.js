@@ -110,7 +110,7 @@ function (TP, WorkoutModel, WorkoutFileData, WorkoutQuickView, WorkoutFileReader
         onQuickviewClosed: function ()
         {
             // The QuickView already saved the model to the server, let's update our local collections to reflect the change.
-            this.model.save();
+            this.newWorkout.save();
             this.model.trigger("workout:added", this.newWorkout);
         }
     });

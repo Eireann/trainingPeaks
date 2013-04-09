@@ -1,10 +1,10 @@
 define(
 [
     "utilities/determineCompletedWorkout",
-    "utilities/convertToViewUnits",
+    "utilities/conversion",
     "utilities/printTimeFromDecimalHours"
 ],
-function(determineCompletedWorkout, convertToViewUnits, printTimeFromDecimalHours)
+function(determineCompletedWorkout, conversion, printTimeFromDecimalHours)
 {
 
     function printKeyStat(workout)
@@ -19,7 +19,7 @@ function(determineCompletedWorkout, convertToViewUnits, printTimeFromDecimalHour
         {
             if (workout.distance)
             {
-                wdt = convertToViewUnits(workout.distance, "distance");
+                wdt = conversion.convertToViewUnits(workout.distance, "distance");
             }
             else if (workout.totalTime)
             {
@@ -34,7 +34,7 @@ function(determineCompletedWorkout, convertToViewUnits, printTimeFromDecimalHour
         {
             if (workout.distancePlanned)
             {
-                wdt = convertToViewUnits(workout.distancePlanned, "distance");
+                wdt = conversion.convertToViewUnits(workout.distancePlanned, "distance");
             }
             else if(workout.totalTimePlanned)
             {

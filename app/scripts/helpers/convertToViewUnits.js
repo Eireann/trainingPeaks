@@ -7,10 +7,10 @@ plus a moment.js compatible formatString (defaults to 'ddd', day name abbreviati
 define(
 [
     "handlebars",
-    "utilities/convertToViewUnits"
+    "utilities/conversion"
 ],
-function(Handlebars, convertToViewUnits)
+function(Handlebars, conversion)
 {
-    Handlebars.registerHelper("convertToViewUnits", convertToViewUnits);
-    return convertToViewUnits;
+    Handlebars.registerHelper("convertToViewUnits", conversion.convertToViewUnits);
+    return conversion.convertToViewUnits;
 });
