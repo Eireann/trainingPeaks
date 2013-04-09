@@ -1,16 +1,17 @@
 ﻿define(
 [
     "underscore",
-    "utilities/color"
+    "utilities/color",
+    "models/imageData"
 ],
-function(_, colorUtils)
+function(_, colorUtils, ImageData)
 {
     var coachAndAffiliateCustomizations =
     {
 
         initializeCoachAndAffiliateCustomizations: function()
         {
-            _.bindAll(this, "updateHeaderColorsFromLogo", "getImageData");
+            _.bindAll(this, "updateHeaderColorsFromImageData");
             this.on("render", this.setupHeaderLogo, this);
         },
 
@@ -28,18 +29,33 @@ function(_, colorUtils)
                     $logo.attr("src", logoUrl);
                 }
 
-                $logo.on("load", this.updateHeaderColorsFromLogo);
+                this.loadLogoImageData(logoUrl);
             }
         },
 
-        updateHeaderColorsFromLogo: function()
+        loadLogoImageData: function(logoUrl)
         {
-            var logoImg = this.$("#topLogo")[0];
-            var imageColor = colorUtils.getImageColorAtRightEdge(logoImg);
-            this.updateHeaderColors(imageColor, logoImg.height);
+            var self = this;
+            var imageData = new ImageData({ url: logoUrl });
+            var onDataLoaded = function()
+            {
+                var img = $("<img/>");
+                img.attr("src", imageData.get("data"));
+                img.load(function()
+                {
+                    self.updateHeaderColorsFromImageData(this);
+                });
+            }
+            imageData.getImageData().done(onDataLoaded);
         },
 
-        updateHeaderColors: function(colorValues, height)
+        updateHeaderColorsFromImageData: function(img)
+        {
+            var imageColor = colorUtils.getImageColorAtRightEdge(img);
+            this.updateHeaderColors(imageColor);
+        },
+
+        updateHeaderColors: function(colorValues)
         {
             this.setBackgroundColors(colorValues);
             this.setTextColors(colorValues);
