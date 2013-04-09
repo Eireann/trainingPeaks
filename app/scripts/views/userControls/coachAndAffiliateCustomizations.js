@@ -1,9 +1,9 @@
 ﻿define(
 [
     "underscore",
-    "utilities/image"
+    "utilities/color"
 ],
-function (_, imageUtils)
+function (_, colorUtils)
 {
     var coachAndAffiliateCustomizations =
     {
@@ -16,19 +16,69 @@ function (_, imageUtils)
         updateHeaderColorFromLogoOnLoad: function()
         {
             // only for coaches / affiliates - how?
-            _.bindAll(this, "updateHeaderColorFromLogo");
-            this.$("#topLogo").on("load", this.updateHeaderColorFromLogo);
+            _.bindAll(this, "updateHeaderColorsFromLogo");
+            this.$("#topLogo").on("load", this.updateHeaderColorsFromLogo);
         },
 
-        updateHeaderColorFromLogo: function()
+        updateHeaderColorsFromLogo: function()
         {
+            var imageColor = this.getLogoColor();
+            this.updateHeaderColors(imageColor);
+        },
 
+        updateHeaderColors: function(colorData)
+        {
+            this.setBackgroundColors(colorData);
+            this.setTextColors(colorData);
+        },
+
+        getLogoColor: function()
+        {
             var logoImg = this.$("#topLogo")[0];
-            var colorData = imageUtils.getImageColorAtRightEdge(logoImg);
-            // we can't just join colorData because it's a Uint8ClampedArray
-            //var rgbaColor = "rgba(" + colorData[0] + "," + colorData[1] + "," + colorData[2] + "," + colorData[3] + ")";
-            var rgbColor = "rgb(" + colorData[0] + "," + colorData[1] + "," + colorData[2] + ")";
-            this.$("#userControlsBackground").css("background-color", rgbColor);
+            return colorUtils.getImageColorAtRightEdge(logoImg);
+        },
+
+        setBackgroundColors: function(colorData)
+        {
+            var bgColor = colorData.rgb;
+
+            // set the top bar
+            this.$("#userControlsBackground").css("background-color", bgColor);
+
+            // set the menu arrow. since it comes and goes we need a class instead of setting it directly
+            var cssRule = ".accountSettings .hoverBox .colored { background-color: " + bgColor + "; }";
+            $("<style>").prop("type", "text/css").html(cssRule).appendTo("head");
+        },
+
+        setTextColors: function(colorData)
+        {
+            var grayscaleBackground = colorData.gray;
+            var normalGrayValue = 180;
+            var normalGrayOpacity = 0.75;
+            var hoverGrayValue = 255;
+            var hoverGrayOpacity = 0.8;
+
+            if (grayscaleBackground > 128)
+            {
+                hoverGrayValue = 0;
+                normalGrayValue = 128;
+            }
+
+            // text color value of username label
+            var normalTextColor = "rgba(" + normalGrayValue + "," + normalGrayValue + "," + normalGrayValue + "," + normalGrayOpacity + ")";
+            this.$(".rightNavigation .personHeaderButtons label").css("color", normalTextColor);
+
+            // hover state of username label
+            var hoverTextColor = "rgba(" + hoverGrayValue + "," + hoverGrayValue + "," + hoverGrayValue + "," + hoverGrayOpacity + ")";
+            this.$(".headerRollOver").hover(
+                function()
+                {
+                    $(this).find("label").css('color', hoverTextColor);
+                },
+                function()
+                {
+                    $(this).find("label").css('color', normalTextColor);
+                });
         }
 
     };

@@ -18,12 +18,6 @@ function ($, Backbone, UserControlsView)
             expect(UserControlsView).toBeDefined();
         });
 
-        it("Registers UI elements onto its context", function()
-        {
-            var view = new UserControlsView();
-            expect(view.ui.settingsButton).toBeDefined();
-        });
-
         it("Renders the UserSettings view when the usernameLabel is clicked", function()
         {
             var view = new UserControlsView();

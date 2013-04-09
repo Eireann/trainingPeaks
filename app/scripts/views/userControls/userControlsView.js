@@ -16,11 +16,6 @@ function(_, TP, coachAndAffiliateCustomizations, AccountMenuView, userControlsTe
             template: userControlsTemplate
         },
 
-        ui:
-        {
-            "settingsButton": "#userName"
-        },
-
         events:
         {
             "click #userName": "onUsernameLabelClicked"
