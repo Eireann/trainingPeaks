@@ -1,14 +1,12 @@
 ﻿define(
 [
     "utilities/printUnitLabel",
-    "utilities/convertToViewUnits",
     "utilities/printTimeFromDecimalHours",
     "utilities/conversion",
     "hbs!templates/views/quickView/workoutComments"
 ],
 function(
     printUnitLabel,
-    convertToViewUnits,
     printTimeFromDecimalHours,
     conversion,
     workoutCommentsTemplate
@@ -332,7 +330,7 @@ function(
 
         getDistance: function (value, options)
         {
-            return +convertToViewUnits(value, "distance", null, null, 2);
+            return +conversion.convertToViewUnits(value, "distance", null, null, 2);
         },
 
         setDistance: function(value, options)
@@ -352,7 +350,7 @@ function(
 
         getPace: function (value, options)
         {
-            return convertToViewUnits(value, "pace");
+            return conversion.convertToViewUnits(value, "pace");
         },
 
         setPace: function (value, options)
@@ -362,7 +360,7 @@ function(
 
         getSpeed: function (value, options)
         {
-            return +convertToViewUnits(value, "speed");
+            return +conversion.convertToViewUnits(value, "speed");
         },
 
         setSpeed: function (value, options)
@@ -372,7 +370,7 @@ function(
 
         getElevation: function (value, options)
         {
-            return +convertToViewUnits(value, "elevation");
+            return +conversion.convertToViewUnits(value, "elevation");
         },
 
         setElevation: function (value, options)
@@ -397,7 +395,7 @@ function(
         
         getTemperature: function(value, options)
         {
-            return +convertToViewUnits(value, "temperature");
+            return +conversion.convertToViewUnits(value, "temperature");
         },
         
         setTemperature: function(value, options)

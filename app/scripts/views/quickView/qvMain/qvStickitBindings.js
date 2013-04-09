@@ -2,14 +2,12 @@
 [
     "utilities/printDate",
     "utilities/printUnitLabel",
-    "utilities/convertToViewUnits",
     "utilities/printTimeFromDecimalHours",
     "utilities/conversion"
 ],
 function (
     printDate,
     printUnitLabel,
-    convertToViewUnits,
     printTimeFromDecimalHours,
     conversion
 )
@@ -98,7 +96,7 @@ function (
 
         getDistance: function(value, options)
         {
-            return convertToViewUnits(value, "distance", null, 0);
+            return conversion.convertToModelUnits(value, "distance", null, 0);
         },
 
         getDayName: function(value, options)

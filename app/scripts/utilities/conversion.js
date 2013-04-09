@@ -2,7 +2,7 @@
 [
     "utilities/conversion/convertTimeHoursToDecimal",
     "utilities/conversion/convertToModelUnits",
-    "utilities/convertToViewUnits"
+    "utilities/conversion/convertToViewUnits"
 ], function (convertTimeHoursToDecimal, convertToModelUnits, convertToViewUnits)
 {
     return {
