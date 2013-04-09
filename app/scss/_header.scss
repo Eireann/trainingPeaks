@@ -35,6 +35,11 @@
             z-index: 99;
         }
 
+        .headerShadow
+        {
+            height: 17px;
+        }
+
         .rightNavigation
         {
             float: right;
@@ -58,9 +63,9 @@
                 text-align: center;
                 //&:hover { background-color: $TPBlue; }
                 float:left;
-                @include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey3, normal);
-
+                @include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey2, normal);
             }
+
 
             .headerRollOver
             {
@@ -79,10 +84,13 @@
                 padding: 11px 25px 0px 25px;
                 @include linearGradient(bottom, rgb(34,97,143), rgba(59,125,193, 1)); 
                 cursor: pointer;
+
                 label
                 {
                     color: $white;
                     cursor: pointer;
+                    font-size: $fontSizeSmall;
+                    font-family: $navigationFontFamilyRegular;
                 }
             }
 
