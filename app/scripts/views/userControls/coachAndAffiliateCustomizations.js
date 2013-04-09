@@ -21,7 +21,8 @@ function(_, colorUtils)
             {
                 var $logo = this.$("#topLogo");
 
-                var logoUrl = headerImageUrl.indexOf("http") == 0 ? headerImageUrl : theMarsApp.wwwRoot + headerImageUrl;
+                var logoUrl = headerImageUrl.indexOf("http") === 0 ? headerImageUrl : theMarsApp.wwwRoot + headerImageUrl;
+
                 if($logo.attr("src") !== logoUrl)
                 {
                     $logo.attr("src", logoUrl);
