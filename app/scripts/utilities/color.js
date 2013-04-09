@@ -9,6 +9,13 @@
             this.r = r;
             this.g = g;
             this.b = b;
+
+            // canvas returns 0-255 instead of 0-1?
+            if (a > 1)
+            {
+                a = Math.round(a / 255);
+            }
+
             this.a = a;
             this.rgb = "rgb(" + r + "," + g + "," + b + ")";
             this.rgba = "rgba(" + r + "," + g + "," + b + "," + a + ")";
