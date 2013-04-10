@@ -23,12 +23,16 @@
     {
         overflow-y: scroll;
         @include nice-scrollbar;
+        border-left: solid;
+        border-left-width: 1px;
+        border-left-color: $TPGrey2;
     }
 
     .week
     {
         @include outerRow();
 		background-color: $TPGrey1;
+        padding-left: 4px;
     }
 
     .day
@@ -77,7 +81,7 @@
 		height: 27px;
 		margin-bottom: 2px;
 		border-bottom: 1px;
-		border-bottom-color: $TPGrey6;
+		border-bottom-color: $TPGrey3;
 		border-bottom-style: solid;
 		padding-left: 5px;
 
