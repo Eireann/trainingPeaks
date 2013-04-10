@@ -1,59 +1,31 @@
 ﻿define(
 [
-    "underscore"
+    "underscore",
+    "utilities/affiliates"
 ],
-function(_)
+function(_, affiliateUtils)
 {
     var coachAndAffiliateCustomizations =
     {
 
-        coachAndAffiliateEvents:
-        {
-            "click #banner": "onBannerClicked"
-        },
-
         initializeCoachAndAffiliateCustomizations: function()
         {
-            _.extend(this.events, this.coachAndAffiliateEvents);
-            this.on("render", this.setupAds, this);
+            this.on("render", this.setupBanner, this);
         },
 
-        setupAds: function()
+        setupBanner: function()
         {
-            if (this.shouldDisplayAffiliateAdvertisements())
+            _.bindAll(this, "displayBanner");
+            affiliateUtils.loadAffiliateSettings().done(this.displayBanner);
+        },
+
+        displayBanner: function(affiliateSettings)
+        {
+            if (affiliateSettings && affiliateSettings.hasOwnProperty("bannerCode"))
             {
                 this.$el.addClass("withAds");
-                this.$("#banner").css("display", "block").attr("src", this.getBannerUrl());
-            }
-        },
-
-        shouldDisplayAffiliateAdvertisements: function()
-        {
-            var affiliateCode = theMarsApp.user.get("settings.affiliate.affiliateCode");
-            if (affiliateCode === "runnersworld")
-            {
-                return true;
-            }
-            return false;
-        },
-
-        getBannerUrl: function()
-        {
-            var logoUrl = theMarsApp.user.get("settings.account.headerImageUrl");
-            if(logoUrl.indexOf("http") !== 0)
-            {
-                logoUrl = theMarsApp.wwwRoot + logoUrl;      
-            }
-            return logoUrl;
-        },
-
-        onBannerClicked: function(e)
-        {
-            var linkUrl = theMarsApp.user.get("settings.account.headerLink");
-            if(linkUrl)
-            {
-                window.open(linkUrl);
-            }
+                this.$("#affiliateBanner").css("display", "block").html(affiliateSettings.bannerCode);
+            } 
         }
 
     };

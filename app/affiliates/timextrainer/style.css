@@ -1,0 +1,14 @@
+﻿#calendarContainer .thisWeek .dayHeader
+{
+    background-color: rgb(200, 81, 72);
+}
+
+#calendarContainer .thisWeek .today .dayHeader
+{
+    background-color: rgb(235, 156, 151);
+}
+
+#userControlsContainer #userControlsBackground .personHeaderLogo
+{
+    background-image: url(timexLogo.png);
+}

@@ -1,0 +1,15 @@
+﻿
+#calendarContainer .thisWeek .dayHeader
+{
+    background-color: rgb(60, 75, 137);
+}
+
+#calendarContainer .thisWeek .today .dayHeader
+{
+    background-color: rgb(144, 153, 188);
+}
+
+#userControlsContainer #userControlsBackground .personHeaderLogo
+{
+    background-image: url(rwLogo.png);
+}

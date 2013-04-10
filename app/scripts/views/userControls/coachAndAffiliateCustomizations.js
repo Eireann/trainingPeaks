@@ -2,16 +2,17 @@
 [
     "underscore",
     "utilities/color",
+    "utilities/affiliates",
     "models/imageData"
 ],
-function(_, colorUtils, ImageData)
+function(_, colorUtils, affiliateUtils, ImageData)
 {
     var coachAndAffiliateCustomizations =
     {
 
         coachAndAffiliateEvents:
         {
-            "click #topLogo": "onLogoClicked"
+            "click .personHeaderLogo": "onLogoClicked"
         },
 
         initializeCoachAndAffiliateCustomizations: function()
@@ -23,15 +24,18 @@ function(_, colorUtils, ImageData)
 
         setupHeader: function()
         {
-            if (this.userHasAffiliateAccount())
+            if (theMarsApp.user.get("settings.account") && !this.affiliateHeaderLoaded)
             {
-                this.setAffiliateLogoImageSrc();
-                this.setAffiliateWeekHeaderColors();
-                this.$("#userControlsBackground").addClass("affiliateBanner");
-            } else if (this.userHasCoachAccount())
-            {
-                this.loadCoachLogoImageData();
-                this.$("#userControlsBackground").addClass("coachBanner");
+                if (this.userHasAffiliateAccount())
+                {
+                    affiliateUtils.loadAffiliateStylesheet();
+                    this.$("#userControlsBackground").addClass("affiliateBanner");
+                } else if (this.userHasCoachAccount())
+                {
+                    this.loadCoachLogoImageData();
+                    this.$("#userControlsBackground").addClass("coachBanner");
+                }
+                this.affiliateHeaderLoaded = true;
             }
         },
 
@@ -42,24 +46,13 @@ function(_, colorUtils, ImageData)
             {
                 return false;
             }
-
-            var affiliateCode = theMarsApp.user.get("settings.affiliate.affiliateCode");
-            switch (affiliateCode)
-            {
-                case "timextrainer":
-                    return true;
-                case "runnersworld":
-                    return true;
-                default:
-                    return false;
-            }
-            return false;
+            return affiliateUtils.isAffiliate();
         },
 
         userHasCoachAccount: function()
         {
             var logoUrl = theMarsApp.user.get("settings.account.headerImageUrl");
-            if(logoUrl && !this.userHasAffiliateAccount() && logoUrl.indexOf("training_peaks_banner") < 0)
+            if (logoUrl && !this.userHasAffiliateAccount() && logoUrl.indexOf("training_peaks_banner") < 0)
             {
                 return true;
             }
@@ -76,47 +69,20 @@ function(_, colorUtils, ImageData)
             return logoUrl;
         },
 
-        setAffiliateLogoImageSrc: function()
-        {
-            var logoUrl = this.getLogoUrl();
-            this.$("#topLogo").attr("src", logoUrl);
-        },
-
-        setAffiliateWeekHeaderColors: function()
-        {
-            var affiliateCode = theMarsApp.user.get("settings.affiliate.affiliateCode");
-            var thisWeekColor = "";
-            var todayColor = "";
-            switch (affiliateCode)
-            {
-                case "timextrainer":
-                    thisWeekColor = "rgb(200, 81, 72)";
-                    todayColor = "rgb(235, 156, 151)";
-                    break;
-                case "runnersworld":
-                    thisWeekColor = "rgb(60, 75, 137)";
-                    todayColor = "rgb(144, 153, 188)";
-                    break;
-                default:
-                    return false;
-            }
-            var cssRule = "#calendarContainer .thisWeek .dayHeader { background-color: " + thisWeekColor + "; }";
-            cssRule += "#calendarContainer .thisWeek .today .dayHeader { background-color: " + todayColor + "; }";
-            $("<style>").prop("type", "text/css").html(cssRule).appendTo("head");
-        },
-
         loadCoachLogoImageData: function()
         {
-            var self = this;
             var logoUrl = this.getLogoUrl();
+            this.$(".personHeaderLogo").css("background-image", "none");
+            var self = this;
             var imageData = new ImageData({ url: logoUrl });
             var onDataLoaded = function()
             {
-                var logo = self.$("#topLogo");
+                var logo = $("<img />");
                 logo.attr("src", imageData.get("data"));
                 logo.load(function()
                 {
                     self.updateHeaderColorsFromImageData(this);
+                    self.$(".personHeaderLogo").append(logo);
                 });
             };
             imageData.getImageData().done(onDataLoaded);

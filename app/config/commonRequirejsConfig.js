@@ -47,12 +47,11 @@
             "moment": "../vendor/js/libs/moment/moment",
 
             // thread utilities
-            "setImmediate": "../vendor/js/libs/setImmediate"
+            "setImmediate": "../vendor/js/libs/setImmediate",
 
-            // lawnchair - for localStorage
-           // "lawnchair": "../vendor/js/libs/lawnchair"
- 
-            
+            // affiliates
+            "affiliates": "affiliates"
+
         },
 
         hbs:
