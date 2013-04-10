@@ -1,12 +1,15 @@
 define(
 [
     "TP",
+    "views/calendarHeader/coachAndAffiliateCustomizations",
     "hbs!templates/views/calendarHeader"
 ],
-function(TP, calendarHeaderTemplate)
+function(TP, coachAndAffiliateCustomizations, calendarHeaderTemplate)
 {
-    return TP.ItemView.extend(
-    {
+    var calendarHeaderViewBase = {
+
+        className: "calendarHeaderView",
+
         template:
         {
             type: "handlebars",
@@ -24,6 +27,8 @@ function(TP, calendarHeaderTemplate)
         {
             if (!this.model)
                 throw "Cannot have a CalendarHeaderView without a model";
+
+            this.initializeCoachAndAffiliateCustomizations();
         },
 
         onGoToTodayButtonClicked: function()
@@ -40,5 +45,10 @@ function(TP, calendarHeaderTemplate)
         {
             this.trigger("request:lastweek", this.model);
         }
-    });
+
+    };
+
+    _.extend(calendarHeaderViewBase, coachAndAffiliateCustomizations);
+    return TP.ItemView.extend(calendarHeaderViewBase);
+
 });

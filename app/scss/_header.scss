@@ -203,7 +203,7 @@
 
 #calendarHeader
 {
-	height: 64px;
+	min-height: 64px;
 	float:left;
 	background-color: $white;
 	.calendarMonthLabel
@@ -226,53 +226,81 @@
 		}
 	}
 
-	.navigation
-	{
-		float:left;
-		//padding-top: 12px;
-        margin-top: 4px;
-		
-		@include headerButtons(0px, 35px, $fontSizeMedium);
+    .calendarHeaderView
+    {
 
-		.calendarNavigation
-		{
-			float:left;
-			padding-right: 8px;
-			padding-top: 3px;
-			@include headerButtons(0px, 35px, 12px);
-			
-		}
-
-		.today
-		{
-			float:left;
-			padding-top: 3px;
-			@include headerButtons(0px, 71px, 12px);
-		}
-
-		.printRefreshButtons
-		{
-			float:left;
-			padding-top: 3px;
-			@include headerButtons(20px, 40px, $fontSizeMedium);
-			margin-left: -12px;
-            button
+        &.withAds
+        {
+            .calendarMonthLabel
             {
-                img
+                margin-top: 30px;
+            }
+
+            .navigation
+            {
+                margin-top: 30px;
+            }
+        }
+
+	    .navigation
+        {
+            float:left;
+            //padding-top: 12px;
+            margin-top: 4px;
+            
+            @include headerButtons(0px, 35px, $fontSizeMedium);
+
+            .calendarNavigation
+            {
+                float:left;
+                padding-right: 8px;
+                padding-top: 3px;
+                @include headerButtons(0px, 35px, 12px);
+                
+            }
+
+            .today
+            {
+                float:left;
+                padding-top: 3px;
+                @include headerButtons(0px, 71px, 12px);
+            }
+
+            .printRefreshButtons
+            {
+                float:left;
+                padding-top: 3px;
+                @include headerButtons(20px, 40px, $fontSizeMedium);
+                margin-left: -12px;
+                button
                 {
-                    margin-top: -2px;
+                    img
+                    {
+                        margin-top: -2px;
+                    }
+                }
+                .refreshButton
+                {
+                    margin-left: 8px;
+                }
+                .settingsButton
+                {
+                    margin-left: 8px;
                 }
             }
-			.refreshButton
-			{
-				margin-left: 8px;
-			}
-			.settingsButton
-			{
-				margin-left: 8px;
-			}
-		}
-	}
+        }
+
+        #banner
+        {
+            margin-left: 80px;
+            margin-bottom: 15px;
+            margin-top: 10px;
+            height: 85px;
+            float: left;
+            display: none;
+        }
+
+    }
 
 }
 

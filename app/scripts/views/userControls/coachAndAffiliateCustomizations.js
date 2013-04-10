@@ -26,6 +26,13 @@ function(_, colorUtils, ImageData)
             if (this.userHasAffiliateAccount())
             {
                 this.setLogoImageSrc();
+                if (this.displayAffiliateAdvertisements())
+                {
+                    this.$("#userControlsBackground").addClass("affiliateBannerWithAds");
+                } else
+                {
+                    this.$("#userControlsBackground").addClass("affiliateBanner");
+                }
             } else if (this.userHasCoachAccount())
             {
                 this.loadLogoImageData();
@@ -52,6 +59,18 @@ function(_, colorUtils, ImageData)
                     return false;
             }
             return false;
+        },
+
+        displayAffiliateAdvertisements: function()
+        {
+            var affiliateCode = theMarsApp.user.get("settings.affiliate.affiliateCode");
+            switch(affiliateCode)
+            {
+                case "runnersworld":
+                    return true;
+                default:
+                    return false;
+            }
         },
 
         userHasCoachAccount: function()

@@ -12,7 +12,7 @@ define(
     "models/library/libraryExercisesCollection",
     "models/workoutModel",
     "models/commands/addWorkoutFromExerciseLibrary",
-    "views/calendarHeaderView",
+    "views/calendarHeader/calendarHeaderView",
     "views/calendarContainerView",
     "views/library/libraryView"
 ],
