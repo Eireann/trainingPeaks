@@ -71,7 +71,7 @@ function(_, colorUtils, ImageData)
 
             // set the menu arrow. since it comes and goes we need a class instead of setting it directly
             // usually make it a little darker than the bg, unless the bg is already pretty dark
-            var valueMultiplier = colorValues.gray <= 32 ? 1.2 : 0.8;
+            var valueMultiplier = colorValues.gray <= 32 ? 1.3 : 0.7;
             var arrowBgColor = colorUtils.darkenOrLighten(colorValues, valueMultiplier);
             var cssRule = ".accountSettings .hoverBox .colored { background-color: " + arrowBgColor.rgb + "; }";
             $("<style>").prop("type", "text/css").html(cssRule).appendTo("head");
@@ -79,34 +79,14 @@ function(_, colorUtils, ImageData)
 
         setTextColors: function(colorValues)
         {
-            var grayscaleBackground = colorValues.gray;
-            var normalGrayValue = 192;
-            var normalGrayOpacity = 0.80;
-            var hoverGrayValue = 255;
-            var hoverGrayOpacity = 0.8;
-
-            if (grayscaleBackground > 128)
+            if (colorValues.gray > 128)
             {
-                hoverGrayValue = 0;
-                normalGrayValue = 64;
+                this.$("#userControlsBackground").addClass("lightBackground").removeClass("darkBackground");
+            } else
+            {
+                this.$("#userControlsBackground").addClass("darkBackground").removeClass("lightBackground");
             }
 
-            // text color value of username label
-            var normalTextColor = "rgba(" + normalGrayValue + "," + normalGrayValue + "," + normalGrayValue + "," + normalGrayOpacity + ")";
-            this.$(".personHeaderButtons:not(.upgradeButton) label").css("color", normalTextColor);
-            this.$(".headerPipe").css("color", normalTextColor);
-
-            // hover state of username label
-            var hoverTextColor = "rgba(" + hoverGrayValue + "," + hoverGrayValue + "," + hoverGrayValue + "," + hoverGrayOpacity + ")";
-            this.$(".headerRollOver").hover(
-                function()
-                {
-                    $(this).find("label").css('color', hoverTextColor);
-                },
-                function()
-                {
-                    $(this).find("label").css('color', normalTextColor);
-                });
         }
 
     };
