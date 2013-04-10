@@ -21,7 +21,21 @@ function(modelToViewConversionFactors)
         return (minutes + ":" + seconds);
     };
 
-    var convertToViewUnits = function(value, fieldType, workoutType, defaultValue, decimalPlaces)
+    var roundViewUnits = function(value)
+    {
+        if (value >= 100)
+        {
+            return Math.round(value);
+        } else if (value >= 10)
+        {
+            return value.toFixed(1);
+        } else
+        {
+            return value.toFixed(2);
+        }
+    }
+
+    var convertToViewUnits = function(value, fieldType, workoutType, defaultValue)
     {
         if (!_.isNumber(value))
             return typeof defaultValue !== 'undefined' ? defaultValue : ""; 
@@ -34,8 +48,7 @@ function(modelToViewConversionFactors)
                 return (value * modelToViewConversionFactors[fieldType][currentUnits]).toFixed(0);
             case "speed":
             case "distance":
-                var convertedValue = value * modelToViewConversionFactors[fieldType][currentUnits];
-                return convertedValue >= 100 && !decimalPlaces ? convertedValue.toFixed(1) : convertedValue.toFixed(2);
+                return roundViewUnits(value * modelToViewConversionFactors[fieldType][currentUnits]);
             case "pace":
                 return convertToPaceFromSpeed(value, currentUnits);
             case "temperature":

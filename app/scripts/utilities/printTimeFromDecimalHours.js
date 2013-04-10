@@ -46,14 +46,14 @@ function()
             */
         time = "" + fullHours;
 
-        if (fullMinutes > 10)
+        if (fullMinutes >= 10)
             time += ":" + fullMinutes;
         else
             time += ":0" + fullMinutes;
         
         if (showSeconds === true)
         {
-            if (fullSeconds > 10)
+            if (fullSeconds >= 10)
                 time += ":" + fullSeconds;
             else
                 time += ":0" + fullSeconds;
