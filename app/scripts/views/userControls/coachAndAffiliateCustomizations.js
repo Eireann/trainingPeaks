@@ -9,55 +9,87 @@ function(_, colorUtils, ImageData)
     var coachAndAffiliateCustomizations =
     {
 
+        coachAndAffiliateEvents:
+        {
+            "click #topLogo": "onLogoClicked"
+        },
+
         initializeCoachAndAffiliateCustomizations: function()
         {
             _.bindAll(this, "updateHeaderColorsFromImageData");
-            this.on("render", this.setupHeaderLogo, this);
+            _.extend(this.events, this.coachAndAffiliateEvents);
+            this.on("render", this.setupHeader, this);
         },
 
-        setupHeaderLogo: function()
+        setupHeader: function()
         {
-            return;
-            /*
-            var headerImageUrl = theMarsApp.user.get("settings.account.headerImageUrl");
-            if (headerImageUrl)
+            if (this.userHasAffiliateAccount())
             {
-                this.setLogoImage(headerImageUrl);
-                this.setAffiliateOrCoach();
-                this.loadLogoImageData(logoUrl);
+                this.setLogoImageSrc();
+            } else if (this.userHasCoachAccount())
+            {
+                this.loadLogoImageData();
+                this.$("#userControlsBackground").addClass("coachBanner");
             }
-            */
         },
 
-        setAffiliateOrCoach: function()
+        userHasAffiliateAccount: function()
         {
-            this.$("#userControlsBackground").addClass("coachBanner");
+            var logoUrl = theMarsApp.user.get("settings.account.headerImageUrl");
+            if(logoUrl && logoUrl.indexOf("training_peaks_banner") >= 0)
+            {
+                return false;
+            }
+
+            var affiliateCode = theMarsApp.user.get("settings.affiliate.affiliateCode");
+            switch(affiliateCode)
+            {
+                case "timextrainer":
+                    return true;
+                case "runnersworld":
+                    return true;
+                default:
+                    return false;
+            }
+            return false;
         },
 
-        setLogoImage: function(logoUrl)
+        userHasCoachAccount: function()
         {
-                var $logo = this.$("#topLogo");
-
-                if(logoUrl.indexOf("http") !== 0)
-                {
-                    logoUrl = theMarsApp.wwwRoot + logoUrl;      
-                }
-
-                if($logo.attr("src") !== logoUrl)
-                {
-                    $logo.attr("src", logoUrl);
-                }
+            var logoUrl = theMarsApp.user.get("settings.account.headerImageUrl");
+            if(logoUrl && !this.userHasAffiliateAccount() && logoUrl.indexOf("training_peaks_banner") < 0)
+            {
+                return true;
+            }
+            return false;
         },
 
-        loadLogoImageData: function(logoUrl)
+        getLogoUrl: function()
+        {
+            var logoUrl = theMarsApp.user.get("settings.account.headerImageUrl");
+            if(logoUrl.indexOf("http") !== 0)
+            {
+                logoUrl = theMarsApp.wwwRoot + logoUrl;      
+            }
+            return logoUrl;
+        },
+
+        setLogoImageSrc: function()
+        {
+            var logoUrl = this.getLogoUrl();
+            this.$("#topLogo").attr("src", logoUrl);
+        },
+
+        loadLogoImageData: function()
         {
             var self = this;
+            var logoUrl = this.getLogoUrl();
             var imageData = new ImageData({ url: logoUrl });
             var onDataLoaded = function()
             {
-                var img = $("<img/>");
-                img.attr("src", imageData.get("data"));
-                img.load(function()
+                var logo = self.$("#topLogo");
+                logo.attr("src", imageData.get("data"));
+                logo.load(function()
                 {
                     self.updateHeaderColorsFromImageData(this);
                 });
@@ -102,6 +134,15 @@ function(_, colorUtils, ImageData)
                 this.$("#userControlsBackground").addClass("darkBackground").removeClass("lightBackground");
             }
 
+        },
+
+        onLogoClicked: function(e)
+        {
+            var linkUrl = theMarsApp.user.get("settings.account.headerLink");
+            if(linkUrl)
+            {
+                window.open(linkUrl);
+            }
         }
 
     };
