@@ -33,7 +33,7 @@ function(modelToViewConversionFactors)
         {
             return value.toFixed(2);
         }
-    }
+    };
 
     var convertToViewUnits = function(value, fieldType, workoutType, defaultValue)
     {
