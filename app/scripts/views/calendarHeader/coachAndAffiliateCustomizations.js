@@ -30,13 +30,11 @@ function(_)
         shouldDisplayAffiliateAdvertisements: function()
         {
             var affiliateCode = theMarsApp.user.get("settings.affiliate.affiliateCode");
-            switch(affiliateCode)
+            if (affiliateCode === "runnersworld")
             {
-                case "runnersworld":
-                    return true;
-                default:
-                    return false;
+                return true;
             }
+            return false;
         },
 
         getBannerUrl: function()
