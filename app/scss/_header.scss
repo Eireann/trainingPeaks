@@ -9,6 +9,11 @@
 	    height: 35px;
     	background-color: $black;
 
+        #topLogo
+        {
+            cursor: pointer;
+        }
+
         &.coachBanner
         {
             height: 61px;
@@ -16,8 +21,8 @@
             .rightNavigation
             {
                 margin-top: 13px;
-                margin-right: 20px;
             }
+
         }
 
         &.lightBackground
@@ -169,7 +174,6 @@
 
 #navigationContainer
 {
-	height: 65px;
 	background-color: $white;
 
 	.row
@@ -199,7 +203,7 @@
 
 #calendarHeader
 {
-	height: 60px;
+	height: 64px;
 	float:left;
 	background-color: $white;
 	.calendarMonthLabel
@@ -207,7 +211,8 @@
 		width: 265px;
 		float: left;
 		padding-left: 65px;
-		padding-top: 13px;
+		//padding-top: 13px;
+        margin-top: 5px;
 		@include labels($navigationFontFamilyRegular, $fontSizeHeader, $TPBlue, normal);
 		label
 		{
@@ -224,7 +229,8 @@
 	.navigation
 	{
 		float:left;
-		padding-top: 12px;
+		//padding-top: 12px;
+        margin-top: 4px;
 		
 		@include headerButtons(0px, 35px, $fontSizeMedium);
 

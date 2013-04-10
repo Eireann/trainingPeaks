@@ -9,39 +9,87 @@ function(_, colorUtils, ImageData)
     var coachAndAffiliateCustomizations =
     {
 
+        coachAndAffiliateEvents:
+        {
+            "click #topLogo": "onLogoClicked"
+        },
+
         initializeCoachAndAffiliateCustomizations: function()
         {
             _.bindAll(this, "updateHeaderColorsFromImageData");
-            this.on("render", this.setupHeaderLogo, this);
+            _.extend(this.events, this.coachAndAffiliateEvents);
+            this.on("render", this.setupHeader, this);
         },
 
-        setupHeaderLogo: function()
+        setupHeader: function()
         {
-            var headerImageUrl = theMarsApp.user.get("settings.account.headerImageUrl");
-            if (headerImageUrl)
+            if (this.userHasAffiliateAccount())
             {
-                var $logo = this.$("#topLogo");
-
-                var logoUrl = headerImageUrl.indexOf("http") === 0 ? headerImageUrl : theMarsApp.wwwRoot + headerImageUrl;
-
-                if($logo.attr("src") !== logoUrl)
-                {
-                    $logo.attr("src", logoUrl);
-                }
-
-                this.loadLogoImageData(logoUrl);
+                this.setLogoImageSrc();
+            } else if (this.userHasCoachAccount())
+            {
+                this.loadLogoImageData();
+                this.$("#userControlsBackground").addClass("coachBanner");
             }
         },
 
-        loadLogoImageData: function(logoUrl)
+        userHasAffiliateAccount: function()
+        {
+            var logoUrl = theMarsApp.user.get("settings.account.headerImageUrl");
+            if(logoUrl && logoUrl.indexOf("training_peaks_banner") >= 0)
+            {
+                return false;
+            }
+
+            var affiliateCode = theMarsApp.user.get("settings.affiliate.affiliateCode");
+            switch(affiliateCode)
+            {
+                case "timextrainer":
+                    return true;
+                case "runnersworld":
+                    return true;
+                default:
+                    return false;
+            }
+            return false;
+        },
+
+        userHasCoachAccount: function()
+        {
+            var logoUrl = theMarsApp.user.get("settings.account.headerImageUrl");
+            if(logoUrl && !this.userHasAffiliateAccount() && logoUrl.indexOf("training_peaks_banner") < 0)
+            {
+                return true;
+            }
+            return false;
+        },
+
+        getLogoUrl: function()
+        {
+            var logoUrl = theMarsApp.user.get("settings.account.headerImageUrl");
+            if(logoUrl.indexOf("http") !== 0)
+            {
+                logoUrl = theMarsApp.wwwRoot + logoUrl;      
+            }
+            return logoUrl;
+        },
+
+        setLogoImageSrc: function()
+        {
+            var logoUrl = this.getLogoUrl();
+            this.$("#topLogo").attr("src", logoUrl);
+        },
+
+        loadLogoImageData: function()
         {
             var self = this;
+            var logoUrl = this.getLogoUrl();
             var imageData = new ImageData({ url: logoUrl });
             var onDataLoaded = function()
             {
-                var img = $("<img/>");
-                img.attr("src", imageData.get("data"));
-                img.load(function()
+                var logo = self.$("#topLogo");
+                logo.attr("src", imageData.get("data"));
+                logo.load(function()
                 {
                     self.updateHeaderColorsFromImageData(this);
                 });
@@ -66,7 +114,6 @@ function(_, colorUtils, ImageData)
             var bgColor = colorValues.rgb;
 
             // set the top bar
-            this.$("#userControlsBackground").addClass("coachBanner");
             this.$("#userControlsBackground").css("background-color", bgColor);
 
             // set the menu arrow. since it comes and goes we need a class instead of setting it directly
@@ -87,6 +134,15 @@ function(_, colorUtils, ImageData)
                 this.$("#userControlsBackground").addClass("darkBackground").removeClass("lightBackground");
             }
 
+        },
+
+        onLogoClicked: function(e)
+        {
+            var linkUrl = theMarsApp.user.get("settings.account.headerLink");
+            if(linkUrl)
+            {
+                window.open(linkUrl);
+            }
         }
 
     };
