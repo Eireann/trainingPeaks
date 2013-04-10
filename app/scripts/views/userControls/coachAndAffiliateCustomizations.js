@@ -18,6 +18,7 @@ function(_, colorUtils, ImageData)
         setupHeaderLogo: function()
         {
             return;
+            /*
             var headerImageUrl = theMarsApp.user.get("settings.account.headerImageUrl");
             if (headerImageUrl)
             {
@@ -25,6 +26,7 @@ function(_, colorUtils, ImageData)
                 this.setAffiliateOrCoach();
                 this.loadLogoImageData(logoUrl);
             }
+            */
         },
 
         setAffiliateOrCoach: function()
