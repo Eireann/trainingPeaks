@@ -17,20 +17,34 @@ function(_, colorUtils, ImageData)
 
         setupHeaderLogo: function()
         {
+            return;
             var headerImageUrl = theMarsApp.user.get("settings.account.headerImageUrl");
             if (headerImageUrl)
             {
+                this.setLogoImage(headerImageUrl);
+                this.setAffiliateOrCoach();
+                this.loadLogoImageData(logoUrl);
+            }
+        },
+
+        setAffiliateOrCoach: function()
+        {
+            this.$("#userControlsBackground").addClass("coachBanner");
+        },
+
+        setLogoImage: function(logoUrl)
+        {
                 var $logo = this.$("#topLogo");
 
-                var logoUrl = headerImageUrl.indexOf("http") === 0 ? headerImageUrl : theMarsApp.wwwRoot + headerImageUrl;
+                if(logoUrl.indexOf("http") !== 0)
+                {
+                    logoUrl = theMarsApp.wwwRoot + logoUrl;      
+                }
 
                 if($logo.attr("src") !== logoUrl)
                 {
                     $logo.attr("src", logoUrl);
                 }
-
-                this.loadLogoImageData(logoUrl);
-            }
         },
 
         loadLogoImageData: function(logoUrl)
@@ -66,7 +80,6 @@ function(_, colorUtils, ImageData)
             var bgColor = colorValues.rgb;
 
             // set the top bar
-            this.$("#userControlsBackground").addClass("coachBanner");
             this.$("#userControlsBackground").css("background-color", bgColor);
 
             // set the menu arrow. since it comes and goes we need a class instead of setting it directly

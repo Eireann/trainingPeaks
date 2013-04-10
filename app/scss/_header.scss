@@ -169,7 +169,6 @@
 
 #navigationContainer
 {
-	height: 65px;
 	background-color: $white;
 
 	.row
@@ -199,7 +198,7 @@
 
 #calendarHeader
 {
-	height: 60px;
+	height: 64px;
 	float:left;
 	background-color: $white;
 	.calendarMonthLabel
@@ -207,7 +206,7 @@
 		width: 265px;
 		float: left;
 		padding-left: 65px;
-		padding-top: 13px;
+		//padding-top: 13px;
 		@include labels($navigationFontFamilyRegular, $fontSizeHeader, $TPBlue, normal);
 		label
 		{
@@ -224,7 +223,7 @@
 	.navigation
 	{
 		float:left;
-		padding-top: 12px;
+		//padding-top: 12px;
 		
 		@include headerButtons(0px, 35px, $fontSizeMedium);
 
