@@ -25,11 +25,12 @@ function(_, colorUtils, ImageData)
         {
             if (this.userHasAffiliateAccount())
             {
-                this.setLogoImageSrc();
+                this.setAffiliateLogoImageSrc();
+                this.setAffiliateWeekHeaderColors();
                 this.$("#userControlsBackground").addClass("affiliateBanner");
             } else if (this.userHasCoachAccount())
             {
-                this.loadLogoImageData();
+                this.loadCoachLogoImageData();
                 this.$("#userControlsBackground").addClass("coachBanner");
             }
         },
@@ -43,7 +44,7 @@ function(_, colorUtils, ImageData)
             }
 
             var affiliateCode = theMarsApp.user.get("settings.affiliate.affiliateCode");
-            switch(affiliateCode)
+            switch (affiliateCode)
             {
                 case "timextrainer":
                     return true;
@@ -75,13 +76,36 @@ function(_, colorUtils, ImageData)
             return logoUrl;
         },
 
-        setLogoImageSrc: function()
+        setAffiliateLogoImageSrc: function()
         {
             var logoUrl = this.getLogoUrl();
             this.$("#topLogo").attr("src", logoUrl);
         },
 
-        loadLogoImageData: function()
+        setAffiliateWeekHeaderColors: function()
+        {
+            var affiliateCode = theMarsApp.user.get("settings.affiliate.affiliateCode");
+            var thisWeekColor = "";
+            var todayColor = "";
+            switch (affiliateCode)
+            {
+                case "timextrainer":
+                    thisWeekColor = "rgb(200, 81, 72)";
+                    todayColor = "rgb(235, 156, 151)";
+                    break;
+                case "runnersworld":
+                    thisWeekColor = "rgb(60, 75, 137)";
+                    todayColor = "rgb(144, 153, 188)";
+                    break;
+                default:
+                    return false;
+            }
+            var cssRule = "#calendarContainer .thisWeek .dayHeader { background-color: " + thisWeekColor + "; }";
+            cssRule += "#calendarContainer .thisWeek .today .dayHeader { background-color: " + todayColor + "; }";
+            $("<style>").prop("type", "text/css").html(cssRule).appendTo("head");
+        },
+
+        loadCoachLogoImageData: function()
         {
             var self = this;
             var logoUrl = this.getLogoUrl();
