@@ -1,11 +1,7 @@
-﻿{{#each workoutComments}}
-<div class="comment">
-    <div class="commentHeader">
-        <span class="name">{{ firstName }} {{ lastName }}</span>
-        <span class="date">{{ printDate dateCreated "ddd, MM/DD/YY" }}</span>
-    </div>
-    <div class="commentBody">
-        {{ comment }}
-    </div>
+﻿<div class="commentHeader">
+    <span class="name">{{ firstName }} {{ lastName }}</span>
+    <span class="date">{{ printDate dateCreated "ddd, MM/DD/YY" }}</span>
 </div>
-{{/each}}
+<div class="commentBody">
+    {{ comment }}
+</div>

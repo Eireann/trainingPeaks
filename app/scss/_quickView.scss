@@ -571,9 +571,9 @@ input[disabled='disabled']
 
         .commentHeader
         {
-            padding: 5px;
             font-size: $fontSizeSmall;
-            background-color: $TPGrey5;
+            font-weight: $fontWeightBold;
+            margin-bottom: 5px;
 
             .name
             {
@@ -581,10 +581,6 @@ input[disabled='disabled']
             }
         }
 
-        .commentBody
-        {
-            padding: 5px;
-        }
     }
 }
 .updatingModel

@@ -7,6 +7,7 @@
     "views/quickView/summaryView/summaryViewTextAreas",
     "views/quickView/summaryView/summaryViewUserCustomization",
     "views/quickView/summaryView/summaryViewStickitBindings",
+    "views/quickView/summaryView/workoutCommentsCollectionView",
     "hbs!templates/views/quickView/summaryView"
 ],
 function (
@@ -17,6 +18,7 @@ function (
     summaryViewTextAreas,
     summaryViewUserCustomization,
     summaryViewStickitBindings,
+    WorkoutCommentsCollectionView,
     workoutQuickViewSummaryTemplate)
 {
     
@@ -39,11 +41,29 @@ function (
 
             this.initializeTextAreas();
             this.initializeUserCustomization();
+            this.on("render", this.renderComments, this);
 
             // setup stickit last because the user customization onRender needs to happen before stickit
             this.initializeStickit();
-        }
+        },
 
+        renderComments: function()
+        {
+            //preActivityCommentsList
+            //postActivityCommentsList
+            this.preActivityCommentsView = new WorkoutCommentsCollectionView(
+                { collection: this.model.preActivityComments }
+                );
+            this.postActivityCommentsView = new WorkoutCommentsCollectionView(
+                { collection: this.model.postActivityComments }
+                );
+
+            this.preActivityCommentsView.render();
+            this.$("#preActivityCommentsList").append(this.preActivityCommentsView.el);
+            this.postActivityCommentsView.render();
+            this.$("#postActivityCommentsList").append(this.postActivityCommentsView.el);
+
+        }
     };
 
     _.extend(summaryViewBase, summaryViewTextAreas);
