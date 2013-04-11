@@ -89,8 +89,7 @@ function(TP, setImmediate, jqueryOutside, UserConfirmationView, selectedRangeSet
 
         unselect: function(e)
         {
-            // disabled until we discuss functionality with stakeholders
-            //this.selectedRangeCollection.trigger("range:unselect", this.selectedRangeCollection);
+            this.selectedRangeCollection.trigger("range:unselect", this.selectedRangeCollection);
         }
     });
 });
