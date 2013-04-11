@@ -132,6 +132,15 @@ function(_, moment, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, C
             }
         },
 
+        onRangeUnselected: function(selectedRange)
+        {
+            if (this.selectedRange === selectedRange)
+            {
+                this.selectedRange.unselect();
+                this.selectedRange = null;
+            }
+        },
+
         onKeypressCopy: function(e)
         {
             if (this.selectedWeek)
@@ -280,6 +289,7 @@ function(_, moment, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, C
                 this.selectedRange = this.createRangeOfDays(this.selectedDay.id, dayModel.id);
                 this.selectedRange.select();
                 this.selectedRange.on("range:shiftwizard", this.onShiftWizardOpen, this);
+                this.selectedRange.on("range:unselect", this.onRangeUnselected, this);
 
                 // cancel default text selection behavior - also prevented through css on #calendarContainer
                 document.getSelection().removeAllRanges();

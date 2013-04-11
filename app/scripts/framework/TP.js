@@ -127,7 +127,7 @@ function(Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmediate,
             this.$overlay = $("<div></div>");
             this.$overlay.addClass("modalOverlay");
             this.$overlay.addClass(this.className + "ModalOverlay");
-            this.$overlay.on("click", function() { self.close(); });
+            this.$overlay.on("click", function() { self.trigger("clickoutside"); self.close(); });
 
             if (this.modal.mask)
                 this.$overlay.addClass("modalOverlayMask");
