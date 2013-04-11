@@ -34,6 +34,7 @@ function(TP, UserConfirmationView, calendarWeekSummarySettings, deleteConfirmati
         {
             this.parentEl = options.parentEl;
             this.inheritedClassNames = options.className;
+            this.on("clickoutside", this.unselect, this);
         },
 
         attributes: function()
@@ -111,6 +112,11 @@ function(TP, UserConfirmationView, calendarWeekSummarySettings, deleteConfirmati
         {
             this.hideSettings(e);
             this.model.trigger("week:shiftwizard");
+        },
+
+        unselect: function(e)
+        {
+            this.model.collection.trigger("week:unselect", this.model.collection);
         }
 
     });
