@@ -39,11 +39,11 @@
 
 .dialogHeader
 {
-    font-weight: $fontWeightMedium;
+    font-weight: $fontWeightBold;
     color: $TPGrey4;
     text-align: left;
     font-family: $navigationFontFamilyRegular;
-    font-size: $fontSizeMedium;
+    font-size: $fontSizeSmall;
 }
 
 .dialogContent
@@ -52,7 +52,7 @@
     padding-top: 40px;
     padding-bottom: 40px;
     @include filter-gradient(#ffffff, #dedcde, horizontal);
-    @include background-image(radial-gradient(center, ellipse cover,  #ffffff 0%,#dedcde 100%));
+    @include background-image(radial-gradient(center, ellipse cover,  #eaebec 0%,#dedcde 100%));
 
     line-height: 1.5em;
     font-weight: $fontWeightMedium;
