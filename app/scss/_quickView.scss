@@ -592,3 +592,15 @@ input[disabled='disabled']
 {
 	color: green;
 }
+
+.comment
+{
+    position: relative;
+    .menuButton
+    {
+        position: absolute;
+        display: none;
+        top: 5px;
+        right: 5px;
+    }
+}
