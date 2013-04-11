@@ -15,10 +15,10 @@
 		background:-moz-linear-gradient( center top, #ededed 5%, #dfdfdf 100% );
 		filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ededed', endColorstr='#dfdfdf');
 		background-color:#ededed;
-		border:1px solid $TPGrey2;
+		border: 0px;
 		display:inline-block;
 		text-decoration:none;
-
+        padding-top: 1px;
         outline-width: 1px;
         outline-style: solid;
         outline-color: $TPGrey3;
