@@ -44,7 +44,7 @@ function(_)
             if (this.isAffiliate())
             {
                 var affiliateCode = theMarsApp.user.get("settings.affiliate.affiliateCode");
-                $("<link>").attr("rel", "stylesheet").attr("href", "app/affiliates/" + affiliateCode + "/style.css").appendTo("body");
+                $("<link>").attr("rel", "stylesheet").attr("href", "app/scripts/affiliates/" + affiliateCode + "/style.css").appendTo("body");
             }
         }
 

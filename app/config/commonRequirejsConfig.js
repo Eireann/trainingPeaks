@@ -50,7 +50,7 @@
             "setImmediate": "../vendor/js/libs/setImmediate",
 
             // affiliates
-            "affiliates": "affiliates"
+            "affiliates": "scripts/affiliates"
 
         },
 
