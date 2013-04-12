@@ -165,7 +165,6 @@
 
             .personHeaderMailIcon
             {
-                padding-top: 12px;
                 padding-right: 13px;
                 &:hover{cursor: pointer;}
                 float: left;
@@ -174,7 +173,7 @@
                 height: 26px;
                 background-repeat: no-repeat;
                 background-position-x: 0px;
-                background-position-y: 12px;
+                margin-top: 12px;
             }
         }
 	}
