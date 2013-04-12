@@ -12,13 +12,19 @@
     {
         margin-right: 1em;
         font-size: $fontSizeSmall;
-        font-weight: $fontWeightMedium;
+        font-family: $navigationFontFamilyRegular;
         color: $TPGrey3;
 
         &:last
         {
             margin-right:0px;
         }
+    }
+
+    button[name="ok"]
+    {
+        background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #dfdfdf), color-stop(1, #AAC8E5) );
+		background:-moz-linear-gradient( center top, #dfdfdf 20%, #AAC8E5 100% );
     }
 
     .titleBar
@@ -43,7 +49,8 @@
     color: $TPGrey4;
     text-align: left;
     font-family: $navigationFontFamilyRegular;
-    font-size: $fontSizeSmall;
+    font-size: $fontSizeMedium;
+    text-align: center;
 }
 
 .dialogContent
