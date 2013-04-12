@@ -2,9 +2,11 @@ define(
 [
     "TP",
     "views/genericMenuView",
+    "views/userConfirmationView",
+    "hbs!templates/views/deleteConfirmationView",
     "hbs!templates/views/quickView/workoutComments"
 ],
-function(TP, GenericMenuView, WorkoutCommentsTemplate)
+function(TP, GenericMenuView, UserConfirmationView, deleteConfirmationTemplate, WorkoutCommentsTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -37,20 +39,28 @@ function(TP, GenericMenuView, WorkoutCommentsTemplate)
 
         showMenu: function(e)
         {
-            var menuView = new GenericMenuView({ className: "workoutCommentMenu", labels: ['Copy', 'Delete'] });
+            var menuLabels = this.model.get("commenterPersonId") === theMarsApp.user.id ? ['Copy', 'Delete'] : ['Copy'];
+            var menuView = new GenericMenuView({ className: "workoutCommentMenu", labels: menuLabels });
             menuView.on("Delete", this.onDeleteClicked, this);
             menuView.on("Copy", this.onCopyClicked, this);
             menuView.render().bottom(e.pageY).center(e.pageX);
         },
 
-        onDeleteClicked: function()
+        onDeleteClicked: function(e)
         {
-            alert('delete');
+            this.deleteConfirmationView = new UserConfirmationView({ template: deleteConfirmationTemplate });
+            this.deleteConfirmationView.render();
+            this.deleteConfirmationView.on("userConfirmed", this.onDeleteConfirmed, this);
+        },
+        
+        onDeleteConfirmed: function()
+        {
+            this.model.collection.remove(this.model);
         },
 
         onCopyClicked: function()
         {
-            alert('copy');
+            this.notImplemented();
         }
 
     });
