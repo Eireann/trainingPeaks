@@ -29,7 +29,10 @@ function(TP, GenericMenuView, UserConfirmationView, deleteConfirmationTemplate, 
 
         showMenuButton: function()
         {
-            this.$(".menuButton").show();
+            if (this.getMenuOptions().length)
+            {
+                this.$(".menuButton").show();
+            }
         },
 
         hideMenuButton: function()
@@ -37,10 +40,21 @@ function(TP, GenericMenuView, UserConfirmationView, deleteConfirmationTemplate, 
             this.$(".menuButton").hide();
         },
 
+        getMenuOptions: function()
+        {
+            if (!this.menuOptions)
+            {
+                //this.menuOptions = this.model.get("commenterPersonId") === theMarsApp.user.id ? ['Copy', 'Delete'] : ['Copy'];
+                // not implementing copy yet ...
+                this.menuOptions = this.model.get("commenterPersonId") === theMarsApp.user.id ? ['Delete'] : [];
+            }
+            return this.menuOptions;
+        },
+
         showMenu: function(e)
         {
-            var menuLabels = this.model.get("commenterPersonId") === theMarsApp.user.id ? ['Copy', 'Delete'] : ['Copy'];
-            var menuView = new GenericMenuView({ className: "workoutCommentMenu", labels: menuLabels });
+            var menuOptions = this.getMenuOptions();
+            var menuView = new GenericMenuView({ className: "workoutCommentMenu", labels: menuOptions });
             menuView.on("Delete", this.onDeleteClicked, this);
             menuView.on("Copy", this.onCopyClicked, this);
             menuView.render().bottom(e.pageY).center(e.pageX);

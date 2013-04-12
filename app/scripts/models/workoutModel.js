@@ -198,15 +198,6 @@ function (_, moment, TP)
             }
         },
 
-        getPreActivityComments: function()
-        {
-            if(!this.preActivityComments)
-            {
-                this.preActivityComments = new TP.Collection();
-            }
-            return this.preActivityComments;
-        },
-
         getPostActivityComments: function()
         {
             if (!this.postActivityComments)
@@ -219,13 +210,11 @@ function (_, moment, TP)
         parse: function(response)
         {
             this.getPostActivityComments().update(response.workoutComments);
-            this.getPreActivityComments().update(response.coachComments);
             return response;
         },
 
         toJSON: function(options) {
             var attributes = _.deepClone(this.attributes);
-            attributes.coachComments = this.getPreActivityComments().toJSON();
             attributes.workoutComments = this.getPostActivityComments().toJSON();
             return attributes;
         }
