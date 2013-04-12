@@ -25,14 +25,14 @@
     {
         text-align: left;
         min-height: 28px;
-        padding: 8px;
-        padding-left:16px;
+        padding: 10px 0px 0px 16px;
         background-color: #eaebec;
         @include box-shadow(2px 0px 7px 0px $TPGrey4);
         position: relative; 
         z-index: 99;
         font-size: $fontSizeSmall;
         font-weight: $fontWeightMedium;
+        font-family: $navigationFontFamilyRegular;
         color: $TPGrey3;
     }
 }
@@ -53,8 +53,10 @@
     padding-bottom: 40px;
     @include filter-gradient(#ffffff, #dedcde, horizontal);
     @include background-image(radial-gradient(center, ellipse cover,  #eaebec 0%,#dedcde 100%));
+    @include buttons(0px, 65px, $fontSizeSmall);
 
     line-height: 1.5em;
+    font-size: $fontSizeSmall;
     font-weight: $fontWeightMedium;
     color: $TPGrey4;
     padding-left: 40px;
