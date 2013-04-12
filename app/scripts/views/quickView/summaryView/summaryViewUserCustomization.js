@@ -2,26 +2,26 @@
 [
     "utilities/workoutLayoutFormatter"
 ],
-function(
+function (
     workoutLayoutFormatter
 )
 {
 
     var summaryViewUserCustomization = {
 
-        initializeUserCustomization: function()
+        initializeUserCustomization: function ()
         {
             this.model.on("change:workoutDay change:workoutTypeValueId", this.updateUICustomization, this);
             this.on("close", this.userCustomizationOnClose, this);
             this.on("render", this.userCustomizationOnRender, this);
         },
 
-        userCustomizationOnClose: function()
+        userCustomizationOnClose: function ()
         {
             this.model.off("change:workoutDay change:workoutTypeValueId", this.updateUICustomization);
         },
 
-        userCustomizationOnRender: function()
+        userCustomizationOnRender: function ()
         {
             if (!this.userCustomizationInitialized)
             {
@@ -30,14 +30,14 @@ function(
             }
         },
 
-        updateUICustomization: function()
+        updateUICustomization: function ()
         {
             this.unstickit();
             this.applyUICustomization();
             this.stickit();
         },
 
-        applyUICustomization: function()
+        applyUICustomization: function ()
         {
             this.applyGhostingForFuture();
             this.applyUserPreferences();
@@ -69,7 +69,7 @@ function(
             }
         },
 
-        applyUserPreferences: function()
+        applyUserPreferences: function ()
         {
             var statsTree = this.$("#workoutPlannedCompletedStats");
             var summaryTree = this.$("#workoutMinMaxAvgStats");
@@ -89,34 +89,37 @@ function(
             var workoutOrderPreferences = theMarsApp.user.get("settings").workout.layout[this.model.get("workoutTypeValueId")];
 
             //Reset visibility
-            statsTree.find(".workoutStatsRow").each(function() { $(this).addClass('hide'); });
-            summaryTree.find(".workoutStatsRow").each(function() { $(this).addClass('hide'); });
+            statsTree.find(".workoutStatsRow").addClass("hide");
+            summaryTree.find(".workoutStatsRow").addClass("hide");
 
             //Process stats and summary order area
             var statsAnchor = statsTree.find("#workoutStatsAnchor");
             var summaryAnchor = summaryTree.find("#workoutSummaryAnchor");
-            for (var index = 0; index < workoutOrderPreferences.length; index++)
+            var summaryRowCount = 0;
+            _.each(workoutOrderPreferences, function (orderPreference, index)
             {
-                var stat = workoutLayoutFormatter[workoutOrderPreferences[index]];
+                var stat = workoutLayoutFormatter.quickViewLayout[orderPreference];
                 var statRow = statsTree.find("." + stat + "StatsRow");
 
-                if (statRow !== [])
+                if (statRow.length)
                 {
-                    statRow.insertBefore(statsAnchor);
-                    statRow.removeClass("hide");
+                    statRow.insertBefore(statsAnchor).removeClass("hide");
                 }
 
                 var summaryRow = summaryTree.find("." + stat + "SummaryRow");
-                var summaryRowCount = 0;
-                if (summaryRow !== [])
+                
+                if (summaryRow.length)
                 {
-                    summaryRow.insertBefore(summaryAnchor);
-                    summaryRow.removeClass("hide");
+                    summaryRow.insertBefore(summaryAnchor).removeClass("hide");
                     summaryRowCount++;
                 }
 
-                if (summaryRowCount === 0)
-                    this.$(".columnLabelsMinMaxAvg").addClass("hide");
+                
+            }, this);
+
+            if (summaryRowCount === 0)
+            {
+                this.$(".columnLabelsMinMaxAvg").addClass("hide");
             }
         },
 
