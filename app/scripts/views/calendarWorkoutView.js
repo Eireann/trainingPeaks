@@ -7,10 +7,11 @@ define(
     "views/calendarWorkoutSettings",
     "utilities/workoutTypeName",
     "utilities/determineCompletedWorkout",
+    "utilities/workoutLayoutFormatter",
     "hbs!templates/views/calendarWorkout",
     "hbs!templates/views/calendarWorkoutDragState"
 ],
-function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkoutSettingsHover, workoutTypeName, determineCompletedWorkout, CalendarWorkoutTemplate, CalendarWorkoutTemplateDragState)
+function (moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkoutSettingsHover, workoutTypeName, determineCompletedWorkout, workoutLayoutFormatter, CalendarWorkoutTemplate, CalendarWorkoutTemplateDragState)
 {
     return TP.ItemView.extend(
     {
@@ -20,20 +21,20 @@ function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkout
 
         today: moment().format("YYYY-MM-DD"),
 
-        className: function()
+        className: function ()
         {
             return "workout " +
                 this.getDynamicCssClassNames();
         },
 
-        getDynamicCssClassNames: function()
+        getDynamicCssClassNames: function ()
         {
             return this.getWorkoutTypeCssClassName() + " " +
                 this.getComplianceCssClassName() + " " +
                 this.getPastOrCompletedCssClassName();
         },
 
-        getWorkoutTypeCssClassName: function()
+        getWorkoutTypeCssClassName: function ()
         {
             return workoutTypeName(this.model.get("workoutTypeValueId")).replace(/ /g, "");
         },
@@ -81,11 +82,11 @@ function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkout
             return "ComplianceGreen";
         },
 
-        getPastOrCompletedCssClassName: function()
+        getPastOrCompletedCssClassName: function ()
         {
-             if (this.model.getCalendarDay() < this.today)
+            if (this.model.getCalendarDay() < this.today)
             {
-                 return "past";
+                return "past";
             } else if (this.model.getCalendarDay() === this.today && determineCompletedWorkout(this.model.attributes))
             {
                 return "past";
@@ -95,7 +96,7 @@ function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkout
             }
         },
 
-        attributes: function()
+        attributes: function ()
         {
             return {
                 "data-workoutId": this.model.id
@@ -108,7 +109,7 @@ function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkout
             template: CalendarWorkoutTemplate
         },
 
-        initialize: function(options)
+        initialize: function (options)
         {
             if (!this.model)
                 throw "Cannot have a CalendarWorkoutView without a model";
@@ -131,13 +132,13 @@ function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkout
 
         },
 
-        onMouseEnter: function(e)
+        onMouseEnter: function (e)
         {
             this.showSettingsButton(e);
             //this.showWorkoutSummaryHover(e);
         },
 
-        onMouseLeave: function(e)
+        onMouseLeave: function (e)
         {
             var toElement = document.elementFromPoint(e.pageX, e.pageY);
             if (e.toElement === this.el)
@@ -149,7 +150,7 @@ function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkout
             //this.hideWorkoutSummaryHover(e);
         },
 
-        showSettingsButton: function()
+        showSettingsButton: function ()
         {
             this.$(".workoutSettings").css('display', "block");
         },
@@ -163,22 +164,22 @@ function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkout
             }
         },
 
-        workoutSettingsClicked: function(e)
+        workoutSettingsClicked: function (e)
         {
             e.preventDefault();
 
             var offset = $(e.currentTarget).offset();
             this.workoutSettings = new CalendarWorkoutSettingsHover({ model: this.model });
             this.workoutSettings.render().bottom(offset.top + 10).center(offset.left + 5);
-            
+
             this.workoutSettings.on("mouseleave", this.onMouseLeave, this);
         },
 
-        workoutClicked: function(e)
+        workoutClicked: function (e)
         {
             if (e)
             {
-                if(e.isDefaultPrevented())
+                if (e.isDefaultPrevented())
                     return;
 
                 e.preventDefault();
@@ -188,7 +189,7 @@ function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkout
             view.render();
         },
 
-        showWorkoutSummaryHover: function()
+        showWorkoutSummaryHover: function ()
         {
             if (!this.workoutHoverView || this.workoutHoverView.isClosed)
             {
@@ -199,14 +200,15 @@ function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkout
             }
         },
 
-        hideWorkoutSummaryHover: function(e)
+        hideWorkoutSummaryHover: function (e)
         {
             this.workoutHoverView.close();
             delete this.workoutHoverView;
         },
 
-        onRender: function()
+        onRender: function ()
         {
+            this.applyUILayout();
             // we may not have a workout id yet at first render if it was just added from library
             if (!this.$el.data('workoutId'))
             {
@@ -232,7 +234,32 @@ function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkout
         },
         */
 
-        makeDraggable: function()
+        applyUILayout: function ()
+        {
+            //remove the "if" condition once defaults are built into api layer
+            if (theMarsApp.user.get("settings").calendar && theMarsApp.user.get("settings").calendar.workoutLabelLayout)
+            {
+                var layoutPreferences = theMarsApp.user.get("settings").calendar.workoutLabelLayout;
+                if (layout)
+                    var anchor = this.$(".userLayoutAnchor");
+                _.each(layoutPreferences, function(layoutPreference, index)
+                {
+                    var field = workoutLayoutFormatter.calendarWorkoutLayout[layoutPreference];
+                    var prefix = field.prefix ? field.prefix + ": " : "";
+
+                    var fieldValue = this.model.get(field.name);
+                    if (fieldValue)
+                    {
+                        var element = $("<p>" + prefix + fieldValue + "</p>");
+                        element.insertBefore(anchor);
+                    }
+
+
+                }, this);
+            }
+        },
+
+        makeDraggable: function ()
         {
             _.bindAll(this, "draggableHelper", "onDragStart", "onDragStop");
             this.$el.data("ItemId", this.model.id);
@@ -242,11 +269,11 @@ function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkout
             this.$el.draggable(this.draggableOptions);
         },
 
-        makeDraggableHelperElement: function()
+        makeDraggableHelperElement: function ()
         {
             var $helperEl = $(CalendarWorkoutTemplateDragState(this.serializeData()));
             var classNames = this.className().split(" ");
-            _.each(classNames, function(className)
+            _.each(classNames, function (className)
             {
                 $helperEl.addClass(className);
             });
@@ -254,7 +281,7 @@ function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkout
             return $helperEl;
         },
 
-        draggableHelper: function(e)
+        draggableHelper: function (e)
         {
             var $helperEl = this.makeDraggableHelperElement();
 
@@ -269,12 +296,12 @@ function(moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkout
             return $helperEl;
         },
 
-        onDragStart: function()
+        onDragStart: function ()
         {
             this.$el.addClass("dragging");
         },
 
-        onDragStop: function()
+        onDragStop: function ()
         {
             this.$el.removeClass("dragging");
         }

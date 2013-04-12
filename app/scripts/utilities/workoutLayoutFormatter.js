@@ -29,27 +29,27 @@ function ()
         },
         calendarWorkoutLayout:
         {
-            "1": "completedStartTime",
-            "2": "plannedStartTime",
-            "3": "completedDistance",
-            "4": "plannedDistance",
-            "5": "completedCaloriesBurned",
-            "6": "completedEnergy",
-            "7": "completedDuration",
-            "8": "plannedDuration",
-            "13": "temperature",
-            "23": "title",
-            "24": "type",
-            "25": "code",
-            "26": "description",
-            "30": "preactivityComments",
-            "31": "postactivityComments",
-            "35": "completedTss",
-            "36": "completedIF",
-            "38": "plannedTss",
-            "39": "plannedIF",
-            "40": "plannedCaloriesBurned",
-            "41": "plannedEnergy"
+            "1": { name: "startTime", prefix: "C", conversion: "" },
+            "2": { name: "plannedStartTime", prefix: "P" },  //Needs wired up
+            "3": { name: "distance", prefix: "C" },
+            "4": { name: "distancePlanned", prefix: "P" },
+            "5": { name: "calories", prefix: "C" },
+            "6": { name: "energy", prefix: "C" } ,
+            "7": { name: "totalTime", prefix: "C" } ,
+            "8": { name: "totalTimePlanned", prefix: "P" } ,
+            "13": { name: "tempAvg", prefix: "" } ,
+            "23": { name: "title", prefix: "" } ,
+            "24": { name: "workoutTypeValueId", prefix: "" } ,
+            "25": { name: "code", prefix: "" } , //needs wired up
+            "26": { name: "description", prefix: "" } ,
+            "30": { name: "coachComments", prefix: "P" } ,
+            "31": { name: "workoutComments", prefix: "C" } ,
+            "35": { name: "tssActual", prefix: "C" } ,
+            "36": { name: "if", prefix: "C" } ,
+            "38": { name: "tssPlanned", prefix: "P" } ,
+            "39": { name: "ifPlanned", prefix: "P" } ,
+            "40": { name: "caloriesPlanned", prefix: "P" } ,
+            "41": { name: "energyPlanned", prefix: "P" }
         }
     };
 });
