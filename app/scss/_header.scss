@@ -24,65 +24,72 @@
             .rightNavigation
             {
                 margin-top: 13px;
+                margin-right: 20px;
             }
 
         }
 
         &.lightBackground
         {
-            .personHeaderButtons
+            .rightNavigation
             {
-                label
+                .personHeaderButtons:not(.upgradeButton)
                 {
-                    color: rgba(64, 64, 64, 0.8);
+                    label
+                    {
+                        color: rgba(64, 64, 64, 0.8);
+                    }
                 }
-            }
 
-            .headerPipe
-            {
-                    color: rgba(64, 64, 64, 0.8);
-            }
-
-            .headerRollOver
-            {
-                &:hover label
+                .headerPipe
                 {
-                    color: rgba(0, 0, 0, 0.9);
+                        color: rgba(64, 64, 64, 0.8);
                 }
-            }
 
-            .personHeaderMailIcon
-            {
-                background-image: url(../../assets/images/calendarImages/messagesIcon.png);
+                .headerRollOver
+                {
+                    &:hover label
+                    {
+                        color: rgba(0, 0, 0, 0.9);
+                    }
+                }
+
+                .personHeaderMailIcon
+                {
+                    background-image: url(../../assets/images/calendarImages/messagesIcon.png);
+                }
             }
         }
  
          &.darkBackground
         {
-            .personHeaderButtons
+            .rightNavigation
             {
-                label
+                .personHeaderButtons:not(.upgradeButton)
                 {
-                    color: rgba(192, 192, 192, 0.8);
+                    label
+                    {
+                        color: rgba(192, 192, 192, 0.8);
+                    }
                 }
-            }
 
-            .headerPipe
-            {
-                    color: rgba(192, 192, 192, 0.8);
-            }
-
-            .headerRollOver
-            {
-                &:hover label
+                .headerPipe
                 {
-                    color: rgba(255, 255, 255, 0.9);
+                        color: rgba(192, 192, 192, 0.8);
                 }
-            }
 
-            .personHeaderMailIcon
-            {
-                background-image: url(../../assets/images/calendarImages/messagesIcon.png);
+                .headerRollOver
+                {
+                    &:hover label
+                    {
+                        color: rgba(255, 255, 255, 0.9);
+                    }
+                }
+
+                .personHeaderMailIcon
+                {
+                    background-image: url(../../assets/images/calendarImages/messagesIcon.png);
+                }
             }
         }       
 
