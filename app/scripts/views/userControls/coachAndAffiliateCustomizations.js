@@ -73,8 +73,7 @@ function(_, colorUtils, affiliateUtils)
 
             // set the menu arrow. since it comes and goes we need a class instead of setting it directly
             // usually make it a little darker than the bg, unless the bg is already pretty dark
-            var valueMultiplier = colorValues.gray <= 32 ? 1.3 : 0.7;
-            var arrowBgColor = colorUtils.darkenOrLighten(colorValues, valueMultiplier);
+            var arrowBgColor = colorValues.gray <= 32 ? colorUtils.lighten(colorValues) : colorUtils.darken(colorValues);
             var cssRule = ".accountSettings .hoverBox .colored { background-color: " + arrowBgColor.rgb + "; }";
             $("<style>").prop("type", "text/css").html(cssRule).appendTo("head");
         },
