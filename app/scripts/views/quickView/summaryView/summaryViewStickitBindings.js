@@ -318,6 +318,10 @@ function(
             "#postActivityCommentsInput": 
             {
                 observe: "newComment"
+            },
+            "#preActivityCommentsInput": 
+            {
+                observe: "coachComments"
             }
         },
 

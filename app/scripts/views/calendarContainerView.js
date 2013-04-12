@@ -191,7 +191,7 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, c
             this.$el.find(".daysOfWeek").removeClass("scrollInProgress");
             
             var uiOffset = this.ui.weeksContainer.offset();
-            var currentWeek = $(document.elementFromPoint(uiOffset.left, uiOffset.top)).closest(".week");
+            var currentWeek = $(document.elementFromPoint(uiOffset.left + 15, uiOffset.top + 15)).closest(".week");
             var nextWeek = currentWeek.next(".week");
 
             var weeksContainerTop = uiOffset.top;
