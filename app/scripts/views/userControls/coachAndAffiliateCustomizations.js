@@ -2,10 +2,9 @@
 [
     "underscore",
     "utilities/color",
-    "utilities/affiliates",
-    "models/imageData"
+    "utilities/affiliates"
 ],
-function(_, colorUtils, affiliateUtils, ImageData)
+function(_, colorUtils, affiliateUtils)
 {
     var coachAndAffiliateCustomizations =
     {
@@ -26,11 +25,11 @@ function(_, colorUtils, affiliateUtils, ImageData)
         {
             if (theMarsApp.user.get("settings.account") && !this.affiliateHeaderLoaded)
             {
-                if (this.userHasAffiliateAccount())
+                if (affiliateUtils.isAffiliate())
                 {
                     affiliateUtils.loadAffiliateStylesheet();
                     this.$("#userControlsBackground").addClass("affiliateBanner");
-                } else if (this.userHasCoachAccount())
+                } else if (affiliateUtils.isCoachedAccount())
                 {
                     this.loadCoachLogoImageData();
                     this.$("#userControlsBackground").addClass("coachBanner");
@@ -39,65 +38,30 @@ function(_, colorUtils, affiliateUtils, ImageData)
             }
         },
 
-        userHasAffiliateAccount: function()
-        {
-            var logoUrl = theMarsApp.user.get("settings.account.headerImageUrl");
-            if(logoUrl && logoUrl.indexOf("training_peaks_banner") >= 0)
-            {
-                return false;
-            }
-            return affiliateUtils.isAffiliate();
-        },
-
-        userHasCoachAccount: function()
-        {
-            var logoUrl = theMarsApp.user.get("settings.account.headerImageUrl");
-            if (logoUrl && !this.userHasAffiliateAccount() && logoUrl.indexOf("training_peaks_banner") < 0)
-            {
-                return true;
-            }
-            return false;
-        },
-
-        getLogoUrl: function()
-        {
-            var logoUrl = theMarsApp.user.get("settings.account.headerImageUrl");
-            if(logoUrl.indexOf("http") !== 0)
-            {
-                logoUrl = theMarsApp.wwwRoot + logoUrl;      
-            }
-            return logoUrl;
-        },
-
         loadCoachLogoImageData: function()
         {
-            var logoUrl = this.getLogoUrl();
-            this.$(".personHeaderLogo").css("background-image", "none");
+            _.bindAll(this, "onLogoDataLoaded");
+            affiliateUtils.loadLogoImageData().done(this.onLogoDataLoaded);
+        },
+
+        onLogoDataLoaded: function(imageData)
+        {
+            var logo = $("<img />");
+            logo.attr("src", imageData);
             var self = this;
-            var imageData = new ImageData({ url: logoUrl });
-            var onDataLoaded = function()
+            logo.load(function()
             {
-                var logo = $("<img />");
-                logo.attr("src", imageData.get("data"));
-                logo.load(function()
-                {
-                    self.updateHeaderColorsFromImageData(this);
-                    self.$(".personHeaderLogo").append(logo);
-                });
-            };
-            imageData.getImageData().done(onDataLoaded);
+                self.$(".personHeaderLogo").css("background-image", "none");
+                self.$(".personHeaderLogo").append(logo);
+                self.updateHeaderColorsFromImageData(this);
+            });
         },
 
         updateHeaderColorsFromImageData: function(img)
         {
             var imageColor = colorUtils.getImageColorAtRightEdge(img);
-            this.updateHeaderColors(imageColor);
-        },
-
-        updateHeaderColors: function(colorValues)
-        {
-            this.setBackgroundColors(colorValues);
-            this.setTextColors(colorValues);
+            this.setBackgroundColors(imageColor);
+            this.setTextColors(imageColor);
         },
 
         setBackgroundColors: function(colorValues)
@@ -109,8 +73,7 @@ function(_, colorUtils, affiliateUtils, ImageData)
 
             // set the menu arrow. since it comes and goes we need a class instead of setting it directly
             // usually make it a little darker than the bg, unless the bg is already pretty dark
-            var valueMultiplier = colorValues.gray <= 32 ? 1.3 : 0.7;
-            var arrowBgColor = colorUtils.darkenOrLighten(colorValues, valueMultiplier);
+            var arrowBgColor = colorValues.gray <= 32 ? colorUtils.lighten(colorValues) : colorUtils.darken(colorValues);
             var cssRule = ".accountSettings .hoverBox .colored { background-color: " + arrowBgColor.rgb + "; }";
             $("<style>").prop("type", "text/css").html(cssRule).appendTo("head");
         },
@@ -129,8 +92,8 @@ function(_, colorUtils, affiliateUtils, ImageData)
 
         onLogoClicked: function(e)
         {
-            var linkUrl = theMarsApp.user.get("settings.account.headerLink");
-            if(linkUrl)
+            var linkUrl = affiliateUtils.getHeaderLinkUrl();
+            if (linkUrl)
             {
                 window.open(linkUrl);
             }

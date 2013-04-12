@@ -89,7 +89,6 @@ function (_, moment, TP)
         {
             TP.APIModel.prototype.initialize.apply(this, arguments);
             _.bindAll(this, "checkpoint", "revert");
-            //this.on("save", this.removeNewComment, this);
         },
         
         checkpoint: function()
@@ -201,19 +200,28 @@ function (_, moment, TP)
             }
         },
 
+        getPostActivityComments: function()
+        {
+            if (!this.postActivityComments)
+            {
+                this.postActivityComments = new TP.Collection();
+            }
+            return this.postActivityComments;
+        },
+
         parse: function(response)
         {
-            if(response.workoutComments)
-            {
-                this.postActivityComments = new TP.Collection(response.workoutComments);
-            }
-            if(response.coachComments)
-            {
-                this.preActivityComments = new TP.Collection(response.coachComments);
-            }
+            this.getPostActivityComments().update(response.workoutComments);
             return response;
+        },
+
+        toJSON: function(options) {
+            var attributes = _.deepClone(this.attributes);
+            attributes.workoutComments = this.getPostActivityComments().toJSON();
+            return attributes;
         }
-    }, { preActivityComments: null, postActivityComments: null });
+
+    });
 
     return WorkoutModel;
 });

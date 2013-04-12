@@ -1,8 +1,9 @@
 ﻿define(
 [
-    "underscore"
+    "underscore",
+    "models/imageData"
 ],
-function(_)
+function(_, ImageData)
 {
     var affiliateUtils =
     {
@@ -11,6 +12,21 @@ function(_)
         isAffiliate: function()
         {
             return _.contains(this.affiliates, this.getAffiliateCode());
+        },
+
+        isTpAffiliate: function()
+        {
+            return this.getAffiliateCode().indexOf("trainingpeaks") >= 0 && this.getLogoUrl().indexOf("training_peaks_banner") >= 0;
+        },
+
+        isCoachedAccount: function()
+        {
+            var logoUrl = this.getLogoUrl();
+            if (logoUrl && !this.isAffiliate() && !this.isTpAffiliate())
+            {
+                return true;
+            }
+            return false;
         },
 
         getAffiliateCode: function()
@@ -46,6 +62,34 @@ function(_)
                 var affiliateCode = theMarsApp.user.get("settings.affiliate.affiliateCode");
                 $("<link>").attr("rel", "stylesheet").attr("href", "app/scripts/affiliates/" + affiliateCode + "/style.css").appendTo("body");
             }
+        },
+
+        getLogoUrl: function()
+        {
+            var logoUrl = theMarsApp.user.get("settings.account.headerImageUrl");
+            if (logoUrl.indexOf("http") !== 0)
+            {
+                logoUrl = theMarsApp.wwwRoot + logoUrl;      
+            }
+            return logoUrl;
+        },
+
+        loadLogoImageData: function()
+        {
+            var logoUrl = affiliateUtils.getLogoUrl();
+            var imageData = new ImageData({ url: logoUrl });
+            var deferred = new $.Deferred();
+            var self = this;
+            imageData.getImageData().done(function()
+            {
+                deferred.resolveWith(self, [imageData.get("data")]);
+            });
+            return deferred;
+        },
+
+        getHeaderLinkUrl: function()
+        {
+            return theMarsApp.user.get("settings.account.headerLink");
         }
 
     };

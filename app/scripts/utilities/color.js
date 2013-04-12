@@ -54,11 +54,28 @@
             return Math.round((0.2126 * R) + (0.7152 * G) + (0.0722 * B));
         },
 
-        darkenOrLighten: function(originalColorValues, percent)
+        darken: function(originalColorValues)
         {
-            var r = this.limitRange(Math.round(originalColorValues.r * percent));
-            var g = this.limitRange(Math.round(originalColorValues.g * percent));
-            var b = this.limitRange(Math.round(originalColorValues.b * percent));
+
+            // make it 25% closer to black ...
+            var currentGray = originalColorValues.gray;
+            var increment = currentGray / 4;
+
+            var r = this.limitRange(Math.round(originalColorValues.r - increment));
+            var g = this.limitRange(Math.round(originalColorValues.g - increment));
+            var b = this.limitRange(Math.round(originalColorValues.b - increment));
+            return new this.ColorValues(r, g, b, originalColorValues.a);
+        },
+
+        lighten: function(originalColorValues)
+        {
+            // make it 25% closer to white ...
+            var currentGray = originalColorValues.gray;
+            var increment = (255 - currentGray) / 4;
+
+            var r = this.limitRange(Math.round(originalColorValues.r + increment));
+            var g = this.limitRange(Math.round(originalColorValues.g + increment));
+            var b = this.limitRange(Math.round(originalColorValues.b + increment));
             return new this.ColorValues(r, g, b, originalColorValues.a);
         },
 
