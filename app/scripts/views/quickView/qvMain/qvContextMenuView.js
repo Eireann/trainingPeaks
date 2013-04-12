@@ -68,12 +68,12 @@ function(TP, SaveToLibraryConfirmationView, WorkoutQuickViewMenuTemplate)
 
         onConfigureClicked: function()
         {
-            alert('fixme');
+            this.notImplemented();
         },
 
         onPrintClicked: function()
         {
-            alert('fixme');
+            this.notImplemented();
         }
 
     });

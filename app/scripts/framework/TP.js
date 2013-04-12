@@ -98,6 +98,11 @@ function(Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmediate,
         waitingOff: function()
         {
             this.$el.removeClass('waiting');
+        },
+
+        notImplemented: function()
+        {
+            alert('Feature Not Implemented');
         }
 
     });

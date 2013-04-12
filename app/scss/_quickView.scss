@@ -571,8 +571,9 @@ input[disabled='disabled']
 
         .commentHeader
         {
-            font-size: $fontSizeSmall;
+            font-size: $fontSizeXSmall;
             font-weight: $fontWeightBold;
+            color: $TPGrey4;
             margin-bottom: 5px;
 
             .name
