@@ -30,7 +30,7 @@ function ()
         calendarWorkoutLayout:
         {
             "1": { name: "startTime", prefix: "C", conversion: "" },
-            "2": { name: "plannedStartTime", prefix: "P" },  //Needs wired up
+            "2": { name: "plannedStartTime", prefix: "P" },
             "3": { name: "distance", prefix: "C" },
             "4": { name: "distancePlanned", prefix: "P" },
             "5": { name: "calories", prefix: "C" },
@@ -40,7 +40,7 @@ function ()
             "13": { name: "tempAvg", prefix: "" } ,
             "23": { name: "title", prefix: "" } ,
             "24": { name: "workoutTypeValueId", prefix: "" } ,
-            "25": { name: "code", prefix: "" } , //needs wired up
+            "25": { name: "code", prefix: "" } , 
             "26": { name: "description", prefix: "" } ,
             "30": { name: "coachComments", prefix: "P" } ,
             "31": { name: "workoutComments", prefix: "C" } ,

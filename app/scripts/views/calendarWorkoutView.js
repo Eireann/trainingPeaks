@@ -249,6 +249,9 @@ function (moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkou
                     var fieldValue = this.model.get(field.name);
                     if (fieldValue)
                     {
+                        //TODO: wireup formatting of values (specify function name in workoutLayoutFormatter)
+                        //TODO: need to exclude key stat from showing a second time
+                        //TODO: remove hardcoded items from view (title, description)
                         var element = $("<p>" + prefix + fieldValue + "</p>");
                         element.insertBefore(anchor);
                     }
