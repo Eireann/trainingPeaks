@@ -121,13 +121,16 @@ function(Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmediate,
             if (this.$overlay)
                 return;
 
+            // get existing modal so we can render on top
+            var existingModal = $(".modalOverlay:last");
+
             // make an overlay
             _.bindAll(this, "close");
             var self = this;
             this.$overlay = $("<div></div>");
             this.$overlay.addClass("modalOverlay");
             this.$overlay.addClass(this.className + "ModalOverlay");
-            this.$overlay.on("click", function() { self.close(); });
+            this.$overlay.on("click", function() { self.trigger("clickoutside"); self.close(); });
 
             if (this.modal.mask)
                 this.$overlay.addClass("modalOverlayMask");
@@ -152,6 +155,16 @@ function(Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmediate,
             this.left(($window.width() - this.$el.width()) / 2).top(($window.height() - this.$el.height()) / 2);
 
             this.enableEscapeKey();
+
+            // set on top of other modals
+            if(existingModal.length)
+            {
+                var topIndex = Number(existingModal.css("z-index"));
+                this.$overlay.css("z-index", topIndex + 2);
+                this.$el.css("z-index", topIndex + 3);
+            }
+
+            this.trigger("modalrender");
 
             return this;
         },

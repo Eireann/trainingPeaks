@@ -30,6 +30,7 @@ function(TP, setImmediate, jqueryOutside, UserConfirmationView, selectedRangeSet
         initialize: function(options)
         {
             this.selectedRangeCollection = options.collection;
+            this.on("clickoutside", this.unselect, this);
         },
 
         attributes:
@@ -84,6 +85,11 @@ function(TP, setImmediate, jqueryOutside, UserConfirmationView, selectedRangeSet
         updatePasteAvailability: function()
         {
             this.selectedRangeCollection.trigger("week:pasteMenu", this.selectedRangeCollection.models[0].id);
+        },
+
+        unselect: function(e)
+        {
+            this.selectedRangeCollection.trigger("range:unselect", this.selectedRangeCollection);
         }
     });
 });

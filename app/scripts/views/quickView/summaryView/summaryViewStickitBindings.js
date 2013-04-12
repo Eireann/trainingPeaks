@@ -2,8 +2,7 @@
 [
     "utilities/printUnitLabel",
     "utilities/printTimeFromDecimalHours",
-    "utilities/conversion",
-    "hbs!templates/views/quickView/workoutComments"
+    "utilities/conversion"
 ],
 function(
     printUnitLabel,
@@ -319,12 +318,6 @@ function(
             "#postActivityCommentsInput": 
             {
                 observe: "newComment"
-            },
-            "#postActivityCommentsList":
-            {
-                observe: "workoutComments",
-                onGet: "getFormattedWorkoutComments",
-                updateMethod: "html"
             }
         },
 
@@ -401,12 +394,6 @@ function(
         setTemperature: function(value, options)
         {
             return conversion.convertToModelUnits(parseInt(value, 10), "temperature");
-        },
-
-        getFormattedWorkoutComments: function(value, options)
-        {
-            var commentsHTML = workoutCommentsTemplate({ workoutComments: value });
-            return commentsHTML;
         },
 
         updateModel: function(newViewValue, options)

@@ -20,6 +20,12 @@
         padding: 10px 20px 20px 30px;
         font-weight: normal;
 
+        fieldset 
+        {
+            border: solid 1px $TPGrey2;
+            border-radius: 0px;
+        }
+
         legend
         {
             font-weight: normal;
@@ -42,9 +48,13 @@
                 {
                     margin: 0 0 0 0;
                     padding: 5px 5px 5px 5px;
-                    border: 0 0 0 0;
-                    cell-spacing: 0 0 0 0;
+                    border: 0px 0px 0px 0px;
+                    cell-spacing: 0px 0px 0px 0px;
                     background-color: transparent;
+                }
+                .dialogHeader
+                {
+                    padding-bottom: 0px;
                 }
             }
         }
@@ -57,14 +67,19 @@
             margin-right: 0px;
             color: $TPGrey3;
             width: 100%;
-            padding-left: 20px;
-            padding-right: 20px;
+            padding: 1px 20px 0px 20px;
             min-width: 110px;
         }
 
         button[name="uploadDeviceFile"]
         {
             width: 150px;
+            margin-right: 1em;
+        }
+
+        button[name="chooseMetricBtn"]
+        {
+            width: 200px;
             margin-right: 1em;
         }
     }
@@ -78,6 +93,8 @@
     .helpText
     {
         font-style: italic;
+        font-color: #3c7fc4;
+        font-size: $fontSizeSmall;
     }
 }
 

@@ -197,8 +197,21 @@ function (_, moment, TP)
                 newWorkout.save();
                 return newWorkout;
             }
+        },
+
+        parse: function(response)
+        {
+            if(response.workoutComments)
+            {
+                this.postActivityComments = new TP.Collection(response.workoutComments);
+            }
+            if(response.coachComments)
+            {
+                this.preActivityComments = new TP.Collection(response.coachComments);
+            }
+            return response;
         }
-    });
+    }, { preActivityComments: null, postActivityComments: null });
 
     return WorkoutModel;
 });
