@@ -236,12 +236,11 @@ function (moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkou
 
         applyUILayout: function ()
         {
-            //remove the "if" condition once defaults are built into api layer
+            //remove the "if" condition once defaults are built into api 
             if (theMarsApp.user.get("settings").calendar && theMarsApp.user.get("settings").calendar.workoutLabelLayout)
             {
                 var layoutPreferences = theMarsApp.user.get("settings").calendar.workoutLabelLayout;
-                if (layout)
-                    var anchor = this.$(".userLayoutAnchor");
+                var anchor = this.$(".userLayoutAnchor");
                 _.each(layoutPreferences, function(layoutPreference, index)
                 {
                     var field = workoutLayoutFormatter.calendarWorkoutLayout[layoutPreference];
@@ -253,8 +252,6 @@ function (moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkou
                         var element = $("<p>" + prefix + fieldValue + "</p>");
                         element.insertBefore(anchor);
                     }
-
-
                 }, this);
             }
         },

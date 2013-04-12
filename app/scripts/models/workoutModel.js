@@ -28,6 +28,7 @@ function (_, moment, TP)
             "personId": null,
             "title": null,
             "workoutTypeValueId": null,
+            "code": null,
             "workoutDay": null,
             "isItAnOr": false,
             "isHidden": null,
@@ -80,7 +81,8 @@ function (_, moment, TP)
             "cadenceAverage": null,
             "cadenceMaximum": null,
             "lastModifiedDate": null,
-            "startTime": null
+            "startTime": null,
+            "startTimePlanned": null
         },
 
         initialize: function()
