@@ -14,6 +14,21 @@ function(_, ImageData)
             return _.contains(this.affiliates, this.getAffiliateCode());
         },
 
+        isTpAffiliate: function()
+        {
+            return this.getAffiliateCode().indexOf("trainingpeaks") >= 0 && this.getLogoUrl().indexOf("training_peaks_banner") >= 0;
+        },
+
+        isCoachedAccount: function()
+        {
+            var logoUrl = this.getLogoUrl();
+            if (logoUrl && !this.isAffiliate() && !this.isTpAffiliate())
+            {
+                return true;
+            }
+            return false;
+        },
+
         getAffiliateCode: function()
         {
             return theMarsApp.user.get("settings.affiliate.affiliateCode");
@@ -47,16 +62,6 @@ function(_, ImageData)
                 var affiliateCode = theMarsApp.user.get("settings.affiliate.affiliateCode");
                 $("<link>").attr("rel", "stylesheet").attr("href", "app/scripts/affiliates/" + affiliateCode + "/style.css").appendTo("body");
             }
-        },
-
-        isCoachedAccount: function()
-        {
-            var logoUrl = this.getLogoUrl();
-            if (logoUrl && !this.isAffiliate() && logoUrl.indexOf("training_peaks_banner") < 0)
-            {
-                return true;
-            }
-            return false;
         },
 
         getLogoUrl: function()
