@@ -42,13 +42,7 @@ function(TP, GenericMenuView, UserConfirmationView, deleteConfirmationTemplate, 
 
         getMenuOptions: function()
         {
-            if (!this.menuOptions)
-            {
-                //this.menuOptions = this.model.get("commenterPersonId") === theMarsApp.user.id ? ['Copy', 'Delete'] : ['Copy'];
-                // not implementing copy yet ...
-                this.menuOptions = this.model.get("commenterPersonId") === theMarsApp.user.id ? ['Delete'] : [];
-            }
-            return this.menuOptions;
+            return ['Delete'];
         },
 
         showMenu: function(e)
