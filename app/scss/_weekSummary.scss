@@ -100,13 +100,11 @@
 
 
 #weekSummaryContainer {
-
-	padding-top:2px;
-	padding-left:6px;
-	padding-right:10px;
+	padding:7px 10px 5px 6px;
 
 	.weekSummaryBarGraphContain {
 		width:280px;
+		margin: 0 0 5px 0;
 	}
 
 	.weekSummaryBarGraphItem {
@@ -127,26 +125,18 @@
 
 	.weekSummaryBarGraphLabel {
 		float:left;
-		margin-bottom: 3px;
-		margin-top:4px;
-		
-		h6 {
-			margin:0 !important;
-			font-size:$fontSizeXSmall;
-		}
-		
+		font-size:$fontSizeXSmall;
 	}
 	
 	.weekSummaryBarGraphLabel.total {
-		h6 {
-			text-transform: uppercase !important;
-		}
+		text-transform: uppercase !important;
 	}
 	
 	.weekSummaryBarGraph {
 		height:8px;
 		float:left;
 		width:100%;
+		margin-top:3px;
 		
 		background: #cccccc; /* Old browsers */
 		/* IE9 SVG, needs conditional override of 'filter' to 'none' */
@@ -175,8 +165,6 @@
 		background: -ms-linear-gradient(top,  #cccccc 0%,#aeaeae 100%); /* IE10+ */
 		background: linear-gradient(to bottom,  #cccccc 0%,#aeaeae 100%); /* W3C */
 		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cccccc', endColorstr='#aeaeae',GradientType=0 ); /* IE6-8 */
-		
-		
 	}
 	
 	.weekSummaryBarGraphProgress {
@@ -210,9 +198,7 @@
 		background: -ms-linear-gradient(top,  #8820d1 0%,#561484 100%); /* IE10+ */
 		background: linear-gradient(to bottom,  #8820d1 0%,#561484 100%); /* W3C */
 		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#8820d1', endColorstr='#561484',GradientType=0 ); /* IE6-8 */
-		
 	}
-	
 	
 	.weekSummaryBarGraphProgress.strength {
 		width:74px;
@@ -241,101 +227,84 @@
 			filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#636569', endColorstr='#3d3e41',GradientType=0 ); /* IE6-8 */
 			}	
 		
-		
-	
-	
-	.weekSummaryTimeContain {
-		float:right;
-		margin-bottom: 3px;
-		
-		h6 {
-			font-weight:normal !important;
+		.weekSummaryTimeContain {
+			float:right;
 			text-align:right;
-			margin:0 !important;
+			font-size:$fontSizeXSmall;
+		
+			.weekSummaryTimeCompleted {
+				font-weight:bold;
+				color:#303030;
+			}
+			.weekSummaryTimeCompleted.bike {
+				color:#8c2edc;
+				}
+			.weekSummaryTimeCompleted.strength {
+				color:#912c8a
+				}
+			.weekSummaryTimePlanned {
+				color:#a5a5a5;
+			}
 		}
-		.weekSummaryTimeCompleted {
+	
+		#weekSummaryMetricContain {
+			width:272px;
+			float:left;
+		}
+	
+		.weekSummaryMetricItem {
+			border-bottom:1px solid #dbdbdc;
+			padding:2px 0 2px 0;
+		}
+	
+		.weekSummaryMetricItem.last {
+			border-bottom:none;
+		}
+	
+		#weekSummaryATPContain {
+			width:272px;
+			float:left;
+		}
+	
+		.weekSummaryATPItem {
+			border-bottom:1px solid #dbdbdc;
+			padding:4px 0 4px 0;
+		}
+	
+		.weekSummaryATPItem.last {
+			border-bottom:none;
+		}
+	
+		.weekSummaryMetricValue, 
+		.weekSummaryATPValue, {
+			float:left;
+			width:131px;
+		}
+	
+		.weekSummaryMetricValue {
+			text-align:right;
+			font-size:$fontSizeXLarge;
+			font-weight:normal;
+		}
+	
+		.weekSummaryMetricTitle, 
+		.weekSummaryATPTitle {
+			float:left;
+			width:131px;
+			margin:0 0 0 10px;
 			font-size:$fontSizeXSmall;
 			font-weight:bold;
-			color:#303030;
 		}
-		.weekSummaryTimeCompleted.bike {
-			color:#8c2edc;
-			}
-		.weekSummaryTimeCompleted.strength {
-			color:#912c8a
-			}
-		.weekSummaryTimePlanned {
+	
+		.weekSummaryMetricTitle {
+			padding-top:5px;
+			line-height:normal;
+		}
+	
+		.weekSummaryATPValue {
+			text-align:right;
 			font-size:$fontSizeXSmall;
-			color:#a5a5a5;
 		}
-	}
 	
-	#weekSummaryMetricContain {
-		width:272px;
-		float:left;
-	}
-	
-	.weekSummaryMetricItem {
-		border-bottom:1px solid #dbdbdc;
-	}
-	
-	#weekSummaryATPContain {
-		width:272px;
-		float:left;
-	}
-	
-	.weekSummaryATPItem {
-		border-bottom:1px solid #dbdbdc;
-	}
-	
-	.weekSummaryMetricValue, .weekSummaryATPValue, {
-		float:left;
-		width:131px;
-	}
-	
-	.weekSummaryMetricTitle, .weekSummaryATPTitle {
-		float:left;
-		width:121px;
-		margin:0 0 0 10px;
-	}
-
-
-	
-	.weekSummaryMetricTitle h6 {
-		padding-top: 4px;
-		margin:2px 0 0 10px;
-	}
-	
-	.weekSummaryATPTitle h6, .weekSummaryMetricTitle h6 {
-		font-size:$fontSizeXSmall;
-		padding-bottom:3px;
-	}
-	
-	.weekSummaryMetricTitle h6 {
-		margin:5px 0 0 0;
-	}
-	
-	.weekSummaryATPTitle h6 {
-		margin:3px 0 0 0;
-	}
-	
-	.weekSummaryMetricValue h6 {
-		text-align:right;
-		font-weight:normal;
-		font-size:$fontSizeXLarge;
-		margin:3px 0 0 0;
-	}
-	
-	.weekSummaryATPValue h6 {
-		text-align:right;
-		font-size:$fontSizeXSmall;
-		margin:0;
-		padding-top: 3px;
-	}
-	
-	.weekSummaryATPValue h6 {
-		font-size:$fontSizeXSmall;
-		font-weight:normal;	
-	}
 	
 }
