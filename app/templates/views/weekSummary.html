@@ -8,64 +8,117 @@
     </div>
 </div>
 
-<div class="weekSummaryTableContainer">
-    <table class="weekSummaryTable">
-    <thead>
-        <th></th>
-        <th>Planned</th>
-        <th>Completed</th>
-    </thead>
-    <tbody>
-        <tr>
-            <td class="weekSummaryRowLabel">Total Time</td>
-            <td class="weekSummaryValue"><span class="planned">{{printTimeFromDecimalHours totalTimePlanned}}</span></td>
-            <td class="weekSummaryValue"><span class="completed">{{printTimeFromDecimalHours totalTimeCompleted}}</span><span class="units"></span></td>
-        </tr>
-        <tr>
-            <td class="weekSummaryRowLabel">Bike Dis</td>
-            <td class="weekSummaryValue"><span class="planned">{{convertToViewUnits bikeDistancePlanned "distance"}}</span></td>
-            <td class="weekSummaryValue"><span class="completed">{{convertToViewUnits bikeDistanceCompleted "distance"}}</span><span class="units">{{printUnitLabel "distance"}}</span></td>
-        </tr>
-        <tr>
-            <td class="weekSummaryRowLabel">Run Dis</td>
-            <td class="weekSummaryValue"><span class="planned">{{convertToViewUnits runDistancePlanned "distance"}}</span></td>
-            <td class="weekSummaryValue"><span class="completed">{{convertToViewUnits runDistanceCompleted "distance"}}</span><span class="units">{{printUnitLabel "distance"}}</span></td>
-        </tr>
-        <tr>
-            <td class="weekSummaryRowLabel">Swim Dis</td>
-            <td class="weekSummaryValue"><span class="planned">{{convertToViewUnits swimDistancePlanned "distance"}}</span></td>
-            <td class="weekSummaryValue"><span class="completed">{{convertToViewUnits swimDistanceCompleted "distance"}}</span><span class="units">{{printUnitLabel "distance"}}</span></td>
-        </tr>
-        <tr>
-            <td class="weekSummaryRowLabel">Bike Dur</td>
-            <td class="weekSummaryValue"><span class="planned">{{printTimeFromDecimalHours bikeDurationPlanned}}</span></td>
-            <td class="weekSummaryValue"><span class="completed">{{printTimeFromDecimalHours bikeDurationCompleted}}</span><span class="units"></span></td>
-        </tr>
-        <tr>
-            <td class="weekSummaryRowLabel">Run Dur</td>
-            <td class="weekSummaryValue"><span class="planned">{{printTimeFromDecimalHours runDurationPlanned}}</span></td>
-            <td class="weekSummaryValue"><span class="completed">{{printTimeFromDecimalHours runDurationCompleted}}</span><span class="units"></span></td>
-        </tr>
-        <tr>
-            <td class="weekSummaryRowLabel">Swim Dur</td>
-            <td class="weekSummaryValue"><span class="planned">{{printTimeFromDecimalHours swimDurationPlanned}}</span></td>
-            <td class="weekSummaryValue"><span class="completed">{{printTimeFromDecimalHours swimDurationCompleted}}</span><span class="units"></span></td>
-        </tr>
-        <tr>
-            <td class="weekSummaryRowLabel">Strength Dur</td>
-            <td class="weekSummaryValue"><span class="planned">{{printTimeFromDecimalHours strengthDurationPlanned}}</span></td>
-            <td class="weekSummaryValue"><span class="completed">{{printTimeFromDecimalHours strengthDurationCompleted}}</span><span class="units"></span></td>
-        </tr>
-        <tr>
-            <td class="weekSummaryRowLabel">TSS</td>
-            <td class="weekSummaryValue"><span class="planned">{{tssPlanned}}</span></td>
-            <td class="weekSummaryValue"><span class="completed">{{tssCompleted}}</span></td>
-        </tr>
-        <tr>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-        </tr>
-    </tbody>
-</table>
+<div id="weekSummaryContainer" class="cf">
+	<div class="weekSummaryBarGraphContain cf">
+
+		<div class="weekSummaryBarGraphItem total cf">
+			<div class="weekSummaryBarGraphLabel total">
+				Total
+			</div>		
+			<div class="weekSummaryTimeContain">
+				<span class="weekSummaryTimeCompleted">{{printTimeFromDecimalHours totalTimeCompleted}}</span> <span class="weekSummaryTimePlanned">{{printTimeFromDecimalHours totalTimePlanned}}</span>
+			</div>
+			<div class="weekSummaryBarGraph total">
+			 	<div class="weekSummaryBarGraphProgress total"></div>
+			</div>
+		</div>
+	
+		<div class="weekSummaryBarGraphItem cf">
+			<div class="weekSummaryBarGraphLabel">
+				Bike
+			</div>		
+			<div class="weekSummaryTimeContain">
+				<span class="weekSummaryTimeCompleted bike">{{printTimeFromDecimalHours totalTimeCompleted}}</span> <span class="weekSummaryTimePlanned">{{printTimeFromDecimalHours totalTimePlanned}}</span>
+			</div>
+			<div class="weekSummaryBarGraph">
+			 	<div class="weekSummaryBarGraphProgress bike"></div>
+			</div>
+		</div>
+		
+		<div class="weekSummaryBarGraphItem cf right">
+			<div class="weekSummaryBarGraphLabel">
+				Strength
+			</div>		
+			<div class="weekSummaryTimeContain">
+				<span class="weekSummaryTimeCompleted strength">{{printTimeFromDecimalHours strengthDurationCompleted}}</span> <span class="weekSummaryTimePlanned">{{printTimeFromDecimalHours strengthDurationPlanned}}</span>
+			</div>
+			<div class="weekSummaryBarGraph">
+			 	<div class="weekSummaryBarGraphProgress strength"></div>
+			</div>
+		</div>
+		
+		<div class="weekSummaryBarGraphItem cf">
+			<div class="weekSummaryBarGraphLabel">
+				TSS
+			</div>		
+			<div class="weekSummaryTimeContain">
+				<span class="weekSummaryTimeCompleted tss">{{tssCompleted}}</span> <span class="weekSummaryTimePlanned">{{tssPlanned}}</span>
+			</div>
+			<div class="weekSummaryBarGraph">
+			 	<div class="weekSummaryBarGraphProgress tss"></div>
+			</div>
+		</div>
+	
+	</div>
+	
+	<div id="weekSummaryMetricContain">
+		
+		<div class="weekSummaryMetricItem cf">
+			<div class="weekSummaryMetricValue">
+				{{convertToViewUnits bikeDistanceCompleted "distance"}}
+			</div>
+			<div class="weekSummaryMetricTitle">
+				{{printUnitLabel "distance"}} Bike
+			</div>
+		</div>
+		
+		<div class="weekSummaryMetricItem cf">
+			<div class="weekSummaryMetricValue">
+				{{convertToViewUnits runDistanceCompleted "distance"}}
+			</div>
+			<div class="weekSummaryMetricTitle">
+				{{printUnitLabel "distance"}} Run
+			</div>		
+		</div>
+		
+		<div class="weekSummaryMetricItem cf">
+			<div class="weekSummaryMetricValue">
+				{{tssCompleted}}
+			</div>
+			<div class="weekSummaryMetricTitle">
+				TSS
+			</div>		
+		</div>
+	</div>
+	
+	<div id="weekSummaryATPContain">
+		<div class="weekSummaryATPItem cf">
+			<div class="weekSummaryATPValue">
+				12:30
+			</div>
+			<div class="weekSummaryATPTitle">
+				Annual Training Plan
+			</div>	
+		</div>
+		
+		<div class="weekSummaryATPItem cf">
+			<div class="weekSummaryATPValue">
+				Base 2, Week 2
+			</div>
+			<div class="weekSummaryATPTitle">
+				Period
+			</div>	
+		</div>
+		
+		<div class="weekSummaryATPItem cf last">
+			<div class="weekSummaryATPValue">
+				Bike E, S, T
+			</div>
+			<div class="weekSummaryATPTitle">
+				Limiters
+			</div>	
+		</div>
+		
+	</div>
+
 </div>
