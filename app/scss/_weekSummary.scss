@@ -268,7 +268,7 @@
 	
 		.weekSummaryATPItem {
 			border-bottom:1px solid #dbdbdc;
-			padding:4px 0 4px 0;
+			padding:0 0 4px 0;
 		}
 	
 		.weekSummaryATPItem.last {
@@ -277,8 +277,9 @@
 	
 		.weekSummaryMetricValue, 
 		.weekSummaryATPValue, {
-			float:left;
+			/* float:left; */
 			width:131px;
+			display:inline-block;
 		}
 	
 		.weekSummaryMetricValue {
@@ -289,11 +290,12 @@
 	
 		.weekSummaryMetricTitle, 
 		.weekSummaryATPTitle {
-			float:left;
+			/* float:left; */
 			width:131px;
-			margin:0 0 0 10px;
+			margin:0 0 0 6px;
 			font-size:$fontSizeXSmall;
 			font-weight:bold;
+			display:inline-block;
 		}
 	
 		.weekSummaryMetricTitle {
