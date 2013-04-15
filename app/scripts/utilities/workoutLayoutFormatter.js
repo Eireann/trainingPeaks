@@ -29,27 +29,28 @@ function ()
         },
         calendarWorkoutLayout:
         {
-            "1": { name: "startTime", prefix: "C", conversion: "" },
-            "2": { name: "plannedStartTime", prefix: "P" },
-            "3": { name: "distance", prefix: "C" },
-            "4": { name: "distancePlanned", prefix: "P" },
-            "5": { name: "calories", prefix: "C" },
-            "6": { name: "energy", prefix: "C" } ,
-            "7": { name: "totalTime", prefix: "C" } ,
-            "8": { name: "totalTimePlanned", prefix: "P" } ,
-            "13": { name: "tempAvg", prefix: "" } ,
-            "23": { name: "title", prefix: "" } ,
+            "1": { name: "startTime", prefix: "C", conversion: "getTime" },
+            "2": { name: "plannedStartTime", prefix: "P", conversion: "getTime" },
+            "3": { name: "distance", prefix: "C", conversion: "getDistance" },
+            "4": { name: "distancePlanned", prefix: "P", conversion: "getDistance" },
+            "5": { name: "calories", prefix: "C", conversion:"getNumber" },
+            "6": { name: "energy", prefix: "C", conversion: "getNumber" },
+            "7": { name: "totalTime", prefix: "C", conversion: "getTime" },
+            "8": { name: "totalTimePlanned", prefix: "P", conversion: "getTime" } ,
+            "13": { name: "tempAvg", prefix: "", conversion:"getTemperature" } ,
+            "23": { name: "title", prefix: "" },
+            //TODO: add lookup to resolve valueId
             "24": { name: "workoutTypeValueId", prefix: "" } ,
             "25": { name: "code", prefix: "" } , 
             "26": { name: "description", prefix: "" } ,
             "30": { name: "coachComments", prefix: "P" } ,
             "31": { name: "workoutComments", prefix: "C" } ,
-            "35": { name: "tssActual", prefix: "C" } ,
-            "36": { name: "if", prefix: "C" } ,
-            "38": { name: "tssPlanned", prefix: "P" } ,
-            "39": { name: "ifPlanned", prefix: "P" } ,
-            "40": { name: "caloriesPlanned", prefix: "P" } ,
-            "41": { name: "energyPlanned", prefix: "P" }
+            "35": { name: "tssActual", prefix: "C", conversion: "getNumber" },
+            "36": { name: "if", prefix: "C", conversion: "getNumber" },
+            "38": { name: "tssPlanned", prefix: "P", conversion: "getNumber" },
+            "39": { name: "ifPlanned", prefix: "P", conversion: "getNumber" },
+            "40": { name: "caloriesPlanned", prefix: "P", conversion: "getNumber" },
+            "41": { name: "energyPlanned", prefix: "P", conversion: "getNumber" }
         }
     };
 });

@@ -2,9 +2,10 @@ define(
 [
     "underscore",
     "utilities/workoutLayoutFormatter",
-    "utilities/getKeyStatField"
+    "utilities/getKeyStatField",
+    "utilities/conversion"
 ],
-function(_, workoutLayoutFormatter, getKeyStatField)
+function(_, workoutLayoutFormatter, getKeyStatField, conversion)
 {
     var calendarWorkoutUserCustomization = {
 
@@ -51,7 +52,12 @@ function(_, workoutLayoutFormatter, getKeyStatField)
             
             if (fieldValue)
             {
+                if (field.conversion)
+                {
+                    fieldValue = conversion[field.conversion](fieldValue);
+                }
                 //TODO: wireup formatting of values (specify function name in workoutLayoutFormatter, and refactor value conversion util into separate functions)
+                //TODO: add units to formatted fields
                 //TODO: create entire list up, then do one insert into main dom
                 var element = $("<p>" + prefix + fieldValue + "</p>");
                 element.insertBefore(this.ui.layoutAnchor);
