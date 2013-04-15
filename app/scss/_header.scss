@@ -270,6 +270,14 @@
                 padding-right: 8px;
                 padding-top: 3px;
                 @include headerButtons(0px, 35px, 12px);
+
+                button
+                {
+                    img
+                    {
+                        padding-top: 4px;
+                    }
+                }
                 
             }
 
