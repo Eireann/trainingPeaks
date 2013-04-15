@@ -34,6 +34,10 @@ function(
 
         today: moment().format("YYYY-MM-DD"),
 
+        ui: {
+
+        },
+
         className: function ()
         {
             return "workout " +

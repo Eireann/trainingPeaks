@@ -1,13 +1,17 @@
 define(
 [
+    "underscore",
     "utilities/workoutLayoutFormatter"
 ],
-function(workoutLayoutFormatter)
+function(_, workoutLayoutFormatter)
 {
     var calendarWorkoutUserCustomization = {
 
         initializeUserCustomization: function()
         {
+            _.extend(this.ui, {
+                layoutAnchor: ".userLayoutAnchor"
+            });
             this.on("render", this.userCustomizationOnRender, this);
         },
 
@@ -18,26 +22,34 @@ function(workoutLayoutFormatter)
 
         applyUILayout: function ()
         {
-            //remove the "if" condition once defaults are built into api 
-            if (theMarsApp.user.get("settings").calendar && theMarsApp.user.get("settings").calendar.workoutLabelLayout)
+            var layoutPreferences = this.getUserLayoutSettings();
+            if (layoutPreferences)
             {
-                var layoutPreferences = theMarsApp.user.get("settings").calendar.workoutLabelLayout;
-                var anchor = this.$(".userLayoutAnchor");
-                _.each(layoutPreferences, function(layoutPreference, index)
+                _.each(layoutPreferences, function(layoutPreferenceId, index)
                 {
-                    var field = workoutLayoutFormatter.calendarWorkoutLayout[layoutPreference];
-                    var prefix = field.prefix ? field.prefix + ": " : "";
-
-                    var fieldValue = this.model.get(field.name);
-                    if (fieldValue)
-                    {
-                        //TODO: wireup formatting of values (specify function name in workoutLayoutFormatter)
-                        //TODO: need to exclude key stat from showing a second time
-                        //TODO: remove hardcoded items from view (title, description)
-                        var element = $("<p>" + prefix + fieldValue + "</p>");
-                        element.insertBefore(anchor);
-                    }
+                    this.applyFieldLayoutPreference(layoutPreferenceId);
                 }, this);
+            }
+        },
+
+        getUserLayoutSettings: function()
+        {
+            return theMarsApp.user.get("settings.calendar.workoutLabelLayout");
+        },
+
+        applyFieldLayoutPreference: function(layoutPreferenceId)
+        {
+            var field = workoutLayoutFormatter.calendarWorkoutLayout[layoutPreferenceId];
+            var prefix = field.prefix ? field.prefix + ": " : "";
+
+            var fieldValue = this.model.get(field.name);
+            if (fieldValue)
+            {
+                //TODO: wireup formatting of values (specify function name in workoutLayoutFormatter, and refactor value conversion util into separate functions)
+                //TODO: need to exclude key stat from showing a second time
+                //TODO: remove hardcoded items from view (title, description)
+                var element = $("<p>" + prefix + fieldValue + "</p>");
+                element.insertBefore(anchor);
             }
         }
 
