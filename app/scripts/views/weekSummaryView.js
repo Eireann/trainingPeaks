@@ -48,14 +48,18 @@ function(TP, workoutTypeEnum, WeekSummarySettings, weekSummaryTemplate)
         {
             var completedValues =
             {
+                totalDistance: 0,
                 totalTime: 0,
+                totalEnergy: 0,
                 distanceByWorkoutType: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0 },
                 durationByWorkoutType: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0 },
                 cumulativeTss: 0
             };
             var plannedValues =
             {
+                totalDistance: 0,
                 totalTime: 0,
+                totalEnergy: 0,
                 distanceByWorkoutType: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0 },
                 durationByWorkoutType: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0 },
                 cumulativeTss: 0
@@ -76,12 +80,24 @@ function(TP, workoutTypeEnum, WeekSummarySettings, weekSummaryTemplate)
   
                     if (workout.has("totalTimePlanned") && workout.get("totalTimePlanned") !== null)
                         plannedValues.totalTime += Number(workout.get("totalTimePlanned"));
+
+                    if (workout.has("energy") && workout.get("energy") !== null)
+                        completedValues.totalEnergy += Number(workout.get("energy"));
+  
+                    if (workout.has("energyPlanned") && workout.get("energyPlanned") !== null)
+                        plannedValues.totalEnergy += Number(workout.get("energyPlanned"));
                     
                     if (workout.has("tssActual") && workout.get("tssActual") !== null)
                         completedValues.cumulativeTss += Number(workout.get("tssActual"));
 
                     if (workout.has("tssPlanned") && workout.get("tssPlanned") !== null)
                         plannedValues.cumulativeTss += Number(workout.get("tssPlanned"));
+
+                    if (workout.has("distance") && workout.get("distance") !== null)
+                        completedValues.totalDistance += Number(workout.get("distance"));
+  
+                    if (workout.has("distancePlanned") && workout.get("distancePlanned") !== null)
+                        plannedValues.totalDistance += Number(workout.get("distancePlanned"));
 
                     var workoutType = workout.get("workoutTypeValueId");
 
@@ -112,6 +128,10 @@ function(TP, workoutTypeEnum, WeekSummarySettings, weekSummaryTemplate)
             {
                 totalTimePlanned: plannedValues.totalTime,
                 totalTimeCompleted: completedValues.totalTime,
+                totalDistancePlanned: plannedValues.totalDistance,
+                totalDistanceCompleted: completedValues.totalDistance,
+                totalEnergyPlanned: plannedValues.totalEnergy,
+                totalEnergyCompleted: completedValues.totalEnergy,
                 bikeDistancePlanned: plannedValues.distanceByWorkoutType[workoutTypeEnum["Bike"]],
                 bikeDistanceCompleted: completedValues.distanceByWorkoutType[workoutTypeEnum["Bike"]],
                 runDistancePlanned: plannedValues.distanceByWorkoutType[workoutTypeEnum["Run"]],
