@@ -78,7 +78,7 @@ function(TP, determineCompletedWorkout, workoutTypeEnum, WeekSummarySettings, we
                 //iterate over items (workouts, meals, metrics) for the current day
                 item.itemsCollection.each(function(workout)
                 {
-                    if (determineCompletedWorkout(workout.attributes))
+                    if (workout.getCalendarDay && determineCompletedWorkout(workout.attributes))
                     {
                         completedValues.completedDays[workout.getCalendarDay()] = true;
                         if(!completedValues.completedDaysByWorkoutType[workout.get("workoutTypeValueId")])

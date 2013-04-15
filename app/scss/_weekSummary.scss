@@ -155,7 +155,24 @@
         &.moreThanPlanned
         {
             z-index:3;
-            opacity:0.25;
+            @include linearGradient(top, #85878a 0%, #68696c 100%);
+
+            &.bike {
+                @include linearGradient(top, #a153d8 0%, #7b4a9e 100%);
+            }
+            
+            &.strength {
+                @include linearGradient(top, #a75ca3 0%, #80507d 100%);
+            }	
+            
+            &.run {
+                @include linearGradient(top, #5f9cb0 0%, #517885 100%);
+            }	
+
+            &.swim {
+                @include linearGradient(top,  #53b5d8 0%, #4a889e 100%);
+            }
+
         }
 	}
 
@@ -175,24 +192,24 @@
 	}
 	 
     .weekSummaryBarGraphProgress {
-        @include linearGradient(top,  #636569 0%,#3d3e41 100%);
+        @include linearGradient(top,  #636569 0%, #3d3e41 100%);
+
+        &.bike {
+            @include linearGradient(top,  #8820d1 0%, #561484 100%);
+        }
+        
+        &.strength {
+            @include linearGradient(top, #912c8a 0%, #5b1c5b 100%);
+        }	
+        
+        &.run {
+            @include linearGradient(top,  #30819c 0%, #1e5162 100%);
+        }	
+
+        &.swim {
+            @include linearGradient(top,  #20a3d1 0%, #146784 100%);
+        }
     }
-
-	.weekSummaryBarGraphProgress.bike {
-        @include linearGradient(top,  #8820d1 0%,#561484 100%);
-	}
-	
-	.weekSummaryBarGraphProgress.strength {
-        @include linearGradient(top,  #8e2e8d 0%,#5b1c5b 100%);
-    }	
-	
-	.weekSummaryBarGraphProgress.run {
-        @include linearGradient(top,  #8820d1 0%,#561484 100%);
-	}	
-
-	.weekSummaryBarGraphProgress.swim {
-        @include linearGradient(top,  #8820d1 0%,#561484 100%);
-	}
 
     .weekSummaryTimeContain {
         float:right;
@@ -202,13 +219,28 @@
         .weekSummaryTimeCompleted {
             font-weight:bold;
             color:#303030;
+
+            &.run
+            {
+                color: #30819c;
+            }
+
+            &.bike
+            {
+                color:#8c2edc;
+            }
+
+            &.swim
+            {
+                color: #20a3d1; 
+            }
+
+            &.strength
+            {
+                color:#912c8a
+            }
         }
-        .weekSummaryTimeCompleted.bike {
-            color:#8c2edc;
-            }
-        .weekSummaryTimeCompleted.strength {
-            color:#912c8a
-            }
+
         .weekSummaryTimePlanned {
             color:#a5a5a5;
         }
