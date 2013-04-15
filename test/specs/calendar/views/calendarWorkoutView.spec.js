@@ -3,7 +3,7 @@ requirejs(
 [
     "moment",
     "models/workoutModel",
-    "views/calendarWorkoutView"
+    "views/calendarWorkout/calendarWorkoutView"
 ],
 function(moment, WorkoutModel, CalendarWorkoutView)
 {
