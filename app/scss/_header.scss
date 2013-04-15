@@ -226,7 +226,7 @@
 		float: left;
 		padding-left: 65px;
 		//padding-top: 13px;
-        margin-top: 10px;
+        margin-top: 5px;
 		@include labels($navigationFontFamilyRegular, $fontSizeHeader, $TPBlue, normal);
 		label
 		{
@@ -260,7 +260,7 @@
         {
             float:left;
             //padding-top: 12px;
-            margin-top: 9px;
+            margin-top: 4px;
             
             @include headerButtons(0px, 35px, $fontSizeMedium);
 
@@ -314,7 +314,7 @@
 
         #affiliateBanner
         {
-            margin-left: 50px;
+            margin-left: 100px;
             margin-bottom: 15px;
             margin-top: 10px;
             height: 90px;
