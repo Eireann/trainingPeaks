@@ -84,7 +84,6 @@
         setTemperature: function (value, options)
         {
             return convertToModelUnits(parseInt(value, 10), "temperature");
-        },
-
+        }
     };
 });

@@ -3,9 +3,10 @@ define(
     "underscore",
     "utilities/workoutLayoutFormatter",
     "utilities/getKeyStatField",
-    "utilities/conversion"
+    "utilities/conversion",
+    "utilities/printing"
 ],
-function(_, workoutLayoutFormatter, getKeyStatField, conversion)
+function(_, workoutLayoutFormatter, getKeyStatField, conversion, printing)
 {
     var calendarWorkoutUserCustomization = {
 
@@ -56,10 +57,12 @@ function(_, workoutLayoutFormatter, getKeyStatField, conversion)
                 {
                     fieldValue = conversion[field.conversion](fieldValue);
                 }
-                //TODO: wireup formatting of values (specify function name in workoutLayoutFormatter, and refactor value conversion util into separate functions)
+
+                var units = field.unitHelper ? " " + printing.printUnitLabel(field.unitHelper) : "";
+                
                 //TODO: add units to formatted fields
                 //TODO: create entire list up, then do one insert into main dom
-                var element = $("<p>" + prefix + fieldValue + "</p>");
+                var element = $("<p>" + prefix + fieldValue + units + "</p>");
                 element.insertBefore(this.ui.layoutAnchor);
             }
         }
