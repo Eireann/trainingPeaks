@@ -1,11 +1,12 @@
 define(
 [
     "TP",
+    "utilities/dates",
     "views/userConfirmationView",
     "hbs!templates/views/calendarWeekSummarySettings",
     "hbs!templates/views/deleteConfirmationView"
 ],
-function(TP, UserConfirmationView, calendarWeekSummarySettings, deleteConfirmationTemplate)
+function(TP, DateUtils, UserConfirmationView, calendarWeekSummarySettings, deleteConfirmationTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -53,11 +54,7 @@ function(TP, UserConfirmationView, calendarWeekSummarySettings, deleteConfirmati
 
         onRender: function()
         {
-
-            var today = moment();
-            var weekDate = moment(this.model.get("date"));
-
-            if (weekDate.week() === today.week() && weekDate.year() === today.year())
+            if (DateUtils.isThisWeek(this.model.get("date")))
             {
                 this.$el.find(".hoverBox").addClass("thisWeek");
             }
