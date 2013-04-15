@@ -1,9 +1,10 @@
 define(
 [
     "underscore",
-    "utilities/workoutLayoutFormatter"
+    "utilities/workoutLayoutFormatter",
+    "utilities/getKeyStatField"
 ],
-function(_, workoutLayoutFormatter)
+function(_, workoutLayoutFormatter, getKeyStatField)
 {
     var calendarWorkoutUserCustomization = {
 
@@ -23,11 +24,17 @@ function(_, workoutLayoutFormatter)
         applyUILayout: function ()
         {
             var layoutPreferences = this.getUserLayoutSettings();
+
             if (layoutPreferences)
             {
+                var keyStatFieldName = getKeyStatField(this.model);
                 _.each(layoutPreferences, function(layoutPreferenceId, index)
                 {
-                    this.applyFieldLayoutPreference(layoutPreferenceId);
+                    var field = workoutLayoutFormatter.calendarWorkoutLayout[layoutPreferenceId];
+                    if (keyStatFieldName !== field)
+                    {
+                        this.applyFieldLayoutPreference(field);
+                    } 
                 }, this);
             }
         },
@@ -37,24 +44,19 @@ function(_, workoutLayoutFormatter)
             return theMarsApp.user.get("settings.calendar.workoutLabelLayout");
         },
 
-        applyFieldLayoutPreference: function(layoutPreferenceId)
+        applyFieldLayoutPreference: function(field)
         {
-            var field = workoutLayoutFormatter.calendarWorkoutLayout[layoutPreferenceId];
             var prefix = field.prefix ? field.prefix + ": " : "";
-
             var fieldValue = this.model.get(field.name);
+            
             if (fieldValue)
             {
                 //TODO: wireup formatting of values (specify function name in workoutLayoutFormatter, and refactor value conversion util into separate functions)
-                //TODO: need to exclude key stat from showing a second time
-                //TODO: remove hardcoded items from view (title, description)
+                //TODO: create entire list up, then do one insert into main dom
                 var element = $("<p>" + prefix + fieldValue + "</p>");
-                element.insertBefore(anchor);
+                element.insertBefore(this.ui.layoutAnchor);
             }
         }
-
     };
-
     return calendarWorkoutUserCustomization;
-
 });
