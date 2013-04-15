@@ -1,11 +1,12 @@
 define(
 [
     "TP",
+    "utilities/determineCompletedWorkout",
     "utilities/workoutTypeEnum",
     "views/weekSummarySettings",
     "hbs!templates/views/weekSummary"
 ],
-function(TP, workoutTypeEnum, WeekSummarySettings, weekSummaryTemplate)
+function(TP, determineCompletedWorkout, workoutTypeEnum, WeekSummarySettings, weekSummaryTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -53,7 +54,9 @@ function(TP, workoutTypeEnum, WeekSummarySettings, weekSummaryTemplate)
                 totalEnergy: 0,
                 distanceByWorkoutType: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0 },
                 durationByWorkoutType: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0 },
-                cumulativeTss: 0
+                cumulativeTss: 0,
+                completedDays: {},
+                completedDaysByWorkoutType: {}
             };
             var plannedValues =
             {
@@ -71,10 +74,20 @@ function(TP, workoutTypeEnum, WeekSummarySettings, weekSummaryTemplate)
                 //exclude if item is a weekSummaryModel instead of calendarDayModel 
                 if (!item.itemsCollection)
                     return;
-                
+
                 //iterate over items (workouts, meals, metrics) for the current day
                 item.itemsCollection.each(function(workout)
                 {
+                    if (determineCompletedWorkout(workout.attributes))
+                    {
+                        completedValues.completedDays[workout.getCalendarDay()] = true;
+                        if(!completedValues.completedDaysByWorkoutType[workout.get("workoutTypeValueId")])
+                        {
+                            completedValues.completedDaysByWorkoutType[workout.get("workoutTypeValueId")] = {};
+                        }
+                        completedValues.completedDaysByWorkoutType[workout.get("workoutTypeValueId")][workout.getCalendarDay()] = true;
+                    }
+
                     if (workout.has("totalTime") && workout.get("totalTime") !== null)
                         completedValues.totalTime += Number(workout.get("totalTime"));
   
@@ -128,6 +141,7 @@ function(TP, workoutTypeEnum, WeekSummarySettings, weekSummaryTemplate)
             {
                 totalTimePlanned: plannedValues.totalTime,
                 totalTimeCompleted: completedValues.totalTime,
+                totalDaysCompleted: _.keys(completedValues.completedDays).length,
                 totalDistancePlanned: plannedValues.totalDistance,
                 totalDistanceCompleted: completedValues.totalDistance,
                 totalEnergyPlanned: plannedValues.totalEnergy,
@@ -140,12 +154,16 @@ function(TP, workoutTypeEnum, WeekSummarySettings, weekSummaryTemplate)
                 swimDistanceCompleted: completedValues.distanceByWorkoutType[workoutTypeEnum["Swim"]],
                 bikeDurationPlanned: plannedValues.durationByWorkoutType[workoutTypeEnum["Bike"]],
                 bikeDurationCompleted: completedValues.durationByWorkoutType[workoutTypeEnum["Bike"]],
+                bikeDaysCompleted: _.keys(completedValues.completedDaysByWorkoutType[workoutTypeEnum["Bike"]]).length,
                 runDurationPlanned: plannedValues.durationByWorkoutType[workoutTypeEnum["Run"]],
                 runDurationCompleted: completedValues.durationByWorkoutType[workoutTypeEnum["Run"]],
+                runDaysCompleted: _.keys(completedValues.completedDaysByWorkoutType[workoutTypeEnum["Run"]]).length,
                 swimDurationPlanned: plannedValues.durationByWorkoutType[workoutTypeEnum["Swim"]],
                 swimDurationCompleted: completedValues.durationByWorkoutType[workoutTypeEnum["Swim"]],
+                swimDaysCompleted: _.keys(completedValues.completedDaysByWorkoutType[workoutTypeEnum["Swim"]]).length,
                 strengthDurationPlanned: plannedValues.durationByWorkoutType[workoutTypeEnum["Strength"]],
                 strengthDurationCompleted: completedValues.durationByWorkoutType[workoutTypeEnum["Strength"]],
+                strengthDaysCompleted: _.keys(completedValues.completedDaysByWorkoutType[workoutTypeEnum["Strength"]]).length,
                 tssPlanned: plannedValues.cumulativeTss,
                 tssCompleted: completedValues.cumulativeTss
             },

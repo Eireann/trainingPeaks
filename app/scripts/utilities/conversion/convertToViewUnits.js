@@ -37,7 +37,7 @@ function(modelToViewConversionFactors)
 
     var convertToViewUnits = function(value, fieldType, workoutType, defaultValue)
     {
-        if (!_.isNumber(value))
+        if (!_.isNumber(value) || !value)
             return typeof defaultValue !== 'undefined' ? defaultValue : ""; 
         
         var currentUnits = theMarsApp.user.get("units");

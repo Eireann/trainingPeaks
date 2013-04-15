@@ -16,49 +16,49 @@
 				Total
 			</div>		
 			<div class="weekSummaryTimeContain">
-				<span class="weekSummaryTimeCompleted">{{printTimeFromDecimalHours totalTimeCompleted false}}</span> <span class="weekSummaryTimePlanned">{{printTimeFromDecimalHours totalTimePlanned false}}</span>
+				<span class="weekSummaryTimeCompleted">{{printTimeFromDecimalHours totalTimeCompleted false}}</span> <span class="weekSummaryTimePlanned">{{printTimeFromDecimalHours totalTimePlanned false "--:--"}}</span>
 			</div>
-            {{{ weekSummaryBarGraph totalTimePlanned totalTimeCompleted "total" }}}
+            {{{ weekSummaryBarGraph totalTimePlanned totalTimeCompleted totalDaysCompleted "total" }}}
 		</div>
 			
 		<div class="weekSummaryBarGraphItem cf">
-			<div class="weekSummaryBarGraphLabel">
+			<div class="weekSummaryBarGraphLabel strength">
 				Strength
 			</div>		
 			<div class="weekSummaryTimeContain">
-				<span class="weekSummaryTimeCompleted strength">{{printTimeFromDecimalHours strengthDurationCompleted false}}</span> <span class="weekSummaryTimePlanned">{{printTimeFromDecimalHours strengthDurationPlanned false}}</span>
+				<span class="weekSummaryTimeCompleted strength">{{printTimeFromDecimalHours strengthDurationCompleted false}}</span> <span class="weekSummaryTimePlanned">{{printTimeFromDecimalHours strengthDurationPlanned false "--:--"}}</span>
 			</div>
-            {{{ weekSummaryBarGraph strengthDurationPlanned strengthDurationCompleted "strength" }}}
+            {{{ weekSummaryBarGraph strengthDurationPlanned strengthDurationCompleted strengthDaysCompleted "strength" }}}
 		</div>
 	
 		<div class="weekSummaryBarGraphItem cf right">
-			<div class="weekSummaryBarGraphLabel">
+			<div class="weekSummaryBarGraphLabel bike">
 				Bike
 			</div>		
 			<div class="weekSummaryTimeContain">
-				<span class="weekSummaryTimeCompleted bike">{{printTimeFromDecimalHours bikeDurationCompleted false}}</span> <span class="weekSummaryTimePlanned">{{printTimeFromDecimalHours bikeDurationPlanned false}}</span>
+				<span class="weekSummaryTimeCompleted bike">{{printTimeFromDecimalHours bikeDurationCompleted false}}</span> <span class="weekSummaryTimePlanned">{{printTimeFromDecimalHours bikeDurationPlanned false "--:--"}}</span>
 			</div>
-            {{{ weekSummaryBarGraph bikeDurationPlanned bikeDurationCompleted "bike" }}}
+            {{{ weekSummaryBarGraph bikeDurationPlanned bikeDurationCompleted bikeDaysCompleted "bike" }}}
 		</div>
 
 		<div class="weekSummaryBarGraphItem cf">
-			<div class="weekSummaryBarGraphLabel">
+			<div class="weekSummaryBarGraphLabel run">
 				Run
 			</div>		
 			<div class="weekSummaryTimeContain">
-				<span class="weekSummaryTimeCompleted run">{{convertToViewUnits runDistanceCompleted "distance"}}</span> <span class="weekSummaryTimePlanned">{{convertToViewUnits runDistancePlanned "distance"}}</span>
+				<span class="weekSummaryTimeCompleted run">{{convertToViewUnits runDistanceCompleted "distance"}}</span> <span class="weekSummaryTimePlanned">{{convertToViewUnits runDistancePlanned "distance" workoutTypeValueId "--" }}</span>
 			</div>
-            {{{ weekSummaryBarGraph runDistancePlanned runDistanceCompleted "run" }}}
+            {{{ weekSummaryBarGraph runDistancePlanned runDistanceCompleted runDaysCompleted "run" }}}
 		</div>
 	
 		<div class="weekSummaryBarGraphItem cf right">
-			<div class="weekSummaryBarGraphLabel">
+			<div class="weekSummaryBarGraphLabel swim">
 				Swim
 			</div>		
 			<div class="weekSummaryTimeContain">
-				<span class="weekSummaryTimeCompleted swim">{{convertToViewUnits swimDistanceCompleted "distance"}}</span> <span class="weekSummaryTimePlanned">{{convertToViewUnits swimDistancePlanned "distance"}}</span>
+				<span class="weekSummaryTimeCompleted swim">{{convertToViewUnits swimDistanceCompleted "distance"}}</span> <span class="weekSummaryTimePlanned">{{convertToViewUnits swimDistancePlanned "distance" workoutTypeValueId "--" }}</span>
 			</div>
-            {{{ weekSummaryBarGraph swimDistancePlanned swimDistanceCompleted "swim" }}}
+            {{{ weekSummaryBarGraph swimDistancePlanned swimDistanceCompleted swimDaysCompleted "swim" }}}
 		</div>	
 	
 	</div>
@@ -113,7 +113,7 @@
 			</div>	
 		</div>
 		
-		<div class="weekSummaryATPItem weekSummaryItem cf">
+		<div class="weekSummaryATPItem weekSummaryItem cf last">
 			<div class="weekSummaryATPValue">
 				--
 			</div>

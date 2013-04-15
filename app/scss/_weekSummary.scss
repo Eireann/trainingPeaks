@@ -100,6 +100,7 @@
 
 
 #weekSummaryContainer {
+
 	padding:7px 10px 5px 6px;
 
 	.weekSummaryBarGraphContain {
@@ -131,7 +132,7 @@
 	.weekSummaryBarGraphLabel.total {
 		text-transform: uppercase !important;
 	}
-	
+
 	.weekSummaryBarGraph {
 		height:8px;
 		float:left;
@@ -154,6 +155,7 @@
         &.moreThanPlanned
         {
             z-index:3;
+            opacity:0.25;
         }
 	}
 
@@ -171,111 +173,108 @@
         left:0px;
         z-index:2;
 	}
-	
-	.weekSummaryBarGraphProgress.total {
-		width:75px;
-		background: #636569; /* Old browsers */
+	 
+    .weekSummaryBarGraphProgress {
         @include linearGradient(top,  #636569 0%,#3d3e41 100%);
-	}
-	
+    }
+
 	.weekSummaryBarGraphProgress.bike {
-		width:50px;
-		background: #8820d1; /* Old browsers */
         @include linearGradient(top,  #8820d1 0%,#561484 100%);
 	}
 	
 	.weekSummaryBarGraphProgress.strength {
-		width:74px;
-		background: #8e2e8d; /* Old browsers */
         @include linearGradient(top,  #8e2e8d 0%,#5b1c5b 100%);
-		}
-		
-		.weekSummaryBarGraphProgress {
-			width:14px;
-			@include linearGradient(top,  #636569 0%,#3d3e41 100%);
-			}	
-		
-		.weekSummaryTimeContain {
-			float:right;
-			text-align:right;
-			font-size:$fontSizeXSmall;
-		
-			.weekSummaryTimeCompleted {
-				font-weight:bold;
-				color:#303030;
-			}
-			.weekSummaryTimeCompleted.bike {
-				color:#8c2edc;
-				}
-			.weekSummaryTimeCompleted.strength {
-				color:#912c8a
-				}
-			.weekSummaryTimePlanned {
-				color:#a5a5a5;
-			}
-		}
+    }	
 	
-		#weekSummaryMetricContain {
-			width:272px;
-			float:left;
-		}
-	
-		.weekSummaryMetricItem {
-			padding:2px 0 2px 0;
-		}
+	.weekSummaryBarGraphProgress.run {
+        @include linearGradient(top,  #8820d1 0%,#561484 100%);
+	}	
 
-        .weekSummaryItem
-        {
-			border-bottom:1px solid #dbdbdc;
-            &:last
-            {
-                border-bottom:none;
-            }
+	.weekSummaryBarGraphProgress.swim {
+        @include linearGradient(top,  #8820d1 0%,#561484 100%);
+	}
+
+    .weekSummaryTimeContain {
+        float:right;
+        text-align:right;
+        font-size:$fontSizeXSmall;
+    
+        .weekSummaryTimeCompleted {
+            font-weight:bold;
+            color:#303030;
         }
-        	
-		#weekSummaryATPContain {
-			width:272px;
-			float:left;
-		}
+        .weekSummaryTimeCompleted.bike {
+            color:#8c2edc;
+            }
+        .weekSummaryTimeCompleted.strength {
+            color:#912c8a
+            }
+        .weekSummaryTimePlanned {
+            color:#a5a5a5;
+        }
+    }
 	
-		.weekSummaryATPItem {
-			padding:0 0 4px 0;
-		}
-	
-		.weekSummaryATPItem.last {
-			border-bottom:none;
-		}
-	
-		.weekSummaryMetricValue, 
-		.weekSummaryATPValue, {
-			width:131px;
-			display:inline-block;
-		}
-	
-		.weekSummaryMetricValue {
-			text-align:right;
-			font-size:$fontSizeXLarge;
-			font-weight:normal;
-		}
-	
-		.weekSummaryMetricTitle, 
-		.weekSummaryATPTitle {
-			width:131px;
-			margin:0 0 0 6px;
-			font-size:$fontSizeXSmall;
-			font-weight:bold;
-			display:inline-block;
-		}
-	
-		.weekSummaryMetricTitle {
-			padding-top:5px;
-			line-height:normal;
-		}
-	
-		.weekSummaryATPValue {
-			text-align:right;
-			font-size:$fontSizeXSmall;
-		}
-	
-	
+    #weekSummaryMetricContain {
+        width:272px;
+        float:left;
+    }
+
+    .weekSummaryMetricItem {
+        padding:2px 0 2px 0;
+    }
+
+    .weekSummaryItem
+    {
+        border-bottom:1px solid #dbdbdc;
+        &.last
+        {
+            border-bottom:none;
+        }
+    }
+        
+    #weekSummaryATPContain {
+        width:272px;
+        float:left;
+    }
+
+    .weekSummaryATPItem {
+        padding:0 0 4px 0;
+    }
+
+    .weekSummaryATPItem.last {
+        border-bottom:none;
+    }
+
+    .weekSummaryMetricValue, 
+    .weekSummaryATPValue, {
+        width:131px;
+        display:inline-block;
+    }
+
+    .weekSummaryMetricValue {
+        text-align:right;
+        font-size:$fontSizeXLarge;
+        font-weight:normal;
+    }
+
+    .weekSummaryMetricTitle, 
+    .weekSummaryATPTitle {
+        width:131px;
+        margin:0 0 0 6px;
+        font-size:$fontSizeXSmall;
+        font-weight:bold;
+        display:inline-block;
+    }
+
+    .weekSummaryMetricTitle {
+        padding-top:5px;
+        line-height:normal;
+    }
+
+    .weekSummaryATPValue {
+        text-align:right;
+        font-size:$fontSizeXSmall;
+    }
+
+
 }
