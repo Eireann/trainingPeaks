@@ -16,7 +16,7 @@
 				Total
 			</div>		
 			<div class="weekSummaryTimeContain">
-				<span class="weekSummaryTimeCompleted">{{printTimeFromDecimalHours totalTimeCompleted false}}</span> <span class="weekSummaryTimePlanned">{{printTimeFromDecimalHours totalTimePlanned false "--:--"}}</span>
+				<span class="weekSummaryTimeCompleted total">{{printTimeFromDecimalHours totalTimeCompleted false}}</span> <span class="weekSummaryTimePlanned total">{{printTimeFromDecimalHours totalTimePlanned false "--:--"}}</span>
 			</div>
             {{{ weekSummaryBarGraph totalTimePlanned totalTimeCompleted totalDaysCompleted "total" }}}
 		</div>
@@ -26,7 +26,7 @@
 				Strength
 			</div>		
 			<div class="weekSummaryTimeContain">
-				<span class="weekSummaryTimeCompleted strength">{{printTimeFromDecimalHours strengthDurationCompleted false}}</span> <span class="weekSummaryTimePlanned">{{printTimeFromDecimalHours strengthDurationPlanned false "--:--"}}</span>
+				<span class="weekSummaryTimeCompleted strength">{{printTimeFromDecimalHours strengthDurationCompleted false}}</span> <span class="weekSummaryTimePlanned strength">{{printTimeFromDecimalHours strengthDurationPlanned false "--:--"}}</span>
 			</div>
             {{{ weekSummaryBarGraph strengthDurationPlanned strengthDurationCompleted strengthDaysCompleted "strength" }}}
 		</div>
@@ -36,7 +36,7 @@
 				Bike
 			</div>		
 			<div class="weekSummaryTimeContain">
-				<span class="weekSummaryTimeCompleted bike">{{printTimeFromDecimalHours bikeDurationCompleted false}}</span> <span class="weekSummaryTimePlanned">{{printTimeFromDecimalHours bikeDurationPlanned false "--:--"}}</span>
+				<span class="weekSummaryTimeCompleted bike">{{printTimeFromDecimalHours bikeDurationCompleted false}}</span> <span class="weekSummaryTimePlanned bike">{{printTimeFromDecimalHours bikeDurationPlanned false "--:--"}}</span>
 			</div>
             {{{ weekSummaryBarGraph bikeDurationPlanned bikeDurationCompleted bikeDaysCompleted "bike" }}}
 		</div>
@@ -46,7 +46,7 @@
 				Run
 			</div>		
 			<div class="weekSummaryTimeContain">
-				<span class="weekSummaryTimeCompleted run">{{convertToViewUnits runDistanceCompleted "distance"}}</span> <span class="weekSummaryTimePlanned">{{convertToViewUnits runDistancePlanned "distance" workoutTypeValueId "--" }}</span>
+				<span class="weekSummaryTimeCompleted run">{{convertToViewUnits runDistanceCompleted "distance"}}</span> <span class="weekSummaryTimePlanned run">{{convertToViewUnits runDistancePlanned "distance" workoutTypeValueId "--" }}</span>
 			</div>
             {{{ weekSummaryBarGraph runDistancePlanned runDistanceCompleted runDaysCompleted "run" }}}
 		</div>
@@ -56,7 +56,7 @@
 				Swim
 			</div>		
 			<div class="weekSummaryTimeContain">
-				<span class="weekSummaryTimeCompleted swim">{{convertToViewUnits swimDistanceCompleted "distance"}}</span> <span class="weekSummaryTimePlanned">{{convertToViewUnits swimDistancePlanned "distance" workoutTypeValueId "--" }}</span>
+				<span class="weekSummaryTimeCompleted swim">{{convertToViewUnits swimDistanceCompleted "distance"}}</span> <span class="weekSummaryTimePlanned swim">{{convertToViewUnits swimDistancePlanned "distance" workoutTypeValueId "--" }}</span>
 			</div>
             {{{ weekSummaryBarGraph swimDistancePlanned swimDistanceCompleted swimDaysCompleted "swim" }}}
 		</div>	
@@ -66,28 +66,28 @@
 	<div id="weekSummaryMetricContain">
 		
 		<div class="weekSummaryMetricItem weekSummaryItem cf">
-			<div class="weekSummaryMetricValue">
+			<div class="weekSummaryMetricValue distance">
 				{{convertToViewUnits totalDistanceCompleted "distance"}}
 			</div>
-			<div class="weekSummaryMetricTitle">
+			<div class="weekSummaryMetricTitle distance">
 				{{printUnitLabel "distance"}}
 			</div>
 		</div>
 	
 		<div class="weekSummaryMetricItem weekSummaryItem cf">
-			<div class="weekSummaryMetricValue">
+			<div class="weekSummaryMetricValue tss">
 				{{tssCompleted}}
 			</div>
-			<div class="weekSummaryMetricTitle">
+			<div class="weekSummaryMetricTitle tss">
 				TSS
 			</div>		
 		</div>
 	
 		<div class="weekSummaryMetricItem weekSummaryItem cf">
-			<div class="weekSummaryMetricValue">
+			<div class="weekSummaryMetricValue energy">
 				{{totalEnergyCompleted}}
 			</div>
-			<div class="weekSummaryMetricTitle">
+			<div class="weekSummaryMetricTitle energy">
 				Kilojoules
 			</div>		
 		</div>
@@ -96,28 +96,28 @@
 	
 	<div id="weekSummaryATPContain">
 		<div class="weekSummaryATPItem weekSummaryItem cf">
-			<div class="weekSummaryATPValue">
+			<div class="weekSummaryATPValue plan">
 				--:--
 			</div>
-			<div class="weekSummaryATPTitle">
+			<div class="weekSummaryATPTitle plan">
 				Annual Training Plan
 			</div>	
 		</div>
 		
 		<div class="weekSummaryATPItem weekSummaryItem cf">
-			<div class="weekSummaryATPValue">
+			<div class="weekSummaryATPValue period">
 				--
 			</div>
-			<div class="weekSummaryATPTitle">
+			<div class="weekSummaryATPTitle period">
 				Period
 			</div>	
 		</div>
 		
 		<div class="weekSummaryATPItem weekSummaryItem cf last">
-			<div class="weekSummaryATPValue">
+			<div class="weekSummaryATPValue limiters">
 				--
 			</div>
-			<div class="weekSummaryATPTitle">
+			<div class="weekSummaryATPTitle limiters">
 				Limiters
 			</div>	
 		</div>
