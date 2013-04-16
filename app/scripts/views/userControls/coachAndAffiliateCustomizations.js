@@ -80,7 +80,7 @@ function(_, colorUtils, affiliateUtils)
 
         setTextColors: function(colorValues)
         {
-            if (colorValues.gray > 128)
+            if (colorValues.gray > 160)
             {
                 this.$("#userControlsBackground").addClass("lightBackground").removeClass("darkBackground");
             } else

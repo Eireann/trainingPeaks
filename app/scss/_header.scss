@@ -24,7 +24,6 @@
             .rightNavigation
             {
                 margin-top: 13px;
-                margin-right: 20px;
             }
 
         }
@@ -58,6 +57,11 @@
                 {
                     background-image: url(../../assets/images/calendarImages/messagesIcon.png);
                 }
+
+                .upgradeButton
+                {
+                    border: 1px solid rgba(192, 192, 192, 0.8);
+                }
             }
         }
  
@@ -90,6 +94,11 @@
                 {
                     background-image: url(../../assets/images/calendarImages/messagesIcon.png);
                 }
+
+                .upgradeButton
+                {
+                    border: 1px solid rgba(192, 192, 192, 0.8);
+                }
             }
         }       
 
@@ -116,6 +125,7 @@
         {
             float: right;
             padding-right: 12px;
+            margin-right: 35px;
 
             .headerPipe
             {
