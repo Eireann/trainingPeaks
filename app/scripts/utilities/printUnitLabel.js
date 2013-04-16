@@ -40,15 +40,16 @@ function()
             "0": "ft",
             "1": "m"
         },
+        //TODO: will need to add logic to determine type of tss
         tss:
         {
-            "0": "",
-            "1": ""
+            "0": "TSS",
+            "1": "TSS"
         },
         "if":
         {
-            "0": "",
-            "1": ""
+            "0": "IF",
+            "1": "IF"
         },
         energy:
         {
@@ -99,7 +100,6 @@ function()
         {
             "0": "hms",
             "1": "hms"
-            
         }
     };
     

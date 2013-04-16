@@ -35,12 +35,11 @@ function ()
             "4": { name: "distancePlanned", prefix: "P", conversion: "getDistance", unitHelper: "distance" },
             "5": { name: "calories", prefix: "C", conversion:"getNumber", unitHelper: "calories" },
             "6": { name: "energy", prefix: "C", conversion: "getNumber", unitHelper: "energy" },
-            "7": { name: "totalTime", prefix: "C", conversion: "getTime", unitHelper: "time" },
-            "8": { name: "totalTimePlanned", prefix: "P", conversion: "getTime", unitHelper: "time" },
+            "7": { name: "totalTime", prefix: "C", conversion: "getTime"},
+            "8": { name: "totalTimePlanned", prefix: "P", conversion: "getTime"},
             "13": { name: "tempAvg", prefix: "", conversion: "getTemperature", unitHelper: "temperature" },
-            "23": { name: "title", prefix: "" },
-            //TODO: add lookup to resolve valueId
-            "24": { name: "workoutTypeValueId", prefix: "" } ,
+            //"23": { name: "title", prefix: "" }, //commented out because it is hardwired
+            "24": { name: "workoutTypeValueId", prefix: "", conversion: "getWorkoutType" },
             "25": { name: "code", prefix: "" } , 
             "26": { name: "description", prefix: "" } ,
             "30": { name: "coachComments", prefix: "P" } ,

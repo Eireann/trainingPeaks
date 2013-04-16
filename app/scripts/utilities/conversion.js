@@ -3,8 +3,9 @@
     "utilities/conversion/convertTimeHoursToDecimal",
     "utilities/conversion/convertToModelUnits",
     "utilities/conversion/convertToViewUnits",
-    "utilities/printTimeFromDecimalHours"
-], function (convertTimeHoursToDecimal, convertToModelUnits, convertToViewUnits, printTimeFromDecimalHours)
+    "utilities/printTimeFromDecimalHours",
+    "utilities/workoutTypeEnum2"
+], function (convertTimeHoursToDecimal, convertToModelUnits, convertToViewUnits, printTimeFromDecimalHours, workoutTypeEnum2)
 {
     return {
         convertTimeHoursToDecimal: convertTimeHoursToDecimal,
@@ -84,6 +85,14 @@
         setTemperature: function (value, options)
         {
             return convertToModelUnits(parseInt(value, 10), "temperature");
+        },
+        
+        getWorkoutType: function(value, options)
+        {
+            //Yes, I know this sucks
+            //TODO: make this not suck
+            return workoutTypeEnum2[value];
         }
+        
     };
 });

@@ -33,7 +33,7 @@ function(_, workoutLayoutFormatter, getKeyStatField, conversion, printing)
                 _.each(layoutPreferences, function(layoutPreferenceId, index)
                 {
                     var field = workoutLayoutFormatter.calendarWorkoutLayout[layoutPreferenceId];
-                    if (keyStatFieldName !== field)
+                    if (field && keyStatFieldName !== field)
                     {
                         this.applyFieldLayoutPreference(field);
                     } 
@@ -57,10 +57,7 @@ function(_, workoutLayoutFormatter, getKeyStatField, conversion, printing)
                 {
                     fieldValue = conversion[field.conversion](fieldValue);
                 }
-
                 var units = field.unitHelper ? " " + printing.printUnitLabel(field.unitHelper) : "";
-                
-                //TODO: add units to formatted fields
                 //TODO: create entire list up, then do one insert into main dom
                 var element = $("<p>" + prefix + fieldValue + units + "</p>");
                 element.insertBefore(this.ui.layoutAnchor);
