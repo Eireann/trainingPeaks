@@ -16,7 +16,7 @@ function(_, ImageData)
 
         isTpAffiliate: function()
         {
-            return this.getAffiliateCode().indexOf("trainingpeaks") >= 0 && this.getLogoUrl().indexOf("training_peaks_banner") >= 0;
+            return this.getAffiliateCode() && this.getAffiliateCode().indexOf("trainingpeaks") >= 0 && this.getLogoUrl().indexOf("training_peaks_banner") >= 0;
         },
 
         isCoachedAccount: function()
@@ -31,7 +31,7 @@ function(_, ImageData)
 
         getAffiliateCode: function()
         {
-            return theMarsApp.user.get("settings.affiliate.affiliateCode");
+            return theMarsApp.user.get("settings.affiliate.code");
         },
 
         loadAffiliateSettings: function()
@@ -59,7 +59,7 @@ function(_, ImageData)
         {
             if (this.isAffiliate())
             {
-                var affiliateCode = theMarsApp.user.get("settings.affiliate.affiliateCode");
+                var affiliateCode = this.getAffiliateCode();
                 $("<link>").attr("rel", "stylesheet").attr("href", "app/scripts/affiliates/" + affiliateCode + "/style.css").appendTo("body");
             }
         },

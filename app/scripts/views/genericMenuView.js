@@ -1,9 +1,10 @@
 define(
 [
+    "underscore",
     "TP",
     "hbs!templates/views/genericMenu"
 ],
-function(TP, genericMenuTemplate)
+function(_, TP, genericMenuTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -26,7 +27,14 @@ function(TP, genericMenuTemplate)
                 throw "GenericMenuView requires a labels array";
             }
 
-            this.model = new TP.Model({ labels: options.labels });
+            // we could have just kept labels as a simple array, but the template parser is failing randomly so trying a different approach
+            var labels = [];
+            _.each(options.labels, function(label)
+            {
+                labels.push({ labelText: label });
+            });
+
+            this.model = new TP.Model({ labels: labels });
 
             this.on("modalrender", this.addGenericClassName, this);
         },
