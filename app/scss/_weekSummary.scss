@@ -100,6 +100,7 @@
 
 
 #weekSummaryContainer {
+
 	padding:7px 10px 5px 6px;
 
 	.weekSummaryBarGraphContain {
@@ -131,180 +132,182 @@
 	.weekSummaryBarGraphLabel.total {
 		text-transform: uppercase !important;
 	}
-	
+
 	.weekSummaryBarGraph {
 		height:8px;
 		float:left;
 		width:100%;
 		margin-top:3px;
-		
-		background: #cccccc; /* Old browsers */
-		/* IE9 SVG, needs conditional override of 'filter' to 'none' */
-		background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2NjY2NjYyIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNhZWFlYWUiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
-		background: -moz-linear-gradient(top,  #cccccc 0%, #aeaeae 100%); /* FF3.6+ */
-		background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#cccccc), color-stop(100%,#aeaeae)); /* Chrome,Safari4+ */
-		background: -webkit-linear-gradient(top,  #cccccc 0%,#aeaeae 100%); /* Chrome10+,Safari5.1+ */
-		background: -o-linear-gradient(top,  #cccccc 0%,#aeaeae 100%); /* Opera 11.10+ */
-		background: -ms-linear-gradient(top,  #cccccc 0%,#aeaeae 100%); /* IE10+ */
-		background: linear-gradient(to bottom,  #cccccc 0%,#aeaeae 100%); /* W3C */
-		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cccccc', endColorstr='#aeaeae',GradientType=0 ); /* IE6-8 */
-		
+        position:relative;
 	}
-	
+    
+    .weekSummaryBarGraphPlanned
+    {	
+        position:absolute;
+        top:0px;
+        bottom:0px;
+        left:0px;
+        right:0px;
+        z-index:1;
+
+        @include linearGradient(top,  #cccccc 0%,#aeaeae 100%);
+
+        &.moreThanPlanned
+        {
+            z-index:3;
+            @include linearGradient(top, #85878a 0%, #68696c 100%);
+
+            &.bike {
+                @include linearGradient(top, #a153d8 0%, #7b4a9e 100%);
+            }
+            
+            &.strength {
+                @include linearGradient(top, #a75ca3 0%, #80507d 100%);
+            }	
+            
+            &.run {
+                @include linearGradient(top, #5f9cb0 0%, #517885 100%);
+            }	
+
+            &.swim {
+                @include linearGradient(top,  #53b5d8 0%, #4a889e 100%);
+            }
+
+        }
+	}
+
 	.weekSummaryBarGraph.total {
 		height:15px;
 		float:left;
 		width:100%;
-		background: #cccccc; /* Old browsers */
-		/* IE9 SVG, needs conditional override of 'filter' to 'none' */
-		background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2NjY2NjYyIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNhZWFlYWUiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
-		background: -moz-linear-gradient(top,  #cccccc 0%, #aeaeae 100%); /* FF3.6+ */
-		background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#cccccc), color-stop(100%,#aeaeae)); /* Chrome,Safari4+ */
-		background: -webkit-linear-gradient(top,  #cccccc 0%,#aeaeae 100%); /* Chrome10+,Safari5.1+ */
-		background: -o-linear-gradient(top,  #cccccc 0%,#aeaeae 100%); /* Opera 11.10+ */
-		background: -ms-linear-gradient(top,  #cccccc 0%,#aeaeae 100%); /* IE10+ */
-		background: linear-gradient(to bottom,  #cccccc 0%,#aeaeae 100%); /* W3C */
-		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cccccc', endColorstr='#aeaeae',GradientType=0 ); /* IE6-8 */
 	}
 	
 	.weekSummaryBarGraphProgress {
 		height:100%;
 		display:block;
+        position:absolute;
+        top:0px;
+        left:0px;
+        z-index:2;
 	}
+	 
+    .weekSummaryBarGraphProgress {
+        @include linearGradient(top,  #636569 0%, #3d3e41 100%);
+
+        &.bike {
+            @include linearGradient(top,  #8820d1 0%, #561484 100%);
+        }
+        
+        &.strength {
+            @include linearGradient(top, #912c8a 0%, #5b1c5b 100%);
+        }	
+        
+        &.run {
+            @include linearGradient(top,  #30819c 0%, #1e5162 100%);
+        }	
+
+        &.swim {
+            @include linearGradient(top,  #20a3d1 0%, #146784 100%);
+        }
+    }
+
+    .weekSummaryTimeContain {
+        float:right;
+        text-align:right;
+        font-size:$fontSizeXSmall;
+    
+        .weekSummaryTimeCompleted {
+            font-weight:bold;
+            color:#303030;
+			margin-right: 2px;
+
+            &.run
+            {
+                color: #30819c;
+            }
+
+            &.bike
+            {
+                color:#8c2edc;
+            }
+
+            &.swim
+            {
+                color: #20a3d1; 
+            }
+
+            &.strength
+            {
+                color:#912c8a
+            }
+        }
+
+        .weekSummaryTimePlanned {
+            color:#a5a5a5;
+        }
+    }
 	
-	.weekSummaryBarGraphProgress.total {
-		width:75px;
-		background: #636569; /* Old browsers */
-		/* IE9 SVG, needs conditional override of 'filter' to 'none' */
-		background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzYzNjU2OSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMzZDNlNDEiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
-		background: -moz-linear-gradient(top,  #636569 0%, #3d3e41 100%); /* FF3.6+ */
-		background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#636569), color-stop(100%,#3d3e41)); /* Chrome,Safari4+ */
-		background: -webkit-linear-gradient(top,  #636569 0%,#3d3e41 100%); /* Chrome10+,Safari5.1+ */
-		background: -o-linear-gradient(top,  #636569 0%,#3d3e41 100%); /* Opera 11.10+ */
-		background: -ms-linear-gradient(top,  #636569 0%,#3d3e41 100%); /* IE10+ */
-		background: linear-gradient(to bottom,  #636569 0%,#3d3e41 100%); /* W3C */
-		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#636569', endColorstr='#3d3e41',GradientType=0 ); /* IE6-8 */
-	}
-	
-	.weekSummaryBarGraphProgress.bike {
-		width:50px;
-		background: #8820d1; /* Old browsers */
-		/* IE9 SVG, needs conditional override of 'filter' to 'none' */
-		background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzg4MjBkMSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM1NjE0ODQiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
-		background: -moz-linear-gradient(top,  #8820d1 0%, #561484 100%); /* FF3.6+ */
-		background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#8820d1), color-stop(100%,#561484)); /* Chrome,Safari4+ */
-		background: -webkit-linear-gradient(top,  #8820d1 0%,#561484 100%); /* Chrome10+,Safari5.1+ */
-		background: -o-linear-gradient(top,  #8820d1 0%,#561484 100%); /* Opera 11.10+ */
-		background: -ms-linear-gradient(top,  #8820d1 0%,#561484 100%); /* IE10+ */
-		background: linear-gradient(to bottom,  #8820d1 0%,#561484 100%); /* W3C */
-		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#8820d1', endColorstr='#561484',GradientType=0 ); /* IE6-8 */
-	}
-	
-	.weekSummaryBarGraphProgress.strength {
-		width:74px;
-		background: #8e2e8d; /* Old browsers */
-		/* IE9 SVG, needs conditional override of 'filter' to 'none' */
-		background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzhlMmU4ZCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM1YjFjNWIiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
-		background: -moz-linear-gradient(top,  #8e2e8d 0%, #5b1c5b 100%); /* FF3.6+ */
-		background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#8e2e8d), color-stop(100%,#5b1c5b)); /* Chrome,Safari4+ */
-		background: -webkit-linear-gradient(top,  #8e2e8d 0%,#5b1c5b 100%); /* Chrome10+,Safari5.1+ */
-		background: -o-linear-gradient(top,  #8e2e8d 0%,#5b1c5b 100%); /* Opera 11.10+ */
-		background: -ms-linear-gradient(top,  #8e2e8d 0%,#5b1c5b 100%); /* IE10+ */
-		background: linear-gradient(to bottom,  #8e2e8d 0%,#5b1c5b 100%); /* W3C */
-		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#8e2e8d', endColorstr='#5b1c5b',GradientType=0 ); /* IE6-8 */
-		}
-		
-		.weekSummaryBarGraphProgress.tss {
-			width:14px;
-			/* IE9 SVG, needs conditional override of 'filter' to 'none' */
-			background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzYzNjU2OSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMzZDNlNDEiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
-			background: -moz-linear-gradient(top,  #636569 0%, #3d3e41 100%); /* FF3.6+ */
-			background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#636569), color-stop(100%,#3d3e41)); /* Chrome,Safari4+ */
-			background: -webkit-linear-gradient(top,  #636569 0%,#3d3e41 100%); /* Chrome10+,Safari5.1+ */
-			background: -o-linear-gradient(top,  #636569 0%,#3d3e41 100%); /* Opera 11.10+ */
-			background: -ms-linear-gradient(top,  #636569 0%,#3d3e41 100%); /* IE10+ */
-			background: linear-gradient(to bottom,  #636569 0%,#3d3e41 100%); /* W3C */
-			filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#636569', endColorstr='#3d3e41',GradientType=0 ); /* IE6-8 */
-			}	
-		
-		.weekSummaryTimeContain {
-			float:right;
-			text-align:right;
-			font-size:$fontSizeXSmall;
-		
-			.weekSummaryTimeCompleted {
-				font-weight:bold;
-				color:#303030;
-			}
-			.weekSummaryTimeCompleted.bike {
-				color:#8c2edc;
-				}
-			.weekSummaryTimeCompleted.strength {
-				color:#912c8a
-				}
-			.weekSummaryTimePlanned {
-				color:#a5a5a5;
-			}
-		}
-	
-		#weekSummaryMetricContain {
-			width:272px;
-			float:left;
-		}
-	
-		.weekSummaryMetricItem {
-			border-bottom:1px solid #dbdbdc;
-			padding:2px 0 2px 0;
-		}
-	
-		.weekSummaryMetricItem.last {
-			border-bottom:none;
-		}
-	
-		#weekSummaryATPContain {
-			width:272px;
-			float:left;
-		}
-	
-		.weekSummaryATPItem {
-			border-bottom:1px solid #dbdbdc;
-			padding:0 0 4px 0;
-		}
-	
-		.weekSummaryATPItem.last {
-			border-bottom:none;
-		}
-	
-		.weekSummaryMetricValue, 
-		.weekSummaryATPValue, {
-			width:131px;
-			display:inline-block;
-		}
-	
-		.weekSummaryMetricValue {
-			text-align:right;
-			font-size:$fontSizeXLarge;
-			font-weight:normal;
-		}
-	
-		.weekSummaryMetricTitle, 
-		.weekSummaryATPTitle {
-			width:131px;
-			margin:0 0 0 6px;
-			font-size:$fontSizeXSmall;
-			font-weight:bold;
-			display:inline-block;
-		}
-	
-		.weekSummaryMetricTitle {
-			padding-top:5px;
-			line-height:normal;
-		}
-	
-		.weekSummaryATPValue {
-			text-align:right;
-			font-size:$fontSizeXSmall;
-		}
-	
-	
+    #weekSummaryMetricContain {
+        width:272px;
+        float:left;
+    }
+
+    .weekSummaryMetricItem {
+        padding:2px 0 2px 0;
+    }
+
+    .weekSummaryItem
+    {
+        border-bottom:1px solid #dbdbdc;
+        &.last
+        {
+            border-bottom:none;
+        }
+    }
+        
+    #weekSummaryATPContain {
+        width:272px;
+        float:left;
+    }
+
+    .weekSummaryATPItem {
+        padding:0 0 4px 0;
+    }
+
+    .weekSummaryATPItem.last {
+        border-bottom:none;
+    }
+
+    .weekSummaryMetricValue, 
+    .weekSummaryATPValue, {
+        width:131px;
+        display:inline-block;
+    }
+
+    .weekSummaryMetricValue {
+        text-align:right;
+        font-size:$fontSizeXLarge;
+        font-weight:normal;
+    }
+
+    .weekSummaryMetricTitle, 
+    .weekSummaryATPTitle {
+        width:131px;
+        margin:0 0 0 6px;
+        font-size:$fontSizeXSmall;
+        font-weight:bold;
+        display:inline-block;
+    }
+
+    .weekSummaryMetricTitle {
+        padding-top:5px;
+        line-height:normal;
+    }
+
+    .weekSummaryATPValue {
+        text-align:right;
+        font-size:$fontSizeXSmall;
+    }
+
+
 }

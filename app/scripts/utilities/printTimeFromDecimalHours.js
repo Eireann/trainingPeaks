@@ -1,8 +1,10 @@
 define(
-[],
-function()
+[
+    "underscore"
+],
+function(_)
 {
-    var printTimeFromDecimalHours = function(hours, showSeconds)
+    var printTimeFromDecimalHours = function(hours, showSeconds, zeroFormatValue)
     {
         if (typeof showSeconds !== 'boolean')
         {
@@ -11,6 +13,10 @@ function()
 
         if (!hours || hours <= 0.00001)
         {
+            if (_.isNumber(zeroFormatValue) || _.isString(zeroFormatValue))
+            {
+                return zeroFormatValue;
+            }
             var displayTime = (showSeconds === true) ? "0:00:00" : "00:00";
             return displayTime;
         }
