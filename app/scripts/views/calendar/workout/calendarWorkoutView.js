@@ -1,19 +1,32 @@
 define(
 [
+    "underscore",
     "moment",
     "TP",
+    "views/calendar/workout/calendarWorkoutDragAndDrop",
+    "views/calendar/workout/calendarWorkoutUserCustomization",
     "views/quickView/workoutQuickView",
     "views/calendar/workout/calendarWorkoutHoverView",
     "views/calendar/workout/calendarWorkoutSettings",
     "utilities/workoutTypeName",
     "utilities/determineCompletedWorkout",
-    "utilities/workoutLayoutFormatter",
-    "hbs!templates/views/calendar/workout/calendarWorkout",
-    "hbs!templates/views/calendar/workout/calendarWorkoutDragState"
+    "hbs!templates/views/calendar/workout/calendarWorkout"
 ],
-function (moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkoutSettingsHover, workoutTypeName, determineCompletedWorkout, workoutLayoutFormatter, CalendarWorkoutTemplate, CalendarWorkoutTemplateDragState)
+function(
+    _,
+    moment,
+    TP,
+    calendarWorkoutDragAndDrop,
+    calendarWorkoutUserCustomization,
+    WorkoutQuickView,
+    CalendarWorkoutHoverView,
+    CalendarWorkoutSettingsHover,
+    workoutTypeName,
+    determineCompletedWorkout,
+    CalendarWorkoutTemplate)
 {
-    return TP.ItemView.extend(
+
+    var calendarWorkoutViewBase =
     {
 
         showThrobbers: false,
@@ -21,25 +34,29 @@ function (moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkou
 
         today: moment().format("YYYY-MM-DD"),
 
-        className: function ()
+        ui: {
+
+        },
+
+        className: function()
         {
             return "workout " +
                 this.getDynamicCssClassNames();
         },
 
-        getDynamicCssClassNames: function ()
+        getDynamicCssClassNames: function()
         {
             return this.getWorkoutTypeCssClassName() + " " +
                 this.getComplianceCssClassName() + " " +
                 this.getPastOrCompletedCssClassName();
         },
 
-        getWorkoutTypeCssClassName: function ()
+        getWorkoutTypeCssClassName: function()
         {
             return workoutTypeName(this.model.get("workoutTypeValueId")).replace(/ /g, "");
         },
 
-        getComplianceCssClassName: function ()
+        getComplianceCssClassName: function()
         {
             var complianceAttributeNames =
             {
@@ -82,7 +99,7 @@ function (moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkou
             return "ComplianceGreen";
         },
 
-        getPastOrCompletedCssClassName: function ()
+        getPastOrCompletedCssClassName: function()
         {
             if (this.model.getCalendarDay() < this.today)
             {
@@ -96,7 +113,7 @@ function (moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkou
             }
         },
 
-        attributes: function ()
+        attributes: function()
         {
             return {
                 "data-workoutId": this.model.id
@@ -109,13 +126,16 @@ function (moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkou
             template: CalendarWorkoutTemplate
         },
 
-        initialize: function (options)
+        initialize: function(options)
         {
             if (!this.model)
                 throw "Cannot have a CalendarWorkoutView without a model";
 
-            //this.model.on("view", this.workoutClicked, this);
-            //console.log("Watching the model: " + this.model.id);
+            this.on("render", this.checkForWorkoutId, this);
+            this.on("render", this.setClassName, this);
+            this.initializeUserCustomization();
+            this.initializeDragAndDrop();
+
         },
 
         events:
@@ -132,13 +152,13 @@ function (moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkou
 
         },
 
-        onMouseEnter: function (e)
+        onMouseEnter: function(e)
         {
             this.showSettingsButton(e);
             //this.showWorkoutSummaryHover(e);
         },
 
-        onMouseLeave: function (e)
+        onMouseLeave: function(e)
         {
             var toElement = document.elementFromPoint(e.pageX, e.pageY);
             if (e.toElement === this.el)
@@ -150,12 +170,12 @@ function (moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkou
             //this.hideWorkoutSummaryHover(e);
         },
 
-        showSettingsButton: function ()
+        showSettingsButton: function()
         {
             this.$(".workoutSettings").css('display', "block");
         },
 
-        removeSettingsButton: function (e)
+        removeSettingsButton: function(e)
         {
             var toElement = $(document.elementFromPoint(e.pageX, e.pageY));
             if (!toElement.is(".workoutSettings") && !toElement.is("#workoutSettingsDiv") && !toElement.is(".hoverBox") && !toElement.is(".modal") && !toElement.is(".modalOverlay"))
@@ -164,7 +184,7 @@ function (moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkou
             }
         },
 
-        workoutSettingsClicked: function (e)
+        workoutSettingsClicked: function(e)
         {
             e.preventDefault();
 
@@ -175,7 +195,7 @@ function (moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkou
             this.workoutSettings.on("mouseleave", this.onMouseLeave, this);
         },
 
-        workoutClicked: function (e)
+        workoutClicked: function(e)
         {
             if (e)
             {
@@ -189,7 +209,7 @@ function (moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkou
             view.render();
         },
 
-        showWorkoutSummaryHover: function ()
+        showWorkoutSummaryHover: function()
         {
             if (!this.workoutHoverView || this.workoutHoverView.isClosed)
             {
@@ -200,107 +220,31 @@ function (moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkou
             }
         },
 
-        hideWorkoutSummaryHover: function (e)
+        hideWorkoutSummaryHover: function(e)
         {
             this.workoutHoverView.close();
             delete this.workoutHoverView;
         },
 
-        onRender: function ()
+        checkForWorkoutId: function()
         {
-            this.applyUILayout();
             // we may not have a workout id yet at first render if it was just added from library
             if (!this.$el.data('workoutId'))
             {
                 this.$el.attr(this.attributes());
             }
 
-            // set up drag and drop
-            this.makeDraggable();
+        },
 
-            // setup dynamic class names
+        setClassName: function()
+        {
+            // setup dynamic class names - in case they changed since initial render
             this.$el.attr("class", this.className());
-
-            // allow to open quick view by triggering click on the model
-            //this.model.on("view", this.workoutClicked, this);
-
-        },
-
-        /*
-        onClose: function()
-        {
-            // unbind this since it's not in modelEvents
-            this.model.off("view", this.workoutClicked, this);
-        },
-        */
-
-        applyUILayout: function ()
-        {
-            //remove the "if" condition once defaults are built into api 
-            if (theMarsApp.user.get("settings").calendar && theMarsApp.user.get("settings").calendar.workoutLabelLayout)
-            {
-                var layoutPreferences = theMarsApp.user.get("settings").calendar.workoutLabelLayout;
-                var anchor = this.$(".userLayoutAnchor");
-                _.each(layoutPreferences, function(layoutPreference, index)
-                {
-                    var field = workoutLayoutFormatter.calendarWorkoutLayout[layoutPreference];
-                    var prefix = field.prefix ? field.prefix + ": " : "";
-
-                    var fieldValue = this.model.get(field.name);
-                    if (fieldValue)
-                    {
-                        var element = $("<p>" + prefix + fieldValue + "</p>");
-                        element.insertBefore(anchor);
-                    }
-                }, this);
-            }
-        },
-
-        makeDraggable: function ()
-        {
-            _.bindAll(this, "draggableHelper", "onDragStart", "onDragStop");
-            this.$el.data("ItemId", this.model.id);
-            this.$el.data("ItemType", this.model.webAPIModelName);
-            this.$el.data("DropEvent", "itemMoved");
-            this.draggableOptions = { appendTo: 'body', helper: this.draggableHelper, start: this.onDragStart, stop: this.onDragStop };
-            this.$el.draggable(this.draggableOptions);
-        },
-
-        makeDraggableHelperElement: function ()
-        {
-            var $helperEl = $(CalendarWorkoutTemplateDragState(this.serializeData()));
-            var classNames = this.className().split(" ");
-            _.each(classNames, function (className)
-            {
-                $helperEl.addClass(className);
-            });
-            $helperEl.width(this.$el.width());
-            return $helperEl;
-        },
-
-        draggableHelper: function (e)
-        {
-            var $helperEl = this.makeDraggableHelperElement();
-
-            // if they clicked further down on a long workout, set a specific cursor offset for the draggable,
-            // else let jqueryui handle it automagically
-            var offset = this.$el.offset();
-            if ((e.pageY - offset.top) > 50)
-            {
-                this.$el.data("ui-draggable").options.cursorAt = { top: 45, left: e.pageX - offset.left };
-            }
-
-            return $helperEl;
-        },
-
-        onDragStart: function ()
-        {
-            this.$el.addClass("dragging");
-        },
-
-        onDragStop: function ()
-        {
-            this.$el.removeClass("dragging");
         }
-    });
+
+    };
+
+    _.extend(calendarWorkoutViewBase, calendarWorkoutDragAndDrop);
+    _.extend(calendarWorkoutViewBase, calendarWorkoutUserCustomization);
+    return TP.ItemView.extend(calendarWorkoutViewBase);
 });
