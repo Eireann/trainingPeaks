@@ -30,7 +30,7 @@ function ()
         calendarWorkoutLayout:
         {
             "1": { name: "startTime", prefix: "C", conversion: "getTime"},
-            "2": { name: "plannedStartTime", prefix: "P", conversion: "getTime"},
+            "2": { name: "startTimePlanned", prefix: "P", conversion: "getTime"},
             "3": { name: "distance", prefix: "C", conversion: "getDistance", unitHelper: "distance" },
             "4": { name: "distancePlanned", prefix: "P", conversion: "getDistance", unitHelper: "distance" },
             "5": { name: "calories", prefix: "C", conversion:"getNumber", unitHelper: "calories" },
