@@ -4,8 +4,8 @@ define(
     "setImmediate",
     "jqueryOutside",
     "views/userConfirmationView",
-    "hbs!templates/views/calendarWorkoutSettingsHover",
-    "hbs!templates/views/deleteConfirmationView"
+    "hbs!templates/views/calendar/workout/calendarWorkoutSettingsHover",
+    "hbs!templates/views/confirmationViews/deleteConfirmationView"
 ],
 function (TP, setImmediate, jqueryOutside, UserConfirmationView, calendarWorkoutSettingsHover, deleteConfirmationTemplate)
 {

@@ -3,7 +3,7 @@
     "TP",
     "models/commands/saveWorkoutToExerciseLibrary",
     "views/quickView/saveWorkoutToLibrary/saveWorkoutToLibraryAfterSaveMessageView",
-    "hbs!templates/views/saveWorkoutToLibraryConfirmationView"
+    "hbs!templates/views/quickView/saveWorkoutToLibrary/saveWorkoutToLibraryConfirmationView"
 ],
 function(TP, SaveWorkoutToLibraryCommand, AfterSaveView, saveWorkoutToLibraryTemplate)
 {

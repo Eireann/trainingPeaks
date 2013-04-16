@@ -8,8 +8,8 @@ define(
     "utilities/workoutTypeName",
     "utilities/determineCompletedWorkout",
     "utilities/workoutLayoutFormatter",
-    "hbs!templates/views/calendarWorkout",
-    "hbs!templates/views/calendarWorkoutDragState"
+    "hbs!templates/views/calendar/workout/calendarWorkout",
+    "hbs!templates/views/calendar/workout/calendarWorkoutDragState"
 ],
 function (moment, TP, WorkoutQuickView, CalendarWorkoutHoverView, CalendarWorkoutSettingsHover, workoutTypeName, determineCompletedWorkout, workoutLayoutFormatter, CalendarWorkoutTemplate, CalendarWorkoutTemplateDragState)
 {

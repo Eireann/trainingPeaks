@@ -3,7 +3,7 @@ requirejs(
 [
     "jquery",
     "views/userConfirmationView",
-    "hbs!templates/views/deleteConfirmationView"
+    "hbs!templates/views/confirmationViews/deleteConfirmationView"
 ],
 function ($, UserConfirmationView, deleteConfirmationTemplate)
 {

@@ -3,7 +3,7 @@
     "TP",
     "views/userControls/accountMenuView",
     "views/userControls/userSettingsView",
-    "hbs!templates/views/accountMenu"
+    "hbs!templates/views/userControls/accountMenu"
 ],
 function (TP, AccountMenuView, UserSettingsView, accountMenuTemplate)
 {

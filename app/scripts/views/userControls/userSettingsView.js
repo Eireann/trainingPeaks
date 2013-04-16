@@ -2,7 +2,7 @@
 [
     "TP",
     "utilities/printUnitsValue",
-    "hbs!templates/views/userSettings"
+    "hbs!templates/views/userControls/userSettings"
 ],
 function(TP, printUnitsValue, userSettingsTemplate)
 {

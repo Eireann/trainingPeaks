@@ -2,7 +2,7 @@ define(
 [
     "TP",
     "views/applicationHeader/coachAndAffiliateCustomizations",
-    "hbs!templates/views/calendarHeader"
+    "hbs!templates/views/applicationHeader/calendarHeader"
 ],
 function(TP, coachAndAffiliateCustomizations, calendarHeaderTemplate)
 {

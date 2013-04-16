@@ -3,7 +3,7 @@ define(
     "moment",
     "TP",
     "views/calendar/workout/calendarWorkoutView",
-    "hbs!templates/views/calendarWorkoutDragState"
+    "hbs!templates/views/calendar/workout/calendarWorkoutDragState"
 ],
 function(moment, TP, CalendarWorkoutView, CalendarWorkoutTemplateDragState)
 {

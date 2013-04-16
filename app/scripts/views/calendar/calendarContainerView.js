@@ -5,7 +5,7 @@
     "views/calendar/calendarWeekView",
     "views/calendar/moveItems/selectedRangeSettings",
     "views/calendar/moveItems/shiftWizzardView",
-    "hbs!templates/views/calendarContainerView"
+    "hbs!templates/views/calendar/calendarContainerView"
 ],
 function(_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, calendarContainerView)
 {

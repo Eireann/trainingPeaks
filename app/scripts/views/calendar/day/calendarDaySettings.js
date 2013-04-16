@@ -6,8 +6,8 @@ define(
     "jqueryOutside",
     "views/calendar/newItemView",
     "views/userConfirmationView",
-    "hbs!templates/views/calendarDaySettings",
-    "hbs!templates/views/deleteConfirmationView"
+    "hbs!templates/views/calendar/day/calendarDaySettings",
+    "hbs!templates/views/confirmationViews/deleteConfirmationView"
 ],
 function(TP, DateUtils, setImmediate, jqueryOutside, NewItemView, UserConfirmationView, calendarDaySettingsTemplate, deleteConfirmationView)
 {

@@ -3,7 +3,7 @@ define(
     "TP",
     "views/genericMenuView",
     "views/userConfirmationView",
-    "hbs!templates/views/deleteConfirmationView",
+    "hbs!templates/views/confirmationViews/deleteConfirmationView",
     "hbs!templates/views/quickView/workoutComments"
 ],
 function(TP, GenericMenuView, UserConfirmationView, deleteConfirmationTemplate, WorkoutCommentsTemplate)

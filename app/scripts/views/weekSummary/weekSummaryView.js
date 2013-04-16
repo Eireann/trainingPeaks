@@ -4,7 +4,7 @@ define(
     "utilities/determineCompletedWorkout",
     "utilities/workoutTypeEnum",
     "views/weekSummary/weekSummarySettings",
-    "hbs!templates/views/weekSummary"
+    "hbs!templates/views/weekSummary/weekSummary"
 ],
 function(TP, determineCompletedWorkout, workoutTypeEnum, WeekSummarySettings, weekSummaryTemplate)
 {

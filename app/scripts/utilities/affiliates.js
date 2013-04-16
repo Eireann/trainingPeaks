@@ -16,7 +16,12 @@ function(_, ImageData)
 
         isTpAffiliate: function()
         {
-            return this.getAffiliateCode().indexOf("trainingpeaks") >= 0 && this.getLogoUrl().indexOf("training_peaks_banner") >= 0;
+            if (this.getAffiliateCode())
+            {
+                return this.getAffiliateCode().indexOf("trainingpeaks") >= 0 && this.getLogoUrl().indexOf("training_peaks_banner") >= 0;
+            }
+            else
+                return false;
         },
 
         isCoachedAccount: function()

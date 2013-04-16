@@ -5,7 +5,7 @@
     "jqueryui/spinner",
     "TP",
     "models/commands/ShiftWorkouts",
-    "hbs!templates/views/shiftWizzard"
+    "hbs!templates/views/calendar/moveItems/shiftWizzard"
 ],
 function(moment, datepicker, spinner, TP, ShiftWorkoutsCommand, shiftWizzard)
 {

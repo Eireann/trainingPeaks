@@ -4,7 +4,7 @@
     "TP",
     "views/userControls/coachAndAffiliateCustomizations",
     "views/userControls/accountMenuView",
-    "hbs!templates/views/userControls"
+    "hbs!templates/views/userControls/userControls"
 ],
 function(_, TP, coachAndAffiliateCustomizations, AccountMenuView, userControlsTemplate)
 {

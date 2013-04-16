@@ -4,8 +4,8 @@ define(
     "setImmediate",
     "jqueryOutside",
     "views/userConfirmationView",
-    "hbs!templates/views/selectedRangeSettings",
-    "hbs!templates/views/deleteConfirmationView"
+    "hbs!templates/views/calendar/moveItems/selectedRangeSettings",
+    "hbs!templates/views/confirmationViews/deleteConfirmationView"
 ],
 function(TP, setImmediate, jqueryOutside, UserConfirmationView, selectedRangeSettingsTemplate, deleteConfirmationTemplate)
 {

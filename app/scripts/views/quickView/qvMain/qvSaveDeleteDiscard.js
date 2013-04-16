@@ -2,8 +2,8 @@
 [
     "underscore",
     "views/userConfirmationView",
-    "hbs!templates/views/deleteConfirmationView",
-    "hbs!templates/views/discardConfirmationView"
+    "hbs!templates/views/confirmationViews/deleteConfirmationView",
+    "hbs!templates/views/confirmationViews/discardConfirmationView"
 ],
 function(
     _,

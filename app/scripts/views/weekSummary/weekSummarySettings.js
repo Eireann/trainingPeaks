@@ -3,8 +3,8 @@ define(
     "TP",
     "utilities/dates",
     "views/userConfirmationView",
-    "hbs!templates/views/calendarWeekSummarySettings",
-    "hbs!templates/views/deleteConfirmationView"
+    "hbs!templates/views/weekSummary/calendarWeekSummarySettings",
+    "hbs!templates/views/confirmationViews/deleteConfirmationView"
 ],
 function(TP, DateUtils, UserConfirmationView, calendarWeekSummarySettings, deleteConfirmationTemplate)
 {

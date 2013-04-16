@@ -1,7 +1,7 @@
 ﻿define(
 [
     "TP",
-    "hbs!templates/views/saveWorkoutToLibraryAfterSaveMessage"
+    "hbs!templates/views/quickView/saveWorkoutToLibrary/saveWorkoutToLibraryAfterSaveMessage"
 ],
 function (TP, afterSaveMessageTemplate)
 {

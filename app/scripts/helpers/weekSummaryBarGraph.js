@@ -2,7 +2,7 @@ define(
 [
     "handlebars",
     "utilities/calculations",
-    "hbs!templates/views/weekSummaryBarGraph"
+    "hbs!templates/views/weekSummary/weekSummaryBarGraph"
 ],
 function(Handlebars, calculations, weekSummaryBarGraphTemplate)
 {

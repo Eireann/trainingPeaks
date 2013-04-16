@@ -11,7 +11,7 @@ define(
     "views/calendar/day/calendarDaySettings",
     "views/calendar/newItemView",
     "views/calendar/day/calendarDayDragStateView",
-    "hbs!templates/views/calendarDay"
+    "hbs!templates/views/calendar/day/calendarDay"
 ],
 function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySettingsView, NewItemView, CalendarDayDragStateView, CalendarDayTemplate)
 {

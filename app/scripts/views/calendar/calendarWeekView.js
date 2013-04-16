@@ -6,7 +6,7 @@
     "utilities/dates",
     "views/calendar/day/calendarDayView",
     "views/weekSummary/weekSummaryView",
-    "hbs!templates/views/calendarWeek"
+    "hbs!templates/views/calendar/calendarWeek"
 ],
 function(moment, setImmediate, TP, DateUtils, CalendarDayView, WeekSummaryView, CalendarWeek)
 {

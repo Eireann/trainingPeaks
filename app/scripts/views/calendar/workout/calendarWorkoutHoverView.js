@@ -1,7 +1,7 @@
 define(
 [
     "TP",
-    "hbs!templates/views/calendarWorkoutHover"
+    "hbs!templates/views/calendar/workout/calendarWorkoutHover"
 ],
 function(TP, CalendarWorkoutHoverTemplate)
 {

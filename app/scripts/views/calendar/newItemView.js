@@ -5,7 +5,7 @@
     "models/workoutFileData",
     "views/quickView/workoutQuickView",
     "utilities/workoutFileReader",
-    "hbs!templates/views/newItemView"
+    "hbs!templates/views/calendar/newItemView"
 ],
 function (TP, WorkoutModel, WorkoutFileData, WorkoutQuickView, WorkoutFileReader, newItemViewTemplate)
 {
