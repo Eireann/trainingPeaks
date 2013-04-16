@@ -259,24 +259,26 @@
 	    .navigation
         {
             float:left;
-            //padding-top: 12px;
-            margin-top: 4px;
+            margin:7px 0 0 0;
             
             @include headerButtons(0px, 35px, $fontSizeMedium);
 
             .calendarNavigation
             {
                 float:left;
-                padding-right: 8px;
-                padding-top: 3px;
-                @include headerButtons(0px, 35px, 12px);
+	            @include headerButtons(0px, 35px, 12px);
 
                 button
                 {
                     img
                     {
-                        padding-top: 4px;
+                        padding-top: 3px;
                     }
+                }
+
+                #goToLastWeekButton
+                {
+                    border-right-width: 0px;
                 }
                 
             }
@@ -284,30 +286,28 @@
             .today
             {
                 float:left;
-                padding-top: 3px;
                 @include headerButtons(0px, 71px, 12px);
+				margin-left:7px;
             }
 
             .printRefreshButtons
             {
                 float:left;
-                padding-top: 3px;
-                @include headerButtons(20px, 40px, $fontSizeMedium);
-                margin-left: -12px;
+                @include headerButtons(7px, 40px, $fontSizeMedium);
                 button
                 {
                     img
                     {
-                        padding-top: 2px;
+                        padding-top: 1px;
                     }
                 }
                 .refreshButton
                 {
-                    margin-left: 8px;
+                    margin-left: 7px;
                 }
                 .settingsButton
                 {
-                    margin-left: 8px;
+                    margin-left: 7px;
                 }
             }
         }
