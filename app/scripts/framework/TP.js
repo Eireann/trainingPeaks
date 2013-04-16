@@ -21,7 +21,7 @@ function(Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmediate,
     Backbone.Stickit.addHandler(
     {
         selector: "input",
-        events: ["blur"]
+        events: [ "blur", "keyup", "change", "cut", "paste" ]
     });
 
     Backbone.Stickit.addHandler(

@@ -26,7 +26,8 @@ function (
 {
     var WorkoutQuickView =
     {
-        modal: {
+        modal:
+        {
             mask: true,
             shadow: true
         },

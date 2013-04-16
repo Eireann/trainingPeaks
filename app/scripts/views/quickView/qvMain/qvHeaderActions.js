@@ -16,8 +16,8 @@ function (
     QVContextMenuView
 )
 {
-    var qvHeaderActions = {
-
+    var qvHeaderActions =
+    {
         headerEvents:
         {
             "click #breakThrough": "onBreakThroughClicked",
@@ -86,6 +86,7 @@ function (
         onDateClicked: function(e)
         {
             _.bindAll(this, "onDateChanged");
+
             var position = [this.ui.date.offset().left, this.ui.date.offset().top + this.ui.date.height()];
             var settings = { dateFormat: "yy-mm-dd", firstDay: theMarsApp.controllers.calendarController.startOfWeekDayIndex };
             var widget = this.ui.date.datepicker("dialog", this.model.getCalendarDay(), this.onDateChanged, settings, position).datepicker("widget");

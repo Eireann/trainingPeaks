@@ -12,8 +12,8 @@ function(
     discardConfirmationTemplate
 )
 {
-    var qvSaveDeleteDiscard = {
-
+    var qvSaveDeleteDiscard =
+    {
         saveDeleteDiscardEvents:
         {
             "click #delete": "onDeleteWorkout",
@@ -50,9 +50,12 @@ function(
         {
             if (!_.isEmpty(this.model.changed))
             {
-                this.enableDiscardButton();
+                if(!_.has(this.model.changed, "workoutDay"))
+                    this.enableDiscardButton();
 
-                if (_.has(this.model.changed, "description") || _.has(this.model.changed, "title") ||
+                // The model properties we are checking for here are not bound via StickIt, so
+                // they have to be saved manually when the model changes.
+                if (
                     _.has(this.model.changed, "coachComments") || _.has(this.model.changed, "workoutComment") ||
                     _.has(this.model.changed, "newComment") || _.has(this.model.changed, "workoutTypeValueId"))
                 {
@@ -104,7 +107,6 @@ function(
             this.trigger("close");
             this.close();
         }
-
     };
 
     return qvSaveDeleteDiscard;
