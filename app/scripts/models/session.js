@@ -77,7 +77,9 @@ function (_, TP)
         
         onAuthenticationFailure: function()
         {
-            this.authPromise.reject();
+            var originalPromise = this.authPromise;
+            this.authPromise = new $.Deferred();
+            originalPromise.reject();
             this.trigger("api:authorization:failure");
         },
         
