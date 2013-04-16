@@ -18,7 +18,7 @@ function(TP)
             return {
                 athleteId: theMarsApp.user.has("userId") ? theMarsApp.user.get("userId") : 0,
                 exerciseLibraryItemId: 0,
-                workoutDay: null,
+                workoutDateTime: null,
                 workoutData: {}
             };
         },
@@ -34,7 +34,12 @@ function(TP)
             this.workout = options.workout;
             this.exerciseLibraryItem = options.exerciseLibraryItem;
             this.set("exerciseLibraryItemId", this.exerciseLibraryItem.id, { silent: true });
-            this.set("workoutDay", this.workout.get("workoutDay"));
+            var workoutDateTime = this.workout.get("workoutDay");
+            if (this.workout.get("startTimePlanned"))
+            {
+                workoutDateTime += " " + this.workout.get("startTimePlanned");
+            }
+            this.set("workoutDateTime", workoutDateTime);
 
             this.on("sync", this.onSave, this);
         },
@@ -47,6 +52,11 @@ function(TP)
         onSave: function()
         {
             this.workout.set(this.get("workoutData"));
+        },
+
+        parse: function(response)
+        {
+            return { workoutData: response };
         }
 
     }, { workout: null, exerciseLibraryItem: null });

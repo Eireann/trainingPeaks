@@ -95,7 +95,11 @@
           // Setup one-way, form element to model, bindings.
           _.each(config.events || [], function(type) {
             var event = type + namespace;
-            var method = function(event) {
+            var method = function(event)
+            {
+                //TODO: B.F. Hack to pass through which type of event triggered this update request.
+                var eventType = type;
+                config.eventType = eventType;
               var val = config.getVal.call(self, $el, event, config);
               // Don't update the model if false is returned from the `updateModel` configuration.
               if (evaluateBoolean(self, config.updateModel, val, config))

@@ -43,7 +43,9 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, c
         {
             "add": "onAddWeek",
             "reset": "render",
-            "item:move": "onItemMoved"
+            "item:move": "onItemMoved",
+            "shiftwizard:open": "onShiftWizardOpen",
+            "rangeselect": "onRangeSelect"
         },
 
         initialize: function(options)
@@ -62,7 +64,6 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, c
             this.calendarHeaderModel = options.calendarHeaderModel;
             this.throttledCheckForPosition = _.throttle(this.checkCurrentScrollPosition, 100);
             this.startOfWeekDayIndex = options.startOfWeekDayIndex ? options.startOfWeekDayIndex : 0;
-            this.collection.on("shiftwizard:open", this.onShiftWizardOpen, this);
         },
 
         resizeHeight: function()
@@ -176,7 +177,6 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, c
 
             this.checkCurrentScrollPosition();
 
-            this.collection.on("rangeselect", this.onRangeSelect, this);
         },
 
         // onShow happens after render finishes and dom has updated ...
@@ -258,12 +258,9 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, c
         {
             var elements = this.ui.weeksContainer.find(selector);
             if (elements && elements.length)
-            {
-                return this.scrollToElement(elements[0], animationTimeout);
-            } else
-            {
+                this.scrollToElement(elements[0], animationTimeout);
+            else
                 theMarsApp.logger.debug("ScollTo Selector not found: " + selector);
-            }
         },
 
         scrollToElement: function(element, animationTimeout)
@@ -320,16 +317,14 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, c
                 return null;
 
             var uiOffset = this.ui.weeksContainer.offset();
-            var $currentElement = $(document.elementFromPoint(uiOffset.left, uiOffset.top));
+            var $currentElement = $(document.elementFromPoint(uiOffset.left + 10, uiOffset.top + 10));
             var $currentWeek = $currentElement.closest(".week");
             var $lastDayOfWeek = $currentWeek.find(".day:last");
+            
             if ($currentWeek && $lastDayOfWeek && $lastDayOfWeek.data("date"))
-            {
                 return $lastDayOfWeek.data("date");
-            } else
-            {
-                return null;
-            }
+
+            return null;
         },
 
         checkCurrentScrollPosition: function()

@@ -28,6 +28,11 @@ function(moment, TP)
         execute: function()
         {
             return this.save();
+        },
+
+        parse: function(response)
+        {
+            return { resultCount: response };
         }
     });
 

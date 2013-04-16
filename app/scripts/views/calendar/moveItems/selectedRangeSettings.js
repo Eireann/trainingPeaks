@@ -78,8 +78,8 @@ function(TP, setImmediate, jqueryOutside, UserConfirmationView, selectedRangeSet
 
         onShiftClicked: function(e)
         {
-            this.close();
             this.selectedRangeCollection.trigger("range:shiftwizard");
+            this.close();
         },
 
         updatePasteAvailability: function()

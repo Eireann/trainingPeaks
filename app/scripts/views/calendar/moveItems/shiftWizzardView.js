@@ -65,7 +65,12 @@ function(moment, datepicker, spinner, TP, ShiftWorkoutsCommand, shiftWizzard)
 
             "#fromDate": "fromDate",
             "#toDate": "toDate",
-            "#moveToStartDate": "moveToStartDate",
+            "#moveToStartDate":
+            {
+                observe: "moveToStartDate",
+                events: ["change"]
+            },
+
             "#moveByNumberOfDays": "moveByNumberOfDays",
             "#moveByNumberOfWeeks": "moveByNumberOfWeeks"
         },

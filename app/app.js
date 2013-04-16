@@ -52,17 +52,25 @@ function(TP, initializeAjaxAuth, ajaxCaching, initializeAjaxTimezone, Session, U
     // add a session
     theApp.addInitializer(function initSession()
     {
-        var self = this;
 
         this.user = new UserModel();
         this.userSettings = new UserSettingsModel();
-        
         this.session = new Session();
+        this.setupAuthPromise();
+    });
+
+    theApp.setupAuthPromise = function()
+    {
+        var self = this;
         this.session.authPromise.done(function()
         {
             self.user.fetch();
         });
-    });
+        this.session.authPromise.fail(function()
+        {
+            self.setupAuthPromise();
+        });
+    };
 
     // add event tracking
     theApp.addInitializer(function()

@@ -12,8 +12,8 @@ function (
     conversion
 )
 {
-    var workoutQuickViewStickitBindings = {
-
+    var workoutQuickViewStickitBindings =
+    {
         initializeStickit: function()
         {
             this.on("render", this.stickitOnRender, this);
@@ -33,7 +33,8 @@ function (
         {
             "#workoutTitleField":
             {
-                observe: "title"
+                observe: "title",
+                updateModel: "updateTitle"
             },
             "#dayName":
             {
@@ -55,7 +56,8 @@ function (
             "#qv-header-distance":
             {
                 observe: "distance",
-                onGet: "getDistance"
+                onGet: "getDistance",
+                updateModel: ""
             },
             "#qv-header-totaltime":
             {
@@ -114,7 +116,8 @@ function (
             try
             {
                 return moment(value).format("h:mm a");
-            } catch (e)
+            }
+            catch (e)
             {
                 return value;
             }
@@ -130,6 +133,38 @@ function (
             {
                 return value;
             }
+        },
+        
+        updateTitle: function(newViewValue, options)
+        {
+            var self = this;
+
+            var updateModel = function ()
+            {
+                if (self.model.get("title") !== "newViewValue")
+                {
+                    var newModelValue = newViewValue;
+                    self.model.set("title", newModelValue);
+                    var modelUpdatePromise = self.model.save();
+
+                    modelUpdatePromise.done(function ()
+                    {
+                    });
+                }
+            };
+
+            if (this.updateModelTimeout)
+                clearTimeout(this.updateModelTimeout);
+
+            // TODO: This required a hack at line ~100 of the Backbone.StickIt library in order to work
+            // properly. There does not seem to be any other way to catch which type of event triggered
+            // this update request.
+            if (options.eventType === "blur")
+                updateModel();
+            else
+                this.updateModelTimeout = setTimeout(updateModel, 2000);
+
+            return false;
         }
 
     };

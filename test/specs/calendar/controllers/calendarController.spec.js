@@ -1,6 +1,7 @@
 // use requirejs() here, not define(), for jasmine compatibility
 requirejs(
 [
+"TP",
 "moment",
 "jquery",
 "underscore",
@@ -11,7 +12,7 @@ requirejs(
 "views/calendar/calendarContainerView",
 "views/library/libraryView"
 ],
-function(moment, $, _, Backbone, CalendarController, WorkoutModel, WorkoutsCollection, CalendarView, LibraryView)
+function(TP, moment, $, _, Backbone, CalendarController, WorkoutModel, WorkoutsCollection, CalendarView, LibraryView)
 {
 
     describe("Calendar Controller", function()
@@ -427,6 +428,30 @@ function(moment, $, _, Backbone, CalendarController, WorkoutModel, WorkoutsColle
                 controller.showDate(showDate);
                 expect(controller.reset).not.toHaveBeenCalled();
                 expect(controller.appendWeekToCalendar).toHaveBeenCalled();
+            });
+        });
+
+        describe("Event binding", function()
+        {
+            it("Should reset the calendar state on the request:refresh event", function()
+            {
+                var controller = new CalendarController();
+                controller.initializeHeader();
+                controller.views.calendar =
+                {
+                    scrollToDate: function()
+                    {
+                    }
+                };
+                
+                spyOn(controller, "reset");
+                
+                var dateAsMoment = moment("2013-04-16");
+                var currentWeekModel = new TP.Model({ date: dateAsMoment });
+
+                controller.views.header.trigger("request:refresh", currentWeekModel);
+
+                expect(controller.reset).toHaveBeenCalled();
             });
         });
 
