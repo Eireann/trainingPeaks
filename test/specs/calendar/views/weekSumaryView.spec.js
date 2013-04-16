@@ -2,7 +2,7 @@
 requirejs(
 [
     "TP",
-    "views/weekSummaryView",
+    "views/weekSummary/weekSummaryView",
     "utilities/workoutTypeEnum"
 ],
 function (TP, WeekSummaryView, workoutTypeEnum)

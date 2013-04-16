@@ -2,9 +2,9 @@
 [
     "underscore",
     "TP",
-    "views/calendarWeekView",
-    "views/selectedRangeSettings",
-    "views/shiftWizzardView",
+    "views/calendar/calendarWeekView",
+    "views/calendar/moveItems/selectedRangeSettings",
+    "views/calendar/moveItems/shiftWizzardView",
     "hbs!templates/views/calendarContainerView"
 ],
 function(_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, calendarContainerView)

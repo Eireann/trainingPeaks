@@ -1,7 +1,7 @@
 define(
 [
     "TP",
-    "views/calendarHeader/coachAndAffiliateCustomizations",
+    "views/applicationHeader/coachAndAffiliateCustomizations",
     "hbs!templates/views/calendarHeader"
 ],
 function(TP, coachAndAffiliateCustomizations, calendarHeaderTemplate)

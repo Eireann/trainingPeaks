@@ -1,7 +1,7 @@
 define(
 [
     "TP",
-    "views/saveWorkoutToLibraryConfirmationView",
+    "views/quickView/saveWorkoutToLibrary/saveWorkoutToLibraryConfirmationView",
     "hbs!templates/views/quickView/workoutQuickViewMenu"
 ],
 function(TP, SaveToLibraryConfirmationView, WorkoutQuickViewMenuTemplate)

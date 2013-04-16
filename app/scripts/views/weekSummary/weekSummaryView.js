@@ -3,7 +3,7 @@ define(
     "TP",
     "utilities/determineCompletedWorkout",
     "utilities/workoutTypeEnum",
-    "views/weekSummarySettings",
+    "views/weekSummary/weekSummarySettings",
     "hbs!templates/views/weekSummary"
 ],
 function(TP, determineCompletedWorkout, workoutTypeEnum, WeekSummarySettings, weekSummaryTemplate)

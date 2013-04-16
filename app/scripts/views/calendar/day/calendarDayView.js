@@ -7,10 +7,10 @@ define(
     "moment",
 
     "TP",
-    "views/calendarWorkoutView",
-    "views/calendarDaySettings",
-    "views/newItemView",
-    "views/calendarDayDragStateView",
+    "views/calendar/workout/calendarWorkoutView",
+    "views/calendar/day/calendarDaySettings",
+    "views/calendar/newItemView",
+    "views/calendar/day/calendarDayDragStateView",
     "hbs!templates/views/calendarDay"
 ],
 function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySettingsView, NewItemView, CalendarDayDragStateView, CalendarDayTemplate)

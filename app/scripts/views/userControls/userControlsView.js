@@ -3,7 +3,7 @@
     "underscore",
     "TP",
     "views/userControls/coachAndAffiliateCustomizations",
-    "views/accountMenuView",
+    "views/userControls/accountMenuView",
     "hbs!templates/views/userControls"
 ],
 function(_, TP, coachAndAffiliateCustomizations, AccountMenuView, userControlsTemplate)

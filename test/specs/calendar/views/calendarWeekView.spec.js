@@ -2,9 +2,9 @@
 requirejs(
 [
     "TP",
-    "views/calendarWeekView",
-    "views/weekSummaryView",
-    "views/calendarDayView"
+    "views/calendar/calendarWeekView",
+    "views/weekSummary/weekSummaryView",
+    "views/calendar/day/calendarDayView"
 ],
 function(TP, CalendarWeekView, WeekSummaryView, CalendarDayView)
 {

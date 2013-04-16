@@ -5,7 +5,7 @@ requirejs(
     "TP",
     "moment",
     "app",
-    "views/calendarContainerView"
+    "views/calendar/calendarContainerView"
 ],
 function($, TP, moment, theMarsApp, CalendarView)
 {

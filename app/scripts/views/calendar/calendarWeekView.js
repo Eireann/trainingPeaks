@@ -4,8 +4,8 @@
     "setImmediate",
     "TP",
     "utilities/dates",
-    "views/calendarDayView",
-    "views/weekSummaryView",
+    "views/calendar/day/calendarDayView",
+    "views/weekSummary/weekSummaryView",
     "hbs!templates/views/calendarWeek"
 ],
 function(moment, setImmediate, TP, DateUtils, CalendarDayView, WeekSummaryView, CalendarWeek)

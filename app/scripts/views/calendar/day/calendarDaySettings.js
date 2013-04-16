@@ -4,7 +4,7 @@ define(
     "utilities/dates",
     "setImmediate",
     "jqueryOutside",
-    "views/newItemView",
+    "views/calendar/newItemView",
     "views/userConfirmationView",
     "hbs!templates/views/calendarDaySettings",
     "hbs!templates/views/deleteConfirmationView"

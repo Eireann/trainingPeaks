@@ -5,8 +5,8 @@ requirejs(
     "scripts/helpers/printDate",
     "models/calendarDay",
     "models/workoutModel",
-    "views/calendarWorkoutView",
-    "views/calendarDayView"
+    "views/calendar/workout/calendarWorkoutView",
+    "views/calendar/day/calendarDayView"
 ],
 function(moment, printDate, CalendarDayModel, WorkoutModel, CalendarWorkoutView, CalendarDayView)
 {

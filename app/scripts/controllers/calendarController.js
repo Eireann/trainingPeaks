@@ -12,8 +12,8 @@ define(
     "models/library/libraryExercisesCollection",
     "models/workoutModel",
     "models/commands/addWorkoutFromExerciseLibrary",
-    "views/calendarHeader/calendarHeaderView",
-    "views/calendarContainerView",
+    "views/applicationHeader/calendarHeaderView",
+    "views/calendar/calendarContainerView",
     "views/library/libraryView"
 ],
 function(_, moment, setImmediate, TP, CalendarLayout, CalendarCollection, CalendarWeekCollection,
