@@ -15,7 +15,6 @@ function(
 
         initializeStickit: function()
         {
-
             this.bindingsLUT = {};
             
             _.each(this.bindings, function(value, key)
@@ -74,13 +73,16 @@ function(
             },
             "#tssPlannedField":
             {
-                observe: "tssPlanned"
+                observe: "tssPlanned",
+                onGet: "getNumber",
+                onSet: "setInteger",
+                updateModel: "updateModel"
             },
             "#tssCompletedField":
             {
                 observe: "tssActual",
                 onGet: "getNumber",
-                onSet: "setFloat",
+                onSet: "setInteger",
                 updateModel: "updateModel"
             },
             "#normalizedPacePlannedField":
@@ -120,7 +122,10 @@ function(
             },
             "#caloriesPlannedField":
             {
-                observe: "caloriesPlanned"
+                observe: "caloriesPlanned",
+                onGet: "getNumber",
+                onSet: "setInteger",
+                updateModel: "updateModel"
             },
             "#caloriesCompletedField":
             {
@@ -313,7 +318,9 @@ function(
             },
             "#descriptionInput":
             {
-                observe: "description"
+                events: [ "blur", "keyup", "change", "cut", "paste" ],
+                observe: "description",
+                updateModel: "updateModel"
             },
             "#postActivityCommentsInput": 
             {
@@ -402,44 +409,47 @@ function(
 
         updateModel: function(newViewValue, options)
         {
+            var self = this;
+
+            var updateModel = function()
+            {
+                if (self.checkIfModelUpdateRequired(newViewValue, options))
+                    self.performModelUpdate(newViewValue, options);
+            };
+            
+            if (this.updateModelTimeout)
+                clearTimeout(this.updateModelTimeout);
+
+            // TODO: This required a hack at line ~100 of the Backbone.StickIt library in order to work
+            // properly. There does not seem to be any other way to catch which type of event triggered
+            // this update request.
+            if (options.eventType === "blur")
+                updateModel();
+            else
+                this.updateModelTimeout = setTimeout(updateModel, 2000);
+
+            return false;
+        },
+        
+        checkIfModelUpdateRequired: function(newViewValue, options)
+        {
             var currentModelValue = this.model.get(options.observe);
-            var currentViewValue = this[options.onGet](currentModelValue);
+            var currentViewValue = options.observe === "description" ? currentModelValue : this[options.onGet](currentModelValue);
 
             // DO coerce type in this situation, since we only care about truthy/falsy'ness.
             /*jslint eqeq: true*/
             var doUpdateModel = (currentViewValue == newViewValue) ? false : true;
             /*jsline eqeq: false*/
 
-            if (doUpdateModel)
-            {
-                var self = this;
-                var $input = this.$(this.bindingsLUT[options.observe]);
-                var $overlay = $("<div>updating...</div>").width($input.width()).height($input.height()).offset($input.offset());
-                $("body").append($overlay);
-                
-                //Add progress overlay
-                
-                
-                // Do the save!
-                var newModelValue = this[options.onSet](newViewValue);
-                this.model.set(options.observe, newModelValue);
-                var modelUpdatePromise = this.model.save();
-
-                modelUpdatePromise.done(function()
-                {
-                    //Add success overlay
-                    $overlay.html("success!");
-                    
-                    setTimeout(function()
-                    {
-                        //Remove success overlay
-                        $overlay.remove();
-                        
-                    }, 5000);
-                });
-            }
-
-            return false;
+            return doUpdateModel;
+        },
+        
+        performModelUpdate: function(newViewValue, options)
+        {
+            // Do the save!
+            var newModelValue = options.observe === "description" ? newViewValue : this[options.onSet](newViewValue);
+            this.model.set(options.observe, newModelValue);
+            this.model.save();
         }
 
     };
