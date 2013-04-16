@@ -7,7 +7,7 @@ define(
     "moment",
 
     "TP",
-    "views/calendarWorkoutView",
+    "views/calendarWorkout/calendarWorkoutView",
     "views/calendarDaySettings",
     "views/newItemView",
     "views/calendarDayDragStateView",

@@ -2,7 +2,7 @@ define(
 [
     "moment",
     "TP",
-    "views/calendarWorkoutDragStateView",
+    "views/calendarWorkout/calendarWorkoutDragStateView",
     "hbs!templates/views/calendarDayDragState"
 ],
 function(moment, TP, CalendarWorkoutDragStateView, CalendarDayTemplate)
