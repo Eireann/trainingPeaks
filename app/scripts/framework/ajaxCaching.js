@@ -189,7 +189,7 @@ function(_, Backbone, setImmediate)
                 setImmediate(function()
                 {
                     options.ajaxCachingDeferred.resolveWith(options, [cachedData, status, xhr]);
-                    theMarsApp.logger.debug("AjaxCaching Loaded from cache: " + options.url);
+                    //theMarsApp.logger.debug("AjaxCaching Loaded from cache: " + options.url);
                 });
             }
         },

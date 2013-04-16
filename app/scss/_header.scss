@@ -303,10 +303,14 @@
 				margin-left:7px;
             }
 
+			.today button {
+				color:$TPGrey8;
+			}
+
             .printRefreshButtons
             {
                 float:left;
-                @include headerButtons(7px, 40px, $fontSizeMedium);
+                @include headerButtons(7px, 38px, $fontSizeMedium);
                 button
                 {
                     img
@@ -321,6 +325,7 @@
                 .settingsButton
                 {
                     margin-left: 7px;
+					width:31px;
                 }
             }
         }

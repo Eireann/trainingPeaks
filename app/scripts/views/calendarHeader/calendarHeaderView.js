@@ -20,7 +20,8 @@ function(TP, coachAndAffiliateCustomizations, calendarHeaderTemplate)
         {
             "click #goToTodayButton": "onGoToTodayButtonClicked",
             "click #goToNextWeekButton": "onGoToNextWeekButtonClicked",
-            "click #goToLastWeekButton": "onGoToLastWeekButtonClicked"
+            "click #goToLastWeekButton": "onGoToLastWeekButtonClicked",
+            "click button.refreshButton": "onRefreshButtonClicked"
         },
 
         initialize: function()
@@ -44,8 +45,12 @@ function(TP, coachAndAffiliateCustomizations, calendarHeaderTemplate)
         onGoToLastWeekButtonClicked: function()
         {
             this.trigger("request:lastweek", this.model);
+        },
+        
+        onRefreshButtonClicked: function()
+        {
+            this.trigger("request:refresh", this.model);
         }
-
     };
 
     _.extend(calendarHeaderViewBase, coachAndAffiliateCustomizations);

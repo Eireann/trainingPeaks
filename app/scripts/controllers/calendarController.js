@@ -92,7 +92,7 @@ function(_, moment, setImmediate, TP, CalendarLayout, CalendarCollection, Calend
                     if (!calendarController.wasScrolled)
                     {
                         calendarController.wasScrolled = true;
-                        setImmediate(function() { calendarController.showDate(moment(dateToScrollTo), 500); });
+                        setTimeout(function() { calendarController.showDate(moment(dateToScrollTo), 500); }, 100);
                     }
                 };
                 if (ajaxCachingDeferreds.length > 0)
@@ -201,10 +201,10 @@ function(_, moment, setImmediate, TP, CalendarLayout, CalendarCollection, Calend
                     return self.scrollToDateAfterLoad(deferreds, scrollToDate);
                 };
                 this.loadCalendarData(onLoad);
-            } else
-            {
-                this.loadCalendarData();
             }
+            else
+                this.loadCalendarData();
+
             this.views.calendar.fadeIn(800);
         },
 
@@ -258,7 +258,8 @@ function(_, moment, setImmediate, TP, CalendarLayout, CalendarCollection, Calend
                 var newStartDate = this.createStartDay(dateAsMoment).subtract("weeks", 4);
                 var newEndDate = this.createEndDay(dateAsMoment).add("weeks", 6);
                 this.reset(newStartDate, newEndDate, dateAsMoment);
-            } else if(dateAsMoment < this.startDate)
+            }
+            else if(dateAsMoment < this.startDate)
             {
                 var weeksToPrepend = this.startDate.diff(dateAsMoment, "weeks") + 2;
                 for(i = 0;i<weeksToPrepend;i++)
@@ -266,7 +267,8 @@ function(_, moment, setImmediate, TP, CalendarLayout, CalendarCollection, Calend
                     this.prependWeekToCalendar();
                 }
                 calendarView.scrollToDate(dateAsMoment);
-            } else if(dateAsMoment > this.endDate)
+            }
+            else if (dateAsMoment > this.endDate)
             {
                 var weeksToAppend = dateAsMoment.diff(this.endDate, "weeks") + 2;
                 for (i = 0; i < weeksToAppend; i++)
@@ -295,6 +297,7 @@ function(_, moment, setImmediate, TP, CalendarLayout, CalendarCollection, Calend
             this.views.header.on("request:today", this.onRequestToday, this);
             this.views.header.on("request:nextweek", this.onRequestNextWeek, this);
             this.views.header.on("request:lastweek", this.onRequestLastWeek, this);
+            this.views.header.on("request:refresh", this.onRequestRefresh, this);
         },
 
         initializeCalendar: function()
@@ -328,6 +331,32 @@ function(_, moment, setImmediate, TP, CalendarLayout, CalendarCollection, Calend
         {
             // header has end of week, our showDate wants start of week ...
             this.showDate(moment(currentWeekModel.get("date")).add("days", 1), 200);
+        },
+
+        onRequestRefresh: function(currentWeekModel)
+        {
+            var dateAsMoment = moment(currentWeekModel.get("date"));
+
+            if (dateAsMoment.day() !== this.startOfWeekDayIndex)
+            {
+                var newDateAsMoment = this.createStartDay(dateAsMoment);
+                if (newDateAsMoment.format(this.dateFormat) > dateAsMoment.format(this.dateFormat))
+                {
+                    newDateAsMoment.subtract("weeks", 1);
+                }
+                dateAsMoment = newDateAsMoment;
+            }
+            
+            var newStartDate = this.createStartDay(dateAsMoment).subtract("weeks", 4);
+            var newEndDate = this.createEndDay(dateAsMoment).add("weeks", 6);
+
+            this.reset(newStartDate, newEndDate, dateAsMoment);
+
+            var calendarView = this.views.calendar;
+            setImmediate(function ()
+            {
+                calendarView.scrollToDate(dateAsMoment);
+            });
         },
 
         bindToCalendarViewEvents: function(calendarView)
