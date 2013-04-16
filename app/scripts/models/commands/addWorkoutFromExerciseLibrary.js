@@ -18,7 +18,7 @@ function(TP)
             return {
                 athleteId: theMarsApp.user.has("userId") ? theMarsApp.user.get("userId") : 0,
                 exerciseLibraryItemId: 0,
-                workoutDay: null,
+                workoutDateTime: null,
                 workoutData: {}
             };
         },
@@ -34,7 +34,7 @@ function(TP)
             this.workout = options.workout;
             this.exerciseLibraryItem = options.exerciseLibraryItem;
             this.set("exerciseLibraryItemId", this.exerciseLibraryItem.id, { silent: true });
-            this.set("workoutDay", this.workout.get("workoutDay"));
+            this.set("workoutDateTime", this.workout.get("workoutDay") + " " + this.workout.get("plannedStartTime"));
 
             this.on("sync", this.onSave, this);
         },

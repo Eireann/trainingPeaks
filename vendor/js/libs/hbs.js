@@ -68,7 +68,8 @@ define([
             xhr.onreadystatechange = function (evt) {
                 //Do not explicitly handle errors, those should be
                 //visible via console output in the browser.
-                if (xhr.readyState === 4) {
+                if (xhr.readyState === 4)
+                {
                     callback(xhr.responseText);
                 }
             };
