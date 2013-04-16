@@ -2,7 +2,7 @@
 [
     "TP",
     "views/accountMenuView",
-    "views/userSettingsView",
+    "views/userSettings/userSettingsView",
     "hbs!templates/views/accountMenu"
 ],
 function (TP, AccountMenuView, UserSettingsView, accountMenuTemplate)

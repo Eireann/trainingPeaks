@@ -79,23 +79,6 @@ function (TP, summaryViewStickitBindings)
 
         describe("updateModel method which triggers a conditional model update when a StickIt bindings is fired", function()
         {
-            it("clears an existing un-triggered update timeout", function()
-            {
-                // Creating global variable on purpose in order to be able to spy on it 
-                // and fake-inject it into the updateModel method.
-                clearTimeout = jasmine.createSpy();
-
-                var context =
-                {
-                    
-                };
-                
-                summaryViewStickitBindings.updateModel.call(context, 100, {});
-                expect(window.clearTimeout).not.toHaveBeenCalled();
-
-                summaryViewStickitBindings.updateModel.call(context, 100, {});
-                expect(window.clearTimeout).toHaveBeenCalled();
-            });
         });
 
         describe("checkIfModelUpdateRequired method which returns true/false if model needs to be updated", function()

@@ -34,17 +34,17 @@ function(TP, printUnitsValue, userSettingsTemplate)
             "#firstNameSettingField":
             {
                 observe: "firstName",
-                eventsOverride: ["blur"]
+                updateModel: "updateModel"
             },
             "#lastNameSettingField":
             {
                 observe: "lastName",
-                eventsOverride: [ "blur" ]
+                updateModel: "updateModel"
             },
             "#userNameSettingField":
             {
                 observe: "userName",
-                eventsOverride: [ "blur" ]
+                updateModel: "updateModel"
             },
             "#athleteTypeSettingField":
             {
@@ -62,32 +62,32 @@ function(TP, printUnitsValue, userSettingsTemplate)
             "#birthdaySettingField":
             {
                 observe: "birthday",
-                eventsOverride: [ "blur" ]
+                updateModel: "updateModel"
             },
             "#genderSettingField":
             {
                 observe: "gender",
-                eventsOverride: [ "blur" ]
+                updateModel: "updateModel"
             },
             "#emailSettingField":
             {
                 observe: "email",
-                eventsOverride: [ "blur" ]
+                updateModel: "updateModel"
             },
             "#addressSettingField":
             {
                 observe: "address",
-                eventsOverride: ["blur"]
+                updateModel: "updateModel"
             },
             "#address2SettingField":
             {
                 observe: "address2",
-                eventsOverride: [ "blur" ]
+                updateModel: "updateModel"
             },
             "#citySettingField":
             {
                 observe: "city",
-                eventsOverride: [ "blur" ]
+                updateModel: "updateModel"
             },
             "#stateSettingField":
             {
@@ -105,7 +105,7 @@ function(TP, printUnitsValue, userSettingsTemplate)
             "#zipCodeSettingField":
             {
                 observe: "zipCode",
-                eventsOverride: [ "blur" ]
+                updateModel: "updateModel"
             },
             "#countrySettingField":
             {
@@ -123,16 +123,17 @@ function(TP, printUnitsValue, userSettingsTemplate)
             "#phoneSettingField":
             {
                 observe: "phone",
-                eventsOverride: [ "blur" ]
+                updateModel: "updateModel"
             },
             "#cellPhoneSettingField":
             {
                 observe: "cellPhone",
-                eventsOverride: [ "blur" ]
+                updateModel: "updateModel"
             },
             "input[name=unitsSettingField]":
             {
-                observe: "units"
+                observe: "units",
+                updateModel: "updateModel"
             },
             "input[name=dateFormatSettingField]":
             {
@@ -189,6 +190,51 @@ function(TP, printUnitsValue, userSettingsTemplate)
         onResetSettings: function()
         {
             this.model.revert();
+        },
+        
+        updateModel: function(newViewValue, options)
+        {
+            var self = this;
+
+            var updateModel = function ()
+            {
+                if (self.checkIfModelUpdateRequired(newViewValue, options))
+                    self.performModelUpdate(newViewValue, options);
+            };
+
+            if (this.updateModelTimeout)
+                clearTimeout(this.updateModelTimeout);
+
+            // TODO: This required a hack at line ~100 of the Backbone.StickIt library in order to work
+            // properly. There does not seem to be any other way to catch which type of event triggered
+            // this update request.
+            if (options.eventType === "blur")
+                updateModel();
+            else
+                this.updateModelTimeout = setTimeout(updateModel, 2000);
+
+            return false;
+        },
+
+        checkIfModelUpdateRequired: function (newViewValue, options)
+        {
+            var currentModelValue = this.model.get(options.observe);
+            var currentViewValue = currentModelValue;
+
+            // DO coerce type in this situation, since we only care about truthy/falsy'ness.
+            /*jslint eqeq: true*/
+            var doUpdateModel = (currentViewValue == newViewValue) ? false : true;
+            /*jsline eqeq: false*/
+
+            return doUpdateModel;
+        },
+
+        performModelUpdate: function (newViewValue, options)
+        {
+            // Do the save!
+            var newModelValue = newViewValue;
+            this.model.set(options.observe, newModelValue);
+            this.model.save();
         }
     });
 });
