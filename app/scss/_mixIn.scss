@@ -5,7 +5,7 @@
 	button
 	{
 		width: $width;
-		height: 20px;
+		padding:2px 0;
 		font-family: $navigationFontFamilyLight;
 		font-size: $fontSize;
 		margin-left: $marginLeft;
@@ -30,6 +30,7 @@
 	button
 	{
 		float: left;
+		height:21px;
 	}
 }
 
@@ -63,7 +64,6 @@
 	select
 	{
 		margin-top: 3px;
-		height: 20px;
 		width: $width;
 		font-size: $fontSizeMedium;
 		font-family: $navigationFontFamilyRegular;

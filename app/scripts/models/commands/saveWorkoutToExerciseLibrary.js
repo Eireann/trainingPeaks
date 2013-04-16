@@ -26,6 +26,11 @@ function(TP)
         execute: function()
         {
             return this.save();
+        },
+
+        parse: function(response)
+        {
+            return { exerciseLibraryItemId: response };
         }
     });
 

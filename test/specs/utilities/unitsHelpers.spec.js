@@ -66,12 +66,12 @@ function(printUnitLabel, conversion)
 
             it("should print the unit label for tss", function()
             {
-                expect(printUnitLabel("tss")).toBe("");
+                expect(printUnitLabel("tss")).toBe("TSS");
             });
 
             it("should print the unit label for intensity factory", function()
             {
-                expect(printUnitLabel("if")).toBe("");
+                expect(printUnitLabel("if")).toBe("IF");
             });
 
             it("should print the unit label for energy", function()

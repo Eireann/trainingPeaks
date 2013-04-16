@@ -43,7 +43,9 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, c
         {
             "add": "onAddWeek",
             "reset": "render",
-            "item:move": "onItemMoved"
+            "item:move": "onItemMoved",
+            "shiftwizard:open": "onShiftWizardOpen",
+            "rangeselect": "onRangeSelect"
         },
 
         initialize: function(options)
@@ -62,7 +64,6 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, c
             this.calendarHeaderModel = options.calendarHeaderModel;
             this.throttledCheckForPosition = _.throttle(this.checkCurrentScrollPosition, 100);
             this.startOfWeekDayIndex = options.startOfWeekDayIndex ? options.startOfWeekDayIndex : 0;
-            this.collection.on("shiftwizard:open", this.onShiftWizardOpen, this);
         },
 
         resizeHeight: function()
@@ -176,7 +177,6 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, c
 
             this.checkCurrentScrollPosition();
 
-            this.collection.on("rangeselect", this.onRangeSelect, this);
         },
 
         // onShow happens after render finishes and dom has updated ...
