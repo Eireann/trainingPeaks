@@ -9,6 +9,12 @@
 	    height: 35px;
     	background-color: $black;
 
+
+        .upgradeButton
+        {
+            border: none;
+        }
+
         &.coachBanner
         {
             height: 61px;
@@ -24,6 +30,12 @@
             .rightNavigation
             {
                 margin-top: 13px;
+
+                .upgradeButton
+                {
+                    border-width: 1px;
+                    border-style: solid;
+                }
             }
 
         }
@@ -60,7 +72,7 @@
 
                 .upgradeButton
                 {
-                    border: 1px solid rgba(192, 192, 192, 0.8);
+                    border-color: rgba(192, 192, 192, 0.8);
                 }
             }
         }
@@ -97,7 +109,7 @@
 
                 .upgradeButton
                 {
-                    border: 1px solid rgba(192, 192, 192, 0.8);
+                    border-color: rgba(192, 192, 192, 0.8);
                 }
             }
         }       
@@ -125,7 +137,7 @@
         {
             float: right;
             padding-right: 12px;
-            margin-right: 35px;
+            margin-right: 30px;
 
             .headerPipe
             {
