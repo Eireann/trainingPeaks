@@ -451,7 +451,6 @@ function(
             this.model.set(options.observe, newModelValue);
             this.model.save();
         }
-
     };
 
     return summaryViewStickitBindings;
