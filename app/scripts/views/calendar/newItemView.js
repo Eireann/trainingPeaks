@@ -11,8 +11,8 @@ function (TP, WorkoutModel, WorkoutFileData, WorkoutQuickView, WorkoutFileReader
 {
     return TP.ItemView.extend(
     {
-
-        modal: {
+        modal:
+        {
             mask: true,
             shadow: true
         },
@@ -44,28 +44,28 @@ function (TP, WorkoutModel, WorkoutFileData, WorkoutQuickView, WorkoutFileReader
 
         onNewWorkoutClicked: function (e)
         {
+            // Handle file uploads as a specific case & return
             if (e.currentTarget.name === "uploadDeviceFile")
             {
                 this.ui.fileinput.click();
+                return;
             }
-            else
+
+            // Handle a specific workout/metric/meal type creation
+            var workoutTypeId = $(e.currentTarget).data("workoutid");
+            this.newWorkout = new WorkoutModel(
             {
-                var workoutTypeId = $(e.currentTarget).data("workoutid");
-                this.newWorkout = new WorkoutModel(
-                {
-                    personId: theMarsApp.user.get("userId"),
-                    workoutDay: moment(this.model.get("date")).format("YYYY-MM-DDThh:mm:ss"),
-                    startTime: moment(this.model.get("date")).add("hours", 6).format("YYYY-MM-DDThh:mm:ss"),
-                    title: "",
-                    workoutTypeValueId: workoutTypeId
-                });
-                var quickView = new WorkoutQuickView({ model: this.newWorkout });
-                quickView.on("discard", this.onNewWorkoutDiscarded, this);
-                quickView.on("close", this.onQuickviewClosed, this);
-                quickView.on("saved", this.onQuickviewClosed, this);
-                this.close();
-                quickView.render();
-            }
+                personId: theMarsApp.user.get("userId"),
+                workoutDay: moment(this.model.get("date")).format("YYYY-MM-DDThh:mm:ss"),
+                startTime: moment(this.model.get("date")).add("hours", 6).format("YYYY-MM-DDThh:mm:ss"),
+                title: "",
+                workoutTypeValueId: workoutTypeId
+            });
+
+            var quickView = new WorkoutQuickView({ model: this.newWorkout, isNewWorkout: true, dayModel: this.model });
+            quickView.render();
+
+            this.close();   
         },
 
         onFileSelected: function ()
@@ -93,26 +93,16 @@ function (TP, WorkoutModel, WorkoutFileData, WorkoutQuickView, WorkoutFileReader
             var workoutModelJson = this.uploadedFileDataModel.get("workoutModel");
             var newModel = new WorkoutModel(workoutModelJson);
             this.model.trigger("workout:added", newModel);
+
             var quickView = new WorkoutQuickView({ model: newModel });
-            this.close();
             quickView.render();
+
+            this.close();
         },
 
         onUploadFail: function ()
         {
             this.$el.removeClass("waiting");
-        },
-
-        onNewWorkoutDiscarded: function ()
-        {
-            delete this.newWorkout;
-        },
-
-        onQuickviewClosed: function ()
-        {
-            // The QuickView already saved the model to the server, let's update our local collections to reflect the change.
-            this.newWorkout.save();
-            this.model.trigger("workout:added", this.newWorkout);
         },
 
         onCloseClicked: function ()

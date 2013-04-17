@@ -324,11 +324,13 @@ function(
             },
             "#postActivityCommentsInput": 
             {
-                observe: "newComment"
+                observe: "newComment",
+                onSet: "setTextField"
             },
             "#preActivityCommentsInput": 
             {
-                observe: "coachComments"
+                observe: "coachComments",
+                onSet: "setTextField"
             }
         },
 
@@ -407,6 +409,11 @@ function(
             return conversion.convertToModelUnits(parseInt(value, 10), "temperature");
         },
 
+        setTextField: function(value, options)
+        {
+            return value === "" ? null : value;
+        },
+
         updateModel: function(newViewValue, options)
         {
             var self = this;
@@ -433,12 +440,15 @@ function(
         
         checkIfModelUpdateRequired: function(newViewValue, options)
         {
+            var doUpdateModel;
             var currentModelValue = this.model.get(options.observe);
-            var currentViewValue = options.observe === "description" ? currentModelValue : this[options.onGet](currentModelValue);
 
             // DO coerce type in this situation, since we only care about truthy/falsy'ness.
             /*jslint eqeq: true*/
-            var doUpdateModel = (currentViewValue == newViewValue) ? false : true;
+            if (options.observe === "description")
+                doUpdateModel = (newViewValue === "" && currentModelValue === null ? false : (newViewValue == currentModelValue));    
+            else
+                doUpdateModel = (this[options.onGet](currentModelValue) == newViewValue) ? false : true;
             /*jsline eqeq: false*/
 
             return doUpdateModel;
