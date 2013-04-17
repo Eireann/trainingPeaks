@@ -97,8 +97,8 @@
                     }
                 }
 				.printButton {
-					background-image: url(../../assets/images/calendarImages/icon-print@2x.png);
-					background-image: url(../../assets/images/calendarImages/icon-print@2x.png);
+					background-image: url(../../assets/images/calendarImages/icon-print@2x.png), -moz-linear-gradient(top,  #ffffff,  #e0dddd);
+					background-image: url(../../assets/images/calendarImages/icon-print@2x.png), -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#e0dddd));
 					background-position: 0 0;
 					background-size: 38px 20px;
 					}
