@@ -334,7 +334,7 @@ function(
             }
         },
 
-        getDistance: function (value, options)
+        getDistance: function(value, options)
         {
             return conversion.convertToViewUnits(value, "distance");
         },

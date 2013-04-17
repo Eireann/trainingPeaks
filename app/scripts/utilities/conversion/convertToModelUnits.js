@@ -28,6 +28,11 @@ function(_, modelToViewConversionFactors)
     
     var isNumeric = function(value)
     {
+        if (value === null)
+        {
+            return false;
+        }
+
         if (_.isString(value) && !value.trim())
         {
             return false;

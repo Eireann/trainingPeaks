@@ -201,6 +201,9 @@ function(printUnitLabel, conversion)
 
             it("should return null for non numeric values and empty strings", function()
             {
+                expect(conversion.convertToModelUnits("", "elevation")).toBe(null);
+                expect(conversion.convertToModelUnits("", "temperature")).toBe(null);
+                expect(conversion.convertToModelUnits("", "pace")).toBe(null);
                 expect(conversion.convertToModelUnits("", "distance")).toBe(null);
                 expect(conversion.convertToModelUnits("some string", "distance")).toBe(null);
             });

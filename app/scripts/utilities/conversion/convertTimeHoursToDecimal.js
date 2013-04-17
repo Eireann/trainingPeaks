@@ -4,6 +4,11 @@ function()
 {
     var convertTimeHoursToDecimal = function(timeString)
     {
+        if (!timeString.trim())
+        {
+            return null;
+        }
+
         var parts = timeString.split(":");
         while (parts.length < 3)
         {

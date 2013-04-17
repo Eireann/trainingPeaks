@@ -6,6 +6,18 @@ function(_)
 {
     var printTimeFromDecimalHours = function(hours, showSeconds, defaultValueIfEmpty)
     {
+
+        var defaultTime = (showSeconds === true) ? "0:00:00" : "00:00";
+        if (_.isNumber(defaultValueIfEmpty) || _.isString(defaultValueIfEmpty))
+        {
+            defaultTime = defaultValueIfEmpty;
+        }
+
+        if (_.isString(hours))
+        {
+            hours = Number(hours);
+        }
+
         if (typeof showSeconds !== 'boolean')
         {
             showSeconds = true;
@@ -13,12 +25,8 @@ function(_)
 
         if (!hours || hours <= 0.00001)
         {
-            if (_.isNumber(defaultValueIfEmpty) || _.isString(defaultValueIfEmpty))
-            {
-                return defaultValueIfEmpty;
-            }
-            var displayTime = (showSeconds === true) ? "0:00:00" : "00:00";
-            return displayTime;
+
+            return defaultTime;
         }
 
         var fullHours = Math.floor(hours);
