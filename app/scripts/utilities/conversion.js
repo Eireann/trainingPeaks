@@ -14,7 +14,7 @@
         
         getDistance: function (value, options)
         {
-            return +convertToViewUnits(value, "distance", null, null, 2);
+            return convertToViewUnits(value, "distance");
         },
 
         setDistance: function (value, options)
@@ -44,7 +44,7 @@
 
         getSpeed: function (value, options)
         {
-            return +convertToViewUnits(value, "speed");
+            return convertToViewUnits(value, "speed");
         },
 
         setSpeed: function (value, options)
@@ -54,7 +54,7 @@
 
         getElevation: function (value, options)
         {
-            return +convertToViewUnits(value, "elevation");
+            return convertToViewUnits(value, "elevation");
         },
 
         setElevation: function (value, options)
@@ -79,7 +79,7 @@
 
         getTemperature: function (value, options)
         {
-            return +convertToViewUnits(value, "temperature");
+            return convertToViewUnits(value, "temperature");
         },
 
         setTemperature: function (value, options)

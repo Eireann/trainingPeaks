@@ -334,7 +334,7 @@ function(
 
         getDistance: function (value, options)
         {
-            return +conversion.convertToViewUnits(value, "distance", null, null, 2);
+            return conversion.convertToViewUnits(value, "distance");
         },
 
         setDistance: function(value, options)
@@ -344,7 +344,7 @@ function(
 
         getTime: function (value, options)
         {
-            return printTimeFromDecimalHours(value, true);
+            return printTimeFromDecimalHours(value, true, "");
         },
 
         setTime: function (value, options)
@@ -364,7 +364,7 @@ function(
 
         getSpeed: function (value, options)
         {
-            return +conversion.convertToViewUnits(value, "speed");
+            return conversion.convertToViewUnits(value, "speed");
         },
 
         setSpeed: function (value, options)
@@ -374,7 +374,7 @@ function(
 
         getElevation: function (value, options)
         {
-            return +conversion.convertToViewUnits(value, "elevation");
+            return conversion.convertToViewUnits(value, "elevation");
         },
 
         setElevation: function (value, options)
@@ -384,7 +384,7 @@ function(
 
         getNumber: function(value, options)
         {
-            return ((value === null || value === 0) ? "" : +value);
+            return ((value === null || value === 0 || value === "0") ? "" : +value);
         },
         
         setInteger: function(value, options)
@@ -396,10 +396,10 @@ function(
         {
             return (value === "" ? null : parseFloat(value));
         },
-        
+
         getTemperature: function(value, options)
         {
-            return +conversion.convertToViewUnits(value, "temperature");
+            return conversion.convertToViewUnits(value, "temperature");
         },
         
         setTemperature: function(value, options)

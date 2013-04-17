@@ -98,7 +98,7 @@ function (
 
         getDistance: function(value, options)
         {
-            return conversion.convertToViewUnits(value, "distance", null, 0);
+            return conversion.convertToViewUnits(value, "distance", 0);
         },
 
         getDayName: function(value, options)

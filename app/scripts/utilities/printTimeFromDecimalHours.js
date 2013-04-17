@@ -4,7 +4,7 @@ define(
 ],
 function(_)
 {
-    var printTimeFromDecimalHours = function(hours, showSeconds, zeroFormatValue)
+    var printTimeFromDecimalHours = function(hours, showSeconds, defaultValueIfEmpty)
     {
         if (typeof showSeconds !== 'boolean')
         {
@@ -13,9 +13,9 @@ function(_)
 
         if (!hours || hours <= 0.00001)
         {
-            if (_.isNumber(zeroFormatValue) || _.isString(zeroFormatValue))
+            if (_.isNumber(defaultValueIfEmpty) || _.isString(defaultValueIfEmpty))
             {
-                return zeroFormatValue;
+                return defaultValueIfEmpty;
             }
             var displayTime = (showSeconds === true) ? "0:00:00" : "00:00";
             return displayTime;

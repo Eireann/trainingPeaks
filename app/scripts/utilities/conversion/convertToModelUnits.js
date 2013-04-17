@@ -1,8 +1,9 @@
 define(
 [
+    "underscore",
     "utilities/modelToViewConversionFactors"
 ],
-function(modelToViewConversionFactors)
+function(_, modelToViewConversionFactors)
 {
     var convertToSpeedFromPace = function (pace, unitSystem)
     {
@@ -25,9 +26,35 @@ function(modelToViewConversionFactors)
         return speed;
     };
     
+    var isNumeric = function(value)
+    {
+        if (_.isString(value) && !value.trim())
+        {
+            return false;
+        }
+
+        var asNumber = Number(value);
+        return _.isNumber(asNumber) && !_.isNaN(asNumber);
+    };
+
+    var isTimeString = function(value)
+    {
+        var stringValue = "" + value;
+        var valueWithoutColons = value.replace(/:/g, "");
+        return isNumeric(valueWithoutColons);
+    };
+
     var convertToModelUnits = function (value, fieldType, workoutType)
     {
         var currentUnits = theMarsApp.user.get("units");
+
+        if (fieldType === "pace" && !isTimeString(value))
+        {
+            return null;
+        } else if (fieldType !== "pace" && !isNumeric(value))
+        {
+            return null;
+        }
 
         switch (fieldType)
         {

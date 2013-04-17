@@ -1,13 +1,18 @@
 define(
 [
+    "underscore",
     "utilities/modelToViewConversionFactors"
 ],
-function(modelToViewConversionFactors)
+function(_, modelToViewConversionFactors)
 {
     var convertToPaceFromSpeed = function(speed, unitSystem)
     {
+
         if (speed <= 0.01)
             return "99:99";
+
+        if (!unitSystem)
+            unitSystem = theMarsApp.user.get("units");
 
         var pace;
         var conversion = modelToViewConversionFactors.speed[unitSystem];
@@ -23,6 +28,16 @@ function(modelToViewConversionFactors)
 
     var roundViewUnits = function(value)
     {
+        if (!isNumeric(value))
+        {
+            return null;
+        }
+
+        if (!_.isNumber(value))
+        {
+            value = Number(value);
+        }
+
         if (value >= 100)
         {
             return Math.round(value);
@@ -35,27 +50,61 @@ function(modelToViewConversionFactors)
         }
     };
 
-    var convertToViewUnits = function(value, fieldType, workoutType, defaultValue)
+    var isNumeric = function(value)
     {
-        if (!_.isNumber(value) || (defaultValue && !value))
-            return typeof defaultValue !== 'undefined' ? defaultValue : ""; 
-        
-        var currentUnits = theMarsApp.user.get("units");
-        
-        switch(fieldType)
+        if (_.isString(value) && !value.trim())
+        {
+            return false;
+        }
+
+        var asNumber = Number(value);
+        return _.isNumber(asNumber) && !_.isNaN(asNumber);
+    };
+
+    var convertToViewUnits = function(value, fieldType, defaultValueIfEmpty)
+    {
+        if (!isNumeric(value))
+        {
+            if (!_.isUndefined(defaultValueIfEmpty))
+            {
+                return defaultValueIfEmpty;
+            } else
+            {
+                return "";
+            }
+        }
+
+        switch (fieldType)
         {
             case "elevation":
-                return (value * modelToViewConversionFactors[fieldType][currentUnits]).toFixed(0);
+                return convertElevation(value);
             case "speed":
             case "distance":
-                return roundViewUnits(value * modelToViewConversionFactors[fieldType][currentUnits]);
+                return convertDistanceToViewUnits(value);
             case "pace":
-                return convertToPaceFromSpeed(value, currentUnits);
+                return convertToPaceFromSpeed(value);
             case "temperature":
-                return roundViewUnits(currentUnits === "0" ? 9 / 5 * value + 32 : value);
+                return convertTemperature(value);
             default:
                 throw "Unknown field type for unit conversion";
         }
+    };
+
+    var convertElevation = function(value)
+    {
+        var currentUnits = theMarsApp.user.get("units");
+        return (value * modelToViewConversionFactors["elevation"][currentUnits]).toFixed(0);
+    };
+
+    var convertTemperature = function(value)
+    {
+        var currentUnits = theMarsApp.user.get("units");
+        return roundViewUnits(currentUnits === "0" ? 9 / 5 * value + 32 : value);
+    };
+
+    var convertDistanceToViewUnits = function(value)
+    {
+        return roundViewUnits(value * modelToViewConversionFactors["distance"][theMarsApp.user.get("units")]);
     };
 
     return convertToViewUnits;
