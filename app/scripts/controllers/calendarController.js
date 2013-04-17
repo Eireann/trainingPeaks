@@ -12,13 +12,13 @@ define(
     "models/library/libraryExercisesCollection",
     "models/workoutModel",
     "models/commands/addWorkoutFromExerciseLibrary",
-    "views/applicationHeader/calendarHeaderView",
+    "views/calendar/calendarHeaderView",
     "views/calendar/calendarContainerView",
     "views/library/libraryView"
 ],
 function(_, moment, setImmediate, TP, CalendarLayout, CalendarCollection, CalendarWeekCollection,
          CalendarDayModel, ExerciseLibrariesCollection, LibraryExercisesCollection, WorkoutModel, AddWorkoutFromExerciseLibrary,
-         CalendarHeaderView, CalendarContainerView, LibraryView)
+         calendarHeaderView, CalendarContainerView, LibraryView)
 {
     return TP.Controller.extend(
     {
@@ -292,7 +292,7 @@ function(_, moment, setImmediate, TP, CalendarLayout, CalendarCollection, Calend
 
             this.models.calendarHeaderModel = new TP.Model();
 
-            this.views.header = new CalendarHeaderView({ model: this.models.calendarHeaderModel });
+            this.views.header = new calendarHeaderView({ model: this.models.calendarHeaderModel });
 
             this.views.header.on("request:today", this.onRequestToday, this);
             this.views.header.on("request:nextweek", this.onRequestNextWeek, this);

@@ -2,7 +2,7 @@ define(
 [
     "TP",
     "views/applicationHeader/coachAndAffiliateCustomizations",
-    "hbs!templates/views/applicationHeader/calendarHeader"
+    "hbs!templates/views/calendar/calendarHeader"
 ],
 function(TP, coachAndAffiliateCustomizations, calendarHeaderTemplate)
 {
@@ -27,7 +27,7 @@ function(TP, coachAndAffiliateCustomizations, calendarHeaderTemplate)
         initialize: function()
         {
             if (!this.model)
-                throw "Cannot have a CalendarHeaderView without a model";
+                throw "Cannot have a calendarHeaderView without a model";
 
             this.initializeCoachAndAffiliateCustomizations();
         },

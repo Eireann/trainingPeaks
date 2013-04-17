@@ -1,26 +1,26 @@
 @import "settings";
 @import "foundation";
 
-@import "tpstylesheet";
-@import "mixIn";
-@import "throbber";
-@import "dragAndDrop";
-@import "modal";
+@import "globalCSS/tpstylesheet";
+@import "globalCSS/mixIn";
+@import "globalCSS/throbber";
+@import "calendar/dragAndDrop";
+@import "globalCSS/modal";
 
 @import "header";
-@import "calendar";
-@import "calendarWorkout";
-@import "weekSummary";
+@import "calendar/calendar";
+@import "calendar/calendarWorkout";
+@import "calendar/weekSummary";
 @import "library";
-@import "newItemView";
-@import "quickView";
-@import "workoutColor";
-@import "hoverBox";
-@import "shiftWizzard";
+@import "calendar/newItemView";
+@import "calendar/quickView";
+@import "calendar/workoutColor";
+@import "globalCSS/hoverBox";
+@import "calendar/shiftWizzard";
 
-@import "timepicker";
-@import "dialog";
-@import "tooltip";
+@import "globalCSS/timepicker";
+@import "globalCSS/dialog";
+@import "globalCSS/tooltip";
 
 body
 {
