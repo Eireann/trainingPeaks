@@ -46,8 +46,14 @@ function (
             "quickViewContent": "#quickViewContent"
         },
 
-        initialize: function()
+        initialize: function(options)
         {
+            if (options.isNewWorkout)
+            {
+                this.isNewWorkout = true;
+                this.dayModel = options.dayModel;
+            }
+            
             this.initializeFileUploads();
             this.initializeStickit();
             this.initializeSaveDeleteDiscard();
