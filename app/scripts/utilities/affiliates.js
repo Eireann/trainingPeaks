@@ -11,21 +11,22 @@ function(_, ImageData)
 
         isAffiliate: function()
         {
-            return _.contains(this.affiliates, this.getAffiliateCode());
+            return !this.isCoachedAccount() && _.contains(this.affiliates, this.getAffiliateCode());
         },
 
         isTpAffiliate: function()
         {
-            return this.getAffiliateCode() && this.getAffiliateCode().indexOf("trainingpeaks") >= 0 && this.getLogoUrl().indexOf("training_peaks_banner") >= 0;
+            return !this.isCoachedAccount() && this.getAffiliateCode() && this.getAffiliateCode().indexOf("trainingpeaks") >= 0 && this.getLogoUrl().indexOf("training_peaks_banner") >= 0;
         },
 
         isCoachedAccount: function()
         {
-            var logoUrl = this.getLogoUrl();
-            if (logoUrl && !this.isAffiliate() && !this.isTpAffiliate())
-            {
+            if (!theMarsApp.user.get("settings.account.isAthlete"))
                 return true;
-            }
+
+            if (theMarsApp.user.get("settings.account.isCoached"))
+                return true;
+
             return false;
         },
 
