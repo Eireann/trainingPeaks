@@ -54,8 +54,8 @@ function (TP, WorkoutModel, WorkoutFileData, WorkoutQuickView, WorkoutFileReader
                 this.newWorkout = new WorkoutModel(
                 {
                     personId: theMarsApp.user.get("userId"),
-                    workoutDay: moment(this.model.get("date")).format("YYYY-MM-DDThh:mm:ss"),
-                    startTime: moment(this.model.get("date")).add("hours", 6).format("YYYY-MM-DDThh:mm:ss"),
+                    workoutDay: moment(this.model.get("date")).format(TP.utils.datetime.longDateFormat),
+                    startTime: moment(this.model.get("date")).add("hours", 6).format(TP.utils.datetime.longDateFormat),
                     title: "",
                     workoutTypeValueId: workoutTypeId
                 });
@@ -81,7 +81,7 @@ function (TP, WorkoutModel, WorkoutFileData, WorkoutQuickView, WorkoutFileReader
 
             deferred.done(function(dataAsString)
             {
-                self.uploadedFileDataModel = new WorkoutFileData({ workoutDay: moment(self.model.get("date")).format("YYYY-MM-DDThh:mm:ss"), startTime: moment(self.model.get("date")).add("hours", 6).format("YYYY-MM-DDThh:mm:ss"), data: dataAsString });
+                self.uploadedFileDataModel = new WorkoutFileData({ workoutDay: moment(self.model.get("date")).format(TP.utils.datetime.longDateFormat), startTime: moment(self.model.get("date")).add("hours", 6).format(TP.utils.datetime.longDateFormat), data: dataAsString });
                 self.uploadedFileDataModel.save().done(self.onUploadDone).fail(self.onUploadFail);
             });
         },

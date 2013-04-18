@@ -11,9 +11,10 @@ define(
     "backbone.marionette",
     "setImmediate",
     "framework/APIModel",
-    "framework/Logger"
+    "framework/Logger",
+    "framework/utilities"
 ],
-function(Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmediate, APIModel, Logger)
+function(Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmediate, APIModel, Logger, utilities)
 {
     var TP = {};
 
@@ -282,6 +283,8 @@ function(Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmediate,
     TP.Router = Backbone.Router.extend({});
 
     TP.Logger = Logger;
+
+    TP.utils = utilities;
 
     return TP;
 });

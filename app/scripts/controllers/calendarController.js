@@ -173,8 +173,6 @@ function(_, moment, setImmediate, TP, CalendarLayout, CalendarCollection, Calend
             this.layout = new CalendarLayout();
             this.layout.on("show", this.show, this);
 
-            this.dateFormat = "YYYY-MM-DD";
-
             this.startDate = this.createStartDay().subtract("weeks", 4);
             this.endDate = this.createEndDay().add("weeks", 6);
 
@@ -236,7 +234,7 @@ function(_, moment, setImmediate, TP, CalendarLayout, CalendarCollection, Calend
             if (dateAsMoment.day() !== this.startOfWeekDayIndex)
             {
                 var newDateAsMoment = this.createStartDay(dateAsMoment);
-                if (newDateAsMoment.format(this.dateFormat) > dateAsMoment.format(this.dateFormat))
+                if (newDateAsMoment.format(TP.utils.datetime.shortDateFormat) > dateAsMoment.format(TP.utils.datetime.shortDateFormat))
                 {
                     newDateAsMoment.subtract("weeks", 1);
                 }
@@ -340,7 +338,7 @@ function(_, moment, setImmediate, TP, CalendarLayout, CalendarCollection, Calend
             if (dateAsMoment.day() !== this.startOfWeekDayIndex)
             {
                 var newDateAsMoment = this.createStartDay(dateAsMoment);
-                if (newDateAsMoment.format(this.dateFormat) > dateAsMoment.format(this.dateFormat))
+                if (newDateAsMoment.format(TP.utils.datetime.shortDateFormat) > dateAsMoment.format(TP.utils.datetime.shortDateFormat))
                 {
                     newDateAsMoment.subtract("weeks", 1);
                 }

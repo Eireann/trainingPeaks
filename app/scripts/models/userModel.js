@@ -10,9 +10,6 @@ function(TP)
 
         webAPIModelName: "User",
         idAttribute: "userId",
-        shortDateFormat: "YYYY-MM-DD",
-        timeFormat: "Thh:mm:ss",
-        longDateFormat: "YYYY-MM-DDThh:mm:ss",
 
         defaults:
         {

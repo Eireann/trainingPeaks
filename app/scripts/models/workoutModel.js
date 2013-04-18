@@ -13,9 +13,6 @@ function (_, moment, TP)
 
         webAPIModelName: "Workout",
         idAttribute: "workoutId",
-        shortDateFormat: "YYYY-MM-DD",
-        timeFormat: "Thh:mm:ss",
-        longDateFormat: "YYYY-MM-DDThh:mm:ss",
 
         urlRoot: function()
         {
@@ -107,7 +104,7 @@ function (_, moment, TP)
         
         getCalendarDay: function()
         {
-            return moment(this.get("workoutDay")).format(this.shortDateFormat);
+            return moment(this.get("workoutDay")).format(TP.utils.datetime.shortDateFormat);
         },
 
         moveToDay: function(newDate, newCollection)
@@ -117,7 +114,7 @@ function (_, moment, TP)
             var originalDate = moment(this.get("workoutDay"));
             var originalCollection = this.dayCollection;
 
-            this.set("workoutDay", moment(newDate).format(this.longDateFormat));
+            this.set("workoutDay", moment(newDate).format(TP.utils.datetime.longDateFormat));
             if (newCollection)
             {
                 newCollection.add(this);
@@ -130,7 +127,7 @@ function (_, moment, TP)
 
             var revertOnFailure = function()
             {
-                self.set("workoutDay", originalDate.format(this.longDateFormat));
+                self.set("workoutDay", originalDate.format(TP.utils.datetime.longDateFormat));
                 if (newCollection)
                     newCollection.remove(self);
                 if (originalCollection) {
@@ -180,7 +177,7 @@ function (_, moment, TP)
         {
             if (this.id)
             {
-                if (moment(dateToPasteTo).format(this.shortDateFormat) !== this.getCalendarDay())
+                if (moment(dateToPasteTo).format(TP.utils.datetime.shortDateFormat) !== this.getCalendarDay())
                 {
                     this.moveToDay(dateToPasteTo);
                     return this;
@@ -193,7 +190,7 @@ function (_, moment, TP)
             {
                 var newWorkout = new WorkoutModel(_.clone(this.attributes, true));
                 var workoutDateMoment = moment(dateToPasteTo);
-                var formattedWorkoutDate = workoutDateMoment.format(this.longDateFormat);
+                var formattedWorkoutDate = workoutDateMoment.format(TP.utils.datetime.longDateFormat);
                 newWorkout.set("workoutDay", formattedWorkoutDate);
                 newWorkout.save();
                 return newWorkout;

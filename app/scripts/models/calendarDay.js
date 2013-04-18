@@ -11,7 +11,6 @@ function(_, moment, TP)
     {
 
         idAttribute: 'date',
-        dateFormat: "YYYY-MM-DD",
 
         initialize: function()
         {
@@ -27,7 +26,7 @@ function(_, moment, TP)
                 throw "CalendarDay requires a date";
 
             // use a formatted string for date attribute and for calendar id
-            this.set("date", moment(date).format(this.dateFormat), { silent: true });
+            this.set("date", moment(date).format(datetimeUtils.constants.shortDateFormat), { silent: true });
         },
 
         configureCollection: function()

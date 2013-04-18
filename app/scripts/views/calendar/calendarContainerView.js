@@ -293,8 +293,8 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, c
             if (typeof effectDuration === "undefined")
                 effectDuration = 500;
 
-            //theMarsApp.logger.debug(dateAsMoment.format("YYYY-MM-DD"));
-            var dateAsString = dateAsMoment.format("YYYY-MM-DD");
+            //theMarsApp.logger.debug(dateAsMoment.format(TP.utils.datetime.shortDateFormat));
+            var dateAsString = dateAsMoment.format(TP.utils.datetime.shortDateFormat);
             var selector = '.day[data-date="' + dateAsString + '"]';
             this.scrollToSelector(selector, effectDuration);
             this.setCurrentDate(targetDate);
@@ -343,7 +343,7 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, c
                 dateAsMoment.day(this.startOfWeekDayIndex + 6);
 
             if (currentDate)
-                this.calendarHeaderModel.set("date", dateAsMoment.format("YYYY-MM-DD"));
+                this.calendarHeaderModel.set("date", dateAsMoment.format(TP.utils.datetime.shortDateFormat));
         },
 
         fadeOut: function(duration)

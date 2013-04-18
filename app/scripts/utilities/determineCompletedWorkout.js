@@ -7,7 +7,7 @@ function(moment)
     function determineCompletedWorkout(workout)
     {
         // not completed in future ...
-        if (moment(workout.workoutDay).format("YYYY-MM-DD") > moment().format("YYYY-MM-DD"))
+        if (moment(workout.workoutDay).format(TP.utils.datetime.shortDateFormat) > moment().format(TP.utils.datetime.shortDateFormat))
         {
             return false;
         }
