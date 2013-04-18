@@ -603,7 +603,7 @@ input[disabled='disabled']
         {
             font-size: $fontSizeXSmall;
             font-weight: $fontWeightBold;
-            margin-bottom: 2px;
+            margin-bottom: 3px;
 
             .date
             {
@@ -634,11 +634,21 @@ input[disabled='disabled']
 .comment
 {
     position: relative;
-    .menuButton
+    .deleteButton
     {
         position: absolute;
         display: none;
-        top: -2px;
+        top: 4px;
         right: 3px;
+        height: 8px;
+        width: 10px;
+    }
+
+    &.hover
+    {
+        .deleteButton
+        {
+            display:block
+        }
     }
 }

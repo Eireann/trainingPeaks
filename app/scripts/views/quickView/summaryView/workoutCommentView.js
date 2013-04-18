@@ -1,12 +1,11 @@
 define(
 [
     "TP",
-    "views/genericMenuView",
     "views/userConfirmationView",
     "hbs!templates/views/confirmationViews/deleteConfirmationView",
     "hbs!templates/views/quickView/workoutComments"
 ],
-function(TP, GenericMenuView, UserConfirmationView, deleteConfirmationTemplate, WorkoutCommentsTemplate)
+function(TP, UserConfirmationView, deleteConfirmationTemplate, WorkoutCommentsTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -18,7 +17,7 @@ function(TP, GenericMenuView, UserConfirmationView, deleteConfirmationTemplate, 
         {
             "mouseenter": "onMouseOver",
             "mouseleave": "onMouseOut",
-            "click .menuButton": "showMenu"
+            "click .deleteButton": "onDeleteClicked"
         },
 
         template:
@@ -30,10 +29,6 @@ function(TP, GenericMenuView, UserConfirmationView, deleteConfirmationTemplate, 
         onMouseOver: function()
         {
             this.$el.addClass("hover");
-            if (this.getMenuOptions().length)
-            {
-                this.$(".menuButton").show();
-            }
         },
 
         onMouseOut: function(e)
@@ -43,22 +38,6 @@ function(TP, GenericMenuView, UserConfirmationView, deleteConfirmationTemplate, 
                 return;
             }
             this.$el.removeClass("hover");
-            this.$(".menuButton").hide();
-        },
-
-        getMenuOptions: function()
-        {
-            return ['Delete'];
-        },
-
-        showMenu: function(e)
-        {
-            var menuOptions = this.getMenuOptions();
-            var menuView = new GenericMenuView({ className: "workoutCommentMenu", labels: menuOptions });
-            menuView.on("Delete", this.onDeleteClicked, this);
-            menuView.on("Copy", this.onCopyClicked, this);
-            menuView.on("close", this.onMouseOut, this);
-            menuView.render().bottom(e.pageY).center(e.pageX);
         },
 
         onDeleteClicked: function(e)
@@ -71,11 +50,6 @@ function(TP, GenericMenuView, UserConfirmationView, deleteConfirmationTemplate, 
         onDeleteConfirmed: function()
         {
             this.model.collection.remove(this.model);
-        },
-
-        onCopyClicked: function()
-        {
-            this.notImplemented();
         }
 
     });
