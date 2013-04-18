@@ -1,12 +1,13 @@
 ﻿define(
 [
     "utilities/printUnitLabel",
+    "utilities/datetime/datetime",
     "utilities/printTimeFromDecimalHours",
     "utilities/conversion"
 ],
 function(
     printUnitLabel,
-    printTimeFromDecimalHours,
+    datetimeUtils,
     conversion,
     workoutCommentsTemplate
 )
@@ -349,7 +350,7 @@ function(
 
         setTime: function (value, options)
         {
-            return conversion.convertTimeHoursToDecimal(value);
+            return datetimeUtils.convert.timeStringToDecimalHours(value);
         },
 
         getPace: function (value, options)

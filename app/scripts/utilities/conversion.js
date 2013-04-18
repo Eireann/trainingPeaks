@@ -1,14 +1,12 @@
 ﻿define(
 [
-    "utilities/conversion/convertTimeHoursToDecimal",
     "utilities/conversion/convertToModelUnits",
     "utilities/conversion/convertToViewUnits",
     "utilities/printTimeFromDecimalHours",
     "utilities/workoutTypeEnum2"
-], function (convertTimeHoursToDecimal, convertToModelUnits, convertToViewUnits, printTimeFromDecimalHours, workoutTypeEnum2)
+], function (convertToModelUnits, convertToViewUnits, printTimeFromDecimalHours, workoutTypeEnum2)
 {
     return {
-        convertTimeHoursToDecimal: convertTimeHoursToDecimal,
         convertToModelUnits: convertToModelUnits,
         convertToViewUnits: convertToViewUnits,
         
@@ -25,11 +23,6 @@
         getTime: function (value, options)
         {
             return printTimeFromDecimalHours(value, true);
-        },
-
-        setTime: function (value, options)
-        {
-            return conversion.convertTimeHoursToDecimal(value);
         },
 
         getPace: function (value, options)
