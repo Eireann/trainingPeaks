@@ -33,7 +33,7 @@ function(_, workoutLayoutFormatter, getKeyStatField, conversion, printing)
                 _.each(layoutPreferences, function(layoutPreferenceId, index)
                 {
                     var field = workoutLayoutFormatter.calendarWorkoutLayout[layoutPreferenceId];
-                    if (field && keyStatFieldName !== field)
+                    if (field && keyStatFieldName !== field.name)
                     {
                         this.applyFieldLayoutPreference(field);
                     } 
