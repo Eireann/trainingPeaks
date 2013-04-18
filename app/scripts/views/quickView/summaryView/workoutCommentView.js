@@ -29,6 +29,10 @@ function(TP, UserConfirmationView, deleteConfirmationTemplate, WorkoutCommentsTe
         onMouseOver: function()
         {
             this.$el.addClass("hover");
+            if (this.model.get("commenterPersonId") !== theMarsApp.user.id)
+            {
+                this.$(".deleteButton").hide();
+            }
         },
 
         onMouseOut: function(e)
@@ -42,6 +46,10 @@ function(TP, UserConfirmationView, deleteConfirmationTemplate, WorkoutCommentsTe
 
         onDeleteClicked: function(e)
         {
+            if (this.model.get("commenterPersonId") !== theMarsApp.user.id)
+            {
+                return;
+            }
             this.deleteConfirmationView = new UserConfirmationView({ template: deleteConfirmationTemplate });
             this.deleteConfirmationView.render();
             this.deleteConfirmationView.on("userConfirmed", this.onDeleteConfirmed, this);
