@@ -447,7 +447,7 @@ function(
             // DO coerce type in this situation, since we only care about truthy/falsy'ness.
             /*jslint eqeq: true*/
             if (options.observe === "description")
-                doUpdateModel = (newViewValue === "" && currentModelValue === null ? false : (newViewValue == currentModelValue));    
+                doUpdateModel = (newViewValue === "" && currentModelValue === null ? false : (newViewValue != currentModelValue));    
             else
                 doUpdateModel = (this[options.onGet](currentModelValue) == newViewValue) ? false : true;
             /*jsline eqeq: false*/
