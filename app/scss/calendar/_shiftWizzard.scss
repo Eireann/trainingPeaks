@@ -9,6 +9,16 @@
     button
     {
         margin-right: 0.5em;
+        cursor: default;
+    }
+
+    div
+    {
+        cursor: default;
+    }
+    span
+    {
+        cursor: default;
     }
 
 	.bold
@@ -26,6 +36,11 @@
         {
             margin-left: 10px;
             margin-right: 10px;
+        }
+
+        input[type=radio]
+        {
+            cursor: default;
         }
 
 		.toAndFromDateRange
