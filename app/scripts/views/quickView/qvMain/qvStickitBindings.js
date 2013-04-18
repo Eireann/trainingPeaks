@@ -1,10 +1,12 @@
 ﻿define(
 [
+    "TP",
     "utilities/printDate",
     "utilities/printUnitLabel",
     "utilities/conversion"
 ],
-function (
+function(
+    TP,
     printDate,
     printUnitLabel,
     conversion

@@ -1,8 +1,10 @@
 ﻿define(
 [
-], function()
+], 
+function()
 {
     return {
+
         decimalHoursAsTime: function(hours, showSeconds, zeroFormatValue)
         {
             if (typeof showSeconds !== 'boolean')
@@ -66,6 +68,6 @@
             }
 
             return time;
-        };
+        }
     };
 });
