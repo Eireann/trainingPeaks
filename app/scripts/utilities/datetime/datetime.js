@@ -2,7 +2,7 @@
 [
     "utilities/datetime/format",
     "utilities/datetime/convert"
-], function(constants, format, convert)
+], function(format, convert)
 {
     return {
 
@@ -10,7 +10,6 @@
         timeFormat: "Thh:mm:ss",
         longDateFormat: "YYYY-MM-DDThh:mm:ss",
 
-        constants: constants,
         format: format,
         convert: convert
     };

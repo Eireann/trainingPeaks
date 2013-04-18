@@ -17,11 +17,6 @@ function($, TP, moment, WorkoutModel, WorkoutsCollection, CalendarCollection)
             expect(CalendarCollection).toBeDefined();
         });
 
-        it("should have a default dateFormat string", function()
-        {
-            expect(CalendarCollection.prototype.dateFormat).toBe("YYYY-MM-DD");
-        });
-
         it("should have a method to retrieve a specific day inside a Week by the day's date, when the week starts on a Sunday", function()
         {
             var weekStartDate = moment().day(0);

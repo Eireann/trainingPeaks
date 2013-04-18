@@ -1,8 +1,9 @@
 ﻿define(
 [
-    "moment"
+    "moment",
+    "TP"
 ],
-function(moment)
+function(moment, TP)
 {
     function determineCompletedWorkout(workout)
     {
