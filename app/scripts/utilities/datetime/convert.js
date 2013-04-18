@@ -4,7 +4,7 @@
 {
     return {
 
-        timeStringToDecimalHours: function(timeString)
+        timeToDecimalHours: function(timeString)
         {
             if (!timeString.trim())
             {

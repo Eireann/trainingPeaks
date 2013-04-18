@@ -7,7 +7,6 @@ function(moment, datetimeUtils)
 {
     describe("datetime", function()
     {
-
         describe("isThisWeek", function()
         {
             it("should return true for today", function()
@@ -29,12 +28,12 @@ function(moment, datetimeUtils)
 
         describe("convert", function()
         {
-            describe("timeStringToDecimalHours", function()
+            describe("timeToDecimalHours", function()
             {
 
                 it("Should return 0 for invalid numbers", function()
                 {
-                    expect(datetimeUtils.convert.timeStringToDecimalHours("x")).toBe(0);
+                    expect(datetimeUtils.convert.timeToDecimalHours("x")).toBe(0);
                 });
 
                 it("Should return valid times", function()
@@ -48,7 +47,7 @@ function(moment, datetimeUtils)
 
                     for (var timeString in times)
                     {
-                        expect(datetimeUtils.convert.timeStringToDecimalHours(timeString)).toEqual(times[timeString]);
+                        expect(datetimeUtils.convert.timeToDecimalHours(timeString)).toEqual(times[timeString]);
                     }
 
                 });

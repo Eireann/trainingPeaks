@@ -1,11 +1,11 @@
 define(
 [
+    "TP",
     "utilities/determineCompletedWorkout",
     "utilities/conversion",
-    "utilities/printTimeFromDecimalHours",
     "utilities/getKeyStatField"
 ],
-function (determineCompletedWorkout, conversion, printTimeFromDecimalHours, getKeyStatField)
+function(TP, determineCompletedWorkout, conversion, getKeyStatField)
 {
     function printKeyStat(workout)
     {
@@ -23,7 +23,7 @@ function (determineCompletedWorkout, conversion, printTimeFromDecimalHours, getK
         }
         else if (keyStatField === "totalTime" || keyStatField === "totalTimePlanned")
         {
-            returnValue = printTimeFromDecimalHours(value, "distance");
+            returnValue = TP.utils.datetime.format.decimalHoursAsTime(value, "distance");
         }
         else if (keyStatField === "tssActual" || keyStatField === "tssPlanned")
         {

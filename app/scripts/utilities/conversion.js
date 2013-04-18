@@ -1,10 +1,10 @@
 ﻿define(
 [
+    "TP",
     "utilities/conversion/convertToModelUnits",
     "utilities/conversion/convertToViewUnits",
-    "utilities/printTimeFromDecimalHours",
     "utilities/workoutTypeEnum2"
-], function (convertToModelUnits, convertToViewUnits, printTimeFromDecimalHours, workoutTypeEnum2)
+], function (TP, convertToModelUnits, convertToViewUnits, workoutTypeEnum2)
 {
     return {
         convertToModelUnits: convertToModelUnits,
@@ -22,7 +22,12 @@
 
         getTime: function (value, options)
         {
-            return printTimeFromDecimalHours(value, true);
+            return TP.utils.datetime.format.timeFromDecimalHours(value, true);
+        },
+
+        setTime: function(value, options)
+        {
+            return TP.utils.datetime.convert.timeToDecimalHours(value);
         },
 
         getPace: function (value, options)
