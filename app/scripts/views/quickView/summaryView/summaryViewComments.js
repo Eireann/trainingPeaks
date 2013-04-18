@@ -1,10 +1,12 @@
 ﻿define(
 [
     "underscore",
+    "setImmediate",
     "views/quickView/summaryView/workoutCommentsCollectionView"
 ],
 function (
     _,
+    setImmediate,
     WorkoutCommentsCollectionView
 )
 {
@@ -13,6 +15,21 @@ function (
         initializeComments: function()
         {
             this.on("render", this.renderComments, this);
+            this.model.on("change:newComment", this.onNewCommentChange, this);
+        },
+
+        onNewCommentChange: function()
+        {
+            var input = this.$("#postActivityCommentsInput");
+            setImmediate(function()
+            {
+
+                console.log(input.css("height"));
+                if (!input.val())
+                {
+                    input.css("height", "");
+                }
+            });
         },
 
         renderComments: function()

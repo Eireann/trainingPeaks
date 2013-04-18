@@ -16,8 +16,8 @@ function(TP, GenericMenuView, UserConfirmationView, deleteConfirmationTemplate, 
 
         events:
         {
-            "mouseenter": "showMenuButton",
-            "mouseleave": "hideMenuButton",
+            "mouseenter": "onMouseOver",
+            "mouseleave": "onMouseOut",
             "click .menuButton": "showMenu"
         },
 
@@ -27,16 +27,22 @@ function(TP, GenericMenuView, UserConfirmationView, deleteConfirmationTemplate, 
             template: WorkoutCommentsTemplate
         },
 
-        showMenuButton: function()
+        onMouseOver: function()
         {
+            this.$el.addClass("hover");
             if (this.getMenuOptions().length)
             {
                 this.$(".menuButton").show();
             }
         },
 
-        hideMenuButton: function()
+        onMouseOut: function(e)
         {
+            if (e && e.toElement && $(e.toElement).is(".workoutCommentMenuModalOverlay"))
+            {
+                return;
+            }
+            this.$el.removeClass("hover");
             this.$(".menuButton").hide();
         },
 
@@ -51,6 +57,7 @@ function(TP, GenericMenuView, UserConfirmationView, deleteConfirmationTemplate, 
             var menuView = new GenericMenuView({ className: "workoutCommentMenu", labels: menuOptions });
             menuView.on("Delete", this.onDeleteClicked, this);
             menuView.on("Copy", this.onCopyClicked, this);
+            menuView.on("close", this.onMouseOut, this);
             menuView.render().bottom(e.pageY).center(e.pageX);
         },
 
