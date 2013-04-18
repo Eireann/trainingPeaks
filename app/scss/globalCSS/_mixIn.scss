@@ -10,7 +10,7 @@
 		font-size: $fontSize;
 		margin-left: $marginLeft;
 		color: $TPGrey4;
-		cursor: pointer;
+		cursor: default;
 		background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #ffffff), color-stop(1, #dfdfdf) );
 		background:-moz-linear-gradient( center top, #ededed 5%, #dfdfdf 100% );
 		filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ededed', endColorstr='#dfdfdf');
@@ -30,7 +30,8 @@
 	button
 	{
 		float: left;
-		height:21px;
+        cursor: default;
+		height:22px;
 	}
 }
 
@@ -56,6 +57,7 @@
 		font-family: $fontFamily;
 		padding-top: 0px;
 		padding-bottom: 0px;
+        cursor: text;
 	}
 }
 

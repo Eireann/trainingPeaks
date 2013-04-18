@@ -127,7 +127,7 @@
             left: 0px;
             top: 0px;
             z-index: 99;
-            cursor: pointer;
+            cursor: default;
             background-image: url(../../assets/images/calendarImages/tpLogo.png);
             background-position-x: right;
             background-repeat: no-repeat;
@@ -164,7 +164,7 @@
 
             .headerRollOver
             {
-                cursor: pointer;
+                cursor: default;
                 label
                 {
                     cursor: pointer;
@@ -176,12 +176,12 @@
                 margin: 0px 0px 0px 10px;
                 padding: 11px 25px 0px 25px;
                 @include linearGradient(bottom, rgb(34,97,143), rgba(59,125,193, 1)); 
-                cursor: pointer;
+                cursor: default;
 
                 label
                 {
                     color: $white;
-                    cursor: pointer;
+                    cursor: default;
                     font-size: $fontSizeSmall;
                     font-family: $navigationFontFamilyRegular;
                 }
@@ -190,7 +190,6 @@
             .personHeaderMailIcon
             {
                 padding-right: 13px;
-                &:hover{cursor: pointer;}
                 float: left;
                 display: block;
                 width: 33px;
