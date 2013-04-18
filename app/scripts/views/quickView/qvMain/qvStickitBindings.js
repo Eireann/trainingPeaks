@@ -98,7 +98,7 @@ function(
 
         getDistance: function(value, options)
         {
-            return conversion.convertToViewUnits(value, "distance", null, 0);
+            return conversion.convertToViewUnits(value, "distance", 0);
         },
 
         getDayName: function(value, options)
@@ -141,7 +141,11 @@ function(
 
             var updateModel = function ()
             {
-                if (self.model.get("title") !== "newViewValue")
+                // Check for the special case where the model is still set to null and the newViewValue is empty, and abort
+                //if (self.model.get("title") === null && newViewValue === "")
+                //    return;
+
+                if (self.model.get("title") !== newViewValue)
                 {
                     var newModelValue = newViewValue;
                     self.model.set("title", newModelValue);

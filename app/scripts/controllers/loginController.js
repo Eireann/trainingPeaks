@@ -19,6 +19,12 @@ function(TP, LoginLayout, LoginView)
         
         show: function()
         {
+            if (theMarsApp.session.isAuthenticated())
+            {
+                theMarsApp.session.logout();
+                return;
+            }
+
             if (this.views.loginView)
                 this.views.loginView.close();
             

@@ -70,6 +70,19 @@
                 #goToLastWeekButton
                 {
                     border-right-width: 0px;
+					background-image: url(../../assets/images/calendarImages/leftArrow.png), -moz-linear-gradient(top,  #ffffff,  #e0dddd);
+					background-image: url(../../assets/images/calendarImages/leftArrow.png), -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#e0dddd));
+					background-size: 35px 21px;
+					background-position:-1px -1px;
+                }
+
+				#goToNextWeekButton
+                {
+               
+					background-image: url(../../assets/images/calendarImages/rightArrow.png), -moz-linear-gradient(top,  #ffffff,  #e0dddd);
+					background-image: url(../../assets/images/calendarImages/rightArrow.png), -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#e0dddd));
+					background-size: 35px 21px;
+					background-position:-1px -1px;
                 }
                 
             }
@@ -85,7 +98,7 @@
 				color:$TPGrey8;
 			}
 
-            .printRefreshButtons
+			.printRefreshButtons
             {
                 float:left;
                 @include headerButtons(7px, 38px, $fontSizeMedium);
@@ -96,12 +109,28 @@
                         padding-top: 1px;
                     }
                 }
+
+			
+				.printButton {
+					background-image: url(../../assets/images/calendarImages/icon-print@2x.png), -moz-linear-gradient(top,  #ffffff,  #e0dddd);
+					background-image: url(../../assets/images/calendarImages/icon-print@2x.png), -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#e0dddd));
+					background-position: 0 0;
+					background-size: 38px 20px;
+					}
                 .refreshButton
                 {
+					background-image: url(../../assets/images/calendarImages/icon-refresh@2x.png), -moz-linear-gradient(top,  #ffffff,  #e0dddd);
+					background-image: url(../../assets/images/calendarImages/icon-refresh@2x.png), -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#e0dddd));
+					background-size: 38px 20px;
+					background-position:0 0;
                     margin-left: 7px;
                 }
                 .settingsButton
                 {
+					background-image: url(../../assets/images/calendarImages/icon-settings@2x.png), -moz-linear-gradient(top,  #ffffff,  #e0dddd);
+					background-image: url(../../assets/images/calendarImages/icon-settings@2x.png), -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#e0dddd));
+					background-size: 31px 20px;
+					background-position:-1px 0;
                     margin-left: 7px;
 					width:31px;
                 }

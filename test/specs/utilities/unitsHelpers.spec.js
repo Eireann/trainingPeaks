@@ -131,7 +131,7 @@ function(printUnitLabel, conversion)
             {
                 expect(function() { conversion.convertToViewUnits(1234, "unknownType"); }).toThrow();
             });
-            
+
             it("should convert a distance in meters to miles and cut off after 2 decimal places", function()
             {
                 expect(conversion.convertToViewUnits(0, "distance")).toBe("0.00");
@@ -158,10 +158,18 @@ function(printUnitLabel, conversion)
                 expect(conversion.convertToViewUnits(0.005, "pace")).toBe("99:99");
                 expect(conversion.convertToViewUnits(-1, "pace")).toBe("99:99");
             });
+
+
+            it("should return empty string for non numeric values", function()
+            {
+                expect(conversion.convertToViewUnits("", "distance")).toBe("");
+                expect(conversion.convertToViewUnits("some string", "distance")).toBe("");
+            });
         });
         
         describe("convertToModelUnits template helper", function ()
         {
+
             it("should throw an exception when trying to convert for an unknown value type", function ()
             {
                 expect(function () { conversion.convertToModelUnits(1234, "unknownType"); }).toThrow();
@@ -190,6 +198,16 @@ function(printUnitLabel, conversion)
                 expect(conversion.convertToModelUnits("08:56", "pace")).toBeCloseTo(3, 0);
                 expect(conversion.convertToModelUnits("99:99", "pace")).toBeCloseTo(0.266, 3);
             });
+
+            it("should return null for non numeric values and empty strings", function()
+            {
+                expect(conversion.convertToModelUnits("", "elevation")).toBe(null);
+                expect(conversion.convertToModelUnits("", "temperature")).toBe(null);
+                expect(conversion.convertToModelUnits("", "pace")).toBe(null);
+                expect(conversion.convertToModelUnits("", "distance")).toBe(null);
+                expect(conversion.convertToModelUnits("some string", "distance")).toBe(null);
+            });
+
             
         });
     });

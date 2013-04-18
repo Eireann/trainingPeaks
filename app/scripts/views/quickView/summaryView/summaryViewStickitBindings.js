@@ -323,17 +323,19 @@ function(
             },
             "#postActivityCommentsInput": 
             {
-                observe: "newComment"
+                observe: "newComment",
+                onSet: "setTextField"
             },
             "#preActivityCommentsInput": 
             {
-                observe: "coachComments"
+                observe: "coachComments",
+                onSet: "setTextField"
             }
         },
 
-        getDistance: function (value, options)
+        getDistance: function(value, options)
         {
-            return +conversion.convertToViewUnits(value, "distance", null, null, 2);
+            return conversion.convertToViewUnits(value, "distance");
         },
 
         setDistance: function(value, options)
@@ -343,7 +345,7 @@ function(
 
         getTime: function (value, options)
         {
-            return TP.utils.datetime.format.decimalHoursAsTime(value, true);
+            return TP.utils.datetime.format.decimalHoursAsTime(value, true, "");
         },
 
         setTime: function (value, options)
@@ -363,7 +365,7 @@ function(
 
         getSpeed: function (value, options)
         {
-            return +conversion.convertToViewUnits(value, "speed");
+            return conversion.convertToViewUnits(value, "speed");
         },
 
         setSpeed: function (value, options)
@@ -373,7 +375,7 @@ function(
 
         getElevation: function (value, options)
         {
-            return +conversion.convertToViewUnits(value, "elevation");
+            return conversion.convertToViewUnits(value, "elevation");
         },
 
         setElevation: function (value, options)
@@ -383,7 +385,7 @@ function(
 
         getNumber: function(value, options)
         {
-            return ((value === null || value === 0) ? "" : +value);
+            return ((value === null || value === 0 || value === "0") ? "" : +value);
         },
         
         setInteger: function(value, options)
@@ -395,15 +397,20 @@ function(
         {
             return (value === "" ? null : parseFloat(value));
         },
-        
+
         getTemperature: function(value, options)
         {
-            return +conversion.convertToViewUnits(value, "temperature");
+            return conversion.convertToViewUnits(value, "temperature");
         },
         
         setTemperature: function(value, options)
         {
             return conversion.convertToModelUnits(parseInt(value, 10), "temperature");
+        },
+
+        setTextField: function(value, options)
+        {
+            return value === "" ? null : value;
         },
 
         updateModel: function(newViewValue, options)
@@ -432,12 +439,15 @@ function(
         
         checkIfModelUpdateRequired: function(newViewValue, options)
         {
+            var doUpdateModel;
             var currentModelValue = this.model.get(options.observe);
-            var currentViewValue = options.observe === "description" ? currentModelValue : this[options.onGet](currentModelValue);
 
             // DO coerce type in this situation, since we only care about truthy/falsy'ness.
             /*jslint eqeq: true*/
-            var doUpdateModel = (currentViewValue == newViewValue) ? false : true;
+            if (options.observe === "description")
+                doUpdateModel = (newViewValue === "" && currentModelValue === null ? false : (newViewValue == currentModelValue));    
+            else
+                doUpdateModel = (this[options.onGet](currentModelValue) == newViewValue) ? false : true;
             /*jsline eqeq: false*/
 
             return doUpdateModel;

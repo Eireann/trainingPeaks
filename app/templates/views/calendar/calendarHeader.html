@@ -4,16 +4,16 @@
 </div>
 <div class="navigation">
     <div class="calendarNavigation">
-        <button id="goToLastWeekButton"><img src="assets/images/calendarImages/leftArrow.png"/></button>
-        <button id="goToNextWeekButton"><img src="assets/images/calendarImages/rightArrow.png"/></button>
+        <button id="goToLastWeekButton" tabindex="-1"></button>
+        <button id="goToNextWeekButton" tabindex="-1"></button>
     </div>
     <div class="today">
-        <button id="goToTodayButton">{{$ "Today"}}</button>
+        <button id="goToTodayButton" tabindex="-1">{{$ "Today"}}</button>
     </div>
     <div class="printRefreshButtons">
-        <button class="printButton" title="Print"></button>
-        <button class="refreshButton" title="Refresh"></button>
-        <button class="settingsButton" title="Calendar Settings"></button>
+        <button class="printButton" title="Print" tabindex="-1"></button>
+        <button class="refreshButton" title="Refresh" tabindex="-1"></button>
+        <button class="settingsButton" title="Calendar Settings" tabindex="-1"></button>
     </div>
 </div>
 <div id="affiliateBanner"></div>
