@@ -21,6 +21,16 @@ input[disabled='disabled']
     @include box-shadow(2px 0px 7px 0px $TPGrey3);
     position: relative;
 
+    div
+    {
+        cursor: default;
+    }
+
+    span
+    {
+        cursor: default;
+    }
+
     .dateAndTime
     {
         float: left;

@@ -44,12 +44,14 @@
             {
                 padding: 10px 0px 0px 30px;
 
+                @include labels($navigationFontFamilyRegular, $fontSizeXLarge, $TPGrey4, normal);
                 label
                 {
                     display:inline-block;
+                    cursor: -moz-grab;
+                    cursor: -webkit-grab;
                 }
-
-                @include labels($navigationFontFamilyRegular, $fontSizeXLarge, $TPGrey4, normal);
+                
                 .units
                 {
                     font-size: 0.88em;
@@ -68,6 +70,8 @@
                     border: none;
                     padding: 0px;
                     width: 15px;
+                    cursor: -moz-grab;
+                    cursor: -webkit-grab;
                 }
             }
         }
@@ -75,7 +79,13 @@
         {
             padding: 10px 5px 5px 5px;
             @include labels($navigationFontFamilyRegular, $fontSizeXSmall, $TPGrey4, normal);
-            label{font-weight: bold;}
+            label
+            {
+                font-weight: bold;
+                cursor: -moz-grab;
+                cursor: -webkit-grab;
+            
+            }
             
             p
             {
@@ -85,6 +95,8 @@
                 font-family: $navigationFontFamilyRegular;
                 text-align: left;
                 line-height: 12px;
+                cursor: -moz-grab;
+                cursor: -webkit-grab;
             }
         }
     }
@@ -108,6 +120,8 @@
         {
             margin-top:10px;
             margin-bottom:2px;
+            cursor: -moz-grab;
+            cursor: -webkit-grab;
         }
 
         label:first

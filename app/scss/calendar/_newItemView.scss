@@ -4,6 +4,7 @@
 {
     .titleBar
     {
+        cursor: default;
         .close
         {
             float: right;
@@ -12,7 +13,7 @@
 
             img
             {
-                cursor: pointer;
+                cursor: default;
             }
         }
     }
@@ -33,6 +34,11 @@
             legend
             {
                 margin-left: 20px;
+            }
+
+            a
+            {
+                cursor:default;
             }
         }
 
@@ -61,6 +67,7 @@
                     border: 0px 0px 0px 0px;
                     cell-spacing: 0px 0px 0px 0px;
                     background-color: transparent;
+                    cursor:default;
                 }
                 .dialogHeader
                 {
