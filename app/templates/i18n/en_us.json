@@ -216,5 +216,8 @@
 
     "Title": "Title",
 
-    "WorkoutAddedToLibrary": "The workout has been added to your workout library. Click on 'Workouts' to access it."
+    "WorkoutAddedToLibrary": "The workout has been added to your workout library. Click on 'Workouts' to access it.",
+
+    "UntitledWorkout": "Untitled Workout",
+    "EnterComment": "Enter a new comment"
 }

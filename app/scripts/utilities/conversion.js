@@ -92,6 +92,15 @@
             //Yes, I know this sucks
             //TODO: make this not suck
             return workoutTypeEnum2[value];
+        },
+
+        formatWorkoutComments: function(commentsArray, options)
+        {
+            if (commentsArray && commentsArray.length && commentsArray[0].comment)
+            {
+                return commentsArray[0].comment;
+            }
+            return "";
         }
         
     };

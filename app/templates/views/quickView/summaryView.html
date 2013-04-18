@@ -381,7 +381,7 @@
             <textarea id="descriptionInput" />
         </div> 
 
-        <div>
+        <div id="preActivityComments">
             <label id="preActivityCommentsLabel">{{$ "PreActivityComments"}}</label>
             <textarea id="preActivityCommentsInput" class="activityComments" />
         </div>
@@ -389,7 +389,7 @@
         <div>
             <label>{{$ "PostActivityComments"}}</label>
             <div class="workoutComments" id="postActivityCommentsList"></div> 
-            <textarea id="postActivityCommentsInput" class="activityComments" />
+            <input type="text" name="postActivityCommentsInput" class="activityComments" placeholder="{{$ "EnterComment" }}" id="postActivityCommentsInput" />
         </div>
     </div> 
 </div>
