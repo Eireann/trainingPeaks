@@ -49,15 +49,14 @@ function (
             "#startTimeInput":
             {
                 observe: "startTime",
-                eventsOverride: ["changeTime"],
+                events: ["changeTime"],
                 onGet: "getStartTime",
                 onSet: "setStartTime"
             },
             "#qv-header-distance":
             {
                 observe: "distance",
-                onGet: "getDistance",
-                updateModel: ""
+                onGet: "getDistance"
             },
             "#qv-header-totaltime":
             {
@@ -134,7 +133,7 @@ function (
                 return value;
             }
         },
-        
+
         updateTitle: function(newViewValue, options)
         {
             var self = this;
