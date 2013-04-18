@@ -1,6 +1,6 @@
 ﻿<div class="commentHeader">
     <span class="name">{{ firstName }} {{ lastName }}</span>
-    <span class="date">{{ printDate dateCreated "ddd, MM/DD/YY" }}</span>
+    <span class="date"><span class="weekdayName">{{ printDate dateCreated "ddd" }}</span> {{ printDate dateCreated "MMMM d, YYYY" }}</span>
 </div>
 <div class="commentBody">
     {{ comment }}

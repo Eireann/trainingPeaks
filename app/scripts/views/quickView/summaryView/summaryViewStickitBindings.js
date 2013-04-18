@@ -7,8 +7,7 @@
 function(
     printUnitLabel,
     printTimeFromDecimalHours,
-    conversion,
-    workoutCommentsTemplate
+    conversion
 )
 {
     var summaryViewStickitBindings = {
@@ -322,15 +321,17 @@ function(
                 observe: "description",
                 updateModel: "updateModel"
             },
-            "#postActivityCommentsInput": 
+            "#postActivityCommentsInput":
             {
                 observe: "newComment",
-                onSet: "setTextField"
+                onSet: "setTextField",
+                events: ["blur", "change"]
             },
             "#preActivityCommentsInput": 
             {
                 observe: "coachComments",
-                onSet: "setTextField"
+                onSet: "setTextField",
+                events: ["blur", "change"]
             }
         },
 
