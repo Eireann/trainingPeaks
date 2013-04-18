@@ -22,6 +22,10 @@
         margin-bottom: 3px; 
         padding: 10px;
         @include linearGradient(bottom, rgb(255,255,255), rgba(255,255,255,0.90)); 
+        label
+        {
+            cursor: default;
+        }
     }
 
     // this is what gives the top and side shadows

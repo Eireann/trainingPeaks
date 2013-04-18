@@ -253,7 +253,7 @@
                 border: none;
                 padding: 0px;
                 width: 15px;
-				cursor: pointer;
+				cursor: default;
                         
             }
         }
@@ -264,6 +264,7 @@
 		.dayHeader
 		{
 			background-color: $thisWeekBlue;
+            cursor: default;
 		}
 
 		.today
@@ -302,6 +303,7 @@
 		border-width: 1px;
 		position: relative;
 		z-index: 1;
+        cursor: default;
 
         div
         {
