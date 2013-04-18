@@ -215,9 +215,10 @@ function (_, moment, TP)
             return response;
         },
 
-        toJSON: function(options) {
+        toJSON: function(options)
+        {
             var attributes = _.deepClone(this.attributes);
-            attributes.workoutComments = this.getPostActivityComments().toJSON();
+            attributes.workoutComments = new TP.Collection(this.attributes.workoutComments).toJSON();
             return attributes;
         }
 
