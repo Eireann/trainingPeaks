@@ -23,8 +23,6 @@ function (
             var input = this.$("#postActivityCommentsInput");
             setImmediate(function()
             {
-
-                console.log(input.css("height"));
                 if (!input.val())
                 {
                     input.css("height", "");
