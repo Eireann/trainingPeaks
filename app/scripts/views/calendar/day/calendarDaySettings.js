@@ -1,7 +1,6 @@
 define(
 [
     "TP",
-    "utilities/dates",
     "setImmediate",
     "jqueryOutside",
     "views/calendar/newItemView",
@@ -9,7 +8,7 @@ define(
     "hbs!templates/views/calendar/day/calendarDaySettings",
     "hbs!templates/views/confirmationViews/deleteConfirmationView"
 ],
-function(TP, DateUtils, setImmediate, jqueryOutside, NewItemView, UserConfirmationView, calendarDaySettingsTemplate, deleteConfirmationView)
+function(TP, setImmediate, jqueryOutside, NewItemView, UserConfirmationView, calendarDaySettingsTemplate, deleteConfirmationView)
 {
     return TP.ItemView.extend(
     {
@@ -71,7 +70,7 @@ function(TP, DateUtils, setImmediate, jqueryOutside, NewItemView, UserConfirmati
             this.on("close", this.hideSettings, this);
 
             // highlight the day
-            if (DateUtils.isThisWeek(this.model.id))
+            if (TP.utils.datetime.isThisWeek(this.model.id))
             {
                 this.$el.find(".hoverBox").addClass("thisWeek");
             }

@@ -1,11 +1,32 @@
 requirejs(
 [
+    "moment",
     "utilities/datetime/datetime"
 ],
-function(datetimeUtils)
+function(moment, datetimeUtils)
 {
     describe("datetime", function()
     {
+
+        describe("isThisWeek", function()
+        {
+            it("should return true for today", function()
+            {
+                expect(datetimeUtils.isThisWeek(moment())).toBe(true);
+            });
+
+            it("should return false for last week", function()
+            {
+                expect(datetimeUtils.isThisWeek(moment().add("weeks", -1))).toBe(false);
+            });
+
+            it("should return false for next year", function()
+            {
+                expect(datetimeUtils.isThisWeek(moment().add("years", 1))).toBe(false);
+            });
+
+        });
+
         describe("convert", function()
         {
             describe("timeStringToDecimalHours", function()

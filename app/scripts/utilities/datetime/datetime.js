@@ -11,6 +11,13 @@
         longDateFormat: "YYYY-MM-DDThh:mm:ss",
 
         format: format,
-        convert: convert
+        convert: convert,
+
+        isThisWeek: function(dateToCheck)
+        {
+            var today = moment();
+            var weekDate = moment(dateToCheck);
+            return weekDate.isoWeek() === today.isoWeek() && weekDate.year() === today.year();
+        }
     };
 });
