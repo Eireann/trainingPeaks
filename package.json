@@ -43,12 +43,13 @@
     "grunt-istanbul": "https://github.com/taichi/grunt-istanbul/tarball/master",
     "grunt-lib-contrib": "~0.5.2",
     "tmp": "0.0.16",
-    "plato":"~0.4.4",
+    "plato": "~0.4.4",
     "jasmine-node": "~1.0.28",
     "jsdom": "~0.3.4",
     "requirejs": "~2.1.2",
-    "underscore":"~1.4.3",
-    "findup-sync": "0.1.1"
+    "underscore": "~1.4.3",
+    "findup-sync": "0.1.1",
+    "bower": "~0.8.6"
   },
   "preferGlobal": "false"
 }
