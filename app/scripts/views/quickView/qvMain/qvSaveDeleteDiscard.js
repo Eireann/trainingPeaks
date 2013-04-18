@@ -25,8 +25,18 @@ function(
         initializeSaveDeleteDiscard: function()
         {
             _.extend(this.events, this.saveDeleteDiscardEvents);
+
             this.on("render", this.saveDeleteDiscardOnRender, this);
             this.on("close", this.removeSaveOnModelChange, this);
+
+            if (this.isNewWorkout)
+                this.model.on("sync", this.addWorkoutToDay, this);
+        },
+
+        addWorkoutToDay: function()
+        {
+            this.model.off("sync", this.addWorkoutToDay);
+            this.dayModel.trigger("workout:added", this.model);
         },
 
         saveDeleteDiscardOnRender: function()
@@ -55,9 +65,8 @@ function(
 
                 // The model properties we are checking for here are not bound via StickIt, so
                 // they have to be saved manually when the model changes.
-                if (
-                    _.has(this.model.changed, "coachComments") || _.has(this.model.changed, "workoutComment") ||
-                    _.has(this.model.changed, "newComment") || _.has(this.model.changed, "workoutTypeValueId"))
+                if(_.has(this.model.changed, "coachComments") || _.has(this.model.changed, "workoutComment") ||
+                   _.has(this.model.changed, "newComment") || _.has(this.model.changed, "workoutTypeValueId"))
                 {
                     this.model.save();
                 }
@@ -79,11 +88,11 @@ function(
 
         onDiscardChangesConfirmed: function()
         {
-            // Only discard changes and save if we already have an id (if the workout is not new)
-            if (this.model.id)
+            if (this.isNewWorkout)
+                this.model.destroy();
+            else if (this.model.id)
                 this.model.revert();
 
-            this.trigger("discard");
             this.close();
         },
 
@@ -96,15 +105,14 @@ function(
 
         onDeleteWorkoutConfirmed: function()
         {
-            this.close();
             // pass wait here so it won't actually remove the model until the server call returns,
             // which will then remove the view and the waiting indicator
             this.model.destroy({ wait: true });
+            this.close();
         },
 
         onCloseClicked: function()
         {
-            this.trigger("close");
             this.close();
         }
     };

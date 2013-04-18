@@ -200,7 +200,7 @@ module.exports = function(grunt)
         watch:
         {
             compass: {
-                files: ["Gruntfile.js", "app/scss/*.scss"],
+                files: ["Gruntfile.js", "app/scss/**/*.scss"],
                 tasks: "compass:debug"
             }
         },
