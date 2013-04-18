@@ -16,7 +16,7 @@ define(
 function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySettingsView, NewItemView, CalendarDayDragStateView, CalendarDayTemplate)
 {
 
-    var today = moment().format("YYYY-MM-DD");
+    var today = moment().format(TP.utils.datetime.shortDateFormat);
 
     var CalendarDayLabelView = TP.ItemView.extend(
     {

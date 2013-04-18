@@ -67,9 +67,15 @@
                     }
                 }
 
-                #goToLastWeekButton
-                {
+                #goToLastWeekButton {
                     border-right-width: 0px;
+					background: url(../../assets/images/calendarImages/leftArrow.png) no-repeat 0 0;
+					background-size: 34px 20px;
+                }
+
+				#goToNextWeekButton {
+					background: url(../../assets/images/calendarImages/rightArrow.png) no-repeat 0 0;
+					background-size: 33px 20px;
                 }
                 
             }
@@ -79,10 +85,14 @@
                 float:left;
                 @include headerButtons(0px, 71px, 12px);
 				margin-left:7px;
+				
             }
 
 			.today button {
 				color:$TPGrey8;
+				padding:1px 0 2px;
+				background: url(../../assets/images/calendarImages/background-gradient-button.png) repeat-x 0 0;
+				background-size: 100% 20px;
 			}
 
 			.printRefreshButtons
@@ -96,28 +106,24 @@
                         padding-top: 1px;
                     }
                 }
+
+			
 				.printButton {
-					background-image: url(../../assets/images/calendarImages/icon-print@2x.png), -moz-linear-gradient(top,  #ffffff,  #e0dddd);
-					background-image: url(../../assets/images/calendarImages/icon-print@2x.png), -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#e0dddd));
-					background-position: 0 0;
-					background-size: 38px 20px;
+					background: url(../../assets/images/calendarImages/icon-print@2x.png) no-repeat 0 0;
+					background-size: 36px 20px;
+					width: 38px;
+					height: 22px;
 					}
-                .refreshButton
-                {
-					background-image: url(../../assets/images/calendarImages/icon-refresh@2x.png), -moz-linear-gradient(top,  #ffffff,  #e0dddd);
-					background-image: url(../../assets/images/calendarImages/icon-refresh@2x.png), -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#e0dddd));
-					background-size: 38px 20px;
-					background-position:0 0;
+                .refreshButton {
+					background: url(../../assets/images/calendarImages/icon-refresh@2x.png) no-repeat 0 0;
+					background-size: 36px 20px;
                     margin-left: 7px;
                 }
-                .settingsButton
-                {
-					background-image: url(../../assets/images/calendarImages/icon-settings@2x.png), -moz-linear-gradient(top,  #ffffff,  #e0dddd);
-					background-image: url(../../assets/images/calendarImages/icon-settings@2x.png), -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#e0dddd));
-					background-size: 31px 20px;
-					background-position:-1px 0;
+                .settingsButton {
+					background: url(../../assets/images/calendarImages/icon-settings@2x.png) no-repeat 0 0;
+					background-size: 29px 20px;
                     margin-left: 7px;
-					width:31px;
+					width: 31px;
                 }
             }
         }
@@ -238,7 +244,7 @@
                 border: none;
                 padding: 0px;
                 width: 15px;
-				cursor: pointer;
+				cursor: default;
                         
             }
         }
@@ -249,6 +255,7 @@
 		.dayHeader
 		{
 			background-color: $thisWeekBlue;
+            cursor: default;
 		}
 
 		.today
@@ -287,6 +294,7 @@
 		border-width: 1px;
 		position: relative;
 		z-index: 1;
+        cursor: default;
 
         div
         {

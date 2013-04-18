@@ -54,7 +54,7 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, c
             if (!this.collection)
                 throw "CalendarView needs a Collection!";
 
-            _.bindAll(this, "checkCurrentScrollPosition");
+            _.bindAll(this, "checkCurrentScrollPosition", "afterScrollToElement");
             
             // theMarsApp.user.on("change", this.setWorkoutColorization, this);
 
@@ -189,7 +189,7 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, c
         {
             this.scrolling = false;
             this.$el.find(".daysOfWeek").removeClass("scrollInProgress");
-            
+
             var uiOffset = this.ui.weeksContainer.offset();
             var currentWeek = $(document.elementFromPoint(uiOffset.left + 15, uiOffset.top + 15)).closest(".week");
             var nextWeek = currentWeek.next(".week");
@@ -199,9 +199,10 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, c
             if (!currentWeek || !currentWeek.offset())
                 return;
 
-            var currentWeekOffset = Math.abs(currentWeek.offset().top - weeksContainerTop);
-            var nextWeekOffset = Math.abs(nextWeek.offset().top - weeksContainerTop);
-
+            // at some zoom levels we end up with a fraction of a pixel difference, due to all of the browser scaling calculations, so round down
+            var currentWeekOffset = Math.floor(Math.abs(currentWeek.offset().top - weeksContainerTop));
+            var nextWeekOffset = Math.floor(Math.abs(nextWeek.offset().top - weeksContainerTop));
+            //console.log("Current week offset: " + currentWeekOffset);
             var threshhold = 100;
             var animationTimeout = 300;
             if (currentWeekOffset > 0 && currentWeekOffset <= threshhold)
@@ -273,7 +274,9 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, c
                 throw "Invalid scroll element - must be a .day or .week (" + $element.attr("class") + ")";
 
             var requestedElementOffsetFromContainer = $element.position().top;
-            var scrollToOffset = this.ui.weeksContainer.scrollTop() + requestedElementOffsetFromContainer - this.ui.weeksContainer.position().top;
+            var scrollToOffset = Math.round(this.ui.weeksContainer.scrollTop() + requestedElementOffsetFromContainer - this.ui.weeksContainer.position().top);
+
+            //console.log("Scrolling to: " + scrollToOffset);
 
             if (typeof animationTimeout === "undefined" && requestedElementOffsetFromContainer < 300)
                 animationTimeout = 500;
@@ -283,7 +286,13 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, c
             this.ui.weeksContainer.animate(
             {
                 scrollTop: scrollToOffset
-            }, animationTimeout, this.checkCurrentScrollPosition);
+            }, animationTimeout, this.afterScrollToElement);
+        },
+
+        afterScrollToElement: function()
+        {
+            this.checkCurrentScrollPosition();
+            //console.log("Scrolled to: " + this.ui.weeksContainer.scrollTop());
         },
 
         scrollToDate: function(targetDate, effectDuration)
@@ -293,8 +302,8 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, c
             if (typeof effectDuration === "undefined")
                 effectDuration = 500;
 
-            //theMarsApp.logger.debug(dateAsMoment.format("YYYY-MM-DD"));
-            var dateAsString = dateAsMoment.format("YYYY-MM-DD");
+            //theMarsApp.logger.debug(dateAsMoment.format(TP.utils.datetime.shortDateFormat));
+            var dateAsString = dateAsMoment.format(TP.utils.datetime.shortDateFormat);
             var selector = '.day[data-date="' + dateAsString + '"]';
             this.scrollToSelector(selector, effectDuration);
             this.setCurrentDate(targetDate);
@@ -343,7 +352,7 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, c
                 dateAsMoment.day(this.startOfWeekDayIndex + 6);
 
             if (currentDate)
-                this.calendarHeaderModel.set("date", dateAsMoment.format("YYYY-MM-DD"));
+                this.calendarHeaderModel.set("date", dateAsMoment.format(TP.utils.datetime.shortDateFormat));
         },
 
         fadeOut: function(duration)

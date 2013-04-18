@@ -1,20 +1,18 @@
 ﻿define(
 [
-    "utilities/conversion/convertTimeHoursToDecimal",
+    "TP",
     "utilities/conversion/convertToModelUnits",
     "utilities/conversion/convertToViewUnits",
-    "utilities/printTimeFromDecimalHours",
     "utilities/workoutTypeEnum2"
-], function (convertTimeHoursToDecimal, convertToModelUnits, convertToViewUnits, printTimeFromDecimalHours, workoutTypeEnum2)
+], function (TP, convertToModelUnits, convertToViewUnits, workoutTypeEnum2)
 {
     return {
-        convertTimeHoursToDecimal: convertTimeHoursToDecimal,
         convertToModelUnits: convertToModelUnits,
         convertToViewUnits: convertToViewUnits,
         
         getDistance: function (value, options)
         {
-            return +convertToViewUnits(value, "distance", null, null, 2);
+            return convertToViewUnits(value, "distance");
         },
 
         setDistance: function (value, options)
@@ -24,12 +22,12 @@
 
         getTime: function (value, options)
         {
-            return printTimeFromDecimalHours(value, true);
+            return TP.utils.datetime.format.timeFromDecimalHours(value, true);
         },
 
-        setTime: function (value, options)
+        setTime: function(value, options)
         {
-            return conversion.convertTimeHoursToDecimal(value);
+            return TP.utils.datetime.convert.timeToDecimalHours(value);
         },
 
         getPace: function (value, options)
@@ -44,7 +42,7 @@
 
         getSpeed: function (value, options)
         {
-            return +convertToViewUnits(value, "speed");
+            return convertToViewUnits(value, "speed");
         },
 
         setSpeed: function (value, options)
@@ -54,7 +52,7 @@
 
         getElevation: function (value, options)
         {
-            return +convertToViewUnits(value, "elevation");
+            return convertToViewUnits(value, "elevation");
         },
 
         setElevation: function (value, options)
@@ -79,7 +77,7 @@
 
         getTemperature: function (value, options)
         {
-            return +convertToViewUnits(value, "temperature");
+            return convertToViewUnits(value, "temperature");
         },
 
         setTemperature: function (value, options)

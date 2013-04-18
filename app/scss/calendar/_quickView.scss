@@ -21,6 +21,16 @@ input[disabled='disabled']
     @include box-shadow(2px 0px 7px 0px $TPGrey3);
     position: relative;
 
+    div
+    {
+        cursor: default;
+    }
+
+    span
+    {
+        cursor: default;
+    }
+
     .dateAndTime
     {
         float: left;
@@ -566,20 +576,31 @@ input[disabled='disabled']
     .comment
     {
 
+        font-size: $fontSizeSmall;
         margin-top:10px;
         margin-bottom:10px;
 
         .commentHeader
         {
-            font-size: $fontSizeXSmall;
+            // this becomes smaller because it's relative to the size above it ...
+            font-size: $fontSizeSmall;
             font-weight: $fontWeightBold;
             color: $TPGrey4;
             margin-bottom: 5px;
 
             .name
             {
-                margin-right: 20px;
+                margin-right: 5px;
             }
+
+            .date
+            {
+                .weekdayName
+                {
+                    text-transform: uppercase;
+                }
+            }
+
         }
 
     }
