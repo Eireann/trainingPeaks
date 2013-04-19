@@ -495,8 +495,15 @@ function(
             // Do the save!
             var newModelValue = options.observe === "description" ? newViewValue : this[options.onSet](newViewValue);
             this.model.set(options.observe, newModelValue);
+
+            if (options.observe === "distance" || options.observe === "totalTime")
+                this.model.set("velocityAverage", null);
+            else if (options.observe === "distancePlanned" || options.observe === "totalTimePlanned")
+                this.model.set("velocityPlanned", null);
+
             this.model.save();
         }
+
     };
 
     return summaryViewStickitBindings;
