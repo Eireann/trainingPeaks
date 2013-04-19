@@ -23,6 +23,15 @@ function(
 
             this.on("close", this.stickitBindingsOnClose, this);
             this.on("render", this.stickitBindingsOnRender, this);
+
+            // FIXME - we need to handle this on an api level
+            this.model.on("change:description", function()
+            {
+                this.model.set("description",
+                    this.fixNewlines(this.model.get("description")),
+                    { silent: true });
+            }, this);
+
         },
 
         stickitBindingsOnClose: function()
@@ -319,12 +328,15 @@ function(
             {
                 events: [ "blur", "keyup", "change", "cut", "paste" ],
                 observe: "description",
+                onSet: "setTextField",
+                onGet: "getTextField",
                 updateModel: "updateModel"
             },
             "#postActivityCommentsInput":
             {
                 observe: "newComment",
                 onSet: "setTextField",
+                onGet: "getTextField",
                 events: ["blur", "change", "keyup", "paste"],
                 updateModel: "updateModel"
             },
@@ -332,6 +344,7 @@ function(
             {
                 observe: "coachComments",
                 onSet: "setTextField",
+                onGet: "getTextField",
                 events: ["blur", "change", "keyup", "paste"],
                 updateModel: "updateModel"
             }
@@ -442,10 +455,20 @@ function(
             return value ? (Math.round(parseFloat(value))).toFixed(0) : 0;
         },
 
-
         setTextField: function(value, options)
         {
-            return value === "" ? null : value;
+            return value === "" ? null : this.fixNewlines(value);
+        },
+
+        getTextField: function(value, options)
+        {
+            return value === null ? "" : this.fixNewlines(value);
+        },
+
+        fixNewlines: function(value)
+        {
+            var newValue = value.replace(/\r\n/g, "\n").replace(/\n/g, "\r\n");
+            return newValue;
         },
 
         updateModel: function(newViewValue, options)
