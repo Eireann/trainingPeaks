@@ -73,15 +73,15 @@ function(
             "#tssPlannedField":
             {
                 observe: "tssPlanned",
-                onGet: "getNumber",
-                onSet: "setInteger",
+                onGet: "getTSS",
+                onSet: "setTSS",
                 updateModel: "updateModel"
             },
             "#tssCompletedField":
             {
                 observe: "tssActual",
-                onGet: "getNumber",
-                onSet: "setInteger",
+                onGet: "getTSS",
+                onSet: "setTSS",
                 updateModel: "updateModel"
             },
             "#normalizedPacePlannedField":
@@ -171,15 +171,15 @@ function(
             "#energyPlannedField":
             {
                 observe: "energyPlanned",
-                onGet: "getNumber",
-                onSet: "setInteger",
+                onGet: "getEnergy",
+                onSet: "setEnergy",
                 updateModel: "updateModel"
             },
             "#energyCompletedField":
             {
                 observe: "energy",
-                onGet: "getNumber",
-                onSet: "setInteger",
+                onGet: "getEnergy",
+                onSet: "setEnergy",
                 updateModel: "updateModel"
             },
             "#powerAvgField":
@@ -419,6 +419,27 @@ function(
         {
             return (Math.round(parseFloat(value) * 100) / 100).toFixed(2);
         },
+        
+        getTSS: function (value, options)
+        {
+            return +(Math.round(value * 10) / 10);
+        },
+
+        setTSS: function (value, options)
+        {
+            return (Math.round(parseFloat(value) * 10) / 10).toFixed(1);
+        },
+        
+        getEnergy: function (value, options)
+        {
+            return +(Math.round(value));
+        },
+
+        setEnergy: function (value, options)
+        {
+            return (Math.round(parseInt(value)));
+        },
+
 
         setTextField: function(value, options)
         {

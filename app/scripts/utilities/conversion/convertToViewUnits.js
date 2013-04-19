@@ -68,7 +68,7 @@ function(_, modelToViewConversionFactors)
 
     var convertToViewUnits = function(value, fieldType, defaultValueIfEmpty)
     {
-        if (!isNumeric(value))
+        if (!isNumeric(value) || Number(value) === 0)
         {
             if (!_.isUndefined(defaultValueIfEmpty))
             {
