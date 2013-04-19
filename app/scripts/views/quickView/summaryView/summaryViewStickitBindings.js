@@ -479,6 +479,7 @@ function(
         updateModel: function(newViewValue, options)
         {
             var self = this;
+            var saveTimeout = options.observe === "newComment" ? 60000 : 2000;
 
             var updateModel = function()
             {
@@ -495,7 +496,7 @@ function(
             if (options.eventType === "blur")
                 updateModel();
             else
-                this.updateModelTimeout = setTimeout(updateModel, 2000);
+                this.updateModelTimeout = setTimeout(updateModel, saveTimeout);
 
             return false;
         },
@@ -512,7 +513,7 @@ function(
             else if (!options.onGet)
                 doUpdateModel = currentModelValue == newViewValue ? false : true;
             else
-                doUpdateModel = (this[options.onGet](currentModelValue) == newViewValue) ? false : true;
+                doUpdateModel = (this[options.onGet](currentModelValue) == newViewValue || parseFloat(this[options.onGet](currentModelValue)) == parseFloat(newViewValue)) ? false : true;
             /*jsline eqeq: false*/
 
             return doUpdateModel;
