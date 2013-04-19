@@ -10,6 +10,7 @@
 input[disabled='disabled']
 {
     @include box-shadow(none);
+    cursor: default;
 }
 
 .QVHeader
