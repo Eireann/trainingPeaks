@@ -66,8 +66,7 @@ function(
                 // The model properties we are checking for here are not bound via StickIt, so
                 // they have to be saved manually when the model changes.
                 if(_.has(this.model.changed, "coachComments") || _.has(this.model.changed, "workoutComment") ||
-                   _.has(this.model.changed, "newComment") || _.has(this.model.changed, "workoutTypeValueId") ||
-                   _.has(this.model.changed, "startTime"))
+                    _.has(this.model.changed, "workoutTypeValueId") || _.has(this.model.changed, "startTime"))
                 {
                     this.model.save();
                 }

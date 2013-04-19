@@ -84,6 +84,7 @@ function(_, modelToViewConversionFactors)
             case "elevation":
                 return convertElevation(value);
             case "speed":
+                return convertSpeedToViewUnits(value);
             case "distance":
                 return convertDistanceToViewUnits(value);
             case "pace":
@@ -110,6 +111,11 @@ function(_, modelToViewConversionFactors)
     var convertDistanceToViewUnits = function(value)
     {
         return roundViewUnits(value * modelToViewConversionFactors["distance"][theMarsApp.user.get("units")]);
+    };
+
+    var convertSpeedToViewUnits = function(value)
+    {
+        return roundViewUnits(value * modelToViewConversionFactors["speed"][theMarsApp.user.get("units")]);
     };
 
     return convertToViewUnits;
