@@ -48,8 +48,7 @@
                 label
                 {
                     display:inline-block;
-                    cursor: -moz-grab;
-                    cursor: -webkit-grab;
+                    cursor: inherit;
                 }
                 
                 .units
@@ -70,8 +69,7 @@
                     border: none;
                     padding: 0px;
                     width: 15px;
-                    cursor: -moz-grab;
-                    cursor: -webkit-grab;
+                    cursor: default;
                 }
             }
         }
@@ -82,8 +80,7 @@
             label
             {
                 font-weight: bold;
-                cursor: -moz-grab;
-                cursor: -webkit-grab;
+                cursor: inherit;
             
             }
             
@@ -95,8 +92,7 @@
                 font-family: $navigationFontFamilyRegular;
                 text-align: left;
                 line-height: 12px;
-                cursor: -moz-grab;
-                cursor: -webkit-grab;
+                cursor: inherit;
             }
         }
     }
@@ -120,8 +116,7 @@
         {
             margin-top:10px;
             margin-bottom:2px;
-            cursor: -moz-grab;
-            cursor: -webkit-grab;
+            cursor: inherit;
         }
 
         label:first
