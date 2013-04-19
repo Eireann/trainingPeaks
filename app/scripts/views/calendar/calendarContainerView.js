@@ -202,20 +202,23 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, c
             // at some zoom levels we end up with a fraction of a pixel difference, due to all of the browser scaling calculations, so round down
             var currentWeekOffset = Math.floor(Math.abs(currentWeek.offset().top - weeksContainerTop));
             var nextWeekOffset = Math.floor(Math.abs(nextWeek.offset().top - weeksContainerTop));
-            //console.log("Current week offset: " + currentWeekOffset);
+            //console.debug("Current week offset: " + currentWeekOffset);
             var threshhold = 100;
             var animationTimeout = 300;
-            if (currentWeekOffset > 0 && currentWeekOffset <= threshhold)
+
+            // use 3px as allowable minimum margin, because of browser zoom calculation errors
+            var minimumOffset = 3;
+            if (currentWeekOffset > minimumOffset && currentWeekOffset <= threshhold)
             {
                 this.scrollToElement(currentWeek, animationTimeout);
                 this.snappedToWeekHeader = true;
             }
-            else if (nextWeekOffset > 0 && nextWeekOffset <= threshhold)
+            else if (nextWeekOffset > minimumOffset && nextWeekOffset <= threshhold)
             {
                 this.scrollToElement(nextWeek, animationTimeout);
                 this.snappedToWeekHeader = true;
             }
-            else if (nextWeekOffset === 0 || currentWeekOffset === 0)
+            else if (nextWeekOffset <= minimumOffset || currentWeekOffset <= minimumOffset)
             {
                 this.snappedToWeekHeader = true;
             }
@@ -276,7 +279,7 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, c
             var requestedElementOffsetFromContainer = $element.position().top;
             var scrollToOffset = Math.round(this.ui.weeksContainer.scrollTop() + requestedElementOffsetFromContainer - this.ui.weeksContainer.position().top);
 
-            //console.log("Scrolling to: " + scrollToOffset);
+            //console.debug("Scrolling to: " + scrollToOffset);
 
             if (typeof animationTimeout === "undefined" && requestedElementOffsetFromContainer < 300)
                 animationTimeout = 500;
@@ -292,7 +295,7 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, c
         afterScrollToElement: function()
         {
             this.checkCurrentScrollPosition();
-            //console.log("Scrolled to: " + this.ui.weeksContainer.scrollTop());
+            //console.debug("Scrolled to: " + this.ui.weeksContainer.scrollTop());
         },
 
         scrollToDate: function(targetDate, effectDuration)

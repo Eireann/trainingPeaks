@@ -51,7 +51,7 @@ function(_, workoutLayoutFormatter, getKeyStatField, conversion, printing)
             var prefix = field.prefix ? field.prefix + ": " : "";
             var fieldValue = this.model.get(field.name);
             
-            if (fieldValue)
+            if (fieldValue) 
             {
                 if (field.conversion)
                 {

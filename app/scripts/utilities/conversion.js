@@ -1,11 +1,12 @@
 ﻿define(
 [
+    "moment",
     "utilities/conversion/convertTimeHoursToDecimal",
     "utilities/conversion/convertToModelUnits",
     "utilities/conversion/convertToViewUnits",
     "utilities/printTimeFromDecimalHours",
     "utilities/workoutTypeEnum2"
-], function (convertTimeHoursToDecimal, convertToModelUnits, convertToViewUnits, printTimeFromDecimalHours, workoutTypeEnum2)
+], function (moment, convertTimeHoursToDecimal, convertToModelUnits, convertToViewUnits, printTimeFromDecimalHours, workoutTypeEnum2)
 {
     return {
         convertTimeHoursToDecimal: convertTimeHoursToDecimal,
@@ -30,6 +31,12 @@
         setTime: function (value, options)
         {
             return conversion.convertTimeHoursToDecimal(value);
+        },
+        
+        getTimeOfDay: function(value, options)
+        {
+            var timeOfDay = moment(value);
+            return timeOfDay.format("hh:mm:ss A");
         },
 
         getPace: function (value, options)
@@ -93,6 +100,36 @@
             //TODO: make this not suck
             return workoutTypeEnum2[value];
         },
+        
+        getIF: function (value, options)
+        {
+            return +(Math.round(value * 100) / 100);
+        },
+
+        setIF: function (value, options)
+        {
+            return (Math.round(parseFloat(value) * 100) / 100).toFixed(2);
+        },
+
+        getTSS: function (value, options)
+        {
+            return +(Math.round(value * 10) / 10);
+        },
+
+        setTSS: function (value, options)
+        {
+            return (Math.round(parseFloat(value) * 10) / 10).toFixed(1);
+        },
+
+        getEnergy: function (value, options)
+        {
+            return +(Math.round(value));
+        },
+
+        setEnergy: function (value, options)
+        {
+            return (Math.round(parseFloat(value))).toFixed(0);
+        },
 
         formatWorkoutComments: function(commentsArray, options)
         {
@@ -102,6 +139,8 @@
             }
             return "";
         }
+        
+
         
     };
 });
