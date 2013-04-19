@@ -57,7 +57,7 @@ function(_, workoutLayoutFormatter, getKeyStatField, conversion, printing)
                 {
                     fieldValue = conversion[field.conversion](fieldValue);
                 }
-                var units = field.unitHelper ? " " + printing.printUnitLabel(field.unitHelper) : "";
+                var units = field.unitHelper ? " " + printing.printUnitLabel(field.unitHelper, null, this) : "";
                 //TODO: create entire list up, then do one insert into main dom
                 var element = $("<p>" + prefix + fieldValue + units + "</p>");
                 element.insertBefore(this.ui.layoutAnchor);

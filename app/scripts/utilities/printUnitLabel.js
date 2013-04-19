@@ -1,6 +1,8 @@
 define(
-[],
-function()
+[
+    "utilities/workoutLayoutFormatter"
+],
+function(workoutLayoutFormatter)
 {
     var unitsHash =
     {
@@ -103,7 +105,7 @@ function()
         }
     };
     
-    var printUnitLabel = function(fieldName, sportType)
+    var printUnitLabel = function(fieldName, sportType, viewContext)
     {
         var currentUnits = theMarsApp.user.get("units");
         if (!unitsHash.hasOwnProperty(fieldName))
@@ -112,6 +114,14 @@ function()
         if (sportType !== undefined && unitsHash[fieldName].hasOwnProperty(sportType))
             return unitsHash[fieldName][sportType][currentUnits];
         
+        //TODO: refactor
+        if (viewContext && fieldName == "tss")
+        {
+            var tssSource = viewContext.model.get("tssSource");
+            var tssAbbreviation = workoutLayoutFormatter.trainingStressScoreSource[tssSource].abbreviation;
+            return tssAbbreviation;
+        }
+
         return unitsHash[fieldName][currentUnits];
     };
 

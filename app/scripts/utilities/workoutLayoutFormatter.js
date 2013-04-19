@@ -50,6 +50,15 @@ function ()
             "39": { name: "ifPlanned", prefix: "P", conversion: "getIF", unitHelper: "if" },
             "40": { name: "caloriesPlanned", prefix: "P", conversion: "getNumber", unitHelper: "calories" },
             "41": { name: "energyPlanned", prefix: "P", conversion: "getNumber", unitHelper: "energy" }
+        },
+        trainingStressScoreSource:
+        {
+            "0": { name: "Undefined", abbreviation: "TSS*" },
+            "1": { name: "PowerTss", abbreviation: "TSS" },
+            "2": { name: "RunningTss", abbreviation: "rTSS" },
+            "3": { name: "SwimmingTss", abbreviation: "sTSS" },
+            "4": { name: "HeartRateTss", abbreviation: "hrTSS" },
+            "5": { name: "TrimpsTss", abbreviation: "tTSS" },
         }
     };
 });
