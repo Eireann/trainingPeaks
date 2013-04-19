@@ -437,7 +437,7 @@ function(
 
         setEnergy: function (value, options)
         {
-            return (Math.round(parseInt(value)));
+            return (Math.round(parseFloat(value))).toFixed(0);
         },
 
 
