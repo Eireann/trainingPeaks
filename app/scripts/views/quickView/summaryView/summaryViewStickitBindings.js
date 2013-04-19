@@ -157,15 +157,15 @@ function(
             "#ifPlannedField":
             {
                 observe: "ifPlanned",
-                onGet: "getNumber",
-                onSet: "setInteger",
+                onGet: "getIF",
+                onSet: "setIF",
                 updateModel: "updateModel"
             },
             "#ifCompletedField":
             {
                 observe: "if",
-                onGet: "getNumber",
-                onSet: "setFloat",
+                onGet: "getIF",
+                onSet: "setIF",
                 updateModel: "updateModel"
             },
             "#energyPlannedField":
@@ -408,6 +408,16 @@ function(
         setTemperature: function(value, options)
         {
             return conversion.convertToModelUnits(parseInt(value, 10), "temperature");
+        },
+        
+        getIF: function (value, options)
+        {
+            return +(Math.round(value * 100) / 100);
+        },
+
+        setIF: function (value, options)
+        {
+            return (Math.round(parseFloat(value) * 100) / 100).toFixed(2);
         },
 
         setTextField: function(value, options)

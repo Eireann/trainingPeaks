@@ -93,6 +93,16 @@
             //TODO: make this not suck
             return workoutTypeEnum2[value];
         },
+        
+        getIF: function (value, options)
+        {
+            return +(Math.round(value * 100) / 100);
+        },
+
+        setIF: function (value, options)
+        {
+            return (Math.round(parseFloat(value) * 100) / 100).toFixed(2);
+        },
 
         formatWorkoutComments: function(commentsArray, options)
         {
@@ -102,6 +112,8 @@
             }
             return "";
         }
+        
+
         
     };
 });

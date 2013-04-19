@@ -45,9 +45,9 @@ function ()
             "30": { name: "coachComments", prefix: "P" },
             "31": { name: "workoutComments", prefix: "Post", conversion: "formatWorkoutComments" },
             "35": { name: "tssActual", prefix: "C", conversion: "getNumber", unitHelper: "tss" },
-            "36": { name: "if", prefix: "C", conversion: "getNumber", unitHelper: "if" },
+            "36": { name: "if", prefix: "C", conversion: "getIF", unitHelper: "if" },
             "38": { name: "tssPlanned", prefix: "P", conversion: "getNumber", unitHelper: "tss" },
-            "39": { name: "ifPlanned", prefix: "P", conversion: "getNumber", unitHelper: "if" },
+            "39": { name: "ifPlanned", prefix: "P", conversion: "getIF", unitHelper: "if" },
             "40": { name: "caloriesPlanned", prefix: "P", conversion: "getNumber", unitHelper: "calories" },
             "41": { name: "energyPlanned", prefix: "P", conversion: "getNumber", unitHelper: "energy" }
         }
