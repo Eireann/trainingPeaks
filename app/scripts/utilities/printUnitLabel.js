@@ -115,7 +115,7 @@ function(workoutLayoutFormatter)
             return unitsHash[fieldName][sportType][currentUnits];
         
         //TODO: refactor
-        if (viewContext && fieldName == "tss")
+        if (viewContext && fieldName === "tss")
         {
             var tssSource = viewContext.model.get("tssSource");
             var tssAbbreviation = workoutLayoutFormatter.trainingStressScoreSource[tssSource].abbreviation;

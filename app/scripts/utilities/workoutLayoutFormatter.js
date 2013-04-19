@@ -58,7 +58,7 @@ function ()
             "2": { name: "RunningTss", abbreviation: "rTSS" },
             "3": { name: "SwimmingTss", abbreviation: "sTSS" },
             "4": { name: "HeartRateTss", abbreviation: "hrTSS" },
-            "5": { name: "TrimpsTss", abbreviation: "tTSS" },
+            "5": { name: "TrimpsTss", abbreviation: "tTSS" }
         }
     };
 });
