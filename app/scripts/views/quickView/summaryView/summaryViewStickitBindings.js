@@ -412,32 +412,32 @@ function(
         
         getIF: function (value, options)
         {
-            return +(Math.round(value * 100) / 100);
+            return value ? +(Math.round(value * 100) / 100) : "";
         },
 
         setIF: function (value, options)
         {
-            return (Math.round(parseFloat(value) * 100) / 100).toFixed(2);
+            return value ? (Math.round(parseFloat(value) * 100) / 100).toFixed(2) : 0;
         },
         
         getTSS: function (value, options)
         {
-            return +(Math.round(value * 10) / 10);
+            return value ? (Math.round(value * 10) / 10) : "";
         },
 
         setTSS: function (value, options)
         {
-            return (Math.round(parseFloat(value) * 10) / 10).toFixed(1);
+            return value ? (Math.round(parseFloat(value) * 10) / 10).toFixed(1) : 0;
         },
         
         getEnergy: function (value, options)
         {
-            return +(Math.round(value));
+            return value ? +(Math.round(value)) : "";
         },
 
         setEnergy: function (value, options)
         {
-            return (Math.round(parseFloat(value))).toFixed(0);
+            return value ? (Math.round(parseFloat(value))).toFixed(0) : 0;
         },
 
 
@@ -469,7 +469,7 @@ function(
 
             return false;
         },
-        
+
         checkIfModelUpdateRequired: function(newViewValue, options)
         {
             var doUpdateModel;
