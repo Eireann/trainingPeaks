@@ -91,8 +91,8 @@ function (TP, WeekSummaryView, workoutTypeEnum)
 
             expect(view.model.get("totalTimeCompleted")).toBe(0);
             expect(view.model.get("totalTimePlanned")).toBe(0);
-            expect(view.model.get("tssCompleted")).toBe(0);
-            expect(view.model.get("tssPlanned")).toBe(0);
+            expect(view.model.get("tssCompleted")).toBe('0');
+            expect(view.model.get("tssPlanned")).toBe('0');
 
             dayModel1.itemsCollection.add(workout1);
             
@@ -100,8 +100,8 @@ function (TP, WeekSummaryView, workoutTypeEnum)
 
             expect(view.model.get("totalTimeCompleted")).toBe(1);
             expect(view.model.get("totalTimePlanned")).toBe(2);
-            expect(view.model.get("tssCompleted")).toBe(100);
-            expect(view.model.get("tssPlanned")).toBe(200);
+            expect(view.model.get("tssCompleted")).toBe('100');
+            expect(view.model.get("tssPlanned")).toBe('200');
 
             dayModel1.itemsCollection.add(workout2);
             dayModel2.itemsCollection.add(workout3);
@@ -111,8 +111,8 @@ function (TP, WeekSummaryView, workoutTypeEnum)
             
             expect(view.model.get("totalTimeCompleted")).toBe(10);
             expect(view.model.get("totalTimePlanned")).toBe(20);
-            expect(view.model.get("tssCompleted")).toBe(1000);
-            expect(view.model.get("tssPlanned")).toBe(2000);
+            expect(view.model.get("tssCompleted")).toBe('1000');
+            expect(view.model.get("tssPlanned")).toBe('2000');
         });
 
         it("Should aggregate weekly workout totals by workout type correctly", function()
