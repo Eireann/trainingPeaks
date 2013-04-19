@@ -617,6 +617,7 @@ input[disabled='disabled']
         .commentBody
         {
             font-size: $fontSizeSmall;
+            white-space: pre;
         }
 
     }
