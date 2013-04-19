@@ -84,7 +84,7 @@ function(
                 onSet: "setTSS",
                 updateModel: "updateModel"
             },
-            "#normalizedPacePlannedField":
+            "#normalizedPaceCompletedField":
             {
                 observe: "normalizedSpeedActual",
                 onGet: "getPace",
