@@ -24,6 +24,11 @@ function(
             this.on("close", this.stickitBindingsOnClose, this);
             this.on("render", this.stickitBindingsOnRender, this);
 
+            this.fixNewlinesOnModelDescription();
+        },
+
+        fixNewlinesOnModelDescription: function()
+        {
             // FIXME - we need to handle this on an api level
             this.model.on("change:description", function()
             {
