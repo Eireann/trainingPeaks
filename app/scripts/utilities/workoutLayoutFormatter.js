@@ -34,7 +34,7 @@ function ()
             "3": { name: "distance", prefix: "C", conversion: "getDistance", unitHelper: "distance" },
             "4": { name: "distancePlanned", prefix: "P", conversion: "getDistance", unitHelper: "distance" },
             "5": { name: "calories", prefix: "C", conversion:"getNumber", unitHelper: "calories" },
-            "6": { name: "energy", prefix: "C", conversion: "getNumber", unitHelper: "energy" },
+            "6": { name: "energy", prefix: "C", conversion: "getEnergy", unitHelper: "energy" },
             "7": { name: "totalTime", prefix: "C", conversion: "getTime"},
             "8": { name: "totalTimePlanned", prefix: "P", conversion: "getTime"},
             "13": { name: "tempAvg", prefix: "", conversion: "getTemperature", unitHelper: "temperature" },
@@ -49,7 +49,7 @@ function ()
             "38": { name: "tssPlanned", prefix: "P", conversion: "getNumber", unitHelper: "tss" },
             "39": { name: "ifPlanned", prefix: "P", conversion: "getIF", unitHelper: "if" },
             "40": { name: "caloriesPlanned", prefix: "P", conversion: "getNumber", unitHelper: "calories" },
-            "41": { name: "energyPlanned", prefix: "P", conversion: "getNumber", unitHelper: "energy" }
+            "41": { name: "energyPlanned", prefix: "P", conversion: "getEnergy", unitHelper: "energy" }
         },
         trainingStressScoreSource:
         {
