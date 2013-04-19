@@ -144,8 +144,8 @@ function(TP, determineCompletedWorkout, workoutTypeEnum, WeekSummarySettings, we
                 totalDaysCompleted: _.keys(completedValues.completedDays).length,
                 totalDistancePlanned: plannedValues.totalDistance,
                 totalDistanceCompleted: completedValues.totalDistance,
-                totalEnergyPlanned: plannedValues.totalEnergy,
-                totalEnergyCompleted: completedValues.totalEnergy,
+                totalEnergyPlanned: plannedValues.totalEnergy.toFixed(0),
+                totalEnergyCompleted: completedValues.totalEnergy.toFixed(0),
                 bikeDistancePlanned: plannedValues.distanceByWorkoutType[workoutTypeEnum["Bike"]],
                 bikeDistanceCompleted: completedValues.distanceByWorkoutType[workoutTypeEnum["Bike"]],
                 runDistancePlanned: plannedValues.distanceByWorkoutType[workoutTypeEnum["Run"]],
@@ -164,8 +164,8 @@ function(TP, determineCompletedWorkout, workoutTypeEnum, WeekSummarySettings, we
                 strengthDurationPlanned: plannedValues.durationByWorkoutType[workoutTypeEnum["Strength"]],
                 strengthDurationCompleted: completedValues.durationByWorkoutType[workoutTypeEnum["Strength"]],
                 strengthDaysCompleted: _.keys(completedValues.completedDaysByWorkoutType[workoutTypeEnum["Strength"]]).length,
-                tssPlanned: plannedValues.cumulativeTss,
-                tssCompleted: completedValues.cumulativeTss
+                tssPlanned: plannedValues.cumulativeTss.toFixed(0),
+                tssCompleted: completedValues.cumulativeTss.toFixed(0)
             },
             { silent: true });
         },

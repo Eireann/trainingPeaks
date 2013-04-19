@@ -184,7 +184,8 @@ function(TP, initializeAjaxAuth, ajaxCaching, initializeAjaxTimezone, Session, U
         live: "https://api.trainingpeaks.com",
         uat: "http://api.uat.trainingpeaks.com",
         dev: "http://api.dev.trainingpeaks.com",
-        local: "http://localhost:8900"
+        local: "http://localhost:8900",
+        todd: "DEV20-T430:8900"
     };
 
     // get environment name from index.html build target
