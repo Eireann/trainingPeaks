@@ -481,8 +481,8 @@ function(
             /*jslint eqeq: true*/
             if (options.observe === "description")
                 doUpdateModel = (newViewValue === "" && currentModelValue === null ? false : (newViewValue != currentModelValue));
-            else if (options.observe === "newComment")
-                doUpdateModel = newViewValue && newViewValue.trim() ? true : false;
+            else if (!options.onGet)
+                doUpdateModel = currentModelValue == newViewValue ? false : true;
             else
                 doUpdateModel = (this[options.onGet](currentModelValue) == newViewValue) ? false : true;
             /*jsline eqeq: false*/
