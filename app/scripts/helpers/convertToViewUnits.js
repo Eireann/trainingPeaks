@@ -19,7 +19,8 @@ function(Handlebars, conversion)
             defaultValueIfEmpty = undefined;
         }
         return conversion.convertToViewUnits(value, fieldType, defaultValueIfEmpty);
-    }
+    };
+
     Handlebars.registerHelper("convertToViewUnits", convertToViewUnitsHelper);
     return convertToViewUnitsHelper;
 });
