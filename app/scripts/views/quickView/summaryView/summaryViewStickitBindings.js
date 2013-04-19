@@ -325,13 +325,15 @@ function(
             {
                 observe: "newComment",
                 onSet: "setTextField",
-                events: ["blur", "change"]
+                events: ["blur", "change", "keyup", "paste"],
+                updateModel: "updateModel"
             },
             "#preActivityCommentsInput": 
             {
                 observe: "coachComments",
                 onSet: "setTextField",
-                events: ["blur", "change"]
+                events: ["blur", "change", "keyup", "paste"],
+                updateModel: "updateModel"
             }
         },
 
@@ -455,7 +457,7 @@ function(
                 if (self.checkIfModelUpdateRequired(newViewValue, options))
                     self.performModelUpdate(newViewValue, options);
             };
-            
+
             if (this.updateModelTimeout)
                 clearTimeout(this.updateModelTimeout);
 
@@ -478,7 +480,9 @@ function(
             // DO coerce type in this situation, since we only care about truthy/falsy'ness.
             /*jslint eqeq: true*/
             if (options.observe === "description")
-                doUpdateModel = (newViewValue === "" && currentModelValue === null ? false : (newViewValue != currentModelValue));    
+                doUpdateModel = (newViewValue === "" && currentModelValue === null ? false : (newViewValue != currentModelValue));
+            else if (options.observe === "newComment")
+                doUpdateModel = newViewValue && newViewValue.trim() ? true : false;
             else
                 doUpdateModel = (this[options.onGet](currentModelValue) == newViewValue) ? false : true;
             /*jsline eqeq: false*/
