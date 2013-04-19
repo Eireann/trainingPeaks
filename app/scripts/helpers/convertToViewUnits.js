@@ -14,7 +14,7 @@ function(Handlebars, conversion)
     // wrapping here because handlebars passes extra parameters - like the model context - that confuse the converter
     var convertToViewUnitsHelper = function(value, fieldType, defaultValueIfEmpty, handlebarsContext)
     {
-        if (arguments.length == 3)
+        if (arguments.length === 3)
         {
             defaultValueIfEmpty = undefined;
         }
