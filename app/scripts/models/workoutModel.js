@@ -2,9 +2,10 @@
 [
     "underscore",
     "moment",
-    "TP"
+    "TP",
+    "models/workoutDetails"
 ],
-function (_, moment, TP)
+function (_, moment, TP, WorkoutDetailsModel)
 {
     var WorkoutModel = TP.APIModel.extend(
     {
@@ -82,13 +83,17 @@ function (_, moment, TP)
             "cadenceMaximum": null,
             "lastModifiedDate": null,
             "startTime": null,
-            "startTimePlanned": null
+            "startTimePlanned": null,
+            
+            "details": null
         },
 
         initialize: function()
         {
             TP.APIModel.prototype.initialize.apply(this, arguments);
             _.bindAll(this, "checkpoint", "revert");
+
+            this.set("details", new WorkoutDetailsModel({ workoutId: this.get("workoutId") }));
         },
         
         checkpoint: function()
