@@ -255,7 +255,8 @@
 		.dayHeader
 		{
 			background-color: $thisWeekBlue;
-            cursor: default;
+            cursor: -moz-grab;
+            cursor: -webkit-grab;
 		}
 
 		.today

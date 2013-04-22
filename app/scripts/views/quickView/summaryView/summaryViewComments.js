@@ -1,10 +1,12 @@
 ﻿define(
 [
     "underscore",
+    "setImmediate",
     "views/quickView/summaryView/workoutCommentsCollectionView"
 ],
 function (
     _,
+    setImmediate,
     WorkoutCommentsCollectionView
 )
 {
@@ -13,6 +15,19 @@ function (
         initializeComments: function()
         {
             this.on("render", this.renderComments, this);
+            this.model.on("change:newComment", this.onNewCommentChange, this);
+        },
+
+        onNewCommentChange: function()
+        {
+            var input = this.$("#postActivityCommentsInput");
+            setImmediate(function()
+            {
+                if (!input.val())
+                {
+                    input.css("height", "");
+                }
+            });
         },
 
         renderComments: function()
@@ -25,6 +40,11 @@ function (
             this.$("#postActivityCommentsList").append(this.postActivityCommentsView.el);
 
             this.postActivityCommentsView.on("item:removed", this.onWorkoutCommentRemoved, this);
+
+            if (theMarsApp.user.get("settings.account.isCoach") || this.model.get("coachComments"))
+            {
+                this.$("#preActivityComments").css("display", "block");
+            }
         },
 
         onWorkoutCommentRemoved: function()

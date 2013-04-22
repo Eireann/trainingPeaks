@@ -134,7 +134,7 @@ function(printUnitLabel, conversion)
 
             it("should convert a distance in meters to miles and cut off after 2 decimal places", function()
             {
-                expect(conversion.convertToViewUnits(0, "distance")).toBe("0.00");
+                expect(conversion.convertToViewUnits(0, "distance")).toBe("");
                 expect(conversion.convertToViewUnits(1609, "distance")).toBe("1.00");
                 expect(conversion.convertToViewUnits(3218, "distance")).toBe("2.00");
                 expect(conversion.convertToViewUnits(1234567890, "distance")).toBe(767125);
@@ -144,7 +144,7 @@ function(printUnitLabel, conversion)
 
             it("should convert an elevation in meters to ft and cut off after 2 decimal places", function()
             {
-                expect(conversion.convertToViewUnits(0, "elevation")).toBe("0");
+                expect(conversion.convertToViewUnits(0, "elevation")).toBe("");
                 expect(conversion.convertToViewUnits(1000, "elevation")).toBe("3281");
                 expect(conversion.convertToViewUnits(1000000, "elevation")).toBe("3280840");
                 expect(conversion.convertToViewUnits(-1000, "elevation")).toBe("-3281");

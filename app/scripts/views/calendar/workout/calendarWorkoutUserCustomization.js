@@ -33,7 +33,7 @@ function(_, workoutLayoutFormatter, getKeyStatField, conversion, printing)
                 _.each(layoutPreferences, function(layoutPreferenceId, index)
                 {
                     var field = workoutLayoutFormatter.calendarWorkoutLayout[layoutPreferenceId];
-                    if (field && keyStatFieldName !== field)
+                    if (field && keyStatFieldName !== field.name)
                     {
                         this.applyFieldLayoutPreference(field);
                     } 
@@ -51,13 +51,13 @@ function(_, workoutLayoutFormatter, getKeyStatField, conversion, printing)
             var prefix = field.prefix ? field.prefix + ": " : "";
             var fieldValue = this.model.get(field.name);
             
-            if (fieldValue)
+            if (fieldValue) 
             {
                 if (field.conversion)
                 {
                     fieldValue = conversion[field.conversion](fieldValue);
                 }
-                var units = field.unitHelper ? " " + printing.printUnitLabel(field.unitHelper) : "";
+                var units = field.unitHelper ? " " + printing.printUnitLabel(field.unitHelper, null, this) : "";
                 //TODO: create entire list up, then do one insert into main dom
                 var element = $("<p>" + prefix + fieldValue + units + "</p>");
                 element.insertBefore(this.ui.layoutAnchor);

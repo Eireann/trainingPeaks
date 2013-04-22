@@ -53,6 +53,11 @@ function (
                 this.isNewWorkout = true;
                 this.dayModel = options.dayModel;
             }
+            else
+            {
+                // Not a new workout, let's pre-fetch WorkoutDetails from the server
+                this.model.get("details").fetch();
+            }
             
             this.initializeFileUploads();
             this.initializeStickit();

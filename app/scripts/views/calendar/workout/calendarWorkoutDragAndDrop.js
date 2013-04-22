@@ -47,7 +47,7 @@ function(CalendarWorkoutTemplateDragState)
             var offset = this.$el.offset();
             if ((e.pageY - offset.top) > 50)
             {
-                this.$el.data("ui-draggable").options.cursorAt = { top: 45, left: e.pageX - offset.left };
+                this.$el.data("ui-draggable").options.cursorAt = { top: 30, left: e.pageX - offset.left };
             }
 
             return $helperEl;

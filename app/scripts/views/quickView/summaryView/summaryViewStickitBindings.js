@@ -23,6 +23,20 @@ function(
 
             this.on("close", this.stickitBindingsOnClose, this);
             this.on("render", this.stickitBindingsOnRender, this);
+
+            this.fixNewlinesOnModelDescription();
+        },
+
+        fixNewlinesOnModelDescription: function()
+        {
+            // FIXME - we need to handle this on an api level
+            this.model.on("change:description", function()
+            {
+                this.model.set("description",
+                    this.fixNewlines(this.model.get("description")),
+                    { silent: true });
+            }, this);
+
         },
 
         stickitBindingsOnClose: function()
@@ -73,18 +87,18 @@ function(
             "#tssPlannedField":
             {
                 observe: "tssPlanned",
-                onGet: "getNumber",
-                onSet: "setInteger",
+                onGet: "getTSS",
+                onSet: "setTSS",
                 updateModel: "updateModel"
             },
             "#tssCompletedField":
             {
                 observe: "tssActual",
-                onGet: "getNumber",
-                onSet: "setInteger",
+                onGet: "getTSS",
+                onSet: "setTSS",
                 updateModel: "updateModel"
             },
-            "#normalizedPacePlannedField":
+            "#normalizedPaceCompletedField":
             {
                 observe: "normalizedSpeedActual",
                 onGet: "getPace",
@@ -157,29 +171,29 @@ function(
             "#ifPlannedField":
             {
                 observe: "ifPlanned",
-                onGet: "getNumber",
-                onSet: "setInteger",
+                onGet: "getIF",
+                onSet: "setIF",
                 updateModel: "updateModel"
             },
             "#ifCompletedField":
             {
                 observe: "if",
-                onGet: "getNumber",
-                onSet: "setFloat",
+                onGet: "getIF",
+                onSet: "setIF",
                 updateModel: "updateModel"
             },
             "#energyPlannedField":
             {
                 observe: "energyPlanned",
-                onGet: "getNumber",
-                onSet: "setInteger",
+                onGet: "getEnergy",
+                onSet: "setEnergy",
                 updateModel: "updateModel"
             },
             "#energyCompletedField":
             {
                 observe: "energy",
-                onGet: "getNumber",
-                onSet: "setInteger",
+                onGet: "getEnergy",
+                onSet: "setEnergy",
                 updateModel: "updateModel"
             },
             "#powerAvgField":
@@ -319,17 +333,25 @@ function(
             {
                 events: [ "blur", "keyup", "change", "cut", "paste" ],
                 observe: "description",
+                onSet: "setTextField",
+                onGet: "getTextField",
                 updateModel: "updateModel"
             },
-            "#postActivityCommentsInput": 
+            "#postActivityCommentsInput":
             {
                 observe: "newComment",
-                onSet: "setTextField"
+                onSet: "setTextField",
+                onGet: "getTextField",
+                events: ["blur", "change", "keyup", "paste"],
+                updateModel: "updateModel"
             },
             "#preActivityCommentsInput": 
             {
                 observe: "coachComments",
-                onSet: "setTextField"
+                onSet: "setTextField",
+                onGet: "getTextField",
+                events: ["blur", "change", "keyup", "paste"],
+                updateModel: "updateModel"
             }
         },
 
@@ -407,22 +429,64 @@ function(
         {
             return conversion.convertToModelUnits(parseInt(value, 10), "temperature");
         },
+        
+        getIF: function (value, options)
+        {
+            return value ? +(Math.round(value * 100) / 100) : "";
+        },
+
+        setIF: function (value, options)
+        {
+            return value ? (Math.round(parseFloat(value) * 100) / 100).toFixed(2) : 0;
+        },
+        
+        getTSS: function (value, options)
+        {
+            return value ? (Math.round(value * 10) / 10) : "";
+        },
+
+        setTSS: function (value, options)
+        {
+            return value ? (Math.round(parseFloat(value) * 10) / 10).toFixed(1) : 0;
+        },
+        
+        getEnergy: function (value, options)
+        {
+            return value ? +(Math.round(value)) : "";
+        },
+
+        setEnergy: function (value, options)
+        {
+            return value ? (Math.round(parseFloat(value))).toFixed(0) : 0;
+        },
 
         setTextField: function(value, options)
         {
-            return value === "" ? null : value;
+            return value === "" ? null : this.fixNewlines(value);
+        },
+
+        getTextField: function(value, options)
+        {
+            return value === null ? "" : this.fixNewlines(value);
+        },
+
+        fixNewlines: function(value)
+        {
+            var newValue = value.replace(/\r\n/g, "\n").replace(/\n/g, "\r\n");
+            return newValue;
         },
 
         updateModel: function(newViewValue, options)
         {
             var self = this;
+            var saveTimeout = options.observe === "newComment" ? 60000 : 2000;
 
             var updateModel = function()
             {
                 if (self.checkIfModelUpdateRequired(newViewValue, options))
                     self.performModelUpdate(newViewValue, options);
             };
-            
+
             if (this.updateModelTimeout)
                 clearTimeout(this.updateModelTimeout);
 
@@ -432,11 +496,11 @@ function(
             if (options.eventType === "blur")
                 updateModel();
             else
-                this.updateModelTimeout = setTimeout(updateModel, 2000);
+                this.updateModelTimeout = setTimeout(updateModel, saveTimeout);
 
             return false;
         },
-        
+
         checkIfModelUpdateRequired: function(newViewValue, options)
         {
             var doUpdateModel;
@@ -445,9 +509,11 @@ function(
             // DO coerce type in this situation, since we only care about truthy/falsy'ness.
             /*jslint eqeq: true*/
             if (options.observe === "description")
-                doUpdateModel = (newViewValue === "" && currentModelValue === null ? false : (newViewValue == currentModelValue));    
+                doUpdateModel = (newViewValue === "" && currentModelValue === null ? false : (newViewValue != currentModelValue));
+            else if (!options.onGet)
+                doUpdateModel = currentModelValue == newViewValue ? false : true;
             else
-                doUpdateModel = (this[options.onGet](currentModelValue) == newViewValue) ? false : true;
+                doUpdateModel = (this[options.onGet](currentModelValue) == newViewValue || parseFloat(this[options.onGet](currentModelValue)) == parseFloat(newViewValue)) ? false : true;
             /*jsline eqeq: false*/
 
             return doUpdateModel;
@@ -458,8 +524,15 @@ function(
             // Do the save!
             var newModelValue = options.observe === "description" ? newViewValue : this[options.onSet](newViewValue);
             this.model.set(options.observe, newModelValue);
+
+            if (options.observe === "distance" || options.observe === "totalTime")
+                this.model.set("velocityAverage", null);
+            else if (options.observe === "distancePlanned" || options.observe === "totalTimePlanned")
+                this.model.set("velocityPlanned", null);
+
             this.model.save();
         }
+
     };
 
     return summaryViewStickitBindings;

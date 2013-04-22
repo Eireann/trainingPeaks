@@ -35,7 +35,7 @@ function(
             if (this.$("#preActivityCommentsInput").val())
                 this.$("#preActivityCommentsInput").height(this.$("#preActivityCommentsInput")[0].scrollHeight);
 
-            if (this.$("#descriptionInput").val())
+            if (this.$("#postActivityCommentsInput").val())
                 this.$("#postActivityCommentsInput").height(this.$("#postActivityCommentsInput")[0].scrollHeight);
         }
     };

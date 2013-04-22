@@ -10,6 +10,7 @@
 input[disabled='disabled']
 {
     @include box-shadow(none);
+    cursor: default;
 }
 
 .QVHeader
@@ -399,6 +400,11 @@ input[disabled='disabled']
         font-weight: bold;
     }
 
+    #preActivityComments
+    {
+        display:none;
+    }
+
 	#descriptionInput
 	{
 		width: 275px;
@@ -573,24 +579,40 @@ input[disabled='disabled']
 
 .workoutComments
 {
+
+    #postActivityCommentsInput
+    {
+        height: 30px;
+    }
+
     .comment
     {
 
-        font-size: $fontSizeSmall;
-        margin-top:10px;
-        margin-bottom:10px;
+        margin-bottom:3px;
+        margin-left: -3px;
+        padding: 3px;
+        color: $TPGrey4;
+        border: 1px solid transparent;
+
+        &.hover
+        {
+            background-color: $TPGrey1;
+            border-color: $TPGrey7;
+        }
 
         .commentHeader
         {
             // this becomes smaller because it's relative to the size above it ...
             font-size: $fontSizeSmall;
             font-weight: $fontWeightBold;
-            color: $TPGrey4;
-            margin-bottom: 5px;
+            margin-bottom: 3px;
 
-            .name
+            .date
             {
-                margin-right: 5px;
+                .weekdayName
+                {
+                    text-transform: uppercase;
+                }
             }
 
             .date
@@ -601,6 +623,12 @@ input[disabled='disabled']
                 }
             }
 
+        }
+
+        .commentBody
+        {
+            font-size: $fontSizeSmall;
+            white-space: pre;
         }
 
     }
@@ -618,11 +646,21 @@ input[disabled='disabled']
 .comment
 {
     position: relative;
-    .menuButton
+    .deleteButton
     {
         position: absolute;
         display: none;
-        top: 5px;
-        right: 5px;
+        top: 4px;
+        right: 3px;
+        height: 8px;
+        width: 10px;
+    }
+
+    &.hover
+    {
+        .deleteButton
+        {
+            display:block
+        }
     }
 }

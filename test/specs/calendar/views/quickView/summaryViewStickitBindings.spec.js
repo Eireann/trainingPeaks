@@ -28,6 +28,10 @@ function (TP, summaryViewStickitBindings)
                     off: function()
                     {
 
+                    },
+                    on: function()
+                    {
+
                     }
                 },
                 stickit: function()
@@ -55,6 +59,10 @@ function (TP, summaryViewStickitBindings)
                 model:
                 {
                     off: function ()
+                    {
+
+                    },
+                    on: function()
                     {
 
                     }

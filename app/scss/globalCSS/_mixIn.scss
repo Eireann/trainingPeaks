@@ -59,6 +59,11 @@
 		padding-bottom: 0px;
         cursor: text;
 	}
+
+    input[disabled='disabled']
+    {
+        cursor: default;
+    }
 }
 
 @mixin selectionBox($width)

@@ -1,10 +1,11 @@
 ﻿define(
 [
     "TP",
+    "moment",
     "utilities/conversion/convertToModelUnits",
     "utilities/conversion/convertToViewUnits",
     "utilities/workoutTypeEnum2"
-], function (TP, convertToModelUnits, convertToViewUnits, workoutTypeEnum2)
+], function(TP, moment, convertToModelUnits, convertToViewUnits, workoutTypeEnum2)
 {
     return {
         convertToModelUnits: convertToModelUnits,
@@ -28,6 +29,12 @@
         setTime: function(value, options)
         {
             return TP.utils.datetime.convert.timeToDecimalHours(value);
+        },
+        
+        getTimeOfDay: function(value, options)
+        {
+            var timeOfDay = moment(value);
+            return timeOfDay.format("hh:mm:ss A");
         },
 
         getPace: function (value, options)
@@ -90,7 +97,48 @@
             //Yes, I know this sucks
             //TODO: make this not suck
             return workoutTypeEnum2[value];
+        },
+        
+        getIF: function (value, options)
+        {
+            return +(Math.round(value * 100) / 100);
+        },
+
+        setIF: function (value, options)
+        {
+            return (Math.round(parseFloat(value) * 100) / 100).toFixed(2);
+        },
+
+        getTSS: function (value, options)
+        {
+            return +(Math.round(value * 10) / 10);
+        },
+
+        setTSS: function (value, options)
+        {
+            return (Math.round(parseFloat(value) * 10) / 10).toFixed(1);
+        },
+
+        getEnergy: function (value, options)
+        {
+            return +(Math.round(value));
+        },
+
+        setEnergy: function (value, options)
+        {
+            return (Math.round(parseFloat(value))).toFixed(0);
+        },
+
+        formatWorkoutComments: function(commentsArray, options)
+        {
+            if (commentsArray && commentsArray.length && commentsArray[0].comment)
+            {
+                return commentsArray[0].comment;
+            }
+            return "";
         }
+        
+
         
     };
 });

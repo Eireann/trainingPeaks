@@ -1,13 +1,15 @@
 {
   "name": "Mars",
   "version": "0.1.0",
-  "repository": {
+  "repository":
+  {
     "type": "git",
     "url": "https://bitbucket.org/trainingpeaks/mars"
   },
   "author": "TrainingPeaks",
   "description": "TrainingPeaks Mars 2013 Seed",
-  "contributors": [
+  "contributors":
+  [
     {
       "name": "Bernardo Fanti",
       "email": "bernardo@trainingpeaks.com"
@@ -25,11 +27,6 @@
       "email": "mbrady@peaksware.com"
     }
   ],
-  "jam": {
-    "packageDir": "./vendor/jam",
-    "baseUrl": "./app",
-    "dependencies": {}
-  },
   "devDependencies": {
     "grunt": "~0.4",
     "grunt-contrib-concat": "~0.1.2rc5",

@@ -1,12 +1,11 @@
 define(
 [
     "TP",
-    "views/genericMenuView",
     "views/userConfirmationView",
     "hbs!templates/views/confirmationViews/deleteConfirmationView",
     "hbs!templates/views/quickView/workoutComments"
 ],
-function(TP, GenericMenuView, UserConfirmationView, deleteConfirmationTemplate, WorkoutCommentsTemplate)
+function(TP, UserConfirmationView, deleteConfirmationTemplate, WorkoutCommentsTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -16,9 +15,9 @@ function(TP, GenericMenuView, UserConfirmationView, deleteConfirmationTemplate, 
 
         events:
         {
-            "mouseenter": "showMenuButton",
-            "mouseleave": "hideMenuButton",
-            "click .menuButton": "showMenu"
+            "mouseenter": "onMouseOver",
+            "mouseleave": "onMouseOut",
+            "click .deleteButton": "onDeleteClicked"
         },
 
         template:
@@ -27,35 +26,30 @@ function(TP, GenericMenuView, UserConfirmationView, deleteConfirmationTemplate, 
             template: WorkoutCommentsTemplate
         },
 
-        showMenuButton: function()
+        onMouseOver: function()
         {
-            if (this.getMenuOptions().length)
+            this.$el.addClass("hover");
+            if (this.model.get("commenterPersonId") !== theMarsApp.user.id)
             {
-                this.$(".menuButton").show();
+                this.$(".deleteButton").hide();
             }
         },
 
-        hideMenuButton: function()
+        onMouseOut: function(e)
         {
-            this.$(".menuButton").hide();
-        },
-
-        getMenuOptions: function()
-        {
-            return ['Delete'];
-        },
-
-        showMenu: function(e)
-        {
-            var menuOptions = this.getMenuOptions();
-            var menuView = new GenericMenuView({ className: "workoutCommentMenu", labels: menuOptions });
-            menuView.on("Delete", this.onDeleteClicked, this);
-            menuView.on("Copy", this.onCopyClicked, this);
-            menuView.render().bottom(e.pageY).center(e.pageX);
+            if (e && e.toElement && $(e.toElement).is(".workoutCommentMenuModalOverlay"))
+            {
+                return;
+            }
+            this.$el.removeClass("hover");
         },
 
         onDeleteClicked: function(e)
         {
+            if (this.model.get("commenterPersonId") !== theMarsApp.user.id)
+            {
+                return;
+            }
             this.deleteConfirmationView = new UserConfirmationView({ template: deleteConfirmationTemplate });
             this.deleteConfirmationView.render();
             this.deleteConfirmationView.on("userConfirmed", this.onDeleteConfirmed, this);
@@ -64,11 +58,6 @@ function(TP, GenericMenuView, UserConfirmationView, deleteConfirmationTemplate, 
         onDeleteConfirmed: function()
         {
             this.model.collection.remove(this.model);
-        },
-
-        onCopyClicked: function()
-        {
-            this.notImplemented();
         }
 
     });

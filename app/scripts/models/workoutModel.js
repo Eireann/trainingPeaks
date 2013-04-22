@@ -2,9 +2,10 @@
 [
     "underscore",
     "moment",
-    "TP"
+    "TP",
+    "models/workoutDetails"
 ],
-function (_, moment, TP)
+function (_, moment, TP, WorkoutDetailsModel)
 {
     var WorkoutModel = TP.APIModel.extend(
     {
@@ -79,13 +80,17 @@ function (_, moment, TP)
             "cadenceMaximum": null,
             "lastModifiedDate": null,
             "startTime": null,
-            "startTimePlanned": null
+            "startTimePlanned": null,
+            
+            "details": null
         },
 
         initialize: function()
         {
             TP.APIModel.prototype.initialize.apply(this, arguments);
             _.bindAll(this, "checkpoint", "revert");
+
+            this.set("details", new WorkoutDetailsModel({ workoutId: this.get("workoutId") }));
         },
         
         checkpoint: function()
@@ -212,9 +217,10 @@ function (_, moment, TP)
             return response;
         },
 
-        toJSON: function(options) {
+        toJSON: function(options)
+        {
             var attributes = _.deepClone(this.attributes);
-            attributes.workoutComments = this.getPostActivityComments().toJSON();
+            attributes.workoutComments = new TP.Collection(this.attributes.workoutComments).toJSON();
             return attributes;
         }
 

@@ -71,6 +71,8 @@ function (
 
         applyUserPreferences: function ()
         {
+            this.saveFocusedInputId();
+
             var statsTree = this.$("#workoutPlannedCompletedStats");
             var summaryTree = this.$("#workoutMinMaxAvgStats");
 
@@ -82,10 +84,27 @@ function (
 
             statsTree.replaceWith(statsTreeClone);
             summaryTree.replaceWith(summaryTreeClone);
+
+            this.refocusLastInput();
+        },
+
+        saveFocusedInputId: function()
+        {
+            // don't lose focus for edit/tab
+            this.focusedInputId = this.$("input:focus").length ? this.$("input:focus").attr("id") : null;
+        },
+
+        refocusLastInput: function()
+        {
+            if(this.focusedInputId)
+            {
+                this.$("#" + this.focusedInputId).focus();
+            }
         },
 
         applyPreferencesSort: function (statsTree, summaryTree)
         {
+
             var workoutOrderPreferences = theMarsApp.user.get("settings").workout.layout[this.model.get("workoutTypeValueId")];
 
             //Reset visibility
