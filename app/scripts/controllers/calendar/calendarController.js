@@ -14,14 +14,33 @@ define(
     "models/commands/addWorkoutFromExerciseLibrary",
     "views/calendar/calendarHeaderView",
     "views/calendar/calendarContainerView",
-    "views/library/libraryView"
+    "views/library/libraryView",
+    "controllers/calendar/dragMoveShift",
+    "controllers/calendar/weeksCollectionManagement"
 ],
-function(_, moment, setImmediate, TP, CalendarLayout, CalendarCollection, CalendarWeekCollection,
-         CalendarDayModel, ExerciseLibrariesCollection, LibraryExercisesCollection, WorkoutModel, AddWorkoutFromExerciseLibrary,
-         calendarHeaderView, CalendarContainerView, LibraryView)
+function(
+    _,
+    moment,
+    setImmediate,
+    TP,
+    CalendarLayout,
+    CalendarCollection,
+    CalendarWeekCollection,
+    CalendarDayModel,
+    ExerciseLibrariesCollection,
+    LibraryExercisesCollection,
+    WorkoutModel,
+    AddWorkoutFromExerciseLibrary,
+    calendarHeaderView,
+    CalendarContainerView,
+    LibraryView,
+    calendarControllerDragMoveShift,
+    calendarControllerWeeksCollectionManagement
+    )
 {
-    return TP.Controller.extend(
-    {
+
+    // base controller functionality
+    var calendarControllerBase = {
         summaryViewEnabled: true,
 
         show: function()
@@ -165,6 +184,7 @@ function(_, moment, setImmediate, TP, CalendarLayout, CalendarCollection, Calend
 
         initialize: function()
         {
+            // TODO: split this into a couple different functions 
             this.models = {};
             this.views = {};
 
@@ -361,38 +381,7 @@ function(_, moment, setImmediate, TP, CalendarLayout, CalendarCollection, Calend
         {
             calendarView.on("prepend", this.prependWeekToCalendar, this);
             calendarView.on("append", this.appendWeekToCalendar, this);
-            calendarView.on("itemDropped", this.onDropItem, this);
-            calendarView.on("workoutsShifted", this.onShiftItems, this);
-            calendarView.on("itemMoved", this.onItemMoved, this);
-        },
-
-        onDropItem: function(options)
-        {
-            if (options.DropEvent === "itemMoved")
-            {
-                this.weeksCollection.onItemMoved(options);        
-            }
-            else if (options.DropEvent === "dayMoved")
-            {
-                this.weeksCollection.onDayMoved(options);
-            }
-            else if (options.DropEvent === "addExerciseFromLibrary")
-            {
-                var destinationDate = options.destinationCalendarDayModel.id;
-
-                // create a model by copying library attributes
-                var workout = this.createNewWorkoutFromExerciseLibraryItem(options.LibraryId, options.ItemId, destinationDate);
-
-                // add it to the calendar
-                this.weeksCollection.addWorkout(workout);
-                this.views.calendar.scrollToDate(destinationDate);
-                
-            } 
-        },
-
-        onShiftItems: function(shiftCommand)
-        {
-            this.clearCacheAndRefresh();
+            this.bindToDragMoveAndShiftEvents(calendarView);
         },
 
         createNewWorkoutFromExerciseLibraryItem: function(exerciseLibraryId, exerciseLibraryItemId, workoutDate)
@@ -450,20 +439,17 @@ function(_, moment, setImmediate, TP, CalendarLayout, CalendarCollection, Calend
             this.views.calendar.onLibraryAnimate(cssAttributes, duration);
         },
 
-        onItemMoved: function(item, movedToDate, deferredResult)
-        {
-            var self = this;
-            var callback = function()
-            {
-                self.showDate(movedToDate);
-            };
-            deferredResult.done(callback);
-        },
-
         getExerciseLibraries: function()
         {
             return this.libraryCollections.exerciseLibraries;
         }
 
-    });
+    };
+
+    // mixins
+    _.extend(calendarControllerBase, calendarControllerDragMoveShift);
+    _.extend(calendarControllerBase, calendarControllerWeeksCollectionManagement);
+
+    // make it a TP.Controller
+    return TP.Controller.extend(calendarControllerBase);
 });
