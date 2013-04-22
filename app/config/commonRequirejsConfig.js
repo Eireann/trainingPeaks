@@ -16,7 +16,7 @@
             "layouts": "scripts/layouts",
             "helpers": "scripts/helpers",
             "utilities": "scripts/utilities",
- 
+     
             // jQuery related
             "jqueryui": "../vendor/js/libs/jqueryui",
             "jqueryOutside": "../vendor/js/libs/jquery/jquery.ba-outside-events",
@@ -25,11 +25,11 @@
             "jquerySelectBox": "../vendor/js/libs/jquery/chosen.jquery",
 
             // Underscore & Lodash (provided by Lodash)
-            "lodash": "../components/lodash.underscore/index",
-            "underscore": "../components/lodash.underscore/index",
+            "lodash": "../vendor/js/libs/lodash/lodash",
+            "underscore": "../vendor/js/libs/lodash/lodash",
 
             // Backbone and plugins
-            "backbone": "../components/backbone/backbone",
+            "backbone": "../vendor/js/libs/backbone",
             "backbone.marionette": "../vendor/js/libs/backbone.marionette",
             "Backbone.Marionette.Handlebars": "../vendor/js/libs/Backbone.Marionette.Handlebars/backbone.marionette.handlebars",
             "backbone.deepmodel": "../vendor/js/libs/backbone.deepmodel",
