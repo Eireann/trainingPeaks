@@ -79,7 +79,7 @@ function($, TP, moment, WorkoutModel, WorkoutsCollection, CalendarCollection)
             });
         });
 
-        describe("createWeekCollectionStartingOn", function()
+        xdescribe("createWeekCollectionStartingOn", function()
         {
             it("Should create a Backbone.Collection with seven DayModels without WeekSummary", function()
             {

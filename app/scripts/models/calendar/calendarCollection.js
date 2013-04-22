@@ -6,7 +6,8 @@
     "models/workoutsCollection",
     "models/calendar/calendarWeekCollection",
     "models/calendar/calendarDay",
-    "models/calendar/calendarCollectionCopyPaste"
+    "models/calendar/calendarCollectionCopyPaste",
+    "models/calendar/calendarCollectionMoveAndShift"
 ],
 function(
     _,
@@ -15,14 +16,14 @@ function(
     WorkoutsCollection,
     CalendarWeekCollection,
     CalendarDayModel,
-    calendarCollectionCopyPaste
+    calendarCollectionCopyPaste,
+    calendarCollectionMoveAndShift
     )
 {
     var calendarCollectionBase = {
 
         initialize: function(models, options)
         {
-            this.initializeCopyPaste();
             
             if (!options || !options.hasOwnProperty('startDate'))
                 throw "CalendarCollection requires a start date";
@@ -35,12 +36,11 @@ function(
             this.workoutsCollection = new WorkoutsCollection();
             this.daysCollection = new TP.Collection();
 
-            this.daysCollection.on("workout:added", this.addItem, this);
-
-            this.subscribeToCopyPasteEvents();
-            this.subscribeToSelectEvents();
 
             this.setUpWeeks(options.startDate, options.endDate);
+
+            this.initializeCopyPaste();
+            this.initializeMoveAndShift();
         },
 
         setUpWeeks: function(startDate, endDate)
@@ -103,13 +103,8 @@ function(
                 }
             }
 
-            weekCollection.on("week:copy", this.onItemsCopy, this);
-            weekCollection.on("week:cut", this.onItemsCut, this);
-            weekCollection.on("week:paste", this.onPaste, this);
-            weekCollection.on("week:pasteMenu", this.onPasteMenuOpen, this);
-            weekCollection.on("week:select", this.onWeekSelected, this);
-            weekCollection.on("week:unselect", this.onWeekUnselected, this);
-            weekCollection.on("week:shiftwizard", this.onShiftWizardOpen, this);
+            this.subscribeToWeekCopyPaste(weekCollection);
+            this.subscribeToWeekMoveAndShift(weekCollection);
 
             return weekCollection;
         },
@@ -229,100 +224,11 @@ function(
                     weekModel.trigger("sync");
                 }
             });
-        },
-
-        onWorkoutDateChange: function(workoutModel, destinationDate)
-        {
-            this.moveItem(workoutModel, destinationDate);
-        },
-
-        onItemMoved: function(options)
-        {
-            if (!options.hasOwnProperty('ItemId') || !options.ItemId ||
-                !options.hasOwnProperty('destinationCalendarDayModel') || !options.destinationCalendarDayModel)
-            {
-                theMarsApp.logger.debug("CalendarCollection.onItemMoved: missing ItemId or destinationCalendarDayModel attribute?");
-                return;
-            }
-
-            // get the item
-            var item = this.workoutsCollection.get(options.ItemId);
-            this.moveItem(item, options.destinationCalendarDayModel.id);
-        },
-
-        onDayMoved: function(options)
-        {
-            if (!options.hasOwnProperty('ItemId') || !options.ItemId ||
-                !options.hasOwnProperty('destinationCalendarDayModel') || !options.destinationCalendarDayModel)
-            {
-                theMarsApp.logger.debug("CalendarCollection.onItemMoved: missing ItemId or destinationCalendarDayModel attribute?");
-                return;
-            }
-
-            // get the item
-            var sourceDayModel = this.getDayModel(options.ItemId);
-            var item = null;
-
-            // first model is day label ...
-            while (sourceDayModel.itemsCollection.length > 1)
-            {
-                item = sourceDayModel.itemsCollection.pop();
-                this.moveItem(item, options.destinationCalendarDayModel.id);
-            }
-
-            options.destinationCalendarDayModel.trigger("day:click", options.destinationCalendarDayModel, $.Event());
-        },
-
-        moveItem: function(item, destinationDay)
-        {
-
-            // if it has a getCalendarDay and moveToDay then we can move it
-            if (item && _.isFunction(item.getCalendarDay) && _.isFunction(item.moveToDay))
-            {
-                var oldCalendarDay = item.getCalendarDay();
-                var newCalendarDay = destinationDay;
-
-                if (oldCalendarDay !== newCalendarDay)
-                {
-
-                    var sourceCalendarDayModel = this.getDayModel(oldCalendarDay);
-                    var deferredResult;
-
-                    // in a date range we already have?
-                    try {
-                        var destinationCalendarDayModel = this.getDayModel(newCalendarDay);
-                        deferredResult = item.moveToDay(newCalendarDay, destinationCalendarDayModel);
-                        this.trigger("item:move", item, destinationDay, deferredResult);
-                    } catch (e)
-                    {
-                        // else add it to a new date range so our quick view still works
-                        deferredResult = item.moveToDay(newCalendarDay);
-
-                        // let other stuff happen on the deferred result ...
-                        this.trigger("item:move", item, destinationDay, deferredResult);
-
-                        // then, add this same workout model instance back to the appropriate calendar day,
-                        // replacing a different instance of the same workout, and keeping our currently open quick view intact ...
-                        var self = this;
-                        var callback = function()
-                        {
-                            self.addItem(item);
-                        };
-                        deferredResult.done(callback);
-                    }
-
-                }
-            }
-
-        },
-
-        onShiftWizardOpen: function()
-        {
-            this.trigger("shiftwizard:open");
         }
     };
 
     _.extend(calendarCollectionBase, calendarCollectionCopyPaste);
+    _.extend(calendarCollectionBase, calendarCollectionMoveAndShift);
 
     return TP.Collection.extend(calendarCollectionBase);
 

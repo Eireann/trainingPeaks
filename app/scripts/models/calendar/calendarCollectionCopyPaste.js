@@ -19,18 +19,29 @@ function(
         initializeCopyPaste: function()
         {
             this.clipboard = new Clipboard();
+            this.subscribeToCopyPasteEvents();
+            this.subscribeToSelectEvents();
         },
 
         subscribeToCopyPasteEvents: function()
         {
             this.workoutsCollection.on("workout:copy", this.onItemsCopy, this);
             this.workoutsCollection.on("workout:cut", this.onItemsCut, this);
-            this.workoutsCollection.on("workout:move", this.onWorkoutDateChange, this);
 
             this.daysCollection.on("day:copy", this.onItemsCopy, this);
             this.daysCollection.on("day:cut", this.onItemsCut, this);
             this.daysCollection.on("day:paste", this.onPaste, this);
             this.daysCollection.on("day:pasteMenu", this.onPasteMenuOpen, this);
+        },
+
+        subscribeToWeekCopyPaste: function(weekCollection)
+        {
+            weekCollection.on("week:copy", this.onItemsCopy, this);
+            weekCollection.on("week:cut", this.onItemsCut, this);
+            weekCollection.on("week:paste", this.onPaste, this);
+            weekCollection.on("week:pasteMenu", this.onPasteMenuOpen, this);
+            weekCollection.on("week:select", this.onWeekSelected, this);
+            weekCollection.on("week:unselect", this.onWeekUnselected, this);
         },
 
         subscribeToSelectEvents: function()
