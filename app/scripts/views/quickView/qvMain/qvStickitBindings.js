@@ -1,14 +1,14 @@
 ﻿define(
 [
+    "TP",
     "utilities/printDate",
     "utilities/printUnitLabel",
-    "utilities/printTimeFromDecimalHours",
     "utilities/conversion"
 ],
-function (
+function(
+    TP,
     printDate,
     printUnitLabel,
-    printTimeFromDecimalHours,
     conversion
 )
 {
@@ -87,7 +87,7 @@ function (
 
         getTime: function(value, options)
         {
-            return printTimeFromDecimalHours(value, true);
+            return TP.utils.datetime.format.decimalHoursAsTime(value, true);
         },
 
         getTss: function(value, options)

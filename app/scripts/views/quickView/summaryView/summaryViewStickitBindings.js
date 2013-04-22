@@ -1,12 +1,12 @@
 ﻿define(
 [
+    "TP",
     "utilities/printUnitLabel",
-    "utilities/printTimeFromDecimalHours",
     "utilities/conversion"
 ],
 function(
+    TP,
     printUnitLabel,
-    printTimeFromDecimalHours,
     conversion
 )
 {
@@ -367,12 +367,12 @@ function(
 
         getTime: function (value, options)
         {
-            return printTimeFromDecimalHours(value, true, "");
+            return TP.utils.datetime.format.decimalHoursAsTime(value, true, "");
         },
 
         setTime: function (value, options)
         {
-            return conversion.convertTimeHoursToDecimal(value);
+            return TP.utils.datetime.convert.timeToDecimalHours(value);
         },
 
         getPace: function (value, options)

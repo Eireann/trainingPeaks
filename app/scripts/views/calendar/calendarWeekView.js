@@ -3,12 +3,11 @@
     "moment",
     "setImmediate",
     "TP",
-    "utilities/dates",
     "views/calendar/day/calendarDayView",
     "views/weekSummary/weekSummaryView",
     "hbs!templates/views/calendar/calendarWeek"
 ],
-function(moment, setImmediate, TP, DateUtils, CalendarDayView, WeekSummaryView, CalendarWeek)
+function(moment, setImmediate, TP, CalendarDayView, WeekSummaryView, CalendarWeek)
 {
     return TP.CompositeView.extend(
     {
@@ -92,7 +91,7 @@ function(moment, setImmediate, TP, DateUtils, CalendarDayView, WeekSummaryView, 
         setThisWeekCss: function ()
         {
             // so we can style today or scroll to it
-            if (DateUtils.isThisWeek(this.model.id))
+            if (TP.utils.datetime.isThisWeek(this.model.id))
             {
                 this.$el.addClass("thisWeek");
             }

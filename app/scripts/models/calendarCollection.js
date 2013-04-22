@@ -12,7 +12,6 @@ function(_, moment, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, C
 {
     return TP.Collection.extend(
     {
-        dateFormat: "YYYY-MM-DD",
 
         initialize: function(models, options)
         {
@@ -82,7 +81,7 @@ function(_, moment, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, C
 
 
             var cutData = this.clipboard.getValue();
-            dateToPasteTo = moment(dateToPasteTo).format("YYYY-MM-DD");
+            dateToPasteTo = moment(dateToPasteTo).format(TP.utils.datetime.shortDateFormat);
 
             // can't paste a day back to itself
             if (cutData instanceof CalendarDayModel && dateToPasteTo === cutData.get("date"))
@@ -338,7 +337,7 @@ function(_, moment, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, C
                 var weekStartDate = moment(this.startDate).add("weeks", i);
 
                 // Get a CalendarWeekCollection and wrap it inside a model, with its matching ID, to be able to add it to a parent collection
-                var weekModel = new TP.Model({ id: weekStartDate.format(this.dateFormat), week: this.createWeekCollectionStartingOn(weekStartDate) });
+                var weekModel = new TP.Model({ id: weekStartDate.format(TP.utils.datetime.shortDateFormat), week: this.createWeekCollectionStartingOn(weekStartDate) });
                 this.add(weekModel, { silent: false, append: true });
             }
         },
@@ -377,7 +376,7 @@ function(_, moment, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, C
 
                 if (dayOffset === 6 && this.summaryViewEnabled)
                 {
-                    var summary = new CalendarSummaryModel({ date: weekStartDate.format(this.dateFormat) });
+                    var summary = new CalendarSummaryModel({ date: weekStartDate.format(TP.utils.datetime.shortDateFormat) });
                     weekCollection.add(summary);
                 }
             }
@@ -419,7 +418,7 @@ function(_, moment, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, C
         appendWeek: function(startDate)
         {
             var newWeekCollection = this.createWeekCollectionStartingOn(moment(startDate));
-            var newWeekModel = new TP.Model({ id: startDate.format(this.dateFormat), week: newWeekCollection });
+            var newWeekModel = new TP.Model({ id: startDate.format(TP.utils.datetime.shortDateFormat), week: newWeekCollection });
 
             this.add(newWeekModel, { append: true });
         },
@@ -427,14 +426,14 @@ function(_, moment, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, C
         prependWeek: function(startDate)
         {
             var newWeekCollection = this.createWeekCollectionStartingOn(startDate);
-            var newWeekModel = new TP.Model({ id: startDate.format(this.dateFormat), week: newWeekCollection });
+            var newWeekModel = new TP.Model({ id: startDate.format(TP.utils.datetime.shortDateFormat), week: newWeekCollection });
 
             this.add(newWeekModel, { at: 0, append: false });
         },
 
         getDayModel: function(date)
         {
-            var formattedDate = moment(date).format(this.dateFormat);
+            var formattedDate = moment(date).format(TP.utils.datetime.shortDateFormat);
             var dayModel = this.daysCollection.get(formattedDate);
 
             if (!dayModel)
@@ -498,8 +497,8 @@ function(_, moment, TP, Clipboard, WorkoutsCollection, CalendarWeekCollection, C
 
         stopWeeksWaiting: function(startDate, endDate)
         {
-            startDate = startDate.format(this.dateFormat);
-            endDate = endDate.format(this.dateFormat);
+            startDate = startDate.format(TP.utils.datetime.shortDateFormat);
+            endDate = endDate.format(TP.utils.datetime.shortDateFormat);
             this.forEach(function(weekModel)
             {
                 var weekDate = weekModel.id;

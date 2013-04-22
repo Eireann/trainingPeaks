@@ -8,7 +8,7 @@ define(
 function(moment, TP, CalendarWorkoutDragStateView, CalendarDayTemplate)
 {
 
-    var today = moment().format("YYYY-MM-DD");
+    var today = moment().format(TP.utils.datetime.shortDateFormat);
 
     var CalendarDayLabelView = TP.ItemView.extend(
     {

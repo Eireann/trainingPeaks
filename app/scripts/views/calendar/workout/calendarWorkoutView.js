@@ -32,7 +32,7 @@ function(
         showThrobbers: false,
         tagName: "div",
 
-        today: moment().format("YYYY-MM-DD"),
+        today: moment().format(TP.utils.datetime.shortDateFormat),
 
         ui: {
 

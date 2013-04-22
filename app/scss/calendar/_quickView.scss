@@ -602,7 +602,8 @@ input[disabled='disabled']
 
         .commentHeader
         {
-            font-size: $fontSizeXSmall;
+            // this becomes smaller because it's relative to the size above it ...
+            font-size: $fontSizeSmall;
             font-weight: $fontWeightBold;
             margin-bottom: 3px;
 
@@ -613,6 +614,15 @@ input[disabled='disabled']
                     text-transform: uppercase;
                 }
             }
+
+            .date
+            {
+                .weekdayName
+                {
+                    text-transform: uppercase;
+                }
+            }
+
         }
 
         .commentBody

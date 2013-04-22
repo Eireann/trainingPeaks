@@ -1,10 +1,10 @@
 define(
 [
     "handlebars",
-    "utilities/printTimeFromDecimalHours"
+    "TP"
 ],
-function(Handlebars, printTimeFromDecimalHours)
+function(Handlebars, TP)
 {
-    Handlebars.registerHelper("printTimeFromDecimalHours", printTimeFromDecimalHours);
-    return printTimeFromDecimalHours;
+    Handlebars.registerHelper("printTimeFromDecimalHours", TP.utils.datetime.format.decimalHoursAsTime);
+    return TP.utils.datetime.format.decimalHoursAsTime;
 });

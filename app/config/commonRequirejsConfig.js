@@ -16,7 +16,7 @@
             "layouts": "scripts/layouts",
             "helpers": "scripts/helpers",
             "utilities": "scripts/utilities",
- 
+     
             // jQuery related
             "jqueryui": "../vendor/js/libs/jqueryui",
             "jqueryOutside": "../vendor/js/libs/jquery/jquery.ba-outside-events",

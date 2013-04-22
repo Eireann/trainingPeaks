@@ -23,17 +23,17 @@ function(moment, $, WorkoutModel)
 
         it("Should return correct calendar date", function()
         {
-            var today = moment().format(WorkoutModel.prototype.shortDateFormat);
+            var today = moment().format("YYYY-MM-DD");
             var workoutId = "098765";
             var workout = new WorkoutModel({ workoutDay: today, workoutId: workoutId });
-            expect(workout.getCalendarDay()).toEqual(moment().format(WorkoutModel.prototype.shortDateFormat));
+            expect(workout.getCalendarDay()).toEqual(moment().format("YYYY-MM-DD"));
         });
 
         describe("moveToDay", function()
         {
             var workout;
-            var originalDate = moment().format(WorkoutModel.prototype.dateFormat);
-            var tomorrow = moment().add("days", 1).format(WorkoutModel.prototype.dateFormat);
+            var originalDate = moment().format("YYYY-MM-DDThh:mm:ss");
+            var tomorrow = moment().add("days", 1).format("YYYY-MM-DD");
             var originalCollection;
             var newCollection;
 
@@ -51,7 +51,7 @@ function(moment, $, WorkoutModel)
             {
                 var newDate = moment("2013-01-19");
                 workout.moveToDay(newDate);
-                expect(workout.getCalendarDay()).toEqual(newDate.format(WorkoutModel.prototype.shortDateFormat));
+                expect(workout.getCalendarDay()).toEqual(newDate.format("YYYY-MM-DD"));
             });
 
             it("Should call save", function()

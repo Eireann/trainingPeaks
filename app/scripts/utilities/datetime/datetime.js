@@ -1,10 +1,18 @@
 ﻿define(
 [
-], function ()
+    "utilities/datetime/format",
+    "utilities/datetime/convert"
+], function(format, convert)
 {
     return {
 
-        // note - if we change user settings to allow sunday week start, we'll have to change this method to detect user settings ...
+        shortDateFormat: "YYYY-MM-DD",
+        timeFormat: "Thh:mm:ss",
+        longDateFormat: "YYYY-MM-DDThh:mm:ss",
+
+        format: format,
+        convert: convert,
+
         isThisWeek: function(dateToCheck)
         {
             var today = moment();
