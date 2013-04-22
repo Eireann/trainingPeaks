@@ -244,10 +244,30 @@ function(moment, $, WorkoutModel)
                     var copiedWorkout = workout.copyToClipboard();
                     var dateToPasteTo = "2012-10-10";
                     var pastedWorkout = copiedWorkout.onPaste(dateToPasteTo);
-                    _.each(_.keys(copiedWorkout.attributes), function(attributeName)
+
+                    var attributesToCopy = [
+                        "personId",
+                        "title",
+                        "workoutTypeValueId",
+                        "workoutDay",
+                        "isItAnOr",
+                        "description",
+                        "distancePlanned",
+                        "totalTimePlanned",
+                        "caloriesPlanned",
+                        "tssPlanned",
+                        "ifPlanned",
+                        "velocityPlanned",
+                        "energyPlanned",
+                        "elevationGainPlanned"
+                    ];
+
+                    _.each(attributesToCopy, function(attributeName)
                     {
-                        if(attributeName !== "workoutDay")
+                        if (attributeName !== "workoutDay")
+                        {
                             expect(pastedWorkout.get(attributeName)).toBe(copiedWorkout.get(attributeName));
+                        }
                     });
 
                 });
