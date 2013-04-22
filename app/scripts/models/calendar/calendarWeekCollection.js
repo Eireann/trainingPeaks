@@ -2,7 +2,7 @@ define(
 [
     "moment",
     "TP",
-    "models/calendarDay"
+    "models/calendar/calendarDay"
 ],
 function(moment, TP, CalendarDayModel)
 {

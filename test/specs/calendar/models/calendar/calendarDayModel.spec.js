@@ -2,7 +2,7 @@
 requirejs(
 [
     "models/workoutModel",
-    "models/calendarDay"
+    "models/calendar/calendarDay"
 ],
 function(WorkoutModel, CalendarDay)
 {

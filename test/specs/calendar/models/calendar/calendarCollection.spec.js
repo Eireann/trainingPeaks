@@ -6,7 +6,7 @@ requirejs(
     "moment",
     "models/workoutModel",
     "models/workoutsCollection",
-    "models/calendarCollection"
+    "models/calendar/calendarCollection"
 ],
 function($, TP, moment, WorkoutModel, WorkoutsCollection, CalendarCollection)
 {

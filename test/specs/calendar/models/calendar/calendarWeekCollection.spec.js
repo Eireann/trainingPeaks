@@ -2,8 +2,8 @@
 requirejs(
 [
     "moment",
-    "models/calendarDay",
-    "models/calendarWeekCollection"
+    "models/calendar/calendarDay",
+    "models/calendar/calendarWeekCollection"
 ],
 function(moment, CalendarDay, CalendarWeek)
 {

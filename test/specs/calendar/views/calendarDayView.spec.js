@@ -3,7 +3,7 @@ requirejs(
 [
     "moment",
     "scripts/helpers/printDate",
-    "models/calendarDay",
+    "models/calendar/calendarDay",
     "models/workoutModel",
     "views/calendar/workout/calendarWorkoutView",
     "views/calendar/day/calendarDayView"
