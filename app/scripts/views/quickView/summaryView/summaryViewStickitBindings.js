@@ -1,10 +1,12 @@
 ﻿define(
 [
+    "underscore",
     "TP",
     "utilities/printUnitLabel",
     "utilities/conversion"
 ],
 function(
+    _,
     TP,
     printUnitLabel,
     conversion
@@ -355,111 +357,6 @@ function(
             }
         },
 
-        getDistance: function(value, options)
-        {
-            return conversion.convertToViewUnits(value, "distance");
-        },
-
-        setDistance: function(value, options)
-        {
-            return conversion.convertToModelUnits(parseFloat(value), "distance");
-        },
-
-        getTime: function (value, options)
-        {
-            return TP.utils.datetime.format.decimalHoursAsTime(value, true, "");
-        },
-
-        setTime: function (value, options)
-        {
-            return TP.utils.datetime.convert.timeToDecimalHours(value);
-        },
-
-        getPace: function (value, options)
-        {
-            return conversion.convertToViewUnits(value, "pace");
-        },
-
-        setPace: function (value, options)
-        {
-            return conversion.convertToModelUnits(value, "pace");
-        },
-
-        getSpeed: function (value, options)
-        {
-            return conversion.convertToViewUnits(value, "speed");
-        },
-
-        setSpeed: function (value, options)
-        {
-            return conversion.convertToModelUnits(parseFloat(value), "speed");
-        },
-
-        getElevation: function (value, options)
-        {
-            return conversion.convertToViewUnits(value, "elevation");
-        },
-
-        setElevation: function (value, options)
-        {
-            return conversion.convertToModelUnits(parseInt(value, 10), "elevation");
-        },
-
-        getNumber: function(value, options)
-        {
-            return ((value === null || value === 0 || value === "0") ? "" : +value);
-        },
-        
-        setInteger: function(value, options)
-        {
-            return ((value === "" || value === "0") ? null : parseInt(value, 10));
-        },
-        
-        setFloat: function(value, options)
-        {
-            return (value === "" ? null : parseFloat(value));
-        },
-
-        getTemperature: function(value, options)
-        {
-            return conversion.convertToViewUnits(value, "temperature");
-        },
-        
-        setTemperature: function(value, options)
-        {
-            return conversion.convertToModelUnits(parseInt(value, 10), "temperature");
-        },
-        
-        getIF: function (value, options)
-        {
-            return value ? +(Math.round(value * 100) / 100) : "";
-        },
-
-        setIF: function (value, options)
-        {
-            return value ? (Math.round(parseFloat(value) * 100) / 100).toFixed(2) : 0;
-        },
-        
-        getTSS: function (value, options)
-        {
-            return value ? (Math.round(value * 10) / 10) : "";
-        },
-
-        setTSS: function (value, options)
-        {
-            return value ? (Math.round(parseFloat(value) * 10) / 10).toFixed(1) : 0;
-        },
-        
-        getEnergy: function (value, options)
-        {
-            return value ? +(Math.round(value)) : "";
-        },
-
-        setEnergy: function (value, options)
-        {
-            return value ? (Math.round(parseFloat(value))).toFixed(0) : 0;
-        },
-
         setTextField: function(value, options)
         {
             return value === "" ? null : this.fixNewlines(value);
@@ -535,5 +432,6 @@ function(
 
     };
 
+    _.extend(summaryViewStickitBindings, conversion);
     return summaryViewStickitBindings;
 });

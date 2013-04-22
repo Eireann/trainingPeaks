@@ -23,21 +23,21 @@
 
         getTime: function (value, options)
         {
-            return TP.utils.datetime.format.decimalHoursAsTime(value, true);
+            return TP.utils.datetime.format.decimalHoursAsTime(value, true, "");
         },
 
         setTime: function(value, options)
         {
             return TP.utils.datetime.convert.timeToDecimalHours(value);
         },
-        
+
         getTimeOfDay: function(value, options)
         {
             var timeOfDay = moment(value);
             return timeOfDay.format("hh:mm:ss A");
         },
 
-        getPace: function (value, options)
+        getPace: function(value, options)
         {
             return convertToViewUnits(value, "pace");
         },
@@ -47,7 +47,7 @@
             return convertToModelUnits(value, "pace");
         },
 
-        getSpeed: function (value, options)
+        getSpeed: function(value, options)
         {
             return convertToViewUnits(value, "speed");
         },
@@ -98,35 +98,35 @@
             //TODO: make this not suck
             return workoutTypeEnum2[value];
         },
-        
-        getIF: function (value, options)
+
+        getIF: function(value, options)
         {
-            return +(Math.round(value * 100) / 100);
+            return value ? +(Math.round(value * 100) / 100) : "";
         },
 
         setIF: function (value, options)
         {
-            return (Math.round(parseFloat(value) * 100) / 100).toFixed(2);
+            return value ? (Math.round(parseFloat(value) * 100) / 100).toFixed(2) : 0;
         },
-
+        
         getTSS: function (value, options)
         {
-            return +(Math.round(value * 10) / 10);
+            return value ? (Math.round(value * 10) / 10) : "";
         },
 
         setTSS: function (value, options)
         {
-            return (Math.round(parseFloat(value) * 10) / 10).toFixed(1);
+            return value ? (Math.round(parseFloat(value) * 10) / 10).toFixed(1) : 0;
         },
-
+        
         getEnergy: function (value, options)
         {
-            return +(Math.round(value));
+            return value ? +(Math.round(value)) : "";
         },
 
         setEnergy: function (value, options)
         {
-            return (Math.round(parseFloat(value))).toFixed(0);
+            return value ? (Math.round(parseFloat(value))).toFixed(0) : 0;
         },
 
         formatWorkoutComments: function(commentsArray, options)
