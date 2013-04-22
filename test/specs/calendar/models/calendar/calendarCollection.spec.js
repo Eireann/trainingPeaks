@@ -79,14 +79,13 @@ function($, TP, moment, WorkoutModel, WorkoutsCollection, CalendarCollection)
             });
         });
 
-        xdescribe("createWeekCollectionStartingOn", function()
+        describe("createWeekCollectionStartingOn", function()
         {
             it("Should create a Backbone.Collection with seven DayModels without WeekSummary", function()
             {
                 var startDate = moment();
-
-                var context = { summaryViewEnabled: false, daysCollection: new TP.Collection() };
-                var weekCollection = CalendarCollection.prototype.createWeekCollectionStartingOn.call(context, moment(startDate));
+                var contextWithoutSummary = _.extend({ summaryViewEnabled: false, daysCollection: new TP.Collection() }, CalendarCollection.prototype);
+                var weekCollection = CalendarCollection.prototype.createWeekCollectionStartingOn.call(contextWithoutSummary, moment(startDate));
 
                 expect(weekCollection.length).toBe(7);
                 expect(weekCollection.at(0).get("date")).toBe(startDate.format("YYYY-MM-DD"));
@@ -99,7 +98,7 @@ function($, TP, moment, WorkoutModel, WorkoutsCollection, CalendarCollection)
             {
                 var startDate = moment();
 
-                var contextWithSummary = { summaryViewEnabled: true, daysCollection: new TP.Collection() };
+                var contextWithSummary = _.extend({ summaryViewEnabled: true, daysCollection: new TP.Collection() }, CalendarCollection.prototype);
                 var weekCollectionWithSummary = CalendarCollection.prototype.createWeekCollectionStartingOn.call(contextWithSummary, moment(startDate));
 
                 expect(weekCollectionWithSummary.length).toBe(8);
@@ -113,7 +112,7 @@ function($, TP, moment, WorkoutModel, WorkoutsCollection, CalendarCollection)
                 var startDate = moment();
 
                 var daysSpy = jasmine.createSpyObj("DaysCollection spy", ["add"]);
-                var context = { summaryViewEnabled: false, daysCollection: daysSpy };
+                var context = _.extend({ summaryViewEnabled: false, daysCollection: daysSpy }, CalendarCollection.prototype);
                 var weekCollection = CalendarCollection.prototype.createWeekCollectionStartingOn.call(context, moment(startDate));
                 expect(daysSpy.add).toHaveBeenCalled();
                 expect(daysSpy.add.calls.length).toEqual(7);

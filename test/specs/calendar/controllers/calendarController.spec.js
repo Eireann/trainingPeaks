@@ -191,19 +191,21 @@ function(TP, moment, $, _, Backbone, CalendarController, WorkoutModel, WorkoutsC
             });
         });
 
-        xdescribe("Bind to CalendarView events", function()
+        describe("Bind to CalendarView events", function()
         {
 
             var context = {
                 prependWeekToCalendar: function() { },
                 appendWeekToCalendar: function() { },
-                onDropItem: function() { }
+                onDropItem: function() { },
+                bindToDragMoveAndShiftEvents: CalendarController.prototype.bindToDragMoveAndShiftEvents
             };
 
                         
             var calendarView;
 
-            beforeEach(function() {
+            beforeEach(function()
+            {
                 calendarView = jasmine.createSpyObj("CalendarView spy", ["on"]);
             });
 
