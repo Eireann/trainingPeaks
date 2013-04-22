@@ -23,7 +23,7 @@
 
         getTime: function (value, options)
         {
-            return TP.utils.datetime.format.timeFromDecimalHours(value, true);
+            return TP.utils.datetime.format.decimalHoursAsTime(value, true);
         },
 
         setTime: function(value, options)

@@ -213,7 +213,7 @@ function (_, moment, TP, WorkoutDetailsModel)
 
         parse: function(response)
         {
-            this.getPostActivityComments().set(response.workoutComments);
+            this.getPostActivityComments().update(response.workoutComments);
             return response;
         },
 
