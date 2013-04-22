@@ -153,13 +153,6 @@ function(
                 this.libraryCollections[libraryName].fetch();
         },
 
-        watchClipboard: function()
-        {
-            this.weeksCollection.on("paste:enable", this.onPasteEnabled, this);
-            this.weeksCollection.on("paste:disable", this.onPasteDisabled, this);
-            this.onPasteDisabled();
-        },
-
         onPasteEnabled: function()
         {
             $('body').removeClass('pasteDisabled').addClass('pasteEnabled');
@@ -196,12 +189,7 @@ function(
             this.startDate = this.createStartDay().subtract("weeks", 4);
             this.endDate = this.createEndDay().add("weeks", 6);
 
-            this.weeksCollection = new CalendarCollection(null,
-            {
-                summaryViewEnabled: this.summaryViewEnabled,
-                startDate: moment(this.startDate),
-                endDate: moment(this.endDate)
-            });
+            this.weeksCollectionInitialize();
         },
 
         reset: function(startDate, endDate, scrollToDate)
@@ -412,26 +400,6 @@ function(
 
             this.views.library = new LibraryView({ collections: this.libraryCollections });
             this.views.library.on("animate", this.onLibraryAnimate, this);
-        },
-
-        appendWeekToCalendar: function ()
-        {
-            var startDate = moment(this.endDate).add("days", 1);
-            var endDate = moment(startDate).add("days", 6);
-            this.endDate = moment(endDate);
-
-            this.weeksCollection.appendWeek(startDate);
-            this.weeksCollection.requestWorkouts(startDate, endDate);
-        },
-
-        prependWeekToCalendar: function()
-        {
-            var endDate = moment(this.startDate).subtract("days", 1);
-            var startDate = moment(endDate).subtract("days", 6);
-            this.startDate = moment(startDate);
-
-            this.weeksCollection.prependWeek(startDate);
-            this.weeksCollection.requestWorkouts(startDate, endDate);
         },
 
         onLibraryAnimate: function(cssAttributes, duration)
