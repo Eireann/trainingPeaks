@@ -1,0 +1,178 @@
+﻿@import "../globalCSS/tpstylesheet";
+@import "workoutColor";
+
+.workout
+{
+    margin: 5px 4px 4px 0px;
+    @include box-shadow(0px 2px 3px -2px $TPGrey4);
+
+    &.dragHelper
+    {
+        opacity: 0.6;
+        min-width: 150px;
+    }
+
+    &.dragging
+    {
+        opacity:0.8;
+    }
+
+    .workoutDiv
+    {
+
+        min-height: 35px;
+        /*
+        border-bottom: $TPGrey3;
+        border-bottom-width: 1px;
+        border-bottom-style: solid;
+        */
+
+        .workoutHeader
+        {
+            padding: 0px 5px 5px 5px;
+            height: 27px;
+            .workoutIcon
+            {
+                width: 25px;
+                height: 25px;
+                background-color: $white;
+                float: left;
+                margin-top: 5px;
+            }
+
+            .workoutDistanceTime
+            {
+                padding: 10px 0px 0px 30px;
+
+                @include labels($navigationFontFamilyRegular, $fontSizeXLarge, $TPGrey4, normal);
+                label
+                {
+                    display:inline-block;
+                    cursor: inherit;
+                }
+                
+                .units
+                {
+                    font-size: 0.88em;
+                    margin-left: 0.15em;
+                }
+            }
+
+            .workoutSettings
+            {
+                display: none;
+                float: right;
+
+                button
+                {	
+                    background: transparent;
+                    border: none;
+                    padding: 0px;
+                    width: 15px;
+                    cursor: default;
+                }
+            }
+        }
+        .workoutBody
+        {
+            padding: 10px 5px 5px 5px;
+            @include labels($navigationFontFamilyRegular, $fontSizeXSmall, $TPGrey4, normal);
+            label
+            {
+                font-weight: bold;
+                cursor: inherit;
+            
+            }
+            
+            p
+            {
+                margin-bottom: 0px;
+                font-size: $fontSizeXSmall;
+                font-color: $black;
+                font-family: $navigationFontFamilyRegular;
+                text-align: left;
+                line-height: 12px;
+                cursor: inherit;
+            }
+        }
+    }
+
+} // end .workout
+
+
+
+#workoutHoverDiv
+{
+    z-index:99;
+    position:absolute;
+
+    .details
+    {
+        min-width: 100px;
+
+        @include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey4, normal);
+
+        label
+        {
+            margin-top:10px;
+            margin-bottom:2px;
+            cursor: inherit;
+        }
+
+        label:first
+        {
+            margin-top:0px;
+        }
+
+        .planned
+        {
+            color: $todayBlue ;
+            font-size:$fontSizeLarge;
+        }
+
+        .completed
+        {
+            color: $thisWeekBlue;
+            font-size:$fontSizeLarge;
+        }
+
+        .slash
+        {
+            color: $thisWeekBlue;
+            font-size:$fontSizeLarge;
+        }
+    }
+
+}
+
+#workoutSettingsDiv
+{
+    min-width: 75px;
+	padding-left: 10px;
+	padding-bottom: 20px;
+
+	@include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey4, normal);
+	label
+	{
+		padding-top: 2px;
+	}
+
+	.arrow
+    {
+        width: 15px;
+        height: 15px;
+        @include transform(translateY(-7px) rotate(45deg));
+        @include calc(margin-left, "50% - 20");
+    }
+
+	.colorBar
+    {
+        bottom: 15px;
+    }
+
+	.bottomShadow
+    {
+        bottom: 14px;
+    }
+
+}

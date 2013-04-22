@@ -1,51 +1,40 @@
-﻿@import "tpstylesheet";
+﻿@import "globalCSS/tpstylesheet";
 
 #libraryContainer
 {
 
-    margin-top:15px;
+    margin-top:0px;
+	padding: 0 5px;
+    @include column(1);
+    width: 40px;
 
     #libraries
     {
         @include outerRow();
-        min-width:50px;
+        min-width: 45px;
         position:relative;
-        background-color:$white;
-        height:600px;
+        background-color:$TPGrey1;
     }
-
              
     &.open
     {
-        @include column(4);
-        @include transition-property(width);
-        @include transition-duration(400ms);
         padding-right:2px;
 
         #activeLibraryContainer
         {
             visibility:visible;
         }
-
     }
 
     &.closed
     {
-        @include column(1);
-        width:51px;
         text-align:right;
-        @include transition-property(width);
-        @include transition-duration(400ms);
 
         #libraries
         {
             background-color:$TPGrey1;
         }
 
-        #activeLibraryContainer
-        {
-            visibility:hidden;
-        }
     }
 
     #tabs
@@ -53,88 +42,160 @@
         position:absolute;
         left:0px;
         top:0px;
-        background-color:$TPGrey1;
-        height:600px;
-        width:50px;
+        background-color: white;
+        width:40px;
 
         div
         {
-            width:50px;
-            height:50px;
+            width: 33px;
+            height:33px;
             color: $white;
-            border-bottom:2px solid $TPGrey1;
-            border-right:2px solid $TPGrey1;
-            background-color: $TPGrey2;
+            background-color: $TPGrey1;
+            margin-bottom: 3px;
+
+            .arrow
+            {
+                position:relative;
+                display:none;
+                z-index: 0;
+                width: 17px;
+                height: 17px;
+                background-color: $TPBlue;
+                left: 35px;
+                @include transform(translateY(10px) rotate(45deg));
+            }
         }
 
         div.active
         {
-            background-color: $TPBlue;
-            border-right-color:$TPBlue;
+            background-color: $TPGrey2;
+
+            .arrow
+            {
+                display: block;
+            }
         }
+
+        
     }
 
     #activeLibraryContainer
     {
 
+        @include nice-scrollbar;
         position:absolute;
         top:0px;
         bottom:0px;
-        left:50px;
+        left: 42px;
         right: 0px;
         overflow-y:auto;
-        padding:15px;
+        padding: 5px;
+        @include calc(width, "100% - 40px"); 
+        white-space: nowrap;
 
-        background-color:$white;
-        border-left:2px solid $TPBlue;
+        background-color: $TPGrey1;
+        border-left: 3px solid $TPBlue;
 
-        @include labels($navigationFontFamilyRegular, 20px, $TPBlue);
-        label
+        .libraryNavigation
         {
-            display: inline-block;
-            margin-right: 15px;
+            @include labels($navigationFontFamilyRegular, $fontSizeXLarge, $TPBlue, normal);
+            label
+            {
+                display: inline-block;
+                margin-right: 15px;
+            }
+
+            @include headerButtons(0px, 40px, $fontSizeMedium);
+            button
+            {
+                float: right;
+                margin-left: 5px;
+            }
         }
 
         .librarySearch
         {
-            input#search
+            margin-top: 10px;
+            @include inputs(100%, 20px, $fontSizeMedium, $navigationFontFamilyRegular);
+
+            select
             {
-                margin-top:10px;
+                margin-top: -5px;
+                font-family: $navigationFontFamilyRegular;
+                font-size: $fontSizeMedium;
             }
         }
 
         .helpText
         {
+            padding-left: 10px;
             color: $TPGrey3;
             font-style: italic;
+            cursor: default;
         }
 
-        .workout
-        {
-
-            color: $TPGrey3;
-            margin-top:10px;
-
-            .title
-            {
-                font-size:15px;
-                font-weight:bold;
-                color:$TPGrey4;
-            }
-
-        }
     }
 
 }
 
-#workoutLibraryAddView
+#exerciseLibraryAddItemView
 {
 
     background-color: $TPGrey4;
     opacity: 0.9;
+    padding: 50px;
 
     div
     {
         margin-top:10px;
+    }
+}
+
+.libraryExercise
+{
+    @include box-shadow(0px 2px 3px -2px $TPGrey4);
+    background-color: #e1e2e2;
+
+
+    &.dragHelper
+    {
+        opacity: 0.6;
+        min-width: 150px;
+    }
+
+    &.dragging
+    {
+        opacity: 0.8;
+    }
+
+    color: $TPGrey3;
+    margin-top: 4px;
+
+    .workoutHeader
+    {
+        padding: 0px 5px 5px 5px;
+        height: 27px;
+
+        .workoutIcon
+        {
+            width: 25px;
+            height: 25px;
+            background-color: $white;
+            float: left;
+            margin-top: 5px;
+        }
+
+        .workoutDistanceTime
+        {
+            padding: 10px 0px 0px 30px;
+
+            @include labels($navigationFontFamilyRegular, $fontSizeXLarge, $black, normal);
+        }
+    }
+    .workoutBody
+    {
+        padding: 10px 5px 5px 5px;
+        @include labels($navigationFontFamilyRegular, $fontSizeXSmall, $black, normal);
+        label{font-weight: bold;}
     }
 }

@@ -28,9 +28,11 @@ theSpecLoader = {
 requirejs(['jasmine-spec-loader'], function (loader) {
     theSpecLoader = loader;
     _.each(_.keys(fakeRegistry), function (key) {
-        if (fakeRegistry[key] === true) {
+        if (fakeRegistry[key] === true)
+        {
             loader.completed(key);
-        } else {
+        } else
+        {
             loader.register(key);
         }
     });
@@ -38,18 +40,22 @@ requirejs(['jasmine-spec-loader'], function (loader) {
 
 // override requirejs, so we call the spec loader's register/complete functions
 var originalRequireJs = requirejs;
-var requirejs = function (dependencies, callback) {
-    function registerDependencies(dependencies) {
-        _.each(dependencies, function (modulePath) {
+var requirejs = function(dependencies, callback)
+{
+    function registerDependencies(dependencies)
+    {
+        _.each(dependencies, function(modulePath)
+        {
             theSpecLoader.register(modulePath);
-            originalRequireJs([modulePath], function (completedDependency) {
+            originalRequireJs([modulePath], function(completedDependency)
+            {
                 theSpecLoader.completed(modulePath);
             });
         });
     }
 
     registerDependencies(dependencies);
-    originalRequireJs.apply(originalRequireJs, arguments);
+    originalRequireJs.call(originalRequireJs, dependencies, callback);
 };
 
 requirejs.config = function () {
@@ -61,3 +67,5 @@ requirejs.config(nodeConfig);
 
 // set baseUrl here, even though we have it in nodeConfig, or else code coverage doesn't work
 requirejs.config({ baseUrl: path.join(rootJsDir, "app") });
+
+global.requirejs = global.require = requirejs;

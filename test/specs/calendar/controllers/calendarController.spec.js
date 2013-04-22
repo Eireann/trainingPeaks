@@ -1,6 +1,7 @@
 // use requirejs() here, not define(), for jasmine compatibility
 requirejs(
 [
+"TP",
 "moment",
 "jquery",
 "underscore",
@@ -8,10 +9,10 @@ requirejs(
 "controllers/calendarController",
 "models/workoutModel",
 "models/workoutsCollection",
-"views/calendarView",
-"views/libraryView"
+"views/calendar/calendarContainerView",
+"views/library/libraryView"
 ],
-function(moment, $, _, Backbone, CalendarController, WorkoutModel, WorkoutsCollection, CalendarView, LibraryView)
+function(TP, moment, $, _, Backbone, CalendarController, WorkoutModel, WorkoutsCollection, CalendarView, LibraryView)
 {
 
     describe("Calendar Controller", function()
@@ -48,7 +49,7 @@ function(moment, $, _, Backbone, CalendarController, WorkoutModel, WorkoutsColle
                 var controller = new CalendarController();
                 expect(controller.startDate).toBeDefined();
 
-                var expectedStartDate = moment().day(0).subtract("weeks", 4);
+                var expectedStartDate = moment().day(controller.startOfWeekDayIndex).subtract("weeks", 4);
                 expect(controller.startDate.format("YYYY-MM-DD")).toBe(expectedStartDate.format("YYYY-MM-DD"));
             });
 
@@ -57,7 +58,7 @@ function(moment, $, _, Backbone, CalendarController, WorkoutModel, WorkoutsColle
                 var controller = new CalendarController();
                 expect(controller.endDate).toBeDefined();
 
-                var expectedEndDate = moment().day(6).add("weeks", 6);
+                var expectedEndDate = moment().day(6 + controller.startOfWeekDayIndex).add("weeks", 6);
                 expect(controller.endDate.format("YYYY-MM-DD")).toBe(expectedEndDate.format("YYYY-MM-DD"));
             });
 
@@ -67,6 +68,67 @@ function(moment, $, _, Backbone, CalendarController, WorkoutModel, WorkoutsColle
                 expect(controller.weeksCollection).toBeDefined();
                 expect(controller.weeksCollection).not.toBeNull();
             });
+        });
+
+        describe("Show calendar", function()
+        {
+            var controller;
+
+            beforeEach(function()
+            {
+                controller = new CalendarController();
+                spyOn(controller, "showViewsInRegions");
+                spyOn(controller, "scrollToDateAfterLoad");
+                spyOn(controller, "showDate");
+            });
+
+            it("Should initialize the header", function()
+            {
+                spyOn(controller, "initializeHeader");
+                controller.show();
+                expect(controller.initializeHeader).toHaveBeenCalled();
+            });
+
+            it("Should initialize the calendar", function()
+            {
+                spyOn(controller, "initializeCalendar");
+                controller.show();
+                expect(controller.initializeCalendar).toHaveBeenCalled();
+            });
+
+            it("Should initialize the library", function()
+            {
+                spyOn(controller, "initializeLibrary");
+                controller.show();
+                expect(controller.initializeLibrary).toHaveBeenCalled();
+            });
+
+            it("Should display the views in their regioins", function()
+            {
+                controller.show();
+                expect(controller.showViewsInRegions).toHaveBeenCalled();
+            });
+
+            it("Should load the library data", function()
+            {
+                spyOn(controller, "loadLibraryData");
+                controller.show();
+                expect(controller.loadLibraryData).toHaveBeenCalled();
+            });
+
+            it("Should load the calendar data", function()
+            {
+                spyOn(controller, "loadCalendarData");
+                controller.show();
+                expect(controller.loadCalendarData).toHaveBeenCalled();
+            });
+
+            it("Should scroll to today after loading", function()
+            {
+                controller.show();
+                expect(controller.scrollToDateAfterLoad).toHaveBeenCalled();
+            });
+
         });
 
         describe("initializeCalendar", function()
@@ -89,15 +151,53 @@ function(moment, $, _, Backbone, CalendarController, WorkoutModel, WorkoutsColle
 
         });
 
+        describe("Load calendar data", function()
+        {
+
+            it("Should call requestWorkouts once for each week", function()
+            {
+                var controller = new CalendarController();
+                controller.startDate = moment().day(0);
+                controller.endDate = moment().day(0).add("weeks", 20);
+                spyOn(controller.weeksCollection, "requestWorkouts");
+                controller.loadCalendarData();
+                expect(controller.weeksCollection.requestWorkouts).toHaveBeenCalled();
+                expect(controller.weeksCollection.requestWorkouts.callCount).toEqual(20);
+            });
+
+        });
+
+        describe("Load library data", function()
+        {
+
+            describe("Initialize library", function()
+            {
+                it("Should create an exerciseLibraries", function()
+                {
+                    var controller = new CalendarController();
+                    controller.initializeLibrary();
+                    expect(controller.libraryCollections.exerciseLibraries).toBeDefined();
+                });
+                
+            });
+
+            it("Should fetch the exercise library", function()
+            {
+                var controller = new CalendarController();
+                controller.initializeLibrary();
+                spyOn(controller.libraryCollections.exerciseLibraries, "fetch");
+                controller.loadLibraryData();
+                expect(controller.libraryCollections.exerciseLibraries.fetch).toHaveBeenCalled();
+            });
+        });
+
         describe("Bind to CalendarView events", function()
         {
 
             var context = {
-                prependWeekToCalendar: function(){},
-                appendWeekToCalendar: function(){},
-                weeksCollection: {
-                    onItemMoved: function(){}
-                }
+                prependWeekToCalendar: function() { },
+                appendWeekToCalendar: function() { },
+                onDropItem: function() { }
             };
 
                         
@@ -119,11 +219,10 @@ function(moment, $, _, Backbone, CalendarController, WorkoutModel, WorkoutsColle
                 expect(calendarView.on).toHaveBeenCalledWith("append", context.appendWeekToCalendar, context);
             });
 
-            it("Should bind to calendar view 'itemMoved' event", function()
+            it("Should bind to calendar view 'itemDropped' event", function()
             {
                 CalendarController.prototype.bindToCalendarViewEvents.call(context, calendarView);
-                expect(calendarView.on).toHaveBeenCalledWith("append", context.appendWeekToCalendar, context);
-                expect(calendarView.on).toHaveBeenCalledWith("itemMoved", context.weeksCollection.onItemMoved, context.weeksCollection);
+                expect(calendarView.on).toHaveBeenCalledWith("itemDropped", context.onDropItem, context);
             });
         });
 
@@ -137,14 +236,42 @@ function(moment, $, _, Backbone, CalendarController, WorkoutModel, WorkoutsColle
                 expect(LibraryView.prototype.initialize).toHaveBeenCalled();
             });
 
-            it("Should bind to LibraryView events", function()
+        });
+
+        describe("Drag and drop items", function()
+        {
+
+            it("Should drag an existing workout to a new date", function()
             {
+                var eventOptions = {
+                    DropEvent: "itemMoved"
+                };
                 var controller = new CalendarController();
-                spyOn(controller, "bindToLibraryViewEvents");
-                controller.initializeLibrary();
-                expect(controller.bindToLibraryViewEvents).toHaveBeenCalledWith(controller.views.library);
+                spyOn(controller.weeksCollection, "onItemMoved");
+                controller.onDropItem(eventOptions);
+                expect(controller.weeksCollection.onItemMoved).toHaveBeenCalledWith(eventOptions);
             });
 
+            it("Should drag a new workout from library", function()
+            {
+                var eventOptions = {
+                    DropEvent: "addExerciseFromLibrary",
+                    LibraryId: 1234,
+                    ItemId: 5432,
+                    destinationCalendarDayModel: {
+                        id: '2012-01-01'
+                    }
+                };
+                var controller = new CalendarController();
+                controller.initializeCalendar();
+                spyOn(controller.views.calendar, "scrollToDate");
+                var workout = jasmine.createSpyObj("Workout spy", ["save"]);
+                spyOn(controller.weeksCollection, "addWorkout");
+                spyOn(controller, "createNewWorkoutFromExerciseLibraryItem").andReturn(workout);
+                controller.onDropItem(eventOptions);
+                expect(controller.createNewWorkoutFromExerciseLibraryItem).toHaveBeenCalledWith(eventOptions.LibraryId, eventOptions.ItemId, eventOptions.destinationCalendarDayModel.id);
+                expect(controller.weeksCollection.addWorkout).toHaveBeenCalledWith(workout);
+            });
         });
 
         describe("Prepend a week to the calendar", function()
@@ -215,6 +342,116 @@ function(moment, $, _, Backbone, CalendarController, WorkoutModel, WorkoutsColle
                 expect(controller.weeksCollection.appendWeek).toHaveBeenCalled();
                 var lastCall = controller.weeksCollection.appendWeek.mostRecentCall;
                 expect(lastCall.args[0].format(dateFormat)).toEqual(expectedStartDate.format(dateFormat));
+            });
+        });
+
+
+        describe("Reset", function()
+        {
+
+            var controller, endDate, startDate;
+
+            beforeEach(function()
+            {
+                startDate = moment().day(0);
+                endDate = moment().day(0).add("weeks",4);
+                controller = new CalendarController();
+                controller.initializeCalendar();
+                spyOn(controller.weeksCollection, "resetToDates");
+            });
+
+            it("Should set the correct start and end dates", function()
+            {
+                controller.reset(startDate, endDate);
+                expect(controller.startDate.unix()).toEqual(startDate.unix());
+                expect(controller.endDate.unix()).toEqual(endDate.unix());
+            });
+
+            it("Should reset the weeks collection to the correct dates", function()
+            {
+                controller.reset(startDate, endDate);
+                expect(controller.weeksCollection.resetToDates).toHaveBeenCalledWith(startDate, endDate);
+            });
+
+        });
+
+        describe("showDate", function()
+        {
+
+            var controller;
+            
+            beforeEach(function()
+            {
+                controller = new CalendarController();
+                spyOn(controller, "reset");
+                spyOn(controller, "prependWeekToCalendar");
+                spyOn(controller, "appendWeekToCalendar");
+                controller.initializeCalendar();
+                controller.views.calendar = jasmine.createSpyObj("calendar view spy", ["scrollToDate"]);
+            });
+
+            it("Should scroll to date, but not reset, if within current date range", function()
+            {
+                controller.startDate = moment().day(0);
+                controller.endDate = moment().day(0).add("weeks", 3);
+                var showDate = moment().day(3).add("weeks", 1);
+                controller.showDate(showDate);
+                expect(controller.reset).not.toHaveBeenCalled();
+                expect(controller.views.calendar.scrollToDate).toHaveBeenCalled();
+
+            });
+
+            it("Should reset if requested date is more than 8 weeks outside current range", function()
+            {
+                controller.startDate = moment().day(0);
+                controller.endDate = moment().day(0).add("weeks", 3);
+                var showDate = moment().day(3).add("weeks", 16);
+                controller.showDate(showDate);
+                expect(controller.reset).toHaveBeenCalled();
+            });
+
+            it("Should prepend week if date is before current range", function()
+            {
+                controller.startDate = moment().day(0);
+                controller.endDate = moment().day(0).add("weeks", 3);
+                var showDate = moment().day(3).subtract("weeks", 5);
+                controller.showDate(showDate);
+                expect(controller.reset).not.toHaveBeenCalled();
+                expect(controller.prependWeekToCalendar).toHaveBeenCalled();
+            });
+
+            it("Should append week if date is before current range", function()
+            {
+                controller.startDate = moment().day(0);
+                controller.endDate = moment().day(0).add("weeks", 3);
+                var showDate = moment().day(3).add("weeks", 6);
+                controller.showDate(showDate);
+                expect(controller.reset).not.toHaveBeenCalled();
+                expect(controller.appendWeekToCalendar).toHaveBeenCalled();
+            });
+        });
+
+        describe("Event binding", function()
+        {
+            it("Should reset the calendar state on the request:refresh event", function()
+            {
+                var controller = new CalendarController();
+                controller.initializeHeader();
+                controller.views.calendar =
+                {
+                    scrollToDate: function()
+                    {
+                    }
+                };
+                
+                spyOn(controller, "reset");
+                
+                var dateAsMoment = moment("2013-04-16");
+                var currentWeekModel = new TP.Model({ date: dateAsMoment });
+
+                controller.views.header.trigger("request:refresh", currentWeekModel);
+
+                expect(controller.reset).toHaveBeenCalled();
             });
         });
 

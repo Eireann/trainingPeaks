@@ -2,9 +2,9 @@
 requirejs(
 [
     "TP",
-    "views/calendarWeekView",
-    "views/weekSummaryView",
-    "views/calendarDayView"
+    "views/calendar/calendarWeekView",
+    "views/weekSummary/weekSummaryView",
+    "views/calendar/day/calendarDayView"
 ],
 function(TP, CalendarWeekView, WeekSummaryView, CalendarDayView)
 {
@@ -18,6 +18,7 @@ function(TP, CalendarWeekView, WeekSummaryView, CalendarDayView)
 
         it("should dynamically pick an itemView based on the item model", function()
         {
+            var parentCollection = new TP.Collection({});
             var weekSummaryItem = new TP.Model({});
             weekSummaryItem.isSummary = true;
 
@@ -25,9 +26,11 @@ function(TP, CalendarWeekView, WeekSummaryView, CalendarDayView)
             
             var WeekItemView = CalendarWeekView.prototype.getItemView.call(null, weekSummaryItem);
             var CalendarItemView = CalendarWeekView.prototype.getItemView.call(null, dayItem);
-
+            var weekSummaryModel = new TP.Model({});
+            parentCollection.add(weekSummaryModel);
+            
             expect(WeekItemView).toBeDefined();
-            expect(new WeekItemView({ model: new TP.Model() }) instanceof WeekSummaryView).toBeTruthy();
+            expect(new WeekItemView({ model: weekSummaryModel }) instanceof WeekSummaryView).toBeTruthy();
 
             expect(CalendarItemView).toBeDefined();
             expect(new CalendarItemView({ model: new TP.Model() }) instanceof CalendarDayView).toBeTruthy();

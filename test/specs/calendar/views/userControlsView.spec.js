@@ -3,7 +3,7 @@ requirejs(
 [
     "jquery",
     "backbone",
-    "views/userControlsView"
+    "views/userControls/userControlsView"
 ],
 function ($, Backbone, UserControlsView)
 {
@@ -16,12 +16,6 @@ function ($, Backbone, UserControlsView)
         it("Loads as a module", function()
         {
             expect(UserControlsView).toBeDefined();
-        });
-
-        it("Registers UI elements onto its context", function()
-        {
-            var view = new UserControlsView();
-            expect(view.ui.settingsButton).toBeDefined();
         });
 
         it("Renders the UserSettings view when the usernameLabel is clicked", function()

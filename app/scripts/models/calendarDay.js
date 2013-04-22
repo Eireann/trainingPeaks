@@ -7,12 +7,10 @@
 function(_, moment, TP)
 {
 
-    return TP.Model.extend(
+    var CalendarDay = TP.Model.extend(
     {
 
-        idAttribute: 'dateString',
-        dateFormat: "YYYY-MM-DD",
-        collection: null,
+        idAttribute: 'date',
 
         initialize: function()
         {
@@ -27,47 +25,90 @@ function(_, moment, TP)
             if(!date)
                 throw "CalendarDay requires a date";
 
-            // date must be a moment
-            if (!moment.isMoment(date))
-            {
-                date = moment(date);
-                this.set("date", date, { silent: true });
-            }
-
-            // formatted date for id in collection 
-            this.set("dateString", moment(date).format(this.dateFormat), { silent: true });
+            // use a formatted string for date attribute and for calendar id
+            this.set("date", moment(date).format(TP.utils.datetime.shortDateFormat), { silent: true });
         },
 
         configureCollection: function()
         {
             // empty collection to store our collection
-            this.collection = new TP.Collection();
-            this.collection.on("all", this.bubbleUpEvent, this);
-
-            // add a model to hold our label
-            var dayLabel = new TP.Model({ date: this.get("date") });
-            dayLabel.isDateLabel = true;
-            this.collection.add(dayLabel);
-
-            // watch for changes on collection
-            this.collection.on("add", this.change, this);
-            this.collection.on("remove", this.change, this);
+            this.itemsCollection = new TP.Collection();
         },
 
-        bubbleUpEvent: function(event)
+        // gets called via onBeforeRender of calendarDayView - only add a label if we need it for render,
+        // but not for copy/paste etc
+        configureDayLabel: function()
         {
-            this.trigger.apply(this, arguments);
+            if (!this.hasLabel)
+            {
+                // add a model to hold our label
+                var dayLabel = new TP.Model({ date: this.get("date") });
+                dayLabel.isDateLabel = true;
+                this.itemsCollection.unshift(dayLabel);
+                this.hasLabel = true;
+            }
         },
 
-        add: function(item)
+        add: function(item, noParentReference)
         {
-            this.collection.add(item);
+            this.itemsCollection.add(item);
         },
 
         remove: function(item)
         {
-            this.collection.remove(item);
+            this.itemsCollection.remove(item);
+        },
+        
+        deleteDayItems: function()
+        {
+            this.itemsCollection.each(function(item)
+            {
+                if (!item.isDateLabel)
+                    item.destroy({ wait:true });
+            });
+        },
+
+        copyToClipboard: function()
+        {
+            var calendarDay = new CalendarDay({ date: this.get("date") });
+            this.itemsCollection.each(function(item)
+            {
+                if (typeof item.copyToClipboard === "function")
+                    calendarDay.add(item.copyToClipboard());
+            });
+            return calendarDay;
+        },
+        
+        cutToClipboard: function()
+        {
+            var calendarDay = new CalendarDay({ date: this.get("date") });
+            this.itemsCollection.each(function (item)
+            {
+                if (typeof item.cutToClipboard === "function")
+                    calendarDay.add(item.cutToClipboard());
+            });
+            return calendarDay;
+        },
+        
+        onPaste: function(dateToPasteTo)
+        {
+            var pastedItems = [];
+            this.itemsCollection.each(function(item)
+            {
+                if (typeof item.onPaste === "function")
+                {
+                    pastedItems.push(item.onPaste(dateToPasteTo));
+                }
+            });
+            return pastedItems;
+        },
+
+        length: function()
+        {
+            return this.itemsCollection.length;
         }
 
-    });
+    }, { hasLabel: false });
+
+    return CalendarDay;
 });

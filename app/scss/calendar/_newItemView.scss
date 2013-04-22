@@ -1,0 +1,124 @@
+﻿@import "../globalCSS/tpstylesheet";
+
+#newItemViewContainer
+{
+    .titleBar
+    {
+        cursor: default;
+        .close
+        {
+            float: right;
+            padding-right: 10px;
+            margin-top: -2px;
+
+            img
+            {
+                cursor: default;
+            }
+        }
+    }
+
+    .addItemButtonsContainer
+    {
+        padding: 10px 20px 20px 30px;
+        font-weight: normal;
+
+        fieldset 
+        {
+            border: solid 1px $TPGrey2;
+            border-radius: 0px;
+            margin-top: 0px;
+            color: $TPGrey2;
+            padding-top: 5px;
+
+            legend
+            {
+                margin-left: 20px;
+            }
+
+            a
+            {
+                cursor:default;
+            }
+        }
+
+        legend
+        {
+            font-weight: normal;
+            background-color: transparent;
+            padding-left: 15px;
+            font-style: italic;
+        }
+
+        table
+        {
+            border: 0;
+            border-collapse: collapse;
+            background-color: transparent;
+
+            tr
+            {
+            background-color: transparent;
+
+                td
+                {
+                    margin: 0 0 0 0;
+                    padding: 5px 5px 5px 5px;
+                    border: 0px 0px 0px 0px;
+                    cell-spacing: 0px 0px 0px 0px;
+                    background-color: transparent;
+                    cursor:default;
+                }
+                .dialogHeader
+                {
+                    padding-bottom: 0px;
+                }
+            }
+        }
+
+        @include headerButtons(0px, 50px, $fontSizeMedium);
+
+        button
+        {
+            font-weight:normal;
+            margin-right: 0px;
+            color: $TPGrey3;
+            width: 100%;
+            padding: 1px 20px 0px 20px;
+            min-width: 110px;
+        }
+
+        button[name="uploadDeviceFile"]
+        {
+            width: 220px;
+            margin-right: 1em;
+            background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #dfdfdf), color-stop(1, #AAC8E5) );
+		    background:-moz-linear-gradient( center top, #dfdfdf 20%, #AAC8E5 100% );
+            margin-left: 10px;
+        }
+
+        button[name="chooseMetricBtn"]
+        {
+            width: 200px;
+            margin-right: 1em;
+        }
+    }
+
+    .addItemSectionHeader
+    {
+        color: $TPBlue;
+        font-weight: bold;
+    }
+
+    .helpText
+    {
+        font-style: italic;
+        font-color: #3c7fc4;
+        font-size: $fontSizeSmall;
+    }
+}
+
+#uploadingNotification 
+{
+    padding-left: 10px;
+}

@@ -17,11 +17,6 @@ function($, TP, moment, WorkoutModel, WorkoutsCollection, CalendarCollection)
             expect(CalendarCollection).toBeDefined();
         });
 
-        it("should have a default dateFormat string", function()
-        {
-            expect(CalendarCollection.prototype.dateFormat).toBe("YYYY-MM-DD");
-        });
-
         it("should have a method to retrieve a specific day inside a Week by the day's date, when the week starts on a Sunday", function()
         {
             var weekStartDate = moment().day(0);
@@ -35,7 +30,7 @@ function($, TP, moment, WorkoutModel, WorkoutsCollection, CalendarCollection)
 
             expect(function() { collection.getDayModel(dayInsideOfWeek); }).not.toThrow();
             expect(collection.getDayModel(dayInsideOfWeek)).toBeDefined();
-            expect(collection.getDayModel(dayInsideOfWeek).get("date").format("YYYY-MM-DD")).toBe(dayInsideOfWeek.format("YYYY-MM-DD"));
+            expect(collection.getDayModel(dayInsideOfWeek).get("date")).toBe(dayInsideOfWeek.format("YYYY-MM-DD"));
         });
 
         it("should have a method to retrieve a specific day inside a Week by the day's date, when the week starts on a Monday", function()
@@ -52,7 +47,7 @@ function($, TP, moment, WorkoutModel, WorkoutsCollection, CalendarCollection)
 
             expect(function() { collection.getDayModel(dayInsideOfWeek); }).not.toThrow();
             expect(collection.getDayModel(dayInsideOfWeek)).toBeDefined();
-            expect(collection.getDayModel(dayInsideOfWeek).get("date").format("YYYY-MM-DD")).toBe(dayInsideOfWeek.format("YYYY-MM-DD"));
+            expect(collection.getDayModel(dayInsideOfWeek).get("date")).toBe(dayInsideOfWeek.format("YYYY-MM-DD"));
 
         });
 
@@ -94,8 +89,8 @@ function($, TP, moment, WorkoutModel, WorkoutsCollection, CalendarCollection)
                 var weekCollection = CalendarCollection.prototype.createWeekCollectionStartingOn.call(context, moment(startDate));
 
                 expect(weekCollection.length).toBe(7);
-                expect(weekCollection.at(0).get("date").format("YYYY-MM-DD")).toBe(startDate.format("YYYY-MM-DD"));
-                expect(weekCollection.at(6).get("date").format("YYYY-MM-DD")).toBe(startDate.add("days", 6).format("YYYY-MM-DD"));
+                expect(weekCollection.at(0).get("date")).toBe(startDate.format("YYYY-MM-DD"));
+                expect(weekCollection.at(6).get("date")).toBe(startDate.add("days", 6).format("YYYY-MM-DD"));
                 
                
             });
@@ -108,8 +103,8 @@ function($, TP, moment, WorkoutModel, WorkoutsCollection, CalendarCollection)
                 var weekCollectionWithSummary = CalendarCollection.prototype.createWeekCollectionStartingOn.call(contextWithSummary, moment(startDate));
 
                 expect(weekCollectionWithSummary.length).toBe(8);
-                expect(weekCollectionWithSummary.at(0).get("date").format("YYYY-MM-DD")).toBe(startDate.format("YYYY-MM-DD"));
-                expect(weekCollectionWithSummary.at(6).get("date").format("YYYY-MM-DD")).toBe(startDate.add("days", 6).format("YYYY-MM-DD"));
+                expect(weekCollectionWithSummary.at(0).get("date")).toBe(startDate.format("YYYY-MM-DD"));
+                expect(weekCollectionWithSummary.at(6).get("date")).toBe(startDate.add("days", 6).format("YYYY-MM-DD"));
                 expect(weekCollectionWithSummary.at(7).isSummary).toBe(true);
             });
 
@@ -139,9 +134,9 @@ function($, TP, moment, WorkoutModel, WorkoutsCollection, CalendarCollection)
                 // fake workout collection fetcher
                 var workouts =
                 [
-                        new WorkoutModel({ WorkoutDay: moment().add("days", 1).format(), WorkoutId: '1234' }),
-                        new WorkoutModel({ WorkoutDay: moment().add("days", 2).format(), WorkoutId: '2345' }),
-                        new WorkoutModel({ WorkoutDay: moment().add("days", 3).format(), WorkoutId: '3456' })
+                        new WorkoutModel({ workoutDay: moment().add("days", 1).format(), workoutId: '1234' }),
+                        new WorkoutModel({ workoutDay: moment().add("days", 2).format(), workoutId: '2345' }),
+                        new WorkoutModel({ workoutDay: moment().add("days", 3).format(), workoutId: '3456' })
                 ];
 
                 spyOn(WorkoutsCollection.__super__, "fetch").andCallFake(function()
@@ -275,56 +270,230 @@ function($, TP, moment, WorkoutModel, WorkoutsCollection, CalendarCollection)
                     startDate: moment().day(0),
                     endDate: moment().day(6).add("weeks", 2)
                 });
-                workout = new WorkoutModel({ WorkoutDay: yesterday + "T00:00:00", WorkoutId: workoutId });
-                collection.addWorkoutToCalendarDay(workout);
-                collection.workoutsCollection.add(workout);
+                workout = new WorkoutModel({ workoutDay: yesterday + "T00:00:00", workoutId: workoutId });
+                collection.addWorkout(workout);
                 yesterdayCalendarDay = collection.getDayModel(yesterday);
                 tomorrowCalendarDay = collection.getDayModel(tomorrow);
             });
 
-            it("Should call remove on yesterday's calendarDay model", function()
-            {
-                spyOn(yesterdayCalendarDay, "remove");
-                collection.onItemMoved({ itemId: workoutId, destinationCalendarDayModel: tomorrowCalendarDay });
-                expect(yesterdayCalendarDay.remove).toHaveBeenCalledWith(workout);
-            });
-
-            it("Should call add on tomorrow's calendarDay model", function()
-            {
-                spyOn(tomorrowCalendarDay, "add");
-                collection.onItemMoved({ itemId: workoutId, destinationCalendarDayModel: tomorrowCalendarDay });
-                expect(tomorrowCalendarDay.add).toHaveBeenCalledWith(workout);
-            });
-
             it("Should call moveToDay on workout", function()
             {
-                spyOn(workout, "moveToDay").andCallThrough();
-                collection.onItemMoved({ itemId: workoutId, destinationCalendarDayModel: tomorrowCalendarDay });
-                expect(workout.moveToDay).toHaveBeenCalledWith(tomorrow);
-            });
-
-            it("Should move workout back if save fails", function()
-            {
-                var deferred = $.Deferred();
-                spyOn(workout, "save").andReturn(deferred);
-                spyOn(tomorrowCalendarDay, "add");
-                spyOn(tomorrowCalendarDay, "remove");
-                spyOn(yesterdayCalendarDay, "add");
-                spyOn(yesterdayCalendarDay, "remove");
-
-                // move it ...
-                collection.onItemMoved({ itemId: workoutId, destinationCalendarDayModel: tomorrowCalendarDay });
-                expect(tomorrowCalendarDay.add).toHaveBeenCalledWith(workout);
-                expect(yesterdayCalendarDay.remove).toHaveBeenCalledWith(workout);
-
-                // fail - should move back
-                deferred.reject();
-                expect(tomorrowCalendarDay.remove).toHaveBeenCalledWith(workout);
-                expect(yesterdayCalendarDay.add).toHaveBeenCalledWith(workout);
-
+                spyOn(workout, "moveToDay");
+                collection.onItemMoved({ ItemId: workoutId, destinationCalendarDayModel: tomorrowCalendarDay });
+                expect(workout.moveToDay).toHaveBeenCalledWith(tomorrow, tomorrowCalendarDay);
             });
 
         });
-    });
 
+        it("Sets up the weeks based on a start and end date ", function()
+        {
+            expect(CalendarCollection.prototype.setUpWeeks).toBeDefined();
+            expect(typeof CalendarCollection.prototype.setUpWeeks).toBe("function");
+
+            var i = 0;
+            var context =
+            {
+                workoutsCollection: new TP.Collection(),
+                daysCollection: new TP.Collection(),
+                add: function ()
+                {
+                    i++;
+                },
+                createWeekCollectionStartingOn: function() {}                
+            };
+            
+            spyOn(context.workoutsCollection, "reset");
+            spyOn(context.daysCollection, "reset");
+
+            var startDate = moment("2013-01-01");
+            var endDate = moment("2013-03-01");
+            CalendarCollection.prototype.setUpWeeks.call(context, startDate, endDate);
+
+            expect(context.startDate.unix()).toBe(startDate.unix());
+            expect(context.endDate.unix()).toBe(endDate.unix());
+            expect(context.workoutsCollection.reset).toHaveBeenCalled();
+            expect(context.daysCollection.reset).toHaveBeenCalled();
+            expect(i).toBe(9);
+        });
+
+        describe("Cut, Copy, Paste", function()
+        {
+            var collection;
+            var copySpy;
+            var cutSpy;
+            var fakeData;
+            var dateToPasteTo;
+
+            beforeEach(function()
+            {
+                collection = new CalendarCollection([], {
+                    startDate: moment().day(0),
+                    endDate: moment().day(6).add("weeks", 2)
+                });
+                fakeData = {'some':'junk'};
+                dateToPasteTo = moment().format("YYYY-MM-DD");
+                copySpy = jasmine.createSpyObj("Copy Spy", ["copyToClipboard", "cutToClipboard", "onPaste"]);
+                copySpy.copyToClipboard.andReturn(fakeData);
+                copySpy.cutToClipboard.andReturn(fakeData);
+                copySpy.onPaste.andReturn(null);
+            });
+
+            it("Should call subscribeToCopyPasteEvents", function()
+            {
+                spyOn(CalendarCollection.prototype, "subscribeToCopyPasteEvents");
+                var collection = new CalendarCollection([], {
+                    startDate: moment().day(0),
+                    endDate: moment().day(6).add("weeks", 2)
+                });
+                expect(CalendarCollection.prototype.subscribeToCopyPasteEvents).toHaveBeenCalled();
+            });
+
+            describe("onItemsCopy", function()
+            {
+                it("Should call copyToClipboard", function()
+                {
+                    collection.onItemsCopy(copySpy);
+                    expect(copySpy.copyToClipboard).toHaveBeenCalled();
+                });
+
+                it("Should copy to clipboard", function()
+                {
+                    spyOn(collection.clipboard, "set").andCallThrough();
+                    collection.onItemsCopy(copySpy);
+                    expect(collection.clipboard.set).toHaveBeenCalledWith(fakeData, "copy");
+                });
+            });
+
+            describe("onItemsCut", function()
+            {
+                it("Should call cutToClipboard", function()
+                {
+                    collection.onItemsCut(copySpy);
+                    expect(copySpy.cutToClipboard).toHaveBeenCalled();
+                });
+
+                it("Should cut to clipboard", function()
+                {
+                    spyOn(collection.clipboard, "set").andCallThrough();
+                    collection.onItemsCut(copySpy);
+                    expect(collection.clipboard.set).toHaveBeenCalledWith(fakeData, "cut");
+                });
+            });
+
+            describe("onPaste", function()
+            {
+                it("Should check whether clipboard is empty", function()
+                {
+                    spyOn(collection.clipboard, "hasData").andReturn(false);
+                    collection.onPaste(dateToPasteTo);
+                    expect(collection.clipboard.hasData).toHaveBeenCalled();
+                });
+
+                it("Should call onPaste of clipboard data", function()
+                {
+                    collection.clipboard.set(copySpy, "copy");
+                    collection.onPaste(dateToPasteTo);
+                    expect(copySpy.onPaste).toHaveBeenCalledWith(dateToPasteTo);
+                });
+
+                it("Should call addItems", function()
+                {
+                    var fakeItem = {};
+                    spyOn(collection, "addItems");
+                    collection.clipboard.set(copySpy, "copy");
+                    copySpy.onPaste.andReturn(fakeItem);
+                    collection.onPaste(dateToPasteTo);
+                    expect(collection.addItems).toHaveBeenCalledWith(fakeItem);
+                });
+
+                it("Should empty the clipboard after pasting a cut", function()
+                {
+                    collection.clipboard.set(copySpy, "cut");
+                    spyOn(collection.clipboard, "empty");
+                    collection.onPaste(dateToPasteTo);
+                    expect(collection.clipboard.empty).toHaveBeenCalled();
+                });
+
+                it("Should empty the clipboard after pasting a copy", function()
+                {
+                    collection.clipboard.set(copySpy, "copy");
+                    spyOn(collection.clipboard, "empty");
+                    collection.onPaste(dateToPasteTo);
+                    expect(collection.clipboard.empty).not.toHaveBeenCalled();
+                });
+            });
+
+        });
+
+        describe("addItems", function()
+        {
+
+            var collection;
+            var workouts;
+
+            beforeEach(function()
+            {
+                collection = new CalendarCollection([], {
+                    startDate: moment().day(0),
+                    endDate: moment().day(6).add("weeks", 2)
+                });
+
+                workouts = [];
+                for (var i = 0; i < 5; i++)
+                {
+                    workouts.push(new TP.Model());
+                }
+
+                spyOn(collection, "addItem");
+            });
+
+            it("Should work with empty values", function()
+            {
+                collection.addItems(null);
+                expect(collection.addItem).not.toHaveBeenCalled();
+            });
+
+            it("Should work with single items", function()
+            {
+                var workout = new TP.Model();
+                collection.addItems(workout);
+                expect(collection.addItem).toHaveBeenCalledWith(workout);
+            });
+
+            it("Should work with collections", function()
+            {
+                collection.addItems(new TP.Collection(workouts));
+                _.each(workouts, function(workout)
+                {
+                    expect(collection.addItem).toHaveBeenCalledWith(workout);
+                });
+            });
+
+            it("Should work with arrays", function()
+            {
+                collection.addItems(workouts);
+                _.each(workouts, function(workout)
+                {
+                    expect(collection.addItem).toHaveBeenCalledWith(workout);
+                });
+            });
+
+            it("Should work with nested arrays", function()
+            {
+                var nestedWorkouts = [[], []];
+                for (var i = 0; i < workouts.length; i++)
+                {
+                    var nestedIndex = i % 2 === 0 ? 0 : 1;
+                    nestedWorkouts[nestedIndex].push(workouts[i]);
+                }
+                collection.addItems(nestedWorkouts);
+                _.each(workouts, function(workout)
+                {
+                    expect(collection.addItem).toHaveBeenCalledWith(workout);
+                });
+            });
+
+        });
+
+    });
 });

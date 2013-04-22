@@ -6,14 +6,30 @@ Wraps and extends core backbone and marionette functionality
 define(
 [
     "backbone",
+    "backbone.deepmodel",
     "backbone.stickit",
     "backbone.marionette",
+    "setImmediate",
     "framework/APIModel",
-    "framework/Logger"
+    "framework/Logger",
+    "framework/utilities"
 ],
-function(Backbone, BackboneStickit, Marionette, APIModel, Logger)
+function(Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmediate, APIModel, Logger, utilities)
 {
     var TP = {};
+
+    // Override default "input" handling
+    Backbone.Stickit.addHandler(
+    {
+        selector: "input",
+        events: [ "blur", "keyup", "change", "cut", "paste" ]
+    });
+
+    Backbone.Stickit.addHandler(
+    {
+        selector: "textarea",
+        events: [ "blur" ]
+    });
 
     // Marionette stuff
     TP.Application = Marionette.Application.extend({});
@@ -35,44 +51,240 @@ function(Backbone, BackboneStickit, Marionette, APIModel, Logger)
     });
     TP.Region = Marionette.Region;
 
-    // Give all views waiting indicators and event bubblers
-    var commonViewFunctions = {
+    // Common functionality for all TP View types
+    var commonViewFunctions = {};
+
+    // add throbbers
+    _.extend(commonViewFunctions, {
+
+        showThrobbers: true,
 
         modelEvents: {
             "request": "onWaitStart",
             "sync": "onWaitStop",
-            "error": "onWaitStop"
+            "error": "onWaitStop",
+            "change": "render",
+            "destroy": "onWaitStop"
+        },
+
+        collectionEvents: {
+            "request": "onWaitStart",
+            "sync": "onWaitStop",
+            "error": "onWaitStop",
+            "refresh": "render",
+            "destroy": "onWaitStop"
         },
 
         onWaitStart: function()
         {
-            this.trigger("waitStart");
+            if (this.showThrobbers)
+            {
+                this.waitingOn();
+            }
+        },
+
+        waitingOn: function()
+        {
             this.$el.addClass('waiting');
         },
 
         onWaitStop: function()
         {
-            this.trigger("waitStop");
+            if (this.showThrobbers)
+            {
+                this.waitingOff();
+            }
+        },
+
+        waitingOff: function()
+        {
             this.$el.removeClass('waiting');
+        },
+
+        notImplemented: function()
+        {
+            alert('Feature Not Implemented');
         }
 
+    });
+
+    // modal rendering for item views that have a modal = true attribute
+    var modalRendering = {
+
+        modal: false,
+
+
+        // set modal = true attribute
+        // then view.render() == modal and centered
+        // view.render().left(x).top(y) == modal and positioned at x,y
+        renderModal: function()
+        {
+            // not a modal view ...
+            if (!this.modal)
+                return this;
+
+            // already rendered ...
+            if (this.$overlay)
+                return;
+
+            // get existing modal so we can render on top
+            var existingModal = $(".modalOverlay:last");
+
+            // make an overlay
+            _.bindAll(this, "close");
+            var self = this;
+            this.$overlay = $("<div></div>");
+            this.$overlay.addClass("modalOverlay");
+            this.$overlay.addClass(this.className + "ModalOverlay");
+            this.$overlay.on("click", function() { self.trigger("clickoutside"); self.close(); });
+
+            if (this.modal.mask)
+                this.$overlay.addClass("modalOverlayMask");
+
+            $('body').append(this.$overlay);
+
+            // make $el absolute and put it on the body
+            this.$el.addClass("modal");
+
+            if (this.modal.shadow)
+                this.$el.addClass("modalShadow");
+
+            $('body').append(this.$el);
+
+            var $window = $(window);
+            if (this.$el.height() > $window.height())
+                this.$el.height($window.height() - 10);
+
+            if (this.$el.width() > $window.width())
+                this.$el.width($window.width() - 10);
+
+            this.left(($window.width() - this.$el.width()) / 2).top(($window.height() - this.$el.height()) / 2);
+
+            this.enableEscapeKey();
+
+            // set on top of other modals
+            if(existingModal.length)
+            {
+                var topIndex = Number(existingModal.css("z-index"));
+                this.$overlay.css("z-index", topIndex + 2);
+                this.$el.css("z-index", topIndex + 3);
+            }
+
+            this.trigger("modalrender");
+
+            return this;
+        },
+
+        enableEscapeKey: function()
+        {
+            _.bindAll(this, "onEscapeKey");
+            $(document).on("keyup", this.onEscapeKey);
+        },
+
+        disableEscapeKey: function()
+        {
+            $(document).off("keyup", this.onEscapeKey);
+        },
+
+        onEscapeKey: function(e)
+        {
+            if (e.which === 27)
+                this.close();
+        },
+
+        closeModal: function()
+        {
+            this.disableEscapeKey();
+            if (this.modal && this.$overlay)
+            {
+                this.$overlay.hide().remove();
+                this.$overlay = null;
+            }
+        },
+
+        left: function(left)
+        {
+            if (this.modal && this.$el)
+            {
+                if (left < 0)
+                    left = 0;
+
+                if (left + this.$el.width() > $(window).width())
+                    left = $(window).width() - this.$el.width() - 10;
+
+                this.$el.css("left", left);
+            }
+
+            return this;
+        },
+
+        center: function(center)
+        {
+            if (this.modal && this.$el)
+            {
+                this.left(center - (this.$el.width() / 2));
+            }
+
+            return this;
+        },
+
+        right: function(right)
+        {
+            if (this.modal && this.$el)
+            {
+                this.left(right - this.$el.width());
+            }
+
+            return this;
+        },
+
+        top: function(top)
+        {
+            if (this.modal && this.$el)
+            {
+                if (top < 0)
+                    top = 0;
+                this.$el.css("top", top);
+            }
+
+            return this;
+        },
+
+        bottom: function(bottom)
+        {
+            if (this.modal && this.$el)
+            {
+                this.top(bottom - this.$el.height());
+            }
+
+            return this;
+        },
+
+        // ONLY FOR ITEM VIEWS - or see marionette CollectionView and CompositeView initialEvents
+        initialEvents: function()
+        {
+            this.on("render", this.renderModal, this);
+            this.on("close", this.closeModal, this);
+        }
     };
 
     TP.Events = Backbone.Events;
 
     TP.View = Marionette.View.extend();
-    TP.ItemView = Marionette.ItemView.extend(commonViewFunctions);
+    TP.ItemView = Marionette.ItemView.extend(commonViewFunctions).extend(modalRendering);
     TP.CollectionView = Marionette.CollectionView.extend(commonViewFunctions);
     TP.CompositeView = Marionette.CompositeView.extend(commonViewFunctions);
 
     // Backbone stuff
     TP.history = Backbone.history;
     TP.Collection = Backbone.Collection.extend({});
-    TP.Model = Backbone.Model.extend({});
+    TP.Model = Backbone.DeepModel.extend({});
     TP.APIModel = APIModel;
     TP.Router = Backbone.Router.extend({});
 
     TP.Logger = Logger;
+
+    TP.utils = utilities;
 
     return TP;
 });

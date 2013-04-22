@@ -1,0 +1,19 @@
+<div id="calendarMonthLabel" class="calendarMonthLabel">
+    <label class="headerMonth">{{printDate date "MMMM"}}</label>
+    <label class="headerYear">{{printDate date "YYYY"}}</label>
+</div>
+<div class="navigation">
+    <div class="calendarNavigation">
+        <button id="goToLastWeekButton" tabindex="-1"></button>
+        <button id="goToNextWeekButton" tabindex="-1"></button>
+    </div>
+    <div class="today">
+        <button id="goToTodayButton" tabindex="-1">{{$ "Today"}}</button>
+    </div>
+    <div class="printRefreshButtons">
+        <button class="printButton" title="Print" tabindex="-1"></button>
+        <button class="refreshButton" title="Refresh" tabindex="-1"></button>
+        <button class="settingsButton" title="Calendar Settings" tabindex="-1"></button>
+    </div>
+</div>
+<div id="affiliateBanner"></div>

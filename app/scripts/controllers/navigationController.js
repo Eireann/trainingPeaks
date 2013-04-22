@@ -2,7 +2,7 @@
 [
     "TP",
     "layouts/navigationLayout",
-    "views/userControlsView",
+    "views/userControls/userControlsView",
     "views/navigationView"
 ],
 function(TP, NavigationLayout, UserControlsView, NavigationView)

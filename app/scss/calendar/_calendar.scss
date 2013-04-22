@@ -1,0 +1,369 @@
+﻿@import "../globalCSS/tpstylesheet";
+
+#calendarWrapper
+{
+    @include outerRow();
+	background-color: white;
+}
+
+#calendarHeader
+{
+	min-height: 64px;
+	float:left;
+	background-color: $white;
+	.calendarMonthLabel
+	{
+		width: 265px;
+		float: left;
+		padding-left: 65px;
+		//padding-top: 13px;
+        margin-top: 5px;
+		@include labels($navigationFontFamilyRegular, $fontSizeHeader, $TPBlue, normal);
+		label
+		{
+			float: left;
+			padding-right: 10px;
+			
+		}
+		.headerYear
+		{
+			font-family: $navigationFontFamilyLight;
+		}
+	}
+
+    .calendarHeaderView
+    {
+
+        &.withAds
+        {
+            .calendarMonthLabel
+            {
+                margin-top: 30px;
+            }
+
+            .navigation
+            {
+                margin-top: 30px;
+            }
+        }
+
+	    .navigation
+        {
+            float:left;
+            margin:7px 0 0 0;
+            
+            @include headerButtons(0px, 35px, $fontSizeMedium);
+
+            .calendarNavigation
+            {
+                float:left;
+	            @include headerButtons(0px, 35px, 12px);
+
+                button
+                {
+                    img
+                    {
+                        padding-top: 3px;
+                    }
+                }
+
+                #goToLastWeekButton {
+                    border-right-width: 0px;
+					background: url(../../assets/images/calendarImages/leftArrow.png) no-repeat 0 0;
+					background-size: 34px 20px;
+                }
+
+				#goToNextWeekButton {
+					background: url(../../assets/images/calendarImages/rightArrow.png) no-repeat 0 0;
+					background-size: 33px 20px;
+                }
+                
+            }
+
+            .today
+            {
+                float:left;
+                @include headerButtons(0px, 71px, 12px);
+				margin-left:7px;
+				
+            }
+
+			.today button {
+				color:$TPGrey8;
+				padding:1px 0 2px;
+				background: url(../../assets/images/calendarImages/background-gradient-button.png) repeat-x 0 0;
+				background-size: 100% 20px;
+			}
+
+			.printRefreshButtons
+            {
+                float:left;
+                @include headerButtons(7px, 38px, $fontSizeMedium);
+                button
+                {
+                    img
+                    {
+                        padding-top: 1px;
+                    }
+                }
+
+			
+				.printButton {
+					background: url(../../assets/images/calendarImages/icon-print@2x.png) no-repeat 0 0;
+					background-size: 36px 20px;
+					width: 38px;
+					height: 22px;
+					}
+                .refreshButton {
+					background: url(../../assets/images/calendarImages/icon-refresh@2x.png) no-repeat 0 0;
+					background-size: 36px 20px;
+                    margin-left: 7px;
+                }
+                .settingsButton {
+					background: url(../../assets/images/calendarImages/icon-settings@2x.png) no-repeat 0 0;
+					background-size: 29px 20px;
+                    margin-left: 7px;
+					width: 31px;
+                }
+            }
+        }
+
+        #affiliateBanner
+        {
+            margin-left: 100px;
+            margin-bottom: 15px;
+            margin-top: 10px;
+            height: 90px;
+            float: left;
+            display: none;
+        }
+
+    }
+
+}
+
+#calendarContainer
+{
+
+    @include column(15);
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    //margin-left: 45px;
+	padding: 0 2px;
+	background-color: white;
+
+    @include calc(width, "100% - 45px"); 
+
+    .scrollable
+    {
+        overflow-y: scroll;
+        @include nice-scrollbar;
+        border-left: solid;
+        border-left-width: 1px;
+        border-left-color: $TPGrey2;
+    }
+
+    .week
+    {
+        @include outerRow();
+		background-color: $TPGrey1;
+        padding-left: 4px;
+    }
+
+    .day
+    {
+        @include column(2);
+        min-height:150px;
+		background-color: $TPGrey1;
+        padding: 0px 0px 5px;
+
+        overflow-x: hidden;
+        overflow-y: visible;
+
+        &.selected
+        {
+            background-color: $selectedDay;
+        }
+    }
+
+	.daySelected
+	{
+		display: none;
+		background-color: white;
+		left: 0px;
+		right: 0px;
+		height: 100%;
+		position: absolute;
+		opacity: .35;
+	}
+
+	.weekSelected
+	{
+		display: none;
+		background-color: white;
+		left: 0px;
+		right: 0px;
+		height: 100%;
+		position: absolute;
+		opacity: .35;
+		z-index: 99;
+	}
+
+	.dayHeader 
+	{
+		background-color: $TPGrey2;
+		width: 100%;
+		height: 27px;
+		margin-bottom: 2px;
+		border-bottom: 1px;
+		border-bottom-color: $TPGrey3;
+		border-bottom-style: solid;
+		padding-left: 5px;
+
+
+		#calendarDate
+		{
+			font-Family: $navigationFontFamilyRegular;
+			font-size: $fontSizeMedium;
+			color: $TPGrey4;
+			text-align: right;
+			float:left;
+			margin: 0px;
+			padding-top: 2px;
+		}
+
+		.daySettings
+        {
+            display: none;
+            float: right;
+			padding: 2px 5px 0px 0px;
+            button
+            {	
+                background: transparent;
+                border: none;
+                padding: 0px;
+                width: 15px;
+				cursor: default;
+                        
+            }
+        }
+	}
+
+	.thisWeek
+	{
+		.dayHeader
+		{
+			background-color: $thisWeekBlue;
+            cursor: -moz-grab;
+            cursor: -webkit-grab;
+		}
+
+		.today
+        {
+		    .dayHeader
+		    {
+                background-color: $todayBlue;
+        	}
+	    }
+		.summaryHeader
+		{
+			background-color: #206193;
+			#calendarDate{color: white;}
+		}
+	}
+
+	.summaryHeader
+	{
+		background-color: $TPGrey3;
+		#calendarDate{color: white;}
+	}
+
+    .daysOfWeek
+    {
+        @include outerRow();
+        @include calc(width, "100%"); 
+		background-color: $TPGrey1;
+		height: 27px;
+		padding-top: 7px;
+		padding-right: 12px;
+		//margin-left: -8px;
+        margin-left: 0px;
+        //margin-right:12px;
+		border: $TPGrey2;
+		border-style: solid;
+		border-width: 1px;
+		position: relative;
+		z-index: 1;
+        cursor: default;
+
+        div
+        {
+                @include column(2);
+                padding-bottom: 0px;
+                padding-left: 5px;
+                padding-right: 0px;
+                font-Family: $navigationFontFamilyLight;
+                font-size: $fontSizeSmall;
+                color: $TPGrey4;
+                text-align: left;
+                height: 15px;
+                //margin-left: -1px;
+                
+        }
+    }
+    
+.scrollInProgress
+{
+    @include single-transition(all, 200ms, ease-out);
+    @include box-shadow(0px 3px 8px -4px $TPGrey3);
+}
+}
+
+body.clipboardEmpty
+{
+    .paste
+    {
+        color:$TPGrey2;
+    }
+}
+
+body.pasteDisabled
+{
+    .paste
+    {
+        color:$TPGrey2;
+    }
+}
+
+body.clipboardFull
+{
+    .paste
+    {
+        //color:green;
+    }
+}
+
+#selectedRangeSettingsDiv
+{
+    .colored
+    {
+        background-color: $selectedDay;
+    }
+}
+
+.dragHelper
+{
+   &.day
+   {
+        background-color: $selectedDay;
+        opacity: 0.8;
+        min-height: 350px;
+       
+        .dayHeader
+        {
+            background-color: transparent; 
+            height: 27px;
+        } 
+   }  
+}

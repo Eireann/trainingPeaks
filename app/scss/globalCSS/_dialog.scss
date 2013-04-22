@@ -1,0 +1,78 @@
+﻿@import "tpstylesheet";
+
+.dialog 
+{
+    text-align: center;
+    min-width: 400px;
+    font-family: $navigationFontFamilyRegular;
+    @include buttons(0px, 60px, $fontSizeMedium);
+
+
+    button
+    {
+        margin-right: 1em;
+        font-size: $fontSizeSmall;
+        font-family: $navigationFontFamilyRegular;
+        color: $TPGrey3;
+
+        &:last
+        {
+            margin-right:0px;
+        }
+    }
+
+    button[name="ok"]
+    {
+        background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #dfdfdf), color-stop(1, #AAC8E5) );
+		background:-moz-linear-gradient( center top, #dfdfdf 20%, #AAC8E5 100% );
+    }
+
+    .titleBar
+    {
+        text-align: left;
+        min-height: 28px;
+        padding: 10px 0px 0px 16px;
+        background-color: #eaebec;
+        @include box-shadow(2px 0px 7px 0px $TPGrey4);
+        position: relative; 
+        z-index: 99;
+        font-size: $fontSizeSmall;
+        font-weight: $fontWeightMedium;
+        font-family: $navigationFontFamilyRegular;
+        color: $TPGrey3;
+        cursor: default;
+    }
+}
+
+.dialogHeader
+{
+    font-weight: $fontWeightBold;
+    color: $TPGrey4;
+    text-align: left;
+    font-family: $navigationFontFamilyRegular;
+    font-size: $fontSizeMedium;
+    text-align: center;
+}
+
+.dialogContent
+{
+    min-height: 150px;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    @include filter-gradient(#ffffff, #dedcde, horizontal);
+    @include background-image(radial-gradient(center, ellipse cover,  #eaebec 0%,#dedcde 100%));
+    @include buttons(0px, 65px, $fontSizeSmall);
+
+    line-height: 1.5em;
+    font-size: $fontSizeSmall;
+    font-weight: $fontWeightMedium;
+    color: $TPGrey4;
+    padding-left: 40px;
+    padding-right: 40px;
+    cursor: default;
+
+    label
+    {
+        cursor: default;
+    }
+}

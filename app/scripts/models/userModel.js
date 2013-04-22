@@ -1,54 +1,67 @@
 ﻿define(
 [
-    "moment",
     "TP"
 ],
-function (moment, TP)
+function(TP)
 {
     return TP.APIModel.extend(
     {
+        cacheable: true,
 
         webAPIModelName: "User",
-        idAttribute: "PersonId",
-        shortDateFormat: "YYYY-MM-DD",
-        timeFormat: "Thh:mm:ss",
-        longDateFormat: "YYYY-MM-DDThh:mm:ss",
+        idAttribute: "userId",
 
         defaults:
         {
-            Language: "",
-            CouponCode: "",
-            FirstName: "",
-            LastName: "",
-            PersonId: "",
-            Username: "",
-            Disciplines: "",
-            Services: "",
-            Story: "",
-            Url: "",
-            CoachSpecialty: "",
-            CompanyName: "",
-            Email: "",
-            IsEmailVerified: "",
-            City: "",
-            State: "",
-            Country: "",
-            CoachParentId: null,
-            IsFeaturedCoach: false,
-            MakePublic: false,
-            UnitsValue: 0,
-            DateFormat: "",
-            UserTypeValue: 0,
-            CoachedBy: null,
-            PhotoFileData: null,
-            AthleteTypeValue: 0,
-            Age: null,
-            Birthday: null
+            address: "",
+            address2: "",
+            age: 0,
+            birthday: "",
+            cellPhone: "",
+            city: "",
+            country: "",
+            dateFormat: "",
+            email: "",
+            firstName: "",
+            gender: null,
+            language: "",
+            lastName: "",
+            latitude: null,
+            longitude: null,
+            phone: "",
+            profilePhotoUrl: "",
+            state: "",
+            story: "",
+            timeZone: "",
+            units: 0,
+            userId: 0,
+            userName: "",
+            zipCode: "",
+
+            settings: {},
+            athletes: []
         },
-        
+
         url: function()
         {
             return theMarsApp.apiRoot + "/WebApiServer/Users/V1/User";
+        },
+
+        initialize: function(options)
+        {
+            Backbone.Model.prototype.initialize.apply(this, arguments);
+            _.bindAll(this, "checkpoint", "revert");
+        },
+        
+        checkpoint: function()
+        {
+            this.checkpointAttributes = _.clone(this.attributes);
+        },
+        
+        revert: function()
+        {
+            if(this.checkpointAttributes)
+                this.set(this.checkpointAttributes);
         }
     });
 });

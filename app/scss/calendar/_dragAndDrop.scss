@@ -1,0 +1,14 @@
+﻿.ui-draggable
+{
+    cursor: -moz-grab;
+    cursor: -webkit-grab;
+}
+
+.ui-draggable-dragging
+{
+    cursor: move;
+    // z-index so the dragged clone floats above any other z-indexed layers we may have
+    z-index: 10;
+    cursor: -moz-grabbing;
+    cursor: -webkit-grabbing;
+}

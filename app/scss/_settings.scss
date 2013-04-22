@@ -6,7 +6,7 @@
 
 $rowWidth: 100%;
 // $columnGutter: 30px;
-$totalColumns: 16;
+$totalColumns: 17;
 // $mobileTotalColumns: 4;
 // $blockGridElements: 14; // Highest number of block grid elements, Maximum of 24 supported
 
@@ -121,7 +121,7 @@ $totalColumns: 16;
 // $progBarBorderSize: 1px;
 // $progBarPad: 2px;
 // $linkListBottomMargin: 17px -22px;
-// $tableBorderRadius: 3px;
+$tableBorderRadius: 0px;
 
 // Tooltip Settings
 
@@ -241,3 +241,35 @@ $totalColumns: 16;
 // Produced the following list of values: 14, 17, 23, 27, 37, 44, 59, 71, 95, 115;
 // http://www.modularscale.com by Tim Brown
 // https://github.com/scottkellum/modular-scale by scottkellum
+
+
+
+
+/**
+To Clear Floats 
+
+ * For modern browsers
+ * 1. The space content is one way to avoid an Opera bug when the
+ *    contenteditable attribute is included anywhere else in the document.
+ *    Otherwise it causes space to appear at the top and bottom of elements
+ *    that are clearfixed.
+ * 2. The use of `table` rather than `block` is only necessary if using
+ *    `:before` to contain the top-margins of child elements.
+ */
+.cf:before,
+.cf:after {
+    content: " "; /* 1 */
+    display: table; /* 2 */
+}
+
+.cf:after {
+    clear: both;
+}
+
+/**
+ * For IE 6/7 only
+ * Include this rule to trigger hasLayout and contain floats.
+ */
+.cf {
+    *zoom: 1;
+}

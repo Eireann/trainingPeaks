@@ -48,7 +48,7 @@ function (_, TP)
                 username: options.username,
                 password: options.password,
                 response_type: "token",
-                scope: "Fitness ClientEvents Users"
+                scope: "fitness clientevents users athletes exerciselibrary images"
             };
 
             this.username = options.username;
@@ -77,9 +77,16 @@ function (_, TP)
         
         onAuthenticationFailure: function()
         {
-            this.authPromise.reject();
+            var originalPromise = this.authPromise;
+            this.authPromise = new $.Deferred();
+            originalPromise.reject();
             this.trigger("api:authorization:failure");
+        },
+        
+        logout: function()
+        {
+            this.storageLocation.removeItem("access_token");
+            this.trigger("logout");
         }
-
     });
 });

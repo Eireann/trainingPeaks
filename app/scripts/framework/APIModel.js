@@ -6,12 +6,13 @@ Wraps and extends core backbone and marionette functionality
 define(
 [
     "underscore",
-    "backbone"
+    "backbone",
+    "backbone.deepmodel"
 ],
 function(_, Backbone)
 {
 
-    return Backbone.Model.extend(
+    return Backbone.DeepModel.extend(
     {
         webAPIModelName: null,
         idAttribute: null,
@@ -19,7 +20,7 @@ function(_, Backbone)
         get: function(key)
         {
             this.validateKeyExistsInDefaults(key);
-            return this.attributes[key];
+            return Backbone.DeepModel.prototype.get.call(this, key);
         },
 
         validate: function(attrs, options)
@@ -73,6 +74,14 @@ function(_, Backbone)
             }
 
             var defaults = _.result(this, 'defaults');
+
+            var separatorIndex = key.indexOf(".");
+            if (separatorIndex !== -1)
+                key = key.substring(0, separatorIndex);
+
+            var arrayIndex = key.indexOf("[");
+            if (arrayIndex !== -1)
+                key = key.substring(0, arrayIndex);
 
             if (!defaults.hasOwnProperty(key))
             {

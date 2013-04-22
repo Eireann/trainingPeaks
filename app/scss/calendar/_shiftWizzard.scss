@@ -1,0 +1,89 @@
+﻿@import "../globalCSS/tpstylesheet";
+
+#shiftItems
+{
+	width: 400px;
+
+	@include buttons(0, 60px, 12px);
+    
+    button
+    {
+        margin-right: 0.5em;
+        cursor: default;
+    }
+
+    div
+    {
+        cursor: default;
+    }
+    span
+    {
+        cursor: default;
+    }
+
+	.bold
+	{
+		font-weight: bold;
+	}
+
+	.shiftItemsBody
+	{
+        text-align: left;
+		padding: 10px 15px 15px 15px;
+		@include inputs(13px, 13px, 12px, $navigationFontFamilyRegular);
+
+        input[type=text]
+        {
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+
+        input[type=radio]
+        {
+            cursor: default;
+        }
+
+		.toAndFromDateRange
+		{
+			display: -webkit-box;
+			@include inputs(100px, 25px, 12px, $navigationFontFamilyRegular);
+			input
+			{
+				display: inline;
+			}
+		}
+
+		.selectNewStartDateInput
+		{
+			display: -webkit-box;
+			@include inputs(100px, 25px, 12px, $navigationFontFamilyRegular);
+			input
+			{
+				display: inline;
+			}
+		}
+
+        input.numberpicker
+        {
+            border:none;
+            outline:none;
+            padding:0px;
+            margin:0px;
+            margin-left:5px;
+            width:100px;
+            height:32px;
+
+            &:focus
+            {
+               outline:none;
+            } 
+        }
+
+        .dialogHeader
+        {
+            margin-bottom: 0.25px;
+        }
+            
+	}
+
+}

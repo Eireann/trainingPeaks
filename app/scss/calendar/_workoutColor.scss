@@ -1,0 +1,65 @@
+﻿@import "../globalCSS/tpstylesheet";
+
+@mixin workoutColorsByType($property:background-color)
+{
+     &.Run
+    {
+        #{$property}: $clrRun;
+    }
+     &.Bike
+    {
+        #{$property}: $clrBike;
+    }
+     &.Swim
+    {
+        #{$property}: $clrSwim;
+    }
+}
+
+@mixin workoutColorsByCompliance($property:background-color, $childSelector:'')
+{
+    &.ComplianceYellow #{$childSelector}
+    {
+        #{$property}: $clrComplianceYellow;
+    }
+
+    &.ComplianceRed #{$childSelector}
+    {
+        #{$property}: $clrComplianceRed;
+    }
+
+    &.ComplianceGreen #{$childSelector}
+    {
+        #{$property}: $clrComplianceGreen;
+    }
+}
+
+
+// background colors of workouts
+.workout.future
+{
+    background-color: $TPGrey2;
+                 
+}
+
+.workout.past
+{
+    @include workoutColorsByCompliance("background-color"); 
+}
+
+// arrow/border color of workout hover
+#workoutHoverDiv.past
+{
+    @include workoutColorsByCompliance("background-color", ".hoverBox .colored"); 
+}
+
+#workoutHoverDiv.future
+{
+    .hoverBox
+    {
+        .colored
+        {
+            background-color: $TPGrey2;
+        }
+    }
+}
