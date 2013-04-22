@@ -6,7 +6,14 @@
 /node_modules/
 /bin/
 /obj/
+/plato/
+/coverage/
 /test/webApiJson/
 *.csproj*
 *.suo
 /*.sln.DotSettings.user
+
+test/specsList.js
+JSLintOptions.xml
+/SeleniumSuite/bin
+/SeleniumSuite/obj

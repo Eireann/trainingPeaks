@@ -5,12 +5,15 @@ requirejs(
     "jquery",
     "models/session"
 ],
-function ($, theSession)
+function($, SessionModel)
 {
     describe("Session Model ", function ()
     {
+        var theSession;
+
         beforeEach(function()
         {
+            theSession = new SessionModel();
         });
 
         it("should be loaded as a module", function()
@@ -18,13 +21,13 @@ function ($, theSession)
             expect(theSession).toBeDefined();
         });
 
-        xit("should publish current authentication state on its public interface", function()
+        it("should publish current authentication state on its public interface", function()
         {
             expect(typeof theSession.isAuthenticated).toBe("function");
             expect(theSession.isAuthenticated()).toBe(false);
         });
 
-        xit("should send an ajax POST json request to the OAuth Token endpoint containing username & password for authentication", function()
+        it("should send an ajax POST json request to the OAuth Token endpoint containing username & password for authentication", function()
         {
             spyOn($, "ajax").andCallFake(function(options)
             {
@@ -36,8 +39,8 @@ function ($, theSession)
                 expect(options.data.username).toBe("myusername");
                 expect(options.data.password).toBe("mypassword");
                 expect(options.data.response_type).toBe("token");
-                expect(options.data.scope).toBe("Fitness");
-                
+                expect(options.data.scope).toBe("fitness clientevents users athletes exerciselibrary images");
+
                 return {
                     done: function()
                     {
@@ -60,7 +63,7 @@ function ($, theSession)
             expect($.ajax).toHaveBeenCalled();
         });
 
-        xit("should call a success callback when the request succeeds", function()
+        it("should call a success callback when the request succeeds", function()
         {
             var mockDeferred = {
                 done: function ()

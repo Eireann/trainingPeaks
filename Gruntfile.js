@@ -17,7 +17,8 @@ module.exports = function(grunt)
                 "test/specs/**/*.js",
                 "app/*.js",
                 "app/scripts/**/*.js",
-                "!app/Handlebars.js"
+                "!app/Handlebars.js",
+                "app/templates/**/*.json"
             ],
             options:
             {
@@ -27,9 +28,36 @@ module.exports = function(grunt)
                 eqnull: true,
                 browser: true,
                 devel: true,
+                sub: true,
                 globals:
                 {
-                    "theMarsApp": true
+                    "theMarsApp": true,
+                    "$": true
+                }
+            }
+        },
+
+        plato:
+        {
+            dummy:
+            {
+                files:
+                {
+                    'plato': ['app/**/!(Handlebars).js']
+                }
+            },
+            debug:
+            {
+                files:
+                {
+                    'build/debug/plato': ['app/**/!(Handlebars).js']
+                }
+            },
+            dev:
+            {
+                files:
+                {
+                    'build/dev/plato': ['app/**/!(Handlebars).js']
                 }
             }
         },
@@ -44,7 +72,29 @@ module.exports = function(grunt)
                     cssDir: "build/debug/app/css",
                     outputStyle: "expanded",
                     require: "zurb-foundation",
-                    imagesDir: "app/images"
+                    imagesDir: "assets/images"
+                }
+            },
+            dev:
+            {
+                options:
+                {
+                    sassDir: "app/scss",
+                    cssDir: "build/dev/app/css",
+                    outputStyle: "expanded",
+                    require: "zurb-foundation",
+                    imagesDir: "assets/images"
+                }
+            },
+            "uat":
+            {
+                options:
+                {
+                    sassDir: "app/scss",
+                    cssDir: "build/uat/app/css",
+                    outputStyle: "expanded",
+                    require: "zurb-foundation",
+                    imagesDir: "assets/images"
                 }
             },
             release:
@@ -55,7 +105,7 @@ module.exports = function(grunt)
                     cssDir: "build/release/app/css",
                     outputStyle: "compressed",
                     require: "zurb-foundation",
-                    imagesDir: "app/images"
+                    imagesDir: "assets/images"
                 }
             }
         },
@@ -93,6 +143,30 @@ module.exports = function(grunt)
                 dest: "build/debug/single.js",
 
                 separator: ";"
+            },
+
+            "uat":
+            {
+                src:
+                [
+                    "build/debug/single.js"
+                ],
+
+                dest: "build/uat/single.min.js",
+
+                separator: ";"
+            },
+
+            dev:
+            {
+                src:
+                [
+                    "build/debug/single.js"
+                ],
+
+                dest: "build/dev/single.js",
+
+                separator: ";"
             }
         },
 
@@ -101,6 +175,16 @@ module.exports = function(grunt)
          */
         uglify:
         {
+            uat:
+            {
+                files:
+                {
+                    "build/uat/single.min.js":
+                    [
+                        "build/debug/single.js"
+                    ]
+                }
+            },
             release:
             {
                 files:
@@ -116,8 +200,8 @@ module.exports = function(grunt)
         watch:
         {
             compass: {
-                files: ["Gruntfile.js", "app/scss/*.scss"],
-                tasks: "compass"
+                files: ["Gruntfile.js", "app/scss/**/*.scss"],
+                tasks: "compass:debug"
             }
         },
 
@@ -130,9 +214,21 @@ module.exports = function(grunt)
             release:
             {
                 src: ["build"]
+            },
+            dev:
+            {
+                src: ["build"]
+            },
+            "uat":
+            {
+                src: ["build"]
+            },
+            coverage:
+            {
+                src: ["coverage"]
             }
         },
-        
+
         targethtml:
         {
             debug:
@@ -144,6 +240,16 @@ module.exports = function(grunt)
             {
                 src: "index.html",
                 dest: "build/release/index.html"
+            },
+            "uat":
+            {
+                src: "index.html",
+                dest: "build/uat/index.html"
+            },
+            dev:
+            {
+                src: "index.html",
+                dest: "build/dev/index.html"
             }
         },
 
@@ -153,7 +259,7 @@ module.exports = function(grunt)
             {
                 files:
                 {
-                    "build/debug": ["app/images/**"]
+                    "build/debug": ["assets/images/**", "app/scripts/affiliates/**", "!app/scripts/affiliates/**/*.js"]
                 }
             },
 
@@ -161,7 +267,55 @@ module.exports = function(grunt)
             {
                 files:
                 {
-                    "build/release": ["app/images/**"]
+                    "build/release": ["assets/images/**", "app/scripts/affiliates/**", "!app/scripts/affiliates/**/*.js"]
+                }
+            },
+
+            "uat":
+            {
+                files:
+                {
+                    "build/uat": ["assets/images/**", "app/scripts/affiliates/**", "!app/scripts/affiliates/**/*.js"]
+                }
+            },
+
+            dev:
+            {
+                files:
+                {
+                    "build/dev": ["assets/images/**", "app/scripts/affiliates/**", "!app/scripts/affiliates/**/*.js"]
+                }
+            },
+
+            pre_instrument:
+            {
+                files:
+                {
+                    "coverage": ["test/**", "vendor/**", "app/**"]
+                }
+            },
+
+            post_instrument:
+            {
+                files:
+                {
+                    "coverage": ["app/Handlebars.js", "app/config/**"]
+                }
+            },
+
+            debug_coverage:
+            {
+                files:
+                {
+                    "build/debug": ["coverage/lcov-report/**"]
+                }
+            },
+            
+            dev_coverage:
+            {
+                files:
+                {
+                    "build/dev": ["coverage/lcov-report/**"]
                 }
             }
         },
@@ -182,16 +336,38 @@ module.exports = function(grunt)
         {
             specNameMatcher: ".spec",
             projectRoot: ".",
-            requirejs: './app/config/jasmine_requirejs_config.js',
+            requirejs: './app/config/jasmineRequirejsConfig.js',
             forceExit: true,
             watchfiles: ['app/**/*.js', 'test/specs/**/*.js', 'app/**/*.html'],
             jUnit: {
-                report: true,
+                report: false,
                 savePath: "./junit_reports/",
                 useDotNotation: false,
                 consolidate: true
             }
+        },
+
+        instrument: {
+          files: "app/**/!(Handlebars).js",
+          options: {
+              basePath: 'coverage'
+          }
+        },
+
+        storeCoverage : {
+            options: {
+                dir: 'coverage/coverage'
+          }
+        },
+
+        makeReport: {
+            src: 'coverage/coverage/**/*.json',
+          options : {
+              type: 'lcov',
+              dir: 'coverage'
+          }
         }
+
     });
 
     /*
@@ -200,30 +376,27 @@ module.exports = function(grunt)
     * npm-tasks like this:
     */
     grunt.loadNpmTasks("grunt-contrib-clean");
-    grunt.loadNpmTasks("grunt-contrib-compass");
     grunt.loadNpmTasks("grunt-contrib-jshint");
     grunt.loadNpmTasks("grunt-contrib-concat");
     grunt.loadNpmTasks("grunt-contrib-uglify");
     grunt.loadNpmTasks("grunt-contrib-requirejs");
     grunt.loadNpmTasks("grunt-contrib-watch");
+    grunt.loadNpmTasks("grunt-istanbul");
 
-    grunt.registerTask("test", ["jshint", "validate_models", "jasmine_node"]);
+    grunt.registerTask("test", ["clean:coverage", "jshint", "setup-spec-list", "validate_models", "jasmine_node"]);
     grunt.registerTask("validate_models", ["validate-webapi-models"]);
     grunt.registerTask("update_grunt_config", ["requirejs_config", "i18n_config"]);
-    grunt.registerTask("debug", ["clean", "update_grunt_config", "requirejs", "compass:debug", "targethtml:debug", "concat", "copy:debug"]);
-    grunt.registerTask("release", ["debug", "compass:release", "targethtml:release", "uglify", "copy:release"]);
+    grunt.registerTask("debug", ["clean", "coverage", "update_grunt_config", "requirejs", "compass:debug", "targethtml:debug", "concat", "copy:debug", "copy-i18n-files", "copy:debug_coverage", "plato:debug"]);
+    grunt.registerTask("dev", ["debug", "compass:dev", "targethtml:dev", "concat:dev", "copy:dev", "copy:dev_coverage", "plato:dev"]);
+    grunt.registerTask("uat", ["debug", "compass:uat", "targethtml:uat", "concat:uat", "copy:uat"]);
+    grunt.registerTask("release", ["debug", "compass:release", "targethtml:release", "uglify", "copy:release", "copy-i18n-files"]);
     grunt.registerTask("default", ["debug"]);
 
-    /* DISABLED TESTACULAR - doesn't run some of our async tests 
-    //"testacular": "~0.5.6"
-    grunt.registerTask("testacular", "Run Jasmine Tests", function () {
-    var done = this.async();
-    require("child_process").exec("testacular start testacular.conf.js --single-run", function (err, stdout) {
-    grunt.log.write(stdout);
-    done(err);
-    });
-    
-    });
-    */
+    // makes reports available at localhost/Mars/coverage/lcov-report/index.html,
+    // and at build/debug/coverage/lcov-report/index.html
+    grunt.registerTask('coverage', ['clean:coverage', 'copy:pre_instrument', 'instrument', 'copy:post_instrument', 'jasmine_node_coverage_config', 'jasmine_node', 'storeCoverage', 'makeReport']);
+
+    // grunt debug && grunt coverage && grunt plato
+    // for some reason putting debug and coverage into the same task results in some
 
 };

@@ -1,0 +1,323 @@
+@import "../globalCSS/tpstylesheet";
+@import "../globalCSS/hoverBox";
+
+.weekSummary
+{
+    @include column(3);
+    min-height: 150px;
+    background-color: $TPGrey1;
+    overflow: hidden;
+    margin-bottom: 10px;
+
+    div
+    {
+        cursor:default;
+    }
+
+    span
+    {
+        cursor: default;
+    }
+    
+    padding: 0px;
+
+	.summarySettings
+    {
+        display: none;
+        float: right;
+		padding: 2px 5px 0px 0px;
+        button
+        {	
+            background: transparent;
+            border: none;
+            padding: 0px;
+            width: 15px;
+			cursor: default;
+                        
+        }
+	}
+
+    .weekSummaryTableContainer
+    {
+        margin: 0 5px 0 0px;
+        @include box-shadow(2px 2px 4px 1px #888888);
+
+        .weekSummaryTable
+        {
+            width: 100%;
+            border-collapse: collapse;
+
+            th
+            {
+                padding: 8px 5px 0 5px;
+                background-color: $white;
+                font-size: $fontSizeXSmall;
+                text-align: right;
+            }
+
+            tr:nth-child(odd)
+            {
+                background-color: $TPGrey1;
+            }   
+                     
+            tr:nth-child(even)
+            {
+                background-color: $white;
+            }   
+
+            td
+            {
+                margin: 0 0 0 0;
+                padding: 5px 5px 5px 5px;
+                border: 0 0 0 0;
+                cell-spacing: 0 0 0 0;
+
+                &.weekSummaryValue
+                {
+                    font-size: $fontSizeSmall;
+                    text-align: right;
+
+                    .planned
+                    {
+                        color: $TPGrey3;
+                    }
+
+                    .completed
+                    {
+                        color: $thisWeekBlue;
+                    }
+
+                    .units
+                    {
+                        color: $thisWeekBlue;
+                        margin-left: 0.2em;
+                    }
+
+                }
+
+                &.weekSummaryRowLabel
+                {
+                    padding-left: 10px;
+                    text-align: left;
+                    font-size: $fontSizeSmall;
+                }
+            }
+        }
+    }
+}
+
+
+
+
+#weekSummaryContainer {
+
+	padding:7px 10px 5px 6px;
+
+	.weekSummaryBarGraphContain {
+		width:280px;
+		margin: 0 0 5px 0;
+	}
+
+	.weekSummaryBarGraphItem {
+		height:28px;
+		margin-bottom:3px;
+		width:131px;
+		float:left;
+	}
+	
+	.weekSummaryBarGraphItem.right {
+		margin-left:10px;
+	}
+	
+	.weekSummaryBarGraphItem.total {
+		width:272px;
+		height:35px;
+	}
+
+	.weekSummaryBarGraphLabel {
+		float:left;
+		font-size:$fontSizeXSmall;
+	}
+	
+	.weekSummaryBarGraphLabel.total {
+		text-transform: uppercase !important;
+	}
+
+	.weekSummaryBarGraph {
+		height:8px;
+		float:left;
+		width:100%;
+		margin-top:3px;
+        position:relative;
+	}
+    
+    .weekSummaryBarGraphPlanned
+    {	
+        position:absolute;
+        top:0px;
+        bottom:0px;
+        left:0px;
+        right:0px;
+        z-index:1;
+
+        @include linearGradient(top,  #cccccc 0%,#aeaeae 100%);
+
+        &.moreThanPlanned
+        {
+            z-index:3;
+            @include linearGradient(top, #85878a 0%, #68696c 100%);
+
+            &.bike {
+                @include linearGradient(top, #a153d8 0%, #7b4a9e 100%);
+            }
+            
+            &.strength {
+                @include linearGradient(top, #a75ca3 0%, #80507d 100%);
+            }	
+            
+            &.run {
+                @include linearGradient(top, #5f9cb0 0%, #517885 100%);
+            }	
+
+            &.swim {
+                @include linearGradient(top,  #53b5d8 0%, #4a889e 100%);
+            }
+
+        }
+	}
+
+	.weekSummaryBarGraph.total {
+		height:15px;
+		float:left;
+		width:100%;
+	}
+	
+	.weekSummaryBarGraphProgress {
+		height:100%;
+		display:block;
+        position:absolute;
+        top:0px;
+        left:0px;
+        z-index:2;
+	}
+	 
+    .weekSummaryBarGraphProgress {
+        @include linearGradient(top,  #636569 0%, #3d3e41 100%);
+
+        &.bike {
+            @include linearGradient(top,  #8820d1 0%, #561484 100%);
+        }
+        
+        &.strength {
+            @include linearGradient(top, #912c8a 0%, #5b1c5b 100%);
+        }	
+        
+        &.run {
+            @include linearGradient(top,  #30819c 0%, #1e5162 100%);
+        }	
+
+        &.swim {
+            @include linearGradient(top,  #20a3d1 0%, #146784 100%);
+        }
+    }
+
+    .weekSummaryTimeContain {
+        float:right;
+        text-align:right;
+        font-size:$fontSizeXSmall;
+    
+        .weekSummaryTimeCompleted {
+            font-weight:bold;
+            color:#303030;
+			margin-right: 2px;
+
+            &.run
+            {
+                color: #30819c;
+            }
+
+            &.bike
+            {
+                color:#8c2edc;
+            }
+
+            &.swim
+            {
+                color: #20a3d1; 
+            }
+
+            &.strength
+            {
+                color:#912c8a
+            }
+        }
+
+        .weekSummaryTimePlanned {
+            color:#a5a5a5;
+        }
+    }
+	
+    #weekSummaryMetricContain {
+        width:272px;
+        float:left;
+    }
+
+    .weekSummaryMetricItem {
+        padding:2px 0 2px 0;
+    }
+
+    .weekSummaryItem
+    {
+        border-bottom:1px solid #dbdbdc;
+        &.last
+        {
+            border-bottom:none;
+        }
+    }
+        
+    #weekSummaryATPContain {
+        width:272px;
+        float:left;
+    }
+
+    .weekSummaryATPItem {
+        padding:0 0 4px 0;
+    }
+
+    .weekSummaryATPItem.last {
+        border-bottom:none;
+    }
+
+    .weekSummaryMetricValue, 
+    .weekSummaryATPValue, {
+        width:131px;
+        display:inline-block;
+    }
+
+    .weekSummaryMetricValue {
+        text-align:right;
+        font-size:$fontSizeXLarge;
+        font-weight:normal;
+    }
+
+    .weekSummaryMetricTitle, 
+    .weekSummaryATPTitle {
+        width:131px;
+        margin:0 0 0 6px;
+        font-size:$fontSizeXSmall;
+        font-weight:bold;
+        display:inline-block;
+    }
+
+    .weekSummaryMetricTitle {
+        padding-top:5px;
+        line-height:normal;
+    }
+
+    .weekSummaryATPValue {
+        text-align:right;
+        font-size:$fontSizeXSmall;
+    }
+
+
+}

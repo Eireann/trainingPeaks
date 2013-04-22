@@ -1,0 +1,666 @@
+﻿@import "../globalCSS/tpstylesheet";
+
+#workOutQuickView
+{
+	overflow:hidden;
+    width: 690px;
+    height: 530px;
+}
+
+input[disabled='disabled']
+{
+    @include box-shadow(none);
+    cursor: default;
+}
+
+.QVHeader
+{
+	width: 100%;
+	height: 125px;
+	background-color: $TPGrey1;
+    padding: 12px 0px 0px 12px;
+    @include box-shadow(2px 0px 7px 0px $TPGrey3);
+    position: relative;
+
+    div
+    {
+        cursor: default;
+    }
+
+    span
+    {
+        cursor: default;
+    }
+
+    .dateAndTime
+    {
+        float: left;
+        padding-left: 2px;
+        
+        #dayName
+        {
+            font-family: $navigationFontFamilyRegular;
+            font-size:$fontSizeMedium;
+            color: $TPGrey3;
+            padding-right: 14px;
+            text-transform:uppercase;
+        }
+
+        #calendarDate
+        {
+            font-family: $navigationFontFamilyRegular;
+            font-size:$fontSizeSmall;
+            color: $TPGrey3;
+            padding-right: 14px;
+        }
+
+        #time
+        {
+            font-family: $navigationFontFamilyRegular;
+            font-size:$fontSizeSmall;
+            color: $TPGrey3;
+            font-style: italic
+        }
+
+        @include inputs(200px, 20px, $fontSizeSmall, $navigationFontFamilyRegular);
+        input#startTimeInput
+        {
+            color: $TPGrey3;
+            font-style: italic;
+            display: inline-block;
+            outline: none;
+            @include box-shadow(none);
+            border: none;
+            background-color: transparent;
+            margin: 0px;
+            padding: 0px;
+        }
+    }
+
+    .closeAndSettings
+    {
+        float: right;
+        margin: -7px 7px 0px 0px;
+        span
+        {
+            padding-left: 5px;
+        }
+    }
+  
+    .grayHeader
+    {
+        width: 570px;
+        height: 80px;
+        padding: 5px 0px 5px 5px;
+        background-color: $TPGrey2;
+        float: left;
+        margin-top: 0px;
+
+        @include box-shadow(0px 5px 2px -3px $TPGrey3);
+
+        .workoutIcon
+        {
+            width: 70px;
+            height: 70px;
+            background-color: white;
+            float: left;
+        }
+
+        .workoutHeaderStats
+        {
+            float: left;
+            width: 490px;
+
+            .headerIcons
+            {
+                float: right;
+                margin-top: -7px;
+
+                .icon
+                {
+                    float: left;
+                    padding-right: 5px;
+                }
+
+                .addAttachment
+                {
+                    margin-top: -1px;
+                }
+        
+            }
+
+            .headerWorkoutValue
+            {
+                float: left;
+                padding: 10px 0px 0px 10px;
+                @include labels($navigationFontFamilyRegular, $fontSizeQVHeader, $TPGrey4, normal);
+            }
+            .headerWorkoutValueLabel
+            {
+                float: left;
+                padding: 18px 0px 0px 0px;
+                @include labels($navigationFontFamilyRegular, $fontSizeXXLarge, $TPGrey4, normal);
+            }
+
+            .title
+            {
+                padding-left: 5px;
+                @include inputs(100%, 20px, $fontSizeLarge, $navigationFontFamilyRegular);
+                input
+                {
+                    background:transparent;
+                    outline: none;
+                    border: none;
+                    box-shadow: inset 0 0px 0px rgba(0, 0, 0, 0.0);
+                    color: $TPGrey4;
+                    display: inline;
+                    font-style: italic;
+                }
+            }
+        }
+
+        &.past
+        {
+            .headerWorkoutValue
+            {
+                .planned
+                {
+                   display:none;
+                }
+            }
+        } 
+
+        &.future
+        {
+            .headerWorkoutValue
+            {
+                .actual
+                {
+                   display:none;
+                }
+            }
+        } 
+    }
+
+    .uploadButton
+    {
+        width: 80px;
+        height: 80px;
+        float: left;
+        @include box-shadow(0px 5px 2px -3px $TPGrey3);
+        @include labels($navigationFontFamilyRegular, $fontSizeLarge, $TPGrey4, normal);
+        margin-left: 10px;
+        @include linearGradient(top, #fefefe, #e0dddd);
+        text-align: center;
+        padding-top: 30px;
+    }
+
+    #menuIcon
+    {
+        padding-bottom: 5px;
+        padding-left: 5px;
+        padding-right: 2px;
+        padding-top: 1px;
+    }
+
+    #closeIcon
+    {
+        padding-bottom: 5px;
+        padding-left: 5px;
+        padding-right: 2px;
+        padding-top: 1px;
+    }
+}
+
+.tabNavigation
+{
+    width: 37px;
+    height: 360px;
+    float: left;
+    background-color: $TPGrey5;
+    padding: 0px 0px 0px 0px;
+    border-bottom: $TPGrey7;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+
+
+    .summaryTab
+    {
+        padding: 12px 0px 10px 11px;
+        background-color: $TPGrey6;
+    }
+
+    .heartrateTab
+    {
+        padding: 10px 0px 10px 10px;
+        img
+        {
+            opacity: 0.4;
+        }
+    }
+
+    .powerTab
+    {
+        padding: 10px 0px 10px 13px;
+        img
+        {
+            opacity: 0.4;
+        }
+    }
+
+    .paceTab
+    {
+        padding: 10px 0px 10px 7px;
+        img
+        {
+            opacity: 0.4;
+        }
+    }
+}
+
+#quickViewContent
+{
+	height: 360px;
+	overflow-y:scroll; 
+	overflow-x:hidden;
+    @include nice-scrollbar;
+	@include radialGradient(#e6e4e4, #dedcdc);
+    width: 653px;
+}
+
+.stats
+{
+	padding-left: 20px;
+	padding-right: 40px;
+    padding-bottom: 20px;
+	background: transparent;
+	float: left;
+
+	.selectionBox
+	{
+		padding-left: 87px;
+		@include selectionBox(168px);
+	}
+}
+.workoutStatsRow
+{
+	@include innerRow();
+	
+	clear: both;
+    height: 23px;
+
+	.workoutStatsColumn
+	{
+		float:left;
+        height: 23px;
+		@include inputs(83.5px, 20px, 12px, $navigationFontFamilyRegular);
+        padding-right: 2px;
+
+        .hide
+        {
+            display:none;
+        }
+	}
+
+	
+
+	.workoutStatsColumnMinMaxAvg
+	{
+		float:left;
+        height: 23px;
+		@include inputs(55px, 20px, 12px, $navigationFontFamilyRegular);
+        padding-right: 2px;
+	}
+
+	label
+	{
+		text-align: right;
+		width: 100px;
+		padding-top: 5px;
+		padding-right: 5px;
+
+
+        &.ghosted
+        {
+            color: $TPGrey7;
+        }
+
+	}
+	
+	@include labels($navigationFontFamilyRegular, 0.82em, $TPGrey4, normal);
+
+	.workoutStatsUnitLabel
+	{
+		label
+		{
+			text-align: left;
+			width: 45px;
+			padding-top: 5px;
+			padding-left: 5px;
+		}
+	}
+}
+
+.columnLabelsPlannedCompleted
+{
+	padding-left: 105px;
+	padding-top: 10px;
+	width: 100%;
+	height: 15px;
+	background: transparent;
+
+	@include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey4, normal);
+	label
+	{
+		float: left;
+		width: 75px;
+        font-weight: bold;
+
+        &.ghosted
+        {
+            color: $TPGrey7;
+        }
+	}
+
+}
+
+.columnLabelsMinMaxAvg
+{
+	padding-left: 105px;
+	width: 100%;
+	height: 23px;
+	background: transparent;
+    padding-top: 10px;
+
+	@include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey4, normal);
+	label
+	{
+		float: left;
+		width: 56px;
+        font-weight: bold;
+            
+        &.ghosted
+        {
+            color: $TPGrey7;
+        }
+	}
+}
+
+.comments
+{
+	float: left;
+	background: transparent;
+	padding-top: 10px;
+	@include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey4, normal);
+	width: 275px;
+	height: 100%;
+
+    label
+    {
+        font-weight: bold;
+    }
+
+    #preActivityComments
+    {
+        display:none;
+    }
+
+	#descriptionInput
+	{
+		width: 275px;
+        max-width: 275px
+	}
+
+	.activityComments
+	{
+		width: 275px;
+        max-width: 275px
+	}
+}
+
+.quickviewFooter
+{
+	height:50px;
+	background-color: $TPGrey5;
+	padding-top: 9px;
+
+	.selectionBox
+	{
+		padding-left: 55px;
+		width: 130px;
+		float:left;
+		@include selectionBox(130px);
+	}
+	.saveCloseButtons
+	{
+		float: right;
+		width: 300px;
+		padding-top: 5px;
+        @include buttons(0, 77px, $fontSizeSmall);
+		#saveClose
+		{
+			width: 107px;
+		}
+        button
+        {
+            margin-right: 8px;
+        }
+	}
+}
+
+.workoutTypeMenuModalOverlay
+{
+    z-index: 102;
+}
+
+.workoutTypeMenu
+{
+    z-index: 103;
+
+    .hoverBox
+    {
+        .colorBar
+        {
+            top: 0px;
+            bottom: 0px;
+            right: 0px;
+            left: calc(100% - 4px);
+            width: 4px;
+            height: 100%;
+        }
+
+        .bottomShadow
+        {
+            display:none;
+        }
+
+        .arrow
+        {
+            position: absolute;
+            top: 40px;
+            right: 0px;
+            @include transform(translateX(8px) rotate(45deg));
+        }
+
+        .colored
+        {
+            background-color: $TPGrey3;
+        }
+
+        .hoverBoxContents
+        {
+            @include linearGradient(right, rgb(255,255,255), rgba(255,255,255,0.95)); 
+            padding: 20px;
+            padding-right: 30px;
+            min-width: 150px;
+
+            label
+            {
+                margin-bottom: 8px;
+
+                &.selected
+                {
+                    font-weight: bold;
+                }
+
+                &:hover
+                {
+                    font-weight: bold;
+                }
+            }
+        }
+
+        .mainShadow
+        {
+            bottom: 0px;
+            @include box-shadow(0px 3px 3px -2px $TPGrey4);
+        }
+    }
+}
+
+.workoutQuickViewMenuModalOverlay
+{
+    z-index: 102;
+}
+
+.workoutQuickViewMenu
+{
+    z-index: 103;
+}
+
+.saveWorkoutToLibraryConfirmationModalOverlay
+{
+    z-index: 102;
+}
+
+.saveWorkoutToLibraryConfirmation
+{
+    z-index: 103;
+    min-width: 450px;
+
+    .labels
+    {
+        text-align: right;
+        width: 35%;
+        display: inline-block;
+        margin-right: 10px;
+        margin-left: 20px;
+    }
+
+    .values
+    {
+        text-align: left;
+        width: 45%;
+        display: inline-block;
+        margin-right: 20px;
+    }
+
+    label
+    {
+        display:inline-block;
+        font-weight: bold;
+    }
+
+    select
+    {
+        width: 200px;
+    }
+
+    input
+    {
+        width: 200px;
+    }
+
+    .dialogButtons
+    {
+        margin-top: 20px;
+    }
+}
+
+.workoutComments
+{
+
+    #postActivityCommentsInput
+    {
+        height: 30px;
+    }
+
+    .comment
+    {
+
+        margin-bottom:3px;
+        margin-left: -3px;
+        padding: 3px;
+        color: $TPGrey4;
+        border: 1px solid transparent;
+
+        &.hover
+        {
+            background-color: $TPGrey1;
+            border-color: $TPGrey7;
+        }
+
+        .commentHeader
+        {
+            // this becomes smaller because it's relative to the size above it ...
+            font-size: $fontSizeSmall;
+            font-weight: $fontWeightBold;
+            margin-bottom: 3px;
+
+            .date
+            {
+                .weekdayName
+                {
+                    text-transform: uppercase;
+                }
+            }
+
+            .date
+            {
+                .weekdayName
+                {
+                    text-transform: uppercase;
+                }
+            }
+
+        }
+
+        .commentBody
+        {
+            font-size: $fontSizeSmall;
+            white-space: pre;
+        }
+
+    }
+}
+.updatingModel
+{
+	color: red;
+}
+
+.modelUpdateSuccess
+{
+	color: green;
+}
+
+.comment
+{
+    position: relative;
+    .deleteButton
+    {
+        position: absolute;
+        display: none;
+        top: 4px;
+        right: 3px;
+        height: 8px;
+        width: 10px;
+    }
+
+    &.hover
+    {
+        .deleteButton
+        {
+            display:block
+        }
+    }
+}

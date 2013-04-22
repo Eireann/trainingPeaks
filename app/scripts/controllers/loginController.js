@@ -14,23 +14,38 @@ function(TP, LoginLayout, LoginView)
         {
             this.layout = new LoginLayout();
             this.layout.on("show", this.show, this);
+            theMarsApp.session.on("logout", this.onLogout, this);
         },
         
         show: function()
         {
+            if (theMarsApp.session.isAuthenticated())
+            {
+                theMarsApp.session.logout();
+                return;
+            }
+
             if (this.views.loginView)
                 this.views.loginView.close();
             
             this.views.loginView = new LoginView({ model: theMarsApp.session });
 
-            var self = this;
-
-            this.views.loginView.on("login:success", function()
-            {
-                self.trigger("login:success");
-            });
+          
+            this.views.loginView.on("login:success", this.onLoginSuccess, this);
 
             this.layout.mainRegion.show(this.views.loginView);
+        },
+
+        onLoginSuccess: function ()
+        {
+            this.trigger("login:success");
+            theMarsApp.clientEvents.logEvent({ Event: { Type: "Login", Label: "Login", AppContext: "Login" } });
+        },
+
+        onLogout: function()
+        {
+            theMarsApp.router.navigate("login");
+            window.location.reload();
         }
         
     });

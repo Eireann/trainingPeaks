@@ -1,0 +1,173 @@
+﻿@import "tpstylesheet";
+
+@mixin buttons($marginLeft, $width, $fontSize)
+{
+	button
+	{
+		width: $width;
+		padding:2px 0;
+		font-family: $navigationFontFamilyLight;
+		font-size: $fontSize;
+		margin-left: $marginLeft;
+		color: $TPGrey4;
+		cursor: default;
+		background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #ffffff), color-stop(1, #dfdfdf) );
+		background:-moz-linear-gradient( center top, #ededed 5%, #dfdfdf 100% );
+		filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ededed', endColorstr='#dfdfdf');
+		background-color:#ededed;
+		border: 0px;
+		display:inline-block;
+		text-decoration:none;
+        border-width: 1px;
+        border-style: solid;
+        border-color: $TPGrey9;
+	}
+}
+
+@mixin headerButtons($marginLeft, $width, $fontSize)
+{
+    @include buttons($marginLeft, $width, $fontSize);
+	button
+	{
+		float: left;
+        cursor: default;
+		height:22px;
+	}
+}
+
+@mixin labels($fontFamily, $fontSize, $fontColor, $fontWeight, $selector: label)
+{
+	#{$selector}
+	{
+		font-family: $fontFamily;
+		font-size: $fontSize;
+		color: $fontColor;
+		font-weight: $fontWeight;
+		cursor: default;
+	}
+}
+
+@mixin inputs($width, $height, $fontSize, $fontFamily) 
+{
+	input
+	{
+		width: $width;
+		height: $height;
+		font-size: $fontSize;
+		font-family: $fontFamily;
+		padding-top: 0px;
+		padding-bottom: 0px;
+        cursor: text;
+	}
+
+    input[disabled='disabled']
+    {
+        cursor: default;
+    }
+}
+
+@mixin selectionBox($width)
+{
+	select
+	{
+		margin-top: 3px;
+		width: $width;
+		font-size: $fontSizeMedium;
+		font-family: $navigationFontFamilyRegular;
+	}
+}
+
+@mixin nice-scrollbar($size: 12px, $track-background: $TPGrey1, $thumb-color: $TPGrey2, $inactive-thumb-color: $TPGrey2)
+{
+    &::-webkit-scrollbar 
+    {
+        width: $size;
+        height: $size;
+    }
+
+    &::-webkit-scrollbar-track
+    {
+        border-radius: 0;
+        background: $track-background;
+        box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0.2) 0 1px 1px 1px inset;
+    }
+
+    &::-webkit-scrollbar-thumb
+    {
+        border-radius: 0;
+        background: $thumb-color;
+        box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0.7) 0 1px 7px 0px inset;
+    }
+
+    &::-webkit-scrollbar-thumb:window-inactive
+    {
+        border-radius: 0;
+        background: $thumb-color;
+        box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0.4) 0 1px 1px 1px inset;
+    }
+}
+
+@mixin throbber($backgroundColor: $TPGrey1) {
+    opacity:0.7;
+    background-image: url(../../assets/images/throbber.gif);
+    background-repeat: no-repeat;
+    background-position: center;
+    position:absolute;
+    height: 90%;
+    width: 90%;
+    top:5%;
+    left:5%;
+    content: ' ';
+    display: block;
+}
+
+@mixin flexboxParent() {
+    display: -webkit-box;
+    -webkit-box-orient: horizontal;
+
+    display: -moz-box;
+    -moz-box-orient: horizontal;
+
+    display: box;
+    box-orient: horizontal;
+}
+
+@mixin flexboxChild() {
+    -webkit-box-flex: 1;
+    -moz-box-flex: 1;
+    box-flex: 1;
+}
+
+@mixin calc($property, $expression) { 
+  #{$property}: -moz-calc(#{$expression}); 
+  #{$property}: -o-calc(#{$expression}); 
+  #{$property}: -webkit-calc(#{$expression}); 
+  #{$property}: calc(#{$expression}); 
+} 
+
+@mixin transform($expression) {
+    -ms-transform: #{$expression};
+    -moz-transform: #{$expression};
+    -webkit-transform: #{$expression};
+    -o-transform: #{$expression};
+}
+
+@mixin linearGradient($position, $color1, $color2)
+{
+    background-image: -webkit-linear-gradient($position, $color1, $color2);
+    background-image: -moz-linear-gradient($position, $color1, $color2);
+    background-image: -ms-linear-gradient($position, $color1, $color2);
+    background-image: linear-gradient($position, $color1, $color2);
+}
+
+@mixin radialGradient($color1, $color2)
+{
+    background: #1e5799;
+    background: -moz-radial-gradient(center, ellipse cover, #1e5799 0%, $color1 0%, $color2 100%);
+    background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,#1e5799), color-stop(0%, $color1), color-stop(100%, $color2));
+    background: -webkit-radial-gradient(center, ellipse cover, #1e5799 0%, $color1 0%, $color2 100%);
+    background: -o-radial-gradient(center, ellipse cover, #1e5799 0%, $color1 0%, $color2 100%);
+    background: -ms-radial-gradient(center, ellipse cover, #1e5799 0%, $color1 0%, $color2 100%);
+    background: radial-gradient(ellipse at center, #1e5799 0%, $color1 0%, $color2 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', endColorstr='#cac8c8',GradientType=1 );
+}

@@ -1,8 +1,9 @@
 ﻿requirejs(
 [
+    "TP",
     "router"
 ],
-function(Router)
+function(TP, Router)
 {
     describe("Test the router", function()
     {

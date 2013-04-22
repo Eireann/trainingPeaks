@@ -5,8 +5,8 @@ requirejs(
     "scripts/helpers/printDate",
     "models/calendarDay",
     "models/workoutModel",
-    "views/calendarWorkoutView",
-    "views/calendarDayView"
+    "views/calendar/workout/calendarWorkoutView",
+    "views/calendar/day/calendarDayView"
 ],
 function(moment, printDate, CalendarDayModel, WorkoutModel, CalendarWorkoutView, CalendarDayView)
 {
@@ -67,24 +67,28 @@ function(moment, printDate, CalendarDayModel, WorkoutModel, CalendarWorkoutView,
                     var dayView = new CalendarDayView({ model: dayModel });
                     spyOn(dayView.$el, "droppable");
                     dayView.setUpDroppable();
-                    expect(dayView.$el.droppable).toHaveBeenCalledWith({ drop: dayView.onDropItem });
+                    expect(dayView.$el.droppable).toHaveBeenCalledWith({ drop: dayView.onDropItem, tolerance: 'pointer' });
                 });
 
-                it("Should trigger a workoutMoved event", function()
+                it("Should trigger an itemDropped event", function()
                 {
                     var dayModel = new CalendarDayModel({ date: moment() });
                     var dayView = new CalendarDayView({ model: dayModel });
                     var uiMock = {
                         draggable: {
                             data: function() {
-                                return "12345";
+                                return {
+                                    ItemId: "12345",
+                                    ItemType: "Workout",
+                                    DropEvent: "itemMoved"
+                                };
                             }
                         }
                     };
                     spyOn(dayView, "trigger");
                     dayView.onDropItem({}, uiMock);
-                    eventOptions = { itemId: "12345", destinationCalendarDayModel: dayModel };
-                    expect(dayView.trigger).toHaveBeenCalledWith("itemMoved", eventOptions);
+                    eventOptions = { ItemId: "12345", DropEvent: "itemMoved", ItemType: "Workout", destinationCalendarDayModel: dayModel };
+                    expect(dayView.trigger).toHaveBeenCalledWith("itemDropped", eventOptions);
                 });
 
             });

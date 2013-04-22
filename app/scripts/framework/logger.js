@@ -1,11 +1,13 @@
 ﻿define(
-    [],
-    function()
+    ["setImmediate"],
+    function(setImmediate)
     {
         function Logger(myConsole)
         {
             this.logLevel = this.logLevels.ERROR;
             this.console = typeof myConsole !== 'undefined' ? myConsole : console;
+            this.timers = {};
+            this.filterText = null;
         }
 
         Logger.prototype.logLevels = {
@@ -22,14 +24,23 @@
             this.logLevel = logLevel;
         };
 
-        Logger.prototype.write = function(logLevel, message)
+        Logger.prototype.filter = function(filterText)
+        {
+            this.filterText = filterText;
+        };
+
+        Logger.prototype.write = function(logLevel, message, method)
         {
             if (logLevel >= this.logLevel)
             {
-                this.console.log(message);
-                if (this.logLevel === this.logLevels.TRACE)
+                if (!this.filterText || message.indexOf(this.filterText) >= 0)
                 {
-                    this.console.trace();
+                    var consoleMethod = method && this.console[method] ? this.console[method] : this.console.log;
+                    consoleMethod.call(this.console, message);
+                    if (this.logLevel === this.logLevels.TRACE)
+                    {
+                        this.console.trace();
+                    }
                 }
             }
         };
@@ -53,25 +64,55 @@
 
         Logger.prototype.debug = function(message)
         {
-            this.write(this.logLevels.DEBUG, 'DEBUG: ' + message);
+            this.write(this.logLevels.DEBUG, message, "debug");
         };
 
         Logger.prototype.info = function(message)
         {
-            this.write(this.logLevels.INFO, 'INFO: ' + message);
+            this.write(this.logLevels.INFO, message, "info");
         };
 
         Logger.prototype.warn = function(message)
         {
-            this.write(this.logLevels.WARN, 'WARN: ' + message);
+            this.write(this.logLevels.WARN, message, "warn");
         };
 
         Logger.prototype.error = function(message)
         {
-            this.write(this.logLevels.ERROR, 'ERROR: ' + message);
+            this.write(this.logLevels.ERROR, message, "error");
         };
 
 
+        Logger.prototype.startTimer = function(timerName, msg)
+        {
+            msg = msg || "Started Timer";
+            this.timers[timerName] = +new Date();
+            this.logTimer(timerName, msg);
+        };
+
+        Logger.prototype.logTimer = function(timerName, msg)
+        {
+            if (!this.timers.hasOwnProperty(timerName))
+            {
+                throw "Invalid timer name: " + timerName;
+            }
+            msg = "TIMER: " + timerName + " " + msg + " at " + (+new Date() - this.timers[timerName]) + "ms";
+            this.debug(msg);
+        };
+
+        Logger.prototype.waitAndLogTimer = function(timerName, msg)
+        {
+            this.logTimer(timerName, "Begin waiting for browser to render");
+            var waitStartTime = +new Date();
+            var theLogger = this;
+            setImmediate(
+                function logIt()
+                {
+                    var msgWithTime = msg + " (" + (+new Date() - waitStartTime) + " ms)";
+                    theLogger.logTimer(timerName, msgWithTime);
+                }
+            );
+        };
 
         return Logger;
     }

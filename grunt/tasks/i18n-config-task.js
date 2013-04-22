@@ -1,14 +1,22 @@
 module.exports = function (grunt) {
-    'use strict';
+
     var _ = require('underscore');
     var fs = require('fs');
+    var path = require('path');
+
+    // this needs to be in a config file
+    var locales = ["en_us", "fr_fr", "it_it"];
+
+    function getLocalePath(target, localeName)
+    {
+        return "build/" + target + "/" + localeName;
+    }
 
     // INTERNATIONALIZATION
     grunt.registerTask("i18n_config", "Compile one single.js file for each supported language", function()
     {
 
         // modify properties of the requirejs grunt config
-
         function addLocaleToRequirejs(localeName, localeSingleFile)
         {
 
@@ -83,23 +91,95 @@ module.exports = function (grunt) {
             grunt.config.set('uglify', uglifyOptions);
         }
 
-        // this needs to be in a config file
-        var locales = ["en_us", "fr_fr", "it_it"];
-
         // build options for each locale - set the single.js filename and the locale
         _.each(locales, function(localeName)
         {
-            var localeSingleFile = "build/debug/locale/" + localeName + "/single.js";
+            var localeFolder = getLocalePath('debug', localeName);
+            var localeSingleFile = localeFolder + "/single.js";
             addLocaleToRequirejs(localeName, localeSingleFile);
             addLocaleToConcat(localeName, localeSingleFile);
             addLocaleToUglify(localeName, localeSingleFile);
         });
 
-        console.log(grunt.config.get("requirejs").en_us.options);
-        console.log(grunt.config.get("concat"));
+        //console.log(grunt.config.get("compass"));
+        //console.log(grunt.config.get("concat"));
 
     });
 
+    // Copies css, assets, index.html files into locale folders
+    grunt.registerTask("copy-i18n-files", "Copy i18n app files", function()
+    {
+        function copyFileSync(srcPath, destPath)
+        {
 
+            if (fs.statSync(srcPath).isDirectory() && !fs.existsSync(destPath))
+            {
+                var pathParts = destPath.split(path.sep);
+                var destDir = "";
+                while (pathParts.length > 0)
+                {
+                    destDir = path.join(destDir, pathParts.shift());
+                    grunt.log.writeln("Mkdir " + destDir);
+                    if (!fs.existsSync(destDir))
+                    {
+                        fs.mkdirSync(destDir);
+                    }
+                }
+                var files = fs.readdirSync(srcPath);
+                _.each(files, function(file)
+                {
+                    var fileSrcPath = path.join(srcPath, file);
+                    var fileDestPath = path.join(destPath, file);
+                    copyFileSync(fileSrcPath, fileDestPath);
+                });
+                // copy
+            }
+            else if (fs.statSync(srcPath).isFile())
+            {
+                grunt.log.writeln("Copy " + srcPath + " to " + destPath);
+                var BUF_LENGTH, buff, bytesRead, fdr, fdw, pos;
+                BUF_LENGTH = 64 * 1024;
+                buff = new Buffer(BUF_LENGTH);
+                fdr = fs.openSync(srcPath, 'r');
+                fdw = fs.openSync(destPath, 'w');
+                bytesRead = 1;
+                pos = 0;
+                while (bytesRead > 0)
+                {
+                    bytesRead = fs.readSync(fdr, buff, 0, BUF_LENGTH, pos);
+                    fs.writeSync(fdw, buff, 0, bytesRead);
+                    pos += bytesRead;
+                }
+                fs.closeSync(fdr);
+                return fs.closeSync(fdw);
+            }
+            
+        };
+
+        var targets = ['debug', 'release'];
+        var filesToCopy = ['app', 'assets', 'index.html'];
+        // build options for each locale - set the single.js filename and the locale
+        _.each(locales, function(localeName)
+        {
+           _.each(targets, function(targetName)
+           {
+                if (fs.existsSync('build/' + targetName))
+                {
+                    var localeFolder = getLocalePath(targetName, localeName);
+
+                    _.each(filesToCopy, function(fileName)
+                    {
+                        var srcPath = path.join("build", targetName, fileName);
+                        var destPath = path.join("build", targetName, localeName, fileName);
+                        copyFileSync(srcPath, destPath);
+                    });
+                }
+
+            });
+
+        });
+
+
+    });
 };
 

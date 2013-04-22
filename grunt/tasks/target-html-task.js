@@ -1,5 +1,5 @@
-module.exports = function (grunt) {
-    'use strict';
+module.exports = function(grunt)
+{
 
     // TARGETHTML - copied and modified from grunt-targethtml
     grunt.registerMultiTask('targethtml', 'Produces html-output depending on grunt release version', function()

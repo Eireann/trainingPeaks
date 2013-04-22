@@ -1,32 +1,7 @@
-<div class="row ">
-    <div id="calendarHeader" class="thirteen columns" >
-        <div class="calendarMonthLabel four column">
-            <label>January 2013</label>
-        </div>
-        <div class="navigation eleven column">
-            <div class="calendarNavigation three column">
-                <button><</button>
-                <button>></button>
-            </div>
-            <div>
-                <button>{{$ "Today"}}</button>
-            </div>
-            <div class="calendarView five column">
-                <select>
-                    <option value="Month" selected>{{$ "Month"}}</option>
-                    <option value="Week">{{$ "Week"}}</option>
-                    <option value="Day">{{$ "Day"}}</option>
-                </select>
-            </div>
-            <div>
-                <button><img src="app/images/calendarImages/printIcon.png"/></button>
-            </div>
-            <div>
-                <button><img src="app/images/calendarImages/refreshIcon.png"/></button>
-            </div>
-        </div>
-    </div>
-
+<div id="calendarHeader" class="row ">
 </div>
 
-<div id="calendarContainer"><</div>
+<div id="calendarWrapper">
+    <div id="libraryContainer" class="closed"></div>
+    <div id="calendarContainer"></div>
+</div>

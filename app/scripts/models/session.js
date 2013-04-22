@@ -5,9 +5,7 @@ define(
 ],
 function (_, TP)
 {
-    "use strict";
-
-    var Session = TP.Model.extend(
+    return TP.Model.extend(
     {
         url: function()
         {
@@ -18,15 +16,18 @@ function (_, TP)
 
         initialize: function()
         {
+            this.authPromise = new $.Deferred();
+
             var accessToken = this.storageLocation.getItem("access_token");
+
             if (accessToken)
             {
                 var expiresOn = this.storageLocation.getItem("expires_on");
-                var now = (new Date()).getTime() / 1000;
+                var now = parseInt(+new Date(), 10) / 1000;
                 if (now < expiresOn)
                 {
                     this.set("access_token", accessToken);
-                    this.set("username", this.storageLocation.getItem("username"));
+                    this.authPromise.resolve();
                 }
             }
         },
@@ -47,7 +48,7 @@ function (_, TP)
                 username: options.username,
                 password: options.password,
                 response_type: "token",
-                scope: "Fitness"
+                scope: "fitness clientevents users athletes exerciselibrary images"
             };
 
             this.username = options.username;
@@ -60,6 +61,7 @@ function (_, TP)
                 type: "POST",
                 contentType: "application/x-www-form-urlencoded"
             }).done(this.onAuthenticationSuccess).error(this.onAuthenticationFailure);
+
         },
         
         onAuthenticationSuccess: function()
@@ -68,19 +70,23 @@ function (_, TP)
 
             this.storageLocation.setItem("access_token", this.get("access_token"));
             this.storageLocation.setItem("expires_on", expiresOn);
-            this.storageLocation.setItem("username", this.username);
 
-            this.set("username", this.username);
-
+            this.authPromise.resolve();
             this.trigger("api:authorization:success");
         },
         
         onAuthenticationFailure: function()
         {
+            var originalPromise = this.authPromise;
+            this.authPromise = new $.Deferred();
+            originalPromise.reject();
             this.trigger("api:authorization:failure");
+        },
+        
+        logout: function()
+        {
+            this.storageLocation.removeItem("access_token");
+            this.trigger("logout");
         }
-
     });
-
-    return Session;
 });
