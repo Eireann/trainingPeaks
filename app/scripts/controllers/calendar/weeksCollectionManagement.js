@@ -1,6 +1,6 @@
 define(
 [
-    "models/calendar/calendarCollection"
+    "models/calendarCollection"
 ],
 function(CalendarCollection
 

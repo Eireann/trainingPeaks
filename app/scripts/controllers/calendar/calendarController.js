@@ -16,7 +16,8 @@ define(
     "views/calendar/calendarContainerView",
     "views/library/libraryView",
     "controllers/calendar/dragMoveShift",
-    "controllers/calendar/weeksCollectionManagement"
+    "controllers/calendar/weeksCollectionManagement",
+    "controllers/calendar/calendarControlsHeader"
 ],
 function(
     _,
@@ -35,7 +36,8 @@ function(
     CalendarContainerView,
     LibraryView,
     calendarControllerDragMoveShift,
-    calendarControllerWeeksCollectionManagement
+    calendarControllerWeeksCollectionManagement,
+    calendarControlsHeader
     )
 {
 
@@ -68,7 +70,7 @@ function(
 
         showViewsInRegions: function()
         {
-            this.layout.headerRegion.show(this.views.header);
+            this.showHeader();
             this.layout.calendarRegion.show(this.views.calendar);
             this.layout.libraryRegion.show(this.views.library);
         },
@@ -291,21 +293,6 @@ function(
 
         },
 
-        initializeHeader: function ()
-        {
-            if (this.views.header)
-                this.views.header.close();
-
-            this.models.calendarHeaderModel = new TP.Model();
-
-            this.views.header = new calendarHeaderView({ model: this.models.calendarHeaderModel });
-
-            this.views.header.on("request:today", this.onRequestToday, this);
-            this.views.header.on("request:nextweek", this.onRequestNextWeek, this);
-            this.views.header.on("request:lastweek", this.onRequestLastWeek, this);
-            this.views.header.on("request:refresh", this.onRequestRefresh, this);
-        },
-
         initializeCalendar: function()
         {
             var weekDaysModel = new TP.Model({ startOfWeekDayIndex: this.startOfWeekDayIndex });
@@ -325,18 +312,6 @@ function(
         onRequestToday: function()
         {
             this.showDate(moment());
-        },
-        
-        onRequestLastWeek: function(currentWeekModel)
-        {
-            // header has end of week, our showDate wants start of week ...
-            this.showDate(moment(currentWeekModel.get("date")).subtract("days",6).subtract("weeks", 1), 200);
-        },
-        
-        onRequestNextWeek: function(currentWeekModel)
-        {
-            // header has end of week, our showDate wants start of week ...
-            this.showDate(moment(currentWeekModel.get("date")).add("days", 1), 200);
         },
 
         onRequestRefresh: function(currentWeekModel)
@@ -417,6 +392,7 @@ function(
     // mixins
     _.extend(calendarControllerBase, calendarControllerDragMoveShift);
     _.extend(calendarControllerBase, calendarControllerWeeksCollectionManagement);
+    _.extend(calendarControllerBase, calendarControlsHeader);
 
     // make it a TP.Controller
     return TP.Controller.extend(calendarControllerBase);
