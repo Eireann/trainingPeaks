@@ -8,7 +8,6 @@ define(
     "views/quickView/workoutQuickView",
     "views/calendar/workout/calendarWorkoutHoverView",
     "views/calendar/workout/calendarWorkoutSettings",
-    "utilities/workoutTypeName",
     "utilities/determineCompletedWorkout",
     "hbs!templates/views/calendar/workout/calendarWorkout"
 ],
@@ -21,7 +20,6 @@ function(
     WorkoutQuickView,
     CalendarWorkoutHoverView,
     CalendarWorkoutSettingsHover,
-    workoutTypeName,
     determineCompletedWorkout,
     CalendarWorkoutTemplate)
 {
@@ -53,7 +51,7 @@ function(
 
         getWorkoutTypeCssClassName: function()
         {
-            return workoutTypeName(this.model.get("workoutTypeValueId")).replace(/ /g, "");
+            return TP.utils.workoutTypes.getNameById(this.model.get("workoutTypeValueId")).replace(/ /g, "");
         },
 
         getComplianceCssClassName: function()
