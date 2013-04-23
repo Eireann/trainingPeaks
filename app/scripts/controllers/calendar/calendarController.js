@@ -13,7 +13,7 @@ define(
     "models/workoutModel",
     "models/commands/addWorkoutFromExerciseLibrary",
     "views/calendar/calendarHeaderView",
-    "views/calendar/calendarContainerView",
+    "views/calendar/container/calendarContainerView",
     "views/library/libraryView",
     "controllers/calendar/dragMoveShift",
     "controllers/calendar/weeksCollectionManagement",

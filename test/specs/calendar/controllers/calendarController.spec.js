@@ -9,7 +9,7 @@ requirejs(
 "controllers/calendar/calendarController",
 "models/workoutModel",
 "models/workoutsCollection",
-"views/calendar/calendarContainerView",
+"views/calendar/container/calendarContainerView",
 "views/library/libraryView"
 ],
 function(TP, moment, $, _, Backbone, CalendarController, WorkoutModel, WorkoutsCollection, CalendarView, LibraryView)
