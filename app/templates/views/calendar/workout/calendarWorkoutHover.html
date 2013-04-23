@@ -11,9 +11,9 @@
     <div>
         <label>{{$ "Duration" }}</label>
         <div>
-            <span id="totalTimePlanned" class="planned">{{ printTimeFromDecimalHours totalTimePlanned }}</span>
+            <span id="totalTimePlanned" class="planned">{{ formatTime totalTimePlanned }}</span>
             <span class="slash"> / </span>
-            <span id="totalTime" class="completed">{{ printTimeFromDecimalHours totalTime }}</span>
+            <span id="totalTime" class="completed">{{ formatTime totalTime }}</span>
         </div>
     </div>
     <div>
