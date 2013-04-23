@@ -10,17 +10,15 @@ function(TP)
 
         urlRoot: function()
         {
-            return theMarsApp.apiRoot + "/WebApiServer/Fitness/V1/commands/addworkoutfromlibraryitem";
+            var athleteId = theMarsApp.user.get("athletes.0.athleteId");
+            return theMarsApp.apiRoot + "/WebApiServer/fitness/v1/athletes/" + athleteId + "/commands/addworkoutfromlibraryitem";
         },
 
-        defaults: function()
+        defaults:
         {
-            return {
-                athleteId: theMarsApp.user.has("userId") ? theMarsApp.user.get("userId") : 0,
-                exerciseLibraryItemId: 0,
-                workoutDateTime: null,
-                workoutData: {}
-            };
+            exerciseLibraryItemId: 0,
+            workoutDateTime: null,
+            workoutData: {}
         },
 
         initialize: function(attributes, options)
