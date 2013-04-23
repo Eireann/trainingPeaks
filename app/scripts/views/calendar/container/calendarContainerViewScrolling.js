@@ -7,6 +7,10 @@ function(_, TP)
 {
     var CalendarContainerViewScrolling =
     {
+
+        scrollDownThresholdInPx: 150,
+        scrollUpThresholdInPx: 100,
+
         initializeScrolling: function ()
         {
             _.bindAll(this, "checkCurrentScrollPosition", "afterScrollToElement");
@@ -31,8 +35,8 @@ function(_, TP)
 
         onScrollStop: function ()
         {
-            this.scrolling = false;
-            this.$el.find(".daysOfWeek").removeClass("scrollInProgress");
+        
+            this.stopScrollingState();
 
             var uiOffset = this.ui.weeksContainer.offset();
             var currentWeek = $(document.elementFromPoint(uiOffset.left + 15, uiOffset.top + 15)).closest(".week");
@@ -72,26 +76,47 @@ function(_, TP)
             }
         },
 
-        onScroll: function ()
+        startScrollingState: function()
         {
             if (!this.scrolling)
             {
                 this.$el.find(".daysOfWeek").addClass("scrollInProgress");
                 this.scrolling = true;
             }
+        },
 
+        stopScrollingState: function()
+        {
+            this.scrolling = false;
+            this.$el.find(".daysOfWeek").removeClass("scrollInProgress");
+        },
+
+        getScrollTop: function()
+        {
+            return this.ui.weeksContainer.scrollTop();
+        },
+
+        getHiddenHeight: function()
+        {
             var howMuchIHave = this.ui.weeksContainer[0].scrollHeight;
             var howMuchIsVisible = this.ui.weeksContainer.height();
             var hidden = howMuchIHave - howMuchIsVisible;
-            var scrollDownThresholdInPx = 150;
-            var scrollUpThresholdInPx = 100;
+            return hidden;
+        },
 
-            if (this.ui.weeksContainer.scrollTop() <= scrollUpThresholdInPx)
+        onScroll: function()
+        {
+            this.startScrollingState();
+
+            var hidden = this.getHiddenHeight();
+            var scrollTop = this.getScrollTop();
+
+            if (scrollTop <= this.scrollUpThresholdInPx)
             {
                 // Within the threshold at the TOP. Add row & request data.
                 this.trigger("prepend");
             }
-            else if (this.ui.weeksContainer.scrollTop() >= (hidden - scrollDownThresholdInPx))
+            else if (scrollTop >= (hidden - this.scrollDownThresholdInPx))
             {
                 // Within the threshold at the BOTTOM. Add row & request data.
                 this.trigger("append");
