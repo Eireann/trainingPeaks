@@ -35,8 +35,8 @@ function ()
             "4": { name: "distancePlanned", prefix: "P", conversion: "formatDistance", unitHelper: "distance" },
             "5": { name: "calories", prefix: "C", conversion:"formatNumber", unitHelper: "calories" },
             "6": { name: "energy", prefix: "C", conversion: "formatEnergy", unitHelper: "energy" },
-            "7": { name: "totalTime", prefix: "C", conversion: "formatTime"},
-            "8": { name: "totalTimePlanned", prefix: "P", conversion: "formatTime"},
+            "7": { name: "totalTime", prefix: "C", conversion: "formatDuration"},
+            "8": { name: "totalTimePlanned", prefix: "P", conversion: "formatDuration"},
             "13": { name: "tempAvg", prefix: "", conversion: "formatTemperature", unitHelper: "temperature" },
             //"23": { name: "title", prefix: "" }, //commented out because it is hardwired
             "24": { name: "workoutTypeValueId", prefix: "", conversion: "formatWorkoutType" },

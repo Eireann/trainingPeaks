@@ -21,12 +21,12 @@
             return convertToModelUnits(parseFloat(value), "distance");
         },
 
-        formatTime: function (value, options)
+        formatDuration: function (value, options)
         {
             return datetimeUtils.format.decimalHoursAsTime(value, true, "");
         },
 
-        parseTime: function(value, options)
+        parseDuration: function(value, options)
         {
             return datetimeUtils.convert.timeToDecimalHours(value);
         },
@@ -134,9 +134,16 @@
                 return commentsArray[0].comment;
             }
             return "";
-        }
+        },
         
-
+        formatDateToDayName: function (value, options)
+        {
+            return datetimeUtils.format(value, "dddd");
+        },
         
+        formatDateToCalendarDate: function (value, options)
+        {
+            return datetimeUtils.format(value, "MMM DD, YYYY");
+        },
     };
 });

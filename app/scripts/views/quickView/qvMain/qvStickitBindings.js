@@ -1,8 +1,10 @@
 ﻿define(
 [
+    "underscore",
     "TP"
 ],
-function(
+function (
+    _,
     TP
 )
 {
@@ -33,12 +35,12 @@ function(
             "#dayName":
             {
                 observe: "workoutDay",
-                onGet: "getDayName"
+                onGet: "formatDateToDayName"
             },
             "#calendarDate":
             {
                 observe: "workoutDay",
-                onGet: "getCalendarDate"
+                onGet: "formatDateToCalendarDate"
             },
             "#startTimeInput":
             {
@@ -50,58 +52,33 @@ function(
             "#qv-header-distance":
             {
                 observe: "distance",
-                onGet: "getDistance"
+                onGet: "formatDistance"
             },
             "#qv-header-totaltime":
             {
                 observe: "totalTime",
-                onGet: "getTime"
+                onGet: "formatDuration"
             },
             "#qv-header-tssactual":
             {
                 observe: "tssActual",
-                onGet: "getTss"
+                onGet: "formatTSS"
             },
             "#qv-header-distancePlanned":
             {
                 observe: "distancePlanned",
-                onGet: "getDistance"
+                onGet: "formatDistance"
             },
             "#qv-header-totaltimePlanned":
             {
                 observe: "totalTimePlanned",
-                onGet: "getTime"
+                onGet: "formatDuration"
             },
             "#qv-header-tssPlanned":
             {
                 observe: "tssPlanned",
-                onGet: "getTss"
+                onGet: "formatTSS"
             }
-        },
-
-        getTime: function(value, options)
-        {
-            return TP.utils.datetime.format.decimalHoursAsTime(value, true);
-        },
-
-        getTss: function(value, options)
-        {
-            return value ? value : 0;
-        },
-
-        getDistance: function(value, options)
-        {
-            return TP.utils.conversion.convertToViewUnits(value, "distance", 0);
-        },
-
-        getDayName: function(value, options)
-        {
-            return TP.utils.datetime.format(value, "dddd");
-        },
-
-        getCalendarDate: function(value, options)
-        {
-            return TP.utils.datetime.format(value, "MMM DD, YYYY");
         },
 
         getStartTime: function(value, options)
@@ -165,6 +142,8 @@ function(
         }
 
     };
+
+    _.extend(workoutQuickViewStickitBindings, TP.utils.conversion);
 
     return workoutQuickViewStickitBindings;
 

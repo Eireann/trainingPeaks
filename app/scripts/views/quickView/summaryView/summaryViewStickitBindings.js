@@ -71,15 +71,15 @@ function(
             "#totalTimeCompletedField":
             {
                 observe: "totalTime",
-                onGet: "formatTime",
-                onSet: "parseTime",
+                onGet: "formatDuration",
+                onSet: "parseDuration",
                 updateModel: "updateModel"
             },
             "#totalTimePlannedField":
             {
                 observe: "totalTimePlanned",
-                onGet: "formatTime",
-                onSet: "parseTime",
+                onGet: "formatDuration",
+                onSet: "parseDuration",
                 updateModel: "updateModel"
             },
             "#tssPlannedField":
