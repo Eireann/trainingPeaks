@@ -2,10 +2,9 @@
 requirejs(
 [
     "TP",
-    "views/weekSummary/weekSummaryView",
-    "utilities/workoutTypeEnum"
+    "views/weekSummary/weekSummaryView"
 ],
-function (TP, WeekSummaryView, workoutTypeEnum)
+function (TP, WeekSummaryView)
 {
     describe("WeekSummaryView", function ()
     {
@@ -133,16 +132,16 @@ function (TP, WeekSummaryView, workoutTypeEnum)
 
             var view = new WeekSummaryView({ model: summaryModel });
 
-            var bike1 = new TP.Model({ distance: 1, distancePlanned: 2, tssActual: 100, tssPlanned: 200, workoutTypeValueId:workoutTypeEnum["Bike"]});
-            var bike2 = new TP.Model({ distance: 2, distancePlanned: 4, tssActual: 200, tssPlanned: 400, workoutTypeValueId:workoutTypeEnum["Bike"]});
-            var run1 = new TP.Model({ distance: 3, distancePlanned: 6, tssActual: 300, tssPlanned: 600, workoutTypeValueId:workoutTypeEnum["Run"]});
-            var run2 = new TP.Model({ distance: 4, distancePlanned: 8, tssActual: 400, tssPlanned: 800, workoutTypeValueId: workoutTypeEnum["Run"] });
-            var swim1 = new TP.Model({ distance: 1, distancePlanned: 2, tssActual: 100, tssPlanned: 200, workoutTypeValueId: workoutTypeEnum["Swim"] });
-            var swim2 = new TP.Model({ distance: 2, distancePlanned: 4, tssActual: 200, tssPlanned: 400, workoutTypeValueId: workoutTypeEnum["Swim"] });
-            var strength1 = new TP.Model({ totalTime: 3, totalTimePlanned: 6, tssActual: 300, tssPlanned: 600, workoutTypeValueId: workoutTypeEnum["Strength"] });
-            var strength2 = new TP.Model({ totalTime: 4, totalTimePlanned: 8, tssActual: 400, tssPlanned: 800, workoutTypeValueId: workoutTypeEnum["Strength"] });
-            var rowing1 = new TP.Model({ totalTime: 1, totalTimePlanned: 2, tssActual: 100, tssPlanned: 200, workoutTypeValueId: workoutTypeEnum["Rowing"] });
-            var rowing2 = new TP.Model({ totalTime: 2, totalTimePlanned: 4, tssActual: 200, tssPlanned: 400, workoutTypeValueId: workoutTypeEnum["Rowing"] });
+            var bike1 = new TP.Model({ distance: 1, distancePlanned: 2, tssActual: 100, tssPlanned: 200, workoutTypeValueId: TP.utils.workoutTypes.getIdByName("Bike")});
+            var bike2 = new TP.Model({ distance: 2, distancePlanned: 4, tssActual: 200, tssPlanned: 400, workoutTypeValueId: TP.utils.workoutTypes.getIdByName("Bike")});
+            var run1 = new TP.Model({ distance: 3, distancePlanned: 6, tssActual: 300, tssPlanned: 600, workoutTypeValueId: TP.utils.workoutTypes.getIdByName("Run")});
+            var run2 = new TP.Model({ distance: 4, distancePlanned: 8, tssActual: 400, tssPlanned: 800, workoutTypeValueId: TP.utils.workoutTypes.getIdByName("Run") });
+            var swim1 = new TP.Model({ distance: 1, distancePlanned: 2, tssActual: 100, tssPlanned: 200, workoutTypeValueId: TP.utils.workoutTypes.getIdByName("Swim") });
+            var swim2 = new TP.Model({ distance: 2, distancePlanned: 4, tssActual: 200, tssPlanned: 400, workoutTypeValueId: TP.utils.workoutTypes.getIdByName("Swim") });
+            var strength1 = new TP.Model({ totalTime: 3, totalTimePlanned: 6, tssActual: 300, tssPlanned: 600, workoutTypeValueId: TP.utils.workoutTypes.getIdByName("Strength") });
+            var strength2 = new TP.Model({ totalTime: 4, totalTimePlanned: 8, tssActual: 400, tssPlanned: 800, workoutTypeValueId: TP.utils.workoutTypes.getIdByName("Strength") });
+            var rowing1 = new TP.Model({ totalTime: 1, totalTimePlanned: 2, tssActual: 100, tssPlanned: 200, workoutTypeValueId: TP.utils.workoutTypes.getIdByName("Rowing") });
+            var rowing2 = new TP.Model({ totalTime: 2, totalTimePlanned: 4, tssActual: 200, tssPlanned: 400, workoutTypeValueId: TP.utils.workoutTypes.getIdByName("Rowing") });
 
             view.onBeforeRender();
 
