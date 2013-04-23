@@ -11,118 +11,118 @@
         convertToModelUnits: convertToModelUnits,
         convertToViewUnits: convertToViewUnits,
         
-        getDistance: function (value, options)
+        formatDistance: function (value, options)
         {
             return convertToViewUnits(value, "distance");
         },
 
-        setDistance: function (value, options)
+        parseDistance: function (value, options)
         {
             return convertToModelUnits(parseFloat(value), "distance");
         },
 
-        getTime: function (value, options)
+        formatTime: function (value, options)
         {
             return datetimeUtils.format.decimalHoursAsTime(value, true, "");
         },
 
-        setTime: function(value, options)
+        parseTime: function(value, options)
         {
-            return datetimeUtilsconvert.timeToDecimalHours(value);
+            return datetimeUtils.convert.timeToDecimalHours(value);
         },
 
-        getTimeOfDay: function(value, options)
+        formatTimeOfDay: function(value, options)
         {
             var timeOfDay = moment(value);
             return timeOfDay.format("hh:mm:ss A");
         },
 
-        getPace: function(value, options)
+        formatPace: function(value, options)
         {
             return convertToViewUnits(value, "pace");
         },
 
-        setPace: function (value, options)
+        parsePace: function (value, options)
         {
             return convertToModelUnits(value, "pace");
         },
 
-        getSpeed: function(value, options)
+        formatSpeed: function(value, options)
         {
             return convertToViewUnits(value, "speed");
         },
 
-        setSpeed: function (value, options)
+        parseSpeed: function (value, options)
         {
             return convertToModelUnits(parseFloat(value), "speed");
         },
 
-        getElevation: function (value, options)
+        formatElevation: function (value, options)
         {
             return convertToViewUnits(value, "elevation");
         },
 
-        setElevation: function (value, options)
+        parseElevation: function (value, options)
         {
             return convertToModelUnits(parseInt(value, 10), "elevation");
         },
 
-        getNumber: function (value, options)
+        formatNumber: function (value, options)
         {
             return ((value === null || value === 0) ? "" : +value);
         },
 
-        setInteger: function (value, options)
+        parseInteger: function (value, options)
         {
             return ((value === "" || value === "0") ? null : parseInt(value, 10));
         },
 
-        setFloat: function (value, options)
+        parseFloat: function (value, options)
         {
             return (value === "" ? null : parseFloat(value));
         },
 
-        getTemperature: function (value, options)
+        formatTemperature: function (value, options)
         {
             return convertToViewUnits(value, "temperature");
         },
 
-        setTemperature: function (value, options)
+        parseTemperature: function (value, options)
         {
             return convertToModelUnits(parseInt(value, 10), "temperature");
         },
         
-        getWorkoutType: function(value, options)
+        formatWorkoutType: function(value, options)
         {
             return workoutUtils.types.getNameById(value);
         },
 
-        getIF: function(value, options)
+        formatIF: function(value, options)
         {
             return value ? +(Math.round(value * 100) / 100) : "";
         },
 
-        setIF: function (value, options)
+        parseIF: function (value, options)
         {
             return value ? (Math.round(parseFloat(value) * 100) / 100).toFixed(2) : 0;
         },
         
-        getTSS: function (value, options)
+        formatTSS: function (value, options)
         {
             return value ? (Math.round(value * 10) / 10) : "";
         },
 
-        setTSS: function (value, options)
+        parseTSS: function (value, options)
         {
             return value ? (Math.round(parseFloat(value) * 10) / 10).toFixed(1) : 0;
         },
         
-        getEnergy: function (value, options)
+        formatEnergy: function (value, options)
         {
             return value ? +(Math.round(value)) : "";
         },
 
-        setEnergy: function (value, options)
+        parseEnergy: function (value, options)
         {
             return value ? (Math.round(parseFloat(value))).toFixed(0) : 0;
         },
