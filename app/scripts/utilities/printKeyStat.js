@@ -1,7 +1,7 @@
 define(
 [
     "TP",
-    "utilities/conversion",
+    "utilities/conversion/conversion",
     "utilities/getKeyStatField"
 ],
 function(TP, conversion, getKeyStatField)

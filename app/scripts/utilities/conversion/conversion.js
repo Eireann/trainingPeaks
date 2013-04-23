@@ -1,10 +1,11 @@
 ﻿define(
 [
-    "TP",
     "moment",
+    "utilities/datetime/datetime",
+    "utilities/workout/workout",
     "utilities/conversion/convertToModelUnits",
     "utilities/conversion/convertToViewUnits"
-], function(TP, moment, convertToModelUnits, convertToViewUnits)
+], function(moment, datetimeUtils, workoutUtils, convertToModelUnits, convertToViewUnits)
 {
     return {
         convertToModelUnits: convertToModelUnits,
@@ -22,12 +23,12 @@
 
         getTime: function (value, options)
         {
-            return TP.utils.datetime.format.decimalHoursAsTime(value, true, "");
+            return datetimeUtils.format.decimalHoursAsTime(value, true, "");
         },
 
         setTime: function(value, options)
         {
-            return TP.utils.datetime.convert.timeToDecimalHours(value);
+            return datetimeUtilsconvert.timeToDecimalHours(value);
         },
 
         getTimeOfDay: function(value, options)
@@ -93,7 +94,7 @@
         
         getWorkoutType: function(value, options)
         {
-            return TP.utils.workout.types.getNameById(value);
+            return workoutUtils.types.getNameById(value);
         },
 
         getIF: function(value, options)

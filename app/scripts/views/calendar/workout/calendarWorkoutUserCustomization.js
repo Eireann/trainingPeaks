@@ -3,10 +3,9 @@ define(
     "underscore",
     "TP",
     "utilities/workoutLayoutFormatter",
-    "utilities/getKeyStatField",
-    "utilities/conversion"
+    "utilities/getKeyStatField"
 ],
-function(_, TP, workoutLayoutFormatter, getKeyStatField, conversion)
+function(_, TP, workoutLayoutFormatter, getKeyStatField)
 {
     var calendarWorkoutUserCustomization = {
 
@@ -55,7 +54,7 @@ function(_, TP, workoutLayoutFormatter, getKeyStatField, conversion)
             {
                 if (field.conversion)
                 {
-                    fieldValue = conversion[field.conversion](fieldValue);
+                    fieldValue = TP.utils.conversion[field.conversion](fieldValue);
                 }
                 var units = field.unitHelper ? " " + TP.utils.units.getUnitsLabel(field.unitHelper, null, this) : "";
                 //TODO: create entire list up, then do one insert into main dom

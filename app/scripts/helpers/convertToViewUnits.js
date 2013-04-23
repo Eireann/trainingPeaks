@@ -1,9 +1,9 @@
 define(
 [
     "handlebars",
-    "utilities/conversion"
+    "TP"
 ],
-function(Handlebars, conversion)
+function(Handlebars, TP)
 {
     // wrapping here because handlebars passes extra parameters - like the model context - that confuse the converter
     var convertToViewUnitsHelper = function(value, fieldType, defaultValueIfEmpty, handlebarsContext)
@@ -12,7 +12,7 @@ function(Handlebars, conversion)
         {
             defaultValueIfEmpty = undefined;
         }
-        return conversion.convertToViewUnits(value, fieldType, defaultValueIfEmpty);
+        return TP.utils.conversion.convertToViewUnits(value, fieldType, defaultValueIfEmpty);
     };
 
     Handlebars.registerHelper("convertToViewUnits", convertToViewUnitsHelper);

@@ -1,13 +1,11 @@
 ﻿define(
 [
     "underscore",
-    "TP",
-    "utilities/conversion"
+    "TP"
 ],
 function(
     _,
-    TP,
-    conversion
+    TP
 )
 {
     var summaryViewStickitBindings = {
@@ -430,6 +428,6 @@ function(
 
     };
 
-    _.extend(summaryViewStickitBindings, conversion);
+    _.extend(summaryViewStickitBindings, TP.utils.conversion);
     return summaryViewStickitBindings;
 });

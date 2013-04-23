@@ -1,9 +1,8 @@
 requirejs(
 [
-    "TP",
-    "utilities/conversion"
+    "TP"
 ],
-function(TP, conversion)
+function(TP)
 {
     describe("units related utilities, english units", function()
     {
@@ -129,41 +128,41 @@ function(TP, conversion)
         {
             it("should throw an exception when trying to convert for an unknown value type", function()
             {
-                expect(function() { conversion.convertToViewUnits(1234, "unknownType"); }).toThrow();
+                expect(function() { TP.utils.conversion.convertToViewUnits(1234, "unknownType"); }).toThrow();
             });
 
             it("should convert a distance in meters to miles and cut off after 2 decimal places", function()
             {
-                expect(conversion.convertToViewUnits(0, "distance")).toBe("");
-                expect(conversion.convertToViewUnits(1609, "distance")).toBe("1.00");
-                expect(conversion.convertToViewUnits(3218, "distance")).toBe("2.00");
-                expect(conversion.convertToViewUnits(1234567890, "distance")).toBe(767125);
-                expect(conversion.convertToViewUnits("notANumber", "distance")).toBe("");
-                expect(conversion.convertToViewUnits(-1609, "distance")).toBe("-1.00");
+                expect(TP.utils.conversion.convertToViewUnits(0, "distance")).toBe("");
+                expect(TP.utils.conversion.convertToViewUnits(1609, "distance")).toBe("1.00");
+                expect(TP.utils.conversion.convertToViewUnits(3218, "distance")).toBe("2.00");
+                expect(TP.utils.conversion.convertToViewUnits(1234567890, "distance")).toBe(767125);
+                expect(TP.utils.conversion.convertToViewUnits("notANumber", "distance")).toBe("");
+                expect(TP.utils.conversion.convertToViewUnits(-1609, "distance")).toBe("-1.00");
             });
 
             it("should convert an elevation in meters to ft and cut off after 2 decimal places", function()
             {
-                expect(conversion.convertToViewUnits(0, "elevation")).toBe("");
-                expect(conversion.convertToViewUnits(1000, "elevation")).toBe("3281");
-                expect(conversion.convertToViewUnits(1000000, "elevation")).toBe("3280840");
-                expect(conversion.convertToViewUnits(-1000, "elevation")).toBe("-3281");
+                expect(TP.utils.conversion.convertToViewUnits(0, "elevation")).toBe("");
+                expect(TP.utils.conversion.convertToViewUnits(1000, "elevation")).toBe("3281");
+                expect(TP.utils.conversion.convertToViewUnits(1000000, "elevation")).toBe("3280840");
+                expect(TP.utils.conversion.convertToViewUnits(-1000, "elevation")).toBe("-3281");
             });
 
             it("should convert a pace value in meters per second to min/mile, properly formated", function()
             {
-                expect(conversion.convertToViewUnits(1, "pace")).toBe("26:49");
-                expect(conversion.convertToViewUnits(3, "pace")).toBe("08:56");
-                expect(conversion.convertToViewUnits("notAnumber", "pace")).toBe("");
-                expect(conversion.convertToViewUnits(0.005, "pace")).toBe("99:99");
-                expect(conversion.convertToViewUnits(-1, "pace")).toBe("99:99");
+                expect(TP.utils.conversion.convertToViewUnits(1, "pace")).toBe("26:49");
+                expect(TP.utils.conversion.convertToViewUnits(3, "pace")).toBe("08:56");
+                expect(TP.utils.conversion.convertToViewUnits("notAnumber", "pace")).toBe("");
+                expect(TP.utils.conversion.convertToViewUnits(0.005, "pace")).toBe("99:99");
+                expect(TP.utils.conversion.convertToViewUnits(-1, "pace")).toBe("99:99");
             });
 
 
             it("should return empty string for non numeric values", function()
             {
-                expect(conversion.convertToViewUnits("", "distance")).toBe("");
-                expect(conversion.convertToViewUnits("some string", "distance")).toBe("");
+                expect(TP.utils.conversion.convertToViewUnits("", "distance")).toBe("");
+                expect(TP.utils.conversion.convertToViewUnits("some string", "distance")).toBe("");
             });
         });
         
@@ -172,40 +171,40 @@ function(TP, conversion)
 
             it("should throw an exception when trying to convert for an unknown value type", function ()
             {
-                expect(function () { conversion.convertToModelUnits(1234, "unknownType"); }).toThrow();
+                expect(function () { TP.utils.conversion.convertToModelUnits(1234, "unknownType"); }).toThrow();
             });
 
             it("should convert a distance in miles to meters", function ()
             {
-                expect(conversion.convertToModelUnits(0, "distance")).toBe(0);
-                expect(conversion.convertToModelUnits(1, "distance")).toBeCloseTo(1609, 0);
-                expect(conversion.convertToModelUnits(2, "distance")).toBeCloseTo(3218.689, 4);
-                expect(conversion.convertToModelUnits(767124.68, "distance")).toBeCloseTo(1234567883, 0);
-                expect(conversion.convertToModelUnits(-1, "distance")).toBeCloseTo(-1609, 0);
+                expect(TP.utils.conversion.convertToModelUnits(0, "distance")).toBe(0);
+                expect(TP.utils.conversion.convertToModelUnits(1, "distance")).toBeCloseTo(1609, 0);
+                expect(TP.utils.conversion.convertToModelUnits(2, "distance")).toBeCloseTo(3218.689, 4);
+                expect(TP.utils.conversion.convertToModelUnits(767124.68, "distance")).toBeCloseTo(1234567883, 0);
+                expect(TP.utils.conversion.convertToModelUnits(-1, "distance")).toBeCloseTo(-1609, 0);
             });
             
             it("should convert an elevation in ft to meters", function ()
             {
-                expect(conversion.convertToModelUnits(0, "elevation")).toBe(0);
-                expect(conversion.convertToModelUnits(3281, "elevation")).toBeCloseTo(1000, 0);
-                expect(conversion.convertToModelUnits(3280840, "elevation")).toBeCloseTo(1000000, 0);
-                expect(conversion.convertToModelUnits(-3281, "elevation")).toBeCloseTo(-1000, 0);
+                expect(TP.utils.conversion.convertToModelUnits(0, "elevation")).toBe(0);
+                expect(TP.utils.conversion.convertToModelUnits(3281, "elevation")).toBeCloseTo(1000, 0);
+                expect(TP.utils.conversion.convertToModelUnits(3280840, "elevation")).toBeCloseTo(1000000, 0);
+                expect(TP.utils.conversion.convertToModelUnits(-3281, "elevation")).toBeCloseTo(-1000, 0);
             });
 
             it("should convert a pace value in min/mile to meters per second", function ()
             {
-                expect(conversion.convertToModelUnits("26:49", "pace")).toBeCloseTo(1);
-                expect(conversion.convertToModelUnits("08:56", "pace")).toBeCloseTo(3, 0);
-                expect(conversion.convertToModelUnits("99:99", "pace")).toBeCloseTo(0.266, 3);
+                expect(TP.utils.conversion.convertToModelUnits("26:49", "pace")).toBeCloseTo(1);
+                expect(TP.utils.conversion.convertToModelUnits("08:56", "pace")).toBeCloseTo(3, 0);
+                expect(TP.utils.conversion.convertToModelUnits("99:99", "pace")).toBeCloseTo(0.266, 3);
             });
 
             it("should return null for non numeric values and empty strings", function()
             {
-                expect(conversion.convertToModelUnits("", "elevation")).toBe(null);
-                expect(conversion.convertToModelUnits("", "temperature")).toBe(null);
-                expect(conversion.convertToModelUnits("", "pace")).toBe(null);
-                expect(conversion.convertToModelUnits("", "distance")).toBe(null);
-                expect(conversion.convertToModelUnits("some string", "distance")).toBe(null);
+                expect(TP.utils.conversion.convertToModelUnits("", "elevation")).toBe(null);
+                expect(TP.utils.conversion.convertToModelUnits("", "temperature")).toBe(null);
+                expect(TP.utils.conversion.convertToModelUnits("", "pace")).toBe(null);
+                expect(TP.utils.conversion.convertToModelUnits("", "distance")).toBe(null);
+                expect(TP.utils.conversion.convertToModelUnits("some string", "distance")).toBe(null);
             });
 
             

@@ -2,16 +2,19 @@
 [
     "utilities/datetime/datetime",
     "utilities/units/units",
-    "utilities/workout/workout"
+    "utilities/workout/workout",
+    "utilities/conversion/conversion"
 ], function(
     datetime,
     units,
-    workout
+    workout,
+    conversion
     )
 {
     return {
         datetime: datetime,
         units: units,
-        workout: workout
+        workout: workout,
+        conversion: conversion
     };
 });

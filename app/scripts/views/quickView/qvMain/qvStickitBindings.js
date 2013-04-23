@@ -1,11 +1,9 @@
 ﻿define(
 [
-    "TP",
-    "utilities/conversion"
+    "TP"
 ],
 function(
-    TP,
-    conversion
+    TP
 )
 {
     var workoutQuickViewStickitBindings =
@@ -93,7 +91,7 @@ function(
 
         getDistance: function(value, options)
         {
-            return conversion.convertToViewUnits(value, "distance", 0);
+            return TP.utils.conversion.convertToViewUnits(value, "distance", 0);
         },
 
         getDayName: function(value, options)
