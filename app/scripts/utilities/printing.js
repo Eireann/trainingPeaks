@@ -2,15 +2,13 @@
 [
     "utilities/printKeyStat",
     "utilities/printKeyStatUnits",
-    "utilities/printUnitLabel",
     "utilities/printUnitsValue"
 
-], function (printKeyStat, printKeyStatUnits, printUnitLabel, printUnitsValue)
+], function (printKeyStat, printKeyStatUnits, printUnitsValue)
 {
     return {
         printKeyStat: printKeyStat,
         printKeyStatUnits: printKeyStatUnits,
-        printUnitLabel: printUnitLabel,
         printUnitsValue: printUnitsValue
     };
 });

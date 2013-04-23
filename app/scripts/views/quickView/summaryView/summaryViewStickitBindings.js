@@ -2,13 +2,11 @@
 [
     "underscore",
     "TP",
-    "utilities/printUnitLabel",
     "utilities/conversion"
 ],
 function(
     _,
     TP,
-    printUnitLabel,
     conversion
 )
 {

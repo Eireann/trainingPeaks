@@ -1,9 +1,9 @@
 requirejs(
 [
-    "utilities/printUnitLabel",
+    "TP",
     "utilities/conversion"
 ],
-function(printUnitLabel, conversion)
+function(TP, conversion)
 {
     describe("units related utilities, english units", function()
     {
@@ -27,101 +27,101 @@ function(printUnitLabel, conversion)
 
         });
         
-        describe("printUnitLabel template helper", function()
+        describe("TP.utils.units.getUnitsLabel template helper", function()
         {
             it("should print the unit label for distance", function()
             {
-                expect(printUnitLabel("distance")).toBe("mi");
+                expect(TP.utils.units.getUnitsLabel("distance")).toBe("mi");
             });
 
             it("should print the unit label for normalized pace", function()
             {
-                expect(printUnitLabel("normalizedPace")).toBe("min/mile");
+                expect(TP.utils.units.getUnitsLabel("normalizedPace")).toBe("min/mile");
             });
 
             it("should print the unit label for averagePace", function()
             {
-                expect(printUnitLabel("averagePace")).toBe("min/mile");
+                expect(TP.utils.units.getUnitsLabel("averagePace")).toBe("min/mile");
             });
 
             it("should print the unit label for average speed", function()
             {
-                expect(printUnitLabel("averageSpeed")).toBe("mph");
+                expect(TP.utils.units.getUnitsLabel("averageSpeed")).toBe("mph");
             });
 
             it("should print the unit label for calories", function()
             {
-                expect(printUnitLabel("calories")).toBe("kcal");
+                expect(TP.utils.units.getUnitsLabel("calories")).toBe("kcal");
             });
 
             it("should print the unit label for elevation gain", function()
             {
-                expect(printUnitLabel("elevationGain")).toBe("ft");
+                expect(TP.utils.units.getUnitsLabel("elevationGain")).toBe("ft");
             });
 
             it("should print the unit label for elevationloss", function()
             {
-                expect(printUnitLabel("elevationLoss")).toBe("ft");
+                expect(TP.utils.units.getUnitsLabel("elevationLoss")).toBe("ft");
             });
 
             it("should print the unit label for tss", function()
             {
-                expect(printUnitLabel("tss")).toBe("TSS");
+                expect(TP.utils.units.getUnitsLabel("tss")).toBe("TSS");
             });
 
             it("should print the unit label for intensity factory", function()
             {
-                expect(printUnitLabel("if")).toBe("IF");
+                expect(TP.utils.units.getUnitsLabel("if")).toBe("IF");
             });
 
             it("should print the unit label for energy", function()
             {
-                expect(printUnitLabel("energy")).toBe("kJ");
+                expect(TP.utils.units.getUnitsLabel("energy")).toBe("kJ");
             });
 
             it("should print the unit label for temperature", function()
             {
-                expect(printUnitLabel("temperature")).toBe("F");
+                expect(TP.utils.units.getUnitsLabel("temperature")).toBe("F");
             });
 
             it("should print the unit label for heart rate", function()
             {
-                expect(printUnitLabel("heartrate")).toBe("bpm");
+                expect(TP.utils.units.getUnitsLabel("heartrate")).toBe("bpm");
             });
 
             it("should print the unit label for pace", function()
             {
-                expect(printUnitLabel("pace")).toBe("min/mile");
+                expect(TP.utils.units.getUnitsLabel("pace")).toBe("min/mile");
             });
 
             it("should print the unit label for speed", function()
             {
-                expect(printUnitLabel("speed")).toBe("mph");
+                expect(TP.utils.units.getUnitsLabel("speed")).toBe("mph");
             });
 
             it("should print the unit label for cadence", function()
             {
-                expect(printUnitLabel("cadence")).toBe("rpm");
+                expect(TP.utils.units.getUnitsLabel("cadence")).toBe("rpm");
             });
 
             it("should print the unit label for torque", function()
             {
-                expect(printUnitLabel("torque")).toBe("ft/lbs");
+                expect(TP.utils.units.getUnitsLabel("torque")).toBe("ft/lbs");
             });
 
             it("shouuld print the unit label for elevation", function()
             {
-                expect(printUnitLabel("elevation")).toBe("ft");
+                expect(TP.utils.units.getUnitsLabel("elevation")).toBe("ft");
             });
 
             it("should print the unit label for power", function()
             {
-                expect(printUnitLabel("power")).toBe("W");
+                expect(TP.utils.units.getUnitsLabel("power")).toBe("W");
             });
 
             it("should throw an exception if an uknown value type is requested", function()
             {
-                expect(function() { printUnitLabel("unknown"); }).toThrow();
+                expect(function() { TP.utils.units.getUnitsLabel("unknown"); }).toThrow();
             });
         });
         

@@ -1,9 +1,9 @@
 define(
 [
-    "utilities/determineCompletedWorkout",
-    "utilities/printUnitLabel"
+    "TP",
+    "utilities/determineCompletedWorkout"
 ],
-function (determineCompletedWorkout, printUnitLabel)
+function (TP, determineCompletedWorkout)
 {
 
     function printKeyStatUnits(workout)
@@ -18,7 +18,7 @@ function (determineCompletedWorkout, printUnitLabel)
         {
             if (workout.distance)
             {
-                units = printUnitLabel("distance");
+                units = TP.utils.units.getUnitsLabel("distance");
             }
             else if (workout.totalTime)
             {
@@ -33,7 +33,7 @@ function (determineCompletedWorkout, printUnitLabel)
         {
             if (workout.distancePlanned)
             {
-                units = printUnitLabel("distance");
+                units = TP.utils.units.getUnitsLabel("distance");
             }
             else if(workout.totalTimePlanned)
             {

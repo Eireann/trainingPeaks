@@ -21,7 +21,7 @@
                 </div>
 
                 <div class="workoutStatsColumn workoutStatsUnitLabel">
-                    <label>{{printUnitLabel "distance" }}</label>
+                    <label>{{getUnitsLabel "distance" }}</label>
                 </div>
             </div>   
 
@@ -57,7 +57,7 @@
                 </div>
 
                 <div class="workoutStatsColumn workoutStatsUnitLabel">
-                    <label>{{printUnitLabel "normalizedPace"}}</label>
+                    <label>{{getUnitsLabel "normalizedPace"}}</label>
                 </div>
             </div>   
             
@@ -75,7 +75,7 @@
                 </div>
 
                 <div class="workoutStatsColumn workoutStatsUnitLabel">
-                    <label>{{printUnitLabel "averagePace"}}</label>
+                    <label>{{getUnitsLabel "averagePace"}}</label>
                 </div>
             </div>  
             
@@ -93,7 +93,7 @@
                 </div>
 
                 <div class="workoutStatsColumn workoutStatsUnitLabel">
-                    <label>{{printUnitLabel "averageSpeed"}}</label>
+                    <label>{{getUnitsLabel "averageSpeed"}}</label>
                 </div>
             </div>  
             
@@ -111,7 +111,7 @@
                 </div>
 
                 <div class="workoutStatsColumn workoutStatsUnitLabel">
-                    <label>{{printUnitLabel "calories"}}</label>
+                    <label>{{getUnitsLabel "calories"}}</label>
                 </div>
             </div>  
             
@@ -129,7 +129,7 @@
                 </div>
 
                 <div class="workoutStatsColumn workoutStatsUnitLabel">
-                    <label>{{printUnitLabel "elevationGain"}}</label>
+                    <label>{{getUnitsLabel "elevationGain"}}</label>
                 </div>
             </div>  
             
@@ -147,7 +147,7 @@
                 </div>
 
                 <div class="workoutStatsColumn workoutStatsUnitLabel">
-                    <label>{{printUnitLabel "elevationLoss"}}</label>
+                    <label>{{getUnitsLabel "elevationLoss"}}</label>
                 </div>
             </div>  
             
@@ -165,7 +165,7 @@
                 </div>
 
                 <div class="workoutStatsColumn workoutStatsUnitLabel">
-                    <label>{{printUnitLabel "tss"}}</label>
+                    <label>{{getUnitsLabel "tss"}}</label>
                 </div>
             </div>  
             <div class="workoutStatsRow hide normalizedPowerStatsRow">
@@ -179,7 +179,7 @@
 		            <input type="text" id="normalizedPowerCompleted"/>
 	            </div>
 	            <div class="workoutStatsColumn workoutStatsUnitLabel">
-		            <label>{{printUnitLabel "power"}}</label>
+		            <label>{{getUnitsLabel "power"}}</label>
 	            </div>
             </div>
             <div class="workoutStatsRow hide IFStatsRow">
@@ -196,7 +196,7 @@
                 </div>
 
                 <div class="workoutStatsColumn workoutStatsUnitLabel">
-                    <label>{{printUnitLabel "if"}}</label>
+                    <label>{{getUnitsLabel "if"}}</label>
                 </div>
             </div>  
             
@@ -214,7 +214,7 @@
                 </div>
 
                 <div class="workoutStatsColumn workoutStatsUnitLabel">
-                    <label>{{printUnitLabel "energy"}}</label>
+                    <label>{{getUnitsLabel "energy"}}</label>
                 </div>
             </div>  
         </div>
@@ -240,7 +240,7 @@
                     <input type="text" id="powerMaxField"/>
                 </div>
                 <div class="workoutStatsColumn workoutStatsUnitLabel">
-                    <label>{{printUnitLabel "power"}}</label>
+                    <label>{{getUnitsLabel "power"}}</label>
                 </div>
             </div>
             <div class="workoutStatsRow hide torqueSummaryRow">
@@ -257,7 +257,7 @@
                     <input type="text" id="torqueMaxField"/>
                 </div>
                 <div class="workoutStatsColumn workoutStatsUnitLabel">
-                    <label>{{printUnitLabel "torque"}}</label>
+                    <label>{{getUnitsLabel "torque"}}</label>
                 </div>
             </div>
             <div class="workoutStatsRow hide elevationSummaryRow">
@@ -274,7 +274,7 @@
                     <input type="text" id="elevationMaxField"/>
                 </div>
                 <div class="workoutStatsColumn workoutStatsUnitLabel">
-                    <label>{{printUnitLabel "elevation"}}</label>
+                    <label>{{getUnitsLabel "elevation"}}</label>
                 </div>
             </div>
             <div class="workoutStatsRow hide cadenceSummaryRow">
@@ -291,7 +291,7 @@
                     <input type="text" id="cadenceMaxField"/>
                 </div>
                 <div class="workoutStatsColumn workoutStatsUnitLabel">
-                    <label>{{printUnitLabel "cadence"}}</label>
+                    <label>{{getUnitsLabel "cadence"}}</label>
                 </div>
             </div>
             <div class="workoutStatsRow hide speedSummaryRow">
@@ -308,7 +308,7 @@
                     <input type="text" id="speedMaxField"/>
                 </div>
                 <div class="workoutStatsColumn workoutStatsUnitLabel">
-                    <label>{{printUnitLabel "speed"}}</label>
+                    <label>{{getUnitsLabel "speed"}}</label>
                 </div>
             </div>
             <div class="workoutStatsRow hide paceSummaryRow">
@@ -325,7 +325,7 @@
                     <input type="text" id="paceMaxField"/>
                 </div>
                 <div class="workoutStatsColumn workoutStatsUnitLabel">
-                    <label>{{printUnitLabel "pace"}}</label>
+                    <label>{{getUnitsLabel "pace"}}</label>
                 </div>
             </div>
             <div class="workoutStatsRow hide heartRateSummaryRow">
@@ -342,7 +342,7 @@
                     <input type="text" id="hrMaxField"/>
                 </div>
                 <div class="workoutStatsColumn workoutStatsUnitLabel">
-                    <label>{{printUnitLabel "heartrate"}}</label>
+                    <label>{{getUnitsLabel "heartrate"}}</label>
                 </div>
             </div>
             <div class="workoutStatsRow hide temperatureSummaryRow">
@@ -359,7 +359,7 @@
                     <input type="text" id="tempMaxField"/>
                 </div>
                 <div class="workoutStatsColumn workoutStatsUnitLabel">
-                    <label>{{printUnitLabel "temperature"}}</label>
+                    <label>{{getUnitsLabel "temperature"}}</label>
                 </div>
             </div>
         </div>

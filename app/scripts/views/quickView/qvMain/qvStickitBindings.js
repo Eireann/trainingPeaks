@@ -1,12 +1,10 @@
 ﻿define(
 [
     "TP",
-    "utilities/printUnitLabel",
     "utilities/conversion"
 ],
 function(
     TP,
-    printUnitLabel,
     conversion
 )
 {

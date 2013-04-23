@@ -104,8 +104,9 @@ function(workoutLayoutFormatter)
             "1": "hms"
         }
     };
-    
-    var printUnitLabel = function(fieldName, sportType, viewContext)
+
+    // TP.utils.units.getUnitsLabel(fieldName, sportType, viewContext)
+    var getUnitsLabel = function(fieldName, sportType, viewContext)
     {
         var currentUnits = theMarsApp.user.get("units");
         if (!unitsHash.hasOwnProperty(fieldName))
@@ -125,5 +126,5 @@ function(workoutLayoutFormatter)
         return unitsHash[fieldName][currentUnits];
     };
 
-    return printUnitLabel;
+    return getUnitsLabel;
 });

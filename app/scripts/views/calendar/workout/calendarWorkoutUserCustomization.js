@@ -1,12 +1,12 @@
 define(
 [
     "underscore",
+    "TP",
     "utilities/workoutLayoutFormatter",
     "utilities/getKeyStatField",
-    "utilities/conversion",
-    "utilities/printing"
+    "utilities/conversion"
 ],
-function(_, workoutLayoutFormatter, getKeyStatField, conversion, printing)
+function(_, TP, workoutLayoutFormatter, getKeyStatField, conversion)
 {
     var calendarWorkoutUserCustomization = {
 
@@ -57,7 +57,7 @@ function(_, workoutLayoutFormatter, getKeyStatField, conversion, printing)
                 {
                     fieldValue = conversion[field.conversion](fieldValue);
                 }
-                var units = field.unitHelper ? " " + printing.printUnitLabel(field.unitHelper, null, this) : "";
+                var units = field.unitHelper ? " " + TP.utils.units.getUnitsLabel(field.unitHelper, null, this) : "";
                 //TODO: create entire list up, then do one insert into main dom
                 var element = $("<p>" + prefix + fieldValue + units + "</p>");
                 element.insertBefore(this.ui.layoutAnchor);
