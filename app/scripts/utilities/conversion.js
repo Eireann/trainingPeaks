@@ -3,9 +3,8 @@
     "TP",
     "moment",
     "utilities/conversion/convertToModelUnits",
-    "utilities/conversion/convertToViewUnits",
-    "utilities/workoutTypeEnum2"
-], function(TP, moment, convertToModelUnits, convertToViewUnits, workoutTypeEnum2)
+    "utilities/conversion/convertToViewUnits"
+], function(TP, moment, convertToModelUnits, convertToViewUnits)
 {
     return {
         convertToModelUnits: convertToModelUnits,
@@ -94,9 +93,7 @@
         
         getWorkoutType: function(value, options)
         {
-            //Yes, I know this sucks
-            //TODO: make this not suck
-            return workoutTypeEnum2[value];
+            return TP.utils.workoutTypes.getNameById(value);
         },
 
         getIF: function(value, options)

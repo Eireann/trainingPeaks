@@ -7,7 +7,7 @@ function(_, TP)
 {
     var CalendarContainerViewScrolling =
     {
-        initializeScrolling: function()
+        initializeScrolling: function ()
         {
             _.bindAll(this, "checkCurrentScrollPosition", "afterScrollToElement");
 
@@ -28,7 +28,7 @@ function(_, TP)
 
             this.checkCurrentScrollPosition();
         },
-        
+
         onScrollStop: function ()
         {
             this.scrolling = false;
@@ -56,14 +56,17 @@ function(_, TP)
             {
                 this.scrollToElement(currentWeek, animationTimeout);
                 this.snappedToWeekHeader = true;
-            } else if (nextWeekOffset > minimumOffset && nextWeekOffset <= threshhold)
+            }
+            else if (nextWeekOffset > minimumOffset && nextWeekOffset <= threshhold)
             {
                 this.scrollToElement(nextWeek, animationTimeout);
                 this.snappedToWeekHeader = true;
-            } else if (nextWeekOffset <= minimumOffset || currentWeekOffset <= minimumOffset)
+            }
+            else if (nextWeekOffset <= minimumOffset || currentWeekOffset <= minimumOffset)
             {
                 this.snappedToWeekHeader = true;
-            } else
+            }
+            else
             {
                 this.snappedToWeekHeader = false;
             }
@@ -87,7 +90,8 @@ function(_, TP)
             {
                 // Within the threshold at the TOP. Add row & request data.
                 this.trigger("prepend");
-            } else if (this.ui.weeksContainer.scrollTop() >= (hidden - scrollDownThresholdInPx))
+            }
+            else if (this.ui.weeksContainer.scrollTop() >= (hidden - scrollDownThresholdInPx))
             {
                 // Within the threshold at the BOTTOM. Add row & request data.
                 this.trigger("append");
@@ -102,9 +106,13 @@ function(_, TP)
         {
             var elements = this.ui.weeksContainer.find(selector);
             if (elements && elements.length)
+            {
                 this.scrollToElement(elements[0], animationTimeout);
+            }
             else
+            {
                 theMarsApp.logger.debug("ScollTo Selector not found: " + selector);
+            }
         },
 
         scrollToElement: function (element, animationTimeout)
@@ -122,10 +130,13 @@ function(_, TP)
             //console.debug("Scrolling to: " + scrollToOffset);
 
             if (typeof animationTimeout === "undefined" && requestedElementOffsetFromContainer < 300)
+            {
                 animationTimeout = 500;
+            }
             else if (typeof animationTimeout === "undefined" && requestedElementOffsetFromContainer > 1500)
+            {
                 animationTimeout = 2000;
-
+            }
             this.ui.weeksContainer.animate(
                 {
                     scrollTop: scrollToOffset
@@ -152,15 +163,17 @@ function(_, TP)
             this.setCurrentDate(targetDate);
             this.snappedToWeekHeader = true;
         },
-        
+
         checkCurrentScrollPosition: function ()
         {
             var scrollDate = this.getCurrentScrollDate();
             if (!scrollDate)
+            {
                 return;
+            }
             this.setCurrentDate(scrollDate);
         },
-        
+
         getCurrentScrollDate: function ()
         {
             if (!document.elementFromPoint)
@@ -172,18 +185,20 @@ function(_, TP)
             var $lastDayOfWeek = $currentWeek.find(".day:last");
 
             if ($currentWeek && $lastDayOfWeek && $lastDayOfWeek.data("date"))
+            {
                 return $lastDayOfWeek.data("date");
-
+            }
             return null;
         },
-        
+
         // if we un-snapped from the week header because of text wrapping on library show/hide,
         // or if we scrolled into a different week, snap back to the correct week
         scrollToLastViewedDate: function (duration)
         {
             if (typeof duration === "undefined")
+            {
                 duration = 100;
-
+            }
             var headerDate = this.getHeaderDate();
             var scrollDate = this.getCurrentScrollDate();
             if (this.snappedToWeekHeader || headerDate !== scrollDate)

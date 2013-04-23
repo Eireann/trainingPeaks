@@ -1,9 +1,11 @@
 ﻿define(
 [
-    "utilities/datetime/datetime"
-], function(datetime)
+    "utilities/datetime/datetime",
+    "utilities/workoutTypes"
+], function(datetime, workoutTypes)
 {
     return {
-        datetime: datetime
+        datetime: datetime,
+        workoutTypes: workoutTypes
     };
 });

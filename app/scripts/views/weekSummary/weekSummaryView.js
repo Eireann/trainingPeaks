@@ -2,11 +2,10 @@ define(
 [
     "TP",
     "utilities/determineCompletedWorkout",
-    "utilities/workoutTypeEnum",
     "views/weekSummary/weekSummarySettings",
     "hbs!templates/views/weekSummary/weekSummary"
 ],
-function(TP, determineCompletedWorkout, workoutTypeEnum, WeekSummarySettings, weekSummaryTemplate)
+function(TP, determineCompletedWorkout, WeekSummarySettings, weekSummaryTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -117,10 +116,10 @@ function(TP, determineCompletedWorkout, workoutTypeEnum, WeekSummarySettings, we
                     // Always aggregate total time independently of workoutType
                     // Only aggregate specifics for Swim, Bike, Run, Strength
                     if (!workoutType || 
-                        workoutType !== workoutTypeEnum["Swim"] &&
-                        workoutType !== workoutTypeEnum["Bike"] &&
-                        workoutType !== workoutTypeEnum["Run"] &&
-                        workoutType !== workoutTypeEnum["Strength"])
+                        workoutType !== TP.utils.workoutTypes.getIdByName("Swim") &&
+                        workoutType !== TP.utils.workoutTypes.getIdByName("Bike") &&
+                        workoutType !== TP.utils.workoutTypes.getIdByName("Run") &&
+                        workoutType !== TP.utils.workoutTypes.getIdByName("Strength"))
                         return;
 
                     if (workout.has("distance") && workout.get("distance") !== null)
@@ -146,24 +145,24 @@ function(TP, determineCompletedWorkout, workoutTypeEnum, WeekSummarySettings, we
                 totalDistanceCompleted: completedValues.totalDistance,
                 totalEnergyPlanned: plannedValues.totalEnergy.toFixed(0),
                 totalEnergyCompleted: completedValues.totalEnergy.toFixed(0),
-                bikeDistancePlanned: plannedValues.distanceByWorkoutType[workoutTypeEnum["Bike"]],
-                bikeDistanceCompleted: completedValues.distanceByWorkoutType[workoutTypeEnum["Bike"]],
-                runDistancePlanned: plannedValues.distanceByWorkoutType[workoutTypeEnum["Run"]],
-                runDistanceCompleted: completedValues.distanceByWorkoutType[workoutTypeEnum["Run"]],
-                swimDistancePlanned: plannedValues.distanceByWorkoutType[workoutTypeEnum["Swim"]],
-                swimDistanceCompleted: completedValues.distanceByWorkoutType[workoutTypeEnum["Swim"]],
-                bikeDurationPlanned: plannedValues.durationByWorkoutType[workoutTypeEnum["Bike"]],
-                bikeDurationCompleted: completedValues.durationByWorkoutType[workoutTypeEnum["Bike"]],
-                bikeDaysCompleted: _.keys(completedValues.completedDaysByWorkoutType[workoutTypeEnum["Bike"]]).length,
-                runDurationPlanned: plannedValues.durationByWorkoutType[workoutTypeEnum["Run"]],
-                runDurationCompleted: completedValues.durationByWorkoutType[workoutTypeEnum["Run"]],
-                runDaysCompleted: _.keys(completedValues.completedDaysByWorkoutType[workoutTypeEnum["Run"]]).length,
-                swimDurationPlanned: plannedValues.durationByWorkoutType[workoutTypeEnum["Swim"]],
-                swimDurationCompleted: completedValues.durationByWorkoutType[workoutTypeEnum["Swim"]],
-                swimDaysCompleted: _.keys(completedValues.completedDaysByWorkoutType[workoutTypeEnum["Swim"]]).length,
-                strengthDurationPlanned: plannedValues.durationByWorkoutType[workoutTypeEnum["Strength"]],
-                strengthDurationCompleted: completedValues.durationByWorkoutType[workoutTypeEnum["Strength"]],
-                strengthDaysCompleted: _.keys(completedValues.completedDaysByWorkoutType[workoutTypeEnum["Strength"]]).length,
+                bikeDistancePlanned: plannedValues.distanceByWorkoutType[TP.utils.workoutTypes.getIdByName("Bike")],
+                bikeDistanceCompleted: completedValues.distanceByWorkoutType[TP.utils.workoutTypes.getIdByName("Bike")],
+                runDistancePlanned: plannedValues.distanceByWorkoutType[TP.utils.workoutTypes.getIdByName("Run")],
+                runDistanceCompleted: completedValues.distanceByWorkoutType[TP.utils.workoutTypes.getIdByName("Run")],
+                swimDistancePlanned: plannedValues.distanceByWorkoutType[TP.utils.workoutTypes.getIdByName("Swim")],
+                swimDistanceCompleted: completedValues.distanceByWorkoutType[TP.utils.workoutTypes.getIdByName("Swim")],
+                bikeDurationPlanned: plannedValues.durationByWorkoutType[TP.utils.workoutTypes.getIdByName("Bike")],
+                bikeDurationCompleted: completedValues.durationByWorkoutType[TP.utils.workoutTypes.getIdByName("Bike")],
+                bikeDaysCompleted: _.keys(completedValues.completedDaysByWorkoutType[TP.utils.workoutTypes.getIdByName("Bike")]).length,
+                runDurationPlanned: plannedValues.durationByWorkoutType[TP.utils.workoutTypes.getIdByName("Run")],
+                runDurationCompleted: completedValues.durationByWorkoutType[TP.utils.workoutTypes.getIdByName("Run")],
+                runDaysCompleted: _.keys(completedValues.completedDaysByWorkoutType[TP.utils.workoutTypes.getIdByName("Run")]).length,
+                swimDurationPlanned: plannedValues.durationByWorkoutType[TP.utils.workoutTypes.getIdByName("Swim")],
+                swimDurationCompleted: completedValues.durationByWorkoutType[TP.utils.workoutTypes.getIdByName("Swim")],
+                swimDaysCompleted: _.keys(completedValues.completedDaysByWorkoutType[TP.utils.workoutTypes.getIdByName("Swim")]).length,
+                strengthDurationPlanned: plannedValues.durationByWorkoutType[TP.utils.workoutTypes.getIdByName("Strength")],
+                strengthDurationCompleted: completedValues.durationByWorkoutType[TP.utils.workoutTypes.getIdByName("Strength")],
+                strengthDaysCompleted: _.keys(completedValues.completedDaysByWorkoutType[TP.utils.workoutTypes.getIdByName("Strength")]).length,
                 tssPlanned: plannedValues.cumulativeTss.toFixed(0),
                 tssCompleted: completedValues.cumulativeTss.toFixed(0)
             },

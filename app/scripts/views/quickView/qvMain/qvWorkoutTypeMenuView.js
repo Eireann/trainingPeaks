@@ -2,10 +2,9 @@ define(
 [
     "underscore",
     "TP",
-    "utilities/workoutTypeEnum",
     "hbs!templates/views/quickView/workoutTypeMenu"
 ],
-function(underscore, TP, workoutTypeEnum, workoutTypeMenuTemplate)
+function(underscore, TP, workoutTypeMenuTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -31,11 +30,10 @@ function(underscore, TP, workoutTypeEnum, workoutTypeMenuTemplate)
         initialize: function(options)
         {
             this.model = new TP.Model();
-
             var types = [];
-            _.each(_.keys(workoutTypeEnum), function(typeName)
+            var typesById = TP.utils.workoutTypes.typesById;
+            _.each(_.keys(typesById), function (typeId)
             {
-                var typeId = workoutTypeEnum[typeName];
                 var selected = typeId === options.workoutTypeId ? true : false;
                 types.push({ typeName: typeName, typeId: typeId, selected: selected});
             });
