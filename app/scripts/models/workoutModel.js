@@ -148,7 +148,7 @@ function (_, moment, TP, WorkoutDetailsModel)
         copyToClipboard: function()
         {
             var attributesToCopy = [
-                "personId",
+                "athleteId",
                 "title",
                 "workoutTypeValueId",
                 "workoutDay",
