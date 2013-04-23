@@ -1,8 +1,8 @@
 ﻿define(
 [
-    "TP"
+    "utilities/workout/determineCompletedWorkout"
 ],
-function (TP)
+function (determineCompletedWorkout)
 {
     function getKeyStatField(workout)
     {
@@ -12,7 +12,7 @@ function (TP)
 
         var keyStat = "";
 
-        if (TP.utils.workout.determineCompletedWorkout(workout))
+        if (determineCompletedWorkout(workout))
         {
             if (workout.distance)
             {

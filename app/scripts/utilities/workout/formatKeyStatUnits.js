@@ -1,11 +1,12 @@
 define(
 [
-    "TP"
+    "utilities/workout/determineCompletedWorkout",
+    "utilities/units/units"
 ],
-function(TP)
+function(determineCompletedWorkout, unitsUtils)
 {
 
-    function printKeyStatUnits(workout)
+    function formatKeyStatUnits(workout)
     {
         // we might have a Backbone workoutModel, or we might have a raw JSON object ...
         if (workout.hasOwnProperty('attributes') && workout.attributes.hasOwnProperty('distance'))
@@ -13,11 +14,11 @@ function(TP)
 
         var units = " ";
 
-        if (TP.utils.workout.determineCompletedWorkout(workout))
+        if (determineCompletedWorkout(workout))
         {
             if (workout.distance)
             {
-                units = TP.utils.units.getUnitsLabel("distance");
+                units = unitsUtils.getUnitsLabel("distance");
             }
             else if (workout.totalTime)
             {
@@ -32,7 +33,7 @@ function(TP)
         {
             if (workout.distancePlanned)
             {
-                units = TP.utils.units.getUnitsLabel("distance");
+                units = unitsUtils.getUnitsLabel("distance");
             }
             else if(workout.totalTimePlanned)
             {
@@ -51,5 +52,5 @@ function(TP)
         return units;
     }
 
-    return printKeyStatUnits;
+    return formatKeyStatUnits;
 });

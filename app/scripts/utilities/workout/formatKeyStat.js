@@ -1,12 +1,12 @@
 define(
 [
-    "TP",
+    "utilities/datetime/datetime",
     "utilities/conversion/conversion",
-    "utilities/getKeyStatField"
+    "utilities/workout/getKeyStatField"
 ],
-function(TP, conversion, getKeyStatField)
+function(datetime, conversion, getKeyStatField)
 {
-    function printKeyStat(workout)
+    function formatKeyStat(workout)
     {
         // we might have a Backbone workoutModel, or we might have a raw JSON object ...
         if (workout.hasOwnProperty('attributes') && workout.attributes.hasOwnProperty('distance'))
@@ -22,7 +22,7 @@ function(TP, conversion, getKeyStatField)
         }
         else if (keyStatField === "totalTime" || keyStatField === "totalTimePlanned")
         {
-            returnValue = TP.utils.datetime.format.decimalHoursAsTime(value, "distance");
+            returnValue = datetime.format.decimalHoursAsTime(value, "distance");
         }
         else if (keyStatField === "tssActual" || keyStatField === "tssPlanned")
         {
@@ -35,5 +35,5 @@ function(TP, conversion, getKeyStatField)
 
         return returnValue;
     }
-    return printKeyStat;
+    return formatKeyStat;
 });
