@@ -50,6 +50,8 @@ function ()
 
     return {
         getIdByName: getIdByName,
-        getNameById: getNameById
+        getNameById: getNameById,
+        typesByName: workoutTypesByName,
+        typesById: workoutTypesById
     };
 });
