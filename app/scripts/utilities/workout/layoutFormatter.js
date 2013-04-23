@@ -44,9 +44,9 @@ function ()
             "26": { name: "description", prefix: "" } ,
             "30": { name: "coachComments", prefix: "P" },
             "31": { name: "workoutComments", prefix: "Post", conversion: "formatWorkoutComments" },
-            "35": { name: "tssActual", prefix: "C", conversion: "formatNumber", unitHelper: "tss" },
+            "35": { name: "tssActual", prefix: "C", conversion: "formatTSS", unitHelper: "tss" },
             "36": { name: "if", prefix: "C", conversion: "formatIF", unitHelper: "if" },
-            "38": { name: "tssPlanned", prefix: "P", conversion: "formatNumber", unitHelper: "tss" },
+            "38": { name: "tssPlanned", prefix: "P", conversion: "formatTSS", unitHelper: "tss" },
             "39": { name: "ifPlanned", prefix: "P", conversion: "formatIF", unitHelper: "if" },
             "40": { name: "caloriesPlanned", prefix: "P", conversion: "formatNumber", unitHelper: "calories" },
             "41": { name: "energyPlanned", prefix: "P", conversion: "formatEnergy", unitHelper: "energy" }
