@@ -2,8 +2,8 @@
     <div class="QVHeader">
         <div class="dateAndTime">
             <span id="date">
-                <span id="dayName">{{printDate workoutDay "dddd"}}</span> 
-                <span id="calendarDate">{{printDate workoutDay "MMMM DD, YYYY"}}</span>
+                <span id="dayName">{{formatDate workoutDay "dddd"}}</span> 
+                <span id="calendarDate">{{formatDate workoutDay "MMMM DD, YYYY"}}</span>
             </span> 
             <input type="text" id="startTimeInput" value="{{ startTime }}" placeholder="Enter Time" />
         </div>

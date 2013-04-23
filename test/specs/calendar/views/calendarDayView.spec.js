@@ -2,13 +2,13 @@
 requirejs(
 [
     "moment",
-    "scripts/helpers/printDate",
+    "TP",
     "models/calendar/calendarDay",
     "models/workoutModel",
     "views/calendar/workout/calendarWorkoutView",
     "views/calendar/day/calendarDayView"
 ],
-function(moment, printDate, CalendarDayModel, WorkoutModel, CalendarWorkoutView, CalendarDayView)
+function(moment, TP, CalendarDayModel, WorkoutModel, CalendarWorkoutView, CalendarDayView)
 {
 
     describe("CalendarDayView ", function()
@@ -55,7 +55,7 @@ function(moment, printDate, CalendarDayModel, WorkoutModel, CalendarWorkoutView,
                 var dayModel = new CalendarDayModel({ date: today });
                 var dayView = new CalendarDayView({ model: dayModel });
                 dayView.render();
-                expect(dayView.$el.html()).toContain(printDate(today));
+                expect(dayView.$el.html()).toContain(TP.utils.datetime.format(today));
             });
 
             describe("Drag and drop", function()

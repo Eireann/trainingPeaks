@@ -1,13 +1,11 @@
 ﻿define(
 [
     "TP",
-    "utilities/printDate",
     "utilities/printUnitLabel",
     "utilities/conversion"
 ],
 function(
     TP,
-    printDate,
     printUnitLabel,
     conversion
 )
@@ -102,12 +100,12 @@ function(
 
         getDayName: function(value, options)
         {
-            return printDate(value, "dddd");
+            return TP.utils.datetime.format(value, "dddd");
         },
 
         getCalendarDate: function(value, options)
         {
-            return printDate(value, "MMM DD, YYYY");
+            return TP.utils.datetime.format(value, "MMM DD, YYYY");
         },
 
         getStartTime: function(value, options)
