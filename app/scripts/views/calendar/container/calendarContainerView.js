@@ -55,14 +55,14 @@ function (_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, 
                 throw "CalendarView needs a Collection!";
 
             this.initializeScrolling();
+            this.on("render", this.setupKeyBindingsOnRender, this);
+            this.on("render", this.addWeeksOnRender, this);
 
-            // theMarsApp.user.on("change", this.setWorkoutColorization, this);
 
             _.bindAll(this, "resizeContainer");
             $(window).on("resize", this.resizeContainer);
 
             this.calendarHeaderModel = options.calendarHeaderModel;
-            this.throttledCheckForPosition = _.throttle(this.checkCurrentScrollPosition, 100);
             this.startOfWeekDayIndex = options.startOfWeekDayIndex ? options.startOfWeekDayIndex : 0;
         },
 
@@ -116,11 +116,8 @@ function (_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, 
 
         onAddWeek: function(model)
         {
-            //theMarsApp.logger.startTimer("CalendarView.onAddWeek", "Before adding a week");
             var weekCollection = model.get("week");
             this.addWeek({ model: model, collection: weekCollection, append: arguments[2].append });
-            //theMarsApp.logger.logTimer("CalendarView.onAddWeek", "Finished adding a week (but before the browser displays it)");
-            //theMarsApp.logger.waitAndLogTimer("CalendarView.onAddWeek", "Browser has now displayed the week");
         },
 
         addWeek: function(options)
@@ -142,15 +139,8 @@ function (_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, 
             this.children.push(weekView);
         },
 
-        onRender: function()
+        setupKeyBindingsOnRender: function()
         {
-            //this.setWorkoutColorization();
-            _.bindAll(this, "onScroll");
-            this.ui.weeksContainer.scroll(this.onScroll);
-
-            _.bindAll(this, "onScrollStop");
-            var debouncedScrollStop = _.debounce(this.onScrollStop, 300);
-            this.ui.weeksContainer.scroll(debouncedScrollStop);
 
             // keydown, because keypress doesn't seem to register with ctrl key, and keyup doesn't register command key in chrome on mac
             _.bindAll(this, "onKeyDown");
@@ -159,9 +149,10 @@ function (_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, 
             // prevent autorepeat keydown
             _.bindAll(this, "onKeyUp");
             $(document).on('keyup', this.onKeyUp);
+        },
 
-            //theMarsApp.logger.startTimer("CalendarView.onRender", "Begin rendering weeks");
-
+        addWeeksOnRender: function()
+        {
             var numWeeks = this.collection.length;
             var i = 0;
 
@@ -171,12 +162,7 @@ function (_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, 
                 this.addWeek({ model: weekModel, collection: weekModel.get("week"), append: true });
             }
 
-            //theMarsApp.logger.logTimer("CalendarView.onRender", "Finished rendering weeks (but before the browser displays them)");
-            //theMarsApp.logger.waitAndLogTimer("CalendarView.onRender", "Browser has now rendered the weeks");
             this.resizeHeight();
-
-            this.checkCurrentScrollPosition();
-
         },
 
         // onShow happens after render finishes and dom has updated ...
@@ -193,17 +179,6 @@ function (_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, 
         onItemMoved: function(item, movedToDate, deferredResult)
         {
             this.trigger("itemMoved", item, movedToDate, deferredResult);
-        },
-
-        setCurrentDate: function(currentDate)
-        {
-            var dateAsMoment = moment(currentDate);
-            var endOfWeek = this.startOfWeekDayIndex === 0 ? 6 : 0;
-            if (dateAsMoment.day() !== endOfWeek)
-                dateAsMoment.day(this.startOfWeekDayIndex + 6);
-
-            if (currentDate)
-                this.calendarHeaderModel.set("date", dateAsMoment.format(TP.utils.datetime.shortDateFormat));
         },
 
         fadeOut: function(duration)
@@ -258,11 +233,6 @@ function (_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, 
         onLibraryAnimateProgress: function()
         {
             this.scrollToLastViewedDate(0);
-        },
-
-        getHeaderDate: function()
-        {
-            return this.calendarHeaderModel.get("date");
         },
 
         onKeyDown: function(e)
