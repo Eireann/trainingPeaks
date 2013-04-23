@@ -93,7 +93,7 @@
         
         getWorkoutType: function(value, options)
         {
-            return TP.utils.workoutTypes.getNameById(value);
+            return TP.utils.workout.types.getNameById(value);
         },
 
         getIF: function(value, options)

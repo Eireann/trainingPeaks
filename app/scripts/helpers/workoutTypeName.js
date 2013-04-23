@@ -5,6 +5,6 @@ define(
 ],
 function(Handlebars, TP)
 {
-    Handlebars.registerHelper("workoutTypeName", TP.utils.workoutTypes.getNameById);
-    return TP.utils.workoutTypes.getNameById;
+    Handlebars.registerHelper("workoutTypeName", TP.utils.workout.types.getNameById);
+    return TP.utils.workout.types.getNameById;
 });

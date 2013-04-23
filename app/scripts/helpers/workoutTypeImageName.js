@@ -8,7 +8,7 @@ function(Handlebars, TP)
 
     function workoutTypeImageName(workoutTypeId)
     {
-        var typeName = TP.utils.workoutTypes.getNameById(workoutTypeId);
+        var typeName = TP.utils.workout.types.getNameById(workoutTypeId);
         // Remove any non alpha characters
         typeName = typeName.replace(/[^a-z]/ig, "");
         return typeName;

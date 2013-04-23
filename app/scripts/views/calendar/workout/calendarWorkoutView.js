@@ -51,7 +51,7 @@ function(
 
         getWorkoutTypeCssClassName: function()
         {
-            return TP.utils.workoutTypes.getNameById(this.model.get("workoutTypeValueId")).replace(/ /g, "");
+            return TP.utils.workout.types.getNameById(this.model.get("workoutTypeValueId")).replace(/ /g, "");
         },
 
         getComplianceCssClassName: function()
