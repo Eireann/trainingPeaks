@@ -144,6 +144,6 @@
         formatDateToCalendarDate: function (value, options)
         {
             return datetimeUtils.format(value, "MMM DD, YYYY");
-        },
+        }
     };
 });
