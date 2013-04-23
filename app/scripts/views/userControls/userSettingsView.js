@@ -1,10 +1,9 @@
 ﻿define(
 [
     "TP",
-    "utilities/printUnitsValue",
     "hbs!templates/views/userControls/userSettings"
 ],
-function(TP, printUnitsValue, userSettingsTemplate)
+function(TP, userSettingsTemplate)
 {
     return TP.ItemView.extend(
     {

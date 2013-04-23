@@ -1,14 +1,11 @@
 ﻿define(
 [
     "utilities/printKeyStat",
-    "utilities/printKeyStatUnits",
-    "utilities/printUnitsValue"
-
-], function (printKeyStat, printKeyStatUnits, printUnitsValue)
+    "utilities/printKeyStatUnits"
+], function(printKeyStat, printKeyStatUnits)
 {
     return {
         printKeyStat: printKeyStat,
-        printKeyStatUnits: printKeyStatUnits,
-        printUnitsValue: printUnitsValue
+        printKeyStatUnits: printKeyStatUnits
     };
 });
