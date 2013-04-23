@@ -18,7 +18,9 @@ function (TP)
             if (!this.has("workoutId"))
                 throw "WorkoutFileAttachment requires a workout id";
 
-            return theMarsApp.apiRoot + "/WebApiServer/Fitness/V1/workouts/" + this.get("workoutId") + "/fileattachment";
+            var athleteId = theMarsApp.user.get("athletes.0.athleteId");
+
+            return theMarsApp.apiRoot + "/WebApiServer/fitness/v1/athletes/" + athleteId + "/workouts/" + this.get("workoutId") + "/fileattachment";
         }
         
     });

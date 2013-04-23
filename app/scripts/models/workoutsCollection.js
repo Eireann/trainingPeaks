@@ -14,7 +14,8 @@ function(moment, TP, WorkoutModel)
 
         urlRoot: function()
         {
-            return theMarsApp.apiRoot + "/WebApiServer/Fitness/V1/workouts";
+            var athleteId = theMarsApp.user.get("athletes.0.athleteId");
+            return theMarsApp.apiRoot + "/WebApiServer/fitness/v1/athletes/" + athleteId + "/workouts";
         },
 
         url: function()

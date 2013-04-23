@@ -12,7 +12,7 @@ function(TP, LibraryExerciseModel)
 
         url: function()
         {
-            var libraryUrl = theMarsApp.apiRoot + "/WebApiServer/ExerciseLibrary/V1/LibraryItems";
+            var libraryUrl = theMarsApp.apiRoot + "/WebApiServer/exerciselibrary/v1/libraryitems";
             if (this.exerciseLibraryId)
             {
                 libraryUrl += "/" + this.exerciseLibraryId;
