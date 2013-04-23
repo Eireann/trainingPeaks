@@ -17,7 +17,7 @@ function(theMarsApp, LibraryExercisesCollection)
 
             var url = LibraryExercisesCollection.prototype.url();
             expect(url).toContain(theMarsApp.apiRoot);
-            expect(url).toContain("/WebApiServer/ExerciseLibrary/V1/LibraryItems");
+            expect(url).toContain("/WebApiServer/exerciselibrary/v1/libraryitems");
 
         });
     });

@@ -345,6 +345,7 @@ function(
             this.bindToDragMoveAndShiftEvents(calendarView);
         }
 
+
     };
 
     // mixins
