@@ -1,20 +1,19 @@
 define(
 [
     "handlebars",
-    "utilities/workoutTypeName"
+    "TP"
 ],
-function(Handlebars, workoutTypeName)
+function(Handlebars, TP)
 {
 
     function workoutTypeImageName(workoutTypeId)
     {
-        var typeName = workoutTypeName(workoutTypeId);
+        var typeName = TP.utils.workoutTypes.getNameById(workoutTypeId);
         // Remove any non alpha characters
         typeName = typeName.replace(/[^a-z]/ig, "");
         return typeName;
     }
 
-
     Handlebars.registerHelper("workoutTypeImageName", workoutTypeImageName);
-    return workoutTypeName;
+    return workoutTypeImageName;
 });
