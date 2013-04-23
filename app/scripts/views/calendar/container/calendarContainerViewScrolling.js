@@ -1,14 +1,32 @@
 ﻿define(
 [
+    "underscore",
     "TP"
 ],
-function (TP)
+function(_, TP)
 {
     var CalendarContainerViewScrolling =
     {
         initializeScrolling: function ()
         {
             _.bindAll(this, "checkCurrentScrollPosition", "afterScrollToElement");
+
+            this.throttledCheckForPosition = _.throttle(this.checkCurrentScrollPosition, 100);
+
+            this.on("render", this.setupScrollingOnRender, this);
+        },
+
+        setupScrollingOnRender: function()
+        {
+            _.bindAll(this, "onScroll");
+            this.ui.weeksContainer.scroll(this.onScroll);
+
+            _.bindAll(this, "onScrollStop");
+            var debouncedScrollStop = _.debounce(this.onScrollStop, 300);
+            this.ui.weeksContainer.scroll(debouncedScrollStop);
+
+
+            this.checkCurrentScrollPosition();
         },
 
         onScrollStop: function ()
@@ -187,7 +205,25 @@ function (TP)
             {
                 this.scrollToDate(moment(headerDate), duration);
             }
+        },
+
+        getHeaderDate: function()
+        {
+            return this.calendarHeaderModel.get("date");
+        },
+
+        setCurrentDate: function(currentDate)
+        {
+            var dateAsMoment = moment(currentDate);
+            var endOfWeek = this.startOfWeekDayIndex === 0 ? 6 : 0;
+            if (dateAsMoment.day() !== endOfWeek)
+                dateAsMoment.day(this.startOfWeekDayIndex + 6);
+
+            if (currentDate)
+                this.calendarHeaderModel.set("date", dateAsMoment.format(TP.utils.datetime.shortDateFormat));
         }
+
+
     };
 
     return CalendarContainerViewScrolling;
