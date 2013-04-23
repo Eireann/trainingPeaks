@@ -1,14 +1,17 @@
 ﻿define(
 [
     "utilities/workout/workoutTypes",
-    "utilities/workout/determineCompletedWorkout"
+    "utilities/workout/determineCompletedWorkout",
+    "utilities/workout/fileReader"
 ], function(
     workoutTypes,
-    determineCompletedWorkout
+    determineCompletedWorkout,
+    workoutFileReader
     )
 {
     return {
         types: workoutTypes,
-        determineCompletedWorkout: determineCompletedWorkout
+        determineCompletedWorkout: determineCompletedWorkout,
+        FileReader: workoutFileReader
     };
 });

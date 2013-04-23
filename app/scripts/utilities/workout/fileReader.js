@@ -1,9 +1,9 @@
 ﻿define(
 [ 
-    "TP", 
-    "underscore"
+    "underscore",
+    "backbone"
 ],
-function (TP, _)
+function(_, Backbone)
 {
     function WorkoutFileReader(file)
     {
@@ -38,7 +38,8 @@ function (TP, _)
         return readFileDeferred;
     };
 
-    _.extend(WorkoutFileReader, TP.Events);
+    // using Backbone instead of TP here or else we get circular import ...
+    _.extend(WorkoutFileReader, Backbone.Events);
 
     return WorkoutFileReader;
 });

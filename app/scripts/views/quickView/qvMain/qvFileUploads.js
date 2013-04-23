@@ -3,15 +3,13 @@
     "underscore",
     "TP",
     "models/workoutFileData",
-    "models/workoutFileAttachment",
-    "utilities/workoutFileReader"
+    "models/workoutFileAttachment"
 ],
 function (
     _,
     TP,
     WorkoutFileData,
-    WorkoutFileAttachment,
-    WorkoutFileReader
+    WorkoutFileAttachment
 )
 {
     var workoutQuickViewFileUploads = {
@@ -53,7 +51,7 @@ function (
 
             var fileList = this.ui.fileinput[0].files;
 
-            var workoutReader = new WorkoutFileReader(fileList[0]);
+            var workoutReader = new TP.utils.workout.FileReader(fileList[0]);
             var readDeferral = workoutReader.readFile();
             $.when(saveDeferral, readDeferral).done(function(saveArgs, readArgs)
             {
@@ -88,7 +86,7 @@ function (
             _.bindAll(this, "uploadAttachment");
             this.waitingOn();
             var file = this.ui.attachmentinput[0].files[0];
-            var workoutReader = new WorkoutFileReader(file);
+            var workoutReader = new TP.utils.workout.FileReader(file);
             var readDeferral = workoutReader.readFile();
 
             var self = this;
