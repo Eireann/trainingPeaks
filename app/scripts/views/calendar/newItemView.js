@@ -55,7 +55,7 @@ function (TP, WorkoutModel, WorkoutFileData, WorkoutQuickView, WorkoutFileReader
             var workoutTypeId = $(e.currentTarget).data("workoutid");
             this.newWorkout = new WorkoutModel(
             {
-                personId: theMarsApp.user.get("userId"),
+                athleteId: theMarsApp.user.get("athletes.0.athleteId"),
                 workoutDay: moment(this.model.get("date")).format(TP.utils.datetime.longDateFormat),
                 startTime: moment(this.model.get("date")).add("hours", 6).format(TP.utils.datetime.longDateFormat),
                 title: "",
