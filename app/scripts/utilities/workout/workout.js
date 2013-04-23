@@ -2,16 +2,19 @@
 [
     "utilities/workout/workoutTypes",
     "utilities/workout/determineCompletedWorkout",
-    "utilities/workout/fileReader"
+    "utilities/workout/fileReader",
+    "utilities/workout/layoutFormatter"
 ], function(
     workoutTypes,
     determineCompletedWorkout,
-    workoutFileReader
+    workoutFileReader,
+    workoutLayoutFormatter
     )
 {
     return {
         types: workoutTypes,
         determineCompletedWorkout: determineCompletedWorkout,
-        FileReader: workoutFileReader
+        FileReader: workoutFileReader,
+        layoutFormatter: workoutLayoutFormatter
     };
 });
