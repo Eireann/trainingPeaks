@@ -1,55 +1,44 @@
 define(
 [
-    "utilities/workout/determineCompletedWorkout",
+    "utilities/workout/getKeyStatField",
     "utilities/units/units"
 ],
-function(determineCompletedWorkout, unitsUtils)
+function(getKeyStatField, unitsUtils)
 {
+
+    function getWorkoutAttributes(workout)
+    {
+        // we might have a Backbone workoutModel, if this was called directly,
+        // or we might have a JSON object if it was called via our backbone helper ...
+        if (workout.hasOwnProperty('attributes') && workout.attributes.hasOwnProperty('distance'))
+        {
+            return workout.attributes;
+        } else
+        {
+            return workout;
+        }
+    }
 
     function formatKeyStatUnits(workout)
     {
-        // we might have a Backbone workoutModel, or we might have a raw JSON object ...
-        if (workout.hasOwnProperty('attributes') && workout.attributes.hasOwnProperty('distance'))
-            workout = workout.attributes;
-
-        var units = " ";
-
-        if (determineCompletedWorkout(workout))
+        var workoutAttributes = getWorkoutAttributes(workout);
+        var keyStatField = getKeyStatField(workoutAttributes);
+        
+        if (keyStatField === "distance" || keyStatField === "distancePlanned")
         {
-            if (workout.distance)
-            {
-                units = unitsUtils.getUnitsLabel("distance");
-            }
-            else if (workout.totalTime)
-            {
-                units = "";
-            }
-            else if (workout.tssActual)
-            {
-                units = "TSS";
-            }
+            return unitsUtils.getUnitsLabel("distance");
         }
-        else
+        else if (keyStatField === "totalTime" || keyStatField === "totalTimePlanned")
         {
-            if (workout.distancePlanned)
-            {
-                units = unitsUtils.getUnitsLabel("distance");
-            }
-            else if(workout.totalTimePlanned)
-            {
-                units = "";
-            }
-            else if (workout.tssPlanned)
-            {
-                units = "TSS";
-            }
-            else
-            {
-                units = "";
-            }
+            return "";
         }
-
-        return units;
+        else if (keyStatField === "tssActual" || keyStatField === "tssPlanned")
+        {
+            return "TSS";
+        } else
+        {
+            return "";
+        }
     }
 
     return formatKeyStatUnits;

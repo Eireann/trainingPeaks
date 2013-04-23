@@ -1,39 +1,47 @@
 define(
 [
-    "utilities/datetime/datetime",
     "utilities/conversion/conversion",
     "utilities/workout/getKeyStatField"
 ],
-function(datetime, conversion, getKeyStatField)
+function(conversion, getKeyStatField)
 {
+
+    function getWorkoutAttributes(workout)
+    {
+        // we might have a Backbone workoutModel, if this was called directly,
+        // or we might have a JSON object if it was called via our backbone helper ...
+        if (workout.hasOwnProperty('attributes') && workout.attributes.hasOwnProperty('distance'))
+        {
+            return workout.attributes;
+        } else
+        {
+            return workout;
+        }
+    }
+
     function formatKeyStat(workout)
     {
-        // we might have a Backbone workoutModel, or we might have a raw JSON object ...
-        if (workout.hasOwnProperty('attributes') && workout.attributes.hasOwnProperty('distance'))
-            workout = workout.attributes;
+        var workoutAttributes = getWorkoutAttributes(workout);
 
-        var keyStatField = getKeyStatField(workout);
-        var value = workout[keyStatField];
-        var returnValue = "";
+        var keyStatField = getKeyStatField(workoutAttributes);
+        var value = workoutAttributes[keyStatField];
         
         if (keyStatField === "distance" || keyStatField === "distancePlanned")
         {
-            returnValue = conversion.convertToViewUnits(value, "distance");
+            return conversion.formatDistance(value);
         }
         else if (keyStatField === "totalTime" || keyStatField === "totalTimePlanned")
         {
-            returnValue = datetime.format.decimalHoursAsTime(value, "distance");
+            return conversion.formatDuration(value);
         }
         else if (keyStatField === "tssActual" || keyStatField === "tssPlanned")
         {
-            returnValue = value;
-        }
-        else
+            return value;
+        } else
         {
-            return returnValue;
+            return "";
         }
-
-        return returnValue;
     }
+
     return formatKeyStat;
 });
