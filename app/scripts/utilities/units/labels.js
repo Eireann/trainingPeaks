@@ -1,6 +1,6 @@
 define(
 [
-    "utilities/workoutLayoutFormatter"
+    "utilities/workout/layoutFormatter"
 ],
 function(workoutLayoutFormatter)
 {

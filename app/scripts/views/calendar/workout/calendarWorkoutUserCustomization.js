@@ -2,10 +2,9 @@ define(
 [
     "underscore",
     "TP",
-    "utilities/workoutLayoutFormatter",
     "utilities/getKeyStatField"
 ],
-function(_, TP, workoutLayoutFormatter, getKeyStatField)
+function(_, TP, getKeyStatField)
 {
     var calendarWorkoutUserCustomization = {
 
@@ -31,7 +30,7 @@ function(_, TP, workoutLayoutFormatter, getKeyStatField)
                 var keyStatFieldName = getKeyStatField(this.model);
                 _.each(layoutPreferences, function(layoutPreferenceId, index)
                 {
-                    var field = workoutLayoutFormatter.calendarWorkoutLayout[layoutPreferenceId];
+                    var field = TP.utils.workout.layoutFormatter.calendarWorkoutLayout[layoutPreferenceId];
                     if (field && keyStatFieldName !== field.name)
                     {
                         this.applyFieldLayoutPreference(field);
