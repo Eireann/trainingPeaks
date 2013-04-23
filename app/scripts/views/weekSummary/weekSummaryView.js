@@ -1,11 +1,13 @@
 define(
 [
     "TP",
-    "utilities/determineCompletedWorkout",
     "views/weekSummary/weekSummarySettings",
     "hbs!templates/views/weekSummary/weekSummary"
 ],
-function(TP, determineCompletedWorkout, WeekSummarySettings, weekSummaryTemplate)
+function(
+    TP,
+    WeekSummarySettings,
+    weekSummaryTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -77,7 +79,7 @@ function(TP, determineCompletedWorkout, WeekSummarySettings, weekSummaryTemplate
                 //iterate over items (workouts, meals, metrics) for the current day
                 item.itemsCollection.each(function(workout)
                 {
-                    if (workout.getCalendarDay && determineCompletedWorkout(workout.attributes))
+                    if (workout.getCalendarDay && TP.utils.workout.determineCompletedWorkout(workout.attributes))
                     {
                         completedValues.completedDays[workout.getCalendarDay()] = true;
                         if(!completedValues.completedDaysByWorkoutType[workout.get("workoutTypeValueId")])

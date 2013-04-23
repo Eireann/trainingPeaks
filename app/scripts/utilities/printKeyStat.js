@@ -1,11 +1,10 @@
 define(
 [
     "TP",
-    "utilities/determineCompletedWorkout",
     "utilities/conversion",
     "utilities/getKeyStatField"
 ],
-function(TP, determineCompletedWorkout, conversion, getKeyStatField)
+function(TP, conversion, getKeyStatField)
 {
     function printKeyStat(workout)
     {

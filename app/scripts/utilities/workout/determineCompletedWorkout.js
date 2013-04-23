@@ -1,14 +1,14 @@
 ﻿define(
 [
     "moment",
-    "TP"
+    "utilities/datetime/datetime"
 ],
-function(moment, TP)
+function(moment, datetime)
 {
     function determineCompletedWorkout(workout)
     {
         // not completed in future ...
-        if (moment(workout.workoutDay).format(TP.utils.datetime.shortDateFormat) > moment().format(TP.utils.datetime.shortDateFormat))
+        if (moment(workout.workoutDay).format(datetime.shortDateFormat) > moment().format(datetime.shortDateFormat))
         {
             return false;
         }

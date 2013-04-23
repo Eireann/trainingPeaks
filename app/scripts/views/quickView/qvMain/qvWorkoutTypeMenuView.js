@@ -38,7 +38,7 @@ function(underscore, TP, workoutTypeMenuTemplate)
                 var selected = typeId === options.workoutTypeId ? true : false;
                 types.push({ typeName: typeName, typeId: typeId, selected: selected});
             });
-            this.model.set("workout.types", types);
+            this.model.set("workoutTypes", types);
         },
 
         template:

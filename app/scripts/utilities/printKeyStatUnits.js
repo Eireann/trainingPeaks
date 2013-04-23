@@ -1,9 +1,8 @@
 define(
 [
-    "TP",
-    "utilities/determineCompletedWorkout"
+    "TP"
 ],
-function (TP, determineCompletedWorkout)
+function(TP)
 {
 
     function printKeyStatUnits(workout)
@@ -14,7 +13,7 @@ function (TP, determineCompletedWorkout)
 
         var units = " ";
 
-        if (determineCompletedWorkout(workout))
+        if (TP.utils.workout.determineCompletedWorkout(workout))
         {
             if (workout.distance)
             {

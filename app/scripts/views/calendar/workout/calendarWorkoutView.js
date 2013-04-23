@@ -8,7 +8,6 @@ define(
     "views/quickView/workoutQuickView",
     "views/calendar/workout/calendarWorkoutHoverView",
     "views/calendar/workout/calendarWorkoutSettings",
-    "utilities/determineCompletedWorkout",
     "hbs!templates/views/calendar/workout/calendarWorkout"
 ],
 function(
@@ -20,7 +19,6 @@ function(
     WorkoutQuickView,
     CalendarWorkoutHoverView,
     CalendarWorkoutSettingsHover,
-    determineCompletedWorkout,
     CalendarWorkoutTemplate)
 {
 
@@ -102,7 +100,7 @@ function(
             if (this.model.getCalendarDay() < this.today)
             {
                 return "past";
-            } else if (this.model.getCalendarDay() === this.today && determineCompletedWorkout(this.model.attributes))
+            } else if (this.model.getCalendarDay() === this.today && TP.utils.workout.determineCompletedWorkout(this.model.attributes))
             {
                 return "past";
             } else
