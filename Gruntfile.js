@@ -335,6 +335,7 @@ module.exports = function(grunt)
         jasmine_node:
         {
             specNameMatcher: ".spec",
+            specFolder: "test",
             projectRoot: ".",
             requirejs: './app/config/jasmineRequirejsConfig.js',
             forceExit: true,
