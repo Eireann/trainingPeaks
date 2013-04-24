@@ -134,7 +134,7 @@ module.exports = function(grunt)
                 src:
                 [
                     // We include AlmondJS + the compiled unified app.js file.
-                    "components/almond/almond.js",
+                    "vendor/js/libs/almond.js",
                     "vendor/js/libs/lodash/lodash.amd.js",
                     "vendor/js/libs/HandlebarsRuntime.js",
                     "build/debug/single.js"

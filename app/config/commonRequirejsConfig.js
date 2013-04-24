@@ -25,15 +25,15 @@
             "jquerySelectBox": "../vendor/js/libs/jquery/chosen.jquery",
 
             // Underscore & Lodash (provided by Lodash)
-            "lodash": "../components/lodash.underscore/index",
-            "underscore": "../components/lodash.underscore/index",
+            "lodash": "../vendor/js/libs/lodash",
+            "underscore": "../vendor/js/libs/lodash",
 
             // Backbone and plugins
             "backbone": "../vendor/js/libs/backbone",
             "backbone.marionette": "../vendor/js/libs/backbone.marionette",
             "Backbone.Marionette.Handlebars": "../vendor/js/libs/Backbone.Marionette.Handlebars/backbone.marionette.handlebars",
             "backbone.deepmodel": "../vendor/js/libs/backbone.deepmodel",
-            "backbone.stickit": "../vendor/js/libs/backbone.stickit",
+            "backbone.stickit": "../vendor/js/libs/backbone.stickit.TP",
 
             // Marionette plugins
             "marionette.faderegion": "scripts/plugins/marionette.faderegion",
@@ -41,7 +41,9 @@
             // Handlebars plugins
             "i18nprecompile": "../vendor/js/libs/i18nprecompile",
             "json2": "../vendor/js/libs/json2",
-            "hbs": "../vendor/js/libs/hbs",
+
+            // our vendor hbs has been patched to resolve string args, so don't use bower ...
+            "hbs": "../vendor/js/libs/hbs.TP",
 
             // date utilities
             "moment": "../vendor/js/libs/moment/moment",

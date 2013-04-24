@@ -144,7 +144,7 @@ function(
         loadLibraryData: function()
         {
             for (var libraryName in this.libraryCollections)
-                this.libraryCollections[libraryName].fetch();
+                this.libraryCollections[libraryName].fetch({ reset: true });
         },
 
         onPasteEnabled: function()

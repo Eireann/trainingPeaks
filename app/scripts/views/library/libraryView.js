@@ -118,7 +118,6 @@ function(_, jqueryOutside, TP, ExerciseLibraryView, MealLibraryView, libraryTemp
             this.turnOnTab(this.activeLibraryName);
             this.resizeContainerHeight();
 
-            //this.hideOnClickOutside();
         },
 
         hideLibrary: function()
@@ -170,12 +169,6 @@ function(_, jqueryOutside, TP, ExerciseLibraryView, MealLibraryView, libraryTemp
                 library.$el.hide();
             }
             this.resizeContainerHeight();
-        },
-
-        hideOnClickOutside: function()
-        {
-            //_.bindAll(this, "hideLibrary");
-            //this.$el.on("clickoutside", this.hideLibrary);
         },
 
         onShow: function()
