@@ -52,32 +52,38 @@ function (
             "#qv-header-distance":
             {
                 observe: "distance",
-                onGet: "formatDistance"
+                onGet: "formatDistance",
+                defaultValue: "0"
             },
             "#qv-header-totaltime":
             {
                 observe: "totalTime",
-                onGet: "formatDuration"
+                onGet: "formatDuration",
+                defaultValue: "0:00:00"
             },
             "#qv-header-tssactual":
             {
                 observe: "tssActual",
-                onGet: "formatTSS"
+                onGet: "formatTSS",
+                defaultValue: "0"
             },
             "#qv-header-distancePlanned":
             {
                 observe: "distancePlanned",
-                onGet: "formatDistance"
+                onGet: "formatDistance",
+                defaultValue: "0"
             },
             "#qv-header-totaltimePlanned":
             {
                 observe: "totalTimePlanned",
-                onGet: "formatDuration"
+                onGet: "formatDuration",
+                defaultValue: "0:00:00"
             },
             "#qv-header-tssPlanned":
             {
                 observe: "tssPlanned",
-                onGet: "formatTSS"
+                onGet: "formatTSS",
+                defaultValue: "0"
             }
         },
 

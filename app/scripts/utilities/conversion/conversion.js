@@ -13,7 +13,7 @@
         
         formatDistance: function (value, options)
         {
-            return convertToViewUnits(value, "distance");
+            return convertToViewUnits(value, "distance", options && options.hasOwnProperty("defaultValue") ? options.defaultValue : "");
         },
 
         parseDistance: function (value, options)
@@ -23,7 +23,7 @@
 
         formatDuration: function (value, options)
         {
-            return datetimeUtils.format.decimalHoursAsTime(value, true, "");
+            return datetimeUtils.format.decimalHoursAsTime(value, true, options && options.hasOwnProperty("defaultValue") ? options.defaultValue : "");
         },
 
         parseDuration: function(value, options)
@@ -109,7 +109,7 @@
         
         formatTSS: function (value, options)
         {
-            return value ? (Math.round(value * 10) / 10) : "";
+            return value ? (Math.round(value * 10) / 10) : (options && options.hasOwnProperty("defaultValue") ? options.defaultValue : "");
         },
 
         parseTSS: function (value, options)
