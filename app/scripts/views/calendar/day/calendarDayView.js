@@ -52,8 +52,6 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySe
 
         events:
         {
-            mouseenter: "onMouseEnter",
-            mouseleave: "onMouseLeave",
             "mousedown .dayHeader": "onDayClicked",
             "click .dayHeader": "onDayClicked",
 
@@ -135,35 +133,14 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySe
             this.trigger("itemDropped", options);
         },
 
-        onMouseEnter: function(e)
+        keepSettingsButtonVisible: function()
         {
-            this.showSettingsButton(e);
+            this.$el.addClass("menuOpen");
         },
 
-        onMouseLeave: function(e)
+        allowSettingsButtonToHide: function(e)
         {
-            if (e.toElement === this.el)
-                return;
-
-            this.removeSettingsButton(e);
-        },
-
-        showSettingsButton: function ()
-        {
-            this.$(".daySettings").css('display', "block");
-        },
-
-        removeSettingsButton: function(e)
-        {
-            if (!e)
-            {
-                this.$(".daySettings").css('display', "none");
-                return;
-            }
-
-            var toElement = $(document.elementFromPoint(e.pageX, e.pageY));
-            if (!toElement.is(".daySettings") && !toElement.is("#daySettingsDiv") && !toElement.is(".hoverBox") && !toElement.is(".modal") && !toElement.is(".modalOverlay"))
-                this.$(".daySettings").css('display', "none");
+            this.$el.removeClass("menuOpen");
         },
 
         daySettingsClicked: function (e)
@@ -171,12 +148,13 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySe
             if (e.shiftKey)
                 return;
 
+            this.keepSettingsButtonVisible();
             e.preventDefault();
 
             var offset = $(e.currentTarget).offset();
             this.daySettings = new CalendarDaySettingsView({ model: this.model, parentEl: this.$el });
             this.daySettings.render().center(offset.left + 10).bottom(offset.top + 10);
-            this.daySettings.on("close", this.removeSettingsButton, this);
+            this.daySettings.on("close", this.allowSettingsButtonToHide, this);
             this.$(".daySelected").css("display", "block");
             this.model.trigger("day:click", this.model, e);
         },
@@ -200,6 +178,7 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySe
             if (e.shiftKey)
                 return;
 
+            this.allowSettingsButtonToHide();
             e.preventDefault();
 
             this.model.trigger("day:click", this.model, e);
