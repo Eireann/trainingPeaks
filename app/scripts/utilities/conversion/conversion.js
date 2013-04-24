@@ -2,10 +2,10 @@
 [
     "moment",
     "utilities/datetime/datetime",
-    "utilities/workout/workout",
+    "utilities/workout/workoutTypes",
     "utilities/conversion/convertToModelUnits",
     "utilities/conversion/convertToViewUnits"
-], function(moment, datetimeUtils, workoutUtils, convertToModelUnits, convertToViewUnits)
+], function(moment, datetimeUtils, workoutTypes, convertToModelUnits, convertToViewUnits)
 {
     return {
         convertToModelUnits: convertToModelUnits,
@@ -94,7 +94,7 @@
         
         formatWorkoutType: function(value, options)
         {
-            return workoutUtils.types.getNameById(value);
+            return workoutTypes.getNameById(value);
         },
 
         formatIF: function(value, options)
