@@ -135,7 +135,8 @@ module.exports = function(grunt)
                 [
                     // We include AlmondJS + the compiled unified app.js file.
                     "vendor/js/libs/almond.js",
-                    "vendor/js/libs/lodash/lodash.amd.js",
+                    "vendor/js/libs/lodash.TP.js",
+                    "vendor/js/libs/underscore.amd.js",
                     "vendor/js/libs/HandlebarsRuntime.js",
                     "build/debug/single.js"
                 ],
@@ -388,6 +389,7 @@ module.exports = function(grunt)
     grunt.registerTask("validate_models", ["validate-webapi-models"]);
     grunt.registerTask("update_grunt_config", ["requirejs_config", "i18n_config"]);
     grunt.registerTask("debug", ["clean", "coverage", "update_grunt_config", "requirejs", "compass:debug", "targethtml:debug", "concat", "copy:debug", "copy-i18n-files", "copy:debug_coverage", "plato:debug"]);
+    grunt.registerTask("single", ["clean", "update_grunt_config", "requirejs", "concat:dist"]);
     grunt.registerTask("dev", ["debug", "compass:dev", "targethtml:dev", "concat:dev", "copy:dev", "copy:dev_coverage", "plato:dev"]);
     grunt.registerTask("uat", ["debug", "compass:uat", "targethtml:uat", "concat:uat", "copy:uat"]);
     grunt.registerTask("release", ["debug", "compass:release", "targethtml:release", "uglify", "copy:release", "copy-i18n-files"]);

@@ -25,8 +25,8 @@
             "jquerySelectBox": "../vendor/js/libs/jquery/chosen.jquery",
 
             // Underscore & Lodash (provided by Lodash)
-            "lodash": "../vendor/js/libs/lodash",
-            "underscore": "../vendor/js/libs/lodash",
+            "lodash": "../vendor/js/libs/lodash.TP",
+            "underscore": "../vendor/js/libs/lodash.TP",
 
             // Backbone and plugins
             "backbone": "../vendor/js/libs/backbone",

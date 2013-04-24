@@ -4368,8 +4368,9 @@
   /*--------------------------------------------------------------------------*/
 
   // expose Lo-Dash
-  // some AMD build optimizers, like r.js, check for specific condition patterns like the following:
-  if (typeof define == 'function' && typeof define.amd == 'object' && define.amd) {
+    // some AMD build optimizers, like r.js, check for specific condition patterns like the following:
+    if (typeof define == 'function' && typeof define.amd == 'object' && define.amd)
+    {
     // Expose Lo-Dash to the global object even when an AMD loader is present in
     // case Lo-Dash was injected by a third-party script and not intended to be
     // loaded as a module. The global assignment can be reverted in the Lo-Dash
@@ -4377,10 +4378,12 @@
     window._ = lodash;
 
     // define as an anonymous module so, through path mapping, it can be
-    // referenced as the "underscore" module
-    define(function() {
+        // referenced as the "underscore" module
+    define([], function()
+    {
       return lodash;
-    });
+        });
+
   }
   // check for `exports` after `define` in case a build optimizer adds an `exports` object
   else if (freeExports && !freeExports.nodeType) {
@@ -4397,4 +4400,5 @@
     // in a browser or Rhino
     window._ = lodash;
   }
+
 }(this));

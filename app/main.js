@@ -20,8 +20,7 @@ else
     define(
     [
         "TP",
-        "app",
-        "framework/ajaxCaching"
+        "app"
     ],
     function(TP, theApp)
     {
