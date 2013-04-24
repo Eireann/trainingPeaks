@@ -5,7 +5,6 @@
 ],
 function(moment, TP)
 {
-
     return TP.Model.extend(
     {
 
@@ -15,15 +14,12 @@ function(moment, TP)
             return theMarsApp.apiRoot + "/WebApiServer/fitness/v1/athletes/" + athleteId + "/commands/shiftworkouts";
         },
 
-        defaults: function()
+        defaults:
         {
-            return {
-                athleteId: theMarsApp.user.has("userId") ? theMarsApp.user.get("userId") : 0,
-                startDate: null,
-                endDate: null,
-                days: null,
-                resultCount: 0
-            };
+            startDate: null,
+            endDate: null,
+            days: null,
+            resultCount: 0
         },
 
         execute: function()

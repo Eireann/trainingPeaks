@@ -195,20 +195,14 @@ input[disabled='disabled']
         padding-top: 30px;
     }
 
-    #menuIcon
-    {
-        padding-bottom: 5px;
-        padding-left: 5px;
-        padding-right: 2px;
-        padding-top: 1px;
+    #menuIcon {
+		padding: 0 0 6px 0;
+		cursor:pointer;
     }
 
-    #closeIcon
-    {
-        padding-bottom: 5px;
-        padding-left: 5px;
-        padding-right: 2px;
-        padding-top: 1px;
+    #closeIcon {
+		padding: 1px 2px 5px 5px;
+		cursor:pointer;
     }
 }
 

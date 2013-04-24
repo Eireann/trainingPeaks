@@ -14,14 +14,11 @@ function(TP)
             return theMarsApp.apiRoot + "/WebApiServer/fitness/v1/athletes/" + athleteId + "/commands/addworkoutfromlibraryitem";
         },
 
-        defaults: function()
+        defaults:
         {
-            return {
-                athleteId: theMarsApp.user.has("userId") ? theMarsApp.user.get("userId") : 0,
-                exerciseLibraryItemId: 0,
-                workoutDateTime: null,
-                workoutData: {}
-            };
+            exerciseLibraryItemId: 0,
+            workoutDateTime: null,
+            workoutData: {}
         },
 
         initialize: function(attributes, options)

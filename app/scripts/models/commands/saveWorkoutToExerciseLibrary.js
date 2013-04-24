@@ -10,17 +10,16 @@ function(TP)
 
         urlRoot: function()
         {
-            return theMarsApp.apiRoot + "/WebApiServer/ExerciseLibrary/V1/commands/saveworkouttolibrary";
+            var athleteId = theMarsApp.user.get("athletes.0.athleteId");
+            return theMarsApp.apiRoot + "/WebApiServer/exerciselibrary/v1/athletes/" + athleteId + "/commands/saveworkouttolibrary";
         },
 
-        defaults: function()
+        defaults:
         {
-            return {
-                exerciseName: "",
-                exerciseLibraryId: 0,
-                exerciseLibraryItemId: 0,
-                workoutId: 0
-            };
+            exerciseName: "",
+            exerciseLibraryId: 0,
+            exerciseLibraryItemId: 0,
+            workoutId: 0
         },
 
         execute: function()
