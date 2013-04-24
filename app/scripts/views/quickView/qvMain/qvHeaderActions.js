@@ -3,7 +3,7 @@
     "underscore",
     "jqueryui/datepicker",
     "jqueryTimepicker",
-    "utilities/determineCompletedWorkout",
+    "TP",
     "views/quickView/qvMain/qvWorkoutTypeMenuView",
     "views/quickView/qvMain/qvContextMenuView"
 ],
@@ -11,7 +11,7 @@ function (
     _,
     datepicker,
     timepicker,
-    determineCompletedWorkout,
+    TP,
     WorkoutTypeMenuView,
     QVContextMenuView
 )
@@ -74,7 +74,7 @@ function (
             if (this.model.getCalendarDay() < this.today)
             {
                 return "past";
-            } else if (this.model.getCalendarDay() === this.today && determineCompletedWorkout(this.model.attributes))
+            } else if (this.model.getCalendarDay() === this.today && TP.utils.workout.determineCompletedWorkout(this.model.attributes))
             {
                 return "past";
             } else

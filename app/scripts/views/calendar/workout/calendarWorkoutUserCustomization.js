@@ -1,12 +1,9 @@
 define(
 [
     "underscore",
-    "utilities/workoutLayoutFormatter",
-    "utilities/getKeyStatField",
-    "utilities/conversion",
-    "utilities/printing"
+    "TP"
 ],
-function(_, workoutLayoutFormatter, getKeyStatField, conversion, printing)
+function(_, TP)
 {
     var calendarWorkoutUserCustomization = {
 
@@ -29,10 +26,10 @@ function(_, workoutLayoutFormatter, getKeyStatField, conversion, printing)
 
             if (layoutPreferences)
             {
-                var keyStatFieldName = getKeyStatField(this.model);
+                var keyStatFieldName = TP.utils.workout.keyStat.getField(this.model);
                 _.each(layoutPreferences, function(layoutPreferenceId, index)
                 {
-                    var field = workoutLayoutFormatter.calendarWorkoutLayout[layoutPreferenceId];
+                    var field = TP.utils.workout.layoutFormatter.calendarWorkoutLayout[layoutPreferenceId];
                     if (field && keyStatFieldName !== field.name)
                     {
                         this.applyFieldLayoutPreference(field);
@@ -55,9 +52,9 @@ function(_, workoutLayoutFormatter, getKeyStatField, conversion, printing)
             {
                 if (field.conversion)
                 {
-                    fieldValue = conversion[field.conversion](fieldValue);
+                    fieldValue = TP.utils.conversion[field.conversion](fieldValue);
                 }
-                var units = field.unitHelper ? " " + printing.printUnitLabel(field.unitHelper, null, this) : "";
+                var units = field.unitHelper ? " " + TP.utils.units.getUnitsLabel(field.unitHelper, null, this) : "";
                 //TODO: create entire list up, then do one insert into main dom
                 var element = $("<p>" + prefix + fieldValue + units + "</p>");
                 element.insertBefore(this.ui.layoutAnchor);

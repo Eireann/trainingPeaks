@@ -8,8 +8,6 @@ define(
     "views/quickView/workoutQuickView",
     "views/calendar/workout/calendarWorkoutHoverView",
     "views/calendar/workout/calendarWorkoutSettings",
-    "utilities/workoutTypeName",
-    "utilities/determineCompletedWorkout",
     "hbs!templates/views/calendar/workout/calendarWorkout"
 ],
 function(
@@ -21,8 +19,6 @@ function(
     WorkoutQuickView,
     CalendarWorkoutHoverView,
     CalendarWorkoutSettingsHover,
-    workoutTypeName,
-    determineCompletedWorkout,
     CalendarWorkoutTemplate)
 {
 
@@ -53,7 +49,7 @@ function(
 
         getWorkoutTypeCssClassName: function()
         {
-            return workoutTypeName(this.model.get("workoutTypeValueId")).replace(/ /g, "");
+            return TP.utils.workout.types.getNameById(this.model.get("workoutTypeValueId")).replace(/ /g, "");
         },
 
         getComplianceCssClassName: function()
@@ -104,7 +100,7 @@ function(
             if (this.model.getCalendarDay() < this.today)
             {
                 return "past";
-            } else if (this.model.getCalendarDay() === this.today && determineCompletedWorkout(this.model.attributes))
+            } else if (this.model.getCalendarDay() === this.today && TP.utils.workout.determineCompletedWorkout(this.model.attributes))
             {
                 return "past";
             } else

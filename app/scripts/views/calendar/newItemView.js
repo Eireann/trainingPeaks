@@ -4,10 +4,9 @@
     "models/workoutModel",
     "models/workoutFileData",
     "views/quickView/workoutQuickView",
-    "utilities/workoutFileReader",
     "hbs!templates/views/calendar/newItemView"
 ],
-function (TP, WorkoutModel, WorkoutFileData, WorkoutQuickView, WorkoutFileReader, newItemViewTemplate)
+function (TP, WorkoutModel, WorkoutFileData, WorkoutQuickView, newItemViewTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -76,7 +75,7 @@ function (TP, WorkoutModel, WorkoutFileData, WorkoutQuickView, WorkoutFileReader
             var self = this;
             var fileList = this.ui.fileinput[0].files;
 
-            var workoutReader = new WorkoutFileReader(fileList[0]);
+            var workoutReader = new TP.utils.workout.FileReader(fileList[0]);
             var deferred = workoutReader.readFile();
 
             deferred.done(function(dataAsString)

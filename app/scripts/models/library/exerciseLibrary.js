@@ -43,7 +43,7 @@ function (TP, LibraryExercisesCollection)
             {
                 this.exercises.exerciseLibraryId = this.get("exerciseLibraryId");
             }
-            this.exercises.fetch();
+            this.exercises.fetch({ reset: true });
         }
 
     });

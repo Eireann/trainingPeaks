@@ -1,9 +1,9 @@
 ﻿define(
 [
-    "utilities/workoutLayoutFormatter"
+    "TP"
 ],
 function (
-    workoutLayoutFormatter
+    TP
 )
 {
 
@@ -117,7 +117,7 @@ function (
             var summaryRowCount = 0;
             _.each(workoutOrderPreferences, function (orderPreference, index)
             {
-                var stat = workoutLayoutFormatter.quickViewLayout[orderPreference];
+                var stat = TP.utils.workout.layoutFormatter.quickViewLayout[orderPreference];
                 var statRow = statsTree.find("." + stat + "StatsRow");
 
                 if (statRow.length)

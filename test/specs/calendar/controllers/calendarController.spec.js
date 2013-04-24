@@ -6,10 +6,10 @@ requirejs(
 "jquery",
 "underscore",
 "backbone",
-"controllers/calendarController",
+"controllers/calendar/calendarController",
 "models/workoutModel",
 "models/workoutsCollection",
-"views/calendar/calendarContainerView",
+"views/calendar/container/calendarContainerView",
 "views/library/libraryView"
 ],
 function(TP, moment, $, _, Backbone, CalendarController, WorkoutModel, WorkoutsCollection, CalendarView, LibraryView)
@@ -197,13 +197,15 @@ function(TP, moment, $, _, Backbone, CalendarController, WorkoutModel, WorkoutsC
             var context = {
                 prependWeekToCalendar: function() { },
                 appendWeekToCalendar: function() { },
-                onDropItem: function() { }
+                onDropItem: function() { },
+                bindToDragMoveAndShiftEvents: CalendarController.prototype.bindToDragMoveAndShiftEvents
             };
 
                         
             var calendarView;
 
-            beforeEach(function() {
+            beforeEach(function()
+            {
                 calendarView = jasmine.createSpyObj("CalendarView spy", ["on"]);
             });
 

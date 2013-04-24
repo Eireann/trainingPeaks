@@ -9,7 +9,7 @@ define(
     "models/clientEventsCollection",
     "controllers/navigationController",
     "controllers/loginController",
-    "controllers/calendarController",
+    "controllers/calendar/calendarController",
     "router",
     "marionette.faderegion",
     "jqueryui/tooltip"

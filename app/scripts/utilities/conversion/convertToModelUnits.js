@@ -1,7 +1,7 @@
 define(
 [
     "underscore",
-    "utilities/modelToViewConversionFactors"
+    "utilities/conversion/modelToViewConversionFactors"
 ],
 function(_, modelToViewConversionFactors)
 {
