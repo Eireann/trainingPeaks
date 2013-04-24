@@ -16,8 +16,8 @@
             "layouts": "scripts/layouts",
             "helpers": "scripts/helpers",
             "utilities": "scripts/utilities",
-     
-            // jQuery related
+
+            // jQuery related, but not managed by bower yet ...
             "jqueryui": "../vendor/js/libs/jqueryui",
             "jqueryOutside": "../vendor/js/libs/jquery/jquery.ba-outside-events",
             "jqueryTimepicker": "../vendor/js/libs/jquery-timepicker/jquery.timepicker",
@@ -25,8 +25,8 @@
             "jquerySelectBox": "../vendor/js/libs/jquery/chosen.jquery",
 
             // Underscore & Lodash (provided by Lodash)
-            "lodash": "../vendor/js/libs/lodash/lodash",
-            "underscore": "../vendor/js/libs/lodash/lodash",
+            "lodash": "../components/lodash.underscore/index",
+            "underscore": "../components/lodash.underscore/index",
 
             // Backbone and plugins
             "backbone": "../vendor/js/libs/backbone",
@@ -85,10 +85,6 @@
             {
                 deps: ["backbone"],
                 exports: "Backbone"
-            },
-            "lawnchair":
-            {
-                exports: "Lawnchair"
             },
             "jqueryOutside":
             {

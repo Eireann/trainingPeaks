@@ -1,10 +1,15 @@
 ﻿define(
 [
      "models/library/exerciseLibrariesCollection",
+     "models/workoutModel",
+    "models/commands/addWorkoutFromExerciseLibrary",
      "views/library/libraryView"
 ],
-function (ExerciseLibrariesCollection, 
-          LibraryView)
+function(
+    ExerciseLibrariesCollection,
+    WorkoutModel,
+    AddWorkoutFromExerciseLibrary,
+    LibraryView)
 {
 
     var calendarLibrary = {
@@ -13,7 +18,7 @@ function (ExerciseLibrariesCollection,
         {
             var exerciseLibraryItem = this.libraryCollections.exerciseLibraries.get(exerciseLibraryId).exercises.get(exerciseLibraryItemId);
             var workout = new WorkoutModel({
-                personId: theMarsApp.user.get("userId"),
+                athleteId: theMarsApp.user.get("userId"),
                 workoutDay: workoutDate,
                 title: exerciseLibraryItem.get("itemName"),
                 workoutTypeValueId: exerciseLibraryItem.get("workoutTypeId")
