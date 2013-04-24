@@ -205,6 +205,14 @@ input[disabled='disabled']
             margin-top: 10px;
             background-image: url(../../assets/images/QVImages/expandBackground.png);
         }
+
+        .collapseButton
+        {
+            margin-top: 10px;
+            background-image: url(../../assets/images/QVImages/expandBackground.png);
+            display: none;
+            padding-left: 25px;
+        }
     }
 
     #menuIcon
