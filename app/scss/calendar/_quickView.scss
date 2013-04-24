@@ -34,7 +34,7 @@ input[disabled='disabled']
 
     .dateAndTime
     {
-        float: left;
+        
         padding-left: 2px;
         
         #dayName
@@ -181,18 +181,30 @@ input[disabled='disabled']
             }
         } 
     }
-
-    .uploadButton
+    .uploadExpandButtons
     {
-        width: 80px;
-        height: 80px;
         float: left;
-        @include box-shadow(0px 5px 2px -3px $TPGrey3);
-        @include labels($navigationFontFamilyRegular, $fontSizeLarge, $TPGrey4, normal);
-        margin-left: 10px;
-        @include linearGradient(top, #fefefe, #e0dddd);
-        text-align: center;
-        padding-top: 30px;
+        width: 80px;
+        
+        .buttons
+        {
+            width: 81px;
+            height: 36px;
+            @include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey3, normal);
+            margin-left: 10px;
+            padding-top: 12px;
+            padding-left: 28px;
+            float: left;
+        }
+        .uploadButton
+        {
+            background-image: url(../../assets/images/QVImages/uploadBackground.png);
+        }
+        .expandButton
+        {
+            margin-top: 10px;
+            background-image: url(../../assets/images/QVImages/expandBackground.png);
+        }
     }
 
     #menuIcon

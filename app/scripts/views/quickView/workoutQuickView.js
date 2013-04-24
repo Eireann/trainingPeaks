@@ -8,6 +8,7 @@
     "views/quickView/qvMain/qvSaveDeleteDiscard",
     "views/quickView/qvMain/qvHeaderActions",
     "views/quickView/qvMain/qvFileUploads",
+    "views/quickView/qvMain/qvExpand",
     "views/quickView/summaryView",
     "hbs!templates/views/quickView/workoutQuickView"
 ],
@@ -20,6 +21,7 @@ function (
     qvSaveDeleteDiscard,
     qvHeaderActions,
     qvFileUploads,
+    qvExpand,
     WorkoutQuickViewSummary,
     workoutQuickViewTemplate
 )
@@ -107,6 +109,7 @@ function (
     _.extend(WorkoutQuickView, qvHeaderActions);
     _.extend(WorkoutQuickView, qvStickitBindings);
     _.extend(WorkoutQuickView, qvFileUploads);
+    _.extend(WorkoutQuickView, qvExpand);
 
     return TP.ItemView.extend(WorkoutQuickView);
 });
