@@ -17,6 +17,37 @@
         opacity:0.8;
     }
 
+    .workoutSettings
+    {
+        display: none;
+        float: right;
+
+        button
+        {	
+            background: transparent;
+            border: none;
+            padding: 0px;
+            width: 15px;
+            cursor: default;
+        }
+    }
+
+    &:hover
+    {
+        .workoutSettings
+        {
+            display: block;
+        }
+    }
+
+    &.menuOpen
+    {
+        .workoutSettings
+        {
+            display: block;
+        }
+    }
+
     .workoutDiv
     {
 
@@ -58,20 +89,6 @@
                 }
             }
 
-            .workoutSettings
-            {
-                display: none;
-                float: right;
-
-                button
-                {	
-                    background: transparent;
-                    border: none;
-                    padding: 0px;
-                    width: 15px;
-                    cursor: default;
-                }
-            }
         }
         .workoutBody
         {

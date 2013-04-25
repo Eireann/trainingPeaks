@@ -185,6 +185,38 @@
         {
             background-color: $selectedDay;
         }
+
+		.daySettings
+        {
+            display: none;
+            float: right;
+			padding: 2px 5px 0px 0px;
+            button
+            {	
+                background: transparent;
+                border: none;
+                padding: 0px;
+                width: 15px;
+				cursor: default;
+                        
+            }
+        }
+
+        &:hover
+        {
+            .daySettings
+            {
+                display:block;
+            }
+        }
+
+        &.menuOpen
+        {
+            .daySettings
+            {
+                display:block;
+            }
+        }
     }
 
 	.daySelected
@@ -233,21 +265,6 @@
 			padding-top: 2px;
 		}
 
-		.daySettings
-        {
-            display: none;
-            float: right;
-			padding: 2px 5px 0px 0px;
-            button
-            {	
-                background: transparent;
-                border: none;
-                padding: 0px;
-                width: 15px;
-				cursor: default;
-                        
-            }
-        }
 	}
 
 	.thisWeek

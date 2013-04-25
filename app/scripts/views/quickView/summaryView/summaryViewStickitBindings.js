@@ -59,14 +59,16 @@ function(
                 observe: "distance",
                 onGet: "formatDistance",
                 onSet: "parseDistance",
-                updateModel: "updateModel"
+                updateModel: "updateModel",
+                precision: 2
             },
             "#distancePlannedField":
             {
                 observe: "distancePlanned",
                 onGet: "formatDistance",
                 onSet: "parseDistance",
-                updateModel: "updateModel"
+                updateModel: "updateModel",
+                precision: 2
             },
             "#totalTimeCompletedField":
             {
@@ -376,8 +378,10 @@ function(
 
             var updateModel = function()
             {
-                if (self.checkIfModelUpdateRequired(newViewValue, options))
-                    self.performModelUpdate(newViewValue, options);
+                var inputFieldId = self.bindingsLUT[options.observe];
+                var currentViewValue = self.$(inputFieldId).val();
+                if (self.checkIfModelUpdateRequired(currentViewValue, options))
+                    self.performModelUpdate(currentViewValue, options);
             };
 
             if (this.updateModelTimeout)
