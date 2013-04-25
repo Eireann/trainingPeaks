@@ -376,8 +376,10 @@ function(
 
             var updateModel = function()
             {
-                if (self.checkIfModelUpdateRequired(newViewValue, options))
-                    self.performModelUpdate(newViewValue, options);
+                var inputFieldId = self.bindingsLUT[options.observe];
+                var currentViewValue = self.$(inputFieldId).val();
+                if (self.checkIfModelUpdateRequired(currentViewValue, options))
+                    self.performModelUpdate(currentViewValue, options);
             };
 
             if (this.updateModelTimeout)
