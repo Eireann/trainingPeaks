@@ -1,107 +1,112 @@
 define(
 [
+    "utilities/units/constants",
     "utilities/workout/layoutFormatter"
 ],
-function(workoutLayoutFormatter)
+function(unitConstants, workoutLayoutFormatter)
 {
+
+    var ENGLISH = unitConstants.English;
+    var METRIC = unitConstants.Metric;
+
     var unitsHash =
     {
         distance:
         {
-            "0": "mi",
-            "1": "km"
+            ENGLISH: "mi",
+            METRIC: "km"
         },
         normalizedPace:
         {
-            "0": "min/mile",
-            "1": "min/km"
+            ENGLISH: "min/mile",
+            METRIC: "min/km"
         },
         averagePace:
         {
-            "0": "min/mile",
-            "1": "min/km"
+            ENGLISH: "min/mile",
+            METRIC: "min/km"
         },
         averageSpeed:
         {
-            "0": "mph",
-            "1": "km/h"
+            ENGLISH: "mph",
+            METRIC: "km/h"
         },
         calories:
         {
-            //"0": "Cal", //1 Cal(orie) = 1kcal
-            "0": "kcal", //We currently only show kcal in flex app
-            "1": "kcal"
+            //ENGLISH: "Cal", //1 Cal(orie) = 1kcal
+            ENGLISH: "kcal", //We currently only show kcal in flex app
+            METRIC: "kcal"
         },
         elevationGain:
         {
-            "0": "ft",
-            "1": "m"
+            ENGLISH: "ft",
+            METRIC: "m"
         },
         elevationLoss:
         {
-            "0": "ft",
-            "1": "m"
+            ENGLISH: "ft",
+            METRIC: "m"
         },
         //TODO: will need to add logic to determine type of tss
         tss:
         {
-            "0": "TSS",
-            "1": "TSS"
+            ENGLISH: "TSS",
+            METRIC: "TSS"
         },
         "if":
         {
-            "0": "IF",
-            "1": "IF"
+            ENGLISH: "IF",
+            METRIC: "IF"
         },
         energy:
         {
-            "0": "kJ",
-            "1": "kJ"
+            ENGLISH: "kJ",
+            METRIC: "kJ"
         },
         temperature:
         {
-            "0": "F",
-            "1": "C"
+            ENGLISH: "F",
+            METRIC: "C"
         },
         heartrate:
         {
-            "0": "bpm",
-            "1": "bpm"
+            ENGLISH: "bpm",
+            METRIC: "bpm"
         },
         pace:
         {
-            "0": "min/mile",
-            "1": "min/km"
+            ENGLISH: "min/mile",
+            METRIC: "min/km"
         },
         speed:
         {
-            "0": "mph",
-            "1": "km/h"
+            ENGLISH: "mph",
+            METRIC: "km/h"
         },
         cadence:
         {
-            "0": "rpm",
-            "1": "rpm"
+            ENGLISH: "rpm",
+            METRIC: "rpm"
         },
         torque:
         {
-            "0": "ft/lbs",
-            "1": "Nm"
+            ENGLISH: "ft/lbs",
+            METRIC: "Nm"
         },
         elevation:
         {
-            "0": "ft",
-            "1": "m"
+            ENGLISH: "ft",
+            METRIC: "m"
         },
         power:
         {
-            "0": "W",
-            "1": "W"
+            ENGLISH: "W",
+            METRIC: "W"
         },
         time:
         {
-            "0": "hms",
-            "1": "hms"
+            ENGLISH: "hms",
+            METRIC: "hms"
         }
     };
 

@@ -1,10 +1,13 @@
 ﻿define(
 [
-    "utilities/units/labels"
-], function(getUnitsLabel)
+    "utilities/units/labels",
+    "utilities/units/constants"
+], function(getUnitsLabel, constants)
 {
     return {
         // TP.utils.units.getUnitsLabel(fieldName, sportType, viewContext)
-        getUnitsLabel: getUnitsLabel
+        getUnitsLabel: getUnitsLabel,
+
+        constants: constants
     };
 });

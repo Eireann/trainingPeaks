@@ -12,7 +12,7 @@ function(TP)
             {
                 get: function(system)
                 {
-                    return 0;
+                    return TP.utils.units.constants.English;
                 }
             }
         };
