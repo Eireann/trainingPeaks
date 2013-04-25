@@ -16,7 +16,7 @@
 				Total
 			</div>		
 			<div class="weekSummaryTimeContain">
-				<span class="weekSummaryTimeCompleted total">{{printTimeFromDecimalHours totalTimeCompleted false}}</span> <span class="weekSummaryTimePlanned total">{{printTimeFromDecimalHours totalTimePlanned false "--:--"}}</span>
+				<span class="weekSummaryTimeCompleted total">{{formatTime totalTimeCompleted false}}</span> <span class="weekSummaryTimePlanned total">{{formatTime totalTimePlanned false "--:--"}}</span>
 			</div>
             {{{ weekSummaryBarGraph totalTimePlanned totalTimeCompleted totalDaysCompleted "total" }}}
 		</div>
@@ -26,7 +26,7 @@
 				Strength
 			</div>		
 			<div class="weekSummaryTimeContain">
-				<span class="weekSummaryTimeCompleted strength">{{printTimeFromDecimalHours strengthDurationCompleted false}}</span> <span class="weekSummaryTimePlanned strength">{{printTimeFromDecimalHours strengthDurationPlanned false "--:--"}}</span>
+				<span class="weekSummaryTimeCompleted strength">{{formatTime strengthDurationCompleted false}}</span> <span class="weekSummaryTimePlanned strength">{{formatTime strengthDurationPlanned false "--:--"}}</span>
 			</div>
             {{{ weekSummaryBarGraph strengthDurationPlanned strengthDurationCompleted strengthDaysCompleted "strength" }}}
 		</div>
@@ -36,7 +36,7 @@
 				Bike
 			</div>		
 			<div class="weekSummaryTimeContain">
-				<span class="weekSummaryTimeCompleted bike">{{printTimeFromDecimalHours bikeDurationCompleted false}}</span> <span class="weekSummaryTimePlanned bike">{{printTimeFromDecimalHours bikeDurationPlanned false "--:--"}}</span>
+				<span class="weekSummaryTimeCompleted bike">{{formatTime bikeDurationCompleted false}}</span> <span class="weekSummaryTimePlanned bike">{{formatTime bikeDurationPlanned false "--:--"}}</span>
 			</div>
             {{{ weekSummaryBarGraph bikeDurationPlanned bikeDurationCompleted bikeDaysCompleted "bike" }}}
 		</div>
@@ -70,7 +70,7 @@
 				{{convertToViewUnits totalDistanceCompleted "distance"}}
 			</div>
 			<div class="weekSummaryMetricTitle distance">
-				{{printUnitLabel "distance"}}
+				{{getUnitsLabel "distance"}}
 			</div>
 		</div>
 	

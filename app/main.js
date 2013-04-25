@@ -14,13 +14,13 @@ if (!cookiesAreEnabled())
 {
     alert("Cookies are disabled in your browser. Please enable your cookie support.");
     document.location.href = "http://howenablecookies.com/";
-} else
+}
+else
 {
     define(
     [
         "TP",
-        "app",
-        "framework/ajaxCaching"
+        "app"
     ],
     function(TP, theApp)
     {

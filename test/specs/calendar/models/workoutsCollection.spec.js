@@ -19,7 +19,8 @@ function(moment, theMarsApp, WorkoutsCollection)
                 var startDate = moment().subtract("days", 30);
                 var endDate = moment().add("days", 30);
                 var dateFormat = "YYYY-MM-DD";
-                var expectedUrl = "/WebApiServer/Fitness/V1/workouts/" +
+                var athleteId = 1234;
+                var expectedUrl = "/WebApiServer/fitness/v1/athletes/" + theMarsApp.user.get("athletes.0.athleteId") + "/workouts/" +
                     startDate.format(dateFormat) + "/" +
                     endDate.format(dateFormat);
                 var workouts = new WorkoutsCollection([], { startDate: startDate, endDate: endDate });

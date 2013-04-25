@@ -17,13 +17,14 @@ function (_, moment, TP, WorkoutDetailsModel)
 
         urlRoot: function()
         {
-            return theMarsApp.apiRoot + "/WebApiServer/Fitness/V1/workouts";
+            var athleteId = theMarsApp.user.get("athletes.0.athleteId");
+            return theMarsApp.apiRoot + "/WebApiServer/fitness/v1/athletes/" + athleteId + "/workouts";
         },
 
         defaults:
         {
             "workoutId": null,
-            "personId": null,
+            "athleteId": null,
             "title": null,
             "workoutTypeValueId": null,
             "code": null,
@@ -147,7 +148,7 @@ function (_, moment, TP, WorkoutDetailsModel)
         copyToClipboard: function()
         {
             var attributesToCopy = [
-                "personId",
+                "athleteId",
                 "title",
                 "workoutTypeValueId",
                 "workoutDay",
@@ -213,7 +214,7 @@ function (_, moment, TP, WorkoutDetailsModel)
 
         parse: function(response)
         {
-            this.getPostActivityComments().update(response.workoutComments);
+            this.getPostActivityComments().set(response.workoutComments);
             return response;
         },
 

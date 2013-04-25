@@ -6,16 +6,15 @@ define(
     "framework/ajaxTimezone",
     "models/session",
     "models/userModel",
-    "models/userSettingsModel",
     "models/clientEventsCollection",
     "controllers/navigationController",
     "controllers/loginController",
-    "controllers/calendarController",
+    "controllers/calendar/calendarController",
     "router",
     "marionette.faderegion",
     "jqueryui/tooltip"
 ],
-function(TP, initializeAjaxAuth, ajaxCaching, initializeAjaxTimezone, Session, UserModel, UserSettingsModel, ClientEventsCollection, NavigationController, LoginController, CalendarController, Router)
+function(TP, initializeAjaxAuth, ajaxCaching, initializeAjaxTimezone, Session, UserModel, ClientEventsCollection, NavigationController, LoginController, CalendarController, Router)
 {
     var theApp = new TP.Application();
 
@@ -50,11 +49,9 @@ function(TP, initializeAjaxAuth, ajaxCaching, initializeAjaxTimezone, Session, U
     });
     
     // add a session
-    theApp.addInitializer(function initSession()
+    theApp.addInitializer(function()
     {
-
         this.user = new UserModel();
-        this.userSettings = new UserSettingsModel();
         this.session = new Session();
         this.setupAuthPromise();
     });
@@ -199,7 +196,8 @@ function(TP, initializeAjaxAuth, ajaxCaching, initializeAjaxTimezone, Session, U
     if (apiRootName !== 'live')
     {
         theApp.root = "/Mars";
-    } else
+    }
+    else
     {
         theApp.root = '';
     }

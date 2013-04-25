@@ -1,11 +1,11 @@
 define(
 [
     "handlebars",
-    "utilities/determineCompletedWorkout"
+    "TP"
 ],
-function (Handlebars, determineCompletedWorkout)
+function (Handlebars, TP)
 {
 
-        Handlebars.registerHelper("determineCompletedWorkout", determineCompletedWorkout);
-        return determineCompletedWorkout;
+    Handlebars.registerHelper("determineCompletedWorkout", TP.utils.workout.determineCompletedWorkout);
+    return TP.utils.workout.determineCompletedWorkout;
 });

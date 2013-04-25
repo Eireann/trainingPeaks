@@ -3,9 +3,10 @@
 requirejs(
 [
     "jquery",
+    "moment",
     "models/session"
 ],
-function($, SessionModel)
+function($, moment, SessionModel)
 {
     describe("Session Model ", function ()
     {
@@ -90,6 +91,26 @@ function($, SessionModel)
             theSession.authenticate(authObj);
 
             expect(mockDeferred.done).toHaveBeenCalled();
+        });
+
+       it("should call sucess if accessToken in not null", function()
+        {
+            spyOn(theSession.storageLocation, "getItem").andCallFake(function (keyName)
+            {
+                if(keyName === "access_token")
+                {
+                    return "accessTokenSet";
+                }
+                else
+                {
+                    return moment().add("days", 1).unix();
+                }
+
+            });
+
+            theSession.initialize();
+            expect(theSession.get("access_token")).toBe("accessTokenSet");
+
         });
     });
 

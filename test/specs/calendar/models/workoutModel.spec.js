@@ -88,7 +88,7 @@ function(moment, $, WorkoutModel)
             var workout;
             var workoutAttributes = {
                 "workoutId": 12345,
-                "personId": 67890,
+                "athleteId": 67890,
                 "title": "My Copied Workout",
                 "workoutTypeValueId": 1,
                 "workoutDay": "2013-01-01T07:00:00",
@@ -114,7 +114,7 @@ function(moment, $, WorkoutModel)
                 "elevationGainPlanned": 1000
             };
             var attributesToCopy = [
-                "personId",
+                "athleteId",
                 "title",
                 "workoutTypeValueId",
                 "workoutDay",
@@ -246,7 +246,7 @@ function(moment, $, WorkoutModel)
                     var pastedWorkout = copiedWorkout.onPaste(dateToPasteTo);
 
                     var attributesToCopy = [
-                        "personId",
+                        "athleteId",
                         "title",
                         "workoutTypeValueId",
                         "workoutDay",

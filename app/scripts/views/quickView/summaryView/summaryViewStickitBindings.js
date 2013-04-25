@@ -1,13 +1,11 @@
 ﻿define(
 [
-    "TP",
-    "utilities/printUnitLabel",
-    "utilities/conversion"
+    "underscore",
+    "TP"
 ],
 function(
-    TP,
-    printUnitLabel,
-    conversion
+    _,
+    TP
 )
 {
     var summaryViewStickitBindings = {
@@ -59,413 +57,308 @@ function(
             "#distanceCompletedField":
             {
                 observe: "distance",
-                onGet: "getDistance",
-                onSet: "setDistance",
+                onGet: "formatDistance",
+                onSet: "parseDistance",
                 updateModel: "updateModel"
             },
             "#distancePlannedField":
             {
                 observe: "distancePlanned",
-                onGet: "getDistance",
-                onSet: "setDistance",
+                onGet: "formatDistance",
+                onSet: "parseDistance",
                 updateModel: "updateModel"
             },
             "#totalTimeCompletedField":
             {
                 observe: "totalTime",
-                onGet: "getTime",
-                onSet: "setTime",
+                onGet: "formatDuration",
+                onSet: "parseDuration",
                 updateModel: "updateModel"
             },
             "#totalTimePlannedField":
             {
                 observe: "totalTimePlanned",
-                onGet: "getTime",
-                onSet: "setTime",
+                onGet: "formatDuration",
+                onSet: "parseDuration",
                 updateModel: "updateModel"
             },
             "#tssPlannedField":
             {
                 observe: "tssPlanned",
-                onGet: "getTSS",
-                onSet: "setTSS",
+                onGet: "formatTSS",
+                onSet: "parseTSS",
                 updateModel: "updateModel"
             },
             "#tssCompletedField":
             {
                 observe: "tssActual",
-                onGet: "getTSS",
-                onSet: "setTSS",
+                onGet: "formatTSS",
+                onSet: "parseTSS",
                 updateModel: "updateModel"
             },
             "#normalizedPaceCompletedField":
             {
                 observe: "normalizedSpeedActual",
-                onGet: "getPace",
-                onSet: "setPace",
+                onGet: "formatPace",
+                onSet: "parsePace",
                 updateModel: "updateModel"
             },
             "#averagePacePlannedField":
             {
                 observe: "velocityPlanned",
-                onGet: "getPace",
-                onSet: "setPace",
+                onGet: "formatPace",
+                onSet: "parsePace",
                 updateModel: "updateModel"
             },
             "#averagePaceCompletedField":
             {
                 observe: "velocityAverage",
-                onGet: "getPace",
-                onSet: "setPace",
+                onGet: "formatPace",
+                onSet: "parsePace",
                 updateModel: "updateModel"
             },
             "#averageSpeedPlannedField":
             {
                 observe: "velocityPlanned",
-                onGet: "getSpeed",
-                onSet: "setSpeed",
+                onGet: "formatSpeed",
+                onSet: "parseSpeed",
                 updateModel: "updateModel"
             },
             "#averageSpeedCompletedField":
             {
                 observe: "velocityAverage",
-                onGet: "getSpeed",
-                onSet: "setSpeed",
+                onGet: "formatSpeed",
+                onSet: "parseSpeed",
                 updateModel: "updateModel"
             },
             "#caloriesPlannedField":
             {
                 observe: "caloriesPlanned",
-                onGet: "getNumber",
-                onSet: "setInteger",
+                onGet: "formatNumber",
+                onSet: "parseInteger",
                 updateModel: "updateModel"
             },
             "#caloriesCompletedField":
             {
                 observe: "calories",
-                onGet: "getNumber",
-                onSet: "setInteger",
+                onGet: "formatNumber",
+                onSet: "parseInteger",
                 updateModel: "updateModel"
             },
             "#elevationGainPlannedField":
             {
                 observe: "elevationGainPlanned",
-                onGet: "getElevation",
-                onSet: "setElevation",
+                onGet: "formatElevation",
+                onSet: "parseElevation",
                 updateModel: "updateModel"
             },
             "#elevationGainCompletedField":
             {
                 observe: "elevationGain",
-                onGet: "getElevation",
-                onSet: "setElevation",
+                onGet: "formatElevation",
+                onSet: "parseElevation",
                 updateModel: "updateModel"
             },
             "#elevationLossCompletedField":
             {
                 observe: "elevationLoss",
-                onGet: "getElevation",
-                onSet: "setElevation",
+                onGet: "formatElevation",
+                onSet: "parseElevation",
                 updateModel: "updateModel"
             },
             "#ifPlannedField":
             {
                 observe: "ifPlanned",
-                onGet: "getIF",
-                onSet: "setIF",
+                onGet: "formatIF",
+                onSet: "parseIF",
                 updateModel: "updateModel"
             },
             "#ifCompletedField":
             {
                 observe: "if",
-                onGet: "getIF",
-                onSet: "setIF",
+                onGet: "formatIF",
+                onSet: "parseIF",
                 updateModel: "updateModel"
             },
             "#energyPlannedField":
             {
                 observe: "energyPlanned",
-                onGet: "getEnergy",
-                onSet: "setEnergy",
+                onGet: "formatEnergy",
+                onSet: "parseEnergy",
                 updateModel: "updateModel"
             },
             "#energyCompletedField":
             {
                 observe: "energy",
-                onGet: "getEnergy",
-                onSet: "setEnergy",
+                onGet: "formatEnergy",
+                onSet: "parseEnergy",
                 updateModel: "updateModel"
             },
             "#powerAvgField":
             {
                 observe: "powerAverage",
-                onGet: "getNumber",
-                onSet: "setFloat",
+                onGet: "formatNumber",
+                onSet: "parseFloat",
                 updateModel: "updateModel"
             },
             "#powerMaxField":
             {
                 observe: "powerMaximum",
-                onGet: "getNumber",
-                onSet: "setFloat",
+                onGet: "formatNumber",
+                onSet: "parseFloat",
                 updateModel: "updateModel"
             },
             "#torqueAvgField":
             {
                 observe: "torqueAverage",
-                onGet: "getNumber",
-                onSet: "setFloat",
+                onGet: "formatNumber",
+                onSet: "parseFloat",
                 updateModel: "updateModel"
             },
             "#torqueMaxField":
             {
                 observe: "torqueMaximum",
-                onGet: "getNumber",
-                onSet: "setFloat",
+                onGet: "formatNumber",
+                onSet: "parseFloat",
                 updateModel: "updateModel"
             },
             "#elevationMinField":
             {
                 observe: "elevationMinimum",
-                onGet: "getElevation",
-                onSet: "setElevation",
+                onGet: "formatElevation",
+                onSet: "parseElevation",
                 updateModel: "updateModel"
             },
             "#elevationAvgField":
             {
                 observe: "elevationAverage",
-                onGet: "getElevation",
-                onSet: "setElevation",
+                onGet: "formatElevation",
+                onSet: "parseElevation",
                 updateModel: "updateModel"
             },
             "#elevationMaxField":
             {
                 observe: "elevationMaximum",
-                onGet: "getElevation",
-                onSet: "setElevation",
+                onGet: "formatElevation",
+                onSet: "parseElevation",
                 updateModel: "updateModel"
             },
             "#cadenceAvgField":
             {
                 observe: "cadenceAverage",
-                onGet: "getNumber",
-                onSet: "setInteger",
+                onGet: "formatNumber",
+                onSet: "parseInteger",
                 updateModel: "updateModel"
             },
             "#cadenceMaxField":
             {
                 observe: "cadenceMaximum",
-                onGet: "getNumber",
-                onSet: "setInteger",
+                onGet: "formatNumber",
+                onSet: "parseInteger",
                 updateModel: "updateModel"
             },
             "#speedAvgField":
             {
                 observe: "velocityAverage",
-                onGet: "getSpeed",
-                onSet: "setSpeed",
+                onGet: "formatSpeed",
+                onSet: "parseSpeed",
                 updateModel: "updateModel"
             },
             "#speedMaxField":
             {
                 observe: "velocityMaximum",
-                onGet: "getSpeed",
-                onSet: "setSpeed",
+                onGet: "formatSpeed",
+                onSet: "parseSpeed",
                 updateModel: "updateModel"
             },
             "#paceAvgField":
             {
                 observe: "velocityAverage",
-                onGet: "getPace",
-                onSet: "setPace",
+                onGet: "formatPace",
+                onSet: "parsePace",
                 updateModel: "updateModel"
             },
             "#paceMaxField":
             {
                 observe: "velocityMaximum",
-                onGet: "getPace",
-                onSet: "setPace",
+                onGet: "formatPace",
+                onSet: "parsePace",
                 updateModel: "updateModel"
             },
             "#hrMinField":
             {
                 observe: "heartRateMinimum",
-                onGet: "getNumber",
-                onSet: "setInteger",
+                onGet: "formatNumber",
+                onSet: "parseInteger",
                 updateModel: "updateModel"
             },
             "#hrAvgField":
             {
                 observe: "heartRateAverage",
-                onGet: "getNumber",
-                onSet: "setInteger",
+                onGet: "formatNumber",
+                onSet: "parseInteger",
                 updateModel: "updateModel"
             },
             "#hrMaxField":
             {
                 observe: "heartRateMaximum",
-                onGet: "getNumber",
-                onSet: "setInteger",
+                onGet: "formatNumber",
+                onSet: "parseInteger",
                 updateModel: "updateModel"
             },
             "#tempMinField":
             {
                 observe: "tempMin",
-                onGet: "getTemperature",
-                onSet: "setTemperature",
+                onGet: "formatTemperature",
+                onSet: "parseTemperature",
                 updateModel: "updateModel"
             },
             "#tempAvgField":
             {
                 observe: "tempAvg",
-                onGet: "getTemperature",
-                onSet: "setTemperature",
+                onGet: "formatTemperature",
+                onSet: "parseTemperature",
                 updateModel: "updateModel"
             },
             "#tempMaxField":
             {
                 observe: "tempMax",
-                onGet: "getTemperature",
-                onSet: "setTemperature",
+                onGet: "formatTemperature",
+                onSet: "parseTemperature",
                 updateModel: "updateModel"
             },
             "#descriptionInput":
             {
                 events: [ "blur", "keyup", "change", "cut", "paste" ],
                 observe: "description",
-                onSet: "setTextField",
-                onGet: "getTextField",
+                onSet: "parseTextField",
+                onGet: "formatTextField",
                 updateModel: "updateModel"
             },
             "#postActivityCommentsInput":
             {
                 observe: "newComment",
-                onSet: "setTextField",
-                onGet: "getTextField",
+                onSet: "parseTextField",
+                onGet: "formatTextField",
                 events: ["blur", "change", "keyup", "paste"],
                 updateModel: "updateModel"
             },
             "#preActivityCommentsInput": 
             {
                 observe: "coachComments",
-                onSet: "setTextField",
-                onGet: "getTextField",
+                onSet: "parseTextField",
+                onGet: "formatTextField",
                 events: ["blur", "change", "keyup", "paste"],
                 updateModel: "updateModel"
             }
         },
 
-        getDistance: function(value, options)
-        {
-            return conversion.convertToViewUnits(value, "distance");
-        },
-
-        setDistance: function(value, options)
-        {
-            return conversion.convertToModelUnits(parseFloat(value), "distance");
-        },
-
-        getTime: function (value, options)
-        {
-            return TP.utils.datetime.format.decimalHoursAsTime(value, true, "");
-        },
-
-        setTime: function (value, options)
-        {
-            return TP.utils.datetime.convert.timeToDecimalHours(value);
-        },
-
-        getPace: function (value, options)
-        {
-            return conversion.convertToViewUnits(value, "pace");
-        },
-
-        setPace: function (value, options)
-        {
-            return conversion.convertToModelUnits(value, "pace");
-        },
-
-        getSpeed: function (value, options)
-        {
-            return conversion.convertToViewUnits(value, "speed");
-        },
-
-        setSpeed: function (value, options)
-        {
-            return conversion.convertToModelUnits(parseFloat(value), "speed");
-        },
-
-        getElevation: function (value, options)
-        {
-            return conversion.convertToViewUnits(value, "elevation");
-        },
-
-        setElevation: function (value, options)
-        {
-            return conversion.convertToModelUnits(parseInt(value, 10), "elevation");
-        },
-
-        getNumber: function(value, options)
-        {
-            return ((value === null || value === 0 || value === "0") ? "" : +value);
-        },
-        
-        setInteger: function(value, options)
-        {
-            return ((value === "" || value === "0") ? null : parseInt(value, 10));
-        },
-        
-        setFloat: function(value, options)
-        {
-            return (value === "" ? null : parseFloat(value));
-        },
-
-        getTemperature: function(value, options)
-        {
-            return conversion.convertToViewUnits(value, "temperature");
-        },
-        
-        setTemperature: function(value, options)
-        {
-            return conversion.convertToModelUnits(parseInt(value, 10), "temperature");
-        },
-        
-        getIF: function (value, options)
-        {
-            return value ? +(Math.round(value * 100) / 100) : "";
-        },
-
-        setIF: function (value, options)
-        {
-            return value ? (Math.round(parseFloat(value) * 100) / 100).toFixed(2) : 0;
-        },
-        
-        getTSS: function (value, options)
-        {
-            return value ? (Math.round(value * 10) / 10) : "";
-        },
-
-        setTSS: function (value, options)
-        {
-            return value ? (Math.round(parseFloat(value) * 10) / 10).toFixed(1) : 0;
-        },
-        
-        getEnergy: function (value, options)
-        {
-            return value ? +(Math.round(value)) : "";
-        },
-
-        setEnergy: function (value, options)
-        {
-            return value ? (Math.round(parseFloat(value))).toFixed(0) : 0;
-        },
-
-        setTextField: function(value, options)
+        parseTextField: function(value, options)
         {
             return value === "" ? null : this.fixNewlines(value);
         },
 
-        getTextField: function(value, options)
+        formatTextField: function(value, options)
         {
             return value === null ? "" : this.fixNewlines(value);
         },
@@ -535,5 +428,6 @@ function(
 
     };
 
+    _.extend(summaryViewStickitBindings, TP.utils.conversion);
     return summaryViewStickitBindings;
 });

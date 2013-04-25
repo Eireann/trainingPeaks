@@ -16,8 +16,8 @@
             "layouts": "scripts/layouts",
             "helpers": "scripts/helpers",
             "utilities": "scripts/utilities",
-     
-            // jQuery related
+
+            // jQuery related, but not managed by bower yet ...
             "jqueryui": "../vendor/js/libs/jqueryui",
             "jqueryOutside": "../vendor/js/libs/jquery/jquery.ba-outside-events",
             "jqueryTimepicker": "../vendor/js/libs/jquery-timepicker/jquery.timepicker",
@@ -25,15 +25,15 @@
             "jquerySelectBox": "../vendor/js/libs/jquery/chosen.jquery",
 
             // Underscore & Lodash (provided by Lodash)
-            "lodash": "../vendor/js/libs/lodash/lodash",
-            "underscore": "../vendor/js/libs/lodash/lodash",
+            "lodash": "../vendor/js/libs/lodash.TP",
+            "underscore": "../vendor/js/libs/lodash.TP",
 
             // Backbone and plugins
             "backbone": "../vendor/js/libs/backbone",
             "backbone.marionette": "../vendor/js/libs/backbone.marionette",
             "Backbone.Marionette.Handlebars": "../vendor/js/libs/Backbone.Marionette.Handlebars/backbone.marionette.handlebars",
             "backbone.deepmodel": "../vendor/js/libs/backbone.deepmodel",
-            "backbone.stickit": "../vendor/js/libs/backbone.stickit",
+            "backbone.stickit": "../vendor/js/libs/backbone.stickit.TP",
 
             // Marionette plugins
             "marionette.faderegion": "scripts/plugins/marionette.faderegion",
@@ -41,7 +41,9 @@
             // Handlebars plugins
             "i18nprecompile": "../vendor/js/libs/i18nprecompile",
             "json2": "../vendor/js/libs/json2",
-            "hbs": "../vendor/js/libs/hbs",
+
+            // our vendor hbs has been patched to resolve string args, so don't use bower ...
+            "hbs": "../vendor/js/libs/hbs.TP",
 
             // date utilities
             "moment": "../vendor/js/libs/moment/moment",
@@ -85,10 +87,6 @@
             {
                 deps: ["backbone"],
                 exports: "Backbone"
-            },
-            "lawnchair":
-            {
-                exports: "Lawnchair"
             },
             "jqueryOutside":
             {

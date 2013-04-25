@@ -44,7 +44,7 @@ function(TP)
 
         url: function()
         {
-            return theMarsApp.apiRoot + "/WebApiServer/Users/V1/User";
+            return theMarsApp.apiRoot + "/WebApiServer/users/v1/user";
         },
 
         initialize: function(options)

@@ -1,10 +1,10 @@
 define(
 [
     "handlebars",
-    "utilities/workoutTypeName"
+    "TP"
 ],
-function(Handlebars, workoutTypeName)
+function(Handlebars, TP)
 {
-    Handlebars.registerHelper("workoutTypeName", workoutTypeName);
-    return workoutTypeName;
+    Handlebars.registerHelper("workoutTypeName", TP.utils.workout.types.getNameById);
+    return TP.utils.workout.types.getNameById;
 });

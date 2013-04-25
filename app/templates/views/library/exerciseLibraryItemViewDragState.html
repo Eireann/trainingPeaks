@@ -6,11 +6,11 @@
         <div class="workoutDistanceTime">
             <label>
                 {{#if distancePlanned }}
-                {{ convertToViewUnits distancePlanned}} {{printUnitLabel "distance"}}
+                {{ convertToViewUnits distancePlanned}} {{getUnitsLabel "distance"}}
                 {{/if}}
            
                 {{#if totalTimePlanned}} 
-                {{ printTimeFromDecimalHours totalTimePlanned }}
+                {{ formatTime totalTimePlanned }}
                 {{/if}}
            
                 {{#if tssPlanned}} 
