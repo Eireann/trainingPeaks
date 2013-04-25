@@ -106,6 +106,14 @@
             "jquerySelectBox":
             {
                 exports: ""
+            },
+            "highcharts":
+            {
+                exports: "Highcharts"
+            },
+            "leaflet":
+            {
+                exports: "L"
             }
         }
 

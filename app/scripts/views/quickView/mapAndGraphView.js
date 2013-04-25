@@ -6,7 +6,6 @@
 ],
 function (TP, Highcharts, workoutQuickViewMapAndGraphTemplate)
 {
-    
     var mapAndGraphViewBase = 
     {
         className: "mapAndGraph",

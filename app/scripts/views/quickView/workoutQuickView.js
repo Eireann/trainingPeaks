@@ -80,14 +80,6 @@ function (
                 {
                     self.model.get("details").fetch();
                 }, 800);
-
-                // Let's also pre-fetch WorkoutDetailData (Samples & Detailed Peaks & Laps),
-                // but let's wait a few seconds to avoid fetching the data unless the user
-                // stays on the QuickView long enough.
-                this.workoutDetailDataFetchTimeout = setTimeout(function()
-                {
-                    self.model.get("detailData").fetch();
-                }, 3000);
                 
                 this.on("close", this.stopWorkoutDetailsFetch, this);
             }
@@ -171,7 +163,7 @@ function (
             if (!e)
                 return;
 
-            var tabIndex = parseInt(this.$(e.currentTarget).data("tabindex"));
+            var tabIndex = parseInt(this.$(e.currentTarget).data("tabindex"), 10);
 
             if (tabIndex === null || typeof tabIndex === "undefined")
                 return;
