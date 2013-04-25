@@ -3,9 +3,10 @@
     "underscore",
     "moment",
     "TP",
-    "models/workoutDetails"
+    "models/workoutDetails",
+    "models/workoutDetailData"
 ],
-function (_, moment, TP, WorkoutDetailsModel)
+function (_, moment, TP, WorkoutDetailsModel, WorkoutDetailDataModel)
 {
     var WorkoutModel = TP.APIModel.extend(
     {
@@ -83,7 +84,8 @@ function (_, moment, TP, WorkoutDetailsModel)
             "startTime": null,
             "startTimePlanned": null,
             
-            "details": null
+            "details": null,
+            "detailData": null
         },
 
         initialize: function()
@@ -92,6 +94,7 @@ function (_, moment, TP, WorkoutDetailsModel)
             _.bindAll(this, "checkpoint", "revert");
 
             this.set("details", new WorkoutDetailsModel({ workoutId: this.get("workoutId") }));
+            this.set("detailData", new WorkoutDetailDataModel({ workoutId: this.get("workoutId") }));
         },
         
         checkpoint: function()

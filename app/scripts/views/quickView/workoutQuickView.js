@@ -56,7 +56,12 @@ function (
             else
             {
                 // Not a new workout, let's pre-fetch WorkoutDetails from the server
-                this.model.get("details").fetch();
+                var self = this;
+                var detailsPromise = this.model.get("details").fetch();
+                detailsPromise.done(function()
+                {
+                    self.model.get("detailData").fetch();
+                });
             }
             
             this.initializeFileUploads();
