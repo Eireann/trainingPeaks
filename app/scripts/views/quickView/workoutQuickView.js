@@ -41,7 +41,14 @@ function (
         showThrobbers: false,
 
         // must have an events, even if empty, or else all of our extending won't work right ...
-        events: {},
+        events:
+        {
+            "click .tabNavigation > .summaryTab": "onTabNavigationClicked",
+            "click .tabNavigation > .heartrateTab": "onTabNavigationClicked",
+            "click .tabNavigation > .powerTab": "onTabNavigationClicked",
+            "click .tabNavigation > .paceTab": "onTabNavigationClicked",
+            "click .tabNavigation > .mapAndGraphTab": "onTabNavigationClicked"
+        },
 
         ui:
         {
@@ -61,6 +68,15 @@ function (
             "#quickViewPowerTab",
             "#quickViewSpeedTab",
             "#quickViewMapAndGraphTab"
+        ],
+
+        tabRendered:
+        [
+            false,
+            false,
+            false,
+            false,
+            false
         ],
 
         initialize: function(options)
@@ -140,12 +156,29 @@ function (
             var tab = this.tabs[this.currentTabIndex];
 
             // Lazy render the tab, only once
-            tab.render();
+            if (!this.tabRendered[this.currentTabIndex])
+            {
+                tab.render();
+                this.tabRendered[this.currentTabIndex] = true;
+            }
 
             this.ui.quickViewContent.find(".tabContent").hide();
             this.ui.quickViewContent.find(this.tabDomIDs[this.currentTabIndex]).show();
-        }
+        },
+        
+        onTabNavigationClicked: function(e)
+        {
+            if (!e)
+                return;
 
+            var tabIndex = parseInt(this.$(e.currentTarget).data("tabindex"));
+
+            if (tabIndex === null || typeof tabIndex === "undefined")
+                return;
+            
+            this.currentTabIndex = tabIndex;
+            this.renderCurrentTab();
+        }
     };
 
     _.extend(WorkoutQuickView, qvSaveDeleteDiscard);
