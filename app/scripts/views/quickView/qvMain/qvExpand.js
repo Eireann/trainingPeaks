@@ -30,8 +30,8 @@ function (
         animate: function(windowHeight, windowWidth)
         {
             var duration = 300;
-            var newHeight = windowHeight * .95;
-            var newWidth = windowWidth * .95;
+            var newHeight = windowHeight * 0.95;
+            var newWidth = windowWidth * 0.95;
             this.$el.animate({ height: newHeight, width: newWidth, top: "20px", left: "20px" }, { duration: duration });
             this.$("#workOutQuickView").animate({ height: newHeight, width: newWidth }, { duration: duration });
             this.$(".tabNavigation, #quickViewContent, .quickviewFooter, #menuIcon, .expandButton").css({ display: "none" });
