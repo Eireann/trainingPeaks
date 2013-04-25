@@ -2,33 +2,39 @@
 [
     "utilities/units/constants"
 ],
-function(unitConstants)
+function(unitsConstants)
 {
-    var ENGLISH = unitConstants.English;
-    var METRIC = unitConstants.Metric;
 
     // Conversion factors from Model units (metric) to view units.
     // Use inverse (1/*) for View to Model conversion.
-    return {
+    var conversionFactors = {
         "distance":
         {
-            ENGLISH: 0.000621371,
-            METRIC: 0.001
+            English: 0.000621371,
+            Metric: 0.001
         },
         "pace":
         {
-            ENGLISH: 26.8224,
-            METRIC: 16.666666666667
+            English: 26.8224,
+            Metric: 16.666666666667
         },
         "speed":
         {
-            ENGLISH: 2.236936,
-            METRIC: 3.6
+            English: 2.236936,
+            Metric: 3.6
         },
         "elevation":
         {
-            ENGLISH: 3.28084,
-            METRIC: 1
+            English: 3.28084,
+            Metric: 1
         }
     };
+
+    var lookupConversion = function(unitsType, userUnits)
+    {
+        var userUnitsKey = userUnits === unitsConstants.English ? "English" : "Metric";
+        return conversionFactors[unitsType][userUnitsKey];
+    };
+
+    return lookupConversion;
 });

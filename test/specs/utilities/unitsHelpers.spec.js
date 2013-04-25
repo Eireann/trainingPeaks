@@ -1,22 +1,14 @@
 requirejs(
 [
-    "TP"
+    "TP",
+    "app"
 ],
-function(TP)
+function(TP, theMarsApp)
 {
     describe("units related utilities, english units", function()
     {
-        var theMarsApp =
-        {
-            user:
-            {
-                get: function(system)
-                {
-                    return TP.utils.units.constants.English;
-                }
-            }
-        };
-         
+        theMarsApp.user.set("units", TP.utils.units.constants.English);
+
         describe("convertToModelUnits template helper", function()
         {
         });

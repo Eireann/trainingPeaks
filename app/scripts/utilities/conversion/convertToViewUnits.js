@@ -19,7 +19,7 @@ function(
             unitSystem = theMarsApp.user.get("units");
 
         var pace;
-        var conversion = modelToViewConversionFactors.speed[unitSystem];
+        var conversion = modelToViewConversionFactors("speed", unitSystem);
         speed = speed * conversion / 60;
         pace = (1 / speed).toFixed(2);
         var minutes = Math.floor(pace);
@@ -119,7 +119,7 @@ function(
     var convertElevation = function(value)
     {
         var currentUnits = theMarsApp.user.get("units");
-        return (value * modelToViewConversionFactors["elevation"][currentUnits]).toFixed(0);
+        return (value * modelToViewConversionFactors("elevation", currentUnits)).toFixed(0);
     };
 
     var convertTemperature = function(value)
@@ -131,7 +131,7 @@ function(
     var convertDistanceToViewUnits = function(value, sportType, precision)
     {
 
-        var convertedValue = value * modelToViewConversionFactors["distance"][theMarsApp.user.get("units")];
+        var convertedValue = value * modelToViewConversionFactors("distance", theMarsApp.user.get("units"));
 
         var swimType = workoutTypes.getIdByName("Swim");
         if (swimType === sportType)
@@ -145,7 +145,7 @@ function(
 
     var convertSpeedToViewUnits = function(value)
     {
-        return roundViewUnits(value * modelToViewConversionFactors["speed"][theMarsApp.user.get("units")], 1);
+        return roundViewUnits(value * modelToViewConversionFactors("speed", theMarsApp.user.get("units")), 1);
     };
 
     return convertToViewUnits;
