@@ -5,7 +5,7 @@
     "TP",
     "models/workoutDetails"
 ],
-function (_, moment, TP, WorkoutDetailsModel)
+function(_, moment, TP, WorkoutDetailsModel)
 {
     var WorkoutModel = TP.APIModel.extend(
     {
@@ -92,6 +92,12 @@ function (_, moment, TP, WorkoutDetailsModel)
             _.bindAll(this, "checkpoint", "revert");
 
             this.set("details", new WorkoutDetailsModel({ workoutId: this.get("workoutId") }));
+
+            // for newly added workouts, or else opening the qv again passes null to endpoint url
+            this.on("change:workoutId", function()
+            {
+                this.get("details").set("workoutId", this.get("workoutId"));
+            }, this);
         },
         
         checkpoint: function()
