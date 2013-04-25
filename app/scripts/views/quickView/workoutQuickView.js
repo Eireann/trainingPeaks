@@ -9,6 +9,7 @@
     "views/quickView/qvMain/qvHeaderActions",
     "views/quickView/qvMain/qvFileUploads",
     "views/quickView/summaryView",
+    "views/quickView/mapAndGraphView",
     "hbs!templates/views/quickView/workoutQuickView"
 ],
 function (
@@ -21,6 +22,7 @@ function (
     qvHeaderActions,
     qvFileUploads,
     WorkoutQuickViewSummary,
+    WorkoutQuickViewMapAndGraph,
     workoutQuickViewTemplate
 )
 {
@@ -46,6 +48,21 @@ function (
             "quickViewContent": "#quickViewContent"
         },
 
+        currentTabIndex: 0,
+
+        tabs:
+        [
+        ],
+
+        tabDomIDs:
+        [
+            "#quickViewSummaryTab",
+            "#quickViewHRTab",
+            "#quickViewPowerTab",
+            "#quickViewSpeedTab",
+            "#quickViewMapAndGraphTab"
+        ],
+
         initialize: function(options)
         {
             if (options.isNewWorkout)
@@ -55,20 +72,38 @@ function (
             }
             else
             {
-                // Not a new workout, let's pre-fetch WorkoutDetails from the server
                 var self = this;
-                var detailsPromise = this.model.get("details").fetch();
-                detailsPromise.done(function()
+
+                // Not a new workout, let's pre-fetch WorkoutDetails from the server
+                this.workoutDetailsFetchTimeout = setTimeout(function()
+                {
+                    self.model.get("details").fetch();
+                }, 800);
+
+                // Let's also pre-fetch WorkoutDetailData (Samples & Detailed Peaks & Laps),
+                // but let's wait a few seconds to avoid fetching the data unless the user
+                // stays on the QuickView long enough.
+                this.workoutDetailDataFetchTimeout = setTimeout(function()
                 {
                     self.model.get("detailData").fetch();
-                });
+                }, 3000);
+                
+                this.on("close", this.stopWorkoutDetailsFetch, this);
             }
             
             this.initializeFileUploads();
             this.initializeStickit();
             this.initializeSaveDeleteDiscard();
             this.initializeHeaderActions();
-            this.initializeTabs();
+        },
+        
+        stopWorkoutDetailsFetch: function ()
+        {
+            if (this.workoutDetailsFetchTimeout)
+                clearTimeout(this.workoutDetailsFetchTimeout);
+            
+            if (this.workoutDetailDataFetchTimeout)
+                clearTimeout(this.workoutDetailDataFetchTimeout);
         },
 
         template:
@@ -81,29 +116,34 @@ function (
         {
             if (!this.renderInitialized)
             {
+                this.initializeTabs();
+                this.renderCurrentTab();
+
                 this.renderInitialized = true;
-                this.renderTabs();
             }
         },
 
         initializeTabs: function()
         {
-            this.views =
-            {
-                workoutQuickViewSummary: new WorkoutQuickViewSummary({ model: this.model })
-            };
-
-            this.activeTabName = null;
+            this.tabs =
+            [
+                new WorkoutQuickViewSummary({ model: this.model, el: this.$(this.tabDomIDs[0]) }),
+                null,
+                null,
+                null,
+                new WorkoutQuickViewMapAndGraph({ model: this.model, el: this.$(this.tabDomIDs[4]) })
+            ];
         },
 
-        renderTabs: function()
+        renderCurrentTab: function()
         {
-            for (var tabName in this.views)
-            {
-                var tab = this.views[tabName];
-                tab.render();
-                this.ui.quickViewContent.append(tab.$el);
-            }
+            var tab = this.tabs[this.currentTabIndex];
+
+            // Lazy render the tab, only once
+            tab.render();
+
+            this.ui.quickViewContent.find(".tabContent").hide();
+            this.ui.quickViewContent.find(this.tabDomIDs[this.currentTabIndex]).show();
         }
 
     };

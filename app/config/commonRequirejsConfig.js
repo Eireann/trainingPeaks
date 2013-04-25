@@ -52,8 +52,11 @@
             "setImmediate": "../vendor/js/libs/setImmediate",
 
             // affiliates
-            "affiliates": "scripts/affiliates"
-
+            "affiliates": "scripts/affiliates",
+            
+            // Map & Graph
+            "leaflet": "../vendor/js/libs/leaflet/leaflet-src",
+            "highcharts": "../vendor/js/libs/highcharts/highcharts.src"
         },
 
         hbs:
