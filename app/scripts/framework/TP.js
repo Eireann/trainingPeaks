@@ -268,10 +268,35 @@ function(Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmediate,
         }
     };
 
+    // Because Marionette 1.0 took away initialEvents, which we need to hook up our modal functionality
+    var viewConstructor = {
+        constructor: function()
+        {
+            var args = Array.prototype.slice.apply(arguments);
+            Marionette.View.prototype.constructor.apply(this, args);
+            if (this.initialEvents)
+            {
+                this.initialEvents();
+            }
+        }
+    };
+
+    var itemViewConstructor = {
+        constructor: function()
+        {
+            var args = Array.prototype.slice.apply(arguments);
+            Marionette.ItemView.prototype.constructor.apply(this, args);
+            if (this.initialEvents)
+            {
+                this.initialEvents();
+            }
+        }
+    };
+
     TP.Events = Backbone.Events;
 
-    TP.View = Marionette.View.extend();
-    TP.ItemView = Marionette.ItemView.extend(commonViewFunctions).extend(modalRendering);
+    TP.View = Marionette.View.extend(viewConstructor);
+    TP.ItemView = Marionette.ItemView.extend(commonViewFunctions).extend(modalRendering).extend(itemViewConstructor);
     TP.CollectionView = Marionette.CollectionView.extend(commonViewFunctions);
     TP.CompositeView = Marionette.CompositeView.extend(commonViewFunctions);
 

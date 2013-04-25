@@ -2,10 +2,10 @@
 [
     "moment",
     "utilities/datetime/datetime",
-    "utilities/workout/workout",
+    "utilities/workout/workoutTypes",
     "utilities/conversion/convertToModelUnits",
     "utilities/conversion/convertToViewUnits"
-], function(moment, datetimeUtils, workoutUtils, convertToModelUnits, convertToViewUnits)
+], function(moment, datetimeUtils, workoutTypes, convertToModelUnits, convertToViewUnits)
 {
     return {
         convertToModelUnits: convertToModelUnits,
@@ -13,7 +13,7 @@
         
         formatDistance: function (value, options)
         {
-            return convertToViewUnits(value, "distance");
+            return convertToViewUnits(value, "distance", options && options.hasOwnProperty("defaultValue") ? options.defaultValue : "");
         },
 
         parseDistance: function (value, options)
@@ -23,7 +23,7 @@
 
         formatDuration: function (value, options)
         {
-            return datetimeUtils.format.decimalHoursAsTime(value, true, "");
+            return datetimeUtils.format.decimalHoursAsTime(value, true, options && options.hasOwnProperty("defaultValue") ? options.defaultValue : "");
         },
 
         parseDuration: function(value, options)
@@ -94,7 +94,7 @@
         
         formatWorkoutType: function(value, options)
         {
-            return workoutUtils.types.getNameById(value);
+            return workoutTypes.getNameById(value);
         },
 
         formatIF: function(value, options)
@@ -109,7 +109,7 @@
         
         formatTSS: function (value, options)
         {
-            return value ? (Math.round(value * 10) / 10) : "";
+            return value ? (Math.round(value * 10) / 10) : (options && options.hasOwnProperty("defaultValue") ? options.defaultValue : "");
         },
 
         parseTSS: function (value, options)

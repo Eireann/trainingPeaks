@@ -8,9 +8,6 @@ define(
     "models/calendar/calendarCollection",
     "models/calendar/calendarWeekCollection",
     "models/calendar/calendarDay",
-    "models/library/libraryExercisesCollection",
-    "models/workoutModel",
-    "models/commands/addWorkoutFromExerciseLibrary",
     "views/calendar/calendarHeaderView",
     "views/calendar/container/calendarContainerView",
     "controllers/calendar/dragMoveShift",
@@ -27,9 +24,6 @@ function(
     CalendarCollection,
     CalendarWeekCollection,
     CalendarDayModel,
-    LibraryExercisesCollection,
-    WorkoutModel,
-    AddWorkoutFromExerciseLibrary,
     calendarHeaderView,
     CalendarContainerView,
     calendarControllerDragMoveShift,
@@ -150,7 +144,7 @@ function(
         loadLibraryData: function()
         {
             for (var libraryName in this.libraryCollections)
-                this.libraryCollections[libraryName].fetch();
+                this.libraryCollections[libraryName].fetch({ reset: true });
         },
 
         onPasteEnabled: function()

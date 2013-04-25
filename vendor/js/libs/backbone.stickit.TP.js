@@ -97,7 +97,7 @@
             var event = type + namespace;
             var method = function(event)
             {
-                //TODO: B.F. Hack to pass through which type of event triggered this update request.
+                //TP TODO: B.F. Hack to pass through which type of event triggered this update request.
                 var eventType = type;
                 config.eventType = eventType;
               var val = config.getVal.call(self, $el, event, config);

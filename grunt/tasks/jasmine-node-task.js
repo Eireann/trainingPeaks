@@ -26,6 +26,7 @@ module.exports = function(grunt)
         }
 
         var projectRoot = grunt.config("jasmine_node.projectRoot") || ".";
+        var specFolder = grunt.config("jasmine_node.specFolder") || projectRoot;
         var source = grunt.config("jasmine_node.source") || "src";
         var specNameMatcher = grunt.config("jasmine_node.specNameMatcher") || "spec";
         var teamcity = process.env.TEAMCITY_PROJECT_NAME || grunt.config("jasmine_node.teamcity") || false;
@@ -83,7 +84,7 @@ module.exports = function(grunt)
         };
 
         var options = {
-            specFolder: projectRoot,
+            specFolder: specFolder,
             onComplete: onComplete,
             isVerbose: isVerbose,
             showColors: showColors,

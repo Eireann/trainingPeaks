@@ -138,7 +138,8 @@ define([
                 disableI18n = (config.hbs && config.hbs.disableI18n),
                 partialDeps = [];
 
-            function recursiveNodeSearch(statements, res) {
+            function recursiveNodeSearch(statements, res)
+            {
                 _(statements).forEach(function (statement) {
                     if (statement && statement.type && statement.type === 'partial') {
                         res.push(statement.id.string);
@@ -225,6 +226,7 @@ define([
                         var paramsWithoutParts = ['this', '.', '..', './..', '../..', '../../..'];
 
                         // grab the params
+                        // TP: modified by Micah, to allow string arguments to helpers
                         if (statement.params && typeof Handlebars.helpers[statement.id.string] === 'undefined' && statement.id.string !== "$")
                         {
                             _(statement.params).forEach(function(param) {
