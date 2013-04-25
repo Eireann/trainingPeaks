@@ -380,8 +380,11 @@ function(
             {
                 var inputFieldId = self.bindingsLUT[options.observe];
                 var currentViewValue = self.$(inputFieldId).val();
-                if (self.checkIfModelUpdateRequired(currentViewValue, options))
-                    self.performModelUpdate(currentViewValue, options);
+
+                // always update the model - even if a save is not required,
+                // the parsed view value is equivalent to current model value,
+                // but we may have lost formatting, so set the model value which triggers input field to reformat
+                self.performModelUpdate(currentViewValue, options);
             };
 
             if (this.updateModelTimeout)
@@ -398,25 +401,34 @@ function(
             return false;
         },
 
-        checkIfModelUpdateRequired: function(newViewValue, options)
+        checkIfModelSaveRequired: function(newViewValue, options)
         {
-            var doUpdateModel;
+            var doUpdateModel = false;
             var currentModelValue = this.model.get(options.observe);
 
             // DO coerce type in this situation, since we only care about truthy/falsy'ness.
             /*jslint eqeq: true*/
-            if (options.observe === "description")
-                doUpdateModel = (newViewValue === "" && currentModelValue === null ? false : (newViewValue != currentModelValue));
-            else if (!options.onGet)
-                doUpdateModel = currentModelValue == newViewValue ? false : true;
-            else
-                doUpdateModel = (this[options.onGet](currentModelValue) == newViewValue || parseFloat(this[options.onGet](currentModelValue)) == parseFloat(newViewValue)) ? false : true;
+            if (options.observe === "description" || !options.onSet)
+            {
+                if (newViewValue != currentModelValue)
+                {
+                    doUpdateModel = true;
+                }
+            } else {
+                // if the parsed input would be the same as the current value,
+                if (this[options.onSet](newViewValue) != currentModelValue)
+                {
+                    doUpdateModel = true;
+                }
+            }
             /*jsline eqeq: false*/
+
+            console.log("'" + currentModelValue + "', changing to '" + newViewValue + "', doUpdateModel=" + (doUpdateModel ? "true" : "false"));
 
             return doUpdateModel;
         },
         
-        performModelUpdate: function(newViewValue, options)
+        setModelValue: function(newViewValue, options)
         {
             // Do the save!
             var newModelValue = options.observe === "description" ? newViewValue : this[options.onSet](newViewValue);
@@ -427,7 +439,21 @@ function(
             else if (options.observe === "distancePlanned" || options.observe === "totalTimePlanned")
                 this.model.set("velocityPlanned", null);
 
-            this.model.save();
+        },
+
+        performModelUpdate: function(newViewValue, options)
+        {
+
+            // if model save is required, do it,
+            // else trigger a change so the view reformats
+            if (this.checkIfModelSaveRequired(newViewValue, options))
+            {
+                this.setModelValue(newViewValue, options);
+                this.model.save();                   
+            } else
+            {
+                this.model.trigger("change:" + options.observe, this.model, newViewValue, options);
+            }
         }
 
     };

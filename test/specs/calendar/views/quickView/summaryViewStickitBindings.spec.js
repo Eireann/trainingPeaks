@@ -89,7 +89,7 @@ function (TP, summaryViewStickitBindings)
         {
         });
 
-        describe("checkIfModelUpdateRequired method which returns true/false if model needs to be updated", function()
+        describe("checkIfModelSaveRequired method which returns true/false if model needs to be updated", function()
         {
             it("returns false when the new and old values are the same", function()
             {
@@ -114,7 +114,7 @@ function (TP, summaryViewStickitBindings)
 
                 context.model.set(options.observe, oldValue);
 
-                expect(summaryViewStickitBindings.checkIfModelUpdateRequired.call(context, newValue, options)).toBe(false);
+                expect(summaryViewStickitBindings.checkIfModelSaveRequired.call(context, newValue, options)).toBe(false);
             });
 
             it("returns true when the new and old values differ", function ()
@@ -140,11 +140,12 @@ function (TP, summaryViewStickitBindings)
 
                 context.model.set(options.observe, oldValue);
 
-                expect(summaryViewStickitBindings.checkIfModelUpdateRequired.call(context, newValue, options)).toBe(true);
+                expect(summaryViewStickitBindings.checkIfModelSaveRequired.call(context, newValue, options)).toBe(true);
             });
         });
 
-        describe("performModelUpdate method which performs the model update", function()
+        // needs refactoring
+        xdescribe("performModelSave method which performs the model update", function()
         {
             it("sets a non-description value in the model", function()
             {
