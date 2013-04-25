@@ -21,43 +21,110 @@ function (TP, Highcharts, workoutQuickViewMapAndGraphTemplate)
 
         initialize: function()
         {
+            _.bindAll(this, "onModelFetched");
+            this.modelPromise = this.model.get("detailData").fetch();
         },
         
         onRender: function()
         {
-            var data = [];
+            this.modelPromise.done(this.onModelFetched);
+        },
+        
+        onModelFetched: function()
+        {
+            if (this.model.get("detailData") === null || this.model.get("detailData").attributes.flatSamples === null)
+                return;
+
+            var seriesArray = [];
 
             var samples = this.model.get("detailData").attributes.flatSamples.samples;
 
-            _.each(samples, function(sample)
+            var channelMask = this.model.get("detailData").attributes.flatSamples.channelMask;
+            _.each(channelMask, function (channel)
             {
-                data.push([sample.millisecondOffset, sample.values[3]]);
+                seriesArray.push({ name: channel, data: [] });
+            });
+
+            _.each(samples, function (sample)
+            {
+                for (var i = 0; i < sample.values.length; i++)
+                {
+                    seriesArray[i].data.push([sample.millisecondsOffset, sample.values[i]]);
+                }
             });
 
             this.$("#quickViewGraph").highcharts(
             {
                 chart:
                 {
-                    type: "line"
+                    type: "line",
+                    zoomType: "x",
+                    resetZoomEnabled: true,
+                    alignTicks: true
+                },
+                credits:
+                {
+                    enabled: false
+                },
+                legend:
+                {
+                    enabled: true,
+                    backgroundColor: '#FFFFFF',
+                    layout: "horizontal",
+                    verticalAlign: "top",
+                    floating: false,
+                    align: "center",
+                    x: 0,
+                    y: 0
+                },
+                scrollbar:
+                {
+                    enabled: false
                 },
                 title:
                 {
                     text: "TP Chart"
                 },
                 yAxis:
-                {
-                    title:
-                    {
-                        text: "Heart Rate"
-                    }
-                },
-                series:
                 [
                     {
-                        name: "HR",
-                        data: data
+                        title:
+                        {
+                            text: "Heart Rate"
+                        },
+                        gridLineWidth: 1,
+                        min: 0
                     }
-                ]
+                ],
+                series: seriesArray,
+                plotOptions:
+                {
+                    line:
+                    {
+                        connectNulls: true,
+                        turboThreshold: 100
+                    },
+                    series:
+                    {
+                        allowPointSelector: true,
+                        animation: false,
+                        cursor: "pointer",
+                        lineWidth: 1,
+                        marker:
+                        {
+                            enabled: false
+                        },
+                        shadow: false,
+                        states:
+                        {
+                            hover:
+                            {
+                                enabled: false
+                            }
+                        },
+                        showCheckbox: false
+                    }
+                }
             });
         }
     };

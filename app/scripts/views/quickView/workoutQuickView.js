@@ -55,12 +55,6 @@ function (
             "quickViewContent": "#quickViewContent"
         },
 
-        currentTabIndex: 0,
-
-        tabs:
-        [
-        ],
-
         tabDomIDs:
         [
             "#quickViewSummaryTab",
@@ -68,15 +62,6 @@ function (
             "#quickViewPowerTab",
             "#quickViewSpeedTab",
             "#quickViewMapAndGraphTab"
-        ],
-
-        tabRendered:
-        [
-            false,
-            false,
-            false,
-            false,
-            false
         ],
 
         initialize: function(options)
@@ -106,6 +91,19 @@ function (
                 
                 this.on("close", this.stopWorkoutDetailsFetch, this);
             }
+
+            this.currentTabIndex = 0;
+
+            this.tabs = [];
+
+            this.tabRendered =
+            [
+                false,
+                false,
+                false,
+                false,
+                false
+            ];
             
             this.initializeFileUploads();
             this.initializeStickit();
@@ -115,6 +113,8 @@ function (
         
         stopWorkoutDetailsFetch: function ()
         {
+            this.off("close", this.stopWorkoutDetailsFetch);
+            
             if (this.workoutDetailsFetchTimeout)
                 clearTimeout(this.workoutDetailsFetchTimeout);
             
