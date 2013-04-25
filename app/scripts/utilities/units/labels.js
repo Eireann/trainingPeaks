@@ -105,22 +105,32 @@ function(workoutLayoutFormatter)
         }
     };
 
-    // TP.utils.units.getUnitsLabel(fieldName, sportType, viewContext)
-    var getUnitsLabel = function(fieldName, sportType, viewContext)
+    // TP.utils.units.getUnitsLabel(fieldName, sportType, context)
+    var getUnitsLabel = function(fieldName, sportType, context)
     {
         var currentUnits = theMarsApp.user.get("units");
         if (!unitsHash.hasOwnProperty(fieldName))
             throw "Unknown field type (" + fieldName + ") for unit label";
 
-        if (sportType !== undefined && unitsHash[fieldName].hasOwnProperty(sportType))
+        if (sportType !== undefined && unitsHash[fieldName].hasOwnProperty("bySportType") && unitsHash[fieldName].bySportType.hasOwnProperty(sportType))
             return unitsHash[fieldName][sportType][currentUnits];
         
         //TODO: refactor
-        if (viewContext && fieldName === "tss")
+        if (context && fieldName === "tss")
         {
-            var tssSource = viewContext.model.get("tssSource");
-            var tssAbbreviation = workoutLayoutFormatter.trainingStressScoreSource[tssSource].abbreviation;
-            return tssAbbreviation;
+            var tssSource = "";
+            if (context.hasOwnProperty("tssSource"))
+            {
+                tssSource = context.tssSource;
+            } else if (context.hasOwnProperty("model"))
+            {
+                tssSource = context.model.get("tssSource");
+            }
+
+            if (tssSource && workoutLayoutFormatter.trainingStressScoreSource[tssSource])
+            {
+                return workoutLayoutFormatter.trainingStressScoreSource[tssSource].abbreviation;
+            }
         }
 
         return unitsHash[fieldName][currentUnits];
