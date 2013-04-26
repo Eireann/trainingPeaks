@@ -1,9 +1,11 @@
 ﻿define(
 [
     "TP",
+    "views/quickView/mapAndGraph/mapCreator",
+    "views/quickView/mapAndGraph/graphCreator",
     "hbs!templates/views/quickView/mapAndGraphView"
 ],
-function (TP, workoutQuickViewMapAndGraphTemplate)
+function (TP, createMapOnContainer, createGraphOnContainer, workoutQuickViewMapAndGraphTemplate)
 {
     var mapAndGraphViewBase = 
     {
@@ -34,6 +36,7 @@ function (TP, workoutQuickViewMapAndGraphTemplate)
                 return;
 
             var seriesArray = [];
+            var latLongArray = [];
 
             var samples = this.model.get("detailData").attributes.flatSamples.samples;
 
@@ -51,81 +54,8 @@ function (TP, workoutQuickViewMapAndGraphTemplate)
                 }
             });
 
-            this.$("#quickViewGraph").highcharts(
-            {
-                chart:
-                {
-                    type: "line",
-                    zoomType: "x",
-                    resetZoomEnabled: true,
-                    alignTicks: true,
-                    width: 622,
-                    height: 340
-                },
-                credits:
-                {
-                    enabled: false
-                },
-                legend:
-                {
-                    enabled: true,
-                    backgroundColor: '#FFFFFF',
-                    layout: "horizontal",
-                    verticalAlign: "top",
-                    floating: false,
-                    align: "center",
-                    x: 0,
-                    y: 0
-                },
-                scrollbar:
-                {
-                    enabled: false
-                },
-                title:
-                {
-                    text: "TP Chart"
-                },
-                yAxis:
-                [
-                    {
-                        title:
-                        {
-                            text: "Heart Rate"
-                        },
-                        gridLineWidth: 1,
-                        min: 0
-                    }
-                ],
-                series: seriesArray,
-                plotOptions:
-                {
-                    line:
-                    {
-                        connectNulls: true,
-                        turboThreshold: 100
-                    },
-                    series:
-                    {
-                        allowPointSelector: true,
-                        animation: false,
-                        cursor: "pointer",
-                        lineWidth: 1,
-                        marker:
-                        {
-                            enabled: false
-                        },
-                        shadow: false,
-                        states:
-                        {
-                            hover:
-                            {
-                                enabled: false
-                            }
-                        },
-                        showCheckbox: false
-                    }
-                }
-            });
+            createGraphOnContainer(this.$("#quickViewGraph"), seriesArray);
+            createMapOnContainer(this.$("#quickViewMap"), latLongArray);
         }
     };
 

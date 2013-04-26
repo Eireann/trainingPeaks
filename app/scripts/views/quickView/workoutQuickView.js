@@ -9,6 +9,9 @@
     "views/quickView/qvMain/qvHeaderActions",
     "views/quickView/qvMain/qvFileUploads",
     "views/quickView/summaryView",
+    "views/quickView/hrView",
+    "views/quickView/powerView",
+    "views/quickView/paceView",
     "views/quickView/mapAndGraphView",
     "hbs!templates/views/quickView/workoutQuickView"
 ],
@@ -22,6 +25,9 @@ function (
     qvHeaderActions,
     qvFileUploads,
     WorkoutQuickViewSummary,
+    WorkoutQuickViewHR,
+    WorkoutQuickViewPower,
+    WorkoutQuickViewPace,
     WorkoutQuickViewMapAndGraph,
     workoutQuickViewTemplate
 )
@@ -47,11 +53,12 @@ function (
             "click .tabNavigation > .heartrateTab": "onTabNavigationClicked",
             "click .tabNavigation > .powerTab": "onTabNavigationClicked",
             "click .tabNavigation > .paceTab": "onTabNavigationClicked",
-            "click .tabNavigation > .mapAndGraphTab": "onTabNavigationClicked"
+            "click .tabNavigation > .mapGraphTab": "onTabNavigationClicked"
         },
 
         ui:
         {
+            "tabNavigation": ".tabNavigation",
             "quickViewContent": "#quickViewContent"
         },
 
@@ -136,9 +143,9 @@ function (
             this.tabs =
             [
                 new WorkoutQuickViewSummary({ model: this.model, el: this.$(this.tabDomIDs[0]) }),
-                null,
-                null,
-                null,
+                new WorkoutQuickViewHR({ model: this.model, el: this.$(this.tabDomIDs[1]) }),
+                new WorkoutQuickViewPower({ model: this.model, el: this.$(this.tabDomIDs[2]) }),
+                new WorkoutQuickViewPace({ model: this.model, el: this.$(this.tabDomIDs[3]) }),
                 new WorkoutQuickViewMapAndGraph({ model: this.model, el: this.$(this.tabDomIDs[4]) })
             ];
         },
@@ -167,7 +174,10 @@ function (
 
             if (tabIndex === null || typeof tabIndex === "undefined")
                 return;
-            
+
+            this.ui.tabNavigation.find("div").removeClass("tabSelected");
+            $(e.currentTarget).addClass("tabSelected");
+
             this.currentTabIndex = tabIndex;
             this.renderCurrentTab();
         }
