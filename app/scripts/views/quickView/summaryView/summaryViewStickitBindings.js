@@ -105,6 +105,13 @@ function(
                 onSet: "parsePace",
                 updateModel: "updateModel"
             },
+            "#normalizedPowerCompleted":
+            {
+                observe: "normalizedPowerActual",
+                onGet: "formatInteger",
+                onSet: "parseFloat",
+                updateModel: "updateModel"
+            },
             "#averagePacePlannedField":
             {
                 observe: "velocityPlanned",
