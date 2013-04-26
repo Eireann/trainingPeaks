@@ -10,6 +10,7 @@
     "views/quickView/qvMain/qvFileUploads",
     "views/quickView/qvMain/qvExpand",
     "views/quickView/summaryView",
+    "views/quickView/expandedView/quickViewExpandedView",
     "hbs!templates/views/quickView/workoutQuickView"
 ],
 function (
@@ -23,6 +24,7 @@ function (
     qvFileUploads,
     qvExpand,
     WorkoutQuickViewSummary,
+    expandedView,
     workoutQuickViewTemplate
 )
 {
@@ -45,7 +47,8 @@ function (
 
         ui:
         {
-            "quickViewContent": "#quickViewContent"
+            "quickViewContent": "#quickViewContent",
+            "quickViewContentExpanded": "#quickViewExpandedContent"
         },
 
         initialize: function(options)
@@ -66,6 +69,7 @@ function (
             this.initializeSaveDeleteDiscard();
             this.initializeHeaderActions();
             this.initializeTabs();
+            this.initializeExpand();
         },
 
         template:

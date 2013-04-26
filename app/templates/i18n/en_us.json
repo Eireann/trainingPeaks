@@ -223,5 +223,11 @@
 
     "Upload": "Upload",
     "Expand": "Expand",
-    "Collapse": "Collapse"
+    "Collapse": "Collapse",
+    "View": "View",
+    "Charts": "Charts",
+    "Tools": "Tools",
+    "Layout": "Layout",
+    "Comment": "Comment",
+    "Options": "Options"
 }
