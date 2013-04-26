@@ -675,8 +675,9 @@ input[disabled='disabled']
 
 #quickViewMapAndGraphTab
 {
-    .mapAndGraph
+    #quickViewGraph
     {
+<<<<<<< HEAD
         width: 600px;
         margin: 10px;
 
@@ -684,5 +685,23 @@ input[disabled='disabled']
         {
             height: 400px;
         }
+=======
+        width: 620;
+        height: 170px;
+        margin-left: 10px;
+        margin-right: 10px;
+        margin-top: 5px;
+        margin-bottom: 10px;
+    }
+
+    #quickViewMap
+    {
+        width: 620px;
+        height: 170px;
+        margin-left: 10px;
+        margin-right: 10px;
+        margin-top: 10px;
+        margin-bottom: 5px;
+>>>>>>> a1cda89cb777d2fafbe7a3ad4ba5653a7c33a1ae
     }
 }
