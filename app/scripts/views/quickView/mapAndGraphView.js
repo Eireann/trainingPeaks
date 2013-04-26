@@ -1,10 +1,9 @@
 ﻿define(
 [
     "TP",
-    "highcharts",
     "hbs!templates/views/quickView/mapAndGraphView"
 ],
-function (TP, Highcharts, workoutQuickViewMapAndGraphTemplate)
+function (TP, workoutQuickViewMapAndGraphTemplate)
 {
     var mapAndGraphViewBase = 
     {

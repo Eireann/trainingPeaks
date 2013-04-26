@@ -55,8 +55,7 @@
             "affiliates": "scripts/affiliates",
             
             // Map & Graph
-            "leaflet": "../vendor/js/libs/leaflet/leaflet-src",
-            "highcharts": "../vendor/js/libs/highcharts/highcharts.src"
+            "leaflet": "../vendor/js/libs/leaflet/leaflet-src"
         },
 
         hbs:
@@ -106,14 +105,6 @@
             "jquerySelectBox":
             {
                 exports: ""
-            },
-            "highcharts":
-            {
-                exports: "Highcharts"
-            },
-            "leaflet":
-            {
-                exports: "L"
             }
         }
 
