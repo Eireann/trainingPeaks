@@ -21,7 +21,7 @@
                 </div>
 
                 <div class="workoutStatsColumn workoutStatsUnitLabel">
-                    <label>{{getUnitsLabel "distance" }}</label>
+                    <label>{{getUnitsLabel "distance" workoutTypeValueId }}</label>
                 </div>
             </div>   
 
@@ -57,7 +57,7 @@
                 </div>
 
                 <div class="workoutStatsColumn workoutStatsUnitLabel">
-                    <label>{{getUnitsLabel "normalizedPace"}}</label>
+                    <label>{{getUnitsLabel "normalizedPace" workoutTypeValueId}}</label>
                 </div>
             </div>   
             
@@ -67,7 +67,7 @@
                 </div>
 
                 <div class="workoutStatsColumn workoutStatsPlanned">
-                    <input type="text" id="averagePacePlannedField" disabled="disabled"/>
+                    <input type="text" id="averagePacePlannedField" />
                 </div>
 
                 <div class="workoutStatsColumn workoutStatsCompleted">
@@ -75,7 +75,7 @@
                 </div>
 
                 <div class="workoutStatsColumn workoutStatsUnitLabel">
-                    <label>{{getUnitsLabel "averagePace"}}</label>
+                    <label>{{getUnitsLabel "averagePace" workoutTypeValueId}}</label>
                 </div>
             </div>  
             
@@ -93,7 +93,7 @@
                 </div>
 
                 <div class="workoutStatsColumn workoutStatsUnitLabel">
-                    <label>{{getUnitsLabel "averageSpeed"}}</label>
+                    <label>{{getUnitsLabel "averageSpeed" workoutTypeValueId}}</label>
                 </div>
             </div>  
             
@@ -165,7 +165,7 @@
                 </div>
 
                 <div class="workoutStatsColumn workoutStatsUnitLabel">
-                    <label>{{getUnitsLabel "tss"}}</label>
+                    <label>{{getUnitsLabel "tss" workoutTypeValueId this}}</label>
                 </div>
             </div>  
             <div class="workoutStatsRow hide normalizedPowerStatsRow">
@@ -308,7 +308,7 @@
                     <input type="text" id="speedMaxField"/>
                 </div>
                 <div class="workoutStatsColumn workoutStatsUnitLabel">
-                    <label>{{getUnitsLabel "speed"}}</label>
+                    <label>{{getUnitsLabel "speed" workoutTypeValueId}}</label>
                 </div>
             </div>
             <div class="workoutStatsRow hide paceSummaryRow">
@@ -325,7 +325,7 @@
                     <input type="text" id="paceMaxField"/>
                 </div>
                 <div class="workoutStatsColumn workoutStatsUnitLabel">
-                    <label>{{getUnitsLabel "pace"}}</label>
+                    <label>{{getUnitsLabel "pace" workoutTypeValueId}}</label>
                 </div>
             </div>
             <div class="workoutStatsRow hide heartRateSummaryRow">

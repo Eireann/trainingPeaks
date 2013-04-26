@@ -1,129 +1,143 @@
 define(
 [
+    "utilities/units/constants",
     "utilities/workout/layoutFormatter"
 ],
-function(workoutLayoutFormatter)
+function(unitsConstants, workoutLayoutFormatter)
 {
+
     var unitsHash =
     {
         distance:
         {
-            "0": "mi",
-            "1": "km"
+            English: "mi",
+            Metric: "km"
         },
         normalizedPace:
         {
-            "0": "min/mile",
-            "1": "min/km"
+            English: "min/mile",
+            Metric: "min/km"
         },
         averagePace:
         {
-            "0": "min/mile",
-            "1": "min/km"
+            English: "min/mile",
+            Metric: "min/km"
         },
         averageSpeed:
         {
-            "0": "mph",
-            "1": "km/h"
+            English: "mph",
+            Metric: "km/h"
         },
         calories:
         {
-            //"0": "Cal", //1 Cal(orie) = 1kcal
-            "0": "kcal", //We currently only show kcal in flex app
-            "1": "kcal"
+            //English: "Cal", //1 Cal(orie) = 1kcal
+            English: "kcal", //We currently only show kcal in flex app
+            Metric: "kcal"
         },
         elevationGain:
         {
-            "0": "ft",
-            "1": "m"
+            English: "ft",
+            Metric: "m"
         },
         elevationLoss:
         {
-            "0": "ft",
-            "1": "m"
+            English: "ft",
+            Metric: "m"
         },
         //TODO: will need to add logic to determine type of tss
         tss:
         {
-            "0": "TSS",
-            "1": "TSS"
+            English: "TSS",
+            Metric: "TSS"
         },
         "if":
         {
-            "0": "IF",
-            "1": "IF"
+            English: "IF",
+            Metric: "IF"
         },
         energy:
         {
-            "0": "kJ",
-            "1": "kJ"
+            English: "kJ",
+            Metric: "kJ"
         },
         temperature:
         {
-            "0": "F",
-            "1": "C"
+            English: "F",
+            Metric: "C"
         },
         heartrate:
         {
-            "0": "bpm",
-            "1": "bpm"
+            English: "bpm",
+            Metric: "bpm"
         },
         pace:
         {
-            "0": "min/mile",
-            "1": "min/km"
+            English: "min/mile",
+            Metric: "min/km"
         },
         speed:
         {
-            "0": "mph",
-            "1": "km/h"
+            English: "mph",
+            Metric: "km/h"
         },
         cadence:
         {
-            "0": "rpm",
-            "1": "rpm"
+            English: "rpm",
+            Metric: "rpm"
         },
         torque:
         {
-            "0": "ft/lbs",
-            "1": "Nm"
+            English: "ft/lbs",
+            Metric: "Nm"
         },
         elevation:
         {
-            "0": "ft",
-            "1": "m"
+            English: "ft",
+            Metric: "m"
         },
         power:
         {
-            "0": "W",
-            "1": "W"
+            English: "W",
+            Metric: "W"
         },
         time:
         {
-            "0": "hms",
-            "1": "hms"
+            English: "hms",
+            Metric: "hms"
         }
     };
 
-    // TP.utils.units.getUnitsLabel(fieldName, sportType, viewContext)
-    var getUnitsLabel = function(fieldName, sportType, viewContext)
+    // TP.utils.units.getUnitsLabel(fieldName, sportType, context)
+    var getUnitsLabel = function(fieldName, sportType, context)
     {
-        var currentUnits = theMarsApp.user.get("units");
+        var userUnits = theMarsApp.user.get("units");
+        var userUnitsKey = userUnits === unitsConstants.English ? "English" : "Metric";
+
         if (!unitsHash.hasOwnProperty(fieldName))
             throw "Unknown field type (" + fieldName + ") for unit label";
 
-        if (sportType !== undefined && unitsHash[fieldName].hasOwnProperty(sportType))
-            return unitsHash[fieldName][sportType][currentUnits];
+        if (sportType !== undefined && unitsHash[fieldName].hasOwnProperty("bySportType") && unitsHash[fieldName].bySportType.hasOwnProperty(sportType))
+            return unitsHash[fieldName][sportType][userUnitsKey];
         
         //TODO: refactor
-        if (viewContext && fieldName === "tss")
+        if (context && fieldName === "tss")
         {
-            var tssSource = viewContext.model.get("tssSource");
-            var tssAbbreviation = workoutLayoutFormatter.trainingStressScoreSource[tssSource].abbreviation;
-            return tssAbbreviation;
+            var tssSource = "";
+            if (context.hasOwnProperty("tssSource"))
+            {
+                tssSource = context.tssSource;
+            } else if (context.hasOwnProperty("model"))
+            {
+                tssSource = context.model.get("tssSource");
+            }
+
+            if (tssSource && workoutLayoutFormatter.trainingStressScoreSource[tssSource])
+            {
+                return workoutLayoutFormatter.trainingStressScoreSource[tssSource].abbreviation;
+            }
         }
 
-        return unitsHash[fieldName][currentUnits];
+        return unitsHash[fieldName][userUnitsKey];
     };
 
     return getUnitsLabel;

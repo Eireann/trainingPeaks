@@ -86,14 +86,23 @@
         background-color: $TPGrey4;
     }
 
-    &.uparrow
-    {
-
+    &.uparrow {
+		width:136px;
+		
         .hoverBoxContents
         {
             margin-bottom: 0px;
             margin-top:3px;
             @include linearGradient(top, rgb(255,255,255), rgba(255,255,255,0.90)); 
+			border-left:1px solid #979797;
+			border-right:1px solid #979797;
+			border-bottom:1px solid #979797;
+			& label {
+				font-size:$fontSizeSmall;
+				font-weight:normal;
+				line-height:20px;
+				margin:0;
+			}
         }
 
         // this is what gives the top and side shadows
@@ -101,7 +110,7 @@
         {
             top: 20px;
             bottom:0px;
-            @include box-shadow(0px 2px 4px 1px #888888);
+           	@include box-shadow(0px 3px 5px 0px #adadad);
         }
 
         // top shadow, except for the arrow

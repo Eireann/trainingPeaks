@@ -138,9 +138,6 @@ function(
         {
             "click": "workoutClicked",
 
-            "mouseenter": "onMouseEnter",
-            "mouseleave": "onMouseLeave",
-
             "mouseenter .workoutIcon": "showWorkoutSummaryHover",
             "mouseleave .workoutIcon": "hideWorkoutSummaryHover",
 
@@ -148,46 +145,25 @@ function(
 
         },
 
-        onMouseEnter: function(e)
+        keepSettingsButtonVisible: function()
         {
-            this.showSettingsButton(e);
-            //this.showWorkoutSummaryHover(e);
+            this.$el.addClass("menuOpen");
         },
 
-        onMouseLeave: function(e)
+        allowSettingsButtonToHide: function(e)
         {
-            var toElement = document.elementFromPoint(e.pageX, e.pageY);
-            if (e.toElement === this.el)
-            {
-                return;
-            }
-
-            this.removeSettingsButton(e);
-            //this.hideWorkoutSummaryHover(e);
-        },
-
-        showSettingsButton: function()
-        {
-            this.$(".workoutSettings").css('display', "block");
-        },
-
-        removeSettingsButton: function(e)
-        {
-            var toElement = $(document.elementFromPoint(e.pageX, e.pageY));
-            if (!toElement.is(".workoutSettings") && !toElement.is("#workoutSettingsDiv") && !toElement.is(".hoverBox") && !toElement.is(".modal") && !toElement.is(".modalOverlay"))
-            {
-                this.$(".workoutSettings").css('display', "none");
-            }
+            this.$el.removeClass("menuOpen");
         },
 
         workoutSettingsClicked: function(e)
         {
             e.preventDefault();
 
+            this.keepSettingsButtonVisible();
             var offset = $(e.currentTarget).offset();
             this.workoutSettings = new CalendarWorkoutSettingsHover({ model: this.model });
             this.workoutSettings.render().bottom(offset.top + 10).center(offset.left + 5);
-
+            this.workoutSettings.on("close", this.allowSettingsButtonToHide, this);
             this.workoutSettings.on("mouseleave", this.onMouseLeave, this);
         },
 
@@ -201,6 +177,7 @@ function(
                 e.preventDefault();
             }
 
+            this.allowSettingsButtonToHide();
             var view = new WorkoutQuickView({ model: this.model });
             view.render();
         },
