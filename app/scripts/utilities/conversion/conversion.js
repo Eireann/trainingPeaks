@@ -91,9 +91,14 @@
             return convertToModelUnits(parseInt(value, 10), "elevation");
         },
 
-        formatNumber: function (value, options)
+        formatNumber: function(value, options)
         {
             return ((value === null || value === 0) ? "" : +value);
+        },
+
+        formatInteger: function(value, options)
+        {
+            return ((value === null || value === 0) ? "" : (Math.round(parseFloat(value))).toFixed(0));
         },
 
         parseInteger: function (value, options)
