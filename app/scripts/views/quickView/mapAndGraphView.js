@@ -58,7 +58,9 @@ function (TP, workoutQuickViewMapAndGraphTemplate)
                     type: "line",
                     zoomType: "x",
                     resetZoomEnabled: true,
-                    alignTicks: true
+                    alignTicks: true,
+                    width: 622,
+                    height: 340
                 },
                 credits:
                 {
