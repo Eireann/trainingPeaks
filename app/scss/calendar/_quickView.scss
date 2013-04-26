@@ -740,6 +740,12 @@ input[disabled='disabled']
     @include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey3, normal);
     @include buttons(0, 77px, $fontSizeSmall);
 
+    button
+    {
+        padding-top: 3px;
+        color: $TPGrey3;
+    }
+
     background-repeat: no-repeat;
     background-image: url(../../assets/images/QVImages/buttonsBackround.jpg);
 
@@ -799,15 +805,32 @@ input[disabled='disabled']
     .charts
     {
         height: 79px;
-        width: 120px;
+        width: 102px;
+        float: left;
+        border-left: solid 1px $TPGrey2;
+        padding: 7px 0 0 12px;
+    }
+
+    .tools
+    {
+        height: 79px;
+        width: 102px;
+        float: left;
+        border-left: solid 1px $TPGrey2;
+        padding: 7px 0 0 12px;
+    }
+
+    .share
+    {
+        height: 79px;
+        width: 102px;
         float: left;
         border-left: solid 1px $TPGrey2;
         padding: 7px 0 0 12px;
 
-        button
+        img
         {
-            padding-top: 3px;
-            font-color: $TPGrey3;
+            padding: 3px 0 0 3px;
         }
     }
 }
