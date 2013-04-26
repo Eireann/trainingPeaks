@@ -711,3 +711,103 @@ input[disabled='disabled']
         margin: 10px;
     }
 }
+
+.quickViewExpandedStats
+{
+    width: 333px;
+    float: left;
+}
+
+.viewOne
+{
+    background-color: $TPGrey1;
+    float: left;
+}
+
+.viewTwo
+{
+    background-color: $TPGrey1;
+    float: left;
+}
+
+.expandedViewsButtons
+{
+    display:none;
+    width: 500px;
+    height: 80px;
+    float: left;
+    margin-left: 10px;
+    @include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey3, normal);
+    @include buttons(0, 77px, $fontSizeSmall);
+
+    background-repeat: no-repeat;
+    background-image: url(../../assets/images/QVImages/buttonsBackround.jpg);
+
+    .vRule
+    {
+        width: 1px;
+        height: 79px;
+        border-right: solid 1px $TPGrey2;
+        margin-top: 1px;
+        margin-left: 14px;
+        float: left;
+    }
+
+    .views
+    {
+        margin-left: 12px;
+        margin-top: 7px;
+        width: 120px;
+        height: 80px;
+        float: left;
+        
+
+        .view
+        {
+            float: left;
+                
+        }
+        .topViews
+        {
+            height: 30px;
+            width: 115px;
+            
+            padding-top: 5px;
+
+            .twoUpViewHorizontal
+            {
+                padding-left: 9px;
+            }
+
+            .twoUpViewVertical
+            {
+                padding-left: 10px;
+            }
+        }
+
+        .bottomViews
+        {
+           padding-top: 2px;
+
+           .fourUpView
+           {
+                padding-left: 9px;
+           }
+        }
+    }
+
+    .charts
+    {
+        height: 79px;
+        width: 120px;
+        float: left;
+        border-left: solid 1px $TPGrey2;
+        padding: 7px 0 0 12px;
+
+        button
+        {
+            padding-top: 3px;
+            font-color: $TPGrey3;
+        }
+    }
+}

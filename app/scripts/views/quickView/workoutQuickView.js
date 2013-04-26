@@ -14,6 +14,7 @@
     "views/quickView/powerView",
     "views/quickView/paceView",
     "views/quickView/mapAndGraphView",
+    "views/quickView/expandedView/quickViewExpandedView",
     "hbs!templates/views/quickView/workoutQuickView"
 ],
 function (
@@ -31,6 +32,7 @@ function (
     WorkoutQuickViewPower,
     WorkoutQuickViewPace,
     WorkoutQuickViewMapAndGraph,
+    expandedView,
     workoutQuickViewTemplate
 )
 {
@@ -61,7 +63,8 @@ function (
         ui:
         {
             "tabNavigation": ".tabNavigation",
-            "quickViewContent": "#quickViewContent"
+            "quickViewContent": "#quickViewContent",
+            "quickViewContentExpanded": "#quickViewExpandedContent"
         },
 
         tabDomIDs:
@@ -89,7 +92,7 @@ function (
                 {
                     self.model.get("details").fetch();
                 }, 800);
-                
+
                 this.on("close", this.stopWorkoutDetailsFetch, this);
             }
 
@@ -110,6 +113,8 @@ function (
             this.initializeStickit();
             this.initializeSaveDeleteDiscard();
             this.initializeHeaderActions();
+            this.initializeTabs();
+            this.initializeExpand();
         },
         
         stopWorkoutDetailsFetch: function ()

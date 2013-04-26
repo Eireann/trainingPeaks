@@ -50,6 +50,7 @@
                         <input type="text" name="workoutTitle" class="workoutTitle" placeholder="{{$ "UntitledWorkout" }}" id="workoutTitleField" title="{{$ "SetTitleTooltip" }}" />
                     </div>
                 </div>
+                
             </div>
             <div class="uploadExpandButtons">
                 <div class="buttons uploadButton" id="quickViewFileUploadDiv" title="{{$ "FileUploadTooltip" }}">
@@ -60,6 +61,37 @@
                 </div>
                 <div class="buttons collapseButton" id="quickViewCollapseDiv">
                     <label>{{$ "Collapse"}}</label>
+                </div>
+            </div>
+            <div class="expandedViewsButtons">
+                <div class="vRule" />
+                <div class="views">
+                    <label>{{$ "View"}}</label>
+                    <div class="topViews">
+                        <div class="oneUpView view">
+                            <img src="assets/images/QVImages/1UpView.jpg"/>
+                        </div>
+                        <div class="twoUpViewHorizontal view">
+                            <img src="assets/images/QVImages/2UpViewHorizontal.jpg"/>
+                        </div>
+                        <div class="twoUpViewVertical view">
+                            <img src="assets/images/QVImages/2UpViewVertical.jpg"/>
+                        </div>
+                        
+                    </div>
+                    <div class="bottomViews">
+                        <div class="threeUpView view">
+                            <img src="assets/images/QVImages/3UpView.jpg"/>
+                        </div>
+                        <div class="fourUpView view">
+                            <img src="assets/images/QVImages/4UpView.jpg"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="charts">
+                    <label>{{$ "Charts"}}</label>
+                    <button id="add">{{$ "Add"}}</button>
+                    <button id="layout">{{$ "Layout"}}</button>
                 </div>
             </div>
             <input id="fileUploadInput" style="display: none" type="file"/>
@@ -91,6 +123,7 @@
         <div id="quickViewSpeedTab" class="tabContent"></div>
         <div id="quickViewMapAndGraphTab" class="tabContent"></div>
     </div>
+    <div id="quickViewExpandedContent"/> 
     
     <div class="quickviewFooter">
         <div class="selectionBox this.$(".chosenSelect").chosen();">
