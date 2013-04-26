@@ -34,6 +34,10 @@ function (
             expandedView.render();
             this.ui.quickViewContentExpanded.append(expandedView.$el);
 
+            this.originalPosition = this.$el.position();
+            this.originalPosition.height = this.$el.height();
+            this.originalPosition.width = this.$el.width();
+
             this.animate(windowHeight, windowWidth);
             
         },
@@ -46,21 +50,29 @@ function (
             var viewsWidth = newWidth - 333;
             var numberOfVisibleViews = 2;
             var viewsHeight = (newHeight - 125) / numberOfVisibleViews;
-            
-            this.$el.animate({ height: newHeight, width: newWidth, top: "20px", left: "20px" }, { duration: duration });
+            var left = (windowWidth - newWidth) / 2;
+            var top = (windowHeight - newHeight) / 2;
+
+            this.$el.animate({ height: newHeight, width: newWidth, top: top + "px", left: left + "px" }, { duration: duration });
             this.$("#workOutQuickView").animate({ height: newHeight, width: newWidth }, { duration: duration });
             this.$(".tabNavigation, #quickViewContent, .quickviewFooter, #menuIcon, .expandButton").css({ display: "none" });
-            this.$(".collapseButton, .expandedViewsButtons").css({ display: "block" });
+            this.$("#quickViewExpandedContent, .collapseButton, .expandedViewsButtons").css({ display: "block" });
             this.$(".viewOne, .viewTwo").css({ width: viewsWidth, height: viewsHeight });
         },
 
         collapseClicked: function ()
         {
             var duration = 300;
-            this.$el.animate({ height: 600, width: 800 }, { duration: duration });
-            this.$("#workOutQuickView").animate({ height: 600, width: 800 }, { duration: duration });
-            this.$(".tabNavigation, #quickViewContent, .quickviewFooter, #menuIcon, .expandButton").css({ display: "block" });
-            this.$(".collapseButton").css({ display: "none" });
+            this.$el.animate({
+                height: this.originalPosition.height,
+                width: this.originalPosition.width,
+                top: this.originalPosition.top + "px",
+                left: this.originalPosition.left + "px"
+            }, { duration: duration });
+            this.$("#workOutQuickView").animate({ height: this.originalPosition.height, width: this.originalPosition.width }, { duration: duration });
+            this.$(".tabNavigation, #quickViewContent, .quickviewFooter, .expandButton").css({ display: "block" });
+            this.$("#menuIcon").css({ display: "" });
+            this.$("#quickViewExpandedContent, .collapseButton, .expandedViewsButtons").css({ display: "none" });
         }
 
     };
