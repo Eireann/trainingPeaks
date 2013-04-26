@@ -87,6 +87,7 @@ function (_, TP, UserModel)
         logout: function()
         {
             this.removeFromLocalStorage("access_token");
+            this.removeFromLocalStorage("app_user");
             this.trigger("logout");
         },
 
