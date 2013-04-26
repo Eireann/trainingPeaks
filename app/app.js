@@ -52,6 +52,7 @@ function(TP, initializeAjaxAuth, ajaxCaching, initializeAjaxTimezone, Session, U
     theApp.addInitializer(function()
     {
         this.user = new UserModel();
+        this.userFetchPromise = new $.Deferred();
         this.session = new Session();
         this.setupAuthPromise();
     });
@@ -61,12 +62,34 @@ function(TP, initializeAjaxAuth, ajaxCaching, initializeAjaxTimezone, Session, U
         var self = this;
         this.session.authPromise.done(function()
         {
-            self.user.fetch();
+            self.fetchUser();
         });
         this.session.authPromise.fail(function()
         {
             self.setupAuthPromise();
         });
+    };
+
+    theApp.fetchUser = function()
+    {
+        var self = this;
+
+        var storedUser = this.session.getUserFromLocalStorage();
+        if (storedUser && storedUser.get("athletes.0.athleteId"))
+        {
+            self.user.set(storedUser.attributes);
+            self.userFetchPromise.resolve();
+        } else
+        {
+            self.user.fetch().done(function()
+            {
+                self.session.saveUserToLocalStorage(self.user);
+                self.userFetchPromise.resolve();
+            }).fail(function()
+            {
+                self.userFetchPromise.reject();
+            });
+        }
     };
 
     // add event tracking

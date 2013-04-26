@@ -105,33 +105,48 @@ function(
                 onSet: "parsePace",
                 updateModel: "updateModel"
             },
+            "#normalizedPowerCompleted":
+            {
+                observe: "normalizedPowerActual",
+                onGet: "formatInteger",
+                onSet: "parseFloat",
+                updateModel: "updateModel"
+            },
             "#averagePacePlannedField":
             {
                 observe: "velocityPlanned",
                 onGet: "formatPace",
                 onSet: "parsePace",
-                updateModel: "updateModel"
+                updateModel: "updateModel",
+
+                // NOTE: For any pace/speed fields that share the same velocityXXX model field,
+                // we need input id here for updateModel to work right, 
+                // but we don't need it for other fields because we can get it from bindingsLUT
+                inputId: "#averagePacePlannedField"
             },
             "#averagePaceCompletedField":
             {
                 observe: "velocityAverage",
                 onGet: "formatPace",
                 onSet: "parsePace",
-                updateModel: "updateModel"
+                updateModel: "updateModel",
+                inputId: "#averagePaceCompletedField"
             },
             "#averageSpeedPlannedField":
             {
                 observe: "velocityPlanned",
                 onGet: "formatSpeed",
                 onSet: "parseSpeed",
-                updateModel: "updateModel"
+                updateModel: "updateModel",
+                inputId: "#averageSpeedPlannedField"
             },
             "#averageSpeedCompletedField":
             {
                 observe: "velocityAverage",
                 onGet: "formatSpeed",
                 onSet: "parseSpeed",
-                updateModel: "updateModel"
+                updateModel: "updateModel",
+                inputId: "#averageSpeedCompletedField"
             },
             "#caloriesPlannedField":
             {
@@ -199,28 +214,28 @@ function(
             "#powerAvgField":
             {
                 observe: "powerAverage",
-                onGet: "formatNumber",
+                onGet: "formatInteger",
                 onSet: "parseFloat",
                 updateModel: "updateModel"
             },
             "#powerMaxField":
             {
                 observe: "powerMaximum",
-                onGet: "formatNumber",
+                onGet: "formatInteger",
                 onSet: "parseFloat",
                 updateModel: "updateModel"
             },
             "#torqueAvgField":
             {
                 observe: "torqueAverage",
-                onGet: "formatNumber",
+                onGet: "formatInteger",
                 onSet: "parseFloat",
                 updateModel: "updateModel"
             },
             "#torqueMaxField":
             {
                 observe: "torqueMaximum",
-                onGet: "formatNumber",
+                onGet: "formatInteger",
                 onSet: "parseFloat",
                 updateModel: "updateModel"
             },
@@ -264,28 +279,32 @@ function(
                 observe: "velocityAverage",
                 onGet: "formatSpeed",
                 onSet: "parseSpeed",
-                updateModel: "updateModel"
+                updateModel: "updateModel",
+                inputId: "#speedAvgField"
             },
             "#speedMaxField":
             {
                 observe: "velocityMaximum",
                 onGet: "formatSpeed",
                 onSet: "parseSpeed",
-                updateModel: "updateModel"
+                updateModel: "updateModel",
+                inputId: "#speedMaxField"
             },
             "#paceAvgField":
             {
                 observe: "velocityAverage",
                 onGet: "formatPace",
                 onSet: "parsePace",
-                updateModel: "updateModel"
+                updateModel: "updateModel",
+                inputId: "#paceAvgField"
             },
             "#paceMaxField":
             {
                 observe: "velocityMaximum",
                 onGet: "formatPace",
                 onSet: "parsePace",
-                updateModel: "updateModel"
+                updateModel: "updateModel",
+                inputId: "#paceMaxField"
             },
             "#hrMinField":
             {
@@ -378,7 +397,11 @@ function(
 
             var updateModel = function()
             {
-                var inputFieldId = self.bindingsLUT[options.observe];
+
+                // NOTE: For any pace/speed fields that share the same velocityXXX model field,
+                // we need input id here for updateModel to work right, 
+                // but we don't need it for other fields because we can get it from bindingsLUT
+                var inputFieldId = options.inputId ? options.inputId : self.bindingsLUT[options.observe];
                 var currentViewValue = self.$(inputFieldId).val();
 
                 // always update the model - even if a save is not required,
@@ -405,6 +428,7 @@ function(
         {
             var doUpdateModel = false;
             var currentModelValue = this.model.get(options.observe);
+            var parsedViewValue = newViewValue;
 
             // DO coerce type in this situation, since we only care about truthy/falsy'ness.
             /*jslint eqeq: true*/
@@ -420,10 +444,12 @@ function(
                 {
                     doUpdateModel = true;
                 }
+                parsedViewValue = this[options.onSet](newViewValue);
             }
             /*jsline eqeq: false*/
 
-            console.log("'" + currentModelValue + "', changing to '" + newViewValue + "', doUpdateModel=" + (doUpdateModel ? "true" : "false"));
+            //console.log(this.bindingsLUT[options.observe] + ": current '" + currentModelValue + "', changing to '" +
+            //    newViewValue + "' (" + parsedViewValue + ")', doUpdateModel=" + (doUpdateModel ? "true" : "false"));
 
             return doUpdateModel;
         },

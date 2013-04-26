@@ -12,8 +12,9 @@ function(_, modelToViewConversionFactors)
 
         pace = pace.split(":");
 
+        // if no colon assume whole minutes
         if (pace.length !== 2)
-            return 0;
+            pace.push("00");
 
         var minutes = parseInt(pace[0], 10);
         var seconds = parseInt(pace[1], 10);

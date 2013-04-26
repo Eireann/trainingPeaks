@@ -42,7 +42,7 @@ function(
             value = Number(value);
         }
 
-        if (precision)
+        if (_.isNumber(precision))
         {
             return value.toFixed(precision);
         }
@@ -125,7 +125,7 @@ function(
     var convertTemperature = function(value)
     {
         var currentUnits = theMarsApp.user.get("units");
-        return roundViewUnits(currentUnits === "0" ? 9 / 5 * value + 32 : value);
+        return roundViewUnits(currentUnits === "0" ? 9 / 5 * value + 32 : value, 0);
     };
 
     var convertDistanceToViewUnits = function(value, sportType, precision)

@@ -1,9 +1,10 @@
 define(
 [
     "underscore",
-    "TP"
+    "TP",
+    "models/userModel"
 ],
-function (_, TP)
+function (_, TP, UserModel)
 {
     return TP.Model.extend(
     {
@@ -18,11 +19,11 @@ function (_, TP)
         {
             this.authPromise = new $.Deferred();
 
-            var accessToken = this.storageLocation.getItem("access_token");
+            var accessToken = this.getFromLocalStorage("access_token");
 
             if (accessToken)
             {
-                var expiresOn = this.storageLocation.getItem("expires_on");
+                var expiresOn = this.getFromLocalStorage("expires_on");
                 var now = parseInt(+new Date(), 10) / 1000;
                 if (now < expiresOn)
                 {
@@ -32,7 +33,7 @@ function (_, TP)
             }
         },
 
-        isAuthenticated: function ()
+        isAuthenticated: function()
         {
             var token = this.get("access_token");
             return !!token && (token.length > 0);
@@ -68,8 +69,8 @@ function (_, TP)
         {
             var expiresOn = parseInt(this.get("expires_in"), 10) + parseInt((+new Date()) / 1000, 10);
 
-            this.storageLocation.setItem("access_token", this.get("access_token"));
-            this.storageLocation.setItem("expires_on", expiresOn);
+            this.setToLocalStorage("access_token", this.get("access_token"));
+            this.setToLocalStorage("expires_on", expiresOn);
 
             this.authPromise.resolve();
             this.trigger("api:authorization:success");
@@ -85,8 +86,39 @@ function (_, TP)
         
         logout: function()
         {
-            this.storageLocation.removeItem("access_token");
+            this.removeFromLocalStorage("access_token");
+            this.removeFromLocalStorage("app_user");
             this.trigger("logout");
+        },
+
+        setToLocalStorage: function(key, value)
+        {
+            this.storageLocation.setItem(key, value);
+        },
+
+        getFromLocalStorage: function(key)
+        {
+            return this.storageLocation.getItem(key);
+        },
+
+        removeFromLocalStorage: function(key)
+        {
+            this.storageLocation.removeItem(key);
+        },
+
+        saveUserToLocalStorage: function(user)
+        {
+            this.setToLocalStorage("app_user", JSON.stringify(user.attributes));
+        },
+
+        getUserFromLocalStorage: function()
+        {
+            var storedUser = this.getFromLocalStorage("app_user");
+            if(!storedUser)
+            {
+                return null;
+            }
+            return new UserModel(JSON.parse(storedUser));
         }
     });
 });

@@ -5,6 +5,7 @@
 	overflow:hidden;
     width: 690px;
     height: 530px;
+	@include radialGradient(#e6e4e4, #dedcdc);
 }
 
 input[disabled='disabled']
@@ -34,7 +35,7 @@ input[disabled='disabled']
 
     .dateAndTime
     {
-        float: left;
+        
         padding-left: 2px;
         
         #dayName
@@ -96,7 +97,7 @@ input[disabled='disabled']
         float: left;
         margin-top: 0px;
 
-        @include box-shadow(0px 5px 2px -3px $TPGrey3);
+        @include box-shadow(0px 1px 2px 0px #40403f);
 
         .workoutIcon
         {
@@ -181,18 +182,46 @@ input[disabled='disabled']
             }
         } 
     }
-
-    .uploadButton
+    .uploadExpandButtons
     {
-        width: 80px;
-        height: 80px;
         float: left;
-        @include box-shadow(0px 5px 2px -3px $TPGrey3);
+        width: 80px;
+        
+        .buttons
+        {
+            width: 81px;
+            height: 36px;
+            @include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey3, normal);
+            margin-left: 10px;
+            padding-top: 12px;
+            padding-left: 28px;
+            padding-right: 8px;
+            float: left;
+        }
+        .uploadButton
+        {
+            background-image: url(../../assets/images/QVImages/uploadBackground.png);
+        }
+        .expandButton
+        {
+            margin-top: 10px;
+            background-image: url(../../assets/images/QVImages/expandBackground.png);
+        }
+
+        .collapseButton
+        {
+            margin-top: 10px;
+            background-image: url(../../assets/images/QVImages/expandBackground.png);
+            display: none;
+            padding-left: 25px;
+        }
+
         @include labels($navigationFontFamilyRegular, $fontSizeLarge, $TPGrey4, normal);
-        margin-left: 10px;
-        @include linearGradient(top, #fefefe, #e0dddd);
         text-align: center;
-        padding-top: 30px;
+        //@include box-shadow(0px 1px 2px 0px #40403f);
+        //margin-left: 10px;
+        //@include linearGradient(top, #fefefe, #e0dddd);
+        //padding-top: 30px;
     }
 
     #menuIcon {
@@ -242,6 +271,15 @@ input[disabled='disabled']
     }
 
     .paceTab
+    {
+        padding: 10px 0px 10px 7px;
+        img
+        {
+            opacity: 0.4;
+        }
+    }
+
+    .mapGraphTab
     {
         padding: 10px 0px 10px 7px;
         img
@@ -488,6 +526,7 @@ input[disabled='disabled']
             top: 40px;
             right: 0px;
             @include transform(translateX(8px) rotate(45deg));
+			box-shadow: -2px 6px 2px 2px #303030;
         }
 
         .colored
@@ -693,5 +732,133 @@ input[disabled='disabled']
         margin-right: 10px;
         margin-top: 10px;
         margin-bottom: 5px;
+    }
+}
+
+.quickViewExpandedStats
+{
+    width: 333px;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+}
+
+.QVExpandedView
+{
+    position: relative;
+
+    .viewOne
+    {
+        background-color: $TPGrey1;
+    }
+
+    .viewTwo
+    {
+        background-color: $TPGrey1;
+    }
+}
+
+.expandedViewsButtons
+{
+    display:none;
+    width: 500px;
+    height: 80px;
+    float: left;
+    margin-left: 10px;
+    @include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey3, normal);
+    @include buttons(0, 77px, $fontSizeSmall);
+
+    button
+    {
+        padding-top: 3px;
+        color: $TPGrey3;
+    }
+
+    background-repeat: no-repeat;
+    background-image: url(../../assets/images/QVImages/buttonsBackround.jpg);
+
+    .vRule
+    {
+        width: 1px;
+        height: 79px;
+        border-right: solid 1px $TPGrey2;
+        margin-top: 1px;
+        margin-left: 14px;
+        float: left;
+    }
+
+    .views
+    {
+        margin-left: 12px;
+        margin-top: 7px;
+        width: 120px;
+        height: 80px;
+        float: left;
+        
+
+        .view
+        {
+            float: left;
+                
+        }
+        .topViews
+        {
+            height: 30px;
+            width: 115px;
+            
+            padding-top: 5px;
+
+            .twoUpViewHorizontal
+            {
+                padding-left: 9px;
+            }
+
+            .twoUpViewVertical
+            {
+                padding-left: 10px;
+            }
+        }
+
+        .bottomViews
+        {
+           padding-top: 2px;
+
+           .fourUpView
+           {
+                padding-left: 9px;
+           }
+        }
+    }
+
+    .charts
+    {
+        height: 79px;
+        width: 102px;
+        float: left;
+        border-left: solid 1px $TPGrey2;
+        padding: 7px 0 0 12px;
+    }
+
+    .tools
+    {
+        height: 79px;
+        width: 102px;
+        float: left;
+        border-left: solid 1px $TPGrey2;
+        padding: 7px 0 0 12px;
+    }
+
+    .share
+    {
+        height: 79px;
+        width: 102px;
+        float: left;
+        border-left: solid 1px $TPGrey2;
+        padding: 7px 0 0 12px;
+
+        img
+        {
+            padding: 3px 0 0 3px;
+        }
     }
 }
