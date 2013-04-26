@@ -15,30 +15,35 @@
   <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.0/themes/base/jquery-ui.css" />
   <link rel="stylesheet" href="build/debug/app/css/app.css?dummy=true">
   <script src="./vendor/js/libs/jquery/jquery.js"></script>
+  <script src="http://code.highcharts.com/highcharts.src.js"></script>
   <!--<!(endif)-->
 
   <!--(if target release)>
   <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.0/themes/base/jquery-ui.css" />
   <link rel="stylesheet" href="app/css/app.css">
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+  <script src-="http://code.highcharts.com/highcharts.src.js"></script> 
   <!(endif)-->
 
   <!--(if target debug)>
   <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.0/themes/base/jquery-ui.css" />
   <link rel="stylesheet" href="app/css/app.css">
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.js"></script>
+  <script src-="http://code.highcharts.com/highcharts.src.js"></script>
   <!(endif)-->
 
   <!--(if target dev)>
   <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.0/themes/base/jquery-ui.css" />
   <link rel="stylesheet" href="app/css/app.css">
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.js"></script>
+  <script src-="http://code.highcharts.com/highcharts.src.js"></script>
   <!(endif)-->
 
   <!--(if target uat)>
   <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.0/themes/base/jquery-ui.css" />
   <link rel="stylesheet" href="app/css/app.css">
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.js"></script>
+  <script src-="http://code.highcharts.com/highcharts.src.js"></script>
   <!(endif)-->
 </head>
 
@@ -51,7 +56,7 @@
   <!-- Application source. -->
 
   <!--(if target dummy)><!-->
-  <script>window.apiRoot = "dev";</script>
+  <script>window.apiRoot = "local";</script>
   <script data-main="./app/config/config" src="./vendor/js/libs/require.js"></script>
   <!--<!(endif)-->
 

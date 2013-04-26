@@ -9,6 +9,10 @@
     "views/quickView/qvMain/qvHeaderActions",
     "views/quickView/qvMain/qvFileUploads",
     "views/quickView/summaryView",
+    "views/quickView/hrView",
+    "views/quickView/powerView",
+    "views/quickView/paceView",
+    "views/quickView/mapAndGraphView",
     "hbs!templates/views/quickView/workoutQuickView"
 ],
 function (
@@ -21,6 +25,10 @@ function (
     qvHeaderActions,
     qvFileUploads,
     WorkoutQuickViewSummary,
+    WorkoutQuickViewHR,
+    WorkoutQuickViewPower,
+    WorkoutQuickViewPace,
+    WorkoutQuickViewMapAndGraph,
     workoutQuickViewTemplate
 )
 {
@@ -39,12 +47,29 @@ function (
         showThrobbers: false,
 
         // must have an events, even if empty, or else all of our extending won't work right ...
-        events: {},
+        events:
+        {
+            "click .tabNavigation > .summaryTab": "onTabNavigationClicked",
+            "click .tabNavigation > .heartrateTab": "onTabNavigationClicked",
+            "click .tabNavigation > .powerTab": "onTabNavigationClicked",
+            "click .tabNavigation > .paceTab": "onTabNavigationClicked",
+            "click .tabNavigation > .mapGraphTab": "onTabNavigationClicked"
+        },
 
         ui:
         {
+            "tabNavigation": ".tabNavigation",
             "quickViewContent": "#quickViewContent"
         },
+
+        tabDomIDs:
+        [
+            "#quickViewSummaryTab",
+            "#quickViewHRTab",
+            "#quickViewPowerTab",
+            "#quickViewSpeedTab",
+            "#quickViewMapAndGraphTab"
+        ],
 
         initialize: function(options)
         {
@@ -55,15 +80,45 @@ function (
             }
             else
             {
+                var self = this;
+
                 // Not a new workout, let's pre-fetch WorkoutDetails from the server
-                this.model.get("details").fetch();
+                this.workoutDetailsFetchTimeout = setTimeout(function()
+                {
+                    self.model.get("details").fetch();
+                }, 800);
+                
+                this.on("close", this.stopWorkoutDetailsFetch, this);
             }
+
+            this.currentTabIndex = 0;
+
+            this.tabs = [];
+
+            this.tabRendered =
+            [
+                false,
+                false,
+                false,
+                false,
+                false
+            ];
             
             this.initializeFileUploads();
             this.initializeStickit();
             this.initializeSaveDeleteDiscard();
             this.initializeHeaderActions();
-            this.initializeTabs();
+        },
+        
+        stopWorkoutDetailsFetch: function ()
+        {
+            this.off("close", this.stopWorkoutDetailsFetch);
+            
+            if (this.workoutDetailsFetchTimeout)
+                clearTimeout(this.workoutDetailsFetchTimeout);
+            
+            if (this.workoutDetailDataFetchTimeout)
+                clearTimeout(this.workoutDetailDataFetchTimeout);
         },
 
         template:
@@ -76,31 +131,56 @@ function (
         {
             if (!this.renderInitialized)
             {
+                this.initializeTabs();
+                this.renderCurrentTab();
+
                 this.renderInitialized = true;
-                this.renderTabs();
             }
         },
 
         initializeTabs: function()
         {
-            this.views =
-            {
-                workoutQuickViewSummary: new WorkoutQuickViewSummary({ model: this.model })
-            };
-
-            this.activeTabName = null;
+            this.tabs =
+            [
+                new WorkoutQuickViewSummary({ model: this.model, el: this.$(this.tabDomIDs[0]) }),
+                new WorkoutQuickViewHR({ model: this.model, el: this.$(this.tabDomIDs[1]) }),
+                new WorkoutQuickViewPower({ model: this.model, el: this.$(this.tabDomIDs[2]) }),
+                new WorkoutQuickViewPace({ model: this.model, el: this.$(this.tabDomIDs[3]) }),
+                new WorkoutQuickViewMapAndGraph({ model: this.model, el: this.$(this.tabDomIDs[4]) })
+            ];
         },
 
-        renderTabs: function()
+        renderCurrentTab: function()
         {
-            for (var tabName in this.views)
-            {
-                var tab = this.views[tabName];
-                tab.render();
-                this.ui.quickViewContent.append(tab.$el);
-            }
-        }
+            var tab = this.tabs[this.currentTabIndex];
 
+            // Lazy render the tab, only once
+            if (!this.tabRendered[this.currentTabIndex])
+            {
+                tab.render();
+                this.tabRendered[this.currentTabIndex] = true;
+            }
+
+            this.ui.quickViewContent.find(".tabContent").hide();
+            this.ui.quickViewContent.find(this.tabDomIDs[this.currentTabIndex]).show();
+        },
+        
+        onTabNavigationClicked: function(e)
+        {
+            if (!e)
+                return;
+
+            var tabIndex = parseInt(this.$(e.currentTarget).data("tabindex"), 10);
+
+            if (tabIndex === null || typeof tabIndex === "undefined")
+                return;
+
+            this.ui.tabNavigation.find("div").removeClass("tabSelected");
+            $(e.currentTarget).addClass("tabSelected");
+
+            this.currentTabIndex = tabIndex;
+            this.renderCurrentTab();
+        }
     };
 
     _.extend(WorkoutQuickView, qvSaveDeleteDiscard);
