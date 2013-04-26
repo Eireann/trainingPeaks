@@ -57,31 +57,34 @@ function (
             var self = this;
             var afterExpanding = function()
             {
-                self.$("#workOutQuickView").css({ height: newHeight, width: newWidth });
-                self.afterExpand();
+                self.$(".expandButton").css({ display: "none" });
+                self.$(".collapseButton, .expandedViewsButtons").css({ display: "block" });
+                self.$("#quickViewExpandedContent").css({ display: "block" });
             };
 
             var animateExpansion = function()
             {
+                var expandDelay = 300;
+                var expandDuration = 300;
                 setTimeout(function()
                 {
+                    self.$("#workOutQuickView").animate({ height: newHeight, width: newWidth }, { duration: expandDuration });
                     self.$(".tabNavigation, #quickViewContent, .quickviewFooter, #menuIcon").css({ display: "none" });
                     self.$(".viewOne, .viewTwo").css({ width: viewsWidth, height: viewsHeight });
-                    self.$(".expandButton").css({ display: "none" });
-                    self.$(".collapseButton, .expandedViewsButtons").css({ display: "block" });
 
                     self.$el.animate({ height: newHeight, width: newWidth },
                     {
-                        duration: 200, complete: afterExpanding
+                        duration: expandDuration, complete: afterExpanding
                     });
-                }, 300);
+                }, expandDelay);
             };
 
             var moveThenExpand = function()
             {
+                var moveDuration = 100;
                 self.$el.animate({ top: top + "px", left: left + "px" },
                     {
-                        duration: 100, complete: animateExpansion
+                        duration: moveDuration, complete: animateExpansion
                     });
             };
 
@@ -89,40 +92,61 @@ function (
 
         },
 
-        afterExpand: function()
-        {
-            this.$("#quickViewExpandedContent").css({ display: "block" });
-        },
-
         collapseClicked: function ()
         {
             var duration = 300;
 
             var self = this;
-            this.$el.animate({
-                height: this.originalPosition.height,
-                width: this.originalPosition.width,
-                top: this.originalPosition.top + "px",
-                left: this.originalPosition.left + "px"
-            },
+
+            var afterCollapsing = function()
             {
-                duration: duration,
-                complete: function()
+                self.$("#menuIcon").css({ display: "" });
+                self.$("#workOutQuickView").css({ height: self.originalPosition.height, width: self.originalPosition.width });
+                self.$(".collapseButton, .expandedViewsButtons").css({ display: "none" });
+                self.$(".tabNavigation, .quickviewFooter, .expandButton").css({ display: "block" });
+                self.$("#quickViewContent").css({ display: "block" });
+                animateMove();
+            };
+
+            var animateMove = function()
+            {
+                var moveDelay = 300;
+                var moveDuration = 300;
+                setTimeout(function()
                 {
-                    self.afterCollapse();
-                }
-            });
-            //this.$("#workOutQuickView").animate({ height: this.originalPosition.height, width: this.originalPosition.width }, { duration: duration });
-            this.$("#menuIcon").css({ display: "" });
-            this.$("#quickViewExpandedContent").css({ display: "none" });
+                     self.$el.animate({
+                        height: self.originalPosition.height,
+                        width: self.originalPosition.width,
+                        top: self.originalPosition.top + "px",
+                        left: self.originalPosition.left + "px"
+                    },
+                    {
+                        duration: moveDuration
+                    });                   
+                }, moveDelay);
+            };
+
+            var collapseThenMove = function()
+            {
+                var collapseDuration = 300;
+                self.$("#quickViewExpandedContent").css({ display: "none" });
+                self.$el.animate({
+                    height: self.originalPosition.height,
+                    width: self.originalPosition.width
+                },
+                {
+                    duration: collapseDuration,
+                    complete: afterCollapsing
+                });                   
+            };
+
+            collapseThenMove();
+
         },
 
         afterCollapse: function()
         {
-            this.$("#workOutQuickView").css({ height: this.originalPosition.height, width: this.originalPosition.width });
-            this.$(".collapseButton, .expandedViewsButtons").css({ display: "none" });
-            this.$(".tabNavigation, .quickviewFooter, .expandButton").css({ display: "block" });
-            this.$("#quickViewContent").css({ display: "block" });
+
         }
 
     };
