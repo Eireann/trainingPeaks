@@ -53,11 +53,24 @@ function (
             var left = (windowWidth - newWidth) / 2;
             var top = (windowHeight - newHeight) / 2;
 
-            this.$el.animate({ height: newHeight, width: newWidth, top: top + "px", left: left + "px" }, { duration: duration });
+            var self = this;
+            this.$el.animate({ height: newHeight, width: newWidth, top: top + "px", left: left + "px" },
+                {
+                    duration: duration, easing: "linear", complete: function()
+                {
+                    self.afterExpand();
+                }
+                });
             this.$("#workOutQuickView").animate({ height: newHeight, width: newWidth }, { duration: duration });
+            this.$("#workOutQuickView").css({ height: newHeight, width: newWidth });
             this.$(".tabNavigation, #quickViewContent, .quickviewFooter, #menuIcon, .expandButton").css({ display: "none" });
-            this.$("#quickViewExpandedContent, .collapseButton, .expandedViewsButtons").css({ display: "block" });
+            this.$(".collapseButton, .expandedViewsButtons").css({ display: "block" });
             this.$(".viewOne, .viewTwo").css({ width: viewsWidth, height: viewsHeight });
+        },
+
+        afterExpand: function()
+        {
+            this.$("#quickViewExpandedContent").css({ display: "block" });
         },
 
         collapseClicked: function ()
@@ -82,12 +95,12 @@ function (
             this.$(".tabNavigation, .quickviewFooter, .expandButton").css({ display: "block" });
             this.$("#menuIcon").css({ display: "" });
             this.$(".collapseButton, .expandedViewsButtons").css({ display: "none" });
+            this.$("#quickViewExpandedContent").css({ display: "none" });
         },
 
         afterCollapse: function()
         {
             this.$("#quickViewContent").css({ display: "block" });
-            this.$("#quickViewExpandedContent").css({ display: "none" });
         }
 
     };

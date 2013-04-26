@@ -5,6 +5,7 @@
 	overflow:hidden;
     width: 690px;
     height: 530px;
+	@include radialGradient(#e6e4e4, #dedcdc);
 }
 
 input[disabled='disabled']
