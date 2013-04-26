@@ -12,15 +12,16 @@ function(_, modelToViewConversionFactors)
 
         pace = pace.split(":");
 
+        // if no colon assume whole minutes
         if (pace.length !== 2)
-            return 0;
+            pace.push("00");
 
         var minutes = parseInt(pace[0], 10);
         var seconds = parseInt(pace[1], 10);
         var fractionOfMinute = seconds / 60;
         minutes += fractionOfMinute;
 
-        var conversion = modelToViewConversionFactors.speed[unitSystem];
+        var conversion = modelToViewConversionFactors("speed", unitSystem);
         var speed = 60 / minutes / conversion;
         
         return speed;
@@ -51,7 +52,7 @@ function(_, modelToViewConversionFactors)
 
     var convertToModelUnits = function (value, fieldType, workoutType)
     {
-        var currentUnits = theMarsApp.user.get("units");
+        var userUnits = theMarsApp.user.get("units");
 
         if (fieldType === "pace" && !isTimeString(value))
         {
@@ -64,14 +65,14 @@ function(_, modelToViewConversionFactors)
         switch (fieldType)
         {
             case "elevation":
-                return (+value / modelToViewConversionFactors[fieldType][currentUnits]);
+                return (+value / modelToViewConversionFactors(fieldType, userUnits));
             case "speed":
             case "distance":
-                return (+value / modelToViewConversionFactors[fieldType][currentUnits]);
+                return (+value / modelToViewConversionFactors(fieldType, userUnits));
             case "pace":
-                return convertToSpeedFromPace(value, currentUnits);
+                return convertToSpeedFromPace(value, userUnits);
             case "temperature":
-                return currentUnits === "0" ? 5 / 9 * (value - 32) : value;
+                return userUnits === "0" ? 5 / 9 * (value - 32) : value;
             default:
                 throw "Unknown field type for unit conversion";
         }

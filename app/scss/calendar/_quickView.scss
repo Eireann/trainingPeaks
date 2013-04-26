@@ -241,7 +241,6 @@ input[disabled='disabled']
     .summaryTab
     {
         padding: 12px 0px 10px 11px;
-        background-color: $TPGrey6;
     }
 
     .heartrateTab
@@ -270,6 +269,7 @@ input[disabled='disabled']
             opacity: 0.4;
         }
     }
+
     .mapGraphTab
     {
         padding: 10px 0px 10px 7px;
@@ -277,6 +277,11 @@ input[disabled='disabled']
         {
             opacity: 0.4;
         }
+    }
+
+    .tabSelected 
+    {
+        background-color: $TPGrey6;
     }
 }
 
@@ -304,6 +309,16 @@ input[disabled='disabled']
 		@include selectionBox(168px);
 	}
 }
+
+.mapGraphTab
+{
+    padding: 10px 0px 10px 7px;
+    img
+    {
+        opacity: 0.4;
+    }
+}
+
 .workoutStatsRow
 {
 	@include innerRow();
@@ -502,6 +517,7 @@ input[disabled='disabled']
             top: 40px;
             right: 0px;
             @include transform(translateX(8px) rotate(45deg));
+			box-shadow: -2px 6px 2px 2px #303030;
         }
 
         .colored
@@ -650,7 +666,7 @@ input[disabled='disabled']
         .commentBody
         {
             font-size: $fontSizeSmall;
-            white-space: pre;
+            white-space: pre-wrap;
         }
 
     }
@@ -684,5 +700,14 @@ input[disabled='disabled']
         {
             display:block
         }
+    }
+}
+
+#quickViewMapAndGraphTab
+{
+    .mapAndGraph
+    {
+        width: 600px;
+        margin: 10px;
     }
 }

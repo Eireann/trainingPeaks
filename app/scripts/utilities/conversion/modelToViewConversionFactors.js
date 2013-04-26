@@ -1,30 +1,40 @@
 ﻿define(
 [
+    "utilities/units/constants"
 ],
-function()
+function(unitsConstants)
 {
+
     // Conversion factors from Model units (metric) to view units.
     // Use inverse (1/*) for View to Model conversion.
-    return {
+    var conversionFactors = {
         "distance":
         {
-            "0": 0.000621371,
-            "1": 0.001
+            English: 0.000621371,
+            Metric: 0.001
         },
         "pace":
         {
-            "0": 26.8224,
-            "1": 16.666666666667
+            English: 26.8224,
+            Metric: 16.666666666667
         },
         "speed":
         {
-            "0": 2.236936,
-            "1": 3.6
+            English: 2.236936,
+            Metric: 3.6
         },
         "elevation":
         {
-            "0": 3.28084,
-            "1": 1
+            English: 3.28084,
+            Metric: 1
         }
     };
+
+    var lookupConversion = function(unitsType, userUnits)
+    {
+        var userUnitsKey = userUnits === unitsConstants.English ? "English" : "Metric";
+        return conversionFactors[unitsType][userUnitsKey];
+    };
+
+    return lookupConversion;
 });

@@ -48,17 +48,33 @@ function(
             // load the calendar, and aggregate all of the deferreds from each workout request
             var today = moment();
             this.showDate(today);
+
+            this.watchClipboard();
+
+            // wait for user to load ...
+            this.setupUserFetchPromise();
+        },
+
+        loadDataAfterUserLoads: function()
+        {
             var self = this;
             var onLoad = function(deferreds)
             {
+                var today = moment();
                 self.scrollToDateAfterLoad(deferreds, today);
             };
             this.loadCalendarData(onLoad);
-
             this.loadLibraryData();
+        },
 
-            this.watchClipboard();
-        }, 
+        setupUserFetchPromise: function()
+        {
+            var self = this;
+            theMarsApp.userFetchPromise.done(function()
+            {
+                self.loadDataAfterUserLoads();
+            });
+        },
 
         showViewsInRegions: function()
         {

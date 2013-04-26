@@ -3,8 +3,8 @@
 
 .workout
 {
-    margin: 5px 4px 4px 0px;
-    @include box-shadow(0px 2px 3px -2px $TPGrey4);
+    margin: 5px 4px 4px 2px;
+    @include box-shadow(0 1px 1.5px 0 #2c2c2c);
 
     &.dragHelper
     {
@@ -15,6 +15,37 @@
     &.dragging
     {
         opacity:0.8;
+    }
+
+    .workoutSettings
+    {
+        display: none;
+        float: right;
+
+        button
+        {	
+            background: transparent;
+            border: none;
+            padding: 0px;
+            width: 15px;
+            cursor: default;
+        }
+    }
+
+    &:hover
+    {
+        .workoutSettings
+        {
+            display: block;
+        }
+    }
+
+    &.menuOpen
+    {
+        .workoutSettings
+        {
+            display: block;
+        }
     }
 
     .workoutDiv
@@ -58,20 +89,6 @@
                 }
             }
 
-            .workoutSettings
-            {
-                display: none;
-                float: right;
-
-                button
-                {	
-                    background: transparent;
-                    border: none;
-                    padding: 0px;
-                    width: 15px;
-                    cursor: default;
-                }
-            }
         }
         .workoutBody
         {
@@ -81,6 +98,7 @@
             {
                 font-weight: bold;
                 cursor: inherit;
+                white-space: pre-wrap;
             
             }
             
@@ -93,6 +111,7 @@
                 text-align: left;
                 line-height: 12px;
                 cursor: inherit;
+                white-space: pre-wrap;
             }
         }
     }

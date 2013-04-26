@@ -38,7 +38,6 @@ function (
 
         initialize: function()
         {
-
             this.initializeTextAreas();
             this.initializeUserCustomization();
             this.initializeComments();

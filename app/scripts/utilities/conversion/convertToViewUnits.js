@@ -1,9 +1,13 @@
 define(
 [
     "underscore",
+    "utilities/workout/workoutTypes",
     "utilities/conversion/modelToViewConversionFactors"
 ],
-function(_, modelToViewConversionFactors)
+function(
+    _,
+    workoutTypes,
+    modelToViewConversionFactors)
 {
     var convertToPaceFromSpeed = function(speed, unitSystem)
     {
@@ -15,7 +19,7 @@ function(_, modelToViewConversionFactors)
             unitSystem = theMarsApp.user.get("units");
 
         var pace;
-        var conversion = modelToViewConversionFactors.speed[unitSystem];
+        var conversion = modelToViewConversionFactors("speed", unitSystem);
         speed = speed * conversion / 60;
         pace = (1 / speed).toFixed(2);
         var minutes = Math.floor(pace);
@@ -26,7 +30,7 @@ function(_, modelToViewConversionFactors)
         return (minutes + ":" + seconds);
     };
 
-    var roundViewUnits = function(value)
+    var roundViewUnits = function(value, precision)
     {
         if (!isNumeric(value))
         {
@@ -36,6 +40,11 @@ function(_, modelToViewConversionFactors)
         if (!_.isNumber(value))
         {
             value = Number(value);
+        }
+
+        if (_.isNumber(precision))
+        {
+            return value.toFixed(precision);
         }
 
         if (value >= 100)
@@ -66,8 +75,19 @@ function(_, modelToViewConversionFactors)
         return _.isNumber(asNumber) && !_.isNaN(asNumber);
     };
 
-    var convertToViewUnits = function(value, fieldType, defaultValueIfEmpty)
+    var convertToViewUnits = function(value, fieldType, defaultValueIfEmpty, sportType)
     {
+        var precision = null;
+        if (_.isObject(value))
+        {
+            var parameters = value;
+            value = parameters.value;
+            fieldType = parameters.fieldType;
+            defaultValueIfEmpty = parameters.defaultValue;
+            sportType = parameters.sportType;
+            precision = parameters.precision;
+        }
+
         if (!isNumeric(value) || Number(value) === 0)
         {
             if (!_.isUndefined(defaultValueIfEmpty))
@@ -86,7 +106,7 @@ function(_, modelToViewConversionFactors)
             case "speed":
                 return convertSpeedToViewUnits(value);
             case "distance":
-                return convertDistanceToViewUnits(value);
+                return convertDistanceToViewUnits(value, sportType, precision);
             case "pace":
                 return convertToPaceFromSpeed(value);
             case "temperature":
@@ -99,23 +119,33 @@ function(_, modelToViewConversionFactors)
     var convertElevation = function(value)
     {
         var currentUnits = theMarsApp.user.get("units");
-        return (value * modelToViewConversionFactors["elevation"][currentUnits]).toFixed(0);
+        return (value * modelToViewConversionFactors("elevation", currentUnits)).toFixed(0);
     };
 
     var convertTemperature = function(value)
     {
         var currentUnits = theMarsApp.user.get("units");
-        return roundViewUnits(currentUnits === "0" ? 9 / 5 * value + 32 : value);
+        return roundViewUnits(currentUnits === "0" ? 9 / 5 * value + 32 : value, 0);
     };
 
-    var convertDistanceToViewUnits = function(value)
+    var convertDistanceToViewUnits = function(value, sportType, precision)
     {
-        return roundViewUnits(value * modelToViewConversionFactors["distance"][theMarsApp.user.get("units")]);
+
+        var convertedValue = value * modelToViewConversionFactors("distance", theMarsApp.user.get("units"));
+
+        var swimType = workoutTypes.getIdByName("Swim");
+        if (swimType === sportType)
+        {
+            return Math.round(convertedValue);
+        } else
+        {
+            return roundViewUnits(convertedValue, precision);
+        }
     };
 
     var convertSpeedToViewUnits = function(value)
     {
-        return roundViewUnits(value * modelToViewConversionFactors["speed"][theMarsApp.user.get("units")]);
+        return roundViewUnits(value * modelToViewConversionFactors("speed", theMarsApp.user.get("units")), 1);
     };
 
     return convertToViewUnits;

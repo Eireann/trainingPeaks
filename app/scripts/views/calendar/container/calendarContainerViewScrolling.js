@@ -174,7 +174,7 @@ function(_, TP)
             //console.debug("Scrolled to: " + this.ui.weeksContainer.scrollTop());
         },
 
-        scrollToDate: function (targetDate, effectDuration)
+        scrollToDate: function(targetDate, effectDuration)
         {
             var dateAsMoment = moment(targetDate);
 
@@ -185,7 +185,8 @@ function(_, TP)
             var dateAsString = dateAsMoment.format(TP.utils.datetime.shortDateFormat);
             var selector = '.day[data-date="' + dateAsString + '"]';
             this.scrollToSelector(selector, effectDuration);
-            this.setCurrentDate(targetDate);
+            // no need to do this as it will already update after scroll, this makes it flash twice
+            //this.setCurrentDate(targetDate);
             this.snappedToWeekHeader = true;
         },
 

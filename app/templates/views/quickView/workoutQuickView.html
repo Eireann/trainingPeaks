@@ -37,7 +37,7 @@
                         <label id="qv-header-distance" class="actual"/>
                     </div>
                     <div class="headerWorkoutValueLabel">
-                        <label>{{getUnitsLabel "distance" }}</label>
+                        <label>{{getUnitsLabel "distance" workoutTypeValueId}}</label>
                     </div>
                     <div class="headerWorkoutValue middleValues">
                         <label id="qv-header-tssPlanned" class="planned"/>
@@ -67,24 +67,30 @@
     </div>
 
     <div class="tabNavigation">
-        <div class="summaryTab">
+        <div class="summaryTab tabSelected" data-tabindex="0">
             <img src="assets/images/QVImages/summary.png"/>
         </div>
-        <div class="heartrateTab">
+        <div class="heartrateTab" data-tabindex="1">
             <img src="assets/images/QVImages/heartrate.png"/>
         </div>
-        <div class="powerTab">
+        <div class="powerTab" data-tabindex="2">
             <img src="assets/images/QVImages/power.png"/>
         </div>
-        <div class="paceTab">
+        <div class="paceTab" data-tabindex="3">
             <img src="assets/images/QVImages/pace.png"/>
         </div>
-        <div class="mapGraphTab">
+        <div class="mapGraphTab" data-tabindex="4">
             <img src="assets/images/QVImages/mapGraph.png"/>
         </div>
     </div>
 
-    <div id="quickViewContent"/>
+    <div id="quickViewContent">
+        <div id="quickViewSummaryTab" class="tabContent"></div>
+        <div id="quickViewHRTab" class="tabContent"></div>
+        <div id="quickViewPowerTab" class="tabContent"></div>
+        <div id="quickViewSpeedTab" class="tabContent"></div>
+        <div id="quickViewMapAndGraphTab" class="tabContent"></div>
+    </div>
     
     <div class="quickviewFooter">
         <div class="selectionBox this.$(".chosenSelect").chosen();">

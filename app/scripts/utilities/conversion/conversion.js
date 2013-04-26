@@ -10,10 +10,34 @@
     return {
         convertToModelUnits: convertToModelUnits,
         convertToViewUnits: convertToViewUnits,
-        
-        formatDistance: function (value, options)
+
+        // works if we have extended these conversion functions onto a view like in quickview, otherwise useless ...
+        getMySportType: function()
         {
-            return convertToViewUnits(value, "distance", options && options.hasOwnProperty("defaultValue") ? options.defaultValue : "");
+            var sportType = null;
+            if (this.hasOwnProperty("model") && this.model.has("workoutTypeValueId"))
+            {
+                sportType = this.model.get("workoutTypeValueId");
+            }
+            return sportType;
+        },
+
+        formatDistance: function(value, options)
+        {
+            var parameters = {
+                value: value,
+                fieldType: "distance",
+                defaultValue: options && options.hasOwnProperty("defaultValue") ? options.defaultValue : "",
+                sportType: this.getMySportType()
+            };
+
+            if (options && options.precision)
+            {
+                parameters.precision = options.precision;
+            }
+
+            return convertToViewUnits(parameters);
+
         },
 
         parseDistance: function (value, options)
@@ -67,9 +91,14 @@
             return convertToModelUnits(parseInt(value, 10), "elevation");
         },
 
-        formatNumber: function (value, options)
+        formatNumber: function(value, options)
         {
             return ((value === null || value === 0) ? "" : +value);
+        },
+
+        formatInteger: function(value, options)
+        {
+            return ((value === null || value === 0) ? "" : (Math.round(parseFloat(value))).toFixed(0));
         },
 
         parseInteger: function (value, options)
@@ -99,7 +128,7 @@
 
         formatIF: function(value, options)
         {
-            return value ? +(Math.round(value * 100) / 100) : "";
+            return value ? +(Math.round(value * 100) / 100).toFixed(2) : "";
         },
 
         parseIF: function (value, options)
@@ -109,7 +138,7 @@
         
         formatTSS: function (value, options)
         {
-            return value ? (Math.round(value * 10) / 10) : (options && options.hasOwnProperty("defaultValue") ? options.defaultValue : "");
+            return value ? (Math.round(value * 10) / 10).toFixed(1) : (options && options.hasOwnProperty("defaultValue") ? options.defaultValue : "");
         },
 
         parseTSS: function (value, options)

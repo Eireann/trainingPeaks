@@ -2,6 +2,7 @@
 requirejs(
 [
 "TP",
+"app",
 "moment",
 "jquery",
 "underscore",
@@ -12,7 +13,7 @@ requirejs(
 "views/calendar/container/calendarContainerView",
 "views/library/libraryView"
 ],
-function(TP, moment, $, _, Backbone, CalendarController, WorkoutModel, WorkoutsCollection, CalendarView, LibraryView)
+function(TP, theMarsApp, moment, $, _, Backbone, CalendarController, WorkoutModel, WorkoutsCollection, CalendarView, LibraryView)
 {
 
     describe("Calendar Controller", function()
@@ -103,29 +104,32 @@ function(TP, moment, $, _, Backbone, CalendarController, WorkoutModel, WorkoutsC
                 expect(controller.initializeLibrary).toHaveBeenCalled();
             });
 
-            it("Should display the views in their regioins", function()
+            it("Should display the views in their regions", function()
             {
                 controller.show();
                 expect(controller.showViewsInRegions).toHaveBeenCalled();
             });
 
-            it("Should load the library data", function()
+            it("Should load the library data after user loads", function()
             {
                 spyOn(controller, "loadLibraryData");
                 controller.show();
+                theMarsApp.userFetchPromise.resolve();
                 expect(controller.loadLibraryData).toHaveBeenCalled();
             });
 
-            it("Should load the calendar data", function()
+            it("Should load the calendar data after user loads", function()
             {
                 spyOn(controller, "loadCalendarData");
                 controller.show();
+                theMarsApp.userFetchPromise.resolve();
                 expect(controller.loadCalendarData).toHaveBeenCalled();
             });
 
             it("Should scroll to today after loading", function()
             {
                 controller.show();
+                theMarsApp.userFetchPromise.resolve();
                 expect(controller.scrollToDateAfterLoad).toHaveBeenCalled();
             });
 
