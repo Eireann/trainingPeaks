@@ -63,16 +63,31 @@ function (
         collapseClicked: function ()
         {
             var duration = 300;
+
+            var self = this;
             this.$el.animate({
                 height: this.originalPosition.height,
                 width: this.originalPosition.width,
                 top: this.originalPosition.top + "px",
                 left: this.originalPosition.left + "px"
-            }, { duration: duration });
+            },
+            {
+                duration: duration,
+                complete: function()
+                {
+                    self.afterCollapse();
+                }
+            });
             this.$("#workOutQuickView").animate({ height: this.originalPosition.height, width: this.originalPosition.width }, { duration: duration });
-            this.$(".tabNavigation, #quickViewContent, .quickviewFooter, .expandButton").css({ display: "block" });
+            this.$(".tabNavigation, .quickviewFooter, .expandButton").css({ display: "block" });
             this.$("#menuIcon").css({ display: "" });
-            this.$("#quickViewExpandedContent, .collapseButton, .expandedViewsButtons").css({ display: "none" });
+            this.$(".collapseButton, .expandedViewsButtons").css({ display: "none" });
+        },
+
+        afterCollapse: function()
+        {
+            this.$("#quickViewContent").css({ display: "block" });
+            this.$("#quickViewExpandedContent").css({ display: "none" });
         }
 
     };
