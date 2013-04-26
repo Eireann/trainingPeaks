@@ -41,6 +41,11 @@ function (_, TP)
 
         calendar: function ()
         {
+            if (!theMarsApp.session.isAuthenticated())
+            {
+                theMarsApp.session.logout();
+                return;
+            }
             theMarsApp.mainRegion.show(theMarsApp.controllers.calendarController.getLayout());
         },
 
@@ -48,5 +53,6 @@ function (_, TP)
         {
             theMarsApp.mainRegion.show(theMarsApp.controllers.loginController.getLayout());
         }
+
     });
 });
