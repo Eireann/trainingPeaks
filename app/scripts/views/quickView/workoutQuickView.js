@@ -116,9 +116,6 @@ function (
             
             if (this.workoutDetailsFetchTimeout)
                 clearTimeout(this.workoutDetailsFetchTimeout);
-            
-            if (this.workoutDetailDataFetchTimeout)
-                clearTimeout(this.workoutDetailDataFetchTimeout);
         },
 
         template:
