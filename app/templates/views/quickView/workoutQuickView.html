@@ -1,60 +1,111 @@
 ﻿<div id="workOutQuickView">
     <div class="QVHeader">
-        <div class="dateAndTime">
-            <span id="date">
-                <span id="dayName">{{formatDate workoutDay "dddd"}}</span> 
-                <span id="calendarDate">{{formatDate workoutDay "MMMM DD, YYYY"}}</span>
-            </span> 
-            <input type="text" id="startTimeInput" value="{{ startTime }}" placeholder="Enter Time" />
-        </div>
+  
         <div class="closeAndSettings">
             <span><img id="menuIcon" src="assets/images/calendarImages/settingsIcon.png"/></span>
             <span><img id="closeIcon" src="assets/images/closeX.png"/></span>
         </div>
 
         <div>
-        <div class="grayHeader workout">
-            <div class="workoutIcon">
-
+            <div class="dateAndTime">
+                <span id="date">
+                    <span id="dayName">{{formatDate workoutDay "dddd"}}</span> 
+                    <span id="calendarDate">{{formatDate workoutDay "MMMM DD, YYYY"}}</span>
+                </span> 
+                <input type="text" id="startTimeInput" value="{{ startTime }}" placeholder="Enter Time" />
             </div>
-            <div class="workoutHeaderStats">
-                <div class="headerIcons">
-                    <div id="breakThrough" class="icon" title="{{$ "BreakthroughTooltip" }}">
-                        <img src="assets/images/QVImages/breakthrough.png"/>
+            <div class="grayHeader workout">
+                <div class="workoutIcon">
+
+                </div>
+                <div class="workoutHeaderStats">
+                    <div class="headerIcons">
+                        <div id="breakThrough" class="icon" title="{{$ "BreakthroughTooltip" }}">
+                            <img src="assets/images/QVImages/breakthrough.png"/>
+                        </div>
+                        <div class="icon addAttachment" title="{{$ "UploadAttachmentTooltip" }}">
+                            <img src="assets/images/QVImages/paperClip.png"/>
+                        </div>
+                        <input id="attachment" style="display: none" type="file"/>
                     </div>
-                    <div class="icon addAttachment" title="{{$ "UploadAttachmentTooltip" }}">
-                        <img src="assets/images/QVImages/paperClip.png"/>
+                    <div class="headerWorkoutValue middleValues">
+                        <label id="qv-header-totaltimePlanned" class="planned"/>
+                        <label id="qv-header-totaltime" class="actual"/>
                     </div>
-                    <input id="attachment" style="display: none" type="file"/>
+                    <div class="headerWorkoutValue">
+                        <label id="qv-header-distancePlanned" class="planned"/>
+                        <label id="qv-header-distance" class="actual"/>
+                    </div>
+                    <div class="headerWorkoutValueLabel">
+                        <label>{{getUnitsLabel "distance" workoutTypeValueId}}</label>
+                    </div>
+                    <div class="headerWorkoutValue middleValues">
+                        <label id="qv-header-tssPlanned" class="planned"/>
+                        <label id="qv-header-tssactual" class="actual"/>
+                    </div>
+                    <div class="headerWorkoutValueLabel">
+                        <label>TSS</label>
+                    </div> 
+                    <div class="title">
+                        <input type="text" name="workoutTitle" class="workoutTitle" placeholder="{{$ "UntitledWorkout" }}" id="workoutTitleField" title="{{$ "SetTitleTooltip" }}" />
+                    </div>
                 </div>
-                <div class="headerWorkoutValue middleValues">
-                    <label id="qv-header-totaltimePlanned" class="planned"/>
-                    <label id="qv-header-totaltime" class="actual"/>
+                
+            </div>
+            <div class="uploadExpandButtons">
+                <div class="buttons uploadButton" id="quickViewFileUploadDiv" title="{{$ "FileUploadTooltip" }}">
+                    <label>{{$ "Upload"}}</label>
                 </div>
-                <div class="headerWorkoutValue">
-                    <label id="qv-header-distancePlanned" class="planned"/>
-                    <label id="qv-header-distance" class="actual"/>
+                <div class="buttons expandButton" id="quickViewExpandDiv">
+                    <label>{{$ "Expand"}}</label>
                 </div>
-                <div class="headerWorkoutValueLabel">
-                    <label>{{getUnitsLabel "distance" workoutTypeValueId }}</label>
-                </div>
-                <div class="headerWorkoutValue middleValues">
-                    <label id="qv-header-tssPlanned" class="planned"/>
-                    <label id="qv-header-tssactual" class="actual"/>
-                </div>
-                <div class="headerWorkoutValueLabel">
-                    <label>TSS</label>
-                </div> 
-                <div class="title">
-                    <input type="text" name="workoutTitle" class="workoutTitle" placeholder="{{$ "UntitledWorkout" }}" id="workoutTitleField" title="{{$ "SetTitleTooltip" }}" />
+                <div class="buttons collapseButton" id="quickViewCollapseDiv">
+                    <label>{{$ "Collapse"}}</label>
                 </div>
             </div>
-        </div>
-
-        <div class="uploadButton" id="quickViewFileUploadDiv" title="{{$ "FileUploadTooltip" }}">
-                <label>Upload</label>
-        </div>
-        <input id="fileUploadInput" style="display: none" type="file"/>
+            <div class="expandedViewsButtons">
+                <div class="vRule" />
+                <div class="views">
+                    <label>{{$ "View"}}</label>
+                    <div class="topViews">
+                        <div class="oneUpView view">
+                            <img src="assets/images/QVImages/1UpView.jpg"/>
+                        </div>
+                        <div class="twoUpViewHorizontal view">
+                            <img src="assets/images/QVImages/2UpViewHorizontal.jpg"/>
+                        </div>
+                        <div class="twoUpViewVertical view">
+                            <img src="assets/images/QVImages/2UpViewVertical.jpg"/>
+                        </div>
+                        
+                    </div>
+                    <div class="bottomViews">
+                        <div class="threeUpView view">
+                            <img src="assets/images/QVImages/3UpView.jpg"/>
+                        </div>
+                        <div class="fourUpView view">
+                            <img src="assets/images/QVImages/4UpView.jpg"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="charts">
+                    <label>{{$ "Charts"}}</label>
+                    <button id="add">{{$ "Add"}}</button>
+                    <button id="layout">{{$ "Layout"}}</button>
+                </div>
+                <div class="tools">
+                    <label>{{$ "Tools"}}</label>
+                    <button id="comment">{{$ "Comment"}}</button>
+                    <button id="options">{{$ "Options"}}</button>
+                </div>
+                <div class="share">
+                    <label>{{$ "Share"}}</label>
+                    <img src="assets/images/QVImages/twitterIcon.jpg"/>
+                    <img src="assets/images/QVImages/facebookIcon.jpg"/>
+                    <img src="assets/images/QVImages/mailIcon.jpg"/>
+                </div>
+            </div>
+            <input id="fileUploadInput" style="display: none" type="file"/>
         </div>
     </div>
 
@@ -83,6 +134,7 @@
         <div id="quickViewSpeedTab" class="tabContent"></div>
         <div id="quickViewMapAndGraphTab" class="tabContent"></div>
     </div>
+    <div id="quickViewExpandedContent" style="display:none;"/> 
     
     <div class="quickviewFooter">
         <div class="selectionBox this.$(".chosenSelect").chosen();">

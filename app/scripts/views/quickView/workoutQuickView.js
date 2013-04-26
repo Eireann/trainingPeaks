@@ -8,11 +8,13 @@
     "views/quickView/qvMain/qvSaveDeleteDiscard",
     "views/quickView/qvMain/qvHeaderActions",
     "views/quickView/qvMain/qvFileUploads",
+    "views/quickView/qvMain/qvExpand",
     "views/quickView/summaryView",
     "views/quickView/hrView",
     "views/quickView/powerView",
     "views/quickView/paceView",
     "views/quickView/mapAndGraphView",
+    "views/quickView/expandedView/quickViewExpandedView",
     "hbs!templates/views/quickView/workoutQuickView"
 ],
 function (
@@ -24,11 +26,13 @@ function (
     qvSaveDeleteDiscard,
     qvHeaderActions,
     qvFileUploads,
+    qvExpand,
     WorkoutQuickViewSummary,
     WorkoutQuickViewHR,
     WorkoutQuickViewPower,
     WorkoutQuickViewPace,
     WorkoutQuickViewMapAndGraph,
+    expandedView,
     workoutQuickViewTemplate
 )
 {
@@ -59,7 +63,8 @@ function (
         ui:
         {
             "tabNavigation": ".tabNavigation",
-            "quickViewContent": "#quickViewContent"
+            "quickViewContent": "#quickViewContent",
+            "quickViewContentExpanded": "#quickViewExpandedContent"
         },
 
         tabDomIDs:
@@ -87,7 +92,7 @@ function (
                 {
                     self.model.get("details").fetch();
                 }, 800);
-                
+
                 this.on("close", this.stopWorkoutDetailsFetch, this);
             }
 
@@ -108,6 +113,8 @@ function (
             this.initializeStickit();
             this.initializeSaveDeleteDiscard();
             this.initializeHeaderActions();
+            this.initializeTabs();
+            this.initializeExpand();
         },
         
         stopWorkoutDetailsFetch: function ()
@@ -187,6 +194,7 @@ function (
     _.extend(WorkoutQuickView, qvHeaderActions);
     _.extend(WorkoutQuickView, qvStickitBindings);
     _.extend(WorkoutQuickView, qvFileUploads);
+    _.extend(WorkoutQuickView, qvExpand);
 
     return TP.ItemView.extend(WorkoutQuickView);
 });
