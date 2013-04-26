@@ -488,6 +488,7 @@ input[disabled='disabled']
             top: 40px;
             right: 0px;
             @include transform(translateX(8px) rotate(45deg));
+			box-shadow: -2px 6px 2px 2px #303030;
         }
 
         .colored
