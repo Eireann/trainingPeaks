@@ -97,7 +97,7 @@ function(TP, theMarsApp)
 
             it("should print the unit label for torque", function()
             {
-                expect(TP.utils.units.getUnitsLabel("torque")).toBe("ft/lbs");
+                expect(TP.utils.units.getUnitsLabel("torque")).toBe("in/lbs");
             });
 
             it("shouuld print the unit label for elevation", function()
