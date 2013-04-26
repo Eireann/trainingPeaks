@@ -195,6 +195,7 @@ input[disabled='disabled']
             margin-left: 10px;
             padding-top: 12px;
             padding-left: 28px;
+            padding-right: 8px;
             float: left;
         }
         .uploadButton
@@ -215,12 +216,12 @@ input[disabled='disabled']
             padding-left: 25px;
         }
 
-        @include box-shadow(0px 1px 2px 0px #40403f);
         @include labels($navigationFontFamilyRegular, $fontSizeLarge, $TPGrey4, normal);
-        margin-left: 10px;
-        @include linearGradient(top, #fefefe, #e0dddd);
         text-align: center;
-        padding-top: 30px;
+        //@include box-shadow(0px 1px 2px 0px #40403f);
+        //margin-left: 10px;
+        //@include linearGradient(top, #fefefe, #e0dddd);
+        //padding-top: 30px;
     }
 
     #menuIcon {
