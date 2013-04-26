@@ -10,7 +10,7 @@ function (
 
     var expandedViewBase =
     {
-        className: "summary",
+        className: "QVExpandedView",
 
         template:
         {

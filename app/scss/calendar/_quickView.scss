@@ -716,19 +716,24 @@ input[disabled='disabled']
 .quickViewExpandedStats
 {
     width: 333px;
-    float: left;
+    position: absolute;
+    right: 0px;
+    top: 0px;
 }
 
-.viewOne
+.QVExpandedView
 {
-    background-color: $TPGrey1;
-    float: left;
-}
+    position: relative;
 
-.viewTwo
-{
-    background-color: $TPGrey1;
-    float: left;
+    .viewOne
+    {
+        background-color: $TPGrey1;
+    }
+
+    .viewTwo
+    {
+        background-color: $TPGrey1;
+    }
 }
 
 .expandedViewsButtons
