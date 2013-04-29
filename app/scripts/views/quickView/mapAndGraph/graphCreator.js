@@ -20,7 +20,8 @@ function (_)
             max: null, // Null means max is auto-calced
             min: 0,
             minTickInterval: 5,
-            type: "linear"
+            type: "linear",
+            title: null
         },
         "Power":
         {
@@ -31,12 +32,13 @@ function (_)
             {
                 enabled: false
             },
-            lineColor: "#FF0000",
+            lineColor: "#FF00FF",
             lineWidth: 0,
             max: null, // Null means max is auto-calced
             min: 0,
             minTickInterval: 5,
-            type: "linear"
+            type: "linear",
+            title: null
         },
         "Cadence":
         {
@@ -47,12 +49,13 @@ function (_)
             {
                 enabled: false
             },
-            lineColor: "#FF0000",
+            lineColor: "#FFA500",
             lineWidth: 0,
             max: null, // Null means max is auto-calced
             min: 0,
             minTickInterval: 5,
-            type: "linear"
+            type: "linear",
+            title: null
         },
         "Speed":
         {
@@ -63,12 +66,13 @@ function (_)
             {
                 enabled: false
             },
-            lineColor: "#FF0000",
+            lineColor: "#3399FF",
             lineWidth: 0,
             max: null, // Null means max is auto-calced
             min: 0,
             minTickInterval: 5,
-            type: "linear"
+            type: "linear",
+            title: null
         },
         "Temperature":
         {
@@ -79,12 +83,13 @@ function (_)
             {
                 enabled: false
             },
-            lineColor: "#FF0000",
+            lineColor: "#0A0AFF",
             lineWidth: 0,
             max: null, // Null means max is auto-calced
             min: 0,
             minTickInterval: 5,
-            type: "linear"
+            type: "linear",
+            title: null
         },
         "Elevation":
         {
@@ -95,13 +100,14 @@ function (_)
             {
                 enabled: false
             },
-            lineColor: "#FF0000",
+            lineColor: "#4fbf00",
             lineWidth: 0,
             max: null, // Null means max is auto-calced
             min: 0,
             minTickInterval: 5,
             type: "linear",
-            opposite: true
+            opposite: true,
+            title: null
         }
     };
     
@@ -117,7 +123,10 @@ function (_)
         var seriesConfig = [];
         _.each(seriesArray, function(seriesItem, index)
         {
-            seriesConfig.push({ name: seriesItem.name, yAxis: index, data: seriesItem.data });
+            var config = { name: seriesItem.name, yAxis: index, data: seriesItem.data };
+            if (seriesItem.name === "Elevation")
+                config["type"] = "area";
+            seriesConfig.push(config);
         });
         
         container.highcharts(
