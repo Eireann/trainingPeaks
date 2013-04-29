@@ -1,0 +1,60 @@
+﻿@import "../../globalCSS/tpstylesheet";
+
+.tabNavigation
+{
+    width: 37px;
+    height: 360px;
+    float: left;
+    background-color: $TPGrey5;
+    padding: 0px 0px 0px 0px;
+    border-bottom: $TPGrey7;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+
+
+    .summaryTab
+    {
+        padding: 12px 0px 10px 11px;
+    }
+
+    .heartrateTab
+    {
+        padding: 10px 0px 10px 10px;
+        img
+        {
+            opacity: 0.4;
+        }
+    }
+
+    .powerTab
+    {
+        padding: 10px 0px 10px 13px;
+        img
+        {
+            opacity: 0.4;
+        }
+    }
+
+    .paceTab
+    {
+        padding: 10px 0px 10px 7px;
+        img
+        {
+            opacity: 0.4;
+        }
+    }
+
+    .mapGraphTab
+    {
+        padding: 10px 0px 10px 7px;
+        img
+        {
+            opacity: 0.4;
+        }
+    }
+
+    .tabSelected 
+    {
+        background-color: $TPGrey6;
+    }
+}

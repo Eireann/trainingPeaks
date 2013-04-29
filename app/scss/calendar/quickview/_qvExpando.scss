@@ -1,0 +1,129 @@
+﻿@import "../../globalCSS/tpstylesheet";
+
+.quickViewExpandedStats
+{
+    width: 333px;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+}
+
+.QVExpandedView
+{
+    position: relative;
+
+    .viewOne
+    {
+        background-color: $TPGrey1;
+    }
+
+    .viewTwo
+    {
+        background-color: $TPGrey1;
+    }
+}
+
+.expandedViewsButtons
+{
+    display:none;
+    width: 500px;
+    height: 80px;
+    float: left;
+    margin-left: 10px;
+    @include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey3, normal);
+    @include buttons(0, 77px, $fontSizeSmall);
+
+    button
+    {
+        padding-top: 3px;
+        color: $TPGrey3;
+    }
+
+    background-repeat: no-repeat;
+    background-image: url(../../assets/images/QVImages/buttonsBackround.jpg);
+
+    .vRule
+    {
+        width: 1px;
+        height: 79px;
+        border-right: solid 1px $TPGrey2;
+        margin-top: 1px;
+        margin-left: 14px;
+        float: left;
+    }
+
+    .views
+    {
+        margin-left: 12px;
+        margin-top: 7px;
+        width: 120px;
+        height: 80px;
+        float: left;
+        
+
+        .view
+        {
+            float: left;
+                
+        }
+        .topViews
+        {
+            height: 30px;
+            width: 115px;
+            
+            padding-top: 5px;
+
+            .twoUpViewHorizontal
+            {
+                padding-left: 9px;
+            }
+
+            .twoUpViewVertical
+            {
+                padding-left: 10px;
+            }
+        }
+
+        .bottomViews
+        {
+           padding-top: 2px;
+
+           .fourUpView
+           {
+                padding-left: 9px;
+           }
+        }
+    }
+
+    .charts
+    {
+        height: 79px;
+        width: 102px;
+        float: left;
+        border-left: solid 1px $TPGrey2;
+        padding: 7px 0 0 12px;
+    }
+
+    .tools
+    {
+        height: 79px;
+        width: 102px;
+        float: left;
+        border-left: solid 1px $TPGrey2;
+        padding: 7px 0 0 12px;
+    }
+
+    .share
+    {
+        height: 79px;
+        width: 102px;
+        float: left;
+        border-left: solid 1px $TPGrey2;
+        padding: 7px 0 0 12px;
+
+        img
+        {
+            padding: 3px 0 0 3px;
+        }
+    }
+}
