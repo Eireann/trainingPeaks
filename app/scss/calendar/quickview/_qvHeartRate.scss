@@ -1,2 +1,111 @@
 ﻿@import "../../globalCSS/tpstylesheet";
 
+#quickViewHRTab
+{
+    position:relative;
+
+    #heartRateByZonesChart
+    {
+        position: absolute;
+        top: 14px;
+        left: 14px;
+        width: 290px;
+        height: 220px;
+    }
+
+    #heartRatePeaksChart
+    {
+        position: absolute;
+        top: 14px;
+        left: 320px;
+        width: 290px;
+        height: 220px;
+    }
+
+    #heartRateByZonesTable
+    {
+        position: absolute;
+        top: 250px;
+        left: 14px;
+        width: 290px;
+        height: auto;
+        min-height: 200px;
+
+        .heartRateZoneRow
+        {
+            height: 24px;
+
+            .zoneName
+            {
+                display: inline-block;
+                width: 90px;
+                text-align: right;
+                @include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey3, $fontWeightBold);
+            }
+
+            .zoneInput
+            {
+                display: inline-block;
+                margin-left: 10px;
+                @include inputs(80px, 20px, 12px, $navigationFontFamilyRegular);
+                input
+                {
+                    text-align: right;
+                    color: $TPGrey3;
+                }
+            }
+
+            .zoneBPM
+            {
+                display: inline-block;
+                margin-left: 5px;
+                @include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey3, normal);
+            }
+        }
+
+    }
+
+    #heartRatePeaksTable
+    {
+        position: absolute;
+        top: 250px;
+        left: 320px;
+        width: 290px;
+        height: auto;
+        min-height: 200px;
+
+
+        .heartRatePeakRow
+        {
+            height: 24px;
+
+            .peakName
+            {
+                display: inline-block;
+                width: 160px;
+                text-align: right;
+                @include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey3, $fontWeightBold);
+            }
+
+            .peakInput
+            {
+                display: inline-block;
+                margin-left: 10px;
+                @include inputs(58px, 20px, 12px, $navigationFontFamilyRegular);
+                input
+                {
+                    text-align: right;
+                    color: $TPGrey3;
+                }
+            }
+
+            .peakBPM
+            {
+                display: inline-block;
+                margin-left: 5px;
+                @include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey3, normal);
+            }
+        }
+    }
+
+}
