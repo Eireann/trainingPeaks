@@ -144,6 +144,7 @@ function (
 
         initializeTabs: function()
         {
+            this.on("close", this.closeTabViews, this);
             this.tabs =
             [
                 new WorkoutQuickViewSummary({ model: this.model, el: this.$(this.tabDomIDs[0]) }),
@@ -152,6 +153,14 @@ function (
                 new WorkoutQuickViewPace({ model: this.model, el: this.$(this.tabDomIDs[3]) }),
                 new WorkoutQuickViewMapAndGraph({ model: this.model, el: this.$(this.tabDomIDs[4]) })
             ];
+        },
+
+        closeTabViews: function()
+        {
+            _.each(this.tabs, function(tabView)
+            {
+                tabView.close();
+            }, this);
         },
 
         renderCurrentTab: function()
