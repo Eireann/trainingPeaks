@@ -113,7 +113,6 @@ function (
             this.initializeStickit();
             this.initializeSaveDeleteDiscard();
             this.initializeHeaderActions();
-            this.initializeTabs();
             this.initializeExpand();
         },
         
@@ -135,14 +134,14 @@ function (
         {
             if (!this.renderInitialized)
             {
-                this.initializeTabs();
+                this.initializeTabsAfterRender();
                 this.renderCurrentTab();
 
                 this.renderInitialized = true;
             }
         },
 
-        initializeTabs: function()
+        initializeTabsAfterRender: function()
         {
             this.on("close", this.closeTabViews, this);
             this.tabs =
