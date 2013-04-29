@@ -16,7 +16,7 @@ function (
         initializeExpand: function()
         {
             _.extend(this.events, this.expandEvents);
-            this.on("close", this.closeExpandedView(), this);
+            this.on("close", this.closeExpandedView, this);
         },
 
         closeExpandedView: function()
