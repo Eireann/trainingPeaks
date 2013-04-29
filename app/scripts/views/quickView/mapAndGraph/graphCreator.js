@@ -113,6 +113,12 @@ function (_)
         {
             orderedAxes.push(yAxes[series.name]);
         });
+
+        var seriesConfig = [];
+        _.each(seriesArray, function(seriesItem, index)
+        {
+            seriesConfig.push({ name: seriesItem.name, yAxis: index, data: seriesItem.data });
+        });
         
         container.highcharts(
             {
@@ -162,7 +168,7 @@ function (_)
                     }
                 },
                 yAxis: orderedAxes,
-                series: seriesArray,
+                series: seriesConfig,
                 plotOptions:
                 {
                     line:
