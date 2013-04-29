@@ -1,5 +1,7 @@
-﻿<div class="heartRatePeakRow">
-    <div class="peakName"><label>Peak 5 seconds</label></div> 
-    <div class="peakInput"><input type="text" value="169" /></div>
+﻿{{#each peaks }}
+<div class="heartRatePeakRow">
+    <div class="peakName"><label>Peak {{ label }}</label></div> 
+    <div class="peakInput"><input type="text" value="{{ value }}" /></div>
     <div class="peakBPM"><label>BPM</label></div>
 </div>
+{{/each}}
