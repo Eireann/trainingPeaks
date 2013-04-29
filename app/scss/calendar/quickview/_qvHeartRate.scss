@@ -11,6 +11,29 @@
         left: 14px;
         width: 290px;
         height: 220px;
+
+        .highcharts-series
+        {
+            rect
+            {
+                fill: red;
+                stroke: darkred;
+            }
+        }
+
+        .heartRateZoneGraphTooltip
+        {
+            .tooltipLabel
+            {
+                color: $TPGrey3;
+                font-weight: bold; 
+            }
+
+            .tooltipValue
+            {
+                color: $TPGrey3;
+            }
+        }
     }
 
     #heartRatePeaksChart

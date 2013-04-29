@@ -39,7 +39,9 @@ function (timeInZoneTooltipTemplate)
                     min: 0,
                     title: {
                         text: 'Minutes'
-                    }
+                    },
+                    alternateGridColor: "#cdcbcb",
+                    tickInterval: 10
                 },
                 legend:
                 {
