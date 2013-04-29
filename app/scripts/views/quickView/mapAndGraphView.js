@@ -56,25 +56,31 @@ function (TP, createMapOnContainer, createGraphOnContainer, workoutQuickViewMapA
             var channelMask = this.model.get("detailData").attributes.flatSamples.channelMask;
             _.each(channelMask, function (channel)
             {
-                if (channel === "Latitude" || channel === "Longitude")
-                    return;
-
-                seriesArray.push({ name: channel, data: [] });
+                seriesArray.push({ name: channel, data: []});
             });
 
             _.each(samples, function (sample)
             {
+                var latLong = {};
                 for (var i = 0; i < sample.values.length; i++)
                 {
-                    if (channelMask[i] === "Latitude" || channelMask[i] === "Longitude")
-                        latLongArray.push([sample.values[i], sample.values[++i]]);
+                    if (channelMask[i] === "Latitude")
+                        latLong.lat = sample.values[i];
+                    else if (channelMask[i] === "Longitude")
+                        latLong.long = sample.values[i];
+                    else if (channelMask[i] === "Distance")
+                        continue;
                     else
                         seriesArray[i].data.push([sample.millisecondsOffset, sample.values[i]]);
                 }
+                latLongArray.push([latLong.lat, latLong.long]);
             });
+            
+            // Remove Distance/Lat/Long
+            var filteredSeriesArray = _.reject(seriesArray, function(seriesItem) {return seriesItem.name === "Distance"})
 
             return {
-                seriesArray: seriesArray,
+                seriesArray: filteredSeriesArray,
                 latLongArray: latLongArray
             };
         }
