@@ -16,6 +16,15 @@ function (
         initializeExpand: function()
         {
             _.extend(this.events, this.expandEvents);
+            this.on("close", this.closeExpandedView(), this);
+        },
+
+        closeExpandedView: function()
+        {
+            if(this.expandedView)
+            {
+                this.expandedView.close();
+            }
         },
 
         expandEvents:
@@ -25,14 +34,22 @@ function (
         },
 
 
+        renderExpandedView: function()
+        {
+            if(!this.expandedView)
+            {
+                this.expandedView = new ExpandedView({ model: this.model });
+                this.expandedView.render();
+                this.ui.quickViewContentExpanded.append(this.expandedView.$el);
+            }
+        },
+
         expandClicked: function ()
         {
+            this.renderExpandedView();
+
             var windowHeight = $(window).height();
             var windowWidth = $(window).width();
-            var expandedView = new ExpandedView({ model: this.model });
-
-            expandedView.render();
-            this.ui.quickViewContentExpanded.append(expandedView.$el);
 
             this.originalPosition = this.$el.position();
             this.originalPosition.height = this.$el.height();
