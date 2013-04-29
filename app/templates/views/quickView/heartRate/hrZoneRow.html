@@ -1,0 +1,7 @@
+﻿{{#each timeInZones }}
+<div class="heartRateZoneRow">
+    <div class="zoneName"><label>{{ label }}</label></div> 
+    <div class="zoneInput"><input type="text" value="{{ formatSeconds seconds "0:00:00" }}" /></div>
+    <div class="zoneBPM"><label>{{minimum}}-{{maximum}} BPM</label></div>
+</div>
+{{/each}}
