@@ -1,0 +1,26 @@
+﻿<div class="heartRateZoneGraphTooltip">
+    <div class="tooltipRow">
+        <span class="label">{{ splitString label ":" "0" }}:</span>
+        <span class="value">{{ splitString label ":" "1" }}</span>
+    </div>
+    <div class="tooltipRow">
+        <span class="label">Range:</span>
+        <span class="value">{{ rangeMinimum }}-{{rangeMaximum}} BPM</span>
+    </div>
+    <div class="tooltipRow">
+        <span class="label">% lt:</span>
+        <span class="value">{{ percentLTMin }}-{{percentLTMax}} %</span>
+    </div>
+    <div class="tooltipRow">
+        <span class="label">% max:</span>
+        <span class="value">{{ percentMHRMin }}-{{percentMHRMax}} %</span>
+    </div>
+    <div class="tooltipRow">
+        <span class="label">Time:</span>
+        <span class="value">{{ formatSeconds seconds }}</span>
+    </div>
+    <div class="tooltipRow">
+        <span class="label">Percent:</span>
+        <span class="value">{{ percentTime }}</span>
+    </div>
+</div>

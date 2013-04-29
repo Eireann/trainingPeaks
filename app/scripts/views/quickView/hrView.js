@@ -1,11 +1,12 @@
 ﻿define(
 [
     "TP",
+    "views/quickView/heartRate/graphCreator",
     "hbs!templates/views/quickView/heartRate/hrTabView",
     "hbs!templates/views/quickView/heartRate/hrZoneRow",
     "hbs!templates/views/quickView/heartRate/hrPeakRow"
 ],
-function(TP, hrTabTemplate, hrZoneRowTemplate, hrPeakRowTemplate)
+function(TP, hrGraphCreator, hrTabTemplate, hrZoneRowTemplate, hrPeakRowTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -77,6 +78,10 @@ function(TP, hrTabTemplate, hrZoneRowTemplate, hrPeakRowTemplate)
         {
             if (timeInZones)
             {
+                _.each(timeInZones.timeInZones, function(timeInZone)
+                {
+                    timeInZone.labelShort = timeInZone.label.split(":")[0];
+                }, this);
                 var zonesHtml = hrZoneRowTemplate(timeInZones);
                 this.ui.heartRateByZonesTable.html(zonesHtml);
             } else
@@ -89,10 +94,43 @@ function(TP, hrTabTemplate, hrZoneRowTemplate, hrPeakRowTemplate)
         {
             if (timeInZones)
             {
+                var chartPoints = [];
+                var totalHours = this.model.get("totalTime");
+                // zone times are in seconds, convert to minutes
+                _.each(timeInZones.timeInZones, function(timeInZone, index)
+                {
+
+                    var minutes = timeInZone.seconds ? Number(timeInZone.seconds) / 60 : 0;
+                    var hours = timeInZone.seconds ? Number(timeInZone.seconds) / 3600 : 0;
+
+                    var point = {
+                        label: timeInZone.label,
+                        rangeMinimum: timeInZone.minimum,
+                        rangeMaximum: timeInZone.maximum,
+                        percentTime: this.toPercent(hours, totalHours),
+                        percentLTMin: this.toPercent(timeInZone.minimum, timeInZones.threshold),
+                        percentLTMax: this.toPercent(timeInZone.maximum, timeInZones.threshold),
+                        percentMHRMin: this.toPercent(timeInZone.minimum, timeInZones.maximum),
+                        percentMHRMax: this.toPercent(timeInZone.maximum, timeInZones.maximum),
+                        seconds: timeInZone.seconds,
+                        y: minutes,
+                        x: index
+                    };
+
+                    chartPoints.push(point);
+
+                }, this);
+
+                hrGraphCreator.renderTimeInZonesGraph(this.ui.heartRateByZonesChart, chartPoints);
             } else
             {
                 this.ui.heartRateByZonesChart.html("");
             }
+        },
+
+        toPercent: function(numerator, denominator)
+        {
+            return Math.round((numerator / denominator) * 100);
         },
 
         renderPeaks: function()
@@ -117,6 +155,7 @@ function(TP, hrTabTemplate, hrZoneRowTemplate, hrPeakRowTemplate)
         {
             if (peaks)
             {
+
             } else
             {
                 this.ui.heartRatePeaksChart.html("");

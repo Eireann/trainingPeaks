@@ -38,7 +38,7 @@
             .zoneName
             {
                 display: inline-block;
-                width: 120px;
+                width: 90px;
                 text-align: right;
                 vertical-align: top;
                 @include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey3, $fontWeightBold);
