@@ -210,11 +210,11 @@ function(
 
         findMinimum: function(peaks)
         {
-            var min = peaks[0].value;
+            var min = 0;
 
             _.each(peaks, function(peak)
             {
-                if (peak.value < min)
+                if ((!min && peak.value) || peak.value < min)
                     min = peak.value;
             });
             return min;
@@ -230,6 +230,23 @@ function(
                     chart:
                     {
                         type: "spline"
+                    },
+                    plotOptions:
+                    {
+                        line:
+                        {
+                            marker:
+                            {
+                                enabled: false,
+                                states:
+                                {
+                                    hover:
+                                    {
+                                        enabled: false
+                                    }
+                                }
+                            }
+                        }
                     },
                     title:
                     {
