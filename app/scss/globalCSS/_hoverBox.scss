@@ -40,7 +40,9 @@
         // the bottom will be covered by the bottom bar and arrow
         bottom: 20px;
 
-        @include box-shadow(0px 0px 4px 1px #888888);
+        // @include box-shadow(0px 0px 4px 1px #888888);
+		@include box-shadow(0 3px 5px 0 #ADADAD);
+	
     }
 
     // bottom shadow, except for the arrow

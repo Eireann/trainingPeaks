@@ -33,6 +33,6 @@
 
     .modalOverlayMask + &
     {
-        @include box-shadow(0px 3px 6px 2px $TPGrey4);
+        @include box-shadow(0 3px 5px 0 $TPGrey4);
     }
 }
