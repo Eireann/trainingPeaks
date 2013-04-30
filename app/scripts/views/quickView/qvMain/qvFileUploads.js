@@ -66,6 +66,7 @@ function (
             this.waitingOff();
 
             this.model.set(this.uploadedFileDataModel.get("workoutModel"));
+            this.model.get("details").fetch();
 
             if (this.isNew)
                 this.trigger("saved");
