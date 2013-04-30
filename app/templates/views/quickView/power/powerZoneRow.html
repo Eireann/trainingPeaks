@@ -1,0 +1,7 @@
+﻿{{#each timeInZones }}
+<div class="zoneRow">
+    <div class="zoneName"><label title="{{ label }}">{{ labelShort }}</label></div> 
+    <div class="zoneInput"><input type="text" value="{{ formatSeconds seconds "0:00:00" }}" /></div>
+    <div class="zoneRange"><label>{{minimum}}-{{maximum}} {{$ "Watts"}}</label></div>
+</div>
+{{/each}}
