@@ -171,9 +171,8 @@
 
 }
 
-#workoutSettingsDiv
-{
-    min-width: 75px;
+#workoutSettingsDiv {
+   
 	padding-left: 10px;
 	padding-bottom: 20px;
 
@@ -202,9 +201,20 @@
     }
 
 	.hoverBoxContents {
+		min-width: 75px;
 		border-width:1px 1px 0 1px;
 		border-color: #979797;
 		border-style:solid;	
 	}
 
+}
+
+
+#daySettingsDiv {
+	.hoverBoxContents {
+		min-width: 75px;
+		border-width:1px 1px 0 1px;
+		border-color: #979797;
+		border-style:solid;
+	}
 }

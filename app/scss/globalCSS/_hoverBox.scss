@@ -25,6 +25,9 @@
         label
         {
             cursor: default;
+			font-size:$fontSizeSmall;
+			font-weight:normal;
+	
         }
     }
 
@@ -100,10 +103,7 @@
 			border-right:1px solid #979797;
 			border-bottom:1px solid #979797;
 			& label {
-				font-size:$fontSizeSmall;
-				font-weight:normal;
-				line-height:20px;
-				margin:0;
+			
 			}
         }
 
