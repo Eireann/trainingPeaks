@@ -222,7 +222,7 @@ function(
 
         renderPeaksChart: function(peaks)
         {
-            if (peaks)
+            if (peaks && peaks.length)
             {
                 var chartPoints = this.buildPeaksChartPoints(peaks);
 
