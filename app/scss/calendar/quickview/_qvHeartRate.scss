@@ -1,0 +1,162 @@
+﻿@import "../../globalCSS/tpstylesheet";
+
+#quickViewHRTab
+{
+    position:relative;
+
+    #heartRateByZonesChart
+    {
+        position: absolute;
+        top: 14px;
+        left: 14px;
+        width: 290px;
+        height: 220px;
+
+        .highcharts-series
+        {
+            rect
+            {
+                fill: red;
+                stroke: darkred;
+            }
+        }
+
+        .heartRateZoneGraphTooltip
+        {
+            .tooltipLabel
+            {
+                color: $TPGrey3;
+                font-weight: bold; 
+            }
+
+            .tooltipValue
+            {
+                color: $TPGrey3;
+            }
+        }
+    }
+
+    #heartRatePeaksChart
+    {
+        position: absolute;
+        top: 14px;
+        left: 320px;
+        width: 290px;
+        height: 220px;
+    }
+
+    #heartRateByZonesTable
+    {
+        position: absolute;
+        top: 250px;
+        left: 14px;
+        width: 290px;
+        height: auto;
+        min-height: 200px;
+
+        .heartRateZoneRow
+        {
+            height: 24px;
+
+            .zoneName
+            {
+                display: inline-block;
+                width: 90px;
+                text-align: right;
+                vertical-align: top;
+                @include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey3, $fontWeightBold);
+                label
+                {
+                    margin-top: 5px;
+                    white-space: nowrap;
+                    overflow: hidden;
+                }
+            }
+
+            .zoneInput
+            {
+                display: inline-block;
+                margin-left: 10px;
+                vertical-align: top;
+                @include inputs(60px, 20px, 12px, $navigationFontFamilyRegular);
+                input
+                {
+                    text-align: right;
+                    color: $TPGrey3;
+                }
+            }
+
+            .zoneBPM
+            {
+                display: inline-block;
+                width: 75px;
+                text-align: right;
+                vertical-align: top;
+                margin-left: 5px;
+                @include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey3, normal);
+                label
+                {
+                    margin-top: 5px;
+                }
+            }
+        }
+
+    }
+
+    #heartRatePeaksTable
+    {
+        position: absolute;
+        top: 250px;
+        left: 320px;
+        width: 290px;
+        height: auto;
+        min-height: 200px;
+
+
+        .heartRatePeakRow
+        {
+            height: 24px;
+
+            .peakName
+            {
+                display: inline-block;
+                width: 160px;
+                text-align: right;
+                vertical-align: top;
+                @include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey3, $fontWeightBold);
+                label
+                {
+                    margin-top: 5px;
+                    white-space: nowrap;
+                    overflow: hidden;
+                }
+            }
+
+            .peakInput
+            {
+                display: inline-block;
+                margin-left: 10px;
+                vertical-align: top;
+                @include inputs(58px, 20px, 12px, $navigationFontFamilyRegular);
+                input
+                {
+                    text-align: right;
+                    color: $TPGrey3;
+                }
+            }
+
+            .peakBPM
+            {
+                display: inline-block;
+                margin-left: 5px;
+                vertical-align: top;
+                @include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey3, normal);
+                label
+                {
+                    margin-top: 5px;
+                }
+            }
+        }
+    }
+
+}

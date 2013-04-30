@@ -70,10 +70,10 @@ function (
         tabDomIDs:
         [
             "#quickViewSummaryTab",
+            "#quickViewMapAndGraphTab",
             "#quickViewHRTab",
             "#quickViewPowerTab",
-            "#quickViewSpeedTab",
-            "#quickViewMapAndGraphTab"
+            "#quickViewSpeedTab"
         ],
 
         initialize: function(options)
@@ -147,10 +147,10 @@ function (
             this.tabs =
             [
                 new WorkoutQuickViewSummary({ model: this.model, el: this.$(this.tabDomIDs[0]) }),
-                new WorkoutQuickViewHR({ model: this.model, el: this.$(this.tabDomIDs[1]) }),
-                new WorkoutQuickViewPower({ model: this.model, el: this.$(this.tabDomIDs[2]) }),
-                new WorkoutQuickViewPace({ model: this.model, el: this.$(this.tabDomIDs[3]) }),
-                new WorkoutQuickViewMapAndGraph({ model: this.model, el: this.$(this.tabDomIDs[4]) })
+                new WorkoutQuickViewMapAndGraph({ model: this.model, el: this.$(this.tabDomIDs[1]) }),
+                new WorkoutQuickViewHR({ model: this.model, el: this.$(this.tabDomIDs[2]) }),
+                new WorkoutQuickViewPower({ model: this.model, el: this.$(this.tabDomIDs[3]) }),
+                new WorkoutQuickViewPace({ model: this.model, el: this.$(this.tabDomIDs[4]) })
             ];
         },
 

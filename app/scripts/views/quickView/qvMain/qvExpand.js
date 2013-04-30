@@ -55,11 +55,11 @@ function (
             this.originalPosition.height = this.$el.height();
             this.originalPosition.width = this.$el.width();
 
-            this.animate(windowHeight, windowWidth);
-            
+            //this.animateTwoStepExpansion(windowHeight, windowWidth);
+            this.animateOneStepExpansion(windowHeight, windowWidth);
         },
 
-        animate: function(windowHeight, windowWidth)
+        animateTwoStepExpansion: function(windowHeight, windowWidth)
         {
             var duration = 300;
             var newHeight = windowHeight * 0.95;
@@ -109,10 +109,55 @@ function (
 
         },
 
+        animateOneStepExpansion: function(windowHeight, windowWidth)
+        {
+            var duration = 400;
+            var newHeight = windowHeight * 0.95;
+            var newWidth = windowWidth * 0.95;
+            var viewsWidth = newWidth - 333;
+            var numberOfVisibleViews = 2;
+            var viewsHeight = (newHeight - 125) / numberOfVisibleViews;
+            var left = (windowWidth - newWidth) / 2;
+            var top = (windowHeight - newHeight) / 2;
+
+
+            var self = this;
+            var afterExpanding = function()
+            {
+                self.$(".expandButton").css({ display: "none" });
+                self.$(".collapseButton, .expandedViewsButtons").css({ display: "block" });
+                self.$("#quickViewExpandedContent").css({ display: "block" });
+            };
+
+            var animateExpansion = function()
+            {
+                var expandDuration = 300;
+
+                self.$("#workOutQuickView").animate({ height: newHeight, width: newWidth }, { duration: expandDuration });
+                self.$(".tabNavigation, #quickViewContent, .quickviewFooter, #menuIcon").css({ display: "none" });
+                self.$(".viewOne, .viewTwo").css({ width: viewsWidth, height: viewsHeight });
+
+                self.$el.animate({top: top + "px", left: left + "px",  height: newHeight, width: newWidth },
+                {
+                    duration: expandDuration, complete: afterExpanding
+                });
+            };
+
+
+            animateExpansion();
+
+        },
+
         collapseClicked: function ()
         {
-            var duration = 300;
+            this.animateOneStepCollapse();
+            //this.animateTwoStepCollapse();
+        },
 
+        animateTwoStepCollapse: function()
+        {
+            var duration = 300;
+            
             var self = this;
 
             var afterCollapsing = function()
@@ -161,8 +206,33 @@ function (
 
         },
 
-        afterCollapse: function()
+        animateOneStepCollapse: function()
         {
+            var duration = 400;
+            
+            var self = this;
+
+            var afterCollapsing = function()
+            {
+                self.$("#menuIcon").css({ display: "" });
+                self.$("#workOutQuickView").css({ height: self.originalPosition.height, width: self.originalPosition.width });
+                self.$(".collapseButton, .expandedViewsButtons").css({ display: "none" });
+                self.$(".tabNavigation, .quickviewFooter, .expandButton").css({ display: "block" });
+                self.$("#quickViewContent").css({ display: "block" });
+            };
+
+            var collapseDuration = 300;
+            this.$("#quickViewExpandedContent").css({ display: "none" });
+            this.$el.animate({
+                height: this.originalPosition.height,
+                width: this.originalPosition.width,
+                top: this.originalPosition.top + "px",
+                left: this.originalPosition.left + "px"
+            },
+            {
+                duration: collapseDuration,
+                complete: afterCollapsing
+            });                   
 
         }
 

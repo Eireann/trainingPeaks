@@ -230,8 +230,22 @@ function (_, moment, TP, WorkoutDetailsModel, WorkoutDetailDataModel)
 
         toJSON: function(options)
         {
-            var attributes = _.deepClone(this.attributes);
+            var attributes = {};
+
+            // don't post details or detailData as part of saving workout tier 1
+            // do save workoutComments, but handle them separately
+            var attributesToExclude = ["details", "detailData", "workoutComments"];
+
+            _.each(_.keys(this.attributes), function(attributeName)
+            {
+                if(!_.contains(attributesToExclude, attributeName))
+                {
+                    attributes[attributeName] = _.deepClone(this.attributes[attributeName]);
+                }
+            }, this);
+
             attributes.workoutComments = new TP.Collection(this.attributes.workoutComments).toJSON();
+
             return attributes;
         }
 
