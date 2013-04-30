@@ -372,7 +372,9 @@ function (TP, Leaflet, workoutQuickViewMapAndGraphTemplate)
             {
                 minElevation = _.min(dataByChannel.Elevation, function(value)
                 {
-                    return value[1];
+                    // Underscore Min considers "null" a valid comparable value and will always return a min of "null"
+                    // if null is present in the data set, therefore need a quick hack to get around this.
+                    return value[1] === null ? 999999999999999 : value[1];
                 })[1];
             }
 
