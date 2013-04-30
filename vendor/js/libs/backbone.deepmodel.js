@@ -12,8 +12,9 @@
 /**
  * Underscore mixins for deep objects
  */
-(function() {
-  var arrays, basicObjects, deepClone, deepExtend, deepExtendCouple, isBasicObject,
+(function()
+{
+    var arrays, basicObjects, deepClone, deepExtend, deepExtendCouple, isBasicObject,
     __slice = [].slice;
 
   deepClone = function(obj) {
@@ -264,6 +265,30 @@
             return getNested(this.attributes, attr);
         },
 
+        // TP: micah added deepclone to account for models w/ other models as attributes
+        deepClone: function()
+        {
+            var newAttributes = {};
+
+            _.each(_.keys(this.attributes), function(key)
+            {
+                var value = this.attributes[key];
+
+                // if it's a model, clone it's attributes
+                if (!_.isUndefined(value) && !_.isNull(value) && !_.isUndefined(value.deepClone) && _.isFunction(value.deepClone))
+                {
+                    value = value.deepClone();
+                } else
+                {
+                    value = _.deepClone(value);
+                }
+
+                newAttributes[key] = value;
+            }, this);
+
+            return newAttributes;
+        },
+
         // Override set
         // Supports nested attributes via the syntax 'obj.attr' e.g. 'author.user.name'
         set: function(key, val, options) {
@@ -291,7 +316,7 @@
             this._changing  = true;
 
             if (!changing) {
-              this._previousAttributes = _.deepClone(this.attributes); //<custom>: Replaced _.clone with _.deepClone
+              this._previousAttributes = this.deepClone(); //<custom>: Replaced _.clone with this.deepClone
               this.changed = {};
             }
             current = this.attributes, prev = this._previousAttributes;

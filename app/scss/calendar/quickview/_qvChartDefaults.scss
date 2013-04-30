@@ -1,0 +1,173 @@
+﻿@import "../../globalCSS/tpstylesheet";
+
+.qvZonesTab
+{
+    position:relative;
+
+
+
+    .zonesChart
+    {
+        position: absolute;
+        top: 14px;
+        left: 14px;
+        width: 290px;
+        height: 220px;
+    }
+
+    .peaksChart
+    {
+        position: absolute;
+        top: 14px;
+        left: 320px;
+        width: 290px;
+        height: 220px;
+    }
+
+    .zonesTable
+    {
+        position: absolute;
+        top: 250px;
+        left: 30px;
+        width: 280px;
+        height: auto;
+        min-height: 200px;
+    }
+
+    .peaksTable
+    {
+        position: absolute;
+        top: 250px;
+        left: 320px;
+        width: 300px;
+        height: auto;
+        min-height: 200px;
+
+    }
+
+    .highcharts-series
+    {
+        rect
+        {
+            fill: red;
+            stroke: darkred;
+        }
+
+        path
+        {
+            stroke: red;
+        }
+    }
+
+    .highcharts-tooltip
+    {
+        .tooltipLabel
+        {
+            color: $TPGrey3;
+            font-weight: bold;
+        }
+
+        .tooltipValue
+        {
+            color: $TPGrey3;
+        }
+    }
+}
+
+.zonesTable
+{
+    .zoneRow
+    {
+        height: 24px;
+
+        .zoneName
+        {
+            display: inline-block;
+            width: 140px;
+            overflow: hidden;
+            text-align: right;
+            vertical-align: top;
+            @include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey3, $fontWeightBold);
+            label
+            {
+                margin-top: 5px;
+                white-space: nowrap;
+            }
+        }
+
+        .zoneInput
+        {
+            display: inline-block;
+            margin-left: 8px;
+            vertical-align: top;
+            @include inputs(60px, 20px, $fontSizeSmall, $navigationFontFamilyRegular);
+            input
+            {
+                text-align: right;
+                color: $TPGrey3;
+            }
+        }
+
+        .zoneRange
+        {
+            display: inline-block;
+            text-align: right;
+            vertical-align: top;
+            margin-left: 5px;
+            width: 50px;
+            @include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey3, normal);
+            label
+            {
+                margin-top: 5px;
+            }
+        }
+    }
+}
+
+.peaksTable
+{
+    .peakRow
+    {
+        height: 24px;
+
+        .peakName
+        {
+            display: inline-block;
+            width: 160px;
+            text-align: right;
+            vertical-align: top;
+            @include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey3, $fontWeightBold);
+            label
+            {
+                margin-top: 5px;
+                white-space: nowrap;
+                overflow: hidden;
+            }
+        }
+
+        .peakInput
+        {
+            display: inline-block;
+            margin-left: 10px;
+            vertical-align: top;
+            @include inputs(58px, 20px, 12px, $navigationFontFamilyRegular);
+            input
+            {
+                text-align: right;
+                color: $TPGrey3;
+            }
+        }
+
+        .peakRange
+        {
+            display: inline-block;
+            margin-left: 5px;
+            vertical-align: top;
+            @include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey3, normal);
+            label
+            {
+                margin-top: 5px;
+            }
+        }
+    }
+}

@@ -1,5 +1,5 @@
 /**
- * @license Highcharts JS v3.0.1 (2013-04-09)
+ * @license Highstock JS v1.3.1 (2013-04-09)
  * MooTools adapter
  *
  * (c) 2010-2013 Torstein Hønsi

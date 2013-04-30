@@ -1,0 +1,152 @@
+﻿@import "../../globalCSS/tpstylesheet";
+
+.stats
+{
+	padding-left: 20px;
+	padding-right: 40px;
+    padding-bottom: 20px;
+	background: transparent;
+	float: left;
+
+	.selectionBox
+	{
+		padding-left: 87px;
+		@include selectionBox(168px);
+	}
+}
+
+.workoutStatsRow
+{
+	@include innerRow();
+	
+	clear: both;
+    height: 23px;
+
+	.workoutStatsColumn
+	{
+		float:left;
+        height: 23px;
+		@include inputs(83.5px, 20px, 12px, $navigationFontFamilyRegular);
+        padding-right: 2px;
+
+        .hide
+        {
+            display:none;
+        }
+	}
+
+	
+
+	.workoutStatsColumnMinMaxAvg
+	{
+		float:left;
+        height: 23px;
+		@include inputs(55px, 20px, 12px, $navigationFontFamilyRegular);
+        padding-right: 2px;
+	}
+
+	label
+	{
+		text-align: right;
+		width: 100px;
+		padding-top: 5px;
+		padding-right: 5px;
+
+
+        &.ghosted
+        {
+            color: $TPGrey7;
+        }
+
+	}
+	
+	@include labels($navigationFontFamilyRegular, 0.82em, $TPGrey4, normal);
+
+	.workoutStatsUnitLabel
+	{
+		label
+		{
+			text-align: left;
+			width: 45px;
+			padding-top: 5px;
+			padding-left: 5px;
+		}
+	}
+}
+
+.columnLabelsPlannedCompleted
+{
+	padding-left: 105px;
+	padding-top: 10px;
+	width: 100%;
+	height: 15px;
+	background: transparent;
+
+	@include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey4, normal);
+	label
+	{
+		float: left;
+		width: 75px;
+        font-weight: bold;
+
+        &.ghosted
+        {
+            color: $TPGrey7;
+        }
+	}
+
+}
+
+.columnLabelsMinMaxAvg
+{
+	padding-left: 105px;
+	width: 100%;
+	height: 23px;
+	background: transparent;
+    padding-top: 10px;
+
+	@include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey4, normal);
+	label
+	{
+		float: left;
+		width: 56px;
+        font-weight: bold;
+            
+        &.ghosted
+        {
+            color: $TPGrey7;
+        }
+	}
+}
+
+.comments
+{
+	float: left;
+	background: transparent;
+	padding-top: 10px;
+	@include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey4, normal);
+	width: 275px;
+	height: 100%;
+
+    label
+    {
+        font-weight: bold;
+    }
+
+    #preActivityComments
+    {
+        display:none;
+    }
+
+	#descriptionInput
+	{
+		width: 275px;
+        max-width: 275px
+	}
+
+	.activityComments
+	{
+		width: 275px;
+        max-width: 275px
+	}
+}

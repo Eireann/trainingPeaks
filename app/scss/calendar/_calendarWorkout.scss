@@ -124,7 +124,14 @@
 {
     z-index:99;
     position:absolute;
-
+	
+	.hoverBoxContents {
+		border-width:1px 1px 0 1px;
+		border-color: #979797;
+		border-style:solid;
+	}
+	
+	
     .details
     {
         min-width: 100px;
@@ -193,5 +200,11 @@
     {
         bottom: 14px;
     }
+
+	.hoverBoxContents {
+		border-width:1px 1px 0 1px;
+		border-color: #979797;
+		border-style:solid;	
+	}
 
 }

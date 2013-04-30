@@ -22,6 +22,13 @@ function(_, moment)
         return momentDate.format(formatString);
     };
 
+    // TP.utils.datetime.format.decimalSecondsAsTime
+    format.decimalSecondsAsTime = function(seconds, defaultValueIfEmpty)
+    {
+        var hours = seconds ? Number(seconds) / 3600 : 0;
+        return format.decimalHoursAsTime(hours, true, defaultValueIfEmpty);
+    };
+
     // TP.utils.datetime.format.decimalHoursAsTime
     format.decimalHoursAsTime = function(hours, showSeconds, defaultValueIfEmpty)
     {
