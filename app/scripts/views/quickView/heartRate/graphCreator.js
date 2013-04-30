@@ -52,7 +52,7 @@ function()
                 tooltip: {
                     formatter: function()
                     {
-                        return tooltipTemplate(this.point.options)
+                        return tooltipTemplate(this.point.options);
                     },
                     shared: false,
                     useHTML: true
