@@ -131,15 +131,27 @@ input[disabled='disabled']
     }
 }
 
-.workoutQuickViewMenuModalOverlay
-{
+.workoutQuickViewMenuModalOverlay {
     z-index: 102;
 }
 
-.workoutQuickViewMenu
-{
-    z-index: 103;
+.workoutQuickViewMenu {
+	z-index: 103;
+	
+	.hoverBox {
+		.hoverBoxContents .details label {
+			font-weight:normal;
+			font-size: $fontSizeSmall;
+			}
+		.mainShadow {
+			box-shadow: 0 0 4px 1px $TPGrey4;
+		}	
+		.arrow {
+			box-shadow: 0 0 4px 1px $TPGrey4;
+		}
+	}
 }
+
 
 .saveWorkoutToLibraryConfirmationModalOverlay
 {
@@ -277,4 +289,3 @@ input[disabled='disabled']
         }
     }
 }
-

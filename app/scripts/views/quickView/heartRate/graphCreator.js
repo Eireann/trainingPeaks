@@ -50,18 +50,16 @@ function()
                     enabled: false
                 },
                 tooltip: {
-                    formatter: this.formatToolTip,
+                    formatter: function()
+                    {
+                        return tooltipTemplate(this.point.options)
+                    },
                     shared: false,
                     useHTML: true
                 }
             };
 
             container.highcharts(chartOptions);
-        },
-
-        formatToolTip: function()
-        {
-            return tooltipTemplate(this.point.options);
         }
     };
 });
