@@ -1,10 +1,10 @@
 ﻿@import "../../globalCSS/tpstylesheet";
 
-#quickViewHRTab
+.qvZonesTab
 {
     position:relative;
 
-    #heartRateByZonesChart
+    .zonesChart
     {
         position: absolute;
         top: 14px;
@@ -13,7 +13,7 @@
         height: 220px;
     }
 
-    #heartRatePeaksChart
+    .peaksChart
     {
         position: absolute;
         top: 14px;
@@ -22,118 +22,123 @@
         height: 220px;
     }
 
-    #heartRateByZonesTable
+    .zonesTable
     {
         position: absolute;
         top: 250px;
-        left: 14px;
-        width: 290px;
+        left: 30px;
+        width: 280px;
+        height: auto;
+        min-height: 200px;
+    }
+
+    .peaksTable
+    {
+        position: absolute;
+        top: 250px;
+        left: 320px;
+        width: 300px;
         height: auto;
         min-height: 200px;
 
-        .heartRateZoneRow
-        {
-            height: 24px;
+    }
 
-            .zoneName
+}
+
+.zonesTable
+{
+    .zoneRow
+    {
+        height: 24px;
+
+        .zoneName
+        {
+            display: inline-block;
+            width: 140px;
+            overflow: hidden;
+            text-align: right;
+            vertical-align: top;
+            @include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey3, $fontWeightBold);
+            label
             {
-                display: inline-block;
-                width: 90px;
+                margin-top: 5px;
+                white-space: nowrap;
+            }
+        }
+
+        .zoneInput
+        {
+            display: inline-block;
+            margin-left: 8px;
+            vertical-align: top;
+            @include inputs(60px, 20px, $fontSizeSmall, $navigationFontFamilyRegular);
+            input
+            {
+                text-align: right;
+                color: $TPGrey3;
+            }
+        }
+
+        .zoneRange
+        {
+            display: inline-block;
+            text-align: right;
+            vertical-align: top;
+            margin-left: 5px;
+            width: 50px;
+            @include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey3, normal);
+            label
+            {
+                margin-top: 5px;
+            }
+        }
+    }
+}
+
+.peaksTable
+{
+    .peakRow
+    {
+        height: 24px;
+
+        .peakName
+        {
+            display: inline-block;
+            width: 160px;
+            text-align: right;
+            vertical-align: top;
+            @include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey3, $fontWeightBold);
+            label
+            {
+                margin-top: 5px;
+                white-space: nowrap;
                 overflow: hidden;
-                text-align: right;
-                vertical-align: top;
-                @include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey3, $fontWeightBold);
-                label
-                {
-                    margin-top: 5px;
-                    white-space: nowrap;
-                }
-            }
-
-            .zoneInput
-            {
-                display: inline-block;
-                margin-left: 10px;
-                vertical-align: top;
-                @include inputs(60px, 20px, 12px, $navigationFontFamilyRegular);
-                input
-                {
-                    text-align: right;
-                    color: $TPGrey3;
-                }
-            }
-
-            .zoneBPM
-            {
-                display: inline-block;
-                width: 75px;
-                text-align: right;
-                vertical-align: top;
-                margin-left: 5px;
-                @include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey3, normal);
-                label
-                {
-                    margin-top: 5px;
-                }
             }
         }
 
-    }
-
-    #heartRatePeaksTable
-    {
-        position: absolute;
-        top: 250px;
-        left: 320px;
-        width: 290px;
-        height: auto;
-        min-height: 200px;
-
-
-        .heartRatePeakRow
+        .peakInput
         {
-            height: 24px;
-
-            .peakName
+            display: inline-block;
+            margin-left: 10px;
+            vertical-align: top;
+            @include inputs(58px, 20px, 12px, $navigationFontFamilyRegular);
+            input
             {
-                display: inline-block;
-                width: 160px;
                 text-align: right;
-                vertical-align: top;
-                @include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey3, $fontWeightBold);
-                label
-                {
-                    margin-top: 5px;
-                    white-space: nowrap;
-                    overflow: hidden;
-                }
+                color: $TPGrey3;
             }
+        }
 
-            .peakInput
+        .peakRange
+        {
+            display: inline-block;
+            margin-left: 5px;
+            vertical-align: top;
+            @include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey3, normal);
+            label
             {
-                display: inline-block;
-                margin-left: 10px;
-                vertical-align: top;
-                @include inputs(58px, 20px, 12px, $navigationFontFamilyRegular);
-                input
-                {
-                    text-align: right;
-                    color: $TPGrey3;
-                }
-            }
-
-            .peakBPM
-            {
-                display: inline-block;
-                margin-left: 5px;
-                vertical-align: top;
-                @include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey3, normal);
-                label
-                {
-                    margin-top: 5px;
-                }
+                margin-top: 5px;
             }
         }
     }
-
 }
