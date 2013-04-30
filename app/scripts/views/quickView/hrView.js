@@ -233,7 +233,7 @@ function(
                     },
                     plotOptions:
                     {
-                        line:
+                        spline:
                         {
                             marker:
                             {
