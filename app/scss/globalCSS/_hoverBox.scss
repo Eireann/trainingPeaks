@@ -41,7 +41,7 @@
         bottom: 20px;
 
         // @include box-shadow(0px 0px 4px 1px #888888);
-		@include box-shadow(0 3px 5px 0 #ADADAD);
+		@include box-shadow(0 2px 3px 0 #ADADAD);
 	
     }
 
@@ -69,7 +69,7 @@
         height: 20px;
         margin-left:20px;
         @include transform(translateY(-10px) rotate(45deg));
-        @include box-shadow(0px 0px 5px 2px #666666);
+        @include box-shadow(0px 2px 3px 0 #666666);
     }
 
     .colorBar
@@ -112,7 +112,7 @@
         {
             top: 20px;
             bottom:0px;
-           	@include box-shadow(0px 3px 5px 0px #adadad);
+           	@include box-shadow(0px 2px 3px 0px #adadad);
         }
 
         // top shadow, except for the arrow
