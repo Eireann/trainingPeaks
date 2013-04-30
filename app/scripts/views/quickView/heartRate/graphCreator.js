@@ -1,12 +1,10 @@
 ﻿define(
-[
-    "hbs!templates/views/quickView/heartRate/timeInZoneGraphTooltip"
-],
-function (timeInZoneTooltipTemplate)
+[],
+function()
 {
     return {
 
-        renderTimeInZonesGraph: function(container, chartData)
+        renderTimeInZonesGraph: function(container, chartData, tooltipTemplate)
         {
             var chartOptions = {
                 series: [{ data: chartData }],
@@ -63,7 +61,7 @@ function (timeInZoneTooltipTemplate)
 
         formatToolTip: function()
         {
-            return timeInZoneTooltipTemplate(this.point.options);
+            return tooltipTemplate(this.point.options);
         }
     };
 });

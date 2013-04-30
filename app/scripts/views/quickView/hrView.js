@@ -4,9 +4,16 @@
     "views/quickView/heartRate/graphCreator",
     "hbs!templates/views/quickView/heartRate/hrTabView",
     "hbs!templates/views/quickView/heartRate/hrZoneRow",
-    "hbs!templates/views/quickView/heartRate/hrPeakRow"
+    "hbs!templates/views/quickView/heartRate/hrPeakRow",
+    "hbs!templates/views/quickView/heartRate/timeInZoneGraphTooltip"
 ],
-function(TP, hrGraphCreator, hrTabTemplate, hrZoneRowTemplate, hrPeakRowTemplate)
+function(
+    TP,
+    hrGraphCreator,
+    hrTabTemplate,
+    hrZoneRowTemplate,
+    hrPeakRowTemplate,
+    timeInZoneTooltipTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -121,7 +128,7 @@ function(TP, hrGraphCreator, hrTabTemplate, hrZoneRowTemplate, hrPeakRowTemplate
 
                 }, this);
 
-                hrGraphCreator.renderTimeInZonesGraph(this.ui.heartRateByZonesChart, chartPoints);
+                hrGraphCreator.renderTimeInZonesGraph(this.ui.heartRateByZonesChart, chartPoints, timeInZoneTooltipTemplate);
             } else
             {
                 this.ui.heartRateByZonesChart.html("");
