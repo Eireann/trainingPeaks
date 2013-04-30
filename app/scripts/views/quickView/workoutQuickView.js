@@ -113,7 +113,6 @@ function (
             this.initializeStickit();
             this.initializeSaveDeleteDiscard();
             this.initializeHeaderActions();
-            this.initializeTabs();
             this.initializeExpand();
         },
         
@@ -123,9 +122,6 @@ function (
             
             if (this.workoutDetailsFetchTimeout)
                 clearTimeout(this.workoutDetailsFetchTimeout);
-            
-            if (this.workoutDetailDataFetchTimeout)
-                clearTimeout(this.workoutDetailDataFetchTimeout);
         },
 
         template:
@@ -138,15 +134,16 @@ function (
         {
             if (!this.renderInitialized)
             {
-                this.initializeTabs();
+                this.initializeTabsAfterRender();
                 this.renderCurrentTab();
 
                 this.renderInitialized = true;
             }
         },
 
-        initializeTabs: function()
+        initializeTabsAfterRender: function()
         {
+            this.on("close", this.closeTabViews, this);
             this.tabs =
             [
                 new WorkoutQuickViewSummary({ model: this.model, el: this.$(this.tabDomIDs[0]) }),
@@ -155,6 +152,14 @@ function (
                 new WorkoutQuickViewPace({ model: this.model, el: this.$(this.tabDomIDs[3]) }),
                 new WorkoutQuickViewMapAndGraph({ model: this.model, el: this.$(this.tabDomIDs[4]) })
             ];
+        },
+
+        closeTabViews: function()
+        {
+            _.each(this.tabs, function(tabView)
+            {
+                tabView.close();
+            }, this);
         },
 
         renderCurrentTab: function()

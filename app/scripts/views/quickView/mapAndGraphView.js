@@ -11,7 +11,7 @@ function (TP, createMapOnContainer, createGraphOnContainer, workoutQuickViewMapA
     {
         className: "mapAndGraph",
 
-        showThrobbers: false,
+        showThrobbers: true,
 
         template:
         {
@@ -22,19 +22,32 @@ function (TP, createMapOnContainer, createGraphOnContainer, workoutQuickViewMapA
         initialize: function()
         {
             _.bindAll(this, "onModelFetched");
-            this.modelPromise = this.model.get("detailData").fetch();
+
+            this.mapCreated = false;
         },
         
         onRender: function()
         {
-            this.modelPromise.done(this.onModelFetched);
+            this.$el.addClass("waiting");
+            var modelPromise = this.model.get("detailData").fetch();
+            modelPromise.then(this.onModelFetched);
         },
         
         onModelFetched: function()
         {
+            this.$el.removeClass("waiting");
+            
             if (this.model.get("detailData") === null || this.model.get("detailData").attributes.flatSamples === null)
                 return;
 
+            var data = this.parseData();
+
+            createGraphOnContainer(this.$("#quickViewGraph"), data.seriesArray);
+            createMapOnContainer("quickViewMap", data.latLongArray);
+        },
+        
+        parseData: function()
+        {
             var seriesArray = [];
             var latLongArray = [];
 
@@ -43,6 +56,9 @@ function (TP, createMapOnContainer, createGraphOnContainer, workoutQuickViewMapA
             var channelMask = this.model.get("detailData").attributes.flatSamples.channelMask;
             _.each(channelMask, function (channel)
             {
+                if (channel === "Latitude" || channel === "Longitude")
+                    return;
+
                 seriesArray.push({ name: channel, data: [] });
             });
 
@@ -50,12 +66,17 @@ function (TP, createMapOnContainer, createGraphOnContainer, workoutQuickViewMapA
             {
                 for (var i = 0; i < sample.values.length; i++)
                 {
-                    seriesArray[i].data.push([sample.millisecondsOffset, sample.values[i]]);
+                    if (channelMask[i] === "Latitude" || channelMask[i] === "Longitude")
+                        latLongArray.push([sample.values[i], sample.values[++i]]);
+                    else
+                        seriesArray[i].data.push([sample.millisecondsOffset, sample.values[i]]);
                 }
             });
 
-            createGraphOnContainer(this.$("#quickViewGraph"), seriesArray);
-            createMapOnContainer(this.$("#quickViewMap"), latLongArray);
+            return {
+                seriesArray: seriesArray,
+                latLongArray: latLongArray
+            };
         }
     };
 

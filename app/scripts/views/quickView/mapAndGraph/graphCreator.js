@@ -13,8 +13,8 @@ function ()
                     zoomType: "x",
                     resetZoomEnabled: true,
                     alignTicks: true,
-                    width: 622,
-                    height: 340
+                    width: 620,
+                    height: 170
                 },
                 credits:
                 {
