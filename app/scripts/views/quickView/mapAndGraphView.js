@@ -114,6 +114,22 @@ function (TP, Leaflet, workoutQuickViewMapAndGraphTemplate)
             type: "linear",
             title: null
         },
+        "Torque":
+        {
+            allowDecimals: false,
+            endOnTick: true,
+            gridLineWidth: 1,
+            labels:
+            {
+                enabled: false
+            },
+            lineColor: "#000000",
+            lineWidth: 0,
+            max: null,
+            min: 0,
+            type: "linear",
+            title: null
+        },
         "Elevation":
         {
             allowDecimals: false,
@@ -138,8 +154,8 @@ function (TP, Leaflet, workoutQuickViewMapAndGraphTemplate)
         chart:
         {
             type: "line",
-            zoomType: "x",
-            resetZoomEnabled: true,
+            zoomType: null,
+            resetZoomEnabled: false,
             alignTicks: true,
             width: 620,
             height: 160,
@@ -191,7 +207,14 @@ function (TP, Leaflet, workoutQuickViewMapAndGraphTemplate)
         {
             line:
             {
-                connectNulls: true,
+                connectNulls: false,
+                gapSize: 2,
+                turboThreshold: 100
+            },
+            area:
+            {
+                connectNulls: false,
+                gapSize: 2,
                 turboThreshold: 100
             },
             series:
@@ -199,7 +222,7 @@ function (TP, Leaflet, workoutQuickViewMapAndGraphTemplate)
                 pointStart: 0,
                 pointInterval: 1000, //1 second
                 allowPointSelector: true,
-                animation: false,
+                animation: true,
                 cursor: "pointer",
                 lineWidth: 1,
                 marker:
@@ -216,6 +239,14 @@ function (TP, Leaflet, workoutQuickViewMapAndGraphTemplate)
                 },
                 showCheckbox: false
             }
+        },
+        navigator:
+        {
+            enabled: false
+        },
+        rangeSelector:
+        {
+            enabled: false
         }
     };
     
@@ -241,9 +272,11 @@ function (TP, Leaflet, workoutQuickViewMapAndGraphTemplate)
 
         onRender: function()
         {
+            var self = this;
+            
             this.$el.addClass("waiting");
             var modelPromise = this.model.get("detailData").fetch();
-            modelPromise.then(this.onModelFetched);
+            setImmediate(function() { modelPromise.then(self.onModelFetched); });
         },
 
         onModelFetched: function()
@@ -294,6 +327,7 @@ function (TP, Leaflet, workoutQuickViewMapAndGraphTemplate)
             };
 
             // Clean up the channels. For now, let's remove GAPS.
+            /*
             samples = _.reject(samples, function(sample)
             {
                 var previousValue = sample.values[0];
@@ -307,6 +341,16 @@ function (TP, Leaflet, workoutQuickViewMapAndGraphTemplate)
                 });
 
                 return equal;
+            });
+            */
+
+            _.each(samples, function(sample)
+            {
+                for(var i = 0; i < sample.values.length; i++)
+                {
+                    if (sample.values[i] === 1.7976931348623157e+308)
+                        sample.values[i] = null;
+                }
             });
 
             _.each(samples, function(sample)
@@ -425,7 +469,7 @@ function (TP, Leaflet, workoutQuickViewMapAndGraphTemplate)
             this.graphConfig.chart.renderTo = container;
             this.graphConfig.yAxis = orderedAxes;
             this.graphConfig.series = this.seriesArray;
-            this.graph = new Highcharts.Chart(this.graphConfig);
+            this.graph = new Highcharts.StockChart(this.graphConfig);
         },
         
         setMapData: function()
