@@ -5,7 +5,8 @@
     "hbs!templates/views/quickView/heartRate/hrTabView",
     "hbs!templates/views/quickView/heartRate/hrZoneRow",
     "hbs!templates/views/quickView/heartRate/hrPeakRow",
-    "hbs!templates/views/quickView/heartRate/timeInZoneGraphTooltip"
+    "hbs!templates/views/quickView/heartRate/timeInZoneGraphTooltip",
+    "hbs!templates/views/quickView/heartRate/peakGraphTooltip"
 ],
 function(
     TP,
@@ -13,7 +14,8 @@ function(
     hrTabTemplate,
     hrZoneRowTemplate,
     hrPeakRowTemplate,
-    timeInZoneTooltipTemplate)
+    timeInZoneTooltipTemplate,
+    peaksTooltipTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -85,10 +87,6 @@ function(
         {
             if (timeInZones)
             {
-                _.each(timeInZones.timeInZones, function(timeInZone)
-                {
-                    timeInZone.labelShort = timeInZone.label.split(":")[0];
-                }, this);
                 var zonesHtml = hrZoneRowTemplate(timeInZones);
                 this.ui.heartRateByZonesTable.html(zonesHtml);
             } else
@@ -97,38 +95,67 @@ function(
             }
         },
 
+        buildTimeInZonesChartPoints: function(timeInZones)
+        {
+            var chartPoints = [];
+            var totalHours = this.model.get("totalTime");
+            // zone times are in seconds, convert to minutes
+            _.each(timeInZones.timeInZones, function(timeInZone, index)
+            {
+
+                var minutes = timeInZone.seconds ? Number(timeInZone.seconds) / 60 : 0;
+                var hours = timeInZone.seconds ? Number(timeInZone.seconds) / 3600 : 0;
+
+                var point = {
+                    label: timeInZone.label,
+                    rangeMinimum: timeInZone.minimum,
+                    rangeMaximum: timeInZone.maximum,
+                    percentTime: this.toPercent(hours, totalHours),
+                    percentLTMin: this.toPercent(timeInZone.minimum, timeInZones.threshold),
+                    percentLTMax: this.toPercent(timeInZone.maximum, timeInZones.threshold),
+                    percentMHRMin: this.toPercent(timeInZone.minimum, timeInZones.maximum),
+                    percentMHRMax: this.toPercent(timeInZone.maximum, timeInZones.maximum),
+                    seconds: timeInZone.seconds,
+                    y: minutes,
+                    x: index
+                };
+
+                chartPoints.push(point);
+
+            }, this);
+
+            return chartPoints;
+
+        },
+
         renderTimeInZonesChart: function(timeInZones)
         {
             if (timeInZones)
             {
-                var chartPoints = [];
-                var totalHours = this.model.get("totalTime");
-                // zone times are in seconds, convert to minutes
-                _.each(timeInZones.timeInZones, function(timeInZone, index)
-                {
+                var chartPoints = this.buildTimeInZonesChartPoints(timeInZones);
 
-                    var minutes = timeInZone.seconds ? Number(timeInZone.seconds) / 60 : 0;
-                    var hours = timeInZone.seconds ? Number(timeInZone.seconds) / 3600 : 0;
-
-                    var point = {
-                        label: timeInZone.label,
-                        rangeMinimum: timeInZone.minimum,
-                        rangeMaximum: timeInZone.maximum,
-                        percentTime: this.toPercent(hours, totalHours),
-                        percentLTMin: this.toPercent(timeInZone.minimum, timeInZones.threshold),
-                        percentLTMax: this.toPercent(timeInZone.maximum, timeInZones.threshold),
-                        percentMHRMin: this.toPercent(timeInZone.minimum, timeInZones.maximum),
-                        percentMHRMax: this.toPercent(timeInZone.maximum, timeInZones.maximum),
-                        seconds: timeInZone.seconds,
-                        y: minutes,
-                        x: index
-                    };
-
-                    chartPoints.push(point);
-
-                }, this);
-
-                hrGraphCreator.renderTimeInZonesGraph(this.ui.heartRateByZonesChart, chartPoints, timeInZoneTooltipTemplate);
+                var chartOptions = {
+                    chart:
+                    {
+                        type: "column"
+                    },
+                    title:
+                    {
+                        text: "Heart Rate by Zones"
+                    },
+                    xAxis: {
+                        title:
+                        {
+                            text: "Zones"
+                        }
+                    },
+                    yAxis: {
+                        title: {
+                            text: 'Minutes'
+                        }
+                    }
+                };
+                hrGraphCreator.renderGraph(this.ui.heartRateByZonesChart, chartPoints, timeInZoneTooltipTemplate, chartOptions);
             } else
             {
                 this.ui.heartRateByZonesChart.html("");
@@ -144,6 +171,7 @@ function(
         {
             var peaks = this.getPeaksData();
             this.renderPeaksTable(peaks);
+            this.renderPeaksChart(peaks);
         },
 
         renderPeaksTable: function(peaks)
@@ -158,11 +186,69 @@ function(
             }
         },
 
+        buildPeaksChartPoints: function(peaks)
+        {
+            var chartPoints = [];
+            _.each(peaks, function(peak, index)
+            {
+
+
+                var point = {
+                    label: peak.label,
+                    value: peak.value,
+                    y: peak.value,
+                    x: index
+                };
+
+                chartPoints.push(point);
+
+            }, this);
+
+            return chartPoints;
+
+        },
+
+        findMinimum: function(peaks)
+        {
+            var min = peaks[0].value;
+
+            _.each(peaks, function(peak)
+            {
+                if (peak.value < min)
+                    min = peak.value;
+            });
+            return min;
+        },
+
         renderPeaksChart: function(peaks)
         {
             if (peaks)
             {
+                var chartPoints = this.buildPeaksChartPoints(peaks);
 
+                var chartOptions = {
+                    chart:
+                    {
+                        type: "spline"
+                    },
+                    title:
+                    {
+                        text: "Peak Heart Rate"
+                    },
+                    xAxis: {
+                        labels:
+                        {
+                            enabled: true
+                        }
+                    },
+                    yAxis: {
+                        title: {
+                            text: 'BPM'
+                        },
+                        min: this.findMinimum(peaks) - 10
+                    }
+                };
+                hrGraphCreator.renderGraph(this.ui.heartRatePeaksChart, chartPoints, peaksTooltipTemplate, chartOptions);
             } else
             {
                 this.ui.heartRatePeaksChart.html("");

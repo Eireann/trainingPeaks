@@ -10,7 +10,7 @@
         top: 14px;
         left: 14px;
         width: 290px;
-        height: 220px;:w
+        height: 220px;
     }
 
     #heartRatePeaksChart
@@ -39,6 +39,7 @@
             {
                 display: inline-block;
                 width: 90px;
+                overflow: hidden;
                 text-align: right;
                 vertical-align: top;
                 @include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey3, $fontWeightBold);
@@ -46,7 +47,6 @@
                 {
                     margin-top: 5px;
                     white-space: nowrap;
-                    overflow: hidden;
                 }
             }
 

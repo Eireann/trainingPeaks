@@ -4,7 +4,7 @@ function()
 {
     return {
 
-        renderTimeInZonesGraph: function(container, chartData, tooltipTemplate)
+        renderGraph: function(container, chartData, tooltipTemplate, additionalChartOptions)
         {
             var chartOptions = {
                 series: [{ data: chartData }],
@@ -15,31 +15,41 @@ function()
                     width: container.width(),
                     height: container.height()
                 },
-                title:
-                {
-                    text: "Heart Rate by Zones"
-                },
                 credits:
                 {
                     enabled: false
                 },
+                title:
+                {
+                    style: {
+                        color: '#636569',
+                        fontWeight: 'bold'
+                    }
+                },
                 xAxis: {
-                    title:
-                    {
-                        text: "Zones"
-                    },
-                    labels:
+                   labels:
                     {
                         enabled: false
+                    },
+                    title:
+                    {
+                        style: {
+                            color: '#636569',
+                            fontWeight: 'bold'
+                        }
                     }
                 },
                 yAxis: {
                     min: 0,
-                    title: {
-                        text: 'Minutes'
-                    },
                     alternateGridColor: "#cdcbcb",
-                    tickInterval: 10
+                    tickInterval: 10,
+                    title:
+                    {
+                        style: {
+                            color: '#636569',
+                            fontWeight: 'bold'
+                        }
+                    }
                 },
                 legend:
                 {
@@ -55,9 +65,15 @@ function()
                         return tooltipTemplate(this.point.options);
                     },
                     shared: false,
-                    useHTML: true
+                    useHTML: true,
+                    borderColor: "transparent",
+                    shadow: true,
+                    borderRadius: 3
                 }
             };
+
+            if (additionalChartOptions)
+                $.extend(true, chartOptions, additionalChartOptions);
 
             container.highcharts(chartOptions);
         }
