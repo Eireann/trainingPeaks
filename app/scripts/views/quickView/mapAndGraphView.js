@@ -123,7 +123,7 @@ function (TP, Leaflet, workoutQuickViewMapAndGraphTemplate)
             {
                 enabled: false
             },
-            lineColor: "#000000",
+            lineColor: "#BDBDBD",
             lineWidth: 0,
             max: null,
             min: 0,
@@ -208,13 +208,13 @@ function (TP, Leaflet, workoutQuickViewMapAndGraphTemplate)
             line:
             {
                 connectNulls: false,
-                gapSize: 0,
+                gapSize: 1,
                 turboThreshold: 100
             },
             area:
             {
                 connectNulls: false,
-                gapSize: 0,
+                gapSize: 1,
                 turboThreshold: 100
             },
             series:
@@ -324,7 +324,8 @@ function (TP, Leaflet, workoutQuickViewMapAndGraphTemplate)
                 "RightPower": "#FF00FF",
                 "Speed": "#3399FF",
                 "Elevation": "#306B00",
-                "Temperature": "#0A0AFF"
+                "Temperature": "#0A0AFF",
+                "Torque": "#BDBDBD"
             };
             var indexByChannel =
             {
@@ -334,26 +335,9 @@ function (TP, Leaflet, workoutQuickViewMapAndGraphTemplate)
                 "RightPower": 4,
                 "Speed": 5,
                 "Elevation": 0,
-                "Temperature": 6
+                "Temperature": 6,
+                "Torque": 7
             };
-
-            // Clean up the channels. For now, let's remove GAPS.
-            /*
-            samples = _.reject(samples, function(sample)
-            {
-                var previousValue = sample.values[0];
-                var equal = true;
-                _.each(sample.values, function(value)
-                {
-                    if (value !== previousValue)
-                        equal = false;
-
-                    previousValue = value;
-                });
-
-                return equal;
-            });
-            */
 
             _.each(samples, function(sample)
             {
