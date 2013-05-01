@@ -208,13 +208,13 @@ function (TP, Leaflet, workoutQuickViewMapAndGraphTemplate)
             line:
             {
                 connectNulls: false,
-                gapSize: 2,
+                gapSize: 0,
                 turboThreshold: 100
             },
             area:
             {
                 connectNulls: false,
-                gapSize: 2,
+                gapSize: 0,
                 turboThreshold: 100
             },
             series:
@@ -262,12 +262,13 @@ function (TP, Leaflet, workoutQuickViewMapAndGraphTemplate)
             template: workoutQuickViewMapAndGraphTemplate
         },
 
-        initialize: function()
+        initialize: function(options)
         {
             _.bindAll(this, "onModelFetched");
 
             this.map = null;
             this.graph = null;
+            this.prefetchConfig = options.prefetchConfig;
         },
 
         onRender: function()
@@ -275,18 +276,28 @@ function (TP, Leaflet, workoutQuickViewMapAndGraphTemplate)
             var self = this;
             
             this.$el.addClass("waiting");
-            var modelPromise = this.model.get("detailData").fetch();
-            setImmediate(function() { modelPromise.then(self.onModelFetched); });
+
+            if (!this.prefetchConfig.detailDataPromise)
+            {
+                if (this.prefetchConfig.workoutDetailDataFetchTimeout)
+                    clearTimeout(this.prefetchConfig.workoutDetailDataFetchTimeout);
+
+                this.prefetchConfig.detailDataPromise = this.model.get("detailData").fetch();
+            }
+
+            setImmediate(function() { self.prefetchConfig.detailDataPromise.then(self.onModelFetched); });
         },
 
         onModelFetched: function()
         {
+            var self = this;
+            
             this.$el.removeClass("waiting");
 
             if (this.model.get("detailData") === null || this.model.get("detailData").attributes.flatSamples === null)
                 return;
 
-            this.createAndDisplayMapAndGraph();
+            setImmediate(function() { self.createAndDisplayMapAndGraph(); });
         },
 
         createAndDisplayMapAndGraph: function()
@@ -460,7 +471,7 @@ function (TP, Leaflet, workoutQuickViewMapAndGraphTemplate)
             {
                 var seriesAxis = yAxes[series.name];
 
-                if (series.name === "Elevation")
+                if (series.name === "Elevation" && self.minElevation > 0)
                     seriesAxis.min = self.minElevation;
                 
                 series.yAxis = i++;
