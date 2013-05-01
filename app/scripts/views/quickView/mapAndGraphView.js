@@ -2,9 +2,10 @@
 [
     "TP",
     "leaflet",
+    "utilities/workout/workoutTypes",
     "hbs!templates/views/quickView/mapAndGraphView"
 ],
-function (TP, Leaflet, workoutQuickViewMapAndGraphTemplate)
+function (TP, Leaflet, workoutTypes, workoutQuickViewMapAndGraphTemplate)
 {
     var osmURL = "http://otile1.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.jpg";
     var cloudmadeURL = "http://b.tile.cloudmade.com/8ee2a50541944fb9bcedded5165f09d9/1/256/{z}/{x}/{y}.png";
@@ -123,7 +124,7 @@ function (TP, Leaflet, workoutQuickViewMapAndGraphTemplate)
             {
                 enabled: false
             },
-            lineColor: "#000000",
+            lineColor: "#BDBDBD",
             lineWidth: 0,
             max: null,
             min: 0,
@@ -208,13 +209,13 @@ function (TP, Leaflet, workoutQuickViewMapAndGraphTemplate)
             line:
             {
                 connectNulls: false,
-                gapSize: 0,
+                gapSize: 1,
                 turboThreshold: 100
             },
             area:
             {
                 connectNulls: false,
-                gapSize: 0,
+                gapSize: 1,
                 turboThreshold: 100
             },
             series:
@@ -324,7 +325,8 @@ function (TP, Leaflet, workoutQuickViewMapAndGraphTemplate)
                 "RightPower": "#FF00FF",
                 "Speed": "#3399FF",
                 "Elevation": "#306B00",
-                "Temperature": "#0A0AFF"
+                "Temperature": "#0A0AFF",
+                "Torque": "#BDBDBD"
             };
             var indexByChannel =
             {
@@ -334,26 +336,9 @@ function (TP, Leaflet, workoutQuickViewMapAndGraphTemplate)
                 "RightPower": 4,
                 "Speed": 5,
                 "Elevation": 0,
-                "Temperature": 6
+                "Temperature": 6,
+                "Torque": 7
             };
-
-            // Clean up the channels. For now, let's remove GAPS.
-            /*
-            samples = _.reject(samples, function(sample)
-            {
-                var previousValue = sample.values[0];
-                var equal = true;
-                _.each(sample.values, function(value)
-                {
-                    if (value !== previousValue)
-                        equal = false;
-
-                    previousValue = value;
-                });
-
-                return equal;
-            });
-            */
 
             _.each(samples, function(sample)
             {
@@ -482,6 +467,10 @@ function (TP, Leaflet, workoutQuickViewMapAndGraphTemplate)
             this.graphConfig.chart.renderTo = container;
             this.graphConfig.yAxis = orderedAxes;
             this.graphConfig.series = this.seriesArray;
+
+            if (workoutTypes.getNameById(this.model.get("workoutTypeValueId")) === "Swim")
+                this.graphConfig.plotOptions.line.gapSize = 0;
+
             this.graph = new Highcharts.StockChart(this.graphConfig);
         },
         
