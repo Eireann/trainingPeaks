@@ -232,5 +232,6 @@
     "Options": "Options",
 
     "Watts": "Watts",
-    "Zone": "Zone"
+    "ShortMinute": "min",
+    "Weight": "Weight"
 }
