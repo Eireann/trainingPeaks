@@ -42,13 +42,6 @@ function()
                             }
                         }
                     }
-                },
-                xAxis: {
-                    labels:
-                    {
-                        enabled: false
-                    },
-                    tickColor: 'transparent'
                 }
             };
 
@@ -91,7 +84,8 @@ function()
                             color: '#636569',
                             fontWeight: 'bold'
                         }
-                    }
+                    },
+                    tickColor: 'transparent'
                 },
                 yAxis: {
                     min: 0,
