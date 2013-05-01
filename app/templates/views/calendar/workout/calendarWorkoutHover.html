@@ -19,9 +19,9 @@
     <div>
         <label>{{$ "TSS" }}</label>
         <div>
-            <span id="tssPlanned" class="planned">{{ defaultValue tssPlanned 0 }}</span>
+            <span id="tssPlanned" class="planned">{{ conversion "formatTSS" tssPlanned}}</span>
             <span class="slash"> / </span>
-            <span id="tssActual" class="completed">{{ defaultValue tssActual 0 }}</span>
+            <span id="tssActual" class="completed">{{ conversion "formatTSS" tssActual}}</span>
         </div>
     </div>
 </div>

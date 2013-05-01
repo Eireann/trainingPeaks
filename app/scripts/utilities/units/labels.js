@@ -15,18 +15,18 @@ function(unitsConstants, workoutLayoutFormatter)
         },
         normalizedPace:
         {
-            English: "min/mile",
+            English: "min/mi",
             Metric: "min/km"
         },
         averagePace:
         {
-            English: "min/mile",
+            English: "min/mi",
             Metric: "min/km"
         },
         averageSpeed:
         {
             English: "mph",
-            Metric: "km/h"
+            Metric: "kph"
         },
         calories:
         {
@@ -72,13 +72,13 @@ function(unitsConstants, workoutLayoutFormatter)
         },
         pace:
         {
-            English: "min/mile",
+            English: "min/mi",
             Metric: "min/km"
         },
         speed:
         {
             English: "mph",
-            Metric: "km/h"
+            Metric: "kph"
         },
         cadence:
         {
@@ -87,7 +87,7 @@ function(unitsConstants, workoutLayoutFormatter)
         },
         torque:
         {
-            English: "in/lbs",
+            English: "in-lbs",
             Metric: "Nm"
         },
         elevation:
@@ -97,8 +97,8 @@ function(unitsConstants, workoutLayoutFormatter)
         },
         power:
         {
-            English: "W",
-            Metric: "W"
+            English: "watts",
+            Metric: "watts"
         },
         time:
         {

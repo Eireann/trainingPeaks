@@ -1,16 +1,14 @@
 ﻿define(
 [
     "TP",
-    "views/quickView/heartRate/graphCreator",
     "hbs!templates/views/quickView/heartRate/hrTabView",
     "hbs!templates/views/quickView/heartRate/hrZoneRow",
     "hbs!templates/views/quickView/heartRate/hrPeakRow",
-    "hbs!templates/views/quickView/heartRate/timeInZoneGraphTooltip",
-    "hbs!templates/views/quickView/heartRate/peakGraphTooltip"
+    "hbs!templates/views/quickView/heartRate/timeInZoneChartTooltip",
+    "hbs!templates/views/quickView/heartRate/peakChartTooltip"
 ],
 function(
     TP,
-    hrGraphCreator,
     hrTabTemplate,
     hrZoneRowTemplate,
     hrPeakRowTemplate,
@@ -48,14 +46,6 @@ function(
             'MM90Minutes'
         ],
 
-        ui:
-        {
-            "heartRateByZonesChart": "#heartRateByZonesChart",
-            "heartRatePeaksChart": "#heartRatePeaksChart",
-            "heartRateByZonesTable": "#heartRateByZonesTable",
-            "heartRatePeaksTable": "#heartRatePeaksTable"
-        },
-
         onRender: function()
         {
             this.renderTimeInZones();
@@ -88,10 +78,10 @@ function(
             if (timeInZones)
             {
                 var zonesHtml = hrZoneRowTemplate(timeInZones);
-                this.ui.heartRateByZonesTable.html(zonesHtml);
+                this.$("#heartRateByZonesTable").html(zonesHtml);
             } else
             {
-                this.ui.heartRateByZonesTable.html("");
+                this.$("#heartRateByZonesTable").html("");
             }
         },
 
@@ -135,10 +125,6 @@ function(
                 var chartPoints = this.buildTimeInZonesChartPoints(timeInZones);
 
                 var chartOptions = {
-                    chart:
-                    {
-                        type: "column"
-                    },
                     title:
                     {
                         text: "Heart Rate by Zones"
@@ -155,10 +141,10 @@ function(
                         }
                     }
                 };
-                hrGraphCreator.renderGraph(this.ui.heartRateByZonesChart, chartPoints, timeInZoneTooltipTemplate, chartOptions);
+                TP.utils.chartBuilder.renderColumnChart(this.$("#heartRateByZonesChart"), chartPoints, timeInZoneTooltipTemplate, chartOptions);
             } else
             {
-                this.ui.heartRateByZonesChart.html("");
+                this.$("#heartRateByZonesChart").html("");
             }
         },
 
@@ -179,10 +165,10 @@ function(
             if (peaks)
             {
                 var peaksHtml = hrPeakRowTemplate({ peaks: peaks });
-                this.ui.heartRatePeaksTable.html(peaksHtml);
+                this.$("#heartRatePeaksTable").html(peaksHtml);
             } else
             {
-                this.ui.heartRatePeaksTable.html("");
+                this.$("#heartRatePeaksTable").html("");
             }
         },
 
@@ -208,13 +194,36 @@ function(
 
         },
 
+        getPeakChartCategories: function(chartPoints)
+        {
+            // list every third label
+            var categories = [];
+            for (var i = 0; i < chartPoints.length; i++)
+            {
+                if (i % 3 === 0)
+                {
+                    categories.push(this.formatPeakChartLabel(chartPoints[i].label));
+                } else
+                {
+                    // need one category per point, so push empty category
+                    categories.push('');
+                }
+            }
+            return categories;
+        },
+
+        formatPeakChartLabel: function(label)
+        {
+            return label.replace(/ /g, "").replace(/Minutes/, "min").replace(/Seconds/, "sec").replace(/Hour/, "hr");
+        },
+
         findMinimum: function(peaks)
         {
             var min = 0;
 
             _.each(peaks, function(peak)
             {
-                if ((!min && peak.value) || peak.value < min)
+                if ((!min && peak.value) || (peak.value && peak.value < min))
                     min = peak.value;
             });
             return min;
@@ -227,27 +236,6 @@ function(
                 var chartPoints = this.buildPeaksChartPoints(peaks);
 
                 var chartOptions = {
-                    chart:
-                    {
-                        type: "spline"
-                    },
-                    plotOptions:
-                    {
-                        spline:
-                        {
-                            marker:
-                            {
-                                enabled: false,
-                                states:
-                                {
-                                    hover:
-                                    {
-                                        enabled: false
-                                    }
-                                }
-                            }
-                        }
-                    },
                     title:
                     {
                         text: "Peak Heart Rate"
@@ -256,7 +244,10 @@ function(
                         labels:
                         {
                             enabled: true
-                        }
+                        },
+                        tickColor: 'transparent',
+                        type: 'category',
+                        categories: this.getPeakChartCategories(chartPoints)
                     },
                     yAxis: {
                         title: {
@@ -265,10 +256,10 @@ function(
                         min: this.findMinimum(peaks) - 10
                     }
                 };
-                hrGraphCreator.renderGraph(this.ui.heartRatePeaksChart, chartPoints, peaksTooltipTemplate, chartOptions);
+                TP.utils.chartBuilder.renderSplineChart(this.$("#heartRatePeaksChart"), chartPoints, peaksTooltipTemplate, chartOptions);
             } else
             {
-                this.ui.heartRatePeaksChart.html("");
+                this.$("#heartRatePeaksChart").html("");
             }
         },
 
