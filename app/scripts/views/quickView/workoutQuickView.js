@@ -129,7 +129,7 @@ function (
                 clearTimeout(this.prefetchConfig.workoutDetailsFetchTimeout);
 
             if (this.prefetchConfig.workoutDetailDataFetchTimeout)
-                clearTimeout(this.prefetchConfig.workotuDetailDataFetchTimeout);
+                clearTimeout(this.prefetchConfig.workoutDetailDataFetchTimeout);
         },
 
         template:
