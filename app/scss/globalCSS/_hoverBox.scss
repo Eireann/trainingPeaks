@@ -72,7 +72,7 @@
         height: 20px;
         margin-left:20px;
         @include transform(translateY(-10px) rotate(45deg));
-        @include box-shadow(0px 2px 3px 0 #666666);
+        @include box-shadow(0 0 3px 1px #727272);
     }
 
     .colorBar
