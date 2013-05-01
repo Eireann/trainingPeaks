@@ -44,14 +44,6 @@ function (TP, powerTabTemplate,
             'MM90Minutes'
         ],
 
-        ui:
-        {
-            "powerByZonesChart": "#powerByZonesChart",
-            "powerPeaksChart": "#powerPeaksChart",
-            "powerByZonesTable": "#powerByZonesTable",
-            "powerPeaksTable": "#powerPeaksTable"
-        },
-
         onRender: function ()
         {
             this.renderTimeInZones();
@@ -88,10 +80,10 @@ function (TP, powerTabTemplate,
                     timeInZone.labelShort = timeInZone.label.split(":")[0];
                 }, this);
                 var zonesHtml = powerZoneRowTemplate(timeInZones);
-                this.ui.powerByZonesTable.html(zonesHtml);
+                this.$("#powerByZonesTable").html(zonesHtml);
             } else
             {
-                this.ui.powerByZonesTable.html("");
+                this.$("#powerByZonesTable").html("");
             }
         },
 
@@ -118,10 +110,10 @@ function (TP, powerTabTemplate,
                         }
                     }
                 };
-                TP.utils.chartBuilder.renderColumnChart(this.ui.powerByZonesChart, chartPoints, timeInZoneTooltipTemplate, chartOptions);
+                TP.utils.chartBuilder.renderColumnChart(this.$("#powerByZonesChart"), chartPoints, timeInZoneTooltipTemplate, chartOptions);
             } else
             {
-                this.ui.powerByZonesChart.html("");
+                this.$("#powerByZonesChart").html("");
             }
         },
 
@@ -142,10 +134,10 @@ function (TP, powerTabTemplate,
             if (peaks)
             {
                 var peaksHtml = powerPeakRowTemplate({ peaks: peaks });
-                this.ui.powerPeaksTable.html(peaksHtml);
+                this.$("#powerPeaksTable").html(peaksHtml);
             } else
             {
-                this.ui.powerPeaksTable.html("");
+                this.$("#powerPeaksTable").html("");
             }
         },
 
@@ -178,10 +170,10 @@ function (TP, powerTabTemplate,
                         min: this.findMinimum(peaks) - 10
                     }
                 };
-                TP.utils.chartBuilder.renderSplineChart(this.ui.powerPeaksChart, chartPoints, peaksTooltipTemplate, chartOptions);
+                TP.utils.chartBuilder.renderSplineChart(this.$("#powerPeaksChart"), chartPoints, peaksTooltipTemplate, chartOptions);
             } else
             {
-                this.ui.powerPeaksChart.html("");
+                this.$("#powerPeaksChart").html("");
             }
         },
 
