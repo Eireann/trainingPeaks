@@ -44,7 +44,13 @@ function (TP, powerTabTemplate,
             'MM90Minutes'
         ],
 
-        onRender: function ()
+        initialize: function()
+        {
+            // turn off the default TP item view on change event ...
+            delete this.modelEvents.change;
+        },
+
+        onRender: function()
         {
             this.renderTimeInZones();
             this.renderPeaks();

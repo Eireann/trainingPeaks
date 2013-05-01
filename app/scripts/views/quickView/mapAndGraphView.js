@@ -283,8 +283,7 @@ function (TP, Leaflet, workoutTypes, workoutQuickViewMapAndGraphTemplate)
         {
             var self = this;
 
-            // once the view has been rendered once, listen for changes            
-            this.model.on("change:detailData", this.render, this);
+            this.watchForModelChanges();
 
             this.$el.addClass("waiting");
 
@@ -297,6 +296,18 @@ function (TP, Leaflet, workoutTypes, workoutQuickViewMapAndGraphTemplate)
             }
 
             setImmediate(function() { self.prefetchConfig.detailDataPromise.then(self.onModelFetched); });
+
+        },
+
+        watchForModelChanges: function()
+        {
+            this.model.on("change:detailData", this.render, this);
+            this.on("close", this.stopWatchingModelChanges, this);
+        },
+
+        stopWatchingModelChanges: function()
+        {
+            this.model.off("change:detailData", this.render, this);
         },
 
         onModelFetched: function()

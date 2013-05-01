@@ -46,6 +46,12 @@ function(
             'MM90Minutes'
         ],
 
+        initialize: function()
+        {
+            // turn off the default TP item view on change event ...
+            delete this.modelEvents.change;
+        },
+
         onRender: function()
         {
             this.renderTimeInZones();
