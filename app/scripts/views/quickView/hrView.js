@@ -222,7 +222,7 @@ function(
 
         formatPeakChartLabel: function(label)
         {
-            return label.replace(/ /g,"").replace(/Minutes/, "min").replace(/Seconds/, "sec").replace(/Hour/, "hr");
+            return label.replace(/ /g, "").replace(/Minutes/, "min").replace(/Seconds/, "sec").replace(/Hour/, "hr");
         },
 
         findMinimum: function(peaks)
