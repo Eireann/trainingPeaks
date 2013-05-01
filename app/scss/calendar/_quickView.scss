@@ -12,6 +12,11 @@
     width: 690px;
     height: 530px;
 	@include radialGradient(#e6e4e4, #dedcdc);
+
+    input
+    {
+        text-align: center;
+    }
 }
 
 input[disabled='disabled']

@@ -19,7 +19,7 @@
     {
         position: absolute;
         top: 14px;
-        left: 320px;
+        left: 330px;
         width: 290px;
         height: 220px;
     }
@@ -29,7 +29,7 @@
         position: absolute;
         top: 250px;
         left: 30px;
-        width: 280px;
+        width: 265px;
         height: auto;
         min-height: 200px;
     }
@@ -38,8 +38,8 @@
     {
         position: absolute;
         top: 250px;
-        left: 320px;
-        width: 300px;
+        left: 350px;
+        width: 265px;
         height: auto;
         min-height: 200px;
 
@@ -61,15 +61,15 @@
 
     .highcharts-tooltip
     {
-        .tooltipLabel
+        .tooltipRow
         {
+            font-size: $fontSizeSmall;
             color: $TPGrey3;
-            font-weight: bold;
-        }
 
-        .tooltipValue
-        {
-            color: $TPGrey3;
+            .tooltipLabel
+            {
+                font-weight: bold;
+            }
         }
     }
 }
@@ -78,49 +78,43 @@
 {
     .zoneRow
     {
-        height: 24px;
 
-        .zoneName
+        .zoneText
         {
+            width: calc(100% - 80px);
             display: inline-block;
-            width: 140px;
             overflow: hidden;
             text-align: right;
             vertical-align: top;
-            @include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey3, $fontWeightBold);
+        }
+
+        .zoneRange
+        {
+            @include labels($navigationFontFamilyRegular, 0.8em, $TPGrey3, normal);
+        }
+
+        .zoneName
+        {
+            @include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey4, $fontWeightBold);
             label
             {
-                margin-top: 5px;
                 white-space: nowrap;
             }
         }
 
         .zoneInput
         {
+            width: 70px;
             display: inline-block;
-            margin-left: 8px;
+            margin-left: 5px;
             vertical-align: top;
-            @include inputs(60px, 20px, $fontSizeSmall, $navigationFontFamilyRegular);
+            @include inputs(70px, 26px, $fontSizeSmall, $navigationFontFamilyRegular);
             input
             {
-                text-align: right;
                 color: $TPGrey3;
             }
         }
 
-        .zoneRange
-        {
-            display: inline-block;
-            text-align: right;
-            vertical-align: top;
-            margin-left: 5px;
-            width: 50px;
-            @include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey3, normal);
-            label
-            {
-                margin-top: 5px;
-            }
-        }
     }
 }
 
@@ -133,10 +127,10 @@
         .peakName
         {
             display: inline-block;
-            width: 160px;
+            width: calc(100% - 100px);
             text-align: right;
             vertical-align: top;
-            @include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey3, $fontWeightBold);
+            @include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey4, $fontWeightBold);
             label
             {
                 margin-top: 5px;
@@ -150,7 +144,7 @@
             display: inline-block;
             margin-left: 10px;
             vertical-align: top;
-            @include inputs(58px, 20px, 12px, $navigationFontFamilyRegular);
+            @include inputs(45px, 20px, 12px, $navigationFontFamilyRegular);
             input
             {
                 text-align: right;
@@ -162,8 +156,9 @@
         {
             display: inline-block;
             margin-left: 5px;
+            width: 25px;
             vertical-align: top;
-            @include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey3, normal);
+            @include labels($navigationFontFamilyRegular, $fontSizeXSmall, $TPGrey3, normal);
             label
             {
                 margin-top: 5px;
