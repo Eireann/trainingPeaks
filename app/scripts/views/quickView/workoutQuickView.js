@@ -78,6 +78,9 @@ function (
 
         initialize: function(options)
         {
+
+            this.prefetchConfig = {};
+
             if (options.isNewWorkout)
             {
                 this.isNewWorkout = true;
@@ -86,7 +89,6 @@ function (
             else
             {
                 var self = this;
-                this.prefetchConfig = {};
 
                 this.prefetchConfig.workoutDetailsFetchTimeout = setTimeout(function()
                 {
