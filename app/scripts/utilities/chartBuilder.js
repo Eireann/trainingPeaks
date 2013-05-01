@@ -4,7 +4,61 @@ function()
 {
     return {
 
-        renderGraph: function(container, chartData, tooltipTemplate, additionalChartOptions)
+        renderColumnChart: function(container, chartData, tooltipTemplate, additionalChartOptions)
+        {
+            var chartOptions = {
+                chart:
+                {
+                    type: "column"
+                }
+            };
+
+            if (additionalChartOptions)
+                $.extend(true, chartOptions, additionalChartOptions);
+
+            return this.renderChart(container, chartData, tooltipTemplate, chartOptions);
+        },
+
+        renderSplineChart: function(container, chartData, tooltipTemplate, additionalChartOptions)
+        {
+            var chartOptions = {
+                chart:
+                {
+                    type: "spline"
+                },
+                plotOptions:
+                {
+                    spline:
+                    {
+                        marker:
+                        {
+                            enabled: false,
+                            states:
+                            {
+                                hover:
+                                {
+                                    enabled: false
+                                }
+                            }
+                        }
+                    }
+                },
+                xAxis: {
+                    labels:
+                    {
+                        enabled: false
+                    },
+                    tickColor: 'transparent'
+                }
+            };
+
+            if (additionalChartOptions)
+                $.extend(true, chartOptions, additionalChartOptions);
+
+            return this.renderChart(container, chartData, tooltipTemplate, chartOptions);
+        },
+
+        renderChart: function(container, chartData, tooltipTemplate, additionalChartOptions)
         {
             var chartOptions = {
                 series: [{ data: chartData }],
