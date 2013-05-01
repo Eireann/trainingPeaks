@@ -286,12 +286,15 @@ function(
                 if(allPeaksByLabel.hasOwnProperty(label))
                 {
                     var peak = allPeaksByLabel[label];
-                    enabledPeaks.push(
-                        {
-                            label: this.formatMeanMaxLabel(peak.label),
-                            value: peak.value
-                        }
-                    );
+                    if (peak.value)
+                    {
+                        enabledPeaks.push(
+                            {
+                                label: this.formatMeanMaxLabel(peak.label),
+                                value: peak.value
+                            }
+                        );
+                    }
                 }
             }, this);
 
