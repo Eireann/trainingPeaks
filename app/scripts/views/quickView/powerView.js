@@ -4,12 +4,14 @@
     "hbs!templates/views/quickView/power/powerTabView",
     "hbs!templates/views/quickView/power/powerZoneRow",
     "hbs!templates/views/quickView/power/powerPeakRow",
-    "hbs!templates/views/quickView/power/timeInZoneGraphTooltip"
+    "hbs!templates/views/quickView/power/timeInZoneGraphTooltip",
+    "hbs!templates/views/quickView/power/peakChartTooltip"
 ],
 function (TP, powerTabTemplate,
     powerZoneRowTemplate,
     powerPeakRowTemplate,
-    timeInZoneTooltipTemplate)
+    timeInZoneTooltipTemplate,
+    peaksTooltipTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -97,34 +99,26 @@ function (TP, powerTabTemplate,
         {
             if (timeInZones)
             {
-                var chartPoints = [];
-                var totalHours = this.model.get("totalTime");
-                // zone times are in seconds, convert to minutes
-                _.each(timeInZones.timeInZones, function (timeInZone, index)
-                {
+                var chartPoints = this.buildTimeInZonesChartPoints(timeInZones);
 
-                    var minutes = timeInZone.seconds ? Number(timeInZone.seconds) / 60 : 0;
-                    var hours = timeInZone.seconds ? Number(timeInZone.seconds) / 3600 : 0;
-
-                    var point = {
-                        label: timeInZone.label,
-                        rangeMinimum: timeInZone.minimum,
-                        rangeMaximum: timeInZone.maximum,
-                        percentTime: this.toPercent(hours, totalHours),
-                        percentLTMin: this.toPercent(timeInZone.minimum, timeInZones.threshold),
-                        percentLTMax: this.toPercent(timeInZone.maximum, timeInZones.threshold),
-                        percentMPowerMin: this.toPercent(timeInZone.minimum, timeInZones.maximum),
-                        percentMPowerMax: this.toPercent(timeInZone.maximum, timeInZones.maximum),
-                        seconds: timeInZone.seconds,
-                        y: minutes,
-                        x: index
-                    };
-
-                    chartPoints.push(point);
-
-                }, this);
-
-                //powerGraphCreator.renderTimeInZonesGraph(this.ui.powerByZonesChart, chartPoints, timeInZoneTooltipTemplate);
+                var chartOptions = {
+                    title:
+                    {
+                        text: "Power by Zones"
+                    },
+                    xAxis: {
+                        title:
+                        {
+                            text: "Zones"
+                        }
+                    },
+                    yAxis: {
+                        title: {
+                            text: 'Minutes'
+                        }
+                    }
+                };
+                TP.utils.chartBuilder.renderColumnChart(this.ui.powerByZonesChart, chartPoints, timeInZoneTooltipTemplate, chartOptions);
             } else
             {
                 this.ui.powerByZonesChart.html("");
@@ -140,6 +134,7 @@ function (TP, powerTabTemplate,
         {
             var peaks = this.getPeaksData();
             this.renderPeaksTable(peaks);
+            this.renderPeaksChart(peaks);
         },
 
         renderPeaksTable: function (peaks)
@@ -156,13 +151,114 @@ function (TP, powerTabTemplate,
 
         renderPeaksChart: function (peaks)
         {
-            if (peaks)
+            if (peaks && peaks.length)
             {
+                var chartPoints = this.buildPeaksChartPoints(peaks);
 
+                var chartOptions = {
+                    title:
+                    {
+                        text: "Peak Power"
+                    },
+                    xAxis: {
+                        labels:
+                        {
+                            enabled: true
+                        },
+                        tickColor: 'transparent',
+                        type: 'category',
+                        categories: this.getPeakChartCategories(chartPoints)
+                    },
+                    yAxis: {
+                        title: {
+                            text: 'Watts'
+            
+                        },
+                        tickInterval: this.getTickInterval(peaks),
+                        min: this.findMinimum(peaks) - 10
+                    }
+                };
+                TP.utils.chartBuilder.renderSplineChart(this.ui.powerPeaksChart, chartPoints, peaksTooltipTemplate, chartOptions);
             } else
             {
                 this.ui.powerPeaksChart.html("");
             }
+        },
+
+        getPeakChartCategories: function (chartPoints)
+        {
+            // list every third label
+            var categories = [];
+            for (var i = 0; i < chartPoints.length; i++)
+            {
+                if (i % 3 === 0)
+                {
+                    categories.push(this.formatPeakChartLabel(chartPoints[i].label));
+                } else
+                {
+                    // need one category per point, so push empty category
+                    categories.push('');
+                }
+            }
+            return categories;
+        },
+
+        formatPeakChartLabel: function (label)
+        {
+            return label.replace(/ /g, "").replace(/Minutes/, "min").replace(/Seconds/, "sec").replace(/Hour/, "hr");
+        },
+
+        findMinimum: function (peaks)
+        {
+            var min = 0;
+
+            _.each(peaks, function (peak)
+            {
+                if ((!min && peak.value) || (peak.value && peak.value < min))
+                    min = peak.value;
+            });
+            return min;
+        },
+
+        getTickInterval: function (peaks)
+        {
+            var min = 0;
+            var max = 0;
+            var tickInterval = 0;
+
+            _.each(peaks, function (peak)
+            {
+                if ((!min && peak.value) || (peak.value && peak.value < min))
+                    min = peak.value;
+
+                if ((!max && peak.value) || (peak.value && peak.value > max))
+                    max = peak.value;
+
+                tickInterval = Math.round((max - min) / 7);
+            });
+            return tickInterval;
+        },
+
+        buildPeaksChartPoints: function (peaks)
+        {
+            var chartPoints = [];
+            _.each(peaks, function (peak, index)
+            {
+
+
+                var point = {
+                    label: peak.label,
+                    value: peak.value,
+                    y: peak.value,
+                    x: index
+                };
+
+                chartPoints.push(point);
+
+            }, this);
+
+            return chartPoints;
+
         },
 
         getPeaksData: function ()
@@ -198,6 +294,39 @@ function (TP, powerTabTemplate,
         {
             // Change MM100Meters to "100 Meters", or MMHalfMarathon to "Half Marathon"
             return label.replace(/^MM/, "").replace(/([0-9]+)/g, "$1 ").replace(/([a-z])([A-Z])/g, "$1 $2");
+        },
+
+        buildTimeInZonesChartPoints: function (timeInZones)
+        {
+            var chartPoints = [];
+            var totalHours = this.model.get("totalTime");
+            // zone times are in seconds, convert to minutes
+            _.each(timeInZones.timeInZones, function (timeInZone, index)
+            {
+
+                var minutes = timeInZone.seconds ? Number(timeInZone.seconds) / 60 : 0;
+                var hours = timeInZone.seconds ? Number(timeInZone.seconds) / 3600 : 0;
+
+                var point = {
+                    label: timeInZone.label,
+                    rangeMinimum: timeInZone.minimum,
+                    rangeMaximum: timeInZone.maximum,
+                    percentTime: this.toPercent(hours, totalHours),
+                    percentLTMin: this.toPercent(timeInZone.minimum, timeInZones.threshold),
+                    percentLTMax: this.toPercent(timeInZone.maximum, timeInZones.threshold),
+                    percentMHRMin: this.toPercent(timeInZone.minimum, timeInZones.maximum),
+                    percentMHRMax: this.toPercent(timeInZone.maximum, timeInZones.maximum),
+                    seconds: timeInZone.seconds,
+                    y: minutes,
+                    x: index
+                };
+
+                chartPoints.push(point);
+
+            }, this);
+
+            return chartPoints;
+
         }
     });
 });
