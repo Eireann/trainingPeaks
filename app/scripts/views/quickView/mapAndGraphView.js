@@ -2,9 +2,10 @@
 [
     "TP",
     "leaflet",
+    "utilities/workout/workoutTypes",
     "hbs!templates/views/quickView/mapAndGraphView"
 ],
-function (TP, Leaflet, workoutQuickViewMapAndGraphTemplate)
+function (TP, Leaflet, workoutTypes, workoutQuickViewMapAndGraphTemplate)
 {
     var osmURL = "http://otile1.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.jpg";
     var cloudmadeURL = "http://b.tile.cloudmade.com/8ee2a50541944fb9bcedded5165f09d9/1/256/{z}/{x}/{y}.png";
@@ -466,6 +467,10 @@ function (TP, Leaflet, workoutQuickViewMapAndGraphTemplate)
             this.graphConfig.chart.renderTo = container;
             this.graphConfig.yAxis = orderedAxes;
             this.graphConfig.series = this.seriesArray;
+
+            if (workoutTypes.getNameById(this.model.get("workoutTypeValueId")) === "Swim")
+                this.graphConfig.plotOptions.line.gapSize = 0;
+
             this.graph = new Highcharts.StockChart(this.graphConfig);
         },
         
