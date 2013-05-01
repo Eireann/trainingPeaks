@@ -46,14 +46,6 @@ function(
             'MM90Minutes'
         ],
 
-        ui:
-        {
-            "heartRateByZonesChart": "#heartRateByZonesChart",
-            "heartRatePeaksChart": "#heartRatePeaksChart",
-            "heartRateByZonesTable": "#heartRateByZonesTable",
-            "heartRatePeaksTable": "#heartRatePeaksTable"
-        },
-
         onRender: function()
         {
             this.renderTimeInZones();
@@ -86,10 +78,10 @@ function(
             if (timeInZones)
             {
                 var zonesHtml = hrZoneRowTemplate(timeInZones);
-                this.ui.heartRateByZonesTable.html(zonesHtml);
+                this.$("#heartRateByZonesTable").html(zonesHtml);
             } else
             {
-                this.ui.heartRateByZonesTable.html("");
+                this.$("#heartRateByZonesTable").html("");
             }
         },
 
@@ -149,10 +141,10 @@ function(
                         }
                     }
                 };
-                TP.utils.chartBuilder.renderColumnChart(this.ui.heartRateByZonesChart, chartPoints, timeInZoneTooltipTemplate, chartOptions);
+                TP.utils.chartBuilder.renderColumnChart(this.$("#heartRateByZonesChart"), chartPoints, timeInZoneTooltipTemplate, chartOptions);
             } else
             {
-                this.ui.heartRateByZonesChart.html("");
+                this.$("#heartRateByZonesChart").html("");
             }
         },
 
@@ -173,10 +165,10 @@ function(
             if (peaks)
             {
                 var peaksHtml = hrPeakRowTemplate({ peaks: peaks });
-                this.ui.heartRatePeaksTable.html(peaksHtml);
+                this.$("#heartRatePeaksTable").html(peaksHtml);
             } else
             {
-                this.ui.heartRatePeaksTable.html("");
+                this.$("#heartRatePeaksTable").html("");
             }
         },
 
@@ -264,10 +256,10 @@ function(
                         min: this.findMinimum(peaks) - 10
                     }
                 };
-                TP.utils.chartBuilder.renderSplineChart(this.ui.heartRatePeaksChart, chartPoints, peaksTooltipTemplate, chartOptions);
+                TP.utils.chartBuilder.renderSplineChart(this.$("#heartRatePeaksChart"), chartPoints, peaksTooltipTemplate, chartOptions);
             } else
             {
-                this.ui.heartRatePeaksChart.html("");
+                this.$("#heartRatePeaksChart").html("");
             }
         },
 
