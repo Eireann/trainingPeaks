@@ -106,7 +106,7 @@ function (TP, powerTabTemplate,
                     },
                     yAxis: {
                         title: {
-                            text: 'Minutes'
+                            text: 'Watts'
                         }
                     }
                 };
