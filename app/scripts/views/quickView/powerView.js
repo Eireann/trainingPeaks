@@ -40,14 +40,14 @@ function (TP, powerTabTemplate,
 
         watchForModelChanges: function ()
         {
-            this.model.get("details").on("change:timeInPowerZones", this.renderTimeInZones, this);
+            this.model.get("details").on("change:timeInPowerZones.timeInZones", this.renderTimeInZones, this);
             this.model.get("details").on("change:meanMaxPower", this.renderPeaks, this);
             this.on("close", this.stopWatchingModelChanges, this);
         },
 
         stopWatchingModelChanges: function ()
         {
-            this.model.get("details").off("change:timeInPowerZones", this.renderTimeInZones, this);
+            this.model.get("details").off("change:timeInPowerZones.timeInZones", this.renderTimeInZones, this);
             this.model.get("details").off("change:meanMaxPower", this.renderPeaks, this);
         },
 

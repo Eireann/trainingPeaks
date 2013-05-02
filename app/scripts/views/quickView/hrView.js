@@ -42,14 +42,14 @@ function(
 
         watchForModelChanges: function()
         {
-            this.model.get("details").on("change:timeInHeartRateZones", this.renderTimeInZones, this);
+            this.model.get("details").on("change:timeInHeartRateZones.timeInZones", this.renderTimeInZones, this);
             this.model.get("details").on("change:meanMaxHeartRate", this.renderPeaks, this);
             this.on("close", this.stopWatchingModelChanges, this);
         },
 
         stopWatchingModelChanges: function()
         {
-            this.model.get("details").off("change:timeInHeartRateZones", this.renderTimeInZones, this);
+            this.model.get("details").off("change:timeInHeartRateZones.timeInZones", this.renderTimeInZones, this);
             this.model.get("details").off("change:meanMaxHeartRate", this.renderPeaks, this);
         },
 

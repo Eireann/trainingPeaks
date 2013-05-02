@@ -41,14 +41,14 @@ function (TP,
 
         watchForModelChanges: function ()
         {
-            this.model.get("details").on("change:timeInSpeedZones", this.renderTimeInZones, this);
+            this.model.get("details").on("change:timeInSpeedZones.timeInZones", this.renderTimeInZones, this);
             this.model.get("details").on("change:meanMaxSpeed", this.renderPeaks, this);
             this.on("close", this.stopWatchingModelChanges, this);
         },
 
         stopWatchingModelChanges: function ()
         {
-            this.model.get("details").off("change:timeInSpeedZones", this.renderTimeInZones, this);
+            this.model.get("details").off("change:timeInSpeedZones.timeInZones", this.renderTimeInZones, this);
             this.model.get("details").off("change:meanMaxSpeed", this.renderPeaks, this);
         },
 
