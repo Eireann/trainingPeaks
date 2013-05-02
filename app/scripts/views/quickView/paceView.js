@@ -208,7 +208,8 @@ function (TP,
                             text: 'min/mile'
                         },
                         type: 'category',
-                        categories: this.getChartCategoriesAsPace(chartPoints)
+                        categories: this.getChartCategoriesAsPace(chartPoints),
+                        tickInterval: null
                     }
                 };
                 TP.utils.chartBuilder.renderSplineChart(this.$("#pacePeaksChart"), chartPoints, peaksTooltipTemplate, chartOptions);
@@ -228,13 +229,11 @@ function (TP,
         {
 
             var categories = [];
-
-            categories.push(TP.utils.conversion.formatPace(chartPoints[chartPoints.length - 1].value));
-
-            while (categories.length < chartPoints.length)
-                categories.push("");
-
-            categories.push(TP.utils.conversion.formatPace(chartPoints[0].value));
+            _.each(chartPoints, function(point)
+            {
+                categories.unshift(TP.utils.conversion.formatPace(point.value));
+            }, this);
+            categories.push("");
 
             return categories;
         }
