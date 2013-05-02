@@ -263,12 +263,14 @@ function (TP, Leaflet, workoutTypes, workoutQuickViewMapAndGraphTemplate)
             template: workoutQuickViewMapAndGraphTemplate
         },
 
+        initialEvents: function()
+        {
+            this.model.off("change", this.render);
+        },
+
         initialize: function(options)
         {
             _.bindAll(this, "onModelFetched");
-
-            // turn off the default TP item view on change event ...
-            delete this.modelEvents.change;
 
             this.map = null;
             this.graph = null;
