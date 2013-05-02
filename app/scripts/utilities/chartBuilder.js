@@ -17,7 +17,8 @@ function(_)
                 yAxis:
                 {
                     tickInterval: tickInterval,
-                    min: this.findMinimum(chartData)
+                    min: 0
+                    //min: this.findMinimum(chartData) - tickInterval
                 }
             };
 
@@ -235,18 +236,20 @@ function(_)
 
         getColumnTickInterval: function(points)
         {
-            return this.getTickInterval(points);
+            var max = this.findMaximum(points);
+            return this.getTickInterval(0, max);
         },
 
         getSplineTickInterval: function(points)
         {
-            return this.getTickInterval(points);
-        },
-
-        getTickInterval: function(points)
-        {
             var min = this.findMinimum(points);
             var max = this.findMaximum(points);
+            return this.getTickInterval(min, max);
+        },
+
+        getTickInterval: function(min, max)
+        {
+
             var range = max - min;
 
             // 6 divisions will give 8 ticks including top and bottom
