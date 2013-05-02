@@ -256,7 +256,7 @@ function(_)
             var divisions = 6;
 
             if (range <= 1)
-                return Number((max - min) / divisions).toFixed(2);
+                return parseFloat(Number((max - min) / divisions).toFixed(2));
             else if (range < 10)
                 return 1;
             else 
@@ -272,6 +272,10 @@ function(_)
                 if ((!min && point.value) || (point.value && point.value < min))
                     min = point.value;
             });
+
+            if (min < 0)
+                min = 0;
+
             return min;
         },
 
