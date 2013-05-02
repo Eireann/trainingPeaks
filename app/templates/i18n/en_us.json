@@ -234,5 +234,8 @@
     "Watts": "Watts",
     "ShortMinute": "min",
     "Zone": "Zone",
-    "Weight": "Weight"
+    "Weight": "Weight",
+    "Range": "Range",
+    "Time": "Time",
+    "Percent": "Percent"
 }
