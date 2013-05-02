@@ -146,7 +146,7 @@ function (TP, powerTabTemplate,
                         },
                         tickColor: 'transparent',
                         type: 'category',
-                        categories: this.getPeakChartCategories(chartPoints)
+                        categories: TP.utils.chartBuilder.getPeakChartCategories(chartPoints)
                     },
                     yAxis: {
                         title: {
@@ -159,29 +159,6 @@ function (TP, powerTabTemplate,
             {
                 this.$("#powerPeaksChart").html("");
             }
-        },
-
-        getPeakChartCategories: function (chartPoints)
-        {
-            // list every third label
-            var categories = [];
-            for (var i = 0; i < chartPoints.length; i++)
-            {
-                if (i % 3 === 0)
-                {
-                    categories.push(this.formatPeakChartLabel(chartPoints[i].label));
-                } else
-                {
-                    // need one category per point, so push empty category
-                    categories.push('');
-                }
-            }
-            return categories;
-        },
-
-        formatPeakChartLabel: function (label)
-        {
-            return label.replace(/ /g, "").replace(/Minutes/, "min").replace(/Seconds/, "sec").replace(/Hour/, "hr");
         },
 
         buildPeaksChartPoints: function(peaks)

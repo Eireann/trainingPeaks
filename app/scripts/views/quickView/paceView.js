@@ -169,6 +169,7 @@ function (TP,
                 var point = {
                     label: peak.label,
                     value: peak.value,
+                    name: TP.utils.conversion.formatPace(peak.value),
                     y: peak.value,
                     x: index
                 };
@@ -179,29 +180,6 @@ function (TP,
 
             return chartPoints;
 
-        },
-
-        getPeakChartCategories: function (chartPoints)
-        {
-            // list every third label
-            var categories = [];
-            for (var i = 0; i < chartPoints.length; i++)
-            {
-                if (i % 3 === 0)
-                {
-                    categories.push(this.formatPeakChartLabel(chartPoints[i].label));
-                } else
-                {
-                    // need one category per point, so push empty category
-                    categories.push('');
-                }
-            }
-            return categories;
-        },
-
-        formatPeakChartLabel: function (label)
-        {
-            return label.replace(/ /g, "").replace(/Minutes/, "min").replace(/Seconds/, "sec").replace(/Hour/, "hr");
         },
 
         renderPeaksChart: function (peaks)
@@ -222,12 +200,13 @@ function (TP,
                         },
                         tickColor: 'transparent',
                         type: 'category',
-                        categories: this.getPeakChartCategories(chartPoints)
+                        categories: TP.utils.chartBuilder.getPeakChartCategories(chartPoints)
                     },
                     yAxis: {
                         title: {
                             text: 'min/mile'
-                        }
+                        },
+                        type: 'category'
                     }
                 };
                 TP.utils.chartBuilder.renderSplineChart(this.$("#pacePeaksChart"), chartPoints, peaksTooltipTemplate, chartOptions);

@@ -147,6 +147,42 @@ function(_)
             return label.replace(/^MM/, "").replace(/([0-9]+)/g, "$1 ").replace(/([a-z])([A-Z])/g, "$1 $2").replace(/1 Minute/, "60 Seconds").replace(/1 Hour/, "60 minutes");
         },
 
+        getPeakChartCategories: function(chartPoints)
+        {
+            var skipInterval = 2;
+            var skip = 0;
+            var categories = [];
+            for (var i = 0; i < chartPoints.length; i++)
+            {
+                var addLabel = false;
+                if (i === 0)
+                {
+                    addLabel = true;
+                } else if (skip === skipInterval)
+                {
+                    addLabel = true;
+                }
+
+
+                if (addLabel)
+                {
+                    categories.push(this.formatPeakChartAxisLabel(chartPoints[i].label));
+                    skip = 0;
+                }
+                else
+                {
+                    categories.push('');
+                    skip++;
+                }
+            }
+            return categories;
+        },
+
+        formatPeakChartAxisLabel: function (label)
+        {
+            return label.replace(/ /g, "").replace(/Minutes/, "min").replace(/Seconds/, "sec").replace(/Hour/, "hr");
+        },
+
         cleanAndFormatPeaksData: function(peaksData)
         {
 

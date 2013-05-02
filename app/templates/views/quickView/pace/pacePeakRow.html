@@ -1,7 +1,7 @@
 ﻿{{#each peaks }}
 <div class="peakRow">
     <div class="peakName"><label>Peak {{ label }}</label></div> 
-    <div class="peakInput"><input type="text" value="{{ value }}" /></div>
+    <div class="peakInput"><input type="text" value="{{ formatPace value }}" /></div>
     <div class="peakRange"><label>{{$ "ShortMinute"}}/{{getUnitsLabel "distance" workoutTypeValueId }}</label></div>
 </div>
 {{/each}}
