@@ -137,7 +137,6 @@ function(_)
             if (additionalChartOptions)
                 $.extend(true, chartOptions, additionalChartOptions);
 
-            console.log(chartOptions);
             container.highcharts(chartOptions);
         },
 
