@@ -236,7 +236,6 @@ function (TP,
 
             categories.push(TP.utils.conversion.formatPace(chartPoints[0].value));
 
-            console.log(categories);
             return categories;
         }
     });
