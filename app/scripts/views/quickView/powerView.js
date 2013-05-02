@@ -25,25 +25,6 @@ function (TP, powerTabTemplate,
             template: powerTabTemplate
         },
 
-        defaultPeakSettings: [
-            'MM2Seconds',
-            'MM5Seconds',
-            'MM10Seconds',
-            'MM12Seconds',
-            'MM20Seconds',
-            'MM30Seconds',
-            'MM1Minute',
-            'MM2Minutes',
-            'MM5Minutes',
-            'MM6Minutes',
-            'MM10Minutes',
-            'MM12Minutes',
-            'MM20Minutes',
-            'MM30Minutes',
-            'MM1Hour',
-            'MM90Minutes'
-        ],
-
         initialize: function()
         {
             // turn off the default TP item view on change event ...
@@ -262,33 +243,7 @@ function (TP, powerTabTemplate,
         getPeaksData: function ()
         {
             var powerPeaks = this.model.get("details").get("meanMaxPower");
-
-            var allPeaksByLabel = {};
-            _.each(powerPeaks, function (powerPeak)
-            {
-                allPeaksByLabel[powerPeak.label] = powerPeak;
-            }, this);
-
-
-            var enabledPeaks = [];
-            _.each(this.defaultPeakSettings, function (label)
-            {
-                if (allPeaksByLabel.hasOwnProperty(label))
-                {
-                    var peak = allPeaksByLabel[label];
-                    if (peak.value)
-                    {
-                        enabledPeaks.push(
-                            {
-                                label: TP.utils.chartBuilder.formatMeanMaxLabel(peak.label),
-                                value: peak.value
-                            }
-                        );
-                    }
-                }
-            }, this);
-
-            return enabledPeaks;
+            return TP.utils.chartBuilder.cleanAndFormatPeaksData(powerPeaks);
         },
 
         buildTimeInZonesChartPoints: function (timeInZones)

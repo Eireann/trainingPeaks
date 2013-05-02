@@ -26,24 +26,11 @@ function (TP,
             template: paceTabTemplate
         },
 
-        defaultPeakSettings: [
-            'MM2Seconds',
-            'MM5Seconds',
-            'MM10Seconds',
-            'MM12Seconds',
-            'MM20Seconds',
-            'MM30Seconds',
-            'MM1Minute',
-            'MM2Minutes',
-            'MM5Minutes',
-            'MM6Minutes',
-            'MM10Minutes',
-            'MM12Minutes',
-            'MM20Minutes',
-            'MM30Minutes',
-            'MM1Hour',
-            'MM90Minutes'
-        ],
+        initialize: function()
+        {
+            // turn off the default TP item view on change event ...
+            delete this.modelEvents.change;
+        },
 
         onRender: function ()
         {
@@ -265,36 +252,7 @@ function (TP,
         getPeaksData: function ()
         {
             var pacePeaks = this.model.get("details").get("meanMaxSpeed");
-
-            var allPeaksByLabel = {};
-            _.each(pacePeaks, function (pacePeak)
-            {
-                allPeaksByLabel[pacePeak.label] = pacePeak;
-            }, this);
-
-
-            var enabledPeaks = [];
-            _.each(this.defaultPeakSettings, function (label)
-            {
-                if (allPeaksByLabel.hasOwnProperty(label))
-                {
-                    var peak = allPeaksByLabel[label];
-                    enabledPeaks.push(
-                        {
-                            label: this.formatMeanMaxLabel(peak.label),
-                            value: peak.value
-                        }
-                    );
-                }
-            }, this);
-
-            return enabledPeaks;
-        },
-
-        formatMeanMaxLabel: function (label)
-        {
-            // Change MM100Meters to "100 Meters", or MMHalfMarathon to "Half Marathon"
-            return label.replace(/^MM/, "").replace(/([0-9]+)/g, "$1 ").replace(/([a-z])([A-Z])/g, "$1 $2");
+            return TP.utils.chartBuilder.cleanAndFormatPeaksData(pacePeaks);
         }
     });
     

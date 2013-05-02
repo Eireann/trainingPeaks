@@ -26,26 +26,7 @@ function(
             type: "handlebars",
             template: hrTabTemplate
         },
-
-        defaultPeakSettings: [
-            'MM2Seconds',
-            'MM5Seconds',
-            'MM10Seconds',
-            'MM12Seconds',
-            'MM20Seconds',
-            'MM30Seconds',
-            'MM1Minute',
-            'MM2Minutes',
-            'MM5Minutes',
-            'MM6Minutes',
-            'MM10Minutes',
-            'MM12Minutes',
-            'MM20Minutes',
-            'MM30Minutes',
-            'MM1Hour',
-            'MM90Minutes'
-        ],
-
+        
         initialize: function()
         {
             // turn off the default TP item view on change event ...
@@ -276,33 +257,7 @@ function(
         getPeaksData: function()
         {
             var hrPeaks = this.model.get("details").get("meanMaxHeartRate");
-
-            var allPeaksByLabel = {};
-            _.each(hrPeaks, function(hrPeak)
-            {
-                allPeaksByLabel[hrPeak.label] = hrPeak;
-            }, this);
-
-
-            var enabledPeaks = [];
-            _.each(this.defaultPeakSettings, function(label)
-            {
-                if(allPeaksByLabel.hasOwnProperty(label))
-                {
-                    var peak = allPeaksByLabel[label];
-                    if (peak.value)
-                    {
-                        enabledPeaks.push(
-                            {
-                                label: TP.utils.chartBuilder.formatMeanMaxLabel(peak.label),
-                                value: peak.value
-                            }
-                        );
-                    }
-                }
-            }, this);
-
-            return enabledPeaks;
+            return TP.utils.chartBuilder.cleanAndFormatPeaksData(hrPeaks);
         }
     });
 });
