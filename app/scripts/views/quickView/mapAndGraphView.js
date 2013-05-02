@@ -295,6 +295,12 @@ function (TP, Leaflet, workoutTypes, workoutQuickViewMapAndGraphTemplate)
                 this.prefetchConfig.detailDataPromise = this.model.get("detailData").fetch();
             }
 
+            // if we already have it in memory, render it
+            if (this.model.get("detailData") !== null && this.model.get("detailData").attributes.flatSamples !== null)
+            {
+                this.onModelFetched();
+            }
+
             setImmediate(function() { self.prefetchConfig.detailDataPromise.then(self.onModelFetched); });
 
         },
