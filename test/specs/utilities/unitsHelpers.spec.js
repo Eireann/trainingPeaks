@@ -27,12 +27,12 @@ function(TP, theMarsApp)
 
             it("should print the unit label for normalized pace", function()
             {
-                expect(TP.utils.units.getUnitsLabel("normalizedPace")).toBe("min/mile");
+                expect(TP.utils.units.getUnitsLabel("normalizedPace")).toBe("min/mi");
             });
 
             it("should print the unit label for averagePace", function()
             {
-                expect(TP.utils.units.getUnitsLabel("averagePace")).toBe("min/mile");
+                expect(TP.utils.units.getUnitsLabel("averagePace")).toBe("min/mi");
             });
 
             it("should print the unit label for average speed", function()
@@ -82,7 +82,7 @@ function(TP, theMarsApp)
 
             it("should print the unit label for pace", function()
             {
-                expect(TP.utils.units.getUnitsLabel("pace")).toBe("min/mile");
+                expect(TP.utils.units.getUnitsLabel("pace")).toBe("min/mi");
             });
 
             it("should print the unit label for speed", function()
@@ -97,7 +97,7 @@ function(TP, theMarsApp)
 
             it("should print the unit label for torque", function()
             {
-                expect(TP.utils.units.getUnitsLabel("torque")).toBe("in/lbs");
+                expect(TP.utils.units.getUnitsLabel("torque")).toBe("in-lbs");
             });
 
             it("shouuld print the unit label for elevation", function()
@@ -107,7 +107,7 @@ function(TP, theMarsApp)
 
             it("should print the unit label for power", function()
             {
-                expect(TP.utils.units.getUnitsLabel("power")).toBe("W");
+                expect(TP.utils.units.getUnitsLabel("power")).toBe("watts");
             });
 
             it("should throw an exception if an uknown value type is requested", function()

@@ -131,6 +131,14 @@
 		border-style:solid;
 	}
 	
+	.mainShadow {
+		box-shadow: 0 2px 3px 0 #727272;
+	}
+	
+	.hoverBox .arrow {
+		box-shadow: 0 0 3px 1px #727272;
+	}
+	
 	
     .details
     {
@@ -206,6 +214,11 @@
 		border-color: #979797;
 		border-style:solid;	
 	}
+	
+	.hoverBox .colorBar {
+	  bottom: 14px;
+	  height: 4px;
+	}
 
 }
 
@@ -224,6 +237,5 @@
 		border-width:1px 1px 0 1px;
 		border-color: #979797;
 		border-style:solid;
-}
-
+	}
 }

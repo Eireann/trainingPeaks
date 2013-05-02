@@ -46,12 +46,10 @@ function(
             'MM90Minutes'
         ],
 
-        ui:
+        initialize: function()
         {
-            "heartRateByZonesChart": "#heartRateByZonesChart",
-            "heartRatePeaksChart": "#heartRatePeaksChart",
-            "heartRateByZonesTable": "#heartRateByZonesTable",
-            "heartRatePeaksTable": "#heartRatePeaksTable"
+            // turn off the default TP item view on change event ...
+            delete this.modelEvents.change;
         },
 
         onRender: function()
@@ -86,10 +84,10 @@ function(
             if (timeInZones)
             {
                 var zonesHtml = hrZoneRowTemplate(timeInZones);
-                this.ui.heartRateByZonesTable.html(zonesHtml);
+                this.$("#heartRateByZonesTable").html(zonesHtml);
             } else
             {
-                this.ui.heartRateByZonesTable.html("");
+                this.$("#heartRateByZonesTable").html("");
             }
         },
 
@@ -149,10 +147,10 @@ function(
                         }
                     }
                 };
-                TP.utils.chartBuilder.renderColumnChart(this.ui.heartRateByZonesChart, chartPoints, timeInZoneTooltipTemplate, chartOptions);
+                TP.utils.chartBuilder.renderColumnChart(this.$("#heartRateByZonesChart"), chartPoints, timeInZoneTooltipTemplate, chartOptions);
             } else
             {
-                this.ui.heartRateByZonesChart.html("");
+                this.$("#heartRateByZonesChart").html("");
             }
         },
 
@@ -163,9 +161,10 @@ function(
 
         renderPeaks: function()
         {
+            var timeInZones = this.model.get("details").get("timeInHeartRateZones");
             var peaks = this.getPeaksData();
             this.renderPeaksTable(peaks);
-            this.renderPeaksChart(peaks);
+            this.renderPeaksChart(peaks, timeInZones);
         },
 
         renderPeaksTable: function(peaks)
@@ -173,15 +172,16 @@ function(
             if (peaks)
             {
                 var peaksHtml = hrPeakRowTemplate({ peaks: peaks });
-                this.ui.heartRatePeaksTable.html(peaksHtml);
+                this.$("#heartRatePeaksTable").html(peaksHtml);
             } else
             {
-                this.ui.heartRatePeaksTable.html("");
+                this.$("#heartRatePeaksTable").html("");
             }
         },
 
-        buildPeaksChartPoints: function(peaks)
+        buildPeaksChartPoints: function(peaks, timeInZones)
         {
+
             var chartPoints = [];
             _.each(peaks, function(peak, index)
             {
@@ -190,6 +190,8 @@ function(
                 var point = {
                     label: peak.label,
                     value: peak.value,
+                    percentLT: this.toPercent(peak.value, timeInZones.threshold),
+                    percentMHR: this.toPercent(peak.value, timeInZones.maximum),
                     y: peak.value,
                     x: index
                 };
@@ -237,11 +239,11 @@ function(
             return min;
         },
 
-        renderPeaksChart: function(peaks)
+        renderPeaksChart: function(peaks, timeInZones)
         {
             if (peaks && peaks.length)
             {
-                var chartPoints = this.buildPeaksChartPoints(peaks);
+                var chartPoints = this.buildPeaksChartPoints(peaks, timeInZones);
 
                 var chartOptions = {
                     title:
@@ -264,10 +266,10 @@ function(
                         min: this.findMinimum(peaks) - 10
                     }
                 };
-                TP.utils.chartBuilder.renderSplineChart(this.ui.heartRatePeaksChart, chartPoints, peaksTooltipTemplate, chartOptions);
+                TP.utils.chartBuilder.renderSplineChart(this.$("#heartRatePeaksChart"), chartPoints, peaksTooltipTemplate, chartOptions);
             } else
             {
-                this.ui.heartRatePeaksChart.html("");
+                this.$("#heartRatePeaksChart").html("");
             }
         },
 
@@ -288,12 +290,15 @@ function(
                 if(allPeaksByLabel.hasOwnProperty(label))
                 {
                     var peak = allPeaksByLabel[label];
-                    enabledPeaks.push(
-                        {
-                            label: this.formatMeanMaxLabel(peak.label),
-                            value: peak.value
-                        }
-                    );
+                    if (peak.value)
+                    {
+                        enabledPeaks.push(
+                            {
+                                label: this.formatMeanMaxLabel(peak.label),
+                                value: peak.value
+                            }
+                        );
+                    }
                 }
             }, this);
 
