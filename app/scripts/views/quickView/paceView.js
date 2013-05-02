@@ -207,9 +207,13 @@ function (TP,
                         title: {
                             text: 'min/mile'
                         },
-                        type: 'category',
-                        categories: this.getChartCategoriesAsPace(chartPoints),
-                        tickInterval: null
+                        labels:
+                        {
+                            enabled: false
+                        }
+                        //type: 'category',
+                        //categories: this.getChartCategoriesAsPace(chartPoints),
+                        //tickInterval: null
                     }
                 };
                 TP.utils.chartBuilder.renderSplineChart(this.$("#pacePeaksChart"), chartPoints, peaksTooltipTemplate, chartOptions);
