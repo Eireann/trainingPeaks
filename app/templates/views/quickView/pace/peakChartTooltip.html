@@ -1,6 +1,8 @@
 ﻿<div class="heartRatePeakGraphTooltip">
     <div class="tooltipRow">
         <span class="tooltipLabel">{{ label }}</span>
-        <span class="tooltipValue">{{ value }} BPM</span>
+    </div>
+    <div class="tooltipRow">
+        <span class="tooltipValue">{{ formatPace value }} {{$ "ShortMinute"}}/{{getUnitsLabel "distance" workoutTypeValueId }}</span>
     </div>
 </div>

@@ -252,8 +252,8 @@ function(_)
             // 6 divisions will give 8 ticks including top and bottom
             var divisions = 6;
 
-            if(range <= 1)
-                return (max - min) / divisions;
+            if (range <= 1)
+                return Number((max - min) / divisions).toFixed(2);
             else if (range < 10)
                 return 1;
             else 

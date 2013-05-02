@@ -92,6 +92,7 @@ function (TP,
                     percentMPaceMin: this.toPercent(timeInZone.minimum, timeInZones.maximum),
                     percentMPaceMax: this.toPercent(timeInZone.maximum, timeInZones.maximum),
                     seconds: timeInZone.seconds,
+                    minutes: Math.round(minutes),
                     value: minutes,
                     y: minutes,
                     x: index
@@ -206,7 +207,8 @@ function (TP,
                         title: {
                             text: 'min/mile'
                         },
-                        type: 'category'
+                        type: 'category',
+                        categories: this.getChartCategoriesAsPace(chartPoints)
                     }
                 };
                 TP.utils.chartBuilder.renderSplineChart(this.$("#pacePeaksChart"), chartPoints, peaksTooltipTemplate, chartOptions);
@@ -220,6 +222,22 @@ function (TP,
         {
             var pacePeaks = this.model.get("details").get("meanMaxSpeed");
             return TP.utils.chartBuilder.cleanAndFormatPeaksData(pacePeaks);
+        },
+
+        getChartCategoriesAsPace: function(chartPoints)
+        {
+
+            var categories = [];
+
+            categories.push(TP.utils.conversion.formatPace(chartPoints[chartPoints.length - 1].value));
+
+            while (categories.length < chartPoints.length)
+                categories.push("");
+
+            categories.push(TP.utils.conversion.formatPace(chartPoints[0].value));
+
+            console.log(categories);
+            return categories;
         }
     });
     
