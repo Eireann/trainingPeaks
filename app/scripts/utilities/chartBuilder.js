@@ -8,10 +8,16 @@ function(_)
 
         renderColumnChart: function(container, chartData, tooltipTemplate, additionalChartOptions)
         {
+            var tickInterval = this.getColumnTickInterval(chartData);
             var chartOptions = {
                 chart:
                 {
                     type: "column"
+                },
+                yAxis:
+                {
+                    tickInterval: tickInterval,
+                    min: this.findMinimum(chartData)
                 }
             };
 
@@ -23,10 +29,16 @@ function(_)
 
         renderSplineChart: function(container, chartData, tooltipTemplate, additionalChartOptions)
         {
+            var tickInterval = this.getSplineTickInterval(chartData);
             var chartOptions = {
                 chart:
                 {
                     type: "spline"
+                },
+                yAxis:
+                {
+                    tickInterval: tickInterval,
+                    min: this.findMinimum(chartData)
                 },
                 plotOptions:
                 {
@@ -183,7 +195,58 @@ function(_)
             'MM30Minutes',
             'MM1Hour',
             'MM90Minutes'
-        ]
+        ],
+
+        getColumnTickInterval: function(points)
+        {
+            return this.getTickInterval(points);
+        },
+
+        getSplineTickInterval: function(points)
+        {
+            return this.getTickInterval(points);
+        },
+
+        getTickInterval: function(points)
+        {
+            var min = this.findMinimum(points);
+            var max = this.findMaximum(points);
+            var range = max - min;
+
+            // 6 divisions will give 8 ticks including top and bottom
+            var divisions = 6;
+
+            if(range <= 1)
+                return (max - min) / divisions;
+            else if (range < 10)
+                return 1;
+            else 
+                return Math.round((max - min) / divisions);
+        },
+
+        findMinimum: function(points)
+        {
+            var min = 0;
+
+            _.each(points, function(point)
+            {
+                if ((!min && point.value) || (point.value && point.value < min))
+                    min = point.value;
+            });
+            return min;
+        },
+
+        findMaximum: function(points)
+        {
+            var max = 0;
+
+            _.each(points, function(point)
+            {
+                if (point.value && point.value > max)
+                    max = point.value;
+            });
+            return max;
+        }
 
     };
 });

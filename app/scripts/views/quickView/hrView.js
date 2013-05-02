@@ -94,6 +94,7 @@ function(
                     percentMHRMax: this.toPercent(timeInZone.maximum, timeInZones.maximum),
                     seconds: timeInZone.seconds,
                     y: minutes,
+                    value: minutes,
                     x: index
                 };
 
@@ -208,18 +209,6 @@ function(
             return label.replace(/ /g, "").replace(/Minutes/, "min").replace(/Seconds/, "sec").replace(/Hour/, "hr");
         },
 
-        findMinimum: function(peaks)
-        {
-            var min = 0;
-
-            _.each(peaks, function(peak)
-            {
-                if ((!min && peak.value) || (peak.value && peak.value < min))
-                    min = peak.value;
-            });
-            return min;
-        },
-
         renderPeaksChart: function(peaks, timeInZones)
         {
             if (peaks && peaks.length)
@@ -243,8 +232,7 @@ function(
                     yAxis: {
                         title: {
                             text: 'BPM'
-                        },
-                        min: this.findMinimum(peaks) - 10
+                        }
                     }
                 };
                 TP.utils.chartBuilder.renderSplineChart(this.$("#heartRatePeaksChart"), chartPoints, peaksTooltipTemplate, chartOptions);

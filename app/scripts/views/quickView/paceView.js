@@ -92,6 +92,7 @@ function (TP,
                     percentMPaceMin: this.toPercent(timeInZone.minimum, timeInZones.maximum),
                     percentMPaceMax: this.toPercent(timeInZone.maximum, timeInZones.maximum),
                     seconds: timeInZone.seconds,
+                    value: minutes,
                     y: minutes,
                     x: index
                 };
@@ -203,18 +204,6 @@ function (TP,
             return label.replace(/ /g, "").replace(/Minutes/, "min").replace(/Seconds/, "sec").replace(/Hour/, "hr");
         },
 
-        findMinimum: function (peaks)
-        {
-            var min = 0;
-
-            _.each(peaks, function (peak)
-            {
-                if ((!min && peak.value) || (peak.value && peak.value < min))
-                    min = peak.value;
-            });
-            return min;
-        },
-
         renderPeaksChart: function (peaks)
         {
             if (peaks && peaks.length)
@@ -238,8 +227,7 @@ function (TP,
                     yAxis: {
                         title: {
                             text: 'min/mile'
-                        },
-                        min: this.findMinimum(peaks) - 1
+                        }
                     }
                 };
                 TP.utils.chartBuilder.renderSplineChart(this.$("#pacePeaksChart"), chartPoints, peaksTooltipTemplate, chartOptions);

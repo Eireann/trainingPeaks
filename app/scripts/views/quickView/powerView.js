@@ -93,7 +93,7 @@ function (TP, powerTabTemplate,
                     },
                     yAxis: {
                         title: {
-                            text: 'Watts'
+                            text: 'Minutes'
                         }
                     }
                 };
@@ -151,10 +151,7 @@ function (TP, powerTabTemplate,
                     yAxis: {
                         title: {
                             text: 'Watts'
-            
-                        },
-                        tickInterval: this.getTickInterval(peaks),
-                        min: this.findMinimum(peaks) - 10
+                        }
                     }
                 };
                 TP.utils.chartBuilder.renderSplineChart(this.$("#powerPeaksChart"), chartPoints, peaksTooltipTemplate, chartOptions);
@@ -187,38 +184,7 @@ function (TP, powerTabTemplate,
             return label.replace(/ /g, "").replace(/Minutes/, "min").replace(/Seconds/, "sec").replace(/Hour/, "hr");
         },
 
-        findMinimum: function (peaks)
-        {
-            var min = 0;
-
-            _.each(peaks, function (peak)
-            {
-                if ((!min && peak.value) || (peak.value && peak.value < min))
-                    min = peak.value;
-            });
-            return min;
-        },
-
-        getTickInterval: function (peaks)
-        {
-            var min = 0;
-            var max = 0;
-            var tickInterval = 0;
-
-            _.each(peaks, function (peak)
-            {
-                if ((!min && peak.value) || (peak.value && peak.value < min))
-                    min = peak.value;
-
-                if ((!max && peak.value) || (peak.value && peak.value > max))
-                    max = peak.value;
-
-                tickInterval = Math.round((max - min) / 7);
-            });
-            return tickInterval;
-        },
-
-        buildPeaksChartPoints: function (peaks)
+        buildPeaksChartPoints: function(peaks)
         {
             var chartPoints = [];
             _.each(peaks, function (peak, index)
@@ -267,6 +233,7 @@ function (TP, powerTabTemplate,
                     percentMHRMin: this.toPercent(timeInZone.minimum, timeInZones.maximum),
                     percentMHRMax: this.toPercent(timeInZone.maximum, timeInZones.maximum),
                     seconds: timeInZone.seconds,
+                    value: minutes,
                     y: minutes,
                     x: index
                 };
