@@ -294,7 +294,7 @@ function(
                     {
                         enabledPeaks.push(
                             {
-                                label: this.formatMeanMaxLabel(peak.label),
+                                label: TP.utils.chartBuilder.formatMeanMaxLabel(peak.label),
                                 value: peak.value
                             }
                         );
@@ -303,12 +303,6 @@ function(
             }, this);
 
             return enabledPeaks;
-        },
-
-        formatMeanMaxLabel: function(label)
-        {
-            // Change MM100Meters to "100 Meters", or MMHalfMarathon to "Half Marathon"
-            return label.replace(/^MM/, "").replace(/([0-9]+)/g, "$1 ").replace(/([a-z])([A-Z])/g, "$1 $2");
         }
     });
 });

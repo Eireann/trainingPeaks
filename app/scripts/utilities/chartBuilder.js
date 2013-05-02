@@ -124,6 +124,13 @@ function()
                 $.extend(true, chartOptions, additionalChartOptions);
 
             container.highcharts(chartOptions);
+        },
+
+        formatMeanMaxLabel: function(label)
+        {
+            // Change MM100Meters to "100 Meters", or MMHalfMarathon to "Half Marathon"
+            // change 1 Minute to 60 Seconds and 1 Hour to 60 Minutes
+            return label.replace(/^MM/, "").replace(/([0-9]+)/g, "$1 ").replace(/([a-z])([A-Z])/g, "$1 $2").replace(/1 Minute/, "60 Seconds").replace(/1 Hour/, "60 minutes");
         }
     };
 });
