@@ -1,6 +1,8 @@
 ﻿define(
-[],
-function()
+[
+    "underscore"
+],
+function(_)
 {
     return {
 
@@ -137,7 +139,7 @@ function()
         {
 
             var allPeaksByLabel = {};
-            _.each(peaksData, function (peak)
+            _.each(peaksData, function(peak)
             {
                 allPeaksByLabel[peak.label] = peak;
             }, this);
@@ -153,7 +155,7 @@ function()
                     {
                         enabledPeaks.push(
                             {
-                                label: TP.utils.chartBuilder.formatMeanMaxLabel(peak.label),
+                                label: this.formatMeanMaxLabel(peak.label),
                                 value: peak.value
                             }
                         );
