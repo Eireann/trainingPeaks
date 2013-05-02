@@ -2,254 +2,17 @@
 [
     "TP",
     "leaflet",
+    "utilities/charting/axesBaseConfig",
+    "utilities/charting/highchartsBaseConfig",
+    "utilities/charting/dataParser",
     "utilities/workout/workoutTypes",
     "hbs!templates/views/quickView/mapAndGraphView"
 ],
-function (TP, Leaflet, workoutTypes, workoutQuickViewMapAndGraphTemplate)
+function (TP, Leaflet, axesBaseConfig, highchartsBaseConfig, dataParser, workoutTypes, workoutQuickViewMapAndGraphTemplate)
 {
     var osmURL = "http://otile1.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.jpg";
     var cloudmadeURL = "http://b.tile.cloudmade.com/8ee2a50541944fb9bcedded5165f09d9/1/256/{z}/{x}/{y}.png";
     var leafletURL = "http://{s}.tile.osm.org/{z}/{x}/{y}.png";
-    
-    var yAxes =
-    {
-        "HeartRate":
-        {
-            allowDecimals: false,
-            endOnTick: true,
-            gridLineWidth: 1,
-            labels:
-            {
-                enabled: false
-            },
-            lineColor: "#FF0000",
-            lineWidth: 0,
-            max: null,
-            min: 0,
-            minTickInterval: 5,
-            type: "linear",
-            title: null
-        },
-        "Power":
-        {
-            allowDecimals: false,
-            endOnTick: true,
-            gridLineWidth: 1,
-            labels:
-            {
-                enabled: false
-            },
-            lineColor: "#FF00FF",
-            lineWidth: 0,
-            max: null,
-            min: 0,
-            minTickInterval: 5,
-            type: "linear",
-            title: null
-        },
-        "RightPower":
-        {
-            allowDecimals: false,
-            endOnTick: true,
-            gridLineWidth: 1,
-            labels:
-            {
-                enabled: false
-            },
-            lineColor: "#FF00FF",
-            lineWidth: 0,
-            max: null,
-            min: 0,
-            minTickInterval: 5,
-            type: "linear",
-            title: null
-        },
-        "Cadence":
-        {
-            allowDecimals: false,
-            endOnTick: true,
-            gridLineWidth: 1,
-            labels:
-            {
-                enabled: false
-            },
-            lineColor: "#FFA500",
-            lineWidth: 0,
-            max: null,
-            min: 0,
-            minTickInterval: 5,
-            type: "linear",
-            title: null
-        },
-        "Speed":
-        {
-            allowDecimals: false,
-            endOnTick: true,
-            gridLineWidth: 1,
-            labels:
-            {
-                enabled: false
-            },
-            lineColor: "#3399FF",
-            lineWidth: 0,
-            max: null,
-            min: 0,
-            minTickInterval: 5,
-            type: "linear",
-            title: null
-        },
-        "Temperature":
-        {
-            allowDecimals: false,
-            endOnTick: true,
-            gridLineWidth: 1,
-            labels:
-            {
-                enabled: false
-            },
-            lineColor: "#0A0AFF",
-            lineWidth: 0,
-            max: null,
-            min: 0,
-            minTickInterval: 5,
-            type: "linear",
-            title: null
-        },
-        "Torque":
-        {
-            allowDecimals: false,
-            endOnTick: true,
-            gridLineWidth: 1,
-            labels:
-            {
-                enabled: false
-            },
-            lineColor: "#BDBDBD",
-            lineWidth: 0,
-            max: null,
-            min: 0,
-            type: "linear",
-            title: null
-        },
-        "Elevation":
-        {
-            allowDecimals: false,
-            endOnTick: true,
-            gridLineWidth: 1,
-            labels:
-            {
-                enabled: false
-            },
-            lineColor: "#4fbf00",
-            lineWidth: 0,
-            max: null,
-            minTickInterval: 5,
-            type: "linear",
-            opposite: true,
-            title: null
-        }
-    };
-
-    var highchartsConfig =
-    {
-        chart:
-        {
-            type: "line",
-            zoomType: null,
-            resetZoomEnabled: false,
-            alignTicks: true,
-            width: 620,
-            height: 160,
-            backgroundColor: "transparent"
-        },
-        credits:
-        {
-            enabled: false
-        },
-        tooltip:
-        {
-            enabled: false
-        },
-        legend:
-        {
-            enabled: false,
-            backgroundColor: '#FFFFFF',
-            layout: "horizontal",
-            verticalAlign: "top",
-            floating: false,
-            align: "center",
-            x: 0,
-            y: 0
-        },
-        scrollbar:
-        {
-            enabled: false
-        },
-        title:
-        {
-            text: null
-        },
-        xAxis:
-        {
-            ordinal: false,
-            type: "linear",
-            labels:
-            {
-                formatter: function()
-                {
-                    var decimalHours = (this.value / (3600 * 1000)).toFixed(2);
-                    return TP.utils.datetime.format.decimalHoursAsTime(decimalHours, true, null);
-                }
-            }
-        },
-        yAxis: [],
-        series: [],
-        plotOptions:
-        {
-            line:
-            {
-                connectNulls: false,
-                gapSize: 1,
-                turboThreshold: 100
-            },
-            area:
-            {
-                connectNulls: false,
-                gapSize: 1,
-                turboThreshold: 100
-            },
-            series:
-            {
-                pointStart: 0,
-                pointInterval: 1000, //1 second
-                allowPointSelector: true,
-                animation: true,
-                cursor: "pointer",
-                lineWidth: 1,
-                marker:
-                {
-                    enabled: false
-                },
-                shadow: false,
-                states:
-                {
-                    hover:
-                    {
-                        enabled: false
-                    }
-                },
-                showCheckbox: false
-            }
-        },
-        navigator:
-        {
-            enabled: false
-        },
-        rangeSelector:
-        {
-            enabled: false
-        }
-    };
     
     var mapAndGraphViewBase =
     {
@@ -266,6 +29,27 @@ function (TP, Leaflet, workoutTypes, workoutQuickViewMapAndGraphTemplate)
         initialize: function(options)
         {
             _.bindAll(this, "onModelFetched");
+
+            this.axesConfig = {};
+            _.extend(this.axesConfig, axesBaseConfig,
+            {
+                
+            });
+
+            this.chartConfig = {};
+            _.extend(this.chartConfig, highchartsBaseConfig,
+            {
+                chart:
+                {
+                    alignTicks: true,
+                    backgroundColor: "transparent",
+                    height: 160,
+                    resetZoomEnabled: false,
+                    type: "line",
+                    width: 620,
+                    zoomType: null
+                }
+            });
 
             this.map = null;
             this.graph = null;
@@ -316,103 +100,12 @@ function (TP, Leaflet, workoutTypes, workoutQuickViewMapAndGraphTemplate)
         {
             var samples = this.model.get("detailData").attributes.flatSamples.samples;
             var channelMask = this.model.get("detailData").attributes.flatSamples.channelMask;
-            var dataByChannel = {};
-            var colorByChannel =
-            {
-                "HeartRate": "#FF0000",
-                "Cadence": "#FFA500",
-                "Power": "#FF00FF",
-                "RightPower": "#FF00FF",
-                "Speed": "#3399FF",
-                "Elevation": "#306B00",
-                "Temperature": "#0A0AFF",
-                "Torque": "#BDBDBD"
-            };
-            var indexByChannel =
-            {
-                "HeartRate": 1,
-                "Cadence": 2,
-                "Power": 3,
-                "RightPower": 4,
-                "Speed": 5,
-                "Elevation": 0,
-                "Temperature": 6,
-                "Torque": 7
-            };
 
-            _.each(samples, function(sample)
-            {
-                for(var i = 0; i < sample.values.length; i++)
-                {
-                    if (sample.values[i] === 1.7976931348623157e+308)
-                        sample.values[i] = null;
-                }
-            });
+            var data = dataParser(samples, channelMask);
 
-            _.each(samples, function(sample)
-            {
-                var latLon = [];
-
-                for (var i = 0; i < sample.values.length; i++)
-                {
-                    if (!_.has(dataByChannel, channelMask[i]))
-                        dataByChannel[channelMask[i]] = [];
-
-                    dataByChannel[channelMask[i]].push([sample.millisecondsOffset, sample.values[i]]);
-                }
-            });
-
-            // Clean up Elevation channel
-            var minElevation = 0;
-            if (_.has(dataByChannel, "Elevation"))
-            {
-                minElevation = _.min(dataByChannel.Elevation, function(value)
-                {
-                    // Underscore Min considers "null" a valid comparable value and will always return a min of "null"
-                    // if null is present in the data set, therefore need a quick hack to get around this.
-                    return value[1] === null ? 999999999999999 : value[1];
-                })[1];
-            }
-
-            var seriesArray = [];
-            _.each(channelMask, function(channel)
-            {
-                if (channel === "Distance")
-                    return;
-
-                if (channel === "Latitude" || channel === "Longitude")
-                    return;
-
-                var type = channel === "Elevation" ? "area" : "line";
-
-                seriesArray.push(
-                    {
-                        color: colorByChannel[channel],
-                        name: channel,
-                        data: dataByChannel[channel],
-                        type: type,
-                        index: indexByChannel[channel]
-                    });
-            });
-
-            var latLonArray = [];
-            if (_.has(dataByChannel, "Latitude") && _.has(dataByChannel, "Longitude") && (dataByChannel.Latitude.length === dataByChannel.Longitude.length))
-            {
-                for (var i = 0; i < dataByChannel.Latitude.length; i++)
-                {
-                    var lat = dataByChannel.Latitude[i][1];
-                    var lon = dataByChannel.Longitude[i][1];
-
-                    if (_.isNaN(lat) || _.isNaN(lon))
-                        continue;
-
-                    latLonArray.push([lat, lon]);
-                }
-            }
-
-            this.seriesArray = seriesArray;
-            this.latLonArray = latLonArray;
-            this.minElevation = minElevation;
+            this.seriesArray = data.seriesArray;
+            this.latLonArray = data.latLonArray;
+            this.minElevation = data.minElevation;
         },
 
         createMapOnContainer: function(container)
@@ -454,7 +147,7 @@ function (TP, Leaflet, workoutTypes, workoutQuickViewMapAndGraphTemplate)
         
             _.each(this.seriesArray, function(series)
             {
-                var seriesAxis = yAxes[series.name];
+                var seriesAxis = self.axesConfig[series.name];
 
                 if (series.name === "Elevation" && self.minElevation > 0)
                     seriesAxis.min = self.minElevation;
@@ -463,15 +156,14 @@ function (TP, Leaflet, workoutTypes, workoutQuickViewMapAndGraphTemplate)
                 orderedAxes.push(seriesAxis);
             });
 
-            this.graphConfig = _.clone(highchartsConfig);
-            this.graphConfig.chart.renderTo = container;
-            this.graphConfig.yAxis = orderedAxes;
-            this.graphConfig.series = this.seriesArray;
+            this.chartConfig.chart.renderTo = container;
+            this.chartConfig.yAxis = orderedAxes;
+            this.chartConfig.series = this.seriesArray;
 
             if (workoutTypes.getNameById(this.model.get("workoutTypeValueId")) === "Swim")
-                this.graphConfig.plotOptions.line.gapSize = 0;
+                this.chartConfig.plotOptions.line.gapSize = 0;
 
-            this.graph = new Highcharts.StockChart(this.graphConfig);
+            this.graph = new Highcharts.StockChart(this.chartConfig);
         },
         
         setMapData: function()
