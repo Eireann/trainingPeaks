@@ -267,15 +267,24 @@ function (TP, Leaflet, workoutTypes, workoutQuickViewMapAndGraphTemplate)
         {
             _.bindAll(this, "onModelFetched");
 
+            // turn off the default TP item view on change event ...
+            delete this.modelEvents.change;
+
             this.map = null;
             this.graph = null;
+
+            if (!options.prefetchConfig)
+                throw "Prefetch config is required for map and graph view";
+
             this.prefetchConfig = options.prefetchConfig;
         },
 
         onRender: function()
         {
             var self = this;
-            
+
+            this.watchForModelChanges();
+
             this.$el.addClass("waiting");
 
             if (!this.prefetchConfig.detailDataPromise)
@@ -286,7 +295,25 @@ function (TP, Leaflet, workoutTypes, workoutQuickViewMapAndGraphTemplate)
                 this.prefetchConfig.detailDataPromise = this.model.get("detailData").fetch();
             }
 
+            // if we already have it in memory, render it
+            if (this.model.get("detailData") !== null && this.model.get("detailData").attributes.flatSamples !== null)
+            {
+                this.onModelFetched();
+            }
+
             setImmediate(function() { self.prefetchConfig.detailDataPromise.then(self.onModelFetched); });
+
+        },
+
+        watchForModelChanges: function()
+        {
+            this.model.on("change:detailData", this.render, this);
+            this.on("close", this.stopWatchingModelChanges, this);
+        },
+
+        stopWatchingModelChanges: function()
+        {
+            this.model.off("change:detailData", this.render, this);
         },
 
         onModelFetched: function()

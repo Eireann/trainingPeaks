@@ -44,7 +44,13 @@ function (TP, powerTabTemplate,
             'MM90Minutes'
         ],
 
-        onRender: function ()
+        initialize: function()
+        {
+            // turn off the default TP item view on change event ...
+            delete this.modelEvents.change;
+        },
+
+        onRender: function()
         {
             this.renderTimeInZones();
             this.renderPeaks();
@@ -270,22 +276,19 @@ function (TP, powerTabTemplate,
                 if (allPeaksByLabel.hasOwnProperty(label))
                 {
                     var peak = allPeaksByLabel[label];
-                    enabledPeaks.push(
-                        {
-                            label: this.formatMeanMaxLabel(peak.label),
-                            value: peak.value
-                        }
-                    );
+                    if (peak.value)
+                    {
+                        enabledPeaks.push(
+                            {
+                                label: TP.utils.chartBuilder.formatMeanMaxLabel(peak.label),
+                                value: peak.value
+                            }
+                        );
+                    }
                 }
             }, this);
 
             return enabledPeaks;
-        },
-
-        formatMeanMaxLabel: function (label)
-        {
-            // Change MM100Meters to "100 Meters", or MMHalfMarathon to "Half Marathon"
-            return label.replace(/^MM/, "").replace(/([0-9]+)/g, "$1 ").replace(/([a-z])([A-Z])/g, "$1 $2");
         },
 
         buildTimeInZonesChartPoints: function (timeInZones)

@@ -16,7 +16,18 @@
     input
     {
         text-align: center;
+
+       &.workoutTitle
+       {
+            text-align: left;
+       }
+
+       &#startTimeInput
+       {
+            text-align: left;
+       }
     }
+
 }
 
 input[disabled='disabled']

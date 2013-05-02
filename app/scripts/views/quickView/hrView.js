@@ -46,6 +46,12 @@ function(
             'MM90Minutes'
         ],
 
+        initialize: function()
+        {
+            // turn off the default TP item view on change event ...
+            delete this.modelEvents.change;
+        },
+
         onRender: function()
         {
             this.renderTimeInZones();
@@ -155,9 +161,10 @@ function(
 
         renderPeaks: function()
         {
+            var timeInZones = this.model.get("details").get("timeInHeartRateZones");
             var peaks = this.getPeaksData();
             this.renderPeaksTable(peaks);
-            this.renderPeaksChart(peaks);
+            this.renderPeaksChart(peaks, timeInZones);
         },
 
         renderPeaksTable: function(peaks)
@@ -172,8 +179,9 @@ function(
             }
         },
 
-        buildPeaksChartPoints: function(peaks)
+        buildPeaksChartPoints: function(peaks, timeInZones)
         {
+
             var chartPoints = [];
             _.each(peaks, function(peak, index)
             {
@@ -182,6 +190,8 @@ function(
                 var point = {
                     label: peak.label,
                     value: peak.value,
+                    percentLT: this.toPercent(peak.value, timeInZones.threshold),
+                    percentMHR: this.toPercent(peak.value, timeInZones.maximum),
                     y: peak.value,
                     x: index
                 };
@@ -229,11 +239,11 @@ function(
             return min;
         },
 
-        renderPeaksChart: function(peaks)
+        renderPeaksChart: function(peaks, timeInZones)
         {
             if (peaks && peaks.length)
             {
-                var chartPoints = this.buildPeaksChartPoints(peaks);
+                var chartPoints = this.buildPeaksChartPoints(peaks, timeInZones);
 
                 var chartOptions = {
                     title:
@@ -280,22 +290,19 @@ function(
                 if(allPeaksByLabel.hasOwnProperty(label))
                 {
                     var peak = allPeaksByLabel[label];
-                    enabledPeaks.push(
-                        {
-                            label: this.formatMeanMaxLabel(peak.label),
-                            value: peak.value
-                        }
-                    );
+                    if (peak.value)
+                    {
+                        enabledPeaks.push(
+                            {
+                                label: TP.utils.chartBuilder.formatMeanMaxLabel(peak.label),
+                                value: peak.value
+                            }
+                        );
+                    }
                 }
             }, this);
 
             return enabledPeaks;
-        },
-
-        formatMeanMaxLabel: function(label)
-        {
-            // Change MM100Meters to "100 Meters", or MMHalfMarathon to "Half Marathon"
-            return label.replace(/^MM/, "").replace(/([0-9]+)/g, "$1 ").replace(/([a-z])([A-Z])/g, "$1 $2");
         }
     });
 });
