@@ -158,7 +158,12 @@ function(Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmediate,
             if (this.$el.width() > $window.width())
                 this.$el.width($window.width() - 10);
 
-            this.left(($window.width() - this.$el.width()) / 2).top(($window.height() - this.$el.height()) / 2);
+            // static centering
+            //this.left(($window.width() - this.$el.width()) / 2).top(($window.height() - this.$el.height()) / 2);
+
+            // dynamic centering
+            this.$el.css("left", "calc(50% - " + Math.round(this.$el.width() / 2) + "px)");
+            this.$el.css("top", "calc(50% - " + Math.round(this.$el.height() / 2) + "px)");
 
             this.enableEscapeKey();
 
