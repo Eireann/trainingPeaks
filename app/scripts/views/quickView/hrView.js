@@ -161,9 +161,10 @@ function(
 
         renderPeaks: function()
         {
+            var timeInZones = this.model.get("details").get("timeInHeartRateZones");
             var peaks = this.getPeaksData();
             this.renderPeaksTable(peaks);
-            this.renderPeaksChart(peaks);
+            this.renderPeaksChart(peaks, timeInZones);
         },
 
         renderPeaksTable: function(peaks)
@@ -178,8 +179,9 @@ function(
             }
         },
 
-        buildPeaksChartPoints: function(peaks)
+        buildPeaksChartPoints: function(peaks, timeInZones)
         {
+
             var chartPoints = [];
             _.each(peaks, function(peak, index)
             {
@@ -188,6 +190,8 @@ function(
                 var point = {
                     label: peak.label,
                     value: peak.value,
+                    percentLT: this.toPercent(peak.value, timeInZones.threshold),
+                    percentMHR: this.toPercent(peak.value, timeInZones.maximum),
                     y: peak.value,
                     x: index
                 };
@@ -235,11 +239,11 @@ function(
             return min;
         },
 
-        renderPeaksChart: function(peaks)
+        renderPeaksChart: function(peaks, timeInZones)
         {
             if (peaks && peaks.length)
             {
-                var chartPoints = this.buildPeaksChartPoints(peaks);
+                var chartPoints = this.buildPeaksChartPoints(peaks, timeInZones);
 
                 var chartOptions = {
                     title:
