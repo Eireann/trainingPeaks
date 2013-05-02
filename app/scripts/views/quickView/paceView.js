@@ -26,10 +26,9 @@ function (TP,
             template: paceTabTemplate
         },
 
-        initialize: function()
+        initialEvents: function()
         {
-            // turn off the default TP item view on change event ...
-            delete this.modelEvents.change;
+            this.model.off("change", this.render);
         },
 
         onRender: function ()
