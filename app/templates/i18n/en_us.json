@@ -237,5 +237,6 @@
     "Weight": "Weight",
     "Range": "Range",
     "Time": "Time",
-    "Percent": "Percent"
+    "Percent": "Percent",
+    "Peak": "Peak"
 }

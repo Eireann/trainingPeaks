@@ -3,23 +3,15 @@
         <span class="tooltipLabel">{{ label }}</span>
     </div>
     <div class="tooltipRow">
-        <span class="tooltipLabel">Range:</span>
+        <span class="tooltipLabel">{{$ "Range"}}:</span>
         <span class="tooltipValue">{{ rangeMinimum }}-{{rangeMaximum}} BPM</span>
     </div>
     <div class="tooltipRow">
-        <span class="tooltipLabel">% lt:</span>
-        <span class="tooltipValue">{{ percentLTMin }}-{{percentLTMax}} %</span>
-    </div>
-    <div class="tooltipRow">
-        <span class="tooltipLabel">% max:</span>
-        <span class="tooltipValue">{{ percentMHRMin }}-{{percentMHRMax}} %</span>
-    </div>
-    <div class="tooltipRow">
-        <span class="tooltipLabel">Time:</span>
+        <span class="tooltipLabel">{{$ "Time"}}:</span>
         <span class="tooltipValue">{{ formatSeconds seconds }}</span>
     </div>
     <div class="tooltipRow">
-        <span class="tooltipLabel">Percent:</span>
+        <span class="tooltipLabel">{{$ "Percent"}}:</span>
         <span class="tooltipValue">{{ percentTime }}</span>
     </div>
 </div>
