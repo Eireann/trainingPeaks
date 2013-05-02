@@ -2,9 +2,10 @@
 [
     "TP",
     "leaflet",
+    "utilities/workout/workoutTypes",
     "hbs!templates/views/quickView/mapAndGraphView"
 ],
-function (TP, Leaflet, workoutQuickViewMapAndGraphTemplate)
+function (TP, Leaflet, workoutTypes, workoutQuickViewMapAndGraphTemplate)
 {
     var osmURL = "http://otile1.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.jpg";
     var cloudmadeURL = "http://b.tile.cloudmade.com/8ee2a50541944fb9bcedded5165f09d9/1/256/{z}/{x}/{y}.png";
@@ -123,7 +124,7 @@ function (TP, Leaflet, workoutQuickViewMapAndGraphTemplate)
             {
                 enabled: false
             },
-            lineColor: "#000000",
+            lineColor: "#BDBDBD",
             lineWidth: 0,
             max: null,
             min: 0,
@@ -208,13 +209,13 @@ function (TP, Leaflet, workoutQuickViewMapAndGraphTemplate)
             line:
             {
                 connectNulls: false,
-                gapSize: 2,
+                gapSize: 1,
                 turboThreshold: 100
             },
             area:
             {
                 connectNulls: false,
-                gapSize: 2,
+                gapSize: 1,
                 turboThreshold: 100
             },
             series:
@@ -262,31 +263,69 @@ function (TP, Leaflet, workoutQuickViewMapAndGraphTemplate)
             template: workoutQuickViewMapAndGraphTemplate
         },
 
-        initialize: function()
+        initialize: function(options)
         {
             _.bindAll(this, "onModelFetched");
 
+            // turn off the default TP item view on change event ...
+            delete this.modelEvents.change;
+
             this.map = null;
             this.graph = null;
+
+            if (!options.prefetchConfig)
+                throw "Prefetch config is required for map and graph view";
+
+            this.prefetchConfig = options.prefetchConfig;
         },
 
         onRender: function()
         {
             var self = this;
-            
+
+            this.watchForModelChanges();
+
             this.$el.addClass("waiting");
-            var modelPromise = this.model.get("detailData").fetch();
-            setImmediate(function() { modelPromise.then(self.onModelFetched); });
+
+            if (!this.prefetchConfig.detailDataPromise)
+            {
+                if (this.prefetchConfig.workoutDetailDataFetchTimeout)
+                    clearTimeout(this.prefetchConfig.workoutDetailDataFetchTimeout);
+
+                this.prefetchConfig.detailDataPromise = this.model.get("detailData").fetch();
+            }
+
+            // if we already have it in memory, render it
+            if (this.model.get("detailData") !== null && this.model.get("detailData").attributes.flatSamples !== null)
+            {
+                this.onModelFetched();
+            }
+
+            setImmediate(function() { self.prefetchConfig.detailDataPromise.then(self.onModelFetched); });
+
+        },
+
+        watchForModelChanges: function()
+        {
+            this.model.on("change:detailData", this.render, this);
+            this.on("close", this.stopWatchingModelChanges, this);
+        },
+
+        stopWatchingModelChanges: function()
+        {
+            this.model.off("change:detailData", this.render, this);
         },
 
         onModelFetched: function()
         {
+            var self = this;
+            
             this.$el.removeClass("waiting");
 
             if (this.model.get("detailData") === null || this.model.get("detailData").attributes.flatSamples === null)
                 return;
 
-            this.createAndDisplayMapAndGraph();
+            setImmediate(function() { self.createAndDisplayMapAndGraph(); });
         },
 
         createAndDisplayMapAndGraph: function()
@@ -313,7 +352,8 @@ function (TP, Leaflet, workoutQuickViewMapAndGraphTemplate)
                 "RightPower": "#FF00FF",
                 "Speed": "#3399FF",
                 "Elevation": "#306B00",
-                "Temperature": "#0A0AFF"
+                "Temperature": "#0A0AFF",
+                "Torque": "#BDBDBD"
             };
             var indexByChannel =
             {
@@ -323,26 +363,9 @@ function (TP, Leaflet, workoutQuickViewMapAndGraphTemplate)
                 "RightPower": 4,
                 "Speed": 5,
                 "Elevation": 0,
-                "Temperature": 6
+                "Temperature": 6,
+                "Torque": 7
             };
-
-            // Clean up the channels. For now, let's remove GAPS.
-            /*
-            samples = _.reject(samples, function(sample)
-            {
-                var previousValue = sample.values[0];
-                var equal = true;
-                _.each(sample.values, function(value)
-                {
-                    if (value !== previousValue)
-                        equal = false;
-
-                    previousValue = value;
-                });
-
-                return equal;
-            });
-            */
 
             _.each(samples, function(sample)
             {
@@ -460,7 +483,7 @@ function (TP, Leaflet, workoutQuickViewMapAndGraphTemplate)
             {
                 var seriesAxis = yAxes[series.name];
 
-                if (series.name === "Elevation")
+                if (series.name === "Elevation" && self.minElevation > 0)
                     seriesAxis.min = self.minElevation;
                 
                 series.yAxis = i++;
@@ -471,6 +494,10 @@ function (TP, Leaflet, workoutQuickViewMapAndGraphTemplate)
             this.graphConfig.chart.renderTo = container;
             this.graphConfig.yAxis = orderedAxes;
             this.graphConfig.series = this.seriesArray;
+
+            if (workoutTypes.getNameById(this.model.get("workoutTypeValueId")) === "Swim")
+                this.graphConfig.plotOptions.line.gapSize = 0;
+
             this.graph = new Highcharts.StockChart(this.graphConfig);
         },
         

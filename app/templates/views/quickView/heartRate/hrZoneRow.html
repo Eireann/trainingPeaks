@@ -1,7 +1,9 @@
 ﻿{{#each timeInZones }}
 <div class="zoneRow">
-    <div class="zoneName"><label title="{{ label }}">{{ label }}</label></div> 
+    <div class="zoneText">
+        <div class="zoneName"><label>{{ label }}</label></div> 
+        <div class="zoneRange"><label>{{minimum}} - {{maximum}} BPM</label></div>
+    </div>
     <div class="zoneInput"><input type="text" value="{{ formatSeconds seconds "0:00:00" }}" /></div>
-    <div class="zoneRange"><label title="{{minimum}}-{{maximum}} BPM">{{minimum}}-{{maximum}}</label></div>
 </div>
 {{/each}}

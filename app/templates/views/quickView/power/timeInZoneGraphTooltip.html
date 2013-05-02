@@ -1,19 +1,18 @@
 ﻿<div class="powerZoneGraphTooltip">
     <div class="tooltipRow">
-        <span class="tooltipLabel">{{ splitString label ":" "0" }}:</span>
-        <span class="tooltipValue">{{ splitString label ":" "1" }}</span>
+        <span class="tooltipLabel">{{ label }}</span>
     </div>
     <div class="tooltipRow">
         <span class="tooltipLabel">Range:</span>
-        <span class="tooltipValue">{{ rangeMinimum }}-{{rangeMaximum}} BPM</span>
+        <span class="tooltipValue">{{ rangeMinimum }}-{{rangeMaximum}} </span>
     </div>
     <div class="tooltipRow">
-        <span class="tooltipLabel">% lt:</span>
+        <span class="tooltipLabel">% FTP:</span>
         <span class="tooltipValue">{{ percentLTMin }}-{{percentLTMax}} %</span>
     </div>
     <div class="tooltipRow">
-        <span class="tooltipLabel">% max:</span>
-        <span class="tooltipValue">{{ percentMHRMin }}-{{percentMHRMax}} %</span>
+        <span class="tooltipLabel">{{$ "Watts"}}/{{Weight}}:</span>
+        <span class="tooltipValue"></span>
     </div>
     <div class="tooltipRow">
         <span class="tooltipLabel">Time:</span>
@@ -22,5 +21,6 @@
     <div class="tooltipRow">
         <span class="tooltipLabel">Percent:</span>
         <span class="tooltipValue">{{ percentTime }}</span>
+    </div>
     </div>
 </div>

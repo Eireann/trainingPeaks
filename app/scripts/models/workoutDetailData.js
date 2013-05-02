@@ -8,7 +8,7 @@ function (_, moment, TP)
 {
     var WorkoutDetailData = TP.APIModel.extend(
     {
-        cacheable: true,
+        cacheable: false,
 
         webAPIModelName: "WorkoutDetailData",
         idAttribute: "workoutId",

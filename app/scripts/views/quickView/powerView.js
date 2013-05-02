@@ -44,15 +44,13 @@ function (TP, powerTabTemplate,
             'MM90Minutes'
         ],
 
-        ui:
+        initialize: function()
         {
-            "powerByZonesChart": "#powerByZonesChart",
-            "powerPeaksChart": "#powerPeaksChart",
-            "powerByZonesTable": "#powerByZonesTable",
-            "powerPeaksTable": "#powerPeaksTable"
+            // turn off the default TP item view on change event ...
+            delete this.modelEvents.change;
         },
 
-        onRender: function ()
+        onRender: function()
         {
             this.renderTimeInZones();
             this.renderPeaks();
@@ -88,10 +86,10 @@ function (TP, powerTabTemplate,
                     timeInZone.labelShort = timeInZone.label.split(":")[0];
                 }, this);
                 var zonesHtml = powerZoneRowTemplate(timeInZones);
-                this.ui.powerByZonesTable.html(zonesHtml);
+                this.$("#powerByZonesTable").html(zonesHtml);
             } else
             {
-                this.ui.powerByZonesTable.html("");
+                this.$("#powerByZonesTable").html("");
             }
         },
 
@@ -114,14 +112,14 @@ function (TP, powerTabTemplate,
                     },
                     yAxis: {
                         title: {
-                            text: 'Minutes'
+                            text: 'Watts'
                         }
                     }
                 };
-                TP.utils.chartBuilder.renderColumnChart(this.ui.powerByZonesChart, chartPoints, timeInZoneTooltipTemplate, chartOptions);
+                TP.utils.chartBuilder.renderColumnChart(this.$("#powerByZonesChart"), chartPoints, timeInZoneTooltipTemplate, chartOptions);
             } else
             {
-                this.ui.powerByZonesChart.html("");
+                this.$("#powerByZonesChart").html("");
             }
         },
 
@@ -142,10 +140,10 @@ function (TP, powerTabTemplate,
             if (peaks)
             {
                 var peaksHtml = powerPeakRowTemplate({ peaks: peaks });
-                this.ui.powerPeaksTable.html(peaksHtml);
+                this.$("#powerPeaksTable").html(peaksHtml);
             } else
             {
-                this.ui.powerPeaksTable.html("");
+                this.$("#powerPeaksTable").html("");
             }
         },
 
@@ -178,10 +176,10 @@ function (TP, powerTabTemplate,
                         min: this.findMinimum(peaks) - 10
                     }
                 };
-                TP.utils.chartBuilder.renderSplineChart(this.ui.powerPeaksChart, chartPoints, peaksTooltipTemplate, chartOptions);
+                TP.utils.chartBuilder.renderSplineChart(this.$("#powerPeaksChart"), chartPoints, peaksTooltipTemplate, chartOptions);
             } else
             {
-                this.ui.powerPeaksChart.html("");
+                this.$("#powerPeaksChart").html("");
             }
         },
 
@@ -278,22 +276,19 @@ function (TP, powerTabTemplate,
                 if (allPeaksByLabel.hasOwnProperty(label))
                 {
                     var peak = allPeaksByLabel[label];
-                    enabledPeaks.push(
-                        {
-                            label: this.formatMeanMaxLabel(peak.label),
-                            value: peak.value
-                        }
-                    );
+                    if (peak.value)
+                    {
+                        enabledPeaks.push(
+                            {
+                                label: TP.utils.chartBuilder.formatMeanMaxLabel(peak.label),
+                                value: peak.value
+                            }
+                        );
+                    }
                 }
             }, this);
 
             return enabledPeaks;
-        },
-
-        formatMeanMaxLabel: function (label)
-        {
-            // Change MM100Meters to "100 Meters", or MMHalfMarathon to "Half Marathon"
-            return label.replace(/^MM/, "").replace(/([0-9]+)/g, "$1 ").replace(/([a-z])([A-Z])/g, "$1 $2");
         },
 
         buildTimeInZonesChartPoints: function (timeInZones)

@@ -25,6 +25,9 @@
         label
         {
             cursor: default;
+			font-size:$fontSizeSmall;
+			font-weight:normal;
+	
         }
     }
 
@@ -69,7 +72,7 @@
         height: 20px;
         margin-left:20px;
         @include transform(translateY(-10px) rotate(45deg));
-        @include box-shadow(0px 2px 3px 0 #666666);
+        @include box-shadow(0 0 3px 1px #727272);
     }
 
     .colorBar
@@ -78,8 +81,8 @@
         z-index: 4;
         left: 0px;
         right: 0px;
-        bottom: 20px;
-        height: 3px;
+        bottom: 19px;
+        height: 4px;
     }
 
     // the arrow and the colorBar are .colored, so we can easily override color for some popups
@@ -100,10 +103,7 @@
 			border-right:1px solid #979797;
 			border-bottom:1px solid #979797;
 			& label {
-				font-size:$fontSizeSmall;
-				font-weight:normal;
-				line-height:20px;
-				margin:0;
+			
 			}
         }
 

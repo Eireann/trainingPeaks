@@ -78,6 +78,9 @@ function (
 
         initialize: function(options)
         {
+
+            this.prefetchConfig = {};
+
             if (options.isNewWorkout)
             {
                 this.isNewWorkout = true;
@@ -87,11 +90,15 @@ function (
             {
                 var self = this;
 
-                // Not a new workout, let's pre-fetch WorkoutDetails from the server
-                this.workoutDetailsFetchTimeout = setTimeout(function()
+                this.prefetchConfig.workoutDetailsFetchTimeout = setTimeout(function()
                 {
-                    self.model.get("details").fetch();
+                    self.prefetchConfig.detailsPromise = self.model.get("details").fetch();
                 }, 800);
+
+                this.prefetchConfig.workoutDetailDataFetchTimeout = setTimeout(function()
+                {
+                    self.prefetchConfig.detailDataPromise = self.model.get("detailData").fetch();
+                }, 2000);
 
                 this.on("close", this.stopWorkoutDetailsFetch, this);
             }
@@ -120,8 +127,11 @@ function (
         {
             this.off("close", this.stopWorkoutDetailsFetch);
             
-            if (this.workoutDetailsFetchTimeout)
-                clearTimeout(this.workoutDetailsFetchTimeout);
+            if (this.prefetchConfig.workoutDetailsFetchTimeout)
+                clearTimeout(this.prefetchConfig.workoutDetailsFetchTimeout);
+
+            if (this.prefetchConfig.workoutDetailDataFetchTimeout)
+                clearTimeout(this.prefetchConfig.workoutDetailDataFetchTimeout);
         },
 
         template:
@@ -147,7 +157,7 @@ function (
             this.tabs =
             [
                 new WorkoutQuickViewSummary({ model: this.model, el: this.$(this.tabDomIDs[0]) }),
-                new WorkoutQuickViewMapAndGraph({ model: this.model, el: this.$(this.tabDomIDs[1]) }),
+                new WorkoutQuickViewMapAndGraph({ model: this.model, prefetchConfig: this.prefetchConfig, el: this.$(this.tabDomIDs[1]) }),
                 new WorkoutQuickViewHR({ model: this.model, el: this.$(this.tabDomIDs[2]) }),
                 new WorkoutQuickViewPower({ model: this.model, el: this.$(this.tabDomIDs[3]) }),
                 new WorkoutQuickViewPace({ model: this.model, el: this.$(this.tabDomIDs[4]) })
