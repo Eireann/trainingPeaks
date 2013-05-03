@@ -73,7 +73,7 @@ function (TP,
         buildTimeInZonesChartPoints: function (timeInZones)
         {
             var chartPoints = [];
-            var totalHours = this.model.get("totalTime");
+            var totalSeconds = TP.utils.chartBuilder.calculateTotalTimeInZones(timeInZones);
             // zone times are in seconds, convert to minutes
             _.each(timeInZones.timeInZones, function (timeInZone, index)
             {
@@ -85,7 +85,7 @@ function (TP,
                     label: timeInZone.label,
                     rangeMinimum: timeInZone.minimum,
                     rangeMaximum: timeInZone.maximum,
-                    percentTime: this.toPercent(hours, totalHours),
+                    percentTime: this.toPercent(timeInZone.seconds, totalSeconds),
                     percentLTMin: this.toPercent(timeInZone.minimum, timeInZones.threshold),
                     percentLTMax: this.toPercent(timeInZone.maximum, timeInZones.threshold),
                     percentMPaceMin: this.toPercent(timeInZone.minimum, timeInZones.maximum),

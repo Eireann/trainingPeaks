@@ -55,8 +55,6 @@ function (TP, Leaflet, axesBaseConfig, highchartsBaseConfig, dataParser, workout
                     zoomType: null
                 }
             });
-            // turn off the default TP item view on change event ...
-            delete this.modelEvents.change;
 
             this.map = null;
             this.graph = null;
