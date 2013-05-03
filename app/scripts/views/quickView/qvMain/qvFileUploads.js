@@ -3,13 +3,17 @@
     "underscore",
     "TP",
     "models/workoutFileData",
-    "models/workoutFileAttachment"
+    "models/workoutFileAttachment",
+    "views/userConfirmationView",
+    "hbs!templates/views/quickView/fileUploadErrorView"
 ],
 function (
     _,
     TP,
     WorkoutFileData,
-    WorkoutFileAttachment
+    WorkoutFileAttachment,
+    UserConfirmationView,
+    fileUploadErrorTemplate
 )
 {
     var workoutQuickViewFileUploads = {
@@ -65,7 +69,15 @@ function (
         {
             this.waitingOff();
 
-            this.model.set(this.uploadedFileDataModel.get("workoutModel"));
+            var updatedWorkoutModel = this.uploadedFileDataModel.get("workoutModel");
+
+            if (!updatedWorkoutModel)
+            {
+                this.displayUploadError();
+                return;
+            }
+
+            this.model.set(updatedWorkoutModel);
             this.model.get("details").fetch();
 
             if (this.isNew)
@@ -111,6 +123,12 @@ function (
             {
                 self.waitingOff();
             });
+        },
+
+        displayUploadError: function()
+        {
+            this.errorMessageView = new UserConfirmationView({ template: fileUploadErrorTemplate });
+            this.errorMessageView.render();
         }
 
     };
