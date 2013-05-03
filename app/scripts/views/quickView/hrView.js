@@ -86,7 +86,7 @@ function(
                     label: timeInZone.label,
                     rangeMinimum: timeInZone.minimum,
                     rangeMaximum: timeInZone.maximum,
-                    percentTime: this.toPercent(timeInZone.seconds / totalSeconds),
+                    percentTime: this.toPercent(timeInZone.seconds, totalSeconds),
                     percentLTMin: this.toPercent(timeInZone.minimum, timeInZones.threshold),
                     percentLTMax: this.toPercent(timeInZone.maximum, timeInZones.threshold),
                     percentMHRMin: this.toPercent(timeInZone.minimum, timeInZones.maximum),
