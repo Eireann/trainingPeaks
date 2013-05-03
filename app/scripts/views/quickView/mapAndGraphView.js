@@ -129,10 +129,9 @@ function (TP, Leaflet, axesBaseConfig, highchartsBaseConfig, dataParser, workout
 
         parseData: function()
         {
-            var samples = this.model.get("detailData").attributes.flatSamples.samples;
-            var channelMask = this.model.get("detailData").attributes.flatSamples.channelMask;
+            var flatSamples = this.model.get("detailData").attributes.flatSamples;
 
-            var data = dataParser(samples, channelMask);
+            var data = dataParser(flatSamples);
 
             this.seriesArray = data.seriesArray;
             this.latLonArray = data.latLonArray;

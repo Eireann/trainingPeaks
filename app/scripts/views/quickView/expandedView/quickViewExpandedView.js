@@ -6,7 +6,7 @@
     "utilities/charting/dataParser",
     "hbs!templates/views/quickView/quickViewExpandedView"
 ],
-function (TP, axesBaseConfig, highchartsBaseConfig, dataParser, expandedViewTemplate)
+function (TP, axesBaseConfig, highchartsBaseConfig, DataParser, expandedViewTemplate)
 {
 
     var expandedViewBase =
@@ -33,220 +33,63 @@ function (TP, axesBaseConfig, highchartsBaseConfig, dataParser, expandedViewTemp
 
             if (this.splineButton)
                 this.splineButton.remove();
+
+            if (this.toolTip)
+                this.toolTip.remove();
         },
 
         initialize: function()
         {
-            this.axesConfig = {};
-            _.extend(this.axesConfig, axesBaseConfig,
-            {
-                
-            });
-
-            this.chartConfig = {};
-            _.extend(this.chartConfig, highchartsBaseConfig,
-            {
-                chart:
-                {
-                    alignTicks: true,
-                    backgroundColor: "transparent",
-                    height: 300,
-                    resetZoomEnabled: false,
-                    type: "line",
-                    width: 1200,
-                    zoomType: "x" 
-                },
-                tooltip:
-                {
-                    enabled: true
-                },
-                legend:
-                {
-                    enabled: false,
-                    backgroundColor: '#FFFFFF',
-                    layout: "horizontal",
-                    verticalAlign: "top",
-                    floating: false,
-                    align: "center",
-                    x: 0,
-                    y: 0
-                },
-                navigator:
-                {
-                    enabled: true
-                }
-            });
         },
         
         onRender: function()
         {
-            var samples = this.model.get("detailData").attributes.flatSamples.samples;
-            var channelMask = this.model.get("detailData").attributes.flatSamples.channelMask;
-            var data = dataParser(samples, channelMask);
-
-            this.seriesArray = data.seriesArray;
-            this.lanLonArray = data.latLonArray;
-            this.minElevation = data.minElevation;
-
             var self = this;
+
+            if (!this.model.get("detailData").attributes.flatSamples)
+                return;
+            
             setImmediate(function()
             {
-                self.createGraphOnContainer(self.$("#largeGraphContainer2")[0]);
                 self.createFlotGraphOnContainer();
             });
-        },
-        
-        createGraphOnContainer: function(container)
-        {
-            var self = this;
-
-            if (this.graph)
-                this.graph.destroy();
-
-            var orderedAxes = [];
-            var i = 0;
-
-            _.each(this.seriesArray, function (series)
-            {
-                var seriesAxis = self.axesConfig[series.name];
-
-                seriesAxis.lineWidth = 1;
-                seriesAxis.title = series.name;
-                
-                if (series.name === "Elevation" && self.minElevation > 0)
-                    seriesAxis.min = self.minElevation;
-
-                series.yAxis = i++;
-                orderedAxes.push(seriesAxis);
-            });
-
-            this.chartConfig.chart.renderTo = container;
-            this.chartConfig.yAxis = orderedAxes;
-            this.chartConfig.series = this.seriesArray;
-
-            this.graph = new Highcharts.StockChart(this.chartConfig);
-        },
-        
-        findIndexByMsOffset: function (list, offset)
-        {
-            if (list.length === 0)
-                return -1;
-
-            var low = 0;
-            var high = list.length - 1;
-            var midpoint = 0;
-
-            if (list[low][0] >= offset)
-                return low;
-            else if (list[high][0] <= offset)
-                return high;
-
-            while (low <= high)
-            {
-                midpoint = low + Math.ceil((high - low) / 2.0);
-
-                // We need do this check here for smart-recorded files
-                if (list[low][0] >= offset)
-                    return low;
-                else if (list[high][0] <= offset)
-                    return high;
-
-                if (offset >= list[midpoint][0] && offset <= list[midpoint + 1][0])
-                {
-                    // For a smart-recorded file it could be midpoint, or midpoint+1
-                    if (offset === list[midpoint + 1][0])
-                        return midpoint + 1;
-                    else
-                        return midpoint;
-                }
-                else if (offset < list[midpoint][0])
-                    high = midpoint - 1;
-                else
-                    low = midpoint + 1;
-            }
-
-            return -1;
-        },
-        
-        getDataForFlot: function(x1, x2)
-        {
-            var countdown = 3;
-            var flotData = [];
-            var yaxes = [];
-
-            var startIdx = null;
-            var endIdx = null;
-
-            if (x1 !== null && x2 !== null)
-            {
-                startIdx = this.findIndexByMsOffset(this.seriesArray[0].data, x1);
-                endIdx = this.findIndexByMsOffset(this.seriesArray[0].data, x2);
-            }
-            
-            for (var i = 0; i < this.seriesArray.length; i++)
-            {
-                var series = this.seriesArray[i];
-                var fill = false;
-
-                if (series.name === "Elevation")
-                    fill = 0.3;
-
-                var seriesData = [];
-                if (startIdx !== null && endIdx !== null)
-                {
-                    for (var idx = startIdx; idx <= endIdx; idx++)
-                        seriesData.push(series.data[idx]);
-                }
-                else
-                    seriesData = series.data;
-
-                var data =
-                {
-                    data: seriesData,
-                    color: series.color,
-                    label: series.name,
-                    yaxis: i + 1,
-                    lines:
-                    {
-                        //show: false,
-                        fill: fill
-                    },
-                    splines:
-                    {
-                        //show: true,
-                        fill: fill
-                    },
-                    shadowSize: 0
-                };
-
-                var yAxis =
-                {
-                    show: true,
-                    min: series.name === "Elevation" ? this.minElevation : 0,
-                    position: countdown-- > 0 ? "right" : "left",
-                    color: series.color,
-                    tickColor: series.color,
-                    font:
-                    {
-                        color: series.color
-                    }
-                };
-
-                flotData.push(data);
-                yaxes.push(yAxis);
-            }
-
-            return {
-                flotData: flotData,
-                yaxes: yaxes
-            };
         },
         
         createFlotGraphOnContainer: function()
         {
             var self = this;
+
+            var flatSamples = this.model.get("detailData").attributes.flatSamples;
+
+            if (!this.dataParser)
+            {
+                this.dataParser = new DataParser();
+                this.dataParser.loadData(flatSamples);
+            }
+
+            var series = dataParser.getSeries();
+            var yaxes = [];
+            var countdown = 3;
+            _.each(series, function(s)
+            {
+                yaxes.push(
+                {
+                    show: true,
+                    min:
+                        s.name === "Elevation" ? self.dataParser.getMinimumElevation() : 0,
+                    position:
+                        countdown-- > 0 ? "right" : "left",
+                    color:
+                        s.color,
+                    tickColor:
+                        s.color,
+                    font:
+                    {
+                        color: s.color
+                    }
+                });
+            });
             
-            var startingData = this.getDataForFlot(0, this.seriesArray[0].data[this.seriesArray[0].data.length - 1][0]);
             this.flotOptions =
             {
                 grid:
@@ -291,10 +134,10 @@ function (TP, axesBaseConfig, highchartsBaseConfig, dataParser, expandedViewTemp
                         }
                     }
                 ],
-                yaxes: startingData.yaxes
+                yaxes: yaxes
             };
             
-            this.createFlotPlot(startingData.flotData);
+            this.createFlotPlot(series);
             this.bindZoom();
 
             this.splineButton = $("<button id='flotSplineButton'></button>").css(
@@ -322,12 +165,13 @@ function (TP, axesBaseConfig, highchartsBaseConfig, dataParser, expandedViewTemp
         
         bindTooltip: function()
         {
+            var self = this;
             function showTooltip(x, y, label, color, itemX, itemY)
             {
                 itemX = (itemX / (3600 * 1000)).toFixed(2);
                 var time = TP.utils.datetime.format.decimalHoursAsTime(itemX, true, null);
                 var content = "<b>" + label + "</b><br/>X: " + time + "</br>Y: " + itemY;
-                $('<div id="flottooltip">' + content + '</div>').css(
+                self.toolTip = $('<div id="flottooltip">' + content + '</div>').css(
                 {
                     position: "absolute",
                     display: "none",
@@ -350,15 +194,17 @@ function (TP, axesBaseConfig, highchartsBaseConfig, dataParser, expandedViewTemp
                     {
                         previousPoint = item.dataIndex;
 
-                        $("#flottooltip").fadeOut(200).remove();
+                        if(self.toolTip)
+                            self.toolTip.fadeOut(200).remove();
+
                         var x = item.datapoint[0].toFixed(2),
                             y = item.datapoint[1].toFixed(2);
 
                         showTooltip(item.pageX, item.pageY, item.series.label, item.series.color, x, y);
                     }
                 }
-                else
-                    $("#flottooltip").fadeOut(100).remove();
+                else if(self.toolTip)
+                    self.toolTip.fadeOut(100).remove();
             });
         },
         
