@@ -50,58 +50,7 @@ function (_, TP, ExpandedView)
             this.originalPosition.height = this.$el.height();
             this.originalPosition.width = this.$el.width();
 
-            //this.animateTwoStepExpansion(windowHeight, windowWidth);
             this.animateOneStepExpansion(windowHeight, windowWidth);
-        },
-
-        animateTwoStepExpansion: function(windowHeight, windowWidth)
-        {
-            var newHeight = windowHeight * 0.95;
-            var newWidth = windowWidth * 0.95;
-            var viewsWidth = newWidth - 333;
-            var numberOfVisibleViews = 2;
-            var viewsHeight = (newHeight - 125) / numberOfVisibleViews;
-            var left = (windowWidth - newWidth) / 2;
-            var top = (windowHeight - newHeight) / 2;
-
-            var self = this;
-            var afterExpanding = function()
-            {
-                //TODO Use jQuery show() & hide() methods
-                self.$(".expandButton").css({ display: "none" });
-                self.$(".collapseButton, .expandedViewsButtons").css({ display: "block" });
-                self.$("#quickViewExpandedContent").css({ display: "block" });
-            };
-
-            var animateExpansion = function()
-            {
-                var expandDelay = 300;
-                var expandDuration = 300;
-                setTimeout(function()
-                {
-                    //TODO use jQuery show() and hide() methods
-                    self.$("#workOutQuickView").animate({ height: newHeight, width: newWidth }, { duration: expandDuration });
-                    self.$(".tabNavigation, #quickViewContent, .quickviewFooter, #menuIcon").css({ display: "none" });
-                    self.$(".viewOne, .viewTwo").css({ width: viewsWidth, height: viewsHeight });
-
-                    self.$el.animate({ height: newHeight, width: newWidth },
-                    {
-                        duration: expandDuration, complete: afterExpanding
-                    });
-                }, expandDelay);
-            };
-
-            var moveThenExpand = function()
-            {
-                var moveDuration = 100;
-                self.$el.animate({ top: top + "px", left: left + "px" },
-                {
-                    duration: moveDuration,
-                    complete: animateExpansion
-                });
-            };
-
-            moveThenExpand();
         },
 
         animateOneStepExpansion: function(windowHeight, windowWidth)
@@ -118,6 +67,8 @@ function (_, TP, ExpandedView)
             var afterExpanding = function()
             {
                 //TODO: Collide & Expand button should be the same, the text() should change
+                // Maybe we shouldn't check the text from in here due to i18n issues?
+                // also having two separate buttons makes it easy to know which state we're in
                 self.$(".expandButton").hide();
                 self.$(".collapseButton, .expandedViewsButtons").show();
                 self.$("#quickViewExpandedContent").show();
@@ -128,6 +79,7 @@ function (_, TP, ExpandedView)
                 var expandDuration = 300;
 
                 //TODO Use jQuery hide() and show()
+                // or better, add a class to the main qv container - .expanded or .collapsed
                 self.$("#workOutQuickView").animate({ height: newHeight, width: newWidth }, { duration: expandDuration });
                 self.$(".tabNavigation, #quickViewContent, .quickviewFooter, #menuIcon").css({ display: "none" });
                 self.$(".viewOne, .viewTwo").css({ width: viewsWidth, height: viewsHeight });
@@ -144,64 +96,6 @@ function (_, TP, ExpandedView)
         collapseClicked: function ()
         {
             this.animateOneStepCollapse();
-            //this.animateTwoStepCollapse();
-        },
-
-        animateTwoStepCollapse: function()
-        {
-            var self = this;
-
-            var afterCollapsing = function()
-            {
-                //TODO use jQuery show() and hide()
-                //TODO collapse & expand button should be the same
-                //TODO separation of concerns: let quickViewContent show itself through its Backbone View.
-                self.$("#menuIcon").css({ display: "" });
-                self.$("#workOutQuickView").css({ height: self.originalPosition.height, width: self.originalPosition.width });
-                self.$(".collapseButton, .expandedViewsButtons").css({ display: "none" });
-                self.$(".tabNavigation, .quickviewFooter, .expandButton").css({ display: "block" });
-                self.$("#quickViewContent").css({ display: "block" });
-                
-                animateMove();
-            };
-
-            var animateMove = function()
-            {
-                var moveDelay = 300;
-                var moveDuration = 300;
-                setTimeout(function()
-                {
-                    self.$el.animate(
-                    {
-                        height: self.originalPosition.height,
-                        width: self.originalPosition.width,
-                        top: self.originalPosition.top + "px",
-                        left: self.originalPosition.left + "px"
-                    },
-                    {
-                        duration: moveDuration
-                    });                   
-                }, moveDelay);
-            };
-
-            var collapseThenMove = function()
-            {
-                var collapseDuration = 300;
-
-                //TODO Separation of concerns: let the quickviewExpandedcontent show/hide itself through its BB View.
-                self.$("#quickViewExpandedContent").css({ display: "none" });
-                self.$el.animate(
-                {
-                    height: self.originalPosition.height,
-                    width: self.originalPosition.width
-                },
-                {
-                    duration: collapseDuration,
-                    complete: afterCollapsing
-                });                   
-            };
-
-            collapseThenMove();
         },
 
         animateOneStepCollapse: function()
