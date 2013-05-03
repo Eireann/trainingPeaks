@@ -289,6 +289,20 @@ function(_)
                     max = point.value;
             });
             return max;
+        },
+
+        calculateTotalTimeInZones: function(timeInZones)
+        {
+            var totalSeconds = 0;
+
+            _.each(timeInZones.timeInZones, function(timeInZone, index)
+            {
+                totalSeconds += Number(timeInZone.seconds);
+
+            }, this);
+
+            return totalSeconds;
+
         }
 
     };

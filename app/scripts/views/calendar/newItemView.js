@@ -4,9 +4,18 @@
     "models/workoutModel",
     "models/workoutFileData",
     "views/quickView/workoutQuickView",
+    "views/userConfirmationView",
+    "hbs!templates/views/quickView/fileUploadErrorView",
     "hbs!templates/views/calendar/newItemView"
 ],
-function (TP, WorkoutModel, WorkoutFileData, WorkoutQuickView, newItemViewTemplate)
+function(
+    TP,
+    WorkoutModel,
+    WorkoutFileData,
+    WorkoutQuickView,
+    UserConfirmationView,
+    fileUploadErrorTemplate,
+    newItemViewTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -88,8 +97,15 @@ function (TP, WorkoutModel, WorkoutFileData, WorkoutQuickView, newItemViewTempla
         onUploadDone: function ()
         {
             this.$el.removeClass("waiting");
-            
+         
             var workoutModelJson = this.uploadedFileDataModel.get("workoutModel");
+
+            if (!workoutModelJson)
+            {
+                this.displayUploadError();
+                return;
+            }
+
             var newModel = new WorkoutModel(workoutModelJson);
             this.model.trigger("workout:added", newModel);
 
@@ -108,7 +124,14 @@ function (TP, WorkoutModel, WorkoutFileData, WorkoutQuickView, newItemViewTempla
         {
             this.trigger("close");
             this.close();
+        },
+
+        displayUploadError: function()
+        {
+            this.errorMessageView = new UserConfirmationView({ template: fileUploadErrorTemplate });
+            this.errorMessageView.render();
         }
+
 
     });
 });

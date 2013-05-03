@@ -35,34 +35,44 @@ function(_, TP)
 
         onScrollStop: function ()
         {
-        
+
+            // update drop shadow of header
             this.stopScrollingState();
 
+            // if we were already snapping to header, and browser is zoomed, it may snap a couple pixels off - ignore it and stop instead of looping
+            if (this.snappingToHeader)
+            {
+                this.snappingToHeader = false;
+                return;
+            }
+
+
+            // where are we now ...
             var uiOffset = this.ui.weeksContainer.offset();
             var currentWeek = $(document.elementFromPoint(uiOffset.left + 15, uiOffset.top + 15)).closest(".week");
             var nextWeek = currentWeek.next(".week");
-
             var weeksContainerTop = uiOffset.top;
 
+            // can't find the elements?
             if (!currentWeek || !currentWeek.offset())
                 return;
 
             // at some zoom levels we end up with a fraction of a pixel difference, due to all of the browser scaling calculations, so round down
             var currentWeekOffset = Math.floor(Math.abs(currentWeek.offset().top - weeksContainerTop));
             var nextWeekOffset = Math.floor(Math.abs(nextWeek.offset().top - weeksContainerTop));
-            //console.debug("Current week offset: " + currentWeekOffset);
             var threshhold = 100;
             var animationTimeout = 300;
 
-            // use 3px as allowable minimum margin, because of browser zoom calculation errors
-            var minimumOffset = 3;
+            var minimumOffset = 0;
             if (currentWeekOffset > minimumOffset && currentWeekOffset <= threshhold)
             {
+                this.snappingToHeader = true;
                 this.scrollToElement(currentWeek, animationTimeout);
                 this.snappedToWeekHeader = true;
             }
             else if (nextWeekOffset > minimumOffset && nextWeekOffset <= threshhold)
             {
+                this.snappingToHeader = true;
                 this.scrollToElement(nextWeek, animationTimeout);
                 this.snappedToWeekHeader = true;
             }
@@ -140,7 +150,7 @@ function(_, TP)
             }
         },
 
-        scrollToElement: function (element, animationTimeout)
+        scrollToElement: function(element, animationTimeout)
         {
             var $element = $(element);
             if ($element.is(".day"))
@@ -152,7 +162,6 @@ function(_, TP)
             var requestedElementOffsetFromContainer = $element.position().top;
             var scrollToOffset = Math.round(this.ui.weeksContainer.scrollTop() + requestedElementOffsetFromContainer - this.ui.weeksContainer.position().top);
 
-            //console.debug("Scrolling to: " + scrollToOffset);
 
             if (typeof animationTimeout === "undefined" && requestedElementOffsetFromContainer < 300)
             {
@@ -171,7 +180,6 @@ function(_, TP)
         afterScrollToElement: function ()
         {
             this.checkCurrentScrollPosition();
-            //console.debug("Scrolled to: " + this.ui.weeksContainer.scrollTop());
         },
 
         scrollToDate: function(targetDate, effectDuration)

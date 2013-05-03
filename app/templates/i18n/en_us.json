@@ -239,5 +239,8 @@
     "Range": "Range",
     "Time": "Time",
     "Percent": "Percent",
-    "Peak": "Peak"
+    "Peak": "Peak",
+
+    "Error": "Error",
+    "ErrorUploadingFile": "An error occurred uploading your device file"
 }
