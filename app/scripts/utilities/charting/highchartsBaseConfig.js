@@ -65,8 +65,7 @@ function(TP)
             },
             area:
             {
-                connectNulls: false,
-                gapSize: 1,
+                connectNulls: true,
                 turboThreshold: 100
             },
             series:

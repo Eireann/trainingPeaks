@@ -14,7 +14,7 @@ function()
             "Power": "#FF00FF",
             "RightPower": "#FF00FF",
             "Speed": "#3399FF",
-            "Elevation": "#306B00",
+            "Elevation": "#0B8200",
             "Temperature": "#0A0AFF",
             "Torque": "#BDBDBD"
         };
@@ -41,6 +41,7 @@ function()
             }
         });
 
+        var previousElevation = null;
         _.each(samples, function(sample)
         {
             var i;
@@ -49,7 +50,21 @@ function()
                 if (!_.has(dataByChannel, channelMask[i]))
                     dataByChannel[channelMask[i]] = [];
 
-                dataByChannel[channelMask[i]].push([sample.millisecondsOffset, sample.values[i]]);
+                var value = sample.values[i];
+
+                if (channelMask[i] === "Elevation" && value === null)
+                    value = previousElevation;
+                else if (channelMask[i] === "Elevation")
+                    previousElevation = value;
+
+                // For the Elevation channel we don't want to maintain nulls because we don't care
+                // about gaps, in fact we want to connect gaps on Elevation.
+                /*
+                if (channelMask[i] === "Elevation" && value === null)
+                    return;
+                */
+
+                dataByChannel[channelMask[i]].push([sample.millisecondsOffset, value]);
             }
         });
 
@@ -80,10 +95,12 @@ function()
                 return;
 
             var type = channel === "Elevation" ? "area" : "spline";
+            var fillOpacity = channel === "Elevation" ? 0.3 : null;
 
             seriesArray.push(
             {
                 color: colorByChannel[channel],
+                fillOpacity: fillOpacity,
                 name: channel,
                 data: dataByChannel[channel],
                 type: type,

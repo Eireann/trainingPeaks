@@ -4,15 +4,10 @@
     "TP",
     "views/quickView/expandedView/quickViewExpandedView"
 ],
-function (
-    _,
-    TP,
-    ExpandedView
-
-)
+function (_, TP, ExpandedView)
 {
-    var workoutQVExpand = {
-
+    var workoutQVExpand =
+    {
         initializeExpand: function()
         {
             _.extend(this.events, this.expandEvents);
@@ -61,7 +56,6 @@ function (
 
         animateTwoStepExpansion: function(windowHeight, windowWidth)
         {
-            var duration = 300;
             var newHeight = windowHeight * 0.95;
             var newWidth = windowWidth * 0.95;
             var viewsWidth = newWidth - 333;
@@ -70,10 +64,10 @@ function (
             var left = (windowWidth - newWidth) / 2;
             var top = (windowHeight - newHeight) / 2;
 
-
             var self = this;
             var afterExpanding = function()
             {
+                //TODO Use jQuery show() & hide() methods
                 self.$(".expandButton").css({ display: "none" });
                 self.$(".collapseButton, .expandedViewsButtons").css({ display: "block" });
                 self.$("#quickViewExpandedContent").css({ display: "block" });
@@ -85,6 +79,7 @@ function (
                 var expandDuration = 300;
                 setTimeout(function()
                 {
+                    //TODO use jQuery show() and hide() methods
                     self.$("#workOutQuickView").animate({ height: newHeight, width: newWidth }, { duration: expandDuration });
                     self.$(".tabNavigation, #quickViewContent, .quickviewFooter, #menuIcon").css({ display: "none" });
                     self.$(".viewOne, .viewTwo").css({ width: viewsWidth, height: viewsHeight });
@@ -100,18 +95,17 @@ function (
             {
                 var moveDuration = 100;
                 self.$el.animate({ top: top + "px", left: left + "px" },
-                    {
-                        duration: moveDuration, complete: animateExpansion
-                    });
+                {
+                    duration: moveDuration,
+                    complete: animateExpansion
+                });
             };
 
             moveThenExpand();
-
         },
 
         animateOneStepExpansion: function(windowHeight, windowWidth)
         {
-            var duration = 400;
             var newHeight = windowHeight * 0.95;
             var newWidth = windowWidth * 0.95;
             var viewsWidth = newWidth - 333;
@@ -120,19 +114,20 @@ function (
             var left = (windowWidth - newWidth) / 2;
             var top = (windowHeight - newHeight) / 2;
 
-
             var self = this;
             var afterExpanding = function()
             {
-                self.$(".expandButton").css({ display: "none" });
-                self.$(".collapseButton, .expandedViewsButtons").css({ display: "block" });
-                self.$("#quickViewExpandedContent").css({ display: "block" });
+                //TODO: Collide & Expand button should be the same, the text() should change
+                self.$(".expandButton").hide();
+                self.$(".collapseButton, .expandedViewsButtons").show();
+                self.$("#quickViewExpandedContent").show();
             };
 
             var animateExpansion = function()
             {
                 var expandDuration = 300;
 
+                //TODO Use jQuery hide() and show()
                 self.$("#workOutQuickView").animate({ height: newHeight, width: newWidth }, { duration: expandDuration });
                 self.$(".tabNavigation, #quickViewContent, .quickviewFooter, #menuIcon").css({ display: "none" });
                 self.$(".viewOne, .viewTwo").css({ width: viewsWidth, height: viewsHeight });
@@ -143,9 +138,7 @@ function (
                 });
             };
 
-
             animateExpansion();
-
         },
 
         collapseClicked: function ()
@@ -156,17 +149,19 @@ function (
 
         animateTwoStepCollapse: function()
         {
-            var duration = 300;
-            
             var self = this;
 
             var afterCollapsing = function()
             {
+                //TODO use jQuery show() and hide()
+                //TODO collapse & expand button should be the same
+                //TODO separation of concerns: let quickViewContent show itself through its Backbone View.
                 self.$("#menuIcon").css({ display: "" });
                 self.$("#workOutQuickView").css({ height: self.originalPosition.height, width: self.originalPosition.width });
                 self.$(".collapseButton, .expandedViewsButtons").css({ display: "none" });
                 self.$(".tabNavigation, .quickviewFooter, .expandButton").css({ display: "block" });
                 self.$("#quickViewContent").css({ display: "block" });
+                
                 animateMove();
             };
 
@@ -176,7 +171,8 @@ function (
                 var moveDuration = 300;
                 setTimeout(function()
                 {
-                     self.$el.animate({
+                    self.$el.animate(
+                    {
                         height: self.originalPosition.height,
                         width: self.originalPosition.width,
                         top: self.originalPosition.top + "px",
@@ -191,8 +187,11 @@ function (
             var collapseThenMove = function()
             {
                 var collapseDuration = 300;
+
+                //TODO Separation of concerns: let the quickviewExpandedcontent show/hide itself through its BB View.
                 self.$("#quickViewExpandedContent").css({ display: "none" });
-                self.$el.animate({
+                self.$el.animate(
+                {
                     height: self.originalPosition.height,
                     width: self.originalPosition.width
                 },
@@ -203,17 +202,16 @@ function (
             };
 
             collapseThenMove();
-
         },
 
         animateOneStepCollapse: function()
         {
-            var duration = 400;
-            
             var self = this;
 
             var afterCollapsing = function()
             {
+                //TODO Collapse & Expand button need to be the same
+                //TODO Separation of concerns: quickViewContent needs to show/hide itself through BB View.
                 self.$("#menuIcon").css({ display: "" });
                 self.$("#workOutQuickView").css({ height: self.originalPosition.height, width: self.originalPosition.width });
                 self.$(".collapseButton, .expandedViewsButtons").css({ display: "none" });
@@ -222,7 +220,7 @@ function (
             };
 
             var collapseDuration = 300;
-            this.$("#quickViewExpandedContent").css({ display: "none" });
+            this.expandedView.collapse();
             this.$el.animate({
                 height: this.originalPosition.height,
                 width: this.originalPosition.width,
