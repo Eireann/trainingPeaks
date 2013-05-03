@@ -26,6 +26,11 @@ function (TP, Leaflet, axesBaseConfig, highchartsBaseConfig, dataParser, workout
             template: workoutQuickViewMapAndGraphTemplate
         },
 
+        initialEvents: function()
+        {
+            this.model.off("change", this.render);
+        },
+
         initialize: function(options)
         {
             _.bindAll(this, "onModelFetched");

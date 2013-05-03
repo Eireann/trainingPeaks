@@ -22,12 +22,23 @@ function(
         var conversion = modelToViewConversionFactors("speed", unitSystem);
         speed = speed * conversion / 60;
         pace = (1 / speed).toFixed(2);
+
+        var hours = 0;
         var minutes = Math.floor(pace);
+
+        if (minutes >= 60)
+        {
+            hours = Math.floor(minutes / 60);
+            minutes = minutes % 60;
+        }
+
+
         if (minutes < 10) minutes = "0" + minutes;
+
         var seconds = ((pace % 1) * 60).toFixed(0);
         if (seconds < 10) seconds = "0" + seconds;
 
-        return (minutes + ":" + seconds);
+        return hours ? (hours + ":" + minutes + ":" + seconds) : (minutes + ":" + seconds);
     };
 
     var roundViewUnits = function(value, precision)

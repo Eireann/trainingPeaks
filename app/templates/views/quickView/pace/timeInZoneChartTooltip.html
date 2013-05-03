@@ -1,0 +1,21 @@
+﻿<div class="heartRateZoneGraphTooltip">
+    <div class="tooltipRow">
+        <span class="tooltipLabel">{{ label }}</span>
+    </div>
+    <div class="tooltipRow">
+        <span class="tooltipLabel">{{$ "Range"}}:</span>
+        <span class="tooltipValue">{{ formatPace  rangeMinimum }} - {{ formatPace rangeMaximum}} {{$ "ShortMinute"}}/{{getUnitsLabel "distance" workoutTypeValueId }}</span>
+    </div>
+    <div class="tooltipRow">
+        <span class="tooltipLabel">{{$ "Time"}}:</span>
+        <span class="tooltipValue">{{ minutes }} {{$ "Minutes" }}</span>
+    </div>
+    <div class="tooltipRow">
+        <span class="tooltipLabel">HH:MM:SS:</span>
+        <span class="tooltipValue">{{ formatSeconds seconds }}</span>
+    </div>
+    <div class="tooltipRow">
+        <span class="tooltipLabel">{{$ "Percent"}}:</span>
+        <span class="tooltipValue">{{ percentTime }} %</span>
+    </div>
+</div>

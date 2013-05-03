@@ -151,8 +151,7 @@ function (TP, axesBaseConfig, highchartsBaseConfig, dataParser, expandedViewTemp
                 else if (list[high][0] <= offset)
                     return high;
 
-                if (offset >= list[midpoint][0]
-                    && offset <= list[midpoint + 1][0])
+                if (offset >= list[midpoint][0] && offset <= list[midpoint + 1][0])
                 {
                     // For a smart-recorded file it could be midpoint, or midpoint+1
                     if (offset === list[midpoint + 1][0])
@@ -235,7 +234,7 @@ function (TP, axesBaseConfig, highchartsBaseConfig, dataParser, expandedViewTemp
 
                 flotData.push(data);
                 yaxes.push(yAxis);
-            };
+            }
 
             return {
                 flotData: flotData,
@@ -304,7 +303,7 @@ function (TP, axesBaseConfig, highchartsBaseConfig, dataParser, expandedViewTemp
                 position: "absolute",
                 zIndex: 999,
                 top: 200,
-                left: 200, 
+                left: 200
             }).text("Show Spline").appendTo("body").click(function()
             {
                 self.flotOptions.series.lines.show = !self.flotOptions.series.lines.show;
@@ -347,7 +346,7 @@ function (TP, axesBaseConfig, highchartsBaseConfig, dataParser, expandedViewTemp
             {
                 if (item)
                 {
-                    if (previousPoint != item.dataIndex)
+                    if (previousPoint !== item.dataIndex)
                     {
                         previousPoint = item.dataIndex;
 

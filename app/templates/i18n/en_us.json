@@ -232,6 +232,12 @@
     "Options": "Options",
 
     "Watts": "Watts",
+    "ShortMinute": "min",
+    "Minutes": "Minutes",
     "Zone": "Zone",
-    "Weight": "Weight"
+    "Weight": "Weight",
+    "Range": "Range",
+    "Time": "Time",
+    "Percent": "Percent",
+    "Peak": "Peak"
 }

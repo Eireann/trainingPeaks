@@ -1,0 +1,9 @@
+﻿{{#each timeInZones }}
+<div class="zoneRow">
+    <div class="zoneText">
+        <div class="zoneName"><label title="{{ label }}">{{ label }}</label></div> 
+        <div class="zoneRange"><label title="{{ formatPace minimum}}-{{ formatPace maximum}}">{{ formatPace minimum}} - {{ formatPace maximum}} {{$ "ShortMinute"}}/{{getUnitsLabel "distance" workoutTypeValueId }}</label></div>
+    </div>
+    <div class="zoneInput"><input type="text" value="{{ formatSeconds seconds "0:00:00" }}" /></div>
+</div>
+{{/each}}
