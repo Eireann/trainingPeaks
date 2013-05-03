@@ -2,13 +2,11 @@
 [
     "TP",
     "leaflet",
-    "utilities/charting/axesBaseConfig",
-    "utilities/charting/highchartsBaseConfig",
     "utilities/charting/dataParser",
     "utilities/workout/workoutTypes",
     "hbs!templates/views/quickView/mapAndGraphView"
 ],
-function (TP, Leaflet, axesBaseConfig, highchartsBaseConfig, dataParser, workoutTypes, workoutQuickViewMapAndGraphTemplate)
+function (TP, Leaflet, DataParser, workoutTypes, workoutQuickViewMapAndGraphTemplate)
 {
     var osmURL = "http://otile1.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.jpg";
     var cloudmadeURL = "http://b.tile.cloudmade.com/8ee2a50541944fb9bcedded5165f09d9/1/256/{z}/{x}/{y}.png";
@@ -35,27 +33,7 @@ function (TP, Leaflet, axesBaseConfig, highchartsBaseConfig, dataParser, workout
         {
             _.bindAll(this, "onModelFetched");
 
-            this.axesConfig = {};
-            _.extend(this.axesConfig, axesBaseConfig,
-            {
-                
-            });
-
-            this.chartConfig = {};
-            _.extend(this.chartConfig, highchartsBaseConfig,
-            {
-                chart:
-                {
-                    alignTicks: true,
-                    backgroundColor: "transparent",
-                    height: 160,
-                    resetZoomEnabled: false,
-                    type: "line",
-                    width: 620,
-                    zoomType: null
-                }
-            });
-
+            this.dataParser = new DataParser();
             this.map = null;
             this.graph = null;
 
@@ -128,12 +106,7 @@ function (TP, Leaflet, axesBaseConfig, highchartsBaseConfig, dataParser, workout
         parseData: function()
         {
             var flatSamples = this.model.get("detailData").attributes.flatSamples;
-
-            var data = dataParser(flatSamples);
-
-            this.seriesArray = data.seriesArray;
-            this.latLonArray = data.latLonArray;
-            this.minElevation = data.minElevation;
+            this.dataParser.loadData(flatSamples);
         },
 
         createMapOnContainer: function(container)
@@ -163,44 +136,88 @@ function (TP, Leaflet, axesBaseConfig, highchartsBaseConfig, dataParser, workout
             L.control.layers(baseMaps).addTo(this.map);
         },
         
-        createAndShowGraph: function(container)
+        createAndShowGraph: function()
         {
             var self = this;
-            
-            if (this.graph)
-                this.graph.destroy();
-            
-            var orderedAxes = [];
-            var i = 0;
-        
-            _.each(this.seriesArray, function(series)
-            {
-                var seriesAxis = self.axesConfig[series.name];
 
-                if (series.name === "Elevation" && self.minElevation > 0)
-                    seriesAxis.min = self.minElevation;
-                
-                series.yAxis = i++;
-                orderedAxes.push(seriesAxis);
+            var series = this.dataParser.getSeries();
+            var yaxes = [];
+            var countdown = 3;
+
+            _.each(series, function (s)
+            {
+                yaxes.push(
+                {
+                    show: true,
+                    min: s.name === "Elevation" ? self.dataParser.getMinimumElevation().min : 0,
+                    position: countdown-- > 0 ? "left" : "right",
+                    color: s.color,
+                    tickColor: s.color,
+                    font:
+                    {
+                        color: s.color
+                    }
+                });
             });
 
-            this.chartConfig.chart.renderTo = container;
-            this.chartConfig.yAxis = orderedAxes;
-            this.chartConfig.series = this.seriesArray;
+            var flotOptions =
+            {
+                grid:
+                {
+                    show: true,
+                    borderWidth: 0,
+                    hoverable: true,
+                    clickable: true
+                },
+                legend:
+                {
+                    show: false
+                },
+                selection:
+                {
+                    mode: "x"
+                },
+                series:
+                {
+                    lines:
+                    {
+                        show: true,
+                        lineWidth: 0.75,
+                        fill: false,
+                        hoverable: true
+                    },
+                    splines:
+                    {
+                        show: false,
+                        lineWidth: 0.75,
+                        type: "bezier"
+                    }
+                },
+                xaxes:
+                [
+                    {
+                        min: 0,
+                        tickFormatter: function (value, axis)
+                        {
+                            var decimalHours = (value / (3600 * 1000)).toFixed(2);
+                            return TP.utils.datetime.format.decimalHoursAsTime(decimalHours, true, null);
+                        }
+                    }
+                ],
+                yaxes: yaxes
+            };
 
-            if (workoutTypes.getNameById(this.model.get("workoutTypeValueId")) === "Swim")
-                this.chartConfig.plotOptions.line.gapSize = 0;
-
-            this.graph = new Highcharts.StockChart(this.chartConfig);
+            $.plot($("#quickViewGraph"), series, flotOptions);
         },
         
         setMapData: function()
         {
-            if (this.latLonArray && this.latLonArray.length > 0)
+            var latLonArray = this.dataParser.getLatLonArray();
+            if (latLonArray && latLonArray.length > 0)
             {
                 var leafletLatLongs = [];
 
-                _.each(this.latLonArray, function (point)
+                _.each(latLonArray, function (point)
                 {
                     if (point[0] && point[1])
                         leafletLatLongs.push(new L.LatLng(parseFloat(point[0]).toFixed(6), parseFloat(point[1]).toFixed(6)));

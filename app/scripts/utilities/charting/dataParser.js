@@ -1,8 +1,9 @@
 ﻿define(
 [
+    "utilities/charting/seriesColorByChannel",
     "utilities/charting/findIndexByMsOffset"
 ],
-function(findIndexByMsOffset)
+function(seriesColorByChannel, findIndexByMsOffset)
 {
     var parseDataByChannel = function(flatSamples)
     {
@@ -44,6 +45,7 @@ function(findIndexByMsOffset)
 
     var generateSeriesFromData = function(channelMask, dataByChannel, elevationIsAllNegative, x1, x2)
     {
+        var self = this;
         var seriesArray = [];
 
         _.each(channelMask, function(channel)
@@ -60,19 +62,20 @@ function(findIndexByMsOffset)
             var fillOpacity = channel === "Elevation" ? 0.3 : null;
 
             var data = [];
-            if (x1 !== null && x2 !== null)
+            if (typeof x1 !== "undefined" && typeof x2 !== "undefined")
             {
-                var startIdx = this.findIndexByMsOffset(this.seriesArray[0].data, x1);
-                var endIdx = this.findIndexByMsOffset(this.seriesArray[0].data, x2);
+                var startIdx = findIndexByMsOffset(self.flatSamples.msOffsetsOfSamples, x1);
+                var endIdx = findIndexByMsOffset(self.flatSamples.msOffsetsOfSamples, x2);
                 
                 for (var idx = startIdx; idx <= endIdx; idx++)
-                    data.push(series.data[idx]);
+                    data.push(dataByChannel[channel][idx]);
             }
             else
                 data = _.clone(dataByChannel[channel]);
 
             seriesArray.push(
             {
+                color: seriesColorByChannel[channel],
                 data: data,
                 label: channel,
                 lines:
@@ -92,19 +95,34 @@ function(findIndexByMsOffset)
 
     var getMinElevationOnDataRange = function(x1, x2)
     {
+        var elevationIsAllNegative = true;
+        var minElevation = 10000;
+        
         if (_.has(this.dataByChannel, "Elevation"))
         {
-            var startIdx = findIndexByMsOffset(x1);
-            var endIdx = findIndexByMsOffset(x2);
+            var startIdx = 0;
+            var endIdx = this.flatSamples.msOffsetsOfSamples.length - 1;
             
-            self.minElevation = _.min(dataByChannel.Elevation, function (value)
+            if (typeof x1 !== "undefined" && typeof x2 !== "undefined")
             {
-                // Underscore Min considers "null" a valid comparable value and will always return a min of "null"
-                // if null is present in the data set, therefore need a quick hack to get around this.
-                self.elevationIsAllNegative = self.elevationIsAllNegative && (value[1] === null ? true : value[1] < 0);
-                return value[1] === null ? 999999999999999 : value[1];
-            })[1];
+                startIdx = findIndexByMsOffset(this.flatSamples.msOffsetsOfSamples, x1);
+                endIdx = findIndexByMsOffset(this.flatSamples.msOffsetsOfSamples, x2);
+            }
+
+            for(startIdx; startIdx <= endIdx; startIdx++)
+            {
+                var value = this.dataByChannel["Elevation"][1];
+                elevationIsAllNegative = elevationIsAllNegative && (value === null ? true : value < 0);
+                value = value === null ? 999999999999999 : value;
+                if (value < minElevation)
+                    minElevation = value;
+            }
         }
+
+        return {
+            min: minElevation,
+            isAllNegative: elevationIsAllNegative
+        };
     };
 
     var generateLatLonFromData = function(dataByChannel)
@@ -139,34 +157,34 @@ function(findIndexByMsOffset)
     
     DataParser.prototype.loadData = function(flatSamples)
     {
-        var self = this;
-
-        this.dataByChannel = parseDataByChannel(flatSamples);
+        this.flatSamples = flatSamples;
+        this.dataByChannel = parseDataByChannel.call(this, flatSamples);
 
         // Find the minimum elevation in order to properly adjust the area graph (which would default to a 0 minimum).
-        this.minElevation = 0;
-        this.elevationIsAllNegative = true;
-
+        var elevationInfo = getMinElevationOnDataRange.call(this);
+        this.minElevation = elevationInfo.min;
+        this.elevationIsAllNegative = elevationInfo.isAllNegative;
     };
 
     DataParser.prototype.getSeries = function(x1, x2)
     {
-        return generateSeriesFromData(flatSamples.channelMask, this.dataByChannel, elevationIsAllNegative, x1, x2);
+        return generateSeriesFromData.call(this, this.flatSamples.channelMask, this.dataByChannel, this.elevationIsAllNegative, x1, x2);
     };
 
-    DataParser.prototype.getMinimumElevation = function(x1, x2)
+    DataParser.prototype.getElevationInfo = function(x1, x2)
     {
-        if (x1 !== null && x2 !== null)
-        {
-            return getMinElevationOnDataRange(x1, x2);
-        }
+        if (typeof x1 !== "undefined" && typeof x2 !== "undefined")
+            return getMinElevationOnDataRange.call(this, x1, x2);
 
-        return this.minElevation;
+        return {
+            min: this.minElevation,
+            isAllNegative: this.elevationIsAllNegative
+        };
     };
 
     DataParser.prototype.getLatLonArray = function()
     {
-        return generateLatLonFromData(this.dataByChannel);
+        return generateLatLonFromData.call(this, this.dataByChannel);
     };
 
     return DataParser;
