@@ -91,8 +91,15 @@ function (
             var settings = { dateFormat: "yy-mm-dd", firstDay: theMarsApp.controllers.calendarController.startOfWeekDayIndex };
             var widget = this.ui.date.datepicker("dialog", this.model.getCalendarDay(), this.onDateChanged, settings, position).datepicker("widget");
 
+            // hide then show, or else it flashes for some reason
+            widget.hide();
+
             // because jqueryui sets useless values for these ...
-            widget.css("z-index", Number(this.$el.css("z-index") + 1)).css("opacity", 1);
+            widget.css("z-index", Number(this.$el.css("z-index") + 1));
+            widget.css("opacity", 1);
+
+            // animate instead of just show directly, or else it flashes for some reason
+            widget.show(100);
         },
 
         onDateChanged: function(newDate)
