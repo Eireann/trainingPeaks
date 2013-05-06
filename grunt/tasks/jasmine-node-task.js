@@ -11,12 +11,14 @@ require('jasmine-node');
 module.exports = function(grunt)
 {
 
+    var fs = require('fs');
+    var Path = require('path');
+
     grunt.registerTask("jasmine_node", "Runs jasmine-node.", function () {
 
         var util;
         // TODO: ditch this when grunt v0.4 is released
         grunt.util = grunt.util || grunt.utils;
-        var Path = require('path');
         var _ = grunt.util._;
 
         try {
@@ -26,7 +28,10 @@ module.exports = function(grunt)
         }
 
         var projectRoot = grunt.config("jasmine_node.projectRoot") || ".";
-        var specFolder = grunt.config("jasmine_node.specFolder") || projectRoot;
+        var specFolder = findSpecFolder(grunt.config("jasmine_node.specFolder"));
+
+        console.log("testing specs in folder: " + specFolder);
+
         var source = grunt.config("jasmine_node.source") || "src";
         var specNameMatcher = grunt.config("jasmine_node.specNameMatcher") || "spec";
         var teamcity = process.env.TEAMCITY_PROJECT_NAME || grunt.config("jasmine_node.teamcity") || false;
@@ -113,10 +118,57 @@ module.exports = function(grunt)
             try {
                 // since jasmine-node@1.0.28 an options object need to be passed
                 jasmine.executeSpecsInFolder(options);
-            } catch (e) {
+            } catch (e)
+            {
                 console.log('Failed to execute "jasmine.executeSpecsInFolder": ' + e.stack);
             }
         }
     });
+
+    // match command line folder option
+    function findSpecFolder(specsFolder)
+    {
+        var dirOption = grunt.option("dir");
+
+        if(dirOption)
+        {
+            var pattern = new RegExp(dirOption, "i");
+            var matchedFolder = findFolder(pattern, specsFolder);
+            if(matchedFolder)
+            {
+                return matchedFolder;
+            }
+        }
+
+        return specsFolder;
+    }
+
+    function findFolder(pattern, folder)
+    {
+
+        // top level directory matches
+        if (fs.statSync(folder).isDirectory() && folder.match(pattern))
+        {
+            return folder;
+
+        // sub directory matches
+        } else if (fs.statSync(folder).isDirectory())
+        {
+            var files = fs.readdirSync(folder);
+            for (var i = 0; i < files.length; i++)
+            {
+                var path = folder + "/" + files[i];
+                if (fs.statSync(path).isDirectory())
+                {
+                    var matchingSubfolder = findFolder(pattern, path);
+                    if(matchingSubfolder)
+                        return matchingSubfolder;
+                }
+            }
+        }
+
+        // no match in this tree
+        return null;
+    }
 };
 
