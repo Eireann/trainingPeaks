@@ -148,6 +148,7 @@ function(seriesColorByChannel, findIndexByMsOffset)
 
     var generateYAxes = function(series)
     {
+        var self = this;
         var yaxes = [];
         var countdown = 3;
         var axisIndex = 1;
@@ -157,7 +158,7 @@ function(seriesColorByChannel, findIndexByMsOffset)
             yaxes.push(
             {
                 show: true,
-                min: s.name === "Elevation" ? self.getElevationInfo().min : 0,
+                min: s.label === "Elevation" ? self.getElevationInfo().min : 0,
                 position: countdown-- > 0 ? "right" : "left",
                 color: s.color,
                 tickColor: s.color,
