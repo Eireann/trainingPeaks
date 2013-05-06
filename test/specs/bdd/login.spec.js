@@ -1,36 +1,50 @@
 // use requirejs() here, not define(), for jasmine compatibility
 requirejs(
 [
-    "jquery",
-    "TP",
+    "testUtils/testHelpers",
     "app"
 ],
-function($, TP, theApp)
+function(
+    testHelpers,
+    theApp)
 {
-
-    var setupRegionElements = function()
-    {
-        this.navRegion.$el = $("<div id='navigation'></div>");
-        this.mainRegion.$el = $("<div id='main'></div>");
-    };
-
-    var startTheApp = function(theApp)
-    {
-        theApp.on("initialize:before", setupRegionElements, theApp);
-        theApp.start();
-        TP.history.start({ pushState: false, root: theApp.root });
-    };
 
     describe("Login", function()
     {
+        testHelpers.startTheApp();
+        var $el = theApp.mainRegion.$el;
+
+        beforeEach(function()
+        {
+            testHelpers.setupFakeAjax();
+        });
+
+        /*afterEach not defined in this version of jasmine?
+        afterEach(function()
+        {
+            testHelpers.removeFakeAjax();
+        });
+        */
+
         it("Should have a username input", function()
         {
-            startTheApp(theApp);
             theApp.router.navigate("login", true);
-            console.log(theApp.mainRegion.$el.html());
-            expect(theApp.mainRegion.$el.find("#username")).toBeDefined();
-            expect(theApp.mainRegion.$el.find("#username").length).toBe(1);
+            //console.log($el.html());
+            expect($el.find("#username")).toBeDefined();
+            expect($el.find("#username").length).toBe(1);
         });
+
+        it("Should respond to a click on the input button", function()
+        {
+            spyOn(theApp.session, "authenticate").andCallThrough();
+            var submitButton = $el.find("input[name=Submit]");
+            expect(submitButton.length).toBe(1);
+            submitButton.trigger("click");
+            expect(theApp.session.authenticate).toHaveBeenCalled();
+
+            testHelpers.resolveRequest("Token", { token: 'someToken' });
+        });
+
     });
 
 

@@ -199,6 +199,11 @@ function(TP, initializeAjaxAuth, ajaxCaching, initializeAjaxTimezone, Session, U
         return true;
     };
 
+    theApp.reloadApp = function()
+    {
+        window.location.reload();
+    };
+
     var apiRoots =
     {
         live: "https://api.trainingpeaks.com",

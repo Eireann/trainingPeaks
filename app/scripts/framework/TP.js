@@ -48,6 +48,15 @@ function(Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmediate,
     });
     TP.Layout = Marionette.Layout.extend(
     {
+        fadeIn: function(callback)
+        {
+            this.$el.fadeIn(500, callback);
+        },
+
+        fadeOut: function (callback)
+        {
+            this.$el.fadeOut(500, callback);
+        }
     });
     TP.Region = Marionette.Region;
 
