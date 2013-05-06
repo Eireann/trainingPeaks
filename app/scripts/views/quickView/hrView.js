@@ -79,14 +79,14 @@ function(
             _.each(timeInZones.timeInZones, function(timeInZone, index)
             {
 
-                var minutes = timeInZone.seconds ? Number(timeInZone.seconds) / 60 : 0;
-                var hours = timeInZone.seconds ? Number(timeInZone.seconds) / 3600 : 0;
+                var minutes = timeInZone.seconds ? parseInt(timeInZone.seconds, 10) / 60 : 0;
+                var hours = timeInZone.seconds ? parseInt(timeInZone.seconds, 10) / 3600 : 0;
 
                 var point = {
                     label: timeInZone.label,
                     rangeMinimum: timeInZone.minimum,
                     rangeMaximum: timeInZone.maximum,
-                    percentTime: this.toPercent(timeInZone.seconds / totalSeconds),
+                    percentTime: this.toPercent(timeInZone.seconds, totalSeconds),
                     percentLTMin: this.toPercent(timeInZone.minimum, timeInZones.threshold),
                     percentLTMax: this.toPercent(timeInZone.maximum, timeInZones.threshold),
                     percentMHRMin: this.toPercent(timeInZone.minimum, timeInZones.maximum),
