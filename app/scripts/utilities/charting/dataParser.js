@@ -80,11 +80,11 @@ function(seriesColorByChannel, findIndexByMsOffset)
                 label: channel,
                 lines:
                 {
-                    fill: fillOpacity,
+                    fill: fillOpacity
                 },
                 splines:
                 {
-                    fill: fillOpacity,
+                    fill: fillOpacity
                 },
                 shadowSize: 0
             });
@@ -93,7 +93,7 @@ function(seriesColorByChannel, findIndexByMsOffset)
         return seriesArray;
     };
 
-    var getMinElevationOnDataRange = function(x1, x2)
+    var getElevationInfoOnRange = function(x1, x2)
     {
         var elevationIsAllNegative = true;
         var minElevation = 10000;
@@ -111,7 +111,7 @@ function(seriesColorByChannel, findIndexByMsOffset)
 
             for(startIdx; startIdx <= endIdx; startIdx++)
             {
-                var value = this.dataByChannel["Elevation"][1];
+                var value = this.dataByChannel["Elevation"][startIdx][1];
                 elevationIsAllNegative = elevationIsAllNegative && (value === null ? true : value < 0);
                 value = value === null ? 999999999999999 : value;
                 if (value < minElevation)
@@ -145,6 +145,30 @@ function(seriesColorByChannel, findIndexByMsOffset)
 
         return latLon;
     };
+
+    var generateYAxes = function(series)
+    {
+        var yaxes = [];
+        var countdown = 3;
+        var axisIndex = 1;
+        _.each(series, function(s)
+        {
+            s.yaxis = axisIndex++;
+            yaxes.push(
+            {
+                show: true,
+                min: s.name === "Elevation" ? self.getElevationInfo().min : 0,
+                position: countdown-- > 0 ? "right" : "left",
+                color: s.color,
+                tickColor: s.color,
+                font:
+                {
+                    color: s.color
+                }
+            });
+        });
+        return yaxes;
+    };
     
     var DataParser = function()
     {
@@ -161,7 +185,7 @@ function(seriesColorByChannel, findIndexByMsOffset)
         this.dataByChannel = parseDataByChannel.call(this, flatSamples);
 
         // Find the minimum elevation in order to properly adjust the area graph (which would default to a 0 minimum).
-        var elevationInfo = getMinElevationOnDataRange.call(this);
+        var elevationInfo = getElevationInfoOnRange.call(this);
         this.minElevation = elevationInfo.min;
         this.elevationIsAllNegative = elevationInfo.isAllNegative;
     };
@@ -174,7 +198,7 @@ function(seriesColorByChannel, findIndexByMsOffset)
     DataParser.prototype.getElevationInfo = function(x1, x2)
     {
         if (typeof x1 !== "undefined" && typeof x2 !== "undefined")
-            return getMinElevationOnDataRange.call(this, x1, x2);
+            return getElevationInfoOnRange.call(this, x1, x2);
 
         return {
             min: this.minElevation,
@@ -187,5 +211,10 @@ function(seriesColorByChannel, findIndexByMsOffset)
         return generateLatLonFromData.call(this, this.dataByChannel);
     };
 
+    DataParser.prototype.getYAxes = function(series)
+    {
+        return generateYAxes.call(this, series);
+    };
+    
     return DataParser;
 });

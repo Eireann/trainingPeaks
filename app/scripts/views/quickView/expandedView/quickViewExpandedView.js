@@ -67,28 +67,8 @@ function (TP, axesBaseConfig, highchartsBaseConfig, DataParser, expandedViewTemp
                 this.dataParser.loadData(flatSamples);
             }
 
-            var series = dataParser.getSeries();
-            var yaxes = [];
-            var countdown = 3;
-            _.each(series, function(s)
-            {
-                yaxes.push(
-                {
-                    show: true,
-                    min:
-                        s.name === "Elevation" ? self.dataParser.getMinimumElevation() : 0,
-                    position:
-                        countdown-- > 0 ? "right" : "left",
-                    color:
-                        s.color,
-                    tickColor:
-                        s.color,
-                    font:
-                    {
-                        color: s.color
-                    }
-                });
-            });
+            var series = this.dataParser.getSeries();
+            var yaxes = this.dataParser.getYAxes(series);
             
             this.flotOptions =
             {
@@ -139,28 +119,12 @@ function (TP, axesBaseConfig, highchartsBaseConfig, DataParser, expandedViewTemp
             
             this.createFlotPlot(series);
             this.bindZoom();
-
-            this.splineButton = $("<button id='flotSplineButton'></button>").css(
-            {
-                display: "block",
-                position: "absolute",
-                zIndex: 999,
-                top: 200,
-                left: 200
-            }).text("Show Spline").appendTo("body").click(function()
-            {
-                self.flotOptions.series.lines.show = !self.flotOptions.series.lines.show;
-                self.flotOptions.series.splines.show = !self.flotOptions.series.lines.show;
-                $(this).text(self.flotOptions.series.lines.show ? "Show Spline" : "Hide Spline");
-                self.createFlotPlot(startingData.flotData);
-            });
         },
         
-        createFlotPlot: function(data)
+        createFlotPlot: function(data, options)
         {
-            var plot = $.plot($("#largeGraphContainer"), data, this.flotOptions);
+            $.plot($("#largeGraphContainer"), data, typeof options !== "undefined" ? options : this.flotOptions);
             this.bindTooltip();
-            return plot;
         },
         
         bindTooltip: function()
@@ -222,15 +186,17 @@ function (TP, axesBaseConfig, highchartsBaseConfig, DataParser, expandedViewTemp
                 if (ranges.yaxis.to - ranges.yaxis.from < 0.00001)
                     ranges.yaxis.to = ranges.yaxis.from + 0.00001;
 
-                var rangeData = self.getDataForFlot(ranges.xaxis.from, ranges.xaxis.to);
+                var zoomedSeriesData = self.dataParser.getSeries(ranges.xaxis.from, ranges.xaxis.to);
+                var yaxes = self.dataParser.getYAxes(zoomedSeriesData);
 
                 var newOptions = {};
                 _.extend(newOptions, self.flotOptions);
                 newOptions.xaxes[0].min = ranges.xaxis.min;
                 newOptions.xaxes[0].max = ranges.xaxis.max;
+                newOptions.yaxes = yaxes;
 
                 // Redraw the zoomed plot
-                self.createFlotPlot(rangeData.flotData, newOptions);
+                self.createFlotPlot(zoomedSeriesData, newOptions);
 
                 self.resetButton = $("<button id='flotResetButton'>Reset Zoom</button>").css(
                 {
@@ -243,8 +209,12 @@ function (TP, axesBaseConfig, highchartsBaseConfig, DataParser, expandedViewTemp
 
                 self.resetButton.on("click", function ()
                 {
-                    var fullData = self.getDataForFlot(null, null);
-                    self.createFlotPlot(fullData.flotData, self.flotOptions);
+                    var fullSeriesData = self.dataParser.getSeries();
+                    var yaxes = self.dataParser.getYAxes(fullSeriesData);
+                    var newOptions = {};
+                    _.extend(newOptions, self.flotOptions);
+                    newOptions.yaxes = yaxes;
+                    self.createFlotPlot(fullSeriesData, newOptions);
                     $(this).fadeOut(200).remove();
                 });
             });

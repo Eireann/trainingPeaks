@@ -66,7 +66,6 @@ function (TP, Leaflet, DataParser, workoutTypes, workoutQuickViewMapAndGraphTemp
             }
 
             setImmediate(function() { self.prefetchConfig.detailDataPromise.then(self.onModelFetched); });
-
         },
 
         watchForModelChanges: function()
@@ -138,27 +137,8 @@ function (TP, Leaflet, DataParser, workoutTypes, workoutQuickViewMapAndGraphTemp
         
         createAndShowGraph: function()
         {
-            var self = this;
-
             var series = this.dataParser.getSeries();
-            var yaxes = [];
-            var countdown = 3;
-
-            _.each(series, function (s)
-            {
-                yaxes.push(
-                {
-                    show: true,
-                    min: s.name === "Elevation" ? self.dataParser.getMinimumElevation().min : 0,
-                    position: countdown-- > 0 ? "left" : "right",
-                    color: s.color,
-                    tickColor: s.color,
-                    font:
-                    {
-                        color: s.color
-                    }
-                });
-            });
+            var yaxes = this.dataParser.getYAxes(series);
 
             var flotOptions =
             {
@@ -175,7 +155,7 @@ function (TP, Leaflet, DataParser, workoutTypes, workoutQuickViewMapAndGraphTemp
                 },
                 selection:
                 {
-                    mode: "x"
+                    mode: null 
                 },
                 series:
                 {
