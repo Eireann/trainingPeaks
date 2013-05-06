@@ -113,6 +113,9 @@ function(
 
         onCloseClicked: function()
         {
+            if (this.isNewWorkout)
+                this.dayModel.trigger("workout:added", this.model);
+
             this.close();
         }
     };
