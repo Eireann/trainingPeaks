@@ -28,9 +28,9 @@ function (_, TP, ExpandedView)
             "click #quickViewCollapseDiv": "collapseClicked"
         },
 
-
         renderExpandedView: function()
         {
+            //TODO: Create MapAndGraphExpando Controller to encapsulate Views & interactions between those views.
             if(!this.expandedView)
             {
                 this.expandedView = new ExpandedView({ model: this.model });
@@ -66,9 +66,7 @@ function (_, TP, ExpandedView)
             var self = this;
             var afterExpanding = function()
             {
-                //TODO: Collide & Expand button should be the same, the text() should change
-                // Maybe we shouldn't check the text from in here due to i18n issues?
-                // also having two separate buttons makes it easy to know which state we're in
+                //TODO Use CSS classes instead of manually setting css attributes in here
                 self.$(".expandButton").hide();
                 self.$(".collapseButton, .expandedViewsButtons").show();
                 self.$("#quickViewExpandedContent").show();
@@ -78,10 +76,9 @@ function (_, TP, ExpandedView)
             {
                 var expandDuration = 300;
 
-                //TODO Use jQuery hide() and show()
-                // or better, add a class to the main qv container - .expanded or .collapsed
+                //TODO or better, add a class to the main qv container - .expanded or .collapsed
                 self.$("#workOutQuickView").animate({ height: newHeight, width: newWidth }, { duration: expandDuration });
-                self.$(".tabNavigation, #quickViewContent, .quickviewFooter, #menuIcon").css({ display: "none" });
+                self.$(".tabNavigation, #quickViewContent, .quickviewFooter, #menuIcon").hide();
                 self.$(".viewOne, .viewTwo").css({ width: viewsWidth, height: viewsHeight });
 
                 self.$el.animate({top: top + "px", left: left + "px",  height: newHeight, width: newWidth },
@@ -104,9 +101,8 @@ function (_, TP, ExpandedView)
 
             var afterCollapsing = function()
             {
-                //TODO Collapse & Expand button need to be the same
                 //TODO Separation of concerns: quickViewContent needs to show/hide itself through BB View.
-                self.$("#menuIcon").css({ display: "" });
+                self.$("#menuIcon").show();
                 self.$("#workOutQuickView").css({ height: self.originalPosition.height, width: self.originalPosition.width });
                 self.$(".collapseButton, .expandedViewsButtons").css({ display: "none" });
                 self.$(".tabNavigation, .quickviewFooter, .expandButton").css({ display: "block" });
@@ -125,7 +121,6 @@ function (_, TP, ExpandedView)
                 duration: collapseDuration,
                 complete: afterCollapsing
             });                   
-
         }
 
     };

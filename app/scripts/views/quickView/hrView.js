@@ -79,8 +79,8 @@ function(
             _.each(timeInZones.timeInZones, function(timeInZone, index)
             {
 
-                var minutes = timeInZone.seconds ? Number(timeInZone.seconds) / 60 : 0;
-                var hours = timeInZone.seconds ? Number(timeInZone.seconds) / 3600 : 0;
+                var minutes = timeInZone.seconds ? parseInt(timeInZone.seconds, 10) / 60 : 0;
+                var hours = timeInZone.seconds ? parseInt(timeInZone.seconds, 10) / 3600 : 0;
 
                 var point = {
                     label: timeInZone.label,

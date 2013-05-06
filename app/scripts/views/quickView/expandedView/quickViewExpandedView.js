@@ -26,7 +26,7 @@ function (TP, axesBaseConfig, highchartsBaseConfig, dataParser, expandedViewTemp
         
         collapse: function()
         {
-            this.$el.parent().css({ display: "none" });
+            this.$el.parent().hide();
 
             if (this.resetButton)
                 this.resetButton.remove();
