@@ -1,40 +1,59 @@
 // use requirejs() here, not define(), for jasmine compatibility
 requirejs(
 [
-    "jquery",
     "testUtils/testHelpers",
     "testUtils/xhrDataStubs",
     "app"
 ],
 function(
-    $,
     testHelpers,
     xhrData,
     theApp)
 {
 
-    describe("qvTabs", function()
+    describe("Quick View", function()
     {
-        var $el, $body;
 
-        beforeEach(function()
+        describe("heart rate tab", function()
         {
+
+            // start the app
             testHelpers.startTheApp();
-            $el = theApp.mainRegion.$el;
             testHelpers.setupFakeAjax();
-            $body = $("<body>");
-            spyOn(theApp, "getBodyElement").andReturn($body);
+            testHelpers.submitLogin(xhrData.users.barbkprem);
+            theApp.router.navigate("calendar", true);
+            var $el = theApp.mainRegion.$el;
+            var $body = theApp.getBodyElement();
+
+            // open the qv
+            $el.find(".day.today").trigger("click");
+            theApp.getBodyElement().find("button[data-workoutid=3]").trigger("click"); // 3=run
+
+            //var $el;
+            //beforeEach(function()
+            //{
+            /*
+                testHelpers.startTheApp();
+                testHelpers.setupFakeAjax();
+                testHelpers.submitLogin(xhrData.users.barbkprem);
+                theApp.router.navigate("calendar", true);
+                */
+            //});
+
+            // for some reason afterEach is undefined here, 
+            // but we can access it via jasmine.getEnv()
+            // need to cleanup our mess
+            /*jasmine.getEnv().afterEach(function()
+            {
+                testHelpers.reset();
+            });*/
+
+            it("Should open the heart rate tab", function()
+            {
+                $body.find(".heartrateTab").trigger("click");
+                expect($body.find("#quickViewHRTab").is(":visible")).toBe(true);
+            });
         });
-
-        // for some reason afterEach is undefined here, 
-        // but we can access it via jasmine.getEnv()
-        // need to cleanup our mess
-        jasmine.getEnv().afterEach(function()
-        {
-            testHelpers.reset();
-        });
-
-
 
     });
 
