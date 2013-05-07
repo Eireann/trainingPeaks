@@ -23,7 +23,7 @@ function(TP, theApp)
             expect(TP.utils.workout.keyStat.formatStats(workout)).toBe("1:00:00");
             
             workout.set("totalTime", null);
-            expect(TP.utils.workout.keyStat.formatStats(workout)).toBe(100);
+            expect(TP.utils.workout.keyStat.formatStats(workout)).toBe("100.0");
             
             workout.set("tssActual", null);
             expect(TP.utils.workout.keyStat.formatStats(workout)).toBe("0.01");
@@ -32,7 +32,7 @@ function(TP, theApp)
             expect(TP.utils.workout.keyStat.formatStats(workout)).toBe("1:00:00");
 
             workout.set("totalTimePlanned", null);
-            expect(TP.utils.workout.keyStat.formatStats(workout)).toBe(100);
+            expect(TP.utils.workout.keyStat.formatStats(workout)).toBe("100.0");
 
             workout.set("tssPlanned", null);
             expect(TP.utils.workout.keyStat.formatStats(workout)).toBe("");

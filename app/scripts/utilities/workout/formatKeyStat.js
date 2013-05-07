@@ -36,7 +36,7 @@ function(conversion, getKeyStatField)
         }
         else if (keyStatField === "tssActual" || keyStatField === "tssPlanned")
         {
-            return value;
+            return conversion.formatTSS(value);
         } else
         {
             return "";
