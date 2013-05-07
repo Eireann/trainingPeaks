@@ -1,5 +1,9 @@
 US642 TODO:
 
+athleteSettings object needs an athleteId
+
+watch for settings change/load
+
 2) pull athlete settings endpoint
 
 

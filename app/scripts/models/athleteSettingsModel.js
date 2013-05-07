@@ -13,7 +13,27 @@ function(TP)
 
         defaults:
         {
-            athleteId: 0
+            athleteId: 0,
+            userName: null,
+            birthday: null,
+            gender: null,
+            email: null,
+            address: null,
+            address2: null,
+            city: null,
+            state: null,
+            country: null,
+            zipCode: null,
+            phone: null,
+            cellPhone: null,
+            profilePhotoUrl: null,
+            age: null,
+            units: 0,
+            dateFormat: null,
+            timeZone: null,
+            heartRateZones: null,
+            powerZones: null,
+            speedZones: null
         },
 
         url: function()

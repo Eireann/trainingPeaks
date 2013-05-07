@@ -138,7 +138,8 @@ function(_)
             if (additionalChartOptions)
                 $.extend(true, chartOptions, additionalChartOptions);
 
-            container.highcharts(chartOptions);
+            if(container.highcharts)
+                container.highcharts(chartOptions);
         },
 
         formatMeanMaxLabel: function(label)

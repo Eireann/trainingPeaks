@@ -1,6 +1,5 @@
 define(
 [
-    "jquery",
     "TP",
     "framework/ajaxAuth",
     "framework/ajaxCaching",
@@ -16,7 +15,6 @@ define(
     "jqueryui/tooltip"
 ],
 function(
-    $,
     TP,
     initializeAjaxAuth,
     ajaxCaching,

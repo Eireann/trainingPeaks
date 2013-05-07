@@ -1,5 +1,6 @@
 ﻿define(
 [
+    "underscore",
     "TP",
     "hbs!templates/views/quickView/heartRate/hrTabView",
     "hbs!templates/views/quickView/heartRate/hrZoneRow",
@@ -8,6 +9,7 @@
     "hbs!templates/views/quickView/heartRate/peakChartTooltip"
 ],
 function(
+    _,
     TP,
     hrTabTemplate,
     hrZoneRowTemplate,
@@ -54,13 +56,29 @@ function(
 
         renderTimeInZones: function()
         {
-            var timeInZones = this.model.get("details").get("timeInHeartRateZones");
+            var timeInZones = this.getOrCreateTimeInZones();
             this.renderTimeInZonesTable(timeInZones);
             this.renderTimeInZonesChart(timeInZones);
         },
 
+        getOrCreateTimeInZones: function()
+        {
+
+            var timeInZones = this.model.get("details").get("timeInHeartRateZones");
+            if (!timeInZones)
+            {
+                timeInZones = this.buildTimeInZonesFromAthleteSettings();
+
+                if (timeInZones)
+                    this.model.get("details").set("timeInHeartRateZones", timeInZones, { silent: true });
+            }
+
+            return timeInZones;
+        },
+
         renderTimeInZonesTable: function(timeInZones)
         {
+
             if (timeInZones)
             {
                 var zonesHtml = hrZoneRowTemplate(timeInZones);
@@ -222,6 +240,66 @@ function(
         {
             var hrPeaks = this.model.get("details").get("meanMaxHeartRate");
             return TP.utils.chartBuilder.cleanAndFormatPeaksData(hrPeaks);
+        },
+
+        buildTimeInZonesFromAthleteSettings: function()
+        {
+            var zoneSettingName = "heartRateZones";
+            var workoutTypeId = this.model.get("workoutTypeValueId");
+            var settings = this.getZoneSettingsByWorkoutTypeId(zoneSettingName, workoutTypeId);
+
+            if (!settings)
+                return null;
+
+            var timeInZones = {
+                maximum: settings.maximumHeartRate,
+                resting: settings.restingHeartRate,
+                threshold: settings.threshold,
+                timeInZones: []
+            };
+
+            _.each(settings.zones, function(zone)
+            {
+                timeInZones.timeInZones.push({
+                    seconds: 0,
+                    minimum: zone.minimum,
+                    maximum: zone.maximum,
+                    label: zone.label
+                });
+            }, this);
+
+            return timeInZones;
+        },
+
+        getZoneSettingsByWorkoutTypeId: function(zoneSettingName, workoutTypeId)
+        {
+            var athleteSettings = theMarsApp.user.getAthleteSettings();
+            if(!athleteSettings || !athleteSettings.has(zoneSettingName))
+                return null;
+
+            var hrZoneSettings = athleteSettings.get(zoneSettingName);
+            if (!hrZoneSettings || !hrZoneSettings.length)
+                return null;
+
+            var defaultWorkoutTypeId = 0;
+            var workoutTypeSettings = null;
+            var defaultWorkoutTypeSettings = null;
+
+            _.each(hrZoneSettings, function(zoneSet)
+            {
+                if (zoneSet.workoutTypeId === workoutTypeId)
+                    workoutTypeSettings = zoneSet;
+
+                if (zoneSet.workoutTypeId === defaultWorkoutTypeId)
+                    defaultWorkoutTypeSettings = zoneSet;
+
+            }, this);
+
+            if (!workoutTypeSettings)
+                workoutTypeSettings = defaultWorkoutTypeSettings;
+
+            return workoutTypeSettings;
         }
+
     });
 });
