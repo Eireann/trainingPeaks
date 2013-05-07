@@ -34,12 +34,8 @@ function(
         it("Should display today", function()
         {
             testHelpers.submitLogin(xhrData.users.barbkprem);
-            console.log(theApp.session.attributes);
-            expect(theApp.session.isAuthenticated()).toBe(true);
-            expect(theApp.user.get("userName")).toBe("barbkprem");
             theApp.router.navigate("calendar", true);
             var todayElement = $el.find(".day.today");
-            expect(todayElement).toBeDefined();
             expect(todayElement.length).toBe(1);
         });
 
