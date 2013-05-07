@@ -15,13 +15,15 @@ function(_, $, Backbone, TP, xhrData, app)
 
         setupRegionElements: function()
         {
-            this.navRegion.$el = $("<div id='navigation'></div>");
-            this.mainRegion.$el = $("<div id='main'></div>");
+
+            this.$body = $("<body><div id='navigation'></div><div id='main'></div></body>");
+            this.navRegion.$el = this.$body.find("#navigation");
+            this.mainRegion.$el = this.$body.find("#main");
         },
 
         reset: function()
         {
-            app.ajaxCachingEnabled = false;
+            app.syncCachingEnabled = false;
             this.removeFakeAjax();
             app.resetAppToInitialState();
         },
@@ -29,8 +31,9 @@ function(_, $, Backbone, TP, xhrData, app)
         startTheApp: function()
         {
 
-            // ajaxCaching doesn't play nicely with our fake xhr ...
-            app.ajaxCachingEnabled = false;
+
+            // syncCaching doesn't play nicely with our fake xhr ...
+            app.syncCachingEnabled = false;
             app.resetAppToInitialState();
 
             // disable window reload
@@ -55,46 +58,60 @@ function(_, $, Backbone, TP, xhrData, app)
                 //console.log("Ignoring history already started");
             }
 
-            // go to #logout, even though it doesn't really exist, so then we can navigate to login or anywhere else
-            app.router.navigate("logout", true);
         },
 
-        fakeAjax: function(url, options)
+        fakeSync: function(method, model, options)
         {
-            if (_.isObject(url))
-            {
-                options = url;
-                url = options.url;
-            }
+            // if no url was passed in, build one from the model
+            if (!options.url)
+                options.url = _.result(model, 'url');
 
-            options.testHelpersDeferred = new $.Deferred();
-            var jqXhr = Backbone.$.ajax.apply(Backbone.$, arguments);
+            // fire backbone sync to get a jquery xhr deferred, and wrap it with our own deferred
+            var ajaxDeferred = this.addDeferred(method, model, options, this.backboneSync);
+
+            // this is what actually triggers Backbone models/collections to sync,
+            // and is added in Backbone.sync
+            if(options.success)
+                ajaxDeferred.done(options.success);
+
+            if (!options.type)
+                options.type = "GET";
+
+            this.fakeAjaxRequests[options.url] = {
+                url: options.url,
+                jqXhr: ajaxDeferred,
+                options: options,
+                model: model
+            };
+
+            //console.log("Fake request: " + options.type + " " + options.url);
+            //console.log(options);
+
+            return ajaxDeferred;
+        },
+
+        addDeferred: function(method, model, options, backboneSync)
+        {
+
+            options.ajaxDeferred = new $.Deferred();
+            var jqXhr = backboneSync(method, model, options);
+            jqXhr.ajaxDeferred = options.ajaxDeferred;
+
             var deferredFunctionNames = ["always", "done", "fail", "pipe", "progress", "then"];
 
-            _.each(deferredFunctionNames, function(httpVerbName)
+            _.each(deferredFunctionNames, function(methodName)
             {
-                var originalJqMethod = jqXhr[httpVerbName];
-                var ajaxDeferredMethod = options.testHelpersDeferred[httpVerbName];
-                jqXhr[httpVerbName] = function()
+                var originalJqMethod = jqXhr[methodName];
+                var ajaxDeferredMethod = options.ajaxDeferred[methodName];
+                jqXhr[methodName] = function()
                 {
                     // apply on our cached data first
-                    ajaxDeferredMethod.apply(options.testHelpersDeferred, arguments);
-
-                    // then apply on our server data
-                    originalJqMethod.apply(jqXhr, arguments);
-
+                    ajaxDeferredMethod.apply(options.ajaxDeferred, arguments);
                     return this;
                 };
             }, this);
-            this.fakeAjaxRequests[url] = {
-                url: url,
-                jqXhr: jqXhr,
-                options: options
-            };
 
-            //console.log("Fake XHR: " + url);
             return jqXhr;
-
         },
 
         resolveRequest: function(httpVerb, urlPattern, data)
@@ -103,9 +120,10 @@ function(_, $, Backbone, TP, xhrData, app)
             if (request)
             {
                 //console.log("Resolving request " + request.url);
-                request.options.testHelpersDeferred.resolveWith(request.options, [data, 'success', request.jqXhr]);
+                request.jqXhr.ajaxDeferred.resolveWith(request.options, [data, 'success', request.jqXhr]);
             } else
             {
+                //console.log(this.fakeAjaxRequests);
                 throw "Cannot find request to resolve: " + httpVerb + " " + urlPattern;
             }
         },
@@ -131,19 +149,22 @@ function(_, $, Backbone, TP, xhrData, app)
 
         setupFakeAjax: function()
         {
-            _.bindAll(this, "fakeAjax");
+            _.bindAll(this, "fakeSync");
 
-            if (!Backbone._originalAjax)
-                Backbone._originalAjax = Backbone.ajax;
+            if (!Backbone._originalSync)
+            {
+                Backbone._originalSync = Backbone.sync;
+                this.backboneSync = Backbone.sync;
+            }
 
-            Backbone.ajax = this.fakeAjax;
-            this.fakeAjaxRequests = [];
+            Backbone.sync = this.fakeSync;
+            this.fakeAjaxRequests = {};
         },
 
         removeFakeAjax: function()
         {
-            if (Backbone._originalAjax)
-                Backbone.ajax = Backbone._originalAjax;
+            if (Backbone._originalSync)
+                Backbone.sync = Backbone._originalSync;
         },
 
         submitLogin: function(userData)

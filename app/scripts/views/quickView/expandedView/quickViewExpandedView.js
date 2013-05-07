@@ -146,7 +146,7 @@ function (TP, axesBaseConfig, highchartsBaseConfig, DataParser, expandedViewTemp
                     "background-color": "#ffffff",
                     opacity: 1.0,
                     zIndex: 999
-                }).appendTo("body").fadeIn(200);
+                }).appendTo(theMarsApp.getBodyElement()).fadeIn(200);
             }
 
             var previousPoint = null;
@@ -205,7 +205,7 @@ function (TP, axesBaseConfig, highchartsBaseConfig, DataParser, expandedViewTemp
                     zIndex: 999,
                     top: top,
                     left: left
-                }).appendTo("body").fadeIn(200);
+                }).appendTo(theMarsApp.getBodyElement()).fadeIn(200);
 
                 self.resetButton.on("click", function ()
                 {

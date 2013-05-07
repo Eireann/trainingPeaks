@@ -1,5 +1,6 @@
 define(
 [
+    "jquery",
     "TP",
     "framework/ajaxAuth",
     "framework/ajaxCaching",
@@ -14,11 +15,23 @@ define(
     "marionette.faderegion",
     "jqueryui/tooltip"
 ],
-function(TP, initializeAjaxAuth, ajaxCaching, initializeAjaxTimezone, Session, UserModel, ClientEventsCollection, NavigationController, LoginController, CalendarController, Router)
+function(
+    $,
+    TP,
+    initializeAjaxAuth,
+    ajaxCaching,
+    initializeAjaxTimezone,
+    Session,
+    UserModel,
+    ClientEventsCollection,
+    NavigationController,
+    LoginController,
+    CalendarController,
+    Router)
 {
 
     var theApp = new TP.Application();
-    theApp.ajaxCachingEnabled = true;
+    theApp.ajaxCachingEnabled = false;
 
     theApp.resetAppToInitialState = function()
     {
@@ -209,6 +222,14 @@ function(TP, initializeAjaxAuth, ajaxCaching, initializeAjaxTimezone, Session, U
                 return false;
 
             return true;
+        };
+
+        this.getBodyElement = function()
+        {
+            if (!this.$body)
+                this.$body = $("body");
+
+            return this.$body;
         };
 
         this.reloadApp = function()

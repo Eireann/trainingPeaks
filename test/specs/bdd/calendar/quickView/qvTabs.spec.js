@@ -1,11 +1,13 @@
 // use requirejs() here, not define(), for jasmine compatibility
 requirejs(
 [
+    "jquery",
     "testUtils/testHelpers",
     "testUtils/xhrDataStubs",
     "app"
 ],
 function(
+    $,
     testHelpers,
     xhrData,
     theApp)
@@ -13,13 +15,15 @@ function(
 
     describe("qvTabs", function()
     {
-        var $el;
+        var $el, $body;
 
         beforeEach(function()
         {
             testHelpers.startTheApp();
             $el = theApp.mainRegion.$el;
             testHelpers.setupFakeAjax();
+            $body = $("<body>");
+            spyOn(theApp, "getBodyElement").andReturn($body);
         });
 
         // for some reason afterEach is undefined here, 
@@ -30,13 +34,7 @@ function(
             testHelpers.reset();
         });
 
-        it("Should request athlete settings after resolving the login", function()
-        {
-            var testUser = xhrData.users.barbkprem;
-            var athleteSettingsUrl = "athletes/v1/athletes/" + testUser.athletes[0].athleteId + "/settings";
-            testHelpers.submitLogin(testUser);
-            expect(testHelpers.hasRequest("GET", athleteSettingsUrl)).toBeTruthy();
-        });
+
 
     });
 

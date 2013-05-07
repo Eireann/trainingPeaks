@@ -1,8 +1,10 @@
 US642 TODO:
 
-Get all tests to run again - reset app state after bdd tests
-
 2) pull athlete settings endpoint
+
+
+should change for sport type
+
 3) figure out how settings and tab editing are related for default fields etc
 4) empty/editable hr tab
 5) save hr tab

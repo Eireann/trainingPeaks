@@ -88,7 +88,6 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySe
 
         onBeforeRender: function()
         {
-            console.trace();
             this.model.configureDayLabel();
         },
 
@@ -206,7 +205,7 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySe
             this.$el.data("ItemId", this.model.id);
             this.$el.data("ItemType", "CalendarDay");
             this.$el.data("DropEvent", "dayMoved");
-            this.draggableOptions = { appendTo: 'body', helper: this.draggableHelper, start: this.onDragStart, stop: this.onDragStop };
+            this.draggableOptions = { appendTo: theMarsApp.getBodyElement(), helper: this.draggableHelper, start: this.onDragStart, stop: this.onDragStop };
             this.$el.draggable(this.draggableOptions);
         },
 

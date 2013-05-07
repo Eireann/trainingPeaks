@@ -150,7 +150,7 @@ function(Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmediate,
             if (this.modal.mask)
                 this.$overlay.addClass("modalOverlayMask");
 
-            $('body').append(this.$overlay);
+            theMarsApp.getBodyElement().append(this.$overlay);
 
             // make $el absolute and put it on the body
             this.$el.addClass("modal");
@@ -158,7 +158,7 @@ function(Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmediate,
             if (this.modal.shadow)
                 this.$el.addClass("modalShadow");
 
-            $('body').append(this.$el);
+            theMarsApp.getBodyElement().append(this.$el);
 
             var $window = $(window);
             if (this.$el.height() > $window.height())
