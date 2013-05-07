@@ -1,11 +1,18 @@
 ﻿require(
 [
-    "TP"
+    "TP",
+    "app"
 ],
-function(TP)
+function(TP, theApp)
 {
-    describe("Display workout distance, time, or tss", function()
+    describe("Display key stat unit for distance, time, or tss", function()
     {
+
+        beforeEach(function()
+        {
+            theApp.user.set("units", TP.utils.units.constants.English);
+        });
+
         it("Should display a completed workout of backbone model with the precendent of distance, duration, and tss", function()
         {
             var workout = new TP.Model();

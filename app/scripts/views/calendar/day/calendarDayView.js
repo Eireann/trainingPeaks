@@ -41,7 +41,7 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySe
         initialize: function()
         {
             if (theMarsApp)
-                theMarsApp.user.on("change", this.render, this);
+                theMarsApp.user.on("change:settings", this.render, this);
             
             this.collection = this.model.itemsCollection;
 
@@ -88,6 +88,7 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySe
 
         onBeforeRender: function()
         {
+            console.trace();
             this.model.configureDayLabel();
         },
 

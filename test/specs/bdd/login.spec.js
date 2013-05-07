@@ -11,38 +11,51 @@ function(
 
     describe("Login", function()
     {
-        testHelpers.startTheApp();
-        var $el = theApp.mainRegion.$el;
+
+        var $el;
 
         beforeEach(function()
         {
+            testHelpers.startTheApp();
+            $el = theApp.mainRegion.$el;
             testHelpers.setupFakeAjax();
         });
 
-        /*afterEach not defined in this version of jasmine?
-        afterEach(function()
+        // for some reason afterEach is undefined here, 
+        // but we can access it via jasmine.getEnv()
+        // need to cleanup our mess
+        jasmine.getEnv().afterEach(function()
         {
-            testHelpers.removeFakeAjax();
+            testHelpers.reset();
         });
-        */
 
         it("Should have a username input", function()
         {
             theApp.router.navigate("login", true);
-            //console.log($el.html());
             expect($el.find("#username")).toBeDefined();
             expect($el.find("#username").length).toBe(1);
         });
 
         it("Should respond to a click on the input button", function()
         {
-            spyOn(theApp.session, "authenticate").andCallThrough();
+            spyOn(theApp.session, "authenticate");
+            theApp.router.navigate("login", true);
             var submitButton = $el.find("input[name=Submit]");
             expect(submitButton.length).toBe(1);
             submitButton.trigger("click");
             expect(theApp.session.authenticate).toHaveBeenCalled();
+        });
 
-            testHelpers.resolveRequest("Token", { token: 'someToken' });
+        it("Should request user data after resolving the login", function()
+        {
+            theApp.router.navigate("login", true);
+            var submitButton = $el.find("input[name=Submit]");
+
+            submitButton.trigger("click");
+            expect(testHelpers.hasRequest("POST", "Token")).toBe(true);
+
+            testHelpers.resolveRequest("POST", "Token", { token: 'someToken' });
+            expect(testHelpers.hasRequest("GET", "users/v1/user")).toBe(true);
         });
 
     });

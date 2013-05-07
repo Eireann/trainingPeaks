@@ -1,13 +1,14 @@
-// use requirejs() here, not define(), for jasmine compatibility
 define(
 [
     "underscore",
     "jquery",
     "backbone",
     "TP",
-    "app"
+    "testUtils/xhrDataStubs",
+    "app",
+
 ],
-function(_, $, Backbone, TP, app)
+function(_, $, Backbone, TP, xhrData, app)
 {
 
     return {
@@ -18,8 +19,20 @@ function(_, $, Backbone, TP, app)
             this.mainRegion.$el = $("<div id='main'></div>");
         },
 
+        reset: function()
+        {
+            app.ajaxCachingEnabled = false;
+            this.removeFakeAjax();
+            app.resetAppToInitialState();
+        },
+
         startTheApp: function()
         {
+
+            // ajaxCaching doesn't play nicely with our fake xhr ...
+            app.ajaxCachingEnabled = false;
+            app.resetAppToInitialState();
+
             // disable window reload
             app.reloadApp = function() { };
 
@@ -32,7 +45,15 @@ function(_, $, Backbone, TP, app)
 
             // start the app
             app.start();
-            TP.history.start({ pushState: false, root: app.root });
+
+            // unless it was already started
+            try
+            {
+                TP.history.start({ pushState: false, root: app.root });
+            } catch(e)
+            {
+                //console.log("Ignoring history already started");
+            }
 
             // go to #logout, even though it doesn't really exist, so then we can navigate to login or anywhere else
             app.router.navigate("logout", true);
@@ -50,10 +71,11 @@ function(_, $, Backbone, TP, app)
             var jqXhr = Backbone.$.ajax.apply(Backbone.$, arguments);
             var deferredFunctionNames = ["always", "done", "fail", "pipe", "progress", "then"];
 
-            _.each(deferredFunctionNames, function(methodName) {
-                var originalJqMethod = jqXhr[methodName];
-                var ajaxDeferredMethod = options.testHelpersDeferred[methodName];
-                jqXhr[methodName] = function()
+            _.each(deferredFunctionNames, function(httpVerbName)
+            {
+                var originalJqMethod = jqXhr[httpVerbName];
+                var ajaxDeferredMethod = options.testHelpersDeferred[httpVerbName];
+                jqXhr[httpVerbName] = function()
                 {
                     // apply on our cached data first
                     ajaxDeferredMethod.apply(options.testHelpersDeferred, arguments);
@@ -70,36 +92,67 @@ function(_, $, Backbone, TP, app)
                 options: options
             };
 
-            console.log("Fake XHR: " + url);
+            //console.log("Fake XHR: " + url);
             return jqXhr;
 
         },
 
-        resolveRequest: function(urlPattern, data)
+        resolveRequest: function(httpVerb, urlPattern, data)
+        {
+            var request = this.findRequest(httpVerb, urlPattern);
+            if (request)
+            {
+                //console.log("Resolving request " + request.url);
+                request.options.testHelpersDeferred.resolveWith(request.options, [data, 'success', request.jqXhr]);
+            } else
+            {
+                throw "Cannot find request to resolve: " + httpVerb + " " + urlPattern;
+            }
+        },
+
+        hasRequest: function(httpVerb, urlPattern)
+        {
+            var request = this.findRequest(httpVerb, urlPattern);
+            return request ? true : false;
+        },
+
+        findRequest: function(httpVerb, urlPattern)
         {
             var pattern = new RegExp(urlPattern);
-            _.each(_.keys(this.fakeAjaxRequests), function(url)
+            var request = _.find(_.values(this.fakeAjaxRequests), function(req)
             {
-                if(pattern.test(url))
+                if(pattern.test(req.url) && (!httpVerb || req.options.type === httpVerb))
                 {
-                    console.log("Resolving request " + url);
-                    var request = this.fakeAjaxRequests[url];
-                    request.options.testHelpersDeferred.resolveWith(request.options, [data, 'success', request.jqXhr]);
+                    return true;
                 }
             }, this);
+            return request;
         },
 
         setupFakeAjax: function()
         {
             _.bindAll(this, "fakeAjax");
-            Backbone._ajax = Backbone.ajax;
+
+            if (!Backbone._originalAjax)
+                Backbone._originalAjax = Backbone.ajax;
+
             Backbone.ajax = this.fakeAjax;
             this.fakeAjaxRequests = [];
         },
 
         removeFakeAjax: function()
         {
-            Backbone.ajax = Backbone._ajax;
+            if (Backbone._originalAjax)
+                Backbone.ajax = Backbone._originalAjax;
+        },
+
+        submitLogin: function(userData)
+        {
+            app.router.navigate("logout", true);
+            app.router.navigate("login", true);
+            app.mainRegion.$el.find("input[name=Submit]").trigger("click");
+            this.resolveRequest("POST", "Token", xhrData.token);
+            this.resolveRequest("GET", "users/v1/user", userData);
         }
 
     };
