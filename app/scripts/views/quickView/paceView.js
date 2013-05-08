@@ -129,8 +129,6 @@ function(
 
             }, this);
 
-            console.log(this.bindings);
-            console.log(this.model.attributes);
         },
 
         modifyPeaksChart: function(chartOptions, chartPoints)
