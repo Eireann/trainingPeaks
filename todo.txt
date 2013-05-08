@@ -1,17 +1,34 @@
 US642 TODO:
 
-athleteSettings object needs an athleteId
+HR TAB:
 
-watch for settings change/load
+initial peaks structure
+initial zones structure
 
-2) pull athlete settings endpoint
+2) stickit bindings for peaks
+update charts on change, only on blur/change
+3) autosave on blur
+4) autosave on timeout
+3) integrate checkpoint and cancel
+4) refactor, especially data building, stickit building, and autosave building
+- and templates can we combine across tabs?
+- could we even have a common tab base class?
+- some of the peak calculation probably doesn't belong in chartbuilder
+5) watch for settings change/load in qv tabs
+6) watch for workout type change - discuss behavior for existing workouts w/ data
+7) do we display and graph zero values for peaks?
+8) will we have a story to change the charts to flot? and improve design?
 
+throbbers on details instead of workout change
 
-should change for sport type
+BDD TESTS:
+zones and meanmax
+stickit and autosave
+late loading of athlete settings
+cancel
+changing workout type
+get full test set to work, and check coverage
 
-3) figure out how settings and tab editing are related for default fields etc
-4) empty/editable hr tab
-5) save hr tab
-6) repeat for other tabs
+REPEAT FOR OTHER TABS
 
 how to deal w/ bdd tests not running in browser?

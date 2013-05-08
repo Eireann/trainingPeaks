@@ -138,7 +138,7 @@ function(_)
             if (additionalChartOptions)
                 $.extend(true, chartOptions, additionalChartOptions);
 
-            if(container.highcharts)
+            if (container.highcharts)
                 container.highcharts(chartOptions);
         },
 
@@ -189,35 +189,44 @@ function(_)
         {
 
             var allPeaksByLabel = {};
-            _.each(peaksData, function(peak)
+            _.each(peaksData, function(peak, index)
             {
+                peak.modelArrayIndex = index;
                 allPeaksByLabel[peak.label] = peak;
             }, this);
 
 
-            var enabledPeaks = [];
+            var formattedPeaks = [];
             _.each(this.defaultPeakSettings, function (label)
             {
+                // display every peak with a formatted label and zero default value
+                var formattedLabel = this.formatMeanMaxLabel(label);
+                var peakValue = null;
+                var modelArrayIndex = null;
+
+                // if there is a value in the workout, display it
                 if (allPeaksByLabel.hasOwnProperty(label))
                 {
                     var peak = allPeaksByLabel[label];
-                    if (peak.value)
-                    {
-                        enabledPeaks.push(
-                            {
-                                label: this.formatMeanMaxLabel(peak.label),
-                                value: peak.value
-                            }
-                        );
-                    }
+                    peakValue = peak.value;
+                    modelArrayIndex = peak.modelArrayIndex;
                 }
+
+                formattedPeaks.push(
+                    {
+                        id: label,
+                        label: formattedLabel,
+                        value: peakValue,
+                        modelArrayIndex: modelArrayIndex
+                    }
+                );
             }, this);
 
-            return enabledPeaks;
+            return formattedPeaks;
         },
 
         defaultPeakSettings: [
-            'MM2Seconds',
+            //'MM2Seconds',
             'MM5Seconds',
             'MM10Seconds',
             'MM12Seconds',

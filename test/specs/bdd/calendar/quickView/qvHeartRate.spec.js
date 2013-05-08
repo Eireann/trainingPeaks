@@ -67,6 +67,16 @@ function(
                 expect(tabHtml).toContain(zone.label);
             }, this);
         });
+
+        // how do we get from zone input to actual model value?
+        // or do we just close/open and check new value?
+        xit("Should parse times as seconds", function()
+        {
+            var zoneInput = $body.find("input#timeInZone0");
+            zoneInput.val("0:01:00");
+            zoneInput.trigger("blur");
+
+        });
     });
 
 
