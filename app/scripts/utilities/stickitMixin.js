@@ -100,11 +100,17 @@ function(
             if (this.checkIfModelSaveRequired(newViewValue, options))
             {
                 this.setModelValue(newViewValue, options);
-                this.model.save();                   
+                this.saveModel();
             } else
             {
                 this.model.trigger("change:" + options.observe, this.model, newViewValue, options);
             }
+        },
+
+        // somewhat pointless, but it makes it easy to override for qv tabs ...
+        saveModel: function()
+        {
+            this.model.save();
         }
 
     };

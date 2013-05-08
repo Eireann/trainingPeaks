@@ -23,6 +23,7 @@ function(
         {
             if (!this.stickitInitialized)
             {
+                this.bindings = {};
                 this.buildTimeInZonesBindings();
                 this.buildPeaksBindings();
                 this.stickit();
@@ -34,10 +35,6 @@ function(
         cleanupStickitOnClose: function()
         {
             this.model.off("change", this.triggerChangeForDiscardButton, this);
-        },
-
-        bindings: {
-
         },
 
         buildTimeInZonesBindings: function()
@@ -78,7 +75,29 @@ function(
 
     };
 
+    var stickitUtilsOverrides = {
+
+        saveModel: function()
+        {
+            // existing workout? just save as usual
+            if (this.model.get("workoutId"))
+            {
+                this.model.save();
+
+                // new workout? save the workout first, then save the details
+            } else
+            {
+                var self = this;
+                this.workoutModel.save().done(function()
+                {
+                    self.model.save();
+                });
+            }
+        }
+    };
+
     _.extend(stickitBindingsMixin, stickitUtilsMixin);
+    _.extend(stickitBindingsMixin, stickitUtilsOverrides);
     return stickitBindingsMixin;
 
 });

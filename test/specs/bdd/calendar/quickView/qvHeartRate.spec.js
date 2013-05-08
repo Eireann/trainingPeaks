@@ -14,7 +14,7 @@ function(
 {
 
 
-    describe("heart rate tab", function()
+    xdescribe("heart rate tab", function()
     {
 
         // start the app

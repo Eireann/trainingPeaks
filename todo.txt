@@ -1,9 +1,6 @@
 US642 TODO:
 
-finish hr tab key functions:
-	debug webapi save
-	what if workout is not yet saved?
-	test qv summary/header stickit behavior still works
+webapi save
 
 refactor to make everything reuseable:
 	what are the differences between tabs? especially labels and tool tips
@@ -15,7 +12,9 @@ refactor to make everything reuseable:
 	some of the peak calculation probably doesn't belong in chartbuilder
 
 watch for settings change/load in qv tabs if athlete settings haven't loaded yet
-workout type change - is there a
+
+workout type change - how does this effect existing 'time in zones' data? do we re-display based on settings? or would it change on server?
+
 watch for workout type change - discuss behavior for existing workouts w/ data
 
 default zones for new users - where or how? or, what about existing users that have no zones?

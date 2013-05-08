@@ -11,7 +11,7 @@ function(
     theApp)
 {
 
-    describe("open the calendar", function()
+    xdescribe("open the calendar", function()
     {
         var $el;
 

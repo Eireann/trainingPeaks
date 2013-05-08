@@ -11,7 +11,7 @@ function(
     theApp)
 {
 
-    describe("Login", function()
+    xdescribe("Login", function()
     {
 
         var $el;

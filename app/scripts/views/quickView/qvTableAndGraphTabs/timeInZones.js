@@ -55,7 +55,6 @@ function(
 
         onTimeInZonesChange: function()
         {
-            console.log("Updating zones chart");
             var timeInZones = this.getOrCreateTimeInZones();
             this.renderTimeInZonesChart(timeInZones);
             this.trigger("change:model", this.model);
