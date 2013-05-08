@@ -17,7 +17,7 @@
 
 .workoutStatsRow
 {
-	@include innerRow();
+	@include grid-row();
 	
 	clear: both;
     height: 23px;
