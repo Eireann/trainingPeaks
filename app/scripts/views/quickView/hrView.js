@@ -19,6 +19,8 @@ function(
     
     var hrViewBase = {
 
+        metric: "HeartRate",
+
         className: "quickViewHrTab",
 
         showThrobbers: true,

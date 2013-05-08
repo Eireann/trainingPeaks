@@ -45,6 +45,8 @@ function(
             {
                 this.model.checkpoint();
                 this.model.on("change", this.saveOnModelChange, this);
+                this.model.on("change", this.enableDiscardButtonOnModelChange, this);
+                this.on("change:details", this.enableDiscardButtonOnModelChange, this);
                 this.discardButtonColor = this.$("button#discard").css("color");
                 this.$("button#discard").css("color", "grey");
                 this.saveDeleteDiscardInitialized = true;
@@ -54,14 +56,20 @@ function(
         removeSaveOnModelChange: function()
         {
             this.model.off("change", this.saveOnModelChange);
+            this.model.off("change", this.enableDiscardButtonOnModelChange);
+            this.off("change:details", this.enableDiscardButtonOnModelChange);
+        },
+
+        enableDiscardButtonOnModelChange: function(model)
+        {
+            if (!_.isEmpty(model.changed) && !_.has(model.changed, "workoutDay"))
+                this.enableDiscardButton();
         },
 
         saveOnModelChange: function()
         {
             if (!_.isEmpty(this.model.changed))
             {
-                if(!_.has(this.model.changed, "workoutDay"))
-                    this.enableDiscardButton();
 
                 // The model properties we are checking for here are not bound via StickIt, so
                 // they have to be saved manually when the model changes.

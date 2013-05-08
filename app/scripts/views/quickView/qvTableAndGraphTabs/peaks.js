@@ -8,7 +8,7 @@
 function(
     _,
     TP,
-    hrPeakRowTemplate,
+    peakRowTemplate,
     peaksTooltipTemplate
 )
 {
@@ -17,6 +17,9 @@ function(
 
         initializePeaks: function()
         {
+            if (!this.metric)
+                throw "peaks mixin requires a metric name (this.metric)";
+
             this.on("render", this.onRenderPeaks, this);
         },
 
@@ -29,13 +32,13 @@ function(
 
         watchForPeaksChanges: function()
         {
-            this.model.on("change:meanMaxHeartRate.*", this.updatePeaksChart, this);
+            this.model.on("change:meanMax" + this.metric + ".*", this.onPeaksChange, this);
             this.on("close", this.stopWatchingPeaksChanges, this);
         },
 
         stopWatchingPeaksChanges: function()
         {
-            this.model.off("change:meanMaxHeartRate.*", this.updatePeaksChart, this);
+            this.model.off("change:meanMax" + this.metric + ".*", this.onPeaksChange, this);
         },
 
         renderPeaks: function()
@@ -46,23 +49,23 @@ function(
             this.renderPeaksChart(peaks, timeInZones);
         },
 
-        updatePeaksChart: function()
+        onPeaksChange: function()
         {
-            console.log("Updating peaks chart");
             var timeInZones = this.getOrCreateTimeInZones();
             var peaks = this.getPeaksData();
             this.renderPeaksChart(peaks, timeInZones);
+            this.trigger("change:model", this.model);
         },
 
         renderPeaksTable: function(peaks)
         {
             if (peaks)
             {
-                var peaksHtml = hrPeakRowTemplate({ peaks: peaks });
-                this.$("#heartRatePeaksTable").html(peaksHtml);
+                var peaksHtml = peakRowTemplate({ peaks: peaks });
+                this.$(".peaksTable").html(peaksHtml);
             } else
             {
-                this.$("#heartRatePeaksTable").html("");
+                this.$(".peaksTable").html("");
             }
         },
 
@@ -117,17 +120,17 @@ function(
                         }
                     }
                 };
-                TP.utils.chartBuilder.renderSplineChart(this.$("#heartRatePeaksChart"), chartPoints, peaksTooltipTemplate, chartOptions);
+                TP.utils.chartBuilder.renderSplineChart(this.$(".peaksChart"), chartPoints, peaksTooltipTemplate, chartOptions);
             } else
             {
-                this.$("#heartRatePeaksChart").html("");
+                this.$(".peaksChart").html("");
             }
         },
 
         getPeaksData: function()
         {
-            var hrPeaks = this.model.get("meanMaxHeartRate");
-            return TP.utils.chartBuilder.cleanAndFormatPeaksData(hrPeaks);
+            var peaks = this.model.get("meanMax" + this.metric);
+            return TP.utils.chartBuilder.cleanAndFormatPeaksData(peaks);
         },
 
         defaultPeakSettings: [
@@ -151,15 +154,15 @@ function(
 
         initializePeakDataOnModel: function()
         {
-            var hrPeaks = this.model.get("meanMaxHeartRate");
+            var peaks = this.model.get("meanMax" + this.metric);
 
-            if (!hrPeaks)
+            if (!peaks)
             {
-                hrPeaks = [];
+                peaks = [];
             }
 
             var allPeaksByLabel = {};
-            _.each(hrPeaks, function(peak, index)
+            _.each(peaks, function(peak, index)
             {
                 peak.modelArrayIndex = index;
                 allPeaksByLabel[peak.label] = peak;
@@ -170,7 +173,7 @@ function(
             {
                 if (!allPeaksByLabel.hasOwnProperty(label))
                 {
-                    hrPeaks.push({
+                    peaks.push({
                         label: label,
                         value: null
                     });
@@ -178,7 +181,7 @@ function(
 
             }, this);
 
-            this.model.set("meanMaxHeartRate", hrPeaks, { silent: true });
+            this.model.set("meanMax" + this.metric, peaks, { silent: true });
         }
 
     };

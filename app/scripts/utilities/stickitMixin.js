@@ -87,7 +87,7 @@ function(
         setModelValue: function(newViewValue, options)
         {
             // Do the save!
-            var newModelValue = options.observe === "description" ? newViewValue : this[options.onSet](newViewValue);
+            var newModelValue = (options.ignoreOnSetForUpdateModel || !options.onSet) ? newViewValue : this[options.onSet](newViewValue);
             this.model.set(options.observe, newModelValue);
             this.trigger("setModelValue", newViewValue, options);
         },

@@ -151,16 +151,32 @@ function (
             }
         },
 
+        onDetailsChange: function(detailModel)
+        {
+            this.trigger("change:details", detailModel);
+        },
+
         initializeTabsAfterRender: function()
         {
             this.on("close", this.closeTabViews, this);
+
+            var tabViews = {
+                summary: new WorkoutQuickViewSummary({ model: this.model, el: this.$(this.tabDomIDs[0]) }),
+                map: new WorkoutQuickViewMapAndGraph({ model: this.model, prefetchConfig: this.prefetchConfig, el: this.$(this.tabDomIDs[1]) }),
+                hr: new WorkoutQuickViewHR({ model: this.model.get("details"), workoutModel: this.model, el: this.$(this.tabDomIDs[2]) }),
+                power: new WorkoutQuickViewPower({ model: this.model, el: this.$(this.tabDomIDs[3]) }),
+                pace: new WorkoutQuickViewPace({ model: this.model, el: this.$(this.tabDomIDs[4]) })
+            };
+
+            tabViews.hr.on("change:model", this.onDetailsChange, this);
+
             this.tabs =
             [
-                new WorkoutQuickViewSummary({ model: this.model, el: this.$(this.tabDomIDs[0]) }),
-                new WorkoutQuickViewMapAndGraph({ model: this.model, prefetchConfig: this.prefetchConfig, el: this.$(this.tabDomIDs[1]) }),
-                new WorkoutQuickViewHR({ model: this.model.get("details"), workoutModel: this.model, el: this.$(this.tabDomIDs[2]) }),
-                new WorkoutQuickViewPower({ model: this.model, el: this.$(this.tabDomIDs[3]) }),
-                new WorkoutQuickViewPace({ model: this.model, el: this.$(this.tabDomIDs[4]) })
+                tabViews.summary,
+                tabViews.map,
+                tabViews.hr,
+                tabViews.power,
+                tabViews.pace
             ];
         },
 

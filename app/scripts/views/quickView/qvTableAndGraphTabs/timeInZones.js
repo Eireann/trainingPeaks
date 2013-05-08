@@ -8,7 +8,7 @@
 function(
     _,
     TP,
-    hrZoneRowTemplate,
+    zoneRowTemplate,
     timeInZoneTooltipTemplate
 )
 {
@@ -17,6 +17,9 @@ function(
 
         initializeTimeInZones: function()
         {
+            if (!this.metric)
+                throw "zones mixin requires a metric name (this.metric)";
+
             this.on("render", this.onRenderTimeInZones, this);
         },
 
@@ -28,13 +31,13 @@ function(
 
         watchForTimeInZonesChanges: function()
         {
-            this.model.on("change:timeInHeartRateZones.timeInZones.*", this.updateTimeInZonesChart, this);
+            this.model.on("change:timeIn" + this.metric + "Zones.timeInZones.*", this.onTimeInZonesChange, this);
             this.on("close", this.stopWatchingTimeInZonesChanges, this);
         },
 
         stopWatchingTimeInZonesChanges: function()
         {
-            this.model.off("change:timeInHeartRateZones.timeInZones.*", this.updateTimeInZonesChart, this);
+            this.model.off("change:timeIn" + this.metric + "Zones.timeInZones.*", this.onTimeInZonesChange, this);
         },
 
         renderTimeInZones: function()
@@ -44,11 +47,12 @@ function(
             this.renderTimeInZonesChart(timeInZones);
         },
 
-        updateTimeInZonesChart: function()
+        onTimeInZonesChange: function()
         {
             console.log("Updating zones chart");
             var timeInZones = this.getOrCreateTimeInZones();
             this.renderTimeInZonesChart(timeInZones);
+            this.trigger("change:model", this.model);
         },
 
         renderTimeInZonesTable: function(timeInZones)
@@ -56,11 +60,11 @@ function(
 
             if (timeInZones)
             {
-                var zonesHtml = hrZoneRowTemplate(timeInZones);
-                this.$("#heartRateByZonesTable").html(zonesHtml);
+                var zonesHtml = zoneRowTemplate(timeInZones);
+                this.$(".zonesTable").html(zonesHtml);
             } else
             {
-                this.$("#heartRateByZonesTable").html("");
+                this.$(".zonesTable").html("");
             }
         },
 
@@ -121,24 +125,24 @@ function(
                         }
                     }
                 };
-                TP.utils.chartBuilder.renderColumnChart(this.$("#heartRateByZonesChart"), chartPoints, timeInZoneTooltipTemplate, chartOptions);
+                TP.utils.chartBuilder.renderColumnChart(this.$(".zonesChart"), chartPoints, timeInZoneTooltipTemplate, chartOptions);
             } else
             {
-                this.$("#heartRateByZonesChart").html("");
+                this.$(".zonesChart").html("");
             }
         },
 
         getOrCreateTimeInZones: function()
         {
 
-            var timeInZones = this.model.get("timeInHeartRateZones");
-            if (!timeInZones)
+            var timeInZones = this.model.get("timeIn" + this.metric + "Zones");
+            if (!timeInZones || !timeInZones.timeInZones || !timeInZones.timeInZones.length)
             {
                 timeInZones = this.buildTimeInZonesFromAthleteSettings();
 
                 if (timeInZones)
                 {
-                    this.model.set("timeInHeartRateZones", timeInZones, { silent: true });
+                    this.model.set("timeIn" + this.metric + "Zones", timeInZones, { silent: true });
                 }
             }
 

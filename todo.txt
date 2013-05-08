@@ -1,22 +1,23 @@
 US642 TODO:
 
-extract hr specific details
-remove 'description' from stickitutils
+finish hr tab key functions:
+	debug webapi save
+	integrate checkpoint and cancel and qv ok/cancel state
+	what if workout is not yet saved?
+	watch for workout details onload changes
+	test qv summary/header stickit behavior still works
 
-watch for onload changes
+refactor to make everything reuseable:
+	what are the differences between tabs? especially labels and tool tips
+	extract hr specific details
+	point tool tip data
+	tool tip template
+	build from settings
+	view base class?
+	some of the peak calculation probably doesn't belong in chartbuilder
 
-verify webapi save is working
-
-refactor tool tips
-refactor other tabs to use same logic: what are differences in templates and tooltips and calculations?
-
-integrate checkpoint and cancel
-
-some of the peak calculation probably doesn't belong in chartbuilder
-
-watch for settings change/load in qv tabs?
-
-6) watch for workout type change - discuss behavior for existing workouts w/ data
+watch for settings change/load in qv tabs if athlete settings haven't loaded yet
+watch for workout type change - discuss behavior for existing workouts w/ data
 
 8) will we have a story to change the charts to flot? and improve design?
 
