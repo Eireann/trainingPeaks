@@ -2,8 +2,9 @@
 
 #calendarWrapper
 {
-    @include outerRow();
+    @include grid-row();
 	background-color: white;
+    max-width: none;
 }
 
 #calendarHeader
@@ -145,13 +146,15 @@
 #calendarContainer
 {
 
-    @include column(15);
+    @include grid-column(15);
+    @include nice-scrollbar;
     user-select: none;
     -moz-user-select: none;
     -webkit-user-select: none;
     //margin-left: 45px;
 	padding: 0 2px;
 	background-color: white;
+    overflow-x: auto;
 
     @include calc(width, "100% - 45px"); 
 
@@ -164,22 +167,28 @@
         border-left-color: $TPGrey2;
     }
 
+    #weeksContainer
+    {
+        min-width: 1007px;
+    }
+
     .week
     {
-        @include outerRow();
+        @include grid-row();
 		background-color: $TPGrey1;
         padding-left: 4px;
+        max-width: none;
     }
 
     .day
     {
-        @include column(2);
         min-height:150px;
 		background-color: $TPGrey1;
         padding: 0px 0px 5px;
-
+        @include calc(width, "(100% - 288px) /7");
         overflow-x: hidden;
         overflow-y: visible;
+        float: left;
 
         &.selected
         {
@@ -298,7 +307,7 @@
 
     .daysOfWeek
     {
-        @include outerRow();
+        @include grid-row();
         @include calc(width, "100%"); 
 		background-color: $TPGrey1;
 		height: 27px;
@@ -313,10 +322,13 @@
 		position: relative;
 		z-index: 1;
         cursor: default;
+        max-width: none;
+        min-width: 1007px;
 
         div
         {
-                @include column(2);
+                @include calc(width, "(100% - 288px) /7");
+                float: left;
                 padding-bottom: 0px;
                 padding-left: 5px;
                 padding-right: 0px;
