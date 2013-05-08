@@ -26,10 +26,9 @@ function(seriesColorByChannel, findIndexByMsOffset)
                 {
                     if (channelName === "Latitude" || channelName === "Longitude")
                         value = value / 100000;
-                    else
+                    else if (!(channelName === "Power" || channelName === "Cadence" || channelName === "HeartRate" || channelName === "RightPower"))
                         value = value / 100;
                 }
-
 
                 if (channelName === "Elevation" && value === null)
                     value = previousElevation;
@@ -79,10 +78,6 @@ function(seriesColorByChannel, findIndexByMsOffset)
                 data: data,
                 label: channel,
                 lines:
-                {
-                    fill: fillOpacity
-                },
-                splines:
                 {
                     fill: fillOpacity
                 },

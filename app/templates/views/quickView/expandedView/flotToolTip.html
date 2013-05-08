@@ -1,0 +1,13 @@
+﻿<div>
+    {{timeOffset}}<br/>
+    {{#each series}}
+    {{#if this.current}}
+    <b>
+    {{/if}}
+    {{this.label}}: {{this.value}} {{this.units}}
+    {{#if this.current}}
+    </b>
+    {{/if}}
+    <br/>
+    {{/each}}
+</div>

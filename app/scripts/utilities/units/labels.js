@@ -107,7 +107,6 @@ function(unitsConstants, workoutLayoutFormatter)
         }
     };
 
-    // TP.utils.units.getUnitsLabel(fieldName, sportType, context)
     var getUnitsLabel = function(fieldName, sportType, context)
     {
         var userUnits = theMarsApp.user.get("units");

@@ -9,7 +9,6 @@ function(_, moment, TP)
 
     var CalendarDay = TP.Model.extend(
     {
-
         idAttribute: 'date',
 
         initialize: function()
@@ -22,7 +21,7 @@ function(_, moment, TP)
         {
             // we need a date
             var date = this.get("date");
-            if(!date)
+            if (!date)
                 throw "CalendarDay requires a date";
 
             // use a formatted string for date attribute and for calendar id
@@ -58,13 +57,13 @@ function(_, moment, TP)
         {
             this.itemsCollection.remove(item);
         },
-        
+
         deleteDayItems: function()
         {
             this.itemsCollection.each(function(item)
             {
                 if (!item.isDateLabel)
-                    item.destroy({ wait:true });
+                    item.destroy({ wait: true });
             });
         },
 
@@ -78,18 +77,18 @@ function(_, moment, TP)
             });
             return calendarDay;
         },
-        
+
         cutToClipboard: function()
         {
             var calendarDay = new CalendarDay({ date: this.get("date") });
-            this.itemsCollection.each(function (item)
+            this.itemsCollection.each(function(item)
             {
                 if (typeof item.cutToClipboard === "function")
                     calendarDay.add(item.cutToClipboard());
             });
             return calendarDay;
         },
-        
+
         onPaste: function(dateToPasteTo)
         {
             var pastedItems = [];
@@ -106,8 +105,20 @@ function(_, moment, TP)
         length: function()
         {
             return this.itemsCollection.length;
-        }
+        },
 
+        workoutAdded: function(newWorkout)
+        {
+            /*
+            _.each(this.itemsCollection.models, function(existingWorkout)
+            {
+                if (existingWorkout.get && existingWorkout.get("workoutId") === newWorkout.get("workoutId"))
+                    existingWorkout.trigger("change");
+            });
+            */
+
+            this.trigger("workout:added", newWorkout);
+        }
     }, { hasLabel: false });
 
     return CalendarDay;
