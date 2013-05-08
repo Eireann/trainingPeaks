@@ -1,9 +1,9 @@
 US642 TODO:
 
 finish hr tab key functions:
+	watch for workout details onload changes
 	debug webapi save
 	what if workout is not yet saved?
-	watch for workout details onload changes
 	test qv summary/header stickit behavior still works
 
 refactor to make everything reuseable:

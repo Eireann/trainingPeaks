@@ -191,8 +191,9 @@ function(_)
             var allPeaksByLabel = {};
             _.each(peaksData, function(peak, index)
             {
-                peak.modelArrayIndex = index;
-                allPeaksByLabel[peak.label] = peak;
+                var peakClone = _.clone(peak);
+                peakClone.modelArrayIndex = index;
+                allPeaksByLabel[peakClone.label] = peakClone;
             }, this);
 
 
