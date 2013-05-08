@@ -6,70 +6,126 @@
 
 	@include buttons(0, 60px, 12px);
     
-    button
-    {
-        margin-right: 0.5em;
+    button {
+ 		margin:0;
+        cursor: default;
+    	&#cancel {
+			margin-right:1px;
+			}
+		}
+
+	label {
+		font-weight:normal;
+	}
+
+    div {
+        cursor: default;
+    }
+    span {
         cursor: default;
     }
 
-    div
-    {
-        cursor: default;
-    }
-    span
-    {
-        cursor: default;
-    }
-
-	.bold
-	{
+	.bold {
 		font-weight: bold;
 	}
 
-	.shiftItemsBody
-	{
+	.shiftItemsBody {
         text-align: left;
 		padding: 10px 15px 15px 15px;
 		@include inputs(13px, 13px, 12px, $navigationFontFamilyRegular);
 
-        input[type=text]
-        {
+        input[type=text] {
             margin-left: 10px;
             margin-right: 10px;
-        }
+        	}
 
-        input[type=radio]
-        {
+        input[type=radio] {
             cursor: default;
-        }
+			margin-right:10px;
+        	}
 
-		.toAndFromDateRange
-		{
-			display: -webkit-box;
-			@include inputs(100px, 25px, 12px, $navigationFontFamilyRegular);
-			input
-			{
-				display: inline;
+		.DateRange {
+		
+			}
+			
+		.DateRangeContain {
+			width:290px;
+			margin:0 auto;
+			}
+		
+		.dateSelector {
+			float:left;
+			width:155px;
+			&.to {
+				width:135px;
 			}
 		}
+		
+		#selectDateRange, #MoveContain {
+		
+		}
+		
+		
+		#selectItems label, #howToShift label {
+			margin-left:50px;
+		}
+		
+		#howToShift .MoveToNewStartDateLabel label {
+			margin-left:0;
+		}
+		
 
-		.selectNewStartDateInput
-		{
+		.toAndFromDateRange {
 			display: -webkit-box;
 			@include inputs(100px, 25px, 12px, $navigationFontFamilyRegular);
-			input
-			{
+			
+			input {
 				display: inline;
+				}
+			
+			label {
+				font-size: $fontSizeSmall;
+				}
 			}
-		}
+
+		.selectNewStartDateInput {
+		/* -webkit-box makes the label and input display as inline */
+		//	display: -webkit-box;
+			@include inputs(100px, 25px, 12px, $navigationFontFamilyRegular);
+			
+			input {
+				display: inline;
+				}
+			
+			
+			.MoveToNewStartDateLabel {
+			
+				}
+			
+			.MoveToNewStartDateInput {
+			
+				}
+			
+			}
+
+		#MoveToNewStartDate, 
+		#MoveBySpecifiedNumberOfDays, 
+		#MoveBySpecifiedNumberOfWeeks {
+			text-align:center;
+			
+			label {
+				font-weight:bold;
+				font-size:$fontSizeSmall;
+				margin:0;
+				}
+			}
 
         input.numberpicker
         {
             border:none;
             outline:none;
-            padding:0px;
+            padding:0 0 0 5px;
             margin:0px;
-            margin-left:5px;
             width:100px;
             height:32px;
 
@@ -79,10 +135,43 @@
             } 
         }
 
-        .dialogHeader
-        {
+        .dialogHeader	{
             margin-bottom: 0.25px;
         }
+
+		.dialogHeader h3 {
+			margin: 10px 0;
+			font-size: $fontSizeXLarge;
+		}
+		
+		.dialogHeader h4  {
+			margin: 10px 0;
+			font-size: $fontSizeMedium;
+		}
+		
+		#howToShift {
+			margin-top:25px;
+		}
+		
+		#howToShift h4 {
+			margin: 10px 0;
+			font-size: $fontSizeMedium;
+		}
+		
+		.cancelOkButtons {
+			text-align:right;
+		}
+		
+	
+		#MoveContain {
+			margin-top:20px;
+			height:75px;
+		}
+		
+		#selectItems form {
+			margin-bottom:20px;
+		}
+		
             
 	}
 
