@@ -4,7 +4,7 @@
     "./timeInZones",
     "./peaks",
     "./stickitBindings",
-    "hbs!templates/views/quickView/zonesTabView"
+    "hbs!templates/views/quickView/zonesTab/zonesTabView"
 ],
 function(
     _,
@@ -28,7 +28,7 @@ function(
             this.model.off("change", this.render);
         },
 
-        initialize: function(options)
+        initializeBaseView: function(options)
         {
             this.workoutModel = options.workoutModel;
             this.initializeTimeInZones();

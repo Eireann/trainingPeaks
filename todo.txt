@@ -4,14 +4,15 @@ webapi save
 
 compare all tabs to app.dev
 
-refactor to make everything reuseable:
-	what are the differences between tabs? especially labels and tool tips
-	extract hr specific details
-	point tool tip data
-	tool tip template
-	build from settings
-	view base class?
-	some of the peak calculation probably doesn't belong in chartbuilder
+stickit functions
+refactor tooltips to single template
+
+make other classes use same base
+look on app.dev for differences
+
+some of the peak calculation probably doesn't belong in chartbuilder
+
+remove all unused files
 
 watch for settings change/load in qv tabs if athlete settings haven't loaded yet
 

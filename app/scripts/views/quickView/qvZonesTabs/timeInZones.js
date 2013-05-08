@@ -2,14 +2,14 @@
 [
     "underscore",
     "TP",
-    "hbs!templates/views/quickView/heartRate/hrZoneRow",
-    "hbs!templates/views/quickView/heartRate/timeInZoneChartTooltip"
+    "hbs!templates/views/quickView/zonesTab/zoneTableRow",
+    "hbs!templates/views/quickView/zonesTab/chartTooltip"
 ],
 function(
     _,
     TP,
     zoneRowTemplate,
-    timeInZoneTooltipTemplate
+    tooltipTemplate
 )
 {
 
@@ -86,19 +86,17 @@ function(
 
                 var point = {
                     label: timeInZone.label,
-                    rangeMinimum: timeInZone.minimum,
-                    rangeMaximum: timeInZone.maximum,
+                    minimum: timeInZone.minimum,
+                    maximum: timeInZone.maximum,
                     percentTime: TP.utils.conversion.toPercent(timeInZone.seconds, totalSeconds),
-                    percentLTMin: TP.utils.conversion.toPercent(timeInZone.minimum, timeInZones.threshold),
-                    percentLTMax: TP.utils.conversion.toPercent(timeInZone.maximum, timeInZones.threshold),
-                    percentMHRMin: TP.utils.conversion.toPercent(timeInZone.minimum, timeInZones.maximum),
-                    percentMHRMax: TP.utils.conversion.toPercent(timeInZone.maximum, timeInZones.maximum),
                     seconds: timeInZone.seconds,
                     y: minutes,
                     value: minutes,
                     x: index
                 };
 
+                // gives our view or other listeners a hook to modify the point
+                this.trigger("buildTimeInZoneChartPoint", point, timeInZone, timeInZones);
                 chartPoints.push(point);
 
             }, this);
@@ -116,7 +114,7 @@ function(
                 var chartOptions = {
                     title:
                     {
-                        text: "Heart Rate by Zones"
+                        text: this.graphTitle + " by Zones"
                     },
                     xAxis: {
                         title:
@@ -130,7 +128,7 @@ function(
                         }
                     }
                 };
-                TP.utils.chartBuilder.renderColumnChart(this.$(".zonesChart"), chartPoints, timeInZoneTooltipTemplate, chartOptions);
+                TP.utils.chartBuilder.renderColumnChart(this.$(".zonesChart"), chartPoints, tooltipTemplate, chartOptions);
             } else
             {
                 this.$(".zonesChart").html("");
@@ -156,16 +154,15 @@ function(
 
         buildTimeInZonesFromAthleteSettings: function()
         {
-            var zoneSettingName = "heartRateZones";
             var workoutTypeId = this.workoutModel.get("workoutTypeValueId");
-            var settings = this.getZoneSettingsByWorkoutTypeId(zoneSettingName, workoutTypeId);
+            var settings = this.getZoneSettingsByWorkoutTypeId(this.zoneSettingName, workoutTypeId);
 
             if (!settings)
                 return null;
 
             var timeInZones = {
-                maximum: settings.maximumHeartRate,
-                resting: settings.restingHeartRate,
+                maximum: settings["maximum" + this.metric],
+                resting: settings["resting" + this.metric],
                 threshold: settings.threshold,
                 timeInZones: []
             };

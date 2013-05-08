@@ -43,15 +43,17 @@ function(
             _.each(timeInZones.timeInZones, function(timeInZone, index)
             {
                 var inputFieldCssId = "#timeInZone" + index;
-                var modelFieldName = "timeInHeartRateZones.timeInZones." + index + ".seconds";
+                var modelFieldName = "timeIn" + this.metric + "Zones.timeInZones." + index + ".seconds";
 
-                this.bindings[inputFieldCssId] =
-                {
+                var binding = {
                     observe: modelFieldName,
-                    onGet: "formatDurationFromSeconds",
-                    onSet: "parseDurationAsSeconds",
                     updateModel: "updateModel"
                 };
+
+                this.trigger("buildTimeInZoneStickitBinding", binding, timeInZone);
+
+                this.bindings[inputFieldCssId] = binding;
+
             }, this);
         },
 
@@ -61,15 +63,16 @@ function(
             _.each(peaks, function(peak, index)
             {
                 var inputFieldCssId = "#" + peak.id;
-                var modelFieldName = "meanMaxHeartRate." + peak.modelArrayIndex + ".value";
+                var modelFieldName = "meanMax" + this.metric + "." + peak.modelArrayIndex + ".value";
 
-                this.bindings[inputFieldCssId] =
-                {
+                var binding = {
                     observe: modelFieldName,
-                    onGet: "formatInteger",
-                    onSet: "parseInteger",
                     updateModel: "updateModel"
                 };
+
+                this.trigger("buildPeakStickitBinding", binding, peak);
+
+                this.bindings[inputFieldCssId] = binding;
             }, this);
         }
 

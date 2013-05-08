@@ -2,14 +2,14 @@
 [
     "underscore",
     "TP",
-    "hbs!templates/views/quickView/heartRate/hrPeakRow",
-    "hbs!templates/views/quickView/heartRate/peakChartTooltip"
+    "hbs!templates/views/quickView/zonesTab/peakTableRow",
+    "hbs!templates/views/quickView/zonesTab/chartTooltip"
 ],
 function(
     _,
     TP,
     peakRowTemplate,
-    peaksTooltipTemplate
+    tooltipTemplate
 )
 {
 
@@ -86,11 +86,12 @@ function(
                 var point = {
                     label: peak.label,
                     value: peak.value,
-                    percentLT: TP.utils.conversion.toPercent(peak.value, timeInZones.threshold),
-                    percentMHR: TP.utils.conversion.toPercent(peak.value, timeInZones.maximum),
                     y: peak.value,
                     x: index
                 };
+
+                // gives our view or other listeners a hook to modify the point
+                this.trigger("buildPeakChartPoint", point, peak, timeInZones);
 
                 chartPoints.push(point);
 
@@ -109,7 +110,7 @@ function(
                 var chartOptions = {
                     title:
                     {
-                        text: "Peak Heart Rate"
+                        text: "Peak " + this.graphTitle
                     },
                     xAxis: {
                         labels:
@@ -126,7 +127,7 @@ function(
                         }
                     }
                 };
-                TP.utils.chartBuilder.renderSplineChart(this.$(".peaksChart"), chartPoints, peaksTooltipTemplate, chartOptions);
+                TP.utils.chartBuilder.renderSplineChart(this.$(".peaksChart"), chartPoints, tooltipTemplate, chartOptions);
             } else
             {
                 this.$(".peaksChart").html("");
