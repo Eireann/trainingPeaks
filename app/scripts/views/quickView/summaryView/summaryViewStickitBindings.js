@@ -384,6 +384,9 @@ function(
 
         fixNewlines: function(value)
         {
+            if (value === null)
+                return "";
+
             var newValue = value.replace(/\r\n/g, "\n").replace(/\n/g, "\r\n");
             return newValue;
         },

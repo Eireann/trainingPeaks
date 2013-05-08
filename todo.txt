@@ -2,7 +2,6 @@ US642 TODO:
 
 finish hr tab key functions:
 	debug webapi save
-	integrate checkpoint and cancel and qv ok/cancel state
 	what if workout is not yet saved?
 	watch for workout details onload changes
 	test qv summary/header stickit behavior still works
@@ -17,6 +16,7 @@ refactor to make everything reuseable:
 	some of the peak calculation probably doesn't belong in chartbuilder
 
 watch for settings change/load in qv tabs if athlete settings haven't loaded yet
+workout type change - is there a
 watch for workout type change - discuss behavior for existing workouts w/ data
 
 8) will we have a story to change the charts to flot? and improve design?
