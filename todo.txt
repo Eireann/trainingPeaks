@@ -4,6 +4,10 @@ HR TAB:
 
 initial peaks structure
 initial zones structure
+fix NAN
+test stickit
+extract hr specific details
+refactor tool tips
 
 2) stickit bindings for peaks
 update charts on change, only on blur/change

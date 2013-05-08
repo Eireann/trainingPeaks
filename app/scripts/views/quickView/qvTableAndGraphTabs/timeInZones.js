@@ -137,7 +137,9 @@ function(
                 timeInZones = this.buildTimeInZonesFromAthleteSettings();
 
                 if (timeInZones)
+                {
                     this.model.set("timeInHeartRateZones", timeInZones, { silent: true });
+                }
             }
 
             return timeInZones;

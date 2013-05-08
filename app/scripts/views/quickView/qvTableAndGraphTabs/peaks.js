@@ -151,9 +151,6 @@ function(
 
         initializePeakDataOnModel: function()
         {
-            console.log("Before init: ");
-            console.log(this.model.get("meanMaxHeartRate"));
-
             var hrPeaks = this.model.get("meanMaxHeartRate");
 
             if (!hrPeaks)
@@ -162,7 +159,7 @@ function(
             }
 
             var allPeaksByLabel = {};
-            _.each(peaksData, function(peak, index)
+            _.each(hrPeaks, function(peak, index)
             {
                 peak.modelArrayIndex = index;
                 allPeaksByLabel[peak.label] = peak;
@@ -181,10 +178,7 @@ function(
 
             }, this);
 
-            this.model.set("meanMaxHeartRate", hrPeaks, { silent: true })
-
-            console.log("After init: ");
-            console.log(this.model.get("meanMaxHeartRate"));
+            this.model.set("meanMaxHeartRate", hrPeaks, { silent: true });
         }
 
     };
