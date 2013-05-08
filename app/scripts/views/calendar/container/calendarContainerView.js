@@ -71,7 +71,13 @@ function (_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, 
             var $window = $(window);
             var headerHeight = $("#navigation").height();
             var windowHeight = $window.height();
-            this.$(".scrollable").css({ height: windowHeight - headerHeight - 75 + 'px' });
+            var weeksContainerHeight = windowHeight - headerHeight - 75;
+            if (this.$el.closest("#calendarContainer").width() < 1007)
+            {
+                weeksContainerHeight -= 28;
+            }
+            this.$(".scrollable").css({ height: weeksContainerHeight + 'px' });
+            
         },
 
         resizeContainer: function(event)
