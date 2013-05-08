@@ -31,12 +31,18 @@ function(
 
         watchForTimeInZonesChanges: function()
         {
+
+            // big change - i.e. initial load from server - rerender whole tab
+            this.model.on("change:timeIn" + this.metric + "Zones.timeInZones", this.reRenderOnChange, this);
+
+            // small change - i.e. stickit edit, just update the graph
             this.model.on("change:timeIn" + this.metric + "Zones.timeInZones.*", this.onTimeInZonesChange, this);
             this.on("close", this.stopWatchingTimeInZonesChanges, this);
         },
 
         stopWatchingTimeInZonesChanges: function()
         {
+            this.model.off("change:timeIn" + this.metric + "Zones.timeInZones", this.reRenderOnChange, this);
             this.model.off("change:timeIn" + this.metric + "Zones.timeInZones.*", this.onTimeInZonesChange, this);
         },
 

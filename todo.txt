@@ -1,7 +1,6 @@
 US642 TODO:
 
 finish hr tab key functions:
-	watch for workout details onload changes
 	debug webapi save
 	what if workout is not yet saved?
 	test qv summary/header stickit behavior still works
@@ -18,6 +17,8 @@ refactor to make everything reuseable:
 watch for settings change/load in qv tabs if athlete settings haven't loaded yet
 workout type change - is there a
 watch for workout type change - discuss behavior for existing workouts w/ data
+
+default zones for new users - where or how? or, what about existing users that have no zones?
 
 8) will we have a story to change the charts to flot? and improve design?
 

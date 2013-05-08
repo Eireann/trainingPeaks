@@ -32,12 +32,18 @@ function(
 
         watchForPeaksChanges: function()
         {
+
+            // big change - i.e. initial load from server - rerender whole tab
+            this.model.on("change:meanMax" + this.metric, this.reRenderOnChange, this);
+
+            // small change - i.e. stickit edit, just update the graph
             this.model.on("change:meanMax" + this.metric + ".*", this.onPeaksChange, this);
             this.on("close", this.stopWatchingPeaksChanges, this);
         },
 
         stopWatchingPeaksChanges: function()
         {
+            this.model.off("change:meanMax" + this.metric, this.reRenderOnChange, this);
             this.model.off("change:meanMax" + this.metric + ".*", this.onPeaksChange, this);
         },
 

@@ -44,6 +44,25 @@ function(
             this.initializeStickit();
         },
 
+        onInitialRender: function()
+        {
+            this.off("render", this.onInitialRender, this);
+            this.watchForModelChanges();
+            this.on("close", this.stopWatchingModelChanges, this);
+        },
+
+        // only on full update from server, won't happen on every small stickit change
+        reRenderOnChange: function(model, updateData, options)
+        {
+            if (!options["alreadyRendered" + this.metric + "Tab"])
+            {
+                this.unstickit();
+                this.stickitInitialized = false;
+                this.render();
+                options["alreadyRendered" + this.metric + "Tab"] = true;
+            }
+        },
+
         getZoneSettingsByWorkoutTypeId: function(zoneSettingName, workoutTypeId)
         {
             var athleteSettings = theMarsApp.user.getAthleteSettings();
