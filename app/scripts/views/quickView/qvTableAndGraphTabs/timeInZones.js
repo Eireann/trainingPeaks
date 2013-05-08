@@ -28,13 +28,13 @@ function(
 
         watchForTimeInZonesChanges: function()
         {
-            this.model.on("change:timeInHeartRateZones.timeInZones", this.updateTimeInZonesChart, this);
+            this.model.on("change:timeInHeartRateZones.timeInZones.*", this.updateTimeInZonesChart, this);
             this.on("close", this.stopWatchingTimeInZonesChanges, this);
         },
 
         stopWatchingTimeInZonesChanges: function()
         {
-            this.model.off("change:timeInHeartRateZones.timeInZones", this.updateTimeInZonesChart, this);
+            this.model.off("change:timeInHeartRateZones.timeInZones.*", this.updateTimeInZonesChart, this);
         },
 
         renderTimeInZones: function()

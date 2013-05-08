@@ -10,8 +10,21 @@ function(
 {
     var stickitUtilsMixin = {
 
+        initializeBindingsLUT: function()
+        {
+            this.bindingsLUT = {};
+            _.each(this.bindings, function(value, key)
+            {
+                this.bindingsLUT[value.observe] = key;
+            }, this);
+        },
+
         updateModel: function(newViewValue, options)
         {
+
+            if (!this.bindingsLUT)
+                this.initializeBindingsLUT();
+
             var self = this;
             var saveTimeout = options.saveTimeout ? options.saveTimeout : 2000;
 

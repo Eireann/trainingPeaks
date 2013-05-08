@@ -29,13 +29,13 @@ function(
 
         watchForPeaksChanges: function()
         {
-            this.model.on("change:meanMaxHeartRate", this.updatePeaksChart, this);
+            this.model.on("change:meanMaxHeartRate.*", this.updatePeaksChart, this);
             this.on("close", this.stopWatchingPeaksChanges, this);
         },
 
         stopWatchingPeaksChanges: function()
         {
-            this.model.off("change:meanMaxHeartRate", this.updatePeaksChart, this);
+            this.model.off("change:meanMaxHeartRate.*", this.updatePeaksChart, this);
         },
 
         renderPeaks: function()

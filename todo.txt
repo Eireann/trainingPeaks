@@ -1,29 +1,25 @@
 US642 TODO:
 
-HR TAB:
-
-initial peaks structure
-initial zones structure
-fix NAN
-test stickit
 extract hr specific details
-refactor tool tips
+remove 'description' from stickitutils
 
-2) stickit bindings for peaks
-update charts on change, only on blur/change
-3) autosave on blur
-4) autosave on timeout
-3) integrate checkpoint and cancel
-4) refactor, especially data building, stickit building, and autosave building
-- and templates can we combine across tabs?
-- could we even have a common tab base class?
-- some of the peak calculation probably doesn't belong in chartbuilder
-5) watch for settings change/load in qv tabs
+watch for onload changes
+
+verify webapi save is working
+
+refactor tool tips
+refactor other tabs to use same logic: what are differences in templates and tooltips and calculations?
+
+integrate checkpoint and cancel
+
+some of the peak calculation probably doesn't belong in chartbuilder
+
+watch for settings change/load in qv tabs?
+
 6) watch for workout type change - discuss behavior for existing workouts w/ data
-7) do we display and graph zero values for peaks?
+
 8) will we have a story to change the charts to flot? and improve design?
 
-throbbers on details instead of workout change
 
 BDD TESTS:
 zones and meanmax
@@ -32,7 +28,4 @@ late loading of athlete settings
 cancel
 changing workout type
 get full test set to work, and check coverage
-
-REPEAT FOR OTHER TABS
-
 how to deal w/ bdd tests not running in browser?

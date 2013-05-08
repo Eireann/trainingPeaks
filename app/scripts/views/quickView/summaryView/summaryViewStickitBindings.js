@@ -14,13 +14,6 @@ function(
 
         initializeStickit: function()
         {
-            this.bindingsLUT = {};
-            
-            _.each(this.bindings, function(value, key)
-            {
-                this.bindingsLUT[value.observe] = key;
-            }, this);
-
             this.on("close", this.stickitBindingsOnClose, this);
             this.on("render", this.stickitBindingsOnRender, this);
 
