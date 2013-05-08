@@ -2,6 +2,8 @@ US642 TODO:
 
 webapi save
 
+compare all tabs to app.dev
+
 refactor to make everything reuseable:
 	what are the differences between tabs? especially labels and tool tips
 	extract hr specific details
