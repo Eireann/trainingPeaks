@@ -51,10 +51,11 @@ function(
                 };
 
                 this.trigger("buildTimeInZoneStickitBinding", binding, timeInZone);
-
                 this.bindings[inputFieldCssId] = binding;
 
             }, this);
+
+            this.trigger("additionalTimeInZonesStickitBindings", this.bindings, timeInZones);
         },
 
         buildPeaksBindings: function()
@@ -74,6 +75,8 @@ function(
 
                 this.bindings[inputFieldCssId] = binding;
             }, this);
+
+            this.trigger("additionalPeaksStickitBindings", this.bindings, peaks);
         }
 
     };

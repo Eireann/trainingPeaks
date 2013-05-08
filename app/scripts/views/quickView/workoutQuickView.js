@@ -164,8 +164,8 @@ function (
                 summary: new WorkoutQuickViewSummary({ model: this.model, el: this.$(this.tabDomIDs[0]) }),
                 map: new WorkoutQuickViewMapAndGraph({ model: this.model, prefetchConfig: this.prefetchConfig, el: this.$(this.tabDomIDs[1]) }),
                 hr: new WorkoutQuickViewHR({ model: this.model.get("details"), workoutModel: this.model, el: this.$(this.tabDomIDs[2]) }),
-                power: new WorkoutQuickViewPower({ model: this.model, el: this.$(this.tabDomIDs[3]) }),
-                pace: new WorkoutQuickViewPace({ model: this.model, el: this.$(this.tabDomIDs[4]) })
+                power: new WorkoutQuickViewPower({ model: this.model.get("details"), workoutModel: this.model, el: this.$(this.tabDomIDs[3]) }),
+                pace: new WorkoutQuickViewPace({ model: this.model.get("details"), workoutModel: this.model, el: this.$(this.tabDomIDs[4]) })
             };
 
             tabViews.hr.on("change:model", this.onDetailsChange, this);

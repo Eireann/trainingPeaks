@@ -2,13 +2,9 @@ US642 TODO:
 
 webapi save
 
+power tab
+
 compare all tabs to app.dev
-
-stickit functions
-refactor tooltips to single template
-
-make other classes use same base
-look on app.dev for differences
 
 some of the peak calculation probably doesn't belong in chartbuilder
 

@@ -128,6 +128,8 @@ function(
                         }
                     }
                 };
+
+                this.trigger("buildTimeInZonesChart", chartOptions, chartPoints);
                 TP.utils.chartBuilder.renderColumnChart(this.$(".zonesChart"), chartPoints, tooltipTemplate, chartOptions);
             } else
             {

@@ -72,7 +72,7 @@ function(
                     },
                     {
                         label: "Time",
-                        value: TP.utils.conversion.formatDurationFromSeconds
+                        value: TP.utils.conversion.formatDurationFromSeconds(timeInZone.seconds)
                     },
                     {
                         label: "Percent",

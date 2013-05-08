@@ -127,6 +127,8 @@ function(
                         }
                     }
                 };
+
+                this.trigger("buildPeaksChart", chartOptions, chartPoints);
                 TP.utils.chartBuilder.renderSplineChart(this.$(".peaksChart"), chartPoints, tooltipTemplate, chartOptions);
             } else
             {
