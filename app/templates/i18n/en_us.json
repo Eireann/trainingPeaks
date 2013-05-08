@@ -51,6 +51,14 @@
 	"Saturday": "SATURDAY",
 	"Sunday": "SUNDAY",
 
+    "Mon": "MON",
+	"Tue": "TUE",
+	"Wed": "WED",
+	"Thu": "THU",
+	"Fri": "FRI",
+	"Sat": "SAT",
+	"Sun": "SUN",
+
     "PersonalInfo": "Personal Info",
     "FirstName": "First Name",
     "LastName": "Last Name",
