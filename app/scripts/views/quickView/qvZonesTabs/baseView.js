@@ -34,13 +34,12 @@ function(
             this.initializeTimeInZones();
             this.initializePeaks();
             this.initializeStickit();
+            this.once("render", this.onInitialRender, this);
         },
 
         onInitialRender: function()
         {
-            this.off("render", this.onInitialRender, this);
-            this.watchForModelChanges();
-            this.on("close", this.stopWatchingModelChanges, this);
+            this.watchForWorkoutTypeChange();
         },
 
         // only on full update from server, won't happen on every small stickit change
@@ -83,6 +82,21 @@ function(
                 workoutTypeSettings = defaultWorkoutTypeSettings;
 
             return workoutTypeSettings;
+        },
+
+        watchForWorkoutTypeChange: function()
+        {
+            this.workoutModel.on("change:workoutTypeValueId", this.onWorkoutTypeChange, this);
+            this.on("close", function() { this.workoutModel.off("change:workoutTypeValueId", this.onWorkoutTypeChange); }, this);
+        },
+
+        onWorkoutTypeChange: function()
+        {
+            // after it changes and saves, update our details
+            this.workoutModel.once("sync", function()
+            {
+                this.model.fetch();
+            }, this);
         }
 
     };
