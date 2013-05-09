@@ -50,7 +50,7 @@ function(TP, CalendarWorkoutHoverTemplate)
 
         onRender: function()
         {
-            $('body').append(this.$el);
+            theMarsApp.getBodyElement().append(this.$el);
             this.$el.css("left", this.posX - 17).css("top", this.posY - this.$el.height());
         }
 

@@ -165,12 +165,12 @@ function(
 
         onPasteEnabled: function()
         {
-            $('body').removeClass('pasteDisabled').addClass('pasteEnabled');
+            theMarsApp.getBodyElement().removeClass('pasteDisabled').addClass('pasteEnabled');
         },
 
         onPasteDisabled: function()
         {
-            $('body').removeClass('pasteEnabled').addClass('pasteDisabled');
+            theMarsApp.getBodyElement().removeClass('pasteEnabled').addClass('pasteDisabled');
         },
 
         createStartDay: function(startDate)

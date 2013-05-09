@@ -1,8 +1,9 @@
 ﻿define(
 [
-    "TP"
+    "TP",
+    "models/athleteSettingsModel"
 ],
-function(TP)
+function(TP, AthleteSettingsModel)
 {
     return TP.APIModel.extend(
     {
@@ -62,6 +63,24 @@ function(TP)
         {
             if(this.checkpointAttributes)
                 this.set(this.checkpointAttributes);
+        },
+
+        getAthleteId: function()
+        {
+            var athletes = this.get("athletes");
+            if (!athletes || !athletes.length)
+                return 0;
+
+            return athletes[0].athleteId;
+        },
+
+        getAthleteSettings: function()
+        {
+            if(!this.athleteSettings)
+            {
+                this.athleteSettings = new AthleteSettingsModel({ athleteId: this.getAthleteId() });
+            }
+            return this.athleteSettings;
         }
     });
 });

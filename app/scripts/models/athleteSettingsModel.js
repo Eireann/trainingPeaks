@@ -1,0 +1,46 @@
+﻿define(
+[
+    "TP"
+],
+function(TP)
+{
+    return TP.APIModel.extend(
+    {
+        cacheable: true,
+
+        webAPIModelName: "AthleteSettings",
+        idAttribute: "athleteId",
+
+        defaults:
+        {
+            athleteId: 0,
+            userName: null,
+            birthday: null,
+            gender: null,
+            email: null,
+            address: null,
+            address2: null,
+            city: null,
+            state: null,
+            country: null,
+            zipCode: null,
+            phone: null,
+            cellPhone: null,
+            profilePhotoUrl: null,
+            age: null,
+            units: 0,
+            dateFormat: null,
+            timeZone: null,
+            heartRateZones: null,
+            powerZones: null,
+            speedZones: null
+        },
+
+        url: function()
+        {
+            var athleteSettingsUrl = "fitness/v1/athletes/" + theMarsApp.user.getAthleteId() + "/settings";
+            return theMarsApp.apiRoot + "/WebApiServer/" + athleteSettingsUrl;
+        }
+
+    });
+});

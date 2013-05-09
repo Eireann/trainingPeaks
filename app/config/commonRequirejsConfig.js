@@ -55,7 +55,10 @@
             "affiliates": "scripts/affiliates",
             
             // Map & Graph
-            "leaflet": "../vendor/js/libs/leaflet/leaflet-src"
+            "leaflet": "../vendor/js/libs/leaflet/leaflet-src",
+
+            // jasmine test utils
+            "testUtils": "../test/utils"
         },
 
         hbs:

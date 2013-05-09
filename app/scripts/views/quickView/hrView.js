@@ -1,227 +1,105 @@
 ﻿define(
 [
+    "underscore",
     "TP",
-    "hbs!templates/views/quickView/heartRate/hrTabView",
-    "hbs!templates/views/quickView/heartRate/hrZoneRow",
-    "hbs!templates/views/quickView/heartRate/hrPeakRow",
-    "hbs!templates/views/quickView/heartRate/timeInZoneChartTooltip",
-    "hbs!templates/views/quickView/heartRate/peakChartTooltip"
+    "views/quickView/qvZonesTabs/baseView"
 ],
 function(
+    _,
     TP,
-    hrTabTemplate,
-    hrZoneRowTemplate,
-    hrPeakRowTemplate,
-    timeInZoneTooltipTemplate,
-    peaksTooltipTemplate)
+    zonesViewBase
+)
 {
-    return TP.ItemView.extend(
-    {
+    var hrViewBase = {
+        metric: "HeartRate",
+        zoneSettingName: "heartRateZones",
+        graphTitle: "Heart Rate",
         className: "quickViewHrTab",
 
-        showThrobbers: false,
-
-        template:
+        initialize: function(options)
         {
-            type: "handlebars",
-            template: hrTabTemplate
+            this.initializeBaseView(options);
+            this.on("buildPeakChartPoint", this.addTooltipDataToPeakChartPoint, this);
+            this.on("buildTimeInZoneChartPoint", this.addTooltipDataToTimeInZoneChartPoint, this);
+            this.on("buildPeakStickitBinding", this.addFormattersToPeakStickitBinding, this);
+            this.on("buildTimeInZoneStickitBinding", this.addFormattersToTimeInZoneStickitBinding, this);
         },
 
-        initialEvents: function()
+        addTooltipDataToPeakChartPoint: function(point, peak, timeInZones)
         {
-            this.model.off("change", this.render);
-        },
-
-        onRender: function()
-        {
-            this.renderTimeInZones();
-            this.renderPeaks();
-            this.watchForModelChanges();
-        },
-
-        watchForModelChanges: function()
-        {
-            this.model.get("details").on("change:timeInHeartRateZones.timeInZones", this.renderTimeInZones, this);
-            this.model.get("details").on("change:meanMaxHeartRate", this.renderPeaks, this);
-            this.on("close", this.stopWatchingModelChanges, this);
-        },
-
-        stopWatchingModelChanges: function()
-        {
-            this.model.get("details").off("change:timeInHeartRateZones.timeInZones", this.renderTimeInZones, this);
-            this.model.get("details").off("change:meanMaxHeartRate", this.renderPeaks, this);
-        },
-
-        renderTimeInZones: function()
-        {
-            var timeInZones = this.model.get("details").get("timeInHeartRateZones");
-            this.renderTimeInZonesTable(timeInZones);
-            this.renderTimeInZonesChart(timeInZones);
-        },
-
-        renderTimeInZonesTable: function(timeInZones)
-        {
-            if (timeInZones)
-            {
-                var zonesHtml = hrZoneRowTemplate(timeInZones);
-                this.$("#heartRateByZonesTable").html(zonesHtml);
-            } else
-            {
-                this.$("#heartRateByZonesTable").html("");
-            }
-        },
-
-        buildTimeInZonesChartPoints: function(timeInZones)
-        {
-            var chartPoints = [];
-            var totalSeconds = TP.utils.chartBuilder.calculateTotalTimeInZones(timeInZones);
-            // zone times are in seconds, convert to minutes
-            _.each(timeInZones.timeInZones, function(timeInZone, index)
-            {
-
-                var minutes = timeInZone.seconds ? parseInt(timeInZone.seconds, 10) / 60 : 0;
-                var hours = timeInZone.seconds ? parseInt(timeInZone.seconds, 10) / 3600 : 0;
-
-                var point = {
-                    label: timeInZone.label,
-                    rangeMinimum: timeInZone.minimum,
-                    rangeMaximum: timeInZone.maximum,
-                    percentTime: this.toPercent(timeInZone.seconds, totalSeconds),
-                    percentLTMin: this.toPercent(timeInZone.minimum, timeInZones.threshold),
-                    percentLTMax: this.toPercent(timeInZone.maximum, timeInZones.threshold),
-                    percentMHRMin: this.toPercent(timeInZone.minimum, timeInZones.maximum),
-                    percentMHRMax: this.toPercent(timeInZone.maximum, timeInZones.maximum),
-                    seconds: timeInZone.seconds,
-                    y: minutes,
-                    value: minutes,
-                    x: index
-                };
-
-                chartPoints.push(point);
-
-            }, this);
-
-            return chartPoints;
-
-        },
-
-        renderTimeInZonesChart: function(timeInZones)
-        {
-            if (timeInZones)
-            {
-                var chartPoints = this.buildTimeInZonesChartPoints(timeInZones);
-
-                var chartOptions = {
-                    title:
+            _.extend(point, {
+                tooltips: [
                     {
-                        text: "Heart Rate by Zones"
+                        label: point.label
                     },
-                    xAxis: {
-                        title:
-                        {
-                            text: "Zones"
-                        }
-                    },
-                    yAxis: {
-                        title: {
-                            text: 'Minutes'
-                        }
-                    }
-                };
-                TP.utils.chartBuilder.renderColumnChart(this.$("#heartRateByZonesChart"), chartPoints, timeInZoneTooltipTemplate, chartOptions);
-            } else
-            {
-                this.$("#heartRateByZonesChart").html("");
-            }
-        },
-
-        toPercent: function(numerator, denominator)
-        {
-            return Math.round((numerator / denominator) * 100);
-        },
-
-        renderPeaks: function()
-        {
-            var timeInZones = this.model.get("details").get("timeInHeartRateZones");
-            var peaks = this.getPeaksData();
-            this.renderPeaksTable(peaks);
-            this.renderPeaksChart(peaks, timeInZones);
-        },
-
-        renderPeaksTable: function(peaks)
-        {
-            if (peaks)
-            {
-                var peaksHtml = hrPeakRowTemplate({ peaks: peaks });
-                this.$("#heartRatePeaksTable").html(peaksHtml);
-            } else
-            {
-                this.$("#heartRatePeaksTable").html("");
-            }
-        },
-
-        buildPeaksChartPoints: function(peaks, timeInZones)
-        {
-
-            var chartPoints = [];
-            _.each(peaks, function(peak, index)
-            {
-
-
-                var point = {
-                    label: peak.label,
-                    value: peak.value,
-                    percentLT: this.toPercent(peak.value, timeInZones.threshold),
-                    percentMHR: this.toPercent(peak.value, timeInZones.maximum),
-                    y: peak.value,
-                    x: index
-                };
-
-                chartPoints.push(point);
-
-            }, this);
-
-            return chartPoints;
-
-        },
-        
-        renderPeaksChart: function(peaks, timeInZones)
-        {
-            if (peaks && peaks.length)
-            {
-                var chartPoints = this.buildPeaksChartPoints(peaks, timeInZones);
-
-                var chartOptions = {
-                    title:
                     {
-                        text: "Peak Heart Rate"
+                        value: point.value + " BPM"
                     },
-                    xAxis: {
-                        labels:
-                        {
-                            enabled: true
-                        },
-                        tickColor: 'transparent',
-                        type: 'category',
-                        categories: TP.utils.chartBuilder.getPeakChartCategories(chartPoints)
+                    {
+                        value: TP.utils.conversion.toPercent(peak.value, timeInZones.threshold) + " %lt"
                     },
-                    yAxis: {
-                        title: {
-                            text: 'BPM'
-                        }
+                    {
+                        value: TP.utils.conversion.toPercent(peak.value, timeInZones.maximum) + " %Max"
                     }
-                };
-                TP.utils.chartBuilder.renderSplineChart(this.$("#heartRatePeaksChart"), chartPoints, peaksTooltipTemplate, chartOptions);
-            } else
-            {
-                this.$("#heartRatePeaksChart").html("");
-            }
+                ]
+            });
         },
 
-        getPeaksData: function()
+        addTooltipDataToTimeInZoneChartPoint: function(point, timeInZone, timeInZones)
         {
-            var hrPeaks = this.model.get("details").get("meanMaxHeartRate");
-            return TP.utils.chartBuilder.cleanAndFormatPeaksData(hrPeaks);
+            _.extend(point, {
+                tooltips: [
+                    {
+                        label: point.label
+                    },
+                    {
+                        label: "Range",
+                        value: timeInZone.minimum + "-" + timeInZone.maximum + " BPM"
+                    },
+                    {
+                        label: "% lt",
+                        value: TP.utils.conversion.toPercent(timeInZone.minimum, timeInZones.threshold) +
+                            "-" + TP.utils.conversion.toPercent(timeInZone.maximum, timeInZones.threshold) +
+                            " %"
+
+                    },
+                    {
+                        label: "% Max",
+                        value: TP.utils.conversion.toPercent(timeInZone.minimum, timeInZones.maximum) +
+                            "-" + TP.utils.conversion.toPercent(timeInZone.maximum, timeInZones.maximum) +
+                            " %"
+
+                    },
+                    {
+                        label: "Time",
+                        value: TP.utils.conversion.formatDurationFromSeconds(timeInZone.seconds)
+                    },
+                    {
+                        label: "Percent",
+                        value: point.percentTime + "%"
+                    }
+                ]
+            });
+        },
+
+        addFormattersToPeakStickitBinding: function(binding, peak)
+        {
+            _.extend(binding, {
+                onGet: "formatInteger",
+                onSet: "parseInteger"
+            });
+        },
+
+        addFormattersToTimeInZoneStickitBinding: function(binding, timeInZone)
+        {
+            _.extend(binding, {
+                onGet: "formatDurationFromSeconds",
+                onSet: "parseDurationAsSeconds"
+            });
         }
-    });
+
+    };
+
+    _.extend(hrViewBase, zonesViewBase);
+    return TP.ItemView.extend(hrViewBase);
 });

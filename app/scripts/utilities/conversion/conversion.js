@@ -45,7 +45,7 @@
             return convertToModelUnits(parseFloat(value), "distance");
         },
 
-        formatDuration: function (value, options)
+        formatDuration: function(value, options)
         {
             return datetimeUtils.format.decimalHoursAsTime(value, true, options && options.hasOwnProperty("defaultValue") ? options.defaultValue : "");
         },
@@ -53,6 +53,18 @@
         parseDuration: function(value, options)
         {
             return datetimeUtils.convert.timeToDecimalHours(value);
+        },
+
+        formatDurationFromSeconds: function(value, options)
+        {
+            return datetimeUtils.format.decimalSecondsAsTime(value);
+        },
+
+        parseDurationAsSeconds: function(value, options)
+        {
+            var hours = this.parseDuration(value, options);
+            var seconds = hours * 3600;
+            return seconds;
         },
 
         formatTimeOfDay: function(value, options)
@@ -98,7 +110,7 @@
 
         formatInteger: function(value, options)
         {
-            return ((value === null || value === 0) ? "" : (Math.round(parseFloat(value))).toFixed(0));
+            return ((value === null || value === 0) ? (options && options.hasOwnProperty("defaultValue") ? options.defaultValue : "") : (Math.round(parseFloat(value))).toFixed(0));
         },
 
         parseInteger: function (value, options)
@@ -116,7 +128,7 @@
             return convertToViewUnits(value, "temperature");
         },
 
-        parseTemperature: function (value, options)
+        parseTemperature: function(value, options)
         {
             return convertToModelUnits(parseInt(value, 10), "temperature");
         },
@@ -173,6 +185,12 @@
         formatDateToCalendarDate: function (value, options)
         {
             return datetimeUtils.format(value, "MMM DD, YYYY");
+        },
+
+        toPercent: function(numerator, denominator)
+        {
+            return denominator === 0 ? 0 : Math.round((numerator / denominator) * 100);
         }
+
     };
 });

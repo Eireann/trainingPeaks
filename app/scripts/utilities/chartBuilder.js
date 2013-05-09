@@ -138,16 +138,10 @@ function(_)
             if (additionalChartOptions)
                 $.extend(true, chartOptions, additionalChartOptions);
 
-            container.highcharts(chartOptions);
+            if (container.highcharts)
+                container.highcharts(chartOptions);
         },
-
-        formatMeanMaxLabel: function(label)
-        {
-            // Change MM100Meters to "100 Meters", or MMHalfMarathon to "Half Marathon"
-            // change 1 Minute to 60 Seconds and 1 Hour to 60 Minutes
-            return label.replace(/^MM/, "").replace(/([0-9]+)/g, "$1 ").replace(/([a-z])([A-Z])/g, "$1 $2").replace(/1 Minute/, "60 Seconds").replace(/1 Hour/, "60 minutes");
-        },
-
+        
         getPeakChartCategories: function(chartPoints)
         {
             var skipInterval = 2;
@@ -183,56 +177,6 @@ function(_)
         {
             return label.replace(/ /g, "").replace(/Minutes/, "min").replace(/Seconds/, "sec").replace(/Hour/, "hr");
         },
-
-        cleanAndFormatPeaksData: function(peaksData)
-        {
-
-            var allPeaksByLabel = {};
-            _.each(peaksData, function(peak)
-            {
-                allPeaksByLabel[peak.label] = peak;
-            }, this);
-
-
-            var enabledPeaks = [];
-            _.each(this.defaultPeakSettings, function (label)
-            {
-                if (allPeaksByLabel.hasOwnProperty(label))
-                {
-                    var peak = allPeaksByLabel[label];
-                    if (peak.value)
-                    {
-                        enabledPeaks.push(
-                            {
-                                label: this.formatMeanMaxLabel(peak.label),
-                                value: peak.value
-                            }
-                        );
-                    }
-                }
-            }, this);
-
-            return enabledPeaks;
-        },
-
-        defaultPeakSettings: [
-            'MM2Seconds',
-            'MM5Seconds',
-            'MM10Seconds',
-            'MM12Seconds',
-            'MM20Seconds',
-            'MM30Seconds',
-            'MM1Minute',
-            'MM2Minutes',
-            'MM5Minutes',
-            'MM6Minutes',
-            'MM10Minutes',
-            'MM12Minutes',
-            'MM20Minutes',
-            'MM30Minutes',
-            'MM1Hour',
-            'MM90Minutes'
-        ],
 
         getColumnTickInterval: function(points)
         {
