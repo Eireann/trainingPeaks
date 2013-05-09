@@ -3,8 +3,6 @@ US642 TODO:
 integrate webapi refactor
 test webapi save
 
-some of the peak calculation probably doesn't belong in chartbuilder
-
 
 watch for settings change/load in qv tabs if athlete settings haven't loaded yet
 watch for workout type change - discuss behavior for existing workouts w/ data

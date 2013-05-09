@@ -139,7 +139,7 @@ function(
         getPeaksData: function()
         {
             var peaks = this.model.get("meanMax" + this.metric);
-            return TP.utils.chartBuilder.cleanAndFormatPeaksData(peaks);
+            return this.cleanAndFormatPeaksData(peaks);
         },
 
         defaultPeakSettings: [
@@ -191,7 +191,56 @@ function(
             }, this);
 
             this.model.set("meanMax" + this.metric, peaks, { silent: true });
+        },
+
+        cleanAndFormatPeaksData: function(peaksData)
+        {
+
+            var allPeaksByLabel = {};
+            _.each(peaksData, function(peak, index)
+            {
+                var peakClone = _.clone(peak);
+                peakClone.modelArrayIndex = index;
+                allPeaksByLabel[peakClone.label] = peakClone;
+            }, this);
+
+
+            var formattedPeaks = [];
+            _.each(this.defaultPeakSettings, function(label)
+            {
+                // display every peak with a formatted label and zero default value
+                var formattedLabel = this.formatMeanMaxLabel(label);
+                var peakValue = null;
+                var modelArrayIndex = null;
+
+                // if there is a value in the workout, display it
+                if (allPeaksByLabel.hasOwnProperty(label))
+                {
+                    var peak = allPeaksByLabel[label];
+                    peakValue = peak.value;
+                    modelArrayIndex = peak.modelArrayIndex;
+                }
+
+                formattedPeaks.push(
+                    {
+                        id: label,
+                        label: formattedLabel,
+                        value: peakValue,
+                        modelArrayIndex: modelArrayIndex
+                    }
+                );
+            }, this);
+
+            return formattedPeaks;
+        },
+
+        formatMeanMaxLabel: function(label)
+        {
+            // Change MM100Meters to "100 Meters", or MMHalfMarathon to "Half Marathon"
+            // change 1 Minute to 60 Seconds and 1 Hour to 60 Minutes
+            return label.replace(/^MM/, "").replace(/([0-9]+)/g, "$1 ").replace(/([a-z])([A-Z])/g, "$1 $2").replace(/1 Minute/, "60 Seconds").replace(/1 Hour/, "60 minutes");
         }
+
 
     };
 
