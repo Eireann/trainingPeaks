@@ -305,3 +305,42 @@ input[disabled='disabled']
         }
     }
 }
+
+.workoutFileUploadMenu
+{
+    z-index: 103;
+
+    .hoverBox
+    {
+        .arrow
+        {
+            position: absolute;
+            top: 13px;
+        }
+    }
+
+    &.left
+    {
+        .hoverBox
+        {
+            .arrow
+            {
+                right: 0px;
+                @include transform(translateX(8px) rotate(45deg));
+            }
+        }
+    }
+
+    &.right
+    {
+        .hoverBox
+        {
+            .arrow
+            {
+                left: 0px;
+                @include transform(translateX(-35px) rotate(-45deg));
+            }
+        }
+    }
+
+}

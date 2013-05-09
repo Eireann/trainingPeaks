@@ -250,5 +250,7 @@
     "Peak": "Peak",
 
     "Error": "Error",
-    "ErrorUploadingFile": "An error occurred uploading your device file"
+    "ErrorUploadingFile": "An error occurred uploading your device file",
+
+    "BrowseFiles": "Browse Files"
 }
