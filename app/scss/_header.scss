@@ -143,22 +143,28 @@
             {
                 float: left;
                 height: 30px;
-                padding: 10px 10px 0px 10px;
+                padding: 9px 10px 0px 10px;
                 font-size: $fontSizeMedium;
                 cursor: default;
             }
 
-            .personHeaderButtons
-            {
-                padding: 12px 0px 0px 10px;
-                margin: 0px 0px 0px -10px;
-                height: 35px;
+            .personHeaderButtons {
                 text-align: center;
                 //&:hover { background-color: $TPBlue; }
                 float:left;
 
                 // note that the color here gets overridden by darkBackground and lightBackground above 
                 @include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey2, normal);
+
+				#usernameLabel {
+					padding: 11px 0 12px 0;
+					margin:0;
+			
+				}
+				label {
+					padding: 11px 0 12px 0;
+				}
+				
             }
 
 
@@ -174,16 +180,18 @@
             .upgradeButton
             {
                 margin: 0px 0px 0px 10px;
-                padding: 11px 25px 0px 25px;
+                padding: 11px 25px 12px;
                 @include linearGradient(bottom, rgb(34,97,143), rgba(59,125,193, 1)); 
-                cursor: default;
-
+                cursor: pointer;
+			
                 label
                 {
                     color: $white;
-                    cursor: default;
                     font-size: $fontSizeSmall;
                     font-family: $navigationFontFamilyRegular;
+					padding:0;
+					margin:0;
+					cursor: pointer;
                 }
             }
 
@@ -196,7 +204,7 @@
                 height: 26px;
                 background-repeat: no-repeat;
                 background-position-x: 0px;
-                margin-top: 12px;
+                margin-top: 11px;
             }
         }
 	}
@@ -206,43 +214,36 @@
 {
 	background-color: $white;
 
-	.row
-	{
+	.row {
 		width: 100%;
-	}
+		}
 
-	.appNavigation
-	{
+	.appNavigation {
+		text-align: center;
 
-        text-align: center;
-
-        .centered
-        {
+		.centered {
             display: inline-block;
-        }
+        	}
 
-		span
-		{
+		span {
 			float: left;
-			height: 20px;
 			text-align: center;
 			&:hover label{color: $TPBlue; }
 			&:hover label{border-bottom-style:solid; border-bottom-width:2px; border-color:$TPBlue;}
-			
 		}
-
+	
 		@include labels($navigationFontFamilyRegular, $fontSizeMedium, $TPGrey4, normal);
-		label
-		{
-			padding: 0px 7px 7px 7px;
+		label {
+			padding: 0px 7px 0px 7px;
+			height:23px;
+			cursor:pointer;
 		}	
 	}
 }
 
-.mainNavigationButtons
-{
-	padding-left: 6px;
-	padding-right: 6px;
+.mainNavigationButtons {
+	margin-left: 6px;
+	margin-right: 6px;
 }
 
 #loginHeader, #calendarHeader
@@ -260,7 +261,7 @@
     {
         .arrow 
         {
-			box-shadow:none;
+		
         }
     }
 }
