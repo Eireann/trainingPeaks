@@ -51,6 +51,14 @@
 	"Saturday": "SATURDAY",
 	"Sunday": "SUNDAY",
 
+    "Mon": "MON",
+	"Tue": "TUE",
+	"Wed": "WED",
+	"Thu": "THU",
+	"Fri": "FRI",
+	"Sat": "SAT",
+	"Sun": "SUN",
+
     "PersonalInfo": "Personal Info",
     "FirstName": "First Name",
     "LastName": "Last Name",
@@ -197,7 +205,7 @@
 	"SelectDateRange": "Select date range",
 	"From": "From",
 	"To": "To",
-	"HowDoYouWantToShiftItems": "How do you want to shift these items",
+	"HowDoYouWantToShiftItems": "How do you want to shift these items?",
 	"MoveNewStartDate": "Move to new start date",
 	"MoveBySpecifiedNumberOfDays": "Move by a specified number of days",
 	"MoveBySpecifiedNumberOfWeeks": "Move by a specified number of weeks",

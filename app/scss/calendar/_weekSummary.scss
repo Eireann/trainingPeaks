@@ -3,11 +3,13 @@
 
 .weekSummary
 {
-    @include column(3);
+    @include grid-column(3);
     min-height: 150px;
     background-color: $TPGrey1;
     overflow: hidden;
     margin-bottom: 10px;
+    width: 288px;
+    min-width: 288px;
 
     div
     {
@@ -33,7 +35,8 @@
             padding: 0px;
             width: 15px;
 			cursor: default;
-                        
+            margin-bottom: 0px;
+            box-shadow: none;
         }
 	}
 
