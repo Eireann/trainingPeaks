@@ -153,6 +153,7 @@ function(seriesColorByChannel, findIndexByMsOffset)
             yaxes.push(
             {
                 show: true,
+                label: s.label,
                 min: s.label === "Elevation" ? self.getElevationInfo().min : 0,
                 position: countdown-- > 0 ? "right" : "left",
                 color: s.color,
