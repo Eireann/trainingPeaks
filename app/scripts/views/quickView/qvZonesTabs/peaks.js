@@ -34,17 +34,17 @@ function(
         {
 
             // big change - i.e. initial load from server - rerender whole tab
-            this.model.on("change:meanMax" + this.metric, this.reRenderOnChange, this);
+            this.model.on("change:meanMax" + this.metric + "s", this.reRenderOnChange, this);
 
             // small change - i.e. stickit edit, just update the graph
-            this.model.on("change:meanMax" + this.metric + ".*", this.onPeaksChange, this);
+            this.model.on("change:meanMax" + this.metric + "s.meanMaxes.*", this.onPeaksChange, this);
             this.on("close", this.stopWatchingPeaksChanges, this);
         },
 
         stopWatchingPeaksChanges: function()
         {
-            this.model.off("change:meanMax" + this.metric, this.reRenderOnChange, this);
-            this.model.off("change:meanMax" + this.metric + ".*", this.onPeaksChange, this);
+            this.model.off("change:meanMax" + this.metric + "s", this.reRenderOnChange, this);
+            this.model.off("change:meanMax" + this.metric + "s.meanMaxes.*", this.onPeaksChange, this);
         },
 
         renderPeaks: function()
@@ -138,7 +138,7 @@ function(
 
         getPeaksData: function()
         {
-            var peaks = this.model.get("meanMax" + this.metric);
+            var peaks = this.model.get("meanMax" + this.metric + "s");
             return this.cleanAndFormatPeaksData(peaks);
         },
 
@@ -163,12 +163,13 @@ function(
 
         initializePeakDataOnModel: function()
         {
-            var peaks = this.model.get("meanMax" + this.metric);
-
-            if (!peaks)
+            var meanMaxes = this.model.get("meanMax" + this.metric + "s");
+            if (!meanMaxes || !meanMaxes.meanMaxes)
             {
-                peaks = [];
+                this.model.set("meanMax" + this.metric + "s", { id: 0, meanMaxes: [] });
             }
+
+            var peaks = this.model.get("meanMax" + this.metric + "s.meanMaxes");
 
             var allPeaksByLabel = {};
             _.each(peaks, function(peak, index)
@@ -190,19 +191,22 @@ function(
 
             }, this);
 
-            this.model.set("meanMax" + this.metric, peaks, { silent: true });
+            this.model.set("meanMax" + this.metric + "s.meanMaxes", peaks, { silent: true });
         },
 
         cleanAndFormatPeaksData: function(peaksData)
         {
 
             var allPeaksByLabel = {};
-            _.each(peaksData, function(peak, index)
+            if (peaksData.meanMaxes)
             {
-                var peakClone = _.clone(peak);
-                peakClone.modelArrayIndex = index;
-                allPeaksByLabel[peakClone.label] = peakClone;
-            }, this);
+                _.each(peaksData.meanMaxes, function(peak, index)
+                {
+                    var peakClone = _.clone(peak);
+                    peakClone.modelArrayIndex = index;
+                    allPeaksByLabel[peakClone.label] = peakClone;
+                }, this);
+            }
 
 
             var formattedPeaks = [];

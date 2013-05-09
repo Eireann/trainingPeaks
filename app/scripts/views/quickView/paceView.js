@@ -86,7 +86,7 @@ function(
             _.each(peaks, function(peak, index)
             {
                 var unitsLabelCssId = "#" + peak.id + "UnitsLabel";
-                var modelFieldName = "meanMax" + this.metric + "." + peak.modelArrayIndex + ".value";
+                var modelFieldName = "meanMax" + this.metric + "s.meanMaxes." + peak.modelArrayIndex + ".value";
 
                 var binding = {
                     observe: modelFieldName,
