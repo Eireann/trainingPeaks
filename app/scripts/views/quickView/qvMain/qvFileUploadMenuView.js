@@ -16,7 +16,8 @@ function(TP, WorkoutFileUploadMenuTemplate)
 
         events:
         {
-            "click #workoutFileUploadMenuBrowse": "onBrowseClicked"
+            "click #workoutFileUploadMenuBrowse": "onBrowseClicked",
+            "click #closeIcon": "close"
         },
 
         attributes: {

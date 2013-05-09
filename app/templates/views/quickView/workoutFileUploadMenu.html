@@ -1,5 +1,15 @@
 {{#hoverBox this}}
     <div class="details">
-        <label id="workoutFileUploadMenuBrowse">{{$ "BrowseFiles" }}</label>
+
+        <img id="closeIcon" src="assets/images/closeX.png"/>
+
+        <div class="dialogHeader">{{$ "UploadFiles" }}</div>
+
+        <div>{{$ "SelectFile" }}<a id="deviceAgentLink">{{$ "DeviceAgent" }}</a></div>
+        <div class="buttons">
+            <button id="workoutFileUploadMenuBrowse">{{$ "BrowseFiles" }}</button>
+            <button id="deviceAgentButton">{{$ "GetDeviceAgent" }}</button>
+        </div>
+
     </div>
 {{/hoverBox}}
