@@ -385,7 +385,9 @@ module.exports = function(grunt)
     grunt.loadNpmTasks("grunt-contrib-watch");
     grunt.loadNpmTasks("grunt-istanbul");
 
+    // NOTE: grunt test --dir=some/pattern will limit tests to a subfolder
     grunt.registerTask("test", ["clean:coverage", "jshint", "setup-spec-list", "validate_models", "jasmine_node"]);
+
     grunt.registerTask("validate_models", ["validate-webapi-models"]);
     grunt.registerTask("update_grunt_config", ["requirejs_config", "i18n_config"]);
     grunt.registerTask("debug", ["clean", "coverage", "update_grunt_config", "requirejs", "compass:debug", "targethtml:debug", "concat", "copy:debug", "copy-i18n-files", "copy:debug_coverage", "plato:debug"]);

@@ -44,6 +44,11 @@ function(CalendarCollection
             this.weeksCollection.on("paste:enable", this.onPasteEnabled, this);
             this.weeksCollection.on("paste:disable", this.onPasteDisabled, this);
             this.onPasteDisabled();
+        },
+
+        getWorkout: function(workoutId)
+        {
+            return this.weeksCollection.getWorkout(workoutId);
         }
 
 

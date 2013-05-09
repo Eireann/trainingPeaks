@@ -114,22 +114,13 @@ function (
         updateTitle: function(newViewValue, options)
         {
             var self = this;
-
             var updateModel = function ()
             {
-                // Check for the special case where the model is still set to null and the newViewValue is empty, and abort
-                //if (self.model.get("title") === null && newViewValue === "")
-                //    return;
-
                 if (self.model.get("title") !== newViewValue)
                 {
                     var newModelValue = newViewValue;
                     self.model.set("title", newModelValue);
-                    var modelUpdatePromise = self.model.save();
-
-                    modelUpdatePromise.done(function ()
-                    {
-                    });
+                    self.model.save();
                 }
             };
 

@@ -106,9 +106,18 @@ function(
                 return;
             }
 
-            var newModel = new WorkoutModel(workoutModelJson);
-            this.model.trigger("workout:added", newModel);
+            var newModel = new WorkoutModel();
 
+            var existingModel = theMarsApp.controllers.calendarController.getWorkout(workoutModelJson.workoutId);
+            if (existingModel)
+            {
+                newModel = existingModel;
+            } else
+            {
+                this.model.trigger("workout:added", newModel);
+            }
+
+            newModel.set(workoutModelJson);
             var quickView = new WorkoutQuickView({ model: newModel });
             quickView.render();
 

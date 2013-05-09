@@ -12,6 +12,7 @@
 *.csproj*
 *.suo
 /*.sln.DotSettings.user
+*.swp
 
 test/specsList.js
 JSLintOptions.xml

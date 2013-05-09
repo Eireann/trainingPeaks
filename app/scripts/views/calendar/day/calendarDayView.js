@@ -41,7 +41,7 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySe
         initialize: function()
         {
             if (theMarsApp)
-                theMarsApp.user.on("change", this.render, this);
+                theMarsApp.user.on("change:settings", this.render, this);
             
             this.collection = this.model.itemsCollection;
 
@@ -205,7 +205,7 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySe
             this.$el.data("ItemId", this.model.id);
             this.$el.data("ItemType", "CalendarDay");
             this.$el.data("DropEvent", "dayMoved");
-            this.draggableOptions = { appendTo: 'body', helper: this.draggableHelper, start: this.onDragStart, stop: this.onDragStop };
+            this.draggableOptions = { appendTo: theMarsApp.getBodyElement(), helper: this.draggableHelper, start: this.onDragStart, stop: this.onDragStop };
             this.$el.draggable(this.draggableOptions);
         },
 

@@ -1,245 +1,153 @@
 ﻿define(
 [
+    "underscore",
     "TP",
-    "hbs!templates/views/quickView/pace/paceTabView",
-    "hbs!templates/views/quickView/pace/paceZoneRow",
-    "hbs!templates/views/quickView/pace/pacePeakRow",
-    "hbs!templates/views/quickView/pace/timeInZoneChartTooltip",
-    "hbs!templates/views/quickView/pace/peakChartTooltip"
+    "views/quickView/qvZonesTabs/baseView"
 ],
-function (TP,
-    paceTabTemplate,
-    paceZoneRowTemplate,
-    pacePeakRowTemplate,
-    timeInZoneTooltipTemplate,
-    peaksTooltipTemplate)
+function(
+    _,
+    TP,
+    zonesViewBase
+)
 {
-    return TP.ItemView.extend(
-    {
+    var paceViewBase = {
+        metric: "Speed",
+        zoneSettingName: "speedZones",
+        graphTitle: "Pace",
         className: "quickViewPaceTab",
 
-        showThrobbers: false,
-
-        template:
+        initialize: function(options)
         {
-            type: "handlebars",
-            template: paceTabTemplate
+            this.initializeBaseView(options);
+            this.on("buildPeakChartPoint", this.addTooltipDataToPeakChartPoint, this);
+            this.on("buildTimeInZoneChartPoint", this.addTooltipDataToTimeInZoneChartPoint, this);
+            this.on("buildPeakStickitBinding", this.addFormattersToPeakStickitBinding, this);
+            this.on("buildTimeInZoneStickitBinding", this.addFormattersToTimeInZoneStickitBinding, this);
+            this.on("additionalPeaksStickitBindings", this.addPeaksLabelStickitBindings, this);
+            this.on("additionalTimeInZonesStickitBindings", this.addTimeInZonesLabelStickitBindings, this);
+            this.on("buildPeaksChart", this.modifyPeaksChart, this);
         },
 
-        initialEvents: function()
+        addTooltipDataToPeakChartPoint: function(point, peak, timeInZones)
         {
-            this.model.off("change", this.render);
-        },
-
-        onRender: function ()
-        {
-            this.renderTimeInZones();
-            this.renderPeaks();
-            this.watchForModelChanges();
-        },
-
-        watchForModelChanges: function ()
-        {
-            this.model.get("details").on("change:timeInSpeedZones.timeInZones", this.renderTimeInZones, this);
-            this.model.get("details").on("change:meanMaxSpeed", this.renderPeaks, this);
-            this.on("close", this.stopWatchingModelChanges, this);
-        },
-
-        stopWatchingModelChanges: function ()
-        {
-            this.model.get("details").off("change:timeInSpeedZones.timeInZones", this.renderTimeInZones, this);
-            this.model.get("details").off("change:meanMaxSpeed", this.renderPeaks, this);
-        },
-
-        renderTimeInZones: function ()
-        {
-            var timeInZones = this.model.get("details").get("timeInSpeedZones");
-            this.renderTimeInZonesTable(timeInZones);
-            this.renderTimeInZonesChart(timeInZones);
-        },
-
-        renderTimeInZonesTable: function (timeInZones)
-        {
-            if (timeInZones)
-            {
-                var zonesHtml = paceZoneRowTemplate(timeInZones);
-                this.$("#paceByZonesTable").html(zonesHtml);
-            } else
-            {
-                this.$("#paceByZonesTable").html("");
-            }
-        },
-
-        buildTimeInZonesChartPoints: function (timeInZones)
-        {
-            var chartPoints = [];
-            var totalSeconds = TP.utils.chartBuilder.calculateTotalTimeInZones(timeInZones);
-            // zone times are in seconds, convert to minutes
-            _.each(timeInZones.timeInZones, function (timeInZone, index)
-            {
-
-                var minutes = timeInZone.seconds ? Number(timeInZone.seconds) / 60 : 0;
-                var hours = timeInZone.seconds ? Number(timeInZone.seconds) / 3600 : 0;
-
-                var point = {
-                    label: timeInZone.label,
-                    rangeMinimum: timeInZone.minimum,
-                    rangeMaximum: timeInZone.maximum,
-                    percentTime: this.toPercent(timeInZone.seconds, totalSeconds),
-                    percentLTMin: this.toPercent(timeInZone.minimum, timeInZones.threshold),
-                    percentLTMax: this.toPercent(timeInZone.maximum, timeInZones.threshold),
-                    percentMPaceMin: this.toPercent(timeInZone.minimum, timeInZones.maximum),
-                    percentMPaceMax: this.toPercent(timeInZone.maximum, timeInZones.maximum),
-                    seconds: timeInZone.seconds,
-                    minutes: Math.round(minutes),
-                    value: minutes,
-                    y: minutes,
-                    x: index
-                };
-
-                chartPoints.push(point);
-
-            }, this);
-
-            return chartPoints;
-
-        },
-
-        renderTimeInZonesChart: function (timeInZones)
-        {
-            if (timeInZones)
-            {
-                var chartPoints = this.buildTimeInZonesChartPoints(timeInZones);
-
-                var chartOptions = {
-                    title:
+            _.extend(point, {
+                tooltips: [
                     {
-                        text: "Pace by Zones"
+                        label: point.label
                     },
-                    xAxis: {
-                        title:
-                        {
-                            text: "Zones"
-                        }
-                    },
-                    yAxis: {
-                        title: {
-                            text: 'Minutes'
-                        }
-                    }
-                };
-                TP.utils.chartBuilder.renderColumnChart(this.$("#paceByZonesChart"), chartPoints, timeInZoneTooltipTemplate, chartOptions);
-            } else
-            {
-                this.$("#paceByZonesChart").html("");
-            }
-        },
-
-        toPercent: function (numerator, denominator)
-        {
-            return Math.round((numerator / denominator) * 100);
-        },
-
-        renderPeaks: function ()
-        {
-            var peaks = this.getPeaksData();
-            this.renderPeaksTable(peaks);
-            this.renderPeaksChart(peaks);
-        },
-
-        renderPeaksTable: function (peaks)
-        {
-            if (peaks)
-            {
-                var peaksHtml = pacePeakRowTemplate({ peaks: peaks });
-                this.$("#pacePeaksTable").html(peaksHtml);
-            } else
-            {
-                this.$("#pacePeaksTable").html("");
-            }
-        },
-
-        buildPeaksChartPoints: function (peaks)
-        {
-            var chartPoints = [];
-            _.each(peaks, function (peak, index)
-            {
-
-
-                var point = {
-                    label: peak.label,
-                    value: peak.value,
-                    name: TP.utils.conversion.formatPace(peak.value),
-                    y: peak.value,
-                    x: index
-                };
-
-                chartPoints.push(point);
-
-            }, this);
-
-            return chartPoints;
-
-        },
-
-        renderPeaksChart: function (peaks)
-        {
-            if (peaks && peaks.length)
-            {
-                var chartPoints = this.buildPeaksChartPoints(peaks);
-
-                var chartOptions = {
-                    title:
                     {
-                        text: "Peak Pace"
-                    },
-                    xAxis: {
-                        labels:
-                        {
-                            enabled: true
-                        },
-                        tickColor: 'transparent',
-                        type: 'category',
-                        categories: TP.utils.chartBuilder.getPeakChartCategories(chartPoints)
-                    },
-                    yAxis: {
-                        title: {
-                            text: 'min/mile'
-                        },
-                        labels:
-                        {
-                            enabled: false
-                        }
-                        //type: 'category',
-                        //categories: this.getChartCategoriesAsPace(chartPoints),
-                        //tickInterval: null
+                        value: this.formatPace(point.value) + " " + this.formatPeakUnitsLabel(point.value)
                     }
+                ]
+            });
+        },
+
+        addTooltipDataToTimeInZoneChartPoint: function(point, timeInZone, timeInZones)
+        {
+            _.extend(point, {
+                tooltips: [
+                    {
+                        label: point.label
+                    },
+                    {
+                        label: "Range",
+                        value: this.formatPace(timeInZone.minimum) + "-" + this.formatPace(timeInZone.maximum) + " " + this.formatPeakUnitsLabel(point.value)
+                    },
+                    {
+                        label: "Time",
+                        value: TP.utils.conversion.formatDurationFromSeconds(timeInZone.seconds)
+                    },
+                    {
+                        label: "Percent",
+                        value: point.percentTime + "%"
+                    }
+                ]
+            });
+        },
+
+        addFormattersToPeakStickitBinding: function(binding, peak)
+        {
+            _.extend(binding, {
+                onGet: "formatPace",
+                onSet: "parsePace"
+            });
+        },
+
+        addFormattersToTimeInZoneStickitBinding: function(binding, timeInZone)
+        {
+            _.extend(binding, {
+                onGet: "formatDurationFromSeconds",
+                onSet: "parseDurationAsSeconds"
+            });
+        },
+
+        addPeaksLabelStickitBindings: function(bindings, peaks)
+        {
+            _.each(peaks, function(peak, index)
+            {
+                var unitsLabelCssId = "#" + peak.id + "UnitsLabel";
+                var modelFieldName = "meanMax" + this.metric + "s.meanMaxes." + peak.modelArrayIndex + ".value";
+
+                var binding = {
+                    observe: modelFieldName,
+                    onGet: "formatPeakUnitsLabel"
                 };
-                TP.utils.chartBuilder.renderSplineChart(this.$("#pacePeaksChart"), chartPoints, peaksTooltipTemplate, chartOptions);
-            } else
-            {
-                this.$("#pacePeaksChart").html("");
-            }
-        },
 
-        getPeaksData: function ()
-        {
-            var pacePeaks = this.model.get("details").get("meanMaxSpeed");
-            return TP.utils.chartBuilder.cleanAndFormatPeaksData(pacePeaks);
-        },
-
-        getChartCategoriesAsPace: function(chartPoints)
-        {
-
-            var categories = [];
-            _.each(chartPoints, function(point)
-            {
-                categories.unshift(TP.utils.conversion.formatPace(point.value));
+                bindings[unitsLabelCssId] = binding;
             }, this);
-            categories.push("");
+        },
 
-            return categories;
+        formatPeakUnitsLabel: function(value, options)
+        {
+            return "min/" + TP.utils.units.getUnitsLabel("distance", this.workoutModel.get("workoutTypeValueId"));
+        },
+
+        addTimeInZonesLabelStickitBindings: function(bindings, timeInZones)
+        {
+            _.each(timeInZones.timeInZones, function(timeInZone, index)
+            {
+                var cssId = "#timeInZone" + index;
+                var unitsLabelCssId = cssId + "UnitsLabel";
+                var minimumCssId = cssId + "Minimum";
+                var maximumCssId = cssId + "Maximum";
+                var modelFieldName = "timeIn" + this.metric + "Zones.timeInZones." + index;
+
+                bindings[unitsLabelCssId] = {
+                    observe: modelFieldName + ".seconds",
+                    onGet: "formatPeakUnitsLabel"
+                };
+
+                bindings[minimumCssId] = {
+                    observe: modelFieldName + ".minimum",
+                    onGet: "formatPace"
+                };
+
+                bindings[maximumCssId] = {
+                    observe: modelFieldName + ".maximum",
+                    onGet: "formatPace"
+                };
+
+            }, this);
+
+        },
+
+        modifyPeaksChart: function(chartOptions, chartPoints)
+        {
+            _.extend(chartOptions, {
+                yAxis: {
+                    title: {
+                        text: this.formatPeakUnitsLabel(1)
+                    },
+                    labels:
+                    {
+                        enabled: false
+                    }
+                }
+            });
         }
-    });
-    
+
+    };
+
+    _.extend(paceViewBase, zonesViewBase);
+    return TP.ItemView.extend(paceViewBase);
 });

@@ -73,7 +73,7 @@ function(TP)
                 pointStart: 0,
                 pointInterval: 1000, //1 second
                 allowPointSelector: true,
-                animation: true,
+                animation: false,
                 cursor: "pointer",
                 lineWidth: 1,
                 marker:

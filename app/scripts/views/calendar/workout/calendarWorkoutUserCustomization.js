@@ -26,11 +26,10 @@ function(_, TP)
 
             if (layoutPreferences)
             {
-                var keyStatFieldName = TP.utils.workout.keyStat.getField(this.model);
                 _.each(layoutPreferences, function(layoutPreferenceId, index)
                 {
                     var field = TP.utils.workout.layoutFormatter.calendarWorkoutLayout[layoutPreferenceId];
-                    if (field && keyStatFieldName !== field.name)
+                    if (field)
                     {
                         this.applyFieldLayoutPreference(field);
                     } 

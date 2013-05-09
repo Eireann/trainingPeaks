@@ -1,11 +1,18 @@
 ﻿require(
 [
-    "TP"
+    "TP",
+    "app"
 ],
-function(TP)
+function(TP, theApp)
 {
-    describe("Display workout distance, time, or tss", function()
+    describe("Display key stat distance, time, or tss", function()
     {
+
+        beforeEach(function()
+        {
+            theApp.user.set("units", TP.utils.units.constants.English);
+        });
+
         it("Should display a completed workout of backbone model with the precendent of distance, duration, and tss", function()
         {
             var workout = new TP.Model();
@@ -16,7 +23,7 @@ function(TP)
             expect(TP.utils.workout.keyStat.formatStats(workout)).toBe("1:00:00");
             
             workout.set("totalTime", null);
-            expect(TP.utils.workout.keyStat.formatStats(workout)).toBe(100);
+            expect(TP.utils.workout.keyStat.formatStats(workout)).toBe("100.0");
             
             workout.set("tssActual", null);
             expect(TP.utils.workout.keyStat.formatStats(workout)).toBe("0.01");
@@ -25,15 +32,15 @@ function(TP)
             expect(TP.utils.workout.keyStat.formatStats(workout)).toBe("1:00:00");
 
             workout.set("totalTimePlanned", null);
-            expect(TP.utils.workout.keyStat.formatStats(workout)).toBe(100);
+            expect(TP.utils.workout.keyStat.formatStats(workout)).toBe("100.0");
 
             workout.set("tssPlanned", null);
             expect(TP.utils.workout.keyStat.formatStats(workout)).toBe("");
  
 
         });
-        
-        it("Should accept a JSON object", function ()
+
+        it("Should accept a JSON object", function()
         {
             var workout = { distance: 20, totalTime: 1, tssActual: 100 };
             expect(TP.utils.workout.keyStat.formatStats(workout)).toBe("0.01");
