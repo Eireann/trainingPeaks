@@ -30,13 +30,17 @@ function(
             this.on("close", this.removeSaveOnModelChange, this);
 
             if (this.isNewWorkout)
-                this.model.on("sync", this.addWorkoutToDay, this);
-        },
+            {
+                var dayToAddTo = this.dayModel;
+                var newWorkoutModel = this.model;
+                var onSyncNewWorkout = function()
+                {
+                    newWorkoutModel.off("sync", onSyncNewWorkout);
+                    dayToAddTo.trigger("workout:added", newWorkoutModel);
+                };
 
-        addWorkoutToDay: function()
-        {
-            this.model.off("sync", this.addWorkoutToDay);
-            this.dayModel.trigger("workout:added", this.model);
+                this.model.on("sync", onSyncNewWorkout);
+            }
         },
 
         saveDeleteDiscardOnRender: function()
@@ -121,9 +125,6 @@ function(
 
         onCloseClicked: function()
         {
-            if (this.isNewWorkout)
-                this.dayModel.trigger("workout:added", this.model);
-
             this.close();
         }
     };
