@@ -3,13 +3,37 @@
 
         <img id="closeIcon" src="assets/images/closeX.png"/>
 
-        <div class="dialogHeader">{{$ "UploadFiles" }}</div>
+        <div class="header">{{$ "UploadFiles" }}</div>
 
-        <div>{{$ "SelectFile" }}<a id="deviceAgentLink">{{$ "DeviceAgent" }}</a></div>
-        <div class="buttons">
+        <p>{{$ "SelectFile" }}&nbsp;<a class="deviceAgentButton" id="deviceAgentLink">{{$ "DeviceAgent" }}</a></p>
+
+        <div class="bigButtons">
             <button id="workoutFileUploadMenuBrowse">{{$ "BrowseFiles" }}</button>
-            <button id="deviceAgentButton">{{$ "GetDeviceAgent" }}</button>
+            <button id="deviceAgentButton" class="deviceAgentButton">{{$ "GetDeviceAgent" }}</button>
         </div>
+
+        {{#with details }}
+            {{#if workoutDeviceFileInfos }}
+                <div class="deviceFiles">
+                    <div class="header">{{$ "UploadedFiles" }}</div>
+
+                    <div class="fileList">
+                        {{#each workoutDeviceFileInfos }}
+                            <div class="file">
+                                <input type="checkbox" class="fileSelect" data-fileid="{{ fileId }}" name="checkbox{{ fileId }}" id="checkbox{{ fileId }}"/> <label for="checkbox{{ fileId }}">{{ fileName }}</label>
+                            </div>
+                        {{/each}}
+                    </div>
+
+                    <div class="fileButtons">
+                        <button class="download">{{$ "Download" }}</button>
+                        <button class="view">{{$ "View" }}</button>
+                        <button class="recalculate">{{$ "Recalculate" }}</button>
+                        <button class="delete">{{$ "Delete" }}</button>
+                    </div>
+                </div>
+            {{/if}}
+        {{/with}}
 
     </div>
 {{/hoverBox}}

@@ -4,13 +4,25 @@
 .workoutFileUploadMenu
 {
     z-index: 103;
+    width: 360px;
 
     .hoverBox
     {
+        .hoverBoxContents
+        {
+            background-image: none;
+            background-color: $white;
+        }
+
         .arrow
         {
             position: absolute;
             top: 13px;
+        }
+
+        .mainShadow
+        {
+            bottom: 0px;
         }
     }
 
@@ -45,5 +57,94 @@
         right: 8px;
     }
 
-    @include buttons(0px, 60px, $fontSizeMedium);
+    .details
+    {
+        margin-left: 15px;
+        margin-top: 5px;
+        font-size: $fontSizeSmall;
+        color: $TPGrey3;
+
+        .header
+        {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        p {
+            margin-bottom: 5px;
+        }
+
+        @include buttons(0px, 150px, $fontSizeMedium);
+        button {
+            font-weight: normal;
+            width: calc(50% - 3px);
+            &:first
+            {
+                margin-right: 6px; 
+            }
+        }
+
+        #deviceAgentLink
+        {
+            font-style: italic;
+        }
+
+       .deviceFiles
+       {
+            margin-top: 23px;       
+
+            .fileList
+            {
+                border: 1px solid $TPGrey7;
+                padding: 7px;
+            }
+
+            .file
+            {
+
+                checkbox
+                {
+                    margin: 0px;
+                }
+
+                label
+                {
+                    font-size: 1em;
+                    line-height: 1;
+                    display: inline-block;
+                    vertical-align: top;
+                    margin-left: 5px;
+                }
+
+                &.selected
+                {
+                    label
+                    {
+                        font-weight: bold;
+                    }
+                }
+            }
+
+            .fileButtons
+            {
+                margin-top: 10px;
+
+                button 
+                {
+                    font-weight: normal;
+                    padding-left: 5px;
+                    padding-right: 5px;
+                    width: calc(25% - 6px);
+                    margin-right: 5px;
+                    &.delete
+                    {
+                        margin-right: 0px; 
+                    }
+                }
+            }
+       } 
+
+    }
+
+
 }
