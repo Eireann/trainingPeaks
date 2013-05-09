@@ -112,12 +112,13 @@ function(
             if (existingModel)
             {
                 newModel = existingModel;
+                newModel.set(workoutModelJson);
             } else
             {
+                newModel.set(workoutModelJson);
                 this.model.trigger("workout:added", newModel);
             }
 
-            newModel.set(workoutModelJson);
             var quickView = new WorkoutQuickView({ model: newModel });
             quickView.render();
 
