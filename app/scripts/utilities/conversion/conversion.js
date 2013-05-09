@@ -110,7 +110,7 @@
 
         formatInteger: function(value, options)
         {
-            return ((value === null || value === 0) ? "" : (Math.round(parseFloat(value))).toFixed(0));
+            return ((value === null || value === 0) ? (options && options.hasOwnProperty("defaultValue") ? options.defaultValue : "") : (Math.round(parseFloat(value))).toFixed(0));
         },
 
         parseInteger: function (value, options)

@@ -47,7 +47,8 @@ function(
 
                 var binding = {
                     observe: modelFieldName,
-                    updateModel: "updateModel"
+                    updateModel: "updateModel",
+                    inputId: inputFieldCssId
                 };
 
                 this.trigger("buildTimeInZoneStickitBinding", binding, timeInZone);
@@ -68,7 +69,8 @@ function(
 
                 var binding = {
                     observe: modelFieldName,
-                    updateModel: "updateModel"
+                    updateModel: "updateModel",
+                    inputId: inputFieldCssId
                 };
 
                 this.trigger("buildPeakStickitBinding", binding, peak);

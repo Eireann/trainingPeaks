@@ -1,225 +1,149 @@
 ﻿define(
 [
+    "underscore",
     "TP",
-    "hbs!templates/views/quickView/power/powerTabView",
-    "hbs!templates/views/quickView/power/powerZoneRow",
-    "hbs!templates/views/quickView/power/powerPeakRow",
-    "hbs!templates/views/quickView/power/timeInZoneGraphTooltip",
-    "hbs!templates/views/quickView/power/peakChartTooltip"
+    "views/quickView/qvZonesTabs/baseView"
 ],
-function (TP, powerTabTemplate,
-    powerZoneRowTemplate,
-    powerPeakRowTemplate,
-    timeInZoneTooltipTemplate,
-    peaksTooltipTemplate)
+function(
+    _,
+    TP,
+    zonesViewBase
+)
 {
-    return TP.ItemView.extend(
-    {
+    var paceViewBase = {
+        metric: "Power",
+        zoneSettingName: "powerZones",
+        graphTitle: "Power",
         className: "quickViewPowerTab",
 
-        showThrobbers: false,
-
-        template:
+        initialize: function(options)
         {
-            type: "handlebars",
-            template: powerTabTemplate
+            this.initializeBaseView(options);
+            this.on("buildPeakChartPoint", this.addTooltipDataToPeakChartPoint, this);
+            this.on("buildTimeInZoneChartPoint", this.addTooltipDataToTimeInZoneChartPoint, this);
+            this.on("buildPeakStickitBinding", this.addFormattersToPeakStickitBinding, this);
+            this.on("buildTimeInZoneStickitBinding", this.addFormattersToTimeInZoneStickitBinding, this);
+            this.on("additionalPeaksStickitBindings", this.addPeaksLabelStickitBindings, this);
+            this.on("additionalTimeInZonesStickitBindings", this.addTimeInZonesLabelStickitBindings, this);
+            this.on("buildPeaksChart", this.modifyPeaksChart, this);
         },
 
-        initialEvents: function()
+        addTooltipDataToPeakChartPoint: function(point, peak, timeInZones)
         {
-            this.model.off("change", this.render);
-        },
-
-        onRender: function()
-        {
-            this.renderTimeInZones();
-            this.renderPeaks();
-            this.watchForModelChanges();
-        },
-
-        watchForModelChanges: function ()
-        {
-            this.model.get("details").on("change:timeInPowerZones.timeInZones", this.renderTimeInZones, this);
-            this.model.get("details").on("change:meanMaxPower", this.renderPeaks, this);
-            this.on("close", this.stopWatchingModelChanges, this);
-        },
-
-        stopWatchingModelChanges: function ()
-        {
-            this.model.get("details").off("change:timeInPowerZones.timeInZones", this.renderTimeInZones, this);
-            this.model.get("details").off("change:meanMaxPower", this.renderPeaks, this);
-        },
-
-        renderTimeInZones: function ()
-        {
-            var timeInZones = this.model.get("details").get("timeInPowerZones");
-            this.renderTimeInZonesTable(timeInZones);
-            this.renderTimeInZonesChart(timeInZones);
-        },
-
-        renderTimeInZonesTable: function (timeInZones)
-        {
-            if (timeInZones)
-            {
-                _.each(timeInZones.timeInZones, function (timeInZone)
-                {
-                    timeInZone.labelShort = timeInZone.label.split(":")[0];
-                }, this);
-                var zonesHtml = powerZoneRowTemplate(timeInZones);
-                this.$("#powerByZonesTable").html(zonesHtml);
-            } else
-            {
-                this.$("#powerByZonesTable").html("");
-            }
-        },
-
-        renderTimeInZonesChart: function (timeInZones)
-        {
-            if (timeInZones)
-            {
-                var chartPoints = this.buildTimeInZonesChartPoints(timeInZones);
-
-                var chartOptions = {
-                    title:
+            _.extend(point, {
+                tooltips: [
                     {
-                        text: "Power by Zones"
+                        label: point.label
                     },
-                    xAxis: {
-                        title:
-                        {
-                            text: "Zones"
-                        }
-                    },
-                    yAxis: {
-                        title: {
-                            text: 'Minutes'
-                        }
-                    }
-                };
-                TP.utils.chartBuilder.renderColumnChart(this.$("#powerByZonesChart"), chartPoints, timeInZoneTooltipTemplate, chartOptions);
-            } else
-            {
-                this.$("#powerByZonesChart").html("");
-            }
-        },
-
-        toPercent: function (numerator, denominator)
-        {
-            return Math.round((numerator / denominator) * 100);
-        },
-
-        renderPeaks: function ()
-        {
-            var peaks = this.getPeaksData();
-            this.renderPeaksTable(peaks);
-            this.renderPeaksChart(peaks);
-        },
-
-        renderPeaksTable: function (peaks)
-        {
-            if (peaks)
-            {
-                var peaksHtml = powerPeakRowTemplate({ peaks: peaks });
-                this.$("#powerPeaksTable").html(peaksHtml);
-            } else
-            {
-                this.$("#powerPeaksTable").html("");
-            }
-        },
-
-        renderPeaksChart: function (peaks)
-        {
-            if (peaks && peaks.length)
-            {
-                var chartPoints = this.buildPeaksChartPoints(peaks);
-
-                var chartOptions = {
-                    title:
                     {
-                        text: "Peak Power"
-                    },
-                    xAxis: {
-                        labels:
-                        {
-                            enabled: true
-                        },
-                        tickColor: 'transparent',
-                        type: 'category',
-                        categories: TP.utils.chartBuilder.getPeakChartCategories(chartPoints)
-                    },
-                    yAxis: {
-                        title: {
-                            text: 'Watts'
-                        }
+                        value: this.formatInteger(point.value) + " " + this.formatPeakUnitsLabel(point.value)
                     }
-                };
-                TP.utils.chartBuilder.renderSplineChart(this.$("#powerPeaksChart"), chartPoints, peaksTooltipTemplate, chartOptions);
-            } else
-            {
-                this.$("#powerPeaksChart").html("");
-            }
+                ]
+            });
         },
 
-        buildPeaksChartPoints: function(peaks)
+        addTooltipDataToTimeInZoneChartPoint: function(point, timeInZone, timeInZones)
         {
-            var chartPoints = [];
-            _.each(peaks, function (peak, index)
+            _.extend(point, {
+                tooltips: [
+                    {
+                        label: point.label
+                    },
+                    {
+                        label: "Range",
+                        value: this.formatInteger(timeInZone.minimum, { defaultValue: "0" }) + "-" + this.formatInteger(timeInZone.maximum, { defaultValue: "0" }) + " " + this.formatPeakUnitsLabel(point.value)
+                    },
+                    {
+                        label: "% FTP",
+                        value: TP.utils.conversion.toPercent(timeInZone.minimum, timeInZones.threshold) +
+                            "-" + TP.utils.conversion.toPercent(timeInZone.maximum, timeInZones.threshold) +
+                            " %"
+
+                    },
+                    {
+                        label: "Watts/Weight",
+                        value: ""
+
+                    },
+                    {
+                        label: "Time",
+                        value: TP.utils.conversion.formatDurationFromSeconds(timeInZone.seconds)
+                    },
+                    {
+                        label: "Percent",
+                        value: point.percentTime + "%"
+                    }
+                ]
+            });
+        },
+
+        addFormattersToPeakStickitBinding: function(binding, peak)
+        {
+            _.extend(binding, {
+                onGet: "formatInteger",
+                onSet: "parseInteger"
+            });
+        },
+
+        addFormattersToTimeInZoneStickitBinding: function(binding, timeInZone)
+        {
+            _.extend(binding, {
+                onGet: "formatDurationFromSeconds",
+                onSet: "parseDurationAsSeconds"
+            });
+        },
+
+        addPeaksLabelStickitBindings: function(bindings, peaks)
+        {
+            _.each(peaks, function(peak, index)
             {
+                var unitsLabelCssId = "#" + peak.id + "UnitsLabel";
+                var modelFieldName = "meanMax" + this.metric + "." + peak.modelArrayIndex + ".value";
 
-
-                var point = {
-                    label: peak.label,
-                    value: peak.value,
-                    y: peak.value,
-                    x: index
+                var binding = {
+                    observe: modelFieldName,
+                    onGet: "formatPeakUnitsLabel"
                 };
 
-                chartPoints.push(point);
+                bindings[unitsLabelCssId] = binding;
+            }, this);
+        },
+
+        formatPeakUnitsLabel: function(value, options)
+        {
+            return "Watts";
+        },
+
+        addTimeInZonesLabelStickitBindings: function(bindings, timeInZones)
+        {
+            _.each(timeInZones.timeInZones, function(timeInZone, index)
+            {
+                var cssId = "#timeInZone" + index;
+                var unitsLabelCssId = cssId + "UnitsLabel";
+                var modelFieldName = "timeIn" + this.metric + "Zones.timeInZones." + index;
+
+                bindings[unitsLabelCssId] = {
+                    observe: modelFieldName + ".seconds",
+                    onGet: "formatPeakUnitsLabel"
+                };
 
             }, this);
 
-            return chartPoints;
-
         },
 
-        getPeaksData: function ()
+        modifyPeaksChart: function(chartOptions, chartPoints)
         {
-            var powerPeaks = this.model.get("details").get("meanMaxPower");
-            return TP.utils.chartBuilder.cleanAndFormatPeaksData(powerPeaks);
-        },
-
-        buildTimeInZonesChartPoints: function (timeInZones)
-        {
-            var chartPoints = [];
-            var totalSeconds = TP.utils.chartBuilder.calculateTotalTimeInZones(timeInZones);
-            // zone times are in seconds, convert to minutes
-            _.each(timeInZones.timeInZones, function (timeInZone, index)
-            {
-
-                var minutes = timeInZone.seconds ? Number(timeInZone.seconds) / 60 : 0;
-                var hours = timeInZone.seconds ? Number(timeInZone.seconds) / 3600 : 0;
-
-                var point = {
-                    label: timeInZone.label,
-                    rangeMinimum: timeInZone.minimum,
-                    rangeMaximum: timeInZone.maximum,
-                    percentTime: this.toPercent(timeInZone.seconds, totalSeconds),
-                    percentLTMin: this.toPercent(timeInZone.minimum, timeInZones.threshold),
-                    percentLTMax: this.toPercent(timeInZone.maximum, timeInZones.threshold),
-                    percentMHRMin: this.toPercent(timeInZone.minimum, timeInZones.maximum),
-                    percentMHRMax: this.toPercent(timeInZone.maximum, timeInZones.maximum),
-                    seconds: timeInZone.seconds,
-                    value: minutes,
-                    y: minutes,
-                    x: index
-                };
-
-                chartPoints.push(point);
-
-            }, this);
-
-            return chartPoints;
-
+            _.extend(chartOptions, {
+                yAxis: {
+                    title: {
+                        text: "Watts"
+                    }
+                }
+            });
         }
-    });
+
+    };
+
+    _.extend(paceViewBase, zonesViewBase);
+    return TP.ItemView.extend(paceViewBase);
 });

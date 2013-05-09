@@ -1,33 +1,14 @@
 US642 TODO:
 
-webapi save
-
-pace tab stickit issues?
-
-power tab
-
-compare all tabs to app.dev
+integrate webapi refactor
+test webapi save
 
 some of the peak calculation probably doesn't belong in chartbuilder
 
-remove all unused files
 
 watch for settings change/load in qv tabs if athlete settings haven't loaded yet
-
-workout type change - how does this effect existing 'time in zones' data? do we re-display based on settings? or would it change on server?
-
 watch for workout type change - discuss behavior for existing workouts w/ data
 
 default zones for new users - where or how? or, what about existing users that have no zones?
 
-8) will we have a story to change the charts to flot? and improve design?
 
-
-BDD TESTS:
-zones and meanmax
-stickit and autosave
-late loading of athlete settings
-cancel
-changing workout type
-get full test set to work, and check coverage
-how to deal w/ bdd tests not running in browser?
