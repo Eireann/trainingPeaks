@@ -5,6 +5,16 @@ define(
 ],
 function(TP, WorkoutFileUploadMenuTemplate)
 {
+    /* TODO:
+
+    upload button dark state
+    review api endpoints
+    connect bottom buttons to actions
+        with delete confirmation
+    reload details and detailData on recalculate
+
+    */
+
     return TP.ItemView.extend(
     {
 
