@@ -109,14 +109,6 @@ function(_, moment, TP)
 
         workoutAdded: function(newWorkout)
         {
-            /*
-            _.each(this.itemsCollection.models, function(existingWorkout)
-            {
-                if (existingWorkout.get && existingWorkout.get("workoutId") === newWorkout.get("workoutId"))
-                    existingWorkout.trigger("change");
-            });
-            */
-
             this.trigger("workout:added", newWorkout);
         }
     }, { hasLabel: false });

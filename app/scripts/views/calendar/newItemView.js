@@ -106,8 +106,8 @@ function(
                 return;
             }
 
-            //var newModel = new WorkoutModel(workoutModelJson);
-            var newModel = this.model.workoutAdded(workoutModelJson);
+            var newModel = new WorkoutModel(workoutModelJson);
+            this.model.workoutAdded(newModel);
             
             var quickView = new WorkoutQuickView({ model: newModel });
             quickView.render();
