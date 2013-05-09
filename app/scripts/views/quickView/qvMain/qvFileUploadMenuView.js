@@ -8,6 +8,7 @@ function(TP, WorkoutFileUploadMenuTemplate)
     /* TODO:
 
     upload button dark state
+    review user story
     review api endpoints
     connect bottom buttons to actions
         with delete confirmation
@@ -74,13 +75,8 @@ function(TP, WorkoutFileUploadMenuTemplate)
         {
             var checkbox = $(e.target);
             var fileDiv = checkbox.closest(".file");
-            if (checkbox.is(":checked"))
-            {
-                fileDiv.addClass("selected");
-            } else
-            {
-                fileDiv.removeClass("selected");
-            }
+            this.$(".file.selected").removeClass("selected");
+            fileDiv.addClass("selected");
         }
 
     });
