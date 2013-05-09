@@ -12,7 +12,7 @@ function(_, jqueryOutside, TP, ExerciseLibraryView, MealLibraryView, libraryTemp
     return TP.ItemView.extend(
     {
         widthClosed: 40,
-        widthOpen: 350,
+        widthOpen: 310,
 
         template:
         {
