@@ -193,6 +193,7 @@
     "Unknown": "Unknown",
     "ChooseMetric": "Choose Metric",
     "UploadFile": "Upload File",
+    "UploadFiles": "Upload Files",
     "FileUploadHelp": "Learn more about device file upload options",
     "FileUploadTooltip": "Choose a file on your computer\n(.fit, .tcx, .pwx, .wko, .csv, .hrm).",
 	"ShiftString": "What types of items do you want to shift?",
@@ -250,5 +251,13 @@
     "Peak": "Peak",
 
     "Error": "Error",
-    "ErrorUploadingFile": "An error occurred uploading your device file"
+    "ErrorUploadingFile": "An error occurred uploading your device file",
+
+    "BrowseFiles": "Browse Files",
+    "GetDeviceAgent": "Get Device Agent",
+    "SelectFile": "Select a file from your computer\n(.csv, .pwx, .fit, .tcx etc)\nor use",
+    "DeviceAgent": "Device Agent",
+    "UploadedFiles": "Uploaded Files",
+    "Download": "Download",
+    "Recalculate": "Recalculate"
 }
