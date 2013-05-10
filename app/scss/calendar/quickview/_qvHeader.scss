@@ -187,6 +187,17 @@
         .uploadButton
         {
             background-image: url(../../assets/images/QVImages/uploadBackground.png);
+
+            &.menuOpen
+            {
+                background-image: url(../../assets/images/QVImages/uploadBackgroundDark.png);
+
+                label
+                {
+                    color: $white;
+                    opacity: 0.85;
+                }
+            }
         }
         .expandButton
         {
