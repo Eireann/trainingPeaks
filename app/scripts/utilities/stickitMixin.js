@@ -61,7 +61,6 @@ function(
         {
             var doUpdateModel = false;
             var currentModelValue = this.model.get(options.observe);
-            var parsedViewValue = newViewValue;
 
             // DO coerce type in this situation, since we only care about truthy/falsy'ness.
             /*jslint eqeq: true*/
@@ -73,17 +72,30 @@ function(
                 }
             } else {
                 // if the parsed input would be the same as the current value,
-                if (this[options.onSet](newViewValue) != currentModelValue)
+                var parsedViewValue = this[options.onSet](newViewValue);
+                if (parsedViewValue != currentModelValue)
                 {
+
                     doUpdateModel = true;
+
+                    // maybe it's a rounding error? i.e. time in zone = 718.8 in workout file, but we would have rounded it to 719
+                    if (options.onGet)
+                    {
+                        var formattedModelValue = this[options.onGet](currentModelValue);
+                        var parsedModelValue = this[options.onSet](formattedModelValue);
+                        if(parsedModelValue == parsedViewValue)
+                        {
+                            doUpdateModel = false;
+                        }
+                    }
+
                 }
-                parsedViewValue = this[options.onSet](newViewValue);
             }
             /*jsline eqeq: false*/
 
             return doUpdateModel;
         },
-        
+
         setModelValue: function(newViewValue, options)
         {
             // Do the save!
