@@ -100,7 +100,7 @@ function (_, moment, TP, WorkoutDetailsModel, WorkoutDetailDataModel)
             this.on("change:workoutId", function()
             {
                 this.get("details").set("workoutId", this.get("workoutId"));
-		this.get("detailData").set("workoutId", this.get("workoutId"));
+                this.get("detailData").set("workoutId", this.get("workoutId"));
             }, this);
         },
         

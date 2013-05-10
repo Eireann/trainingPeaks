@@ -1,13 +1,27 @@
 define(
 [
+    "underscore",
     "TP",
+    "models/workoutFileData",
+    "models/commands/recalculateWorkoutFromDeviceFile",
+    "views/userConfirmationView",
+    "hbs!templates/views/confirmationViews/deleteConfirmationView",
     "hbs!templates/views/quickView/workoutFileUploadMenu"
 ],
-function(TP, WorkoutFileUploadMenuTemplate)
+function(
+    _,
+    TP,
+    WorkoutFileDataModel,
+    RecalculateWorkoutCommand,
+    UserConfirmationView,
+    deleteConfirmationTemplate,
+    WorkoutFileUploadMenuTemplate
+    )
 {
     /* TODO:
 
     upload button dark state
+    review user story
     review api endpoints
     connect bottom buttons to actions
         with delete confirmation
@@ -15,11 +29,11 @@ function(TP, WorkoutFileUploadMenuTemplate)
 
     */
 
+
     return TP.ItemView.extend(
     {
 
         modal: true,
-        showThrobbers: false,
         tagName: "div",
         deviceAgentUrl: "http://support.trainingpeaks.com/device-agent.aspx",
 
@@ -30,7 +44,10 @@ function(TP, WorkoutFileUploadMenuTemplate)
             "click #workoutFileUploadMenuBrowse": "onBrowseClicked",
             "click .deviceAgentButton": "onDeviceAgentClicked",
             "click #closeIcon": "close",
-            "change .fileSelect": "selectFileCheckbox"
+            "change .fileSelect": "selectFileCheckbox",
+            "click button.recalculate": "onRecalculateClicked",
+            "click button.download": "onDownloadClicked",
+            "click button.delete": "onDeleteClicked"
         },
 
         attributes: {
@@ -51,6 +68,16 @@ function(TP, WorkoutFileUploadMenuTemplate)
         initialize: function(options)
         {
             this.$el.addClass(options.direction);
+            this.watchForFileChanges();
+        },
+
+        watchForFileChanges: function()
+        {
+            this.model.get("details").on("change:workoutDeviceFileInfos", this.render, this);
+            this.on("close", function()
+            {
+                this.model.get("details").off("change:workoutDeviceFileInfos", this.render, this);
+            }, this);
         },
 
         onDeviceAgentClicked: function()
@@ -73,14 +100,94 @@ function(TP, WorkoutFileUploadMenuTemplate)
         selectFileCheckbox: function(e)
         {
             var checkbox = $(e.target);
+            this.selectedFileId = checkbox.val();
+
+            // select the file
             var fileDiv = checkbox.closest(".file");
-            if (checkbox.is(":checked"))
+            this.$(".file.selected").removeClass("selected");
+            fileDiv.addClass("selected");
+
+            // enable all buttons
+            this.$(".fileButtons button").attr("disabled", null);
+        },
+
+        onRecalculateClicked: function()
+        {
+
+            this.waitingOn();
+
+            this.recalcCommand = new RecalculateWorkoutCommand({
+                workoutId: this.model.get("workoutId"),
+                workoutFileDataId: this.selectedFileId
+            });
+
+            _.bindAll(this, "afterRecalculate");
+            this.recalcCommand.execute().done(this.afterRecalculate);
+            // returns workout data
+            // re-fetch details and detailData
+        },
+
+        afterRecalculate: function()
+        {
+            if (this.recalcCommand && this.recalcCommand.has("workoutModelData"))
             {
-                fileDiv.addClass("selected");
+                // update the model
+                this.model.set(this.recalcCommand.get("workoutModelData"));
+                this.model.fetch();
+
+                // update the details
+                var self = this;
+                this.model.get("details").fetch();
+                /*.done(function()
+                {
+                    self.waitingOff();
+                });*/
+
+                // update the detail data
+                this.model.get("detailData").fetch();
             } else
             {
-                fileDiv.removeClass("selected");
+                this.waitingOff();
             }
+            this.close();
+        },
+
+        onDownloadClicked: function()
+        {
+            //GET athletes/{athleteId:int}/workouts/{workoutId:int}/filedata/{fileId:int
+            // how to handle as file
+        },
+
+        onDeleteClicked: function()
+        {
+            this.deleteConfirmationView = new UserConfirmationView({ template: deleteConfirmationTemplate });
+            this.deleteConfirmationView.render();
+            this.deleteConfirmationView.on("userConfirmed", this.onDeleteFileConfirmed, this);
+        },
+
+        onDeleteFileConfirmed: function()
+        {
+            this.waitingOn();
+            var fileDataModel = new WorkoutFileDataModel({ id: this.selectedFileId, workoutId: this.model.get("workoutId") });
+            var self = this;
+            fileDataModel.destroy().done(function()
+            {
+                    self.model.get("details").fetch().done(function()
+                    {
+                        self.waitingOff();
+                    });
+                }
+            );
+        },
+
+        waitingOn: function()
+        {
+            this.$(".details").addClass("waiting");
+        },
+
+        waitingOff: function()
+        {
+            this.$(".details").removeClass("waiting");
         }
 
     });
