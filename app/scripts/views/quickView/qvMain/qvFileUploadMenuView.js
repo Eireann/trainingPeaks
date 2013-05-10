@@ -18,17 +18,6 @@ function(
     WorkoutFileUploadMenuTemplate
     )
 {
-    /* TODO:
-
-    upload button dark state
-    review user story
-    review api endpoints
-    connect bottom buttons to actions
-        with delete confirmation
-    reload details and detailData on recalculate
-
-    */
-
 
     return TP.ItemView.extend(
     {
@@ -138,10 +127,6 @@ function(
                 // update the details
                 var self = this;
                 this.model.get("details").fetch();
-                /*.done(function()
-                {
-                    self.waitingOff();
-                });*/
 
                 // update the detail data
                 this.model.get("detailData").fetch();
@@ -154,8 +139,23 @@ function(
 
         onDownloadClicked: function()
         {
-            //GET athletes/{athleteId:int}/workouts/{workoutId:int}/filedata/{fileId:int
-            // how to handle as file
+            this.waitingOn();
+            var fileDataModel = new WorkoutFileDataModel({ id: this.getSelectedFileSystemId(), workoutId: this.model.get("workoutId") });
+            var self = this;
+            fileDataModel.fetch().done(function()
+                {
+                    self.waitingOff();
+                });
+        },
+
+        getSelectedFileSystemId: function()
+        {
+            var fileInfo = _.find(this.model.get("details").get("workoutDeviceFileInfos"), function(fileInfo)
+            {
+                return fileInfo.fileId === Number(this.selectedFileId);
+            }, this);
+
+            return fileInfo ? fileInfo.fileSystemId : "";
         },
 
         onDeleteClicked: function()
