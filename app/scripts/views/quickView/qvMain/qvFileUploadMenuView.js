@@ -35,7 +35,6 @@ function(
             "click #closeIcon": "close",
             "change .fileSelect": "selectFileCheckbox",
             "click button.recalculate": "onRecalculateClicked",
-            "click button.download": "onDownloadClicked",
             "click button.delete": "onDeleteClicked"
         },
 
@@ -58,6 +57,7 @@ function(
         {
             this.$el.addClass(options.direction);
             this.watchForFileChanges();
+            this.on("render", this.preDownloadFiles, this);
         },
 
         watchForFileChanges: function()
@@ -137,35 +137,33 @@ function(
             this.close();
         },
 
-        onDownloadClicked: function()
+        preDownloadFiles: function()
+        {
+            var deviceFiles = this.model.get("details").get("workoutDeviceFileInfos");
+            _.each(deviceFiles, function(fileInfo)
+            {
+                this.downloadFile(fileInfo);
+            }, this);
+        },
+
+        downloadFile: function(fileInfo)
         {
             this.waitingOn();
-            var fileDataModel = new WorkoutFileDataModel({ id: this.getSelectedFileSystemId(), workoutId: this.model.get("workoutId") });
+            var fileDataModel = new WorkoutFileDataModel({ id: fileInfo.fileSystemId, workoutId: this.model.get("workoutId") });
             var self = this;
             fileDataModel.fetch().done(function(fileData)
             {
                 TP.utils.filesystem.downloadFile(fileData.fileName, fileData.data, fileData.contentType, function(filesystemURL)
                 {
-                    var link = $("<a>");
+
+                    var link = self.$(".file#" + fileInfo.fileId + " a.download");
                     link.attr("href", filesystemURL);
                     link.attr("download", fileData.fileName);
-                    link.text(fileData.fileName);
-                    self.$(".details").append(link);
-                    //console.log(filesystemURL);
+                    link.removeClass("disabled");
                 });
 
                 self.waitingOff();
             });
-        },
-
-        getSelectedFileSystemId: function()
-        {
-            var fileInfo = _.find(this.model.get("details").get("workoutDeviceFileInfos"), function(fileInfo)
-            {
-                return fileInfo.fileId === Number(this.selectedFileId);
-            }, this);
-
-            return fileInfo ? fileInfo.fileSystemId : "";
         },
 
         onDeleteClicked: function()
