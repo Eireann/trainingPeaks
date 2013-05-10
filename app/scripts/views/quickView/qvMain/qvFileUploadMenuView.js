@@ -18,17 +18,6 @@ function(
     WorkoutFileUploadMenuTemplate
     )
 {
-    /* TODO:
-
-    upload button dark state
-    review user story
-    review api endpoints
-    connect bottom buttons to actions
-        with delete confirmation
-    reload details and detailData on recalculate
-
-    */
-
 
     return TP.ItemView.extend(
     {
@@ -46,7 +35,6 @@ function(
             "click #closeIcon": "close",
             "change .fileSelect": "selectFileCheckbox",
             "click button.recalculate": "onRecalculateClicked",
-            "click button.download": "onDownloadClicked",
             "click button.delete": "onDeleteClicked"
         },
 
@@ -69,6 +57,7 @@ function(
         {
             this.$el.addClass(options.direction);
             this.watchForFileChanges();
+            this.on("render", this.preDownloadFiles, this);
         },
 
         watchForFileChanges: function()
@@ -138,10 +127,6 @@ function(
                 // update the details
                 var self = this;
                 this.model.get("details").fetch();
-                /*.done(function()
-                {
-                    self.waitingOff();
-                });*/
 
                 // update the detail data
                 this.model.get("detailData").fetch();
@@ -152,10 +137,33 @@ function(
             this.close();
         },
 
-        onDownloadClicked: function()
+        preDownloadFiles: function()
         {
-            //GET athletes/{athleteId:int}/workouts/{workoutId:int}/filedata/{fileId:int
-            // how to handle as file
+            var deviceFiles = this.model.get("details").get("workoutDeviceFileInfos");
+            _.each(deviceFiles, function(fileInfo)
+            {
+                this.downloadFile(fileInfo);
+            }, this);
+        },
+
+        downloadFile: function(fileInfo)
+        {
+            this.waitingOn();
+            var fileDataModel = new WorkoutFileDataModel({ id: fileInfo.fileSystemId, workoutId: this.model.get("workoutId") });
+            var self = this;
+            fileDataModel.fetch().done(function(fileData)
+            {
+                TP.utils.filesystem.downloadFile(fileData.fileName, fileData.data, fileData.contentType, function(filesystemURL)
+                {
+
+                    var link = self.$(".file#" + fileInfo.fileId + " a.download");
+                    link.attr("href", filesystemURL);
+                    link.attr("download", fileData.fileName);
+                    link.removeClass("disabled");
+                });
+
+                self.waitingOff();
+            });
         },
 
         onDeleteClicked: function()

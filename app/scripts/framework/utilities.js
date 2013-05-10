@@ -4,13 +4,15 @@
     "utilities/units/units",
     "utilities/workout/workout",
     "utilities/conversion/conversion",
-    "utilities/chartBuilder"
+    "utilities/chartBuilder",
+    "utilities/filesystem"
 ], function(
     datetime,
     units,
     workout,
     conversion,
-    chartBuilder
+    chartBuilder,
+    filesystem
     )
 {
     return {
@@ -18,6 +20,7 @@
         units: units,
         workout: workout,
         conversion: conversion,
-        chartBuilder: chartBuilder
+        chartBuilder: chartBuilder,
+        filesystem: filesystem
     };
 });
