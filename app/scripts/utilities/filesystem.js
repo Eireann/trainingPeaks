@@ -31,7 +31,7 @@
                         var blob = new Blob([fileDataAsUint8Array], { type: contentType });
                         fileWriter.write(blob);
                         onSuccess(fileEntry.toURL());
-                    }
+                    };
 
                     fileEntry.createWriter(afterCreateFileWriter);
                 };
