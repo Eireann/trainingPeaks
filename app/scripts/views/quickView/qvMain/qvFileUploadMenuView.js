@@ -1,14 +1,18 @@
 define(
 [
+    "underscore",
     "TP",
     "models/workoutFileData",
+    "models/commands/recalculateWorkoutFromDeviceFile",
     "views/userConfirmationView",
     "hbs!templates/views/confirmationViews/deleteConfirmationView",
     "hbs!templates/views/quickView/workoutFileUploadMenu"
 ],
 function(
+    _,
     TP,
     WorkoutFileDataModel,
+    RecalculateWorkoutCommand,
     UserConfirmationView,
     deleteConfirmationTemplate,
     WorkoutFileUploadMenuTemplate
@@ -109,10 +113,43 @@ function(
 
         onRecalculateClicked: function()
         {
-            //POST athletes/{athleteId:int}/commands/workouts/{workoutId:int}/recalc/{fileId:int
+
+            this.waitingOn();
+
+            this.recalcCommand = new RecalculateWorkoutCommand({
+                workoutId: this.model.get("workoutId"),
+                workoutFileDataId: this.selectedFileId
+            });
+
+            _.bindAll(this, "afterRecalculate");
+            this.recalcCommand.execute().done(this.afterRecalculate);
             // returns workout data
             // re-fetch details and detailData
+        },
 
+        afterRecalculate: function()
+        {
+            if (this.recalcCommand && this.recalcCommand.has("workoutModelData"))
+            {
+                // update the model
+                this.model.set(this.recalcCommand.get("workoutModelData"));
+                this.model.fetch();
+
+                // update the details
+                var self = this;
+                this.model.get("details").fetch();
+                /*.done(function()
+                {
+                    self.waitingOff();
+                });*/
+
+                // update the detail data
+                this.model.get("detailData").fetch();
+            } else
+            {
+                this.waitingOff();
+            }
+            this.close();
         },
 
         onDownloadClicked: function()
@@ -130,17 +167,27 @@ function(
 
         onDeleteFileConfirmed: function()
         {
-            this.$(".details").addClass("waiting");
+            this.waitingOn();
             var fileDataModel = new WorkoutFileDataModel({ id: this.selectedFileId, workoutId: this.model.get("workoutId") });
             var self = this;
             fileDataModel.destroy().done(function()
             {
                     self.model.get("details").fetch().done(function()
                     {
-                        self.$(".details").removeClass("waiting");
+                        self.waitingOff();
                     });
                 }
             );
+        },
+
+        waitingOn: function()
+        {
+            this.$(".details").addClass("waiting");
+        },
+
+        waitingOff: function()
+        {
+            this.$(".details").removeClass("waiting");
         }
 
     });
