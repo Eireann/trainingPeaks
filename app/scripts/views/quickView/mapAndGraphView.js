@@ -4,9 +4,10 @@
     "leaflet",
     "utilities/charting/dataParser",
     "utilities/workout/workoutTypes",
+    "utilities/charting/flotCustomTooltip",
     "hbs!templates/views/quickView/mapAndGraphView"
 ],
-function (TP, Leaflet, DataParser, workoutTypes, workoutQuickViewMapAndGraphTemplate)
+function (TP, Leaflet, DataParser, workoutTypes, flotCustomToolTip, workoutQuickViewMapAndGraphTemplate)
 {
     var osmURL = "http://otile1.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.jpg";
     var cloudmadeURL = "http://b.tile.cloudmade.com/8ee2a50541944fb9bcedded5165f09d9/1/256/{z}/{x}/{y}.png";
@@ -156,6 +157,18 @@ function (TP, Leaflet, DataParser, workoutTypes, workoutQuickViewMapAndGraphTemp
                 selection:
                 {
                     mode: null 
+                },
+                tooltip: true,
+                tooltipOpts:
+                {
+                    content: function (x, y)
+                    {
+                        return "";
+                    },
+                    onHover: function (flotItem, $tooltipEl)
+                    {
+                        $tooltipEl.html(flotCustomToolTip(series, flotItem.series.label, flotItem.dataIndex, flotItem.datapoint[0]));
+                    }
                 },
                 series:
                 {

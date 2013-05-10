@@ -2,12 +2,10 @@
 [
     "TP",
     "utilities/charting/dataParser",
-    "utilities/conversion/convertToViewUnits",
-    "utilities/units/labels",
-    "hbs!templates/views/quickView/quickViewExpandedView",
-    "hbs!templates/views/quickView/expandedView/flotToolTip"
+    "utilities/charting/flotCustomTooltip",
+    "hbs!templates/views/quickView/quickViewExpandedView"
 ],
-function (TP, DataParser, convertToViewUnits, unitLabels, expandedViewTemplate, flotToolTipTemplate)
+function (TP, DataParser, flotCustomToolTip, expandedViewTemplate)
 {
 
     var expandedViewBase =
@@ -39,58 +37,62 @@ function (TP, DataParser, convertToViewUnits, unitLabels, expandedViewTemplate, 
                 this.toolTip.remove();
         },
 
-        initialize: function()
+        initialize: function(options)
         {
+            _.bindAll(this, "onModelFetched");
+            this.prefetchConfig = options.prefetchConfig;
         },
         
         onRender: function()
         {
             var self = this;
 
-            if (!this.model.get("detailData").attributes.flatSamples)
-                return;
-            
-            setImmediate(function()
+            this.watchForModelChanges();
+
+            this.$el.addClass("waiting");
+
+            if (!this.prefetchConfig.detailDataPromise)
             {
-                self.createFlotGraphOnContainer();
-            });
+                if (this.prefetchConfig.workoutDetailDataFetchTimeout)
+                    clearTimeout(this.prefetchConfig.workoutDetailDataFetchTimeout);
+
+                this.prefetchConfig.detailDataPromise = this.model.get("detailData").fetch();
+            }
+
+            // if we already have it in memory, render it
+            if (this.model.get("detailData") !== null && this.model.get("detailData").attributes.flatSamples !== null)
+            {
+                this.onModelFetched();
+            }
+            
+            setImmediate(function() { self.prefetchConfig.detailDataPromise.then(self.onModelFetched); });
         },
 
-        generateTooltipHtml: function(series, hoveredSeries, hoveredIndex, timeOffset)
+        watchForModelChanges: function ()
         {
-            var toolTipData =
-            {
-                timeOffset: null,
-                series: []
-            };
+            this.model.on("change:detailData", this.render, this);
+            this.on("close", this.stopWatchingModelChanges, this);
+        },
 
-            toolTipData.timeOffset = timeOffset;
-            _.each(series, function(s)
-            {
-                var value = s.data[hoveredIndex][1];
-                
-                //TODO Refactor!
-                var fieldName = s.label.toLowerCase();
-                var config =
-                {
-                    label: s.label,
-                    value: convertToViewUnits(value, fieldName),
-                    units: unitLabels(fieldName) 
-                };
-
-                if (s.label === hoveredSeries)
-                    config.current = true;
-
-                toolTipData.series.push(config);
-            });
-
-            return flotToolTipTemplate(toolTipData);
+        stopWatchingModelChanges: function ()
+        {
+            this.model.off("change:detailData", this.render, this);
         },
         
-        createFlotGraphOnContainer: function()
+        onModelFetched: function ()
         {
             var self = this;
 
+            this.$el.removeClass("waiting");
+
+            if (this.model.get("detailData") === null || this.model.get("detailData").attributes.flatSamples === null)
+                return;
+
+            setImmediate(function () { self.createFlotGraphOnContainer(); });
+        },
+
+        createFlotGraphOnContainer: function()
+        {
             var flatSamples = this.model.get("detailData").attributes.flatSamples;
 
             if (!this.dataParser)
@@ -128,7 +130,7 @@ function (TP, DataParser, convertToViewUnits, unitLabels, expandedViewTemplate, 
                     },
                     onHover: function(flotItem, $tooltipEl)
                     {
-                        $tooltipEl.html(self.generateTooltipHtml(series, flotItem.series.label, flotItem.dataIndex, flotItem.datapoint[0]));
+                        $tooltipEl.html(flotCustomToolTip(series, flotItem.series.label, flotItem.dataIndex, flotItem.datapoint[0]));
                     }
                 },
                 series:
@@ -154,7 +156,7 @@ function (TP, DataParser, convertToViewUnits, unitLabels, expandedViewTemplate, 
                 ],
                 yaxes: yaxes
             };
-            
+
             this.createFlotPlot(series);
             this.bindZoom();
         },

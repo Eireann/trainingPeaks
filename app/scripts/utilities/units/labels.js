@@ -100,6 +100,11 @@ function(unitsConstants, workoutLayoutFormatter)
             English: "watts",
             Metric: "watts"
         },
+        rightpower:
+        {
+            English: "watts",
+            Metric: "watts"
+        },
         time:
         {
             English: "hms",

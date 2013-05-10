@@ -1,9 +1,10 @@
 ﻿define(
 [
     "utilities/charting/seriesColorByChannel",
-    "utilities/charting/findIndexByMsOffset"
+    "utilities/charting/findIndexByMsOffset",
+    "utilities/conversion/convertToViewUnits"
 ],
-function(seriesColorByChannel, findIndexByMsOffset)
+function(seriesColorByChannel, findIndexByMsOffset, convertToViewUnits)
 {
     var parseDataByChannel = function(flatSamples)
     {
@@ -161,6 +162,13 @@ function(seriesColorByChannel, findIndexByMsOffset)
                 font:
                 {
                     color: s.color
+                },
+                tickFormatter: function(value)
+                {
+                    // Purposefully using the closure created above to capture s.label for each given axis,
+                    // in order to easily obtain the correct unit conversion for each axis.
+                    // For some reason, a '0' value returns a NaN, check for it.
+                    return value === 0 ? +0 : parseInt(convertToViewUnits(value, s.label.toLowerCase()), 10);
                 }
             });
         });

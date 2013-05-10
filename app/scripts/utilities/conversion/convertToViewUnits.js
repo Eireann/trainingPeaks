@@ -155,6 +155,8 @@ function(
                 return convertToPaceFromSpeed(value);
             case "temperature":
                 return convertTemperature(value);
+            case "rightpower":
+                return value;
             case "power":
                 return value;
             case "torque":
@@ -164,7 +166,7 @@ function(
             case "cadence":
                 return value;
             default:
-                throw "Unknown field type for unit conversion";
+                throw +fieldType + ": Unknown field type for unit conversion";
         }
     };
 });

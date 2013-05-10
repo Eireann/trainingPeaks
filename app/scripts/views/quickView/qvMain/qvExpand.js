@@ -33,7 +33,7 @@ function (_, TP, ExpandedView)
             //TODO: Create MapAndGraphExpando Controller to encapsulate Views & interactions between those views.
             if(!this.expandedView)
             {
-                this.expandedView = new ExpandedView({ model: this.model });
+                this.expandedView = new ExpandedView({ model: this.model, prefetchConfig: this.prefetchConfig });
                 this.expandedView.render();
                 this.ui.quickViewContentExpanded.append(this.expandedView.$el);
             }
