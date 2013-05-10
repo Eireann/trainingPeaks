@@ -142,10 +142,20 @@ function(
             this.waitingOn();
             var fileDataModel = new WorkoutFileDataModel({ id: this.getSelectedFileSystemId(), workoutId: this.model.get("workoutId") });
             var self = this;
-            fileDataModel.fetch().done(function()
+            fileDataModel.fetch().done(function(fileData)
+            {
+                TP.utils.filesystem.downloadFile(fileData.fileName, fileData.data, fileData.contentType, function(filesystemURL)
                 {
-                    self.waitingOff();
+                    var link = $("<a>");
+                    link.attr("href", filesystemURL);
+                    link.attr("download", fileData.fileName);
+                    link.text(fileData.fileName);
+                    self.$(".details").append(link);
+                    //console.log(filesystemURL);
                 });
+
+                self.waitingOff();
+            });
         },
 
         getSelectedFileSystemId: function()
