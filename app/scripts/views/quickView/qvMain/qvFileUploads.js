@@ -47,7 +47,7 @@ function (
             var offset = uploadButton.offset();
             var direction = this.expanded ? "right" : "left";
             this.fileUploadMenu = new QVFileUploadMenuView({ model: this.model, direction: direction });
-            this.fileUploadMenu.render().top(offset.top - 5);
+            this.fileUploadMenu.render().top(offset.top - 8);
 
             if (direction === "right")
             {
