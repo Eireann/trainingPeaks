@@ -265,7 +265,7 @@
       return _.clone(this.attributes);
     },
 
-    // Proxy `Backbone.sync` by default.
+      // Proxy `Backbone.sync` by default.
     sync: function() {
       return Backbone.sync.apply(this, arguments);
     },
@@ -1416,7 +1416,7 @@
   // Useful when interfacing with server-side languages like **PHP** that make
   // it difficult to read the body of `PUT` requests.
   Backbone.sync = function(method, model, options) {
-    var type = methodMap[method];
+      var type = methodMap[method];
 
     // Default options, unless specified.
     _.defaults(options || (options = {}), {

@@ -41,6 +41,7 @@ function (_, TP, ExpandedView)
 
         expandClicked: function ()
         {
+            this.expanded = true;
             this.renderExpandedView();
 
             var windowHeight = $(window).height();
@@ -92,6 +93,7 @@ function (_, TP, ExpandedView)
 
         collapseClicked: function ()
         {
+            this.expanded = false;
             this.animateOneStepCollapse();
         },
 

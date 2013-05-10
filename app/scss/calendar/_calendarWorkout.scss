@@ -29,6 +29,7 @@
             padding: 0px;
             width: 15px;
             cursor: default;
+            box-shadow: none;
         }
     }
 
@@ -48,16 +49,9 @@
         }
     }
 
-    .workoutDiv
-    {
-
+    .workoutDiv {
         min-height: 35px;
-        /*
-        border-bottom: $TPGrey3;
-        border-bottom-width: 1px;
-        border-bottom-style: solid;
-        */
-
+      
         .workoutHeader
         {
             padding: 0px 5px 5px 5px;
@@ -126,9 +120,7 @@
     position:absolute;
 	
 	.hoverBoxContents {
-		border-width:1px 1px 0 1px;
-		border-color: #979797;
-		border-style:solid;
+
 	}
 	
 	.mainShadow {
@@ -199,7 +191,7 @@
     {
         width: 15px;
         height: 15px;
-        @include transform(translateY(-7px) rotate(45deg));
+        @include transform(translateY(-10px) rotate(45deg));
         @include calc(margin-left, "50% - 20");
     }
 
@@ -215,14 +207,15 @@
 
 	.hoverBoxContents {
 		min-width: 75px;
-		border-width:1px 1px 0 1px;
-		border-color: #979797;
-		border-style:solid;	
 	}
 	
 	.hoverBox .colorBar {
-	  bottom: 14px;
-	  height: 4px;
+	  	bottom: 14px;
+		height: 4px;
+	}
+	
+	.hoverBox .mainShadow {
+		bottom: 18px;
 	}
 
 }
@@ -231,16 +224,13 @@
 #daySettingsDiv {
 	.hoverBoxContents {
 		min-width: 75px;
-		border-width:1px 1px 0 1px;
-		border-color: #979797;
-		border-style:solid;
 	}
 }
 
 #summarySettingsDiv {
-	.hoverBoxContents {
-		border-width:1px 1px 0 1px;
-		border-color: #979797;
-		border-style:solid;
+	.hoverBox {
+		.arrow {
+			margin-left:52px;
+			}
 	}
 }

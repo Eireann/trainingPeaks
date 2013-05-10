@@ -1,0 +1,12 @@
+﻿<div class="graphTooltip">
+    {{#each tooltips }}
+        <div class="tooltipRow">
+            {{#if label }}
+                <span class="tooltipLabel">{{ label }}{{#if value}}:{{/if}}</span>
+            {{/if}}
+            {{#if value}}
+                <span class="tooltipValue">{{ value }}</span>
+            {{/if}}
+        </div>
+    {{/each}}
+</div>

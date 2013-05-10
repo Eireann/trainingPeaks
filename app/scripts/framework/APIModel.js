@@ -87,6 +87,20 @@ function(_, Backbone)
             {
                 throw this.webAPIModelName + ": Cannot access key '" + key + "' because it is not in model defaults";
             }
+        },
+
+        checkpoint: function()
+        {
+            this.checkpointAttributes = _.clone(this.attributes);
+        },
+        
+        revert: function()
+        {
+            if (this.checkpointAttributes && !_.isEmpty(this.checkpointAttributes) && !_.isEqual(this.attributes, this.checkpointAttributes))
+            {
+                this.set(this.checkpointAttributes);
+                this.save();
+            }
         }
 
     });

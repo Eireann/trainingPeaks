@@ -18,7 +18,7 @@
             "localStorage": "../test/js_global_dependencies/localStorage",
             "browserEnvironment": "../test/js_global_dependencies/browserEnvironment",
             "jquery": "../test/vendor/js/libs/jquery_jsdom",
-            "lawnchair": "../test/vendor/js/libs/fake_lawnchair",
+            //"lawnchair": "../test/vendor/js/libs/fake_lawnchair",
             "backbone": "../test/vendor/js/libs/backbone.amd",
             "backbone.eventbinder": "../test/vendor/js/libs/backbone.eventbinder.amd",
             "backbone.babysitter": "../test/vendor/js/libs/backbone.babysitter.amd",

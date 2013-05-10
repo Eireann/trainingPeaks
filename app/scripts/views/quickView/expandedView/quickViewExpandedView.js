@@ -197,7 +197,7 @@ function (TP, DataParser, convertToViewUnits, unitLabels, expandedViewTemplate, 
                     zIndex: 999,
                     top: top,
                     left: left
-                }).appendTo("body").fadeIn(200);
+                }).appendTo(theMarsApp.getBodyElement()).fadeIn(200);
 
                 self.resetButton.on("click", function ()
                 {
