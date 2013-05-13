@@ -2,10 +2,11 @@
 [
     "TP",
     "utilities/charting/dataParser",
+    "utilities/charting/defaultFlotOptions",
     "utilities/charting/flotCustomTooltip",
     "hbs!templates/views/quickView/quickViewExpandedView"
 ],
-function (TP, DataParser, flotCustomToolTip, expandedViewTemplate)
+function (TP, DataParser, getDefaultFlotOptions, flotCustomToolTip, expandedViewTemplate)
 {
 
     var expandedViewBase =
@@ -103,60 +104,12 @@ function (TP, DataParser, flotCustomToolTip, expandedViewTemplate)
 
             var series = this.dataParser.getSeries();
             var yaxes = this.dataParser.getYAxes(series);
-            
-            this.flotOptions =
-            {
-                grid:
-                {
-                    show: true,
-                    borderWidth: 0,
-                    hoverable: true,
-                    clickable: true
-                },
-                legend:
-                {
-                    show: false
-                },
-                selection:
-                {
-                    mode: "x"
-                },
-                tooltip: true,
-                tooltipOpts:
-                {
-                    content: function(x, y)
-                    {
-                        return "";
-                    },
-                    onHover: function(flotItem, $tooltipEl)
-                    {
-                        $tooltipEl.html(flotCustomToolTip(series, flotItem.series.label, flotItem.dataIndex, flotItem.datapoint[0]));
-                    }
-                },
-                series:
-                {
-                    lines:
-                    {
-                        show: true,
-                        lineWidth: 0.75,
-                        fill: false,
-                        hoverable: true
-                    }
-                },
-                xaxes:
-                [
-                    {
-                        min: 0,
-                        tickFormatter: function(value, axis)
-                        {
-                            var decimalHours = (value / (3600 * 1000)).toFixed(2);
-                            return TP.utils.datetime.format.decimalHoursAsTime(decimalHours, true, null);
-                        }
-                    }
-                ],
-                yaxes: yaxes
-            };
 
+            this.flotOptions = getDefaultFlotOptions(series);
+
+            this.flotOptions.selection.mode = "x";
+            this.flotOptions.yaxes = yaxes;
+            
             this.createFlotPlot(series);
             this.bindZoom();
         },

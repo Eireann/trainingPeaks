@@ -3,11 +3,11 @@
     "TP",
     "leaflet",
     "utilities/charting/dataParser",
+    "utilities/charting/defaultFlotOptions",
     "utilities/workout/workoutTypes",
-    "utilities/charting/flotCustomTooltip",
     "hbs!templates/views/quickView/mapAndGraphView"
 ],
-function (TP, Leaflet, DataParser, workoutTypes, flotCustomToolTip, workoutQuickViewMapAndGraphTemplate)
+function (TP, Leaflet, DataParser, getDefaultFlotOptions, workoutTypes, workoutQuickViewMapAndGraphTemplate)
 {
     var osmURL = "http://otile1.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.jpg";
     var cloudmadeURL = "http://b.tile.cloudmade.com/8ee2a50541944fb9bcedded5165f09d9/1/256/{z}/{x}/{y}.png";
@@ -141,64 +141,9 @@ function (TP, Leaflet, DataParser, workoutTypes, flotCustomToolTip, workoutQuick
             var series = this.dataParser.getSeries();
             var yaxes = this.dataParser.getYAxes(series);
 
-            var flotOptions =
-            {
-                grid:
-                {
-                    show: true,
-                    borderWidth: 0,
-                    hoverable: true,
-                    clickable: true
-                },
-                legend:
-                {
-                    show: false
-                },
-                selection:
-                {
-                    mode: null 
-                },
-                tooltip: true,
-                tooltipOpts:
-                {
-                    content: function (x, y)
-                    {
-                        return "";
-                    },
-                    onHover: function (flotItem, $tooltipEl)
-                    {
-                        $tooltipEl.html(flotCustomToolTip(series, flotItem.series.label, flotItem.dataIndex, flotItem.datapoint[0]));
-                    }
-                },
-                series:
-                {
-                    lines:
-                    {
-                        show: true,
-                        lineWidth: 0.75,
-                        fill: false,
-                        hoverable: true
-                    },
-                    splines:
-                    {
-                        show: false,
-                        lineWidth: 0.75,
-                        type: "bezier"
-                    }
-                },
-                xaxes:
-                [
-                    {
-                        min: 0,
-                        tickFormatter: function (value, axis)
-                        {
-                            var decimalHours = (value / (3600 * 1000)).toFixed(2);
-                            return TP.utils.datetime.format.decimalHoursAsTime(decimalHours, true, null);
-                        }
-                    }
-                ],
-                yaxes: yaxes
-            };
+            var flotOptions = getDefaultFlotOptions(series);
+
+            flotOptions.yaxes = yaxes;
 
             $.plot($("#quickViewGraph"), series, flotOptions);
         },
