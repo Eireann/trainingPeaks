@@ -185,7 +185,7 @@
         min-height:150px;
 		background-color: $TPGrey1;
         padding: 0px 0px 5px;
-        @include calc(width, "(100% - 293px) /7");
+        @include calc(width, "(100% - 294px) /7");
         overflow-x: hidden;
         overflow-y: visible;
         float: left;
