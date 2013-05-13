@@ -145,7 +145,7 @@ function (TP, Leaflet, DataParser, getDefaultFlotOptions, workoutTypes, workoutQ
 
             flotOptions.yaxes = yaxes;
 
-            $.plot($("#quickViewGraph"), series, flotOptions);
+            $.plot(this.$("#quickViewGraph"), series, flotOptions);
         },
         
         setMapData: function()

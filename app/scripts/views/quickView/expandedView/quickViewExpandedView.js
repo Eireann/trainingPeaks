@@ -4,9 +4,10 @@
     "utilities/charting/dataParser",
     "utilities/charting/defaultFlotOptions",
     "utilities/charting/flotCustomTooltip",
+    "utilities/charting/jquery.flot.zoom",
     "hbs!templates/views/quickView/quickViewExpandedView"
 ],
-function (TP, DataParser, getDefaultFlotOptions, flotCustomToolTip, expandedViewTemplate)
+function (TP, DataParser, getDefaultFlotOptions, flotCustomToolTip, flotZoom, expandedViewTemplate)
 {
 
     var expandedViewBase =
@@ -109,62 +110,15 @@ function (TP, DataParser, getDefaultFlotOptions, flotCustomToolTip, expandedView
 
             this.flotOptions.selection.mode = "x";
             this.flotOptions.yaxes = yaxes;
-            
+            this.flotOptions.zoom = { enabled: true };
+            this.flotOptions.zoom.dataParser = this.dataParser;
+
             this.createFlotPlot(series);
-            this.bindZoom();
         },
         
         createFlotPlot: function(data, options)
         {
-            $.plot($("#expandoGraphContainer"), data, typeof options !== "undefined" ? options : this.flotOptions);
-        },
-
-        bindZoom: function()
-        {
-            var self = this;
-            var top = 200;
-            var left = 1000;
-
-            this.$("#expandoGraphContainer").bind("plotselected", function (event, ranges)
-            {
-                // Clamp the zooming to prevent eternal zoom
-                if (ranges.xaxis.to - ranges.xaxis.from < 0.00001)
-                    ranges.xaxis.to = ranges.xaxis.from + 0.00001;
-                if (ranges.yaxis.to - ranges.yaxis.from < 0.00001)
-                    ranges.yaxis.to = ranges.yaxis.from + 0.00001;
-
-                var zoomedSeriesData = self.dataParser.getSeries(ranges.xaxis.from, ranges.xaxis.to);
-                var yaxes = self.dataParser.getYAxes(zoomedSeriesData);
-
-                var newOptions = {};
-                _.extend(newOptions, self.flotOptions);
-                newOptions.xaxes[0].min = ranges.xaxis.min;
-                newOptions.xaxes[0].max = ranges.xaxis.max;
-                newOptions.yaxes = yaxes;
-
-                // Redraw the zoomed plot
-                self.createFlotPlot(zoomedSeriesData, newOptions);
-
-                self.resetButton = $("<button id='flotResetButton'>Reset Zoom</button>").css(
-                {
-                    display: "none",
-                    position: "absolute",
-                    zIndex: 999,
-                    top: top,
-                    left: left
-                }).appendTo(theMarsApp.getBodyElement()).fadeIn(200);
-
-                self.resetButton.on("click", function ()
-                {
-                    var fullSeriesData = self.dataParser.getSeries();
-                    var yaxes = self.dataParser.getYAxes(fullSeriesData);
-                    var newOptions = {};
-                    _.extend(newOptions, self.flotOptions);
-                    newOptions.yaxes = yaxes;
-                    self.createFlotPlot(fullSeriesData, newOptions);
-                    $(this).fadeOut(200).remove();
-                });
-            });
+            $.plot(this.$("#expandoGraphContainer"), data, typeof options !== "undefined" ? options : this.flotOptions);
         }
     };
 
