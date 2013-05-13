@@ -31,18 +31,30 @@ function(TP, ExpandoLayout, GraphView, MapView, StatsView, LapsView, ChartsView)
         show: function()
         {
             this.closeViews();
+            this.fetchDetailData();
 
-            this.views.graphView = new GraphView({ model: this.model });
-            this.views.mapView = new MapView({ model: this.model });
-            this.views.statsView = new StatsView({ model: this.model });
-            this.views.lapsView = new LapsView({ model: this.model });
-            this.views.chartsView = new ChartsView({ model: this.model });
+            this.views.graphView = new GraphView({ model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise });
+            this.views.mapView = new MapView({ model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise });
+            this.views.statsView = new StatsView({ model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise });
+            this.views.lapsView = new LapsView({ model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise });
+            this.views.chartsView = new ChartsView({ model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise });
 
             this.layout.graphRegion.show(this.views.graphView);
             this.layout.mapRegion.show(this.views.mapView);
             this.layout.statsRegion.show(this.views.statsView);
             this.layout.lapsRegion.show(this.views.lapsView);
             this.layout.chartsRegion.show(this.views.chartsView);
+        },
+
+        fetchDetailData: function()
+        {
+            if (!this.prefetchConfig.detailDataPromise)
+            {
+                if (this.prefetchConfig.workoutDetailDataFetchTimeout)
+                    clearTimeout(this.prefetchConfig.workoutDetailDataFetchTimeout);
+
+                this.prefetchConfig.detailDataPromise = this.model.get("detailData").fetch();
+            }
         },
 
         collapse: function()

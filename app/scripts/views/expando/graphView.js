@@ -7,7 +7,7 @@
     "utilities/charting/jquery.flot.zoom",
     "hbs!templates/views/expando/graphTemplate"
 ],
-function (TP, DataParser, getDefaultFlotOptions, flotCustomToolTip, flotZoom, graphTemplate)
+function(TP, DataParser, getDefaultFlotOptions, flotCustomToolTip, flotZoom, graphTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -19,22 +19,28 @@ function (TP, DataParser, getDefaultFlotOptions, flotCustomToolTip, flotZoom, gr
         
         initialize: function(options)
         {
+            _.bindAll(this, "createFlotGraph");
             var width = this.$el.parent().width();
             var height = 400;
             
             this.$el.width(width);
             this.$el.height(height);
+
+            if (!options.detailDataPromise)
+                throw "detailDataPromise is required for map and graph view";
+
+            this.detailDataPromise = options.detailDataPromise;
         },
         
         onRender: function()
         {
             var self = this;
-            setImmediate(function() { self.createFlotGraph(); });
+            setImmediate(function() { self.detailDataPromise.then(self.createFlotGraph); });
         },
         
         createFlotGraph: function ()
         {
-            var flatSamples = this.model.get("detailData").attributes.flatSamples;
+            var flatSamples = this.model.get("detailData").get("flatSamples");
 
             if (!this.dataParser)
             {
