@@ -226,7 +226,8 @@ function(
 
         clearCacheAndRefresh: function()
         {
-            theMarsApp.ajaxCaching.clearCache();
+            if (theMarsApp.ajaxCachingEnabled)
+                theMarsApp.ajaxCaching.clearCache();
             this.weeksCollection.resetToDates(moment(this.startDate), moment(this.endDate));
             this.views.calendar.scrollToLastViewedDate();
             var headerDate = this.views.calendar.getHeaderDate();
