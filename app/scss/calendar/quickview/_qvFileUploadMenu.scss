@@ -71,6 +71,7 @@
 
         p {
             margin-bottom: 5px;
+            white-space: pre-wrap;
         }
 
         @include buttons(0px, 150px, $fontSizeMedium);

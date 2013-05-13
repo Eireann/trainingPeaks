@@ -6,6 +6,7 @@ define(
     "models/commands/recalculateWorkoutFromDeviceFile",
     "views/userConfirmationView",
     "hbs!templates/views/confirmationViews/deleteConfirmationView",
+    "hbs!templates/views/quickView/recalculateConfirmationView",
     "hbs!templates/views/quickView/workoutFileUploadMenu"
 ],
 function(
@@ -15,6 +16,7 @@ function(
     RecalculateWorkoutCommand,
     UserConfirmationView,
     deleteConfirmationTemplate,
+    recalculateConfirmationTemplate,
     WorkoutFileUploadMenuTemplate
     )
 {
@@ -102,6 +104,13 @@ function(
         },
 
         onRecalculateClicked: function()
+        {
+            this.recalculateConfirmationView = new UserConfirmationView({ template: recalculateConfirmationTemplate });
+            this.recalculateConfirmationView.render();
+            this.recalculateConfirmationView.on("userConfirmed", this.onRecalculateConfirmed, this);
+        },
+
+        onRecalculateConfirmed: function()
         {
 
             this.waitingOn();

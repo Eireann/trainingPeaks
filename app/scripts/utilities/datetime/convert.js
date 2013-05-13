@@ -1,6 +1,7 @@
 ﻿define(
 [
-], function()
+    "underscore"
+], function(_)
 {
 
     function TimeParser(timeString)
