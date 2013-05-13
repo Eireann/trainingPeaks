@@ -72,6 +72,11 @@
     padding-right: 40px;
     cursor: default;
 
+    .text
+    {
+        white-space: pre-wrap;
+    }
+
     label
     {
         cursor: default;
