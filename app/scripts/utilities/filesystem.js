@@ -4,21 +4,48 @@
 {
     var filesystemUtils = {
 
-        requestFileSystem: function(type, length, callback)
+        requestFileSystem: function(onSuccess, onError)
         {
+            if (this.temporaryFs)
+            {
+                onSuccess(this.temporaryFs);
+            } else
+            {
+                var self = this;
 
-            if (webkitRequestFileSystem)
-                return webkitRequestFileSystem(type, length, callback);
+                var afterRequestFileSystem = function(fs)
+                {
+                    //console.log("Got filesystem");
+                    self.temporaryFs = fs;
+                    onSuccess(self.temporaryFs);
+                };
 
-            if (requestFileSystem)
-                return requestFileSystem(type, length, callback);
+                /*
+                if (!onError)
+                {
+                    onError = function()
+                    {
+                        console.log("Error");
+                    }
+                }*/
 
+                var type = TEMPORARY;
+                var length = 1024 * 1024 * 1024; // 1GB
+
+                if (webkitRequestFileSystem)
+                {
+                    webkitRequestFileSystem(type, length, afterRequestFileSystem, onError);
+                } else if (requestFileSystem)
+                {
+                    requestFileSystem(type, length, afterRequestFileSystem, onError);
+                }
+            }
         },
 
-        downloadFile: function(fileName, fileData, contentType, onSuccess)
+        saveFileToTemporaryFilesystem: function(fileName, fileContents, contentType, onSuccess, onError)
         {
 
-            var fileDataAsUint8Array = this.stringToUint8Array(fileData);
+            var fileDataAsUint8Array = this.stringToUint8Array(fileContents);
 
             var afterRequestFilesystem = function(fs)
             {
@@ -40,8 +67,7 @@
             };
 
 
-            // how big does fs need to be?
-            this.requestFileSystem(TEMPORARY, fileData.length * 2, afterRequestFilesystem);
+            this.requestFileSystem(afterRequestFilesystem, onError);
 
         },
 
@@ -56,6 +82,23 @@
                 array[i] = raw.charCodeAt(i);
             }
             return array;
+        },
+
+        getLocalFilesystemUrl: function(fileName, onSuccess, onError)
+        {
+
+            var afterRequestFilesystem = function(fs)
+            {
+
+                var afterGetFileEntry = function(fileEntry)
+                {
+                    onSuccess(fileEntry.toURL());
+                };
+
+                fs.root.getFile(fileName, { create: false }, afterGetFileEntry, onError);
+            };
+
+            this.requestFileSystem(afterRequestFilesystem, onError);
         }
 
     };

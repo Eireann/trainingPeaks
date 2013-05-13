@@ -19,6 +19,7 @@ function(
     )
 {
 
+    // TODO: check if file was already downloaded
     return TP.ItemView.extend(
     {
 
@@ -139,6 +140,7 @@ function(
 
         preDownloadFiles: function()
         {
+            _.bindAll(this, "enableFileDownloadLink");
             var deviceFiles = this.model.get("details").get("workoutDeviceFileInfos");
             _.each(deviceFiles, function(fileInfo)
             {
@@ -148,22 +150,39 @@ function(
 
         downloadFile: function(fileInfo)
         {
-            this.waitingOn();
-            var fileDataModel = new WorkoutFileDataModel({ id: fileInfo.fileSystemId, workoutId: this.model.get("workoutId") });
+
             var self = this;
-            fileDataModel.fetch().done(function(fileData)
+
+            var ifLocalFileExists = function(existingLocalFileUrl)
             {
-                TP.utils.filesystem.downloadFile(fileData.fileName, fileData.data, fileData.contentType, function(filesystemURL)
+                self.enableFileDownloadLink(fileInfo.fileId, fileInfo.fileName, existingLocalFileUrl);
+            };
+
+            var ifLocalFileDoesNotExist = function()
+            {
+                var fileDataModel = new WorkoutFileDataModel({ id: fileInfo.fileSystemId, workoutId: self.model.get("workoutId") });
+                fileDataModel.fetch().done(function(downloadedFileData)
                 {
-
-                    var link = self.$(".file#" + fileInfo.fileId + " a.download");
-                    link.attr("href", filesystemURL);
-                    link.attr("download", fileData.fileName);
-                    link.removeClass("disabled");
+                    var onDownload = function(filesystemUrl)
+                    {
+                        self.enableFileDownloadLink(fileInfo.fileId, fileInfo.fileName, filesystemUrl);
+                    };
+                    TP.utils.filesystem.saveFileToTemporaryFilesystem(fileInfo.fileName, downloadedFileData.data, downloadedFileData.contentType, onDownload);
                 });
+            };
 
-                self.waitingOff();
-            });
+            TP.utils.filesystem.getLocalFilesystemUrl(fileInfo.fileName, ifLocalFileExists, ifLocalFileDoesNotExist);
+
+
+        },
+
+        enableFileDownloadLink: function(fileId, fileName, filesystemURL)
+        {
+
+            var link = this.$(".file#" + fileId + " a.download");
+            link.attr("href", filesystemURL);
+            link.attr("download", fileName);
+            link.removeClass("disabled");
         },
 
         onDeleteClicked: function()
