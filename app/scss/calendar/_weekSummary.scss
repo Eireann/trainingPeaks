@@ -8,8 +8,9 @@
     background-color: $TPGrey1;
     overflow: hidden;
     margin-bottom: 10px;
-    width: 288px;
-    min-width: 288px;
+    width: 293px;
+    min-width: 293px;
+    padding: 0px 5px 0px 0px;
 
     div
     {
@@ -21,7 +22,6 @@
         cursor: default;
     }
     
-    padding: 0px;
 
 	.summarySettings
     {
@@ -124,16 +124,16 @@
 	.weekSummaryBarGraphItem {
 		height:28px;
 		margin-bottom:3px;
-		width:131px;
+		width:133px;
 		float:left;
 	}
 	
 	.weekSummaryBarGraphItem.right {
-		margin-left:10px;
+		margin-right: 3px;
 	}
 	
 	.weekSummaryBarGraphItem.total {
-		width:272px;
+		width:277px;
 		height:35px;
 	}
 
@@ -261,7 +261,7 @@
     }
 	
     #weekSummaryMetricContain {
-        width:272px;
+        width:277px;
         float:left;
     }
 
@@ -279,7 +279,7 @@
     }
         
     #weekSummaryATPContain {
-        width:272px;
+        width:277px;
         float:left;
     }
 
@@ -293,7 +293,7 @@
 
     .weekSummaryMetricValue, 
     .weekSummaryATPValue, {
-        width:131px;
+        width:133px;
         display:inline-block;
     }
 
@@ -305,7 +305,7 @@
 
     .weekSummaryMetricTitle, 
     .weekSummaryATPTitle {
-        width:131px;
+        width:133px;
         margin:0 0 0 6px;
         font-size:$fontSizeXSmall;
         font-weight:bold;

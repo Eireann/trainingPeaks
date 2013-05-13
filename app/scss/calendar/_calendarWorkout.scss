@@ -17,7 +17,7 @@
         opacity:0.8;
     }
 
-    .workoutSettings
+    .workoutSettings  
     {
         display: none;
         float: right;
@@ -27,9 +27,9 @@
             background: transparent;
             border: none;
             padding: 0px;
-            width: 15px;
             cursor: default;
             box-shadow: none;
+            margin: 0px;
         }
     }
 
@@ -54,8 +54,10 @@
       
         .workoutHeader
         {
-            padding: 0px 5px 5px 5px;
-            height: 27px;
+            padding: 0px 3px 3px 3px;
+            height: 32px;
+            position: relative;
+            top: -1px;
             .workoutIcon
             {
                 width: 25px;
@@ -67,7 +69,7 @@
 
             .workoutDistanceTime
             {
-                padding: 10px 0px 0px 30px;
+                padding: 15px 0px 0px 30px;
 
                 @include labels($navigationFontFamilyRegular, $fontSizeXLarge, $TPGrey4, normal);
                 label
@@ -86,7 +88,7 @@
         }
         .workoutBody
         {
-            padding: 10px 5px 5px 5px;
+            padding: 2px 3px 3px 3px;
             @include labels($navigationFontFamilyRegular, $fontSizeXSmall, $TPGrey4, normal);
             label
             {
