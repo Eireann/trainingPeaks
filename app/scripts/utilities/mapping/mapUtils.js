@@ -59,6 +59,23 @@ function(
                 var polyline = L.polyline(leafletLatLongs, { color: "red", smoothFactor: 1.0, opacity: 1, weight: 5 }).addTo(map);
                 map.fitBounds(polyline.getBounds());
             }
+        },
+
+        addMileMarkers: function(map, latLonArray)
+        {
+            if (latLonArray && latLonArray.length > 0)
+            {
+                var leafletLatLongs = [];
+
+                _.each(latLonArray, function (point)
+                {
+                    if (point[0] && point[1])
+                    {
+                        L.marker([parseFloat(point[0]).toFixed(6), parseFloat(point[1]).toFixed(6)]).addTo(map);
+                    }
+                });
+
+            }
         }
 
     };

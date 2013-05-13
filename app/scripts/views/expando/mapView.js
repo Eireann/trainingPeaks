@@ -82,14 +82,34 @@ function(
             if (!this.map)
                 this.map = MapUtils.createMapOnContainer(this.$("#expandoMap")[0]);
 
-            MapUtils.setMapData(this.map, this.dataParser.getLatLonArray());
-            MapUtils.addMileMarkers(this.map, this.dataParser.calculateMileMarkers());
+            var latLonArray = this.dataParser.getLatLonArray();
+            MapUtils.setMapData(this.map, latLonArray);
+            MapUtils.addMileMarkers(this.map, this.calculateMileMarkers(latLonArray));
         },
 
         parseData: function()
         {
             var flatSamples = this.model.get("detailData").attributes.flatSamples;
             this.dataParser.loadData(flatSamples);
+        },
+
+        calculateMileMarkers: function(latLonArray)
+        {
+            var distances = this.dataParser.dataByChannel.Distance;
+            var interval = 1000;
+            var nextMarker = interval;
+            var markers = [];
+            // array index 0 = ms offset, 1 = distance (in meters?)
+            for(var i = 0; i < distances.length && i < latLonArray.length; i++)
+            {
+                if (distances[i][1] >= nextMarker)
+                {
+                    markers.push(latLonArray[i]);
+                    nextMarker += interval;
+                }
+            }
+
+            return markers;
         }
     });
 });
