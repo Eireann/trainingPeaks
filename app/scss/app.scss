@@ -28,6 +28,11 @@ body
     font-size: $baseFontSize;
 }
 
+a
+{
+    cursor: pointer;
+}
+
 #loginFooter, #calendarFooter
 {
     span

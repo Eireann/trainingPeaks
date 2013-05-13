@@ -255,9 +255,10 @@
 
     "BrowseFiles": "Browse Files",
     "GetDeviceAgent": "Get Device Agent",
-    "SelectFile": "Select a file from your computer\n(.csv, .pwx, .fit, .tcx etc)\nor use",
+    "SelectFile": "Select a file from your computer (.csv, .pwx, .fit, .tcx etc)\n or use",
     "DeviceAgent": "Device Agent",
     "UploadedFiles": "Uploaded Files",
     "Download": "Download",
-    "Recalculate": "Recalculate"
+    "Recalculate": "Recalculate",
+    "ConfirmRecalculate": "Are you sure you would like to recalculate all summary data on the workout from this file?\nThis may overwrite data you have manually made changes to."
 }
