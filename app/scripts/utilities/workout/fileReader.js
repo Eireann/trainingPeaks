@@ -15,6 +15,7 @@ function(_, Backbone)
         var readFileDeferred = new $.Deferred();
         var reader = new FileReader();
 
+        var self = this;
         reader.onload = function (event)
         {
             function uint8ToString(buf)
@@ -30,7 +31,7 @@ function(_, Backbone)
             var data = new Uint8Array(event.target.result);
             var dataAsString = btoa(uint8ToString(data));
 
-            readFileDeferred.resolveWith(this, [ dataAsString ]);
+            readFileDeferred.resolveWith(this, [self.file.name, dataAsString]);
         };
 
         reader.readAsArrayBuffer(this.file);

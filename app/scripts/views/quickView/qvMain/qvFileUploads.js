@@ -85,8 +85,9 @@ function (
             var readDeferral = workoutReader.readFile();
             $.when(saveDeferral, readDeferral).done(function(saveArgs, readArgs)
             {
-                var dataAsString = readArgs;
-                self.uploadedFileDataModel = new WorkoutFileData({ workoutId: self.model.get("workoutId"), workoutDay: self.model.get("workoutDay"), startTime: self.model.get("startTime"), data: dataAsString });
+                var fileName = readArgs[0];
+                var dataAsString = readArgs[1];
+                self.uploadedFileDataModel = new WorkoutFileData({ workoutId: self.model.get("workoutId"), workoutDay: self.model.get("workoutDay"), startTime: self.model.get("startTime"), fileName: fileName, data: dataAsString });
                 self.uploadedFileDataModel.save().done(self.onUploadDone).fail(self.onUploadFail);
             });
         },
