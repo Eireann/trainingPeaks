@@ -122,9 +122,17 @@
 
                 &.selected
                 {
-                    label
+                    .download
                     {
                         font-weight: bold;
+                    }
+                }
+
+                .download
+                {
+                    &.disabled
+                    {
+                        color: $TPGrey3;
                     }
                 }
             }

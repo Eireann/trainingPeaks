@@ -19,14 +19,13 @@
 
                     <div class="fileList">
                         {{#each workoutDeviceFileInfos }}
-                            <div class="file">
-                                <input type="radio" class="fileSelect" name="fileSelect" value="{{ fileId }}" id="checkbox{{ fileId }}"/> <label for="checkbox{{ fileId }}">{{ fileName }}</label>
+                            <div class="file" id="{{ fileId }}">
+                                <input type="radio" class="fileSelect" name="fileSelect" value="{{ fileId }}" id="checkbox{{ fileId }}"/> <a class="download disabled" id="{{ fileId }}">{{ fileName }}</a>
                             </div>
                         {{/each}}
                     </div>
 
                     <div class="fileButtons">
-                        <button disabled class="download">{{$ "Download" }}</button>
                         <button disabled class="recalculate">{{$ "Recalculate" }}</button>
                         <button disabled class="delete">{{$ "Delete" }}</button>
                     </div>
