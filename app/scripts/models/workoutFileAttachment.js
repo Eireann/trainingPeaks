@@ -6,7 +6,8 @@ function (TP)
 {
     var WorkoutFileData = TP.Model.extend(
     {
-        defaults: {
+        defaults:
+        {
             fileName: null,
             description: null,
             data: null,
@@ -20,7 +21,7 @@ function (TP)
 
             var athleteId = theMarsApp.user.get("athletes.0.athleteId");
 
-            return theMarsApp.apiRoot + "/WebApiServer/fitness/v1/athletes/" + athleteId + "/workouts/" + this.get("workoutId") + "/fileattachment";
+            return theMarsApp.apiRoot + "/fitness/v1/athletes/" + athleteId + "/workouts/" + this.get("workoutId") + "/attachments" + (this.id ? ("/" + this.id) : "");
         }
         
     });

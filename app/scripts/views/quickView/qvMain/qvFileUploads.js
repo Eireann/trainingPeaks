@@ -3,35 +3,35 @@
     "underscore",
     "TP",
     "models/workoutFileData",
-    "models/workoutFileAttachment",
     "views/userConfirmationView",
     "views/quickView/qvMain/qvFileUploadMenuView",
+    "views/quickView/qvMain/qvAttachmentUploadMenuView",
     "hbs!templates/views/quickView/fileUploadErrorView"
 ],
 function (
     _,
     TP,
     WorkoutFileData,
-    WorkoutFileAttachment,
     UserConfirmationView,
     QVFileUploadMenuView,
+    QVAttachmentUploadMenuView,
     fileUploadErrorTemplate
 )
 {
-    var workoutQuickViewFileUploads = {
-
+    var workoutQuickViewFileUploads =
+    {
         fileUploadEvents:
         {
             "click #quickViewFileUploadDiv": "onUploadFileClicked",
-            "change input[type='file']#fileUploadInput": "onFileSelected",
-            "change input[type='file']#attachment": "onAttachmentFileSelected",
-            "click .addAttachment": "onAddAttachmentClicked"
+            "click .addAttachment": "onAddAttachmentClicked",
+
+            // TODO Refactor: needs to be moved into qvFileUploadMenuView and dealt with internally
+            "change input[type='file']#fileUploadInput": "onFileSelected"
         },
 
         fileUploadUi:
         {
-            "fileinput": "input[type='file']#fileUploadInput",
-            "attachmentinput": "input[type='file']#attachment"
+            "fileinput": "input[type='file']#fileUploadInput"
         },
 
         initializeFileUploads: function()
@@ -118,38 +118,25 @@ function (
 
         onAddAttachmentClicked: function()
         {
-            this.ui.attachmentinput.click();
-        },
+            // Wire up & Display the File Attachment Tomahawk
+            var uploadButton = this.$("div.addAttachment");
+            var offset = uploadButton.offset();
+            var direction = this.expanded ? "right" : "left";
 
-        onAttachmentFileSelected: function()
-        {
-            _.bindAll(this, "uploadAttachment");
-            this.waitingOn();
-            var file = this.ui.attachmentinput[0].files[0];
-            var workoutReader = new TP.utils.workout.FileReader(file);
-            var readDeferral = workoutReader.readFile();
+            this.attachmentUploadMenu = new QVAttachmentUploadMenuView({ model: this.model, direction: direction });
+            this.attachmentUploadMenu.render().top(offset.top - 8);
 
-            var self = this;
-            readDeferral.done(function(fileContentsEncoded)
+            if (direction === "right")
             {
-                self.uploadAttachment(file.name, fileContentsEncoded);
-            });
-        },
-
-        uploadAttachment: function(fileName, data)
-        {
-            var attachment = new WorkoutFileAttachment({
-                fileName: fileName,
-                description: fileName,
-                data: data,
-                workoutId: this.model.id
-            });
-
-            var self = this;
-            attachment.save().done(function()
+                this.attachmentUploadMenu.left(offset.left + uploadButton.outerWidth() + 13);
+            }
+            else
             {
-                self.waitingOff();
-            });
+                this.attachmentUploadMenu.right(offset.left - 13);
+            }
+
+            uploadButton.addClass("menuOpen");
+            this.attachmentUploadMenu.on("close", function () { uploadButton.removeClass("menuOpen"); });
         },
 
         displayUploadError: function()

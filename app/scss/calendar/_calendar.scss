@@ -68,15 +68,34 @@
                     }
                 }
 
-                #goToLastWeekButton {
+                #goToLastWeekButton
+                {
                     border-right-width: 0px;
 					background: url(../../assets/images/calendarImages/icon-left-arrow@2x.png) no-repeat 0 0;
 					background-size: 34px 20px;
+
+                    &:hover
+                    {
+                        border-right-width: 1px
+                    }
+
+                    &:active
+                    {
+                        background: url(../../assets/images/calendarImages/icon-left-arrow@2x_active.png) no-repeat 0 0;
+                        background-size: 34px 20px;
+                    }
                 }
 
-				#goToNextWeekButton {
+				#goToNextWeekButton 
+                {
 					background: url(../../assets/images/calendarImages/icon-right-arrow@2x.png) no-repeat 0 0;
 					background-size: 33px 20px;
+                    
+                    &:active
+                    {
+                        background: url(../../assets/images/calendarImages/icon-right-arrow@2x_active.png) no-repeat 0 0;
+					    background-size: 33px 20px;
+                    }
                 }
                 
             }
@@ -89,11 +108,19 @@
 				
             }
 
-			.today button {
+			.today button 
+            {
 				color:$TPGrey8;
 				padding:1px 0 2px;
 				background: url(../../assets/images/calendarImages/background-gradient-button.png) repeat-x 0 0;
 				background-size: 100% 20px;
+                
+                &:active
+                {
+                    background: url(../../assets/images/calendarImages/background-gradient-button_active.png) repeat-x 0 0;
+				    background-size: 100% 20px;
+                    color: #ffffff;
+                }
 			}
 
 			.printRefreshButtons
@@ -109,22 +136,43 @@
                 }
 
 			
-				.printButton {
+				.printButton 
+                {
 					background: url(../../assets/images/calendarImages/icon-print@2x.png) no-repeat 0 0;
 					background-size: 36px 20px;
 					width: 38px;
 					height: 22px;
-					}
-                .refreshButton {
+
+                    &:active
+                    {
+                        background: url(../../assets/images/calendarImages/icon-print@2x_active.png) no-repeat 0 0;
+					    background-size: 36px 20px;
+                    }
+				}
+                .refreshButton 
+                {
 					background: url(../../assets/images/calendarImages/icon-refresh@2x.png) no-repeat 0 0;
 					background-size: 36px 20px;
                     margin-left: 7px;
+
+                    &:active
+                    {
+                        background: url(../../assets/images/calendarImages/icon-refresh@2x_active.png) no-repeat 0 0;
+					    background-size: 36px 20px;
+                    }
                 }
-                .settingsButton {
+                .settingsButton 
+                {
 					background: url(../../assets/images/calendarImages/icon-settings@2x.png) no-repeat 0 0;
 					background-size: 29px 20px;
                     margin-left: 7px;
 					width: 31px;
+
+                    &:active
+                    {
+                        background: url(../../assets/images/calendarImages/icon-settings@2x_active.png) no-repeat 0 0;
+					    background-size: 29px 20px;
+                    }
                 }
             }
         }
@@ -208,7 +256,7 @@
                 padding: 0px;
                 width: 20px;
                 height: 15px;
-				cursor: default;
+				cursor: pointer;
                 margin-bottom: 0px;
                 box-shadow: none
             }
@@ -284,8 +332,7 @@
 		.dayHeader
 		{
 			background-color: $thisWeekBlue;
-            cursor: -moz-grab;
-            cursor: -webkit-grab;
+            cursor: pointer;
 		}
 
 		.today
@@ -299,6 +346,7 @@
 		{
 			background-color: #206193;
 			#calendarDate{color: white;}
+            cursor: default;
 		}
 	}
 
@@ -344,12 +392,12 @@
                 
         }
     }
+}
     
 .scrollInProgress
 {
     @include single-transition(all, 200ms, ease-out);
     @include box-shadow(0px 3px 8px -4px $TPGrey3);
-}
 }
 
 body.clipboardEmpty
