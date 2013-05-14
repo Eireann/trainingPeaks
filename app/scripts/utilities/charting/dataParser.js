@@ -183,7 +183,7 @@ function(seriesColorByChannel, findIndexByMsOffset, convertToViewUnits)
         this.elevationIsAllNegative = null;
         this.latLonArray = null;
     };
-    
+
     DataParser.prototype.loadData = function(flatSamples)
     {
         this.flatSamples = flatSamples;
@@ -193,6 +193,7 @@ function(seriesColorByChannel, findIndexByMsOffset, convertToViewUnits)
         var elevationInfo = getElevationInfoOnRange.call(this);
         this.minElevation = elevationInfo.min;
         this.elevationIsAllNegative = elevationInfo.isAllNegative;
+        this.latLonArray = null;
     };
 
     DataParser.prototype.getSeries = function(x1, x2)
@@ -213,7 +214,10 @@ function(seriesColorByChannel, findIndexByMsOffset, convertToViewUnits)
 
     DataParser.prototype.getLatLonArray = function()
     {
-        return generateLatLonFromData.call(this, this.dataByChannel);
+        if (!this.latLonArray)
+            this.latLonArray = generateLatLonFromData.call(this, this.dataByChannel);
+
+        return this.latLonArray;
     };
 
     DataParser.prototype.getYAxes = function(series)

@@ -15,10 +15,7 @@ function(
 
     /*
     TODO:
-    mile markers
-        how many to display min/max?
-        kilometers or miles from user settings
-        styling
+    how many markers?
     how are the different tile url's related, and how do we pull in google?
     */
 
@@ -82,34 +79,15 @@ function(
             if (!this.map)
                 this.map = MapUtils.createMapOnContainer(this.$("#expandoMap")[0]);
 
-            var latLonArray = this.dataParser.getLatLonArray();
-            MapUtils.setMapData(this.map, latLonArray);
-            MapUtils.addMileMarkers(this.map, this.calculateMileMarkers(latLonArray));
+            MapUtils.setMapData(this.map, this.dataParser.getLatLonArray());
+            MapUtils.calculateAndAddMileMarkers(this.map, this.dataParser);
         },
 
         parseData: function()
         {
             var flatSamples = this.model.get("detailData").attributes.flatSamples;
             this.dataParser.loadData(flatSamples);
-        },
-
-        calculateMileMarkers: function(latLonArray)
-        {
-            var distances = this.dataParser.dataByChannel.Distance;
-            var interval = 1000;
-            var nextMarker = interval;
-            var markers = [];
-            // array index 0 = ms offset, 1 = distance (in meters?)
-            for(var i = 0; i < distances.length && i < latLonArray.length; i++)
-            {
-                if (distances[i][1] >= nextMarker)
-                {
-                    markers.push(latLonArray[i]);
-                    nextMarker += interval;
-                }
-            }
-
-            return markers;
         }
+
     });
 });

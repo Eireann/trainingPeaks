@@ -61,21 +61,64 @@ function(
             }
         },
 
-        addMileMarkers: function(map, latLonArray)
+        addMarkers: function(map, latLonArray)
         {
             if (latLonArray && latLonArray.length > 0)
             {
                 var leafletLatLongs = [];
 
-                _.each(latLonArray, function (point)
+                _.each(latLonArray, function (markerOptions)
                 {
+                    var point = markerOptions.latLng;
                     if (point[0] && point[1])
                     {
-                        L.marker([parseFloat(point[0]).toFixed(6), parseFloat(point[1]).toFixed(6)]).addTo(map);
+                        var latLng = [parseFloat(point[0]).toFixed(6), parseFloat(point[1]).toFixed(6)];
+                        L.marker(latLng, markerOptions.options).addTo(map);
                     }
                 });
 
             }
+        },
+
+        calculateAndAddMileMarkers: function(map, dataParser)
+        {
+            this.addMarkers(map, this.calculateMileMarkers(dataParser));
+        },
+
+        calculateMileMarkers: function(dataParser)
+        {
+            var latLonArray = dataParser.getLatLonArray();
+            var distances = dataParser.dataByChannel.Distance;
+            var intervals = this.calculateMileMarkerInterval(distances[distances.length - 1][1]);
+            var nextMarker = intervals.distanceBetweenMarkers;
+            var markers = [];
+            var units = TP.utils.units.getUnitsLabel("distance");
+            var markerNumber = intervals.countBy;
+
+            // array index 0 = ms offset, 1 = distance (in meters?)
+            for(var i = 0; i < distances.length && i < latLonArray.length; i++)
+            {
+                if (distances[i][1] >= nextMarker)
+                {
+                    markers.push({ latLng: latLonArray[i], options: { riseOnHover: true, title: markerNumber + " " + units } });
+                    nextMarker += intervals.distanceBetweenMarkers;
+                    markerNumber += intervals.countBy;
+                }
+            }
+
+            return markers;
+        },
+
+        calculateMileMarkerInterval: function(totalDistance)
+        {
+            // 1k or 1 mile
+            var baseInterval = theMarsApp.user.get("units") === TP.utils.units.constants.English ? 1609.34 : 1000;
+
+            var maxMarkersToDisplay = 10;
+            var totalIntervals = totalDistance / baseInterval;
+            var skip = Math.round(totalIntervals / maxMarkersToDisplay);
+
+            return { distanceBetweenMarkers: baseInterval * skip, countBy: skip };
         }
 
     };

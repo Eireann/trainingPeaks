@@ -104,6 +104,7 @@ function(
                 this.map = MapUtils.createMapOnContainer(this.$("#quickViewMap")[0]);
 
             MapUtils.setMapData(this.map, this.dataParser.getLatLonArray());
+            MapUtils.calculateAndAddMileMarkers(this.map, this.dataParser);
         },
 
         parseData: function()
