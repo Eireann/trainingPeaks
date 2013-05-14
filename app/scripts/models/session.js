@@ -10,7 +10,8 @@ function (_, TP, UserModel)
     {
         url: function()
         {
-            return theMarsApp.apiRoot + "/OAuthAuthorizationServer/OAuth/Token";
+//            return theMarsApp.apiRoot + "/OAuthAuthorizationServer/OAuth/Token";
+            return theMarsApp.oAuthRoot + "/OAuth/Token";
         },
 
         storageLocation: localStorage,
