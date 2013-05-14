@@ -45,7 +45,7 @@ function(TP, AthleteSettingsModel)
 
         url: function()
         {
-            return theMarsApp.apiRoot + "/WebApiServer/users/v1/user";
+            return theMarsApp.apiRoot + "/users/v1/user";
         },
 
         initialize: function(options)
