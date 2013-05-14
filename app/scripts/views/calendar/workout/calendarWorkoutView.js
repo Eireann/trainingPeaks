@@ -18,7 +18,7 @@ function(
     calendarWorkoutUserCustomization,
     WorkoutQuickView,
     CalendarWorkoutHoverView,
-    CalendarWorkoutSettingsHover,
+    CalendarWorkoutSettingsView,
     CalendarWorkoutTemplate)
 {
 
@@ -161,8 +161,8 @@ function(
 
             this.keepSettingsButtonVisible();
             var offset = $(e.currentTarget).offset();
-            this.workoutSettings = new CalendarWorkoutSettingsHover({ model: this.model });
-            this.workoutSettings.render().bottom(offset.top + 10).center(offset.left + 5);
+            this.workoutSettings = new CalendarWorkoutSettingsView({ model: this.model });
+            this.workoutSettings.render().bottom(offset.top + 5).center(offset.left - 2);
             this.workoutSettings.on("close", this.allowSettingsButtonToHide, this);
             this.workoutSettings.on("mouseleave", this.onMouseLeave, this);
         },
