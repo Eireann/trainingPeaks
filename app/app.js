@@ -237,9 +237,9 @@ function(
 
         var apiRoots =
         {
-            live: "https://private.api.trainingpeaks.com",
-            uat: "http://private.api.uat.trainingpeaks.com",
-            dev: "http://private.api.dev.trainingpeaks.com",
+            live: "https://tpapi.trainingpeaks.com",
+            uat: "http://tpapi.uat.trainingpeaks.com",
+            dev: "http://tpapi.dev.trainingpeaks.com",
             local: "http://localhost:8901",
             todd: "DEV20-T430:8901"
         };
