@@ -33,7 +33,7 @@ function(_,
             "change .fileSelect": "selectFileCheckbox",
             "click button.download": "onDownloadClicked",
             "click button.delete": "onDeleteClicked",
-            "change input[type='file']#attachmentInput": "onAttachmentFileSelected",
+            "change input[type='file']#attachmentInput": "onAttachmentFileSelected"
         },
 
         template:
@@ -181,6 +181,6 @@ function(_,
         waitingOff: function ()
         {
             this.$(".details").removeClass("waiting");
-        },
+        }
     });
 });
