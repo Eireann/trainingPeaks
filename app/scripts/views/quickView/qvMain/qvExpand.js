@@ -2,10 +2,9 @@
 [
     "underscore",
     "TP",
-    "views/quickView/expandedView/quickViewExpandedView",
     "controllers/expandoController"
 ],
-function (_, TP, ExpandedView, ExpandoController)
+function (_, TP, ExpandoController)
 {
     var workoutQVExpand =
     {
