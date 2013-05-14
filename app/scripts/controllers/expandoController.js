@@ -45,21 +45,7 @@ function(TP, ExpandoLayout, GraphView, MapView, StatsView, LapsView, ChartsView)
 
             this.layout.$el.addClass("waiting");
 
-            if (!this.prefetchConfig.detailDataPromise)
-            {
-                if (this.prefetchConfig.workoutDetailDataFetchTimeout)
-                    clearTimeout(this.prefetchConfig.workoutDetailDataFetchTimeout);
-
-                this.prefetchConfig.detailDataPromise = this.model.get("detailData").fetch();
-            }
-
-            // if we already have it in memory, render it
-            if (this.model.get("detailData") !== null && this.model.get("detailData").attributes.flatSamples !== null)
-            {
-                this.onModelFetched();
-            }
-
-            setImmediate(function () { self.prefetchConfig.detailDataPromise.then(self.onModelFetched); });
+            setImmediate(function() { self.prefetchConfig.detailDataPromise.then(self.onModelFetched); });
         },
 
         onModelFetched: function()

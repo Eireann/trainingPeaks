@@ -17,8 +17,8 @@ function (TP, DataParser, getDefaultFlotOptions, flotCustomToolTip, flotZoom, Gr
             type: "handlebars",
             template: graphTemplate
         },
-        
-        initialize: function()
+
+        initialize: function(options)
         {
             _.bindAll(this, "createFlotGraph");
 
@@ -31,7 +31,7 @@ function (TP, DataParser, getDefaultFlotOptions, flotCustomToolTip, flotZoom, Gr
             this.$el.width(this.$el.parent().width());
             this.$el.height(400);
         },
-        
+
         onRender: function()
         {
             var self = this;

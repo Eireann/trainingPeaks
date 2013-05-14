@@ -81,7 +81,7 @@ function(
                 this.map = MapUtils.createMapOnContainer(this.$("#expandoMap")[0]);
 
             MapUtils.setMapData(this.map, this.dataParser.getLatLonArray());
-            MapUtils.calculateAndAddMileMarkers(this.map, this.dataParser);
+            MapUtils.calculateAndAddMileMarkers(this.map, this.dataParser, 15);
         },
 
         parseData: function()

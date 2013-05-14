@@ -86,16 +86,16 @@ function(
             }
         },
 
-        calculateAndAddMileMarkers: function(map, dataParser)
+        calculateAndAddMileMarkers: function(map, dataParser, maxMarkers)
         {
-            this.addMarkers(map, this.calculateMileMarkers(dataParser));
+            this.addMarkers(map, this.calculateMileMarkers(dataParser, maxMarkers));
         },
 
-        calculateMileMarkers: function(dataParser)
+        calculateMileMarkers: function(dataParser, maxMarkers)
         {
             var latLonArray = dataParser.getLatLonArray();
             var distances = dataParser.dataByChannel.Distance;
-            var intervals = this.calculateMileMarkerInterval(distances[distances.length - 1][1]);
+            var intervals = this.calculateMileMarkerInterval(distances[distances.length - 1][1], maxMarkers);
             var nextMarker = intervals.distanceBetweenMarkers;
             var markers = [];
             var units = TP.utils.units.getUnitsLabel("distance");
@@ -115,12 +115,12 @@ function(
             return markers;
         },
 
-        calculateMileMarkerInterval: function(totalDistance)
+        calculateMileMarkerInterval: function(totalDistance, maxMarkers)
         {
             // 1k or 1 mile
             var baseInterval = theMarsApp.user.get("units") === TP.utils.units.constants.English ? 1609.34 : 1000;
 
-            var maxMarkersToDisplay = 15;
+            var maxMarkersToDisplay = maxMarkers ? maxMarkers : 10;
             var totalIntervals = totalDistance / baseInterval;
             var skip = Math.round(totalIntervals / maxMarkersToDisplay);
             if (skip < 1)
