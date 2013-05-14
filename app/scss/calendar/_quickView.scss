@@ -49,9 +49,9 @@ input[disabled='disabled']
 
 .quickviewFooter
 {
-	height:50px;
+	height:45px;
 	background-color: $TPGrey5;
-	padding-top: 9px;
+	padding-top: 11px;
 
 	.selectionBox
 	{
@@ -59,12 +59,17 @@ input[disabled='disabled']
 		width: 130px;
 		float:left;
 		@include selectionBox(130px);
+		
+		select {
+			margin-top:0;
+		}
 	}
 	.saveCloseButtons
 	{
+		font-weight:normal;
 		float: right;
-		width: 300px;
-		padding-top: 5px;
+		width: 258px;
+	//	padding-top: 5px;
         @include buttons(0, 77px, $fontSizeSmall);
 		#saveClose
 		{
@@ -73,6 +78,7 @@ input[disabled='disabled']
         button
         {
             margin-right: 8px;
+  			padding: 3px 0;
         }
 	}
 }
