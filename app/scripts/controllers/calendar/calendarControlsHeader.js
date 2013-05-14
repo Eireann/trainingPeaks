@@ -3,13 +3,11 @@
      "TP",
      "views/calendar/calendarHeaderView"
 ],
-function (TP, calendarHeaderView
-
-    )
+function (TP, calendarHeaderView)
 {
 
-    var calendarControlsHeader = {
-
+    var calendarControlsHeader =
+    {
         showHeader: function ()
         {
             this.layout.headerRegion.show(this.views.header);

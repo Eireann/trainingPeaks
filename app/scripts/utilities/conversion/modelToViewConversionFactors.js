@@ -4,10 +4,10 @@
 ],
 function(unitsConstants)
 {
-
     // Conversion factors from Model units (metric) to view units.
     // Use inverse (1/*) for View to Model conversion.
-    var conversionFactors = {
+    var conversionFactors =
+    {
         "distance":
         {
             English: 0.000621371,

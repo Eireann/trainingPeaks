@@ -1,17 +1,21 @@
 ﻿define(
 [
     "TP",
-    "leaflet",
     "utilities/charting/dataParser",
+    "utilities/charting/defaultFlotOptions",
+    "utilities/mapping/mapUtils",
     "utilities/workout/workoutTypes",
     "hbs!templates/views/quickView/mapAndGraphView"
 ],
-function (TP, Leaflet, DataParser, workoutTypes, workoutQuickViewMapAndGraphTemplate)
+function(
+    TP,
+    DataParser,
+    getDefaultFlotOptions,
+    MapUtils,
+    workoutTypes,
+    workoutQuickViewMapAndGraphTemplate)
 {
-    var osmURL = "http://otile1.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.jpg";
-    var cloudmadeURL = "http://b.tile.cloudmade.com/8ee2a50541944fb9bcedded5165f09d9/1/256/{z}/{x}/{y}.png";
-    var leafletURL = "http://{s}.tile.osm.org/{z}/{x}/{y}.png";
-    
+
     var mapAndGraphViewBase =
     {
         className: "mapAndGraph",
@@ -94,12 +98,13 @@ function (TP, Leaflet, DataParser, workoutTypes, workoutQuickViewMapAndGraphTemp
         createAndDisplayMapAndGraph: function()
         {
             this.parseData();
-            this.createAndShowGraph("quickViewGraph");
+            this.createAndShowGraph();
 
             if (!this.map)
-                this.createMapOnContainer("quickViewMap");
+                this.map = MapUtils.createMapOnContainer(this.$("#quickViewMap")[0]);
 
-            this.setMapData();
+            MapUtils.setMapData(this.map, this.dataParser.getLatLonArray());
+            MapUtils.calculateAndAddMileMarkers(this.map, this.dataParser, 10);
         },
 
         parseData: function()
@@ -108,104 +113,16 @@ function (TP, Leaflet, DataParser, workoutTypes, workoutQuickViewMapAndGraphTemp
             this.dataParser.loadData(flatSamples);
         },
 
-        createMapOnContainer: function(container)
-        {
-            var osmLayer = new L.TileLayer(osmURL);
-            var cloudmadeLayer = new L.TileLayer(cloudmadeURL);
-            var leafletLayer = new L.TileLayer(leafletURL);
-
-            var mapConfig =
-            {
-                scrollWheelZoom: false,
-                doubleClickZoom: false,
-                boxZoom: true,
-                layers: [osmLayer],
-                center: new L.LatLng(40.012369, -105.132353),
-                zoom: 8
-            };
-
-            var baseMaps =
-            {
-                "OSM": osmLayer,
-                "Cloudmade": cloudmadeLayer,
-                "Leaflet": leafletLayer
-            };
-
-            this.map = L.map(container, mapConfig);
-            L.control.layers(baseMaps).addTo(this.map);
-        },
-        
         createAndShowGraph: function()
         {
             var series = this.dataParser.getSeries();
             var yaxes = this.dataParser.getYAxes(series);
 
-            var flotOptions =
-            {
-                grid:
-                {
-                    show: true,
-                    borderWidth: 0,
-                    hoverable: true,
-                    clickable: true
-                },
-                legend:
-                {
-                    show: false
-                },
-                selection:
-                {
-                    mode: null 
-                },
-                series:
-                {
-                    lines:
-                    {
-                        show: true,
-                        lineWidth: 0.75,
-                        fill: false,
-                        hoverable: true
-                    },
-                    splines:
-                    {
-                        show: false,
-                        lineWidth: 0.75,
-                        type: "bezier"
-                    }
-                },
-                xaxes:
-                [
-                    {
-                        min: 0,
-                        tickFormatter: function (value, axis)
-                        {
-                            var decimalHours = (value / (3600 * 1000)).toFixed(2);
-                            return TP.utils.datetime.format.decimalHoursAsTime(decimalHours, true, null);
-                        }
-                    }
-                ],
-                yaxes: yaxes
-            };
+            var flotOptions = getDefaultFlotOptions(series);
 
-            $.plot($("#quickViewGraph"), series, flotOptions);
-        },
-        
-        setMapData: function()
-        {
-            var latLonArray = this.dataParser.getLatLonArray();
-            if (latLonArray && latLonArray.length > 0)
-            {
-                var leafletLatLongs = [];
+            flotOptions.yaxes = yaxes;
 
-                _.each(latLonArray, function (point)
-                {
-                    if (point[0] && point[1])
-                        leafletLatLongs.push(new L.LatLng(parseFloat(point[0]).toFixed(6), parseFloat(point[1]).toFixed(6)));
-                });
-
-                var polyline = L.polyline(leafletLatLongs, { color: "red", smoothFactor: 1.0, opacity: 1, weight: 5 }).addTo(this.map);
-                this.map.fitBounds(polyline.getBounds());
-            }
+            $.plot(this.$("#quickViewGraph"), series, flotOptions);
         }
     };
 

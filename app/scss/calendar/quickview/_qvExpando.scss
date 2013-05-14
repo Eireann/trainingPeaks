@@ -114,3 +114,57 @@
         }
     }
 }
+
+#expandoLeftColumn
+{
+    float: left;
+    width: calc(100% - 335px);
+    overflow-y: scroll;
+    @include nice-scrollbar;
+
+    #expandoMapRegion
+    {
+        height: 350px;
+        width: 100%;
+
+        #expandoMap
+        {
+            height: 350px;
+            width: 100%;
+        }
+    }
+
+    #expandoGraphRegion
+    {
+        height: 400px;
+        width: 100%;
+    }
+
+    #expandoChartsRegion
+    {
+        width: 100%;
+    }
+
+}
+
+#expandoRightColumn
+{
+    float: right;
+    width: 335px;
+
+    #expandoStatsRegion
+    {
+        height: 275px;
+        overflow-y: scroll;
+        @include nice-scrollbar;
+    }
+
+    #expandoLapsRegion
+    {
+        overflow-y: scroll;
+        @include nice-scrollbar;
+    }
+
+}
+
+

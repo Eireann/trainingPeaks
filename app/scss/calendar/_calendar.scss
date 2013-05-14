@@ -176,6 +176,7 @@
     {
         @include grid-row();
 		background-color: $TPGrey1;
+		padding-bottom:30px;
         padding-left: 4px;
         max-width: none;
     }

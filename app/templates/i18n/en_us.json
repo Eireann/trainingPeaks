@@ -260,5 +260,8 @@
     "UploadedFiles": "Uploaded Files",
     "Download": "Download",
     "Recalculate": "Recalculate",
-    "ConfirmRecalculate": "Are you sure you would like to recalculate all summary data on the workout from this file?\nThis may overwrite data you have manually made changes to."
+    "ConfirmRecalculate": "Are you sure you would like to recalculate all summary data on the workout from this file?\nThis may overwrite data you have manually made changes to.",
+
+    "Zoom": "Zoom",
+    "Dist": "Dist"
 }
