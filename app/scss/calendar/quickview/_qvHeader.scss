@@ -91,6 +91,7 @@
             height: 70px;
             background-color: white;
             float: left;
+            cursor: pointer;
         }
 
         .workoutHeaderStats
@@ -107,11 +108,13 @@
                 {
                     float: left;
                     padding-right: 5px;
+                    cursor: pointer;
                 }
 
                 .addAttachment
                 {
                     margin-top: -1px;
+                    cursor: pointer;
                 }
         
             }
