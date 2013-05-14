@@ -8,7 +8,7 @@ function (TP)
     {
         url: function ()
         {
-            return theMarsApp.apiRoot + "/WebApiServer/images/v1/imagedata";
+            return theMarsApp.apiRoot + "/images/v1/imagedata";
         },
 
         defaults:

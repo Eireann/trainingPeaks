@@ -12,7 +12,7 @@ function(TP, ExerciseLibraryModel)
 
         url: function()
         {
-            return theMarsApp.apiRoot + "/WebApiServer/exerciselibrary/v1/libraries";
+            return theMarsApp.apiRoot + "/exerciselibrary/v1/libraries";
         }
 
     });

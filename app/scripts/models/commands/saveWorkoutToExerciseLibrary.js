@@ -11,7 +11,7 @@ function(TP)
         urlRoot: function()
         {
             var athleteId = theMarsApp.user.get("athletes.0.athleteId");
-            return theMarsApp.apiRoot + "/WebApiServer/exerciselibrary/v1/athletes/" + athleteId + "/commands/saveworkouttolibrary";
+            return theMarsApp.apiRoot + "/exerciselibrary/v1/athletes/" + athleteId + "/commands/saveworkouttolibrary";
         },
 
         defaults:
