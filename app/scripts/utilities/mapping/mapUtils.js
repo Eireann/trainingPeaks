@@ -26,6 +26,9 @@ function(
             var leafletLayer = new L.TileLayer(leafletURL);
             var gmapLayer = new L.Google('ROADMAP');
 
+            // Leaflet needs to know where to find images
+            L.Icon.Default.imagePath = theMarsApp.assetsRoot + "images/leaflet";
+
             var mapConfig =
             {
                 scrollWheelZoom: false,

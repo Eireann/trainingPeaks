@@ -261,6 +261,9 @@ function(
             this.root = '';
         }
 
+        // where to find assets dynamically
+        this.assetsRoot = this.apiRootName === 'dev' ? 'build/debug/assets/' : 'assets/';
+
     };
 
 
