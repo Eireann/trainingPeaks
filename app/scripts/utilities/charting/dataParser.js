@@ -1,9 +1,10 @@
 ﻿define(
 [
     "utilities/charting/seriesColorByChannel",
-    "utilities/charting/findIndexByMsOffset"
+    "utilities/charting/findIndexByMsOffset",
+    "utilities/conversion/convertToViewUnits"
 ],
-function(seriesColorByChannel, findIndexByMsOffset)
+function(seriesColorByChannel, findIndexByMsOffset, convertToViewUnits)
 {
     var parseDataByChannel = function(flatSamples)
     {
@@ -18,7 +19,10 @@ function(seriesColorByChannel, findIndexByMsOffset)
                 var channelName = flatSamples.channelMask[channelIdx];
 
                 if (!_.has(dataByChannel, channelName))
+                {
                     dataByChannel[channelName] = [];
+                    this._channelMask.push(channelName);
+                }
 
                 var value = sample.values[channelIdx];
 
@@ -26,10 +30,9 @@ function(seriesColorByChannel, findIndexByMsOffset)
                 {
                     if (channelName === "Latitude" || channelName === "Longitude")
                         value = value / 100000;
-                    else
+                    else if (!(channelName === "Power" || channelName === "Cadence" || channelName === "HeartRate" || channelName === "RightPower"))
                         value = value / 100;
                 }
-
 
                 if (channelName === "Elevation" && value === null)
                     value = previousElevation;
@@ -79,10 +82,6 @@ function(seriesColorByChannel, findIndexByMsOffset)
                 data: data,
                 label: channel,
                 lines:
-                {
-                    fill: fillOpacity
-                },
-                splines:
                 {
                     fill: fillOpacity
                 },
@@ -158,6 +157,7 @@ function(seriesColorByChannel, findIndexByMsOffset)
             yaxes.push(
             {
                 show: true,
+                label: s.label,
                 min: s.label === "Elevation" ? self.getElevationInfo().min : 0,
                 position: countdown-- > 0 ? "right" : "left",
                 color: s.color,
@@ -165,6 +165,13 @@ function(seriesColorByChannel, findIndexByMsOffset)
                 font:
                 {
                     color: s.color
+                },
+                tickFormatter: function(value)
+                {
+                    // Purposefully using the closure created above to capture s.label for each given axis,
+                    // in order to easily obtain the correct unit conversion for each axis.
+                    // For some reason, a '0' value returns a NaN, check for it.
+                    return value === 0 ? +0 : parseInt(convertToViewUnits(value, s.label.toLowerCase()), 10);
                 }
             });
         });
@@ -178,44 +185,58 @@ function(seriesColorByChannel, findIndexByMsOffset)
         this.minElevation = null;
         this.elevationIsAllNegative = null;
         this.latLonArray = null;
+        this._channelMask = [];
     };
-    
-    DataParser.prototype.loadData = function(flatSamples)
+
+    _.extend(DataParser.prototype,
     {
-        this.flatSamples = flatSamples;
-        this.dataByChannel = parseDataByChannel.call(this, flatSamples);
+        loadData:  function(flatSamples)
+        {
+            this.flatSamples = flatSamples;
+            this.dataByChannel = parseDataByChannel.call(this, flatSamples);
 
-        // Find the minimum elevation in order to properly adjust the area graph (which would default to a 0 minimum).
-        var elevationInfo = getElevationInfoOnRange.call(this);
-        this.minElevation = elevationInfo.min;
-        this.elevationIsAllNegative = elevationInfo.isAllNegative;
-    };
+            // Find the minimum elevation in order to properly adjust the area graph (which would default to a 0 minimum).
+            var elevationInfo = getElevationInfoOnRange.call(this);
+            this.minElevation = elevationInfo.min;
+            this.elevationIsAllNegative = elevationInfo.isAllNegative;
+            this.latLonArray = null;
 
-    DataParser.prototype.getSeries = function(x1, x2)
-    {
-        return generateSeriesFromData.call(this, this.flatSamples.channelMask, this.dataByChannel, this.elevationIsAllNegative, x1, x2);
-    };
+        },
 
-    DataParser.prototype.getElevationInfo = function(x1, x2)
-    {
-        if (typeof x1 !== "undefined" && typeof x2 !== "undefined")
-            return getElevationInfoOnRange.call(this, x1, x2);
+        getSeries: function(x1, x2)
+        {
+            return generateSeriesFromData.call(this, this.flatSamples.channelMask, this.dataByChannel, this.elevationIsAllNegative, x1, x2);
+        },
 
-        return {
-            min: this.minElevation,
-            isAllNegative: this.elevationIsAllNegative
-        };
-    };
+        getElevationInfo: function(x1, x2)
+        {
+            if (typeof x1 !== "undefined" && typeof x2 !== "undefined")
+                return getElevationInfoOnRange.call(this, x1, x2);
 
-    DataParser.prototype.getLatLonArray = function()
-    {
-        return generateLatLonFromData.call(this, this.dataByChannel);
-    };
+            return {
+                min: this.minElevation,
+                isAllNegative: this.elevationIsAllNegative
+            };
+        },
 
-    DataParser.prototype.getYAxes = function(series)
-    {
-        return generateYAxes.call(this, series);
-    };
+        getLatLonArray: function()
+        {
+            if (!this.latLonArray)
+                this.latLonArray = generateLatLonFromData.call(this, this.dataByChannel);
+
+            return this.latLonArray;
+        },
+
+        getYAxes: function(series)
+        {
+            return generateYAxes.call(this, series);
+        },
+        
+        getChannelMask: function()
+        {
+            return this._channelMask;
+        }
+    });
     
     return DataParser;
 });

@@ -56,6 +56,7 @@
             
             // Map & Graph
             "leaflet": "../vendor/js/libs/leaflet/leaflet-src",
+            "leafletGoogleTiles": "../vendor/js/libs/leaflet/Google",
 
             // jasmine test utils
             "testUtils": "../test/utils"

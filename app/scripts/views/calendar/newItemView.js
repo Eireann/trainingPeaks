@@ -113,7 +113,8 @@ function(
             {
                 newModel = existingModel;
                 newModel.set(workoutModelJson);
-            } else
+            }
+            else
             {
                 newModel.set(workoutModelJson);
                 this.model.trigger("workout:added", newModel);

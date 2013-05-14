@@ -136,6 +136,7 @@
 	
 	.hoverBox .arrow {
 		box-shadow: 0 0 3px 1px #868686;
+		margin-left:19px;
 	}
 	
 	
@@ -226,14 +227,19 @@
 
 #daySettingsDiv {
 	.hoverBoxContents {
-		min-width: 75px;
+		min-width: 76px;
 	}
+	.hoverBox {
+		.arrow {
+			margin-left:28px;
+			}
+	}	
 }
 
 #summarySettingsDiv {
 	.hoverBox {
 		.arrow {
-			margin-left:52px;
+			margin-left:50px;
 			}
 	}
 }

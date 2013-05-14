@@ -14,7 +14,6 @@
     "views/quickView/powerView",
     "views/quickView/paceView",
     "views/quickView/mapAndGraphView",
-    "views/quickView/expandedView/quickViewExpandedView",
     "hbs!templates/views/quickView/workoutQuickView"
 ],
 function (
@@ -32,7 +31,6 @@ function (
     WorkoutQuickViewPower,
     WorkoutQuickViewPace,
     WorkoutQuickViewMapAndGraph,
-    expandedView,
     workoutQuickViewTemplate
 )
 {

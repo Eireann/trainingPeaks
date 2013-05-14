@@ -86,47 +86,6 @@ function(
         return _.isNumber(asNumber) && !_.isNaN(asNumber);
     };
 
-    var convertToViewUnits = function(value, fieldType, defaultValueIfEmpty, sportType)
-    {
-        var precision = null;
-        if (_.isObject(value))
-        {
-            var parameters = value;
-            value = parameters.value;
-            fieldType = parameters.fieldType;
-            defaultValueIfEmpty = parameters.defaultValue;
-            sportType = parameters.sportType;
-            precision = parameters.precision;
-        }
-
-        if (!isNumeric(value) || Number(value) === 0)
-        {
-            if (!_.isUndefined(defaultValueIfEmpty))
-            {
-                return defaultValueIfEmpty;
-            } else
-            {
-                return "";
-            }
-        }
-
-        switch (fieldType)
-        {
-            case "elevation":
-                return convertElevation(value);
-            case "speed":
-                return convertSpeedToViewUnits(value);
-            case "distance":
-                return convertDistanceToViewUnits(value, sportType, precision);
-            case "pace":
-                return convertToPaceFromSpeed(value);
-            case "temperature":
-                return convertTemperature(value);
-            default:
-                throw "Unknown field type for unit conversion";
-        }
-    };
-
     var convertElevation = function(value)
     {
         var currentUnits = theMarsApp.user.get("units");
@@ -159,5 +118,55 @@ function(
         return roundViewUnits(value * modelToViewConversionFactors("speed", theMarsApp.user.get("units")), 1);
     };
 
-    return convertToViewUnits;
+    return function(value, fieldType, defaultValueIfEmpty, sportType)
+    {
+        var precision = null;
+        if (_.isObject(value))
+        {
+            var parameters = value;
+            value = parameters.value;
+            fieldType = parameters.fieldType;
+            defaultValueIfEmpty = parameters.defaultValue;
+            sportType = parameters.sportType;
+            precision = parameters.precision;
+        }
+
+        if (!isNumeric(value) || Number(value) === 0)
+        {
+            if (!_.isUndefined(defaultValueIfEmpty))
+            {
+                return defaultValueIfEmpty;
+            }
+            else
+            {
+                return "";
+            }
+        }
+
+        switch (fieldType)
+        {
+            case "elevation":
+                return convertElevation(value);
+            case "speed":
+                return convertSpeedToViewUnits(value);
+            case "distance":
+                return convertDistanceToViewUnits(value, sportType, precision);
+            case "pace":
+                return convertToPaceFromSpeed(value);
+            case "temperature":
+                return convertTemperature(value);
+            case "rightpower":
+                return value;
+            case "power":
+                return value;
+            case "torque":
+                return value;
+            case "heartrate":
+                return value;
+            case "cadence":
+                return value;
+            default:
+                throw +fieldType + ": Unknown field type for unit conversion";
+        }
+    };
 });

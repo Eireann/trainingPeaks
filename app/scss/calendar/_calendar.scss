@@ -68,7 +68,7 @@
                     }
                 }
 
-                #goToLastWeekButton 
+                #goToLastWeekButton {
                 {
                     border-right-width: 0px;
 					background: url(../../assets/images/calendarImages/icon-left-arrow@2x.png) no-repeat 0 0;
@@ -224,6 +224,7 @@
     {
         @include grid-row();
 		background-color: $TPGrey1;
+		padding-bottom:30px;
         padding-left: 4px;
         max-width: none;
     }
