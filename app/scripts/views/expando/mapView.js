@@ -15,8 +15,9 @@ function(
 
     /*
     TODO:
+    google maps
     how many markers?
-    how are the different tile url's related, and how do we pull in google?
+    mile marker icons
     */
 
     return TP.ItemView.extend(

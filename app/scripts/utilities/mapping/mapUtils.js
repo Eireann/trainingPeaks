@@ -1,18 +1,22 @@
 ﻿define(
 [
     "TP",
-    "leaflet"
+    "leaflet",
+    "leafletGoogleTiles"
 ],
 function(
     TP,
-    Leaflet
+    Leaflet,
+    LeafletGoogleTiles
     )
 {
 
     var osmURL = "http://otile1.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.jpg";
     var cloudmadeURL = "http://b.tile.cloudmade.com/8ee2a50541944fb9bcedded5165f09d9/1/256/{z}/{x}/{y}.png";
     var leafletURL = "http://{s}.tile.osm.org/{z}/{x}/{y}.png";
- 
+
+    L.Google = LeafletGoogleTiles(L);
+
     return {
 
         createMapOnContainer: function(container)
@@ -20,19 +24,21 @@ function(
             var osmLayer = new L.TileLayer(osmURL);
             var cloudmadeLayer = new L.TileLayer(cloudmadeURL);
             var leafletLayer = new L.TileLayer(leafletURL);
+            var gmapLayer = new L.Google('ROADMAP');
 
             var mapConfig =
             {
                 scrollWheelZoom: false,
                 doubleClickZoom: false,
                 boxZoom: true,
-                layers: [osmLayer],
+                layers: [gmapLayer],
                 center: new L.LatLng(40.012369, -105.132353),
                 zoom: 8
             };
 
             var baseMaps =
             {
+                "Google": gmapLayer,
                 "OSM": osmLayer,
                 "Cloudmade": cloudmadeLayer,
                 "Leaflet": leafletLayer
@@ -114,9 +120,11 @@ function(
             // 1k or 1 mile
             var baseInterval = theMarsApp.user.get("units") === TP.utils.units.constants.English ? 1609.34 : 1000;
 
-            var maxMarkersToDisplay = 10;
+            var maxMarkersToDisplay = 15;
             var totalIntervals = totalDistance / baseInterval;
             var skip = Math.round(totalIntervals / maxMarkersToDisplay);
+            if (skip < 1)
+                skip = 1;
 
             return { distanceBetweenMarkers: baseInterval * skip, countBy: skip };
         }
