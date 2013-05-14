@@ -199,6 +199,8 @@ function(seriesColorByChannel, findIndexByMsOffset, convertToViewUnits)
             var elevationInfo = getElevationInfoOnRange.call(this);
             this.minElevation = elevationInfo.min;
             this.elevationIsAllNegative = elevationInfo.isAllNegative;
+            this.latLonArray = null;
+
         },
 
         getSeries: function(x1, x2)
@@ -219,7 +221,10 @@ function(seriesColorByChannel, findIndexByMsOffset, convertToViewUnits)
 
         getLatLonArray: function()
         {
-            return generateLatLonFromData.call(this, this.dataByChannel);
+            if (!this.latLonArray)
+                this.latLonArray = generateLatLonFromData.call(this, this.dataByChannel);
+
+            return this.latLonArray;
         },
 
         getYAxes: function(series)

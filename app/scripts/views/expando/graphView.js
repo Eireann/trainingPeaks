@@ -17,26 +17,33 @@ function (TP, DataParser, getDefaultFlotOptions, flotCustomToolTip, flotZoom, Gr
             type: "handlebars",
             template: graphTemplate
         },
-        
-        initialize: function()
+
+        initialize: function(options)
         {
+            _.bindAll(this, "createFlotGraph");
+
+            if (!options.detailDataPromise)
+                throw "detailDataPromise is required for map and graph view";
+
+            this.detailDataPromise = options.detailDataPromise;
+
             //TODO refactor, this should be set by CSS classes (CSS calc?)
             this.$el.width(this.$el.parent().width());
             this.$el.height(400);
         },
-        
+
         onRender: function()
         {
             var self = this;
-            setImmediate(function() { self.createFlotGraph(); });
+            setImmediate(function() { self.detailDataPromise.then(self.createFlotGraph); });
         },
         
         createFlotGraph: function ()
         {
+            var flatSamples = this.model.get("detailData").get("flatSamples");
+
             if(this.model.get("detailData") === null)
                 return;
-            
-            var flatSamples = this.model.get("detailData").attributes.flatSamples;
 
             if (!this.dataParser)
             {
