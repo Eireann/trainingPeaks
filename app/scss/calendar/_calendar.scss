@@ -68,7 +68,7 @@
                     }
                 }
 
-                #goToLastWeekButton {
+                #goToLastWeekButton
                 {
                     border-right-width: 0px;
 					background: url(../../assets/images/calendarImages/icon-left-arrow@2x.png) no-repeat 0 0;
@@ -392,12 +392,12 @@
                 
         }
     }
+}
     
 .scrollInProgress
 {
     @include single-transition(all, 200ms, ease-out);
     @include box-shadow(0px 3px 8px -4px $TPGrey3);
-}
 }
 
 body.clipboardEmpty
