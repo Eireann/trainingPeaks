@@ -27,7 +27,7 @@
         @include linearGradient(bottom, rgb(255,255,255), rgba(255,255,255,0.90)); 
         label
         {
-            cursor: default;
+            cursor: pointer;
 			font-size:$fontSizeSmall;
 			font-weight:normal;
 			line-height:$fontSizeXXLarge;
@@ -99,7 +99,7 @@
             margin-top:0;
             @include linearGradient(top, rgb(255,255,255), rgba(255,255,255,0.90)); 
 			& label {
-			
+			    cursor: pointer;
 			}
         }
 

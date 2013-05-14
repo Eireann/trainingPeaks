@@ -183,10 +183,17 @@
             padding-left: 28px;
             padding-right: 8px;
             float: left;
+            
         }
         .uploadButton
         {
             background-image: url(../../assets/images/QVImages/uploadBackground.png);
+            cursor: pointer;
+
+            label
+            {
+                cursor: pointer;
+            }
 
             &.menuOpen
             {
@@ -196,13 +203,20 @@
                 {
                     color: $white;
                     opacity: 0.85;
+                    cursor: pointer;
                 }
             }
         }
         .expandButton
         {
+            cursor: pointer;
             margin-top: 10px;
             background-image: url(../../assets/images/QVImages/expandBackground.png);
+
+            label
+            {
+                cursor: pointer;
+            }
         }
 
         .collapseButton
@@ -211,6 +225,12 @@
             background-image: url(../../assets/images/QVImages/expandBackground.png);
             display: none;
             padding-left: 25px;
+            cursor: pointer;
+
+            label
+            {
+                cursor: pointer;
+            }
         }
 
         @include labels($navigationFontFamilyRegular, $fontSizeLarge, $TPGrey4, normal);

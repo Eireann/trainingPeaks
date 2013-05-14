@@ -27,7 +27,7 @@
             background: transparent;
             border: none;
             padding: 0px;
-            cursor: default;
+            cursor: pointer;
             box-shadow: none;
             margin: 0px;
         }
@@ -187,6 +187,7 @@
 	label
 	{
 		padding-top: 2px;
+        cursor: pointer;
 	}
 
 	.arrow
