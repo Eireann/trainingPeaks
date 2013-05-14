@@ -20,7 +20,6 @@ function(
     WorkoutFileUploadMenuTemplate
     )
 {
-
     // TODO: check if file was already downloaded
     return TP.ItemView.extend(
     {
@@ -41,7 +40,8 @@ function(
             "click button.delete": "onDeleteClicked"
         },
 
-        attributes: {
+        attributes:
+        {
             "id": "workoutFileUploadMenuDiv"
         },
 
@@ -135,12 +135,12 @@ function(
                 this.model.fetch();
 
                 // update the details
-                var self = this;
                 this.model.get("details").fetch();
 
                 // update the detail data
                 this.model.get("detailData").fetch();
-            } else
+            }
+            else
             {
                 this.waitingOff();
             }
@@ -159,7 +159,6 @@ function(
 
         downloadFile: function(fileInfo)
         {
-
             var self = this;
 
             var ifLocalFileExists = function(existingLocalFileUrl)
@@ -181,13 +180,10 @@ function(
             };
 
             TP.utils.filesystem.getLocalFilesystemUrl(fileInfo.fileName, ifLocalFileExists, ifLocalFileDoesNotExist);
-
-
         },
 
         enableFileDownloadLink: function(fileId, fileName, filesystemURL)
         {
-
             var link = this.$(".file#" + fileId + " a.download");
             link.attr("href", filesystemURL);
             link.attr("download", fileName);
