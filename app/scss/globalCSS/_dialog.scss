@@ -1,17 +1,18 @@
 ﻿@import "tpstylesheet";
+@import "compass/css3/images";
 
 .dialog 
 {
     text-align: center;
     min-width: 400px;
     font-family: $navigationFontFamilyRegular;
-    @include buttons(0px, 60px, $fontSizeMedium);
+    @include buttons(0px, 60px, 14px);
 
 
     button
     {
         margin-right: 1em;
-        font-size: $fontSizeSmall;
+        font-size: 12px;
         font-family: $navigationFontFamilyRegular;
         color: $TPGrey3;
 
@@ -61,7 +62,7 @@
     padding-bottom: 40px;
     @include filter-gradient(#ffffff, #dedcde, horizontal);
     @include background-image(radial-gradient(center, ellipse cover,  #eaebec 0%,#dedcde 100%));
-    @include buttons(0px, 65px, $fontSizeSmall);
+    @include buttons(0px, 65px, 12px);
 
     line-height: 1.5em;
     font-size: $fontSizeSmall;
@@ -70,6 +71,11 @@
     padding-left: 40px;
     padding-right: 40px;
     cursor: default;
+
+    .text
+    {
+        white-space: pre-wrap;
+    }
 
     label
     {

@@ -1,0 +1,37 @@
+{{#hoverBox this}}
+    <div class="details">
+
+        <img id="closeIcon" src="assets/images/closeX.png"/>
+
+        <div class="header">{{$ "UploadFiles" }}</div>
+
+        <p>{{$ "SelectFile" }}&nbsp;<a class="deviceAgentButton" id="deviceAgentLink">{{$ "DeviceAgent" }}</a></p>
+
+        <div class="bigButtons">
+            <button id="workoutFileUploadMenuBrowse">{{$ "BrowseFiles" }}</button>
+            <button id="deviceAgentButton" class="deviceAgentButton">{{$ "GetDeviceAgent" }}</button>
+        </div>
+
+        {{#with details }}
+            {{#if workoutDeviceFileInfos }}
+                <div class="deviceFiles">
+                    <div class="header">{{$ "UploadedFiles" }}</div>
+
+                    <div class="fileList">
+                        {{#each workoutDeviceFileInfos }}
+                            <div class="file" id="{{ fileId }}">
+                                <input type="radio" class="fileSelect" name="fileSelect" value="{{ fileId }}" id="checkbox{{ fileId }}"/> <a class="download disabled" id="{{ fileId }}">{{ fileName }}</a>
+                            </div>
+                        {{/each}}
+                    </div>
+
+                    <div class="fileButtons">
+                        <button disabled class="recalculate">{{$ "Recalculate" }}</button>
+                        <button disabled class="delete">{{$ "Delete" }}</button>
+                    </div>
+                </div>
+            {{/if}}
+        {{/with}}
+
+    </div>
+{{/hoverBox}}

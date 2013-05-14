@@ -2,9 +2,9 @@
 [
     "underscore",
     "TP",
-    "views/quickView/expandedView/quickViewExpandedView"
+    "controllers/expandoController"
 ],
-function (_, TP, ExpandedView)
+function (_, TP, ExpandoController)
 {
     var workoutQVExpand =
     {
@@ -12,14 +12,20 @@ function (_, TP, ExpandedView)
         {
             _.extend(this.events, this.expandEvents);
             this.on("close", this.closeExpandedView, this);
+
+            //TODO Needs some refactor: should be initialized somewhere else?
+            this.expandoRegion = new TP.Region(
+            {
+                el: "#quickViewExpandedContent"    
+            });
         },
 
         closeExpandedView: function()
         {
-            if(this.expandedView)
-            {
-                this.expandedView.close();
-            }
+            if (this.expandoController)
+                this.expandoController.close();
+
+            this.expandoRegion.close();
         },
 
         expandEvents:
@@ -30,17 +36,16 @@ function (_, TP, ExpandedView)
 
         renderExpandedView: function()
         {
-            //TODO: Create MapAndGraphExpando Controller to encapsulate Views & interactions between those views.
-            if(!this.expandedView)
+            if(!this.expandoController)
             {
-                this.expandedView = new ExpandedView({ model: this.model });
-                this.expandedView.render();
-                this.ui.quickViewContentExpanded.append(this.expandedView.$el);
+                this.expandoController = new ExpandoController({ model: this.model, prefetchConfig: this.prefetchConfig });
+                this.expandoRegion.show(this.expandoController.getLayout());
             }
         },
 
         expandClicked: function ()
         {
+            this.expanded = true;
             this.renderExpandedView();
 
             var windowHeight = $(window).height();
@@ -92,6 +97,7 @@ function (_, TP, ExpandedView)
 
         collapseClicked: function ()
         {
+            this.expanded = false;
             this.animateOneStepCollapse();
         },
 
@@ -110,7 +116,7 @@ function (_, TP, ExpandedView)
             };
 
             var collapseDuration = 300;
-            this.expandedView.collapse();
+            this.expandoController.collapse();
             this.$el.animate({
                 height: this.originalPosition.height,
                 width: this.originalPosition.width,

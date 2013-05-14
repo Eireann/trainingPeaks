@@ -71,5 +71,6 @@ function (_, TP, loginViewTemplate)
 
             this.model.authenticate({ username: username, password: password });
         }
+
     });
 });

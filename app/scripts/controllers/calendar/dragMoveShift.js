@@ -1,14 +1,10 @@
 define(
 [
-
 ],
-function(
-
-    )
+function ()
 {
-
-    var calendarControllerDragMoveShift = {
-
+    var calendarControllerDragMoveShift =
+    {
         bindToDragMoveAndShiftEvents: function(calendarView)
         {
             calendarView.on("itemDropped", this.onDropItem, this);
@@ -36,7 +32,7 @@ function(
                 // add it to the calendar
                 this.weeksCollection.addWorkout(workout);
                 this.views.calendar.scrollToDate(destinationDate);
-                
+                    
             } 
         },
 
@@ -54,7 +50,6 @@ function(
         {
             this.clearCacheAndRefresh();
         }
-
     };
 
     return calendarControllerDragMoveShift;

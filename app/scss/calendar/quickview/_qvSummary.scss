@@ -2,22 +2,29 @@
 
 .stats
 {
-	padding-left: 20px;
-	padding-right: 40px;
+	padding-left: 15px;
+	padding-right: 20px;
     padding-bottom: 20px;
 	background: transparent;
 	float: left;
 
 	.selectionBox
 	{
-		padding-left: 87px;
+		padding-left: 102px;
 		@include selectionBox(168px);
+        width: 168px;
+        padding-top: 5px;
+        
+        select
+        {
+            margin-bottom: 3px;
+        }
 	}
 }
 
 .workoutStatsRow
 {
-	@include innerRow();
+	@include grid-row();
 	
 	clear: both;
     height: 23px;
@@ -86,14 +93,20 @@
 	label
 	{
 		float: left;
-		width: 75px;
+		width: 80px;
         font-weight: bold;
+        text-align: center;
 
         &.ghosted
         {
             color: $TPGrey7;
         }
 	}
+
+    .workoutStatsCompleted
+    {
+        padding-left: 10px;
+    }
 
 }
 
@@ -111,6 +124,7 @@
 		float: left;
 		width: 56px;
         font-weight: bold;
+        text-align: center;
             
         &.ghosted
         {

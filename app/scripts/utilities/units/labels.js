@@ -100,6 +100,11 @@ function(unitsConstants, workoutLayoutFormatter)
             English: "watts",
             Metric: "watts"
         },
+        rightpower:
+        {
+            English: "watts",
+            Metric: "watts"
+        },
         time:
         {
             English: "hms",
@@ -107,7 +112,6 @@ function(unitsConstants, workoutLayoutFormatter)
         }
     };
 
-    // TP.utils.units.getUnitsLabel(fieldName, sportType, context)
     var getUnitsLabel = function(fieldName, sportType, context)
     {
         var userUnits = theMarsApp.user.get("units");

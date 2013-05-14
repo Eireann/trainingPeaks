@@ -28,6 +28,11 @@ body
     font-size: $baseFontSize;
 }
 
+a
+{
+    cursor: pointer;
+}
+
 #loginFooter, #calendarFooter
 {
     span
@@ -42,4 +47,9 @@ body
     background-color: $white;
     overflow-x:visible;
     overflow-y:auto;
+}
+
+.row
+{
+    max-width: none;
 }

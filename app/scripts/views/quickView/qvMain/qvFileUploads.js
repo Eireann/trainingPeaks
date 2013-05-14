@@ -5,6 +5,7 @@
     "models/workoutFileData",
     "models/workoutFileAttachment",
     "views/userConfirmationView",
+    "views/quickView/qvMain/qvFileUploadMenuView",
     "hbs!templates/views/quickView/fileUploadErrorView"
 ],
 function (
@@ -13,6 +14,7 @@ function (
     WorkoutFileData,
     WorkoutFileAttachment,
     UserConfirmationView,
+    QVFileUploadMenuView,
     fileUploadErrorTemplate
 )
 {
@@ -41,11 +43,35 @@ function (
 
         onUploadFileClicked: function()
         {
+            var uploadButton = this.$("#quickViewFileUploadDiv");
+            var offset = uploadButton.offset();
+            var direction = this.expanded ? "right" : "left";
+            this.fileUploadMenu = new QVFileUploadMenuView({ model: this.model, direction: direction });
+            this.fileUploadMenu.render().top(offset.top - 8);
+
+            if (direction === "right")
+            {
+                this.fileUploadMenu.left(offset.left + uploadButton.outerWidth() + 13);
+            } else
+            {
+                this.fileUploadMenu.right(offset.left - 13);
+            }
+
+            uploadButton.addClass("menuOpen");
+            this.fileUploadMenu.on("browseFile", this.onUploadFileMenuUploadButtonClicked, this);
+            this.fileUploadMenu.on("close", function() { uploadButton.removeClass("menuOpen"); });
+        },
+
+        onUploadFileMenuUploadButtonClicked: function()
+        {
             this.ui.fileinput.click();
         },
 
         onFileSelected: function()
         {
+
+            if (this.fileUploadMenu)
+                this.fileUploadMenu.close();
 
             this.waitingOn();
             this.isNew = this.model.get("workoutId") ? false : true;

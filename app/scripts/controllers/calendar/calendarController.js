@@ -165,12 +165,12 @@ function(
 
         onPasteEnabled: function()
         {
-            $('body').removeClass('pasteDisabled').addClass('pasteEnabled');
+            theMarsApp.getBodyElement().removeClass('pasteDisabled').addClass('pasteEnabled');
         },
 
         onPasteDisabled: function()
         {
-            $('body').removeClass('pasteEnabled').addClass('pasteDisabled');
+            theMarsApp.getBodyElement().removeClass('pasteEnabled').addClass('pasteDisabled');
         },
 
         createStartDay: function(startDate)
@@ -226,7 +226,8 @@ function(
 
         clearCacheAndRefresh: function()
         {
-            theMarsApp.ajaxCaching.clearCache();
+            if (theMarsApp.ajaxCachingEnabled)
+                theMarsApp.ajaxCaching.clearCache();
             this.weeksCollection.resetToDates(moment(this.startDate), moment(this.endDate));
             this.views.calendar.scrollToLastViewedDate();
             var headerDate = this.views.calendar.getHeaderDate();

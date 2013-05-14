@@ -51,6 +51,14 @@
 	"Saturday": "SATURDAY",
 	"Sunday": "SUNDAY",
 
+    "Mon": "MON",
+	"Tue": "TUE",
+	"Wed": "WED",
+	"Thu": "THU",
+	"Fri": "FRI",
+	"Sat": "SAT",
+	"Sun": "SUN",
+
     "PersonalInfo": "Personal Info",
     "FirstName": "First Name",
     "LastName": "Last Name",
@@ -185,6 +193,7 @@
     "Unknown": "Unknown",
     "ChooseMetric": "Choose Metric",
     "UploadFile": "Upload File",
+    "UploadFiles": "Upload Files",
     "FileUploadHelp": "Learn more about device file upload options",
     "FileUploadTooltip": "Choose a file on your computer\n(.fit, .tcx, .pwx, .wko, .csv, .hrm).",
 	"ShiftString": "What types of items do you want to shift?",
@@ -197,7 +206,7 @@
 	"SelectDateRange": "Select date range",
 	"From": "From",
 	"To": "To",
-	"HowDoYouWantToShiftItems": "How do you want to shift these items",
+	"HowDoYouWantToShiftItems": "How do you want to shift these items?",
 	"MoveNewStartDate": "Move to new start date",
 	"MoveBySpecifiedNumberOfDays": "Move by a specified number of days",
 	"MoveBySpecifiedNumberOfWeeks": "Move by a specified number of weeks",
@@ -242,5 +251,17 @@
     "Peak": "Peak",
 
     "Error": "Error",
-    "ErrorUploadingFile": "An error occurred uploading your device file"
+    "ErrorUploadingFile": "An error occurred uploading your device file",
+
+    "BrowseFiles": "Browse Files",
+    "GetDeviceAgent": "Get Device Agent",
+    "SelectFile": "Select a file from your computer (.csv, .pwx, .fit, .tcx etc)\n or use",
+    "DeviceAgent": "Device Agent",
+    "UploadedFiles": "Uploaded Files",
+    "Download": "Download",
+    "Recalculate": "Recalculate",
+    "ConfirmRecalculate": "Are you sure you would like to recalculate all summary data on the workout from this file?\nThis may overwrite data you have manually made changes to.",
+
+    "Zoom": "Zoom",
+    "Dist": "Dist"
 }

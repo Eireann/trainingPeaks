@@ -2,13 +2,16 @@
 
 #userControlsContainer
 {
+    &.row
+    {
+        max-width: 100%;
+    }
 
     #userControlsBackground
     {
 
 	    height: 35px;
     	background-color: $black;
-
 
         .upgradeButton
         {

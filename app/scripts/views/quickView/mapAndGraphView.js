@@ -3,10 +3,11 @@
     "TP",
     "leaflet",
     "utilities/charting/dataParser",
+    "utilities/charting/defaultFlotOptions",
     "utilities/workout/workoutTypes",
     "hbs!templates/views/quickView/mapAndGraphView"
 ],
-function (TP, Leaflet, DataParser, workoutTypes, workoutQuickViewMapAndGraphTemplate)
+function (TP, Leaflet, DataParser, getDefaultFlotOptions, workoutTypes, workoutQuickViewMapAndGraphTemplate)
 {
     var osmURL = "http://otile1.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.jpg";
     var cloudmadeURL = "http://b.tile.cloudmade.com/8ee2a50541944fb9bcedded5165f09d9/1/256/{z}/{x}/{y}.png";
@@ -140,54 +141,11 @@ function (TP, Leaflet, DataParser, workoutTypes, workoutQuickViewMapAndGraphTemp
             var series = this.dataParser.getSeries();
             var yaxes = this.dataParser.getYAxes(series);
 
-            var flotOptions =
-            {
-                grid:
-                {
-                    show: true,
-                    borderWidth: 0,
-                    hoverable: true,
-                    clickable: true
-                },
-                legend:
-                {
-                    show: false
-                },
-                selection:
-                {
-                    mode: null 
-                },
-                series:
-                {
-                    lines:
-                    {
-                        show: true,
-                        lineWidth: 0.75,
-                        fill: false,
-                        hoverable: true
-                    },
-                    splines:
-                    {
-                        show: false,
-                        lineWidth: 0.75,
-                        type: "bezier"
-                    }
-                },
-                xaxes:
-                [
-                    {
-                        min: 0,
-                        tickFormatter: function (value, axis)
-                        {
-                            var decimalHours = (value / (3600 * 1000)).toFixed(2);
-                            return TP.utils.datetime.format.decimalHoursAsTime(decimalHours, true, null);
-                        }
-                    }
-                ],
-                yaxes: yaxes
-            };
+            var flotOptions = getDefaultFlotOptions(series);
 
-            $.plot($("#quickViewGraph"), series, flotOptions);
+            flotOptions.yaxes = yaxes;
+
+            $.plot(this.$("#quickViewGraph"), series, flotOptions);
         },
         
         setMapData: function()

@@ -100,13 +100,22 @@ function (_, moment, TP, WorkoutDetailsModel, WorkoutDetailDataModel)
             this.on("change:workoutId", function()
             {
                 this.get("details").set("workoutId", this.get("workoutId"));
-		this.get("detailData").set("workoutId", this.get("workoutId"));
+                this.get("detailData").set("workoutId", this.get("workoutId"));
             }, this);
         },
         
         checkpoint: function()
         {
             this.checkpointAttributes = _.clone(this.attributes);
+
+            // details checkpoint
+            this.get("details").checkpoint();
+            delete this.checkpointAttributes.details;
+
+            // probably no need for checkpoint/revert here?
+            //this.get("detailData").checkpoint();
+            delete this.checkpointAttributes.detailData;
+
         },
         
         revert: function()
@@ -115,6 +124,12 @@ function (_, moment, TP, WorkoutDetailsModel, WorkoutDetailDataModel)
             {
                 this.set(this.checkpointAttributes);
                 this.save();
+
+                this.get("details").revert();
+
+                // not needed until we can edit detailData
+                //this.get("detailData").revert();
+
             }
         },
         

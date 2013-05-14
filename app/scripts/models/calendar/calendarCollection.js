@@ -224,6 +224,11 @@ function(
                     weekModel.trigger("sync");
                 }
             });
+        },
+
+        getWorkout: function(workoutId)
+        {
+            return this.workoutsCollection.get(workoutId);
         }
     };
 
