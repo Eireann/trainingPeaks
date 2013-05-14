@@ -36,6 +36,9 @@ function ()
         function shutdown(plot, eventHolder)
         {
             plot.getPlaceholder().unbind("plotselected", plot.zoomToSelection);
+
+            if(resetButton)
+                resetButton.off("click", plot.resetZoom).fadeOut(200).remove();
         }
 
         function doZoomOnCanvas()
@@ -54,7 +57,7 @@ function ()
            
             doZoomOnCanvas();
 
-            resetButton.off("click", plot.resetZoom).fadeOut(200).remove();
+            resetButton.fadeOut(200);
         };
 
         plot.zoomToSelection = function (event, ranges)
@@ -72,19 +75,13 @@ function ()
 
             doZoomOnCanvas();
 
-            if (resetButton)
-                resetButton.remove();
-
-            resetButton = $("<button id='flotResetButton'>Reset Zoom</button>").css(
+            if (!resetButton)
             {
-                display: "none",
-                position: "absolute",
-                zIndex: 999,
-                top: 20,
-                left: 20
-            }).appendTo(plot.getPlaceholder()).fadeIn(200);
+                resetButton = plot.getPlaceholder().find(o.zoom.resetButton);
+                resetButton.on("click", plot.resetZoom);
+            }
 
-            resetButton.on("click", plot.resetZoom);
+            resetButton.fadeIn(200);
         };
 
         plot.hooks.bindEvents.push(bindEvents);

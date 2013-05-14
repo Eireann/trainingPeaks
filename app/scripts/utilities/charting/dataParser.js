@@ -19,7 +19,10 @@ function(seriesColorByChannel, findIndexByMsOffset, convertToViewUnits)
                 var channelName = flatSamples.channelMask[channelIdx];
 
                 if (!_.has(dataByChannel, channelName))
+                {
                     dataByChannel[channelName] = [];
+                    this._channelMask.push(channelName);
+                }
 
                 var value = sample.values[channelIdx];
 
@@ -182,48 +185,58 @@ function(seriesColorByChannel, findIndexByMsOffset, convertToViewUnits)
         this.minElevation = null;
         this.elevationIsAllNegative = null;
         this.latLonArray = null;
+        this._channelMask = [];
     };
 
-    DataParser.prototype.loadData = function(flatSamples)
+    _.extend(DataParser.prototype,
     {
-        this.flatSamples = flatSamples;
-        this.dataByChannel = parseDataByChannel.call(this, flatSamples);
+        loadData:  function(flatSamples)
+        {
+            this.flatSamples = flatSamples;
+            this.dataByChannel = parseDataByChannel.call(this, flatSamples);
 
-        // Find the minimum elevation in order to properly adjust the area graph (which would default to a 0 minimum).
-        var elevationInfo = getElevationInfoOnRange.call(this);
-        this.minElevation = elevationInfo.min;
-        this.elevationIsAllNegative = elevationInfo.isAllNegative;
-        this.latLonArray = null;
-    };
+            // Find the minimum elevation in order to properly adjust the area graph (which would default to a 0 minimum).
+            var elevationInfo = getElevationInfoOnRange.call(this);
+            this.minElevation = elevationInfo.min;
+            this.elevationIsAllNegative = elevationInfo.isAllNegative;
+            this.latLonArray = null;
 
-    DataParser.prototype.getSeries = function(x1, x2)
-    {
-        return generateSeriesFromData.call(this, this.flatSamples.channelMask, this.dataByChannel, this.elevationIsAllNegative, x1, x2);
-    };
+        },
 
-    DataParser.prototype.getElevationInfo = function(x1, x2)
-    {
-        if (typeof x1 !== "undefined" && typeof x2 !== "undefined")
-            return getElevationInfoOnRange.call(this, x1, x2);
+        getSeries: function(x1, x2)
+        {
+            return generateSeriesFromData.call(this, this.flatSamples.channelMask, this.dataByChannel, this.elevationIsAllNegative, x1, x2);
+        },
 
-        return {
-            min: this.minElevation,
-            isAllNegative: this.elevationIsAllNegative
-        };
-    };
+        getElevationInfo: function(x1, x2)
+        {
+            if (typeof x1 !== "undefined" && typeof x2 !== "undefined")
+                return getElevationInfoOnRange.call(this, x1, x2);
 
-    DataParser.prototype.getLatLonArray = function()
-    {
-        if (!this.latLonArray)
-            this.latLonArray = generateLatLonFromData.call(this, this.dataByChannel);
+            return {
+                min: this.minElevation,
+                isAllNegative: this.elevationIsAllNegative
+            };
+        },
 
-        return this.latLonArray;
-    };
+        getLatLonArray: function()
+        {
+            if (!this.latLonArray)
+                this.latLonArray = generateLatLonFromData.call(this, this.dataByChannel);
 
-    DataParser.prototype.getYAxes = function(series)
-    {
-        return generateYAxes.call(this, series);
-    };
+            return this.latLonArray;
+        },
+
+        getYAxes: function(series)
+        {
+            return generateYAxes.call(this, series);
+        },
+        
+        getChannelMask: function()
+        {
+            return this._channelMask;
+        }
+    });
     
     return DataParser;
 });

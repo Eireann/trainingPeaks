@@ -5,9 +5,10 @@
     "utilities/charting/defaultFlotOptions",
     "utilities/charting/flotCustomTooltip",
     "utilities/charting/jquery.flot.zoom",
+    "views/expando/graphToolbarView",
     "hbs!templates/views/expando/graphTemplate"
 ],
-function(TP, DataParser, getDefaultFlotOptions, flotCustomToolTip, flotZoom, graphTemplate)
+function (TP, DataParser, getDefaultFlotOptions, flotCustomToolTip, flotZoom, GraphToolbarView, graphTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -17,19 +18,18 @@ function(TP, DataParser, getDefaultFlotOptions, flotCustomToolTip, flotZoom, gra
             template: graphTemplate
         },
         
-        initialize: function(options)
+        initialize: function()
         {
             _.bindAll(this, "createFlotGraph");
-            var width = this.$el.parent().width();
-            var height = 400;
-            
-            this.$el.width(width);
-            this.$el.height(height);
 
             if (!options.detailDataPromise)
                 throw "detailDataPromise is required for map and graph view";
 
             this.detailDataPromise = options.detailDataPromise;
+
+            //TODO refactor, this should be set by CSS classes (CSS calc?)
+            this.$el.width(this.$el.parent().width());
+            this.$el.height(400);
         },
         
         onRender: function()
@@ -41,6 +41,9 @@ function(TP, DataParser, getDefaultFlotOptions, flotCustomToolTip, flotZoom, gra
         createFlotGraph: function ()
         {
             var flatSamples = this.model.get("detailData").get("flatSamples");
+
+            if(this.model.get("detailData") === null)
+                return;
 
             if (!this.dataParser)
             {
@@ -57,13 +60,17 @@ function(TP, DataParser, getDefaultFlotOptions, flotCustomToolTip, flotZoom, gra
             this.flotOptions.yaxes = yaxes;
             this.flotOptions.zoom = { enabled: true };
             this.flotOptions.zoom.dataParser = this.dataParser;
+            this.flotOptions.zoom.resetButton = ".graphResetButton";
 
-            this.createFlotPlot(series);
+            $.plot(this.$el, series, this.flotOptions);
+
+            this.overlayGraphToolbar();
         },
-
-        createFlotPlot: function (data)
+        
+        overlayGraphToolbar: function()
         {
-            $.plot(this.$el, data, this.flotOptions);
+            var toolbar = new GraphToolbarView({ dataParser: this.dataParser });
+            this.$el.append(toolbar.render().$el);
         }
     });
 });

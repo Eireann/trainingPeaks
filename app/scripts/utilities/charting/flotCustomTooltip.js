@@ -3,7 +3,7 @@
     "utilities/datetime/format",
     "utilities/conversion/convertToViewUnits",
     "utilities/units/labels",
-    "hbs!templates/views/quickView/expandedView/flotToolTip"
+    "hbs!templates/views/expando/flotToolTip"
     ],
 function(formatDateTime, convertToViewUnits, unitLabels, flotToolTipTemplate)
 {
