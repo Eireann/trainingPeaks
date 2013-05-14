@@ -71,7 +71,7 @@
         z-index: 2;
         width: 20px;
         height: 20px;
-        margin-left:22px;
+        margin-left:30px;
         @include transform(translateY(-15px) rotate(45deg));
         @include box-shadow(0 0 3px 1px #ADADAD);
 		background-color:#ffffff;
