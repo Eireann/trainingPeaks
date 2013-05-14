@@ -11,33 +11,38 @@
                 onSuccess(this.temporaryFs);
             } else
             {
-                var self = this;
+                try {
+                    var self = this;
 
-                var afterRequestFileSystem = function(fs)
-                {
-                    //console.log("Got filesystem");
-                    self.temporaryFs = fs;
-                    onSuccess(self.temporaryFs);
-                };
-
-                /*
-                if (!onError)
-                {
-                    onError = function()
+                    var afterRequestFileSystem = function(fs)
                     {
-                        console.log("Error");
+                        //console.log("Got filesystem");
+                        self.temporaryFs = fs;
+                        onSuccess(self.temporaryFs);
+                    };
+
+                    /*
+                    if (!onError)
+                    {
+                        onError = function()
+                        {
+                            console.log("Error");
+                        }
+                    }*/
+
+                    var type = TEMPORARY;
+                    var length = 1024 * 1024 * 1024; // 1GB
+
+                    if (webkitRequestFileSystem)
+                    {
+                        webkitRequestFileSystem(type, length, afterRequestFileSystem, onError);
+                    } else if (requestFileSystem)
+                    {
+                        requestFileSystem(type, length, afterRequestFileSystem, onError);
                     }
-                }*/
-
-                var type = TEMPORARY;
-                var length = 1024 * 1024 * 1024; // 1GB
-
-                if (webkitRequestFileSystem)
+                } catch(e)
                 {
-                    webkitRequestFileSystem(type, length, afterRequestFileSystem, onError);
-                } else if (requestFileSystem)
-                {
-                    requestFileSystem(type, length, afterRequestFileSystem, onError);
+                    onError();
                 }
             }
         },
