@@ -10,11 +10,6 @@ function(TP, WorkoutCommentView)
     {
         tagName: "div",
         className: "workoutCommentsCollection",
-
-        getItemView: function(item)
-        {
-            return WorkoutCommentView;
-        }
-
+        itemView: WorkoutCommentView
     });
 });
