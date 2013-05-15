@@ -47,9 +47,9 @@
             }
         },
 
-        saveFileToTemporaryFilesystem: function(fileName, fileContents, contentType, onSuccess, onError)
+        saveFileToTemporaryFilesystem: function(fileId, fileName, fileContents, contentType, onSuccess, onError)
         {
-
+            var fileNameWithId = fileId + "_" + fileName;
             var fileDataAsUint8Array = this.stringToUint8Array(fileContents);
 
             var afterRequestFilesystem = function(fs)
@@ -68,7 +68,7 @@
                     fileEntry.createWriter(afterCreateFileWriter);
                 };
 
-                fs.root.getFile(fileName, { create: true }, afterCreateFile);
+                fs.root.getFile(fileNameWithId, { create: true }, afterCreateFile);
             };
 
 
@@ -89,9 +89,10 @@
             return array;
         },
 
-        getLocalFilesystemUrl: function(fileName, onSuccess, onError)
+        getLocalFilesystemUrl: function(fileId, fileName, onSuccess, onError)
         {
 
+            var fileNameWithId = fileId + "_" + fileName;
             var afterRequestFilesystem = function(fs)
             {
 
@@ -100,7 +101,7 @@
                     onSuccess(fileEntry.toURL());
                 };
 
-                fs.root.getFile(fileName, { create: false }, afterGetFileEntry, onError);
+                fs.root.getFile(fileNameWithId, { create: false }, afterGetFileEntry, onError);
             };
 
             this.requestFileSystem(afterRequestFilesystem, onError);

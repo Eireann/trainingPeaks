@@ -175,11 +175,11 @@ function(
                     {
                         self.enableFileDownloadLink(fileInfo.fileId, fileInfo.fileName, filesystemUrl);
                     };
-                    TP.utils.filesystem.saveFileToTemporaryFilesystem(fileInfo.fileName, downloadedFileData.data, downloadedFileData.contentType, onDownload);
+                    TP.utils.filesystem.saveFileToTemporaryFilesystem(fileInfo.fileId, fileInfo.fileName, downloadedFileData.data, downloadedFileData.contentType, onDownload);
                 });
             };
 
-            TP.utils.filesystem.getLocalFilesystemUrl(fileInfo.fileName, ifLocalFileExists, ifLocalFileDoesNotExist);
+            TP.utils.filesystem.getLocalFilesystemUrl(fileInfo.fileId, fileInfo.fileName, ifLocalFileExists, ifLocalFileDoesNotExist);
         },
 
         enableFileDownloadLink: function(fileId, fileName, filesystemURL)
