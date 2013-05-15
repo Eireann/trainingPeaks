@@ -237,9 +237,18 @@ function(
 
         var apiRoots =
         {
-            live: "https://api.trainingpeaks.com",
-            uat: "http://api.uat.trainingpeaks.com",
-            dev: "http://api.dev.trainingpeaks.com",
+            live: "https://tpapi.trainingpeaks.com",
+            uat: "http://tpapi.uat.trainingpeaks.com",
+            dev: "http://tpapi.dev.trainingpeaks.com",
+            local: "http://localhost:8901",
+            todd: "DEV20-T430:8901"
+        };
+
+        var oAuthRoots =
+        {
+            live: "https://oauth.trainingpeaks.com",
+            uat: "http://oauth.uat.trainingpeaks.com",
+            dev: "http://oauth.dev.trainingpeaks.com",
             local: "http://localhost:8900",
             todd: "DEV20-T430:8900"
         };
@@ -249,6 +258,7 @@ function(
 
         // point to appropriate api server
         this.apiRoot = apiRoots[apiRootName];
+        this.oAuthRoot = oAuthRoots[apiRootName];
         this.wwwRoot = "http://www.trainingpeaks.com";
 
         // app root for router and history
