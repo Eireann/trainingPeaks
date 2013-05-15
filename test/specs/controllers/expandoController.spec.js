@@ -45,9 +45,9 @@ function(TP, ExpandoController, $)
                     detailDataPromise: $.Deferred()
                 };
 
-                var controller = new ExpandoController({ model: null, prefetchConfig: prefetchConfig });
+                var controller = new ExpandoController({ model: new TP.Model(), prefetchConfig: prefetchConfig });
                 expect(controller.prefetchConfig).toBe(prefetchConfig);
-                controller.fetchDetailData();
+                controller.preFetchDetailData();
                 expect(controller.prefetchConfig).toBe(prefetchConfig);
             });
 
@@ -65,7 +65,7 @@ function(TP, ExpandoController, $)
 
                 var controller = new ExpandoController({ model: model, prefetchConfig: prefetchConfig });
                 expect(controller.prefetchConfig.detailDataPromise).toBe(null);
-                controller.fetchDetailData();
+                controller.preFetchDetailData();
                 expect(controller.prefetchConfig.detailDataPromise).not.toBe(null);
             });
 
@@ -83,7 +83,7 @@ function(TP, ExpandoController, $)
                 model.set("detailData", model2);
 
                 var controller = new ExpandoController({ model: model, prefetchConfig: prefetchConfig });
-                controller.fetchDetailData();
+                controller.preFetchDetailData();
                 expect(prefetchConfig.workoutDetailDataFetchTimeout).toBe(123);
             });
         });

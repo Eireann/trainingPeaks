@@ -32,24 +32,39 @@ function (TP, DataParser, getDefaultFlotOptions, flotCustomToolTip, flotZoom, Gr
             this.$el.height(400);
         },
 
+        initialEvents: function()
+        {
+            this.model.off("change", this.render);
+        },
+
         onRender: function()
         {
             var self = this;
+            this.watchForModelChanges();
             setImmediate(function() { self.detailDataPromise.then(self.createFlotGraph); });
         },
         
+        watchForModelChanges: function()
+        {
+            this.model.get("detailData").on("change:flatSamples.samples", this.createFlotGraph, this);
+            this.on("close", this.stopWatchingModelChanges, this);
+        },
+
+        stopWatchingModelChanges: function()
+        {
+            this.model.get("detailData").off("change:flatSamples.samples", this.createFlotGraph, this);
+        },
+
         createFlotGraph: function ()
         {
-            var flatSamples = this.model.get("detailData").get("flatSamples");
 
-            if(this.model.get("detailData") === null)
+            if (this.model.get("detailData") === null || !this.model.get("detailData").get("flatSamples"))
                 return;
 
-            if (!this.dataParser)
-            {
-                this.dataParser = new DataParser();
-                this.dataParser.loadData(flatSamples);
-            }
+            var flatSamples = this.model.get("detailData").get("flatSamples");
+
+            this.dataParser = new DataParser();
+            this.dataParser.loadData(flatSamples);
 
             var series = this.dataParser.getSeries();
             var yaxes = this.dataParser.getYAxes(series);

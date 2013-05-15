@@ -51,42 +51,47 @@ function(
         {
             var self = this;
 
-            this.watchForModelChanges();
-
             this.$el.addClass("waiting");
+
+            this.watchForModelChanges();
 
             if (!this.prefetchConfig.detailDataPromise)
             {
                 if (this.prefetchConfig.workoutDetailDataFetchTimeout)
                     clearTimeout(this.prefetchConfig.workoutDetailDataFetchTimeout);
 
-                this.prefetchConfig.detailDataPromise = this.model.get("detailData").fetch();
+                this.prefetchConfig.detailDataPromise = this.model.get("detailData").createPromise();
+
+                if (!this.model.get("workoutId"))
+                    this.prefetchConfig.detailDataPromise.resolve();
             }
 
             // if we already have it in memory, render it
             if (this.model.get("detailData") !== null && this.model.get("detailData").attributes.flatSamples !== null)
             {
                 this.onModelFetched();
+            } else
+            {
+                setImmediate(function() { self.prefetchConfig.detailDataPromise.then(self.onModelFetched); });
             }
 
-            setImmediate(function() { self.prefetchConfig.detailDataPromise.then(self.onModelFetched); });
         },
 
         watchForModelChanges: function()
         {
-            this.model.on("change:detailData", this.render, this);
+            this.model.get("detailData").on("change:flatSamples.samples", this.onModelFetched, this);
             this.on("close", this.stopWatchingModelChanges, this);
         },
 
         stopWatchingModelChanges: function()
         {
-            this.model.off("change:detailData", this.render, this);
+            this.model.get("detailData").off("change:flatSamples.samples", this.onModelFetched, this);
         },
 
         onModelFetched: function()
         {
             var self = this;
-            
+
             this.$el.removeClass("waiting");
 
             if (this.model.get("detailData") === null || this.model.get("detailData").attributes.flatSamples === null)
@@ -97,6 +102,9 @@ function(
 
         createAndDisplayMapAndGraph: function()
         {
+            if (!this.model.get("detailData") || !this.model.get("detailData").get("flatSamples"))
+                return;
+
             this.parseData();
             this.createAndShowGraph();
 

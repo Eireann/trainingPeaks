@@ -35,7 +35,7 @@ function(TP, ExpandoLayout, GraphView, MapView, StatsView, LapsView, ChartsView)
             var self = this;
 
             this.closeViews();
-            this.fetchDetailData();
+            this.preFetchDetailData();
 
             this.views.graphView = new GraphView({ model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise });
             this.views.mapView = new MapView({ model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise });
@@ -45,7 +45,14 @@ function(TP, ExpandoLayout, GraphView, MapView, StatsView, LapsView, ChartsView)
 
             this.layout.$el.addClass("waiting");
 
+            this.watchForModelChanges();
+
             setImmediate(function() { self.prefetchConfig.detailDataPromise.then(self.onModelFetched); });
+
+            // if we don't have a workout, just resolve the deferred to let everything render
+            if(!this.model.get("workoutId"))
+                this.prefetchConfig.detailDataPromise.resolve();
+
         },
 
         onModelFetched: function()
@@ -59,14 +66,14 @@ function(TP, ExpandoLayout, GraphView, MapView, StatsView, LapsView, ChartsView)
             this.layout.chartsRegion.show(this.views.chartsView);
         },
 
-        fetchDetailData: function()
+        preFetchDetailData: function()
         {
             if (!this.prefetchConfig.detailDataPromise)
             {
                 if (this.prefetchConfig.workoutDetailDataFetchTimeout)
                     clearTimeout(this.prefetchConfig.workoutDetailDataFetchTimeout);
 
-                this.prefetchConfig.detailDataPromise = this.model.get("detailData").fetch();
+                this.prefetchConfig.detailDataPromise = this.model.get("detailData").createPromise();
             }
         },
 
@@ -90,6 +97,26 @@ function(TP, ExpandoLayout, GraphView, MapView, StatsView, LapsView, ChartsView)
             //TODO wherever it might get closed.
             if(this.prefetchCongig && this.prefetchConfig.detailDataPromise)
                 this.prefetchConfig.detailDataPromise.reject();
+
+            this.stopWatchingModelChanges();
+        },
+ 
+        watchForModelChanges: function()
+        {
+            this.model.on("deviceFileUploaded", this.fetchDetailData, this);
+            this.on("close", this.stopWatchingModelChanges, this);
+        },
+
+        fetchDetailData: function()
+        {
+            if (this.model.get("workoutId"))
+                this.model.get("detailData").fetch();
+        },
+
+        stopWatchingModelChanges: function()
+        {
+            this.model.off("deviceFileUploaded", this.fetchDetailData, this);
         }
+
     });
 });

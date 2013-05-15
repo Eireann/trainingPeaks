@@ -10,7 +10,12 @@ function (TP, statsTemplate)
         template:
         {
             type: "handlebars",
-            template: statsTemplate 
+            template: statsTemplate
+        },
+
+        initialEvents: function()
+        {
+            this.model.off("change", this.render);
         }
     });
 });

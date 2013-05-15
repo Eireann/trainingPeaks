@@ -11,6 +11,11 @@ function (TP, lapsTemplate)
         {
             type: "handlebars",
             template: lapsTemplate
+        },
+
+        initialEvents: function()
+        {
+            this.model.off("change", this.render);
         }
     });
 });

@@ -101,6 +101,17 @@ function(_, Backbone)
                 this.set(this.checkpointAttributes);
                 this.save();
             }
+        },
+
+        createPromise: function()
+        {
+            if (this.get(this.idAttribute))
+            {
+                return this.fetch();
+            } else
+            {
+                return new $.Deferred();
+            }
         }
 
     });

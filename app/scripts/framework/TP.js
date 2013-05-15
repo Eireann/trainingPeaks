@@ -213,7 +213,6 @@ function(Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmediate,
 
         onWindowResize: function()
         {
-            console.log("resized");
             this.centerWindow();
         },
 
@@ -346,7 +345,21 @@ function(Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmediate,
     // Backbone stuff
     TP.history = Backbone.history;
     TP.Collection = Backbone.Collection.extend({});
-    TP.Model = Backbone.DeepModel.extend({});
+    TP.Model = Backbone.DeepModel.extend({
+
+        createPromise: function()
+        {
+            if(this.id)
+            {
+                return this.fetch();
+            } else
+            {
+                return new $.Deferred();
+            }
+        }
+
+    });
+
     TP.APIModel = APIModel;
     TP.Router = Backbone.Router.extend({});
 

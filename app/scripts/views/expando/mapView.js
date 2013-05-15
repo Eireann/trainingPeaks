@@ -58,13 +58,13 @@ function(
 
         watchForModelChanges: function()
         {
-            this.model.on("change:detailData", this.onModelFetched, this);
+            this.model.get("detailData").on("change:flatSamples.samples", this.onModelFetched, this);
             this.on("close", this.stopWatchingModelChanges, this);
         },
 
         stopWatchingModelChanges: function()
         {
-            this.model.off("change:detailData", this.render, this);
+            this.model.get("detailData").off("change:flatSamples.samples", this.onModelFetched, this);
         },
 
         onModelFetched: function()
@@ -75,6 +75,9 @@ function(
 
         createAndDisplayMap: function()
         {
+            if (!this.model.get("detailData").get("flatSamples"))
+                return;
+
             this.parseData();
 
             if (!this.map)
@@ -86,7 +89,7 @@ function(
 
         parseData: function()
         {
-            var flatSamples = this.model.get("detailData").attributes.flatSamples;
+            var flatSamples = this.model.get("detailData").get("flatSamples");
             this.dataParser.loadData(flatSamples);
         }
 

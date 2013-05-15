@@ -90,12 +90,22 @@ function (
 
                 this.prefetchConfig.workoutDetailsFetchTimeout = setTimeout(function()
                 {
-                    self.prefetchConfig.detailsPromise = self.model.get("details").fetch();
+                    self.prefetchConfig.detailsPromise = self.model.get("details").createPromise();
+
+                    // if we don't have a workout, just resolve the deferred to let everything render
+                    if (!self.model.get("workoutId"))
+                        self.prefetchConfig.detailsPromise.resolve();
+
                 }, 800);
 
                 this.prefetchConfig.workoutDetailDataFetchTimeout = setTimeout(function()
                 {
-                    self.prefetchConfig.detailDataPromise = self.model.get("detailData").fetch();
+                    self.prefetchConfig.detailDataPromise = self.model.get("detailData").createPromise();
+
+                    // if we don't have a workout, just resolve the deferred to let everything render
+                    if (!self.model.get("workoutId"))
+                        self.prefetchConfig.detailDataPromise.resolve();
+
                 }, 2000);
 
                 this.on("close", this.stopWorkoutDetailsFetch, this);
@@ -146,6 +156,8 @@ function (
                 this.renderCurrentTab();
 
                 this.renderInitialized = true;
+
+                this.watchForFileUploads();
             }
         },
 
@@ -216,6 +228,26 @@ function (
 
             this.currentTabIndex = tabIndex;
             this.renderCurrentTab();
+        },
+
+        watchForFileUploads: function()
+        {
+            this.model.on("deviceFileUploaded", this.fetchDetailData, this);
+            this.on("close", this.stopWatchingFileUploads, this);
+        },
+
+        fetchDetailData: function()
+        {
+            if (!this.model.get("workoutId"))
+                return;
+
+            this.model.get("details").fetch();
+            this.model.get("detailData").fetch();
+        },
+
+        stopWatchingFileUploads: function()
+        {
+            this.model.off("deviceFileUploaded", this.fetchDetailData, this);
         }
     };
 

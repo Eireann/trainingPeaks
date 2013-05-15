@@ -110,6 +110,7 @@ function (
 
             this.model.set(updatedWorkoutModel);
             this.model.get("details").fetch();
+            this.model.trigger("deviceFileUploaded");
 
             if (this.isNew)
                 this.trigger("saved");
