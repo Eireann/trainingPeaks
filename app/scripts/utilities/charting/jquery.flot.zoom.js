@@ -82,6 +82,7 @@ function ()
             }
 
             resetButton.fadeIn(200);
+            plot.clearSelection();
         };
 
         plot.hooks.bindEvents.push(bindEvents);

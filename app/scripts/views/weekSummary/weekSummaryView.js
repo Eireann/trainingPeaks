@@ -213,7 +213,7 @@ function(
             var offset = $(e.currentTarget).offset();
 
             this.summarySettings = new WeekSummarySettings({ model: this.model });
-            this.summarySettings.render().center(offset.left + 5).bottom(offset.top + 10);
+            this.summarySettings.render().center(offset.left - 5).bottom(offset.top + 15);
             this.summarySettings.on("close", this.settingsClosed, this);
 
             this.$el.closest(".week").find(".weekSelected").css("display", "block");

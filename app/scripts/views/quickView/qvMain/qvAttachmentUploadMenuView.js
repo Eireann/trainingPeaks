@@ -119,7 +119,7 @@ function(_,
             var readDeferral = workoutReader.readFile();
 
             var self = this;
-            readDeferral.done(function (fileContentsEncoded)
+            readDeferral.done(function (fileName, fileContentsEncoded)
             {
                 self.uploadAttachment(file.name, fileContentsEncoded);
             });
