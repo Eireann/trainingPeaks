@@ -171,8 +171,8 @@ function(Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmediate,
             //this.left(($window.width() - this.$el.width()) / 2).top(($window.height() - this.$el.height()) / 2);
 
             // dynamic centering
-            this.$el.css("left", "calc(50% - " + Math.round(this.$el.width() / 2) + "px)");
-            this.$el.css("top", "calc(50% - " + Math.round(this.$el.height() / 2) + "px)");
+            this.centerWindow();
+            this.watchForWindowResize();
 
             this.enableEscapeKey();
 
@@ -187,6 +187,34 @@ function(Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmediate,
             this.trigger("modalrender");
 
             return this;
+        },
+
+        centerWindow: function()
+        {
+            var windowWidth = $(window).width();
+            var windowHeight = $(window).height();
+            var overallHeight = this.$el.height();
+
+            this.$el.css("left", Math.round((windowWidth - this.$el.width()) / 2) + "px");
+            this.$el.css("top", Math.round((windowHeight - overallHeight) / 2) + "px");
+        },
+
+        watchForWindowResize: function()
+        {
+            _.bindAll(this, "onWindowResize");
+            var debouncedResize = _.debounce(this.onWindowResize, 300);
+            $(window).on("resize", debouncedResize);
+        },
+
+        stopWatchingWindowResize: function()
+        {
+            $(window).off("resize", this.onWindowResize);
+        },
+
+        onWindowResize: function()
+        {
+            console.log("resized");
+            this.centerWindow();
         },
 
         enableEscapeKey: function()
@@ -209,6 +237,7 @@ function(Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmediate,
         closeModal: function()
         {
             this.disableEscapeKey();
+            this.stopWatchingWindowResize();
             if (this.modal && this.$overlay)
             {
                 this.$overlay.hide().remove();

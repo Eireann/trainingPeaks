@@ -89,7 +89,7 @@ function(
 
             deferred.done(function(fileName, dataAsString)
             {
-                self.uploadedFileDataModel = new WorkoutFileData({ workoutDay: moment(self.model.get("date")).format(TP.utils.datetime.longDateFormat), startTime: moment(self.model.get("date")).add("hours", 6).format(TP.utils.datetime.longDateFormat), data: dataAsString });
+                self.uploadedFileDataModel = new WorkoutFileData({ workoutDay: moment(self.model.get("date")).format(TP.utils.datetime.longDateFormat), startTime: moment(self.model.get("date")).add("hours", 6).format(TP.utils.datetime.longDateFormat), data: dataAsString, fileName: fileName });
                 self.uploadedFileDataModel.save().done(self.onUploadDone).fail(self.onUploadFail);
             });
         },
