@@ -191,8 +191,12 @@ function(Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmediate,
 
         centerWindow: function()
         {
-            this.$el.css("left", "calc(50% - " + Math.round(this.$el.width() / 2) + "px)");
-            this.$el.css("top", "calc(50% - " + Math.round(this.$el.height() / 2) + "px)");
+            var windowWidth = $(window).width();
+            var windowHeight = $(window).height();
+            var overallHeight = this.$el.height();
+
+            this.$el.css("left", Math.round((windowWidth - this.$el.width()) / 2) + "px");
+            this.$el.css("top", Math.round((windowHeight - overallHeight) / 2) + "px");
         },
 
         watchForWindowResize: function()
