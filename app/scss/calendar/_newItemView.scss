@@ -77,7 +77,7 @@
             }
         }
 
-        @include headerButtons(0px, 50px, $fontSizeMedium);
+       	// @include headerButtons(0px, 50px, $fontSizeMedium);
 
         button
         {
@@ -85,8 +85,8 @@
             margin-right: 0px;
             color: $TPGrey3;
             width: 100%;
-            padding: 1px 20px 0px 20px;
             min-width: 110px;
+			padding:4px 0;
         }
 
         button[name="uploadDeviceFile"]

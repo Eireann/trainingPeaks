@@ -32,9 +32,14 @@
 	.workoutStatsColumn
 	{
 		float:left;
-        height: 23px;
-		@include inputs(83.5px, 20px, 12px, $navigationFontFamilyRegular);
         padding-right: 2px;
+ 		// height: 23px;
+		
+		@include inputs(83.5px, 21px, 12px, $navigationFontFamilyRegular);
+       	input {
+			margin: 0;
+		  	padding: 0;
+		}
 
         .hide
         {
