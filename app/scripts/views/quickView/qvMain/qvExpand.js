@@ -112,7 +112,6 @@ function (_, TP, ExpandoController)
                 self.$(".collapseButton, .expandedViewsButtons").css({ display: "none" });
                 self.$(".tabNavigation, .quickviewFooter, .expandButton").css({ display: "block" });
                 self.$("#quickViewContent").css({ display: "block" });
-
                 self.centerWindow();
             };
 
