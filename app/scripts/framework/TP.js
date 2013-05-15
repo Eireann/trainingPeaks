@@ -171,8 +171,7 @@ function(Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmediate,
             //this.left(($window.width() - this.$el.width()) / 2).top(($window.height() - this.$el.height()) / 2);
 
             // dynamic centering
-            this.$el.css("left", "calc(50% - " + Math.round(this.$el.width() / 2) + "px)");
-            this.$el.css("top", "calc(50% - " + Math.round(this.$el.height() / 2) + "px)");
+            this.centerDynamically();
 
             this.enableEscapeKey();
 
@@ -187,6 +186,12 @@ function(Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmediate,
             this.trigger("modalrender");
 
             return this;
+        },
+
+        centerDynamically: function()
+        {
+            this.$el.css("left", "calc(50% - " + Math.round(this.$el.width() / 2) + "px)");
+            this.$el.css("top", "calc(50% - " + Math.round(this.$el.height() / 2) + "px)");
         },
 
         enableEscapeKey: function()
