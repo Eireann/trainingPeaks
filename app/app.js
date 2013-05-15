@@ -161,8 +161,21 @@ function(
                     position.top -= (self.height() + 20);
                 }
                 */
+                
+                if (targetElement.outerWidth() > self.outerWidth())
+                {
+                    position.left = position.left - (self.outerWidth() / 2) + (targetElement.outerWidth() / 2);
+                }
+                else if (position.left > $(window).outerWidth() / 2)
+                {
+                    position.left = position.left + targetElement.outerWidth() - self.outerWidth();
+                    $(".arrow").css('margin-left', self.outerWidth() - (targetElement.outerWidth() / 2) - 10);
+                }
+                else
+                {
+                    $(".arrow").css('margin-left', (targetElement.outerWidth() / 2) - 10);
+                }
 
-                position.left = position.left - (self.outerWidth() / 2) + (targetElement.outerWidth() / 2);
                 //position.left = position.left - (self.outerWidth() / 2);
                 if (self.hasClass("above"))
                 {

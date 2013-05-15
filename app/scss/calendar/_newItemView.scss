@@ -96,6 +96,7 @@
             background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #dfdfdf), color-stop(1, #AAC8E5) );
 		    background:-moz-linear-gradient( center top, #dfdfdf 20%, #AAC8E5 100% );
             margin-left: 10px;
+            float: left;
         }
 
         button[name="chooseMetricBtn"]
