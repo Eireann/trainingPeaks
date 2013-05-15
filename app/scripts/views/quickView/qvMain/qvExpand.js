@@ -75,6 +75,7 @@ function (_, TP, ExpandoController)
                 self.$(".expandButton").hide();
                 self.$(".collapseButton, .expandedViewsButtons").show();
                 self.$("#quickViewExpandedContent").show();
+                self.centerDynamically();
             };
 
             var animateExpansion = function()
@@ -113,6 +114,7 @@ function (_, TP, ExpandoController)
                 self.$(".collapseButton, .expandedViewsButtons").css({ display: "none" });
                 self.$(".tabNavigation, .quickviewFooter, .expandButton").css({ display: "block" });
                 self.$("#quickViewContent").css({ display: "block" });
+                self.centerDynamically();
             };
 
             var collapseDuration = 300;
