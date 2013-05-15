@@ -20,7 +20,7 @@
                     <div class="fileList">
                         {{#each workoutDeviceFileInfos }}
                             <div class="file" id="{{ fileId }}">
-                                <input type="radio" class="fileSelect" name="fileSelect" value="{{ fileId }}" id="checkbox{{ fileId }}"/> <a class="download disabled" id="{{ fileId }}">{{ fileName }}</a>
+                                <label class="radioButtonWrapper"><input type="radio" class="fileSelect" name="fileSelect" value="{{ fileId }}" id="checkbox{{ fileId }}"/> <a class="download disabled" id="{{ fileId }}">{{ fileName }}</a></label>
                             </div>
                         {{/each}}
                     </div>
