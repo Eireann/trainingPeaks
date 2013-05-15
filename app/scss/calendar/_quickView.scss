@@ -51,24 +51,26 @@ input[disabled='disabled']
 {
 	height:45px;
 	background-color: $TPGrey5;
-	padding-top: 11px;
+	padding-top: 12px;
 
 	.selectionBox
 	{
 		padding-left: 55px;
 		width: 130px;
 		float:left;
-		@include selectionBox(130px);
+		// @include selectionBox(130px);
 		
 		select {
-			margin-top:0;
+			margin-top:1px;
+			padding:0;
+			width:130px;
 		}
 	}
 	.saveCloseButtons
 	{
 		font-weight:normal;
 		float: right;
-		width: 258px;
+		width: 285px;
 	//	padding-top: 5px;
         @include buttons(0, 77px, $fontSizeSmall);
 		#saveClose
