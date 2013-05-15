@@ -267,5 +267,8 @@
 
     "UploadAttachments": "Upload Attachments",
     "SelectAttachment": "Select an attachment file from your computer",
-    "UploadedAttachments": "Uploaded Attachments"
+    "UploadedAttachments": "Uploaded Attachments",
+
+    "Message": "Message",
+    "saveWorkoutBeforeAttachment": "Please save the workout (by adding a minimum of a Title) before attempting to attach a file."
 }

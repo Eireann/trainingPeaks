@@ -6,7 +6,9 @@
     "views/userConfirmationView",
     "views/quickView/qvMain/qvFileUploadMenuView",
     "views/quickView/qvMain/qvAttachmentUploadMenuView",
-    "hbs!templates/views/quickView/fileUploadErrorView"
+    "views/userMessageView",
+    "hbs!templates/views/quickView/fileUploadErrorView",
+    "hbs!templates/views/userMessage/saveWorkoutBeforeAttachment"
 ],
 function (
     _,
@@ -15,7 +17,9 @@ function (
     UserConfirmationView,
     QVFileUploadMenuView,
     QVAttachmentUploadMenuView,
-    fileUploadErrorTemplate
+    UserMessageView,
+    fileUploadErrorTemplate,
+    saveWorkoutBeforeAttachmentTemplate
 )
 {
     var workoutQuickViewFileUploads =
@@ -118,6 +122,13 @@ function (
 
         onAddAttachmentClicked: function()
         {
+            if (this.isNewWorkout && !this.model.get("workoutId"))
+            {
+                var view = new UserMessageView({ template: saveWorkoutBeforeAttachmentTemplate });
+                view.render();
+                return;
+            }
+            
             // Wire up & Display the File Attachment Tomahawk
             var uploadButton = this.$("div.addAttachment");
             var offset = uploadButton.offset();
