@@ -10,8 +10,8 @@ function (
     WorkoutCommentsCollectionView
 )
 {
-    var summaryViewComments = {
-
+    var summaryViewComments =
+    {
         initializeComments: function()
         {
             this.on("render", this.renderComments, this);
@@ -40,7 +40,8 @@ function (
             this.$("#postActivityCommentsList").append(this.postActivityCommentsView.el);
 
             this.postActivityCommentsView.on("item:removed", this.onWorkoutCommentRemoved, this);
-
+            this.postActivityCommentsView.on("itemview:commentedited", this.onWorkoutCommentEdited, this);
+            
             if (theMarsApp.user.get("settings.account.isCoach") || this.model.get("coachComments"))
             {
                 this.$("#preActivityComments").css("display", "block");
@@ -48,6 +49,12 @@ function (
         },
 
         onWorkoutCommentRemoved: function()
+        {
+            this.model.set("workoutComments",  this.commentsToArray(this.model.getPostActivityComments()), { silent: true });
+            this.model.save();
+        },
+        
+        onWorkoutCommentEdited: function ()
         {
             this.model.set("workoutComments",  this.commentsToArray(this.model.getPostActivityComments()), { silent: true });
             this.model.save();
