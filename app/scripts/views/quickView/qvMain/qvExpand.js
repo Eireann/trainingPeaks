@@ -18,6 +18,7 @@ function (_, TP, ExpandoController)
             {
                 el: "#quickViewExpandedContent"    
             });
+
         },
 
         closeExpandedView: function()
@@ -62,9 +63,6 @@ function (_, TP, ExpandoController)
         {
             var newHeight = windowHeight * 0.95;
             var newWidth = windowWidth * 0.95;
-            var viewsWidth = newWidth - 333;
-            var numberOfVisibleViews = 2;
-            var viewsHeight = (newHeight - 125) / numberOfVisibleViews;
             var left = (windowWidth - newWidth) / 2;
             var top = (windowHeight - newHeight) / 2;
 
@@ -75,6 +73,8 @@ function (_, TP, ExpandoController)
                 self.$(".expandButton").hide();
                 self.$(".collapseButton, .expandedViewsButtons").show();
                 self.$("#quickViewExpandedContent").show();
+
+                self.centerWindow();
             };
 
             var animateExpansion = function()
@@ -84,7 +84,6 @@ function (_, TP, ExpandoController)
                 //TODO or better, add a class to the main qv container - .expanded or .collapsed
                 self.$("#workOutQuickView").animate({ height: newHeight, width: newWidth }, { duration: expandDuration });
                 self.$(".tabNavigation, #quickViewContent, .quickviewFooter, #menuIcon").hide();
-                self.$(".viewOne, .viewTwo").css({ width: viewsWidth, height: viewsHeight });
 
                 self.$el.animate({top: top + "px", left: left + "px",  height: newHeight, width: newWidth },
                 {
@@ -113,6 +112,8 @@ function (_, TP, ExpandoController)
                 self.$(".collapseButton, .expandedViewsButtons").css({ display: "none" });
                 self.$(".tabNavigation, .quickviewFooter, .expandButton").css({ display: "block" });
                 self.$("#quickViewContent").css({ display: "block" });
+
+                self.centerWindow();
             };
 
             var collapseDuration = 300;
@@ -127,7 +128,44 @@ function (_, TP, ExpandoController)
                 duration: collapseDuration,
                 complete: afterCollapsing
             });                   
+        },
+
+        onWindowResize: function()
+        {
+
+            if (this.expanded)
+            {
+                var windowWidth = $(window).width();
+                var windowHeight = $(window).height();
+                var newHeight = windowHeight * 0.95;
+                var newWidth = windowWidth * 0.95;
+
+                this.$("#workOutQuickView").width(newWidth).height(newHeight);
+                this.$el.width(newWidth).height(newHeight);
+            }
+
+            this.centerWindow();
+
+        },
+
+        centerWindow: function()
+        {
+
+            var windowWidth = $(window).width();
+            var windowHeight = $(window).height();
+            var overallHeight = this.$el.height();
+
+            this.$el.css("left", Math.round((windowWidth - this.$el.width()) / 2) + "px");
+            this.$el.css("top", Math.round((windowHeight - overallHeight) / 2) + "px");
+
+            if (this.expanded)
+            {
+                var headerHeight = this.$(".QVHeader").outerHeight();
+                this.$("#quickViewExpandedContent, #expandoLeftColumn, #expandoRightColumn").css("height", overallHeight - headerHeight + "px");
+            }
+
         }
+
 
     };
     return workoutQVExpand;
