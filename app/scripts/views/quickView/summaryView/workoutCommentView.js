@@ -29,12 +29,15 @@ function (TP, UserConfirmationView, deleteConfirmationTemplate, WorkoutCommentsT
             "keyup textarea": "onCommentBodyChanged"
         },
         
-        template:
+        initialize: function()
         {
-            type: "handlebars",
-            template: WorkoutCommentsTemplate
+            this.template =
+            {
+                type: "handlebars",
+                template: WorkoutCommentsTemplate
+            };
         },
-
+        
         onMouseOver: function ()
         {
             this.$el.addClass("hover");
