@@ -31,7 +31,7 @@ function(
         {
             var workoutData = this.model.toJSON();
             var detailData = this.model.get("detailData").toJSON();
-            var lapData = detailData.totalStats;
+            var lapData = detailData.totalStats ? detailData.totalStats : {};
             lapData.name = "Entire Workout";
             _.extend(workoutData, lapData);
             return workoutData;
@@ -45,23 +45,36 @@ function(
 
         findAvailableMinMaxAvgFields: function(lapData)
         {
-            if (lapData.minimumPower !== null || lapData.averagePower !== null || lapData.maximumPower !== null)
-                lapData.minMaxPower = true;
+            lapData.minMaxAvg = false;
 
-            if (lapData.minimumSpeed !== null || lapData.averageSpeed !== null || lapData.maximumSpeed !== null)
-                lapData.minMaxSpeed = true;
+            if (this.hasAnyValue(lapData, ["minimumPower", "averagePower", "maximumPower"]))
+                lapData.minMaxPower = lapData.minMaxAvg = true;
 
-            if (lapData.minimumHeartRate !== null || lapData.averageHeartRate !== null || lapData.maximumHeartRate !== null)
-                lapData.minMaxHeartRate = true;
+            if (this.hasAnyValue(lapData, ["minimumSpeed", "averageSpeed", "maximumSpeed"]))
+                lapData.minMaxSpeed = lapData.minMaxAvg = true;
 
-            if (lapData.minimumCadence !== null || lapData.averageCadence !== null || lapData.maximumCadence !== null)
-                lapData.minMaxCadence = true;
+            if (this.hasAnyValue(lapData, ["minimumHeartRate", "averageHeartRate", "maximumHeartRate"]))
+                lapData.minMaxHeartRate = lapData.minMaxAvg = true;
 
-            if (lapData.elevationMinimum !== null || lapData.elevationAverage !== null || lapData.elevationMaximum !== null)
-                lapData.minMaxElevation = true;
+            if (this.hasAnyValue(lapData, ["minimumCadence", "averageCadence", "maximumCadence"]))
+                lapData.minMaxCadence = lapData.minMaxAvg = true;
 
-            if (lapData.tempAvg !== null || lapData.tempMax !== null || lapData.tempMin !== null)
-                lapData.minMaxTemp = true;
+            if (this.hasAnyValue(lapData, ["elevationMinimum", "elevationAverage", "elevationMaximum"]))
+                lapData.minMaxElevation = lapData.minMaxAvg = true;
+
+            if (this.hasAnyValue(lapData, ["tempMin", "tempAvg", "tempMax"]))
+                lapData.minMaxTemp = lapData.minMaxAvg = true;
+
+        },
+
+        hasAnyValue: function(context, keys)
+        {
+            var keyWithAValue = _.find(keys, function(key)
+            {
+                return !_.isUndefined(context[key]) && !_.isNull(context[key]);
+            });
+
+            return keyWithAValue ? true : false;
         }
 
     };
