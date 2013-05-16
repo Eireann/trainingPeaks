@@ -19,15 +19,22 @@
         	</form>
 		</div>
         
+
+		<fieldset>
+            <legend>{{$ "SelectDateRange"}}&nbsp;&nbsp;</legend>
+            
+            <div class="textDiv">
+                <form class="toAndFromDateRange">
+					<div class="DateRangeContain cf">
+	            		<div class="dateSelector"><label><span>{{$ "From"}}</span><input type="text" id="fromDate" class="datepicker"/></label></div>
+	            		<div class="dateSelector to"><label><span>{{$ "To"}}</span><input type="text" id="toDate" class="datepicker" /></label></div>
+	        		</div>
+				</form>
+            </div>
+            
+        </fieldset>
 		
-		<div class="dialogHeader"><h4>{{$ "SelectDateRange"}}</h4></div>
-			<form class="toAndFromDateRange">
-				<div class="DateRangeContain cf">
-            		<div class="dateSelector"><label><span>{{$ "From"}}</span><input type="text" id="fromDate" class="datepicker"/></label></div>
-            		<div class="dateSelector to"><label><span>{{$ "To"}}</span><input type="text" id="toDate" class="datepicker" /></label></div>
-        		</div>
-			</form>
-		
+	
 	
 
         <div id="howToShift">
@@ -38,24 +45,39 @@
 	            <label><input type="radio" value="MoveBySpecifiedNumberOfWeeks" name="shiftBy"/>{{$ "MoveBySpecifiedNumberOfWeeks"}}</label>
 
 				<div id="MoveContain">
+					
+					
+					
+					
 	            	<div id="MoveToNewStartDate" class="selectNewStartDateInput">
-		                <div class="MoveToNewStartDateLabel">
-							<label for="moveToStartDate"><h4>{{$ "SelectNewStartDate"}}</h4></label>
-						</div>
-		                <div class="MoveToNewStartDateInput">
-							<input type="text" id="moveToStartDate" class="datepicker"/>
-						</div>
+						<fieldset>
+                            <legend>{{$ "SelectNewStartDate"}}&nbsp;&nbsp;</legend>
+                            <div class="textDiv">
+                                <div class="MoveToNewStartDateInput">
+									<input type="text" id="moveToStartDate" class="datepicker"/>
+								</div>
+                            </div>
+                        </fieldset>
 		            </div>
 
 		            <div id="MoveBySpecifiedNumberOfDays">
-		                <div class="MoveToNewStartDateLabel"><label for="moveByNumberOfDays"><h4>{{$ "SelectNumberOfDays"}}</h4></label></div>
-		                <div class="MoveToNewStartDateInput"><input type="number" id="moveByNumberOfDays" class="numberpicker"/></div>
+						<fieldset>
+                            <legend>{{$ "SelectNumberOfDays"}}&nbsp;&nbsp;</legend>
+                            <div class="textDiv">
+                               <div class="MoveToNewStartDateInput"><input type="number" id="moveByNumberOfDays" class="numberpicker"/></div>
+                            </div>
+                        </fieldset>
 		            </div>
 
 		            <div id="MoveBySpecifiedNumberOfWeeks">
-		                <div class="MoveToNewStartDateLabel"><label for="moveByNumberOfWeeks"><h4>{{$ "SelectNumberOfWeeks"}}</h4></label></div>
-		                <div class="MoveToNewStartDateInput"><input type="number" id="moveByNumberOfWeeks" class="numberpicker"/></div>
+						<fieldset>
+                            <legend>{{$ "SelectNumberOfWeeks"}}&nbsp;&nbsp;</legend>
+                            <div class="textDiv">
+                               <div class="MoveToNewStartDateInput"><input type="number" id="moveByNumberOfWeeks" class="numberpicker"/></div>
+                            </div>
+                        </fieldset>
 		            </div>
+		
 	        	</div>
 			</form>
 		</div>
