@@ -1,24 +1,13 @@
 ﻿{{# comment }}
 
-Work?
-NP normalizedPowerActual
-VI vi
-Pw:Hr? calculate
-Pa:Hr (only if run)? calculate
-EF efficiencyFactor
-El. Gain elevationGain
-El. Loss elevationLoss
-Grade grade
-VAM vam
-W/Kg wattsPerKg
-Min Avg Max
-    Power averagePower
-    Heart Rate averageHeartRate
-    Cadence averageCadence
-    Speed average/minimum/maximumSpeed
-    Pace averageSpeed - convert
-    Elevation elevationMaximum, Average, Minimum
-    Temperature tempAvg TempMax TempMin
+TODO:
+css
+work (before NP)
+pwhr (after vi)
+pahr
+
+vi units?
+vam units?
 
 {{/comment}}
 
@@ -55,3 +44,80 @@ Min Avg Max
     <span class="units"></span>
 </div>
 {{/if}}
+
+{{#if normalizedPowerActual }}
+<div class="statsRow" id="normalizedPower">
+    <label>{{$ "NP" }}</label>
+    <span class="value">{{ conversion "formatInteger" normalizedPowerActual }}</span>
+    <span class="units">{{ getUnitsLabel "power" }}</span>
+</div>
+{{/if}}
+
+{{#if vi }}
+<div class="statsRow" id="vi">
+    <label>{{$ "VI" }}</label>
+    <span class="value">{{ conversion "formatInteger" vi }}</span>
+    <span class="units"></span>
+</div>
+{{/if}}
+
+{{#if efficiencyFactor }}
+<div class="statsRow" id="efficiencyFactor">
+    <label>{{$ "EF" }}</label>
+    <span class="value">{{ conversion "formatInteger" efficiencyFactor }}</span>
+    <span class="units"></span>
+</div>
+{{/if}}
+
+{{#if elevationGain }}
+<div class="statsRow" id="elevationGain">
+    <label>{{$ "EGain" }}</label>
+    <span class="value">{{ conversion "formatElevation" elevationGain }}</span>
+    <span class="units">{{ getUnitsLabel "elevation" }}</span>
+</div>
+{{/if}}
+
+{{#if elevationLoss }}
+<div class="statsRow" id="elevationLoss">
+    <label>{{$ "ELoss" }}</label>
+    <span class="value">{{ conversion "formatElevation" elevationLoss }}</span>
+    <span class="units">{{ getUnitsLabel "elevation" }}</span>
+</div>
+{{/if}}
+
+{{#if grade }}
+<div class="statsRow" id="grade">
+    <label>{{$ "Grade" }}</label>
+    <span class="value">{{ conversion "formatInteger" grade }}</span>
+    <span class="units">%</span>
+</div>
+{{/if}}
+
+{{#if vam }}
+<div class="statsRow" id="vam">
+    <label>{{$ "VAM" }}</label>
+    <span class="value">{{ conversion "formatInteger" vam }}</span>
+    <span class="units"></span>
+</div>
+{{/if}}
+
+{{#if wattsPerKg }}
+<div class="statsRow" id="wattsPerKg">
+    <label>{{$ "WKg" }}</label>
+    <span class="value">{{ conversion "formatInteger" wattsPerKg }}</span>
+    <span class="units"></span>
+</div>
+{{/if}}
+
+
+{{#comment }}
+Min Avg Max
+    Power averagePower
+    Heart Rate averageHeartRate
+    Cadence averageCadence
+    Speed average/minimum/maximumSpeed
+    Pace averageSpeed - convert
+    Elevation elevationMaximum, Average, Minimum
+    Temperature tempAvg TempMax TempMin
+
+{{/comment }}
