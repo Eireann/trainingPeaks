@@ -97,6 +97,12 @@
 		    background:-moz-linear-gradient( center top, #dfdfdf 20%, #AAC8E5 100% );
             margin-left: 10px;
             float: left;
+
+            &:active
+            {
+                background: url(../../assets/images/calendarImages/uploadFileButton_active.png) repeat-x 0 0;
+		        background-size: 100% 100%;
+            }
         }
 
         button[name="chooseMetricBtn"]
