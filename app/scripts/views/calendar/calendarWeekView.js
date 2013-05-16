@@ -58,12 +58,15 @@ function(moment, setImmediate, TP, CalendarDayView, WeekSummaryView, CalendarWee
 
         updateDayCellHeights: function()
         {
+            var absoluteMinHeight = 150;
+            var padding = 30;
+
             // start by resetting to min-height 150 in case cell height needs to shrink because we removed content
-            this.$(".day").css("min-height", 150);
+            this.$(".day").css("min-height", absoluteMinHeight);
 
             // then check if actual height of week div is taller, and stretch days to fit
-            var myHeight = this.$el.height();
-            if (myHeight > 150)
+            var myHeight = this.$el.height() + padding;
+            if (myHeight > absoluteMinHeight)
             {
                // use min-height instead of height, or else some days get scrollbars?
                 this.$(".day").css("min-height", myHeight);
