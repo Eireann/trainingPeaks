@@ -8,6 +8,7 @@
     padding: 12px 0px 0px 12px;
     @include box-shadow(2px 0px 7px 0px $TPGrey3);
     position: relative;
+    z-index: 2; // otherwise maps/charts overlay it and kill the drop shadow
 
     div
     {

@@ -32,6 +32,7 @@ function(
             var workoutData = this.model.toJSON();
             var detailData = this.model.get("detailData").toJSON();
             var lapData = detailData.totalStats;
+            lapData.name = "Entire Workout";
             _.extend(workoutData, lapData);
             return workoutData;
         },
