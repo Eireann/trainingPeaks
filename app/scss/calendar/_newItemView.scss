@@ -77,16 +77,18 @@
             }
         }
 
-       	// @include headerButtons(0px, 50px, $fontSizeMedium);
+       	@include headerButtons(0px, 50px, $fontSizeMedium);
 
         button
         {
-            font-weight:normal;
-            margin-right: 0px;
             color: $TPGrey3;
             width: 100%;
             min-width: 110px;
-			padding:4px 0;
+
+            &:active
+            {
+                color: #ffffff;
+            }
         }
 
         button[name="uploadDeviceFile"]
@@ -97,6 +99,13 @@
 		    background:-moz-linear-gradient( center top, #dfdfdf 20%, #AAC8E5 100% );
             margin-left: 10px;
             float: left;
+
+            &:active
+            {
+                background: url(../../assets/images/calendarImages/uploadFileButton_active.png) repeat-x 0 0;
+		        background-size: 100% 100%;
+                color: #ffffff;
+            }
         }
 
         button[name="chooseMetricBtn"]
