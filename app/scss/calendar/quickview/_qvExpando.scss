@@ -163,6 +163,29 @@
         height: 275px;
         overflow-y: scroll;
         @include nice-scrollbar;
+
+        .rangeTitle
+        {
+
+        }
+
+        .statsRow
+        {
+            label
+            {
+                display: inline;
+            }
+
+            .value
+            {
+
+            }
+
+            .units
+            {
+
+            }
+        }
     }
 
     #expandoLapsRegion

@@ -1,1 +1,57 @@
-﻿
+﻿{{# comment }}
+
+Work?
+NP normalizedPowerActual
+VI vi
+Pw:Hr? calculate
+Pa:Hr (only if run)? calculate
+EF efficiencyFactor
+El. Gain elevationGain
+El. Loss elevationLoss
+Grade grade
+VAM vam
+W/Kg wattsPerKg
+Min Avg Max
+    Power averagePower
+    Heart Rate averageHeartRate
+    Cadence averageCadence
+    Speed average/minimum/maximumSpeed
+    Pace averageSpeed - convert
+    Elevation elevationMaximum, Average, Minimum
+    Temperature tempAvg TempMax TempMin
+
+{{/comment}}
+
+<div class="rangeTitle">{{ title }}</div>
+
+{{#if totalTime }}
+<div class="statsRow" id="duration">
+    <label>{{$ "Duration" }}</label>
+    <span class="value">{{ formatTime movingTime }}</span>
+    <span class="units">{{ formatTime totalTime }}</span>
+</div>
+{{/if}}
+
+{{#if distance }}
+<div class="statsRow" id="distance">
+    <label>{{$ "Distance" }}</label>
+    <span class="value">{{ convertToViewUnits distance "distance" }}</span>
+    <span class="units">{{ getUnitsLabel "distance" }}</span>
+</div>
+{{/if}}
+
+{{#if tssActual }}
+<div class="statsRow" id="tss">
+    <label>{{ getUnitsLabel "tss" workoutTypeValueId this }}</label>
+    <span class="value">{{ conversion "formatTSS" tssActual }}</span>
+    <span class="units"></span>
+</div>
+{{/if}}
+
+{{#if if }}
+<div class="statsRow" id="if">
+    <label>{{$ "IF" }}</label>
+    <span class="value">{{ conversion "formatIF" if }}</span>
+    <span class="units"></span>
+</div>
+{{/if}}
