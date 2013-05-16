@@ -109,7 +109,13 @@ function(unitsConstants, workoutLayoutFormatter)
         {
             English: "hms",
             Metric: "hms"
+        },
+        vam:
+        {
+            English: "meters/hr",
+            Metric: "meters/hr"
         }
+
     };
 
     var getUnitsLabel = function(fieldName, sportType, context)

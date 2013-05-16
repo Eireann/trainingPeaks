@@ -160,9 +160,99 @@
 
     #expandoStatsRegion
     {
+
         height: 275px;
         overflow-y: scroll;
+        overflow-x: auto;
         @include nice-scrollbar;
+        font-size: $fontSizeMedium;
+        color: $TPGrey4;
+        border-bottom: 1px solid $TPGrey7;
+
+        .rangeTitle
+        {
+            text-align: center;
+            padding: 10px;
+            margin-bottom: 8px;
+            font-size: $fontSizeXLarge;
+            @include box-shadow(0px 9px 8px -10px $TPGrey4);
+        }
+
+        .contents
+        {
+
+            padding: 10px;
+            @include labels($navigationFontFamilyLight, $fontSizeXSmall, $TPGrey4, normal);
+
+
+            .statsRow
+            {
+
+                label
+                {
+                    display: inline-block;
+                    width: calc(50% - 5px);
+                    text-align: right;
+                    margin-right: 10px;
+                }
+
+                .value
+                {
+                    line-height: 1.5;
+                    font-size: $fontSizeXLarge; 
+                }
+
+                .units
+                {
+                    font-size: $fontSizeMedLarge;
+                }
+            }
+
+            .minMaxAvg
+            {
+                display: table;
+                margin-top: 20px;
+
+                .minMaxAvgRow
+                {
+                    display: table-row;
+
+                    label
+                    {
+                        display: table-cell;
+                        padding-right: 10px;
+                        white-space: nowrap;
+                        text-align: right;
+                        width: auto;
+                    }
+
+                    span
+                    {
+                        display: table-cell;
+                        text-align: center;
+                        padding: 0px 8px;
+
+                        &.units
+                        {
+                            text-align: left;
+                            padding: 0px 0px 2px 0px;
+                        }
+
+                    }
+
+                    &.minMaxAvgHeaders
+                    {
+                        label
+                        {
+                            text-transform: uppercase;
+                            text-align: center;
+                            padding: 0px;
+                        }
+                    }
+                }
+
+            }
+        }
     }
 
     #expandoLapsRegion
