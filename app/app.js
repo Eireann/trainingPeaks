@@ -150,7 +150,8 @@ function(
                     var arrow = $("<div>").addClass("arrow");
                     self.append(arrow);
                     self.html(self.html().replace(/\n/g, "<br />"));
-                    self.addClass(position.top >= (self.outerHeight() + 30) ? "above" : "below");
+                    //self.addClass(position.top >= (self.outerHeight() + 30) ? "above" : "below");
+                    self.addClass("above");
                 }
 
                 // position it
@@ -169,11 +170,11 @@ function(
                 else if (position.left > $(window).outerWidth() / 2)
                 {
                     position.left = position.left + targetElement.outerWidth() - self.outerWidth();
-                    $(".arrow").css('margin-left', self.outerWidth() - (targetElement.outerWidth() / 2) - 10);
+                    self.find(".arrow").css('margin-left', self.outerWidth() - (targetElement.outerWidth() / 2) - 10);
                 }
                 else
                 {
-                    $(".arrow").css('margin-left', (targetElement.outerWidth() / 2) - 10);
+                    self.find(".arrow").css('margin-left', (targetElement.outerWidth() / 2) - 10);
                 }
 
                 //position.left = position.left - (self.outerWidth() / 2);
