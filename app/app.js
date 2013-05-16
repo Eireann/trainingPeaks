@@ -169,11 +169,11 @@ function(
                 else if (position.left > $(window).outerWidth() / 2)
                 {
                     position.left = position.left + targetElement.outerWidth() - self.outerWidth();
-                    $(".arrow").css('margin-left', self.outerWidth() - (targetElement.outerWidth() / 2) - 10);
+                    self.find(".arrow").css('margin-left', self.outerWidth() - (targetElement.outerWidth() / 2) - 10);
                 }
                 else
                 {
-                    $(".arrow").css('margin-left', (targetElement.outerWidth() / 2) - 10);
+                    self.find(".arrow").css('margin-left', (targetElement.outerWidth() / 2) - 10);
                 }
 
                 //position.left = position.left - (self.outerWidth() / 2);
