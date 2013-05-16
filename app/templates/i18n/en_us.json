@@ -270,5 +270,17 @@
     "UploadedAttachments": "Uploaded Attachments",
 
     "Message": "Message",
-    "saveWorkoutBeforeAttachment": "Please save the workout (by adding a minimum of a Title) before attempting to attach a file."
+    "saveWorkoutBeforeAttachment": "Please save the workout (by adding a minimum of a Title) before attempting to attach a file.",
+
+    "NP": "NP",
+    "VI": "VI",
+    "EF": "EF",
+    "EGain": "El. Gain",
+    "ELoss": "El. Loss",
+    "Grade": "Grade",
+    "VAM": "VAM",
+    "WKg": "W/Kg",
+    "Work": "Work",
+    "pwhr": "Pw:Hr",
+    "pahr": "Pa:Hr"
 }

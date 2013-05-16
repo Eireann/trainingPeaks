@@ -103,6 +103,16 @@
             return convertToModelUnits(parseInt(value, 10), "elevation");
         },
 
+        formatPaHr: function(value, options)
+        {
+            return ((value === null || value === 0) ? "" : Number(value).toFixed(2));
+        },
+
+        formatPwHr: function(value, options)
+        {
+            return ((value === null || value === 0) ? "" : Number(value).toFixed(2));
+        },
+
         formatNumber: function(value, options)
         {
             return ((value === null || value === 0) ? "" : +value);
