@@ -156,6 +156,7 @@
 				margin:0;
 				width:44px;
 				float:left;
+				box-shadow:none;
 				@include linearGradient(top, #ffffff, #dfddde);
 				background-color:#fff;
 				color:$TPGrey3;
@@ -171,7 +172,15 @@
 				}
 				&.graphSeriesButton {
 					border-right:none;
-					}		
+					}	
+				&.graphHeartRateButton {
+					@include linearGradient(top, #f8b3b6, #e61101);
+					color:#ffffff;
+					}
+				&.graphSpeedButton {
+					@include linearGradient(top, #b5d8ff, #0f7ffd);
+					color:#ffffff;
+				}			
 			}
 			button:last-of-type {
 				border-right:1px solid #808080;
