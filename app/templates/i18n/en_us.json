@@ -279,5 +279,8 @@
     "ELoss": "El. Loss",
     "Grade": "Grade",
     "VAM": "VAM",
-    "WKg": "W/Kg"
+    "WKg": "W/Kg",
+    "Work": "Work",
+    "pwhr": "Pw:Hr",
+    "pahr": "Pa:Hr"
 }

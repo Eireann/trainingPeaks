@@ -162,18 +162,23 @@
     {
         height: 275px;
         overflow-y: scroll;
+        overflow-x: auto;
         @include nice-scrollbar;
+        padding: 10px;
 
         .rangeTitle
         {
-
+            text-align: center;
+            margin: 10px;
         }
 
         .statsRow
         {
             label
             {
-                display: inline;
+                display: inline-block;
+                width: 50%;
+                text-align: right;
             }
 
             .value
@@ -185,6 +190,29 @@
             {
 
             }
+        }
+
+        .minMaxAvg
+        {
+            display: table;
+
+            .minMaxAvgRow
+            {
+                display: table-row;
+
+                label
+                {
+                    display: table-cell;
+                    width: 25%;
+                }
+
+                span
+                {
+                    display: table-cell;
+                    width: 25%;
+                }
+            }
+
         }
     }
 
