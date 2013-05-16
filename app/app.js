@@ -150,7 +150,8 @@ function(
                     var arrow = $("<div>").addClass("arrow");
                     self.append(arrow);
                     self.html(self.html().replace(/\n/g, "<br />"));
-                    self.addClass(position.top >= (self.outerHeight() + 30) ? "above" : "below");
+                    //self.addClass(position.top >= (self.outerHeight() + 30) ? "above" : "below");
+                    self.addClass("above");
                 }
 
                 // position it
