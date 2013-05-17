@@ -383,7 +383,6 @@ function(
         // need to scroll the calendar down - back to a previous week - because we're dragging something off top of calendar
         onRequestScrollDown: function()
         {
-
             if (this.autoScrollDownInterval)
                 return;
 
