@@ -39,8 +39,12 @@ function(
 
         calculateMovingTime: function(lapData)
         {
+            // NOTE: stoppedTime is in milliseconds, totalTime is in decimal hours
             if (lapData.stoppedTime)
-                lapData.movingTime = lapData.totalTime - lapData.stoppedTime;
+            {
+                var stoppedTime = (lapData.stoppedTime / 1000) / 3600;
+                lapData.movingTime = lapData.totalTime - stoppedTime;
+            }
         },
 
         findAvailableMinMaxAvgFields: function(lapData)

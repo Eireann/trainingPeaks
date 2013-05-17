@@ -41,6 +41,14 @@
     </div>
     {{/if}}
 
+    {{#if normalizedSpeedActual }}
+    <div class="statsRow" id="ngp">
+        <label>{{$ "NGP" }}</label>
+        <span class="value">{{ formatPace normalizedSpeedActual }}</span>
+        <span class="units">{{ getUnitsLabel "pace" }}</span>
+    </div>
+    {{/if}}
+
     {{#if if }}
     <div class="statsRow" id="if">
         <label>{{$ "IF" }}</label>
@@ -108,7 +116,7 @@
     {{#if grade }}
     <div class="statsRow" id="grade">
         <label>{{$ "Grade" }}</label>
-        <span class="value">{{ conversion "formatInteger" grade }}</span>
+        <span class="value">{{ conversion "formatPercent" grade }}</span>
         <span class="units">%</span>
     </div>
     {{/if}}
