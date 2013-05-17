@@ -156,6 +156,12 @@ function(TP, theMarsApp)
                 expect(TP.utils.conversion.convertToViewUnits("", "distance")).toBe("");
                 expect(TP.utils.conversion.convertToViewUnits("some string", "distance")).toBe("");
             });
+
+            it("Should convert temperatures", function()
+            {
+                expect(TP.utils.conversion.convertToViewUnits(0, "temperature")).toBe('32');
+                expect(TP.utils.conversion.convertToViewUnits(100, "temperature")).toBe('212');
+            });
         });
         
         describe("convertToModelUnits template helper", function ()

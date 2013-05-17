@@ -2,12 +2,14 @@ define(
 [
     "underscore",
     "utilities/workout/workoutTypes",
-    "utilities/conversion/modelToViewConversionFactors"
+    "utilities/conversion/modelToViewConversionFactors",
+    "utilities/units/constants"
 ],
 function(
     _,
     workoutTypes,
-    modelToViewConversionFactors)
+    modelToViewConversionFactors,
+    unitsConstants)
 {
     var convertToPaceFromSpeed = function(speed, unitSystem)
     {
@@ -95,7 +97,7 @@ function(
     var convertTemperature = function(value)
     {
         var currentUnits = theMarsApp.user.get("units");
-        return roundViewUnits(currentUnits === "0" ? 9 / 5 * value + 32 : value, 0);
+        return Math.round(currentUnits === unitsConstants.English ? 9 / 5 * value + 32 : value).toFixed(0);
     };
 
     var convertDistanceToViewUnits = function(value, sportType, precision)
@@ -115,7 +117,7 @@ function(
 
     var convertSpeedToViewUnits = function(value)
     {
-        return roundViewUnits(value * modelToViewConversionFactors("speed", theMarsApp.user.get("units")), 1);
+        return roundViewUnits(value * modelToViewConversionFactors("speed", theMarsApp.user.get("units")));
     };
 
     return function(value, fieldType, defaultValueIfEmpty, sportType)
@@ -131,7 +133,7 @@ function(
             precision = parameters.precision;
         }
 
-        if (!isNumeric(value) || Number(value) === 0)
+        if (!isNumeric(value) || (Number(value) === 0 && fieldType !== "temperature"))
         {
             if (!_.isUndefined(defaultValueIfEmpty))
             {
@@ -165,6 +167,8 @@ function(
                 return value;
             case "cadence":
                 return value;
+            case "number":
+                return roundViewUnits(value);
             default:
                 throw +fieldType + ": Unknown field type for unit conversion";
         }

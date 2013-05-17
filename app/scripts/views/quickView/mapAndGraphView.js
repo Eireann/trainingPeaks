@@ -123,12 +123,53 @@ function(
 
         createAndShowGraph: function()
         {
+            var priority =
+            [
+                "Power",
+                "Speed",
+                "HeartRate",
+                "Cadence",
+                "RightPower",
+                "Temperature",
+                "Torque"
+            ];
+
+            var numSeries = 0;
+
+            // Get all series & axes in the data set
             var series = this.dataParser.getSeries();
             var yaxes = this.dataParser.getYAxes(series);
+
+            // Hide all series & axes by default in the data set
+            _.each(series, function(s) { s.lines.show = false; });
+            _.each(yaxes, function(axis)
+            {
+                axis.show = false;
+                axis.tickLength = 0;
+            });
+
+            // Pick the top 2 series by priority and show those
+            _.each(priority, function(channel)
+            {
+                var s = _.where(series, { label: channel });
+                if (s && s[0] && numSeries++ < 2)
+                {
+                    s[0].lines.show = true;
+                    yaxes[s[0].yaxis - 1].show = true;
+                    yaxes[s[0].yaxis - 1].position = numSeries === 1 ? "left" : "right";
+                }
+            });
+
+            // Show Elevation if we have it
+            var elevationSeries = _.where(series, { label: "Elevation" });
+            if (elevationSeries && elevationSeries[0])
+                elevationSeries[0].lines.show = true;
 
             var flotOptions = getDefaultFlotOptions(series);
 
             flotOptions.yaxes = yaxes;
+            flotOptions.grid.mouseActiveRadius = 0;
+            flotOptions.xaxes[0].tickLength = 0;
 
             $.plot(this.$("#quickViewGraph"), series, flotOptions);
         }

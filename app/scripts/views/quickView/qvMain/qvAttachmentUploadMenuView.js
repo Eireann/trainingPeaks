@@ -182,5 +182,6 @@ function(_,
         {
             this.$(".details").removeClass("waiting");
         }
+
     });
 });

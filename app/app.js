@@ -142,6 +142,7 @@ function(
 
                 var self = $(this);
                 var targetElement = $(feedback.target.element);
+                var cssLeftProperty = "left";
                 position = targetElement.offset();
 
                 // add an arrow
@@ -150,7 +151,16 @@ function(
                     var arrow = $("<div>").addClass("arrow");
                     self.append(arrow);
                     self.html(self.html().replace(/\n/g, "<br />"));
-                    self.addClass(position.top >= (self.outerHeight() + 30) ? "above" : "below");
+                    if (position.top <= ($(window).outerHeight() - 50))
+                    {
+                        self.addClass("below");
+
+                    }
+                    else
+                    {
+                        self.addClass("above");
+                        cssLeftProperty = "margin-left";
+                    }
                 }
 
                 // position it
@@ -162,19 +172,21 @@ function(
                 }
                 */
                 
-                if (targetElement.outerWidth() > self.outerWidth())
-                {
-                    position.left = position.left - (self.outerWidth() / 2) + (targetElement.outerWidth() / 2);
-                }
-                else if (position.left > $(window).outerWidth() / 2)
+                
+                if (position.left > $(window).outerWidth() - 100)
                 {
                     position.left = position.left + targetElement.outerWidth() - self.outerWidth();
-                    self.find(".arrow").css('margin-left', self.outerWidth() - (targetElement.outerWidth() / 2) - 10);
+                    self.find(".arrow").css(cssLeftProperty, self.outerWidth() - (targetElement.outerWidth() / 2) - 10);
+                }
+                else if (position.left < 100)
+                {
+                    self.find(".arrow").css(cssLeftProperty, (targetElement.outerWidth() / 2) - 10);
                 }
                 else
                 {
-                    self.find(".arrow").css('margin-left', (targetElement.outerWidth() / 2) - 10);
+                    position.left = position.left + (targetElement.outerWidth() / 2) - (self.outerWidth() / 2);
                 }
+
 
                 //position.left = position.left - (self.outerWidth() / 2);
                 if (self.hasClass("above"))

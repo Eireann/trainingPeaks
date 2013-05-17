@@ -200,6 +200,11 @@
         toPercent: function(numerator, denominator)
         {
             return denominator === 0 ? 0 : Math.round((numerator / denominator) * 100);
+        },
+
+        formatPercent: function(value, options)
+        {
+            return ((value === null || value === 0) ? (options && options.hasOwnProperty("defaultValue") ? options.defaultValue : "") : parseFloat(value).toFixed(1));
         }
 
     };

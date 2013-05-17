@@ -144,6 +144,49 @@
     {
         height: 400px;
         width: 100%;
+
+		.graphToolbar {
+			padding:0;
+			margin:10px 55px 0 0;
+			
+			button {
+				font-size:$fontSizeSmall;
+				font-weight:normal;
+				padding:3px 0 4px 0;
+				margin:0;
+				width:44px;
+				float:left;
+				box-shadow:none;
+				@include linearGradient(top, #ffffff, #dfddde);
+				background-color:#fff;
+				color:$TPGrey3;
+				border-color:#808080;
+				
+				&.graphZoomButton, 
+				&.graphDistanceButton {
+					margin-right:25px;
+					border-left:none;
+				}
+				&.graphResetButton {
+					border-right:none;
+				}
+				&.graphSeriesButton {
+					border-right:none;
+					}	
+				&.graphHeartRateButton {
+					@include linearGradient(top, #f8b3b6, #e61101);
+					color:#ffffff;
+					}
+				&.graphSpeedButton {
+					@include linearGradient(top, #b5d8ff, #0f7ffd);
+					color:#ffffff;
+				}			
+			}
+			button:last-of-type {
+				border-right:1px solid #808080;
+			}
+	
+		}
     }
 
     #expandoChartsRegion

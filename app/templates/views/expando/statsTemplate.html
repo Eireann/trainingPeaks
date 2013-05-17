@@ -41,6 +41,14 @@
     </div>
     {{/if}}
 
+    {{#if normalizedSpeedActual }}
+    <div class="statsRow" id="ngp">
+        <label>{{$ "NGP" }}</label>
+        <span class="value">{{ formatPace normalizedSpeedActual }}</span>
+        <span class="units">{{ getUnitsLabel "pace" }}</span>
+    </div>
+    {{/if}}
+
     {{#if if }}
     <div class="statsRow" id="if">
         <label>{{$ "IF" }}</label>
@@ -60,26 +68,30 @@
     {{#if vi }}
     <div class="statsRow" id="vi">
         <label>{{$ "VI" }}</label>
-        <span class="value">{{ conversion "formatInteger" vi }}</span>
+        <span class="value">{{ convertToViewUnits vi "number" }}</span>
         <span class="units"></span>
     </div>
     {{/if}}
 
-    {{#if powerPulseDecoupling }}
-    <div class="statsRow" id="powerPulseDecoupling">
-        <label>{{$ "pwhr" }}</label>
-        <span class="value">{{ conversion "formatPwHr" powerPulseDecoupling }}</span>
-        <span class="units"></span>
-    </div>
-    {{/if}}
+    {{#ifWorkoutType workoutTypeValueId "Bike" }}
+        {{#if powerPulseDecoupling }}
+        <div class="statsRow" id="powerPulseDecoupling">
+            <label>{{$ "pwhr" }}</label>
+            <span class="value">{{ conversion "formatPwHr" powerPulseDecoupling }}</span>
+            <span class="units"></span>
+        </div>
+        {{/if}}
+    {{/ifWorkoutType }}
 
-    {{#if speedPulseDecoupling }}
-    <div class="statsRow" id="speedPulseDecoupling">
-        <label>{{$ "pahr" }}</label>
-        <span class="value">{{ conversion "formatPaHr" speedPulseDecoupling }}</span>
-        <span class="units"></span>
-    </div>
-    {{/if}}
+    {{#ifWorkoutType workoutTypeValueId "Run" }}
+        {{#if speedPulseDecoupling }}
+        <div class="statsRow" id="speedPulseDecoupling">
+            <label>{{$ "pahr" }}</label>
+            <span class="value">{{ conversion "formatPaHr" speedPulseDecoupling }}</span>
+            <span class="units"></span>
+        </div>
+        {{/if}}
+    {{/ifWorkoutType}}
 
     {{#if efficiencyFactor }}
     <div class="statsRow" id="efficiencyFactor">
@@ -108,7 +120,7 @@
     {{#if grade }}
     <div class="statsRow" id="grade">
         <label>{{$ "Grade" }}</label>
-        <span class="value">{{ conversion "formatInteger" grade }}</span>
+        <span class="value">{{ conversion "formatPercent" grade }}</span>
         <span class="units">%</span>
     </div>
     {{/if}}
@@ -117,14 +129,14 @@
     <div class="statsRow" id="vam">
         <label>{{$ "VAM" }}</label>
         <span class="value">{{ conversion "formatInteger" vam }}</span>
-        <span class="units">{{ getUnitsLabel "elevation" }}</span>
+        <span class="units">{{ getUnitsLabel "vam" }}</span>
     </div>
     {{/if}}
 
     {{#if wattsPerKg }}
     <div class="statsRow" id="wattsPerKg">
         <label>{{$ "WKg" }}</label>
-        <span class="value">{{ conversion "formatInteger" wattsPerKg }}</span>
+        <span class="value">{{ convertToViewUnits wattsPerKg "number" }}</span>
         <span class="units"></span>
     </div>
     {{/if}}

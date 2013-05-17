@@ -133,7 +133,7 @@ function(Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmediate,
                 return this;
 
             // already rendered ...
-            if (this.$overlay)
+            if (this.modalWasRendered())
                 return;
 
             // get existing modal so we can render on top
@@ -171,7 +171,7 @@ function(Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmediate,
             //this.left(($window.width() - this.$el.width()) / 2).top(($window.height() - this.$el.height()) / 2);
 
             // dynamic centering
-            this.centerWindow();
+            this.rePositionView();
             this.watchForWindowResize();
 
             this.enableEscapeKey();
@@ -189,7 +189,12 @@ function(Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmediate,
             return this;
         },
 
-        centerWindow: function()
+        modalWasRendered: function()
+        {
+            return this.$overlay ? true : false;
+        },
+
+        centerViewInWindow: function()
         {
             var windowWidth = $(window).width();
             var windowHeight = $(window).height();
@@ -213,7 +218,42 @@ function(Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmediate,
 
         onWindowResize: function()
         {
-            this.centerWindow();
+            this.rePositionView();
+        },
+
+        setPosition: function(positionAttributes)
+        {
+            this.positionAttributes = positionAttributes;
+            if (this.modalWasRendered())
+                this.rePositionView();
+            return this;
+        },
+
+        rePositionView: function()
+        {
+            if (!this.positionAttributes)
+            {
+                this.centerViewInWindow();
+                return;
+            }
+
+            var startOffset = this.positionAttributes.hasOwnProperty("fromElement") ? $(this.positionAttributes.fromElement).offset() : { top: 0, left: 0 };
+            
+            if (this.positionAttributes.hasOwnProperty("left"))
+                this.left(startOffset.left + this.positionAttributes.left);
+
+            if (this.positionAttributes.hasOwnProperty("right"))
+                this.right(startOffset.left + this.positionAttributes.right);
+ 
+            if (this.positionAttributes.hasOwnProperty("center"))
+                this.center(startOffset.left + this.positionAttributes.center);
+ 
+            if (this.positionAttributes.hasOwnProperty("top"))
+                this.top(startOffset.top + this.positionAttributes.top);
+
+            if (this.positionAttributes.hasOwnProperty("bottom"))
+                this.bottom(startOffset.top + this.positionAttributes.bottom);
+
         },
 
         enableEscapeKey: function()

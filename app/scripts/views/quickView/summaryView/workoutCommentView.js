@@ -24,17 +24,20 @@ function (TP, UserConfirmationView, deleteConfirmationTemplate, WorkoutCommentsT
             "mouseenter": "onMouseOver",
             "mouseleave": "onMouseOut",
             "click .deleteButton": "onDeleteClicked",
-            "click .commentBody": "onCommentBodyClicked",
+            "mousedown .commentBody": "onCommentBodyClicked",
             "blur .commentBody": "onCommentBodyBlur",
             "keyup textarea": "onCommentBodyChanged"
         },
         
-        template:
+        initialize: function()
         {
-            type: "handlebars",
-            template: WorkoutCommentsTemplate
+            this.template =
+            {
+                type: "handlebars",
+                template: WorkoutCommentsTemplate
+            };
         },
-
+        
         onMouseOver: function ()
         {
             this.$el.addClass("hover");

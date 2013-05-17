@@ -113,10 +113,12 @@ function(
             {
                 newModel = existingModel;
                 newModel.set(workoutModelJson);
+                newModel.parse(workoutModelJson);
             }
             else
             {
                 newModel.set(workoutModelJson);
+                newModel.parse(workoutModelJson);
                 this.model.trigger("workout:added", newModel);
             }
 

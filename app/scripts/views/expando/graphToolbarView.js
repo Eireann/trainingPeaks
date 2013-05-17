@@ -23,13 +23,18 @@ function(TP, graphToolbarTemplate)
         onRender: function()
         {
             var self = this;
+			var shownButtons = [];
             _.each(this.dataParser.getChannelMask(), function(channel)
             {
                 if (channel === "Distance" || channel === "Latitude" || channel === "Longitude")
                     return;
 
-                self.$(".graph" + channel + "Button").show();
+                var button = self.$(".graph" + channel + "Button");
+				button.show();
+				shownButtons.push(button[0]);
             });
+			
+			this.$(".graphSeriesButton").not(shownButtons).remove();
         }
     });
 });

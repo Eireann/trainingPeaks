@@ -28,7 +28,7 @@ function (TP, DataParser, getDefaultFlotOptions, flotCustomToolTip, flotZoom, Gr
             this.detailDataPromise = options.detailDataPromise;
 
             //TODO refactor, this should be set by CSS classes (CSS calc?)
-            this.$el.width(this.$el.parent().width());
+            //this.$el.width(this.$el.parent().width());
             this.$el.height(400);
         },
 
