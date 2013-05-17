@@ -115,7 +115,7 @@ function(
 
     var convertSpeedToViewUnits = function(value)
     {
-        return roundViewUnits(value * modelToViewConversionFactors("speed", theMarsApp.user.get("units")), 1);
+        return roundViewUnits(value * modelToViewConversionFactors("speed", theMarsApp.user.get("units")));
     };
 
     return function(value, fieldType, defaultValueIfEmpty, sportType)
@@ -165,6 +165,8 @@ function(
                 return value;
             case "cadence":
                 return value;
+            case "number":
+                return roundViewUnits(value);
             default:
                 throw +fieldType + ": Unknown field type for unit conversion";
         }
