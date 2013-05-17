@@ -202,7 +202,8 @@ function(_, TP)
 
             var $week = $(selector).closest(".week");
 
-            if ($week.position().top < 30 || ($week.position().top + $week.height() > this.ui.weeksContainer.height()))
+            var weekPosition = $week.position();
+            if (weekPosition && weekPosition.hasOwnProperty("top") && weekPosition.top < 30 || (weekPosition.top + $week.height() > this.ui.weeksContainer.height()))
             {
                 this.scrollToDate(targetDate, effectDuration);
             }

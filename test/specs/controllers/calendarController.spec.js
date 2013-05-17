@@ -270,7 +270,7 @@ function(TP, theMarsApp, moment, $, _, Backbone, CalendarController, WorkoutMode
                 };
                 var controller = new CalendarController();
                 controller.initializeCalendar();
-                spyOn(controller.views.calendar, "scrollToDate");
+                spyOn(controller.views.calendar, "scrollToDateIfNotFullyVisible");
                 var workout = jasmine.createSpyObj("Workout spy", ["save"]);
                 spyOn(controller.weeksCollection, "addWorkout");
                 spyOn(controller, "createNewWorkoutFromExerciseLibraryItem").andReturn(workout);
