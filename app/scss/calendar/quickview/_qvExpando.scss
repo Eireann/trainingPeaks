@@ -225,7 +225,7 @@
         {
 
             padding: 10px;
-            @include labels($navigationFontFamilyLight, $fontSizeXSmall, $TPGrey4, normal);
+            @include labels($navigationFontFamilyRegular, $fontSizeXSmall, $TPGrey4, $fontWeightBold);
 
 
             .statsRow
@@ -236,7 +236,7 @@
                     display: inline-block;
                     width: calc(50% - 5px);
                     text-align: right;
-                    margin-right: 10px;
+                    margin-right: 5px;
                 }
 
                 .value
