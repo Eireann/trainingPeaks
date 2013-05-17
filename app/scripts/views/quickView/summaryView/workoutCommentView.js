@@ -24,7 +24,7 @@ function (TP, UserConfirmationView, deleteConfirmationTemplate, WorkoutCommentsT
             "mouseenter": "onMouseOver",
             "mouseleave": "onMouseOut",
             "click .deleteButton": "onDeleteClicked",
-            "click .commentBody": "onCommentBodyClicked",
+            "mousedown .commentBody": "onCommentBodyClicked",
             "blur .commentBody": "onCommentBodyBlur",
             "keyup textarea": "onCommentBodyChanged"
         },
