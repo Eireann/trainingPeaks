@@ -26,6 +26,7 @@ body
 {
     @include nice-scrollbar;
     font-size: $baseFontSize;
+    font-family: 'Roboto', sans-serif;
 }
 
 a
