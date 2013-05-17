@@ -73,21 +73,25 @@
     </div>
     {{/if}}
 
-    {{#if powerPulseDecoupling }}
-    <div class="statsRow" id="powerPulseDecoupling">
-        <label>{{$ "pwhr" }}</label>
-        <span class="value">{{ conversion "formatPwHr" powerPulseDecoupling }}</span>
-        <span class="units"></span>
-    </div>
-    {{/if}}
+    {{#ifWorkoutType workoutTypeValueId "Bike" }}
+        {{#if powerPulseDecoupling }}
+        <div class="statsRow" id="powerPulseDecoupling">
+            <label>{{$ "pwhr" }}</label>
+            <span class="value">{{ conversion "formatPwHr" powerPulseDecoupling }}</span>
+            <span class="units"></span>
+        </div>
+        {{/if}}
+    {{/ifWorkoutType }}
 
-    {{#if speedPulseDecoupling }}
-    <div class="statsRow" id="speedPulseDecoupling">
-        <label>{{$ "pahr" }}</label>
-        <span class="value">{{ conversion "formatPaHr" speedPulseDecoupling }}</span>
-        <span class="units"></span>
-    </div>
-    {{/if}}
+    {{#ifWorkoutType workoutTypeValueId "Run" }}
+        {{#if speedPulseDecoupling }}
+        <div class="statsRow" id="speedPulseDecoupling">
+            <label>{{$ "pahr" }}</label>
+            <span class="value">{{ conversion "formatPaHr" speedPulseDecoupling }}</span>
+            <span class="units"></span>
+        </div>
+        {{/if}}
+    {{/ifWorkoutType}}
 
     {{#if efficiencyFactor }}
     <div class="statsRow" id="efficiencyFactor">
