@@ -32,7 +32,7 @@ function(TP, draggable, ExerciseLibraryItemViewTemplate, ExerciseLibraryItemView
                 throw "Cannot have a LibraryExerciseItemView without a model";
 
 
-            _.bindAll(this, "draggableHelper", "onDragStart", "onDragStop");
+            _.bindAll(this, "draggableHelper", "onDragStart", "onDragStop", "onDrag");
         },
 
         onRender: function()
@@ -47,6 +47,7 @@ function(TP, draggable, ExerciseLibraryItemViewTemplate, ExerciseLibraryItemView
             this.$el.data("ItemType", this.model.webAPIModelName);
             this.$el.data("DropEvent", "addExerciseFromLibrary");
             this.$el.draggable({ appendTo: theMarsApp.getBodyElement(), 'z-index': 100, helper: this.draggableHelper, start: this.onDragStart, stop: this.onDragStop });
+            this.$el.on("drag", this.onDrag);
         },
 
         draggableHelper: function()
@@ -65,6 +66,11 @@ function(TP, draggable, ExerciseLibraryItemViewTemplate, ExerciseLibraryItemView
         onDragStop: function()
         {
             this.$el.removeClass("dragging");
+        },
+
+        onDrag: function(e, ui)
+        {
+            this.trigger("dragItem", ui.position);
         }
 
     });

@@ -23,7 +23,7 @@ function(TP, ExerciseLibraryItemView)
             beforeEach(function()
             {
                 viewSpy = jasmine.createSpyObj("View spy", ["makeDraggable"]);
-                viewSpy.$el = jasmine.createSpyObj("$el spy", ["data", "draggable"]);
+                viewSpy.$el = jasmine.createSpyObj("$el spy", ["data", "draggable", "on"]);
                 viewSpy.model = new TP.Model({ exerciseLibraryId: 123 });
                 _.extend(viewSpy.model, {
                     id: 12345,

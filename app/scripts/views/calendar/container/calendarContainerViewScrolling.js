@@ -11,7 +11,7 @@ function(_, TP)
         scrollDownThresholdInPx: 150,
         scrollUpThresholdInPx: 100,
 
-        initializeScrolling: function ()
+        initializeScrolling: function()
         {
             _.bindAll(this, "checkCurrentScrollPosition", "afterScrollToElement");
 
@@ -29,6 +29,8 @@ function(_, TP)
             var debouncedScrollStop = _.debounce(this.onScrollStop, 300);
             this.ui.weeksContainer.scroll(debouncedScrollStop);
 
+            _.bindAll(this, "onDragItem");
+            this.debouncedOnDragItem = _.debounce(this.onDragItem, 200);
 
             this.checkCurrentScrollPosition();
         },
@@ -255,6 +257,27 @@ function(_, TP)
 
             if (currentDate)
                 this.calendarHeaderModel.set("date", dateAsMoment.format(TP.utils.datetime.shortDateFormat));
+        },
+
+        onDragItem: function(itemView, dragPosition)
+        {
+            var calendarTop = this.ui.weeksContainer.offset().top;
+            var dragItemTop = dragPosition.top;
+            var topThreshold = calendarTop + 30;
+            var bottomThreshold = calendarTop + this.ui.weeksContainer.height() - 50;
+            var stopThreshold = 50;
+
+            if (dragItemTop <= topThreshold)
+            {
+                this.trigger("requestScrollDown");
+            } else if (dragItemTop >= bottomThreshold)
+            {
+                this.trigger("requestScrollUp");
+            } else if(dragItemTop >= (topThreshold + stopThreshold) && dragItemTop <= (bottomThreshold - stopThreshold))
+            {
+                this.trigger("cancelAutoScroll");
+            }
+
         }
 
 

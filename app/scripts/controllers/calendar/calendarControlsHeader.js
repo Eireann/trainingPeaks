@@ -1,9 +1,10 @@
 ﻿define(
 [
+    "underscore",
      "TP",
      "views/calendar/calendarHeaderView"
 ],
-function (TP, calendarHeaderView)
+function (_, TP, calendarHeaderView)
 {
 
     var calendarControlsHeader =
@@ -26,18 +27,25 @@ function (TP, calendarHeaderView)
             this.views.header.on("request:nextweek", this.onRequestNextWeek, this);
             this.views.header.on("request:lastweek", this.onRequestLastWeek, this);
             this.views.header.on("request:refresh", this.onRequestRefresh, this);
+
         },
 
-        onRequestLastWeek: function (currentWeekModel)
+        onRequestLastWeek: function (currentWeekModel, animationSpeed)
         {
+            if (_.isUndefined(animationSpeed))
+                animationSpeed = 200;
+
             // header has end of week, our showDate wants start of week ...
-            this.showDate(moment(currentWeekModel.get("date")).subtract("days", 6).subtract("weeks", 1), 200);
+            this.showDate(moment(currentWeekModel.get("date")).subtract("days", 6).subtract("weeks", 1), animationSpeed);
         },
 
-        onRequestNextWeek: function (currentWeekModel)
+        onRequestNextWeek: function(currentWeekModel, animationSpeed)
         {
+            if (_.isUndefined(animationSpeed))
+                animationSpeed = 200;
+
             // header has end of week, our showDate wants start of week ...
-            this.showDate(moment(currentWeekModel.get("date")).add("days", 1), 200);
+            this.showDate(moment(currentWeekModel.get("date")).add("days", 1), animationSpeed);
         }
 
     };

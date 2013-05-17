@@ -48,7 +48,7 @@ function(LibraryView, ExerciseLibraryView, LibraryTemplate)
 
             it("Should create an ExerciseLibraryView", function()
             {
-                var librarySpy = jasmine.createSpy("LibraryView spy");
+                var librarySpy = jasmine.createSpyObj("LibraryView spy", ["setupDragListeners"]);
                 spyOn(ExerciseLibraryView.prototype, "initialize").andCallThrough();
                 LibraryView.prototype.initialize.call(librarySpy);
                 expect(ExerciseLibraryView.prototype.initialize).toHaveBeenCalled();

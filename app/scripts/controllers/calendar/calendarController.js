@@ -265,7 +265,7 @@ function(
             {
                 // The requested date is within the currently rendered weeks.
                 // Let's scroll straight to it.
-                calendarView.scrollToDate(dateAsMoment);
+                calendarView.scrollToDate(dateAsMoment, effectDuration);
                 return;
             }
             else if(dateAsMoment.diff(this.endDate, "weeks") >= 8 || dateAsMoment.diff(this.startDate, "weeks") <= -8)
@@ -283,7 +283,7 @@ function(
                 {
                     this.prependWeekToCalendar();
                 }
-                calendarView.scrollToDate(dateAsMoment);
+                calendarView.scrollToDate(dateAsMoment, effectDuration);
             }
             else if (dateAsMoment > this.endDate)
             {
@@ -292,12 +292,13 @@ function(
                 {
                     this.appendWeekToCalendar();
                 }
-                calendarView.scrollToDate(dateAsMoment);
+                calendarView.scrollToDate(dateAsMoment, effectDuration);
             }
 
+            // is this necessary?
             setImmediate(function()
             {
-                calendarView.scrollToDate(dateAsMoment);
+                calendarView.scrollToDate(dateAsMoment, effectDuration);
             });
 
         },
@@ -353,8 +354,79 @@ function(
         {
             calendarView.on("prepend", this.prependWeekToCalendar, this);
             calendarView.on("append", this.appendWeekToCalendar, this);
+
+            calendarView.on("requestScrollUp", this.onRequestScrollUp, this);
+            calendarView.on("requestScrollDown", this.onRequestScrollDown, this);
+            calendarView.on("cancelAutoScroll", this.cancelAutoScroll, this);
+
             this.bindToDragMoveAndShiftEvents(calendarView);
+        },
+
+        // need to scroll the calendar up - to next week - because we're dragging something off bottom of calendar
+        onRequestScrollUp: function()
+        {
+            if (this.autoScrollUpInterval)
+                return;
+
+            this.cancelAutoScroll();
+            var self = this;
+            var currentWeekModel = this.views.header.model;
+
+            this.autoScrollUpInterval = setInterval(function()
+            {
+                self.onRequestNextWeek(currentWeekModel, 0);
+            }, 500);
+
+            this.cancelAutoScrollOnMouseUp();
+        },
+
+        // need to scroll the calendar down - back to a previous week - because we're dragging something off top of calendar
+        onRequestScrollDown: function()
+        {
+
+            if (this.autoScrollDownInterval)
+                return;
+
+            this.cancelAutoScroll();
+            var self = this;
+            var currentWeekModel = this.views.header.model;
+
+            this.autoScrollDownInterval = setInterval(function()
+            {
+                self.onRequestLastWeek(currentWeekModel, 0);
+            }, 500);
+
+            this.cancelAutoScrollOnMouseUp();
+        },
+
+        cancelAutoScrollOnMouseUp: function()
+        {
+            var self = this;
+            var cancelScroll = function()
+            {
+                self.cancelAutoScroll();
+                $(window).off("mouseup", cancelScroll);
+            };
+
+            $(window).on("mouseup", cancelScroll);
+        },
+
+        cancelAutoScroll: function()
+        {
+
+            if (this.autoScrollUpInterval)
+            {
+                clearInterval(this.autoScrollUpInterval);
+                this.autoScrollUpInterval = null;
+            }
+
+            if (this.autoScrollDownInterval)
+            {
+                clearInterval(this.autoScrollDownInterval);
+                this.autoScrollDownInterval = null;
+            }
         }
+
 
 
     };

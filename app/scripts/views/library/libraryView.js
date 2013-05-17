@@ -32,9 +32,23 @@ function(_, jqueryOutside, TP, ExerciseLibraryView, MealLibraryView, libraryTemp
                 mealLibrary: new MealLibraryView()
             };
 
+            this.setupDragListeners();
+
+
             this.activeLibraryName = null;
 
             $(window).on("resize", this.resizeContainerHeight);
+        },
+
+        setupDragListeners: function()
+        {
+            this.views.exerciseLibrary.on("itemview:dragItem", this.onDragItem, this);
+            this.views.mealLibrary.on("itemview:dragItem", this.onDragItem, this);
+        },
+
+        onDragItem: function(itemView, dragPosition)
+        {
+            this.trigger("dragItem", itemView, dragPosition);
         },
 
         ui:
