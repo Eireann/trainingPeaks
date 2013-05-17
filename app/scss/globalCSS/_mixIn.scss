@@ -51,6 +51,8 @@
             border-width: 1px;
             border-style: solid;
             cursor: default;
+            color: $TPGrey4;
+            @include box-shadow(none);
         }
 
 	}
