@@ -131,7 +131,6 @@ function (_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, 
         {
             var weekView = new CalendarWeekView({ collection: options.collection, model: options.model });
             weekView.on("itemview:itemDropped", this.onItemDropped, this);
-            weekView.on("itemview:dragItem", this.debouncedOnDragItem, this);
 
             if (options.append)
                 this.ui.weeksContainer.append(weekView.render().el);

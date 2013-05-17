@@ -60,11 +60,6 @@ function(CalendarWorkoutTemplateDragState)
         onDragStop: function()
         {
             this.$el.removeClass("dragging");
-        },
-
-        onDrag: function(e, ui)
-        {
-            this.trigger("dragItem", ui.position);
         }
     };
 

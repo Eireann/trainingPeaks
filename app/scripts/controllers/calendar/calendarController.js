@@ -355,15 +355,15 @@ function(
             calendarView.on("prepend", this.prependWeekToCalendar, this);
             calendarView.on("append", this.appendWeekToCalendar, this);
 
-            calendarView.on("requestScrollUp", this.onRequestScrollUp, this);
-            calendarView.on("requestScrollDown", this.onRequestScrollDown, this);
+            calendarView.on("autoScrollUp", this.autoScrollUp, this);
+            calendarView.on("autoScrollDown", this.autoScrollDown, this);
             calendarView.on("cancelAutoScroll", this.cancelAutoScroll, this);
 
             this.bindToDragMoveAndShiftEvents(calendarView);
         },
 
         // need to scroll the calendar up - to next week - because we're dragging something off bottom of calendar
-        onRequestScrollUp: function()
+        autoScrollUp: function()
         {
             if (this.autoScrollUpInterval)
                 return;
@@ -371,17 +371,17 @@ function(
             this.cancelAutoScroll();
             var self = this;
             var currentWeekModel = this.views.header.model;
+            self.onRequestNextWeek(currentWeekModel, 0);
 
             this.autoScrollUpInterval = setInterval(function()
             {
                 self.onRequestNextWeek(currentWeekModel, 0);
-            }, 500);
+            }, 400);
 
-            this.cancelAutoScrollOnMouseUp();
         },
 
         // need to scroll the calendar down - back to a previous week - because we're dragging something off top of calendar
-        onRequestScrollDown: function()
+        autoScrollDown: function()
         {
             if (this.autoScrollDownInterval)
                 return;
@@ -389,30 +389,17 @@ function(
             this.cancelAutoScroll();
             var self = this;
             var currentWeekModel = this.views.header.model;
+            self.onRequestLastWeek(currentWeekModel, 0);
 
             this.autoScrollDownInterval = setInterval(function()
             {
                 self.onRequestLastWeek(currentWeekModel, 0);
-            }, 500);
+            }, 400);
 
-            this.cancelAutoScrollOnMouseUp();
-        },
-
-        cancelAutoScrollOnMouseUp: function()
-        {
-            var self = this;
-            var cancelScroll = function()
-            {
-                self.cancelAutoScroll();
-                $(window).off("mouseup", cancelScroll);
-            };
-
-            $(window).on("mouseup", cancelScroll);
         },
 
         cancelAutoScroll: function()
         {
-
             if (this.autoScrollUpInterval)
             {
                 clearInterval(this.autoScrollUpInterval);

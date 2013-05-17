@@ -44,7 +44,6 @@ function(
 
             this.views.library = new LibraryView({ collections: this.libraryCollections });
             this.views.library.on("animate", this.onLibraryAnimate, this);
-            this.views.library.on("dragItem", this.onLibraryDragItem, this);
         },
 
         onLibraryAnimate: function (cssAttributes, duration)
@@ -55,11 +54,6 @@ function(
         getExerciseLibraries: function ()
         {
             return this.libraryCollections.exerciseLibraries;
-        },
-
-        onLibraryDragItem: function(itemView, dragPosition)
-        {
-            this.views.calendar.onDragItem(itemView, dragPosition);
         }
 
     };

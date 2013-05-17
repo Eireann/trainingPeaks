@@ -29,10 +29,21 @@ function(_, TP)
             var debouncedScrollStop = _.debounce(this.onScrollStop, 300);
             this.ui.weeksContainer.scroll(debouncedScrollStop);
 
-            _.bindAll(this, "onDragItem");
-            this.debouncedOnDragItem = _.debounce(this.onDragItem, 200);
-
             this.checkCurrentScrollPosition();
+            this.watchForDragging();
+        },
+
+        watchForDragging: function()
+        {
+            _.bindAll(this, "onDragItem", "cancelAutoScroll");
+            $(document).on("drag", this.onDragItem);
+            $(document).on("mouseup", this.cancelAutoScroll);
+
+            this.on("close", function()
+            {
+                $(document).off("drag", this.onDragItem);
+                $(document).off("mouseup", this.cancelAutoScroll);
+            }, this);
         },
 
         onScrollStop: function ()
@@ -259,25 +270,28 @@ function(_, TP)
                 this.calendarHeaderModel.set("date", dateAsMoment.format(TP.utils.datetime.shortDateFormat));
         },
 
-        onDragItem: function(itemView, dragPosition)
+        onDragItem: function(e, ui)
         {
             var calendarTop = this.ui.weeksContainer.offset().top;
-            var dragItemTop = dragPosition.top;
             var topThreshold = calendarTop + 30;
             var bottomThreshold = calendarTop + this.ui.weeksContainer.height() - 50;
             var stopThreshold = 50;
 
-            if (dragItemTop <= topThreshold)
+            if (e.pageY <= topThreshold)
             {
-                this.trigger("requestScrollDown");
-            } else if (dragItemTop >= bottomThreshold)
+                this.trigger("autoScrollDown");
+            } else if (e.pageY >= bottomThreshold)
             {
-                this.trigger("requestScrollUp");
-            } else if(dragItemTop >= (topThreshold + stopThreshold) && dragItemTop <= (bottomThreshold - stopThreshold))
+                this.trigger("autoScrollUp");
+            } else if(e.pageY >= (topThreshold + stopThreshold) && e.pageY <= (bottomThreshold - stopThreshold))
             {
-                this.trigger("cancelAutoScroll");
+                this.cancelAutoScroll();
             }
+        },
 
+        cancelAutoScroll: function()
+        {
+            this.trigger("cancelAutoScroll");
         }
 
 
