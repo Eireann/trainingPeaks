@@ -68,7 +68,7 @@
     {{#if vi }}
     <div class="statsRow" id="vi">
         <label>{{$ "VI" }}</label>
-        <span class="value">{{ conversion "formatInteger" vi }}</span>
+        <span class="value">{{ convertToViewUnits vi "number" }}</span>
         <span class="units"></span>
     </div>
     {{/if}}
@@ -125,14 +125,14 @@
     <div class="statsRow" id="vam">
         <label>{{$ "VAM" }}</label>
         <span class="value">{{ conversion "formatInteger" vam }}</span>
-        <span class="units">{{ getUnitsLabel "elevation" }}</span>
+        <span class="units">{{ getUnitsLabel "vam" }}</span>
     </div>
     {{/if}}
 
     {{#if wattsPerKg }}
     <div class="statsRow" id="wattsPerKg">
         <label>{{$ "WKg" }}</label>
-        <span class="value">{{ conversion "formatInteger" wattsPerKg }}</span>
+        <span class="value">{{ convertToViewUnits wattsPerKg "number" }}</span>
         <span class="units"></span>
     </div>
     {{/if}}
