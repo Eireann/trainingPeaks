@@ -51,17 +51,19 @@ function (
             var offset = uploadButton.offset();
             var direction = this.expanded ? "right" : "left";
             this.fileUploadMenu = new QVFileUploadMenuView({ model: this.model, direction: direction });
-            this.fileUploadMenu.render().top(offset.top - 8);
 
             if (direction === "right")
             {
-                this.fileUploadMenu.left(offset.left + uploadButton.outerWidth() + 13);
+                this.fileUploadMenu.setPosition({ fromElement: uploadButton, left: uploadButton.outerWidth() + 13, top: -8 });
             } else
             {
-                this.fileUploadMenu.right(offset.left - 13);
+                this.fileUploadMenu.setPosition({ fromElement: uploadButton, right: -13, top: -8 });
             }
 
             uploadButton.addClass("menuOpen");
+
+            this.fileUploadMenu.render();
+
             this.fileUploadMenu.on("browseFile", this.onUploadFileMenuUploadButtonClicked, this);
             this.fileUploadMenu.on("close", function() { uploadButton.removeClass("menuOpen"); });
         },
@@ -136,18 +138,19 @@ function (
             var direction = this.expanded ? "right" : "left";
 
             this.attachmentUploadMenu = new QVAttachmentUploadMenuView({ model: this.model, direction: direction });
-            this.attachmentUploadMenu.render().top(offset.top - 8);
 
             if (direction === "right")
             {
-                this.attachmentUploadMenu.left(offset.left + uploadButton.outerWidth() + 13);
-            }
-            else
+                this.attachmentUploadMenu.setPosition({ fromElement: uploadButton, left: uploadButton.outerWidth() + 13, top: -8 });
+            } else
             {
-                this.attachmentUploadMenu.right(offset.left - 13);
+                this.attachmentUploadMenu.setPosition({ fromElement: uploadButton, right: -13, top: -8 });
             }
 
+
             uploadButton.addClass("menuOpen");
+
+            this.attachmentUploadMenu.render();
             this.attachmentUploadMenu.on("close", function () { uploadButton.removeClass("menuOpen"); });
         },
 

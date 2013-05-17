@@ -74,7 +74,7 @@ function (_, TP, ExpandoController)
                 self.$(".collapseButton, .expandedViewsButtons").show();
                 self.$("#quickViewExpandedContent").show();
 
-                self.centerWindow();
+                self.centerViewInWindow();
             };
 
             var animateExpansion = function()
@@ -112,7 +112,7 @@ function (_, TP, ExpandoController)
                 self.$(".collapseButton, .expandedViewsButtons").css({ display: "none" });
                 self.$(".tabNavigation, .quickviewFooter, .expandButton").css({ display: "block" });
                 self.$("#quickViewContent").css({ display: "block" });
-                self.centerWindow();
+                self.centerViewInWindow();
             };
 
             var collapseDuration = 300;
@@ -143,11 +143,11 @@ function (_, TP, ExpandoController)
                 this.$el.width(newWidth).height(newHeight);
             }
 
-            this.centerWindow();
+            this.centerViewInWindow();
 
         },
 
-        centerWindow: function()
+        centerViewInWindow: function()
         {
 
             var windowWidth = $(window).width();
