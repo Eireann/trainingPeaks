@@ -26,6 +26,10 @@ function (TP, DataParser, getDefaultFlotOptions, flotCustomToolTip, flotZoom, Gr
                 throw "detailDataPromise is required for map and graph view";
 
             this.detailDataPromise = options.detailDataPromise;
+
+            //TODO refactor, this should be set by CSS classes (CSS calc?)
+            //this.$el.width(this.$el.parent().width());
+            this.$el.height(400);
         },
 
         initialEvents: function()
