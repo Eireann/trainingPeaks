@@ -195,6 +195,20 @@ function(_, TP)
             this.checkCurrentScrollPosition();
         },
 
+        scrollToDateIfNotFullyVisible: function(targetDate, effectDuration)
+        {
+            var dateAsString = moment(targetDate).format(TP.utils.datetime.shortDateFormat);
+            var selector = '.day[data-date="' + dateAsString + '"]';
+
+            var $week = $(selector).closest(".week");
+
+            if ($week.position().top < 30 || ($week.position().top + $week.height() > this.ui.weeksContainer.height()))
+            {
+                this.scrollToDate(targetDate, effectDuration);
+            }
+
+        },
+
         scrollToDate: function(targetDate, effectDuration)
         {
             var dateAsMoment = moment(targetDate);

@@ -31,10 +31,9 @@ function ()
 
                 // add it to the calendar
                 this.weeksCollection.addWorkout(workout);
-                this.views.calendar.scrollToDate(destinationDate);
+                this.views.calendar.scrollToDateIfNotFullyVisible(destinationDate);
             }
 
-            this.cancelAutoScroll();
         },
 
         onItemMoved: function(item, movedToDate, deferredResult)
@@ -42,7 +41,7 @@ function ()
             var self = this;
             var callback = function()
             {
-                self.showDate(movedToDate);
+                self.views.calendar.scrollToDateIfNotFullyVisible(movedToDate);
             };
             deferredResult.done(callback);
         },
