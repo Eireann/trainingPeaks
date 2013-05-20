@@ -43,7 +43,6 @@ function(_, TP, navigationViewTemplate)
         onRouteChange: function(route)
         {
             this.model.set("route", route);
-            console.log("Navigated to: " + route);
         }
 
     });
