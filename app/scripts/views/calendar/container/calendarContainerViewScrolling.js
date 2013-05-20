@@ -288,18 +288,35 @@ function(_, TP)
 
         onDragItem: function(e, ui)
         {
-            var calendarTop = this.ui.weeksContainer.offset().top;
-            var topThreshold = calendarTop + 50;
-            var bottomThreshold = calendarTop + this.ui.weeksContainer.height() - 50;
-            var stopThreshold = 50;
+            var calendarPosition = {
+                top: this.ui.weeksContainer.offset().top,
+                bottom: this.ui.weeksContainer.offset().top + this.ui.weeksContainer.height()
+            };
 
-            if (e.pageY <= topThreshold)
+            var uiPosition = {
+                mouse: e.pageY,
+                top: ui.helper.position().top,
+                bottom: ui.helper.position().top + ui.helper.height(),
+
+            };
+
+            this.autoScrollIfNecessary(calendarPosition, uiPosition);
+        },
+
+        autoScrollIfNecessary: function(calendarPosition, uiPosition)
+        {
+            var scrollTriggerHeight = 10;
+            var topThreshold = calendarPosition.top + scrollTriggerHeight;
+            var bottomThreshold = calendarPosition.bottom - scrollTriggerHeight;
+            var stopThreshold = scrollTriggerHeight;
+
+            if (uiPosition.top <= topThreshold)
             {
                 this.trigger("autoScrollDown");
-            } else if (e.pageY >= bottomThreshold)
+            } else if (uiPosition.bottom >= bottomThreshold)
             {
                 this.trigger("autoScrollUp");
-            } else if(e.pageY >= (topThreshold + stopThreshold) && e.pageY <= (bottomThreshold - stopThreshold))
+            } else if(uiPosition.top >= (topThreshold + stopThreshold) && uiPosition.bottom <= (bottomThreshold - stopThreshold))
             {
                 this.cancelAutoScroll();
             }
