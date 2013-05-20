@@ -110,6 +110,7 @@ function(moment, datepicker, spinner, TP, ShiftWorkoutsCommand, shiftWizzard)
             // watch for changes
             this.updateSelectItemsOptions();
             this.updateShiftByOptions();
+            this.rePositionView();
             this.model.on("change:selectItems", this.updateSelectItemsOptions, this);
             this.model.on("change:shiftBy", this.updateShiftByOptions, this);
 
