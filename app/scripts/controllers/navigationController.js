@@ -17,7 +17,7 @@ function(TP, NavigationLayout, UserControlsView, NavigationView)
             this.layout.on("show", this.show, this);
 
             this.views.userControlsView = new UserControlsView({ model: theMarsApp.user });
-            this.views.navigationView = new NavigationView();
+            this.views.navigationView = new NavigationView({ model: new TP.Model({route:"calendar"})});
         },
         
         show: function()
