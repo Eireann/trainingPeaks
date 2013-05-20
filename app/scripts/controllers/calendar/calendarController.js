@@ -388,13 +388,13 @@ function(
             var currentWeekModel = this.views.header.model;
 
             // how long between each week step
-            var intervalTime = 350;
+            var intervalTime = 300;
 
             // using animation doesn't work well, because by the time we animate to one we may request another
             var animationSpeed = 0;
 
             // scroll once, then set interval
-            self[scrollMethodName](currentWeekModel, animationSpeed);
+            //self[scrollMethodName](currentWeekModel, animationSpeed);
             self[intervalName] = setInterval(function()
             {
                 self[scrollMethodName](currentWeekModel, animationSpeed);
