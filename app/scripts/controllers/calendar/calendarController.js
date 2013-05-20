@@ -265,7 +265,6 @@ function(
             {
                 // The requested date is within the currently rendered weeks.
                 // Let's scroll straight to it.
-                console.log("Scrolling to currently loaded date: " + dateAsMoment.format(TP.utils.datetime.shortDateFormat));
                 calendarView.scrollToDate(dateAsMoment, effectDuration);
                 return;
             }
@@ -279,7 +278,6 @@ function(
             }
             else if(dateAsMoment < this.startDate)
             {
-                console.log("Appending weeks before: " + dateAsMoment.format(TP.utils.datetime.shortDateFormat));
 
                 // prepend only one week at a time, or else the scroll gets jumpy because we're changing the div height vs scrolltop
                 var weeksToPrepend = this.startDate.diff(dateAsMoment, "weeks") + 1;
