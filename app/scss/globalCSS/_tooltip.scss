@@ -7,6 +7,11 @@
     padding: 0px;
     background-color: transparent;
 
+    &.ui-widget
+    {
+        font-size: $fontSizeMedium;
+    }
+    
     &.ui-widget-content
     {
         border: none;
