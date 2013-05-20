@@ -23,6 +23,16 @@ function (_, TP)
             {
                 self.navigate("calendar", { trigger: true });
             });
+
+            this.on("route", function(routeName)
+            {
+                this.currentRoute = routeName;
+            }, this);
+        },
+
+        getCurrentRoute: function()
+        {
+            return this.currentRoute;
         },
 
         routes:
