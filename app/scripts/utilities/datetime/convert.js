@@ -201,6 +201,11 @@
         timeToDecimalHours: function(timeString)
         {
             return new TimeParser(timeString).getTime();
+        },
+
+        millisecondsToDecimalHours: function(milliseconds)
+        {
+            return (milliseconds / 1000) / 3600;
         }
     };
 
