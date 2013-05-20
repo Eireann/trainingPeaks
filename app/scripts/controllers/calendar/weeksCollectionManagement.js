@@ -29,7 +29,7 @@ function(CalendarCollection
             this.weeksCollection.requestWorkouts(startDate, endDate);
         },
 
-        prependWeekToCalendar: function ()
+        prependWeekToCalendar: function()
         {
             var endDate = moment(this.startDate).subtract("days", 1);
             var startDate = moment(endDate).subtract("days", 6);

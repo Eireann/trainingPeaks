@@ -278,7 +278,9 @@ function(
             }
             else if(dateAsMoment < this.startDate)
             {
-                var weeksToPrepend = this.startDate.diff(dateAsMoment, "weeks") + 2;
+
+                // prepend only one week at a time, or else the scroll gets jumpy because we're changing the div height vs scrolltop
+                var weeksToPrepend = this.startDate.diff(dateAsMoment, "weeks") + 1;
                 for(i = 0;i<weeksToPrepend;i++)
                 {
                     this.prependWeekToCalendar();
@@ -365,36 +367,38 @@ function(
         // need to scroll the calendar up - to next week - because we're dragging something off bottom of calendar
         autoScrollUp: function()
         {
-            if (this.autoScrollUpInterval)
-                return;
-
-            this.cancelAutoScroll();
-            var self = this;
-            var currentWeekModel = this.views.header.model;
-            self.onRequestNextWeek(currentWeekModel, 0);
-
-            this.autoScrollUpInterval = setInterval(function()
-            {
-                self.onRequestNextWeek(currentWeekModel, 0);
-            }, 400);
-
+            this.autoScroll("autoScrollUpInterval", "onRequestNextWeek");
         },
 
         // need to scroll the calendar down - back to a previous week - because we're dragging something off top of calendar
         autoScrollDown: function()
         {
-            if (this.autoScrollDownInterval)
+            this.autoScroll("autoScrollDownInterval", "onRequestLastWeek");
+        },
+
+        autoScroll: function(intervalName, scrollMethodName)
+        {
+            // already scrolling in this direction
+            if (this[intervalName])
                 return;
 
+            // else cancel all existing auto scrolls
             this.cancelAutoScroll();
             var self = this;
             var currentWeekModel = this.views.header.model;
-            self.onRequestLastWeek(currentWeekModel, 0);
 
-            this.autoScrollDownInterval = setInterval(function()
+            // how long between each week step
+            var intervalTime = 350;
+
+            // using animation doesn't work well, because by the time we animate to one we may request another
+            var animationSpeed = 0;
+
+            // scroll once, then set interval
+            self[scrollMethodName](currentWeekModel, animationSpeed);
+            self[intervalName] = setInterval(function()
             {
-                self.onRequestLastWeek(currentWeekModel, 0);
-            }, 400);
+                self[scrollMethodName](currentWeekModel, animationSpeed);
+            }, intervalTime);
 
         },
 

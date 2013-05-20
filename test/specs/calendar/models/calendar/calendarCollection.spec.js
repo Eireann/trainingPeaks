@@ -148,6 +148,12 @@ function($, TP, moment, WorkoutModel, WorkoutsCollection, CalendarCollection)
                         done: function(callback)
                         {
                             callback();
+                            return this;
+                        },
+                        always: function(callback)
+                        {
+                            callback();
+                            return this;
                         }
                     };
                 });

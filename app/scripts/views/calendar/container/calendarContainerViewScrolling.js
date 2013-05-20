@@ -36,6 +36,7 @@ function(_, TP)
         watchForDragging: function()
         {
             _.bindAll(this, "onDragItem", "cancelAutoScroll");
+
             $(document).on("drag", this.onDragItem);
             $(document).on("mouseup", this.cancelAutoScroll);
 
@@ -288,7 +289,7 @@ function(_, TP)
         onDragItem: function(e, ui)
         {
             var calendarTop = this.ui.weeksContainer.offset().top;
-            var topThreshold = calendarTop + 30;
+            var topThreshold = calendarTop + 50;
             var bottomThreshold = calendarTop + this.ui.weeksContainer.height() - 50;
             var stopThreshold = 50;
 

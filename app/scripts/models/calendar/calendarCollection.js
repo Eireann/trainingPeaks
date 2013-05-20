@@ -125,6 +125,8 @@ function(
                 {
                     self.addWorkout(workout);
                 });
+            }).always(function()
+            {
                 self.stopWeeksWaiting(moment(startDate), moment(endDate));
             });
 
