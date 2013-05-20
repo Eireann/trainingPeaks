@@ -207,8 +207,7 @@ function(Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmediate,
         watchForWindowResize: function()
         {
             _.bindAll(this, "onWindowResize");
-            var debouncedResize = _.debounce(this.onWindowResize, 300);
-            $(window).on("resize", debouncedResize);
+            $(window).on("resize", this.onWindowResize);
         },
 
         stopWatchingWindowResize: function()
