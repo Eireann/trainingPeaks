@@ -296,8 +296,7 @@ function(_, TP)
             var uiPosition = {
                 mouse: e.pageY,
                 top: ui.helper.position().top,
-                bottom: ui.helper.position().top + ui.helper.height(),
-
+                bottom: ui.helper.position().top + ui.helper.height()
             };
 
             this.autoScrollIfNecessary(calendarPosition, uiPosition);
