@@ -31,7 +31,7 @@ function(
         });
 
 
-        it("Should display today", function()
+        xit("Should display today", function()
         {
             testHelpers.submitLogin(xhrData.users.barbkprem);
             theApp.router.navigate("calendar", true);

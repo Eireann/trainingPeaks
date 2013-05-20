@@ -1,5 +1,6 @@
 define(
 [
+    "underscore",
     "TP",
     "framework/ajaxAuth",
     "framework/ajaxCaching",
@@ -15,6 +16,7 @@ define(
     "jqueryui/tooltip"
 ],
 function(
+    _,
     TP,
     initializeAjaxAuth,
     ajaxCaching,
@@ -31,8 +33,35 @@ function(
     var theApp = new TP.Application();
     theApp.ajaxCachingEnabled = false;
 
+    theApp.addAllShutdowns = function()
+    {
+
+        // close all of the controllers, which should close each of their corresponding layouts and views
+        this.addShutdown(function()
+        {
+            _.each(_.keys(this.controllers), function(controllerName)
+            {
+                this.controllers[controllerName].close();
+            }, this);
+        });
+
+        // cleanup session and user state
+
+        // cleanup history
+
+        // done
+        this.addShutdown(function()
+        {
+            this.started = false;
+        });
+
+    };
+
     theApp.resetAppToInitialState = function()
     {
+
+        this.addAllShutdowns();
+
         this.addRegions(
         {
             navRegion: "#navigation",
@@ -235,6 +264,11 @@ function(
             {
                 self.isBlurred = true;
             });
+        });
+
+        this.addInitializer(function()
+        {
+            this.started = true;
         });
         
         this.isLive = function()

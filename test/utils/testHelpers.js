@@ -31,6 +31,7 @@ function(_, $, Backbone, TP, xhrData, app)
         startTheApp: function()
         {
 
+            this.stopTheApp();
 
             // syncCaching doesn't play nicely with our fake xhr ...
             app.syncCachingEnabled = false;
@@ -58,6 +59,14 @@ function(_, $, Backbone, TP, xhrData, app)
                 //console.log("Ignoring history already started");
             }
 
+        },
+
+        stopTheApp: function()
+        {
+            if (app.started)
+            {
+                app.stop();
+            }
         },
 
         fakeSync: function(method, model, options)
