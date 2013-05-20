@@ -101,7 +101,7 @@ input[disabled='disabled']
             top: 0px;
             bottom: 0px;
             right: 0px;
-            left: calc(100% - 4px);
+            @include calc(left, "100% - 4px"); 
             width: 4px;
             height: 100%;
         }

@@ -124,7 +124,7 @@
 #expandoLeftColumn
 {
     float: left;
-    width: calc(100% - 335px);
+    @include calc(width, "100% - 335px"); 
     overflow-y: scroll;
     @include nice-scrollbar;
 
@@ -234,7 +234,7 @@
                 label
                 {
                     display: inline-block;
-                    width: calc(50% - 5px);
+                    @include calc(width, "50% - 5px"); 
                     text-align: right;
                     margin-right: 5px;
                 }

@@ -81,7 +81,7 @@
 
         .zoneText
         {
-            width: calc(100% - 80px);
+            @include calc(width, "100% - 80px"); 
             display: inline-block;
             overflow: hidden;
             text-align: right;
@@ -127,7 +127,7 @@
         .peakName
         {
             display: inline-block;
-            width: calc(100% - 100px);
+            @include calc(width, "100% - 100px"); 
             text-align: right;
             vertical-align: top;
             @include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey4, $fontWeightBold);

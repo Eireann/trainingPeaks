@@ -40,7 +40,7 @@
         {
             position:absolute;
             top:0px;
-            left: calc(50% - 10px);
+            @include calc(left, "50% - 10px"); 
             border-top: transparent;
             border-bottom: 10px solid rgba(99, 101, 105, 0.9);
         }
