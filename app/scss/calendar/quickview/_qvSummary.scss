@@ -89,7 +89,8 @@
 .columnLabelsPlannedCompleted
 {
 	padding-left: 105px;
-	padding-top: 10px;
+	padding-top: 14px;
+    padding-bottom: 18px;
 	width: 100%;
 	height: 15px;
 	background: transparent;
@@ -150,6 +151,8 @@
     label
     {
         font-weight: bold;
+        padding-top: 4px;
+        padding-bottom: 4px;
     }
 
     #preActivityComments
