@@ -134,15 +134,16 @@ input[disabled='disabled']
             label
             {
                 margin-bottom: 3px;
+                color: $TPGrey2;
 
                 &.selected
                 {
-                    font-weight: bold;
+                    color: $TPGrey3;
                 }
 
                 &:hover
                 {
-                    font-weight: bold;
+                    color: $TPGrey3;
                 }
             }
         }

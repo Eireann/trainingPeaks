@@ -193,7 +193,7 @@
 	padding-left: 10px;
 	padding-bottom: 20px;
 
-	@include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey4, normal);
+	@include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey3, normal);
 	label
 	{
 		padding-top: 2px;

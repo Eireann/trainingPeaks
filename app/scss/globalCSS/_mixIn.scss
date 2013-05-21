@@ -122,14 +122,14 @@
     {
         border-radius: 0;
         background: $track-background;
-        box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0.2) 0 -1px 1px 1px inset;
+        box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0.2) 0 0px 1px 1px inset;
     }
 
     &::-webkit-scrollbar-thumb
     {
         border-radius: 0;
         background: $thumb-color;
-        box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(48, 48, 48, 0.5) 0 1px 7px 0px inset;
+        box-shadow: rgba(255, 255, 255, 0.1) 0px 0px 0px 0px, rgba(48, 48, 48, 0.5) 0px 0px 7px 0px inset;
     }
 
     &::-webkit-scrollbar-thumb:window-inactive
@@ -142,7 +142,7 @@
     {
         border-radius: 0;
         background: $thumb-color;
-        box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0.7) 0 1px 7px 0px inset;
+        box-shadow: rgba(255, 255, 255, 0.1) 0px 0px 0px 0px, rgba(0, 0, 0, 0.7) 0px -1px 7px 0px inset;
     }
 }
 
