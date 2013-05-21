@@ -124,21 +124,7 @@
     z-index:99;
     position:absolute;
 	
-	.hoverBoxContents {
-
-	}
-	
-	.mainShadow {
-		box-shadow: 0 2px 3px 0 #ADADAD;
-	}
-	
-	.bottomShadow
-    {
-		width:97%;
-    }
-	
 	.hoverBox .arrow {
-		box-shadow: 0 0 3px 1px #868686;
 		margin-left:19px;
 	}
 	
@@ -163,19 +149,33 @@
 
         .planned
         {
-            color: $todayBlue ;
+            //color: $todayBlue;
+            color: $TPGrey3; 
             font-size:$fontSizeLarge;
+
+            &.empty
+            {
+                font-size:$fontSizeXLarge;
+            }
         }
 
         .completed
         {
-            color: $thisWeekBlue;
+            //color: $thisWeekBlue;
+            color: $TPGrey3; 
+            font-weight: bold;
             font-size:$fontSizeLarge;
+
+            &.empty
+            {
+                font-size:$fontSizeXLarge;
+            }
         }
 
         .slash
         {
-            color: $thisWeekBlue;
+            //color: $thisWeekBlue;
+            color: $TPGrey3;
             font-size:$fontSizeLarge;
         }
     }

@@ -19,9 +19,9 @@
     <div>
         <label>{{$ "TSS" }}</label>
         <div>
-            <span id="tssActual" class="completed">{{ conversion "formatTSS" tssActual}}</span>
+            <span id="tssActual" class="completed {{#unless tssActual}}empty{{/unless}}">{{ conversion "formatTSS" tssActual}}</span>
             <span class="slash"> / </span>
-            <span id="tssPlanned" class="planned">{{ conversion "formatTSS" tssPlanned}}</span>
+            <span id="tssPlanned" class="planned {{#unless tssPlanned}}empty{{/unless}}">{{ conversion "formatTSS" tssPlanned}}</span>
         </div>
     </div>
 </div>
