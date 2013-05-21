@@ -31,11 +31,11 @@ function(underscore, TP, workoutTypeMenuTemplate)
         {
             this.model = new TP.Model();
             var types = [];
-            var typesByName = TP.utils.workout.types.typesByName;
-            _.each(_.keys(typesByName), function(typeName)
+            var typesById = TP.utils.workout.types.typesById;
+            _.each(_.keys(typesById), function(typeId)
             {
-                var typeId = typesByName[typeName];
-                var selected = typeId === options.workoutTypeId ? true : false;
+                var typeName = typesById[typeId];
+                var selected = Number(typeId) === options.workoutTypeId ? true : false;
                 types.push({ typeName: typeName, typeId: typeId, selected: selected});
             });
             this.model.set("workoutTypes", types);

@@ -130,20 +130,23 @@ input[disabled='disabled']
             @include linearGradient(right, rgb(255,255,255), rgba(255,255,255,0.95)); 
             padding: 10px;
 
+            .details
+            {
+                min-width: 120px;
+            }
 
             label
             {
                 margin-bottom: 3px;
-                color: $TPGrey2;
 
                 &.selected
                 {
-                    color: $TPGrey3;
+                    font-weight: bold;
                 }
 
                 &:hover
                 {
-                    color: $TPGrey3;
+                    font-weight: bold;
                 }
             }
         }

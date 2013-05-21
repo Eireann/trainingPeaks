@@ -34,7 +34,7 @@ function ()
         5: "XTrain",
         6: "Race",
         7: "Day Off",
-        8: "MountainBike",
+        8: "Mountain Bike",
         9: "Strength",
         10: "Custom",
         11: "XC-Ski",
