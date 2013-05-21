@@ -215,6 +215,7 @@
 	"SelectNumberOfDays": "Select number of days",
 	"SelectNumberOfWeeks": "Select number of weeks",
 	"Summary": "Summary",
+    "SUMMARY": "SUMMARY",
 
     "BreakthroughTooltip": "Breakthrough workout",
     "UploadAttachmentTooltip": "Upload attachment",
