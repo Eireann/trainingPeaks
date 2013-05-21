@@ -236,6 +236,8 @@ function(Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmediate,
                 return;
             }
 
+            this.trigger("before:reposition");
+
             var startOffset = this.positionAttributes.hasOwnProperty("fromElement") ? $(this.positionAttributes.fromElement).offset() : { top: 0, left: 0 };
             
             if (this.positionAttributes.hasOwnProperty("left"))
