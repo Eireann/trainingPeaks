@@ -237,6 +237,7 @@
         overflow-x: hidden;
         overflow-y: visible;
         float: left;
+        color: $TPGrey8;
 
         &.selected
         {
@@ -315,7 +316,7 @@
 		{
 			font-Family: $navigationFontFamilyRegular;
 			font-size: $fontSizeMedium;
-			color: $TPGrey4;
+			color: $TPGrey8;
 			text-align: right;
 			float:left;
 			margin: 0px;

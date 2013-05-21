@@ -3,25 +3,25 @@
     <div>
         <label>{{$ "Distance" }}</label>
         <div>
-            <span id="distancePlanned" class="planned">{{ convertToViewUnits distancePlanned "distance" "0" }}</span>
-            <span class="slash"> / </span>
             <span id="distance" class="completed">{{ convertToViewUnits distance "distance" "0" }}</span>
+            <span class="slash"> / </span>
+            <span id="distancePlanned" class="planned">{{ convertToViewUnits distancePlanned "distance" "0" }}</span>
         </div>
     </div>
     <div>
         <label>{{$ "Duration" }}</label>
         <div>
-            <span id="totalTimePlanned" class="planned">{{ formatTime totalTimePlanned }}</span>
-            <span class="slash"> / </span>
             <span id="totalTime" class="completed">{{ formatTime totalTime }}</span>
+            <span class="slash"> / </span>
+            <span id="totalTimePlanned" class="planned">{{ formatTime totalTimePlanned }}</span>
         </div>
     </div>
     <div>
         <label>{{$ "TSS" }}</label>
         <div>
-            <span id="tssPlanned" class="planned">{{ conversion "formatTSS" tssPlanned}}</span>
-            <span class="slash"> / </span>
             <span id="tssActual" class="completed">{{ conversion "formatTSS" tssActual}}</span>
+            <span class="slash"> / </span>
+            <span id="tssPlanned" class="planned">{{ conversion "formatTSS" tssPlanned}}</span>
         </div>
     </div>
 </div>
