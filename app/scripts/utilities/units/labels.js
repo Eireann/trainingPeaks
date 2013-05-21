@@ -87,7 +87,7 @@ function(unitsConstants, workoutLayoutFormatter)
         },
         torque:
         {
-            English: "in-lbs",
+            English: "in. lbs",
             Metric: "Nm"
         },
         elevation:
