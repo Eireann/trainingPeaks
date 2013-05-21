@@ -297,6 +297,11 @@
         display:inline-block;
     }
 
+    .weekSummaryATPValue
+    {
+        font-size: 1em; 
+    }
+
     .weekSummaryMetricValue {
         text-align:right;
         font-size:$fontSizeXLarge;

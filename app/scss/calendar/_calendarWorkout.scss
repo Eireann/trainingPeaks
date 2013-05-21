@@ -21,6 +21,7 @@
     {
         display: none;
         float: right;
+        margin-top: 1px;
 
         button
         {	
@@ -71,7 +72,7 @@
             {
                 padding: 13px 0px 0px 30px;
 
-                @include labels($navigationFontFamilyRegular, $fontSizeXLarge, $TPGrey4, normal);
+                @include labels($navigationFontFamilyRegular, $fontSizeXLarge, $TPGrey8, normal);
                 label
                 {
                     display:inline-block;
@@ -88,8 +89,10 @@
         }
         .workoutBody
         {
+
+            color: $TPGrey8;
             padding: 2px 3px 3px 3px;
-            @include labels($navigationFontFamilyRegular, $fontSizeXSmall, $TPGrey4, normal);
+            @include labels($navigationFontFamilyRegular, $fontSizeXSmall, $TPGrey8, normal);
             label
             {
                 font-weight: bold;
@@ -102,7 +105,7 @@
             {
                 margin-bottom: 0px;
                 font-size: $fontSizeXSmall;
-                font-color: $black;
+                color: $TPGrey8;
                 font-family: $navigationFontFamilyRegular;
                 text-align: left;
                 line-height: 12px;
@@ -120,22 +123,13 @@
 {
     z-index:99;
     position:absolute;
-	
-	.hoverBoxContents {
 
-	}
-	
-	.mainShadow {
-		box-shadow: 0 2px 3px 0 #ADADAD;
-	}
-	
-	.bottomShadow
+    .hoverBoxContents
     {
-		width:97%;
+        padding-top: 4px;
     }
 	
 	.hoverBox .arrow {
-		box-shadow: 0 0 3px 1px #868686;
 		margin-left:19px;
 	}
 	
@@ -143,6 +137,7 @@
     .details
     {
         min-width: 100px;
+        padding-bottom: 4px;
 
         @include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey4, normal);
 
@@ -160,20 +155,34 @@
 
         .planned
         {
-            color: $todayBlue ;
-            font-size:$fontSizeLarge;
+            //color: $todayBlue;
+            color: $TPGrey3; 
+            font-size:$fontSizeMedium;
+
+            &.empty
+            {
+                font-size:$fontSizeLarge;
+            }
         }
 
         .completed
         {
-            color: $thisWeekBlue;
-            font-size:$fontSizeLarge;
+            //color: $thisWeekBlue;
+            color: $TPGrey3; 
+            font-weight: bold;
+            font-size:$fontSizeMedium;
+
+            &.empty
+            {
+                font-size:$fontSizeLarge;
+            }
         }
 
         .slash
         {
-            color: $thisWeekBlue;
-            font-size:$fontSizeLarge;
+            //color: $thisWeekBlue;
+            color: $TPGrey3;
+            font-size:$fontSizeMedium;
         }
     }
 

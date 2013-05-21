@@ -157,10 +157,10 @@
         {
             return value ? (Math.round(parseFloat(value) * 100) / 100).toFixed(2) : 0;
         },
-        
-        formatTSS: function (value, options)
+
+        formatTSS: function(value, options)
         {
-            return value ? (Math.round(value * 10) / 10).toFixed(1) : (options && options.hasOwnProperty("defaultValue") ? options.defaultValue : "");
+            return value ? (Math.round(value * 10) / 10).toFixed(1) : (options && options.hasOwnProperty("defaultValue") ? options.defaultValue : "--");
         },
 
         parseTSS: function (value, options)

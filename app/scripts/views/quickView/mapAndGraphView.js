@@ -168,7 +168,6 @@ function(
             var flotOptions = getDefaultFlotOptions(series);
 
             flotOptions.yaxes = yaxes;
-            flotOptions.grid.mouseActiveRadius = 0;
             flotOptions.xaxes[0].tickLength = 0;
 
             $.plot(this.$("#quickViewGraph"), series, flotOptions);
