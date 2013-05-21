@@ -394,7 +394,7 @@ function(
             var animationSpeed = 0;
 
             // scroll once, then set interval
-            self[scrollMethodName](currentWeekModel, animationSpeed);
+            //self[scrollMethodName](currentWeekModel, animationSpeed);
             self[intervalName] = setInterval(function()
             {
                 self[scrollMethodName](currentWeekModel, animationSpeed);

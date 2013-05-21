@@ -7,7 +7,14 @@ function(TP, flotCustomToolTip)
 {
     return function(series)
     {
-        return {
+        return _.extend({}, {
+            crosshair:
+            {
+                mode: "x",
+                color: "rgba(170, 0, 0, 0.80)",
+                lineWidth: 1
+                
+            },
             grid:
             {
                 show: true,
@@ -56,6 +63,6 @@ function(TP, flotCustomToolTip)
                     }
                 }
             ]
-        };
+        });
     };
 });

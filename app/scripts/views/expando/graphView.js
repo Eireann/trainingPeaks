@@ -3,12 +3,11 @@
     "TP",
     "utilities/charting/dataParser",
     "utilities/charting/defaultFlotOptions",
-    "utilities/charting/flotCustomTooltip",
     "utilities/charting/jquery.flot.zoom",
     "views/expando/graphToolbarView",
     "hbs!templates/views/expando/graphTemplate"
 ],
-function (TP, DataParser, getDefaultFlotOptions, flotCustomToolTip, flotZoom, GraphToolbarView, graphTemplate)
+function (TP, DataParser, getDefaultFlotOptions, flotZoom, GraphToolbarView, graphTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -28,7 +27,6 @@ function (TP, DataParser, getDefaultFlotOptions, flotCustomToolTip, flotZoom, Gr
             this.detailDataPromise = options.detailDataPromise;
 
             //TODO refactor, this should be set by CSS classes (CSS calc?)
-            //this.$el.width(this.$el.parent().width());
             this.$el.height(400);
         },
 

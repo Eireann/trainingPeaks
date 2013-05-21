@@ -22,7 +22,7 @@ function(
         serializeData: function()
         {
             var lapData = this.getLapData();
-            this.calculateMovingTime(lapData);
+            this.calculateTotalAndMovingTime(lapData);
             this.findAvailableMinMaxAvgFields(lapData);
             return lapData;
         },
@@ -37,12 +37,13 @@ function(
             return workoutData;
         },
 
-        calculateMovingTime: function(lapData)
+        calculateTotalAndMovingTime: function(lapData)
         {
-            // NOTE: stoppedTime is in milliseconds, totalTime is in decimal hours
+            lapData.totalTime = TP.utils.datetime.convert.millisecondsToDecimalHours(lapData.end - lapData.begin);
+
             if (lapData.stoppedTime)
             {
-                var stoppedTime = (lapData.stoppedTime / 1000) / 3600;
+                var stoppedTime = TP.utils.datetime.convert.millisecondsToDecimalHours(lapData.stoppedTime);
                 lapData.movingTime = lapData.totalTime - stoppedTime;
             }
         },
