@@ -244,32 +244,28 @@ input[disabled='disabled']
         margin-bottom:3px;
         margin-left: -3px;
         padding: 3px;
-        color: $TPGrey4;
         border: 1px solid transparent;
+        font-size: $fontSizeSmaller;
 
         &.hover
         {
-            background-color: $TPGrey1;
-            border-color: $TPGrey7;
+            &:not(.editable)
+            {
+                background-color: $TPGrey1;
+                border-color: $TPGrey7;
+            }
         }
 
         .commentHeader
         {
             // this becomes smaller because it's relative to the size above it ...
-            font-size: $fontSizeSmall;
             font-weight: $fontWeightBold;
             margin-bottom: 3px;
+            color: $TPGrey3;
 
             .date
             {
-                .weekdayName
-                {
-                    text-transform: uppercase;
-                }
-            }
-
-            .date
-            {
+                margin-left: 5px;
                 .weekdayName
                 {
                     text-transform: uppercase;
@@ -280,7 +276,6 @@ input[disabled='disabled']
 
         .commentBody
         {
-            font-size: $fontSizeSmall;
             white-space: pre-wrap;
         }
 
