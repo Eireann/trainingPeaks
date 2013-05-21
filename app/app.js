@@ -174,7 +174,7 @@ function(
                 
                 if(targetElement.outerWidth() > 200)
                 {
-                    position.left;
+                    //position.left;
                 }
                 else if (position.left > $(window).outerWidth() - 100)
                 {
