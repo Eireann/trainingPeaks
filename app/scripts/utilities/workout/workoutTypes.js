@@ -11,7 +11,7 @@ function ()
         "XTrain": 5,
         "Race": 6,
         "Day Off": 7,
-        "MountainBike": 8,
+        "Mountain Bike": 8,
         "Strength": 9,
         "Custom": 10,
         "XC-Ski": 11,
