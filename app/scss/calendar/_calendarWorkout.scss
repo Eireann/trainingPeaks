@@ -123,6 +123,11 @@
 {
     z-index:99;
     position:absolute;
+
+    .hoverBoxContents
+    {
+        padding-top: 4px;
+    }
 	
 	.hoverBox .arrow {
 		margin-left:19px;
@@ -132,6 +137,7 @@
     .details
     {
         min-width: 100px;
+        padding-bottom: 4px;
 
         @include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey4, normal);
 
@@ -151,11 +157,11 @@
         {
             //color: $todayBlue;
             color: $TPGrey3; 
-            font-size:$fontSizeLarge;
+            font-size:$fontSizeMedium;
 
             &.empty
             {
-                font-size:$fontSizeXLarge;
+                font-size:$fontSizeLarge;
             }
         }
 
@@ -164,11 +170,11 @@
             //color: $thisWeekBlue;
             color: $TPGrey3; 
             font-weight: bold;
-            font-size:$fontSizeLarge;
+            font-size:$fontSizeMedium;
 
             &.empty
             {
-                font-size:$fontSizeXLarge;
+                font-size:$fontSizeLarge;
             }
         }
 
@@ -176,7 +182,7 @@
         {
             //color: $thisWeekBlue;
             color: $TPGrey3;
-            font-size:$fontSizeLarge;
+            font-size:$fontSizeMedium;
         }
     }
 

@@ -110,7 +110,7 @@
 	}
 }
 
-@mixin nice-scrollbar($size: 12px, $track-background: $TPGrey1, $thumb-color: $TPGrey2, $inactive-thumb-color: $TPGrey2)
+@mixin nice-scrollbar($size: 12px, $track-background: $TPGrey1, $thumb-color: $TPGrey2, $inactive-thumb-color: $TPGrey6)
 {
     &::-webkit-scrollbar 
     {
@@ -129,14 +129,20 @@
     {
         border-radius: 0;
         background: $thumb-color;
-        box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0.7) 0 1px 7px 0px inset;
+        box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(48, 48, 48, 0.5) 0 1px 7px 0px inset;
     }
 
     &::-webkit-scrollbar-thumb:window-inactive
     {
         border-radius: 0;
+        background: $inactive-thumb-color;
+    }
+
+    &::-webkit-scrollbar-thumb:hover
+    {
+        border-radius: 0;
         background: $thumb-color;
-        box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0.4) 0 1px 1px 1px inset;
+        box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0.7) 0 1px 7px 0px inset;
     }
 }
 
