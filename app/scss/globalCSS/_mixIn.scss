@@ -26,12 +26,12 @@
         cursor: pointer;
 
         background: url(../../assets/images/calendarImages/background-gradient-button.png) repeat-x 0 0;
-		background-size: 100% 100%;
+		//background-size: 100% 100%;
                 
         &:active
         {
             background: url(../../assets/images/calendarImages/background-gradient-button_active.png) repeat-x 0 0;
-			background-size: 100% 100%;
+			//background-size: 100% 100%;
             color: #ffffff;
         }
 
@@ -46,7 +46,7 @@
         &:disabled
         {
             background: url(../../assets/images/calendarImages/background-gradient-button.png) repeat-x 0 0;
-		    background-size: 100% 22px;
+		    //background-size: 100% 22px;
             border-color: $TPGrey9;
             border-width: 1px;
             border-style: solid;
