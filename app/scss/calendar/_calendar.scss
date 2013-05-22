@@ -54,29 +54,40 @@
             margin:7px 0 0 0;
             
             @include headerButtons(0px, 35px, $fontSizeMedium);
+			button {
+			 	&:active {
+					box-shadow:none;
+				}
+			}
 
-            .calendarNavigation
-            {
+            .calendarNavigation {
                 float:left;
 	            @include headerButtons(0px, 35px, 12px);
-
+				background-color:$TPGrey9;
+				&:hover {
+					background-color:#8d8d8d;
+				}
+				
                 button
                 {
                     img
                     {
                         padding-top: 3px;
                     }
+					
+				
                 }
 
                 #goToLastWeekButton
                 {
-                    border-right-width: 0px;
+                    border-right:none;
 					background: url(../../assets/images/calendarImages/sprite-header-icons.png) no-repeat 0 -20px;
 
                     &:hover
                     {
                         // border-right-width: 1px;
 						background: url(../../assets/images/calendarImages/sprite-header-icons.png) no-repeat -36px -20px;
+						
                     }
 
                     &:active
@@ -85,12 +96,14 @@
                     }
                 }
 
-				#goToNextWeekButton 
-                {
+				#goToNextWeekButton {
+					margin-left:1px;
+					border-left:none;
 					background: url(../../assets/images/calendarImages/sprite-header-icons.png) no-repeat 0 0;
 					 &:hover
 	                    {
 							background: url(../../assets/images/calendarImages/sprite-header-icons.png) no-repeat -36px 0px;
+						//	border-left:1px solid $TPGrey9;
 	                    }
 		
 		
