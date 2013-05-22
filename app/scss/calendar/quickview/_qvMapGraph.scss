@@ -1,5 +1,27 @@
 ﻿@import "../../globalCSS/tpstylesheet";
 
+.mapMileMarkerIcon
+{
+
+    position: absolute;
+
+    height: 16px;
+    width: 16px;
+
+    // use margin-left and margin-top to center this div over the map point
+    margin-left: -8px;
+    margin-top: -8px;
+
+    color: $white;
+    background-color: $TPGrey7;
+    font-size: $fontSizeXSmall;
+    padding: 2px;
+    text-align: center;
+
+    opacity: 0.9;
+    border-radius: 50%;
+}
+
 .mapGraphTab
 {
     padding: 10px 0px 10px 7px;
