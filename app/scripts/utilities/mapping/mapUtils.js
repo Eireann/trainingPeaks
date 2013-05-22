@@ -2,12 +2,14 @@
 [
     "TP",
     "leaflet",
-    "leafletGoogleTiles"
+    "leafletGoogleTiles",
+    "./leafletIcons"
 ],
 function(
     TP,
     Leaflet,
-    LeafletGoogleTiles
+    LeafletGoogleTiles,
+    LeafletIcons
     )
 {
 
@@ -65,7 +67,7 @@ function(
                         leafletLatLongs.push(new L.LatLng(parseFloat(point[0]).toFixed(6), parseFloat(point[1]).toFixed(6)));
                 });
 
-                var polyline = L.polyline(leafletLatLongs, { color: "red", smoothFactor: 1.0, opacity: 1, weight: 5 }).addTo(map);
+                var polyline = L.polyline(leafletLatLongs, { color: "red", smoothFactor: 1.0, opacity: 1, weight: 2 }).addTo(map);
                 map.fitBounds(polyline.getBounds());
             }
         },
@@ -91,7 +93,13 @@ function(
 
         calculateAndAddMileMarkers: function(map, dataParser, maxMarkers)
         {
-            this.addMarkers(map, this.calculateMileMarkers(dataParser, maxMarkers));
+            var markers = this.calculateMileMarkers(dataParser, maxMarkers);
+            _.each(markers, function(markerOptions)
+            {
+                markerOptions.options.icon = new LeafletIcons.MileMarker(markerOptions);
+            });
+
+            this.addMarkers(map, markers);
         },
 
         calculateMileMarkers: function(dataParser, maxMarkers)
@@ -109,7 +117,7 @@ function(
             {
                 if (distances[i][1] >= nextMarker)
                 {
-                    markers.push({ latLng: latLonArray[i], options: { riseOnHover: true, title: markerNumber + " " + units } });
+                    markers.push({ latLng: latLonArray[i], options: { riseOnHover: true, title: markerNumber + " " + units, number: markerNumber } });
                     nextMarker += intervals.distanceBetweenMarkers;
                     markerNumber += intervals.countBy;
                 }
