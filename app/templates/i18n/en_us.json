@@ -283,5 +283,12 @@
     "Work": "Work",
     "pwhr": "Pw:Hr",
     "pahr": "Pa:Hr",
-    "NGP": "NGP"
+    "NGP": "NGP",
+
+    "PeakHeartRate": "Peak Heart Rate",
+    "PeakPower": "Peak Power",
+    "PeakSpeed": "Peak Speed",
+    "PeakPace": "Peak Pace",
+    "PeakCadence": "Peak Cadence",
+    "UncheckAll": "Uncheck All"
 }

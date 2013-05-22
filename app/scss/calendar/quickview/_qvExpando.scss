@@ -307,6 +307,36 @@
     {
         overflow-y: scroll;
         @include nice-scrollbar;
+
+        .controls
+        {
+            margin-left: 20px;
+            margin-top: 20px;
+
+            select
+            {
+                width: auto;
+                margin-right: 10px;
+
+                font-family: $navigationFontFamilyLight;
+                font-size: $fontSizeSmall;
+                color: $TPGrey3;
+                border-width: 1px;
+                border-style: solid;
+                border-color: $TPGrey9;
+
+                cursor: pointer;
+
+                background: url(../../assets/images/calendarImages/background-gradient-button.png) repeat-x 0 0;
+            }
+
+            @include buttons(0, 77px, $fontSizeSmall);
+            button
+            {
+                height: 20px;
+                vertical-align: top;
+            }
+        }
     }
 
 }
