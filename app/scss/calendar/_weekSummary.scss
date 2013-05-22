@@ -228,7 +228,7 @@
         font-size:$fontSizeXSmall;
     
         .weekSummaryTimeCompleted {
-            font-weight:bold;
+            font-family: $fontFamilyHeavy;
             color:#303030;
 			margin-right: 2px;
 
@@ -311,7 +311,7 @@
         width:133px;
         margin:0 0 0 6px;
         font-size:$fontSizeXSmall;
-        font-weight:bold;
+        font-family: $fontFamilyHeavy;
         display:inline-block;
     }
 

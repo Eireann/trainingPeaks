@@ -103,7 +103,7 @@
 
         .libraryNavigation
         {
-            @include labels($navigationFontFamilyRegular, $fontSizeXLarge, $TPBlue, normal);
+            @include labels($fontFamilyRegular, $fontSizeXLarge, $TPBlue, normal);
             label
             {
                 display: inline-block;
@@ -132,12 +132,12 @@
         .librarySearch
         {
             margin-top: 10px;
-            @include inputs(100%, 20px, $fontSizeMedium, $navigationFontFamilyRegular);
+            @include inputs(100%, 20px, $fontSizeMedium, $fontFamilyRegular);
 
             select
             {
                 margin-top: -5px;
-                font-family: $navigationFontFamilyRegular;
+                font-family: $fontFamilyRegular;
                 font-size: $fontSizeMedium;
             }
         }
@@ -205,13 +205,12 @@
         {
             padding: 10px 0px 0px 30px;
 
-            @include labels($navigationFontFamilyRegular, $fontSizeXLarge, $black, normal);
+            @include labels($fontFamilyRegular, $fontSizeXLarge, $black, normal);
         }
     }
     .workoutBody
     {
         padding: 10px 5px 5px 5px;
-        @include labels($navigationFontFamilyRegular, $fontSizeXSmall, $black, normal);
-        label{font-weight: bold;}
+        @include labels($fontFamilyHeavy, $fontSizeXSmall, $TPGrey3, normal);
     }
 }

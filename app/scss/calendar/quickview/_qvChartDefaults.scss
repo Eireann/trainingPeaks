@@ -68,7 +68,7 @@
 
             .tooltipLabel
             {
-                font-weight: bold;
+                font-family: $fontFamilyHeavy;
             }
         }
     }
@@ -90,12 +90,12 @@
 
         .zoneRange
         {
-            @include labels($navigationFontFamilyRegular, 0.8em, $TPGrey3, normal);
+            @include labels($fontFamilyRegular, 0.8em, $TPGrey3, normal);
         }
 
         .zoneName
         {
-            @include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey4, $fontWeightBold);
+            @include labels($fontFamilyHeavy, $fontSizeSmall, $TPGrey4, normal);
             label
             {
                 white-space: nowrap;
@@ -108,7 +108,7 @@
             display: inline-block;
             margin-left: 5px;
             vertical-align: top;
-            @include inputs(70px, 26px, $fontSizeSmall, $navigationFontFamilyRegular);
+            @include inputs(70px, 26px, $fontSizeSmall, $fontFamilyRegular);
             input
             {
                 color: $TPGrey3;
@@ -130,7 +130,7 @@
             @include calc(width, "100% - 100px"); 
             text-align: right;
             vertical-align: top;
-            @include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey4, $fontWeightBold);
+            @include labels($fontFamilyHeavy, $fontSizeSmall, $TPGrey4, normal);
             label
             {
                 margin-top: 5px;
@@ -144,7 +144,7 @@
             display: inline-block;
             margin-left: 10px;
             vertical-align: top;
-            @include inputs(45px, 20px, 12px, $navigationFontFamilyRegular);
+            @include inputs(45px, 20px, 12px, $fontFamilyRegular);
             input
             {
                 text-align: right;
@@ -158,7 +158,7 @@
             margin-left: 5px;
             width: 25px;
             vertical-align: top;
-            @include labels($navigationFontFamilyRegular, $fontSizeXSmall, $TPGrey3, normal);
+            @include labels($fontFamilyRegular, $fontSizeXSmall, $TPGrey3, normal);
             label
             {
                 margin-top: 5px;

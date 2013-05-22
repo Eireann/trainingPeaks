@@ -34,7 +34,7 @@
     height: 80px;
     float: left;
     margin-left: 10px;
-    @include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey3, normal);
+    @include labels($fontFamilyRegular, $fontSizeSmall, $TPGrey3, normal);
     @include buttons(0, 77px, $fontSizeSmall);
 
     button
@@ -252,7 +252,7 @@
         {
 
             padding: 10px;
-            @include labels($navigationFontFamilyRegular, $fontSizeXSmall, $TPGrey4, $fontWeightBold);
+            @include labels($fontFamilyHeavy, $fontSizeXSmall, $TPGrey4, normal);
 
 
             .statsRow
