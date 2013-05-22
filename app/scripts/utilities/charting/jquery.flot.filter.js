@@ -57,8 +57,8 @@ function ()
 
         timeSeriesCopy.reverse();
 
-        var startingSma;
-        var previousEma = startingSma = computeSimpleMovingAverages(timeSeriesCopy.slice(0, period))[0];
+        var startingSma = computeSimpleMovingAverages(timeSeriesCopy.slice(0, period))[0];
+        var previousEma = startingSma;
         var currentEma;
 
         var smoothing = 2.0 / (period + 1);
@@ -68,7 +68,7 @@ function ()
         {
             if (i < period - 1)
                 emas.push(null);
-            else if (i == period - 1)
+            else if (i === period - 1)
                 emas.push(startingSma);
             else
             {
