@@ -209,19 +209,19 @@
         @include linearGradient(top,  #636569 0%, #3d3e41 100%);
 
         &.bike {
-            @include linearGradient(top,  #8820d1 0%, #561484 100%);
+            @include linearGradient(top,  #8820d1 0%, $clrBike 100%);
         }
         
         &.strength {
-            @include linearGradient(top, #912c8a 0%, #5b1c5b 100%);
+            @include linearGradient(top, #912c8a 0%, $clrStrength 100%);
         }	
         
         &.run {
-            @include linearGradient(top,  #30819c 0%, #1e5162 100%);
+            @include linearGradient(top,  #30819c 0%, $clrRun 100%);
         }	
 
         &.swim {
-            @include linearGradient(top,  #20a3d1 0%, #146784 100%);
+            @include linearGradient(top,  #20a3d1 0%, $clrSwim 100%);
         }
     }
 

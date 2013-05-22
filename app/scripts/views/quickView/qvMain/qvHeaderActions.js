@@ -64,9 +64,15 @@ function (
             }
             this.$(".grayHeader").addClass(this.getComplianceCssClassName());
             this.$(".grayHeader").addClass(this.getPastOrCompletedCssClassName());
+            this.$(".grayHeader").addClass(this.getWorkoutTypeCssClassName());
 
             this.$(".chzn-select").chosen();
 
+        },
+
+        getWorkoutTypeCssClassName: function ()
+        {
+            return TP.utils.workout.types.getNameById(this.model.get("workoutTypeValueId")).replace(/ /g, "");
         },
 
         getPastOrCompletedCssClassName: function()
