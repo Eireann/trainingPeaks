@@ -79,12 +79,11 @@
     {
         width: 570px;
         height: 80px;
-        padding: 5px 0px 5px 5px;
+        padding: 4px 0px 5px 5px;
         background-color: $TPGrey2;
         float: left;
         margin-top: 0px;
-
-        @include box-shadow(0px 1px 2px 0px #40403f);
+        border: 1px solid $TPGrey9;
 
         .workoutIcon
         {

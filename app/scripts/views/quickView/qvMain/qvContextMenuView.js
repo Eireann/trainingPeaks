@@ -25,6 +25,11 @@ function(TP, SaveToLibraryConfirmationView, WorkoutQuickViewMenuTemplate)
             "click #workoutQuickViewMenuPrintLabel": "onPrintClicked"
         },
 
+        initialize: function()
+        {
+            this.on("before:reposition", this.beforeReposition, this);
+        },
+
         attributes: function()
         {
             return {
@@ -74,6 +79,48 @@ function(TP, SaveToLibraryConfirmationView, WorkoutQuickViewMenuTemplate)
         onPrintClicked: function()
         {
             this.notImplemented();
+        },
+
+        canFitAbove: function(positionTop)
+        {
+            return (positionTop - this.$el.height()) > 10 ? true : false;
+        },
+
+        beforeReposition: function()
+        {
+            if (!this.positionAttributes)
+                return;
+
+            if (!this.originalPositionAttributes)
+                this.originalPositionAttributes = this.positionAttributes;
+
+            this.positionAttributes = _.clone(this.originalPositionAttributes);
+
+            if(!this.canFitAbove(this.positionAttributes.fromElement.offset().top))
+            {
+                delete this.positionAttributes.bottom;
+                this.addUpArrow();
+            } else
+            {
+                delete this.positionAttributes.top;
+                this.addDownArrow();
+            }
+        },
+
+        addUpArrow: function()
+        {
+            var hoverBox = this.$el.find(".hoverBox");
+            hoverBox.addClass("uparrow");
+            var arrow = this.$el.find(".arrow");
+            arrow.detach().prependTo(hoverBox);
+        },
+
+        addDownArrow: function()
+        {
+            var hoverBox = this.$el.find(".hoverBox");
+            hoverBox.removeClass("uparrow");
+            var arrow = this.$el.find(".arrow");
+            arrow.detach().appendTo(hoverBox);
         }
 
     });
