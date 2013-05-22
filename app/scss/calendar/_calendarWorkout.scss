@@ -4,7 +4,7 @@
 .workout
 {
     margin: 5px 4px 4px 2px;
-    @include box-shadow(0 1px 1.5px 0 #2c2c2c);
+   // @include box-shadow(0 1px 1.5px 0 #2c2c2c);
 
     &.dragHelper
     {
@@ -193,7 +193,7 @@
 	padding-left: 10px;
 	padding-bottom: 20px;
 
-	@include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey4, normal);
+	@include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey3, normal);
 	label
 	{
 		padding-top: 2px;

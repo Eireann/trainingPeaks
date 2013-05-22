@@ -1,11 +1,11 @@
-﻿@import "../globalCSS/tpstylesheet";
-@import "quickview/qvChartDefaults";
-@import "quickview/qvHeader";
-@import "quickview/qvExpando";
-@import "quickview/qvTabs";
-@import "quickview/qvSummary";
-@import "quickview/qvMapGraph";
-@import "quickview/qvFileUploadMenu";
+﻿@import "../../globalCSS/tpstylesheet";
+@import "qvChartDefaults";
+@import "qvHeader";
+@import "qvExpando";
+@import "qvTabs";
+@import "qvSummary";
+@import "qvMapGraph";
+@import "qvFileUploadMenu";
 
 #workOutQuickView
 {
@@ -141,6 +141,10 @@ input[disabled='disabled']
             @include linearGradient(right, rgb(255,255,255), rgba(255,255,255,0.95)); 
             padding: 10px;
 
+            .details
+            {
+                min-width: 120px;
+            }
 
             label
             {
@@ -161,7 +165,12 @@ input[disabled='disabled']
         .mainShadow
         {
             bottom: 0px;
-            @include box-shadow(0px 3px 3px -2px $TPGrey4);
+            @include box-shadow(3px 0px 3px -2px $TPGrey4);
+        }
+
+        .arrow
+        {
+            @include box-shadow(3px 0px 3px -2px $TPGrey4);
         }
     }
 }
@@ -251,32 +260,28 @@ input[disabled='disabled']
         margin-bottom:3px;
         margin-left: -3px;
         padding: 3px;
-        color: $TPGrey4;
         border: 1px solid transparent;
+        font-size: $fontSizeSmaller;
 
         &.hover
         {
-            background-color: $TPGrey1;
-            border-color: $TPGrey7;
+            &:not(.editable)
+            {
+                background-color: $TPGrey1;
+                border-color: $TPGrey7;
+            }
         }
 
         .commentHeader
         {
             // this becomes smaller because it's relative to the size above it ...
-            font-size: $fontSizeSmall;
             font-weight: $fontWeightBold;
             margin-bottom: 3px;
+            color: $TPGrey3;
 
             .date
             {
-                .weekdayName
-                {
-                    text-transform: uppercase;
-                }
-            }
-
-            .date
-            {
+                margin-left: 5px;
                 .weekdayName
                 {
                     text-transform: uppercase;
@@ -287,7 +292,6 @@ input[disabled='disabled']
 
         .commentBody
         {
-            font-size: $fontSizeSmall;
             white-space: pre-wrap;
         }
 

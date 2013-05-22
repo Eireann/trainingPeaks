@@ -129,12 +129,13 @@ function (
 
         onMenuIconClicked: function()
         {
-            var offset = this.$("#menuIcon").offset();
+            var menuIcon = this.$("#menuIcon");
             var menu = new QVContextMenuView({ model: this.model });
             menu.on("delete", this.onDeleteWorkout, this);
             menu.on("cut", this.close, this);
             menu.on("copy", this.close, this);
-            menu.render().bottom(offset.top).left(offset.left - 20);
+            menu.setPosition({ fromElement: menuIcon, bottom: 0, top: menuIcon.height(), left: -30 });
+            menu.render();
         },
 
         removeUpdateHeaderOnChange: function()
