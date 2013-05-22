@@ -22,7 +22,7 @@ function (
         {
             "click #breakThrough": "onBreakThroughClicked",
             "click #date": "onDateClicked",
-            "click .workoutIcon": "onWorkoutIconClicked",
+            "click .workoutIconLarge": "onWorkoutIconClicked",
             "click #menuIcon": "onMenuIconClicked"
         },
 
@@ -122,7 +122,7 @@ function (
 
         onWorkoutIconClicked: function()
         {
-            var offset = this.$(".workoutIcon").offset();
+            var offset = this.$(".workoutIconLarge").offset();
             var typesMenu = new WorkoutTypeMenuView({ workoutTypeId: this.model.get("workoutTypeValueId") });
             typesMenu.on("selectWorkoutType", this.onSelectWorkoutType, this);
             typesMenu.render().right(offset.left - 5).top(offset.top - 15);
