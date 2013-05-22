@@ -1,0 +1,65 @@
+﻿$bikeNegativeSmallURL: url(../../assets/images/sportTypeIcons/bike_neg_50.png);
+$bikeNegativeLargeURL: url(../../assets/images/sportTypeIcons/bike_neg_140.png);
+
+$bikePositiveSmallURL: url(../../assets/images/sportTypeIcons/bike_pos_50.png);
+$bikePositiveLargeURL: url(../../assets/images/sportTypeIcons/bike_pos_140.png);
+
+$runNegativeSmallURL: url(../../assets/images/sportTypeIcons/run_neg_50.png);
+$runNegativeLargeURL: url(../../assets/images/sportTypeIcons/run_neg_140.png);
+
+$runPositiveSmallURL: url(../../assets/images/sportTypeIcons/run_pos_50.png);
+$runPositiveLargeURL: url(../../assets/images/sportTypeIcons/run_pos_140.png);
+
+$swimNegativeSmallURL: url(../../assets/images/sportTypeIcons/swim_neg_50.png);
+$swimNegativeLargeURL: url(../../assets/images/sportTypeIcons/swim_neg_140.png);
+
+$swimPositiveSmallURL: url(../../assets/images/sportTypeIcons/swim_pos_50.png);
+$swimPositiveLargeURL: url(../../assets/images/sportTypeIcons/swim_pos_140.png);
+
+@mixin workoutIcons($pastWorkoutIconSmallURL, $pastWorkoutIconLargeURL, $futureWorkoutIconSmallURL, $futureWorkoutIconLargeURL, $futureBackgroundColor) 
+{
+    .workoutIcon
+    {
+        background: $pastWorkoutIconSmallURL no-repeat 0 0;
+        background-size: 25px 25px;
+    }
+
+    .workoutIconLarge
+    {
+        background: $pastWorkoutIconLargeURL no-repeat 0 0;
+        background-size: 70px 70px;
+    }
+
+    &.future
+    {
+        .workoutIcon
+        {
+            background: $futureWorkoutIconSmallURL no-repeat 0 0;
+            background-color: $futureBackgroundColor;
+            background-size: 25px 25px;
+        }
+
+        .workoutIconLarge
+        {
+            background: $futureWorkoutIconLargeURL no-repeat 0 0;
+            background-color: $futureBackgroundColor;
+            background-size: 70px 70px;
+        }
+    }
+}
+
+.Bike
+{
+    @include workoutIcons($bikeNegativeSmallURL, $bikeNegativeLargeURL, $bikePositiveSmallURL, $bikePositiveLargeURL, $clrBike);
+}
+
+.Run
+{
+    @include workoutIcons($runNegativeSmallURL, $runNegativeLargeURL, $runPositiveSmallURL, $runPositiveLargeURL, $clrRun);
+}
+
+.Swim
+{
+    @include workoutIcons($swimNegativeSmallURL, $swimNegativeLargeURL, $swimPositiveSmallURL, $swimPositiveLargeURL, $clrSwim);
+}
+ 

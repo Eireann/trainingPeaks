@@ -1,5 +1,6 @@
 ﻿@import "../globalCSS/tpstylesheet";
 @import "workoutColor";
+@import "workoutIcons";
 
 .workout
 {
@@ -63,9 +64,8 @@
             {
                 width: 25px;
                 height: 25px;
-                background-color: $white;
                 float: left;
-                margin-top: 5px;
+                margin-top: 4px;
             }
 
             .workoutDistanceTime
