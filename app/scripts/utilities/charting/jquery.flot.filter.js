@@ -62,10 +62,6 @@ function ()
         var currentEma;
 
         var smoothing = 2.0 / (period + 1);
-
-        if (plot.getOptions().smoothing !== null)
-            smoothing = plot.getOptions().smoothing;
-        
         var seriesLength = timeSeriesCopy.length;
         
         for (var i = 0; i < seriesLength; i++)
@@ -76,13 +72,13 @@ function ()
                 emas.push(startingSma);
             else
             {
-                if (timeSeriesCopy[i] === null)
+                if (timeSeriesCopy[i] === null && period < 50)
                 {
                     emas.push(null);
                     continue;
                 }
-                
-                var value = _.isNaN(timeSeriesCopy[i]) ? previousEma : timeSeriesCopy[i];
+
+                var value = _.isNaN(timeSeriesCopy[i]) || timeSeriesCopy[i] === null ? previousEma : timeSeriesCopy[i];
                 currentEma = ((parseFloat(value) - previousEma) * smoothing) + previousEma;
                 emas.push(currentEma);
                 previousEma = currentEma;
@@ -96,60 +92,62 @@ function ()
     {
     };
 
-    var originalData = {};
-
-    var applyDataFilter = function(plot, series, data)
+    var applyDataFilter = function(plot, series, datapoints)
     {
-        if (_.isEmpty(originalData))
-            _.extend(originalData, series);
-        
         var o = plot.getOptions();
-        
+
         if (!o.filter.enabled || series.label === "Elevation")
             return;
-        
+
         var i;
         var y;
         var timeSeries = [];
-        
-        for (i = 1; i < data.length; i++)
+
+        for (i = 1; i < datapoints.points.length; i++)
         {
-            y = data[i][1];
-            timeSeries.push(y);
+            if (i % 2)
+            {
+                y = datapoints.points[i];
+                timeSeries.push(y);
+            }
         }
 
         var filterFunction;
-
 
         switch (o.filter.type)
         {
             case "sma":
                 filterFunction = computeSimpleMovingAverages;
+                break;
             case "ema":
                 filterFunction = computeExponentialMovingAverages;
+                break;
             case "gauss":
                 filterFunction = computeGaussianFilter;
+                break;
             default:
                 filterFunction = computeSimpleMovingAverages;
         }
 
         var filteredData = filterFunction(timeSeries, o.filter.period);
-        
-        for (i = 1; i < data.length; i++)
+
+        for (i = 1; i < datapoints.points.length; i++)
         {
-            y = filteredData[i];
-            data[i][1] = y;
+            if (i % 2)
+            {
+                datapoints.points[i] = filteredData.shift();
+            }
         }
     };
 
-    var setFilter = function(plot, period)
+    var setFilter = function (plot, period)
     {
         var o = plot.getOptions();
 
         o.filter.enabled = period !== 0 ? true : false;
         o.filter.period = period;
 
-        plot.setData(originalData);
+        plot.setData(plot.getData());
         plot.setupGrid();
         plot.draw();
     };
@@ -161,7 +159,7 @@ function ()
             enabled: false,
             period: 10,
             smoothing: null,
-            type: "sma"
+            type: "ema"
         }
     };
     
@@ -176,7 +174,7 @@ function ()
                     setFilter(plot, period);
                 };
                 
-                plot.hooks.processRawData.push(applyDataFilter);
+                plot.hooks.processDatapoints.push(applyDataFilter);
             },
             options: options,
             name: "filter",

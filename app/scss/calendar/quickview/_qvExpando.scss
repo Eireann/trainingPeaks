@@ -151,7 +151,7 @@
         .graphToolbar
         {
             padding: 0;
-            margin: -40px 55px 0 0;
+            margin: -35px 55px 0 0;
 
             button
             {
@@ -162,8 +162,7 @@
                 width: 44px;
                 float: left;
                 box-shadow: none;
-                @include
-                linearGradient(top, #ffffff, #dfddde);
+                @include linearGradient(top, #ffffff, #dfddde);
                 background-color: #fff;
                 color: $TPGrey3;
                 border-color: #808080;

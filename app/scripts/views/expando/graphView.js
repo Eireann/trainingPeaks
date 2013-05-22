@@ -78,7 +78,7 @@ function (TP, DataParser, getDefaultFlotOptions, flotZoom, GraphToolbarView, gra
             this.flotOptions.filter =
             {
                 enabled: false,
-                type: "sma",
+                type: "ema",
                 period: 30
             };
 
