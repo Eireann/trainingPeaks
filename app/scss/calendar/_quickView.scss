@@ -14,19 +14,30 @@
     height: 530px;
 	@include radialGradient(#e6e4e4, #dedcdc);
 
+    textarea, input
+    {
+        @include box-shadow(none);
+        
+        &:focus 
+        {
+            background-color: #FFFFFF;
+        }
+    }
+
     input
     {
+        
         text-align: center;
 
-       &.workoutTitle
-       {
+        &.workoutTitle
+        {
             text-align: left;
-       }
+        }
 
-       &#startTimeInput
-       {
+        &#startTimeInput
+        {
             text-align: left;
-       }
+        }
     }
 
 }
