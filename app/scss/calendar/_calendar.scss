@@ -120,7 +120,7 @@
 				}
                 &:active
                 {
-                    background: url(../../assets/images/calendarImages/background-gradient-button_active.png) repeat-x -40px 0;
+                    background: url(../../assets/images/calendarImages/background-gradient-button.png) repeat-x 0 -20px;
                     color: #ffffff;
                 }
 			}
@@ -129,14 +129,7 @@
             {
                 float:left;
                 @include headerButtons(7px, 38px, $fontSizeMedium);
-                button
-                {
-                    img
-                    {
-                        padding-top: 1px;
-                    }
-                }
-
+             
 			
 				.printButton 
                 {
