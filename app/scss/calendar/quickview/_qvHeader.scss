@@ -1,5 +1,16 @@
 ﻿@import "../../globalCSS/tpstylesheet";
 
+.workoutQuickView
+{
+    &.expanded
+    {
+        #workOutQuickView
+        {
+            min-width: 1150px;
+        }
+    }
+}
+
 .QVHeader
 {
 	width: 100%;
@@ -9,6 +20,7 @@
     @include box-shadow(2px 0px 7px 0px $TPGrey3);
     position: relative;
     z-index: 2; // otherwise maps/charts overlay it and kill the drop shadow
+
 
     div
     {
@@ -83,8 +95,7 @@
         background-color: $TPGrey2;
         float: left;
         margin-top: 0px;
-
-        @include box-shadow(0px 1px 2px 0px #40403f);
+        border: 1px solid $TPGrey9;
 
         .workoutIconLarge
         {
@@ -245,7 +256,7 @@
     }
 
     #menuIcon {
-		padding: 0 0 6px 0;
+		padding: 2px 0 6px 0;
 		cursor:pointer;
     }
 

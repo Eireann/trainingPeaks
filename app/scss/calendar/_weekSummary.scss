@@ -22,7 +22,6 @@
         cursor: default;
     }
     
-
 	.summarySettings
     {
         display: none;
@@ -33,12 +32,10 @@
             background: transparent;
             border: none;
             padding: 0px;
-            width: 20px;
-            height: 15px;
 			cursor: pointer;
             margin-bottom: 0px;
             box-shadow: none;
-        }
+			}
 	}
 
     .weekSummaryTableContainer
@@ -296,6 +293,11 @@
     .weekSummaryATPValue, {
         width:133px;
         display:inline-block;
+    }
+
+    .weekSummaryATPValue
+    {
+        font-size: 1em; 
     }
 
     .weekSummaryMetricValue {

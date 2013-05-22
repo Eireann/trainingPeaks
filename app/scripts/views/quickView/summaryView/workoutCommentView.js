@@ -80,6 +80,7 @@ function (TP, UserConfirmationView, deleteConfirmationTemplate, WorkoutCommentsT
                 this.editable = true;
                 this.template.template = editableWorkoutCommentsTemplate;
                 this.render();
+                this.$el.addClass("editable");
                 setImmediate(function() { self.$(".commentBody").focus(); });
             }
         },
@@ -100,6 +101,7 @@ function (TP, UserConfirmationView, deleteConfirmationTemplate, WorkoutCommentsT
                 this.editable = false;
                 this.template.template = WorkoutCommentsTemplate;
                 this.render();
+                this.$el.removeClass("editable");
             }
         },
         

@@ -3,12 +3,11 @@
     "TP",
     "utilities/charting/dataParser",
     "utilities/charting/defaultFlotOptions",
-    "utilities/charting/flotCustomTooltip",
     "utilities/charting/jquery.flot.zoom",
     "views/expando/graphToolbarView",
     "hbs!templates/views/expando/graphTemplate"
 ],
-function (TP, DataParser, getDefaultFlotOptions, flotCustomToolTip, flotZoom, GraphToolbarView, graphTemplate)
+function (TP, DataParser, getDefaultFlotOptions, flotZoom, GraphToolbarView, graphTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -28,7 +27,6 @@ function (TP, DataParser, getDefaultFlotOptions, flotCustomToolTip, flotZoom, Gr
             this.detailDataPromise = options.detailDataPromise;
 
             //TODO refactor, this should be set by CSS classes (CSS calc?)
-            //this.$el.width(this.$el.parent().width());
             this.$el.height(400);
         },
 
@@ -77,7 +75,14 @@ function (TP, DataParser, getDefaultFlotOptions, flotCustomToolTip, flotZoom, Gr
             this.flotOptions.zoom.dataParser = this.dataParser;
             this.flotOptions.zoom.resetButton = ".graphResetButton";
 
-            $.plot(this.$el, series, this.flotOptions);
+            this.flotOptions.filter =
+            {
+                enabled: false,
+                type: "ema",
+                period: 30
+            };
+
+            this.plot = $.plot(this.$el, series, this.flotOptions);
 
             this.overlayGraphToolbar();
         },
@@ -85,7 +90,16 @@ function (TP, DataParser, getDefaultFlotOptions, flotCustomToolTip, flotZoom, Gr
         overlayGraphToolbar: function()
         {
             var toolbar = new GraphToolbarView({ dataParser: this.dataParser });
+            toolbar.on("filterPeriodChanged", this.applyFilter, this);
             this.$el.append(toolbar.render().$el);
+        },
+        
+        applyFilter: function(period)
+        {
+            if (!this.plot)
+                return;
+            
+            this.plot.setFilter(period);
         }
     });
 });

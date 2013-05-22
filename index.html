@@ -12,7 +12,42 @@
   <!-- Application styles. -->
     
   <!-- Font -->
-  <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+<style type="text/css">
+
+@import url("http://fast.fonts.com/t/1.css?apiType=css&projectid=444b1e2c-23c4-43ca-8978-58740876bc10");
+@font-face{
+font-family:"HelveticaNeueW01-45Ligh";
+src:url("assets/fonts/ae1656aa-5f8f-4905-aed0-93e667bd6e4a.eot?#iefix");
+src:url("assets/fonts/ae1656aa-5f8f-4905-aed0-93e667bd6e4a.eot?#iefix") format("eot"),url("assets/fonts/530dee22-e3c1-4e9f-bf62-c31d510d9656.woff") format("woff"),url("assets/fonts/688ab72b-4deb-4e15-a088-89166978d469.ttf") format("truetype"),url("assets/fonts/7816f72f-f47e-4715-8cd7-960e3723846a.svg#7816f72f-f47e-4715-8cd7-960e3723846a") format("svg");
+}
+@font-face{
+font-family:"HelveticaNeueW01-46Ligh";
+src:url("assets/fonts/a4f9f319-dec9-4afc-8b50-e18cc1b61cb4.eot?#iefix");
+src:url("assets/fonts/a4f9f319-dec9-4afc-8b50-e18cc1b61cb4.eot?#iefix") format("eot"),url("assets/fonts/8e9ee02b-f337-4f13-ad6c-969d6d6536c8.woff") format("woff"),url("assets/fonts/beddbbc6-203e-4f36-8960-3f5ca22af567.ttf") format("truetype"),url("assets/fonts/af177436-d9e8-44e8-9c9c-ef2d945f20a3.svg#af177436-d9e8-44e8-9c9c-ef2d945f20a3") format("svg");
+}
+@font-face{
+font-family:"HelveticaNeueW01-65Medi";
+src:url("assets/fonts/07fe0fec-b63f-4963-8ee1-535528b67fdb.eot?#iefix");
+src:url("assets/fonts/07fe0fec-b63f-4963-8ee1-535528b67fdb.eot?#iefix") format("eot"),url("assets/fonts/60be5c39-863e-40cb-9434-6ebafb62ab2b.woff") format("woff"),url("assets/fonts/4c6503c9-859b-4d3b-a1d5-2d42e1222415.ttf") format("truetype"),url("assets/fonts/36c182c6-ef98-4021-9b0d-d63122c2bbf5.svg#36c182c6-ef98-4021-9b0d-d63122c2bbf5") format("svg");
+}
+@font-face{
+font-family:"HelveticaNeueW01-66Medi";
+src:url("assets/fonts/71c74bc5-e7c8-48ad-9b03-43f3e6760e4e.eot?#iefix");
+src:url("assets/fonts/71c74bc5-e7c8-48ad-9b03-43f3e6760e4e.eot?#iefix") format("eot"),url("assets/fonts/5f0efe11-b07a-49fc-ab86-7af6152fa368.woff") format("woff"),url("assets/fonts/fea58e5b-b0a7-43f7-8928-fc0639365852.ttf") format("truetype"),url("assets/fonts/398e1bb8-f2eb-41d5-b3b6-b9a889b52ee7.svg#398e1bb8-f2eb-41d5-b3b6-b9a889b52ee7") format("svg");
+}
+@font-face{
+font-family:"HelveticaNeueW01-85Heav";
+src:url("assets/fonts/bb37f770-d450-4f24-af2b-3a81bf640315.eot?#iefix");
+src:url("assets/fonts/bb37f770-d450-4f24-af2b-3a81bf640315.eot?#iefix") format("eot"),url("assets/fonts/a0d9d2cb-f057-4e8d-a957-27853630f58e.woff") format("woff"),url("assets/fonts/54085041-5049-4b91-939c-49980c66abab.ttf") format("truetype"),url("assets/fonts/7a48747c-74f2-49a8-bb65-1c522d4aa618.svg#7a48747c-74f2-49a8-bb65-1c522d4aa618") format("svg");
+}
+@font-face{
+font-family:"HelveticaNeueW01-86Heav";
+src:url("assets/fonts/2daec1fd-cd45-448e-b86e-ec73aacdb4ec.eot?#iefix");
+src:url("assets/fonts/2daec1fd-cd45-448e-b86e-ec73aacdb4ec.eot?#iefix") format("eot"),url("assets/fonts/eb32ec0b-c520-4a30-8777-e19326236901.woff") format("woff"),url("assets/fonts/2d92bb71-9a10-499c-954f-8b61e8dd47f1.ttf") format("truetype"),url("assets/fonts/e425d5b6-a4c5-4e1c-b29a-9a5b467b9645.svg#e425d5b6-a4c5-4e1c-b29a-9a5b467b9645") format("svg");
+}
+
+</style>
+
 
   <!--(if target dummy)><!-->
   <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.0/themes/base/jquery-ui.css" />
@@ -54,6 +89,7 @@
   <!--(if target dummy)><!-->
   <script src="./vendor/js/libs/jquery/jquery.js"></script>
   <script src="./vendor/js/libs/flot/jquery.flot.js"></script>
+  <script src="./vendor/js/libs/flot/jquery.flot.crosshair.js"></script>
   <script src="./vendor/js/libs/flot/jquery.flot.resize.js"></script>
   <script src="./vendor/js/libs/flot/jquery.flot.selection.js"></script>
   <script src="./vendor/js/libs/flot/jquery.flot.spline.js"></script>
@@ -65,6 +101,7 @@
   <!--(if target release)>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
   <script src="http://storage.trainingpeaks.com.s3.amazonaws.com/js/jquery.flot.js"></script>
+  <script src="http://storage.trainingpeaks.com.s3.amazonaws.com/js/jquery.flot.crosshair.js"></script>
   <script src="http://storage.trainingpeaks.com.s3.amazonaws.com/js/jquery.flot.resize.js"></script>
   <script src="http://storage.trainingpeaks.com.s3.amazonaws.com/js/jquery.flot.selection.js"></script>
   <script src="http://storage.trainingpeaks.com.s3.amazonaws.com/js/jquery.flot.spline.js"></script>
@@ -76,6 +113,7 @@
   <!--(if target debug)>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.js"></script>
   <script src="http://storage.trainingpeaks.com.s3.amazonaws.com/js/jquery.flot.js"></script>
+  <script src="http://storage.trainingpeaks.com.s3.amazonaws.com/js/jquery.flot.crosshair.js"></script>
   <script src="http://storage.trainingpeaks.com.s3.amazonaws.com/js/jquery.flot.resize.js"></script>
   <script src="http://storage.trainingpeaks.com.s3.amazonaws.com/js/jquery.flot.selection.js"></script>
   <script src="http://storage.trainingpeaks.com.s3.amazonaws.com/js/jquery.flot.spline.js"></script>
@@ -87,6 +125,7 @@
   <!--(if target dev)>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.js"></script>
   <script src="http://storage.trainingpeaks.com.s3.amazonaws.com/js/jquery.flot.js"></script>
+  <script src="http://storage.trainingpeaks.com.s3.amazonaws.com/js/jquery.flot.crosshair.js"></script>
   <script src="http://storage.trainingpeaks.com.s3.amazonaws.com/js/jquery.flot.resize.js"></script>
   <script src="http://storage.trainingpeaks.com.s3.amazonaws.com/js/jquery.flot.selection.js"></script>
   <script src="http://storage.trainingpeaks.com.s3.amazonaws.com/js/jquery.flot.spline.js"></script>
@@ -98,6 +137,7 @@
   <!--(if target uat)>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.js"></script>
   <script src="http://storage.trainingpeaks.com.s3.amazonaws.com/js/jquery.flot.js"></script>
+  <script src="http://storage.trainingpeaks.com.s3.amazonaws.com/js/jquery.flot.crosshair.js"></script>
   <script src="http://storage.trainingpeaks.com.s3.amazonaws.com/js/jquery.flot.resize.js"></script>
   <script src="http://storage.trainingpeaks.com.s3.amazonaws.com/js/jquery.flot.selection.js"></script>
   <script src="http://storage.trainingpeaks.com.s3.amazonaws.com/js/jquery.flot.spline.js"></script>

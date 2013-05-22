@@ -70,6 +70,7 @@ function (_, TP, ExpandoController)
             var afterExpanding = function()
             {
                 //TODO Use CSS classes instead of manually setting css attributes in here
+                self.$el.addClass("expanded");
                 self.$(".expandButton").hide();
                 self.$(".collapseButton, .expandedViewsButtons").show();
                 self.$("#quickViewExpandedContent").show();
@@ -117,6 +118,9 @@ function (_, TP, ExpandoController)
 
             var collapseDuration = 300;
             this.expandoController.collapse();
+
+            this.$el.removeClass("expanded");
+
             this.$el.animate({
                 height: this.originalPosition.height,
                 width: this.originalPosition.width,
@@ -152,15 +156,20 @@ function (_, TP, ExpandoController)
 
             var windowWidth = $(window).width();
             var windowHeight = $(window).height();
-            var overallHeight = this.$el.height();
+            var qvHeight = this.$el.height();
+            var qvWidth = this.$el.width();
 
-            this.$el.css("left", Math.round((windowWidth - this.$el.width()) / 2) + "px");
-            this.$el.css("top", Math.round((windowHeight - overallHeight) / 2) + "px");
+            var left = windowWidth > qvWidth ? Math.round((windowWidth - qvWidth) / 2) : 10;
+
+            var top = windowHeight > qvHeight ? Math.round((windowHeight - qvHeight) / 2) : 10;
+
+            this.$el.css("left", left + "px");
+            this.$el.css("top", top + "px");
 
             if (this.expanded)
             {
                 var headerHeight = this.$(".QVHeader").outerHeight();
-                this.$("#quickViewExpandedContent, #expandoLeftColumn, #expandoRightColumn").css("height", overallHeight - headerHeight + "px");
+                this.$("#quickViewExpandedContent, #expandoLeftColumn, #expandoRightColumn").css("height", qvHeight - headerHeight + "px");
             }
 
         }

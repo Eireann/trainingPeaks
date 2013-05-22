@@ -140,7 +140,7 @@
         {
             float: right;
             padding-right: 12px;
-            margin-right: 30px;
+            margin-right: 42px;
 
             .headerPipe
             {
@@ -217,30 +217,70 @@
 {
 	background-color: $white;
 
-	.row {
+	.row 
+    {
 		width: 100%;
-		}
+	}
 
-	.appNavigation {
+	.appNavigation 
+    {
 		text-align: center;
 
-		.centered {
+		.centered 
+        {
             display: inline-block;
-        	}
+        }
 
-		span {
+		span 
+        {
 			float: left;
 			text-align: center;
 			&:hover label{color: $TPBlue; }
 			&:hover label{border-bottom-style:solid; border-bottom-width:2px; border-color:$TPBlue;}
 		}
 	
-		@include labels($navigationFontFamilyRegular, $fontSizeMedium, $TPGrey4, normal);
+		@include labels($navigationFontFamilyRegular, $fontSizeMedium, $TPGrey3, normal);
 		label {
 			padding: 0px 7px 0px 7px;
-			height:23px;
+			height:20px;
 			cursor:pointer;
-		}	
+		}
+
+        &.home
+        {
+            label#home
+            {
+                color: $TPBlue; 
+			    border-bottom-style:solid; border-bottom-width:2px; border-color:$TPBlue;
+            }
+        }
+        
+        &.calendar
+        {
+            label#calendar
+            {
+                color: $TPBlue; 
+			    border-bottom-style:solid; border-bottom-width:2px; border-color:$TPBlue;
+            }
+        }
+        
+        &.dashboard
+        {
+            label#dashboard
+            {
+                color: $TPBlue; 
+			    border-bottom-style:solid; border-bottom-width:2px; border-color:$TPBlue;
+            }
+        }
+        
+        &.tools
+        {
+            label#tools
+            {
+                color: $TPBlue; 
+			    border-bottom-style:solid; border-bottom-width:2px; border-color:$TPBlue;
+            }
+        }	
 	}
 }
 
