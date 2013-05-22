@@ -1,5 +1,16 @@
 ﻿@import "../../globalCSS/tpstylesheet";
 
+.workoutQuickView
+{
+    &.expanded
+    {
+        #workOutQuickView
+        {
+            min-width: 1150px;
+        }
+    }
+}
+
 .QVHeader
 {
 	width: 100%;
@@ -9,6 +20,7 @@
     @include box-shadow(2px 0px 7px 0px $TPGrey3);
     position: relative;
     z-index: 2; // otherwise maps/charts overlay it and kill the drop shadow
+
 
     div
     {
