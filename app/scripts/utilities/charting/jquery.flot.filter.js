@@ -67,10 +67,8 @@ function ()
         
         for (var i = 0; i < seriesLength; i++)
         {
-            if (i < period - 1)
-                emas.push(null);
-            else if (i === period - 1)
-                emas.push(startingSma);
+            if (i <= period - 1)
+                emas.push((previousEma + timeSeriesCopy[i] + timeSeriesCopy[0]) / 3);
             else
             {
                 if (timeSeriesCopy[i] === null && period < 50)
