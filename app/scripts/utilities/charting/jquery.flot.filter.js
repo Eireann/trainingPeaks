@@ -157,6 +157,7 @@ function ()
         o.filter.period = period;
 
         plot.setData(plot.getData());
+        //# Remvoed on purpose since we don't want the axes to change dynamically as we smooth - looks weird!
         //plot.setupGrid();
         plot.draw();
     };
@@ -191,4 +192,16 @@ function ()
             version: "0.1"
         });
     }
+
+    // Make this shit testable
+    var flotFilter =
+    {
+        setFilter: setFilter,
+        applyDataFilter: applyDataFilter,
+        computeSumsOverPeriod: computeSumsOverPeriod,
+        computeSimpleMovingAverages: computeSimpleMovingAverages,
+        computeExponentialMovingAverages: computeExponentialMovingAverages
+    };
+    
+    return flotFilter;
 });
