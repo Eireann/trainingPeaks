@@ -75,7 +75,7 @@ function (TP, DataParser, getDefaultFlotOptions, flotZoom, GraphToolbarView, gra
             this.flotOptions.zoom.dataParser = this.dataParser;
             this.flotOptions.zoom.resetButton = ".graphResetButton";
 
-            $.plot(this.$el, series, this.flotOptions);
+            this.plot = $.plot(this.$el, series, this.flotOptions);
 
             this.overlayGraphToolbar();
         },
@@ -83,7 +83,16 @@ function (TP, DataParser, getDefaultFlotOptions, flotZoom, GraphToolbarView, gra
         overlayGraphToolbar: function()
         {
             var toolbar = new GraphToolbarView({ dataParser: this.dataParser });
+            toolbar.on("filterPeriodChanged", this.applyFilter, this);
             this.$el.append(toolbar.render().$el);
+        },
+        
+        applyFilter: function(period)
+        {
+            if (!this.plot)
+                return;
+            
+            this.plot.setFilter(period);
         }
     });
 });

@@ -26,7 +26,7 @@
     }
 
 	.bold {
-		font-weight: bold;
+        font-family: $fontFamilyHeavy;
 	}
 	
 	fieldset {
@@ -51,7 +51,7 @@
 	.shiftItemsBody {
         text-align: left;
 		padding: 10px 15px 15px 35px;
-		@include inputs(13px, 13px, 12px, $navigationFontFamilyRegular);
+		@include inputs(13px, 13px, 12px, $fontFamilyRegular);
 
         input[type=text] {
             margin-left: 10px;
@@ -110,7 +110,7 @@
 		
 		.toAndFromDateRange {
 			display: -webkit-box;
-			@include inputs(100px, 25px, 12px, $navigationFontFamilyRegular);
+			@include inputs(100px, 25px, 12px, $fontFamilyRegular);
 			margin-bottom:0;
 			input {
 				display: inline;
@@ -125,7 +125,7 @@
 		.selectNewStartDateInput {
 		/* -webkit-box makes the label and input display as inline */
 		//	display: -webkit-box;
-			@include inputs(100px, 25px, 12px, $navigationFontFamilyRegular);
+			@include inputs(100px, 25px, 12px, $fontFamilyRegular);
 			
 			input {
 				display: inline;
@@ -150,7 +150,7 @@
 		#MoveBySpecifiedNumberOfWeeks {
 		
 			label {
-				font-weight:bold;
+                font-family: $fontFamilyHeavy;
 				font-size:$fontSizeSmall;
 				color:#222222;
 				margin:0 0 0 20px;

@@ -157,7 +157,7 @@
                 float:left;
 
                 // note that the color here gets overridden by darkBackground and lightBackground above 
-                @include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey2, normal);
+                @include labels($fontFamilyRegular, $fontSizeSmall, $TPGrey2, normal);
 
 				#usernameLabel {
 					padding: 11px 0 12px 0;
@@ -191,7 +191,7 @@
                 {
                     color: $white;
                     font-size: $fontSizeSmall;
-                    font-family: $navigationFontFamilyRegular;
+                    font-family: $fontFamilyRegular;
 					padding:0;
 					margin:0;
 					cursor: pointer;
@@ -239,7 +239,7 @@
 			&:hover label{border-bottom-style:solid; border-bottom-width:2px; border-color:$TPBlue;}
 		}
 	
-		@include labels($navigationFontFamilyRegular, $fontSizeMedium, $TPGrey3, normal);
+		@include labels($fontFamilyRegular, $fontSizeMedium, $TPGrey3, normal);
 		label {
 			padding: 0px 7px 0px 7px;
 			height:20px;
@@ -293,7 +293,7 @@
 {
     span
     {
-        font-family: $navigationFontFamilyRegular;
+        font-family: $fontFamilyRegular;
         font-size: $fontSizeHeader;
     }
 }

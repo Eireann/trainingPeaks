@@ -1,7 +1,8 @@
 ﻿define(
 [
     "TP",
-    "utilities/charting/flotCustomTooltip"
+    "utilities/charting/flotCustomTooltip",
+    "utilities/charting/jquery.flot.filter"
 ],
 function(TP, flotCustomToolTip)
 {

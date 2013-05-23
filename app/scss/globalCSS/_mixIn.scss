@@ -6,7 +6,7 @@
 	{
 		width: $width;
 		padding:2px 0;
-		font-family: $navigationFontFamilyLight;
+		font-family: $fontFamilyRegular;
 		font-size: $fontSize;
 		font-weight:normal;
 		margin-left: $marginLeft;
@@ -106,7 +106,7 @@
 		margin-top: 3px;
 		width: $width;
 		font-size: $fontSizeMedium;
-		font-family: $navigationFontFamilyRegular;
+		font-family: $fontFamilyRegular;
 	}
 }
 

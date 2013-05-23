@@ -20,6 +20,20 @@ function(TP, graphToolbarTemplate)
             this.dataParser = options.dataParser;
         },
         
+        events:
+        {
+            "change input[name=filterPeriod]": "onFilterPeriodChanged"  
+        },
+        
+        onFilterPeriodChanged: function(event)
+        {
+            if (!event.target)
+                return;
+
+            var period = parseInt(event.target.value, 10);
+            this.trigger("filterPeriodChanged", period);
+        },
+        
         onRender: function()
         {
             var self = this;

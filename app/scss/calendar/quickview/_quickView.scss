@@ -152,12 +152,12 @@ input[disabled='disabled']
 
                 &.selected
                 {
-                    font-weight: bold;
+                    font-family: $fontFamilyHeavy;
                 }
 
                 &:hover
                 {
-                    font-weight: bold;
+                    font-family: $fontFamilyHeavy;
                 }
             }
         }
@@ -227,7 +227,7 @@ input[disabled='disabled']
     label
     {
         display:inline-block;
-        font-weight: bold;
+        font-family: $fontFamilyHeavy;
     }
 
     select
@@ -275,7 +275,8 @@ input[disabled='disabled']
         .commentHeader
         {
             // this becomes smaller because it's relative to the size above it ...
-            font-weight: $fontWeightBold;
+            font-family: $fontFamilyHeavy;
+            font-weight: normal;
             margin-bottom: 3px;
             color: $TPGrey3;
 

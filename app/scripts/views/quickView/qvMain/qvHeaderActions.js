@@ -22,7 +22,7 @@ function (
         {
             "click #breakThrough": "onBreakThroughClicked",
             "click #date": "onDateClicked",
-            "click .workoutIcon": "onWorkoutIconClicked",
+            "click .workoutIconLarge": "onWorkoutIconClicked",
             "click #menuIcon": "onMenuIconClicked"
         },
 
@@ -64,9 +64,15 @@ function (
             }
             this.$(".grayHeader").addClass(this.getComplianceCssClassName());
             this.$(".grayHeader").addClass(this.getPastOrCompletedCssClassName());
+            this.$(".grayHeader").addClass(this.getWorkoutTypeCssClassName());
 
             this.$(".chzn-select").chosen();
 
+        },
+
+        getWorkoutTypeCssClassName: function ()
+        {
+            return TP.utils.workout.types.getNameById(this.model.get("workoutTypeValueId")).replace(/ /g, "");
         },
 
         getPastOrCompletedCssClassName: function()
@@ -116,7 +122,7 @@ function (
 
         onWorkoutIconClicked: function()
         {
-            var offset = this.$(".workoutIcon").offset();
+            var offset = this.$(".workoutIconLarge").offset();
             var typesMenu = new WorkoutTypeMenuView({ workoutTypeId: this.model.get("workoutTypeValueId") });
             typesMenu.on("selectWorkoutType", this.onSelectWorkoutType, this);
             typesMenu.render().right(offset.left - 5).top(offset.top - 15);
