@@ -2,7 +2,7 @@
 
 @mixin buttons($marginLeft, $width, $fontSize)
 {
-	button
+    button, input[type=button]
 	{
 		width: $width;
 		padding:2px 0;
