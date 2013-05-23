@@ -92,7 +92,7 @@ function ()
 
     var computeWeightedMovingAverage = function(timeSeries, period)
     {
-        var weights = [ ]
+        var weights = [];
         for (var i = 0; i < timeSeries.length; i++)
         {
         }

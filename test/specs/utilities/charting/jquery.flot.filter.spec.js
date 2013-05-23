@@ -119,7 +119,7 @@ function($, TP, moment, theMarsApp, flotFilter)
             expect(actualAverages).toEqual(expectedAverages);
 
             // Period 9
-            expectedAverages = [ null, null, null, null, null, null, null, null, 5, 6 ]
+            expectedAverages = [null, null, null, null, null, null, null, null, 5, 6];
             actualAverages = flotFilter.computeExponentialMovingAverages(timeSeriesData, 9);
             expect(actualAverages).toEqual(expectedAverages);
 
