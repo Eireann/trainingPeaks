@@ -72,13 +72,13 @@ function(TP, draggable, ExerciseLibraryItemViewTemplate, ExerciseLibraryItemView
         {
             this.$el.addClass(this.getWorkoutTypeCssClassName());
             // we need the "future" class to get the right icon.
-            this.$el.addClass("future")
+            this.$el.addClass("future");
         },
 
         getWorkoutTypeCssClassName: function ()
         {
             return TP.utils.workout.types.getNameById(this.model.get("workoutTypeId")).replace(/ /g, "");
-        },
+        }
 
     });
 });
