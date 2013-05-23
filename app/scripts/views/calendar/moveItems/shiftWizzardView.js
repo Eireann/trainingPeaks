@@ -320,7 +320,7 @@ function(moment, datepicker, spinner, TP, ShiftWorkoutsCommand, shiftWizzard)
         {
             var dateValidator = function(value)
             {
-                if(!value || !moment(value).isValid())
+                if (!value || !moment(value, "YYYY-MM-DD").isValid())
                 {
                     return false;
                 }
