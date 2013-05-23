@@ -38,6 +38,7 @@ function(TP, draggable, ExerciseLibraryItemViewTemplate, ExerciseLibraryItemView
         onRender: function()
         {
             this.makeDraggable();
+            this.getIconType();
         },
 
         makeDraggable: function()
@@ -65,7 +66,18 @@ function(TP, draggable, ExerciseLibraryItemViewTemplate, ExerciseLibraryItemView
         onDragStop: function()
         {
             this.$el.removeClass("dragging");
-        }
+        },
+
+        getIconType: function ()
+        {
+            this.$el.addClass(this.getWorkoutTypeCssClassName());
+            this.$el.addClass("future")
+        },
+
+        getWorkoutTypeCssClassName: function ()
+        {
+            return TP.utils.workout.types.getNameById(this.model.get("workoutTypeId")).replace(/ /g, "");
+        },
 
     });
 });
