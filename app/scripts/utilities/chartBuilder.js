@@ -68,6 +68,13 @@ function(_)
 
         renderChart: function(container, chartData, tooltipTemplate, additionalChartOptions)
         {
+            var chartFontStyle = {
+                color: "#636569",
+                fontFamily: "HelveticaNeueW01-65Medi",
+                fontSize: "12px",
+                fontWeight: "normal"
+            };
+
             var chartOptions = {
                 series: [{ data: chartData }],
                 chart:
@@ -83,10 +90,7 @@ function(_)
                 },
                 title:
                 {
-                    style: {
-                        color: '#636569',
-                        fontWeight: 'bold'
-                    }
+                    style: chartFontStyle
                 },
                 xAxis: {
                    labels:
@@ -95,10 +99,7 @@ function(_)
                     },
                     title:
                     {
-                        style: {
-                            color: '#636569',
-                            fontWeight: 'bold'
-                        }
+                        style: chartFontStyle
                     },
                     tickColor: 'transparent'
                 },
@@ -108,10 +109,7 @@ function(_)
                     tickInterval: 10,
                     title:
                     {
-                        style: {
-                            color: '#636569',
-                            fontWeight: 'bold'
-                        }
+                        style: chartFontStyle
                     }
                 },
                 legend:

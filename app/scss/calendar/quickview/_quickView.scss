@@ -17,6 +17,7 @@
     textarea, input
     {
         @include box-shadow(none);
+        color: $TPGrey4;
         
         &:focus 
         {
@@ -262,6 +263,7 @@ input[disabled='disabled']
         padding: 3px;
         border: 1px solid transparent;
         font-size: $fontSizeSmaller;
+        color: $TPGrey3;
 
         &.hover
         {
