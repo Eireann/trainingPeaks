@@ -33,12 +33,13 @@ function(TP, draggable, ExerciseLibraryItemViewTemplate, ExerciseLibraryItemView
 
 
             _.bindAll(this, "draggableHelper", "onDragStart", "onDragStop");
+
+            this.getIconType();
         },
 
         onRender: function()
         {
             this.makeDraggable();
-            this.getIconType();
         },
 
         makeDraggable: function()
