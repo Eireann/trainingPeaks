@@ -41,7 +41,8 @@ function(moment, datepicker, spinner, TP, ShiftWorkoutsCommand, shiftWizzard)
         events:
         {
             "click button#cancel": "onClose",
-            "click button#ok": "onOkClicked"
+            "click button#ok": "onOkClicked",
+            "change": "validateFields"
         },
 
         template:
@@ -87,6 +88,7 @@ function(moment, datepicker, spinner, TP, ShiftWorkoutsCommand, shiftWizzard)
         initialize: function(options)
         {
             this.initModel(options);
+            _.bindAll(this, "disableSubmit");
         },
 
         initModel: function(options)
@@ -247,6 +249,94 @@ function(moment, datepicker, spinner, TP, ShiftWorkoutsCommand, shiftWizzard)
                     break;
             }
 
+        },
+
+        validateFields: function()
+        {
+
+            this.enableSubmit();
+
+            // how to move
+            switch (this.model.get("selectItems"))
+            {
+                case "itemsOnAllSelectedDays":
+                    // no date range inputs to validate
+                    break;
+                   
+                case "ItemsWithinSpecifiedDateRange":
+                    this.validateDate("fromDate", this.disableSubmit);
+                    this.validateDate("toDate", this.disableSubmit);
+                    break;
+
+                case "ItemsOnAfterSpecifiedStartDate":
+                    this.validateDate("fromDate", this.disableSubmit);
+                    break;
+            }
+
+
+            // where to move
+            switch (this.model.get("shiftBy"))
+            {
+                case "MoveToNewStartDate":
+                    this.validateDate("moveToStartDate", this.disableSubmit);
+                    break;
+
+                case "MoveBySpecifiedNumberOfDays":
+                    this.validateInt("moveByNumberOfDays", this.disableSubmit);
+                    break;
+
+                case "MoveBySpecifiedNumberOfWeeks":
+                    this.validateInt("moveByNumberOfWeeks", this.disableSubmit);
+                    break;
+            }
+
+        },
+
+        enableSubmit: function()
+        {
+            this.$("#ok").attr("disabled", false);
+        },
+
+        disableSubmit: function()
+        {
+            this.$("#ok").attr("disabled", true);
+        },
+
+        validateInt: function(attributeName, onFail)
+        {
+            var intValidator = function(value)
+            {
+                if(!value || isNaN(value))
+                {
+                    return false;
+                }
+
+                return true;
+            }
+            this.validate(intValidator, attributeName, onFail);
+        },
+
+        validateDate: function(attributeName, onFail)
+        {
+            var dateValidator = function(value)
+            {
+                if(!value || !moment(value).isValid())
+                {
+                    return false;
+                }
+
+                return true;
+            }
+            this.validate(dateValidator, attributeName, onFail);
+        },
+
+        validate: function(validator, attributeName, onFail)
+        {
+            var value = this.model.get(attributeName);
+            if(!validator(value))
+            {
+                onFail.call(this);
+            }
         }
     });
 });
