@@ -75,13 +75,6 @@ function (TP, DataParser, getDefaultFlotOptions, flotZoom, GraphToolbarView, gra
             this.flotOptions.zoom.dataParser = this.dataParser;
             this.flotOptions.zoom.resetButton = ".graphResetButton";
 
-            this.flotOptions.filter =
-            {
-                enabled: false,
-                type: "ema",
-                period: 30
-            };
-
             this.plot = $.plot(this.$el, series, this.flotOptions);
 
             this.overlayGraphToolbar();

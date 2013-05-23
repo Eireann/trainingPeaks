@@ -50,16 +50,17 @@ function ()
         return movingAverages;
     };
 
-    var computeExponentialMovingAverages = function(timeSeries, period)
+    var computeExponentialMovingAverages = function(timeSeries, period, reverse)
     {
         var emas = [];
         var timeSeriesCopy = ([]).concat(timeSeries);
 
-        timeSeriesCopy.reverse();
-
         var startingSma = computeSimpleMovingAverages(timeSeriesCopy.slice(0, period))[0];
         var previousEma = startingSma;
         var currentEma;
+
+        if (reverse)
+            timeSeriesCopy.reverse();
 
         var smoothing = 2.0 / (period + 1);
         var seriesLength = timeSeriesCopy.length;
@@ -84,12 +85,17 @@ function ()
                 previousEma = currentEma;
             }
         }
-        emas.reverse();
+        if(reverse)
+            emas.reverse();
         return emas;
     };
 
-    var computeGaussianFilter = function()
+    var computeWeightedMovingAverage = function(timeSeries, period)
     {
+        var weights = [ ]
+        for (var i = 0; i < timeSeries.length; i++)
+        {
+        }
     };
 
     var applyDataFilter = function(plot, series, datapoints)
@@ -122,14 +128,17 @@ function ()
             case "ema":
                 filterFunction = computeExponentialMovingAverages;
                 break;
-            case "gauss":
-                filterFunction = computeGaussianFilter;
+            case "wma":
+                filterFunction = computeWeightedMovingAverage;
                 break;
             default:
                 filterFunction = computeSimpleMovingAverages;
         }
 
-        var filteredData = filterFunction(timeSeries, o.filter.period);
+        var filteredData = filterFunction(timeSeries, o.filter.period, false);
+        
+        if(o.filter.type === "ema")
+            filteredData = filterFunction(filteredData, o.filter.period, true);
 
         for (i = 1; i < datapoints.points.length; i++)
         {
@@ -148,7 +157,7 @@ function ()
         o.filter.period = period;
 
         plot.setData(plot.getData());
-        plot.setupGrid();
+        //plot.setupGrid();
         plot.draw();
     };
 
@@ -158,7 +167,6 @@ function ()
         {
             enabled: false,
             period: 10,
-            smoothing: null,
             type: "ema"
         }
     };
@@ -169,6 +177,8 @@ function ()
         {
             init: function(plot)
             {
+                theMarsApp.flotOptions = plot.getOptions();
+                
                 plot.setFilter = function(period)
                 {
                     setFilter(plot, period);
