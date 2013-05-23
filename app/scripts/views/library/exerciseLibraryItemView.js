@@ -71,6 +71,7 @@ function(TP, draggable, ExerciseLibraryItemViewTemplate, ExerciseLibraryItemView
         getIconType: function ()
         {
             this.$el.addClass(this.getWorkoutTypeCssClassName());
+            // we need the "future" class to get the right icon.
             this.$el.addClass("future")
         },
 
