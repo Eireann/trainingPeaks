@@ -27,6 +27,7 @@ function(
             var cloudmadeLayer = new L.TileLayer(cloudmadeURL);
             var leafletLayer = new L.TileLayer(leafletURL);
             var gmapLayer = new L.Google('ROADMAP');
+            var gTerrainLayer = new L.Google("TERRAIN");
 
             // Leaflet needs to know where to find images
             L.Icon.Default.imagePath = theMarsApp.assetsRoot + "images/leaflet";
@@ -36,13 +37,14 @@ function(
                 scrollWheelZoom: false,
                 doubleClickZoom: false,
                 boxZoom: true,
-                layers: [gmapLayer],
+                layers: [gTerrainLayer],
                 center: new L.LatLng(40.012369, -105.132353),
                 zoom: 8
             };
 
             var baseMaps =
             {
+                "Terrain": gTerrainLayer,
                 "Google": gmapLayer,
                 "OSM": osmLayer,
                 "Cloudmade": cloudmadeLayer,
