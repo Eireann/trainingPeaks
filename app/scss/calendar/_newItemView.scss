@@ -91,15 +91,20 @@
             }
         }
 
-        button[name="uploadDeviceFile"]
-        {
+        button[name="uploadDeviceFile"] {
             width: 210px;
             margin-right: 1em;
-            margin-left: 5px;
+      
+			@include linearGradient(top, #dfdfdf, #AAC8E5);
+			margin-left: 10px;
             float: left;
+			box-shadow:none;
 
-            @include blueButton();
-
+            &:active {
+				color: #636569;
+				background:none;
+				@include linearGradient(top, #dfdfdf, #8cb5dc);
+            }
         }
 
         button[name="chooseMetricBtn"]
