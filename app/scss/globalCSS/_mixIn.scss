@@ -91,6 +91,7 @@
 		padding-top: 0px;
 		padding-bottom: 0px;
         cursor: text;
+        @include box-shadow(none);
 	}
 
     input[disabled='disabled']

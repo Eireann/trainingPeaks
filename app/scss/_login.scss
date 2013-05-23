@@ -16,7 +16,7 @@
 
         legend
         {
-            font-family: $fontFamilyHeavy;
+            font-family: $fontFamilyRegular;
             font-weight: normal;
             color: $TPGrey3;
             text-transform: uppercase;
@@ -37,6 +37,14 @@
             display: none;
             color: #AA0000;
             margin-bottom: 8px;
+        }
+
+        input
+        {
+            &:focus 
+            {
+                background-color: #FFFFFF;
+            }
         }
     }
 }
