@@ -54,16 +54,14 @@ $fontSizeSmaller: .786em;
 // 10px
 $fontSizeXSmall: .714em;
 
-$fontWeightBold: 700;
-$fontWeightMedium: 600;
-
 // footer fonts
 $footerFontFamily: 'Courier New', Courier, 'Nimbus Mono L', monospace;
 
 
 // navigation fonts
-$navigationFontFamilyLight: "HelveticaNeueW01-45Ligh";
-$navigationFontFamilyRegular: "HelveticaNeueW01-65Medi"; 
+$fontFamilyLight: "HelveticaNeueW01-45Ligh";
+$fontFamilyRegular: "HelveticaNeueW01-65Medi"; 
+$fontFamilyHeavy: "HelveticaNeueW01-85Heav"; 
 
 // colors by workout type
 $clrRun: #1e5162;

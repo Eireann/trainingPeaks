@@ -19,7 +19,7 @@
 		padding-left: 65px;
 		//padding-top: 13px;
         margin-top: 5px;
-		@include labels($navigationFontFamilyRegular, $fontSizeHeader, $TPBlue, normal);
+		@include labels($fontFamilyRegular, $fontSizeHeader, $TPBlue, normal);
 		label
 		{
 			float: left;
@@ -28,7 +28,7 @@
 		}
 		.headerYear
 		{
-			font-family: $navigationFontFamilyLight;
+			font-family: $fontFamilyLight;
 		}
 	}
 
@@ -335,7 +335,7 @@
 
 		#calendarDate
 		{
-			font-Family: $navigationFontFamilyRegular;
+			font-Family: $fontFamilyRegular;
 			font-size: $fontSizeMedium;
 			color: $TPGrey8;
 			text-align: right;
@@ -402,7 +402,7 @@
                 padding-bottom: 0px;
                 padding-left: 5px;
                 padding-right: 0px;
-                font-Family: $navigationFontFamilyLight;
+                font-Family: $fontFamilyLight;
                 font-size: $fontSizeSmall;
                 color: $TPGrey3;
                 text-align: left;

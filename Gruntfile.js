@@ -260,7 +260,7 @@ module.exports = function(grunt)
             {
                 files:
                 {
-                    "build/debug": ["web.config", "assets/fonts/**", "assets/images/**", "app/scripts/affiliates/**", "!app/scripts/affiliates/**/*.js"]
+                    "build/debug": ["assets/fonts/**", "assets/images/**", "app/scripts/affiliates/**", "!app/scripts/affiliates/**/*.js"]
                 }
             },
 
