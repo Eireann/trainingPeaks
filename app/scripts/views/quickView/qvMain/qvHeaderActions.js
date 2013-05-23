@@ -189,7 +189,7 @@ function (
 
             // if nothing was planned, we can't fail to complete it properly ...
 
-            return "ComplianceGreen";
+            return "ComplianceNone";
         },
 
         updateHeaderOnChange: function()

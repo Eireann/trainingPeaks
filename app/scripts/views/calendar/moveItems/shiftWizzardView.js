@@ -306,13 +306,13 @@ function(moment, datepicker, spinner, TP, ShiftWorkoutsCommand, shiftWizzard)
         {
             var intValidator = function(value)
             {
-                if(!value || isNaN(value))
+                if (!value || isNaN(value))
                 {
                     return false;
                 }
 
                 return true;
-            }
+            };
             this.validate(intValidator, attributeName, onFail);
         },
 
@@ -326,7 +326,7 @@ function(moment, datepicker, spinner, TP, ShiftWorkoutsCommand, shiftWizzard)
                 }
 
                 return true;
-            }
+            };
             this.validate(dateValidator, attributeName, onFail);
         },
 
