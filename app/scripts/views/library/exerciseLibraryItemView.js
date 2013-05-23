@@ -33,6 +33,8 @@ function(TP, draggable, ExerciseLibraryItemViewTemplate, ExerciseLibraryItemView
 
 
             _.bindAll(this, "draggableHelper", "onDragStart", "onDragStop");
+
+            this.getIconType();
         },
 
         onRender: function()
@@ -65,6 +67,18 @@ function(TP, draggable, ExerciseLibraryItemViewTemplate, ExerciseLibraryItemView
         onDragStop: function()
         {
             this.$el.removeClass("dragging");
+        },
+
+        getIconType: function ()
+        {
+            this.$el.addClass(this.getWorkoutTypeCssClassName());
+            // we need the "future" class to get the right icon.
+            this.$el.addClass("future");
+        },
+
+        getWorkoutTypeCssClassName: function ()
+        {
+            return TP.utils.workout.types.getNameById(this.model.get("workoutTypeId")).replace(/ /g, "");
         }
 
     });
