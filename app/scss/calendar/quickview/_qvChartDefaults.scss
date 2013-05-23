@@ -95,7 +95,7 @@
 
         .zoneName
         {
-            @include labels($fontFamilyHeavy, $fontSizeSmall, $TPGrey3, normal);
+            @include labels($fontFamilyRegular, $fontSizeSmall, $TPGrey4, normal);
             label
             {
                 white-space: nowrap;
@@ -130,7 +130,7 @@
             @include calc(width, "100% - 100px"); 
             text-align: right;
             vertical-align: top;
-            @include labels($fontFamilyHeavy, $fontSizeSmall, $TPGrey3, normal);
+            @include labels($fontFamilyRegular, $fontSizeSmall, $TPGrey4, normal);
             label
             {
                 margin-top: 5px;
