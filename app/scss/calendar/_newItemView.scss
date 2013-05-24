@@ -94,17 +94,10 @@
         button[name="uploadDeviceFile"] {
             width: 210px;
             margin-right: 1em;
-      
-			@include linearGradient(top, #dfdfdf, #AAC8E5);
 			margin-left: 10px;
             float: left;
-			box-shadow:none;
 
-            &:active {
-				color: #636569;
-				background:none;
-				@include linearGradient(top, #dfdfdf, #8cb5dc);
-            }
+            @include blueButton();
         }
 
         button[name="chooseMetricBtn"]

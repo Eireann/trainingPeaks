@@ -125,6 +125,14 @@
                 {
                     margin-top: -1px;
                     cursor: pointer;
+                    width: 13px;
+                    height: 34px;
+                    background: url(../../assets/images/QVImages/paperClip.png);
+
+                    &.withAttachments
+                    {
+                        background: url(../../assets/images/QVImages/paperClipActive.png);
+                    }
                 }
         
             }
