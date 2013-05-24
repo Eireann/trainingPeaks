@@ -140,7 +140,7 @@ input[disabled='disabled']
 
         .hoverBoxContents
         {
-            @include linearGradient(right, rgb(255,255,255), rgba(255,255,255,0.95)); 
+            //@include linearGradient(right, rgb(255,255,255), rgba(255,255,255,0.95)); 
             padding: 10px;
 
             .details

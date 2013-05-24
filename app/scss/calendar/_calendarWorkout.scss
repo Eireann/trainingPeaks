@@ -72,7 +72,7 @@
             {
                 padding: 13px 0px 0px 30px;
 
-                @include labels($fontFamilyRegular, $fontSizeXLarge, $TPGrey8, normal);
+                @include labels($fontFamilyRegular, $fontSizeXLarge, $TPGrey4, normal);
                 label
                 {
                     display:inline-block;
@@ -90,9 +90,9 @@
         .workoutBody
         {
 
-            color: $TPGrey8;
+            color: $TPGrey4;
             padding: 2px 3px 3px 3px;
-            @include labels($fontFamilyHeavy, $fontSizeXSmall, $TPGrey8, normal);
+            @include labels($fontFamilyHeavy, $fontSizeXSmall, $TPGrey4, normal);
             label
             {
                 cursor: inherit;
@@ -104,7 +104,7 @@
             {
                 margin-bottom: 0px;
                 font-size: $fontSizeXSmall;
-                color: $TPGrey8;
+                color: $TPGrey4;
                 font-family: $fontFamilyRegular;
                 text-align: left;
                 line-height: 12px;

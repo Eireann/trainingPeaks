@@ -226,3 +226,11 @@
     background: -ms-radial-gradient(center, ellipse cover, #1e5799 0%, $color1 0%, $color2 100%);
     background: radial-gradient(ellipse at center, #1e5799 0%, $color1 0%, $color2 100%);
 }
+
+@mixin placeholders($color)
+{
+    ::-webkit-input-placeholder { color: $color; }
+    :moz-placeholder { color: $color; }
+    ::moz-placeholder { color: $color; }
+    :-ms-input-placeholder { color: $color; }
+}
