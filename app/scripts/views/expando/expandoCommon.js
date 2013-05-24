@@ -1,7 +1,7 @@
 ﻿define(
 [
     "TP"
-], function (TP)
+], function(TP)
 {
     return {
         calculateTotalAndMovingTime: function(lapData)
@@ -15,4 +15,4 @@
             }
         }
     };
-})
+});
