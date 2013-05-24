@@ -41,7 +41,7 @@ function (TP, UserConfirmationView, deleteConfirmationTemplate, WorkoutCommentsT
         onMouseOver: function ()
         {
             this.$el.addClass("hover");
-            if (this.model.get("commenterPersonId") !== theMarsApp.user.id)
+            if (this.editable || this.model.get("commenterPersonId") !== theMarsApp.user.id)
             {
                 this.$(".deleteButton").hide();
             }

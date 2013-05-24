@@ -55,9 +55,13 @@ input[disabled='disabled']
 	height: 360px;
 	overflow-y:scroll; 
 	overflow-x:hidden;
-    @include nice-scrollbar;
 	@include radialGradient(#e6e4e4, #dedcdc);
     width: 653px;
+
+    @include nice-scrollbar;
+    &::-webkit-scrollbar-track {
+        box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0.2) 0 0px 1px 1px inset;
+    }
 }
 
 .quickviewFooter
@@ -273,6 +277,11 @@ input[disabled='disabled']
                 background-color: $TPGrey1;
                 border-color: $TPGrey7;
             }
+        }
+
+        &.editable
+        {
+            padding-right: 0px;
         }
 
         .commentHeader

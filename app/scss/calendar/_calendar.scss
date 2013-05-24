@@ -354,7 +354,11 @@
 		.summaryHeader
 		{
 			background-color: #206193;
-			#calendarDate{color: white;}
+			#calendarDate
+            {
+                color: white;
+                font-family: $fontFamilyLight;
+            }
             cursor: default;
 		}
 	}
