@@ -1,0 +1,50 @@
+﻿@import "globalCSS/tpstylesheet";
+
+
+#loginForm
+{
+
+    form
+    {
+        width: 30%;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 150px;
+
+
+        @include labels($fontFamilyRegular, $fontSizeMedium, $TPGrey3, normal);
+
+        legend
+        {
+            font-family: $fontFamilyRegular;
+            font-weight: normal;
+            color: $TPGrey3;
+            text-transform: uppercase;
+        }
+
+        @include inputs(100%, 22px, $fontSizeMedium, $fontFamilyRegular);
+        @include buttons(0px, 80px, $fontSizeMedium);
+        
+        #loginInProgressLabel
+        {
+            display: none;
+            color: #005695;
+            margin-bottom: 8px;
+        }
+
+        #loginFailedLabel
+        {
+            display: none;
+            color: #AA0000;
+            margin-bottom: 8px;
+        }
+
+        input
+        {
+            &:focus 
+            {
+                background-color: #FFFFFF;
+            }
+        }
+    }
+}

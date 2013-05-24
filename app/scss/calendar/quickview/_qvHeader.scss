@@ -39,7 +39,7 @@
         
         #dayName
         {
-            font-family: $navigationFontFamilyRegular;
+            font-family: $fontFamilyRegular;
             font-size:$fontSizeMedium;
             color: $TPGrey3;
             padding-right: 14px;
@@ -48,7 +48,7 @@
 
         #calendarDate
         {
-            font-family: $navigationFontFamilyRegular;
+            font-family: $fontFamilyRegular;
             font-size:$fontSizeSmall;
             color: $TPGrey3;
             padding-right: 14px;
@@ -56,17 +56,15 @@
 
         #time
         {
-            font-family: $navigationFontFamilyRegular;
+            font-family: $fontFamilyRegular;
             font-size:$fontSizeSmall;
             color: $TPGrey3;
-            font-style: italic
         }
 
-        @include inputs(200px, 20px, $fontSizeSmall, $navigationFontFamilyRegular);
+        @include inputs(200px, 20px, $fontSizeSmall, $fontFamilyRegular);
         input#startTimeInput
         {
             color: $TPGrey3;
-            font-style: italic;
             display: inline-block;
             outline: none;
             @include box-shadow(none);
@@ -91,19 +89,19 @@
     {
         width: 570px;
         height: 80px;
-        padding: 4px 0px 5px 5px;
+        padding: 5px 0px 5px 4px;
         background-color: $TPGrey2;
         float: left;
         margin-top: 0px;
         border: 1px solid $TPGrey9;
 
-        .workoutIcon
+        .workoutIconLarge
         {
             width: 70px;
             height: 70px;
-            background-color: white;
             float: left;
             cursor: pointer;
+            margin-top: -1px;
         }
 
         .workoutHeaderStats
@@ -127,6 +125,14 @@
                 {
                     margin-top: -1px;
                     cursor: pointer;
+                    width: 13px;
+                    height: 34px;
+                    background: url(../../assets/images/QVImages/paperClip.png);
+
+                    &.withAttachments
+                    {
+                        background: url(../../assets/images/QVImages/paperClipActive.png);
+                    }
                 }
         
             }
@@ -135,20 +141,31 @@
             {
                 float: left;
                 padding: 10px 0px 0px 10px;
-                @include labels($navigationFontFamilyRegular, $fontSizeQVHeader, $TPGrey4, normal);
+                @include labels($fontFamilyLight, $fontSizeQVHeader, $TPGrey4, normal);
+
+                &.duration
+                {
+                    margin-right: 10px;
+                }
             }
             .headerWorkoutValueLabel
             {
                 float: left;
                 padding: 18px 0px 0px 0px;
-                @include labels($navigationFontFamilyRegular, $fontSizeXXLarge, $TPGrey4, normal);
+                @include labels($fontFamilyLight, $fontSizeXXLarge, $TPGrey4, normal);
+
+                &.distance
+                {
+                    margin-right: 10px;
+                }
             }
 
             .title
             {
+                clear: left;
                 padding-left: 5px;
-                @include inputs(100%, 20px, $fontSizeLarge, $navigationFontFamilyRegular);
-                input
+                @include inputs(10px, 20px, $fontSizeLarge, $fontFamilyRegular);
+                input#workoutTitleField
                 {
                     background:transparent;
                     outline: none;
@@ -156,8 +173,18 @@
                     box-shadow: inset 0 0px 0px rgba(0, 0, 0, 0.0);
                     color: $TPGrey4;
                     display: inline;
-                    font-style: italic;
+                    min-width: 145px;
+                    max-width: 100%;
+                    //width: auto;
+                    //overflow-x: visible;
+
+                    &:focus
+                    {
+                        background-color: rgba(255, 255, 255, 0.5);
+                    }
                 }
+                @include placeholders($TPGrey3);
+
             }
         }
 
@@ -192,7 +219,7 @@
         {
             width: 81px;
             height: 36px;
-            @include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey3, normal);
+            @include labels($fontFamilyRegular, $fontSizeSmall, $TPGrey3, normal);
             margin-left: 10px;
             padding-top: 12px;
             padding-left: 28px;
@@ -248,7 +275,7 @@
             }
         }
 
-        @include labels($navigationFontFamilyRegular, $fontSizeLarge, $TPGrey4, normal);
+        @include labels($fontFamilyRegular, $fontSizeLarge, $TPGrey4, normal);
         text-align: center;
         //@include box-shadow(0px 1px 2px 0px #40403f);
         //margin-left: 10px;

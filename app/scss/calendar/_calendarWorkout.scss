@@ -1,5 +1,6 @@
 ﻿@import "../globalCSS/tpstylesheet";
 @import "workoutColor";
+@import "workoutIcons";
 
 .workout
 {
@@ -63,16 +64,15 @@
             {
                 width: 25px;
                 height: 25px;
-                background-color: $white;
                 float: left;
-                margin-top: 5px;
+                margin-top: 4px;
             }
 
             .workoutDistanceTime
             {
                 padding: 13px 0px 0px 30px;
 
-                @include labels($navigationFontFamilyRegular, $fontSizeXLarge, $TPGrey8, normal);
+                @include labels($fontFamilyRegular, $fontSizeXLarge, $TPGrey4, normal);
                 label
                 {
                     display:inline-block;
@@ -90,12 +90,11 @@
         .workoutBody
         {
 
-            color: $TPGrey8;
+            color: $TPGrey4;
             padding: 2px 3px 3px 3px;
-            @include labels($navigationFontFamilyRegular, $fontSizeXSmall, $TPGrey8, normal);
+            @include labels($fontFamilyHeavy, $fontSizeXSmall, $TPGrey4, normal);
             label
             {
-                font-weight: bold;
                 cursor: inherit;
                 white-space: pre-wrap;
             
@@ -105,8 +104,8 @@
             {
                 margin-bottom: 0px;
                 font-size: $fontSizeXSmall;
-                color: $TPGrey8;
-                font-family: $navigationFontFamilyRegular;
+                color: $TPGrey4;
+                font-family: $fontFamilyRegular;
                 text-align: left;
                 line-height: 12px;
                 cursor: inherit;
@@ -139,7 +138,7 @@
         min-width: 100px;
         padding-bottom: 4px;
 
-        @include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey4, normal);
+        @include labels($fontFamilyRegular, $fontSizeSmall, $TPGrey4, normal);
 
         label
         {
@@ -169,7 +168,7 @@
         {
             //color: $thisWeekBlue;
             color: $TPGrey3; 
-            font-weight: bold;
+            font-family: $fontFamilyHeavy;
             font-size:$fontSizeMedium;
 
             &.empty
@@ -193,42 +192,15 @@
 	padding-left: 10px;
 	padding-bottom: 20px;
 
-	@include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey3, normal);
+	@include labels($fontFamilyRegular, $fontSizeSmall, $TPGrey3, normal);
 	label
 	{
 		padding-top: 2px;
         cursor: pointer;
 	}
 
-	.arrow
-    {
-        width: 15px;
-        height: 15px;
-        @include transform(translateY(-10px) rotate(45deg));
-        @include calc(margin-left, "50% - 20");
-    }
-
-	.colorBar
-    {
-        bottom: 15px;
-    }
-
-	.bottomShadow
-    {
-        bottom: 14px;
-    }
-
 	.hoverBoxContents {
 		min-width: 75px;
-	}
-	
-	.hoverBox .colorBar {
-	  	bottom: 14px;
-		height: 4px;
-	}
-	
-	.hoverBox .mainShadow {
-		bottom: 18px;
 	}
 
 }

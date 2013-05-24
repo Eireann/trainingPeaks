@@ -141,13 +141,14 @@ function(
             var yaxes = this.dataParser.getYAxes(series);
 
             // Hide all series & axes by default in the data set
-            _.each(series, function(s) { s.lines.show = false; });
+            _.each(series, function(s) { s.lines.show = true; });
             _.each(yaxes, function(axis)
             {
                 axis.show = false;
                 axis.tickLength = 0;
             });
 
+            /*
             // Pick the top 2 series by priority and show those
             _.each(priority, function(channel)
             {
@@ -164,13 +165,15 @@ function(
             var elevationSeries = _.where(series, { label: "Elevation" });
             if (elevationSeries && elevationSeries[0])
                 elevationSeries[0].lines.show = true;
+            */
 
             var flotOptions = getDefaultFlotOptions(series);
 
             flotOptions.yaxes = yaxes;
             flotOptions.xaxes[0].tickLength = 0;
 
-            $.plot(this.$("#quickViewGraph"), series, flotOptions);
+            var plot = $.plot(this.$("#quickViewGraph"), series, flotOptions);
+            plot.setFilter(10);
         }
     };
 

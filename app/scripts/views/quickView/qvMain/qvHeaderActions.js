@@ -22,8 +22,11 @@ function (
         {
             "click #breakThrough": "onBreakThroughClicked",
             "click #date": "onDateClicked",
-            "click .workoutIcon": "onWorkoutIconClicked",
-            "click #menuIcon": "onMenuIconClicked"
+            "click .workoutIconLarge": "onWorkoutIconClicked",
+            "click #menuIcon": "onMenuIconClicked",
+            "focus input.workoutTitle": "onTitleFocus",
+            "blur input.workoutTitle": "onTitleBlur",
+            "keyup input.workoutTitle": "onTitleChanged"
         },
 
         headerUi:
@@ -64,9 +67,17 @@ function (
             }
             this.$(".grayHeader").addClass(this.getComplianceCssClassName());
             this.$(".grayHeader").addClass(this.getPastOrCompletedCssClassName());
+            this.$(".grayHeader").addClass(this.getWorkoutTypeCssClassName());
 
             this.$(".chzn-select").chosen();
 
+            this.$(".workoutTitle").css('width', this.titleWidth());
+
+        },
+
+        getWorkoutTypeCssClassName: function ()
+        {
+            return TP.utils.workout.types.getNameById(this.model.get("workoutTypeValueId")).replace(/ /g, "");
         },
 
         getPastOrCompletedCssClassName: function()
@@ -116,7 +127,7 @@ function (
 
         onWorkoutIconClicked: function()
         {
-            var offset = this.$(".workoutIcon").offset();
+            var offset = this.$(".workoutIconLarge").offset();
             var typesMenu = new WorkoutTypeMenuView({ workoutTypeId: this.model.get("workoutTypeValueId") });
             typesMenu.on("selectWorkoutType", this.onSelectWorkoutType, this);
             typesMenu.render().right(offset.left - 5).top(offset.top - 15);
@@ -183,7 +194,7 @@ function (
 
             // if nothing was planned, we can't fail to complete it properly ...
 
-            return "ComplianceGreen";
+            return "ComplianceNone";
         },
 
         updateHeaderOnChange: function()
@@ -208,6 +219,27 @@ function (
                 description = description.replace(/BT: /, "");
                 this.model.set("description", description);
             }
+        },
+
+        onTitleFocus: function()
+        {
+            $(document).tooltip("close");
+            $(document).tooltip("disable");
+        },
+
+        onTitleBlur: function()
+        {
+            $(document).tooltip("enable");
+        },
+
+        onTitleChanged: function ()
+        {
+            this.$(".workoutTitle").css('width', this.titleWidth());
+        },
+
+        titleWidth: function ()
+        {
+            return (this.$(".workoutTitle").val().length + 1) * 8 + 10 + 'px';
         }
 
     };

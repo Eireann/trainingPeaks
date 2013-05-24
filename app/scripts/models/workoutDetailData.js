@@ -32,7 +32,9 @@ function (_, moment, TP)
             "peakPowers": null,
             "peakSpeeds": null,
             "peakSpeedsByDistance": null,
-            "sampleRate": null
+            "sampleRate": null,
+            "totalStats": null,
+            "lapsStats": null
         }
     });
 

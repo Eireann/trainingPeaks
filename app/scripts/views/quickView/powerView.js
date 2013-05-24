@@ -10,7 +10,7 @@ function(
     zonesViewBase
 )
 {
-    var paceViewBase = {
+    var powerViewBase = {
         metric: "Power",
         zoneSettingName: "powerZones",
         graphTitle: "Power",
@@ -136,7 +136,7 @@ function(
             _.extend(chartOptions, {
                 yAxis: {
                     title: {
-                        text: "Watts"
+                        text: "WATTS"
                     }
                 }
             });
@@ -144,6 +144,9 @@ function(
 
     };
 
-    _.extend(paceViewBase, zonesViewBase);
-    return TP.ItemView.extend(paceViewBase);
+    _.extend(powerViewBase, zonesViewBase);
+
+    powerViewBase.chartColor = "#8106C9";
+
+    return TP.ItemView.extend(powerViewBase);
 });

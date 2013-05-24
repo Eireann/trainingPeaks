@@ -1,1 +1,27 @@
-﻿
+﻿<div class="controls">
+    <select id="peakType">
+        {{#each selectOptions}}
+        <option value="{{ value }}"{{#if selected}} selected{{/if}}>{{ label }}</option>
+        {{/each}}
+    </select>
+    <button id="uncheck">{{$ "UncheckAll" }}</button>
+</div>
+<div class="rangesList">
+    <ul>
+    {{#each rangeLaps}}
+        <li>
+            <input type="checkbox"/> {{ name }} ({{ formatTime totalTime}})
+        </li>
+    {{/each}}
+    {{#with rangeTotals}}
+        <li class="statsRow" id="duration">
+            <input type="checkbox"/> {{$ "EntireWorkout" }} ({{ formatTime totalTime }})
+        </li>
+    {{/with}}
+        {{#each rangePeaks}}
+        <li>
+            <input type="checkbox"/> {{$ "Peak" }} {{ formatPeakTime interval }} ({{ formattedValue }} {{ units }})
+        </li>
+    {{/each}}
+    </ul>
+</div>

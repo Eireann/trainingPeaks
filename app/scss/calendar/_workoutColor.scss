@@ -32,6 +32,11 @@
     {
         #{$property}: $clrComplianceGreen;
     }
+
+    &.ComplianceNone #{$childSelector}
+    {
+        #{$property}: $TPGrey2;
+    }
 }
 
 
@@ -39,7 +44,6 @@
 .workout.future
 {
     background-color: $TPGrey2;
-                 
 }
 
 .workout.past
