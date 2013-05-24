@@ -25,7 +25,7 @@ function (
             "click .workoutIconLarge": "onWorkoutIconClicked",
             "click #menuIcon": "onMenuIconClicked",
             "focus input.workoutTitle": "onTitleFocus",
-            "blur input.workoutTitle": "onTitleBlur",
+            "blur input.workoutTitle": "onTitleBlur"
         },
 
         headerUi:
