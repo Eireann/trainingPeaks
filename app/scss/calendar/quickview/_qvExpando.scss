@@ -311,10 +311,15 @@
                         &.units
                         {
                             text-align: left;
-                            padding: 0px 0px 2px 0px;
+                            padding: 0px 0px 2px 8px;
                             font-size: $fontSizeXSmall
                         }
 
+                    }
+
+                    .separator 
+                    {
+                        padding: 0px;
                     }
 
                     .value
