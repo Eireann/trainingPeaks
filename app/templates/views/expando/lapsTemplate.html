@@ -1,16 +1,30 @@
-﻿
-    <div class="controls">
-
-
-        <select id="peakType">
-            <option value="power">{{$ "PeakPower" }}</option>
-            <option value="heartRate">{{$ "PeakHeartRate" }}</option>
-            <option value="speed">{{$ "PeakSpeed" }}</option>
-            <option value="pace">{{$ "PeakPace" }}</option>
-            <option value="cadence">{{$ "PeakCadence" }}</option>
-        </select>
-
-
-        <button id="uncheck">{{$ "UncheckAll" }}</button>
-
+﻿<div class="controls">
+    <select id="peakType">
+        {{#each selectOptions}}
+        <option value="{{ value }}"{{#if selected}} selected{{/if}}>{{ label }}</option>
+        {{/each}}
+    </select>
+    <button id="uncheck">{{$ "UncheckAll" }}</button>
+</div>
+<div>
+    {{#each rangeLaps}}
+    <div>
+        <label>{{ name }}</label>
+        <span>{{ formatTime totalTime}}</span>
     </div>
+    {{/each}}
+    {{#with rangeTotals}}
+    <div class="statsRow" id="duration">
+        <label>{{$ "EntireWorkout" }}</label>
+        {{#if movingTime }}
+        <span class="value movingTime">{{ formatTime movingTime }}</span>
+        <span class="units totalTime">({{ formatTime totalTime }})</span>
+        {{ else }}
+        <span class="value movingTime">{{ formatTime totalTime }}</span>
+        {{/if}}
+    </div>
+    {{/with}}
+    {{#each rangePeaks}}
+    {{$ "Peak" }}{{ formatPeakTime interval }} ({{ formattedValue }} {{ units }})
+    {{/each}}
+</div>

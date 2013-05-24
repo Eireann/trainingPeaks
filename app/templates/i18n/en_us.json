@@ -290,5 +290,7 @@
     "PeakSpeed": "Peak Speed",
     "PeakPace": "Peak Pace",
     "PeakCadence": "Peak Cadence",
-    "UncheckAll": "Uncheck All"
+    "UncheckAll": "Uncheck All",
+
+    "EntireWorkout": "Entire Workout"
 }
