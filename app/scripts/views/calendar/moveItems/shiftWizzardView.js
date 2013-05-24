@@ -5,9 +5,22 @@
     "jqueryui/spinner",
     "TP",
     "models/commands/ShiftWorkouts",
+    "views/userConfirmationView",
+    "hbs!templates/views/calendar/moveItems/intRangeValidationError",
+    "hbs!templates/views/calendar/moveItems/dateValidationError",
     "hbs!templates/views/calendar/moveItems/shiftWizzard"
 ],
-function(moment, datepicker, spinner, TP, ShiftWorkoutsCommand, shiftWizzard)
+function(
+    moment,
+    datepicker,
+    spinner,
+    TP,
+    ShiftWorkoutsCommand,
+    UserConfirmationView,
+    intRangeErrorTemplate,
+    dateErrorTemplate,
+    shiftWizzardTemplate
+    )
 {
 
     var ShiftWizardModel = TP.Model.extend(
@@ -41,14 +54,13 @@ function(moment, datepicker, spinner, TP, ShiftWorkoutsCommand, shiftWizzard)
         events:
         {
             "click button#cancel": "onClose",
-            "click button#ok": "onOkClicked",
-            "change": "validateFields"
+            "click button#ok": "onOkClicked"
         },
 
         template:
         {
             type: "handlebars",
-            template: shiftWizzard
+            template: shiftWizzardTemplate
         },
 
         bindings:
@@ -88,7 +100,6 @@ function(moment, datepicker, spinner, TP, ShiftWorkoutsCommand, shiftWizzard)
         initialize: function(options)
         {
             this.initModel(options);
-            _.bindAll(this, "disableSubmit");
         },
 
         initModel: function(options)
@@ -180,6 +191,11 @@ function(moment, datepicker, spinner, TP, ShiftWorkoutsCommand, shiftWizzard)
 
         onOkClicked: function()
         {
+            this.validateFields().done(this.doShift).fail(this.showErrorMessage);
+        },
+
+        doShift: function()
+        {
 
             // show throbber
             this.onWaitStart();
@@ -254,7 +270,7 @@ function(moment, datepicker, spinner, TP, ShiftWorkoutsCommand, shiftWizzard)
         validateFields: function()
         {
 
-            this.enableSubmit();
+            var deferred = new $.Deferred();
 
             // how to move
             switch (this.model.get("selectItems"))
@@ -264,12 +280,12 @@ function(moment, datepicker, spinner, TP, ShiftWorkoutsCommand, shiftWizzard)
                     break;
                    
                 case "ItemsWithinSpecifiedDateRange":
-                    this.validateDate("fromDate", this.disableSubmit);
-                    this.validateDate("toDate", this.disableSubmit);
+                    this.validateDate("fromDate", deferred);
+                    this.validateDate("toDate", deferred);
                     break;
 
                 case "ItemsOnAfterSpecifiedStartDate":
-                    this.validateDate("fromDate", this.disableSubmit);
+                    this.validateDate("fromDate", deferred);
                     break;
             }
 
@@ -278,65 +294,46 @@ function(moment, datepicker, spinner, TP, ShiftWorkoutsCommand, shiftWizzard)
             switch (this.model.get("shiftBy"))
             {
                 case "MoveToNewStartDate":
-                    this.validateDate("moveToStartDate", this.disableSubmit);
+                    this.validateDate("moveToStartDate", deferred);
                     break;
 
                 case "MoveBySpecifiedNumberOfDays":
-                    this.validateInt("moveByNumberOfDays", this.disableSubmit);
+                    this.validateInt("moveByNumberOfDays", deferred);
                     break;
 
                 case "MoveBySpecifiedNumberOfWeeks":
-                    this.validateInt("moveByNumberOfWeeks", this.disableSubmit);
+                    this.validateInt("moveByNumberOfWeeks", deferred);
                     break;
             }
 
+            deferred.resolveWith(this);
+
+            return deferred;
         },
 
-        enableSubmit: function()
+        showErrorMessage: function(messageTemplate)
         {
-            this.$("#ok").attr("disabled", false);
+            this.errorMessageView = new UserConfirmationView({ template: messageTemplate });
+            this.errorMessageView.render();
         },
 
-        disableSubmit: function()
-        {
-            this.$("#ok").attr("disabled", true);
-        },
-
-        validateInt: function(attributeName, onFail)
-        {
-            var intValidator = function(value)
-            {
-                if (!value || isNaN(value))
-                {
-                    return false;
-                }
-
-                return true;
-            };
-            this.validate(intValidator, attributeName, onFail);
-        },
-
-        validateDate: function(attributeName, onFail)
-        {
-            var dateValidator = function(value)
-            {
-                if (!value || !moment(value, "YYYY-MM-DD").isValid())
-                {
-                    return false;
-                }
-
-                return true;
-            };
-            this.validate(dateValidator, attributeName, onFail);
-        },
-
-        validate: function(validator, attributeName, onFail)
+        validateInt: function(attributeName, deferred)
         {
             var value = this.model.get(attributeName);
-            if(!validator(value))
+            if (!value || isNaN(value) || Math.abs(Number(value)) > 1000)
             {
-                onFail.call(this);
+                deferred.rejectWith(this, [intRangeErrorTemplate]);
+            }
+        },
+
+        validateDate: function(attributeName, deferred)
+        {
+            var value = this.model.get(attributeName);
+            if (!value || !moment(value, "YYYY-MM-DD").isValid())
+            {
+                deferred.rejectWith(this, [dateErrorTemplate]);
             }
         }
+
     });
 });

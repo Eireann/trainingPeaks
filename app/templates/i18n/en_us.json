@@ -292,5 +292,8 @@
     "PeakCadence": "Peak Cadence",
     "UncheckAll": "Uncheck All",
 
-    "EntireWorkout": "Entire Workout"
+    "EntireWorkout": "Entire Workout",
+
+    "DateError": "Please make sure you've chosen a valid date or date range to continue.",
+    "ShiftWizardIntError": "Please select a valid number of days or weeks (1000 to -1000)."
 }
