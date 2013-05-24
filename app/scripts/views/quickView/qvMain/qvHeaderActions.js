@@ -25,7 +25,8 @@ function (
             "click .workoutIconLarge": "onWorkoutIconClicked",
             "click #menuIcon": "onMenuIconClicked",
             "focus input.workoutTitle": "onTitleFocus",
-            "blur input.workoutTitle": "onTitleBlur"
+            "blur input.workoutTitle": "onTitleBlur",
+            "keyup input.workoutTitle": "onTitleChanged"
         },
 
         headerUi:
@@ -69,6 +70,8 @@ function (
             this.$(".grayHeader").addClass(this.getWorkoutTypeCssClassName());
 
             this.$(".chzn-select").chosen();
+
+            this.$(".workoutTitle").css('width', this.titleWidth());
 
         },
 
@@ -227,6 +230,16 @@ function (
         onTitleBlur: function()
         {
             $(document).tooltip("enable");
+        },
+
+        onTitleChanged: function ()
+        {
+            this.$(".workoutTitle").css('width', this.titleWidth());
+        },
+
+        titleWidth: function ()
+        {
+            return (this.$(".workoutTitle").val().length + 1) * 8 + 10 + 'px';
         }
 
     };
