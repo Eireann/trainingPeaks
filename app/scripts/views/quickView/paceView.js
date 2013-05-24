@@ -150,7 +150,7 @@ function(
 
     _.extend(paceViewBase, zonesViewBase);
 
-    paceViewBase.chartColor = { light: "#0E7FCF", dark: "#0B568D" }
+    paceViewBase.chartColor = { light: "#0E7FCF", dark: "#0B568D" };
 
     return TP.ItemView.extend(paceViewBase);
 });
