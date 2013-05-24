@@ -359,6 +359,21 @@
                 vertical-align: top;
             }
         }
+
+        .rangesList
+        {
+            margin-left: 35px;   
+
+            ul 
+            {
+                list-style-type: none;
+            }
+
+            li 
+            {
+                line-height: 1em;
+            }
+        }
     }
 
 }

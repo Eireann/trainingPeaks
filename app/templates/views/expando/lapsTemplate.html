@@ -6,25 +6,22 @@
     </select>
     <button id="uncheck">{{$ "UncheckAll" }}</button>
 </div>
-<div>
+<div class="rangesList">
+    <ul>
     {{#each rangeLaps}}
-    <div>
-        <label>{{ name }}</label>
-        <span>{{ formatTime totalTime}}</span>
-    </div>
+        <li>
+            <input type="checkbox"/> {{ name }} ({{ formatTime totalTime}})
+        </li>
     {{/each}}
     {{#with rangeTotals}}
-    <div class="statsRow" id="duration">
-        <label>{{$ "EntireWorkout" }}</label>
-        {{#if movingTime }}
-        <span class="value movingTime">{{ formatTime movingTime }}</span>
-        <span class="units totalTime">({{ formatTime totalTime }})</span>
-        {{ else }}
-        <span class="value movingTime">{{ formatTime totalTime }}</span>
-        {{/if}}
-    </div>
+        <li class="statsRow" id="duration">
+            <input type="checkbox"/> {{$ "EntireWorkout" }} ({{ formatTime totalTime }})
+        </li>
     {{/with}}
-    {{#each rangePeaks}}
-    {{$ "Peak" }}{{ formatPeakTime interval }} ({{ formattedValue }} {{ units }})
+        {{#each rangePeaks}}
+        <li>
+            <input type="checkbox"/> {{$ "Peak" }} {{ formatPeakTime interval }} ({{ formattedValue }} {{ units }})
+        </li>
     {{/each}}
+    </ul>
 </div>
