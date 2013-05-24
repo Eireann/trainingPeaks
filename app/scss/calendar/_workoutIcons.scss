@@ -30,7 +30,7 @@ $swimPositiveLargeURL: url(../../assets/images/sportTypeIcons/swim_pos_140.png);
         background-size: 70px 70px;
     }
 
-    &.future
+    &.future, &.past.ComplianceNone
     {
         .workoutIcon
         {

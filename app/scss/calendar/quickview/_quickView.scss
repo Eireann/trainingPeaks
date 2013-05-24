@@ -17,6 +17,7 @@
     textarea, input
     {
         @include box-shadow(none);
+        color: $TPGrey3;
         
         &:focus 
         {
@@ -32,6 +33,7 @@
         &.workoutTitle
         {
             text-align: left;
+            color: $TPGrey4;
         }
 
         &#startTimeInput
@@ -262,6 +264,7 @@ input[disabled='disabled']
         padding: 3px;
         border: 1px solid transparent;
         font-size: $fontSizeSmaller;
+        color: $TPGrey3;
 
         &.hover
         {

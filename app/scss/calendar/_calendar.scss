@@ -48,8 +48,7 @@
             }
         }
 
-	    .navigation
-        {
+	    .navigation {
             float:left;
             margin:7px 0 0 0;
             
@@ -57,8 +56,8 @@
 			button {
 			 	&:active {
 					box-shadow:none;
+					}
 				}
-			}
 
             .calendarNavigation {
                 float:left;
@@ -66,32 +65,20 @@
 				background-color:$TPGrey9;
 				&:hover {
 					background-color:#8d8d8d;
-				}
-				
-                button
-                {
-                    img
-                    {
+					}
+                button {
+                	img {
                         padding-top: 3px;
-                    }
-					
-				
+                   	}
                 }
 
-                #goToLastWeekButton
-                {
+                #goToLastWeekButton {
                     border-right:none;
 					background: url(../../assets/images/calendarImages/sprite-header-icons.png) no-repeat 0 -20px;
-
-                    &:hover
-                    {
-                        // border-right-width: 1px;
-						background: url(../../assets/images/calendarImages/sprite-header-icons.png) no-repeat -36px -20px;
-						
+                    &:hover {
+						background: url(../../assets/images/calendarImages/sprite-header-icons.png) no-repeat -36px -20px;	
                     }
-
-                    &:active
-                    {
+                    &:active {
                         background: url(../../assets/images/calendarImages/sprite-header-icons.png) no-repeat -72px -20px;
                     }
                 }
@@ -100,97 +87,100 @@
 					margin-left:1px;
 					border-left:none;
 					background: url(../../assets/images/calendarImages/sprite-header-icons.png) no-repeat 0 0;
-					 &:hover
-	                    {
-							background: url(../../assets/images/calendarImages/sprite-header-icons.png) no-repeat -36px 0px;
-						//	border-left:1px solid $TPGrey9;
-	                    }
-		
-		
-                    &:active
-                    {
+					&:hover {
+						background: url(../../assets/images/calendarImages/sprite-header-icons.png) no-repeat -36px 0px;
+	               	}
+                    &:active {
                         background: url(../../assets/images/calendarImages/sprite-header-icons.png) no-repeat -72px 0;
                     }
                 }
+
+				@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
+					#goToLastWeekButton, 
+					#goToNextWeekButton {
+						background-image: url(../../assets/images/calendarImages/sprite-header-icons@2x.png);
+						background-size: 108px 100px;
+				  	}
+				}
                 
             }
 
-            .today
-            {
+            .today {
                 float:left;
                 @include headerButtons(0px, 71px, 12px);
-				margin-left:7px;
-				
+				margin-left:7px;	
             }
 
-			.today button 
-            {
+			.today button  {
 				color:$TPGrey8;
 				padding:1px 0 2px;
 				background: url(../../assets/images/calendarImages/background-gradient-button.png) repeat-x 0 0;
                 &:hover {
 					color:#3d3e41;
-				}
-                &:active
-                {
+					}
+                &:active {
                     background: url(../../assets/images/calendarImages/background-gradient-button.png) repeat-x 0 -20px;
                     color: #ffffff;
-                }
+                	}
+			}
+			
+			@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
+				.today button  {
+					background-image: url(../../assets/images/calendarImages/background-gradient-button@2x.png);
+					background-size: 1px 40px;
+				}
 			}
 
-			.printRefreshButtons
-            {
+			.printRefreshButtons {
                 float:left;
                 @include headerButtons(7px, 38px, $fontSizeMedium);
-             
-			
-				.printButton 
-                {
+
+				.printButton  {
 					background: url(../../assets/images/calendarImages/sprite-header-icons.png) no-repeat 0 -40px;
 					width: 38px;
 					height: 22px;
-					
 					&:hover {
-					background: url(../../assets/images/calendarImages/sprite-header-icons.png) no-repeat -36px -40px;
+						background: url(../../assets/images/calendarImages/sprite-header-icons.png) no-repeat -36px -40px;
 					}
-
-                    &:active
-                    {
+                    &:active {
                         background: url(../../assets/images/calendarImages/sprite-header-icons.png) no-repeat -72px -40px;
                     }
 				}
-                .refreshButton 
-                {
+                .refreshButton {
 					background: url(../../assets/images/calendarImages/sprite-header-icons.png) no-repeat 0 -80px;
-	
                     margin-left: 7px;
 					&:hover {
 						background: url(../../assets/images/calendarImages/sprite-header-icons.png) no-repeat -36px -80px;
 					}
 
-                    &:active
-                    {
+                    &:active {
                         background: url(../../assets/images/calendarImages/sprite-header-icons.png) no-repeat -72px -80px;
                     }
                 }
-                .settingsButton 
-                {
+                .settingsButton  {
 					background: url(../../assets/images/calendarImages/sprite-header-icons.png) no-repeat 0 -60px;
                     margin-left: 7px;
 					width: 38px;
-					
 					&:hover {
 						background: url(../../assets/images/calendarImages/sprite-header-icons.png) no-repeat -36px -60px;
 					}
-
-                    &:active
-                    {
+                    &:active {
                         background: url(../../assets/images/calendarImages/sprite-header-icons.png) no-repeat -72px -60px;
-		
-                    }
+					}
                 }
-            }
-        }
+
+				@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
+					.printButton, 
+					.refreshButton,
+					.settingsButton  {
+						background-image: url(../../assets/images/calendarImages/sprite-header-icons@2x.png);
+						background-size: 108px 100px;
+				  	}
+				}
+			}
+        
+				
+		}
 
         #affiliateBanner
         {
