@@ -14,6 +14,16 @@ function(_)
                 {
                     type: "column"
                 },
+                plotOptions:
+                {
+                    column:
+                    {
+                        borderWidth: 0,
+
+                        // actual chart width is approx container.width - 70px (axis labels etc), so divide that evenly between bars
+                        pointWidth: Math.round(($(container).width() - 70) / chartData.length) - 5
+                    }
+                },
                 yAxis:
                 {
                     tickInterval: tickInterval,
@@ -34,7 +44,7 @@ function(_)
             var chartOptions = {
                 chart:
                 {
-                    type: "spline"
+                    type: "areaspline"
                 },
                 yAxis:
                 {
@@ -43,8 +53,10 @@ function(_)
                 },
                 plotOptions:
                 {
-                    spline:
+                    areaspline:
                     {
+                        connectNulls: true,
+                        lineColor: "#FF0000",
                         marker:
                         {
                             enabled: false,
@@ -68,11 +80,26 @@ function(_)
 
         renderChart: function(container, chartData, tooltipTemplate, additionalChartOptions)
         {
+            var defaultColors = Highcharts.getOptions().colors;
             var chartFontStyle = {
                 color: "#636569",
                 fontFamily: "HelveticaNeueW01-65Medi",
                 fontSize: "12px",
                 fontWeight: "normal"
+            };
+
+            var chartColors = additionalChartOptions && additionalChartOptions.hasOwnProperty('colors') ? additionalChartOptions.colors : defaultColors;
+            var colorGradients = {
+                colors: Highcharts.map(chartColors, function(color)
+                {
+                    return {
+                        linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+                        stops: [
+                                [0, color],
+                                [1, Highcharts.Color(color).brighten(-0.4).get('rgb')]
+                        ]
+                    };
+                }),
             };
 
             var chartOptions = {
@@ -105,7 +132,7 @@ function(_)
                 },
                 yAxis: {
                     min: 0,
-                    alternateGridColor: "#cdcbcb",
+                    //alternateGridColor: "#cdcbcb",
                     tickInterval: 10,
                     title:
                     {
@@ -135,6 +162,8 @@ function(_)
 
             if (additionalChartOptions)
                 $.extend(true, chartOptions, additionalChartOptions);
+
+            $.extend(true, chartOptions, colorGradients);
 
             if (container.highcharts)
                 container.highcharts(chartOptions);

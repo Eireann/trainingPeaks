@@ -17,6 +17,8 @@ function(
     
     var zonesViewBase = {
 
+        chartColor: "#0000FF",
+
         template:
         {
             type: "handlebars",

@@ -136,7 +136,7 @@ function(
             _.extend(chartOptions, {
                 yAxis: {
                     title: {
-                        text: this.formatPeakUnitsLabel(1)
+                        text: this.formatPeakUnitsLabel(1).toUpperCase()
                     },
                     labels:
                     {
@@ -149,5 +149,8 @@ function(
     };
 
     _.extend(paceViewBase, zonesViewBase);
+
+    paceViewBase.chartColor = "#0E7FCF";
+
     return TP.ItemView.extend(paceViewBase);
 });

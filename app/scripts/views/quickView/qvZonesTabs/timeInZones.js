@@ -112,6 +112,7 @@ function(
                 var chartPoints = this.buildTimeInZonesChartPoints(timeInZones);
 
                 var chartOptions = {
+                    colors: [this.chartColor],
                     title:
                     {
                         text: this.graphTitle + " by Zones"
@@ -119,12 +120,12 @@ function(
                     xAxis: {
                         title:
                         {
-                            text: "Zones"
+                            text: "ZONES"
                         }
                     },
                     yAxis: {
                         title: {
-                            text: 'Minutes'
+                            text: 'MINUTES'
                         }
                     }
                 };

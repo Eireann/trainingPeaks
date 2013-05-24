@@ -101,5 +101,8 @@ function(
     };
 
     _.extend(hrViewBase, zonesViewBase);
+
+    hrViewBase.chartColor = "#ED3F1D";
+
     return TP.ItemView.extend(hrViewBase);
 });
