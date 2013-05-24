@@ -17,7 +17,7 @@ function(
     
     var zonesViewBase = {
 
-        chartColor: "#0000FF",
+        chartColor: { light: "#ED3F1D", dark: "#B50F00" },
 
         template:
         {

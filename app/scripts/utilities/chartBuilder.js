@@ -56,7 +56,8 @@ function(_)
                     areaspline:
                     {
                         connectNulls: true,
-                        lineColor: "#FF0000",
+                        lineColor: "#FFFFFF",
+                        lineWidth: 2,
                         marker:
                         {
                             enabled: false,
@@ -81,25 +82,16 @@ function(_)
         renderChart: function(container, chartData, tooltipTemplate, additionalChartOptions)
         {
             var defaultColors = Highcharts.getOptions().colors;
-            var chartFontStyle = {
-                color: "#636569",
-                fontFamily: "HelveticaNeueW01-65Medi",
-                fontSize: "12px",
-                fontWeight: "normal"
+            var titleFontStyle = {
+                color: "#303030",
+                fontFamily: "HelveticaNeueW01-75Bold",
+                fontSize: "12px"
             };
 
-            var chartColors = additionalChartOptions && additionalChartOptions.hasOwnProperty('colors') ? additionalChartOptions.colors : defaultColors;
-            var colorGradients = {
-                colors: Highcharts.map(chartColors, function(color)
-                {
-                    return {
-                        linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
-                        stops: [
-                                [0, color],
-                                [1, Highcharts.Color(color).brighten(-0.4).get('rgb')]
-                        ]
-                    };
-                })
+            var axisFontStyle = {
+                color: "#303030",
+                fontFamily: "HelveticaNeueW01-55Roma",
+                fontSize: "12px"
             };
 
             var chartOptions = {
@@ -117,26 +109,37 @@ function(_)
                 },
                 title:
                 {
-                    style: chartFontStyle
+                    style: titleFontStyle
                 },
                 xAxis: {
+                    lineWidth: 1,
+                    lineColor: "#636569",
                    labels:
                     {
-                        enabled: false
+                        enabled: false,
+                        style: axisFontStyle,
+                        useHTML: true
                     },
                     title:
                     {
-                        style: chartFontStyle
+                        style: axisFontStyle
                     },
                     tickColor: 'transparent'
                 },
                 yAxis: {
+                    lineWidth: 1,
+                    lineColor: "#636569",
                     min: 0,
                     //alternateGridColor: "#cdcbcb",
                     tickInterval: 10,
                     title:
                     {
-                        style: chartFontStyle
+                        style: axisFontStyle
+                    },
+                    labels:
+                    {
+                        style: axisFontStyle,
+                        useHTML: true
                     }
                 },
                 legend:
@@ -163,12 +166,29 @@ function(_)
             if (additionalChartOptions)
                 $.extend(true, chartOptions, additionalChartOptions);
 
-            $.extend(true, chartOptions, colorGradients);
+            if (additionalChartOptions.hasOwnProperty('colors'))
+            {
+                var colorGradients = {
+                    colors: Highcharts.map(additionalChartOptions.colors, function(color)
+                    {
+                        return {
+                            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+                            stops: [
+                                    [0, color.light],
+                                    [1, color.dark]
+                            ]
+                        };
+                    })
+                };
+
+
+                $.extend(true, chartOptions, colorGradients);
+            }
 
             if (container.highcharts)
                 container.highcharts(chartOptions);
         },
-        
+
         getPeakChartCategories: function(chartPoints)
         {
             var skipInterval = 2;
@@ -202,7 +222,7 @@ function(_)
 
         formatPeakChartAxisLabel: function (label)
         {
-            return label.replace(/ /g, "").replace(/Minutes/, "min").replace(/Seconds/, "sec").replace(/Hour/, "hr");
+            return label.replace(/ /g, "").replace(/Minutes/, "m").replace(/Seconds/, "s").replace(/Hour/, "h");
         },
 
         getColumnTickInterval: function(points)
