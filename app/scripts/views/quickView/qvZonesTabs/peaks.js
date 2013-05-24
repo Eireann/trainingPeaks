@@ -108,6 +108,7 @@ function(
                 var chartPoints = this.buildPeaksChartPoints(peaks, timeInZones);
 
                 var chartOptions = {
+                    colors: [this.chartColor],
                     title:
                     {
                         text: "Peak " + this.graphTitle

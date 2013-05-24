@@ -283,6 +283,12 @@
                 display: table;
                 margin-top: 20px;
 
+                .separator 
+                {
+                    display: table-cell;
+                    width: 2px;
+                }
+
                 .minMaxAvgRow
                 {
                     display: table-row;
@@ -305,10 +311,20 @@
                         &.units
                         {
                             text-align: left;
-                            padding: 0px 0px 2px 0px;
+                            padding: 0px 0px 2px 8px;
                             font-size: $fontSizeXSmall
                         }
 
+                    }
+
+                    .separator 
+                    {
+                        padding: 0px;
+                    }
+
+                    .value
+                    {
+                        background-color: #eaebec;
                     }
 
                     &.minMaxAvgHeaders
@@ -318,6 +334,7 @@
                             text-transform: uppercase;
                             text-align: center;
                             padding: 0px;
+                            padding-bottom: 5px;
                             font-family: $fontFamilyHeavy;
                         }
                     }

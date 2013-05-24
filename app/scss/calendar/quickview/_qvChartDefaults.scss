@@ -47,22 +47,14 @@
 
     .highcharts-series
     {
-        rect
-        {
-            fill: red;
-            stroke: darkred;
-        }
-
-        path
-        {
-            stroke: red;
-        }
+        
     }
 
     .highcharts-tooltip
     {
         .tooltipRow
         {
+            font-family: $fontFamilyRegular;
             font-size: $fontSizeSmall;
             color: $TPGrey3;
 
