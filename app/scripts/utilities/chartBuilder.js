@@ -99,7 +99,7 @@ function(_)
                                 [1, Highcharts.Color(color).brighten(-0.4).get('rgb')]
                         ]
                     };
-                }),
+                })
             };
 
             var chartOptions = {
