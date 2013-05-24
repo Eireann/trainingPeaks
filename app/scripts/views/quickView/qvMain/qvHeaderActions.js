@@ -23,7 +23,9 @@ function (
             "click #breakThrough": "onBreakThroughClicked",
             "click #date": "onDateClicked",
             "click .workoutIconLarge": "onWorkoutIconClicked",
-            "click #menuIcon": "onMenuIconClicked"
+            "click #menuIcon": "onMenuIconClicked",
+            "focus input.workoutTitle": "onTitleFocus",
+            "blur input.workoutTitle": "onTitleBlur",
         },
 
         headerUi:
@@ -214,6 +216,17 @@ function (
                 description = description.replace(/BT: /, "");
                 this.model.set("description", description);
             }
+        },
+
+        onTitleFocus: function()
+        {
+            $(document).tooltip("close");
+            $(document).tooltip("disable");
+        },
+
+        onTitleBlur: function()
+        {
+            $(document).tooltip("enable");
         }
 
     };
