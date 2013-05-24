@@ -252,7 +252,7 @@
         {
 
             padding: 10px;
-            @include labels($fontFamilyHeavy, $fontSizeXSmall, $TPGrey4, normal);
+            @include labels($fontFamilyRegular, $fontSizeXSmall, $TPGrey4, normal);
 
 
             .statsRow
@@ -306,6 +306,7 @@
                         {
                             text-align: left;
                             padding: 0px 0px 2px 0px;
+                            font-size: $fontSizeXSmall
                         }
 
                     }
@@ -317,6 +318,7 @@
                             text-transform: uppercase;
                             text-align: center;
                             padding: 0px;
+                            font-family: $fontFamilyHeavy;
                         }
                     }
                 }
@@ -340,7 +342,7 @@
                 width: auto;
                 margin-right: 10px;
 
-                font-family: $fontFamilyLight;
+                font-family: $fontFamilyRegular;
                 font-size: $fontSizeSmall;
                 color: $TPGrey3;
                 border-width: 1px;
