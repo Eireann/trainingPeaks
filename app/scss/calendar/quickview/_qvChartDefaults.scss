@@ -52,6 +52,12 @@
 
     .highcharts-tooltip
     {
+
+        .graphTooltip
+        {
+            background-color: rgba(255, 255, 255, 0);
+        }
+
         .tooltipRow
         {
             font-family: $fontFamilyRegular;
