@@ -138,6 +138,8 @@ function(TP, ExpandoLayout, GraphView, MapView, StatsView, LapsView, ChartsView)
             {
                 view.off("rangeselected", this.onRangeSelected, this);
             }, this);
+
+            this.views.lapsView.off("lapSelected", this.onLapSelected, this);
         },
 
         onRangeSelected: function(startOffsetMs, endOffsetMs, triggeringView)
@@ -148,6 +150,11 @@ function(TP, ExpandoLayout, GraphView, MapView, StatsView, LapsView, ChartsView)
                     view.trigger("controller:rangeselected", startOffsetMs, endOffsetMs);
 
             }, this);
+        },
+
+        onLapSelected: function (lapIndex)
+        {
+            this.views.statsView.trigger("lapSelected", lapIndex);
         }
 
     });
