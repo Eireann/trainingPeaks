@@ -12,6 +12,7 @@ function(seriesColorByChannel, findIndexByMsOffset, convertToViewUnits)
         "HeartRate",
         "Elevation",
         "Power",
+        "RightPower",
         "Speed",
         "Pace",
         "Torque",
