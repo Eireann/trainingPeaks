@@ -130,7 +130,6 @@ function(TP, ExpandoLayout, WorkoutStatsForRange, GraphView, MapView, StatsView,
 
             this.on("close", this.stopWatchingViewEvents, this);
 
-            this.views.lapsView.on("lapSelected", this.onLapSelected, this);
         },
 
         stopWatchingViewEvents: function()
@@ -140,7 +139,6 @@ function(TP, ExpandoLayout, WorkoutStatsForRange, GraphView, MapView, StatsView,
                 view.off("rangeselected", this.onRangeSelected, this);
             }, this);
 
-            this.views.lapsView.off("lapSelected", this.onLapSelected, this);
         },
 
         onRangeSelected: function(startOffsetMs, endOffsetMs, rangeData)
@@ -152,18 +150,13 @@ function(TP, ExpandoLayout, WorkoutStatsForRange, GraphView, MapView, StatsView,
 
             if(!rangeData)
             {
-                rangeData = new WorkoutStatsForRange({ workoutId: this.model.id, rangeStart: startOffsetMs, rangeEnd: endOffsetMs });
+                rangeData = new WorkoutStatsForRange({ workoutId: this.model.id, begin: startOffsetMs, end: endOffsetMs });
                 var self = this;
                 rangeData.fetch().done(function()
                 {
                     self.onRangeSelected(startOffsetMs, endOffsetMs, rangeData);
                 });
             }
-        },
-
-        onLapSelected: function (lapIndex)
-        {
-            this.views.statsView.trigger("lapSelected", lapIndex);
         }
 
     });

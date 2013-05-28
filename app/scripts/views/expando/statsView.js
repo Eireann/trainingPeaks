@@ -23,7 +23,7 @@ function(
 
         initialize: function()
         {
-            this.on("lapSelected", this.onLapSelected, this);
+            this.on("controller:rangeselected", this.onRangeSelected, this);
         },
 
         serializeData: function()
@@ -36,19 +36,30 @@ function(
 
         getLapData: function()
         {
-            var detailData = this.model.get("detailData").toJSON();
-            var lapData;
-
-            if (this.lapIndex == null)
+            if (this.selectedRangeData)
             {
-                lapData = detailData.totalStats ? detailData.totalStats : {};
-                lapData.name = "Entire Workout";
+                return this.selectedRangeData;
             }
             else
             {
-                lapData = detailData.lapsStats[this.lapIndex];
+                var detailData = this.model.get("detailData").toJSON();
+                var lapData = detailData.totalStats ? detailData.totalStats : {};
+                lapData.name = "Entire Workout";
+                return lapData;
             }
-            return lapData;
+        },
+        
+        onRangeSelected: function (startOffsetMs, endOffsetMs, rangeData)
+        {
+            if (rangeData)
+            {
+                this.selectedRangeData = rangeData.toJSON();;
+                if (!this.selectedRangeData.name)
+                {
+                    this.selectedRangeData.name = "Selection";
+                }
+                this.render();
+            }
         },
 
         findAvailableMinMaxAvgFields: function(lapData)
@@ -83,14 +94,7 @@ function(
             });
 
             return keyWithAValue ? true : false;
-        },
-
-        onLapSelected: function (lapIndex)
-        {   
-            this.lapIndex = lapIndex;
-            this.render();
         }
-
     };
 
     return TP.ItemView.extend(expandoStatsView);

@@ -2,9 +2,10 @@
 [
     "TP",
     "./expandoCommon",
+    "models/workoutStatsForRange",
     "hbs!templates/views/expando/lapsTemplate"
 ],
-function (TP, expandoCommon, lapsTemplate)
+function (TP, expandoCommon, WorkoutStatsForRange, lapsTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -23,12 +24,15 @@ function (TP, expandoCommon, lapsTemplate)
         events:
         {
             "change #peakType": "onSelectPeakType",
-            "click .lap": "onLapsClicked"
+            "click .lap": "onLapsClicked",
+            "click .totals": "onEntireWorkoutClicked",
+            "click .peaks": "c"
+            
         },
 
         serializeData: function ()
         {
-            
+
             this.getDefaultSelectOption();
             var detailData = this.model.get("detailData").toJSON();
 
@@ -168,8 +172,32 @@ function (TP, expandoCommon, lapsTemplate)
         onLapsClicked: function (e)
         {
             var lapIndex = $(e.target).data("lapindex");
-            this.trigger("lapSelected", lapIndex);
-        }
+            var detailData = this.model.get("detailData").toJSON();
+            var lapData = detailData.lapsStats[lapIndex];
+            lapData.workoutId = this.model.id;
+            var statsForRange = new WorkoutStatsForRange(lapData);
+            this.trigger("rangeselected", lapData.begin, lapData.end, statsForRange);
+        },
 
+        onEntireWorkoutClicked: function ()
+        {
+            var detailData = this.model.get("detailData").toJSON();
+            var entireWorkoutData = detailData.totalStats;
+            entireWorkoutData.workoutId = this.model.id;
+            entireWorkoutData.name = "Entire Workout";
+            var statsForRange = new WorkoutStatsForRange(entireWorkoutData);
+            this.trigger("rangeselected", entireWorkoutData.begin, entireWorkoutData.end, statsForRange);
+        },
+        
+        onPeaksClicked: function(e)
+        {
+            //var peakIndex = $(e.target).data("peakInterval");
+            //var detailData = this.model.get("detailData").toJSON();
+            //var intervalData = detailData.lapsStats[peakIndex];
+            //intervalData.workoutId = this.model.id;
+            //intervalData.name = "Peak " + i
+            //var statsForRange = new WorkoutStatsForRange(intervalData);
+            //this.trigger("rangeselected", intervalData.begin, intervalData.end, statsForRange);
+        }
     });
 });

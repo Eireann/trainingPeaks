@@ -14,12 +14,12 @@
         </li>
     {{/each}}
     {{#with rangeTotals}}
-        <li class="statsRow" id="duration">
+        <li class="statsRow totals" id="duration">
             <input type="checkbox"/> {{$ "EntireWorkout" }} ({{ formatTime totalTime }})
         </li>
     {{/with}}
         {{#each rangePeaks}}
-        <li>
+        <li data-peakInterval="{{interval}}" class="peak">
             <input type="checkbox"/> {{$ "Peak" }} {{ formatPeakTime interval }} ({{ formattedValue }} {{ units }})
         </li>
     {{/each}}
