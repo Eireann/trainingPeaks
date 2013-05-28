@@ -37,7 +37,7 @@ function(
         {
             _.bindAll(this, "onModelFetched");
 
-            this.dataParser = new DataParser();
+            this.dataParser = new DataParser(this.model.get("workoutTypeValueId"));
             this.map = null;
             this.graph = null;
 

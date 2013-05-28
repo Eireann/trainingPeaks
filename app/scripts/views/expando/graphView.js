@@ -61,7 +61,7 @@ function (TP, DataParser, getDefaultFlotOptions, flotZoom, GraphToolbarView, gra
 
             var flatSamples = this.model.get("detailData").get("flatSamples");
 
-            this.dataParser = new DataParser();
+            this.dataParser = new DataParser(this.model.get("workoutTypeValueId"));
             this.dataParser.loadData(flatSamples);
 
             var series = this.dataParser.getSeries();

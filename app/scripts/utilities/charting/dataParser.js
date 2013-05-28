@@ -6,6 +6,18 @@
 ],
 function(seriesColorByChannel, findIndexByMsOffset, convertToViewUnits)
 {
+    var flexChannelOrder =
+    [
+        "Cadence",
+        "HeartRate",
+        "Elevation",
+        "Power",
+        "Speed",
+        "Pace",
+        "Torque",
+        "Temperature"
+    ];
+    
     var parseDataByChannel = function(flatSamples)
     {
         var dataByChannel = {};
@@ -87,9 +99,33 @@ function(seriesColorByChannel, findIndexByMsOffset, convertToViewUnits)
                 },
                 shadowSize: 0
             });
+
+            if (channel === "Speed" && (self.workoutType === 1 || self.workoutType === 3 || self.workoutType === 13))
+            {
+                seriesArray.push(
+                {
+                    color: seriesColorByChannel["Pace"],
+                    data: data,
+                    label: "Pace",
+                    lines:
+                    {
+                        fill: fillOpacity
+                    },
+                    shadowSize: 0
+                });
+            }
         });
 
-        return seriesArray;
+        var orderedSeriesArray = [];
+
+        _.each(flexChannelOrder, function (orderedChannel)
+        {
+            var series = _.find(seriesArray, function (s) { return s.label === orderedChannel; });
+            if (series)
+                orderedSeriesArray.push(series);
+        });
+
+        return orderedSeriesArray;
     };
 
     var getElevationInfoOnRange = function(x1, x2)
@@ -149,10 +185,13 @@ function(seriesColorByChannel, findIndexByMsOffset, convertToViewUnits)
     {
         var self = this;
         var yaxes = [];
-        var countdown = 3;
+        var countdown = (series.length / 2).toFixed(0);
         var axisIndex = 1;
         _.each(series, function(s)
         {
+            if (s.label === "Pace")
+                return;
+            
             s.yaxis = axisIndex++;
             yaxes.push(
             {
@@ -178,8 +217,9 @@ function(seriesColorByChannel, findIndexByMsOffset, convertToViewUnits)
         return yaxes;
     };
     
-    var DataParser = function()
+    var DataParser = function(workoutType)
     {
+        this.workoutType = workoutType;
         this.flatSamples = null;
         this.dataByChannel = null;
         this.minElevation = null;
