@@ -121,7 +121,7 @@ function(
         {
             var startOffsetMs = Math.round(this.plot.getSelection().xaxis.from);
             var endOffsetMs = Math.round(this.plot.getSelection().xaxis.to);
-            this.trigger("rangeselected", startOffsetMs, endOffsetMs, this);
+            this.trigger("rangeselected", startOffsetMs, endOffsetMs);
         }
 
 

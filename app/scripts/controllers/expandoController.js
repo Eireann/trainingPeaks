@@ -2,13 +2,14 @@
 [
     "TP",
     "layouts/expandoLayout",
+    "models/workoutStatsForRange",
     "views/expando/graphView",
     "views/expando/mapView",
     "views/expando/statsView",
     "views/expando/lapsView",
     "views/expando/chartsView"
 ],
-function(TP, ExpandoLayout, GraphView, MapView, StatsView, LapsView, ChartsView)
+function(TP, ExpandoLayout, WorkoutStatsForRange, GraphView, MapView, StatsView, LapsView, ChartsView)
 {
     return TP.Controller.extend(
     {
@@ -138,14 +139,22 @@ function(TP, ExpandoLayout, GraphView, MapView, StatsView, LapsView, ChartsView)
             }, this);
         },
 
-        onRangeSelected: function(startOffsetMs, endOffsetMs, triggeringView)
+        onRangeSelected: function(startOffsetMs, endOffsetMs, rangeData)
         {
             _.each(this.views, function(view, key)
             {
-                if (view !== triggeringView)
-                    view.trigger("controller:rangeselected", startOffsetMs, endOffsetMs);
-
+                view.trigger("controller:rangeselected", startOffsetMs, endOffsetMs, rangeData);
             }, this);
+
+            if(!rangeData)
+            {
+                rangeData = new WorkoutStatsForRange({ workoutId: this.model.id, rangeStart: startOffsetMs, rangeEnd: endOffsetMs });
+                var self = this;
+                rangeData.fetch().done(function()
+                {
+                    self.onRangeSelected(startOffsetMs, endOffsetMs, rangeData);
+                });
+            }
         }
 
     });
