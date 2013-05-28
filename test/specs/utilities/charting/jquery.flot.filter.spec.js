@@ -114,22 +114,22 @@ function($, TP, moment, theMarsApp, flotFilter)
             var timeSeriesData = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
             // Period 3
-            var expectedAverages = [1.3333333333333333, 1.6666666666666667, 2, 3, 4, 5, 6, 7, 8, 9 ];
+            var expectedAverages = [1, 2, 3, 3, 4, 5, 6, 7, 8, 9 ];
             var actualAverages = flotFilter.computeExponentialMovingAverages(timeSeriesData, 3);
             expect(actualAverages).toEqual(expectedAverages);
 
             // Period 9
-            expectedAverages = [2.3333333333333335, 2.6666666666666665, 3, 3.3333333333333335, 3.6666666666666665, 4, 4.333333333333333, 4.666666666666667, 5, 6];
+            expectedAverages = [1, 2, 3, 4, 5, 6, 7, 8, 9, 6];
             actualAverages = flotFilter.computeExponentialMovingAverages(timeSeriesData, 9);
             expect(actualAverages).toEqual(expectedAverages);
 
             // Period 10
-            expectedAverages = [2.5, 2.8333333333333335, 3.1666666666666665, 3.5, 3.8333333333333335, 4.166666666666667, 4.5, 4.833333333333333, 5.166666666666667, 5.5];
+            expectedAverages = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
             actualAverages = flotFilter.computeExponentialMovingAverages(timeSeriesData, 10);
             expect(actualAverages).toEqual(expectedAverages);
 
             // Period = 20
-            expectedAverages = [2.5, 2.8333333333333335, 3.1666666666666665, 3.5, 3.8333333333333335, 4.166666666666667, 4.5, 4.833333333333333, 5.166666666666667, 5.5];
+            expectedAverages = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
             actualAverages = flotFilter.computeExponentialMovingAverages(timeSeriesData, 20);
             expect(actualAverages).toEqual(expectedAverages);
         });
