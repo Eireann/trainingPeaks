@@ -127,10 +127,10 @@
                     cursor: pointer;
                     width: 13px;
                     height: 34px;
-					background: url(../../assets/images/QVImages/sprite-paperclip.png) no-repeat 0 0;
+					background: url(../../assets/images/QVImages/sprite-paperclip.png) no-repeat -13px 0;
 
                     &:hover {
-       					background: url(../../assets/images/QVImages/sprite-paperclip.png) no-repeat -13px 0;
+       					background: url(../../assets/images/QVImages/sprite-paperclip.png) no-repeat -26px 0;
                     }
 
                     &.withAttachments
@@ -142,10 +142,10 @@
 
                         background-size:13px 34px;
 
-                        background: url(../../assets/images/QVImages/sprite-paperclip@2x.png) no-repeat 0 0;
+                        background: url(../../assets/images/QVImages/sprite-paperclip@2x.png) no-repeat -13px 0;
 
                         &:hover {
-                            background: url(../../assets/images/QVImages/sprite-paperclip@2x.png) no-repeat -13px 0;
+                            background: url(../../assets/images/QVImages/sprite-paperclip@2x.png) no-repeat -26px 0;
                         }
 
                         &.withAttachments
