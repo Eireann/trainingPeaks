@@ -22,7 +22,8 @@ function (TP, expandoCommon, lapsTemplate)
 
         events:
         {
-            "change #peakType": "onSelectPeakType"
+            "change #peakType": "onSelectPeakType",
+            "click .lap": "onLapsClicked"
         },
 
         serializeData: function ()
@@ -162,6 +163,12 @@ function (TP, expandoCommon, lapsTemplate)
         {
             this.selectedPeakType = this.$("#peakType").val();
             this.render();
+        },
+
+        onLapsClicked: function (e)
+        {
+            var lapIndex = $(e.target).data("lapindex");
+            this.trigger("lapSelected", lapIndex);
         }
 
     });

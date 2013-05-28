@@ -9,8 +9,8 @@
 <div class="rangesList">
     <ul>
     {{#each rangeLaps}}
-        <li>
-            <input type="checkbox"/> {{ name }} ({{ formatTime totalTime}})
+        <li data-lapIndex="{{@index}}" class="lap">
+            <input type="checkbox" data-lapindex="{{@index}}"/> {{ name }} ({{ formatTime totalTime}})
         </li>
     {{/each}}
     {{#with rangeTotals}}

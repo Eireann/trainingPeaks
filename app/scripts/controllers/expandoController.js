@@ -128,6 +128,8 @@ function(TP, ExpandoLayout, GraphView, MapView, StatsView, LapsView, ChartsView)
             }, this);
 
             this.on("close", this.stopWatchingViewEvents, this);
+
+            this.views.lapsView.on("lapSelected", this.onLapSelected, this);
         },
 
         stopWatchingViewEvents: function()
