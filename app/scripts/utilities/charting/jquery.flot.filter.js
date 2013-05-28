@@ -68,7 +68,7 @@ function ()
         for (var i = 0; i < seriesLength; i++)
         {
             if (i <= period - 1)
-                emas.push((previousEma + timeSeriesCopy[i] + timeSeriesCopy[0]) / 3);
+                emas.push(timeSeriesCopy[i]);
             else
             {
                 if (timeSeriesCopy[i] === null && period < 50)
@@ -88,19 +88,11 @@ function ()
         return emas;
     };
 
-    var computeWeightedMovingAverage = function(timeSeries, period)
-    {
-        var weights = [];
-        for (var i = 0; i < timeSeries.length; i++)
-        {
-        }
-    };
-
     var applyDataFilter = function(plot, series, datapoints)
     {
         var o = plot.getOptions();
 
-        if (!o.filter.enabled || series.label === "Elevation")
+        if (!o.filter.enabled || series.label === "Elevation" || series.label === "Temperature")
             return;
 
         var i;
@@ -126,16 +118,13 @@ function ()
             case "ema":
                 filterFunction = computeExponentialMovingAverages;
                 break;
-            case "wma":
-                filterFunction = computeWeightedMovingAverage;
-                break;
             default:
                 filterFunction = computeSimpleMovingAverages;
         }
 
         var filteredData = filterFunction(timeSeries, o.filter.period, false);
         
-        if(o.filter.type === "ema")
+        if (o.filter.type === "ema")
             filteredData = filterFunction(filteredData, o.filter.period, true);
 
         for (i = 1; i < datapoints.points.length; i++)
@@ -155,8 +144,6 @@ function ()
         o.filter.period = period;
 
         plot.setData(plot.getData());
-        //# Remvoed on purpose since we don't want the axes to change dynamically as we smooth - looks weird!
-        //plot.setupGrid();
         plot.draw();
     };
 
@@ -192,6 +179,7 @@ function ()
     }
 
     // Make this shit testable
+    // Not optimal - nobody should touch this shit outside of the flot plugin registered aboved.
     var flotFilter =
     {
         setFilter: setFilter,
