@@ -122,19 +122,30 @@ function(TP, ExpandoLayout, GraphView, MapView, StatsView, LapsView, ChartsView)
 
         watchForViewEvents: function()
         {
-            this.views.graphView.on("plotselected", this.onPlotSelected, this);
+            _.each(this.views, function(view, key)
+            {
+                view.on("rangeselected", this.onRangeSelected, this);
+            }, this);
 
             this.on("close", this.stopWatchingViewEvents, this);
         },
 
         stopWatchingViewEvents: function()
         {
-            this.views.graphView.off("plotselected", this.onPlotSelected, this);
+            _.each(this.views, function(view, key)
+            {
+                view.off("rangeselected", this.onRangeSelected, this);
+            }, this);
         },
 
-        onPlotSelected: function(sampleIndexStart, sampleIndexEnd)
+        onRangeSelected: function(startOffsetMs, endOffsetMs, triggeringView)
         {
-            this.views.mapView.trigger("plotselected", sampleIndexStart, sampleIndexEnd);
+            _.each(this.views, function(view, key)
+            {
+                if (view !== triggeringView)
+                    view.trigger("controller:rangeselected", startOffsetMs, endOffsetMs);
+
+            }, this);
         }
 
     });

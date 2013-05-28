@@ -96,16 +96,16 @@ function(
 
         watchForControllerEvents: function()
         {
-            this.on("plotselected", this.onPlotSelected, this);
+            this.on("controller:rangeselected", this.onRangeSelected, this);
             this.on("close", this.stopWatchingControllerEvents, this);
         },
 
         stopWatchingControllerEvents: function()
         {
-            this.off("plotselected", this.onPlotSelected, this);
+            this.off("controller:rangeselected", this.onRangeSelected, this);
         },
 
-        onPlotSelected: function(sampleStartIndex, sampleEndIndex)
+        onRangeSelected: function(startOffsetMs, endOffsetMs)
         {
             if (this.selection)
             {
@@ -113,6 +113,8 @@ function(
                 this.selection = null;
             }
 
+            var sampleStartIndex = this.dataParser.findIndexByMsOffset(startOffsetMs);
+            var sampleEndIndex = this.dataParser.findIndexByMsOffset(endOffsetMs);
             this.selection = MapUtils.highlight(this.map, this.dataParser.getLatLonArray().slice(sampleStartIndex, sampleEndIndex));
         }
 
