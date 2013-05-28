@@ -18,6 +18,7 @@
         {
             position: absolute;
             top: 15px;
+            @include box-shadow(0 0 0 1px #ADADAD);
         }
 
         .mainShadow

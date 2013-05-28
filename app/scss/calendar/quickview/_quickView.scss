@@ -113,28 +113,13 @@ input[disabled='disabled']
 
     .hoverBox
     {
-        .colorBar
-        {
-            top: 0px;
-            bottom: 0px;
-            right: 0px;
-            @include calc(left, "100% - 4px"); 
-            width: 4px;
-            height: 100%;
-        }
-
-        .bottomShadow
-        {
-            display:none;
-        }
-
         .arrow
         {
             position: absolute;
             top: 40px;
             right: 0px;
             @include transform(translateX(8px) rotate(45deg));
-			box-shadow: -2px 6px 2px 2px #303030;
+            @include box-shadow(0 0 0 1px #ADADAD);
         }
 
         .colored
@@ -144,7 +129,6 @@ input[disabled='disabled']
 
         .hoverBoxContents
         {
-            //@include linearGradient(right, rgb(255,255,255), rgba(255,255,255,0.95)); 
             padding: 10px;
 
             .details
@@ -168,16 +152,6 @@ input[disabled='disabled']
             }
         }
 
-        .mainShadow
-        {
-            bottom: 0px;
-            @include box-shadow(3px 0px 3px -2px $TPGrey4);
-        }
-
-        .arrow
-        {
-            @include box-shadow(3px 0px 3px -2px $TPGrey4);
-        }
     }
 }
 
