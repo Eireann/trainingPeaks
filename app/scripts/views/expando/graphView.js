@@ -77,6 +77,7 @@ function (TP, DataParser, getDefaultFlotOptions, flotZoom, GraphToolbarView, gra
 
             this.plot = $.plot(this.$el, series, this.flotOptions);
 
+            this.bindToPlotEvents();
             this.overlayGraphToolbar();
         },
         
@@ -93,6 +94,18 @@ function (TP, DataParser, getDefaultFlotOptions, flotZoom, GraphToolbarView, gra
                 return;
             
             this.plot.setFilter(period);
+        },
+
+        bindToPlotEvents: function()
+        {
+            this.plot.getPlaceholder().bind("plotselected", this.onPlotSelected, this);
+        },
+
+        unbindPlotEvents: function()
+        {
+
         }
+
+
     });
 });
