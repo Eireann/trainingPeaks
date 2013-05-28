@@ -127,12 +127,33 @@
                     cursor: pointer;
                     width: 13px;
                     height: 34px;
-                    background: url(../../assets/images/QVImages/paperClip.png);
+					background: url(../../assets/images/QVImages/sprite-paperclip.png) no-repeat 0 0;
+
+                    &:hover {
+       					background: url(../../assets/images/QVImages/sprite-paperclip.png) no-repeat -13px 0;
+                    }
 
                     &.withAttachments
                     {
-                        background: url(../../assets/images/QVImages/paperClipActive.png);
+       					background: url(../../assets/images/QVImages/sprite-paperclip.png) no-repeat -26px 0;
                     }
+
+                    @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
+
+                        background-size:13px 34px;
+
+                        background: url(../../assets/images/QVImages/sprite-paperclip@2x.png) no-repeat 0 0;
+
+                        &:hover {
+                            background: url(../../assets/images/QVImages/sprite-paperclip@2x.png) no-repeat -13px 0;
+                        }
+
+                        &.withAttachments
+                        {
+                            background: url(../../assets/images/QVImages/sprite-paperclip@2x.png) no-repeat -26px 0;
+                        }
+                    }
+
                 }
         
             }
