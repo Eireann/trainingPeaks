@@ -139,10 +139,10 @@ function (TP, expandoCommon, lapsTemplate)
 
         templatePeakTypeNames: {
             power: "Peak Power",
-            pace: "Peak Pace",
             heartrate: "Peak Heart Rate",
-            cadence: "Peak Cadence",
-            speed: "Peak Speed"
+            speed: "Peak Speed",
+            pace: "Peak Pace",
+            cadence: "Peak Cadence"
         },
 
         modelPeakKeys: {
