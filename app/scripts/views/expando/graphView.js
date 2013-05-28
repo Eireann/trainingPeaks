@@ -80,7 +80,7 @@ function(
 
             this.flotOptions.selection.mode = "x";
             this.flotOptions.yaxes = yaxes;
-            this.flotOptions.zoom = { enabled: true };
+            this.flotOptions.zoom = { enabled: false };
             this.flotOptions.zoom.dataParser = this.dataParser;
             this.flotOptions.zoom.resetButton = ".graphResetButton";
 
