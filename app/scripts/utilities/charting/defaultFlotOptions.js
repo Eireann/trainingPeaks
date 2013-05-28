@@ -6,7 +6,7 @@
 ],
 function(TP, flotCustomToolTip)
 {
-    return function(series)
+    return function(series, workoutType)
     {
         return _.extend({}, {
             crosshair:
@@ -34,13 +34,13 @@ function(TP, flotCustomToolTip)
             tooltip: true,
             tooltipOpts:
             {
-                content: function(x, y)
+                content: function()
                 {
                     return "";
                 },
                 onHover: function(flotItem, $tooltipEl)
                 {
-                    $tooltipEl.html(flotCustomToolTip(series, flotItem.series.label, flotItem.dataIndex, flotItem.datapoint[0]));
+                    $tooltipEl.html(flotCustomToolTip(series, flotItem.series.label, flotItem.dataIndex, flotItem.datapoint[0], workoutType));
                 }
             },
             series:

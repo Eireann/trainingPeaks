@@ -37,7 +37,7 @@ function(
         {
             _.bindAll(this, "onModelFetched");
 
-            this.dataParser = new DataParser(this.model.get("workoutTypeValueId"));
+            this.dataParser = new DataParser();
             this.map = null;
             this.graph = null;
 
@@ -167,7 +167,7 @@ function(
                 elevationSeries[0].lines.show = true;
             */
 
-            var flotOptions = getDefaultFlotOptions(series);
+            var flotOptions = getDefaultFlotOptions(series, this.model.get("workoutTypeValueId"));
 
             flotOptions.yaxes = yaxes;
             flotOptions.xaxes[0].tickLength = 0;

@@ -99,21 +99,6 @@ function(seriesColorByChannel, findIndexByMsOffset, convertToViewUnits)
                 },
                 shadowSize: 0
             });
-
-            if (channel === "Speed" && (self.workoutType === 1 || self.workoutType === 3 || self.workoutType === 13))
-            {
-                seriesArray.push(
-                {
-                    color: seriesColorByChannel["Pace"],
-                    data: data,
-                    label: "Pace",
-                    lines:
-                    {
-                        fill: fillOpacity
-                    },
-                    shadowSize: 0
-                });
-            }
         });
 
         var orderedSeriesArray = [];
@@ -217,9 +202,8 @@ function(seriesColorByChannel, findIndexByMsOffset, convertToViewUnits)
         return yaxes;
     };
     
-    var DataParser = function(workoutType)
+    var DataParser = function()
     {
-        this.workoutType = workoutType;
         this.flatSamples = null;
         this.dataByChannel = null;
         this.minElevation = null;

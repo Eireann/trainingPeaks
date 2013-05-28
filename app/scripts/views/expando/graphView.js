@@ -61,13 +61,13 @@ function (TP, DataParser, getDefaultFlotOptions, flotZoom, GraphToolbarView, gra
 
             var flatSamples = this.model.get("detailData").get("flatSamples");
 
-            this.dataParser = new DataParser(this.model.get("workoutTypeValueId"));
+            this.dataParser = new DataParser();
             this.dataParser.loadData(flatSamples);
 
             var series = this.dataParser.getSeries();
             var yaxes = this.dataParser.getYAxes(series);
 
-            this.flotOptions = getDefaultFlotOptions(series);
+            this.flotOptions = getDefaultFlotOptions(series, this.model.get("workoutTypeValueId"));
 
             this.flotOptions.selection.mode = "x";
             this.flotOptions.yaxes = yaxes;
