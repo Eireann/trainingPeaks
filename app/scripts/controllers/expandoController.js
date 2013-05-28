@@ -47,6 +47,8 @@ function(TP, ExpandoLayout, GraphView, MapView, StatsView, LapsView, ChartsView)
 
             this.watchForModelChanges();
 
+            this.watchForViewEvents();
+
             setImmediate(function() { self.prefetchConfig.detailDataPromise.then(self.onModelFetched); });
 
             // if we don't have a workout, just resolve the deferred to let everything render
@@ -116,6 +118,23 @@ function(TP, ExpandoLayout, GraphView, MapView, StatsView, LapsView, ChartsView)
         stopWatchingModelChanges: function()
         {
             this.model.off("deviceFileUploaded", this.fetchDetailData, this);
+        },
+
+        watchForViewEvents: function()
+        {
+            this.views.graphView.on("plotselected", this.onPlotSelected, this);
+
+            this.on("close", this.stopWatchingViewEvents, this);
+        },
+
+        stopWatchingViewEvents: function()
+        {
+            this.views.graphView.off("plotselected", this.onPlotSelected, this);
+        },
+
+        onPlotSelected: function(sampleIndexStart, sampleIndexEnd)
+        {
+            this.views.mapView.trigger("plotselected", sampleIndexStart, sampleIndexEnd);
         }
 
     });

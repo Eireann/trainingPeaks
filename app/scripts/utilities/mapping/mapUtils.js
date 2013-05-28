@@ -74,6 +74,24 @@ function(
             }
         },
 
+        highlight: function(map, latLonArray)
+        {
+            if (latLonArray && latLonArray.length > 0)
+            {
+                var leafletLatLongs = [];
+
+                _.each(latLonArray, function (point)
+                {
+                    if (point[0] && point[1])
+                        leafletLatLongs.push(new L.LatLng(parseFloat(point[0]).toFixed(6), parseFloat(point[1]).toFixed(6)));
+                });
+
+                var polyline = L.polyline(leafletLatLongs, { color: "blue", smoothFactor: 1.0, opacity: 0.7, weight: 4 }).addTo(map);
+                //map.fitBounds(polyline.getBounds());
+                return polyline;
+            }
+        },
+
         addMarkers: function(map, latLonArray)
         {
             if (latLonArray && latLonArray.length > 0)

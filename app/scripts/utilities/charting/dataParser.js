@@ -235,7 +235,13 @@ function(seriesColorByChannel, findIndexByMsOffset, convertToViewUnits)
         getChannelMask: function()
         {
             return this._channelMask;
+        },
+
+        findIndexByMsOffset: function(msOffset)
+        {
+            return findIndexByMsOffset(this.flatSamples.msOffsetsOfSamples, msOffset);
         }
+
     });
     
     return DataParser;

@@ -1,5 +1,6 @@
 ﻿define(
 [
+    "underscore",
     "TP",
     "utilities/charting/dataParser",
     "utilities/charting/defaultFlotOptions",
@@ -7,7 +8,15 @@
     "views/expando/graphToolbarView",
     "hbs!templates/views/expando/graphTemplate"
 ],
-function (TP, DataParser, getDefaultFlotOptions, flotZoom, GraphToolbarView, graphTemplate)
+function(
+    _,
+    TP,
+    DataParser,
+    getDefaultFlotOptions,
+    flotZoom,
+    GraphToolbarView,
+    graphTemplate
+    )
 {
     return TP.ItemView.extend(
     {
@@ -98,12 +107,23 @@ function (TP, DataParser, getDefaultFlotOptions, flotZoom, GraphToolbarView, gra
 
         bindToPlotEvents: function()
         {
-            this.plot.getPlaceholder().bind("plotselected", this.onPlotSelected, this);
+            _.bindAll(this, "onPlotSelected");
+            this.plot.getPlaceholder().bind("plotselected", this.onPlotSelected);
+            this.on("close", this.unbindPlotEvents, this);
         },
 
         unbindPlotEvents: function()
         {
+            this.plot.getPlaceholder().unbind("plotselected", this.onPlotSelected);
+        },
 
+        onPlotSelected: function()
+        {
+            var selectionStartMilliseconds = Math.round(this.plot.getXAxes()[0].min);
+            var selectionEndMilliseconds = Math.round(this.plot.getXAxes()[0].max);
+            var sampleStartIndex = this.dataParser.findIndexByMsOffset(selectionStartMilliseconds);
+            var sampleEndIndex = this.dataParser.findIndexByMsOffset(selectionEndMilliseconds);
+            this.trigger("plotselected", sampleStartIndex, sampleEndIndex);
         }
 
 

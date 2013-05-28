@@ -52,6 +52,7 @@ function(
         {
             var self = this;
             this.watchForModelChanges();
+            this.watchForControllerEvents();
             this.$el.addClass("waiting");
             setImmediate(function() { self.detailDataPromise.then(self.onModelFetched); });
         },
@@ -91,6 +92,28 @@ function(
         {
             var flatSamples = this.model.get("detailData").get("flatSamples");
             this.dataParser.loadData(flatSamples);
+        },
+
+        watchForControllerEvents: function()
+        {
+            this.on("plotselected", this.onPlotSelected, this);
+            this.on("close", this.stopWatchingControllerEvents, this);
+        },
+
+        stopWatchingControllerEvents: function()
+        {
+            this.off("plotselected", this.onPlotSelected, this);
+        },
+
+        onPlotSelected: function(sampleStartIndex, sampleEndIndex)
+        {
+            if (this.selection)
+            {
+                this.map.removeLayer(this.selection);
+                this.selection = null;
+            }
+
+            this.selection = MapUtils.highlight(this.map, this.dataParser.getLatLonArray().slice(sampleStartIndex, sampleEndIndex));
         }
 
     });
