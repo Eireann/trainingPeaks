@@ -21,6 +21,11 @@ function(
             template: statsTemplate
         },
 
+        initialize: function()
+        {
+            this.on("lapSelected", this.onLapSelected, this);
+        },
+
         serializeData: function()
         {
             var lapData = this.getLapData();
@@ -31,12 +36,19 @@ function(
 
         getLapData: function()
         {
-            var workoutData = this.model.toJSON();
             var detailData = this.model.get("detailData").toJSON();
-            var lapData = detailData.totalStats ? detailData.totalStats : {};
-            lapData.name = "Entire Workout";
-            _.extend(workoutData, lapData);
-            return workoutData;
+            var lapData;
+
+            if (this.lapIndex == null)
+            {
+                lapData = detailData.totalStats ? detailData.totalStats : {};
+                lapData.name = "Entire Workout";
+            }
+            else
+            {
+                lapData = detailData.lapsStats[this.lapIndex];
+            }
+            return lapData;
         },
 
         findAvailableMinMaxAvgFields: function(lapData)
@@ -71,6 +83,12 @@ function(
             });
 
             return keyWithAValue ? true : false;
+        },
+
+        onLapSelected: function (lapIndex)
+        {   
+            this.lapIndex = lapIndex;
+            this.render();
         }
 
     };
