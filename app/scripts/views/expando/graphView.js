@@ -119,8 +119,8 @@ function(
 
         onPlotSelected: function()
         {
-            var selectionStartMilliseconds = Math.round(this.plot.getXAxes()[0].min);
-            var selectionEndMilliseconds = Math.round(this.plot.getXAxes()[0].max);
+            var selectionStartMilliseconds = Math.round(this.plot.getSelection().xaxis.from);
+            var selectionEndMilliseconds = Math.round(this.plot.getSelection().xaxis.to);
             var sampleStartIndex = this.dataParser.findIndexByMsOffset(selectionStartMilliseconds);
             var sampleEndIndex = this.dataParser.findIndexByMsOffset(selectionEndMilliseconds);
             this.trigger("plotselected", sampleStartIndex, sampleEndIndex);
