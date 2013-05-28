@@ -4,6 +4,26 @@
 ],
 function(_)
 {
+
+    var titleFontStyle = {
+        color: "#303030",
+        fontFamily: "HelveticaNeueW01-75Bold",
+        fontSize: "12px"
+    };
+
+    var axisFontStyle = {
+        color: "#303030",
+        fontFamily: "HelveticaNeueW01-55Roma",
+        fontSize: "12px"
+    };
+
+    var tooltipFontStyle = {
+        color: "#636569",
+        fontFamily: "HelveticaNeueW01-55Roma",
+        fontSize: "12px",
+        backgroundColor: "rgba(255, 255, 255, 1)"
+    };
+
     return {
 
         renderColumnChart: function(container, chartData, tooltipTemplate, additionalChartOptions)
@@ -82,17 +102,6 @@ function(_)
         renderChart: function(container, chartData, tooltipTemplate, additionalChartOptions)
         {
             var defaultColors = Highcharts.getOptions().colors;
-            var titleFontStyle = {
-                color: "#303030",
-                fontFamily: "HelveticaNeueW01-75Bold",
-                fontSize: "12px"
-            };
-
-            var axisFontStyle = {
-                color: "#303030",
-                fontFamily: "HelveticaNeueW01-55Roma",
-                fontSize: "12px"
-            };
 
             var chartOptions = {
                 series: [{ data: chartData }],
@@ -159,7 +168,9 @@ function(_)
                     useHTML: true,
                     borderColor: "transparent",
                     shadow: true,
-                    borderRadius: 3
+                    borderRadius: 0,
+                    backgroundColor: "rgba(255, 255, 255, 1)",
+                    style: tooltipFontStyle
                 }
             };
 
