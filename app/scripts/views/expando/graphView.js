@@ -125,14 +125,19 @@ function(
 
         bindToPlotEvents: function()
         {
-            _.bindAll(this, "onPlotSelected");
-            this.plot.getPlaceholder().bind("plotselected", this.onPlotSelected);
+            _.bindAll(this, "onPlotSelected", "onPlotHover");
+            var plotPlaceHolder = this.plot.getPlaceholder();
+            plotPlaceHolder.bind("plotselected", this.onPlotSelected);
+            plotPlaceHolder.bind("plothover", this.onPlotHover);
+            
             this.on("close", this.unbindPlotEvents, this);
         },
 
         unbindPlotEvents: function()
         {
-            this.plot.getPlaceholder().unbind("plotselected", this.onPlotSelected);
+            var plotPlaceHolder = this.plot.getPlaceholder();
+            plotPlaceHolder.unbind("plotselected", this.onPlotSelected);
+            plotPlaceHolder.unbind("plothover", this.onPlotHover);
         },
 
         onPlotSelected: function()
@@ -141,6 +146,18 @@ function(
             var endOffsetMs = Math.round(this.plot.getSelection().xaxis.to);
             var workoutStatsForRange = new WorkoutStatsForRange({ workoutId: this.model.id, begin: startOffsetMs, end: endOffsetMs, name: "Selection" });
             this.trigger("rangeselected", workoutStatsForRange);
+        },
+        
+        onPlotHover: function(event, pos, item)
+        {
+            if (!item)
+            {
+                this.trigger("graphleave");
+            }
+            else
+            {
+                this.trigger("graphhover", pos.x);
+            }
         },
         
         enableSeries: function(series)

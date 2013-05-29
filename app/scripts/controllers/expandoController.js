@@ -128,6 +128,8 @@ function(TP, ExpandoLayout, GraphView, MapView, StatsView, LapsView, ChartsView)
             _.each(this.views, function(view, key)
             {
                 view.on("rangeselected", this.onRangeSelected, this);
+                view.on("graphhover", this.onGraphHover, this);
+                view.on("graphleave", this.onGraphLeave, this);
             }, this);
 
             this.on("close", this.stopWatchingViewEvents, this);
@@ -139,6 +141,8 @@ function(TP, ExpandoLayout, GraphView, MapView, StatsView, LapsView, ChartsView)
             _.each(this.views, function(view, key)
             {
                 view.off("rangeselected", this.onRangeSelected, this);
+                view.off("graphhover", this.onGraphHover, this);
+                view.off("graphleave", this.onGraphLeave, this);
             }, this);
 
         },
@@ -159,6 +163,22 @@ function(TP, ExpandoLayout, GraphView, MapView, StatsView, LapsView, ChartsView)
                     self.onRangeSelected(workoutStatsForRange);
                 });
             }
+        },
+        
+        onGraphHover: function (msOffset)
+        {
+            _.each(this.views, function (view, key)
+            {
+                view.trigger("controller:graphhover", msOffset);
+            }, this);
+        },
+        
+        onGraphLeave: function()
+        {
+            _.each(this.views, function (view, key)
+            {
+                view.trigger("controller:graphleave");
+            }, this);
         },
 
         watchForWindowResize: function()

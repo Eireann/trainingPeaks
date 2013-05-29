@@ -5,7 +5,7 @@
     "utilities/mapping/mapUtils",
     "hbs!templates/views/expando/mapTemplate"
 ],
-function(
+function (
     TP,
     DataParser,
     MapUtils,
@@ -25,15 +25,15 @@ function(
         template:
         {
             type: "handlebars",
-            template: mapTemplate 
+            template: mapTemplate
         },
 
-        initialEvents: function()
+        initialEvents: function ()
         {
             this.model.off("change", this.render);
         },
 
-        initialize: function(options)
+        initialize: function (options)
         {
             _.bindAll(this, "onModelFetched");
 
@@ -48,33 +48,33 @@ function(
             this.detailDataPromise = options.detailDataPromise;
         },
 
-        onRender: function()
+        onRender: function ()
         {
             var self = this;
             this.watchForModelChanges();
             this.watchForControllerEvents();
             this.$el.addClass("waiting");
-            setImmediate(function() { self.detailDataPromise.then(self.onModelFetched); });
+            setImmediate(function () { self.detailDataPromise.then(self.onModelFetched); });
         },
 
-        watchForModelChanges: function()
+        watchForModelChanges: function ()
         {
             this.model.get("detailData").on("change:flatSamples.samples", this.onModelFetched, this);
             this.on("close", this.stopWatchingModelChanges, this);
         },
 
-        stopWatchingModelChanges: function()
+        stopWatchingModelChanges: function ()
         {
             this.model.get("detailData").off("change:flatSamples.samples", this.onModelFetched, this);
         },
 
-        onModelFetched: function()
+        onModelFetched: function ()
         {
             this.$el.removeClass("waiting");
             this.createAndDisplayMap();
         },
 
-        createAndDisplayMap: function()
+        createAndDisplayMap: function ()
         {
             if (!this.model.get("detailData").get("flatSamples"))
                 return;
@@ -88,21 +88,25 @@ function(
             MapUtils.calculateAndAddMileMarkers(this.map, this.dataParser, 15);
         },
 
-        parseData: function()
+        parseData: function ()
         {
             var flatSamples = this.model.get("detailData").get("flatSamples");
             this.dataParser.loadData(flatSamples);
         },
 
-        watchForControllerEvents: function()
+        watchForControllerEvents: function ()
         {
             this.on("controller:rangeselected", this.onRangeSelected, this);
             this.on("close", this.stopWatchingControllerEvents, this);
+            this.on("controller:graphhover", this.onGraphHover, this);
+            this.on("controller:graphleave", this.onGraphLeave, this);
         },
 
-        stopWatchingControllerEvents: function()
+        stopWatchingControllerEvents: function ()
         {
             this.off("controller:rangeselected", this.onRangeSelected, this);
+            this.off("controller:graphhover", this.onGraphHover, this);
+            this.off("controller:graphleave", this.onGraphLeave, this);
         },
 
         onRangeSelected: function (workoutStatsForRange)
@@ -116,6 +120,30 @@ function(
             var sampleStartIndex = this.dataParser.findIndexByMsOffset(workoutStatsForRange.get("begin"));
             var sampleEndIndex = this.dataParser.findIndexByMsOffset(workoutStatsForRange.get("end"));
             this.selection = MapUtils.highlight(this.map, this.dataParser.getLatLonArray().slice(sampleStartIndex, sampleEndIndex));
+        },
+
+        onGraphHover: function (msOffset)
+        {
+            var index = this.dataParser.findIndexByMsOffset(msOffset);
+            var item = this.dataParser.getLatLonArray()[index];
+            if (!this.hoverMarker)
+            {
+                this.hoverMarker = L.marker(item);
+                this.hoverMarker.addTo(this.map);
+            }
+            else
+            {
+                this.hoverMarker.setLatLng(item);
+            }
+        },
+
+        onGraphLeave: function ()
+        {
+            if (this.hoverMarker)
+            {
+                this.map.removeLayer(this.hoverMarker);
+                this.hoverMarker = null;
+            }
         }
     });
 });
