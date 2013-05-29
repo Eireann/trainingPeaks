@@ -31,7 +31,7 @@ function(TP)
             if (this.has("name"))
                 response.name = this.get("name");
             return response;
-        },
+        }
     });
 
     return WorkoutStatsForRange;
