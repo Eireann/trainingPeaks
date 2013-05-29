@@ -67,20 +67,13 @@ function (TP, DataParser, getDefaultFlotOptions, flotZoom, GraphToolbarView, gra
             var series = this.dataParser.getSeries();
             var yaxes = this.dataParser.getYAxes(series);
 
-            this.flotOptions = getDefaultFlotOptions(series);
+            this.flotOptions = getDefaultFlotOptions(series, this.model.get("workoutTypeValueId"));
 
             this.flotOptions.selection.mode = "x";
             this.flotOptions.yaxes = yaxes;
             this.flotOptions.zoom = { enabled: true };
             this.flotOptions.zoom.dataParser = this.dataParser;
             this.flotOptions.zoom.resetButton = ".graphResetButton";
-
-            this.flotOptions.filter =
-            {
-                enabled: false,
-                type: "ema",
-                period: 30
-            };
 
             this.plot = $.plot(this.$el, series, this.flotOptions);
 

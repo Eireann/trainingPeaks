@@ -17,6 +17,7 @@
     textarea, input
     {
         @include box-shadow(none);
+        color: $TPGrey3;
         
         &:focus 
         {
@@ -32,6 +33,7 @@
         &.workoutTitle
         {
             text-align: left;
+            color: $TPGrey4;
         }
 
         &#startTimeInput
@@ -53,9 +55,13 @@ input[disabled='disabled']
 	height: 360px;
 	overflow-y:scroll; 
 	overflow-x:hidden;
-    @include nice-scrollbar;
 	@include radialGradient(#e6e4e4, #dedcdc);
     width: 653px;
+
+    @include nice-scrollbar;
+    &::-webkit-scrollbar-track {
+        box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0.2) 0 0px 1px 1px inset;
+    }
 }
 
 .quickviewFooter
@@ -107,28 +113,13 @@ input[disabled='disabled']
 
     .hoverBox
     {
-        .colorBar
-        {
-            top: 0px;
-            bottom: 0px;
-            right: 0px;
-            @include calc(left, "100% - 4px"); 
-            width: 4px;
-            height: 100%;
-        }
-
-        .bottomShadow
-        {
-            display:none;
-        }
-
         .arrow
         {
             position: absolute;
             top: 40px;
             right: 0px;
             @include transform(translateX(8px) rotate(45deg));
-			box-shadow: -2px 6px 2px 2px #303030;
+            @include box-shadow(0 0 2px 0 #ADADAD);
         }
 
         .colored
@@ -138,7 +129,6 @@ input[disabled='disabled']
 
         .hoverBoxContents
         {
-            @include linearGradient(right, rgb(255,255,255), rgba(255,255,255,0.95)); 
             padding: 10px;
 
             .details
@@ -152,26 +142,16 @@ input[disabled='disabled']
 
                 &.selected
                 {
-                    font-weight: bold;
+                    font-family: $fontFamilyHeavy;
                 }
 
                 &:hover
                 {
-                    font-weight: bold;
+                    font-family: $fontFamilyHeavy;
                 }
             }
         }
 
-        .mainShadow
-        {
-            bottom: 0px;
-            @include box-shadow(3px 0px 3px -2px $TPGrey4);
-        }
-
-        .arrow
-        {
-            @include box-shadow(3px 0px 3px -2px $TPGrey4);
-        }
     }
 }
 
@@ -227,7 +207,7 @@ input[disabled='disabled']
     label
     {
         display:inline-block;
-        font-weight: bold;
+        font-family: $fontFamilyHeavy;
     }
 
     select
@@ -262,6 +242,7 @@ input[disabled='disabled']
         padding: 3px;
         border: 1px solid transparent;
         font-size: $fontSizeSmaller;
+        color: $TPGrey3;
 
         &.hover
         {
@@ -272,10 +253,16 @@ input[disabled='disabled']
             }
         }
 
+        &.editable
+        {
+            padding-right: 0px;
+        }
+
         .commentHeader
         {
             // this becomes smaller because it's relative to the size above it ...
-            font-weight: $fontWeightBold;
+            font-family: $fontFamilyHeavy;
+            font-weight: normal;
             margin-bottom: 3px;
             color: $TPGrey3;
 

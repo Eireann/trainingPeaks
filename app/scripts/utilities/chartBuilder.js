@@ -4,6 +4,26 @@
 ],
 function(_)
 {
+
+    var titleFontStyle = {
+        color: "#303030",
+        fontFamily: "HelveticaNeueW01-75Bold",
+        fontSize: "12px"
+    };
+
+    var axisFontStyle = {
+        color: "#303030",
+        fontFamily: "HelveticaNeueW01-55Roma",
+        fontSize: "12px"
+    };
+
+    var tooltipFontStyle = {
+        color: "#636569",
+        fontFamily: "HelveticaNeueW01-55Roma",
+        fontSize: "12px",
+        backgroundColor: "rgba(255, 255, 255, 1)"
+    };
+
     return {
 
         renderColumnChart: function(container, chartData, tooltipTemplate, additionalChartOptions)
@@ -13,6 +33,16 @@ function(_)
                 chart:
                 {
                     type: "column"
+                },
+                plotOptions:
+                {
+                    column:
+                    {
+                        borderWidth: 0,
+
+                        // actual chart width is approx container.width - 70px (axis labels etc), so divide that evenly between bars
+                        pointWidth: Math.round(($(container).width() - 70) / chartData.length) - 5
+                    }
                 },
                 yAxis:
                 {
@@ -34,7 +64,7 @@ function(_)
             var chartOptions = {
                 chart:
                 {
-                    type: "spline"
+                    type: "areaspline"
                 },
                 yAxis:
                 {
@@ -43,8 +73,11 @@ function(_)
                 },
                 plotOptions:
                 {
-                    spline:
+                    areaspline:
                     {
+                        connectNulls: true,
+                        lineColor: "#FFFFFF",
+                        lineWidth: 2,
                         marker:
                         {
                             enabled: false,
@@ -68,6 +101,8 @@ function(_)
 
         renderChart: function(container, chartData, tooltipTemplate, additionalChartOptions)
         {
+            var defaultColors = Highcharts.getOptions().colors;
+
             var chartOptions = {
                 series: [{ data: chartData }],
                 chart:
@@ -83,35 +118,37 @@ function(_)
                 },
                 title:
                 {
-                    style: {
-                        color: '#636569',
-                        fontWeight: 'bold'
-                    }
+                    style: titleFontStyle
                 },
                 xAxis: {
+                    lineWidth: 1,
+                    lineColor: "#636569",
                    labels:
                     {
-                        enabled: false
+                        enabled: false,
+                        style: axisFontStyle,
+                        useHTML: true
                     },
                     title:
                     {
-                        style: {
-                            color: '#636569',
-                            fontWeight: 'bold'
-                        }
+                        style: axisFontStyle
                     },
                     tickColor: 'transparent'
                 },
                 yAxis: {
+                    lineWidth: 1,
+                    lineColor: "#636569",
                     min: 0,
-                    alternateGridColor: "#cdcbcb",
+                    //alternateGridColor: "#cdcbcb",
                     tickInterval: 10,
                     title:
                     {
-                        style: {
-                            color: '#636569',
-                            fontWeight: 'bold'
-                        }
+                        style: axisFontStyle
+                    },
+                    labels:
+                    {
+                        style: axisFontStyle,
+                        useHTML: true
                     }
                 },
                 legend:
@@ -131,17 +168,38 @@ function(_)
                     useHTML: true,
                     borderColor: "transparent",
                     shadow: true,
-                    borderRadius: 3
+                    borderRadius: 0,
+                    backgroundColor: "rgba(255, 255, 255, 1)",
+                    style: tooltipFontStyle
                 }
             };
 
             if (additionalChartOptions)
                 $.extend(true, chartOptions, additionalChartOptions);
 
+            if (additionalChartOptions.hasOwnProperty('colors'))
+            {
+                var colorGradients = {
+                    colors: Highcharts.map(additionalChartOptions.colors, function(color)
+                    {
+                        return {
+                            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+                            stops: [
+                                    [0, color.light],
+                                    [1, color.dark]
+                            ]
+                        };
+                    })
+                };
+
+
+                $.extend(true, chartOptions, colorGradients);
+            }
+
             if (container.highcharts)
                 container.highcharts(chartOptions);
         },
-        
+
         getPeakChartCategories: function(chartPoints)
         {
             var skipInterval = 2;
@@ -175,7 +233,7 @@ function(_)
 
         formatPeakChartAxisLabel: function (label)
         {
-            return label.replace(/ /g, "").replace(/Minutes/, "min").replace(/Seconds/, "sec").replace(/Hour/, "hr");
+            return label.replace(/ /g, "").replace(/Minutes/, "m").replace(/Seconds/, "s").replace(/Hour/, "h");
         },
 
         getColumnTickInterval: function(points)

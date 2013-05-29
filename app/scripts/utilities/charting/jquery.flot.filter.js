@@ -50,26 +50,25 @@ function ()
         return movingAverages;
     };
 
-    var computeExponentialMovingAverages = function(timeSeries, period)
+    var computeExponentialMovingAverages = function(timeSeries, period, reverse)
     {
         var emas = [];
         var timeSeriesCopy = ([]).concat(timeSeries);
 
-        timeSeriesCopy.reverse();
-
         var startingSma = computeSimpleMovingAverages(timeSeriesCopy.slice(0, period))[0];
         var previousEma = startingSma;
         var currentEma;
+
+        if (reverse)
+            timeSeriesCopy.reverse();
 
         var smoothing = 2.0 / (period + 1);
         var seriesLength = timeSeriesCopy.length;
         
         for (var i = 0; i < seriesLength; i++)
         {
-            if (i < period - 1)
-                emas.push(null);
-            else if (i === period - 1)
-                emas.push(startingSma);
+            if (i <= period - 1)
+                emas.push(timeSeriesCopy[i]);
             else
             {
                 if (timeSeriesCopy[i] === null && period < 50)
@@ -84,19 +83,16 @@ function ()
                 previousEma = currentEma;
             }
         }
-        emas.reverse();
+        if(reverse)
+            emas.reverse();
         return emas;
-    };
-
-    var computeGaussianFilter = function()
-    {
     };
 
     var applyDataFilter = function(plot, series, datapoints)
     {
         var o = plot.getOptions();
 
-        if (!o.filter.enabled || series.label === "Elevation")
+        if (!o.filter.enabled || series.label === "Elevation" || series.label === "Temperature")
             return;
 
         var i;
@@ -122,14 +118,14 @@ function ()
             case "ema":
                 filterFunction = computeExponentialMovingAverages;
                 break;
-            case "gauss":
-                filterFunction = computeGaussianFilter;
-                break;
             default:
                 filterFunction = computeSimpleMovingAverages;
         }
 
-        var filteredData = filterFunction(timeSeries, o.filter.period);
+        var filteredData = filterFunction(timeSeries, o.filter.period, false);
+        
+        if (o.filter.type === "ema")
+            filteredData = filterFunction(filteredData, o.filter.period, true);
 
         for (i = 1; i < datapoints.points.length; i++)
         {
@@ -148,7 +144,6 @@ function ()
         o.filter.period = period;
 
         plot.setData(plot.getData());
-        plot.setupGrid();
         plot.draw();
     };
 
@@ -158,7 +153,6 @@ function ()
         {
             enabled: false,
             period: 10,
-            smoothing: null,
             type: "ema"
         }
     };
@@ -169,6 +163,8 @@ function ()
         {
             init: function(plot)
             {
+                theMarsApp.flotOptions = plot.getOptions();
+                
                 plot.setFilter = function(period)
                 {
                     setFilter(plot, period);
@@ -181,4 +177,17 @@ function ()
             version: "0.1"
         });
     }
+
+    // Make this shit testable
+    // Not optimal - nobody should touch this shit outside of the flot plugin registered aboved.
+    var flotFilter =
+    {
+        setFilter: setFilter,
+        applyDataFilter: applyDataFilter,
+        computeSumsOverPeriod: computeSumsOverPeriod,
+        computeSimpleMovingAverages: computeSimpleMovingAverages,
+        computeExponentialMovingAverages: computeExponentialMovingAverages
+    };
+    
+    return flotFilter;
 });

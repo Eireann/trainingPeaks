@@ -39,7 +39,7 @@
         
         #dayName
         {
-            font-family: $navigationFontFamilyRegular;
+            font-family: $fontFamilyRegular;
             font-size:$fontSizeMedium;
             color: $TPGrey3;
             padding-right: 14px;
@@ -48,7 +48,7 @@
 
         #calendarDate
         {
-            font-family: $navigationFontFamilyRegular;
+            font-family: $fontFamilyRegular;
             font-size:$fontSizeSmall;
             color: $TPGrey3;
             padding-right: 14px;
@@ -56,17 +56,15 @@
 
         #time
         {
-            font-family: $navigationFontFamilyRegular;
+            font-family: $fontFamilyRegular;
             font-size:$fontSizeSmall;
             color: $TPGrey3;
-            font-style: italic
         }
 
-        @include inputs(200px, 20px, $fontSizeSmall, $navigationFontFamilyRegular);
+        @include inputs(200px, 20px, $fontSizeSmall, $fontFamilyRegular);
         input#startTimeInput
         {
             color: $TPGrey3;
-            font-style: italic;
             display: inline-block;
             outline: none;
             @include box-shadow(none);
@@ -127,6 +125,35 @@
                 {
                     margin-top: -1px;
                     cursor: pointer;
+                    width: 13px;
+                    height: 34px;
+					background: url(../../assets/images/QVImages/sprite-paperclip.png) no-repeat -13px 0;
+
+                    &:hover {
+       					background: url(../../assets/images/QVImages/sprite-paperclip.png) no-repeat -26px 0;
+                    }
+
+                    &.withAttachments
+                    {
+       					background: url(../../assets/images/QVImages/sprite-paperclip.png) no-repeat -26px 0;
+                    }
+
+                    @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
+
+                        background-size:13px 34px;
+
+                        background: url(../../assets/images/QVImages/sprite-paperclip@2x.png) no-repeat -13px 0;
+
+                        &:hover {
+                            background: url(../../assets/images/QVImages/sprite-paperclip@2x.png) no-repeat -26px 0;
+                        }
+
+                        &.withAttachments
+                        {
+                            background: url(../../assets/images/QVImages/sprite-paperclip@2x.png) no-repeat -26px 0;
+                        }
+                    }
+
                 }
         
             }
@@ -135,20 +162,31 @@
             {
                 float: left;
                 padding: 10px 0px 0px 10px;
-                @include labels($navigationFontFamilyRegular, $fontSizeQVHeader, $TPGrey4, normal);
+                @include labels($fontFamilyLight, $fontSizeQVHeader, $TPGrey4, normal);
+
+                &.duration
+                {
+                    margin-right: 10px;
+                }
             }
             .headerWorkoutValueLabel
             {
                 float: left;
                 padding: 18px 0px 0px 0px;
-                @include labels($navigationFontFamilyRegular, $fontSizeXXLarge, $TPGrey4, normal);
+                @include labels($fontFamilyLight, $fontSizeXXLarge, $TPGrey4, normal);
+
+                &.distance
+                {
+                    margin-right: 10px;
+                }
             }
 
             .title
             {
+                clear: left;
                 padding-left: 5px;
-                @include inputs(100%, 20px, $fontSizeLarge, $navigationFontFamilyRegular);
-                input
+                @include inputs(10px, 20px, $fontSizeLarge, $fontFamilyRegular);
+                input#workoutTitleField
                 {
                     background:transparent;
                     outline: none;
@@ -156,8 +194,18 @@
                     box-shadow: inset 0 0px 0px rgba(0, 0, 0, 0.0);
                     color: $TPGrey4;
                     display: inline;
-                    font-style: italic;
+                    min-width: 145px;
+                    max-width: 100%;
+                    //width: auto;
+                    //overflow-x: visible;
+
+                    &:focus
+                    {
+                        background-color: rgba(255, 255, 255, 0.5);
+                    }
                 }
+                @include placeholders($TPGrey3);
+
             }
         }
 
@@ -187,32 +235,77 @@
     {
         float: left;
         width: 80px;
+
         
         .buttons
         {
-            width: 81px;
-            height: 36px;
-            @include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey3, normal);
-            margin-left: 10px;
+            height: 34px;
+            @include labels($fontFamilyRegular, $fontSizeSmall, $TPGrey3, normal);
             padding-top: 12px;
             padding-left: 28px;
             padding-right: 8px;
             float: left;
+            margin-left: 10px;
+
+            border-width: 1px;
+            border-style: solid;
+            border-color: $TPGrey9;
+            
+            &:hover
+            {
+                border-color: #8d8d8d;
+    	        color:#3d3e41;
+            }
             
         }
         .uploadButton
         {
-            background-image: url(../../assets/images/QVImages/uploadBackground.png);
+
+            background: url(../../assets/images/QVImages/sprite-buttons-expando.png) no-repeat 0 0;
+			&:hover 
+            {
+			    background: url(../../assets/images/QVImages/sprite-buttons-expando.png) no-repeat -79px 0px;
+	        }
+            &:active 
+            {
+                background: url(../../assets/images/QVImages/sprite-buttons-expando.png) no-repeat -158px 0;
+
+                label
+                {
+                    color: $white;
+                    opacity: 0.85;
+                    cursor: pointer;
+                }
+            }
+
+            @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) 
+            {
+				.uploadButton
+                {
+					background-image: url(../../assets/images/QVImages/sprite-buttons-expando@2x.png);
+					background-size: 80px 34px;
+				}
+			}
+
             cursor: pointer;
 
             label
             {
                 cursor: pointer;
             }
-
-            &.menuOpen
+        }
+        .expandButton
+        {
+            cursor: pointer;
+            margin-top: 10px;
+            background: url(../../assets/images/QVImages/sprite-buttons-expando.png) no-repeat 0 -34px;
+			&:hover 
             {
-                background-image: url(../../assets/images/QVImages/uploadBackgroundDark.png);
+			    background: url(../../assets/images/QVImages/sprite-buttons-expando.png) no-repeat -79px -34px;
+	        }
+            &:active 
+            {
+                background: url(../../assets/images/QVImages/sprite-buttons-expando.png) no-repeat -158px -34px;
 
                 label
                 {
@@ -222,25 +315,30 @@
                 }
             }
         }
-        .expandButton
-        {
-            cursor: pointer;
-            margin-top: 10px;
-            background-image: url(../../assets/images/QVImages/expandBackground.png);
-
-            label
-            {
-                cursor: pointer;
-            }
-        }
 
         .collapseButton
         {
             margin-top: 10px;
-            background-image: url(../../assets/images/QVImages/expandBackground.png);
             display: none;
             padding-left: 25px;
             cursor: pointer;
+
+            background: url(../../assets/images/QVImages/sprite-buttons-expando.png) no-repeat 0 -68px;
+			&:hover 
+            {
+			    background: url(../../assets/images/QVImages/sprite-buttons-expando.png) no-repeat -79px -68px;
+	        }
+            &:active 
+            {
+                background: url(../../assets/images/QVImages/sprite-buttons-expando.png) no-repeat -158px -68px;
+
+                label
+                {
+                    color: $white;
+                    opacity: 0.85;
+                    cursor: pointer;
+                }
+            }
 
             label
             {
@@ -248,7 +346,7 @@
             }
         }
 
-        @include labels($navigationFontFamilyRegular, $fontSizeLarge, $TPGrey4, normal);
+        @include labels($fontFamilyRegular, $fontSizeLarge, $TPGrey4, normal);
         text-align: center;
         //@include box-shadow(0px 1px 2px 0px #40403f);
         //margin-left: 10px;
@@ -257,7 +355,7 @@
     }
 
     #menuIcon {
-		padding: 2px 0 6px 0;
+		padding: 3px 0 6px 0;
 		cursor:pointer;
     }
 

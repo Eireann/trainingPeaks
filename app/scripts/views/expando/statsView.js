@@ -1,10 +1,12 @@
 ﻿define(
 [
     "TP",
+    "./expandoCommon",
     "hbs!templates/views/expando/statsTemplate"
 ],
 function(
     TP,
+    expandoCommon,
     statsTemplate
     )
 {
@@ -19,10 +21,15 @@ function(
             template: statsTemplate
         },
 
+        initialize: function()
+        {
+            this.watchForControllerResize();
+        },
+
         serializeData: function()
         {
             var lapData = this.getLapData();
-            this.calculateTotalAndMovingTime(lapData);
+            expandoCommon.calculateTotalAndMovingTime(lapData);
             this.findAvailableMinMaxAvgFields(lapData);
             return lapData;
         },
@@ -35,17 +42,6 @@ function(
             lapData.name = "Entire Workout";
             _.extend(workoutData, lapData);
             return workoutData;
-        },
-
-        calculateTotalAndMovingTime: function(lapData)
-        {
-            lapData.totalTime = TP.utils.datetime.convert.millisecondsToDecimalHours(lapData.end - lapData.begin);
-
-            if (lapData.stoppedTime)
-            {
-                var stoppedTime = TP.utils.datetime.convert.millisecondsToDecimalHours(lapData.stoppedTime);
-                lapData.movingTime = lapData.totalTime - stoppedTime;
-            }
         },
 
         findAvailableMinMaxAvgFields: function(lapData)
@@ -80,6 +76,20 @@ function(
             });
 
             return keyWithAValue ? true : false;
+        },
+
+        watchForControllerResize: function()
+        {
+            this.on("controller:resize", this.onControllerResize, this);
+            this.on("close", function()
+            {
+                this.off("controller:resize", this.onControllerResize, this);
+            }, this);
+        },
+
+        onControllerResize: function(containerHeight)
+        {
+            this.$el.parent().height(Math.round(containerHeight * 0.4));
         }
 
     };

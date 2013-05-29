@@ -2,11 +2,11 @@
 
 @mixin buttons($marginLeft, $width, $fontSize)
 {
-	button
+    button, input[type=button]
 	{
 		width: $width;
 		padding:2px 0;
-		font-family: $navigationFontFamilyLight;
+		font-family: $fontFamilyRegular;
 		font-size: $fontSize;
 		font-weight:normal;
 		margin-left: $marginLeft;
@@ -22,7 +22,7 @@
         border-style: solid;
         border-color: $TPGrey9;
         margin-bottom: 0px;
-
+		box-shadow:none;
         cursor: pointer;
 
         background: url(../../assets/images/calendarImages/background-gradient-button.png) repeat-x 0 0;
@@ -38,6 +38,7 @@
         &:hover
         {
            border-color: #8d8d8d;
+    	   color:#3d3e41;
           // -webkit-box-shadow: 0px 0px 3px 1px rgba($TPGrey7, .50);
           // -moz-box-shadow: 0px 0px 3px 1px rgba($TPGrey9, .50);
           // box-shadow: 0px 0px 3px 1px rgba($TPGrey9, .50);
@@ -68,6 +69,21 @@
 	}
 }
 
+@mixin blueButton()
+{
+    @include box-shadow(none);
+
+	@include linearGradient(top, #dfdfdf, #AAC8E5);
+
+    &:active
+    {
+        color: #636569;
+        background:none;
+        @include linearGradient(top, #dfdfdf, #8cb5dc);
+    }
+
+}
+
 @mixin labels($fontFamily, $fontSize, $fontColor, $fontWeight, $selector: label)
 {
 	#{$selector}
@@ -91,6 +107,7 @@
 		padding-top: 0px;
 		padding-bottom: 0px;
         cursor: text;
+        @include box-shadow(none);
 	}
 
     input[disabled='disabled']
@@ -106,7 +123,7 @@
 		margin-top: 3px;
 		width: $width;
 		font-size: $fontSizeMedium;
-		font-family: $navigationFontFamilyRegular;
+		font-family: $fontFamilyRegular;
 	}
 }
 
@@ -122,7 +139,7 @@
     {
         border-radius: 0;
         background: $track-background;
-        box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0.2) 0 0px 1px 1px inset;
+        box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0.2) 0 -1px 1px 1px inset;
     }
 
     &::-webkit-scrollbar-thumb
@@ -142,7 +159,7 @@
     {
         border-radius: 0;
         background: $thumb-color;
-        box-shadow: rgba(255, 255, 255, 0.1) 0px 0px 0px 0px, rgba(0, 0, 0, 0.7) 0px -1px 7px 0px inset;
+        box-shadow: rgba(255, 255, 255, 0.1) 0px 0px 0px 0px, rgba(0, 0, 0, .7) 0px 0px 7px 0px inset;
     }
 }
 
@@ -208,4 +225,12 @@
     background: -o-radial-gradient(center, ellipse cover, #1e5799 0%, $color1 0%, $color2 100%);
     background: -ms-radial-gradient(center, ellipse cover, #1e5799 0%, $color1 0%, $color2 100%);
     background: radial-gradient(ellipse at center, #1e5799 0%, $color1 0%, $color2 100%);
+}
+
+@mixin placeholders($color)
+{
+    ::-webkit-input-placeholder { color: $color; }
+    :moz-placeholder { color: $color; }
+    ::moz-placeholder { color: $color; }
+    :-ms-input-placeholder { color: $color; }
 }

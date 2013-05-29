@@ -23,7 +23,10 @@ function (
             "click #breakThrough": "onBreakThroughClicked",
             "click #date": "onDateClicked",
             "click .workoutIconLarge": "onWorkoutIconClicked",
-            "click #menuIcon": "onMenuIconClicked"
+            "click #menuIcon": "onMenuIconClicked",
+            "focus input.workoutTitle": "onTitleFocus",
+            "blur input.workoutTitle": "onTitleBlur",
+            "keyup input.workoutTitle": "onTitleChanged"
         },
 
         headerUi:
@@ -67,6 +70,8 @@ function (
             this.$(".grayHeader").addClass(this.getWorkoutTypeCssClassName());
 
             this.$(".chzn-select").chosen();
+
+            this.$(".workoutTitle").css('width', this.titleWidth());
 
         },
 
@@ -189,7 +194,7 @@ function (
 
             // if nothing was planned, we can't fail to complete it properly ...
 
-            return "ComplianceGreen";
+            return "ComplianceNone";
         },
 
         updateHeaderOnChange: function()
@@ -214,6 +219,27 @@ function (
                 description = description.replace(/BT: /, "");
                 this.model.set("description", description);
             }
+        },
+
+        onTitleFocus: function()
+        {
+            $(document).tooltip("close");
+            $(document).tooltip("disable");
+        },
+
+        onTitleBlur: function()
+        {
+            $(document).tooltip("enable");
+        },
+
+        onTitleChanged: function ()
+        {
+            this.$(".workoutTitle").css('width', this.titleWidth());
+        },
+
+        titleWidth: function ()
+        {
+            return (this.$(".workoutTitle").val().length + 1) * 8 + 10 + 'px';
         }
 
     };

@@ -41,10 +41,11 @@
         padding-right: 2px;
  		// height: 23px;
 		
-		@include inputs(83.5px, 21px, 12px, $navigationFontFamilyRegular);
+		@include inputs(83.5px, 21px, 12px, $fontFamilyRegular);
        	input {
 			margin: 0;
 		  	padding: 0;
+            color: $TPGrey4;
 		}
 
         .hide
@@ -59,7 +60,7 @@
 	{
 		float:left;
         height: 23px;
-		@include inputs(55px, 20px, 12px, $navigationFontFamilyRegular);
+		@include inputs(55px, 20px, 12px, $fontFamilyRegular);
         padding-right: 2px;
 	}
 
@@ -78,7 +79,7 @@
 
 	}
 	
-	@include labels($navigationFontFamilyRegular, 0.82em, $TPGrey3, normal);
+	@include labels($fontFamilyRegular, 0.82em, $TPGrey3, normal);
 
 	.workoutStatsUnitLabel
 	{
@@ -101,12 +102,11 @@
 	height: 15px;
 	background: transparent;
 
-	@include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey3, normal);
+	@include labels($fontFamilyHeavy, $fontSizeSmall, $TPGrey3, normal);
 	label
 	{
 		float: left;
 		width: 80px;
-        font-weight: bold;
         text-align: center;
 
         &.ghosted
@@ -130,12 +130,11 @@
 	background: transparent;
     padding-top: 10px;
 
-	@include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey3, normal);
+	@include labels($fontFamilyHeavy, $fontSizeSmall, $TPGrey3, normal);
 	label
 	{
 		float: left;
 		width: 56px;
-        font-weight: bold;
         text-align: center;
             
         &.ghosted
@@ -150,13 +149,18 @@
 	float: left;
 	background: transparent;
 	padding-top: 10px;
-	@include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey3, normal);
+	@include labels($fontFamilyHeavy, $fontSizeSmall, $TPGrey3, normal);
 	width: 275px;
 	height: 100%;
 
+    textarea
+    {
+        color: $TPGrey4;
+        font-family: $fontFamilyRegular;
+    }
+
     label
     {
-        font-weight: bold;
         padding-top: 4px;
         padding-bottom: 4px;
     }

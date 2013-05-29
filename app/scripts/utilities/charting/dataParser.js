@@ -6,6 +6,19 @@
 ],
 function(seriesColorByChannel, findIndexByMsOffset, convertToViewUnits)
 {
+    var flexChannelOrder =
+    [
+        "Cadence",
+        "HeartRate",
+        "Elevation",
+        "Power",
+        "RightPower",
+        "Speed",
+        "Pace",
+        "Torque",
+        "Temperature"
+    ];
+    
     var parseDataByChannel = function(flatSamples)
     {
         var dataByChannel = {};
@@ -89,7 +102,16 @@ function(seriesColorByChannel, findIndexByMsOffset, convertToViewUnits)
             });
         });
 
-        return seriesArray;
+        var orderedSeriesArray = [];
+
+        _.each(flexChannelOrder, function (orderedChannel)
+        {
+            var series = _.find(seriesArray, function (s) { return s.label === orderedChannel; });
+            if (series)
+                orderedSeriesArray.push(series);
+        });
+
+        return orderedSeriesArray;
     };
 
     var getElevationInfoOnRange = function(x1, x2)
@@ -149,10 +171,13 @@ function(seriesColorByChannel, findIndexByMsOffset, convertToViewUnits)
     {
         var self = this;
         var yaxes = [];
-        var countdown = 3;
+        var countdown = (series.length / 2).toFixed(0);
         var axisIndex = 1;
         _.each(series, function(s)
         {
+            if (s.label === "Pace")
+                return;
+            
             s.yaxis = axisIndex++;
             yaxes.push(
             {

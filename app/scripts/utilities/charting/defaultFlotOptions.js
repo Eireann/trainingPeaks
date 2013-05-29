@@ -6,7 +6,7 @@
 ],
 function(TP, flotCustomToolTip)
 {
-    return function(series)
+    return function(series, workoutType)
     {
         return _.extend({}, {
             crosshair:
@@ -34,13 +34,13 @@ function(TP, flotCustomToolTip)
             tooltip: true,
             tooltipOpts:
             {
-                content: function(x, y)
+                content: function()
                 {
                     return "";
                 },
                 onHover: function(flotItem, $tooltipEl)
                 {
-                    $tooltipEl.html(flotCustomToolTip(series, flotItem.series.label, flotItem.dataIndex, flotItem.datapoint[0]));
+                    $tooltipEl.html(flotCustomToolTip(series, flotItem.series.label, flotItem.dataIndex, flotItem.datapoint[0], workoutType));
                 }
             },
             series:
@@ -59,8 +59,33 @@ function(TP, flotCustomToolTip)
                     min: 0,
                     tickFormatter: function(value, axis)
                     {
-                        var decimalHours = (value / (3600 * 1000)).toFixed(2);
+                        var decimalHours = (value / (3600 * 1000));
                         return TP.utils.datetime.format.decimalHoursAsTime(decimalHours, true, null);
+                    },
+                    ticks: function(axis)
+                    {
+                        var ticksArray = [];
+
+                        if (axis.tickSize <= 120000)
+                            axis.tickSize = 120000;
+                        else if (axis.tickSize <= 300000)
+                            axis.tickSize = 300000;
+                        else if (axis.tickSize <= 600000)
+                            axis.tickSize = 600000;
+                        else if (axis.tickSize <= 900000)
+                            axis.tickSize = 900000;
+                        else if (axis.tickSize <= 1200000)
+                            axis.tickSize = 1200000;
+                        else
+                            axis.tickSize -= (axis.tickSize % 1500000);
+                        
+                        var max = axis.datamax;
+                        while (max > 0)
+                        {
+                            ticksArray.push(axis.datamax - max);
+                            max -= axis.tickSize;
+                        }
+                        return ticksArray;
                     }
                 }
             ]

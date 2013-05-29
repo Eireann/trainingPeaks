@@ -24,7 +24,8 @@
         z-index: 3;
         margin-bottom: 3px; 
         padding: 10px;
-        @include linearGradient(bottom, rgb(255,255,255), rgba(255,255,255,0.90)); 
+        //@include linearGradient(bottom, rgb(255,255,255), rgba(255,255,255,0.90)); 
+        background-color: $white;
         label
         {
             color: $TPGrey3;
@@ -46,7 +47,7 @@
 
         // the bottom will be covered by the bottom bar and arrow
         bottom: 23px;
-		@include box-shadow(0 2px 3px 0 #ADADAD);
+		@include box-shadow(0 1px 3px 0 #ADADAD);
     }
 
     // bottom shadow, except for the arrow
@@ -98,7 +99,7 @@
         .hoverBoxContents {
             margin-bottom: 0px;
             margin-top:0;
-            @include linearGradient(top, rgb(255,255,255), rgba(255,255,255,0.90)); 
+            //@include linearGradient(top, rgb(255,255,255), rgba(255,255,255,0.90)); 
 			& label {
 			    cursor: pointer;
 			}

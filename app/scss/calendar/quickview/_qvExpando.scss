@@ -34,7 +34,7 @@
     height: 80px;
     float: left;
     margin-left: 10px;
-    @include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey3, normal);
+    @include labels($fontFamilyRegular, $fontSizeSmall, $TPGrey3, normal);
     @include buttons(0, 77px, $fontSizeSmall);
 
     button
@@ -225,8 +225,6 @@
 
     #expandoStatsRegion
     {
-
-        height: 275px;
         overflow-y: scroll;
         overflow-x: auto;
         @include nice-scrollbar;
@@ -252,7 +250,7 @@
         {
 
             padding: 10px;
-            @include labels($navigationFontFamilyRegular, $fontSizeXSmall, $TPGrey4, $fontWeightBold);
+            @include labels($fontFamilyRegular, $fontSizeXSmall, $TPGrey4, normal);
 
 
             .statsRow
@@ -283,6 +281,12 @@
                 display: table;
                 margin-top: 20px;
 
+                .separator 
+                {
+                    display: table-cell;
+                    width: 2px;
+                }
+
                 .minMaxAvgRow
                 {
                     display: table-row;
@@ -305,9 +309,20 @@
                         &.units
                         {
                             text-align: left;
-                            padding: 0px 0px 2px 0px;
+                            padding: 0px 0px 2px 8px;
+                            font-size: $fontSizeXSmall
                         }
 
+                    }
+
+                    .separator 
+                    {
+                        padding: 0px;
+                    }
+
+                    .value
+                    {
+                        background-color: #eaebec;
                     }
 
                     &.minMaxAvgHeaders
@@ -317,6 +332,8 @@
                             text-transform: uppercase;
                             text-align: center;
                             padding: 0px;
+                            padding-bottom: 5px;
+                            font-family: $fontFamilyHeavy;
                         }
                     }
                 }
@@ -329,6 +346,51 @@
     {
         overflow-y: scroll;
         @include nice-scrollbar;
+
+        .controls
+        {
+            margin-left: 20px;
+            margin-top: 20px;
+
+            select
+            {
+                width: auto;
+                margin-right: 10px;
+
+                font-family: $fontFamilyRegular;
+                font-size: $fontSizeSmall;
+                color: $TPGrey3;
+                border-width: 1px;
+                border-style: solid;
+                border-color: $TPGrey9;
+
+                cursor: pointer;
+
+                background: url(../../assets/images/calendarImages/background-gradient-button.png) repeat-x 0 0;
+            }
+
+            @include buttons(0, 77px, $fontSizeSmall);
+            button
+            {
+                height: 20px;
+                vertical-align: top;
+            }
+        }
+
+        .rangesList
+        {
+            margin-left: 35px;   
+
+            ul 
+            {
+                list-style-type: none;
+            }
+
+            li 
+            {
+                line-height: 1em;
+            }
+        }
     }
 
 }

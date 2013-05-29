@@ -7,7 +7,7 @@
     ],
 function(formatDateTime, convertToViewUnits, unitLabels, flotToolTipTemplate)
 {
-    return function(series, hoveredSeries, hoveredIndex, timeOffset)
+    return function(series, hoveredSeries, hoveredIndex, timeOffset, workoutType)
     {
         var toolTipData =
         {
@@ -33,6 +33,21 @@ function(formatDateTime, convertToViewUnits, unitLabels, flotToolTipTemplate)
                 config.current = true;
 
             toolTipData.series.push(config);
+
+            if (s.label === "Speed" && (workoutType === 1 || workoutType === 3 || workoutType === 13 || workoutType === 100))
+            {
+                config =
+                {
+                    label: "Pace",
+                    value: convertToViewUnits(value, "pace"),
+                    units: unitLabels("pace")
+                };
+
+                if (s.label === hoveredSeries)
+                    config.current = true;
+
+                toolTipData.series.push(config);
+            }
         });
 
         return flotToolTipTemplate(toolTipData);

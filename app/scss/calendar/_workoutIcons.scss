@@ -84,7 +84,7 @@ $xc-skiPositiveLargeURL: url(../../assets/images/sportTypeIcons/xc_ski_pos_140.p
         background-size: 70px 70px;
     }
 
-    &.future
+    &.future, &.past.ComplianceNone
     {
         .workoutIcon
         {
