@@ -40,7 +40,7 @@ function (
             this.dataParser = new DataParser();
             this.map = null;
             this.graph = null;
-
+            this.selections = [];
 
             if (!options.detailDataPromise)
                 throw "detailDataPromise is required for map and graph view";
@@ -111,15 +111,55 @@ function (
 
         onRangeSelected: function (workoutStatsForRange)
         {
-            if (this.selection)
-            {
-                this.map.removeLayer(this.selection);
-                this.selection = null;
-            }
 
+            var selection;
+            if (workoutStatsForRange.removeFromSelection)
+            {
+                selection = this.findMapSelection(workoutStatsForRange.get("begin"), workoutStatsForRange.get("end"));
+                if(selection)
+                {
+                    this.removeSelectionFromMap(selection);
+                    this.selections = _.without(this.selections, selection);
+                }
+            } else if(workoutStatsForRange.addToSelection)
+            {
+                selection = this.createMapSelection(workoutStatsForRange);
+                this.addSelectionToMap(selection);
+            }
+        },
+
+        findMapSelection: function(begin, end)
+        {
+            return _.find(this.selections, function(selection)
+            {
+                return selection.begin === begin && selection.end === end;
+            });
+        },
+
+        createMapSelection: function(workoutStatsForRange)
+        {
             var sampleStartIndex = this.dataParser.findIndexByMsOffset(workoutStatsForRange.get("begin"));
             var sampleEndIndex = this.dataParser.findIndexByMsOffset(workoutStatsForRange.get("end"));
-            this.selection = MapUtils.highlight(this.map, this.dataParser.getLatLonArray().slice(sampleStartIndex, sampleEndIndex));
+            var mapLayer = MapUtils.createHighlight(this.map, this.dataParser.getLatLonArray().slice(sampleStartIndex, sampleEndIndex));
+
+            var selection = {
+                begin: workoutStatsForRange.get("begin"),
+                end: workoutStatsForRange.get("end"),
+                mapLayer: mapLayer
+            };
+
+            return selection;
+        },
+
+        addSelectionToMap: function(selection)
+        {
+            this.selections.push(selection);
+            this.map.addLayer(selection.mapLayer);
+        },
+
+        removeSelectionFromMap: function(selection)
+        {
+            this.map.removeLayer(selection.mapLayer);
         },
 
         onGraphHover: function (msOffset)
