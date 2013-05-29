@@ -194,13 +194,15 @@ function (TP, expandoCommon, lapsTemplate)
 
         getPeakTypes: function()
         {
-            if (this.shouldDisplayDistance())
-            {
-                return ["distance", "power", "heartrate", "speed", "pace", "cadence"];
-            } else
-            {
-                return ["power", "heartrate", "speed", "pace", "cadence"];
-            }
+            var allKeys = ["distance", "pace", "power", "speed", "heartrate", "cadence"];
+
+            if (!this.shouldDisplayDistance())
+                allKeys = _.without(allKeys, "distance");
+
+            if (!this.shouldDisplayPace())
+                allKeys = _.without(allKeys, "pace");
+
+            return allKeys;
         },
 
         formatMethods: {
@@ -246,6 +248,20 @@ function (TP, expandoCommon, lapsTemplate)
             if (workoutTypeId === TP.utils.workout.types.getIdByName("Walk"))
                 return true;
             if (workoutTypeId === TP.utils.workout.types.getIdByName("Run"))
+                return true;
+            return false;
+        },
+
+        shouldDisplayPace: function()
+        {
+            var workoutTypeId = this.model.get("workoutTypeValueId");
+            if (workoutTypeId === TP.utils.workout.types.getIdByName("Walk"))
+                return true;
+            if (workoutTypeId === TP.utils.workout.types.getIdByName("Run"))
+                return true;
+            if (workoutTypeId === TP.utils.workout.types.getIdByName("Swim"))
+                return true;
+            if (workoutTypeId === TP.utils.workout.types.getIdByName("Other"))
                 return true;
             return false;
         },
