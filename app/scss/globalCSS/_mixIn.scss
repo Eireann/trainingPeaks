@@ -10,7 +10,7 @@
 		font-size: $fontSize;
 		font-weight:normal;
 		margin-left: $marginLeft;
-		color: $TPGrey3;
+		color: $TPGrey10;
 		background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #ffffff), color-stop(1, #dfdfdf) );
 		background:-moz-linear-gradient( center top, #ededed 5%, #dfdfdf 100% );
 		background-color:#ededed;
@@ -78,9 +78,9 @@
 
     &:active
     {
-        color: #636569;
+        color: #ffffff;
         background:none;
-        @include linearGradient(top, #dfdfdf, #8cb5dc);
+        @include linearGradient(top, #6694c1, #3a6e99);
     }
 
 }

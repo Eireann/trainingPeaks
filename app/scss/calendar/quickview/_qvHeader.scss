@@ -232,90 +232,73 @@
             }
         } 
     }
-    .uploadExpandButtons
-    {
-        float: left;
-        width: 80px;
 
-        
-        .buttons
-        {
-            height: 34px;
+    .uploadExpandButtons {
+        float: left;
+        width:86px;
+
+        .buttons {
+            height: 35px;
             @include labels($fontFamilyRegular, $fontSizeSmall, $TPGrey3, normal);
             padding-top: 12px;
-            padding-left: 28px;
+            padding-left: 30px;
             padding-right: 8px;
             float: left;
-            margin-left: 10px;
-
+            margin-left: 6px;
+			width: 86px;
             border-width: 1px;
             border-style: solid;
             border-color: $TPGrey9;
-       		color: $TPGrey3;
-
-            &:hover
-            {
+       		
+			label {
+				color: $TPGrey10;
+			}
+			
+            &:hover {
                 border-color: #8d8d8d;
     	        color:#303030;
-
-                label
-                {
+                label {
                     color:#303030;
+					cursor:pointer;
+                }
+            }  
+        }
+
+        .uploadButton {
+            background: url(../../assets/images/QVImages/sprite-buttons-expando.png) no-repeat 0 0;
+			cursor: pointer;
+			
+			&:hover {
+			    background: url(../../assets/images/QVImages/sprite-buttons-expando.png) no-repeat -86px 0px;
+	        }
+			
+			&:active {
+                background: url(../../assets/images/QVImages/sprite-buttons-expando.png) no-repeat -172px 0;
+                label {
+                    color: $white;
+                    opacity: 0.85;
+                    cursor: pointer;
                 }
             }
             
-        }
-        .uploadButton
-        {
-
-            background: url(../../assets/images/QVImages/sprite-buttons-expando.png) no-repeat 0 0;
-			&:hover 
-            {
-			    background: url(../../assets/images/QVImages/sprite-buttons-expando.png) no-repeat -79px 0px;
-	        }
-            &:active 
-            {
-                background: url(../../assets/images/QVImages/sprite-buttons-expando.png) no-repeat -158px 0;
-
-                label
-                {
-                    color: $white;
-                    opacity: 0.85;
-                    cursor: pointer;
-                }
-            }
-
-            @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) 
-            {
-				.uploadButton
-                {
-					background-image: url(../../assets/images/QVImages/sprite-buttons-expando@2x.png);
-					background-size: 80px 34px;
-				}
-			}
-
-            cursor: pointer;
-
-            label
-            {
+			label {
                 cursor: pointer;
             }
         }
-        .expandButton
-        {
+
+        .expandButton {
             cursor: pointer;
             margin-top: 10px;
-            background: url(../../assets/images/QVImages/sprite-buttons-expando.png) no-repeat 0 -34px;
-			&:hover 
-            {
-			    background: url(../../assets/images/QVImages/sprite-buttons-expando.png) no-repeat -79px -34px;
+            background: url(../../assets/images/QVImages/sprite-buttons-expando.png) no-repeat 0 -35px;
+			
+			&:hover {
+			    background: url(../../assets/images/QVImages/sprite-buttons-expando.png) no-repeat -86px -35px;
 	        }
-            &:active 
-            {
-                background: url(../../assets/images/QVImages/sprite-buttons-expando.png) no-repeat -158px -34px;
+            
+			&:active {
+                background: url(../../assets/images/QVImages/sprite-buttons-expando.png) no-repeat -172px -35px;
 
-                label
-                {
+                label {
                     color: $white;
                     opacity: 0.85;
                     cursor: pointer;
@@ -323,35 +306,37 @@
             }
         }
 
-        .collapseButton
-        {
+        .collapseButton {
             margin-top: 10px;
             display: none;
-            padding-left: 25px;
+            padding-left: 28px;
             cursor: pointer;
-
-            background: url(../../assets/images/QVImages/sprite-buttons-expando.png) no-repeat 0 -68px;
-			&:hover 
-            {
-			    background: url(../../assets/images/QVImages/sprite-buttons-expando.png) no-repeat -79px -68px;
+            background: url(../../assets/images/QVImages/sprite-buttons-expando.png) no-repeat 0 -70px;
+			
+			&:hover  {
+			    background: url(../../assets/images/QVImages/sprite-buttons-expando.png) no-repeat -86px -70px;
 	        }
-            &:active 
-            {
-                background: url(../../assets/images/QVImages/sprite-buttons-expando.png) no-repeat -158px -68px;
-
-                label
-                {
+            
+			&:active {
+                background: url(../../assets/images/QVImages/sprite-buttons-expando.png) no-repeat -172px -70px;
+                label {
                     color: $white;
                     opacity: 0.85;
                     cursor: pointer;
                 }
             }
 
-            label
-            {
+            label {
                 cursor: pointer;
             }
         }
+
+		@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
+			.uploadButton, .expandButton, .collapseButton {
+				background-image: url(../../assets/images/QVImages/sprite-buttons-expando@2x.png);
+				background-size: 258px 105px;
+			}
+		}
 
         @include labels($fontFamilyRegular, $fontSizeLarge, $TPGrey4, normal);
         text-align: center;
