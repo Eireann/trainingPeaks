@@ -24,7 +24,14 @@ function(TP)
 
             if (!this.has("end"))
                 throw "end is required for WorkoutStatsForRange";
-        }
+        },
+        
+        parse: function(response)
+        {
+            if (this.has("name"))
+                response.name = this.get("name");
+            return response;
+        },
     });
 
     return WorkoutStatsForRange;

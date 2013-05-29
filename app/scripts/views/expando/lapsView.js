@@ -26,7 +26,7 @@ function (TP, expandoCommon, WorkoutStatsForRange, lapsTemplate)
             "change #peakType": "onSelectPeakType",
             "click .lap": "onLapsClicked",
             "click .totals": "onEntireWorkoutClicked",
-            "click .peaks": "c"
+            "click .peaks": "onPeaksClicked"
             
         },
 
@@ -89,6 +89,7 @@ function (TP, expandoCommon, WorkoutStatsForRange, lapsTemplate)
                 {
                     outputPeaks[peakItem.interval] = peakItem;
                     peakItem.units = units;
+                    peakItem.peakType = this.selectedPeakType;
                     if (this.formatMethods[this.selectedPeakType])
                     {
                         peakItem.formattedValue = this.formatMethods[this.selectedPeakType](peakItem.value);
@@ -176,7 +177,8 @@ function (TP, expandoCommon, WorkoutStatsForRange, lapsTemplate)
             var lapData = detailData.lapsStats[lapIndex];
             lapData.workoutId = this.model.id;
             var statsForRange = new WorkoutStatsForRange(lapData);
-            this.trigger("rangeselected", lapData.begin, lapData.end, statsForRange);
+            statsForRange.hasLoaded = true;
+            this.trigger("rangeselected", statsForRange);
         },
 
         onEntireWorkoutClicked: function ()
@@ -186,18 +188,24 @@ function (TP, expandoCommon, WorkoutStatsForRange, lapsTemplate)
             entireWorkoutData.workoutId = this.model.id;
             entireWorkoutData.name = "Entire Workout";
             var statsForRange = new WorkoutStatsForRange(entireWorkoutData);
-            this.trigger("rangeselected", entireWorkoutData.begin, entireWorkoutData.end, statsForRange);
+            statsForRange.hasLoaded = true;
+            this.trigger("rangeselected", statsForRange);
         },
         
         onPeaksClicked: function(e)
         {
-            //var peakIndex = $(e.target).data("peakInterval");
-            //var detailData = this.model.get("detailData").toJSON();
-            //var intervalData = detailData.lapsStats[peakIndex];
-            //intervalData.workoutId = this.model.id;
-            //intervalData.name = "Peak " + i
-            //var statsForRange = new WorkoutStatsForRange(intervalData);
-            //this.trigger("rangeselected", intervalData.begin, intervalData.end, statsForRange);
+            var peakInterval = $(e.target).data("peakinterval");
+            var peakType = $(e.target).data("peaktype");
+            var detailData = this.model.get("detailData").toJSON();
+            var peakDataSet = detailData[this.modelPeakKeys[peakType]];
+            var peakDataItem = _.find(peakDataSet, function(item)
+            {
+                return item.interval === peakInterval;
+            });
+            peakDataItem.workoutId = this.model.id;
+            peakDataItem.name = "Peak " + peakInterval;
+            var statsForRange = new WorkoutStatsForRange(peakDataItem);
+            this.trigger("rangeselected", statsForRange);
         }
     });
 });
