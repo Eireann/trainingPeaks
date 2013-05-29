@@ -20,8 +20,10 @@ function (TP, expandoCommon, lapsTemplate)
             this.model.off("change", this.render);
         },
 
-        initialize: function()
+        onRender: function()
         {
+            this.watchForWorkoutTypeChange();
+            this.watchForPeakChanges();
             this.watchForControllerResize();
         },
 
@@ -32,7 +34,7 @@ function (TP, expandoCommon, lapsTemplate)
 
         serializeData: function ()
         {
-            
+
             this.getDefaultSelectOption();
             var detailData = this.model.get("detailData").toJSON();
 
@@ -48,7 +50,15 @@ function (TP, expandoCommon, lapsTemplate)
             //TODO: get correct peaks on drop down select
             workoutData.rangePeaks = peaks;
 
-            workoutData.selectOptions = selectOptions;
+            if ((totals && totals.length && totals[0].totalTime) || (laps && laps.length) || (peaks && peaks.length))
+            {
+                workoutData.hasLapsOrPeaks = true;
+            }
+
+            if (selectOptions && selectOptions.length)
+            {
+                workoutData.selectOptions = selectOptions;
+            }
 
             return workoutData;
         },
@@ -79,14 +89,14 @@ function (TP, expandoCommon, lapsTemplate)
             }
 
             var metric = this.modelPeakKeys[this.selectedPeakType];
-            var ignorePeaks = [1, 3, 4, 6, 9, 14, 21, 32, 48, 72, 108, 162, 243, 364, 546, 819, 1228, 1842];
+            var visiblePeaks = this.getEnabledPeaks();
             var outputPeaks = [];
             var peaksData = detailData[metric] ? detailData[metric] : [];
 
             var units = this.getPeakUnitsLabel();
             _.each(peaksData, function (peakItem)
             {
-                if (!_.contains(ignorePeaks, peakItem.interval))
+                if (_.contains(visiblePeaks, peakItem.interval))
                 {
                     outputPeaks[peakItem.interval] = peakItem;
                     peakItem.units = units;
@@ -97,7 +107,7 @@ function (TP, expandoCommon, lapsTemplate)
                     {
                         peakItem.formattedValue = peakItem.value;
                     }
-                    if(this.selectedPeakType === "distance")
+                    if (this.selectedPeakType === "distance")
                     {
                         peakItem.isDistance = true;
                         peakItem.isTime = false;
@@ -114,7 +124,7 @@ function (TP, expandoCommon, lapsTemplate)
         getSelectOptions: function (detailData)
         {
             var selectOptions = [];
-            _.each(_.keys(this.modelPeakKeys), function (peakName)
+            _.each(this.getPeakTypes(), function(peakName)
             {
                 var modelKey = this.modelPeakKeys[peakName];
                 if (detailData[modelKey] && detailData[modelKey].length)
@@ -130,13 +140,14 @@ function (TP, expandoCommon, lapsTemplate)
             return selectOptions;
         },
 
-        getDefaultSelectOption: function ()
+        getDefaultSelectOption: function()
         {
             if (this.selectedPeakType)
                 return;
 
             var detailData = this.model.get("detailData");
-            this.selectedPeakType = _.find(_.keys(this.modelPeakKeys), function (peakName)
+
+            this.selectedPeakType = _.find(this.getPeakTypes(), function(peakName)
             {
                 var modelKey = this.modelPeakKeys[peakName];
                 if (detailData.has(modelKey) && detailData.get(modelKey).length)
@@ -181,6 +192,17 @@ function (TP, expandoCommon, lapsTemplate)
             cadence: "peakCadences"
         },
 
+        getPeakTypes: function()
+        {
+            if (this.shouldDisplayDistance())
+            {
+                return ["distance", "power", "heartrate", "speed", "pace", "cadence"];
+            } else
+            {
+                return ["power", "heartrate", "speed", "pace", "cadence"];
+            }
+        },
+
         formatMethods: {
             pace: TP.utils.conversion.formatPace,
             speed: TP.utils.conversion.formatSpeed,
@@ -205,8 +227,74 @@ function (TP, expandoCommon, lapsTemplate)
         onControllerResize: function(containerHeight)
         {
             this.$el.parent().height(Math.round(containerHeight * 0.6));
-        }
+        },
 
+        getEnabledPeaks: function()
+        {
+            if (this.selectedPeakType === "distance")
+            {
+                return [400, 800, 1000, 1600, 1609, 5000, 8047, 10000, 15000, 16094, 21097, 30000, 42195, 50000, 100000];
+            } else
+            {
+                return [1, 2, 5, 10, 12, 20, 30, 60, 90, 120, 300, 360, 600, 720, 1200, 1800, 3600, 5400, 7200, 10800];
+            }
+        },
+
+        shouldDisplayDistance: function()
+        {
+            var workoutTypeId = this.model.get("workoutTypeValueId");
+            if (workoutTypeId === TP.utils.workout.types.getIdByName("Walk"))
+                return true;
+            if (workoutTypeId === TP.utils.workout.types.getIdByName("Run"))
+                return true;
+            return false;
+        },
+
+        watchForWorkoutTypeChange: function()
+        {
+            this.model.on("change:workoutTypeValueId", this.onWorkoutTypeChange, this);
+            this.on("close", function()
+            {
+                this.model.off("change:workoutTypeValueId", this.onWorkoutTypeChange, this);
+            }, this);
+        },
+
+        onWorkoutTypeChange: function()
+        {
+            this.selectedPeakType = null;
+            this.render();
+        },
+
+        watchForPeakChanges: function()
+        {
+            var statsToWatch = ["lapsStats", "peakSpeedsByDistance", "peakPowers", "peakHeartRates", "peakSpeeds", "peakCadences"];
+            var detailDataModel = this.model.get("detailData");
+
+            _.each(statsToWatch, function(stat)
+            {
+                detailDataModel.on("change:" + stat, this.onPeaksChange, this);
+            }, this);
+
+            this.on("close", this.stopWatchingPeakChanges, this);
+
+        },
+
+        stopWatchingPeakChanges: function()
+        {
+            var statsToWatch = ["lapsStats", "peakSpeedsByDistance", "peakPowers", "peakHeartRates", "peakSpeeds", "peakCadences"];
+            var detailDataModel = this.model.get("detailData");
+
+            _.each(statsToWatch, function(stat)
+            {
+                detailDataModel.off("change:" + stat, this.onPeaksChange, this);
+            }, this);
+        },
+
+        onPeaksChange: function()
+        {
+            this.selectedPeakType = null;
+            this.render();
+        }
 
     });
 });

@@ -1,10 +1,17 @@
 ﻿<div class="controls">
+    {{#if selectOptions}}
     <select id="peakType">
         {{#each selectOptions}}
         <option value="{{ value }}"{{#if selected}} selected{{/if}}>{{ label }}</option>
         {{/each}}
     </select>
+    {{/if}}
+
+
+    {{#if workoutData.hasLapsOrPeaks }}
     <button id="uncheck">{{$ "UncheckAll" }}</button>
+    {{/if}}
+
 </div>
 <div class="rangesList">
     <ul>
