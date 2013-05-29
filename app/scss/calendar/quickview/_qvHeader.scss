@@ -113,6 +113,7 @@
             {
                 float: right;
                 margin-top: -7px;
+                margin-right: 5px;
 
                 .icon
                 {
@@ -250,11 +251,17 @@
             border-width: 1px;
             border-style: solid;
             border-color: $TPGrey9;
-            
+       		color: $TPGrey3;
+
             &:hover
             {
                 border-color: #8d8d8d;
-    	        color:#3d3e41;
+    	        color:#303030;
+
+                label
+                {
+                    color:#303030;
+                }
             }
             
         }

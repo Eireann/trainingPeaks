@@ -114,14 +114,6 @@
 			.today button  {
 				color:$TPGrey8;
 				padding:1px 0 2px;
-				background: url(../../assets/images/calendarImages/background-gradient-button.png) repeat-x 0 0;
-                &:hover {
-					color:#3d3e41;
-					}
-                &:active {
-                    background: url(../../assets/images/calendarImages/background-gradient-button.png) repeat-x 0 -20px;
-                    color: #ffffff;
-                	}
 			}
 			
 			@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {

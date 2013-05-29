@@ -16,6 +16,60 @@ $swimNegativeLargeURL: url(../../assets/images/sportTypeIcons/swim_neg_140.png);
 $swimPositiveSmallURL: url(../../assets/images/sportTypeIcons/swim_pos_50.png);
 $swimPositiveLargeURL: url(../../assets/images/sportTypeIcons/swim_pos_140.png);
 
+$brickNegativeSmallURL: url(../../assets/images/sportTypeIcons/brick_neg_50.png);
+$brickNegativeLargeURL: url(../../assets/images/sportTypeIcons/brick_neg_140.png);
+
+$brickPositiveSmallURL: url(../../assets/images/sportTypeIcons/brick_pos_50.png);
+$brickPositiveLargeURL: url(../../assets/images/sportTypeIcons/brick_pos_140.png);
+
+$mtbNegativeSmallURL: url(../../assets/images/sportTypeIcons/mtb_neg_50.png);
+$mtbNegativeLargeURL: url(../../assets/images/sportTypeIcons/mtb_neg_140.png);
+
+$mtbPositiveSmallURL: url(../../assets/images/sportTypeIcons/mtb_pos_50.png);
+$mtbPositiveLargeURL: url(../../assets/images/sportTypeIcons/mtb_pos_140.png);
+
+$otherNegativeSmallURL: url(../../assets/images/sportTypeIcons/other_neg_50.png);
+$otherNegativeLargeURL: url(../../assets/images/sportTypeIcons/other_neg_140.png);
+
+$otherPositiveSmallURL: url(../../assets/images/sportTypeIcons/other_pos_50.png);
+$otherPositiveLargeURL: url(../../assets/images/sportTypeIcons/other_pos_140.png);
+
+$raceNegativeSmallURL: url(../../assets/images/sportTypeIcons/race_neg_50.png);
+$raceNegativeLargeURL: url(../../assets/images/sportTypeIcons/race_neg_140.png);
+
+$racePositiveSmallURL: url(../../assets/images/sportTypeIcons/race_pos_50.png);
+$racePositiveLargeURL: url(../../assets/images/sportTypeIcons/race_pos_140.png);
+
+$restNegativeSmallURL: url(../../assets/images/sportTypeIcons/rest_neg_50.png);
+$restNegativeLargeURL: url(../../assets/images/sportTypeIcons/rest_neg_140.png);
+
+$restPositiveSmallURL: url(../../assets/images/sportTypeIcons/rest_pos_50.png);
+$restPositiveLargeURL: url(../../assets/images/sportTypeIcons/rest_pos_140.png);
+
+$rowingNegativeSmallURL: url(../../assets/images/sportTypeIcons/row_neg_50.png);
+$rowingNegativeLargeURL: url(../../assets/images/sportTypeIcons/row_neg_140.png);
+
+$rowingPositiveSmallURL: url(../../assets/images/sportTypeIcons/row_pos_50.png);
+$rowingPositiveLargeURL: url(../../assets/images/sportTypeIcons/row_pos_140.png);
+
+$strengthNegativeSmallURL: url(../../assets/images/sportTypeIcons/strength_neg_50.png);
+$strengthNegativeLargeURL: url(../../assets/images/sportTypeIcons/strength_neg_140.png);
+
+$strengthPositiveSmallURL: url(../../assets/images/sportTypeIcons/strength_pos_50.png);
+$strengthPositiveLargeURL: url(../../assets/images/sportTypeIcons/strength_pos_140.png);
+
+$walkNegativeSmallURL: url(../../assets/images/sportTypeIcons/walk_neg_50.png);
+$walkNegativeLargeURL: url(../../assets/images/sportTypeIcons/walk_neg_140.png);
+
+$walkPositiveSmallURL: url(../../assets/images/sportTypeIcons/walk_pos_50.png);
+$walkPositiveLargeURL: url(../../assets/images/sportTypeIcons/walk_pos_140.png);
+
+$xc-skiNegativeSmallURL: url(../../assets/images/sportTypeIcons/xc_ski_neg_50.png);
+$xc-skiNegativeLargeURL: url(../../assets/images/sportTypeIcons/xc_ski_neg_140.png);
+
+$xc-skiPositiveSmallURL: url(../../assets/images/sportTypeIcons/xc_ski_pos_50.png);
+$xc-skiPositiveLargeURL: url(../../assets/images/sportTypeIcons/xc_ski_pos_140.png);
+
 @mixin workoutIcons($pastWorkoutIconSmallURL, $pastWorkoutIconLargeURL, $futureWorkoutIconSmallURL, $futureWorkoutIconLargeURL, $futureBackgroundColor) 
 {
     .workoutIcon
@@ -62,4 +116,48 @@ $swimPositiveLargeURL: url(../../assets/images/sportTypeIcons/swim_pos_140.png);
 {
     @include workoutIcons($swimNegativeSmallURL, $swimNegativeLargeURL, $swimPositiveSmallURL, $swimPositiveLargeURL, $clrSwim);
 }
- 
+
+.Brick
+{
+    @include workoutIcons($brickNegativeSmallURL, $brickNegativeLargeURL, $brickPositiveSmallURL, $brickPositiveLargeURL, $clrBrick);
+}
+
+.Other, .Custom, .XTrain
+{
+    @include workoutIcons($otherNegativeSmallURL, $otherNegativeLargeURL, $otherPositiveSmallURL, $otherPositiveLargeURL, $clrOther);
+}
+
+.Race
+{
+    @include workoutIcons($raceNegativeSmallURL, $raceNegativeLargeURL, $racePositiveSmallURL, $racePositiveLargeURL, $clrRace);
+}
+
+.DayOff
+{
+    @include workoutIcons($restNegativeSmallURL, $restNegativeLargeURL, $restPositiveSmallURL, $restPositiveLargeURL, $clrRest);
+}
+
+.MountainBike
+{
+    @include workoutIcons($mtbNegativeSmallURL, $mtbNegativeLargeURL, $mtbPositiveSmallURL, $mtbPositiveLargeURL, $clrMTB);
+}
+
+.Strength
+{
+    @include workoutIcons($strengthNegativeSmallURL, $strengthNegativeLargeURL, $strengthPositiveSmallURL, $strengthPositiveLargeURL, $clrStrength);
+}
+
+.XC-Ski
+{
+    @include workoutIcons($xc-skiNegativeSmallURL, $xc-skiNegativeLargeURL, $xc-skiPositiveSmallURL, $xc-skiPositiveLargeURL, $clrXc-ski);
+}
+
+.Rowing
+{
+    @include workoutIcons($rowingNegativeSmallURL, $rowingNegativeLargeURL, $rowingPositiveSmallURL, $rowingPositiveLargeURL, $clrRowing);
+}
+
+.Walk
+{
+    @include workoutIcons($walkNegativeSmallURL, $walkNegativeLargeURL, $walkPositiveSmallURL, $walkPositiveLargeURL, $clrWalk);
+}
