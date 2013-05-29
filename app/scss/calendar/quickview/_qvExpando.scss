@@ -184,17 +184,57 @@
                     border-right: none;
                 }
 
-                &.graphHeartRateButton
+                &.graphElevationButton
                 {
-                    @include
-                    linearGradient(top, #f8b3b6, #e61101);
+                    @include linearGradient(top, #10B500, #0B8200);
                     color: #ffffff;
                 }
 
                 &.graphSpeedButton
                 {
-                    @include
-                    linearGradient(top, #b5d8ff, #0f7ffd);
+                    @include linearGradient(top, #b5d8ff, #0f7ffd);
+                    color: #ffffff;
+                }
+
+                &.graphHeartRateButton
+                {
+                    @include linearGradient(top, #f8b3b6, #e61101);
+                    color: #ffffff;
+                }
+
+                &.graphPowerButton
+                {
+                    @include linearGradient(top, #F8C7FF, #FF00FF);
+                    color: #ffffff;
+                }
+
+                &.graphRightPowerButton
+                {
+                    @include linearGradient(top, #F8C7FF, #FF00FF);
+                    color: #ffffff;
+                }
+
+                &.graphTorqueButton
+                {
+                    @include linearGradient(top, #D9D9D9, #BDBDBD);
+                    color: #ffffff;
+                }
+
+                &.graphCadenceButton
+                {
+                    @include linearGradient(top, #FFCC00, #FFA500);
+                    color: #ffffff;
+                }
+
+                &.graphTemperatureButton
+                {
+                    @include linearGradient(top, #0883FF, #0A0AFF);
+                    color: #ffffff;
+                }
+
+                &.graphSeriesDisabled
+                {
+                    @include linearGradient(top, #D9D9D9, #BDBDBD);
                     color: #ffffff;
                 }
             }

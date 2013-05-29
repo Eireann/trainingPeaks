@@ -22,7 +22,8 @@ function(TP, graphToolbarTemplate)
         
         events:
         {
-            "change input[name=filterPeriod]": "onFilterPeriodChanged"  
+            "change input[name=filterPeriod]": "onFilterPeriodChanged",
+            "click button.graphSeriesButton": "onGraphSeriesButtonClicked"
         },
         
         onFilterPeriodChanged: function(event)
@@ -32,6 +33,23 @@ function(TP, graphToolbarTemplate)
 
             var period = parseInt(event.target.value, 10);
             this.trigger("filterPeriodChanged", period);
+        },
+
+        onGraphSeriesButtonClicked: function(event)
+        {
+            var clickedButton = $(event.target);
+            var clickedSeries = clickedButton.attr("class").replace("graphSeriesButton ", "").replace("graph", "").replace("Button", "").replace("graphSeriesDisabled", "").trim();
+
+            if (clickedButton.hasClass("graphSeriesDisabled"))
+            {
+                clickedButton.removeClass("graphSeriesDisabled");
+                this.trigger("enableSeries", clickedSeries);
+            }
+            else
+            {
+                clickedButton.addClass("graphSeriesDisabled");
+                this.trigger("disableSeries", clickedSeries);
+            }
         },
         
         onRender: function()

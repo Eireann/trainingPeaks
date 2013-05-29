@@ -66,6 +66,9 @@ function(seriesColorByChannel, findIndexByMsOffset, convertToViewUnits)
 
         _.each(channelMask, function(channel)
         {
+            if (_.contains(self.disabledSeries, channel))
+                return;
+            
             if (channel === "Distance")
                 return;
 
@@ -205,6 +208,7 @@ function(seriesColorByChannel, findIndexByMsOffset, convertToViewUnits)
     
     var DataParser = function()
     {
+        this.disabledSeries = [];
         this.flatSamples = null;
         this.dataByChannel = null;
         this.minElevation = null;
@@ -226,6 +230,11 @@ function(seriesColorByChannel, findIndexByMsOffset, convertToViewUnits)
             this.elevationIsAllNegative = elevationInfo.isAllNegative;
             this.latLonArray = null;
 
+        },
+
+        setDisabledSeries: function(series)
+        {
+            this.disabledSeries = series;
         },
 
         getSeries: function(x1, x2)

@@ -146,7 +146,7 @@ module.exports = function(grunt)
                 separator: ";"
             },
 
-            "uat":
+            uat:
             {
                 src:
                 [

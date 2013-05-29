@@ -37,10 +37,13 @@ function(
 
             //TODO refactor, this should be set by CSS classes (CSS calc?)
             this.$el.height(400);
+
+            this.lastFilterPeriod = 0;
         },
 
         initialEvents: function()
         {
+            this.disabledSeries = [];
             this.model.off("change", this.render);
         },
 
@@ -64,7 +67,6 @@ function(
 
         createFlotGraph: function ()
         {
-
             if (this.model.get("detailData") === null || !this.model.get("detailData").get("flatSamples"))
                 return;
 
@@ -72,6 +74,16 @@ function(
 
             this.dataParser = new DataParser();
             this.dataParser.loadData(flatSamples);
+
+            this.overlayGraphToolbar();
+            this.$plot = $("<div style='height:100%'></div>").appendTo(this.$el);
+
+            this.drawPlot();
+        },
+        
+        drawPlot: function()
+        {
+            this.dataParser.setDisabledSeries(this.disabledSeries);
 
             var series = this.dataParser.getSeries();
             var yaxes = this.dataParser.getYAxes(series);
@@ -83,17 +95,20 @@ function(
             this.flotOptions.zoom = { enabled: false };
             this.flotOptions.zoom.dataParser = this.dataParser;
             this.flotOptions.zoom.resetButton = ".graphResetButton";
+            this.flotOptions.filter = { enabled: this.lastFilterPeriod ? true : false, period: this.lastFilterPeriod };
 
-            this.plot = $.plot(this.$el, series, this.flotOptions);
-
+            this.plot = $.plot(this.$plot, series, this.flotOptions);
             this.bindToPlotEvents();
-            this.overlayGraphToolbar();
         },
         
         overlayGraphToolbar: function()
         {
             var toolbar = new GraphToolbarView({ dataParser: this.dataParser });
+
             toolbar.on("filterPeriodChanged", this.applyFilter, this);
+            toolbar.on("enableSeries", this.enableSeries, this);
+            toolbar.on("disableSeries", this.disableSeries, this);
+
             this.$el.append(toolbar.render().$el);
         },
         
@@ -101,7 +116,8 @@ function(
         {
             if (!this.plot)
                 return;
-            
+
+            this.lastFilterPeriod = period;
             this.plot.setFilter(period);
         },
 
@@ -122,8 +138,31 @@ function(
             var startOffsetMs = Math.round(this.plot.getSelection().xaxis.from);
             var endOffsetMs = Math.round(this.plot.getSelection().xaxis.to);
             this.trigger("rangeselected", startOffsetMs, endOffsetMs);
-        }
+        },
+        
+        enableSeries: function(series)
+        {
+            if (!this.plot)
+                return;
+            
+            if(_.contains(this.disabledSeries, series))
+            {
+                this.disabledSeries = _.without(this.disabledSeries, series);
+                this.drawPlot();
+            }
+        },
+        
+        disableSeries: function(series)
+        {
+            if (!this.plot)
+                return;
 
+            if (!_.contains(this.disabledSeries, series))
+            {
+                this.disabledSeries.push(series);
+                this.drawPlot();
+            }
+        }
 
     });
 });

@@ -163,8 +163,6 @@ function ()
         {
             init: function(plot)
             {
-                theMarsApp.flotOptions = plot.getOptions();
-                
                 plot.setFilter = function(period)
                 {
                     setFilter(plot, period);
