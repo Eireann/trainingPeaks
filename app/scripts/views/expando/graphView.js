@@ -3,6 +3,7 @@
     "underscore",
     "TP",
     "utilities/charting/dataParser",
+    "models/workoutStatsForRange",
     "utilities/charting/defaultFlotOptions",
     "utilities/charting/jquery.flot.zoom",
     "views/expando/graphToolbarView",
@@ -12,6 +13,7 @@ function(
     _,
     TP,
     DataParser,
+    WorkoutStatsForRange,
     getDefaultFlotOptions,
     flotZoom,
     GraphToolbarView,
@@ -137,7 +139,8 @@ function(
         {
             var startOffsetMs = Math.round(this.plot.getSelection().xaxis.from);
             var endOffsetMs = Math.round(this.plot.getSelection().xaxis.to);
-            this.trigger("rangeselected", startOffsetMs, endOffsetMs);
+            var workoutStatsForRange = new WorkoutStatsForRange({ workoutId: this.model.id, begin: startOffsetMs, end: endOffsetMs, name: "Selection" });
+            this.trigger("rangeselected", workoutStatsForRange);
         },
         
         enableSeries: function(series)
@@ -163,6 +166,5 @@ function(
                 this.drawPlot();
             }
         }
-
     });
 });

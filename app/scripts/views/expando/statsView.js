@@ -50,15 +50,11 @@ function(
             }
         },
         
-        onRangeSelected: function (startOffsetMs, endOffsetMs, rangeData)
+        onRangeSelected: function (workoutStatsForRange)
         {
-            if (rangeData)
+            if (workoutStatsForRange)
             {
-                this.selectedRangeData = rangeData.toJSON();
-                if (!this.selectedRangeData.name)
-                {
-                    this.selectedRangeData.name = "Selection";
-                }
+                this.selectedRangeData = workoutStatsForRange.toJSON();
                 this.render();
             }
         },

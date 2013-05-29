@@ -2,14 +2,13 @@
 [
     "TP",
     "layouts/expandoLayout",
-    "models/workoutStatsForRange",
     "views/expando/graphView",
     "views/expando/mapView",
     "views/expando/statsView",
     "views/expando/lapsView",
     "views/expando/chartsView"
 ],
-function(TP, ExpandoLayout, WorkoutStatsForRange, GraphView, MapView, StatsView, LapsView, ChartsView)
+function(TP, ExpandoLayout, GraphView, MapView, StatsView, LapsView, ChartsView)
 {
     return TP.Controller.extend(
     {
@@ -144,20 +143,20 @@ function(TP, ExpandoLayout, WorkoutStatsForRange, GraphView, MapView, StatsView,
 
         },
 
-        onRangeSelected: function(startOffsetMs, endOffsetMs, rangeData)
+        onRangeSelected: function (workoutStatsForRange)
         {
             _.each(this.views, function(view, key)
             {
-                view.trigger("controller:rangeselected", startOffsetMs, endOffsetMs, rangeData);
+                view.trigger("controller:rangeselected", workoutStatsForRange);
             }, this);
 
-            if(!rangeData)
+            if(!workoutStatsForRange.hasLoaded)
             {
-                rangeData = new WorkoutStatsForRange({ workoutId: this.model.id, begin: startOffsetMs, end: endOffsetMs });
                 var self = this;
-                rangeData.fetch().done(function()
+                workoutStatsForRange.fetch().done(function ()
                 {
-                    self.onRangeSelected(startOffsetMs, endOffsetMs, rangeData);
+                    workoutStatsForRange.hasLoaded = true;
+                    self.onRangeSelected(workoutStatsForRange);
                 });
             }
         },
@@ -182,6 +181,5 @@ function(TP, ExpandoLayout, WorkoutStatsForRange, GraphView, MapView, StatsView,
                 view.trigger("controller:resize", containerHeight);
             }, this);
         }
-
     });
 });

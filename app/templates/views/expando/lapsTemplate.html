@@ -9,7 +9,7 @@
 <div class="rangesList">
     <ul>
     {{#each rangeLaps}}
-        <li data-lapIndex="{{@index}}" class="lap">
+        <li data-lapindex="{{@index}}" class="lap">
             <input type="checkbox" data-lapindex="{{@index}}"/> {{ name }} ({{ formatTime totalTime}})
         </li>
     {{/each}}
@@ -19,7 +19,7 @@
         </li>
     {{/with}}
         {{#each rangePeaks}}
-        <li data-peakInterval="{{interval}}" class="peak">
+        <li data-peakinterval="{{interval}}" data-peaktype="{{peakType}}" class="peaks">
             <input type="checkbox"/> {{$ "Peak" }} {{#if isDistance }}{{ formatPeakDistance interval }}{{ else }}{{ formatPeakTime interval }}{{/if }} ({{ formattedValue }} {{ units }})
         </li>
     {{/each}}
