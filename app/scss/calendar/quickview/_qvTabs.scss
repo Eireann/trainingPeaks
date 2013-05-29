@@ -188,8 +188,16 @@ $QVTabSpriteRetinaURL: url(../../assets/images/QVImages/sprite-icons-QV-Tabs@2x.
         }
     }
 
+	@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
+		.summaryTab div, .heartrateTab div, .powerTab div, .paceTab div, .mapGraphTab div {
+			background-image: $QVTabSpriteRetinaURL;
+			background-size: 99px 165px;
+		}
+	}
+
     .tabSelected 
     {
         background-color: $TPGrey6;
     }
+
 }
