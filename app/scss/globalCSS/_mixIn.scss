@@ -27,13 +27,6 @@
 
         background: url(../../assets/images/calendarImages/background-gradient-button.png) repeat-x 0 0;
 		//background-size: 100% 100%;
-                
-        &:active
-        {
-            background: url(../../assets/images/calendarImages/background-gradient-button.png) repeat-x 0 -20px;
-			//background-size: 100% 100%;
-            color: #ffffff;
-        }
 
         &:hover
         {
@@ -43,6 +36,13 @@
           // -webkit-box-shadow: 0px 0px 3px 1px rgba($TPGrey7, .50);
           // -moz-box-shadow: 0px 0px 3px 1px rgba($TPGrey9, .50);
           // box-shadow: 0px 0px 3px 1px rgba($TPGrey9, .50);
+        }
+                
+        &:active
+        {
+            background: url(../../assets/images/calendarImages/background-gradient-button.png) repeat-x 0 -20px;
+			//background-size: 100% 100%;
+            color: #ffffff;
         }
 
         &:disabled
