@@ -21,6 +21,11 @@ function(
             template: statsTemplate
         },
 
+        initialize: function()
+        {
+            this.watchForControllerResize();
+        },
+
         serializeData: function()
         {
             var lapData = this.getLapData();
@@ -71,6 +76,20 @@ function(
             });
 
             return keyWithAValue ? true : false;
+        },
+
+        watchForControllerResize: function()
+        {
+            this.on("controller:resize", this.onControllerResize, this);
+            this.on("close", function()
+            {
+                this.off("controller:resize", this.onControllerResize, this);
+            }, this);
+        },
+
+        onControllerResize: function(containerHeight)
+        {
+            this.$el.parent().height(Math.round(containerHeight * 0.4));
         }
 
     };

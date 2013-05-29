@@ -7,7 +7,13 @@ function(conversion, getKeyStatField)
 {
     function formatPeakTime(interval)
     {
-        return interval + " sec";
+        if (interval < 90 || (interval % 60) !== 0)
+        {
+            return interval + " sec";
+        } else
+        {
+            return (interval / 60) + " min";
+        }
     }
 
     return formatPeakTime;

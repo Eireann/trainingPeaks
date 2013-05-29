@@ -20,7 +20,7 @@
     {{/with}}
         {{#each rangePeaks}}
         <li>
-            <input type="checkbox"/> {{$ "Peak" }} {{ formatPeakTime interval }} ({{ formattedValue }} {{ units }})
+            <input type="checkbox"/> {{$ "Peak" }} {{#if isDistance }}{{ formatPeakDistance interval }}{{ else }}{{ formatPeakTime interval }}{{/if }} ({{ formattedValue }} {{ units }})
         </li>
     {{/each}}
     </ul>
