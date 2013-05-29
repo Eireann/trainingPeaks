@@ -249,7 +249,10 @@
             border-width: 1px;
             border-style: solid;
             border-color: $TPGrey9;
-       		color: $TPGrey3;
+       		
+			label {
+				color: $TPGrey10;
+			}
 			
             &:hover {
                 border-color: #8d8d8d;
