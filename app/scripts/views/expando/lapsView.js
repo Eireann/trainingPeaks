@@ -16,9 +16,14 @@ function (TP, expandoCommon, WorkoutStatsForRange, lapsTemplate)
             template: lapsTemplate
         },
 
-        initialEvents: function ()
+        initialEvents: function()
         {
             this.model.off("change", this.render);
+        },
+
+        initialize: function()
+        {
+            this.watchForControllerResize();
         },
 
         events:
@@ -79,13 +84,14 @@ function (TP, expandoCommon, WorkoutStatsForRange, lapsTemplate)
             }
 
             var metric = this.modelPeakKeys[this.selectedPeakType];
-            var displayPeaks = [2, 5, 10];
+            var ignorePeaks = [1, 3, 4, 6, 9, 14, 21, 32, 48, 72, 108, 162, 243, 364, 546, 819, 1228, 1842];
             var outputPeaks = [];
             var peaksData = detailData[metric] ? detailData[metric] : [];
-            var units = TP.utils.units.getUnitsLabel(this.selectedPeakType, this.model.get("workoutTypeValueId"));
+
+            var units = this.getPeakUnitsLabel();
             _.each(peaksData, function (peakItem)
             {
-                if (_.contains(displayPeaks, peakItem.interval))
+                if (!_.contains(ignorePeaks, peakItem.interval))
                 {
                     outputPeaks[peakItem.interval] = peakItem;
                     peakItem.units = units;
@@ -95,6 +101,15 @@ function (TP, expandoCommon, WorkoutStatsForRange, lapsTemplate)
                     } else
                     {
                         peakItem.formattedValue = peakItem.value;
+                    }
+                    if(this.selectedPeakType === "distance")
+                    {
+                        peakItem.isDistance = true;
+                        peakItem.isTime = false;
+                    } else
+                    {
+                        peakItem.isDistance = false;
+                        peakItem.isTime = true;
                     }
                 }
             }, this);
@@ -142,7 +157,19 @@ function (TP, expandoCommon, WorkoutStatsForRange, lapsTemplate)
 
         },
 
+        getPeakUnitsLabel: function()
+        {
+            if (this.selectedPeakType === "distance")
+            {
+                return TP.utils.units.getUnitsLabel("pace", this.model.get("workoutTypeValueId"));
+            } else
+            {
+                return TP.utils.units.getUnitsLabel(this.selectedPeakType, this.model.get("workoutTypeValueId"));
+            }
+        },
+
         templatePeakTypeNames: {
+            distance: "Peak Distance",
             power: "Peak Power",
             heartrate: "Peak Heart Rate",
             speed: "Peak Speed",
@@ -151,16 +178,18 @@ function (TP, expandoCommon, WorkoutStatsForRange, lapsTemplate)
         },
 
         modelPeakKeys: {
+            distance: "peakSpeedsByDistance",
             power: "peakPowers",
-            pace: "peakSpeeds",
             heartrate: "peakHeartRates",
-            cadence: "peakCadences",
-            speed: "peakSpeeds"
+            speed: "peakSpeeds",
+            pace: "peakSpeeds",
+            cadence: "peakCadences"
         },
 
         formatMethods: {
             pace: TP.utils.conversion.formatPace,
-            speed: TP.utils.conversion.formatSpeed
+            speed: TP.utils.conversion.formatSpeed,
+            distance: TP.utils.conversion.formatPace
         },
 
         onSelectPeakType: function ()
@@ -198,6 +227,21 @@ function (TP, expandoCommon, WorkoutStatsForRange, lapsTemplate)
             //intervalData.name = "Peak " + i
             //var statsForRange = new WorkoutStatsForRange(intervalData);
             //this.trigger("rangeselected", intervalData.begin, intervalData.end, statsForRange);
+        },
+
+        watchForControllerResize: function()
+        {
+            this.on("controller:resize", this.onControllerResize, this);
+            this.on("close", function()
+            {
+                this.off("controller:resize", this.onControllerResize, this);
+            }, this);
+        },
+
+        onControllerResize: function(containerHeight)
+        {
+            this.$el.parent().height(Math.round(containerHeight * 0.6));
         }
+
     });
 });

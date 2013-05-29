@@ -354,11 +354,6 @@
 		.summaryHeader
 		{
 			background-color: #206193;
-			#calendarDate
-            {
-                color: white;
-                font-family: $fontFamilyLight;
-            }
             cursor: default;
 		}
 	}
@@ -366,7 +361,11 @@
 	.summaryHeader
 	{
 		background-color: $TPGrey3;
-		#calendarDate{color: white;}
+		#calendarDate{
+            color: white;
+            font-family: $fontFamilyLight;
+        }
+        cursor: default;
 	}
 
     .daysOfWeek

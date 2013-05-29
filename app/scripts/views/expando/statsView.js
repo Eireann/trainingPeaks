@@ -24,6 +24,7 @@ function(
         initialize: function()
         {
             this.on("controller:rangeselected", this.onRangeSelected, this);
+            this.watchForControllerResize();
         },
 
         serializeData: function()
@@ -53,7 +54,7 @@ function(
         {
             if (rangeData)
             {
-                this.selectedRangeData = rangeData.toJSON();;
+                this.selectedRangeData = rangeData.toJSON();
                 if (!this.selectedRangeData.name)
                 {
                     this.selectedRangeData.name = "Selection";
@@ -94,6 +95,20 @@ function(
             });
 
             return keyWithAValue ? true : false;
+        },
+
+        watchForControllerResize: function()
+        {
+            this.on("controller:resize", this.onControllerResize, this);
+            this.on("close", function()
+            {
+                this.off("controller:resize", this.onControllerResize, this);
+            }, this);
+        },
+
+        onControllerResize: function(containerHeight)
+        {
+            this.$el.parent().height(Math.round(containerHeight * 0.4));
         }
     };
 
