@@ -299,7 +299,8 @@
                 label
                 {
                     display: inline-block;
-                    @include calc(width, "50% - 5px"); 
+                    width: 127px;
+                    //@include calc(width, "50% - 5px"); 
                     text-align: right;
                     margin-right: 5px;
                 }
@@ -331,6 +332,15 @@
                 {
                     display: table-row;
 
+                    &.statsRow
+                    {
+                        .value
+                        {
+                            font-size: $fontSizeMedLarge;
+                            min-width: 60px;
+                        }
+                    }
+
                     label
                     {
                         display: table-cell;
@@ -338,6 +348,14 @@
                         white-space: nowrap;
                         text-align: right;
                         width: auto;
+                    }
+
+                    &:not(.minMaxAvgHeaders)
+                    {
+                        label
+                        {
+                            min-width: 70px;
+                        }
                     }
 
                     span

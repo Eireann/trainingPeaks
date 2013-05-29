@@ -238,7 +238,6 @@ input[disabled='disabled']
     {
 
         margin-bottom:3px;
-        margin-left: -3px;
         padding: 3px;
         border: 1px solid transparent;
         font-size: $fontSizeSmaller;
@@ -281,6 +280,13 @@ input[disabled='disabled']
         {
             white-space: pre-wrap;
         }
+
+        textarea.commentBody
+        {
+            @include calc(width, "100% + 3px");
+            margin-left: -3px;
+        }
+
 
     }
 }
