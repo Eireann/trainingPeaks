@@ -56,6 +56,13 @@ function(
             {
                 this.selectedRangeData = workoutStatsForRange.toJSON();
                 this.render();
+                if(workoutStatsForRange.hasLoaded)
+                {
+                    this.$el.removeClass("waiting");
+                } else
+                {
+                    this.$el.addClass("waiting");
+                }
             }
         },
 

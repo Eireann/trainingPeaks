@@ -448,9 +448,18 @@
             {
                 line-height: 1em;
 
+                span
+                {
+                    display: inline-block;
+                    @include calc(width, "100% - 20px");
+                }
+
                 &.highlight 
                 {
-                    background-color: #ffffff;
+                    span
+                    {
+                        background-color: #ffffff;
+                    }
                 }
             }
         }
