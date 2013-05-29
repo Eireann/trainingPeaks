@@ -34,7 +34,7 @@ function(formatDateTime, convertToViewUnits, unitLabels, flotToolTipTemplate)
 
             toolTipData.series.push(config);
 
-            if (s.label === "Speed" && (workoutType === 1 || workoutType === 3 || workoutType === 13))
+            if (s.label === "Speed" && (workoutType === 1 || workoutType === 3 || workoutType === 13 || workoutType === 100))
             {
                 config =
                 {

@@ -24,6 +24,7 @@ function(
         initialize: function()
         {
             this.on("controller:rangeselected", this.onRangeSelected, this);
+            this.watchForControllerResize();
         },
 
         serializeData: function()
@@ -90,6 +91,20 @@ function(
             });
 
             return keyWithAValue ? true : false;
+        },
+
+        watchForControllerResize: function()
+        {
+            this.on("controller:resize", this.onControllerResize, this);
+            this.on("close", function()
+            {
+                this.off("controller:resize", this.onControllerResize, this);
+            }, this);
+        },
+
+        onControllerResize: function(containerHeight)
+        {
+            this.$el.parent().height(Math.round(containerHeight * 0.4));
         }
     };
 

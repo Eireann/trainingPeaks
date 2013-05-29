@@ -16,7 +16,7 @@ function(TP, ExpandoLayout, GraphView, MapView, StatsView, LapsView, ChartsView)
         {
             return this.layout;
         },
-        
+
         initialize: function(options)
         {
             this.model = options.model;
@@ -46,6 +46,7 @@ function(TP, ExpandoLayout, GraphView, MapView, StatsView, LapsView, ChartsView)
             this.layout.$el.addClass("waiting");
 
             this.watchForModelChanges();
+            this.watchForWindowResize();
 
             this.watchForViewEvents();
 
@@ -66,6 +67,8 @@ function(TP, ExpandoLayout, GraphView, MapView, StatsView, LapsView, ChartsView)
             this.layout.statsRegion.show(this.views.statsView);
             this.layout.lapsRegion.show(this.views.lapsView);
             this.layout.chartsRegion.show(this.views.chartsView);
+
+            this.onWindowResize();
         },
 
         preFetchDetailData: function()
@@ -156,6 +159,27 @@ function(TP, ExpandoLayout, GraphView, MapView, StatsView, LapsView, ChartsView)
                     self.onRangeSelected(workoutStatsForRange);
                 });
             }
+        },
+
+        watchForWindowResize: function()
+        {
+            _.bindAll(this, "onWindowResize");
+            $(window).on("resize", this.onWindowResize);
+            this.on("close", this.stopWatchingWindowResize, this);
+        },
+
+        stopWatchingWindowResize: function()
+        {
+            $(window).off("resize", this.onWindowResize);
+        },
+
+        onWindowResize: function()
+        {
+            var containerHeight = this.layout.$el.parent().height();
+            _.each(this.views, function(view)
+            {
+                view.trigger("controller:resize", containerHeight);
+            }, this);
         }
     });
 });
