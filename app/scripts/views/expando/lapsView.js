@@ -201,17 +201,20 @@ function (TP, expandoCommon, WorkoutStatsForRange, lapsTemplate)
 
         onLapsClicked: function (e)
         {
-            var lapIndex = $(e.target).data("lapindex");
+            var target = $(e.target);
+            var lapIndex = target.data("lapindex");
             var detailData = this.model.get("detailData").toJSON();
             var lapData = detailData.lapsStats[lapIndex];
             lapData.workoutId = this.model.id;
             var statsForRange = new WorkoutStatsForRange(lapData);
             statsForRange.hasLoaded = true;
             this.trigger("rangeselected", statsForRange);
+            this.highlightListItem(target);
         },
 
-        onEntireWorkoutClicked: function ()
+        onEntireWorkoutClicked: function (e)
         {
+            var target = $(e.target);
             var detailData = this.model.get("detailData").toJSON();
             var entireWorkoutData = detailData.totalStats;
             entireWorkoutData.workoutId = this.model.id;
@@ -219,12 +222,14 @@ function (TP, expandoCommon, WorkoutStatsForRange, lapsTemplate)
             var statsForRange = new WorkoutStatsForRange(entireWorkoutData);
             statsForRange.hasLoaded = true;
             this.trigger("rangeselected", statsForRange);
+            this.highlightListItem(target);
         },
         
         onPeaksClicked: function(e)
         {
-            var peakInterval = $(e.target).data("peakinterval");
-            var peakType = $(e.target).data("peaktype");
+            var target = $(e.target);
+            var peakInterval = target.data("peakinterval");
+            var peakType = target.data("peaktype");
             var detailData = this.model.get("detailData").toJSON();
             var peakDataSet = detailData[this.modelPeakKeys[peakType]];
             var peakDataItem = _.find(peakDataSet, function(item)
@@ -235,7 +240,13 @@ function (TP, expandoCommon, WorkoutStatsForRange, lapsTemplate)
             peakDataItem.name = "Peak " + peakInterval;
             var statsForRange = new WorkoutStatsForRange(peakDataItem);
             this.trigger("rangeselected", statsForRange);
-
+            this.highlightListItem(target);
+        },
+        
+        highlightListItem: function(target)
+        {
+            this.$(".rangesList li").removeClass("highlight");
+            target.addClass("highlight");
         },
 
         watchForControllerResize: function()

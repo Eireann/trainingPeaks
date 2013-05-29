@@ -105,7 +105,7 @@ function(
             this.off("controller:rangeselected", this.onRangeSelected, this);
         },
 
-        onRangeSelected: function(startOffsetMs, endOffsetMs)
+        onRangeSelected: function (workoutStatsForRange)
         {
             if (this.selection)
             {
@@ -113,10 +113,9 @@ function(
                 this.selection = null;
             }
 
-            var sampleStartIndex = this.dataParser.findIndexByMsOffset(startOffsetMs);
-            var sampleEndIndex = this.dataParser.findIndexByMsOffset(endOffsetMs);
+            var sampleStartIndex = this.dataParser.findIndexByMsOffset(workoutStatsForRange.get("begin"));
+            var sampleEndIndex = this.dataParser.findIndexByMsOffset(workoutStatsForRange.get("end"));
             this.selection = MapUtils.highlight(this.map, this.dataParser.getLatLonArray().slice(sampleStartIndex, sampleEndIndex));
         }
-
     });
 });

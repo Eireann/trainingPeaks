@@ -429,10 +429,14 @@
             li 
             {
                 line-height: 1em;
+
+                &.highlight 
+                {
+                    background-color: #ffffff;
+                }
             }
         }
     }
-
 }
 
 
