@@ -9,7 +9,7 @@ function(conversion, getKeyStatField)
     {
         var minutes, hours, seconds;
 
-        if (interval < 90 || (interval % 60) !== 0)
+        if (interval < 60)
         {
             return interval + " sec";
         } else if (interval > 3600)
