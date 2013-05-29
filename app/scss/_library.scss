@@ -1,5 +1,8 @@
 ﻿@import "globalCSS/tpstylesheet";
 
+$mainTabSpriteURL: url(../../assets/images/sprite-icons-main-tabs.png);
+$mainTtabSpriteRetinaURL: url(../../assets/images/sprite-icons-main-tabs@2x.png);
+
 #libraryContainer
 {
 
@@ -67,17 +70,117 @@
             }
         }
 
+        #exerciseLibrary
+        {
+            background: $TPGrey1 $mainTabSpriteURL no-repeat 0 0;
+            &:hover
+            {
+                background-position: -33px 0;
+            }
+
+            &:active
+            {
+                background-color: $TPGrey2;
+                background-position: -66px 0;
+            }
+
+            &.active
+            {
+                background-color: $TPGrey2;
+                background-position: -66px 0;
+            }
+        }
+        #mealLibrary
+        {
+            background: $TPGrey1 $mainTabSpriteURL no-repeat 0 -33px;
+            &:hover
+            {
+                background-ition: -33px -33px;
+            }
+
+            &:active
+            {
+               background-color: $TPGrey2;
+               background-position: -66px -33px;
+            }
+
+            &.active
+            {
+                background-color: $TPGrey2;
+                background-position: -66px -33px;
+            }
+        }
+
+        #foodLibrary
+        {
+            background: $TPGrey1 $mainTabSpriteURL no-repeat 0 -132px;
+            &:hover
+            {
+                background-position: -33px -132px;
+            }
+
+            &:active
+            {
+               background-color: $TPGrey2;
+               background-position: -66px -132px;
+            }
+
+            &.active
+            {
+                background-color: $TPGrey2;
+                background-position: -66px -132px;
+            }
+        }
+
+        #plansLibrary
+        {
+            background: $TPGrey1 $mainTabSpriteURL no-repeat 0 -66px;
+            &:hover
+            {
+                background-position: -33px -66px;
+            }
+
+            &:active
+            {
+               background-color: $TPGrey2;
+               background-position: -66px -66px;
+            }
+
+            &.active
+            {
+                background-color: $TPGrey2;
+                background-position: -66px -66px;
+            }
+        }
+
+        #routesLibrary
+        {
+            background: $TPGrey1 $mainTabSpriteURL no-repeat 0 -99px;
+            &:hover
+            {
+                background-position: -33px -99px;
+            }
+
+            &:active
+            {
+               background-color: $TPGrey2;
+               background-position: -66px -99px;
+            }
+
+            &.active
+            {
+                background-color: $TPGrey2;
+                background-position: -66px -99px;
+            }
+        }
+
         div.active
         {
-            background-color: $TPGrey2;
-
             .arrow
             {
                 display: block;
             }
         }
-
-        
     }
 
     #activeLibraryContainer
