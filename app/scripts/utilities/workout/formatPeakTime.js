@@ -7,13 +7,15 @@ function(conversion, getKeyStatField)
 {
     function formatPeakTime(interval)
     {
+        var minutes, hours, seconds;
+
         if (interval < 90 || (interval % 60) !== 0)
         {
             return interval + " sec";
         } else if (interval > 3600)
         {
-            var hours = Math.floor(interval / 3600);
-            var minutes = Math.round((interval % 3600) / 60);
+            hours = Math.floor(interval / 3600);
+            minutes = Math.round((interval % 3600) / 60);
 
             if (hours < 10)
                 hours = "0" + hours;
@@ -24,8 +26,8 @@ function(conversion, getKeyStatField)
             return hours + ":" + minutes + " h";
         } else 
         {
-            var minutes = Math.floor(interval / 60);
-            var seconds = interval % 60;
+            minutes = Math.floor(interval / 60);
+            seconds = interval % 60;
             if (seconds < 10)
                 seconds = "0" + seconds;
 
