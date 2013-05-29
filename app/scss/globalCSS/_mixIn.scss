@@ -78,9 +78,9 @@
 
     &:active
     {
-        color: #636569;
+        color: #ffffff;
         background:none;
-        @include linearGradient(top, #dfdfdf, #8cb5dc);
+        @include linearGradient(top, #6694c1, #3a6e99);
     }
 
 }
