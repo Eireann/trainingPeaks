@@ -183,9 +183,10 @@ function(
         onRangeSelected: function (workoutStatsForRange)
         {
 
+            var selection;
             if (workoutStatsForRange.removeFromSelection)
             {
-                var selection = this.findGraphSelection(workoutStatsForRange.get("begin"), workoutStatsForRange.get("end"));
+                selection = this.findGraphSelection(workoutStatsForRange.get("begin"), workoutStatsForRange.get("end"));
                 if(selection)
                 {
                     this.removeSelectionFromGraph(selection);
@@ -193,7 +194,7 @@ function(
                 }
             } else if(workoutStatsForRange.addToSelection)
             {
-                var selection = this.createGraphSelection(workoutStatsForRange);
+                selection = this.createGraphSelection(workoutStatsForRange);
                 this.addSelectionToGraph(selection);
             }
         },
@@ -214,7 +215,7 @@ function(
             var selection = {
                 begin: workoutStatsForRange.get("begin"),
                 end: workoutStatsForRange.get("end")
-            }
+            };
 
             return selection;
         },

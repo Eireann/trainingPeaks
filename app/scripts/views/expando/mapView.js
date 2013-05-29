@@ -108,9 +108,10 @@ function(
         onRangeSelected: function (workoutStatsForRange)
         {
 
+            var selection;
             if (workoutStatsForRange.removeFromSelection)
             {
-                var selection = this.findMapSelection(workoutStatsForRange.get("begin"), workoutStatsForRange.get("end"));
+                selection = this.findMapSelection(workoutStatsForRange.get("begin"), workoutStatsForRange.get("end"));
                 if(selection)
                 {
                     this.removeSelectionFromMap(selection);
@@ -118,7 +119,7 @@ function(
                 }
             } else if(workoutStatsForRange.addToSelection)
             {
-                var selection = this.createMapSelection(workoutStatsForRange);
+                selection = this.createMapSelection(workoutStatsForRange);
                 this.addSelectionToMap(selection);
             }
         },
@@ -141,7 +142,7 @@ function(
                 begin: workoutStatsForRange.get("begin"),
                 end: workoutStatsForRange.get("end"),
                 mapLayer: mapLayer
-            }
+            };
 
             return selection;
         },
