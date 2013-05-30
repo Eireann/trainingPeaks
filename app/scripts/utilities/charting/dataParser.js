@@ -261,6 +261,50 @@ function(seriesColorByChannel, findIndexByMsOffset, convertToViewUnits)
             return this.latLonArray;
         },
 
+        getLatLngMsOffset: function()
+        {
+            if (!this.latLngMsOffset)
+            {
+                this.latLngMsOffset = {};
+
+                if (_.has(this.dataByChannel, "Latitude") && _.has(this.dataByChannel, "Longitude") && (this.dataByChannel.Latitude.length === this.dataByChannel.Longitude.length))
+                {
+                    for (var i = 0; i < this.dataByChannel.Latitude.length; i++)
+                    {
+                        var lat = this.dataByChannel.Latitude[i][1];
+                        var lng = this.dataByChannel.Longitude[i][1];
+                        if (_.isNaN(lat) || _.isNaN(lng))
+                            continue;
+
+                        var msOffset = this.dataByChannel.Latitude[i][0];
+                        var key = lat + "," + lng;
+                        this.latLngMsOffset[key] = msOffset;
+                    }
+                }
+
+                console.log(_.keys(this.latLngMsOffset).sort());
+
+            }
+
+            return this.latLngMsOffset;
+        },
+
+        findMsOffsetByLatLng: function(lat, lng)
+        {
+            var latLngMsOffset = this.getLatLngMsOffset();
+
+            // data from api is truncated at 5 decimals, but leaflet will give us longer values
+            var key = Number(lat).toFixed(5) + "," + Number(lng).toFixed(5);
+            console.log(lat + "," + lng + " = " + key);
+            if(latLngMsOffset.hasOwnProperty(key))
+            {
+                return latLngMsOffset[key];
+            } else
+            {
+                return null;
+            }
+        },
+
         getYAxes: function(series)
         {
             return generateYAxes.call(this, series);
