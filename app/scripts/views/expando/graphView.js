@@ -217,9 +217,6 @@ function(
 
         onRangeSelected: function (workoutStatsForRange)
         {
-
-            this.plot.clearSelection();
-
             var selection;
             if (workoutStatsForRange.removeFromSelection)
             {
@@ -231,6 +228,7 @@ function(
                 }
             } else if(workoutStatsForRange.addToSelection)
             {
+                this.plot.clearSelection();
                 selection = this.createGraphSelection(workoutStatsForRange);
                 this.addSelectionToGraph(selection);
             }
@@ -259,13 +257,13 @@ function(
 
         addSelectionToGraph: function(selection)
         {
+            selection.selection = this.plot.addMultiSelection({ xaxis: { from: selection.begin, to: selection.end } });
             this.selections.push(selection);
-            this.plot.setMultiSelection({ xaxis: { from: selection.begin, to: selection.end } }, true);
         },
 
         removeSelectionFromGraph: function(selection)
         {
-            this.plot.clearMultiSelection();
+            this.plot.clearMultiSelection(selection.selection);
         },
 
         onUnSelectAll: function()
