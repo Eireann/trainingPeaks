@@ -17,7 +17,7 @@ function(TP, timeInZonesGenerator, HRTimeInZonesChartView, PowerTimeInZonesChart
             template: chartsTemplate
         },
 
-        viewsByMetricName:
+        chartViewsByMetricName:
         {
             "HeartRate": HRTimeInZonesChartView,
             "Power": PowerTimeInZonesChartView,
@@ -45,11 +45,11 @@ function(TP, timeInZonesGenerator, HRTimeInZonesChartView, PowerTimeInZonesChart
         
         onRender: function()
         {
-            _.each(this.viewsByMetricName, function(View, metric)
+            _.each(this.chartViewsByMetricName, function(ChartView, metric)
             {
                 var timeInZones = timeInZonesGenerator(metric, this.zoneSettingNameByMetricName[metric], this.model.get("details"), this.model);
                 var el = this.$el.find(this.elByMetricName[metric] + " > .timeInZonesChartContainer");
-                var view = new View({ timeInZones: timeInZones, el: el });
+                var view = new ChartView({ timeInZones: timeInZones, el: el });
                 el.css("height", "350px");
                 el.css("width", "600px");
                 view.render();

@@ -84,7 +84,7 @@ function(_, TP, timeInZonesGenerator, HeartRateTimeInZonesChartView, PowerTimeIn
             }
             else if (this.metric === "Speed")
             {
-                view = new SpeedTimeInZonesChartView({ el: this.$(".zonesChart"), timeInZones: timeInZones });
+                view = new SpeedTimeInZonesChartView({ el: this.$(".zonesChart"), timeInZones: timeInZones, workoutType: this.workoutModel.get("workoutTypeValueId") });
                 view.render();
             }
         }

@@ -13,6 +13,7 @@ function(TP, TimeInZonesChartView)
         
         initialize: function(options)
         {
+            this.workoutType = options.workoutType;
             this.constructor.__super__.initialize.call(this,
             {
                 timeInZones: options.timeInZones,
@@ -47,8 +48,7 @@ function(TP, TimeInZonesChartView)
         
         formatPeakUnitsLabel: function (value, options)
         {
-            return "min/mi";
-            return "min/" + TP.utils.units.getUnitsLabel("distance", this.workoutModel.get("workoutTypeValueId"));
-        },
+            return "min/" + TP.utils.units.getUnitsLabel("distance", this.workoutType);
+        }
     });
 });
