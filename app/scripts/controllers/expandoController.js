@@ -130,6 +130,7 @@ function(TP, ExpandoLayout, GraphView, MapView, StatsView, LapsView, ChartsView)
             _.each(this.views, function(view, key)
             {
                 view.on("rangeselected", this.onRangeSelected, this);
+                view.on("unselectall", this.onUnSelectAll, this);
                 view.on("graphhover", this.onGraphHover, this);
                 view.on("graphleave", this.onGraphLeave, this);
             }, this);
@@ -143,6 +144,7 @@ function(TP, ExpandoLayout, GraphView, MapView, StatsView, LapsView, ChartsView)
             _.each(this.views, function(view, key)
             {
                 view.off("rangeselected", this.onRangeSelected, this);
+                view.off("unselectall", this.onUnSelectAll, this);
                 view.off("graphhover", this.onGraphHover, this);
                 view.off("graphleave", this.onGraphLeave, this);
             }, this);
@@ -187,6 +189,14 @@ function(TP, ExpandoLayout, GraphView, MapView, StatsView, LapsView, ChartsView)
             _.each(this.views, function (view, key)
             {
                 view.trigger("controller:graphleave");
+            }, this);
+        },
+        
+        onUnSelectAll: function()
+        {
+            _.each(this.views, function (view, key)
+            {
+                view.trigger("controller:unselectall");
             }, this);
         },
 

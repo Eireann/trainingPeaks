@@ -70,16 +70,16 @@ function(
         {
             lapData.minMaxAvg = false;
 
-            if (this.hasAnyValue(lapData, ["minimumPower", "averagePower", "maximumPower"]))
+            if (this.hasAnyNonZeroValue(lapData, ["minimumPower", "averagePower", "maximumPower"]))
                 lapData.minMaxPower = lapData.minMaxAvg = true;
 
-            if (this.hasAnyValue(lapData, ["minimumSpeed", "averageSpeed", "maximumSpeed"]))
+            if (this.hasAnyNonZeroValue(lapData, ["minimumSpeed", "averageSpeed", "maximumSpeed"]))
                 lapData.minMaxSpeed = lapData.minMaxAvg = true;
 
-            if (this.hasAnyValue(lapData, ["minimumHeartRate", "averageHeartRate", "maximumHeartRate"]))
+            if (this.hasAnyNonZeroValue(lapData, ["minimumHeartRate", "averageHeartRate", "maximumHeartRate"]))
                 lapData.minMaxHeartRate = lapData.minMaxAvg = true;
 
-            if (this.hasAnyValue(lapData, ["minimumCadence", "averageCadence", "maximumCadence"]))
+            if (this.hasAnyNonZeroValue(lapData, ["minimumCadence", "averageCadence", "maximumCadence"]))
                 lapData.minMaxCadence = lapData.minMaxAvg = true;
 
             if (this.hasAnyValue(lapData, ["elevationMinimum", "elevationAverage", "elevationMaximum"]))
@@ -95,6 +95,16 @@ function(
             var keyWithAValue = _.find(keys, function(key)
             {
                 return !_.isUndefined(context[key]) && !_.isNull(context[key]);
+            });
+
+            return keyWithAValue ? true : false;
+        },
+
+        hasAnyNonZeroValue: function(context, keys)
+        {
+            var keyWithAValue = _.find(keys, function(key)
+            {
+                return !_.isUndefined(context[key]) && !_.isNull(context[key]) && Number(context[key]) !== 0;
             });
 
             return keyWithAValue ? true : false;
