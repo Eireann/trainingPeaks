@@ -437,7 +437,7 @@
 
         .rangesList
         {
-            margin-left: 35px;   
+            margin-left: 35px; 
 
             ul 
             {
@@ -446,19 +446,25 @@
 
             li 
             {
-                line-height: 1em;
+                //line-height: 1em;
 
                 span
                 {
                     display: inline-block;
                     @include calc(width, "100% - 20px");
+                    cursor: pointer;  
+                    &:hover
+                    {
+                        background-color: $TPGrey2;
+                    }
                 }
 
                 &.highlight 
                 {
                     span
                     {
-                        background-color: #ffffff;
+                        background-color: $TPGrey4;
+                        color: #ffffff;
                     }
                 }
             }
