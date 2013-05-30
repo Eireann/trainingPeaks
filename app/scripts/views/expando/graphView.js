@@ -90,7 +90,7 @@ function(
             this.$plot = this.$("#plot");
             if (!this.$plot.height())
             {
-                this.$plot.height(375);
+                this.$plot.height(365);
             }
             this.drawPlot();
 

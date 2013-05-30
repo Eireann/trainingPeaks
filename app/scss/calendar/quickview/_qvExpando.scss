@@ -144,8 +144,7 @@
 
     #expandoGraphRegion
     {
-        margin-top: 40px;
-        padding-top: 5px;
+        padding-top: 15px;
         padding-left: 10px;
         padding-right: 10px;
         height: 400px;
@@ -153,18 +152,18 @@
 
         #graphToolbar
         {
-            height: 25px;
+            height: 35px;
         }
 
         #plot
         {
-            height: 370px;
+            height: 365px;
         }
 
         .graphToolbar
         {
             padding: 0;
-            margin: -35px 55px 0 0;
+            margin: 0 55px 0 0;
 
             button
             {
