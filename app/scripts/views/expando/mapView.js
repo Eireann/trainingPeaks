@@ -143,6 +143,7 @@ function (
         watchForControllerEvents: function ()
         {
             this.on("controller:rangeselected", this.onRangeSelected, this);
+            this.on("controller:unselectall", this.onUnSelectAll, this);
             this.on("close", this.stopWatchingControllerEvents, this);
             this.on("controller:graphhover", this.onGraphHover, this);
             this.on("controller:graphleave", this.onGraphLeave, this);
@@ -206,6 +207,15 @@ function (
         removeSelectionFromMap: function(selection)
         {
             this.map.removeLayer(selection.mapLayer);
+        },
+
+        onUnSelectAll: function()
+        {
+            _.each(this.selections, function(selection)
+            {
+                this.removeSelectionFromMap(selection);
+            }, this);
+            this.selections = [];
         },
 
         onGraphHover: function (msOffset)

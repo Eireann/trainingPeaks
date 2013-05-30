@@ -206,6 +206,7 @@ function(
         watchForControllerEvents: function()
         {
             this.on("controller:rangeselected", this.onRangeSelected, this);
+            this.on("controller:unselectall", this.onUnSelectAll, this);
             this.on("close", this.stopWatchingControllerEvents, this);
         },
 
@@ -216,6 +217,8 @@ function(
 
         onRangeSelected: function (workoutStatsForRange)
         {
+
+            this.plot.clearSelection();
 
             var selection;
             if (workoutStatsForRange.removeFromSelection)
@@ -262,7 +265,17 @@ function(
 
         removeSelectionFromGraph: function(selection)
         {
-            this.plot.clearSelection();
+            this.plot.clearMultiSelection();
+        },
+
+        onUnSelectAll: function()
+        {
+            _.each(this.selections, function(selection)
+            {
+                this.removeSelectionFromGraph(selection);
+            }, this);
+            this.selections = [];
         }
+
     });
 });
