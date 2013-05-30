@@ -80,6 +80,11 @@ $mainTtabSpriteRetinaURL: url(../../assets/images/sprite-icons-main-tabs@2x.png)
                 background-color: $TPGrey2;
                 background-position: -66px 0;
             }
+
+			&.active {
+                background-color: $TPGrey2;
+                background-position: -66px 0;
+            }
         }
 
         #mealLibrary {
@@ -89,6 +94,11 @@ $mainTtabSpriteRetinaURL: url(../../assets/images/sprite-icons-main-tabs@2x.png)
             }
 
             &:active {
+               background-color: $TPGrey2;
+               background-position: -66px -33px;
+            }
+
+			&.active {
                background-color: $TPGrey2;
                background-position: -66px -33px;
             }
@@ -104,6 +114,11 @@ $mainTtabSpriteRetinaURL: url(../../assets/images/sprite-icons-main-tabs@2x.png)
                background-color: $TPGrey2;
                background-position: -66px -132px;
             }
+
+			&.active {
+               background-color: $TPGrey2;
+               background-position: -66px -132px;
+            }
         }
 
         #plansLibrary {
@@ -116,6 +131,11 @@ $mainTtabSpriteRetinaURL: url(../../assets/images/sprite-icons-main-tabs@2x.png)
                background-color: $TPGrey2;
                background-position: -66px -66px;
             }
+
+			&.active {
+               background-color: $TPGrey2;
+               background-position: -66px -66px;
+            }
         }
 
         #routesLibrary {
@@ -125,6 +145,11 @@ $mainTtabSpriteRetinaURL: url(../../assets/images/sprite-icons-main-tabs@2x.png)
             }
 
             &:active {
+               background-color: $TPGrey2;
+               background-position: -66px -99px;
+            }
+
+			&.active {
                background-color: $TPGrey2;
                background-position: -66px -99px;
             }
