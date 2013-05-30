@@ -84,8 +84,54 @@ function (
             if (!this.map)
                 this.map = MapUtils.createMapOnContainer(this.$("#expandoMap")[0]);
 
-            MapUtils.setMapData(this.map, this.dataParser.getLatLonArray());
+            var latLongArray = this.dataParser.getLatLonArray();
+
+            this.addMouseHoverBuffer(latLongArray);
+            MapUtils.setMapData(this.map, latLongArray);
             MapUtils.calculateAndAddMileMarkers(this.map, this.dataParser, 15);
+        },
+
+        addMouseHoverBuffer: function(latLongArray)
+        {
+            this.mapMouseBuffer = MapUtils.addTransparentBuffer(this.map, latLongArray);
+
+            this.mapMouseBuffer.on("mousemove", this.onMapHover, this);
+            this.mapMouseBuffer.on("mouseout", this.onMapMouseOut, this);
+            this.on("close", this.unbindMouseHoverEvents, this);
+        },
+
+        unbindMouseHoverEvents: function()
+        {
+            this.mapMouseBuffer.off("mousemove", this.onMapHover, this);
+            this.mapMouseBuffer.off("mouseout", this.onMapMouseOut, this);
+        },
+
+        onMapHover: function(e)
+        {
+
+            var linePoint = this.mapMouseBuffer.closestLayerPoint(e.layerPoint);
+            var latLng = this.map.layerPointToLatLng(linePoint);
+            this.showHoverMarker(latLng.lat, latLng.lng);
+            return;
+            /*
+            close but not quite - because leaflet is converting lat lng to pixels and back, the resulting values are off by a thousandth or so,
+            so they don't map nicely to a simple lookup of our lat lng array without some calculating
+
+            var msOffset = this.dataParser.findMsOffsetByLatLng(latLng.lat, latLng.lng);
+            if (msOffset)
+            {
+                this.trigger("maphover", msOffset);
+                console.log(msOffset);
+            } else
+            {
+                console.log("No point");
+            }
+            */
+        },
+
+        onMapMouseOut: function(e)
+        {
+            this.hideHoverMarker();
         },
 
         parseData: function ()
@@ -165,25 +211,66 @@ function (
         onGraphHover: function (msOffset)
         {
             var index = this.dataParser.findIndexByMsOffset(msOffset);
-            var item = this.dataParser.getLatLonArray()[index];
-            if (!this.hoverMarker)
+            var lat = this.dataParser.dataByChannel.Latitude[index][1];
+            var long = this.dataParser.dataByChannel.Longitude[index][1];
+
+            if (isNaN(lat) || isNaN(long))
             {
-                this.hoverMarker = L.marker(item);
-                this.hoverMarker.addTo(this.map);
-            }
-            else
+                this.hideHoverMarkerWithDelay();
+            } else
             {
-                this.hoverMarker.setLatLng(item);
+                this.showHoverMarker(lat, long);
             }
         },
 
         onGraphLeave: function ()
         {
+            this.hideHoverMarker();
+        },
+
+        hideHoverMarker: function()
+        {
+            this.clearHoverHideTimeout();
             if (this.hoverMarker)
             {
                 this.map.removeLayer(this.hoverMarker);
                 this.hoverMarker = null;
             }
+        },
+
+        hideHoverMarkerWithDelay: function()
+        {
+            this.clearHoverHideTimeout();
+            var self = this;
+            this.hoverHideTimeout = setTimeout(function()
+            {
+                self.hideHoverMarker();
+            }, 1000);
+        },
+
+        clearHoverHideTimeout: function()
+        {
+            if(this.hoverHideTimeout)
+            {
+                clearTimeout(this.hoverHideTimeout);
+            }
+
+        },
+
+        showHoverMarker: function(lat, long)
+        {
+            this.clearHoverHideTimeout();
+            var position = [lat, long];
+            if (!this.hoverMarker)
+            {
+                this.hoverMarker = L.marker(position);
+                this.hoverMarker.addTo(this.map);
+            }
+            else
+            {
+                this.hoverMarker.setLatLng(position);
+            }
         }
+
     });
 });

@@ -55,7 +55,7 @@ function (TP, expandoCommon, WorkoutStatsForRange, lapsTemplate)
             //TODO: get correct peaks on drop down select
             workoutData.rangePeaks = peaks;
 
-            if ((totals && totals.length && totals[0].totalTime) || (laps && laps.length) || (peaks && peaks.length))
+            if ((totals && totals.totalTime) || (laps && laps.length) || (peaks && peaks.length))
             {
                 workoutData.hasLapsOrPeaks = true;
             }
@@ -208,6 +208,9 @@ function (TP, expandoCommon, WorkoutStatsForRange, lapsTemplate)
             if (!this.shouldDisplayPace())
                 allKeys = _.without(allKeys, "pace");
 
+            if (!this.shouldDisplaySpeed())
+                allKeys = _.without(allKeys, "speed");
+
             return allKeys;
         },
 
@@ -356,6 +359,18 @@ function (TP, expandoCommon, WorkoutStatsForRange, lapsTemplate)
             if (workoutTypeId === TP.utils.workout.types.getIdByName("Other"))
                 return true;
             return false;
+        },
+
+        shouldDisplaySpeed: function()
+        {
+            var workoutTypeId = this.model.get("workoutTypeValueId");
+            if (workoutTypeId === TP.utils.workout.types.getIdByName("Walk"))
+                return false;
+            if (workoutTypeId === TP.utils.workout.types.getIdByName("Run"))
+                return false;
+            if (workoutTypeId === TP.utils.workout.types.getIdByName("Swim"))
+                return false;
+            return true;
         },
 
         watchForWorkoutTypeChange: function()

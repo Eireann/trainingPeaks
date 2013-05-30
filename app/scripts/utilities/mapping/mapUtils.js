@@ -59,18 +59,43 @@ function(
 
         setMapData: function(map, latLonArray)
         {
+            var polyline = this.createPolyline(latLonArray);
+            polyline.addTo(map);
+            if (latLonArray && latLonArray.length > 0)
+            {
+                map.fitBounds(polyline.getBounds());
+            }
+            return polyline;
+        },
+
+        addTransparentBuffer: function(map, latLonArray)
+        {
+            var polyline = this.createPolyline(latLonArray, { color: "transparent", opacity: 0, weight: 40 });
+            polyline.addTo(map);
+            return polyline;
+        },
+
+        createPolyline: function(latLonArray, polyLineOptions)
+        {
             if (latLonArray && latLonArray.length > 0)
             {
                 var leafletLatLongs = [];
 
-                _.each(latLonArray, function (point)
+                _.each(latLonArray, function(point)
                 {
                     if (point[0] && point[1])
                         leafletLatLongs.push(new L.LatLng(parseFloat(point[0]).toFixed(6), parseFloat(point[1]).toFixed(6)));
                 });
 
-                var polyline = L.polyline(leafletLatLongs, { color: "red", smoothFactor: 1.0, opacity: 1, weight: 2 }).addTo(map);
-                map.fitBounds(polyline.getBounds());
+                var options = { color: "red", smoothFactor: 1.0, opacity: 1, weight: 2 };
+                if (polyLineOptions)
+                {
+                    _.extend(options, polyLineOptions);
+                }
+                return L.polyline(leafletLatLongs, options);
+            } else
+            {
+                return L.polyline([]);
             }
         },
 
