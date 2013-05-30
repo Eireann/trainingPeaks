@@ -12,7 +12,7 @@ function(conversion, getKeyStatField)
         if (interval < 60)
         {
             return interval + " sec";
-        } else if (interval > 3600)
+        } else if (interval >= 3600)
         {
             hours = Math.floor(interval / 3600);
             minutes = Math.round((interval % 3600) / 60);

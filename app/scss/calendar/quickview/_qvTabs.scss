@@ -3,8 +3,7 @@
 $QVTabSpriteURL: url(../../assets/images/QVImages/sprite-icons-QV-Tabs.png);
 $QVTabSpriteRetinaURL: url(../../assets/images/QVImages/sprite-icons-QV-Tabs@2x.png);
 
-.tabNavigation
-{
+.tabNavigation {
     width: 37px;
     height: 360px;
     float: left;
@@ -13,13 +12,13 @@ $QVTabSpriteRetinaURL: url(../../assets/images/QVImages/sprite-icons-QV-Tabs@2x.
     border-bottom-style: solid;
     border-bottom-width: 1px;
 
-
-    .summaryTab
-    {
+    .summaryTab {
         padding: 7px 0px 10px 2px;
         height: 45px;
-        div
-        {
+		&:hover {
+			cursor:pointer;
+		}
+        div {
             height: 33px;
             background: $QVTabSpriteURL no-repeat 0 0;
             &:hover
@@ -52,6 +51,9 @@ $QVTabSpriteRetinaURL: url(../../assets/images/QVImages/sprite-icons-QV-Tabs@2x.
     {
         padding: 6px 0px 10px 2px;
         height: 45px;
+		&:hover {
+			cursor:pointer;
+		}
         div
         {
             height: 33px;
@@ -87,6 +89,9 @@ $QVTabSpriteRetinaURL: url(../../assets/images/QVImages/sprite-icons-QV-Tabs@2x.
     {
         padding: 6px 0px 10px 1px;
         height: 45px;
+		&:hover {
+			cursor:pointer;
+		}
         div
         {
             height: 33px;
@@ -122,6 +127,9 @@ $QVTabSpriteRetinaURL: url(../../assets/images/QVImages/sprite-icons-QV-Tabs@2x.
     {
         padding: 6px 0px 10px 1px;
         height: 45px;
+		&:hover {
+			cursor:pointer;
+		}
         div
         {
             height: 33px;
@@ -157,6 +165,9 @@ $QVTabSpriteRetinaURL: url(../../assets/images/QVImages/sprite-icons-QV-Tabs@2x.
     {
         padding: 5px 0px 10px 2px;
         height: 45px;
+		&:hover {
+			cursor:pointer;
+		}
         div
         {
             height: 33px;

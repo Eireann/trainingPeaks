@@ -70,107 +70,88 @@ $mainTtabSpriteRetinaURL: url(../../assets/images/sprite-icons-main-tabs@2x.png)
             }
         }
 
-        #exerciseLibrary
-        {
+        #exerciseLibrary {
             background: $TPGrey1 $mainTabSpriteURL no-repeat 0 0;
-            &:hover
-            {
+            &:hover {
                 background-position: -33px 0;
             }
 
-            &:active
-            {
+            &:active {
                 background-color: $TPGrey2;
                 background-position: -66px 0;
             }
 
-            &.active
-            {
+			&.active {
                 background-color: $TPGrey2;
                 background-position: -66px 0;
             }
         }
-        #mealLibrary
-        {
+
+        #mealLibrary {
             background: $TPGrey1 $mainTabSpriteURL no-repeat 0 -33px;
-            &:hover
-            {
-                background-ition: -33px -33px;
+            &:hover {
+                background-position: -33px -33px;
             }
 
-            &:active
-            {
+            &:active {
                background-color: $TPGrey2;
                background-position: -66px -33px;
             }
 
-            &.active
-            {
-                background-color: $TPGrey2;
-                background-position: -66px -33px;
+			&.active {
+               background-color: $TPGrey2;
+               background-position: -66px -33px;
             }
         }
 
-        #foodLibrary
-        {
+        #foodLibrary {
             background: $TPGrey1 $mainTabSpriteURL no-repeat 0 -132px;
-            &:hover
-            {
+            &:hover {
                 background-position: -33px -132px;
             }
 
-            &:active
-            {
+            &:active {
                background-color: $TPGrey2;
                background-position: -66px -132px;
             }
 
-            &.active
-            {
-                background-color: $TPGrey2;
-                background-position: -66px -132px;
+			&.active {
+               background-color: $TPGrey2;
+               background-position: -66px -132px;
             }
         }
 
-        #plansLibrary
-        {
+        #plansLibrary {
             background: $TPGrey1 $mainTabSpriteURL no-repeat 0 -66px;
-            &:hover
-            {
+            &:hover {
                 background-position: -33px -66px;
             }
 
-            &:active
-            {
+            &:active {
                background-color: $TPGrey2;
                background-position: -66px -66px;
             }
 
-            &.active
-            {
-                background-color: $TPGrey2;
-                background-position: -66px -66px;
+			&.active {
+               background-color: $TPGrey2;
+               background-position: -66px -66px;
             }
         }
 
-        #routesLibrary
-        {
+        #routesLibrary {
             background: $TPGrey1 $mainTabSpriteURL no-repeat 0 -99px;
-            &:hover
-            {
+            &:hover {
                 background-position: -33px -99px;
             }
 
-            &:active
-            {
+            &:active {
                background-color: $TPGrey2;
                background-position: -66px -99px;
             }
 
-            &.active
-            {
-                background-color: $TPGrey2;
-                background-position: -66px -99px;
+			&.active {
+               background-color: $TPGrey2;
+               background-position: -66px -99px;
             }
         }
 

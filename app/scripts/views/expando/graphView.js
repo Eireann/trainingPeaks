@@ -24,10 +24,16 @@ function(
 {
     return TP.ItemView.extend(
     {
+        className: "graphContainer",
+
         template:
         {
             type: "handlebars",
             template: graphTemplate
+        },
+
+        events: {
+            "mouseleave #plot": "onMouseLeave"
         },
 
         initialize: function(options)
@@ -38,9 +44,6 @@ function(
                 throw "detailDataPromise is required for map and graph view";
 
             this.detailDataPromise = options.detailDataPromise;
-
-            //TODO refactor, this should be set by CSS classes (CSS calc?)
-            this.$el.height(400);
 
             this.lastFilterPeriod = 0;
             this.selections = [];
@@ -82,11 +85,19 @@ function(
             this.dataParser.loadData(flatSamples);
 
             this.overlayGraphToolbar();
-            this.$plot = $("<div style='height:100%'></div>").appendTo(this.$el);
+            /*
+            if (!this.$plot.height())
+            {
+                this.$el.height(this.$el.parent().height());
+                this.$plot.height(this.$el.height() - this.$(".graphToolbar").height() - 50);
+            }
+            */
 
+            this.$plot = this.$("#plot");
             this.drawPlot();
+
         },
-        
+
         drawPlot: function()
         {
             var self = this;
@@ -116,7 +127,7 @@ function(
             this.plot = $.plot(this.$plot, series, this.flotOptions);
             this.bindToPlotEvents();
         },
-        
+
         overlayGraphToolbar: function()
         {
             var toolbar = new GraphToolbarView({ dataParser: this.dataParser });
@@ -125,7 +136,7 @@ function(
             toolbar.on("enableSeries", this.enableSeries, this);
             toolbar.on("disableSeries", this.disableSeries, this);
 
-            this.$el.append(toolbar.render().$el);
+            this.$("#graphToolbar").append(toolbar.render().$el);
         },
         
         applyFilter: function(period)
@@ -164,16 +175,22 @@ function(
 
         onPlotHover: function(event, pos, item)
         {
-            if (!item)
+            /*if (!item)
             {
                 this.trigger("graphleave");
             }
             else
             {
                 this.trigger("graphhover", pos.x);
-            }
+            }*/
+            this.trigger("graphhover", pos.x);
         },
-        
+       
+        onMouseLeave: function(event)
+        {
+            this.trigger("graphleave");
+        },
+
         enableSeries: function(series)
         {
             if (!this.plot)

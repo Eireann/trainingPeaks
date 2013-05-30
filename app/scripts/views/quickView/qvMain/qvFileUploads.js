@@ -44,20 +44,21 @@ function (
             _.extend(this.ui, this.fileUploadUi);
             _.extend(this.events, this.fileUploadEvents);
             this.watchForFileAttachments();
+            this.on("render", this.updateAttachmentIconState, this);
         },
 
         watchForFileAttachments: function()
         {
-            this.model.get("details").on("change:attachmentFileInfos", this.onAttachmentsChange, this);
+            this.model.get("details").on("change:attachmentFileInfos", this.updateAttachmentIconState, this);
             this.on("close", this.stopWatchingForFileAttachments, this);
         },
 
         stopWatchingForFileAttachments: function()
         {
-            this.model.get("details").off("change:attachmentFileInfos", this.onAttachmentsChange, this);
+            this.model.get("details").off("change:attachmentFileInfos", this.updateAttachmentIconState, this);
         },
 
-        onAttachmentsChange: function()
+        updateAttachmentIconState: function()
         {
             var attachments = this.model.get("details").get("attachmentFileInfos");
             if (attachments && attachments.length)
