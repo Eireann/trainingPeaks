@@ -6,7 +6,9 @@
     "utilities/workout/layoutFormatter",
     "utilities/workout/getKeyStatField",
     "utilities/workout/formatKeyStat",
-    "utilities/workout/formatKeyStatUnits"
+    "utilities/workout/formatKeyStatUnits",
+    "utilities/workout/formatPeakTime",
+    "utilities/workout/formatPeakDistance"
 ], function(
     workoutTypes,
     determineCompletedWorkout,
@@ -14,7 +16,9 @@
     workoutLayoutFormatter,
     getKeyStatField,
     formatKeyStat,
-    formatKeyStatUnits
+    formatKeyStatUnits,
+    formatPeakTime,
+    formatPeakDistance
     )
 {
     return {
@@ -22,6 +26,8 @@
         determineCompletedWorkout: determineCompletedWorkout,
         FileReader: workoutFileReader,
         layoutFormatter: workoutLayoutFormatter,
+        formatPeakTime: formatPeakTime,
+        formatPeakDistance: formatPeakDistance,
 
         keyStat: {
             getField: getKeyStatField,

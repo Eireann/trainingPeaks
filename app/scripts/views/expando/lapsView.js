@@ -223,6 +223,7 @@ function (TP, expandoCommon, WorkoutStatsForRange, lapsTemplate)
         onSelectPeakType: function ()
         {
             this.selectedPeakType = this.$("#peakType").val();
+            this.trigger("unselectall");
             this.render();
         },
 
@@ -289,7 +290,7 @@ function (TP, expandoCommon, WorkoutStatsForRange, lapsTemplate)
                 return item.interval === peakInterval;
             });
             peakDataItem.workoutId = this.model.id;
-            peakDataItem.name = "Peak " + peakInterval;
+            peakDataItem.name = "Peak " + this.formatPeakName(peakInterval);
             var statsForRange = new WorkoutStatsForRange(peakDataItem);
 
             if (target.is("input[type=checkbox]"))
@@ -417,6 +418,16 @@ function (TP, expandoCommon, WorkoutStatsForRange, lapsTemplate)
         {
             this.selectedPeakType = null;
             this.render();
+        },
+
+        formatPeakName: function(interval)
+        {
+            if (this.selectedPeakType === "distance")
+            {
+                return TP.utils.workout.formatPeakDistance(interval); 
+            } else {
+                return TP.utils.workout.formatPeakTime(interval);                   
+            }
         }
 
     });
