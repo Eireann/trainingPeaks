@@ -166,6 +166,10 @@ function (
         {
             var index = this.dataParser.findIndexByMsOffset(msOffset);
             var item = this.dataParser.getLatLonArray()[index];
+
+            if (!item)
+                return;
+            
             if (!this.hoverMarker)
             {
                 this.hoverMarker = L.marker(item);

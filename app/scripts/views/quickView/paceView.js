@@ -20,7 +20,6 @@ function(
         {
             this.initializeBaseView(options);
             this.on("buildPeakChartPoint", this.addTooltipDataToPeakChartPoint, this);
-            this.on("buildTimeInZoneChartPoint", this.addTooltipDataToTimeInZoneChartPoint, this);
             this.on("buildPeakStickitBinding", this.addFormattersToPeakStickitBinding, this);
             this.on("buildTimeInZoneStickitBinding", this.addFormattersToTimeInZoneStickitBinding, this);
             this.on("additionalPeaksStickitBindings", this.addPeaksLabelStickitBindings, this);
@@ -37,29 +36,6 @@ function(
                     },
                     {
                         value: this.formatPace(point.value) + " " + this.formatPeakUnitsLabel(point.value)
-                    }
-                ]
-            });
-        },
-
-        addTooltipDataToTimeInZoneChartPoint: function(point, timeInZone, timeInZones)
-        {
-            _.extend(point, {
-                tooltips: [
-                    {
-                        label: point.label
-                    },
-                    {
-                        label: "Range",
-                        value: this.formatPace(timeInZone.minimum) + "-" + this.formatPace(timeInZone.maximum) + " " + this.formatPeakUnitsLabel(point.value)
-                    },
-                    {
-                        label: "Time",
-                        value: TP.utils.conversion.formatDurationFromSeconds(timeInZone.seconds)
-                    },
-                    {
-                        label: "Percent",
-                        value: point.percentTime + "%"
                     }
                 ]
             });

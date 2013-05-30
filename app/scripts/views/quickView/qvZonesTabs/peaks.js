@@ -2,12 +2,14 @@
 [
     "underscore",
     "TP",
+    "utilities/data/timeInZonesGenerator",
     "hbs!templates/views/quickView/zonesTab/peakTableRow",
     "hbs!templates/views/quickView/zonesTab/chartTooltip"
 ],
 function(
     _,
     TP,
+    timeInZonesGenerator,
     peakRowTemplate,
     tooltipTemplate
 )
@@ -49,7 +51,7 @@ function(
 
         renderPeaks: function()
         {
-            var timeInZones = this.getOrCreateTimeInZones();
+            var timeInZones = timeInZonesGenerator(this.metric, this.zoneSettingName, this.model, this.workoutModel);
             var peaks = this.getPeaksData();
             this.renderPeaksTable(peaks);
             this.renderPeaksChart(peaks, timeInZones);
@@ -57,7 +59,7 @@ function(
 
         onPeaksChange: function()
         {
-            var timeInZones = this.getOrCreateTimeInZones();
+            var timeInZones = timeInZonesGenerator(this.metric, this.zoneSettingName, this.model, this.workoutModel);
             var peaks = this.getPeaksData();
             this.renderPeaksChart(peaks, timeInZones);
             this.trigger("change:model", this.model);

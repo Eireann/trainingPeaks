@@ -255,6 +255,12 @@
     #expandoChartsRegion
     {
         width: 100%;
+
+        .timeInZonesChartContainer
+        {
+            height: 220px;
+            min-height: 220px; 
+        }
     }
 }
 

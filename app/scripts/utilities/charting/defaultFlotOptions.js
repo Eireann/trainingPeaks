@@ -1,14 +1,14 @@
 ﻿define(
 [
     "TP",
-    "utilities/charting/flotCustomTooltip",
     "utilities/charting/jquery.flot.filter"
 ],
-function(TP, flotCustomToolTip)
+function(TP)
 {
-    return function(series, workoutType)
+    return function(onHoverHandler)
     {
-        return _.extend({}, {
+        return _.extend({},
+        {
             crosshair:
             {
                 mode: "x",
@@ -38,10 +38,7 @@ function(TP, flotCustomToolTip)
                 {
                     return "";
                 },
-                onHover: function(flotItem, $tooltipEl)
-                {
-                    $tooltipEl.html(flotCustomToolTip(series, flotItem.series.label, flotItem.dataIndex, flotItem.datapoint[0], workoutType));
-                }
+                onHover: onHoverHandler
             },
             series:
             {

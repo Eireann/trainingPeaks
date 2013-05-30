@@ -3,6 +3,7 @@
     "TP",
     "utilities/charting/dataParser",
     "utilities/charting/defaultFlotOptions",
+    "utilities/charting/flotCustomTooltip",
     "utilities/mapping/mapUtils",
     "utilities/workout/workoutTypes",
     "hbs!templates/views/quickView/mapAndGraphView"
@@ -11,6 +12,7 @@ function(
     TP,
     DataParser,
     getDefaultFlotOptions,
+    flotCustomToolTip,
     MapUtils,
     workoutTypes,
     workoutQuickViewMapAndGraphTemplate)
@@ -70,7 +72,8 @@ function(
             if (this.model.get("detailData") !== null && this.model.get("detailData").attributes.flatSamples !== null)
             {
                 this.onModelFetched();
-            } else
+            }
+            else
             {
                 setImmediate(function() { self.prefetchConfig.detailDataPromise.then(self.onModelFetched); });
             }
@@ -123,6 +126,8 @@ function(
 
         createAndShowGraph: function()
         {
+            var self = this;
+            
             var priority =
             [
                 "Power",
@@ -140,34 +145,18 @@ function(
             var series = this.dataParser.getSeries();
             var yaxes = this.dataParser.getYAxes(series);
 
-            // Hide all series & axes by default in the data set
-            _.each(series, function(s) { s.lines.show = true; });
+            // Hide all axes by default in the data set
             _.each(yaxes, function(axis)
             {
                 axis.show = false;
                 axis.tickLength = 0;
             });
 
-            /*
-            // Pick the top 2 series by priority and show those
-            _.each(priority, function(channel)
+            var onHoverHandler = function(flotItem, $tooltipEl)
             {
-                var s = _.where(series, { label: channel });
-                if (s && s[0] && numSeries++ < 2)
-                {
-                    s[0].lines.show = true;
-                    yaxes[s[0].yaxis - 1].show = true;
-                    yaxes[s[0].yaxis - 1].position = numSeries === 1 ? "left" : "right";
-                }
-            });
-
-            // Show Elevation if we have it
-            var elevationSeries = _.where(series, { label: "Elevation" });
-            if (elevationSeries && elevationSeries[0])
-                elevationSeries[0].lines.show = true;
-            */
-
-            var flotOptions = getDefaultFlotOptions(series, this.model.get("workoutTypeValueId"));
+                $tooltipEl.html(flotCustomToolTip(series, flotItem.series.label, flotItem.dataIndex, flotItem.datapoint[0], self.model.get("workoutTypeValueId")));
+            };
+            var flotOptions = getDefaultFlotOptions(onHoverHandler);
 
             flotOptions.yaxes = yaxes;
             flotOptions.xaxes[0].tickLength = 0;

@@ -5,6 +5,7 @@
     "utilities/charting/dataParser",
     "models/workoutStatsForRange",
     "utilities/charting/defaultFlotOptions",
+    "utilities/charting/flotCustomTooltip",
     "utilities/charting/jquery.flot.zoom",
     "views/expando/graphToolbarView",
     "hbs!templates/views/expando/graphTemplate"
@@ -15,6 +16,7 @@ function(
     DataParser,
     WorkoutStatsForRange,
     getDefaultFlotOptions,
+    flotCustomToolTip,
     flotZoom,
     GraphToolbarView,
     graphTemplate
@@ -87,12 +89,19 @@ function(
         
         drawPlot: function()
         {
+            var self = this;
+            
             this.dataParser.setDisabledSeries(this.disabledSeries);
 
             var series = this.dataParser.getSeries();
             var yaxes = this.dataParser.getYAxes(series);
 
-            this.flotOptions = getDefaultFlotOptions(series, this.model.get("workoutTypeValueId"));
+            var onHoverHandler = function(flotItem, $tooltipEl)
+            {
+                $tooltipEl.html(flotCustomToolTip(series, flotItem.series.label, flotItem.dataIndex, flotItem.datapoint[0], self.model.get("workoutTypeValueId")));
+            };
+            
+            this.flotOptions = getDefaultFlotOptions(onHoverHandler);
 
             this.flotOptions.selection.mode = "x";
             this.flotOptions.yaxes = yaxes;
@@ -101,6 +110,9 @@ function(
             this.flotOptions.zoom.resetButton = ".graphResetButton";
             this.flotOptions.filter = { enabled: this.lastFilterPeriod ? true : false, period: this.lastFilterPeriod };
 
+            if (this.plot)
+                this.unbindPlotEvents();
+            
             this.plot = $.plot(this.$plot, series, this.flotOptions);
             this.bindToPlotEvents();
         },
@@ -149,7 +161,7 @@ function(
             var workoutStatsForRange = new WorkoutStatsForRange({ workoutId: this.model.id, begin: startOffsetMs, end: endOffsetMs, name: "Selection" });
             this.trigger("rangeselected", workoutStatsForRange);
         },
-        
+
         onPlotHover: function(event, pos, item)
         {
             if (!item)

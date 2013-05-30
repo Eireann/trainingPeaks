@@ -14,9 +14,8 @@ function(
     zonesTabTemplate
 )
 {
-    
-    var zonesViewBase = {
-
+    var zonesViewBase =
+    {
         chartColor: { light: "#ED3F1D", dark: "#B50F00" },
 
         template:
@@ -54,36 +53,6 @@ function(
                 this.render();
                 options["alreadyRendered" + this.metric + "Tab"] = true;
             }
-        },
-
-        getZoneSettingsByWorkoutTypeId: function(zoneSettingName, workoutTypeId)
-        {
-            var athleteSettings = theMarsApp.user.getAthleteSettings();
-            if (!athleteSettings || !athleteSettings.has(zoneSettingName))
-                return null;
-
-            var hrZoneSettings = athleteSettings.get(zoneSettingName);
-            if (!hrZoneSettings || !hrZoneSettings.length)
-                return null;
-
-            var defaultWorkoutTypeId = 0;
-            var workoutTypeSettings = null;
-            var defaultWorkoutTypeSettings = null;
-
-            _.each(hrZoneSettings, function(zoneSet)
-            {
-                if (zoneSet.workoutTypeId === workoutTypeId)
-                    workoutTypeSettings = zoneSet;
-
-                if (zoneSet.workoutTypeId === defaultWorkoutTypeId)
-                    defaultWorkoutTypeSettings = zoneSet;
-
-            }, this);
-
-            if (!workoutTypeSettings)
-                workoutTypeSettings = defaultWorkoutTypeSettings;
-
-            return workoutTypeSettings;
         },
 
         watchForWorkoutTypeChange: function()

@@ -20,7 +20,6 @@ function(
         {
             this.initializeBaseView(options);
             this.on("buildPeakChartPoint", this.addTooltipDataToPeakChartPoint, this);
-            this.on("buildTimeInZoneChartPoint", this.addTooltipDataToTimeInZoneChartPoint, this);
             this.on("buildPeakStickitBinding", this.addFormattersToPeakStickitBinding, this);
             this.on("buildTimeInZoneStickitBinding", this.addFormattersToTimeInZoneStickitBinding, this);
             this.on("additionalPeaksStickitBindings", this.addPeaksLabelStickitBindings, this);
@@ -37,41 +36,6 @@ function(
                     },
                     {
                         value: this.formatInteger(point.value) + " " + this.formatPeakUnitsLabel(point.value)
-                    }
-                ]
-            });
-        },
-
-        addTooltipDataToTimeInZoneChartPoint: function(point, timeInZone, timeInZones)
-        {
-            _.extend(point, {
-                tooltips: [
-                    {
-                        label: point.label
-                    },
-                    {
-                        label: "Range",
-                        value: this.formatInteger(timeInZone.minimum, { defaultValue: "0" }) + "-" + this.formatInteger(timeInZone.maximum, { defaultValue: "0" }) + " " + this.formatPeakUnitsLabel(point.value)
-                    },
-                    {
-                        label: "% FTP",
-                        value: TP.utils.conversion.toPercent(timeInZone.minimum, timeInZones.threshold) +
-                            "-" + TP.utils.conversion.toPercent(timeInZone.maximum, timeInZones.threshold) +
-                            " %"
-
-                    },
-                    {
-                        label: "Watts/Weight",
-                        value: ""
-
-                    },
-                    {
-                        label: "Time",
-                        value: TP.utils.conversion.formatDurationFromSeconds(timeInZone.seconds)
-                    },
-                    {
-                        label: "Percent",
-                        value: point.percentTime + "%"
                     }
                 ]
             });
@@ -145,8 +109,6 @@ function(
     };
 
     _.extend(powerViewBase, zonesViewBase);
-
-    powerViewBase.chartColor = { light: "#8106C9", dark: "#590888" };
 
     return TP.ItemView.extend(powerViewBase);
 });

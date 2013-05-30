@@ -2,17 +2,13 @@
 [
     "underscore",
     "TP",
-    "utilities/stickitMixin"
+    "utilities/stickitMixin",
+    "utilities/data/timeInZonesGenerator"
 ],
-function(
-    _,
-    TP,
-    stickitUtilsMixin
-)
+function(_, TP, stickitUtilsMixin, timeInZonesGenerator)
 {
-
-    var stickitBindingsMixin = {
-
+    var stickitBindingsMixin =
+    {
         initializeStickit: function()
         {
             this.on("render", this.stickitOnRender, this);
@@ -39,13 +35,14 @@ function(
 
         buildTimeInZonesBindings: function()
         {
-            var timeInZones = this.getOrCreateTimeInZones();
+            var timeInZones = timeInZonesGenerator(this.metric, this.zoneSettingName, this.model, this.workoutModel);
             _.each(timeInZones.timeInZones, function(timeInZone, index)
             {
                 var inputFieldCssId = "#timeInZone" + index;
                 var modelFieldName = "timeIn" + this.metric + "Zones.timeInZones." + index + ".seconds";
 
-                var binding = {
+                var binding =
+                {
                     observe: modelFieldName,
                     updateModel: "updateModel",
                     inputId: inputFieldCssId

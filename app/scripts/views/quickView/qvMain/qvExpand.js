@@ -39,7 +39,7 @@ function (_, TP, ExpandoController)
         {
             if(!this.expandoController)
             {
-                this.expandoController = new ExpandoController({ model: this.model, prefetchConfig: this.prefetchConfig });
+                this.expandoController = new ExpandoController({ model: this.model, workoutModel: this.workoutModel, workoutDetailsModel: this.workoutDetailsModel, prefetchConfig: this.prefetchConfig });
                 this.expandoRegion.show(this.expandoController.getLayout());
             }
         },

@@ -70,7 +70,9 @@ function(
                 {
                     doUpdateModel = true;
                 }
-            } else {
+            }
+            else
+            {
                 // if the parsed input would be the same as the current value,
                 var parsedViewValue = this[options.onSet](newViewValue);
                 if (parsedViewValue != currentModelValue)

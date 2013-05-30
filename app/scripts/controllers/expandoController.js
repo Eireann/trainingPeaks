@@ -20,6 +20,8 @@ function(TP, ExpandoLayout, GraphView, MapView, StatsView, LapsView, ChartsView)
         initialize: function(options)
         {
             this.model = options.model;
+            this.workoutModel = options.workoutModel;
+            this.workoutDetailsModel = options.workoutDetailsModel;
             this.prefetchConfig = options.prefetchConfig;
 
             this.layout = new ExpandoLayout();
