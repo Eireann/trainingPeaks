@@ -43,9 +43,6 @@ function(
 
             this.detailDataPromise = options.detailDataPromise;
 
-            //TODO refactor, this should be set by CSS classes (CSS calc?)
-            this.$el.height(400);
-
             this.lastFilterPeriod = 0;
             this.selections = [];
         },
@@ -86,11 +83,19 @@ function(
             this.dataParser.loadData(flatSamples);
 
             this.overlayGraphToolbar();
-            this.$plot = this.$("#plot");
+            /*
+            if (!this.$plot.height())
+            {
+                this.$el.height(this.$el.parent().height());
+                this.$plot.height(this.$el.height() - this.$(".graphToolbar").height() - 50);
+            }
+            */
 
+            this.$plot = this.$("#plot");
             this.drawPlot();
+
         },
-        
+
         drawPlot: function()
         {
             this.dataParser.setDisabledSeries(this.disabledSeries);
@@ -110,7 +115,7 @@ function(
             this.plot = $.plot(this.$plot, series, this.flotOptions);
             this.bindToPlotEvents();
         },
-        
+
         overlayGraphToolbar: function()
         {
             var toolbar = new GraphToolbarView({ dataParser: this.dataParser });
@@ -119,7 +124,7 @@ function(
             toolbar.on("enableSeries", this.enableSeries, this);
             toolbar.on("disableSeries", this.disableSeries, this);
 
-            this.$el.append(toolbar.render().$el);
+            this.$("#graphToolbar").append(toolbar.render().$el);
         },
         
         applyFilter: function(period)
