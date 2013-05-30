@@ -110,5 +110,7 @@ function(
 
     _.extend(powerViewBase, zonesViewBase);
 
+    powerViewBase.chartColor = { light: "#8106C9", dark: "#590888" };
+
     return TP.ItemView.extend(powerViewBase);
 });
