@@ -6,6 +6,7 @@
     "models/workoutStatsForRange",
     "utilities/charting/defaultFlotOptions",
     "utilities/charting/jquery.flot.zoom",
+    "utilities/charting/jquery.flot.multiselection",
     "views/expando/graphToolbarView",
     "hbs!templates/views/expando/graphTemplate"
 ],
@@ -16,6 +17,7 @@ function(
     WorkoutStatsForRange,
     getDefaultFlotOptions,
     flotZoom,
+    flotMultiSelection,
     GraphToolbarView,
     graphTemplate
     )
@@ -83,15 +85,13 @@ function(
             this.dataParser.loadData(flatSamples);
 
             this.overlayGraphToolbar();
-            /*
-            if (!this.$plot.height())
-            {
-                this.$el.height(this.$el.parent().height());
-                this.$plot.height(this.$el.height() - this.$(".graphToolbar").height() - 50);
-            }
-            */
+
 
             this.$plot = this.$("#plot");
+            if (!this.$plot.height())
+            {
+                this.$plot.height(375);
+            }
             this.drawPlot();
 
         },
@@ -257,7 +257,7 @@ function(
         addSelectionToGraph: function(selection)
         {
             this.selections.push(selection);
-            this.plot.setSelection({ xaxis: { from: selection.begin, to: selection.end }});
+            this.plot.setMultiSelection({ xaxis: { from: selection.begin, to: selection.end } }, true);
         },
 
         removeSelectionFromGraph: function(selection)
