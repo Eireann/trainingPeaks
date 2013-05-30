@@ -70,7 +70,7 @@ function(
 
         addTransparentBuffer: function(map, latLonArray)
         {
-            var polyline = this.createPolyline(latLonArray, { color: "yellow", opacity: 0.2, weight: 30 });
+            var polyline = this.createPolyline(latLonArray, { color: "transparent", opacity: 0, weight: 20 });
             polyline.addTo(map);
             return polyline;
         },
