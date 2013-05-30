@@ -1,3 +1,8 @@
+define(
+[],
+function ()
+{
+// TODO: SIMPLIFY
 /* Flot plugin for selecting regions of a plot.
 
 Copyright (c) 2007-2013 IOLA and Ole Laursen.
@@ -78,7 +83,6 @@ The plugin allso adds the following methods to the plot object:
 
 */
 
-(function ($) {
     function init(plot) {
         var selection = {
                 first: { x: -1, y: -1}, second: { x: -1, y: -1},
@@ -103,19 +107,21 @@ The plugin allso adds the following methods to the plot object:
             }
         }
 
-        function onMouseDown(e) {
-            if (e.which != 1)  // only accept left-click
+        function onMouseDown(e)
+        {
+            if (e.which !== 1)  // only accept left-click
                 return;
             
             // cancel out any text selections
             document.body.focus();
 
             // prevent text selection and drag in old-school browsers
-            if (document.onselectstart !== undefined && savedhandlers.onselectstart == null) {
+            if (document.onselectstart !== undefined && savedhandlers.onselectstart === null)
+            {
                 savedhandlers.onselectstart = document.onselectstart;
                 document.onselectstart = function () { return false; };
             }
-            if (document.ondrag !== undefined && savedhandlers.ondrag == null) {
+            if (document.ondrag !== undefined && savedhandlers.ondrag === null) {
                 savedhandlers.ondrag = document.ondrag;
                 document.ondrag = function () { return false; };
             }
@@ -192,15 +198,15 @@ The plugin allso adds the following methods to the plot object:
             pos.x = clamp(0, e.pageX - offset.left - plotOffset.left, plot.width());
             pos.y = clamp(0, e.pageY - offset.top - plotOffset.top, plot.height());
 
-            if (o.selection.mode == "y")
-                pos.x = pos == selection.first ? 0 : plot.width();
+            if (o.selection.mode === "y")
+                pos.x = pos === selection.first ? 0 : plot.width();
 
-            if (o.selection.mode == "x")
-                pos.y = pos == selection.first ? 0 : plot.height();
+            if (o.selection.mode === "x")
+                pos.y = pos === selection.first ? 0 : plot.height();
         }
 
         function updateSelection(pos) {
-            if (pos.pageX == null)
+            if (pos.pageX === null)
                 return;
 
             setSelectionPos(selection.second, pos);
@@ -227,9 +233,9 @@ The plugin allso adds the following methods to the plot object:
 
             for (var k in axes) {
                 axis = axes[k];
-                if (axis.direction == coord) {
+                if (axis.direction === coord) {
                     key = coord + axis.n + "axis";
-                    if (!ranges[key] && axis.n == 1)
+                    if (!ranges[key] && axis.n === 1)
                         key = coord + "axis"; // support x1axis as xaxis
                     if (ranges[key]) {
                         from = ranges[key].from;
@@ -241,7 +247,7 @@ The plugin allso adds the following methods to the plot object:
 
             // backwards-compat stuff - to be removed in future
             if (!ranges[key]) {
-                axis = coord == "x" ? plot.getXAxes()[0] : plot.getYAxes()[0];
+                axis = coord === "x" ? plot.getXAxes()[0] : plot.getYAxes()[0];
                 from = ranges[coord + "1"];
                 to = ranges[coord + "2"];
             }
@@ -259,7 +265,7 @@ The plugin allso adds the following methods to the plot object:
         function setSelection(ranges, preventEvent) {
             var axis, range, o = plot.getOptions();
 
-            if (o.selection.mode == "y") {
+            if (o.selection.mode === "y") {
                 selection.first.x = 0;
                 selection.second.x = plot.width();
             }
@@ -270,7 +276,7 @@ The plugin allso adds the following methods to the plot object:
                 selection.second.x = range.axis.p2c(range.to);
             }
 
-            if (o.selection.mode == "x") {
+            if (o.selection.mode === "x") {
                 selection.first.y = 0;
                 selection.second.y = plot.height();
             }
@@ -344,17 +350,21 @@ The plugin allso adds the following methods to the plot object:
 
     }
 
-    $.plot.plugins.push({
-        init: init,
-        options: {
-            selection: {
-                mode: null, // one of null, "x", "y" or "xy"
-                color: "#e8cfac",
-                shape: "round", // one of "round", "miter", or "bevel"
-                minSize: 5 // minimum number of pixels
-            }
-        },
-        name: 'multiselection',
-        version: '0.1'
-    });
-})(jQuery);
+    if ($.plot)
+    {
+        $.plot.plugins.push({
+            init: init,
+            options: {
+                selection: {
+                    mode: null, // one of null, "x", "y" or "xy"
+                    color: "#e8cfac",
+                    shape: "round", // one of "round", "miter", or "bevel"
+                    minSize: 5 // minimum number of pixels
+                }
+            },
+            name: 'multiselection',
+            version: '0.1'
+        });
+    }
+
+});
