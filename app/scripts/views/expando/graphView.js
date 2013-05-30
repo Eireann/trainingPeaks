@@ -31,7 +31,7 @@ function(
         },
 
         events: {
-            "mouseleave .graphContainer": "onMouseLeave"
+            "mouseleave #plot": "onMouseLeave"
         },
 
         initialize: function(options)
@@ -86,7 +86,7 @@ function(
             this.dataParser.loadData(flatSamples);
 
             this.overlayGraphToolbar();
-            this.$plot = $("<div style='height:100%'></div>").appendTo(this.$el);
+            this.$plot = this.$("#plot");
 
             this.drawPlot();
         },

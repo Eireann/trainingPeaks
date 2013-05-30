@@ -184,6 +184,7 @@ function (
 
         hideHoverMarker: function()
         {
+            this.clearHoverHideTimeout();
             if (this.hoverMarker)
             {
                 this.map.removeLayer(this.hoverMarker);
