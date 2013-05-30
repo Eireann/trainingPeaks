@@ -1,6 +1,10 @@
 define(
-[],
-function ()
+[
+    "underscore"
+],
+function(
+    _
+    )
 {
 // TODO: SIMPLIFY
     /* 
@@ -21,19 +25,16 @@ selection: {
 }
 
 
- setMultiSelection
+ addMultiSelection
  clearMultiSelection(selection)
 */
 
     function init(plot)
     {
 
-        var multiSelection = {
-            first: { x: -1, y: -1 }, second: { x: -1, y: -1 },
-            show: true
-            };
+        var multiSelections = [];
 
-        function clearMultiSelection()
+        function clearMultiSelection(multiSelection)
         {
             if (multiSelection.show)
             {
@@ -78,7 +79,13 @@ selection: {
             return { from: from, to: to, axis: axis };
         }
         
-        function setMultiSelection(ranges, preventEvent) {
+        function addMultiSelection(ranges, preventEvent)
+        {
+            var multiSelection = {
+                first: { x: -1, y: -1 }, second: { x: -1, y: -1 },
+                show: true
+            };
+
             var axis, range, o = plot.getOptions();
 
             if (o.multiSelection.mode === "y")
@@ -105,49 +112,55 @@ selection: {
             }
 
             multiSelection.show = true;
+            multiSelections.push(multiSelection);
             plot.triggerRedrawOverlay();
+            return multiSelection;
 
         }
 
-        function selectionIsSane() {
+        function selectionIsSane(multiSelection)
+        {
             var minSize = plot.getOptions().multiSelection.minSize;
             return Math.abs(multiSelection.second.x - multiSelection.first.x) >= minSize &&
                 Math.abs(multiSelection.second.y - multiSelection.first.y) >= minSize;
         }
 
-        function drawSelectionBox(plot, ctx)
+        function drawSelectionBoxes(plot, ctx)
         {
-            // draw selection
-            if (multiSelection.show && selectionIsSane()) {
-                var plotOffset = plot.getPlotOffset();
-                var o = plot.getOptions();
+            var plotOffset = plot.getPlotOffset();
+            var o = plot.getOptions();
+            var c = $.color.parse(o.multiSelection.color);
+            var fillStyle = c.scale('a', 0.5).toString();
+            var strokeStyle = c.scale('a', 0.8).toString();
 
-                ctx.save();
-                ctx.translate(plotOffset.left, plotOffset.top);
+            ctx.save();
+            ctx.strokeStyle = strokeStyle;
+            ctx.fillStyle = fillStyle;
+            ctx.lineWidth = 1;
+            ctx.lineJoin = o.multiSelection.shape;
+            ctx.translate(plotOffset.left, plotOffset.top);
 
-                var c = $.color.parse(o.multiSelection.color);
+            _.each(multiSelections, function(multiSelection)
+            {
+                if (multiSelection.show && selectionIsSane(multiSelection))
+                {
+                    var x = Math.min(multiSelection.first.x, multiSelection.second.x) + 0.5,
+                        y = Math.min(multiSelection.first.y, multiSelection.second.y) + 0.5,
+                        w = Math.abs(multiSelection.second.x - multiSelection.first.x) - 1,
+                        h = Math.abs(multiSelection.second.y - multiSelection.first.y) - 1;
 
-                ctx.strokeStyle = c.scale('a', 0.8).toString();
-                ctx.lineWidth = 1;
-                ctx.lineJoin = o.multiSelection.shape;
-                ctx.fillStyle = c.scale('a', 0.4).toString();
+                    ctx.fillRect(x, y, w, h);
+                    ctx.strokeRect(x, y, w, h);
+                }
+            });
 
-                var x = Math.min(multiSelection.first.x, multiSelection.second.x) + 0.5,
-                    y = Math.min(multiSelection.first.y, multiSelection.second.y) + 0.5,
-                    w = Math.abs(multiSelection.second.x - multiSelection.first.x) - 1,
-                    h = Math.abs(multiSelection.second.y - multiSelection.first.y) - 1;
-
-                ctx.fillRect(x, y, w, h);
-                ctx.strokeRect(x, y, w, h);
-
-                ctx.restore();
-            }
+            ctx.restore();
         }
 
         plot.clearMultiSelection = clearMultiSelection;
-        plot.setMultiSelection = setMultiSelection;
+        plot.addMultiSelection = addMultiSelection;
 
-        plot.hooks.drawOverlay.push(drawSelectionBox);
+        plot.hooks.drawOverlay.push(drawSelectionBoxes);
        
     }
 
@@ -157,10 +170,10 @@ selection: {
             init: init,
             options: {
                 multiSelection: {
-                    mode: null, // one of null, "x", "y" or "xy"
+                    mode: "x", // one of null, "x", "y" or "xy"
                     color: "#accfe8",
                     shape: "round", // one of "round", "miter", or "bevel"
-                    minSize: 5 // minimum number of pixels
+                    minSize: 1 // minimum number of pixels
                 }
             },
             name: 'multiselection',
