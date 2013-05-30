@@ -6,7 +6,7 @@
     "models/workoutStatsForRange",
     "utilities/charting/defaultFlotOptions",
     "utilities/charting/jquery.flot.zoom",
-    "utilities/charting/jquery.flot.multiselection",
+    //"utilities/charting/jquery.flot.multiselection",
     "views/expando/graphToolbarView",
     "hbs!templates/views/expando/graphTemplate"
 ],
@@ -17,7 +17,7 @@ function(
     WorkoutStatsForRange,
     getDefaultFlotOptions,
     flotZoom,
-    flotMultiSelection,
+    //flotMultiSelection,
     GraphToolbarView,
     graphTemplate
     )
@@ -260,12 +260,12 @@ function(
         addSelectionToGraph: function(selection)
         {
             this.selections.push(selection);
-            this.plot.setMultiSelection({ xaxis: { from: selection.begin, to: selection.end } }, true);
+            this.plot.setSelection({ xaxis: { from: selection.begin, to: selection.end } }, true);
         },
 
         removeSelectionFromGraph: function(selection)
         {
-            this.plot.clearMultiSelection();
+            this.plot.clearSelection();
         },
 
         onUnSelectAll: function()
