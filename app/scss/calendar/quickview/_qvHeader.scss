@@ -109,16 +109,26 @@
             float: left;
             width: 490px;
 
+            label
+            {
+                margin-bottom: 0em;
+            }
+
             .headerIcons
             {
                 float: right;
                 margin-top: -7px;
                 margin-right: 5px;
 
+                #breakThrough
+                {
+                    margin-right: 5px;
+                }
+
                 .icon
                 {
                     float: left;
-                    padding-right: 5px;
+                    //padding-right: 5px;
                     cursor: pointer;
                 }
 
