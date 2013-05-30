@@ -165,25 +165,65 @@ function (
         onGraphHover: function (msOffset)
         {
             var index = this.dataParser.findIndexByMsOffset(msOffset);
-            var item = this.dataParser.getLatLonArray()[index];
-            if (!this.hoverMarker)
+            var lat = this.dataParser.dataByChannel.Latitude[index][1];
+            var long = this.dataParser.dataByChannel.Longitude[index][1];
+
+            if (isNaN(lat) || isNaN(long))
             {
-                this.hoverMarker = L.marker(item);
-                this.hoverMarker.addTo(this.map);
-            }
-            else
+                this.hideHoverMarkerWithDelay();
+            } else
             {
-                this.hoverMarker.setLatLng(item);
+                this.showHoverMarker(lat, long);
             }
         },
 
         onGraphLeave: function ()
+        {
+            this.hideHoverMarker();
+        },
+
+        hideHoverMarker: function()
         {
             if (this.hoverMarker)
             {
                 this.map.removeLayer(this.hoverMarker);
                 this.hoverMarker = null;
             }
+        },
+
+        hideHoverMarkerWithDelay: function()
+        {
+            this.clearHoverHideTimeout();
+            var self = this;
+            this.hoverHideTimeout = setTimeout(function()
+            {
+                self.hideHoverMarker();
+            }, 1000);
+        },
+
+        clearHoverHideTimeout: function()
+        {
+            if(this.hoverHideTimeout)
+            {
+                clearTimeout(this.hoverHideTimeout);
+            }
+
+        },
+
+        showHoverMarker: function(lat, long)
+        {
+            this.clearHoverHideTimeout();
+            var position = [lat, long];
+            if (!this.hoverMarker)
+            {
+                this.hoverMarker = L.marker(position);
+                this.hoverMarker.addTo(this.map);
+            }
+            else
+            {
+                this.hoverMarker.setLatLng(position);
+            }
         }
+
     });
 });

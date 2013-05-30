@@ -22,10 +22,16 @@ function(
 {
     return TP.ItemView.extend(
     {
+        className: "graphContainer",
+
         template:
         {
             type: "handlebars",
             template: graphTemplate
+        },
+
+        events: {
+            "mouseleave .graphContainer": "onMouseLeave"
         },
 
         initialize: function(options)
@@ -152,16 +158,22 @@ function(
         
         onPlotHover: function(event, pos, item)
         {
-            if (!item)
+            /*if (!item)
             {
                 this.trigger("graphleave");
             }
             else
             {
                 this.trigger("graphhover", pos.x);
-            }
+            }*/
+            this.trigger("graphhover", pos.x);
         },
-        
+       
+        onMouseLeave: function(event)
+        {
+            this.trigger("graphleave");
+        },
+
         enableSeries: function(series)
         {
             if (!this.plot)
