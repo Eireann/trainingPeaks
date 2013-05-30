@@ -7,7 +7,7 @@ function(TP, TimeInZonesChartView)
 {
     return TimeInZonesChartView.extend(
     {
-        chartColor: { light: "#ED3F1D", dark: "#B50F00" },
+        chartColor: { light: "#0E7FCF", dark: "#0B568D" },
 
         graphTitle: "Pace",
         
