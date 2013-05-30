@@ -317,7 +317,13 @@ function(seriesColorByChannel, findIndexByMsOffset, convertToViewUnits)
 
         findIndexByMsOffset: function(msOffset)
         {
-            return findIndexByMsOffset(this.flatSamples.msOffsetsOfSamples, msOffset);
+            if (this.flatSamples && this.flatSamples.msOffsetsOfSamples)
+            {
+                return findIndexByMsOffset(this.flatSamples.msOffsetsOfSamples, msOffset);
+            } else
+            {
+                return null;
+            }
         }
 
     });

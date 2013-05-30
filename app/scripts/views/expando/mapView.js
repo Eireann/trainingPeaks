@@ -221,6 +221,12 @@ function (
         onGraphHover: function (msOffset)
         {
             var index = this.dataParser.findIndexByMsOffset(msOffset);
+
+            if (index === null)
+            {
+                return;
+            }
+
             var lat = this.dataParser.dataByChannel.Latitude[index][1];
             var long = this.dataParser.dataByChannel.Longitude[index][1];
 
