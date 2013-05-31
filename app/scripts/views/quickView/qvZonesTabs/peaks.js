@@ -3,20 +3,23 @@
     "underscore",
     "TP",
     "utilities/data/timeInZonesGenerator",
-    "hbs!templates/views/quickView/zonesTab/peakTableRow",
-    "hbs!templates/views/quickView/zonesTab/chartTooltip"
+    "views/charts/heartRatePeaksChart",
+    "views/charts/powerPeaksChart",
+    "views/charts/speedPeaksChart",
+    "hbs!templates/views/quickView/zonesTab/peakTableRow"
 ],
 function(
     _,
     TP,
     timeInZonesGenerator,
-    peakRowTemplate,
-    tooltipTemplate
+    HRPeaksChartView,
+    PowerPeaksChartView,
+    SpeedPeaksChartView,
+    peakRowTemplate
 )
 {
-
-    var peaksMixin = {
-
+    var peaksMixin =
+    {
         initializePeaks: function()
         {
             if (!this.metric)
@@ -34,7 +37,6 @@ function(
 
         watchForPeaksChanges: function()
         {
-
             // big change - i.e. initial load from server - rerender whole tab
             this.model.on("change:meanMax" + this.metric + "s", this.reRenderOnChange, this);
 
@@ -71,71 +73,30 @@ function(
             {
                 var peaksHtml = peakRowTemplate({ peaks: peaks });
                 this.$(".peaksTable").html(peaksHtml);
-            } else
+            }
+            else
             {
                 this.$(".peaksTable").html("");
             }
         },
 
-        buildPeaksChartPoints: function(peaks, timeInZones)
-        {
-
-            var chartPoints = [];
-            _.each(peaks, function(peak, index)
-            {
-
-
-                var point = {
-                    label: peak.label,
-                    value: peak.value,
-                    y: peak.value,
-                    x: index
-                };
-
-                // gives our view or other listeners a hook to modify the point
-                this.trigger("buildPeakChartPoint", point, peak, timeInZones);
-
-                chartPoints.push(point);
-
-            }, this);
-
-            return chartPoints;
-
-        },
-
         renderPeaksChart: function(peaks, timeInZones)
         {
-            if (peaks && peaks.length)
+            var view;
+            if (this.metric === "HeartRate")
             {
-                var chartPoints = this.buildPeaksChartPoints(peaks, timeInZones);
-
-                var chartOptions = {
-                    colors: [this.chartColor],
-                    title:
-                    {
-                        text: "Peak " + this.graphTitle
-                    },
-                    xAxis: {
-                        labels:
-                        {
-                            enabled: true
-                        },
-                        tickColor: 'transparent',
-                        type: 'category',
-                        categories: TP.utils.chartBuilder.getPeakChartCategories(chartPoints)
-                    },
-                    yAxis: {
-                        title: {
-                            text: 'BPM'
-                        }
-                    }
-                };
-
-                this.trigger("buildPeaksChart", chartOptions, chartPoints);
-                TP.utils.chartBuilder.renderSplineChart(this.$(".peaksChart"), chartPoints, tooltipTemplate, chartOptions);
-            } else
+                view = new HRPeaksChartView({ el: this.$(".peaksChart"), peaks: peaks, timeInZones: timeInZones });
+                view.render();
+            }
+            else if (this.metric === "Power")
             {
-                this.$(".peaksChart").html("");
+                view = new PowerPeaksChartView({ el: this.$(".peaksChart"), peaks: peaks, timeInZones: timeInZones });
+                view.render();
+            }
+            else if (this.metric === "Speed")
+            {
+                view = new SpeedPeaksChartView({ el: this.$(".peaksChart"), peaks: peaks, timeInZones: timeInZones, workoutType: this.workoutModel.get("workoutTypeValueId") });
+                view.render();
             }
         },
 
@@ -145,7 +106,8 @@ function(
             return this.cleanAndFormatPeaksData(peaks);
         },
 
-        defaultPeakSettings: [
+        defaultPeakSettings:
+        [
             //'MM2Seconds',
             'MM5Seconds',
             'MM10Seconds',
@@ -182,7 +144,7 @@ function(
             }, this);
 
 
-            _.each(this.defaultPeakSettings, function (label)
+            _.each(this.defaultPeakSettings, function(label)
             {
                 if (!allPeaksByLabel.hasOwnProperty(label))
                 {
@@ -229,12 +191,12 @@ function(
                 }
 
                 formattedPeaks.push(
-                    {
-                        id: label,
-                        label: formattedLabel,
-                        value: peakValue,
-                        modelArrayIndex: modelArrayIndex
-                    }
+                {
+                    id: label,
+                    label: formattedLabel,
+                    value: peakValue,
+                    modelArrayIndex: modelArrayIndex
+                }
                 );
             }, this);
 
@@ -247,8 +209,6 @@ function(
             // change 1 Minute to 60 Seconds and 1 Hour to 60 Minutes
             return label.replace(/^MM/, "").replace(/([0-9]+)/g, "$1 ").replace(/([a-z])([A-Z])/g, "$1 $2").replace(/1 Minute/, "60 Seconds").replace(/1 Hour/, "60 minutes");
         }
-
-
     };
 
     return peaksMixin;

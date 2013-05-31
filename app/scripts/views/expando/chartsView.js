@@ -5,9 +5,12 @@
     "views/charts/heartRateTimeInZonesChart",
     "views/charts/powerTimeInZonesChart",
     "views/charts/speedTimeInZonesChart",
+    "views/charts/heartRatePeaksChart",
+    "views/charts/powerPeaksChart",
+    "views/charts/speedPeaksChart",
     "hbs!templates/views/expando/chartsTemplate"
 ],
-function(TP, timeInZonesGenerator, HRTimeInZonesChartView, PowerTimeInZonesChartView, SpeedTimeInZonesChartView, chartsTemplate)
+function(TP, timeInZonesGenerator, HRTimeInZonesChartView, PowerTimeInZonesChartView, SpeedTimeInZonesChartView, HRPeaksChartView, PowerPeaksChartView, SpeedPeaksChartView, chartsTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -17,7 +20,7 @@ function(TP, timeInZonesGenerator, HRTimeInZonesChartView, PowerTimeInZonesChart
             template: chartsTemplate
         },
 
-        chartViewsByMetricName:
+        zoneChartViewsByMetricName:
         {
             "HeartRate": HRTimeInZonesChartView,
             "Power": PowerTimeInZonesChartView,
@@ -38,6 +41,13 @@ function(TP, timeInZonesGenerator, HRTimeInZonesChartView, PowerTimeInZonesChart
             "Speed": "speedZones"
         },
 
+        peaksChartViewsByMetricName:
+        {
+            "HeartRate": HRPeaksChartView,
+            "Power": PowerPeaksChartView,
+            "Speed": SpeedPeaksChartView
+        },
+
         initialEvents: function()
         {
             this.model.off("change", this.render);
@@ -45,7 +55,7 @@ function(TP, timeInZonesGenerator, HRTimeInZonesChartView, PowerTimeInZonesChart
         
         onRender: function()
         {
-            _.each(this.chartViewsByMetricName, function(ChartView, metric)
+            _.each(this.zoneChartViewsByMetricName, function(ChartView, metric)
             {
                 var timeInZones = timeInZonesGenerator(metric, this.zoneSettingNameByMetricName[metric], this.model.get("details"), this.model);
                 var el = this.$el.find(this.elByMetricName[metric] + " > .timeInZonesChartContainer");
@@ -53,6 +63,13 @@ function(TP, timeInZonesGenerator, HRTimeInZonesChartView, PowerTimeInZonesChart
                 el.css("height", "350px");
                 el.css("width", "600px");
                 view.render();
+            }, this);
+
+            _.each(this.peaksChartViewsByMetricName, function(ChartView, metric)
+            {
+                var peaks = null;
+                var el = this.$el.find(this.elByMetricName[metric] + " > .peaksChartContainer");
+                var view = null;
             }, this);
         }
     });
