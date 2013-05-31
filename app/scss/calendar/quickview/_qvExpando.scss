@@ -270,8 +270,14 @@
 
         .timeInZonesChartContainer
         {
+            float: left;
             height: 220px;
             min-height: 220px; 
+        }
+
+        .peaksChartContainer
+        {
+            float: left;
         }
     }
 }

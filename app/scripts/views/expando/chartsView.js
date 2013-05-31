@@ -2,6 +2,7 @@
 [
     "TP",
     "utilities/data/timeInZonesGenerator",
+    "utilities/data/peaksGenerator",
     "views/charts/heartRateTimeInZonesChart",
     "views/charts/powerTimeInZonesChart",
     "views/charts/speedTimeInZonesChart",
@@ -10,7 +11,7 @@
     "views/charts/speedPeaksChart",
     "hbs!templates/views/expando/chartsTemplate"
 ],
-function(TP, timeInZonesGenerator, HRTimeInZonesChartView, PowerTimeInZonesChartView, SpeedTimeInZonesChartView, HRPeaksChartView, PowerPeaksChartView, SpeedPeaksChartView, chartsTemplate)
+function(TP, timeInZonesGenerator, peaksGenerator, HRTimeInZonesChartView, PowerTimeInZonesChartView, SpeedTimeInZonesChartView, HRPeaksChartView, PowerPeaksChartView, SpeedPeaksChartView, chartsTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -67,9 +68,13 @@ function(TP, timeInZonesGenerator, HRTimeInZonesChartView, PowerTimeInZonesChart
 
             _.each(this.peaksChartViewsByMetricName, function(ChartView, metric)
             {
-                var peaks = null;
+                var timeInZones = timeInZonesGenerator(metric, this.zoneSettingNameByMetricName[metric], this.model.get("details"), this.model);
+                var peaks = peaksGenerator(metric, this.model.get("details"));
                 var el = this.$el.find(this.elByMetricName[metric] + " > .peaksChartContainer");
-                var view = null;
+                var view = new ChartView({ peaks: peaks, timeInZones: timeInZones, el: el});
+                el.css("height", "350px");
+                el.css("width", "600px");
+                view.render();
             }, this);
         }
     });

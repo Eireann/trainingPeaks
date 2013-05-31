@@ -45,7 +45,8 @@ function(_, TP, zonesViewBase)
                 var unitsLabelCssId = "#" + peak.id + "UnitsLabel";
                 var modelFieldName = "meanMax" + this.metric + "s.meanMaxes." + peak.modelArrayIndex + ".value";
 
-                var binding = {
+                var binding =
+                {
                     observe: modelFieldName,
                     onGet: "formatPeakUnitsLabel"
                 };
@@ -62,14 +63,20 @@ function(_, TP, zonesViewBase)
                 var unitsLabelCssId = cssId + "UnitsLabel";
                 var modelFieldName = "timeIn" + this.metric + "Zones.timeInZones." + index;
 
-                bindings[unitsLabelCssId] = {
+                bindings[unitsLabelCssId] =
+                {
                     observe: modelFieldName + ".seconds",
                     onGet: "formatPeakUnitsLabel"
                 };
 
             }, this);
 
-        }
+        },
+        
+        formatPeakUnitsLabel: function (value, options)
+        {
+            return "Watts";
+        },
     };
 
     _.extend(powerViewBase, zonesViewBase);
