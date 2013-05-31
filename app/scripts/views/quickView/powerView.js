@@ -76,7 +76,7 @@ function(_, TP, zonesViewBase)
         formatPeakUnitsLabel: function (value, options)
         {
             return "Watts";
-        },
+        }
     };
 
     _.extend(powerViewBase, zonesViewBase);
