@@ -27,6 +27,11 @@ function(
             this.watchForControllerResize();
         },
 
+        onRender: function()
+        {
+            this.trigger("resize");
+        },
+
         serializeData: function()
         {
             var lapData = this.getLapData();
@@ -112,16 +117,18 @@ function(
 
         watchForControllerResize: function()
         {
-            this.on("controller:resize", this.onControllerResize, this);
+            this.on("controller:resize", this.setViewHeight, this);
             this.on("close", function()
             {
-                this.off("controller:resize", this.onControllerResize, this);
+                this.off("controller:resize", this.setViewHeight, this);
             }, this);
         },
 
-        onControllerResize: function(containerHeight)
+        setViewHeight: function(containerHeight)
         {
-            this.$el.parent().height(Math.round(containerHeight * 0.4));
+            // assumes that stats view resizes before laps view, because of their ordering in the expandoController
+            //this.$el.parent().height(this.$el.outerHeight() + 10);
+            this.$el.parent().css("min-height", containerHeight / 2);
         }
     };
 

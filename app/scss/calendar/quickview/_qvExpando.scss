@@ -132,12 +132,12 @@
 
     #expandoMapRegion
     {
-        height: 350px;
+        height: 320px;
         width: 100%;
 
         #expandoMap
         {
-            height: 350px;
+            height: 320px;
             width: 100%;
         }
     }
@@ -267,6 +267,7 @@
     #expandoChartsRegion
     {
         width: 100%;
+        margin-top: 30px;
 
         .timeInZonesChartContainer
         {
@@ -283,9 +284,8 @@
 
     #expandoStatsRegion
     {
-        overflow-y: scroll;
         overflow-x: auto;
-        @include nice-scrollbar;
+        overflow-y: visible;
         font-size: $fontSizeMedium;
         color: $TPGrey4;
         border-bottom: 1px solid $TPGrey7;
@@ -466,34 +466,24 @@
             {
                 //line-height: 1em;
 
-                &:hover
-                {
-                    background-color: $todayBlue;
-                }
-
                 span
                 {
                     cursor: pointer;  
-                    /*display: inline-block;
+                    display: inline-block;
                     @include calc(width, "100% - 20px");
                     &:hover
                     {
                         background-color: $TPGrey2;
                     }
-                    */
                 }
 
                 &.highlight 
                 {
-                    /*
                     span
                     {
                         background-color: $TPGrey4;
                         color: #ffffff;
                     }
-                    */
-                    background-color: $thisWeekBlue;
-                    color: $white;
                 }
             }
         }
