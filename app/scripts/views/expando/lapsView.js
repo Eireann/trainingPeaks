@@ -25,7 +25,7 @@ function (TP, expandoCommon, WorkoutStatsForRange, lapsTemplate)
         {
             this.watchForWorkoutTypeChange();
             this.watchForPeakChanges();
-            this.watchForControllerResize();
+            this.watchForControllerEvents();
         },
 
         events:
@@ -224,6 +224,10 @@ function (TP, expandoCommon, WorkoutStatsForRange, lapsTemplate)
         onUncheck: function()
         {
             this.trigger("unselectall");
+        },
+
+        onUnSelectAll: function()
+        {
             this.render();
         },
 
@@ -231,7 +235,6 @@ function (TP, expandoCommon, WorkoutStatsForRange, lapsTemplate)
         {
             this.selectedPeakType = this.$("#peakType").val();
             this.trigger("unselectall");
-            this.render();
         },
 
         onLapsClicked: function (e)
@@ -320,12 +323,14 @@ function (TP, expandoCommon, WorkoutStatsForRange, lapsTemplate)
             target.addClass("highlight");
         },
 
-        watchForControllerResize: function()
+        watchForControllerEvents: function()
         {
             this.on("controller:resize", this.setViewHeight, this);
+            this.on("controller:unselectall", this.onUnSelectAll, this);
             this.on("close", function()
             {
                 this.off("controller:resize", this.setViewHeight, this);
+                this.off("controller:unselectall", this.onUnSelectAll, this);
             }, this);
         },
 
