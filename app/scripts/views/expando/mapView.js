@@ -53,6 +53,7 @@ function (
             var self = this;
             this.watchForModelChanges();
             this.watchForControllerEvents();
+            this.watchForControllerResize();
             this.$el.addClass("waiting");
             setImmediate(function () { self.detailDataPromise.then(self.onModelFetched); });
         },
@@ -271,7 +272,6 @@ function (
             {
                 clearTimeout(this.hoverHideTimeout);
             }
-
         },
 
         showHoverMarker: function(lat, long)
@@ -287,7 +287,25 @@ function (
             {
                 this.hoverMarker.setLatLng(position);
             }
+        },
+
+        watchForControllerResize: function()
+        {
+            this.on("controller:resize", this.setViewWidth, this);
+            this.on("close", function()
+            {
+                this.off("controller:resize", this.setViewWidth, this);
+            }, this);
+        },
+
+        setViewWidth: function()
+        {
+            if (this.map)
+            {
+                this.map.invalidateSize();
+            }
         }
+
 
     });
 });
