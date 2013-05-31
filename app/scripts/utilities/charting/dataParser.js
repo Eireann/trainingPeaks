@@ -151,11 +151,18 @@ function(seriesColorByChannel, findIndexByMsOffset, convertToViewUnits)
 
     var generateLatLonFromData = function(dataByChannel)
     {
+        var startIndex = 0;
+        var endIndex = dataByChannel.Latitude.length;
+        return generateLatLonFromDataBetweenIndexes.call(this, dataByChannel, startIndex, endIndex);
+    };
+
+    var generateLatLonFromDataBetweenIndexes = function(dataByChannel, startIndex, endIndex)
+    {
         var latLon = [];
         
         if (_.has(dataByChannel, "Latitude") && _.has(dataByChannel, "Longitude") && (dataByChannel.Latitude.length === dataByChannel.Longitude.length))
         {
-            for (var i = 0; i < dataByChannel.Latitude.length; i++)
+            for (var i = startIndex; i < endIndex; i++)
             {
                 var lat = dataByChannel.Latitude[i][1];
                 var lon = dataByChannel.Longitude[i][1];
@@ -259,6 +266,13 @@ function(seriesColorByChannel, findIndexByMsOffset, convertToViewUnits)
                 this.latLonArray = generateLatLonFromData.call(this, this.dataByChannel);
 
             return this.latLonArray;
+        },
+
+        getLatLonBetweenMsOffsets: function(startMsOffset, endMsOffset)
+        {
+            var sampleStartIndex = this.findIndexByMsOffset(startMsOffset);
+            var sampleEndIndex = this.findIndexByMsOffset(endMsOffset);
+            return generateLatLonFromDataBetweenIndexes.call(this, this.dataByChannel, sampleStartIndex, sampleEndIndex);
         },
 
         getLatLngMsOffset: function()

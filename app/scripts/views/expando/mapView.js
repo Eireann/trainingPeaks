@@ -186,9 +186,8 @@ function (
 
         createMapSelection: function(workoutStatsForRange)
         {
-            var sampleStartIndex = this.dataParser.findIndexByMsOffset(workoutStatsForRange.get("begin"));
-            var sampleEndIndex = this.dataParser.findIndexByMsOffset(workoutStatsForRange.get("end"));
-            var mapLayer = MapUtils.createHighlight(this.map, this.dataParser.getLatLonArray().slice(sampleStartIndex, sampleEndIndex));
+            var latLngs = this.dataParser.getLatLonBetweenMsOffsets(workoutStatsForRange.get("begin"), workoutStatsForRange.get("end"));
+            var mapLayer = MapUtils.createHighlight(this.map, latLngs);
 
             var selection = {
                 begin: workoutStatsForRange.get("begin"),
@@ -245,6 +244,7 @@ function (
         {
             this.hideHoverMarker();
         },
+
 
         hideHoverMarker: function()
         {

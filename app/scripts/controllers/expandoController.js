@@ -153,14 +153,14 @@ function(TP, ExpandoLayout, GraphView, MapView, StatsView, LapsView, ChartsView)
 
         },
 
-        onRangeSelected: function (workoutStatsForRange)
+        onRangeSelected: function (workoutStatsForRange, triggeringView)
         {
 
             this.mostRecentlySelectedRange = workoutStatsForRange;
 
             _.each(this.views, function(view, key)
             {
-                view.trigger("controller:rangeselected", workoutStatsForRange);
+                view.trigger("controller:rangeselected", workoutStatsForRange, triggeringView);
             }, this);
 
             if(!workoutStatsForRange.hasLoaded)
@@ -172,7 +172,7 @@ function(TP, ExpandoLayout, GraphView, MapView, StatsView, LapsView, ChartsView)
 
                     // if we change ranges before this range loads, don't bother to display it
                     if (workoutStatsForRange === self.mostRecentlySelectedRange)
-                        self.onRangeSelected(workoutStatsForRange);
+                        self.onRangeSelected(workoutStatsForRange, triggeringView);
 
                 });
             }
