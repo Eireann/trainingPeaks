@@ -13,7 +13,7 @@ function(
     _,
     TP,
     timeInZonesGenerator,
-    peaksGenerator,
+    ThePeaksGenerator,
     HRPeaksChartView,
     PowerPeaksChartView,
     SpeedPeaksChartView,
@@ -55,7 +55,7 @@ function(
         renderPeaks: function()
         {
             var timeInZones = timeInZonesGenerator(this.metric, this.zoneSettingName, this.model, this.workoutModel);
-            var peaks = peaksGenerator(this.metric, this.model);
+            var peaks = ThePeaksGenerator.generate(this.metric, this.model);
             this.renderPeaksTable(peaks);
             this.renderPeaksChart(peaks, timeInZones);
         },
@@ -63,7 +63,7 @@ function(
         onPeaksChange: function()
         {
             var timeInZones = timeInZonesGenerator(this.metric, this.zoneSettingName, this.model, this.workoutModel);
-            var peaks = peaksGenerator(this.metric, this.model);
+            var peaks = ThePeaksGenerator.generate(this.metric, this.model);
             this.renderPeaksChart(peaks, timeInZones);
             this.trigger("change:model", this.model);
         },
