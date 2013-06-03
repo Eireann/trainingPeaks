@@ -43,7 +43,7 @@ function(
             _.bindAll(this, "createFlotGraph");
 
             if (!options.detailDataPromise)
-                throw "detailDataPromise is required for map and graph view";
+                throw "detailDataPromise is required for graph view";
 
             this.detailDataPromise = options.detailDataPromise;
 
@@ -267,11 +267,6 @@ function(
 
         findGraphSelection: function(begin, end, dataType)
         {
-            if (!dataType)
-            {
-                dataType = 'default';
-            }
-
             return _.find(this.selections, function(selection)
             {
                 return selection.begin === begin && selection.end === end && selection.dataType === dataType;
@@ -286,13 +281,8 @@ function(
             var selection = {
                 begin: workoutStatsForRange.get("begin"),
                 end: workoutStatsForRange.get("end"),
-                dataType: 'default'
+                dataType: options.dataType
             };
-
-            if (options.dataType)
-            {
-                selection.dataType = options.dataType;
-            }
 
             return selection;
         },

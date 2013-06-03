@@ -16,6 +16,7 @@ function(TP)
 
         initialize: function()
         {
+
             if (!this.has("workoutId"))
                 throw "workoutId is required for WorkoutStatsForRange";
 

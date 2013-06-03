@@ -5,7 +5,7 @@
     "models/workoutStatsForRange",
     "hbs!templates/views/expando/lapsTemplate"
 ],
-function (TP, expandoCommon, WorkoutStatsForRange, lapsTemplate)
+function(TP, expandoCommon, WorkoutStatsForRange, lapsTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -19,6 +19,11 @@ function (TP, expandoCommon, WorkoutStatsForRange, lapsTemplate)
         initialEvents: function()
         {
             this.model.off("change", this.render);
+        },
+
+        initialize: function()
+        {
+            this.initializeCheckboxes(true);
         },
 
         onRender: function()
@@ -240,58 +245,60 @@ function (TP, expandoCommon, WorkoutStatsForRange, lapsTemplate)
 
         onSelectPeakType: function()
         {
+            this.changePeakType(this.$("#peakType").val());
+        },
 
+        changePeakType: function(newPeakType)
+        {
             // unselect other peaks
-            var detailData = this.model.get("detailData").toJSON();
-            var oldPeakDataSet = detailData[this.modelPeakKeys[this.selectedPeakType]];
-            this.unselectAllCheckedPeaks(oldPeakDataSet, this.selectedPeakType);
-
+            this.unselectAllCheckedPeaks(this.selectedPeakType);
 
             // render, and reselect same peak time ranges
-            this.selectedPeakType = this.$("#peakType").val();
-            var newPeakDataSet = detailData[this.modelPeakKeys[this.selectedPeakType]];
+            this.selectedPeakType = newPeakType;
             this.render();
-            this.reselectAllCheckedPeaks(newPeakDataSet, this.selectedPeakType);
+            this.reselectAllCheckedPeaks(this.selectedPeakType);
 
             // display totals
             this.selectEntireWorkout();
         },
 
-        unselectAllCheckedPeaks: function(peakDataSet, peakType)
+        unselectAllCheckedPeaks: function(peakType)
         {
             _.each(this.checkboxStates.peaks, function(value, interval)
             {
                 if (value)
                 {
-                    this.triggerSelectionOnPeak(peakDataSet, peakType, interval, false);
+                    this.selectPeak(peakType, interval, false, false);
                 }
 
             }, this);
         },
 
-        reselectAllCheckedPeaks: function(peakDataSet, peakType)
+        reselectAllCheckedPeaks: function(peakType)
         {
             _.each(this.checkboxStates.peaks, function(value, interval)
             {
                 if (value)
                 {
-                    this.triggerSelectionOnPeak(peakDataSet, peakType, interval, true);
+                    this.selectPeak(peakType, interval, true, false);
                 }
 
             }, this);
         },
 
-        triggerSelectionOnPeak: function(peakDataSet, peakType, peakInterval, select)
+        selectPeak: function(peakType, peakInterval, select, updateCheckboxes)
         {
-            peakInterval = Number(peakInterval);
-            var peakDataItem = _.find(peakDataSet, function(item)
+            var peakDataItem = this.findPeak(peakType, peakInterval);
+
+            if (updateCheckboxes)
             {
-                return item.interval === peakInterval;
-            });
+                this.checkboxStates.peaks[peakInterval] = select;
+            }
 
             if (peakDataItem)
             {
                 peakDataItem.workoutId = this.model.id;
+                peakDataItem.name = "Peak " + this.formatPeakName(peakInterval);
                 var statsForRange = new WorkoutStatsForRange(peakDataItem);
                 var options = {};
                 options.dataType = peakType;
@@ -304,6 +311,20 @@ function (TP, expandoCommon, WorkoutStatsForRange, lapsTemplate)
                 }
                 this.trigger("rangeselected", statsForRange, options, this);
             }
+        },
+
+        findPeak: function(peakType, peakInterval)
+        {
+            // string from dom, need int in model
+            peakInterval = Number(peakInterval);
+
+            var detailData = this.model.get("detailData").toJSON();
+            var peakDataSet = detailData[this.modelPeakKeys[peakType]];
+
+            return _.find(peakDataSet, function(item)
+            {
+                return item.interval === peakInterval;
+            });
         },
 
         onLapsClicked: function (e)
@@ -381,33 +402,18 @@ function (TP, expandoCommon, WorkoutStatsForRange, lapsTemplate)
             var target = $(e.target);
             var li = target.closest("li");
             var peakInterval = li.data("peakinterval");
-            var detailData = this.model.get("detailData").toJSON();
-            var peakDataSet = detailData[this.modelPeakKeys[this.selectedPeakType]];
-            peakInterval = Number(peakInterval);
-            var peakDataItem = _.find(peakDataSet, function(item)
-            {
-                return item.interval === peakInterval;
-            });
-            peakDataItem.workoutId = this.model.id;
-            peakDataItem.name = "Peak " + this.formatPeakName(peakInterval);
-            var statsForRange = new WorkoutStatsForRange(peakDataItem);
-
-            var options = {};
 
             if (target.is("input[type=checkbox]"))
             {
                 if(target.is(":checked"))
                 {
-                    options.addToSelection = true;
-                    this.checkboxStates.peaks[peakInterval] = true;
-                } else {
-                    options.removeFromSelection = true;
-                    this.checkboxStates.peaks[peakInterval] = false;
+                    this.selectPeak(this.selectedPeakType, peakInterval, true, true);
+                } else
+                {
+                    this.selectPeak(this.selectedPeakType, peakInterval, false, true);
                 }
             }
 
-            options.dataType = this.selectedPeakType;
-            this.trigger("rangeselected", statsForRange, options, this);
             this.highlightListItem(li);
         },
         
@@ -525,7 +531,9 @@ function (TP, expandoCommon, WorkoutStatsForRange, lapsTemplate)
         onPeaksChange: function()
         {
             this.selectedPeakType = null;
+            this.initializeCheckboxes(true);
             this.render();
+            this.selectEntireWorkout();
         },
 
         formatPeakName: function(interval)
@@ -551,11 +559,14 @@ function (TP, expandoCommon, WorkoutStatsForRange, lapsTemplate)
                 peaks: {}
             };
 
-            var laps = this.model.get("detailData").get("lapsStats");
-            _.each(laps, function(lap, index)
+            if (this.model.has("detailData") && this.model.get("detailData").has("lapsStats"))
             {
-                this.checkboxStates.laps[index] = false;
-            }, this);
+                var laps = this.model.get("detailData").get("lapsStats");
+                _.each(laps, function(lap, index)
+                {
+                    this.checkboxStates.laps[index] = false;
+                }, this);
+            }
 
             var distancePeaks = this.getEnabledPeaks("distance");
             var otherPeaks = this.getEnabledPeaks();

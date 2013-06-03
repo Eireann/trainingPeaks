@@ -43,7 +43,7 @@ function (
             this.selections = [];
 
             if (!options.detailDataPromise)
-                throw "detailDataPromise is required for map and graph view";
+                throw "detailDataPromise is required for map view";
 
             this.detailDataPromise = options.detailDataPromise;
         },

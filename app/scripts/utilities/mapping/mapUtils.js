@@ -189,13 +189,13 @@ function(
         getColorByDataType: function(dataType)
         {
             var colors = {
-                defaultColor: 'lightblue',
-                distance: 'lightblue',
-                pace: 'lightblue',
-                speed: 'lightblue',
-                heartrate: 'lightblue',
-                cadence: 'lightblue',
-                power: 'lightblue'
+                defaultColor: 'blue',
+                distance: 'blue',
+                pace: 'blue',
+                speed: 'blue',
+                heartrate: 'blue',
+                cadence: 'blue',
+                power: 'blue'
             };
 
             return dataType && colors.hasOwnProperty(dataType) ? colors[dataType] : colors.defaultColor;

@@ -34,8 +34,6 @@ function(TP, ExpandoLayout, GraphView, MapView, StatsView, LapsView, ChartsView)
 
         show: function()
         {
-            var self = this;
-
             this.closeViews();
             this.preFetchDetailData();
 
@@ -52,6 +50,13 @@ function(TP, ExpandoLayout, GraphView, MapView, StatsView, LapsView, ChartsView)
 
             this.watchForViewEvents();
 
+            this.handleDetailDataPromise();
+        },
+
+        handleDetailDataPromise: function()
+        {
+
+            var self = this;
             setImmediate(function() { self.prefetchConfig.detailDataPromise.then(self.onModelFetched); });
 
             // if we don't have a workout, just resolve the deferred to let everything render
