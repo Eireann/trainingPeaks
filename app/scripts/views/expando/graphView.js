@@ -170,7 +170,9 @@ function(
             var startOffsetMs = Math.round(this.plot.getSelection().xaxis.from);
             var endOffsetMs = Math.round(this.plot.getSelection().xaxis.to);
             var workoutStatsForRange = new WorkoutStatsForRange({ workoutId: this.model.id, begin: startOffsetMs, end: endOffsetMs, name: "Selection" });
-            this.trigger("rangeselected", workoutStatsForRange);
+            workoutStatsForRange.addToSelection = true;
+            this.trigger("unselectall");
+            this.trigger("rangeselected", workoutStatsForRange, this);
         },
 
         onPlotHover: function(event, pos, item)
@@ -227,8 +229,11 @@ function(
             this.off("controller:rangeselected", this.onRangeSelected, this);
         },
 
-        onRangeSelected: function (workoutStatsForRange)
+        onRangeSelected: function (workoutStatsForRange, triggeringView)
         {
+            if (triggeringView === this)
+                return;
+
             var selection;
             if (workoutStatsForRange.removeFromSelection)
             {
@@ -238,7 +243,7 @@ function(
                     this.removeSelectionFromGraph(selection);
                     this.selections = _.without(this.selections, selection);
                 }
-            } else if(workoutStatsForRange.addToSelection)
+            } else if (workoutStatsForRange.addToSelection)
             {
                 this.plot.clearSelection();
                 selection = this.createGraphSelection(workoutStatsForRange);

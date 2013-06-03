@@ -25,7 +25,7 @@ function (TP, expandoCommon, WorkoutStatsForRange, lapsTemplate)
         {
             this.watchForWorkoutTypeChange();
             this.watchForPeakChanges();
-            this.watchForControllerResize();
+            this.watchForControllerEvents();
         },
 
         events:
@@ -33,7 +33,8 @@ function (TP, expandoCommon, WorkoutStatsForRange, lapsTemplate)
             "change #peakType": "onSelectPeakType",
             "click .lap": "onLapsClicked",
             "click .totals": "onEntireWorkoutClicked",
-            "click .peaks": "onPeaksClicked"
+            "click .peaks": "onPeaksClicked",
+            "click #uncheck": "onUncheck"
             
         },
 
@@ -220,11 +221,20 @@ function (TP, expandoCommon, WorkoutStatsForRange, lapsTemplate)
             distance: TP.utils.conversion.formatPace
         },
 
+        onUncheck: function()
+        {
+            this.trigger("unselectall");
+        },
+
+        onUnSelectAll: function()
+        {
+            this.render();
+        },
+
         onSelectPeakType: function ()
         {
             this.selectedPeakType = this.$("#peakType").val();
             this.trigger("unselectall");
-            this.render();
         },
 
         onLapsClicked: function (e)
@@ -313,18 +323,22 @@ function (TP, expandoCommon, WorkoutStatsForRange, lapsTemplate)
             target.addClass("highlight");
         },
 
-        watchForControllerResize: function()
+        watchForControllerEvents: function()
         {
-            this.on("controller:resize", this.onControllerResize, this);
+            this.on("controller:resize", this.setViewHeight, this);
+            this.on("controller:unselectall", this.onUnSelectAll, this);
             this.on("close", function()
             {
-                this.off("controller:resize", this.onControllerResize, this);
+                this.off("controller:resize", this.setViewHeight, this);
+                this.off("controller:unselectall", this.onUnSelectAll, this);
             }, this);
         },
 
-        onControllerResize: function(containerHeight)
+        setViewHeight: function(containerHeight)
         {
-            this.$el.parent().height(Math.round(containerHeight * 0.6));
+            // assumes that stats view resizes before laps view, because of their ordering in the expandoController
+            //this.$el.parent().css("max-height", containerHeight / 2);
+            this.$el.parent().height(containerHeight - $("#expandoStatsRegion").outerHeight());
         },
 
         getEnabledPeaks: function()

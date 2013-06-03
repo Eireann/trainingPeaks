@@ -70,7 +70,7 @@ function(TP, ExpandoLayout, GraphView, MapView, StatsView, LapsView, ChartsView)
             this.layout.lapsRegion.show(this.views.lapsView);
             this.layout.chartsRegion.show(this.views.chartsView);
 
-            this.onWindowResize();
+            this.onViewResize();
         },
 
         preFetchDetailData: function()
@@ -133,6 +133,7 @@ function(TP, ExpandoLayout, GraphView, MapView, StatsView, LapsView, ChartsView)
                 view.on("unselectall", this.onUnSelectAll, this);
                 view.on("graphhover", this.onGraphHover, this);
                 view.on("graphleave", this.onGraphLeave, this);
+                view.on("resize", this.onViewResize, this);
             }, this);
 
             this.on("close", this.stopWatchingViewEvents, this);
@@ -147,18 +148,19 @@ function(TP, ExpandoLayout, GraphView, MapView, StatsView, LapsView, ChartsView)
                 view.off("unselectall", this.onUnSelectAll, this);
                 view.off("graphhover", this.onGraphHover, this);
                 view.off("graphleave", this.onGraphLeave, this);
+                view.on("resize", this.onViewResize, this);
             }, this);
 
         },
 
-        onRangeSelected: function (workoutStatsForRange)
+        onRangeSelected: function (workoutStatsForRange, triggeringView)
         {
 
             this.mostRecentlySelectedRange = workoutStatsForRange;
 
             _.each(this.views, function(view, key)
             {
-                view.trigger("controller:rangeselected", workoutStatsForRange);
+                view.trigger("controller:rangeselected", workoutStatsForRange, triggeringView);
             }, this);
 
             if(!workoutStatsForRange.hasLoaded)
@@ -170,7 +172,7 @@ function(TP, ExpandoLayout, GraphView, MapView, StatsView, LapsView, ChartsView)
 
                     // if we change ranges before this range loads, don't bother to display it
                     if (workoutStatsForRange === self.mostRecentlySelectedRange)
-                        self.onRangeSelected(workoutStatsForRange);
+                        self.onRangeSelected(workoutStatsForRange, triggeringView);
 
                 });
             }
@@ -202,17 +204,17 @@ function(TP, ExpandoLayout, GraphView, MapView, StatsView, LapsView, ChartsView)
 
         watchForWindowResize: function()
         {
-            _.bindAll(this, "onWindowResize");
-            $(window).on("resize", this.onWindowResize);
+            _.bindAll(this, "onViewResize");
+            $(window).on("resize", this.onViewResize);
             this.on("close", this.stopWatchingWindowResize, this);
         },
 
         stopWatchingWindowResize: function()
         {
-            $(window).off("resize", this.onWindowResize);
+            $(window).off("resize", this.onViewResize);
         },
 
-        onWindowResize: function()
+        onViewResize: function()
         {
             var containerHeight = this.layout.$el.parent().height();
             _.each(this.views, function(view)

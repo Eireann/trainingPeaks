@@ -53,6 +53,7 @@ function (
             var self = this;
             this.watchForModelChanges();
             this.watchForControllerEvents();
+            this.watchForControllerResize();
             this.$el.addClass("waiting");
             setImmediate(function () { self.detailDataPromise.then(self.onModelFetched); });
         },
@@ -185,9 +186,8 @@ function (
 
         createMapSelection: function(workoutStatsForRange)
         {
-            var sampleStartIndex = this.dataParser.findIndexByMsOffset(workoutStatsForRange.get("begin"));
-            var sampleEndIndex = this.dataParser.findIndexByMsOffset(workoutStatsForRange.get("end"));
-            var mapLayer = MapUtils.createHighlight(this.map, this.dataParser.getLatLonArray().slice(sampleStartIndex, sampleEndIndex));
+            var latLngs = this.dataParser.getLatLonBetweenMsOffsets(workoutStatsForRange.get("begin"), workoutStatsForRange.get("end"));
+            var mapLayer = MapUtils.createHighlight(this.map, latLngs);
 
             var selection = {
                 begin: workoutStatsForRange.get("begin"),
@@ -221,6 +221,12 @@ function (
         onGraphHover: function (msOffset)
         {
             var index = this.dataParser.findIndexByMsOffset(msOffset);
+
+            if (index === null)
+            {
+                return;
+            }
+
             var lat = this.dataParser.dataByChannel.Latitude[index][1];
             var long = this.dataParser.dataByChannel.Longitude[index][1];
 
@@ -238,6 +244,7 @@ function (
         {
             this.hideHoverMarker();
         },
+
 
         hideHoverMarker: function()
         {
@@ -265,7 +272,6 @@ function (
             {
                 clearTimeout(this.hoverHideTimeout);
             }
-
         },
 
         showHoverMarker: function(lat, long)
@@ -281,7 +287,25 @@ function (
             {
                 this.hoverMarker.setLatLng(position);
             }
+        },
+
+        watchForControllerResize: function()
+        {
+            this.on("controller:resize", this.setViewWidth, this);
+            this.on("close", function()
+            {
+                this.off("controller:resize", this.setViewWidth, this);
+            }, this);
+        },
+
+        setViewWidth: function()
+        {
+            if (this.map)
+            {
+                this.map.invalidateSize();
+            }
         }
+
 
     });
 });
