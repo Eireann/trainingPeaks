@@ -90,7 +90,7 @@ function(
 
             }
 
-            var options = { color: "green", smoothFactor: 1.0, opacity: 1, weight: 2 };
+            var options = { color: "red", smoothFactor: 1.0, opacity: 1, weight: 2 };
             if (polyLineOptions)
             {
                 _.extend(options, polyLineOptions);
@@ -189,13 +189,13 @@ function(
         getColorByDataType: function(dataType)
         {
             var colors = {
-                defaultColor: 'blue',
-                distance: 'blue',
-                pace: 'blue',
-                speed: 'blue',
-                heartrate: 'red',
-                cadence: 'yellow',
-                power: 'blue'
+                defaultColor: 'lightblue',
+                distance: 'lightblue',
+                pace: 'lightblue',
+                speed: 'lightblue',
+                heartrate: 'lightblue',
+                cadence: 'lightblue',
+                power: 'lightblue'
             };
 
             return dataType && colors.hasOwnProperty(dataType) ? colors[dataType] : colors.defaultColor;

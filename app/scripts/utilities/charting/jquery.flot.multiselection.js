@@ -181,13 +181,13 @@ selection: {
                     shape: "round", // one of "round", "miter", or "bevel"
                     minSize: 1, // minimum number of pixels
                     colors: {
-                        defaultColor: 'blue',
-                        distance: 'blue',
-                        pace: 'blue',
-                        speed: 'blue',
-                        heartrate: 'red',
-                        cadence: 'yellow',
-                        power: 'blue'
+                        defaultColor: 'lightblue',
+                        distance: 'lightblue',
+                        pace: 'lightblue',
+                        speed: 'lightblue',
+                        heartrate: 'lightblue',
+                        cadence: 'lightblue',
+                        power: 'lightblue'
                     }
                 }
             },
