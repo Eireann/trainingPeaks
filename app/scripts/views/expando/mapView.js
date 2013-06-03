@@ -163,16 +163,22 @@ function (
             var selection;
             if (workoutStatsForRange.removeFromSelection)
             {
+                // remove it, if it was selected
                 selection = this.findMapSelection(workoutStatsForRange.get("begin"), workoutStatsForRange.get("end"));
                 if(selection)
                 {
                     this.removeSelectionFromMap(selection);
                     this.selections = _.without(this.selections, selection);
                 }
-            } else if(workoutStatsForRange.addToSelection)
+            } else if (workoutStatsForRange.addToSelection)
             {
-                selection = this.createMapSelection(workoutStatsForRange);
-                this.addSelectionToMap(selection);
+                // add it, if it wasn't already selected
+                selection = this.findMapSelection(workoutStatsForRange.get("begin"), workoutStatsForRange.get("end"));
+                if (!selection)
+                {
+                    selection = this.createMapSelection(workoutStatsForRange);
+                    this.addSelectionToMap(selection);
+                }
             }
         },
 

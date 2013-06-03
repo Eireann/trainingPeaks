@@ -63,10 +63,10 @@ function(
                 this.render();
                 if(workoutStatsForRange.hasLoaded)
                 {
-                    this.$el.removeClass("waiting");
+                    this.onWaitStop();
                 } else
                 {
-                    this.$el.addClass("waiting");
+                    this.onWaitStart();
                 }
             }
         },
@@ -129,6 +129,29 @@ function(
             // assumes that stats view resizes before laps view, because of their ordering in the expandoController
             //this.$el.parent().height(this.$el.outerHeight() + 10);
             this.$el.parent().css("min-height", containerHeight / 2);
+        },
+
+        onWaitStart: function()
+        {
+            if(!this.$throbber)
+            {
+                var offset = this.$el.parent().offset();
+                this.$throbber = $("<div></div>").addClass("expandoStatsThrobber");
+                this.$throbber.css("top", offset.top + "px");
+                this.$throbber.css("left", offset.left + "px");
+                this.$throbber.width(this.$el.parent().width());
+                this.$throbber.height(this.$el.parent().height());
+                $("body").append(this.$throbber);
+            }
+        },
+
+        onWaitStop: function()
+        {
+            if(this.$throbber)
+            {
+                this.$throbber.remove();
+                this.$throbber = null;
+            }
         }
     };
 

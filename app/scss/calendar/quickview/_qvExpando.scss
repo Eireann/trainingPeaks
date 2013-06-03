@@ -496,4 +496,8 @@
     }
 }
 
-
+.expandoStatsThrobber
+{
+    @include throbber;
+    z-index: 2000;
+}

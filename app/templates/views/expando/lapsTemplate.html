@@ -17,17 +17,17 @@
     <ul>
     {{#each rangeLaps}}
         <li data-lapindex="{{@index}}" class="lap">
-            <input type="checkbox" data-lapindex="{{@index}}"/> <span>{{ name }} ({{ formatTime totalTime}})</span>
+            <input type="checkbox" {{#if checked}}checked{{/if}} data-lapindex="{{@index}}"/> <span>{{ name }} ({{ formatTime totalTime}})</span>
         </li>
     {{/each}}
     {{#with rangeTotals}}
         <li class="statsRow totals" id="duration">
-            <input type="checkbox"/> <span>{{$ "EntireWorkout" }} ({{ formatTime totalTime }})</span>
+            <input type="checkbox" {{#if checked}}checked{{/if}}/> <span>{{$ "EntireWorkout" }} ({{ formatTime totalTime }})</span>
         </li>
     {{/with}}
         {{#each rangePeaks}}
         <li data-peakinterval="{{interval}}" data-peaktype="{{peakType}}" class="peaks">
-            <input type="checkbox"/> <span>{{$ "Peak" }} {{#if isDistance }}{{ formatPeakDistance interval }}{{ else }}{{ formatPeakTime interval }}{{/if }} ({{ formattedValue }} {{ units }})</span>
+            <input type="checkbox" {{#if checked}}checked{{/if}}/> <span>{{$ "Peak" }} {{#if isDistance }}{{ formatPeakDistance interval }}{{ else }}{{ formatPeakTime interval }}{{/if }} ({{ formattedValue }} {{ units }})</span>
         </li>
     {{/each}}
     </ul>

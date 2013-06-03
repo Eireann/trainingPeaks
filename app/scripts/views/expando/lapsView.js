@@ -34,14 +34,16 @@ function (TP, expandoCommon, WorkoutStatsForRange, lapsTemplate)
             "click .lap": "onLapsClicked",
             "click .totals": "onEntireWorkoutClicked",
             "click .peaks": "onPeaksClicked",
-            "click #uncheck": "onUncheck"
+            "click #uncheck": "onUncheckAll"
             
         },
 
-        serializeData: function ()
+        serializeData: function()
         {
 
             this.getDefaultSelectOption();
+            this.initializeCheckboxes();
+
             var detailData = this.model.get("detailData").toJSON();
 
             var totals = this.getTotalsData(detailData);
@@ -69,19 +71,22 @@ function (TP, expandoCommon, WorkoutStatsForRange, lapsTemplate)
             return workoutData;
         },
 
-        getTotalsData: function (detailData)
+        getTotalsData: function(detailData)
         {
             var totalData = detailData.totalStats ? detailData.totalStats : {};
             expandoCommon.calculateTotalAndMovingTime(totalData);
+
+            totalData.checked = this.checkboxStates.entireWorkout;
             return totalData;
         },
 
-        getLapsData: function (detailData)
+        getLapsData: function(detailData)
         {
             var lapsData = detailData.lapsStats ? detailData.lapsStats : [];
-            _.each(lapsData, function (lapItem)
+            _.each(lapsData, function (lapItem, index)
             {
                 expandoCommon.calculateTotalAndMovingTime(lapItem);
+                lapItem.checked = this.checkboxStates.laps[index];
             }, this);
             return lapsData;
         },
@@ -95,7 +100,7 @@ function (TP, expandoCommon, WorkoutStatsForRange, lapsTemplate)
             }
 
             var metric = this.modelPeakKeys[this.selectedPeakType];
-            var visiblePeaks = this.getEnabledPeaks();
+            var visiblePeaks = this.getEnabledPeaks(this.selectedPeakType);
             var outputPeaks = [];
             var peaksData = detailData[metric] ? detailData[metric] : [];
 
@@ -123,6 +128,8 @@ function (TP, expandoCommon, WorkoutStatsForRange, lapsTemplate)
                         peakItem.isDistance = false;
                         peakItem.isTime = true;
                     }
+
+                    peakItem.checked = this.checkboxStates.peaks[peakItem.interval];
                 }
             }, this);
             return _.compact(outputPeaks);
@@ -221,20 +228,78 @@ function (TP, expandoCommon, WorkoutStatsForRange, lapsTemplate)
             distance: TP.utils.conversion.formatPace
         },
 
-        onUncheck: function()
+        onUncheckAll: function()
         {
             this.trigger("unselectall");
         },
 
         onUnSelectAll: function()
         {
+            this.initializeCheckboxes(true);
             this.render();
         },
 
-        onSelectPeakType: function ()
+        onSelectPeakType: function()
         {
+
+            // unselect other peaks
+            var oldPeakDataSet = this.model.get("detailData").get(this.modelPeakKeys[this.selectedPeakType]);
+            this.unselectAllCheckedPeaks(oldPeakDataSet);
+
+
+            // render, and reselect same peak time ranges
             this.selectedPeakType = this.$("#peakType").val();
-            this.trigger("unselectall");
+            var newPeakDataSet = this.model.get("detailData").get(this.modelPeakKeys[this.selectedPeakType]);
+            this.render();
+            this.reselectAllCheckedPeaks(oldPeakDataSet);
+
+            // display totals
+            this.selectEntireWorkout();
+        },
+
+        unselectAllCheckedPeaks: function(peakDataSet)
+        {
+            _.each(this.checkboxStates.peaks, function(value, interval)
+            {
+                if (value)
+                {
+                    this.triggerSelectionOnPeak(peakDataSet, interval, false);
+                }
+
+            }, this);
+        },
+
+        reselectAllCheckedPeaks: function(peakDataSet)
+        {
+            _.each(this.checkboxStates.peaks, function(value, interval)
+            {
+                if (value)
+                {
+                    this.triggerSelectionOnPeak(peakDataSet, interval, true);
+                }
+
+            }, this);
+        },
+
+        triggerSelectionOnPeak: function(peakDataSet, interval, select)
+        {
+            var peakDataItem = _.find(peakDataSet, function(item)
+            {
+                return item.interval === peakInterval;
+            });
+
+            if (peakDataItem)
+            {
+                var statsForRange = new WorkoutStatsForRange(peakDataItem);
+                if (select)
+                {
+                    statsForRange.addToSelection = true;
+                } else
+                {
+                    statsForRange.removeFromSelection = true;
+                }
+                this.trigger("rangeselected", statsForRange);
+            }
         },
 
         onLapsClicked: function (e)
@@ -250,11 +315,13 @@ function (TP, expandoCommon, WorkoutStatsForRange, lapsTemplate)
 
             if (target.is("input[type=checkbox]"))
             {
-                if(target.is(":checked"))
+                if (target.is(":checked"))
                 {
                     statsForRange.addToSelection = true;
+                    this.checkboxStates.laps[lapIndex] = true;
                 } else {
                     statsForRange.removeFromSelection = true;
+                    this.checkboxStates.laps[lapIndex] = false;
                 }
             }
             this.trigger("rangeselected", statsForRange);
@@ -265,6 +332,24 @@ function (TP, expandoCommon, WorkoutStatsForRange, lapsTemplate)
         {
             var target = $(e.target);
             var li = target.closest("li");
+
+            var checked = false;
+            if(target.is("input[type=checkbox]"))
+            {
+                if(target.is(":checked"))
+                {
+                    checked = true;
+
+                }
+            }
+
+            this.checkboxStates.entireWorkout = checked;
+            this.selectEntireWorkout();
+            this.highlightListItem(li);
+        },
+
+        selectEntireWorkout: function(selected)
+        {
             var detailData = this.model.get("detailData").toJSON();
             var entireWorkoutData = detailData.totalStats;
             entireWorkoutData.workoutId = this.model.id;
@@ -272,19 +357,16 @@ function (TP, expandoCommon, WorkoutStatsForRange, lapsTemplate)
             var statsForRange = new WorkoutStatsForRange(entireWorkoutData);
             statsForRange.hasLoaded = true;
 
-            if(target.is("input[type=checkbox]"))
+            if (selected)
             {
-                if(target.is(":checked"))
-                {
-                    statsForRange.addToSelection = true;
-                } else
-                {
-                    statsForRange.removeFromSelection = true;
-                }
+                statsForRange.addToSelection = true;
+            } else
+            {
+                statsForRange.removeFromSelection = true;
             }
 
             this.trigger("rangeselected", statsForRange);
-            this.highlightListItem(li);
+
         },
         
         onPeaksClicked: function(e)
@@ -308,8 +390,10 @@ function (TP, expandoCommon, WorkoutStatsForRange, lapsTemplate)
                 if(target.is(":checked"))
                 {
                     statsForRange.addToSelection = true;
+                    this.checkboxStates.peaks[peakInterval] = true;
                 } else {
                     statsForRange.removeFromSelection = true;
+                    this.checkboxStates.peaks[peakInterval] = false;
                 }
             }
 
@@ -341,9 +425,9 @@ function (TP, expandoCommon, WorkoutStatsForRange, lapsTemplate)
             this.$el.parent().height(containerHeight - $("#expandoStatsRegion").outerHeight());
         },
 
-        getEnabledPeaks: function()
+        getEnabledPeaks: function(selectedPeakType)
         {
-            if (this.selectedPeakType === "distance")
+            if (selectedPeakType === "distance")
             {
                 return [400, 800, 1000, 1600, 1609, 5000, 8047, 10000, 15000, 16094, 21097, 30000, 42195, 50000, 100000];
             } else
@@ -442,6 +526,37 @@ function (TP, expandoCommon, WorkoutStatsForRange, lapsTemplate)
             } else {
                 return TP.utils.workout.formatPeakTime(interval);                   
             }
+        },
+
+        initializeCheckboxes: function(reset)
+        {
+            if(this.checkboxStates && !reset)
+            {
+                return;
+            }
+
+            this.checkboxStates = {
+                entireWorkout: false,
+                laps: [],
+                peaks: {}
+            };
+
+            var laps = this.model.get("detailData").get("lapsStats");
+            _.each(laps, function(lap, index)
+            {
+                this.checkboxStates.laps[index] = false;
+            }, this);
+
+            var distancePeaks = this.getEnabledPeaks("distance");
+            var otherPeaks = this.getEnabledPeaks();
+            _.each(distancePeaks, function(peakInterval)
+            {
+                this.checkboxStates.peaks[peakInterval] = false;
+            }, this);
+            _.each(otherPeaks, function(peakInterval)
+            {
+                this.checkboxStates.peaks[peakInterval] = false;
+            }, this);
         }
 
     });

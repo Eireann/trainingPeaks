@@ -156,14 +156,18 @@ function(TP, ExpandoLayout, GraphView, MapView, StatsView, LapsView, ChartsView)
         onRangeSelected: function (workoutStatsForRange, triggeringView)
         {
 
-            this.mostRecentlySelectedRange = workoutStatsForRange;
+            if (!workoutStatsForRange.removeFromSelection)
+            {
+                this.mostRecentlySelectedRange = workoutStatsForRange;
+            }
 
             _.each(this.views, function(view, key)
             {
                 view.trigger("controller:rangeselected", workoutStatsForRange, triggeringView);
             }, this);
 
-            if(!workoutStatsForRange.hasLoaded)
+            // no need to load it if we're trying to unselect it
+            if (!workoutStatsForRange.hasLoaded && !workoutStatsForRange.removeFromSelection)
             {
                 var self = this;
                 workoutStatsForRange.fetch().done(function ()
