@@ -157,11 +157,11 @@ function (
             this.off("controller:graphleave", this.onGraphLeave, this);
         },
 
-        onRangeSelected: function (workoutStatsForRange)
+        onRangeSelected: function(workoutStatsForRange, options, triggeringView)
         {
 
             var selection;
-            if (workoutStatsForRange.removeFromSelection)
+            if (options.removeFromSelection)
             {
                 // remove it, if it was selected
                 selection = this.findMapSelection(workoutStatsForRange.get("begin"), workoutStatsForRange.get("end"));
@@ -170,13 +170,13 @@ function (
                     this.removeSelectionFromMap(selection);
                     this.selections = _.without(this.selections, selection);
                 }
-            } else if (workoutStatsForRange.addToSelection)
+            } else if (options.addToSelection)
             {
                 // add it, if it wasn't already selected
                 selection = this.findMapSelection(workoutStatsForRange.get("begin"), workoutStatsForRange.get("end"));
                 if (!selection)
                 {
-                    selection = this.createMapSelection(workoutStatsForRange);
+                    selection = this.createMapSelection(workoutStatsForRange, options);
                     this.addSelectionToMap(selection);
                 }
             }
@@ -190,10 +190,10 @@ function (
             });
         },
 
-        createMapSelection: function(workoutStatsForRange)
+        createMapSelection: function(workoutStatsForRange, options)
         {
             var latLngs = this.dataParser.getLatLonBetweenMsOffsets(workoutStatsForRange.get("begin"), workoutStatsForRange.get("end"));
-            var mapLayer = MapUtils.createHighlight(this.map, latLngs);
+            var mapLayer = MapUtils.createHighlight(this.map, latLngs, options.dataType);
 
             var selection = {
                 begin: workoutStatsForRange.get("begin"),

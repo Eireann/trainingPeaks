@@ -55,7 +55,7 @@ function(
             }
         },
         
-        onRangeSelected: function (workoutStatsForRange)
+        onRangeSelected: function (workoutStatsForRange, options, triggeringView)
         {
             if (workoutStatsForRange)
             {

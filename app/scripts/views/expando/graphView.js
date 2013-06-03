@@ -76,7 +76,7 @@ function(
             this.model.get("detailData").off("change:flatSamples.samples", this.createFlotGraph, this);
         },
 
-        createFlotGraph: function ()
+        createFlotGraph: function()
         {
             if (this.model.get("detailData") === null || !this.model.get("detailData").get("flatSamples"))
                 return;
@@ -170,9 +170,10 @@ function(
             var startOffsetMs = Math.round(this.plot.getSelection().xaxis.from);
             var endOffsetMs = Math.round(this.plot.getSelection().xaxis.to);
             this.selectedWorkoutStatsForRange = new WorkoutStatsForRange({ workoutId: this.model.id, begin: startOffsetMs, end: endOffsetMs, name: "Selection" });
-            this.selectedWorkoutStatsForRange.addToSelection = true;
+            var options = {};
+            options.addToSelection = true;
             this.trigger("unselectall");
-            this.trigger("rangeselected", this.selectedWorkoutStatsForRange, this);
+            this.trigger("rangeselected", this.selectedWorkoutStatsForRange, options, this);
         },
 
         onPlotHover: function(event, pos, item)
@@ -229,60 +230,76 @@ function(
             this.off("controller:rangeselected", this.onRangeSelected, this);
         },
 
-        onRangeSelected: function(workoutStatsForRange, triggeringView)
+        onRangeSelected: function(workoutStatsForRange, options, triggeringView)
         {
             if (triggeringView === this)
                 return;
 
             var selection;
-            if (workoutStatsForRange.removeFromSelection)
+            if (options.removeFromSelection)
             {
-                selection = this.findGraphSelection(workoutStatsForRange.get("begin"), workoutStatsForRange.get("end"));
+                selection = this.findGraphSelection(workoutStatsForRange.get("begin"), workoutStatsForRange.get("end"), options.dataType);
                 if(selection)
                 {
                     this.removeSelectionFromGraph(selection);
                     this.selections = _.without(this.selections, selection);
                 }
-            } else if (workoutStatsForRange.addToSelection)
+            } else if (options.addToSelection)
             {
-                this.plot.clearSelection();
-                selection = this.createGraphSelection(workoutStatsForRange);
-                this.addSelectionToGraph(selection);
-
-                if(this.selectedWorkoutStatsForRange)
+                selection = this.findGraphSelection(workoutStatsForRange.get("begin"), workoutStatsForRange.get("end"), options.dataType);
+                if (!selection)
                 {
-                    this.selectedWorkoutStatsForRange.addToSelection = false;
-                    this.selectedWorkoutStatsForRange.removeFromSelection = true;
-                    this.trigger("rangeselected", this.selectedWorkoutStatsForRange, this);
-                    this.selectedWorkoutStatsForRange = null;
+
+                    this.plot.clearSelection();
+                    selection = this.createGraphSelection(workoutStatsForRange, options);
+                    this.addSelectionToGraph(selection);
+
+                    if (this.selectedWorkoutStatsForRange)
+                    {
+                        var triggerOptions = {};
+                        triggerOptions.removeFromSelection = true;
+                        this.trigger("rangeselected", this.selectedWorkoutStatsForRange, triggerOptions, this);
+                        this.selectedWorkoutStatsForRange = null;
+                    }
                 }
             }
         },
 
-        findGraphSelection: function(begin, end)
+        findGraphSelection: function(begin, end, dataType)
         {
+            if (!dataType)
+            {
+                dataType = 'default';
+            }
+
             return _.find(this.selections, function(selection)
             {
-                return selection.begin === begin && selection.end === end;
+                return selection.begin === begin && selection.end === end && selection.dataType === dataType;
             });
         },
 
-        createGraphSelection: function(workoutStatsForRange)
+        createGraphSelection: function(workoutStatsForRange, options)
         {
             var sampleStartIndex = this.dataParser.findIndexByMsOffset(workoutStatsForRange.get("begin"));
             var sampleEndIndex = this.dataParser.findIndexByMsOffset(workoutStatsForRange.get("end"));
 
             var selection = {
                 begin: workoutStatsForRange.get("begin"),
-                end: workoutStatsForRange.get("end")
+                end: workoutStatsForRange.get("end"),
+                dataType: 'default'
             };
+
+            if (options.dataType)
+            {
+                selection.dataType = options.dataType;
+            }
 
             return selection;
         },
 
         addSelectionToGraph: function(selection)
         {
-            selection.selection = this.plot.addMultiSelection({ xaxis: { from: selection.begin, to: selection.end } });
+            selection.selection = this.plot.addMultiSelection({ xaxis: { from: selection.begin, to: selection.end }}, {dataType: selection.dataType });
             this.selections.push(selection);
         },
 

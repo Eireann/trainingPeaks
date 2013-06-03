@@ -153,21 +153,21 @@ function(TP, ExpandoLayout, GraphView, MapView, StatsView, LapsView, ChartsView)
 
         },
 
-        onRangeSelected: function (workoutStatsForRange, triggeringView)
+        onRangeSelected: function (workoutStatsForRange, options, triggeringView)
         {
 
-            if (!workoutStatsForRange.removeFromSelection)
+            if (!options.removeFromSelection)
             {
                 this.mostRecentlySelectedRange = workoutStatsForRange;
             }
 
             _.each(this.views, function(view, key)
             {
-                view.trigger("controller:rangeselected", workoutStatsForRange, triggeringView);
+                view.trigger("controller:rangeselected", workoutStatsForRange, options, triggeringView);
             }, this);
 
             // no need to load it if we're trying to unselect it
-            if (!workoutStatsForRange.hasLoaded && !workoutStatsForRange.removeFromSelection)
+            if (!workoutStatsForRange.hasLoaded && !options.removeFromSelection)
             {
                 var self = this;
                 workoutStatsForRange.fetch().done(function ()
@@ -176,8 +176,12 @@ function(TP, ExpandoLayout, GraphView, MapView, StatsView, LapsView, ChartsView)
 
                     // if we change ranges before this range loads, don't bother to display it
                     if (workoutStatsForRange === self.mostRecentlySelectedRange)
-                        self.onRangeSelected(workoutStatsForRange, triggeringView);
-
+                    {
+                        _.each(self.views, function(view, key)
+                        {
+                            view.trigger("controller:rangeselected", workoutStatsForRange, options, triggeringView);
+                        }, self);
+                    }
                 });
             }
         },
