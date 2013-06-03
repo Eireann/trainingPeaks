@@ -6,7 +6,7 @@
     "utilities/data/timeInZonesGenerator",
     "utilities/data/peaksGenerator"
 ],
-function(_, TP, stickitUtilsMixin, timeInZonesGenerator, peaksGenerator)
+function(_, TP, stickitUtilsMixin, timeInZonesGenerator, ThePeaksGenerator)
 {
     var stickitBindingsMixin =
     {
@@ -59,7 +59,7 @@ function(_, TP, stickitUtilsMixin, timeInZonesGenerator, peaksGenerator)
 
         buildPeaksBindings: function()
         {
-            var peaks = peaksGenerator(this.metric, this.model);
+            var peaks = ThePeaksGenerator.generate(this.metric, this.model);
             _.each(peaks, function(peak, index)
             {
                 var inputFieldCssId = "#" + peak.id;

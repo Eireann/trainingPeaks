@@ -11,7 +11,7 @@
     "views/charts/speedPeaksChart",
     "hbs!templates/views/expando/chartsTemplate"
 ],
-function(TP, timeInZonesGenerator, peaksGenerator, HRTimeInZonesChartView, PowerTimeInZonesChartView, SpeedTimeInZonesChartView, HRPeaksChartView, PowerPeaksChartView, SpeedPeaksChartView, chartsTemplate)
+function(TP, timeInZonesGenerator, ThePeaksGenerator, HRTimeInZonesChartView, PowerTimeInZonesChartView, SpeedTimeInZonesChartView, HRPeaksChartView, PowerPeaksChartView, SpeedPeaksChartView, chartsTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -69,7 +69,7 @@ function(TP, timeInZonesGenerator, peaksGenerator, HRTimeInZonesChartView, Power
             _.each(this.peaksChartViewsByMetricName, function(ChartView, metric)
             {
                 var timeInZones = timeInZonesGenerator(metric, this.zoneSettingNameByMetricName[metric], this.model.get("details"), this.model);
-                var peaks = peaksGenerator(metric, this.model.get("details"));
+                var peaks = ThePeaksGenerator.generate(metric, this.model.get("details"));
                 var el = this.$el.find(this.elByMetricName[metric] + " > .peaksChartContainer");
                 var view = new ChartView({ peaks: peaks, timeInZones: timeInZones, el: el});
                 el.css("height", "350px");
