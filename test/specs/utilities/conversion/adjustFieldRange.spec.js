@@ -41,7 +41,29 @@ function(adjustFieldRange)
                 var withinRange = 55.23;
                 expect(adjustFieldRange(withinRange, 'duration')).toBe(withinRange);
             });
+
+            it("Should allow values at the very top of the range", function ()
+            {
+                var topOfRange = 99 + (59 / 60);
+                expect(adjustFieldRange(topOfRange, 'duration')).toBe(topOfRange);
+            });
+
+            it("Should allow values at the very bottom of the range", function ()
+            {
+                var bottomOfRange = 0;
+                expect(adjustFieldRange(bottomOfRange, 'duration')).toBe(bottomOfRange);
+            });
         });
+
+        describe("Pace", function ()
+        {
+            it("Should not allow values less then zero", function ()
+            {
+                var toLow = -10;
+                expect(adjustFieldRange(toLow, 'pace')).toEqual(0);
+            });
+        });
+
 
     });
 });
