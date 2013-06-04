@@ -40,12 +40,10 @@ function(TP, expandoCommon, WorkoutStatsForRange, lapsTemplate)
             "click .totals": "onEntireWorkoutClicked",
             "click .peaks": "onPeaksClicked",
             "click #uncheck": "onUncheckAll"
-            
         },
 
         serializeData: function()
         {
-
             this.getDefaultSelectOption();
             this.initializeCheckboxes();
 
@@ -268,7 +266,11 @@ function(TP, expandoCommon, WorkoutStatsForRange, lapsTemplate)
             {
                 if (value)
                 {
-                    this.selectPeak(peakType, interval, false, false);
+                    var options = {
+                        removeFromSelection: true,
+                        updateCheckboxes: false
+                    };
+                    this.selectPeak(peakType, interval, options);
                 }
 
             }, this);
@@ -280,35 +282,31 @@ function(TP, expandoCommon, WorkoutStatsForRange, lapsTemplate)
             {
                 if (value)
                 {
-                    this.selectPeak(peakType, interval, true, false);
+                    var options = {
+                        addToSelection: true,
+                        updateCheckboxes: false
+                    };
+                    this.selectPeak(peakType, interval, options);
                 }
 
             }, this);
         },
 
-        selectPeak: function(peakType, peakInterval, select, updateCheckboxes)
+        selectPeak: function(peakType, peakInterval, options)
         {
             var peakDataItem = this.findPeak(peakType, peakInterval);
 
-            if (updateCheckboxes)
+            if (options.updateCheckboxes)
             {
-                this.checkboxStates.peaks[peakInterval] = select;
+                this.checkboxStates.peaks[peakInterval] = options.addToSelection ? true : false;
             }
 
             if (peakDataItem)
             {
                 peakDataItem.workoutId = this.model.id;
                 peakDataItem.name = "Peak " + this.formatPeakName(peakInterval);
-                var statsForRange = new WorkoutStatsForRange(peakDataItem);
-                var options = {};
+                var statsForRange = this.getWorkoutStatsForRange(peakDataItem);
                 options.dataType = peakType;
-                if (select)
-                {
-                    options.addToSelection = true;
-                } else
-                {
-                    options.removeFromSelection = true;
-                }
                 this.trigger("rangeselected", statsForRange, options, this);
             }
         },
@@ -327,7 +325,7 @@ function(TP, expandoCommon, WorkoutStatsForRange, lapsTemplate)
             });
         },
 
-        onLapsClicked: function (e)
+        onLapsClicked: function(e)
         {
             var target = $(e.target);
             var li = target.closest("li");
@@ -335,7 +333,7 @@ function(TP, expandoCommon, WorkoutStatsForRange, lapsTemplate)
             var detailData = this.model.get("detailData").toJSON();
             var lapData = detailData.lapsStats[lapIndex];
             lapData.workoutId = this.model.id;
-            var statsForRange = new WorkoutStatsForRange(lapData);
+            var statsForRange = this.getWorkoutStatsForRange(lapData);
             statsForRange.hasLoaded = true;
 
             var options = {};
@@ -351,47 +349,42 @@ function(TP, expandoCommon, WorkoutStatsForRange, lapsTemplate)
                     this.checkboxStates.laps[lapIndex] = false;
                 }
             }
+
             this.trigger("rangeselected", statsForRange, options, this);
             this.highlightListItem(li);
         },
 
-        onEntireWorkoutClicked: function (e)
+        onEntireWorkoutClicked: function(e)
         {
             var target = $(e.target);
             var li = target.closest("li");
 
-            var checked = false;
+            var options = {};
             if(target.is("input[type=checkbox]"))
             {
                 if(target.is(":checked"))
                 {
-                    checked = true;
-
+                    options.addToSelection = true;
+                    this.checkboxStates.entireWorkout = true;
+                } else
+                {
+                    options.removeFromSelection = true;
+                    this.checkboxStates.entireWorkout = false;
                 }
             }
 
-            this.checkboxStates.entireWorkout = checked;
-            this.selectEntireWorkout();
+            this.selectEntireWorkout(options);
             this.highlightListItem(li);
         },
 
-        selectEntireWorkout: function(selected)
+        selectEntireWorkout: function(options)
         {
             var detailData = this.model.get("detailData").toJSON();
             var entireWorkoutData = detailData.totalStats;
             entireWorkoutData.workoutId = this.model.id;
             entireWorkoutData.name = "Entire Workout";
-            var statsForRange = new WorkoutStatsForRange(entireWorkoutData);
+            var statsForRange = this.getWorkoutStatsForRange(entireWorkoutData);
             statsForRange.hasLoaded = true;
-            var options = {};
-
-            if (selected)
-            {
-                options.addToSelection = true;
-            } else
-            {
-                options.removeFromSelection = true;
-            }
 
             this.trigger("rangeselected", statsForRange, options, this);
 
@@ -403,15 +396,28 @@ function(TP, expandoCommon, WorkoutStatsForRange, lapsTemplate)
             var li = target.closest("li");
             var peakInterval = li.data("peakinterval");
 
+            var options = {};
+
             if (target.is("input[type=checkbox]"))
             {
-                if(target.is(":checked"))
+                if (target.is(":checked"))
                 {
-                    this.selectPeak(this.selectedPeakType, peakInterval, true, true);
+                    options = {
+                        updateCheckboxes: true,
+                        addToSelection: true
+                    };
+                    this.selectPeak(this.selectedPeakType, peakInterval, options);
                 } else
                 {
-                    this.selectPeak(this.selectedPeakType, peakInterval, false, true);
+                    options = {
+                        updateCheckboxes: true,
+                        removeFromSelection: true
+                    };
+                    this.selectPeak(this.selectedPeakType, peakInterval, options);
                 }
+            } else
+            {
+                this.selectPeak(this.selectedPeakType, peakInterval, options);
             }
 
             this.highlightListItem(li);
@@ -578,6 +584,29 @@ function(TP, expandoCommon, WorkoutStatsForRange, lapsTemplate)
             {
                 this.checkboxStates.peaks[peakInterval] = false;
             }, this);
+        },
+
+        getWorkoutStatsForRange: function(rangeData)
+        {
+
+            if(!this.cachedWorkoutStats)
+            {
+                this.cachedWorkoutStats = {};
+            }
+
+            // combination of name + msOffset start + msOffset end, to create a unique key
+            // name alone doesn't work, because peak 60 seconds cadence vs peak 60 seconds heart rate would have different start/end offsets
+            // start/end offset alone doesn't work, because if you're moving fast enough, 1 mile (1609 meters) will be the same as 1600 meters
+            var rangeKey = rangeData.name + ":" + rangeData.begin + ":" + rangeData.end;
+
+            if(this.cachedWorkoutStats.hasOwnProperty(rangeKey))
+            {
+                return this.cachedWorkoutStats[rangeKey];
+            }
+
+            var stats = new WorkoutStatsForRange(rangeData);
+            this.cachedWorkoutStats[rangeKey] = stats;
+            return stats;
         }
 
     });

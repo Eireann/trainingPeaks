@@ -161,32 +161,17 @@ function(TP, ExpandoLayout, GraphView, MapView, StatsView, LapsView, ChartsView)
         onRangeSelected: function (workoutStatsForRange, options, triggeringView)
         {
 
-            if (!options.removeFromSelection)
-            {
-                this.mostRecentlySelectedRange = workoutStatsForRange;
-            }
-
             _.each(this.views, function(view, key)
             {
                 view.trigger("controller:rangeselected", workoutStatsForRange, options, triggeringView);
             }, this);
 
-            // no need to load it if we're trying to unselect it
-            if (!workoutStatsForRange.hasLoaded && !options.removeFromSelection)
+            if (!workoutStatsForRange.hasLoaded)
             {
-                var self = this;
-                workoutStatsForRange.fetch().done(function ()
+                workoutStatsForRange.fetch().done(function()
                 {
                     workoutStatsForRange.hasLoaded = true;
-
-                    // if we change ranges before this range loads, don't bother to display it
-                    if (workoutStatsForRange === self.mostRecentlySelectedRange)
-                    {
-                        _.each(self.views, function(view, key)
-                        {
-                            view.trigger("controller:rangeselected", workoutStatsForRange, options, triggeringView);
-                        }, self);
-                    }
+                    // don't retrigger the views, the views can decide if they want to listen or not
                 });
             }
         },

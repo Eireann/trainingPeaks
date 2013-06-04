@@ -24,6 +24,7 @@ function(
         initialize: function()
         {
             this.on("controller:rangeselected", this.onRangeSelected, this);
+            this.on("controller:unselectall", this.onUnSelectAll, this);
             this.watchForControllerResize();
         },
 
@@ -57,18 +58,60 @@ function(
         
         onRangeSelected: function (workoutStatsForRange, options, triggeringView)
         {
-            if (workoutStatsForRange)
+
+            // we were waiting for something else to load, ignore this one
+            if (options.afterFetch && workoutStatsForRange.hasLoaded && this.waitingForRange && this.waitingForRange !== workoutStatsForRange)
             {
-                this.selectedRangeData = workoutStatsForRange.toJSON();
-                this.render();
-                if(workoutStatsForRange.hasLoaded)
-                {
-                    this.onWaitStop();
-                } else
-                {
-                    this.onWaitStart();
-                }
+                return;
             }
+
+            // we're trying to add or remove it from multi selection - don't show it in stats
+            if (options.addToSelection || options.removeFromSelection)
+            {
+                return;
+            }
+
+            this.renderWorkoutStats(workoutStatsForRange);
+
+            // if it hasn't loaded, watch for changes
+            if (!workoutStatsForRange.hasLoaded)
+            {
+                this.waitForStats(workoutStatsForRange);
+            } else
+            {
+                this.stopWaitingForStats();
+            }
+        },
+
+        renderWorkoutStats: function(workoutStatsForRange)
+        {
+            // render
+            this.selectedRangeData = workoutStatsForRange.toJSON();
+            this.render();
+        },
+
+        onStatsFetched: function()
+        {
+            this.renderWorkoutStats(this.waitingFor);
+            this.stopWaitingForStats();
+        },
+
+        waitForStats: function(workoutStatsForRange)
+        {
+            this.stopWaitingForStats();
+            this.onWaitStart();
+            this.waitingFor = workoutStatsForRange;
+            this.waitingFor.once("sync", this.onStatsFetched, this);
+        },
+
+        stopWaitingForStats: function()
+        {
+            if (this.waitingFor)
+            {
+                this.waitingFor.off("sync", this.onStatsFetched, this);
+            }
+            this.waitingFor = null;
+            this.onWaitStop();
         },
 
         findAvailableMinMaxAvgFields: function(lapData)
@@ -152,6 +195,13 @@ function(
                 this.$throbber.remove();
                 this.$throbber = null;
             }
+        },
+
+        onUnSelectAll: function()
+        {
+            this.selectedRangeData = null;
+            this.stopWaitingForStats();
+            this.render();
         }
     };
 

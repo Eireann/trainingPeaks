@@ -52,7 +52,11 @@ function(
             it("Should trigger a rangeselected event when selecting a peak", function()
             {
                 spyOn(lapsView, "trigger");
-                lapsView.selectPeak('heartrate', 120, true, true);
+                var options = {
+                    addToSelection: true,
+                    updateCheckboxes: true
+                };
+                lapsView.selectPeak('heartrate', 120, options);
                 expect(lapsView.trigger).toHaveBeenCalled();
                 expect(lapsView.trigger.calls[0].args[0]).toEqual("rangeselected");
                 expect(lapsView.trigger.calls[0].args[2].addToSelection).toBe(true);
@@ -60,7 +64,11 @@ function(
 
             it("Should unselect all checked peaks on changing peak type", function()
             {
-                lapsView.selectPeak('heartrate', 120, true, true);
+                var options = {
+                    addToSelection: true,
+                    updateCheckboxes: true
+                };
+                lapsView.selectPeak('heartrate', 120, options);
                 spyOn(lapsView, "trigger");
                 lapsView.changePeakType('cadence');
 
