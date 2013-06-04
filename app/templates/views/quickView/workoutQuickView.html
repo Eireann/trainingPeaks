@@ -96,8 +96,8 @@
                 </div>
                 <div class="share {{#if publicSettingValue }}public{{/if}}">
                     <label>{{$ "Share"}}</label>
-                    <div class="publicCheckbox">
-                        <input type="checkbox" class="public" {{#if publicSettingValue }}checked{{/if}}/> {{$ "Public" }}
+                    <div class="publicCheckboxContainer">
+                        <input type="checkbox" class="publicCheckbox" {{#if publicSettingValue }}checked{{/if}}/> <span>{{$ "Public" }}</span>
                     </div>
                     <div class="shareIcons">
                         <img src="assets/images/QVImages/twitterIcon.jpg"/>
@@ -139,9 +139,8 @@
     
     <div class="quickviewFooter">
         <div class="share {{#if publicSettingValue }}public{{/if}}">
-            <label>{{$ "Share"}}</label>
-            <div class="publicCheckbox">
-                <input type="checkbox" class="public" {{#if publicSettingValue }}checked{{/if}}/> {{$ "Public" }}
+            <div class="publicCheckboxContainer">
+                <input type="checkbox" class="publicCheckbox" {{#if publicSettingValue }}checked{{/if}}/> {{$ "Public" }}
             </div>
             <div class="shareIcons">
                 <img src="assets/images/QVImages/twitterIcon.jpg"/>

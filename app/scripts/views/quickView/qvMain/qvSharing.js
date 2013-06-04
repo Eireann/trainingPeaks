@@ -15,7 +15,7 @@ function (
     {
         sharingEvents:
         {
-            "click .public": "onPublicCheckboxClicked"
+            "click .publicCheckbox": "onPublicCheckboxClicked"
         },
 
         initializeSharing: function()
@@ -30,12 +30,12 @@ function (
             {
                 this.model.set("publicSettingValue", PUBLIC);
                 this.$(".share").addClass("public");
-                this.$(".public").attr("checked", true);
+                this.$(".publicCheckbox").prop("checked", true);
             } else
             {
                 this.model.set("publicSettingValue", PRIVATE);
                 this.$(".share").removeClass("public");
-                this.$(".public").attr("checked", false);
+                this.$(".publicCheckbox").prop("checked", false);
             }
             this.model.save();
         }

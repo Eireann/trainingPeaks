@@ -1,0 +1,47 @@
+﻿.share
+    {
+        div
+        {
+            font-size: $fontSizeSmall;
+        }
+
+        input
+        {
+            height: 18px;
+            width: 18px;
+            margin-bottom: 0px;
+            vertical-align: middle;
+        }
+       
+        .shareIcons
+        {
+            white-space: nowrap;
+        }
+    }
+
+.quickviewFooter
+{
+    .share
+    {
+        .publicCheckboxContainer
+        {
+            margin-left: 10px;
+            display:inline;
+        }
+        .shareIcons
+        {
+            display:inline;
+        }
+    }
+}
+
+.expandedViewsButtons
+{
+    .share
+    {
+        .publicCheckboxContainer
+        {
+           margin-top: 8px;
+        }
+    }
+}
