@@ -103,7 +103,11 @@ function(
             beforeEach(function()
             {
                 var deferredSpy = jasmine.createSpyObj("deferred spy", ["done", "then"]);
-                controller = new ExpandoController({ model: new TP.Model(), prefetchConfig: { detailDataPromise: deferredSpy } });
+                var workoutModel = new TP.Model({
+                    details: new TP.Model(),
+                    detailData: new TP.Model()
+                });
+                controller = new ExpandoController({ model: workoutModel, prefetchConfig: { detailDataPromise: deferredSpy } });
 
                 spyOn(controller, "preFetchDetailData");
                 spyOn(controller, "handleDetailDataPromise");
