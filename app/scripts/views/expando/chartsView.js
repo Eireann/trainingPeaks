@@ -66,6 +66,7 @@ function (TP, timeInZonesGenerator, ThePeaksGenerator, HRTimeInZonesChartView, P
             this.on("close", function () { this.model.off("change:workoutTypeValueId", this.render, this); });
         },
 
+
         onRender: function ()
         {
             var workoutTypeValueId = this.model.get("workoutTypeValueId");
@@ -74,9 +75,10 @@ function (TP, timeInZonesGenerator, ThePeaksGenerator, HRTimeInZonesChartView, P
                 var timeInZones = timeInZonesGenerator(metric, this.zoneSettingNameByMetricName[metric], this.model.get("details"), this.model);
                 var el = this.$el.find(this.elByMetricName[metric] + " > .timeInZonesChartContainer");
                 var view = new ChartView({ timeInZones: timeInZones, el: el });
-                el.css("height", "350px");
-                el.css("width", "600px");
+                el.css("height", "233px");
+                el.css("width", "400px");
                 view.render();
+                this.viewListensForResize(view);
             }, this);
 
             _.each(this.getPeaksChartViewsByMetricName(workoutTypeValueId), function (ChartView, metric)
@@ -85,10 +87,22 @@ function (TP, timeInZonesGenerator, ThePeaksGenerator, HRTimeInZonesChartView, P
                 var peaks = ThePeaksGenerator.generate(metric, this.model.get("details"));
                 var el = this.$el.find(this.elByMetricName[metric] + " > .peaksChartContainer");
                 var view = new ChartView({ peaks: peaks, timeInZones: timeInZones, el: el });
-                el.css("height", "350px");
-                el.css("width", "600px");
+                el.css("height", "233px");
+                el.css("width", "400px");
                 view.render();
+                this.viewListensForResize(view);
             }, this);
+
+            this.watchForControllerEvents();
+
+        },
+
+        viewListensForResize: function(view)
+        {
+            this.on("chartResize", function (width)
+            {
+                view.trigger("chartResize", width);
+            });
         },
 
         watchForControllerEvents: function()
@@ -98,7 +112,7 @@ function (TP, timeInZonesGenerator, ThePeaksGenerator, HRTimeInZonesChartView, P
 
         setViewHeightAndWidth: function (containerHeight, containerWidth)
         {
-            $(".timeInZonesChartContainer").css("width", (containerWidth / 2) - 20);
+            this.trigger("chartResize", (containerWidth /2) *.95);
         },
     });
 });
