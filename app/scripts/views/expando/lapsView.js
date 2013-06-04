@@ -439,7 +439,6 @@ function(TP, expandoCommon, WorkoutStatsForRange, lapsTemplate)
         {
             var target = $(e.target);
             var li = target.closest("li");
-            var li = target.closest("li");
             var peakInterval = li.data("peakinterval");
 
             var options = {};
