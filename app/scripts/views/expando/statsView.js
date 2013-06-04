@@ -59,14 +59,8 @@ function(
         onRangeSelected: function (workoutStatsForRange, options, triggeringView)
         {
 
-            // we were waiting for something else to load, ignore this one
-            if (options.afterFetch && workoutStatsForRange.hasLoaded && this.waitingForRange && this.waitingForRange !== workoutStatsForRange)
-            {
-                return;
-            }
-
             // we're trying to add or remove it from multi selection - don't show it in stats
-            if (options.addToSelection || options.removeFromSelection)
+            if ((options.addToSelection || options.removeFromSelection) && !options.displayStats)
             {
                 return;
             }
@@ -74,12 +68,10 @@ function(
             this.renderWorkoutStats(workoutStatsForRange);
 
             // if it hasn't loaded, watch for changes
+            this.stopWaitingForStats();
             if (!workoutStatsForRange.hasLoaded)
             {
                 this.waitForStats(workoutStatsForRange);
-            } else
-            {
-                this.stopWaitingForStats();
             }
         },
 
@@ -98,7 +90,6 @@ function(
 
         waitForStats: function(workoutStatsForRange)
         {
-            this.stopWaitingForStats();
             this.onWaitStart();
             this.waitingFor = workoutStatsForRange;
             this.waitingFor.once("sync", this.onStatsFetched, this);

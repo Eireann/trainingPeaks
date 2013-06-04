@@ -172,6 +172,7 @@ function(
             this.selectedWorkoutStatsForRange = new WorkoutStatsForRange({ workoutId: this.model.id, begin: startOffsetMs, end: endOffsetMs, name: "Selection" });
             var options = {};
             options.addToSelection = true;
+            options.displayStats = true;
             this.trigger("unselectall");
             this.trigger("rangeselected", this.selectedWorkoutStatsForRange, options, this);
         },
