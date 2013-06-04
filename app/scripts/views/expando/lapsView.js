@@ -478,7 +478,7 @@ function(TP, expandoCommon, WorkoutStatsForRange, lapsTemplate)
             }, this);
         },
 
-        setViewHeight: function(containerHeight)
+        setViewHeight: function(containerHeight, containerWidth)
         {
             // assumes that stats view resizes before laps view, because of their ordering in the expandoController
             //this.$el.parent().css("max-height", containerHeight / 2);

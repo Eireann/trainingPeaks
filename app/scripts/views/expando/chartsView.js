@@ -89,6 +89,16 @@ function (TP, timeInZonesGenerator, ThePeaksGenerator, HRTimeInZonesChartView, P
                 el.css("width", "600px");
                 view.render();
             }, this);
-        }
+        },
+
+        watchForControllerEvents: function()
+        {
+            this.on("controller:resize", this.setViewHeightAndWidth, this);
+        },
+
+        setViewHeightAndWidth: function (containerHeight, containerWidth)
+        {
+            $(".timeInZonesChartContainer").css("width", (containerWidth / 2) - 20);
+        },
     });
 });
