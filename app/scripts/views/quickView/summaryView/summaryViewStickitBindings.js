@@ -108,7 +108,7 @@ function(
             {
                 observe: "normalizedPowerActual",
                 onGet: "formatInteger",
-                onSet: "parseFloat",
+                onSet: "parsePower",
                 updateModel: "updateModel"
             },
             "#averagePacePlannedField":

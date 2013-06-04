@@ -43,7 +43,9 @@
 
         parseDistance: function (value, options)
         {
-            return convertToModelUnits(parseFloat(value), "distance");
+            var modelValue = convertToModelUnits(parseFloat(value), "distance");
+            modelValue = adjustFieldRange(modelValue, "distance");
+            return modelValue;
         },
 
         formatDuration: function(value, options)
@@ -75,6 +77,13 @@
             var timeOfDay = moment(value);
             return timeOfDay.format("hh:mm:ss A");
         },
+        
+        parsePower: function(value, options)
+        {
+            var modelValue = this.parseFloat(value, options);
+            modelValue = adjustFieldRange(modelValue, "power");
+            return modelValue;
+        },
 
         formatPace: function(value, options)
         {
@@ -83,9 +92,11 @@
 
         parsePace: function (value, options)
         {
-            return convertToModelUnits(value, "pace");
+            var modelValue =  convertToModelUnits(value, "pace");
+            modelValue = adjustFieldRange(modelValue, "pace");
+            return modelValue;
         },
-
+        
         formatSpeed: function(value, options)
         {
             return convertToViewUnits(value, "speed");
@@ -130,7 +141,7 @@
         {
             return ((value === "" || value === "0") ? null : parseInt(value, 10));
         },
-
+        
         parseFloat: function (value, options)
         {
             return (value === "" ? null : parseFloat(value));
@@ -168,7 +179,9 @@
 
         parseTSS: function (value, options)
         {
-            return value ? (Math.round(parseFloat(value) * 10) / 10).toFixed(1) : 0;
+            var modelValue =  value ? (Math.round(parseFloat(value) * 10) / 10).toFixed(1) : 0;
+            modelValue = adjustFieldRange(modelValue, "tss");
+            return modelValue;
         },
         
         formatEnergy: function (value, options)
