@@ -7,6 +7,7 @@
     "views/quickView/qvMain/qvStickitBindings",
     "views/quickView/qvMain/qvSaveDeleteDiscard",
     "views/quickView/qvMain/qvHeaderActions",
+    "views/quickView/qvMain/qvSharing",
     "views/quickView/qvMain/qvFileUploads",
     "views/quickView/qvMain/qvExpand",
     "views/quickView/summaryView",
@@ -24,6 +25,7 @@ function (
     qvStickitBindings,
     qvSaveDeleteDiscard,
     qvHeaderActions,
+    qvSharing,
     qvFileUploads,
     qvExpand,
     WorkoutQuickViewSummary,
@@ -129,6 +131,7 @@ function (
             this.initializeSaveDeleteDiscard();
             this.initializeHeaderActions();
             this.initializeExpand();
+            this.initializeSharing();
         },
         
         stopWorkoutDetailsFetch: function ()
@@ -256,6 +259,7 @@ function (
     _.extend(WorkoutQuickView, qvStickitBindings);
     _.extend(WorkoutQuickView, qvFileUploads);
     _.extend(WorkoutQuickView, qvExpand);
+    _.extend(WorkoutQuickView, qvSharing);
 
     return TP.ItemView.extend(WorkoutQuickView);
 });
