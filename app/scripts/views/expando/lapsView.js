@@ -36,9 +36,12 @@ function(TP, expandoCommon, WorkoutStatsForRange, lapsTemplate)
         events:
         {
             "change #peakType": "onSelectPeakType",
-            "click .lap": "onLapsClicked",
-            "click .totals": "onEntireWorkoutClicked",
-            "click .peaks": "onPeaksClicked",
+            "click .lap span": "onLapsClicked",
+            "click .totals span": "onEntireWorkoutClicked",
+            "click .peaks span": "onPeaksClicked",
+            "click .lap .checkbox": "onLapsCheckboxClicked",
+            "click .totals .checkbox": "onEntireWorkoutCheckboxClicked",
+            "click .peaks .checkbox": "onPeaksCheckboxClicked",
             "click #uncheck": "onUncheckAll"
         },
 
@@ -354,27 +357,57 @@ function(TP, expandoCommon, WorkoutStatsForRange, lapsTemplate)
             this.highlightListItem(li);
         },
 
+        onLapsCheckboxClicked: function(e)
+        {
+            var target = $(e.target);
+            var li = target.closest("li");
+            var lapIndex = li.data("lapindex");
+            var detailData = this.model.get("detailData").toJSON();
+            var lapData = detailData.lapsStats[lapIndex];
+            lapData.workoutId = this.model.id;
+            var statsForRange = this.getWorkoutStatsForRange(lapData);
+            statsForRange.hasLoaded = true;
+
+            var options = {};
+
+            if (target.is(":checked"))
+            {
+                options.addToSelection = true;
+                this.checkboxStates.laps[lapIndex] = true;
+            } else {
+                options.removeFromSelection = true;
+                this.checkboxStates.laps[lapIndex] = false;
+            }
+
+            this.trigger("rangeselected", statsForRange, options, this);
+        },
+
         onEntireWorkoutClicked: function(e)
         {
             var target = $(e.target);
             var li = target.closest("li");
+            var options = {};
+            this.selectEntireWorkout(options);
+            this.highlightListItem(li);
+        },
+
+        onEntireWorkoutCheckboxClicked: function(e)
+        {
+            var target = $(e.target);
 
             var options = {};
-            if(target.is("input[type=checkbox]"))
+
+            if(target.is(":checked"))
             {
-                if(target.is(":checked"))
-                {
-                    options.addToSelection = true;
-                    this.checkboxStates.entireWorkout = true;
-                } else
-                {
-                    options.removeFromSelection = true;
-                    this.checkboxStates.entireWorkout = false;
-                }
+                options.addToSelection = true;
+                this.checkboxStates.entireWorkout = true;
+            } else
+            {
+                options.removeFromSelection = true;
+                this.checkboxStates.entireWorkout = false;
             }
 
             this.selectEntireWorkout(options);
-            this.highlightListItem(li);
         },
 
         selectEntireWorkout: function(options)
@@ -398,31 +431,37 @@ function(TP, expandoCommon, WorkoutStatsForRange, lapsTemplate)
 
             var options = {};
 
-            if (target.is("input[type=checkbox]"))
-            {
-                if (target.is(":checked"))
-                {
-                    options = {
-                        updateCheckboxes: true,
-                        addToSelection: true
-                    };
-                    this.selectPeak(this.selectedPeakType, peakInterval, options);
-                } else
-                {
-                    options = {
-                        updateCheckboxes: true,
-                        removeFromSelection: true
-                    };
-                    this.selectPeak(this.selectedPeakType, peakInterval, options);
-                }
-            } else
-            {
-                this.selectPeak(this.selectedPeakType, peakInterval, options);
-            }
-
+            this.selectPeak(this.selectedPeakType, peakInterval, options);
             this.highlightListItem(li);
         },
         
+        onPeaksCheckboxClicked: function(e)
+        {
+            var target = $(e.target);
+            var li = target.closest("li");
+            var li = target.closest("li");
+            var peakInterval = li.data("peakinterval");
+
+            var options = {};
+
+            if (target.is(":checked"))
+            {
+                options = {
+                    updateCheckboxes: true,
+                    addToSelection: true
+                };
+                this.selectPeak(this.selectedPeakType, peakInterval, options);
+            } else
+            {
+                options = {
+                    updateCheckboxes: true,
+                    removeFromSelection: true
+                };
+                this.selectPeak(this.selectedPeakType, peakInterval, options);
+            }
+
+        },
+
         highlightListItem: function(target)
         {
             this.$(".rangesList li").removeClass("highlight");
