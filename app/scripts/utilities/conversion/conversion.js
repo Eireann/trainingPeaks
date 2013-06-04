@@ -4,8 +4,9 @@
     "utilities/datetime/datetime",
     "utilities/workout/workoutTypes",
     "utilities/conversion/convertToModelUnits",
-    "utilities/conversion/convertToViewUnits"
-], function(moment, datetimeUtils, workoutTypes, convertToModelUnits, convertToViewUnits)
+    "utilities/conversion/convertToViewUnits",
+    "utilities/conversion/adjustFieldRange"
+], function (moment, datetimeUtils, workoutTypes, convertToModelUnits, convertToViewUnits, adjustFieldRange)
 {
     return {
         convertToModelUnits: convertToModelUnits,
@@ -52,7 +53,9 @@
 
         parseDuration: function(value, options)
         {
-            return datetimeUtils.convert.timeToDecimalHours(value);
+            var modelValue = datetimeUtils.convert.timeToDecimalHours(value);
+            modelValue = adjustFieldRange(modelValue, "duration");
+            return modelValue;
         },
 
         formatDurationFromSeconds: function(value, options)

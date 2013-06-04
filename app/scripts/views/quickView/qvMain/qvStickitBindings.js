@@ -12,6 +12,7 @@ function (
     {
         initializeStickit: function()
         {
+            this.addModelToBindings();
             this.on("render", this.stickitOnRender, this);
         },
 
@@ -136,6 +137,14 @@ function (
                 this.updateModelTimeout = setTimeout(updateModel, 2000);
 
             return false;
+        },
+        
+        addModelToBindings: function ()
+        {
+            _.each(this.bindings, function (binding)
+            {
+                binding.model = this.model;
+            }, this);
         }
 
     };

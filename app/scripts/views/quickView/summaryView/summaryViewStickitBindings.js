@@ -14,6 +14,7 @@ function(
 
         initializeStickit: function()
         {
+            this.addModelToBindings();
             this.on("close", this.stickitBindingsOnClose, this);
             this.on("render", this.stickitBindingsOnRender, this);
 
@@ -399,8 +400,15 @@ function(
                 this.model.set("velocityAverage", null);
             else if (options.observe === "distancePlanned" || options.observe === "totalTimePlanned")
                 this.model.set("velocityPlanned", null);
+        },
+        
+        addModelToBindings : function()
+        {
+            _.each(this.bindings, function(binding)
+            {
+                binding.model = this.model;
+            }, this);
         }
-
     };
 
     _.extend(summaryViewStickitBindings, stickitUtilsMixin);
