@@ -81,8 +81,9 @@ function (
             var url = this.getShortenedUrl();
             var windowTitle = document.title;
             var descriptionText = this.getSharedText();
+            var appID = 103295416394750;
 
-            var facebookURL = "https://www.facebook.com/dialog/feed?app_id=103295416394750&link=" + escape(url) + "&picture=https://s3.amazonaws.com/storage.trainingpeaks.com/assets/images/trainingpeaks-activity-viewer.png&name=" + escape(windowTitle) + "&caption=" + escape(url) + "&description=" + escape(descriptionText) + "&redirect_uri=" + escape(url);
+            var facebookURL = "https://www.facebook.com/dialog/feed?app_id=" + appID + "&link=" + escape(url) + "&picture=https://s3.amazonaws.com/storage.trainingpeaks.com/assets/images/trainingpeaks-activity-viewer.png&name=" + escape(windowTitle) + "&caption=" + escape(url) + "&description=" + escape(descriptionText) + "&redirect_uri=" + escape(url);
             window.open(facebookURL, '', 'width=1000');
         },
 
