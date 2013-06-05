@@ -57,3 +57,13 @@ a
 {
     max-width: none;
 }
+
+@include buttons(0px, auto, $fontSizeMedium);
+
+input[type="text"]
+{
+    padding-top: 0px;
+    padding-bottom: 0px;
+    cursor: text;
+    @include box-shadow(none);
+}

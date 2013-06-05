@@ -182,3 +182,59 @@
         }
     }
 }
+
+.shortUrlView
+{
+   
+    .hoverBox
+    {
+        .arrow
+        {
+            position: absolute;
+            left: 0px;
+            top: 15px;
+            @include transform(translateX(-35px) rotate(-45deg));
+            @include box-shadow(0 0 2px 0 #ADADAD);
+        }
+    }
+
+    .details
+    {
+        width: 250px;
+
+        margin: 5px 15px;
+        color: $TPGrey3;
+        font-size: $fontSizeSmall;
+
+        .header
+        {
+            font-family: $fontFamilyHeavy;
+            margin-bottom: 5px;
+        }
+
+        button#go
+        {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .buttons
+        {
+            text-align: right;
+        }
+
+        .inputs
+        {
+            font-size: 1em;
+        }
+
+        #closeIcon
+        {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+        }
+
+    }
+
+}

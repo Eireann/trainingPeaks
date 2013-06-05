@@ -2,12 +2,14 @@
 [
     "underscore",
     "moment",
-    "TP"
+    "TP",
+    "views/quickView/qvMain/qvShortUrlView"
 ],
 function (
     _,
     moment,
-    TP
+    TP,
+    ShortUrlView
 )
 {
     var PUBLIC = 1;
@@ -76,9 +78,14 @@ function (
 
         },
 
-        onLinkIconClicked: function()
+        onLinkIconClicked: function(e)
         {
+            var linkIcon = $(e.target);
+            this.shortUrlView = new ShortUrlView({ model: this.model });
 
+            this.shortUrlView.setPosition({ fromElement: linkIcon, left: linkIcon.outerWidth() + 13, top: -15 });
+
+            this.shortUrlView.render();
         },
 
         enableOrDisableEmailLink: function()
