@@ -105,14 +105,16 @@ function(
 
         var convertedValue = value * modelToViewConversionFactors("distance", theMarsApp.user.get("units"));
 
-        var swimType = workoutTypes.getIdByName("Swim");
-        if (swimType === sportType)
-        {
-            return Math.round(convertedValue);
-        } else
-        {
-            return roundViewUnits(convertedValue, precision);
-        }
+        //var swimType = workoutTypes.getIdByName("Swim");
+        //if (swimType === sportType)
+        //{
+        //    return Math.round(convertedValue);
+        //} else
+        //{
+        //    return roundViewUnits(convertedValue, precision);
+        //}
+        
+        return roundViewUnits(convertedValue, precision);
     };
 
     var convertSpeedToViewUnits = function(value)

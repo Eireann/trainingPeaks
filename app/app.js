@@ -94,20 +94,17 @@ function(
             if (storedUser && storedUser.get("athletes.0.athleteId"))
             {
                 self.user.set(storedUser.attributes);
+            }
+            
+            self.user.fetch().done(function()
+            {
+                self.session.saveUserToLocalStorage(self.user);
                 self.fetchAthleteSettings();
                 self.userFetchPromise.resolve();
-            } else
+            }).fail(function()
             {
-                self.user.fetch().done(function()
-                {
-                    self.session.saveUserToLocalStorage(self.user);
-                    self.fetchAthleteSettings();
-                    self.userFetchPromise.resolve();
-                }).fail(function()
-                {
-                    self.userFetchPromise.reject();
-                });
-            }
+                self.userFetchPromise.reject();
+            });
         };
 
         this.fetchAthleteSettings = function()
