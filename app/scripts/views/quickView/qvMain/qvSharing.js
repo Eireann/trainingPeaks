@@ -27,6 +27,7 @@ function (
         initializeSharing: function()
         {
             _.extend(this.events, this.sharingEvents);
+            this.on("render", this.enableOrDisableEmailLink, this);
         },
 
         onPublicCheckboxClicked: function(e)
@@ -43,6 +44,8 @@ function (
                 this.$(".share").removeClass("public");
                 this.$(".publicCheckbox").prop("checked", false);
             }
+
+            this.enableOrDisableEmailLink();
             this.model.save();
         },
 
@@ -79,8 +82,22 @@ function (
 
         },
 
-        onMailIconClicked: function()
+        enableOrDisableEmailLink: function()
         {
+
+            // this has to be an actual link for the user to click on instead of a window.open, so we just enable or disable the url as needed
+            var emailLink = this.$(".emailLink");
+
+            if (this.model.get("publicSettingValue") !== PUBLIC)
+            {
+                emailLink.attr("href", "javascript: void null;");
+                return;
+            }
+
+            var mailBody = TP.utils.translate("Click the link below to view the workout") + "\n\n" + this.getShortenedUrl();
+            var mailSubject = theMarsApp.user.get("firstName") + " " + theMarsApp.user.get("lastName") + " " + TP.utils.translate("has shared a workout with you");
+            var mailtoUrl = "mailto:?subject=" + escape(mailSubject) + "&body=" + escape(mailBody);
+            emailLink.attr("href", mailtoUrl);
 
         },
 
