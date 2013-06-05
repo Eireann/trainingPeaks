@@ -198,6 +198,8 @@ function(_)
 
             if (container.highcharts)
                 container.highcharts(chartOptions);
+
+            return container.highcharts();
         },
 
         getPeakChartCategories: function(chartPoints)

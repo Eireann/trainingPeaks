@@ -33,10 +33,10 @@
     </div>
     {{/if}}
 
-    {{#if tssActual }}
+    {{#if trainingStressScoreActual }}
     <div class="statsRow" id="tss">
         <label>{{ getUnitsLabel "tss" workoutTypeValueId this }}</label>
-        <span class="value">{{ conversion "formatTSS" tssActual }}</span>
+        <span class="value">{{ conversion "formatTSS" trainingStressScoreActual }}</span>
         <span class="units"></span>
     </div>
     {{/if}}
@@ -96,7 +96,7 @@
     {{#if efficiencyFactor }}
     <div class="statsRow" id="efficiencyFactor">
         <label>{{$ "EF" }}</label>
-        <span class="value">{{ conversion "formatInteger" efficiencyFactor }}</span>
+        <span class="value">{{ conversion "formatNumber" efficiencyFactor }}</span>
         <span class="units"></span>
     </div>
     {{/if}}
@@ -216,11 +216,11 @@
         {{#if minMaxElevation }}
         <div class="minMaxAvgRow statsRow" id="minMaxElevation">
             <label>{{$ "Elevation" }}</label>
-            <span class="value">{{ conversion "formatElevation" elevationMinimum }}</span>
+            <span class="value">{{ conversion "formatElevation" minimumElevation }}</span>
             <span class="separator" />
-            <span class="value">{{ conversion "formatElevation" elevationAverage }}</span>
+            <span class="value">{{ conversion "formatElevation" averageElevation }}</span>
             <span class="separator" />
-            <span class="value">{{ conversion "formatElevation" elevationMaximum }}</span>
+            <span class="value">{{ conversion "formatElevation" maximumElevation }}</span>
             <span class="units">{{ getUnitsLabel "elevation" }}</span>
         </div>
         {{/if}}
@@ -228,17 +228,27 @@
         {{#if minMaxTemp }}
         <div class="minMaxAvgRow statsRow" id="minMaxTemp">
             <label>{{$ "Temperature" }}</label>
-            <span class="value">{{ conversion "formatTemperature" tempMin }}</span>
+            <span class="value">{{ conversion "formatTemperature" minimumTemp }}</span>
             <span class="separator" />
-            <span class="value">{{ conversion "formatTemperature" tempAvg }}</span>
+            <span class="value">{{ conversion "formatTemperature" averageTemp }}</span>
             <span class="separator" />
-            <span class="value">{{ conversion "formatTemperature" tempMax }}</span>
+            <span class="value">{{ conversion "formatTemperature" maximumTemp }}</span>
             <span class="units">{{ getUnitsLabel "temperature" }}</span>
         </div>
         {{/if}}
 
+        {{#if minMaxTorque }}
+        <div class="minMaxAvgRow statsRow" id="minMaxTorque">
+            <label>{{$ "Torque" }}</label>
+            <span class="value">{{ conversion "formatInteger" minimumTorque }}</span>
+            <span class="separator" />
+            <span class="value">{{ conversion "formatInteger" averageTorque }}</span>
+            <span class="separator" />
+            <span class="value">{{ conversion "formatInteger" maximumTorque }}</span>
+            <span class="units">{{ getUnitsLabel "torque" }}</span>
+        </div>
+        {{/if}}
     </div>
     {{/if}}
 
 </div>
-

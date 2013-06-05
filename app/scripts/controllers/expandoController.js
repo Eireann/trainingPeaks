@@ -215,9 +215,10 @@ function(TP, ExpandoLayout, GraphView, MapView, StatsView, LapsView, ChartsView)
         onViewResize: function()
         {
             var containerHeight = this.layout.$el.parent().height();
+            var mapAndChartsContainerWidth = this.layout.$("#expandoLeftColumn").width();
             _.each(this.views, function(view)
             {
-                view.trigger("controller:resize", containerHeight);
+                view.trigger("controller:resize", containerHeight, mapAndChartsContainerWidth);
             }, this);
         }
     });

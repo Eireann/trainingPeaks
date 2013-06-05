@@ -46,6 +46,8 @@ function (TP, tooltipTemplate)
             }
             else
                 this.$chartEl = this.$el;
+
+            this.on("chartResize", this.resizeCharts, this);
         },
 
         onRender: function()
@@ -81,7 +83,7 @@ function (TP, tooltipTemplate)
                 };
 
                 this.chartModifier.call(this, chartOptions, chartPoints);
-                TP.utils.chartBuilder.renderSplineChart(this.$chartEl, chartPoints, tooltipTemplate, chartOptions);
+                this.chart = TP.utils.chartBuilder.renderSplineChart(this.$chartEl, chartPoints, tooltipTemplate, chartOptions);
             }
             else
             {
@@ -108,6 +110,19 @@ function (TP, tooltipTemplate)
             }, this);
 
             return chartPoints;
+        },
+
+        resizeCharts: function (width)
+        {
+            var self = this;
+            this.$el.width(width);
+            var height = width * 0.5825;
+            setImmediate(function ()
+            {
+                self.chart.setSize(width, height, false);
+                $(".peaksChartContainer").css("width", width);
+                $(".peaksChartContainer").css("height", height);
+            });
         }
     });
 });
