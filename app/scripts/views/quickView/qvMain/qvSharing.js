@@ -20,8 +20,7 @@ function (
             "click .publicCheckbox": "onPublicCheckboxClicked",
             "click .twitterIcon": "onTwitterIconClicked",
             "click .facebookIcon": "onFacebookIconClicked",
-            "click .linkIcon": "onLinkIconClicked",
-            "click .mailIcon": "onMailIconClicked"
+            "click .linkIcon": "onLinkIconClicked"
         },
 
         initializeSharing: function()
