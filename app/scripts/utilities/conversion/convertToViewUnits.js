@@ -105,6 +105,7 @@ function(
 
         var convertedValue = value * modelToViewConversionFactors("distance", theMarsApp.user.get("units"));
 
+        //Disabled until we address changing QV unit options
         //var swimType = workoutTypes.getIdByName("Swim");
         //if (swimType === sportType)
         //{
@@ -115,6 +116,11 @@ function(
         //}
         
         return roundViewUnits(convertedValue, precision);
+    };
+    
+    var convertTorqueToViewUnits = function (value, precision)
+    {
+        return roundViewUnits(value * modelToViewConversionFactors("torque", theMarsApp.user.get("units")));
     };
 
     var convertSpeedToViewUnits = function(value)
@@ -164,7 +170,7 @@ function(
             case "power":
                 return value;
             case "torque":
-                return value;
+                return convertTorqueToViewUnits(value);
             case "heartrate":
                 return value;
             case "cadence":
