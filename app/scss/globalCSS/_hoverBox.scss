@@ -46,7 +46,7 @@
         right: 0px;
 
         // the bottom will be covered by the bottom bar and arrow
-        bottom: 23px;
+        bottom: 19px;
 		@include box-shadow(0 1px 3px 0 #ADADAD);
     }
 
@@ -71,8 +71,8 @@
     {
         position:relative;
         z-index: 2;
-        width: 20px;
-        height: 20px;
+        width: 16px;
+        height: 16px;
         margin-left:30px;
         @include transform(translateY(-15px) rotate(45deg));
         @include box-shadow(0 0 3px 1px #ADADAD);
