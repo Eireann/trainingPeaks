@@ -153,7 +153,7 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySe
 
             var offset = $(e.currentTarget).offset();
             this.daySettings = new CalendarDaySettingsView({ model: this.model, parentEl: this.$el });
-            this.daySettings.render().center(offset.left + 10).bottom(offset.top + 10);
+            this.daySettings.render().center(offset.left + 10).bottom(offset.top + 15);
             this.daySettings.on("close", this.allowSettingsButtonToHide, this);
             this.$(".daySelected").css("display", "block");
             this.model.trigger("day:click", this.model, e);
