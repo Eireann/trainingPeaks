@@ -64,7 +64,7 @@ function (
 
         onTwitterIconClicked: function()
         {
-            if (this.workoutIsShareable())
+            if (!this.workoutIsShareable())
             {
                 return;
             }
@@ -73,7 +73,7 @@ function (
             var text = this.getSharedText();
 
             var twitterUrl = "https://twitter.com/intent/tweet?text=" + escape(text) + "&url=" + escape(url);
-            window.open(twitterUrl);
+            window.open(twitterUrl, 'twitterWindow', 'width=1000');
         },
 
         getSharedText: function()
@@ -87,7 +87,7 @@ function (
         
         onFacebookIconClicked: function()
         {
-            if (this.workoutIsShareable())
+            if (!this.workoutIsShareable())
             {
                 return;
             }
@@ -98,12 +98,12 @@ function (
             var appID = 103295416394750;
 
             var facebookURL = "https://www.facebook.com/dialog/feed?app_id=" + appID + "&link=" + escape(url) + "&picture=https://s3.amazonaws.com/storage.trainingpeaks.com/assets/images/trainingpeaks-activity-viewer.png&name=" + escape(windowTitle) + "&caption=" + escape(url) + "&description=" + escape(descriptionText) + "&redirect_uri=" + escape(url);
-            window.open(facebookURL, '', 'width=1000');
+            window.open(facebookURL, 'facebookWindow', 'width=1000');
         },
 
         onLinkIconClicked: function(e)
         {
-            if (this.workoutIsShareable())
+            if (!this.workoutIsShareable())
             {
                 return;
             }
@@ -151,7 +151,7 @@ function (
             // this has to be an actual link for the user to click on instead of a window.open, so we just enable or disable the url as needed
             var emailLink = this.$(".emailLink");
 
-            if (this.workoutIsPublic())
+            if (!this.workoutIsShareable())
             {
                 emailLink.attr("href", "javascript: void null;");
                 return;
