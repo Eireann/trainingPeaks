@@ -19,7 +19,7 @@ function (
     {
         sharingEvents:
         {
-            "click .publicCheckbox": "onPublicCheckboxClicked",
+            "change .publicCheckbox": "onPublicCheckboxClicked",
             "click .twitterIcon": "onTwitterIconClicked",
             "click .facebookIcon": "onFacebookIconClicked",
             "click .linkIcon": "onLinkIconClicked"
@@ -28,31 +28,43 @@ function (
         initializeSharing: function()
         {
             _.extend(this.events, this.sharingEvents);
-            this.on("render", this.enableOrDisableEmailLink, this);
+            this.on("render", this.sharingOnRender, this);
+        },
+
+        sharingOnRender: function()
+        {
+            this.enableOrDisableSharing();
+
+            this.model.on("change", this.enableOrDisableSharing, this);
+
+            this.on("close", function()
+            {
+                this.model.off("change", this.enableOrDisableSharing, this);
+            }, this);
         },
 
         onPublicCheckboxClicked: function(e)
         {
+            if (!TP.utils.workout.determineCompletedWorkout(this.model))
+            {
+                return;
+            }
+
             var checkbox = $(e.target);
-            if(checkbox.is(":checked"))
+            if (checkbox.is(":checked"))
             {
                 this.model.set("publicSettingValue", PUBLIC);
-                this.$(".share").addClass("public");
-                this.$(".publicCheckbox").prop("checked", true);
             } else
             {
                 this.model.set("publicSettingValue", PRIVATE);
-                this.$(".share").removeClass("public");
-                this.$(".publicCheckbox").prop("checked", false);
             }
 
-            this.enableOrDisableEmailLink();
             this.model.save();
         },
 
         onTwitterIconClicked: function()
         {
-            if (this.model.get("publicSettingValue") !== PUBLIC)
+            if (this.workoutIsShareable())
             {
                 return;
             }
@@ -75,7 +87,7 @@ function (
         
         onFacebookIconClicked: function()
         {
-            if (this.model.get("publicSettingValue") !== PUBLIC)
+            if (this.workoutIsShareable())
             {
                 return;
             }
@@ -91,6 +103,11 @@ function (
 
         onLinkIconClicked: function(e)
         {
+            if (this.workoutIsShareable())
+            {
+                return;
+            }
+
             var linkIcon = $(e.target);
             this.shortUrlView = new ShortUrlView({ model: this.model });
 
@@ -99,13 +116,42 @@ function (
             this.shortUrlView.render();
         },
 
+        enableOrDisableSharing: function()
+        {
+            if (this.workoutIsComplete())
+            {
+                this.$(".publicCheckbox").prop("disabled", false);
+            } else
+            {
+                this.$(".publicCheckbox").prop("disabled", true);
+            }
+
+            if (this.workoutIsShareable())
+            {
+                this.$(".share").addClass("public");
+            } else
+            {
+                this.$(".share").removeClass("public");
+            }
+
+            if (this.workoutIsPublic())
+            {
+                this.$(".publicCheckbox").prop("checked", true);
+            } else
+            {
+                this.$(".publicCheckbox").prop("checked", false);
+            }
+
+            this.enableOrDisableEmailLink();
+        },
+
         enableOrDisableEmailLink: function()
         {
 
             // this has to be an actual link for the user to click on instead of a window.open, so we just enable or disable the url as needed
             var emailLink = this.$(".emailLink");
 
-            if (this.model.get("publicSettingValue") !== PUBLIC)
+            if (this.workoutIsPublic())
             {
                 emailLink.attr("href", "javascript: void null;");
                 return;
@@ -130,6 +176,21 @@ function (
                 return this.getPublicFileViewerUrl();
             }
             return this.model.get("shortUrl");
+        },
+
+        workoutIsComplete: function()
+        {
+            return TP.utils.workout.determineCompletedWorkout(this.model);
+        },
+
+        workoutIsPublic: function()
+        {
+            return this.model.get("publicSettingValue") === PUBLIC;
+        },
+
+        workoutIsShareable: function()
+        {
+            return this.workoutIsPublic() && this.workoutIsComplete();
         }
 
     };

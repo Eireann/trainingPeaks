@@ -1,16 +1,17 @@
 define(
 [
-    "handlebars"
+    "handlebars",
+    "TP"
 ],
-function(Handlebars)
+function(Handlebars, TP)
 {
 
     var PUBLIC = 1;
     var PRIVATE = 2;
 
-    var ifWorkoutIsPublic = function(publicSettingValue, options)
+    var ifWorkoutIsPublic = function(workout, options)
     {
-        var isPublic = Number(publicSettingValue) === PUBLIC;
+        var isPublic = Number(workout.publicSettingValue) === PUBLIC && TP.utils.workout.determineCompletedWorkout(workout);
 
         if(isPublic)
         {

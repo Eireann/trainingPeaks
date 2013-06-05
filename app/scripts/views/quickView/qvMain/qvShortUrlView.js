@@ -19,7 +19,9 @@ function(
 
         events:
         {
-
+            "click #closeIcon": "close",
+            "click #go": "goToUrl",
+            "click #shortUrl": "selectAll"
         },
 
         template:
@@ -47,6 +49,16 @@ function(
                 return this.getPublicFileViewerUrl();
             }
             return this.model.get("shortUrl");
+        },
+
+        goToUrl: function()
+        {
+            window.open(this.getShortenedUrl());
+        },
+
+        selectAll: function()
+        {
+            this.$("#shortUrl").select();
         }
     });
 });
