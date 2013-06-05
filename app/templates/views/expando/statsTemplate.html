@@ -240,11 +240,11 @@
         {{#if minMaxTorque }}
         <div class="minMaxAvgRow statsRow" id="minMaxTorque">
             <label>{{$ "Torque" }}</label>
-            <span class="value">{{ conversion "formatInteger" minimumTorque }}</span>
+            <span class="value">{{ conversion "formatTorque" minimumTorque }}</span>
             <span class="separator" />
-            <span class="value">{{ conversion "formatInteger" averageTorque }}</span>
+            <span class="value">{{ conversion "formatTorque" averageTorque }}</span>
             <span class="separator" />
-            <span class="value">{{ conversion "formatInteger" maximumTorque }}</span>
+            <span class="value">{{ conversion "formatTorque" maximumTorque }}</span>
             <span class="units">{{ getUnitsLabel "torque" }}</span>
         </div>
         {{/if}}
