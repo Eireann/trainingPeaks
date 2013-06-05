@@ -56,13 +56,13 @@ function (
             }
 
             var url = this.getShortenedUrl();
-            var text = this.getTweetText();
+            var text = this.getSharedText();
 
             var twitterUrl = "https://twitter.com/intent/tweet?text=" + escape(text) + "&url=" + escape(url);
             window.open(twitterUrl);
         },
 
-        getTweetText: function()
+        getSharedText: function()
         {
             //Barbara prem Kauffman's Run workout on Tue, 05/28/2013 
             var text = theMarsApp.user.get("firstName") + " " + theMarsApp.user.get("lastName") + "'s";
@@ -73,7 +73,17 @@ function (
         
         onFacebookIconClicked: function()
         {
+            if (this.model.get("publicSettingValue") !== PUBLIC)
+            {
+                return;
+            }
 
+            var url = this.getShortenedUrl();
+            var windowTitle = document.title;
+            var descriptionText = this.getSharedText();
+
+            var facebookURL = "https://www.facebook.com/dialog/feed?app_id=103295416394750&link=" + escape(url) + "&picture=https://s3.amazonaws.com/storage.trainingpeaks.com/assets/images/trainingpeaks-activity-viewer.png&name=" + escape(windowTitle) + "&caption=" + escape(url) + "&description=" + escape(descriptionText) + "&redirect_uri=" + escape(url);
+            window.open(facebookURL, '', 'width=1000');
         },
 
         onLinkIconClicked: function()
