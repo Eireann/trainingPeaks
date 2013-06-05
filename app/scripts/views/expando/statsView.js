@@ -38,6 +38,7 @@ function(
             var lapData = this.getLapData();
             expandoCommon.calculateTotalAndMovingTime(lapData);
             this.findAvailableMinMaxAvgFields(lapData);
+            this.addCommonWorkoutFields(lapData);
             return lapData;
         },
 
@@ -121,12 +122,14 @@ function(
             if (this.hasAnyNonZeroValue(lapData, ["minimumCadence", "averageCadence", "maximumCadence"]))
                 lapData.minMaxCadence = lapData.minMaxAvg = true;
 
-            if (this.hasAnyValue(lapData, ["elevationMinimum", "elevationAverage", "elevationMaximum"]))
+            if (this.hasAnyValue(lapData, ["minimumElevation", "averageElevation", "maximumElevation"]))
                 lapData.minMaxElevation = lapData.minMaxAvg = true;
 
-            if (this.hasAnyValue(lapData, ["tempMin", "tempAvg", "tempMax"]))
+            if (this.hasAnyValue(lapData, ["minimumTemp", "averageTemp", "maximumTemp"]))
                 lapData.minMaxTemp = lapData.minMaxAvg = true;
 
+            if (this.hasAnyValue(lapData, ["minimumTorque", "averageTorque", "maximumTorque"]))
+                lapData.minMaxTorque = lapData.minMaxAvg = true;
         },
 
         hasAnyValue: function(context, keys)
@@ -193,7 +196,13 @@ function(
             this.selectedRangeData = null;
             this.stopWaitingForStats();
             this.render();
+        },
+
+        addCommonWorkoutFields: function(lapData)
+        {
+            lapData.workoutTypeValueId = this.model.get("workoutTypeValueId");
         }
+
     };
 
     return TP.ItemView.extend(expandoStatsView);

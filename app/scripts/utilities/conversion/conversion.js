@@ -115,7 +115,7 @@
 
         formatNumber: function(value, options)
         {
-            return ((value === null || value === 0) ? "" : +value);
+            return ((value === null || value === 0) ? "" : convertToViewUnits(value, "number"));
         },
 
         formatInteger: function(value, options)

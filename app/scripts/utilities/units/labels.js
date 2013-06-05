@@ -118,6 +118,55 @@ function(unitsConstants, workoutLayoutFormatter)
 
     };
 
+    var getTssLabel = function(context)
+    {
+
+        var tssSource = "";
+        var tssSourceKeys = ["tssSource", "trainingStressScoreActualSource"];
+        var contexts = [];
+
+        if (context)
+        {
+            contexts.push(context);
+        }
+
+        if (context && context.hasOwnProperty("model"))
+        {
+            contexts.push(context.model.attributes);
+        }
+
+        _.each(contexts, function(ctx)
+        {
+            _.each(tssSourceKeys, function(key)
+            {
+                if (ctx.hasOwnProperty(key))
+                {
+                    tssSource = ctx[key];
+                }
+            });
+        });
+
+        // in workout it's an int, tssSource, and in lap/peak detail data it's a string
+        if (tssSource && workoutLayoutFormatter.trainingStressScoreSource[tssSource])
+        {
+            return workoutLayoutFormatter.trainingStressScoreSource[tssSource].abbreviation;
+        } else if (tssSource)
+        {
+            var label = _.find(workoutLayoutFormatter.trainingStressScoreSource, function(tssLabel)
+            {
+                return tssLabel.name === tssSource;
+            });
+
+            if (label)
+            {
+                return label.abbreviation;
+            }
+        } else
+        {
+            return "TSS";
+        }
+    };
+
     var getUnitsLabel = function(fieldName, sportType, context)
     {
         var userUnits = theMarsApp.user.get("units");
@@ -130,23 +179,11 @@ function(unitsConstants, workoutLayoutFormatter)
             return unitsHash[fieldName][sportType][userUnitsKey];
         
         //TODO: refactor
-        if (context && fieldName === "tss")
+        if (fieldName === "tss")
         {
-            var tssSource = "";
-            if (context.hasOwnProperty("tssSource"))
-            {
-                tssSource = context.tssSource;
-            } else if (context.hasOwnProperty("model"))
-            {
-                tssSource = context.model.get("tssSource");
-            }
-
-            if (tssSource && workoutLayoutFormatter.trainingStressScoreSource[tssSource])
-            {
-                return workoutLayoutFormatter.trainingStressScoreSource[tssSource].abbreviation;
-            }
+            return getTssLabel(context);
         }
-
+        
         return unitsHash[fieldName][userUnitsKey];
     };
 

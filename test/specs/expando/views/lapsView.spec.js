@@ -75,7 +75,6 @@ function(
                 expect(lapsView.trigger).toHaveBeenCalled();
                 expect(lapsView.trigger.callCount).toBe(2);
 
-                console.log(lapsView.trigger.calls);
                 expect(lapsView.trigger.calls[0].args[0]).toEqual("rangeselected");
                 expect(lapsView.trigger.calls[0].args[1].get("begin")).toEqual(fakeHrPeak.begin);
                 expect(lapsView.trigger.calls[0].args[1].get("end")).toEqual(fakeHrPeak.end);
