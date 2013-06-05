@@ -123,8 +123,14 @@ function(unitsConstants, workoutLayoutFormatter)
 
         var tssSource = "";
         var tssSourceKeys = ["tssSource", "trainingStressScoreActualSource"];
-        var contexts = [context];
-        if (context.hasOwnProperty("model"))
+        var contexts = [];
+
+        if (context)
+        {
+            contexts.push(context);
+        }
+
+        if (context && context.hasOwnProperty("model"))
         {
             contexts.push(context.model.attributes);
         }
@@ -151,13 +157,14 @@ function(unitsConstants, workoutLayoutFormatter)
                 return tssLabel.name === tssSource;
             });
 
-            if(label)
+            if (label)
             {
                 return label.abbreviation;
             }
+        } else
+        {
+            return "TSS";
         }
-
-        return "";
     };
 
     var getUnitsLabel = function(fieldName, sportType, context)

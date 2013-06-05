@@ -60,6 +60,18 @@ function(TP, theMarsApp)
                 expect(TP.utils.units.getUnitsLabel("tss")).toBe("TSS");
             });
 
+            it("should print the unit label for tss with an integer tssSource", function()
+            {
+                var tssLabel = TP.utils.units.getUnitsLabel("tss", 0, { "tssSource": 2 });
+                expect(tssLabel).toBe("rTSS");
+            });
+
+            it("should print the unit label for tss with a string trainingStressScoreActualSource", function()
+            {
+                var tssLabel = TP.utils.units.getUnitsLabel("tss", 0, { "trainingStressScoreActualSource": "SwimmingTss" });
+                expect(tssLabel).toBe("sTSS");
+            });
+
             it("should print the unit label for intensity factory", function()
             {
                 expect(TP.utils.units.getUnitsLabel("if")).toBe("IF");
