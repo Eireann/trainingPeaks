@@ -116,7 +116,7 @@ function (TP, tooltipTemplate)
         {
             var self = this;
             this.$el.width(width);
-            var height = width * .5825;
+            var height = width * 0.5825;
             setImmediate(function ()
             {
                 self.chart.setSize(width, height, false);

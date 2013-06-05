@@ -112,7 +112,7 @@ function (TP, timeInZonesGenerator, ThePeaksGenerator, HRTimeInZonesChartView, P
 
         setViewHeightAndWidth: function (containerHeight, containerWidth)
         {
-            this.trigger("chartResize", (containerWidth /2) *.95);
-        },
+            this.trigger("chartResize", (containerWidth /2) * 0.95);
+        }
     });
 });
