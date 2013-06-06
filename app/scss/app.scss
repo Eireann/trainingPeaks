@@ -66,4 +66,9 @@ input[type="text"]
     padding-bottom: 0px;
     cursor: text;
     @include box-shadow(none);
+
+    &:focus
+    {
+        @include box-shadow(none);
+    }
 }
