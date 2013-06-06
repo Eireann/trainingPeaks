@@ -107,7 +107,7 @@ function(
             "#normalizedPowerCompleted":
             {
                 observe: "normalizedPowerActual",
-                onGet: "formatInteger",
+                onGet: "formatPower",
                 onSet: "parsePower",
                 updateModel: "updateModel"
             },
@@ -150,36 +150,36 @@ function(
             "#caloriesPlannedField":
             {
                 observe: "caloriesPlanned",
-                onGet: "formatNumber",
-                onSet: "parseInteger",
+                onGet: "formatCalories",
+                onSet: "parseCalories",
                 updateModel: "updateModel"
             },
             "#caloriesCompletedField":
             {
                 observe: "calories",
-                onGet: "formatNumber",
-                onSet: "parseInteger",
+                onGet: "formatCalories",
+                onSet: "parseCalories",
                 updateModel: "updateModel"
             },
             "#elevationGainPlannedField":
             {
                 observe: "elevationGainPlanned",
-                onGet: "formatElevation",
-                onSet: "parseElevation",
+                onGet: "formatElevationGain",
+                onSet: "parseElevationGain",
                 updateModel: "updateModel"
             },
             "#elevationGainCompletedField":
             {
                 observe: "elevationGain",
-                onGet: "formatElevation",
-                onSet: "parseElevation",
+                onGet: "formatElevationGain",
+                onSet: "parseElevationGain",
                 updateModel: "updateModel"
             },
             "#elevationLossCompletedField":
             {
                 observe: "elevationLoss",
-                onGet: "formatElevation",
-                onSet: "parseElevation",
+                onGet: "formatElevationLoss",
+                onSet: "parseElevationLoss",
                 updateModel: "updateModel"
             },
             "#ifPlannedField":
@@ -262,15 +262,15 @@ function(
             "#cadenceAvgField":
             {
                 observe: "cadenceAverage",
-                onGet: "formatNumber",
-                onSet: "parseInteger",
+                onGet: "formatCadence",
+                onSet: "parseCadence",
                 updateModel: "updateModel"
             },
             "#cadenceMaxField":
             {
                 observe: "cadenceMaximum",
-                onGet: "formatNumber",
-                onSet: "parseInteger",
+                onGet: "formatCadence",
+                onSet: "parseCadence",
                 updateModel: "updateModel"
             },
             "#speedAvgField":
@@ -308,8 +308,8 @@ function(
             "#hrMinField":
             {
                 observe: "heartRateMinimum",
-                onGet: "formatNumber",
-                onSet: "parseInteger",
+                onGet: "formatHeartRate",
+                onSet: "parseHeartRate",
                 updateModel: "updateModel"
             },
             "#hrAvgField":

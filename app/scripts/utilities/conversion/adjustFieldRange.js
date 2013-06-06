@@ -15,7 +15,7 @@ function ()
         calories: 99999,
         elevationGain: 99999,
         elevationLoss: 99999,
-        elevationAvg: 99999,
+        elevation: 99999,
         power: 9999,
         torque: 9999,
         cadence: 255,
@@ -27,12 +27,14 @@ function ()
 
     var minimums = {
         pace: 1 / 3600,
-        elevationAvg: -15000,
+        elevation: -15000,
         temp: -999
     };
 
     var adjustFieldRange = function (value, fieldName)
     {
+
+        value = parseFloat(value);
 
         if (isNaN(value) || !fieldName)
         {

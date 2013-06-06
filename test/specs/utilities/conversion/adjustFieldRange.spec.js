@@ -44,7 +44,7 @@ function(adjustFieldRange)
         {
             var nan = Number("x");
             expect(isNaN(adjustFieldRange(nan, "duration"))).toBeTruthy();
-            expect(adjustFieldRange(undefined, "duration")).toBe(undefined);
+            expect(isNaN(adjustFieldRange(undefined, "duration"))).toBeTruthy();
         });
 
         it("Should return if the field type is not valid", function()
@@ -103,11 +103,11 @@ function(adjustFieldRange)
             describeRange("elevationLoss", minElevationLoss, maxElevationLoss);
         });
 
-        describe("elevationAvg", function()
+        describe("elevation", function()
         {
             var maxElevationAvg = 99999;
             var minElevationAvg = -15000;
-            describeRange("elevationAvg", minElevationAvg, maxElevationAvg);
+            describeRange("elevation", minElevationAvg, maxElevationAvg);
         });
 
         describe("TSS", function()

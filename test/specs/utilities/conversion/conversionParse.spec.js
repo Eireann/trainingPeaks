@@ -188,6 +188,402 @@ function(theMarsApp, TP, conversion, convertToModelUnits, dateTimeUtils)
             ]);
         });
 
+        describe("Calories", function()
+        {
+            describeParse("parseCalories", [
+                {
+                    input: "99999",
+                    output: 99999 
+                },
+                {
+                    input: "99999.1",
+                    output: 99999
+                },
+                {
+                    input: "100000",
+                    output: 99999
+                },
+                {
+                    input: "1",
+                    output: 1
+                },
+                {
+                    input: "0",
+                    output: 0
+                },
+                {
+                    input: "-1",
+                    output: 0
+                }
+            ]);
+        });
+
+        describe("Elevation Gain", function()
+        {
+            describeParse("parseElevationGain", [
+                {
+                    input: "99999",
+                    output: 99999 
+                },
+                {
+                    input: "99999.1",
+                    output: 99999
+                },
+                {
+                    input: "100000",
+                    output: 99999
+                },
+                {
+                    input: "1",
+                    output: 1
+                },
+                {
+                    input: "0",
+                    output: 0
+                },
+                {
+                    input: "-1",
+                    output: 0
+                }
+            ]);
+        });
+
+        describe("Elevation Loss", function()
+        {
+            describeParse("parseElevationLoss", [
+                {
+                    input: "99999",
+                    output: 99999 
+                },
+                {
+                    input: "99999.1",
+                    output: 99999
+                },
+                {
+                    input: "100000",
+                    output: 99999
+                },
+                {
+                    input: "1",
+                    output: 1
+                },
+                {
+                    input: "0",
+                    output: 0
+                },
+                {
+                    input: "-1",
+                    output: 0
+                }
+            ]);
+        });
+
+        describe("Elevation", function()
+        {
+            describeParse("parseElevation", [
+                {
+                    input: "99999",
+                    output: 99999 
+                },
+                {
+                    input: "99999.1",
+                    output: 99999
+                },
+                {
+                    input: "100000",
+                    output: 99999
+                },
+                {
+                    input: "1",
+                    output: 1
+                },
+                {
+                    input: "0",
+                    output: 0
+                },
+                {
+                    input: "-1",
+                    output: -1 
+                },
+                {
+                    input: "-15001",
+                    output: -15000
+                }
+            ]);
+        });
+
+        describe("Energy", function()
+        {
+            describeParse("parseEnergy", [
+                {
+                    input: "99999",
+                    output: 99999 
+                },
+                {
+                    input: "99999.1",
+                    output: 99999
+                },
+                {
+                    input: "100000",
+                    output: 99999
+                },
+                {
+                    input: "1",
+                    output: 1
+                },
+                {
+                    input: "0",
+                    output: 0
+                },
+                {
+                    input: "-1",
+                    output: 0
+                }
+            ]);
+        });
+
+        describe("TSS", function()
+        {
+            describeParse("parseTSS", [
+                {
+                    input: "9999",
+                    output: 9999
+                },
+                {
+                    input: "9999.1",
+                    output: 9999
+                },
+                {
+                    input: "999.1",
+                    output: 999.1
+                },
+                {
+                    input: "10000",
+                    output: 9999
+                },
+                {
+                    input: "1",
+                    output: 1
+                },
+                {
+                    input: "0",
+                    output: 0
+                },
+                {
+                    input: "0.23",
+                    output: 0.2
+                },
+                {
+                    input: "-1",
+                    output: 0
+                }
+            ]);
+        });
+
+        describe("IF", function()
+        {
+            describeParse("parseIF", [
+                {
+                    input: "99",
+                    output: 99
+                },
+                {
+                    input: "99.1",
+                    output: 99
+                },
+                {
+                    input: "9.13",
+                    output: 9.13
+                },
+                {
+                    input: "100",
+                    output: 99
+                },
+                {
+                    input: "1",
+                    output: 1
+                },
+                {
+                    input: "0",
+                    output: 0
+                },
+                {
+                    input: "0.234",
+                    output: 0.23
+                },
+                {
+                    input: "-1",
+                    output: 0
+                }
+            ]);
+        });
+
+        describe("Power", function()
+        {
+            describeParse("parsePower", [
+                {
+                    input: "9999",
+                    output: 9999 
+                },
+                {
+                    input: "9999.1",
+                    output: 9999
+                },
+                {
+                    input: "10000",
+                    output: 9999
+                },
+                {
+                    input: "1",
+                    output: 1
+                },
+                {
+                    input: 0,
+                    output: 0
+                },
+                {
+                    input: "-1",
+                    output: 0
+                }
+            ]);
+        });
+
+        describe("HeartRate", function()
+        {
+            describeParse("parseHeartRate", [
+                {
+                    input: "255",
+                    output: 255 
+                },
+                {
+                    input: "255.1",
+                    output: 255
+                },
+                {
+                    input: "10000",
+                    output: 255
+                },
+                {
+                    input: "1",
+                    output: 1
+                },
+                {
+                    input: 0,
+                    output: 0
+                },
+                {
+                    input: "-1",
+                    output: 0
+                }
+            ]);
+        });
+
+        describe("Cadence", function()
+        {
+            describeParse("parseCadence", [
+                {
+                    input: "255",
+                    output: 255 
+                },
+                {
+                    input: "255.1",
+                    output: 255
+                },
+                {
+                    input: "10000",
+                    output: 255
+                },
+                {
+                    input: "1",
+                    output: 1
+                },
+                {
+                    input: 0,
+                    output: 0
+                },
+                {
+                    input: "-1",
+                    output: 0
+                }
+            ]);
+        });
+
+        describe("Torque", function()
+        {
+            describeParse("parseTorque", [
+                {
+                    input: "9999",
+                    output: 9999 
+                },
+                {
+                    input: "9999.1",
+                    output: 9999
+                },
+                {
+                    input: "10000",
+                    output: 9999
+                },
+                {
+                    input: "1",
+                    output: 1
+                },
+                {
+                    input: "0",
+                    output: 0
+                },
+                {
+                    input: "-1",
+                    output: 0
+                },
+                {
+                    input: "1.23",
+                    output: 1.23
+                }
+            ]);
+        });
+
+        describe("Temperature", function()
+        {
+            describeParse("parseTemperature", [
+                {
+                    input: "999",
+                    output: 999 
+                },
+                {
+                    input: "999.1",
+                    output: 999
+                },
+                {
+                    input: "1000",
+                    output: 999
+                },
+                {
+                    input: "1",
+                    output: 1
+                },
+                {
+                    input: 0,
+                    output: 0
+                },
+                {
+                    input: "-1",
+                    output: -1
+                },
+                {
+                    input: "-999",
+                    output: -999
+                },
+                {
+                    input: "-1000",
+                    output: -999
+                }
+            ]);
+        });
+
+
+
+
+
     });
 
 });
