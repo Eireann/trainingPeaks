@@ -79,7 +79,7 @@ selection: {
             return { from: from, to: to, axis: axis };
         }
         
-        function addMultiSelection(ranges, preventEvent)
+        function addMultiSelection(ranges, options, preventEvent)
         {
             var multiSelection = {
                 first: { x: -1, y: -1 }, second: { x: -1, y: -1 },
@@ -112,6 +112,7 @@ selection: {
             }
 
             multiSelection.show = true;
+            multiSelection.dataType = options.dataType;
             multiSelections.push(multiSelection);
             plot.triggerRedrawOverlay();
             return multiSelection;
@@ -128,16 +129,10 @@ selection: {
         function drawSelectionBoxes(plot, ctx)
         {
             var plotOffset = plot.getPlotOffset();
-            var o = plot.getOptions();
-            var c = $.color.parse(o.multiSelection.color);
-            var fillStyle = c.scale('a', 0.5).toString();
-            var strokeStyle = c.scale('a', 0.8).toString();
-
+            var options = plot.getOptions().multiSelection;
             ctx.save();
-            ctx.strokeStyle = strokeStyle;
-            ctx.fillStyle = fillStyle;
             ctx.lineWidth = 1;
-            ctx.lineJoin = o.multiSelection.shape;
+            ctx.lineJoin = options.shape;
             ctx.translate(plotOffset.left, plotOffset.top);
 
             _.each(multiSelections, function(multiSelection)
@@ -149,12 +144,24 @@ selection: {
                         w = Math.abs(multiSelection.second.x - multiSelection.first.x) - 1,
                         h = Math.abs(multiSelection.second.y - multiSelection.first.y) - 1;
 
+                    setColorBySelectionType(options, multiSelection.dataType, ctx);
+
                     ctx.fillRect(x, y, w, h);
                     ctx.strokeRect(x, y, w, h);
                 }
             });
 
             ctx.restore();
+        }
+
+        function setColorBySelectionType(options, selectionType, ctx)
+        {
+            var colorCode = selectionType && options.colors.hasOwnProperty(selectionType) ? options.colors[selectionType] : options.colors.defaultColor;
+            var c = $.color.parse(colorCode);
+            var fillStyle = c.scale('a', 0.5).toString();
+            var strokeStyle = c.scale('a', 0.8).toString();
+            ctx.strokeStyle = strokeStyle;
+            ctx.fillStyle = fillStyle;
         }
 
         plot.clearMultiSelection = clearMultiSelection;
@@ -171,9 +178,17 @@ selection: {
             options: {
                 multiSelection: {
                     mode: "x", // one of null, "x", "y" or "xy"
-                    color: "#accfe8",
                     shape: "round", // one of "round", "miter", or "bevel"
-                    minSize: 1 // minimum number of pixels
+                    minSize: 1, // minimum number of pixels
+                    colors: {
+                        defaultColor: 'lightblue',
+                        distance: 'lightblue',
+                        pace: 'lightblue',
+                        speed: 'lightblue',
+                        heartrate: 'lightblue',
+                        cadence: 'lightblue',
+                        power: 'lightblue'
+                    }
                 }
             },
             name: 'multiselection',

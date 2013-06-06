@@ -24,6 +24,7 @@ function(
         initialize: function()
         {
             this.on("controller:rangeselected", this.onRangeSelected, this);
+            this.on("controller:unselectall", this.onUnSelectAll, this);
             this.watchForControllerResize();
         },
 
@@ -37,6 +38,7 @@ function(
             var lapData = this.getLapData();
             expandoCommon.calculateTotalAndMovingTime(lapData);
             this.findAvailableMinMaxAvgFields(lapData);
+            this.addCommonWorkoutFields(lapData);
             return lapData;
         },
 
@@ -55,20 +57,53 @@ function(
             }
         },
         
-        onRangeSelected: function (workoutStatsForRange)
+        onRangeSelected: function (workoutStatsForRange, options, triggeringView)
         {
-            if (workoutStatsForRange)
+
+            // we're trying to add or remove it from multi selection - don't show it in stats
+            if ((options.addToSelection || options.removeFromSelection) && !options.displayStats)
             {
-                this.selectedRangeData = workoutStatsForRange.toJSON();
-                this.render();
-                if(workoutStatsForRange.hasLoaded)
-                {
-                    this.$el.removeClass("waiting");
-                } else
-                {
-                    this.$el.addClass("waiting");
-                }
+                return;
             }
+
+            this.renderWorkoutStats(workoutStatsForRange);
+
+            // if it hasn't loaded, watch for changes
+            this.stopWaitingForStats();
+            if (!workoutStatsForRange.hasLoaded)
+            {
+                this.waitForStats(workoutStatsForRange);
+            }
+        },
+
+        renderWorkoutStats: function(workoutStatsForRange)
+        {
+            // render
+            this.selectedRangeData = workoutStatsForRange.toJSON();
+            this.render();
+        },
+
+        onStatsFetched: function()
+        {
+            this.renderWorkoutStats(this.waitingFor);
+            this.stopWaitingForStats();
+        },
+
+        waitForStats: function(workoutStatsForRange)
+        {
+            this.onWaitStart();
+            this.waitingFor = workoutStatsForRange;
+            this.waitingFor.once("sync", this.onStatsFetched, this);
+        },
+
+        stopWaitingForStats: function()
+        {
+            if (this.waitingFor)
+            {
+                this.waitingFor.off("sync", this.onStatsFetched, this);
+            }
+            this.waitingFor = null;
+            this.onWaitStop();
         },
 
         findAvailableMinMaxAvgFields: function(lapData)
@@ -87,12 +122,14 @@ function(
             if (this.hasAnyNonZeroValue(lapData, ["minimumCadence", "averageCadence", "maximumCadence"]))
                 lapData.minMaxCadence = lapData.minMaxAvg = true;
 
-            if (this.hasAnyValue(lapData, ["elevationMinimum", "elevationAverage", "elevationMaximum"]))
+            if (this.hasAnyValue(lapData, ["minimumElevation", "averageElevation", "maximumElevation"]))
                 lapData.minMaxElevation = lapData.minMaxAvg = true;
 
-            if (this.hasAnyValue(lapData, ["tempMin", "tempAvg", "tempMax"]))
+            if (this.hasAnyValue(lapData, ["minimumTemp", "averageTemp", "maximumTemp"]))
                 lapData.minMaxTemp = lapData.minMaxAvg = true;
 
+            if (this.hasAnyValue(lapData, ["minimumTorque", "averageTorque", "maximumTorque"]))
+                lapData.minMaxTorque = lapData.minMaxAvg = true;
         },
 
         hasAnyValue: function(context, keys)
@@ -129,7 +166,43 @@ function(
             // assumes that stats view resizes before laps view, because of their ordering in the expandoController
             //this.$el.parent().height(this.$el.outerHeight() + 10);
             this.$el.parent().css("min-height", containerHeight / 2);
+        },
+
+        onWaitStart: function()
+        {
+            if(!this.$throbber)
+            {
+                var offset = this.$el.parent().offset();
+                this.$throbber = $("<div></div>").addClass("expandoStatsThrobber");
+                this.$throbber.css("top", offset.top + "px");
+                this.$throbber.css("left", offset.left + "px");
+                this.$throbber.width(this.$el.parent().width());
+                this.$throbber.height(this.$el.parent().height());
+                $("body").append(this.$throbber);
+            }
+        },
+
+        onWaitStop: function()
+        {
+            if(this.$throbber)
+            {
+                this.$throbber.remove();
+                this.$throbber = null;
+            }
+        },
+
+        onUnSelectAll: function()
+        {
+            this.selectedRangeData = null;
+            this.stopWaitingForStats();
+            this.render();
+        },
+
+        addCommonWorkoutFields: function(lapData)
+        {
+            lapData.workoutTypeValueId = this.model.get("workoutTypeValueId");
         }
+
     };
 
     return TP.ItemView.extend(expandoStatsView);

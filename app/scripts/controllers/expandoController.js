@@ -34,8 +34,6 @@ function(TP, ExpandoLayout, GraphView, MapView, StatsView, LapsView, ChartsView)
 
         show: function()
         {
-            var self = this;
-
             this.closeViews();
             this.preFetchDetailData();
 
@@ -52,6 +50,13 @@ function(TP, ExpandoLayout, GraphView, MapView, StatsView, LapsView, ChartsView)
 
             this.watchForViewEvents();
 
+            this.handleDetailDataPromise();
+        },
+
+        handleDetailDataPromise: function()
+        {
+
+            var self = this;
             setImmediate(function() { self.prefetchConfig.detailDataPromise.then(self.onModelFetched); });
 
             // if we don't have a workout, just resolve the deferred to let everything render
@@ -153,27 +158,20 @@ function(TP, ExpandoLayout, GraphView, MapView, StatsView, LapsView, ChartsView)
 
         },
 
-        onRangeSelected: function (workoutStatsForRange, triggeringView)
+        onRangeSelected: function (workoutStatsForRange, options, triggeringView)
         {
-
-            this.mostRecentlySelectedRange = workoutStatsForRange;
 
             _.each(this.views, function(view, key)
             {
-                view.trigger("controller:rangeselected", workoutStatsForRange, triggeringView);
+                view.trigger("controller:rangeselected", workoutStatsForRange, options, triggeringView);
             }, this);
 
-            if(!workoutStatsForRange.hasLoaded)
+            if (!workoutStatsForRange.hasLoaded)
             {
-                var self = this;
-                workoutStatsForRange.fetch().done(function ()
+                workoutStatsForRange.fetch().done(function()
                 {
                     workoutStatsForRange.hasLoaded = true;
-
-                    // if we change ranges before this range loads, don't bother to display it
-                    if (workoutStatsForRange === self.mostRecentlySelectedRange)
-                        self.onRangeSelected(workoutStatsForRange, triggeringView);
-
+                    // don't retrigger the views, the views can decide if they want to listen or not
                 });
             }
         },
@@ -217,9 +215,10 @@ function(TP, ExpandoLayout, GraphView, MapView, StatsView, LapsView, ChartsView)
         onViewResize: function()
         {
             var containerHeight = this.layout.$el.parent().height();
+            var mapAndChartsContainerWidth = this.layout.$("#expandoLeftColumn").width();
             _.each(this.views, function(view)
             {
-                view.trigger("controller:resize", containerHeight);
+                view.trigger("controller:resize", containerHeight, mapAndChartsContainerWidth);
             }, this);
         }
     });

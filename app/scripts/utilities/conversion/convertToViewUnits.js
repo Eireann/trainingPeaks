@@ -97,13 +97,10 @@ function(
     var convertEfficiencyFactor = function(value, workoutType)
     {
         var currentUnits = theMarsApp.user.get("units");
-        return (value * modelToViewConversionFactors("elevation", currentUnits)).toFixed(0);
-
         var runType = workoutTypes.getIdByName("Run");
         var walkType = workoutTypes.getIdByName("Walk");
-        if(workoutType
-			&& (workoutType === runType
-				|| workoutType === walkType))
+
+        if(workoutType && (workoutType === runType || workoutType === walkType))
         {
             return (value * modelToViewConversionFactors("efficiencyfactor", currentUnits)).toFixed(2);
         }
@@ -124,14 +121,22 @@ function(
 
         var convertedValue = value * modelToViewConversionFactors("distance", theMarsApp.user.get("units"));
 
-        var swimType = workoutTypes.getIdByName("Swim");
-        if (swimType === sportType)
-        {
-            return Math.round(convertedValue);
-        } else
-        {
-            return roundViewUnits(convertedValue, precision);
-        }
+        //Disabled until we address changing QV unit options
+        //var swimType = workoutTypes.getIdByName("Swim");
+        //if (swimType === sportType)
+        //{
+        //    return Math.round(convertedValue);
+        //} else
+        //{
+        //    return roundViewUnits(convertedValue, precision);
+        //}
+        
+        return roundViewUnits(convertedValue, precision);
+    };
+    
+    var convertTorqueToViewUnits = function (value, precision)
+    {
+        return roundViewUnits(value * modelToViewConversionFactors("torque", theMarsApp.user.get("units")));
     };
 
     var convertSpeedToViewUnits = function(value)
@@ -181,7 +186,7 @@ function(
             case "power":
                 return value;
             case "torque":
-                return value;
+                return convertTorqueToViewUnits(value);
             case "heartrate":
                 return value;
             case "cadence":

@@ -227,15 +227,15 @@ function(
             "#torqueAvgField":
             {
                 observe: "torqueAverage",
-                onGet: "formatInteger",
-                onSet: "parseFloat",
+                onGet: "formatTorque",
+                onSet: "parseTorque",
                 updateModel: "updateModel"
             },
             "#torqueMaxField":
             {
                 observe: "torqueMaximum",
-                onGet: "formatInteger",
-                onSet: "parseFloat",
+                onGet: "formatTorque",
+                onSet: "parseTorque",
                 updateModel: "updateModel"
             },
             "#elevationMinField":

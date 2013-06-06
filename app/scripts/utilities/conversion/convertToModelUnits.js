@@ -73,6 +73,8 @@ function(_, modelToViewConversionFactors)
                 return convertToSpeedFromPace(value, userUnits);
             case "temperature":
                 return userUnits === "0" ? 5 / 9 * (value - 32) : value;
+            case "torque":
+                return (+value / modelToViewConversionFactors(fieldType, userUnits));
             default:
                 throw "Unknown field type for unit conversion";
         }

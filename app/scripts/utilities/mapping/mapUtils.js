@@ -100,9 +100,9 @@ function(
  
         },
 
-        createHighlight: function(map, latLonArray)
+        createHighlight: function(map, latLonArray, dataType)
         {
-            var polylineOptions = { color: "blue", smoothFactor: 1.0, opacity: 0.7, weight: 4 };
+            var polylineOptions = { color: this.getColorByDataType(dataType), smoothFactor: 1.0, opacity: 0.7, weight: 4 };
             var leafletLatLongs = [];
 
             if (latLonArray && latLonArray.length > 0)
@@ -150,25 +150,28 @@ function(
 
         calculateMileMarkers: function(dataParser, maxMarkers)
         {
-            var latLonArray = dataParser.getLatLonArray();
-            var distances = dataParser.dataByChannel.Distance;
-            var intervals = this.calculateMileMarkerInterval(distances[distances.length - 1][1], maxMarkers);
-            var nextMarker = intervals.distanceBetweenMarkers;
             var markers = [];
-            var units = TP.utils.units.getUnitsLabel("distance");
-            var markerNumber = intervals.countBy;
-
-            // array index 0 = ms offset, 1 = distance (in meters?)
-            for(var i = 0; i < distances.length && i < latLonArray.length; i++)
+            var latLonArray = dataParser.getLatLonArray();
+            if (latLonArray)
             {
-                if (distances[i][1] >= nextMarker)
+                var distances = dataParser.dataByChannel.Distance;
+                var intervals = this.calculateMileMarkerInterval(distances[distances.length - 1][1], maxMarkers);
+                var nextMarker = intervals.distanceBetweenMarkers;
+
+                var units = TP.utils.units.getUnitsLabel("distance");
+                var markerNumber = intervals.countBy;
+
+                // array index 0 = ms offset, 1 = distance (in meters?)
+                for (var i = 0; i < distances.length && i < latLonArray.length; i++)
                 {
-                    markers.push({ latLng: latLonArray[i], options: { riseOnHover: true, title: markerNumber + " " + units, number: markerNumber } });
-                    nextMarker += intervals.distanceBetweenMarkers;
-                    markerNumber += intervals.countBy;
+                    if (distances[i][1] >= nextMarker)
+                    {
+                        markers.push({ latLng: latLonArray[i], options: { riseOnHover: true, title: markerNumber + " " + units, number: markerNumber } });
+                        nextMarker += intervals.distanceBetweenMarkers;
+                        markerNumber += intervals.countBy;
+                    }
                 }
             }
-
             return markers;
         },
 
@@ -184,6 +187,22 @@ function(
                 skip = 1;
 
             return { distanceBetweenMarkers: baseInterval * skip, countBy: skip };
+        },
+
+        getColorByDataType: function(dataType)
+        {
+            var colors = {
+                defaultColor: 'blue',
+                distance: 'blue',
+                pace: 'blue',
+                speed: 'blue',
+                heartrate: 'blue',
+                cadence: 'blue',
+                power: 'blue'
+            };
+
+            return dataType && colors.hasOwnProperty(dataType) ? colors[dataType] : colors.defaultColor;
+
         }
 
     };

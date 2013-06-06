@@ -271,8 +271,12 @@
 
         .timeInZonesChartContainer
         {
-            height: 220px;
-            min-height: 220px; 
+            float: left;
+        }
+
+        .peaksChartContainer
+        {
+            float: left;
         }
     }
 }
@@ -490,4 +494,8 @@
     }
 }
 
-
+.expandoStatsThrobber
+{
+    @include throbber;
+    z-index: 2000;
+}

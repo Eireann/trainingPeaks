@@ -22,7 +22,7 @@
     {
         display: none;
         float: right;
-        margin-top: 1px;
+        margin-right: -1px;
 
         button
         {	
@@ -70,7 +70,7 @@
 
             .workoutDistanceTime
             {
-                padding: 13px 0px 0px 30px;
+                padding: 14px 0px 0px 30px;
 
                 @include labels($fontFamilyRegular, $fontSizeXLarge, $TPGrey4, normal);
                 label

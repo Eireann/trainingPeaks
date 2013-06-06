@@ -135,7 +135,7 @@
 
         formatNumber: function(value, options)
         {
-            return ((value === null || value === 0) ? "" : +value);
+            return ((value === null || value === 0) ? "" : convertToViewUnits(value, "number"));
         },
 
         formatInteger: function(value, options)
@@ -198,6 +198,28 @@
         parseEnergy: function (value, options)
         {
             return value ? (Math.round(parseFloat(value))).toFixed(0) : 0;
+        },
+        
+        formatTorque: function (value, options)
+        {
+            var parameters = {
+                value: value,
+                fieldType: "torque",
+                defaultValue: options && options.hasOwnProperty("defaultValue") ? options.defaultValue : "",
+                sportType: this.getMySportType()
+            };
+
+            if (options && options.precision)
+            {
+                parameters.precision = options.precision;
+            }
+
+            return convertToViewUnits(parameters);
+        },
+
+        parseTorque: function (value, options)
+        {
+            return convertToModelUnits(parseFloat(value), "torque");
         },
 
         formatWorkoutComments: function(commentsArray, options)

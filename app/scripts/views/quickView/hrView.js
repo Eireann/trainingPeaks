@@ -16,33 +16,11 @@ function(_, TP, zonesViewBase)
         initialize: function(options)
         {
             this.initializeBaseView(options);
-            this.on("buildPeakChartPoint", this.addTooltipDataToPeakChartPoint, this);
             this.on("buildPeakStickitBinding", this.addFormattersToPeakStickitBinding, this);
             this.on("buildTimeInZoneStickitBinding", this.addFormattersToTimeInZoneStickitBinding, this);
         },
 
-        addTooltipDataToPeakChartPoint: function(point, peak, timeInZones)
-        {
-            _.extend(point,
-            {
-                tooltips: [
-                    {
-                        label: point.label
-                    },
-                    {
-                        value: point.value + " BPM"
-                    },
-                    {
-                        value: TP.utils.conversion.toPercent(peak.value, timeInZones.threshold) + " %lt"
-                    },
-                    {
-                        value: TP.utils.conversion.toPercent(peak.value, timeInZones.maximum) + " %Max"
-                    }
-                ]
-            });
-        },
-
-        addFormattersToPeakStickitBinding: function(binding, peak)
+        addFormattersToPeakStickitBinding: function (binding, peak)
         {
             _.extend(binding,
             {

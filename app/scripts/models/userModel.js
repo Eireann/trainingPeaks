@@ -69,7 +69,7 @@ function(TP, AthleteSettingsModel)
         {
             var athletes = this.get("athletes");
             if (!athletes || !athletes.length)
-                return 0;
+                throw "User has no athletes";
 
             return athletes[0].athleteId;
         },

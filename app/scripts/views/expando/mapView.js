@@ -43,7 +43,7 @@ function (
             this.selections = [];
 
             if (!options.detailDataPromise)
-                throw "detailDataPromise is required for map and graph view";
+                throw "detailDataPromise is required for map view";
 
             this.detailDataPromise = options.detailDataPromise;
         },
@@ -85,11 +85,13 @@ function (
             if (!this.map)
                 this.map = MapUtils.createMapOnContainer(this.$("#expandoMap")[0]);
 
-            var latLongArray = this.dataParser.getLatLonArray();
-
-            this.addMouseHoverBuffer(latLongArray);
-            MapUtils.setMapData(this.map, latLongArray);
-            MapUtils.calculateAndAddMileMarkers(this.map, this.dataParser, 15);
+            if (this.dataParser.hasLatLonData)
+            {
+                var latLongArray = this.dataParser.getLatLonArray();
+                this.addMouseHoverBuffer(latLongArray);
+                MapUtils.setMapData(this.map, latLongArray);
+                MapUtils.calculateAndAddMileMarkers(this.map, this.dataParser, 15);
+            }
         },
 
         addMouseHoverBuffer: function(latLongArray)
@@ -157,22 +159,28 @@ function (
             this.off("controller:graphleave", this.onGraphLeave, this);
         },
 
-        onRangeSelected: function (workoutStatsForRange)
+        onRangeSelected: function(workoutStatsForRange, options, triggeringView)
         {
 
             var selection;
-            if (workoutStatsForRange.removeFromSelection)
+            if (options.removeFromSelection)
             {
+                // remove it, if it was selected
                 selection = this.findMapSelection(workoutStatsForRange.get("begin"), workoutStatsForRange.get("end"));
                 if(selection)
                 {
                     this.removeSelectionFromMap(selection);
                     this.selections = _.without(this.selections, selection);
                 }
-            } else if(workoutStatsForRange.addToSelection)
+            } else if (options.addToSelection)
             {
-                selection = this.createMapSelection(workoutStatsForRange);
-                this.addSelectionToMap(selection);
+                // add it, if it wasn't already selected
+                selection = this.findMapSelection(workoutStatsForRange.get("begin"), workoutStatsForRange.get("end"));
+                if (!selection)
+                {
+                    selection = this.createMapSelection(workoutStatsForRange, options);
+                    this.addSelectionToMap(selection);
+                }
             }
         },
 
@@ -184,10 +192,10 @@ function (
             });
         },
 
-        createMapSelection: function(workoutStatsForRange)
+        createMapSelection: function(workoutStatsForRange, options)
         {
             var latLngs = this.dataParser.getLatLonBetweenMsOffsets(workoutStatsForRange.get("begin"), workoutStatsForRange.get("end"));
-            var mapLayer = MapUtils.createHighlight(this.map, latLngs);
+            var mapLayer = MapUtils.createHighlight(this.map, latLngs, options.dataType);
 
             var selection = {
                 begin: workoutStatsForRange.get("begin"),
@@ -220,29 +228,36 @@ function (
 
         onGraphHover: function (msOffset)
         {
-            var index = this.dataParser.findIndexByMsOffset(msOffset);
-
-            if (index === null)
+            if (this.dataParser.hasLatLongData)
             {
-                return;
-            }
+                var index = this.dataParser.findIndexByMsOffset(msOffset);
 
-            var lat = this.dataParser.dataByChannel.Latitude[index][1];
-            var long = this.dataParser.dataByChannel.Longitude[index][1];
+                if (index === null)
+                {
+                    return;
+                }
 
-            if (_.isNaN(lat) || _.isNaN(long))
-            {
-                this.hideHoverMarkerWithDelay();
-            }
-            else
-            {
-                this.showHoverMarker(lat, long);
+                var lat = this.dataParser.dataByChannel.Latitude[index][1];
+                var long = this.dataParser.dataByChannel.Longitude[index][1];
+
+                if (_.isNaN(lat) || _.isNaN(long))
+                {
+                    this.hideHoverMarkerWithDelay();
+                }
+                else
+                {
+                    this.showHoverMarker(lat, long);
+                }
             }
         },
 
         onGraphLeave: function ()
         {
-            this.hideHoverMarker();
+            if (this.dataParser.hasLatLongData)
+            {
+                this.hideHoverMarker();
+                
+            }
         },
 
 

@@ -96,9 +96,15 @@
                 </div>
                 <div class="share">
                     <label>{{$ "Share"}}</label>
-                    <img src="assets/images/QVImages/twitterIcon.jpg"/>
-                    <img src="assets/images/QVImages/facebookIcon.jpg"/>
-                    <img src="assets/images/QVImages/mailIcon.jpg"/>
+                    <div class="publicCheckboxContainer">
+                        <input type="checkbox" class="publicCheckbox"/> <span>{{$ "Public" }}</span>
+                    </div>
+                    <div class="shareIcons">
+                        <div class="twitterIcon"/>
+                        <div class="facebookIcon"/>
+                        <div class="linkIcon"/>
+                        <a class="emailLink"><div class="emailIcon"/></a>
+                    </div>
                 </div>
             </div>
             <input id="fileUploadInput" style="display: none" type="file"/>
@@ -133,14 +139,16 @@
     <div id="quickViewExpandedContent" style="display:none;"/> 
     
     <div class="quickviewFooter">
-        <div class="selectionBox">
-            <select>
-                <option value="Share" selected>{{$ "Share"}}</option>
-                <option value="Facebook">{{$ "Facebook"}}</option>
-                <option value="Twitter">{{$ "Twitter"}}</option>
-                <option value="Email">{{$ "Email"}}</option>
-                <option value="Link">{{$ "Link"}}</option>
-            </select>
+        <div class="share">
+            <div class="publicCheckboxContainer">
+                <input type="checkbox" class="publicCheckbox"/> {{$ "Public" }}
+            </div>
+            <div class="shareIcons">
+                <div class="twitterIcon"/>
+                <div class="facebookIcon"/>
+                <div class="linkIcon"/>
+                <a class="emailLink"><div class="emailIcon"/></a>
+            </div>
         </div>
         <div class="saveCloseButtons">
             <button id="delete">{{$ "Delete"}}</button>
