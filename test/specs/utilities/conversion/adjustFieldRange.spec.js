@@ -10,9 +10,8 @@ function(adjustFieldRange)
         it("Should return if the value is not a number", function()
         {
             var nan = Number("x");
-            var undef = undefined;
             expect(isNaN(adjustFieldRange(nan, "duration"))).toBeTruthy();
-            expect(adjustFieldRange(undef, "duration")).toBe(undef);
+            expect(adjustFieldRange(undefined, "duration")).toBe(undefined);
         });
 
         it("Should return if the field type is not valid", function()

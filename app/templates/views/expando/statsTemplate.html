@@ -96,7 +96,7 @@
     {{#if efficiencyFactor }}
     <div class="statsRow" id="efficiencyFactor">
         <label>{{$ "EF" }}</label>
-        <span class="value">{{ conversion "formatInteger" efficiencyFactor }}</span>
+        <span class="value">{{ conversion "formatEfficiencyFactor" efficiencyFactor this }}</span>
         <span class="units"></span>
     </div>
     {{/if}}

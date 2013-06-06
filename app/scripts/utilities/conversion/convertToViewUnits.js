@@ -94,6 +94,25 @@ function(
         return (value * modelToViewConversionFactors("elevation", currentUnits)).toFixed(0);
     };
 
+    var convertEfficiencyFactor = function(value, workoutType)
+    {
+        var currentUnits = theMarsApp.user.get("units");
+        return (value * modelToViewConversionFactors("elevation", currentUnits)).toFixed(0);
+
+        var runType = workoutTypes.getIdByName("Run");
+        var walkType = workoutTypes.getIdByName("Walk");
+        if(workoutType
+			&& (workoutType === runType
+				|| workoutType === walkType))
+        {
+            return (value * modelToViewConversionFactors("efficiencyfactor", currentUnits)).toFixed(2);
+        }
+		else
+        {
+            return value.toFixed(2);
+		}
+    };
+
     var convertTemperature = function(value)
     {
         var currentUnits = theMarsApp.user.get("units");
@@ -169,6 +188,8 @@ function(
                 return value;
             case "number":
                 return roundViewUnits(value);
+            case "efficiencyfactor":
+                return convertEfficiencyFactor(value, sportType);
             default:
                 throw +fieldType + ": Unknown field type for unit conversion";
         }

@@ -13,10 +13,16 @@
         convertToViewUnits: convertToViewUnits,
 
         // works if we have extended these conversion functions onto a view like in quickview, otherwise useless ...
-        getMySportType: function()
+        getMySportType: function(options)
         {
             var sportType = null;
-            if (this.hasOwnProperty("model") && this.model.has("workoutTypeValueId"))
+            if (options && options.hasOwnProperty("workoutTypeValueId"))
+            {
+                sportType = options.workoutTypeValueId;
+            } else if (options && options.hasOwnProperty("model") && options.model.has("workoutTypeValueId"))
+            {
+                sportType = options.model.get("workoutTypeValueId");
+            } else if (this.hasOwnProperty("model") && this.model.has("workoutTypeValueId"))
             {
                 sportType = this.model.get("workoutTypeValueId");
             }
@@ -29,7 +35,7 @@
                 value: value,
                 fieldType: "distance",
                 defaultValue: options && options.hasOwnProperty("defaultValue") ? options.defaultValue : "",
-                sportType: this.getMySportType()
+                sportType: this.getMySportType(options)
             };
 
             if (options && options.precision)
@@ -221,6 +227,11 @@
         formatPercent: function(value, options)
         {
             return ((value === null || value === 0) ? (options && options.hasOwnProperty("defaultValue") ? options.defaultValue : "") : parseFloat(value).toFixed(1));
+        },
+
+        formatEfficiencyFactor: function(value, options)
+        {
+            return convertToViewUnits(value, "efficiencyfactor", undefined, this.getMySportType(options));
         }
 
     };
