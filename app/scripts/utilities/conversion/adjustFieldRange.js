@@ -3,19 +3,25 @@
 ],
 function ()
 {
-    var maxDuration = 99 + (59 / 60); //Duration is in decimal hours, limit is 99:59:00 currently
-    var maxPace = 99 + (59 / 60) + (59 / 3600); //99:59:59
-    var maxSpeed = 999;
-    var maxDistance = 999999;
-    var maxTSS = 9999;
-    var maxCalories = 99999;
-    var maxElevation = 99999;
-    var maxPower = 9999;
-    var maxTorque = 9999;
-    var maxCadence = 255;
-    var maxHR = 255;
-    var maxTemp = 999;
-    
+    var almostOneHundredHours = 99 + (59 / 60) + ((59.99 * 60) / 3600); // 99:59:59.99
+
+    var maximums = {
+        duration: almostOneHundredHours,
+        pace: almostOneHundredHours,
+        speed: 999,
+        distance: 999999,
+        TSS: 9999,
+        calories: 99999,
+        elevation: 99999,
+        power: 9999,
+        torque: 9999,
+        cadence: 255,
+        heartrate: 255,
+        temp: 999
+    };
+
+    var minimums = {};
+
     var adjustFieldRange = function (value, fieldName)
     {
 
@@ -25,53 +31,22 @@ function ()
         }
         else
         {
-            var newValue = value;
-            switch (fieldName)
+            var min = minimums.hasOwnProperty(fieldName) ? minimums[fieldName] : 0;
+            var max = maximums.hasOwnProperty(fieldName) ? maximums[fieldName] : value;
+
+            if(value < min)
             {
-                case "duration":
-                    if (value < 0)
-                    {
-                        newValue = 0;
-                    }
-                    else if (value > maxDuration)
-                    {
-                        newValue = maxDuration;
-                    }
-                    break;
-                case "pace":
-                    if (value < 0)
-                    {
-                        newValue = 0;
-                    }
-                    else if (value > maxPace)
-                    {
-                        newValue = maxPace;
-                    }
-                    break;
-                case "distance":
-                    if (value < 0)
-                    {
-                        newValue = 0;
-                    }
-                    else if (value > maxDistance)
-                    {
-                        newValue = maxDistance;
-                    }
-                    break;
-                case "tss":
-                    if (value < 0)
-                    {
-                        newValue = 0;
-                    }
-                    else if (value > maxDistance)
-                    {
-                        newValue = maxDistance;
-                    }
-                    break;
+                return min;
+            } else if(value > max)
+            {
+                return max;
+            } else
+            {
+                return value;
             }
-            return newValue;
         }
     };
 
     return adjustFieldRange;
+
 });

@@ -6,7 +6,7 @@
     "utilities/conversion/convertToModelUnits",
     "utilities/conversion/convertToViewUnits",
     "utilities/conversion/adjustFieldRange"
-], function (moment, datetimeUtils, workoutTypes, convertToModelUnits, convertToViewUnits, adjustFieldRange)
+], function(moment, datetimeUtils, workoutTypes, convertToModelUnits, convertToViewUnits, adjustFieldRange)
 {
     return {
         convertToModelUnits: convertToModelUnits,
@@ -47,7 +47,7 @@
 
         },
 
-        parseDistance: function (value, options)
+        parseDistance: function(value, options)
         {
             var modelValue = convertToModelUnits(parseFloat(value), "distance");
             modelValue = adjustFieldRange(modelValue, "distance");
@@ -56,6 +56,7 @@
 
         formatDuration: function(value, options)
         {
+            value = adjustFieldRange(value, "distance");
             return datetimeUtils.format.decimalHoursAsTime(value, true, options && options.hasOwnProperty("defaultValue") ? options.defaultValue : "");
         },
 
@@ -110,7 +111,9 @@
 
         parseSpeed: function (value, options)
         {
-            return convertToModelUnits(parseFloat(value), "speed");
+            var modelValue = convertToModelUnits(parseFloat(value), "speed");
+            modelValue = adjustFieldRange(modelValue, "speed");
+            return modelValue;
         },
 
         formatElevation: function (value, options)
