@@ -457,36 +457,29 @@
             }
         }
 
-        .rangesList
-        {
+        .rangesList {
             margin-left: 35px; 
 
-            ul 
-            {
+            ul {
                 list-style-type: none;
             }
 
-            li 
-            {
-                //line-height: 1em;
-
-                span
-                {
+            li {
+				color:#76787d;
+                
+				span {
                     cursor: pointer;  
                     display: inline-block;
                     @include calc(width, "100% - 20px");
-                    &:hover
-                    {
-                        background-color: $TPGrey2;
+                    &:hover {
+						color:#303030;	
                     }
                 }
 
-                &.highlight 
-                {
-                    span
-                    {
-                        background-color: $TPGrey4;
-                        color: #ffffff;
+                &.highlight {
+                    span {
+                        color: #303030;
+						font-family:$fontFamilyHeavy;
                     }
                 }
             }
