@@ -4,6 +4,39 @@ requirejs(
 ],
 function(adjustFieldRange)
 {
+
+
+    var describeRange = function(key, min, max)
+    {
+        it("Should not allow values less than minimum " + min, function()
+        {
+            var tooLow = (min > 0) ? min / 2 : min - 1;
+            expect(adjustFieldRange(tooLow, key)).toEqual(min);
+        });
+
+        it("Should not allow values greater than max " + max, function()
+        {
+            var tooHigh = max + 1;
+            expect(adjustFieldRange(tooHigh, key)).toEqual(max);
+        });
+
+        it("Should allow values between min " + min + " and max " + max, function()
+        {
+            var withinRange = (min + max) / 2;
+            expect(adjustFieldRange(withinRange, key)).toBe(withinRange);
+        });
+
+        it("Should allow values at the very top of the range " + max, function()
+        {
+            expect(adjustFieldRange(max, key)).toBe(max);
+        });
+
+        it("Should allow values at the very bottom of the range " + min, function()
+        {
+            expect(adjustFieldRange(min, key)).toBe(min);
+        });
+    };
+
     describe("Adjust Field Range", function()
     {
 
@@ -23,46 +56,116 @@ function(adjustFieldRange)
 
         describe("Duration", function()
         {
-            it("Should not allow values less than zero", function()
-            {
-                var tooLow = -10;
-                expect(adjustFieldRange(tooLow, 'duration')).toEqual(0);
-            });
-
-            it("Should not allow values greater than 99:59:00", function()
-            {
-                var tooHigh = 100;
-                expect(adjustFieldRange(tooHigh, 'duration')).toEqual(99 + (59/60));
-            });
-
-            it("Should allow values within range", function()
-            {
-                var withinRange = 55.23;
-                expect(adjustFieldRange(withinRange, 'duration')).toBe(withinRange);
-            });
-
-            it("Should allow values at the very top of the range", function ()
-            {
-                var topOfRange = 99 + (59 / 60);
-                expect(adjustFieldRange(topOfRange, 'duration')).toBe(topOfRange);
-            });
-
-            it("Should allow values at the very bottom of the range", function ()
-            {
-                var bottomOfRange = 0;
-                expect(adjustFieldRange(bottomOfRange, 'duration')).toBe(bottomOfRange);
-            });
+            var maxDuration = 99 + (59 / 60) + (59.99 / 3600);
+            var minDuration = 0;
+            describeRange("duration", minDuration, maxDuration);
         });
 
-        describe("Pace", function ()
+        describe("Distance", function()
         {
-            it("Should not allow values less then zero", function ()
-            {
-                var toLow = -10;
-                expect(adjustFieldRange(toLow, 'pace')).toEqual(0);
-            });
+            var maxDistance = 999999;
+            var minDistance = 0;
+            describeRange("distance", minDistance, maxDistance);
         });
 
+        describe("Speed", function()
+        {
+            var maxSpeed = 999;
+            var minSpeed = 0;
+            describeRange("speed", minSpeed, maxSpeed);
+        });
+
+        describe("Pace", function()
+        {
+            var maxPace = 99 + (59 / 60) + (59.99 / 3600);
+            var minPace = 1 / 3600;
+            describeRange("pace", minPace, maxPace);
+        });
+
+        describe("calories", function()
+        {
+            var maxCalories = 99999;
+            var minCalories = 0;
+            describeRange("calories", minCalories, maxCalories);
+        });
+
+        describe("elevationGain", function()
+        {
+            var maxElevationGain = 99999;
+            var minElevationGain = 0;
+            describeRange("elevationGain", minElevationGain, maxElevationGain);
+        });
+
+        describe("elevationLoss", function()
+        {
+            var maxElevationLoss = 99999;
+            var minElevationLoss = 0;
+            describeRange("elevationLoss", minElevationLoss, maxElevationLoss);
+        });
+
+        describe("elevationAvg", function()
+        {
+            var maxElevationAvg = 99999;
+            var minElevationAvg = -15000;
+            describeRange("elevationAvg", minElevationAvg, maxElevationAvg);
+        });
+
+        describe("TSS", function()
+        {
+            var minTss = 0;
+            var maxTss = 9999;
+            describeRange("TSS", minTss, maxTss);
+        });
+
+        describe("IF", function()
+        {
+            var minIf = 0;
+            var maxIf = 99;
+            describeRange("IF", minIf, maxIf);
+        });
+
+        describe("Energy", function()
+        {
+            var minEnergy = 0;
+            var maxEnergy = 99999;
+            describeRange("energy", minEnergy, maxEnergy);
+        });
+
+        describe("Heart Rate", function()
+        {
+            var minHR = 0;
+            var maxHR = 255;
+            describeRange("heartrate", minHR, maxHR);
+        });
+
+        describe("Power", function()
+        {
+            var minPower = 0;
+            var maxPower = 9999;
+            describeRange("power", minPower, maxPower);
+        });
+
+        describe("Torque", function()
+        {
+            var minTorque = 0;
+            var maxTorque = 9999;
+            describeRange("torque", minTorque, maxTorque);
+        });
+
+        describe("Cadence", function()
+        {
+            var minCadence = 0;
+            var maxCadence = 255;
+            describeRange("cadence", minCadence, maxCadence);
+        });
+
+        describe("Temperature", function()
+        {
+            var minTemp = -999;
+            var maxTemp = 999;
+            describeRange("temp", minTemp, maxTemp);
+        });
 
     });
+
 });

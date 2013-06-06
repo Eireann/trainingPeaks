@@ -38,7 +38,9 @@
             var hours = 0;
             hours += this.hours;
             hours += this.minutes / 60;
-            hours += this.seconds / 3600;
+
+            var seconds = this.seconds.toFixed(2);
+            hours += seconds / 3600;
             this.decimalHours = hours;
         },
 

@@ -3,13 +3,15 @@ define(
     "underscore",
     "utilities/workout/workoutTypes",
     "utilities/conversion/modelToViewConversionFactors",
-    "utilities/units/constants"
+    "utilities/units/constants",
+    "utilities/threeSigFig"
 ],
 function(
     _,
     workoutTypes,
     modelToViewConversionFactors,
-    unitsConstants)
+    unitsConstants,
+    threeSigFig)
 {
     var convertToPaceFromSpeed = function(speed, unitSystem)
     {
@@ -41,35 +43,6 @@ function(
         if (seconds < 10) seconds = "0" + seconds;
 
         return hours ? (hours + ":" + minutes + ":" + seconds) : (minutes + ":" + seconds);
-    };
-
-    var roundViewUnits = function(value, precision)
-    {
-        if (!isNumeric(value))
-        {
-            return null;
-        }
-
-        if (!_.isNumber(value))
-        {
-            value = Number(value);
-        }
-
-        if (_.isNumber(precision))
-        {
-            return value.toFixed(precision);
-        }
-
-        if (value >= 100)
-        {
-            return Math.round(value);
-        } else if (value >= 10)
-        {
-            return value.toFixed(1);
-        } else
-        {
-            return value.toFixed(2);
-        }
     };
 
     var isNumeric = function(value)
@@ -128,20 +101,20 @@ function(
         //    return Math.round(convertedValue);
         //} else
         //{
-        //    return roundViewUnits(convertedValue, precision);
+        //    return threeSigFig(convertedValue, precision);
         //}
         
-        return roundViewUnits(convertedValue, precision);
+        return threeSigFig(convertedValue, precision);
     };
     
     var convertTorqueToViewUnits = function (value, precision)
     {
-        return roundViewUnits(value * modelToViewConversionFactors("torque", theMarsApp.user.get("units")));
+        return threeSigFig(value * modelToViewConversionFactors("torque", theMarsApp.user.get("units")));
     };
 
     var convertSpeedToViewUnits = function(value)
     {
-        return roundViewUnits(value * modelToViewConversionFactors("speed", theMarsApp.user.get("units")));
+        return threeSigFig(value * modelToViewConversionFactors("speed", theMarsApp.user.get("units")));
     };
 
     return function(value, fieldType, defaultValueIfEmpty, sportType)
@@ -192,7 +165,7 @@ function(
             case "cadence":
                 return value;
             case "number":
-                return roundViewUnits(value);
+                return threeSigFig(value);
             case "efficiencyfactor":
                 return convertEfficiencyFactor(value, sportType);
             default:

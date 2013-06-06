@@ -49,8 +49,8 @@
 
         parseDistance: function(value, options)
         {
-            var modelValue = convertToModelUnits(parseFloat(value), "distance");
-            modelValue = adjustFieldRange(modelValue, "distance");
+            var modelValue = adjustFieldRange(parseFloat(value), "distance");
+            modelValue = convertToModelUnits(modelValue, "distance");
             return modelValue;
         },
 
@@ -84,7 +84,7 @@
             var timeOfDay = moment(value);
             return timeOfDay.format("hh:mm:ss A");
         },
-        
+
         parsePower: function(value, options)
         {
             var modelValue = this.parseFloat(value, options);
@@ -99,9 +99,14 @@
 
         parsePace: function (value, options)
         {
-            var modelValue =  convertToModelUnits(value, "pace");
-            modelValue = adjustFieldRange(modelValue, "pace");
-            return modelValue;
+            console.log("Input: " + value);
+            var rawTime = datetimeUtils.convert.timeToDecimalHours(value);
+            console.log("Parsed: " + rawTime);
+            var limitedTime = adjustFieldRange(rawTime, "pace");
+            console.log("Limited: " + limitedTime);
+            var formattedLimitedTime = datetimeUtils.format.decimalHoursAsTime(limitedTime, true);
+            console.log("Formatted: " + formattedLimitedTime);
+            return convertToModelUnits(formattedLimitedTime, "pace");
         },
         
         formatSpeed: function(value, options)
@@ -109,10 +114,10 @@
             return convertToViewUnits(value, "speed");
         },
 
-        parseSpeed: function (value, options)
+        parseSpeed: function(value, options)
         {
-            var modelValue = convertToModelUnits(parseFloat(value), "speed");
-            modelValue = adjustFieldRange(modelValue, "speed");
+            var modelValue = adjustFieldRange(parseFloat(value), "speed");
+            modelValue = convertToModelUnits(modelValue, "speed");
             return modelValue;
         },
 
