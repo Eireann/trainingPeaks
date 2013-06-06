@@ -238,7 +238,7 @@ function(seriesColorByChannel, findIndexByMsOffset, convertToViewUnits)
             if (this.dataByChannel.Latitude && this.dataByChannel.Longitude)
             {
                 this.hasLatLongData = true;
-            } 
+            }
             else
             {
                 this.hasLatLongData = false;
@@ -269,7 +269,7 @@ function(seriesColorByChannel, findIndexByMsOffset, convertToViewUnits)
 
         getLatLonArray: function()
         {
-            if (this.hasLatLongData && !this.latLonArray)
+            if (this.dataByChannel.Latitude && this.dataByChannel.Longitude && !this.latLonArray)
                 this.latLonArray = generateLatLonFromData.call(this, this.dataByChannel);
 
             return this.latLonArray;

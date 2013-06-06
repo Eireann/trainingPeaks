@@ -85,16 +85,17 @@ function (
             if (!this.map)
                 this.map = MapUtils.createMapOnContainer(this.$("#expandoMap")[0]);
 
-            if (this.dataParser.hasLatLonData)
+
+            var latLongArray = this.dataParser.getLatLonArray();
+            if (latLongArray)
             {
-                var latLongArray = this.dataParser.getLatLonArray();
                 this.addMouseHoverBuffer(latLongArray);
                 MapUtils.setMapData(this.map, latLongArray);
                 MapUtils.calculateAndAddMileMarkers(this.map, this.dataParser, 15);
             }
         },
 
-        addMouseHoverBuffer: function(latLongArray)
+        addMouseHoverBuffer: function (latLongArray)
         {
             this.mapMouseBuffer = MapUtils.addTransparentBuffer(this.map, latLongArray);
 
@@ -103,13 +104,13 @@ function (
             this.on("close", this.unbindMouseHoverEvents, this);
         },
 
-        unbindMouseHoverEvents: function()
+        unbindMouseHoverEvents: function ()
         {
             this.mapMouseBuffer.off("mousemove", this.onMapHover, this);
             this.mapMouseBuffer.off("mouseout", this.onMapMouseOut, this);
         },
 
-        onMapHover: function(e)
+        onMapHover: function (e)
         {
 
             var linePoint = this.mapMouseBuffer.closestLayerPoint(e.layerPoint);
@@ -132,7 +133,7 @@ function (
             */
         },
 
-        onMapMouseOut: function(e)
+        onMapMouseOut: function (e)
         {
             this.hideHoverMarker();
         },
@@ -159,7 +160,7 @@ function (
             this.off("controller:graphleave", this.onGraphLeave, this);
         },
 
-        onRangeSelected: function(workoutStatsForRange, options, triggeringView)
+        onRangeSelected: function (workoutStatsForRange, options, triggeringView)
         {
 
             var selection;
@@ -167,7 +168,7 @@ function (
             {
                 // remove it, if it was selected
                 selection = this.findMapSelection(workoutStatsForRange.get("begin"), workoutStatsForRange.get("end"));
-                if(selection)
+                if (selection)
                 {
                     this.removeSelectionFromMap(selection);
                     this.selections = _.without(this.selections, selection);
@@ -184,15 +185,15 @@ function (
             }
         },
 
-        findMapSelection: function(begin, end)
+        findMapSelection: function (begin, end)
         {
-            return _.find(this.selections, function(selection)
+            return _.find(this.selections, function (selection)
             {
                 return selection.begin === begin && selection.end === end;
             });
         },
 
-        createMapSelection: function(workoutStatsForRange, options)
+        createMapSelection: function (workoutStatsForRange, options)
         {
             var latLngs = this.dataParser.getLatLonBetweenMsOffsets(workoutStatsForRange.get("begin"), workoutStatsForRange.get("end"));
             var mapLayer = MapUtils.createHighlight(this.map, latLngs, options.dataType);
@@ -206,20 +207,20 @@ function (
             return selection;
         },
 
-        addSelectionToMap: function(selection)
+        addSelectionToMap: function (selection)
         {
             this.selections.push(selection);
             this.map.addLayer(selection.mapLayer);
         },
 
-        removeSelectionFromMap: function(selection)
+        removeSelectionFromMap: function (selection)
         {
             this.map.removeLayer(selection.mapLayer);
         },
 
-        onUnSelectAll: function()
+        onUnSelectAll: function ()
         {
-            _.each(this.selections, function(selection)
+            _.each(this.selections, function (selection)
             {
                 this.removeSelectionFromMap(selection);
             }, this);
@@ -256,12 +257,12 @@ function (
             if (this.dataParser.hasLatLongData)
             {
                 this.hideHoverMarker();
-                
+
             }
         },
 
 
-        hideHoverMarker: function()
+        hideHoverMarker: function ()
         {
             this.clearHoverHideTimeout();
             if (this.hoverMarker)
@@ -271,25 +272,25 @@ function (
             }
         },
 
-        hideHoverMarkerWithDelay: function()
+        hideHoverMarkerWithDelay: function ()
         {
             this.clearHoverHideTimeout();
             var self = this;
-            this.hoverHideTimeout = setTimeout(function()
+            this.hoverHideTimeout = setTimeout(function ()
             {
                 self.hideHoverMarker();
             }, 1000);
         },
 
-        clearHoverHideTimeout: function()
+        clearHoverHideTimeout: function ()
         {
-            if(this.hoverHideTimeout)
+            if (this.hoverHideTimeout)
             {
                 clearTimeout(this.hoverHideTimeout);
             }
         },
 
-        showHoverMarker: function(lat, long)
+        showHoverMarker: function (lat, long)
         {
             this.clearHoverHideTimeout();
             var position = [lat, long];
@@ -304,16 +305,16 @@ function (
             }
         },
 
-        watchForControllerResize: function()
+        watchForControllerResize: function ()
         {
             this.on("controller:resize", this.setViewWidth, this);
-            this.on("close", function()
+            this.on("close", function ()
             {
                 this.off("controller:resize", this.setViewWidth, this);
             }, this);
         },
 
-        setViewWidth: function()
+        setViewWidth: function ()
         {
             if (this.map)
             {
