@@ -52,6 +52,7 @@ function(theMarsApp, TP, conversion, convertToModelUnits, dateTimeUtils)
                 expect(dateTimeUtils.format.decimalHoursAsTime(98 + (59 / 60) + (59.99 / 3600), true, "00:00:00", false)).toEqual("99:00:00");
                 expect(dateTimeUtils.format.decimalHoursAsTime(98 + (59 / 60) + (59.33 / 3600), true, "00:00:00", false)).toEqual("98:59:59");
             });
+
         });
 
         describe("Duration", function()

@@ -101,13 +101,7 @@
         parsePace: function (value, options)
         {
             // utilize datetime smart parsing, but assume we're working with minutes
-            var parts = value.split(":");
-            while (parts.length < 3)
-            {
-                parts.unshift("0");
-            }
-            value = parts.join(":");
-            var rawTime = datetimeUtils.convert.timeToDecimalHours(value);
+            var rawTime = datetimeUtils.convert.timeToDecimalHours(value, { assumeHours: false });
             var limitedTime = adjustFieldRange(rawTime, "pace");
             var formattedLimitedTime = datetimeUtils.format.decimalHoursAsTime(limitedTime, true);
             var convertedPace = convertToModelUnits(formattedLimitedTime, "pace");

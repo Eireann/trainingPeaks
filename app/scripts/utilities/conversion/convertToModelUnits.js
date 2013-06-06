@@ -9,7 +9,7 @@ function(_, modelToViewConversionFactors, dateTimeConvert)
     var convertToSpeedFromPace = function (pace, unitSystem)
     {
 
-        var hours = dateTimeConvert.timeToDecimalHours(pace);
+        var hours = dateTimeConvert.timeToDecimalHours(pace, { assumeHours: false });
         var minutes = hours * 60;
 
         if ((minutes / 60) <= 0.01)
@@ -46,7 +46,7 @@ function(_, modelToViewConversionFactors, dateTimeConvert)
         return isNumeric(valueWithoutColons);
     };
 
-    var convertToModelUnits = function (value, fieldType, workoutType)
+    var convertToModelUnits = function(value, fieldType, workoutType)
     {
         var userUnits = theMarsApp.user.get("units");
 
