@@ -100,7 +100,7 @@ function(
         var runType = workoutTypes.getIdByName("Run");
         var walkType = workoutTypes.getIdByName("Walk");
 
-        if(workoutType && (workoutType === runType || workoutType === walkType))
+        if (workoutType && (workoutType === runType || workoutType === walkType))
         {
             return (value * modelToViewConversionFactors("efficiencyfactor", currentUnits)).toFixed(2);
         }
