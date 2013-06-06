@@ -33,7 +33,7 @@
         {
             .arrow
             {
-                right: 0px;
+                right: 4px;
                 @include transform(translateX(8px) rotate(45deg));
             }
         }
@@ -45,7 +45,7 @@
         {
             .arrow
             {
-                left: 0px;
+                left: 1px;
                 @include transform(translateX(-35px) rotate(-45deg));
             }
         }
