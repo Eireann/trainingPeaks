@@ -7,7 +7,11 @@ function(TP, theMarsApp)
 {
     describe("units related utilities, english units", function()
     {
-        theMarsApp.user.set("units", TP.utils.units.constants.English);
+
+        beforeEach(function()
+        {
+            theMarsApp.user.set("units", TP.utils.units.constants.English);
+        });
 
         describe("convertToModelUnits template helper", function()
         {
@@ -20,6 +24,11 @@ function(TP, theMarsApp)
         
         describe("TP.utils.units.getUnitsLabel template helper", function()
         {
+            beforeEach(function()
+            {
+                theMarsApp.user.set("units", TP.utils.units.constants.English);
+            });
+
             it("should print the unit label for distance", function()
             {
                 expect(TP.utils.units.getUnitsLabel("distance")).toBe("mi");
@@ -127,9 +136,15 @@ function(TP, theMarsApp)
                 expect(function() { TP.utils.units.getUnitsLabel("unknown"); }).toThrow();
             });
         });
-        
+
         describe("convertToViewUnits template helper", function()
         {
+
+            beforeEach(function()
+            {
+                theMarsApp.user.set("units", TP.utils.units.constants.English);
+            });
+
             it("should throw an exception when trying to convert for an unknown value type", function()
             {
                 expect(function() { TP.utils.conversion.convertToViewUnits(1234, "unknownType"); }).toThrow();
@@ -155,8 +170,8 @@ function(TP, theMarsApp)
 
             it("should convert a pace value in meters per second to min/mile, properly formated", function()
             {
-                expect(TP.utils.conversion.convertToViewUnits(1, "pace")).toBe("26:49");
-                expect(TP.utils.conversion.convertToViewUnits(3, "pace")).toBe("08:56");
+                expect(TP.utils.conversion.convertToViewUnits(1, "pace")).toBe("26:49.34");
+                expect(TP.utils.conversion.convertToViewUnits(3, "pace")).toBe("08:56.45");
                 expect(TP.utils.conversion.convertToViewUnits("notAnumber", "pace")).toBe("");
                 expect(TP.utils.conversion.convertToViewUnits(0.005, "pace")).toBe("99:99");
                 expect(TP.utils.conversion.convertToViewUnits(-1, "pace")).toBe("99:99");
@@ -188,6 +203,11 @@ function(TP, theMarsApp)
         
         describe("convertToModelUnits template helper", function ()
         {
+
+            beforeEach(function()
+            {
+                theMarsApp.user.set("units", TP.utils.units.constants.English);
+            });
 
             it("should throw an exception when trying to convert for an unknown value type", function ()
             {

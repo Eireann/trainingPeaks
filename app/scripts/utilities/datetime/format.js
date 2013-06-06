@@ -117,5 +117,19 @@ function(_, moment)
         return time;
     };
 
+    format.decimalMinutesAsTime = function(minutes, showSeconds, defaultValueIfEmpty, showDecimalSeconds)
+    {
+        var formattedMinutes = format.decimalHoursAsTime(minutes / 60, showSeconds, defaultValueIfEmpty, showDecimalSeconds);
+
+        if(minutes < 60)
+        {
+            var parts = formattedMinutes.split(":");
+            parts.shift();
+            formattedMinutes = parts.join(":");
+        }
+
+        return formattedMinutes;
+    };
+
     return format;
 });

@@ -4,6 +4,7 @@ define(
     "utilities/workout/workoutTypes",
     "utilities/conversion/modelToViewConversionFactors",
     "utilities/units/constants",
+    "utilities/datetime/datetime",
     "utilities/threeSigFig"
 ],
 function(
@@ -11,6 +12,7 @@ function(
     workoutTypes,
     modelToViewConversionFactors,
     unitsConstants,
+    dateTimeUtils,
     threeSigFig)
 {
     var convertToPaceFromSpeed = function(speed, unitSystem)
@@ -22,27 +24,11 @@ function(
         if (!unitSystem)
             unitSystem = theMarsApp.user.get("units");
 
-        var pace;
         var conversion = modelToViewConversionFactors("speed", unitSystem);
         speed = speed * conversion / 60;
-        pace = (1 / speed).toFixed(2);
+        var pace = (1 / speed);
 
-        var hours = 0;
-        var minutes = Math.floor(pace);
-
-        if (minutes >= 60)
-        {
-            hours = Math.floor(minutes / 60);
-            minutes = minutes % 60;
-        }
-
-
-        if (minutes < 10) minutes = "0" + minutes;
-
-        var seconds = ((pace % 1) * 60).toFixed(0);
-        if (seconds < 10) seconds = "0" + seconds;
-
-        return hours ? (hours + ":" + minutes + ":" + seconds) : (minutes + ":" + seconds);
+        return dateTimeUtils.format.decimalMinutesAsTime(pace);
     };
 
     var isNumeric = function(value)

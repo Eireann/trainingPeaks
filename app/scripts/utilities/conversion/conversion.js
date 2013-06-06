@@ -57,7 +57,7 @@
         formatDuration: function(value, options)
         {
             value = adjustFieldRange(value, "distance");
-            return datetimeUtils.format.decimalHoursAsTime(value, true, options && options.hasOwnProperty("defaultValue") ? options.defaultValue : "");
+            return datetimeUtils.format.decimalHoursAsTime(value, true, options && options.hasOwnProperty("defaultValue") ? options.defaultValue : "", false);
         },
 
         parseDuration: function(value, options)
@@ -69,7 +69,7 @@
 
         formatDurationFromSeconds: function(value, options)
         {
-            return datetimeUtils.format.decimalSecondsAsTime(value);
+            return datetimeUtils.format.decimalSecondsAsTime(value, true, undefined, false);
         },
 
         parseDurationAsSeconds: function(value, options)
@@ -94,19 +94,24 @@
 
         formatPace: function(value, options)
         {
-            return convertToViewUnits(value, "pace");
+            var formattedPace = convertToViewUnits(value, "pace");
+            return formattedPace;
         },
 
         parsePace: function (value, options)
         {
-            console.log("Input: " + value);
+            // utilize datetime smart parsing, but assume we're working with minutes
+            var parts = value.split(":");
+            while (parts.length < 3)
+            {
+                parts.unshift("0");
+            }
+            value = parts.join(":");
             var rawTime = datetimeUtils.convert.timeToDecimalHours(value);
-            console.log("Parsed: " + rawTime);
             var limitedTime = adjustFieldRange(rawTime, "pace");
-            console.log("Limited: " + limitedTime);
             var formattedLimitedTime = datetimeUtils.format.decimalHoursAsTime(limitedTime, true);
-            console.log("Formatted: " + formattedLimitedTime);
-            return convertToModelUnits(formattedLimitedTime, "pace");
+            var convertedPace = convertToModelUnits(formattedLimitedTime, "pace");
+            return convertedPace;
         },
         
         formatSpeed: function(value, options)
