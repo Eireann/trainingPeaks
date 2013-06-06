@@ -1,0 +1,240 @@
+﻿.share
+    {
+        div
+        {
+            font-size: $fontSizeSmall;
+        }
+
+        input
+        {
+            margin-bottom: 0px;
+            vertical-align: middle;
+            margin-top: -3px
+        }
+       
+        .shareIcons
+        {
+            white-space: nowrap;
+            width: 104px;   
+            height: 21px;
+            margin-top: 9px;
+            
+            div
+            {
+              height: 21px;
+              width: 21px;
+              opacity: .50;
+              cursor: default;
+              float: left;
+              margin-right: 5px;
+            }
+
+            .twitterIcon
+            {
+                background: url(../../assets/images/QVImages/sprite-share-icons.png) no-repeat 0 0;
+
+                @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) 
+                {
+
+                    background-size: 42px 84px;
+                    background: url(../../assets/images/QVImages/sprite-share-icons@2x.png) no-repeat 0 0;
+                }
+            }
+
+            .facebookIcon
+            {
+                background: url(../../assets/images/QVImages/sprite-share-icons.png) no-repeat 0 -21px;
+
+                @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) 
+                {
+
+                    background-size: 42px 84px;
+                    background: url(../../assets/images/QVImages/sprite-share-icons@2x.png) no-repeat 0 -21px;
+                }
+            }
+
+            .linkIcon
+            {
+                background: url(../../assets/images/QVImages/sprite-share-icons.png) no-repeat 0 -63px;
+               
+                @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) 
+                {
+
+                    background-size: 42px 84px;
+                    background: url(../../assets/images/QVImages/sprite-share-icons@2x.png) no-repeat 0 -63px;
+                }
+            }
+
+            .emailIcon
+            {
+                background: url(../../assets/images/QVImages/sprite-share-icons.png) no-repeat 0 -42px;
+          
+                @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) 
+                {
+
+                    background-size: 42px 84px;
+                    background: url(../../assets/images/QVImages/sprite-share-icons@2x.png) no-repeat 0 -42px;
+                }
+            }
+        }
+
+        &.public
+        {
+            .twitterIcon
+            {
+                cursor: pointer;
+                opacity: 1;
+                &:hover 
+                {
+                    background: url(../../assets/images/QVImages/sprite-share-icons.png) no-repeat -21px 0;
+                }
+
+                @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) 
+                {
+                    &:hover 
+                    {
+                        background: url(../../assets/images/QVImages/sprite-share-icons@2x.png) no-repeat 0 0;
+                    }
+                }
+            }
+
+            .facebookIcon
+            {
+                cursor: pointer;
+                opacity: 1;
+                &:hover 
+                {
+       			    background: url(../../assets/images/QVImages/sprite-share-icons.png) no-repeat -21px -21px;
+                }
+
+
+                @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) 
+                {
+                    &:hover 
+                    {
+                        background: url(../../assets/images/QVImages/sprite-share-icons@2x.png) no-repeat -21px -21px;
+                    }
+                }
+            }
+
+            .linkIcon
+            {
+                cursor: pointer;
+                opacity: 1;
+                &:hover 
+                {
+       			    background: url(../../assets/images/QVImages/sprite-share-icons.png) no-repeat -21px -63px;
+                }
+
+                @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) 
+                {
+                    &:hover 
+                    {
+                        background: url(../../assets/images/QVImages/sprite-share-icons@2x.png) no-repeat -21px -63px;
+                    }
+                }
+            }
+
+            .emailIcon
+            {
+                cursor: pointer;
+                opacity: 1;
+                &:hover 
+                {
+       			    background: url(../../assets/images/QVImages/sprite-share-icons.png) no-repeat -21px -42px;
+                }
+
+                @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) 
+                {
+                    &:hover 
+                    {
+                        background: url(../../assets/images/QVImages/sprite-share-icons@2x.png) no-repeat -21px -42px;
+                    }
+                }
+            }
+        }
+    }
+
+.quickviewFooter
+{
+    .share
+    {
+        .publicCheckboxContainer
+        {
+            display:inline;
+            float: left;
+            margin: 5px 7px 0 10px;
+        }
+        .shareIcons
+        {
+            display:inline;
+        }
+    }
+}
+
+.expandedViewsButtons
+{
+    .share
+    {
+        .publicCheckboxContainer
+        {
+           margin-top: 11px;
+        }
+    }
+}
+
+.shortUrlView
+{
+   
+    .hoverBox
+    {
+        .arrow
+        {
+            position: absolute;
+            left: 0px;
+            top: 15px;
+            @include transform(translateX(-35px) rotate(-45deg));
+            @include box-shadow(0 0 2px 0 #ADADAD);
+        }
+    }
+
+    .details
+    {
+        width: 250px;
+
+        margin: 5px 15px;
+        color: $TPGrey3;
+        font-size: $fontSizeSmall;
+
+        .header
+        {
+            font-family: $fontFamilyHeavy;
+            margin-bottom: 5px;
+        }
+
+        button#go
+        {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .buttons
+        {
+            text-align: right;
+        }
+
+        .inputs
+        {
+            font-size: 1em;
+        }
+
+        #closeIcon
+        {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+        }
+
+    }
+
+}
