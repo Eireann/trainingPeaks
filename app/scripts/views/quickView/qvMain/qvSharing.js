@@ -105,7 +105,7 @@ function (
                 text += " in " + this.formatDuration(this.model.get("totalTime")) + " ";
             }
 
-            if(this.model.has("tssActual") && this.model.get("tssActual") != 0)
+            if(this.model.has("tssActual") && this.model.get("tssActual") !== 0)
             {
                 text += "with " + this.model.get("tssActual") + " " + TP.utils.units.getUnitsLabel("tss", this.model.get("workoutTypeValueId"), this.model);
             }
