@@ -174,6 +174,16 @@ function(TP, theMarsApp)
                 expect(TP.utils.conversion.convertToViewUnits(0, "temperature")).toBe('32');
                 expect(TP.utils.conversion.convertToViewUnits(100, "temperature")).toBe('212');
             });
+
+            it("should convert and format efficiency factor values for run", function()
+            {
+                expect(TP.utils.conversion.convertToViewUnits(0.016512562392295274, "efficiencyfactor", null, 3)).toBe('1.08');
+            });
+ 
+            it("should format efficiency factor values for other sport types", function()
+            {
+                expect(TP.utils.conversion.convertToViewUnits(0.016512562392295274, "efficiencyfactor", null, 10)).toBe('0.02');
+            });           
         });
         
         describe("convertToModelUnits template helper", function ()
@@ -217,7 +227,6 @@ function(TP, theMarsApp)
                 expect(TP.utils.conversion.convertToModelUnits("some string", "distance")).toBe(null);
             });
 
-            
         });
     });
 });
