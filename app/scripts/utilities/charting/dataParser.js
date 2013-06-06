@@ -235,8 +235,15 @@ function(seriesColorByChannel, findIndexByMsOffset, convertToViewUnits)
             var elevationInfo = getElevationInfoOnRange.call(this);
             this.minElevation = elevationInfo.min;
             this.elevationIsAllNegative = elevationInfo.isAllNegative;
+            if (this.dataByChannel.Latitude && this.dataByChannel.Longitude)
+            {
+                this.hasLatLongData = true;
+            } 
+            else
+            {
+                this.hasLatLongData = false;
+            }
             this.latLonArray = null;
-
         },
 
         setDisabledSeries: function(series)
@@ -262,7 +269,7 @@ function(seriesColorByChannel, findIndexByMsOffset, convertToViewUnits)
 
         getLatLonArray: function()
         {
-            if (!this.latLonArray)
+            if (this.hasLatLongData && !this.latLonArray)
                 this.latLonArray = generateLatLonFromData.call(this, this.dataByChannel);
 
             return this.latLonArray;

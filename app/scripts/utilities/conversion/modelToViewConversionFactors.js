@@ -27,6 +27,11 @@ function(unitsConstants)
         {
             English: 3.28084,
             Metric: 1
+        },
+        "torque":
+        {
+            English: 8.850745793490558,
+            Metric: 1
         }
     };
 

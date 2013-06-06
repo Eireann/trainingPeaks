@@ -89,12 +89,6 @@ function(
         this.fetchUser = function()
         {
             var self = this;
-
-            var storedUser = this.session.getUserFromLocalStorage();
-            if (storedUser && storedUser.get("athletes.0.athleteId"))
-            {
-                self.user.set(storedUser.attributes);
-            }
             
             self.user.fetch().done(function()
             {

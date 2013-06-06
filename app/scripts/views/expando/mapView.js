@@ -85,11 +85,13 @@ function (
             if (!this.map)
                 this.map = MapUtils.createMapOnContainer(this.$("#expandoMap")[0]);
 
-            var latLongArray = this.dataParser.getLatLonArray();
-
-            this.addMouseHoverBuffer(latLongArray);
-            MapUtils.setMapData(this.map, latLongArray);
-            MapUtils.calculateAndAddMileMarkers(this.map, this.dataParser, 15);
+            if (this.dataParser.hasLatLonData)
+            {
+                var latLongArray = this.dataParser.getLatLonArray();
+                this.addMouseHoverBuffer(latLongArray);
+                MapUtils.setMapData(this.map, latLongArray);
+                MapUtils.calculateAndAddMileMarkers(this.map, this.dataParser, 15);
+            }
         },
 
         addMouseHoverBuffer: function(latLongArray)
@@ -226,29 +228,36 @@ function (
 
         onGraphHover: function (msOffset)
         {
-            var index = this.dataParser.findIndexByMsOffset(msOffset);
-
-            if (index === null)
+            if (this.dataParser.hasLatLongData)
             {
-                return;
-            }
+                var index = this.dataParser.findIndexByMsOffset(msOffset);
 
-            var lat = this.dataParser.dataByChannel.Latitude[index][1];
-            var long = this.dataParser.dataByChannel.Longitude[index][1];
+                if (index === null)
+                {
+                    return;
+                }
 
-            if (_.isNaN(lat) || _.isNaN(long))
-            {
-                this.hideHoverMarkerWithDelay();
-            }
-            else
-            {
-                this.showHoverMarker(lat, long);
+                var lat = this.dataParser.dataByChannel.Latitude[index][1];
+                var long = this.dataParser.dataByChannel.Longitude[index][1];
+
+                if (_.isNaN(lat) || _.isNaN(long))
+                {
+                    this.hideHoverMarkerWithDelay();
+                }
+                else
+                {
+                    this.showHoverMarker(lat, long);
+                }
             }
         },
 
         onGraphLeave: function ()
         {
-            this.hideHoverMarker();
+            if (this.dataParser.hasLatLongData)
+            {
+                this.hideHoverMarker();
+                
+            }
         },
 
 
