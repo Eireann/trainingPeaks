@@ -42,6 +42,7 @@ function (_, moment, TP, WorkoutDetailsModel, WorkoutDetailDataModel)
             "makeWorkoutPublic": null,
             "sharedWorkoutInformationKey": null,
             "sharedWorkoutInformationExpireKey": null,
+            "shortUrl": null,
             "distance": null,
             "distancePlanned": null,
             "distanceCustomized": null,

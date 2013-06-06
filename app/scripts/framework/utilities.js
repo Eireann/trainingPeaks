@@ -21,6 +21,12 @@
         workout: workout,
         conversion: conversion,
         chartBuilder: chartBuilder,
-        filesystem: filesystem
+        filesystem: filesystem,
+
+        translate: function(textToTranslate)
+        {
+            return textToTranslate;
+        }
+
     };
 });

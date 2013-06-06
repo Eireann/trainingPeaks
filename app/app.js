@@ -250,6 +250,15 @@ function(
             window.location.reload();
         };
 
+        var wwwRoots =
+        {
+            live: "http://www.trainingpeaks.com",
+            uat: "http://www.uat.trainingpeaks.com",
+            dev: "http://www.dev.trainingpeaks.com",
+            local: "http://localhost:8905",
+            todd: "DEV20-T430:8901"
+        };
+
         var apiRoots =
         {
             live: "https://tpapi.trainingpeaks.com",
@@ -274,7 +283,7 @@ function(
         // point to appropriate api server
         this.apiRoot = apiRoots[apiRootName];
         this.oAuthRoot = oAuthRoots[apiRootName];
-        this.wwwRoot = "http://www.trainingpeaks.com";
+        this.wwwRoot = wwwRoots[apiRootName];
 
         // app root for router and history
         if (apiRootName !== 'live')
