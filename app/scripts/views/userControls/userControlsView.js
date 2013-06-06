@@ -37,7 +37,7 @@ function(_, TP, coachAndAffiliateCustomizations, AccountMenuView, userControlsTe
             
             var offset = $(e.currentTarget).offset();
             this.accountMenu = new AccountMenuView({model: this.model, parentEl: this.$el });
-            this.accountMenu.render().top(offset.top + 18).left(offset.left);
+            this.accountMenu.render().top(offset.top + 23).left(offset.left);
         }
 
     };

@@ -117,7 +117,7 @@ input[disabled='disabled']
         {
             position: absolute;
             top: 40px;
-            right: 0px;
+            right: 4px;
             @include transform(translateX(8px) rotate(45deg));
             @include box-shadow(0 0 2px 0 #ADADAD);
         }
