@@ -71,6 +71,7 @@ function (
 
             var url = this.getShortenedUrl();
             var text = this.getSharedText();
+            text += " #trainingpeaks";
 
             var twitterUrl = "https://twitter.com/intent/tweet?text=" + escape(text) + "&url=" + escape(url);
             window.open(twitterUrl, 'twitterWindow', 'width=1000');
@@ -78,10 +79,39 @@ function (
 
         getSharedText: function()
         {
-            //Barbara prem Kauffman's Run workout on Tue, 05/28/2013 
-            var text = theMarsApp.user.get("firstName") + " " + theMarsApp.user.get("lastName") + "'s";
-            text += " " + TP.utils.workout.types.getNameById(this.model.get("workoutTypeValueId")) + " on ";
-            text += moment(this.model.get("workoutDay")).format("ddd, MM/DD/YYYY");
+
+            if (theMarsApp.user.has("firstName"))
+            {
+                text = theMarsApp.user.get("firstName") + " completed a ";
+            }
+
+            if(this.model.has("distance"))
+            {
+                text += this.formatDistance(this.model.get("distance")) + " " + TP.utils.units.getUnitsLabel("distance", this.model.get("workoutTypeValueId"), this.model) + " ";
+            }
+
+            if (this.model.has("workoutTypeValueId"))
+            {
+                text += TP.utils.workout.types.getNameById(this.model.get("workoutTypeValueId")) + " ";
+            }
+
+            if(this.model.has("workoutDay"))
+            {
+                text += "on " + moment(this.model.get("workoutDay")).format("MM/DD") + " ";
+            }
+
+            if(this.model.has("totalTime"))
+            {
+                text += " in " + this.formatDuration(this.model.get("totalTime")) + " ";
+            }
+
+            if(this.model.has("tssActual") && this.model.get("tssActual") != 0)
+            {
+                text += "with " + this.model.get("tssActual") + " " + TP.utils.units.getUnitsLabel("tss", this.model.get("workoutTypeValueId"), this.model);
+            }
+
+            text += ". ";
+
             return text;
         },
         
