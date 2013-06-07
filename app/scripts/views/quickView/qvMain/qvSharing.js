@@ -3,12 +3,14 @@
     "underscore",
     "moment",
     "TP",
+    "models/shortUrlModel",
     "views/quickView/qvMain/qvShortUrlView"
 ],
 function (
     _,
     moment,
     TP,
+    ShortUrlModel,
     ShortUrlView
 )
 {
@@ -135,7 +137,7 @@ function (
 
         onLinkIconClicked: function(e)
         {
-            if (!this.workoutIsShareable())
+            if (!this.workoutIsShareable() || !this.workoutHasFileData())
             {
                 return;
             }
@@ -213,11 +215,10 @@ function (
 
         getShortenedUrl: function()
         {
-            if (!this.model.has("shortUrl"))
-            {
-                return this.getPublicFileViewerUrl();
-            }
-            return this.model.get("shortUrl");
+            if (!this.shortUrlModel)
+                return null;
+            else
+                return this.shortUrlModel.get("url");
         },
 
         workoutIsComplete: function()
@@ -237,24 +238,40 @@ function (
 
         onWorkoutDetailsChanged: function()
         {
+            this.resolveShortUrl();
             this.applyLinkIconEnableState();
         },
         
+        resolveShortUrl: function()
+        {
+            if (this.workoutHasFileData() && !this.shortUrlModel)
+            {
+                this.shortUrlModel = new ShortUrlModel({ workoutId: this.model.get("workoutId") });
+                this.shortUrlModel.fetch();
+            }
+            else if (!this.workoutHasFileData())
+            {
+                this.shortUrlModel = null;
+            }
+        },
+
         applyLinkIconEnableState: function()
         {
-            if (this.workoutIsPublic())
+            if (this.workoutIsPublic() && this.workoutHasFileData())
             {
-                if (this.model.get("details").has("workoutDeviceFileInfos")
-                    && this.model.get("details").get("workoutDeviceFileInfos").length)
-                {
-                    this.hasFileData = true;
-                    this.$(".linkIcon").removeClass("disabled");
-                } else
-                {
-                    this.hasFileData = false;
-                    this.$(".linkIcon").addClass("disabled");
-                }
+                this.hasFileData = true;
+                this.$(".linkIcon").removeClass("disabled");
+            } else
+            {
+                this.hasFileData = false;
+                this.$(".linkIcon").addClass("disabled");
             }
+        },
+        
+        workoutHasFileData: function()
+        {
+            return this.model.get("details").has("workoutDeviceFileInfos")
+                && this.model.get("details").get("workoutDeviceFileInfos").length;
         }
     };
 
