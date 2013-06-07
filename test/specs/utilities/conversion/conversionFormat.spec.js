@@ -94,7 +94,7 @@ function(theMarsApp, TP, conversion, convertToModelUnits, dateTimeUtils)
             ]);
         });
 
-        xdescribe("Speed", function()
+        describe("Speed", function()
         {
 
             beforeEach(function()
@@ -105,28 +105,28 @@ function(theMarsApp, TP, conversion, convertToModelUnits, dateTimeUtils)
 
             describeFormat("formatSpeed", [
                 {
-                    output: "999",
-                    input: convertToModelUnits("999", "speed")
+                    input: "999",
+                    output: convertToModelUnits("999", "speed")
                 },
                 {
-                    output: "999.1",
-                    input: convertToModelUnits("999", "speed")
+                    input: "999.1",
+                    output: convertToModelUnits("999", "speed")
                 },
                 {
-                    output: "1000",
-                    input: convertToModelUnits("999", "speed")
+                    input: "1000",
+                    output: convertToModelUnits("999", "speed")
                 },
                 {
-                    output: "1",
-                    input: convertToModelUnits("1", "speed")
+                    input: "1",
+                    output: convertToModelUnits("1", "speed")
                 },
                 {
-                    output: "0",
-                    input: 0
+                    input: "0",
+                    output: ""
                 },
                 {
-                    output: "-1",
-                    input: 0
+                    input: "-1",
+                    output: ""
                 }
             ]);
         });
