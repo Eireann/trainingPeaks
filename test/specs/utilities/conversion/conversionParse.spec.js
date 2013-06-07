@@ -74,12 +74,12 @@ function(theMarsApp, TP, conversion, convertToModelUnits, dateTimeUtils)
                     output: 1 / 3600
                 },
                 {
-                    input: "99:59:59",
+                    input: "99:59:59.99",
                     output: 99 + (59 / 60) + (59 / 3600)
                 },
                 {
-                    input: "99:59:59.99",
-                    output: 99 + (59 / 60) + (59.99 / 3600)
+                    input: "99:59:59",
+                    output: 99 + (59 / 60) + (59 / 3600)
                 },
                 {
                     input: "::59.99",

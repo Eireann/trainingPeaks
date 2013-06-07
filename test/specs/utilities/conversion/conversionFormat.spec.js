@@ -23,7 +23,7 @@ function(theMarsApp, TP, conversion, convertToModelUnits, dateTimeUtils)
 
     describe("Conversion Output Formatting", function()
     {
-        xdescribe("Duration", function()
+        describe("Duration", function()
         {
 
             beforeEach(function()
@@ -34,11 +34,11 @@ function(theMarsApp, TP, conversion, convertToModelUnits, dateTimeUtils)
 
             describeFormat("formatDuration", [
                 {
-                    output: "-1:00:00",
-                    input: 0
+                    input: -1,
+                    output: ""
                 },
                 {
-                    output: "00:00:01",
+                    output: "0:00:01",
                     input: 1 / 3600
                 },
                 {
@@ -46,15 +46,15 @@ function(theMarsApp, TP, conversion, convertToModelUnits, dateTimeUtils)
                     input: 99 + (59 / 60) + (59 / 3600)
                 },
                 {
-                    output: "99:59:59.99",
+                    output: "99:59:59",
                     input: 99 + (59 / 60) + (59.99 / 3600)
                 },
                 {
-                    output: "::59.99",
+                    output: "0:01:00",
                     input: (59.99 / 3600)
                 },
                 {
-                    output: "::0.99",
+                    output: "0:00:01",
                     input: (0.99 / 3600)
                 }
             ]);

@@ -56,7 +56,7 @@ function(adjustFieldRange)
 
         describe("Duration", function()
         {
-            var maxDuration = 99 + (59 / 60) + (59.99 / 3600);
+            var maxDuration = 99 + (59 / 60) + (59 / 3600);
             var minDuration = 0;
             describeRange("duration", minDuration, maxDuration);
         });

@@ -3,12 +3,9 @@
 ],
 function ()
 {
-    // 99:59:59.99 = 99 hours + 59 minutes + 59.99 seconds
-    var almostOneHundredHours = 99 + (59 / 60) + (59.99 / 3600);
-
     var maximums = {
-        duration: almostOneHundredHours,
-        pace: almostOneHundredHours,
+        duration: 99 + (59 / 60) + (59 / 3600), // 99:59:59
+        pace: 99 + (59 / 60) + (59.99 / 3600), // 99:59:59.99
         speed: 999,
         distance: 999999,
         TSS: 9999,

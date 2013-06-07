@@ -59,8 +59,12 @@
 
         formatDuration: function(value, options)
         {
-            value = adjustFieldRange(value, "distance");
-            return datetimeUtils.format.decimalHoursAsTime(value, true, options && options.hasOwnProperty("defaultValue") ? options.defaultValue : "", false);
+            if (value <= 0 || value === "0")
+            {
+                return options && options.hasOwnProperty("defaultValue") ? options.defaultValue : "";
+            }
+            value = adjustFieldRange(value, "duration");
+            return datetimeUtils.format.decimalHoursAsTime(value, true, undefined, false);
         },
 
         parseDuration: function(value, options)
