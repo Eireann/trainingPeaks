@@ -18,7 +18,6 @@
 
 /* Styles that apply to all SelectBoxIt elements */
 .selectboxit-container * {
-  font: 14px Helvetica, Arial;
   /* Prevents text selection */
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -136,7 +135,6 @@
 
 /* Drop Down optgroup headers */
 .selectboxit-optgroup-header {
-  font-weight: bold;
 }
 
 /* Drop Down optgroup header hover psuedo class */
