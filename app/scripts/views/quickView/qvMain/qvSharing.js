@@ -65,7 +65,7 @@ function (
 
             this.model.save();
         },
-        
+
         getSharedText: function()
         {
             var textArray = [];
@@ -82,7 +82,7 @@ function (
 
             if (this.model.has("workoutTypeValueId"))
             {
-                textArray.push(TP.utils.workout.types.getNameById(this.model.get("workoutTypeValueId")));
+                textArray.push(TP.utils.workout.types.getNameById(this.model.get("workoutTypeValueId")).toLowerCase());
             }
 
             if(this.model.has("workoutDay"))
@@ -97,7 +97,7 @@ function (
 
             if(this.model.has("tssActual") && this.model.get("tssActual") !== 0)
             {
-                textArray.push("with " + this.model.get("tssActual") + " " + TP.utils.units.getUnitsLabel("tss", this.model.get("workoutTypeValueId"), this.model));
+                textArray.push("with " + this.formatTSS(this.model.get("tssActual")) + " " + TP.utils.units.getUnitsLabel("tss", this.model.get("workoutTypeValueId"), this.model));
             }
             var text = textArray.join(" ");
             text += ".";
