@@ -61,7 +61,7 @@ function(theMarsApp, TP, conversion, convertToModelUnits, dateTimeUtils)
         });
 
 
-        xdescribe("Distance", function()
+        describe("Distance", function()
         {
 
             beforeEach(function()
@@ -72,24 +72,24 @@ function(theMarsApp, TP, conversion, convertToModelUnits, dateTimeUtils)
 
             describeFormat("formatDistance", [
                 {
-                    output: "999999",
+                    output: 999999,
                     input: convertToModelUnits(999999, "distance")
                 },
                 {
-                    output: "1000000",
-                    input: convertToModelUnits(999999, "distance")
+                    output: 999999,
+                    input: convertToModelUnits(10000000, "distance")
                 },
                 {
-                    output: "1",
+                    output: 1,
                     input: convertToModelUnits(1, "distance")
                 },
                 {
-                    output: "0",
+                    output: "",
                     input: 0
                 },
                 {
-                    output: "-1",
-                    input: 0
+                    output: "",
+                    input: -1
                 }
             ]);
         });
@@ -105,28 +105,28 @@ function(theMarsApp, TP, conversion, convertToModelUnits, dateTimeUtils)
 
             describeFormat("formatSpeed", [
                 {
-                    input: "999",
-                    output: convertToModelUnits("999", "speed")
+                    output: 999,
+                    input: convertToModelUnits("999", "speed")
                 },
                 {
-                    input: "999.1",
-                    output: convertToModelUnits("999", "speed")
+                    output: 999,
+                    input: convertToModelUnits("999.1", "speed")
                 },
                 {
-                    input: "1000",
-                    output: convertToModelUnits("999", "speed")
+                    output: 999,
+                    input: convertToModelUnits("1000", "speed")
                 },
                 {
-                    input: "1",
-                    output: convertToModelUnits("1", "speed")
+                    output: 1,
+                    input: convertToModelUnits("1", "speed")
                 },
                 {
-                    input: "0",
-                    output: ""
+                    output: "",
+                    input: 0
                 },
                 {
-                    input: "-1",
-                    output: ""
+                    output: "",
+                    input: 0
                 }
             ]);
         });

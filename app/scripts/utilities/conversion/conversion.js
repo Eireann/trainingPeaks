@@ -44,8 +44,10 @@
                 parameters.precision = options.precision;
             }
 
-            return convertToViewUnits(parameters);
-
+            var convertedDistance = parseFloat(convertToViewUnits(parameters));
+            var limitedDistance = adjustFieldRange(convertedDistance, "distance");
+            var formattedDistance = this.formatEmptyValue(limitedDistance, options);
+            return formattedDistance;
         },
 
         parseDistance: function(value, options)
@@ -116,10 +118,12 @@
             var convertedPace = convertToModelUnits(formattedLimitedTime, "pace");
             return convertedPace;
         },
-        
+
         formatSpeed: function(value, options)
         {
-            return convertToViewUnits(value, "speed");
+            var convertedSpeed = convertToViewUnits(value, "speed");
+            var limitedSpeed = adjustFieldRange(convertedSpeed, "speed");
+            return this.formatEmptyValue(limitedSpeed, options);
         },
 
         parseSpeed: function(value, options)
@@ -374,7 +378,7 @@
                 return defaultValue;
             }
 
-            if(value === 0 || value === "0")
+            if (value === 0 || value === "0" || Number(value) === 0)
             {
                 return defaultValue;
             }
