@@ -321,9 +321,18 @@
             return denominator === 0 ? 0 : Math.round((numerator / denominator) * 100);
         },
 
-        formatPercent: function(value, options)
+        formatGrade: function(value, options)
         {
-            return ((value === null || value === 0) ? (options && options.hasOwnProperty("defaultValue") ? options.defaultValue : "") : parseFloat(value).toFixed(1));
+
+            var parsedValue = parseFloat(value).toFixed(1);
+
+            if (value === null || value === 0 || Number(parsedValue) === 0)
+            {
+                return options && options.hasOwnProperty("defaultValue") ? options.defaultValue : "";
+            } else
+            {
+                return parsedValue;
+            }
         },
 
         formatEfficiencyFactor: function(value, options)

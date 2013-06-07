@@ -77,7 +77,7 @@
         {{#if powerPulseDecoupling }}
         <div class="statsRow" id="powerPulseDecoupling">
             <label>{{$ "pwhr" }}</label>
-            <span class="value">{{ conversion "formatPwHr" powerPulseDecoupling }}</span>
+            <span class="value">{{ conversion "formatPwHr" powerPulseDecoupling }}%</span>
             <span class="units"></span>
         </div>
         {{/if}}
@@ -87,7 +87,7 @@
         {{#if speedPulseDecoupling }}
         <div class="statsRow" id="speedPulseDecoupling">
             <label>{{$ "pahr" }}</label>
-            <span class="value">{{ conversion "formatPaHr" speedPulseDecoupling }}</span>
+            <span class="value">{{ conversion "formatPaHr" speedPulseDecoupling }}%</span>
             <span class="units"></span>
         </div>
         {{/if}}
@@ -117,13 +117,13 @@
     </div>
     {{/if}}
 
-    {{#if grade }}
+    {{#ifHasValueAfterFormatted "formatGrade" grade this }}
     <div class="statsRow" id="grade">
         <label>{{$ "Grade" }}</label>
-        <span class="value">{{ conversion "formatPercent" grade }}</span>
-        <span class="units">%</span>
+        <span class="value">{{ conversion "formatGrade" grade }}%</span>
+        <span class="units"></span>
     </div>
-    {{/if}}
+    {{/ifHasValueAfterFormatted}}
 
     {{#if vam }}
     <div class="statsRow" id="vam">
