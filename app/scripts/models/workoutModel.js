@@ -10,7 +10,6 @@ function (_, moment, TP, WorkoutDetailsModel, WorkoutDetailDataModel)
 {
     var WorkoutModel = TP.APIModel.extend(
     {
-
         cacheable: true,
 
         webAPIModelName: "Workout",

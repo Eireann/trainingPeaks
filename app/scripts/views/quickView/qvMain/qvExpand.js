@@ -174,8 +174,6 @@ function (_, TP, ExpandoController)
             }
 
         }
-
-
     };
     return workoutQVExpand;
 });

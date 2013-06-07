@@ -5,7 +5,8 @@
     "jqueryTimepicker",
     "TP",
     "views/quickView/qvMain/qvWorkoutTypeMenuView",
-    "views/quickView/qvMain/qvContextMenuView"
+    "views/quickView/qvMain/qvContextMenuView",
+    "views/quickView/qvMain/qvOptionsMenuView"
 ],
 function (
     _,
@@ -13,7 +14,8 @@ function (
     timepicker,
     TP,
     WorkoutTypeMenuView,
-    QVContextMenuView
+    QVContextMenuView,
+    QVOptionsMenuView
 )
 {
     var qvHeaderActions =
@@ -26,7 +28,8 @@ function (
             "click #menuIcon": "onMenuIconClicked",
             "focus input.workoutTitle": "onTitleFocus",
             "blur input.workoutTitle": "onTitleBlur",
-            "keyup input.workoutTitle": "onTitleChanged"
+            "keyup input.workoutTitle": "onTitleChanged",
+            "click button#options": "onOptionsClicked"
         },
 
         headerUi:
@@ -240,8 +243,15 @@ function (
         titleWidth: function ()
         {
             return (this.$(".workoutTitle").val().length + 1) * 8 + 10 + 'px';
-        }
+        },
+        
+        onOptionsClicked: function(e)
+        {
+            var offset = $(e.currentTarget).offset();
 
+            this.optionsMenu = new QVOptionsMenuView({ model: this.model, parentEl: this.$el });
+            this.optionsMenu.render().top(offset.top + 18).left(offset.left);
+        }
     };
 
     return qvHeaderActions;
