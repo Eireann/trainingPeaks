@@ -235,8 +235,15 @@ function(seriesColorByChannel, findIndexByMsOffset, convertToViewUnits)
             var elevationInfo = getElevationInfoOnRange.call(this);
             this.minElevation = elevationInfo.min;
             this.elevationIsAllNegative = elevationInfo.isAllNegative;
+            if (this.dataByChannel.Latitude && this.dataByChannel.Longitude)
+            {
+                this.hasLatLongData = true;
+            }
+            else
+            {
+                this.hasLatLongData = false;
+            }
             this.latLonArray = null;
-
         },
 
         setDisabledSeries: function(series)
@@ -262,7 +269,7 @@ function(seriesColorByChannel, findIndexByMsOffset, convertToViewUnits)
 
         getLatLonArray: function()
         {
-            if (!this.latLonArray)
+            if (this.dataByChannel.Latitude && this.dataByChannel.Longitude && !this.latLonArray)
                 this.latLonArray = generateLatLonFromData.call(this, this.dataByChannel);
 
             return this.latLonArray;
@@ -338,6 +345,19 @@ function(seriesColorByChannel, findIndexByMsOffset, convertToViewUnits)
             {
                 return null;
             }
+        },
+        
+        createCorrectedElevationChannel: function (elevations)
+        {
+            var index = 0;
+            var corrected = _.map(this.dataByChannel["Elevation"], function(elevationPoint)
+            {
+                if (index >= (elevations.length - 1))
+                    return [elevationPoint[0], null];
+
+                return [elevationPoint[0], elevations[index++]];
+            });
+            return corrected;
         }
 
     });

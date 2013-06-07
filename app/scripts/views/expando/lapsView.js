@@ -143,7 +143,7 @@ function(
                     peakItem.units = units;
                     if (this.formatMethods[this.selectedPeakType])
                     {
-                        peakItem.formattedValue = this.formatMethods[this.selectedPeakType](peakItem.value);
+                        peakItem.formattedValue = TP.utils.conversion[this.formatMethods[this.selectedPeakType]](peakItem.value);
                     } else
                     {
                         peakItem.formattedValue = peakItem.value;
@@ -252,9 +252,9 @@ function(
         },
 
         formatMethods: {
-            pace: TP.utils.conversion.formatPace,
-            speed: TP.utils.conversion.formatSpeed,
-            distance: TP.utils.conversion.formatPace
+            pace: "formatPace",
+            speed: "formatSpeed",
+            distance: "formatPace"
         },
 
         onUncheckAll: function()

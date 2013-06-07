@@ -74,7 +74,7 @@ function(
             else
             {
                 // if the parsed input would be the same as the current value,
-                var parsedViewValue = this[options.onSet](newViewValue);
+                var parsedViewValue = this[options.onSet](newViewValue, options);
                 if (parsedViewValue != currentModelValue)
                 {
 
@@ -83,8 +83,8 @@ function(
                     // maybe it's a rounding error? i.e. time in zone = 718.8 in workout file, but we would have rounded it to 719
                     if (options.onGet)
                     {
-                        var formattedModelValue = this[options.onGet](currentModelValue);
-                        var parsedModelValue = this[options.onSet](formattedModelValue);
+                        var formattedModelValue = this[options.onGet](currentModelValue, options);
+                        var parsedModelValue = this[options.onSet](formattedModelValue, options);
                         if(parsedModelValue == parsedViewValue)
                         {
                             doUpdateModel = false;
@@ -101,7 +101,7 @@ function(
         setModelValue: function(newViewValue, options)
         {
             // Do the save!
-            var newModelValue = (options.ignoreOnSetForUpdateModel || !options.onSet) ? newViewValue : this[options.onSet](newViewValue);
+            var newModelValue = (options.ignoreOnSetForUpdateModel || !options.onSet) ? newViewValue : this[options.onSet](newViewValue, options);
             this.model.set(options.observe, newModelValue);
             this.trigger("setModelValue", newViewValue, options);
         },

@@ -24,8 +24,8 @@ function(_, TP, zonesViewBase)
         {
             _.extend(binding,
             {
-                onGet: "formatInteger",
-                onSet: "parseInteger"
+                onGet: "formatHeartRate",
+                onSet: "parseHeartRate"
             });
         },
 

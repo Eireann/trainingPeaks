@@ -101,9 +101,8 @@ function(_)
 
         renderChart: function(container, chartData, tooltipTemplate, additionalChartOptions)
         {
-            var defaultColors = Highcharts.getOptions().colors;
-
-            var chartOptions = {
+            var chartOptions =
+            {
                 series: [{ data: chartData }],
                 chart:
                 {
@@ -120,10 +119,11 @@ function(_)
                 {
                     style: titleFontStyle
                 },
-                xAxis: {
+                xAxis:
+                {
                     lineWidth: 1,
                     lineColor: "#636569",
-                   labels:
+                    labels:
                     {
                         enabled: false,
                         style: axisFontStyle,
@@ -135,7 +135,8 @@ function(_)
                     },
                     tickColor: 'transparent'
                 },
-                yAxis: {
+                yAxis:
+                {
                     lineWidth: 1,
                     lineColor: "#636569",
                     min: 0,
@@ -159,7 +160,8 @@ function(_)
                 {
                     enabled: false
                 },
-                tooltip: {
+                tooltip:
+                {
                     formatter: function()
                     {
                         return tooltipTemplate(this.point.options);
@@ -179,14 +181,16 @@ function(_)
 
             if (additionalChartOptions.hasOwnProperty('colors'))
             {
-                var colorGradients = {
+                var colorGradients =
+                {
                     colors: Highcharts.map(additionalChartOptions.colors, function(color)
                     {
                         return {
                             linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
-                            stops: [
-                                    [0, color.light],
-                                    [1, color.dark]
+                            stops:
+                            [
+                                [0, color.light],
+                                [1, color.dark]
                             ]
                         };
                     })

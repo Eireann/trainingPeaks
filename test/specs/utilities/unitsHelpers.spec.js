@@ -7,7 +7,11 @@ function(TP, theMarsApp)
 {
     describe("units related utilities, english units", function()
     {
-        theMarsApp.user.set("units", TP.utils.units.constants.English);
+
+        beforeEach(function()
+        {
+            theMarsApp.user.set("units", TP.utils.units.constants.English);
+        });
 
         describe("convertToModelUnits template helper", function()
         {
@@ -20,6 +24,11 @@ function(TP, theMarsApp)
         
         describe("TP.utils.units.getUnitsLabel template helper", function()
         {
+            beforeEach(function()
+            {
+                theMarsApp.user.set("units", TP.utils.units.constants.English);
+            });
+
             it("should print the unit label for distance", function()
             {
                 expect(TP.utils.units.getUnitsLabel("distance")).toBe("mi");
@@ -127,9 +136,15 @@ function(TP, theMarsApp)
                 expect(function() { TP.utils.units.getUnitsLabel("unknown"); }).toThrow();
             });
         });
-        
+
         describe("convertToViewUnits template helper", function()
         {
+
+            beforeEach(function()
+            {
+                theMarsApp.user.set("units", TP.utils.units.constants.English);
+            });
+
             it("should throw an exception when trying to convert for an unknown value type", function()
             {
                 expect(function() { TP.utils.conversion.convertToViewUnits(1234, "unknownType"); }).toThrow();
@@ -148,18 +163,18 @@ function(TP, theMarsApp)
             it("should convert an elevation in meters to ft and cut off after 2 decimal places", function()
             {
                 expect(TP.utils.conversion.convertToViewUnits(0, "elevation")).toBe("");
-                expect(TP.utils.conversion.convertToViewUnits(1000, "elevation")).toBe("3281");
-                expect(TP.utils.conversion.convertToViewUnits(1000000, "elevation")).toBe("3280840");
-                expect(TP.utils.conversion.convertToViewUnits(-1000, "elevation")).toBe("-3281");
+                expect(TP.utils.conversion.convertToViewUnits(1000, "elevation")).toBe(3281);
+                expect(TP.utils.conversion.convertToViewUnits(1000000, "elevation")).toBe(3280840);
+                expect(TP.utils.conversion.convertToViewUnits(-1000, "elevation")).toBe(-3281);
             });
 
             it("should convert a pace value in meters per second to min/mile, properly formated", function()
             {
-                expect(TP.utils.conversion.convertToViewUnits(1, "pace")).toBe("26:49");
-                expect(TP.utils.conversion.convertToViewUnits(3, "pace")).toBe("08:56");
+                expect(TP.utils.conversion.convertToViewUnits(1, "pace")).toBe("26:49.34");
+                expect(TP.utils.conversion.convertToViewUnits(3, "pace")).toBe("08:56.45");
                 expect(TP.utils.conversion.convertToViewUnits("notAnumber", "pace")).toBe("");
-                expect(TP.utils.conversion.convertToViewUnits(0.005, "pace")).toBe("99:99");
-                expect(TP.utils.conversion.convertToViewUnits(-1, "pace")).toBe("99:99");
+                expect(TP.utils.conversion.convertToViewUnits(0.0005, "pace")).toBe("99:59:59.99");
+                expect(TP.utils.conversion.convertToViewUnits(-1, "pace")).toBe("99:59:59.99");
             });
 
 
@@ -174,10 +189,25 @@ function(TP, theMarsApp)
                 expect(TP.utils.conversion.convertToViewUnits(0, "temperature")).toBe('32');
                 expect(TP.utils.conversion.convertToViewUnits(100, "temperature")).toBe('212');
             });
+
+            it("should convert and format efficiency factor values for run", function()
+            {
+                expect(TP.utils.conversion.convertToViewUnits(0.016512562392295274, "efficiencyfactor", null, 3)).toBe('1.08');
+            });
+ 
+            it("should format efficiency factor values for other sport types", function()
+            {
+                expect(TP.utils.conversion.convertToViewUnits(0.016512562392295274, "efficiencyfactor", null, 10)).toBe('0.02');
+            });           
         });
         
         describe("convertToModelUnits template helper", function ()
         {
+
+            beforeEach(function()
+            {
+                theMarsApp.user.set("units", TP.utils.units.constants.English);
+            });
 
             it("should throw an exception when trying to convert for an unknown value type", function ()
             {
@@ -217,7 +247,6 @@ function(TP, theMarsApp)
                 expect(TP.utils.conversion.convertToModelUnits("some string", "distance")).toBe(null);
             });
 
-            
         });
     });
 });

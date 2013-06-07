@@ -1,13 +1,26 @@
 ﻿define(
 [
     "underscore",
+    "setImmediate",
+    "jqueryui/widget",
+    "jquerySelectBox",
     "backbone.marionette",
     "TP",
     "views/library/exerciseLibraryItemView",
     "views/library/exerciseLibraryAddItemView",
     "hbs!templates/views/library/exerciseLibraryView"
 ],
-function(_, Marionette, TP, ExerciseLibraryItemView, ExerciseLibraryAddItemView, exerciseLibraryViewTemplate)
+function(
+    _,
+    setImmediate,
+    jqueryUiWidget,
+    jquerySelectBox,
+    Marionette,
+    TP,
+    ExerciseLibraryItemView,
+    ExerciseLibraryAddItemView,
+    exerciseLibraryViewTemplate
+    )
 {
     return TP.CompositeView.extend(
     {
@@ -35,6 +48,17 @@ function(_, Marionette, TP, ExerciseLibraryItemView, ExerciseLibraryAddItemView,
         {
             "click button#add": "addToLibrary",
             "change #librarySelect": "onSelectLibrary"
+        },
+
+        onRender: function()
+        {
+            var self = this;
+            setImmediate(function()
+            {
+                self.$("#librarySelect").selectBoxIt({
+                    dynamicPositioning: false
+                });
+            });
         },
 
         addToLibrary: function()

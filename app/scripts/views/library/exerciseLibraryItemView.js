@@ -11,7 +11,7 @@ function(TP, draggable, ExerciseLibraryItemViewTemplate, ExerciseLibraryItemView
     {
 
         tagName: "div",
-        className: "libraryExercise",
+        className: "libraryExercise workout",
 
         attributes: function()
         {
@@ -48,14 +48,16 @@ function(TP, draggable, ExerciseLibraryItemViewTemplate, ExerciseLibraryItemView
             this.$el.data("ItemId", this.model.id);
             this.$el.data("ItemType", this.model.webAPIModelName);
             this.$el.data("DropEvent", "addExerciseFromLibrary");
-            this.$el.draggable({ appendTo: theMarsApp.getBodyElement(), 'z-index': 100, helper: this.draggableHelper, start: this.onDragStart, stop: this.onDragStop, containment: "#calendarContainer" });
+            this.$el.draggable({ appendTo: theMarsApp.getBodyElement(), 'z-index': 100, helper: this.draggableHelper, start: this.onDragStart, stop: this.onDragStop, containment: "#calendarWrapper" });
         },
 
         draggableHelper: function()
         {
             var $helperEl = $(ExerciseLibraryItemViewTemplateDragState(this.serializeData()));
             $helperEl.addClass(this.className);
-            $helperEl.width(this.$el.width());
+            $helperEl.addClass(this.getWorkoutTypeCssClassName());
+            $helperEl.addClass("future");
+            $helperEl.width($(".day .workout:first").width());
             return $helperEl;
         },
 

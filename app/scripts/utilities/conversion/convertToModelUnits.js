@@ -1,32 +1,29 @@
 define(
 [
     "underscore",
-    "utilities/conversion/modelToViewConversionFactors"
+    "utilities/conversion/modelToViewConversionFactors",
+    "utilities/datetime/convert"
 ],
-function(_, modelToViewConversionFactors)
+function(_, modelToViewConversionFactors, dateTimeConvert)
 {
     var convertToSpeedFromPace = function (pace, unitSystem)
     {
-        if (pace <= 0.01)
-            return "99:99";
 
-        pace = pace.split(":");
+        var hours = dateTimeConvert.timeToDecimalHours(pace, { assumeHours: false });
+        var minutes = hours * 60;
+        var seconds = minutes * 60;
 
-        // if no colon assume whole minutes
-        if (pace.length !== 2)
-            pace.push("00");
-
-        var minutes = parseInt(pace[0], 10);
-        var seconds = parseInt(pace[1], 10);
-        var fractionOfMinute = seconds / 60;
-        minutes += fractionOfMinute;
+        if (seconds < 1)
+        {
+            return convertToSpeedFromPace("00:99:59", unitSystem);
+        }
 
         var conversion = modelToViewConversionFactors("speed", unitSystem);
         var speed = 60 / minutes / conversion;
         
         return speed;
     };
-    
+
     var isNumeric = function(value)
     {
         if (value === null)
@@ -50,7 +47,7 @@ function(_, modelToViewConversionFactors)
         return isNumeric(valueWithoutColons);
     };
 
-    var convertToModelUnits = function (value, fieldType, workoutType)
+    var convertToModelUnits = function(value, fieldType, workoutType)
     {
         var userUnits = theMarsApp.user.get("units");
 
@@ -73,6 +70,8 @@ function(_, modelToViewConversionFactors)
                 return convertToSpeedFromPace(value, userUnits);
             case "temperature":
                 return userUnits === "0" ? 5 / 9 * (value - 32) : value;
+            case "torque":
+                return (+value / modelToViewConversionFactors(fieldType, userUnits));
             default:
                 throw "Unknown field type for unit conversion";
         }

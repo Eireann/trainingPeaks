@@ -1,0 +1,45 @@
+﻿@import "globalCSS/tpstylesheet";
+
+.elevationCorrectionContainer
+{
+    width: 800px;
+    height: 600px;
+    background-color: $TPGrey1;
+
+    .titleBar
+    {
+        text-align: left;
+        min-height: 28px;
+        padding: 7px 0px 0px 16px;
+        background-color: $TPGrey1;
+        @include box-shadow(2px 0px 7px 0px $TPGrey4);
+        position: relative; 
+        z-index: 99;
+        cursor: default;
+
+        span
+        {
+            font-size: $fontSizeSmall;
+            font-family: $fontFamilyRegular;
+            color: $TPGrey3;
+        }
+
+        .close
+        {
+            float: right;
+            padding-right: 10px;
+            margin-top: -2px;
+
+            img
+            {
+                cursor: pointer;
+            }
+        }
+    }
+
+    .elevationGraph
+    {
+        width: 550px;
+        margin: 20px 0 0 20px;
+    }
+}

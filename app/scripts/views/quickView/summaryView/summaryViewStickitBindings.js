@@ -14,6 +14,7 @@ function(
 
         initializeStickit: function()
         {
+            this.addModelToBindings();
             this.on("close", this.stickitBindingsOnClose, this);
             this.on("render", this.stickitBindingsOnRender, this);
 
@@ -106,8 +107,8 @@ function(
             "#normalizedPowerCompleted":
             {
                 observe: "normalizedPowerActual",
-                onGet: "formatInteger",
-                onSet: "parseFloat",
+                onGet: "formatPower",
+                onSet: "parsePower",
                 updateModel: "updateModel"
             },
             "#averagePacePlannedField":
@@ -149,36 +150,36 @@ function(
             "#caloriesPlannedField":
             {
                 observe: "caloriesPlanned",
-                onGet: "formatNumber",
-                onSet: "parseInteger",
+                onGet: "formatCalories",
+                onSet: "parseCalories",
                 updateModel: "updateModel"
             },
             "#caloriesCompletedField":
             {
                 observe: "calories",
-                onGet: "formatNumber",
-                onSet: "parseInteger",
+                onGet: "formatCalories",
+                onSet: "parseCalories",
                 updateModel: "updateModel"
             },
             "#elevationGainPlannedField":
             {
                 observe: "elevationGainPlanned",
-                onGet: "formatElevation",
-                onSet: "parseElevation",
+                onGet: "formatElevationGain",
+                onSet: "parseElevationGain",
                 updateModel: "updateModel"
             },
             "#elevationGainCompletedField":
             {
                 observe: "elevationGain",
-                onGet: "formatElevation",
-                onSet: "parseElevation",
+                onGet: "formatElevationGain",
+                onSet: "parseElevationGain",
                 updateModel: "updateModel"
             },
             "#elevationLossCompletedField":
             {
                 observe: "elevationLoss",
-                onGet: "formatElevation",
-                onSet: "parseElevation",
+                onGet: "formatElevationLoss",
+                onSet: "parseElevationLoss",
                 updateModel: "updateModel"
             },
             "#ifPlannedField":
@@ -212,29 +213,29 @@ function(
             "#powerAvgField":
             {
                 observe: "powerAverage",
-                onGet: "formatInteger",
-                onSet: "parseFloat",
+                onGet: "formatPower",
+                onSet: "parsePower",
                 updateModel: "updateModel"
             },
             "#powerMaxField":
             {
                 observe: "powerMaximum",
-                onGet: "formatInteger",
-                onSet: "parseFloat",
+                onGet: "formatPower",
+                onSet: "parsePower",
                 updateModel: "updateModel"
             },
             "#torqueAvgField":
             {
                 observe: "torqueAverage",
-                onGet: "formatInteger",
-                onSet: "parseFloat",
+                onGet: "formatTorque",
+                onSet: "parseTorque",
                 updateModel: "updateModel"
             },
             "#torqueMaxField":
             {
                 observe: "torqueMaximum",
-                onGet: "formatInteger",
-                onSet: "parseFloat",
+                onGet: "formatTorque",
+                onSet: "parseTorque",
                 updateModel: "updateModel"
             },
             "#elevationMinField":
@@ -261,15 +262,15 @@ function(
             "#cadenceAvgField":
             {
                 observe: "cadenceAverage",
-                onGet: "formatNumber",
-                onSet: "parseInteger",
+                onGet: "formatCadence",
+                onSet: "parseCadence",
                 updateModel: "updateModel"
             },
             "#cadenceMaxField":
             {
                 observe: "cadenceMaximum",
-                onGet: "formatNumber",
-                onSet: "parseInteger",
+                onGet: "formatCadence",
+                onSet: "parseCadence",
                 updateModel: "updateModel"
             },
             "#speedAvgField":
@@ -307,22 +308,22 @@ function(
             "#hrMinField":
             {
                 observe: "heartRateMinimum",
-                onGet: "formatNumber",
-                onSet: "parseInteger",
+                onGet: "formatHeartRate",
+                onSet: "parseHeartRate",
                 updateModel: "updateModel"
             },
             "#hrAvgField":
             {
                 observe: "heartRateAverage",
-                onGet: "formatNumber",
-                onSet: "parseInteger",
+                onGet: "formatHeartRate",
+                onSet: "parseHeartRate",
                 updateModel: "updateModel"
             },
             "#hrMaxField":
             {
                 observe: "heartRateMaximum",
-                onGet: "formatNumber",
-                onSet: "parseInteger",
+                onGet: "formatHeartRate",
+                onSet: "parseHeartRate",
                 updateModel: "updateModel"
             },
             "#tempMinField":
@@ -399,8 +400,15 @@ function(
                 this.model.set("velocityAverage", null);
             else if (options.observe === "distancePlanned" || options.observe === "totalTimePlanned")
                 this.model.set("velocityPlanned", null);
+        },
+        
+        addModelToBindings : function()
+        {
+            _.each(this.bindings, function(binding)
+            {
+                binding.model = this.model;
+            }, this);
         }
-
     };
 
     _.extend(summaryViewStickitBindings, stickitUtilsMixin);

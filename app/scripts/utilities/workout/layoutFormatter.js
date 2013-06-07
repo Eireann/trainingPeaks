@@ -29,11 +29,11 @@ function ()
         },
         calendarWorkoutLayout:
         {
-            "1": { name: "startTime", prefix: "C", conversion: "formatTimeOfDay"},
+            "1": { name: "startTime", prefix: "C", conversion: "formatTimeOfDay" },
             "2": { name: "startTimePlanned", prefix: "P", conversion: "formatTimeOfDay"},
             "3": { name: "distance", prefix: "C", conversion: "formatDistance", unitHelper: "distance" },
             "4": { name: "distancePlanned", prefix: "P", conversion: "formatDistance", unitHelper: "distance" },
-            "5": { name: "calories", prefix: "C", conversion:"formatNumber", unitHelper: "calories" },
+            "5": { name: "calories", prefix: "C", conversion:"formatCalories", unitHelper: "calories" },
             "6": { name: "energy", prefix: "C", conversion: "formatEnergy", unitHelper: "energy" },
             "7": { name: "totalTime", prefix: "C", conversion: "formatDuration"},
             "8": { name: "totalTimePlanned", prefix: "P", conversion: "formatDuration"},
@@ -48,7 +48,7 @@ function ()
             "36": { name: "if", prefix: "C", conversion: "formatIF", unitHelper: "if" },
             "38": { name: "tssPlanned", prefix: "P", conversion: "formatTSS", unitHelper: "tss" },
             "39": { name: "ifPlanned", prefix: "P", conversion: "formatIF", unitHelper: "if" },
-            "40": { name: "caloriesPlanned", prefix: "P", conversion: "formatNumber", unitHelper: "calories" },
+            "40": { name: "caloriesPlanned", prefix: "P", conversion: "formatCalories", unitHelper: "calories" },
             "41": { name: "energyPlanned", prefix: "P", conversion: "formatEnergy", unitHelper: "energy" }
         },
         trainingStressScoreSource:

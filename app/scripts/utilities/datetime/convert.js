@@ -4,13 +4,19 @@
 ], function(_)
 {
 
-    function TimeParser(timeString)
+    function TimeParser(timeString, options)
     {
         this.timeString = timeString.trim();
         this.hours = 0;
         this.minutes = 0;
         this.seconds = 0;
         this.decimalHours = null;
+
+        this.options = {
+            assumeHours: true
+        };
+
+        _.extend(this.options, options);
     }
 
     _.extend(TimeParser.prototype, {
@@ -38,7 +44,9 @@
             var hours = 0;
             hours += this.hours;
             hours += this.minutes / 60;
-            hours += this.seconds / 3600;
+
+            var seconds = this.seconds.toFixed(2);
+            hours += seconds / 3600;
             this.decimalHours = hours;
         },
 
@@ -62,7 +70,13 @@
             var parts = this.timeString.split(":");
             while (parts.length < 3)
             {
-                parts.push("0");
+                if (this.options.assumeHours)
+                {
+                    parts.push("0");
+                } else
+                {
+                    parts.unshift("0");
+                }
             }
 
             for (var i = 0; i < parts.length; i++)
@@ -90,11 +104,20 @@
 
         treatIntegersLessThanTenAsHours: function()
         {
+
             if (this.timeString.match(/^[0-9]+$/) && this.timeString >= 0 && this.timeString <= 9)
             {
-                this.hours = Number(this.timeString);
-                this.minutes = 0;
-                this.seconds = 0;
+                if (this.options.assumeHours)
+                {
+                    this.hours = Number(this.timeString);
+                    this.minutes = 0;
+                    this.seconds = 0;
+                } else
+                {
+                    this.minutes = Number(this.timeString);
+                    this.hours = 0;
+                    this.seconds = 0;
+                }
             }
         },
 
@@ -128,9 +151,18 @@
         {
             if (this.timeString.match(/^[0-9][0-9]+\.[0-9]+$/))
             {
-                this.hours = Math.floor(Number(this.timeString));
-                this.minutes = (Number(this.timeString) % 1) * 60;
-                this.seconds = 0;
+                if (this.options.assumeHours)
+                {
+                    this.hours = Math.floor(Number(this.timeString));
+                    this.minutes = (Number(this.timeString) % 1) * 60;
+                    this.seconds = 0;
+                } else
+                {
+                    this.minutes = Math.floor(Number(this.timeString));
+                    this.seconds = (Number(this.timeString) % 1) * 60;
+                    this.hours = 0;
+                }
+
             }
         },
 
@@ -198,9 +230,9 @@
 
     return {
 
-        timeToDecimalHours: function(timeString)
+        timeToDecimalHours: function(timeString, options)
         {
-            return new TimeParser(timeString).getTime();
+            return new TimeParser(timeString, options).getTime();
         },
 
         millisecondsToDecimalHours: function(milliseconds)

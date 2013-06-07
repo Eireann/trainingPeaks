@@ -1,15 +1,13 @@
 ﻿define(
 [
     "TP",
-    "views/userControls/accountMenuView",
     "views/userControls/userSettingsView",
     "hbs!templates/views/userControls/accountMenu"
 ],
-function (TP, AccountMenuView, UserSettingsView, accountMenuTemplate)
+function (TP, UserSettingsView, accountMenuTemplate)
 {
     return TP.ItemView.extend(
     {
-
         showThrobbers: false,
         tagName: "div",
         className: "accountSettings",

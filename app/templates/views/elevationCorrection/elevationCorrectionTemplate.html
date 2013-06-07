@@ -1,0 +1,54 @@
+﻿<div class="elevationCorrectionContainer">
+    <div class="titleBar">
+        <span>{{$ "ElevationCorrection"}}</span>
+        <div class="close">
+            <img class="closeIcon" src="assets/images/closeX.png"/>
+        </div>
+    </div>
+    <div class="elevationGraph"/>
+    <div class="elevationStats">
+        <div class="statsHeader">
+            <span>{{$ "Original"}}</span>
+            <span>{{$ "Corrected"}}</span>
+        </div>
+        <div class="stats">
+            <span>{{$ "Min"}}</span>
+            <span class="originalMin"></span>
+            <span class="correctedMin"></span>
+        </div>
+        <div class="stats">
+            <span>{{$ "Avg"}}</span>
+            <span class="originalAvg"></span>
+            <span class="correctedMin"></span>
+            <span class="units">%</span>
+        </div>
+        <div class="stats">
+            <span>{{$ "Max"}}</span>
+            <span class="originalMax"></span>
+            <span class="correctedMax"></span>
+            <span class="units">%</span>
+        </div>
+        <div class="stats">
+            <span>{{$ "Gain"}}</span>
+            <span class="originalGain"></span>
+            <span class="correctedGain"></span>
+            <span class="units">%</span>
+        </div>
+        <div class="stats">
+            <span>{{$ "Loss"}}</span>
+            <span class="originalLoss"></span>
+            <span class="correctedLoss"></span>
+            <span class="units">%</span>
+        </div>
+        <div class="stats">
+            <span>{{$ "Grade"}}</span>
+            <span class="originalGrade"></span>
+            <span class="correctedGrade"></span>
+            <span>%</span>
+        </div>
+    </div>
+	<div class="buttons">
+        <button type="submit">Go!</button>
+        <button type="reset">Close</button>
+    </div>
+</div>
