@@ -3,11 +3,12 @@
     "TP",
     "utilities/charting/dataParser",
     "models/elevationCorrection",
+    "models/commands/elevationCorrection",
     "utilities/charting/defaultFlotOptions",
     "utilities/conversion/convertToViewUnits",
     "hbs!templates/views/elevationCorrection/elevationCorrectionTemplate"
 ],
-function(TP, DataParser, ElevationCorrectionModel, getDefaultFlotOptions, convertToViewUnits, elevationCorrectionTemplate)
+function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandModel, getDefaultFlotOptions, convertToViewUnits, elevationCorrectionTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -41,37 +42,47 @@ function(TP, DataParser, ElevationCorrectionModel, getDefaultFlotOptions, conver
             if (!this.model || !this.model.get("detailData") || !this.model.get("detailData").get("flatSamples") || !this.model.get("detailData").get("flatSamples").hasLatLngData || !_.contains(this.model.get("detailData").get("flatSamples").channelMask, "Elevation"))
                 throw "ElevationCorrectionView requires a DetailData Model with valid flatSamples, latLngData, and Elevation channel";
             
-            this.dataParser = new DataParser();
-            this.dataParser.loadData(this.model.get("detailData").get("flatSamples"));
+            _.bindAll(this, "showCorrectedElevation", "onElevationCorrectionApplied");
 
-            _.bindAll(this, "showCorrectedElevation");
+            this.dataParser = new DataParser();
+            this.setOriginalElevation();
+
+            this.$el.addClass("waiting");
+
+            this.elevationCorrectionModel = new ElevationCorrectionModel({}, { latLngArray: this.dataParser.getLatLonArray() });
+            this.elevationCorrectionModel.save().done(this.showCorrectedElevation);
+        },
+
+        setOriginalElevation: function()
+        {
+            this.dataParser.loadData(this.model.get("detailData").get("flatSamples"));
+            this.originalElevation = this.dataParser.dataByChannel["Elevation"];
         },
         
         onRender: function()
         {
             this.ui.chart.css("height", "400px");
-            var originalElevation = this.dataParser.dataByChannel["Elevation"];
-            this.renderPlot(originalElevation);
+            this.renderPlot();
         },
-
-        renderPlot: function(originalElevation, correctedElevation)
+        
+        renderPlot: function()
         {
             var series = [];
 
             series.push(
             {
                 color: "red",
-                data: originalElevation,
+                data: this.originalElevation,
                 label: "Original",
                 shadowSize: 0
             });
 
-            if (correctedElevation)
+            if (this.correctedElevation)
             {
                 series.push(
                 {
                     color: "orange",
-                    data: correctedElevation,
+                    data: this.correctedElevation,
                     label: "Corrected",
                     shadowSize: 0
                 });
@@ -89,7 +100,7 @@ function(TP, DataParser, ElevationCorrectionModel, getDefaultFlotOptions, conver
                     {
                         color: "red"
                     },
-                    tickFormatter: function(value)
+                    tickFormatter: function (value)
                     {
                         return value === 0 ? +0 : parseInt(convertToViewUnits(value, "elevation"), 10);
                     }
@@ -97,11 +108,10 @@ function(TP, DataParser, ElevationCorrectionModel, getDefaultFlotOptions, conver
             ];
 
 
-            var onHoverHandler = function (flotItem, $tooltipEl)
-            {
+            var onHoverHandler = function (flotItem, $tooltipEl) {
                 $tooltipEl.html("");
             };
-            
+
             var flotOptions = getDefaultFlotOptions(onHoverHandler);
 
             flotOptions.selection.mode = null;
@@ -109,22 +119,36 @@ function(TP, DataParser, ElevationCorrectionModel, getDefaultFlotOptions, conver
             flotOptions.zoom = { enabled: false };
             flotOptions.filter = { enabled: false };
 
-            this.plot = $.plot(this.ui.chart, series, this.flotOptions);
-
-            this.$el.addClass("waiting");
-            
-            this.elevationCorrectionModel = new ElevationCorrectionModel({}, { latLngArray: this.dataParser.getLatLonArray() });
-            this.elevationCorrectionModel.save().done(this.showCorrectedElevation);
+            this.plot = $.plot(this.ui.chart, series, flotOptions);
         },
-        
+
         showCorrectedElevation: function()
         {
             this.$el.removeClass("waiting");
             
-            var originalElevation = this.dataParser.dataByChannel["Elevation"];
-            var correctedElevation = this.dataParser.createCorrectedElevationChannel(this.elevationCorrectionModel.get("elevations"));
+            this.correctedElevation = this.dataParser.createCorrectedElevationChannel(this.elevationCorrectionModel.get("elevations"));
 
-            this.renderPlot(originalElevation, correctedElevation);
+            this.renderPlot();
+        },
+        
+        onSubmitClicked: function()
+        {
+            var fileId = this.model.get("details").get("workoutDeviceFileInfos")[0].fileId;
+            var elevationCorrectionCommand = new ElevationCorrectionCommandModel({}, { uploadedFileId: fileId });
+
+            this.$el.addClass("waiting");
+            elevationCorrectionCommand.execute().done(this.onElevationCorrectionApplied);
+        },
+        
+        onElevationCorrectionApplied: function ()
+        {
+            var self = this;
+            self.model.get("detailData").fetch().done(function()
+            {
+                self.setOriginalElevation();
+                self.renderPlot();
+                self.$el.removeClass("waiting");
+            });
         },
         
         onResetClicked: function()

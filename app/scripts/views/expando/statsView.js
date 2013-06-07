@@ -59,7 +59,9 @@ function(
         
         onRangeSelected: function (workoutStatsForRange, options, triggeringView)
         {
-
+            if (!options)
+                return;
+            
             // we're trying to add or remove it from multi selection - don't show it in stats
             if ((options.addToSelection || options.removeFromSelection) && !options.displayStats)
             {

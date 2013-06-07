@@ -157,7 +157,7 @@ function (
             }
 
             var linkIcon = $(e.target);
-            this.shortUrlView = new ShortUrlView({ model: this.model });
+            this.shortUrlView = new ShortUrlView({ model: this.shortUrlModel });
 
             this.shortUrlView.setPosition({ fromElement: linkIcon, left: linkIcon.outerWidth() + 13, top: -15 });
 
