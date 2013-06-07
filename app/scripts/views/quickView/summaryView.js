@@ -1,6 +1,5 @@
 ﻿define(
 [
-    "jquerySelectBox",
     "underscore",
     "moment",
     "TP",
@@ -11,7 +10,6 @@
     "hbs!templates/views/quickView/summaryView"
 ],
 function (
-    selectBox,
     _,
     moment,
     TP,

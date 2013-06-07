@@ -1,6 +1,5 @@
 ﻿define(
 [
-    "jquerySelectBox",
     "underscore",
     "moment",
     "TP",
@@ -16,8 +15,7 @@
     "views/quickView/mapAndGraphView",
     "hbs!templates/views/quickView/workoutQuickView"
 ],
-function (
-    selectBox,
+function(
     _,
     moment,
     TP,

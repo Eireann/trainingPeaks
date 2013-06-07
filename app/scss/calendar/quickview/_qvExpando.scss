@@ -434,7 +434,7 @@
 
             select
             {
-                width: auto;
+                width: 120px;
                 margin-right: 10px;
 
                 font-family: $fontFamilyRegular;
@@ -447,6 +447,7 @@
                 cursor: pointer;
 
                 background: url(../../assets/images/calendarImages/background-gradient-button.png) repeat-x 0 0;
+
             }
 
             @include buttons(0, 77px, $fontSizeSmall);

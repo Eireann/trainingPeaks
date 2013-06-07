@@ -1,11 +1,21 @@
 ﻿define(
 [
+    "setImmediate",
+    "jqueryui/widget",
+    "jquerySelectBox",
     "TP",
     "./expandoCommon",
     "models/workoutStatsForRange",
     "hbs!templates/views/expando/lapsTemplate"
 ],
-function(TP, expandoCommon, WorkoutStatsForRange, lapsTemplate)
+function(
+    setImmediate,
+    jqueryUiWidget,
+    jquerySelectBox,
+    TP,
+    expandoCommon,
+    WorkoutStatsForRange,
+    lapsTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -31,6 +41,20 @@ function(TP, expandoCommon, WorkoutStatsForRange, lapsTemplate)
             this.watchForWorkoutTypeChange();
             this.watchForPeakChanges();
             this.watchForControllerEvents();
+
+            var self = this;
+            setImmediate(function()
+            {
+                self.styleSelectBox();
+            });
+
+        },
+
+        styleSelectBox: function()
+        {
+            this.$("#peakType").selectBoxIt({
+                dynamicPositioning: false
+            });
         },
 
         events:

@@ -69,8 +69,6 @@ function (
             this.$(".grayHeader").addClass(this.getPastOrCompletedCssClassName());
             this.$(".grayHeader").addClass(this.getWorkoutTypeCssClassName());
 
-            this.$(".chzn-select").chosen();
-
             this.$(".workoutTitle").css('width', this.titleWidth());
 
         },
