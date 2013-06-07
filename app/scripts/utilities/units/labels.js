@@ -133,6 +133,9 @@ function(unitsConstants, workoutLayoutFormatter)
         if (context && context.hasOwnProperty("model"))
         {
             contexts.push(context.model.attributes);
+        } else if (context && context.hasOwnProperty("attributes"))
+        {
+            contexts.push(context.attributes);
         }
 
         _.each(contexts, function(ctx)
