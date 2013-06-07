@@ -104,6 +104,11 @@ function (
             return text;
         },
         
+        getMailSubjectLine: function ()
+        {
+            return TP.utils.workout.types.getNameById(this.model.get("workoutTypeValueId")) + " on " + moment(this.model.get("workoutDay")).format("MM/DD");
+        },
+        
         onTwitterIconClicked: function ()
         {
             if (!this.workoutIsShareable())
@@ -176,11 +181,12 @@ function (
             var mailBody = this.getSharedText();
             if (activityUrl)
                 mailBody += "\n\n" + activityUrl;
-            var mailSubject = theMarsApp.user.get("firstName") + " " + theMarsApp.user.get("lastName") + " " + TP.utils.translate("has shared a workout with you");
+            var mailSubject = this.getMailSubjectLine();
             var mailtoUrl = "mailto:?subject=" + escape(mailSubject) + "&body=" + escape(mailBody);
             emailLink.attr("href", mailtoUrl);
 
         },
+
 
         enableOrDisableSharing: function()
         {
