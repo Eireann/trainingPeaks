@@ -50,7 +50,7 @@ function(
     var convertElevation = function(value)
     {
         var currentUnits = theMarsApp.user.get("units");
-        return (value * modelToViewConversionFactors("elevation", currentUnits)).toFixed(0);
+        return Math.round(parseFloat(value * modelToViewConversionFactors("elevation", currentUnits)));
     };
 
     var convertEfficiencyFactor = function(value, workoutType)

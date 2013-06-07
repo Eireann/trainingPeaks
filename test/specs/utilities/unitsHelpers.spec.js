@@ -163,9 +163,9 @@ function(TP, theMarsApp)
             it("should convert an elevation in meters to ft and cut off after 2 decimal places", function()
             {
                 expect(TP.utils.conversion.convertToViewUnits(0, "elevation")).toBe("");
-                expect(TP.utils.conversion.convertToViewUnits(1000, "elevation")).toBe("3281");
-                expect(TP.utils.conversion.convertToViewUnits(1000000, "elevation")).toBe("3280840");
-                expect(TP.utils.conversion.convertToViewUnits(-1000, "elevation")).toBe("-3281");
+                expect(TP.utils.conversion.convertToViewUnits(1000, "elevation")).toBe(3281);
+                expect(TP.utils.conversion.convertToViewUnits(1000000, "elevation")).toBe(3280840);
+                expect(TP.utils.conversion.convertToViewUnits(-1000, "elevation")).toBe(-3281);
             });
 
             it("should convert a pace value in meters per second to min/mile, properly formated", function()

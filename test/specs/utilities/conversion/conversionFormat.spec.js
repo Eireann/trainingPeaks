@@ -247,172 +247,172 @@ function(theMarsApp, TP, conversion, convertToModelUnits, dateTimeUtils)
             ]);
         });
 
-        xdescribe("Elevation", function()
+        describe("Elevation", function()
         {
             describeFormat("formatElevation", [
                 {
-                    output: "99999",
-                    input: 99999 
+                    input: "99999",
+                    output: 99999 
                 },
                 {
-                    output: "99999.1",
-                    input: 99999
+                    input: "99999.1",
+                    output: 99999
                 },
                 {
-                    output: "100000",
-                    input: 99999
+                    input: "100000",
+                    output: 99999
                 },
                 {
-                    output: "1",
-                    input: 1
+                    input: "1",
+                    output: 1
                 },
                 {
-                    output: "0",
-                    input: 0
+                    input: "0",
+                    output: 0
                 },
                 {
-                    output: "-1",
-                    input: -1 
+                    input: "-1",
+                    output: -1 
                 },
                 {
-                    output: "-15001",
-                    input: -15000
+                    input: "-15001",
+                    output: -15000
                 }
             ]);
         });
 
-        xdescribe("Energy", function()
+        describe("Energy", function()
         {
             describeFormat("formatEnergy", [
                 {
-                    output: "99999",
-                    input: 99999 
+                    input: "99999",
+                    output: 99999 
                 },
                 {
-                    output: "99999.1",
-                    input: 99999
+                    input: "99999.1",
+                    output: 99999
                 },
                 {
-                    output: "100000",
-                    input: 99999
+                    input: "100000",
+                    output: 99999
                 },
                 {
-                    output: "1",
-                    input: 1
+                    input: "1",
+                    output: 1
                 },
                 {
-                    output: "0",
-                    input: 0
+                    input: "0",
+                    output: ""
                 },
                 {
-                    output: "-1",
-                    input: 0
+                    input: "-1",
+                    output: ""
                 }
             ]);
         });
 
-        xdescribe("TSS", function()
+        describe("TSS", function()
         {
             describeFormat("formatTSS", [
                 {
-                    output: "9999",
-                    input: 9999
+                    input: "9999",
+                    output: 9999
                 },
                 {
-                    output: "9999.1",
-                    input: 9999
+                    input: "9999.1",
+                    output: 9999
                 },
                 {
-                    output: "999.1",
-                    input: 999.1
+                    input: "999.1",
+                    output: 999.1
                 },
                 {
-                    output: "10000",
-                    input: 9999
+                    input: "10000",
+                    output: 9999
                 },
                 {
-                    output: "1",
-                    input: 1
+                    input: "1",
+                    output: 1
                 },
                 {
-                    output: "0",
-                    input: 0
+                    input: "0",
+                    output: ""
                 },
                 {
-                    output: "0.23",
-                    input: 0.2
+                    input: "0.23",
+                    output: 0.2
                 },
                 {
-                    output: "-1",
-                    input: 0
+                    input: "-1",
+                    output: ""
                 }
             ]);
         });
 
-        xdescribe("IF", function()
+        describe("IF", function()
         {
             describeFormat("formatIF", [
                 {
-                    output: "99",
-                    input: 99
+                    input: "99",
+                    output: 99
                 },
                 {
-                    output: "99.1",
-                    input: 99
+                    input: "99.1",
+                    output: 99
                 },
                 {
-                    output: "9.13",
-                    input: 9.13
+                    input: "9.13",
+                    output: 9.13
                 },
                 {
-                    output: "100",
-                    input: 99
+                    input: "100",
+                    output: 99
                 },
                 {
-                    output: "1",
-                    input: 1
+                    input: "1",
+                    output: 1
                 },
                 {
-                    output: "0",
-                    input: 0
+                    input: "0",
+                    output: ""
                 },
                 {
-                    output: "0.234",
-                    input: 0.23
+                    input: "0.234",
+                    output: 0.23
                 },
                 {
-                    output: "-1",
-                    input: 0
+                    input: "-1",
+                    output: ""
                 }
             ]);
         });
 
-        xdescribe("Power", function()
+        describe("Power", function()
         {
             describeFormat("formatPower", [
                 {
-                    output: "9999",
-                    input: 9999 
+                    input: "9999",
+                    output: 9999 
                 },
                 {
-                    output: "9999.1",
-                    input: 9999
+                    input: "9999.1",
+                    output: 9999
                 },
                 {
-                    output: "10000",
-                    input: 9999
+                    input: "10000",
+                    output: 9999
                 },
                 {
-                    output: "1",
-                    input: 1
+                    input: "1",
+                    output: 1
                 },
                 {
-                    output: 0,
+                    output: "",
                     input: 0
                 },
                 {
-                    output: "-1",
-                    input: 0
+                    input: "-1",
+                    output: ""
                 }
             ]);
         });
@@ -531,7 +531,7 @@ function(theMarsApp, TP, conversion, convertToModelUnits, dateTimeUtils)
                     input: 1
                 },
                 {
-                    output: "",
+                    output: 0,
                     input: 0
                 },
                 {
