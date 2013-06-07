@@ -213,15 +213,15 @@ function(
             "#powerAvgField":
             {
                 observe: "powerAverage",
-                onGet: "formatInteger",
-                onSet: "parseFloat",
+                onGet: "formatPower",
+                onSet: "parsePower",
                 updateModel: "updateModel"
             },
             "#powerMaxField":
             {
                 observe: "powerMaximum",
-                onGet: "formatInteger",
-                onSet: "parseFloat",
+                onGet: "formatPower",
+                onSet: "parsePower",
                 updateModel: "updateModel"
             },
             "#torqueAvgField":
@@ -315,15 +315,15 @@ function(
             "#hrAvgField":
             {
                 observe: "heartRateAverage",
-                onGet: "formatNumber",
-                onSet: "parseInteger",
+                onGet: "formatHeartRate",
+                onSet: "parseHeartRate",
                 updateModel: "updateModel"
             },
             "#hrMaxField":
             {
                 observe: "heartRateMaximum",
-                onGet: "formatNumber",
-                onSet: "parseInteger",
+                onGet: "formatHeartRate",
+                onSet: "parseHeartRate",
                 updateModel: "updateModel"
             },
             "#tempMinField":

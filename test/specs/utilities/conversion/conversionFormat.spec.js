@@ -449,6 +449,10 @@ function(theMarsApp, TP, conversion, convertToModelUnits, dateTimeUtils)
                     output: 255
                 },
                 {
+                    input: "100.1",
+                    output: 100
+                },
+                {
                     input: "10000",
                     output: 255
                 },

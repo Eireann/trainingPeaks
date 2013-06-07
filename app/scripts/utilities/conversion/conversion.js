@@ -139,9 +139,9 @@
 
         formatElevation: function(value, options)
         {
-            var viewValue = convertToViewUnits(value, "elevation");
-            viewValue = adjustFieldRange(value, "elevation");
-            return this.formatInteger(viewValue, options, 0);
+            var convertedValue = convertToViewUnits(value, "elevation");
+            var limitedValue = adjustFieldRange(convertedValue, "elevation");
+            return this.formatInteger(limitedValue, options, 0);
         },
 
         parseElevation: function(value, options)
@@ -152,9 +152,9 @@
 
         formatElevationGain: function(value, options)
         {
-            var viewValue = convertToViewUnits(value, "elevation");
-            viewValue = adjustFieldRange(value, "elevationGain");
-            return this.formatInteger(viewValue, options);
+            var convertedValue = convertToViewUnits(value, "elevation");
+            var limitedValue = adjustFieldRange(convertedValue, "elevationGain");
+            return this.formatInteger(limitedValue, options);
         },
 
         parseElevationGain: function(value, options)
@@ -165,9 +165,9 @@
 
         formatElevationLoss: function(value, options)
         {
-            var viewValue = convertToViewUnits(value, "elevation");
-            viewValue = adjustFieldRange(value, "elevationLoss");
-            return this.formatInteger(viewValue, options);
+            var convertedValue = convertToViewUnits(value, "elevation");
+            var limitedValue = adjustFieldRange(convertedValue, "elevationLoss");
+            return this.formatInteger(limitedValue, options);
         },
 
         parseElevationLoss: function(value, options)
