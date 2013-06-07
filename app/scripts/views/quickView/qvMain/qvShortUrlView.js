@@ -37,18 +37,12 @@ function(
             };
         },
 
-        getPublicFileViewerUrl: function()
-        {
-            return theMarsApp.wwwRoot + "/av/" + this.model.get("sharedWorkoutInformationKey");
-        },
-
         getShortenedUrl: function()
         {
-            if (!this.model.has("shortUrl"))
-            {
-                return this.getPublicFileViewerUrl();
-            }
-            return this.model.get("shortUrl");
+            if (this.model)
+                return this.model.get("url");
+
+            return null;
         },
 
         goToUrl: function()
