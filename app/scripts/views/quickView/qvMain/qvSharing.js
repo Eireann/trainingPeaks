@@ -36,10 +36,12 @@ function (
             this.enableOrDisableSharing();
 
             this.model.on("change", this.enableOrDisableSharing, this);
+            this.model.get("details").on("change", this.onWorkoutDetailsChanged, this);
 
             this.on("close", function()
             {
                 this.model.off("change", this.enableOrDisableSharing, this);
+                this.model.get("details").off("change", this.onWorkoutDetailsChanged, this);
             }, this);
         },
 
@@ -158,10 +160,20 @@ function (
 
             if (this.workoutIsShareable())
             {
-                this.$(".share").addClass("public");
+                var shareClass = this.$(".share");
+                shareClass.removeClass("disabled");
+                shareClass.find(".twitterIcon").removeClass("disabled");
+                shareClass.find(".facebookIcon").removeClass("disabled");
+                this.applyLinkIconEnableState();
+                shareClass.find(".emailIcon").removeClass("disabled");
             } else
             {
-                this.$(".share").removeClass("public");
+                var shareClass = this.$(".share");
+                shareClass.addClass("disabled");
+                shareClass.find(".twitterIcon").addClass("disabled");
+                shareClass.find(".facebookIcon").addClass("disabled");
+                this.applyLinkIconEnableState();
+                shareClass.find(".emailIcon").addClass("disabled");
             }
 
             if (this.workoutIsPublic())
@@ -221,8 +233,29 @@ function (
         workoutIsShareable: function()
         {
             return this.workoutIsPublic() && this.workoutIsComplete();
-        }
+        },
 
+        onWorkoutDetailsChanged: function()
+        {
+            this.applyLinkIconEnableState();
+        },
+        
+        applyLinkIconEnableState: function()
+        {
+            if (this.workoutIsPublic())
+            {
+                if (this.model.get("details").has("workoutDeviceFileInfos")
+                    && this.model.get("details").get("workoutDeviceFileInfos").length)
+                {
+                    this.hasFileData = true;
+                    this.$(".linkIcon").removeClass("disabled");
+                } else
+                {
+                    this.hasFileData = false;
+                    this.$(".linkIcon").addClass("disabled");
+                }
+            }
+        }
     };
 
     return qvSharing;
