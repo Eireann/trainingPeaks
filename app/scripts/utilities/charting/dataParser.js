@@ -345,6 +345,19 @@ function(seriesColorByChannel, findIndexByMsOffset, convertToViewUnits)
             {
                 return null;
             }
+        },
+        
+        createCorrectedElevationChannel: function (elevations)
+        {
+            var index = 0;
+            var corrected = _.map(this.dataByChannel["Elevation"], function(elevationPoint)
+            {
+                if(index >= (elevations.length - 1))
+                    return elevationPoint;
+
+                return [elevationPoint[0], elevations[index++]];
+            });
+            return corrected;
         }
 
     });

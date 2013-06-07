@@ -16,7 +16,7 @@ function(TP)
         
         defaults:
         {
-            latLngString: "",
+            latLngs: "",
             elevations: ""
         },
         
@@ -34,7 +34,20 @@ function(TP)
 
             serializedLatLng = serializedLatLng.trim();
 
-            this.set("latLngString", serializedLatLng, { silent: true });
+            this.set("latLngs", serializedLatLng, { silent: true });
+        },
+        
+        parse: function (response)
+        {
+            if (!response || !response.elevations)
+                return null;
+
+            var parsedResponse = _.map(response.elevations.split(" "), function(elevation)
+            {
+                return (elevation !== null ? elevation / 100 : null);
+            });
+
+            return { elevations: parsedResponse };
         }
     });
 });
