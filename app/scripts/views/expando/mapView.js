@@ -162,7 +162,9 @@ function (
 
         onRangeSelected: function (workoutStatsForRange, options, triggeringView)
         {
-
+            if (!options)
+                return;
+            
             var selection;
             if (options.removeFromSelection)
             {

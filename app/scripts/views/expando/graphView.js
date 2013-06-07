@@ -233,7 +233,7 @@ function(
 
         onRangeSelected: function(workoutStatsForRange, options, triggeringView)
         {
-            if (triggeringView === this)
+            if (triggeringView === this || !options)
                 return;
 
             var selection;
@@ -245,7 +245,8 @@ function(
                     this.removeSelectionFromGraph(selection);
                     this.selections = _.without(this.selections, selection);
                 }
-            } else if (options.addToSelection)
+            }
+            else if (options.addToSelection)
             {
                 selection = this.findGraphSelection(workoutStatsForRange.get("begin"), workoutStatsForRange.get("end"), options.dataType);
                 if (!selection)
