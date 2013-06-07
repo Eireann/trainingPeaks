@@ -27,7 +27,7 @@ function (TP)
         parse: function (response)
         {
             return { url: response };
-        },
+        }
     });
 
     return ShortUrlModel;

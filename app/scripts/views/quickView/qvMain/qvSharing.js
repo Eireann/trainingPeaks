@@ -65,8 +65,46 @@ function (
 
             this.model.save();
         },
+        
+        getSharedText: function()
+        {
+            var textArray = [];
+            
+            if (theMarsApp.user.has("firstName"))
+            {
+                textArray.push(theMarsApp.user.get("firstName") + " completed a");
+            }
 
-        onTwitterIconClicked: function()
+            if(this.model.has("distance"))
+            {
+                textArray.push(this.formatDistance(this.model.get("distance")) + " " + TP.utils.units.getUnitsLabel("distance", this.model.get("workoutTypeValueId"), this.model));
+            }
+
+            if (this.model.has("workoutTypeValueId"))
+            {
+                textArray.push(TP.utils.workout.types.getNameById(this.model.get("workoutTypeValueId")));
+            }
+
+            if(this.model.has("workoutDay"))
+            {
+                textArray.push("on " + moment(this.model.get("workoutDay")).format("MM/DD"));
+            }
+
+            if(this.model.has("totalTime"))
+            {
+                textArray.push("in " + this.formatDuration(this.model.get("totalTime")));
+            }
+
+            if(this.model.has("tssActual") && this.model.get("tssActual") !== 0)
+            {
+                textArray.push("with " + this.model.get("tssActual") + " " + TP.utils.units.getUnitsLabel("tss", this.model.get("workoutTypeValueId"), this.model));
+            }
+            var text = textArray.join(" ");
+            text += ".";
+            return text;
+        },
+        
+        onTwitterIconClicked: function ()
         {
             if (!this.workoutIsShareable())
             {
@@ -77,46 +115,12 @@ function (
             var text = this.getSharedText();
             text += " #trainingpeaks";
 
-            var twitterUrl = "https://twitter.com/intent/tweet?text=" + escape(text) + "&url=" + escape(url);
+            var twitterUrl = "https://twitter.com/intent/tweet?text=" + escape(text);
+            if (url)
+            {
+                twitterUrl = twitterUrl + "&url=" + escape(url);
+            }
             window.open(twitterUrl, 'twitterWindow', 'width=1000');
-        },
-
-        getSharedText: function()
-        {
-
-            if (theMarsApp.user.has("firstName"))
-            {
-                text = theMarsApp.user.get("firstName") + " completed a ";
-            }
-
-            if(this.model.has("distance"))
-            {
-                text += this.formatDistance(this.model.get("distance")) + " " + TP.utils.units.getUnitsLabel("distance", this.model.get("workoutTypeValueId"), this.model) + " ";
-            }
-
-            if (this.model.has("workoutTypeValueId"))
-            {
-                text += TP.utils.workout.types.getNameById(this.model.get("workoutTypeValueId")) + " ";
-            }
-
-            if(this.model.has("workoutDay"))
-            {
-                text += "on " + moment(this.model.get("workoutDay")).format("MM/DD") + " ";
-            }
-
-            if(this.model.has("totalTime"))
-            {
-                text += " in " + this.formatDuration(this.model.get("totalTime")) + " ";
-            }
-
-            if(this.model.has("tssActual") && this.model.get("tssActual") !== 0)
-            {
-                text += "with " + this.model.get("tssActual") + " " + TP.utils.units.getUnitsLabel("tss", this.model.get("workoutTypeValueId"), this.model);
-            }
-
-            text += ". ";
-
-            return text;
         },
         
         onFacebookIconClicked: function()
@@ -131,7 +135,12 @@ function (
             var descriptionText = this.getSharedText();
             var appID = 103295416394750;
 
-            var facebookURL = "https://www.facebook.com/dialog/feed?app_id=" + appID + "&link=" + escape(url) + "&picture=https://s3.amazonaws.com/storage.trainingpeaks.com/assets/images/trainingpeaks-activity-viewer.png&name=" + escape(windowTitle) + "&caption=" + escape(url) + "&description=" + escape(descriptionText) + "&redirect_uri=" + escape(url);
+            var facebookURL = "https://www.facebook.com/dialog/feed?app_id=" + appID + "&picture=https://s3.amazonaws.com/storage.trainingpeaks.com/assets/images/trainingpeaks-activity-viewer.png&name=" + escape(windowTitle) + "&description=" + escape(descriptionText) + "&redirect_uri=https://www.trainingpeaks.com";
+            if (url)
+            {
+                var escapedUrl = escape(url);
+                facebookURL += "&link=" + escapedUrl + "&caption=" + escapedUrl;
+            }
             window.open(facebookURL, 'facebookWindow', 'width=1000');
         },
 
@@ -149,28 +158,53 @@ function (
 
             this.shortUrlView.render();
         },
+        
+        enableOrDisableEmailLink: function ()
+        {
+
+            // this has to be an actual link for the user to click on instead of a window.open, so we just enable or disable the url as needed
+            var emailLink = this.$(".emailLink");
+
+            if (!this.workoutIsShareable())
+            {
+                emailLink.attr("href", "javascript: void null;");
+                return;
+            }
+
+            //var mailBody = TP.utils.translate("Click the link below to view the workout") + "\n\n" + this.getShortenedUrl();
+            var activityUrl = this.getShortenedUrl();
+            var mailBody = this.getSharedText();
+            if (activityUrl)
+                mailBody += "\n\n" + activityUrl;
+            var mailSubject = theMarsApp.user.get("firstName") + " " + theMarsApp.user.get("lastName") + " " + TP.utils.translate("has shared a workout with you");
+            var mailtoUrl = "mailto:?subject=" + escape(mailSubject) + "&body=" + escape(mailBody);
+            emailLink.attr("href", mailtoUrl);
+
+        },
 
         enableOrDisableSharing: function()
         {
             if (this.workoutIsComplete())
             {
                 this.$(".publicCheckbox").prop("disabled", false);
-            } else
+            }
+            else
             {
                 this.$(".publicCheckbox").prop("disabled", true);
             }
 
+            var shareClass = this.$(".share");
+
             if (this.workoutIsShareable())
             {
-                var shareClass = this.$(".share");
                 shareClass.removeClass("disabled");
                 shareClass.find(".twitterIcon").removeClass("disabled");
                 shareClass.find(".facebookIcon").removeClass("disabled");
                 this.applyLinkIconEnableState();
                 shareClass.find(".emailIcon").removeClass("disabled");
-            } else
+            }
+            else
             {
-                var shareClass = this.$(".share");
                 shareClass.addClass("disabled");
                 shareClass.find(".twitterIcon").addClass("disabled");
                 shareClass.find(".facebookIcon").addClass("disabled");
@@ -187,25 +221,6 @@ function (
             }
 
             this.enableOrDisableEmailLink();
-        },
-
-        enableOrDisableEmailLink: function()
-        {
-
-            // this has to be an actual link for the user to click on instead of a window.open, so we just enable or disable the url as needed
-            var emailLink = this.$(".emailLink");
-
-            if (!this.workoutIsShareable())
-            {
-                emailLink.attr("href", "javascript: void null;");
-                return;
-            }
-
-            var mailBody = TP.utils.translate("Click the link below to view the workout") + "\n\n" + this.getShortenedUrl();
-            var mailSubject = theMarsApp.user.get("firstName") + " " + theMarsApp.user.get("lastName") + " " + TP.utils.translate("has shared a workout with you");
-            var mailtoUrl = "mailto:?subject=" + escape(mailSubject) + "&body=" + escape(mailBody);
-            emailLink.attr("href", mailtoUrl);
-
         },
 
         getPublicFileViewerUrl: function()
@@ -247,11 +262,13 @@ function (
             if (this.workoutHasFileData() && !this.shortUrlModel)
             {
                 this.shortUrlModel = new ShortUrlModel({ workoutId: this.model.get("workoutId") });
-                this.shortUrlModel.fetch();
+                var self = this;
+                this.shortUrlModel.fetch().done(function () { self.enableOrDisableEmailLink(); });
             }
             else if (!this.workoutHasFileData())
             {
                 this.shortUrlModel = null;
+                this.enableOrDisableEmailLink();
             }
         },
 
@@ -270,8 +287,7 @@ function (
         
         workoutHasFileData: function()
         {
-            return this.model.get("details").has("workoutDeviceFileInfos")
-                && this.model.get("details").get("workoutDeviceFileInfos").length;
+            return this.model.get("details").has("workoutDeviceFileInfos") && this.model.get("details").get("workoutDeviceFileInfos").length;
         }
     };
 
