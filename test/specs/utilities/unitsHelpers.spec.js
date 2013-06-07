@@ -173,8 +173,8 @@ function(TP, theMarsApp)
                 expect(TP.utils.conversion.convertToViewUnits(1, "pace")).toBe("26:49.34");
                 expect(TP.utils.conversion.convertToViewUnits(3, "pace")).toBe("08:56.45");
                 expect(TP.utils.conversion.convertToViewUnits("notAnumber", "pace")).toBe("");
-                expect(TP.utils.conversion.convertToViewUnits(0.005, "pace")).toBe("99:99");
-                expect(TP.utils.conversion.convertToViewUnits(-1, "pace")).toBe("99:99");
+                expect(TP.utils.conversion.convertToViewUnits(0.0005, "pace")).toBe("99:59:59.99");
+                expect(TP.utils.conversion.convertToViewUnits(-1, "pace")).toBe("99:59:59.99");
             });
 
 

@@ -15,11 +15,13 @@ function(
     dateTimeUtils,
     threeSigFig)
 {
+    var minimumPace = 0.00277778; // 99:59:59.99
+    var almostOneHundredHoursAsMinutes = (99 + (59 / 60) + (59.99 / 3600)) * 60;
+
     var convertToPaceFromSpeed = function(speed, doFormat)
     {
-
-        if (speed <= 0.01)
-            return doFormat ? "99:99" : (100 + (39 / 60));
+        if (speed <= minimumPace)
+            return doFormat ? "99:59:59.99" : almostOneHundredHoursAsMinutes;
 
         unitSystem = theMarsApp.user.get("units");
         var conversion = modelToViewConversionFactors("speed", unitSystem);
@@ -27,7 +29,7 @@ function(
         var pace = (1 / speed);
 
         // pace = minutes
-        return doFormat ? dateTimeUtils.format.decimalMinutesAsTime(pace) : pace;
+        return doFormat ? dateTimeUtils.format.decimalMinutesAsTime(pace, true, undefined, true) : pace;
     };
 
     var isNumeric = function(value)

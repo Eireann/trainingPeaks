@@ -64,6 +64,12 @@ function(theMarsApp, TP, conversion, convertToModelUnits, dateTimeUtils)
         xdescribe("Distance", function()
         {
 
+            beforeEach(function()
+            {
+                // we don't want to test units conversion here, just limiting, and db is metric, so use metric user preference
+                theMarsApp.user.set("units", TP.utils.units.constants.Metric);
+            });
+
             describeFormat("formatDistance", [
                 {
                     output: "999999",
@@ -90,6 +96,13 @@ function(theMarsApp, TP, conversion, convertToModelUnits, dateTimeUtils)
 
         xdescribe("Speed", function()
         {
+
+            beforeEach(function()
+            {
+                // we don't want to test units conversion here, just limiting, and db is metric, so use metric user preference
+                theMarsApp.user.set("units", TP.utils.units.constants.Metric);
+            });
+
             describeFormat("formatSpeed", [
                 {
                     output: "999",
@@ -118,7 +131,7 @@ function(theMarsApp, TP, conversion, convertToModelUnits, dateTimeUtils)
             ]);
         });
 
-        describe("Pace", function()
+        describe("Pace, as metric user", function()
         {
 
             beforeEach(function()
@@ -137,11 +150,15 @@ function(theMarsApp, TP, conversion, convertToModelUnits, dateTimeUtils)
                     input: conversion.parsePace("00:00:01")
                 },
                 {
-                    output: "1:40:39",
+                    output: "99:59:59",
                     input: conversion.parsePace("99:59:59")
                 },
                 {
-                    output: "1:40:39",
+                    output: "99:59:58",
+                    input: conversion.parsePace("99:59:58")
+                },
+                {
+                    output: "99:59:59.99",
                     input: conversion.parsePace("99:59:59.99")
                 },
                 {
@@ -153,7 +170,7 @@ function(theMarsApp, TP, conversion, convertToModelUnits, dateTimeUtils)
                     input: conversion.parsePace("::0.99")
                 },
                 {
-                    output: "1:40:39",
+                    output: "99:59:59.99",
                     input: conversion.parsePace("100:00:00")
                 }
             ]);
@@ -161,6 +178,7 @@ function(theMarsApp, TP, conversion, convertToModelUnits, dateTimeUtils)
 
         describe("Calories", function()
         {
+
             describeFormat("formatCalories", [
                 {
                     input: "99999",
@@ -481,6 +499,13 @@ function(theMarsApp, TP, conversion, convertToModelUnits, dateTimeUtils)
 
         describe("Torque", function()
         {
+
+            beforeEach(function()
+            {
+                // we don't want to test units conversion here, just limiting, and db is metric, so use metric user preference
+                theMarsApp.user.set("units", TP.utils.units.constants.Metric);
+            });
+
             describeFormat("formatTorque", [
                 {
                     output: 9999,
@@ -515,6 +540,13 @@ function(theMarsApp, TP, conversion, convertToModelUnits, dateTimeUtils)
 
         describe("Temperature", function()
         {
+
+            beforeEach(function()
+            {
+                // we don't want to test units conversion here, just limiting, and db is metric, so use metric user preference
+                theMarsApp.user.set("units", TP.utils.units.constants.Metric);
+            });
+
             describeFormat("formatTemperature", [
                 {
                     output: 999,
@@ -550,10 +582,6 @@ function(theMarsApp, TP, conversion, convertToModelUnits, dateTimeUtils)
                 }
             ]);
         });
-
-
-
-
 
     });
 

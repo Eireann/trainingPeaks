@@ -104,7 +104,7 @@
         {
             var paceAsMinutes = convertToViewUnits(value, "paceUnFormatted");
             var limitedPaceAsHours = adjustFieldRange(paceAsMinutes / 60, "pace");
-            return datetimeUtils.format.decimalMinutesAsTime(limitedPaceAsHours * 60);
+            return datetimeUtils.format.decimalMinutesAsTime(limitedPaceAsHours * 60, true, undefined, true);
         },
 
         parsePace: function (value, options)
