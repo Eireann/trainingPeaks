@@ -74,9 +74,10 @@
             return modelValue;
         },
 
-        formatDurationFromSeconds: function(value, options)
+        formatDurationFromSeconds: function(seconds, options)
         {
-            return datetimeUtils.format.decimalSecondsAsTime(value, true, undefined, false);
+            var hours = seconds ? Number(seconds) / 3600 : 0;
+            return this.formatDuration(hours, options);
         },
 
         parseDurationAsSeconds: function(value, options)
@@ -108,14 +109,22 @@
 
         formatPace: function(value, options)
         {
+            if (!value)
+            {
+                return this.formatEmptyValue(value, options);
+            }
             var paceAsMinutes = convertToViewUnits(value, "paceUnFormatted");
             var limitedPaceAsHours = adjustFieldRange(paceAsMinutes / 60, "pace");
             return datetimeUtils.format.decimalMinutesAsTime(limitedPaceAsHours * 60, true, undefined, true);
         },
 
-        parsePace: function (value, options)
+        parsePace: function(value, options)
         {
             // utilize datetime smart parsing, but assume we're working with minutes
+            if (!value)
+            {
+                return this.formatEmptyValue(value, options);
+            }
             var rawTime = datetimeUtils.convert.timeToDecimalHours(value, { assumeHours: false });
             var limitedTime = adjustFieldRange(rawTime, "pace");
             var formattedLimitedTime = datetimeUtils.format.decimalHoursAsTime(limitedTime, true);

@@ -22,6 +22,7 @@ function(
 {
     var peaksMixin =
     {
+
         initializePeaks: function()
         {
             if (!this.metric)

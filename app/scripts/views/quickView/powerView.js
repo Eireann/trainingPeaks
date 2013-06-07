@@ -25,8 +25,8 @@ function(_, TP, zonesViewBase)
         addFormattersToPeakStickitBinding: function(binding, peak)
         {
             _.extend(binding, {
-                onGet: "formatInteger",
-                onSet: "parseInteger"
+                onGet: "formatPower",
+                onSet: "parsePower"
             });
         },
 
