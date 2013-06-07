@@ -1,12 +1,13 @@
 ﻿define(
 [
+    "underscore",
     "moment",
     "utilities/datetime/datetime",
     "utilities/workout/workoutTypes",
     "utilities/conversion/convertToModelUnits",
     "utilities/conversion/convertToViewUnits",
     "utilities/conversion/adjustFieldRange"
-], function(moment, datetimeUtils, workoutTypes, convertToModelUnits, convertToViewUnits, adjustFieldRange)
+], function(_, moment, datetimeUtils, workoutTypes, convertToModelUnits, convertToViewUnits, adjustFieldRange)
 {
     return {
         convertToModelUnits: convertToModelUnits,
@@ -195,9 +196,11 @@
             return (value === "" ? null : parseFloat(value));
         },
 
-        formatTemperature: function (value, options)
+        formatTemperature: function(value, options)
         {
-            return convertToViewUnits(value, "temperature");
+            var convertedValue = convertToViewUnits(value, "temperature");
+            var adjustedValue = adjustFieldRange(convertedValue, "temp");
+            return this.formatEmptyValue(adjustedValue);
         },
 
         parseTemperature: function(value, options)
@@ -241,8 +244,8 @@
             var limitedValue = adjustFieldRange(value, "energy");
             return this.parseInteger(limitedValue);
         },
-        
-        formatTorque: function (value, options)
+
+        formatTorque: function(value, options)
         {
             var parameters = {
                 value: value,
@@ -256,7 +259,9 @@
                 parameters.precision = options.precision;
             }
 
-            return convertToViewUnits(parameters);
+            var convertedValue = convertToViewUnits(parameters);
+            var adjustedValue = adjustFieldRange(convertedValue, "torque");
+            return this.formatEmptyValue(adjustedValue);
         },
 
         parseTorque: function(value, options)
@@ -323,7 +328,8 @@
         formatHeartRate: function(value, options)
         {
             var intValue = this.formatInteger(value);
-            return adjustFieldRange(intHeartRate, "heartrate");
+            var adjustedValue = adjustFieldRange(intValue, "heartrate");
+            return this.formatEmptyValue(adjustedValue);
         },
 
         parseCadence: function(value, options)
@@ -336,7 +342,23 @@
         formatCadence: function(value, options)
         {
             var intValue = this.formatInteger(value);
-            return adjustFieldRange(intHeartRate, "cadence");
+            var adjustedValue = adjustFieldRange(intValue, "cadence");
+            return this.formatEmptyValue(adjustedValue);
+        },
+
+        formatEmptyValue: function(value)
+        {
+            if(_.isNaN(value) || _.isUndefined(value) || _.isNull(value))
+            {
+                return "";
+            }
+
+            if(value === 0 || value === "0")
+            {
+                return "";
+            }
+
+            return value;
         }
 
     };
