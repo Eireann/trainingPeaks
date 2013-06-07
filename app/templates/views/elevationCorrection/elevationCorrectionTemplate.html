@@ -1,10 +1,11 @@
 ﻿<div class="elevationCorrectionContainer">
-    <div class="header">
+    <div class="titleBar">
         <span>{{$ "ElevationCorrection"}}</span>
+        <div class="close">
+            <img class="closeIcon" src="assets/images/closeX.png"/>
+        </div>
     </div>
-    <div class="elevationGraph">
-
-    </div>
+    <div class="elevationGraph"/>
     <div class="elevationStats">
         <div class="statsHeader">
             <span>{{$ "Original"}}</span>
@@ -46,6 +47,8 @@
             <span>%</span>
         </div>
     </div>
-    <button type="reset">Close</button>
-    <button type="submit">Apply</button>
+	<div class="buttons">
+        <button type="submit">Go!</button>
+        <button type="reset">Close</button>
+    </div>
 </div>
