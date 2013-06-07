@@ -299,5 +299,10 @@
 
     "Public": "Public",
     "ShortUrl": "Short URL",
-    "Go": "Go"
+    "Go": "Go",
+    "ElevationCorrection": "Elevation Correction",
+    "Original": "Original",
+    "Corrected": "Corrected",
+    "Gain": "Gain",
+    "Loss": "Loss"
 }
