@@ -15,20 +15,19 @@ function(
     dateTimeUtils,
     threeSigFig)
 {
-    var convertToPaceFromSpeed = function(speed, unitSystem)
+    var convertToPaceFromSpeed = function(speed, doFormat)
     {
 
         if (speed <= 0.01)
-            return "99:99";
+            return doFormat ? "99:99" : (100 + (39 / 60));
 
-        if (!unitSystem)
-            unitSystem = theMarsApp.user.get("units");
-
+        unitSystem = theMarsApp.user.get("units");
         var conversion = modelToViewConversionFactors("speed", unitSystem);
         speed = speed * conversion / 60;
         var pace = (1 / speed);
 
-        return dateTimeUtils.format.decimalMinutesAsTime(pace);
+        // pace = minutes
+        return doFormat ? dateTimeUtils.format.decimalMinutesAsTime(pace) : pace;
     };
 
     var isNumeric = function(value)
@@ -137,7 +136,9 @@ function(
             case "distance":
                 return convertDistanceToViewUnits(value, sportType, precision);
             case "pace":
-                return convertToPaceFromSpeed(value);
+                return convertToPaceFromSpeed(value, true);
+            case "paceUnFormatted":
+                return convertToPaceFromSpeed(value, false);
             case "temperature":
                 return convertTemperature(value);
             case "rightpower":

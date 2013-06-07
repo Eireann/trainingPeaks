@@ -95,15 +95,16 @@
 
         formatPower: function(value, options)
         {
-            var intPower = this.formatInteger(value);
+            var intPower = this.formatInteger(value, options, 0);
             var adjustedPower = adjustFieldRange(intPower, "power");
             return this.formatEmptyValue(adjustedPower, options);
         },
 
         formatPace: function(value, options)
         {
-            var formattedPace = convertToViewUnits(value, "pace");
-            return formattedPace;
+            var paceAsMinutes = convertToViewUnits(value, "paceUnFormatted");
+            var limitedPaceAsHours = adjustFieldRange(paceAsMinutes / 60, "pace");
+            return datetimeUtils.format.decimalMinutesAsTime(limitedPaceAsHours * 60);
         },
 
         parsePace: function (value, options)
@@ -132,7 +133,7 @@
         {
             var viewValue = convertToViewUnits(value, "elevation");
             viewValue = adjustFieldRange(value, "elevation");
-            return this.formatInteger(viewValue, options);
+            return this.formatInteger(viewValue, options, 0);
         },
 
         parseElevation: function(value, options)
@@ -145,7 +146,7 @@
         {
             var viewValue = convertToViewUnits(value, "elevation");
             viewValue = adjustFieldRange(value, "elevationGain");
-            return this.formatInteger(viewValue);
+            return this.formatInteger(viewValue, options);
         },
 
         parseElevationGain: function(value, options)
@@ -158,7 +159,7 @@
         {
             var viewValue = convertToViewUnits(value, "elevation");
             viewValue = adjustFieldRange(value, "elevationLoss");
-            return this.formatInteger(viewValue);
+            return this.formatInteger(viewValue, options);
         },
 
         parseElevationLoss: function(value, options)
@@ -183,10 +184,10 @@
             return this.formatEmptyValue(value, options, 0);
         },
 
-        formatInteger: function(value, options)
+        formatInteger: function(value, options, defaultValue)
         {
             value = (value === null || value === 0) ? 0 : Math.round(parseFloat(value));
-            return this.formatEmptyValue(value, options, 0);
+            return this.formatEmptyValue(value, options, defaultValue);
         },
 
         parseInteger: function(value, options)
@@ -315,9 +316,9 @@
 
         formatCalories: function(value, options)
         {
-            var modelValue = this.formatInteger(value, options);
+            var modelValue = this.formatInteger(value, options, 0);
             modelValue = adjustFieldRange(modelValue, "calories");
-            return modelValue;               
+            return this.formatEmptyValue(modelValue, options);
         },
 
         parseCalories: function(value, options)
@@ -336,7 +337,7 @@
 
         formatHeartRate: function(value, options)
         {
-            var intValue = this.formatInteger(value);
+            var intValue = this.formatInteger(value, options, 0);
             var adjustedValue = adjustFieldRange(intValue, "heartrate");
             return this.formatEmptyValue(adjustedValue, options);
         },
@@ -350,7 +351,7 @@
 
         formatCadence: function(value, options)
         {
-            var intValue = this.formatInteger(value);
+            var intValue = this.formatInteger(value, options, 0);
             var adjustedValue = adjustFieldRange(intValue, "cadence");
             return this.formatEmptyValue(adjustedValue, options);
         },

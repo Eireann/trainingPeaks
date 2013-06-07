@@ -118,131 +118,133 @@ function(theMarsApp, TP, conversion, convertToModelUnits, dateTimeUtils)
             ]);
         });
 
-        xdescribe("Pace", function()
+        describe("Pace", function()
         {
+
+            beforeEach(function()
+            {
+                // we don't want to test units conversion here, just limiting, and db is metric, so use metric user preference
+                theMarsApp.user.set("units", TP.utils.units.constants.Metric);
+            });
 
             describeFormat("formatPace", [
                 {
-                    output: "00:00:00",
-                    input: convertToModelUnits("00:99:59", "pace")
+                    output: "1:39:59",
+                    input: conversion.parsePace("00:99:59")
                 },
                 {
-                    output: "00:00:01",
-                    input: convertToModelUnits("00:00:01", "pace")
+                    output: "00:01",
+                    input: conversion.parsePace("00:00:01")
                 },
                 {
-                    output: "99:59",
-                    input: convertToModelUnits("00:99:59", "pace")
+                    output: "1:40:39",
+                    input: conversion.parsePace("99:59:59")
                 },
                 {
-                    output: "99:59:59",
-                    input: convertToModelUnits("99:59:59", "pace")
+                    output: "1:40:39",
+                    input: conversion.parsePace("99:59:59.99")
                 },
                 {
-                    output: "99:59:59.99",
-                    input: convertToModelUnits("99:59:59.99", "pace")
+                    output: "00:59.99",
+                    input: conversion.parsePace("::59.99")
                 },
                 {
-                    output: "::59.99",
-                    input: convertToModelUnits("::59.99", "pace")
+                    output: "00:01",
+                    input: conversion.parsePace("::0.99")
                 },
                 {
-                    output: "::0.99",
-                    input: convertToModelUnits("::0.99", "pace")
-                },
-                {
-                    output: "100:00:00",
-                    input: convertToModelUnits("99:59:59.99", "pace")
+                    output: "1:40:39",
+                    input: conversion.parsePace("100:00:00")
                 }
             ]);
         });
 
-        xdescribe("Calories", function()
+        describe("Calories", function()
         {
             describeFormat("formatCalories", [
                 {
-                    output: "99999",
-                    input: 99999 
+                    input: "99999",
+                    output: 99999 
                 },
                 {
-                    output: "99999.1",
-                    input: 99999
+                    input: "99999.1",
+                    output: 99999
                 },
                 {
-                    output: "100000",
-                    input: 99999
+                    input: "100000",
+                    output: 99999
                 },
                 {
-                    output: "1",
-                    input: 1
+                    input: "1",
+                    output: 1
                 },
                 {
-                    output: "0",
-                    input: 0
+                    input: "0",
+                    output: ""
                 },
                 {
-                    output: "-1",
-                    input: 0
+                    input: "-1",
+                    output: ""
                 }
             ]);
         });
 
-        xdescribe("Elevation Gain", function()
+        describe("Elevation Gain", function()
         {
             describeFormat("formatElevationGain", [
                 {
-                    output: "99999",
-                    input: 99999 
+                    input: "99999",
+                    output: 99999 
                 },
                 {
-                    output: "99999.1",
-                    input: 99999
+                    input: "99999.1",
+                    output: 99999
                 },
                 {
-                    output: "100000",
-                    input: 99999
+                    input: "100000",
+                    output: 99999
                 },
                 {
-                    output: "1",
-                    input: 1
+                    input: "1",
+                    output: 1
                 },
                 {
-                    output: "0",
-                    input: 0
+                    input: "0",
+                    output: ""
                 },
                 {
-                    output: "-1",
-                    input: 0
+                    input: "-1",
+                    output: ""
                 }
             ]);
         });
 
-        xdescribe("Elevation Loss", function()
+        describe("Elevation Loss", function()
         {
             describeFormat("formatElevationLoss", [
                 {
-                    output: "99999",
-                    input: 99999 
+                    input: "99999",
+                    output: 99999 
                 },
                 {
-                    output: "99999.1",
-                    input: 99999
+                    input: "99999.1",
+                    output: 99999
                 },
                 {
-                    output: "100000",
-                    input: 99999
+                    input: "100000",
+                    output: 99999
                 },
                 {
-                    output: "1",
-                    input: 1
+                    input: "1",
+                    output: 1
                 },
                 {
-                    output: "0",
-                    input: 0
+                    input: "0",
+                    output: ""
                 },
                 {
-                    output: "-1",
-                    input: 0
+                    input: "-1",
+                    output: ""
                 }
             ]);
         });

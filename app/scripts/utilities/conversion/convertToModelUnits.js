@@ -11,8 +11,9 @@ function(_, modelToViewConversionFactors, dateTimeConvert)
 
         var hours = dateTimeConvert.timeToDecimalHours(pace, { assumeHours: false });
         var minutes = hours * 60;
+        var seconds = minutes * 60;
 
-        if ((minutes / 60) <= 0.01)
+        if (seconds < 1)
         {
             return convertToSpeedFromPace("00:99:59", unitSystem);
         }

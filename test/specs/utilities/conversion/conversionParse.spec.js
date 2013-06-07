@@ -155,7 +155,7 @@ function(theMarsApp, TP, conversion, convertToModelUnits, dateTimeUtils)
             describeParse("parsePace", [
                 {
                     input: "00:00:00",
-                    output: convertToModelUnits("00:99:59", "pace")
+                    output: convertToModelUnits("00:00:01", "pace")
                 },
                 {
                     input: "00:00:01",
@@ -179,7 +179,7 @@ function(theMarsApp, TP, conversion, convertToModelUnits, dateTimeUtils)
                 },
                 {
                     input: "::0.99",
-                    output: convertToModelUnits("::0.99", "pace")
+                    output: convertToModelUnits("0:0:01", "pace")
                 },
                 {
                     input: "100:00:00",

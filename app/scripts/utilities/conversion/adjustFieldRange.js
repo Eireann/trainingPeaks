@@ -26,7 +26,7 @@ function ()
     };
 
     var minimums = {
-        pace: 1 / 3600,
+        pace: 1 / (60 * 60),
         elevation: -15000,
         temp: -999
     };
