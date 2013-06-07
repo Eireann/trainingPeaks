@@ -110,16 +110,17 @@ function(TP, DataParser, ElevationCorrectionModel, getDefaultFlotOptions, conver
             flotOptions.filter = { enabled: false };
 
             this.plot = $.plot(this.ui.chart, series, this.flotOptions);
-        },
-        
-        onSubmitClicked: function()
-        {
+
+            this.$el.addClass("waiting");
+            
             this.elevationCorrectionModel = new ElevationCorrectionModel({}, { latLngArray: this.dataParser.getLatLonArray() });
             this.elevationCorrectionModel.save().done(this.showCorrectedElevation);
         },
-
+        
         showCorrectedElevation: function()
         {
+            this.$el.removeClass("waiting");
+            
             var originalElevation = this.dataParser.dataByChannel["Elevation"];
             var correctedElevation = this.dataParser.createCorrectedElevationChannel(this.elevationCorrectionModel.get("elevations"));
 

@@ -352,8 +352,8 @@ function(seriesColorByChannel, findIndexByMsOffset, convertToViewUnits)
             var index = 0;
             var corrected = _.map(this.dataByChannel["Elevation"], function(elevationPoint)
             {
-                if(index >= (elevations.length - 1))
-                    return elevationPoint;
+                if (index >= (elevations.length - 1))
+                    return [elevationPoint[0], null];
 
                 return [elevationPoint[0], elevations[index++]];
             });
