@@ -9,11 +9,24 @@
   These properties will be applied to any themes that you use
 */
 
+.peakTypeSelectContain {
+	float:left;
+	width:170px;
+}
+
+.peakUncheckAll {
+	float:left;
+	width:100px;
+	margin-left:15px;
+}
+
+
+
 /* SelectBoxIt container */
-.selectboxit-container {
-  position: relative;
-  display: inline-block;
-  vertical-align: top;
+.peakTypeSelectboxIt-container {
+	position: relative;
+  	display: inline-block;
+  	vertical-align: top;
 }
 
 /* Styles that apply to all SelectBoxIt elements */
@@ -32,11 +45,11 @@
 
 /* Button */
 .selectboxit-container .selectboxit {
-  width: 220px; /* Width of the dropdown button */
+  width: 170px !important; /* Width of the dropdown button */
   cursor: pointer;
   margin: 0;
   padding: 0;
-  border-radius: 6px;
+  // border-radius: 6px;
   overflow: hidden;
   display: block;
   position: relative;
@@ -44,8 +57,8 @@
 
 /* Height and Vertical Alignment of Text */
 .selectboxit-container span, .selectboxit-container .selectboxit-options a {
-  height: 30px; /* Height of the drop down */
-  line-height: 30px; /* Vertically positions the drop down text */
+  height: 20px; /* Height of the drop down */
+  line-height: 20px; /* Vertically positions the drop down text */
   display: block;
 }
 
@@ -66,10 +79,11 @@
 
 /* Button Text */
 .selectboxit-text {
-  text-indent: 5px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  float: left;
+  	text-indent: 5px;
+  	overflow: hidden;
+  	text-overflow: ellipsis;
+  	float: left;
+	font-size: $fontSizeSmall;
 }
 
 .selectboxit .selectboxit-option-icon-container {
@@ -78,28 +92,30 @@
 
 /* Options List */
 .selectboxit-container .selectboxit-options {
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-  min-width: 100%;  /* Minimum Width of the dropdown list box options */
-  *width: 100%;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  position: absolute;
-  overflow-x: hidden;
-  overflow-y: auto;
-  cursor: pointer;
-  display: none;
-  z-index: 9999999999999;
-  border-radius: 6px;
-  text-align: left;
-  -webkit-box-shadow: none;
-  -moz-box-shadow: none;
-  box-shadow: none;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	min-width: 100%;  /* Minimum Width of the dropdown list box options */
+	*width: 100%;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	position: absolute;
+	overflow-x: hidden;
+	overflow-y: auto;
+	cursor: pointer;
+	display: none;
+	z-index: 9999999999999;
+	// border-radius: 6px;
+	text-align: left;
+	-webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	box-shadow: none;
+	font-size: $fontSizeSmall;
+	color:$TPGrey10;
 }
 
 /* Individual options */
- .selectboxit-option .selectboxit-option-anchor{
+ .selectboxit-option .selectboxit-option-anchor {
   padding: 0 2px;
 }
 
@@ -117,8 +133,8 @@
 
 /* The first Drop Down option */
 .selectboxit-option-first {
-  border-top-right-radius: 6px;
-  border-top-left-radius: 6px;
+ // border-top-right-radius: 6px;
+ // border-top-left-radius: 6px;
 }
 
 /* The first Drop Down option optgroup */
@@ -129,8 +145,8 @@
 
 /* The last Drop Down option */
 .selectboxit-option-last {
-  border-bottom-right-radius: 6px;
-  border-bottom-left-radius: 6px;
+ // border-bottom-right-radius: 6px;
+ // border-bottom-left-radius: 6px;
 }
 
 /* Drop Down optgroup headers */
@@ -144,18 +160,21 @@
 
 /* Drop Down down arrow container */
 .selectboxit-arrow-container {
-  /* Positions the down arrow */
-  width: 30px;
-  position: absolute;
-  right: 0;
+  	/* Positions the down arrow */
+  	width: 30px;
+  	position: absolute;
+  	right: 0;
+	border-left:1px solid #b5b5b5;
+	
 }
+
 
 /* Drop Down down arrow */
 .selectboxit .selectboxit-arrow-container .selectboxit-arrow {
   /* Horizontally centers the down arrow */
   margin: 0 auto;
   position: absolute;
-  top: 50%;
+  top: 41%;
   right: 0;
   left: 0;
 }
@@ -202,65 +221,94 @@
   Note: Feel free to remove all of the CSS underneath this line if you are not using the default theme
 */
 .selectboxit-btn {
-  background-color: #f5f5f5;
-  background-image: -moz-linear-gradient(top, #ffffff, #e6e6e6);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#e6e6e6));
-  background-image: -webkit-linear-gradient(top, #ffffff, #e6e6e6);
-  background-image: -o-linear-gradient(top, #ffffff, #e6e6e6);
-  background-image: linear-gradient(to bottom, #ffffff, #e6e6e6);
-  background-repeat: repeat-x;
-  border: 1px solid #cccccc;
-  border-color: #e6e6e6 #e6e6e6 #bfbfbf;
-  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
-  border-bottom-color: #b3b3b3;
+ 	// background-color: #f5f5f5;
+  	// background-image: -moz-linear-gradient(top, #ffffff, #e6e6e6);
+  	// background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#e6e6e6));
+  	// background-image: -webkit-linear-gradient(top, #ffffff, #e6e6e6);
+  	// background-image: -o-linear-gradient(top, #ffffff, #e6e6e6);
+  	// background-image: linear-gradient(to bottom, #ffffff, #e6e6e6);
+  	// background-repeat: repeat-x;
+   	
+	background: url(../../assets/images/calendarImages/background-gradient-button.png) repeat-x 0 0;
+	
+	border: 1px solid #b5b5b5;
+  	border-color: #e6e6e6 #e6e6e6 #bfbfbf;
+  	border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  	border-bottom-color: #b3b3b3;
+	
+	border-color: $TPGrey9;
+	color:$TPGrey10;
 }
+
+.selectboxit-btn.selectboxit-enabled:hover {
+	color: $TPGrey4;
+	border: 1px solid #8d8d8d;
+}
+
 
 .selectboxit-btn.selectboxit-enabled:hover,
 .selectboxit-btn.selectboxit-enabled:focus,
 .selectboxit-btn.selectboxit-enabled:active {
-  color: #333333;
-  background-color: #e6e6e6;
+ 	//	color: $TPGrey4;
+	//	border: 1px solid #8d8d8d;
 }
 
 .selectboxit-btn.selectboxit-enabled:hover,
 .selectboxit-btn.selectboxit-enabled:focus {
-  color: #333333;
-  text-decoration: none;
-  background-position: 0 -15px;
+  	// color: #333333;
+  	// background-position: 0 -15px;
+	text-decoration: none;
+	color: $TPGrey4;
+	border: 1px solid #8d8d8d;
+	.selectboxit-arrow-container {
+		border-left: 1px solid #8d8d8d;
+	}
 }
 
+
+.selectboxit-btn.selectboxit-enabled:active {
+	background: url(../../assets/images/calendarImages/background-gradient-button.png) repeat-x 0 -20px;
+	color:#ffffff;
+	.selectboxit-default-arrow {
+		border-top: 4px solid #ffffff;
+	}
+}
+
+
 .selectboxit-default-arrow {
-  width: 0;
-  height: 0;
-  border-top: 4px solid #000000;
-  border-right: 4px solid transparent;
-  border-left: 4px solid transparent;
+	width: 0;
+  	height: 0;
+  	border-top: 4px solid #000000;
+  	border-right: 4px solid transparent;
+  	border-left: 4px solid transparent;
 }
 
 .selectboxit-list {
-  background-color: #ffffff;
-  border: 1px solid #ccc;
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-  -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  	background-color: #ffffff;
+	border-left: 1px solid #8d8d8d;
+	border-right: 1px solid #8d8d8d;
+	border-bottom: 1px solid #8d8d8d;
+	border-top:none;
+ 	// -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+ 	// -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+ 	// box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
 }
 
 .selectboxit-list .selectboxit-option-anchor {
-  color: #333333;
+	color: $TPGrey10;
 }
 
 .selectboxit-list > .selectboxit-focus > .selectboxit-option-anchor {
-  color: #ffffff;
-  background-color: #0081c2;
-  background-image: -moz-linear-gradient(top, #0088cc, #0077b3);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#0088cc), to(#0077b3));
-  background-image: -webkit-linear-gradient(top, #0088cc, #0077b3);
-  background-image: -o-linear-gradient(top, #0088cc, #0077b3);
-  background-image: linear-gradient(to bottom, #0088cc, #0077b3);
-  background-repeat: repeat-x;
+  	color: $TPGrey4;
+	//  background-color: #0081c2;
+	//  background-image: -moz-linear-gradient(top, #0088cc, #0077b3);
+	//  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#0088cc), to(#0077b3));
+	//  background-image: -webkit-linear-gradient(top, #0088cc, #0077b3);
+	//  background-image: -o-linear-gradient(top, #0088cc, #0077b3);
+	//  background-image: linear-gradient(to bottom, #0088cc, #0077b3);
+	//  background-repeat: repeat-x;
 }
 
 .selectboxit-list > .selectboxit-disabled > .selectboxit-option-anchor {
-  color: #999999;
+	color: #999999;
 }

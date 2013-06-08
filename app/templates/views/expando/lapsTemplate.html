@@ -1,18 +1,22 @@
-﻿<div class="controls">
-    {{#if selectOptions}}
-    <select id="peakType">
-        {{#each selectOptions}}
-        <option value="{{ value }}"{{#if selected}} selected{{/if}}>{{ label }}</option>
-        {{/each}}
-    </select>
-    {{/if}}
-
-
-    {{#if hasLapsOrPeaks }}
-    <button id="uncheck">{{$ "UncheckAll" }}</button>
-    {{/if}}
+﻿<div class="controls cf">
+	<div class="peakTypeSelectContain">
+	    {{#if selectOptions}}
+	    <select id="peakType">
+	        {{#each selectOptions}}
+	        <option value="{{ value }}"{{#if selected}} selected{{/if}}>{{ label }}</option>
+	        {{/each}}
+	    </select>
+	    {{/if}}
+	</div>
+	<div class="peakUncheckAll">
+    	{{#if hasLapsOrPeaks }}
+    	<button id="uncheck">{{$ "UncheckAll" }}</button>
+    	{{/if}}
+	</div>
 
 </div>
+
+
 <div class="rangesList">
     <ul>
     {{#each rangeLaps}}
