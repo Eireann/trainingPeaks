@@ -69,33 +69,33 @@ function (
         getSharedText: function()
         {
             var textArray = [];
-            
-            if (theMarsApp.user.has("firstName"))
+
+            if (theMarsApp.user.get("firstName"))
             {
                 textArray.push(theMarsApp.user.get("firstName") + " completed a");
             }
 
-            if(this.model.has("distance"))
+            if (this.model.get("distance"))
             {
                 textArray.push(this.formatDistance(this.model.get("distance")) + " " + TP.utils.units.getUnitsLabel("distance", this.model.get("workoutTypeValueId"), this.model));
             }
 
-            if (this.model.has("workoutTypeValueId"))
+            if (this.model.get("workoutTypeValueId"))
             {
                 textArray.push(TP.utils.workout.types.getNameById(this.model.get("workoutTypeValueId")).toLowerCase());
             }
 
-            if(this.model.has("workoutDay"))
+            if(this.model.get("workoutDay"))
             {
                 textArray.push("on " + moment(this.model.get("workoutDay")).format("MM/DD"));
             }
 
-            if(this.model.has("totalTime"))
+            if(this.model.get("totalTime"))
             {
                 textArray.push("in " + this.formatDuration(this.model.get("totalTime")));
             }
 
-            if(this.model.has("tssActual") && this.model.get("tssActual") !== 0)
+            if(this.model.get("tssActual") && this.model.get("tssActual") !== 0)
             {
                 textArray.push("with " + this.formatTSS(this.model.get("tssActual")) + " " + TP.utils.units.getUnitsLabel("tss", this.model.get("workoutTypeValueId"), this.model));
             }
