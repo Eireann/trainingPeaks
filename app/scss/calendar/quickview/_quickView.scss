@@ -112,14 +112,36 @@ input[disabled='disabled']
 {
     z-index: 103;
 
+    &.left
+    {
+        .hoverBox
+        {
+            .arrow
+            {
+                right: 0px;
+                @include transform(translateX(8px) rotate(45deg));
+            }
+        }
+    }
+
+    &.right
+    {
+        .hoverBox
+        {
+            .arrow
+            {
+                left: 0px;
+                @include transform(translateX(-35px) rotate(-45deg));
+            }
+        }
+    }
+
     .hoverBox
     {
         .arrow
         {
             position: absolute;
             top: 40px;
-            right: 0px;
-            @include transform(translateX(8px) rotate(45deg));
             @include box-shadow(0 0 2px 0 #ADADAD);
         }
 
