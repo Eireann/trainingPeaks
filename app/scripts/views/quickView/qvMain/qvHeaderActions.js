@@ -128,10 +128,20 @@ function (
 
         onWorkoutIconClicked: function()
         {
-            var offset = this.$(".workoutIconLarge").offset();
-            var typesMenu = new WorkoutTypeMenuView({ workoutTypeId: this.model.get("workoutTypeValueId") });
+            var icon = this.$(".workoutIconLarge");
+            var direction = this.expanded ? "right" : "left";
+            var typesMenu = new WorkoutTypeMenuView({ workoutTypeId: this.model.get("workoutTypeValueId"), direction: direction });
             typesMenu.on("selectWorkoutType", this.onSelectWorkoutType, this);
-            typesMenu.render().right(offset.left - 5).top(offset.top - 15);
+
+            if (direction === "right")
+            {
+                typesMenu.setPosition({ fromElement: icon, left: icon.outerWidth() + 10, top: -15 });
+            } else
+            {
+                typesMenu.setPosition({ fromElement: icon, right: -10, top: -15 });
+            }
+
+            typesMenu.render();
         },
 
         onSelectWorkoutType: function(workoutTypeId)

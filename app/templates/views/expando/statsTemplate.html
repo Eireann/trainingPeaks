@@ -141,6 +141,14 @@
     </div>
     {{/if}}
 
+    {{#if powerBalanceLeft }}
+    <div class="statsRow" id="powerBalance">
+        <label>{{$ "PowerBalance" }}</label>
+        <span class="value">{{ conversion "formatPowerBalance" powerBalanceLeft }}/{{ conversion "formatPowerBalance" powerBalanceRight }}%</span>
+        <span class="units"></span>
+    </div>
+    {{/if}}
+
     {{#if minMaxAvg}}
     <div class="minMaxAvg">
 

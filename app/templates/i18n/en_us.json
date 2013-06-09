@@ -304,5 +304,6 @@
     "Original": "Original",
     "Corrected": "Corrected",
     "Gain": "Gain",
-    "Loss": "Loss"
+    "Loss": "Loss",
+    "PowerBalance": "Pwr. Bal."
 }

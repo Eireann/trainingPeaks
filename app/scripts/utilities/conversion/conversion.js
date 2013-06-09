@@ -326,7 +326,20 @@
 
             var parsedValue = parseFloat(value).toFixed(1);
 
-            if (value === null || value === 0 || Number(parsedValue) === 0)
+            if (isNaN(value) || isNaN(parsedValue) || value === null || value === 0 || Number(parsedValue) === 0)
+            {
+                return options && options.hasOwnProperty("defaultValue") ? options.defaultValue : "";
+            } else
+            {
+                return parsedValue;
+            }
+        },
+
+        formatPowerBalance: function(value, options)
+        {
+            var parsedValue = (parseFloat(value) * 100).toFixed(1);
+
+            if (isNaN(value) || isNaN(parsedValue) || value === null || value === 0 || Number(parsedValue) === 0)
             {
                 return options && options.hasOwnProperty("defaultValue") ? options.defaultValue : "";
             } else
