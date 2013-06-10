@@ -40,13 +40,29 @@ function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandMo
 
         initialize: function (options)
         {
-            if (!options || !options.workoutModel || !options.workoutModel.get("detailData") || !options.workoutModel.get("detailData").get("flatSamples") || !options.workoutModel.get("detailData").get("flatSamples").hasLatLngData || !_.contains(options.workoutModel.get("detailData").get("flatSamples").channelMask, "Elevation"))
-                throw "ElevationCorrectionView requires a DetailData Model with valid flatSamples, latLngData, and Elevation channel";
+            this.validateWorkoutModel(options);
 
             _.bindAll(this, "onElevationCorrectionFetched", "onElevationCorrectionApplied", "showUpdatedElevationProfile");
 
             this.workoutModel = options.workoutModel;
+            this.buildModel();
 
+            this.dataParser = new DataParser();
+            this.setOriginalElevation();
+            
+            this.buildElevationCorrrectionModel();
+
+            this.once("render", this.onFirstRender, this);
+        },
+
+        validateWorkoutModel: function(options)
+        {
+            if (!options || !options.workoutModel || !options.workoutModel.get("detailData") || !options.workoutModel.get("detailData").get("flatSamples") || !options.workoutModel.get("detailData").get("flatSamples").hasLatLngData || !_.contains(options.workoutModel.get("detailData").get("flatSamples").channelMask, "Elevation"))
+                throw "ElevationCorrectionView requires a DetailData Model with valid flatSamples, latLngData, and Elevation channel";
+        },
+
+        buildModel: function()
+        {
             var stats = this.workoutModel.get("detailData").get("totalStats");
             this.model = new TP.Model(
             {
@@ -63,14 +79,12 @@ function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandMo
                 originalGrade: (stats.grade * 100).toFixed(1),
                 correctedGrade: null
             });
+        },
 
-            this.dataParser = new DataParser();
-            this.setOriginalElevation();
-
+        buildElevationCorrrectionModel: function()
+        {
             this.elevationCorrectionModel = new ElevationCorrectionModel({}, { latLngArray: this.dataParser.getLatLonArray() });
-            this.elevationCorrectionModel.save().done(this.onElevationCorrectionFetched);
-
-            this.once("render", this.onFirstRender, this);
+            this.elevationCorrectionModel.save().done(this.showCorrectedElevation);
         },
 
         setOriginalElevation: function()
@@ -78,7 +92,7 @@ function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandMo
             this.dataParser.loadData(this.workoutModel.get("detailData").get("flatSamples"));
             this.originalElevation = this.dataParser.dataByChannel["Elevation"];
         },
-        
+
         onRender: function()
         {
             this.ui.chart.css("height", "400px");
@@ -93,7 +107,7 @@ function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandMo
         renderPlot: function()
         {
             var series = this.buildPlotSeries();
-            
+
             var yaxes =
             [
                 {
