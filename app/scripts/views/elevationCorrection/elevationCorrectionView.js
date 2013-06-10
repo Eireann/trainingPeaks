@@ -6,9 +6,10 @@
     "models/commands/elevationCorrection",
     "utilities/charting/defaultFlotOptions",
     "utilities/conversion/convertToViewUnits",
+    "utilities/charting/flotElevationTooltip",
     "hbs!templates/views/elevationCorrection/elevationCorrectionTemplate"
 ],
-function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandModel, getDefaultFlotOptions, convertToViewUnits, elevationCorrectionTemplate)
+function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandModel, getDefaultFlotOptions, convertToViewUnits, flotElevationTooltip, elevationCorrectionTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -53,8 +54,6 @@ function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandMo
             this.buildElevationCorrrectionModel();
 
             this.once("render", this.onFirstRender, this);
-
-            this.firstRender = true;
         },
         validateWorkoutModel: function(options)
         {
@@ -128,10 +127,9 @@ function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandMo
                 }
             ];
 
-
             var onHoverHandler = function (flotItem, $tooltipEl)
             {
-                $tooltipEl.html("");
+                $tooltipEl.html(flotElevationTooltip(series, flotItem.series.label, flotItem.dataIndex));
             };
 
             var flotOptions = getDefaultFlotOptions(onHoverHandler);

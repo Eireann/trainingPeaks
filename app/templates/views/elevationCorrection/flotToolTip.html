@@ -1,0 +1,12 @@
+﻿<div>
+    {{#each series}}
+    {{#if this.current}}
+    <b>
+    {{/if}}
+        {{this.label}}: {{this.value}} {{getUnitsLabel "elevation"}}
+    {{#if this.current}}
+    </b>
+    {{/if}}
+    <br/>
+    {{/each}}
+</div>
