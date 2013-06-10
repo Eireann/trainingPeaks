@@ -62,11 +62,11 @@ $mainTtabSpriteRetinaURL: url(../../assets/images/sprite-icons-main-tabs@2x.png)
                 position:relative;
                 display:none;
                 z-index: 0;
-                width: 17px;
-                height: 17px;
+                width: 20px;
+                height: 20px;
                 background-color: $TPBlue;
                 left: 35px;
-                @include transform(translateY(10px) rotate(45deg));
+                @include transform(translateY(8px) rotate(45deg));
             }
         }
 
@@ -183,23 +183,25 @@ $mainTtabSpriteRetinaURL: url(../../assets/images/sprite-icons-main-tabs@2x.png)
         position:absolute;
         top:0px;
         bottom:0px;
-        left: 42px;
+        left: 37px;
         right: 0px;
         overflow-y:auto;
         padding: 5px;
-        @include calc(width, "100% - 40px"); 
+        padding-top: 10px;
+        @include calc(width, "100% - 36px"); 
         white-space: nowrap;
 
         background-color: $TPGrey1;
-        border-left: 3px solid $TPBlue;
+        border-left: 2px solid $TPBlue;
 
         .libraryNavigation
         {
-            @include labels($fontFamilyRegular, $fontSizeXLarge, $TPBlue, normal);
+            @include labels($fontFamilyRegular, $fontSizeMedium, $TPBlue, normal);
             label
             {
                 display: inline-block;
                 margin-right: 15px;
+                margin-top: 4px;
             }
 
             @include headerButtons(0px, 40px, $fontSizeMedium);
@@ -236,10 +238,13 @@ $mainTtabSpriteRetinaURL: url(../../assets/images/sprite-icons-main-tabs@2x.png)
 
         .helpText
         {
-            padding-left: 10px;
+            margin-top: 5px;
+            margin-left: 5px;
+
             color: $TPGrey3;
             font-style: italic;
             cursor: default;
+            font-size: $fontSizeSmall;
         }
 
     }
