@@ -47,7 +47,7 @@ function(TP, ElevationCorrectionView, optionsMenuTemplate)
             if (!(this.model.get("detailData") && this.model.get("detailData").get("flatSamples") && this.model.get("detailData").get("flatSamples").hasLatLngData))
                 return;
             
-            var view = new ElevationCorrectionView({ model: this.model });
+            var view = new ElevationCorrectionView({ workoutModel: this.model });
             view.render();
             this.close();
         }
