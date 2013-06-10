@@ -76,5 +76,56 @@
                 });
             });
 
+            describe("Show corrected elevation", function()
+            {
+
+                var viewModel, workoutModel, elevationCorrectionModel, viewContext;
+
+                beforeEach(function()
+                {
+                    viewModel = new TP.Model();
+
+                    workoutModel = new TP.Model({
+                        distance: 10000
+                    });
+
+                    elevationCorrectionModel = new TP.Model({
+                        min: 100,
+                        max: 2000,
+                        avg: 375,
+                        gain: 3032,
+                        loss: 1020
+                    });
+
+                    viewContext = {
+                        model: viewModel,
+                        workoutModel: workoutModel,
+                        elevationCorrectionModel: elevationCorrectionModel,
+                        calculateGrade: ElevationCorrectionView.prototype.calculateGrade
+                    };
+                });
+
+                it("Should set appropriate model attributes after elevation correction data is fetched", function()
+                {
+
+                    ElevationCorrectionView.prototype.showCorrectedElevation.apply(viewContext);
+                
+                    expect(viewModel.get("correctedMin")).toEqual(elevationCorrectionModel.get("min"));
+                    expect(viewModel.get("correctedMax")).toEqual(elevationCorrectionModel.get("max"));
+                    expect(viewModel.get("correctedAvg")).toEqual(elevationCorrectionModel.get("avg"));
+                    expect(viewModel.get("correctedGain")).toEqual(elevationCorrectionModel.get("gain"));
+                    expect(viewModel.get("correctedLoss")).toEqual(elevationCorrectionModel.get("loss"));
+
+                });
+
+                it("Should calculate appropriate grade", function()
+                {
+                    ElevationCorrectionView.prototype.showCorrectedElevation.apply(viewContext);
+                    var expectedGrade = '20.1';
+                    expect(viewModel.get("correctedGrade")).toEqual(expectedGrade);
+                });
+
+            });
+
         });
     });

@@ -43,7 +43,7 @@ function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandMo
         {
             this.validateWorkoutModel(options);
 
-            _.bindAll(this, "showCorrectedElevation", "onElevationCorrectionApplied", "showUpdatedElevationProfile");
+            _.bindAll(this, "onElevationCorrectionFetched", "onElevationCorrectionApplied", "showUpdatedElevationProfile");
 
             this.workoutModel = options.workoutModel;
             this.buildModel();
@@ -55,6 +55,7 @@ function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandMo
 
             this.once("render", this.onFirstRender, this);
         },
+
         validateWorkoutModel: function(options)
         {
             if (!options || !options.workoutModel || !options.workoutModel.get("detailData") || !options.workoutModel.get("detailData").get("flatSamples") || !options.workoutModel.get("detailData").get("flatSamples").hasLatLngData || !_.contains(options.workoutModel.get("detailData").get("flatSamples").channelMask, "Elevation"))
@@ -92,7 +93,7 @@ function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandMo
             this.dataParser.loadData(this.workoutModel.get("detailData").get("flatSamples"));
             this.originalElevation = this.dataParser.dataByChannel["Elevation"];
         },
-        
+
         onRender: function()
         {
             this.ui.chart.css("height", "400px");
@@ -107,7 +108,7 @@ function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandMo
         renderPlot: function()
         {
             var series = this.buildPlotSeries();
-            
+
             var yaxes =
             [
                 {
@@ -168,11 +169,20 @@ function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandMo
             return series;
         },
 
-        showCorrectedElevation: function()
+        onElevationCorrectionFetched: function()
         {
             this.ui.chart.removeClass("waiting");
-            
+            this.setCorrectedElevation();
+            this.showCorrectedElevation();
+        },
+
+        setCorrectedElevation: function()
+        {
             this.correctedElevation = this.dataParser.createCorrectedElevationChannel(this.elevationCorrectionModel.get("elevations"));
+        },
+
+        showCorrectedElevation: function()
+        {
             this.model.set(
             {
                 correctedMin: this.elevationCorrectionModel.get("min"),
@@ -180,10 +190,15 @@ function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandMo
                 correctedMax: this.elevationCorrectionModel.get("max"),
                 correctedGain: this.elevationCorrectionModel.get("gain"),
                 correctedLoss: this.elevationCorrectionModel.get("loss"),
-                correctedGrade: (100 * (this.elevationCorrectionModel.get("gain") - this.elevationCorrectionModel.get("loss")) / this.workoutModel.get("distance")).toFixed(1)
+                correctedGrade: this.calculateGrade(this.elevationCorrectionModel.get("gain"), this.elevationCorrectionModel.get("loss"), this.workoutModel.get("distance"))
             });
         },
-        
+
+        calculateGrade: function(gain, loss, distance)
+        {
+            return (100 * (gain - loss) / distance).toFixed(1);
+        },
+
         onSubmitClicked: function()
         {
             var fileId = this.workoutModel.get("details").get("workoutDeviceFileInfos")[0].fileId;
