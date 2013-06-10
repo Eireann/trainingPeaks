@@ -121,7 +121,7 @@
                 it("Should calculate appropriate grade", function()
                 {
                     ElevationCorrectionView.prototype.showCorrectedElevation.apply(viewContext);
-                    var expectedGrade = 20.1;
+                    var expectedGrade = '20.1';
                     expect(viewModel.get("correctedGrade")).toEqual(expectedGrade);
                 });
 
