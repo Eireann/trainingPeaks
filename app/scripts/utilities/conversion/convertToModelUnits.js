@@ -2,9 +2,14 @@ define(
 [
     "underscore",
     "utilities/conversion/modelToViewConversionFactors",
-    "utilities/datetime/convert"
+    "utilities/datetime/convert",
+    "utilities/units/constants"
 ],
-function(_, modelToViewConversionFactors, dateTimeConvert)
+function(
+    _,
+    modelToViewConversionFactors,
+    dateTimeConvert,
+    unitsConstants)
 {
     var convertToSpeedFromPace = function (pace, unitSystem)
     {
@@ -69,7 +74,7 @@ function(_, modelToViewConversionFactors, dateTimeConvert)
             case "pace":
                 return convertToSpeedFromPace(value, userUnits);
             case "temperature":
-                return userUnits === "0" ? 5 / 9 * (value - 32) : value;
+                return convertTemperature(value, userUnits);
             case "torque":
                 return (+value / modelToViewConversionFactors(fieldType, userUnits));
             default:
@@ -77,5 +82,14 @@ function(_, modelToViewConversionFactors, dateTimeConvert)
         }
     };
 
+    var convertTemperature = function(value, userUnits)
+    {
+        if (!userUnits)
+        {
+            userUnits = theMarsApp.user.get("units");
+        }
+
+        return userUnits === unitsConstants.English ? 5 / 9 * (value - 32) : value;
+    };
     return convertToModelUnits;
 });
