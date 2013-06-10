@@ -106,7 +106,14 @@ function (
         
         getMailSubjectLine: function ()
         {
-            return TP.utils.workout.types.getNameById(this.model.get("workoutTypeValueId")) + " on " + moment(this.model.get("workoutDay")).format("MM/DD");
+            //return TP.utils.workout.types.getNameById(this.model.get("workoutTypeValueId")) + " on " + moment(this.model.get("workoutDay")).format("MM/DD");
+            var subject = " has shared a workout with you";
+            if (theMarsApp.user.get("firstName"))
+            {
+                subject = theMarsApp.user.get("firstName") + subject;
+            }
+
+            return subject;
         },
         
         onTwitterIconClicked: function ()
@@ -167,8 +174,8 @@ function (
 
             this.shortUrlView.render();
         },
-        
-        enableOrDisableEmailLink: function ()
+
+        enableOrDisableEmailLink: function()
         {
 
             // this has to be an actual link for the user to click on instead of a window.open, so we just enable or disable the url as needed
