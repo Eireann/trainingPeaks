@@ -3,8 +3,8 @@ define(
     "TP",
     "views/userConfirmationView",
     "hbs!templates/views/confirmationViews/deleteConfirmationView",
-    "hbs!templates/views/quickView/workoutComments",
-    "hbs!templates/views/quickView/editableWorkoutComments"
+    "hbs!templates/views/workoutCommentsEditor/workoutComments",
+    "hbs!templates/views/workoutCommentsEditor/editableWorkoutComments"
 ],
 function (TP, UserConfirmationView, deleteConfirmationTemplate, workoutCommentsTemplate, editableWorkoutCommentsTemplate)
 {
