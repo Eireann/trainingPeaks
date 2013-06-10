@@ -316,14 +316,11 @@ function(seriesColorByChannel, findIndexByMsOffset, convertToViewUnits)
 
             // data from api is truncated at 5 decimals, but leaflet will give us longer values
             var key = Number(lat).toFixed(5) + "," + Number(lng).toFixed(5);
-            console.log(lat + "," + lng + " = " + key);
+
             if(latLngMsOffset.hasOwnProperty(key))
-            {
                 return latLngMsOffset[key];
-            } else
-            {
+            else
                 return null;
-            }
         },
 
         getYAxes: function(series)
@@ -339,12 +336,9 @@ function(seriesColorByChannel, findIndexByMsOffset, convertToViewUnits)
         findIndexByMsOffset: function(msOffset)
         {
             if (this.flatSamples && this.flatSamples.msOffsetsOfSamples)
-            {
                 return findIndexByMsOffset(this.flatSamples.msOffsetsOfSamples, msOffset);
-            } else
-            {
+            else
                 return null;
-            }
         },
         
         createCorrectedElevationChannel: function (elevations)

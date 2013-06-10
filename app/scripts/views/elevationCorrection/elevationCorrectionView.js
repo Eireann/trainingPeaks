@@ -69,6 +69,7 @@ function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandMo
             this.elevationCorrectionModel = new ElevationCorrectionModel({}, { latLngArray: this.dataParser.getLatLonArray() });
             this.elevationCorrectionModel.save().done(this.showCorrectedElevation);
 
+            this.firstRender = true;
         },
 
         setOriginalElevation: function()
@@ -79,7 +80,12 @@ function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandMo
         
         onRender: function()
         {
-            this.ui.chart.addClass("waiting");
+            if (this.firstRender)
+            {
+                this.firstRender = false;
+                this.ui.chart.addClass("waiting");
+            }
+
             this.ui.chart.css("height", "400px");
             this.renderPlot();
         },
@@ -147,8 +153,15 @@ function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandMo
             this.ui.chart.removeClass("waiting");
             
             this.correctedElevation = this.dataParser.createCorrectedElevationChannel(this.elevationCorrectionModel.get("elevations"));
-
-            this.renderPlot();
+            this.model.set(
+            {
+                correctedMin: this.elevationCorrectionModel.get("min"),
+                correctedAvg: this.elevationCorrectionModel.get("avg"),
+                correctedMax: this.elevationCorrectionModel.get("max"),
+                correctedGain: this.elevationCorrectionModel.get("gain"),
+                correctedLoss: this.elevationCorrectionModel.get("loss"),
+                correctedGrade: (100 * (this.elevationCorrectionModel.get("gain") - this.elevationCorrectionModel.get("loss")) / this.workoutModel.get("distance")).toFixed(1)
+            });
         },
         
         onSubmitClicked: function()
@@ -157,6 +170,7 @@ function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandMo
             var elevationCorrectionCommand = new ElevationCorrectionCommandModel({}, { uploadedFileId: fileId });
 
             this.ui.chart.addClass("waiting");
+
             elevationCorrectionCommand.execute().done(this.onElevationCorrectionApplied);
         },
         
@@ -168,17 +182,7 @@ function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandMo
         showUpdatedElevationProfile: function()
         {
             this.setOriginalElevation();
-
-            var stats = this.workoutModel.get("detailData").get("totalStats");
-            this.model.set(
-            {
-                correctedMin: stats.minimumElevation,
-                correctedAvg: stats.averageElevation,
-                correctedMax: stats.maximumElevation,
-                correctedGain: stats.elevationGain,
-                correctedLoss: stats.elevationLoss,
-                correctedGrade: (stats.grade * 100).toFixed(1)
-            });
+            this.renderPlot();
             this.ui.chart.removeClass("waiting");
         },
         

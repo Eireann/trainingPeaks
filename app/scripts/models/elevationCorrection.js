@@ -17,7 +17,12 @@ function(TP)
         defaults:
         {
             latLngs: "",
-            elevations: ""
+            elevations: "",
+            min: null,
+            max: null,
+            avg: null,
+            gain: null,
+            loss: null
         },
         
         initialize: function(attributes, options)
@@ -42,12 +47,14 @@ function(TP)
             if (!response || !response.elevations)
                 return null;
 
-            var parsedResponse = _.map(response.elevations.split(" "), function(elevation)
+            var parsedElevations = _.map(response.elevations.split(" "), function(elevation)
             {
                 return (elevation !== null ? elevation / 100 : null);
             });
 
-            return { elevations: parsedResponse };
+            response.elevations = parsedElevations;
+
+            return response;
         }
     });
 });
