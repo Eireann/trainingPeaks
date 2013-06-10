@@ -65,7 +65,7 @@ function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandMo
 
             this.dataParser = new DataParser();
             this.setOriginalElevation();
-
+            
             this.elevationCorrectionModel = new ElevationCorrectionModel({}, { latLngArray: this.dataParser.getLatLonArray() });
             this.elevationCorrectionModel.save().done(this.showCorrectedElevation);
 

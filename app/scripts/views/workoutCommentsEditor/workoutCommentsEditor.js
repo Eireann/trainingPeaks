@@ -15,10 +15,6 @@ function (_, TP, WorkoutCommentsCollectionView, stickitMixin, workoutCommentsEdi
             type: "handlebars",
             template: workoutCommentsEditorTemplate
         },
-        
-        ui:
-        {
-        },
 
         bindings:
         {
@@ -162,11 +158,6 @@ function (_, TP, WorkoutCommentsCollectionView, stickitMixin, workoutCommentsEdi
                 commentsArray.push(commentsModel.attributes);
             });
             return commentsArray;
-        },
-        
-        onRender: function()
-        {
-            
         }
     };
 

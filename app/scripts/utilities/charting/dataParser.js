@@ -350,6 +350,24 @@ function(seriesColorByChannel, findIndexByMsOffset, convertToViewUnits)
         createCorrectedElevationChannel: function (elevations)
         {
             var index = 0;
+            var badIndeces = [];
+            
+            for (var i = 0; i < this.dataByChannel["Latitude"].length; i++)
+            {
+                if (_.isNaN(this.dataByChannel["Latitude"][i][1]) || _.isNaN(this.dataByChannel["Longitude"][i][1]))
+                    badIndeces.push(i);
+            }
+
+            _.each(badIndeces, function(badIndex)
+            {
+                if (badIndex === 0)
+                    elevations.unshift(null);
+                else
+                    elevations.splice(badIndex, 0, null);
+            });
+
+            console.debug(elevations.length);
+            
             var corrected = _.map(this.dataByChannel["Elevation"], function(elevationPoint)
             {
                 if (index >= (elevations.length - 1))
