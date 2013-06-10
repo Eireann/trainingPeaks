@@ -70,7 +70,7 @@ function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandMo
             this.elevationCorrectionModel = new ElevationCorrectionModel({}, { latLngArray: this.dataParser.getLatLonArray() });
             this.elevationCorrectionModel.save().done(this.showCorrectedElevation);
 
-            this.firstRender = true;
+            this.once("render", this.onFirstRender, this);
         },
 
         setOriginalElevation: function()
@@ -81,16 +81,15 @@ function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandMo
         
         onRender: function()
         {
-            if (this.firstRender)
-            {
-                this.firstRender = false;
-                this.ui.chart.addClass("waiting");
-            }
-
             this.ui.chart.css("height", "400px");
             this.renderPlot();
         },
-        
+       
+        onFirstRender: function()
+        {
+            this.ui.chart.addClass("waiting");
+        },
+
         renderPlot: function()
         {
             var series = this.buildPlotSeries();
