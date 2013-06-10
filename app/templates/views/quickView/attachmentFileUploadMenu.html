@@ -18,14 +18,13 @@
 
                     <div class="fileList">
                         {{#each attachmentFileInfos }}
-                            <div class="file" id="{{ fileId }}">
+                            <div class="file" id="{{ fileId }}" title="{{$ "ClickToDownload"}}">
                                 <label class="radioButtonWrapper"><input type="radio" class="fileSelect" name="fileSelect" value="{{ fileId }}" id="checkbox{{ fileId }}"/> <a class="download disabled" id="{{ fileId }}">{{ fileName }}</a></label>
                             </div>
                         {{/each}}
                     </div>
 
                     <div class="fileButtons">
-                        <button disabled class="download">{{$ "Download" }}</button>
                         <button disabled class="delete">{{$ "Delete" }}</button>
                     </div>
                 </div>
