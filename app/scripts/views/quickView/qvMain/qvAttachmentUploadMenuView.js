@@ -31,7 +31,6 @@ function(_,
             "click #attachmentFileUploadMenuBrowse": "onBrowseClicked",
             "click #closeIcon": "close",
             "change .fileSelect": "selectFileCheckbox",
-            "click button.download": "onDownloadClicked",
             "click button.delete": "onDeleteClicked",
             "change input[type='file']#attachmentInput": "onAttachmentFileSelected"
         },
@@ -87,6 +86,9 @@ function(_,
 
             // enable all buttons
             this.$(".fileButtons button").attr("disabled", null);
+
+            var fileInfo = _.where(this.model.get("details").get("attachmentFileInfos"), { fileId: parseInt(this.selectedFileId, 10) })[0];
+            this.downloadFile(fileInfo);
         },
 
         onDeleteClicked: function()
@@ -141,12 +143,6 @@ function(_,
                 self.model.get("details").fetch();
                 self.waitingOff();
             });
-        },
-
-        onDownloadClicked: function()
-        {
-            var fileInfo = _.where(this.model.get("details").get("attachmentFileInfos"), { fileId: parseInt(this.selectedFileId, 10) })[0];
-            this.downloadFile(fileInfo);
         },
 
         downloadFile: function (fileInfo)
