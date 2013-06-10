@@ -20,6 +20,9 @@
 	margin-left:15px;
 }
 
+#peakTypeSelectBoxItArrow, #librarySelectSelectBoxItArrow {
+	display:none;
+}
 
 
 /* SelectBoxIt container */
@@ -151,11 +154,12 @@
 
 /* Drop Down optgroup headers */
 .selectboxit-optgroup-header {
+
 }
 
 /* Drop Down optgroup header hover psuedo class */
 .selectboxit-optgroup-header:hover {
-  cursor: default;
+  	cursor: default;
 }
 
 /* Drop Down down arrow container */
@@ -171,48 +175,48 @@
 
 /* Drop Down down arrow */
 .selectboxit .selectboxit-arrow-container .selectboxit-arrow {
-  /* Horizontally centers the down arrow */
-  margin: 0 auto;
-  position: absolute;
-  top: 41%;
-  right: 0;
-  left: 0;
+  	/* Horizontally centers the down arrow */
+  	margin: 0 auto;
+  	position: absolute;
+  	top: 41%;
+  	right: 0;
+  	left: 0;
 }
 
 /* Drop Down down arrow for jQueryUI and jQuery Mobile */
 .selectboxit .selectboxit-arrow-container .selectboxit-arrow.ui-icon {
-  top: 30%;
+  	top: 30%;
 }
 
 /* Drop Down individual option icon positioning */
 .selectboxit-option-icon-container {
-  float: left;
+  	float: left;
 }
 
 .selectboxit-container .selectboxit-option-icon {
-  margin: 0;
-  padding: 0;
-  vertical-align: middle;
+  	margin: 0;
+  	padding: 0;
+  	vertical-align: middle;
 }
 
 /* Drop Down individual option icon positioning */
 .selectboxit-option-icon-url {
-  width: 18px;
-  background-size: 18px 18px;
-  background-repeat: no-repeat;
-  height: 100%;
-  background-position: center;
-  float: left;
+  	width: 18px;
+  	background-size: 18px 18px;
+  	background-repeat: no-repeat;
+  	height: 100%;
+  	background-position: center;
+  	float: left;
 }
 
 /* jQueryUI and jQuery Mobile compatability fix - Feel free to remove this style if you are not using jQuery Mobile */
 .jqueryui .ui-icon {
-  background-color: inherit;
+  	background-color: inherit;
 }
 
 /* Another jQueryUI and jQuery Mobile compatability fix - Feel free to remove this style if you are not using jQuery Mobile */
 .jqueryui .ui-icon-triangle-1-s {
-  background-position: -64px -16px;
+  	background-position: -64px -16px;
 }
 
 /*
@@ -220,43 +224,27 @@
   -------------
   Note: Feel free to remove all of the CSS underneath this line if you are not using the default theme
 */
+
 .selectboxit-btn {
- 	// background-color: #f5f5f5;
-  	// background-image: -moz-linear-gradient(top, #ffffff, #e6e6e6);
-  	// background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#e6e6e6));
-  	// background-image: -webkit-linear-gradient(top, #ffffff, #e6e6e6);
-  	// background-image: -o-linear-gradient(top, #ffffff, #e6e6e6);
-  	// background-image: linear-gradient(to bottom, #ffffff, #e6e6e6);
-  	// background-repeat: repeat-x;
-   	
-	background: url(../../assets/images/calendarImages/background-gradient-button.png) repeat-x 0 0;
-	
-	border: 1px solid #b5b5b5;
-  	border-color: #e6e6e6 #e6e6e6 #bfbfbf;
-  	border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
-  	border-bottom-color: #b3b3b3;
-	
-	border-color: $TPGrey9;
+	background: url(../../assets/images/QVImages/sprite-selectboxit.png) repeat-x 0 0;
+	border: 1px solid $TPGrey9;
 	color:$TPGrey10;
 }
 
 .selectboxit-btn.selectboxit-enabled:hover {
 	color: $TPGrey4;
 	border: 1px solid #8d8d8d;
+	background: url(../../assets/images/QVImages/sprite-selectboxit.png) repeat-x 0 -20px;
 }
-
 
 .selectboxit-btn.selectboxit-enabled:hover,
 .selectboxit-btn.selectboxit-enabled:focus,
 .selectboxit-btn.selectboxit-enabled:active {
- 	//	color: $TPGrey4;
-	//	border: 1px solid #8d8d8d;
+
 }
 
 .selectboxit-btn.selectboxit-enabled:hover,
 .selectboxit-btn.selectboxit-enabled:focus {
-  	// color: #333333;
-  	// background-position: 0 -15px;
 	text-decoration: none;
 	color: $TPGrey4;
 	border: 1px solid #8d8d8d;
@@ -265,15 +253,22 @@
 	}
 }
 
-
 .selectboxit-btn.selectboxit-enabled:active {
-	background: url(../../assets/images/calendarImages/background-gradient-button.png) repeat-x 0 -20px;
+	background: url(../../assets/images/QVImages/sprite-selectboxit.png) repeat-x 0 -40px;
 	color:#ffffff;
 	.selectboxit-default-arrow {
 		border-top: 4px solid #ffffff;
 	}
+	
+	.selectboxit-arrow-container {
+		border-left: 1px solid #b5b5b5;
+	}
 }
 
+.selectboxit-btn.selectboxit-enabled:focus {
+	//	border: 1px solid $TPGrey9;
+	//	color:$TPGrey10;
+}
 
 .selectboxit-default-arrow {
 	width: 0;
@@ -289,9 +284,6 @@
 	border-right: 1px solid #8d8d8d;
 	border-bottom: 1px solid #8d8d8d;
 	border-top:none;
- 	// -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
- 	// -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
- 	// box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
 }
 
 .selectboxit-list .selectboxit-option-anchor {
@@ -300,13 +292,6 @@
 
 .selectboxit-list > .selectboxit-focus > .selectboxit-option-anchor {
   	color: $TPGrey4;
-	//  background-color: #0081c2;
-	//  background-image: -moz-linear-gradient(top, #0088cc, #0077b3);
-	//  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#0088cc), to(#0077b3));
-	//  background-image: -webkit-linear-gradient(top, #0088cc, #0077b3);
-	//  background-image: -o-linear-gradient(top, #0088cc, #0077b3);
-	//  background-image: linear-gradient(to bottom, #0088cc, #0077b3);
-	//  background-repeat: repeat-x;
 }
 
 .selectboxit-list > .selectboxit-disabled > .selectboxit-option-anchor {
