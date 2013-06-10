@@ -76,5 +76,71 @@
                 });
             });
 
+            describe("Show corrected elevation", function()
+            {
+
+                var viewModel, workoutModel, elevationCorrectionModel, viewContext;
+
+                beforeEach(function()
+                {
+                    viewModel = new TP.Model();
+
+                    workoutModel = new TP.Model({
+                        distance: 10000
+                    });
+
+                    elevationCorrectionModel = new TP.Model({
+                        min: 100,
+                        max: 2000,
+                        avg: 375,
+                        gain: 3032,
+                        loss: 1020
+                    });
+
+                    viewContext = {
+                        model: viewModel,
+                        workoutModel: workoutModel,
+                        elevationCorrectionModel: elevationCorrectionModel,
+                        calculateGrade: ElevationCorrectionView.prototype.calculateGrade
+                    };
+                });
+
+                it("Should set appropriate model attributes after elevation correction data is fetched", function()
+                {
+
+                    ElevationCorrectionView.prototype.showCorrectedElevation.apply(viewContext);
+                
+                    expect(viewModel.get("correctedMin")).toEqual(elevationCorrectionModel.get("min"));
+                    expect(viewModel.get("correctedMax")).toEqual(elevationCorrectionModel.get("max"));
+                    expect(viewModel.get("correctedAvg")).toEqual(elevationCorrectionModel.get("avg"));
+                    expect(viewModel.get("correctedGain")).toEqual(elevationCorrectionModel.get("gain"));
+                    expect(viewModel.get("correctedLoss")).toEqual(elevationCorrectionModel.get("loss"));
+
+                });
+
+                it("Should calculate appropriate grade", function()
+                {
+                    ElevationCorrectionView.prototype.showCorrectedElevation.apply(viewContext);
+                    var expectedGrade = (100 * (3032 - 1020) / 10000).toFixed(1);
+                    console.log(expectedGrade);
+                    expect(viewModel.get("correctedGrade")).toEqual(expectedGrade);
+                });
+
+                /*
+        showCorrectedElevation: function()
+        {
+            this.model.set(
+            {
+                correctedMin: this.elevationCorrectionModel.get("min"),
+                correctedAvg: this.elevationCorrectionModel.get("avg"),
+                correctedMax: this.elevationCorrectionModel.get("max"),
+                correctedGain: this.elevationCorrectionModel.get("gain"),
+                correctedLoss: this.elevationCorrectionModel.get("loss"),
+                correctedGrade: this.calculateGrade(this.elevationCorrectionModel.get("gain"), this.elevationCorrectionModel.get("loss"), this.workoutModel.get("distance"))
+            });
+        },
+                */
+            });
+
         });
     });
