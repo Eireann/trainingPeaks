@@ -342,7 +342,9 @@
         }
 
 		@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
-			.uploadButton, .expandButton, .collapseButton {
+			.uploadButton,.uploadButton:hover, 
+			.expandButton,.expandButton:hover, 
+			.collapseButton,.collapseButton:hover {
 				background-image: url(../../assets/images/QVImages/sprite-buttons-expando@2x.png);
 				background-size: 258px 105px;
 			}
