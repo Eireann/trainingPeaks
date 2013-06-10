@@ -29,12 +29,12 @@ function(
             var constructorWithNoModel = function()
             {
                 var view = new QVOptionsMenuView();
-            }
+            };
 
             var constructorWithNoDetailData = function()
             {
                 var view = new QVOptionsMenuView({ model: new TP.Model() });
-            }
+            };
 
             expect(constructorWithNoModel).toThrow();
             expect(constructorWithNoDetailData).toThrow();

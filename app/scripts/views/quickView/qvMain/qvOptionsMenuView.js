@@ -55,8 +55,8 @@ function(TP, ElevationCorrectionView, optionsMenuTemplate)
         hasLatLngData: function()
         {
             return this.model && this.model.get("detailData") &&
-                this.model.get("detailData").get("flatSamples")
-                && this.model.get("detailData").get("flatSamples").hasLatLngData;
+                this.model.get("detailData").get("flatSamples") &&
+                this.model.get("detailData").get("flatSamples").hasLatLngData;
         },
 
         onElevationCorrectionClicked: function()
@@ -76,6 +76,7 @@ function(TP, ElevationCorrectionView, optionsMenuTemplate)
             detailData.on("change:flatSamples.hasLatLngData", this.enableOrDisableElevationCorrection, this);
             this.on("close", function()
             {
+                detailData.off("change:flatSamples", this.enableOrDisableElevationCorrection, this);
                 detailData.off("change:flatSamples.hasLatLngData", this.enableOrDisableElevationCorrection, this);
             }, this);
         }
