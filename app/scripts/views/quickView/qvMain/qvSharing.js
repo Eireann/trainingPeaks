@@ -82,7 +82,7 @@ function (
 
             if (this.model.get("workoutTypeValueId"))
             {
-                textArray.push(TP.utils.workout.types.getNameById(this.model.get("workoutTypeValueId")).toLowerCase());
+                textArray.push(TP.utils.workout.types.getNameById(this.model.get("workoutTypeValueId")).toLowerCase() + " workout");
             }
 
             if(this.model.get("workoutDay"))
@@ -140,7 +140,11 @@ function (
             var descriptionText = this.getSharedText();
             var appID = 103295416394750;
 
-            var facebookURL = "https://www.facebook.com/dialog/feed?app_id=" + appID + "&picture=https://s3.amazonaws.com/storage.trainingpeaks.com/assets/images/trainingpeaks-activity-viewer.png&name=" + escape(windowTitle) + "&description=" + escape(descriptionText) + "&redirect_uri=https://www.trainingpeaks.com";
+            //var redirectURL = "https://www.trainingpeaks.com";
+            var redirectURL = "https://www.facebook.com";
+            var pictureURL = "https://s3.amazonaws.com/storage.trainingpeaks.com/assets/images/trainingpeaks-activity-viewer.png";
+
+            var facebookURL = "https://www.facebook.com/dialog/feed?app_id=" + appID + "&picture=" + escape(pictureURL) + "&name=" + escape(windowTitle) + "&description=" + escape(descriptionText) + "&redirect_uri=" + escape(redirectURL);
             if (url)
             {
                 var escapedUrl = escape(url);
@@ -193,10 +197,12 @@ function (
             if (this.workoutIsComplete())
             {
                 this.$(".publicCheckbox").prop("disabled", false);
+                this.$(".publicCheckboxContainer").removeClass("disabled");
             }
             else
             {
                 this.$(".publicCheckbox").prop("disabled", true);
+                this.$(".publicCheckboxContainer").addClass("disabled");
             }
 
             var shareClass = this.$(".share");
@@ -280,7 +286,7 @@ function (
 
         applyLinkIconEnableState: function()
         {
-            if (this.workoutIsPublic() && this.workoutHasFileData())
+            if (this.workoutIsPublic() && this.workoutIsComplete() && this.workoutHasFileData())
             {
                 this.hasFileData = true;
                 this.$(".linkIcon").removeClass("disabled");
