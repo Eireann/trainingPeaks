@@ -93,27 +93,8 @@ function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandMo
         
         renderPlot: function()
         {
-            var series = [];
-
-            series.push(
-            {
-                color: "red",
-                data: this.originalElevation,
-                label: "Original",
-                shadowSize: 0
-            });
-
-            if (this.correctedElevation)
-            {
-                series.push(
-                {
-                    color: "orange",
-                    data: this.correctedElevation,
-                    label: "Corrected",
-                    shadowSize: 0
-                });
-            }
-
+            var series = this.buildPlotSeries();
+            
             var yaxes =
             [
                 {
@@ -147,6 +128,32 @@ function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandMo
             flotOptions.filter = { enabled: false };
 
             this.plot = $.plot(this.ui.chart, series, flotOptions);
+        },
+
+        buildPlotSeries: function()
+        {
+            var series = [];
+
+            series.push(
+            {
+                color: "red",
+                data: this.originalElevation,
+                label: TP.utils.translate("Original"),
+                shadowSize: 0
+            });
+
+            if (this.correctedElevation)
+            {
+                series.push(
+                {
+                    color: "orange",
+                    data: this.correctedElevation,
+                    label: TP.utils.translate("Corrected"),
+                    shadowSize: 0
+                });
+            }
+
+            return series;
         },
 
         showCorrectedElevation: function()
