@@ -244,6 +244,14 @@ $mainTtabSpriteRetinaURL: url(../../assets/images/sprite-icons-main-tabs@2x.png)
 
     }
 
+    .selectboxit-options
+    {
+        width: 238px;
+    }
+
+    .selectboxit-container .selectboxit {
+        width: 238px !important; /* Width of the dropdown button */
+    }
 }
 
 #exerciseLibraryAddItemView
@@ -257,6 +265,12 @@ $mainTtabSpriteRetinaURL: url(../../assets/images/sprite-icons-main-tabs@2x.png)
     {
         margin-top:10px;
     }
+}
+
+.libraryExercise.workout.future
+{
+    background-color: #e2e2e2;
+    border: 1px solid $TPGrey2;
 }
 /*
 .libraryExercise
