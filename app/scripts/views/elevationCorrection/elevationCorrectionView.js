@@ -38,14 +38,13 @@ function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandMo
             "chart": "div.elevationGraph"
         },
 
-        initialize: function (options)
+        initialize: function(options)
         {
             this.validateWorkoutModel(options);
-
-            _.bindAll(this, "onElevationCorrectionFetched", "onElevationCorrectionApplied", "showUpdatedElevationProfile");
+            this.bindCallbacks();
 
             this.workoutModel = options.workoutModel;
-            this.buildModel();
+            this.buildViewModel();
 
             this.dataParser = new DataParser();
             this.setOriginalElevation();
@@ -55,13 +54,18 @@ function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandMo
             this.once("render", this.onFirstRender, this);
         },
 
+        bindCallbacks: function()
+        {
+            _.bindAll(this, "onElevationCorrectionFetched", "onElevationCorrectionApplied", "showUpdatedElevationProfile");
+        },
+
         validateWorkoutModel: function(options)
         {
             if (!options || !options.workoutModel || !options.workoutModel.get("detailData") || !options.workoutModel.get("detailData").get("flatSamples") || !options.workoutModel.get("detailData").get("flatSamples").hasLatLngData || !_.contains(options.workoutModel.get("detailData").get("flatSamples").channelMask, "Elevation"))
                 throw "ElevationCorrectionView requires a DetailData Model with valid flatSamples, latLngData, and Elevation channel";
         },
 
-        buildModel: function()
+        buildViewModel: function()
         {
             var stats = this.workoutModel.get("detailData").get("totalStats");
             this.model = new TP.Model(
