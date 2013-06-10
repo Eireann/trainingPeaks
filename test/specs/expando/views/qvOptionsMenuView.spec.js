@@ -1,0 +1,87 @@
+﻿requirejs(
+[
+    "jquery",
+    "TP",
+    "views/quickView/qvMain/qvOptionsMenuView"
+],
+function(
+    $,
+    TP,
+    QVOptionsMenuView
+    )
+{
+
+    function buildWorkoutModel()
+    {
+        return new TP.Model(
+            {
+                details: new TP.Model(),
+                detailData: new TP.Model()
+            }
+        );
+    }
+
+    describe("QV Options Menu View", function()
+    {
+
+        it("Should require a valid model with detail data", function()
+        {
+            var constructorWithNoModel = function()
+            {
+                var view = new QVOptionsMenuView();
+            }
+
+            var constructorWithNoDetailData = function()
+            {
+                var view = new QVOptionsMenuView({ model: new TP.Model() });
+            }
+
+            expect(constructorWithNoModel).toThrow();
+            expect(constructorWithNoDetailData).toThrow();
+        });
+
+        describe("Elevation Correction option", function()
+        {
+            it("Should have an elevation correction label ", function()
+            {
+                var view = new QVOptionsMenuView({ model: buildWorkoutModel() });
+                view.render();
+                expect(view.$el.find("#elevationCorrectionLabel").length).toEqual(1);
+            });
+
+            it("Should disable the correction label if there is not lat lng data", function()
+            {
+                var view = new QVOptionsMenuView({ model: buildWorkoutModel() });
+                view.render();
+                expect(view.$el.find("#elevationCorrectionLabel").is(".disabled")).toBeTruthy();
+            });
+
+            it("Should enable the correction label if there is lat lng data", function()
+            {
+                var workoutModel = buildWorkoutModel();
+                workoutModel.get("detailData").set("flatSamples", {
+                    hasLatLngData: true
+                });
+
+                var view = new QVOptionsMenuView({ model: workoutModel });
+                view.render();
+                expect(view.$el.find("#elevationCorrectionLabel").is(".disabled")).toBeFalsy();
+            });
+
+            it("Should enable the correction label if the lat lng data arrives after initial render", function()
+            {
+                var workoutModel = buildWorkoutModel();
+                var view = new QVOptionsMenuView({ model: workoutModel });
+                view.render();
+
+                expect(view.$el.find("#elevationCorrectionLabel").is(".disabled")).toBeTruthy();
+
+                workoutModel.get("detailData").set("flatSamples", {
+                    hasLatLngData: true
+                });
+                expect(view.$el.find("#elevationCorrectionLabel").is(".disabled")).toBeFalsy();
+            });
+
+        });
+    });
+});
