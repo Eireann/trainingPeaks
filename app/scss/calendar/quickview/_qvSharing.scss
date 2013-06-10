@@ -12,6 +12,17 @@
             margin-top: -3px
         }
 
+        .publicCheckboxContainer
+        {
+            &.disabled
+            {
+                .publicLabel
+                {
+                    opacity: .50;
+                }
+            }
+        }
+
         .shareIcons
         {
             white-space: nowrap;

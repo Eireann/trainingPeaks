@@ -77,7 +77,7 @@ function(adjustFieldRange)
 
         describe("Pace", function()
         {
-            var maxPace = 99 + (59 / 60) + (59.99 / 3600);
+            var maxPace = 99 + (59 / 60) + (59 / 3600);
             var minPace = 1 / 3600;
             describeRange("pace", minPace, maxPace);
         });
