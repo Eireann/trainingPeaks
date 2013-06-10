@@ -64,7 +64,7 @@
                 return options && options.hasOwnProperty("defaultValue") ? options.defaultValue : "";
             }
             value = adjustFieldRange(value, "duration");
-            return datetimeUtils.format.decimalHoursAsTime(value, true, undefined, false);
+            return datetimeUtils.format.decimalHoursAsTime(value, true);
         },
 
         parseDuration: function(value, options)
@@ -115,7 +115,7 @@
             }
             var paceAsMinutes = convertToViewUnits(value, "paceUnFormatted");
             var limitedPaceAsHours = adjustFieldRange(paceAsMinutes / 60, "pace");
-            return datetimeUtils.format.decimalMinutesAsTime(limitedPaceAsHours * 60, true, undefined, true);
+            return datetimeUtils.format.decimalMinutesAsTime(limitedPaceAsHours * 60, true);
         },
 
         parsePace: function(value, options)

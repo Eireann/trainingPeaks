@@ -21,12 +21,12 @@
     <ul>
     {{#each rangeLaps}}
         <li data-lapindex="{{@index}}" class="lap">
-            <input class="checkbox" type="checkbox" {{#if checked}}checked{{/if}} data-lapindex="{{@index}}"/> <span>{{ name }} ({{ formatTime totalTime}})</span>
+            <input class="checkbox" type="checkbox" {{#if checked}}checked{{/if}} data-lapindex="{{@index}}"/> <span>{{ name }} ({{ formatTimeToHundredths totalTime}})</span>
         </li>
     {{/each}}
     {{#with rangeTotals}}
         <li class="statsRow totals" id="duration">
-            <input class="checkbox" type="checkbox" {{#if checked}}checked{{/if}}/> <span>{{$ "EntireWorkout" }} ({{ formatTime totalTime }})</span>
+            <input class="checkbox" type="checkbox" {{#if checked}}checked{{/if}}/> <span>{{$ "EntireWorkout" }} ({{ formatTimeToHundredths totalTime }})</span>
         </li>
     {{/with}}
         {{#each rangePeaks}}
