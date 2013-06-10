@@ -125,20 +125,6 @@
                     expect(viewModel.get("correctedGrade")).toEqual(expectedGrade);
                 });
 
-                /*
-        showCorrectedElevation: function()
-        {
-            this.model.set(
-            {
-                correctedMin: this.elevationCorrectionModel.get("min"),
-                correctedAvg: this.elevationCorrectionModel.get("avg"),
-                correctedMax: this.elevationCorrectionModel.get("max"),
-                correctedGain: this.elevationCorrectionModel.get("gain"),
-                correctedLoss: this.elevationCorrectionModel.get("loss"),
-                correctedGrade: this.calculateGrade(this.elevationCorrectionModel.get("gain"), this.elevationCorrectionModel.get("loss"), this.workoutModel.get("distance"))
-            });
-        },
-                */
             });
 
         });
