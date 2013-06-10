@@ -23,7 +23,8 @@ function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandMo
         events:
         {
             "click button[type=submit]": "onSubmitClicked",
-            "click button[type=reset]": "onResetClicked"
+            "click button[type=reset]": "onResetClicked",
+            "click .closeIcon": "onResetClicked"
         },
 
         template:
