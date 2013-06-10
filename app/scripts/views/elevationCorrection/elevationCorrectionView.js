@@ -177,9 +177,8 @@ function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandMo
                 correctedMax: stats.maximumElevation,
                 correctedGain: stats.elevationGain,
                 correctedLoss: stats.elevationLoss,
-                correctedGrade: (stats.grade * 100).toFixed(1),
+                correctedGrade: (stats.grade * 100).toFixed(1)
             });
-            //this.renderPlot();
             this.ui.chart.removeClass("waiting");
         },
         
