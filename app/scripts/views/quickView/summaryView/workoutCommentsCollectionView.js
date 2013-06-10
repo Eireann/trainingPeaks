@@ -5,7 +5,6 @@ define(
 ],
 function(TP, WorkoutCommentView)
 {
-
     return TP.CollectionView.extend(
     {
         tagName: "div",

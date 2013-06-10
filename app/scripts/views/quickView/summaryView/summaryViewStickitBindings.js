@@ -10,28 +10,14 @@ function(
     stickitUtilsMixin
 )
 {
-    var summaryViewStickitBindings = {
-
+    var summaryViewStickitBindings =
+    {
         initializeStickit: function()
         {
             this.addModelToBindings();
             this.on("close", this.stickitBindingsOnClose, this);
             this.on("render", this.stickitBindingsOnRender, this);
-
-            this.fixNewlinesOnModelDescription();
             this.on("setModelValue", this.afterSetModelValue, this);
-        },
-
-        fixNewlinesOnModelDescription: function()
-        {
-            // FIXME - we need to handle this on an api level
-            this.model.on("change:description", function()
-            {
-                this.model.set("description",
-                    this.fixNewlines(this.model.get("description")),
-                    { silent: true });
-            }, this);
-
         },
 
         stickitBindingsOnClose: function()
@@ -345,32 +331,6 @@ function(
                 observe: "tempMax",
                 onGet: "formatTemperature",
                 onSet: "parseTemperature",
-                updateModel: "updateModel"
-            },
-            "#descriptionInput":
-            {
-                events: [ "blur", "keyup", "change", "cut", "paste" ],
-                observe: "description",
-                onSet: "parseTextField",
-                onGet: "formatTextField",
-                updateModel: "updateModel",
-                ignoreOnSetForUpdateModel: true
-            },
-            "#postActivityCommentsInput":
-            {
-                observe: "newComment",
-                onSet: "parseTextField",
-                onGet: "formatTextField",
-                events: ["blur", "change", "keyup", "paste"],
-                updateModel: "updateModel",
-                saveTimeout: 60000
-            },
-            "#preActivityCommentsInput": 
-            {
-                observe: "coachComments",
-                onSet: "parseTextField",
-                onGet: "formatTextField",
-                events: ["blur", "change", "keyup", "paste"],
                 updateModel: "updateModel"
             }
         },

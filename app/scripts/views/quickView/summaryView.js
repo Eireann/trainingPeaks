@@ -3,23 +3,20 @@
     "underscore",
     "moment",
     "TP",
-    "views/quickView/summaryView/summaryViewTextAreas",
+    "views/workoutCommentsEditor/workoutCommentsEditor",
     "views/quickView/summaryView/summaryViewUserCustomization",
     "views/quickView/summaryView/summaryViewStickitBindings",
-    "views/quickView/summaryView/summaryViewComments",
     "hbs!templates/views/quickView/summaryView"
 ],
 function (
     _,
     moment,
     TP,
-    summaryViewTextAreas,
+    WorkoutCommentsEditorView,
     summaryViewUserCustomization,
     summaryViewStickitBindings,
-    summaryViewComments,
     workoutQuickViewSummaryTemplate)
 {
-    
     var summaryViewBase = 
     {
         className: "summary",
@@ -33,22 +30,28 @@ function (
             type: "handlebars",
             template: workoutQuickViewSummaryTemplate
         },
+        
+        ui:
+        {
+            "commentsContainer": "div#commentsContainer"  
+        },
 
         initialize: function()
         {
-            this.initializeTextAreas();
             this.initializeUserCustomization();
-            this.initializeComments();
 
             // setup stickit last because the user customization onRender needs to happen before stickit
             this.initializeStickit();
+        },
+        
+        onRender: function()
+        {
+            var commentsEditorView = new WorkoutCommentsEditorView({ model: this.model });
+            this.ui.commentsContainer.html(commentsEditorView.render().$el);
         }
-
     };
 
-    _.extend(summaryViewBase, summaryViewTextAreas);
     _.extend(summaryViewBase, summaryViewUserCustomization);
-    _.extend(summaryViewBase, summaryViewComments);
     _.extend(summaryViewBase, summaryViewStickitBindings);
 
     return TP.ItemView.extend(summaryViewBase);

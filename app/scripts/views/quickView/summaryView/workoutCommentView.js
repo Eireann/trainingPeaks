@@ -6,7 +6,7 @@ define(
     "hbs!templates/views/quickView/workoutComments",
     "hbs!templates/views/quickView/editableWorkoutComments"
 ],
-function (TP, UserConfirmationView, deleteConfirmationTemplate, WorkoutCommentsTemplate, editableWorkoutCommentsTemplate)
+function (TP, UserConfirmationView, deleteConfirmationTemplate, workoutCommentsTemplate, editableWorkoutCommentsTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -34,7 +34,7 @@ function (TP, UserConfirmationView, deleteConfirmationTemplate, WorkoutCommentsT
             this.template =
             {
                 type: "handlebars",
-                template: WorkoutCommentsTemplate
+                template: workoutCommentsTemplate
             };
         },
         
@@ -99,7 +99,7 @@ function (TP, UserConfirmationView, deleteConfirmationTemplate, WorkoutCommentsT
                 }
                 
                 this.editable = false;
-                this.template.template = WorkoutCommentsTemplate;
+                this.template.template = workoutCommentsTemplate;
                 this.render();
                 this.$el.removeClass("editable");
             }
