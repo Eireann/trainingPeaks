@@ -8,7 +8,7 @@
     "views/calendar/container/calendarContainerViewScrolling",
     "hbs!templates/views/calendar/container/calendarContainerView"
 ],
-function (_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, CalendarContainerViewScrolling, calendarContainerView)
+function(_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, CalendarContainerViewScrolling, calendarContainerView)
 {
     var CalendarContainerView =
     {
@@ -209,6 +209,16 @@ function (_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, 
         {
             var rangeSettingsView = new SelectedRangeSettingsView({ collection: rangeSelection });
             rangeSettingsView.render().left(e.pageX - 30).bottom(e.pageY);
+            var onRangeSettingsClose = function()
+            {
+                rangeSelection.trigger("range:unselect", rangeSelection);
+            }
+            rangeSettingsView.once("close", onRangeSettingsClose);
+            rangeSettingsView.once("beforeShift", function()
+            {
+                rangeSettingsView.off("close", onRangeSettingsClose);
+            }, this);
+
         },
 
         onLibraryAnimate: function(libraryAnimationCssAttributes, duration)
@@ -290,6 +300,7 @@ function (_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, 
         {
             this.shiftWizzardView = new ShiftWizzardView({ selectionStartDate: this.collection.getSelectionStartDate(), selectionEndDate: this.collection.getSelectionEndDate() });
             this.shiftWizzardView.on("shifted", this.onShiftWizardShifted, this);
+            this.shiftWizzardView.on("close", this.onCalendarUnSelect, this);
             this.shiftWizzardView.render();
         },
 

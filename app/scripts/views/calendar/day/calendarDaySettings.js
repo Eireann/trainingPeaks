@@ -107,8 +107,9 @@ function(TP, setImmediate, jqueryOutside, UserConfirmationView, calendarDaySetti
             this.hideSettings(e);
         },
 
-        onShiftClicked: function (e)
+        onShiftClicked: function(e)
         {
+            this.trigger("beforeShift");
             this.hideSettings(e);
             this.model.trigger("day:shiftwizard");
         },
