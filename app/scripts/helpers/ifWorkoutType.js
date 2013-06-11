@@ -12,7 +12,7 @@ function (Handlebars, TP)
 
         var matchingName = _.find(allowableWorkoutTypeNames, function(expectedWorkoutTypeName)
         {
-            return expectedWorkoutTypeName.toLowerCase() == actualWorkoutTypeName;
+            return expectedWorkoutTypeName.toLowerCase() === actualWorkoutTypeName;
         });
 
         return matchingName ? true : false;
