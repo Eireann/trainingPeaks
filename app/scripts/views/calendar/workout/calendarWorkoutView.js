@@ -138,8 +138,9 @@ function(
 
         events:
         {
+            "mousedown": "workoutSelected",
             "click": "workoutClicked",
-
+            
             "mouseenter .workoutIcon": "showWorkoutSummaryHover",
             "mouseleave .workoutIcon": "hideWorkoutSummaryHover",
 
@@ -230,6 +231,11 @@ function(
             {
                 this.setSelected();
             }
+        },
+
+        workoutSelected: function()
+        {
+            this.model.trigger("select", this.model);
         }
 
     };

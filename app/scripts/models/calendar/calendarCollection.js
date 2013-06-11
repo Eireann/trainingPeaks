@@ -243,7 +243,7 @@ function(
 
         onSelectModel: function(model)
         {
-            if (this.selectedModel)
+            if (this.selectedModel && this.selectedModel !== model)
             {
                 this.selectedModel.trigger("unselect", this.selectedModel);
             }

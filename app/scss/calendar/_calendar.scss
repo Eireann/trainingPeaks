@@ -234,7 +234,8 @@
     {
         min-height:150px;
 		background-color: $TPGrey1;
-        padding: 0px 0px 5px;
+        //padding: 0px 0px 5px;
+        padding: 0px;
         @include calc(width, "(100% - 294px) /7");
         overflow-x: hidden;
         overflow-y: visible;
@@ -446,13 +447,26 @@ body.clipboardFull
 .day
 {
 
+    .addWorkoutWrapper
+    {
+        position: relative;
+        margin: 5px 4px 4px 2px;
+        height: 32px;
+    }
+
     .addWorkout
     {
-        margin: 5px 4px 4px 2px;
         border: 1px solid #b5b5b5;
         height: 32px;
         text-align: center;
         visibility: hidden;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        right: 0px;
+
+        z-index: 2;
+
 		.addWorkoutPlus {
 			background: url(../../assets/images/calendarImages/sprite-calendar-plus.png) no-repeat; 
 			width:20px; 
@@ -522,6 +536,7 @@ body.clipboardFull
         top: 0px;
         bottom: 0px;
 		position: absolute;
+        z-index: 1;
 	}
 
     &.selected

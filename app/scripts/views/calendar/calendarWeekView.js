@@ -59,7 +59,7 @@ function(moment, setImmediate, TP, CalendarDayView, WeekSummaryView, CalendarWee
         updateDayCellHeights: function()
         {
             var absoluteMinHeight = 150;
-            var padding = 5;
+            var padding = 0;
 
             // start by resetting to min-height 150 in case cell height needs to shrink because we removed content
             this.$(".day").css("min-height", absoluteMinHeight);

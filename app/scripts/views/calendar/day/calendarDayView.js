@@ -265,7 +265,7 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySe
         },
         appendHtml: function(collectionView, itemView, index)
         {
-            itemView.$el.insertBefore(collectionView.$(".addWorkout"));
+            itemView.$el.insertBefore(collectionView.$(".addWorkoutWrapper"));
         },
 
         onDayHeaderMouseEnter: function(e)
