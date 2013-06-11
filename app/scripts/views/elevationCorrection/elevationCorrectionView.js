@@ -100,7 +100,7 @@ function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandMo
 
         onRender: function()
         {
-            this.ui.chart.css("height", "400px");
+            this.ui.chart.css("height", "390px");
             this.renderPlot();
         },
        
