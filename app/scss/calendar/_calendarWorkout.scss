@@ -239,13 +239,14 @@
     .workoutSelected
     {
         display: none;
-		background-color: rgba(0, 0, 255, 0.2);
-        border: 1px solid blue;
 		left: 0px;
 		right: 0px;
         top: 0px;
         bottom: 0px;
 		position: absolute;
+    	background-color: #bcd1eb;
+        border: 1px solid #0043ff;
+		opacity: 0.5;
     }
 
     &.selected
