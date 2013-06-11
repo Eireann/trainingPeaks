@@ -271,12 +271,13 @@ function(TP, theMarsApp, moment, $, _, Backbone, CalendarController, WorkoutMode
                 var controller = new CalendarController();
                 controller.initializeCalendar();
                 spyOn(controller.views.calendar, "scrollToDateIfNotFullyVisible");
-                var workout = jasmine.createSpyObj("Workout spy", ["save"]);
+                var workout = jasmine.createSpyObj("Workout spy", ["save", "trigger"]);
                 spyOn(controller.weeksCollection, "addWorkout");
                 spyOn(controller, "createNewWorkoutFromExerciseLibraryItem").andReturn(workout);
                 controller.onDropItem(eventOptions);
                 expect(controller.createNewWorkoutFromExerciseLibraryItem).toHaveBeenCalledWith(eventOptions.LibraryId, eventOptions.ItemId, eventOptions.destinationCalendarDayModel.id);
                 expect(controller.weeksCollection.addWorkout).toHaveBeenCalledWith(workout);
+                expect(workout.trigger).toHaveBeenCalledWith("select", workout);
             });
         });
 

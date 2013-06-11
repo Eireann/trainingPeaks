@@ -43,19 +43,6 @@ function(LibraryView, ExerciseLibraryView, LibraryTemplate)
             });
         });
 
-        describe("Initialize view", function()
-        {
-
-            it("Should create an ExerciseLibraryView", function()
-            {
-                var librarySpy = jasmine.createSpyObj("LibraryView spy", ["setupDragListeners"]);
-                spyOn(ExerciseLibraryView.prototype, "initialize").andCallThrough();
-                LibraryView.prototype.initialize.call(librarySpy);
-                expect(ExerciseLibraryView.prototype.initialize).toHaveBeenCalled();
-                expect(librarySpy.views.exerciseLibrary).toBeDefined();
-            });
-        });
-
         describe("Tab Switching", function()
         {
             it("Should watch for tab click events", function()
