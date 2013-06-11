@@ -44,6 +44,7 @@ function(
 
             this.views.library = new LibraryView({ collections: this.libraryCollections });
             this.views.library.on("animate", this.onLibraryAnimate, this);
+            this.views.library.on("library:select", this.onLibrarySelect, this);
         },
 
         onLibraryAnimate: function (cssAttributes, duration)
@@ -54,6 +55,11 @@ function(
         getExerciseLibraries: function ()
         {
             return this.libraryCollections.exerciseLibraries;
+        },
+
+        onLibrarySelect: function()
+        {
+            this.views.calendar.trigger("calendar:unselect");
         }
 
     };

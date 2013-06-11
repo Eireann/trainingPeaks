@@ -71,6 +71,38 @@ function(
         {
             this.libraries = options && options.exerciseLibraries ? options.exerciseLibraries : new TP.Collection();
             this.libraries.on('reset', this.loadAllExercises, this);
+            this.listenForSelection();
+        },
+
+        listenForSelection: function()
+        {
+            var view = this;
+            this.libraries.each(function(library)
+            {
+                library.on("select", view.onItemSelect, view);
+            });
+
+            this.on("library:unselect", this.onUnSelect, this);
+        },
+
+        onItemSelect: function(model)
+        {
+            if (this.selectedItem && this.selectedItem !== model)
+            {
+                this.selectedItem.trigger("unselect", this.selectedItem);
+            }
+
+            this.selectedItem = model;
+            this.trigger("select");
+        },
+
+        onUnSelect: function()
+        {
+            if (this.selectedItem)
+            {
+                this.selectedItem.trigger("unselect", this.selectedItem);
+                this.selectedItem = null;
+            }
         },
 
         loadAllExercises: function()
@@ -78,9 +110,11 @@ function(
 
             this.switchLibrary(this.libraries.models[0]);
 
+            var view = this;
             this.libraries.each(function(library)
             {
                 library.fetchExercises();
+                library.on("select", view.onItemSelect, view);
             });
 
         },

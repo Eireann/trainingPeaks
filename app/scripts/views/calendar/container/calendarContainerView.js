@@ -45,7 +45,8 @@ function (_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, 
             "reset": "render",
             "item:move": "onItemMoved",
             "shiftwizard:open": "onShiftWizardOpen",
-            "rangeselect": "onRangeSelect"
+            "rangeselect": "onRangeSelect",
+            "select": "onCalendarSelect"
         },
 
         initialize: function(options)
@@ -57,7 +58,7 @@ function (_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, 
             this.initializeScrolling();
             this.on("render", this.setupKeyBindingsOnRender, this);
             this.on("render", this.addWeeksOnRender, this);
-
+            this.on("calendar:unselect", this.onCalendarUnSelect, this);
 
             _.bindAll(this, "resizeContainer");
             $(window).on("resize", this.resizeContainer);
@@ -301,6 +302,16 @@ function (_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, 
         afterWorkoutsShifted: function(shiftCommand)
         {
             this.trigger("workoutsShifted", shiftCommand);
+        },
+
+        onCalendarSelect: function()
+        {
+            this.trigger("calendar:select");
+        },
+
+        onCalendarUnSelect: function()
+        {
+            this.collection.trigger("calendar:unselect");
         }
     };
 

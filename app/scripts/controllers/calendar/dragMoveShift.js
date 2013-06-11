@@ -32,6 +32,7 @@ function ()
                 // add it to the calendar
                 this.weeksCollection.addWorkout(workout);
                 this.views.calendar.scrollToDateIfNotFullyVisible(destinationDate);
+                workout.trigger("select", workout);
             }
 
         },

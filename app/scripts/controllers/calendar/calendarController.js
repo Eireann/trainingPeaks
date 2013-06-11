@@ -319,6 +319,8 @@ function(
             });
 
             this.bindToCalendarViewEvents(this.views.calendar);
+
+            this.views.calendar.on("calendar:select", this.onCalendarSelect, this);
         },
 
         onRequestToday: function()
@@ -415,9 +417,12 @@ function(
                 clearInterval(this.autoScrollDownInterval);
                 this.autoScrollDownInterval = null;
             }
+        },
+
+        onCalendarSelect: function()
+        {
+            this.views.library.trigger("library:unselect");
         }
-
-
 
     };
 

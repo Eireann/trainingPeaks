@@ -48,6 +48,7 @@ function(
         subscribeToSelectEvents: function()
         {
             this.daysCollection.on("day:click", this.onDayClicked, this);
+            this.on("calendar:unselect", this.onUnSelectCalendar, this);
         },
         
         onItemsCopy: function(model)
@@ -117,6 +118,7 @@ function(
 
             this.selectedWeek = selectedWeek;
             this.selectedWeek.select();
+            this.trigger("select");
         },
 
         onWeekUnselected: function(selectedWeek)
@@ -297,7 +299,7 @@ function(
                 document.getSelection().removeAllRanges();
 
                 this.trigger("rangeselect", this.selectedRange, e);
-
+                this.trigger("select");
                 return;
             }
 
@@ -305,6 +307,7 @@ function(
             this.selectedDay = dayModel;
             this.selectedDay.on("day:shiftwizard", this.onShiftWizardOpen, this);
             dayModel.trigger("day:select");
+            this.trigger("select");
         },
 
         createRangeOfDays: function(selectionStartDay, selectionEndDay)
@@ -341,6 +344,8 @@ function(
             this.selectedModel = model;
             model.selected = true;
 
+            this.trigger("select");
+
             if(this.selectedRange)
             {
                 this.selectedRange.trigger("range:unselect", this.selectedRange);
@@ -361,7 +366,32 @@ function(
         {
             this.selectedModel = null;
             model.selected = false;
+        },
+
+        onUnSelectCalendar: function()
+        {
+
+            if (this.selectedModel)
+            {
+                this.selectedModel.trigger("unselect", this.selectedModel);
+            }
+
+            if(this.selectedRange)
+            {
+                this.selectedRange.trigger("range:unselect", this.selectedRange);
+            }
+
+            if(this.selectedWeek)
+            {
+                this.selectedWeek.trigger("week:unselect", this.selectedWeek);
+            }
+
+            if(this.selectedDay)
+            {
+                this.selectedDay.trigger("day:unselect", this.selectedDay);
+            }
         }
+
     };
 
     return calendarCollectionCopyPaste;
