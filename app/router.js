@@ -37,32 +37,61 @@ function (_, TP)
 
         routes:
         {
-            "home": "home",
             "login": "login",
+            "home": "home",
             "calendar": "calendar",
+            "dashboard": "dashboard",
+            "tools": "tools",
             "": "calendar"  
         },
 
-        home: function ()
+        login: function ()
         {
-            var homeview = new TP.View();
-            theMarsApp.mainRegion.show(homeview);
+            theMarsApp.mainRegion.show(theMarsApp.controllers.loginController.getLayout());
         },
 
-        calendar: function ()
+        home: function ()
         {
             if (!theMarsApp.session.isAuthenticated())
             {
                 theMarsApp.session.logout();
                 return;
             }
+            
+            var homeview = new TP.View();
+            theMarsApp.mainRegion.show(homeview);
+        },
+
+        calendar: function ()
+        {
+            this.checkAuth();
+
             theMarsApp.mainRegion.show(theMarsApp.controllers.calendarController.getLayout());
         },
 
-        login: function (origin)
+        dashboard: function()
         {
-            theMarsApp.mainRegion.show(theMarsApp.controllers.loginController.getLayout());
-        }
+            this.checkAuth();
 
+            var dashboardView = new TP.View();
+            theMarsApp.mainRegion.show(dashboardView);
+        },
+        
+        tools: function()
+        {
+            this.checkAuth();
+
+            var dashboardView = new TP.View();
+            theMarsApp.mainRegion.show(dashboardView);
+        },
+        
+        checkAuth: function()
+        {
+            if (!theMarsApp.session.isAuthenticated())
+            {
+                theMarsApp.session.logout();
+                return;
+            }
+        }        
     });
 });
