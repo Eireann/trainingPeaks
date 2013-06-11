@@ -83,7 +83,7 @@
         {{/if}}
     {{/ifWorkoutType }}
 
-    {{#ifWorkoutType workoutTypeValueId "Run" }}
+    {{#ifWorkoutType workoutTypeValueId "Run" "Walk" "Other" "Swim" }}
         {{#if speedPulseDecoupling }}
         <div class="statsRow" id="speedPulseDecoupling">
             <label>{{$ "pahr" }}</label>
