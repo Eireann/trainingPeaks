@@ -18,8 +18,8 @@
 
                     <div class="fileList">
                         {{#each attachmentFileInfos }}
-                            <div class="file" id="{{ fileId }}" title="{{$ "ClickToDownload"}}">
-                                <label class="radioButtonWrapper"><input type="radio" class="fileSelect" name="fileSelect" value="{{ fileId }}" id="checkbox{{ fileId }}"/> <a class="download disabled" id="{{ fileId }}">{{ fileName }}</a></label>
+                            <div class="file" id="{{ fileId }}">
+                                <label class="radioButtonWrapper"><input type="radio" class="fileSelect" name="fileSelect" value="{{ fileId }}" id="checkbox{{ fileId }}" title="{{$ "ClickToDownload"}}"/> <a class="download disabled" id="{{ fileId }}" title="{{$ "ClickToDownload"}}">{{ fileName }}</a></label>
                             </div>
                         {{/each}}
                     </div>
