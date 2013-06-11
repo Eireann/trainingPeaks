@@ -448,17 +448,38 @@ body.clipboardFull
 
     .addWorkout
     {
-        border: 1px solid blue;
+        border: 1px solid #b5b5b5;
         height: 32px;
         text-align: center;
         visibility: hidden;
-
+		.addWorkoutPlus {
+			background: url(../../assets/images/calendarImages/sprite-calendar-plus.png) no-repeat; 
+			width:20px; 
+			height:20px; 
+			position:relative; 
+			left:50%; 
+			margin-left:-10px; 
+			top:50%; 
+			margin-top:-10px;
+		}
         &.active
         {
-            border: 1px solid red;
+            background: #bcd1eb;
+			border:1px solid #0043ff; 
+			opacity: 0.5;
             visibility: visible;
+			.addWorkoutPlus {
+				background: url(../../assets/images/calendarImages/sprite-calendar-plus.png)  0 -20px no-repeat; 
+			}
         }
     }
+
+	@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
+		.addWorkout {
+			background-image:url(../../assets/images/calendarImages/sprite-calendar-plus@2x.png);
+			background-size: 20px 40px;
+		}
+	}
 
     &:hover
     {
