@@ -224,3 +224,32 @@
 			}
 	}
 }
+
+.workout
+{
+    
+    .workoutDiv
+    {
+        position: relative;
+    }
+
+    .workoutSelected
+    {
+        display: none;
+		background-color: rgba(0, 0, 255, 0.2);
+        border: 1px solid blue;
+		left: 0px;
+		right: 0px;
+        top: 0px;
+        bottom: 0px;
+		position: absolute;
+    }
+
+    &.selected
+    {
+        .workoutSelected
+        {
+            display: block;
+        }
+    }
+}

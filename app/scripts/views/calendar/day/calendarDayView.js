@@ -155,7 +155,6 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySe
         onDaySettingsClose: function(e)
         {
             this.allowSettingsButtonToHide(e);
-            this.$(".daySelected").removeClass("visible");
         },
 
         allowSettingsButtonToHide: function(e)
@@ -175,7 +174,6 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySe
             this.daySettings = new CalendarDaySettingsView({ model: this.model, parentEl: this.$el });
             this.daySettings.render().center(offset.left + 10).bottom(offset.top + 15);
             this.daySettings.on("close", this.onDaySettingsClose, this);
-            this.$(".daySelected").addClass("visible");
             this.model.trigger("day:click", this.model, e);
         },
 
@@ -187,6 +185,7 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySe
             e.preventDefault();
 
             this.model.trigger("day:click", this.model, e);
+            this.select();
         },
 
         onAddWorkoutClicked: function(e)
@@ -202,7 +201,7 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySe
             this.allowSettingsButtonToHide();
             e.preventDefault();
 
-            this.model.trigger("day:click", this.model, e);
+            //this.model.trigger("day:click", this.model, e);
 
             var newItemView = new NewItemView({ model: this.model });
             newItemView.render();
@@ -216,7 +215,7 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySe
             this.$(".addWorkout").removeClass("active");
         },
 
-        select: function()
+        select: function(e)
         {
             this.selected = true;
             this.$el.addClass("selected");

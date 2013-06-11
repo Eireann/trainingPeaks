@@ -242,11 +242,6 @@
         color: $TPGrey8;
         position: relative;
 
-        &.selected
-        {
-            background-color: $selectedDay;
-        }
-
 		.daySettings
         {
             display: none;
@@ -282,22 +277,6 @@
         }
 
     }
-
-	.daySelected
-	{
-		display: none;
-		background-color: white;
-		left: 0px;
-		right: 0px;
-		height: 100%;
-		position: absolute;
-		opacity: .35;
-
-        &.visible
-        {
-            display: block;
-        }
-	}
 
 	.weekSelected
 	{
@@ -495,10 +474,39 @@ body.clipboardFull
 {
     &.hoveringOverDayHeader
     {
-
         .workout
         {
             border: 1px solid blue;
         }
     }
+
+    &.dragging
+    {
+        opacity: 0.8;
+    }
+}
+
+.day
+{
+
+	.daySelected
+	{
+		display: none;
+		background-color: rgba(0, 0, 255, 0.2);
+        border: 1px solid blue;
+		left: 0px;
+		right: 0px;
+        top: 0px;
+        bottom: 0px;
+		position: absolute;
+	}
+
+    &.selected
+    {
+        .daySelected
+        {
+            display: block;
+        }
+    }
+
 }

@@ -132,6 +132,8 @@ function(
             this.initializeUserCustomization();
             this.initializeDragAndDrop();
 
+            this.model.on("select", this.setSelected, this);
+            this.model.on("unselect", this.setUnSelected, this);
         },
 
         events:
@@ -178,8 +180,19 @@ function(
             }
 
             this.allowSettingsButtonToHide();
+            this.model.trigger("select", this.model);
             var view = new WorkoutQuickView({ model: this.model });
             view.render();
+        },
+
+        setSelected: function()
+        {
+            this.$el.addClass("selected");
+        },
+
+        setUnSelected: function()
+        {
+            this.$el.removeClass("selected");
         },
 
         showWorkoutSummaryHover: function()
@@ -213,6 +226,10 @@ function(
         {
             // setup dynamic class names - in case they changed since initial render
             this.$el.attr("class", this.className());
+            if (this.model.selected)
+            {
+                this.setSelected();
+            }
         }
 
     };
