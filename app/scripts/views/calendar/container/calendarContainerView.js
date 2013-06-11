@@ -212,7 +212,7 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, C
             var onRangeSettingsClose = function()
             {
                 rangeSelection.trigger("range:unselect", rangeSelection);
-            }
+            };
             rangeSettingsView.once("close", onRangeSettingsClose);
             rangeSettingsView.once("beforeShift", function()
             {
