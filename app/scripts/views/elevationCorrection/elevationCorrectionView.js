@@ -57,7 +57,7 @@ function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandMo
 
         bindCallbacks: function()
         {
-            _.bindAll(this, "onElevationCorrectionFetched", "onElevationCorrectionApplied", "showUpdatedElevationProfile");
+            _.bindAll(this, "onElevationCorrectionFetched", "onElevationCorrectionApplied", "showUpdatedElevationProfile", "showCorrectedElevation");
         },
 
         validateWorkoutModel: function(options)
@@ -89,7 +89,7 @@ function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandMo
         buildElevationCorrrectionModel: function()
         {
             this.elevationCorrectionModel = new ElevationCorrectionModel({}, { latLngArray: this.dataParser.getLatLonArray() });
-            this.elevationCorrectionModel.save().done(this.showCorrectedElevation);
+            this.elevationCorrectionModel.save().done(this.onElevationCorrectionFetched);
         },
 
         setOriginalElevation: function()
