@@ -240,6 +240,7 @@
         overflow-y: visible;
         float: left;
         color: $TPGrey8;
+        position: relative;
 
         &.selected
         {
@@ -279,6 +280,7 @@
                 display:block;
             }
         }
+
     }
 
 	.daySelected
@@ -290,6 +292,11 @@
 		height: 100%;
 		position: absolute;
 		opacity: .35;
+
+        &.visible
+        {
+            display: block;
+        }
 	}
 
 	.weekSelected
@@ -455,4 +462,31 @@ body.clipboardFull
             height: 27px;
         } 
    }  
+}
+
+.day
+{
+
+    .addWorkout
+    {
+        border: 1px solid blue;
+        height: 32px;
+        text-align: center;
+        visibility: hidden;
+
+        &.active
+        {
+            border: 1px solid red;
+            visibility: visible;
+        }
+    }
+
+    &:hover
+    {
+        .addWorkout
+        {
+            visibility: visible;
+        }
+    }
+
 }

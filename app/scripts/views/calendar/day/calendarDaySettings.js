@@ -35,11 +35,8 @@ function(TP, setImmediate, jqueryOutside, NewItemView, UserConfirmationView, cal
             this.hideSettings(e);
         },
 
-        hideSettings: function (e)
+        hideSettings: function(e)
         {
-
-            this.parentEl.find(".daySelected").css("display", "none");
-
             if (!this.closed)
                 this.close();
         },
