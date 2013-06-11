@@ -16,11 +16,15 @@ function(_, TP, navigationViewTemplate)
             template: navigationViewTemplate
         },
 
+        events:
+        {
+            "click label": "onNavigationClicked"
+        },
+
         initialize: function()
         {
             if (!this.model)
                 this.model = new TP.Model();
-
         },
 
         onRender: function()
@@ -43,7 +47,12 @@ function(_, TP, navigationViewTemplate)
         onRouteChange: function(route)
         {
             this.model.set("route", route);
+        },
+        
+        onNavigationClicked: function(event)
+        {
+            var route = $(event.target).attr("id");
+            theMarsApp.router.navigate(route, { trigger: true });
         }
-
     });
 });
