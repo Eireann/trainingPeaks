@@ -123,10 +123,13 @@ function(
                 this.model.trigger("workout:added", newModel);
             }
 
+            newModel.trigger("select", newModel);
+
             var quickView = new WorkoutQuickView({ model: newModel });
             quickView.render();
 
             this.close();
+
         },
 
         onUploadFail: function ()

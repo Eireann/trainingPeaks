@@ -464,12 +464,8 @@ body.clipboardFull
         height: 48px;
         text-align: center;
         visibility: hidden;
-        position: absolute;
-        top: 0px;
-        left: 0px;
-        right: 0px;
-
-        z-index: 2;
+        position: relative;
+        width: 100%;
 
 		.addWorkoutPlus {
 			background: url(../../assets/images/calendarImages/sprite-calendar-plus.png) no-repeat; 

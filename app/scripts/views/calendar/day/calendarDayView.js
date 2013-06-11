@@ -67,7 +67,7 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySe
             "click .dayHeader": "onDayClicked",
 
             "click .addWorkout": "onAddWorkoutClicked",
-            "click .daySettings": "daySettingsClicked",
+            "mousedown .daySettings": "daySettingsClicked",
             "click .daySelected": "onDayUnClicked"
         },
 
@@ -158,6 +158,7 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySe
         onDaySettingsClose: function(e)
         {
             this.allowSettingsButtonToHide(e);
+            this.onDayUnClicked(e);
         },
 
         allowSettingsButtonToHide: function(e)
@@ -177,6 +178,7 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySe
             this.daySettings = new CalendarDaySettingsView({ model: this.model, parentEl: this.$el });
             this.daySettings.render().center(offset.left + 10).bottom(offset.top + 15);
             this.daySettings.on("close", this.onDaySettingsClose, this);
+            this.daySettings.on("add", this.onAddWorkoutClicked, this);
             this.model.trigger("day:click", this.model, e);
         },
 
@@ -206,7 +208,7 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySe
 
             //this.model.trigger("day:click", this.model, e);
 
-            this.model.trigger("day:selectAddWorkout");
+            this.model.trigger("day:selectAddItem");
 
             var newItemView = new NewItemView({ model: this.model });
             newItemView.render();

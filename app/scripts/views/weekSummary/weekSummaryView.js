@@ -216,7 +216,7 @@ function(
             this.summarySettings.render().center(offset.left - 7).bottom(offset.top + 15);
             this.summarySettings.on("close", this.settingsClosed, this);
 
-            this.$el.closest(".week").find(".weekSelected").css("display", "block");
+            //this.$el.closest(".week").find(".weekSelected").css("display", "block");
 
             //this.model.trigger("weeksummary:settings:open", this.model.collection);
         },
@@ -224,7 +224,7 @@ function(
         settingsClosed: function (e)
         {
             this.removeSettingsButton(e);
-            this.$el.closest(".week").find(".weekSelected").css("display", "none");
+            //this.$el.closest(".week").find(".weekSelected").css("display", "none");
             //this.model.trigger("weeksummary:settings:close", this.model.collection);
         }
     });
