@@ -59,6 +59,9 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySe
         events:
         {
             "mousedown .dayHeader": "onDayClicked",
+            "mouseenter .dayHeader": "onDayHeaderMouseEnter",
+            "mouseleave .dayHeader": "onDayHeaderMouseLeave",
+
             "click .dayHeader": "onDayClicked",
 
             "click .addWorkout": "onAddWorkoutClicked",
@@ -264,6 +267,16 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySe
         appendHtml: function(collectionView, itemView, index)
         {
             itemView.$el.insertBefore(collectionView.$(".addWorkout"));
+        },
+
+        onDayHeaderMouseEnter: function(e)
+        {
+            this.$el.addClass("hoveringOverDayHeader");
+        },
+
+        onDayHeaderMouseLeave: function(e)
+        {
+            this.$el.removeClass("hoveringOverDayHeader");
         }
 
     });

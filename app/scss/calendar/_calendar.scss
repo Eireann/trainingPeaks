@@ -490,3 +490,15 @@ body.clipboardFull
     }
 
 }
+
+.day
+{
+    &.hoveringOverDayHeader
+    {
+
+        .workout
+        {
+            border: 1px solid blue;
+        }
+    }
+}
