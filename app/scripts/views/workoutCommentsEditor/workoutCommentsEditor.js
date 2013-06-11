@@ -2,11 +2,11 @@
 [
     "underscore",
     "TP",
-    "views/quickView/summaryView/workoutCommentsCollectionView",
+    "./workoutCommentsCollectionView",
     "utilities/stickitMixin",
     "hbs!templates/views/workoutCommentsEditor/workoutCommentsEditor"
 ],
-function (_, TP, WorkoutCommentsCollectionView, stickitMixin, workoutCommentsEditorTemplate)
+function(_, TP, WorkoutCommentsCollectionView, stickitMixin, workoutCommentsEditorTemplate)
 {
     var workoutCommentsEditorView =
     {
@@ -46,27 +46,7 @@ function (_, TP, WorkoutCommentsCollectionView, stickitMixin, workoutCommentsEdi
             }
         },
 
-        //TODO Duplicated from summaryViewStickitBindings.js - Refactor!
-        parseTextField: function(value, options)
-        {
-            return value === "" ? null : this.fixNewlines(value);
-        },
-
-        formatTextField: function(value, options)
-        {
-            return value === null ? "" : this.fixNewlines(value);
-        },
-
-        fixNewlines: function(value)
-        {
-            if (value === null)
-                return "";
-
-            var newValue = value.replace(/\r\n/g, "\n").replace(/\n/g, "\r\n");
-            return newValue;
-        },
-            
-        initialize: function ()
+        initialize: function()
         {
             if (!this.model)
                 throw "WorkoutCommentsEditorView requires a model. Aborting";
@@ -74,13 +54,13 @@ function (_, TP, WorkoutCommentsCollectionView, stickitMixin, workoutCommentsEdi
             this.on("render", this.renderComments, this);
             this.model.on("change:newComment", this.onNewCommentChange, this);
 
-            this.on("close", this.stickitBindingsOnClose, this);
-            this.on("render", this.stickitBindingsOnRender, this);
+            this.on("close", this.unstickit, this);
+            this.once("render", this.initializeStickit, this);
 
-            this.fixNewlinesOnModelDescription();
+            this.fixNewlinesOnModelDescriptionChange();
         },
-            
-        fixNewlinesOnModelDescription: function ()
+
+        fixNewlinesOnModelDescriptionChange: function()
         {
             // FIXME - we need to handle this on an api level
             this.model.on("change:description", function ()
@@ -92,19 +72,10 @@ function (_, TP, WorkoutCommentsCollectionView, stickitMixin, workoutCommentsEdi
 
         },
 
-        stickitBindingsOnClose: function ()
+        initializeStickit: function ()
         {
-            this.unstickit();
-        },
-
-        stickitBindingsOnRender: function ()
-        {
-            if (!this.stickitBindingsInitialized)
-            {
-                this.model.off("change", this.render);
-                this.stickit();
-                this.stickitBindingsInitialized = true;
-            }
+            this.model.off("change", this.render);
+            this.stickit();
         },
 
         onNewCommentChange: function()
@@ -129,8 +100,8 @@ function (_, TP, WorkoutCommentsCollectionView, stickitMixin, workoutCommentsEdi
             this.postActivityCommentsView.render();
             this.$("#postActivityCommentsList").append(this.postActivityCommentsView.el);
 
-            this.postActivityCommentsView.on("item:removed", this.onWorkoutCommentRemoved, this);
-            this.postActivityCommentsView.on("itemview:commentedited", this.onWorkoutCommentEdited, this);
+            this.postActivityCommentsView.on("item:removed", this.saveComments, this);
+            this.postActivityCommentsView.on("itemview:commentedited", this.saveComments, this);
             
             if (theMarsApp.user.get("settings.account.isCoach") || this.model.get("coachComments"))
             {
@@ -138,20 +109,15 @@ function (_, TP, WorkoutCommentsCollectionView, stickitMixin, workoutCommentsEdi
             }
         },
 
-        onWorkoutCommentRemoved: function()
+        saveComments: function()
         {
-            this.model.set("workoutComments",  this.commentsToArray(this.model.getPostActivityComments()), { silent: true });
-            this.model.save();
-        },
-        
-        onWorkoutCommentEdited: function ()
-        {
-            this.model.set("workoutComments",  this.commentsToArray(this.model.getPostActivityComments()), { silent: true });
+            this.model.set("workoutComments",  this.getCommentsAsArray(), { silent: true });
             this.model.save();
         },
 
-        commentsToArray: function(commentsCollection)
+        getCommentsAsArray: function()
         {
+            var commentsCollection = this.model.getPostActivityComments();
             var commentsArray = [];
             commentsCollection.each(function(commentsModel)
             {

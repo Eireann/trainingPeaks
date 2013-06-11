@@ -19,30 +19,62 @@
 
         describe("Elevation Correction", function ()
         {
-            it("Should throw an exception because ElevationCorrectionView requires a DetailData Model with valid flatSamples, latLngData, and Elevation channel", function ()
+
+            describe("Initialization", function()
             {
-                var constructorWithNoOptions = function ()
+                it("Should throw an exception because ElevationCorrectionView requires a DetailData Model with valid flatSamples, latLngData, and Elevation channel", function()
                 {
-                    ElevationCorrectionView.prototype.validateWorkoutModel({});
-                };
+                    var constructorWithNoOptions = function()
+                    {
+                        ElevationCorrectionView.prototype.validateWorkoutModel({});
+                    };
 
-                var constructorWithNoDetailData = function ()
+                    var constructorWithNoDetailData = function()
+                    {
+                        ElevationCorrectionView.prototype.validateWorkoutModel({ workoutModel: new TP.Model() });
+                    };
+
+                    expect(constructorWithNoOptions).toThrow();
+                    expect(constructorWithNoDetailData).toThrow();
+                });
+
+                it("Should not throw an exception because ElevationCorrectionView requires a DetailData Model with valid flatSamples, latLngData, and Elevation channel", function()
                 {
-                    ElevationCorrectionView.prototype.validateWorkoutModel({ workoutModel: new TP.Model() });
-                };
+                    var constructorWithOptions = function()
+                    {
+                        ElevationCorrectionView.prototype.validateWorkoutModel({ workoutModel: buildWorkoutModel() });
+                    };
 
-                expect(constructorWithNoOptions).toThrow();
-                expect(constructorWithNoDetailData).toThrow();
-            });
+                    expect(constructorWithOptions).not.toThrow();
+                });
 
-            it("Should not throw an exception because ElevationCorrectionView requires a DetailData Model with valid flatSamples, latLngData, and Elevation channel", function ()
-            {
-                var constructorWithOptions = function ()
+                it("Should build a model for template rendering", function()
                 {
-                    ElevationCorrectionView.prototype.validateWorkoutModel({ workoutModel: buildWorkoutModel() });
-                };
+                    var stats = {
+                        minimumElevation: 5,
+                        averageElevation: 10,
+                        maximumElevation: 15,
+                        elevationGain: 11,
+                        elevationLoss: 13,
+                        grade: 0.2123
+                    };
 
-                expect(constructorWithOptions).not.toThrow();
+                    var detailData = new TP.Model({ totalStats: stats });
+                    var viewContext = {
+                        workoutModel: new TP.Model({ detailData: detailData })
+                    };
+
+                    ElevationCorrectionView.prototype.buildViewModel.apply(viewContext);
+
+                    expect(viewContext.model).toBeDefined();
+                    expect(viewContext.model.get("originalMin")).toEqual(stats.minimumElevation);
+                    expect(viewContext.model.get("originalAvg")).toEqual(stats.averageElevation);
+                    expect(viewContext.model.get("originalMax")).toEqual(stats.maximumElevation);
+                    expect(viewContext.model.get("originalGain")).toEqual(stats.elevationGain);
+                    expect(viewContext.model.get("originalLoss")).toEqual(stats.elevationLoss);
+                    expect(viewContext.model.get("originalGrade")).toEqual('21.2');
+                });
+
             });
 
             describe("Plot Rendering", function()

@@ -1,7 +1,7 @@
 define(
 [
     "TP",
-    "views/quickView/summaryView/workoutCommentView"
+    "./workoutCommentView"
 ],
 function(TP, WorkoutCommentView)
 {

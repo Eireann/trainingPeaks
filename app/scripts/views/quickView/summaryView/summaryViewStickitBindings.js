@@ -335,25 +335,6 @@ function(
             }
         },
 
-        parseTextField: function(value, options)
-        {
-            return value === "" ? null : this.fixNewlines(value);
-        },
-
-        formatTextField: function(value, options)
-        {
-            return value === null ? "" : this.fixNewlines(value);
-        },
-
-        fixNewlines: function(value)
-        {
-            if (value === null)
-                return "";
-
-            var newValue = value.replace(/\r\n/g, "\n").replace(/\n/g, "\r\n");
-            return newValue;
-        },
-
         afterSetModelValue: function(newViewValue, options)
         {
             if (options.observe === "distance" || options.observe === "totalTime")
