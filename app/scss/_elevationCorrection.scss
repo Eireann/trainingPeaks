@@ -40,16 +40,16 @@
 
     .elevationGraph
     {
-        width: 500px;
-        margin: 20px 0 0 20px;
+        width: 490px;
+        margin: 27px 0 0 30px;
         float: left;
     }
 
     .elevationStats
     {
         float: right;
-        width: 275px;
-        margin-top: 60px;
+        width: 265px;
+        margin: 100px 10px 0 0;
 
         .statsHeader
         {
@@ -87,23 +87,25 @@
                 padding: 8px 10px 0 0;
                 text-align: center;
                 height: 30px;
+                margin-right: 2px;
             }
             .statsLabel
             {
                 text-align: right;
                 margin-right: 10px;
-                padding: 0px;
+                padding: 11px 0 0 0;
                 min-width: 50px;
                 font-size: $fontSizeXSmall;
-                font-family: $fontFamilyHeavy;
-                padding-top: 7px;
+                font-family: $fontFamilyRegular;
                 
             }
 
             .units
             {
                 min-width: 15px;
-                padding-left: 15px;
+                padding: 11px 0 0 5px;
+                font-size: $fontSizeXSmall;
+                font-family: $fontFamilyRegular;
             } 
 
             .original
@@ -125,11 +127,13 @@
     {
         width: 180px;
         float: right;
-        margin: 20px 20px 0 0;
+        margin: 20px 47px 0 0;
         
         button
         {
-            width: 55px;
+            width: 77px;
+            font-size: $fontSizeSmall;
+            margin-right: 8px;
         }
     }
 }

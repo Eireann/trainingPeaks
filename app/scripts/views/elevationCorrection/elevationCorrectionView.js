@@ -57,7 +57,7 @@ function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandMo
 
         bindCallbacks: function()
         {
-            _.bindAll(this, "onElevationCorrectionFetched", "onElevationCorrectionApplied", "showUpdatedElevationProfile");
+            _.bindAll(this, "onElevationCorrectionFetched", "onElevationCorrectionApplied", "showUpdatedElevationProfile", "showCorrectedElevation");
         },
 
         validateWorkoutModel: function(options)
@@ -81,7 +81,7 @@ function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandMo
                 correctedGain: null,
                 originalLoss: stats.elevationLoss,
                 correctedLoss: null,
-                originalGrade: (stats.grade * 100).toFixed(1),
+                originalGrade: stats.grade,
                 correctedGrade: null
             });
         },
@@ -89,7 +89,7 @@ function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandMo
         buildElevationCorrrectionModel: function()
         {
             this.elevationCorrectionModel = new ElevationCorrectionModel({}, { latLngArray: this.dataParser.getLatLonArray() });
-            this.elevationCorrectionModel.save().done(this.showCorrectedElevation);
+            this.elevationCorrectionModel.save().done(this.onElevationCorrectionFetched);
         },
 
         setOriginalElevation: function()
@@ -100,7 +100,7 @@ function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandMo
 
         onRender: function()
         {
-            this.ui.chart.css("height", "400px");
+            this.ui.chart.css("height", "390px");
             this.renderPlot();
         },
        
@@ -200,7 +200,7 @@ function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandMo
 
         calculateGrade: function(gain, loss, distance)
         {
-            return (100 * (gain - loss) / distance).toFixed(1);
+            return (100 * (gain - loss) / distance);
         },
 
         onSubmitClicked: function()
