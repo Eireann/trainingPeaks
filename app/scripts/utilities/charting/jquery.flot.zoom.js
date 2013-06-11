@@ -17,7 +17,6 @@ function ()
         var startingYAxes;
 
         var dataParser;
-        var resetButton;
 
         function bindEvents(plot, eventHolder)
         {
@@ -28,17 +27,11 @@ function ()
                 startingMax = plot.getOptions().xaxes[0].max;
                 startingYAxes = _.extend({}, plot.getOptions().yaxes);
                 dataParser = plot.getOptions().zoom.dataParser;
-
-                plot.getPlaceholder().bind("plotselected", plot.zoomToSelection);
             }
         }
 
         function shutdown(plot, eventHolder)
         {
-            plot.getPlaceholder().unbind("plotselected", plot.zoomToSelection);
-
-            if(resetButton)
-                resetButton.off("click", plot.resetZoom).fadeOut(200).remove();
         }
 
         function doZoomOnCanvas()
@@ -56,12 +49,15 @@ function ()
             o.yaxes = startingYAxes;
            
             doZoomOnCanvas();
-
-            resetButton.fadeOut(200);
         };
 
-        plot.zoomToSelection = function (event, ranges)
+        plot.zoomToSelection = function ()
         {
+            var ranges = plot.getSelection();
+            
+            if (!ranges)
+                return;
+            
             if (ranges.xaxis.to - ranges.xaxis.from < 0.00001)
                 ranges.xaxis.to = ranges.xaxis.from + 0.00001;
 
@@ -75,13 +71,6 @@ function ()
 
             doZoomOnCanvas();
 
-            if (!resetButton)
-            {
-                resetButton = plot.getPlaceholder().find(o.zoom.resetButton);
-                resetButton.on("click", plot.resetZoom);
-            }
-
-            resetButton.fadeIn(200);
             plot.clearSelection();
         };
 

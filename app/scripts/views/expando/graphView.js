@@ -136,9 +136,8 @@ function(
 
             this.flotOptions.selection.mode = "x";
             this.flotOptions.yaxes = yaxes;
-            this.flotOptions.zoom = { enabled: false };
+            this.flotOptions.zoom = { enabled: true };
             this.flotOptions.zoom.dataParser = this.dataParser;
-            this.flotOptions.zoom.resetButton = ".graphResetButton";
             this.flotOptions.filter = { enabled: this.lastFilterPeriod ? true : false, period: this.lastFilterPeriod };
 
             if (this.plot)
@@ -155,8 +154,26 @@ function(
             toolbar.on("filterPeriodChanged", this.applyFilter, this);
             toolbar.on("enableSeries", this.enableSeries, this);
             toolbar.on("disableSeries", this.disableSeries, this);
+            toolbar.on("zoom", this.zoomGraph, this);
+            toolbar.on("reset", this.resetZoom, this);
 
             this.$("#graphToolbar").append(toolbar.render().$el);
+        },
+
+        zoomGraph: function()
+        {
+            if (!this.plot)
+                return;
+
+            this.plot.zoomToSelection();
+        },
+        
+        resetZoom: function()
+        {
+            if (!this.plot)
+                return;
+
+            this.plot.resetZoom();
         },
         
         applyFilter: function(period)
@@ -199,14 +216,6 @@ function(
 
         onPlotHover: function(event, pos, item)
         {
-            /*if (!item)
-            {
-                this.trigger("graphleave");
-            }
-            else
-            {
-                this.trigger("graphhover", pos.x);
-            }*/
             this.trigger("graphhover", pos.x);
         },
        
