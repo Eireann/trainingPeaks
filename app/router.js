@@ -58,7 +58,21 @@ function (_, TP)
                 return;
             }
             
-            var homeview = new TP.View();
+            var homeview = new TP.ItemView(
+            {
+                template:
+                {
+                    type: "handlebars",
+                    template: function()
+                    {
+                        var top = $(document).height() / 2;
+                        var left = $(document).width() / 2 - 50;
+                        
+                        return "<div style='font-size:24px;position: absolute; top:" + top.toFixed(0) + "px; left:" + left.toFixed(0) + "px;'>Home</div>";
+                    }
+                }
+            });
+            
             theMarsApp.mainRegion.show(homeview);
         },
 
@@ -73,7 +87,20 @@ function (_, TP)
         {
             this.checkAuth();
 
-            var dashboardView = new TP.View();
+            var dashboardView = new TP.ItemView(
+            {
+                template:
+                {
+                    type: "handlebars",
+                    template: function ()
+                    {
+                        var top = $(document).height() / 2;
+                        var left = $(document).width() / 2 - 70;
+
+                        return "<div style='font-size:24px;position: absolute; top:" + top.toFixed(0) + "px; left:" + left.toFixed(0) + "px;'>Dashboard</div>";
+                    }
+                }
+            });
             theMarsApp.mainRegion.show(dashboardView);
         },
         
@@ -81,8 +108,21 @@ function (_, TP)
         {
             this.checkAuth();
 
-            var dashboardView = new TP.View();
-            theMarsApp.mainRegion.show(dashboardView);
+            var toolsView = new TP.ItemView(
+            {
+                template:
+                {
+                    type: "handlebars",
+                    template: function ()
+                    {
+                        var top = $(document).height() / 2;
+                        var left = $(document).width() / 2 - 50;
+
+                        return "<div style='font-size:24px;position: absolute; top:" + top.toFixed(0) + "px; left:" + left.toFixed(0) + "px;'>Tools</div>";
+                    }
+                }
+            });
+            theMarsApp.mainRegion.show(toolsView);
         },
         
         checkAuth: function()
