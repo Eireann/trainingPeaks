@@ -73,8 +73,18 @@ function(TP)
                             axis.tickSize = 900000;
                         else if (axis.tickSize <= 1200000)
                             axis.tickSize = 1200000;
+                        else if(axis.tickSize <= 1500000)
+                                axis.tickSize = 1500000;
+                        else if (axis.tickSize <= 1800000)
+                            axis.tickSize = 1800000;
+                        else if (axis.tickSize <= 2100000)
+                            axis.tickSize = 2100000;
+                        else if (axis.tickSize <= 2400000)
+                            axis.tickSize = 2400000;
+                        else if (axis.tickSize <= 2700000)
+                            axis.tickSize = 2700000;
                         else
-                            axis.tickSize -= (axis.tickSize % 1500000);
+                            axis.tickSize -= (axis.tickSize % 3000000);
                         
                         var max = axis.datamax;
                         while (max > 0)
