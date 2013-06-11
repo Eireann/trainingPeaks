@@ -136,9 +136,8 @@ function(
 
             this.flotOptions.selection.mode = "x";
             this.flotOptions.yaxes = yaxes;
-            this.flotOptions.zoom = { enabled: false };
+            this.flotOptions.zoom = { enabled: true };
             this.flotOptions.zoom.dataParser = this.dataParser;
-            this.flotOptions.zoom.resetButton = ".graphResetButton";
             this.flotOptions.filter = { enabled: this.lastFilterPeriod ? true : false, period: this.lastFilterPeriod };
 
             if (this.plot)
@@ -150,13 +149,32 @@ function(
 
         overlayGraphToolbar: function()
         {
-            var toolbar = new GraphToolbarView({ dataParser: this.dataParser });
+            this.graphToolbar = new GraphToolbarView({ dataParser: this.dataParser });
 
-            toolbar.on("filterPeriodChanged", this.applyFilter, this);
-            toolbar.on("enableSeries", this.enableSeries, this);
-            toolbar.on("disableSeries", this.disableSeries, this);
+            this.graphToolbar.on("filterPeriodChanged", this.applyFilter, this);
+            this.graphToolbar.on("enableSeries", this.enableSeries, this);
+            this.graphToolbar.on("disableSeries", this.disableSeries, this);
+            this.graphToolbar.on("zoom", this.zoomGraph, this);
+            this.graphToolbar.on("reset", this.resetZoom, this);
 
-            this.$("#graphToolbar").append(toolbar.render().$el);
+            this.$("#graphToolbar").append(this.graphToolbar.render().$el);
+        },
+
+        zoomGraph: function()
+        {
+            if (!this.plot)
+                return;
+
+            if (this.plot.zoomToSelection())
+                this.graphToolbar.onGraphZoomed();
+        },
+        
+        resetZoom: function()
+        {
+            if (!this.plot)
+                return;
+
+            this.plot.resetZoom();
         },
         
         applyFilter: function(period)
@@ -199,14 +217,6 @@ function(
 
         onPlotHover: function(event, pos, item)
         {
-            /*if (!item)
-            {
-                this.trigger("graphleave");
-            }
-            else
-            {
-                this.trigger("graphhover", pos.x);
-            }*/
             this.trigger("graphhover", pos.x);
         },
        
