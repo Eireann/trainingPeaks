@@ -54,6 +54,8 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySe
             this.on("after:item:added", this.makeItemsDraggable, this);
             this.model.on("day:select", this.select, this);
             this.model.on("day:unselect", this.unselect, this);
+
+            this.collection.on("select", this.onItemSelect, this);
         },
 
         events:
@@ -207,13 +209,7 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySe
             var newItemView = new NewItemView({ model: this.model });
             newItemView.render();
 
-            newItemView.once("close", this.onNewItemViewClose, this);
             this.$(".addWorkout").addClass("active");
-        },
-
-        onNewItemViewClose: function()
-        {
-            this.$(".addWorkout").removeClass("active");
         },
 
         select: function(e)
@@ -284,6 +280,11 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySe
             //this.unselect();
             //this.model.trigger("day:click", this.model, e);
             this.model.trigger("day:unselect", this.model, e);
+        },
+
+        onItemSelect: function()
+        {
+            this.$(".addWorkout").addClass("active");
         }
 
     });
