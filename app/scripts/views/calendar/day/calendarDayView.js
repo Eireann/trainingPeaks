@@ -182,6 +182,7 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySe
             this.daySettings.once("beforeShift", function()
             {
                 this.daySettings.off("close", this.onDaySettingsClose, this);
+                this.allowSettingsButtonToHide(e);
             }, this);
             this.model.trigger("day:click", this.model, e);
         },

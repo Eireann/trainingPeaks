@@ -263,9 +263,12 @@
 
         &:hover
         {
-            .daySettings
+            &:not(.selected)
             {
-                display:block;
+                .daySettings
+                {
+                    display:block;
+                }
             }
         }
 
@@ -498,9 +501,12 @@ body.clipboardFull
 
     &:hover
     {
-        .addWorkout
+        &:not(.selected)
         {
-            visibility: visible;
+            .addWorkout
+            {
+                visibility: visible;
+            }
         }
     }
 
