@@ -276,7 +276,13 @@ $mainTtabSpriteRetinaURL: url(../../assets/images/sprite-icons-main-tabs@2x.png)
 {
     background-color: #e2e2e2;
     border: 1px solid $TPGrey2;
+
+    &.selected
+    {
+        border-color: blue;
+    }
 }
+
 /*
 .libraryExercise
 {

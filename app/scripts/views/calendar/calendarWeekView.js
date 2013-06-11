@@ -59,7 +59,7 @@ function(moment, setImmediate, TP, CalendarDayView, WeekSummaryView, CalendarWee
         updateDayCellHeights: function()
         {
             var absoluteMinHeight = 150;
-            var padding = 30;
+            var padding = 0;
 
             // start by resetting to min-height 150 in case cell height needs to shrink because we removed content
             this.$(".day").css("min-height", absoluteMinHeight);
@@ -68,7 +68,7 @@ function(moment, setImmediate, TP, CalendarDayView, WeekSummaryView, CalendarWee
             var myHeight = this.$el.height() + padding;
             if (myHeight > absoluteMinHeight)
             {
-               // use min-height instead of height, or else some days get scrollbars?
+                // use min-height instead of height, or else some days get scrollbars?
                 this.$(".day").css("min-height", myHeight);
             }
         },

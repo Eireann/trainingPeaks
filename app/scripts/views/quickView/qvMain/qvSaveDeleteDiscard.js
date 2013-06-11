@@ -33,10 +33,12 @@ function(
             {
                 var dayToAddTo = this.dayModel;
                 var newWorkoutModel = this.model;
+
                 var onSyncNewWorkout = function()
                 {
                     newWorkoutModel.off("sync", onSyncNewWorkout);
                     dayToAddTo.trigger("workout:added", newWorkoutModel);
+                    newWorkoutModel.trigger("select", newWorkoutModel);
                 };
 
                 this.model.on("sync", onSyncNewWorkout);

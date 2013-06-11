@@ -64,7 +64,7 @@
 	            @include headerButtons(0px, 35px, 12px);
 				background-color:$TPGrey9;
 				&:hover {
-					background-color:#8d8d8d;
+					background-color:$TPGrey11;
 					}
                 button {
                 	img {
@@ -234,17 +234,14 @@
     {
         min-height:150px;
 		background-color: $TPGrey1;
-        padding: 0px 0px 5px;
+        //padding: 0px 0px 5px;
+        padding: 0px;
         @include calc(width, "(100% - 294px) /7");
         overflow-x: hidden;
         overflow-y: visible;
         float: left;
         color: $TPGrey8;
-
-        &.selected
-        {
-            background-color: $selectedDay;
-        }
+        position: relative;
 
 		.daySettings
         {
@@ -266,9 +263,12 @@
 
         &:hover
         {
-            .daySettings
+            &:not(.selected)
             {
-                display:block;
+                .daySettings
+                {
+                    display:block;
+                }
             }
         }
 
@@ -279,18 +279,8 @@
                 display:block;
             }
         }
-    }
 
-	.daySelected
-	{
-		display: none;
-		background-color: white;
-		left: 0px;
-		right: 0px;
-		height: 100%;
-		position: absolute;
-		opacity: .35;
-	}
+    }
 
 	.weekSelected
 	{
@@ -445,14 +435,145 @@ body.clipboardFull
 {
    &.day
    {
-        background-color: $selectedDay;
-        opacity: 0.8;
-        min-height: 350px;
-       
+        opacity: 0.6;
+        min-height: 250px;
+ 
+        .daySelected
+        {
+            display: block; 
+        }
+              
         .dayHeader
         {
             background-color: transparent; 
             height: 27px;
         } 
    }  
+}
+
+.day
+{
+
+    .addWorkoutWrapper
+    {
+        position: relative;
+        margin: 5px 4px 4px 2px;
+        height: 48px;
+    }
+
+    .addWorkout
+    {
+        border: 1px solid #b5b5b5;
+        height: 48px;
+        text-align: center;
+        visibility: hidden;
+        position: relative;
+        width: 100%;
+
+		.addWorkoutPlus {
+			background: url(../../assets/images/calendarImages/sprite-calendar-plus.png) no-repeat; 
+			width:20px; 
+			height:20px; 
+			position:relative; 
+			left:50%; 
+			margin-left:-10px; 
+			top:50%; 
+			margin-top:-10px;
+		}
+        &.active
+        {
+            background: #bcd1eb;
+			border:1px solid #0043ff; 
+			opacity: 0.5;
+            visibility: visible;
+			.addWorkoutPlus {
+				background: url(../../assets/images/calendarImages/sprite-calendar-plus.png)  0 -20px no-repeat; 
+			}
+        }
+    }
+
+	@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
+		.addWorkout {
+			background-image:url(../../assets/images/calendarImages/sprite-calendar-plus@2x.png);
+			background-size: 20px 40px;
+		}
+	}
+
+    &:hover
+    {
+        &:not(.selected)
+        {
+            .addWorkout
+            {
+                visibility: visible;
+            }
+        }
+    }
+
+}
+
+.day
+{
+
+    &.hoveringOverDayHeader
+    {
+        .workout, .workout.past, .workout.future
+        {
+            border: 1px solid $TPGrey11;
+        }
+    }
+
+    &.dragging
+    {
+        opacity: 0.8;
+    }
+}
+
+.daySelected
+{
+    background-color: #bcd1eb;
+    border: 1px solid #0043ff;
+    opacity: 0.5;
+    left: 0px;
+    right: 1px;
+    top: 0px;
+    bottom: 1px;
+    position: absolute;
+    z-index: 1;
+}
+
+.day
+{
+
+	.daySelected
+	{
+		display: none;
+	}
+
+    &.selected
+    {
+        .daySelected
+        {
+            display: block;
+        }
+    }
+
+}
+
+.day
+{
+    .workout:hover
+    {
+        border-color:  $TPGrey11;
+    }
+
+    .workout.past:hover
+    {
+        border-color:  $TPGrey11;
+    }
+
+    .workout.future:hover
+    {
+        border-color:  $TPGrey11;
+    }
 }

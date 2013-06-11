@@ -20,6 +20,9 @@ function(TP, CalendarWeekView, WeekSummaryView, CalendarDayView)
         {
             var parentCollection = new TP.Collection({});
             var weekSummaryItem = new TP.Model({});
+            var calendarDayModel = new TP.Model({});
+            calendarDayModel.itemsCollection = new TP.Collection();
+
             weekSummaryItem.isSummary = true;
 
             var dayItem = new TP.Model();
@@ -33,7 +36,7 @@ function(TP, CalendarWeekView, WeekSummaryView, CalendarDayView)
             expect(new WeekItemView({ model: weekSummaryModel }) instanceof WeekSummaryView).toBeTruthy();
 
             expect(CalendarItemView).toBeDefined();
-            expect(new CalendarItemView({ model: new TP.Model() }) instanceof CalendarDayView).toBeTruthy();
+            expect(new CalendarItemView({ model: calendarDayModel }) instanceof CalendarDayView).toBeTruthy();
         });
     });
 

@@ -232,6 +232,7 @@ function(
         {
             return this.workoutsCollection.get(workoutId);
         }
+
     };
 
     _.extend(calendarCollectionBase, calendarCollectionCopyPaste);

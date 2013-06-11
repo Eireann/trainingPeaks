@@ -20,6 +20,11 @@ function(TP, draggable, ExerciseLibraryItemViewTemplate, ExerciseLibraryItemView
             };
         },
 
+        events:
+        {
+            mousedown: "onMouseDown"
+        },
+
         template:
         {
             type: "handlebars",
@@ -35,6 +40,9 @@ function(TP, draggable, ExerciseLibraryItemViewTemplate, ExerciseLibraryItemView
             _.bindAll(this, "draggableHelper", "onDragStart", "onDragStop");
 
             this.getIconType();
+
+            this.model.on("select", this.onItemSelect, this);
+            this.model.on("unselect", this.onItemUnSelect, this);
         },
 
         onRender: function()
@@ -81,6 +89,21 @@ function(TP, draggable, ExerciseLibraryItemViewTemplate, ExerciseLibraryItemView
         getWorkoutTypeCssClassName: function ()
         {
             return TP.utils.workout.types.getNameById(this.model.get("workoutTypeId")).replace(/ /g, "");
+        },
+
+        onMouseDown: function()
+        {
+            this.model.trigger("select", this.model);
+        },
+
+        onItemSelect: function()
+        {
+            this.$el.addClass("selected");
+        },
+
+        onItemUnSelect: function()
+        {
+            this.$el.removeClass("selected");
         }
 
     });

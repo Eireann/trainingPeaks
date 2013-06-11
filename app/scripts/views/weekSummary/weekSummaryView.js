@@ -214,17 +214,24 @@ function(
 
             this.summarySettings = new WeekSummarySettings({ model: this.model });
             this.summarySettings.render().center(offset.left - 7).bottom(offset.top + 15);
-            this.summarySettings.on("close", this.settingsClosed, this);
+            this.summarySettings.on("close", this.onSettingsClosed, this);
 
-            this.$el.closest(".week").find(".weekSelected").css("display", "block");
+            this.summarySettings.once("beforeShift", function()
+            {
+                this.removeSettingsButton(e);
+                this.summarySettings.off("close", this.onSettingsClosed, this);
+            }, this);
+
+            //this.$el.closest(".week").find(".weekSelected").css("display", "block");
 
             //this.model.trigger("weeksummary:settings:open", this.model.collection);
         },
 
-        settingsClosed: function (e)
+        onSettingsClosed: function(e)
         {
             this.removeSettingsButton(e);
-            this.$el.closest(".week").find(".weekSelected").css("display", "none");
+            this.model.collection.trigger("week:unselect", this.model.collection, e);
+            //this.$el.closest(".week").find(".weekSelected").css("display", "none");
             //this.model.trigger("weeksummary:settings:close", this.model.collection);
         }
     });
