@@ -64,7 +64,7 @@
 	            @include headerButtons(0px, 35px, 12px);
 				background-color:$TPGrey9;
 				&:hover {
-					background-color:#8d8d8d;
+					background-color:$TPGrey11;
 					}
                 button {
                 	img {
@@ -499,7 +499,7 @@ body.clipboardFull
     {
         .workout, .workout.past, .workout.future
         {
-            border: 1px solid blue;
+            border: 1px solid $TPGrey11;
         }
     }
 
@@ -515,8 +515,9 @@ body.clipboardFull
 	.daySelected
 	{
 		display: none;
-		background-color: rgba(0, 0, 255, 0.2);
-        border: 1px solid blue;
+		background-color: #bcd1eb;
+        border: 1px solid #0043ff;
+		opacity: 0.5;
 		left: 0px;
 		right: 0px;
         top: 0px;
