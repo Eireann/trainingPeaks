@@ -49,6 +49,7 @@
 .workout.past
 {
     @include workoutColorsByCompliance("background-color"); 
+    @include workoutColorsByCompliance("border-color"); 
 }
 
 // arrow/border color of workout hover

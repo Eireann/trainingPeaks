@@ -5,6 +5,9 @@
 .workout
 {
     margin: 5px 4px 4px 2px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: $TPGrey2;
    // @include box-shadow(0 1px 1.5px 0 #2c2c2c);
 
     &.dragHelper

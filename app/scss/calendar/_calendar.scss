@@ -448,6 +448,7 @@ body.clipboardFull
 
     .addWorkout
     {
+        margin: 5px 4px 4px 2px;
         border: 1px solid #b5b5b5;
         height: 32px;
         text-align: center;
@@ -493,9 +494,10 @@ body.clipboardFull
 
 .day
 {
+
     &.hoveringOverDayHeader
     {
-        .workout
+        .workout, .workout.past, .workout.future
         {
             border: 1px solid blue;
         }
