@@ -9,10 +9,10 @@
     <div class="statsRow" id="duration">
         <label>{{$ "Duration" }}</label>
         {{#if movingTime }}
-        <span class="value movingTime">{{ formatTime movingTime }}</span>
+        <span class="value movingTime">{{ formatTimeToHundredths movingTime }}</span>
         <span class="units totalTime">({{ formatTime totalTime }})</span>
         {{ else }}
-        <span class="value movingTime">{{ formatTime totalTime }}</span>
+        <span class="value movingTime">{{ formatTimeToHundredths totalTime }}</span>
         {{/if}}
     </div>
     {{/if}}
@@ -83,7 +83,7 @@
         {{/if}}
     {{/ifWorkoutType }}
 
-    {{#ifWorkoutType workoutTypeValueId "Run" }}
+    {{#ifWorkoutType workoutTypeValueId "Run" "Walk" "Other" "Swim" }}
         {{#if speedPulseDecoupling }}
         <div class="statsRow" id="speedPulseDecoupling">
             <label>{{$ "pahr" }}</label>

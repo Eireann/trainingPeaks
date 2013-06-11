@@ -305,5 +305,12 @@
     "Corrected": "Corrected",
     "Gain": "Gain",
     "Loss": "Loss",
-    "PowerBalance": "Pwr. Bal."
+    "PowerBalance": "Pwr. Bal.",
+    "PublicTooltip": "Share your completed workout",
+    "PublicTooltipTwitter": "Share your completed workout on Twitter",
+    "PublicTooltipFacebook": "Share your completed workout on Facebook",
+    "PublicTooltipLink": "Share a link to your completed workout",
+    "PublicTooltipEmail": "Share your completed workout by email",
+
+    "ClickToDownload": "Click Radio Button then click on link to download attachment to disk"
 }

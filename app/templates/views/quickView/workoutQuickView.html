@@ -97,13 +97,13 @@
                 <div class="share">
                     <label>{{$ "Share"}}</label>
                     <div class="publicCheckboxContainer">
-                        <input type="checkbox" class="publicCheckbox"/> <span>{{$ "Public" }}</span>
+                        <input type="checkbox" class="publicCheckbox"/> <span class="publicLabel" title="{{$ "PublicTooltip" }}">{{$ "Public" }}</span>
                     </div>
                     <div class="shareIcons">
-                        <div class="twitterIcon"/>
-                        <div class="facebookIcon"/>
-                        <div class="linkIcon disabled"/>
-                        <a class="emailLink"><div class="emailIcon"/></a>
+                        <div class="twitterIcon disabled" title="{{$ "PublicTooltipTwitter" }}"/>
+                        <div class="facebookIcon disabled" title="{{$ "PublicTooltipFacebook" }}"/>
+                        <div class="linkIcon disabled" title="{{$ "PublicTooltipLink" }}"/>
+                        <a class="emailLink"><div class="emailIcon disabled" title="{{$ "PublicTooltipEmail" }}"/></a>
                     </div>
                 </div>
             </div>
@@ -141,13 +141,13 @@
     <div class="quickviewFooter">
         <div class="share">
             <div class="publicCheckboxContainer">
-                <input type="checkbox" class="publicCheckbox"/> {{$ "Public" }}
+                <input type="checkbox" class="publicCheckbox"/> <span class="publicLabel" title="{{$ "PublicTooltip" }}">{{$ "Public" }}</span>
             </div>
             <div class="shareIcons">
-                <div class="twitterIcon disabled"/>
-                <div class="facebookIcon disabled"/>
-                <div class="linkIcon disabled"/>
-                <a class="emailLink"><div class="emailIcon disabled"/></a>
+                <div class="twitterIcon disabled" title="{{$ "PublicTooltipTwitter" }}"/>
+                <div class="facebookIcon disabled" title="{{$ "PublicTooltipFacebook" }}"/>
+                <div class="linkIcon disabled" title="{{$ "PublicTooltipLink" }}"/>
+                <a class="emailLink"><div class="emailIcon disabled" title="{{$ "PublicTooltipEmail" }}"/></a>
             </div>
         </div>
         <div class="saveCloseButtons">

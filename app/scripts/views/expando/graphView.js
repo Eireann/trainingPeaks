@@ -40,7 +40,7 @@ function(
 
         initialize: function(options)
         {
-            _.bindAll(this, "createFlotGraph");
+            _.bindAll(this, "createFlotGraph", "onFirstRender");
 
             if (!options.detailDataPromise)
                 throw "detailDataPromise is required for graph view";
@@ -49,6 +49,8 @@ function(
 
             this.lastFilterPeriod = 0;
             this.selections = [];
+
+            this.firstRender = true;
         },
 
         initialEvents: function()
@@ -60,9 +62,21 @@ function(
         onRender: function()
         {
             var self = this;
-            this.watchForModelChanges();
-            this.watchForControllerEvents();
-            setImmediate(function() { self.detailDataPromise.then(self.createFlotGraph); });
+
+            if (this.firstRender)
+            {
+                this.firstRender = false;
+
+                this.watchForModelChanges();
+                this.watchForControllerEvents();
+
+                setImmediate(function()
+                {
+                    self.detailDataPromise.then(self.onFirstRender);
+                });
+            }
+            else
+                this.createFlotGraph();
         },
         
         watchForModelChanges: function()
@@ -76,18 +90,25 @@ function(
             this.model.get("detailData").off("change:flatSamples.samples", this.createFlotGraph, this);
         },
 
-        createFlotGraph: function()
+        onFirstRender: function()
         {
             if (this.model.get("detailData") === null || !this.model.get("detailData").get("flatSamples"))
                 return;
 
             var flatSamples = this.model.get("detailData").get("flatSamples");
-
             this.dataParser = new DataParser();
             this.dataParser.loadData(flatSamples);
-
             this.overlayGraphToolbar();
+            this.createFlotGraph();
+        },
 
+        createFlotGraph: function()
+        {
+            if (this.model.get("detailData") === null || !this.model.get("detailData").get("flatSamples"))
+                return;
+            
+            var flatSamples = this.model.get("detailData").get("flatSamples");
+            this.dataParser.loadData(flatSamples);
 
             this.$plot = this.$("#plot");
             if (!this.$plot.height())
@@ -95,7 +116,6 @@ function(
                 this.$plot.height(365);
             }
             this.drawPlot();
-
         },
 
         drawPlot: function()

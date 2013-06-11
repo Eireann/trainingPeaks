@@ -69,33 +69,33 @@ function (
         getSharedText: function()
         {
             var textArray = [];
-            
-            if (theMarsApp.user.has("firstName"))
+
+            if (theMarsApp.user.get("firstName"))
             {
                 textArray.push(theMarsApp.user.get("firstName") + " completed a");
             }
 
-            if(this.model.has("distance"))
+            if (this.model.get("distance"))
             {
                 textArray.push(this.formatDistance(this.model.get("distance")) + " " + TP.utils.units.getUnitsLabel("distance", this.model.get("workoutTypeValueId"), this.model));
             }
 
-            if (this.model.has("workoutTypeValueId"))
+            if (this.model.get("workoutTypeValueId"))
             {
-                textArray.push(TP.utils.workout.types.getNameById(this.model.get("workoutTypeValueId")).toLowerCase());
+                textArray.push(TP.utils.workout.types.getNameById(this.model.get("workoutTypeValueId")).toLowerCase() + " workout");
             }
 
-            if(this.model.has("workoutDay"))
+            if(this.model.get("workoutDay"))
             {
                 textArray.push("on " + moment(this.model.get("workoutDay")).format("MM/DD"));
             }
 
-            if(this.model.has("totalTime"))
+            if(this.model.get("totalTime"))
             {
                 textArray.push("in " + this.formatDuration(this.model.get("totalTime")));
             }
 
-            if(this.model.has("tssActual") && this.model.get("tssActual") !== 0)
+            if(this.model.get("tssActual") && this.model.get("tssActual") !== 0)
             {
                 textArray.push("with " + this.formatTSS(this.model.get("tssActual")) + " " + TP.utils.units.getUnitsLabel("tss", this.model.get("workoutTypeValueId"), this.model));
             }
@@ -106,7 +106,14 @@ function (
         
         getMailSubjectLine: function ()
         {
-            return TP.utils.workout.types.getNameById(this.model.get("workoutTypeValueId")) + " on " + moment(this.model.get("workoutDay")).format("MM/DD");
+            //return TP.utils.workout.types.getNameById(this.model.get("workoutTypeValueId")) + " on " + moment(this.model.get("workoutDay")).format("MM/DD");
+            var subject = " has shared a workout with you";
+            if (theMarsApp.user.get("firstName"))
+            {
+                subject = theMarsApp.user.get("firstName") + subject;
+            }
+
+            return subject;
         },
         
         onTwitterIconClicked: function ()
@@ -140,7 +147,11 @@ function (
             var descriptionText = this.getSharedText();
             var appID = 103295416394750;
 
-            var facebookURL = "https://www.facebook.com/dialog/feed?app_id=" + appID + "&picture=https://s3.amazonaws.com/storage.trainingpeaks.com/assets/images/trainingpeaks-activity-viewer.png&name=" + escape(windowTitle) + "&description=" + escape(descriptionText) + "&redirect_uri=https://www.trainingpeaks.com";
+            //var redirectURL = "https://www.trainingpeaks.com";
+            var redirectURL = "https://www.facebook.com";
+            var pictureURL = "https://s3.amazonaws.com/storage.trainingpeaks.com/assets/images/trainingpeaks-activity-viewer.png";
+
+            var facebookURL = "https://www.facebook.com/dialog/feed?app_id=" + appID + "&picture=" + escape(pictureURL) + "&name=" + escape(windowTitle) + "&description=" + escape(descriptionText) + "&redirect_uri=" + escape(redirectURL);
             if (url)
             {
                 var escapedUrl = escape(url);
@@ -163,8 +174,8 @@ function (
 
             this.shortUrlView.render();
         },
-        
-        enableOrDisableEmailLink: function ()
+
+        enableOrDisableEmailLink: function()
         {
 
             // this has to be an actual link for the user to click on instead of a window.open, so we just enable or disable the url as needed
@@ -193,10 +204,12 @@ function (
             if (this.workoutIsComplete())
             {
                 this.$(".publicCheckbox").prop("disabled", false);
+                this.$(".publicCheckboxContainer").removeClass("disabled");
             }
             else
             {
                 this.$(".publicCheckbox").prop("disabled", true);
+                this.$(".publicCheckboxContainer").addClass("disabled");
             }
 
             var shareClass = this.$(".share");
@@ -280,7 +293,7 @@ function (
 
         applyLinkIconEnableState: function()
         {
-            if (this.workoutIsPublic() && this.workoutHasFileData())
+            if (this.workoutIsPublic() && this.workoutIsComplete() && this.workoutHasFileData())
             {
                 this.hasFileData = true;
                 this.$(".linkIcon").removeClass("disabled");

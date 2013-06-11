@@ -1,11 +1,10 @@
 define(
 [
     "TP",
-    "views/quickView/summaryView/workoutCommentView"
+    "./workoutCommentView"
 ],
 function(TP, WorkoutCommentView)
 {
-
     return TP.CollectionView.extend(
     {
         tagName: "div",

@@ -39,12 +39,17 @@ function(theMarsApp, TP, conversion, convertToModelUnits, dateTimeUtils)
 
             it("Should format decimal seconds output if there is a decimal value", function()
             {
-                expect(dateTimeUtils.format.decimalHoursAsTime(99 + (59 / 60) + (59.99 / 3600))).toEqual("99:59:59.99");
+                expect(dateTimeUtils.format.decimalHoursAsTime((59 / 60) + (59.99 / 3600), true, undefined, true)).toEqual("0:59:59.99");
             });
 
             it("Should not format decimal seconds output if there is not a decimal value", function()
             {
-                expect(dateTimeUtils.format.decimalHoursAsTime(99 + (59 / 60) + (59 / 3600))).toEqual("99:59:59");
+                expect(dateTimeUtils.format.decimalHoursAsTime((59 / 60) + (59 / 3600), true, undefined, true)).toEqual("0:59:59");
+            });
+
+            it("Should not format decimal seconds output if there is a decimal value but hours >= 1", function()
+            {
+                expect(dateTimeUtils.format.decimalHoursAsTime(1 + (59 / 60) + (59 / 3600), true, undefined, true)).toEqual("1:59:59");
             });
 
             it("Should not format decimal seconds output if the showDecimalSeconds parameter is false", function()
@@ -171,11 +176,7 @@ function(theMarsApp, TP, conversion, convertToModelUnits, dateTimeUtils)
                 },
                 {
                     input: "99:59:59.99",
-                    output: convertToModelUnits("99:59:59.99", "pace")
-                },
-                {
-                    input: "::59.99",
-                    output: convertToModelUnits("::59.99", "pace")
+                    output: convertToModelUnits("99:59:59", "pace")
                 },
                 {
                     input: "::0.99",
@@ -183,7 +184,7 @@ function(theMarsApp, TP, conversion, convertToModelUnits, dateTimeUtils)
                 },
                 {
                     input: "100:00:00",
-                    output: convertToModelUnits("99:59:59.99", "pace")
+                    output: convertToModelUnits("99:59:59", "pace")
                 }
             ]);
         });

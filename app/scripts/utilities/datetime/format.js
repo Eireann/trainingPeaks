@@ -50,7 +50,12 @@ function(_, moment)
 
         if (typeof showDecimalSeconds !== 'boolean')
         {
-            showDecimalSeconds = true;
+            showDecimalSeconds = false;
+        }
+
+        if (hours >= 1)
+        {
+            showDecimalSeconds = false;
         }
 
         if (!hours || hours <= 0.00001)

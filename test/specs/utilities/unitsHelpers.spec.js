@@ -247,6 +247,11 @@ function(TP, theMarsApp)
                 expect(TP.utils.conversion.convertToModelUnits("some string", "distance")).toBe(null);
             });
 
+            it("Should convert temperatures", function()
+            {
+                expect(TP.utils.conversion.convertToModelUnits(32, "temperature")).toBe(0);
+                expect(TP.utils.conversion.convertToModelUnits(212, "temperature")).toBe(100);
+            });
         });
     });
 });

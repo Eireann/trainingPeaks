@@ -158,11 +158,11 @@ function(theMarsApp, TP, conversion, convertToModelUnits, dateTimeUtils)
                     input: conversion.parsePace("99:59:58")
                 },
                 {
-                    output: "99:59:59.99",
+                    output: "99:59:59",
                     input: conversion.parsePace("99:59:59.99")
                 },
                 {
-                    output: "00:59.99",
+                    output: "01:00",
                     input: conversion.parsePace("::59.99")
                 },
                 {
@@ -170,7 +170,7 @@ function(theMarsApp, TP, conversion, convertToModelUnits, dateTimeUtils)
                     input: conversion.parsePace("::0.99")
                 },
                 {
-                    output: "99:59:59.99",
+                    output: "99:59:59",
                     input: conversion.parsePace("100:00:00")
                 }
             ]);

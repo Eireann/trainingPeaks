@@ -8,47 +8,48 @@
     <div class="elevationGraph"/>
     <div class="elevationStats">
         <div class="statsHeader">
-            <span>{{$ "Original"}}</span>
-            <span>{{$ "Corrected"}}</span>
+            <span class="original">{{$ "Original"}}</span>
+            <span class="corrected">{{$ "Corrected"}}</span>
         </div>
         <div class="stats">
-            <span>{{$ "Min"}}</span>
-            <span class="originalMin"></span>
-            <span class="correctedMin"></span>
+            <div class="statsLabel">{{$ "Min"}}</div>
+            <div class="originalMin original">{{convertToViewUnits originalMin "elevation"}}</div>
+            <div class="correctedMin corrected">{{convertToViewUnits correctedMin "elevation"}}</div>
+            <div class="units">{{getUnitsLabel "elevation"}}</div>
         </div>
         <div class="stats">
-            <span>{{$ "Avg"}}</span>
-            <span class="originalAvg"></span>
-            <span class="correctedMin"></span>
-            <span class="units">%</span>
+            <div class="statsLabel">{{$ "Avg"}}</div>
+            <div class="originalAvg original">{{convertToViewUnits originalAvg "elevation"}}</div>
+            <div class="correctedMin corrected">{{convertToViewUnits correctedAvg "elevation"}}</div>
+            <div class="units">{{getUnitsLabel "elevation"}}</div>
         </div>
         <div class="stats">
-            <span>{{$ "Max"}}</span>
-            <span class="originalMax"></span>
-            <span class="correctedMax"></span>
-            <span class="units">%</span>
+            <div class="statsLabel">{{$ "Max"}}</div>
+            <div class="originalMax original">{{convertToViewUnits originalMax "elevation"}}</div>
+            <div class="correctedMax corrected">{{convertToViewUnits correctedMax "elevation"}}</div>
+            <div class="units">{{getUnitsLabel "elevation"}}</div>
         </div>
         <div class="stats">
-            <span>{{$ "Gain"}}</span>
-            <span class="originalGain"></span>
-            <span class="correctedGain"></span>
-            <span class="units">%</span>
+            <div class="statsLabel">{{$ "Gain"}}</div>
+            <div class="originalGain original">{{convertToViewUnits originalGain "elevation"}}</div>
+            <div class="correctedGain corrected">{{convertToViewUnits correctedGain "elevation"}}</div>
+            <div class="units">{{getUnitsLabel "elevation"}}</div>
         </div>
         <div class="stats">
-            <span>{{$ "Loss"}}</span>
-            <span class="originalLoss"></span>
-            <span class="correctedLoss"></span>
-            <span class="units">%</span>
+            <div class="statsLabel">{{$ "Loss"}}</div>
+            <div class="originalLoss original">{{convertToViewUnits originalLoss "elevation"}}</div>
+            <div class="correctedLoss corrected">{{convertToViewUnits correctedLoss "elevation"}}</div>
+            <div class="units">{{getUnitsLabel "elevation"}}</div>
         </div>
         <div class="stats">
-            <span>{{$ "Grade"}}</span>
-            <span class="originalGrade"></span>
-            <span class="correctedGrade"></span>
-            <span>%</span>
+            <div class="statsLabel">{{$ "Grade"}}</div>
+            <div class="originalGrade original">{{originalGrade}}</div>
+            <div class="correctedGrade corrected">{{correctedGrade}}</div>
+            <div class="units">%</div>
         </div>
     </div>
 	<div class="buttons">
-        <button type="submit">Go!</button>
+        <button type="submit">Apply</button>
         <button type="reset">Close</button>
     </div>
 </div>

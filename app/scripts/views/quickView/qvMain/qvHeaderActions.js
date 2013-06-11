@@ -6,7 +6,8 @@
     "TP",
     "views/quickView/qvMain/qvWorkoutTypeMenuView",
     "views/quickView/qvMain/qvContextMenuView",
-    "views/quickView/qvMain/qvOptionsMenuView"
+    "views/quickView/qvMain/qvOptionsMenuView",
+    "views/expando/commentsEditor"
 ],
 function (
     _,
@@ -15,7 +16,8 @@ function (
     TP,
     WorkoutTypeMenuView,
     QVContextMenuView,
-    QVOptionsMenuView
+    QVOptionsMenuView,
+    ExpandoCommentsEditorView
 )
 {
     var qvHeaderActions =
@@ -29,7 +31,8 @@ function (
             "focus input.workoutTitle": "onTitleFocus",
             "blur input.workoutTitle": "onTitleBlur",
             "keyup input.workoutTitle": "onTitleChanged",
-            "click button#options": "onOptionsClicked"
+            "click button#options": "onOptionsClicked",
+            "click button#comment": "onCommentsClicked"
         },
 
         headerUi:
@@ -259,6 +262,14 @@ function (
 
             this.optionsMenu = new QVOptionsMenuView({ model: this.model, parentEl: this.$el });
             this.optionsMenu.render().top(offset.top + 18).left(offset.left);
+        },
+        
+        onCommentsClicked: function (e)
+        {
+            var offset = $(e.currentTarget).offset();
+
+            this.commentsEditorView = new ExpandoCommentsEditorView({ model: this.model, parentEl: this.$el });
+            this.commentsEditorView.render().top(offset.top - 13).left(offset.left + 87);
         }
     };
 
