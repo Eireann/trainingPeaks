@@ -21,6 +21,7 @@ function(
             this.clipboard = new Clipboard();
             this.subscribeToCopyPasteEvents();
             this.subscribeToSelectEvents();
+            this.initializeSelectAndUnselectWorkouts();
         },
 
         subscribeToCopyPasteEvents: function()
@@ -255,6 +256,12 @@ function(
 
         onDayClicked: function (dayModel, e)
         {
+            // unselect model
+            if (this.selectedModel)
+            {
+                this.selectedModel.trigger("unselect");
+            }
+
             // do we already have a selected range? unselect it and continue
             if(this.selectedRange)
             {
@@ -315,8 +322,46 @@ function(
             collectionOfDays.on("week:copy", this.onItemsCopy, this);
             collectionOfDays.on("week:cut", this.onItemsCut, this);
             return collectionOfDays;
-        }
+        },
 
+        initializeSelectAndUnselectWorkouts: function()
+        {
+            this.selectedModel = null;
+            this.workoutsCollection.on("select", this.onSelectWorkout, this);
+            this.workoutsCollection.on("unselect", this.onUnSelectWorkout, this);
+        },
+
+        onSelectWorkout: function(model)
+        {
+            if (this.selectedModel && this.selectedModel !== model)
+            {
+                this.selectedModel.trigger("unselect", this.selectedModel);
+            }
+
+            this.selectedModel = model;
+            model.selected = true;
+
+            if(this.selectedRange)
+            {
+                this.selectedRange.trigger("range:unselect", this.selectedRange);
+            }
+
+            if(this.selectedWeek)
+            {
+                this.selectedWeek.trigger("week:unselect", this.selectedWeek);
+            }
+
+            if(this.selectedDay)
+            {
+                this.selectedDay.trigger("day:unselect", this.selectedDay);
+            }
+        },
+
+        onUnSelectWorkout: function(model)
+        {
+            this.selectedModel = null;
+            model.selected = false;
+        }
     };
 
     return calendarCollectionCopyPaste;

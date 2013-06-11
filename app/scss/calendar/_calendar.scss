@@ -432,10 +432,14 @@ body.clipboardFull
 {
    &.day
    {
-        background-color: $selectedDay;
-        opacity: 0.8;
-        min-height: 350px;
-       
+        opacity: 0.6;
+        min-height: 250px;
+ 
+        .daySelected
+        {
+            display: block; 
+        }
+              
         .dayHeader
         {
             background-color: transparent; 
@@ -451,13 +455,13 @@ body.clipboardFull
     {
         position: relative;
         margin: 5px 4px 4px 2px;
-        height: 32px;
+        height: 48px;
     }
 
     .addWorkout
     {
         border: 1px solid #b5b5b5;
-        height: 32px;
+        height: 48px;
         text-align: center;
         visibility: hidden;
         position: absolute;
@@ -523,21 +527,25 @@ body.clipboardFull
     }
 }
 
+.daySelected
+{
+    background-color: #bcd1eb;
+    border: 1px solid #0043ff;
+    opacity: 0.5;
+    left: 0px;
+    right: 1px;
+    top: 0px;
+    bottom: 1px;
+    position: absolute;
+    z-index: 1;
+}
+
 .day
 {
 
 	.daySelected
 	{
 		display: none;
-		background-color: #bcd1eb;
-        border: 1px solid #0043ff;
-		opacity: 0.5;
-		left: 0px;
-		right: 0px;
-        top: 0px;
-        bottom: 0px;
-		position: absolute;
-        z-index: 1;
 	}
 
     &.selected

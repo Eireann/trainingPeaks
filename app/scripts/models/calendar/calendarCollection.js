@@ -41,7 +41,6 @@ function(
 
             this.initializeCopyPaste();
             this.initializeMoveAndShift();
-            this.initializeSelectAndUnselect();
         },
 
         setUpWeeks: function(startDate, endDate)
@@ -232,30 +231,6 @@ function(
         getWorkout: function(workoutId)
         {
             return this.workoutsCollection.get(workoutId);
-        },
-
-        initializeSelectAndUnselect: function()
-        {
-            this.selectedModel = null;
-            this.workoutsCollection.on("select", this.onSelectModel, this);
-            this.workoutsCollection.on("unselect", this.onUnSelectModel, this);
-        },
-
-        onSelectModel: function(model)
-        {
-            if (this.selectedModel && this.selectedModel !== model)
-            {
-                this.selectedModel.trigger("unselect", this.selectedModel);
-            }
-
-            this.selectedModel = model;
-            model.selected = true;
-        },
-
-        onUnSelectModel: function(model)
-        {
-            this.selectedModel = null;
-            model.selected = false;
         }
 
     };

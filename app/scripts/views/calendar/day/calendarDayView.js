@@ -65,7 +65,8 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySe
             "click .dayHeader": "onDayClicked",
 
             "click .addWorkout": "onAddWorkoutClicked",
-            "click .daySettings": "daySettingsClicked"
+            "click .daySettings": "daySettingsClicked",
+            "click .daySelected": "onDayUnClicked"
         },
 
         getItemView: function(item)
@@ -276,6 +277,13 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySe
         onDayHeaderMouseLeave: function(e)
         {
             this.$el.removeClass("hoveringOverDayHeader");
+        },
+
+        onDayUnClicked: function(e)
+        {
+            //this.unselect();
+            //this.model.trigger("day:click", this.model, e);
+            this.model.trigger("day:unselect", this.model, e);
         }
 
     });
