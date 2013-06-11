@@ -149,15 +149,15 @@ function(
 
         overlayGraphToolbar: function()
         {
-            var toolbar = new GraphToolbarView({ dataParser: this.dataParser });
+            this.graphToolbar = new GraphToolbarView({ dataParser: this.dataParser });
 
-            toolbar.on("filterPeriodChanged", this.applyFilter, this);
-            toolbar.on("enableSeries", this.enableSeries, this);
-            toolbar.on("disableSeries", this.disableSeries, this);
-            toolbar.on("zoom", this.zoomGraph, this);
-            toolbar.on("reset", this.resetZoom, this);
+            this.graphToolbar.on("filterPeriodChanged", this.applyFilter, this);
+            this.graphToolbar.on("enableSeries", this.enableSeries, this);
+            this.graphToolbar.on("disableSeries", this.disableSeries, this);
+            this.graphToolbar.on("zoom", this.zoomGraph, this);
+            this.graphToolbar.on("reset", this.resetZoom, this);
 
-            this.$("#graphToolbar").append(toolbar.render().$el);
+            this.$("#graphToolbar").append(this.graphToolbar.render().$el);
         },
 
         zoomGraph: function()
@@ -165,7 +165,8 @@ function(
             if (!this.plot)
                 return;
 
-            this.plot.zoomToSelection();
+            if (this.plot.zoomToSelection())
+                this.graphToolbar.onGraphZoomed();
         },
         
         resetZoom: function()

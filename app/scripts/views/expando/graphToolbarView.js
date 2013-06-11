@@ -62,13 +62,17 @@ function(TP, graphToolbarTemplate)
         onZoomClicked: function()
         {
             this.trigger("zoom");
-            this.ui.zoomResetButton.fadeIn(200);
         },
         
         onResetClicked: function()
         {
             this.trigger("reset");
             this.ui.zoomResetButton.fadeOut(200);
+        },
+
+        onGraphZoomed: function()
+        {
+            this.ui.zoomResetButton.fadeIn(200);
         },
         
         onRender: function()

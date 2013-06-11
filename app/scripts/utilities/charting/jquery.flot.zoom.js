@@ -54,9 +54,9 @@ function ()
         plot.zoomToSelection = function ()
         {
             var ranges = plot.getSelection();
-            
+
             if (!ranges)
-                return;
+                return false;
             
             if (ranges.xaxis.to - ranges.xaxis.from < 0.00001)
                 ranges.xaxis.to = ranges.xaxis.from + 0.00001;
@@ -72,6 +72,8 @@ function ()
             doZoomOnCanvas();
 
             plot.clearSelection();
+
+            return true;
         };
 
         plot.hooks.bindEvents.push(bindEvents);
