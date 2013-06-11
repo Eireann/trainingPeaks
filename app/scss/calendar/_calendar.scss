@@ -549,3 +549,21 @@ body.clipboardFull
     }
 
 }
+
+.day
+{
+    .workout:hover
+    {
+        border-color:  $TPGrey11;
+    }
+
+    .workout.past:hover
+    {
+        border-color:  $TPGrey11;
+    }
+
+    .workout.future:hover
+    {
+        border-color:  $TPGrey11;
+    }
+}
