@@ -81,7 +81,7 @@ function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandMo
                 correctedGain: null,
                 originalLoss: stats.elevationLoss,
                 correctedLoss: null,
-                originalGrade: (stats.grade * 100).toFixed(1),
+                originalGrade: stats.grade,
                 correctedGrade: null
             });
         },
@@ -200,7 +200,7 @@ function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandMo
 
         calculateGrade: function(gain, loss, distance)
         {
-            return (100 * (gain - loss) / distance).toFixed(1);
+            return (100 * (gain - loss) / distance);
         },
 
         onSubmitClicked: function()
