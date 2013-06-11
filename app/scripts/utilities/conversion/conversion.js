@@ -323,7 +323,7 @@
 
         formatGrade: function(value, options)
         {
-            if (_.isNaN(value) || value === null || value === 0)
+            if (_.isUndefined(value) || _.isNaN(value) || value === null || value === 0)
                 return options && options.hasOwnProperty("defaultValue") ? options.defaultValue : "";
             
             var parsedValue = parseFloat(value).toFixed(1);

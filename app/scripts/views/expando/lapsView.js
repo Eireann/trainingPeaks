@@ -34,13 +34,18 @@ function(
         initialize: function()
         {
             this.initializeCheckboxes(true);
+            this.once("render", this.onInitialRender, this);
         },
 
-        onRender: function()
+        onInitialRender: function()
         {
             this.watchForWorkoutTypeChange();
             this.watchForPeakChanges();
             this.watchForControllerEvents();
+        },
+
+        onRender: function()
+        {
 
             var self = this;
             setImmediate(function()
