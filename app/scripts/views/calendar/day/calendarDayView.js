@@ -64,8 +64,6 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySe
             "mouseenter .dayHeader": "onDayHeaderMouseEnter",
             "mouseleave .dayHeader": "onDayHeaderMouseLeave",
 
-            "click .dayHeader": "onDayClicked",
-
             "click .addWorkout": "onAddWorkoutClicked",
             "mousedown .daySettings": "daySettingsClicked",
             "click .daySelected": "onDayUnClicked"

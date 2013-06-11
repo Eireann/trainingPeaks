@@ -139,7 +139,7 @@ function(
         events:
         {
             "mousedown": "workoutSelected",
-            "click": "workoutClicked",
+            "mouseup": "workoutClicked",
             
             "mouseenter .workoutIcon": "showWorkoutSummaryHover",
             "mouseleave .workoutIcon": "hideWorkoutSummaryHover",
