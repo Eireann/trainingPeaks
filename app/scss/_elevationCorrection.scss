@@ -93,18 +93,17 @@
             {
                 text-align: right;
                 margin-right: 10px;
-                padding: 0px;
+                padding: 11px 0 0 0;
                 min-width: 50px;
                 font-size: $fontSizeXSmall;
                 font-family: $fontFamilyRegular;
-                padding-top: 7px;
                 
             }
 
             .units
             {
                 min-width: 15px;
-                padding-left: 5px;
+                padding: 11px 0 0 5px;
                 font-size: $fontSizeXSmall;
                 font-family: $fontFamilyRegular;
             } 
