@@ -33,6 +33,7 @@ function(
             this.daysCollection.on("day:cut", this.onItemsCut, this);
             this.daysCollection.on("day:paste", this.onPaste, this);
             this.daysCollection.on("day:pasteMenu", this.onPasteMenuOpen, this);
+            this.daysCollection.on("day:selectAddItem", this.onSelectAddItem, this);
         },
 
         subscribeToWeekCopyPaste: function(weekCollection)
@@ -366,6 +367,12 @@ function(
         {
             this.selectedModel = null;
             model.selected = false;
+        },
+
+        onSelectAddItem: function()
+        {
+            this.onUnSelectCalendar();
+            this.trigger("select");
         },
 
         onUnSelectCalendar: function()

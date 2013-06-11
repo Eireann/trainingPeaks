@@ -74,6 +74,7 @@ function(
             quickView.render();
 
             this.close();
+            this.trigger("openQuickView", quickView);
         },
 
         onFileSelected: function ()
