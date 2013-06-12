@@ -3006,10 +3006,10 @@ L.icon = function (options) {
 L.Icon.Default = L.Icon.extend({
 
 	options: {
-		iconSize: new L.Point(25, 41),
-		iconAnchor: new L.Point(12, 41),
+		iconSize: new L.Point(23, 32),
+		iconAnchor: new L.Point(12, 32),
 		popupAnchor: new L.Point(1, -34),
-
+		shadowAnchor: new L.Point(12, 39),
 		shadowSize: new L.Point(41, 41)
 	},
 
