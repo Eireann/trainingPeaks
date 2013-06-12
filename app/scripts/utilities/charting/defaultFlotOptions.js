@@ -38,7 +38,8 @@ function(TP)
                 {
                     return "";
                 },
-                onHover: onHoverHandler
+                onHover: onHoverHandler,
+                defaultTheme: false
             },
             series:
             {

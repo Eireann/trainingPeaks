@@ -4,7 +4,7 @@
     "utilities/conversion/convertToViewUnits",
     "utilities/units/labels",
     "hbs!templates/views/expando/flotToolTip"
-    ],
+],
 function(formatDateTime, convertToViewUnits, unitLabels, flotToolTipTemplate)
 {
     return function(series, hoveredSeries, hoveredIndex, timeOffset, workoutType)
@@ -37,7 +37,7 @@ function(formatDateTime, convertToViewUnits, unitLabels, flotToolTipTemplate)
                 
                 toolTipData.series.push(
                 {
-                    label: "Power Balance",
+                    label: "PowerBalance",
                     value: +leftPowerPercentage + "% / " + rightPowerPercentage + "%",
                     units: "",
                     current: (hoveredSeries === "Power" || hoveredSeries === "RightPower")
