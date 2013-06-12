@@ -451,6 +451,16 @@
 
             }
 
+            .selectboxit-option-icon-container 
+            {
+                margin-left: 0px;
+            }
+
+            .selectboxit-option
+            {   
+                text-indent: 3px;
+            }
+
            	@include buttons(0, 96px, $fontSizeSmall);
             button {
                 height: 20px;

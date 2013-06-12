@@ -192,7 +192,7 @@ $mainTtabSpriteRetinaURL: url(../../assets/images/sprite-icons-main-tabs@2x.png)
         white-space: nowrap;
 
         background-color: $TPGrey1;
-        border-left: 2px solid $TPBlue;
+        border-left: 3px solid $TPBlue;
 
         .libraryNavigation
         {
@@ -200,8 +200,7 @@ $mainTtabSpriteRetinaURL: url(../../assets/images/sprite-icons-main-tabs@2x.png)
             label
             {
                 display: inline-block;
-                margin-right: 15px;
-                margin-top: 4px;
+                margin: 4px 15px 0 2px;
             }
 
             @include headerButtons(0px, 40px, $fontSizeMedium);
@@ -226,20 +225,29 @@ $mainTtabSpriteRetinaURL: url(../../assets/images/sprite-icons-main-tabs@2x.png)
         .librarySearch
         {
             margin-top: 10px;
-            @include inputs(100%, 20px, $fontSizeMedium, $fontFamilyRegular);
+            @include inputs(240px, 20px, $fontSizeSmall, $fontFamilyRegular);
+
+            input
+            {
+                margin-bottom: 5px;
+                color: $TPGrey3;
+                padding-left: 5px;
+                margin-left: 2px;
+            }
 
             select
             {
                 margin-top: -5px;
                 font-family: $fontFamilyRegular;
                 font-size: $fontSizeMedium;
+                
             }
         }
 
         .helpText
         {
             margin-top: 5px;
-            margin-left: 5px;
+            margin-left: 8px;
 
             color: $TPGrey3;
             font-style: italic;
@@ -251,11 +259,24 @@ $mainTtabSpriteRetinaURL: url(../../assets/images/sprite-icons-main-tabs@2x.png)
 
     .selectboxit-options
     {
-        width: 238px;
+        width: 240px;
+        margin-left: 2px;
     }
 
-    .selectboxit-container .selectboxit {
-        width: 238px !important; /* Width of the dropdown button */
+    .selectboxit-container .selectboxit 
+    {
+        width: 240px !important; /* Width of the dropdown button */
+        margin-left: 2px;
+    }
+
+    .selectboxit-option
+    {
+        text-indent: 3px;
+    }
+
+    .selectboxit-option-icon-container 
+    {
+        margin-left: 0px;
     }
 }
 
@@ -274,60 +295,18 @@ $mainTtabSpriteRetinaURL: url(../../assets/images/sprite-icons-main-tabs@2x.png)
 
 .libraryExercise.workout.future
 {
-    background-color: #e2e2e2;
-    border: 1px solid $TPGrey2;
+    background-color: $TPGrey6;
+    border-color: $TPGrey6;
+    width: 240px;
 
     &.selected
     {
         border-color: blue;
+        background-color: #bcd1eb;
     }
 }
 
-/*
-.libraryExercise
-{
-    @include box-shadow(0px 2px 3px -2px $TPGrey4);
-    background-color: #e1e2e2;
-
-
-    &.dragHelper
+.workout.future:hover
     {
-        opacity: 0.6;
-        min-width: 150px;
+        border-color:  $TPGrey11;
     }
-
-    &.dragging
-    {
-        opacity: 0.8;
-    }
-
-    color: $TPGrey3;
-    margin-top: 4px;
-
-    .workoutHeader
-    {
-        padding: 0px 5px 5px 5px;
-        height: 27px;
-
-        .workoutIcon
-        {
-            width: 25px;
-            height: 25px;
-            float: left;
-            margin-top: 5px;
-        }
-
-        .workoutDistanceTime
-        {
-            padding: 10px 0px 0px 30px;
-
-            @include labels($fontFamilyRegular, $fontSizeXLarge, $black, normal);
-        }
-    }
-    .workoutBody
-    {
-        padding: 10px 5px 5px 5px;
-        @include labels($fontFamilyHeavy, $fontSizeXSmall, $TPGrey3, normal);
-    }
-}
-*/
