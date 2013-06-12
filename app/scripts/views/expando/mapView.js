@@ -89,7 +89,7 @@ function (
             var latLongArray = this.dataParser.getLatLonArray();
             if (latLongArray)
             {
-                this.addMouseHoverBuffer(latLongArray);
+                //this.addMouseHoverBuffer(latLongArray);
                 MapUtils.setMapData(this.map, latLongArray);
                 MapUtils.calculateAndAddMileMarkers(this.map, this.dataParser, 15);
             }

@@ -31,7 +31,7 @@ function(TP, flotFilter, chartColors)
             selection:
             {
                 mode: null,
-                color: chartColors.chartSelection,
+                color: chartColors.chartSelection
             },
             tooltip: true,
             tooltipOpts:

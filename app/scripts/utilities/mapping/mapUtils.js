@@ -3,13 +3,15 @@
     "TP",
     "leaflet",
     "leafletGoogleTiles",
-    "./leafletIcons"
+    "./leafletIcons",
+    "utilities/charting/chartColors"
 ],
 function(
     TP,
     Leaflet,
     LeafletGoogleTiles,
-    LeafletIcons
+    LeafletIcons,
+    chartColors
     )
 {
 
@@ -90,7 +92,7 @@ function(
 
             }
 
-            var options = { color: "red", smoothFactor: 1.0, opacity: 1, weight: 2 };
+            var options = { color: chartColors.mapRoute, smoothFactor: 1.0, opacity: 1, weight: 2 };
             if (polyLineOptions)
             {
                 _.extend(options, polyLineOptions);
@@ -192,13 +194,13 @@ function(
         getColorByDataType: function(dataType)
         {
             var colors = {
-                defaultColor: 'blue',
-                distance: 'blue',
-                pace: 'blue',
-                speed: 'blue',
-                heartrate: 'blue',
-                cadence: 'blue',
-                power: 'blue'
+                defaultColor: chartColors.mapSelection,
+                distance: chartColors.mapSelection,
+                pace: chartColors.mapSelection,
+                speed: chartColors.mapSelection,
+                heartrate: chartColors.mapSelection,
+                cadence: chartColors.mapSelection,
+                power: chartColors.mapSelection
             };
 
             return dataType && colors.hasOwnProperty(dataType) ? colors[dataType] : colors.defaultColor;

@@ -24,7 +24,10 @@ function()
                 pace: { light: "#0E7FCF", dark: "#0B568D" }
             },
 
-        chartSelection: "#FF0000"
+        chartSelection: "#FF0000",
+
+        mapRoute: "#005695",
+        mapSelection: "#FF0000"
     };
 
 
