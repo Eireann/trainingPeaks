@@ -198,7 +198,7 @@ function (
         createMapSelection: function (workoutStatsForRange, options)
         {
             var latLngs = this.dataParser.getLatLonBetweenMsOffsets(workoutStatsForRange.get("begin"), workoutStatsForRange.get("end"));
-            var mapLayer = MapUtils.createHighlight(this.map, latLngs, options.dataType);
+            var mapLayer = MapUtils.createHighlight(latLngs, options.dataType);
 
             var selection = {
                 begin: workoutStatsForRange.get("begin"),

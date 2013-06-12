@@ -7,6 +7,20 @@
 ],
 function(formatDateTime, convertToViewUnits, unitLabels, flotToolTipTemplate)
 {
+    var flexChannelOrder =
+    [
+        "Cadence",
+        "HeartRate",
+        "Elevation",
+        "Power",
+        "RightPower",
+        "PowerBalance",
+        "Speed",
+        "Pace",
+        "Torque",
+        "Temperature"
+    ];
+
     return function(series, hoveredSeries, hoveredIndex, timeOffset, workoutType)
     {
         var toolTipData =
@@ -16,6 +30,9 @@ function(formatDateTime, convertToViewUnits, unitLabels, flotToolTipTemplate)
         };
 
         toolTipData.timeOffset = formatDateTime.decimalSecondsAsTime(timeOffset / 1000);
+
+        var toolTipSeries = [];
+
         _.each(series, function(s)
         {
             var value = s.data[hoveredIndex][1];
@@ -34,8 +51,8 @@ function(formatDateTime, convertToViewUnits, unitLabels, flotToolTipTemplate)
 
                 var rightPowerPercentage = (100 * value / totalPower).toFixed(1);
                 var leftPowerPercentage = (100 * (totalPower - value) / totalPower).toFixed(1);
-                
-                toolTipData.series.push(
+
+                toolTipSeries.push(
                 {
                     label: "PowerBalance",
                     value: +leftPowerPercentage + "% / " + rightPowerPercentage + "%",
@@ -59,7 +76,7 @@ function(formatDateTime, convertToViewUnits, unitLabels, flotToolTipTemplate)
             if (s.label === hoveredSeries)
                 config.current = true;
 
-            toolTipData.series.push(config);
+            toolTipSeries.push(config);
 
             if (s.label === "Speed" && (workoutType === 1 || workoutType === 3 || workoutType === 13 || workoutType === 100))
             {
@@ -73,7 +90,17 @@ function(formatDateTime, convertToViewUnits, unitLabels, flotToolTipTemplate)
                 if (s.label === hoveredSeries)
                     config.current = true;
 
-                toolTipData.series.push(config);
+                toolTipSeries.push(config);
+            }
+        });
+
+        
+        _.each(flexChannelOrder, function(orderedChannel)
+        {
+            var series = _.find(toolTipSeries, function(s) { return s.label === orderedChannel; });
+            if (series)
+            {
+                toolTipData.series.push(series);
             }
         });
 
