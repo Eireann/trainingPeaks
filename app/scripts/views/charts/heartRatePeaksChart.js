@@ -1,13 +1,14 @@
 ﻿define(
 [
     "TP",
-    "./peaksChart"
+    "./peaksChart",
+    "utilities/charting/chartColors"
 ],
-function(TP, PeaksChartView)
+function(TP, PeaksChartView, chartColors)
 {
     return PeaksChartView.extend(
     {
-        chartColor: { light: "#ED3F1D", dark: "#B50F00" },
+        chartColor: chartColors.gradients.heartRate,
 
         graphTitle: "HeartRate",
         

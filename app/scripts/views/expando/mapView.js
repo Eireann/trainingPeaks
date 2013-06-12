@@ -89,7 +89,7 @@ function (
             var latLongArray = this.dataParser.getLatLonArray();
             if (latLongArray)
             {
-                this.addMouseHoverBuffer(latLongArray);
+                //this.addMouseHoverBuffer(latLongArray);
                 MapUtils.setMapData(this.map, latLongArray);
                 MapUtils.calculateAndAddMileMarkers(this.map, this.dataParser, 15);
             }
@@ -198,7 +198,7 @@ function (
         createMapSelection: function (workoutStatsForRange, options)
         {
             var latLngs = this.dataParser.getLatLonBetweenMsOffsets(workoutStatsForRange.get("begin"), workoutStatsForRange.get("end"));
-            var mapLayer = MapUtils.createHighlight(this.map, latLngs, options.dataType);
+            var mapLayer = MapUtils.createHighlight(latLngs, options.dataType);
 
             var selection = {
                 begin: workoutStatsForRange.get("begin"),

@@ -1,9 +1,11 @@
 define(
 [
-    "underscore"
+    "underscore",
+    "utilities/charting/chartColors"
 ],
 function(
-    _
+    _,
+    chartColors
     )
 {
 // TODO: SIMPLIFY
@@ -145,7 +147,7 @@ selection: {
                         h = Math.abs(multiSelection.second.y - multiSelection.first.y) - 1;
 
                     setColorBySelectionType(options, multiSelection.dataType, ctx);
-
+                    console.log(ctx.fillStyle);
                     ctx.fillRect(x, y, w, h);
                     ctx.strokeRect(x, y, w, h);
                 }
@@ -156,10 +158,11 @@ selection: {
 
         function setColorBySelectionType(options, selectionType, ctx)
         {
-            var colorCode = selectionType && options.colors.hasOwnProperty(selectionType) ? options.colors[selectionType] : options.colors.defaultColor;
+            var colorCode = options.color;
             var c = $.color.parse(colorCode);
-            var fillStyle = c.scale('a', 0.5).toString();
-            var strokeStyle = c.scale('a', 0.8).toString();
+            var scaledColor = c.scale('a', 0.15).toString();
+            var fillStyle = scaledColor;
+            var strokeStyle = scaledColor;
             ctx.strokeStyle = strokeStyle;
             ctx.fillStyle = fillStyle;
         }
@@ -180,15 +183,7 @@ selection: {
                     mode: "x", // one of null, "x", "y" or "xy"
                     shape: "round", // one of "round", "miter", or "bevel"
                     minSize: 1, // minimum number of pixels
-                    colors: {
-                        defaultColor: 'lightblue',
-                        distance: 'lightblue',
-                        pace: 'lightblue',
-                        speed: 'lightblue',
-                        heartrate: 'lightblue',
-                        cadence: 'lightblue',
-                        power: 'lightblue'
-                    }
+                    color: chartColors.chartSelection
                 }
             },
             name: 'multiselection',

@@ -1,9 +1,10 @@
 ﻿define(
 [
     "TP",
-    "utilities/charting/jquery.flot.filter"
+    "utilities/charting/jquery.flot.filter",
+    "utilities/charting/chartColors"
 ],
-function(TP)
+function(TP, flotFilter, chartColors)
 {
     return function(onHoverHandler)
     {
@@ -29,7 +30,8 @@ function(TP)
             },
             selection:
             {
-                mode: null
+                mode: null,
+                color: chartColors.chartSelection
             },
             tooltip: true,
             tooltipOpts:
@@ -38,7 +40,8 @@ function(TP)
                 {
                     return "";
                 },
-                onHover: onHoverHandler
+                onHover: onHoverHandler,
+                defaultTheme: false
             },
             series:
             {

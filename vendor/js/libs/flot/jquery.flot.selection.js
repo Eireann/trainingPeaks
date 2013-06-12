@@ -317,10 +317,11 @@ The plugin allso adds the following methods to the plot object:
 
                 var c = $.color.parse(o.selection.color);
 
-                ctx.strokeStyle = c.scale('a', 0.8).toString();
+                var scaledColor = c.scale('a', 0.15).toString();
+                ctx.strokeStyle = scaledColor;
                 ctx.lineWidth = 1;
                 ctx.lineJoin = o.selection.shape;
-                ctx.fillStyle = c.scale('a', 0.4).toString();
+                ctx.fillStyle = scaledColor;
 
                 var x = Math.min(selection.first.x, selection.second.x) + 0.5,
                     y = Math.min(selection.first.y, selection.second.y) + 0.5,

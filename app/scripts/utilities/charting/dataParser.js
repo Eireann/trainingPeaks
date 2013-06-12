@@ -1,10 +1,10 @@
 ﻿define(
 [
-    "utilities/charting/seriesColorByChannel",
+    "utilities/charting/chartColors",
     "utilities/charting/findIndexByMsOffset",
     "utilities/conversion/convertToViewUnits"
 ],
-function(seriesColorByChannel, findIndexByMsOffset, convertToViewUnits)
+function(chartColors, findIndexByMsOffset, convertToViewUnits)
 {
     var flexChannelOrder =
     [
@@ -18,7 +18,7 @@ function(seriesColorByChannel, findIndexByMsOffset, convertToViewUnits)
         "Torque",
         "Temperature"
     ];
-    
+
     var parseDataByChannel = function(flatSamples)
     {
         var dataByChannel = {};
@@ -92,9 +92,8 @@ function(seriesColorByChannel, findIndexByMsOffset, convertToViewUnits)
             else
                 data = _.clone(dataByChannel[channel]);
 
-            seriesArray.push(
-            {
-                color: seriesColorByChannel[channel],
+            var seriesOptions = {
+                color: chartColors.seriesColorByChannel[channel],
                 data: data,
                 label: channel,
                 lines:
@@ -102,16 +101,33 @@ function(seriesColorByChannel, findIndexByMsOffset, convertToViewUnits)
                     fill: fillOpacity
                 },
                 shadowSize: 0
-            });
+            };
+
+            if (channel === "Elevation")
+            {
+                seriesOptions.color = "#FFFFFF";
+                seriesOptions.lines.fillColor = { colors: [chartColors.gradients.elevation.dark, chartColors.gradients.elevation.light] };
+            }
+
+            seriesArray.push(seriesOptions);
         });
 
         var orderedSeriesArray = [];
 
-        _.each(flexChannelOrder, function (orderedChannel)
+        _.each(flexChannelOrder, function(orderedChannel)
         {
+            var forceElevationFirst = true;
             var series = _.find(seriesArray, function (s) { return s.label === orderedChannel; });
             if (series)
-                orderedSeriesArray.push(series);
+            {
+                if (forceElevationFirst && orderedChannel === "Elevation")
+                {
+                    orderedSeriesArray.unshift(series);
+                } else
+                {
+                    orderedSeriesArray.push(series);
+                }
+            }
         });
 
         return orderedSeriesArray;
@@ -189,17 +205,17 @@ function(seriesColorByChannel, findIndexByMsOffset, convertToViewUnits)
                 return;
             
             s.yaxis = axisIndex++;
-            yaxes.push(
+            var axisOptions =
             {
                 show: true,
                 label: s.label,
                 min: s.label === "Elevation" ? self.getElevationInfo().min : 0,
                 position: countdown-- > 0 ? "right" : "left",
-                color: s.color,
+                color: chartColors.seriesColorByChannel[s.label],
                 tickColor: s.color,
                 font:
                 {
-                    color: s.color
+                    color: chartColors.seriesColorByChannel[s.label]
                 },
                 tickFormatter: function(value)
                 {
@@ -208,7 +224,9 @@ function(seriesColorByChannel, findIndexByMsOffset, convertToViewUnits)
                     // For some reason, a '0' value returns a NaN, check for it.
                     return value === 0 ? +0 : parseInt(convertToViewUnits(value, s.label.toLowerCase()), 10);
                 }
-            });
+            };
+
+            yaxes.push(axisOptions);
         });
         return yaxes;
     };

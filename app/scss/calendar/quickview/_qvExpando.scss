@@ -198,13 +198,13 @@
 
                 &.graphElevationButton
                 {
-                    @include linearGradient(top, #10B500, #0B8200);
+                    @include linearGradient(top, #b5d8ff, #0f7ffd);
                     color: #ffffff;
                 }
 
                 &.graphSpeedButton
                 {
-                    @include linearGradient(top, #b5d8ff, #0f7ffd);
+                    @include linearGradient(top, #10B500, #0B8200);
                     color: #ffffff;
                 }
 

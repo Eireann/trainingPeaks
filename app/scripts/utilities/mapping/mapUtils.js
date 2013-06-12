@@ -3,13 +3,15 @@
     "TP",
     "leaflet",
     "leafletGoogleTiles",
-    "./leafletIcons"
+    "./leafletIcons",
+    "utilities/charting/chartColors"
 ],
 function(
     TP,
     Leaflet,
     LeafletGoogleTiles,
-    LeafletIcons
+    LeafletIcons,
+    chartColors
     )
 {
 
@@ -59,7 +61,8 @@ function(
 
         setMapData: function(map, latLonArray)
         {
-            var polyline = this.createPolyline(latLonArray);
+            var options = { color: chartColors.mapRoute };
+            var polyline = this.createPolyline(latLonArray, options);
             polyline.addTo(map);
             if (latLonArray && latLonArray.length > 0)
             {
@@ -90,7 +93,7 @@ function(
 
             }
 
-            var options = { color: "red", smoothFactor: 1.0, opacity: 1, weight: 2 };
+            var options = { smoothFactor: 1.0, opacity: 1, weight: 2 };
             if (polyLineOptions)
             {
                 _.extend(options, polyLineOptions);
@@ -100,22 +103,10 @@ function(
  
         },
 
-        createHighlight: function(map, latLonArray, dataType)
+        createHighlight: function(latLonArray)
         {
-            var polylineOptions = { color: this.getColorByDataType(dataType), smoothFactor: 1.0, opacity: 0.7, weight: 4 };
-            var leafletLatLongs = [];
-
-            if (latLonArray && latLonArray.length > 0)
-            {
-                _.each(latLonArray, function (point)
-                {
-                    if (point[0] && point[1])
-                        leafletLatLongs.push(new L.LatLng(parseFloat(point[0]).toFixed(6), parseFloat(point[1]).toFixed(6)));
-                });
-            }
-
-            var polyline = L.polyline(leafletLatLongs, polylineOptions);
-            return polyline;
+            var polylineOptions = { color: chartColors.mapSelection };
+            return this.createPolyline(latLonArray, polylineOptions);
         },
 
         addMarkers: function(map, latLonArray)
@@ -187,22 +178,6 @@ function(
                 skip = 1;
 
             return { distanceBetweenMarkers: baseInterval * skip, countBy: skip };
-        },
-
-        getColorByDataType: function(dataType)
-        {
-            var colors = {
-                defaultColor: 'blue',
-                distance: 'blue',
-                pace: 'blue',
-                speed: 'blue',
-                heartrate: 'blue',
-                cadence: 'blue',
-                power: 'blue'
-            };
-
-            return dataType && colors.hasOwnProperty(dataType) ? colors[dataType] : colors.defaultColor;
-
         }
 
     };
