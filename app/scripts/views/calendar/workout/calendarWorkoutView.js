@@ -138,7 +138,7 @@ function(
         {
             "mousedown": "workoutSelected",
             "mouseup": "workoutClicked",
-            "click .workoutSettings": "workoutSettingsClicked"
+            "mouseup .workoutSettings": "workoutSettingsClicked"
         },
 
         keepSettingsButtonVisible: function()
