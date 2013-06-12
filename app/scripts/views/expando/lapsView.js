@@ -48,6 +48,7 @@ function(
         {
 
             var self = this;
+
             setImmediate(function()
             {
                 self.styleSelectBox();
@@ -264,6 +265,9 @@ function(
 
         onUncheckAll: function()
         {
+            // render right away so our select box styles nicely instead of waiting for charts to paint
+            this.initializeCheckboxes(true);
+            this.render();
             this.trigger("unselectall");
         },
 
