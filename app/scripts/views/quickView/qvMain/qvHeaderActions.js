@@ -258,6 +258,11 @@ function (
         
         onOptionsClicked: function(e)
         {
+            if (!(this.model && this.model.get("detailData") &&
+                this.model.get("detailData").get("flatSamples") &&
+                this.model.get("detailData").get("flatSamples").hasLatLngData))
+                return;
+            
             var offset = $(e.currentTarget).offset();
 
             this.optionsMenu = new QVOptionsMenuView({ model: this.model, parentEl: this.$el });

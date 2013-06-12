@@ -72,7 +72,7 @@
                     expect(viewContext.model.get("originalMax")).toEqual(stats.maximumElevation);
                     expect(viewContext.model.get("originalGain")).toEqual(stats.elevationGain);
                     expect(viewContext.model.get("originalLoss")).toEqual(stats.elevationLoss);
-                    expect(viewContext.model.get("originalGrade")).toEqual('21.2');
+                    expect(viewContext.model.get("originalGrade")).toEqual(stats.grade);
                 });
 
             });
@@ -153,7 +153,7 @@
                 it("Should calculate appropriate grade", function()
                 {
                     ElevationCorrectionView.prototype.showCorrectedElevation.apply(viewContext);
-                    var expectedGrade = '20.1';
+                    var expectedGrade = 20.12;
                     expect(viewModel.get("correctedGrade")).toEqual(expectedGrade);
                 });
 

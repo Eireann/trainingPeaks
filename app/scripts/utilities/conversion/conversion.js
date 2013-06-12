@@ -323,16 +323,15 @@
 
         formatGrade: function(value, options)
         {
-
+            if (_.isUndefined(value) || _.isNaN(value) || value === null || value === 0)
+                return options && options.hasOwnProperty("defaultValue") ? options.defaultValue : "";
+            
             var parsedValue = parseFloat(value).toFixed(1);
 
-            if (isNaN(value) || isNaN(parsedValue) || value === null || value === 0 || Number(parsedValue) === 0)
-            {
+            if (_.isNaN(parsedValue))
                 return options && options.hasOwnProperty("defaultValue") ? options.defaultValue : "";
-            } else
-            {
+            else
                 return parsedValue;
-            }
         },
 
         formatPowerBalance: function(value, options)

@@ -20,7 +20,34 @@ function(formatDateTime, convertToViewUnits, unitLabels, flotToolTipTemplate)
         {
             var value = s.data[hoveredIndex][1];
 
-            //TODO Refactor!
+            if (s.label === "RightPower")
+            {
+                var totalPower = _.find(series, function (ps) { return ps.label === "Power"; });
+
+                if (!totalPower)
+                    return;
+
+                totalPower = totalPower.data[hoveredIndex][1];
+
+                if (!totalPower)
+                    return;
+
+                var rightPowerPercentage = (100 * value / totalPower).toFixed(1);
+                var leftPowerPercentage = (100 * (totalPower - value) / totalPower).toFixed(1);
+                
+                toolTipData.series.push(
+                {
+                    label: "Power Balance",
+                    value: +leftPowerPercentage + "% / " + rightPowerPercentage + "%",
+                    units: "",
+                    current: (hoveredSeries === "Power" || hoveredSeries === "RightPower")
+                });
+
+                return;
+            }
+
+            //TODO Refactor: assuming the proper conversion field name is simply the lower-cased series name
+            //TODO is wrong. Should probably add a field to the series object in the data parser.
             var fieldName = s.label.toLowerCase();
             var config =
             {

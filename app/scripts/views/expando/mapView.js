@@ -48,7 +48,7 @@ function (
             this.detailDataPromise = options.detailDataPromise;
         },
 
-        onRender: function ()
+        onRender: function()
         {
             var self = this;
             this.watchForModelChanges();

@@ -6,7 +6,6 @@ define(
     "views/calendar/workout/calendarWorkoutDragAndDrop",
     "views/calendar/workout/calendarWorkoutUserCustomization",
     "views/quickView/workoutQuickView",
-    "views/calendar/workout/calendarWorkoutHoverView",
     "views/calendar/workout/calendarWorkoutSettings",
     "hbs!templates/views/calendar/workout/calendarWorkout"
 ],
@@ -17,7 +16,6 @@ function(
     calendarWorkoutDragAndDrop,
     calendarWorkoutUserCustomization,
     WorkoutQuickView,
-    CalendarWorkoutHoverView,
     CalendarWorkoutSettingsView,
     CalendarWorkoutTemplate)
 {
@@ -30,14 +28,14 @@ function(
 
         today: moment().format(TP.utils.datetime.shortDateFormat),
 
-        ui: {
-
-        },
-
         className: function()
         {
-            return "workout " +
-                this.getDynamicCssClassNames();
+            return "workout " + this.getDynamicCssClassNames();
+        },
+
+        ui:
+        {
+            
         },
 
         getDynamicCssClassNames: function()
@@ -139,13 +137,8 @@ function(
         events:
         {
             "mousedown": "workoutSelected",
-            "click": "workoutClicked",
-            
-            "mouseenter .workoutIcon": "showWorkoutSummaryHover",
-            "mouseleave .workoutIcon": "hideWorkoutSummaryHover",
-
+            "mouseup": "workoutClicked",
             "click .workoutSettings": "workoutSettingsClicked"
-
         },
 
         keepSettingsButtonVisible: function()
@@ -194,23 +187,6 @@ function(
         setUnSelected: function()
         {
             this.$el.removeClass("selected");
-        },
-
-        showWorkoutSummaryHover: function()
-        {
-            if (!this.workoutHoverView || this.workoutHoverView.isClosed)
-            {
-                var iconOffset = this.$('.workoutIcon').offset();
-                this.workoutHoverView = new CalendarWorkoutHoverView({ model: this.model, className: this.getDynamicCssClassNames(), top: iconOffset.top, left: iconOffset.left });
-                this.workoutHoverView.render();
-                this.workoutHoverView.on("mouseleave", this.hideWorkoutSummaryHover, this);
-            }
-        },
-
-        hideWorkoutSummaryHover: function(e)
-        {
-            this.workoutHoverView.close();
-            delete this.workoutHoverView;
         },
 
         checkForWorkoutId: function()

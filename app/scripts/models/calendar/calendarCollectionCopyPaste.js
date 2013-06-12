@@ -262,7 +262,7 @@ function(
             // unselect model
             if (this.selectedModel)
             {
-                this.selectedModel.trigger("unselect");
+                this.selectedModel.trigger("unselect", this.selectedModel);
             }
 
             // do we already have a selected range? unselect it and continue
@@ -283,7 +283,7 @@ function(
             // unselect the selected day and continue, unless we're trying to select a range
             if (this.selectedDay && !e.shiftKey)
             {
-                this.selectedDay.trigger("day:unselect");
+                this.selectedDay.trigger("day:unselect", this.selectedDay);
                 this.selectedDay.off("day:shiftwizard", this.onShiftWizardOpen, this);
                 this.selectedDay = null;
             }

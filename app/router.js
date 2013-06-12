@@ -37,32 +37,101 @@ function (_, TP)
 
         routes:
         {
-            "home": "home",
             "login": "login",
+            "home": "home",
             "calendar": "calendar",
+            "dashboard": "dashboard",
+            "tools": "tools",
             "": "calendar"  
         },
 
-        home: function ()
+        login: function ()
         {
-            var homeview = new TP.View();
-            theMarsApp.mainRegion.show(homeview);
+            theMarsApp.mainRegion.show(theMarsApp.controllers.loginController.getLayout());
         },
 
-        calendar: function ()
+        home: function ()
         {
             if (!theMarsApp.session.isAuthenticated())
             {
                 theMarsApp.session.logout();
                 return;
             }
+            
+            var homeview = new TP.ItemView(
+            {
+                template:
+                {
+                    type: "handlebars",
+                    template: function()
+                    {
+                        var top = $(document).height() / 2;
+                        var left = $(document).width() / 2 - 50;
+                        
+                        return "<div style='font-size:24px;position: absolute; top:" + top.toFixed(0) + "px; left:" + left.toFixed(0) + "px;'>Home</div>";
+                    }
+                }
+            });
+            
+            theMarsApp.mainRegion.show(homeview);
+        },
+
+        calendar: function ()
+        {
+            this.checkAuth();
+
             theMarsApp.mainRegion.show(theMarsApp.controllers.calendarController.getLayout());
         },
 
-        login: function (origin)
+        dashboard: function()
         {
-            theMarsApp.mainRegion.show(theMarsApp.controllers.loginController.getLayout());
-        }
+            this.checkAuth();
 
+            var dashboardView = new TP.ItemView(
+            {
+                template:
+                {
+                    type: "handlebars",
+                    template: function ()
+                    {
+                        var top = $(document).height() / 2;
+                        var left = $(document).width() / 2 - 70;
+
+                        return "<div style='font-size:24px;position: absolute; top:" + top.toFixed(0) + "px; left:" + left.toFixed(0) + "px;'>Dashboard</div>";
+                    }
+                }
+            });
+            theMarsApp.mainRegion.show(dashboardView);
+        },
+        
+        tools: function()
+        {
+            this.checkAuth();
+
+            var toolsView = new TP.ItemView(
+            {
+                template:
+                {
+                    type: "handlebars",
+                    template: function ()
+                    {
+                        var top = $(document).height() / 2;
+                        var left = $(document).width() / 2 - 50;
+
+                        return "<div style='font-size:24px;position: absolute; top:" + top.toFixed(0) + "px; left:" + left.toFixed(0) + "px;'>Tools</div>";
+                    }
+                }
+            });
+            theMarsApp.mainRegion.show(toolsView);
+        },
+        
+        checkAuth: function()
+        {
+            if (!theMarsApp.session.isAuthenticated())
+            {
+                theMarsApp.session.logout();
+                return;
+            }
+        }        
     });
 });

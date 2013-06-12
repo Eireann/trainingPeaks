@@ -250,7 +250,7 @@ $mainTtabSpriteRetinaURL: url(../../assets/images/sprite-icons-main-tabs@2x.png)
             margin-left: 8px;
 
             color: $TPGrey3;
-            font-style: italic;
+            font-family: $fontFamilyRegularItalic;
             cursor: default;
             font-size: $fontSizeSmall;
         }
@@ -299,14 +299,8 @@ $mainTtabSpriteRetinaURL: url(../../assets/images/sprite-icons-main-tabs@2x.png)
     border-color: $TPGrey6;
     width: 240px;
 
-    &.selected
-    {
-        border-color: blue;
-        background-color: #bcd1eb;
-    }
-}
-
-.workout.future:hover
+    &:hover
     {
         border-color:  $TPGrey11;
     }
+}
