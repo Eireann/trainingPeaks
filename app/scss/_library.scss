@@ -192,7 +192,7 @@ $mainTtabSpriteRetinaURL: url(../../assets/images/sprite-icons-main-tabs@2x.png)
         white-space: nowrap;
 
         background-color: $TPGrey1;
-        border-left: 2px solid $TPBlue;
+        border-left: 3px solid $TPBlue;
 
         .libraryNavigation
         {
@@ -200,8 +200,7 @@ $mainTtabSpriteRetinaURL: url(../../assets/images/sprite-icons-main-tabs@2x.png)
             label
             {
                 display: inline-block;
-                margin-right: 15px;
-                margin-top: 4px;
+                margin: 4px 15px 0 2px;
             }
 
             @include headerButtons(0px, 40px, $fontSizeMedium);
@@ -226,23 +225,32 @@ $mainTtabSpriteRetinaURL: url(../../assets/images/sprite-icons-main-tabs@2x.png)
         .librarySearch
         {
             margin-top: 10px;
-            @include inputs(100%, 20px, $fontSizeMedium, $fontFamilyRegular);
+            @include inputs(240px, 20px, $fontSizeSmall, $fontFamilyRegular);
+
+            input
+            {
+                margin-bottom: 5px;
+                color: $TPGrey3;
+                padding-left: 5px;
+                margin-left: 2px;
+            }
 
             select
             {
                 margin-top: -5px;
                 font-family: $fontFamilyRegular;
                 font-size: $fontSizeMedium;
+                
             }
         }
 
         .helpText
         {
             margin-top: 5px;
-            margin-left: 5px;
+            margin-left: 8px;
 
             color: $TPGrey3;
-            font-style: italic;
+            font-family: $fontFamilyRegularItalic;
             cursor: default;
             font-size: $fontSizeSmall;
         }
@@ -251,11 +259,24 @@ $mainTtabSpriteRetinaURL: url(../../assets/images/sprite-icons-main-tabs@2x.png)
 
     .selectboxit-options
     {
-        width: 238px;
+        width: 240px;
+        margin-left: 2px;
     }
 
-    .selectboxit-container .selectboxit {
-        width: 238px !important; /* Width of the dropdown button */
+    .selectboxit-container .selectboxit 
+    {
+        width: 240px !important; /* Width of the dropdown button */
+        margin-left: 2px;
+    }
+
+    .selectboxit-option
+    {
+        text-indent: 3px;
+    }
+
+    .selectboxit-option-icon-container 
+    {
+        margin-left: 0px;
     }
 }
 
@@ -276,9 +297,10 @@ $mainTtabSpriteRetinaURL: url(../../assets/images/sprite-icons-main-tabs@2x.png)
 {
     background-color: $TPGrey6;
     border-color: $TPGrey6;
+    width: 240px;
 
     &:hover
     {
-        border-color: $TPGrey11;
+        border-color:  $TPGrey11;
     }
 }
