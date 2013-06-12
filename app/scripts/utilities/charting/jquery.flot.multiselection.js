@@ -1,9 +1,11 @@
 define(
 [
-    "underscore"
+    "underscore",
+    "utilities/charting/chartColors"
 ],
 function(
-    _
+    _,
+    chartColors
     )
 {
 // TODO: SIMPLIFY
@@ -181,13 +183,13 @@ selection: {
                     shape: "round", // one of "round", "miter", or "bevel"
                     minSize: 1, // minimum number of pixels
                     colors: {
-                        defaultColor: 'lightblue',
-                        distance: 'lightblue',
-                        pace: 'lightblue',
-                        speed: 'lightblue',
-                        heartrate: 'lightblue',
-                        cadence: 'lightblue',
-                        power: 'lightblue'
+                        defaultColor: chartColors.chartSelection,
+                        distance: chartColors.chartSelection,
+                        pace: chartColors.chartSelection,
+                        speed: chartColors.chartSelection,
+                        heartrate: chartColors.chartSelection,
+                        cadence: chartColors.chartSelection,
+                        power: chartColors.chartSelection
                     }
                 }
             },

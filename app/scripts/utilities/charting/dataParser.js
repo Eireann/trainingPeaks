@@ -1,10 +1,10 @@
 ﻿define(
 [
-    "utilities/charting/seriesColorByChannel",
+    "utilities/charting/chartColors",
     "utilities/charting/findIndexByMsOffset",
     "utilities/conversion/convertToViewUnits"
 ],
-function(seriesColorByChannel, findIndexByMsOffset, convertToViewUnits)
+function(chartColors, findIndexByMsOffset, convertToViewUnits)
 {
     var flexChannelOrder =
     [
@@ -94,7 +94,7 @@ function(seriesColorByChannel, findIndexByMsOffset, convertToViewUnits)
 
             seriesArray.push(
             {
-                color: seriesColorByChannel[channel],
+                color: chartColors.seriesColorByChannel[channel],
                 data: data,
                 label: channel,
                 lines:

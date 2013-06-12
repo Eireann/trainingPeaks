@@ -1,13 +1,14 @@
 ﻿define(
 [
     "TP",
-    "./timeInZonesChart"
+    "./timeInZonesChart",
+    "utilities/charting/chartColors"
 ],
-function(TP, TimeInZonesChartView)
+function(TP, TimeInZonesChartView, chartColors)
 {
     return TimeInZonesChartView.extend(
     {
-        chartColor: { light: "#8106C9", dark: "#590888" },
+        chartColor: chartColors.gradients.power,
 
         graphTitle: "Power",
         

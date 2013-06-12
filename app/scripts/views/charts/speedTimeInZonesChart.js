@@ -1,13 +1,14 @@
 ﻿define(
 [
     "TP",
-    "./timeInZonesChart"
+    "./timeInZonesChart",
+    "utilities/charting/chartColors"
 ],
-function(TP, TimeInZonesChartView)
+function(TP, TimeInZonesChartView, chartColors)
 {
     return TimeInZonesChartView.extend(
     {
-        chartColor: { light: "#0E7FCF", dark: "#0B568D" },
+        chartColor: chartColors.gradients.pace,
 
         graphTitle: "Pace",
         
