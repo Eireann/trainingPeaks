@@ -323,6 +323,9 @@
 
         formatGrade: function(value, options)
         {
+            if (options && typeof options === "string" && value !== null)
+                options = { defaultValue: options };
+            
             if (_.isUndefined(value) || _.isNaN(value) || value === null || value === 0)
                 return options && options.hasOwnProperty("defaultValue") ? options.defaultValue : "";
             

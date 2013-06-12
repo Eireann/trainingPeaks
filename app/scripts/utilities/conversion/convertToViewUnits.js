@@ -104,7 +104,7 @@ function(
         return threeSigFig(value * modelToViewConversionFactors("speed", theMarsApp.user.get("units")));
     };
 
-    return function(value, fieldType, defaultValueIfEmpty, sportType)
+    return function(value, fieldType, defaultValueIfEmpty, sportType, displayZeroes)
     {
         var precision = null;
         if (_.isObject(value))
@@ -119,7 +119,7 @@ function(
 
         if (!isNumeric(value) || (Number(value) === 0 && fieldType !== "temperature"))
         {
-            if (!_.isUndefined(defaultValueIfEmpty))
+            if (!_.isUndefined(defaultValueIfEmpty) && (displayZeroes && Number(value) === 0))
             {
                 return defaultValueIfEmpty;
             }

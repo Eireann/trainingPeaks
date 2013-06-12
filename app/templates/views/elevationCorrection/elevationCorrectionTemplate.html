@@ -31,20 +31,20 @@
         </div>
         <div class="stats">
             <div class="statsLabel">{{$ "Gain"}}</div>
-            <div class="originalGain original">{{convertToViewUnits originalGain "elevation"}}</div>
-            <div class="correctedGain corrected">{{convertToViewUnits correctedGain "elevation"}}</div>
+            <div class="originalGain original">{{convertToViewUnits originalGain "elevation" "0.0" "" "true"}}</div>
+            <div class="correctedGain corrected">{{convertToViewUnits correctedGain "elevation" "0.0" "" "true"}}</div>
             <div class="units">{{getUnitsLabel "elevation"}}</div>
         </div>
         <div class="stats">
             <div class="statsLabel">{{$ "Loss"}}</div>
-            <div class="originalLoss original">{{convertToViewUnits originalLoss "elevation"}}</div>
-            <div class="correctedLoss corrected">{{convertToViewUnits correctedLoss "elevation"}}</div>
+            <div class="originalLoss original">{{convertToViewUnits originalLoss "elevation" "0.0" "" "true"}}</div>
+            <div class="correctedLoss corrected">{{convertToViewUnits correctedLoss "elevation" "0.0" "" "true"}}</div>
             <div class="units">{{getUnitsLabel "elevation"}}</div>
         </div>
         <div class="stats">
             <div class="statsLabel">{{$ "Grade"}}</div>
-            <div class="originalGrade original">{{conversion "formatGrade" originalGrade}}</div>
-            <div class="correctedGrade corrected">{{conversion "formatGrade" correctedGrade}}</div>
+            <div class="originalGrade original">{{conversion "formatGrade" originalGrade "0.0"}}</div>
+            <div class="correctedGrade corrected">{{conversion "formatGrade" correctedGrade "0.0"}}</div>
             <div class="units">%</div>
         </div>
     </div>
