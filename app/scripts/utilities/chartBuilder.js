@@ -24,6 +24,40 @@ function(_)
         backgroundColor: "rgba(255, 255, 255, 1)"
     };
 
+    var positionToolTip = function(labelWidth, labelHeight, point)
+    {
+
+        // to right of cursor
+        var x = point.plotX + 70;
+        var y = point.plotY - 10;
+
+        // too low? move it up
+        if (y + labelHeight > (this.chart.chartHeight - 20))
+        {
+            y = this.chart.chartHeight - (labelHeight + 20);
+        }
+
+        // too high? move it down
+        if (y <= 0)
+        {
+            y = 0;
+        }
+
+        // too far right? move it left
+        if (x + labelWidth > (this.chart.chartWidth - 10))
+        {
+            x = point.plotX - labelWidth + 40;
+        }
+
+        // too far left? move it right
+        if (x <= 0)
+        {
+            x = 0;
+        }
+        
+        return { x: x, y: y };
+    };
+
     return {
 
         renderColumnChart: function(container, chartData, tooltipTemplate, additionalChartOptions)
@@ -166,6 +200,8 @@ function(_)
                     {
                         return tooltipTemplate(this.point.options);
                     },
+                    positioner: positionToolTip,
+                    followPointer: true,
                     shared: false,
                     useHTML: true,
                     borderColor: "transparent",
