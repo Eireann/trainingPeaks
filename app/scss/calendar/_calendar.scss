@@ -245,10 +245,12 @@
 
 		.daySettings
         {
+            position: absolute;
+            top: 0px;
+            right: 2px;
+            z-index: 2;
             display: none;
-            float: right;
 			padding: 2px 4px 0px 0px;
-            margin-right: 2px;
 
             button
             {	
@@ -263,12 +265,9 @@
 
         &:hover
         {
-            &:not(.selected)
+            .daySettings
             {
-                .daySettings
-                {
-                    display:block;
-                }
+                display:block;
             }
         }
 
