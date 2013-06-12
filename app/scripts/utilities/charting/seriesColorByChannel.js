@@ -13,4 +13,6 @@ function()
         "Temperature": "#0A0AFF",
         "Torque": "#BDBDBD"
     };
+
+
 });
