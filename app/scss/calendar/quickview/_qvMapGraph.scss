@@ -122,14 +122,14 @@
 }
 
 .leaflet-control-zoom-in {
-	background: url(../../assets/images/leaflet/sprite-map-zoom.png) no-repeat rgba(255, 255, 255, 0.9) !important;
+	background: url(../../assets/images/leaflet/sprite-map-zoom.png) no-repeat rgba(255, 255, 255, 0.8) !important;
 	&:hover {
 		background: url(../../assets/images/leaflet/sprite-map-zoom.png) -23px 0 rgba(255, 255, 255, 1) !important;
 	}
 }
 
 .leaflet-control-zoom-out {
-	background: url(../../assets/images/leaflet/sprite-map-zoom.png) no-repeat 0 -23px rgba(255, 255, 255, 0.9) !important;
+	background: url(../../assets/images/leaflet/sprite-map-zoom.png) no-repeat 0 -23px rgba(255, 255, 255, 0.8) !important;
 	&:hover {
 		background: url(../../assets/images/leaflet/sprite-map-zoom.png) -23px -23px rgba(255, 255, 255, 1) !important;
 	}
