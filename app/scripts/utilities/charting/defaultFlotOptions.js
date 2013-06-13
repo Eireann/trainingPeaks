@@ -13,7 +13,7 @@ function(TP, flotFilter, chartColors)
             crosshair:
             {
                 mode: "x",
-                color: "rgba(170, 0, 0, 0.80)",
+                color: "rgba(255, 255, 255, 0.80)",
                 lineWidth: 1
                 
             },
@@ -53,10 +53,19 @@ function(TP, flotFilter, chartColors)
                     hoverable: true
                 }
             },
+
+            shifts:
+            {
+                x: 0,
+                y: 0
+            },
             xaxes:
             [
                 {
                     min: 0,
+                    color: "transparent",
+                    tickColor: "transparent",
+
                     tickFormatter: function(value, axis)
                     {
                         var decimalHours = (value / (3600 * 1000));

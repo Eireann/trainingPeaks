@@ -130,6 +130,7 @@ function(
             var onHoverHandler = function(flotItem, $tooltipEl)
             {
                 $tooltipEl.html(flotCustomToolTip(series, flotItem.series.label, flotItem.dataIndex, flotItem.datapoint[0], self.model.get("workoutTypeValueId")));
+                self.updateToolTipPosition($tooltipEl);
             };
             
             this.flotOptions = getDefaultFlotOptions(onHoverHandler);
@@ -145,6 +146,39 @@ function(
             
             this.plot = $.plot(this.$plot, series, this.flotOptions);
             this.bindToPlotEvents();
+        },
+
+        updateToolTipPosition: function ($tooltipEl)
+        {
+            var canvasWidth = this.plot.width();
+            var canvasHeight = this.plot.height();
+            var canvasLocation = this.plot.offset();
+            var tooltipWidth = $tooltipEl.width();
+            var tooltipHeight = $tooltipEl.height();
+            var tooltipLocation = $tooltipEl.offset();
+            
+            if (tooltipLocation.top + tooltipHeight > canvasLocation.top + canvasHeight)
+            {
+                $tooltipEl.css("top", tooltipLocation.top - tooltipHeight + 60 + "px");
+                $tooltipEl.addClass("bottom");
+            }
+            else
+            {
+                $tooltipEl.removeClass("bottom");
+            }
+            
+
+            if (tooltipLocation.left + tooltipWidth > canvasLocation.left + canvasWidth - 30)
+            {
+                $tooltipEl.css("left", tooltipLocation.left - tooltipWidth - 40 + "px");
+                $tooltipEl.removeClass("right").addClass("left");
+            }
+            else
+            {
+                $tooltipEl.removeClass("left").addClass("right");
+            }
+
+            
         },
 
         overlayGraphToolbar: function()
@@ -165,8 +199,15 @@ function(
             if (!this.plot)
                 return;
 
+            this.zoomed = true;
+
             if (this.plot.zoomToSelection())
+            {
                 this.graphToolbar.onGraphZoomed();
+            } else
+            {
+                this.zoomed = false;
+            }
         },
         
         resetZoom: function()
@@ -175,6 +216,19 @@ function(
                 return;
 
             this.plot.resetZoom();
+
+            if (this.selectedWorkoutStatsForRange)
+            {
+                var ranges = {
+                    xaxis: {
+                        from: this.selectedWorkoutStatsForRange.get("begin"),
+                        to: this.selectedWorkoutStatsForRange.get("end")
+                    }
+                };
+                this.plot.setSelection(ranges, true);
+            }
+
+            this.zoomed = false;
         },
         
         applyFilter: function(period)
@@ -188,9 +242,10 @@ function(
 
         bindToPlotEvents: function()
         {
-            _.bindAll(this, "onPlotSelected", "onPlotHover");
+            _.bindAll(this, "onPlotSelected", "onPlotUnSelected", "onPlotHover");
             var plotPlaceHolder = this.plot.getPlaceholder();
             plotPlaceHolder.bind("plotselected", this.onPlotSelected);
+            plotPlaceHolder.bind("plotunselected", this.onPlotUnSelected);
             plotPlaceHolder.bind("plothover", this.onPlotHover);
             
             this.on("close", this.unbindPlotEvents, this);
@@ -215,9 +270,22 @@ function(
             this.trigger("rangeselected", this.selectedWorkoutStatsForRange, options, this);
         },
 
+        onPlotUnSelected: function()
+        {
+            if (!this.zoomed)
+            {
+                this.trigger("unselectall");
+            }
+        },
+
         onPlotHover: function(event, pos, item)
         {
-            this.trigger("graphhover", pos.x);
+            var options = {
+                msOffset: pos.x,
+                selected: false
+            };
+
+            this.trigger("graphhover", options);
         },
        
         onMouseLeave: function(event)

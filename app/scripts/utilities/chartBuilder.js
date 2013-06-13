@@ -155,6 +155,7 @@ function(_)
                 },
                 xAxis:
                 {
+                    offset: 2,
                     lineWidth: 1,
                     lineColor: "#636569",
                     labels:
@@ -165,7 +166,8 @@ function(_)
                     },
                     title:
                     {
-                        style: axisFontStyle
+                        style: axisFontStyle,
+                        margin: 30
                     },
                     tickColor: 'transparent'
                 },
@@ -178,7 +180,8 @@ function(_)
                     tickInterval: 10,
                     title:
                     {
-                        style: axisFontStyle
+                        style: axisFontStyle,
+                        margin: 30
                     },
                     labels:
                     {

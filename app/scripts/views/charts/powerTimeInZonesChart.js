@@ -41,11 +41,6 @@ function(TP, TimeInZonesChartView, chartColors)
                             "-" + TP.utils.conversion.toPercent(timeInZone.maximum, this.timeInZones.threshold) + " %"
                     },
                     {
-                        label: "Watts/Weight",
-                        value: ""
-
-                    },
-                    {
                         label: "Time",
                         value: TP.utils.conversion.formatDurationFromSeconds(timeInZone.seconds)
                     },

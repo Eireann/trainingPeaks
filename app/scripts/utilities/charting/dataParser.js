@@ -211,8 +211,8 @@ function(chartColors, findIndexByMsOffset, convertToViewUnits)
                 label: s.label,
                 min: s.label === "Elevation" ? self.getElevationInfo().min : 0,
                 position: countdown-- > 0 ? "right" : "left",
-                color: chartColors.seriesColorByChannel[s.label],
-                tickColor: s.color,
+                color: "transparent",
+                tickColor: "transparent",
                 font:
                 {
                     color: chartColors.seriesColorByChannel[s.label]
@@ -223,7 +223,8 @@ function(chartColors, findIndexByMsOffset, convertToViewUnits)
                     // in order to easily obtain the correct unit conversion for each axis.
                     // For some reason, a '0' value returns a NaN, check for it.
                     return value === 0 ? +0 : parseInt(convertToViewUnits(value, s.label.toLowerCase()), 10);
-                }
+                },
+                labelWidth: 15
             };
 
             yaxes.push(axisOptions);

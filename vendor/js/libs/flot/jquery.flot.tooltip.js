@@ -25,8 +25,8 @@
             xDateFormat: null,
             yDateFormat: null,
             shifts: {
-                x: 10,
-                y: 20
+                x: 20,
+                y: -20
             },
             defaultTheme: true,
 
@@ -77,7 +77,7 @@
                         .css({
                             left: that.tipPosition.x + that.tooltipOptions.shifts.x,
                             top: that.tipPosition.y + that.tooltipOptions.shifts.y
-                        })
+                        }).addClass("right")
                         .show();
 
                     // run callback
@@ -85,7 +85,8 @@
                         that.tooltipOptions.onHover(item, $tip);
                     }
                 }
-                else {
+                else
+                {
                     $tip.hide().html('');
                 }
             });

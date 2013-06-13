@@ -21,6 +21,27 @@ function(formatDateTime, convertToViewUnits, unitLabels, flotToolTipTemplate)
         "Temperature"
     ];
 
+    var channelsThatDontDisplayIfZero = [
+        "Cadence",
+        "HeartRate",
+        "Power",
+        "RightPower",
+        "PowerBalance",
+        "Speed",
+        "Pace",
+        "Torque"
+    ];
+
+    var shouldDisplayTooltipValue = function(seriesName, value)
+    {
+        if (_.contains(channelsThatDontDisplayIfZero, seriesName) && !value)
+        {
+            return false;
+        }
+
+        return true;
+    };
+
     return function(series, hoveredSeries, hoveredIndex, timeOffset, workoutType)
     {
         var toolTipData =
@@ -36,6 +57,11 @@ function(formatDateTime, convertToViewUnits, unitLabels, flotToolTipTemplate)
         _.each(series, function(s)
         {
             var value = s.data[hoveredIndex][1];
+
+            if (!shouldDisplayTooltipValue(s.label, value))
+            {
+                return;
+            }
 
             if (s.label === "RightPower")
             {

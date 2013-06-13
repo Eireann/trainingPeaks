@@ -195,14 +195,14 @@ function(setImmediate, TP, ExpandoLayout, GraphView, MapView, StatsView, LapsVie
             }
         },
         
-        onGraphHover: function (msOffset)
+        onGraphHover: function (options)
         {
-            _.each(this.views, function (view, key)
+            _.each(this.views, function(view, key)
             {
-                view.trigger("controller:graphhover", msOffset);
+                view.trigger("controller:graphhover", options);
             }, this);
         },
-        
+
         onGraphLeave: function()
         {
             _.each(this.views, function (view, key)

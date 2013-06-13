@@ -119,7 +119,7 @@ function (TP, tooltipTemplate)
             var height = width * 0.5825;
             setImmediate(function ()
             {
-                self.chart.setSize(width, height, false);
+                self.chart.setSize(width, height - 25, false);
                 $(".peaksChartContainer").css("width", width);
                 $(".peaksChartContainer").css("height", height);
             });
