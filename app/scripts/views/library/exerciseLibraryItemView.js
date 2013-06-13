@@ -65,7 +65,7 @@ function(TP, draggable, ExerciseLibraryItemViewTemplate, ExerciseLibraryItemView
             $helperEl.addClass(this.className);
             $helperEl.addClass(this.getWorkoutTypeCssClassName());
             $helperEl.addClass("future");
-            $helperEl.width($(".day .workout:first").width());
+            $helperEl.width(this.$el.width());
             return $helperEl;
         },
 

@@ -185,7 +185,7 @@ $mainTtabSpriteRetinaURL: url(../../assets/images/sprite-icons-main-tabs@2x.png)
         bottom:0px;
         left: 37px;
         right: 0px;
-        overflow-y:auto;
+        overflow-y: scroll;
         padding: 5px;
         padding-top: 10px;
         @include calc(width, "100% - 36px"); 
@@ -302,5 +302,31 @@ $mainTtabSpriteRetinaURL: url(../../assets/images/sprite-icons-main-tabs@2x.png)
     &:hover
     {
         border-color:  $TPGrey11;
+    }
+
+    .workoutDiv
+    {
+        .workoutDistanceTime
+        {
+            padding-top: 10px;
+
+            label
+            {
+                color: $TPGrey3;
+                display:inline-block;
+                cursor: inherit;
+                font-size: $fontSizeLarge;
+                margin-right: 4px;
+                margin-left: 1px;
+            }
+        }
+
+        .workoutBody
+        {
+            label
+            {
+                color: $TPGrey3;
+            }
+        }
     }
 }

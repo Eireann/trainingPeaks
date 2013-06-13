@@ -4,7 +4,15 @@
         <div class="workoutHeader">
             <div class="workoutIcon" />
             <div class="workoutDistanceTime">
-                <label>{{formatKeyStat this}}<span class="units">{{formatKeyStatUnits this}}</span></label>
+                {{#if totalTimePlanned }}
+                <label>{{ conversion "formatDuration" totalTimePlanned }}</label>
+                {{/if}}
+                {{#if distancePlanned}}
+                <label>{{ conversion "formatDistance" distancePlanned }}<span class="units">{{ getUnitsLabel "distance" }}</span></label>
+                {{/if}}
+                {{#if tssPlanned}}
+                <label>{{ conversion "formatTSS" tssPlanned }}<span class="units">{{ getUnitsLabel "tss" workoutTypeValueId this }}</span></label>
+                {{/if}}
             </div>
         </div>
         <div class="workoutBody">
