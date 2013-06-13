@@ -57,6 +57,34 @@ function(
             }
         });
 
+        this.addInitializer(function()
+        {
+            var self = this;
+            window.onerror = function (errorMessage, url, lineNumber)
+            {
+                if (self.clientEvents)
+                {
+                    self.clientEvents.logEvent({ Event: { Type: "Error", Label: "UncaughtException", AppContext: url + " Error: " + errorMessage + " Line: " + lineNumber } });
+                }
+                return true;
+            };
+            
+            $(document).ajaxError(function(event, xhr)
+            {
+                if (xhr.status === 400 || xhr.status === 500)
+                {
+                    if (self.clientEvents)
+                    {
+                        var responseText = xhr.responseText;
+                        var status = xhr.status;
+                        var statusText = xhr.statusText;
+
+                        self.clientEvents.logEvent({ Event: { Type: "Error", Label: "AjaxError", AppContext: "ResponseText: " + responseText + ", Status: " + status + ", StatusText:" + statusText } });
+                    }
+                }
+            });
+        });
+
         // setup ajax auth and caching and timezone handling
         this.addInitializer(function()
         {
