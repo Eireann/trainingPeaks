@@ -85,8 +85,9 @@
                         that.tooltipOptions.onHover(item, $tip);
                     }
                 }
-                else {
-                   // $tip.hide().html('');
+                else
+                {
+                    $tip.hide().html('');
                 }
             });
 

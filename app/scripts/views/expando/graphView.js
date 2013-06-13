@@ -199,8 +199,15 @@ function(
             if (!this.plot)
                 return;
 
+            this.zoomed = true;
+
             if (this.plot.zoomToSelection())
+            {
                 this.graphToolbar.onGraphZoomed();
+            } else
+            {
+                this.zoomed = false;
+            }
         },
         
         resetZoom: function()
@@ -209,6 +216,19 @@ function(
                 return;
 
             this.plot.resetZoom();
+
+            if (this.selectedWorkoutStatsForRange)
+            {
+                var ranges = {
+                    xaxis: {
+                        from: this.selectedWorkoutStatsForRange.get("begin"),
+                        to: this.selectedWorkoutStatsForRange.get("end"),
+                    }
+                };
+                this.plot.setSelection(ranges, true);
+            }
+
+            this.zoomed = false;
         },
         
         applyFilter: function(period)
@@ -222,9 +242,10 @@ function(
 
         bindToPlotEvents: function()
         {
-            _.bindAll(this, "onPlotSelected", "onPlotHover");
+            _.bindAll(this, "onPlotSelected", "onPlotUnSelected", "onPlotHover");
             var plotPlaceHolder = this.plot.getPlaceholder();
             plotPlaceHolder.bind("plotselected", this.onPlotSelected);
+            plotPlaceHolder.bind("plotunselected", this.onPlotUnSelected);
             plotPlaceHolder.bind("plothover", this.onPlotHover);
             
             this.on("close", this.unbindPlotEvents, this);
@@ -247,6 +268,14 @@ function(
             options.displayStats = true;
             this.trigger("unselectall");
             this.trigger("rangeselected", this.selectedWorkoutStatsForRange, options, this);
+        },
+
+        onPlotUnSelected: function()
+        {
+            if (!this.zoomed)
+            {
+                this.trigger("unselectall");
+            }
         },
 
         onPlotHover: function(event, pos, item)

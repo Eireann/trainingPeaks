@@ -13,7 +13,7 @@ function(TP, flotFilter, chartColors)
             crosshair:
             {
                 mode: "x",
-                color: "rgba(170, 0, 0, 0.80)",
+                color: "rgba(255, 255, 255, 0.80)",
                 lineWidth: 1
                 
             },
