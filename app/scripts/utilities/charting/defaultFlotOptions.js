@@ -53,6 +53,12 @@ function(TP, flotFilter, chartColors)
                     hoverable: true
                 }
             },
+
+            shifts:
+            {
+                x: 0,
+                y: 0
+            },
             xaxes:
             [
                 {
