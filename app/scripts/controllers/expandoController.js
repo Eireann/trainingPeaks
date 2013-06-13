@@ -1,5 +1,6 @@
 ﻿define(
 [
+    "setImmediate",
     "TP",
     "layouts/expandoLayout",
     "views/expando/graphView",
@@ -8,7 +9,7 @@
     "views/expando/lapsView",
     "views/expando/chartsView"
 ],
-function(TP, ExpandoLayout, GraphView, MapView, StatsView, LapsView, ChartsView)
+function(setImmediate, TP, ExpandoLayout, GraphView, MapView, StatsView, LapsView, ChartsView)
 {
     return TP.Controller.extend(
     {
@@ -68,14 +69,32 @@ function(TP, ExpandoLayout, GraphView, MapView, StatsView, LapsView, ChartsView)
         onModelFetched: function()
         {
             this.layout.$el.removeClass("waiting");
-            
-            this.layout.graphRegion.show(this.views.graphView);
-            this.layout.mapRegion.show(this.views.mapView);
+
+            // use some setImmediate's to allow everything to paint nicely
             this.layout.statsRegion.show(this.views.statsView);
             this.layout.lapsRegion.show(this.views.lapsView);
-            this.layout.chartsRegion.show(this.views.chartsView);
 
-            this.onViewResize();
+            var self = this;
+
+            setImmediate(function()
+            {
+                self.layout.graphRegion.show(self.views.graphView);
+            });
+
+            setImmediate(function()
+            {
+                self.layout.mapRegion.show(self.views.mapView);
+            });
+
+            setImmediate(function()
+            {
+                self.layout.chartsRegion.show(self.views.chartsView);
+            });
+
+            setImmediate(function()
+            {
+                self.onViewResize();
+            });
         },
 
         preFetchDetailData: function()

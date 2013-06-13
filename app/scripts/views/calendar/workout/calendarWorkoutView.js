@@ -138,7 +138,7 @@ function(
         {
             "mousedown": "workoutSelected",
             "mouseup": "workoutClicked",
-            "click .workoutSettings": "workoutSettingsClicked"
+            "mouseup .workoutSettings": "workoutSettingsClicked"
         },
 
         keepSettingsButtonVisible: function()
@@ -153,6 +153,11 @@ function(
 
         workoutSettingsClicked: function(e)
         {
+            if (e && e.button && e.button === 2)
+            {
+                return;
+            }
+
             e.preventDefault();
 
             this.keepSettingsButtonVisible();
@@ -167,6 +172,10 @@ function(
         {
             if (e)
             {
+
+                if (e.button && e.button === 2)
+                    return;
+
                 if (e.isDefaultPrevented())
                     return;
 

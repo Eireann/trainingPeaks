@@ -16,6 +16,15 @@ function (TP)
             "itemName": null,
             "itemType": 0,
             "workoutTypeId": 0,
+            "distancePlanned": null,
+            "totalTimePlanned": null,
+            "caloriesPlanned": null,
+            "tssPlanned": null,
+            "ifPlanned": null,
+            "velocityPlanned": null,
+            "energyPlanned": null,
+            "elevationGainPlanned": null,
+            "description": null,
             "exerciseLibraryItemFilters": null
         }
 

@@ -164,8 +164,13 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySe
             this.$el.removeClass("menuOpen");
         },
 
-        daySettingsClicked: function (e)
+        daySettingsClicked: function(e)
         {
+            if (e && e.button && e.button === 2)
+            {
+                return;
+            }
+
             if (e.shiftKey)
                 return;
 

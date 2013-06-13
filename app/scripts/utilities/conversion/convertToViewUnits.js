@@ -117,7 +117,7 @@ function(
             precision = parameters.precision;
         }
 
-        if (!isNumeric(value) || (Number(value) === 0 && fieldType !== "temperature"))
+        if (!isNumeric(value) || (Number(value) === 0 && fieldType !== "temperature") && fieldType !== "groundControl")
         {
             if (!_.isUndefined(defaultValueIfEmpty))
             {
@@ -131,6 +131,8 @@ function(
 
         switch (fieldType)
         {
+            case "groundControl":
+                return convertElevation(value);
             case "elevation":
                 return convertElevation(value);
             case "speed":

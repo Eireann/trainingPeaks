@@ -29,8 +29,10 @@
     .workoutSettings  
     {
         display: none;
-        float: right;
-        margin-right: -1px;
+        top: 0px;
+        right: 2px;
+		position: absolute;
+        z-index: 2;
 
         button
         {	
@@ -181,6 +183,7 @@
     	background-color: #bcd1eb;
         border: 1px solid #0043ff;
 		opacity: 0.5;
+        z-index: 1;
     }
 
     &.selected

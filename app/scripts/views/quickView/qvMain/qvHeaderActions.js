@@ -7,7 +7,8 @@
     "views/quickView/qvMain/qvWorkoutTypeMenuView",
     "views/quickView/qvMain/qvContextMenuView",
     "views/quickView/qvMain/qvOptionsMenuView",
-    "views/expando/commentsEditor"
+    "views/expando/commentsEditor",
+    "utilities/workout/workoutTypes"
 ],
 function (
     _,
@@ -17,7 +18,8 @@ function (
     WorkoutTypeMenuView,
     QVContextMenuView,
     QVOptionsMenuView,
-    ExpandoCommentsEditorView
+    ExpandoCommentsEditorView,
+    workoutType
 )
 {
     var qvHeaderActions =
@@ -258,9 +260,10 @@ function (
         
         onOptionsClicked: function(e)
         {
-            if (!(this.model && this.model.get("detailData") &&
-                this.model.get("detailData").get("flatSamples") &&
-                this.model.get("detailData").get("flatSamples").hasLatLngData))
+            if (this.model.get("workoutTypeValueId") === workoutType.getIdByName("Swim") ||
+               !(this.model && this.model.get("detailData") &&
+                 this.model.get("detailData").get("flatSamples") &&
+                 this.model.get("detailData").get("flatSamples").hasLatLngData))
                 return;
             
             var offset = $(e.currentTarget).offset();
