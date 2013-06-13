@@ -4,10 +4,10 @@
         <div class="workoutIcon" />
         <div class="workoutDistanceTime">
             {{#if totalTimePlanned }}
-            <label>{{ formatTime totalTimePlanned }}</label>
+            <label>{{ conversion "formatDuration" totalTimePlanned }}</label>
             {{/if}}
             {{#if distancePlanned}}
-            <label>{{ convertToViewUnits distancePlanned "distance" }}<span class="units">{{ getUnitsLabel "distance" }}</span></label>
+            <label>{{ conversion "formatDistance" distancePlanned }}<span class="units">{{ getUnitsLabel "distance" }}</span></label>
             {{/if}}
             {{#if tssPlanned}}
             <label>{{ conversion "formatTSS" tssPlanned }}<span class="units">{{ getUnitsLabel "tss" workoutTypeValueId this }}</span></label>
