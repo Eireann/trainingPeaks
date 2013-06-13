@@ -1,11 +1,13 @@
 ﻿define(
 [
+    "underscore",
     "models/library/exerciseLibrariesCollection",
     "models/workoutModel",
     "models/commands/addWorkoutFromExerciseLibrary",
 "views/library/libraryView"
 ],
 function(
+    _,
     ExerciseLibrariesCollection,
     WorkoutModel,
     AddWorkoutFromExerciseLibrary,
@@ -23,6 +25,12 @@ function(
                 workoutDay: workoutDate,
                 title: exerciseLibraryItem.get("itemName"),
                 workoutTypeValueId: exerciseLibraryItem.get("workoutTypeId")
+            });
+
+            var attributesToCopy = ["caloriesPlanned", "description", "distancePlanned", "elevationGainPlanned", "energyPlanned", "ifPlanned", "totalTimePlanned", "tssPlanned", "velocityPlanned"];
+            _.each(attributesToCopy, function(attr)
+            {
+                workout.set(attr, exerciseLibraryItem.get(attr));
             });
 
             // then update it with the full workout attributes from library
