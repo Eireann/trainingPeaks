@@ -148,7 +148,7 @@ function(
             this.bindToPlotEvents();
         },
 
-        updateToolTipPosition: function ($tooltipEl)
+        updateToolTipPosition: function($tooltipEl)
         {
             var canvasWidth = this.plot.width();
             var canvasHeight = this.plot.height();
@@ -156,10 +156,17 @@ function(
             var tooltipWidth = $tooltipEl.width();
             var tooltipHeight = $tooltipEl.height();
             var tooltipLocation = $tooltipEl.offset();
-            
-            if (tooltipLocation.top + tooltipHeight > canvasLocation.top + canvasHeight)
+            var canvasBottom = canvasLocation.top + canvasHeight;
+
+            if (tooltipLocation.top + tooltipHeight > canvasBottom)
             {
-                $tooltipEl.css("top", tooltipLocation.top - tooltipHeight + 60 + "px");
+                var tooltipTop = tooltipLocation.top - tooltipHeight + 60;
+                if (tooltipTop + tooltipHeight > (canvasBottom + 20))
+                {
+                    tooltipTop = (canvasBottom - tooltipHeight) + 20;
+                }
+
+                $tooltipEl.css("top", tooltipTop + "px");
                 $tooltipEl.addClass("bottom");
             }
             else
@@ -178,7 +185,6 @@ function(
                 $tooltipEl.removeClass("left").addClass("right");
             }
 
-            
         },
 
         overlayGraphToolbar: function()
