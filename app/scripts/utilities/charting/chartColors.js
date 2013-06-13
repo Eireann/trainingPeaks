@@ -20,9 +20,9 @@ function()
 
         gradients:
             {
-                heartRate: { light: "#ED3F1D", dark: "#B50F00" },
-                power: { light: "#8106C9", dark: "#590888" },
-                pace: { light: "#0E7FCF", dark: "#0B568D" },
+                heartRate: { light: "#ec412b", dark: "#b82410" },
+                power: { light: "#880add", dark: "#5a0792" },
+                pace: { light: "#1b82ce", dark: "#125689" },
                 //elevation: { light: "rgba(202, 233, 251, 0.5)", dark: "rgba(110, 150, 185, 0.6)" }
                 elevation: { light: "#cae9fb", dark: "#6e96b9" }
             },

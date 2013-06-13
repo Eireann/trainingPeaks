@@ -139,6 +139,30 @@ function(
             this.addMarkers(map, markers);
         },
 
+        addStartMarker: function(map, latLng)
+        {
+            var marker =
+            {
+                latLng: latLng,
+                options: {}
+            };
+
+            marker.options.icon = new LeafletIcons.StartMarker(marker);
+            this.addMarkers(map, [marker]);
+        },
+
+        addFinishMarker: function(map, latLng)
+        {
+            var marker =
+            {
+                latLng: latLng,
+                options: {}
+            };
+
+            marker.options.icon = new LeafletIcons.FinishMarker(marker);
+            this.addMarkers(map, [marker]);
+        },
+
         calculateMileMarkers: function(dataParser, maxMarkers)
         {
             var markers = [];

@@ -91,7 +91,9 @@ function (
             {
                 //this.addMouseHoverBuffer(latLongArray);
                 MapUtils.setMapData(this.map, latLongArray);
-                MapUtils.calculateAndAddMileMarkers(this.map, this.dataParser, 15);
+                MapUtils.calculateAndAddMileMarkers(this.map, this.dataParser, 10);
+                MapUtils.addStartMarker(this.map, latLongArray[0]);
+                MapUtils.addFinishMarker(this.map, latLongArray[latLongArray.length - 1]);
             }
         },
 

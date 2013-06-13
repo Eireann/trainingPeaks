@@ -114,8 +114,11 @@ function(
             if (!this.map)
                 this.map = MapUtils.createMapOnContainer(this.$("#quickViewMap")[0]);
 
-            MapUtils.setMapData(this.map, this.dataParser.getLatLonArray());
-            MapUtils.calculateAndAddMileMarkers(this.map, this.dataParser, 10);
+            var latLngArray = this.dataParser.getLatLonArray();
+            MapUtils.setMapData(this.map, latLngArray);
+            MapUtils.calculateAndAddMileMarkers(this.map, this.dataParser, 6);
+            MapUtils.addStartMarker(this.map, latLngArray[0]);
+            MapUtils.addFinishMarker(this.map, latLngArray[latLngArray.length - 1]);
         },
 
         parseData: function()

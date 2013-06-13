@@ -17,6 +17,39 @@
 	box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.18);
 }
 
+.mapStartMarkerIcon {
+    position: absolute;
+    height: 20px;
+    width: 30px;
+    // use margin-left and margin-top to center this div over the map point
+    margin-left: 2px;
+    margin-top: -10px;
+
+    background: url(../../assets/images/leaflet/map-icon-start.png) no-repeat 0 0;
+
+    @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
+        background-size:30px 20px;
+        background: url(../../assets/images/leaflet/map-icon-start@2x.png) no-repeat 0 0;
+    }
+
+}
+
+.mapFinishMarkerIcon {
+    position: absolute;
+    height: 20px;
+    width: 30px;
+    // use margin-left and margin-top to center this div over the map point
+    margin-left: -32px;
+    margin-top: -10px;
+
+    background: url(../../assets/images/leaflet/map-icon-finish.png) no-repeat 0 0;
+
+    @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
+        background-size:30px 20px;
+        background: url(../../assets/images/leaflet/map-icon-finish@2x.png) no-repeat 0 0;
+    }
+}
+
 .mapGraphTab
 {
     padding: 10px 0px 10px 7px;

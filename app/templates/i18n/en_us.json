@@ -312,5 +312,9 @@
     "PublicTooltipLink": "Share a link to your completed workout",
     "PublicTooltipEmail": "Share your completed workout by email",
 
-    "ClickToDownload": "Click Radio Button then click on link to download attachment to disk"
+    "ClickToDownload": "Click Radio Button then click on link to download attachment to disk",
+
+    "Start": "Start",
+    "Finish": "Finish"
+
 }
