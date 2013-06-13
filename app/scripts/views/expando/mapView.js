@@ -1,13 +1,11 @@
 ﻿define(
 [
     "TP",
-    "utilities/charting/dataParser",
     "utilities/mapping/mapUtils",
     "hbs!templates/views/expando/mapTemplate"
 ],
 function (
     TP,
-    DataParser,
     MapUtils,
     mapTemplate
     )
@@ -37,7 +35,6 @@ function (
         {
             _.bindAll(this, "onModelFetched");
 
-            this.dataParser = new DataParser();
             this.map = null;
             this.graph = null;
             this.selections = [];
@@ -45,6 +42,10 @@ function (
             if (!options.detailDataPromise)
                 throw "detailDataPromise is required for map view";
 
+            if (!options.dataParser)
+                throw "dataParser is required for map view";
+
+            this.dataParser = options.dataParser;
             this.detailDataPromise = options.detailDataPromise;
         },
 
@@ -55,6 +56,7 @@ function (
             this.watchForControllerEvents();
             this.watchForControllerResize();
             this.$el.addClass("waiting");
+            this.$el.removeClass("hidden");
             setImmediate(function () { self.detailDataPromise.then(self.onModelFetched); });
         },
 
@@ -79,8 +81,6 @@ function (
         {
             if (!this.model.get("detailData").get("flatSamples"))
                 return;
-
-            this.parseData();
 
             if (!this.map)
                 this.map = MapUtils.createMapOnContainer(this.$("#expandoMap")[0]);
@@ -138,12 +138,6 @@ function (
         onMapMouseOut: function (e)
         {
             this.hideHoverMarker();
-        },
-
-        parseData: function ()
-        {
-            var flatSamples = this.model.get("detailData").get("flatSamples");
-            this.dataParser.loadData(flatSamples);
         },
 
         watchForControllerEvents: function ()

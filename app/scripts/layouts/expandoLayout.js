@@ -20,6 +20,17 @@ function(TP, expandoLayoutTemplate)
             statsRegion: "#expandoStatsRegion",
             lapsRegion: "#expandoLapsRegion",
             chartsRegion: "#expandoChartsRegion"
+        },
+
+        showMap: function()
+        {
+            $(this.mapRegion.el).removeClass("hidden");
+        },
+
+        hideMap: function()
+        {
+            $(this.mapRegion.el).addClass("hidden");
         }
+
     });
 });

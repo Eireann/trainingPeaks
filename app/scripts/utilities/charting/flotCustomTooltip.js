@@ -102,6 +102,9 @@ function(formatDateTime, convertToViewUnits, unitLabels, flotToolTipTemplate)
             if (s.label === hoveredSeries)
                 config.current = true;
 
+            if (s.label === "Power" && hoveredSeries === "RightPower")
+                config.current = true;
+
             toolTipSeries.push(config);
 
             if (s.label === "Speed" && (workoutType === 1 || workoutType === 3 || workoutType === 13 || workoutType === 100))

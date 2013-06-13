@@ -2,7 +2,6 @@
 [
     "underscore",
     "TP",
-    "utilities/charting/dataParser",
     "models/workoutStatsForRange",
     "utilities/charting/defaultFlotOptions",
     "utilities/charting/jquery.flot.tooltip",
@@ -16,7 +15,6 @@
 function(
     _,
     TP,
-    DataParser,
     WorkoutStatsForRange,
     getDefaultFlotOptions,
     flotToolTip,
@@ -49,8 +47,11 @@ function(
             if (!options.detailDataPromise)
                 throw "detailDataPromise is required for graph view";
 
-            this.detailDataPromise = options.detailDataPromise;
+            if (!options.dataParser)
+                throw "dataParser is required for graph view";
 
+            this.detailDataPromise = options.detailDataPromise;
+            this.dataParser = options.dataParser;
             this.lastFilterPeriod = 0;
             this.selections = [];
 
@@ -99,9 +100,6 @@ function(
             if (this.model.get("detailData") === null || !this.model.get("detailData").get("flatSamples"))
                 return;
 
-            var flatSamples = this.model.get("detailData").get("flatSamples");
-            this.dataParser = new DataParser();
-            this.dataParser.loadData(flatSamples);
             this.overlayGraphToolbar();
             this.createFlotGraph();
         },
@@ -111,9 +109,6 @@ function(
             if (this.model.get("detailData") === null || !this.model.get("detailData").get("flatSamples"))
                 return;
             
-            var flatSamples = this.model.get("detailData").get("flatSamples");
-            this.dataParser.loadData(flatSamples);
-
             this.$plot = this.$("#plot");
             if (!this.$plot.height())
             {

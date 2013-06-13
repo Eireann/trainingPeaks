@@ -13,7 +13,7 @@ function($, TP, moment, theMarsApp, GraphView)
         it("Should have a valid contructor", function()
         {
             expect(GraphView).toBeDefined();
-            expect(function() { new GraphView({ model: new TP.Model(), detailDataPromise: {}  }); }).not.toThrow();
+            expect(function() { new GraphView({ model: new TP.Model(), detailDataPromise: {}, dataParser: {} }); }).not.toThrow();
         });
     });
 });

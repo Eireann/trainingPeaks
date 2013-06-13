@@ -166,7 +166,7 @@
 #flotTip
 {
     z-index: 999;
-    width: 76px;
+    min-width: 76px;
     padding: 0;
 
     div
@@ -242,16 +242,32 @@
        width: 35px;
        float: left;
        text-align: right;
+       white-space: nowrap;
     }
     
+       .PowerBalance
+       {
+            .value
+            {
+                width: auto;
+                font-family: $fontFamilyRegular;
+            }
+
+            .units
+            {
+                display: none;
+            }
+       }
+
     .units
     {
-        float: right;
+        float: left;
         font-family: $fontFamilyRegular;
         font-size: $fontSizeXSmall;
         width: 31px;
         text-align: left;
         padding: 2px 0 0 3px;
+        margin-left: 3px;
     }
 
     .Cadence.current
@@ -278,7 +294,7 @@
         }
     }
 
-    .RightPower.current
+    .PowerBalance.current
     {
         label
         {

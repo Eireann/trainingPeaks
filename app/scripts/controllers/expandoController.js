@@ -2,6 +2,7 @@
 [
     "setImmediate",
     "TP",
+    "utilities/charting/dataParser",
     "layouts/expandoLayout",
     "views/expando/graphView",
     "views/expando/mapView",
@@ -9,7 +10,7 @@
     "views/expando/lapsView",
     "views/expando/chartsView"
 ],
-function(setImmediate, TP, ExpandoLayout, GraphView, MapView, StatsView, LapsView, ChartsView)
+function(setImmediate, TP, DataParser, ExpandoLayout, GraphView, MapView, StatsView, LapsView, ChartsView)
 {
     return TP.Controller.extend(
     {
@@ -30,6 +31,7 @@ function(setImmediate, TP, ExpandoLayout, GraphView, MapView, StatsView, LapsVie
 
             this.views = {};
 
+            this.dataParser = new DataParser();
             _.bindAll(this, "onModelFetched");
         },
 
@@ -38,8 +40,8 @@ function(setImmediate, TP, ExpandoLayout, GraphView, MapView, StatsView, LapsVie
             this.closeViews();
             this.preFetchDetailData();
 
-            this.views.graphView = new GraphView({ model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise });
-            this.views.mapView = new MapView({ model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise });
+            this.views.graphView = new GraphView({ model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise, dataParser: this.dataParser });
+            this.views.mapView = new MapView({ model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise, dataParser: this.dataParser });
             this.views.statsView = new StatsView({ model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise });
             this.views.lapsView = new LapsView({ model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise });
             this.views.chartsView = new ChartsView({ model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise });
@@ -76,15 +78,25 @@ function(setImmediate, TP, ExpandoLayout, GraphView, MapView, StatsView, LapsVie
 
             var self = this;
 
+            var flatSamples = this.model.get("detailData").get("flatSamples");
+            this.dataParser.loadData(flatSamples);
+
             setImmediate(function()
             {
                 self.layout.graphRegion.show(self.views.graphView);
             });
 
-            setImmediate(function()
+            if (this.dataParser.hasLatLongData)
             {
-                self.layout.mapRegion.show(self.views.mapView);
-            });
+                this.layout.showMap();
+                setImmediate(function()
+                {
+                    self.layout.mapRegion.show(self.views.mapView);
+                });
+            } else
+            {
+                this.layout.hideMap();
+            }
 
             setImmediate(function()
             {
