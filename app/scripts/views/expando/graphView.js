@@ -217,7 +217,12 @@ function(
 
         onPlotHover: function(event, pos, item)
         {
-            this.trigger("graphhover", pos.x);
+            var options = {
+                msOffset: pos.x,
+                selected: false
+            };
+
+            this.trigger("graphhover", options);
         },
        
         onMouseLeave: function(event)

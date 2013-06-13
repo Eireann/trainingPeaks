@@ -231,8 +231,9 @@ function (
             this.selections = [];
         },
 
-        onGraphHover: function (msOffset)
+        onGraphHover: function (options)
         {
+            var msOffset = options.msOffset;
             if (this.dataParser.hasLatLongData)
             {
                 var index = this.dataParser.findIndexByMsOffset(msOffset);
