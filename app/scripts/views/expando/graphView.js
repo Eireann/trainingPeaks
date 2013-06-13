@@ -110,10 +110,7 @@ function(
                 return;
             
             this.$plot = this.$("#plot");
-            if (!this.$plot.height())
-            {
-                this.$plot.height(365);
-            }
+            this.$plot.height(this.getDesiredPlotHeight());
             this.drawPlot();
         },
 
@@ -410,6 +407,11 @@ function(
                 this.removeSelectionFromGraph(selection);
             }, this);
             this.selections = [];
+        },
+
+        getDesiredPlotHeight: function()
+        {
+            return this.dataParser.hasLatLongData ? 365 : 565;
         }
 
     });
