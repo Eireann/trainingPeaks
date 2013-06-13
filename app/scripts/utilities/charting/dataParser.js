@@ -224,7 +224,7 @@ function(chartColors, findIndexByMsOffset, convertToViewUnits)
                     // For some reason, a '0' value returns a NaN, check for it.
                     return value === 0 ? +0 : parseInt(convertToViewUnits(value, s.label.toLowerCase()), 10);
                 },
-                labelWidth: 40
+                labelWidth: 15
             };
 
             yaxes.push(axisOptions);
