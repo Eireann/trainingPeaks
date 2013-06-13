@@ -51,6 +51,17 @@
         }
     }
 
+    &.bottom
+    {
+        .hoverBox
+        {
+            .arrow
+            {
+                @include transform(translateY(80px));
+            }
+        }
+    }
+
     #closeIcon
     {
         position: absolute;

@@ -130,6 +130,7 @@ function(
             var onHoverHandler = function(flotItem, $tooltipEl)
             {
                 $tooltipEl.html(flotCustomToolTip(series, flotItem.series.label, flotItem.dataIndex, flotItem.datapoint[0], self.model.get("workoutTypeValueId")));
+                self.updateToolTipPosition($tooltipEl);
             };
             
             this.flotOptions = getDefaultFlotOptions(onHoverHandler);
@@ -145,6 +146,39 @@ function(
             
             this.plot = $.plot(this.$plot, series, this.flotOptions);
             this.bindToPlotEvents();
+        },
+
+        updateToolTipPosition: function ($tooltipEl)
+        {
+            var canvasWidth = this.plot.width();
+            var canvasHeight = this.plot.height();
+            var canvasLocation = this.plot.offset();
+            var tooltipWidth = $tooltipEl.width();
+            var tooltipHeight = $tooltipEl.height();
+            var tooltipLocation = $tooltipEl.offset();
+            
+            if (tooltipLocation.top + tooltipHeight > canvasLocation.top + canvasHeight)
+            {
+                $tooltipEl.css("top", tooltipLocation.top - tooltipHeight + "px");
+                $tooltipEl.addClass("bottom");
+            }
+            else
+            {
+                $tooltipEl.removeClass("bottom");
+            }
+            
+
+            if (tooltipLocation.left + tooltipWidth > canvasLocation.left + canvasWidth - 30)
+            {
+                $tooltipEl.css("left", tooltipLocation.left - tooltipWidth - 20 + "px");
+                $tooltipEl.removeClass("right").addClass("left");
+            }
+            else
+            {
+                $tooltipEl.removeClass("left").addClass("right");
+            }
+
+            
         },
 
         overlayGraphToolbar: function()

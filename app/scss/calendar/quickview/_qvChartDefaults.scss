@@ -166,4 +166,142 @@
 #flotTip
 {
     z-index: 999;
+    width: 76px;
+    padding: 0;
+
+    div
+    {
+        clear: both;
+    }
+
+    .hoverBoxContents
+    {
+        padding: 0 0 12px 0;
+    }
+
+    &.left
+    {
+        .hoverBox
+        {
+            .arrow
+            {
+                right: 4px;
+                @include transform(translateX(8px) rotate(45deg));
+                position: absolute;
+                top: 20px;
+
+            }
+        }
+    }
+
+    &.right
+    {
+        .hoverBox
+        {
+            .arrow
+            {
+                left: 1px;
+                @include transform(translateX(-35px) rotate(-45deg));
+                position: absolute;
+                top: 20px;
+            }
+        }
+    }
+
+    .details
+    {
+        padding: 2px 5px 8px 5px;
+    }
+
+    .time
+    {
+       font-family: $fontFamilyRegular;
+       font-size: $fontSizeLarge; 
+       text-align: center;
+       
+    }
+
+    .value
+    {
+       font-family: $fontFamilyHeavy;
+       font-size: $fontSizeSmall; 
+       color: $TPGrey4;
+       width: 35px;
+       float: left;
+       text-align: right;
+    }
+    
+    .units
+    {
+        float: right;
+        font-family: $fontFamilyRegular;
+        font-size: $fontSizeXSmall;
+        width: 31px;
+        text-align: left;
+        padding: 2px 0 0 3px;
+    }
+
+    .Cadence.current
+    {
+        label
+        {
+            color: $clrCadence;
+        }
+    }
+
+    .HeartRate.current
+    {
+        label
+        {
+            color: $clrHeartRate;
+        }
+    }
+
+    .Power.current
+    {
+        label
+        {
+            color: $clrPower;
+        }
+    }
+
+    .RightPower.current
+    {
+        label
+        {
+            color: $clrRightPower;
+        }
+    }
+
+    .Speed.current
+    {
+        label
+        {
+            color: $clrSpeed;
+        }
+    }
+
+    .Elevation.current
+    {
+        label
+        {
+            color: $clrElevation;
+        }
+    }
+
+    .Temperature.current
+    {
+        label
+        {
+            color: $clrTemperature;
+        }
+    }
+
+    .Torque.current
+    {
+        label
+        {
+            color: $clrTorque;
+        }
+    }
 }

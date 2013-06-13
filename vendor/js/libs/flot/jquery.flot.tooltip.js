@@ -77,7 +77,7 @@
                         .css({
                             left: that.tipPosition.x + that.tooltipOptions.shifts.x,
                             top: that.tipPosition.y + that.tooltipOptions.shifts.y
-                        })
+                        }).addClass("right")
                         .show();
 
                     // run callback
@@ -86,7 +86,7 @@
                     }
                 }
                 else {
-                    $tip.hide().html('');
+                   // $tip.hide().html('');
                 }
             });
 
