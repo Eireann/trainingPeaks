@@ -166,7 +166,7 @@
 #flotTip
 {
     z-index: 999;
-    min-width: 76px;
+    min-width: 90px;
     padding: 0;
 
     div
@@ -239,7 +239,7 @@
        font-family: $fontFamilyHeavy;
        font-size: $fontSizeSmall; 
        color: $TPGrey4;
-       width: 35px;
+       width: 45px;
        float: left;
        text-align: right;
        white-space: nowrap;
@@ -264,9 +264,9 @@
         float: left;
         font-family: $fontFamilyRegular;
         font-size: $fontSizeXSmall;
-        width: 31px;
+        min-width: 35px;
         text-align: left;
-        padding: 2px 0 0 3px;
+        padding: 2px 5px 0 3px;
         margin-left: 3px;
     }
 
