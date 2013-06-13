@@ -86,7 +86,7 @@
                     }
                 }
                 else {
-                   // $tip.hide().html('');
+                    $tip.hide().html('');
                 }
             });
 
