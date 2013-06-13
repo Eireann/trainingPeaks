@@ -25,8 +25,8 @@
             xDateFormat: null,
             yDateFormat: null,
             shifts: {
-                x: 10,
-                y: 20
+                x: 20,
+                y: -20
             },
             defaultTheme: true,
 
