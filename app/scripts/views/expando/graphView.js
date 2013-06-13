@@ -159,7 +159,7 @@ function(
             
             if (tooltipLocation.top + tooltipHeight > canvasLocation.top + canvasHeight)
             {
-                $tooltipEl.css("top", tooltipLocation.top - tooltipHeight + "px");
+                $tooltipEl.css("top", tooltipLocation.top - tooltipHeight + 60 + "px");
                 $tooltipEl.addClass("bottom");
             }
             else
@@ -170,7 +170,7 @@ function(
 
             if (tooltipLocation.left + tooltipWidth > canvasLocation.left + canvasWidth - 30)
             {
-                $tooltipEl.css("left", tooltipLocation.left - tooltipWidth - 20 + "px");
+                $tooltipEl.css("left", tooltipLocation.left - tooltipWidth - 40 + "px");
                 $tooltipEl.removeClass("right").addClass("left");
             }
             else

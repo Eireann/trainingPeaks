@@ -208,6 +208,18 @@
         }
     }
 
+    &.bottom
+    {
+        .hoverBox
+        {
+            .arrow
+            {
+                top: 100px;
+            }
+        }
+    }
+
+
     .details
     {
         padding: 2px 5px 8px 5px;
