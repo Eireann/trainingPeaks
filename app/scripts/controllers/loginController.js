@@ -2,9 +2,10 @@
 [
     "TP",
     "layouts/loginLayout",
-    "views/loginView"
+    "views/loginView",
+    "views/userMessageView"
 ],
-function(TP, LoginLayout, LoginView)
+function(TP, LoginLayout, LoginView, UserMessageView)
 {
     return TP.Controller.extend(
     {
@@ -42,11 +43,23 @@ function(TP, LoginLayout, LoginView)
             theMarsApp.clientEvents.logEvent({ Event: { Type: "Login", Label: "Login", AppContext: "Login" } });
         },
 
-        onLogout: function()
+        onLogout: function(message)
         {
             theMarsApp.router.navigate("login");
-            theMarsApp.reloadApp();
+            setImmediate(function()
+            {
+                if (false)
+                {
+                    var view = new UserMessageView({ template: message });
+                    view.render();
+                    view.onClose = function ()
+                    {
+                        theMarsApp.reloadApp();
+                    };
+                }
+                else
+                    theMarsApp.reloadApp();
+            });
         }
-        
     });
 });

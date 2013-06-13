@@ -38,7 +38,6 @@ function(moment, setImmediate, TP, CalendarDayView, WeekSummaryView, CalendarWee
 
             if (!this.collection)
                 throw "CalendarWeekView requires a collection";
-
             this.waiting = $('<div class="calendarWeekView waiting"> </div>');
 
             // when any of our child views update, recalculate all of their heights

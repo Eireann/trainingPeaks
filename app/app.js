@@ -11,6 +11,7 @@ define(
     "controllers/loginController",
     "controllers/calendar/calendarController",
     "router",
+    "hbs!templates/views/notAllowedForAlpha",
     "marionette.faderegion",
     "jqueryui/tooltip"
 ],
@@ -25,7 +26,8 @@ function(
     NavigationController,
     LoginController,
     CalendarController,
-    Router)
+    Router,
+    notAllowedForAlphaTemplate)
 {
 
     var theApp = new TP.Application();
@@ -92,13 +94,35 @@ function(
             
             self.user.fetch().done(function()
             {
-                self.session.saveUserToLocalStorage(self.user);
-                self.fetchAthleteSettings();
-                self.userFetchPromise.resolve();
+                if (self.featureAllowedForUser("alpha1", self.user))
+                {
+                    self.session.saveUserToLocalStorage(self.user);
+                    self.fetchAthleteSettings();
+                    self.userFetchPromise.resolve();
+                }
+                else
+                    self.session.logout(notAllowedForAlphaTemplate);
             }).fail(function()
             {
                 self.userFetchPromise.reject();
             });
+        };
+
+        this.featureAllowedForUser = function(feature, user)
+        {
+            switch (feature)
+            {
+                case "alpha1":
+                    {
+                        var userIsNotCoach = user.get("settings.account.isAthlete") && user.get("settings.account.coachType") === 0;
+                        var userIsInAlphaACL = _.contains(user.get("settings.account.accessGroupIds"), 999999);
+                        return userIsNotCoach && userIsInAlphaACL;
+                    }
+                    break;
+                case "beta1":
+                    return false;
+            }
+            throw "Feature does not exist";
         };
 
         this.fetchAthleteSettings = function()
