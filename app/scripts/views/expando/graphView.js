@@ -52,7 +52,7 @@ function(
 
             this.detailDataPromise = options.detailDataPromise;
             this.dataParser = options.dataParser;
-            this.lastFilterPeriod = 0;
+            this.lastFilterPeriod = 5;
             this.selections = [];
 
             this.firstRender = true;
