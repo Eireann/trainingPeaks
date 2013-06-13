@@ -40,7 +40,7 @@ function(formatDateTime, convertToViewUnits, unitLabels, flotToolTipTemplate)
         }
 
         return true;
-    }
+    };
 
     return function(series, hoveredSeries, hoveredIndex, timeOffset, workoutType)
     {

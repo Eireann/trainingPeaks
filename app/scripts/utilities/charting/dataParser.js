@@ -211,8 +211,8 @@ function(chartColors, findIndexByMsOffset, convertToViewUnits)
                 label: s.label,
                 min: s.label === "Elevation" ? self.getElevationInfo().min : 0,
                 position: countdown-- > 0 ? "right" : "left",
-                color: chartColors.seriesColorByChannel[s.label],
-                tickColor: s.color,
+                color: "transparent",
+                tickColor: "transparent",
                 font:
                 {
                     color: chartColors.seriesColorByChannel[s.label]

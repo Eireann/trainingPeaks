@@ -63,6 +63,9 @@ function(TP, flotFilter, chartColors)
             [
                 {
                     min: 0,
+                    color: "transparent",
+                    tickColor: "transparent",
+
                     tickFormatter: function(value, axis)
                     {
                         var decimalHours = (value / (3600 * 1000));

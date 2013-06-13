@@ -222,7 +222,7 @@ function(
                 var ranges = {
                     xaxis: {
                         from: this.selectedWorkoutStatsForRange.get("begin"),
-                        to: this.selectedWorkoutStatsForRange.get("end"),
+                        to: this.selectedWorkoutStatsForRange.get("end")
                     }
                 };
                 this.plot.setSelection(ranges, true);
