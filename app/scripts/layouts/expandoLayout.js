@@ -24,12 +24,12 @@ function(TP, expandoLayoutTemplate)
 
         showMap: function()
         {
-            $(this.mapRegion.el).removeClass("hidden");
+            $("#expandoLeftColumn").removeClass("mapHidden");
         },
 
         hideMap: function()
         {
-            $(this.mapRegion.el).addClass("hidden");
+            $("#expandoLeftColumn").addClass("mapHidden");
         }
 
     });

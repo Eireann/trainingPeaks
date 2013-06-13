@@ -29,7 +29,7 @@ function(
         var pace = (1 / speed);
 
         // pace = minutes
-        return doFormat ? dateTimeUtils.format.decimalMinutesAsTime(pace, true, undefined, true) : pace;
+        return doFormat ? dateTimeUtils.format.decimalMinutesAsTime(pace, true) : pace;
     };
 
     var isNumeric = function(value)

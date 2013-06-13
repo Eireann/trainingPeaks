@@ -1,5 +1,6 @@
 ﻿define(
 [
+    "setImmediate",
     "underscore",
     "moment",
     "TP",
@@ -17,6 +18,7 @@
     "hbs!templates/views/quickView/workoutQuickView"
 ],
 function(
+    setImmediate,
     _,
     moment,
     TP,
@@ -130,6 +132,11 @@ function(
             this.initializeHeaderActions();
             this.initializeExpand();
             this.initializeSharing();
+
+            if (!this.model.get("title"))
+            {
+                this.once("render", this.focusTitle, this);
+            }
         },
         
         stopWorkoutDetailsFetch: function ()
@@ -249,6 +256,15 @@ function(
         stopWatchingFileUploads: function()
         {
             this.model.off("deviceFileUploaded", this.fetchDetailData, this);
+        },
+
+        focusTitle: function()
+        {
+            var titleField = this.$("#workoutTitleField");
+            setImmediate(function()
+            {
+                titleField.focus();
+            });
         }
     };
 

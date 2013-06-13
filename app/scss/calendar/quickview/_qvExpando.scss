@@ -121,6 +121,7 @@
     }
 }
 
+
 #expandoLeftColumn
 {
     float: left;
@@ -130,21 +131,35 @@
     @include
     nice-scrollbar;
 
+    &.mapHidden
+    {
+        #expandoMapRegion
+        {
+            display: none;
+        }
+
+        #expandoGraphRegion
+        {
+            height: 600px;
+
+            #plot
+            {
+                height: 565px;
+            }
+        }
+    }
+
     #expandoMapRegion
     {
         height: 320px;
         width: 100%;
-
-        &.hidden
-        {
-            display: none;
-        }
 
         #expandoMap
         {
             height: 320px;
             width: 100%;
         }
+
     }
 
     #expandoGraphRegion

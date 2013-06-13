@@ -28,13 +28,20 @@ function(_)
     {
 
         // to right of cursor
-        var x = point.plotX + 70;
+        var x = point.plotX + (labelWidth / 2) + 50;
         var y = point.plotY - 10;
 
-        // too low? move it up
-        if (y + labelHeight > (this.chart.chartHeight - 20))
+        // too far right? move it left
+        if (x + labelWidth> this.chart.chartWidth)
         {
-            y = this.chart.chartHeight - (labelHeight + 20);
+            x = point.plotX - (labelWidth / 2);
+        }
+
+        /*
+        // too low? move it up
+        if (y + labelHeight > (this.chart.chartHeight - 50))
+        {
+            y = this.chart.chartHeight - (labelHeight + 50);
         }
 
         // too high? move it down
@@ -44,16 +51,17 @@ function(_)
         }
 
         // too far right? move it left
-        if (x + labelWidth > (this.chart.chartWidth - 10))
+        if (x + labelWidth > (this.chart.chartWidth + 40))
         {
             x = point.plotX - labelWidth + 40;
         }
 
         // too far left? move it right
-        if (x <= 0)
+        if (x <= 100)
         {
-            x = 0;
+            x = 100;
         }
+        */
         
         return { x: x, y: y };
     };
@@ -155,14 +163,14 @@ function(_)
                 },
                 xAxis:
                 {
-                    offset: 2,
+                    offset: 3,
                     lineWidth: 1,
                     lineColor: "#636569",
                     labels:
                     {
                         enabled: false,
                         style: axisFontStyle,
-                        useHTML: true
+                        useHTML: false
                     },
                     title:
                     {
@@ -186,7 +194,7 @@ function(_)
                     labels:
                     {
                         style: axisFontStyle,
-                        useHTML: true
+                        useHTML: false
                     }
                 },
                 legend:
