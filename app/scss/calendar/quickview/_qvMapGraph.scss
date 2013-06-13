@@ -82,3 +82,31 @@
         margin-bottom: 5px;
     }
 }
+
+
+
+.leaflet-control-layers {
+	border-radius: 0;
+	-webkit-border-radius: 0;
+}
+
+.leaflet-bar {
+	border:none;
+	border-radius:0;
+	-webkit-border-radius: 0;
+}
+
+.leaflet-bar-part {
+	border-bottom:none;
+}
+
+.leaflet-bar-part-bottom {
+	border-radius:0;
+	-webkit-border-radius: 0;
+	margin-top:1px;
+}
+
+.leaflet-bar-part-top {
+	border-radius:0;
+	-webkit-border-radius: 0;
+}
