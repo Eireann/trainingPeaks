@@ -54,7 +54,6 @@ function(formatDateTime, convertToViewUnits, unitLabels, flotToolTipTemplate)
 
         _.each(enabledDataSeries, function(s)
         {
-            console.log(s.label);
             var value = s.data[hoveredIndex][1];
 
             if (!shouldDisplayTooltipValue(s.label, value))
