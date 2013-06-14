@@ -42,16 +42,14 @@ function(
                 observe: "distance",
                 onGet: "formatDistance",
                 onSet: "parseDistance",
-                updateModel: "updateModel",
-                precision: 2
+                updateModel: "updateModel"
             },
             "#distancePlannedField":
             {
                 observe: "distancePlanned",
                 onGet: "formatDistance",
                 onSet: "parseDistance",
-                updateModel: "updateModel",
-                precision: 2
+                updateModel: "updateModel"
             },
             "#totalTimeCompletedField":
             {
