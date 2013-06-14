@@ -117,15 +117,20 @@ function(
         drawPlot: function()
         {
             var self = this;
-            
+
+            if (!this.allSeries)
+            {
+                this.allSeries = this.dataParser.getSeries();
+            }
+
             this.dataParser.setDisabledSeries(this.disabledSeries);
 
-            var series = this.dataParser.getSeries();
-            var yaxes = this.dataParser.getYAxes(series);
+            var enabledSeries = this.dataParser.getSeries();
+            var yaxes = this.dataParser.getYAxes(enabledSeries);
 
             var onHoverHandler = function(flotItem, $tooltipEl)
             {
-                $tooltipEl.html(flotCustomToolTip(series, flotItem.series.label, flotItem.dataIndex, flotItem.datapoint[0], self.model.get("workoutTypeValueId")));
+                $tooltipEl.html(flotCustomToolTip(self.allSeries, enabledSeries, flotItem.series.label, flotItem.dataIndex, flotItem.datapoint[0], self.model.get("workoutTypeValueId")));
                 self.updateToolTipPosition($tooltipEl);
             };
             
@@ -140,7 +145,7 @@ function(
             if (this.plot)
                 this.unbindPlotEvents();
             
-            this.plot = $.plot(this.$plot, series, this.flotOptions);
+            this.plot = $.plot(this.$plot, enabledSeries, this.flotOptions);
             this.bindToPlotEvents();
         },
 

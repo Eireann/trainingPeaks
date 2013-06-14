@@ -11,7 +11,6 @@ function()
                 "Cadence": "#FFA500",
                 "Power": "#FF00FF",
                 "RightPower": "#FF00FF",
-                "PowerBalance": "#FF00FF",
                 "Speed": "#0b8200",
                 "Elevation": "#6e96b9",
                 "Temperature": "#0A0AFF",

@@ -50,12 +50,20 @@ function(
         this.init(plot);
     };
 
+
     // main plugin function
     FlotTooltip.prototype.init = function(plot) {
 
         var that = this;
 
-        plot.hooks.bindEvents.push(function (plot, eventHolder) {
+        plot.hooks.shutdown.push(function(plot, eventHolder)
+        {
+            $(plot.getPlaceholder()).unbind("plothover", that.onPlotHover);
+            eventHolder.unbind("mousemove", that.onMouseMove);
+        });
+
+        plot.hooks.bindEvents.push(function(plot, eventHolder)
+        {
 
             // get plot options
             that.plotOptions = plot.getOptions();
@@ -69,17 +77,18 @@ function(
             // create tooltip DOM element
             var $tip = that.getDomElement();
 
-            // bind event
-            $( plot.getPlaceholder() ).bind("plothover", function (event, pos, item) {
+            that.onPlotHover = function(event, pos, item)
+            {
                 that.updateTooltipPosition({ x: pos.pageX, y: pos.pageY });
 
-                if (item) {
+                if (item)
+                {
                     var tipText;
 
                     // convert tooltip content template to real tipText
                     tipText = that.stringFormat(that.tooltipOptions.content, item);
 
-                    $tip.html( tipText )
+                    $tip.html(tipText)
                         .css({
                             left: that.tipPosition.x + that.tooltipOptions.shifts.x,
                             top: that.tipPosition.y + that.tooltipOptions.shifts.y
@@ -87,7 +96,8 @@ function(
                         .show();
 
                     // run callback
-                    if(typeof that.tooltipOptions.onHover === 'function') {
+                    if (typeof that.tooltipOptions.onHover === 'function')
+                    {
                         that.tooltipOptions.onHover(item, $tip);
                     }
                 }
@@ -95,14 +105,19 @@ function(
                 {
                     $tip.hide().html('');
                 }
-            });
+            };
 
-            eventHolder.mousemove( function(e) {
+            that.onMouseMove = function(e)
+            {
                 var pos = {};
                 pos.x = e.pageX;
                 pos.y = e.pageY;
                 that.updateTooltipPosition(pos);
-            });
+            };
+
+            // bind event
+            $(plot.getPlaceholder()).bind("plothover", that.onPlotHover);
+            eventHolder.bind("mousemove", that.onMouseMove);
         });
     };
 

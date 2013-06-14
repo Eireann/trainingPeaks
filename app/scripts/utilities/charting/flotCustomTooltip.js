@@ -14,7 +14,6 @@ function(formatDateTime, convertToViewUnits, unitLabels, flotToolTipTemplate)
         "Elevation",
         "Power",
         "RightPower",
-        "PowerBalance",
         "Speed",
         "Pace",
         "Torque",
@@ -26,7 +25,6 @@ function(formatDateTime, convertToViewUnits, unitLabels, flotToolTipTemplate)
         "HeartRate",
         "Power",
         "RightPower",
-        "PowerBalance",
         "Speed",
         "Pace",
         "Torque"
@@ -42,7 +40,7 @@ function(formatDateTime, convertToViewUnits, unitLabels, flotToolTipTemplate)
         return true;
     };
 
-    return function(series, hoveredSeries, hoveredIndex, timeOffset, workoutType)
+    return function(allDataSeries, enabledDataSeries, hoveredSeriesName, hoveredIndex, timeOffset, workoutType)
     {
         var toolTipData =
         {
@@ -54,8 +52,9 @@ function(formatDateTime, convertToViewUnits, unitLabels, flotToolTipTemplate)
 
         var toolTipSeries = [];
 
-        _.each(series, function(s)
+        _.each(enabledDataSeries, function(s)
         {
+            console.log(s.label);
             var value = s.data[hoveredIndex][1];
 
             if (!shouldDisplayTooltipValue(s.label, value))
@@ -65,7 +64,7 @@ function(formatDateTime, convertToViewUnits, unitLabels, flotToolTipTemplate)
 
             if (s.label === "RightPower")
             {
-                var totalPower = _.find(series, function (ps) { return ps.label === "Power"; });
+                var totalPower = _.find(allDataSeries, function (ps) { return ps.label === "Power"; });
 
                 if (!totalPower)
                     return;
@@ -80,10 +79,10 @@ function(formatDateTime, convertToViewUnits, unitLabels, flotToolTipTemplate)
 
                 toolTipSeries.push(
                 {
-                    label: "PowerBalance",
+                    label: "RightPower",
                     value: +leftPowerPercentage + "% / " + rightPowerPercentage + "%",
                     units: "",
-                    current: (hoveredSeries === "Power" || hoveredSeries === "RightPower")
+                    current: (hoveredSeriesName === "Power" || hoveredSeriesName === "RightPower")
                 });
 
                 return;
@@ -99,10 +98,10 @@ function(formatDateTime, convertToViewUnits, unitLabels, flotToolTipTemplate)
                 units: unitLabels(fieldName)
             };
 
-            if (s.label === hoveredSeries)
+            if (s.label === hoveredSeriesName)
                 config.current = true;
 
-            if (s.label === "Power" && hoveredSeries === "RightPower")
+            if (s.label === "Power" && hoveredSeriesName === "RightPower")
                 config.current = true;
 
             toolTipSeries.push(config);
@@ -116,7 +115,7 @@ function(formatDateTime, convertToViewUnits, unitLabels, flotToolTipTemplate)
                     units: unitLabels("pace")
                 };
 
-                if (s.label === hoveredSeries)
+                if (s.label === hoveredSeriesName)
                     config.current = true;
 
                 toolTipSeries.push(config);

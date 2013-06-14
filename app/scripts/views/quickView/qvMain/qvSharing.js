@@ -132,7 +132,7 @@ function (
             {
                 twitterUrl = twitterUrl + "&url=" + escape(url);
             }
-            window.open(twitterUrl, 'twitterWindow', 'width=500, height=530');
+            window.open(twitterUrl, 'twitterWindow', 'width=500, height=530, top=0, left=0');
         },
         
         onFacebookIconClicked: function()
@@ -157,7 +157,7 @@ function (
                 var escapedUrl = escape(url);
                 facebookURL += "&link=" + escapedUrl + "&caption=" + escapedUrl;
             }
-            window.open(facebookURL, 'facebookWindow', 'width=950, height=525');
+            window.open(facebookURL, 'facebookWindow', 'width=950, height=525, top=0, left=0');
         },
 
         onLinkIconClicked: function(e)
