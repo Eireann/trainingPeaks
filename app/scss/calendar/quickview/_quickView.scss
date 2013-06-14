@@ -219,6 +219,21 @@ input[disabled='disabled']
         margin-left: 20px;
     }
 
+    .selectForm
+    {
+        text-align: right;
+        width: 100%;
+        display: inline-block;
+        margin-right: 10px;
+        margin-left: 20px;
+
+        label
+        {
+            float: left;
+            margin: 0 13px 0 68px;
+        }
+    }
+
     .values
     {
         text-align: left;
@@ -233,9 +248,26 @@ input[disabled='disabled']
         font-family: $fontFamilyHeavy;
     }
 
-    select
+
+
+    .selectboxit-options
     {
         width: 200px;
+    }
+
+    .selectboxit-container .selectboxit 
+    {
+        width: 200px !important; /* Width of the dropdown button */
+    }
+
+    .selectboxit-option
+    {
+        text-indent: 3px;
+    }
+
+    .selectboxit-option-icon-container 
+    {
+        margin-left: 0px;
     }
 
     input
