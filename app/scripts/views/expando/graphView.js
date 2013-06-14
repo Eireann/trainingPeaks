@@ -147,6 +147,8 @@ function(
             
             this.plot = $.plot(this.$plot, enabledSeries, this.flotOptions);
             this.bindToPlotEvents();
+
+            this.highlightOrZoomToPreviousSelection();
         },
 
         updateToolTipPosition: function($tooltipEl)
@@ -224,6 +226,13 @@ function(
 
             this.plot.resetZoom();
 
+            this.highlightPreviousSelection();
+
+            this.zoomed = false;
+        },
+
+        highlightPreviousSelection: function()
+        {
             if (this.selectedWorkoutStatsForRange)
             {
                 var ranges = {
@@ -234,8 +243,19 @@ function(
                 };
                 this.plot.setSelection(ranges, true);
             }
+        },
 
-            this.zoomed = false;
+        highlightOrZoomToPreviousSelection: function()
+        {
+            if(this.selectedWorkoutStatsForRange)
+            {
+                this.highlightPreviousSelection();
+
+                if (this.zoomed)
+                {
+                    this.zoomGraph();
+                }
+            }
         },
         
         applyFilter: function(period)
