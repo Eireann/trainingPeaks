@@ -24,7 +24,7 @@ function(chartColors, findIndexByMsOffset, convertToViewUnits)
         var dataByChannel = {};
         var previousElevation = null;
 
-        if (!flatSamples.samples)
+        if (!flatSamples || !flatSamples.samples)
         {
             return;
         }
