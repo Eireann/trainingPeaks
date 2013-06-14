@@ -10,8 +10,12 @@ function(TP)
 
         urlRoot: function()
         {
+            /*
+            athlete id not implemented yet in library controller
             var athleteId = theMarsApp.user.get("athletes.0.athleteId");
             return theMarsApp.apiRoot + "/exerciselibrary/v1/athletes/" + athleteId + "/commands/saveworkouttolibrary";
+            */
+            return theMarsApp.apiRoot + "/exerciselibrary/v1/commands/saveworkouttolibrary";
         },
 
         defaults:
