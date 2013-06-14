@@ -21,13 +21,6 @@ function(_, $, Backbone, TP, xhrData, app)
             this.mainRegion.$el = this.$body.find("#main");
         },
 
-        reset: function()
-        {
-            app.syncCachingEnabled = false;
-            this.removeFakeAjax();
-            app.resetAppToInitialState();
-        },
-
         startTheApp: function()
         {
 
@@ -59,6 +52,7 @@ function(_, $, Backbone, TP, xhrData, app)
                 //console.log("Ignoring history already started");
             }
 
+            this.setupFakeAjax();
         },
 
         stopTheApp: function()
@@ -178,11 +172,17 @@ function(_, $, Backbone, TP, xhrData, app)
 
         submitLogin: function(userData)
         {
-            app.router.navigate("logout", true);
-            app.router.navigate("login", true);
+            app.router.navigate("logout", { trigger: true });
+            app.router.navigate("login", { trigger: true });
             app.mainRegion.$el.find("input[name=Submit]").trigger("click");
             this.resolveRequest("POST", "Token", xhrData.token);
             this.resolveRequest("GET", "users/v1/user", userData);
+        },
+
+        startTheAppAndLogin: function(userData)
+        {
+            this.startTheApp();
+            this.submitLogin(userData);
         }
 
     };

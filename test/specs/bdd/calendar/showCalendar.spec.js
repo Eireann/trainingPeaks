@@ -11,32 +11,33 @@ function(
     theApp)
 {
 
-    xdescribe("open the calendar", function()
+    describe("open the calendar", function()
     {
-        var $el;
+        var $mainRegion;
 
         beforeEach(function()
         {
-            testHelpers.startTheApp();
-            $el = theApp.mainRegion.$el;
-            testHelpers.setupFakeAjax();
+            testHelpers.startTheAppAndLogin(xhrData.users.barbkprem);
+            $mainRegion = theApp.mainRegion.$el;
         });
 
-        // for some reason afterEach is undefined here, 
-        // but we can access it via jasmine.getEnv()
-        // need to cleanup our mess
-        jasmine.getEnv().afterEach(function()
+        it("Should display the calendar", function()
         {
-            testHelpers.reset();
+            expect($mainRegion.find("#calendarContainer").length).toBe(1);
         });
 
-
-        xit("Should display today", function()
+        it("Should display today in the calendar", function()
         {
-            testHelpers.submitLogin(xhrData.users.barbkprem);
-            theApp.router.navigate("calendar", true);
-            var todayElement = $el.find(".day.today");
-            expect(todayElement.length).toBe(1);
+            expect($mainRegion.find("#calendarContainer .day.today").length).toBe(1);
+        });
+
+        it("Should be able to navigate away and back to the calendar", function()
+        {
+            expect($mainRegion.find("#calendarContainer").length).toBe(1);
+            theApp.router.navigate("home", { trigger: true });
+            expect($mainRegion.find("#calendarContainer").length).toBe(0);
+            theApp.router.navigate("calendar", { trigger: true });
+            expect($mainRegion.find("#calendarContainer").length).toBe(1);
         });
 
     });

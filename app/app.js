@@ -202,8 +202,18 @@ function(
             this.controllers.navigationController = new NavigationController();
             this.controllers.loginController = new LoginController();
             this.controllers.calendarController = new CalendarController();
+        });
 
+        // add router
+        this.addInitializer(function()
+        {
             this.router = new Router();
+        });
+
+        // show navigation
+        this.addInitializer(function()
+        {
+            this.navRegion.show(this.controllers.navigationController.getLayout());
         });
 
         // Set up jQuery UI Tooltips
