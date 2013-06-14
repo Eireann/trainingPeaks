@@ -16,12 +16,43 @@ function(_, TP, navigationViewTemplate)
             template: navigationViewTemplate
         },
 
-        ui:
-        {
-        },
-        
         events:
         {
+            "click label": "onNavigationClicked"
+        },
+
+        initialize: function()
+        {
+            if (!this.model)
+                this.model = new TP.Model();
+        },
+
+        onRender: function()
+        {
+            this.onRouteChange(theMarsApp.router.getCurrentRoute());
+            this.watchForRouteChange();
+        },
+
+        watchForRouteChange: function()
+        {
+            theMarsApp.router.on("route", this.onRouteChange, this);
+            this.on("close", this.stopWatchingRouteChange, this);
+        },
+
+        stopWatchingRouteChange: function()
+        {
+            theMarsApp.router.off("route", this.onRouteChange, this);
+        },
+
+        onRouteChange: function(route)
+        {
+            this.model.set("route", route);
+        },
+        
+        onNavigationClicked: function(event)
+        {
+            var route = $(event.target).attr("id");
+            theMarsApp.router.navigate(route, { trigger: true });
         }
     });
 });

@@ -1,15 +1,24 @@
 ﻿@import "../globalCSS/tpstylesheet";
 @import "workoutColor";
+@import "workoutIcons";
 
 .workout
 {
     margin: 5px 4px 4px 2px;
-    @include box-shadow(0 1px 1.5px 0 #2c2c2c);
+    border-width: 1px;
+    border-style: solid;
+    border-color: $TPGrey2;
+   // @include box-shadow(0 1px 1.5px 0 #2c2c2c);
 
     &.dragHelper
     {
         opacity: 0.6;
         min-width: 150px;
+
+        .workoutSelected
+        {
+            display: block;
+        }
     }
 
     &.dragging
@@ -20,7 +29,10 @@
     .workoutSettings  
     {
         display: none;
-        float: right;
+        top: 0px;
+        right: 2px;
+		position: absolute;
+        z-index: 2;
 
         button
         {	
@@ -62,16 +74,15 @@
             {
                 width: 25px;
                 height: 25px;
-                background-color: $white;
                 float: left;
-                margin-top: 5px;
+                margin-top: 4px;
             }
 
             .workoutDistanceTime
             {
-                padding: 13px 0px 0px 30px;
+                padding: 14px 0px 0px 30px;
 
-                @include labels($navigationFontFamilyRegular, $fontSizeXLarge, $TPGrey4, normal);
+                @include labels($fontFamilyRegular, $fontSizeXLarge, $TPGrey4, normal);
                 label
                 {
                     display:inline-block;
@@ -88,11 +99,12 @@
         }
         .workoutBody
         {
+
+            color: $TPGrey4;
             padding: 2px 3px 3px 3px;
-            @include labels($navigationFontFamilyRegular, $fontSizeXSmall, $TPGrey4, normal);
+            @include labels($fontFamilyHeavy, $fontSizeXSmall, $TPGrey4, normal);
             label
             {
-                font-weight: bold;
                 cursor: inherit;
                 white-space: pre-wrap;
             
@@ -102,8 +114,8 @@
             {
                 margin-bottom: 0px;
                 font-size: $fontSizeXSmall;
-                font-color: $black;
-                font-family: $navigationFontFamilyRegular;
+                color: $TPGrey4;
+                font-family: $fontFamilyRegular;
                 text-align: left;
                 line-height: 12px;
                 cursor: inherit;
@@ -114,112 +126,20 @@
 
 } // end .workout
 
-
-
-#workoutHoverDiv
-{
-    z-index:99;
-    position:absolute;
-	
-	.hoverBoxContents {
-
-	}
-	
-	.mainShadow {
-		box-shadow: 0 2px 3px 0 #ADADAD;
-	}
-	
-	.bottomShadow
-    {
-		width:97%;
-    }
-	
-	.hoverBox .arrow {
-		box-shadow: 0 0 3px 1px #868686;
-		margin-left:19px;
-	}
-	
-	
-    .details
-    {
-        min-width: 100px;
-
-        @include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey4, normal);
-
-        label
-        {
-            margin-top:10px;
-            margin-bottom:2px;
-            cursor: inherit;
-        }
-
-        label:first
-        {
-            margin-top:0px;
-        }
-
-        .planned
-        {
-            color: $todayBlue ;
-            font-size:$fontSizeLarge;
-        }
-
-        .completed
-        {
-            color: $thisWeekBlue;
-            font-size:$fontSizeLarge;
-        }
-
-        .slash
-        {
-            color: $thisWeekBlue;
-            font-size:$fontSizeLarge;
-        }
-    }
-
-}
-
 #workoutSettingsDiv {
    
 	padding-left: 10px;
 	padding-bottom: 20px;
 
-	@include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey4, normal);
+	@include labels($fontFamilyRegular, $fontSizeSmall, $TPGrey3, normal);
 	label
 	{
 		padding-top: 2px;
         cursor: pointer;
 	}
 
-	.arrow
-    {
-        width: 15px;
-        height: 15px;
-        @include transform(translateY(-10px) rotate(45deg));
-        @include calc(margin-left, "50% - 20");
-    }
-
-	.colorBar
-    {
-        bottom: 15px;
-    }
-
-	.bottomShadow
-    {
-        bottom: 14px;
-    }
-
 	.hoverBoxContents {
 		min-width: 75px;
-	}
-	
-	.hoverBox .colorBar {
-	  	bottom: 14px;
-		height: 4px;
-	}
-	
-	.hoverBox .mainShadow {
-		bottom: 18px;
 	}
 
 }
@@ -242,4 +162,35 @@
 			margin-left:50px;
 			}
 	}
+}
+
+.workout
+{
+    
+    .workoutDiv
+    {
+        position: relative;
+    }
+
+    .workoutSelected
+    {
+        display: none;
+		left: -1px;
+		right: -1px;
+        top: -1px;
+        bottom: -1px;
+		position: absolute;
+    	background-color: #bcd1eb;
+        border: 1px solid #0043ff;
+		opacity: 0.5;
+        z-index: 1;
+    }
+
+    &.selected
+    {
+        .workoutSelected
+        {
+            display: block;
+        }
+    }
 }

@@ -1,13 +1,26 @@
 ﻿define(
 [
     "underscore",
+    "setImmediate",
+    "jqueryui/widget",
+    "jquerySelectBox",
     "backbone.marionette",
     "TP",
     "views/library/exerciseLibraryItemView",
     "views/library/exerciseLibraryAddItemView",
     "hbs!templates/views/library/exerciseLibraryView"
 ],
-function(_, Marionette, TP, ExerciseLibraryItemView, ExerciseLibraryAddItemView, exerciseLibraryViewTemplate)
+function(
+    _,
+    setImmediate,
+    jqueryUiWidget,
+    jquerySelectBox,
+    Marionette,
+    TP,
+    ExerciseLibraryItemView,
+    ExerciseLibraryAddItemView,
+    exerciseLibraryViewTemplate
+    )
 {
     return TP.CompositeView.extend(
     {
@@ -37,6 +50,17 @@ function(_, Marionette, TP, ExerciseLibraryItemView, ExerciseLibraryAddItemView,
             "change #librarySelect": "onSelectLibrary"
         },
 
+        onRender: function()
+        {
+            var self = this;
+            setImmediate(function()
+            {
+                self.$("#librarySelect").selectBoxIt({
+                    dynamicPositioning: false
+                });
+            });
+        },
+
         addToLibrary: function()
         {
             var view = new ExerciseLibraryAddItemView({});
@@ -47,6 +71,38 @@ function(_, Marionette, TP, ExerciseLibraryItemView, ExerciseLibraryAddItemView,
         {
             this.libraries = options && options.exerciseLibraries ? options.exerciseLibraries : new TP.Collection();
             this.libraries.on('reset', this.loadAllExercises, this);
+            this.listenForSelection();
+        },
+
+        listenForSelection: function()
+        {
+            var view = this;
+            this.libraries.each(function(library)
+            {
+                library.on("select", view.onItemSelect, view);
+            });
+
+            this.on("library:unselect", this.onUnSelect, this);
+        },
+
+        onItemSelect: function(model)
+        {
+            if (this.selectedItem && this.selectedItem !== model)
+            {
+                this.selectedItem.trigger("unselect", this.selectedItem);
+            }
+
+            this.selectedItem = model;
+            this.trigger("select");
+        },
+
+        onUnSelect: function()
+        {
+            if (this.selectedItem)
+            {
+                this.selectedItem.trigger("unselect", this.selectedItem);
+                this.selectedItem = null;
+            }
         },
 
         loadAllExercises: function()
@@ -54,9 +110,11 @@ function(_, Marionette, TP, ExerciseLibraryItemView, ExerciseLibraryAddItemView,
 
             this.switchLibrary(this.libraries.models[0]);
 
+            var view = this;
             this.libraries.each(function(library)
             {
                 library.fetchExercises();
+                library.on("select", view.onItemSelect, view);
             });
 
         },

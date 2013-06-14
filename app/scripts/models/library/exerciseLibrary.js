@@ -32,6 +32,7 @@ function (TP, LibraryExercisesCollection)
         initialize: function(options)
         {
             this.exercises = new LibraryExercisesCollection();
+            this.exercises.on("select", this.onSelect, this);
         },
 
         fetchExercises: function(force)
@@ -44,6 +45,11 @@ function (TP, LibraryExercisesCollection)
                 this.exercises.exerciseLibraryId = this.get("exerciseLibraryId");
             }
             this.exercises.fetch({ reset: true });
+        },
+
+        onSelect: function(model)
+        {
+            this.trigger("select", model);
         }
 
     });

@@ -79,6 +79,7 @@ function(TP, setImmediate, jqueryOutside, UserConfirmationView, selectedRangeSet
         onShiftClicked: function(e)
         {
             this.selectedRangeCollection.trigger("range:shiftwizard");
+            this.trigger("beforeShift");
             this.close();
         },
 

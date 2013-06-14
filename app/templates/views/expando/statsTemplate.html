@@ -9,10 +9,10 @@
     <div class="statsRow" id="duration">
         <label>{{$ "Duration" }}</label>
         {{#if movingTime }}
-        <span class="value movingTime">{{ formatTime movingTime }}</span>
+        <span class="value movingTime">{{ formatTimeToHundredths movingTime }}</span>
         <span class="units totalTime">({{ formatTime totalTime }})</span>
         {{ else }}
-        <span class="value movingTime">{{ formatTime totalTime }}</span>
+        <span class="value movingTime">{{ formatTimeToHundredths totalTime }}</span>
         {{/if}}
     </div>
     {{/if}}
@@ -33,10 +33,10 @@
     </div>
     {{/if}}
 
-    {{#if tssActual }}
+    {{#if trainingStressScoreActual }}
     <div class="statsRow" id="tss">
         <label>{{ getUnitsLabel "tss" workoutTypeValueId this }}</label>
-        <span class="value">{{ conversion "formatTSS" tssActual }}</span>
+        <span class="value">{{ conversion "formatTSS" trainingStressScoreActual }}</span>
         <span class="units"></span>
     </div>
     {{/if}}
@@ -60,7 +60,7 @@
     {{#if normalizedPowerActual }}
     <div class="statsRow" id="normalizedPower">
         <label>{{$ "NP" }}</label>
-        <span class="value">{{ conversion "formatInteger" normalizedPowerActual }}</span>
+        <span class="value">{{ conversion "formatPower" normalizedPowerActual }}</span>
         <span class="units">{{ getUnitsLabel "power" }}</span>
     </div>
     {{/if}}
@@ -77,17 +77,17 @@
         {{#if powerPulseDecoupling }}
         <div class="statsRow" id="powerPulseDecoupling">
             <label>{{$ "pwhr" }}</label>
-            <span class="value">{{ conversion "formatPwHr" powerPulseDecoupling }}</span>
+            <span class="value">{{ conversion "formatPwHr" powerPulseDecoupling }}%</span>
             <span class="units"></span>
         </div>
         {{/if}}
     {{/ifWorkoutType }}
 
-    {{#ifWorkoutType workoutTypeValueId "Run" }}
+    {{#ifWorkoutType workoutTypeValueId "Run" "Walk" "Other" "Swim" }}
         {{#if speedPulseDecoupling }}
         <div class="statsRow" id="speedPulseDecoupling">
             <label>{{$ "pahr" }}</label>
-            <span class="value">{{ conversion "formatPaHr" speedPulseDecoupling }}</span>
+            <span class="value">{{ conversion "formatPaHr" speedPulseDecoupling }}%</span>
             <span class="units"></span>
         </div>
         {{/if}}
@@ -96,7 +96,7 @@
     {{#if efficiencyFactor }}
     <div class="statsRow" id="efficiencyFactor">
         <label>{{$ "EF" }}</label>
-        <span class="value">{{ conversion "formatInteger" efficiencyFactor }}</span>
+        <span class="value">{{ conversion "formatEfficiencyFactor" efficiencyFactor this }}</span>
         <span class="units"></span>
     </div>
     {{/if}}
@@ -104,7 +104,7 @@
     {{#if elevationGain }}
     <div class="statsRow" id="elevationGain">
         <label>{{$ "EGain" }}</label>
-        <span class="value">{{ conversion "formatElevation" elevationGain }}</span>
+        <span class="value">{{ conversion "formatElevationGain" elevationGain }}</span>
         <span class="units">{{ getUnitsLabel "elevation" }}</span>
     </div>
     {{/if}}
@@ -112,18 +112,18 @@
     {{#if elevationLoss }}
     <div class="statsRow" id="elevationLoss">
         <label>{{$ "ELoss" }}</label>
-        <span class="value">{{ conversion "formatElevation" elevationLoss }}</span>
+        <span class="value">{{ conversion "formatElevationLoss" elevationLoss }}</span>
         <span class="units">{{ getUnitsLabel "elevation" }}</span>
     </div>
     {{/if}}
 
-    {{#if grade }}
+    {{#ifHasValueAfterFormatted "formatGrade" grade this }}
     <div class="statsRow" id="grade">
         <label>{{$ "Grade" }}</label>
-        <span class="value">{{ conversion "formatPercent" grade }}</span>
-        <span class="units">%</span>
+        <span class="value">{{ conversion "formatGrade" grade }}%</span>
+        <span class="units"></span>
     </div>
-    {{/if}}
+    {{/ifHasValueAfterFormatted}}
 
     {{#if vam }}
     <div class="statsRow" id="vam">
@@ -141,22 +141,34 @@
     </div>
     {{/if}}
 
+    {{#if powerBalanceLeft }}
+    <div class="statsRow" id="powerBalance">
+        <label>{{$ "PowerBalance" }}</label>
+        <span class="value">{{ conversion "formatPowerBalance" powerBalanceLeft }}/{{ conversion "formatPowerBalance" powerBalanceRight }}%</span>
+        <span class="units"></span>
+    </div>
+    {{/if}}
+
     {{#if minMaxAvg}}
     <div class="minMaxAvg">
 
         <div class="minMaxAvgRow minMaxAvgHeaders">
             <span></span>
             <label>{{$ "Min" }}</label>
-            <label>{{$ "Max" }}</label>
+            <span class="separator" />
             <label>{{$ "Avg" }}</label>
+            <span class="separator" />
+            <label>{{$ "Max" }}</label>
         </div>
 
         {{#if minMaxPower }}
         <div class="minMaxAvgRow statsRow" id="minMaxPower">
             <label>{{$ "Power" }}</label>
-            <span class="value">{{ conversion "formatInteger" minimumPower }}</span>
-            <span class="value">{{ conversion "formatInteger" averagePower }}</span>
-            <span class="value">{{ conversion "formatInteger" maximumPower }}</span>
+            <span class="value">{{ conversion "formatPower" minimumPower }}</span>
+            <span class="separator" />
+            <span class="value">{{ conversion "formatPower" averagePower }}</span>
+            <span class="separator" />
+            <span class="value">{{ conversion "formatPower" maximumPower }}</span>
             <span class="units">{{ getUnitsLabel "power" }}</span>
         </div>
         {{/if}}
@@ -164,9 +176,11 @@
         {{#if minMaxHeartRate }}
         <div class="minMaxAvgRow statsRow" id="minMaxHeartRate">
             <label>{{$ "HeartRate" }}</label>
-            <span class="value">{{ conversion "formatInteger" minimumHeartRate }}</span>
-            <span class="value">{{ conversion "formatInteger" averageHeartRate }}</span>
-            <span class="value">{{ conversion "formatInteger" maximumHeartRate }}</span>
+            <span class="value">{{ conversion "formatHeartRate" minimumHeartRate }}</span>
+            <span class="separator" />
+            <span class="value">{{ conversion "formatHeartRate" averageHeartRate }}</span>
+            <span class="separator" />
+            <span class="value">{{ conversion "formatHeartRate" maximumHeartRate }}</span>
             <span class="units">{{ getUnitsLabel "heartrate" }}</span>
         </div>
         {{/if}}
@@ -174,9 +188,11 @@
         {{#if minMaxCadence }}
         <div class="minMaxAvgRow statsRow" id="minMaxCadence">
             <label>{{$ "Cadence" }}</label>
-            <span class="value">{{ conversion "formatInteger" minimumCadence }}</span>
-            <span class="value">{{ conversion "formatInteger" averageCadence }}</span>
-            <span class="value">{{ conversion "formatInteger" maximumCadence }}</span>
+            <span class="value">{{ conversion "formatCadence" minimumCadence }}</span>
+            <span class="separator" />
+            <span class="value">{{ conversion "formatCadence" averageCadence }}</span>
+            <span class="separator" />
+            <span class="value">{{ conversion "formatCadence" maximumCadence }}</span>
             <span class="units">{{ getUnitsLabel "cadence" }}</span>
         </div>
         {{/if}}
@@ -185,7 +201,9 @@
         <div class="minMaxAvgRow statsRow" id="minMaxSpeed">
             <label>{{$ "Speed" }}</label>
             <span class="value">{{ conversion "formatSpeed" minimumSpeed }}</span>
+            <span class="separator" />
             <span class="value">{{ conversion "formatSpeed" averageSpeed }}</span>
+            <span class="separator" />
             <span class="value">{{ conversion "formatSpeed" maximumSpeed }}</span>
             <span class="units">{{ getUnitsLabel "speed" }}</span>
         </div>
@@ -195,7 +213,9 @@
         <div class="minMaxAvgRow statsRow" id="minMaxPace">
             <label>{{$ "Pace" }}</label>
             <span class="value">{{ conversion "formatPace" minimumSpeed }}</span>
+            <span class="separator" />
             <span class="value">{{ conversion "formatPace" averageSpeed }}</span>
+            <span class="separator" />
             <span class="value">{{ conversion "formatPace" maximumSpeed }}</span>
             <span class="units">{{ getUnitsLabel "pace" }}</span>
         </div>
@@ -204,9 +224,11 @@
         {{#if minMaxElevation }}
         <div class="minMaxAvgRow statsRow" id="minMaxElevation">
             <label>{{$ "Elevation" }}</label>
-            <span class="value">{{ conversion "formatElevation" elevationMinimum }}</span>
-            <span class="value">{{ conversion "formatElevation" elevationAverage }}</span>
-            <span class="value">{{ conversion "formatElevation" elevationMaximum }}</span>
+            <span class="value">{{ conversion "formatElevation" minimumElevation }}</span>
+            <span class="separator" />
+            <span class="value">{{ conversion "formatElevation" averageElevation }}</span>
+            <span class="separator" />
+            <span class="value">{{ conversion "formatElevation" maximumElevation }}</span>
             <span class="units">{{ getUnitsLabel "elevation" }}</span>
         </div>
         {{/if}}
@@ -214,15 +236,27 @@
         {{#if minMaxTemp }}
         <div class="minMaxAvgRow statsRow" id="minMaxTemp">
             <label>{{$ "Temperature" }}</label>
-            <span class="value">{{ conversion "formatTemperature" tempMin }}</span>
-            <span class="value">{{ conversion "formatTemperature" tempAvg }}</span>
-            <span class="value">{{ conversion "formatTemperature" tempMax }}</span>
+            <span class="value">{{ conversion "formatTemperature" minimumTemp }}</span>
+            <span class="separator" />
+            <span class="value">{{ conversion "formatTemperature" averageTemp }}</span>
+            <span class="separator" />
+            <span class="value">{{ conversion "formatTemperature" maximumTemp }}</span>
             <span class="units">{{ getUnitsLabel "temperature" }}</span>
         </div>
         {{/if}}
 
+        {{#if minMaxTorque }}
+        <div class="minMaxAvgRow statsRow" id="minMaxTorque">
+            <label>{{$ "Torque" }}</label>
+            <span class="value">{{ conversion "formatTorque" minimumTorque }}</span>
+            <span class="separator" />
+            <span class="value">{{ conversion "formatTorque" averageTorque }}</span>
+            <span class="separator" />
+            <span class="value">{{ conversion "formatTorque" maximumTorque }}</span>
+            <span class="units">{{ getUnitsLabel "torque" }}</span>
+        </div>
+        {{/if}}
     </div>
     {{/if}}
 
 </div>
-

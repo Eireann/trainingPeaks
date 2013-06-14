@@ -2,12 +2,16 @@
 [
     "TP",
     "leaflet",
-    "leafletGoogleTiles"
+    "leafletGoogleTiles",
+    "./leafletIcons",
+    "utilities/charting/chartColors"
 ],
 function(
     TP,
     Leaflet,
-    LeafletGoogleTiles
+    LeafletGoogleTiles,
+    LeafletIcons,
+    chartColors
     )
 {
 
@@ -25,6 +29,7 @@ function(
             var cloudmadeLayer = new L.TileLayer(cloudmadeURL);
             var leafletLayer = new L.TileLayer(leafletURL);
             var gmapLayer = new L.Google('ROADMAP');
+            var gTerrainLayer = new L.Google("TERRAIN");
 
             // Leaflet needs to know where to find images
             L.Icon.Default.imagePath = theMarsApp.assetsRoot + "images/leaflet";
@@ -34,13 +39,14 @@ function(
                 scrollWheelZoom: false,
                 doubleClickZoom: false,
                 boxZoom: true,
-                layers: [gmapLayer],
+                layers: [gTerrainLayer],
                 center: new L.LatLng(40.012369, -105.132353),
                 zoom: 8
             };
 
             var baseMaps =
             {
+                "Terrain": gTerrainLayer,
                 "Google": gmapLayer,
                 "OSM": osmLayer,
                 "Cloudmade": cloudmadeLayer,
@@ -55,19 +61,52 @@ function(
 
         setMapData: function(map, latLonArray)
         {
+            var options = { color: chartColors.mapRoute };
+            var polyline = this.createPolyline(latLonArray, options);
+            polyline.addTo(map);
             if (latLonArray && latLonArray.length > 0)
             {
-                var leafletLatLongs = [];
+                map.fitBounds(polyline.getBounds());
+            }
+            return polyline;
+        },
 
-                _.each(latLonArray, function (point)
+        addTransparentBuffer: function(map, latLonArray)
+        {
+            var polyline = this.createPolyline(latLonArray, { color: "transparent", opacity: 0, weight: 40 });
+            polyline.addTo(map);
+            return polyline;
+        },
+
+        createPolyline: function(latLonArray, polyLineOptions)
+        {
+
+            var leafletLatLongs = [];
+
+            if (latLonArray && latLonArray.length > 0)
+            {
+                _.each(latLonArray, function(point)
                 {
                     if (point[0] && point[1])
                         leafletLatLongs.push(new L.LatLng(parseFloat(point[0]).toFixed(6), parseFloat(point[1]).toFixed(6)));
                 });
 
-                var polyline = L.polyline(leafletLatLongs, { color: "red", smoothFactor: 1.0, opacity: 1, weight: 5 }).addTo(map);
-                map.fitBounds(polyline.getBounds());
             }
+
+            var options = { smoothFactor: 1.0, opacity: 1, weight: 2 };
+            if (polyLineOptions)
+            {
+                _.extend(options, polyLineOptions);
+            }
+
+            return L.polyline(leafletLatLongs, options);
+ 
+        },
+
+        createHighlight: function(latLonArray)
+        {
+            var polylineOptions = { color: chartColors.mapSelection };
+            return this.createPolyline(latLonArray, polylineOptions);
         },
 
         addMarkers: function(map, latLonArray)
@@ -91,30 +130,63 @@ function(
 
         calculateAndAddMileMarkers: function(map, dataParser, maxMarkers)
         {
-            this.addMarkers(map, this.calculateMileMarkers(dataParser, maxMarkers));
+            var markers = this.calculateMileMarkers(dataParser, maxMarkers);
+            _.each(markers, function(markerOptions)
+            {
+                markerOptions.options.icon = new LeafletIcons.MileMarker(markerOptions);
+            });
+
+            this.addMarkers(map, markers);
+        },
+
+        addStartMarker: function(map, latLng)
+        {
+            var marker =
+            {
+                latLng: latLng,
+                options: {}
+            };
+
+            marker.options.icon = new LeafletIcons.StartMarker(marker);
+            this.addMarkers(map, [marker]);
+        },
+
+        addFinishMarker: function(map, latLng)
+        {
+            var marker =
+            {
+                latLng: latLng,
+                options: {}
+            };
+
+            marker.options.icon = new LeafletIcons.FinishMarker(marker);
+            this.addMarkers(map, [marker]);
         },
 
         calculateMileMarkers: function(dataParser, maxMarkers)
         {
-            var latLonArray = dataParser.getLatLonArray();
-            var distances = dataParser.dataByChannel.Distance;
-            var intervals = this.calculateMileMarkerInterval(distances[distances.length - 1][1], maxMarkers);
-            var nextMarker = intervals.distanceBetweenMarkers;
             var markers = [];
-            var units = TP.utils.units.getUnitsLabel("distance");
-            var markerNumber = intervals.countBy;
-
-            // array index 0 = ms offset, 1 = distance (in meters?)
-            for(var i = 0; i < distances.length && i < latLonArray.length; i++)
+            var latLonArray = dataParser.getLatLonArray();
+            if (latLonArray)
             {
-                if (distances[i][1] >= nextMarker)
+                var distances = dataParser.dataByChannel.Distance;
+                var intervals = this.calculateMileMarkerInterval(distances[distances.length - 1][1], maxMarkers);
+                var nextMarker = intervals.distanceBetweenMarkers;
+
+                var units = TP.utils.units.getUnitsLabel("distance");
+                var markerNumber = intervals.countBy;
+
+                // array index 0 = ms offset, 1 = distance (in meters?)
+                for (var i = 0; i < distances.length && i < latLonArray.length; i++)
                 {
-                    markers.push({ latLng: latLonArray[i], options: { riseOnHover: true, title: markerNumber + " " + units } });
-                    nextMarker += intervals.distanceBetweenMarkers;
-                    markerNumber += intervals.countBy;
+                    if (distances[i][1] >= nextMarker)
+                    {
+                        markers.push({ latLng: latLonArray[i], options: { riseOnHover: true, title: markerNumber + " " + units, number: markerNumber } });
+                        nextMarker += intervals.distanceBetweenMarkers;
+                        markerNumber += intervals.countBy;
+                    }
                 }
             }
-
             return markers;
         },
 

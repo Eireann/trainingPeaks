@@ -19,7 +19,7 @@
 	"VirtualCoach": "Virtual Coach",
 	"BasicEdition": "Basic Edition",
 	"Upgrade": "UPGRADE",
-	"Planning": "Tools",
+	"Tools": "Tools",
 	"Today": "Today",
 	"Month": "Month",
 	"Week": "Week",
@@ -202,7 +202,7 @@
 	"SelectShiftItemsString": "Select the items you want to move.",
 	"ItemsOnAllSelectedDays": "Items on all selected days",
 	"ItemsWithinSpecifiedDateRange": "Items within a specified date range",
-	"ItemsOnAfterSpecifiedStartDate": "items on and after specified start date",
+	"ItemsOnAfterSpecifiedStartDate": "Items on and after specified start date",
 	"SelectDateRange": "Select date range",
 	"From": "From",
 	"To": "To",
@@ -215,6 +215,7 @@
 	"SelectNumberOfDays": "Select number of days",
 	"SelectNumberOfWeeks": "Select number of weeks",
 	"Summary": "Summary",
+    "SUMMARY": "SUMMARY",
 
     "BreakthroughTooltip": "Breakthrough workout",
     "UploadAttachmentTooltip": "Upload attachment",
@@ -235,7 +236,6 @@
     "Collapse": "Collapse",
     "View": "View",
     "Charts": "Charts",
-    "Tools": "Tools",
     "Layout": "Layout",
     "Comment": "Comment",
     "Options": "Options",
@@ -283,5 +283,39 @@
     "Work": "Work",
     "pwhr": "Pw:Hr",
     "pahr": "Pa:Hr",
-    "NGP": "NGP"
+    "NGP": "NGP",
+
+    "PeakHeartRate": "Peak Heart Rate",
+    "PeakPower": "Peak Power",
+    "PeakSpeed": "Peak Speed",
+    "PeakPace": "Peak Pace",
+    "PeakCadence": "Peak Cadence",
+    "UncheckAll": "Uncheck All",
+
+    "EntireWorkout": "Entire Workout",
+
+    "DateError": "Please make sure you've chosen a valid date or date range to continue.",
+    "ShiftWizardIntError": "Please select a valid number of days or weeks (1000 to -1000).",
+
+    "Public": "Public",
+    "ShortUrl": "Short URL",
+    "Go": "Go",
+    "ElevationCorrection": "Elevation Correction",
+    "Original": "Original",
+    "Corrected": "Corrected",
+    "Gain": "Gain",
+    "Loss": "Loss",
+    "PowerBalance": "Pwr. Bal.",
+    "PublicTooltip": "Share your completed workout",
+    "PublicTooltipTwitter": "Share your completed workout on Twitter",
+    "PublicTooltipFacebook": "Share your completed workout on Facebook",
+    "PublicTooltipLink": "Share a link to your completed workout",
+    "PublicTooltipEmail": "Share your completed workout by email",
+
+    "ClickToDownload": "Click Radio Button then click on link to download attachment to disk",
+    "NotAllowedForAlpha": "Unfortunately, your account has not been activated for Alpha testing",
+
+    "Start": "Start",
+    "Finish": "Finish"
+
 }

@@ -22,7 +22,7 @@
             "jqueryOutside": "../vendor/js/libs/jquery/jquery.ba-outside-events",
             "jqueryTimepicker": "../vendor/js/libs/jquery-timepicker/jquery.timepicker",
             "jqueryTextAreaResize": "../vendor/js/libs/jquery/jquery.autosize",
-            "jquerySelectBox": "../vendor/js/libs/jquery/chosen.jquery",
+            "jquerySelectBox": "../vendor/js/libs/jquery/jquery.selectBoxIt",
 
             // Underscore & Lodash (provided by Lodash)
             "lodash": "../vendor/js/libs/lodash.TP",

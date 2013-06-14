@@ -5,7 +5,10 @@
     "jqueryTimepicker",
     "TP",
     "views/quickView/qvMain/qvWorkoutTypeMenuView",
-    "views/quickView/qvMain/qvContextMenuView"
+    "views/quickView/qvMain/qvContextMenuView",
+    "views/quickView/qvMain/qvOptionsMenuView",
+    "views/expando/commentsEditor",
+    "utilities/workout/workoutTypes"
 ],
 function (
     _,
@@ -13,7 +16,10 @@ function (
     timepicker,
     TP,
     WorkoutTypeMenuView,
-    QVContextMenuView
+    QVContextMenuView,
+    QVOptionsMenuView,
+    ExpandoCommentsEditorView,
+    workoutType
 )
 {
     var qvHeaderActions =
@@ -22,8 +28,13 @@ function (
         {
             "click #breakThrough": "onBreakThroughClicked",
             "click #date": "onDateClicked",
-            "click .workoutIcon": "onWorkoutIconClicked",
-            "click #menuIcon": "onMenuIconClicked"
+            "click .workoutIconLarge": "onWorkoutIconClicked",
+            "click #menuIcon": "onMenuIconClicked",
+            "focus input.workoutTitle": "onTitleFocus",
+            "blur input.workoutTitle": "onTitleBlur",
+            "keyup input.workoutTitle": "onTitleChanged",
+            "click button#options": "onOptionsClicked",
+            "click button#comment": "onCommentsClicked"
         },
 
         headerUi:
@@ -64,9 +75,15 @@ function (
             }
             this.$(".grayHeader").addClass(this.getComplianceCssClassName());
             this.$(".grayHeader").addClass(this.getPastOrCompletedCssClassName());
+            this.$(".grayHeader").addClass(this.getWorkoutTypeCssClassName());
 
-            this.$(".chzn-select").chosen();
+            this.$(".workoutTitle").css('width', this.titleWidth());
 
+        },
+
+        getWorkoutTypeCssClassName: function ()
+        {
+            return TP.utils.workout.types.getNameById(this.model.get("workoutTypeValueId")).replace(/ /g, "");
         },
 
         getPastOrCompletedCssClassName: function()
@@ -116,10 +133,20 @@ function (
 
         onWorkoutIconClicked: function()
         {
-            var offset = this.$(".workoutIcon").offset();
-            var typesMenu = new WorkoutTypeMenuView({ workoutTypeId: this.model.get("workoutTypeValueId") });
+            var icon = this.$(".workoutIconLarge");
+            var direction = this.expanded ? "right" : "left";
+            var typesMenu = new WorkoutTypeMenuView({ workoutTypeId: this.model.get("workoutTypeValueId"), direction: direction });
             typesMenu.on("selectWorkoutType", this.onSelectWorkoutType, this);
-            typesMenu.render().right(offset.left - 5).top(offset.top - 15);
+
+            if (direction === "right")
+            {
+                typesMenu.setPosition({ fromElement: icon, left: icon.outerWidth() + 10, top: -15 });
+            } else
+            {
+                typesMenu.setPosition({ fromElement: icon, right: -10, top: -15 });
+            }
+
+            typesMenu.render();
         },
 
         onSelectWorkoutType: function(workoutTypeId)
@@ -129,12 +156,13 @@ function (
 
         onMenuIconClicked: function()
         {
-            var offset = this.$("#menuIcon").offset();
+            var menuIcon = this.$("#menuIcon");
             var menu = new QVContextMenuView({ model: this.model });
             menu.on("delete", this.onDeleteWorkout, this);
             menu.on("cut", this.close, this);
             menu.on("copy", this.close, this);
-            menu.render().bottom(offset.top).left(offset.left - 20);
+            menu.setPosition({ fromElement: menuIcon, bottom: 0, top: menuIcon.height(), left: -30 });
+            menu.render();
         },
 
         removeUpdateHeaderOnChange: function()
@@ -182,7 +210,7 @@ function (
 
             // if nothing was planned, we can't fail to complete it properly ...
 
-            return "ComplianceGreen";
+            return "ComplianceNone";
         },
 
         updateHeaderOnChange: function()
@@ -207,8 +235,50 @@ function (
                 description = description.replace(/BT: /, "");
                 this.model.set("description", description);
             }
-        }
+        },
 
+        onTitleFocus: function()
+        {
+            $(document).tooltip("close");
+            $(document).tooltip("disable");
+        },
+
+        onTitleBlur: function()
+        {
+            $(document).tooltip("enable");
+        },
+
+        onTitleChanged: function ()
+        {
+            this.$(".workoutTitle").css('width', this.titleWidth());
+        },
+
+        titleWidth: function ()
+        {
+            return (this.$(".workoutTitle").val().length + 1) * 8 + 10 + 'px';
+        },
+        
+        onOptionsClicked: function(e)
+        {
+            if (this.model.get("workoutTypeValueId") === workoutType.getIdByName("Swim") ||
+               !(this.model && this.model.get("detailData") &&
+                 this.model.get("detailData").get("flatSamples") &&
+                 this.model.get("detailData").get("flatSamples").hasLatLngData))
+                return;
+            
+            var offset = $(e.currentTarget).offset();
+
+            this.optionsMenu = new QVOptionsMenuView({ model: this.model, parentEl: this.$el });
+            this.optionsMenu.render().top(offset.top + 18).left(offset.left);
+        },
+        
+        onCommentsClicked: function (e)
+        {
+            var offset = $(e.currentTarget).offset();
+
+            this.commentsEditorView = new ExpandoCommentsEditorView({ model: this.model, parentEl: this.$el });
+            this.commentsEditorView.render().top(offset.top - 13).left(offset.left + 87);
+        }
     };
 
     return qvHeaderActions;

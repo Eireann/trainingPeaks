@@ -1,5 +1,55 @@
 ﻿@import "../../globalCSS/tpstylesheet";
 
+.mapMileMarkerIcon {
+    position: absolute;
+
+    // use margin-left and margin-top to center this div over the map point
+    margin-left: -9px;
+    margin-top: -9px;
+	
+	@include linearGradient(top, #fefefe, #e0dede);
+    color: #005695;
+    font-size: $fontSizeXSmall;
+    padding: 1px 3px;
+	min-width: 18px;
+    text-align: center;
+	border: 1px solid #b5b5b5;
+	box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.18);
+}
+
+.mapStartMarkerIcon {
+    position: absolute;
+    height: 20px;
+    width: 30px;
+    // use margin-left and margin-top to center this div over the map point
+    margin-left: 2px;
+    margin-top: -10px;
+
+    background: url(../../assets/images/leaflet/map-icon-start.png) no-repeat 0 0;
+
+    @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
+        background-size:30px 20px;
+        background: url(../../assets/images/leaflet/map-icon-start@2x.png) no-repeat 0 0;
+    }
+
+}
+
+.mapFinishMarkerIcon {
+    position: absolute;
+    height: 20px;
+    width: 30px;
+    // use margin-left and margin-top to center this div over the map point
+    margin-left: -32px;
+    margin-top: -10px;
+
+    background: url(../../assets/images/leaflet/map-icon-finish.png) no-repeat 0 0;
+
+    @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
+        background-size:30px 20px;
+        background: url(../../assets/images/leaflet/map-icon-finish@2x.png) no-repeat 0 0;
+    }
+}
+
 .mapGraphTab
 {
     padding: 10px 0px 10px 7px;
@@ -19,6 +69,7 @@
         margin-right: 10px;
         margin-top: 5px;
         margin-bottom: 5px;
+        border: 1px solid $TPGrey5;
     }
 
     #quickViewGraph
@@ -30,4 +81,76 @@
         margin-top: 5px;
         margin-bottom: 5px;
     }
+}
+
+
+
+.leaflet-control-layers {
+	border-radius: 0;
+	-webkit-border-radius: 0;
+}
+
+.leaflet-bar {
+	border:none;
+	border-radius:0;
+	-webkit-border-radius: 0;
+}
+
+.leaflet-bar-part {
+	border-bottom:none;
+}
+
+.leaflet-bar-part-bottom {
+	border-radius:0;
+	-webkit-border-radius: 0;
+	margin-top:1px;
+}
+
+.leaflet-bar-part-top {
+	border-radius:0;
+	-webkit-border-radius: 0;
+}
+
+.leaflet-control-zoom a {
+	width:23px;
+	height:23px;
+}
+
+.leaflet-control-zoom a.leaflet-control-zoom-in, 
+.leaflet-control-zoom a.leaflet-control-zoom-out { 
+	color: transparent;
+}
+
+.leaflet-control-zoom-in {
+	background: url(../../assets/images/leaflet/sprite-map-zoom.png) no-repeat rgba(255, 255, 255, 0.8) !important;
+	&:hover {
+		background: url(../../assets/images/leaflet/sprite-map-zoom.png) -23px 0 rgba(255, 255, 255, 1) !important;
+	}
+}
+
+.leaflet-control-zoom-out {
+	background: url(../../assets/images/leaflet/sprite-map-zoom.png) no-repeat 0 -23px rgba(255, 255, 255, 0.8) !important;
+	&:hover {
+		background: url(../../assets/images/leaflet/sprite-map-zoom.png) -23px -23px rgba(255, 255, 255, 1) !important;
+	}
+}
+
+
+.leaflet-control-layers .leaflet-control-layers-list, .leaflet-control-layers-expanded .leaflet-control-layers-toggle {
+	margin-bottom:0 !important;
+	padding:5px;
+}
+
+.leaflet-control-layers label:last-child {
+	input {
+		margin-bottom:0;
+	}
+}
+
+.leaflet-control-layers-selector {
+	top: 0px;
+}
+
+.leaflet-control-layers span {
+	padding-left:3px;	
 }

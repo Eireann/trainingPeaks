@@ -3,12 +3,11 @@ define(
     "TP",
     "setImmediate",
     "jqueryOutside",
-    "views/calendar/newItemView",
     "views/userConfirmationView",
     "hbs!templates/views/calendar/day/calendarDaySettings",
     "hbs!templates/views/confirmationViews/deleteConfirmationView"
 ],
-function(TP, setImmediate, jqueryOutside, NewItemView, UserConfirmationView, calendarDaySettingsTemplate, deleteConfirmationView)
+function(TP, setImmediate, jqueryOutside, UserConfirmationView, calendarDaySettingsTemplate, deleteConfirmationView)
 {
     return TP.ItemView.extend(
     {
@@ -30,16 +29,12 @@ function(TP, setImmediate, jqueryOutside, NewItemView, UserConfirmationView, cal
         
         onAddClicked: function(e)
         {
-            var newItemView = new NewItemView({ model: this.model });
-            newItemView.render();
+            this.trigger("add", e);
             this.hideSettings(e);
         },
 
-        hideSettings: function (e)
+        hideSettings: function(e)
         {
-
-            this.parentEl.find(".daySelected").css("display", "none");
-
             if (!this.closed)
                 this.close();
         },
@@ -112,8 +107,9 @@ function(TP, setImmediate, jqueryOutside, NewItemView, UserConfirmationView, cal
             this.hideSettings(e);
         },
 
-        onShiftClicked: function (e)
+        onShiftClicked: function(e)
         {
+            this.trigger("beforeShift");
             this.hideSettings(e);
             this.model.trigger("day:shiftwizard");
         },

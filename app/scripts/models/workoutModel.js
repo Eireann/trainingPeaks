@@ -10,7 +10,6 @@ function (_, moment, TP, WorkoutDetailsModel, WorkoutDetailDataModel)
 {
     var WorkoutModel = TP.APIModel.extend(
     {
-
         cacheable: true,
 
         webAPIModelName: "Workout",
@@ -42,6 +41,7 @@ function (_, moment, TP, WorkoutDetailsModel, WorkoutDetailDataModel)
             "makeWorkoutPublic": null,
             "sharedWorkoutInformationKey": null,
             "sharedWorkoutInformationExpireKey": null,
+            "shortUrl": null,
             "distance": null,
             "distancePlanned": null,
             "distanceCustomized": null,
@@ -233,6 +233,11 @@ function (_, moment, TP, WorkoutDetailsModel, WorkoutDetailDataModel)
             if (!this.postActivityComments)
             {
                 this.postActivityComments = new TP.Collection();
+
+                if (this.has("workoutComments") && this.get("workoutComments").length)
+                {
+                    this.postActivityComments.set(this.get("workoutComments"));
+                }
             }
             return this.postActivityComments;
         },

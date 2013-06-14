@@ -6,7 +6,6 @@ define(
     "views/calendar/workout/calendarWorkoutDragAndDrop",
     "views/calendar/workout/calendarWorkoutUserCustomization",
     "views/quickView/workoutQuickView",
-    "views/calendar/workout/calendarWorkoutHoverView",
     "views/calendar/workout/calendarWorkoutSettings",
     "hbs!templates/views/calendar/workout/calendarWorkout"
 ],
@@ -17,7 +16,6 @@ function(
     calendarWorkoutDragAndDrop,
     calendarWorkoutUserCustomization,
     WorkoutQuickView,
-    CalendarWorkoutHoverView,
     CalendarWorkoutSettingsView,
     CalendarWorkoutTemplate)
 {
@@ -30,14 +28,14 @@ function(
 
         today: moment().format(TP.utils.datetime.shortDateFormat),
 
-        ui: {
-
-        },
-
         className: function()
         {
-            return "workout " +
-                this.getDynamicCssClassNames();
+            return "workout " + this.getDynamicCssClassNames();
+        },
+
+        ui:
+        {
+            
         },
 
         getDynamicCssClassNames: function()
@@ -92,7 +90,7 @@ function(
 
             // if nothing was planned, we can't fail to complete it properly ...
 
-            return "ComplianceGreen";
+            return "ComplianceNone";
         },
 
         getPastOrCompletedCssClassName: function()
@@ -132,17 +130,15 @@ function(
             this.initializeUserCustomization();
             this.initializeDragAndDrop();
 
+            this.model.on("select", this.setSelected, this);
+            this.model.on("unselect", this.setUnSelected, this);
         },
 
         events:
         {
-            "click": "workoutClicked",
-
-            "mouseenter .workoutIcon": "showWorkoutSummaryHover",
-            "mouseleave .workoutIcon": "hideWorkoutSummaryHover",
-
-            "click .workoutSettings": "workoutSettingsClicked"
-
+            "mousedown": "workoutSelected",
+            "mouseup": "workoutClicked",
+            "mouseup .workoutSettings": "workoutSettingsClicked"
         },
 
         keepSettingsButtonVisible: function()
@@ -157,12 +153,17 @@ function(
 
         workoutSettingsClicked: function(e)
         {
+            if (e && e.button && e.button === 2)
+            {
+                return;
+            }
+
             e.preventDefault();
 
             this.keepSettingsButtonVisible();
             var offset = $(e.currentTarget).offset();
             this.workoutSettings = new CalendarWorkoutSettingsView({ model: this.model });
-            this.workoutSettings.render().bottom(offset.top + 5).center(offset.left - 2);
+            this.workoutSettings.render().bottom(offset.top + 10).center(offset.left - 2);
             this.workoutSettings.on("close", this.allowSettingsButtonToHide, this);
             this.workoutSettings.on("mouseleave", this.onMouseLeave, this);
         },
@@ -171,6 +172,10 @@ function(
         {
             if (e)
             {
+
+                if (e.button && e.button === 2)
+                    return;
+
                 if (e.isDefaultPrevented())
                     return;
 
@@ -178,25 +183,19 @@ function(
             }
 
             this.allowSettingsButtonToHide();
+            this.model.trigger("select", this.model);
             var view = new WorkoutQuickView({ model: this.model });
             view.render();
         },
 
-        showWorkoutSummaryHover: function()
+        setSelected: function()
         {
-            if (!this.workoutHoverView || this.workoutHoverView.isClosed)
-            {
-                var iconOffset = this.$('.workoutIcon').offset();
-                this.workoutHoverView = new CalendarWorkoutHoverView({ model: this.model, className: this.getDynamicCssClassNames(), top: iconOffset.top, left: iconOffset.left });
-                this.workoutHoverView.render();
-                this.workoutHoverView.on("mouseleave", this.hideWorkoutSummaryHover, this);
-            }
+            this.$el.addClass("selected");
         },
 
-        hideWorkoutSummaryHover: function(e)
+        setUnSelected: function()
         {
-            this.workoutHoverView.close();
-            delete this.workoutHoverView;
+            this.$el.removeClass("selected");
         },
 
         checkForWorkoutId: function()
@@ -213,6 +212,15 @@ function(
         {
             // setup dynamic class names - in case they changed since initial render
             this.$el.attr("class", this.className());
+            if (this.model.selected)
+            {
+                this.setSelected();
+            }
+        },
+
+        workoutSelected: function()
+        {
+            this.model.trigger("select", this.model);
         }
 
     };

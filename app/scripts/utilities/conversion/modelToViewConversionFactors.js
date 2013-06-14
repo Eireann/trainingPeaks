@@ -27,6 +27,16 @@ function(unitsConstants)
         {
             English: 3.28084,
             Metric: 1
+        },
+        "efficiencyfactor":
+        {
+            English: 60 * 1.09361,
+            Metric: 60
+        },
+        "torque":
+        {
+            English: 8.850745793490558,
+            Metric: 1
         }
     };
 

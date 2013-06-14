@@ -1,0 +1,25 @@
+﻿// use requirejs() instead of define() here, to keep jasmine test runner happy
+requirejs(
+[
+    "TP",
+    "views/quickView/qvMain/qvAttachmentUploadMenuView"
+],
+function (TP, AttachmentUploadMenuView)
+{
+    describe("AttachmentUploadMenuView", function ()
+    {
+        beforeEach(function ()
+        {
+        });
+
+        it("has an initializer", function()
+        {
+            expect(AttachmentUploadMenuView).toBeDefined();
+
+            var model = new TP.Model();
+            model.set("details", new TP.Model());
+            
+            expect(function() { new AttachmentUploadMenuView({ model: model, direction: "left" }); }).not.toThrow();
+        });
+    });
+});

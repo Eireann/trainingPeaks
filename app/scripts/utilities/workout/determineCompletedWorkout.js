@@ -7,6 +7,13 @@ function(moment, datetime)
 {
     function determineCompletedWorkout(workout)
     {
+
+        // workout can be a model or an object/json
+        if (!workout.hasOwnProperty("workoutDay") && workout.hasOwnProperty("attributes"))
+        {
+            workout = workout.attributes;
+        }
+
         // not completed in future ...
         if (moment(workout.workoutDay).format(datetime.shortDateFormat) > moment().format(datetime.shortDateFormat))
         {

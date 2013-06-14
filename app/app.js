@@ -12,6 +12,7 @@ define(
     "controllers/loginController",
     "controllers/calendar/calendarController",
     "router",
+    "hbs!templates/views/notAllowedForAlpha",
     "marionette.faderegion",
     "jqueryui/tooltip"
 ],
@@ -27,7 +28,8 @@ function(
     NavigationController,
     LoginController,
     CalendarController,
-    Router)
+    Router,
+    notAllowedForAlphaTemplate)
 {
 
     var theApp = new TP.Application();
@@ -84,6 +86,34 @@ function(
             }
         });
 
+        this.addInitializer(function()
+        {
+            var self = this;
+            window.onerror = function (errorMessage, url, lineNumber)
+            {
+                if (self.clientEvents)
+                {
+                    self.clientEvents.logEvent({ Event: { Type: "Error", Label: "UncaughtException", AppContext: url + " Error: " + errorMessage + " Line: " + lineNumber } });
+                }
+                return true;
+            };
+            
+            $(document).ajaxError(function(event, xhr)
+            {
+                if (xhr.status === 400 || xhr.status === 500)
+                {
+                    if (self.clientEvents)
+                    {
+                        var responseText = xhr.responseText;
+                        var status = xhr.status;
+                        var statusText = xhr.statusText;
+
+                        self.clientEvents.logEvent({ Event: { Type: "Error", Label: "AjaxError", AppContext: "ResponseText: " + responseText + ", Status: " + status + ", StatusText:" + statusText } });
+                    }
+                }
+            });
+        });
+
         // setup ajax auth and caching and timezone handling
         this.addInitializer(function()
         {
@@ -118,25 +148,38 @@ function(
         this.fetchUser = function()
         {
             var self = this;
-
-            var storedUser = this.session.getUserFromLocalStorage();
-            if (storedUser && storedUser.get("athletes.0.athleteId"))
+            
+            self.user.fetch().done(function()
             {
-                self.user.set(storedUser.attributes);
-                self.fetchAthleteSettings();
-                self.userFetchPromise.resolve();
-            } else
-            {
-                self.user.fetch().done(function()
+                if (self.featureAllowedForUser("alpha1", self.user))
                 {
                     self.session.saveUserToLocalStorage(self.user);
                     self.fetchAthleteSettings();
                     self.userFetchPromise.resolve();
-                }).fail(function()
-                {
-                    self.userFetchPromise.reject();
-                });
+                }
+                else
+                    self.session.logout(notAllowedForAlphaTemplate);
+            }).fail(function()
+            {
+                self.userFetchPromise.reject();
+            });
+        };
+
+        this.featureAllowedForUser = function(feature, user)
+        {
+            switch (feature)
+            {
+                case "alpha1":
+                    {
+                        var userIsNotCoach = user.get("settings.account.isAthlete") && user.get("settings.account.coachType") === 0;
+                        var userIsInAlphaACL = _.contains(user.get("settings.account.accessGroupIds"), 999999);
+                        return userIsNotCoach && userIsInAlphaACL;
+                    }
+                    break;
+                case "beta1":
+                    return false;
             }
+            throw "Feature does not exist";
         };
 
         this.fetchAthleteSettings = function()
@@ -200,7 +243,6 @@ function(
                     position.top -= (self.height() + 20);
                 }
                 */
-                
                 
                 if (position.left > $(window).outerWidth() - 100)
                 {
@@ -294,6 +336,15 @@ function(
             window.location.reload();
         };
 
+        var wwwRoots =
+        {
+            live: "http://www.trainingpeaks.com",
+            uat: "http://www.uat.trainingpeaks.com",
+            dev: "http://www.dev.trainingpeaks.com",
+            local: "http://localhost:8905",
+            todd: "DEV20-T430:8901"
+        };
+
         var apiRoots =
         {
             live: "https://tpapi.trainingpeaks.com",
@@ -318,7 +369,7 @@ function(
         // point to appropriate api server
         this.apiRoot = apiRoots[apiRootName];
         this.oAuthRoot = oAuthRoots[apiRootName];
-        this.wwwRoot = "http://www.trainingpeaks.com";
+        this.wwwRoot = wwwRoots[apiRootName];
 
         // app root for router and history
         if (apiRootName !== 'live')

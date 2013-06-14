@@ -2,17 +2,14 @@
 [
     "underscore",
     "TP",
-    "utilities/stickitMixin"
+    "utilities/stickitMixin",
+    "utilities/data/timeInZonesGenerator",
+    "utilities/data/peaksGenerator"
 ],
-function(
-    _,
-    TP,
-    stickitUtilsMixin
-)
+function(_, TP, stickitUtilsMixin, timeInZonesGenerator, ThePeaksGenerator)
 {
-
-    var stickitBindingsMixin = {
-
+    var stickitBindingsMixin =
+    {
         initializeStickit: function()
         {
             this.on("render", this.stickitOnRender, this);
@@ -39,13 +36,14 @@ function(
 
         buildTimeInZonesBindings: function()
         {
-            var timeInZones = this.getOrCreateTimeInZones();
+            var timeInZones = timeInZonesGenerator(this.metric, this.zoneSettingName, this.model, this.workoutModel);
             _.each(timeInZones.timeInZones, function(timeInZone, index)
             {
                 var inputFieldCssId = "#timeInZone" + index;
                 var modelFieldName = "timeIn" + this.metric + "Zones.timeInZones." + index + ".seconds";
 
-                var binding = {
+                var binding =
+                {
                     observe: modelFieldName,
                     updateModel: "updateModel",
                     inputId: inputFieldCssId
@@ -61,13 +59,14 @@ function(
 
         buildPeaksBindings: function()
         {
-            var peaks = this.getPeaksData();
+            var peaks = ThePeaksGenerator.generate(this.metric, this.model);
             _.each(peaks, function(peak, index)
             {
                 var inputFieldCssId = "#" + peak.id;
                 var modelFieldName = "meanMax" + this.metric + "s.meanMaxes." + peak.modelArrayIndex + ".value";
 
-                var binding = {
+                var binding =
+                {
                     observe: modelFieldName,
                     updateModel: "updateModel",
                     inputId: inputFieldCssId
@@ -93,7 +92,8 @@ function(
                 this.model.save();
 
                 // new workout? save the workout first, then save the details
-            } else
+            }
+            else
             {
                 var self = this;
                 this.workoutModel.save().done(function()

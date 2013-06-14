@@ -31,26 +31,26 @@
 .expandedViewsButtons
 {
     display:none;
-    width: 440px;
     height: 80px;
     float: left;
     margin-left: 10px;
-    @include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey3, normal);
+    @include labels($fontFamilyRegular, $fontSizeSmall, $TPGrey3, normal);
     @include buttons(0, 77px, $fontSizeSmall);
 
     button
     {
         padding-top: 3px;
-        color: $TPGrey3;
         margin: 5px 0 2px 0;
     }
 
     .views
     {
         margin-left: 12px;
-        margin-top: 7px;
+        margin-right: 12px;
         width: 120px;
         height: 80px;
+        border-left: solid 1px $TPGrey2;
+        padding: 7px 0 0 12px;
         float: left;
         
 
@@ -121,111 +121,222 @@
     }
 }
 
+
 #expandoLeftColumn
 {
     float: left;
-    width: calc(100% - 335px);
+    @include
+    calc(width, "100% - 335px");
     overflow-y: scroll;
-    @include nice-scrollbar;
+    @include
+    nice-scrollbar;
+
+    &.mapHidden
+    {
+        #expandoMapRegion
+        {
+            display: none;
+        }
+
+        #expandoGraphRegion
+        {
+            height: 600px;
+
+            #plot
+            {
+                height: 565px;
+            }
+        }
+    }
 
     #expandoMapRegion
     {
-        height: 350px;
+        height: 320px;
         width: 100%;
 
         #expandoMap
         {
-            height: 350px;
+            height: 320px;
             width: 100%;
         }
+
     }
 
     #expandoGraphRegion
     {
+        padding-top: 15px;
+        padding-left: 10px;
+        padding-right: 10px;
         height: 400px;
         width: 100%;
 
-		.graphToolbar {
-			padding:0;
-			margin:10px 55px 0 0;
-			
-			button {
-				font-size:$fontSizeSmall;
-				font-weight:normal;
-				padding:3px 0 4px 0;
-				margin:0;
-				width:44px;
-				float:left;
-				box-shadow:none;
-				@include linearGradient(top, #ffffff, #dfddde);
-				background-color:#fff;
-				color:$TPGrey3;
-				border-color:#808080;
-				
-				&.graphZoomButton, 
-				&.graphDistanceButton {
-					margin-right:25px;
-					border-left:none;
-				}
-				&.graphResetButton {
-					border-right:none;
-				}
-				&.graphSeriesButton {
-					border-right:none;
-					}	
-				&.graphHeartRateButton {
-					@include linearGradient(top, #f8b3b6, #e61101);
-					color:#ffffff;
-					}
-				&.graphSpeedButton {
-					@include linearGradient(top, #b5d8ff, #0f7ffd);
-					color:#ffffff;
-				}			
-			}
-			button:last-of-type {
-				border-right:1px solid #808080;
-			}
-	
-		}
+        #graphToolbar
+        {
+            height: 35px;
+        }
+
+        #plot
+        {
+            height: 365px;
+        }
+
+        .graphToolbar
+        {
+            padding: 0;
+            margin: 0 55px 0 0;
+
+            button
+            {
+                font-size: $fontSizeSmall;
+                font-weight: normal;
+                padding: 3px 0 4px 0;
+                margin: 0;
+                width: 44px;
+                float: left;
+                box-shadow: none;
+                @include linearGradient(top, #ffffff, #dfddde);
+                background-color: #fff;
+                color: $TPGrey3;
+                border-color: #808080;
+
+                &.graphZoomButton,
+                &.graphDistanceButton
+                {
+                    margin-right: 25px;
+                    border-left: none;
+                }
+
+                &.graphResetButton
+                {
+                    border-right: none;
+                }
+
+                &.graphSeriesButton
+                {
+                    border-right: none;
+                }
+
+                &.graphElevationButton
+                {
+                    @include linearGradient(top, #b5d8ff, #0f7ffd);
+                    color: #ffffff;
+                }
+
+                &.graphSpeedButton
+                {
+                    @include linearGradient(top, #10B500, #0B8200);
+                    color: #ffffff;
+                }
+
+                &.graphHeartRateButton
+                {
+                    @include linearGradient(top, #f8b3b6, #e61101);
+                    color: #ffffff;
+                }
+
+                &.graphPowerButton
+                {
+                    @include linearGradient(top, #F8C7FF, #FF00FF);
+                    color: #ffffff;
+                }
+
+                &.graphRightPowerButton
+                {
+                    @include linearGradient(top, #F8C7FF, #FF00FF);
+                    color: #ffffff;
+                }
+
+                &.graphTorqueButton
+                {
+                    @include linearGradient(top, #D9D9D9, #BDBDBD);
+                    color: #ffffff;
+                }
+
+                &.graphCadenceButton
+                {
+                    @include linearGradient(top, #FFCC00, #FFA500);
+                    color: #ffffff;
+                }
+
+                &.graphTemperatureButton
+                {
+                    @include linearGradient(top, #0883FF, #0A0AFF);
+                    color: #ffffff;
+                }
+
+                &.graphSeriesDisabled
+                {
+                    @include linearGradient(top, #D9D9D9, #BDBDBD);
+                    color: #ffffff;
+                }
+            }
+
+            button:last-of-type
+            {
+                border-right: 1px solid #808080;
+            }
+
+            input[type=range]
+            {
+                float: left;
+                margin-right: 30px;
+            }
+        }
     }
 
     #expandoChartsRegion
     {
         width: 100%;
-    }
+        margin-top: 30px;
 
+        .timeInZonesChartContainer
+        {
+            float: left;
+            margin-bottom: 20px;
+        }
+
+        .peaksChartContainer
+        {
+            float: left;
+            margin-bottom: 20px;
+        }
+    }
 }
 
 #expandoRightColumn
 {
     float: right;
     width: 335px;
+    overflow-y: scroll;
+    @include nice-scrollbar;
 
     #expandoStatsRegion
     {
-
-        height: 275px;
-        overflow-y: scroll;
         overflow-x: auto;
-        @include nice-scrollbar;
+        overflow-y: visible;
         font-size: $fontSizeMedium;
         color: $TPGrey4;
-        border-bottom: 1px solid $TPGrey7;
+        //border-bottom: 1px solid $TPGrey7;
 
         .rangeTitle
         {
             text-align: center;
-            padding: 10px;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
+            margin-top: 15px;
             font-size: $fontSizeXLarge;
-            @include box-shadow(0px 9px 8px -10px $TPGrey4);
+        }
+
+        .shadow
+        {
+            background-image: url(../../assets/images/QVImages/expandoStatsShadow.png);
+            height: 13px;
         }
 
         .contents
         {
 
             padding: 10px;
-            @include labels($navigationFontFamilyRegular, $fontSizeXSmall, $TPGrey4, $fontWeightBold);
+            @include labels($fontFamilyRegular, $fontSizeXSmall, $TPGrey4, normal);
 
 
             .statsRow
@@ -234,7 +345,8 @@
                 label
                 {
                     display: inline-block;
-                    width: calc(50% - 5px);
+                    width: 127px;
+                    //@include calc(width, "50% - 5px"); 
                     text-align: right;
                     margin-right: 5px;
                 }
@@ -256,9 +368,24 @@
                 display: table;
                 margin-top: 20px;
 
+                .separator 
+                {
+                    display: table-cell;
+                    width: 2px;
+                }
+
                 .minMaxAvgRow
                 {
                     display: table-row;
+
+                    &.statsRow
+                    {
+                        .value
+                        {
+                            font-size: $fontSizeMedLarge;
+                            min-width: 60px;
+                        }
+                    }
 
                     label
                     {
@@ -267,6 +394,14 @@
                         white-space: nowrap;
                         text-align: right;
                         width: auto;
+                    }
+
+                    &:not(.minMaxAvgHeaders)
+                    {
+                        label
+                        {
+                            min-width: 70px;
+                        }
                     }
 
                     span
@@ -278,9 +413,20 @@
                         &.units
                         {
                             text-align: left;
-                            padding: 0px 0px 2px 0px;
+                            padding: 0px 0px 2px 8px;
+                            font-size: $fontSizeXSmall
                         }
 
+                    }
+
+                    .separator 
+                    {
+                        padding: 0px;
+                    }
+
+                    .value
+                    {
+                        background-color: #eaebec;
                     }
 
                     &.minMaxAvgHeaders
@@ -290,6 +436,8 @@
                             text-transform: uppercase;
                             text-align: center;
                             padding: 0px;
+                            padding-bottom: 5px;
+                            font-family: $fontFamilyHeavy;
                         }
                     }
                 }
@@ -300,10 +448,84 @@
 
     #expandoLapsRegion
     {
-        overflow-y: scroll;
-        @include nice-scrollbar;
-    }
+        overflow-y: visible;
+        //@include nice-scrollbar;
 
+        .controls
+        {
+            margin-left: 20px;
+            margin-top: 20px;
+			margin-bottom: 20px;
+
+            select
+            {
+                width: 120px;
+                margin-right: 10px;
+
+                font-family: $fontFamilyRegular;
+                font-size: $fontSizeSmall;
+                color: $TPGrey3;
+                border-width: 1px;
+                border-style: solid;
+                border-color: $TPGrey9;
+
+                cursor: pointer;
+
+                background: url(../../assets/images/calendarImages/background-gradient-button.png) repeat-x 0 0;
+
+                visibility: hidden;
+
+            }
+
+            .selectboxit-option-icon-container 
+            {
+                margin-left: 0px;
+            }
+
+            .selectboxit-option
+            {   
+                text-indent: 3px;
+            }
+
+           	@include buttons(0, 96px, $fontSizeSmall);
+            button {
+                height: 20px;
+                vertical-align: top;
+            }
+        }
+
+        .rangesList {
+            margin-left: 35px; 
+
+            ul {
+                list-style-type: none;
+            }
+
+            li {
+				color:$TPGrey10;
+                
+				span {
+                    cursor: pointer;  
+                    display: inline-block;
+                    @include calc(width, "100% - 20px");
+                    &:hover {
+						color:$TPGrey4;	
+                    }
+                }
+
+                &.highlight {
+                    span {
+                        color:$TPGrey4;
+						font-family:$fontFamilyHeavy;
+                    }
+                }
+            }
+        }
+    }
 }
 
-
+.expandoStatsThrobber
+{
+    @include throbber;
+    z-index: 2000;
+}

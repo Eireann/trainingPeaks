@@ -59,6 +59,13 @@ function(moment, datetimeUtils)
                     expect(datetimeUtils.convert.timeToDecimalHours("9")).toEqual(9);
                 });
 
+                it("Should treat integers 1-9 as minutes if assumeHours is false", function()
+                {
+                    expect(datetimeUtils.convert.timeToDecimalHours("1", { assumeHours: false })).toEqual(1 / 60);
+                    expect(datetimeUtils.convert.timeToDecimalHours("3", { assumeHours: false })).toEqual(3 / 60);
+                    expect(datetimeUtils.convert.timeToDecimalHours("9", { assumeHours: false })).toEqual(9 / 60);
+                });
+
                 it("Should treat integers greater than 9 as minutes", function()
                 {
                     expect(datetimeUtils.convert.timeToDecimalHours("10")).toEqual(10 / 60);
@@ -76,6 +83,14 @@ function(moment, datetimeUtils)
                     expect(datetimeUtils.convert.timeToDecimalHours("3:30")).toEqual(3.5);
                     expect(datetimeUtils.convert.timeToDecimalHours("0:30")).toEqual(0.5);
                     expect(datetimeUtils.convert.timeToDecimalHours("9:48")).toEqual(9.8);
+                });
+
+                it("Should treat mm:ss values less than 10:00 as minutes and seconds if assumeHours is false", function()
+                {
+                    expect(datetimeUtils.convert.timeToDecimalHours("1:12", { assumeHours: false })).toBeCloseTo(1.2 / 60);
+                    expect(datetimeUtils.convert.timeToDecimalHours("3:30", { assumeHours: false })).toBeCloseTo(3.5 / 60);
+                    expect(datetimeUtils.convert.timeToDecimalHours("0:30", { assumeHours: false })).toBeCloseTo(0.5 / 60);
+                    expect(datetimeUtils.convert.timeToDecimalHours("9:48", { assumeHours: false })).toBeCloseTo(9.8 / 60);
                 });
 
                 it("Should treat mm:ss values greater than or equal to 10:00 as minutes and seconds", function()

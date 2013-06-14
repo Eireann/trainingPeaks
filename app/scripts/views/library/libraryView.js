@@ -22,6 +22,18 @@ function(_, jqueryOutside, TP, ExerciseLibraryView, MealLibraryView, libraryTemp
 
         initialize: function(options)
         {
+            this.buildViews(options);
+            this.listenToViewEvents();
+
+            this.activeLibraryName = null;
+
+            this.on("library:unselect", this.onUnSelect, this);
+
+            $(window).on("resize", this.resizeContainerHeight);
+        },
+
+        buildViews: function(options)
+        {
             this.views =
             {
                 exerciseLibrary: new ExerciseLibraryView(
@@ -32,9 +44,14 @@ function(_, jqueryOutside, TP, ExerciseLibraryView, MealLibraryView, libraryTemp
                 mealLibrary: new MealLibraryView()
             };
 
-            this.activeLibraryName = null;
+        },
 
-            $(window).on("resize", this.resizeContainerHeight);
+        listenToViewEvents: function()
+        {
+            _.each(_.keys(this.views), function(viewName)
+            {
+                this.views[viewName].on("select", this.onSelect, this);
+            }, this);
         },
 
         ui:
@@ -187,6 +204,20 @@ function(_, jqueryOutside, TP, ExerciseLibraryView, MealLibraryView, libraryTemp
             }
             this.$("#tabs").css({ height: libraryHeight });
             this.$("#activeLibraryContainer").css({ height: libraryHeight });
+        },
+
+        onSelect: function()
+        {
+            this.trigger("library:select");
+        },
+
+        onUnSelect: function()
+        {
+            for (var libraryName in this.views)
+            {
+                var library = this.views[libraryName];
+                library.trigger("library:unselect");
+            }
         }
 
     });

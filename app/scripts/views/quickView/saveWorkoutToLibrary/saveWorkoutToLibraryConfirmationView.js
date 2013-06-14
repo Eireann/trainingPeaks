@@ -30,6 +30,17 @@ function(TP, SaveWorkoutToLibraryCommand, AfterSaveView, saveWorkoutToLibraryTem
             template: saveWorkoutToLibraryTemplate
         },
 
+        onRender: function ()
+        {
+            var self = this;
+            setImmediate(function ()
+            {
+                self.$("#selectLibrary").selectBoxIt({
+                    dynamicPositioning: false
+                });
+            });
+        },
+
         onOk: function()
         {
             var libraryId = this.$("#selectLibrary").val();

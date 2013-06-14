@@ -1,11 +1,13 @@
 ﻿define(
 [
+    "underscore",
     "models/library/exerciseLibrariesCollection",
     "models/workoutModel",
     "models/commands/addWorkoutFromExerciseLibrary",
 "views/library/libraryView"
 ],
 function(
+    _,
     ExerciseLibrariesCollection,
     WorkoutModel,
     AddWorkoutFromExerciseLibrary,
@@ -23,6 +25,12 @@ function(
                 workoutDay: workoutDate,
                 title: exerciseLibraryItem.get("itemName"),
                 workoutTypeValueId: exerciseLibraryItem.get("workoutTypeId")
+            });
+
+            var attributesToCopy = ["caloriesPlanned", "description", "distancePlanned", "elevationGainPlanned", "energyPlanned", "ifPlanned", "totalTimePlanned", "tssPlanned", "velocityPlanned"];
+            _.each(attributesToCopy, function(attr)
+            {
+                workout.set(attr, exerciseLibraryItem.get(attr));
             });
 
             // then update it with the full workout attributes from library
@@ -44,6 +52,7 @@ function(
 
             this.views.library = new LibraryView({ collections: this.libraryCollections });
             this.views.library.on("animate", this.onLibraryAnimate, this);
+            this.views.library.on("library:select", this.onLibrarySelect, this);
         },
 
         onLibraryAnimate: function (cssAttributes, duration)
@@ -54,6 +63,11 @@ function(
         getExerciseLibraries: function ()
         {
             return this.libraryCollections.exerciseLibraries;
+        },
+
+        onLibrarySelect: function()
+        {
+            this.views.calendar.trigger("calendar:unselect");
         }
 
     };

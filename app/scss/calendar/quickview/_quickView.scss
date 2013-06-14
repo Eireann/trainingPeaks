@@ -1,0 +1,383 @@
+﻿@import "../../globalCSS/tpstylesheet";
+@import "qvChartDefaults";
+@import "qvHeader";
+@import "qvExpando";
+@import "qvTabs";
+@import "qvSummary";
+@import "qvMapGraph";
+@import "qvFileUploadMenu";
+@import "qvSharing";
+
+#workOutQuickView
+{
+	overflow:hidden;
+    width: 690px;
+    height: 530px;
+	@include radialGradient(#e6e4e4, #dedcdc);
+
+    textarea, input
+    {
+        @include box-shadow(none);
+        color: $TPGrey3;
+        
+        &:focus 
+        {
+            background-color: #FFFFFF;
+        }
+    }
+
+    input
+    {
+        
+        text-align: center;
+
+        &.workoutTitle
+        {
+            text-align: left;
+            color: $TPGrey4;
+        }
+
+        &#startTimeInput
+        {
+            text-align: left;
+        }
+    }
+
+}
+
+input[disabled='disabled']
+{
+    @include box-shadow(none);
+    cursor: default;
+}
+
+#quickViewContent
+{
+	height: 360px;
+	overflow-y:scroll; 
+	overflow-x:hidden;
+	@include radialGradient(#e6e4e4, #dedcdc);
+    width: 653px;
+
+    @include nice-scrollbar;
+    &::-webkit-scrollbar-track {
+        box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0.2) 0 0px 1px 1px inset;
+    }
+}
+
+.quickviewFooter
+{
+	height:45px;
+	background-color: $TPGrey5;
+	padding-top: 12px;
+
+	.selectionBox
+	{
+		padding-left: 55px;
+		width: 130px;
+		float:left;
+		// @include selectionBox(130px);
+		
+		select {
+			margin-top:1px;
+			padding:0;
+			width:130px;
+		}
+	}
+	.saveCloseButtons
+	{
+		font-weight:normal;
+		float: right;
+		width: 285px;
+	//	padding-top: 5px;
+        @include buttons(0, 77px, $fontSizeSmall);
+		#saveClose
+		{
+			width: 107px;
+		}
+        button
+        {
+            margin-right: 8px;
+  			padding: 3px 0;
+        }
+	}
+}
+
+.workoutTypeMenuModalOverlay
+{
+    z-index: 102;
+}
+
+.workoutTypeMenu
+{
+    z-index: 103;
+
+    &.left
+    {
+        .hoverBox
+        {
+            .arrow
+            {
+                right: 4px;
+                @include transform(translateX(8px) rotate(45deg));
+            }
+        }
+    }
+
+    &.right
+    {
+        .hoverBox
+        {
+            .arrow
+            {
+                left: 1px;
+                @include transform(translateX(-35px) rotate(-45deg));
+            }
+        }
+    }
+
+    .hoverBox
+    {
+        .arrow
+        {
+            position: absolute;
+            top: 40px;
+            @include box-shadow(0 0 2px 0 #ADADAD);
+        }
+
+        .colored
+        {
+            background-color: $TPGrey3;
+        }
+
+        .hoverBoxContents
+        {
+            padding: 10px;
+
+            .details
+            {
+                min-width: 120px;
+            }
+
+            label
+            {
+                margin-bottom: 3px;
+
+                &.selected
+                {
+                    font-family: $fontFamilyHeavy;
+                }
+
+                &:hover
+                {
+                    font-family: $fontFamilyHeavy;
+                }
+            }
+        }
+
+    }
+}
+
+.workoutQuickViewMenuModalOverlay {
+    z-index: 102;
+}
+
+.workoutQuickViewMenu {
+	z-index: 103;
+	
+	.hoverBox {
+		.hoverBoxContents .details label {
+			font-weight:normal;
+			font-size: $fontSizeSmall;
+			}
+		.mainShadow {
+			box-shadow: 0 2px 3px 0 #444444;
+		}	
+		.arrow {
+			box-shadow: 0 2px 3px 0 #444444;
+		}
+	}
+}
+
+
+.saveWorkoutToLibraryConfirmationModalOverlay
+{
+    z-index: 102;
+}
+
+.saveWorkoutToLibraryConfirmation
+{
+    z-index: 103;
+    min-width: 450px;
+
+    .labels
+    {
+        text-align: right;
+        width: 35%;
+        display: inline-block;
+        margin-right: 10px;
+        margin-left: 20px;
+    }
+
+    .selectForm
+    {
+        text-align: right;
+        width: 100%;
+        display: inline-block;
+        margin-right: 10px;
+        margin-left: 20px;
+
+        label
+        {
+            float: left;
+            margin: 0 13px 0 68px;
+        }
+    }
+
+    .values
+    {
+        text-align: left;
+        width: 45%;
+        display: inline-block;
+        margin-right: 20px;
+    }
+
+    label
+    {
+        display:inline-block;
+        font-family: $fontFamilyHeavy;
+    }
+
+
+
+    .selectboxit-options
+    {
+        width: 200px;
+    }
+
+    #selectLibrarySelectBoxItOptions
+    {
+        margin-left: 153px;
+    }
+
+    .selectboxit-container .selectboxit 
+    {
+        width: 200px !important; /* Width of the dropdown button */
+    }
+
+    .selectboxit-option
+    {
+        text-indent: 3px;
+    }
+
+    .selectboxit-option-icon-container 
+    {
+        margin-left: 0px;
+    }
+
+    input
+    {
+        width: 200px;
+    }
+
+    .dialogButtons
+    {
+        margin-top: 20px;
+    }
+}
+
+.workoutComments
+{
+
+    #postActivityCommentsInput
+    {
+        height: 30px;
+    }
+
+    .comment
+    {
+
+        margin-bottom:3px;
+        padding: 3px;
+        border: 1px solid transparent;
+        font-size: $fontSizeSmaller;
+        color: $TPGrey3;
+
+        &.hover
+        {
+            &:not(.editable)
+            {
+                background-color: $TPGrey1;
+                border-color: $TPGrey7;
+            }
+        }
+
+        &.editable
+        {
+            padding-right: 0px;
+        }
+
+        .commentHeader
+        {
+            // this becomes smaller because it's relative to the size above it ...
+            font-family: $fontFamilyHeavy;
+            font-weight: normal;
+            margin-bottom: 3px;
+            color: $TPGrey3;
+
+            .date
+            {
+                margin-left: 5px;
+                .weekdayName
+                {
+                    text-transform: uppercase;
+                }
+            }
+
+        }
+
+        .commentBody
+        {
+            white-space: pre-wrap;
+        }
+
+        textarea.commentBody
+        {
+            @include calc(width, "100% + 3px");
+            margin-left: -3px;
+        }
+
+
+    }
+}
+.updatingModel
+{
+	color: red;
+}
+
+.modelUpdateSuccess
+{
+	color: green;
+}
+
+.comment
+{
+    position: relative;
+    .deleteButton
+    {
+        position: absolute;
+        display: none;
+        top: 4px;
+        right: 3px;
+        height: 8px;
+        width: 10px;
+    }
+
+    &.hover
+    {
+        .deleteButton
+        {
+            display:block
+        }
+    }
+}

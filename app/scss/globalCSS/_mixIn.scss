@@ -2,15 +2,15 @@
 
 @mixin buttons($marginLeft, $width, $fontSize)
 {
-	button
+    button, input[type=button]
 	{
 		width: $width;
 		padding:2px 0;
-		font-family: $navigationFontFamilyLight;
+		font-family: $fontFamilyRegular;
 		font-size: $fontSize;
 		font-weight:normal;
 		margin-left: $marginLeft;
-		color: $TPGrey4;
+		color: $TPGrey10;
 		background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #ffffff), color-stop(1, #dfdfdf) );
 		background:-moz-linear-gradient( center top, #ededed 5%, #dfdfdf 100% );
 		background-color:#ededed;
@@ -22,31 +22,33 @@
         border-style: solid;
         border-color: $TPGrey9;
         margin-bottom: 0px;
-
+		box-shadow:none;
         cursor: pointer;
 
         background: url(../../assets/images/calendarImages/background-gradient-button.png) repeat-x 0 0;
-		background-size: 100% 100%px;
-                
-        &:active
-        {
-            background: url(../../assets/images/calendarImages/background-gradient-button_active.png) repeat-x 0 0;
-			background-size: 100% 100%;
-            color: #ffffff;
-        }
+		//background-size: 100% 100%;
 
         &:hover
         {
-           border-color: #a1a1a1;
+           border-color: $TPGrey11;
+           color: $TPGrey4;
+    	   //color:#3d3e41;
           // -webkit-box-shadow: 0px 0px 3px 1px rgba($TPGrey7, .50);
           // -moz-box-shadow: 0px 0px 3px 1px rgba($TPGrey9, .50);
           // box-shadow: 0px 0px 3px 1px rgba($TPGrey9, .50);
+        }
+                
+        &:active
+        {
+            background: url(../../assets/images/calendarImages/background-gradient-button.png) repeat-x 0 -20px;
+			//background-size: 100% 100%;
+            color: #ffffff;
         }
 
         &:disabled
         {
             background: url(../../assets/images/calendarImages/background-gradient-button.png) repeat-x 0 0;
-		    background-size: 100% 22px;
+		    //background-size: 100% 22px;
             border-color: $TPGrey9;
             border-width: 1px;
             border-style: solid;
@@ -66,6 +68,21 @@
 		float: left;
 		height:22px;
 	}
+}
+
+@mixin blueButton()
+{
+    @include box-shadow(none);
+
+	@include linearGradient(top, #dfdfdf, #AAC8E5);
+
+    &:active
+    {
+        color: #ffffff;
+        background:none;
+        @include linearGradient(top, #6694c1, #3a6e99);
+    }
+
 }
 
 @mixin labels($fontFamily, $fontSize, $fontColor, $fontWeight, $selector: label)
@@ -91,6 +108,7 @@
 		padding-top: 0px;
 		padding-bottom: 0px;
         cursor: text;
+        @include box-shadow(none);
 	}
 
     input[disabled='disabled']
@@ -106,11 +124,11 @@
 		margin-top: 3px;
 		width: $width;
 		font-size: $fontSizeMedium;
-		font-family: $navigationFontFamilyRegular;
+		font-family: $fontFamilyRegular;
 	}
 }
 
-@mixin nice-scrollbar($size: 12px, $track-background: $TPGrey1, $thumb-color: $TPGrey2, $inactive-thumb-color: $TPGrey2)
+@mixin nice-scrollbar($size: 12px, $track-background: $TPGrey1, $thumb-color: $TPGrey2, $inactive-thumb-color: $TPGrey6)
 {
     &::-webkit-scrollbar 
     {
@@ -122,21 +140,27 @@
     {
         border-radius: 0;
         background: $track-background;
-        box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0.2) 0 1px 1px 1px inset;
+        box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0.2) 0 -1px 1px 1px inset;
     }
 
     &::-webkit-scrollbar-thumb
     {
         border-radius: 0;
         background: $thumb-color;
-        box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0.7) 0 1px 7px 0px inset;
+        box-shadow: rgba(255, 255, 255, 0.1) 0px 0px 0px 0px, rgba(48, 48, 48, 0.5) 0px 0px 7px 0px inset;
     }
 
     &::-webkit-scrollbar-thumb:window-inactive
     {
         border-radius: 0;
+        background: $inactive-thumb-color;
+    }
+
+    &::-webkit-scrollbar-thumb:hover
+    {
+        border-radius: 0;
         background: $thumb-color;
-        box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0.4) 0 1px 1px 1px inset;
+        box-shadow: rgba(255, 255, 255, 0.1) 0px 0px 0px 0px, rgba(0, 0, 0, .7) 0px 0px 7px 0px inset;
     }
 }
 
@@ -202,4 +226,12 @@
     background: -o-radial-gradient(center, ellipse cover, #1e5799 0%, $color1 0%, $color2 100%);
     background: -ms-radial-gradient(center, ellipse cover, #1e5799 0%, $color1 0%, $color2 100%);
     background: radial-gradient(ellipse at center, #1e5799 0%, $color1 0%, $color2 100%);
+}
+
+@mixin placeholders($color)
+{
+    ::-webkit-input-placeholder { color: $color; }
+    :moz-placeholder { color: $color; }
+    ::moz-placeholder { color: $color; }
+    :-ms-input-placeholder { color: $color; }
 }

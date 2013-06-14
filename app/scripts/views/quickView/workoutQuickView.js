@@ -1,12 +1,13 @@
 ﻿define(
 [
-    "jquerySelectBox",
+    "setImmediate",
     "underscore",
     "moment",
     "TP",
     "views/quickView/qvMain/qvStickitBindings",
     "views/quickView/qvMain/qvSaveDeleteDiscard",
     "views/quickView/qvMain/qvHeaderActions",
+    "views/quickView/qvMain/qvSharing",
     "views/quickView/qvMain/qvFileUploads",
     "views/quickView/qvMain/qvExpand",
     "views/quickView/summaryView",
@@ -16,14 +17,15 @@
     "views/quickView/mapAndGraphView",
     "hbs!templates/views/quickView/workoutQuickView"
 ],
-function (
-    selectBox,
+function(
+    setImmediate,
     _,
     moment,
     TP,
     qvStickitBindings,
     qvSaveDeleteDiscard,
     qvHeaderActions,
+    qvSharing,
     qvFileUploads,
     qvExpand,
     WorkoutQuickViewSummary,
@@ -129,6 +131,12 @@ function (
             this.initializeSaveDeleteDiscard();
             this.initializeHeaderActions();
             this.initializeExpand();
+            this.initializeSharing();
+
+            if (!this.model.get("title"))
+            {
+                this.once("render", this.focusTitle, this);
+            }
         },
         
         stopWorkoutDetailsFetch: function ()
@@ -248,6 +256,15 @@ function (
         stopWatchingFileUploads: function()
         {
             this.model.off("deviceFileUploaded", this.fetchDetailData, this);
+        },
+
+        focusTitle: function()
+        {
+            var titleField = this.$("#workoutTitleField");
+            setImmediate(function()
+            {
+                titleField.focus();
+            });
         }
     };
 
@@ -256,6 +273,7 @@ function (
     _.extend(WorkoutQuickView, qvStickitBindings);
     _.extend(WorkoutQuickView, qvFileUploads);
     _.extend(WorkoutQuickView, qvExpand);
+    _.extend(WorkoutQuickView, qvSharing);
 
     return TP.ItemView.extend(WorkoutQuickView);
 });

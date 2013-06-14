@@ -1,23 +1,20 @@
-<div class="workoutHeader">
-    <div class="workoutIcon">
-        <!-- <img src="assets/images/workoutTypeImages/{{ workoutTypeImageName workoutTypeValueId }}.png"/>  -->
+<div class="workoutDiv">
+    <div class="workoutSelected" />
+    <div class="workoutHeader">
+        <div class="workoutIcon" />
+        <div class="workoutDistanceTime">
+            {{#if totalTimePlanned }}
+            <label>{{ conversion "formatDuration" totalTimePlanned }}</label>
+            {{/if}}
+            {{#if distancePlanned}}
+            <label>{{ conversion "formatDistance" distancePlanned }}<span class="units">{{ getUnitsLabel "distance" }}</span></label>
+            {{/if}}
+            {{#if tssPlanned}}
+            <label>{{ conversion "formatTSS" tssPlanned }}<span class="units">{{ getUnitsLabel "tss" workoutTypeValueId this }}</span></label>
+            {{/if}}
+        </div>
     </div>
-    <div class="workoutDistanceTime">
-        <label>
-            {{#if distancePlanned }}
-            {{ convertToViewUnits distancePlanned}} {{getUnitsLabel "distance"}}
-            {{/if}}
-       
-            {{#if totalTimePlanned}} 
-            {{ formatTime totalTimePlanned }}
-            {{/if}}
-       
-            {{#if tssPlanned}} 
-            {{ tssPlanned}} tss
-            {{/if}}
-        </label>
+    <div class="workoutBody">
+        <label>{{itemName}}</label>
     </div>
-</div>
-<div class="workoutBody">
-    <label>{{itemName}}</label>
 </div>

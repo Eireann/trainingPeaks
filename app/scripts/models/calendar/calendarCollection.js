@@ -125,6 +125,8 @@ function(
                 {
                     self.addWorkout(workout);
                 });
+            }).always(function()
+            {
                 self.stopWeeksWaiting(moment(startDate), moment(endDate));
             });
 
@@ -230,6 +232,7 @@ function(
         {
             return this.workoutsCollection.get(workoutId);
         }
+
     };
 
     _.extend(calendarCollectionBase, calendarCollectionCopyPaste);

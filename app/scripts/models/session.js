@@ -49,7 +49,7 @@ function (_, TP, UserModel)
                 username: options.username,
                 password: options.password,
                 response_type: "token",
-                scope: "fitness clientevents users athletes exerciselibrary images"
+                scope: "fitness clientevents users athletes exerciselibrary images groundcontrol"
             };
 
             this.username = options.username;
@@ -84,11 +84,11 @@ function (_, TP, UserModel)
             this.trigger("api:authorization:failure");
         },
         
-        logout: function()
+        logout: function(message)
         {
             this.removeFromLocalStorage("access_token");
             this.removeFromLocalStorage("app_user");
-            this.trigger("logout");
+            this.trigger("logout", message);
         },
 
         setToLocalStorage: function(key, value)

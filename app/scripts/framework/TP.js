@@ -225,8 +225,7 @@ function(_, Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmedia
         watchForWindowResize: function()
         {
             _.bindAll(this, "onWindowResize");
-            var debouncedResize = _.debounce(this.onWindowResize, 300);
-            $(window).on("resize", debouncedResize);
+            $(window).on("resize", this.onWindowResize);
         },
 
         stopWatchingWindowResize: function()
@@ -254,6 +253,8 @@ function(_, Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmedia
                 this.centerViewInWindow();
                 return;
             }
+
+            this.trigger("before:reposition");
 
             var startOffset = this.positionAttributes.hasOwnProperty("fromElement") ? $(this.positionAttributes.fromElement).offset() : { top: 0, left: 0 };
             

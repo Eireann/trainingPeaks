@@ -1,1 +1,38 @@
-﻿
+﻿<div class="controls cf">
+	<div class="peakTypeSelectContain">
+	    {{#if selectOptions}}
+	    <select id="peakType">
+	        {{#each selectOptions}}
+	        <option value="{{ value }}"{{#if selected}} selected{{/if}}>{{ label }}</option>
+	        {{/each}}
+	    </select>
+	    {{/if}}
+	</div>
+	<div class="peakUncheckAll">
+    	{{#if hasLapsOrPeaks }}
+    	<button id="uncheck">{{$ "UncheckAll" }}</button>
+    	{{/if}}
+	</div>
+
+</div>
+
+
+<div class="rangesList">
+    <ul>
+    {{#each rangeLaps}}
+        <li data-lapindex="{{@index}}" class="lap">
+            <input class="checkbox" type="checkbox" {{#if checked}}checked{{/if}} data-lapindex="{{@index}}"/> <span>{{ name }} ({{ formatTimeToHundredths totalTime}})</span>
+        </li>
+    {{/each}}
+    {{#with rangeTotals}}
+        <li class="statsRow totals" id="duration">
+            <input class="checkbox" type="checkbox" {{#if checked}}checked{{/if}}/> <span>{{$ "EntireWorkout" }} ({{ formatTimeToHundredths totalTime }})</span>
+        </li>
+    {{/with}}
+        {{#each rangePeaks}}
+        <li data-peakinterval="{{interval}}" data-peaktype="{{peakType}}" class="peaks">
+            <input class="checkbox" type="checkbox" {{#if checked}}checked{{/if}}/> <span>{{$ "Peak" }} {{#if isDistance }}{{ formatPeakDistance interval }}{{ else }}{{ formatPeakTime interval }}{{/if }} ({{ formattedValue }} {{ units }})</span>
+        </li>
+    {{/each}}
+    </ul>
+</div>

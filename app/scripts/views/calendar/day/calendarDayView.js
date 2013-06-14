@@ -5,37 +5,43 @@ define(
     "jqueryui/draggable",
     "jqueryui/droppable",
     "moment",
-
     "TP",
     "views/calendar/workout/calendarWorkoutView",
     "views/calendar/day/calendarDaySettings",
     "views/calendar/newItemView",
     "views/calendar/day/calendarDayDragStateView",
+    "hbs!templates/views/calendar/day/calendarDayHeader",
     "hbs!templates/views/calendar/day/calendarDay"
 ],
-function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySettingsView, NewItemView, CalendarDayDragStateView, CalendarDayTemplate)
+function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySettingsView, NewItemView, CalendarDayDragStateView, CalendarDayHeaderTemplate, CalendarDayTemplate)
 {
 
     var today = moment().format(TP.utils.datetime.shortDateFormat);
 
-    var CalendarDayLabelView = TP.ItemView.extend(
+    var CalendarDayHeaderView = TP.ItemView.extend(
     {
         template:
         {
             type: "handlebars",
-            template: CalendarDayTemplate
+            template: CalendarDayHeaderTemplate
         }
     });
 
-    return TP.CollectionView.extend(
+    return TP.CompositeView.extend(
     {
         tagName: "div",
         className: "day",
 
         modelViews:
         {
-            Label: CalendarDayLabelView,
+            Label: CalendarDayHeaderView,
             Workout: CalendarWorkoutView
+        },
+
+        template:
+        {
+            type: "handlebars",
+            template: CalendarDayTemplate
         },
 
         initialize: function()
@@ -48,19 +54,28 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySe
             this.on("after:item:added", this.makeItemsDraggable, this);
             this.model.on("day:select", this.select, this);
             this.model.on("day:unselect", this.unselect, this);
+
+            this.collection.on("select", this.onItemSelect, this);
         },
 
         events:
         {
             "mousedown .dayHeader": "onDayClicked",
-            "click .dayHeader": "onDayClicked",
+            "mouseenter .dayHeader": "onDayHeaderMouseEnter",
+            "mouseleave .dayHeader": "onDayHeaderMouseLeave",
 
-            "click": "onWhitespaceDayClicked",
-            "click .daySettings": "daySettingsClicked"
+            "click .addWorkout": "onAddWorkoutClicked",
+            "mousedown .daySettings": "daySettingsClicked",
+            "click .daySelected": "onDayUnClicked"
         },
 
         getItemView: function(item)
         {
+            if (!item)
+            {
+                return TP.ItemView;
+            }
+
             var modelName = this.getModelName(item);
             if (!this.modelViews.hasOwnProperty(modelName))
             {
@@ -138,13 +153,24 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySe
             this.$el.addClass("menuOpen");
         },
 
+        onDaySettingsClose: function(e)
+        {
+            this.allowSettingsButtonToHide(e);
+            this.onDayUnClicked(e);
+        },
+
         allowSettingsButtonToHide: function(e)
         {
             this.$el.removeClass("menuOpen");
         },
 
-        daySettingsClicked: function (e)
+        daySettingsClicked: function(e)
         {
+            if (e && e.button && e.button === 2)
+            {
+                return;
+            }
+
             if (e.shiftKey)
                 return;
 
@@ -153,9 +179,14 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySe
 
             var offset = $(e.currentTarget).offset();
             this.daySettings = new CalendarDaySettingsView({ model: this.model, parentEl: this.$el });
-            this.daySettings.render().center(offset.left + 10).bottom(offset.top + 10);
-            this.daySettings.on("close", this.allowSettingsButtonToHide, this);
-            this.$(".daySelected").css("display", "block");
+            this.daySettings.render().center(offset.left + 10).bottom(offset.top + 15);
+            this.daySettings.once("close", this.onDaySettingsClose, this);
+            this.daySettings.once("add", this.onAddWorkoutClicked, this);
+            this.daySettings.once("beforeShift", function()
+            {
+                this.daySettings.off("close", this.onDaySettingsClose, this);
+                this.allowSettingsButtonToHide(e);
+            }, this);
             this.model.trigger("day:click", this.model, e);
         },
 
@@ -167,27 +198,42 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySe
             e.preventDefault();
 
             this.model.trigger("day:click", this.model, e);
+            this.select();
         },
-        
-        onWhitespaceDayClicked: function(e)
+
+        onAddWorkoutClicked: function(e)
         {
 
-            if (theMarsApp.isBlurred || e.isDefaultPrevented())
+            /*if (theMarsApp.isBlurred || e.isDefaultPrevented())
                 return;
 
             if (e.shiftKey)
                 return;
+                */
 
             this.allowSettingsButtonToHide();
             e.preventDefault();
 
-            this.model.trigger("day:click", this.model, e);
+            //this.model.trigger("day:click", this.model, e);
+
+            this.model.trigger("day:selectAddItem");
 
             var newItemView = new NewItemView({ model: this.model });
             newItemView.render();
+
+            this.selectAddWorkoutIcon();
+
+            newItemView.on("close", this.unSelectAddWorkoutIcon, this);
+            newItemView.on("openQuickView", this.onOpenQuickViewFromNewItem, this);
         },
 
-        select: function()
+        onOpenQuickViewFromNewItem: function(quickView)
+        {
+            this.selectAddWorkoutIcon();
+            quickView.on("close", this.unSelectAddWorkoutIcon, this);
+        },
+
+        select: function(e)
         {
             this.selected = true;
             this.$el.addClass("selected");
@@ -234,6 +280,42 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySe
         onDragStop: function()
         {
             this.$el.removeClass("dragging");
+        },
+        appendHtml: function(collectionView, itemView, index)
+        {
+            itemView.$el.insertBefore(collectionView.$(".addWorkoutWrapper"));
+        },
+
+        onDayHeaderMouseEnter: function(e)
+        {
+            this.$el.addClass("hoveringOverDayHeader");
+        },
+
+        onDayHeaderMouseLeave: function(e)
+        {
+            this.$el.removeClass("hoveringOverDayHeader");
+        },
+
+        onDayUnClicked: function(e)
+        {
+            //this.unselect();
+            //this.model.trigger("day:click", this.model, e);
+            this.model.trigger("day:unselect", this.model, e);
+        },
+
+        onItemSelect: function()
+        {
+            this.unSelectAddWorkoutIcon();
+        },
+
+        unSelectAddWorkoutIcon: function()
+        {
+            this.$(".addWorkout").removeClass("active");
+        },
+
+        selectAddWorkoutIcon: function()
+        {
+            this.$(".addWorkout").addClass("active");
         }
 
     });

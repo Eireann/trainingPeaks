@@ -43,6 +43,31 @@ function (
             _.bindAll(this, "onUploadDone", "onUploadFail");
             _.extend(this.ui, this.fileUploadUi);
             _.extend(this.events, this.fileUploadEvents);
+            this.watchForFileAttachments();
+            this.on("render", this.updateAttachmentIconState, this);
+        },
+
+        watchForFileAttachments: function()
+        {
+            this.model.get("details").on("change:attachmentFileInfos", this.updateAttachmentIconState, this);
+            this.on("close", this.stopWatchingForFileAttachments, this);
+        },
+
+        stopWatchingForFileAttachments: function()
+        {
+            this.model.get("details").off("change:attachmentFileInfos", this.updateAttachmentIconState, this);
+        },
+
+        updateAttachmentIconState: function()
+        {
+            var attachments = this.model.get("details").get("attachmentFileInfos");
+            if (attachments && attachments.length)
+            {
+                this.$(".addAttachment").addClass("withAttachments");
+            } else
+            {
+                this.$(".addAttachment").removeClass("withAttachments");
+            }
         },
 
         onUploadFileClicked: function()

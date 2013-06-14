@@ -5,9 +5,22 @@
     "jqueryui/spinner",
     "TP",
     "models/commands/ShiftWorkouts",
+    "views/userConfirmationView",
+    "hbs!templates/views/calendar/moveItems/intRangeValidationError",
+    "hbs!templates/views/calendar/moveItems/dateValidationError",
     "hbs!templates/views/calendar/moveItems/shiftWizzard"
 ],
-function(moment, datepicker, spinner, TP, ShiftWorkoutsCommand, shiftWizzard)
+function(
+    moment,
+    datepicker,
+    spinner,
+    TP,
+    ShiftWorkoutsCommand,
+    UserConfirmationView,
+    intRangeErrorTemplate,
+    dateErrorTemplate,
+    shiftWizzardTemplate
+    )
 {
 
     var ShiftWizardModel = TP.Model.extend(
@@ -47,7 +60,7 @@ function(moment, datepicker, spinner, TP, ShiftWorkoutsCommand, shiftWizzard)
         template:
         {
             type: "handlebars",
-            template: shiftWizzard
+            template: shiftWizzardTemplate
         },
 
         bindings:
@@ -110,6 +123,7 @@ function(moment, datepicker, spinner, TP, ShiftWorkoutsCommand, shiftWizzard)
             // watch for changes
             this.updateSelectItemsOptions();
             this.updateShiftByOptions();
+            this.rePositionView();
             this.model.on("change:selectItems", this.updateSelectItemsOptions, this);
             this.model.on("change:shiftBy", this.updateShiftByOptions, this);
 
@@ -176,6 +190,11 @@ function(moment, datepicker, spinner, TP, ShiftWorkoutsCommand, shiftWizzard)
         },
 
         onOkClicked: function()
+        {
+            this.validateFields().done(this.doShift).fail(this.showErrorMessage);
+        },
+
+        doShift: function()
         {
 
             // show throbber
@@ -246,6 +265,75 @@ function(moment, datepicker, spinner, TP, ShiftWorkoutsCommand, shiftWizzard)
                     break;
             }
 
+        },
+
+        validateFields: function()
+        {
+
+            var deferred = new $.Deferred();
+
+            // how to move
+            switch (this.model.get("selectItems"))
+            {
+                case "itemsOnAllSelectedDays":
+                    // no date range inputs to validate
+                    break;
+                   
+                case "ItemsWithinSpecifiedDateRange":
+                    this.validateDate("fromDate", deferred);
+                    this.validateDate("toDate", deferred);
+                    break;
+
+                case "ItemsOnAfterSpecifiedStartDate":
+                    this.validateDate("fromDate", deferred);
+                    break;
+            }
+
+
+            // where to move
+            switch (this.model.get("shiftBy"))
+            {
+                case "MoveToNewStartDate":
+                    this.validateDate("moveToStartDate", deferred);
+                    break;
+
+                case "MoveBySpecifiedNumberOfDays":
+                    this.validateInt("moveByNumberOfDays", deferred);
+                    break;
+
+                case "MoveBySpecifiedNumberOfWeeks":
+                    this.validateInt("moveByNumberOfWeeks", deferred);
+                    break;
+            }
+
+            deferred.resolveWith(this);
+
+            return deferred;
+        },
+
+        showErrorMessage: function(messageTemplate)
+        {
+            this.errorMessageView = new UserConfirmationView({ template: messageTemplate });
+            this.errorMessageView.render();
+        },
+
+        validateInt: function(attributeName, deferred)
+        {
+            var value = this.model.get(attributeName);
+            if (!value || isNaN(value) || Math.abs(Number(value)) > 1000)
+            {
+                deferred.rejectWith(this, [intRangeErrorTemplate]);
+            }
+        },
+
+        validateDate: function(attributeName, deferred)
+        {
+            var value = this.model.get(attributeName);
+            if (!value || !moment(value, "YYYY-MM-DD").isValid())
+            {
+                deferred.rejectWith(this, [dateErrorTemplate]);
+            }
         }
+
     });
 });

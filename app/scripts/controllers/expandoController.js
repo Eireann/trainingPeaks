@@ -1,6 +1,8 @@
 ﻿define(
 [
+    "setImmediate",
     "TP",
+    "utilities/charting/dataParser",
     "layouts/expandoLayout",
     "views/expando/graphView",
     "views/expando/mapView",
@@ -8,7 +10,7 @@
     "views/expando/lapsView",
     "views/expando/chartsView"
 ],
-function(TP, ExpandoLayout, GraphView, MapView, StatsView, LapsView, ChartsView)
+function(setImmediate, TP, DataParser, ExpandoLayout, GraphView, MapView, StatsView, LapsView, ChartsView)
 {
     return TP.Controller.extend(
     {
@@ -16,10 +18,12 @@ function(TP, ExpandoLayout, GraphView, MapView, StatsView, LapsView, ChartsView)
         {
             return this.layout;
         },
-        
+
         initialize: function(options)
         {
             this.model = options.model;
+            this.workoutModel = options.workoutModel;
+            this.workoutDetailsModel = options.workoutDetailsModel;
             this.prefetchConfig = options.prefetchConfig;
 
             this.layout = new ExpandoLayout();
@@ -27,18 +31,17 @@ function(TP, ExpandoLayout, GraphView, MapView, StatsView, LapsView, ChartsView)
 
             this.views = {};
 
+            this.dataParser = new DataParser();
             _.bindAll(this, "onModelFetched");
         },
 
         show: function()
         {
-            var self = this;
-
             this.closeViews();
             this.preFetchDetailData();
 
-            this.views.graphView = new GraphView({ model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise });
-            this.views.mapView = new MapView({ model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise });
+            this.views.graphView = new GraphView({ model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise, dataParser: this.dataParser });
+            this.views.mapView = new MapView({ model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise, dataParser: this.dataParser });
             this.views.statsView = new StatsView({ model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise });
             this.views.lapsView = new LapsView({ model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise });
             this.views.chartsView = new ChartsView({ model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise });
@@ -46,7 +49,17 @@ function(TP, ExpandoLayout, GraphView, MapView, StatsView, LapsView, ChartsView)
             this.layout.$el.addClass("waiting");
 
             this.watchForModelChanges();
+            this.watchForWindowResize();
 
+            this.watchForViewEvents();
+
+            this.handleDetailDataPromise();
+        },
+
+        handleDetailDataPromise: function()
+        {
+
+            var self = this;
             setImmediate(function() { self.prefetchConfig.detailDataPromise.then(self.onModelFetched); });
 
             // if we don't have a workout, just resolve the deferred to let everything render
@@ -58,12 +71,42 @@ function(TP, ExpandoLayout, GraphView, MapView, StatsView, LapsView, ChartsView)
         onModelFetched: function()
         {
             this.layout.$el.removeClass("waiting");
-            
-            this.layout.graphRegion.show(this.views.graphView);
-            this.layout.mapRegion.show(this.views.mapView);
+
+            // use some setImmediate's to allow everything to paint nicely
             this.layout.statsRegion.show(this.views.statsView);
             this.layout.lapsRegion.show(this.views.lapsView);
-            this.layout.chartsRegion.show(this.views.chartsView);
+
+            var self = this;
+
+            var flatSamples = this.model.get("detailData").get("flatSamples");
+            this.dataParser.loadData(flatSamples);
+
+            setImmediate(function()
+            {
+                self.layout.graphRegion.show(self.views.graphView);
+            });
+
+            if (this.dataParser.hasLatLongData)
+            {
+                this.layout.showMap();
+                setImmediate(function()
+                {
+                    self.layout.mapRegion.show(self.views.mapView);
+                });
+            } else
+            {
+                this.layout.hideMap();
+            }
+
+            setImmediate(function()
+            {
+                self.layout.chartsRegion.show(self.views.chartsView);
+            });
+
+            setImmediate(function()
+            {
+                self.onViewResize();
+            });
         },
 
         preFetchDetailData: function()
@@ -116,7 +159,98 @@ function(TP, ExpandoLayout, GraphView, MapView, StatsView, LapsView, ChartsView)
         stopWatchingModelChanges: function()
         {
             this.model.off("deviceFileUploaded", this.fetchDetailData, this);
-        }
+        },
 
+        watchForViewEvents: function()
+        {
+            _.each(this.views, function(view, key)
+            {
+                view.on("rangeselected", this.onRangeSelected, this);
+                view.on("unselectall", this.onUnSelectAll, this);
+                view.on("graphhover", this.onGraphHover, this);
+                view.on("graphleave", this.onGraphLeave, this);
+                view.on("resize", this.onViewResize, this);
+            }, this);
+
+            this.on("close", this.stopWatchingViewEvents, this);
+
+        },
+
+        stopWatchingViewEvents: function()
+        {
+            _.each(this.views, function(view, key)
+            {
+                view.off("rangeselected", this.onRangeSelected, this);
+                view.off("unselectall", this.onUnSelectAll, this);
+                view.off("graphhover", this.onGraphHover, this);
+                view.off("graphleave", this.onGraphLeave, this);
+                view.on("resize", this.onViewResize, this);
+            }, this);
+
+        },
+
+        onRangeSelected: function (workoutStatsForRange, options, triggeringView)
+        {
+
+            _.each(this.views, function(view, key)
+            {
+                view.trigger("controller:rangeselected", workoutStatsForRange, options, triggeringView);
+            }, this);
+
+            if (!workoutStatsForRange.hasLoaded)
+            {
+                workoutStatsForRange.fetch().done(function()
+                {
+                    workoutStatsForRange.hasLoaded = true;
+                    // don't retrigger the views, the views can decide if they want to listen or not
+                });
+            }
+        },
+        
+        onGraphHover: function (options)
+        {
+            _.each(this.views, function(view, key)
+            {
+                view.trigger("controller:graphhover", options);
+            }, this);
+        },
+
+        onGraphLeave: function()
+        {
+            _.each(this.views, function (view, key)
+            {
+                view.trigger("controller:graphleave");
+            }, this);
+        },
+        
+        onUnSelectAll: function()
+        {
+            _.each(this.views, function (view, key)
+            {
+                view.trigger("controller:unselectall");
+            }, this);
+        },
+
+        watchForWindowResize: function()
+        {
+            _.bindAll(this, "onViewResize");
+            $(window).on("resize", this.onViewResize);
+            this.on("close", this.stopWatchingWindowResize, this);
+        },
+
+        stopWatchingWindowResize: function()
+        {
+            $(window).off("resize", this.onViewResize);
+        },
+
+        onViewResize: function()
+        {
+            var containerHeight = this.layout.$el.parent().height();
+            var mapAndChartsContainerWidth = this.layout.$("#expandoLeftColumn").width();
+            _.each(this.views, function(view)
+            {
+                view.trigger("controller:resize", containerHeight, mapAndChartsContainerWidth);
+            }, this);
+        }
     });
 });

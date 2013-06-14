@@ -21,6 +21,7 @@ function(
             this.clipboard = new Clipboard();
             this.subscribeToCopyPasteEvents();
             this.subscribeToSelectEvents();
+            this.initializeSelectAndUnselectWorkouts();
         },
 
         subscribeToCopyPasteEvents: function()
@@ -32,6 +33,7 @@ function(
             this.daysCollection.on("day:cut", this.onItemsCut, this);
             this.daysCollection.on("day:paste", this.onPaste, this);
             this.daysCollection.on("day:pasteMenu", this.onPasteMenuOpen, this);
+            this.daysCollection.on("day:selectAddItem", this.onSelectAddItem, this);
         },
 
         subscribeToWeekCopyPaste: function(weekCollection)
@@ -47,6 +49,7 @@ function(
         subscribeToSelectEvents: function()
         {
             this.daysCollection.on("day:click", this.onDayClicked, this);
+            this.on("calendar:unselect", this.onUnSelectCalendar, this);
         },
         
         onItemsCopy: function(model)
@@ -116,6 +119,7 @@ function(
 
             this.selectedWeek = selectedWeek;
             this.selectedWeek.select();
+            this.trigger("select");
         },
 
         onWeekUnselected: function(selectedWeek)
@@ -255,6 +259,12 @@ function(
 
         onDayClicked: function (dayModel, e)
         {
+            // unselect model
+            if (this.selectedModel)
+            {
+                this.selectedModel.trigger("unselect", this.selectedModel);
+            }
+
             // do we already have a selected range? unselect it and continue
             if(this.selectedRange)
             {
@@ -273,7 +283,7 @@ function(
             // unselect the selected day and continue, unless we're trying to select a range
             if (this.selectedDay && !e.shiftKey)
             {
-                this.selectedDay.trigger("day:unselect");
+                this.selectedDay.trigger("day:unselect", this.selectedDay);
                 this.selectedDay.off("day:shiftwizard", this.onShiftWizardOpen, this);
                 this.selectedDay = null;
             }
@@ -290,7 +300,7 @@ function(
                 document.getSelection().removeAllRanges();
 
                 this.trigger("rangeselect", this.selectedRange, e);
-
+                this.trigger("select");
                 return;
             }
 
@@ -298,6 +308,7 @@ function(
             this.selectedDay = dayModel;
             this.selectedDay.on("day:shiftwizard", this.onShiftWizardOpen, this);
             dayModel.trigger("day:select");
+            this.trigger("select");
         },
 
         createRangeOfDays: function(selectionStartDay, selectionEndDay)
@@ -315,6 +326,77 @@ function(
             collectionOfDays.on("week:copy", this.onItemsCopy, this);
             collectionOfDays.on("week:cut", this.onItemsCut, this);
             return collectionOfDays;
+        },
+
+        initializeSelectAndUnselectWorkouts: function()
+        {
+            this.selectedModel = null;
+            this.workoutsCollection.on("select", this.onSelectWorkout, this);
+            this.workoutsCollection.on("unselect", this.onUnSelectWorkout, this);
+        },
+
+        onSelectWorkout: function(model)
+        {
+            if (this.selectedModel && this.selectedModel !== model)
+            {
+                this.selectedModel.trigger("unselect", this.selectedModel);
+            }
+
+            this.selectedModel = model;
+            model.selected = true;
+
+            this.trigger("select");
+
+            if(this.selectedRange)
+            {
+                this.selectedRange.trigger("range:unselect", this.selectedRange);
+            }
+
+            if(this.selectedWeek)
+            {
+                this.selectedWeek.trigger("week:unselect", this.selectedWeek);
+            }
+
+            if(this.selectedDay)
+            {
+                this.selectedDay.trigger("day:unselect", this.selectedDay);
+            }
+        },
+
+        onUnSelectWorkout: function(model)
+        {
+            this.selectedModel = null;
+            model.selected = false;
+        },
+
+        onSelectAddItem: function()
+        {
+            this.onUnSelectCalendar();
+            this.trigger("select");
+        },
+
+        onUnSelectCalendar: function()
+        {
+
+            if (this.selectedModel)
+            {
+                this.selectedModel.trigger("unselect", this.selectedModel);
+            }
+
+            if(this.selectedRange)
+            {
+                this.selectedRange.trigger("range:unselect", this.selectedRange);
+            }
+
+            if(this.selectedWeek)
+            {
+                this.selectedWeek.trigger("week:unselect", this.selectedWeek);
+            }
+
+            if(this.selectedDay)
+            {
+                this.selectedDay.trigger("day:unselect", this.selectedDay);
+            }
         }
 
     };

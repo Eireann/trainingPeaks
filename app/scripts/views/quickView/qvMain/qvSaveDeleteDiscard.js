@@ -33,10 +33,12 @@ function(
             {
                 var dayToAddTo = this.dayModel;
                 var newWorkoutModel = this.model;
+
                 var onSyncNewWorkout = function()
                 {
                     newWorkoutModel.off("sync", onSyncNewWorkout);
                     dayToAddTo.trigger("workout:added", newWorkoutModel);
+                    newWorkoutModel.trigger("select", newWorkoutModel);
                 };
 
                 this.model.on("sync", onSyncNewWorkout);
@@ -74,7 +76,6 @@ function(
         {
             if (!_.isEmpty(this.model.changed))
             {
-
                 // The model properties we are checking for here are not bound via StickIt, so
                 // they have to be saved manually when the model changes.
                 if(_.has(this.model.changed, "coachComments") || _.has(this.model.changed, "workoutComment") ||

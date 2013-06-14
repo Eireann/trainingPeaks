@@ -15,7 +15,7 @@
                 <input type="text" id="startTimeInput" value="{{ startTime }}" placeholder="Enter Time" />
             </div>
             <div class="grayHeader workout">
-                <div class="workoutIcon">
+                <div class="workoutIconLarge">
 
                 </div>
                 <div class="workoutHeaderStats">
@@ -23,26 +23,24 @@
                         <div id="breakThrough" class="icon" title="{{$ "BreakthroughTooltip" }}">
                             <img src="assets/images/QVImages/breakthrough.png"/>
                         </div>
-                        <div class="icon addAttachment" title="{{$ "UploadAttachmentTooltip" }}">
-                            <img src="assets/images/QVImages/paperClip.png"/>
-                        </div>
+                        <div class="icon addAttachment" title="{{$ "UploadAttachmentTooltip" }}"></div>
                     </div>
-                    <div class="headerWorkoutValue middleValues">
+                    <div class="headerWorkoutValue middleValues duration">
                         <label id="qv-header-totaltimePlanned" class="planned"/>
                         <label id="qv-header-totaltime" class="actual"/>
                     </div>
-                    <div class="headerWorkoutValue">
+                    <div class="headerWorkoutValue distance">
                         <label id="qv-header-distancePlanned" class="planned"/>
                         <label id="qv-header-distance" class="actual"/>
                     </div>
-                    <div class="headerWorkoutValueLabel">
+                    <div class="headerWorkoutValueLabel distance">
                         <label>{{getUnitsLabel "distance" workoutTypeValueId}}</label>
                     </div>
-                    <div class="headerWorkoutValue middleValues">
+                    <div class="headerWorkoutValue middleValues tss">
                         <label id="qv-header-tssPlanned" class="planned"/>
                         <label id="qv-header-tssactual" class="actual"/>
                     </div>
-                    <div class="headerWorkoutValueLabel">
+                    <div class="headerWorkoutValueLabel tss">
                         <label>TSS</label>
                     </div> 
                     <div class="title">
@@ -98,9 +96,15 @@
                 </div>
                 <div class="share">
                     <label>{{$ "Share"}}</label>
-                    <img src="assets/images/QVImages/twitterIcon.jpg"/>
-                    <img src="assets/images/QVImages/facebookIcon.jpg"/>
-                    <img src="assets/images/QVImages/mailIcon.jpg"/>
+                    <div class="publicCheckboxContainer">
+                        <input type="checkbox" class="publicCheckbox"/> <span class="publicLabel" title="{{$ "PublicTooltip" }}">{{$ "Public" }}</span>
+                    </div>
+                    <div class="shareIcons">
+                        <div class="twitterIcon disabled" title="{{$ "PublicTooltipTwitter" }}"/>
+                        <div class="facebookIcon disabled" title="{{$ "PublicTooltipFacebook" }}"/>
+                        <div class="linkIcon disabled" title="{{$ "PublicTooltipLink" }}"/>
+                        <a class="emailLink"><div class="emailIcon disabled" title="{{$ "PublicTooltipEmail" }}"/></a>
+                    </div>
                 </div>
             </div>
             <input id="fileUploadInput" style="display: none" type="file"/>
@@ -109,19 +113,19 @@
 
     <div class="tabNavigation">
         <div class="summaryTab tabSelected" data-tabindex="0">
-            <img src="assets/images/QVImages/summary.png"/>
+            <div />
         </div>
         <div class="mapGraphTab" data-tabindex="1">
-            <img src="assets/images/QVImages/mapGraph.png"/>
+            <div/>
         </div>
         <div class="heartrateTab" data-tabindex="2">
-            <img src="assets/images/QVImages/heartrate.png"/>
+            <div/>
         </div>
         <div class="powerTab" data-tabindex="3">
-            <img src="assets/images/QVImages/power.png"/>
+            <div/>
         </div>
         <div class="paceTab" data-tabindex="4">
-            <img src="assets/images/QVImages/pace.png"/>
+            <div/>
         </div>
     </div>
 
@@ -135,14 +139,16 @@
     <div id="quickViewExpandedContent" style="display:none;"/> 
     
     <div class="quickviewFooter">
-        <div class="selectionBox this.$(".chosenSelect").chosen();">
-            <select>
-                <option value="Share" selected>{{$ "Share"}}</option>
-                <option value="Facebook">{{$ "Facebook"}}</option>
-                <option value="Twitter">{{$ "Twitter"}}</option>
-                <option value="Email">{{$ "Email"}}</option>
-                <option value="Link">{{$ "Link"}}</option>
-            </select>
+        <div class="share">
+            <div class="publicCheckboxContainer">
+                <input type="checkbox" class="publicCheckbox"/> <span class="publicLabel" title="{{$ "PublicTooltip" }}">{{$ "Public" }}</span>
+            </div>
+            <div class="shareIcons">
+                <div class="twitterIcon disabled" title="{{$ "PublicTooltipTwitter" }}"/>
+                <div class="facebookIcon disabled" title="{{$ "PublicTooltipFacebook" }}"/>
+                <div class="linkIcon disabled" title="{{$ "PublicTooltipLink" }}"/>
+                <a class="emailLink"><div class="emailIcon disabled" title="{{$ "PublicTooltipEmail" }}"/></a>
+            </div>
         </div>
         <div class="saveCloseButtons">
             <button id="delete">{{$ "Delete"}}</button>

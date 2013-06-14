@@ -4,8 +4,6 @@
 {
     position:relative;
 
-
-
     .zonesChart
     {
         position: absolute;
@@ -47,28 +45,26 @@
 
     .highcharts-series
     {
-        rect
-        {
-            fill: red;
-            stroke: darkred;
-        }
-
-        path
-        {
-            stroke: red;
-        }
+        
     }
 
     .highcharts-tooltip
     {
+
+        .graphTooltip
+        {
+            background-color: rgba(255, 255, 255, 0);
+        }
+
         .tooltipRow
         {
+            font-family: $fontFamilyRegular;
             font-size: $fontSizeSmall;
             color: $TPGrey3;
 
             .tooltipLabel
             {
-                font-weight: bold;
+                font-family: $fontFamilyHeavy;
             }
         }
     }
@@ -81,7 +77,7 @@
 
         .zoneText
         {
-            width: calc(100% - 80px);
+            @include calc(width, "100% - 80px"); 
             display: inline-block;
             overflow: hidden;
             text-align: right;
@@ -90,12 +86,12 @@
 
         .zoneRange
         {
-            @include labels($navigationFontFamilyRegular, 0.8em, $TPGrey3, normal);
+            @include labels($fontFamilyRegular, 0.8em, $TPGrey3, normal);
         }
 
         .zoneName
         {
-            @include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey4, $fontWeightBold);
+            @include labels($fontFamilyRegular, $fontSizeSmall, $TPGrey4, normal);
             label
             {
                 white-space: nowrap;
@@ -108,7 +104,7 @@
             display: inline-block;
             margin-left: 5px;
             vertical-align: top;
-            @include inputs(70px, 26px, $fontSizeSmall, $navigationFontFamilyRegular);
+            @include inputs(70px, 26px, $fontSizeSmall, $fontFamilyRegular);
             input
             {
                 color: $TPGrey3;
@@ -127,10 +123,10 @@
         .peakName
         {
             display: inline-block;
-            width: calc(100% - 100px);
+            @include calc(width, "100% - 100px"); 
             text-align: right;
             vertical-align: top;
-            @include labels($navigationFontFamilyRegular, $fontSizeSmall, $TPGrey4, $fontWeightBold);
+            @include labels($fontFamilyRegular, $fontSizeSmall, $TPGrey4, normal);
             label
             {
                 margin-top: 5px;
@@ -144,7 +140,7 @@
             display: inline-block;
             margin-left: 10px;
             vertical-align: top;
-            @include inputs(45px, 20px, 12px, $navigationFontFamilyRegular);
+            @include inputs(45px, 20px, 12px, $fontFamilyRegular);
             input
             {
                 text-align: right;
@@ -158,11 +154,183 @@
             margin-left: 5px;
             width: 25px;
             vertical-align: top;
-            @include labels($navigationFontFamilyRegular, $fontSizeXSmall, $TPGrey3, normal);
+            @include labels($fontFamilyRegular, $fontSizeXSmall, $TPGrey3, normal);
             label
             {
                 margin-top: 5px;
             }
+        }
+    }
+}
+
+#flotTip
+{
+    z-index: 999;
+    min-width: 90px;
+    padding: 0;
+
+    div
+    {
+        clear: both;
+    }
+
+    .hoverBoxContents
+    {
+        padding: 0 0 12px 0;
+    }
+
+    &.left
+    {
+        .hoverBox
+        {
+            .arrow
+            {
+                right: 4px;
+                @include transform(translateX(8px) rotate(45deg));
+                position: absolute;
+                top: 20px;
+
+            }
+        }
+    }
+
+    &.right
+    {
+        .hoverBox
+        {
+            .arrow
+            {
+                left: 1px;
+                @include transform(translateX(-35px) rotate(-45deg));
+                position: absolute;
+                top: 20px;
+            }
+        }
+    }
+
+    &.bottom
+    {
+        .hoverBox
+        {
+            .arrow
+            {
+                bottom: 20px;
+                top: auto;
+            }
+        }
+    }
+
+
+    .details
+    {
+        padding: 2px 5px 8px 5px;
+    }
+
+    .time
+    {
+       font-family: $fontFamilyRegular;
+       font-size: $fontSizeLarge; 
+       text-align: center;
+       
+    }
+
+    .value
+    {
+       font-family: $fontFamilyHeavy;
+       font-size: $fontSizeSmall; 
+       color: $TPGrey4;
+       width: 45px;
+       float: left;
+       text-align: right;
+       white-space: nowrap;
+    }
+    
+       .RightPower
+       {
+            .value
+            {
+                width: auto;
+                font-family: $fontFamilyRegular;
+            }
+
+            .units
+            {
+                display: none;
+            }
+       }
+
+    .units
+    {
+        float: left;
+        font-family: $fontFamilyRegular;
+        font-size: $fontSizeXSmall;
+        min-width: 35px;
+        text-align: left;
+        padding: 2px 5px 0 3px;
+        margin-left: 3px;
+    }
+
+    .Cadence.current
+    {
+        label
+        {
+            color: $clrCadence;
+        }
+    }
+
+    .HeartRate.current
+    {
+        label
+        {
+            color: $clrHeartRate;
+        }
+    }
+
+    .Power.current
+    {
+        label
+        {
+            color: $clrPower;
+        }
+    }
+
+    .RightPower.current
+    {
+        label
+        {
+            color: $clrRightPower;
+        }
+    }
+
+    .Speed.current
+    {
+        label
+        {
+            color: $clrSpeed;
+        }
+    }
+
+    .Elevation.current
+    {
+        label
+        {
+            color: $clrElevation;
+        }
+    }
+
+    .Temperature.current
+    {
+        label
+        {
+            color: $clrTemperature;
+        }
+    }
+
+    .Torque.current
+    {
+        label
+        {
+            color: $clrTorque;
         }
     }
 }

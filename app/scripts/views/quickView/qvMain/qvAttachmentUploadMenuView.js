@@ -31,7 +31,6 @@ function(_,
             "click #attachmentFileUploadMenuBrowse": "onBrowseClicked",
             "click #closeIcon": "close",
             "change .fileSelect": "selectFileCheckbox",
-            "click button.download": "onDownloadClicked",
             "click button.delete": "onDeleteClicked",
             "change input[type='file']#attachmentInput": "onAttachmentFileSelected"
         },
@@ -51,11 +50,14 @@ function(_,
 
         watchForFileChanges: function()
         {
+            this.on("render", this.enableAllAvailableDownloads, this);
+
             this.model.get("details").on("change:attachmentFileInfos", this.render, this);
             this.on("close", function()
             {
                 this.model.get("details").off("change:attachmentFileInfos", this.render, this);
             }, this);
+
         },
 
         onBrowseClicked: function ()
@@ -87,6 +89,9 @@ function(_,
 
             // enable all buttons
             this.$(".fileButtons button").attr("disabled", null);
+
+            var fileInfo = _.where(this.model.get("details").get("attachmentFileInfos"), { fileId: parseInt(this.selectedFileId, 10) })[0];
+            this.downloadFile(fileInfo);
         },
 
         onDeleteClicked: function()
@@ -143,26 +148,26 @@ function(_,
             });
         },
 
-        onDownloadClicked: function()
-        {
-            var fileInfo = _.where(this.model.get("details").get("attachmentFileInfos"), { fileId: parseInt(this.selectedFileId, 10) })[0];
-            this.downloadFile(fileInfo);
-        },
-
         downloadFile: function (fileInfo)
         {
             var self = this;
-            this.waitingOn();
-            var attachmentDataModel = new WorkoutFileAttachment({ id: fileInfo.fileSystemId, workoutId: self.model.get("workoutId") });
-            attachmentDataModel.fetch().done(function(downloadedFileData)
+
+            var downloadAttachmentFromServer = function()
             {
-                self.waitingOff();
-                var onDownload = function(filesystemUrl)
+                self.waitingOn();
+                var attachmentDataModel = new WorkoutFileAttachment({ id: fileInfo.fileSystemId, workoutId: self.model.get("workoutId") });
+                attachmentDataModel.fetch().done(function(downloadedFileData)
                 {
-                   self.enableFileDownloadLink(fileInfo.fileId, fileInfo.fileName, filesystemUrl);
-                };
-                TP.utils.filesystem.saveFileToTemporaryFilesystem(fileInfo.fileId, fileInfo.fileName, downloadedFileData.data, downloadedFileData.contentType, onDownload);
-            });
+                    self.waitingOff();
+                    var onDownload = function(filesystemUrl)
+                    {
+                        self.enableFileDownloadLink(fileInfo.fileId, fileInfo.fileName, filesystemUrl);
+                    };
+                    TP.utils.filesystem.saveFileToTemporaryFilesystem(fileInfo.fileId, fileInfo.fileName, downloadedFileData.data, downloadedFileData.contentType, onDownload);
+                });
+            };
+
+            this.enableLinkIfFileIsAlreadyAvailable(fileInfo, downloadAttachmentFromServer);
         },
 
         enableFileDownloadLink: function (fileId, fileName, filesystemURL)
@@ -181,6 +186,33 @@ function(_,
         waitingOff: function ()
         {
             this.$(".details").removeClass("waiting");
+        },
+
+        enableAllAvailableDownloads: function()
+        {
+            var attachmentFiles = this.model.get("details").get("attachmentFileInfos");
+
+            var ifLocalFileDoesNotExist = function()
+            {
+                return;
+            };
+
+            _.each(attachmentFiles, function(fileInfo)
+            {
+                this.enableLinkIfFileIsAlreadyAvailable(fileInfo, ifLocalFileDoesNotExist);
+            }, this);
+        },
+
+        enableLinkIfFileIsAlreadyAvailable: function(fileInfo, ifLocalFileDoesNotExist)
+        {
+            var self = this;
+
+            var ifLocalFileExists = function(existingLocalFileUrl)
+            {
+                self.enableFileDownloadLink(fileInfo.fileId, fileInfo.fileName, existingLocalFileUrl);
+            };
+
+            TP.utils.filesystem.getLocalFilesystemUrl(fileInfo.fileId, fileInfo.fileName, ifLocalFileExists, ifLocalFileDoesNotExist);
         }
 
     });

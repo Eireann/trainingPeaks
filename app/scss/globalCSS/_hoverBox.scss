@@ -24,9 +24,11 @@
         z-index: 3;
         margin-bottom: 3px; 
         padding: 10px;
-        @include linearGradient(bottom, rgb(255,255,255), rgba(255,255,255,0.90)); 
+        //@include linearGradient(bottom, rgb(255,255,255), rgba(255,255,255,0.90)); 
+        background-color: $white;
         label
         {
+            color: $TPGrey3;
             cursor: pointer;
 			font-size:$fontSizeSmall;
 			font-weight:normal;
@@ -44,8 +46,8 @@
         right: 0px;
 
         // the bottom will be covered by the bottom bar and arrow
-        bottom: 23px;
-		@include box-shadow(0 2px 3px 0 #ADADAD);
+        bottom: 19px;
+		@include box-shadow(0 1px 3px 0 #ADADAD);
     }
 
     // bottom shadow, except for the arrow
@@ -69,8 +71,8 @@
     {
         position:relative;
         z-index: 2;
-        width: 20px;
-        height: 20px;
+        width: 16px;
+        height: 16px;
         margin-left:30px;
         @include transform(translateY(-15px) rotate(45deg));
         @include box-shadow(0 0 3px 1px #ADADAD);
@@ -97,7 +99,7 @@
         .hoverBoxContents {
             margin-bottom: 0px;
             margin-top:0;
-            @include linearGradient(top, rgb(255,255,255), rgba(255,255,255,0.90)); 
+            //@include linearGradient(top, rgb(255,255,255), rgba(255,255,255,0.90)); 
 			& label {
 			    cursor: pointer;
 			}
@@ -106,7 +108,7 @@
         // this is what gives the top and side shadows
         .mainShadow
         {
-            top: 20px;
+            top: 16px;
             bottom:0px;
            	@include box-shadow(0px 1px 2px 1px #adadad);
         }

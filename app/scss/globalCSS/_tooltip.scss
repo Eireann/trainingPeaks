@@ -7,6 +7,11 @@
     padding: 0px;
     background-color: transparent;
 
+    &.ui-widget
+    {
+        font-size: $fontSizeMedium;
+    }
+    
     &.ui-widget-content
     {
         border: none;
@@ -18,9 +23,9 @@
         background-color: rgba(99, 101, 105, 1);
         font-size: $fontSizeSmall;
         color: $white;
-        padding: 8px;
-        padding-left: 15px;
-        padding-right: 15px;
+        padding: 6px;
+        padding-left: 10px;
+        padding-right: 10px;
     }
 
     .arrow
@@ -28,10 +33,11 @@
         position:relative;
         width:0px;
         height:0px;
-        border-top: 10px solid rgba(99, 101, 105, 0.9);
+        border-top: 10px solid rgba(99, 101, 105, 1);
         border-left: 10px solid transparent;
         border-right: 10px solid transparent;
         border-bottom: 1px solid transparent;
+		margin-top:4px;
     }
 
     &.below
@@ -40,9 +46,9 @@
         {
             position:absolute;
             top:0px;
-            left: calc(50% - 10px);
+            @include calc(left, "50% - 10px"); 
             border-top: transparent;
-            border-bottom: 10px solid rgba(99, 101, 105, 0.9);
+            border-bottom: 10px solid rgba(99, 101, 105, 1);
         }
 
         .ui-tooltip-content

@@ -1,5 +1,8 @@
 ﻿@import "globalCSS/tpstylesheet";
 
+$mainTabSpriteURL: url(../../assets/images/sprite-icons-main-tabs.png);
+$mainTtabSpriteRetinaURL: url(../../assets/images/sprite-icons-main-tabs@2x.png);
+
 #libraryContainer
 {
 
@@ -59,39 +62,133 @@
                 position:relative;
                 display:none;
                 z-index: 0;
-                width: 17px;
-                height: 17px;
+                width: 20px;
+                height: 20px;
                 background-color: $TPBlue;
                 left: 35px;
-                @include transform(translateY(10px) rotate(45deg));
+                @include transform(translateY(8px) rotate(45deg));
             }
         }
 
+        #exerciseLibrary {
+            background: $TPGrey1 $mainTabSpriteURL no-repeat 0 0;
+            &:hover {
+                background-position: -33px 0;
+            }
+
+            &:active {
+                background-color: $TPGrey2;
+                background-position: -66px 0;
+            }
+
+			&.active {
+                background-color: $TPGrey2;
+                background-position: -66px 0;
+            }
+        }
+
+        #mealLibrary {
+            background: $TPGrey1 $mainTabSpriteURL no-repeat 0 -33px;
+            &:hover {
+                background-position: -33px -33px;
+            }
+
+            &:active {
+               background-color: $TPGrey2;
+               background-position: -66px -33px;
+            }
+
+			&.active {
+               background-color: $TPGrey2;
+               background-position: -66px -33px;
+            }
+        }
+
+        #foodLibrary {
+            background: $TPGrey1 $mainTabSpriteURL no-repeat 0 -132px;
+            &:hover {
+                background-position: -33px -132px;
+            }
+
+            &:active {
+               background-color: $TPGrey2;
+               background-position: -66px -132px;
+            }
+
+			&.active {
+               background-color: $TPGrey2;
+               background-position: -66px -132px;
+            }
+        }
+
+        #plansLibrary {
+            background: $TPGrey1 $mainTabSpriteURL no-repeat 0 -66px;
+            &:hover {
+                background-position: -33px -66px;
+            }
+
+            &:active {
+               background-color: $TPGrey2;
+               background-position: -66px -66px;
+            }
+
+			&.active {
+               background-color: $TPGrey2;
+               background-position: -66px -66px;
+            }
+        }
+
+        #routesLibrary {
+            background: $TPGrey1 $mainTabSpriteURL no-repeat 0 -99px;
+            &:hover {
+                background-position: -33px -99px;
+            }
+
+            &:active {
+               background-color: $TPGrey2;
+               background-position: -66px -99px;
+            }
+
+			&.active {
+               background-color: $TPGrey2;
+               background-position: -66px -99px;
+            }
+        }
+
+
+		@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
+			#exerciseLibrary, #mealLibrary, #foodLibrary, #plansLibrary, #routesLibrary {
+				background-image: $mainTtabSpriteRetinaURL;
+				background-size: 99px 165px;
+			}
+		}
+
         div.active
         {
-            background-color: $TPGrey2;
-
             .arrow
             {
                 display: block;
             }
         }
-
-        
     }
 
     #activeLibraryContainer
     {
 
         @include nice-scrollbar;
+        &::-webkit-scrollbar-track
+        {
+            box-shadow: rgba(255, 255, 255, 0.1) 0 1px 0, rgba(0, 0, 0, 0.2) 0 0px 1px 1px inset;
+        }
         position:absolute;
         top:0px;
         bottom:0px;
-        left: 42px;
+        left: 37px;
         right: 0px;
-        overflow-y:auto;
+        overflow-y: scroll;
         padding: 5px;
-        @include calc(width, "100% - 40px"); 
+        padding-top: 10px;
+        @include calc(width, "100% - 36px"); 
         white-space: nowrap;
 
         background-color: $TPGrey1;
@@ -99,11 +196,11 @@
 
         .libraryNavigation
         {
-            @include labels($navigationFontFamilyRegular, $fontSizeXLarge, $TPBlue, normal);
+            @include labels($fontFamilyRegular, $fontSizeMedium, $TPBlue, normal);
             label
             {
                 display: inline-block;
-                margin-right: 15px;
+                margin: 4px 15px 0 2px;
             }
 
             @include headerButtons(0px, 40px, $fontSizeMedium);
@@ -128,26 +225,59 @@
         .librarySearch
         {
             margin-top: 10px;
-            @include inputs(100%, 20px, $fontSizeMedium, $navigationFontFamilyRegular);
+            @include inputs(240px, 20px, $fontSizeSmall, $fontFamilyRegular);
+
+            input
+            {
+                margin-bottom: 5px;
+                color: $TPGrey3;
+                padding-left: 5px;
+                margin-left: 2px;
+            }
 
             select
             {
                 margin-top: -5px;
-                font-family: $navigationFontFamilyRegular;
+                font-family: $fontFamilyRegular;
                 font-size: $fontSizeMedium;
+                
             }
         }
 
         .helpText
         {
-            padding-left: 10px;
+            margin-top: 5px;
+            margin-left: 8px;
+
             color: $TPGrey3;
-            font-style: italic;
+            font-family: $fontFamilyRegularItalic;
             cursor: default;
+            font-size: $fontSizeSmall;
         }
 
     }
 
+    .selectboxit-options
+    {
+        width: 240px;
+        margin-left: 2px;
+    }
+
+    .selectboxit-container .selectboxit 
+    {
+        width: 240px !important; /* Width of the dropdown button */
+        margin-left: 2px;
+    }
+
+    .selectboxit-option
+    {
+        text-indent: 3px;
+    }
+
+    .selectboxit-option-icon-container 
+    {
+        margin-left: 0px;
+    }
 }
 
 #exerciseLibraryAddItemView
@@ -163,51 +293,40 @@
     }
 }
 
-.libraryExercise
+.libraryExercise.workout.future
 {
-    @include box-shadow(0px 2px 3px -2px $TPGrey4);
-    background-color: #e1e2e2;
+    background-color: $TPGrey6;
+    border-color: $TPGrey6;
+    width: 240px;
 
-
-    &.dragHelper
+    &:hover
     {
-        opacity: 0.6;
-        min-width: 150px;
+        border-color:  $TPGrey11;
     }
 
-    &.dragging
+    .workoutDiv
     {
-        opacity: 0.8;
-    }
-
-    color: $TPGrey3;
-    margin-top: 4px;
-
-    .workoutHeader
-    {
-        padding: 0px 5px 5px 5px;
-        height: 27px;
-
-        .workoutIcon
-        {
-            width: 25px;
-            height: 25px;
-            background-color: $white;
-            float: left;
-            margin-top: 5px;
-        }
-
         .workoutDistanceTime
         {
-            padding: 10px 0px 0px 30px;
+            padding-top: 10px;
 
-            @include labels($navigationFontFamilyRegular, $fontSizeXLarge, $black, normal);
+            label
+            {
+                color: $TPGrey3;
+                display:inline-block;
+                cursor: inherit;
+                font-size: $fontSizeLarge;
+                margin-right: 4px;
+                margin-left: 1px;
+            }
         }
-    }
-    .workoutBody
-    {
-        padding: 10px 5px 5px 5px;
-        @include labels($navigationFontFamilyRegular, $fontSizeXSmall, $black, normal);
-        label{font-weight: bold;}
+
+        .workoutBody
+        {
+            label
+            {
+                color: $TPGrey3;
+            }
+        }
     }
 }

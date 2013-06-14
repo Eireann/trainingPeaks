@@ -1,13 +1,22 @@
 ﻿define(
 [
     "TP",
-    "utilities/charting/flotCustomTooltip"
+    "utilities/charting/jquery.flot.filter",
+    "utilities/charting/chartColors"
 ],
-function(TP, flotCustomToolTip)
+function(TP, flotFilter, chartColors)
 {
-    return function(series)
+    return function(onHoverHandler)
     {
-        return {
+        return _.extend({},
+        {
+            crosshair:
+            {
+                mode: "x",
+                color: "rgba(255, 255, 255, 0.80)",
+                lineWidth: 1
+                
+            },
             grid:
             {
                 show: true,
@@ -21,19 +30,18 @@ function(TP, flotCustomToolTip)
             },
             selection:
             {
-                mode: null
+                mode: null,
+                color: chartColors.chartSelection
             },
             tooltip: true,
             tooltipOpts:
             {
-                content: function(x, y)
+                content: function()
                 {
                     return "";
                 },
-                onHover: function(flotItem, $tooltipEl)
-                {
-                    $tooltipEl.html(flotCustomToolTip(series, flotItem.series.label, flotItem.dataIndex, flotItem.datapoint[0]));
-                }
+                onHover: onHoverHandler,
+                defaultTheme: false
             },
             series:
             {
@@ -45,17 +53,61 @@ function(TP, flotCustomToolTip)
                     hoverable: true
                 }
             },
+
+            shifts:
+            {
+                x: 0,
+                y: 0
+            },
             xaxes:
             [
                 {
                     min: 0,
+                    color: "transparent",
+                    tickColor: "transparent",
+
                     tickFormatter: function(value, axis)
                     {
-                        var decimalHours = (value / (3600 * 1000)).toFixed(2);
+                        var decimalHours = (value / (3600 * 1000));
                         return TP.utils.datetime.format.decimalHoursAsTime(decimalHours, true, null);
+                    },
+                    ticks: function(axis)
+                    {
+                        var ticksArray = [];
+
+                        if (axis.tickSize <= 120000)
+                            axis.tickSize = 120000;
+                        else if (axis.tickSize <= 300000)
+                            axis.tickSize = 300000;
+                        else if (axis.tickSize <= 600000)
+                            axis.tickSize = 600000;
+                        else if (axis.tickSize <= 900000)
+                            axis.tickSize = 900000;
+                        else if (axis.tickSize <= 1200000)
+                            axis.tickSize = 1200000;
+                        else if(axis.tickSize <= 1500000)
+                                axis.tickSize = 1500000;
+                        else if (axis.tickSize <= 1800000)
+                            axis.tickSize = 1800000;
+                        else if (axis.tickSize <= 2100000)
+                            axis.tickSize = 2100000;
+                        else if (axis.tickSize <= 2400000)
+                            axis.tickSize = 2400000;
+                        else if (axis.tickSize <= 2700000)
+                            axis.tickSize = 2700000;
+                        else
+                            axis.tickSize -= (axis.tickSize % 3000000);
+                        
+                        var max = axis.datamax;
+                        while (max > 0)
+                        {
+                            ticksArray.push(axis.datamax - max);
+                            max -= axis.tickSize;
+                        }
+                        return ticksArray;
                     }
                 }
             ]
-        };
+        });
     };
 });

@@ -1,15 +1,33 @@
 ﻿define(
 [
-    "utilities/charting/seriesColorByChannel",
+    "utilities/charting/chartColors",
     "utilities/charting/findIndexByMsOffset",
     "utilities/conversion/convertToViewUnits"
 ],
-function(seriesColorByChannel, findIndexByMsOffset, convertToViewUnits)
+function(chartColors, findIndexByMsOffset, convertToViewUnits)
 {
+    var flexChannelOrder =
+    [
+        "Cadence",
+        "HeartRate",
+        "Elevation",
+        "Power",
+        "RightPower",
+        "Speed",
+        "Pace",
+        "Torque",
+        "Temperature"
+    ];
+
     var parseDataByChannel = function(flatSamples)
     {
         var dataByChannel = {};
         var previousElevation = null;
+
+        if (!flatSamples || !flatSamples.samples)
+        {
+            return;
+        }
 
         for (var sampleIdx = 0; sampleIdx < flatSamples.samples.length; sampleIdx++)
         {
@@ -53,6 +71,9 @@ function(seriesColorByChannel, findIndexByMsOffset, convertToViewUnits)
 
         _.each(channelMask, function(channel)
         {
+            if (_.contains(self.disabledSeries, channel))
+                return;
+            
             if (channel === "Distance")
                 return;
 
@@ -76,9 +97,8 @@ function(seriesColorByChannel, findIndexByMsOffset, convertToViewUnits)
             else
                 data = _.clone(dataByChannel[channel]);
 
-            seriesArray.push(
-            {
-                color: seriesColorByChannel[channel],
+            var seriesOptions = {
+                color: chartColors.seriesColorByChannel[channel],
                 data: data,
                 label: channel,
                 lines:
@@ -86,10 +106,36 @@ function(seriesColorByChannel, findIndexByMsOffset, convertToViewUnits)
                     fill: fillOpacity
                 },
                 shadowSize: 0
-            });
+            };
+
+            if (channel === "Elevation")
+            {
+                seriesOptions.color = "#FFFFFF";
+                seriesOptions.lines.fillColor = { colors: [chartColors.gradients.elevation.dark, chartColors.gradients.elevation.light] };
+            }
+
+            seriesArray.push(seriesOptions);
         });
 
-        return seriesArray;
+        var orderedSeriesArray = [];
+
+        _.each(flexChannelOrder, function(orderedChannel)
+        {
+            var forceElevationFirst = true;
+            var series = _.find(seriesArray, function (s) { return s.label === orderedChannel; });
+            if (series)
+            {
+                if (forceElevationFirst && orderedChannel === "Elevation")
+                {
+                    orderedSeriesArray.unshift(series);
+                } else
+                {
+                    orderedSeriesArray.push(series);
+                }
+            }
+        });
+
+        return orderedSeriesArray;
     };
 
     var getElevationInfoOnRange = function(x1, x2)
@@ -126,11 +172,18 @@ function(seriesColorByChannel, findIndexByMsOffset, convertToViewUnits)
 
     var generateLatLonFromData = function(dataByChannel)
     {
+        var startIndex = 0;
+        var endIndex = dataByChannel.Latitude.length;
+        return generateLatLonFromDataBetweenIndexes.call(this, dataByChannel, startIndex, endIndex);
+    };
+
+    var generateLatLonFromDataBetweenIndexes = function(dataByChannel, startIndex, endIndex)
+    {
         var latLon = [];
         
         if (_.has(dataByChannel, "Latitude") && _.has(dataByChannel, "Longitude") && (dataByChannel.Latitude.length === dataByChannel.Longitude.length))
         {
-            for (var i = 0; i < dataByChannel.Latitude.length; i++)
+            for (var i = startIndex; i < endIndex; i++)
             {
                 var lat = dataByChannel.Latitude[i][1];
                 var lon = dataByChannel.Longitude[i][1];
@@ -149,22 +202,25 @@ function(seriesColorByChannel, findIndexByMsOffset, convertToViewUnits)
     {
         var self = this;
         var yaxes = [];
-        var countdown = 3;
+        var countdown = (series.length / 2).toFixed(0);
         var axisIndex = 1;
         _.each(series, function(s)
         {
+            if (s.label === "Pace")
+                return;
+            
             s.yaxis = axisIndex++;
-            yaxes.push(
+            var axisOptions =
             {
                 show: true,
                 label: s.label,
                 min: s.label === "Elevation" ? self.getElevationInfo().min : 0,
                 position: countdown-- > 0 ? "right" : "left",
-                color: s.color,
-                tickColor: s.color,
+                color: "transparent",
+                tickColor: "transparent",
                 font:
                 {
-                    color: s.color
+                    color: chartColors.seriesColorByChannel[s.label]
                 },
                 tickFormatter: function(value)
                 {
@@ -172,14 +228,18 @@ function(seriesColorByChannel, findIndexByMsOffset, convertToViewUnits)
                     // in order to easily obtain the correct unit conversion for each axis.
                     // For some reason, a '0' value returns a NaN, check for it.
                     return value === 0 ? +0 : parseInt(convertToViewUnits(value, s.label.toLowerCase()), 10);
-                }
-            });
+                },
+                labelWidth: 15
+            };
+
+            yaxes.push(axisOptions);
         });
         return yaxes;
     };
     
     var DataParser = function()
     {
+        this.disabledSeries = [];
         this.flatSamples = null;
         this.dataByChannel = null;
         this.minElevation = null;
@@ -199,8 +259,20 @@ function(seriesColorByChannel, findIndexByMsOffset, convertToViewUnits)
             var elevationInfo = getElevationInfoOnRange.call(this);
             this.minElevation = elevationInfo.min;
             this.elevationIsAllNegative = elevationInfo.isAllNegative;
+            if (this.dataByChannel.Latitude && this.dataByChannel.Longitude)
+            {
+                this.hasLatLongData = true;
+            }
+            else
+            {
+                this.hasLatLongData = false;
+            }
             this.latLonArray = null;
+        },
 
+        setDisabledSeries: function(series)
+        {
+            this.disabledSeries = series;
         },
 
         getSeries: function(x1, x2)
@@ -221,10 +293,58 @@ function(seriesColorByChannel, findIndexByMsOffset, convertToViewUnits)
 
         getLatLonArray: function()
         {
-            if (!this.latLonArray)
+            if (this.dataByChannel.Latitude && this.dataByChannel.Longitude && !this.latLonArray)
                 this.latLonArray = generateLatLonFromData.call(this, this.dataByChannel);
 
             return this.latLonArray;
+        },
+
+        getLatLonBetweenMsOffsets: function(startMsOffset, endMsOffset)
+        {
+            var sampleStartIndex = this.findIndexByMsOffset(startMsOffset);
+            var sampleEndIndex = this.findIndexByMsOffset(endMsOffset);
+            return generateLatLonFromDataBetweenIndexes.call(this, this.dataByChannel, sampleStartIndex, sampleEndIndex);
+        },
+
+        getLatLngMsOffset: function()
+        {
+            if (!this.latLngMsOffset)
+            {
+                this.latLngMsOffset = {};
+
+                if (_.has(this.dataByChannel, "Latitude") && _.has(this.dataByChannel, "Longitude") && (this.dataByChannel.Latitude.length === this.dataByChannel.Longitude.length))
+                {
+                    for (var i = 0; i < this.dataByChannel.Latitude.length; i++)
+                    {
+                        var lat = this.dataByChannel.Latitude[i][1];
+                        var lng = this.dataByChannel.Longitude[i][1];
+                        if (_.isNaN(lat) || _.isNaN(lng))
+                            continue;
+
+                        var msOffset = this.dataByChannel.Latitude[i][0];
+                        var key = lat + "," + lng;
+                        this.latLngMsOffset[key] = msOffset;
+                    }
+                }
+
+                console.log(_.keys(this.latLngMsOffset).sort());
+
+            }
+
+            return this.latLngMsOffset;
+        },
+
+        findMsOffsetByLatLng: function(lat, lng)
+        {
+            var latLngMsOffset = this.getLatLngMsOffset();
+
+            // data from api is truncated at 5 decimals, but leaflet will give us longer values
+            var key = Number(lat).toFixed(5) + "," + Number(lng).toFixed(5);
+
+            if(latLngMsOffset.hasOwnProperty(key))
+                return latLngMsOffset[key];
+            else
+                return null;
         },
 
         getYAxes: function(series)
@@ -235,7 +355,47 @@ function(seriesColorByChannel, findIndexByMsOffset, convertToViewUnits)
         getChannelMask: function()
         {
             return this._channelMask;
+        },
+
+        findIndexByMsOffset: function(msOffset)
+        {
+            if (this.flatSamples && this.flatSamples.msOffsetsOfSamples)
+                return findIndexByMsOffset(this.flatSamples.msOffsetsOfSamples, msOffset);
+            else
+                return null;
+        },
+        
+        createCorrectedElevationChannel: function (elevations)
+        {
+            var index = 0;
+            var badIndeces = [];
+            
+            for (var i = 0; i < this.dataByChannel["Latitude"].length; i++)
+            {
+                if (_.isNaN(this.dataByChannel["Latitude"][i][1]) || _.isNaN(this.dataByChannel["Longitude"][i][1]))
+                    badIndeces.push(i);
+            }
+
+            _.each(badIndeces, function(badIndex)
+            {
+                if (badIndex === 0)
+                    elevations.unshift(null);
+                else
+                    elevations.splice(badIndex, 0, null);
+            });
+
+            console.debug(elevations.length);
+            
+            var corrected = _.map(this.dataByChannel["Elevation"], function(elevationPoint)
+            {
+                if (index >= (elevations.length - 1))
+                    return [elevationPoint[0], null];
+
+                return [elevationPoint[0], elevations[index++]];
+            });
+            return corrected;
         }
+
     });
     
     return DataParser;

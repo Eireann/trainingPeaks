@@ -8,9 +8,8 @@ function(
     setImmediate
 )
 {
-
-    var summaryViewTextAreas = {
-
+    var summaryViewTextAreas =
+    {
         initializeTextAreas: function()
         {
             this.on("render", this.onRenderTextAreas, this);

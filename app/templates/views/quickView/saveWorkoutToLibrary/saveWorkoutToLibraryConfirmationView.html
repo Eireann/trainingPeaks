@@ -8,16 +8,19 @@
         </div>
 
         <div>
-            <div class="labels"><label for="selectLibrary">{{$ "SelectLibrary" }}:</label></div>
-            <div class="values"><select name="selectLibrary" id="selectLibrary">
-                {{#each libraries}}
-                <option value="{{ exerciseLibraryId }}" {{#if selected}}selected{{/if}}>{{ libraryName }}</option>
-                {{/each}}
-            </select></div>
+            <form class="selectForm"><label for="selectLibrary">{{$ "SelectLibrary" }}:</label>
+            
+                <select name="selectLibrary" id="selectLibrary">
+                    {{#each libraries}}
+                    <option value="{{ exerciseLibraryId }}" {{#if selected}}selected{{/if}}>{{ libraryName }}</option>
+                    {{/each}}
+                </select>
+            
+            </form>
         </div>
 
         <div class="dialogButtons">
-            <button id="confirmationOk">{{$ "Ok" }}</button>
+            <button id="confirmationOk">{{$ "OK" }}</button>
             <button id="confirmationCancel">{{$ "Cancel" }}</button>
         </div>
     </div>

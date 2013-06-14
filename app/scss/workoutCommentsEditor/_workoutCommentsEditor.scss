@@ -1,0 +1,41 @@
+﻿@import "../globalCSS/tpstylesheet";
+
+.expandoCommentsEditor
+{
+    z-index: 103;
+
+    .hoverBox
+    {
+        .hoverBoxContents
+        {
+            background-image: none;
+            background-color: $white;
+        }
+
+        .arrow
+        {
+            position: absolute;
+            top: 15px;
+            @include box-shadow(0 0 2px 0 #ADADAD);
+            left: 1px;
+            @include transform(translateX(-35px) rotate(-45deg));
+        }
+
+        .mainShadow
+        {
+            bottom: 0px;
+        }
+    }
+
+    .comments
+    {
+        float: none;
+    }
+
+    .closeIcon
+    {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+    }
+}

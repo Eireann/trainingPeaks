@@ -1,64 +1,214 @@
 ﻿@import "../../globalCSS/tpstylesheet";
 
-.tabNavigation
-{
+$QVTabSpriteURL: url(../../assets/images/QVImages/sprite-icons-QV-Tabs.png);
+$QVTabSpriteRetinaURL: url(../../assets/images/QVImages/sprite-icons-QV-Tabs@2x.png);
+
+.tabNavigation {
     width: 37px;
     height: 360px;
     float: left;
     background-color: $TPGrey5;
-    padding: 0px 0px 0px 0px;
     border-bottom: $TPGrey7;
     border-bottom-style: solid;
     border-bottom-width: 1px;
 
-    img
-    {
-        cursor: pointer;
-    }
+    .summaryTab {
+        padding: 7px 0px 10px 2px;
+        height: 45px;
+		&:hover {
+			cursor:pointer;
+		}
+        div {
+            height: 33px;
+            background: $QVTabSpriteURL no-repeat 0 0;
+            &:hover
+            {
+                background-position: -33px 0;
+            }
 
-    .summaryTab
-    {
-        padding: 12px 0px 10px 11px;
+            &:active
+            {
+               background-position: -66px 0;
+            }
+        }
+        &.tabSelected
+        {
+            div
+            {
+                background-position: -66px 0;
+            }
+        }
+
+        @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) 
+        {
+			
+			background-image: $QVTabSpriteRetinaURL no-repeat 0 0;
+			background-size: 35px 33px;
+		}
     }
 
     .heartrateTab
     {
-        padding: 10px 0px 10px 10px;
-        img
+        padding: 6px 0px 10px 2px;
+        height: 45px;
+		&:hover {
+			cursor:pointer;
+		}
+        div
         {
-            opacity: 0.4;
+            height: 33px;
+            background: $QVTabSpriteURL no-repeat 0 -66px;
+            &:hover
+            {
+                background-position: -33px -66px;
+            }
+
+            &:active
+            {
+               background-position: -66px -66px;
+            }
+
+            @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) 
+            {
+			
+			    background-image: $QVTabSpriteRetinaURL;
+			    background-size: 35px 33px;
+		    }
+        }
+
+        &.tabSelected
+        {
+            div
+            {
+                background-position: -66px -66px;
+            }
         }
     }
 
     .powerTab
     {
-        padding: 10px 0px 10px 13px;
-        img
+        padding: 6px 0px 10px 1px;
+        height: 45px;
+		&:hover {
+			cursor:pointer;
+		}
+        div
         {
-            opacity: 0.4;
+            height: 33px;
+            background: $QVTabSpriteURL no-repeat 0 -99px;
+            &:hover
+            {
+                background-position: -33px -99px;
+            }
+
+            &:active
+            {
+               background-position: -66px -99px;
+            }
+
+            @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) 
+            {
+			
+			    background-image: $QVTabSpriteRetinaURL no-repeat 0 -99px;
+			    background-size: 35px 33px;
+		    }
+        }
+
+        &.tabSelected
+        {
+            div
+            {
+                background-position: -66px -99px;
+            }
         }
     }
 
     .paceTab
     {
-        padding: 10px 0px 10px 7px;
-        img
+        padding: 6px 0px 10px 1px;
+        height: 45px;
+		&:hover {
+			cursor:pointer;
+		}
+        div
         {
-            opacity: 0.4;
+            height: 33px;
+            background: $QVTabSpriteURL no-repeat 0 -132px;
+            &:hover
+            {
+                background-position: -33px -132px;
+            }
+
+            &:active
+            {
+               background-position: -66px -132px;
+            }
+
+            @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) 
+            {
+			
+			    background-image: $QVTabSpriteRetinaURL no-repeat 0 -132px;
+			    background-size: 35px 33px;
+		    }
+        }
+
+         &.tabSelected
+        {
+            div
+            {
+                background-position: -66px -132px;
+            }
         }
     }
 
     .mapGraphTab
     {
-        padding: 10px 0px 10px 7px;
-        img
+        padding: 5px 0px 10px 2px;
+        height: 45px;
+		&:hover {
+			cursor:pointer;
+		}
+        div
         {
-            opacity: 0.4;
+            height: 33px;
+            background: $QVTabSpriteURL no-repeat 0 -33px;
+            &:hover
+            {
+                background-position: -33px -33px;
+            }
+
+            &:active
+            {
+               background-position: -66px -33px;
+            }
+
+            @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) 
+            {
+			
+			    background-image: $QVTabSpriteRetinaURL no-repeat 0 -33px;
+			    background-size: 35px 33px;
+		    }
+        }
+
+         &.tabSelected
+        {
+            div
+            {
+                background-position: -66px -33px;
+            }
         }
     }
+
+	@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
+		.summaryTab div, .heartrateTab div, .powerTab div, .paceTab div, .mapGraphTab div {
+			background-image: $QVTabSpriteRetinaURL;
+			background-size: 99px 165px;
+		}
+	}
 
     .tabSelected 
     {
         background-color: $TPGrey6;
     }
+
 }

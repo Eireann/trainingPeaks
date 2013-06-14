@@ -3,6 +3,7 @@
     "TP",
     "utilities/charting/dataParser",
     "utilities/charting/defaultFlotOptions",
+    "utilities/charting/flotCustomTooltip",
     "utilities/mapping/mapUtils",
     "utilities/workout/workoutTypes",
     "hbs!templates/views/quickView/mapAndGraphView"
@@ -11,6 +12,7 @@ function(
     TP,
     DataParser,
     getDefaultFlotOptions,
+    flotCustomToolTip,
     MapUtils,
     workoutTypes,
     workoutQuickViewMapAndGraphTemplate)
@@ -70,7 +72,8 @@ function(
             if (this.model.get("detailData") !== null && this.model.get("detailData").attributes.flatSamples !== null)
             {
                 this.onModelFetched();
-            } else
+            }
+            else
             {
                 setImmediate(function() { self.prefetchConfig.detailDataPromise.then(self.onModelFetched); });
             }
@@ -111,8 +114,11 @@ function(
             if (!this.map)
                 this.map = MapUtils.createMapOnContainer(this.$("#quickViewMap")[0]);
 
-            MapUtils.setMapData(this.map, this.dataParser.getLatLonArray());
-            MapUtils.calculateAndAddMileMarkers(this.map, this.dataParser, 10);
+            var latLngArray = this.dataParser.getLatLonArray();
+            MapUtils.setMapData(this.map, latLngArray);
+            MapUtils.calculateAndAddMileMarkers(this.map, this.dataParser, 6);
+            MapUtils.addStartMarker(this.map, latLngArray[0]);
+            MapUtils.addFinishMarker(this.map, latLngArray[latLngArray.length - 1]);
         },
 
         parseData: function()
@@ -123,6 +129,8 @@ function(
 
         createAndShowGraph: function()
         {
+            var self = this;
+            
             var priority =
             [
                 "Power",
@@ -140,38 +148,64 @@ function(
             var series = this.dataParser.getSeries();
             var yaxes = this.dataParser.getYAxes(series);
 
-            // Hide all series & axes by default in the data set
-            _.each(series, function(s) { s.lines.show = false; });
+            // Hide all axes by default in the data set
             _.each(yaxes, function(axis)
             {
                 axis.show = false;
                 axis.tickLength = 0;
             });
 
-            // Pick the top 2 series by priority and show those
-            _.each(priority, function(channel)
+            var onHoverHandler = function(flotItem, $tooltipEl)
             {
-                var s = _.where(series, { label: channel });
-                if (s && s[0] && numSeries++ < 2)
-                {
-                    s[0].lines.show = true;
-                    yaxes[s[0].yaxis - 1].show = true;
-                    yaxes[s[0].yaxis - 1].position = numSeries === 1 ? "left" : "right";
-                }
-            });
-
-            // Show Elevation if we have it
-            var elevationSeries = _.where(series, { label: "Elevation" });
-            if (elevationSeries && elevationSeries[0])
-                elevationSeries[0].lines.show = true;
-
-            var flotOptions = getDefaultFlotOptions(series);
+                $tooltipEl.html(flotCustomToolTip(series, series, flotItem.series.label, flotItem.dataIndex, flotItem.datapoint[0], self.model.get("workoutTypeValueId")));
+                self.updateToolTipPosition($tooltipEl);
+            };
+            var flotOptions = getDefaultFlotOptions(onHoverHandler);
 
             flotOptions.yaxes = yaxes;
-            flotOptions.grid.mouseActiveRadius = 0;
             flotOptions.xaxes[0].tickLength = 0;
 
-            $.plot(this.$("#quickViewGraph"), series, flotOptions);
+            this.plot = $.plot(this.$("#quickViewGraph"), series, flotOptions);
+            this.plot.setFilter(10);
+        },
+
+        updateToolTipPosition: function($tooltipEl)
+        {
+            var canvasWidth = this.plot.width();
+            var canvasHeight = this.plot.height();
+            var canvasLocation = this.plot.offset();
+            var tooltipWidth = $tooltipEl.width();
+            var tooltipHeight = $tooltipEl.height();
+            var tooltipLocation = $tooltipEl.offset();
+            var canvasBottom = canvasLocation.top + canvasHeight;
+
+            if (tooltipLocation.top + tooltipHeight > canvasBottom + 20)
+            {
+                var tooltipTop = tooltipLocation.top - tooltipHeight + 60;
+                if (tooltipTop + tooltipHeight > (canvasBottom + 20))
+                {
+                    tooltipTop = (canvasBottom - tooltipHeight) + 20;
+                }
+
+                $tooltipEl.css("top", tooltipTop + "px");
+                $tooltipEl.addClass("bottom");
+            }
+            else
+            {
+                $tooltipEl.removeClass("bottom");
+            }
+            
+
+            if (tooltipLocation.left + tooltipWidth > canvasLocation.left + canvasWidth - 30)
+            {
+                $tooltipEl.css("left", tooltipLocation.left - tooltipWidth - 40 + "px");
+                $tooltipEl.removeClass("right").addClass("left");
+            }
+            else
+            {
+                $tooltipEl.removeClass("left").addClass("right");
+            }
+
         }
     };
 

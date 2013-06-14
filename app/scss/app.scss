@@ -13,7 +13,7 @@
 @import "calendar/weekSummary";
 @import "library";
 @import "calendar/newItemView";
-@import "calendar/quickView";
+@import "calendar/quickView/quickview";
 @import "calendar/workoutColor";
 @import "globalCSS/hoverBox";
 @import "calendar/shiftWizzard";
@@ -21,12 +21,19 @@
 @import "globalCSS/timepicker";
 @import "globalCSS/dialog";
 @import "globalCSS/tooltip";
+@import "globalCSS/selectBoxIt";
+@import "elevationCorrection";
+
+@import "workoutCommentsEditor/workoutCommentsEditor";
+
+@import "login";
 
 body
 {
     @include nice-scrollbar;
     font-size: $baseFontSize;
-    font-family: 'Roboto', sans-serif;
+    font-family: $fontFamilyRegular;
+    color: $TPGrey4;
 }
 
 a
@@ -38,7 +45,7 @@ a
 {
     span
     {
-        font-family: $footerFontFamily;
+        font-family: $fontFamilyRegular;
         font-size: $fontSizeXSmall;
     }
 }
@@ -53,4 +60,19 @@ a
 .row
 {
     max-width: none;
+}
+
+@include buttons(0px, auto, $fontSizeMedium);
+
+input[type="text"]
+{
+    padding-top: 0px;
+    padding-bottom: 0px;
+    cursor: text;
+    @include box-shadow(none);
+
+    &:focus
+    {
+        @include box-shadow(none);
+    }
 }
