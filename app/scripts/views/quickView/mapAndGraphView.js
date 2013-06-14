@@ -206,7 +206,7 @@ function(
                 $tooltipEl.removeClass("left").addClass("right");
             }
 
-        },
+        }
     };
 
     return TP.ItemView.extend(mapAndGraphViewBase);
