@@ -43,16 +43,18 @@ function(_, $, Backbone, TP, xhrData, app)
             // start the app
             app.start();
 
-            // unless it was already started
-            try
-            {
-                TP.history.start({ pushState: false, root: app.root });
-            } catch(e)
-            {
-                //console.log("Ignoring history already started");
-            }
+            // fix the router to bypass history
+            this.overrideAppRouter(app.router);
 
             this.setupFakeAjax();
+        },
+
+        overrideAppRouter: function(router)
+        {
+            router.navigate = function(routeName)
+            {
+                this[routeName]();
+            };
         },
 
         stopTheApp: function()
@@ -61,6 +63,7 @@ function(_, $, Backbone, TP, xhrData, app)
             {
                 app.stop();
             }
+            this.removeFakeAjax();
         },
 
         fakeSync: function(method, model, options)
@@ -172,8 +175,7 @@ function(_, $, Backbone, TP, xhrData, app)
 
         submitLogin: function(userData)
         {
-            app.router.navigate("logout", { trigger: true });
-            app.router.navigate("login", { trigger: true });
+            app.router.login();
             app.mainRegion.$el.find("input[name=Submit]").trigger("click");
             this.resolveRequest("POST", "Token", xhrData.token);
             this.resolveRequest("GET", "users/v1/user", userData);

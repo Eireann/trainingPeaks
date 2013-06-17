@@ -402,7 +402,6 @@ function(_, Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmedia
     TP.CompositeView = Marionette.CompositeView.extend(commonViewFunctions);
 
     // Backbone stuff
-    TP.history = Backbone.history;
     TP.Collection = Backbone.Collection.extend({});
     TP.Model = Backbone.DeepModel.extend({
 

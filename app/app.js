@@ -50,6 +50,11 @@ function(
         // cleanup session and user state
 
         // cleanup history
+        this.addShutdown(function()
+        {
+            this.history.stop();
+            this.history.handlers = [];
+        });
 
         // done
         this.addShutdown(function()
@@ -316,6 +321,14 @@ function(
             {
                 self.isBlurred = true;
             });
+        });
+
+        this.addInitializer(function()
+        {
+            this.history = new Backbone.History();
+            this.history.stop();
+            this.history.handlers = [];
+            this.history.start({ pushState: false, root: this.root });
         });
 
         this.addInitializer(function()

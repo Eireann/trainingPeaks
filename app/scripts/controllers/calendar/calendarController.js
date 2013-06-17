@@ -39,6 +39,11 @@ function(
 
         show: function()
         {
+            if (this.layout.isClosed)
+            {
+                return;
+            }
+
             this.initializeHeader();
             this.initializeCalendar();
             this.initializeLibrary();
@@ -192,7 +197,7 @@ function(
             this.views = {};
 
             this.startOfWeekDayIndex = 1;
-            
+
             this.layout = new CalendarLayout();
             this.layout.on("show", this.show, this);
 
@@ -200,6 +205,11 @@ function(
             this.endDate = this.createEndDay().add("weeks", 6);
 
             this.weeksCollectionInitialize();
+        },
+
+        onClose: function()
+        {
+            this.layout.off("show", this.show, this);
         },
 
         reset: function(startDate, endDate, scrollToDate)

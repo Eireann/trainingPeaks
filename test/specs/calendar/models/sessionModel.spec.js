@@ -91,7 +91,7 @@ function($, moment, SessionModel)
             theSession.authenticate(authObj);
 
             // TODO: this breaks with bdd testing having run, but then other stuff breaks if we disable this test ...
-            //expect(mockDeferred.done).toHaveBeenCalled();
+            expect(mockDeferred.done).toHaveBeenCalled();
         });
 
        it("should call sucess if accessToken in not null", function()

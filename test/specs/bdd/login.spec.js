@@ -20,8 +20,12 @@ function(
         {
             testHelpers.startTheApp();
             $mainRegion = theApp.mainRegion.$el;
-            theApp.router.navigate("logout", { trigger: true });
             theApp.router.navigate("login", { trigger: true });
+        });
+
+        afterEach(function()
+        {
+            testHelpers.stopTheApp();
         });
 
         it("Should have a login form", function()
@@ -58,7 +62,7 @@ function(
             expect(testHelpers.hasRequest("GET", "users/v1/user")).toBe(true);
         });
 
-        xit("Should request athlete settings after loading the user", function()
+        it("Should request athlete settings after loading the user", function()
         {
 
             // should not request until after user request is resolved

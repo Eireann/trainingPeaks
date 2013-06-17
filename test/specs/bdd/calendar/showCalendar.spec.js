@@ -19,6 +19,7 @@ function(
         {
             testHelpers.startTheAppAndLogin(xhrData.users.barbkprem);
             $mainRegion = theApp.mainRegion.$el;
+            theApp.router.navigate("calendar", true);
         });
 
         it("Should display the calendar", function()
