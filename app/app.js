@@ -34,6 +34,7 @@ function(
 
     var theApp = new TP.Application();
     theApp.ajaxCachingEnabled = false;
+    theApp.historyEnabled = true;
 
     theApp.addAllShutdowns = function()
     {
@@ -49,12 +50,7 @@ function(
 
         // cleanup session and user state
 
-        // cleanup history
-        this.addShutdown(function()
-        {
-            this.history.stop();
-            this.history.handlers = [];
-        });
+        // cleanup history?
 
         // done
         this.addShutdown(function()
@@ -211,15 +207,28 @@ function(
 
         this.addInitializer(function()
         {
-            this.history = Backbone.history;
-            this.history.stop();
-            this.history.handlers = [];
+            if (this.historyEnabled)
+            {
+                this.history = Backbone.history;
+            }
         });
 
         // add router
         this.addInitializer(function()
         {
             this.router = new Router();
+
+            if(!this.historyEnabled)
+            {
+                this.router.navigate = function(routeName)
+                {
+                    if (this.routes.hasOwnProperty(routeName))
+                    {
+                        var methodName = this.routes[routeName];
+                        this[methodName]();
+                    }
+                };
+            }
         });
 
         // show navigation
@@ -332,7 +341,10 @@ function(
 
         this.addInitializer(function()
         {
-            this.history.start({ pushState: false, root: this.root });
+            if (this.historyEnabled)
+            {
+                this.history.start({ pushState: false, root: this.root });
+            }
         });
 
         this.addInitializer(function()

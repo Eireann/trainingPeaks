@@ -27,8 +27,12 @@ function(_, $, Backbone, TP, xhrData, app)
 
             this.stopTheApp();
 
-            // syncCaching doesn't play nicely with our fake xhr ...
-            app.syncCachingEnabled = false;
+            // ajaxCaching doesn't play nicely with our fake xhr ...
+            app.ajaxCachingEnabled = false;
+
+            // backbone history doesn't work well with our tests for some reason
+            app.historyEnabled = false;
+
             app.resetAppToInitialState();
 
             // disable window reload
@@ -44,18 +48,8 @@ function(_, $, Backbone, TP, xhrData, app)
             // start the app
             app.start();
 
-            // fix the router to bypass history
-            this.overrideAppRouter(app.router);
-
+            // capture ajax calls
             this.setupFakeAjax();
-        },
-
-        overrideAppRouter: function(router)
-        {
-            router.navigate = function(routeName)
-            {
-                this[routeName]();
-            };
         },
 
         stopTheApp: function()
