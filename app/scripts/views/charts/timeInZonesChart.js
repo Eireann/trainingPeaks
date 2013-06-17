@@ -101,6 +101,19 @@ function (TP, tooltipTemplate)
                     x: index
                 };
 
+                /*
+                var seriesOptions = {
+                    color: chartColors.seriesColorByChannel[channel],
+                    data: data,
+                    label: channel,
+                    lines:
+                    {
+                        fill: fillOpacity
+                    },
+                    shadowSize: 0
+                };
+                */
+
                 // gives our view or other listeners a hook to modify the point
                 this.toolTipBuilder.call(this, point, timeInZone);
                 chartPoints.push(point);

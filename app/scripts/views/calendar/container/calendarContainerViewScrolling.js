@@ -305,10 +305,10 @@ function(_, TP)
         autoScrollIfNecessary: function(calendarPosition, uiPosition)
         {
             var scrollTriggerHeight = 10;
-            var topThreshold = calendarPosition.top + scrollTriggerHeight;
-            var bottomThreshold = calendarPosition.bottom - scrollTriggerHeight;
+            var topThreshold = calendarPosition.top + 10;
+            var bottomThreshold = calendarPosition.bottom - (scrollTriggerHeight + 5);
             var stopThreshold = scrollTriggerHeight;
-
+            
             if (uiPosition.top <= topThreshold)
             {
                 this.trigger("autoScrollDown");
