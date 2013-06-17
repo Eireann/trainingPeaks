@@ -15,10 +15,11 @@ function(_, $, Backbone, TP, xhrData, app)
 
         setupRegionElements: function()
         {
-
-            this.$body = $("<body><div id='navigation'></div><div id='main'></div></body>");
-            this.navRegion.$el = this.$body.find("#navigation");
-            this.mainRegion.$el = this.$body.find("#main");
+            this.$body = $("<body></body>");
+            this.navRegion.$el = $("<div id='navigation'></div>");
+            this.mainRegion.$el = $("<div id='main'></div>");
+            this.$body.append(this.navRegion.$el);
+            this.$body.append(this.mainRegion.$el);
         },
 
         startTheApp: function()

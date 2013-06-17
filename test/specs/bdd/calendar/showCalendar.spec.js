@@ -22,6 +22,11 @@ function(
             theApp.router.navigate("calendar", true);
         });
 
+        afterEach(function()
+        {
+            testHelpers.stopTheApp();
+        });
+
         it("Should display the calendar", function()
         {
             expect($mainRegion.find("#calendarContainer").length).toBe(1);

@@ -16,42 +16,22 @@ function(
 
     xdescribe("heart rate tab", function()
     {
+        var $mainRegion, $body;
 
-        // start the app
-        var testUser = xhrData.users.barbkprem;
-        testHelpers.startTheApp();
-        testHelpers.setupFakeAjax();
-        testHelpers.submitLogin(testUser);
- //       theApp.router.navigate("calendar", true);
-        /*
-        var $el = theApp.mainRegion.$el;
-        var $body = theApp.getBodyElement();
-        var athleteSettingsUrl = "fitness/v1/athletes/" + testUser.athletes[0].athleteId + "/settings";
-        var athleteSettings = xhrData.athleteSettings.barbkprem;
-        testHelpers.resolveRequest("GET", athleteSettingsUrl, athleteSettings);
-
-        // open the qv
-        $el.find(".day.today").trigger("click");
-        theApp.getBodyElement().find("button[data-workoutid=3]").trigger("click"); // 3=run
-*/
-        //var $el;
-        //beforeEach(function()
-        //{
-        /*
-            testHelpers.startTheApp();
-            testHelpers.setupFakeAjax();
-            testHelpers.submitLogin(xhrData.users.barbkprem);
-            theApp.router.navigate("calendar", true);
-            */
-        //});
-
-        // for some reason afterEach is undefined here, 
-        // but we can access it via jasmine.getEnv()
-        // need to cleanup our mess
-        /*jasmine.getEnv().afterEach(function()
+        beforeEach(function()
         {
-            testHelpers.reset();
-        });*/
+            testHelpers.startTheAppAndLogin(xhrData.users.barbkprem);
+            $mainRegion = theApp.mainRegion.$el;
+            $body = theApp.getBodyElement();
+            theApp.router.navigate("calendar", true);
+            $mainRegion.find("#calendarContainer .day.today .addWorkout").trigger("click");
+            $body.find("button[data-workoutid=3]").trigger("click");
+        });
+
+        afterEach(function()
+        {
+            testHelpers.stopTheApp();
+        });
 
         xit("Should open the heart rate tab", function()
         {

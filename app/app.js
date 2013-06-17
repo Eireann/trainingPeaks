@@ -209,6 +209,13 @@ function(
             this.controllers.calendarController = new CalendarController();
         });
 
+        this.addInitializer(function()
+        {
+            this.history = Backbone.history;
+            this.history.stop();
+            this.history.handlers = [];
+        });
+
         // add router
         this.addInitializer(function()
         {
@@ -325,9 +332,6 @@ function(
 
         this.addInitializer(function()
         {
-            this.history = new Backbone.History();
-            this.history.stop();
-            this.history.handlers = [];
             this.history.start({ pushState: false, root: this.root });
         });
 
