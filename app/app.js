@@ -66,7 +66,10 @@ function(
                 {
                     self.clientEvents.logEvent({ Event: { Type: "Error", Label: "UncaughtException", AppContext: url + " Error: " + errorMessage + " Line: " + lineNumber } });
                 }
-                return true;
+                if (self.isLive())
+                    return true;
+                else
+                    return false;
             };
             
             $(document).ajaxError(function(event, xhr)

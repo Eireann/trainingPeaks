@@ -50,5 +50,33 @@ function(_, TP, TimeInZonesChartView)
             expect(function () { chartPoints = TimeInZonesChartView.prototype.buildTimeInZonesChartPoints.call(context, { timeInZones: timeInZones }); }).not.toThrow();
             expect(chartPoints.length).toEqual(timeInZones.length);
         });
+        
+        it("Should build chart points off a TimeInZones object", function ()
+        {
+            expect(typeof TimeInZonesChartView.prototype.buildTimeInZonesFlotPoints).toBe("function");
+
+            var timeInZones = [];
+            for (var i = 0; i < 10; i++)
+            {
+                timeInZones.push(
+                {
+                    seconds: i * 10,
+                    label: "Zone " + i,
+                    minimum: i * 1.2,
+                    maximum: i * 1.5
+                });
+            }
+
+            var chartPoints;
+            expect(function () { chartPoints = TimeInZonesChartView.prototype.buildTimeInZonesFlotPoints.call(null, { timeInZones: timeInZones }); }).not.toThrow();
+            expect(chartPoints.length).toEqual(timeInZones.length);
+
+            _.each(timeInZones, function(timeInZone, index)
+            {
+                var chartPoint = chartPoints[index];
+                expect(chartPoint[1] * 60).toEqual(timeInZone.seconds);
+                expect(chartPoint[0]).toEqual(index);
+            }, this);
+        });
     });
 });
