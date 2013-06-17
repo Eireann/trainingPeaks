@@ -175,7 +175,7 @@ function(_, $, Backbone, TP, xhrData, app)
 
         submitLogin: function(userData)
         {
-            app.router.login();
+            app.router.navigate("login", true);
             app.mainRegion.$el.find("input[name=Submit]").trigger("click");
             this.resolveRequest("POST", "Token", xhrData.token);
             this.resolveRequest("GET", "users/v1/user", userData);
