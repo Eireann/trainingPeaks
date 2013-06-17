@@ -72,7 +72,7 @@ function(_, $, Backbone, TP, xhrData, app)
 
             // this is what actually triggers Backbone models/collections to sync,
             // and is added in Backbone.sync
-            if(options.success)
+            if (options.success)
                 ajaxDeferred.done(options.success);
 
             if (!options.type)
@@ -102,7 +102,6 @@ function(_, $, Backbone, TP, xhrData, app)
 
             _.each(deferredFunctionNames, function(methodName)
             {
-                var originalJqMethod = jqXhr[methodName];
                 var ajaxDeferredMethod = options.ajaxDeferred[methodName];
                 jqXhr[methodName] = function()
                 {
@@ -111,6 +110,14 @@ function(_, $, Backbone, TP, xhrData, app)
                     return this;
                 };
             }, this);
+
+            var ajaxDeferredDone = options.ajaxDeferred.done;
+            jqXhr.error = function()
+            {
+                // apply on our cached data first
+                ajaxDeferredDone.apply(options.ajaxDeferred, arguments);
+                return this;
+            };
 
             return jqXhr;
         },

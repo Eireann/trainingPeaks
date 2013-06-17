@@ -90,13 +90,13 @@ function(
         this.addInitializer(function()
         {
             var self = this;
-            window.onerror = function (errorMessage, url, lineNumber)
+            window.onerror = function(errorMessage, url, lineNumber)
             {
                 if (self.clientEvents)
                 {
                     self.clientEvents.logEvent({ Event: { Type: "Error", Label: "UncaughtException", AppContext: url + " Error: " + errorMessage + " Line: " + lineNumber } });
                 }
-                return true;
+                return self.isLive() ? true : false;
             };
             
             $(document).ajaxError(function(event, xhr)
