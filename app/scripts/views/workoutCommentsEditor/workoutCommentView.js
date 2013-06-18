@@ -113,7 +113,7 @@ function (TP, UserConfirmationView, deleteConfirmationTemplate, workoutCommentsT
             var self = this;
             this.saveTimeout = setTimeout(function()
             {
-                console.debug("check for save");
+                //console.debug("check for save");
                 if (self.ui.editedComment.val() !== self.model.get("comment"))
                 {
                     self.model.set("comment", self.ui.editedComment.val(), { silent: true });

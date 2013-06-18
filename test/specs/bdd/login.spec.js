@@ -62,17 +62,6 @@ function(
             expect(testHelpers.hasRequest("GET", "users/v1/user")).toBe(true);
         });
 
-        xit("Should request athlete settings after loading the user", function()
-        {
-
-            // should not request until after user request is resolved
-            var testUser = xhrData.users.barbkprem;
-            $mainRegion.find("input[name=Submit]").trigger("click");
-            testHelpers.resolveRequest("POST", "Token", xhrData.token);
-            testHelpers.resolveRequest("GET", "users/v1/user", testUser);
-            var athleteSettingsUrl = "fitness/v1/athletes/" + testUser.athletes[0].athleteId + "/settings";
-            expect(testHelpers.hasRequest("GET", athleteSettingsUrl)).toBeTruthy();
-        });
     });
 
 
