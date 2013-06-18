@@ -79,7 +79,7 @@ function (TP, getDefaultFlotOptions, tooltipTemplate)
         //            
         //            this.chart = TP.utils.chartBuilder.renderColumnChart(this.$chartEl, chartPoints, tooltipTemplate, chartOptions);
         //        },
-
+        /*
         buildTimeInZonesChartPoints: function (timeInZones)
         {
             var chartPoints = [];
@@ -110,6 +110,7 @@ function (TP, getDefaultFlotOptions, tooltipTemplate)
 
             return chartPoints;
         },
+        */
 
         buildTimeInZonesFlotPoints: function (timeInZones)
         {
@@ -132,6 +133,7 @@ function (TP, getDefaultFlotOptions, tooltipTemplate)
             var dataSeries =
             {
                 data: chartPoints,
+                label: "ZONES",
                 bars:
                 {
                     show: true,
@@ -153,12 +155,32 @@ function (TP, getDefaultFlotOptions, tooltipTemplate)
                 this.flotOptions.bars = {};
             this.flotOptions.bars.align = "left";
             this.flotOptions.bars.barWidth = 0.5;
-            this.flotOptions.yaxis = { axisLabelPadding: 10 };
+            this.flotOptions.yaxis = {
+                min: 0,
+                label: "I AM Y",
+                tickFormatter: this.formatYAxisTick
+            };
+          
+            delete this.flotOptions.xaxes;
+            this.flotOptions.xaxis = {
+                tickFormatter: this.formatXAxisTick,
+                label: "XAXIS"
+            };
 
             if (!this.$chartEl)
                 this.$chartEl = this.$el.find("div.chartContainer");
 
             this.plot = $.plot(this.$chartEl, dataSeries, this.flotOptions);
+        },
+
+        formatXAxisTick: function(value, axis)
+        {
+            return value;
+        },
+
+        formatYAxisTick: function(value, axis)
+        {
+            return value;
         },
 
         onRender: function ()
