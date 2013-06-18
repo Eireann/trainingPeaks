@@ -3,7 +3,7 @@
     "underscore",
     "TP",
     "models/workoutStatsForRange",
-    "utilities/charting/defaultFlotOptions",
+    "utilities/charting/flotOptions",
     "utilities/charting/jquery.flot.tooltip",
     "utilities/charting/jquery.flot.selection",
     "utilities/charting/flotCustomTooltip",
@@ -16,7 +16,7 @@ function(
     _,
     TP,
     WorkoutStatsForRange,
-    getDefaultFlotOptions,
+    defaultFlotOptions,
     flotToolTip,
     flotSelection,
     flotCustomToolTip,
@@ -134,7 +134,7 @@ function(
                 self.updateToolTipPosition($tooltipEl);
             };
             
-            this.flotOptions = getDefaultFlotOptions(onHoverHandler);
+            this.flotOptions = defaultFlotOptions.getMultiChannelOptions(onHoverHandler);
 
             this.flotOptions.selection.mode = "x";
             this.flotOptions.yaxes = yaxes;

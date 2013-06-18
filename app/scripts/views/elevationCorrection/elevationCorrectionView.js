@@ -4,12 +4,12 @@
     "utilities/charting/dataParser",
     "models/elevationCorrection",
     "models/commands/elevationCorrection",
-    "utilities/charting/defaultFlotOptions",
+    "utilities/charting/flotOptions",
     "utilities/conversion/convertToViewUnits",
     "utilities/charting/flotElevationTooltip",
     "hbs!templates/views/elevationCorrection/elevationCorrectionTemplate"
 ],
-function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandModel, getDefaultFlotOptions, convertToViewUnits, flotElevationTooltip, elevationCorrectionTemplate)
+function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandModel, defaultFlotOptions, convertToViewUnits, flotElevationTooltip, elevationCorrectionTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -137,7 +137,7 @@ function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandMo
                 $tooltipEl.html(flotElevationTooltip(series, flotItem.series.label, flotItem.dataIndex));
             };
 
-            var flotOptions = getDefaultFlotOptions(onHoverHandler);
+            var flotOptions = defaultFlotOptions.getMultiChannelOptions(onHoverHandler);
 
             flotOptions.selection.mode = null;
             flotOptions.yaxes = yaxes;
