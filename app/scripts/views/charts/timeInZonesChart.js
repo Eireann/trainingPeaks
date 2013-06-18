@@ -174,21 +174,14 @@ function(
                 borderWidth: 0,
                 hoverable: true,
                 clickable: true,
-                margin: {
-                    top: 0,
-                    bottom: 0,
-                    left: 10,
-                    right: 0
-                },
-                labelMargin: 10,
-                axisMargin: 10,
-                autoHighlight:true
+                autoHighlight: true
             };
           
             delete this.flotOptions.xaxes;
             this.flotOptions.xaxis = {
                 min: 0,
-                tickFormatter: this.formatXAxisTick
+                tickFormatter: this.formatXAxisTick,
+                color: 'transparent'
             };
 
             if (!this.$chartEl)
