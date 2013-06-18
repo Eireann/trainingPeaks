@@ -23,34 +23,6 @@ function(_, TP, TimeInZonesChartView)
             expect(function() { new TimeInZonesChartView({ timeInZones: new TP.Model(), chartColor: {}, graphTitle: "Title", toolTipBuilder: function() {} }); }).not.toThrow();
         });
 
-        xit("Should build chart points off a TimeInZones object, for highcharts", function()
-        {
-            expect(typeof TimeInZonesChartView.prototype.buildTimeInZonesChartPoints).toBe("function");
-
-            var context =
-            {
-                toolTipBuilder: function()
-                {
-                }
-            };
-            
-            var timeInZones = [];
-            for (var i = 0; i < 10; i++)
-            {
-                timeInZones.push(
-                {
-                    seconds: i * 10,
-                    label: "Zone " + i,
-                    minimum: i * 1.2,
-                    maximum: i * 1.5
-                });
-            }
-
-            var chartPoints;
-            expect(function () { chartPoints = TimeInZonesChartView.prototype.buildTimeInZonesChartPoints.call(context, { timeInZones: timeInZones }); }).not.toThrow();
-            expect(chartPoints.length).toEqual(timeInZones.length);
-        });
-
         it("Should build chart points off a TimeInZones object, for flot", function()
         {
             expect(typeof TimeInZonesChartView.prototype.buildTimeInZonesFlotPoints).toBe("function");

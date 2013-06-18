@@ -56,6 +56,25 @@
 
                     _.bindAll(this, "onHover");
                 },
+                
+                
+                onRender: function()
+                {
+                    if (!this.timeInZones)
+                        return;
+
+                    var chartPoints = this.buildTimeInZonesFlotPoints(this.timeInZones);
+                    var dataSeries = this.buildTimeInZonesFlotDataSeries(chartPoints);
+                    var flotOptions = this.getFlotChartOptions(chartPoints);
+
+                    var self = this;
+
+                    // let the html draw first so our container has a height and width
+                    setImmediate(function()
+                    {
+                        self.renderTimeInZonesFlotChart([dataSeries], flotOptions);
+                    });
+                },
 
                 buildTimeInZonesFlotPoints: function(timeInZones)
                 {
@@ -124,25 +143,6 @@
                     var tooltipHTML = tooltipTemplate(tooltipData);
                     $tooltipEl.html(tooltipHTML);
                     toolTipPositioner.updatePosition($tooltipEl, this.plot);
-                },
-
-                onRender: function()
-                {
-                    if (!this.timeInZones)
-                        return;
-
-                    var chartPoints = this.buildTimeInZonesFlotPoints(this.timeInZones);
-                    var dataSeries = this.buildTimeInZonesFlotDataSeries(chartPoints);
-                    var flotOptions = this.getFlotChartOptions(chartPoints);
-
-                    var self = this;
-
-                    // let the html draw first so our container has a height and width
-                    setImmediate(function()
-                    {
-                        self.renderTimeInZonesFlotChart([dataSeries], flotOptions);
-                    });
                 }
-
             });
     });
