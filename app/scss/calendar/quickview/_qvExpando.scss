@@ -293,7 +293,7 @@
         {
             float: left;
             margin-bottom: 20px;
-
+            position: relative;
 
             .chartContainer
             {
@@ -306,6 +306,13 @@
         {
             float: left;
             margin-bottom: 20px;
+            position: relative;
+
+            .chartContainer
+            {
+                height: 70%;
+                width: 80%;
+            }
         }
     }
 }
