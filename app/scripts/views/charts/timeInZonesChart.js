@@ -1,10 +1,10 @@
 ﻿define(
 [
     "TP",
-    "utilities/charting/defaultFlotOptions",
+    "utilities/charting/flotOptions",
     "hbs!templates/views/quickView/zonesTab/chartTooltip"
 ],
-function (TP, getDefaultFlotOptions, tooltipTemplate)
+function (TP, flotOptions, tooltipTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -148,7 +148,7 @@ function (TP, getDefaultFlotOptions, tooltipTemplate)
 
         renderTimeInZonesFlotChart: function (dataSeries)
         {
-            this.flotOptions = getDefaultFlotOptions(null);
+            this.flotOptions = flotOptions.getBarOptions(null);
 
             this.flotOptions.series = {bars: {show: true}};
             if (!this.flotOptions.bars)
