@@ -1,140 +1,147 @@
 ﻿define(
 [
+    "underscore",
+    "setImmediate",
     "TP",
-    "hbs!templates/views/quickView/zonesTab/chartTooltip"
+    "utilities/charting/flotOptions",
+    "utilities/charting/jquery.flot.tooltip",
+    "utilities/charting/flotToolTipPositioner",
+    "hbs!templates/views/charts/timeInZonesChart",
+    "hbs!templates/views/charts/chartTooltip"
 ],
-function (TP, tooltipTemplate)
-{
-    return TP.ItemView.extend(
-    {
-        template:
+    function (
+        _,
+        setImmediate,
+        TP,
+        defaultFlotOptions,
+        flotToolTip,
+        toolTipPositioner,
+        timeInZonesChartTemplate,
+        tooltipTemplate)
         {
-            type: "handlebars",
-            template: function() { return ""; }
-        },
-
-        initialize: function(options)
-        {
-            if (!options.timeInZones)
-                throw "TimeInZonesChartView requires a timeInZones object at construction time";
-
-            if (!options.chartColor)
-                throw "TimeInZonesChartView requires a chartColor object at construction time";
-
-            if (!options.graphTitle)
-                throw "TimeInZonesChartView requires a graphTitle string at construction time";
-
-            if (!options.toolTipBuilder)
-                throw "TimeInZonesChartView requires a toolTipBuilder callback at construction time";
-
-            this.timeInZones = options.timeInZones;
-            this.chartColor = options.chartColor;
-            this.graphTitle = options.graphTitle;
-            this.toolTipBuilder = options.toolTipBuilder;
-
-            if (options.template)
+            return TP.ItemView.extend(
             {
-                this.template = options.template;
-                this.$chartEl = null;
-            }
-            else
-                this.$chartEl = this.$el;
+                tagName: "div",
+                className: "timeInZonesChart",
 
-            this.on("chartResize", this.resizeCharts, this);
-        },
-
-        onRender: function()
-        {
-            if (!this.timeInZones)
-                return;
-
-            var chartPoints = this.buildTimeInZonesChartPoints(this.timeInZones);
-
-            var chartOptions =
-            {
-                colors: [this.chartColor],
-                title:
+                template:
                 {
-                    text: this.graphTitle + " by Zones"
+                    type: "handlebars",
+                    template: timeInZonesChartTemplate
                 },
-                xAxis:
+
+                initialize: function(options)
                 {
-                    title:
+                    if (!options.timeInZones)
+                        throw "TimeInZonesChartView requires a timeInZones object at construction time";
+
+                    if (!options.chartColor)
+                        throw "TimeInZonesChartView requires a chartColor object at construction time";
+
+                    if (!options.graphTitle)
+                        throw "TimeInZonesChartView requires a graphTitle string at construction time";
+
+                    if (!options.toolTipBuilder)
+                        throw "TimeInZonesChartView requires a toolTipBuilder callback at construction time";
+
+                    this.timeInZones = options.timeInZones;
+                    this.chartColor = options.chartColor;
+                    this.graphTitle = options.graphTitle;
+                    this.toolTipBuilder = options.toolTipBuilder;
+
+                    if (options.template)
                     {
-                        text: "ZONES"
+                        this.template = options.template;
                     }
+
+                    _.bindAll(this, "onHover");
                 },
-                yAxis:
+                
+                
+                onRender: function()
                 {
-                    title:
+                    if (!this.timeInZones)
+                        return;
+
+                    var chartPoints = this.buildTimeInZonesFlotPoints(this.timeInZones);
+                    var dataSeries = this.buildTimeInZonesFlotDataSeries(chartPoints);
+                    var flotOptions = this.getFlotChartOptions(chartPoints);
+
+                    var self = this;
+
+                    // let the html draw first so our container has a height and width
+                    setImmediate(function()
                     {
-                        text: "MINUTES"
-                    }
+                        self.renderTimeInZonesFlotChart([dataSeries], flotOptions);
+                    });
+                },
+
+                buildTimeInZonesFlotPoints: function(timeInZones)
+                {
+                    var chartPoints = [];
+
+                    _.each(timeInZones.timeInZones, function (timeInZone, index)
+                    {
+                        var minutes = timeInZone.seconds ? parseInt(timeInZone.seconds, 10) / 60 : 0;
+
+                        var point = [index, minutes];
+                        chartPoints.push(point);
+                    }, this);
+
+                    return chartPoints;
+                },
+
+                buildTimeInZonesFlotDataSeries: function (chartPoints)
+                {
+                    var dataSeries =
+                    {
+                        data: chartPoints,
+                        bars:
+                        {
+                            show: true,
+                            lineWidth: 0,
+                            fill: true,
+                            fillColor: { colors: [this.chartColor.light, this.chartColor.dark] }
+                        },
+                        highlightColor: this.chartColor.light
+                    };
+
+                    return dataSeries;
+                },
+
+                getFlotChartOptions: function(chartPoints)
+                {
+                    var flotOptions = defaultFlotOptions.getBarOptions(this.onHover);
+
+                    flotOptions.yaxis = {
+                        min: 0,
+                        tickDecimals: 0
+                    };
+
+
+                    flotOptions.xaxis = {
+                        show: false
+                    };
+
+                    return flotOptions;
+                },
+
+                renderTimeInZonesFlotChart: function(dataSeries, flotOptions)
+                {
+                    if (!this.$chartEl)
+                        this.$chartEl = this.$(".chartContainer");
+
+                    this.plot = $.plot(this.$chartEl, dataSeries, flotOptions);
+                },
+
+                onHover: function(flotItem, $tooltipEl)
+                {
+                    var timeInZonesItem = this.timeInZones.timeInZones[flotItem.dataIndex];
+
+                    var tooltipData = this.toolTipBuilder(timeInZonesItem, this.timeInZones);
+                    var tooltipHTML = tooltipTemplate(tooltipData);
+                    $tooltipEl.html(tooltipHTML);
+                    toolTipPositioner.updatePosition($tooltipEl, this.plot);
                 }
-            };
-            
-            if (!this.$chartEl)
-                this.$chartEl = this.$el.find("div.chartContainer");
-            
-            this.chart = TP.utils.chartBuilder.renderColumnChart(this.$chartEl, chartPoints, tooltipTemplate, chartOptions);
-        },
-
-        buildTimeInZonesChartPoints: function(timeInZones)
-        {
-            var chartPoints = [];
-            var totalSeconds = TP.utils.chartBuilder.calculateTotalTimeInZones(timeInZones);
-
-            // zone times are in seconds, convert to minutes
-            _.each(timeInZones.timeInZones, function(timeInZone, index)
-            {
-                var minutes = timeInZone.seconds ? parseInt(timeInZone.seconds, 10) / 60 : 0;
-
-                var point =
-                {
-                    label: timeInZone.label,
-                    minimum: timeInZone.minimum,
-                    maximum: timeInZone.maximum,
-                    percentTime: TP.utils.conversion.toPercent(timeInZone.seconds, totalSeconds),
-                    seconds: timeInZone.seconds,
-                    y: minutes,
-                    value: minutes,
-                    x: index
-                };
-
-                /*
-                var seriesOptions = {
-                    color: chartColors.seriesColorByChannel[channel],
-                    data: data,
-                    label: channel,
-                    lines:
-                    {
-                        fill: fillOpacity
-                    },
-                    shadowSize: 0
-                };
-                */
-
-                // gives our view or other listeners a hook to modify the point
-                this.toolTipBuilder.call(this, point, timeInZone);
-                chartPoints.push(point);
-
-            }, this);
-
-            return chartPoints;
-        },
-
-        resizeCharts: function (width)
-        {
-            var self = this;
-            this.$el.width(width);
-            var height = width * 0.5825;
-            setImmediate(function ()
-            {
-                self.chart.setSize(width, height, false);
-                $(".timeInZonesChartContainer").css("width", width);
-                $(".timeInZonesChartContainer").css("height", height);
-
             });
-        }
     });
-});

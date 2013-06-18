@@ -1,7 +1,7 @@
 ﻿define(
 [
     "TP",
-    "hbs!templates/views/quickView/zonesTab/chartTooltip"
+    "hbs!templates/views/charts/chartTooltip"
 ],
 function (TP, tooltipTemplate)
 {

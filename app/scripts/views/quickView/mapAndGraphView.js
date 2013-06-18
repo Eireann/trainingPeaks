@@ -2,8 +2,9 @@
 [
     "TP",
     "utilities/charting/dataParser",
-    "utilities/charting/defaultFlotOptions",
+    "utilities/charting/flotOptions",
     "utilities/charting/flotCustomTooltip",
+    "utilities/charting/flotToolTipPositioner",
     "utilities/mapping/mapUtils",
     "utilities/workout/workoutTypes",
     "hbs!templates/views/quickView/mapAndGraphView"
@@ -11,8 +12,9 @@
 function(
     TP,
     DataParser,
-    getDefaultFlotOptions,
+    defaultFlotOptions,
     flotCustomToolTip,
+    toolTipPositioner,
     MapUtils,
     workoutTypes,
     workoutQuickViewMapAndGraphTemplate)
@@ -158,55 +160,17 @@ function(
             var onHoverHandler = function(flotItem, $tooltipEl)
             {
                 $tooltipEl.html(flotCustomToolTip(series, series, flotItem.series.label, flotItem.dataIndex, flotItem.datapoint[0], self.model.get("workoutTypeValueId")));
-                self.updateToolTipPosition($tooltipEl);
+                toolTipPositioner.updatePosition($tooltipEl, self.plot);
             };
-            var flotOptions = getDefaultFlotOptions(onHoverHandler);
+            var flotOptions = defaultFlotOptions.getMultiChannelOptions(onHoverHandler);
 
             flotOptions.yaxes = yaxes;
             flotOptions.xaxes[0].tickLength = 0;
 
             this.plot = $.plot(this.$("#quickViewGraph"), series, flotOptions);
             this.plot.setFilter(10);
-        },
-
-        updateToolTipPosition: function($tooltipEl)
-        {
-            var canvasWidth = this.plot.width();
-            var canvasHeight = this.plot.height();
-            var canvasLocation = this.plot.offset();
-            var tooltipWidth = $tooltipEl.width();
-            var tooltipHeight = $tooltipEl.height();
-            var tooltipLocation = $tooltipEl.offset();
-            var canvasBottom = canvasLocation.top + canvasHeight;
-
-            if (tooltipLocation.top + tooltipHeight > canvasBottom + 20)
-            {
-                var tooltipTop = tooltipLocation.top - tooltipHeight + 60;
-                if (tooltipTop + tooltipHeight > (canvasBottom + 20))
-                {
-                    tooltipTop = (canvasBottom - tooltipHeight) + 20;
-                }
-
-                $tooltipEl.css("top", tooltipTop + "px");
-                $tooltipEl.addClass("bottom");
-            }
-            else
-            {
-                $tooltipEl.removeClass("bottom");
-            }
-            
-
-            if (tooltipLocation.left + tooltipWidth > canvasLocation.left + canvasWidth - 30)
-            {
-                $tooltipEl.css("left", tooltipLocation.left - tooltipWidth - 40 + "px");
-                $tooltipEl.removeClass("right").addClass("left");
-            }
-            else
-            {
-                $tooltipEl.removeClass("left").addClass("right");
-            }
-
         }
+
     };
 
     return TP.ItemView.extend(mapAndGraphViewBase);

@@ -293,12 +293,32 @@
         {
             float: left;
             margin-bottom: 20px;
+            position: relative;
+
+            .chartContainer
+            {
+                height: 70%;
+                width: 80%;
+            }
+
+            .xaxisLabel
+            {
+                top: calc(70% + 30px);
+                left: calc(50% - 35px);
+            }
         }
 
         .peaksChartContainer
         {
             float: left;
             margin-bottom: 20px;
+            position: relative;
+
+            .chartContainer
+            {
+                height: 70%;
+                width: 80%;
+            }
         }
     }
 }

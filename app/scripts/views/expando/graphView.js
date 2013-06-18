@@ -3,10 +3,11 @@
     "underscore",
     "TP",
     "models/workoutStatsForRange",
-    "utilities/charting/defaultFlotOptions",
+    "utilities/charting/flotOptions",
     "utilities/charting/jquery.flot.tooltip",
     "utilities/charting/jquery.flot.selection",
     "utilities/charting/flotCustomTooltip",
+    "utilities/charting/flotToolTipPositioner",
     "utilities/charting/jquery.flot.zoom",
     "utilities/charting/jquery.flot.multiselection",
     "views/expando/graphToolbarView",
@@ -16,10 +17,11 @@ function(
     _,
     TP,
     WorkoutStatsForRange,
-    getDefaultFlotOptions,
+    defaultFlotOptions,
     flotToolTip,
     flotSelection,
     flotCustomToolTip,
+    toolTipPositioner,
     flotZoom,
     flotMultiSelection,
     GraphToolbarView,
@@ -131,10 +133,10 @@ function(
             var onHoverHandler = function(flotItem, $tooltipEl)
             {
                 $tooltipEl.html(flotCustomToolTip(self.allSeries, enabledSeries, flotItem.series.label, flotItem.dataIndex, flotItem.datapoint[0], self.model.get("workoutTypeValueId")));
-                self.updateToolTipPosition($tooltipEl);
+                toolTipPositioner.updatePosition($tooltipEl, self.plot);
             };
             
-            this.flotOptions = getDefaultFlotOptions(onHoverHandler);
+            this.flotOptions = defaultFlotOptions.getMultiChannelOptions(onHoverHandler);
 
             this.flotOptions.selection.mode = "x";
             this.flotOptions.yaxes = yaxes;
@@ -149,45 +151,6 @@ function(
             this.bindToPlotEvents();
 
             this.highlightOrZoomToPreviousSelection();
-        },
-
-        updateToolTipPosition: function($tooltipEl)
-        {
-            var canvasWidth = this.plot.width();
-            var canvasHeight = this.plot.height();
-            var canvasLocation = this.plot.offset();
-            var tooltipWidth = $tooltipEl.width();
-            var tooltipHeight = $tooltipEl.height();
-            var tooltipLocation = $tooltipEl.offset();
-            var canvasBottom = canvasLocation.top + canvasHeight;
-
-            if (tooltipLocation.top + tooltipHeight > canvasBottom)
-            {
-                var tooltipTop = tooltipLocation.top - tooltipHeight + 60;
-                if (tooltipTop + tooltipHeight > (canvasBottom + 20))
-                {
-                    tooltipTop = (canvasBottom - tooltipHeight) + 20;
-                }
-
-                $tooltipEl.css("top", tooltipTop + "px");
-                $tooltipEl.addClass("bottom");
-            }
-            else
-            {
-                $tooltipEl.removeClass("bottom");
-            }
-            
-
-            if (tooltipLocation.left + tooltipWidth > canvasLocation.left + canvasWidth - 30)
-            {
-                $tooltipEl.css("left", tooltipLocation.left - tooltipWidth - 40 + "px");
-                $tooltipEl.removeClass("right").addClass("left");
-            }
-            else
-            {
-                $tooltipEl.removeClass("left").addClass("right");
-            }
-
         },
 
         overlayGraphToolbar: function()
