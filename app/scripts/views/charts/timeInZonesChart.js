@@ -1,17 +1,27 @@
 ﻿define(
 [
+    "setImmediate",
     "TP",
     "utilities/charting/defaultFlotOptions",
+    "hbs!templates/views/quickView/zonesTab/timeInZonesChart",
     "hbs!templates/views/quickView/zonesTab/chartTooltip"
 ],
-function (TP, getDefaultFlotOptions, tooltipTemplate)
+function(
+    setImmediate,
+    TP,
+    getDefaultFlotOptions,
+    timeInZonesChartTemplate,
+    tooltipTemplate)
 {
     return TP.ItemView.extend(
     {
+        tagName: "div",
+        className: "timeInZonesChart",
+
         template:
         {
             type: "handlebars",
-            template: function () { return ""; }
+            template: timeInZonesChartTemplate
         },
 
         initialize: function (options)
@@ -36,10 +46,7 @@ function (TP, getDefaultFlotOptions, tooltipTemplate)
             if (options.template)
             {
                 this.template = options.template;
-                this.$chartEl = null;
             }
-            else
-                this.$chartEl = this.$el;
 
             this.on("chartResize", this.resizeCharts, this);
         },
@@ -148,6 +155,7 @@ function (TP, getDefaultFlotOptions, tooltipTemplate)
 
         renderTimeInZonesFlotChart: function (dataSeries)
         {
+            _.bindAll(this, "formatXAxisTick", "formatYAxisTick");
             this.flotOptions = getDefaultFlotOptions(null);
 
             this.flotOptions.series = {bars: {show: true}};
@@ -157,33 +165,41 @@ function (TP, getDefaultFlotOptions, tooltipTemplate)
             this.flotOptions.bars.barWidth = 0.5;
             this.flotOptions.yaxis = {
                 min: 0,
-                label: "I AM Y",
+                ticks: 6,
                 tickFormatter: this.formatYAxisTick
             };
           
             delete this.flotOptions.xaxes;
             this.flotOptions.xaxis = {
-                tickFormatter: this.formatXAxisTick,
-                label: "XAXIS"
+                min: 0,
+                tickFormatter: this.formatXAxisTick
             };
 
             if (!this.$chartEl)
-                this.$chartEl = this.$el.find("div.chartContainer");
+                this.$chartEl = this.$(".chartContainer");
 
             this.plot = $.plot(this.$chartEl, dataSeries, this.flotOptions);
         },
 
         formatXAxisTick: function(value, axis)
         {
-            return value;
+
+            if (this.timeInZones.timeInZones[value])
+            {
+                var label = this.timeInZones.timeInZones[value].label;
+                return label.substring(0, 7);
+            } else
+            {
+                return "";
+            }
         },
 
         formatYAxisTick: function(value, axis)
         {
-            return value;
+            return value.toFixed(0);
         },
 
-        onRender: function ()
+        onRender: function()
         {
             if (!this.timeInZones)
                 return;
@@ -192,7 +208,13 @@ function (TP, getDefaultFlotOptions, tooltipTemplate)
 
             var dataSeries = this.buildTimeInZonesFlotDataSeries(chartPoints);
 
-            this.renderTimeInZonesFlotChart([dataSeries]);
+            var self = this;
+
+            // let the html draw first so our container has a height and width
+            setImmediate(function()
+            {
+                self.renderTimeInZonesFlotChart([dataSeries]);
+            });
         },
 
         resizeCharts: function (width)
