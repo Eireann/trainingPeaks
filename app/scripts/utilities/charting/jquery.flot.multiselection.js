@@ -147,7 +147,6 @@ selection: {
                         h = Math.abs(multiSelection.second.y - multiSelection.first.y) - 1;
 
                     setColorBySelectionType(options, multiSelection.dataType, ctx);
-                    console.log(ctx.fillStyle);
                     ctx.fillRect(x, y, w, h);
                     ctx.strokeRect(x, y, w, h);
                 }

@@ -37,6 +37,11 @@ function(setImmediate, TP, DataParser, ExpandoLayout, GraphView, MapView, StatsV
 
         show: function()
         {
+            if (this.layout.isClosed)
+            {
+                return;
+            }
+
             this.closeViews();
             this.preFetchDetailData();
 
@@ -132,7 +137,7 @@ function(setImmediate, TP, DataParser, ExpandoLayout, GraphView, MapView, StatsV
                 view.close();
             });
         },
-        
+
         onClose: function()
         {
             //TODO Make sure we stop all deferreds at this point, they could prevent thew view from
@@ -142,6 +147,8 @@ function(setImmediate, TP, DataParser, ExpandoLayout, GraphView, MapView, StatsV
                 this.prefetchConfig.detailDataPromise.reject();
 
             this.stopWatchingModelChanges();
+
+            this.layout.off("show", this.show, this);
         },
  
         watchForModelChanges: function()

@@ -5,6 +5,7 @@ Wraps and extends core backbone and marionette functionality
 
 define(
 [
+    "underscore",
     "backbone",
     "backbone.deepmodel",
     "backbone.stickit",
@@ -14,7 +15,7 @@ define(
     "framework/Logger",
     "framework/utilities"
 ],
-function(Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmediate, APIModel, Logger, utilities)
+function(_, Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmediate, APIModel, Logger, utilities)
 {
     var TP = {};
 
@@ -32,7 +33,24 @@ function(Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmediate,
     });
 
     // Marionette stuff
-    TP.Application = Marionette.Application.extend({});
+    TP.Application = Marionette.Application.extend({
+
+        shutdownHandlers: [],
+
+        addShutdown: function(fn)
+        {
+            this.shutdownHandlers.push(fn);
+        },
+
+        stop: function()
+        {
+            _.each(this.shutdownHandlers, function(onStop)
+            {
+                onStop.call(this);
+            }, this);
+        }
+
+    });
 
     TP.Controller = Marionette.Controller.extend(
     {
@@ -384,7 +402,6 @@ function(Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmediate,
     TP.CompositeView = Marionette.CompositeView.extend(commonViewFunctions);
 
     // Backbone stuff
-    TP.history = Backbone.history;
     TP.Collection = Backbone.Collection.extend({});
     TP.Model = Backbone.DeepModel.extend({
 

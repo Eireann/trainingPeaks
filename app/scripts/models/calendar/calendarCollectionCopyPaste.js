@@ -34,6 +34,7 @@ function(
             this.daysCollection.on("day:paste", this.onPaste, this);
             this.daysCollection.on("day:pasteMenu", this.onPasteMenuOpen, this);
             this.daysCollection.on("day:selectAddItem", this.onSelectAddItem, this);
+            this.daysCollection.on("day:unselectall", this.triggerUnSelectAll, this);
         },
 
         subscribeToWeekCopyPaste: function(weekCollection)
@@ -397,8 +398,13 @@ function(
             {
                 this.selectedDay.trigger("day:unselect", this.selectedDay);
             }
-        }
+        },
 
+        triggerUnSelectAll: function()
+        {
+            this.onUnSelectCalendar();
+            this.trigger("select");
+        }
     };
 
     return calendarCollectionCopyPaste;

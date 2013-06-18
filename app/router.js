@@ -10,8 +10,6 @@ function (_, TP)
         initialize: function ()
         {
 
-            theMarsApp.navRegion.show(theMarsApp.controllers.navigationController.getLayout());
-
             var self = this;
 
             theMarsApp.on("api:unauthorized", function()
@@ -28,6 +26,7 @@ function (_, TP)
             {
                 this.currentRoute = routeName;
             }, this);
+
         },
 
         getCurrentRoute: function()

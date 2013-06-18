@@ -43,15 +43,14 @@ else
                 // refresh.
                 evt.preventDefault();
 
-                // `TP.history.navigate` is sufficient for all Routers and will
+                // `theApp.history.navigate` is sufficient for all Routers and will
                 // trigger the correct events. The Router's internal `navigate` method
                 // calls this anyways.  The fragment is sliced from the root.
-                TP.history.navigate(href.attr, true);
+                theApp.history.navigate(href.attr, true);
             }
         });
 
         theApp.start();
-        TP.history.start({ pushState: false, root: theApp.root });
     });
 
 }

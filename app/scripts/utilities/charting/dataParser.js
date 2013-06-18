@@ -327,7 +327,6 @@ function(chartColors, findIndexByMsOffset, convertToViewUnits)
                     }
                 }
 
-                console.log(_.keys(this.latLngMsOffset).sort());
 
             }
 
@@ -384,8 +383,6 @@ function(chartColors, findIndexByMsOffset, convertToViewUnits)
                     elevations.splice(badIndex, 0, null);
             });
 
-            console.debug(elevations.length);
-            
             var corrected = _.map(this.dataByChannel["Elevation"], function(elevationPoint)
             {
                 if (index >= (elevations.length - 1))

@@ -128,7 +128,6 @@
 
                 renderTimeInZonesFlotChart: function(dataSeries, flotOptions)
                 {
-
                     if (!this.$chartEl)
                         this.$chartEl = this.$(".chartContainer");
 

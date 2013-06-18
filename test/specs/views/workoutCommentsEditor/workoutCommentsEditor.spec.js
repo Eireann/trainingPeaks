@@ -20,7 +20,7 @@ function(TP, WorkoutModel, WorkoutCommentsEditorView)
             var view = new WorkoutCommentsEditorView({ model: workoutModel });
             view.render();
 
-            expect(view.$el.html().indexOf(descriptionText)).not.toEqual(-1);
+            expect(view.$("#descriptionInput").val()).toEqual(descriptionText);
         });
 
         it("Should render post activity comments", function()

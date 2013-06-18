@@ -42,7 +42,5 @@ function(_, TP, zonesViewBase)
 
     _.extend(hrViewBase, zonesViewBase);
 
-    hrViewBase.chartColor = { light: "#ED3F1D", dark: "#B50F00" };
-
     return TP.ItemView.extend(hrViewBase);
 });

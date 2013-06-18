@@ -48,7 +48,7 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySe
         {
             if (theMarsApp)
                 theMarsApp.user.on("change:settings", this.render, this);
-            
+
             this.collection = this.model.itemsCollection;
 
             this.on("after:item:added", this.makeItemsDraggable, this);
@@ -66,7 +66,8 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySe
 
             "click .addWorkout": "onAddWorkoutClicked",
             "mousedown .daySettings": "daySettingsClicked",
-            "click .daySelected": "onDayUnClicked"
+            "click .daySelected": "onDayUnClicked",
+            "click": "clearSelection"
         },
 
         getItemView: function(item)
@@ -300,6 +301,10 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySe
         {
             //this.unselect();
             //this.model.trigger("day:click", this.model, e);
+            if (e)
+            {
+                e.preventDefault();
+            }
             this.model.trigger("day:unselect", this.model, e);
         },
 
@@ -316,6 +321,13 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySe
         selectAddWorkoutIcon: function()
         {
             this.$(".addWorkout").addClass("active");
+        },
+
+        clearSelection: function(e)
+        {
+            if (e.isDefaultPrevented())
+                return;
+            this.model.trigger("day:unselectall");
         }
 
     });
