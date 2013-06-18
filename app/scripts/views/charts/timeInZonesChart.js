@@ -162,12 +162,27 @@ function(
             this.flotOptions.series = {bars: {show: true}};
             if (!this.flotOptions.bars)
                 this.flotOptions.bars = {};
-            this.flotOptions.bars.align = "left";
-            this.flotOptions.bars.barWidth = 0.5;
+            this.flotOptions.bars.barWidth = 0.8;
             this.flotOptions.yaxis = {
                 min: 0,
                 ticks: 6,
                 tickFormatter: this.formatYAxisTick
+            };
+
+            this.flotOptions.grid = {
+                show: true,
+                borderWidth: 0,
+                hoverable: true,
+                clickable: true,
+                margin: {
+                    top: 0,
+                    bottom: 0,
+                    left: 10,
+                    right: 0
+                },
+                labelMargin: 10,
+                axisMargin: 10,
+                autoHighlight:true
             };
           
             delete this.flotOptions.xaxes;
