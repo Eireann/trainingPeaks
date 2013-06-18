@@ -6,8 +6,8 @@
     "utilities/charting/flotOptions",
     "utilities/charting/jquery.flot.tooltip",
     "utilities/charting/flotToolTipPositioner",
-    "hbs!templates/views/quickView/zonesTab/timeInZonesChart",
-    "hbs!templates/views/quickView/zonesTab/chartTooltip"
+    "hbs!templates/views/charts/timeInZonesChart",
+    "hbs!templates/views/charts/chartTooltip"
 ],
     function (
         _,
@@ -96,8 +96,7 @@
 
                     flotOptions.yaxis = {
                         min: 0,
-                        ticks: 6,
-                        tickDecimal: 0
+                        tickDecimals: 0
                     };
 
 

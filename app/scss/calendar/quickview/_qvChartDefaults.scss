@@ -1,5 +1,18 @@
 ﻿@import "../../globalCSS/tpstylesheet";
 
+.chartContainer
+{
+    .flot-base
+    {
+        margin-left: 10px;
+    }
+
+    .flot-overlay
+    {
+        margin-left: 10px;
+    }
+}
+
 .qvZonesTab
 {
     position:relative;
