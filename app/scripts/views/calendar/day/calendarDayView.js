@@ -301,7 +301,10 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySe
         {
             //this.unselect();
             //this.model.trigger("day:click", this.model, e);
-            e.preventDefault();
+            if (e)
+            {
+                e.preventDefault();
+            }
             this.model.trigger("day:unselect", this.model, e);
         },
 
