@@ -23,7 +23,7 @@ function(_, TP, TimeInZonesChartView)
             expect(function() { new TimeInZonesChartView({ timeInZones: new TP.Model(), chartColor: {}, graphTitle: "Title", toolTipBuilder: function() {} }); }).not.toThrow();
         });
 
-        it("Should build chart points off a TimeInZones object", function()
+        xit("Should build chart points off a TimeInZones object, for highcharts", function()
         {
             expect(typeof TimeInZonesChartView.prototype.buildTimeInZonesChartPoints).toBe("function");
 
@@ -51,7 +51,7 @@ function(_, TP, TimeInZonesChartView)
             expect(chartPoints.length).toEqual(timeInZones.length);
         });
         
-        it("Should build chart points off a TimeInZones object", function ()
+        it("Should build chart points off a TimeInZones object, for flot", function ()
         {
             expect(typeof TimeInZonesChartView.prototype.buildTimeInZonesFlotPoints).toBe("function");
 
