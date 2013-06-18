@@ -2,14 +2,14 @@
 [
     "setImmediate",
     "TP",
-    "utilities/charting/defaultFlotOptions",
+    "utilities/charting/flotOptions",
     "hbs!templates/views/quickView/zonesTab/timeInZonesChart",
     "hbs!templates/views/quickView/zonesTab/chartTooltip"
 ],
 function(
     setImmediate,
     TP,
-    getDefaultFlotOptions,
+    flotOptions,
     timeInZonesChartTemplate,
     tooltipTemplate)
 {
@@ -155,8 +155,9 @@ function(
 
         renderTimeInZonesFlotChart: function (dataSeries)
         {
+
             _.bindAll(this, "formatXAxisTick", "formatYAxisTick");
-            this.flotOptions = getDefaultFlotOptions(null);
+            this.flotOptions = flotOptions.getBarOptions(null);
 
             this.flotOptions.series = {bars: {show: true}};
             if (!this.flotOptions.bars)
