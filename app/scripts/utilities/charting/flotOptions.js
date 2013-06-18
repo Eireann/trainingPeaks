@@ -1,15 +1,16 @@
 ﻿define(
 [
+    "underscore",
     "TP",
     "utilities/charting/jquery.flot.filter",
     "utilities/charting/chartColors"
 ],
-function (TP, flotFilter, chartColors)
+function (_, TP, flotFilter, chartColors)
 {
     return {
         getMultiChannelOptions: function (onHoverHandler)
         {
-            return _.extend({},
+            return _.extend(this.getGlobalDefaultOptions(onHoverHandler),
                 {
                     crosshair:
                     {
@@ -113,12 +114,17 @@ function (TP, flotFilter, chartColors)
 
         getBarOptions: function (onHoverHandler)
         {
-            return this.getMultiChannelOptions(onHoverHandler);
+            return _.extend(this.getGlobalDefaultOptions(onHoverHandler), {});
         },
         
-        getSplineOptions: function()
+        getSplineOptions: function (onHoverHandler)
         {
-            return this.getMultiChannelOptions(onHoverHandler);
+            return _.extend(this.getGlobalDefaultOptions(onHoverHandler), {});
+        },
+        
+        getGlobalDefaultOptions: function (onHoverHandler)
+        {
+            return _.extend({}, {});
         }
     };
 });

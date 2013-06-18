@@ -1,12 +1,14 @@
 ﻿define(
 [
+    "underscore",
     "setImmediate",
     "TP",
     "utilities/charting/flotOptions",
     "hbs!templates/views/quickView/zonesTab/timeInZonesChart",
     "hbs!templates/views/quickView/zonesTab/chartTooltip"
 ],
-    function(
+    function (
+        _,
         setImmediate,
         TP,
         defaultFlotOptions,
