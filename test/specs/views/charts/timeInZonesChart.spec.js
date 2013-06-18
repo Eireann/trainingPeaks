@@ -50,8 +50,8 @@ function(_, TP, TimeInZonesChartView)
             expect(function () { chartPoints = TimeInZonesChartView.prototype.buildTimeInZonesChartPoints.call(context, { timeInZones: timeInZones }); }).not.toThrow();
             expect(chartPoints.length).toEqual(timeInZones.length);
         });
-        
-        it("Should build chart points off a TimeInZones object, for flot", function ()
+
+        it("Should build chart points off a TimeInZones object, for flot", function()
         {
             expect(typeof TimeInZonesChartView.prototype.buildTimeInZonesFlotPoints).toBe("function");
 

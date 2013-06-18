@@ -316,6 +316,8 @@
     "NotAllowedForAlpha": "Unfortunately, your account has not been activated for Alpha testing",
 
     "Start": "Start",
-    "Finish": "Finish"
+    "Finish": "Finish",
 
+    "Zones": "Zones",
+    "ByZones": "By Zones"
 }

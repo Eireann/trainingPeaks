@@ -21,6 +21,10 @@ function(TP, TimeInZonesChartView, chartColors)
                 graphTitle: this.graphTitle,
                 toolTipBuilder: this.toolTipBuilder
             });
+
+            this.model = new TP.Model({
+                zoneType: "Heart Rate"
+            });
         },
         
         toolTipBuilder: function(point, timeInZone)
