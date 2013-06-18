@@ -114,14 +114,25 @@ function (_, TP, flotFilter, chartColors)
 
         getBarOptions: function (onHoverHandler)
         {
-            return _.extend(this.getGlobalDefaultOptions(onHoverHandler), {});
+            return _.extend(this.getGlobalDefaultOptions(onHoverHandler),
+                {
+                    series:
+                    {
+                        bars: { show: true }
+                    },
+                    bars:
+                    {
+                        align: "left",
+                        barWidth: 0.5
+                    }
+                });
         },
-        
+
         getSplineOptions: function (onHoverHandler)
         {
             return _.extend(this.getGlobalDefaultOptions(onHoverHandler), {});
         },
-        
+
         getGlobalDefaultOptions: function (onHoverHandler)
         {
             return _.extend({}, {});

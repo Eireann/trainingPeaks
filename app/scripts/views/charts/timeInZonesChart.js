@@ -161,11 +161,11 @@
                     _.bindAll(this, "formatXAxisTick", "formatYAxisTick");
                     this.flotOptions = defaultFlotOptions.getBarOptions(null);
 
-                    this.flotOptions.series = {bars: {show: true}};
-                    if (!this.flotOptions.bars)
-                        this.flotOptions.bars = {};
-                    this.flotOptions.bars.align = "left";
-                    this.flotOptions.bars.barWidth = 0.5;
+                    //this.flotOptions.series = {bars: {show: true}};
+                    //if (!this.flotOptions.bars)
+                    //    this.flotOptions.bars = {};
+                    //this.flotOptions.bars.align = "left";
+                    //this.flotOptions.bars.barWidth = 0.5;
                     this.flotOptions.yaxis = {
                         min: 0,
                         ticks: 6,
