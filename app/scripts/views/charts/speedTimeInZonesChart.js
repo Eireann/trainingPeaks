@@ -22,6 +22,10 @@ function(TP, TimeInZonesChartView, chartColors)
                 graphTitle: this.graphTitle,
                 toolTipBuilder: this.toolTipBuilder
             });
+
+            this.model = new TP.Model({
+                zoneType: "Pace"
+            });
         },
                 toolTipBuilder: function(timeInZone, timeInZones)
         {

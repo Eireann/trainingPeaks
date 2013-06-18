@@ -54,8 +54,7 @@
                         this.template = options.template;
                     }
 
-                    _.bindAll(this, "formatXAxisTick", "formatYAxisTick", "onHover");
-                    this.on("chartResize", this.resizeCharts, this);
+                    _.bindAll(this, "onHover");
                 },
 
                 buildTimeInZonesFlotPoints: function(timeInZones)
@@ -98,15 +97,12 @@
                     flotOptions.yaxis = {
                         min: 0,
                         ticks: 6,
-                        tickFormatter: this.formatYAxisTick
+                        tickDecimal: 0
                     };
 
 
                     flotOptions.xaxis = {
-                        show: false,
-                        min: 0,
-                        tickFormatter: this.formatXAxisTick,
-                        color: 'transparent'
+                        show: false
                     };
 
                     return flotOptions;
@@ -121,32 +117,8 @@
                     this.plot = $.plot(this.$chartEl, dataSeries, flotOptions);
                 },
 
-                formatXAxisTick: function(value, axis)
-                {
-
-                    return value;
-                    /*
-                    if (this.timeInZones.timeInZones[value])
-                    {
-                        var label = this.timeInZones.timeInZones[value].label;
-                        return label.substring(0, 7);
-                    } else
-                    {
-                        return "";
-                    }
-                    */
-                },
-
-                formatYAxisTick: function(value, axis)
-                {
-                    return value.toFixed(0);
-                },
-
-
                 onHover: function(flotItem, $tooltipEl)
                 {
-                    //this.toolTipBuilder = options.toolTipBuilder;
-                    // tooltipTemplate
                     var timeInZonesItem = this.timeInZones.timeInZones[flotItem.dataIndex];
 
                     var tooltipData = this.toolTipBuilder(timeInZonesItem, this.timeInZones);
@@ -171,15 +143,7 @@
                     {
                         self.renderTimeInZonesFlotChart([dataSeries], flotOptions);
                     });
-                },
-
-                resizeCharts: function (width)
-                {
-                    var self = this;
-                    this.$el.width(width);
-                    var height = width * 0.5825;
-                    var container = this.$el.closest(".timeInZonesChartContainer");
-                    container.width(width).height(height);
                 }
+
             });
-        });
+    });
