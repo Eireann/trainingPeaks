@@ -49,7 +49,12 @@ function(TP, PeaksChartView, chartColors)
         formatPeakUnitsLabel: function()
         {
             return "min/" + TP.utils.units.getUnitsLabel("distance", this.workoutType)
-        }
+        },
+
+        formatYAxisTick: function(value, series)
+        {
+            return TP.utils.conversion.formatPace(value)
+        },
 
     });
 });
