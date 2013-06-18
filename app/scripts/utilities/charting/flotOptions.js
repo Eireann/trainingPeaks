@@ -33,12 +33,6 @@ function (_, TP, flotFilter, chartColors)
                             hoverable: true
                         }
                     },
-
-                    shifts:
-                    {
-                        x: 0,
-                        y: 0
-                    },
                     xaxes:
                     [
                         {
@@ -125,6 +119,11 @@ function (_, TP, flotFilter, chartColors)
                 legend:
                 {
                     show: false
+                },
+                shifts:
+                {
+                    x: 0,
+                    y: 0
                 },
                 tooltip: true,
                 tooltipOpts:

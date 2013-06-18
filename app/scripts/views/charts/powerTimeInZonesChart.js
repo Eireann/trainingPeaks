@@ -22,14 +22,16 @@ function(TP, TimeInZonesChartView, chartColors)
                 toolTipBuilder: this.toolTipBuilder
             });
         },
-        
-        toolTipBuilder: function(point, timeInZone)
+
+        toolTipBuilder: function(timeInZone, timeInZones)
         {
-            _.extend(point,
-            {
+
+            var totalSeconds = TP.utils.chartBuilder.calculateTotalTimeInZones(timeInZones);
+            var percentTime = TP.utils.conversion.toPercent(timeInZone.seconds, totalSeconds);
+            return {       
                 tooltips: [
                     {
-                        label: point.label
+                        label: timeInZone.label
                     },
                     {
                         label: "Range",
@@ -46,10 +48,10 @@ function(TP, TimeInZonesChartView, chartColors)
                     },
                     {
                         label: "Percent",
-                        value: point.percentTime + "%"
+                        value: percentTime + "%"
                     }
                 ]
-            });
+            };
         }
     });
 });

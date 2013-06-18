@@ -54,26 +54,6 @@
         
     }
 
-    .highcharts-tooltip
-    {
-
-        .graphTooltip
-        {
-            background-color: rgba(255, 255, 255, 0);
-        }
-
-        .tooltipRow
-        {
-            font-family: $fontFamilyRegular;
-            font-size: $fontSizeSmall;
-            color: $TPGrey3;
-
-            .tooltipLabel
-            {
-                font-family: $fontFamilyHeavy;
-            }
-        }
-    }
 }
 
 .zonesTable
@@ -182,7 +162,7 @@
 
     .hoverBoxContents
     {
-        padding: 0 0 12px 0;
+        padding: 0 0 0 0;
     }
 
     &.left
@@ -229,7 +209,25 @@
 
     .details
     {
-        padding: 2px 5px 8px 5px;
+        padding: 2px 5px 20px 5px;
+
+        &.chart
+        {
+            padding: 5px 5px 8px 5px;
+        }
+    }
+
+    .tooltipRow
+    {
+        font-family: $fontFamilyRegular;
+        font-size: $fontSizeSmall;
+        color: $TPGrey3;
+        line-height: 1.4em;
+
+        .tooltipLabel
+        {
+            font-family: $fontFamilyHeavy;
+        }
     }
 
     .time

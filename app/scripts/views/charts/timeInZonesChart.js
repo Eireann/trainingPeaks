@@ -4,6 +4,8 @@
     "setImmediate",
     "TP",
     "utilities/charting/flotOptions",
+    "utilities/charting/jquery.flot.tooltip",
+    "utilities/charting/flotToolTipPositioner",
     "hbs!templates/views/quickView/zonesTab/timeInZonesChart",
     "hbs!templates/views/quickView/zonesTab/chartTooltip"
 ],
@@ -12,6 +14,8 @@
         setImmediate,
         TP,
         defaultFlotOptions,
+        flotToolTip,
+        toolTipPositioner,
         timeInZonesChartTemplate,
         tooltipTemplate)
         {
@@ -26,7 +30,7 @@
                     template: timeInZonesChartTemplate
                 },
 
-                initialize: function (options)
+                initialize: function(options)
                 {
                     if (!options.timeInZones)
                         throw "TimeInZonesChartView requires a timeInZones object at construction time";
@@ -50,78 +54,11 @@
                         this.template = options.template;
                     }
 
+                    _.bindAll(this, "formatXAxisTick", "formatYAxisTick", "onHover");
                     this.on("chartResize", this.resizeCharts, this);
                 },
 
-                //        onRender: function()
-                //        {
-                //            if (!this.timeInZones)
-                //                return;
-                //
-                //            var chartPoints = this.buildTimeInZonesChartPoints(this.timeInZones);
-                //
-                //            var chartOptions =
-                //            {
-                //                colors: [this.chartColor],
-                //                title:
-                //                {
-                //                    text: this.graphTitle + " by Zones"
-                //                },
-                //                xAxis:
-                //                {
-                //                    title:
-                //                    {
-                //                        text: "ZONES"
-                //                    }
-                //                },
-                //                yAxis:
-                //                {
-                //                    title:
-                //                    {
-                //                        text: "MINUTES"
-                //                    }
-                //                }
-                //            };
-                //            
-                //            if (!this.$chartEl)
-                //                this.$chartEl = this.$el.find("div.chartContainer");
-                //            
-                //            this.chart = TP.utils.chartBuilder.renderColumnChart(this.$chartEl, chartPoints, tooltipTemplate, chartOptions);
-                //        },
-                /*
-                buildTimeInZonesChartPoints: function (timeInZones)
-                {
-                    var chartPoints = [];
-                    var totalSeconds = TP.utils.chartBuilder.calculateTotalTimeInZones(timeInZones);
-        
-                    // zone times are in seconds, convert to minutes
-                    _.each(timeInZones.timeInZones, function (timeInZone, index)
-                    {
-                        var minutes = timeInZone.seconds ? parseInt(timeInZone.seconds, 10) / 60 : 0;
-        
-                        var point =
-                        {
-                            label: timeInZone.label,
-                            minimum: timeInZone.minimum,
-                            maximum: timeInZone.maximum,
-                            percentTime: TP.utils.conversion.toPercent(timeInZone.seconds, totalSeconds),
-                            seconds: timeInZone.seconds,
-                            y: minutes,
-                            value: minutes,
-                            x: index
-                        };
-        
-                        // gives our view or other listeners a hook to modify the point
-                        this.toolTipBuilder.call(this, point, timeInZone);
-                        chartPoints.push(point);
-        
-                    }, this);
-        
-                    return chartPoints;
-                },
-                */
-
-                buildTimeInZonesFlotPoints: function (timeInZones)
+                buildTimeInZonesFlotPoints: function(timeInZones)
                 {
                     var chartPoints = [];
 
@@ -138,52 +75,57 @@
 
                 buildTimeInZonesFlotDataSeries: function (chartPoints)
                 {
-                    //            colors: [chartColors.gradients.elevation.dark, chartColors.gradients.elevation.light]
                     var dataSeries =
                     {
                         data: chartPoints,
-                        label: "ZONES",
                         bars:
                         {
                             show: true,
                             lineWidth: 0,
                             fill: true,
                             fillColor: { colors: [this.chartColor.light, this.chartColor.dark] }
-                        }
+                        },
+                        highlightColor: this.chartColor.light
                     };
 
                     return dataSeries;
                 },
 
-                renderTimeInZonesFlotChart: function (dataSeries)
+                getFlotChartOptions: function(chartPoints)
                 {
+                    var flotOptions = defaultFlotOptions.getBarOptions(this.onHover);
 
-                    _.bindAll(this, "formatXAxisTick", "formatYAxisTick");
-                    this.flotOptions = defaultFlotOptions.getBarOptions(null);
-
-                    this.flotOptions.yaxis = {
+                    flotOptions.yaxis = {
                         min: 0,
                         ticks: 6,
                         tickFormatter: this.formatYAxisTick
                     };
 
 
-                    this.flotOptions.xaxis = {
+                    flotOptions.xaxis = {
+                        show: false,
                         min: 0,
                         tickFormatter: this.formatXAxisTick,
                         color: 'transparent'
                     };
 
+                    return flotOptions;
+                },
+
+                renderTimeInZonesFlotChart: function(dataSeries, flotOptions)
+                {
 
                     if (!this.$chartEl)
                         this.$chartEl = this.$(".chartContainer");
 
-                    this.plot = $.plot(this.$chartEl, dataSeries, this.flotOptions);
+                    this.plot = $.plot(this.$chartEl, dataSeries, flotOptions);
                 },
 
                 formatXAxisTick: function(value, axis)
                 {
 
+                    return value;
+                    /*
                     if (this.timeInZones.timeInZones[value])
                     {
                         var label = this.timeInZones.timeInZones[value].label;
@@ -192,11 +134,25 @@
                     {
                         return "";
                     }
+                    */
                 },
 
                 formatYAxisTick: function(value, axis)
                 {
                     return value.toFixed(0);
+                },
+
+
+                onHover: function(flotItem, $tooltipEl)
+                {
+                    //this.toolTipBuilder = options.toolTipBuilder;
+                    // tooltipTemplate
+                    var timeInZonesItem = this.timeInZones.timeInZones[flotItem.dataIndex];
+
+                    var tooltipData = this.toolTipBuilder(timeInZonesItem, this.timeInZones);
+                    var tooltipHTML = tooltipTemplate(tooltipData);
+                    $tooltipEl.html(tooltipHTML);
+                    toolTipPositioner.updatePosition($tooltipEl, this.plot);
                 },
 
                 onRender: function()
@@ -205,30 +161,25 @@
                         return;
 
                     var chartPoints = this.buildTimeInZonesFlotPoints(this.timeInZones);
-
                     var dataSeries = this.buildTimeInZonesFlotDataSeries(chartPoints);
+                    var flotOptions = this.getFlotChartOptions(chartPoints);
 
                     var self = this;
 
                     // let the html draw first so our container has a height and width
                     setImmediate(function()
                     {
-                        self.renderTimeInZonesFlotChart([dataSeries]);
+                        self.renderTimeInZonesFlotChart([dataSeries], flotOptions);
                     });
                 },
 
                 resizeCharts: function (width)
                 {
-                    //            var self = this;
-                    //            this.$el.width(width);
-                    //            var height = width * 0.5825;
-                    //            setImmediate(function ()
-                    //            {
-                    //                self.chart.setSize(width, height, false);
-                    //                $(".timeInZonesChartContainer").css("width", width);
-                    //                $(".timeInZonesChartContainer").css("height", height);
-                    //
-                    //            });
+                    var self = this;
+                    this.$el.width(width);
+                    var height = width * 0.5825;
+                    var container = this.$el.closest(".timeInZonesChartContainer");
+                    container.width(width).height(height);
                 }
             });
         });
