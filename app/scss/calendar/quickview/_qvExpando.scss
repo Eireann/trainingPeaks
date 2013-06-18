@@ -300,6 +300,12 @@
                 height: 70%;
                 width: 80%;
             }
+
+            .xaxisLabel
+            {
+                top: calc(70% + 30px);
+                left: calc(50% - 35px);
+            }
         }
 
         .peaksChartContainer
