@@ -21,24 +21,25 @@ function(TP, PeaksChartView, chartColors)
                 timeInZones: options.timeInZones,
                 chartColor: this.chartColor,
                 graphTitle: this.graphTitle,
-                chartModifier: function()
-                {
-                },
                 toolTipBuilder: this.toolTipBuilder
+            });
+
+            this.model = new TP.Model({
+                peakType: "Heart Rate",
+                yAxisLabel: "BPM"
             });
         },
 
-        toolTipBuilder: function(point, peak, timeInZones)
+        toolTipBuilder: function(peak, timeInZones)
         {
-            _.extend(point,
-            {
+            return {
                 tooltips:
                 [
                     {
-                        label: point.label
+                        label: peak.label
                     },
                     {
-                        value: point.value + " BPM"
+                        value: peak.value + " BPM"
                     },
                     {
                         value: TP.utils.conversion.toPercent(peak.value, timeInZones.threshold) + " %lt"
@@ -47,7 +48,7 @@ function(TP, PeaksChartView, chartColors)
                         value: TP.utils.conversion.toPercent(peak.value, timeInZones.maximum) + " %Max"
                     }
                 ]
-            });
+            };
         }
     });
 });

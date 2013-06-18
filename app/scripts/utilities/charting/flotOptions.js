@@ -103,7 +103,12 @@ function (_, TP, flotFilter, chartColors)
 
         getSplineOptions: function (onHoverHandler)
         {
-            return _.extend(this.getGlobalDefaultOptions(onHoverHandler), {});
+            return _.extend(this.getGlobalDefaultOptions(onHoverHandler), {
+                    series:
+                    {
+                        lines: { show: true }
+                    }
+            });
         },
 
         getGlobalDefaultOptions: function (onHoverHandler)
