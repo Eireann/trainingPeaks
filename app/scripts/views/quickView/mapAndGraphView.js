@@ -2,7 +2,7 @@
 [
     "TP",
     "utilities/charting/dataParser",
-    "utilities/charting/defaultFlotOptions",
+    "utilities/charting/flotOptions",
     "utilities/charting/flotCustomTooltip",
     "utilities/mapping/mapUtils",
     "utilities/workout/workoutTypes",
@@ -11,7 +11,7 @@
 function(
     TP,
     DataParser,
-    getDefaultFlotOptions,
+    defaultFlotOptions,
     flotCustomToolTip,
     MapUtils,
     workoutTypes,
@@ -160,7 +160,7 @@ function(
                 $tooltipEl.html(flotCustomToolTip(series, series, flotItem.series.label, flotItem.dataIndex, flotItem.datapoint[0], self.model.get("workoutTypeValueId")));
                 self.updateToolTipPosition($tooltipEl);
             };
-            var flotOptions = getDefaultFlotOptions(onHoverHandler);
+            var flotOptions = defaultFlotOptions.getMultiChannelOptions(onHoverHandler);
 
             flotOptions.yaxes = yaxes;
             flotOptions.xaxes[0].tickLength = 0;
