@@ -90,6 +90,7 @@ function($, moment, SessionModel)
             var authObj = { username: "myusername", password: "mypassword" };
             theSession.authenticate(authObj);
 
+            // TODO: this breaks with bdd testing having run, but then other stuff breaks if we disable this test ...
             expect(mockDeferred.done).toHaveBeenCalled();
         });
 

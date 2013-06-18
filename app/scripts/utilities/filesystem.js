@@ -16,19 +16,9 @@
 
                     var afterRequestFileSystem = function(fs)
                     {
-                        //console.log("Got filesystem");
                         self.temporaryFs = fs;
                         onSuccess(self.temporaryFs);
                     };
-
-                    /*
-                    if (!onError)
-                    {
-                        onError = function()
-                        {
-                            console.log("Error");
-                        }
-                    }*/
 
                     var type = TEMPORARY;
                     var length = 1024 * 1024 * 1024; // 1GB

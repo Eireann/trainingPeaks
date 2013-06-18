@@ -161,13 +161,14 @@ function()
                 {
                     "account":
                         {
+                            "accessGroupIds": [999999],
                             "affiliateId":596,
                             "allowMarketingEmails":false,
                             "enablePrivateMessageNotifications":false,
                             "expirationDate":"2014-11-27T15:19:00",
                             "headerImageUrl":"/TPWebServices/GetImageFile.aspx?t=db&i=4fda2babbc3fc714fc11de99&f=training_peaks_banner.png",
-                            "headerLink":"http://www.trainingpeaks.com",
-                            "isAthlete":true,
+                            "headerLink": "http://www.trainingpeaks.com",
+                            "isAthlete": true,
                             "isCoach":false,
                             "isCoached":false,
                             "isEmailVerified":true,

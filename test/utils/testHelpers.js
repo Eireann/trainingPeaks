@@ -15,25 +15,24 @@ function(_, $, Backbone, TP, xhrData, app)
 
         setupRegionElements: function()
         {
-
-            this.$body = $("<body><div id='navigation'></div><div id='main'></div></body>");
-            this.navRegion.$el = this.$body.find("#navigation");
-            this.mainRegion.$el = this.$body.find("#main");
-        },
-
-        reset: function()
-        {
-            app.syncCachingEnabled = false;
-            this.removeFakeAjax();
-            app.resetAppToInitialState();
+            this.$body = $("<body></body>");
+            this.navRegion.$el = $("<div id='navigation'></div>");
+            this.mainRegion.$el = $("<div id='main'></div>");
+            this.$body.append(this.navRegion.$el);
+            this.$body.append(this.mainRegion.$el);
         },
 
         startTheApp: function()
         {
 
+            this.stopTheApp();
 
-            // syncCaching doesn't play nicely with our fake xhr ...
-            app.syncCachingEnabled = false;
+            // ajaxCaching doesn't play nicely with our fake xhr ...
+            app.ajaxCachingEnabled = false;
+
+            // backbone history doesn't work well with our tests for some reason
+            app.historyEnabled = false;
+
             app.resetAppToInitialState();
 
             // disable window reload
@@ -49,15 +48,17 @@ function(_, $, Backbone, TP, xhrData, app)
             // start the app
             app.start();
 
-            // unless it was already started
-            try
-            {
-                TP.history.start({ pushState: false, root: app.root });
-            } catch(e)
-            {
-                //console.log("Ignoring history already started");
-            }
+            // capture ajax calls
+            this.setupFakeAjax();
+        },
 
+        stopTheApp: function()
+        {
+            if (app.started)
+            {
+                app.stop();
+            }
+            this.removeFakeAjax();
         },
 
         fakeSync: function(method, model, options)
@@ -71,7 +72,7 @@ function(_, $, Backbone, TP, xhrData, app)
 
             // this is what actually triggers Backbone models/collections to sync,
             // and is added in Backbone.sync
-            if(options.success)
+            if (options.success)
                 ajaxDeferred.done(options.success);
 
             if (!options.type)
@@ -101,7 +102,6 @@ function(_, $, Backbone, TP, xhrData, app)
 
             _.each(deferredFunctionNames, function(methodName)
             {
-                var originalJqMethod = jqXhr[methodName];
                 var ajaxDeferredMethod = options.ajaxDeferred[methodName];
                 jqXhr[methodName] = function()
                 {
@@ -110,6 +110,14 @@ function(_, $, Backbone, TP, xhrData, app)
                     return this;
                 };
             }, this);
+
+            var ajaxDeferredDone = options.ajaxDeferred.done;
+            jqXhr.error = function()
+            {
+                // apply on our cached data first
+                ajaxDeferredDone.apply(options.ajaxDeferred, arguments);
+                return this;
+            };
 
             return jqXhr;
         },
@@ -169,11 +177,16 @@ function(_, $, Backbone, TP, xhrData, app)
 
         submitLogin: function(userData)
         {
-            app.router.navigate("logout", true);
             app.router.navigate("login", true);
             app.mainRegion.$el.find("input[name=Submit]").trigger("click");
             this.resolveRequest("POST", "Token", xhrData.token);
             this.resolveRequest("GET", "users/v1/user", userData);
+        },
+
+        startTheAppAndLogin: function(userData)
+        {
+            this.startTheApp();
+            this.submitLogin(userData);
         }
 
     };

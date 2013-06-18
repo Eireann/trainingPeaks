@@ -17,9 +17,20 @@ function(TP, LoginLayout, LoginView, UserMessageView)
             this.layout.on("show", this.show, this);
             theMarsApp.session.on("logout", this.onLogout, this);
         },
-        
+
+        onClose: function()
+        {
+            this.layout.off("show", this.show, this);
+            theMarsApp.session.off("logout", this.onLogout, this);
+        },
+
         show: function()
         {
+            if (this.layout.isClosed)
+            {
+                return;
+            }
+
             if (theMarsApp.session.isAuthenticated())
             {
                 theMarsApp.session.logout();

@@ -1,5 +1,6 @@
 define(
 [
+    "underscore",
     "TP",
     "framework/ajaxAuth",
     "framework/ajaxCaching",
@@ -16,6 +17,7 @@ define(
     "jqueryui/tooltip"
 ],
 function(
+    _,
     TP,
     initializeAjaxAuth,
     ajaxCaching,
@@ -32,9 +34,37 @@ function(
 
     var theApp = new TP.Application();
     theApp.ajaxCachingEnabled = false;
+    theApp.historyEnabled = true;
+
+    theApp.addAllShutdowns = function()
+    {
+
+        // close all of the controllers, which should close each of their corresponding layouts and views
+        this.addShutdown(function()
+        {
+            _.each(_.keys(this.controllers), function(controllerName)
+            {
+                this.controllers[controllerName].close();
+            }, this);
+        });
+
+        // cleanup session and user state
+
+        // cleanup history?
+
+        // done
+        this.addShutdown(function()
+        {
+            this.started = false;
+        });
+
+    };
 
     theApp.resetAppToInitialState = function()
     {
+
+        this.addAllShutdowns();
+
         this.addRegions(
         {
             navRegion: "#navigation",
@@ -60,13 +90,13 @@ function(
         this.addInitializer(function()
         {
             var self = this;
-            window.onerror = function (errorMessage, url, lineNumber)
+            window.onerror = function(errorMessage, url, lineNumber)
             {
                 if (self.clientEvents)
                 {
                     self.clientEvents.logEvent({ Event: { Type: "Error", Label: "UncaughtException", AppContext: url + " Error: " + errorMessage + " Line: " + lineNumber } });
                 }
-                return true;
+                return self.isLive() ? true : false;
             };
             
             $(document).ajaxError(function(event, xhr)
@@ -173,8 +203,38 @@ function(
             this.controllers.navigationController = new NavigationController();
             this.controllers.loginController = new LoginController();
             this.controllers.calendarController = new CalendarController();
+        });
 
+        this.addInitializer(function()
+        {
+            if (this.historyEnabled)
+            {
+                this.history = Backbone.history;
+            }
+        });
+
+        // add router
+        this.addInitializer(function()
+        {
             this.router = new Router();
+
+            if(!this.historyEnabled)
+            {
+                this.router.navigate = function(routeName)
+                {
+                    if (this.routes.hasOwnProperty(routeName))
+                    {
+                        var methodName = this.routes[routeName];
+                        this[methodName]();
+                    }
+                };
+            }
+        });
+
+        // show navigation
+        this.addInitializer(function()
+        {
+            this.navRegion.show(this.controllers.navigationController.getLayout());
         });
 
         // Set up jQuery UI Tooltips
@@ -277,6 +337,19 @@ function(
             {
                 self.isBlurred = true;
             });
+        });
+
+        this.addInitializer(function()
+        {
+            if (this.historyEnabled)
+            {
+                this.history.start({ pushState: false, root: this.root });
+            }
+        });
+
+        this.addInitializer(function()
+        {
+            this.started = true;
         });
         
         this.isLive = function()

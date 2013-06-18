@@ -322,7 +322,7 @@
 
       options || (options = {});
 
-      // Run validation.
+        // Run validation.
       if (!this._validate(attrs, options)) return false;
 
       // Extract attributes and options.
@@ -557,9 +557,10 @@
     },
 
     // Run validation against the next complete set of model attributes,
-    // returning `true` if all is well. Otherwise, fire an `"invalid"` event.
-    _validate: function(attrs, options) {
-      if (!options.validate || !this.validate) return true;
+      // returning `true` if all is well. Otherwise, fire an `"invalid"` event.
+    _validate: function(attrs, options)
+    {
+        if ((options && options.hasOwnProperty("validate") && !options.validate) || !this.validate) return true;
       attrs = _.extend({}, this.attributes, attrs);
       var error = this.validationError = this.validate(attrs, options) || null;
       if (!error) return true;

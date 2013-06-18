@@ -11,78 +11,57 @@ function(
     theApp)
 {
 
-    xdescribe("Login", function()
+    describe("Login", function()
     {
 
-        var $el;
+        var $mainRegion;
 
         beforeEach(function()
         {
             testHelpers.startTheApp();
-            $el = theApp.mainRegion.$el;
-            testHelpers.setupFakeAjax();
+            $mainRegion = theApp.mainRegion.$el;
+            theApp.router.navigate("login", { trigger: true });
         });
 
-        // for some reason afterEach is undefined here, 
-        // but we can access it via jasmine.getEnv()
-        // need to cleanup our mess
-        jasmine.getEnv().afterEach(function()
+        afterEach(function()
         {
-            testHelpers.reset();
+            testHelpers.stopTheApp();
         });
 
-        it("needs one useless test to work right", function()
+        it("Should have a login form", function()
         {
-            theApp.router.navigate("logout", true);
-            theApp.router.navigate("login", true);
+            var loginForm = $mainRegion.find("#loginForm");
+            expect(loginForm.length).toBe(1);
         });
 
         it("Should have a submit button", function()
         {
-            theApp.router.navigate("logout", true);
-            theApp.router.navigate("login", true);
-            var submitButton = $el.find("input[name=Submit]");
+            var submitButton = $mainRegion.find("#loginForm input[name=Submit]");
             expect(submitButton.length).toBe(1);
         });
 
         it("Should have a username input", function()
         {
-            theApp.router.navigate("logout", true);
-            theApp.router.navigate("login", true);
-            expect($el.find("#username")).toBeDefined();
-            expect($el.find("#username").length).toBe(1);
+            expect($mainRegion.find("#loginForm #username").length).toBe(1);
         });
 
         it("Should respond to a click on the submit button", function()
         {
             spyOn(theApp.session, "authenticate");
-            theApp.router.navigate("logout", true);
-            theApp.router.navigate("login", true);
-            var submitButton = $el.find("input[name=Submit]");
+            var submitButton = $mainRegion.find("#loginForm input[name=Submit]");
             submitButton.trigger("click");
             expect(theApp.session.authenticate).toHaveBeenCalled();
         });
 
         it("Should request user data after resolving the login", function()
         {
-            theApp.router.navigate("logout", true);
-            theApp.router.navigate("login", true);
-            var submitButton = $el.find("input[name=Submit]");
+            var submitButton = $mainRegion.find("#loginForm input[name=Submit]");
             submitButton.trigger("click");
             expect(testHelpers.hasRequest("POST", "Token")).toBe(true);
             testHelpers.resolveRequest("POST", "Token", { token: 'someToken' });
             expect(testHelpers.hasRequest("GET", "users/v1/user")).toBe(true);
         });
 
-        it("Should request athlete settings after loading the user", function()
-        {
-
-            // should not request until after user request is resolved
-            var testUser = xhrData.users.barbkprem;
-            testHelpers.submitLogin(testUser);
-            var athleteSettingsUrl = "fitness/v1/athletes/" + testUser.athletes[0].athleteId + "/settings";
-            expect(testHelpers.hasRequest("GET", athleteSettingsUrl)).toBeTruthy();
-        });
     });
 
 
