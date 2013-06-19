@@ -26,6 +26,7 @@ function(
             this.views.dashboard = new DashboardChartsView();
             this.views.header = new DashboardHeaderView();
             this.views.library = new DashboardLibraryView();
+            this.views.library.on("animate", this.onLibraryAnimate, this);
         },
 
         show: function()
@@ -45,6 +46,11 @@ function(
             this.layout.off("show", this.show, this);
             this.layout.close();
             this.views.dashboard.close();
+        },
+
+        onLibraryAnimate: function (cssAttributes, duration)
+        {
+            this.views.dashboard.trigger("animate", cssAttributes, duration);
         }
     });
 });
