@@ -85,22 +85,7 @@ function (_, TP)
         dashboard: function()
         {
             this.checkAuth();
-
-            var dashboardView = new TP.ItemView(
-            {
-                template:
-                {
-                    type: "handlebars",
-                    template: function ()
-                    {
-                        var top = $(document).height() / 2;
-                        var left = $(document).width() / 2 - 70;
-
-                        return "<div style='font-size:24px;position: absolute; top:" + top.toFixed(0) + "px; left:" + left.toFixed(0) + "px;'>Dashboard</div>";
-                    }
-                }
-            });
-            theMarsApp.mainRegion.show(dashboardView);
+            theMarsApp.mainRegion.show(theMarsApp.controllers.dashboardController.getLayout());
         },
         
         tools: function()

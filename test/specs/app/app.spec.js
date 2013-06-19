@@ -30,10 +30,24 @@ function( _, theApp)
                 expect(theApp.hasOwnProperty('logger')).toBeTruthy();
             });
 
-            it("Should have three controllers", function()
+            it("Should have a login controller", function()
             {
-                expect(theApp.hasOwnProperty('controllers')).toBeTruthy();
-                expect(_.keys(theApp.controllers).length).toEqual(3);
+                expect(theApp.controllers.loginController).toBeDefined();
+            });
+
+            it("Should have a navigation controller", function()
+            {
+                expect(theApp.controllers.navigationController).toBeDefined();
+            });
+ 
+            it("Should have a calendar controller", function()
+            {
+                expect(theApp.controllers.calendarController).toBeDefined();
+            });
+
+            it("Should have a dashboard controller", function()
+            {
+                expect(theApp.controllers.dashboardController).toBeDefined();
             });
 
             it("Should have a client events tracker", function()

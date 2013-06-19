@@ -11,6 +11,7 @@ define(
     "controllers/navigationController",
     "controllers/loginController",
     "controllers/calendar/calendarController",
+    "controllers/dashboardController",
     "router",
     "hbs!templates/views/notAllowedForAlpha",
     "marionette.faderegion",
@@ -28,6 +29,7 @@ function(
     NavigationController,
     LoginController,
     CalendarController,
+    DashboardController,
     Router,
     notAllowedForAlphaTemplate)
 {
@@ -203,6 +205,7 @@ function(
             this.controllers.navigationController = new NavigationController();
             this.controllers.loginController = new LoginController();
             this.controllers.calendarController = new CalendarController();
+            this.controllers.dashboardController = new DashboardController();
         });
 
         this.addInitializer(function()
