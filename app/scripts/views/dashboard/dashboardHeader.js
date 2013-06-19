@@ -7,6 +7,9 @@ function(TP, dashboardHeaderTemplate)
 {
     var DashboardHeaderView =
     {
+
+        className: "frameworkHeaderView",
+
         template:
         {
             type: "handlebars",
