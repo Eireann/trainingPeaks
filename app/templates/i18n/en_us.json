@@ -320,5 +320,7 @@
 
     "Zones": "Zones",
     "ByZones": "By Zones",
-    "MyDashboard": "My Dashboard"
+    "My": "My",
+    "Dashboard": "Dashboard",
+    "Range": "Range"
 }

@@ -8,7 +8,7 @@ function(TP, coachAndAffiliateCustomizations, calendarHeaderTemplate)
 {
     var calendarHeaderViewBase = {
 
-        className: "calendarHeaderView",
+        className: "calendarHeaderView frameworkHeaderView",
 
         template:
         {
