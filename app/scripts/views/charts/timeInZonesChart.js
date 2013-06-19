@@ -38,21 +38,12 @@
                     if (!options.chartColor)
                         throw "TimeInZonesChartView requires a chartColor object at construction time";
 
-                    if (!options.graphTitle)
-                        throw "TimeInZonesChartView requires a graphTitle string at construction time";
-
                     if (!options.toolTipBuilder)
                         throw "TimeInZonesChartView requires a toolTipBuilder callback at construction time";
 
                     this.timeInZones = options.timeInZones;
                     this.chartColor = options.chartColor;
-                    this.graphTitle = options.graphTitle;
                     this.toolTipBuilder = options.toolTipBuilder;
-
-                    if (options.template)
-                    {
-                        this.template = options.template;
-                    }
 
                     _.bindAll(this, "onHover");
                 },
@@ -64,15 +55,15 @@
                         return;
 
                     var chartPoints = this.buildTimeInZonesFlotPoints(this.timeInZones);
-                    var dataSeries = this.buildTimeInZonesFlotDataSeries(chartPoints);
-                    var flotOptions = this.getFlotChartOptions(chartPoints);
+                    var dataSeries = this.buildTimeInZonesFlotDataSeries(chartPoints, this.chartColor);
+                    var flotOptions = this.buildTimeInZonesFlotChartOptions();
 
                     var self = this;
 
                     // let the html draw first so our container has a height and width
                     setImmediate(function()
                     {
-                        self.renderTimeInZonesFlotChart([dataSeries], flotOptions);
+                        self.renderTimeInZonesFlotChart(dataSeries, flotOptions);
                     });
                 },
 
@@ -91,7 +82,7 @@
                     return chartPoints;
                 },
 
-                buildTimeInZonesFlotDataSeries: function (chartPoints)
+                buildTimeInZonesFlotDataSeries: function (chartPoints, chartColor)
                 {
                     var dataSeries =
                     {
@@ -101,15 +92,15 @@
                             show: true,
                             lineWidth: 0,
                             fill: true,
-                            fillColor: { colors: [this.chartColor.light, this.chartColor.dark] }
+                            fillColor: { colors: [chartColor.light, chartColor.dark] }
                         },
-                        highlightColor: this.chartColor.light
+                        highlightColor: chartColor.light
                     };
 
-                    return dataSeries;
+                    return [dataSeries];
                 },
 
-                getFlotChartOptions: function(chartPoints)
+                buildTimeInZonesFlotChartOptions: function()
                 {
                     var flotOptions = defaultFlotOptions.getBarOptions(this.onHover);
 

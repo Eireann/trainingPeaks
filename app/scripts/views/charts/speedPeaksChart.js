@@ -10,8 +10,6 @@ function(TP, PeaksChartView, chartColors)
     {
         chartColor: chartColors.gradients.pace,
 
-        graphTitle: "Pace",
-        
         initialize: function(options)
         {
             this.workoutType = options.workoutType;
@@ -20,7 +18,6 @@ function(TP, PeaksChartView, chartColors)
                 peaks: options.peaks,
                 timeInZones: options.timeInZones,
                 chartColor: this.chartColor,
-                graphTitle: this.graphTitle,
                 toolTipBuilder: this.toolTipBuilder
             });
 
@@ -48,13 +45,13 @@ function(TP, PeaksChartView, chartColors)
 
         formatPeakUnitsLabel: function()
         {
-            return "min/" + TP.utils.units.getUnitsLabel("distance", this.workoutType)
+            return "min/" + TP.utils.units.getUnitsLabel("distance", this.workoutType);
         },
 
         formatYAxisTick: function(value, series)
         {
-            return TP.utils.conversion.formatPace(value)
-        },
+            return TP.utils.conversion.formatPace(value);
+        }
 
     });
 });

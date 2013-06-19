@@ -10,8 +10,6 @@ function(TP, TimeInZonesChartView, chartColors)
     {
         chartColor: chartColors.gradients.pace,
 
-        graphTitle: "Pace",
-        
         initialize: function(options)
         {
             this.workoutType = options.workoutType;
@@ -19,7 +17,6 @@ function(TP, TimeInZonesChartView, chartColors)
             {
                 timeInZones: options.timeInZones,
                 chartColor: this.chartColor,
-                graphTitle: this.graphTitle,
                 toolTipBuilder: this.toolTipBuilder
             });
 

@@ -10,8 +10,6 @@ function(TP, PeaksChartView, chartColors)
     {
         chartColor: chartColors.gradients.heartRate,
 
-        graphTitle: "HeartRate",
-        
         initialize: function(options)
         {
             this.workoutType = options.workoutType;
@@ -20,7 +18,6 @@ function(TP, PeaksChartView, chartColors)
                 peaks: options.peaks,
                 timeInZones: options.timeInZones,
                 chartColor: this.chartColor,
-                graphTitle: this.graphTitle,
                 toolTipBuilder: this.toolTipBuilder
             });
 

@@ -10,15 +10,12 @@ function(TP, TimeInZonesChartView, chartColors)
     {
         chartColor: chartColors.gradients.power,
 
-        graphTitle: "Power",
-        
         initialize: function(options)
         {
             this.constructor.__super__.initialize.call(this,
             {
                 timeInZones: options.timeInZones,
                 chartColor: this.chartColor,
-                graphTitle: this.graphTitle,
                 toolTipBuilder: this.toolTipBuilder
             });
 

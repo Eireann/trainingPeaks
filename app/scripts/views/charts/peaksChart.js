@@ -33,7 +33,7 @@ function (
             initialize: function(options)
             {
                 if (!options.peaks)
-                    throw "PeaksChartView requiers a peaks object at construction time";
+                    throw "PeaksChartView requires a peaks object at construction time";
 
                 if (!options.timeInZones)
                     throw "PeaksChartView requires a timeInZones object at construction time";
@@ -41,16 +41,12 @@ function (
                 if (!options.chartColor)
                     throw "PeaksChartView requires a chartColor object at construction time";
 
-                if (!options.graphTitle)
-                    throw "PeaksChartView requires a graphTitle string at construction time";
-
                 if (!options.toolTipBuilder)
                     throw "PeaksChartView requires a toolTipBuilder callback at construction time";
 
                 this.peaks = options.peaks;
                 this.timeInZones = options.timeInZones;
                 this.chartColor = options.chartColor;
-                this.graphTitle = options.graphTitle;
 
                 _.bindAll(this, "onHover", "formatXAxisTick", "formatYAxisTick");
             },
@@ -60,33 +56,34 @@ function (
                 if (!this.peaks)
                     return;
 
-                var chartPoints = this.buildpeaksFlotPoints(this.peaks);
-                var dataSeries = this.buildpeaksFlotDataSeries(chartPoints);
-                var flotOptions = this.getFlotChartOptions(chartPoints);
+                var chartPoints = this.buildPeaksFlotPoints(this.peaks);
+                var dataSeries = this.buildPeaksFlotDataSeries(chartPoints, this.chartColor);
+                var flotOptions = this.buildFlotChartOptions();
 
                 var self = this;
 
                 // let the html draw first so our container has a height and width
                 setImmediate(function()
                 {
-                    self.renderpeaksFlotChart([dataSeries], flotOptions);
+                    self.renderpeaksFlotChart(dataSeries, flotOptions);
                 });
             },
 
-            buildpeaksFlotPoints: function(peaks)
+            buildPeaksFlotPoints: function(peaks)
             {
                 var chartPoints = [];
 
                 _.each(peaks, function(peak, index)
                 {
-                    var point = [index, peak.value];
+                    var value = peak.value === null ? 0 : peak.value;
+                    var point = [index, value];
                     chartPoints.push(point);
-                }, this);
+                });
 
                 return chartPoints;
             },
 
-            buildpeaksFlotDataSeries: function (chartPoints)
+            buildPeaksFlotDataSeries: function (chartPoints, chartColor)
             {
                 var dataSeries =
                 {
@@ -94,14 +91,14 @@ function (
                     color: "#FFFFFF",
                     lines:
                     {
-                        fillColor: { colors: [this.chartColor.dark, this.chartColor.light] }
+                        fillColor: { colors: [chartColor.dark, chartColor.light] }
                     }
                 };
 
-                return dataSeries;
+                return [dataSeries];
             },
 
-            getFlotChartOptions: function(chartPoints)
+            buildFlotChartOptions: function()
             {
                 var flotOptions = defaultFlotOptions.getSplineOptions(this.onHover);
 
