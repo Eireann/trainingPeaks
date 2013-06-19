@@ -1,6 +1,7 @@
 ﻿define(
 [
     "TP",
+    "controllers/pageContainerController",
     "layouts/dashboardLayout",
     "views/dashboard/dashboardHeader",
     "views/dashboard/dashboardLibrary",
@@ -8,13 +9,14 @@
 ],
 function(
     TP,
+    PageContainerController,
     DashboardLayout,
     DashboardHeaderView,
     DashboardLibraryView,
     DashboardChartsView
     )
 {
-    return TP.Controller.extend(
+    return PageContainerController.extend(
     {
         views: {},
 
@@ -23,10 +25,7 @@ function(
             this.layout = new DashboardLayout();
             this.layout.on("show", this.show, this);
 
-            this.views.dashboard = new DashboardChartsView();
-            this.views.header = new DashboardHeaderView();
-            this.views.library = new DashboardLibraryView();
-            this.views.library.on("animate", this.onLibraryAnimate, this);
+            this.constructor.__super__.initialize.call(this);
         },
 
         show: function()
@@ -36,21 +35,15 @@ function(
                 return;
             }
 
+            this.views.dashboard = new DashboardChartsView();
+            this.views.header = new DashboardHeaderView();
+            this.views.library = new DashboardLibraryView();
+
             this.layout.dashboardRegion.show(this.views.dashboard);
             this.layout.libraryRegion.show(this.views.library);
             this.layout.headerRegion.show(this.views.header);
-        },
 
-        onClose: function()
-        {
-            this.layout.off("show", this.show, this);
-            this.layout.close();
-            this.views.dashboard.close();
-        },
-
-        onLibraryAnimate: function (cssAttributes, duration)
-        {
-            this.views.dashboard.trigger("animate", cssAttributes, duration);
+            this.trigger("show");
         }
     });
 });

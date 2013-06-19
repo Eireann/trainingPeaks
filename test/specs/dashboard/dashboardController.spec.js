@@ -43,29 +43,33 @@ function(
                 expect(controller.getLayout()).toBeDefined();
             });
 
-            it("Should have a dashboard view", function()
-            {
-                var controller = new DashboardController();
-                expect(controller.views.dashboard).toBeDefined();
-            });
-
-            it("Should have a library view", function()
-            {
-                var controller = new DashboardController();
-                expect(controller.views.library).toBeDefined();
-            });
-
-            it("Should have a header view", function()
-            {
-                var controller = new DashboardController();
-                expect(controller.views.header).toBeDefined();
-            });
         });
 
 
 
         describe("Display controller", function()
         {
+
+            it("Should have a dashboard view", function()
+            {
+                var controller = new DashboardController();
+                controller.show();
+                expect(controller.views.dashboard).toBeDefined();
+            });
+
+            it("Should have a library view", function()
+            {
+                var controller = new DashboardController();
+                controller.show();
+                expect(controller.views.library).toBeDefined();
+            });
+
+            it("Should have a header view", function()
+            {
+                var controller = new DashboardController();
+                controller.show();
+                expect(controller.views.header).toBeDefined();
+            });
 
             it("Should display the dashboard view in the dashboard region", function()
             {

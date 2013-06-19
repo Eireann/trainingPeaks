@@ -15,10 +15,10 @@ function(TP, dashboardTemplate)
 
         initialize: function()
         {
-            this.on("animate", this.onLibraryAnimate, this);
             _.bindAll(this, "resizeContainer");
             $(window).on("resize", this.resizeContainer);
-            this.once("render", this.resizeContainer, this);
+            this.on("library:animate", this.onLibraryAnimate, this);
+            this.on("render", this.resizeHeight, this);
         },
 
         onLibraryAnimate: function(libraryAnimationCssAttributes, duration)

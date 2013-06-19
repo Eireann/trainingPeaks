@@ -2,10 +2,10 @@
 requirejs(
 [
     "TP",
-    "views/library/exerciseLibraryView",
-    "views/library/exerciseLibraryItemView",
-    "views/library/exerciseLibraryAddItemView",
-    "hbs!templates/views/library/exerciseLibraryView"
+    "views/calendar/library/exerciseLibraryView",
+    "views/calendar/library/exerciseLibraryItemView",
+    "views/calendar/library/exerciseLibraryAddItemView",
+    "hbs!templates/views/calendar/library/exerciseLibraryView"
 ],
 function(TP, ExerciseLibraryView, ExerciseLibraryItemView, ExerciseLibraryAddItemView, ExerciseLibraryTemplate)
 {

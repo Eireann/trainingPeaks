@@ -66,6 +66,7 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, C
             this.calendarHeaderModel = options.calendarHeaderModel;
             this.startOfWeekDayIndex = options.startOfWeekDayIndex ? options.startOfWeekDayIndex : 0;
 
+            this.on("library:animate", this.onLibraryAnimate, this);
         },
 
         resizeHeight: function()

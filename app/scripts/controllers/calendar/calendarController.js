@@ -4,6 +4,7 @@ define(
     "moment",
     "setImmediate",
     "TP",
+    "controllers/pageContainerController",
     "layouts/calendarLayout",
     "models/calendar/calendarCollection",
     "models/calendar/calendarWeekCollection",
@@ -20,6 +21,7 @@ function(
     moment,
     setImmediate,
     TP,
+    PageContainerController,
     CalendarLayout,
     CalendarCollection,
     CalendarWeekCollection,
@@ -58,6 +60,8 @@ function(
 
             // wait for user to load ...
             this.setupUserFetchPromise();
+
+            this.trigger("show");
         },
 
         loadDataAfterUserLoads: function()
@@ -205,6 +209,8 @@ function(
             this.endDate = this.createEndDay().add("weeks", 6);
 
             this.weeksCollectionInitialize();
+
+            this.constructor.__super__.initialize.call(this);
         },
 
         onClose: function()
@@ -443,5 +449,5 @@ function(
     _.extend(calendarControllerBase, calendarLibrary);
 
     // make it a TP.Controller
-    return TP.Controller.extend(calendarControllerBase);
+    return PageContainerController.extend(calendarControllerBase);
 });
