@@ -103,14 +103,15 @@ function (
                 var flotOptions = defaultFlotOptions.getSplineOptions(this.onHover);
 
                 flotOptions.yaxis = {
-                    min: 0,
+                    min: this.calculateYAxisMinimum(),
                     tickFormatter: this.formatYAxisTick
                 };
 
                 flotOptions.xaxis = {
                     tickSize: 3,
                     tickDecimals: 0,
-                    tickFormatter: this.formatXAxisTick
+                    tickFormatter: this.formatXAxisTick,
+                    tickLength: 0
                 };
 
                 return flotOptions;
@@ -148,8 +149,22 @@ function (
 
             formatYAxisTick: function(value, series)
             {
-                return value;
+                return value.toFixed(0);
+            },
+
+            calculateYAxisMinimum: function()
+            {
+                    for(var i = this.peaks.length - 1;i >= 0;i--)
+                    {
+                        if (this.peaks[i].value)
+                        {
+                            return this.peaks[i].value * .75;
+                        }
+                    }
+
+                    return 0;
             }
+
         });
 
 });
