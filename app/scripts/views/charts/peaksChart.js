@@ -158,7 +158,7 @@ function (
                     {
                         if (this.peaks[i].value)
                         {
-                            return this.peaks[i].value * .75;
+                            return this.peaks[i].value * 0.75;
                         }
                     }
 

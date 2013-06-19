@@ -132,7 +132,7 @@ function(
 
         describe("Build flot chart options", function()
         {
-            var chartOptions = PeaksChartView.prototype.buildFlotChartOptions.call(null);
+            var chartOptions = PeaksChartView.prototype.buildFlotChartOptions.call({ calculateYAxisMinimum: function() { return 0; }});
 
             it("Should enable line graph display", function()
             {
