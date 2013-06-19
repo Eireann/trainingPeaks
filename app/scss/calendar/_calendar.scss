@@ -1,12 +1,5 @@
 ﻿@import "../globalCSS/tpstylesheet";
 
-#calendarWrapper
-{
-    @include grid-row();
-	background-color: white;
-    max-width: none;
-}
-
 #calendarHeader
 {
 	min-height: 64px;
