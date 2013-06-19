@@ -4,15 +4,14 @@ requirejs(
     "jquery",
     "TP",
     "app",
-    "controllers/dashboardController",
-    "testUtils/testHelpers",
+    "controllers/dashboardController"
 ],
 function(
     $,
     TP,
     theMarsApp,
-    DashboardController,
-    TestHelpers)
+    DashboardController
+    )
 {
 
     describe("Dashboard Controller", function()
