@@ -259,7 +259,7 @@ function(chartColors, findIndexByMsOffset, convertToViewUnits)
             var elevationInfo = getElevationInfoOnRange.call(this);
             this.minElevation = elevationInfo.min;
             this.elevationIsAllNegative = elevationInfo.isAllNegative;
-            if (this.dataByChannel.Latitude && this.dataByChannel.Longitude)
+            if (this.dataByChannel && this.dataByChannel.Latitude && this.dataByChannel.Longitude)
             {
                 this.hasLatLongData = true;
             }

@@ -395,21 +395,19 @@
 
 .qvZonesTab
 {
-    .zonesChart
+
+    .yaxisLabel
     {
-        .yaxisLabel
-        {
-            margin-top: calc(41% - 40px);
-        }
+        margin-top: calc(45% - 50px);
+    }
 
-        .chartTitle
-        {
-            margin-left: 60px;
-        }
+    .chartTitle
+    {
+        margin-left: 60px;
+    }
 
-        .xaxisLabel
-        {   
-        }
+    .xaxisLabel
+    {   
     }
 }
 

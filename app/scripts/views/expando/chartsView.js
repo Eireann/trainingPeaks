@@ -116,8 +116,7 @@ function (TP, timeInZonesGenerator, ThePeaksGenerator, HRTimeInZonesChartView, P
             var width = (containerWidth / 2) * 0.95;
             var height = width * 0.5825;
             this.$(".timeInZonesChartContainer").width(width).height(height);
-
-            this.trigger("chartResize", (containerWidth / 2) * 0.95);
+            this.$(".peaksChartContainer").width(width).height(height);
         }
     });
 });

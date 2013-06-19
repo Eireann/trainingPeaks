@@ -103,7 +103,17 @@ function (_, TP, flotFilter, chartColors)
 
         getSplineOptions: function (onHoverHandler)
         {
-            return _.extend(this.getGlobalDefaultOptions(onHoverHandler), {});
+            return _.extend(this.getGlobalDefaultOptions(onHoverHandler), {
+                series:
+                {
+                    lines:
+                    {
+                        show: true,
+                        lineWidth: 1,
+                        fill: true
+                    }
+                }
+            });
         },
 
         getGlobalDefaultOptions: function (onHoverHandler)

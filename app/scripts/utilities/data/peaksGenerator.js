@@ -1,7 +1,8 @@
 ﻿define(
 [
+    "TP"
 ],
-function()
+function(TP)
 {
     var defaultPeakSettings =
     [
@@ -116,6 +117,10 @@ function()
     {
         generate: function (metric, model)
         {
+            if (!model)
+            {
+                model = new TP.Model();
+            }
             this._initializePeakDataOnModel(metric, model);
             var peaks = model.get("meanMax" + metric + "s");
             return this._cleanAndFormatPeaksData(peaks);

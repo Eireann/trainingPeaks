@@ -10,8 +10,6 @@ function(TP, PeaksChartView, chartColors)
     {
         chartColor: chartColors.gradients.pace,
 
-        graphTitle: "Pace",
-        
         initialize: function(options)
         {
             this.workoutType = options.workoutType;
@@ -20,49 +18,40 @@ function(TP, PeaksChartView, chartColors)
                 peaks: options.peaks,
                 timeInZones: options.timeInZones,
                 chartColor: this.chartColor,
-                graphTitle: this.graphTitle,
-                chartModifier: this.chartModifier,
                 toolTipBuilder: this.toolTipBuilder
             });
-        },
-        
-        chartModifier: function(chartOptions, chartPoints)
-        {
-            _.extend(chartOptions,
-            {
-                yAxis:
-                {
-                    title:
-                    {
-                        text: this.formatPeakUnitsLabel(1).toUpperCase()
-                    },
-                    labels:
-                    {
-                        enabled: false
-                    }
-                }
+
+            this.model = new TP.Model({
+                peakType: "Pace",
+                yAxisLabel: this.formatPeakUnitsLabel()
             });
         },
 
-        toolTipBuilder: function(point, peak, timeInZones)
+        toolTipBuilder: function(peak, timeInZones)
         {
-            _.extend(point,
-            {
+
+            return {
                 tooltips:
                 [
                     {
-                        label: point.label
+                        label: peak.label
                     },
                     {
-                        value: TP.utils.conversion.formatPace(point.value) + " " + this.formatPeakUnitsLabel(point.value)
+                        value: TP.utils.conversion.formatPace(peak.value) + " " + this.formatPeakUnitsLabel(peak.value)
                     }
                 ]
-            });
+            };
         },
-        
-        formatPeakUnitsLabel: function (value, options)
+
+        formatPeakUnitsLabel: function()
         {
             return "min/" + TP.utils.units.getUnitsLabel("distance", this.workoutType);
+        },
+
+        formatYAxisTick: function(value, series)
+        {
+            return TP.utils.conversion.formatPace(value);
         }
+
     });
 });

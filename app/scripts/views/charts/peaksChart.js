@@ -1,128 +1,170 @@
 ﻿define(
 [
+    "underscore",
+    "setImmediate",
     "TP",
+    "utilities/charting/flotOptions",
+    "utilities/charting/jquery.flot.tooltip",
+    "utilities/charting/flotToolTipPositioner",
+    "hbs!templates/views/charts/peaksChart",
     "hbs!templates/views/charts/chartTooltip"
 ],
-function (TP, tooltipTemplate)
+function (
+        _,
+        setImmediate,
+        TP,
+        defaultFlotOptions,
+        flotToolTip,
+        toolTipPositioner,
+        peaksChartTemplate,
+        tooltipTemplate)
 {
-    return TP.ItemView.extend(
-    {
-        template:
+        return TP.ItemView.extend(
         {
-            type: "handlebars",
-            template: function() { return ""; }
-        },
+            tagName: "div",
+            className: "peaksChart",
 
-        initialize: function(options)
-        {
-            if (!options.peaks)
-                throw "PeaksChartView requiers a peaks object at construction time";
-            
-            if (!options.timeInZones)
-                throw "PeaksChartView requires a timeInZones object at construction time";
-
-            if (!options.chartColor)
-                throw "PeaksChartView requires a chartColor object at construction time";
-
-            if (!options.graphTitle)
-                throw "PeaksChartView requires a graphTitle string at construction time";
-
-            if (!options.chartModifier)
-                throw "PeaksChartView requires a chartModifier callback at construction time";
-
-            if (!options.toolTipBuilder)
-                throw "PeaksChartView requires a toolTipBuilder callback at construction time";
-
-            this.peaks = options.peaks;
-            this.timeInZones = options.timeInZones;
-            this.chartColor = options.chartColor;
-            this.graphTitle = options.graphTitle;
-            this.chartModifier = options.chartModifier;
-
-            if (options.template)
+            template:
             {
-                this.template = options.template;
-                this.$chartEl = null;
-            }
-            else
-                this.$chartEl = this.$el;
+                type: "handlebars",
+                template: peaksChartTemplate
+            },
 
-            this.on("chartResize", this.resizeCharts, this);
-        },
-
-        onRender: function()
-        {
-            if (this.peaks && this.peaks.length)
+            initialize: function(options)
             {
-                var chartPoints = this.buildPeaksChartPoints(this.peaks, this.timeInZones);
+                if (!options.peaks)
+                    throw "PeaksChartView requires a peaks object at construction time";
 
-                var chartOptions =
+                if (!options.timeInZones)
+                    throw "PeaksChartView requires a timeInZones object at construction time";
+
+                if (!options.chartColor)
+                    throw "PeaksChartView requires a chartColor object at construction time";
+
+                if (!options.toolTipBuilder)
+                    throw "PeaksChartView requires a toolTipBuilder callback at construction time";
+
+                this.peaks = options.peaks;
+                this.timeInZones = options.timeInZones;
+                this.chartColor = options.chartColor;
+
+                _.bindAll(this, "onHover", "formatXAxisTick", "formatYAxisTick");
+            },
+
+            onRender: function()
+            {
+                if (!this.peaks)
+                    return;
+
+                var chartPoints = this.buildPeaksFlotPoints(this.peaks);
+                var dataSeries = this.buildPeaksFlotDataSeries(chartPoints, this.chartColor);
+                var flotOptions = this.buildFlotChartOptions();
+
+                var self = this;
+
+                // let the html draw first so our container has a height and width
+                setImmediate(function()
                 {
-                    colors: [this.chartColor],
-                    title:
+                    self.renderpeaksFlotChart(dataSeries, flotOptions);
+                });
+            },
+
+            buildPeaksFlotPoints: function(peaks)
+            {
+                var chartPoints = [];
+
+                _.each(peaks, function(peak, index)
+                {
+                    var value = peak.value === null ? 0 : peak.value;
+                    var point = [index, value];
+                    chartPoints.push(point);
+                });
+
+                return chartPoints;
+            },
+
+            buildPeaksFlotDataSeries: function (chartPoints, chartColor)
+            {
+                var dataSeries =
+                {
+                    data: chartPoints,
+                    color: "#FFFFFF",
+                    lines:
                     {
-                        text: "Peak " + this.graphTitle
-                    },
-                    xAxis:
-                    {
-                        labels:
-                        {
-                            enabled: true
-                        },
-                        tickColor: "transparent",
-                        type: "category",
-                        categories: TP.utils.chartBuilder.getPeakChartCategories(chartPoints)
-                    },
-                    yAxis:
-                    {
-                        title:
-                        {
-                            text: "BPM"
-                        }
+                        fillColor: { colors: [chartColor.dark, chartColor.light] }
                     }
                 };
 
-                this.chartModifier.call(this, chartOptions, chartPoints);
-                this.chart = TP.utils.chartBuilder.renderSplineChart(this.$chartEl, chartPoints, tooltipTemplate, chartOptions);
-            }
-            else
+                return [dataSeries];
+            },
+
+            buildFlotChartOptions: function()
             {
-                this.$(".peaksChart").html("");
-            }
-        },
-        
-        buildPeaksChartPoints: function(peaks, timeInZones)
-        {
-            var chartPoints = [];
-            _.each(peaks, function(peak, index)
-            {
-                var point =
-                {
-                    label: peak.label,
-                    value: peak.value,
-                    y: peak.value,
-                    x: index
+                var flotOptions = defaultFlotOptions.getSplineOptions(this.onHover);
+
+                flotOptions.yaxis = {
+                    min: this.calculateYAxisMinimum(),
+                    tickFormatter: this.formatYAxisTick
                 };
 
-                this.toolTipBuilder(point, peak, timeInZones);
-                chartPoints.push(point);
+                flotOptions.xaxis = {
+                    tickSize: 3,
+                    tickDecimals: 0,
+                    tickFormatter: this.formatXAxisTick,
+                    tickLength: 0
+                };
 
-            }, this);
+                return flotOptions;
+            },
 
-            return chartPoints;
-        },
-
-        resizeCharts: function (width)
-        {
-            var self = this;
-            this.$el.width(width);
-            var height = width * 0.5825;
-            setImmediate(function ()
+            renderpeaksFlotChart: function(dataSeries, flotOptions)
             {
-                self.chart.setSize(width, height - 25, false);
-                $(".peaksChartContainer").css("width", width);
-                $(".peaksChartContainer").css("height", height);
-            });
-        }
-    });
+                if (!this.$chartEl)
+                    this.$chartEl = this.$(".chartContainer");
+
+                this.plot = $.plot(this.$chartEl, dataSeries, flotOptions);
+            },
+
+            onHover: function(flotItem, $tooltipEl)
+            {
+                var peaksItem = this.peaks[flotItem.dataIndex];
+
+                var tooltipData = this.toolTipBuilder(peaksItem, this.timeInZones);
+                var tooltipHTML = tooltipTemplate(tooltipData);
+                $tooltipEl.html(tooltipHTML);
+                toolTipPositioner.updatePosition($tooltipEl, this.plot);
+            },
+
+            formatXAxisTick: function(value, series)
+            {
+                if (this.peaks[value])
+                {
+                    var label = this.peaks[value].label;
+                    return label.replace(/ /g, "").replace(/Minutes/, "m").replace(/Seconds/, "s").replace(/Hour/, "h");
+                } else
+                {
+                    return null;
+                }
+            },
+
+            formatYAxisTick: function(value, series)
+            {
+                return value.toFixed(0);
+            },
+
+            calculateYAxisMinimum: function()
+            {
+                    for(var i = this.peaks.length - 1;i >= 0;i--)
+                    {
+                        if (this.peaks[i].value)
+                        {
+                            return this.peaks[i].value * 0.75;
+                        }
+                    }
+
+                    return 0;
+            }
+
+        });
+
 });
