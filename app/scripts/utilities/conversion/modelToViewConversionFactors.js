@@ -27,14 +27,27 @@ function(unitsConstants, workoutTypeUtils)
 
             Swim:
             {
-                English: 100 / 1.0936133,
-                Metric: 100 / 1
+                // convert meters per second to yards per 100 seconds, as a minute value
+                English: (1.0936133 / 100) * 60,
+
+                // meters per second to meters per 100 seconds, as a minute value
+                Metric: (1 / 100) * 60
             }
         },
         "speed":
         {
             English: 2.236936,
-            Metric: 3.6
+            Metric: 3.6,
+
+            Swim:
+            {
+                // convert meters per second to yards per / minute
+                English: 1.0936133 * 60,
+
+                // meters per second to meters per minute
+                Metric: 60
+            }
+
         },
         "elevation":
         {

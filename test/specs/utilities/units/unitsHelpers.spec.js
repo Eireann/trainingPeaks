@@ -391,18 +391,17 @@ function(TP, theMarsApp, TestHelpers)
                 expect(TP.utils.conversion.convertToViewUnits(1125, "distance", undefined, swimTypeId)).toEqual(1230);
             });
 
-            xit("should convert a pace value in meters per second to min/mile, properly formated", function()
+            it("should convert a pace value in meters per second to sec/100y, properly formated", function()
             {
-                expect(TP.utils.conversion.convertToViewUnits(1, "pace")).toBe("26:49");
-                expect(TP.utils.conversion.convertToViewUnits(3, "pace")).toBe("08:56");
-                expect(TP.utils.conversion.convertToViewUnits("notAnumber", "pace")).toBe("");
-                expect(TP.utils.conversion.convertToViewUnits(0.0005, "pace")).toBe("99:59:59.99");
-                expect(TP.utils.conversion.convertToViewUnits(-1, "pace")).toBe("99:59:59.99");
+                expect(TP.utils.conversion.convertToViewUnits(1, "pace", undefined, swimTypeId)).toBe("01:31");
+                expect(TP.utils.conversion.convertToViewUnits(5, "pace", undefined, swimTypeId)).toBe("00:18");
+
             });
 
-            xit("Should convert a speed", function()
+            it("Should convert a speed in meters per second to yards per minute, properly formatted", function()
             {
-
+                expect(TP.utils.conversion.convertToViewUnits(1, "speed", undefined, swimTypeId)).toBe("65.6");
+                expect(TP.utils.conversion.convertToViewUnits(5, "speed", undefined, swimTypeId)).toBe(328);
             });
             
         });

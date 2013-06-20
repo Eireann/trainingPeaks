@@ -25,12 +25,12 @@ function(
 
         unitSystem = theMarsApp.user.get("units");
 
-        var conversionFactor = modelToViewConversionFactors("pace", theMarsApp.user.get("units"), sportTypeId);
-        speed = speed * conversionFactor;
-        var pace = (1 / speed);
+        // paceInMinutes = 1 / (speed * conversionFactor)
+        // speed = 1 / (paceInMinutes * conversionFactor)
+        var conversionFactor = modelToViewConversionFactors("pace", unitSystem, sportTypeId);
+        var paceInMinutes = 1 / (speed * conversionFactor);
 
-        // pace = minutes
-        return doFormat ? dateTimeUtils.format.decimalMinutesAsTime(pace, true) : pace;
+        return doFormat ? dateTimeUtils.format.decimalMinutesAsTime(paceInMinutes, true) : paceInMinutes;
     };
 
     var isNumeric = function(value)
