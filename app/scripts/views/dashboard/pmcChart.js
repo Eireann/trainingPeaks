@@ -70,7 +70,6 @@ function(
 
         buildFlotPoints: function(timeInZones)
         {
-            
             var chartPoints = [];
             for (var i = 0; i < 100; i++)
             {
