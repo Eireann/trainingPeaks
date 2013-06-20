@@ -5,7 +5,6 @@
 ],
 function(TP, LoginLayoutTemplate)
 {
-    "use strict";
 
     return TP.Layout.extend(
     {

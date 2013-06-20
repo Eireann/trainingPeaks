@@ -5,7 +5,6 @@
 ],
 function(TP, calendarLayoutTemplate)
 {
-    "use strict";
 
     return TP.Layout.extend(
     {

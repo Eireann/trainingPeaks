@@ -6,7 +6,6 @@
 ],
 function(_, TP, navigationViewTemplate)
 {
-    "use strict";
 
     return TP.ItemView.extend(
     {

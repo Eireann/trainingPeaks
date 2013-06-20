@@ -5,7 +5,6 @@
 ],
 function(TP, dashboardLayoutTemplate)
 {
-    "use strict";
 
     return TP.Layout.extend(
     {

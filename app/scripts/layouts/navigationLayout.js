@@ -5,7 +5,6 @@
 ],
 function(TP, NavigationLayoutTemplate)
 {
-    "use strict";
 
     return TP.Layout.extend(
     {

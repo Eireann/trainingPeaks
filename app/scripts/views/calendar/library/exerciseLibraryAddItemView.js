@@ -6,7 +6,6 @@
 ],
 function(TP, exerciseLibraryAddItemView)
 {
-    "use strict";
 
     return TP.ItemView.extend(
     {

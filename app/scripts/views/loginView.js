@@ -6,8 +6,7 @@
 ],
 function (_, TP, loginViewTemplate)
 {
-    "use strict";
-    
+
     return TP.ItemView.extend(
     {
         template:
