@@ -2,13 +2,22 @@
 [
     "underscore",
     "TP",
+    "views/pageContainer/primaryContainerView",
     "views/calendar/calendarWeekView",
     "views/calendar/moveItems/selectedRangeSettings",
     "views/calendar/moveItems/shiftWizzardView",
     "views/calendar/container/calendarContainerViewScrolling",
     "hbs!templates/views/calendar/container/calendarContainerView"
 ],
-function(_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, CalendarContainerViewScrolling, calendarContainerView)
+function(
+    _,
+    TP,
+    PrimaryContainerView,
+    CalendarWeekView,
+    SelectedRangeSettingsView,
+    ShiftWizzardView,
+    CalendarContainerViewScrolling,
+    calendarContainerView)
 {
     var CalendarContainerView =
     {
@@ -29,6 +38,25 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, C
             template: calendarContainerView
         },
 
+        initialize: function(options)
+        {
+
+            if (!this.collection)
+                throw "CalendarView needs a Collection!";
+
+            // initialize the superclass
+            this.constructor.__super__.initialize.call(this);
+
+            this.initializeScrolling();
+            this.on("render", this.setupKeyBindingsOnRender, this);
+            this.on("render", this.addWeeksOnRender, this);
+            this.on("calendar:unselect", this.onCalendarUnSelect, this);
+
+
+            this.calendarHeaderModel = options.calendarHeaderModel;
+            this.startOfWeekDayIndex = options.startOfWeekDayIndex ? options.startOfWeekDayIndex : 0;
+        },
+
         ui:
         {
             "weeksContainer": "#weeksContainer"
@@ -47,57 +75,6 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, C
             "shiftwizard:open": "onShiftWizardOpen",
             "rangeselect": "onRangeSelect",
             "select": "onCalendarSelect"
-        },
-
-        initialize: function(options)
-        {
-
-            if (!this.collection)
-                throw "CalendarView needs a Collection!";
-
-            this.initializeScrolling();
-            this.on("render", this.setupKeyBindingsOnRender, this);
-            this.on("render", this.addWeeksOnRender, this);
-            this.on("calendar:unselect", this.onCalendarUnSelect, this);
-
-            _.bindAll(this, "resizeContainer");
-            $(window).on("resize", this.resizeContainer);
-
-            this.calendarHeaderModel = options.calendarHeaderModel;
-            this.startOfWeekDayIndex = options.startOfWeekDayIndex ? options.startOfWeekDayIndex : 0;
-
-            this.on("library:animate", this.onLibraryAnimate, this);
-        },
-
-        resizeHeight: function()
-        {
-            var $window = $(window);
-            var headerHeight = $("#navigation").height();
-            var windowHeight = $window.height();
-            var weeksContainerHeight = windowHeight - headerHeight - 75;
-            if (this.$el.closest("#calendarContainer").width() < 1007)
-            {
-                weeksContainerHeight -= 28;
-            }
-            this.$(".scrollable").css({ height: weeksContainerHeight + 'px' });
-            
-        },
-
-        resizeContainer: function(event)
-        {
-            this.resizeHeight();
-
-            // make sure we still fit in window
-            var $window = $(window);
-            var wrapper = this.$el.closest("#calendarWrapper");
-            var library = wrapper.find("#libraryContainer");
-            var calendarContainer = this.$el.closest("#calendarContainer");
-            var parentWidth = wrapper.width() < $window.width() ? wrapper.width() : $window.width();
-
-            // account for library padding
-            var padding = library.outerWidth() - library.width();
-            var calendarWidth = parentWidth - library.outerWidth() - padding;
-            calendarContainer.width(calendarWidth);
         },
 
         setWorkoutColorization: function()
@@ -222,23 +199,15 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, C
 
         },
 
-        onLibraryAnimate: function(libraryAnimationCssAttributes, duration)
+        onLibraryAnimateComplete: function()
         {
-            var libraryWidth = libraryAnimationCssAttributes.width;
-            var wrapperWidth = this.$el.closest("#calendarWrapper").width();
-            var calendarWidth = wrapperWidth - libraryWidth;
-            var calendarContainer = this.$el.closest("#calendarContainer");
-            var cssAttributes = { width: calendarWidth };
+            this.updateWeekHeights();
+            this.scrollToLastViewedDate(0);
+        },
 
-            _.bindAll(this, "onLibraryAnimateProgress");
-
-            var self = this;
-            var onComplete = function()
-            {
-                self.updateWeekHeights();
-                self.scrollToLastViewedDate(0);
-            };
-            calendarContainer.animate(cssAttributes, { progress: this.onLibraryAnimateProgress, duration: duration, complete: onComplete });
+        onLibraryAnimateProgress: function()
+        {
+            this.scrollToLastViewedDate(0);
         },
 
         updateWeekHeights: function()
@@ -247,11 +216,6 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, C
             {
                 model.trigger("library:resize");
             });
-        },
-
-        onLibraryAnimateProgress: function()
-        {
-            this.scrollToLastViewedDate(0);
         },
 
         onKeyDown: function(e)
@@ -329,5 +293,5 @@ function(_, TP, CalendarWeekView, SelectedRangeSettingsView, ShiftWizzardView, C
 
     _.extend(CalendarContainerView, CalendarContainerViewScrolling);
 
-    return TP.ItemView.extend(CalendarContainerView);
+    return PrimaryContainerView.extend(CalendarContainerView);
 });

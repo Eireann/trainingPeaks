@@ -39,6 +39,26 @@ function(
     var calendarControllerBase = {
         summaryViewEnabled: true,
 
+        initialize: function()
+        {
+            // TODO: split this into a couple different functions 
+            this.models = {};
+            this.views = {};
+
+            this.startOfWeekDayIndex = 1;
+
+            this.layout = new CalendarLayout();
+            this.layout.on("show", this.show, this);
+
+            this.startDate = this.createStartDay().subtract("weeks", 4);
+            this.endDate = this.createEndDay().add("weeks", 6);
+
+            this.weeksCollectionInitialize();
+
+            // call parent constructor
+            this.constructor.__super__.initialize.call(this);
+        },
+
         show: function()
         {
             if (this.layout.isClosed)
@@ -61,6 +81,7 @@ function(
             // wait for user to load ...
             this.setupUserFetchPromise();
 
+            // our parent class PageContainerController needs this to trigger the window resize functionality
             this.trigger("show");
         },
 
@@ -192,30 +213,6 @@ function(
         {
             var endMoment = endDate ? moment(endDate) : moment();
             return endMoment.day(6 + this.startOfWeekDayIndex);
-        },
-
-        initialize: function()
-        {
-            // TODO: split this into a couple different functions 
-            this.models = {};
-            this.views = {};
-
-            this.startOfWeekDayIndex = 1;
-
-            this.layout = new CalendarLayout();
-            this.layout.on("show", this.show, this);
-
-            this.startDate = this.createStartDay().subtract("weeks", 4);
-            this.endDate = this.createEndDay().add("weeks", 6);
-
-            this.weeksCollectionInitialize();
-
-            this.constructor.__super__.initialize.call(this);
-        },
-
-        onClose: function()
-        {
-            this.layout.off("show", this.show, this);
         },
 
         reset: function(startDate, endDate, scrollToDate)
