@@ -1,9 +1,14 @@
 ﻿define(
 [
+    "setImmediate",
     "underscore",
     "TP"
 ],
-function(_, TP, navigationViewTemplate)
+function(
+    setImmediate,
+    _,
+    TP
+    )
 {
 
     return TP.ItemView.extend(
@@ -19,7 +24,7 @@ function(_, TP, navigationViewTemplate)
         {
             _.bindAll(this, "resizeContainer");
             $(window).on("resize", this.resizeContainer);
-            this.on("render", this.resizeContainer, this);
+            this.on("render", this.resizeContainerAfterRender, this);
         },
 
         initLibraryEvents: function()
@@ -28,7 +33,16 @@ function(_, TP, navigationViewTemplate)
             this.on("library:animate", this.onLibraryAnimate, this);
         },
 
-        resizeContainer: function(event)
+        resizeContainerAfterRender: function()
+        {
+            var self = this;
+            setImmediate(function()
+            {
+                self.resizeContainer();
+            });
+        },
+
+        resizeContainer: function()
         {
             this.resizeContainerHeight();
             this.resizeContainerWidth();
@@ -72,7 +86,17 @@ function(_, TP, navigationViewTemplate)
             var primaryContentWidth = wrapperWidth - libraryWidth;
             var primaryContentContainer = this.$el.closest(".frameworkScrollableContainer");
             var cssAttributes = { width: primaryContentWidth };
-            primaryContentContainer.animate(cssAttributes, { progress: this.onLibraryAnimateProgress, duration: duration, complete: this.onLibraryAnimateComplete });
+
+            var self = this;
+            var onComplete = function()
+            {
+                setImmediate(function()
+                {
+                    self.onLibraryAnimateComplete();
+                });
+            };
+
+            primaryContentContainer.animate(cssAttributes, { progress: this.onLibraryAnimateProgress, duration: duration, complete: onComplete });
         },
 
         onLibraryAnimateProgress: function()
