@@ -12,6 +12,8 @@ function (TP)
             shadow: true
         },
 
+        closeOnResize: false,
+
         showThrobbers: false,
         tagName: "div",
         className: "deleteConfirmation",

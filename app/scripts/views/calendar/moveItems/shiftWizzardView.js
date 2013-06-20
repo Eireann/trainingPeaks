@@ -48,6 +48,8 @@ function(
             shadow: true
         },
 
+        closeOnResize: false,
+
         tagName: "div",
         className: "shiftWizzard",
 

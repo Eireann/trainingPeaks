@@ -19,6 +19,8 @@ function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandMo
             shadow: true
         },
 
+        closeOnResize: false,
+
         className: "",
 
         events:
