@@ -47,6 +47,7 @@ function(
         {
             this.charts = [];
             this.charts.push(new DashboardChartView());
+            this.charts.push(new DashboardChartView());
         },
 
         displayDashboardCharts: function()
