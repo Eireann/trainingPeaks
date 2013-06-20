@@ -18,14 +18,15 @@ function(
     var minimumPace = 0.00277778; // 99:59:59.99
     var almostOneHundredHoursAsMinutes = (99 + (59 / 60) + (59.99 / 3600)) * 60;
 
-    var convertToPaceFromSpeed = function(speed, doFormat)
+    var convertToPaceFromSpeed = function(speed, doFormat, sportTypeId)
     {
         if (speed <= minimumPace)
             return doFormat ? "99:59:59.99" : almostOneHundredHoursAsMinutes;
 
         unitSystem = theMarsApp.user.get("units");
-        var conversion = modelToViewConversionFactors("speed", unitSystem);
-        speed = speed * conversion / 60;
+
+        var conversionFactor = modelToViewConversionFactors("pace", theMarsApp.user.get("units"), sportTypeId);
+        speed = speed * conversionFactor;
         var pace = (1 / speed);
 
         // pace = minutes
@@ -76,21 +77,10 @@ function(
         return Math.round(currentUnits === unitsConstants.English ? 9 / 5 * value + 32 : value).toFixed(0);
     };
 
-    var convertDistanceToViewUnits = function(value, sportType, precision)
+    var convertDistanceToViewUnits = function(value, sportTypeId, precision)
     {
-
-        var convertedValue = value * modelToViewConversionFactors("distance", theMarsApp.user.get("units"));
-
-        //Disabled until we address changing QV unit options
-        //var swimType = workoutTypes.getIdByName("Swim");
-        //if (swimType === sportType)
-        //{
-        //    return Math.round(convertedValue);
-        //} else
-        //{
-        //    return threeSigFig(convertedValue, precision);
-        //}
-        
+        var conversionFactor = modelToViewConversionFactors("distance", theMarsApp.user.get("units"), sportTypeId);
+        var convertedValue = value * conversionFactor;
         return threeSigFig(convertedValue, precision);
     };
     
@@ -99,9 +89,11 @@ function(
         return threeSigFig(value * modelToViewConversionFactors("torque", theMarsApp.user.get("units")));
     };
 
-    var convertSpeedToViewUnits = function(value)
+    var convertSpeedToViewUnits = function(value, sportTypeId)
     {
-        return threeSigFig(value * modelToViewConversionFactors("speed", theMarsApp.user.get("units")));
+        var conversionFactor = modelToViewConversionFactors("speed", theMarsApp.user.get("units"), sportTypeId);
+        var convertedValue = value * conversionFactor;
+        return threeSigFig(convertedValue);
     };
 
     return function(value, fieldType, defaultValueIfEmpty, sportType)
@@ -136,13 +128,13 @@ function(
             case "elevation":
                 return convertElevation(value);
             case "speed":
-                return convertSpeedToViewUnits(value);
+                return convertSpeedToViewUnits(value, sportType);
             case "distance":
                 return convertDistanceToViewUnits(value, sportType, precision);
             case "pace":
-                return convertToPaceFromSpeed(value, true);
+                return convertToPaceFromSpeed(value, true, sportType);
             case "paceUnFormatted":
-                return convertToPaceFromSpeed(value, false);
+                return convertToPaceFromSpeed(value, false, sportType);
             case "temperature":
                 return convertTemperature(value);
             case "rightpower":

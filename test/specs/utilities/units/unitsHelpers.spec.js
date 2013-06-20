@@ -366,5 +366,45 @@ function(TP, theMarsApp, TestHelpers)
 
         });
 
+        describe("convertToViewUnits template helper, for swim workouts in english", function()
+        {
+            var swimTypeId = TP.utils.workout.types.getIdByName("Swim");
+
+            beforeEach(function()
+            {
+                TestHelpers.startTheApp();
+                theMarsApp.user.set("units", TP.utils.units.constants.English);
+            });
+
+            afterEach(function()
+            {
+                TestHelpers.stopTheApp();
+            });
+
+            it("should convert a distance in meters to yards and cut off after 2 decimal places", function()
+            {
+                expect(TP.utils.conversion.convertToViewUnits(0, "distance", undefined, swimTypeId)).toEqual("");
+                expect(TP.utils.conversion.convertToViewUnits(1, "distance", undefined, swimTypeId)).toEqual('1.09');
+                expect(TP.utils.conversion.convertToViewUnits(10, "distance", undefined, swimTypeId)).toEqual("10.9");
+                expect(TP.utils.conversion.convertToViewUnits(100, "distance", undefined, swimTypeId)).toEqual(109);
+                expect(TP.utils.conversion.convertToViewUnits(1000, "distance", undefined, swimTypeId)).toEqual(1094);
+                expect(TP.utils.conversion.convertToViewUnits(1125, "distance", undefined, swimTypeId)).toEqual(1230);
+            });
+
+            xit("should convert a pace value in meters per second to min/mile, properly formated", function()
+            {
+                expect(TP.utils.conversion.convertToViewUnits(1, "pace")).toBe("26:49");
+                expect(TP.utils.conversion.convertToViewUnits(3, "pace")).toBe("08:56");
+                expect(TP.utils.conversion.convertToViewUnits("notAnumber", "pace")).toBe("");
+                expect(TP.utils.conversion.convertToViewUnits(0.0005, "pace")).toBe("99:59:59.99");
+                expect(TP.utils.conversion.convertToViewUnits(-1, "pace")).toBe("99:59:59.99");
+            });
+
+            xit("Should convert a speed", function()
+            {
+
+            });
+            
+        });
     });
 });
