@@ -148,7 +148,7 @@ function(
                 this.addWeek({ model: weekModel, collection: weekModel.get("week"), append: true });
             }
 
-            this.resizeHeight();
+            this.resizeContainer();
         },
 
         // onShow happens after render finishes and dom has updated ...
@@ -201,6 +201,7 @@ function(
 
         onLibraryAnimateComplete: function()
         {
+            this.resizeContainer();
             this.updateWeekHeights();
             this.scrollToLastViewedDate(0);
         },

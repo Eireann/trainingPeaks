@@ -19,7 +19,7 @@ function(_, TP, navigationViewTemplate)
         {
             _.bindAll(this, "resizeContainer");
             $(window).on("resize", this.resizeContainer);
-            this.on("render", this.resizeHeight, this);
+            this.on("render", this.resizeContainer, this);
         },
 
         initLibraryEvents: function()
@@ -28,15 +28,21 @@ function(_, TP, navigationViewTemplate)
             this.on("library:animate", this.onLibraryAnimate, this);
         },
 
-        resizeHeight: function()
+        resizeContainer: function(event)
+        {
+            this.resizeContainerHeight();
+            this.resizeContainerWidth();
+        },
+
+        resizeContainerHeight: function()
         {
             var $window = $(window);
             var headerHeight = $("#navigation").height();
             var windowHeight = $window.height();
-            var primaryContentContainerHeight = windowHeight - headerHeight - 65;
+            var primaryContentContainerHeight = windowHeight - headerHeight - 75;
 
             // if we have a horizontal scrollbar, adjust for height
-            if (this.$el.closest(".frameworkScrollableContainer").width() < 1007)
+            if (this.$el.closest(".frameworkScrollableContainer").width() <= 1007)
             {
                 primaryContentContainerHeight -= 28;
             }
@@ -44,10 +50,8 @@ function(_, TP, navigationViewTemplate)
             
         },
 
-        resizeContainer: function(event)
+        resizeContainerWidth: function()
         {
-            this.resizeHeight();
-
             // make sure we still fit in window
             var $window = $(window);
             var wrapper = this.$el.closest(".frameworkMainWrapper");
@@ -78,8 +82,8 @@ function(_, TP, navigationViewTemplate)
 
         onLibraryAnimateComplete: function()
         {
-            return;
-        },
+            this.resizeContainer();
+        }
 
     });
 });
