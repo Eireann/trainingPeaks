@@ -12,6 +12,8 @@ function (TP, afterSaveMessageTemplate)
             shadow: true
         },
 
+        closeOnResize: false,
+
         showThrobbers: false,
         tagName: "div",
         className: "afterSaveMessage",

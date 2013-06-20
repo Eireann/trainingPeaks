@@ -14,6 +14,8 @@ function(TP, SaveWorkoutToLibraryCommand, AfterSaveView, saveWorkoutToLibraryTem
             shadow: true
         },
 
+        closeOnResize: false,
+
         showThrobbers: false,
         tagName: "div",
         className: "saveWorkoutToLibraryConfirmation",

@@ -139,6 +139,7 @@ function(_, Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmedia
     var modalRendering = {
 
         modal: false,
+        closeOnResize: true,
 
 
         // set modal = true attribute
@@ -235,7 +236,13 @@ function(_, Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmedia
 
         onWindowResize: function()
         {
-            this.rePositionView();
+            if (this.closeOnResize)
+            {
+                this.close();
+            } else
+            {
+                this.rePositionView();
+            }
         },
 
         setPosition: function(positionAttributes)

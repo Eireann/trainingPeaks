@@ -25,6 +25,8 @@ function(
             shadow: true
         },
 
+        closeOnResize: false,
+
         className: "newItemView",
 
         events:
