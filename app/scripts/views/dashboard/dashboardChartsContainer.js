@@ -4,6 +4,7 @@
     "TP",
     "views/pageContainer/primaryContainerView",
     "views/dashboard/dashboardChart",
+    "views/dashboard/pmcChart",
     "hbs!templates/views/dashboard/dashboardChartsContainer"
 ],
 function(
@@ -11,6 +12,7 @@ function(
     TP,
     PrimaryContainerView,
     DashboardChartView,
+    PmcChartView,
     dashboardContainerTemplate
     )
 {
@@ -47,7 +49,7 @@ function(
         {
             this.charts = [];
             this.charts.push(new DashboardChartView());
-            this.charts.push(new DashboardChartView());
+            this.charts.push(new PmcChartView());
         },
 
         displayDashboardCharts: function()
