@@ -112,6 +112,20 @@ function(
 
             this.parseData();
             this.createAndShowGraph();
+            this.createAndShowMap();
+        },
+
+        createAndShowMap: function()
+        {
+
+            if (!this.dataParser.hasLatLongData)
+            {
+                this.$("#quickViewMap").addClass("hidden");
+                return;
+            } else
+            {
+                this.$("#quickViewMap").removeClass("hidden");
+            }
 
             if (!this.map)
                 this.map = MapUtils.createMapOnContainer(this.$("#quickViewMap")[0]);
