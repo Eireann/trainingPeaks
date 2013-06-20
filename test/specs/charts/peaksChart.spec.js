@@ -15,15 +15,21 @@ function(
 {
 
 
-    var buildPeaks = function (allowNulls)
+    var buildPeaks = function(defaultPointValue)
     {
         var peaks = ThePeaksGenerator.generate("HeartRate", this.model);
 
-        if (!allowNulls)
+        if (_.isUndefined(defaultPointValue))
         {
             _.each(peaks, function(peak, index)
             {
-                peak.value = index * index;
+                peak.value = index * index + 1;
+            });
+        } else
+        {
+            _.each(peaks, function(peak, index)
+            {
+                peak.value = defaultPointValue;
             });
         }
 
@@ -50,9 +56,9 @@ function(
         {
 
 
-            var buildChartPoints = function(allowNulls)
+            var buildChartPoints = function(defaultPointValue)
             {
-                return PeaksChartView.prototype.buildPeaksFlotPoints.call(null, buildPeaks(allowNulls));
+                return PeaksChartView.prototype.buildPeaksFlotPoints.call(null, buildPeaks(defaultPointValue));
             };
 
             it("Should build chart points", function()
@@ -82,18 +88,29 @@ function(
                 }, this);
             });
 
-            it("Should convert nulls to zero", function()
+            it("Should preserve nulls", function()
             {
-                var peaks = buildPeaks(true);
-                var chartPoints = buildChartPoints(true);
+                var peaks = buildPeaks(null);
+                var chartPoints = buildChartPoints(null);
                 _.each(peaks, function(peak, index)
                 {
                     var chartPoint = chartPoints[index];
                     expect(peak.value).toBe(null);
-                    expect(chartPoint[1]).toEqual(0);
+                    expect(chartPoint[1]).toEqual(null);
                 }, this);
             });
 
+            it("Should convert zeroes to null", function()
+            {
+                var peaks = buildPeaks(0);
+                var chartPoints = buildChartPoints(0);
+                _.each(peaks, function(peak, index)
+                {
+                    var chartPoint = chartPoints[index];
+                    expect(peak.value).toEqual(0);
+                    expect(chartPoint[1]).toEqual(null);
+                }, this);
+            });
         });
 
         describe("Build Data Series", function()

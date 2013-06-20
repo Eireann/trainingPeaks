@@ -75,7 +75,7 @@ function (
 
                 _.each(peaks, function(peak, index)
                 {
-                    var value = peak.value === null ? 0 : peak.value;
+                    var value = peak.value ? peak.value : null;
                     var point = [index, value];
                     chartPoints.push(point);
                 });
