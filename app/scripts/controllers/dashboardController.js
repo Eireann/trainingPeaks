@@ -5,7 +5,7 @@
     "layouts/dashboardLayout",
     "views/dashboard/dashboardHeader",
     "views/dashboard/dashboardLibrary",
-    "views/dashboard/dashboardCharts"
+    "views/dashboard/dashboardChartsContainer"
 ],
 function(
     TP,
@@ -13,7 +13,7 @@ function(
     DashboardLayout,
     DashboardHeaderView,
     DashboardLibraryView,
-    DashboardChartsView
+    DashboardChartsContainerView
     )
 {
     return PageContainerController.extend(
@@ -52,7 +52,7 @@ function(
 
         createViews: function()
         {
-            this.views.dashboard = new DashboardChartsView();
+            this.views.dashboard = new DashboardChartsContainerView();
             this.views.header = new DashboardHeaderView();
             this.views.library = new DashboardLibraryView();
         },
