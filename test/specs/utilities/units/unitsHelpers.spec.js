@@ -1,132 +1,136 @@
 requirejs(
 [
     "TP",
-    "app"
+    "app",
+    "testUtils/testHelpers"
 ],
-function(TP, theMarsApp)
+function(TP, theMarsApp, TestHelpers)
 {
     describe("units related utilities, english units", function()
     {
 
         beforeEach(function()
         {
+            TestHelpers.startTheApp();
             theMarsApp.user.set("units", TP.utils.units.constants.English);
         });
 
-        describe("convertToModelUnits template helper", function()
+        afterEach(function()
         {
-        });
-
-        describe("convertToViewUnits template helper", function()
-        {
-
+            TestHelpers.stopTheApp();
         });
         
         describe("TP.utils.units.getUnitsLabel template helper", function()
         {
             beforeEach(function()
             {
+                TestHelpers.startTheApp();
                 theMarsApp.user.set("units", TP.utils.units.constants.English);
             });
 
-            it("should print the unit label for distance", function()
+            afterEach(function()
+            {
+                TestHelpers.stopTheApp();
+            });
+
+            it("should return the unit label for distance", function()
             {
                 expect(TP.utils.units.getUnitsLabel("distance")).toBe("mi");
             });
 
-            it("should print the unit label for normalized pace", function()
+            it("should return the unit label for normalized pace", function()
             {
                 expect(TP.utils.units.getUnitsLabel("normalizedPace")).toBe("min/mi");
             });
 
-            it("should print the unit label for averagePace", function()
+            it("should return the unit label for averagePace", function()
             {
                 expect(TP.utils.units.getUnitsLabel("averagePace")).toBe("min/mi");
             });
 
-            it("should print the unit label for average speed", function()
+            it("should return the unit label for average speed", function()
             {
                 expect(TP.utils.units.getUnitsLabel("averageSpeed")).toBe("mph");
             });
 
-            it("should print the unit label for calories", function()
+            it("should return the unit label for calories", function()
             {
                 expect(TP.utils.units.getUnitsLabel("calories")).toBe("kcal");
             });
 
-            it("should print the unit label for elevation gain", function()
+            it("should return the unit label for elevation gain", function()
             {
                 expect(TP.utils.units.getUnitsLabel("elevationGain")).toBe("ft");
             });
 
-            it("should print the unit label for elevationloss", function()
+            it("should return the unit label for elevationloss", function()
             {
                 expect(TP.utils.units.getUnitsLabel("elevationLoss")).toBe("ft");
             });
 
-            it("should print the unit label for tss", function()
+            it("should return the unit label for tss", function()
             {
                 expect(TP.utils.units.getUnitsLabel("tss")).toBe("TSS");
             });
 
-            it("should print the unit label for tss with an integer tssSource", function()
+            it("should return the unit label for tss with an integer tssSource", function()
             {
                 var tssLabel = TP.utils.units.getUnitsLabel("tss", 0, { "tssSource": 2 });
                 expect(tssLabel).toBe("rTSS");
             });
 
-            it("should print the unit label for tss with a string trainingStressScoreActualSource", function()
+            it("should return the unit label for tss with a string trainingStressScoreActualSource", function()
             {
                 var tssLabel = TP.utils.units.getUnitsLabel("tss", 0, { "trainingStressScoreActualSource": "SwimmingTss" });
                 expect(tssLabel).toBe("sTSS");
             });
 
-            it("should print the unit label for intensity factory", function()
+            it("should return the unit label for intensity factory", function()
             {
                 expect(TP.utils.units.getUnitsLabel("if")).toBe("IF");
             });
 
-            it("should print the unit label for energy", function()
+            it("should return the unit label for energy", function()
             {
                 expect(TP.utils.units.getUnitsLabel("energy")).toBe("kJ");
             });
 
-            it("should print the unit label for temperature", function()
+            it("should return the unit label for temperature", function()
             {
                 expect(TP.utils.units.getUnitsLabel("temperature")).toBe("F");
             });
 
-            it("should print the unit label for heart rate", function()
+            it("should return the unit label for heart rate", function()
             {
                 expect(TP.utils.units.getUnitsLabel("heartrate")).toBe("bpm");
             });
 
-            it("should print the unit label for pace", function()
+            it("should return the unit label for pace", function()
             {
                 expect(TP.utils.units.getUnitsLabel("pace")).toBe("min/mi");
             });
 
-            it("should print the unit label for speed", function()
+            it("should return the unit label for speed", function()
             {
                 expect(TP.utils.units.getUnitsLabel("speed")).toBe("mph");
             });
 
-            it("should print the unit label for cadence", function()
+            it("should return the unit label for cadence", function()
             {
                 expect(TP.utils.units.getUnitsLabel("cadence")).toBe("rpm");
             });
 
-            it("should print the unit label for torque", function()
+            it("should return the unit label for torque", function()
             {
                 expect(TP.utils.units.getUnitsLabel("torque")).toBe("in-lbs");
             });
 
-            it("shouuld print the unit label for elevation", function()
+            it("shouuld return the unit label for elevation", function()
             {
                 expect(TP.utils.units.getUnitsLabel("elevation")).toBe("ft");
             });
 
-            it("should print the unit label for power", function()
+            it("should return the unit label for power", function()
             {
                 expect(TP.utils.units.getUnitsLabel("power")).toBe("watts");
             });
@@ -142,7 +146,13 @@ function(TP, theMarsApp)
 
             beforeEach(function()
             {
+                TestHelpers.startTheApp();
                 theMarsApp.user.set("units", TP.utils.units.constants.English);
+            });
+
+            afterEach(function()
+            {
+                TestHelpers.stopTheApp();
             });
 
             it("should throw an exception when trying to convert for an unknown value type", function()
@@ -206,7 +216,13 @@ function(TP, theMarsApp)
 
             beforeEach(function()
             {
+                TestHelpers.startTheApp();
                 theMarsApp.user.set("units", TP.utils.units.constants.English);
+            });
+
+            afterEach(function()
+            {
+                TestHelpers.stopTheApp();
             });
 
             it("should throw an exception when trying to convert for an unknown value type", function ()
@@ -253,5 +269,102 @@ function(TP, theMarsApp)
                 expect(TP.utils.conversion.convertToModelUnits(212, "temperature")).toBe(100);
             });
         });
+
+        describe("TP.utils.units.getUnitsLabel, for swim workouts in english units", function()
+        {
+
+            var swimTypeId = TP.utils.workout.types.getIdByName("Swim");
+
+            beforeEach(function()
+            {
+                TestHelpers.startTheApp();
+                theMarsApp.user.set("units", TP.utils.units.constants.English);
+            });
+
+            afterEach(function()
+            {
+                TestHelpers.stopTheApp();
+            });
+
+            it("should return the unit label for distance", function()
+            {
+                expect(TP.utils.units.getUnitsLabel("distance", swimTypeId)).toBe("yds");
+            });
+
+            it("should return the unit label for normalized pace", function()
+            {
+                expect(TP.utils.units.getUnitsLabel("normalizedPace", swimTypeId)).toBe("sec/100y");
+            });
+
+            it("should return the unit label for averagePace", function()
+            {
+                expect(TP.utils.units.getUnitsLabel("averagePace", swimTypeId)).toBe("sec/100y");
+            });
+
+            it("should return the unit label for average speed", function()
+            {
+                expect(TP.utils.units.getUnitsLabel("averageSpeed", swimTypeId)).toBe("yds/min");
+            });
+
+            it("should return the unit label for pace", function()
+            {
+                expect(TP.utils.units.getUnitsLabel("pace", swimTypeId)).toBe("sec/100y");
+            });
+
+            it("should return the unit label for speed", function()
+            {
+                expect(TP.utils.units.getUnitsLabel("speed", swimTypeId)).toBe("yds/min");
+            });
+
+        });
+
+        describe("TP.utils.units.getUnitsLabel, for swim workouts in metric units", function()
+        {
+
+            var swimTypeId = TP.utils.workout.types.getIdByName("Swim");
+
+            beforeEach(function()
+            {
+                TestHelpers.startTheApp();
+                theMarsApp.user.set("units", TP.utils.units.constants.Metric);
+            });
+
+            afterEach(function()
+            {
+                TestHelpers.stopTheApp();
+            });
+
+            it("should return the unit label for distance", function()
+            {
+                expect(TP.utils.units.getUnitsLabel("distance", swimTypeId)).toBe("m");
+            });
+
+            it("should return the unit label for normalized pace", function()
+            {
+                expect(TP.utils.units.getUnitsLabel("normalizedPace", swimTypeId)).toBe("sec/100m");
+            });
+
+            it("should return the unit label for averagePace", function()
+            {
+                expect(TP.utils.units.getUnitsLabel("averagePace", swimTypeId)).toBe("sec/100m");
+            });
+
+            it("should return the unit label for average speed", function()
+            {
+                expect(TP.utils.units.getUnitsLabel("averageSpeed", swimTypeId)).toBe("m/min");
+            });
+
+            it("should return the unit label for pace", function()
+            {
+                expect(TP.utils.units.getUnitsLabel("pace", swimTypeId)).toBe("sec/100m");
+            });
+
+            it("should return the unit label for speed", function()
+            {
+                expect(TP.utils.units.getUnitsLabel("speed", swimTypeId)).toBe("m/min");
+            });
+
+        });
+
     });
 });
