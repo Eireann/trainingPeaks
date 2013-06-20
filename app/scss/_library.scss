@@ -10,6 +10,7 @@ $mainTtabSpriteRetinaURL: url(../../assets/images/sprite-icons-main-tabs@2x.png)
     @include grid-column(1);
     padding: 0 0 0 5px;
     width: 40px;
+    min-height: 600px;
 
     #libraries
     {
@@ -155,6 +156,24 @@ $mainTtabSpriteRetinaURL: url(../../assets/images/sprite-icons-main-tabs@2x.png)
             }
         }
 
+        .unimplementedLibrary {
+            background-color: $TPGrey1;
+
+            &:hover
+            {
+                border: 1px solid $TPGrey2;
+            }
+
+            &:active
+            {
+               background-color: $TPGrey2;
+            }
+
+			&.active
+            {
+               background-color: $TPGrey2;
+            }
+        }
 
 		@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
 			#exerciseLibrary, #mealLibrary, #foodLibrary, #plansLibrary, #routesLibrary {

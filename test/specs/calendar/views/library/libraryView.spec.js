@@ -1,9 +1,9 @@
 // use requirejs() instead of define() here, to keep jasmine test runner happy
 requirejs(
 [
-    "views/library/libraryView",
-    "views/library/exerciseLibraryView",
-    "hbs!templates/views/library/libraryView"
+    "views/calendar/library/libraryView",
+    "views/calendar/library/exerciseLibraryView",
+    "hbs!templates/views/calendar/library/libraryView"
 ],
 function(LibraryView, ExerciseLibraryView, LibraryTemplate)
 {

@@ -6,9 +6,9 @@
     "jquerySelectBox",
     "backbone.marionette",
     "TP",
-    "views/library/exerciseLibraryItemView",
-    "views/library/exerciseLibraryAddItemView",
-    "hbs!templates/views/library/exerciseLibraryView"
+    "views/calendar/library/exerciseLibraryItemView",
+    "views/calendar/library/exerciseLibraryAddItemView",
+    "hbs!templates/views/calendar/library/exerciseLibraryView"
 ],
 function(
     _,

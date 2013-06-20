@@ -2,7 +2,7 @@
 requirejs(
 [
     "TP",
-    "views/library/exerciseLibraryItemView"
+    "views/calendar/library/exerciseLibraryItemView"
 ],
 function(TP, ExerciseLibraryItemView)
 {

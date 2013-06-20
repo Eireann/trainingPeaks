@@ -4,7 +4,7 @@
     "models/library/exerciseLibrariesCollection",
     "models/workoutModel",
     "models/commands/addWorkoutFromExerciseLibrary",
-"views/library/libraryView"
+    "views/calendar/library/libraryView"
 ],
 function(
     _,
@@ -51,16 +51,10 @@ function(
                 this.views.library.close();
 
             this.views.library = new LibraryView({ collections: this.libraryCollections });
-            this.views.library.on("animate", this.onLibraryAnimate, this);
             this.views.library.on("library:select", this.onLibrarySelect, this);
         },
 
-        onLibraryAnimate: function (cssAttributes, duration)
-        {
-            this.views.calendar.onLibraryAnimate(cssAttributes, duration);
-        },
-
-        getExerciseLibraries: function ()
+        getExerciseLibraries: function()
         {
             return this.libraryCollections.exerciseLibraries;
         },

@@ -1,49 +1,42 @@
 ﻿define(
 [
     "underscore",
-    "jqueryOutside",
-    "TP",
-    "views/library/exerciseLibraryView",
-    "views/library/mealLibraryView",
-    "hbs!templates/views/library/libraryView"
+    "TP"
 ],
-function(_, jqueryOutside, TP, ExerciseLibraryView, MealLibraryView, libraryTemplate)
+function(
+    _,
+    TP
+    )
 {
+
     return TP.ItemView.extend(
     {
+
         widthClosed: 40,
         widthOpen: 310,
-
-        template:
-        {
-            type: "handlebars",
-            template: libraryTemplate
-        },
+        activeLibraryName: null,
 
         initialize: function(options)
         {
+            this.initWindowResize();
             this.buildViews(options);
             this.listenToViewEvents();
-
             this.activeLibraryName = null;
-
             this.on("library:unselect", this.onUnSelect, this);
 
+            this.on("render", this.renderLibrariesOnRender, this);
+            this.on("show", this.resizeOnShow, this);
+        },
+
+        initWindowResize: function()
+        {
+            _.bindAll(this, "resizeContainerHeight");
             $(window).on("resize", this.resizeContainerHeight);
         },
 
         buildViews: function(options)
         {
-            this.views =
-            {
-                exerciseLibrary: new ExerciseLibraryView(
-                {
-                    exerciseLibraries: options && options.collections && options.collections.exerciseLibraries ?
-                        options.collections.exerciseLibraries : new TP.Collection()
-                }),
-                mealLibrary: new MealLibraryView()
-            };
-
+            this.views = {};
         },
 
         listenToViewEvents: function()
@@ -139,7 +132,6 @@ function(_, jqueryOutside, TP, ExerciseLibraryView, MealLibraryView, libraryTemp
 
         hideLibrary: function()
         {
-            //this.$el.off("clickoutside", this.hideLibrary);
             if (!this.isOpen())
                 return;
 
@@ -176,7 +168,7 @@ function(_, jqueryOutside, TP, ExerciseLibraryView, MealLibraryView, libraryTemp
             this.ui.activeLibraryContainer.removeClass('waiting');
         },
 
-        onRender: function()
+        renderLibrariesOnRender: function()
         {
             for (var libraryName in this.views)
             {
@@ -188,7 +180,7 @@ function(_, jqueryOutside, TP, ExerciseLibraryView, MealLibraryView, libraryTemp
             this.resizeContainerHeight();
         },
 
-        onShow: function()
+        resizeOnShow: function()
         {
             this.resizeContainerHeight();
         },

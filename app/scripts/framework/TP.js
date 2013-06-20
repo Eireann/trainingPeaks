@@ -68,12 +68,12 @@ function(_, Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmedia
     {
         fadeIn: function(callback)
         {
-            this.$el.fadeIn(500, callback);
+            this.$el.fadeIn(300, callback);
         },
 
         fadeOut: function (callback)
         {
-            this.$el.fadeOut(500, callback);
+            this.$el.fadeOut(300, callback);
         }
     });
     TP.Region = Marionette.Region;

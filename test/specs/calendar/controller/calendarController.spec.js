@@ -11,7 +11,7 @@ requirejs(
 "models/workoutModel",
 "models/workoutsCollection",
 "views/calendar/container/calendarContainerView",
-"views/library/libraryView"
+"views/calendar/library/libraryView"
 ],
 function(TP, theMarsApp, moment, $, _, Backbone, CalendarController, WorkoutModel, WorkoutsCollection, CalendarView, LibraryView)
 {

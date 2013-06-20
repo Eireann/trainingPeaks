@@ -2,7 +2,7 @@
 [
     "underscore",
     "TP",
-    "hbs!templates/views/library/mealLibraryView"
+    "hbs!templates/views/calendar/library/mealLibraryView"
 ],
 function(_, TP, mealLibraryViewTemplate)
 {

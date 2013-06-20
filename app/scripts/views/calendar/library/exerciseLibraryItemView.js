@@ -2,8 +2,8 @@ define(
 [
     "TP",
     "jqueryui/draggable",
-    "hbs!templates/views/library/exerciseLibraryItemView",
-    "hbs!templates/views/library/exerciseLibraryItemViewDragState"
+    "hbs!templates/views/calendar/library/exerciseLibraryItemView",
+    "hbs!templates/views/calendar/library/exerciseLibraryItemViewDragState"
 ],
 function(TP, draggable, ExerciseLibraryItemViewTemplate, ExerciseLibraryItemViewTemplateDragState)
 {

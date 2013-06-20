@@ -7,6 +7,8 @@
 @import "calendar/dragAndDrop";
 @import "globalCSS/modal";
 
+@import "globalCSS/framework";
+
 @import "header";
 @import "calendar/calendar";
 @import "calendar/calendarWorkout";
@@ -27,6 +29,8 @@
 @import "workoutCommentsEditor/workoutCommentsEditor";
 
 @import "login";
+
+@import "dashboard";
 
 body
 {

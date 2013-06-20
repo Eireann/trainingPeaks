@@ -1,7 +1,7 @@
 ﻿define(
 [
     "TP",
-    "hbs!templates/views/library/exerciseLibraryAddItemView"
+    "hbs!templates/views/calendar/library/exerciseLibraryAddItemView"
 
 ],
 function(TP, exerciseLibraryAddItemView)
