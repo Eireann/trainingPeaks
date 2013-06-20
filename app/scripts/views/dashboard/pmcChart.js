@@ -29,7 +29,15 @@ function(
 
         initialize: function(options)
         {
+            //remove when api endpoint is called
             this.on("render", this.renderChartAfterRender, this);
+            
+
+            //TODO: wire up pmcModelCollection
+            //create new modelCollection with options needed for fetch
+            //do fetch w/ done callback
+            //on done callback: trigger event to now render chart
+
 
             this.model = new TP.Model({
                 title: "PMC",
@@ -68,8 +76,9 @@ function(
             });
         },
 
-        buildFlotPoints: function(timeInZones)
+        buildFlotPoints: function()
         {
+            //TODO: iterate over collection in this.model instead of using this random generator
             var chartPoints = [];
             for (var i = 0; i < 100; i++)
             {
