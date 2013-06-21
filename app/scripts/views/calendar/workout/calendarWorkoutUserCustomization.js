@@ -46,14 +46,15 @@ function(_, TP)
         {
             var prefix = field.prefix ? field.prefix + ": " : "";
             var fieldValue = this.model.get(field.name);
+            var workoutTypeValueId = this.model.get("workoutTypeValueId");
             
             if (fieldValue) 
             {
                 if (field.conversion)
                 {
-                    fieldValue = TP.utils.conversion[field.conversion](fieldValue);
+                    fieldValue = TP.utils.conversion[field.conversion](fieldValue, { workoutTypeValueId: workoutTypeValueId });
                 }
-                var units = field.unitHelper ? " " + TP.utils.units.getUnitsLabel(field.unitHelper, null, this) : "";
+                var units = field.unitHelper ? " " + TP.utils.units.getUnitsLabel(field.unitHelper, workoutTypeValueId, this) : "";
                 //TODO: create entire list up, then do one insert into main dom
                 var element = $("<p>" + prefix + fieldValue + units + "</p>");
                 element.insertBefore(this.ui.layoutAnchor);
