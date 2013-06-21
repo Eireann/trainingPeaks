@@ -33,7 +33,8 @@ function (_, moment, TP)
             "meanMaxCadences": null,
             "meanMaxSpeeds": null,
             "workoutDeviceFileInfos": null,
-            "attachmentFileInfos": null
+            "attachmentFileInfos": null,
+            "workoutStructure": null
         },
 
         initialize: function()
