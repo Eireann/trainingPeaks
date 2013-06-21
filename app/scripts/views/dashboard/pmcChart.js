@@ -92,6 +92,7 @@ function (
             var dataSeries =
             {
                 data: chartPoints,
+                color: "red",
                 points:
                 {
                     show: true
