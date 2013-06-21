@@ -503,7 +503,7 @@ function(TP, theMarsApp, TestHelpers)
 
             it("should leave distance units as meters and cut off after 2 decimal places", function()
             {
-                expect(TP.utils.conversion.convertToModelUnits(0, "distance", swimTypeId)).toBeNull();
+                expect(TP.utils.conversion.convertToModelUnits(0, "distance", swimTypeId)).toBe(0);
                 expect(TP.utils.conversion.convertToModelUnits(1, "distance", swimTypeId)).toBeCloseTo(1, 0);
                 expect(TP.utils.conversion.convertToModelUnits(10, "distance", swimTypeId)).toBeCloseTo(10, 0);
                 expect(TP.utils.conversion.convertToModelUnits(100, "distance", swimTypeId)).toBeCloseTo(100, 0);
@@ -521,7 +521,7 @@ function(TP, theMarsApp, TestHelpers)
             it("Should convert a speed in meters per second to meters per minute, properly formatted", function()
             {
                 expect(TP.utils.conversion.convertToModelUnits(60, "speed", swimTypeId)).toBe(1);
-                expect(TP.utils.conversion.convertToModelUnits(300, "speed", swimTypeId)).toBe(300);
+                expect(TP.utils.conversion.convertToModelUnits(300, "speed", swimTypeId)).toBe(5);
             });
             
         });
