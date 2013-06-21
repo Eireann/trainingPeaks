@@ -162,6 +162,7 @@ function(
                 swimDurationPlanned: plannedValues.durationByWorkoutType[TP.utils.workout.types.getIdByName("Swim")],
                 swimDurationCompleted: completedValues.durationByWorkoutType[TP.utils.workout.types.getIdByName("Swim")],
                 swimDaysCompleted: _.keys(completedValues.completedDaysByWorkoutType[TP.utils.workout.types.getIdByName("Swim")]).length,
+                swimFormatOptions: { workoutTypeValueId: 1 },
                 strengthDurationPlanned: plannedValues.durationByWorkoutType[TP.utils.workout.types.getIdByName("Strength")],
                 strengthDurationCompleted: completedValues.durationByWorkoutType[TP.utils.workout.types.getIdByName("Strength")],
                 strengthDaysCompleted: _.keys(completedValues.completedDaysByWorkoutType[TP.utils.workout.types.getIdByName("Strength")]).length,
