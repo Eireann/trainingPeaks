@@ -20,6 +20,9 @@
             if (options && options.hasOwnProperty("workoutTypeValueId"))
             {
                 sportType = options.workoutTypeValueId;
+            } else if (options && options.hasOwnProperty("workoutTypeId"))
+            {
+                sportType = options.workoutTypeId;
             } else if (options && options.hasOwnProperty("model") && options.model.has("workoutTypeValueId"))
             {
                 sportType = options.model.get("workoutTypeValueId");

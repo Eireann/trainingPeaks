@@ -28,7 +28,7 @@ function(conversion, getKeyStatField)
         
         if (keyStatField === "distance" || keyStatField === "distancePlanned")
         {
-            return conversion.formatDistance(value);
+            return conversion.formatDistance(value, { workoutTypeValueId: workoutAttributes.workoutTypeValueId });
         }
         else if (keyStatField === "totalTime" || keyStatField === "totalTimePlanned")
         {
