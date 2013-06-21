@@ -210,8 +210,8 @@ function(TP, theMarsApp, TestHelpers)
                 expect(TP.utils.conversion.convertToViewUnits(0.016512562392295274, "efficiencyfactor", null, 10)).toBe('0.02');
             });           
         });
-        
-        describe("convertToModelUnits template helper", function ()
+
+        describe("convertToModelUnits template helper", function()
         {
 
             beforeEach(function()
@@ -366,7 +366,7 @@ function(TP, theMarsApp, TestHelpers)
 
         });
 
-        describe("convertToViewUnits template helper, for swim workouts in english", function()
+        describe("convertToViewUnits template helper, for swim workouts in english units", function()
         {
             var swimTypeId = TP.utils.workout.types.getIdByName("Swim");
 
@@ -406,7 +406,7 @@ function(TP, theMarsApp, TestHelpers)
             
         });
 
-        describe("convertToViewUnits template helper, for swim workouts in metric", function()
+        describe("convertToViewUnits template helper, for swim workouts in metric units", function()
         {
             var swimTypeId = TP.utils.workout.types.getIdByName("Swim");
 
@@ -444,6 +444,47 @@ function(TP, theMarsApp, TestHelpers)
                 expect(TP.utils.conversion.convertToViewUnits(5, "speed", undefined, swimTypeId)).toBe(300);
             });
             
+        });
+
+        describe("convertToModelUnits template helper, for swim workouts in english units", function()
+        {
+            var swimTypeId = TP.utils.workout.types.getIdByName("Swim");
+ 
+            beforeEach(function()
+            {
+                TestHelpers.startTheApp();
+                theMarsApp.user.set("units", TP.utils.units.constants.English);
+            });
+
+            afterEach(function()
+            {
+                TestHelpers.stopTheApp();
+            });
+
+            it("should convert a distance in yards to meters", function()
+            {
+                expect(TP.utils.conversion.convertToModelUnits("", "distance", swimTypeId)).toBeNull();
+                expect(TP.utils.conversion.convertToModelUnits('1.09', "distance", swimTypeId)).toBeCloseTo(1, 0);
+                expect(TP.utils.conversion.convertToModelUnits("10.9", "distance", swimTypeId)).toBeCloseTo(10, 0);
+                expect(TP.utils.conversion.convertToModelUnits(109, "distance", swimTypeId)).toBeCloseTo(100, 0);
+                expect(TP.utils.conversion.convertToModelUnits(1094, "distance", swimTypeId)).toBeCloseTo(1000, 0);
+                expect(TP.utils.conversion.convertToModelUnits(1230, "distance", swimTypeId)).toBeCloseTo(1125, 0);
+            });
+
+            it("should convert a pace value in sec/100y to meters per second", function()
+            {
+                expect(TP.utils.conversion.convertToModelUnits("01:31", "pace", swimTypeId)).toBeCloseTo(1, 0);
+                expect(TP.utils.conversion.convertToModelUnits("00:18", "pace", swimTypeId)).toBeCloseTo(5, 0);
+
+            });
+
+            it("Should convert a speed in yards per minute to meters per second", function()
+            {
+                expect(TP.utils.conversion.convertToModelUnits("65.6", "speed", swimTypeId)).toBeCloseTo(1, 0);
+                expect(TP.utils.conversion.convertToModelUnits("328", "speed", swimTypeId)).toBeCloseTo(5, 0);
+            });
+ 
+
         });
     });
 });

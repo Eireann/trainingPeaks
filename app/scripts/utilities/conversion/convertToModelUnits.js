@@ -55,7 +55,7 @@ function(
         return isNumeric(valueWithoutColons);
     };
 
-    var convertToModelUnits = function(value, fieldType, workoutType)
+    var convertToModelUnits = function(value, fieldType, workoutTypeId)
     {
         var userUnits = theMarsApp.user.get("units");
 
@@ -72,10 +72,11 @@ function(
             case "elevation":
                 return (+value / modelToViewConversionFactors(fieldType, userUnits));
             case "speed":
+                return (+value / modelToViewConversionFactors(fieldType, userUnits, workoutTypeId));
             case "distance":
-                return (+value / modelToViewConversionFactors(fieldType, userUnits));
+                return (+value / modelToViewConversionFactors(fieldType, userUnits, workoutTypeId));
             case "pace":
-                return convertToSpeedFromPace(value, userUnits);
+                return convertToSpeedFromPace(value, userUnits, workoutTypeId);
             case "temperature":
                 return convertTemperature(value, userUnits);
             case "torque":
