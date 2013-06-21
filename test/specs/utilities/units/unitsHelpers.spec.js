@@ -405,5 +405,45 @@ function(TP, theMarsApp, TestHelpers)
             });
             
         });
+
+        describe("convertToViewUnits template helper, for swim workouts in metric", function()
+        {
+            var swimTypeId = TP.utils.workout.types.getIdByName("Swim");
+
+            beforeEach(function()
+            {
+                TestHelpers.startTheApp();
+                theMarsApp.user.set("units", TP.utils.units.constants.Metric);
+            });
+
+            afterEach(function()
+            {
+                TestHelpers.stopTheApp();
+            });
+
+            it("should leave distance units as meters and cut off after 2 decimal places", function()
+            {
+                expect(TP.utils.conversion.convertToViewUnits(0, "distance", undefined, swimTypeId)).toEqual("");
+                expect(TP.utils.conversion.convertToViewUnits(1, "distance", undefined, swimTypeId)).toEqual('1.00');
+                expect(TP.utils.conversion.convertToViewUnits(10, "distance", undefined, swimTypeId)).toEqual("10.0");
+                expect(TP.utils.conversion.convertToViewUnits(100, "distance", undefined, swimTypeId)).toEqual(100);
+                expect(TP.utils.conversion.convertToViewUnits(1000, "distance", undefined, swimTypeId)).toEqual(1000);
+                expect(TP.utils.conversion.convertToViewUnits(1125, "distance", undefined, swimTypeId)).toEqual(1125);
+            });
+
+            it("should convert a pace value in meters per second to sec/100m, properly formated", function()
+            {
+                expect(TP.utils.conversion.convertToViewUnits(1, "pace", undefined, swimTypeId)).toBe("01:40");
+                expect(TP.utils.conversion.convertToViewUnits(5, "pace", undefined, swimTypeId)).toBe("00:20");
+
+            });
+
+            it("Should convert a speed in meters per second to meters per minute, properly formatted", function()
+            {
+                expect(TP.utils.conversion.convertToViewUnits(1, "speed", undefined, swimTypeId)).toBe("60.0");
+                expect(TP.utils.conversion.convertToViewUnits(5, "speed", undefined, swimTypeId)).toBe(300);
+            });
+            
+        });
     });
 });
