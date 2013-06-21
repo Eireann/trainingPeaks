@@ -248,7 +248,7 @@
 
         &.home
         {
-            label#home
+            label.home
             {
                 color: $TPBlue; 
 			    border-bottom-style:solid; border-bottom-width:2px; border-color:$TPBlue;
@@ -257,7 +257,7 @@
         
         &.calendar
         {
-            label#calendar
+            label.calendar
             {
                 color: $TPBlue; 
 			    border-bottom-style:solid; border-bottom-width:2px; border-color:$TPBlue;
@@ -266,7 +266,7 @@
         
         &.dashboard
         {
-            label#dashboard
+            label.dashboard
             {
                 color: $TPBlue; 
 			    border-bottom-style:solid; border-bottom-width:2px; border-color:$TPBlue;
@@ -275,7 +275,7 @@
         
         &.tools
         {
-            label#tools
+            label.tools
             {
                 color: $TPBlue; 
 			    border-bottom-style:solid; border-bottom-width:2px; border-color:$TPBlue;

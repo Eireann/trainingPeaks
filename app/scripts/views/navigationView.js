@@ -50,7 +50,7 @@ function(_, TP, navigationViewTemplate)
         
         onNavigationClicked: function(event)
         {
-            var route = $(event.target).attr("id");
+            var route = $(event.target).attr("class");
             theMarsApp.router.navigate(route, { trigger: true });
         }
     });
