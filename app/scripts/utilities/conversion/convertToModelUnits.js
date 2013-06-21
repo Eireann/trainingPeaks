@@ -11,20 +11,23 @@ function(
     dateTimeConvert,
     unitsConstants)
 {
-    var convertToSpeedFromPace = function (pace, unitSystem)
+    var convertToSpeedFromPace = function (pace, unitSystem, sportTypeId)
     {
 
-        var hours = dateTimeConvert.timeToDecimalHours(pace, { assumeHours: false });
-        var minutes = hours * 60;
-        var seconds = minutes * 60;
+        var paceInHours = dateTimeConvert.timeToDecimalHours(pace, { assumeHours: false });
+        var paceInMinutes = paceInHours * 60;
+        var paceInSeconds = paceInMinutes * 60;
 
-        if (seconds < 1)
+        if (paceInSeconds < 1)
         {
-            return convertToSpeedFromPace("00:99:59", unitSystem);
+            return convertToSpeedFromPace("00:99:59", unitSystem, sportTypeId);
         }
 
-        var conversion = modelToViewConversionFactors("speed", unitSystem);
-        var speed = 60 / minutes / conversion;
+        var conversionFactor = modelToViewConversionFactors("pace", unitSystem, sportTypeId);
+
+        // paceInMinutes = 1 / (speed * conversionFactor)
+        // speed = 1 / (paceInMinutes * conversionFactor)
+        var speed = 1 / (paceInMinutes * conversionFactor);
         
         return speed;
     };
@@ -52,7 +55,7 @@ function(
         return isNumeric(valueWithoutColons);
     };
 
-    var convertToModelUnits = function(value, fieldType, workoutType)
+    var convertToModelUnits = function(value, fieldType, workoutTypeId)
     {
         var userUnits = theMarsApp.user.get("units");
 
@@ -69,10 +72,11 @@ function(
             case "elevation":
                 return (+value / modelToViewConversionFactors(fieldType, userUnits));
             case "speed":
+                return (+value / modelToViewConversionFactors(fieldType, userUnits, workoutTypeId));
             case "distance":
-                return (+value / modelToViewConversionFactors(fieldType, userUnits));
+                return (+value / modelToViewConversionFactors(fieldType, userUnits, workoutTypeId));
             case "pace":
-                return convertToSpeedFromPace(value, userUnits);
+                return convertToSpeedFromPace(value, userUnits, workoutTypeId);
             case "temperature":
                 return convertTemperature(value, userUnits);
             case "torque":

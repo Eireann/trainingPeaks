@@ -36,7 +36,7 @@ function(TP, TimeInZonesChartView, chartColors)
                     },
                     {
                         label: "Range",
-                        value: TP.utils.conversion.formatPace(timeInZone.minimum) + "-" + TP.utils.conversion.formatPace(timeInZone.maximum) + " " + this.formatPeakUnitsLabel()
+                        value: TP.utils.conversion.formatPace(timeInZone.minimum, { workoutTypeValueId: this.workoutType }) + "-" + TP.utils.conversion.formatPace(timeInZone.maximum, { workoutTypeValueId: this.workoutType }) + " " + this.formatPeakUnitsLabel()
                     },
                     {
                         label: "Time",

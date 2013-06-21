@@ -1,9 +1,10 @@
 define(
 [
     "utilities/units/constants",
-    "utilities/workout/layoutFormatter"
+    "utilities/workout/layoutFormatter",
+    "utilities/workout/workoutTypes"
 ],
-function(unitsConstants, workoutLayoutFormatter)
+function(unitsConstants, workoutLayoutFormatter, workoutTypeUtils)
 {
 
     var unitsHash =
@@ -11,22 +12,46 @@ function(unitsConstants, workoutLayoutFormatter)
         distance:
         {
             English: "mi",
-            Metric: "km"
+            Metric: "km",
+
+            Swim:
+            {
+                English: "yds",
+                Metric: "m"
+            }
         },
         normalizedPace:
         {
             English: "min/mi",
-            Metric: "min/km"
+            Metric: "min/km",
+
+            Swim:
+            {
+                English: "sec/100y",
+                Metric: "sec/100m"
+            }
         },
         averagePace:
         {
             English: "min/mi",
-            Metric: "min/km"
+            Metric: "min/km",
+
+            Swim:
+            {
+                English: "sec/100y",
+                Metric: "sec/100m"
+            }
         },
         averageSpeed:
         {
             English: "mph",
-            Metric: "kph"
+            Metric: "kph",
+
+            Swim:
+            {
+                English: "yds/min",
+                Metric: "m/min"
+            }
         },
         calories:
         {
@@ -73,12 +98,24 @@ function(unitsConstants, workoutLayoutFormatter)
         pace:
         {
             English: "min/mi",
-            Metric: "min/km"
+            Metric: "min/km",
+
+            Swim:
+            {
+                English: "sec/100y",
+                Metric: "sec/100m"
+            }
         },
         speed:
         {
             English: "mph",
-            Metric: "kph"
+            Metric: "kph",
+
+            Swim:
+            {
+                English: "yds/min",
+                Metric: "m/min"
+            }
         },
         cadence:
         {
@@ -170,16 +207,22 @@ function(unitsConstants, workoutLayoutFormatter)
         }
     };
 
-    var getUnitsLabel = function(fieldName, sportType, context)
+    var getUnitsLabel = function(fieldName, sportTypeId, context)
     {
         var userUnits = theMarsApp.user.get("units");
         var userUnitsKey = userUnits === unitsConstants.English ? "English" : "Metric";
 
+        var sportTypeName = null;
+        if (sportTypeId)
+        {
+            sportTypeName = workoutTypeUtils.getNameById(sportTypeId);
+        }
+
         if (!unitsHash.hasOwnProperty(fieldName))
             throw "Unknown field type (" + fieldName + ") for unit label";
 
-        if (sportType !== undefined && unitsHash[fieldName].hasOwnProperty("bySportType") && unitsHash[fieldName].bySportType.hasOwnProperty(sportType))
-            return unitsHash[fieldName][sportType][userUnitsKey];
+        if (sportTypeName && unitsHash[fieldName].hasOwnProperty(sportTypeName) && unitsHash[fieldName][sportTypeName].hasOwnProperty(userUnitsKey))
+            return unitsHash[fieldName][sportTypeName][userUnitsKey];
         
         //TODO: refactor
         if (fieldName === "tss")

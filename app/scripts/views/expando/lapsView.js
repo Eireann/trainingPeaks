@@ -127,7 +127,7 @@ function(
             return lapsData;
         },
 
-        getPeaksData: function (detailData)
+        getPeaksData: function(detailData)
         {
 
             if (!this.selectedPeakType)
@@ -149,7 +149,7 @@ function(
                     peakItem.units = units;
                     if (this.formatMethods[this.selectedPeakType])
                     {
-                        peakItem.formattedValue = TP.utils.conversion[this.formatMethods[this.selectedPeakType]](peakItem.value);
+                        peakItem.formattedValue = TP.utils.conversion[this.formatMethods[this.selectedPeakType]](peakItem.value, { workoutTypeValueId: this.model.get("workoutTypeValueId") });
                     } else
                     {
                         peakItem.formattedValue = peakItem.value;

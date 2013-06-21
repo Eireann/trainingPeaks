@@ -52,8 +52,9 @@
 
         parseDistance: function(value, options)
         {
+            var sportType = this.getMySportType(options);
             var modelValue = adjustFieldRange(parseFloat(value), "distance");
-            modelValue = convertToModelUnits(modelValue, "distance");
+            modelValue = convertToModelUnits(modelValue, "distance", sportType);
             return modelValue;
         },
 
@@ -113,7 +114,8 @@
             {
                 return this.formatEmptyValue(value, options);
             }
-            var paceAsMinutes = convertToViewUnits(value, "paceUnFormatted");
+            var sportType = this.getMySportType(options);
+            var paceAsMinutes = convertToViewUnits(value, "paceUnFormatted", undefined, sportType);
             var limitedPaceAsHours = adjustFieldRange(paceAsMinutes / 60, "pace");
             return datetimeUtils.format.decimalMinutesAsTime(limitedPaceAsHours * 60, true);
         },
@@ -125,24 +127,27 @@
             {
                 return this.formatEmptyValue(value, options);
             }
+            var sportType = this.getMySportType(options);
             var rawTime = datetimeUtils.convert.timeToDecimalHours(value, { assumeHours: false });
             var limitedTime = adjustFieldRange(rawTime, "pace");
             var formattedLimitedTime = datetimeUtils.format.decimalHoursAsTime(limitedTime, true);
-            var convertedPace = convertToModelUnits(formattedLimitedTime, "pace");
+            var convertedPace = convertToModelUnits(formattedLimitedTime, "pace", sportType);
             return convertedPace;
         },
 
         formatSpeed: function(value, options)
         {
-            var convertedSpeed = convertToViewUnits(value, "speed");
+            var sportType = this.getMySportType(options);
+            var convertedSpeed = convertToViewUnits(value, "speed", undefined, sportType);
             var limitedSpeed = adjustFieldRange(convertedSpeed, "speed");
             return this.formatEmptyValue(limitedSpeed, options);
         },
 
         parseSpeed: function(value, options)
         {
+            var sportType = this.getMySportType(options);
             var modelValue = adjustFieldRange(parseFloat(value), "speed");
-            modelValue = convertToModelUnits(modelValue, "speed");
+            modelValue = convertToModelUnits(modelValue, "speed", sportType);
             return modelValue;
         },
 

@@ -31,7 +31,7 @@
     {{/with}}
         {{#each rangePeaks}}
         <li data-peakinterval="{{interval}}" data-peaktype="{{peakType}}" class="peaks">
-            <input class="checkbox" type="checkbox" {{#if checked}}checked{{/if}}/> <span>{{$ "Peak" }} {{#if isDistance }}{{ formatPeakDistance interval }}{{ else }}{{ formatPeakTime interval }}{{/if }} ({{ formattedValue }} {{ units }})</span>
+            <input class="checkbox" type="checkbox" {{#if checked}}checked{{/if}}/> <span>{{$ "Peak" }} {{#if isDistance }}{{ formatPeakDistance interval ../workoutTypeValueId }}{{ else }}{{ formatPeakTime interval }}{{/if }} ({{ formattedValue }} {{ units }})</span>
         </li>
     {{/each}}
     </ul>

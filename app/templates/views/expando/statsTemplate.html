@@ -20,8 +20,8 @@
     {{#if distance }}
     <div class="statsRow" id="distance">
         <label>{{$ "Distance" }}</label>
-        <span class="value">{{ convertToViewUnits distance "distance" }}</span>
-        <span class="units">{{ getUnitsLabel "distance" }}</span>
+        <span class="value">{{ conversion "formatDistance" distance this }}</span>
+        <span class="units">{{ getUnitsLabel "distance" workoutTypeValueId }}</span>
     </div>
     {{/if}}
 
@@ -44,8 +44,8 @@
     {{#if normalizedSpeedActual }}
     <div class="statsRow" id="ngp">
         <label>{{$ "NGP" }}</label>
-        <span class="value">{{ formatPace normalizedSpeedActual }}</span>
-        <span class="units">{{ getUnitsLabel "pace" }}</span>
+        <span class="value">{{ conversion "formatPace" normalizedSpeedActual this }}</span>
+        <span class="units">{{ getUnitsLabel "pace" workoutTypeValueId }}</span>
     </div>
     {{/if}}
 
@@ -200,24 +200,24 @@
         {{#if minMaxSpeed }}
         <div class="minMaxAvgRow statsRow" id="minMaxSpeed">
             <label>{{$ "Speed" }}</label>
-            <span class="value">{{ conversion "formatSpeed" minimumSpeed }}</span>
+            <span class="value">{{ conversion "formatSpeed" minimumSpeed this }}</span>
             <span class="separator" />
-            <span class="value">{{ conversion "formatSpeed" averageSpeed }}</span>
+            <span class="value">{{ conversion "formatSpeed" averageSpeed this }}</span>
             <span class="separator" />
-            <span class="value">{{ conversion "formatSpeed" maximumSpeed }}</span>
-            <span class="units">{{ getUnitsLabel "speed" }}</span>
+            <span class="value">{{ conversion "formatSpeed" maximumSpeed this }}</span>
+            <span class="units">{{ getUnitsLabel "speed" workoutTypeValueId }}</span>
         </div>
         {{/if}}
 
         {{#if minMaxSpeed }}
         <div class="minMaxAvgRow statsRow" id="minMaxPace">
             <label>{{$ "Pace" }}</label>
-            <span class="value">{{ conversion "formatPace" minimumSpeed }}</span>
+            <span class="value">{{ conversion "formatPace" minimumSpeed this }}</span>
             <span class="separator" />
-            <span class="value">{{ conversion "formatPace" averageSpeed }}</span>
+            <span class="value">{{ conversion "formatPace" averageSpeed this }}</span>
             <span class="separator" />
-            <span class="value">{{ conversion "formatPace" maximumSpeed }}</span>
-            <span class="units">{{ getUnitsLabel "pace" }}</span>
+            <span class="value">{{ conversion "formatPace" maximumSpeed this }}</span>
+            <span class="units">{{ getUnitsLabel "pace" workoutTypeValueId }}</span>
         </div>
         {{/if}}
 

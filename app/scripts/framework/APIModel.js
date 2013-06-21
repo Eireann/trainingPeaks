@@ -112,6 +112,11 @@ function(_, Backbone)
             {
                 return new $.Deferred();
             }
+        },
+
+        has: function(attr)
+        {
+            return this.attributes.hasOwnProperty(attr) && this.get(attr) != null;
         }
 
     });

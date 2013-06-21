@@ -352,7 +352,10 @@ function(_)
 
             _.each(timeInZones.timeInZones, function(timeInZone, index)
             {
-                totalSeconds += Number(timeInZone.seconds);
+                if (timeInZone.seconds && !isNaN(Number(timeInZone.seconds)))
+                {
+                    totalSeconds += Number(timeInZone.seconds);
+                }
 
             }, this);
 

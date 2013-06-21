@@ -30,7 +30,8 @@ function(
             _.extend(binding,
             {
                 onGet: "formatPace",
-                onSet: "parsePace"
+                onSet: "parsePace",
+                workoutTypeValueId: this.workoutModel.get("workoutTypeValueId")
             });
         },
 
@@ -53,7 +54,8 @@ function(
                 var binding =
                 {
                     observe: modelFieldName,
-                    onGet: "formatPeakUnitsLabel"
+                    onGet: "formatPeakUnitsLabel",
+                    workoutTypeValueId: this.workoutModel.get("workoutTypeValueId")
                 };
 
                 bindings[unitsLabelCssId] = binding;
@@ -72,17 +74,20 @@ function(
 
                 bindings[unitsLabelCssId] = {
                     observe: modelFieldName + ".seconds",
-                    onGet: "formatPeakUnitsLabel"
+                    onGet: "formatPeakUnitsLabel",
+                    workoutTypeValueId: this.workoutModel.get("workoutTypeValueId")
                 };
 
                 bindings[minimumCssId] = {
                     observe: modelFieldName + ".minimum",
-                    onGet: "formatPace"
+                    onGet: "formatPace",
+                    workoutTypeValueId: this.workoutModel.get("workoutTypeValueId")
                 };
 
                 bindings[maximumCssId] = {
                     observe: modelFieldName + ".maximum",
-                    onGet: "formatPace"
+                    onGet: "formatPace",
+                    workoutTypeValueId: this.workoutModel.get("workoutTypeValueId")
                 };
 
             }, this);
@@ -91,7 +96,7 @@ function(
         
         formatPeakUnitsLabel: function (value, options)
         {
-            return "min/" + TP.utils.units.getUnitsLabel("distance", this.workoutType);
+            return TP.utils.units.getUnitsLabel("pace", this.workoutModel.get("workoutTypeValueId"));
         }
     };
 

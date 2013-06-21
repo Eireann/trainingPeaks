@@ -93,8 +93,8 @@ function(formatDateTime, convertToViewUnits, unitLabels, flotToolTipTemplate)
             var config =
             {
                 label: s.label,
-                value: convertToViewUnits(value, fieldName),
-                units: unitLabels(fieldName)
+                value: convertToViewUnits(value, fieldName, undefined, workoutType),
+                units: unitLabels(fieldName, workoutType)
             };
 
             if (s.label === hoveredSeriesName)
@@ -110,8 +110,8 @@ function(formatDateTime, convertToViewUnits, unitLabels, flotToolTipTemplate)
                 config =
                 {
                     label: "Pace",
-                    value: convertToViewUnits(value, "pace"),
-                    units: unitLabels("pace")
+                    value: convertToViewUnits(value, "pace", undefined, workoutType),
+                    units: unitLabels("pace", workoutType)
                 };
 
                 if (s.label === hoveredSeriesName)
