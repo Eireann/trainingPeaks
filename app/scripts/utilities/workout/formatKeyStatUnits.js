@@ -26,7 +26,7 @@ function(getKeyStatField, unitsUtils)
         
         if (keyStatField === "distance" || keyStatField === "distancePlanned")
         {
-            return unitsUtils.getUnitsLabel("distance");
+            return unitsUtils.getUnitsLabel("distance", workoutAttributes.workoutTypeValueId);
         }
         else if (keyStatField === "totalTime" || keyStatField === "totalTimePlanned")
         {
