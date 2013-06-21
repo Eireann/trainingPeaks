@@ -24,6 +24,11 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
     min-height: 400px;
     border: 1px solid transparent;
 
+    &.doubleWide
+    {
+        min-width: 800px;
+    }
+
     &:hover
     {
         background-color: $TPGrey2;
@@ -43,6 +48,11 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
         left: 50px;
         width: 310px;
         height: 300px;
+
+        &.doubleWide
+        {
+            width: 710px;
+        }
     }
 
     .chartTitle

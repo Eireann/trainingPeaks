@@ -1,25 +1,29 @@
 ﻿define(
 [
+    "underscore",
     "setImmediate",
     "moment",
     "TP",
+    "models/reporting/pmcModel",
     "utilities/charting/flotOptions",
     "utilities/charting/chartColors",
     "hbs!templates/views/dashboard/pmcChart"
 ],
-function(
+function (
+    _,
     setImmediate,
     moment,
     TP,
+    PMCModel,
     defaultFlotOptions,
     chartColors,
     pmcChartTemplate
     )
 {
-    return TP.ItemView.extend({
-
+    return TP.ItemView.extend(
+    {
         tagName: "div",
-        className: "dashboardChart",
+        className: "dashboardChart doubleWide",
 
         template:
         {
@@ -32,18 +36,14 @@ function(
             //remove when api endpoint is called
             this.on("render", this.renderChartAfterRender, this);
             
+            var chartOptions =
+            {
+                startDate: moment().subtract('days', 90),
+                endDate: moment()
+            };
+            this.model = new PMCModel(null, chartOptions);
 
-            //TODO: wire up pmcModelCollection
-            //create new modelCollection with options needed for fetch
-            //do fetch w/ done callback
-            //on done callback: trigger event to now render chart
-
-
-            this.model = new TP.Model({
-                title: "PMC",
-                yaxisLabel: "TSS",
-                xaxisLabel: "Date"
-            });
+            this.model.fetch();
         },
 
         ui: 
@@ -63,7 +63,7 @@ function(
         renderChart: function()
         {
 
-            var chartPoints = this.buildFlotPoints(this.timeInZones);
+            var chartPoints = this.buildFlotPoints();
             var dataSeries = this.buildFlotDataSeries(chartPoints, chartColors.gradients.pace);
             var flotOptions = this.buildFlotChartOptions();
 
@@ -78,21 +78,15 @@ function(
 
         buildFlotPoints: function()
         {
-            //TODO: iterate over collection in this.model instead of using this random generator
             var chartPoints = [];
-            for (var i = 0; i < 100; i++)
+            _.each(this.model.get("data"), function (item, index)
             {
-                var day = moment().subtract('days', 100 - i).valueOf();
-                var tss;
-                if (i % 7 === 0)
-                    tss = 0;
-                else
-                    tss = 80 + (40 * Math.random());
-                chartPoints.push([day, tss]);
-            }
+                var dayMoment = moment(item.workoutDay).valueOf();
+                chartPoints.push([dayMoment, item.tssActual]);
+            }, this);
             return chartPoints;
         },
-
+        
         buildFlotDataSeries: function (chartPoints, chartColor)
         {
             var dataSeries =
@@ -111,15 +105,18 @@ function(
         {
             var flotOptions = defaultFlotOptions.getGlobalDefaultOptions(null);
 
-            flotOptions.yaxis = {
+            flotOptions.yaxis =
+            {
                 tickDecimals: 0
             };
 
-            flotOptions.xaxis = {
+            flotOptions.xaxis =
+            {
                 color: "transparent"
             };
 
-            flotOptions.xaxes = [{
+            flotOptions.xaxes = [
+            {
                 tickFormatter: function(value, axis)
                 {
                     var instance = moment(value);
