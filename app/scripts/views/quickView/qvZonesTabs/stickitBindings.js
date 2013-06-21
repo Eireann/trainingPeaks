@@ -46,7 +46,8 @@ function(_, TP, stickitUtilsMixin, timeInZonesGenerator, ThePeaksGenerator)
                 {
                     observe: modelFieldName,
                     updateModel: "updateModel",
-                    inputId: inputFieldCssId
+                    inputId: inputFieldCssId,
+                    workoutTypeValueId: this.workoutModel.get("workoutTypeValueId")
                 };
 
                 this.trigger("buildTimeInZoneStickitBinding", binding, timeInZone);
@@ -69,7 +70,8 @@ function(_, TP, stickitUtilsMixin, timeInZonesGenerator, ThePeaksGenerator)
                 {
                     observe: modelFieldName,
                     updateModel: "updateModel",
-                    inputId: inputFieldCssId
+                    inputId: inputFieldCssId,
+                    workoutTypeValueId: this.workoutModel.get("workoutTypeValueId")
                 };
 
                 this.trigger("buildPeakStickitBinding", binding, peak);

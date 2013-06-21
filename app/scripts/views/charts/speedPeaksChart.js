@@ -37,7 +37,7 @@ function(TP, PeaksChartView, chartColors)
                         label: peak.label
                     },
                     {
-                        value: TP.utils.conversion.formatPace(peak.value) + " " + this.formatPeakUnitsLabel(peak.value)
+                        value: TP.utils.conversion.formatPace(peak.value, { workoutTypeValueId: this.workoutType }) + " " + this.formatPeakUnitsLabel(peak.value)
                     }
                 ]
             };
@@ -45,12 +45,12 @@ function(TP, PeaksChartView, chartColors)
 
         formatPeakUnitsLabel: function()
         {
-            return "min/" + TP.utils.units.getUnitsLabel("distance", this.workoutType);
+            return TP.utils.units.getUnitsLabel("pace", this.workoutType);
         },
 
         formatYAxisTick: function(value, series)
         {
-            return TP.utils.conversion.formatPace(value);
+            return TP.utils.conversion.formatPace(value, { workoutTypeValueId: this.workoutType });
         }
 
     });
