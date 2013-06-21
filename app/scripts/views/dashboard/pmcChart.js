@@ -7,7 +7,9 @@
     "models/reporting/pmcModel",
     "utilities/charting/flotOptions",
     "utilities/charting/chartColors",
-    "hbs!templates/views/dashboard/pmcChart"
+    "utilities/charting/flotToolTipPositioner",
+    "hbs!templates/views/dashboard/pmcChart",
+    "hbs!templates/views/charts/chartTooltip"
 ],
 function (
     _,
@@ -17,7 +19,9 @@ function (
     PMCModel,
     defaultFlotOptions,
     chartColors,
-    pmcChartTemplate
+    toolTipPositioner,
+    pmcChartTemplate,
+    tooltipTemplate
     )
 {
     return TP.ItemView.extend(
@@ -33,6 +37,7 @@ function (
 
         initialize: function(options)
         {
+            _.bindAll(this, "onHoverToolTip");
             //remove when api endpoint is called
             this.on("render", this.renderChartAfterRender, this);
             
@@ -126,7 +131,22 @@ function (
                 }
             }];
 
+            flotOptions.tooltipOpts.onHover = this.onHoverToolTip;
+
             return flotOptions;
+        },
+        
+        onHoverToolTip: function (flotItem, $tooltipEl)
+        {
+
+            var tooltipData =
+            {
+                tooltips:
+                    [{ label: "Date", value: moment(flotItem.datapoint[0]).format("MM/DD/YY") }, { label: "TSS", value: TP.utils.conversion.formatTSS(flotItem.datapoint[1]) }]
+            };
+            var tooltipHTML = tooltipTemplate(tooltipData);
+            $tooltipEl.html(tooltipHTML);
+            toolTipPositioner.updatePosition($tooltipEl, this.plot);
         },
 
         renderFlotChart: function(dataSeries, flotOptions)
