@@ -484,7 +484,46 @@ function(TP, theMarsApp, TestHelpers)
                 expect(TP.utils.conversion.convertToModelUnits("328", "speed", swimTypeId)).toBeCloseTo(5, 0);
             });
  
+        });
 
+        describe("convertToModelUnits template helper, for swim workouts in metric units", function()
+        {
+            var swimTypeId = TP.utils.workout.types.getIdByName("Swim");
+
+            beforeEach(function()
+            {
+                TestHelpers.startTheApp();
+                theMarsApp.user.set("units", TP.utils.units.constants.Metric);
+            });
+
+            afterEach(function()
+            {
+                TestHelpers.stopTheApp();
+            });
+
+            it("should leave distance units as meters and cut off after 2 decimal places", function()
+            {
+                expect(TP.utils.conversion.convertToModelUnits(0, "distance", swimTypeId)).toBeNull();
+                expect(TP.utils.conversion.convertToModelUnits(1, "distance", swimTypeId)).toBeCloseTo(1, 0);
+                expect(TP.utils.conversion.convertToModelUnits(10, "distance", swimTypeId)).toBeCloseTo(10, 0);
+                expect(TP.utils.conversion.convertToModelUnits(100, "distance", swimTypeId)).toBeCloseTo(100, 0);
+                expect(TP.utils.conversion.convertToModelUnits(1000, "distance", swimTypeId)).toBeCloseTo(1000, 0);
+                expect(TP.utils.conversion.convertToModelUnits(1125, "distance", swimTypeId)).toBeCloseTo(1125, 0);
+            });
+
+            it("should convert a pace value in meters per second to sec/100m, properly formated", function()
+            {
+                expect(TP.utils.conversion.convertToModelUnits("01:40", "pace", swimTypeId)).toBeCloseTo(1, 0);
+                expect(TP.utils.conversion.convertToModelUnits("00:20", "pace", swimTypeId)).toBeCloseTo(5, 0);
+
+            });
+
+            it("Should convert a speed in meters per second to meters per minute, properly formatted", function()
+            {
+                expect(TP.utils.conversion.convertToModelUnits(60, "speed", swimTypeId)).toBe(1);
+                expect(TP.utils.conversion.convertToModelUnits(300, "speed", swimTypeId)).toBe(300);
+            });
+            
         });
     });
 });
