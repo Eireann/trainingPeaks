@@ -8,6 +8,7 @@
     "utilities/charting/flotOptions",
     "utilities/charting/chartColors",
     "utilities/charting/flotToolTipPositioner",
+    "utilities/workout/workoutTypes",
     "hbs!templates/views/dashboard/pmcChart",
     "hbs!templates/views/charts/chartTooltip"
 ],
@@ -20,6 +21,7 @@ function (
     defaultFlotOptions,
     chartColors,
     toolTipPositioner,
+    workoutTypes,
     pmcChartTemplate,
     tooltipTemplate
     )
@@ -47,13 +49,30 @@ function (
                 endDate: moment()
             };
             this.model = new PMCModel(null, chartOptions);
-
             this.model.fetch();
+            this.setTitle();
         },
 
         ui: 
         {
             chartContainer: ".chartContainer"
+        },
+
+        setTitle: function()
+        {
+            var workoutTypesLabel = "";
+            _.each(this.model.workoutTypes, function(item, index)
+            {
+                var intItem = parseInt(item);
+                if (intItem === 0)
+                    workoutTypesLabel += "All";
+                else
+                    workoutTypesLabel += workoutTypes.getNameById(intItem);
+
+                if (index !== (this.model.workoutTypes.length-1))
+                    workoutTypesLabel += ", ";
+            }, this);
+            this.model.set("title", "PMC - Workout Type: " + workoutTypesLabel);
         },
 
         renderChartAfterRender: function()
