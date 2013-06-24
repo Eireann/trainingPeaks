@@ -63,7 +63,7 @@ function (
             var workoutTypesLabel = "";
             _.each(this.model.workoutTypes, function(item, index)
             {
-                var intItem = parseInt(item);
+                var intItem = parseInt(item, 10);
                 if (intItem === 0)
                     workoutTypesLabel += "All";
                 else
