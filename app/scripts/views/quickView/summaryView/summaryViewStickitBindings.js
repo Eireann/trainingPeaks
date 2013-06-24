@@ -330,6 +330,26 @@ function(
                 onGet: "formatTemperature",
                 onSet: "parseTemperature",
                 updateModel: "updateModel"
+            },
+            "label.pace":
+            {
+                observe: "workoutTypeValueId",
+                onGet: "formatPaceLabel"
+            },
+            "label.speed":
+            {
+                observe: "workoutTypeValueId",
+                onGet: "formatSpeedLabel"
+            },
+            "label.distance":
+            {
+                observe: "workoutTypeValueId",
+                onGet: "formatDistanceLabel"
+            },
+            "label.tss":
+            {
+                observe: "tssSource",
+                onGet: "formatTSSLabel"
             }
         },
 
@@ -347,7 +367,28 @@ function(
             {
                 binding.model = this.model;
             }, this);
+        },
+
+        formatPaceLabel: function()
+        {
+            return TP.utils.units.getUnitsLabel("pace", this.model.get("workoutTypeValueId"), this.model);
+        },
+
+        formatSpeedLabel: function()
+        {
+            return TP.utils.units.getUnitsLabel("speed", this.model.get("workoutTypeValueId"), this.model);
+        },
+
+        formatDistanceLabel: function()
+        {
+            return TP.utils.units.getUnitsLabel("distance", this.model.get("workoutTypeValueId"), this.model);
+        },
+
+        formatTssLabel: function()
+        {
+            return TP.utils.units.getUnitsLabel("tss", this.model.get("workoutTypeValueId"), this.model);
         }
+
     };
 
     _.extend(summaryViewStickitBindings, stickitUtilsMixin);
