@@ -67,9 +67,8 @@ function (
 
         renderChart: function()
         {
-
             var chartPoints = this.buildFlotPoints();
-            var dataSeries = this.buildFlotDataSeries(chartPoints, chartColors.gradients.pace);
+            var dataSeries = this.buildFlotDataSeries(chartPoints, chartColors);
             var flotOptions = this.buildFlotChartOptions();
 
             var self = this;
@@ -83,16 +82,33 @@ function (
 
         buildFlotPoints: function()
         {
-            var chartPoints = [];
-            _.each(this.model.get("data"), function (item, index)
+            var data = this.model.get("data");
+            var chartPoints = {
+                TSS: [],
+                ATL: [],
+                CTL: []
+            };
+
+            _.each(data, function (item, index)
             {
                 var dayMoment = moment(item.workoutDay).valueOf();
-                chartPoints.push([dayMoment, item.tssActual]);
+                chartPoints.TSS.push([dayMoment, item.tssActual]);
+                chartPoints.ATL.push([dayMoment, item.atl]);
+                chartPoints.CTL.push([dayMoment, item.ctl]);
             }, this);
             return chartPoints;
         },
-        
-        buildFlotDataSeries: function (chartPoints, chartColor)
+
+        buildFlotDataSeries: function(chartPoints, chartColors)
+        {
+            return [
+                this.buildTSSDataSeries(chartPoints.TSS, chartColors),
+                this.buildATLDataSeries(chartPoints.ATL, chartColors),
+                this.buildCTLDataSeries(chartPoints.CTL, chartColors)
+            ];
+        },
+
+        buildTSSDataSeries: function (chartPoints, chartColors)
         {
             var dataSeries =
             {
@@ -104,17 +120,55 @@ function (
                 }
             };
 
-            return [dataSeries];
+            return dataSeries;
+        },
+
+        buildATLDataSeries: function (chartPoints, chartColors)
+        {
+            var dataSeries =
+            {
+                data: chartPoints,
+                color: "pink",
+                lines:
+                {
+                    show: true
+                }
+            };
+
+            return dataSeries;
+        },
+
+        buildCTLDataSeries: function (chartPoints, chartColors)
+        {
+            var dataSeries =
+            {
+                data: chartPoints,
+                color: "blue",
+                lines:
+                {
+                    show: true
+                }
+            };
+
+            return dataSeries;
         },
 
         buildFlotChartOptions: function()
         {
             var flotOptions = defaultFlotOptions.getGlobalDefaultOptions(null);
 
-            flotOptions.yaxis =
-            {
-                tickDecimals: 0
-            };
+            flotOptions.yaxes =
+            [
+                {
+                    tickDecimals: 0
+                },
+                {
+                    tickDecimals: 0
+                },
+                {
+                    tickDecimals: 0
+                }
+            ];
 
             flotOptions.xaxis =
             {
