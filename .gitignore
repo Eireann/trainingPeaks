@@ -18,3 +18,4 @@ test/specsList.js
 JSLintOptions.xml
 /SeleniumSuite/bin
 /SeleniumSuite/obj
+/.idea
