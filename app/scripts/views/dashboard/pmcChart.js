@@ -28,6 +28,7 @@ function (
     {
         tagName: "div",
         className: "dashboardChart doubleWide",
+        showThrobber: true,
 
         template:
         {
@@ -38,17 +39,64 @@ function (
         initialize: function(options)
         {
             _.bindAll(this, "onHoverToolTip");
-            //remove when api endpoint is called
+
             this.on("render", this.renderChartAfterRender, this);
-            
+
+            this.setupViewModel();
+            this.setupDataModel();
+        },
+
+        setupViewModel: function()
+        {
+            this.model = new TP.Model({
+                title: "PMC",
+                yaxisLabel: "TSS/d",
+                xaxisLabel: "Date"
+            });
+
+        },
+
+        setupDataModel: function()
+        {
+
+            this.onWaitStart();
+
             var chartOptions =
             {
                 startDate: moment().subtract('days', 90),
                 endDate: moment()
             };
-            this.model = new PMCModel(null, chartOptions);
 
-            this.model.fetch();
+            this.pmcModel = new PMCModel(null, chartOptions);
+
+            this.bindPmcModelEvents();
+
+            this.on("user:loaded", this.fetchData, this);
+
+            this.on("close", this.unbindPmcModelEvents, this);
+        },
+
+        bindPmcModelEvents: function()
+        {
+            _.each(_.keys(this.modelEvents), function(eventName)
+            {
+                this.pmcModel.on(eventName, this[this.modelEvents[eventName]], this);
+            }, this);
+        },
+
+        unbindPmcModelEvents: function()
+        {
+            _.each(_.keys(this.modelEvents), function(eventName)
+            {
+                this.pmcModel.off(eventName, this[this.modelEvents[eventName]], this);
+            }, this);
+
+        },
+
+        fetchData: function()
+        {
+            var self = this;
+            this.pmcModel.fetch();
         },
 
         ui: 
@@ -82,7 +130,7 @@ function (
 
         buildFlotPoints: function()
         {
-            var data = this.model.get("data");
+            var data = this.pmcModel.get("data");
             var chartPoints = {
                 TSS: [],
                 ATL: [],
@@ -117,7 +165,8 @@ function (
                 points:
                 {
                     show: true
-                }
+                },
+                yaxis: 1 
             };
 
             return dataSeries;
@@ -132,13 +181,14 @@ function (
                 lines:
                 {
                     show: true
-                }
+                },
+                yaxis: 2 
             };
 
             return dataSeries;
         },
 
-        buildCTLDataSeries: function (chartPoints, chartColors)
+        buildCTLDataSeries: function(chartPoints, chartColors)
         {
             var dataSeries =
             {
@@ -147,7 +197,8 @@ function (
                 lines:
                 {
                     show: true
-                }
+                },
+                yaxis: 2
             };
 
             return dataSeries;
@@ -160,23 +211,20 @@ function (
             flotOptions.yaxes =
             [
                 {
-                    tickDecimals: 0
+                    tickDecimals: 0,
+                    position: "left"
                 },
                 {
-                    tickDecimals: 0
-                },
-                {
-                    tickDecimals: 0
+                    tickDecimals: 0,
+                    position: "right"
                 }
             ];
 
-            flotOptions.xaxis =
-            {
-                color: "transparent"
-            };
 
             flotOptions.xaxes = [
             {
+                color: "transparent",
+
                 tickFormatter: function(value, axis)
                 {
                     var instance = moment(value);
@@ -192,15 +240,20 @@ function (
         
         onHoverToolTip: function (flotItem, $tooltipEl)
         {
-
-            var tooltipData =
-            {
-                tooltips:
-                    [{ label: "Date", value: moment(flotItem.datapoint[0]).format("MM/DD/YY") }, { label: "TSS", value: TP.utils.conversion.formatTSS(flotItem.datapoint[1]) }]
-            };
-            var tooltipHTML = tooltipTemplate(tooltipData);
+            var tooltipHTML = tooltipTemplate({ tooltips: this.buildTooltipData(flotItem.dataIndex) });
             $tooltipEl.html(tooltipHTML);
             toolTipPositioner.updatePosition($tooltipEl, this.plot);
+        },
+
+        buildTooltipData: function(index)
+        {
+            var tips = [];
+            var item = this.pmcModel.get("data")[index];
+            tips.push({ label: "Date", value: moment(item.workoutDay).format("MM/DD/YY") });
+            tips.push({ label: "TSS", value: TP.utils.conversion.formatTSS(item.tssActual, { defaultValue: "--" }) });
+            tips.push({ label: "Acute Training Load ('ATL')", value: TP.utils.conversion.formatTSS(item.atl) });
+            tips.push({ label: "Chronic Training Load ('CTL')", value: TP.utils.conversion.formatTSS(item.ctl) });
+            return tips;
         },
 
         renderFlotChart: function(dataSeries, flotOptions)

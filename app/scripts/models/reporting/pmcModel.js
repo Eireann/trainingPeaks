@@ -11,9 +11,6 @@ function (moment, TP)
 
         defaults:
         {
-            title: "PMC",
-            yaxisLabel: "TSS",
-            xaxisLabel: "Date",
             data: []
         },
 
