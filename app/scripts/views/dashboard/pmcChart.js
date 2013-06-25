@@ -44,25 +44,26 @@ function (
 
             this.on("render", this.renderChartAfterRender, this);
 
-            this.setupViewModel();
-            this.setupDataModel();
+            this.setupViewModel(options);
+            this.setupDataModel(options);
         },
 
-        setupViewModel: function()
+        setupViewModel: function(options)
         {
             this.model = new TP.Model();
         },
 
-        setupDataModel: function()
+        setupDataModel: function(options)
         {
 
             this.onWaitStart();
 
-            var chartOptions =
-            {
-                startDate: moment().subtract('days', 90),
-                endDate: moment()
-            };
+            var chartOptions = _.extend({}, options);
+            _.extend(chartOptions,
+                {
+                    startDate: moment().subtract('days', 90),
+                    endDate: moment()
+                });
 
             this.pmcModel = new PMCModel(null, chartOptions);
 
@@ -95,7 +96,7 @@ function (
             var self = this;
             this.pmcModel.fetch().done(function()
             {
-                self.setTitle();
+                self.setChartTitle();
             });
         },
 
@@ -104,21 +105,24 @@ function (
             chartContainer: ".chartContainer"
         },
 
-        setTitle: function()
+        setChartTitle: function()
         {
-            var workoutTypesLabel = "";
-            _.each(this.pmcModel.workoutTypes, function(item, index)
+            var workoutTypesTitle = this.buildWorkoutTypesTitle(this.pmcModel.workoutTypes);
+            this.model.set("title", workoutTypesTitle);
+        },
+
+        buildWorkoutTypesTitle: function(workoutTypeIds)
+        {
+            var workoutTypeNames = [];
+            _.each(workoutTypeIds, function(item, index)
             {
                 var intItem = parseInt(item, 10);
                 if (intItem === 0)
-                    workoutTypesLabel += "All";
+                    workoutTypeNames.push("All");
                 else
-                    workoutTypesLabel += workoutTypes.getNameById(intItem);
-
-                if (index !== (this.pmcModel.workoutTypes.length-1))
-                    workoutTypesLabel += ", ";
+                    workoutTypeNames.push(workoutTypes.getNameById(intItem));
             }, this);
-            this.model.set("title", "PMC - Workout Type: " + workoutTypesLabel);
+            return "PMC - Workout Type: " + workoutTypeNames.join(", ");
         },
 
         renderChartAfterRender: function()
@@ -132,7 +136,7 @@ function (
 
         renderChart: function()
         {
-            var chartPoints = this.buildFlotPoints();
+            var chartPoints = this.buildFlotPoints(this.pmcModel.get("data"));
             var dataSeries = this.buildFlotDataSeries(chartPoints, chartColors);
             var flotOptions = this.buildFlotChartOptions();
 
@@ -145,16 +149,15 @@ function (
             });
         },
 
-        buildFlotPoints: function()
+        buildFlotPoints: function(modelData)
         {
-            var data = this.pmcModel.get("data");
             var chartPoints = {
                 TSS: [],
                 ATL: [],
                 CTL: []
             };
 
-            _.each(data, function (item, index)
+            _.each(modelData, function (item, index)
             {
                 var dayMoment = moment(item.workoutDay).valueOf();
                 chartPoints.TSS.push([dayMoment, item.tssActual]);
@@ -183,7 +186,7 @@ function (
                 {
                     show: true
                 },
-                yaxis: 1 
+                yaxis: 1
             };
 
             return dataSeries;
@@ -233,7 +236,8 @@ function (
                 },
                 {
                     tickDecimals: 0,
-                    position: "right"
+                    position: "right",
+                    color: "transparent"
                 }
             ];
 

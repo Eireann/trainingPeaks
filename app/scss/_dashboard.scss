@@ -74,6 +74,12 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
         &.pmc
         {
             text-transform: none;
+
+            &.tss
+            {
+                position: absolute;
+                right: -25px;
+            }
         }
     }
 

@@ -3,12 +3,16 @@ requirejs(
 [
     "jquery",
     "TP",
+    "testUtils/testHelpers",
+    "testUtils/xhrDataStubs",
     "app",
     "controllers/dashboardController"
 ],
 function(
     $,
     TP,
+    testHelpers,
+    xhrData,
     theMarsApp,
     DashboardController
     )
@@ -23,6 +27,13 @@ function(
             {
                 return $.Deferred();
             });
+
+            testHelpers.startTheApp();
+        });
+
+        afterEach(function()
+        {
+            testHelpers.stopTheApp();
         });
 
         it("Should load successfully as a module", function()
