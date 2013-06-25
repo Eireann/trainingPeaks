@@ -32,7 +32,8 @@ function(
                 workoutDay: moment().add("days", i).format(TP.utils.datetime.shortDateFormat),
                 tssActual: i * 10,
                 atl: i * 5,
-                ctl: i * 20
+                ctl: i * 20,
+                tsb: i - 20
             });
         }
   
@@ -189,6 +190,47 @@ function(
                     );
                 });
             });
+
+
+            describe("TSB", function()
+            {
+                var chartPoints, chart, modelData;
+                beforeEach(function()
+                {
+                    modelData = buildPmcModelData(10);
+                    chart = new PmcChart();
+                    chartPoints = chart.buildFlotPoints(modelData);
+                });
+
+                it("Should return TSB data in the flot points", function()
+                {
+                    expect(chartPoints.TSB).toBeDefined();
+                    expect(chartPoints.TSB.length).toEqual(modelData.length);
+                });
+
+                it("Should put the correct values in the TSB points", function()
+                {
+                    _.each(chartPoints.TSB, function(chartPoint, index)
+                    {
+                        expect(chartPoint[1]).toEqual(index - 20);
+                    });
+                });
+
+                it("Should include a date for each TSB point", function()
+                {
+                    expect(
+                        moment(chartPoints.TSB[0][0]).format(TP.utils.datetime.shortDateFormat)
+                    ).toEqual(
+                        moment().format(TP.utils.datetime.shortDateFormat)
+                    );
+
+                    expect(
+                        moment(chartPoints.TSB[9][0]).format(TP.utils.datetime.shortDateFormat)
+                    ).toEqual(
+                        moment().add("days", 9).format(TP.utils.datetime.shortDateFormat)
+                    );
+                });
+            });
         });
 
         describe("Build flot data series", function()
@@ -205,7 +247,7 @@ function(
 
             it("Should contain three items", function()
             {
-                expect(chartSeries.length).toBe(3);
+                expect(chartSeries.length).toBe(4);
             });
         });
 

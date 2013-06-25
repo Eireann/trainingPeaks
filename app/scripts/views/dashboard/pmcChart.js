@@ -154,7 +154,8 @@ function (
             var chartPoints = {
                 TSS: [],
                 ATL: [],
-                CTL: []
+                CTL: [],
+                TSB: []
             };
 
             _.each(modelData, function (item, index)
@@ -163,6 +164,7 @@ function (
                 chartPoints.TSS.push([dayMoment, item.tssActual]);
                 chartPoints.ATL.push([dayMoment, item.atl]);
                 chartPoints.CTL.push([dayMoment, item.ctl]);
+                chartPoints.TSB.push([dayMoment, item.tsb]);
             }, this);
             return chartPoints;
         },
@@ -172,7 +174,8 @@ function (
             return [
                 this.buildTSSDataSeries(chartPoints.TSS, chartColors),
                 this.buildATLDataSeries(chartPoints.ATL, chartColors),
-                this.buildCTLDataSeries(chartPoints.CTL, chartColors)
+                this.buildCTLDataSeries(chartPoints.CTL, chartColors),
+                this.buildTSBDataSeries(chartPoints.TSB, chartColors)
             ];
         },
 
@@ -181,7 +184,7 @@ function (
             var dataSeries =
             {
                 data: chartPoints,
-                color: "red",
+                color: chartColors.pmcColors.TSS,
                 points:
                 {
                     show: true
@@ -197,12 +200,12 @@ function (
             var dataSeries =
             {
                 data: chartPoints,
-                color: "pink",
+                color: chartColors.pmcColors.ATL,
                 lines:
                 {
                     show: true
                 },
-                yaxis: 2 
+                yaxis: 2
             };
 
             return dataSeries;
@@ -213,12 +216,28 @@ function (
             var dataSeries =
             {
                 data: chartPoints,
-                color: "blue",
+                color: chartColors.pmcColors.CTL,
                 lines:
                 {
                     show: true
                 },
                 yaxis: 2
+            };
+
+            return dataSeries;
+        },
+
+        buildTSBDataSeries: function (chartPoints, chartColors)
+        {
+            var dataSeries =
+            {
+                data: chartPoints,
+                color: chartColors.pmcColors.TSB,
+                lines:
+                {
+                    show: true
+                },
+                yaxis: 3
             };
 
             return dataSeries;
@@ -230,14 +249,27 @@ function (
 
             flotOptions.yaxes =
             [
+
                 {
                     tickDecimals: 0,
-                    position: "left"
+                    position: "left",
+                    color: "transparent",
+                    font: {
+                        color: chartColors.pmcColors.TSS
+                    }
+                },
+                {
+                    tickDecimals: 0,
+                    position: "left",
+                    color: "transparent"
                 },
                 {
                     tickDecimals: 0,
                     position: "right",
-                    color: "transparent"
+                    color: "transparent",
+                    font: {
+                        color: chartColors.pmcColors.TSB
+                    }
                 }
             ];
 
@@ -274,6 +306,7 @@ function (
             tips.push({ label: "TSS", value: TP.utils.conversion.formatTSS(item.tssActual, { defaultValue: "--" }) });
             tips.push({ label: "Acute Training Load (ATL)", value: TP.utils.conversion.formatTSS(item.atl) });
             tips.push({ label: "Chronic Training Load (CTL)", value: TP.utils.conversion.formatTSS(item.ctl) });
+            tips.push({ label: "Training Stress Balance (TSB)", value: TP.utils.conversion.formatTSB(item.tsb) });
             return tips;
         },
 

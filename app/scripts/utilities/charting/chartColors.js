@@ -17,6 +17,14 @@ function()
                 "Torque": "#BDBDBD"
             },
 
+        pmcColors:
+            {
+                TSS: "#e61101",
+                TSB: "#FFA500",
+                ATL: "pink",
+                CTL: "#1b82ce"
+            },
+
         gradients:
             {
                 heartRate: { light: "#ec412b", dark: "#b82410" },

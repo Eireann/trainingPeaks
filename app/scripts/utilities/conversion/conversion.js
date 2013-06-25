@@ -267,6 +267,13 @@
             return adjustFieldRange(parseFloat(value).toFixed(1), "TSS");
         },
 
+        formatTSB: function(value, options)
+        {
+            var formattedValue = value ? (Math.round(value * 10) / 10).toFixed(1) : 0;
+            var limitedValue = adjustFieldRange(formattedValue, "TSB");
+            return this.formatEmptyValue(limitedValue, options);
+        },
+
         formatEnergy: function(value, options)
         {
             var formattedValue = value ? +(Math.round(value)) : 0;

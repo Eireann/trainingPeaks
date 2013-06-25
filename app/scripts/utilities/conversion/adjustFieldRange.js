@@ -9,6 +9,7 @@ function ()
         speed: 999,
         distance: 999999,
         TSS: 9999,
+        TSB: 9999,
         calories: 99999,
         elevationGain: 99999,
         elevationLoss: 99999,
@@ -25,7 +26,8 @@ function ()
     var minimums = {
         pace: 1 / (60 * 60),
         elevation: -15000,
-        temp: -999
+        temp: -999,
+        TSB: -9999
     };
 
     var adjustFieldRange = function (value, fieldName)

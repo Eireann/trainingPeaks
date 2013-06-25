@@ -98,6 +98,7 @@
 	"ElevationGain": "Elevation Gain",
 	"ElevationLoss": "Elevation Loss",
 	"TSS": "TSS",
+    "TSB": "TSB",
     "TSSD": "TSS/d",
 	"IF": "IF",
 	"Energy": "Energy",
