@@ -2,20 +2,25 @@ define(
 [
     "moment",
     "TP",
-    "models/calendar/calendarDay"
+    "models/calendar/calendarDay",
+    "models/selectedWorkoutCollection"
 ],
-function(moment, TP, CalendarDayModel)
+function(moment, TP, CalendarDayModel, SelectedWorkoutCollection)
 {
     var CalendarWeekCollection = TP.Collection.extend(
     {
         
         deleteWeekItems: function()
         {
+            var selectedWorkoutCollection = new SelectedWorkoutCollection();
             this.each(function(item)
             {
-                if (item.deleteDayItems)
-                    item.deleteDayItems();
+                if (item instanceof CalendarDayModel)
+                {
+                    selectedWorkoutCollection.add(item.getWorkoutItems());
+                }
             });
+            selectedWorkoutCollection.deleteWorkouts();
         },
 
         copyToClipboard: function()
