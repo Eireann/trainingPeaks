@@ -8,6 +8,7 @@
     "utilities/charting/flotOptions",
     "utilities/charting/chartColors",
     "utilities/charting/flotToolTipPositioner",
+    "utilities/workout/workoutTypes",
     "hbs!templates/views/dashboard/pmcChart",
     "hbs!templates/views/charts/chartTooltip"
 ],
@@ -20,6 +21,7 @@ function (
     defaultFlotOptions,
     chartColors,
     toolTipPositioner,
+    workoutTypes,
     pmcChartTemplate,
     tooltipTemplate
     )
@@ -48,12 +50,7 @@ function (
 
         setupViewModel: function()
         {
-            this.model = new TP.Model({
-                title: "PMC",
-                yaxisLabel: "TSS/d",
-                xaxisLabel: "Date"
-            });
-
+            this.model = new TP.Model();
         },
 
         setupDataModel: function()
@@ -96,12 +93,32 @@ function (
         fetchData: function()
         {
             var self = this;
-            this.pmcModel.fetch();
+            this.pmcModel.fetch().done(function()
+            {
+                self.setTitle();
+            });
         },
 
         ui: 
         {
             chartContainer: ".chartContainer"
+        },
+
+        setTitle: function()
+        {
+            var workoutTypesLabel = "";
+            _.each(this.pmcModel.workoutTypes, function(item, index)
+            {
+                var intItem = parseInt(item, 10);
+                if (intItem === 0)
+                    workoutTypesLabel += "All";
+                else
+                    workoutTypesLabel += workoutTypes.getNameById(intItem);
+
+                if (index !== (this.pmcModel.workoutTypes.length-1))
+                    workoutTypesLabel += ", ";
+            }, this);
+            this.model.set("title", "PMC - Workout Type: " + workoutTypesLabel);
         },
 
         renderChartAfterRender: function()

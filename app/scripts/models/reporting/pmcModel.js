@@ -22,7 +22,7 @@ function (moment, TP)
                 this.endDate = options.endDate;
             }
 
-            this.workoutTypes = 0;
+            this.workoutTypes = [0];
             this.ctlConstant = 42;
             this.ctlStart = 40;
             this.atlConstant = 7;
