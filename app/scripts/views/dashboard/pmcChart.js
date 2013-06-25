@@ -272,8 +272,8 @@ function (
             var item = this.pmcModel.get("data")[index];
             tips.push({ label: "Date", value: moment(item.workoutDay).format("MM/DD/YY") });
             tips.push({ label: "TSS", value: TP.utils.conversion.formatTSS(item.tssActual, { defaultValue: "--" }) });
-            tips.push({ label: "Acute Training Load ('ATL')", value: TP.utils.conversion.formatTSS(item.atl) });
-            tips.push({ label: "Chronic Training Load ('CTL')", value: TP.utils.conversion.formatTSS(item.ctl) });
+            tips.push({ label: "Acute Training Load (ATL)", value: TP.utils.conversion.formatTSS(item.atl) });
+            tips.push({ label: "Chronic Training Load (CTL)", value: TP.utils.conversion.formatTSS(item.ctl) });
             return tips;
         },
 
