@@ -46,6 +46,9 @@ function(
             this.createViews();
             this.displayViews();
 
+            // wait for user to load ...
+            this.setupUserFetchPromise();
+
             // our parent class PageContainerController needs this to trigger the window resize functionality
             this.trigger("show");
         },
@@ -62,6 +65,20 @@ function(
             this.layout.dashboardRegion.show(this.views.dashboard);
             this.layout.libraryRegion.show(this.views.library);
             this.layout.headerRegion.show(this.views.header);
+        },
+
+        setupUserFetchPromise: function()
+        {
+            var self = this;
+            theMarsApp.userFetchPromise.done(function()
+            {
+                _.each(self.views, function(view)
+                {
+                    view.trigger("user:loaded");
+                }, self);
+
+            });
         }
+
     });
 });

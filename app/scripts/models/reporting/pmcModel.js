@@ -11,25 +11,38 @@ function (moment, TP)
 
         defaults:
         {
-            title: "PMC",
-            yaxisLabel: "TSS",
-            xaxisLabel: "Date",
             data: []
         },
 
         initialize: function (attributes, options)
         {
-            if (options)
-            {
-                this.startDate = options.startDate;
-                this.endDate = options.endDate;
-            }
+            this.setDefaultParameters();
+            this.setParametersFromOptions(options);
+        },
 
+        setDefaultParameters: function()
+        {
             this.workoutTypes = [0];
             this.ctlConstant = 42;
             this.ctlStart = 40;
             this.atlConstant = 7;
             this.atlStart = 40;
+        },
+
+        setParametersFromOptions: function(options)
+        {
+            if (!options)
+                return;
+
+            var parameterNames = ["workoutTypes", "ctlConstant", "ctlStart", "atlConstant", "atlStart", "startDate", "endDate"];
+
+            _.each(parameterNames, function(name)
+            {
+                if (options.hasOwnProperty(name))
+                {
+                    this[name] = options[name];
+                }
+            }, this);
         },
 
         urlRoot: function ()

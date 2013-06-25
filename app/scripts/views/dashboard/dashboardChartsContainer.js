@@ -34,6 +34,7 @@ function(
             this.charts = [];
             this.on("render", this.renderDashboardCharts, this);
             this.on("close", this.closeDashboardCharts, this);
+            this.on("user:loaded", this.onUserLoaded, this);
 
             // initialize the superclass
             this.constructor.__super__.initialize.call(this);
@@ -66,6 +67,14 @@ function(
             _.each(this.charts, function(chartView)
             {
                 chartView.close();
+            }, this);
+        },
+
+        onUserLoaded: function()
+        {
+            _.each(this.charts, function(chartView)
+            {
+                chartView.trigger("user:loaded");
             }, this);
         }
 

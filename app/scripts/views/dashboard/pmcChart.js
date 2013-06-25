@@ -30,6 +30,7 @@ function (
     {
         tagName: "div",
         className: "dashboardChart doubleWide",
+        showThrobber: true,
 
         template:
         {
@@ -40,17 +41,63 @@ function (
         initialize: function(options)
         {
             _.bindAll(this, "onHoverToolTip");
-            //remove when api endpoint is called
+
             this.on("render", this.renderChartAfterRender, this);
-            
-            var chartOptions =
+
+            this.setupViewModel(options);
+            this.setupDataModel(options);
+        },
+
+        setupViewModel: function(options)
+        {
+            this.model = new TP.Model();
+        },
+
+        setupDataModel: function(options)
+        {
+
+            this.onWaitStart();
+
+            var chartOptions = _.extend({}, options);
+            _.extend(chartOptions,
+                {
+                    startDate: moment().subtract('days', 90),
+                    endDate: moment()
+                });
+
+            this.pmcModel = new PMCModel(null, chartOptions);
+
+            this.bindPmcModelEvents();
+
+            this.on("user:loaded", this.fetchData, this);
+
+            this.on("close", this.unbindPmcModelEvents, this);
+        },
+
+        bindPmcModelEvents: function()
+        {
+            _.each(_.keys(this.modelEvents), function(eventName)
             {
-                startDate: moment().subtract('days', 90),
-                endDate: moment()
-            };
-            this.model = new PMCModel(null, chartOptions);
-            this.model.fetch();
-            this.setTitle();
+                this.pmcModel.on(eventName, this[this.modelEvents[eventName]], this);
+            }, this);
+        },
+
+        unbindPmcModelEvents: function()
+        {
+            _.each(_.keys(this.modelEvents), function(eventName)
+            {
+                this.pmcModel.off(eventName, this[this.modelEvents[eventName]], this);
+            }, this);
+
+        },
+
+        fetchData: function()
+        {
+            var self = this;
+            this.pmcModel.fetch().done(function()
+            {
+                self.setChartTitle();
+            });
         },
 
         ui: 
@@ -58,21 +105,24 @@ function (
             chartContainer: ".chartContainer"
         },
 
-        setTitle: function()
+        setChartTitle: function()
         {
-            var workoutTypesLabel = "";
-            _.each(this.model.workoutTypes, function(item, index)
+            var workoutTypesTitle = this.buildWorkoutTypesTitle(this.pmcModel.workoutTypes);
+            this.model.set("title", workoutTypesTitle);
+        },
+
+        buildWorkoutTypesTitle: function(workoutTypeIds)
+        {
+            var workoutTypeNames = [];
+            _.each(workoutTypeIds, function(item, index)
             {
                 var intItem = parseInt(item, 10);
                 if (intItem === 0)
-                    workoutTypesLabel += "All";
+                    workoutTypeNames.push("All");
                 else
-                    workoutTypesLabel += workoutTypes.getNameById(intItem);
-
-                if (index !== (this.model.workoutTypes.length-1))
-                    workoutTypesLabel += ", ";
+                    workoutTypeNames.push(workoutTypes.getNameById(intItem));
             }, this);
-            this.model.set("title", "PMC - Workout Type: " + workoutTypesLabel);
+            return "PMC - Workout Type: " + workoutTypeNames.join(", ");
         },
 
         renderChartAfterRender: function()
@@ -86,9 +136,8 @@ function (
 
         renderChart: function()
         {
-
-            var chartPoints = this.buildFlotPoints();
-            var dataSeries = this.buildFlotDataSeries(chartPoints, chartColors.gradients.pace);
+            var chartPoints = this.buildFlotPoints(this.pmcModel.get("data"));
+            var dataSeries = this.buildFlotDataSeries(chartPoints, chartColors);
             var flotOptions = this.buildFlotChartOptions();
 
             var self = this;
@@ -100,18 +149,34 @@ function (
             });
         },
 
-        buildFlotPoints: function()
+        buildFlotPoints: function(modelData)
         {
-            var chartPoints = [];
-            _.each(this.model.get("data"), function (item, index)
+            var chartPoints = {
+                TSS: [],
+                ATL: [],
+                CTL: []
+            };
+
+            _.each(modelData, function (item, index)
             {
                 var dayMoment = moment(item.workoutDay).valueOf();
-                chartPoints.push([dayMoment, item.tssActual]);
+                chartPoints.TSS.push([dayMoment, item.tssActual]);
+                chartPoints.ATL.push([dayMoment, item.atl]);
+                chartPoints.CTL.push([dayMoment, item.ctl]);
             }, this);
             return chartPoints;
         },
-        
-        buildFlotDataSeries: function (chartPoints, chartColor)
+
+        buildFlotDataSeries: function(chartPoints, chartColors)
+        {
+            return [
+                this.buildTSSDataSeries(chartPoints.TSS, chartColors),
+                this.buildATLDataSeries(chartPoints.ATL, chartColors),
+                this.buildCTLDataSeries(chartPoints.CTL, chartColors)
+            ];
+        },
+
+        buildTSSDataSeries: function (chartPoints, chartColors)
         {
             var dataSeries =
             {
@@ -120,28 +185,67 @@ function (
                 points:
                 {
                     show: true
-                }
+                },
+                yaxis: 1
             };
 
-            return [dataSeries];
+            return dataSeries;
+        },
+
+        buildATLDataSeries: function (chartPoints, chartColors)
+        {
+            var dataSeries =
+            {
+                data: chartPoints,
+                color: "pink",
+                lines:
+                {
+                    show: true
+                },
+                yaxis: 2 
+            };
+
+            return dataSeries;
+        },
+
+        buildCTLDataSeries: function(chartPoints, chartColors)
+        {
+            var dataSeries =
+            {
+                data: chartPoints,
+                color: "blue",
+                lines:
+                {
+                    show: true
+                },
+                yaxis: 2
+            };
+
+            return dataSeries;
         },
 
         buildFlotChartOptions: function()
         {
             var flotOptions = defaultFlotOptions.getGlobalDefaultOptions(null);
 
-            flotOptions.yaxis =
-            {
-                tickDecimals: 0
-            };
+            flotOptions.yaxes =
+            [
+                {
+                    tickDecimals: 0,
+                    position: "left"
+                },
+                {
+                    tickDecimals: 0,
+                    position: "right",
+                    color: "transparent"
+                }
+            ];
 
-            flotOptions.xaxis =
-            {
-                color: "transparent"
-            };
 
             flotOptions.xaxes = [
             {
+                color: "transparent",
+
                 tickFormatter: function(value, axis)
                 {
                     var instance = moment(value);
@@ -157,15 +261,20 @@ function (
         
         onHoverToolTip: function (flotItem, $tooltipEl)
         {
-
-            var tooltipData =
-            {
-                tooltips:
-                    [{ label: "Date", value: moment(flotItem.datapoint[0]).format("MM/DD/YY") }, { label: "TSS", value: TP.utils.conversion.formatTSS(flotItem.datapoint[1]) }]
-            };
-            var tooltipHTML = tooltipTemplate(tooltipData);
+            var tooltipHTML = tooltipTemplate({ tooltips: this.buildTooltipData(flotItem.dataIndex) });
             $tooltipEl.html(tooltipHTML);
             toolTipPositioner.updatePosition($tooltipEl, this.plot);
+        },
+
+        buildTooltipData: function(index)
+        {
+            var tips = [];
+            var item = this.pmcModel.get("data")[index];
+            tips.push({ label: "Date", value: moment(item.workoutDay).format("MM/DD/YY") });
+            tips.push({ label: "TSS", value: TP.utils.conversion.formatTSS(item.tssActual, { defaultValue: "--" }) });
+            tips.push({ label: "Acute Training Load ('ATL')", value: TP.utils.conversion.formatTSS(item.atl) });
+            tips.push({ label: "Chronic Training Load ('CTL')", value: TP.utils.conversion.formatTSS(item.ctl) });
+            return tips;
         },
 
         renderFlotChart: function(dataSeries, flotOptions)
