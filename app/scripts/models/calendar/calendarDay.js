@@ -2,9 +2,11 @@
 [
     "underscore",
     "moment",
-    "TP"
+    "TP",
+    "models/workoutModel",
+    "models/selectedWorkoutCollection"
 ],
-function(_, moment, TP)
+function(_, moment, TP, WorkoutModel, SelectedWorkoutCollection)
 {
 
     var CalendarDay = TP.Model.extend(
@@ -58,13 +60,31 @@ function(_, moment, TP)
             this.itemsCollection.remove(item);
         },
 
+        //deleteDayItems: function()
+        //{
+        //    this.itemsCollection.each(function(item)
+        //    {
+        //        if (!item.isDateLabel)
+        //            item.destroy({ wait: true });
+        //    });
+        //},
+        
         deleteDayItems: function()
         {
-            this.itemsCollection.each(function(item)
+            var workoutItems = this.getWorkoutItems();
+            var selectedWorkoutcollection = new SelectedWorkoutCollection(workoutItems);
+            selectedWorkoutcollection.deleteWorkouts();
+        },
+        
+        getWorkoutItems: function()
+        {
+            var workoutsList = [];
+            this.itemsCollection.each(function (item)
             {
-                if (!item.isDateLabel)
-                    item.destroy({ wait: true });
+                if (item instanceof WorkoutModel)
+                    workoutsList.push(item);
             });
+            return workoutsList;
         },
 
         copyToClipboard: function()

@@ -24,9 +24,9 @@ function (moment, TP)
         {
             this.workoutTypes = [0];
             this.ctlConstant = 42;
-            this.ctlStart = 40;
+            this.ctlStart = 0;
             this.atlConstant = 7;
-            this.atlStart = 40;
+            this.atlStart = 0;
         },
 
         setParametersFromOptions: function(options)
