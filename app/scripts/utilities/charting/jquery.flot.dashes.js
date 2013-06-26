@@ -142,7 +142,7 @@ function(
                                 x2 = axisx.max;
                             }
 
-                            if (x1 != prevx || y1 != prevy)
+                            if (x1 !== prevx || y1 !== prevy)
                             {
                                 ctx.moveTo(axisx.p2c(x1) + xoffset, axisy.p2c(y1) + yoffset);
                             }
@@ -153,7 +153,8 @@ function(
                                 ay2 = axisy.p2c(y2) + yoffset,
                                 dashOffset;
 
-                            function lineSegmentOffset(segmentLength)
+                            /*jshint loopfunc:true*/
+                            var lineSegmentOffset = function(segmentLength)
                             {
 
                                 var c = Math.sqrt(Math.pow(ax2 - ax1, 2) + Math.pow(ay2 - ay1, 2));
@@ -165,7 +166,7 @@ function(
                                         deltaY: ay2 - ay1,
                                         distance: c,
                                         remainder: segmentLength - c
-                                    }
+                                    };
                                 } else
                                 {
                                     var xsign = ax2 > ax1 ? 1 : -1,
@@ -177,7 +178,7 @@ function(
                                         remainder: 0
                                     };
                                 }
-                            }
+                            };
                             //-end lineSegmentOffset
 
                             do
@@ -187,7 +188,7 @@ function(
                                     dashRemainder > 0 ? dashRemainder :
                                       dashOn ? dashOnLength : dashOffLength);
 
-                                if (dashOffset.deltaX != 0 || dashOffset.deltaY != 0)
+                                if (dashOffset.deltaX !== 0 || dashOffset.deltaY !== 0)
                                 {
                                     if (dashOn)
                                     {
