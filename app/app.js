@@ -170,6 +170,11 @@ function(
 
         this.featureAllowedForUser = function(feature, user)
         {
+            if (!this.isLive())
+            {
+                return true;
+            }
+
             switch (feature)
             {
                 case "alpha1":
@@ -354,7 +359,7 @@ function(
         {
             this.started = true;
         });
-        
+
         this.isLive = function()
         {
             // if we're in local or dev mode, use DEBUG log level etc
@@ -427,6 +432,20 @@ function(
         this.assetsRoot = this.apiRootName === 'dev' ? 'build/debug/assets/' : 'assets/';
 
     };
+
+
+    theApp.currentController = null;
+
+    theApp.getCurrentController = function()
+    {
+        return this.currentController;
+    }
+
+    theApp.showController = function(controller)
+    {
+        this.currentController = controller;
+        this.mainRegion.show(controller.getLayout());
+    }
 
 
     theApp.resetAppToInitialState();

@@ -39,14 +39,15 @@ function (_, TP)
             "login": "login",
             "home": "home",
             "calendar": "calendar",
+            "calendar/athlete/:athleteId": "calendarAsAthlete",
             "dashboard": "dashboard",
             "tools": "tools",
-            "": "calendar"  
+            "": "calendar"
         },
 
         login: function ()
         {
-            theMarsApp.mainRegion.show(theMarsApp.controllers.loginController.getLayout());
+            theMarsApp.showController(theMarsApp.controllers.loginController);
         },
 
         home: function ()
@@ -71,7 +72,7 @@ function (_, TP)
                     }
                 }
             });
-            
+
             theMarsApp.mainRegion.show(homeview);
         },
 
@@ -79,13 +80,25 @@ function (_, TP)
         {
             this.checkAuth();
 
-            theMarsApp.mainRegion.show(theMarsApp.controllers.calendarController.getLayout());
+            if (theMarsApp.getCurrentController() === theMarsApp.controllers.calendarController)
+            {
+                theMarsApp.controllers.calendarController.trigger("refresh");
+            } else
+            {
+                theMarsApp.showController(theMarsApp.controllers.calendarController);
+            }
+        },
+
+        calendarAsAthlete: function (athleteId)
+        {
+            theMarsApp.user.setCurrentAthleteId(athleteId);
+            this.calendar();
         },
 
         dashboard: function()
         {
             this.checkAuth();
-            theMarsApp.mainRegion.show(theMarsApp.controllers.dashboardController.getLayout());
+            theMarsApp.showController(theMarsApp.controllers.dashboardController);
         },
         
         tools: function()

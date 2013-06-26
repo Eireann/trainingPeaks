@@ -55,6 +55,8 @@ function(
 
             this.weeksCollectionInitialize();
 
+            this.on("refresh", this.onRequestRefresh, this);
+
             // call parent constructor
             this.constructor.__super__.initialize.call(this);
         },
@@ -343,7 +345,7 @@ function(
 
         onRequestRefresh: function(currentWeekModel)
         {
-            var dateAsMoment = moment(currentWeekModel.get("date"));
+            var dateAsMoment = currentWeekModel ? moment(currentWeekModel.get("date")) : moment();
 
             if (dateAsMoment.day() !== this.startOfWeekDayIndex)
             {

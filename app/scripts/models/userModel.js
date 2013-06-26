@@ -65,7 +65,17 @@ function(TP, AthleteSettingsModel)
                 this.set(this.checkpointAttributes);
         },
 
+        setCurrentAthleteId: function(athleteId)
+        {
+            this.currentAthleteId = athleteId;
+        },
+
         getCurrentAthleteId: function()
+        {
+            return this.currentAthleteId ? this.currentAthleteId : this.getDefaultAthleteId();
+        },
+
+        getDefaultAthleteId: function()
         {
             var athletes = this.get("athletes");
             if (!athletes || !athletes.length)
