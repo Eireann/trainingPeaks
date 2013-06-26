@@ -1,0 +1,31 @@
+{{#hoverBox this}}
+    <div class="details">
+        <div>
+            <span id="weekSummaryBarChartHoverPlannedLabel" class="plannedOrCompletedLabel">{{$ "Planned" }}</span>
+            {{#if displayTime }}
+                <span id="weekSummaryBarChartHoverPlanned" class ="sumnmaryStats">{{formatTime timePlanned false "--:--"}}</span>
+            {{else}}
+                {{#if distancePlanned}}
+                <span id="weekSummaryBarChartHoverPlanned" class ="sumnmaryStats">{{ conversion "formatDistance" distancePlanned this}}</span>
+                <span class="units">{{ getUnitsLabel "distance" workoutTypeValueId }}</span>
+                {{else}}
+                <span id="weekSummaryBarChartHoverPlanned" class ="sumnmaryStats">--</span>
+                {{/if}}
+            {{/if}}
+        </div>
+        <div>
+            <span id="weekSummaryBarChartHoverCompletedLabel" class="plannedOrCompletedLabel">{{$ "Completed" }}</span>
+            {{#if displayTime }}
+                <span id="weekSummaryBarChartHoverCompleted" class ="sumnmaryStats">{{formatTime timeCompleted false "--:--"}}</span>
+            {{else}}
+                {{#if distancePlanned}}
+                <span id="weekSummaryBarChartHoverCompleted" class ="sumnmaryStats">{{ conversion "formatDistance" distanceCompleted this}}</span>
+                <span class="units">{{ getUnitsLabel "distance" workoutTypeValueId }}</span>
+                {{else}}
+                <span id="weekSummaryBarChartHoverCompleted" class ="sumnmaryStats">--</span>
+                {{/if}}
+            {{/if}}
+        </div>
+        
+    </div>
+{{/hoverBox}}

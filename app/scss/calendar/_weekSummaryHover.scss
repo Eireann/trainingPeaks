@@ -1,0 +1,33 @@
+@import "../globalCSS/tpstylesheet";
+@import "../globalCSS/hoverBox";
+@import "../globalCSS/mixIn";
+
+#weekSummaryBarChartHover
+{   
+    span
+    {
+        color: $TPGrey8;
+        cursor: default;
+	    font-size:$fontSizeXSmall;
+	    font-weight:normal;
+	    line-height:$fontSizeXLarge;
+        margin: 0px;
+        padding: 0px;
+    }
+
+    .sumnmaryStats
+    {
+        color: $TPGrey2;
+    }
+
+    .units
+    {
+        color: $TPGrey2;
+    }
+
+    .plannedOrCompletedLabel
+    {
+       
+    }
+    
+}

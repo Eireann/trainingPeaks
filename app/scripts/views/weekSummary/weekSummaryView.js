@@ -2,11 +2,13 @@ define(
 [
     "TP",
     "views/weekSummary/weekSummarySettings",
+    "views/weekSummary/weekSummaryBarChartHover",
     "hbs!templates/views/weekSummary/weekSummary"
 ],
 function(
     TP,
     WeekSummarySettings,
+    barChartHover,
     weekSummaryTemplate)
 {
     return TP.ItemView.extend(
@@ -24,7 +26,11 @@ function(
         {
             "mouseenter": "onMouseEnter",
             "mouseleave": "onMouseLeave",
-            "click .summarySettings": "summarySettingsClicked"
+            "click .summarySettings": "summarySettingsClicked",
+
+            "mouseleave .weekSummaryBarGraphItem": "weekSummaryBarGraphLeave",
+            "mouseenter .weekSummaryBarGraphItem": "weekSummaryBarGraphHover"
+            
         },
 
         initialize: function()
@@ -234,6 +240,64 @@ function(
             this.model.collection.trigger("week:unselect", this.model.collection, e);
             //this.$el.closest(".week").find(".weekSelected").css("display", "none");
             //this.model.trigger("weeksummary:settings:close", this.model.collection);
+        },
+
+        weekSummaryBarGraphHover: function (e)
+        {
+            if (this.summaryBarChartHover)
+            {
+                return;
+            }
+            e.preventDefault();
+            var target = $(e.currentTarget);
+            var offset = target.offset();
+            var centerPoint = target.width() / 2;
+            var targetDataType = target.data("type");
+            var hoverModel = this.buildHoverModel(targetDataType);
+
+            this.summaryBarChartHover = new barChartHover({model: hoverModel});
+            this.summaryBarChartHover.render().bottom(offset.top + 20).center(offset.left + centerPoint);
+            this.summaryBarChartHover.$el.css('padding', "0px");
+        },
+
+        buildHoverModel: function (targetDataType)
+        {
+            var tpModel = new TP.Model();
+
+            switch (targetDataType)
+            {
+                case "total":
+                    tpModel.set({ timePlanned: this.model.get("totalTimePlanned"), timeCompleted: this.model.get("totalTimeCompleted"), displayTime: true })
+                    break;
+
+                case "strength":
+                    tpModel.set({ timePlanned: this.model.get("strengthDurationPlanned"), timeCompleted: this.model.get("strengthDurationCompleted"), displayTime: true })
+                    break;
+
+                case "bike":
+                    tpModel.set({ timePlanned: this.model.get("bikeDurationPlanned"), timeCompleted: this.model.get("bikeDurationCompleted"), displayTime: true })
+                    break;
+
+                case "run":
+                    tpModel.set({ distancePlanned: this.model.get("runDistancePlanned"), distanceCompleted: this.model.get("runDistanceCompleted"), workoutTypeValueId: 3 })
+                    break;
+
+                case "swim":
+                    tpModel.set({ distancePlanned: this.model.get("swimDistancePlanned"), distanceCompleted: this.model.get("swimDistanceCompleted"), workoutTypeValueId: 1 })
+                    break;
+            }
+
+            return tpModel;
+        },
+
+        weekSummaryBarGraphLeave: function (e)
+        {
+            if (e.toElement && ($(e.toElement).is(".weekSummaryBarChartHover") || $(e.toElement).is(".hoverBox")))
+            {
+                return;
+            }
+            this.summaryBarChartHover.close();
+            this.summaryBarChartHover = null;
         }
     });
 });
