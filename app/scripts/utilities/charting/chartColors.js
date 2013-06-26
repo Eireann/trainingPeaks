@@ -21,7 +21,7 @@ function()
             {
                 TSS: "#e61101",
                 TSB: "#FFA500",
-                ATL: "pink",
+                ATL: "#E38AAE",
                 CTL: "#1b82ce"
             },
 
