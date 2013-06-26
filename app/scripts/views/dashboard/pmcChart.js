@@ -62,7 +62,7 @@ function (
             _.extend(chartOptions,
                 {
                     startDate: moment().subtract('days', 90),
-                    endDate: moment()
+                    endDate: moment().add('days', 21)
                 });
 
             this.pmcModel = new PMCModel(null, chartOptions);
