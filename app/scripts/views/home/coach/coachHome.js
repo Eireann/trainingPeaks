@@ -3,12 +3,14 @@
     "underscore",
     "TP",
     "views/pageContainer/primaryContainerView",
-    "hbs!templates/views/home/homeContainer"
+    "views/home/coach/athleteCollectionView",
+    "hbs!templates/views/home/coach/coachHome"
 ],
 function(
     _,
     TP,
     PrimaryContainerView,
+    AthleteCollectionView,
     homeContainerTemplate
     )
 {
@@ -28,9 +30,17 @@ function(
             this.constructor.__super__.initialize.call(this);
         },
 
+        ui:
+        {
+            homeContainer: "#homeContainer"
+        },
+
         onUserLoaded: function()
         {
-
+            this.athletesCollection = new TP.Collection(theMarsApp.user.get("athletes"));
+            this.athletesView = new AthleteCollectionView({ collection: this.athletesCollection });
+            this.athletesView.render();
+            this.ui.homeContainer.append(this.athletesView.$el);
         }
 
     };

@@ -442,13 +442,13 @@ function(
     theApp.getCurrentController = function()
     {
         return this.currentController;
-    }
+    };
 
     theApp.showController = function(controller)
     {
         this.currentController = controller;
         this.mainRegion.show(controller.getLayout());
-    }
+    };
 
 
     theApp.resetAppToInitialState();

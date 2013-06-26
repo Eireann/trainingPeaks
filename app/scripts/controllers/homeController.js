@@ -5,7 +5,8 @@
     "layouts/homeLayout",
     "views/home/homeHeader",
     "views/home/homeLibrary",
-    "views/home/homeContainer"
+    "views/home/defaultHome",
+    "views/home/coach/coachHome"
 ],
 function(
     TP,
@@ -13,7 +14,8 @@ function(
     HomeLayout,
     HomeHeaderView,
     HomeLibraryView,
-    HomeContainerView
+    DefaultHomeView,
+    CoachHomeView
     )
 {
     return PageContainerController.extend(
@@ -55,14 +57,15 @@ function(
 
         createViews: function()
         {
-            this.views.home = new HomeContainerView();
+            this.views.defaultHome = new DefaultHomeView();
+            this.views.coachHome = new CoachHomeView();
             this.views.header = new HomeHeaderView();
             this.views.library = new HomeLibraryView();
         },
 
         displayViews: function()
         {
-            this.layout.homeRegion.show(this.views.home);
+            this.layout.homeRegion.show(this.views.defaultHome);
             this.layout.libraryRegion.show(this.views.library);
             this.layout.headerRegion.show(this.views.header);
         },
@@ -73,12 +76,10 @@ function(
             theMarsApp.userFetchPromise.done(function()
             {
                 self.showCoachHomeOrRedirect();
-                /*
                 _.each(self.views, function(view)
                 {
                     view.trigger("user:loaded");
                 }, self);
-                */
             });
         },
 
@@ -89,7 +90,7 @@ function(
                 theMarsApp.router.navigate("calendar", true);
             } else
             {
-                this.views.home.$el.append("<div>hello coach</div>");
+                this.layout.homeRegion.show(this.views.coachHome);
             }
         }
 

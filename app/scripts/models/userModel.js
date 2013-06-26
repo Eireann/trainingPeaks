@@ -68,6 +68,7 @@ function(TP, AthleteSettingsModel)
         setCurrentAthleteId: function(athleteId)
         {
             this.currentAthleteId = athleteId;
+            this.trigger("athlete:change");
         },
 
         getCurrentAthleteId: function()
