@@ -138,22 +138,13 @@ module.exports = function(grunt)
                     "vendor/js/libs/lodash.TP.js",
                     "vendor/js/libs/underscore.amd.js",
                     "vendor/js/libs/HandlebarsRuntime.js",
+                    "vendor/js/libs/flot/jquery.flot.js",
+                    "vendor/js/libs/flot/jquery.flot.crosshair.js",
+                    "vendor/js/libs/flot/jquery.flot.resize.js",
                     "build/debug/single.js"
                 ],
 
                 dest: "build/debug/single.js",
-
-                separator: ";"
-            },
-
-            uat:
-            {
-                src:
-                [
-                    "build/debug/single.js"
-                ],
-
-                dest: "build/uat/single.min.js",
 
                 separator: ";"
             },
@@ -390,11 +381,12 @@ module.exports = function(grunt)
 
     grunt.registerTask("validate_models", ["validate-webapi-models"]);
     grunt.registerTask("update_grunt_config", ["requirejs_config", "i18n_config"]);
-    grunt.registerTask("debug", ["clean", "coverage", "update_grunt_config", "requirejs", "compass:debug", "targethtml:debug", "concat", "copy:debug", "copy-i18n-files", "copy:debug_coverage", "plato:debug"]);
-    grunt.registerTask("single", ["clean", "update_grunt_config", "requirejs", "concat:dist"]);
-    grunt.registerTask("dev", ["debug", "compass:dev", "targethtml:dev", "concat:dev", "copy:dev", "copy:dev_coverage", "plato:dev"]);
-    grunt.registerTask("uat", ["debug", "compass:uat", "targethtml:uat", "concat:uat", "copy:uat"]);
-    grunt.registerTask("release", ["debug", "compass:release", "targethtml:release", "uglify", "copy:release", "copy-i18n-files"]);
+    grunt.registerTask("single", ["update_grunt_config", "requirejs", "concat:dist"]);
+    grunt.registerTask("debug_single", ["clean", "single", "compass:debug", "targethtml:debug", "copy:debug"]);
+    grunt.registerTask("debug", ["coverage", "single", "compass:debug", "targethtml:debug", "copy:debug", "copy:debug_coverage", "plato:debug"]);
+    grunt.registerTask("dev", ["debug", "concat:dev", "compass:dev", "targethtml:dev", "copy:dev", "copy:dev_coverage", "plato:dev"]);
+    grunt.registerTask("uat", ["clean", "single", "compass:uat", "targethtml:uat", "copy:uat", "uglify"]);
+    grunt.registerTask("release", ["clean", "single", "compass:release", "targethtml:release", "copy:release", "uglify"]);
     grunt.registerTask("default", ["debug"]);
 
     // makes reports available at localhost/Mars/coverage/lcov-report/index.html,
