@@ -76,10 +76,6 @@ function(
             theMarsApp.userFetchPromise.done(function()
             {
                 self.showCoachHomeOrRedirect();
-                _.each(self.views, function(view)
-                {
-                    view.trigger("user:loaded");
-                }, self);
             });
         },
 

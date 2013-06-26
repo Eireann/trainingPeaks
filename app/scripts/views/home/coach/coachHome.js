@@ -35,7 +35,7 @@ function(
             homeContainer: "#homeContainer"
         },
 
-        onUserLoaded: function()
+        onRender: function()
         {
             this.athletesCollection = new TP.Collection(theMarsApp.user.get("athletes"));
             this.athletesView = new AthleteCollectionView({ collection: this.athletesCollection });
