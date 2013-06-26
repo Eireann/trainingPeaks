@@ -149,8 +149,8 @@ Licensed under the MIT license.
 		context.restore();
 		context.save();
 
-		// Scale the coordinate space to match the display density; so even though we
-		// may have twice as many pixels, we still want lines and other drawing to
+	    // Scale the coordinate space to match the display density; so even though we
+	    // may have twice as many pixels, we still want lines and other drawing to
 		// appear at the same size; the extra pixels will just make them crisper.
 
 		context.scale(pixelRatio, pixelRatio);
@@ -1207,7 +1207,8 @@ Licensed under the MIT license.
 
         function bindEvents() {
             // bind events
-            if (options.grid.hoverable) {
+            if (options.grid.hoverable)
+            {
                 eventHolder.mousemove(onMouseMove);
 
                 // Use bind, rather than .mouseleave, because we officially
@@ -2070,7 +2071,8 @@ Licensed under the MIT license.
                 drawSeriesPoints(series);
         }
 
-        function drawSeriesLines(series) {
+        function drawSeriesLines(series)
+        {
             function plotLine(datapoints, xoffset, yoffset, axisx, axisy) {
                 var points = datapoints.points,
                     ps = datapoints.pointsize,
@@ -2688,7 +2690,9 @@ Licensed under the MIT license.
                 if (axisy.options.inverseTransform)
                     maxy = Number.MAX_VALUE;
 
-                if (s.lines.show || s.points.show) {
+                // ENABLED DASHES ...
+                if (s.lines.show || s.points.show || s.dashes.show)
+                {
                     for (j = 0; j < points.length; j += ps) {
                         var x = points[j], y = points[j + 1];
                         if (x == null)
@@ -2749,7 +2753,8 @@ Licensed under the MIT license.
             return null;
         }
 
-        function onMouseMove(e) {
+        function onMouseMove(e)
+        {
             if (options.grid.hoverable)
                 triggerClickHoverEvent("plothover", e,
                                        function (s) { return s["hoverable"] != false; });
@@ -2761,7 +2766,8 @@ Licensed under the MIT license.
                                        function (s) { return false; });
         }
 
-        function onClick(e) {
+        function onClick(e)
+        {
             triggerClickHoverEvent("plotclick", e,
                                    function (s) { return s["clickable"] != false; });
         }
