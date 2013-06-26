@@ -8,6 +8,7 @@
     "utilities/charting/flotOptions",
     "utilities/charting/chartColors",
     "utilities/charting/flotToolTipPositioner",
+    "utilities/charting/jquery.flot.dashes",
     "utilities/workout/workoutTypes",
     "hbs!templates/views/dashboard/pmcChart",
     "hbs!templates/views/charts/chartTooltip"
@@ -21,6 +22,7 @@ function (
     defaultFlotOptions,
     chartColors,
     toolTipPositioner,
+    flotDashes,
     workoutTypes,
     pmcChartTemplate,
     tooltipTemplate
@@ -43,6 +45,9 @@ function (
             _.bindAll(this, "onHoverToolTip");
 
             this.on("render", this.renderChartAfterRender, this);
+
+            // use zero hour to avoid time zone issues in day diff calculation
+            this.today = moment().hour(0).format("YYYY-MM-DD");
 
             this.setupViewModel(options);
             this.setupDataModel(options);
@@ -155,16 +160,67 @@ function (
                 TSS: [],
                 ATL: [],
                 CTL: [],
-                TSB: []
+                TSB: [],
+                TSSFuture: [],
+                ATLFuture: [],
+                CTLFuture: [],
+                TSBFuture: []
             };
 
             _.each(modelData, function (item, index)
             {
-                var dayMoment = moment(item.workoutDay).valueOf();
-                chartPoints.TSS.push([dayMoment, item.tssActual]);
-                chartPoints.ATL.push([dayMoment, item.atl]);
-                chartPoints.CTL.push([dayMoment, item.ctl]);
-                chartPoints.TSB.push([dayMoment, item.tsb]);
+                var dayMoment = moment(item.workoutDay);
+                var dayMomentValue = dayMoment.valueOf();
+                var itemDate = dayMoment.format("YYYY-MM-DD");
+
+                // include null padding in our arrays, so the tooltip indexes work out correctly
+
+                // for today, overlap the atl/ctl/csb lines so there is not a gap between present and future,
+                // but don't duplicate TSS
+                 if (itemDate === this.today)
+                 {
+
+                     //console.log(itemDate + " is today");
+                    chartPoints.TSS.push([dayMomentValue, item.tssActual]);
+                    chartPoints.TSSFuture.push([dayMomentValue, null]);
+
+                    chartPoints.ATLFuture.push([dayMomentValue, item.atl]);
+                    chartPoints.CTLFuture.push([dayMomentValue, item.ctl]);
+                    chartPoints.TSBFuture.push([dayMomentValue, item.tsb]);
+
+                    chartPoints.ATL.push([dayMomentValue, item.atl]);
+                    chartPoints.CTL.push([dayMomentValue, item.ctl]);
+                    chartPoints.TSB.push([dayMomentValue, item.tsb]);
+
+                // put all future value into the Future points arrays
+                } else if (itemDate > this.today)
+                {
+                    //console.log(itemDate + " is future");
+                    chartPoints.TSSFuture.push([dayMomentValue, item.tssPlanned]);
+                    chartPoints.ATLFuture.push([dayMomentValue, item.atl]);
+                    chartPoints.CTLFuture.push([dayMomentValue, item.ctl]);
+                    chartPoints.TSBFuture.push([dayMomentValue, item.tsb]);
+
+                    chartPoints.TSS.push([dayMomentValue, null]);
+                    chartPoints.ATL.push([dayMomentValue, null]);
+                    chartPoints.CTL.push([dayMomentValue, null]);
+                    chartPoints.TSB.push([dayMomentValue, null]);
+
+                    // put past values into the past point arrays
+                } else
+                {
+                    //console.log(itemDate + " is past");
+                    chartPoints.TSS.push([dayMomentValue, item.tssActual]);
+                    chartPoints.ATL.push([dayMomentValue, item.atl]);
+                    chartPoints.CTL.push([dayMomentValue, item.ctl]);
+                    chartPoints.TSB.push([dayMomentValue, item.tsb]);
+
+                    chartPoints.TSSFuture.push([dayMomentValue, null]);
+                    chartPoints.ATLFuture.push([dayMomentValue, null]);
+                    chartPoints.CTLFuture.push([dayMomentValue, null]);
+                    chartPoints.TSBFuture.push([dayMomentValue, null]);
+                }
+
             }, this);
             return chartPoints;
         },
@@ -173,13 +229,33 @@ function (
         {
             return [
                 this.buildTSSDataSeries(chartPoints.TSS, chartColors),
+                this.buildTSSFutureDataSeries(chartPoints.TSSFuture, chartColors),
                 this.buildATLDataSeries(chartPoints.ATL, chartColors),
+                this.buildATLFutureDataSeries(chartPoints.ATLFuture, chartColors),
                 this.buildCTLDataSeries(chartPoints.CTL, chartColors),
-                this.buildTSBDataSeries(chartPoints.TSB, chartColors)
+                this.buildCTLFutureDataSeries(chartPoints.CTLFuture, chartColors),
+                this.buildTSBDataSeries(chartPoints.TSB, chartColors),
+                this.buildTSBFutureDataSeries(chartPoints.TSBFuture, chartColors)
             ];
         },
 
         buildTSSDataSeries: function (chartPoints, chartColors)
+        {
+            var dataSeries =
+            {
+                data: chartPoints,
+                color: chartColors.pmcColors.TSS,
+                points:
+                {
+                    show: true
+                },
+                yaxis: 1
+            };
+
+            return dataSeries;
+        },
+
+        buildTSSFutureDataSeries: function (chartPoints, chartColors)
         {
             var dataSeries =
             {
@@ -211,6 +287,22 @@ function (
             return dataSeries;
         },
 
+        buildATLFutureDataSeries: function (chartPoints, chartColors)
+        {
+            var dataSeries =
+            {
+                data: chartPoints,
+                color: chartColors.pmcColors.ATL,
+                dashes:
+                {
+                    show: true
+                },
+                yaxis: 2
+            };
+
+            return dataSeries;
+        },
+
         buildCTLDataSeries: function(chartPoints, chartColors)
         {
             var dataSeries =
@@ -227,6 +319,22 @@ function (
             return dataSeries;
         },
 
+        buildCTLFutureDataSeries: function(chartPoints, chartColors)
+        {
+            var dataSeries =
+            {
+                data: chartPoints,
+                color: chartColors.pmcColors.CTL,
+                dashes:
+                {
+                    show: true
+                },
+                yaxis: 2
+            };
+
+            return dataSeries;
+        },
+
         buildTSBDataSeries: function (chartPoints, chartColors)
         {
             var dataSeries =
@@ -234,6 +342,22 @@ function (
                 data: chartPoints,
                 color: chartColors.pmcColors.TSB,
                 lines:
+                {
+                    show: true
+                },
+                yaxis: 3
+            };
+
+            return dataSeries;
+        },
+
+        buildTSBFutureDataSeries: function (chartPoints, chartColors)
+        {
+            var dataSeries =
+            {
+                data: chartPoints,
+                color: chartColors.pmcColors.TSB,
+                dashes:
                 {
                     show: true
                 },
@@ -302,11 +426,24 @@ function (
         {
             var tips = [];
             var item = this.pmcModel.get("data")[index];
-            tips.push({ label: "Date", value: moment(item.workoutDay).format("MM/DD/YY") });
-            tips.push({ label: "TSS", value: TP.utils.conversion.formatTSS(item.tssActual, { defaultValue: "--" }) });
-            tips.push({ label: "Acute Training Load (ATL)", value: TP.utils.conversion.formatTSS(item.atl) });
-            tips.push({ label: "Chronic Training Load (CTL)", value: TP.utils.conversion.formatTSS(item.ctl) });
-            tips.push({ label: "Training Stress Balance (TSB)", value: TP.utils.conversion.formatTSB(item.tsb) });
+
+            var itemDay = moment(item.workoutDay).hour(0);
+            tips.push({ label: "Date", value: itemDay.format("MM/DD/YY") });
+
+            var tss = item.tssActual;
+            var ctl = item.ctl;
+            var atl = item.atl;
+            var tsb = item.tsb;
+
+            if (itemDay.diff(this.today) > 0)
+            {
+                tss = item.tssPlanned;
+            }
+
+            tips.push({ label: "TSS", value: TP.utils.conversion.formatTSS(tss, { defaultValue: "--" }) });
+            tips.push({ label: "Acute Training Load (ATL)", value: TP.utils.conversion.formatTSS(atl) });
+            tips.push({ label: "Chronic Training Load (CTL)", value: TP.utils.conversion.formatTSS(ctl) });
+            tips.push({ label: "Training Stress Balance (TSB)", value: TP.utils.conversion.formatTSB(tsb) });
             return tips;
         },
 

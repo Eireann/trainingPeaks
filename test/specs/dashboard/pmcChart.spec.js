@@ -22,15 +22,18 @@ function(
     )
 {
 
-    var buildPmcModelData = function(howManyItems)
+    var buildPmcModelData = function(howManyItems, future)
     {
         modelData = [];
+
+        var multiplier = future ? 1 : -1;
 
         for(var i = 0;i < howManyItems;i++)
         {
             modelData.push({
-                workoutDay: moment().add("days", i).format(TP.utils.datetime.shortDateFormat),
+                workoutDay: moment().add("days", multiplier * i).hour(0).format(TP.utils.datetime.shortDateFormat),
                 tssActual: i * 10,
+                tssPlanned: i * 15,
                 atl: i * 5,
                 ctl: i * 20,
                 tsb: i - 20
@@ -71,164 +74,356 @@ function(
         describe("Data parsing", function()
         {
 
-            describe("TSS", function()
+            describe("Past and present days", function()
             {
-                var chartPoints, chart, modelData;
-                beforeEach(function()
+                describe("TSS", function()
                 {
-                    modelData = buildPmcModelData(10);
-                    chart = new PmcChart();
-                    chartPoints = chart.buildFlotPoints(modelData);
-                });
-
-                it("Should return TSS data in the flot points", function()
-                {
-                    expect(chartPoints.TSS).toBeDefined();
-                    expect(chartPoints.TSS.length).toEqual(modelData.length);
-                });
-
-                it("Should put the correct values in the TSS points", function()
-                {
-                    _.each(chartPoints.TSS, function(chartPoint, index)
+                    var chartPoints, chart, modelData;
+                    beforeEach(function()
                     {
-                        expect(chartPoint[1]).toEqual(index * 10);
+                        modelData = buildPmcModelData(10);
+                        chart = new PmcChart();
+                        chartPoints = chart.buildFlotPoints(modelData);
+                    });
+
+                    it("Should return TSS data in the flot points", function()
+                    {
+                        expect(chartPoints.TSS).toBeDefined();
+                        expect(chartPoints.TSS.length).toEqual(modelData.length);
+                    });
+
+                    it("Should put the correct values in the TSS points", function()
+                    {
+                        _.each(chartPoints.TSS, function(chartPoint, index)
+                        {
+                            expect(Number(chartPoint[1])).toEqual(index * 10);
+                        });
+                    });
+
+                    it("Should include a date for each TSS point", function()
+                    {
+                        expect(
+                            moment(chartPoints.TSS[0][0]).format(TP.utils.datetime.shortDateFormat)
+                        ).toEqual(
+                            moment().format(TP.utils.datetime.shortDateFormat)
+                        );
+
+                        expect(
+                            moment(chartPoints.TSS[9][0]).format(TP.utils.datetime.shortDateFormat)
+                        ).toEqual(
+                            moment().subtract("days", 9).format(TP.utils.datetime.shortDateFormat)
+                        );
                     });
                 });
 
-                it("Should include a date for each TSS point", function()
+                describe("ATL", function()
                 {
-                    expect(
-                        moment(chartPoints.TSS[0][0]).format(TP.utils.datetime.shortDateFormat)
-                    ).toEqual(
-                        moment().format(TP.utils.datetime.shortDateFormat)
-                    );
+                    var chartPoints, chart, modelData;
+                    beforeEach(function()
+                    {
+                        modelData = buildPmcModelData(10);
+                        chart = new PmcChart();
+                        chartPoints = chart.buildFlotPoints(modelData);
+                    });
 
-                    expect(
-                        moment(chartPoints.TSS[9][0]).format(TP.utils.datetime.shortDateFormat)
-                    ).toEqual(
-                        moment().add("days", 9).format(TP.utils.datetime.shortDateFormat)
-                    );
+                    it("Should return ATL data in the flot points", function()
+                    {
+                        expect(chartPoints.ATL).toBeDefined();
+                        expect(chartPoints.ATL.length).toEqual(modelData.length);
+                    });
+
+                    it("Should put the correct values in the ATL points", function()
+                    {
+                        _.each(chartPoints.ATL, function(chartPoint, index)
+                        {
+                            expect(chartPoint[1]).toEqual(index * 5);
+                        });
+                    });
+
+                    it("Should include a date for each ATL point", function()
+                    {
+                        expect(
+                            moment(chartPoints.ATL[0][0]).format(TP.utils.datetime.shortDateFormat)
+                        ).toEqual(
+                            moment().format(TP.utils.datetime.shortDateFormat)
+                        );
+
+                        expect(
+                            moment(chartPoints.ATL[9][0]).format(TP.utils.datetime.shortDateFormat)
+                        ).toEqual(
+                            moment().subtract("days", 9).format(TP.utils.datetime.shortDateFormat)
+                        );
+                    });
+                });
+
+                describe("CTL", function()
+                {
+                    var chartPoints, chart, modelData;
+                    beforeEach(function()
+                    {
+                        modelData = buildPmcModelData(10);
+                        chart = new PmcChart();
+                        chartPoints = chart.buildFlotPoints(modelData);
+                    });
+
+                    it("Should return CTL data in the flot points", function()
+                    {
+                        expect(chartPoints.CTL).toBeDefined();
+                        expect(chartPoints.CTL.length).toEqual(modelData.length);
+                    });
+
+                    it("Should put the correct values in the CTL points", function()
+                    {
+                        _.each(chartPoints.CTL, function(chartPoint, index)
+                        {
+                            expect(chartPoint[1]).toEqual(index * 20);
+                        });
+                    });
+
+                    it("Should include a date for each CTL point", function()
+                    {
+                        expect(
+                            moment(chartPoints.CTL[0][0]).format(TP.utils.datetime.shortDateFormat)
+                        ).toEqual(
+                            moment().format(TP.utils.datetime.shortDateFormat)
+                        );
+
+                        expect(
+                            moment(chartPoints.CTL[9][0]).format(TP.utils.datetime.shortDateFormat)
+                        ).toEqual(
+                            moment().subtract("days", 9).format(TP.utils.datetime.shortDateFormat)
+                        );
+                    });
+                });
+
+
+                describe("TSB", function()
+                {
+                    var chartPoints, chart, modelData;
+                    beforeEach(function()
+                    {
+                        modelData = buildPmcModelData(10);
+                        chart = new PmcChart();
+                        chartPoints = chart.buildFlotPoints(modelData);
+                    });
+
+                    it("Should return TSB data in the flot points", function()
+                    {
+                        expect(chartPoints.TSB).toBeDefined();
+                        expect(chartPoints.TSB.length).toEqual(modelData.length);
+                    });
+
+                    it("Should put the correct values in the TSB points", function()
+                    {
+                        _.each(chartPoints.TSB, function(chartPoint, index)
+                        {
+                            expect(chartPoint[1]).toEqual(index - 20);
+                        });
+                    });
+
+                    it("Should include a date for each TSB point", function()
+                    {
+                        expect(
+                            moment(chartPoints.TSB[0][0]).format(TP.utils.datetime.shortDateFormat)
+                        ).toEqual(
+                            moment().format(TP.utils.datetime.shortDateFormat)
+                        );
+
+                        expect(
+                            moment(chartPoints.TSB[9][0]).format(TP.utils.datetime.shortDateFormat)
+                        ).toEqual(
+                            moment().subtract("days", 9).format(TP.utils.datetime.shortDateFormat)
+                        );
+                    });
                 });
             });
 
-            describe("ATL", function()
+            describe("Future days", function()
             {
-                var chartPoints, chart, modelData;
-                beforeEach(function()
+                describe("TSSFuture", function()
                 {
-                    modelData = buildPmcModelData(10);
-                    chart = new PmcChart();
-                    chartPoints = chart.buildFlotPoints(modelData);
-                });
-
-                it("Should return ATL data in the flot points", function()
-                {
-                    expect(chartPoints.ATL).toBeDefined();
-                    expect(chartPoints.ATL.length).toEqual(modelData.length);
-                });
-
-                it("Should put the correct values in the ATL points", function()
-                {
-                    _.each(chartPoints.ATL, function(chartPoint, index)
+                    var chartPoints, chart, modelData;
+                    beforeEach(function()
                     {
-                        expect(chartPoint[1]).toEqual(index * 5);
+                        modelData = buildPmcModelData(10, true);
+                        chart = new PmcChart();
+                        chartPoints = chart.buildFlotPoints(modelData);
+                    });
+
+                    it("Should return TSS data in the flot points", function()
+                    {
+                        //console.log(modelData);
+                        //console.log(chartPoints);
+                        expect(chartPoints.TSS).toBeDefined();
+                        expect(chartPoints.TSSFuture).toBeDefined();
+                        expect(chartPoints.TSS.length).toEqual(modelData.length);
+                        expect(chartPoints.TSSFuture.length).toEqual(modelData.length);
+                    });
+
+                    it("Should not put today's TSS value in both past and future", function()
+                    {
+                        expect(chartPoints.TSS[0][1]).toEqual(0);
+                        expect(chartPoints.TSSFuture[0][1]).toEqual(null);
+                    });
+
+                    it("Should put future TSS value only in future", function()
+                    {
+                        expect(chartPoints.TSS[9][1]).toEqual(null);
+                        expect(chartPoints.TSSFuture[9][1]).toEqual(135);
+                    });
+
+                    it("Should include a date for each TSS point", function()
+                    {
+                        expect(
+                            moment(chartPoints.TSSFuture[0][0]).format(TP.utils.datetime.shortDateFormat)
+                        ).toEqual(
+                            moment().format(TP.utils.datetime.shortDateFormat)
+                        );
+
+                        expect(
+                            moment(chartPoints.TSSFuture[9][0]).format(TP.utils.datetime.shortDateFormat)
+                        ).toEqual(
+                            moment().add("days", 9).format(TP.utils.datetime.shortDateFormat)
+                        );
                     });
                 });
 
-                it("Should include a date for each ATL point", function()
+                describe("TSBFuture", function()
                 {
-                    expect(
-                        moment(chartPoints.ATL[0][0]).format(TP.utils.datetime.shortDateFormat)
-                    ).toEqual(
-                        moment().format(TP.utils.datetime.shortDateFormat)
-                    );
-
-                    expect(
-                        moment(chartPoints.ATL[9][0]).format(TP.utils.datetime.shortDateFormat)
-                    ).toEqual(
-                        moment().add("days", 9).format(TP.utils.datetime.shortDateFormat)
-                    );
-                });
-            });
-
-            describe("CTL", function()
-            {
-                var chartPoints, chart, modelData;
-                beforeEach(function()
-                {
-                    modelData = buildPmcModelData(10);
-                    chart = new PmcChart();
-                    chartPoints = chart.buildFlotPoints(modelData);
-                });
-
-                it("Should return CTL data in the flot points", function()
-                {
-                    expect(chartPoints.CTL).toBeDefined();
-                    expect(chartPoints.CTL.length).toEqual(modelData.length);
-                });
-
-                it("Should put the correct values in the CTL points", function()
-                {
-                    _.each(chartPoints.CTL, function(chartPoint, index)
+                    var chartPoints, chart, modelData;
+                    beforeEach(function()
                     {
-                        expect(chartPoint[1]).toEqual(index * 20);
+                        modelData = buildPmcModelData(10, true);
+                        chart = new PmcChart();
+                        chartPoints = chart.buildFlotPoints(modelData);
+                    });
+
+                    it("Should return TSB data in the flot points", function()
+                    {
+                        expect(chartPoints.TSB).toBeDefined();
+                        expect(chartPoints.TSBFuture).toBeDefined();
+                        expect(chartPoints.TSB.length).toEqual(modelData.length);
+                        expect(chartPoints.TSBFuture.length).toEqual(modelData.length);
+                    });
+
+                    it("Should put today's TSB value in both past and future", function()
+                    {
+                        expect(chartPoints.TSB[0][1]).toEqual(-20);
+                        expect(chartPoints.TSBFuture[0][1]).toEqual(-20);
+                    });
+
+                    it("Should put future TSB value only in future", function()
+                    {
+                        expect(chartPoints.TSB[9][1]).toEqual(null);
+                        expect(chartPoints.TSBFuture[9][1]).toEqual(-11);
+                    });
+
+                    it("Should include a date for each TSB point", function()
+                    {
+                        expect(
+                            moment(chartPoints.TSBFuture[0][0]).format(TP.utils.datetime.shortDateFormat)
+                        ).toEqual(
+                            moment().format(TP.utils.datetime.shortDateFormat)
+                        );
+
+                        expect(
+                            moment(chartPoints.TSBFuture[9][0]).format(TP.utils.datetime.shortDateFormat)
+                        ).toEqual(
+                            moment().add("days", 9).format(TP.utils.datetime.shortDateFormat)
+                        );
                     });
                 });
 
-                it("Should include a date for each CTL point", function()
+                describe("ATLFuture", function()
                 {
-                    expect(
-                        moment(chartPoints.CTL[0][0]).format(TP.utils.datetime.shortDateFormat)
-                    ).toEqual(
-                        moment().format(TP.utils.datetime.shortDateFormat)
-                    );
-
-                    expect(
-                        moment(chartPoints.CTL[9][0]).format(TP.utils.datetime.shortDateFormat)
-                    ).toEqual(
-                        moment().add("days", 9).format(TP.utils.datetime.shortDateFormat)
-                    );
-                });
-            });
-
-
-            describe("TSB", function()
-            {
-                var chartPoints, chart, modelData;
-                beforeEach(function()
-                {
-                    modelData = buildPmcModelData(10);
-                    chart = new PmcChart();
-                    chartPoints = chart.buildFlotPoints(modelData);
-                });
-
-                it("Should return TSB data in the flot points", function()
-                {
-                    expect(chartPoints.TSB).toBeDefined();
-                    expect(chartPoints.TSB.length).toEqual(modelData.length);
-                });
-
-                it("Should put the correct values in the TSB points", function()
-                {
-                    _.each(chartPoints.TSB, function(chartPoint, index)
+                    var chartPoints, chart, modelData;
+                    beforeEach(function()
                     {
-                        expect(chartPoint[1]).toEqual(index - 20);
+                        modelData = buildPmcModelData(10, true);
+                        chart = new PmcChart();
+                        chartPoints = chart.buildFlotPoints(modelData);
+                    });
+
+                    it("Should return ATL data in the flot points", function()
+                    {
+                        expect(chartPoints.ATL).toBeDefined();
+                        expect(chartPoints.ATLFuture).toBeDefined();
+                        expect(chartPoints.ATL.length).toEqual(modelData.length);
+                        expect(chartPoints.ATLFuture.length).toEqual(modelData.length);
+                    });
+
+                    it("Should put today's ATL value in both past and future", function()
+                    {
+                        expect(chartPoints.ATL[0][1]).toEqual(0);
+                        expect(chartPoints.ATLFuture[0][1]).toEqual(0);
+                    });
+
+                    it("Should put future ATL value only in future", function()
+                    {
+                        expect(chartPoints.ATL[9][1]).toEqual(null);
+                        expect(chartPoints.ATLFuture[9][1]).toEqual(45);
+                    });
+
+                    it("Should include a date for each ATL point", function()
+                    {
+                        expect(
+                            moment(chartPoints.ATLFuture[0][0]).format(TP.utils.datetime.shortDateFormat)
+                        ).toEqual(
+                            moment().format(TP.utils.datetime.shortDateFormat)
+                        );
+
+                        expect(
+                            moment(chartPoints.ATLFuture[9][0]).format(TP.utils.datetime.shortDateFormat)
+                        ).toEqual(
+                            moment().add("days", 9).format(TP.utils.datetime.shortDateFormat)
+                        );
                     });
                 });
 
-                it("Should include a date for each TSB point", function()
+                describe("CTLFuture", function()
                 {
-                    expect(
-                        moment(chartPoints.TSB[0][0]).format(TP.utils.datetime.shortDateFormat)
-                    ).toEqual(
-                        moment().format(TP.utils.datetime.shortDateFormat)
-                    );
+                    var chartPoints, chart, modelData;
+                    beforeEach(function()
+                    {
+                        modelData = buildPmcModelData(10, true);
+                        chart = new PmcChart();
+                        chartPoints = chart.buildFlotPoints(modelData);
+                    });
 
-                    expect(
-                        moment(chartPoints.TSB[9][0]).format(TP.utils.datetime.shortDateFormat)
-                    ).toEqual(
-                        moment().add("days", 9).format(TP.utils.datetime.shortDateFormat)
-                    );
+                    it("Should return CTL data in the flot points", function()
+                    {
+                        expect(chartPoints.CTL).toBeDefined();
+                        expect(chartPoints.CTLFuture).toBeDefined();
+                        expect(chartPoints.CTL.length).toEqual(modelData.length);
+                        expect(chartPoints.CTLFuture.length).toEqual(modelData.length);
+                    });
+
+                    it("Should put today's CTL value in both past and future", function()
+                    {
+                        expect(chartPoints.CTL[0][1]).toEqual(0);
+                        expect(chartPoints.CTLFuture[0][1]).toEqual(0);
+                    });
+
+                    it("Should put future CTL value only in future", function()
+                    {
+                        expect(chartPoints.CTL[9][1]).toEqual(null);
+                        expect(chartPoints.CTLFuture[9][1]).toEqual(180);
+                    });
+
+                    it("Should include a date for each CTL point", function()
+                    {
+                        expect(
+                            moment(chartPoints.CTLFuture[0][0]).format(TP.utils.datetime.shortDateFormat)
+                        ).toEqual(
+                            moment().format(TP.utils.datetime.shortDateFormat)
+                        );
+
+                        expect(
+                            moment(chartPoints.CTLFuture[9][0]).format(TP.utils.datetime.shortDateFormat)
+                        ).toEqual(
+                            moment().add("days", 9).format(TP.utils.datetime.shortDateFormat)
+                        );
+                    });
                 });
             });
         });
@@ -245,9 +440,9 @@ function(
                 chartSeries = chart.buildFlotDataSeries(chartPoints, chartColors);
             });
 
-            it("Should contain three items", function()
+            it("Should contain eight items (four past, four future)", function()
             {
-                expect(chartSeries.length).toBe(4);
+                expect(chartSeries.length).toBe(8);
             });
         });
 
