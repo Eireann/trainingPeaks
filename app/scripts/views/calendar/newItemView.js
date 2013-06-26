@@ -65,7 +65,7 @@ function(
             var workoutTypeId = $(e.currentTarget).data("workoutid");
             this.newWorkout = new WorkoutModel(
             {
-                athleteId: theMarsApp.user.get("athletes.0.athleteId"),
+                athleteId: theMarsApp.user.getCurrentAthleteId(),
                 workoutDay: moment(this.model.get("date")).format(TP.utils.datetime.longDateFormat),
                 startTime: moment(this.model.get("date")).add("hours", 6).format(TP.utils.datetime.longDateFormat),
                 title: "",

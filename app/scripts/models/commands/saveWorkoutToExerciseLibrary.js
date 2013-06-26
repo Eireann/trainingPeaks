@@ -12,7 +12,7 @@ function(TP)
         {
             /*
             athlete id not implemented yet in library controller
-            var athleteId = theMarsApp.user.get("athletes.0.athleteId");
+            var athleteId = theMarsApp.user.getCurrentAthleteId();
             return theMarsApp.apiRoot + "/exerciselibrary/v1/athletes/" + athleteId + "/commands/saveworkouttolibrary";
             */
             return theMarsApp.apiRoot + "/exerciselibrary/v1/commands/saveworkouttolibrary";
