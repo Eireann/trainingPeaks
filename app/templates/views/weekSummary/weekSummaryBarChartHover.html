@@ -18,7 +18,7 @@
             {{#if displayTime }}
                 <span id="weekSummaryBarChartHoverCompleted" class ="sumnmaryStats">{{formatTime timeCompleted false "--:--"}}</span>
             {{else}}
-                {{#if distancePlanned}}
+                {{#if distanceCompleted}}
                 <span id="weekSummaryBarChartHoverCompleted" class ="sumnmaryStats">{{ conversion "formatDistance" distanceCompleted this}}</span>
                 <span class="units">{{ getUnitsLabel "distance" workoutTypeValueId }}</span>
                 {{else}}
