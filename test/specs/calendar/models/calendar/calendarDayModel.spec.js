@@ -1,13 +1,30 @@
 // use requirejs() here, not define(), for jasmine compatibility
 requirejs(
 [
+    "testUtils/testHelpers",
+    "testUtils/xhrDataStubs",
     "models/workoutModel",
     "models/calendar/calendarDay"
 ],
-function(WorkoutModel, CalendarDay)
+function(
+    testHelpers,
+    xhrData,
+    WorkoutModel,
+    CalendarDay)
 {
     describe("Calendar Day Model", function()
     {
+
+        beforeEach(function()
+        {
+            testHelpers.startTheAppAndLogin(xhrData.users.barbkprem);
+        });
+
+        afterEach(function()
+        {
+            testHelpers.stopTheApp();
+        });
+
         it("should load as a module", function()
         {
             expect(CalendarDay).toBeDefined();

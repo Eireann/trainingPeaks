@@ -1,30 +1,48 @@
 // use requirejs() here, not define(), for jasmine compatibility
 requirejs(
 [
-"TP",
-"app",
-"moment",
-"jquery",
-"underscore",
-"backbone",
-"controllers/calendar/calendarController",
-"models/workoutModel",
-"models/workoutsCollection",
-"views/calendar/container/calendarContainerView",
-"views/calendar/library/libraryView"
+    "testUtils/testHelpers",
+    "testUtils/xhrDataStubs",
+    "TP",
+    "app",
+    "moment",
+    "jquery",
+    "underscore",
+    "backbone",
+    "controllers/calendar/calendarController",
+    "models/workoutModel",
+    "models/workoutsCollection",
+    "views/calendar/container/calendarContainerView",
+    "views/calendar/library/libraryView"
 ],
-function(TP, theMarsApp, moment, $, _, Backbone, CalendarController, WorkoutModel, WorkoutsCollection, CalendarView, LibraryView)
+function(
+    testHelpers,
+    xhrData,
+    TP,
+    theMarsApp,
+    moment,
+    $,
+    _,
+    Backbone,
+    CalendarController,
+    WorkoutModel,
+    WorkoutsCollection,
+    CalendarView,
+    LibraryView
+    )
 {
 
     describe("Calendar Controller", function()
     {
+
         beforeEach(function()
         {
-            // let's not make any remote server calls, just testing object interactions here
-            spyOn($, "ajax").andCallFake(function()
-            {
-                return $.Deferred();
-            });
+            testHelpers.startTheAppAndLogin(xhrData.users.barbkprem);
+        });
+
+        afterEach(function()
+        {
+            testHelpers.stopTheApp();
         });
 
         it("Should load successfully as a module", function()

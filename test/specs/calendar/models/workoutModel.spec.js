@@ -1,12 +1,30 @@
 // use requirejs() here, not define(), for jasmine compatibility
 requirejs(
-    ["moment",
+    [
+    "testUtils/testHelpers",
+    "testUtils/xhrDataStubs",
+    "moment",
     "jquery",
     "models/workoutModel"],
-function(moment, $, WorkoutModel)
+function(
+    testHelpers,
+    xhrData,
+    moment,
+    $,
+    WorkoutModel)
 {
     describe("Workout Model", function()
     {
+
+        beforeEach(function()
+        {
+            testHelpers.startTheAppAndLogin(xhrData.users.barbkprem);
+        });
+
+        afterEach(function()
+        {
+            testHelpers.stopTheApp();
+        });
 
         it("Should load as a module", function()
         {
