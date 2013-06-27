@@ -15,7 +15,6 @@ function(_, moment, TP, WorkoutModel, SelectedWorkoutCollection)
 
         initialize: function()
         {
-            return;
             this.configureDate();
             this.configureCollection();
         },

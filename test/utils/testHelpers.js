@@ -25,9 +25,9 @@ function(_, $, Backbone, TP, xhrData, app)
         startTheApp: function()
         {
 
-            console.log("Starting the app");
             var startTime = +new Date();
             this.stopTheApp();
+
             // ajaxCaching doesn't play nicely with our fake xhr ...
             app.ajaxCachingEnabled = false;
 
@@ -36,7 +36,11 @@ function(_, $, Backbone, TP, xhrData, app)
 
             app.resetAppToInitialState();
             // disable window reload
-            app.reloadApp = function() { };
+            var helper = this;
+            app.reloadApp = function()
+            {
+                helper.startTheApp();
+            };
 
             // disable fade in/out timeouts for all layouts
             TP.Layout.prototype.fadeIn = false;
@@ -51,7 +55,6 @@ function(_, $, Backbone, TP, xhrData, app)
             // capture ajax calls
             this.setupFakeAjax();
 
-            console.log("Finished Starting The App: " + (+new Date() - startTime) + "ms");
         },
 
         stopTheApp: function()
@@ -61,6 +64,7 @@ function(_, $, Backbone, TP, xhrData, app)
                 app.stop();
             }
             this.removeFakeAjax();
+            localStorage.clear();
         },
 
         fakeSync: function(method, model, options)
@@ -182,7 +186,15 @@ function(_, $, Backbone, TP, xhrData, app)
             app.router.navigate("login", true);
             app.mainRegion.$el.find("input[name=Submit]").trigger("click");
             this.resolveRequest("POST", "Token", xhrData.token);
-            this.resolveRequest("GET", "users/v1/user", userData);
+            this.loadUser(userData);
+        },
+
+        loadUser: function(userData)
+        {
+            if (userData)
+            {
+                this.resolveRequest("GET", "users/v1/user", userData);
+            }
         },
 
         startTheAppAndLogin: function(userData)

@@ -81,7 +81,7 @@ function(
             this.logger = new TP.Logger();
 
             // in local environment, and not in test mode? set log level to debug
-            if (!this.isLive())
+            if (!this.isLive() && typeof global === 'undefined')
             {
                 this.logger.setLogLevel(this.logger.logLevels.DEBUG);
             }
@@ -229,14 +229,19 @@ function(
         {
             this.router = new Router();
 
+            // history-less navigation for unit testing
             if(!this.historyEnabled)
             {
-                this.router.navigate = function(routeName)
+                this.router.navigate = function(routeName, trigger)
                 {
                     if (this.routes.hasOwnProperty(routeName))
                     {
                         var methodName = this.routes[routeName];
                         this[methodName]();
+                    }
+                    if (trigger === true || (trigger && trigger.trigger))
+                    {
+                        this.trigger("route", routeName);
                     }
                 };
             }
@@ -367,7 +372,7 @@ function(
         {
             // if we're in local or dev mode, use DEBUG log level etc
             // but if we have a 'global', then we're testing with node/jasmine, so don't output debug messages to clutter test output
-            if ((this.apiRoot.indexOf('local') > 0 || this.apiRoot.indexOf('dev') > 0) && typeof global === 'undefined')
+            if ((this.apiRoot.indexOf('local') >= 0 || this.apiRoot.indexOf('dev') >= 0))
                 return false;
 
             return true;
@@ -446,8 +451,11 @@ function(
 
     theApp.showController = function(controller)
     {
-        this.currentController = controller;
-        this.mainRegion.show(controller.getLayout());
+        if (controller !== this.currentController)
+        {
+            this.currentController = controller;
+            this.mainRegion.show(controller.getLayout());
+        }
     };
 
 

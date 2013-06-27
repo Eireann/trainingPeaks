@@ -291,7 +291,8 @@
 
         // Override set
         // Supports nested attributes via the syntax 'obj.attr' e.g. 'author.user.name'
-        set: function(key, val, options) {
+        set: function(key, val, options)
+        {
             var attr, attrs, unset, changes, silent, changing, prev, current;
             if (key == null) return this;
             

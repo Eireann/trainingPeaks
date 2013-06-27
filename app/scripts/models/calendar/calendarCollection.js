@@ -20,8 +20,6 @@ function(
     calendarCollectionMoveAndShift
     )
 {
-
-
     var CalendarSummaryModel = TP.Model.extend(
     {
         isSummary: true,
@@ -31,6 +29,7 @@ function(
         }
     });
 
+ 
     var calendarCollectionBase = {
 
         initialize: function(models, options)
@@ -46,6 +45,7 @@ function(
 
             this.workoutsCollection = new WorkoutsCollection();
             this.daysCollection = new TP.Collection();
+
 
             this.setUpWeeks(options.startDate, options.endDate);
 
@@ -83,8 +83,6 @@ function(
         
         createWeekCollectionStartingOn: function (startDate)
         {
-
-            var startTime = +new Date();
             // This method return an actual Backbone.Collection.
             // Outside of here, if we want to be able to insert it into another Backbone.Collection,
             // we need to wrap it inside a Backbone.Model.
@@ -92,7 +90,7 @@ function(
             var weekStartDate = moment(startDate);
             var weekCollection = new CalendarWeekCollection();
 
-            for (var dayOffset = 0; dayOffset < 7; ++dayOffset)
+           for (var dayOffset = 0; dayOffset < 7; ++dayOffset)
             {
                 var day = new CalendarDayModel({ date: moment(startDate) });
                 weekCollection.add(day);
@@ -105,10 +103,10 @@ function(
                     weekCollection.add(summary);
                 }
             }
+
             this.subscribeToWeekCopyPaste(weekCollection);
             this.subscribeToWeekMoveAndShift(weekCollection);
 
-            console.log("Create a single week collection took " + (+new Date() - startTime) + "ms");
             return weekCollection;
         },
 
