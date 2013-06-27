@@ -18,7 +18,7 @@ function (TP, setImmediate, jqueryOutside, UserConfirmationView, weekSummaryBarC
 
         events:
         {
-            "mouseleave": "hoverBoxLeave",
+            "mouseleave": "hoverBoxLeave"
         },
 
         
