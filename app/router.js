@@ -40,7 +40,7 @@ function (_, TP)
             "login": "login",
             "home": "home",
             "calendar": "calendar",
-            "calendar/athlete/:athleteId": "calendarAsAthlete",
+            "calendar/athlete/:athleteId": "calendar",
             "dashboard": "dashboard",
             "tools": "tools",
             "": "calendar"
@@ -57,8 +57,14 @@ function (_, TP)
             theMarsApp.showController(theMarsApp.controllers.homeController);
         },
 
-        calendar: function ()
+        calendar: function (athleteId)
         {
+
+            if (athleteId)
+            {
+                theMarsApp.user.setCurrentAthleteId(athleteId);
+            }
+
             this.checkAuth();
 
             if (theMarsApp.getCurrentController() === theMarsApp.controllers.calendarController)
@@ -68,12 +74,6 @@ function (_, TP)
             {
                 theMarsApp.showController(theMarsApp.controllers.calendarController);
             }
-        },
-
-        calendarAsAthlete: function (athleteId)
-        {
-            theMarsApp.user.setCurrentAthleteId(athleteId);
-            this.calendar();
         },
 
         dashboard: function()
