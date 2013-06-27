@@ -145,21 +145,24 @@ function (
             }
 
             var url = this.getShortenedUrl();
+            var urlOverride = theMarsApp.wwwRoot;
             var windowTitle = document.title;
             var descriptionText = this.getSharedText();
             var appID = 103295416394750;
 
-            //var redirectURL = "https://www.trainingpeaks.com";
+            
             var redirectURL = "https://www.facebook.com";
             var pictureURL = "https://s3.amazonaws.com/storage.trainingpeaks.com/assets/images/trainingpeaks-activity-viewer.png";
 
             var facebookURL = "https://www.facebook.com/dialog/feed?app_id=" + appID + "&picture=" + escape(pictureURL) + "&name=" + escape(windowTitle) + "&description=" + escape(descriptionText) + "&redirect_uri=" + escape(redirectURL);
-            if (url)
-            {
-                var escapedUrl = escape(url);
-                facebookURL += "&link=" + escapedUrl + "&caption=" + escapedUrl;
-            }
-            window.open(facebookURL, 'facebookWindow', 'width=950, height=525, top=0, left=0');
+
+            if (!url)
+                url = urlOverride;
+
+            var escapedUrl = escape(url);
+            facebookURL += "&link=" + escapedUrl + "&caption=" + escapedUrl;
+
+                window.open(facebookURL, 'facebookWindow', 'width=950, height=525, top=0, left=0');
         },
 
         onLinkIconClicked: function(e)
