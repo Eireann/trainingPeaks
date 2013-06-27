@@ -26,5 +26,10 @@
         color: $TPGrey12;
         font-family: $fontFamilyRegular;
     }
+
+    .arrow
+    {
+        margin-left: calc(50% - 10px);
+    }
     
 }
