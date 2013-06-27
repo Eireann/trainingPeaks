@@ -10,7 +10,7 @@ function(moment, TP)
 
         urlRoot: function()
         {
-            var athleteId = theMarsApp.user.get("athletes.0.athleteId");
+            var athleteId = theMarsApp.user.getCurrentAthleteId();
             return theMarsApp.apiRoot + "/fitness/v1/athletes/" + athleteId + "/commands/shiftworkouts";
         },
 

@@ -50,13 +50,26 @@ function(
             this.layout = new CalendarLayout();
             this.layout.on("show", this.show, this);
 
+            this.layout.on("close", this.onLayoutClose, this);
+
             this.startDate = this.createStartDay().subtract("weeks", 4);
             this.endDate = this.createEndDay().add("weeks", 6);
 
             this.weeksCollectionInitialize();
 
+            this.on("refresh", this.onRequestRefresh, this);
+            theMarsApp.user.on("athlete:change", this.onAthleteChange, this);
+
             // call parent constructor
             this.constructor.__super__.initialize.call(this);
+        },
+
+        onLayoutClose: function()
+        {
+            _.each(this.views, function(view)
+            {
+                view.close();
+            }, this);
         },
 
         show: function()
@@ -215,12 +228,18 @@ function(
             return endMoment.day(6 + this.startOfWeekDayIndex);
         },
 
-        reset: function(startDate, endDate, scrollToDate)
+        resetCollections: function(startDate, endDate)
         {
-            this.views.calendar.fadeOut(800);
             this.startDate = moment(startDate);
             this.endDate = moment(endDate);
             this.weeksCollection.resetToDates(moment(this.startDate), moment(this.endDate));
+        },
+
+        reset: function(startDate, endDate, scrollToDate)
+        {
+            this.views.calendar.fadeOut(800);
+
+            this.resetCollections(startDate, endDate);
 
             if (scrollToDate)
             {
@@ -343,7 +362,7 @@ function(
 
         onRequestRefresh: function(currentWeekModel)
         {
-            var dateAsMoment = moment(currentWeekModel.get("date"));
+            var dateAsMoment = currentWeekModel ? moment(currentWeekModel.get("date")) : moment();
 
             if (dateAsMoment.day() !== this.startOfWeekDayIndex)
             {
@@ -435,6 +454,19 @@ function(
         onCalendarSelect: function()
         {
             this.views.library.trigger("library:unselect");
+        },
+
+        onAthleteChange: function()
+        {
+            if (theMarsApp.getCurrentController() === this)
+            {
+                this.trigger("refresh");
+            } else
+            {
+                var newStartDate = this.createStartDay().subtract("weeks", 4);
+                var newEndDate = this.createEndDay().add("weeks", 6);
+                this.resetCollections(newStartDate, newEndDate);
+            }
         }
 
     };

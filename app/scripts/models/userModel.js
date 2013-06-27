@@ -65,7 +65,18 @@ function(TP, AthleteSettingsModel)
                 this.set(this.checkpointAttributes);
         },
 
-        getAthleteId: function()
+        setCurrentAthleteId: function(athleteId)
+        {
+            this.currentAthleteId = athleteId;
+            this.trigger("athlete:change");
+        },
+
+        getCurrentAthleteId: function()
+        {
+            return this.currentAthleteId ? this.currentAthleteId : this.getDefaultAthleteId();
+        },
+
+        getDefaultAthleteId: function()
         {
             var athletes = this.get("athletes");
             if (!athletes || !athletes.length)
@@ -78,7 +89,7 @@ function(TP, AthleteSettingsModel)
         {
             if(!this.athleteSettings)
             {
-                this.athleteSettings = new AthleteSettingsModel({ athleteId: this.getAthleteId() });
+                this.athleteSettings = new AthleteSettingsModel({ athleteId: this.getCurrentAthleteId() });
             }
             return this.athleteSettings;
         }

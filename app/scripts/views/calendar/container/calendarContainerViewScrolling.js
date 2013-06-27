@@ -23,11 +23,17 @@ function(_, TP)
         setupScrollingOnRender: function()
         {
             _.bindAll(this, "onScroll");
-            this.ui.weeksContainer.scroll(this.onScroll);
+            this.ui.weeksContainer.on("scroll", this.onScroll);
 
             _.bindAll(this, "onScrollStop");
             var debouncedScrollStop = _.debounce(this.onScrollStop, 300);
-            this.ui.weeksContainer.scroll(debouncedScrollStop);
+            this.ui.weeksContainer.on("scroll", debouncedScrollStop);
+
+            this.on("close", function()
+            {
+                this.ui.weeksContainer.off("scroll", debouncedScrollStop);
+                this.ui.weeksContainer.off("scroll", this.onScroll);
+            }, this);
 
             this.checkCurrentScrollPosition();
             this.watchForDragging();

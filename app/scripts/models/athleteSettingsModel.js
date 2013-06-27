@@ -38,7 +38,7 @@ function(TP)
 
         url: function()
         {
-            var athleteSettingsUrl = "fitness/v1/athletes/" + theMarsApp.user.getAthleteId() + "/settings";
+            var athleteSettingsUrl = "fitness/v1/athletes/" + theMarsApp.user.getCurrentAthleteId() + "/settings";
             return theMarsApp.apiRoot + "/" + athleteSettingsUrl;
         }
 

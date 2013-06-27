@@ -62,6 +62,15 @@ function(
             expect(testHelpers.hasRequest("GET", "users/v1/user")).toBe(true);
         });
 
+        it("Should redirect to home page after the login", function()
+        {
+            var submitButton = $mainRegion.find("#loginForm input[name=Submit]");
+            submitButton.trigger("click");
+            expect(testHelpers.hasRequest("POST", "Token")).toBe(true);
+            testHelpers.resolveRequest("POST", "Token", { token: 'someToken' });
+            expect(theApp.getCurrentController()).toBe(theApp.controllers.homeController);
+        });
+
     });
 
 

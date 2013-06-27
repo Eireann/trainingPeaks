@@ -2,18 +2,20 @@
 [
     "TP",
     "controllers/pageContainerController",
-    "layouts/dashboardLayout",
-    "views/dashboard/dashboardHeader",
-    "views/dashboard/dashboardLibrary",
-    "views/dashboard/dashboardChartsContainer"
+    "layouts/homeLayout",
+    "views/home/homeHeader",
+    "views/home/homeLibrary",
+    "views/home/defaultHome",
+    "views/home/coach/coachHome"
 ],
 function(
     TP,
     PageContainerController,
-    DashboardLayout,
-    DashboardHeaderView,
-    DashboardLibraryView,
-    DashboardChartsContainerView
+    HomeLayout,
+    HomeHeaderView,
+    HomeLibraryView,
+    DefaultHomeView,
+    CoachHomeView
     )
 {
     return PageContainerController.extend(
@@ -22,7 +24,7 @@ function(
 
         initialize: function()
         {
-            this.layout = new DashboardLayout();
+            this.layout = new HomeLayout();
             this.layout.on("show", this.show, this);
             this.layout.on("close", this.onLayoutClose, this);
 
@@ -64,14 +66,15 @@ function(
 
         createViews: function()
         {
-            this.views.dashboard = new DashboardChartsContainerView();
-            this.views.header = new DashboardHeaderView();
-            this.views.library = new DashboardLibraryView();
+            this.views.defaultHome = new DefaultHomeView();
+            this.views.coachHome = new CoachHomeView();
+            this.views.header = new HomeHeaderView();
+            this.views.library = new HomeLibraryView();
         },
 
         displayViews: function()
         {
-            this.layout.dashboardRegion.show(this.views.dashboard);
+            this.layout.homeRegion.show(this.views.defaultHome);
             this.layout.libraryRegion.show(this.views.library);
             this.layout.headerRegion.show(this.views.header);
         },
@@ -81,12 +84,19 @@ function(
             var self = this;
             theMarsApp.userFetchPromise.done(function()
             {
-                _.each(self.views, function(view)
-                {
-                    view.trigger("user:loaded");
-                }, self);
-
+                self.showCoachHomeOrRedirect();
             });
+        },
+
+        showCoachHomeOrRedirect: function()
+        {
+            if(theMarsApp.user.get("settings.account.isAthlete"))
+            {
+                theMarsApp.router.navigate("calendar", true);
+            } else
+            {
+                this.layout.homeRegion.show(this.views.coachHome);
+            }
         }
 
     });

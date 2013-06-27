@@ -45,6 +45,11 @@ function( _, theApp)
                 expect(theApp.controllers.calendarController).toBeDefined();
             });
 
+            it("Should have a home controller", function()
+            {
+                expect(theApp.controllers.homeController).toBeDefined();
+            });
+
             it("Should have a dashboard controller", function()
             {
                 expect(theApp.controllers.dashboardController).toBeDefined();

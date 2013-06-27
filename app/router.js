@@ -19,12 +19,13 @@ function (_, TP)
 
             theMarsApp.controllers.loginController.on("login:success", function()
             {
-                self.navigate("calendar", { trigger: true });
+                self.navigate("home", { trigger: true });
             });
 
             this.on("route", function(routeName)
             {
-                this.currentRoute = routeName;
+                var routeParts = routeName.split("/");
+                this.currentRoute = routeParts[0];
             }, this);
 
         },
@@ -39,53 +40,46 @@ function (_, TP)
             "login": "login",
             "home": "home",
             "calendar": "calendar",
+            "calendar/athlete/:athleteId": "calendar",
             "dashboard": "dashboard",
             "tools": "tools",
-            "": "calendar"  
+            "": "calendar"
         },
 
         login: function ()
         {
-            theMarsApp.mainRegion.show(theMarsApp.controllers.loginController.getLayout());
+            theMarsApp.showController(theMarsApp.controllers.loginController);
         },
 
         home: function ()
         {
-            if (!theMarsApp.session.isAuthenticated())
-            {
-                theMarsApp.session.logout();
-                return;
-            }
-            
-            var homeview = new TP.ItemView(
-            {
-                template:
-                {
-                    type: "handlebars",
-                    template: function()
-                    {
-                        var top = $(document).height() / 2;
-                        var left = $(document).width() / 2 - 50;
-                        
-                        return "<div style='font-size:24px;position: absolute; top:" + top.toFixed(0) + "px; left:" + left.toFixed(0) + "px;'>Home</div>";
-                    }
-                }
-            });
-            
-            theMarsApp.mainRegion.show(homeview);
+            this.checkAuth();
+            theMarsApp.showController(theMarsApp.controllers.homeController);
         },
 
-        calendar: function ()
+        calendar: function (athleteId)
         {
+
+            if (athleteId)
+            {
+                theMarsApp.user.setCurrentAthleteId(athleteId);
+            }
+
             this.checkAuth();
 
-            theMarsApp.mainRegion.show(theMarsApp.controllers.calendarController.getLayout());
+            if (theMarsApp.getCurrentController() === theMarsApp.controllers.calendarController)
+            {
+                theMarsApp.controllers.calendarController.trigger("refresh");
+            } else
+            {
+                theMarsApp.showController(theMarsApp.controllers.calendarController);
+            }
         },
 
         dashboard: function()
         {
             this.checkAuth();
-            theMarsApp.mainRegion.show(theMarsApp.controllers.dashboardController.getLayout());
+            theMarsApp.showController(theMarsApp.controllers.dashboardController);
         },
         
         tools: function()

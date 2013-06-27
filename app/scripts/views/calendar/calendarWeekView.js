@@ -24,10 +24,10 @@ function(moment, setImmediate, TP, CalendarDayView, WeekSummaryView, CalendarWee
         },
 
         template:
-       {
+        {
            type: "handlebars",
            template: CalendarWeek
-       },
+        },
 
         // override some of the default waiting functionality, because of the way css:before behaves,
         // we want the pseudo element to be containd inside the week div instead of in it's parent

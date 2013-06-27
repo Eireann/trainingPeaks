@@ -12,6 +12,7 @@ define(
     "controllers/loginController",
     "controllers/calendar/calendarController",
     "controllers/dashboardController",
+    "controllers/homeController",
     "router",
     "hbs!templates/views/notAllowedForAlpha",
     "marionette.faderegion",
@@ -30,6 +31,7 @@ function(
     LoginController,
     CalendarController,
     DashboardController,
+    HomeController,
     Router,
     notAllowedForAlphaTemplate)
 {
@@ -79,7 +81,7 @@ function(
             this.logger = new TP.Logger();
 
             // in local environment, and not in test mode? set log level to debug
-            if (!this.isLive())
+            if (!this.isLive() && typeof global === 'undefined')
             {
                 this.logger.setLogLevel(this.logger.logLevels.DEBUG);
             }
@@ -170,6 +172,11 @@ function(
 
         this.featureAllowedForUser = function(feature, user)
         {
+            if (!this.isLive())
+            {
+                return true;
+            }
+
             switch (feature)
             {
                 case "alpha1":
@@ -206,6 +213,7 @@ function(
             this.controllers.loginController = new LoginController();
             this.controllers.calendarController = new CalendarController();
             this.controllers.dashboardController = new DashboardController();
+            this.controllers.homeController = new HomeController();
         });
 
         this.addInitializer(function()
@@ -221,14 +229,19 @@ function(
         {
             this.router = new Router();
 
+            // history-less navigation for unit testing
             if(!this.historyEnabled)
             {
-                this.router.navigate = function(routeName)
+                this.router.navigate = function(routeName, trigger)
                 {
                     if (this.routes.hasOwnProperty(routeName))
                     {
                         var methodName = this.routes[routeName];
                         this[methodName]();
+                    }
+                    if (trigger === true || (trigger && trigger.trigger))
+                    {
+                        this.trigger("route", routeName);
                     }
                 };
             }
@@ -354,12 +367,12 @@ function(
         {
             this.started = true;
         });
-        
+
         this.isLive = function()
         {
             // if we're in local or dev mode, use DEBUG log level etc
             // but if we have a 'global', then we're testing with node/jasmine, so don't output debug messages to clutter test output
-            if ((this.apiRoot.indexOf('local') > 0 || this.apiRoot.indexOf('dev') > 0) && typeof global === 'undefined')
+            if ((this.apiRoot.indexOf('local') >= 0 || this.apiRoot.indexOf('dev') >= 0))
                 return false;
 
             return true;
@@ -426,6 +439,23 @@ function(
         // where to find assets dynamically
         this.assetsRoot = this.apiRootName === 'dev' ? 'build/debug/assets/' : 'assets/';
 
+    };
+
+
+    theApp.currentController = null;
+
+    theApp.getCurrentController = function()
+    {
+        return this.currentController;
+    };
+
+    theApp.showController = function(controller)
+    {
+        if (controller !== this.currentController)
+        {
+            this.currentController = controller;
+            this.mainRegion.show(controller.getLayout());
+        }
     };
 
 

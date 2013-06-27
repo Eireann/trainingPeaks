@@ -40,7 +40,7 @@ function(
         it("Should be able to navigate away and back to the calendar", function()
         {
             expect($mainRegion.find("#calendarContainer").length).toBe(1);
-            theApp.router.navigate("home", { trigger: true });
+            theApp.router.navigate("dashboard", { trigger: true });
             expect($mainRegion.find("#calendarContainer").length).toBe(0);
             theApp.router.navigate("calendar", { trigger: true });
             expect($mainRegion.find("#calendarContainer").length).toBe(1);

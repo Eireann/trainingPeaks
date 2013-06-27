@@ -20,6 +20,16 @@ function(
     calendarCollectionMoveAndShift
     )
 {
+    var CalendarSummaryModel = TP.Model.extend(
+    {
+        isSummary: true,
+        defaults:
+        {
+            date: null
+        }
+    });
+
+ 
     var calendarCollectionBase = {
 
         initialize: function(models, options)
@@ -80,16 +90,7 @@ function(
             var weekStartDate = moment(startDate);
             var weekCollection = new CalendarWeekCollection();
 
-            var CalendarSummaryModel = TP.Model.extend(
-            {
-                isSummary: true,
-                defaults:
-                {
-                    date: null
-                }
-            });
-
-            for (var dayOffset = 0; dayOffset < 7; ++dayOffset)
+           for (var dayOffset = 0; dayOffset < 7; ++dayOffset)
             {
                 var day = new CalendarDayModel({ date: moment(startDate) });
                 weekCollection.add(day);

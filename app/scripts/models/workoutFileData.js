@@ -8,7 +8,7 @@ function (TP)
     {
         url: function ()
         {
-            var athleteId = theMarsApp.user.get("athletes.0.athleteId");
+            var athleteId = theMarsApp.user.getCurrentAthleteId();
 
             if (this.get("workoutId") && this.id)
                 return theMarsApp.apiRoot + "/fitness/v1/athletes/" + athleteId + "/workouts/" + this.get("workoutId") + "/filedata/" + this.id;
