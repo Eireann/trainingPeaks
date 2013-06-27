@@ -36,7 +36,7 @@ function (
 
             if (e.ctrlKey)
             {
-                window.open(theMarsApp.root + "#" + athleteUrl);
+                window.open("#" + athleteUrl);
             } else
             {
                 theMarsApp.router.navigate(athleteUrl, true);
