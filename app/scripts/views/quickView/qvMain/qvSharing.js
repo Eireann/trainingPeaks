@@ -35,6 +35,8 @@ function (
 
         sharingOnRender: function()
         {
+            if (this.model.get("details"))
+                this.resolveShortUrl();
             this.enableOrDisableSharing();
 
             this.model.on("change", this.enableOrDisableSharing, this);
