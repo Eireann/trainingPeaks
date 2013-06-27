@@ -9,7 +9,7 @@
         color: $TPGrey8;
         cursor: default;
 	    font-size:$fontSizeXSmall;
-	    font-weight:normal;
+	    font-family: $fontFamilyHeavy;
 	    line-height:$fontSizeXLarge;
         margin: 0px;
         padding: 0px;
@@ -17,17 +17,14 @@
 
     .sumnmaryStats
     {
-        color: $TPGrey2;
+        color: $TPGrey12;
+        font-family: $fontFamilyRegular;
     }
 
     .units
     {
-        color: $TPGrey2;
-    }
-
-    .plannedOrCompletedLabel
-    {
-       
+        color: $TPGrey12;
+        font-family: $fontFamilyRegular;
     }
     
 }

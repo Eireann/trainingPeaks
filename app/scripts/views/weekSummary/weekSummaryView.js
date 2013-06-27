@@ -190,6 +190,8 @@ function(
                 return;
 
             this.removeSettingsButton(e);
+
+            this.weekSummaryBarGraphLeave(e);
         },
 
         showSettingsButton: function ()
@@ -296,8 +298,11 @@ function(
             {
                 return;
             }
-            this.summaryBarChartHover.close();
-            this.summaryBarChartHover = null;
+            if (this.summaryBarChartHover)
+            {
+                this.summaryBarChartHover.close();
+                this.summaryBarChartHover = null;
+            }
         }
     });
 });
