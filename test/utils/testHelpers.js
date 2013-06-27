@@ -25,8 +25,9 @@ function(_, $, Backbone, TP, xhrData, app)
         startTheApp: function()
         {
 
+            console.log("Starting the app");
+            var startTime = +new Date();
             this.stopTheApp();
-
             // ajaxCaching doesn't play nicely with our fake xhr ...
             app.ajaxCachingEnabled = false;
 
@@ -34,7 +35,6 @@ function(_, $, Backbone, TP, xhrData, app)
             app.historyEnabled = false;
 
             app.resetAppToInitialState();
-
             // disable window reload
             app.reloadApp = function() { };
 
@@ -50,6 +50,8 @@ function(_, $, Backbone, TP, xhrData, app)
 
             // capture ajax calls
             this.setupFakeAjax();
+
+            console.log("Finished Starting The App: " + (+new Date() - startTime) + "ms");
         },
 
         stopTheApp: function()
