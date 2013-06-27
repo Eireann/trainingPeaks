@@ -26,9 +26,18 @@ function(
         {
             this.layout = new HomeLayout();
             this.layout.on("show", this.show, this);
+            this.layout.on("close", this.onLayoutClose, this);
 
             // initialize the superclass
             this.constructor.__super__.initialize.call(this);
+        },
+
+        onLayoutClose: function()
+        {
+            _.each(this.views, function(view)
+            {
+                view.close();
+            }, this);
         },
 
         /*

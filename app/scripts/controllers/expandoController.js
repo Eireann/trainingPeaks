@@ -28,11 +28,16 @@ function(setImmediate, TP, DataParser, ExpandoLayout, GraphView, MapView, StatsV
 
             this.layout = new ExpandoLayout();
             this.layout.on("show", this.show, this);
-
+            this.layout.on("close", this.onLayoutClose, this);
             this.views = {};
 
             this.dataParser = new DataParser();
             _.bindAll(this, "onModelFetched");
+        },
+
+        onLayoutClose: function()
+        {
+            this.closeViews();
         },
 
         show: function()

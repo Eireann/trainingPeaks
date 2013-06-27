@@ -50,6 +50,8 @@ function(
             this.layout = new CalendarLayout();
             this.layout.on("show", this.show, this);
 
+            this.layout.on("close", this.onLayoutClose, this);
+
             this.startDate = this.createStartDay().subtract("weeks", 4);
             this.endDate = this.createEndDay().add("weeks", 6);
 
@@ -60,6 +62,14 @@ function(
 
             // call parent constructor
             this.constructor.__super__.initialize.call(this);
+        },
+
+        onLayoutClose: function()
+        {
+            _.each(this.views, function(view)
+            {
+                view.close();
+            }, this);
         },
 
         show: function()

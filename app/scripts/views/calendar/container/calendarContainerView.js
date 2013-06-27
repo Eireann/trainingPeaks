@@ -52,9 +52,18 @@ function(
             this.on("render", this.addWeeksOnRender, this);
             this.on("calendar:unselect", this.onCalendarUnSelect, this);
 
+            this.on("close", this.closeChildren, this);
 
             this.calendarHeaderModel = options.calendarHeaderModel;
             this.startOfWeekDayIndex = options.startOfWeekDayIndex ? options.startOfWeekDayIndex : 0;
+        },
+
+        closeChildren: function()
+        {
+            _.each(this.children, function(childView)
+            {
+                childView.close();
+            });
         },
 
         ui:
@@ -110,7 +119,7 @@ function(
         {
             var weekView = new CalendarWeekView({ collection: options.collection, model: options.model });
             weekView.on("itemview:itemDropped", this.onItemDropped, this);
-
+            
             if (options.append)
                 this.ui.weeksContainer.append(weekView.render().el);
             else
