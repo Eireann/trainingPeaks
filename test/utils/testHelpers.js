@@ -15,7 +15,6 @@ function(_, $, Backbone, TP, xhrData, app)
 
         setupRegionElements: function()
         {
-            console.log("Setting up regions");
             this.$body = $("<body></body>");
             this.navRegion.$el = $("<div id='navigation'></div>");
             this.mainRegion.$el = $("<div id='main'></div>");
