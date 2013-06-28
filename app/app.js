@@ -5,6 +5,7 @@ define(
     "framework/ajaxAuth",
     "framework/ajaxCaching",
     "framework/ajaxTimezone",
+    "framework/tooltips",
     "models/session",
     "models/userModel",
     "models/clientEventsCollection",
@@ -15,8 +16,7 @@ define(
     "controllers/homeController",
     "router",
     "hbs!templates/views/notAllowedForAlpha",
-    "marionette.faderegion",
-    "jqueryui/tooltip"
+    "marionette.faderegion"
 ],
 function(
     _,
@@ -24,6 +24,7 @@ function(
     initializeAjaxAuth,
     ajaxCaching,
     initializeAjaxTimezone,
+    enableTooltips,
     Session,
     UserModel,
     ClientEventsCollection,
@@ -33,7 +34,8 @@ function(
     DashboardController,
     HomeController,
     Router,
-    notAllowedForAlphaTemplate)
+    notAllowedForAlphaTemplate,
+    faderegion)
 {
 
     var theApp = new TP.Application();
@@ -256,86 +258,16 @@ function(
         // Set up jQuery UI Tooltips
         this.addInitializer(function()
         {
-            var tooltipPositioner = function(position, feedback)
-            {
-
-                var self = $(this);
-                var targetElement = $(feedback.target.element);
-                var cssLeftProperty = "left";
-                position = targetElement.offset();
-
-                // add an arrow
-                if (self.find(".arrow").length === 0)
-                {
-                    var arrow = $("<div>").addClass("arrow");
-                    self.append(arrow);
-                    self.html(self.html().replace(/\n/g, "<br />"));
-                    if (position.top <= ($(window).outerHeight() - 50))
-                    {
-                        self.addClass("below");
-
-                    }
-                    else
-                    {
-                        self.addClass("above");
-                        cssLeftProperty = "margin-left";
-                    }
-                }
-
-                // position it
-                /*
-                position.left -= (self.width() / 2);
-                if (self.hasClass("above"))
-                {
-                    position.top -= (self.height() + 20);
-                }
-                */
-                
-                if (position.left > $(window).outerWidth() - 100)
-                {
-                    position.left = position.left + targetElement.outerWidth() - self.outerWidth();
-                    self.find(".arrow").css(cssLeftProperty, self.outerWidth() - (targetElement.outerWidth() / 2) - 10);
-                }
-                else if (position.left < 100)
-                {
-                    self.find(".arrow").css(cssLeftProperty, (targetElement.outerWidth() / 2) - 10);
-                }
-                else
-                {
-                    position.left = position.left + (targetElement.outerWidth() / 2) - (self.outerWidth() / 2);
-                }
-
-
-                //position.left = position.left - (self.outerWidth() / 2);
-                if (self.hasClass("above"))
-                {
-                    position.top -= self.outerHeight();
-                } else
-                {
-                    position.top += targetElement.outerHeight();
-                    //position.top += self.outerHeight();
-                }
-
-                self.css(position);
-            };
-
-            $(document).tooltip(
-            {
-                position:
-                {
-                    using: tooltipPositioner
-                },
-
-                show:
-                {
-                    delay: 500
-                },
-
-                track: false
-            });
+            enableTooltips();
         });
 
+        // Set up touch events
+        this.addInitializer(function()
+        {
+            this.watchForFirstTouch();
+        });
 
+        // setup app blur/focus
         this.addInitializer(function()
         {
             var self = this;
@@ -441,6 +373,28 @@ function(
 
     };
 
+
+    theApp.touchEnabled = false;
+
+    theApp.isTouchEnabled = function()
+    {
+        return this.touchEnabled;
+    };
+
+    theApp.enableTouch = function()
+    {
+        this.getBodyElement().addClass("touchEnabled");
+        this.touchEnabled = true;
+    };
+
+    theApp.watchForFirstTouch = function()
+    {
+        var self = this;
+        this.getBodyElement().one("touchstart", function()
+        {
+            self.enableTouch();
+        });
+    };
 
     theApp.currentController = null;
 

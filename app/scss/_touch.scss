@@ -1,0 +1,27 @@
+
+body.touchEnabled
+{
+    .day
+    {
+        &:hover
+        {
+            &:not(.selected)
+            {
+                .addWorkout
+                {
+                    visibility: hidden;
+                }
+            }
+        }
+
+
+        .addWorkout
+        {
+            &.active
+            {
+                visibility: hidden;
+            }
+        }
+    }
+
+}

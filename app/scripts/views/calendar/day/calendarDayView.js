@@ -60,14 +60,14 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySe
 
         events:
         {
-            "mousedown .dayHeader": "onDayClicked",
+            "mousedown .dayHeader": "onDayHeaderClicked",
             "mouseenter .dayHeader": "onDayHeaderMouseEnter",
             "mouseleave .dayHeader": "onDayHeaderMouseLeave",
 
             "click .addWorkout": "onAddWorkoutClicked",
+            "click": "onDayClicked",
             "mousedown .daySettings": "daySettingsClicked",
-            "click .daySelected": "onDayUnClicked",
-            "click": "clearSelection"
+            "click .daySelected": "onDayUnClicked"
         },
 
         getItemView: function(item)
@@ -191,7 +191,7 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySe
             this.model.trigger("day:click", this.model, e);
         },
 
-        onDayClicked: function(e)
+        onDayHeaderClicked: function(e)
         {
             if (e.isDefaultPrevented())
                 return;
@@ -204,17 +204,27 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySe
 
         onAddWorkoutClicked: function(e)
         {
-
-            /*if (theMarsApp.isBlurred || e.isDefaultPrevented())
-                return;
-
-            if (e.shiftKey)
-                return;
-                */
-
             this.allowSettingsButtonToHide();
             e.preventDefault();
+            this.openNewItemView();
+        },
 
+        onDayClicked: function(e)
+        {
+            if(e.isDefaultPrevented())
+            {
+                return;
+            }
+
+            this.clearSelection(e);
+            if(theMarsApp.isTouchEnabled())
+            {
+                this.openNewItemView(e);
+            }
+        },
+
+        openNewItemView: function()
+        {
             //this.model.trigger("day:click", this.model, e);
 
             this.model.trigger("day:selectAddItem");

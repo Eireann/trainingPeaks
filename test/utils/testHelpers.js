@@ -15,11 +15,15 @@ function(_, $, Backbone, TP, xhrData, app)
 
         setupRegionElements: function()
         {
+            console.log("Setting up regions");
             this.$body = $("<body></body>");
             this.navRegion.$el = $("<div id='navigation'></div>");
             this.mainRegion.$el = $("<div id='main'></div>");
             this.$body.append(this.navRegion.$el);
             this.$body.append(this.mainRegion.$el);
+
+            // since we override the body element, may need to initialize events on it again
+            this.watchForFirstTouch();
         },
 
         startTheApp: function()
