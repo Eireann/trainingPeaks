@@ -18,7 +18,7 @@ function (TP, setImmediate, jqueryOutside, UserConfirmationView, weekSummaryBarC
 
         events:
         {
-            
+            "mouseleave": "hoverBoxLeave"
         },
 
         
@@ -43,6 +43,11 @@ function (TP, setImmediate, jqueryOutside, UserConfirmationView, weekSummaryBarC
         {
             type: "handlebars",
             template: weekSummaryBarChartHover
+        },
+
+        hoverBoxLeave: function (e)
+        {
+            this.trigger("mouseleave", e);
         }
     });
 });

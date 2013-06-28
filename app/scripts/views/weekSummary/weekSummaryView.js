@@ -260,6 +260,7 @@ function(
             this.summaryBarChartHover = new barChartHover({model: hoverModel});
             this.summaryBarChartHover.render().bottom(offset.top + 20).center(offset.left + centerPoint);
             this.summaryBarChartHover.$el.css('padding', "0px");
+            this.summaryBarChartHover.on("mouseleave", this.onSummaryBarChartMouseLeave, this);
         },
 
         buildHoverModel: function (targetDataType)
@@ -298,6 +299,15 @@ function(
             {
                 return;
             }
+            if (this.summaryBarChartHover)
+            {
+                this.summaryBarChartHover.close();
+                this.summaryBarChartHover = null;
+            }
+        },
+
+        onSummaryBarChartMouseLeave: function(e)
+        {
             if (this.summaryBarChartHover)
             {
                 this.summaryBarChartHover.close();
