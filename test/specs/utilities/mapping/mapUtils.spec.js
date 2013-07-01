@@ -23,7 +23,7 @@ function(mapUtils, testHelpers)
             expect(interval.distanceBetweenMarkers).toBe(1000);
             expect(interval.countBy).toBe(1);
             
-            var interval = mapUtils.calculateMileMarkerInterval(30000, 20);
+            interval = mapUtils.calculateMileMarkerInterval(30000, 20);
             expect(interval.distanceBetweenMarkers).toBe(2000);
             expect(interval.countBy).toBe(2);
         });
