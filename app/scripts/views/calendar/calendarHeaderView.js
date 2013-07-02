@@ -54,7 +54,7 @@ function(TP, moment, coachAndAffiliateCustomizations, calendarHeaderTemplate)
             {
                 observe: "date",
                 onGet: "formatYear"
-            },
+            }
         },
 
         formatMonth: function(value)
