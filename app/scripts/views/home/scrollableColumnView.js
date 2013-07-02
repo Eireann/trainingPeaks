@@ -32,7 +32,7 @@ function(
                 var $outerHtml = $(scrollableColumnTemplate());
                 $outerHtml.find(".contents").html(innerHtml);
                 return $outerHtml;
-            }
+            };
         },
 
         initResizeEvents: function()
@@ -61,7 +61,7 @@ function(
             var $window = $(window);
             var headerHeight = this.$el.offset().top;
             var windowHeight = $window.height();
-            var primaryContentContainerHeight = windowHeight - headerHeight - 30;
+            var primaryContentContainerHeight = windowHeight - headerHeight - 40;
 
             this.$(".scrollable").css({ height: primaryContentContainerHeight + 'px' });
             
