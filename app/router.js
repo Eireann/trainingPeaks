@@ -40,7 +40,7 @@ function (_, TP)
             "login": "login",
             "home": "home",
             "calendar": "calendar",
-            "calendar/athlete/:athleteId": "calendar",
+            "calendar/athletes/:athleteId": "calendar",
             "dashboard": "dashboard",
             "tools": "tools",
             "": "calendar"

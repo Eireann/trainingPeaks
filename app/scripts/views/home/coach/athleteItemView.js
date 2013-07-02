@@ -32,7 +32,7 @@ function (
         
         onAthleteClick: function(e)
         {
-            var athleteUrl = "calendar/athlete/" + this.model.get("athleteId");
+            var athleteUrl = "calendar/athletes/" + this.model.get("athleteId");
 
             if (e.ctrlKey)
             {
