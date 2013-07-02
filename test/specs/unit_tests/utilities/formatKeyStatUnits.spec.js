@@ -13,6 +13,11 @@ function(TP, theApp)
             theApp.user.set("units", TP.utils.units.constants.English);
         });
 
+        afterEach(function()
+        {
+            theApp.user.set("units", TP.utils.units.constants.Metric);
+        });
+
         it("Should display a completed workout of backbone model with the precendent of distance, duration, and tss", function()
         {
             var workout = new TP.Model();

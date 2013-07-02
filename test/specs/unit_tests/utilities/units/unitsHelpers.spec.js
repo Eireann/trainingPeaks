@@ -1,36 +1,33 @@
 requirejs(
 [
     "TP",
-    "app",
-    "testUtils/testHelpers"
+    "app"
 ],
-function(TP, theMarsApp, TestHelpers)
+function(TP, theMarsApp)
 {
     describe("units related utilities, english units", function()
     {
 
         beforeEach(function()
         {
-            TestHelpers.startTheApp();
             theMarsApp.user.set("units", TP.utils.units.constants.English);
         });
 
         afterEach(function()
         {
-            TestHelpers.stopTheApp();
+            theMarsApp.user.set("units", TP.utils.units.constants.Metric);
         });
         
         describe("TP.utils.units.getUnitsLabel template helper", function()
         {
             beforeEach(function()
             {
-                TestHelpers.startTheApp();
                 theMarsApp.user.set("units", TP.utils.units.constants.English);
             });
 
             afterEach(function()
             {
-                TestHelpers.stopTheApp();
+                theMarsApp.user.set("units", TP.utils.units.constants.Metric);
             });
 
             it("should return the unit label for distance", function()
@@ -146,13 +143,12 @@ function(TP, theMarsApp, TestHelpers)
 
             beforeEach(function()
             {
-                TestHelpers.startTheApp();
                 theMarsApp.user.set("units", TP.utils.units.constants.English);
             });
 
             afterEach(function()
             {
-                TestHelpers.stopTheApp();
+                theMarsApp.user.set("units", TP.utils.units.constants.Metric);
             });
 
             it("should throw an exception when trying to convert for an unknown value type", function()
@@ -216,13 +212,12 @@ function(TP, theMarsApp, TestHelpers)
 
             beforeEach(function()
             {
-                TestHelpers.startTheApp();
                 theMarsApp.user.set("units", TP.utils.units.constants.English);
             });
 
             afterEach(function()
             {
-                TestHelpers.stopTheApp();
+                theMarsApp.user.set("units", TP.utils.units.constants.Metric);
             });
 
             it("should throw an exception when trying to convert for an unknown value type", function ()
@@ -277,13 +272,12 @@ function(TP, theMarsApp, TestHelpers)
 
             beforeEach(function()
             {
-                TestHelpers.startTheApp();
                 theMarsApp.user.set("units", TP.utils.units.constants.English);
             });
 
             afterEach(function()
             {
-                TestHelpers.stopTheApp();
+                theMarsApp.user.set("units", TP.utils.units.constants.Metric);
             });
 
             it("should return the unit label for distance", function()
@@ -325,16 +319,10 @@ function(TP, theMarsApp, TestHelpers)
 
             beforeEach(function()
             {
-                TestHelpers.startTheApp();
                 theMarsApp.user.set("units", TP.utils.units.constants.Metric);
             });
 
-            afterEach(function()
-            {
-                TestHelpers.stopTheApp();
-            });
-
-            it("should return the unit label for distance", function()
+           it("should return the unit label for distance", function()
             {
                 expect(TP.utils.units.getUnitsLabel("distance", swimTypeId)).toBe("m");
             });
@@ -372,13 +360,12 @@ function(TP, theMarsApp, TestHelpers)
 
             beforeEach(function()
             {
-                TestHelpers.startTheApp();
                 theMarsApp.user.set("units", TP.utils.units.constants.English);
             });
 
             afterEach(function()
             {
-                TestHelpers.stopTheApp();
+                theMarsApp.user.set("units", TP.utils.units.constants.Metric);
             });
 
             it("should convert a distance in meters to yards and cut off after 2 decimal places", function()
@@ -412,13 +399,7 @@ function(TP, theMarsApp, TestHelpers)
 
             beforeEach(function()
             {
-                TestHelpers.startTheApp();
                 theMarsApp.user.set("units", TP.utils.units.constants.Metric);
-            });
-
-            afterEach(function()
-            {
-                TestHelpers.stopTheApp();
             });
 
             it("should leave distance units as meters and cut off after 2 decimal places", function()
@@ -452,13 +433,12 @@ function(TP, theMarsApp, TestHelpers)
  
             beforeEach(function()
             {
-                TestHelpers.startTheApp();
                 theMarsApp.user.set("units", TP.utils.units.constants.English);
             });
 
             afterEach(function()
             {
-                TestHelpers.stopTheApp();
+                theMarsApp.user.set("units", TP.utils.units.constants.Metric);
             });
 
             it("should convert a distance in yards to meters", function()
@@ -492,13 +472,7 @@ function(TP, theMarsApp, TestHelpers)
 
             beforeEach(function()
             {
-                TestHelpers.startTheApp();
                 theMarsApp.user.set("units", TP.utils.units.constants.Metric);
-            });
-
-            afterEach(function()
-            {
-                TestHelpers.stopTheApp();
             });
 
             it("should leave distance units as meters and cut off after 2 decimal places", function()

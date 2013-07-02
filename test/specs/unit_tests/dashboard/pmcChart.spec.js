@@ -4,8 +4,6 @@ requirejs(
     "jquery",
     "moment",
     "TP",
-    "testUtils/testHelpers",
-    "testUtils/xhrDataStubs",
     "app",
     "utilities/charting/chartColors",
     "views/dashboard/pmcChart"
@@ -14,8 +12,6 @@ function(
     $,
     moment,
     TP,
-    testHelpers,
-    xhrData,
     theMarsApp,
     chartColors,
     PmcChart
@@ -45,16 +41,6 @@ function(
 
     describe("PMC Chart View", function()
     {
-
-        beforeEach(function()
-        {
-            testHelpers.startTheApp();
-        });
-
-        afterEach(function()
-        {
-            testHelpers.stopTheApp();
-        });
 
         it("Should load successfully as a module", function()
         {

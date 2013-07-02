@@ -1,22 +1,12 @@
 ﻿requirejs(
 [
-    "utilities/mapping/mapUtils",
-    "testUtils/testHelpers"
+    "app",
+    "utilities/mapping/mapUtils"
 ],
-function(mapUtils, testHelpers)
+function(app, mapUtils)
 {
     describe("MapUtils", function()
     {
-        beforeEach(function ()
-        {
-            testHelpers.startTheApp();
-        });
-
-        afterEach(function ()
-        {
-            testHelpers.stopTheApp();
-        });
-        
         it("should calculate mile marker intervals", function()
         {
             var interval = mapUtils.calculateMileMarkerInterval(10, 10);

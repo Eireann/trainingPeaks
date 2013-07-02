@@ -71,6 +71,8 @@ function(
     theApp.resetAppToInitialState = function()
     {
 
+        this.user = new UserModel();
+
         this.addAllShutdowns();
 
         this.addRegions(

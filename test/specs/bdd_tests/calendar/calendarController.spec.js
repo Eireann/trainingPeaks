@@ -37,7 +37,7 @@ function(
 
         beforeEach(function()
         {
-            testHelpers.startTheAppAndLogin(xhrData.users.barbkprem);
+            testHelpers.startTheApp();
         });
 
         afterEach(function()

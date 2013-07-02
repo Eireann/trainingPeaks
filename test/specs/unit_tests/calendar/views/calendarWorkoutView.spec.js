@@ -1,15 +1,11 @@
 // use requirejs() instead of define() here, to keep jasmine test runner happy
 requirejs(
 [
-    "testUtils/testHelpers",
-    "testUtils/xhrDataStubs",
     "moment",
     "models/workoutModel",
     "views/calendar/workout/calendarWorkoutView"
 ],
 function(
-    testHelpers,
-    xhrData,
     moment,
     WorkoutModel,
     CalendarWorkoutView)
