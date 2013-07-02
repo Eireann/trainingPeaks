@@ -1,29 +1,57 @@
-/*
-
-Wraps and extends core backbone and marionette functionality
-*/
-
 define(
 [
+    "framework/apiConfig",
     "underscore",
     "backbone",
     "backbone.deepmodel"
 ],
-function(_, Backbone)
+function(apiConfig, _, Backbone)
 {
+    var APIModel = Backbone.DeepModel.extend(
+    {
+        checkpoint: function()
+        {
+            this.checkpointAttributes = _.clone(this.attributes);
+        },
+        
+        revert: function()
+        {
+            if (this.checkpointAttributes && !_.isEmpty(this.checkpointAttributes) && !_.isEqual(this.attributes, this.checkpointAttributes))
+            {
+                this.set(this.checkpointAttributes);
+                this.save();
+            }
+        },
 
-    return Backbone.DeepModel.extend(
+        createPromise: function()
+        {
+            if (this.get(this.idAttribute))
+            {
+                return this.fetch();
+            } else
+            {
+                return new $.Deferred();
+            }
+        },
+
+        has: function(attr)
+        {
+            return this.attributes.hasOwnProperty(attr) && this.get(attr) != null;
+        }
+    });
+
+    var DevValidationExtensions =
     {
         webAPIModelName: null,
         idAttribute: null,
 
-        get: function(key)
+        get: function (key)
         {
             this.validateKeyExistsInDefaults(key);
             return Backbone.DeepModel.prototype.get.call(this, key);
         },
 
-        validate: function(attrs, options)
+        validate: function (attrs, options)
         {
             this.validateWebAPIModelName();
             this.validateIdAttribute(attrs);
@@ -58,7 +86,7 @@ function(_, Backbone)
             }
         },
 
-        validateAgainstDefaultValues: function(attrs)
+        validateAgainstDefaultValues: function (attrs)
         {
             for (var key in attrs)
             {
@@ -87,38 +115,11 @@ function(_, Backbone)
             {
                 throw this.webAPIModelName + ": Cannot access key '" + key + "' because it is not in model defaults";
             }
-        },
-
-        checkpoint: function()
-        {
-            this.checkpointAttributes = _.clone(this.attributes);
-        },
-        
-        revert: function()
-        {
-            if (this.checkpointAttributes && !_.isEmpty(this.checkpointAttributes) && !_.isEqual(this.attributes, this.checkpointAttributes))
-            {
-                this.set(this.checkpointAttributes);
-                this.save();
-            }
-        },
-
-        createPromise: function()
-        {
-            if (this.get(this.idAttribute))
-            {
-                return this.fetch();
-            } else
-            {
-                return new $.Deferred();
-            }
-        },
-
-        has: function(attr)
-        {
-            return this.attributes.hasOwnProperty(attr) && this.get(attr) != null;
         }
+    };
 
-    });
-
+    if (apiConfig.configuration === "local" || apiConfig.configuration === "dev")
+        return APIModel.extend(DevValidationExtensions);
+    else
+        return APIModel;
 });

@@ -155,7 +155,7 @@ function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandMo
 
             series.push(
             {
-                color: "red",
+                color: "orange",
                 data: this.originalElevation,
                 label: TP.utils.translate("Original"),
                 shadowSize: 0
@@ -165,7 +165,7 @@ function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandMo
             {
                 series.push(
                 {
-                    color: "orange",
+                    color: "red",
                     data: this.correctedElevation,
                     label: TP.utils.translate("Corrected"),
                     shadowSize: 0
