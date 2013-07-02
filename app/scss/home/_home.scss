@@ -1,0 +1,66 @@
+﻿$chartIconsSpriteURL: url(../../assets/images/charts/sprite-buttons-chart-modal.png);
+$chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-modal@2x.png);
+
+#homeContainer
+{
+    margin: 5px;
+}
+
+.scrollableColumnContainer
+{
+    background-color: $TPGrey1;
+    border-color: $TPGrey2;
+    border-style: solid;
+    border-width: 1px;
+    width: 100%;
+
+    .header
+    {
+        width: 100%;
+		height: 27px;
+		position: relative;
+		z-index: 1;
+    }
+
+    .scrollable
+    {
+        @include nice-scrollbar;
+        overflow-y: scroll;
+        overflow-x: auto;
+    }
+
+    .settings
+    {
+        display: none;
+        position: absolute;
+        top: 2px;
+        right: 2px;
+        width: 16px;
+        height: 12px;
+        background: transparent $chartIconsSpriteURL no-repeat 0 0;
+
+        &:hover {
+            background-position: 0 -17px;
+        }
+
+        &:active {
+            background-position: 0 -17px;
+        }
+    }
+
+    @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
+        .settings {
+            background-image: $chartIconsSpriteRetinaURL;
+            background-size: 16px 12px;
+        }
+    }
+
+    &:hover
+    {
+        .settings
+        {
+            display: block;
+        }
+    }
+
+}

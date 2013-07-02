@@ -1,7 +1,7 @@
 ﻿define(
 [
     "TP",
-    "hbs!templates/layouts/homeLayout"
+    "hbs!templates/layouts/coachHomeLayout"
 ],
 function(TP, homeLayoutTemplate)
 {
@@ -16,7 +16,7 @@ function(TP, homeLayoutTemplate)
 
         regions:
         {
-            homeRegion: "#homeContainer"
+            homeRegion: "#coachHomeContainer"
         }
     });
 });

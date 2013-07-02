@@ -1,7 +1,7 @@
 ﻿define(
 [
     "TP",
-    "hbs!templates/layouts/homeLayout"
+    "hbs!templates/layouts/athleteHomeLayout"
 ],
 function(TP, homeLayoutTemplate)
 {
@@ -16,7 +16,10 @@ function(TP, homeLayoutTemplate)
 
         regions:
         {
-            homeRegion: "#homeContainer"
+            headerRegion: "#athleteHomeHeader",
+            summaryRegion: "#athleteHomeSummary",
+            activityFeedRegion: "#athleteHomeActivityFeed",
+            podsRegion: "#athleteHomePods"
         }
     });
 });

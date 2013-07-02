@@ -1,24 +1,20 @@
 ﻿define(
 [
     "TP",
-    "controllers/pageContainerController",
     "layouts/homeLayout",
-    "views/home/homeHeader",
-    "views/home/homeLibrary",
     "views/home/defaultHome",
-    "views/home/coach/coachHome"
+    "controllers/coachHomeController",
+    "controllers/athleteHomeController"
 ],
 function(
     TP,
-    PageContainerController,
     HomeLayout,
-    HomeHeaderView,
-    HomeLibraryView,
     DefaultHomeView,
-    CoachHomeView
+    CoachHomeController,
+    AthleteHomeController
     )
 {
-    return PageContainerController.extend(
+    return TP.Controller.extend(
     {
         views: {},
 
@@ -27,9 +23,6 @@ function(
             this.layout = new HomeLayout();
             this.layout.on("show", this.show, this);
             this.layout.on("close", this.onLayoutClose, this);
-
-            // initialize the superclass
-            this.constructor.__super__.initialize.call(this);
         },
 
         onLayoutClose: function()
@@ -59,24 +52,18 @@ function(
 
             // wait for user to load ...
             this.setupUserFetchPromise();
-
-            // our parent class PageContainerController needs this to trigger the window resize functionality
-            this.trigger("show");
         },
 
         createViews: function()
         {
             this.views.defaultHome = new DefaultHomeView();
-            this.views.coachHome = new CoachHomeView();
-            this.views.header = new HomeHeaderView();
-            this.views.library = new HomeLibraryView();
+            this.views.athleteHome = new AthleteHomeController();
+            this.views.coachHome = new CoachHomeController();
         },
 
         displayViews: function()
         {
             this.layout.homeRegion.show(this.views.defaultHome);
-            this.layout.libraryRegion.show(this.views.library);
-            this.layout.headerRegion.show(this.views.header);
         },
 
         setupUserFetchPromise: function()
@@ -84,18 +71,18 @@ function(
             var self = this;
             theMarsApp.userFetchPromise.done(function()
             {
-                self.showCoachHomeOrRedirect();
+                self.showCoachHomeOrAthleteHome();
             });
         },
 
-        showCoachHomeOrRedirect: function()
+        showCoachHomeOrAthleteHome: function()
         {
             if(theMarsApp.user.get("settings.account.isAthlete"))
             {
-                theMarsApp.router.navigate("calendar", true);
+                this.layout.homeRegion.show(this.views.athleteHome.getLayout());
             } else
             {
-                this.layout.homeRegion.show(this.views.coachHome);
+                this.layout.homeRegion.show(this.views.coachHome.getLayout());
             }
         }
 

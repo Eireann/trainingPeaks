@@ -2,14 +2,12 @@
 [
     "underscore",
     "TP",
-    "views/pageContainer/primaryContainerView",
     "views/home/coach/athleteCollectionView",
     "hbs!templates/views/home/coach/coachHome"
 ],
 function(
     _,
     TP,
-    PrimaryContainerView,
     AthleteCollectionView,
     homeContainerTemplate
     )
@@ -25,9 +23,6 @@ function(
         initialize: function()
         {
             this.on("user:loaded", this.onUserLoaded, this);
-
-            // initialize the superclass
-            this.constructor.__super__.initialize.call(this);
         },
 
         ui:
@@ -45,5 +40,5 @@ function(
 
     };
 
-    return PrimaryContainerView.extend(HomeView);
+    return TP.ItemView.extend(HomeView);
 });

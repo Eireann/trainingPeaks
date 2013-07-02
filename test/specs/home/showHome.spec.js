@@ -35,14 +35,14 @@ function(
             expect($mainRegion.find("#homeContainer").length).toBe(1);
         });
 
-        it("Should redirect athletes to calendar after load user data", function()
+        it("Should load athlete activity feed for athletes", function()
         {
             testHelpers.submitLogin(xhrData.users.barbkprem);
-            expect($mainRegion.find("#homeContainer").length).toBe(0);
-            expect($mainRegion.find("#calendarContainer").length).toBe(1);
+            expect($mainRegion.find("#homeContainer").length).toBe(1);
+            expect($mainRegion.find("#athleteHomeActivityFeed").length).toBe(1);
         });
 
-        it("Should load coach athletes list on home page", function()
+        it("Should load coach athletes list for coaches", function()
         {
             testHelpers.submitLogin(xhrData.users.supercoach);
             expect($mainRegion.find("#homeContainer").length).toBe(1);

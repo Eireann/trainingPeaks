@@ -1,0 +1,19 @@
+﻿#athleteHomeSummary
+{
+    float: left;
+    @include calc(width, "33% - 5px");
+}
+
+#athleteHomeActivityFeed
+{
+    float: left;
+    @include calc(width, "34%");
+    margin-left: 5px;
+}
+
+#athleteHomePods
+{
+    float: left;
+    @include calc(width, "33% - 5px");
+    margin-left: 5px;
+}
