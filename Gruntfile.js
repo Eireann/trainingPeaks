@@ -312,17 +312,6 @@ module.exports = function(grunt)
             }
         },
 
-        "validate-webapi-models":
-        {
-            compile:
-            {
-                files:
-                {
-                    "app/script/models": ["app/scripts/models/**/*.js"]
-                }
-            }
-        },
-
         // jasmine testsuites
         jasmine_node:
         {
@@ -377,9 +366,8 @@ module.exports = function(grunt)
     grunt.loadNpmTasks("grunt-istanbul");
 
     // NOTE: grunt test --dir=some/pattern will limit tests to a subfolder
-    grunt.registerTask("test", ["clean:coverage", "jshint", "setup-spec-list", "validate_models", "jasmine_node"]);
+    grunt.registerTask("test", ["clean:coverage", "jshint", "setup-spec-list", "jasmine_node"]);
 
-    grunt.registerTask("validate_models", ["validate-webapi-models"]);
     grunt.registerTask("update_grunt_config", ["requirejs_config", "i18n_config"]);
     grunt.registerTask("single", ["update_grunt_config", "requirejs", "concat:dist"]);
     grunt.registerTask("debug_single", ["clean", "single", "compass:debug", "targethtml:debug", "copy:debug"]);

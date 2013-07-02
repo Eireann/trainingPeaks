@@ -1,6 +1,7 @@
 define(
 [
     "underscore",
+    "framework/apiConfig",
     "TP",
     "framework/ajaxAuth",
     "framework/ajaxCaching",
@@ -20,6 +21,7 @@ define(
 ],
 function(
     _,
+    apiConfig,
     TP,
     initializeAjaxAuth,
     ajaxCaching,
@@ -323,56 +325,20 @@ function(
             window.location.reload();
         };
 
-        var wwwRoots =
-        {
-            live: "http://www.trainingpeaks.com",
-            uat: "http://www.uat.trainingpeaks.com",
-            dev: "http://www.dev.trainingpeaks.com",
-            local: "http://localhost:8905",
-            todd: "DEV20-T430:8901"
-        };
-
-        var apiRoots =
-        {
-            live: "https://tpapi.trainingpeaks.com",
-            uat: "http://tpapi.uat.trainingpeaks.com",
-            dev: "http://tpapi.dev.trainingpeaks.com",
-            local: "http://localhost:8901",
-            todd: "DEV20-T430:8901"
-        };
-
-        var oAuthRoots =
-        {
-            live: "https://oauth.trainingpeaks.com",
-            uat: "http://oauth.uat.trainingpeaks.com",
-            dev: "http://oauth.dev.trainingpeaks.com",
-            local: "http://localhost:8900",
-            todd: "DEV20-T430:8900"
-        };
-
-        // get environment name from index.html build target
-        var apiRootName = window.hasOwnProperty('apiRoot') ? window.apiRoot : 'dev';
-
         // point to appropriate api server
-        this.apiRoot = apiRoots[apiRootName];
-        this.oAuthRoot = oAuthRoots[apiRootName];
-        this.wwwRoot = wwwRoots[apiRootName];
+        this.apiRoot = apiConfig.apiRoot;
+        this.oAuthRoot = apiConfig.oAuthRoot;
+        this.wwwRoot = apiConfig.wwwRoot;
 
         // app root for router and history
-        if (apiRootName !== 'live')
-        {
+        if (apiConfig.configuration !== 'live')
             this.root = "/Mars";
-        }
         else
-        {
             this.root = '';
-        }
 
         // where to find assets dynamically
-        this.assetsRoot = this.apiRootName === 'dev' ? 'build/debug/assets/' : 'assets/';
-
+        this.assetsRoot = apiConfig.configuration === 'dev' ? 'build/debug/assets/' : 'assets/';
     };
-
 
     theApp.touchEnabled = false;
 
@@ -411,7 +377,6 @@ function(
             this.mainRegion.show(controller.getLayout());
         }
     };
-
 
     theApp.resetAppToInitialState();
     window.theMarsApp = theApp;
