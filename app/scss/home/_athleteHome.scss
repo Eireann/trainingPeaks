@@ -1,4 +1,6 @@
-﻿#athleteHomeSummary
+﻿@import "globalCSS/tpstylesheet";
+
+#athleteHomeSummary
 {
     float: left;
     @include calc(width, "33% - 5px");
@@ -16,4 +18,43 @@
     float: left;
     @include calc(width, "33% - 5px");
     margin-left: 5px;
+}
+
+.athleteHeader
+{
+    margin-left: 35px;
+    height: 90px;
+
+    .userPhoto
+    {
+        background-color: $TPGrey4;
+        width: 55px;
+        height: 65px;
+        float: left;
+    }
+
+    .athleteInfo
+    {
+        font-family: $fontFamilyRegular;
+        font-size: $fontSizeXLarge;
+        color: $TPGrey4;
+        padding-left: 65px;
+    }
+
+    .trainingFor
+    {
+        font-family: $fontFamilyRegular;
+        font-size: $fontSizeSmall;
+        color: $TPGrey2;
+        padding: 5px 0 5px 66px
+    }
+
+    .activityInformation
+    {
+        margin-left: 10px;
+        font-family: $fontFamilyRegular;
+        font-size: $fontSizeXXLarge;
+        color: $TPGrey7;
+        padding-left: 55px
+    }
 }
