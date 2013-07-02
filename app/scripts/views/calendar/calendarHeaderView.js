@@ -54,7 +54,7 @@ function(TP, moment, coachAndAffiliateCustomizations, calendarHeaderTemplate)
             {
                 observe: "date",
                 onGet: "formatYear"
-            },
+            }
         },
 
         formatMonth: function(value)
@@ -94,12 +94,17 @@ function(TP, moment, coachAndAffiliateCustomizations, calendarHeaderTemplate)
 
         onRender: function ()
         {
-            if (!theMarsApp.user.get("settings.account.isAthlete"))
+            if (this.isCoachWithAthletes())
             {
                 this.customizeAthleteSelectBox();
                 var currentUserId = theMarsApp.user.getCurrentAthleteId();
                 this.$("#athleteCalendarSelect").val(currentUserId);
             }
+        },
+
+        isCoachWithAthletes: function()
+        {
+            return !theMarsApp.user.get("settings.account.isAthlete") && theMarsApp.user.has("athletes") && theMarsApp.user.get("athletes").length > 0;
         },
 
         customizeAthleteSelectBox: function()
