@@ -1,8 +1,6 @@
 // use requirejs() here, not define(), for jasmine compatibility
 requirejs(
 [
-    "testUtils/testHelpers",
-    "testUtils/xhrDataStubs",
     "TP",
     "app",
     "moment",
@@ -16,8 +14,6 @@ requirejs(
     "views/calendar/library/libraryView"
 ],
 function(
-    testHelpers,
-    xhrData,
     TP,
     theMarsApp,
     moment,
@@ -37,12 +33,12 @@ function(
 
         beforeEach(function()
         {
-            testHelpers.startTheApp();
+            theMarsApp.user.setCurrentAthleteId(1234, true);
         });
 
         afterEach(function()
         {
-            testHelpers.stopTheApp();
+            theMarsApp.user.setCurrentAthleteId(null, true);
         });
 
         it("Should load successfully as a module", function()

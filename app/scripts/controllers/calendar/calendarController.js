@@ -59,6 +59,8 @@ function(
             this.on("refresh", this.onRequestRefresh, this);
             theMarsApp.user.on("athlete:change", this.onAthleteChange, this);
 
+            this.weeksCollectionInitialize();
+
             // call parent constructor
             this.constructor.__super__.initialize.call(this);
 
@@ -78,8 +80,6 @@ function(
             {
                 return;
             }
-
-            this.weeksCollectionInitialize();
 
             this.initializeHeader();
             this.initializeCalendar();
