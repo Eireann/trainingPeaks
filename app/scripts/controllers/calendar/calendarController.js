@@ -41,6 +41,7 @@ function(
 
         initialize: function()
         {
+
             // TODO: split this into a couple different functions 
             this.models = {};
             this.views = {};
@@ -55,13 +56,12 @@ function(
             this.startDate = this.createStartDay().subtract("weeks", 4);
             this.endDate = this.createEndDay().add("weeks", 6);
 
-            this.weeksCollectionInitialize();
-
             this.on("refresh", this.onRequestRefresh, this);
             theMarsApp.user.on("athlete:change", this.onAthleteChange, this);
 
             // call parent constructor
             this.constructor.__super__.initialize.call(this);
+
         },
 
         onLayoutClose: function()
@@ -78,6 +78,8 @@ function(
             {
                 return;
             }
+
+            this.weeksCollectionInitialize();
 
             this.initializeHeader();
             this.initializeCalendar();

@@ -365,8 +365,24 @@ module.exports = function(grunt)
     grunt.loadNpmTasks("grunt-contrib-watch");
     grunt.loadNpmTasks("grunt-istanbul");
 
+    grunt.registerTask("bdd_test_config", "Configure for jasmine node bdd tests", function()
+    {
+        var jasmineOptions = grunt.config.get('jasmine_node');
+        jasmineOptions.specFolder = "test/specs/bdd_tests";
+        grunt.config.set('jasmine_node', jasmineOptions);
+    });
+
+    grunt.registerTask("unit_test_config", "Configure for jasmine node unit tests", function()
+    {
+        var jasmineOptions = grunt.config.get('jasmine_node');
+        jasmineOptions.specFolder = "test/specs/unit_tests";
+        grunt.config.set('jasmine_node', jasmineOptions);
+    });
+
     // NOTE: grunt test --dir=some/pattern will limit tests to a subfolder
     grunt.registerTask("test", ["clean:coverage", "jshint", "setup-spec-list", "jasmine_node"]);
+    grunt.registerTask("unit_test", ["unit_test_config", "clean:coverage", "jshint", "jasmine_node"]);
+    grunt.registerTask("bdd_test", ["bdd_test_config", "clean:coverage", "jshint", "jasmine_node"]);
 
     grunt.registerTask("update_grunt_config", ["requirejs_config", "i18n_config"]);
     grunt.registerTask("single", ["update_grunt_config", "requirejs", "concat:dist"]);

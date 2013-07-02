@@ -1,12 +1,33 @@
 // use requirejs() here, not define(), for jasmine compatibility
 requirejs(
-["moment",
-"app",
-"models/workoutsCollection"],
-function(moment, theMarsApp, WorkoutsCollection)
+[
+    "testUtils/testHelpers",
+    "testUtils/xhrDataStubs",
+    "moment",
+    "app",
+    "models/workoutsCollection"
+],
+function(
+    testHelpers,
+    xhrData,
+    moment,
+    theMarsApp,
+    WorkoutsCollection
+    )
 {
     describe("Workouts Collection", function()
     {
+
+        beforeEach(function()
+        {
+            testHelpers.startTheAppAndLogin(xhrData.users.barbkprem);
+        });
+
+        afterEach(function()
+        {
+            testHelpers.stopTheApp();
+        });
+
         it("should load as a module", function()
         {
             expect(WorkoutsCollection).toBeDefined();

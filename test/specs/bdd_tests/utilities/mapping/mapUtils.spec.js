@@ -49,7 +49,6 @@ function(mapUtils, testHelpers)
                 expect(marker.latLng).toEqual([i + 2, i + 2]);
                 expect(marker.options.title).toEqual((i + 1) + " km");
             }
-            console.log(markers);
         });
     });
 });

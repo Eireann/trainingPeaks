@@ -11,12 +11,14 @@ function(CalendarCollection
 
         weeksCollectionInitialize: function ()
         {
+            //var startTime = +new Date();
             this.weeksCollection = new CalendarCollection(null,
             {
                 summaryViewEnabled: this.summaryViewEnabled,
                 startDate: moment(this.startDate),
                 endDate: moment(this.endDate)
             });
+            //console.log("Weeks collection init took " + (+new Date() - startTime) + "ms");
         },
 
         appendWeekToCalendar: function ()

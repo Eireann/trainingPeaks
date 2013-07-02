@@ -252,8 +252,6 @@ function(
 
                     it("Should return TSS data in the flot points", function()
                     {
-                        //console.log(modelData);
-                        //console.log(chartPoints);
                         expect(chartPoints.TSS).toBeDefined();
                         expect(chartPoints.TSSFuture).toBeDefined();
                         expect(chartPoints.TSS.length).toEqual(modelData.length);

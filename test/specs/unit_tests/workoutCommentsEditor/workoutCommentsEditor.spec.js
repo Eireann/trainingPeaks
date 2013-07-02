@@ -108,7 +108,6 @@ function(TP, WorkoutModel, WorkoutCommentsEditorView)
             view.$el.find("textarea.commentBody").trigger("blur");
 
             // save it
-            console.log(workoutModel.getPostActivityComments().models[0].attributes);
             expect(workoutModel.getPostActivityComments().models[0].get("comment")).toEqual(editedComment);
             expect(workoutModel.save).toHaveBeenCalled();
 
