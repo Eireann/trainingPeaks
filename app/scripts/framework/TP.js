@@ -1,8 +1,3 @@
-/*
-
-Wraps and extends core backbone and marionette functionality
-*/
-
 define(
 [
     "underscore",
