@@ -77,6 +77,7 @@
 
         @include buttons(0px, 150px, $fontSizeMedium);
         button {
+            padding:4px 0;
             font-weight: normal;
             @include calc(width, "50% - 3px"); 
             &:first

@@ -39,7 +39,7 @@
 
     button
     {
-        padding-top: 3px;
+        padding: 4px 0;
         margin: 5px 0 2px 0;
     }
 
@@ -189,15 +189,15 @@
             {
                 font-size: $fontSizeSmall;
                 font-weight: normal;
-                padding: 3px 0 4px 0;
+                padding: 4px 0;
                 margin: 0;
                 width: 44px;
                 float: left;
                 box-shadow: none;
                 @include linearGradient(top, #ffffff, #dfddde);
                 background-color: #fff;
-                color: $TPGrey3;
-                border-color: #808080;
+                color: $TPGrey10;
+                border-color: $TPGrey9;
 
                 &.graphZoomButton,
                 &.graphDistanceButton
@@ -475,7 +475,7 @@
         {
             margin-left: 20px;
             margin-top: 20px;
-			margin-bottom: 20px;
+            margin-bottom: 20px;
 
             select
             {
@@ -507,9 +507,9 @@
                 text-indent: 3px;
             }
 
-           	@include buttons(0, 96px, $fontSizeSmall);
+            @include buttons(0, 96px, $fontSizeSmall);
             button {
-                height: 20px;
+                // height: 20px;
                 vertical-align: top;
             }
         }
@@ -522,21 +522,21 @@
             }
 
             li {
-				color:$TPGrey10;
+                color:$TPGrey10;
                 
-				span {
+                span {
                     cursor: pointer;  
                     display: inline-block;
                     @include calc(width, "100% - 20px");
                     &:hover {
-						color:$TPGrey4;	
+                        color:$TPGrey4; 
                     }
                 }
 
                 &.highlight {
                     span {
                         color:$TPGrey4;
-						font-family:$fontFamilyHeavy;
+                        font-family:$fontFamilyHeavy;
                     }
                 }
             }
