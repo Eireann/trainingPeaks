@@ -1,7 +1,6 @@
 define(
 [
     "underscore",
-    "framework/apiConfig",
     "TP",
     "framework/ajaxAuth",
     "framework/ajaxCaching",
@@ -21,7 +20,6 @@ define(
 ],
 function(
     _,
-    apiConfig,
     TP,
     initializeAjaxAuth,
     ajaxCaching,
@@ -327,16 +325,24 @@ function(
             window.location.reload();
         };
 
+        // simple dummy values for testing
+        if (!apiConfig)
+        {
+            apiConfig = {
+                configuration: 'debug',
+                apiRoot: 'localhost:8905',
+                oAuthRoot: 'localhost:8901',
+                wwwRoot: 'localhost'
+            }
+        }
+
         // point to appropriate api server
         this.apiRoot = apiConfig.apiRoot;
         this.oAuthRoot = apiConfig.oAuthRoot;
         this.wwwRoot = apiConfig.wwwRoot;
 
         // app root for router and history
-        if (apiConfig.configuration !== 'live')
-            this.root = "/Mars";
-        else
-            this.root = '';
+        this.root = '';
 
         // where to find assets dynamically
         this.assetsRoot = apiConfig.configuration === 'dev' ? 'build/debug/assets/' : 'assets/';

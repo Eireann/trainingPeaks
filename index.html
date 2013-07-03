@@ -83,23 +83,7 @@ src:url("assets/fonts/2daec1fd-cd45-448e-b86e-ec73aacdb4ec.eot?#iefix") format("
   <link rel="stylesheet" href="app/css/app.css">
   <!(endif)-->
 
-  <!--(if target debug)>
-  <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.0/themes/base/jquery-ui.css" />
-  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5/leaflet.css" />
-  <link rel="stylesheet" href="app/css/app.css">
-  <!(endif)-->
 
-  <!--(if target dev)>
-  <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.0/themes/base/jquery-ui.css" />
-  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5/leaflet.css" />
-  <link rel="stylesheet" href="app/css/app.css">
-  <!(endif)-->
-
-  <!--(if target uat)>
-  <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.0/themes/base/jquery-ui.css" />
-  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5/leaflet.css" />
-  <link rel="stylesheet" href="app/css/app.css">
-  <!(endif)-->
 </head>
 
 <body>
@@ -121,63 +105,19 @@ src:url("assets/fonts/2daec1fd-cd45-448e-b86e-ec73aacdb4ec.eot?#iefix") format("
   <script src="http://maps.google.com/maps/api/js?v=3.2&sensor=false"></script>
   <!(endif)-->
 
-  <!--(if target debug)>
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.js"></script>
-  <script src="http://maps.google.com/maps/api/js?v=3.2&sensor=false"></script>
-  <!(endif)-->
 
-  <!--(if target dev)>
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.js"></script>
-  <script src="http://maps.google.com/maps/api/js?v=3.2&sensor=false"></script>
-  <!(endif)-->
-
-  <!--(if target uat)>
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.js"></script>
-  <script src="http://maps.google.com/maps/api/js?v=3.2&sensor=false"></script>
-  <!(endif)-->
 
   <!-- Application source. -->
 
   <!--(if target dummy)><!-->
   <script>window.apiRoot = "dev";</script>
+  <script src="apiConfig.js"></script>
   <script data-main="./app/config/config" src="./vendor/js/libs/require.js"></script>
   <!--<!(endif)-->
 
-  <!--(if target debug)>
-  <script>window.apiRoot = "dev";</script>
-  <script src="single.js"></script>
-  <script>
-      requirejs(
-        ["Backbone.Marionette.Handlebars", "main"],
-        function (handlebars, main) {}
-      );
-  </script>
-  <!(endif)-->
-
-  <!--(if target dev)>
-  <script>window.apiRoot = "dev";</script>
-  <script src="single.js"></script>
-  <script>
-      requirejs(
-        ["Backbone.Marionette.Handlebars", "main"],
-        function (handlebars, main) {}
-      );
-  </script>
-  <!(endif)-->
-
-  <!--(if target uat)>
-  <script>window.apiRoot = "uat";</script>
-  <script src="single.min.js"></script>
-  <script>
-      requirejs(
-        ["Backbone.Marionette.Handlebars", "main"],
-        function (handlebars, main) {}
-      );
-  </script>
-  <!(endif)-->
-
   <!--(if target release)>
   <script>window.apiRoot = "live";</script>
+  <script src="apiConfig.js"></script>
   <script src="single.min.js"></script>
   <script>
       requirejs(

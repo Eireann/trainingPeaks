@@ -1,11 +1,10 @@
 define(
 [
-    "framework/apiConfig",
     "underscore",
     "backbone",
     "backbone.deepmodel"
 ],
-function(apiConfig, _, Backbone)
+function(_, Backbone)
 {
     var APIModel = Backbone.DeepModel.extend(
     {
@@ -118,7 +117,7 @@ function(apiConfig, _, Backbone)
         }
     };
 
-    if (apiConfig.configuration === "local" || apiConfig.configuration === "dev")
+    if (apiConfig && apiConfig.configuration === "local" || apiConfig.configuration === "dev")
         return APIModel.extend(DevValidationExtensions);
     else
         return APIModel;
