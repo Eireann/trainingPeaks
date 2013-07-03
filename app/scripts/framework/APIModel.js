@@ -117,7 +117,7 @@ function(_, Backbone)
         }
     };
 
-    if (apiConfig && apiConfig.configuration === "local" || apiConfig.configuration === "dev")
+    if (typeof apiConfig !== "undefined" && apiConfig.hasOwnProperty("configuration") && (apiConfig.configuration === "local" || apiConfig.configuration === "dev"))
         return APIModel.extend(DevValidationExtensions);
     else
         return APIModel;

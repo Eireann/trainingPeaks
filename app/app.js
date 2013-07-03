@@ -70,7 +70,7 @@ function(
     {
 
         this.user = new UserModel();
-
+        this.session = new Session();
         this.addAllShutdowns();
 
         this.addRegions(
@@ -128,8 +128,8 @@ function(
         {
             initializeAjaxAuth(this);
             initializeAjaxTimezone();
-            if(this.ajaxCachingEnabled)
-                this.ajaxCaching = ajaxCaching.initialize(this);
+            if (this.ajaxCachingEnabled)
+                this.ajaxCaching = ajaxCaching.initialize();
         });
         
         // add a session
@@ -326,14 +326,16 @@ function(
         };
 
         // simple dummy values for testing
-        if (!apiConfig)
+        if (typeof apiConfig === "undefined")
         {
             apiConfig = {
                 configuration: 'debug',
                 apiRoot: 'localhost:8905',
                 oAuthRoot: 'localhost:8901',
                 wwwRoot: 'localhost'
-            }
+            };
+
+            window.apiConfig = apiConfig;
         }
 
         // point to appropriate api server
@@ -388,6 +390,7 @@ function(
 
     theApp.resetAppToInitialState();
     window.theMarsApp = theApp;
+
 
     if (typeof global !== 'undefined')
     {

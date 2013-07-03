@@ -1,19 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
 	<PropertyGroup>
-		<Configuration Condition="'$(Configuration)' == ''">Debug</Configuration>
 		<MSDeploy 
 			Condition="($(MSDeploy) == '') and Exists('$(SystemDrive)\Program Files\IIS\Microsoft Web Deploy V3\msdeploy.exe')">$(SystemDrive)\Program Files\IIS\Microsoft Web Deploy V3\msdeploy.exe</MSDeploy>
-		<OutputDir>$(MSBuildProjectDirectory)\build\$(Configuration.ToLower())</OutputDir>
+		<OutputDir>$(MSBuildProjectDirectory)\build\release</OutputDir>
 		<GruntCmd>npm install -g grunt-cli &amp;&amp; npm install &amp;&amp; grunt</GruntCmd>
 	</PropertyGroup>
 
-	<Target Name="Clean">
-		<RemoveDir Condition="Exists('$(OutputDir)')" Directories="$(OutputDir)" />
-	</Target>
-
 	<Target Name="Build" DependsOnTargets="Test">
-		<Exec Command="$(GruntCmd) $(Configuration.ToLower())" />
+		<Exec Command="$(GruntCmd) build" />
 	</Target>
 
 	<Target Name="Test">

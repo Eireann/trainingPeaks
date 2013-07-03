@@ -47,11 +47,11 @@ module.exports = function(grunt)
                     'plato': ['app/**/!(Handlebars).js']
                 }
             },
-            release:
+            build:
             {
                 files:
                 {
-                    'build/release/plato': ['app/**/!(Handlebars).js']
+                    'build/debug/plato': ['app/**/!(Handlebars).js']
                 }
             }
         },
@@ -69,7 +69,7 @@ module.exports = function(grunt)
                     imagesDir: "assets/images"
                 }
             },
-            release:
+            build:
             {
                 options:
                 {
@@ -84,7 +84,7 @@ module.exports = function(grunt)
 
         requirejs:
         {
-            compile:
+            build:
             {
                 options:
                 {
@@ -101,7 +101,7 @@ module.exports = function(grunt)
 
         concat:
         {
-            release:
+            build:
             {
                 src:
                 [
@@ -116,25 +116,37 @@ module.exports = function(grunt)
                     "build/debug/single.js"
                 ],
 
-                dest: "build/debug/single.js",
+                dest: "build/release/single.js",
 
                 separator: ";"
             }
-
         },
 
+        targethtml:
+        {
+            build:
+            {
+                src: "index.html",
+                dest: "build/release/index.html"
+            },
+            build_debug:
+            {
+                src: "index.html",
+                dest: "build/release/index.html"
+            }
+        },
         /*
          * The minification task uses the uglify library.
          */
         uglify:
         {
-            release:
+            build:
             {
                 files:
                 {
                     "build/release/single.min.js":
                     [
-                        "build/debug/single.js"
+                        "build/release/single.js"
                     ]
                 }
             }
@@ -152,9 +164,9 @@ module.exports = function(grunt)
         {
             debug:
             {
-                src: ["build"]
+                src: ["build/debug"]
             },
-            release:
+            build:
             {
                 src: ["build"]
             },
@@ -163,7 +175,18 @@ module.exports = function(grunt)
                 src: ["coverage"]
             }
         },
-        
+
+        deleteFiles:
+        {
+            build:
+            {
+                files:
+                {
+                    "build/release": ["build/release/**/single.js"]
+                }
+            }
+        },
+
         copy:
         {
             debug:
@@ -174,35 +197,53 @@ module.exports = function(grunt)
                 }
             },
 
-            release:
+            build_common:
             {
                 files:
                 {
-                    "build/release": ["web.config", "assets/fonts/**", "assets/images/**", "app/scripts/affiliates/**", "!app/scripts/affiliates/**/*.js"]
+                    "build/release": ["assets/fonts/**", "assets/images/**", "app/scripts/affiliates/**", "!app/scripts/affiliates/**/*.js"]
                 }
             },
 
+            build_debug:
+            {
+                files:
+                {
+                    "build/release": ["apiConfig.dev.js"]
+                }
+            },
+
+            build:
+            {
+                files:
+                {
+                    "build/release": ["apiConfig.js", "web.config"]
+                }
+            },
+
+            // stuff that needs to get instrumented for test coverage to work
             pre_instrument:
             {
                 files:
                 {
-                    "coverage": ["test/**", "vendor/**", "app/**"]
+                    "coverage": ["test/**", "app/**"]
                 }
             },
 
+            // stuff that needs to be clean and not modified by test coverage instrumentation
             post_instrument:
             {
                 files:
                 {
-                    "coverage": ["app/Handlebars.js", "app/config/**"]
+                    "coverage": ["vendor/**", "app/Handlebars.js", "app/config/**", "apiConfig.js"]
                 }
             },
 
-            release_coverage:
+            build_coverage:
             {
                 files:
                 {
-                    "build/release": ["coverage/lcov-report/**"]
+                    "build/debug": ["coverage/lcov-report/**"]
                 }
             }
         },
@@ -225,16 +266,16 @@ module.exports = function(grunt)
         },
 
         instrument: {
-          files: "app/**/!(Handlebars).js",
-          options: {
-              basePath: 'coverage'
-          }
+            files: "app/scripts/**/*.js",
+            options: {
+                basePath: 'coverage'
+            }
         },
 
         storeCoverage : {
             options: {
                 dir: 'coverage/coverage'
-          }
+            }
         },
 
         makeReport: {
@@ -278,8 +319,11 @@ module.exports = function(grunt)
     grunt.registerTask("default", ["debug"]);
     grunt.registerTask("debug", ["clean:debug", "compass:debug", "copy:debug"]);
 
-    // grunt release builds a single minified js for dev/uat/live
-    grunt.registerTask("release", ["clean", "coverage", "requirejs_config", "i18n_config", "requirejs", "concat:release", "uglify:release", "compass:release", "copy:release", "targethtml:release", "copy:release_coverage", "plato:release"]);
+    // grunt build builds a single minified js for dev/uat/live, at build/release
+    // grunt build_debug does the same but doesn't minify, and points to local dev config
+    grunt.registerTask("build_common", ["clean", "coverage", "requirejs_config", "i18n_config", "requirejs", "concat", "compass:build", "copy:build_common", "copy:build_coverage", "plato:build"]);
+    grunt.registerTask("build_debug", ["build_common", "copy:build_debug", "targethtml:build_debug", "copy-i18n-files"]);
+    grunt.registerTask("build", ["build_common", "copy:build", "uglify", "deleteFiles:build", "targethtml:build", "copy-i18n-files"]);
 
     // TASKS THAT ARE USED BY OTHER TASKS
     grunt.registerTask("bdd_test_config", "Configure for jasmine node bdd tests", function()
