@@ -1,5 +1,6 @@
 module.exports = function(grunt)
 {
+    var _ = require('underscore');
 
     // TARGETHTML - copied and modified from grunt-targethtml
     grunt.registerMultiTask('targethtml', 'Produces html-output depending on grunt release version', function()

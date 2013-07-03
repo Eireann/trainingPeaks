@@ -347,7 +347,7 @@ function(
         this.root = '';
 
         // where to find assets dynamically
-        this.assetsRoot = apiConfig.configuration === 'dev' ? 'build/debug/assets/' : 'assets/';
+        this.assetsRoot = apiConfig.assetsRoot ? apiConfig.assetsRoot : 'assets/';
     };
 
     theApp.touchEnabled = false;
