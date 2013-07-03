@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
 	<PropertyGroup>
-		<MSDeploy 
+        <Configuration Condition="'$(Configuration)' == ''">Dev</Configuration>
+        <MSDeploy 
 			Condition="($(MSDeploy) == '') and Exists('$(SystemDrive)\Program Files\IIS\Microsoft Web Deploy V3\msdeploy.exe')">$(SystemDrive)\Program Files\IIS\Microsoft Web Deploy V3\msdeploy.exe</MSDeploy>
 		<OutputDir>$(MSBuildProjectDirectory)\build\release</OutputDir>
 		<GruntCmd>npm install -g grunt-cli &amp;&amp; npm install &amp;&amp; grunt</GruntCmd>
