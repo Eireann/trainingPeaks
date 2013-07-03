@@ -68,4 +68,7 @@ requirejs.config(nodeConfig);
 // set baseUrl here, even though we have it in nodeConfig, or else code coverage doesn't work
 requirejs.config({ baseUrl: path.join(rootJsDir, "app") });
 
+// fixes problem with hbs loading during testing
+requirejs.config({ waitSeconds: 0 });
+
 global.requirejs = global.require = requirejs;
