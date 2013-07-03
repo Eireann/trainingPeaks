@@ -182,7 +182,7 @@ module.exports = function(grunt)
             {
                 files:
                 {
-                    "build/release": ["build/release/**/single.js"]
+                    "build/release": ["build/release/**/single.js", "build/debug/**/single.js"]
                 }
             }
         },
