@@ -235,7 +235,7 @@
 .selectboxit-btn.selectboxit-enabled:hover {
 	color: $TPGrey4;
 	border: 1px solid #8d8d8d;
-	background: url(../../assets/images/QVImages/sprite-selectboxit.png) no-repeat right -20px;
+	background: url(../../assets/images/QVImages/sprite-selectboxit.png) no-repeat right -22px;
 }
 
 .selectboxit-btn.selectboxit-enabled:hover,
@@ -255,7 +255,7 @@
 }
 
 .selectboxit-btn.selectboxit-enabled:active {
-	background: url(../../assets/images/QVImages/sprite-selectboxit.png) no-repeat right -40px;
+	background: url(../../assets/images/QVImages/sprite-selectboxit.png) no-repeat right -44px;
 	color:#ffffff;
 	.selectboxit-default-arrow {
 		border-top: 4px solid #ffffff;
@@ -271,7 +271,7 @@
 	.selectboxit-btn.selectboxit-enabled:hover,
 	.selectboxit-btn.selectboxit-enabled:active {
 		background-image: url(../../assets/images/QVImages/sprite-selectboxit@2x.png);
-		background-size: 238px 60px;
+		background-size: 275px 66px;
 	}
 
 }
