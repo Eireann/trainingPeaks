@@ -21,7 +21,7 @@
     <ul>
     {{#each rangeLaps}}
         <li data-lapindex="{{@index}}" class="lap">
-            <input class="checkbox" type="checkbox" {{#if checked}}checked{{/if}} data-lapindex="{{@index}}"/> <span>{{ name }} ({{ formatTimeToHundredths totalTime}})</span>
+            <input class="checkbox" type="checkbox" {{#if checked}}checked{{/if}} data-lapindex="{{@index}}"/> <span>{{ name }} ({{ formatTimeToHundredths movingTime}})</span>
         </li>
     {{/each}}
     {{#with rangeTotals}}

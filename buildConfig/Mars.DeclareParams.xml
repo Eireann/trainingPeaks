@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" ?>
+<parameters>
+  <parameter name="DeployTarget" >
+    <parameterEntry kind="TextFile" scope="apiConfig.js" match="{DEPLOY_TARGET}" />
+  </parameter>
+  <parameter name="WWWRoot" >
+    <parameterEntry kind="TextFile" scope="apiConfig.js" match="{WWW_ROOT}" />
+  </parameter>
+  <parameter name="ApiRoot" >
+    <parameterEntry kind="TextFile" scope="apiConfig.js" match="{API_ROOT}" />
+  </parameter>
+  <parameter name="OauthRoot" >
+    <parameterEntry kind="TextFile" scope="apiConfig.js" match="{OAUTH_ROOT}" />
+  </parameter>
+</parameters>

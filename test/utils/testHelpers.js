@@ -58,6 +58,8 @@ function(_, $, Backbone, TP, xhrData, app)
             // capture ajax calls
             this.setupFakeAjax();
 
+            //console.log("StartTheApp took " + (+new Date() - startTime) + "ms");
+
         },
 
         stopTheApp: function()

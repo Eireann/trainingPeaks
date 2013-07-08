@@ -34,7 +34,7 @@ function(TP, AthleteSettingsModel)
             state: "",
             story: "",
             timeZone: "",
-            units: 0,
+            units: 2,
             userId: 0,
             userName: "",
             zipCode: "",
@@ -65,10 +65,14 @@ function(TP, AthleteSettingsModel)
                 this.set(this.checkpointAttributes);
         },
 
-        setCurrentAthleteId: function(athleteId)
+        setCurrentAthleteId: function(athleteId, silent)
         {
             this.currentAthleteId = athleteId;
-            this.trigger("athlete:change");
+
+            if (!silent)
+            {
+                this.trigger("athlete:change");
+            }
         },
 
         getCurrentAthleteId: function()

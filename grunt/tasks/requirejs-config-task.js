@@ -10,13 +10,13 @@ module.exports = function(grunt)
         // common requirejs settings
         var gruntRequirejsSettings = require("../../app/config/commonRequirejsConfig");
         var requireJsOptions = grunt.config.get('requirejs');
-        _.extend(requireJsOptions.compile.options, gruntRequirejsSettings);
+        _.extend(requireJsOptions.build.options, gruntRequirejsSettings);
 
         // bring in affiliate settings
         var affiliateFolders = fs.readdirSync("app/scripts/affiliates");
         _.each(affiliateFolders, function(affiliateCode)
         {
-            requireJsOptions.compile.options.include.push("affiliates/" + affiliateCode + "/settings");
+            requireJsOptions.build.options.include.push("affiliates/" + affiliateCode + "/settings");
         });
 
         // update main config
