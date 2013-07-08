@@ -26,7 +26,8 @@
         configuration: configuration,
         wwwRoot: wwwRoots[configuration],
         apiRoot: apiRoots[configuration],
-        oAuthRoot: oAuthRoots[configuration]
+        oAuthRoot: oAuthRoots[configuration],
+        buildNumber: "local"
     };
 
     if (typeof global !== "undefined")
