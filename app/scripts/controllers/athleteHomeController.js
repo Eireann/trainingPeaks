@@ -55,7 +55,7 @@ function(
 
         createViews: function()
         {
-            this.views.header = new AthleteHomeHeaderView({ model: theMarsApp.user });
+            this.views.header = new AthleteHomeHeaderView({ model: new TP.Model(theMarsApp.user.getAthleteDetails()) });
             this.views.summary = new AthleteHomeSummaryView();
             this.views.activity = new AthleteHomeActivityView();
             this.views.pods = new AthleteHomePodsView();

@@ -1,8 +1,12 @@
 ﻿<div class="athleteHeader">
-    <div class="userPhoto"/>
+    {{#if photoUrl }}
+    <div class="userPhoto">
+        <img src="{{ wwwUrl photoUrl }}" />
+    </div>
+    {{/if}}
     <div class="athleteInfo">
         <span class="name">{{ firstName }} {{ lastName }}</span>
-        <span class="athleteSportType">{{athleteType}}</span>
+        <span class="athleteSportType">{{ athleteTypeName athleteType }}</span>
     </div>
     <div class="trainingFor">
         {{$ "ImTrainingFor"}}:
