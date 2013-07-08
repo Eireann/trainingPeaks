@@ -96,6 +96,15 @@ function(TP, AthleteSettingsModel)
                 this.athleteSettings = new AthleteSettingsModel({ athleteId: this.getCurrentAthleteId() });
             }
             return this.athleteSettings;
+        },
+
+        getAthleteDetails: function()
+        {
+            var athleteId = this.getCurrentAthleteId();
+            return _.find(this.get("athletes"), function(athlete)
+            {
+                return athlete.athleteId === athleteId;
+            });
         }
     });
 });

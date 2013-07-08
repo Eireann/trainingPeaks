@@ -14,16 +14,11 @@ function(
 {
     return ScrollableColumnView.extend(
     {
-        template:
-        {
-            type: "handlebars",
-            template: activityTemplate
-        },
 
         initialize: function(options)
         {
             // initialize the superclass
-            this.constructor.__super__.initialize.call(this);
+            this.constructor.__super__.initialize.call(this, { template: activityTemplate });
         }
 
     });

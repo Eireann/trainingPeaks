@@ -5,14 +5,16 @@
     "utilities/workout/workout",
     "utilities/conversion/conversion",
     "utilities/chartBuilder",
-    "utilities/filesystem"
+    "utilities/filesystem",
+    "utilities/athlete/athlete"
 ], function(
     datetime,
     units,
     workout,
     conversion,
     chartBuilder,
-    filesystem
+    filesystem,
+    athlete
     )
 {
     return {
@@ -22,6 +24,7 @@
         conversion: conversion,
         chartBuilder: chartBuilder,
         filesystem: filesystem,
+        athlete: athlete,
 
         translate: function(textToTranslate)
         {
