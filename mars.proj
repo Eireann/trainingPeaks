@@ -62,7 +62,7 @@
 			Condition=" $(PackageParamsfile) == '' " />
 
 		<MSBuild Projects="$(MSBuildProjectFile)" Targets="DeployPackage" 
-			Properties="PackageSource=$([System.IO.Path]::GetFullPath($(PackageDir)\Mars.dpkg.zip));"
+			Properties="PackageSource=$([System.IO.Path]::GetFullPath(Mars.dpkg.zip);"
 			/>
 
 	</Target>
