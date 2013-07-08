@@ -3,6 +3,7 @@
 function($, theMarsApp, ajaxCaching)
 {
 
+    // cache has been disabled in the app
     describe("Sync Caching", function()
     {
 
@@ -13,6 +14,7 @@ function($, theMarsApp, ajaxCaching)
 
         describe("sync", function()
         {
+
             it("Should call Backbone.sync if request type is not read", function()
             {
                 var ret = {};
@@ -50,6 +52,10 @@ function($, theMarsApp, ajaxCaching)
                         type: "read",
                         success: function() { }
                     };
+                });
+
+                afterEach(function()
+                {
                 });
 
                 it("Should call addCachingDeferred if request type is read and model is cacheable", function()
@@ -193,6 +199,10 @@ function($, theMarsApp, ajaxCaching)
                 spyOn(ajaxCaching, "writeCache");
             });
 
+            afterEach(function()
+            {
+            });
+
             it("Should not call ajaxCaching.writeCache if status is notmodified", function()
             {
                 ajaxCaching.saveResponseToLocalStorage("", "notmodified", xhr, settings);
@@ -256,6 +266,11 @@ function($, theMarsApp, ajaxCaching)
 
                 spyOn(ajaxCaching, "resolveRequestWithCachedData");
                 spyOn(ajaxCaching, "addRequestCacheHeaders");
+
+            });
+
+            afterEach(function()
+            {
             });
 
             it("Should check cache", function()
