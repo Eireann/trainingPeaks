@@ -10,6 +10,7 @@
     "utilities/charting/flotToolTipPositioner",
     "utilities/charting/jquery.flot.dashes",
     "utilities/workout/workoutTypes",
+    "views/dashboard/pmcChartSettings",
     "hbs!templates/views/dashboard/pmcChart",
     "hbs!templates/views/charts/chartTooltip"
 ],
@@ -24,6 +25,7 @@ function (
     toolTipPositioner,
     flotDashes,
     workoutTypes,
+    pmcChartSettings,
     pmcChartTemplate,
     tooltipTemplate
     )
@@ -108,6 +110,11 @@ function (
         ui: 
         {
             chartContainer: ".chartContainer"
+        },
+
+        events:
+        {
+            "mouseup .settings": "pmcSettingsClicked"
         },
 
         setChartTitle: function()
@@ -453,6 +460,28 @@ function (
             {
                 this.plot = $.plot(this.ui.chartContainer, dataSeries, flotOptions);
             }
-        }
+        },
+
+        pmcSettingsClicked: function (e)
+        {
+            if (e && e.button && e.button === 2)
+            {
+                return;
+            }
+
+            e.preventDefault();
+
+            this.keepSettingsButtonVisible();
+            var offset = $(e.currentTarget).offset();
+            this.pmcSettings = new pmcChartSettings({ model: this.model });
+            this.pmcSettings.render().bottom(offset.top + 10).center(offset.left - 2);
+            this.pmcSettings.on("close", this.allowSettingsButtonToHide, this);
+            this.pmcSettings.on("mouseleave", this.onMouseLeave, this);
+        },
+
+        keepSettingsButtonVisible: function ()
+        {
+            this.$el.addClass("menuOpen");
+        },
     });
 });
