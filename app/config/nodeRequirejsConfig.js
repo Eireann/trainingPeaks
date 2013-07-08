@@ -40,6 +40,13 @@
         });
     }
 
+    global.apiConfig = {
+        configuration: "local",
+        wwwRoot: "localhost",
+        apiRoot: "localhost",
+        oAuthRoot: "localhost"
+    };
+
     return commonConfig;
 
 }());

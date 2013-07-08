@@ -23,8 +23,8 @@ module.exports = function (grunt) {
             // get the requirejs config so we can modify it 
             var requireJsOptions = grunt.config.get('requirejs');
 
-            // clone the default 'compile' options
-            var localeOptions = _.clone(requireJsOptions.compile.options);
+            // clone the default 'build' options
+            var localeOptions = _.clone(requireJsOptions.build.options);
 
             // add locale specific details
             localeOptions.out = localeSingleFile;
@@ -44,13 +44,18 @@ module.exports = function (grunt) {
             // get the concat config so we can modify it 
             var concatOptions = grunt.config.get('concat');
 
-            // clone the default 'dist' options
-            var localeOptions = _.clone(concatOptions.dist);
+            // clone the default 'build' options
+            var localeOptions = _.clone(concatOptions.build);
 
             // add locale specific single.js file
             localeOptions.dest = localeSingleFile;
-            localeOptions.src = _.clone(concatOptions.dist.src);
-            localeOptions.src[3] = localeSingleFile;
+            localeOptions.src = _.clone(concatOptions.build.src);
+
+            // remove the existing single.js
+            localeOptions.src.pop();
+
+            // single file goes last
+            localeOptions.src.push(localeSingleFile);
 
             // add the moment.js translation
             var momentLangDir = "vendor/js/libs/moment/lang/";
@@ -71,6 +76,7 @@ module.exports = function (grunt) {
                 //grunt.log.writeln("No language file found for moment.js: " + momentLangFile);
             }
 
+
             // add it into the requirejs options
             concatOptions[localeName] = localeOptions;
 
@@ -83,8 +89,8 @@ module.exports = function (grunt) {
         function addLocaleToUglify(localeName, localeSingleFile)
         {
             var uglifyOptions = grunt.config.get('uglify');
-            var localeOptions = _.clone(uglifyOptions.release);
-            var minFile = localeSingleFile.replace("debug", "release").replace(".js", ".min.js");
+            var localeOptions = _.clone(uglifyOptions.build);
+            var minFile = localeSingleFile.replace(".js", ".min.js");
             localeOptions.files = {};
             localeOptions.files[minFile] = [localeSingleFile];
             uglifyOptions[localeName] = localeOptions;
@@ -94,7 +100,7 @@ module.exports = function (grunt) {
         // build options for each locale - set the single.js filename and the locale
         _.each(locales, function(localeName)
         {
-            var localeFolder = getLocalePath('debug', localeName);
+            var localeFolder = getLocalePath('release', localeName);
             var localeSingleFile = localeFolder + "/single.js";
             addLocaleToRequirejs(localeName, localeSingleFile);
             addLocaleToConcat(localeName, localeSingleFile);
@@ -119,7 +125,7 @@ module.exports = function (grunt) {
                 while (pathParts.length > 0)
                 {
                     destDir = path.join(destDir, pathParts.shift());
-                    grunt.log.writeln("Mkdir " + destDir);
+                    //grunt.log.writeln("Mkdir " + destDir);
                     if (!fs.existsSync(destDir))
                     {
                         fs.mkdirSync(destDir);
@@ -136,7 +142,7 @@ module.exports = function (grunt) {
             }
             else if (fs.statSync(srcPath).isFile())
             {
-                grunt.log.writeln("Copy " + srcPath + " to " + destPath);
+                //grunt.log.writeln("Copy " + srcPath + " to " + destPath);
                 var BUF_LENGTH, buff, bytesRead, fdr, fdw, pos;
                 BUF_LENGTH = 64 * 1024;
                 buff = new Buffer(BUF_LENGTH);
@@ -156,8 +162,9 @@ module.exports = function (grunt) {
             
         };
 
-        var targets = ['debug', 'release'];
-        var filesToCopy = ['app', 'assets', 'index.html'];
+        var targets = ['release'];
+        var filesToCopy = ['app', 'assets', 'index.html', "apiConfig.js", "apiConfig.dev.js", "web.config"];
+
         // build options for each locale - set the single.js filename and the locale
         _.each(locales, function(localeName)
         {
@@ -171,7 +178,11 @@ module.exports = function (grunt) {
                     {
                         var srcPath = path.join("build", targetName, fileName);
                         var destPath = path.join("build", targetName, localeName, fileName);
-                        copyFileSync(srcPath, destPath);
+                        if (fs.existsSync(srcPath))
+                        {
+                            grunt.log.writeln("Copying " + srcPath + " to " + destPath);
+                            copyFileSync(srcPath, destPath);
+                        }
                     });
                 }
 

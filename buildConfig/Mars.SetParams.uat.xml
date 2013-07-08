@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<parameters>
+	<setParameter name="DeployTarget" value="uat" />
+ 	<setParameter name="WWWRoot" value="https://www.uat.trainingpeaks.com" />
+ 	<setParameter name="ApiRoot" value="https://tpapi.uat.trainingpeaks.com" />
+ 	<setParameter name="OauthRoot" value="https://oauth.uat.trainingpeaks.com" />
+</parameters>

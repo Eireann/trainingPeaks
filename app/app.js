@@ -1,7 +1,6 @@
 define(
 [
     "underscore",
-    "framework/apiConfig",
     "TP",
     "framework/ajaxAuth",
     "framework/ajaxCaching",
@@ -21,7 +20,6 @@ define(
 ],
 function(
     _,
-    apiConfig,
     TP,
     initializeAjaxAuth,
     ajaxCaching,
@@ -72,7 +70,7 @@ function(
     {
 
         this.user = new UserModel();
-
+        this.session = new Session();
         this.addAllShutdowns();
 
         this.addRegions(
@@ -130,8 +128,8 @@ function(
         {
             initializeAjaxAuth(this);
             initializeAjaxTimezone();
-            if(this.ajaxCachingEnabled)
-                this.ajaxCaching = ajaxCaching.initialize(this);
+            if (this.ajaxCachingEnabled)
+                this.ajaxCaching = ajaxCaching.initialize();
         });
         
         // add a session
@@ -327,19 +325,29 @@ function(
             window.location.reload();
         };
 
+        // simple dummy values for testing
+        if (typeof apiConfig === "undefined")
+        {
+            apiConfig = {
+                configuration: 'debug',
+                apiRoot: 'localhost:8905',
+                oAuthRoot: 'localhost:8901',
+                wwwRoot: 'localhost'
+            };
+
+            window.apiConfig = apiConfig;
+        }
+
         // point to appropriate api server
         this.apiRoot = apiConfig.apiRoot;
         this.oAuthRoot = apiConfig.oAuthRoot;
         this.wwwRoot = apiConfig.wwwRoot;
 
         // app root for router and history
-        if (apiConfig.configuration !== 'live')
-            this.root = "/Mars";
-        else
-            this.root = '';
+        this.root = '';
 
         // where to find assets dynamically
-        this.assetsRoot = apiConfig.configuration === 'dev' ? 'build/debug/assets/' : 'assets/';
+        this.assetsRoot = apiConfig.assetsRoot ? apiConfig.assetsRoot : 'assets/';
     };
 
     theApp.touchEnabled = false;
@@ -382,6 +390,7 @@ function(
 
     theApp.resetAppToInitialState();
     window.theMarsApp = theApp;
+
 
     if (typeof global !== 'undefined')
     {

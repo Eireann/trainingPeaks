@@ -25,6 +25,14 @@ function(_, Backbone, setImmediate)
             return this;
         },
 
+        unInitialize: function()
+        {
+            if(this.backboneSync)
+            {
+                Backbone.sync = this.backboneSync;
+            }
+        },
+
         sync: function(method, model, options)
         {
             if (!model.cacheable)

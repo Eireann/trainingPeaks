@@ -36,6 +36,7 @@ module.exports = function(grunt)
             {
                 var srcPath = path.normalize(srcFile);
                 var destPath = path.join(destFolder, srcFile);
+
                 // mkdir
                 if (fs.statSync(srcPath).isDirectory() && !fs.existsSync(destPath))
                 {
@@ -46,7 +47,7 @@ module.exports = function(grunt)
                     while (pathParts.length > 0)
                     {
                         dir = path.join(dir, pathParts.shift());
-                        grunt.log.writeln("Mkdir " + dir);
+                        //grunt.log.writeln("Mkdir " + dir);
                         if (!fs.existsSync(dir))
                         {
                             fs.mkdirSync(dir);
@@ -56,7 +57,7 @@ module.exports = function(grunt)
                 }
                 else if (fs.statSync(srcPath).isFile())
                 {
-                    grunt.log.writeln("Copy " + srcPath + " to " + destPath);
+                    //grunt.log.writeln("Copy " + srcPath + " to " + destPath);
                     copyFileSync(srcPath, destPath);
                     //fs.createReadStream(srcPath).pipe(fs.createWriteStream(destPath));
                 }
