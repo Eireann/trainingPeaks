@@ -3,58 +3,63 @@
 #athleteHomeSummary
 {
     float: left;
-    @include calc(width, "33% - 5px");
+    @include calc(width, "20% - 3px");
 }
 
 #athleteHomeActivityFeed
 {
     float: left;
-    @include calc(width, "34%");
-    margin-left: 5px;
+    @include calc(width, "50%");
+    margin-left: 3px;
 }
 
 #athleteHomePods
 {
     float: left;
-    @include calc(width, "33% - 5px");
-    margin-left: 5px;
+    @include calc(width, "30% - 3px");
+    margin-left: 3px;
 }
 
 .athleteHeader
 {
-    margin-left: 35px;
-    height: 90px;
+    margin-left: 65px;
+    height: 64px;
+    padding-top: 10px;
 
     .userPhoto
     {
         background-color: $TPGrey4;
-        width: 55px;
-        height: 65px;
         float: left;
+        max-width: 55px;
+        max-height: 55px;
+        img
+        {
+            max-width: 30px;
+            max-height: 30px;
+        }
     }
 
     .athleteInfo
     {
         font-family: $fontFamilyRegular;
-        font-size: $fontSizeXLarge;
+        font-size: $fontSizeSmall;
         color: $TPGrey4;
-        padding-left: 65px;
+        float: left;
+        padding: 3px 0 0 5px;
+        margin: 0px;
+
+        .name
+        {
+            font-family: $fontFamilyHeavy;
+        }
     }
 
     .trainingFor
     {
         font-family: $fontFamilyRegular;
-        font-size: $fontSizeSmall;
+        font-size: $fontSizeXSmall;
         color: $TPGrey2;
-        padding: 5px 0 5px 66px
-    }
-
-    .activityInformation
-    {
-        margin-left: 10px;
-        font-family: $fontFamilyRegular;
-        font-size: $fontSizeXXLarge;
-        color: $TPGrey7;
-        padding-left: 55px
+        padding: 5px 0 2px 0px;
+        margin: 0px;
     }
 }

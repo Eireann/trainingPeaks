@@ -4,14 +4,12 @@
         <img src="{{ wwwUrl photoUrl }}" />
     </div>
     {{/if}}
+
     <div class="athleteInfo">
         <span class="name">{{ firstName }} {{ lastName }}</span>
         <span class="athleteSportType">{{ athleteTypeName athleteType }}</span>
-    </div>
-    <div class="trainingFor">
-        {{$ "ImTrainingFor"}}:
-    </div>
-    <div class="activityInformation">
-        Bolder Boulder 10k | Goal 42:00 | in X days
+        <div class="trainingFor">
+            {{$ "ImTrainingFor"}}: Bolder Boulder 10k | Goal 42:00 | in X days
+        </div>
     </div>
 </div>
