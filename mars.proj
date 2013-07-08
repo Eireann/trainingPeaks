@@ -43,9 +43,9 @@
 		<PropertyGroup>
 			<!--
 				Add in if and when Mars has a release branch 
-			<BuildHash Condition=" '$(Configuration)' == 'Release' ">$(BUILD_VCS_NUMBER_Git_Mars_-_Release)</BuildHash>
+			<BuildHash Condition=" '$(Configuration)' == 'Release' ">$(BUILD_VCS_NUMBER_Git_Mars___Release)</BuildHash>
 			-->
-			<BuildHash Condition=" '$(BuildHash)' == '' ">$(BUILD_VCS_NUMBER_Git_Mars_-_Master)</BuildHash>
+			<BuildHash Condition=" '$(BuildHash)' == '' ">$(BUILD_VCS_NUMBER_Git_Mars___Master)</BuildHash>
 			<BuildHash Condition=" '$(BuildHash)' != '' ">$(BuildHash.Substring(0, 9))</BuildHash>
 			<MarsBuild Condition=" '$(MarsBuild)' == '' ">$(BUILD_NUMBER) $(BuildHash)</MarsBuild>
 			<MarsBuild Condition=" '$(MarsBuild)' == '' ">DEVELOPER BUILD</MarsBuild>
