@@ -2,6 +2,6 @@
 <parameters>
 	<setParameter name="DeployTarget" value="dev" />
  	<setParameter name="WWWRoot" value="https://www.dev.trainingpeaks.com" />
- 	<setParameter name="ApiRoot" value="https://tpapi.dev.trainingpeaks.com" />
- 	<setParameter name="OauthRoot" value="https://oauth.dev.trainingpeaks.com" />
+ 	<setParameter name="ApiRoot" value="http://tpapi.dev.trainingpeaks.com" />
+ 	<setParameter name="OauthRoot" value="http://oauth.dev.trainingpeaks.com" />
 </parameters>
