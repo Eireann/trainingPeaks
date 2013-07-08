@@ -14,10 +14,12 @@ function(
 {
     return ScrollableColumnView.extend(
     {
-        template:
+
+        initialize: function(options)
         {
-            type: "handlebars",
-            template: podsTemplate
+            // initialize the superclass
+            this.constructor.__super__.initialize.call(this, { template: podsTemplate });
         }
+
     });
 });
