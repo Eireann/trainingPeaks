@@ -67,7 +67,8 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySe
             "click .addWorkout": "onAddWorkoutClicked",
             "click": "onDayClicked",
             "mousedown .daySettings": "daySettingsClicked",
-            "click .daySelected": "onDayUnClicked"
+            "click .daySelected": "onDayUnClicked",
+            "touchstart": "onDayTouched"
         },
 
         getItemView: function(item)
@@ -316,6 +317,11 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySe
                 e.preventDefault();
             }
             this.model.trigger("day:unselect", this.model, e);
+        },
+        
+        onDayTouched: function(e)
+        {
+            console.log(e);
         },
 
         onItemSelect: function()
