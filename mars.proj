@@ -1,99 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+
 	<PropertyGroup>
-		<Configuration Condition="'$(Configuration)' == ''">Debug</Configuration>
-		<MSDeploy 
-			Condition="($(MSDeploy) == '') and Exists('$(SystemDrive)\Program Files\IIS\Microsoft Web Deploy V3\msdeploy.exe')">$(SystemDrive)\Program Files\IIS\Microsoft Web Deploy V3\msdeploy.exe</MSDeploy>
-		<OutputDir>$(MSBuildProjectDirectory)\build\$(Configuration.ToLower())</OutputDir>
+		<ProjectName>Mars</ProjectName>
+		<Root>$(MSBuildProjectDirectory)</Root>
+		<PackageDir>$(MSBuildProjectDirectory)\build</PackageDir>
+		<BuildConfigDir>$(MSBuildProjectDirectory)\buildConfig</BuildConfigDir>
+		<BuildToolsPath>$(Root)\BuildTools</BuildToolsPath>
+		<MSBuildCommunityTasksPath>$(BuildToolsPath)\MSBuild</MSBuildCommunityTasksPath>
+		
+		<Configuration Condition="'$(Configuration)' == ''">Dev</Configuration>
+        <OutputDir>$(MSBuildProjectDirectory)\build\release</OutputDir>
 		<GruntCmd>npm install -g grunt-cli &amp;&amp; npm install &amp;&amp; grunt</GruntCmd>
 	</PropertyGroup>
 
-	<Target Name="Clean">
-		<RemoveDir Condition="Exists('$(OutputDir)')" Directories="$(OutputDir)" />
-	</Target>
+	<Import Project="$(BuildToolsPath)\MSBuild\trainingpeaks.build.targets" />
+	<Import Project="$(BuildToolsPath)\MSBuild\MSBuild.Community.Tasks.targets" />
 
-	<Target Name="Build" DependsOnTargets="Test">
-		<Exec Command="$(GruntCmd) $(Configuration.ToLower())" />
+	<Target Name="Build"> <!-- DependsOnTargets="Test"> -->
+		<Exec Command="$(GruntCmd) build" />
 	</Target>
 
 	<Target Name="Test">
 		<Exec Command="$(GruntCmd) test" />
 	</Target>
 
-	<Target Name="Package" DependsOnTargets="Build">
+	<Target Name="Package" DependsOnTargets="Build;PrePackage">
+
+		<MSBuild 
+			Projects="$(MSBuildProjectFile)" 
+			StopOnFirstFailure="true" Targets="CreatePackage" 
+			Properties="PackageSource=$([System.IO.Path]::GetFullPath($(OutputDir)));
+				PackageName=Mars.dpkg.zip;
+				PackageOutputDirectory=$(PackageDir);
+				PackageParamsFile=$(BuildConfigDir)\Mars.DeclareParams.xml;
+				IgnoreDeployManagedRuntimeVersion=True" />
+
+	</Target>
+
+	<Target Name="PrePackage">
+		<!-- Update the release files with the current build number -->
+		<PropertyGroup>
+			<!--
+				Add in if and when Mars has a release branch 
+			<BuildHash Condition=" '$(Configuration)' == 'Release' ">$(BUILD_VCS_NUMBER_Git_Mars___Release)</BuildHash>
+			-->
+			<BuildHash Condition=" '$(BuildHash)' == '' ">$(BUILD_VCS_NUMBER_Git_Mars___Master)</BuildHash>
+			<BuildHash Condition=" '$(BuildHash)' != '' ">$(BuildHash.Substring(0, 9))</BuildHash>
+			<MarsBuild Condition=" '$(MarsBuild)' == '' ">$(BUILD_NUMBER) $(BuildHash)</MarsBuild>
+			<MarsBuild Condition=" '$(MarsBuild)' == '' ">DEVELOPER BUILD</MarsBuild>
+		</PropertyGroup>
 		<ItemGroup>
-			<Content Include="$(OutputDir)\**\*.*" />
+			<MarsConfig Include="$(MSBuildProjectDirectory)\build\release\**\apiConfig.js" />
 		</ItemGroup>
 
-		<MSBuild Projects="$(MSBuildProjectFile)" Targets="MSDeploy-Package" 
-			Properties="PackageSource=$([System.IO.Path]::GetFullPath($(OutputDir)));
-						PackageName=Mars.MSDeploy.zip;
-						PackageOutputDirectory=$([System.IO.Path]::GetFullPath($(OutputDir)))"
+		<FileUpdate Files="@(MarsConfig)" Regex='{BUILD_NUMBER}' Multiline="true" ReplacementText="$(MarsBuild)" ReplacementCount="1" />
+    </Target>
+
+	<Target Name="Deploy" >
+		<Error Text="PackageParamsFile parameter (Mars.SetParams.dev.xml) has not be set." 
+			Condition=" $(PackageParamsfile) == '' " />
+
+		<MSBuild Projects="$(MSBuildProjectFile)" Targets="DeployPackage" 
+			Properties="PackageSource=$([System.IO.Path]::GetFullPath(Mars.dpkg.zip));"
 			/>
 
 	</Target>
 
-	<Target Name="MSDeploy-Package" DependsOnTargets="_CheckMsDeploy">
-		<!-- Depends on the following properties being set:
-		
-		   PackageSource: source of the artifacts to deploy
-		   PackageName: Name of the package
-		   PackageParamsFile: Full path to the packages parameters file
-		   PackageOutputDirectory: Full path to the output directory
-		-->
-		
-		<Message Text="MSDeploy-Package MSDeploy: $(MSDeploy)" />
-		<Message Text="MSDeploy-Package PackageSource: $(PackageSource)" />
-		<Message Text="MSDeploy-Package PackageName: $(PackageOutputDirectory)\$(PackageName)" />
-		
-		<MakeDir Directories="$(PackageOutputDir)" Condition=" !Exists('$(PackageOutputDir)') " />
-		
-		<Exec 
-			Command="&quot;$(msdeploy)&quot; -verb:sync -source:contentPath=&quot;$(PackageSource)&quot; -dest:package=&quot;$(PackageOutputDirectory)\$(PackageName)&quot;"
-		/>
-	</Target>
-
-	<Target Name="_CheckMsDeploy">
-		<Error Text="The MSDEPLOY parameter has not been set.  Use an enviornment variable or /p:MSDEPLOY= set to the full path to the msdeploy executable"
-			Condition=" $(msdeploy) == '' " />
-	</Target>
-
-	<Target Name="Deploy" DependsOnTargets="Package" >
-
-		<MSBuild Projects="$(MSBuildProjectFile)" Targets="MSDeploy-Deploy" 
-			Properties="PackageSource=$([System.IO.Path]::GetFullPath($(OutputDir)\Mars.MSDeploy.zip))"
-			/>
-
-	</Target>
-
-	<Target Name="MSDeploy-Deploy" DependsOnTargets="_CheckMsDeploy">
-		<!-- Depends on the following properties being set:
-		
-		   PackageSource: source of the artifacts to deploy
-		   MsDeployServiceUrl: URL for deployment (e.g. https://10.3.2.96:8172/MsDeploy.axd )
-		   DeployIisAppPath: IIS Application Path (e.g. apitest.trainingpeaks.com )
-		   AllowUntrustedCertificate: true/false (default to false)
-		   UserName: Username for deployment
-		   Password: Password for deployment
-		-->
-		
-		<Error Text="MsDeployServiceUrl parameter has not be set." Condition=" $(MsDeployServiceUrl) == '' " />
-		<Error Text="DeployIIsAppPath parameter has not be set." Condition=" $(DeployIIsAppPath) == '' " />
-		<Error Text="UserName parameter has not be set." Condition=" $(UserName) == '' " />
-		<Error Text="Password parameter has not be set." Condition=" $(Password) == '' " />
-
-		<PropertyGroup>
-			<AllowUntrustedCertificate Condition="'$(AllowUntrustedCertificate)' == ''">true</AllowUntrustedCertificate>
-			<DeployCmd>&quot;$(msdeploy)&quot; -verb:sync -source:package=&quot;$(PackageSource)&quot;</DeployCmd>
-			<DeployCmd Condition="'$(AllowUntrustedCertificate)' == 'true'">$(DeployCmd) -allowUntrusted=true</DeployCmd>
-			<DeployCmd>$(DeployCmd) -dest:contentPath='$(DeployIisAppPath)',computerName=$(MsDeployServiceUrl)?site=$(DeployIisAppPath),username='$(UserName)',password='$(Password)',authType='basic'</DeployCmd>
-		</PropertyGroup>
-
-		
-		<Message Text="MSDeploy-Deploy MSDeploy: $(MSDeploy)" />
-		<Message Text="MSDeploy-Deploy PackageSource: $(PackageSource)" />
-		<Message Text="MSDeploy-Deploy Cmd: $(DeployCmd)" />
-		
-		<Exec Command="$(DeployCmd)" />
-	</Target>
 </Project>

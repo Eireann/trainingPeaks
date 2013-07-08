@@ -31,6 +31,7 @@ module.exports = function(grunt)
                 sub: true,
                 globals:
                 {
+                    "apiConfig": true,
                     "theMarsApp": true,
                     "$": true
                 }
@@ -46,18 +47,11 @@ module.exports = function(grunt)
                     'plato': ['app/**/!(Handlebars).js']
                 }
             },
-            debug:
+            build:
             {
                 files:
                 {
                     'build/debug/plato': ['app/**/!(Handlebars).js']
-                }
-            },
-            dev:
-            {
-                files:
-                {
-                    'build/dev/plato': ['app/**/!(Handlebars).js']
                 }
             }
         },
@@ -75,29 +69,7 @@ module.exports = function(grunt)
                     imagesDir: "assets/images"
                 }
             },
-            dev:
-            {
-                options:
-                {
-                    sassDir: "app/scss",
-                    cssDir: "build/dev/app/css",
-                    outputStyle: "expanded",
-                    require: "zurb-foundation",
-                    imagesDir: "assets/images"
-                }
-            },
-            "uat":
-            {
-                options:
-                {
-                    sassDir: "app/scss",
-                    cssDir: "build/uat/app/css",
-                    outputStyle: "expanded",
-                    require: "zurb-foundation",
-                    imagesDir: "assets/images"
-                }
-            },
-            release:
+            build:
             {
                 options:
                 {
@@ -112,7 +84,7 @@ module.exports = function(grunt)
 
         requirejs:
         {
-            compile:
+            build:
             {
                 options:
                 {
@@ -129,7 +101,7 @@ module.exports = function(grunt)
 
         concat:
         {
-            dist:
+            build:
             {
                 src:
                 [
@@ -144,46 +116,37 @@ module.exports = function(grunt)
                     "build/debug/single.js"
                 ],
 
-                dest: "build/debug/single.js",
-
-                separator: ";"
-            },
-
-            dev:
-            {
-                src:
-                [
-                    "build/debug/single.js"
-                ],
-
-                dest: "build/dev/single.js",
+                dest: "build/release/single.js",
 
                 separator: ";"
             }
         },
 
+        targethtml:
+        {
+            build:
+            {
+                src: "index.html",
+                dest: "build/release/index.html"
+            },
+            build_debug:
+            {
+                src: "index.html",
+                dest: "build/release/index.html"
+            }
+        },
         /*
          * The minification task uses the uglify library.
          */
         uglify:
         {
-            uat:
-            {
-                files:
-                {
-                    "build/uat/single.min.js":
-                    [
-                        "build/debug/single.js"
-                    ]
-                }
-            },
-            release:
+            build:
             {
                 files:
                 {
                     "build/release/single.min.js":
                     [
-                        "build/debug/single.js"
+                        "build/release/single.js"
                     ]
                 }
             }
@@ -201,17 +164,9 @@ module.exports = function(grunt)
         {
             debug:
             {
-                src: ["build"]
+                src: ["build/debug"]
             },
-            release:
-            {
-                src: ["build"]
-            },
-            dev:
-            {
-                src: ["build"]
-            },
-            "uat":
+            build:
             {
                 src: ["build"]
             },
@@ -221,27 +176,14 @@ module.exports = function(grunt)
             }
         },
 
-        targethtml:
+        deleteFiles:
         {
-            debug:
+            build:
             {
-                src: "index.html",
-                dest: "build/debug/index.html"
-            },
-            release:
-            {
-                src: "index.html",
-                dest: "build/release/index.html"
-            },
-            "uat":
-            {
-                src: "index.html",
-                dest: "build/uat/index.html"
-            },
-            dev:
-            {
-                src: "index.html",
-                dest: "build/dev/index.html"
+                files:
+                {
+                    "build/release": ["build/release/**/single.js", "build/debug/**/single.js"]
+                }
             }
         },
 
@@ -255,59 +197,53 @@ module.exports = function(grunt)
                 }
             },
 
-            release:
+            build_common:
             {
                 files:
                 {
-                    "build/release": ["web.config", "assets/fonts/**", "assets/images/**", "app/scripts/affiliates/**", "!app/scripts/affiliates/**/*.js"]
+                    "build/release": ["assets/fonts/**", "assets/images/**", "app/scripts/affiliates/**", "!app/scripts/affiliates/**/*.js"]
                 }
             },
 
-            uat:
+            build_debug:
             {
                 files:
                 {
-                    "build/uat": ["web.config", "assets/fonts/**", "assets/images/**", "app/scripts/affiliates/**", "!app/scripts/affiliates/**/*.js"]
+                    "build/release": ["apiConfig.dev.js"]
                 }
             },
 
-            dev:
+            build:
             {
                 files:
                 {
-                    "build/dev": ["web.config", "assets/fonts/**", "assets/images/**", "app/scripts/affiliates/**", "!app/scripts/affiliates/**/*.js"]
+                    "build/release": ["apiConfig.js", "web.config"]
                 }
             },
 
+            // stuff that needs to get instrumented for test coverage to work
             pre_instrument:
             {
                 files:
                 {
-                    "coverage": ["test/**", "vendor/**", "app/**"]
+                    "coverage": ["test/**", "app/**"]
                 }
             },
 
+            // stuff that needs to be clean and not modified by test coverage instrumentation
             post_instrument:
             {
                 files:
                 {
-                    "coverage": ["app/Handlebars.js", "app/config/**"]
+                    "coverage": ["vendor/**", "app/Handlebars.js", "app/config/**", "apiConfig.js"]
                 }
             },
 
-            debug_coverage:
+            build_coverage:
             {
                 files:
                 {
                     "build/debug": ["coverage/lcov-report/**"]
-                }
-            },
-            
-            dev_coverage:
-            {
-                files:
-                {
-                    "build/dev": ["coverage/lcov-report/**"]
                 }
             }
         },
@@ -330,16 +266,16 @@ module.exports = function(grunt)
         },
 
         instrument: {
-          files: "app/**/!(Handlebars).js",
-          options: {
-              basePath: 'coverage'
-          }
+            files: "app/scripts/**/*.js",
+            options: {
+                basePath: 'coverage'
+            }
         },
 
         storeCoverage : {
             options: {
                 dir: 'coverage/coverage'
-          }
+            }
         },
 
         makeReport: {
@@ -365,23 +301,43 @@ module.exports = function(grunt)
     grunt.loadNpmTasks("grunt-contrib-watch");
     grunt.loadNpmTasks("grunt-istanbul");
 
+    
+    // TESTING:
     // NOTE: grunt test --dir=some/pattern will limit tests to a subfolder
     grunt.registerTask("test", ["clean:coverage", "jshint", "setup-spec-list", "jasmine_node"]);
+    grunt.registerTask("unit_test", ["unit_test_config", "clean:coverage", "jshint", "jasmine_node"]);
+    grunt.registerTask("bdd_test", ["bdd_test_config", "clean:coverage", "jshint", "jasmine_node"]);
 
-    grunt.registerTask("update_grunt_config", ["requirejs_config", "i18n_config"]);
-    grunt.registerTask("single", ["update_grunt_config", "requirejs", "concat:dist"]);
-    grunt.registerTask("debug_single", ["clean", "single", "compass:debug", "targethtml:debug", "copy:debug"]);
-    grunt.registerTask("debug", ["coverage", "single", "compass:debug", "targethtml:debug", "copy:debug", "copy:debug_coverage", "plato:debug"]);
-    grunt.registerTask("dev", ["debug", "concat:dev", "compass:dev", "targethtml:dev", "copy:dev", "copy:dev_coverage", "plato:dev"]);
-    grunt.registerTask("uat", ["clean", "single", "compass:uat", "targethtml:uat", "copy:uat", "uglify"]);
-    grunt.registerTask("release", ["clean", "single", "compass:release", "targethtml:release", "copy:release", "uglify"]);
-    grunt.registerTask("default", ["debug"]);
-
-    // makes reports available at localhost/Mars/coverage/lcov-report/index.html,
-    // and at build/debug/coverage/lcov-report/index.html
+    // REPORTING:
+    // grunt plato:dummy makes complexity reports available at localhost:8905/plato
+    // grunt coverage makes coverage reports available at localhost:8905/coverage/lcov-report/index.html,
     grunt.registerTask('coverage', ['clean:coverage', 'copy:pre_instrument', 'instrument', 'copy:post_instrument', 'jasmine_node_coverage_config', 'jasmine_node', 'storeCoverage', 'makeReport']);
 
-    // grunt debug && grunt coverage && grunt plato
-    // for some reason putting debug and coverage into the same task results in some
+    // BUILDING:
+
+    // grunt debug does only compass and copy
+    grunt.registerTask("default", ["debug"]);
+    grunt.registerTask("debug", ["clean:debug", "compass:debug", "copy:debug"]);
+
+    // grunt build builds a single minified js for dev/uat/live, at build/release
+    // grunt build_debug does the same but doesn't minify, and points to local dev config
+    grunt.registerTask("build_common", ["clean", "coverage", "requirejs_config", "i18n_config", "requirejs", "concat", "compass:build", "copy:build_common", "copy:build_coverage", "plato:build"]);
+    grunt.registerTask("build_debug", ["build_common", "copy:build_debug", "targethtml:build_debug", "copy-i18n-files"]);
+    grunt.registerTask("build", ["build_common", "copy:build", "uglify", "deleteFiles:build", "targethtml:build", "copy-i18n-files"]);
+
+    // TASKS THAT ARE USED BY OTHER TASKS
+    grunt.registerTask("bdd_test_config", "Configure for jasmine node bdd tests", function()
+    {
+        var jasmineOptions = grunt.config.get('jasmine_node');
+        jasmineOptions.specFolder = "test/specs/bdd_tests";
+        grunt.config.set('jasmine_node', jasmineOptions);
+    });
+
+    grunt.registerTask("unit_test_config", "Configure for jasmine node unit tests", function()
+    {
+        var jasmineOptions = grunt.config.get('jasmine_node');
+        jasmineOptions.specFolder = "test/specs/unit_tests";
+        grunt.config.set('jasmine_node', jasmineOptions);
+    });
 
 };
