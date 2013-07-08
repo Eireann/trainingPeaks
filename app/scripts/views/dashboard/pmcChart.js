@@ -482,6 +482,6 @@ function (
         keepSettingsButtonVisible: function ()
         {
             this.$el.addClass("menuOpen");
-        },
+        }
     });
 });
