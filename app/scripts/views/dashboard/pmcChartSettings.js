@@ -2,6 +2,7 @@ define(
 [
     "jqueryui/datepicker",
     "jqueryui/spinner",
+    "jquerySelectBox",
     "setImmediate",
     "underscore",
     "TP",
@@ -11,6 +12,7 @@ define(
 function(
     datepicker,
     spinner,
+    jquerySelectBox,
     setImmediate,
     _,
     TP,
@@ -60,6 +62,14 @@ function(
             // setup number picker, and make sure it fires a change event
             this.$("input[type=number]").spinner().on("spinstop", function(event, ui) { $(this).trigger("change", event, ui); });
 
+            // setup dropdown styling
+            setImmediate(function()
+            {
+                self.$("#dateOptions").selectBoxIt({
+                    dynamicPositioning: false
+                });
+            });
+ 
             if(this.focusedInputId)
             {
                 setImmediate(function()
