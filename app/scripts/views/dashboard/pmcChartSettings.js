@@ -2,9 +2,15 @@ define(
 [
     "underscore",
     "TP",
+    "views/dashboard/pmcChartUtils",
     "hbs!templates/views/dashboard/pmcChartSettings"
 ],
-function (_, TP, pmcChartSettings)
+function(
+    _,
+    TP,
+    pmcChartUtils,
+    pmcChartSettingsTemplate
+    )
 {
     return TP.ItemView.extend(
     {
@@ -17,7 +23,7 @@ function (_, TP, pmcChartSettings)
         template:
         {
             type: "handlebars",
-            template: pmcChartSettings
+            template: pmcChartSettingsTemplate
         },
 
         events:
@@ -44,6 +50,8 @@ function (_, TP, pmcChartSettings)
         serializeData: function()
         {
             var pmcSettings = this.model.has("settings.dashboard.pmc") ? this.model.toJSON().settings.dashboard.pmc : {};
+            pmcSettings = pmcChartUtils.buildPmcParameters(pmcSettings);
+
             var allSelected = true;
             pmcSettings.workoutTypes = [];
             _.each(TP.utils.workout.types.typesById, function(typeName, typeId)
@@ -66,6 +74,17 @@ function (_, TP, pmcChartSettings)
                 id: 0,
                 name: "Select All",
                 selected: allSelected ? true : false
+            });
+
+            pmcSettings.dateOptions = [];
+            var selectedOptionId = Number(pmcSettings.quickDateSelectOption);
+            _.each(pmcChartUtils.pmcDateOptions, function(option)
+            {
+                pmcSettings.dateOptions.push({
+                    id: option.id,
+                    label: option.label,
+                    selected: option.id === selectedOptionId
+                });
             });
 
             return pmcSettings;

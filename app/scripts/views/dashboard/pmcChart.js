@@ -11,10 +11,11 @@
     "utilities/charting/jquery.flot.dashes",
     "utilities/workout/workoutTypes",
     "views/dashboard/pmcChartSettings",
+    "views/dashboard/pmcChartUtils",
     "hbs!templates/views/dashboard/pmcChart",
     "hbs!templates/views/charts/chartTooltip"
 ],
-function (
+function(
     _,
     setImmediate,
     moment,
@@ -26,11 +27,12 @@ function (
     flotDashes,
     workoutTypes,
     pmcChartSettings,
+    pmcChartUtils,
     pmcChartTemplate,
     tooltipTemplate
     )
 {
-    return TP.ItemView.extend(
+    var PmcChart = TP.ItemView.extend(
     {
         tagName: "div",
         className: "dashboardChart doubleWide",
@@ -97,7 +99,7 @@ function (
 
             if (theMarsApp.user.has("settings.dashboard.pmc"))
             {
-                this.pmcModel.setParameters(theMarsApp.user.get("settings.dashboard.pmc"));
+                this.pmcModel.setParameters(pmcChartUtils.buildPmcParameters(theMarsApp.user.get("settings.dashboard.pmc")));
             }
 
             this.pmcModel.fetch().done(function()
@@ -106,7 +108,7 @@ function (
             });
         },
 
-        ui: 
+        ui:
         {
             chartContainer: ".chartContainer"
         },
@@ -181,7 +183,7 @@ function (
                 TSBFuture: []
             };
 
-            _.each(modelData, function (item, index)
+            _.each(modelData, function(item, index)
             {
                 var dayMoment = moment(item.workoutDay);
                 var dayMomentValue = dayMoment.valueOf();
@@ -191,10 +193,10 @@ function (
 
                 // for today, overlap the atl/ctl/csb lines so there is not a gap between present and future,
                 // but don't duplicate TSS
-                 if (itemDate === this.today)
-                 {
+                if (itemDate === this.today)
+                {
 
-                     //console.log(itemDate + " is today");
+                    //console.log(itemDate + " is today");
                     chartPoints.TSS.push([dayMomentValue, item.tssActual]);
                     chartPoints.TSSFuture.push([dayMomentValue, null]);
 
@@ -206,7 +208,7 @@ function (
                     chartPoints.CTL.push([dayMomentValue, item.ctl]);
                     chartPoints.TSB.push([dayMomentValue, item.tsb]);
 
-                // put all future value into the Future points arrays
+                    // put all future value into the Future points arrays
                 } else if (itemDate > this.today)
                 {
                     //console.log(itemDate + " is future");
@@ -253,7 +255,7 @@ function (
             ];
         },
 
-        buildTSSDataSeries: function (chartPoints, chartColors)
+        buildTSSDataSeries: function(chartPoints, chartColors)
         {
             var dataSeries =
             {
@@ -269,7 +271,7 @@ function (
             return dataSeries;
         },
 
-        buildTSSFutureDataSeries: function (chartPoints, chartColors)
+        buildTSSFutureDataSeries: function(chartPoints, chartColors)
         {
             var dataSeries =
             {
@@ -285,7 +287,7 @@ function (
             return dataSeries;
         },
 
-        buildATLDataSeries: function (chartPoints, chartColors)
+        buildATLDataSeries: function(chartPoints, chartColors)
         {
             var dataSeries =
             {
@@ -301,7 +303,7 @@ function (
             return dataSeries;
         },
 
-        buildATLFutureDataSeries: function (chartPoints, chartColors)
+        buildATLFutureDataSeries: function(chartPoints, chartColors)
         {
             var dataSeries =
             {
@@ -349,7 +351,7 @@ function (
             return dataSeries;
         },
 
-        buildTSBDataSeries: function (chartPoints, chartColors)
+        buildTSBDataSeries: function(chartPoints, chartColors)
         {
             var dataSeries =
             {
@@ -365,7 +367,7 @@ function (
             return dataSeries;
         },
 
-        buildTSBFutureDataSeries: function (chartPoints, chartColors)
+        buildTSBFutureDataSeries: function(chartPoints, chartColors)
         {
             var dataSeries =
             {
@@ -428,8 +430,8 @@ function (
 
             return flotOptions;
         },
-        
-        onHoverToolTip: function (flotItem, $tooltipEl)
+
+        onHoverToolTip: function(flotItem, $tooltipEl)
         {
             var tooltipHTML = tooltipTemplate({ tooltips: this.buildTooltipData(flotItem.dataIndex) });
             $tooltipEl.html(tooltipHTML);
@@ -469,7 +471,7 @@ function (
             }
         },
 
-        pmcSettingsClicked: function (e)
+        pmcSettingsClicked: function(e)
         {
             if (e && e.button && e.button === 2)
             {
@@ -486,12 +488,12 @@ function (
 
         },
 
-        keepSettingsButtonVisible: function ()
+        keepSettingsButtonVisible: function()
         {
             this.$el.addClass("menuOpen");
         },
 
-        allowSettingsButtonToHide: function ()
+        allowSettingsButtonToHide: function()
         {
             this.$el.removeClass("menuOpen");
         },
@@ -503,4 +505,7 @@ function (
         }
 
     });
+
+
+    return PmcChart;
 });
