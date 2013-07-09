@@ -324,5 +324,9 @@
     "ByZones": "By Zones",
     "My": "My",
     "ImTrainingFor": "I'm training for",
-    "SelectWorkoutType": "Select Workout Type"
+    "SelectWorkoutType": "Select Workout Type",
+    "CTLConstant": "CTL Constant",
+    "CTLStart": "CTL Start",
+    "ATLConstant": "ATL Constant",
+    "ATLStart": "ATL Start"
 }
