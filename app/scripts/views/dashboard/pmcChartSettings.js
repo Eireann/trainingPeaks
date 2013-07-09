@@ -25,6 +25,11 @@ function (_, TP, pmcChartSettings)
             "click .workoutType input[type=checkbox]": "onWorkoutTypeSelected"
         },
 
+        onRender: function()
+        {
+            this.model.off("change", this.render);
+        },
+
         onClose: function()
         {
             this.saveSettings();
@@ -50,16 +55,29 @@ function (_, TP, pmcChartSettings)
                 );
             });
 
-            console.log(pmcSettings);
             return pmcSettings;
         },
 
         onWorkoutTypeSelected: function(e)
         {
             var checkbox = $(e.target);
-            var workoutTypeId = checkbox.data("workouttypeid");
+
+            // the current settings are strings, but somehow checkbox.data gives us an int
+            var workoutTypeId = "" + checkbox.data("workouttypeid");
             var checked = checkbox.is(":checked");
             
+            var workoutTypeIds = _.clone(this.model.get("settings.dashboard.pmc.workoutTypeIds"));
+            var inList = _.contains(workoutTypeIds, workoutTypeId);
+
+            if(checked && !inList)
+            {
+                workoutTypeIds.push(workoutTypeId);
+            } else if(!checked && inList)
+            {
+                workoutTypeIds = _.without(workoutTypeIds, workoutTypeId);
+            }
+
+            this.model.set("settings.dashboard.pmc.workoutTypeIds", workoutTypeIds);
         }
 
     });
