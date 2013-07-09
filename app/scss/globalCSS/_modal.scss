@@ -20,6 +20,38 @@
     z-index:101;
     top:100px;
     left:100px;
+
+     #menuIcon {
+        cursor:pointer;
+        margin:2px 0 0 0;
+        width:17px;
+        height:17px;
+        float:right;
+        background: transparent url(../../assets/images/charts/sprite-buttons-chart-modal.png) no-repeat 0 0;
+        &:hover {
+            background: transparent url(../../assets/images/charts/sprite-buttons-chart-modal.png) no-repeat 0 -17px;
+        }
+    }
+
+    #closeIcon {
+        cursor:pointer;
+        margin:0 0 0 10px;
+        width:17px;
+        height:17px;
+        float:right;
+        background: transparent url(../../assets/images/charts/sprite-buttons-chart-modal.png) no-repeat -51px 0;
+        &:hover {
+            background: transparent url(../../assets/images/charts/sprite-buttons-chart-modal.png) no-repeat -51px -17px;
+        }
+    }
+
+    @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
+        #menuIcon,
+        #closeIcon {
+            background-image:url(../../assets/images/charts/sprite-buttons-chart-modal@2x.png);
+            background-size: 68px 34px;
+        }
+    }
 }
 
 .modalOverlayMask
