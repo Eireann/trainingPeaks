@@ -1,9 +1,10 @@
 ﻿define(
 [
     "moment",
+    "underscore",
     "TP"
 ],
-function (moment, TP)
+function(moment, _, TP)
 {
     return TP.Model.extend(
     {
@@ -64,7 +65,15 @@ function (moment, TP)
             var start = moment(this.startDate).format(TP.utils.datetime.shortDateFormat);
             var end = moment(this.endDate).format(TP.utils.datetime.shortDateFormat);
 
-            var urlExtension = "/" + start + "/" + end + "/" + this.workoutTypeIds.join(",") + "/" + this.ctlConstant + "/" + this.ctlStartValue + "/" + this.atlConstant + "/" + this.atlStartValue;
+            // 0 == all
+            var workoutTypes = this.workoutTypeIds.join(",");
+            
+            if (this.workoutTypeIds.length === _.keys(TP.utils.workout.types.typesById).length || this.workoutTypeIds.length === 0)
+            {
+                workoutTypes = "0";
+            }
+
+            var urlExtension = "/" + start + "/" + end + "/" + workoutTypes + "/" + this.ctlConstant + "/" + this.ctlStartValue + "/" + this.atlConstant + "/" + this.atlStartValue;
 
             return this.urlRoot() + urlExtension;
         },

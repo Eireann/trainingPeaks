@@ -97,8 +97,8 @@ function (
 
             if (theMarsApp.user.has("settings.dashboard.pmc"))
             {
-                this.pmcModel.setOptions(theMarsApp.user.get("settings.dashboard.pmc"));
-            };
+                this.pmcModel.setParameters(theMarsApp.user.get("settings.dashboard.pmc"));
+            }
 
             this.pmcModel.fetch().done(function()
             {
@@ -118,21 +118,29 @@ function (
 
         setChartTitle: function()
         {
-            var workoutTypesTitle = this.buildWorkoutTypesTitle(this.pmcModel.workoutTypes);
+            var workoutTypesTitle = this.buildWorkoutTypesTitle(this.pmcModel.workoutTypeIds);
             this.model.set("title", workoutTypesTitle);
         },
 
         buildWorkoutTypesTitle: function(workoutTypeIds)
         {
             var workoutTypeNames = [];
-            _.each(workoutTypeIds, function(item, index)
+
+            if (workoutTypeIds.length === _.keys(TP.utils.workout.types.typesById).length)
             {
-                var intItem = parseInt(item, 10);
-                if (intItem === 0)
-                    workoutTypeNames.push("All");
-                else
-                    workoutTypeNames.push(workoutTypes.getNameById(intItem));
-            }, this);
+                workoutTypeNames.push("All");
+            } else
+            {
+                _.each(workoutTypeIds, function(item, index)
+                {
+                    var intItem = parseInt(item, 10);
+                    if (intItem === 0)
+                        workoutTypeNames.push("All");
+                    else
+                        workoutTypeNames.push(workoutTypes.getNameById(intItem));
+                }, this);
+            }
+
             return "PMC - Workout Type: " + workoutTypeNames.join(", ");
         },
 

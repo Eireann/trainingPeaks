@@ -28,6 +28,7 @@ function (_, TP, pmcChartSettings)
         onRender: function()
         {
             this.model.off("change", this.render);
+            this.model.on("change:settings.dashboard.pmc.*", this.render, this);
         },
 
         onClose: function()
@@ -43,16 +44,28 @@ function (_, TP, pmcChartSettings)
         serializeData: function()
         {
             var pmcSettings = this.model.has("settings.dashboard.pmc") ? this.model.toJSON().settings.dashboard.pmc : {};
+            var allSelected = true;
             pmcSettings.workoutTypes = [];
             _.each(TP.utils.workout.types.typesById, function(typeName, typeId)
             {
-                pmcSettings.workoutTypes.push(
-                    {
-                        id: typeId,
-                        name: typeName,
-                        selected: _.contains(pmcSettings.workoutTypeIds, typeId) ? true : false
-                    }
-                );
+
+                var workoutType = {
+                    id: typeId,
+                    name: typeName,
+                    selected: _.contains(pmcSettings.workoutTypeIds, typeId) ? true : false
+                };
+                pmcSettings.workoutTypes.push(workoutType);
+
+                if(!workoutType.selected)
+                {
+                    allSelected = false;
+                }
+            });
+
+            pmcSettings.workoutTypes.push({
+                id: 0,
+                name: "Select All",
+                selected: allSelected ? true : false
             });
 
             return pmcSettings;
@@ -66,15 +79,31 @@ function (_, TP, pmcChartSettings)
             var workoutTypeId = "" + checkbox.data("workouttypeid");
             var checked = checkbox.is(":checked");
             
-            var workoutTypeIds = _.clone(this.model.get("settings.dashboard.pmc.workoutTypeIds"));
-            var inList = _.contains(workoutTypeIds, workoutTypeId);
+            var workoutTypeIds = [];
+          
+            // select all
+            if (workoutTypeId === "0")
+            {
+                if(checked)
+                {
+                     _.each(TP.utils.workout.types.typesById, function(typeName, typeId)
+                    {
 
-            if(checked && !inList)
+                         workoutTypeIds.push(typeId);
+                     });
+                }
+            } else
             {
-                workoutTypeIds.push(workoutTypeId);
-            } else if(!checked && inList)
-            {
-                workoutTypeIds = _.without(workoutTypeIds, workoutTypeId);
+                workoutTypeIds = _.clone(this.model.get("settings.dashboard.pmc.workoutTypeIds"));
+                var inList = _.contains(workoutTypeIds, workoutTypeId);
+
+                if (checked && !inList)
+                {
+                    workoutTypeIds.push(workoutTypeId);
+                } else if (!checked && inList)
+                {
+                    workoutTypeIds = _.without(workoutTypeIds, workoutTypeId);
+                }
             }
 
             this.model.set("settings.dashboard.pmc.workoutTypeIds", workoutTypeIds);
