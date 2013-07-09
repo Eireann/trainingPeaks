@@ -23,16 +23,45 @@
         position:relative;
         z-index: 3;
         margin-bottom: 3px; 
-        padding: 10px;
+        padding: 4px 13px 2px 12px;
         //@include linearGradient(bottom, rgb(255,255,255), rgba(255,255,255,0.90)); 
         background-color: $white;
+        
+        .header {
+            font-family: $fontFamilyHeavy;
+            font-size: $fontSizeSmall;
+            margin-bottom: 5px;
+            color: $TPGrey3;
+        }
+
         label
         {
             color: $TPGrey3;
             cursor: pointer;
 			font-size:$fontSizeSmall;
 			font-weight:normal;
-			line-height:$fontSizeXXLarge;
+			// line-height:$fontSizeXXLarge;
+            margin: 8px 0;
+        }
+
+        #closeIcon {
+            position: absolute;
+            top: 5px;
+            right: 3px;
+            width:14px;
+            height:17px;
+            cursor:pointer;
+            background: url(../../assets/images/charts/sprite-buttons-chart-modal.png) no-repeat -51px 0;
+            &:hover {
+                background: transparent url(../../assets/images/charts/sprite-buttons-chart-modal.png) no-repeat -51px -17px;
+            }
+        }
+
+        @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
+            #closeIcon {
+                background-image:url(../../assets/images/charts/sprite-buttons-chart-modal@2x.png);
+                background-size: 68px 34px;
+            }
         }
     }
 
