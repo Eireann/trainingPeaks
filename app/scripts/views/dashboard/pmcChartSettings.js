@@ -1,11 +1,13 @@
 define(
 [
+    "setImmediate",
     "underscore",
     "TP",
     "views/dashboard/pmcChartUtils",
     "hbs!templates/views/dashboard/pmcChartSettings"
 ],
 function(
+    setImmediate,
     _,
     TP,
     pmcChartUtils,
@@ -26,19 +28,38 @@ function(
             template: pmcChartSettingsTemplate
         },
 
+        initialize: function()
+        {
+            this.model.on("change:settings.dashboard.pmc.*", this.render, this);
+        },
+
         events:
         {
-            "click .workoutType input[type=checkbox]": "onWorkoutTypeSelected"
+            "click .workoutType input[type=checkbox]": "onWorkoutTypeSelected",
+            "change #dateOptions": "onDateOptionsChanged",
+            "change #startDate": "onDateOptionsChanged",
+            "change #endDate": "onDateOptionsChanged"
         },
 
         onRender: function()
         {
             this.model.off("change", this.render);
-            this.model.on("change:settings.dashboard.pmc.*", this.render, this);
+
+            if(this.focusedInputId)
+            {
+                var self = this;
+                setImmediate(function()
+                {
+                    self.$("#" + self.focusedInputId).focus();
+                    self.focusedInputId = null;
+                });
+            }
+
         },
 
         onClose: function()
         {
+            this.model.off("change:settings.dashboard.pmc.*", this.render, this);
             this.saveSettings();
         },
 
@@ -126,6 +147,24 @@ function(
             }
 
             this.model.set("settings.dashboard.pmc.workoutTypeIds", workoutTypeIds);
+        },
+
+        onDateOptionsChanged: function(e)
+        {
+            this.focusedInputId = e.target.id;
+            var optionId = this.$("#dateOptions").val();
+
+            var pmcOptions = {
+                quickDateSelectOption: optionId,
+                startDate: this.$("#startDate").val(),
+                endDate: this.$("#endDate").val()
+            };
+
+            pmcOptions = pmcChartUtils.buildPmcParameters(pmcOptions);
+
+            this.model.set("settings.dashboard.pmc.startDate", pmcOptions.customStartDate ? moment(pmcOptions.startDate).utc().unix() * 1000 : null, { silent: true });
+            this.model.set("settings.dashboard.pmc.endDate", pmcOptions.customEndDate ? moment(pmcOptions.endDate).utc().unix() * 1000 : null, { silent: true });
+            this.model.set("settings.dashboard.pmc.quickDateSelectOption", optionId);
         }
 
     });

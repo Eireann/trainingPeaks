@@ -22,18 +22,20 @@ function(
                 pmcSettings.quickDateSelectOption = this.pmcDateOptions.LAST_90_DAYS_AND_NEXT_21_DAYS.id;
             }
 
-            var dateOption = this.findPmcDateOption(this.pmcDateOptions, pmcSettings.quickDateSelectOption);
+            var dateOption = this.findPmcDateOption(pmcSettings.quickDateSelectOption);
 
             pmcSettings.startDate = dateOption.getStartDate(pmcSettings);
             pmcSettings.endDate = dateOption.getEndDate(pmcSettings);
+            pmcSettings.customStartDate = dateOption.customStartDate ? true : false;
+            pmcSettings.customEndDate = dateOption.customEndDate ? true : false;
             return pmcSettings;
         },
 
-        findPmcDateOption: function(dateOptions, selectedOptionId)
+        findPmcDateOption: function(selectedOptionId)
         {
-            return _.find(dateOptions, function(dateOption)
+            return _.find(this.pmcDateOptions, function(dateOption)
             {
-                return this.id === Number(selectedOptionId);
+                return dateOption.id === Number(selectedOptionId);
             });
         },
 
@@ -142,6 +144,11 @@ function(
                 getEndDate: function()
                 {
                     return moment();
+                },
+
+                getStartDate: function()
+                {
+                    return moment().subtract("days", 180);
                 }
             },
 
@@ -187,7 +194,7 @@ function(
                 },
                 getEndDate: function()
                 {
-                    return moment().date(moment.daysInMonth());
+                    return moment().date(moment().daysInMonth());
                 }
             },
 
@@ -211,13 +218,13 @@ function(
                 label: TP.utils.translate("Last week"),
                 getStartDate: function()
                 {
-                    var lastWeek = moment().week();
+                    var lastWeek = moment().week() - 1;
                     return moment().week(lastWeek).day(1);
                 },
 
                 getEndDate: function()
                 {
-                    var lastWeek = moment().week();
+                    var lastWeek = moment().week() - 1;
                     return moment().week(lastWeek).day(7);
                 }
             },
@@ -247,8 +254,8 @@ function(
                 },
                 getEndDate: function()
                 {
-                    var start = this.getStartDate();
-                    return start.date(start.daysInMonth());
+                    var lastMonth = moment().date(1).subtract("months", 1);
+                    return lastMonth.date(lastMonth.daysInMonth());
                 }
             },
 
@@ -276,14 +283,14 @@ function(
                 },
                 getEndDate: function()
                 {
-                    return moment().month(11).date(31).subtract("years", 2);
+                    return moment().month(11).date(31).subtract("years", 1);
                 }
             },
 
             THIS_WEEK_LAST_YEAR:
             {
                 id: 17,
-                label: TP.utils.translate("This week ast year"),
+                label: TP.utils.translate("This week last year"),
                 getStartDate: function()
                 {
                     var thisWeek = moment().week();
@@ -300,17 +307,18 @@ function(
             THIS_MONTH_LAST_YEAR:
             {
                 id: 18,
-                label: TP.utils.translate("This month year"),
+                label: TP.utils.translate("This month last year"),
 
                 getStartDate: function()
                 {
-                    return moment().subtract("years", 1).month(moment().month()).day(1);
+                    return moment().subtract("years", 1).month(moment().month()).date(1);
                 },
 
                 getEndDate: function()
                 {
                     var thisWeek = moment().week();
-                    return moment().subtract("years", 1).month(moment().month()).day(7);
+                    var lastYear = moment().subtract("years", 1).month(moment().month());
+                    return lastYear.date(lastYear.daysInMonth());
                 }
             },
 
