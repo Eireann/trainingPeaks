@@ -90,10 +90,24 @@ function(TP, moment, coachAndAffiliateCustomizations, calendarHeaderTemplate)
 
             this.initializeCoachAndAffiliateCustomizations();
             this.initializeStickit();
+
+            this.on("render", this.watchForAthletesChange, this);
+            this.on("render", this.updateCoachAthleteList, this);
         },
 
-        onRender: function ()
+        watchForAthletesChange: function ()
         {
+            // in case the athletes haven't loaded yet, refresh
+            theMarsApp.user.on("change:athletes", this.render, this);
+            this.on("close", function()
+            {
+                theMarsApp.user.off("change:athletes", this.render, this);
+            }, this);
+        }, 
+
+        updateCoachAthleteList: function()
+        {
+
             if (this.isCoachWithAthletes())
             {
                 this.customizeAthleteSelectBox();

@@ -1,19 +1,19 @@
 requirejs(
-["TP"],
-function(TP)
+["framework/APIModel"],
+function(APIModel)
 {
     describe("TP Web API Model", function()
     {
 
         it("Should require a webAPIModelName", function()
         {
-            var TestModel = TP.APIModel.extend({});
+            var TestModel = APIModel.extend({});
             expect(TestModel).toThrow();
         });
 
         it("Should not be able to set a key that is not defined in defaults", function()
         {
-            var TestModel = TP.APIModel.extend({
+            var TestModel = APIModel.extend({
                 webAPIModelName: "TestModel",
                 idAttribute: "idkey",
                 defaults: {
@@ -40,7 +40,7 @@ function(TP)
 
         it("Should not be able to get a key that is not defined in defaults", function()
         {
-            var TestModel = TP.APIModel.extend({
+            var TestModel = APIModel.extend({
                 webAPIModelName: "TestModel",
                 idAttribute: "idkey",
                 defaults: {
@@ -67,7 +67,7 @@ function(TP)
 
         it("Should also work with a defaults function", function()
         {
-            var TestModel = TP.APIModel.extend({
+            var TestModel = APIModel.extend({
                 webAPIModelName: "TestModel",
                 idAttribute: "idkey",
                 defaults: function()

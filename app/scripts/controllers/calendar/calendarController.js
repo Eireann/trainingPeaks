@@ -239,7 +239,6 @@ function(
 
         reset: function(startDate, endDate, scrollToDate)
         {
-            this.views.calendar.fadeOut(800);
 
             this.resetCollections(startDate, endDate);
 
@@ -255,7 +254,6 @@ function(
             else
                 this.loadCalendarData();
 
-            this.views.calendar.fadeIn(800);
         },
 
         clearCacheAndRefresh: function()

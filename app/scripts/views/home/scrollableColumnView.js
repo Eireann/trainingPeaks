@@ -16,23 +16,28 @@ function(
     return TP.ItemView.extend(
     {
 
-        initialize: function()
+        initialize: function(options)
         {
             this.initResizeEvents();
-            this.wrapInScrollableTemplate();
+            this.wrapInScrollableTemplate(options.template);
         },
 
-        wrapInScrollableTemplate: function()
+        wrapInScrollableTemplate: function(innerTemplate)
         {
-            var innerTemplate = this.template.template;
 
-            this.template.template = function(context)
+            var wrappedTemplate = function(context)
             {
                 var innerHtml = innerTemplate(context);
                 var $outerHtml = $(scrollableColumnTemplate());
                 $outerHtml.find(".contents").html(innerHtml);
                 return $outerHtml;
             };
+
+            this.template = {
+                type: "handlebars",
+                template: wrappedTemplate
+            };
+
         },
 
         initResizeEvents: function()

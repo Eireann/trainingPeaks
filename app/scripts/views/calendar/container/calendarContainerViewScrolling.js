@@ -56,6 +56,11 @@ function(_, TP)
         onScrollStop: function ()
         {
 
+            if (typeof this.ui.weeksContainer.offset === "undefined")
+            {
+                return;
+            }
+
             // update drop shadow of header
             this.stopScrollingState();
 
@@ -247,6 +252,11 @@ function(_, TP)
         {
             if (!document.elementFromPoint)
                 return null;
+
+            if (typeof this.ui.weeksContainer.offset === "undefined")
+            {
+                return;
+            }
 
             var uiOffset = this.ui.weeksContainer.offset();
             var $currentElement = $(document.elementFromPoint(uiOffset.left + 10, uiOffset.top + 10));

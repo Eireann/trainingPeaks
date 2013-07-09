@@ -8,11 +8,11 @@
     {{#if totalTime }}
     <div class="statsRow" id="duration">
         <label>{{$ "Duration" }}</label>
-        {{#if movingTime }}
+        {{#if hasStoppedTime }}
         <span class="value movingTime">{{ formatTimeToHundredths movingTime }}</span>
         <span class="units totalTime">({{ formatTime totalTime }})</span>
         {{ else }}
-        <span class="value movingTime">{{ formatTimeToHundredths totalTime }}</span>
+        <span class="value movingTime">{{ formatTimeToHundredths movingTime }}</span>
         {{/if}}
     </div>
     {{/if}}
