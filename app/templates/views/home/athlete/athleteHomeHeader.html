@@ -1,1 +1,15 @@
-﻿{{ firstName }} {{ lastName }}
+﻿<div class="athleteHeader">
+    {{#if photoUrl }}
+    <div class="userPhoto">
+        <img src="{{ wwwUrl photoUrl }}" />
+    </div>
+    {{/if}}
+
+    <div class="athleteInfo">
+        <span class="name">{{ firstName }} {{ lastName }}</span>
+        <span class="athleteSportType">{{ athleteTypeName athleteType }}</span>
+        <div class="trainingFor">
+            {{$ "ImTrainingFor"}}: Bolder Boulder 10k | Goal 42:00 | in X days
+        </div>
+    </div>
+</div>

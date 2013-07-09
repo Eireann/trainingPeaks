@@ -27,15 +27,48 @@
         }
     }
 
-    .comments
+    .comments {
+    // float: left;
+    float: none;
+    background: transparent;
+    // padding-top: 10px;
+    @include labels($fontFamilyHeavy, $fontSizeSmall, $TPGrey3, normal);
+    width: 275px;
+    height: 100%;
+    margin: 14px 0 10px 0;
+
+    textarea
     {
-        float: none;
+        color: $TPGrey4;
+        font-family: $fontFamilyRegular;
     }
 
-    .closeIcon
+    label
     {
-        position: absolute;
-        top: 8px;
-        right: 8px;
+        padding-top: 4px;
+        padding-bottom: 4px;
+        margin-left: 4px;
     }
+
+    #preActivityComments
+    {
+        display:none;
+    }
+
+    #descriptionInput
+    {
+        width: 275px;
+        max-width: 275px
+    }
+
+    .activityComments
+    {
+        width: 275px;
+        max-width: 275px;
+        margin-bottom:0;
+    }
+}
+
+
+
 }

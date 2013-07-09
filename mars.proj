@@ -15,6 +15,7 @@
 	</PropertyGroup>
 
 	<Import Project="$(BuildToolsPath)\MSBuild\trainingpeaks.build.targets" />
+	<Import Project="$(BuildToolsPath)\MSBuild\MSBuild.Community.Tasks.targets" />
 
 	<Target Name="Build"> <!-- DependsOnTargets="Test"> -->
 		<Exec Command="$(GruntCmd) build" />
@@ -24,7 +25,7 @@
 		<Exec Command="$(GruntCmd) test" />
 	</Target>
 
-	<Target Name="Package" DependsOnTargets="Build">
+	<Target Name="Package" DependsOnTargets="Build;PrePackage">
 
 		<MSBuild 
 			Projects="$(MSBuildProjectFile)" 
@@ -37,12 +38,28 @@
 
 	</Target>
 
+	<Target Name="PrePackage">
+		<!-- Update the release files with the current build number -->
+		<PropertyGroup>
+			<BuildHash Condition=" '$(Configuration)' == 'Release' ">$(BUILD_VCS_NUMBER_Git_Mars___UAT)</BuildHash>
+			<BuildHash Condition=" '$(BuildHash)' == '' ">$(BUILD_VCS_NUMBER_Git_Mars___Master)</BuildHash>
+			<BuildHash Condition=" '$(BuildHash)' != '' ">$(BuildHash.Substring(0, 9))</BuildHash>
+			<MarsBuild Condition=" '$(MarsBuild)' == '' ">$(BUILD_NUMBER) $(BuildHash) $(Configuration)</MarsBuild>
+			<MarsBuild Condition=" '$(MarsBuild)' == '' ">DEVELOPER BUILD</MarsBuild>
+		</PropertyGroup>
+		<ItemGroup>
+			<MarsConfig Include="$(MSBuildProjectDirectory)\build\release\**\apiConfig.js" />
+		</ItemGroup>
+
+		<FileUpdate Files="@(MarsConfig)" Regex='{BUILD_NUMBER}' Multiline="true" ReplacementText="$(MarsBuild)" ReplacementCount="1" />
+    </Target>
+
 	<Target Name="Deploy" >
 		<Error Text="PackageParamsFile parameter (Mars.SetParams.dev.xml) has not be set." 
 			Condition=" $(PackageParamsfile) == '' " />
 
 		<MSBuild Projects="$(MSBuildProjectFile)" Targets="DeployPackage" 
-			Properties="PackageSource=$([System.IO.Path]::GetFullPath($(PackageDir)\Mars.dpkg.zip));"
+			Properties="PackageSource=$([System.IO.Path]::GetFullPath(Mars.dpkg.zip));"
 			/>
 
 	</Target>

@@ -10,10 +10,10 @@
 
 #workOutQuickView
 {
-	overflow:hidden;
+    overflow:hidden;
     width: 690px;
     height: 530px;
-	@include radialGradient(#e6e4e4, #dedcdc);
+    @include radialGradient(#e6e4e4, #dedcdc);
 
     textarea, input
     {
@@ -53,10 +53,10 @@ input[disabled='disabled']
 
 #quickViewContent
 {
-	height: 360px;
-	overflow-y:scroll; 
-	overflow-x:hidden;
-	@include radialGradient(#e6e4e4, #dedcdc);
+    height: 360px;
+    overflow-y:scroll; 
+    overflow-x:hidden;
+    @include radialGradient(#e6e4e4, #dedcdc);
     width: 653px;
 
     @include nice-scrollbar;
@@ -67,40 +67,40 @@ input[disabled='disabled']
 
 .quickviewFooter
 {
-	height:45px;
-	background-color: $TPGrey5;
-	padding-top: 12px;
+    height:45px;
+    background-color: $TPGrey5;
+    padding-top: 12px;
 
-	.selectionBox
-	{
-		padding-left: 55px;
-		width: 130px;
-		float:left;
-		// @include selectionBox(130px);
-		
-		select {
-			margin-top:1px;
-			padding:0;
-			width:130px;
-		}
-	}
-	.saveCloseButtons
-	{
-		font-weight:normal;
-		float: right;
-		width: 285px;
-	//	padding-top: 5px;
+    .selectionBox
+    {
+        padding-left: 55px;
+        width: 130px;
+        float:left;
+        // @include selectionBox(130px);
+        
+        select {
+            margin-top:1px;
+            padding:0;
+            width:130px;
+        }
+    }
+    .saveCloseButtons
+    {
+        font-weight:normal;
+        float: right;
+        width: 285px;
+    //  padding-top: 5px;
         @include buttons(0, 77px, $fontSizeSmall);
-		#saveClose
-		{
-			width: 107px;
-		}
+        #saveClose
+        {
+            width: 107px;
+        }
         button
         {
             margin-right: 8px;
-  			padding: 3px 0;
+            padding: 4px 0;
         }
-	}
+    }
 }
 
 .workoutTypeMenuModalOverlay
@@ -183,20 +183,20 @@ input[disabled='disabled']
 }
 
 .workoutQuickViewMenu {
-	z-index: 103;
-	
-	.hoverBox {
-		.hoverBoxContents .details label {
-			font-weight:normal;
-			font-size: $fontSizeSmall;
-			}
-		.mainShadow {
-			box-shadow: 0 2px 3px 0 #444444;
-		}	
-		.arrow {
-			box-shadow: 0 2px 3px 0 #444444;
-		}
-	}
+    z-index: 103;
+    
+    .hoverBox {
+        .hoverBoxContents .details label {
+            font-weight:normal;
+            font-size: $fontSizeSmall;
+            }
+        .mainShadow {
+            box-shadow: 0 2px 3px 0 #444444;
+        }   
+        .arrow {
+            box-shadow: 0 2px 3px 0 #444444;
+        }
+    }
 }
 
 
@@ -352,12 +352,12 @@ input[disabled='disabled']
 }
 .updatingModel
 {
-	color: red;
+    color: red;
 }
 
 .modelUpdateSuccess
 {
-	color: green;
+    color: green;
 }
 
 .comment
