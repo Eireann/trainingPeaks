@@ -89,7 +89,6 @@ input[disabled='disabled']
         font-weight:normal;
         float: right;
         width: 285px;
-    //  padding-top: 5px;
         @include buttons(0, 77px, $fontSizeSmall);
         #saveClose
         {

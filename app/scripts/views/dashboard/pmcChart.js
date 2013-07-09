@@ -483,7 +483,7 @@ function(
             this.keepSettingsButtonVisible();
             var offset = $(e.currentTarget).offset();
             this.pmcSettings = new pmcChartSettings({ model: theMarsApp.user });
-            this.pmcSettings.render().bottom(offset.top + 10).center(offset.left - 2);
+            this.pmcSettings.render().top(offset.top - 10).left(offset.left + 20);
             this.pmcSettings.on("close", this.onPmcSettingsClose, this);
 
         },

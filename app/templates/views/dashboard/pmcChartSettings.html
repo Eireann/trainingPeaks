@@ -9,8 +9,8 @@
             {{/each}}
             <div style="clear: both;"></div>
         </div>
-    </div>
-<hr/>
+    
+        <hr/>
 
 <div class="title">{{$ "SelectDateRange" }}</div>
 <select id="dateOptions">
@@ -54,17 +54,19 @@
 <div class="checkboxInput">
     <input type="checkbox" id="showTSBFill" class="checkbox"/>{{$ "ShowTSBFill"}}
 </div>
+
 <div style="clear:both;"></div>
 
-<hr />
+        <hr />
 
-<div>
-    {{$ "MissingTSSData"}}?
-    <button>{{$ "RecalculateTSSData"}}</button>
-</div>
+        <div>
+            {{$ "MissingTSSData"}}?
+            <button>{{$ "RecalculateTSSData"}}</button>
+        </div>
 
-<div>
-    <a>{{$ "LearnMoreAboutThePMC"}}</a>
-</div>
+        <div>
+            <a>{{$ "LearnMoreAboutThePMC"}}</a>
+        </div>
+    </div>
 {{/hoverBox}}
 
