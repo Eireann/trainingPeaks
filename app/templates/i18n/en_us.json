@@ -328,5 +328,11 @@
     "CTLConstant": "CTL Constant",
     "CTLStart": "CTL Start",
     "ATLConstant": "ATL Constant",
-    "ATLStart": "ATL Start"
+    "ATLStart": "ATL Start",
+
+    "ShowSecondATLSeries": "Show Second ATL Series",
+    "ShowTSS": "Show TSS",
+    "ShowIntensityFactor": "Show Intensity Factor",
+    "ShowTSBFill": "Show TSB Fill",
+    "MissingTSSData": "Missing Tss Data"
 }
