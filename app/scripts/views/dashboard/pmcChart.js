@@ -473,10 +473,9 @@ function (
 
             this.keepSettingsButtonVisible();
             var offset = $(e.currentTarget).offset();
-            this.pmcSettings = new pmcChartSettings({ model: this.model });
+            this.pmcSettings = new pmcChartSettings({ model: theMarsApp.user });
             this.pmcSettings.render().bottom(offset.top + 10).center(offset.left - 2);
             this.pmcSettings.on("close", this.allowSettingsButtonToHide, this);
-            this.pmcSettings.on("mouseleave", this.onMouseLeave, this);
         },
 
         keepSettingsButtonVisible: function ()

@@ -40,6 +40,17 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
         }
     }
 
+    &.menuOpen
+    {
+        background-color: $TPGrey2;
+        border: 1px solid $TPGrey11;
+
+        .chartButtons
+        {
+            display: block;
+        }
+    }
+
     .chartContainer
     {
         margin: 0px 0px 0px 0px;
