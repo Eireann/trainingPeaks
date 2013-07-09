@@ -65,14 +65,7 @@ function (
 
             this.onWaitStart();
 
-            var chartOptions = _.extend({}, options);
-            _.extend(chartOptions,
-                {
-                    startDate: moment().subtract('days', 90),
-                    endDate: moment().add('days', 21)
-                });
-
-            this.pmcModel = new PMCModel(null, chartOptions);
+            this.pmcModel = new PMCModel(null, null);
 
             this.bindPmcModelEvents();
 
@@ -101,6 +94,12 @@ function (
         fetchData: function()
         {
             var self = this;
+
+            if (theMarsApp.user.has("settings.dashboard.pmc"))
+            {
+                this.pmcModel.setOptions(theMarsApp.user.get("settings.dashboard.pmc"));
+            };
+
             this.pmcModel.fetch().done(function()
             {
                 self.setChartTitle();
@@ -475,12 +474,25 @@ function (
             var offset = $(e.currentTarget).offset();
             this.pmcSettings = new pmcChartSettings({ model: theMarsApp.user });
             this.pmcSettings.render().bottom(offset.top + 10).center(offset.left - 2);
-            this.pmcSettings.on("close", this.allowSettingsButtonToHide, this);
+            this.pmcSettings.on("close", this.onPmcSettingsClose, this);
+
         },
 
         keepSettingsButtonVisible: function ()
         {
             this.$el.addClass("menuOpen");
+        },
+
+        allowSettingsButtonToHide: function ()
+        {
+            this.$el.removeClass("menuOpen");
+        },
+
+        onPmcSettingsClose: function()
+        {
+            this.allowSettingsButtonToHide();
+            this.fetchData();
         }
+
     });
 });

@@ -37,12 +37,12 @@ function (_, TP, pmcChartSettings)
 
         saveSettings: function()
         {
-            this.trigger("settings:saved");
+            this.model.save();
         },
 
         serializeData: function()
         {
-            var pmcSettings = this.model.toJSON().settings.dashboard.pmc;
+            var pmcSettings = this.model.has("settings.dashboard.pmc") ? this.model.toJSON().settings.dashboard.pmc : {};
             pmcSettings.workoutTypes = [];
             _.each(TP.utils.workout.types.typesById, function(typeName, typeId)
             {
