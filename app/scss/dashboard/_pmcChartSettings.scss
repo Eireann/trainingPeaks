@@ -5,6 +5,7 @@
 {
     width: 400px;
     height: 500px;
+    top: 10px;
 
     .hoverBoxContents
     {
@@ -16,5 +17,13 @@
     {
         float: left;
         width: 33%;
+    }
+
+    .title
+    {
+        font-family: $fontFamilyHeavy;
+        font-size: $fontSizeSmall;
+        color: $TPGrey4;
+        padding: 10px 0;
     }
 }

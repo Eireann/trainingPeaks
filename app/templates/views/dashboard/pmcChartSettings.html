@@ -9,47 +9,48 @@
             {{/each}}
             <div style="clear: both;"></div>
         </div>
+    
+        <hr/>
+
+        <div class="title">{{$ "SelectDateRange" }}</div>
+        <select></select>
+        <div class="title">{{$ "From"}}:</div>
+        <input type="text" id="fromDate" class="datePicker">
+        <div class="title">{{$ "To"}}:</div>
+        <input type="text" id="toDate" class="datePicker">
+
+        <hr/>
+        <div class="{{$ "SelectParameters"}}"></div>
+        <form>
+            {{$ "CTLConstant"}}<input type="number" id="ctlConstant" value="42">
+            {{$ "CTLStart"}}<input type="number" id="ctlStart" value="0">
+            {{$ "ATLConstant"}}<input type="number" id="atlConstant" value="7">
+            {{$ "ATLStart"}}<input type="number" id="atlStart" value="0">
+        </form>
+
+        <div>
+            <input type="checkbox" id="showSecondATLSeries" class="checkbox"/>{{$ "ShowSecondATLSeries"}}
+        </div>
+        <div>
+            <input type="checkbox" id="showTss" class="checkbox"/>{{$ "ShowTSS"}}
+        </div>
+        <div>
+            <input type="checkbox" id="showIF" class="checkbox"/>{{$ "ShowIntensityFactor"}}
+        </div>
+        <div>
+            <input type="checkbox" id="showTSBFill" class="checkbox"/>{{$ "ShowTSBFill"}}
+        </div>
+
+        <hr />
+
+        <div>
+            {{$ "MissingTSSData"}}?
+            <button>{{$ "RecalculateTSSData"}}</button>
+        </div>
+
+        <div>
+            <a>{{$ "LearnMoreAboutThePMC"}}</a>
+        </div>
     </div>
-<hr/>
-
-<div class="title">{{$ "SelectDateRange" }}</div>
-<select></select>
-<div class="title">{{$ "From"}}:</div>
-<input type="text" id="fromDate" class="datePicker">
-<div class="title">{{$ "To"}}:</div>
-<input type="text" id="toDate" class="datePicker">
-
-<hr/>
-<div class="{{$ "SelectParameters"}}"></div>
-<form>
-    {{$ "CTLConstant"}}<input type="number" id="ctlConstant" value="42">
-    {{$ "CTLStart"}}<input type="number" id="ctlStart" value="0">
-    {{$ "ATLConstant"}}<input type="number" id="atlConstant" value="7">
-    {{$ "ATLStart"}}<input type="number" id="atlStart" value="0">
-</form>
-
-<div>
-    <input type="checkbox" id="showSecondATLSeries" class="checkbox"/>{{$ "ShowSecondATLSeries"}}
-</div>
-<div>
-    <input type="checkbox" id="showTss" class="checkbox"/>{{$ "ShowTSS"}}
-</div>
-<div>
-    <input type="checkbox" id="showIF" class="checkbox"/>{{$ "ShowIntensityFactor"}}
-</div>
-<div>
-    <input type="checkbox" id="showTSBFill" class="checkbox"/>{{$ "ShowTSBFill"}}
-</div>
-
-<hr />
-
-<div>
-    {{$ "MissingTSSData"}}?
-    <button>{{$ "RecalculateTSSData"}}</button>
-</div>
-
-<div>
-    <a>{{$ "LearnMoreAboutThePMC"}}</a>
-</div>
 {{/hoverBox}}
 
