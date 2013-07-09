@@ -3,9 +3,13 @@
 
 .pmcChartSettings
 {
-    .details
+    width: 400px;
+    height: 500px;
+
+    .hoverBoxContents
     {
-        width: 400px;
+        height: 500px;
+
     }
 
     .workoutType

@@ -10,4 +10,22 @@
             <div style="clear: both;"></div>
         </div>
     </div>
+<hr/>
+
+<div class="title">{{$ "SelectDateRange" }}</div>
+<select></select>
+<div class="title">{{$ "From"}}:</div>
+<input type="text" id="fromDate" class="datePicker">
+<div class="title">{{$ "To"}}:</div>
+<input type="text" id="toDate" class="datePicker">
+
+<hr/>
+<div class="{{$ "SelectParameters"}}"></div>
+<form>
+    {{$ "CTLConstant"}}<input type="number" id="ctlConstant" value="42">
+    {{$ "CTLStart"}}<input type="number" id="ctlStart" value="0">
+    {{$ "ATLConstant"}}<input type="number" id="atlConstant" value="7">
+    {{$ "ATLStart"}}<input type="number" id="atlStart" value="0">
+</form>
 {{/hoverBox}}
+
