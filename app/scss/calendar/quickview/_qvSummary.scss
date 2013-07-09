@@ -144,3 +144,19 @@
 	}
 }
 
+
+#commentsContainer {
+	.comments {
+		width:275px;
+		float:left;
+		padding-top:10px;
+		.header {
+            font-family: $fontFamilyHeavy;
+            font-size: $fontSizeSmall;
+            margin-bottom: 5px;
+            color: $TPGrey3;
+        }
+	}
+}
+
+
