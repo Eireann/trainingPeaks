@@ -17,4 +17,31 @@
         float: left;
         width: 33%;
     }
+
+    input[type=number] {
+        border: none;
+        outline: none;
+        padding: 0 0 0 5px;
+        margin: 0px;
+        width: 50px;
+        height: 23px;
+    }
+
+    .ui-spinner
+    {
+        border-radius: 0px;
+        margin-left: 20px;
+    }
+
+    .numberInput
+    {
+        float: left;
+        width: 50%;
+    }
+
+    .checkboxInput
+    {
+        float: left;
+        width: 50%;
+    }
 }

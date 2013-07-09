@@ -1,5 +1,7 @@
 define(
 [
+    "jqueryui/datepicker",
+    "jqueryui/spinner",
     "setImmediate",
     "underscore",
     "TP",
@@ -7,6 +9,8 @@ define(
     "hbs!templates/views/dashboard/pmcChartSettings"
 ],
 function(
+    datepicker,
+    spinner,
     setImmediate,
     _,
     TP,
@@ -38,16 +42,26 @@ function(
             "click .workoutType input[type=checkbox]": "onWorkoutTypeSelected",
             "change #dateOptions": "onDateOptionsChanged",
             "change #startDate": "onDateOptionsChanged",
-            "change #endDate": "onDateOptionsChanged"
+            "change #endDate": "onDateOptionsChanged",
+            "change input[type=number]": "onNumberOptionsChanged"
         },
 
         onRender: function()
         {
             this.model.off("change", this.render);
 
+            var self = this;
+            setImmediate(function()
+            {
+                self.$(".datepicker").css("position", "relative").css("z-index", self.$el.css("z-index"));
+                self.$(".datepicker").datepicker({ dateFormat: "yy-mm-dd", firstDay: theMarsApp.controllers.calendarController.startOfWeekDayIndex });
+            });
+
+            // setup number picker, and make sure it fires a change event
+            this.$("input[type=number]").spinner().on("spinstop", function(event, ui) { $(this).trigger("change", event, ui); });
+
             if(this.focusedInputId)
             {
-                var self = this;
                 setImmediate(function()
                 {
                     self.$("#" + self.focusedInputId).focus();
@@ -165,6 +179,14 @@ function(
             this.model.set("settings.dashboard.pmc.startDate", pmcOptions.customStartDate ? moment(pmcOptions.startDate).utc().unix() * 1000 : null, { silent: true });
             this.model.set("settings.dashboard.pmc.endDate", pmcOptions.customEndDate ? moment(pmcOptions.endDate).utc().unix() * 1000 : null, { silent: true });
             this.model.set("settings.dashboard.pmc.quickDateSelectOption", optionId);
+        },
+
+        onNumberOptionsChanged: function(e)
+        {
+            var inputId = e.target.id;
+            this.focusedInputId = inputId;
+            var value = $(e.target).val();
+            this.model.set("settings.dashboard.pmc." + inputId, value);
         }
 
     });
