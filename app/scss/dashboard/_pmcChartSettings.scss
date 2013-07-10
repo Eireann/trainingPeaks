@@ -7,10 +7,28 @@
     height: 650px;
     top: 10px;
 
+    div
+    {
+        font-family: $fontFamilyRegular;
+        font-size: 12px;
+        color: $TPGrey3;
+    }
+
+    hr
+    {
+        margin: 10px 0;
+        color: $TPGrey3;
+    }
+
     .hoverBoxContents
     {
         height: 650px;
 
+    }
+
+    .workoutTypes
+    {
+        padding-top: 5px;
     }
 
     .workoutType
@@ -49,8 +67,26 @@
     .title
     {
         font-family: $fontFamilyHeavy;
-        font-size: $fontSizeSmall;
+        font-size: 13px;
         color: $TPGrey4;
         padding: 10px 0;
+    }
+
+    .from 
+    {
+        width: 50%;
+        float: left;
+
+        .fromTo
+        {
+            float: left;
+            padding:3px 15px 0 0 ;
+        }
+
+        .datePicker
+        {
+            width: 75px;
+            height: 20px;
+        }
     }
 }
