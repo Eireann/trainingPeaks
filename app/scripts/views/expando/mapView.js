@@ -306,15 +306,17 @@ function (
 
         watchForControllerResize: function ()
         {
-            this.on("controller:resize", this.setViewWidth, this);
+            this.on("controller:resize", this.setViewSize, this);
             this.on("close", function ()
             {
-                this.off("controller:resize", this.setViewWidth, this);
+                this.off("controller:resize", this.setViewSize, this);
             }, this);
         },
 
-        setViewWidth: function ()
+        setViewSize: function (containerHeight, containerWidth)
         {
+            this.$el.height(containerHeight * 0.6);
+            console.log("Expando height: " + containerHeight + ", map height: " + this.$el.height());
             if (this.map)
             {
                 this.map.invalidateSize();

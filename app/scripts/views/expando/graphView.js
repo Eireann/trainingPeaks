@@ -76,6 +76,7 @@ function(
 
                 this.watchForModelChanges();
                 this.watchForControllerEvents();
+                this.watchForControllerResize();
 
                 setImmediate(function()
                 {
@@ -400,6 +401,21 @@ function(
         getDesiredPlotHeight: function()
         {
             return this.dataParser.hasLatLongData ? 365 : 565;
+        },
+
+        watchForControllerResize: function ()
+        {
+            this.on("controller:resize", this.setViewSize, this);
+            this.on("close", function ()
+            {
+                this.off("controller:resize", this.setViewSize, this);
+            }, this);
+        },
+
+        setViewSize: function (containerHeight, containerWidth)
+        {
+            this.$el.height(containerHeight * 0.4);
+            console.log("Expando height: " + containerHeight + ", graph height: " + this.$el.height());
         }
 
     });
