@@ -315,7 +315,14 @@ function (
 
         setViewSize: function (containerHeight, containerWidth)
         {
-            var mapHeight = Math.floor(containerHeight * 0.6);
+            var bottomMargin = 10;
+            var mapHeight = Math.floor((containerHeight - bottomMargin) * 0.55);
+
+            if (mapHeight < 275)
+            {
+                mapHeight = 275;
+            }
+
             this.$el.closest("#expandoMapRegion").height(mapHeight);
             this.$el.height(mapHeight);
             this.$("#expandoMap").height(mapHeight);

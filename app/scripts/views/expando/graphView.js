@@ -400,7 +400,12 @@ function(
 
         getDesiredPlotHeight: function()
         {
-            return this.dataParser.hasLatLongData ? 365 : 565;
+            if (this.graphHeight)
+            {
+                return this.graphHeight - 50;
+            } else {
+                return this.dataParser.hasLatLongData ? 365 : 565;
+            }
         },
 
         watchForControllerResize: function ()
@@ -414,10 +419,25 @@ function(
 
         setViewSize: function (containerHeight, containerWidth)
         {
-            var graphSize = Math.floor(containerHeight * 0.4);
+            var bottomMargin = 10;
+            var graphHeight = Math.floor((containerHeight - bottomMargin) * 0.45);
+
+            if (graphHeight < 225)
+            {
+                graphHeight = 225;
+            }
+
+            this.graphHeight = graphHeight;
             this.$el.closest("#expandoGraphRegion").height(graphHeight);
-            this.$el.height(graphSize);
-            console.log("Expando height: " + containerHeight + ", graph height: " + this.$el.height());
+
+            var topPadding = 15;
+            var toolbarHeight = 35;
+
+            this.$el.height(graphHeight - topPadding);
+            if (this.$plot)
+            {
+                this.$plot.height(graphHeight - topPadding - toolbarHeight);
+            }
         }
 
     });
