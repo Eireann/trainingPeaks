@@ -66,9 +66,14 @@ function(moment, _, TP)
             var end = moment(this.endDate).format(TP.utils.datetime.shortDateFormat);
 
             // 0 == all
-            var workoutTypes = this.workoutTypeIds.join(",");
+            var workoutTypes = "0";
             
-            if (this.workoutTypeIds.length === _.keys(TP.utils.workout.types.typesById).length || this.workoutTypeIds.length === 0)
+            if (this.workoutTypeIds.length !== _.keys(TP.utils.workout.types.typesById).length && this.workoutTypeIds.length !== 0)
+            {
+                workoutTypes = this.workoutTypeIds.join(",");
+            }
+
+            if (!workoutTypes)
             {
                 workoutTypes = "0";
             }
