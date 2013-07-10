@@ -91,10 +91,51 @@ function(setImmediate, TP, DataParser, ExpandoLayout, GraphView, MapView, StatsV
             var flatSamples = this.model.get("detailData").get("flatSamples");
             this.dataParser.loadData(flatSamples);
 
+            this.showMapAndGraph();
+
             setImmediate(function()
             {
-                self.layout.graphRegion.show(self.views.graphView);
+                self.layout.chartsRegion.show(self.views.chartsView);
             });
+
+            setImmediate(function()
+            {
+                self.onViewResize();
+            });
+        },
+
+        onSensorDataChange: function()
+        {
+            var flatSamples = this.model.get("detailData").get("flatSamples");
+            this.dataParser.loadData(flatSamples);
+            this.showMapAndGraph();
+
+            var self = this;
+            setImmediate(function()
+            {
+                self.onViewResize();
+            });
+ 
+        },
+
+        showMapAndGraph: function()
+        {
+
+            var self = this;
+            if (this.model.get("detailData").hasSamples())
+            {
+                this.layout.showGraph();
+
+                setImmediate(function()
+                {
+                    self.layout.graphRegion.show(self.views.graphView);
+                });
+                
+            } else
+            {
+                this.layout.hideGraph();
+
+            }
 
             if (this.dataParser.hasLatLongData)
             {
@@ -107,16 +148,6 @@ function(setImmediate, TP, DataParser, ExpandoLayout, GraphView, MapView, StatsV
             {
                 this.layout.hideMap();
             }
-
-            setImmediate(function()
-            {
-                self.layout.chartsRegion.show(self.views.chartsView);
-            });
-
-            setImmediate(function()
-            {
-                self.onViewResize();
-            });
         },
 
         preFetchDetailData: function()
@@ -134,7 +165,7 @@ function(setImmediate, TP, DataParser, ExpandoLayout, GraphView, MapView, StatsV
         {
             this.layout.$el.parent().hide();
         },
-        
+
         closeViews: function()
         {
             _.each(this.views, function(view)
@@ -154,11 +185,13 @@ function(setImmediate, TP, DataParser, ExpandoLayout, GraphView, MapView, StatsV
             this.stopWatchingModelChanges();
 
             this.layout.off("show", this.show, this);
+
         },
- 
+
         watchForModelChanges: function()
         {
             this.model.on("deviceFileUploaded", this.fetchDetailData, this);
+            this.model.get("detailData").on("changeSensorData", this.onSensorDataChange, this);
             this.on("close", this.stopWatchingModelChanges, this);
         },
 
@@ -171,6 +204,7 @@ function(setImmediate, TP, DataParser, ExpandoLayout, GraphView, MapView, StatsV
         stopWatchingModelChanges: function()
         {
             this.model.off("deviceFileUploaded", this.fetchDetailData, this);
+            this.model.get("detailData").off("changeSensorData", this.onSensorDataChange, this);
         },
 
         watchForViewEvents: function()

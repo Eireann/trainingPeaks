@@ -403,7 +403,8 @@ function(
             if (this.graphHeight)
             {
                 return this.graphHeight - 50;
-            } else {
+            } else
+            {
                 return this.dataParser.hasLatLongData ? 365 : 565;
             }
         },
@@ -420,7 +421,8 @@ function(
         setViewSize: function (containerHeight, containerWidth)
         {
             var bottomMargin = 10;
-            var graphHeight = Math.floor((containerHeight - bottomMargin) * 0.45);
+            var heightPercent = this.dataParser.hasLatLongData ? 0.45 : 0.8;
+            var graphHeight = Math.floor((containerHeight - bottomMargin) * heightPercent);
 
             if (graphHeight < 225)
             {
