@@ -48,7 +48,6 @@ function(
         {
             _.bindAll(this, "onHoverToolTip");
 
-            this.on("render", this.renderChartAfterRender, this);
 
             // use zero hour to avoid time zone issues in day diff calculation
             this.today = moment().hour(0).format("YYYY-MM-DD");
@@ -71,9 +70,15 @@ function(
 
             this.bindPmcModelEvents();
 
-            this.on("user:loaded", this.fetchData, this);
+            this.on("user:loaded", this.onUserLoaded, this);
 
             this.on("close", this.unbindPmcModelEvents, this);
+        },
+
+        onUserLoaded: function()
+        {
+            this.on("render", this.renderChartAfterRender, this);
+            this.fetchData();
         },
 
         bindPmcModelEvents: function()
@@ -475,6 +480,12 @@ function(
 
         buildTSBFutureDataSeriesFill: function(chartPoints, chartColors)
         {
+            var yaxis = 2;
+            if (this.shouldShowTSS())
+                yaxis++;
+            if (this.shouldShowIF())
+                yaxis++;
+
             var dataSeries =
             {
                 data: chartPoints,
@@ -485,7 +496,7 @@ function(
                     fill: true,
                     fillColor: chartColors.pmcColors.TSBFill
                 },
-                yaxis: 4
+                yaxis: yaxis
             };
 
             return dataSeries;
@@ -498,6 +509,7 @@ function(
 
             flotOptions.yaxes = [];
 
+            // tss = axis 1
             if (this.shouldShowTSS())
             {
                 flotOptions.yaxes.push(
@@ -512,6 +524,7 @@ function(
                 });
             }
 
+            // atl / ctl = axis 1, or 2 if we have tss
             flotOptions.yaxes.push(
             {
                 tickDecimals: 0,
@@ -520,6 +533,7 @@ function(
                 min: 0
             });
 
+            // IF = axis 2, or 3 if we have tss
             if (this.shouldShowIF())
             {
                 flotOptions.yaxes.push(
@@ -534,6 +548,7 @@ function(
                 });
             }
 
+            // tsb = axis 2, 3, or 4
             flotOptions.yaxes.push(
             {
                 tickDecimals: 0,
