@@ -414,7 +414,9 @@ function(
 
         setViewSize: function (containerHeight, containerWidth)
         {
-            this.$el.height(containerHeight * 0.4);
+            var graphSize = Math.floor(containerHeight * 0.4);
+            this.$el.closest("#expandoGraphRegion").height(graphHeight);
+            this.$el.height(graphSize);
             console.log("Expando height: " + containerHeight + ", graph height: " + this.$el.height());
         }
 
