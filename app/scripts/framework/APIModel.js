@@ -35,7 +35,7 @@ function(_, Backbone)
 
         has: function(attr)
         {
-            return this.attributes.hasOwnProperty(attr) && this.get(attr) != null;
+            return this.get(attr) != null;
         }
     });
 

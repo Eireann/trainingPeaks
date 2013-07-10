@@ -16,7 +16,7 @@ function(TP, WorkoutCommentsEditorView, commentsEditorTemplate)
 
         events:
         {
-            "click img.closeIcon": "close"
+            "click div#closeIcon": "close"
         },
 
         ui:

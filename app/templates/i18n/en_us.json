@@ -323,5 +323,16 @@
     "Zones": "Zones",
     "ByZones": "By Zones",
     "My": "My",
-    "ImTrainingFor": "I'm training for"
+    "ImTrainingFor": "I'm training for",
+    "SelectWorkoutType": "Select Workout Type",
+    "CTLConstant": "CTL Constant",
+    "CTLStart": "CTL Start",
+    "ATLConstant": "ATL Constant",
+    "ATLStart": "ATL Start",
+
+    "ShowSecondATLSeries": "Show Second ATL Series",
+    "ShowTSS": "Show TSS",
+    "ShowIntensityFactor": "Show Intensity Factor",
+    "ShowTSBFill": "Show TSB Fill",
+    "MissingTSSData": "Missing Tss Data"
 }

@@ -32,7 +32,9 @@ function(
                 tssPlanned: i * 15,
                 atl: i * 5,
                 ctl: i * 20,
-                tsb: i - 20
+                tsb: i - 20,
+                ifPlanned: i * 0.11,
+                ifActual: i * 0.11
             });
         }
   
@@ -136,6 +138,46 @@ function(
 
                         expect(
                             moment(chartPoints.ATL[9][0]).format(TP.utils.datetime.shortDateFormat)
+                        ).toEqual(
+                            moment().subtract("days", 9).format(TP.utils.datetime.shortDateFormat)
+                        );
+                    });
+                });
+
+                describe("IF", function()
+                {
+                    var chartPoints, chart, modelData;
+                    beforeEach(function()
+                    {
+                        modelData = buildPmcModelData(10);
+                        chart = new PmcChart();
+                        chartPoints = chart.buildFlotPoints(modelData);
+                    });
+
+                    it("Should return IF data in the flot points", function()
+                    {
+                        expect(chartPoints.IF).toBeDefined();
+                        expect(chartPoints.IF.length).toEqual(modelData.length);
+                    });
+
+                    it("Should put the correct values in the IF points", function()
+                    {
+                        _.each(chartPoints.IF, function(chartPoint, index)
+                        {
+                            expect(chartPoint[1]).toEqual(index * 0.11);
+                        });
+                    });
+
+                    it("Should include a date for each IF point", function()
+                    {
+                        expect(
+                            moment(chartPoints.IF[0][0]).format(TP.utils.datetime.shortDateFormat)
+                        ).toEqual(
+                            moment().format(TP.utils.datetime.shortDateFormat)
+                        );
+
+                        expect(
+                            moment(chartPoints.IF[9][0]).format(TP.utils.datetime.shortDateFormat)
                         ).toEqual(
                             moment().subtract("days", 9).format(TP.utils.datetime.shortDateFormat)
                         );
@@ -364,6 +406,51 @@ function(
                     });
                 });
 
+                describe("IFFuture", function()
+                {
+                    var chartPoints, chart, modelData;
+                    beforeEach(function()
+                    {
+                        modelData = buildPmcModelData(10, true);
+                        chart = new PmcChart();
+                        chartPoints = chart.buildFlotPoints(modelData);
+                    });
+
+                    it("Should return IF data in the flot points", function()
+                    {
+                        expect(chartPoints.IF).toBeDefined();
+                        expect(chartPoints.IFFuture).toBeDefined();
+                        expect(chartPoints.IF.length).toEqual(modelData.length);
+                        expect(chartPoints.IFFuture.length).toEqual(modelData.length);
+                    });
+
+                    it("Should not put today's IF value in both past and future", function()
+                    {
+                        expect(chartPoints.IF[0][1]).toEqual(0);
+                        expect(chartPoints.IFFuture[0][1]).toEqual(null);
+                    });
+
+                    it("Should put future IF value only in future", function()
+                    {
+                        expect(chartPoints.IF[9][1]).toEqual(null);
+                        expect(chartPoints.IFFuture[9][1]).toEqual(9 * 0.11);
+                    });
+
+                    it("Should include a date for each IF point", function()
+                    {
+                        expect(
+                            moment(chartPoints.IFFuture[0][0]).format(TP.utils.datetime.shortDateFormat)
+                        ).toEqual(
+                            moment().format(TP.utils.datetime.shortDateFormat)
+                        );
+
+                        expect(
+                            moment(chartPoints.IFFuture[9][0]).format(TP.utils.datetime.shortDateFormat)
+                        ).toEqual(
+                            moment().add("days", 9).format(TP.utils.datetime.shortDateFormat)
+                        );
+                    });
+                });
                 describe("CTLFuture", function()
                 {
                     var chartPoints, chart, modelData;
@@ -424,9 +511,10 @@ function(
                 chartSeries = chart.buildFlotDataSeries(chartPoints, chartColors);
             });
 
-            it("Should contain eight items (four past, four future)", function()
+            // because we need an extra series for IF future fill
+            it("Should contain eleven items (five past, six future)", function()
             {
-                expect(chartSeries.length).toBe(8);
+                expect(chartSeries.length).toBe(11);
             });
         });
 

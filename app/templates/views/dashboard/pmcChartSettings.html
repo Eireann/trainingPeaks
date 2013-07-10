@@ -1,0 +1,69 @@
+{{#hoverBox this}}
+    <div class="details">
+        <div class="title">{{$ "SelectWorkoutType" }}</div>
+        <div id="closeIcon"></div>
+        <div class="workoutTypes">
+            {{#each workoutTypes}}
+                <div class="workoutType">
+                    <input type="checkbox" data-workouttypeid="{{ id }}" {{#if selected}}checked{{/if}} /> {{ name }}
+                </div>
+            {{/each}}
+            <div style="clear: both;"></div>
+        </div>
+    
+        <hr/>
+
+        <div class="title">{{$ "SelectDateRange" }}</div>
+        <select id="dateOptions">
+            {{#each dateOptions}}
+            <option value="{{ id }}"{{#if selected}} selected{{/if}}>{{ label }}</option>
+            {{/each}}
+        </select>
+        <div class="title fromTo">{{$ "From"}}:</div>
+        {{#if customStartDate }}
+        <input type="text" id="startDate" class="datepicker" value="{{ formatDate startDate "YYYY-MM-DD" }}">
+        {{ else }}
+        <input type="hidden" id="Hidden1" value="{{ formatDate startDate "YYYY-MM-DD" }}">
+        <div class="date">{{ formatDate startDate "YYYY-MM-DD" }}</div>
+        {{/if}}
+        <div class="title fromTo">{{$ "To"}}:</div>
+        {{#if customEndDate }}
+        <input type="text" id="endDate" class="datepicker" value="{{ formatDate endDate "YYYY-MM-DD" }}">
+        {{ else }}
+        <input type="hidden" id="Hidden2" value="{{ formatDate endDate "YYYY-MM-DD" }}">
+        <div class="date">{{ formatDate endDate "YYYY-MM-DD" }}</div>
+        {{/if}}
+
+        <hr/>
+
+        <div class="">{{$ "SelectParameters"}}</div>
+
+        <div class="numberInput">{{$ "CTLConstant"}}<input type="number" id="Number1" min="7" max="200" value="{{ ctlConstant }}"></div>
+        <div class="numberInput">{{$ "CTLStart"}}<input type="number" id="ctlStartValue" min="0" max="500" value="{{ ctlStartValue }}"></div>
+        <div class="numberInput">{{$ "ATLConstant"}}<input type="number" id="Number2" min="1" max="40" value="{{ atlConstant }}"></div>
+        <div class="numberInput">{{$ "ATLStart"}}<input type="number" id="atlStartValue" min="0" max="500" value="{{ atlStartValue }}"></div>
+        <div style="clear:both;"></div>
+
+        <div class="checkboxInput">
+            <input type="checkbox" id="showTSSPerDay" class="checkbox chartSeriesOption"{{#if showTSSPerDay }} checked{{/if}}/>{{$ "ShowTSS"}}
+        </div>
+        <div class="checkboxInput">
+            <input type="checkbox" id="showIntensityFactorPerDay" class="checkbox chartSeriesOption"{{#if showIntensityFactorPerDay }} checked{{/if}}/>{{$ "ShowIntensityFactor"}}
+        </div>
+        <div class="checkboxInput">
+            <input type="checkbox" id="showTSBFill" class="checkbox chartSeriesOption"{{#if showTSBFill }} checked{{/if}}/>{{$ "ShowTSBFill"}}
+        </div>
+
+        <div style="clear:both;"></div>
+       <hr />
+
+        <div>
+            {{$ "MissingTSSData"}}?
+            <button>{{$ "RecalculateTSSData"}}</button>
+        </div>
+
+        <div>
+            <a>{{$ "LearnMoreAboutThePMC"}}</a>
+        </div>
+    </div>
+{{/hoverBox}}
