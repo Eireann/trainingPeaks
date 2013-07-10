@@ -192,10 +192,12 @@ function(
                 ATL: [],
                 CTL: [],
                 TSB: [],
+                IF: [],
                 TSSFuture: [],
                 ATLFuture: [],
                 CTLFuture: [],
-                TSBFuture: []
+                TSBFuture: [],
+                IFFuture: []
             };
 
             _.each(modelData, function(item, index)
@@ -215,6 +217,9 @@ function(
                     chartPoints.TSS.push([dayMomentValue, item.tssActual]);
                     chartPoints.TSSFuture.push([dayMomentValue, null]);
 
+                    chartPoints.IF.push([dayMomentValue, item.ifActual]);
+                    chartPoints.IFFuture.push([dayMomentValue, null]);
+
                     chartPoints.ATLFuture.push([dayMomentValue, item.atl]);
                     chartPoints.CTLFuture.push([dayMomentValue, item.ctl]);
                     chartPoints.TSBFuture.push([dayMomentValue, item.tsb, TSBMinimum]);
@@ -231,12 +236,13 @@ function(
                     chartPoints.ATLFuture.push([dayMomentValue, item.atl]);
                     chartPoints.CTLFuture.push([dayMomentValue, item.ctl]);
                     chartPoints.TSBFuture.push([dayMomentValue, item.tsb, TSBMinimum]);
+                    chartPoints.IFFuture.push([dayMomentValue, item.ifPlanned]);
 
                     chartPoints.TSS.push([dayMomentValue, null]);
                     chartPoints.ATL.push([dayMomentValue, null]);
                     chartPoints.CTL.push([dayMomentValue, null]);
                     chartPoints.TSB.push([dayMomentValue, null]);
-
+                    chartPoints.IF.push([dayMomentValue, null]);
                     // put past values into the past point arrays
                 } else
                 {
@@ -245,11 +251,13 @@ function(
                     chartPoints.ATL.push([dayMomentValue, item.atl]);
                     chartPoints.CTL.push([dayMomentValue, item.ctl]);
                     chartPoints.TSB.push([dayMomentValue, item.tsb, TSBMinimum]);
+                    chartPoints.IF.push([dayMomentValue, item.ifActual]);
 
                     chartPoints.TSSFuture.push([dayMomentValue, null]);
                     chartPoints.ATLFuture.push([dayMomentValue, null]);
                     chartPoints.CTLFuture.push([dayMomentValue, null]);
                     chartPoints.TSBFuture.push([dayMomentValue, null]);
+                    chartPoints.IFFuture.push([dayMomentValue, null]);
                 }
 
             }, this);
@@ -266,6 +274,12 @@ function(
                 series.push(this.buildTSBFutureDataSeriesFill(chartPoints.TSBFuture, chartColors));
             }
             series.push(this.buildTSBFutureDataSeries(chartPoints.TSBFuture, chartColors));
+
+            if (this.shouldShowIF())
+            {
+                series.push(this.buildIFDataSeries(chartPoints.IF, chartColors));
+                series.push(this.buildIFFutureDataSeries(chartPoints.IFFuture, chartColors));
+            }
 
             if (this.shouldShowTSS())
             {
@@ -309,6 +323,38 @@ function(
                     show: true
                 },
                 yaxis: 1
+            };
+
+            return dataSeries;
+        },
+
+        buildIFDataSeries: function(chartPoints, chartColors)
+        {
+            var dataSeries =
+            {
+                data: chartPoints,
+                color: chartColors.pmcColors.IF,
+                points:
+                {
+                    show: true
+                },
+                yaxis: this.shouldShowTSS() ? 3 : 2
+            };
+
+            return dataSeries;
+        },
+
+        buildIFFutureDataSeries: function(chartPoints, chartColors)
+        {
+            var dataSeries =
+            {
+                data: chartPoints,
+                color: chartColors.pmcColors.IF,
+                points:
+                {
+                    show: true
+                },
+                yaxis: this.shouldShowTSS() ? 3 : 2
             };
 
             return dataSeries;
@@ -380,6 +426,12 @@ function(
 
         buildTSBDataSeries: function(chartPoints, chartColors)
         {
+            var yaxis = 2;
+            if (this.shouldShowTSS())
+                yaxis++;
+            if (this.shouldShowIF())
+                yaxis++;
+
             var dataSeries =
             {
                 data: chartPoints,
@@ -388,7 +440,7 @@ function(
                 {
                     show: true
                 },
-                yaxis: this.shouldShowTSS() ? 3 : 2
+                yaxis: yaxis
             };
 
             if (this.shouldShowTSBFill())
@@ -401,6 +453,12 @@ function(
 
         buildTSBFutureDataSeries: function(chartPoints, chartColors)
         {
+            var yaxis = 2;
+            if (this.shouldShowTSS())
+                yaxis++;
+            if (this.shouldShowIF())
+                yaxis++;
+
             var dataSeries =
             {
                 data: chartPoints,
@@ -409,7 +467,7 @@ function(
                 {
                     show: true
                 },
-                yaxis: this.shouldShowTSS() ? 3 : 2
+                yaxis: yaxis
             };
 
             return dataSeries;
@@ -420,13 +478,14 @@ function(
             var dataSeries =
             {
                 data: chartPoints,
-                color: chartColors.pmcColors.TSB,
+                color: "transparent",
                 lines:
                 {
                     show: true,
-                    fill: true
+                    fill: true,
+                    fillColor: chartColors.pmcColors.TSBFill
                 },
-                yaxis: this.shouldShowTSS() ? 3 : 2
+                yaxis: 4
             };
 
             return dataSeries;
@@ -436,38 +495,55 @@ function(
         {
             var flotOptions = defaultFlotOptions.getGlobalDefaultOptions(null);
 
-            var tssAxisOptions = {
-                tickDecimals: 0,
-                position: "left",
-                color: "transparent",
-                font: {
-                    color: chartColors.pmcColors.TSS
-                }
-            };
 
-            flotOptions.yaxes =
-            [
-                {
-                    tickDecimals: 0,
-                    position: "left",
-                    color: "transparent"
-                },
-                {
-                    tickDecimals: 0,
-                    position: "right",
-                    color: "transparent",
-                    min: TSBMinimum,
-                    font: {
-                        color: chartColors.pmcColors.TSB
-                    }
-                }
-            ];
+            flotOptions.yaxes = [];
 
             if (this.shouldShowTSS())
             {
-                flotOptions.yaxes.unshift(tssAxisOptions);
+                flotOptions.yaxes.push(
+                {
+                    tickDecimals: 0,
+                    position: "left",
+                    color: "transparent",
+                    font: {
+                        color: chartColors.pmcColors.TSS
+                    },
+                    min: 0
+                });
             }
 
+            flotOptions.yaxes.push(
+            {
+                tickDecimals: 0,
+                position: "left",
+                color: "transparent",
+                min: 0
+            });
+
+            if (this.shouldShowIF())
+            {
+                flotOptions.yaxes.push(
+                {
+                    tickDecimals: 1,
+                    position: "right",
+                    color: "transparent",
+                    font: {
+                        color: chartColors.pmcColors.IF
+                    },
+                    min: 0
+                });
+            }
+
+            flotOptions.yaxes.push(
+            {
+                tickDecimals: 0,
+                position: "right",
+                color: "transparent",
+                min: TSBMinimum,
+                font: {
+                    color: chartColors.pmcColors.TSB
+                }
+            });
 
             flotOptions.xaxes = [
             {
@@ -577,6 +653,15 @@ function(
                 return true;
             }
             return theMarsApp.user.get("settings.dashboard.pmc.showTSSPerDay") ? true : false;
+        },
+
+        shouldShowIF: function()
+        {
+            if (!theMarsApp.user.has("settings.dashboard.pmc"))
+            {
+                return true;
+            }
+            return theMarsApp.user.get("settings.dashboard.pmc.showIntensityFactorPerDay") ? true : false;
         },
 
         shouldShowTSBFill: function()

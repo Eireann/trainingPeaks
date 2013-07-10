@@ -64,11 +64,8 @@ function(
             this.$("input[type=number]").spinner().on("spinstop", function(event, ui) { $(this).trigger("change", event, ui); });
 
             // setup dropdown styling
-            setImmediate(function()
-            {
-                self.$("#dateOptions").selectBoxIt({
-                    dynamicPositioning: false
-                });
+            this.$("#dateOptions").selectBoxIt({
+                dynamicPositioning: false
             });
  
             if(this.focusedInputId)
