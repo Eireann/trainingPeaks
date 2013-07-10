@@ -62,7 +62,7 @@
 /* Height and Vertical Alignment of Text */
 .selectboxit-container span, .selectboxit-container .selectboxit-options a {
   height: 22px; /* Height of the drop down */
-  line-height: 22px; /* Vertically positions the drop down text */
+  line-height: 21px; /* Vertically positions the drop down text */
   display: block;
 }
 
@@ -101,7 +101,7 @@
 	min-width: 100%;  /* Minimum Width of the dropdown list box options */
 	*width: 100%;
 	margin: 0;
-	padding: 0;
+	padding: 5px 0;
 	list-style: none;
 	position: absolute;
 	overflow-x: hidden;

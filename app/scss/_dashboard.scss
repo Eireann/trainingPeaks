@@ -104,6 +104,7 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
             width: 16px;
             right: 36px;
             background: transparent $chartIconsSpriteURL no-repeat 0 0;
+            cursor:pointer;
 
             &:hover {
                 background-position: 0 -17px;
@@ -117,8 +118,8 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
         .expand
         {
             right: 16px;
-
             background: transparent $chartIconsSpriteURL no-repeat -17px 0;
+            cursor:pointer;
 
             &:hover {
                 background-position: -17px -17px;
@@ -133,6 +134,7 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
         {
             right: 0px;
             background: transparent $chartIconsSpriteURL no-repeat -34px 0;
+            cursor:pointer;
 
             &:hover {
                 background-position: -34px -17px;
@@ -144,13 +146,9 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
         }
 
 		@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
-			.settings {
+			.settings, .expand, .close {
 				background-image: $chartIconsSpriteRetinaURL;
-				background-size: 16px 12px;
-			}
-			.expand, .close {
-				background-image: $chartIconsSpriteRetinaURL;
-				background-size: 12px 12px;
+				background-size: 68px 34px;
 			}
 		}
     }
