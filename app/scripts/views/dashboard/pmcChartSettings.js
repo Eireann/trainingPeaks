@@ -46,7 +46,8 @@ function(
             "change #startDate": "onDateOptionsChanged",
             "change #endDate": "onDateOptionsChanged",
             "change input[type=number]": "onNumberOptionsChanged",
-            "click input[type=checkbox].chartSeriesOption": "onChartSeriesOptionChanged"
+            "click input[type=checkbox].chartSeriesOption": "onChartSeriesOptionChanged",
+            "click #closeIcon": "close"
         },
 
         onRender: function()
@@ -83,6 +84,10 @@ function(
         {
             this.model.off("change:settings.dashboard.pmc.*", this.render, this);
             this.saveSettings();
+            if(this.hasChangedSettings)
+            {
+                this.trigger("change:settings");
+            }
         },
 
         saveSettings: function()
@@ -135,6 +140,7 @@ function(
 
         onWorkoutTypeSelected: function(e)
         {
+            this.hasChangedSettings = true;
             var checkbox = $(e.target);
 
             // the current settings are strings, but somehow checkbox.data gives us an int
@@ -148,7 +154,7 @@ function(
             {
                 if(checked)
                 {
-                     _.each(TP.utils.workout.types.typesById, function(typeName, typeId)
+                    _.each(TP.utils.workout.types.typesById, function(typeName, typeId)
                     {
 
                          workoutTypeIds.push(typeId);
@@ -173,6 +179,7 @@ function(
 
         onDateOptionsChanged: function(e)
         {
+            this.hasChangedSettings = true;
             this.focusedInputId = e.target.id;
             var optionId = this.$("#dateOptions").val();
 
@@ -191,6 +198,7 @@ function(
 
         onNumberOptionsChanged: function(e)
         {
+            this.hasChangedSettings = true;
             var inputId = e.target.id;
             this.focusedInputId = inputId;
             var value = $(e.target).val();

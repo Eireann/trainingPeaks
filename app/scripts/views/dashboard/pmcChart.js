@@ -142,14 +142,21 @@ function(
                 _.each(workoutTypeIds, function(item, index)
                 {
                     var intItem = parseInt(item, 10);
-                    if (intItem === 0)
-                        workoutTypeNames.push("All");
-                    else
-                        workoutTypeNames.push(workoutTypes.getNameById(intItem));
+                    var workoutType = intItem === 0 ? "All" : workoutTypes.getNameById(intItem);
+                    if(workoutType !== "Unknown")
+                    {
+                        workoutTypeNames.push(workoutType); 
+                    }
+
                 }, this);
             }
 
-            return "PMC - Workout Type: " + workoutTypeNames.join(", ");
+            var types = workoutTypeNames.join(", ");
+            if (!types)
+            {
+                types = "All";
+            }
+            return "PMC - Workout Type: " + types;
         },
 
         renderChartAfterRender: function()
@@ -593,6 +600,7 @@ function(
             tips.push({ label: "Date", value: itemDay.format("MM/DD/YY") });
 
             var tss = item.tssActual;
+            var intensity = item.ifActual;
             var ctl = item.ctl;
             var atl = item.atl;
             var tsb = item.tsb;
@@ -600,11 +608,17 @@ function(
             if (itemDay.diff(this.today) > 0)
             {
                 tss = item.tssPlanned;
+                intensity = item.ifPlanned;
             }
 
             if (this.shouldShowTSS())
             {
                 tips.push({ label: "TSS", value: TP.utils.conversion.formatTSS(tss, { defaultValue: "--" }) });
+            }
+
+            if (this.shouldShowIF())
+            {
+                tips.push({ label: "Intensity Factor", value: TP.utils.conversion.formatIF(intensity, { defaultValue: "--" }) });
             }
 
             tips.push({ label: "Acute Training Load (ATL)", value: TP.utils.conversion.formatTSS(atl) });
@@ -634,7 +648,8 @@ function(
             var offset = $(e.currentTarget).offset();
             this.pmcSettings = new pmcChartSettings({ model: theMarsApp.user });
             this.pmcSettings.render().top(offset.top - 10).left(offset.left + 20);
-            this.pmcSettings.on("close", this.onPmcSettingsClose, this);
+            this.pmcSettings.on("change:settings", this.onPmcSettingsChange, this);
+            this.pmcSettings.on("close", this.allowSettingsButtonToHide, this);
 
             theMarsApp.user.on("change:settings.dashboard.pmc.showTSSPerDay", this.renderChart, this);
             theMarsApp.user.on("change:settings.dashboard.pmc.showIntensityFactorPerDay", this.renderChart, this);
@@ -651,9 +666,8 @@ function(
             this.$el.removeClass("menuOpen");
         },
 
-        onPmcSettingsClose: function()
+        onPmcSettingsChange: function()
         {
-            this.allowSettingsButtonToHide();
             this.fetchData();
 
             theMarsApp.user.off("change:settings.dashboard.pmc.showTSSPerDay", this.renderChart, this);
