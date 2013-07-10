@@ -45,16 +45,13 @@
         <div style="clear:both;"></div>
 
         <div class="checkboxInput">
-            <input type="checkbox" id="Checkbox1" class="checkbox"/>{{$ "ShowSecondATLSeries"}}
+            <input type="checkbox" id="showTSSPerDay" class="checkbox chartSeriesOption"{{#if showTSSPerDay }} checked{{/if}}/>{{$ "ShowTSS"}}
         </div>
         <div class="checkboxInput">
-            <input type="checkbox" id="Checkbox2" class="checkbox"/>{{$ "ShowTSS"}}
+            <input type="checkbox" id="showIntensityFactorPerDay" class="checkbox chartSeriesOption"{{#if showIntensityFactorPerDay }} checked{{/if}}/>{{$ "ShowIntensityFactor"}}
         </div>
         <div class="checkboxInput">
-            <input type="checkbox" id="Checkbox3" class="checkbox"/>{{$ "ShowIntensityFactor"}}
-        </div>
-        <div class="checkboxInput">
-            <input type="checkbox" id="Checkbox4" class="checkbox"/>{{$ "ShowTSBFill"}}
+            <input type="checkbox" id="showTSBFill" class="checkbox chartSeriesOption"{{#if showTSBFill }} checked{{/if}}/>{{$ "ShowTSBFill"}}
         </div>
 
         <div style="clear:both;"></div>

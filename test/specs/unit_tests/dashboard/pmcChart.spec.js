@@ -424,9 +424,10 @@ function(
                 chartSeries = chart.buildFlotDataSeries(chartPoints, chartColors);
             });
 
-            it("Should contain eight items (four past, four future)", function()
+            // because we need an extra series for IF future fill
+            it("Should contain nine items (four past, five future)", function()
             {
-                expect(chartSeries.length).toBe(8);
+                expect(chartSeries.length).toBe(9);
             });
         });
 

@@ -78,7 +78,7 @@ function(
 
         bindPmcModelEvents: function()
         {
-            _.each(_.keys(this.modelEvents), function(eventName)
+            _.each(_.without(_.keys(this.modelEvents), "change"), function(eventName)
             {
                 this.pmcModel.on(eventName, this[this.modelEvents[eventName]], this);
             }, this);
@@ -86,7 +86,7 @@ function(
 
         unbindPmcModelEvents: function()
         {
-            _.each(_.keys(this.modelEvents), function(eventName)
+            _.each(_.without(_.keys(this.modelEvents), "change"), function(eventName)
             {
                 this.pmcModel.off(eventName, this[this.modelEvents[eventName]], this);
             }, this);
@@ -105,6 +105,7 @@ function(
             this.pmcModel.fetch().done(function()
             {
                 self.setChartTitle();
+                self.render();
             });
         },
 
@@ -157,9 +158,10 @@ function(
 
         renderChart: function()
         {
-            var chartPoints = this.buildFlotPoints(this.pmcModel.get("data"));
+            var TSBMinimum = this.findTSBMinimum(this.pmcModel.get("data"));
+            var chartPoints = this.buildFlotPoints(this.pmcModel.get("data"), TSBMinimum);
             var dataSeries = this.buildFlotDataSeries(chartPoints, chartColors);
-            var flotOptions = this.buildFlotChartOptions();
+            var flotOptions = this.buildFlotChartOptions(TSBMinimum);
 
             var self = this;
 
@@ -170,7 +172,20 @@ function(
             });
         },
 
-        buildFlotPoints: function(modelData)
+        findTSBMinimum: function(modelData)
+        {
+            var min = 0;
+            _.each(modelData, function(item, index)
+            {
+                if(item.hasOwnProperty("tsb") && Number(item.tsb) < min)
+                {
+                    min = item.tsb;
+                }
+            });
+            return min;
+        },
+
+        buildFlotPoints: function(modelData, TSBMinimum)
         {
             var chartPoints = {
                 TSS: [],
@@ -202,11 +217,11 @@ function(
 
                     chartPoints.ATLFuture.push([dayMomentValue, item.atl]);
                     chartPoints.CTLFuture.push([dayMomentValue, item.ctl]);
-                    chartPoints.TSBFuture.push([dayMomentValue, item.tsb]);
+                    chartPoints.TSBFuture.push([dayMomentValue, item.tsb, TSBMinimum]);
 
                     chartPoints.ATL.push([dayMomentValue, item.atl]);
                     chartPoints.CTL.push([dayMomentValue, item.ctl]);
-                    chartPoints.TSB.push([dayMomentValue, item.tsb]);
+                    chartPoints.TSB.push([dayMomentValue, item.tsb, TSBMinimum]);
 
                     // put all future value into the Future points arrays
                 } else if (itemDate > this.today)
@@ -215,7 +230,7 @@ function(
                     chartPoints.TSSFuture.push([dayMomentValue, item.tssPlanned]);
                     chartPoints.ATLFuture.push([dayMomentValue, item.atl]);
                     chartPoints.CTLFuture.push([dayMomentValue, item.ctl]);
-                    chartPoints.TSBFuture.push([dayMomentValue, item.tsb]);
+                    chartPoints.TSBFuture.push([dayMomentValue, item.tsb, TSBMinimum]);
 
                     chartPoints.TSS.push([dayMomentValue, null]);
                     chartPoints.ATL.push([dayMomentValue, null]);
@@ -229,7 +244,7 @@ function(
                     chartPoints.TSS.push([dayMomentValue, item.tssActual]);
                     chartPoints.ATL.push([dayMomentValue, item.atl]);
                     chartPoints.CTL.push([dayMomentValue, item.ctl]);
-                    chartPoints.TSB.push([dayMomentValue, item.tsb]);
+                    chartPoints.TSB.push([dayMomentValue, item.tsb, TSBMinimum]);
 
                     chartPoints.TSSFuture.push([dayMomentValue, null]);
                     chartPoints.ATLFuture.push([dayMomentValue, null]);
@@ -243,16 +258,28 @@ function(
 
         buildFlotDataSeries: function(chartPoints, chartColors)
         {
-            return [
-                this.buildTSSDataSeries(chartPoints.TSS, chartColors),
-                this.buildTSSFutureDataSeries(chartPoints.TSSFuture, chartColors),
-                this.buildATLDataSeries(chartPoints.ATL, chartColors),
-                this.buildATLFutureDataSeries(chartPoints.ATLFuture, chartColors),
-                this.buildCTLDataSeries(chartPoints.CTL, chartColors),
-                this.buildCTLFutureDataSeries(chartPoints.CTLFuture, chartColors),
-                this.buildTSBDataSeries(chartPoints.TSB, chartColors),
-                this.buildTSBFutureDataSeries(chartPoints.TSBFuture, chartColors)
-            ];
+            var series = [];
+
+            series.push(this.buildTSBDataSeries(chartPoints.TSB, chartColors));
+            if (this.shouldShowTSBFill())
+            {
+                series.push(this.buildTSBFutureDataSeriesFill(chartPoints.TSBFuture, chartColors));
+            }
+            series.push(this.buildTSBFutureDataSeries(chartPoints.TSBFuture, chartColors));
+
+            if (this.shouldShowTSS())
+            {
+                series.push(this.buildTSSDataSeries(chartPoints.TSS, chartColors));
+                series.push(this.buildTSSFutureDataSeries(chartPoints.TSSFuture, chartColors));
+            }
+
+            series.push(this.buildATLDataSeries(chartPoints.ATL, chartColors));
+            series.push(this.buildATLFutureDataSeries(chartPoints.ATLFuture, chartColors));
+
+            series.push(this.buildCTLDataSeries(chartPoints.CTL, chartColors));
+            series.push(this.buildCTLFutureDataSeries(chartPoints.CTLFuture, chartColors));
+
+            return series;
         },
 
         buildTSSDataSeries: function(chartPoints, chartColors)
@@ -297,7 +324,7 @@ function(
                 {
                     show: true
                 },
-                yaxis: 2
+                yaxis: this.shouldShowTSS() ? 2 : 1
             };
 
             return dataSeries;
@@ -313,7 +340,7 @@ function(
                 {
                     show: true
                 },
-                yaxis: 2
+                yaxis: this.shouldShowTSS() ? 2 : 1
             };
 
             return dataSeries;
@@ -329,7 +356,7 @@ function(
                 {
                     show: true
                 },
-                yaxis: 2
+                yaxis: this.shouldShowTSS() ? 2 : 1
             };
 
             return dataSeries;
@@ -345,7 +372,7 @@ function(
                 {
                     show: true
                 },
-                yaxis: 2
+                yaxis: this.shouldShowTSS() ? 2 : 1
             };
 
             return dataSeries;
@@ -361,8 +388,13 @@ function(
                 {
                     show: true
                 },
-                yaxis: 3
+                yaxis: this.shouldShowTSS() ? 3 : 2
             };
+
+            if (this.shouldShowTSBFill())
+            {
+                dataSeries.lines.fill = true;
+            }
 
             return dataSeries;
         },
@@ -377,27 +409,44 @@ function(
                 {
                     show: true
                 },
-                yaxis: 3
+                yaxis: this.shouldShowTSS() ? 3 : 2
             };
 
             return dataSeries;
         },
 
-        buildFlotChartOptions: function()
+        buildTSBFutureDataSeriesFill: function(chartPoints, chartColors)
+        {
+            var dataSeries =
+            {
+                data: chartPoints,
+                color: chartColors.pmcColors.TSB,
+                lines:
+                {
+                    show: true,
+                    fill: true
+                },
+                yaxis: this.shouldShowTSS() ? 3 : 2
+            };
+
+            return dataSeries;
+        },
+
+        buildFlotChartOptions: function(TSBMinimum)
         {
             var flotOptions = defaultFlotOptions.getGlobalDefaultOptions(null);
 
+            var tssAxisOptions = {
+                tickDecimals: 0,
+                position: "left",
+                color: "transparent",
+                font: {
+                    color: chartColors.pmcColors.TSS
+                }
+            };
+
             flotOptions.yaxes =
             [
-
-                {
-                    tickDecimals: 0,
-                    position: "left",
-                    color: "transparent",
-                    font: {
-                        color: chartColors.pmcColors.TSS
-                    }
-                },
                 {
                     tickDecimals: 0,
                     position: "left",
@@ -407,11 +456,17 @@ function(
                     tickDecimals: 0,
                     position: "right",
                     color: "transparent",
+                    min: TSBMinimum,
                     font: {
                         color: chartColors.pmcColors.TSB
                     }
                 }
             ];
+
+            if (this.shouldShowTSS())
+            {
+                flotOptions.yaxes.unshift(tssAxisOptions);
+            }
 
 
             flotOptions.xaxes = [
@@ -456,7 +511,11 @@ function(
                 tss = item.tssPlanned;
             }
 
-            tips.push({ label: "TSS", value: TP.utils.conversion.formatTSS(tss, { defaultValue: "--" }) });
+            if (this.shouldShowTSS())
+            {
+                tips.push({ label: "TSS", value: TP.utils.conversion.formatTSS(tss, { defaultValue: "--" }) });
+            }
+
             tips.push({ label: "Acute Training Load (ATL)", value: TP.utils.conversion.formatTSS(atl) });
             tips.push({ label: "Chronic Training Load (CTL)", value: TP.utils.conversion.formatTSS(ctl) });
             tips.push({ label: "Training Stress Balance (TSB)", value: TP.utils.conversion.formatTSB(tsb) });
@@ -486,6 +545,9 @@ function(
             this.pmcSettings.render().top(offset.top - 10).left(offset.left + 20);
             this.pmcSettings.on("close", this.onPmcSettingsClose, this);
 
+            theMarsApp.user.on("change:settings.dashboard.pmc.showTSSPerDay", this.renderChart, this);
+            theMarsApp.user.on("change:settings.dashboard.pmc.showIntensityFactorPerDay", this.renderChart, this);
+            theMarsApp.user.on("change:settings.dashboard.pmc.showTSBFill", this.renderChart, this);
         },
 
         keepSettingsButtonVisible: function()
@@ -502,6 +564,28 @@ function(
         {
             this.allowSettingsButtonToHide();
             this.fetchData();
+
+            theMarsApp.user.off("change:settings.dashboard.pmc.showTSSPerDay", this.renderChart, this);
+            theMarsApp.user.off("change:settings.dashboard.pmc.showIntensityFactorPerDay", this.renderChart, this);
+            theMarsApp.user.off("change:settings.dashboard.pmc.showTSBFill", this.renderChart, this);
+        },
+
+        shouldShowTSS: function()
+        {
+            if (!theMarsApp.user.has("settings.dashboard.pmc"))
+            {
+                return true;
+            }
+            return theMarsApp.user.get("settings.dashboard.pmc.showTSSPerDay") ? true : false;
+        },
+
+        shouldShowTSBFill: function()
+        {
+            if (!theMarsApp.user.has("settings.dashboard.pmc"))
+            {
+                return true;
+            }
+            return theMarsApp.user.get("settings.dashboard.pmc.showTSBFill") ? true : false;
         }
 
     });

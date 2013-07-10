@@ -45,7 +45,8 @@ function(
             "change #dateOptions": "onDateOptionsChanged",
             "change #startDate": "onDateOptionsChanged",
             "change #endDate": "onDateOptionsChanged",
-            "change input[type=number]": "onNumberOptionsChanged"
+            "change input[type=number]": "onNumberOptionsChanged",
+            "click input[type=checkbox].chartSeriesOption": "onChartSeriesOptionChanged"
         },
 
         onRender: function()
@@ -197,6 +198,17 @@ function(
             this.focusedInputId = inputId;
             var value = $(e.target).val();
             this.model.set("settings.dashboard.pmc." + inputId, value);
+        },
+
+        onChartSeriesOptionChanged: function(e)
+        {
+            var checkbox = $(e.target);
+
+            // the current settings are strings, but somehow checkbox.data gives us an int
+            var optionId = checkbox.attr("id");
+            var checked = checkbox.is(":checked");
+           
+            this.model.set("settings.dashboard.pmc." + optionId, checked);
         }
 
     });
