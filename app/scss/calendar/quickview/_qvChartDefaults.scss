@@ -83,7 +83,7 @@
 
         .zoneRange
         {
-            @include labels($fontFamilyRegular, 0.8em, $TPGrey3, normal);
+            @include labels($fontFamilyRegular, $fontSizeSmaller, $TPGrey3, normal);
         }
 
         .zoneName
