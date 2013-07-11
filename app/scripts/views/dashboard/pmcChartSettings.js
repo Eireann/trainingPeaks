@@ -34,9 +34,11 @@ function(
             template: pmcChartSettingsTemplate
         },
 
-        initialize: function()
+        initialize: function(options)
         {
             this.model.on("change:settings.dashboard.pmc.*", this.render, this);
+
+            this.$el.addClass(options.direction);
         },
 
         events:

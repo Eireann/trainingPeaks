@@ -334,5 +334,8 @@
     "ShowTSS": "Show TSS",
     "ShowIntensityFactor": "Show Intensity Factor",
     "ShowTSBFill": "Show TSB Fill",
-    "MissingTSSData": "Missing Tss Data"
+    "MissingTSSData": "Missing Tss Data",
+    "SelectParameters": "Select Parameters",
+    "RecaclulateTssData": "Recaclulate TSS Data",
+    "LearnMoreAboutThePMC": "Learn more about the Performance Management Chart"
 }

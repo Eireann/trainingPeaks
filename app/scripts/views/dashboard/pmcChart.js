@@ -645,11 +645,15 @@ function(
             e.preventDefault();
 
             this.keepSettingsButtonVisible();
+
             var offset = $(e.currentTarget).offset();
-            this.pmcSettings = new pmcChartSettings({ model: theMarsApp.user });
-            this.pmcSettings.render().top(offset.top - 10).left(offset.left + 20);
+            var direction = "left";
+            var icon = this.$(".settings");
+            this.pmcSettings = new pmcChartSettings({ model: theMarsApp.user, direction: direction });
+            this.pmcSettings.render().top(offset.top - 15).left(offset.left - 365);
             this.pmcSettings.on("change:settings", this.onPmcSettingsChange, this);
             this.pmcSettings.on("close", this.allowSettingsButtonToHide, this);
+
 
             theMarsApp.user.on("change:settings.dashboard.pmc.showTSSPerDay", this.renderChart, this);
             theMarsApp.user.on("change:settings.dashboard.pmc.showIntensityFactorPerDay", this.renderChart, this);
