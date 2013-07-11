@@ -1,9 +1,10 @@
 ﻿define(
 [
     "moment",
+    "underscore",
     "TP"
 ],
-function (moment, TP)
+function(moment, _, TP)
 {
     return TP.Model.extend(
     {
@@ -17,24 +18,26 @@ function (moment, TP)
         initialize: function (attributes, options)
         {
             this.setDefaultParameters();
-            this.setParametersFromOptions(options);
+            this.setParameters(options);
         },
 
         setDefaultParameters: function()
         {
-            this.workoutTypes = [0];
+            this.workoutTypeIds = [0];
             this.ctlConstant = 42;
-            this.ctlStart = 0;
+            this.ctlStartValue = 0;
             this.atlConstant = 7;
-            this.atlStart = 0;
+            this.atlStartValue = 0;
+            this.startDate = moment().subtract('days', 90);
+            this.endDate = moment().add('days', 21);
         },
 
-        setParametersFromOptions: function(options)
+        setParameters: function(options)
         {
             if (!options)
                 return;
 
-            var parameterNames = ["workoutTypes", "ctlConstant", "ctlStart", "atlConstant", "atlStart", "startDate", "endDate"];
+            var parameterNames = ["workoutTypeIds", "ctlConstant", "ctlStartValue", "atlConstant", "atlStartValue", "startDate", "endDate"];
 
             _.each(parameterNames, function(name)
             {
@@ -43,6 +46,7 @@ function (moment, TP)
                     this[name] = options[name];
                 }
             }, this);
+
         },
 
         urlRoot: function ()
@@ -58,10 +62,23 @@ function (moment, TP)
             if (!(this.startDate && this.endDate))
                 throw "startDate & endDate needed for pmc";
 
-            var start = this.startDate.format(TP.utils.datetime.shortDateFormat);
+            var start = moment(this.startDate).format(TP.utils.datetime.shortDateFormat);
             var end = moment(this.endDate).format(TP.utils.datetime.shortDateFormat);
 
-            var urlExtension = "/" + start + "/" + end + "/" + this.workoutTypes + "/" + this.ctlConstant + "/" + this.ctlStart + "/" + this.atlConstant + "/" + this.atlStart;
+            // 0 == all
+            var workoutTypes = "0";
+            
+            if (this.workoutTypeIds.length !== _.keys(TP.utils.workout.types.typesById).length && this.workoutTypeIds.length !== 0)
+            {
+                workoutTypes = this.workoutTypeIds.join(",");
+            }
+
+            if (!workoutTypes)
+            {
+                workoutTypes = "0";
+            }
+
+            var urlExtension = "/" + start + "/" + end + "/" + workoutTypes + "/" + this.ctlConstant + "/" + this.ctlStartValue + "/" + this.atlConstant + "/" + this.atlStartValue;
 
             return this.urlRoot() + urlExtension;
         },

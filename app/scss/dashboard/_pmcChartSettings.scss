@@ -1,0 +1,204 @@
+﻿@import "globalCSS/tpstylesheet";
+
+
+.pmcChartSettings
+{
+    width: 355px;
+    top: 10px;
+
+    div
+    {
+        font-family: $fontFamilyRegular;
+        font-size: 12px;
+        color: $TPGrey3;
+    }
+
+    hr
+    {
+        margin: 10px 0;
+        color: $TPGrey3;
+    }
+
+    .hoverBoxContents
+    {
+        height: 500px;
+
+    }
+
+    .workoutTypes
+    {
+        padding-top: 5px;
+    }
+
+    .workoutType
+    {
+        float: left;
+        width: 33%;
+    }
+
+    .title
+    {
+        font-family: $fontFamilyHeavy;
+        font-size: 13px;
+        color: $TPGrey4;
+        padding: 10px 0;
+    }
+
+    .dateRanges
+    {
+        height: 35px;
+        padding: 10px 0;
+
+        div
+        {
+            padding-top: 6px;
+        }
+
+        .fromTo
+        {
+            float: left;
+            padding: 5px 15px 0 0 ;
+            height: 25px;
+        }
+
+        .to
+        {
+            padding-left: 15px;
+        }
+    }
+
+    
+
+    .datePicker
+    {
+        width: 75px;
+        height: 20px;
+    }
+
+    .date
+    {
+        width: 75px;
+        float: left;
+        padding-top: 3px;
+    }
+
+    input[type=number] 
+    {
+        border: none;
+        outline: none;
+        padding: 0 0 0 5px;
+        margin: 0px;
+        width: 50px;
+        height: 20px;
+    }
+
+    input[type=text]
+    {
+        width: 75px;
+        float: left;
+    }
+
+    .ui-spinner
+    {
+        border-radius: 0px;
+        margin-left: 20px;
+    }
+
+    .numberInput
+    {
+        float: left;
+        width: 50%;
+        padding-bottom: 10px
+    }
+
+    .checkboxInput
+    {
+        float: left;
+        width: 50%;
+        
+        label
+        {
+            margin-left: 10px;
+        }
+    }
+
+    .missingData
+    {
+        padding-bottom: 15px;
+
+        button
+        {
+            margin-left: 15px;
+            width: 213px;
+        }
+    }
+
+    &.left
+    {
+        .arrow
+        {
+            position:absolute;
+            top: 58px;
+            right: -8px;
+        }
+    }
+
+    &.right
+    {
+        .arrow
+        {
+            position:absolute;
+            top: 58px;
+            left: -37px;
+        }
+    }
+
+    .hoverBox
+    {
+        .mainShadow
+        {
+            bottom: 0px;
+        }
+    }
+
+    .selectboxit-container span 
+    {
+        height: 22px;
+        font-size: 13px;
+    }
+
+    .selectboxit
+    {
+        width: 100% important;
+    }
+
+    .selectboxit-container .selectboxit 
+    {
+        width: 100% !important; /* Width of the dropdown button */
+        height: 22px;
+    }
+
+    .selectboxit-btn 
+    {
+        background: url(../../assets/images/QVImages/sprite-selectboxit.png) right 0;
+    }
+
+    .selectboxit-btn.selectboxit-enabled:hover 
+    {
+        background: url(../../assets/images/QVImages/sprite-selectboxit.png) right -22px;
+    }
+
+    .selectboxit-option
+    {
+        font-size: 12px;
+    }
+
+}
+
+
+
+
+
+
+
+

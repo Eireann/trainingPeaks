@@ -35,6 +35,32 @@ function (_, moment, TP)
             "sampleRate": null,
             "totalStats": null,
             "lapsStats": null
+        },
+
+        hasSensorData: function()
+        {
+            return this.hasLaps() || this.hasSamples();
+        },
+
+        hasSamples: function()
+        {
+            return this.has("flatSamples.samples") && this.get("flatSamples.samples").length > 0;
+        },
+
+        hasLaps: function()
+        {
+            return this.has("lapsStats") && this.get("lapsStats").length > 1;
+        },
+
+        watchForSensorData: function()
+        {
+            this.on("change:flatSamples.*", this.triggerSensorDataChange, this);
+            this.on("change:lapsStats.*", this.triggerSensorDataChange, this);
+        },
+
+        triggerSensorDataChange: function()
+        {
+            this.trigger("changeSensorData", this);
         }
     });
 

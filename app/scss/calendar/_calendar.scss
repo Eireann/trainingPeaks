@@ -351,3 +351,10 @@ body.clipboardFull
         border-color:  $TPGrey11;
     }
 }
+
+#athleteCalendarSelectSelectBoxItOptions
+{
+    @include nice-scrollbar;
+    max-height: 400px;
+    overflow-y: auto;
+}

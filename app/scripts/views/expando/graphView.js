@@ -76,6 +76,7 @@ function(
 
                 this.watchForModelChanges();
                 this.watchForControllerEvents();
+                this.watchForControllerResize();
 
                 setImmediate(function()
                 {
@@ -399,7 +400,46 @@ function(
 
         getDesiredPlotHeight: function()
         {
-            return this.dataParser.hasLatLongData ? 365 : 565;
+            if (this.graphHeight)
+            {
+                return this.graphHeight - 50;
+            } else
+            {
+                return this.dataParser.hasLatLongData ? 365 : 565;
+            }
+        },
+
+        watchForControllerResize: function ()
+        {
+            this.on("controller:resize", this.setViewSize, this);
+            this.on("close", function ()
+            {
+                this.off("controller:resize", this.setViewSize, this);
+            }, this);
+        },
+
+        setViewSize: function (containerHeight, containerWidth)
+        {
+            var bottomMargin = 10;
+            var heightPercent = this.dataParser.hasLatLongData ? 0.45 : 0.8;
+            var graphHeight = Math.floor((containerHeight - bottomMargin) * heightPercent);
+
+            if (graphHeight < 225)
+            {
+                graphHeight = 225;
+            }
+
+            this.graphHeight = graphHeight;
+            this.$el.closest("#expandoGraphRegion").height(graphHeight);
+
+            var topPadding = 15;
+            var toolbarHeight = 35;
+
+            this.$el.height(graphHeight - topPadding);
+            if (this.$plot)
+            {
+                this.$plot.height(graphHeight - topPadding - toolbarHeight);
+            }
         }
 
     });

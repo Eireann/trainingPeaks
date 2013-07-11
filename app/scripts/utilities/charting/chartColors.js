@@ -21,8 +21,10 @@ function()
             {
                 TSS: "#e61101",
                 TSB: "#FFA500",
+                TSBFill: "rgba(255,165,0, 0.4)",
                 ATL: "#E38AAE",
-                CTL: "#1b82ce"
+                CTL: "#1b82ce",
+                IF: "#6e96b9"
             },
 
         gradients:

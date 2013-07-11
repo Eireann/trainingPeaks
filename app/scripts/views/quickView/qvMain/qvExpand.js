@@ -13,6 +13,9 @@ function (_, TP, ExpandoController)
             _.extend(this.events, this.expandEvents);
             this.on("close", this.closeExpandedView, this);
 
+            this.watchForSensorData();
+
+
             //TODO Needs some refactor: should be initialized somewhere else?
             this.expandoRegion = new TP.Region(
             {
@@ -21,12 +24,21 @@ function (_, TP, ExpandoController)
 
         },
 
+        watchForSensorData: function()
+        {
+            var detailData = this.model.get("detailData");
+            detailData.watchForSensorData();
+            detailData.on("changeSensorData", this.updateExpandButton, this);
+            this.on("render", this.updateExpandButton, this);
+        },
+
         closeExpandedView: function()
         {
             if (this.expandoController)
                 this.expandoController.close();
 
             this.expandoRegion.close();
+            this.model.get("detailData").off("changeSensorData", this.updateExpandButton, this);
         },
 
         expandEvents:
@@ -46,6 +58,11 @@ function (_, TP, ExpandoController)
 
         expandClicked: function ()
         {
+            if (!this.model.get("detailData").hasSensorData())
+            {
+                return;
+            }
+
             this.expanded = true;
             this.renderExpandedView();
 
@@ -173,6 +190,17 @@ function (_, TP, ExpandoController)
                 this.$el.css("top", top + "px");
             }
 
+        },
+
+        updateExpandButton: function()
+        {
+            if(this.model.get("detailData").hasSensorData())
+            {
+                this.$("#quickViewExpandDiv").removeClass("disabled");
+            } else
+            {
+                this.$("#quickViewExpandDiv").addClass("disabled");
+            }
         }
     };
     return workoutQVExpand;
