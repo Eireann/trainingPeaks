@@ -650,7 +650,7 @@ function(
             var direction = "left";
             var icon = this.$(".settings");
             this.pmcSettings = new pmcChartSettings({ model: theMarsApp.user, direction: direction });
-            this.pmcSettings.render().top(offset.top - 48).left(offset.left - 367);
+            this.pmcSettings.render().top(offset.top - 22).left(offset.left - 367);
             this.pmcSettings.on("change:settings", this.onPmcSettingsChange, this);
             this.pmcSettings.on("close", this.allowSettingsButtonToHide, this);
 
