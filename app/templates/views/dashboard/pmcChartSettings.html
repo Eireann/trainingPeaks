@@ -59,13 +59,15 @@
         <div style="clear:both;"></div>
        <hr />
 
+        {{#comment}}
         <div class="missingData">
             {{$ "MissingTSSData"}}?
             <button>{{$ "RecalculateTssData"}}</button>
         </div>
+        {{/comment}}
 
         <div>
-            <a>{{$ "LearnMoreAboutThePMC"}}</a>
+            <a class="helpText" href="http://support.trainingpeaks.com/athlete-edition/training-stress-scores/performance-management-chart.aspx" target="_blank">{{$ "LearnMoreAboutThePMC"}}</a>
         </div>
     </div>
 {{/hoverBox}}
