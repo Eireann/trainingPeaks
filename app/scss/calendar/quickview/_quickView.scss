@@ -153,8 +153,7 @@ input[disabled='disabled']
 
         .hoverBoxContents
         {
-            padding: 10px;
-
+        
             .details
             {
                 min-width: 120px;
@@ -162,8 +161,6 @@ input[disabled='disabled']
 
             label
             {
-                margin-bottom: 3px;
-
                 &.selected
                 {
                     font-family: $fontFamilyHeavy;
