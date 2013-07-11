@@ -218,7 +218,7 @@ $mainTtabSpriteRetinaURL: url(../../assets/images/sprite-icons-main-tabs@2x.png)
             
             label {
                 display: inline-block;
-                margin: 4px 15px 0 2px;
+                margin: 2px 15px 0 2px;
             }
 
             @include headerButtons(0px, 38px, $fontSizeMedium);

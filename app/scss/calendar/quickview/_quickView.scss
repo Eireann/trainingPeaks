@@ -19,12 +19,14 @@
     {
         @include box-shadow(none);
         color: $TPGrey3;
-        
+        line-height:$fontSizeXLarge;
         &:focus 
         {
             background-color: #FFFFFF;
         }
+
     }
+
 
     input
     {
@@ -300,6 +302,7 @@ input[disabled='disabled']
         padding: 3px;
         border: 1px solid transparent;
         font-size: $fontSizeSmaller;
+        line-height: $fontSizeXLarge;
         color: $TPGrey3;
 
         &.hover

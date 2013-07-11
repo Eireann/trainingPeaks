@@ -79,7 +79,7 @@
 
 	}
 	
-	@include labels($fontFamilyRegular, 0.82em, $TPGrey3, normal);
+	@include labels($fontFamilyRegular, $fontSizeSmaller, $TPGrey3, normal);
 
 	.workoutStatsUnitLabel
 	{
@@ -97,9 +97,9 @@
 {
 	padding-left: 105px;
 	padding-top: 14px;
-    padding-bottom: 18px;
+    // padding-bottom: 18px;
 	width: 100%;
-	height: 15px;
+	// height: 15px;
 	background: transparent;
 
 	@include labels($fontFamilyHeavy, $fontSizeSmall, $TPGrey3, normal);
@@ -108,6 +108,7 @@
 		float: left;
 		width: 80px;
         text-align: center;
+        margin-bottom:5px;
 
         &.ghosted
         {
@@ -126,9 +127,10 @@
 {
 	padding-left: 105px;
 	width: 100%;
-	height: 27px;
+	// height: 27px;
 	background: transparent;
     padding-top: 10px;
+
 
 	@include labels($fontFamilyHeavy, $fontSizeSmall, $TPGrey3, normal);
 	label
@@ -136,11 +138,28 @@
 		float: left;
 		width: 56px;
         text-align: center;
-            
+        margin-bottom:5px;
+        margin-top:2px;
         &.ghosted
         {
             color: $TPGrey7;
         }
 	}
 }
+
+
+#commentsContainer {
+	.comments {
+		width:275px;
+		float:left;
+		padding-top:14px;
+		.header {
+            font-family: $fontFamilyHeavy;
+            font-size: $fontSizeSmall;
+            margin-bottom: 5px;
+            color: $TPGrey3;
+        }
+	}
+}
+
 
