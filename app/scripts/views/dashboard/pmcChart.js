@@ -647,10 +647,23 @@ function(
             this.keepSettingsButtonVisible();
 
             var offset = $(e.currentTarget).offset();
-            var direction = "left";
+            var windowWidth = $(window).width();
+
+            var direction = (windowWidth - offset.left) > 450 ? "right" : "left";
             var icon = this.$(".settings");
             this.pmcSettings = new pmcChartSettings({ model: theMarsApp.user, direction: direction });
-            this.pmcSettings.render().top(offset.top - 48).left(offset.left - 367);
+
+            this.pmcSettings.render()
+            this.pmcSettings.render().top(offset.top - 48);
+            this.pmcSettings.setDirection(direction);
+            if (direction === "left")
+            {
+                this.pmcSettings.right(offset.left - 15);
+            } else
+            {
+                this.pmcSettings.left(offset.left + $(e.currentTarget).width() + 15);
+            }
+
             this.pmcSettings.on("change:settings", this.onPmcSettingsChange, this);
             this.pmcSettings.on("close", this.allowSettingsButtonToHide, this);
 

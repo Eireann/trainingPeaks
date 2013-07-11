@@ -85,9 +85,9 @@ function(
         onClose: function()
         {
             this.model.off("change:settings.dashboard.pmc.*", this.render, this);
-            this.saveSettings();
             if(this.hasChangedSettings)
             {
+                this.saveSettings();
                 this.trigger("change:settings");
             }
         },
@@ -103,6 +103,8 @@ function(
             pmcSettings = pmcChartUtils.buildPmcParameters(pmcSettings);
 
             var allSelected = true;
+            var forceAllSelected = _.contains(pmcSettings.workoutTypeIds, 0) || _.contains(pmcSettings.workoutTypeIds, "0") ? true : false;
+
             pmcSettings.workoutTypes = [];
             _.each(TP.utils.workout.types.typesById, function(typeName, typeId)
             {
@@ -110,7 +112,7 @@ function(
                 var workoutType = {
                     id: typeId,
                     name: typeName,
-                    selected: _.contains(pmcSettings.workoutTypeIds, typeId) ? true : false
+                    selected: forceAllSelected || _.contains(pmcSettings.workoutTypeIds, typeId) ? true : false
                 };
                 pmcSettings.workoutTypes.push(workoutType);
 
@@ -156,11 +158,7 @@ function(
             {
                 if(checked)
                 {
-                    _.each(TP.utils.workout.types.typesById, function(typeName, typeId)
-                    {
-
-                         workoutTypeIds.push(typeId);
-                     });
+                    workoutTypeIds.push("0");
                 }
             } else
             {
@@ -174,6 +172,11 @@ function(
                 {
                     workoutTypeIds = _.without(workoutTypeIds, workoutTypeId);
                 }
+            }
+
+            if (workoutTypeIds.length === TP.utils.workout.types.typesById.length)
+            {
+                workoutTypeIds = ["0"];
             }
 
             this.model.set("settings.dashboard.pmc.workoutTypeIds", workoutTypeIds);
@@ -216,6 +219,11 @@ function(
             var checked = checkbox.is(":checked");
            
             this.model.set("settings.dashboard.pmc." + optionId, checked);
+        },
+
+        setDirection: function(direction)
+        {
+            this.$el.removeClass("left").removeClass("right").addClass(direction);
         }
 
     });
