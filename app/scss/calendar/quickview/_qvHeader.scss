@@ -308,6 +308,11 @@
         .expandButton {
             margin-top: 10px;
             background: url(../../assets/images/QVImages/sprite-buttons-expando.png) no-repeat 0 -35px;
+
+            &.disabled
+            {
+                opacity: 0.5;
+            }
 		
             &:not(.disabled)
             {	
