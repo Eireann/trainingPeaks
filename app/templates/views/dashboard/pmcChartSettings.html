@@ -40,9 +40,9 @@
 
         <div class="title">{{$ "SelectParameters"}}</div>
 
-        <div class="numberInput">{{$ "CTLConstant"}}<input type="number" id="Number1" min="7" max="200" value="{{ ctlConstant }}"></div>
+        <div class="numberInput">{{$ "CTLConstant"}}<input type="number" id="ctlConstant" min="7" max="200" value="{{ ctlConstant }}"></div>
         <div class="numberInput">{{$ "CTLStart"}}<input type="number" id="ctlStartValue" min="0" max="500" value="{{ ctlStartValue }}"></div>
-        <div class="numberInput">{{$ "ATLConstant"}}<input type="number" id="Number2" min="1" max="40" value="{{ atlConstant }}"></div>
+        <div class="numberInput">{{$ "ATLConstant"}}<input type="number" id="atlConstant" min="1" max="40" value="{{ atlConstant }}"></div>
         <div class="numberInput">{{$ "ATLStart"}}<input type="number" id="atlStartValue" min="0" max="500" value="{{ atlStartValue }}"></div>
         <div style="clear:both;"></div>
 
@@ -59,10 +59,15 @@
         <div style="clear:both;"></div>
        <hr />
 
+        {{#comment}}
         <div class="missingData">
             {{$ "MissingTSSData"}}?
             <button>{{$ "RecalculateTssData"}}</button>
-            <a>{{$ "LearnMoreAboutThePMC"}}</a>
+        </div>
+        {{/comment}}
+
+        <div>
+            <a class="helpText" href="http://support.trainingpeaks.com/athlete-edition/training-stress-scores/performance-management-chart.aspx" target="_blank">{{$ "LearnMoreAboutThePMC"}}</a>
         </div>
     </div>
 {{/hoverBox}}

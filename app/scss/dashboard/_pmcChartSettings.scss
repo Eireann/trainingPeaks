@@ -9,7 +9,7 @@
     div
     {
         font-family: $fontFamilyRegular;
-        //font-size: 12px;
+        
     }
 
     hr
@@ -21,7 +21,6 @@
     .hoverBoxContents
     {
         height: 500px;
-
     }
 
     .details
@@ -153,10 +152,32 @@
         }
     }
 
-    .arrow
+    &.left
     {
-        margin-left: calc(100% - 10px);
-        top: -470px;
+        .arrow
+        {
+            position:absolute;
+            top: 58px;
+            right: -8px;
+        }
+    }
+
+    &.right
+    {
+        .arrow
+        {
+            position:absolute;
+            top: 58px;
+            left: -37px;
+        }
+    }
+
+    .hoverBox
+    {
+        .mainShadow
+        {
+            bottom: 0px;
+        }
     }
 
     
