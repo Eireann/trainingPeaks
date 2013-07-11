@@ -30,6 +30,16 @@ function(TP, expandoLayoutTemplate)
         hideMap: function()
         {
             $("#expandoLeftColumn").addClass("mapHidden");
+        },
+
+        showGraph: function()
+        {
+            $("#expandoLeftColumn").removeClass("graphHidden");
+        },
+
+        hideGraph: function()
+        {
+            $("#expandoLeftColumn").addClass("graphHidden");
         }
 
     });

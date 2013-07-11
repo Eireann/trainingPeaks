@@ -306,15 +306,26 @@ function (
 
         watchForControllerResize: function ()
         {
-            this.on("controller:resize", this.setViewWidth, this);
+            this.on("controller:resize", this.setViewSize, this);
             this.on("close", function ()
             {
-                this.off("controller:resize", this.setViewWidth, this);
+                this.off("controller:resize", this.setViewSize, this);
             }, this);
         },
 
-        setViewWidth: function ()
+        setViewSize: function (containerHeight, containerWidth)
         {
+            var bottomMargin = 10;
+            var mapHeight = Math.floor((containerHeight - bottomMargin) * 0.55);
+
+            if (mapHeight < 275)
+            {
+                mapHeight = 275;
+            }
+
+            this.$el.closest("#expandoMapRegion").height(mapHeight);
+            this.$el.height(mapHeight);
+            this.$("#expandoMap").height(mapHeight);
             if (this.map)
             {
                 this.map.invalidateSize();

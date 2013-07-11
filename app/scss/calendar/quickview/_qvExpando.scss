@@ -131,6 +131,14 @@
     @include
     nice-scrollbar;
 
+    &.graphHidden
+    {
+        #expandoGraphRegion
+        {
+            display: none;
+        }
+    }
+
     &.mapHidden
     {
         #expandoMapRegion

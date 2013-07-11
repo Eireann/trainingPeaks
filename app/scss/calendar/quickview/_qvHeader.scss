@@ -260,15 +260,27 @@
 			label {
 				color: $TPGrey10;
 			}
-			
-            &:hover {
-                border-color: #8d8d8d;
-    	        color:#303030;
-                label {
+		
+            &:not(.disabled)
+            {	
+                &:hover {
+                    border-color: #8d8d8d;
                     color:#303030;
-					cursor:pointer;
+                    label {
+                        color:#303030;
+                        cursor:pointer;
+                    }
+                }  
+
+                &:active
+                {
+                    color:$white;
+                    label {
+                        color:$white;
+                        cursor:pointer;
+                    }
                 }
-            }  
+            }
         }
 
         .uploadButton {
@@ -294,21 +306,30 @@
         }
 
         .expandButton {
-            cursor: pointer;
             margin-top: 10px;
             background: url(../../assets/images/QVImages/sprite-buttons-expando.png) no-repeat 0 -35px;
-			
-			&:hover {
-			    background: url(../../assets/images/QVImages/sprite-buttons-expando.png) no-repeat -86px -35px;
-	        }
-            
-			&:active {
-                background: url(../../assets/images/QVImages/sprite-buttons-expando.png) no-repeat -172px -35px;
 
-                label {
-                    color: $white;
-                    opacity: 0.85;
-                    cursor: pointer;
+            &.disabled
+            {
+                opacity: 0.5;
+            }
+		
+            &:not(.disabled)
+            {	
+
+                cursor: pointer;
+                &:hover {
+                    background: url(../../assets/images/QVImages/sprite-buttons-expando.png) no-repeat -86px -35px;
+                }
+                
+                &:active {
+                    background: url(../../assets/images/QVImages/sprite-buttons-expando.png) no-repeat -172px -35px;
+
+                    label {
+                        color: $white;
+                        opacity: 0.85;
+                        cursor: pointer;
+                    }
                 }
             }
         }

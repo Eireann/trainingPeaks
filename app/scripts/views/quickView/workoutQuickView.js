@@ -100,7 +100,7 @@ function(
                     if (!self.model.get("workoutId"))
                         self.prefetchConfig.detailsPromise.resolve();
 
-                }, 800);
+                }, 500);
 
                 this.prefetchConfig.workoutDetailDataFetchTimeout = setTimeout(function()
                 {
@@ -110,7 +110,7 @@ function(
                     if (!self.model.get("workoutId"))
                         self.prefetchConfig.detailDataPromise.resolve();
 
-                }, 2000);
+                }, 800);
 
                 this.on("close", this.stopWorkoutDetailsFetch, this);
             }
