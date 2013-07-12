@@ -24,7 +24,6 @@ function(
 
         events:
         {
-            "mouseenter": "onMouseEnter",
             "mouseleave": "onMouseLeave",
             "click .summarySettings": "summarySettingsClicked",
 
@@ -178,41 +177,24 @@ function(
             { silent: true });
         },
 
-        onMouseEnter: function (e)
-        {
-            this.showSettingsButton(e);
-        },
-
         onMouseLeave: function (e)
         {
             var toElement = document.elementFromPoint(e.pageX, e.pageY);
             if (e.toElement === this.el)
                 return;
 
-            this.removeSettingsButton(e);
 
             this.weekSummaryBarGraphLeave(e);
         },
 
-        showSettingsButton: function ()
+        keepSettingsButtonVisible: function()
         {
-            this.$(".summarySettings").css('display', "block");
+            this.$(".summarySettings").addClass("menuOpen");
         },
 
-        removeSettingsButton: function (e)
+        allowSettingsButtonToHide: function (e)
         {
-
-            if (!e)
-            {
-                this.$(".summarySettings").css('display', "none");
-                return;
-            }
-
-            var toElement = $(document.elementFromPoint(e.pageX, e.pageY));
-            if (!toElement.is(".summarySettings") && !toElement.is("#summarySettingsDiv") && !toElement.is(".hoverBox") && !toElement.is(".modal") && !toElement.is(".modalOverlay"))
-            {
-                this.$(".summarySettings").css('display', "none");
-            }
+            this.$(".summarySettings").removeClass("menuOpen");
         },
 
         summarySettingsClicked: function (e)
@@ -221,13 +203,15 @@ function(
 
             var offset = $(e.currentTarget).offset();
 
+            this.keepSettingsButtonVisible(e);
+
             this.summarySettings = new WeekSummarySettings({ model: this.model });
             this.summarySettings.render().center(offset.left - 7).bottom(offset.top + 15);
             this.summarySettings.on("close", this.onSettingsClosed, this);
 
             this.summarySettings.once("beforeShift", function()
             {
-                this.removeSettingsButton(e);
+                this.allowSettingsButtonToHide(e);
                 this.summarySettings.off("close", this.onSettingsClosed, this);
             }, this);
 
@@ -238,7 +222,7 @@ function(
 
         onSettingsClosed: function(e)
         {
-            this.removeSettingsButton(e);
+            this.allowSettingsButtonToHide(e);
             this.model.collection.trigger("week:unselect", this.model.collection, e);
             //this.$el.closest(".week").find(".weekSelected").css("display", "none");
             //this.model.trigger("weeksummary:settings:close", this.model.collection);

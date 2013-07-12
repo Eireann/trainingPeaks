@@ -65,7 +65,7 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySe
             "mouseleave .dayHeader": "onDayHeaderMouseLeave",
 
             "click .addWorkout": "onAddWorkoutClicked",
-            "click": "onDayClicked",
+            "mouseup": "onDayClicked",
             "mousedown .daySettings": "daySettingsClicked",
             "click .daySelected": "onDayUnClicked",
             "touchstart": "onDayTouched"
@@ -218,7 +218,7 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySe
             }
 
             this.clearSelection(e);
-            if(theMarsApp.isTouchEnabled())
+            if (theMarsApp.isTouchEnabled())
             {
                 this.openNewItemView(e);
             }

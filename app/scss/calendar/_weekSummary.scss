@@ -35,8 +35,21 @@
 			cursor: pointer;
             margin-bottom: 0px;
             box-shadow: none;
-			}
+    	}
+
+        &.menuOpen
+        {
+            display: block;
+        }
 	}
+
+    &:hover
+    {
+        .summarySettings
+        {
+            display:block;
+        }
+    }
 
     .weekSummaryTableContainer
     {
