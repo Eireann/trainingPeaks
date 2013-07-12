@@ -29,13 +29,13 @@ function(
             testHelpers.stopTheApp();
         });
 
-        it("Should not open the new item view for a mouseup on the day if touch is not enabled", function()
+        it("Should not open the new item view for a click on the day if touch is not enabled", function()
         {
             // not visible yet
             expect($body.find(".newItemView").length).toBe(0);
 
-            // mouseup add workout
-            $mainRegion.find("#calendarContainer .day.today").trigger("mouseup");
+            // click add workout
+            $mainRegion.find("#calendarContainer .day.today").trigger("click");
 
             // should still not be visible
             expect($body.find(".newItemView").length).toBe(0);
@@ -55,7 +55,7 @@ function(
             expect($body.is(".touchEnabled")).toBe(true);
         });
 
-        it("Should open the new item view for a mouseup on the day if touch is enabled", function()
+        it("Should open the new item view for a click on the day if touch is enabled", function()
         {
             // enable touch
             theMarsApp.enableTouch();
@@ -63,8 +63,8 @@ function(
             // not visible yet
             expect($body.find(".newItemView").length).toBe(0);
 
-            // mouseup add workout
-            $mainRegion.find("#calendarContainer .day.today").trigger("mouseup");
+            // click add workout
+            $mainRegion.find("#calendarContainer .day.today").trigger("click");
 
             // should be visible
             expect($body.find(".newItemView").length).toBe(1);

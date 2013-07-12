@@ -92,6 +92,7 @@ function(
             {
                 var self = this;
 
+                // made this faster so we can enable the expand button faster
                 this.prefetchConfig.workoutDetailsFetchTimeout = setTimeout(function()
                 {
                     self.prefetchConfig.detailsPromise = self.model.get("details").createPromise();
@@ -100,7 +101,7 @@ function(
                     if (!self.model.get("workoutId"))
                         self.prefetchConfig.detailsPromise.resolve();
 
-                }, 500);
+                }, 100);
 
                 this.prefetchConfig.workoutDetailDataFetchTimeout = setTimeout(function()
                 {
@@ -110,7 +111,7 @@ function(
                     if (!self.model.get("workoutId"))
                         self.prefetchConfig.detailDataPromise.resolve();
 
-                }, 800);
+                }, 400);
 
                 this.on("close", this.stopWorkoutDetailsFetch, this);
             }

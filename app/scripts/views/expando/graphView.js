@@ -421,7 +421,7 @@ function(
         setViewSize: function (containerHeight, containerWidth)
         {
             var bottomMargin = 10;
-            var heightPercent = this.dataParser.hasLatLongData ? 0.45 : 0.8;
+            var heightPercent = this.dataParser.hasLatLongData ? 0.50 : 0.8;
             var graphHeight = Math.floor((containerHeight - bottomMargin) * heightPercent);
 
             if (graphHeight < 225)
