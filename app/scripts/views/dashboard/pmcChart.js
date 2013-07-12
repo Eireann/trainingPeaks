@@ -653,7 +653,7 @@ function(
             var icon = this.$(".settings");
             this.pmcSettings = new pmcChartSettings({ model: theMarsApp.user, direction: direction });
 
-            this.pmcSettings.render().top(offset.top - 48);
+            this.pmcSettings.render().top(offset.top - 25);
             this.pmcSettings.setDirection(direction);
 
             if (direction === "left")
