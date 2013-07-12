@@ -304,9 +304,11 @@ function(_, TP)
 
         onDragItem: function(e, ui)
         {
+            var calendarContainer = this.ui.weeksContainer.closest("#calendarContainer");
+
             var calendarPosition = {
-                top: this.ui.weeksContainer.offset().top,
-                bottom: this.ui.weeksContainer.offset().top + this.ui.weeksContainer.height()
+                top: calendarContainer.offset().top,
+                bottom: calendarContainer.offset().top + calendarContainer.height()
             };
 
             var uiPosition = {
@@ -320,10 +322,10 @@ function(_, TP)
 
         autoScrollIfNecessary: function(calendarPosition, uiPosition)
         {
-            var scrollTriggerHeight = 10;
+
             var topThreshold = calendarPosition.top + 10;
-            var bottomThreshold = calendarPosition.bottom - (scrollTriggerHeight + 5);
-            var stopThreshold = scrollTriggerHeight;
+            var bottomThreshold = calendarPosition.bottom - 10;
+            var stopThreshold = 10;
             
             if (uiPosition.top <= topThreshold)
             {

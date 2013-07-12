@@ -270,12 +270,17 @@ function(_, touchPunch, draggable, droppable, moment, TP, CalendarWorkoutView, C
         makeDayDraggable: function()
         {
             _.bindAll(this, "draggableHelper", "onDragStart", "onDragStop");
-            var $draggableElement = this.$(".dayHeader");
+            this.draggableOptions = { appendTo: theMarsApp.getBodyElement(), helper: this.draggableHelper, start: this.onDragStart, stop: this.onDragStop, containment: "#calendarContainer" };
+            this.makeElementDraggable(this.$(".dayHeader"), this.draggableOptions);
+            this.makeElementDraggable(this.$(".daySelected"), this.draggableOptions);
+        },
+
+        makeElementDraggable: function($draggableElement, draggableOptions)
+        {
             $draggableElement.data("ItemId", this.model.id);
             $draggableElement.data("ItemType", "CalendarDay");
             $draggableElement.data("DropEvent", "dayMoved");
-            this.draggableOptions = { appendTo: theMarsApp.getBodyElement(), helper: this.draggableHelper, start: this.onDragStart, stop: this.onDragStop };
-            $draggableElement.draggable(this.draggableOptions);
+            $draggableElement.draggable(draggableOptions);
         },
 
         draggableHelper: function(e)
