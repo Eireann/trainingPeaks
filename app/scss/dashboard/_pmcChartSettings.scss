@@ -9,8 +9,7 @@
     div
     {
         font-family: $fontFamilyRegular;
-        font-size: 12px;
-        color: $TPGrey3;
+        
     }
 
     hr
@@ -19,29 +18,38 @@
         color: $TPGrey3;
     }
 
-    .hoverBoxContents
+    .LearnMore
     {
-        height: 500px;
-
+        text-align: center;
     }
 
-    .workoutTypes
+    .hoverBoxContents
     {
-        padding-top: 5px;
+        height: 460px;
+    }
+
+    .details
+    {
+        margin: 14px 0 10px 0;
+        color: $TPGrey3;
     }
 
     .workoutType
     {
         float: left;
         width: 33%;
+        font-size: $fontSizeSmall;
+        color: $TPGrey3;
+        height: 23px;
     }
 
     .title
     {
         font-family: $fontFamilyHeavy;
-        font-size: 13px;
-        color: $TPGrey4;
-        padding: 10px 0;
+        font-size: $fontSizeSmall;
+        color: $TPGrey3;
+        line-height: $fontSizeXXLarge;
+        margin-bottom: 5px;
     }
 
     .dateRanges
@@ -57,7 +65,7 @@
         .fromTo
         {
             float: left;
-            padding: 5px 15px 0 0 ;
+            padding: 2px 15px 0 0 ;
             height: 25px;
         }
 
@@ -79,7 +87,8 @@
     {
         width: 75px;
         float: left;
-        padding-top: 3px;
+        font-size: $fontSizeSmall;
+        color: $TPGrey3;
     }
 
     input[type=number] 
@@ -89,12 +98,13 @@
         padding: 0 0 0 5px;
         margin: 0px;
         width: 50px;
-        height: 20px;
+        height: 22px;
     }
 
     input[type=text]
     {
-        width: 75px;
+        width: 90px;
+        height: 22px;
         float: left;
     }
 
@@ -108,27 +118,30 @@
     {
         float: left;
         width: 50%;
-        padding-bottom: 10px
+        padding-bottom: 10px;
+        font-size: $fontSizeSmall;
+        color: $TPGrey3;
     }
 
     .checkboxInput
     {
         float: left;
         width: 50%;
-        
-        label
-        {
-            margin-left: 10px;
-        }
+        height: 23px;
+        font-size: $fontSizeSmall;
+        color: $TPGrey3;
     }
 
     .missingData
     {
-        padding-bottom: 15px;
+        padding-top: 5px;
+        font-size: $fontSizeSmall;
+        color: $TPGrey3;
+        text-align: center;
 
         button
         {
-            margin-left: 15px;
+            margin:0 0 10px 15px;
             width: 213px;
         }
     }
@@ -138,7 +151,7 @@
         .arrow
         {
             position:absolute;
-            top: 58px;
+            top: 35px;
             right: -8px;
         }
     }
@@ -148,7 +161,7 @@
         .arrow
         {
             position:absolute;
-            top: 58px;
+            top: 35px;
             left: -37px;
         }
     }
@@ -160,6 +173,8 @@
             bottom: 0px;
         }
     }
+
+    
 
     .selectboxit-container span 
     {
@@ -176,16 +191,6 @@
     {
         width: 100% !important; /* Width of the dropdown button */
         height: 22px;
-    }
-
-    .selectboxit-btn 
-    {
-        background: url(../../assets/images/QVImages/sprite-selectboxit.png) right 0;
-    }
-
-    .selectboxit-btn.selectboxit-enabled:hover 
-    {
-        background: url(../../assets/images/QVImages/sprite-selectboxit.png) right -22px;
     }
 
     .selectboxit-option
