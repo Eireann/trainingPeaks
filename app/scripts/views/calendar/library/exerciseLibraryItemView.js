@@ -1,11 +1,12 @@
 define(
 [
     "TP",
+    "jqueryui/touch-punch",
     "jqueryui/draggable",
     "hbs!templates/views/calendar/library/exerciseLibraryItemView",
     "hbs!templates/views/calendar/library/exerciseLibraryItemViewDragState"
 ],
-function(TP, draggable, ExerciseLibraryItemViewTemplate, ExerciseLibraryItemViewTemplateDragState)
+function(TP, touchPunch, draggable, ExerciseLibraryItemViewTemplate, ExerciseLibraryItemViewTemplateDragState)
 {
     return TP.ItemView.extend(
     {

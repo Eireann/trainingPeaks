@@ -138,7 +138,9 @@ function(
         {
             "mousedown": "workoutSelected",
             "mouseup": "workoutClicked",
-            "mouseup .workoutSettings": "workoutSettingsClicked"
+            "click": "workoutTouched",
+            "mouseup .workoutSettings": "workoutSettingsClicked",
+            "click .workoutSettings": "workoutSettingsTouched"
         },
 
         keepSettingsButtonVisible: function()
@@ -149,6 +151,14 @@ function(
         allowSettingsButtonToHide: function(e)
         {
             this.$el.removeClass("menuOpen");
+        },
+
+        workoutSettingsTouched: function(e)
+        {
+            if(theMarsApp.isTouchEnabled())
+            {
+                e.preventDefault();
+            }
         },
 
         workoutSettingsClicked: function(e)
@@ -170,6 +180,11 @@ function(
 
         workoutClicked: function(e)
         {
+            if (this.$el.hasClass("dragging"))
+            {
+                e.preventDefault();
+                return;
+            }
             if (e)
             {
 
@@ -186,6 +201,19 @@ function(
             this.model.trigger("select", this.model);
             var view = new WorkoutQuickView({ model: this.model });
             view.render();
+        },
+
+        workoutTouched: function(e)
+        {
+            if(e.isDefaultPrevented())
+            {
+                return;
+            }
+
+            if(theMarsApp.isTouchEnabled())
+            {
+                e.preventDefault();
+            }
         },
 
         setSelected: function()
