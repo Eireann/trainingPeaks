@@ -182,8 +182,8 @@
         padding: 0 7px 0 7px;
        
         label {
-            margin-top:4px;
-            margin-bottom:4px;
+            margin-top: 4px;
+            margin-bottom: 4px;
         }
     }
 
@@ -229,13 +229,11 @@
     }
 
 
-    .details
-    {
-        padding: 6px 0px 6px 0px;
+    .details {
+        padding: 4px 0;
 
-        &.chart
-        {
-            padding: 5px 5px 8px 5px;
+        &.chart {
+            padding:4px 5px;
         }
     }
 
@@ -244,7 +242,7 @@
         font-family: $fontFamilyRegular;
         font-size: $fontSizeSmall;
         color: $TPGrey3;
-        line-height: 1.4em;
+        margin:7px 0 6px 0;
 
         .tooltipLabel
         {
