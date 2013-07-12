@@ -167,6 +167,20 @@ function(
                 }
             },
 
+            LAST_2_YEARS:
+            {
+                id: 16,
+                label: TP.utils.translate("Last 2 years"),
+                getStartDate: function()
+                {
+                    return moment().subtract("years", 2).add("days", 1);
+                },
+                getEndDate: function()
+                {
+                    return moment();
+                }
+            },
+
             THIS_WEEK:
             {
                 id: 9,
@@ -266,20 +280,6 @@ function(
                 getStartDate: function()
                 {
                     return moment().month(0).date(1).subtract("years", 1);
-                },
-                getEndDate: function()
-                {
-                    return moment().month(11).date(31).subtract("years", 1);
-                }
-            },
-
-            LAST_2_YEARS:
-            {
-                id: 16,
-                label: TP.utils.translate("Last 2 years"),
-                getStartDate: function()
-                {
-                    return moment().month(0).date(1).subtract("years", 2);
                 },
                 getEndDate: function()
                 {
