@@ -166,6 +166,12 @@
     min-width: 90px;
     padding: 0;
 
+    .hoverBox {
+        .mainShadow {
+            bottom: 0px;
+        }
+    }
+
     div
     {
         clear: both;
