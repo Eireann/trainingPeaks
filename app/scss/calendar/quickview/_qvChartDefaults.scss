@@ -174,6 +174,11 @@
     .hoverBoxContents
     {
         padding: 0 0 0 0;
+       
+        label {
+            margin-top:4px;
+            margin-bottom:4px;
+        }
     }
 
     &.left
@@ -220,7 +225,7 @@
 
     .details
     {
-        padding: 2px 5px 20px 5px;
+        padding: 6px 0px 6px 0px;
 
         &.chart
         {
@@ -255,9 +260,10 @@
        font-size: $fontSizeSmall; 
        color: $TPGrey4;
        width: 45px;
-       float: left;
+       // float: left;
        text-align: right;
        white-space: nowrap;
+       display:inline-block;
     }
     
        .RightPower
@@ -276,13 +282,14 @@
 
     .units
     {
-        float: left;
+        // float: left;
         font-family: $fontFamilyRegular;
         font-size: $fontSizeXSmall;
         min-width: 35px;
         text-align: left;
-        padding: 2px 5px 0 3px;
-        margin-left: 3px;
+        padding: 0px 5px 0 0px;
+        margin-left: 1px;
+        display:inline-block;
     }
 
     .Cadence.current
