@@ -140,6 +140,9 @@ function(
             {
                 this.once("render", this.focusTitle, this);
             }
+            
+            this.model.on("change:workoutTypeValueId", this.checkShowPaceViews, this);
+            this.on("close", function () { this.model.off("change:workoutTypeValueId", this.checkShowPaceViews, this); });
         },
         
         stopWorkoutDetailsFetch: function ()
@@ -181,6 +184,8 @@ function(
         {
             this.on("close", this.closeTabViews, this);
 
+            this.checkShowPaceViews();
+
             var tabViews = {
                 summary: new WorkoutQuickViewSummary({ model: this.model, el: this.$(this.tabDomIDs[0]) }),
                 map: new WorkoutQuickViewMapAndGraph({ model: this.model, prefetchConfig: this.prefetchConfig, el: this.$(this.tabDomIDs[1]) }),
@@ -200,6 +205,25 @@ function(
                 tabViews.pace
             ];
         },
+        
+        checkShowPaceViews: function ()
+        {
+            //Show pace for: run/walk/swim/other
+            var workoutTypeValueId = this.model.get("workoutTypeValueId");
+
+            var showPace = _.contains([1, 3, 13, 100], workoutTypeValueId);
+
+            if (!showPace)
+                this.$(".paceTab").css("display", "none");
+            else
+                this.$(".paceTab").css("display", "");
+            
+            //Move off the pace tab
+            if (this.currentTabIndex === 4)
+                this.$(".tabNavigation > .summaryTab").click();
+
+        },
+
 
         closeTabViews: function()
         {
