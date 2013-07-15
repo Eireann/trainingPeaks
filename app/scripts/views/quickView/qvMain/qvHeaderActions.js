@@ -276,8 +276,20 @@ function (
         {
             var offset = $(e.currentTarget).offset();
 
+            var maxRightWidth = this.$el.offset().left + this.$el.width();
+
             this.commentsEditorView = new ExpandoCommentsEditorView({ model: this.model, parentEl: this.$el });
-            this.commentsEditorView.render().top(offset.top - 13).left(offset.left + 87);
+            this.commentsEditorView.render().top(offset.top - 13);
+           
+            if((this.commentsEditorView.$el.width() + offset.left + 87) > maxRightWidth)
+            {
+                this.commentsEditorView.setDirection("left");
+                this.commentsEditorView.right(offset.left - 12);
+            } else
+            {
+                this.commentsEditorView.setDirection("right");
+                this.commentsEditorView.left(offset.left + 87);
+            }
         }
     };
 

@@ -37,6 +37,12 @@ function(TP, WorkoutCommentsEditorView, commentsEditorTemplate)
         {
             var view = new WorkoutCommentsEditorView({ model: this.model });
             this.$el.find(".editorContainer").html(view.render().$el);
+        },
+
+        setDirection: function(direction)
+        {
+            this.$el.addClass(direction);
         }
+
     });
 });

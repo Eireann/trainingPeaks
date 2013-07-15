@@ -316,7 +316,7 @@ function(_, Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmedia
                 if (left < 0)
                     left = 0;
 
-                if (left + this.$el.width() > $(window).width())
+                if (!theMarsApp.isTouchEnabled() && left + this.$el.width() > $(window).width())
                     left = $(window).width() - this.$el.width() - 10;
 
                 this.$el.css("left", left);
