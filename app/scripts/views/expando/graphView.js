@@ -243,7 +243,7 @@ function(
             {
                 _.each(this.activeMultiSelections, function(selection)
                 {
-                    this.plot.unclearMultiSelection(selection)
+                    this.plot.unclearMultiSelection(selection);
                 }, this);
 
                 this.activeMultiSelections = null;
