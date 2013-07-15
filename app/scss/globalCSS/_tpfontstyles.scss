@@ -16,7 +16,7 @@
 	}
 
 	// Dark Normal Paragraph/Label (Peaks Labels)
-	.dark {
+	.defaultdark {
 		font-family: $fontFamilyRegular;
 		// HelveticaNeueW01-55Roma
 
@@ -40,6 +40,21 @@
 
 		color: $TPGrey3;
 		// #636569
+
+		line-height: $fontSizeLarge;
+		// 1.143em/16px
+	}
+
+	/* Small Bold Paragraph/Label -  Light Grey #636569 (Comments Subhead) */
+	.smallbold {
+		font-family: $fontFamilyHeavy;
+		// HelveticaNeueW01-55Roma
+
+		font-size: $fontSizeSmaller;
+		// .786em/11px
+
+		color: $TPGrey4;
+		// #303030
 
 		line-height: $fontSizeLarge;
 		// 1.143em/16px
