@@ -193,12 +193,24 @@ function(
             if (!this.plot)
                 return;
 
-            this.zoomed = true;
-
-            if (this.plot.zoomToSelection())
+            if (!this.plot.getSelection() && this.plot.hasMultiSelection())
             {
+                this.activeMultiSelections = this.plot.getActiveSelections();
+                var lastSelection = this.plot.getLastMultiSelection();
+                _.each(this.activeMultiSelections, function(selection)
+                {
+                    this.plot.clearMultiSelection(selection);
+                }, this);
+                this.plot.setSelection(lastSelection.ranges, true);
+                this.plot.zoomToSelection(true);
+                this.plot.clearSelection(true);
+                this.zoomed = true;
                 this.graphToolbar.onGraphZoomed();
-            } else
+            } else if (this.plot.getSelection() && this.plot.zoomToSelection())
+            {
+                this.zoomed = true;
+                this.graphToolbar.onGraphZoomed();
+            } else 
             {
                 this.zoomed = false;
             }
@@ -227,6 +239,14 @@ function(
                     }
                 };
                 this.plot.setSelection(ranges, true);
+            } else if (this.activeMultiSelections)
+            {
+                _.each(this.activeMultiSelections, function(selection)
+                {
+                    this.plot.unclearMultiSelection(selection)
+                }, this);
+
+                this.activeMultiSelections = null;
             }
         },
 
