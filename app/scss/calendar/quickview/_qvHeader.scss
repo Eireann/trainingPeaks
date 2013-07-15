@@ -1,4 +1,6 @@
 ﻿@import "../../globalCSS/tpstylesheet";
+$chartIconsSpriteURL: url(../../assets/images/charts/sprite-buttons-chart-modal.png);
+$chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-modal@2x.png);
 
 .workoutQuickView
 {
@@ -78,8 +80,54 @@
     .closeAndSettings {
         float: right;
         margin: -2px 5px 0px 0px;        
-        width:44px;
+        width:80px;
         height:17px;
+
+        #expandIcon
+        {
+            float: right;
+            margin-left: 10px;
+            width: 12px;
+            height: 12px;
+            background: transparent $chartIconsSpriteURL no-repeat -17px 0;
+            cursor:pointer;
+
+            &:hover {
+                background-position: -17px -17px;
+            }
+
+            &:active {
+                background-position: -17px -17px;
+            }
+
+        }
+
+        #collapseIcon
+        {
+            display: none;
+            float: right;
+            margin-left: 10px;
+            width: 12px;
+            height: 12px;
+            background: transparent $chartIconsSpriteURL no-repeat -17px 0;
+            cursor:pointer;
+
+            &:hover {
+                background-position: -17px -17px;
+            }
+
+            &:active {
+                background-position: -17px -17px;
+            }
+
+        }
+
+		@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
+			#expandIcon {
+				background-image: $chartIconsSpriteRetinaURL;
+				background-size: 68px 34px;
+			}
+		}
     }
   
     .grayHeader
