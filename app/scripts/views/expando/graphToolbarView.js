@@ -42,6 +42,11 @@ function(TP, graphToolbarTemplate)
             this.trigger("filterPeriodChanged", period);
         },
 
+        setFilterPeriod: function(period)
+        {
+            this.$("input[name=filterPeriod]").val(period);
+        },
+
         onGraphSeriesButtonClicked: function(event)
         {
             var clickedButton = $(event.target);
@@ -74,7 +79,7 @@ function(TP, graphToolbarTemplate)
         {
             this.ui.zoomResetButton.fadeIn(200);
         },
-        
+
         onRender: function()
         {
             var self = this;

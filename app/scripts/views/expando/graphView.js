@@ -54,7 +54,7 @@ function(
 
             this.detailDataPromise = options.detailDataPromise;
             this.dataParser = options.dataParser;
-            this.lastFilterPeriod = 5;
+            this.lastFilterPeriod = this.getInitialFilterPeriod();
             this.selections = [];
 
             this.firstRender = true;
@@ -147,11 +147,32 @@ function(
 
             if (this.plot)
                 this.unbindPlotEvents();
-            
+
             this.plot = $.plot(this.$plot, enabledSeries, this.flotOptions);
             this.bindToPlotEvents();
 
             this.highlightOrZoomToPreviousSelection();
+
+            this.setInitialToolbarSmoothing(this.lastFilterPeriod);
+        },
+
+        getInitialFilterPeriod: function()
+        {
+            if (this.hasOwnProperty("lastFilterPeriod"))
+            {
+                return this.lastFilterPeriod;
+            } else if (this.model.get("workoutTypeValueId") === TP.utils.workout.types.getIdByName("Swim"))
+            {
+                return 0;
+            } else
+            {
+                return 5;
+            }
+        },
+
+        setInitialToolbarSmoothing: function(period)
+        {
+            this.graphToolbar.setFilterPeriod(period);
         },
 
         overlayGraphToolbar: function()
