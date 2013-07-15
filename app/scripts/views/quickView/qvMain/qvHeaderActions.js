@@ -276,12 +276,11 @@ function (
         {
             var offset = $(e.currentTarget).offset();
 
-            var maxRightWidth = this.$el.offset().left + this.$el.width();
 
             this.commentsEditorView = new ExpandoCommentsEditorView({ model: this.model, parentEl: this.$el });
             this.commentsEditorView.render().top(offset.top - 13);
-           
-            if((this.commentsEditorView.$el.width() + offset.left + 87) > maxRightWidth)
+
+            if (this.$el.width() < 1380)
             {
                 this.commentsEditorView.setDirection("left");
                 this.commentsEditorView.right(offset.left - 12);
