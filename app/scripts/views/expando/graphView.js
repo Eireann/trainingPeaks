@@ -54,7 +54,7 @@ function(
 
             this.detailDataPromise = options.detailDataPromise;
             this.dataParser = options.dataParser;
-            this.lastFilterPeriod = 5;
+            this.lastFilterPeriod = this.getInitialFilterPeriod();
             this.selections = [];
 
             this.firstRender = true;
@@ -147,11 +147,32 @@ function(
 
             if (this.plot)
                 this.unbindPlotEvents();
-            
+
             this.plot = $.plot(this.$plot, enabledSeries, this.flotOptions);
             this.bindToPlotEvents();
 
             this.highlightOrZoomToPreviousSelection();
+
+            this.setInitialToolbarSmoothing(this.lastFilterPeriod);
+        },
+
+        getInitialFilterPeriod: function()
+        {
+            if (this.hasOwnProperty("lastFilterPeriod"))
+            {
+                return this.lastFilterPeriod;
+            } else if (this.model.get("workoutTypeValueId") === TP.utils.workout.types.getIdByName("Swim"))
+            {
+                return 0;
+            } else
+            {
+                return 5;
+            }
+        },
+
+        setInitialToolbarSmoothing: function(period)
+        {
+            this.graphToolbar.setFilterPeriod(period);
         },
 
         overlayGraphToolbar: function()
@@ -172,12 +193,24 @@ function(
             if (!this.plot)
                 return;
 
-            this.zoomed = true;
-
-            if (this.plot.zoomToSelection())
+            if (!this.plot.getSelection() && this.plot.hasMultiSelection())
             {
+                this.activeMultiSelections = this.plot.getActiveSelections();
+                var lastSelection = this.plot.getLastMultiSelection();
+                _.each(this.activeMultiSelections, function(selection)
+                {
+                    this.plot.clearMultiSelection(selection);
+                }, this);
+                this.plot.setSelection(lastSelection.ranges, true);
+                this.plot.zoomToSelection(true);
+                this.plot.clearSelection(true);
+                this.zoomed = true;
                 this.graphToolbar.onGraphZoomed();
-            } else
+            } else if (this.plot.getSelection() && this.plot.zoomToSelection())
+            {
+                this.zoomed = true;
+                this.graphToolbar.onGraphZoomed();
+            } else 
             {
                 this.zoomed = false;
             }
@@ -206,6 +239,14 @@ function(
                     }
                 };
                 this.plot.setSelection(ranges, true);
+            } else if (this.activeMultiSelections)
+            {
+                _.each(this.activeMultiSelections, function(selection)
+                {
+                    this.plot.unclearMultiSelection(selection);
+                }, this);
+
+                this.activeMultiSelections = null;
             }
         },
 

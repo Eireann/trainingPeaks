@@ -51,7 +51,7 @@ function ()
             doZoomOnCanvas();
         };
 
-        plot.zoomToSelection = function ()
+        plot.zoomToSelection = function (noClear)
         {
             var ranges = plot.getSelection();
 
@@ -71,7 +71,10 @@ function ()
 
             doZoomOnCanvas();
 
-            plot.clearSelection();
+            if (!noClear)
+            {
+                plot.clearSelection();
+            }
 
             return true;
         };
