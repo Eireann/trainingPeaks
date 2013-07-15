@@ -45,6 +45,8 @@ function (
             _.extend(this.events, this.fileUploadEvents);
             this.watchForFileAttachments();
             this.on("render", this.updateAttachmentIconState, this);
+            this.watchForWorkoutFiles();
+            this.on("render", this.updateUploadButtonState, this);
         },
 
         watchForFileAttachments: function()
@@ -67,6 +69,29 @@ function (
             } else
             {
                 this.$(".addAttachment").removeClass("withAttachments");
+            }
+        },
+
+        watchForWorkoutFiles: function()
+        {
+            this.model.get("details").on("change:workoutDeviceFileInfos", this.updateUploadButtonState, this);
+            this.on("close", this.stopWatchingForWorkoutFiles, this);
+        },
+
+        stopWatchingForWorkoutFiles: function()
+        {
+            this.model.get("details").off("change:workoutDeviceFileInfos", this.updateUploadButtonState, this);
+        },
+
+        updateUploadButtonState: function()
+        {
+            var attachments = this.model.get("details").get("workoutDeviceFileInfos");
+            if (attachments && attachments.length)
+            {
+                this.$("#quickViewFileUploadDiv").addClass("withFiles");
+            } else
+            {
+                this.$("#quickViewFileUploadDiv").removeClass("withFiles");
             }
         },
 

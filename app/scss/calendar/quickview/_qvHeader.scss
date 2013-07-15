@@ -302,6 +302,25 @@
             
 			label {
                 cursor: pointer;
+                display: inline;
+            }
+
+            label.files
+            {
+                display: none;
+            }
+
+            &.withFiles
+            {
+                label.files
+                {
+                    display: inline;
+                }
+
+                label.upload
+                {
+                    display: none;
+                }
             }
         }
 
