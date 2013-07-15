@@ -37,11 +37,11 @@ function(
             var mapConfig =
             {
                 scrollWheelZoom: false,
-                doubleClickZoom: false,
                 boxZoom: true,
                 layers: [gTerrainLayer],
                 center: new L.LatLng(40.012369, -105.132353),
-                zoom: 8
+                zoom: 8,
+                maxZoom: 15
             };
 
             var baseMaps =
@@ -63,11 +63,11 @@ function(
         {
             var options = { color: chartColors.mapRoute };
             var polyline = this.createPolyline(latLonArray, options);
-            polyline.addTo(map);
             if (latLonArray && latLonArray.length > 0)
             {
                 map.fitBounds(polyline.getBounds());
             }
+            polyline.addTo(map);
             return polyline;
         },
 
