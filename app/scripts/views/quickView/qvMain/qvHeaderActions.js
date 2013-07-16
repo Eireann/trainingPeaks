@@ -7,6 +7,7 @@
     "views/quickView/qvMain/qvWorkoutTypeMenuView",
     "views/quickView/qvMain/qvContextMenuView",
     "views/quickView/qvMain/qvOptionsMenuView",
+    "views/workout/workoutBarView",
     "views/expando/commentsEditor",
     "utilities/workout/workoutTypes"
 ],
@@ -18,6 +19,7 @@ function (
     WorkoutTypeMenuView,
     QVContextMenuView,
     QVOptionsMenuView,
+    WorkoutBarView,
     ExpandoCommentsEditorView,
     workoutType
 )
@@ -54,51 +56,21 @@ function (
         {
             if (!this.headerInitialized)
             {
+                var workoutBarView = new WorkoutBarView({ model: this.model });
+                workoutBarView.turnOffRenderOnChange();
+                workoutBarView.render();
+
+                this.$(".workoutBarView").append(workoutBarView.$el);
+                this.$(".workoutTitle").css('width', this.titleWidth());
+
                 this.model.on("change", this.updateHeaderOnChange, this);
                 this.$("#startTimeInput").timepicker({ appendTo: this.$el, 'timeFormat': 'g:i a' });
             }
-
-            this.updateHeaderClass();
         },
 
-        updateHeaderClass: function()
-        {
-            // first calculate it, then reset if needed
-            var tmpElement = $("<div></div>").addClass("grayHeader").addClass("workout");
-            tmpElement.addClass(this.getComplianceCssClassName());
-            tmpElement.addClass(this.getPastOrCompletedCssClassName());
+        
 
-            var header = this.$(".grayHeader");
-            if (header.attr("class") !== tmpElement.attr("class"))
-            {
-                header.attr("class", tmpElement.attr("class"));
-            }
-            this.$(".grayHeader").addClass(this.getComplianceCssClassName());
-            this.$(".grayHeader").addClass(this.getPastOrCompletedCssClassName());
-            this.$(".grayHeader").addClass(this.getWorkoutTypeCssClassName());
-
-            this.$(".workoutTitle").css('width', this.titleWidth());
-
-        },
-
-        getWorkoutTypeCssClassName: function ()
-        {
-            return TP.utils.workout.types.getNameById(this.model.get("workoutTypeValueId")).replace(/ /g, "");
-        },
-
-        getPastOrCompletedCssClassName: function()
-        {
-            if (this.model.getCalendarDay() < this.today)
-            {
-                return "past";
-            } else if (this.model.getCalendarDay() === this.today && TP.utils.workout.determineCompletedWorkout(this.model.attributes))
-            {
-                return "past";
-            } else
-            {
-                return "future";
-            }
-        },
+        
 
         onDateClicked: function(e)
         {
@@ -170,48 +142,7 @@ function (
             this.model.off("change", this.updateHeaderOnChange);
         },
 
-        getComplianceCssClassName: function()
-        {
-            var complianceAttributeNames =
-            {
-                totalTime: "totalTimePlanned"
-            };
-            /*
-                distance: "distancePlanned",
-                tssActual: "tssPlanned"
-            */
-            var workout = this.model;
-
-            for (var key in complianceAttributeNames)
-            {
-
-                var plannedValueAttributeName = complianceAttributeNames[key];
-                var completedValueAttributeName = key;
-                var plannedValue = this.model.get(plannedValueAttributeName) ? this.model.get(plannedValueAttributeName) : 0;
-                var completedValue = this.model.get(completedValueAttributeName) ? this.model.get(completedValueAttributeName) : 0;
-
-                if (plannedValue)
-                {
-                    if ((plannedValue * 0.8) <= completedValue && completedValue <= (plannedValue * 1.2))
-                    {
-                        return "ComplianceGreen";
-                    }
-                    else if ((plannedValue * 0.5) <= completedValue && completedValue <= (plannedValue * 1.5))
-                    {
-                        return "ComplianceYellow";
-                    }
-                    else
-                    {
-                        return "ComplianceRed";
-                    }
-                }
-            }
-
-
-            // if nothing was planned, we can't fail to complete it properly ...
-
-            return "ComplianceNone";
-        },
+        
 
         updateHeaderOnChange: function()
         {
