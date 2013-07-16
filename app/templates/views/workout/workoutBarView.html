@@ -1,4 +1,4 @@
-﻿<div class="grayHeader workout">
+﻿<div class="workoutBarViewHeader workout">
     <div class="workoutIconLarge">
 
     </div>
@@ -10,24 +10,25 @@
             <div class="icon addAttachment" title="{{$ "UploadAttachmentTooltip" }}"></div>
         </div>
         <div class="headerWorkoutValue middleValues duration">
-            <label id="qv-header-totaltimePlanned" class="planned"/>
-            <label id="qv-header-totaltime" class="actual"/>
+            <label id="qv-header-totaltimePlanned" class="planned">{{ conversion "formatDuration" totalTimePlanned }}</label>
+            <label id="qv-header-totaltime" class="actual">{{ conversion "formatDuration" totalTime }}</label>
         </div>
         <div class="headerWorkoutValue distance">
-            <label id="qv-header-distancePlanned" class="planned"/>
-            <label id="qv-header-distance" class="actual"/>
+            <label id="qv-header-distancePlanned" class="planned">{{ conversion "formatDistance" distancePlanned this }}</label>
+            <label id="qv-header-distance" class="actual">{{ conversion "formatDistance" distance this }}</label>
         </div>
         <div class="headerWorkoutValueLabel distance">
             <label>{{getUnitsLabel "distance" workoutTypeValueId}}</label>
         </div>
         <div class="headerWorkoutValue middleValues tss">
-            <label id="qv-header-tssPlanned" class="planned"/>
-            <label id="qv-header-tssactual" class="actual"/>
+            <label id="qv-header-tssPlanned" class="planned">{{ conversion "formatTSS" tssPlanned this }}</label>
+            <label id="qv-header-tssactual" class="actual">{{ conversion "formatTSS" tssActual this }}</label>
         </div>
         <div class="headerWorkoutValueLabel tss">
             <label>TSS</label>
         </div> 
         <div class="title">
+            <span class="workoutTitleText">{{ title }}</span>
             <input type="text" name="workoutTitle" class="workoutTitle" placeholder="{{$ "UntitledWorkout" }}" id="workoutTitleField" title="{{$ "SetTitleTooltip" }}" />
         </div>
     </div>

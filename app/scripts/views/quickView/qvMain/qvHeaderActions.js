@@ -63,7 +63,6 @@ function (
                 this.$(".workoutBarView").append(workoutBarView.$el);
                 this.$(".workoutTitle").css('width', this.titleWidth());
 
-                this.model.on("change", this.updateHeaderOnChange, this);
                 this.$("#startTimeInput").timepicker({ appendTo: this.$el, 'timeFormat': 'g:i a' });
             }
         },
@@ -135,18 +134,6 @@ function (
             menu.on("copy", this.close, this);
             menu.setPosition({ fromElement: menuIcon, bottom: 0, top: menuIcon.height(), left: -30 });
             menu.render();
-        },
-
-        removeUpdateHeaderOnChange: function()
-        {
-            this.model.off("change", this.updateHeaderOnChange);
-        },
-
-        
-
-        updateHeaderOnChange: function()
-        {
-            this.updateHeaderClass();
         },
 
         onBreakThroughClicked: function()

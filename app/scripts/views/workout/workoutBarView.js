@@ -14,10 +14,11 @@ function (_, TP, workoutBarview)
             type: "handlebars",
             template: workoutBarview
         },
-        
+
         onRender: function()
         {
             this.updateHeaderClass();
+            this.model.on("change", this.updateHeaderClassOnChange, this);
         },
         
         today: moment().format(TP.utils.datetime.shortDateFormat),
@@ -30,18 +31,18 @@ function (_, TP, workoutBarview)
         updateHeaderClass: function ()
         {
             // first calculate it, then reset if needed
-            var tmpElement = $("<div></div>").addClass("grayHeader").addClass("workout");
+            var tmpElement = $("<div></div>").addClass("workoutBarViewHeader").addClass("workout");
             tmpElement.addClass(this.getComplianceCssClassName());
             tmpElement.addClass(this.getPastOrCompletedCssClassName());
 
-            var header = this.$(".grayHeader");
+            var header = this.$(".workoutBarViewHeader");
             if (header.attr("class") !== tmpElement.attr("class"))
             {
                 header.attr("class", tmpElement.attr("class"));
             }
-            this.$(".grayHeader").addClass(this.getComplianceCssClassName());
-            this.$(".grayHeader").addClass(this.getPastOrCompletedCssClassName());
-            this.$(".grayHeader").addClass(this.getWorkoutTypeCssClassName());
+            this.$(".workoutBarViewHeader").addClass(this.getComplianceCssClassName());
+            this.$(".workoutBarViewHeader").addClass(this.getPastOrCompletedCssClassName());
+            this.$(".workoutBarViewHeader").addClass(this.getWorkoutTypeCssClassName());
 
 
         },
@@ -106,6 +107,18 @@ function (_, TP, workoutBarview)
             {
                 return "future";
             }
-        }
+        },
+
+        removeUpdateHeaderOnChange: function()
+        {
+            this.model.off("change", this.updateHeaderClassOnChange);
+        },
+
+        
+
+        updateHeaderOnChange: function()
+        {
+            this.updateHeaderClass();
+        },
     });
 });
