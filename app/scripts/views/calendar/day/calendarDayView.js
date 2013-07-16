@@ -351,7 +351,7 @@ function(_, touchPunch, draggable, droppable, moment, TP, CalendarWorkoutView, C
                 return;
             }
 
-            if (theMarsApp.isTouchEnabled())
+            if (theMarsApp.isTouchEnabled() && !$(e.target).is(".dayHeader"))
             {
                 this.openNewItemView(e);
             }
