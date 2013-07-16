@@ -9,7 +9,9 @@
     "views/quickView/qvMain/qvOptionsMenuView",
     "views/workout/workoutBarView",
     "views/expando/commentsEditor",
-    "utilities/workout/workoutTypes"
+    "views/userMessageView",
+    "utilities/workout/workoutTypes",
+    "hbs!templates/views/userMessage/saveWorkoutBeforeAttachment"
 ],
 function (
     _,
@@ -21,7 +23,9 @@ function (
     QVOptionsMenuView,
     WorkoutBarView,
     ExpandoCommentsEditorView,
-    workoutType
+    UserMessageView,
+    workoutType,
+    saveWorkoutBeforeAttachmentTemplate
 )
 {
     var qvHeaderActions =
@@ -58,6 +62,7 @@ function (
             {
                 var workoutBarView = new WorkoutBarView({ model: this.model });
                 workoutBarView.turnOffRenderOnChange();
+                workoutBarView.on("before:displayAttachmentView", this.checkIfCanAddAttachments, this);
                 workoutBarView.render();
 
                 this.$(".workoutBarView").append(workoutBarView.$el);
@@ -65,11 +70,7 @@ function (
 
                 this.$("#startTimeInput").timepicker({ appendTo: this.$el, 'timeFormat': 'g:i a' });
             }
-        },
-
-        
-
-        
+        }, 
 
         onDateClicked: function(e)
         {
@@ -207,7 +208,18 @@ function (
                 this.commentsEditorView.setDirection("right");
                 this.commentsEditorView.left(offset.left + 87);
             }
+        },
+
+        checkIfCanAddAttachments: function(displayAttachmentsViewDeferred)
+        {
+            if (this.isNewWorkout && !this.model.get("workoutId"))
+            {
+                var view = new UserMessageView({ template: saveWorkoutBeforeAttachmentTemplate });
+                view.render();
+                displayAttachmentsViewDeferred.reject();
+            }
         }
+
     };
 
     return qvHeaderActions;

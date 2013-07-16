@@ -5,10 +5,7 @@
     "models/workoutFileData",
     "views/userConfirmationView",
     "views/quickView/qvMain/qvFileUploadMenuView",
-    "views/quickView/qvMain/qvAttachmentUploadMenuView",
-    "views/userMessageView",
-    "hbs!templates/views/quickView/fileUploadErrorView",
-    "hbs!templates/views/userMessage/saveWorkoutBeforeAttachment"
+    "hbs!templates/views/quickView/fileUploadErrorView"
 ],
 function (
     _,
@@ -16,10 +13,7 @@ function (
     WorkoutFileData,
     UserConfirmationView,
     QVFileUploadMenuView,
-    QVAttachmentUploadMenuView,
-    UserMessageView,
-    fileUploadErrorTemplate,
-    saveWorkoutBeforeAttachmentTemplate
+    fileUploadErrorTemplate
 )
 {
     var workoutQuickViewFileUploads =
@@ -27,7 +21,6 @@ function (
         fileUploadEvents:
         {
             "click #quickViewFileUploadDiv": "onUploadFileClicked",
-            "click .addAttachment": "onAddAttachmentClicked",
 
             // TODO Refactor: needs to be moved into qvFileUploadMenuView and dealt with internally
             "change input[type='file']#fileUploadInput": "onFileSelected"
@@ -43,31 +36,6 @@ function (
             _.bindAll(this, "onUploadDone", "onUploadFail");
             _.extend(this.ui, this.fileUploadUi);
             _.extend(this.events, this.fileUploadEvents);
-            this.watchForFileAttachments();
-            this.on("render", this.updateAttachmentIconState, this);
-        },
-
-        watchForFileAttachments: function()
-        {
-            this.model.get("details").on("change:attachmentFileInfos", this.updateAttachmentIconState, this);
-            this.on("close", this.stopWatchingForFileAttachments, this);
-        },
-
-        stopWatchingForFileAttachments: function()
-        {
-            this.model.get("details").off("change:attachmentFileInfos", this.updateAttachmentIconState, this);
-        },
-
-        updateAttachmentIconState: function()
-        {
-            var attachments = this.model.get("details").get("attachmentFileInfos");
-            if (attachments && attachments.length)
-            {
-                this.$(".addAttachment").addClass("withAttachments");
-            } else
-            {
-                this.$(".addAttachment").removeClass("withAttachments");
-            }
         },
 
         onUploadFileClicked: function()
@@ -146,37 +114,6 @@ function (
         onUploadFail: function()
         {
             this.waitingOff();
-        },
-
-        onAddAttachmentClicked: function()
-        {
-            if (this.isNewWorkout && !this.model.get("workoutId"))
-            {
-                var view = new UserMessageView({ template: saveWorkoutBeforeAttachmentTemplate });
-                view.render();
-                return;
-            }
-            
-            // Wire up & Display the File Attachment Tomahawk
-            var uploadButton = this.$("div.addAttachment");
-            var offset = uploadButton.offset();
-            var direction = this.expanded ? "right" : "left";
-
-            this.attachmentUploadMenu = new QVAttachmentUploadMenuView({ model: this.model, direction: direction });
-
-            if (direction === "right")
-            {
-                this.attachmentUploadMenu.setPosition({ fromElement: uploadButton, left: uploadButton.outerWidth() + 13, top: -8 });
-            } else
-            {
-                this.attachmentUploadMenu.setPosition({ fromElement: uploadButton, right: -13, top: -8 });
-            }
-
-
-            uploadButton.addClass("menuOpen");
-
-            this.attachmentUploadMenu.render();
-            this.attachmentUploadMenu.on("close", function () { uploadButton.removeClass("menuOpen"); });
         },
 
         displayUploadError: function()

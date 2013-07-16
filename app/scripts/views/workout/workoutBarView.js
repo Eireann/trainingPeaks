@@ -2,9 +2,15 @@
 [
     "underscore",
     "TP",
+    "views/quickView/qvMain/qvAttachmentUploadMenuView",
     "hbs!templates/views/workout/workoutBarView"
 ],
-function (_, TP, workoutBarview)
+function (
+    _,
+    TP,
+    QVAttachmentUploadMenuView,
+    workoutBarViewTemplate
+    )
 {
 
     /*
@@ -19,13 +25,20 @@ function (_, TP, workoutBarview)
         template:
         {
             type: "handlebars",
-            template: workoutBarview
+            template: workoutBarViewTemplate
+        },
+
+        events:
+        {
+            "click .addAttachment": "onAddAttachmentClicked"
         },
 
         onRender: function()
         {
             this.updateHeaderClass();
             this.model.on("change", this.updateHeaderClassOnChange, this);
+            this.updateAttachmentIconState();
+            this.watchForFileAttachments();
         },
         
         today: moment().format(TP.utils.datetime.shortDateFormat),
@@ -124,6 +137,64 @@ function (_, TP, workoutBarview)
         updateHeaderClassOnChange: function()
         {
             this.updateHeaderClass();
+        },
+
+        watchForFileAttachments: function()
+        {
+            this.model.get("details").on("change:attachmentFileInfos", this.updateAttachmentIconState, this);
+            this.on("close", this.stopWatchingForFileAttachments, this);
+        },
+
+        stopWatchingForFileAttachments: function()
+        {
+            this.model.get("details").off("change:attachmentFileInfos", this.updateAttachmentIconState, this);
+        },
+
+        updateAttachmentIconState: function()
+        {
+            var attachments = this.model.get("details").get("attachmentFileInfos");
+            if (attachments && attachments.length)
+            {
+                this.$(".addAttachment").addClass("withAttachments");
+            } else
+            {
+                this.$(".addAttachment").removeClass("withAttachments");
+            }
+        },
+
+        onAddAttachmentClicked: function()
+        {
+            _.bindAll(this, "displayAttachmentView");
+            var displayAttachmentPromise = new $.Deferred();
+            displayAttachmentPromise.done(this.displayAttachmentView);
+            this.trigger("before:displayAttachmentView", displayAttachmentPromise);
+            displayAttachmentPromise.resolve();           
+        },
+
+        displayAttachmentView: function()
+        {
+            // Wire up & Display the File Attachment Tomahawk
+            var uploadButton = this.$("div.addAttachment");
+            var offset = uploadButton.offset();
+            var direction = this.expanded ? "right" : "left";
+
+            this.attachmentUploadMenu = new QVAttachmentUploadMenuView({ model: this.model, direction: direction });
+
+            if (direction === "right")
+            {
+                this.attachmentUploadMenu.setPosition({ fromElement: uploadButton, left: uploadButton.outerWidth() + 13, top: -8 });
+            } else
+            {
+                this.attachmentUploadMenu.setPosition({ fromElement: uploadButton, right: -13, top: -8 });
+            }
+
+
+            uploadButton.addClass("menuOpen");
+
+            this.attachmentUploadMenu.render();
+            this.attachmentUploadMenu.on("close", function () { uploadButton.removeClass("menuOpen"); });
         }
+
+
     });
 });
