@@ -50,12 +50,12 @@ function(
 
                 getStartDate: function(pmcSettings)
                 {
-                    return pmcSettings.startDate ? pmcSettings.startDate : moment().subtract("weeks", 1);
+                    return pmcSettings.startDate ? moment.utc(pmcSettings.startDate) : moment().subtract("weeks", 1);
                 },
 
                 getEndDate: function(pmcSettings)
                 {
-                    return pmcSettings.endDate ? pmcSettings.endDate : moment();
+                    return pmcSettings.endDate ? moment.utc(pmcSettings.endDate) : moment();
                 }
             },
 
@@ -67,7 +67,7 @@ function(
 
                 getStartDate: function(pmcSettings)
                 {
-                    return pmcSettings.startDate ? pmcSettings.startDate : moment().subtract("weeks", 1);
+                    return pmcSettings.startDate ? moment.utc(pmcSettings.startDate) : moment().subtract("weeks", 1);
                 },
 
                 getEndDate: function()
@@ -376,7 +376,7 @@ function(
 
                 getStartDate: function(pmcSettings)
                 {
-                    return pmcSettings.startDate ? pmcSettings.startDate : moment().subtract("weeks", 1);
+                    return pmcSettings.startDate ? moment.utc(pmcSettings.startDate) : moment().subtract("weeks", 1);
                 },
 
                 getEndDate: function()

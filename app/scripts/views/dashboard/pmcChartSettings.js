@@ -197,8 +197,8 @@ function(
 
             pmcOptions = pmcChartUtils.buildPmcParameters(pmcOptions);
 
-            this.model.set("settings.dashboard.pmc.startDate", pmcOptions.customStartDate ? moment(pmcOptions.startDate).utc().unix() * 1000 : null, { silent: true });
-            this.model.set("settings.dashboard.pmc.endDate", pmcOptions.customEndDate ? moment(pmcOptions.endDate).utc().unix() * 1000 : null, { silent: true });
+            this.model.set("settings.dashboard.pmc.startDate", pmcOptions.customStartDate ? moment(pmcOptions.startDate).format("YYYY-MM-DD") + "T00:00:00Z" : null, { silent: true });
+            this.model.set("settings.dashboard.pmc.endDate", pmcOptions.customEndDate ? moment(pmcOptions.endDate).format("YYYY-MM-DD") + "T00:00:00Z" : null, { silent: true });
             this.model.set("settings.dashboard.pmc.quickDateSelectOption", optionId);
         },
 
