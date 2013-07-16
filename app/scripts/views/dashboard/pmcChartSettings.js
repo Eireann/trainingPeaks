@@ -48,6 +48,7 @@ function(
             "change #startDate": "onDateOptionsChanged",
             "change #endDate": "onDateOptionsChanged",
             "change input[type=number]": "onNumberOptionsChanged",
+            "blur input[type=number]": "onNumberOptionsChanged",
             "click input[type=checkbox].chartSeriesOption": "onChartSeriesOptionChanged",
             "click #closeIcon": "close"
         },
@@ -203,11 +204,68 @@ function(
 
         onNumberOptionsChanged: function(e)
         {
-            this.hasChangedSettings = true;
             var inputId = e.target.id;
-            this.focusedInputId = inputId;
-            var value = $(e.target).val();
-            this.model.set("settings.dashboard.pmc." + inputId, value);
+
+            if (e.type !== "blur" && e.type !== "focusout")
+            {
+                this.focusedInputId = inputId;
+            }
+
+            var modelKey = "settings.dashboard.pmc." + inputId;
+            var newValue = $(e.target).val();
+            var existingValue = this.model.get(modelKey);
+            var adjustedValue = this.adjustNumericInput(inputId, newValue, existingValue);
+
+            console.log(inputId + " changed to " + adjustedValue);
+            if(adjustedValue === existingValue)
+            {
+                $(e.target).val(adjustedValue);
+            } else
+            {
+                this.hasChangedSettings = true;
+                this.model.set(modelKey, adjustedValue);
+            }
+        },
+
+        numericRanges: {
+            ctlConstant: {
+                min: 7,
+                max: 200
+            },
+            ctlStartValue: {
+                min: 0,
+                max: 500
+            },
+            atlConstant: {
+                min: 1,
+                max: 40
+            },
+            atlStartValue: {
+                min: 0,
+                max: 500
+            }
+        },
+
+        adjustNumericInput: function(inputId, newValue, oldValue)
+        {
+            var numberValue = Number(newValue);
+
+            if(_.isNaN(numberValue))
+            {
+                return oldValue;
+            }
+
+            if(numberValue < this.numericRanges[inputId].min)
+            {
+                return this.numericRanges[inputId].min;
+            }
+
+            if (numberValue > this.numericRanges[inputId].max)
+            {
+                return this.numericRanges[inputId].max;
+            }
+
+            return numberValue;
         },
 
         onChartSeriesOptionChanged: function(e)

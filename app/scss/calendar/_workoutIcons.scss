@@ -122,7 +122,7 @@ $xc-skiPositiveLargeURL: url(../../assets/images/sportTypeIcons/xc_ski_pos_140.p
     @include workoutIcons($brickNegativeSmallURL, $brickNegativeLargeURL, $brickPositiveSmallURL, $brickPositiveLargeURL, $clrBrick);
 }
 
-.Other, .Custom, .XTrain
+.Other, .Custom, .XTrain, .Crosstrain
 {
     @include workoutIcons($otherNegativeSmallURL, $otherNegativeLargeURL, $otherPositiveSmallURL, $otherPositiveLargeURL, $clrOther);
 }
