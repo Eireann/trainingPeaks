@@ -121,11 +121,9 @@ function (_, TP, workoutBarview)
             this.model.off("change", this.updateHeaderClassOnChange);
         },
 
-        
-
-        updateHeaderOnChange: function()
+        updateHeaderClassOnChange: function()
         {
             this.updateHeaderClass();
-        },
+        }
     });
 });

@@ -12,16 +12,16 @@ function(moment, theMarsApp, TP, WorkoutBarView, WorkoutModel)
     function buildWorkoutModel()
     {
         return new WorkoutModel({
-                workoutTypeValueId: 1
-                , totalTime: 1.25
-                , totalTimePlanned: 1.5
-                , distance: 1000
-                , distancePlanned: 1200
-                , tssActual: 100
-                , tssPlanned: 110
-                , title: "My workout title"
-                , workoutDay: "2013-01-01T00:00:00Z"
-            });
+            workoutTypeValueId: 1,
+            totalTime: 1.25,
+            totalTimePlanned: 1.5,
+            distance: 1000,
+            distancePlanned: 1200,
+            tssActual: 100,
+            tssPlanned: 110,
+            title: "My workout title",
+            workoutDay: "2013-01-01T00:00:00Z"
+        });
     }
 
     describe("Workout Bar View", function()
