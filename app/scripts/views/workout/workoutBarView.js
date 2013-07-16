@@ -7,6 +7,13 @@
 function (_, TP, workoutBarview)
 {
 
+    /*
+    TODO:
+    file attachments
+    route icon placeholder
+    review
+    */
+
     return TP.ItemView.extend(
     {
         template:
