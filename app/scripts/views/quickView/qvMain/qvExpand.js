@@ -44,7 +44,9 @@ function (_, TP, ExpandoController)
         expandEvents:
         {
             "click #quickViewExpandDiv": "expandClicked",
-            "click #quickViewCollapseDiv": "collapseClicked"
+            "click #expandIcon": "expandClicked",
+            "click #quickViewCollapseDiv": "collapseClicked",
+            "click #collapseIcon": "collapseClicked"
         },
 
         renderExpandedView: function()
@@ -101,7 +103,8 @@ function (_, TP, ExpandoController)
 
                 //TODO or better, add a class to the main qv container - .expanded or .collapsed
                 self.$("#workOutQuickView").animate({ height: newHeight, width: newWidth }, { duration: expandDuration });
-                self.$(".tabNavigation, #quickViewContent, .quickviewFooter, #menuIcon").hide();
+                self.$(".tabNavigation, #quickViewContent, .quickviewFooter, #menuIcon, #expandIcon").hide();
+                self.$("#collapseIcon").show();
 
                 self.$el.animate({ top: top + "px", left: left + "px", height: newHeight + "px", width: newWidth + "px" },
                 {
@@ -126,6 +129,8 @@ function (_, TP, ExpandoController)
             {
                 //TODO Separation of concerns: quickViewContent needs to show/hide itself through BB View.
                 self.$("#menuIcon").show();
+                self.$("#expandIcon").show();
+                self.$("#collapseIcon").hide();
                 self.$("#workOutQuickView").css({ height: self.originalPosition.height, width: self.originalPosition.width });
                 self.$(".collapseButton, .expandedViewsButtons").css({ display: "none" });
                 self.$(".tabNavigation, .quickviewFooter, .expandButton").css({ display: "block" });

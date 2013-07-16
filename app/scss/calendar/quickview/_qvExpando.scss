@@ -211,12 +211,17 @@
                 &.graphDistanceButton
                 {
                     margin-right: 25px;
+                }
+
+                &.graphDistanceButton
+                {
                     border-left: none;
                 }
 
                 &.graphResetButton
                 {
                     border-right: none;
+                    width: 56px;
                 }
 
                 &.graphSeriesButton
