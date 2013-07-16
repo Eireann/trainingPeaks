@@ -17,13 +17,35 @@
             position: absolute;
             top: 15px;
             @include box-shadow(0 0 2px 0 #ADADAD);
-            left: 1px;
-            @include transform(translateX(-35px) rotate(-45deg));
         }
 
         .mainShadow
         {
             bottom: 0px;
+        }
+    }
+
+    &.left
+    {
+        .hoverBox
+        {
+            .arrow
+            {
+                right: -6px;
+                @include transform(rotate(-45deg));
+            }
+        }
+    }
+
+    &.right
+    {
+        .hoverBox
+        {
+            .arrow
+            {
+                left: 1px;
+                @include transform(translateX(-35px) rotate(-45deg));
+            }
         }
     }
 

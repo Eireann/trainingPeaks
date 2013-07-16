@@ -1,26 +1,70 @@
 
 body.touchEnabled
 {
-    .day
+
+    #calendarContainer
     {
-        &:hover
+        .day
         {
-            &:not(.selected)
+            &:hover
             {
-                .addWorkout
+                &:not(.selected)
                 {
+                    .addWorkout
+                    {
+                        // hidden instead of display:none, so we can still get the height padding in the day cell
+                        visibility: hidden;
+                    }
+                }
+            }
+
+
+            .addWorkout
+            {
+                &.active
+                {
+                    // hidden instead of display:none, so we can still get the height padding in the day cell
                     visibility: hidden;
                 }
             }
         }
 
 
-        .addWorkout
+        .daySettings
         {
-            &.active
-            {
-                visibility: hidden;
-            }
+            display:block;
+        }
+    }
+
+    .workout
+    {
+        .workoutSettings
+        {
+            display:block;
+        }
+    }
+
+    .weekSummary
+    {
+        .summarySettings
+        {
+            display:block;
+        }
+    }
+
+    .dashboardChart
+    {
+        .chartButtons
+        {
+            display:block;
+        }
+    }
+
+    .scrollableColumnContainer
+    {
+        .settings
+        {
+            display:block;
         }
     }
 

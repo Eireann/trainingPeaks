@@ -150,6 +150,17 @@ function(
             describe("onPaste", function()
             {
 
+                // user needs an athlete id for some of these tests to run
+                beforeEach(function()
+                {
+                    app.user.setCurrentAthleteId(1234, true);
+                });
+
+                afterEach(function()
+                {
+                    app.user.setCurrentAthleteId(null, true);
+                });
+
                 it("Should have the correct number of items", function()
                 {
                     var pastedItems = calendarDay.copyToClipboard().onPaste("2020-01-01");

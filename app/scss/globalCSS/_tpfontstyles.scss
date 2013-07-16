@@ -1,0 +1,178 @@
+// Paragraphs or Labels
+
+	// Normal Paragraph/Label (Text field input text, QV Date & Time, upload tomahawk descriptive text)
+	.default {
+		font-family: $fontFamilyRegular;
+		// HelveticaNeueW01-55Roma
+
+		font-size: $fontSizeSmall;
+		// .857em/12px
+
+		line-height:$fontSizeXLarge;
+		// 1.214em/17px
+
+		color: $TPGrey3;
+		// #636569
+	}
+
+	// Dark Normal Paragraph/Label (Peaks Labels)
+	.defaultdark {
+		font-family: $fontFamilyRegular;
+		// HelveticaNeueW01-55Roma
+
+		font-size: $fontSizeSmall;
+		// .857em/12px
+
+		line-height:$fontSizeXLarge;
+		// 1.214em/17px
+
+		color: $TPGrey4;
+		// #303030
+	}
+
+	// Small Paragraph/Label - Light Grey #636569 (Comments text, zone range, stats labels)
+	.small {
+		font-family: $fontFamilyRegular;
+		// HelveticaNeueW01-55Roma
+
+		font-size: $fontSizeSmaller;
+		// .786em/11px
+
+		color: $TPGrey3;
+		// #636569
+
+		line-height: $fontSizeLarge;
+		// 1.143em/16px
+	}
+
+	/* Small Bold Paragraph/Label -  Light Grey #636569 (Comments Subhead) */
+	.smallbold {
+		font-family: $fontFamilyHeavy;
+		// HelveticaNeueW01-55Roma
+
+		font-size: $fontSizeSmaller;
+		// .786em/11px
+
+		color: $TPGrey4;
+		// #303030
+
+		line-height: $fontSizeLarge;
+		// 1.143em/16px
+	}
+
+
+	// Helptext (In workout library under dropwdown)
+	.helptext {
+		font-family: $fontFamilyRegularItalic;
+		// HelveticaNeueW01-56It
+
+		font-size: $fontSizeSmall;
+		// .857em/12px
+
+		line-height:$fontSizeXLarge;
+		// 1.214em/17px
+
+		color: $TPGrey3;
+		// #636569
+	}
+
+
+
+
+// Headlines
+
+	// Blue Library Headline
+	h2.library {
+		font-family: $fontFamilyRegular;
+		// HelveticaNeueW01-55Roma
+		
+		font-size: $fontSizeMedium;
+		// 1em/14px
+
+		margin:2px 15px 0 2px;
+
+		color:$TPBlue;
+		// #005695
+	}
+
+	// Quickview/Tomahawk/Modal Window Section Headlines
+	h3.subheadbold {
+		font-family: $fontFamilyHeavy;
+		// HelveticaNeueW01-75Bold
+			
+		font-size: $fontSizeSmall;
+		// .857em/12px	
+
+		line-height:$fontSizeXLarge;
+		// 1.214em/17px
+		
+		margin-bottom: 5px;
+
+		color: $TPGrey3;
+		// #636569
+	}
+
+	// Chart Titles and Axis Labels
+	h3.chart {
+		font-family: $fontFamilyHeavy;
+		// HelveticaNeueW01-75Bold
+
+		font-size: $fontSizeSmall;
+		// .857em/12px
+
+		color: $TPGrey3;
+		// #636569
+	}
+
+	// Quickview Button Section Headline (View, Charts, Tools, Share)
+	h3.subhead {
+		font-family: $fontFamilyRegular;
+		// HelveticaNeueW01-55Roma
+
+		font-size: $fontSizeSmall;
+		// .857em/12px	
+
+		line-height:$fontSizeXLarge;
+		// 1.214em/17px
+		
+		margin-bottom: 5px;
+
+		color: $TPGrey3;
+		// #636569
+	}
+
+	// Modal Window/Dialog Box Title Headline (Add Workout Menu)
+	h2.modaltitle {
+		font-size: $fontSizeSmall;
+		// .857em/12px
+
+		color: $TPGrey3;
+		// #636569
+	}
+
+	// Headline above expando right col stats
+	h4.rangetitle {
+		font-family: $fontFamilyRegular;
+		// HelveticaNeueW01-55Roma
+
+		font-size:$fontSizeXLarge;
+		//1.214em/17px
+
+		color: $TPGrey4;
+		// #303030
+	}
+
+
+
+// List Items 
+
+	// Tomahawk List/Labels
+	.hoverBoxContents .details-list label {
+		font-size: $fontSizeSmall;
+		// .857em/12px
+
+		color: $TPGrey3;
+		// #636569
+
+		margin: 8px 0;
+	}

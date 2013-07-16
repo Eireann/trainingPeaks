@@ -316,7 +316,7 @@ function (
         setViewSize: function (containerHeight, containerWidth)
         {
             var bottomMargin = 10;
-            var mapHeight = Math.floor((containerHeight - bottomMargin) * 0.55);
+            var mapHeight = Math.floor((containerHeight - bottomMargin) * 0.50);
 
             if (mapHeight < 275)
             {

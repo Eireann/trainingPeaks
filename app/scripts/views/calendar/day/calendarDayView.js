@@ -2,6 +2,7 @@ define(
 [
 
     "underscore",
+    "jqueryui/touch-punch",
     "jqueryui/draggable",
     "jqueryui/droppable",
     "moment",
@@ -13,7 +14,7 @@ define(
     "hbs!templates/views/calendar/day/calendarDayHeader",
     "hbs!templates/views/calendar/day/calendarDay"
 ],
-function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySettingsView, NewItemView, CalendarDayDragStateView, CalendarDayHeaderTemplate, CalendarDayTemplate)
+function(_, touchPunch, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySettingsView, NewItemView, CalendarDayDragStateView, CalendarDayHeaderTemplate, CalendarDayTemplate)
 {
 
     var today = moment().format(TP.utils.datetime.shortDateFormat);
@@ -65,10 +66,10 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySe
             "mouseleave .dayHeader": "onDayHeaderMouseLeave",
 
             "click .addWorkout": "onAddWorkoutClicked",
-            "click": "onDayClicked",
+            "mouseup": "onDayClicked",
             "mousedown .daySettings": "daySettingsClicked",
             "click .daySelected": "onDayUnClicked",
-            "touchstart": "onDayTouched"
+            "click": "onDayTouched"
         },
 
         getItemView: function(item)
@@ -146,6 +147,13 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySe
             {
                 throw "CalendarDayView.onDropItem: ui.draggable should have DropEvent, ItemId, ItemType data attributes: " + options.toString();
             }
+
+            // can't drop on self
+            if (options.ItemType === "CalendarDay" && options.ItemId === this.model.get("date"))
+            {
+                return;
+            }
+
             options.destinationCalendarDayModel = this.model;
             this.trigger("itemDropped", options);
         },
@@ -194,11 +202,7 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySe
 
         onDayHeaderClicked: function(e)
         {
-            if (e.isDefaultPrevented())
-                return;
-
             e.preventDefault();
-
             this.model.trigger("day:click", this.model, e);
             this.select();
         },
@@ -212,16 +216,22 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySe
 
         onDayClicked: function(e)
         {
+            if (this.$el.hasClass("selected"))
+            {
+                return;
+            }
+
             if(e.isDefaultPrevented())
             {
                 return;
             }
 
-            this.clearSelection(e);
-            if(theMarsApp.isTouchEnabled())
+            if (theMarsApp.isTouchEnabled() && this.$el.hasClass("menuOpen"))
             {
-                this.openNewItemView(e);
+                return;
             }
+
+            this.clearSelection(e);
         },
 
         openNewItemView: function()
@@ -260,11 +270,17 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySe
         makeDayDraggable: function()
         {
             _.bindAll(this, "draggableHelper", "onDragStart", "onDragStop");
-            this.$el.data("ItemId", this.model.id);
-            this.$el.data("ItemType", "CalendarDay");
-            this.$el.data("DropEvent", "dayMoved");
-            this.draggableOptions = { appendTo: theMarsApp.getBodyElement(), helper: this.draggableHelper, start: this.onDragStart, stop: this.onDragStop };
-            this.$el.draggable(this.draggableOptions);
+            this.draggableOptions = { appendTo: theMarsApp.getBodyElement(), helper: this.draggableHelper, start: this.onDragStart, stop: this.onDragStop, containment: "#calendarContainer" };
+            this.makeElementDraggable(this.$(".dayHeader"), this.draggableOptions);
+            this.makeElementDraggable(this.$(".daySelected"), this.draggableOptions);
+        },
+
+        makeElementDraggable: function($draggableElement, draggableOptions)
+        {
+            $draggableElement.data("ItemId", this.model.id);
+            $draggableElement.data("ItemType", "CalendarDay");
+            $draggableElement.data("DropEvent", "dayMoved");
+            $draggableElement.draggable(draggableOptions);
         },
 
         draggableHelper: function(e)
@@ -312,16 +328,33 @@ function(_, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySe
         {
             //this.unselect();
             //this.model.trigger("day:click", this.model, e);
+            if (e && e.isDefaultPrevented())
+            {
+                return;
+            }
             if (e)
             {
                 e.preventDefault();
             }
             this.model.trigger("day:unselect", this.model, e);
         },
-        
+
         onDayTouched: function(e)
         {
-            console.log(e);
+            if(e.isDefaultPrevented())
+            {
+                return;
+            }
+
+            if (this.$el.hasClass("menuOpen"))
+            {
+                return;
+            }
+
+            if (theMarsApp.isTouchEnabled())
+            {
+                this.openNewItemView(e);
+            }
         },
 
         onItemSelect: function()
