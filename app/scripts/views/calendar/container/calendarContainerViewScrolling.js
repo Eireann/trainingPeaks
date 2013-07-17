@@ -1,42 +1,22 @@
 ﻿define(
 [
     "underscore",
-    "TP"
+    "TP",
+    "utilities/infiniteScroll"
 ],
-function(_, TP)
+function(_, TP, infiniteScroll)
 {
     var CalendarContainerViewScrolling =
     {
-
-        scrollDownThresholdInPx: 150,
-        scrollUpThresholdInPx: 100,
-
-        initializeScrolling: function()
+        initializeScrollOnDrag: function()
         {
-            _.bindAll(this, "checkCurrentScrollPosition", "afterScrollToElement");
-
-            this.throttledCheckForPosition = _.throttle(this.checkCurrentScrollPosition, 100);
-
-            this.on("render", this.setupScrollingOnRender, this);
-        },
-
-        setupScrollingOnRender: function()
-        {
-            _.bindAll(this, "onScroll");
-            this.ui.weeksContainer.on("scroll", this.onScroll);
-
-            _.bindAll(this, "onScrollStop");
-            var debouncedScrollStop = _.debounce(this.onScrollStop, 300);
-            this.ui.weeksContainer.on("scroll", debouncedScrollStop);
-
-            this.on("close", function()
-            {
-                this.ui.weeksContainer.off("scroll", debouncedScrollStop);
-                this.ui.weeksContainer.off("scroll", this.onScroll);
-            }, this);
-
-            this.checkCurrentScrollPosition();
             this.watchForDragging();
+            this.on("updateScrollPosition", this.onUpdateScrollPosition, this);
+
+            this.on("scroll", this.startScrollingState, this);
+            this.on("scroll:stop", this.snapToHeader, this);
+
+            _.bindAll(this, "afterScrollToElement");
         },
 
         watchForDragging: function()
@@ -53,7 +33,32 @@ function(_, TP)
             }, this);
         },
 
-        onScrollStop: function ()
+        onUpdateScrollPosition: function ($currentElement)
+        {
+            var scrollDate = this.getCurrentScrollDate($currentElement);
+            if (!scrollDate)
+            {
+                return;
+            }
+            this.setCurrentDate(scrollDate);
+        },
+
+        getCurrentScrollDate: function ($currentElement)
+        {
+            if (!$currentElement)
+                return;
+
+            var $currentWeek = $currentElement.closest(".week");
+            var $lastDayOfWeek = $currentWeek.find(".day:last");
+
+            if ($currentWeek && $lastDayOfWeek && $lastDayOfWeek.data("date"))
+            {
+                return $lastDayOfWeek.data("date");
+            }
+            return null;
+        },
+
+        snapToHeader: function ()
         {
 
             if (typeof this.ui.weeksContainer.offset === "undefined")
@@ -124,42 +129,6 @@ function(_, TP)
         {
             this.scrolling = false;
             this.$el.find(".daysOfWeek").removeClass("scrollInProgress");
-        },
-
-        getScrollTop: function()
-        {
-            return this.ui.weeksContainer.scrollTop();
-        },
-
-        getHiddenHeight: function()
-        {
-            var howMuchIHave = this.ui.weeksContainer[0].scrollHeight;
-            var howMuchIsVisible = this.ui.weeksContainer.height();
-            var hidden = howMuchIHave - howMuchIsVisible;
-            return hidden;
-        },
-
-        onScroll: function()
-        {
-            this.startScrollingState();
-
-            var hidden = this.getHiddenHeight();
-            var scrollTop = this.getScrollTop();
-
-            if (scrollTop <= this.scrollUpThresholdInPx)
-            {
-                // Within the threshold at the TOP. Add row & request data.
-                this.trigger("prepend");
-            }
-            else if (scrollTop >= (hidden - this.scrollDownThresholdInPx))
-            {
-                // Within the threshold at the BOTTOM. Add row & request data.
-                this.trigger("append");
-            }
-
-            this.throttledCheckForPosition();
-
-            return;
         },
 
         scrollToSelector: function (selector, animationTimeout)
@@ -238,38 +207,6 @@ function(_, TP)
             this.snappedToWeekHeader = true;
         },
 
-        checkCurrentScrollPosition: function ()
-        {
-            var scrollDate = this.getCurrentScrollDate();
-            if (!scrollDate)
-            {
-                return;
-            }
-            this.setCurrentDate(scrollDate);
-        },
-
-        getCurrentScrollDate: function ()
-        {
-            if (!document.elementFromPoint)
-                return null;
-
-            if (typeof this.ui.weeksContainer.offset === "undefined")
-            {
-                return;
-            }
-
-            var uiOffset = this.ui.weeksContainer.offset();
-            var $currentElement = $(document.elementFromPoint(uiOffset.left + 10, uiOffset.top + 10));
-            var $currentWeek = $currentElement.closest(".week");
-            var $lastDayOfWeek = $currentWeek.find(".day:last");
-
-            if ($currentWeek && $lastDayOfWeek && $lastDayOfWeek.data("date"))
-            {
-                return $lastDayOfWeek.data("date");
-            }
-            return null;
-        },
-
         // if we un-snapped from the week header because of text wrapping on library show/hide,
         // or if we scrolled into a different week, snap back to the correct week
         scrollToLastViewedDate: function (duration)
@@ -279,7 +216,7 @@ function(_, TP)
                 duration = 100;
             }
             var headerDate = this.getHeaderDate();
-            var scrollDate = this.getCurrentScrollDate();
+            var scrollDate = this.getCurrentScrollDate(this.getCurrentVisibleElement());
             if (this.snappedToWeekHeader || headerDate !== scrollDate)
             {
                 this.scrollToDate(moment(headerDate), duration);
@@ -346,6 +283,8 @@ function(_, TP)
 
 
     };
+
+    _.extend(CalendarContainerViewScrolling, infiniteScroll);
 
     return CalendarContainerViewScrolling;
 });
