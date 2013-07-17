@@ -88,16 +88,16 @@ function (_, TP)
 
        getScrollTop: function ()
        {
-           return this.ui.weeksContainer.scrollTop();
+           return this.scrollableContainer.scrollTop();
        },
 
        getHiddenHeight: function ()
        {
-           var howMuchIHave = this.ui.weeksContainer[0].scrollHeight;
-           var howMuchIsVisible = this.ui.weeksContainer.height();
+           var howMuchIHave = this.scrollableContainer[0].scrollHeight;
+           var howMuchIsVisible = this.scrollableContainer.height();
            var hidden = howMuchIHave - howMuchIsVisible;
            return hidden;
-       },
+       }
    };
     return infiniteScroll;
 });
