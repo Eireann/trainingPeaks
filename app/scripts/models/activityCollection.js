@@ -17,7 +17,6 @@ function(moment, TP, WorkoutModel)
 
     var ActivityModelFactory = function(modelAttributes)
     {
-
         if (modelAttributes.hasOwnProperty("workoutId"))
         {
             var model = new WorkoutModel(modelAttributes);

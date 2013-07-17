@@ -21,5 +21,6 @@ function (TP, WorkoutModel, WorkoutBarView, DayBarView)
             else
                 throw "not implemented";
         }
+
     });
 });

@@ -31,15 +31,29 @@ function(
             this.constructor.__super__.initialize.call(this, { template: activityTemplate });
 
             this.activityCollection = new ActivityCollection(null, { startDate: moment().subtract("weeks", 3), endDate: moment().add("weeks", 1) });
-            this.activityCollection.fetch({ reset: true });
+            var self = this;
+            this.activityCollection.fetch({ reset: true }).done(function() { self.scrollToElement("#" + moment().add("days", 1).format("YYYY-MM-DD"), null, 300); });
 
             this.activityCollectionView = new ActivityCollectionView({ collection: this.activityCollection });
+
+            this.on("scroll:top", this.onScrollToTop, this);
+            this.on("scroll:bottom", this.onScrollToBottom, this);
         },
         
         onRender: function()
         {
             this.activityCollectionView.render();
             this.ui.activityFeedContainer.html(this.activityCollectionView.$el);
+        },
+
+        onScrollToTop: function()
+        {
+            console.log("top");
+        },
+
+        onScrollToBottom: function()
+        {
+            console.log("bottom");
         }
     });
 });

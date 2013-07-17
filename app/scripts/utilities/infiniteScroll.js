@@ -67,12 +67,12 @@ function (_, TP)
            if (scrollTop <= this.scrollUpThresholdInPx)
            {
                // Within the threshold at the TOP. Add row & request data.
-               this.trigger("prepend");
+               this.trigger("scroll:top");
            }
            else if (scrollTop >= (hidden - this.scrollDownThresholdInPx))
            {
                // Within the threshold at the BOTTOM. Add row & request data.
-               this.trigger("append");
+               this.trigger("scroll:bottom");
            }
 
            this.throttledCheckForPosition();
@@ -97,7 +97,46 @@ function (_, TP)
            var howMuchIsVisible = this.scrollableContainer.height();
            var hidden = howMuchIHave - howMuchIsVisible;
            return hidden;
+       },
+
+       scrollToElement: function(element, snapToSelector, animationTimeout)
+       {
+
+            var $element = $(element);
+            if (snapToSelector)
+            {
+                if(!$element.is(snapToSelector))
+                {
+                    $element = $element.closest(snapToSelector);
+                }
+
+                if(!$element.is(snapToSelector))
+                {
+                    return;
+                }
+            }
+
+
+            var requestedElementOffsetFromContainer = $element.position().top;
+            var scrollToOffset = Math.round(this.scrollableContainer.scrollTop() + requestedElementOffsetFromContainer - this.scrollableContainer.position().top);
+
+
+            if (typeof animationTimeout === "undefined" && requestedElementOffsetFromContainer < 300)
+            {
+                animationTimeout = 500;
+            }
+            else if (typeof animationTimeout === "undefined" && requestedElementOffsetFromContainer > 1500)
+            {
+                animationTimeout = 2000;
+            }
+
+            var self = this;
+            this.scrollableContainer.animate(
+                {
+                    scrollTop: scrollToOffset
+                }, animationTimeout, function() { self.checkCurrentScrollPosition() });
        }
+
    };
     return infiniteScroll;
 });

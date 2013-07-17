@@ -16,7 +16,6 @@ function(_, TP, infiniteScroll)
             this.on("scroll", this.startScrollingState, this);
             this.on("scroll:stop", this.snapToHeader, this);
 
-            _.bindAll(this, "afterScrollToElement");
         },
 
         watchForDragging: function()
@@ -97,13 +96,13 @@ function(_, TP, infiniteScroll)
             if (currentWeekOffset > minimumOffset && currentWeekOffset <= threshhold)
             {
                 this.snappingToHeader = true;
-                this.scrollToElement(currentWeek, animationTimeout);
+                this.scrollToElement(currentWeek, ".week", animationTimeout);
                 this.snappedToWeekHeader = true;
             }
             else if (nextWeekOffset > minimumOffset && nextWeekOffset <= threshhold)
             {
                 this.snappingToHeader = true;
-                this.scrollToElement(nextWeek, animationTimeout);
+                this.scrollToElement(nextWeek, ".week", animationTimeout);
                 this.snappedToWeekHeader = true;
             }
             else if (nextWeekOffset <= minimumOffset || currentWeekOffset <= minimumOffset)
@@ -136,44 +135,12 @@ function(_, TP, infiniteScroll)
             var elements = this.ui.weeksContainer.find(selector);
             if (elements && elements.length)
             {
-                this.scrollToElement(elements[0], animationTimeout);
+                this.scrollToElement(elements[0], ".week", animationTimeout);
             }
             else
             {
                 theMarsApp.logger.debug("ScollTo Selector not found: " + selector);
             }
-        },
-
-        scrollToElement: function(element, animationTimeout)
-        {
-            var $element = $(element);
-            if ($element.is(".day"))
-                $element = $element.parent();
-
-            if (!$element.is(".week"))
-                throw "Invalid scroll element - must be a .day or .week (" + $element.attr("class") + ")";
-
-            var requestedElementOffsetFromContainer = $element.position().top;
-            var scrollToOffset = Math.round(this.ui.weeksContainer.scrollTop() + requestedElementOffsetFromContainer - this.ui.weeksContainer.position().top);
-
-
-            if (typeof animationTimeout === "undefined" && requestedElementOffsetFromContainer < 300)
-            {
-                animationTimeout = 500;
-            }
-            else if (typeof animationTimeout === "undefined" && requestedElementOffsetFromContainer > 1500)
-            {
-                animationTimeout = 2000;
-            }
-            this.ui.weeksContainer.animate(
-                {
-                    scrollTop: scrollToOffset
-                }, animationTimeout, this.afterScrollToElement);
-        },
-
-        afterScrollToElement: function ()
-        {
-            this.checkCurrentScrollPosition();
         },
 
         scrollToDateIfNotFullyVisible: function(targetDate, effectDuration)
