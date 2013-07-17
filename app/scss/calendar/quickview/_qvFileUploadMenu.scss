@@ -105,7 +105,7 @@
 
                 label
                 {
-                    font-size: 1em;
+                    font-size: $fontSizeSmaller;
                     line-height: 1;
                     display: inline-block;
                     vertical-align: top;
@@ -122,6 +122,7 @@
 
                 .download
                 {
+                    padding-left:2px;
                     &.disabled
                     {
                         color: $TPGrey3;
