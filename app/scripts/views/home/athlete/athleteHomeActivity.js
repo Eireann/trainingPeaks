@@ -46,7 +46,7 @@ function(
             var callback = function()
             {
                 self.listenForScroll();
-            }
+            };
             this.scrollToElement("#" + moment().add("days", 1).format("YYYY-MM-DD"), null, 300, callback);
         },
 

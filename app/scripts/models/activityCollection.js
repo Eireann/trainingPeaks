@@ -80,7 +80,7 @@ function(moment, TP, WorkoutModel)
             var end = moment(requestEndDate).format(TP.utils.datetime.shortDateFormat);
 
             var url = this.urlRoot() + "/" + start + "/" + end;
-            console.log(url);
+            //console.log(url);
             return url;
         },
 
