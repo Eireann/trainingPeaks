@@ -99,7 +99,7 @@ function (_, TP)
            return hidden;
        },
 
-       scrollToElement: function(element, snapToSelector, animationTimeout)
+       scrollToElement: function(element, snapToSelector, animationTimeout, callback)
        {
 
             var $element = $(element);
@@ -134,7 +134,7 @@ function (_, TP)
             this.scrollableContainer.animate(
                 {
                     scrollTop: scrollToOffset
-                }, animationTimeout, function() { self.checkCurrentScrollPosition() });
+                }, animationTimeout, function() { self.checkCurrentScrollPosition(); if (callback) { callback(); } });
        }
 
    };

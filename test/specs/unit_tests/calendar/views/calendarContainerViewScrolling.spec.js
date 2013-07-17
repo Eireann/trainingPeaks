@@ -19,9 +19,9 @@ function($, TP, moment, theMarsApp, CalendarContainerView)
         {
             calendarView = new CalendarContainerView({ collection: new TP.Collection() });
             prependSpy = jasmine.createSpy("onPrepend");
-            calendarView.on("prepend", prependSpy);
+            calendarView.on("scroll:top", prependSpy);
             appendSpy = jasmine.createSpy("onAppend");
-            calendarView.on("append", appendSpy);
+            calendarView.on("scroll:bottom", appendSpy);
             calendarView.render();
 
         });
