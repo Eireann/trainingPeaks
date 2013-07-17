@@ -78,7 +78,10 @@ function(TP, SaveToLibraryConfirmationView, WorkoutQuickViewMenuTemplate)
 
         onPrintClicked: function()
         {
-            this.notImplemented();
+            var personId = theMarsApp.user.getCurrentAthleteId();
+            var workoutId = this.model.id;
+            var url = "https://www.trainingpeaks.com/ui/Print/default.aspx?personId=" + personId + "&workoutId=" + workoutId;
+            window.open(url);
         },
 
         canFitAbove: function(positionTop)
