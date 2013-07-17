@@ -39,30 +39,43 @@ selection: {
 
         function clearMultiSelection(multiSelection)
         {
-            if (multiSelection.show)
-            {
-                multiSelection.show = false;
-                plot.triggerRedrawOverlay();
-            }
+            multiSelection.show = false;
+            multiSelection.temporarilyHidden = false;
+            plot.triggerRedrawOverlay();
         }
 
         function unclearMultiSelection(multiSelection)
         {
-            if (!multiSelection.show)
-            {
-                multiSelection.show = true;
-                plot.triggerRedrawOverlay();
-            }
+            multiSelection.show = true;
+            multiSelection.temporarilyHidden = false;
+            plot.triggerRedrawOverlay();
         }
 
-        function getActiveSelections()
+        function hideActiveSelections()
         {
             var selections = [];
             _.each(multiSelections, function(selection)
             {
                 if (selection.show)
                 {
-                    selections.push(selection);
+                    selection.show = false;
+                    selection.temporarilyHidden = true;
+                }
+            });
+
+            return selections;
+        }
+
+        function unhideActiveSelections()
+        {
+            var selections = [];
+            _.each(multiSelections, function(selection)
+            {
+                if (selection.temporarilyHidden)
+                {
+                    selection.show = true;
+                    selection.temporarilyHidden = false;
+                    plot.triggerRedrawOverlay();
                 }
             });
 
@@ -154,12 +167,20 @@ selection: {
 
         function hasMultiSelection()
         {
-            return multiSelections.length ? true : false;
+            return _.find(multiSelections, function(selection)
+            {
+                return selection.show;
+            });
         }
 
         function getLastMultiSelection()
         {
-            return this.hasMultiSelection() ? multiSelections[multiSelections.length - 1] : null;
+            var activeSelections = _.filter(multiSelections, function(selection)
+            {
+                return selection.show;
+            });
+
+            return activeSelections && activeSelections.length ? activeSelections[activeSelections.length - 1] : null;
         }
 
         function selectionIsSane(multiSelection)
@@ -216,7 +237,8 @@ selection: {
         plot.addMultiSelection = addMultiSelection;
         plot.hasMultiSelection = hasMultiSelection;
         plot.getLastMultiSelection = getLastMultiSelection;
-        plot.getActiveSelections = getActiveSelections;
+        plot.hideActiveSelections = hideActiveSelections;
+        plot.unhideActiveSelections = unhideActiveSelections;
 
         plot.hooks.drawOverlay.push(drawSelectionBoxes);
        
