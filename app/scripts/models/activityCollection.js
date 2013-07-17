@@ -8,10 +8,15 @@ function(moment, TP, WorkoutModel)
 {
     return TP.Collection.extend(
     {
-        model: WorkoutModel,
+        model: TP.Model,
 
         cacheable: true,
 
+        comparator: function(item)
+        {
+            return item.getSortDate();
+        },
+            
         urlRoot: function()
         {
             var athleteId = theMarsApp.user.getCurrentAthleteId();
@@ -31,16 +36,24 @@ function(moment, TP, WorkoutModel)
 
         initialize: function(models, options)
         {
-            if (options)
+            if (!options || !options.startDate || !options.endDate)
+                throw "ActivityCollection requires startDate and endDate";
+            
+            this.startDate = options.startDate;
+            this.endDate = options.endDate;
+
+            var numOfDays = this.startDate.diff(this.endDate, "days");
+            for (var i = 0; i < numOfDays; i++)
             {
-                this.startDate = options.startDate;
-                this.endDate = options.endDate;
+                var dayModel = new TP.Model({ date: moment(this.startDate).add("days", i) });
+                dayModel.isDay = true;
+                this.add(dayModel, { silent: true });
             }
         },
         
         parse: function(response, options)
         {
-            return response.workouts;
+            return  response.workouts;
         }
     });
 });
