@@ -5,8 +5,8 @@
     "moment",
     "models/activityCollection",
     "views/home/scrollableColumnView",
-    "views/home/athlete/activityCollectionView",
-    "hbs!templates/views/home/athlete/athleteHomeActivity"
+    "views/activityFeed/activityCollectionView",
+    "hbs!templates/views/activityFeed/activityFeedContainer"
 ],
 function(
     _,
