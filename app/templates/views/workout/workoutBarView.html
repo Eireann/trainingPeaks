@@ -10,19 +10,19 @@
             <div class="icon addAttachment" title="{{$ "UploadAttachmentTooltip" }}"></div>
         </div>
         <div class="headerWorkoutValue middleValues duration">
-            <label id="qv-header-totaltimePlanned" class="planned">{{ conversion "formatDuration" totalTimePlanned }}</label>
-            <label id="qv-header-totaltime" class="actual">{{ conversion "formatDuration" totalTime }}</label>
+            <label id="qv-header-totaltimePlanned" class="planned">{{ conversion "formatDuration" totalTimePlanned this "0:00:00" }}</label>
+            <label id="qv-header-totaltime" class="actual">{{ conversion "formatDuration" totalTime this "0:00:00" }}</label>
         </div>
         <div class="headerWorkoutValue distance">
-            <label id="qv-header-distancePlanned" class="planned">{{ conversion "formatDistance" distancePlanned this }}</label>
-            <label id="qv-header-distance" class="actual">{{ conversion "formatDistance" distance this }}</label>
+            <label id="qv-header-distancePlanned" class="planned">{{ conversion "formatDistance" distancePlanned this "0" }}</label>
+            <label id="qv-header-distance" class="actual">{{ conversion "formatDistance" distance this "0" }}</label>
         </div>
         <div class="headerWorkoutValueLabel distance">
             <label>{{getUnitsLabel "distance" workoutTypeValueId}}</label>
         </div>
         <div class="headerWorkoutValue middleValues tss">
-            <label id="qv-header-tssPlanned" class="planned">{{ conversion "formatTSS" tssPlanned this }}</label>
-            <label id="qv-header-tssactual" class="actual">{{ conversion "formatTSS" tssActual this }}</label>
+            <label id="qv-header-tssPlanned" class="planned">{{ conversion "formatTSS" tssPlanned this "0" }}</label>
+            <label id="qv-header-tssactual" class="actual">{{ conversion "formatTSS" tssActual this "0" }}</label>
         </div>
         <div class="headerWorkoutValueLabel tss">
             <label>TSS</label>
