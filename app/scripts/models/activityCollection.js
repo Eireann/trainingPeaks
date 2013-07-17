@@ -25,7 +25,7 @@ function(moment, TP, WorkoutModel)
             return model;
         }
 
-        return new TP.Model(modelAttributes);
+        throw "ActivityModelFactory unknown model type";
     };
 
     return TP.Collection.extend(
