@@ -31,7 +31,7 @@ function(
             this.constructor.__super__.initialize.call(this, { template: activityTemplate });
 
             this.activityCollection = new ActivityCollection(null, { startDate: moment().subtract("weeks", 3), endDate: moment().add("weeks", 1) });
-            this.activityCollection.fetch();
+            this.activityCollection.fetch({ reset: true });
 
             this.activityCollectionView = new ActivityCollectionView({ collection: this.activityCollection });
         },

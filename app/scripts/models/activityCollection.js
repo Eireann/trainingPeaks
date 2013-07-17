@@ -6,15 +6,54 @@ define(
 ],
 function(moment, TP, WorkoutModel)
 {
+
+    var DayModel = TP.Model.extend({
+        isDay: true,
+        getSortDate: function()
+        {
+            return this.get("date");
+        }
+    });
+
+    var ActivityModelFactory = function(modelAttributes)
+    {
+
+        if (modelAttributes.hasOwnProperty("workoutId"))
+        {
+            var model = new WorkoutModel(modelAttributes);
+            model.isWorkout = true;
+            return model;
+        }
+
+        return new TP.Model(modelAttributes);
+    };
+
     return TP.Collection.extend(
     {
-        model: TP.Model,
+        model: ActivityModelFactory,
 
         cacheable: true,
 
-        comparator: function(item)
+        comparator: function(a, b)
         {
-            return item.getSortDate();
+            // later dates come first
+            if (a.getSortDate() < b.getSortDate())
+            {
+                return 1;
+            } else if (a.getSortDate() > b.getSortDate())
+            {
+                return -1;
+
+                // days come before models
+            } else if (a.isDay && !b.isDay)
+            {
+                return -1;
+            } else if(b.isDay && !a.isDay)
+            {
+                return 1;
+            }
+
+            return 0;
         },
             
         urlRoot: function()
@@ -38,22 +77,32 @@ function(moment, TP, WorkoutModel)
         {
             if (!options || !options.startDate || !options.endDate)
                 throw "ActivityCollection requires startDate and endDate";
-            
+
             this.startDate = options.startDate;
             this.endDate = options.endDate;
 
-            var numOfDays = this.startDate.diff(this.endDate, "days");
-            for (var i = 0; i < numOfDays; i++)
+            this.on("reset", this.createDayModels, this);
+        },
+
+        createDayModels: function()
+        {
+            var currentDate = moment(this.startDate);
+            while (currentDate.diff(this.endDate, "days") <= 0)
             {
-                var dayModel = new TP.Model({ date: moment(this.startDate).add("days", i) });
-                dayModel.isDay = true;
-                this.add(dayModel, { silent: true });
+                var formattedDate = currentDate.format("YYYY-MM-DD");
+                if (!this.get(formattedDate))
+                {
+                    var dayModel = new DayModel({ date: formattedDate, id: formattedDate });
+                    this.add(dayModel, { silent: true });
+                }
+                currentDate.add("days", 1);
             }
         },
         
         parse: function(response, options)
         {
-            return  response.workouts;
+            return response.workouts;
         }
+
     });
 });

@@ -132,10 +132,15 @@ function (_, moment, TP, WorkoutDetailsModel, WorkoutDetailDataModel)
 
             }
         },
-        
+
         getCalendarDay: function()
         {
             return moment(this.get("workoutDay")).format(TP.utils.datetime.shortDateFormat);
+        },
+
+        getSortDate: function()
+        {
+            return this.getCalendarDay();
         },
 
         moveToDay: function(newDate, newCollection)
