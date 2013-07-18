@@ -172,7 +172,7 @@ function(
         {
             var TSBRange = this.findTSBRange(this.pmcModel.get("data"));
             var chartPoints = this.buildFlotPoints(this.pmcModel.get("data"), TSBRange.minAxisValue);
-            var dataSeries = this.buildFlotDataSeries(chartPoints, chartColors, TSBRange);
+            var dataSeries = this.buildFlotDataSeries(chartPoints, chartColors);
             var flotOptions = this.buildFlotChartOptions(TSBRange);
 
             var self = this;
