@@ -164,6 +164,13 @@ function (
 
         displayAttachmentView: function()
         {
+            // if we haven't already fetched it
+            var attachments = this.model.get("details").get("attachmentFileInfos");
+            if (!attachments || !attachments.length)
+            {
+                this.model.get("details").fetch();
+            }
+
             // Wire up & Display the File Attachment Tomahawk
             var uploadButton = this.$("div.addAttachment");
             var offset = uploadButton.offset();
