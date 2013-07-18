@@ -19,17 +19,17 @@ function($, TP, moment, theMarsApp, CalendarContainerView)
         {
             calendarView = new CalendarContainerView({ collection: new TP.Collection() });
             prependSpy = jasmine.createSpy("onPrepend");
-            calendarView.on("prepend", prependSpy);
+            calendarView.on("scroll:top", prependSpy);
             appendSpy = jasmine.createSpy("onAppend");
-            calendarView.on("append", appendSpy);
+            calendarView.on("scroll:bottom", appendSpy);
             calendarView.render();
 
         });
 
         it("Should trigger prepend event on scroll up past threshhold", function()
         {
-            spyOn(calendarView, "getScrollTop").andReturn(0);
-            spyOn(calendarView, "getHiddenHeight").andReturn(1000);
+            spyOn(calendarView, "getHiddenHeightAboveScrollArea").andReturn(0);
+            spyOn(calendarView, "getHiddenHeightBelowScrollArea").andReturn(1000);
 
             calendarView.onScroll();
 
@@ -39,8 +39,8 @@ function($, TP, moment, theMarsApp, CalendarContainerView)
 
         it("Should trigger append event on scroll down past threshhold", function()
         {
-            spyOn(calendarView, "getScrollTop").andReturn(1000);
-            spyOn(calendarView, "getHiddenHeight").andReturn(0);
+            spyOn(calendarView, "getHiddenHeightAboveScrollArea").andReturn(1000);
+            spyOn(calendarView, "getHiddenHeightBelowScrollArea").andReturn(0);
 
             calendarView.onScroll();
 

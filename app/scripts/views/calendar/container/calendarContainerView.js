@@ -48,6 +48,7 @@ function(
             this.constructor.__super__.initialize.call(this);
 
             this.initializeScrolling();
+            this.initializeScrollOnDrag();
             this.on("render", this.setupKeyBindingsOnRender, this);
             this.on("render", this.addWeeksOnRender, this);
             this.on("calendar:unselect", this.onCalendarUnSelect, this);

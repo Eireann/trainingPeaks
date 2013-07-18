@@ -40,7 +40,7 @@ function($, moment, SessionModel)
                 expect(options.data.username).toBe("myusername");
                 expect(options.data.password).toBe("mypassword");
                 expect(options.data.response_type).toBe("token");
-                expect(options.data.scope).toBe("fitness clientevents users athletes exerciselibrary images groundcontrol");
+                expect(options.data.scope).toBe("fitness clientevents users athletes exerciselibrary images groundcontrol baseactivity");
 
                 return {
                     done: function()

@@ -129,10 +129,10 @@ function(
                 false
             ];
             
+            this.initializeHeaderActions();
             this.initializeFileUploads();
             this.initializeStickit();
             this.initializeSaveDeleteDiscard();
-            this.initializeHeaderActions();
             this.initializeExpand();
             this.initializeSharing();
 
