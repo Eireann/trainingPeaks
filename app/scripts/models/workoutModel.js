@@ -8,7 +8,7 @@
 ],
 function (_, moment, TP, WorkoutDetailsModel, WorkoutDetailDataModel)
 {
-    var WorkoutModel = TP.APIModel.extend(
+    var WorkoutModel = TP.APIDeepModel.extend(
     {
         cacheable: true,
 
@@ -90,7 +90,7 @@ function (_, moment, TP, WorkoutDetailsModel, WorkoutDetailDataModel)
 
         initialize: function()
         {
-            TP.APIModel.prototype.initialize.apply(this, arguments);
+            TP.APIDeepModel.prototype.initialize.apply(this, arguments);
             _.bindAll(this, "checkpoint", "revert");
 
             this.set("details", new WorkoutDetailsModel({ workoutId: this.get("workoutId") }));

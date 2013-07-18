@@ -468,7 +468,7 @@ function(
                 spyOn(controller, "reset");
                 
                 var dateAsMoment = moment("2013-04-16");
-                var currentWeekModel = new TP.Model({ date: dateAsMoment });
+                var currentWeekModel = new TP.Model({ date: dateAsMoment.format(TP.utils.datetime.shortDateFormat) });
 
                 controller.views.header.trigger("request:refresh", currentWeekModel);
 
