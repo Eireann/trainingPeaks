@@ -700,7 +700,7 @@ function(
         },
 
         onPmcSettingsChange: function()
-        {t
+        {
             this.fetchData();
 
             theMarsApp.user.off("change:settings.dashboard.pmc.showTSSPerDay", this.renderChart, this);
