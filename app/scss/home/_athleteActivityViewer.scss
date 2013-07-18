@@ -21,6 +21,7 @@
         {
             @include calc(width, "100% - 30px");
             margin-left: 20px;
+            min-width: 570px;
 
             .workoutHeaderStats
             {
@@ -36,6 +37,7 @@
             {
                 font-size: 1.143em;
                 font-family: "HelveticaNeueW01-55Roma";
+                color: $TPGrey4;
             }
 
             .mapIcon
@@ -47,6 +49,15 @@
                 float: right;
                 margin: 6px 0 0 10px;
             }
+        }
+
+        .day
+        {
+            text-transform: uppercase !important;
+            font-size: $fontSizeSmaller;
+            font-family: $fontFamilyHeavy;
+            color: $TPGrey4;
+            padding: 20px 0 3px 22px;
         }
     }
 }
