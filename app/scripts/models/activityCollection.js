@@ -140,7 +140,7 @@ function(moment, TP, WorkoutModel)
             var currentDate = moment(startDate);
             while (currentDate.diff(endDate, "days") <= 0)
             {
-                var formattedDate = currentDate.format("YYYY-MM-DD");
+                var formattedDate = currentDate.format(TP.utils.datetime.shortDateFormat);
                 if (!this.get(formattedDate))
                 {
                     var dayModel = new DayModel({ date: formattedDate, id: formattedDate });

@@ -5,6 +5,9 @@
 ],
 function (TP, dayBarViewTemplate)
 {
+
+    var today = moment().format(TP.utils.datetime.shortDateFormat);
+
     return TP.ItemView.extend(
     {
         className: "day",
@@ -13,6 +16,14 @@ function (TP, dayBarViewTemplate)
         {
             type: "handlebars",
             template: dayBarViewTemplate
+        },
+
+        onRender: function()
+        {
+            if (this.model.id === today)
+            {
+                this.$el.addClass("today");
+            }
         }
     });
 });

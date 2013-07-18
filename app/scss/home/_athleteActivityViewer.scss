@@ -12,11 +12,6 @@
             background-position: center;
         }
 
-        .day
-        {
-            padding-top: 20px;
-        }
-
         .workoutBarViewHeader 
         {
             @include calc(width, "100% - 30px");
@@ -53,11 +48,22 @@
 
         .day
         {
-            text-transform: uppercase !important;
             font-size: $fontSizeSmaller;
-            font-family: $fontFamilyHeavy;
+            font-family: $fontFamilyRegular;
             color: $TPGrey4;
             padding: 20px 0 3px 22px;
+
+            &.today
+            {
+                font-family: $fontFamilyHeavy;
+            }
+
+            .dayname
+            {
+                text-transform: uppercase !important;
+                display: inline-block;
+                width: 150px;
+            }
         }
     }
 }

@@ -33,7 +33,7 @@ function(
         
         initialize: function(options)
         {
-            // initialize the superclass
+            // initialize the superclass to setup scrolling and other behaviors
             this.constructor.__super__.initialize.call(this, { template: activityTemplate });
 
             this.startDate = moment().subtract("weeks", 3);
@@ -96,7 +96,7 @@ function(
             {
                 self.listenForScroll();
             };
-            this.scrollToElement("#" + moment().add("days", 1).format("YYYY-MM-DD"), null, 300, callback);
+            this.scrollToElement("#" + moment().add("days", 1).format(TP.utils.datetime.shortDateFormat), null, 300, callback);
         },
 
         listenForScroll: function()
