@@ -40,7 +40,7 @@ function (_, TP)
 
        checkCurrentScrollPosition: function ()
        {
-           this.trigger("updateScrollPosition", this.getCurrentVisibleElement());
+           this.trigger("scroll:updatePosition", this.getCurrentVisibleElement());
        },
 
        getCurrentVisibleElement: function ()
@@ -58,18 +58,32 @@ function (_, TP)
            return $currentElement;
        },
 
+       getHiddenHeightAboveScrollArea: function()
+       {
+           return this.scrollableContainer.scrollTop();
+       },
+
+       getHiddenHeightBelowScrollArea: function()
+       {
+           var hiddenAboveScrollArea = this.getHiddenHeightAboveScrollArea();
+           var totalVisibleHeight = this.scrollableContainer.height();
+           var totalContentHeight = this.scrollableContainer[0].scrollHeight;
+           return totalContentHeight - (hiddenAboveScrollArea + totalVisibleHeight);
+       },
+
        onScroll: function ()
        {
 
-           var hidden = this.getHiddenHeight();
-           var scrollTop = this.getScrollTop();
+           var hiddenAboveScrollArea = this.getHiddenHeightAboveScrollArea();
+           var hiddenBelowScrollArea = this.getHiddenHeightBelowScrollArea();
 
-           if (scrollTop <= this.scrollUpThresholdInPx)
+
+           if (hiddenAboveScrollArea <= this.scrollUpThresholdInPx)
            {
                // Within the threshold at the TOP. Add row & request data.
                this.trigger("scroll:top");
            }
-           else if (scrollTop >= (hidden - this.scrollDownThresholdInPx))
+           else if (hiddenBelowScrollArea <= this.scrollDownThresholdInPx)
            {
                // Within the threshold at the BOTTOM. Add row & request data.
                this.trigger("scroll:bottom");
@@ -84,19 +98,6 @@ function (_, TP)
        onScrollStop: function()
        {
            this.trigger("scroll:stop");
-       },
-
-       getScrollTop: function ()
-       {
-           return this.scrollableContainer.scrollTop();
-       },
-
-       getHiddenHeight: function ()
-       {
-           var howMuchIHave = this.scrollableContainer[0].scrollHeight;
-           var howMuchIsVisible = this.scrollableContainer.height();
-           var hidden = howMuchIHave - howMuchIsVisible;
-           return hidden;
        },
 
        scrollToElement: function(element, snapToSelector, animationTimeout, callback)
@@ -131,10 +132,22 @@ function (_, TP)
             }
 
             var self = this;
-            this.scrollableContainer.animate(
+
+            if (animationTimeout)
+            {
+                this.scrollableContainer.animate(
+                    {
+                        scrollTop: scrollToOffset
+                    }, animationTimeout, function() { self.checkCurrentScrollPosition(); if (callback) { callback(); } });
+            } else
+            {
+                this.scrollableContainer.scrollTop(scrollToOffset);
+                this.checkCurrentScrollPosition();
+                if(callback)
                 {
-                    scrollTop: scrollToOffset
-                }, animationTimeout, function() { self.checkCurrentScrollPosition(); if (callback) { callback(); } });
+                    callback();
+                }
+            }
        }
 
    };

@@ -95,25 +95,28 @@ function(moment, TP, WorkoutModel)
             this.on("reset", function() { this.createDayModels(this.startDate, this.endDate, { silent: true }); }, this);
         },
 
-        // fetches a week in the future, at the top of activity feed
+        /*
+        // fetches two weeks in the future, at the top of activity feed
         prependWeek: function()
         {
             var requestStartDate = moment(this.endDate).add("days", 1);
-            var requestEndDate = moment(this.endDate).add("weeks", 1);
+            var requestEndDate = moment(this.endDate).add("weeks", 2);
             return this.requestMoreDays(requestStartDate, requestEndDate);
         },
 
-        // fetches a week in the past, at the bottom of activity feed
+        // fetches two weeks in the past, at the bottom of activity feed
         appendWeek: function()
         {
             var requestEndDate = moment(this.startDate).subtract("days", 1);
-            var requestStartDate = moment(this.startDate).subtract("weeks", 1);
+            var requestStartDate = moment(this.startDate).subtract("weeks", 2);
             return this.requestMoreDays(requestStartDate, requestEndDate);
         },
 
         requestMoreDays: function(requestStartDate, requestEndDate)
         {
-            var fetchPromise = this.fetch({ remove: false, url: this.url(requestStartDate, requestEndDate) });
+            var weekUrl = this.url(requestStartDate, requestEndDate);
+            //console.log("Requesting week: " + weekUrl);
+            var fetchPromise = this.fetch({ remove: false, url: weekUrl });
             var self = this;
             fetchPromise.done(function()
             {
@@ -126,11 +129,12 @@ function(moment, TP, WorkoutModel)
                 {
                     self.endDate = moment(requestEndDate);
                 }
+                //console.log("Finished week: " + weekUrl);
             });
 
             return fetchPromise;
         },
-
+        */
         createDayModels: function(startDate, endDate, options)
         {
             var currentDate = moment(startDate);

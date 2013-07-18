@@ -11,7 +11,7 @@ function(_, TP, infiniteScroll)
         initializeScrollOnDrag: function()
         {
             this.watchForDragging();
-            this.on("updateScrollPosition", this.onUpdateScrollPosition, this);
+            this.on("scroll:updatePosition", this.onUpdateScrollPosition, this);
 
             this.on("scroll", this.startScrollingState, this);
             this.on("scroll:stop", this.snapToHeader, this);

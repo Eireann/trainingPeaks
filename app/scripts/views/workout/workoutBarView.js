@@ -22,6 +22,8 @@ function (
 
     return TP.ItemView.extend(
     {
+        className: "workoutBarViewHeader workout",
+
         template:
         {
             type: "handlebars",
@@ -50,21 +52,10 @@ function (
         
         updateHeaderClass: function ()
         {
-            // first calculate it, then reset if needed
-            var tmpElement = $("<div></div>").addClass("workoutBarViewHeader").addClass("workout");
-            tmpElement.addClass(this.getComplianceCssClassName());
-            tmpElement.addClass(this.getPastOrCompletedCssClassName());
-
-            var header = this.$(".workoutBarViewHeader");
-            if (header.attr("class") !== tmpElement.attr("class"))
-            {
-                header.attr("class", tmpElement.attr("class"));
-            }
-            this.$(".workoutBarViewHeader").addClass(this.getComplianceCssClassName());
-            this.$(".workoutBarViewHeader").addClass(this.getPastOrCompletedCssClassName());
-            this.$(".workoutBarViewHeader").addClass(this.getWorkoutTypeCssClassName());
-
-
+            this.$el.attr("class", this.className);
+            this.$el.addClass(this.getComplianceCssClassName());
+            this.$el.addClass(this.getPastOrCompletedCssClassName());
+            this.$el.addClass(this.getWorkoutTypeCssClassName());
         },
         
         getComplianceCssClassName: function ()

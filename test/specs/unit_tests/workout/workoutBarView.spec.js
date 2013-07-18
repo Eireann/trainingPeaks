@@ -44,7 +44,7 @@ function(moment, theMarsApp, TP, WorkoutBarView, WorkoutModel)
 
         it("Should have the appropriate workout type class", function()
         {
-            expect(workoutBarView.$(".workoutBarViewHeader").is(".Swim")).toBe(true);
+            expect(workoutBarView.$el.is(".Swim")).toBe(true);
         });
 
         describe("Workout Stats", function()
@@ -99,26 +99,26 @@ function(moment, theMarsApp, TP, WorkoutBarView, WorkoutModel)
 
             it("Should have ComplianceGreen", function()
             {
-                expect(workoutBarView.$(".workoutBarViewHeader").is(".ComplianceGreen")).toBe(true);
+                expect(workoutBarView.$el.is(".ComplianceGreen")).toBe(true);
             });
 
             it("Should change to ComplianceNone if there is no planned time", function()
             {
                 workoutModel.set("totalTimePlanned", null);
-                expect(workoutBarView.$(".workoutBarViewHeader").is(".ComplianceGreen")).toBe(false);
-                expect(workoutBarView.$(".workoutBarViewHeader").is(".ComplianceNone")).toBe(true);
+                expect(workoutBarView.$el.is(".ComplianceGreen")).toBe(false);
+                expect(workoutBarView.$el.is(".ComplianceNone")).toBe(true);
             });
 
             it("Should have past", function()
             {
-                expect(workoutBarView.$(".workoutBarViewHeader").is(".past")).toBe(true);
+                expect(workoutBarView.$el.is(".past")).toBe(true);
             });
 
             it("Should change to future when date changes", function()
             {
                 workoutModel.set("workoutDay", moment().add("years", 23).format("YYYY-MM-DD") + "T00:00:00Z");
-                expect(workoutBarView.$(".workoutBarViewHeader").is(".past")).toBe(false);
-                expect(workoutBarView.$(".workoutBarViewHeader").is(".future")).toBe(true);
+                expect(workoutBarView.$el.is(".past")).toBe(false);
+                expect(workoutBarView.$el.is(".future")).toBe(true);
             });
 
 

@@ -2,6 +2,21 @@
 {
     .activityCollection
     {
+
+        .waitingforInfiniteScroll
+        {
+            width: 100%;
+            height: 50px;
+            background-image: url(../../assets/images/throbber.gif);
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .day
+        {
+            padding-top: 20px;
+        }
+
         .workoutBarViewHeader 
         {
             @include calc(width, "100% - 30px");

@@ -7,6 +7,8 @@ function (TP, dayBarViewTemplate)
 {
     return TP.ItemView.extend(
     {
+        className: "day",
+
         template:
         {
             type: "handlebars",

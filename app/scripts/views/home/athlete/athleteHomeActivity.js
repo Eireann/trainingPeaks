@@ -1,6 +1,7 @@
 ﻿define(
 [
     "underscore",
+    "setImmediate",
     "TP",
     "moment",
     "models/activityCollection",
@@ -10,6 +11,7 @@
 ],
 function(
     _,
+    setImmediate,
     TP,
     moment,
     ActivityCollection,
@@ -20,6 +22,10 @@ function(
 {
     return ScrollableColumnView.extend(
     {
+
+        scrollDownThresholdInPx: 500,
+        scrollUpThresholdInPx: 300,
+
         ui:
         {
             activityFeedContainer: "#activityFeedContainer"
@@ -30,14 +36,43 @@ function(
             // initialize the superclass
             this.constructor.__super__.initialize.call(this, { template: activityTemplate });
 
-            this.activityCollection = new ActivityCollection(null, { startDate: moment().subtract("weeks", 3), endDate: moment().add("weeks", 1) });
-            var self = this;
-            this.activityCollection.fetch({ reset: true }).done(function() { self.afterInitialLoad(); });
-
-            this.activityCollectionView = new ActivityCollectionView({ collection: this.activityCollection });
+            this.startDate = moment().subtract("weeks", 3);
+            this.endDate = moment().add("weeks", 1);
 
             _.bindAll(this, "beforeAppend", "afterAppend", "beforePrepend", "afterPrepend");
 
+        },
+
+        onRender: function()
+        {
+            var self = this;
+            this.requestActivities(this.startDate, this.endDate, "append").done(function() { self.afterInitialLoad(); });
+        },
+
+        requestActivities: function(startDate, endDate, appendOrPrepend)
+        {
+            var activityCollection = new ActivityCollection(null, { startDate: startDate, endDate: endDate });
+            var fetchPromise = activityCollection.fetch({ reset: true });
+            var activityCollectionView = new ActivityCollectionView({ collection: activityCollection });
+            activityCollectionView.render();
+            if (appendOrPrepend === "append")
+            {
+                this.ui.activityFeedContainer.append(activityCollectionView.$el);
+            }
+            else
+            {
+                var currentScrollTop = this.scrollableContainer.scrollTop();
+                this.ui.activityFeedContainer.prepend(activityCollectionView.$el);
+                var self = this;
+                fetchPromise.done(function()
+                {
+                    //console.log(activityCollectionView.$el.height());
+                    var newCollectionHeight = activityCollectionView.$el.height();
+                    self.scrollableContainer.scrollTop(currentScrollTop + newCollectionHeight);
+                });
+            }
+
+            return fetchPromise;
         },
 
         afterInitialLoad: function()
@@ -54,22 +89,22 @@ function(
         {
             this.on("scroll:top", this.onScrollToTop, this);
             this.on("scroll:bottom", this.onScrollToBottom, this);
+            this.on("scroll:updatePosition", this.onUpdateScrollPosition, this);
         },
         
-        onRender: function()
-        {
-            this.activityCollectionView.render();
-            this.ui.activityFeedContainer.append(this.activityCollectionView.$el);
-        },
-
         onScrollToTop: function()
         {
             if (!this.prepending)
             {
                 this.beforePrepend();
                 var self = this;
-                var currentEndDate = this.activityCollection.endDate;
-                this.activityCollection.prependWeek().done(function()
+
+                // FIXME: may not be correct
+                var currentEndDate = this.endDate;
+
+                var requestStartDate = moment(this.endDate).add("days", 1);
+                this.endDate = moment(this.endDate).add("weeks", 1);
+                this.requestActivities(requestStartDate, this.endDate, "prepend").done(function()
                 {
                     self.afterPrepend(moment(currentEndDate).add("days", 1));
                 });
@@ -82,49 +117,52 @@ function(
             {
                 this.beforeAppend();
                 var self = this;
-                var currentStartDate = this.activityCollection.startDate;
-                this.activityCollection.appendWeek().done(function()
+
+                var requestEndDate = moment(this.startDate).subtract("days", 1);
+                this.startDate = moment(this.startDate).subtract("weeks", 2);
+                this.requestActivities(this.startDate, requestEndDate, "append").done(function()
                 {
-                    self.afterAppend(moment(currentStartDate).subtract("days", 1));
+                    self.afterAppend();
                 });
             }
         },
 
         beforeAppend: function()
         {
+            this.appending = true;
+            /*
             if (!this.$appendWait)
             {
-                this.$appendWait = $("<div>").addClass("infiniteScroll").addClass("waiting");
+                this.$appendWait = $("<div>").addClass("waitingForInfiniteScroll");
                 this.ui.activityFeedContainer.append(this.$appendWait);
             }
 
             this.$appendWait.show();
-            this.appending = true;
+            */
         },
 
         afterAppend: function(scrollToDate)
         {
-            this.$appendWait.hide();
-            this.scrollToElement("#" + scrollToDate.format("YYYY-MM-DD"), null, 0);
+            //this.$appendWait.hide();
             this.appending = false;
         },
 
         beforePrepend: function()
         {
+            this.prepending = true;
+            /*
             if(!this.$prependWait)
             {
-                this.$prependWait = $("<div>").addClass("infiniteScroll").addClass("waiting");
+                this.$prependWait = $("<div>").addClass("waitingForInfiniteScroll");
                 this.ui.activityFeedContainer.prepend(this.$prependWait);
             }
-
             this.$prependWait.show();
-            this.prepending = true;
+            */
         },
 
         afterPrepend: function(scrollToDate)
         {
-            this.$prependWait.hide();
-            this.scrollToElement("#" + scrollToDate.format("YYYY-MM-DD"), null, 0);
+            //this.$prependWait.hide();
             this.prepending = false;
         }
 
