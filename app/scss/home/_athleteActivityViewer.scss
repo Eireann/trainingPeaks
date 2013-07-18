@@ -53,6 +53,17 @@
         &.today
         {
             font-family: $fontFamilyHeavy;
+
+            .arrowContainer
+            {
+                display: block;
+            }
+
+            .dayname
+            {
+                padding-left: 6px;
+                width: 135px;
+            }
         }
 
         .dayname
@@ -65,13 +76,13 @@
 
         .arrowContainer
         {
-            
+            display: none;
             width: 15px;
             height: 15px;
             float: left;
             position: relative;
-            top: 35px;
-            left: -25px;
+            top: 30px;
+            left: -30px;
 
             .hideHalfOfArrow
             {
