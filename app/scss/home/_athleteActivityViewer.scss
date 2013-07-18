@@ -6,6 +6,7 @@
         {
             @include calc(width, "100% - 30px");
             margin-left: 20px;
+            min-width: 570px;
 
             .workoutHeaderStats
             {
@@ -21,6 +22,7 @@
             {
                 font-size: 1.143em;
                 font-family: "HelveticaNeueW01-55Roma";
+                color: $TPGrey4;
             }
 
             .mapIcon
