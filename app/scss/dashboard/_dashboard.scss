@@ -31,7 +31,7 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
 
     &:hover
     {
-        background-color: $TPGrey2;
+        background-color: $TPGrey6;
         border: 1px solid $TPGrey11;
 
         .chartButtons
@@ -112,8 +112,8 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
 
         .settings
         {
-            width: 16px;
-            right: 36px;
+            width: 11px;
+            right: 43px;
             background: transparent $chartIconsSpriteURL no-repeat 0 0;
             cursor:pointer;
 
@@ -128,7 +128,7 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
 
         .expand
         {
-            right: 16px;
+            right: 21px;
             background: transparent $chartIconsSpriteURL no-repeat -17px 0;
             cursor:pointer;
 
@@ -144,15 +144,15 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
         .close
         {
             right: 0px;
-            background: transparent $chartIconsSpriteURL no-repeat -34px 0;
+            background: transparent $chartIconsSpriteURL no-repeat -51px 0;
             cursor:pointer;
 
             &:hover {
-                background-position: -34px -17px;
+                background-position: -51px -17px;
             }
 
             &:active {
-                background-position: -34px -17px;
+                background-position: -51px 0;
             }
         }
 

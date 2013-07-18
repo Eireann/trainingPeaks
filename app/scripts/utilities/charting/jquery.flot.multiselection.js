@@ -28,6 +28,7 @@ selection: {
 
 
  addMultiSelection
+ getLastSelection
  clearMultiSelection(selection)
 */
 
@@ -38,11 +39,47 @@ selection: {
 
         function clearMultiSelection(multiSelection)
         {
-            if (multiSelection.show)
+            multiSelection.show = false;
+            multiSelection.temporarilyHidden = false;
+            plot.triggerRedrawOverlay();
+        }
+
+        function unclearMultiSelection(multiSelection)
+        {
+            multiSelection.show = true;
+            multiSelection.temporarilyHidden = false;
+            plot.triggerRedrawOverlay();
+        }
+
+        function hideActiveSelections()
+        {
+            var selections = [];
+            _.each(multiSelections, function(selection)
             {
-                multiSelection.show = false;
-                plot.triggerRedrawOverlay();
-            }
+                if (selection.show)
+                {
+                    selection.show = false;
+                    selection.temporarilyHidden = true;
+                }
+            });
+
+            return selections;
+        }
+
+        function unhideActiveSelections()
+        {
+            var selections = [];
+            _.each(multiSelections, function(selection)
+            {
+                if (selection.temporarilyHidden)
+                {
+                    selection.show = true;
+                    selection.temporarilyHidden = false;
+                    plot.triggerRedrawOverlay();
+                }
+            });
+
+            return selections;
         }
 
         // function taken from markings support in Flot
@@ -80,14 +117,27 @@ selection: {
             
             return { from: from, to: to, axis: axis };
         }
-        
+
         function addMultiSelection(ranges, options, preventEvent)
         {
             var multiSelection = {
                 first: { x: -1, y: -1 }, second: { x: -1, y: -1 },
+                ranges: ranges,
                 show: true
             };
 
+            updateSelectionCoordinates(multiSelection);
+
+            multiSelection.show = true;
+            multiSelection.dataType = options.dataType;
+            multiSelections.push(multiSelection);
+            plot.triggerRedrawOverlay();
+            return multiSelection;
+
+        }
+
+        function updateSelectionCoordinates(multiSelection)
+        {
             var axis, range, o = plot.getOptions();
 
             if (o.multiSelection.mode === "y")
@@ -95,8 +145,9 @@ selection: {
                 multiSelection.first.x = 0;
                 multiSelection.second.x = plot.width();
             }
-            else {
-                range = extractRange(ranges, "x");
+            else
+            {
+                range = extractRange(multiSelection.ranges, "x");
 
                 multiSelection.first.x = range.axis.p2c(range.from);
                 multiSelection.second.x = range.axis.p2c(range.to);
@@ -107,18 +158,29 @@ selection: {
                 multiSelection.second.y = plot.height();
             }
             else {
-                range = extractRange(ranges, "y");
+                range = extractRange(multiSelection.ranges, "y");
 
                 multiSelection.first.y = range.axis.p2c(range.from);
                 multiSelection.second.y = range.axis.p2c(range.to);
             }
+        }
 
-            multiSelection.show = true;
-            multiSelection.dataType = options.dataType;
-            multiSelections.push(multiSelection);
-            plot.triggerRedrawOverlay();
-            return multiSelection;
+        function hasMultiSelection()
+        {
+            return _.find(multiSelections, function(selection)
+            {
+                return selection.show;
+            });
+        }
 
+        function getLastMultiSelection()
+        {
+            var activeSelections = _.filter(multiSelections, function(selection)
+            {
+                return selection.show;
+            });
+
+            return activeSelections && activeSelections.length ? activeSelections[activeSelections.length - 1] : null;
         }
 
         function selectionIsSane(multiSelection)
@@ -139,16 +201,20 @@ selection: {
 
             _.each(multiSelections, function(multiSelection)
             {
-                if (multiSelection.show && selectionIsSane(multiSelection))
+                if (multiSelection.show)
                 {
-                    var x = Math.min(multiSelection.first.x, multiSelection.second.x) + 0.5,
-                        y = Math.min(multiSelection.first.y, multiSelection.second.y) + 0.5,
-                        w = Math.abs(multiSelection.second.x - multiSelection.first.x) - 1,
-                        h = Math.abs(multiSelection.second.y - multiSelection.first.y) - 1;
+                    updateSelectionCoordinates(multiSelection);
+                    if (selectionIsSane(multiSelection))
+                    {
+                        var x = Math.min(multiSelection.first.x, multiSelection.second.x) + 0.5,
+                            y = Math.min(multiSelection.first.y, multiSelection.second.y) + 0.5,
+                            w = Math.abs(multiSelection.second.x - multiSelection.first.x) - 1,
+                            h = Math.abs(multiSelection.second.y - multiSelection.first.y) - 1;
 
-                    setColorBySelectionType(options, multiSelection.dataType, ctx);
-                    ctx.fillRect(x, y, w, h);
-                    ctx.strokeRect(x, y, w, h);
+                        setColorBySelectionType(options, multiSelection.dataType, ctx);
+                        ctx.fillRect(x, y, w, h);
+                        ctx.strokeRect(x, y, w, h);
+                    }
                 }
             });
 
@@ -167,7 +233,12 @@ selection: {
         }
 
         plot.clearMultiSelection = clearMultiSelection;
+        plot.unclearMultiSelection = unclearMultiSelection;
         plot.addMultiSelection = addMultiSelection;
+        plot.hasMultiSelection = hasMultiSelection;
+        plot.getLastMultiSelection = getLastMultiSelection;
+        plot.hideActiveSelections = hideActiveSelections;
+        plot.unhideActiveSelections = unhideActiveSelections;
 
         plot.hooks.drawOverlay.push(drawSelectionBoxes);
        

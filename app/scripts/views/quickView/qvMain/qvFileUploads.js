@@ -38,6 +38,29 @@ function (
             _.extend(this.events, this.fileUploadEvents);
         },
 
+        watchForWorkoutFiles: function()
+        {
+            this.model.get("details").on("change:workoutDeviceFileInfos", this.updateUploadButtonState, this);
+            this.on("close", this.stopWatchingForWorkoutFiles, this);
+        },
+
+        stopWatchingForWorkoutFiles: function()
+        {
+            this.model.get("details").off("change:workoutDeviceFileInfos", this.updateUploadButtonState, this);
+        },
+
+        updateUploadButtonState: function()
+        {
+            var attachments = this.model.get("details").get("workoutDeviceFileInfos");
+            if (attachments && attachments.length)
+            {
+                this.$("#quickViewFileUploadDiv").addClass("withFiles");
+            } else
+            {
+                this.$("#quickViewFileUploadDiv").removeClass("withFiles");
+            }
+        },
+
         onUploadFileClicked: function()
         {
             var uploadButton = this.$("#quickViewFileUploadDiv");

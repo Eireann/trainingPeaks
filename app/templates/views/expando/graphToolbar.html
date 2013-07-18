@@ -9,16 +9,11 @@
         display: none;
     }
 
-    .graphResetButton
-    {
-        display: none;
-    }
 </style>
 
 <input type="range" name="filterPeriod" title="Smoothing" min="0" max="60" step="5" value="5"/>
 
-<button class="graphResetButton">{{$ "Reset"}}</button>
-<button class="graphCutButton">{{$ "Cut"}}</button>
+<button class="graphResetButton hidden">{{$ "Unzoom"}}</button>
 <button class="graphZoomButton">{{$ "Zoom"}}</button>
 
 <button class="graphTimeButton">{{$ "Time"}}</button>

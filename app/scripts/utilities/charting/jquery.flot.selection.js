@@ -364,7 +364,7 @@ The plugin allso adds the following methods to the plot object:
                     mode: null, // one of null, "x", "y" or "xy"
                     color: chartColors.chartSelection,
                     shape: "round", // one of "round", "miter", or "bevel"
-                    minSize: 5 // minimum number of pixels
+                    minSize: 1 // minimum number of pixels
                 }
             },
             name: 'selection',

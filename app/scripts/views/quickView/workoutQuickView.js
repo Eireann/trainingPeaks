@@ -140,6 +140,12 @@ function(
             {
                 this.once("render", this.focusTitle, this);
             }
+            
+            this.model.on("change:workoutTypeValueId", this.checkShowPaceViews, this);
+            this.on("close", function () { this.model.off("change:workoutTypeValueId", this.checkShowPaceViews, this); });
+
+            this.model.get("detailData").on("changeSensorData", this.onSensorDataChange, this);
+
         },
         
         stopWorkoutDetailsFetch: function ()
@@ -170,6 +176,13 @@ function(
 
                 this.watchForFileUploads();
             }
+
+            this.$(".mapGraphTab").addClass("missingData");
+            this.$(".heartrateTab").addClass("missingData");
+            this.$(".powerTab").addClass("missingData");
+            this.$(".paceTab").addClass("missingData");
+
+            this.onSensorDataChange();
         },
 
         onDetailsChange: function(detailModel)
@@ -177,9 +190,85 @@ function(
             this.trigger("change:details", detailModel);
         },
 
+        onSensorDataChange: function()
+        {
+            if (this.model.get("detailData").attributes.flatSamples !== null)
+            {
+                this.$(".mapGraphTab").removeClass("missingData");
+            }
+
+            if (this.model.get("details").get("meanMaxHeartRates") !== null)
+            {
+                var heartRateArray = this.model.get("details").get("meanMaxHeartRates").meanMaxes;
+                var hasHeartRateValue = this.checkToSeeModelHasValue(heartRateArray);
+               
+                if (hasHeartRateValue)
+                {
+                    this.$(".heartrateTab").removeClass("missingData");
+                }
+            }
+
+            if (this.model.get("details").get("meanMaxPowers") !== null)
+            {
+                var meanMaxPowerArray = this.model.get("details").get("meanMaxPowers").meanMaxes;
+                var hasPowerValue = this.checkToSeeModelHasValue(meanMaxPowerArray);
+
+                if (hasPowerValue)
+                {
+                    this.$(".powerTab").removeClass("missingData");
+                }
+            }
+
+            if (this.model.get("details").get("timeInSpeedZones") !== null || this.model.get("details").get("meanMaxSpeeds") !== null)
+            {
+                var meanMaxSpeedArray = this.model.get("details").get("meanMaxSpeeds").meanMaxes;
+                var hasSpeedValue = this.checkToSeeModelHasValue(meanMaxSpeedArray);
+
+                if (this.model.get("details").get("timeInSpeedZones") !== null)
+                {
+                    var speedZonesArray = this.model.get("details").get("timeInSpeedZones").timeInZones;
+                    var hasSpeedZonesValue = this.checkToSeeSpeedZoneHasSpeed(speedZonesArray);
+
+                    if (hasSpeedZonesValue)
+                    {
+                        this.$(".paceTab").removeClass("missingData");
+                    }
+                }
+
+                if (hasSpeedValue)
+                {
+                    this.$(".paceTab").removeClass("missingData");
+                }
+            }
+        },
+
+        checkToSeeModelHasValue: function (modelHasValue)
+        {
+            var modelValueArray = modelHasValue;
+            modelValueArray = _.find(modelValueArray, function (modelValue)
+            {
+                return modelValue.value !== null;
+            });
+
+            return modelValueArray;
+        },
+
+        checkToSeeSpeedZoneHasSpeed: function (speedZonesHasSeconds)
+        {
+            var modelSecondsArray = speedZonesHasSeconds;
+            modelSecondsArray = _.find(modelSecondsArray, function (modelSeconds)
+            {
+                return modelSeconds.seconds > 0;
+            });
+
+            return modelSecondsArray;
+        },
+
         initializeTabsAfterRender: function()
         {
             this.on("close", this.closeTabViews, this);
+
+            this.checkShowPaceViews();
 
             var tabViews = {
                 summary: new WorkoutQuickViewSummary({ model: this.model, el: this.$(this.tabDomIDs[0]) }),
@@ -200,6 +289,25 @@ function(
                 tabViews.pace
             ];
         },
+        
+        checkShowPaceViews: function ()
+        {
+            //Show pace for: run/walk/swim/other
+            var workoutTypeValueId = this.model.get("workoutTypeValueId");
+
+            var showPace = _.contains([1, 3, 13, 100], workoutTypeValueId);
+
+            if (!showPace)
+                this.$(".paceTab").css("display", "none");
+            else
+                this.$(".paceTab").css("display", "");
+            
+            //Move off the pace tab
+            if (this.currentTabIndex === 4)
+                this.$(".tabNavigation > .summaryTab").click();
+
+        },
+
 
         closeTabViews: function()
         {

@@ -42,6 +42,11 @@ function(TP, graphToolbarTemplate)
             this.trigger("filterPeriodChanged", period);
         },
 
+        setFilterPeriod: function(period)
+        {
+            this.$("input[name=filterPeriod]").val(period);
+        },
+
         onGraphSeriesButtonClicked: function(event)
         {
             var clickedButton = $(event.target);
@@ -67,14 +72,14 @@ function(TP, graphToolbarTemplate)
         onResetClicked: function()
         {
             this.trigger("reset");
-            this.ui.zoomResetButton.fadeOut(200);
+            this.ui.zoomResetButton.addClass("hidden");
         },
 
         onGraphZoomed: function()
         {
-            this.ui.zoomResetButton.fadeIn(200);
+            this.ui.zoomResetButton.removeClass("hidden");
         },
-        
+
         onRender: function()
         {
             var self = this;

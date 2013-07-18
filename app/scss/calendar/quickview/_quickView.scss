@@ -165,14 +165,17 @@ input[disabled='disabled']
 
             label
             {
+                color:$TPGrey10;
+
                 &.selected
                 {
                     font-family: $fontFamilyHeavy;
+                    color:$TPGrey4;
                 }
 
                 &:hover
                 {
-                    font-family: $fontFamilyHeavy;
+                   color:$TPGrey4;
                 }
             }
         }

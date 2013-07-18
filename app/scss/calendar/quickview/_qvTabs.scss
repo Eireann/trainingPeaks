@@ -12,6 +12,11 @@ $QVTabSpriteRetinaURL: url(../../assets/images/QVImages/sprite-icons-QV-Tabs@2x.
     border-bottom-style: solid;
     border-bottom-width: 1px;
 
+    .missingData
+    {
+        border: 1px red solid;
+    }
+
     .summaryTab {
         padding: 7px 0px 10px 2px;
         height: 45px;
