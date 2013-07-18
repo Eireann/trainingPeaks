@@ -9,6 +9,8 @@ function(_, Backbone, DeepModel, moment)
 {
     var BaseModel = {
 
+        myBackboneModelPrototype: Backbone.Model.prototype,
+
         createPromise: function()
         {
             if(this.id)
@@ -24,6 +26,9 @@ function(_, Backbone, DeepModel, moment)
 
     var APIModel = 
     {
+
+        myBackboneModelPrototype: Backbone.Model.prototype,
+
         checkpoint: function()
         {
             this.checkpointAttributes = _.clone(this.attributes);
@@ -79,16 +84,25 @@ function(_, Backbone, DeepModel, moment)
     {
         webAPIModelName: null,
         idAttribute: null,
-        myPrototype: Backbone.DeepModel.prototype,
 
         get: function (key)
         {
             this.validateKeyExistsInDefaults(key);
-            return this.myPrototype.get.call(this, key);
+            return this.myBackboneModelPrototype.get.call(this, key);
         },
 
         validate: function (attrs, options)
         {
+            if (options && options.disableDevValidations)
+            {
+                this.disableDevValidations = true;
+            }
+
+            if (this.disableDevValidations)
+            {
+                return;
+            }
+
             this.validateWebAPIModelName();
             this.validateIdAttribute(attrs);
             this.validateAgainstDefaultValues(attrs);
@@ -174,8 +188,8 @@ function(_, Backbone, DeepModel, moment)
 
     return {
         BaseModel: Backbone.Model.extend(BaseModel),
-        DeepModel: Backbone.DeepModel.extend(BaseModel),
+        DeepModel: Backbone.DeepModel.extend(_.extend({}, BaseModel, { myBackboneModelPrototype: Backbone.DeepModel.prototype })),
         APIBaseModel: Backbone.Model.extend(APIModel),
-        APIDeepModel: Backbone.DeepModel.extend(APIModel)
+        APIDeepModel: Backbone.DeepModel.extend(_.extend({}, APIModel, { myBackboneModelPrototype: Backbone.DeepModel.prototype }))
     };
 });

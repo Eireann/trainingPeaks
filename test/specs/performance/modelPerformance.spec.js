@@ -4,14 +4,24 @@
     "backbone",
     "backbone.deepmodel",
     "TP",
-    "testUtils/AppTestData/GET_DetailData_134283074"
+    "models/workoutModel",
+    "models/workoutDetailData",
+    "models/workoutsCollection",
+    "testUtils/AppTestData/GET_DetailData_134283074",
+    "testUtils/AppTestData/GET_Workouts_2013_06_17_2013_06_23",
+    "testUtils/AppTestData/singleWorkout"
 ],
 function(
     moment,
     Backbone,
     BackboneDeepModel,
     TP,
-    DetailData1
+    WorkoutModel,
+    WorkoutDetailDataModel,
+    WorkoutsCollection,
+    DetailDataJSON,
+    WorkoutCollectionJSON,
+    SingleWorkoutJSON
     )
 {
 
@@ -84,7 +94,7 @@ function(
                 var Model = Backbone.Model.extend({});
                 for(var i = 0;i<100;i++)
                 {
-                    new Model({ details: DetailData1 });
+                    new Model(DetailDataJSON);
                 }
                 var elapsedTime = +new Date() - startTime;
                 console.log("Creating 100 models with large detail data took " + elapsedTime + "ms");
@@ -157,7 +167,7 @@ function(
                 var Model = Backbone.DeepModel.extend({});
                 for(var i = 0;i<100;i++)
                 {
-                    new Model({ details: DetailData1 });
+                    new Model(DetailDataJSON);
                 }
                 var elapsedTime = +new Date() - startTime;
                 console.log("Creating 100 deepmodels with large detail data took " + elapsedTime + "ms");
@@ -172,11 +182,10 @@ function(
                 var Model = TP.BaseModel.extend({});
                 for(var i = 0;i<100;i++)
                 {
-                    new Model({ details: DetailData1 });
+                    new Model(DetailDataJSON);
                 }
                 var elapsedTime = +new Date() - startTime;
-                console.log("Creating 100 TP.BaseModels with large detail data took " + elapsedTime + "ms");
-                expect(elapsedTime).toBeLessThan(5);
+                expect(elapsedTime).toBeLessThan(10);
             });
         });
 
@@ -188,14 +197,100 @@ function(
                 var Model = TP.DeepModel.extend({});
                 for(var i = 0;i<100;i++)
                 {
-                    new Model({ details: DetailData1 });
+                    new Model(DetailDataJSON);
                 }
                 var elapsedTime = +new Date() - startTime;
-                console.log("Creating 100 TP.DeepModels with large detail data took " + elapsedTime + "ms");
                 expect(elapsedTime).toBeGreaterThan(100);
             });
         });
 
+        describe("WorkoutDetailData Model", function()
+        {
+            it("Should print some times using large detail data", function()
+            {
+                var model;
+                var startTime = +new Date();
+                for(var i = 0;i<100;i++)
+                {
+                    model = new WorkoutDetailDataModel({}, { disableDevValidations: true });
+                    model.set(DetailDataJSON, { disableDevValidations: true });
+                }
+                var elapsedTime = +new Date() - startTime;
+                console.log("Creating 100 WorkoutDetailData models with large detail data took " + elapsedTime + "ms");
+            });
+
+            xit("Should be fast using large detail data", function()
+            {
+                var startTime = +new Date();
+                var model;
+                for(var i = 0;i<100;i++)
+                {
+                    model = new WorkoutDetailDataModel({}, { disableDevValidations: true });
+                    model.set(DetailDataJSON, { disableDevValidations: true });
+                }
+                var elapsedTime = +new Date() - startTime;
+                expect(elapsedTime).toBeLessThan(10);
+            });
+        });
+
+        describe("WorkoutsCollection", function()
+        {
+
+            it("Should print some times using real data", function()
+            {
+                var startTime = +new Date();
+                var collection;
+                for(var i = 0;i<100;i++)
+                {
+                    collection = new WorkoutsCollection();
+                    collection.set(WorkoutCollectionJSON, { disableDevValidations: true });
+                }
+                var elapsedTime = +new Date() - startTime;
+                console.log("Creating 100 Workout Collections with " + WorkoutCollectionJSON.length + " real workouts each took " + elapsedTime + "ms");
+            });
+
+            it("Should be fast using real data", function()
+            {
+                var startTime = +new Date();
+                var collection;
+                for(var i = 0;i<100;i++)
+                {
+                    collection = new WorkoutsCollection();
+                    collection.set(WorkoutCollectionJSON, { disableDevValidations: true });
+                }
+                var elapsedTime = +new Date() - startTime;
+                expect(elapsedTime).toBeLessThan(10);
+            });
+        });
+
+        describe("Workouts", function()
+        {
+            it("Should print some times using real data", function()
+            {
+                var startTime = +new Date();
+                var model;
+                for (var i = 0; i < 100; i++)
+                {
+                    model = new WorkoutModel({}, { disableDevValidations: true });
+                    model.set(SingleWorkoutJSON, { disableDevValidations: true });
+                }
+                var elapsedTime = +new Date() - startTime;
+                console.log("Creating 100 Workouts with real data took " + elapsedTime + "ms");
+            });
+
+            it("Should be fast using real data", function()
+            {
+                var startTime = +new Date();
+                var model;
+                for(var i = 0;i<100;i++)
+                {
+                    model = new WorkoutModel({}, { disableDevValidations: true });
+                    model.set(SingleWorkoutJSON, { disableDevValidations: true });
+                }
+                var elapsedTime = +new Date() - startTime;
+                expect(elapsedTime).toBeLessThan(10);
+            });
+        });
     });
 
 });
