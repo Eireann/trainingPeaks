@@ -41,6 +41,7 @@ function(
 
             _.bindAll(this, "beforeAppend", "afterAppend", "beforePrepend", "afterPrepend");
 
+            this.pages = [];
         },
 
         onRender: function()
@@ -53,26 +54,39 @@ function(
         {
             var activityCollection = new ActivityCollection(null, { startDate: startDate, endDate: endDate });
             var fetchPromise = activityCollection.fetch({ reset: true });
-            var activityCollectionView = new ActivityCollectionView({ collection: activityCollection });
-            activityCollectionView.render();
-            if (appendOrPrepend === "append")
+
+            var self = this;
+            fetchPromise.done(function()
             {
-                this.ui.activityFeedContainer.append(activityCollectionView.$el);
-            }
-            else
-            {
-                var currentScrollTop = this.scrollableContainer.scrollTop();
-                this.ui.activityFeedContainer.prepend(activityCollectionView.$el);
-                var self = this;
-                fetchPromise.done(function()
+                var activityCollectionView = new ActivityCollectionView({ collection: activityCollection });
+                if (appendOrPrepend === "append")
                 {
-                    //console.log(activityCollectionView.$el.height());
-                    var newCollectionHeight = activityCollectionView.$el.height();
-                    self.scrollableContainer.scrollTop(currentScrollTop + newCollectionHeight);
-                });
-            }
+                    self.appendPage(self.ui.activityFeedContainer, activityCollectionView);
+                }
+                else
+                {
+                    self.prependPage(self.ui.activityFeedContainer, activityCollectionView);
+                }
+            });
 
             return fetchPromise;
+        },
+
+        appendPage: function(containerElement, view)
+        {
+            view.render();
+            containerElement.append(view.$el);
+            this.pages.push(view);
+        },
+
+        prependPage: function(containerElement, view)
+        {
+            view.render();
+            containerElement.prepend(view.$el);
+            this.pages.unshift(view);
+            var newCollectionHeight = view.$el.height();
+            var currentScrollTop = this.scrollableContainer.scrollTop();
+            this.scrollableContainer.scrollTop(currentScrollTop + newCollectionHeight);
         },
 
         afterInitialLoad: function()
