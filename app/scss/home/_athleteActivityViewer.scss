@@ -35,5 +35,14 @@
                 margin: 6px 0 0 10px;
             }
         }
+
+        .day
+        {
+            text-transform: uppercase !important;
+            font-size: $fontSizeSmaller;
+            font-family: $fontFamilyHeavy;
+            color: $TPGrey4;
+            padding: 20px 0 3px 22px;
+        }
     }
 }
