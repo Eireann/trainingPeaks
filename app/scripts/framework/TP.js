@@ -409,22 +409,12 @@ function(_, Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmedia
 
     // Backbone stuff
     TP.Collection = Backbone.Collection.extend({});
-    TP.Model = Backbone.DeepModel.extend({
 
-        createPromise: function()
-        {
-            if(this.id)
-            {
-                return this.fetch();
-            } else
-            {
-                return new $.Deferred();
-            }
-        }
-
-    });
-
-    TP.APIModel = APIModel;
+    TP.Model = APIModel.DeepModel;
+    TP.DeepModel = APIModel.DeepModel;
+    TP.BaseModel = APIModel.BaseModel;
+    TP.APIBaseModel = APIModel.APIBaseModel;
+    TP.APIDeepModel = APIModel.APIDeepModel;
     TP.Router = Backbone.Router.extend({});
 
     TP.Logger = Logger;

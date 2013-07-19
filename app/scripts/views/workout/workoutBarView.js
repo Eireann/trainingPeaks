@@ -13,16 +13,12 @@ function (
     )
 {
 
-    /*
-    TODO:
-    file attachments
-    route icon placeholder
-    review
-    */
 
     return TP.ItemView.extend(
     {
         className: "workoutBarViewHeader workout",
+
+        showThrobbers: false,
 
         template:
         {

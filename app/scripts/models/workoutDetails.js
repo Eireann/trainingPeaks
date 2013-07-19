@@ -6,7 +6,7 @@
 ],
 function (_, moment, TP)
 {
-    var WorkoutDetails = TP.APIModel.extend(
+    var WorkoutDetails = TP.APIDeepModel.extend(
     {
         cacheable: true,
 
@@ -35,11 +35,6 @@ function (_, moment, TP)
             "workoutDeviceFileInfos": null,
             "attachmentFileInfos": null,
             "workoutStructure": null
-        },
-
-        initialize: function()
-        {
-            TP.APIModel.prototype.initialize.apply(this, arguments);
         }
     });
 

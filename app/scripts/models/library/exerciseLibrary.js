@@ -5,7 +5,7 @@
 ],
 function (TP, LibraryExercisesCollection)
 {
-    return TP.APIModel.extend(
+    return TP.APIDeepModel.extend(
     {
         cacheable: true,
         webAPIModelName: "ExerciseLibrary",

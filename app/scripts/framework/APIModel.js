@@ -2,12 +2,33 @@ define(
 [
     "underscore",
     "backbone",
-    "backbone.deepmodel"
+    "backbone.deepmodel",
+    "moment"
 ],
-function(_, Backbone)
+function(_, Backbone, DeepModel, moment)
 {
-    var APIModel = Backbone.DeepModel.extend(
+    var BaseModel = {
+
+        myBackboneModelPrototype: Backbone.Model.prototype,
+
+        createPromise: function()
+        {
+            if(this.id)
+            {
+                return this.fetch();
+            } else
+            {
+                return new $.Deferred();
+            }
+        }
+
+    };
+
+    var APIModel = 
     {
+
+        myBackboneModelPrototype: Backbone.Model.prototype,
+
         checkpoint: function()
         {
             this.checkpointAttributes = _.clone(this.attributes);
@@ -37,9 +58,29 @@ function(_, Backbone)
         {
             return this.get(attr) != null;
         }
-    });
+    };
 
-    var DevValidationExtensions =
+    var BaseModelDevValidationExtensions =
+    {
+
+        validate: function (attrs, options)
+        {
+            this.validateAgainstMoments(attrs);
+        },
+
+        validateAgainstMoments: function(attrs)
+        {
+            for (var key in attrs)
+            {
+                if (moment.isMoment(attrs[key]))
+                {
+                    throw "Do not use moments as model attributes, due to performance issues";
+                }
+            }
+        }
+    };
+
+    var APIModelDevValidationExtensions =
     {
         webAPIModelName: null,
         idAttribute: null,
@@ -47,14 +88,25 @@ function(_, Backbone)
         get: function (key)
         {
             this.validateKeyExistsInDefaults(key);
-            return Backbone.DeepModel.prototype.get.call(this, key);
+            return this.myBackboneModelPrototype.get.call(this, key);
         },
 
         validate: function (attrs, options)
         {
+            if (options && options.disableDevValidations)
+            {
+                this.disableDevValidations = true;
+            }
+
+            if (this.disableDevValidations)
+            {
+                return;
+            }
+
             this.validateWebAPIModelName();
             this.validateIdAttribute(attrs);
             this.validateAgainstDefaultValues(attrs);
+            this.validateAgainstMoments(attrs);
         },
 
         validateIdAttribute: function (attrs)
@@ -114,11 +166,30 @@ function(_, Backbone)
             {
                 throw this.webAPIModelName + ": Cannot access key '" + key + "' because it is not in model defaults";
             }
+        },
+
+        validateAgainstMoments: function(attrs)
+        {
+            for (var key in attrs)
+            {
+                if (moment.isMoment(attrs[key]))
+                {
+                    throw this.webAPIModelName + ": Do not use moments as model attributes, due to performance issues";
+                }
+            }
         }
     };
 
     if (typeof apiConfig !== "undefined" && apiConfig.hasOwnProperty("configuration") && (apiConfig.configuration === "local" || apiConfig.configuration === "dev"))
-        return APIModel.extend(DevValidationExtensions);
-    else
-        return APIModel;
+    {
+        _.extend(BaseModel, BaseModelDevValidationExtensions);
+        _.extend(APIModel, APIModelDevValidationExtensions);
+    }
+
+    return {
+        BaseModel: Backbone.Model.extend(BaseModel),
+        DeepModel: Backbone.DeepModel.extend(_.extend({}, BaseModel, { myBackboneModelPrototype: Backbone.DeepModel.prototype })),
+        APIBaseModel: Backbone.Model.extend(APIModel),
+        APIDeepModel: Backbone.DeepModel.extend(_.extend({}, APIModel, { myBackboneModelPrototype: Backbone.DeepModel.prototype }))
+    };
 });

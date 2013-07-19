@@ -91,8 +91,8 @@ function(
             var weekCollection = new CalendarWeekCollection();
 
            for (var dayOffset = 0; dayOffset < 7; ++dayOffset)
-            {
-                var day = new CalendarDayModel({ date: moment(startDate) });
+           {
+               var day = new CalendarDayModel({ date: moment(startDate).format(TP.utils.datetime.shortDateFormat) });
                 weekCollection.add(day);
                 this.daysCollection.add(day);
                 startDate.add("days", 1);
