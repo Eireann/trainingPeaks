@@ -44,7 +44,10 @@ function(
                         options.collections.exerciseLibraries : new TP.Collection()
                 }),
                 mealLibrary: new MealLibraryView(),
-                plansLibrary: new TrainingPlanLibraryView()
+                plansLibrary: new TrainingPlanLibraryView({
+                    collection: options && options.collections && options.collections.trainingPlans ?
+                        options.collections.trainingPlans : new TP.Collection()
+                })
             };
 
         }
