@@ -174,7 +174,7 @@ function (
 
         titleWidth: function ()
         {
-            return (this.$(".workoutTitle").val().length + 1) * 8 + 10 + 'px';
+            return (this.$(".workoutTitle").val().length + 1) * 7 + 10 + 'px';
         },
         
         onOptionsClicked: function(e)
