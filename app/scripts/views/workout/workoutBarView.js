@@ -193,7 +193,7 @@ function (
 
         setBreakthroughIconState: function()
         {
-            var description = this.model.has("description") ? this.model.get("description") : ""
+            var description = this.model.has("description") ? this.model.get("description") : "";
 
             if (description.indexOf("BT: ") >= 0)
             {
