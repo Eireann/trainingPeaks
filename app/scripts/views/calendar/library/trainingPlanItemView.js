@@ -22,6 +22,35 @@ function(TP, trainingPlanItemViewTemplate)
         {
             type: "handlebars",
             template: trainingPlanItemViewTemplate
+        },
+
+        events:
+        {
+            mousedown: "onMouseDown"
+        },
+
+        initialize: function(options)
+        {
+            if (!this.model)
+                throw "Cannot have a TrainingPlanItemView without a model";
+
+            this.model.on("select", this.onItemSelect, this);
+            this.model.on("unselect", this.onItemUnSelect, this);
+        },
+
+        onMouseDown: function()
+        {
+            this.model.trigger("select", this.model);
+        },
+
+        onItemSelect: function()
+        {
+            this.$el.addClass("selected");
+        },
+
+        onItemUnSelect: function()
+        {
+            this.$el.removeClass("selected");
         }
 
     });

@@ -238,3 +238,17 @@
     ::moz-placeholder { color: $color; }
     :-ms-input-placeholder { color: $color; }
 }
+
+@mixin selectedOverlay()
+{
+    display: none;
+    left: -1px;
+    right: -1px;
+    top: -1px;
+    bottom: -1px;
+    position: absolute;
+    background-color: #bcd1eb;
+    border: 1px solid #0043ff;
+    opacity: 0.5;
+    z-index: 1;
+}

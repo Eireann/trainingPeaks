@@ -13,6 +13,11 @@ function(TP, TrainingPlanModel)
         url: function()
         {
             return theMarsApp.apiRoot + "/plans/v1/athletes/" + theMarsApp.user.getCurrentAthleteId();
+        },
+
+        comparator: function(item)
+        {
+            return item.get("title");
         }
 
     });
