@@ -174,9 +174,9 @@ function(
             });
         });
 
-        describe("TP.BaseModel", function()
+        xdescribe("TP.BaseModel", function()
         {
-            it("Should be fast using large detail data", function()
+            xit("Should be fast using large detail data", function()
             {
                 var startTime = +new Date();
                 var Model = TP.BaseModel.extend({});
@@ -189,7 +189,7 @@ function(
             });
         });
 
-        describe("TP.DeepModel", function()
+        xdescribe("TP.DeepModel", function()
         {
             it("Should be slow using large detail data", function()
             {
@@ -249,7 +249,7 @@ function(
                 console.log("Creating 100 Workout Collections with " + WorkoutCollectionJSON.length + " real workouts each took " + elapsedTime + "ms");
             });
 
-            it("Should be fast using real data", function()
+            xit("Should be fast using real data", function()
             {
                 var startTime = +new Date();
                 var collection;
@@ -278,7 +278,7 @@ function(
                 console.log("Creating 100 Workouts with real data took " + elapsedTime + "ms");
             });
 
-            it("Should be fast using real data", function()
+            xit("Should be fast using real data", function()
             {
                 var startTime = +new Date();
                 var model;

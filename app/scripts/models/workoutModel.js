@@ -8,7 +8,7 @@
 ],
 function (_, moment, TP, WorkoutDetailsModel, WorkoutDetailDataModel)
 {
-    var WorkoutModel = TP.APIBaseModel.extend(
+    var WorkoutModel = TP.APIDeepModel.extend(
     {
         cacheable: true,
 
