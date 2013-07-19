@@ -14,7 +14,7 @@ $QVTabSpriteRetinaURL: url(../../assets/images/QVImages/sprite-icons-QV-Tabs@2x.
 
     .missingData
     {
-        border: 1px red solid;
+        // border: 1px red solid;
     }
 
     .summaryTab {
@@ -26,73 +26,73 @@ $QVTabSpriteRetinaURL: url(../../assets/images/QVImages/sprite-icons-QV-Tabs@2x.
         div {
             height: 33px;
             background: $QVTabSpriteURL no-repeat 0 0;
-            &:hover
-            {
+            &:hover {
                 background-position: -33px 0;
             }
 
-            &:active
-            {
-               background-position: -66px 0;
+            &:active {
+               // background-position: -66px 0;
             }
         }
-        &.tabSelected
-        {
-            div
-            {
+        &.tabSelected {
+            div {
+                background-position: -33px 0;
+            }
+        }
+        
+        &.missingData {
+            div {
                 background-position: -66px 0;
+                
+                &:hover {
+                    background-position: -99px 0;
+                }
             }
         }
-
-        @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) 
-        {
-			
-			background-image: $QVTabSpriteRetinaURL no-repeat 0 0;
-			background-size: 35px 33px;
-		}
+    
     }
 
-    .heartrateTab
-    {
+    .heartrateTab {
         padding: 6px 0px 10px 2px;
         height: 45px;
 		&:hover {
 			cursor:pointer;
 		}
-        div
-        {
+        
+        div {
             height: 33px;
             background: $QVTabSpriteURL no-repeat 0 -66px;
-            &:hover
-            {
+            &:hover {
                 background-position: -33px -66px;
             }
 
-            &:active
-            {
-               background-position: -66px -66px;
+            &:active {
+               // background-position: -66px -66px;
             }
 
-            @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) 
-            {
-			
-			    background-image: $QVTabSpriteRetinaURL;
-			    background-size: 35px 33px;
-		    }
+            
         }
 
-        &.tabSelected
-        {
-            div
-            {
+        &.tabSelected {
+            div {
+                background-position: -33px -66px;
+            }
+        }
+
+        &.missingData {
+            div {
                 background-position: -66px -66px;
+                
+                &:hover {
+                    background-position: -99px -66px;
+                }
             }
         }
     }
 
     .powerTab
     {
-        padding: 6px 0px 10px 1px;
+        padding: 6px 0px 10px 2px;
         height: 45px;
 		&:hover {
 			cursor:pointer;
@@ -108,29 +108,33 @@ $QVTabSpriteRetinaURL: url(../../assets/images/QVImages/sprite-icons-QV-Tabs@2x.
 
             &:active
             {
-               background-position: -66px -99px;
+               // background-position: -66px -99px;
             }
 
-            @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) 
-            {
-			
-			    background-image: $QVTabSpriteRetinaURL no-repeat 0 -99px;
-			    background-size: 35px 33px;
-		    }
         }
 
         &.tabSelected
         {
             div
             {
+                background-position: -33px -99px;
+            }
+        }
+
+        &.missingData {
+            div {
                 background-position: -66px -99px;
+                
+                &:hover {
+                    background-position: -99px -99px;
+                }
             }
         }
     }
 
     .paceTab
     {
-        padding: 6px 0px 10px 1px;
+        padding: 6px 0px 10px 2px;
         height: 45px;
 		&:hover {
 			cursor:pointer;
@@ -146,22 +150,27 @@ $QVTabSpriteRetinaURL: url(../../assets/images/QVImages/sprite-icons-QV-Tabs@2x.
 
             &:active
             {
-               background-position: -66px -132px;
+               // background-position: -66px -132px;
             }
 
-            @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) 
-            {
-			
-			    background-image: $QVTabSpriteRetinaURL no-repeat 0 -132px;
-			    background-size: 35px 33px;
-		    }
+         
         }
 
          &.tabSelected
         {
             div
             {
+                background-position: -33px -132px;
+            }
+        }
+
+        &.missingData {
+            div {
                 background-position: -66px -132px;
+                
+                &:hover {
+                    background-position: -99px -132px;
+                }
             }
         }
     }
@@ -184,30 +193,39 @@ $QVTabSpriteRetinaURL: url(../../assets/images/QVImages/sprite-icons-QV-Tabs@2x.
 
             &:active
             {
-               background-position: -66px -33px;
+               // background-position: -66px -33px;
             }
 
-            @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) 
-            {
-			
-			    background-image: $QVTabSpriteRetinaURL no-repeat 0 -33px;
-			    background-size: 35px 33px;
-		    }
+           
         }
 
          &.tabSelected
         {
             div
             {
+                background-position: -33px -33px;
+            }
+        }
+
+        &.missingData {
+            div {
                 background-position: -66px -33px;
+                
+                &:hover {
+                    background-position: -99px -33px;
+                }
             }
         }
     }
 
 	@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
-		.summaryTab div, .heartrateTab div, .powerTab div, .paceTab div, .mapGraphTab div {
+		.summaryTab div, 
+        .heartrateTab div, 
+        .powerTab div, 
+        .paceTab div, 
+        .mapGraphTab div {
 			background-image: $QVTabSpriteRetinaURL;
-			background-size: 99px 165px;
+			background-size: 132px 165px;
 		}
 	}
 
