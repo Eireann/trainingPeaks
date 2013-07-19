@@ -1,12 +1,13 @@
 define(
 [
-    "TP"
+    "TP",
+    "./trainingPlan"
 ],
-function(TP)
+function(TP, TrainingPlanModel)
 {
     return TP.Collection.extend(
     {
-        model: TP.Model,
+        model: TrainingPlanModel,
         cacheable: true,
 
         url: function()
