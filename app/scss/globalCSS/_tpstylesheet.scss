@@ -105,3 +105,114 @@ $clrTorque: #BDBDBD;
     font-family: $fontFamilyRegularItalic;
     font-size: $fontSizeSmall;
 }
+
+
+
+
+@media print {
+	* {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+   }
+
+	#navigation,#main,.tabNavigation,.closeAndSettings,.uploadExpandButtons,.headerIcons,.quickviewFooter  {
+		display:none;
+	}
+
+	.workoutQuickView {
+		top:0pt !important;
+		left:0pt !important;
+	}
+
+	.modalOverlayMask + .modalShadow {
+		box-shadow:none;
+	}
+
+	#workOutQuickView {
+		background:none;
+		height:100% !important;
+		width:100% !important;
+		// border:1px solid red;
+	}
+
+	.QVHeader {
+		background-color:#fff;
+		box-shadow:none;
+		padding:0;
+		height:auto;
+	}
+
+	.workoutIconLarge {
+		
+	}
+
+	.workout.future {
+		background-color:#fff;
+	}
+
+	.workoutBarViewHeader {
+		border:none;
+	}
+
+	#quickViewContent {
+		background:none;
+		height:100%;
+		width:750px;
+		overflow-y:auto;
+		float:left;
+		margin:10px 0;
+	}
+
+
+	input[type="text"], input[type="password"], input[type="date"], input[type="datetime"], input[type="datetime-local"], input[type="month"], input[type="week"], input[type="email"], input[type="number"], input[type="search"], input[type="tel"], input[type="time"], input[type="url"], textarea {
+		border:none;
+		padding:0;
+	}
+
+	textarea {
+		resize:none !important;
+	}
+
+	.workoutStatsCompleted, #workoutMinMaxAvgStats, .columnLabelsMinMaxAvg {
+		// display:none;
+	}
+
+	#commentsContainer .comments {
+	  // border-left: 1px solid red;
+	  padding: 0 0 0 10px;
+	  width: 475px;
+	}
+
+	textarea#descriptionInput, textarea#preActivityCommentsInput {
+		margin:0 0 25px 0;
+		min-height:none;
+	}
+
+	#postActivityCommentsList {
+		display:none;
+	}
+
+	.workoutBarViewHeader {
+		width:735px;
+		height:95px;
+		// border-bottom:1px solid blue;
+		margin:0 10px;
+		padding-left:0;
+	}
+
+	.workoutBarViewHeader .workoutHeaderStats {
+		width:85%;
+	}
+
+	.QVHeader .dateAndTime {
+		padding: 10px 12px 0 12px;
+	}
+
+	.columnLabelsPlannedCompleted {
+		padding-top:0;
+	}
+
+	.stats {
+		padding:0px 5px;
+	}
+}
