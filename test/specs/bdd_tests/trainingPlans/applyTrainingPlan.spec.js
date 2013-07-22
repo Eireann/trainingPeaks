@@ -106,7 +106,7 @@ function(
                 expect(testHelpers.hasRequest(null, "plans/v1/athletes/426489/commands/apply/3")).toBe(true);
             });
 
-            it("Should display a confirmation after applying the plan", function()
+            xit("Should display a confirmation after applying the plan", function()
             {
                 testHelpers.clearRequests();
                 $body.find(".trainingPlanDetails .apply").trigger("click");
@@ -114,7 +114,7 @@ function(
                 expect("FIX ME").toBe(true);
             });
 
-            it("Should refresh the plan library after applying the plan", function()
+            xit("Should refresh the plan library after applying the plan", function()
             {
                 testHelpers.clearRequests();
                 $body.find(".trainingPlanDetails .apply").trigger("click");
@@ -122,7 +122,7 @@ function(
                 expect(testHelpers.hasRequest("GET", "^plans/v1/athletes/426489$")).toBe(true);
             });
 
-            it("Should refresh the calendar after applying the plan", function()
+            xit("Should refresh the calendar after applying the plan", function()
             {
                 testHelpers.clearRequests();
                 $body.find(".trainingPlanDetails .apply").trigger("click");
