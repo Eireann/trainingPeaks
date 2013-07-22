@@ -67,6 +67,7 @@ function(
             if (newLibraryName !== this.activeLibraryName)
             {
                 this.switchLibrary(newLibraryName);
+                this.$(".scrollable").scrollTop(0);
             }
             else
             {
