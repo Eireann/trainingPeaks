@@ -27,7 +27,7 @@ function (TP)
             "dayCount": null,
             "workoutCount": null,
             "plannedWorkoutTypeDurations": null,
-            "description": null,
+            "description": null
         }
     });
 
