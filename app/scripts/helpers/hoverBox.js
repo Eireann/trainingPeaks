@@ -14,16 +14,20 @@ function(Handlebars, wrapTemplate, hoverBoxTemplate)
     */
     function hoverBox()
     {
-        var uparrow = false;
+        var uparrow, leftarrow, downarrow = false;
         var context = arguments[0];
         var options = arguments[1];
         if (arguments.length === 3)
         {
             options = arguments[2];
             uparrow = (arguments[1] === "uparrow") ? true : false;
+            leftarrow = (arguments[1] === "leftarrow") ? true : false;
+            rightarrow = (arguments[1] === "rightarrow") ? true : false;
         }
 
         context.uparrow = uparrow;
+        context.leftarrow = leftarrow;
+        context.rightarrow = rightarrow;
         return wrapTemplate(context, options.fn, hoverBoxTemplate, "innerHtml");
     }
 

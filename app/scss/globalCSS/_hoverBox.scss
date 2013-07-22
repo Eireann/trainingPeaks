@@ -124,6 +124,40 @@
 		background-color: #ffffff;
     }
 
+    &.leftarrow {
+
+        .arrow
+        {
+            position: absolute;
+            top: 40px;
+            left: -6px;
+            margin-left: 0px;
+            @include transform(translateY(-15px) rotate(45deg));
+        }
+
+        .mainShadow
+        {
+            bottom: 0px;
+        }
+    }
+
+    &.rightarrow {
+
+        .arrow
+        {
+            position: absolute;
+            top: 40px;
+            right: -6px;
+            margin-left: 0px;
+            @include transform(translateY(-15px) rotate(45deg));
+        }
+
+        .mainShadow
+        {
+            bottom: 0px;
+        }
+    }
+
     &.uparrow {
 		width:136px;
 		
