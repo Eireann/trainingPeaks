@@ -35,7 +35,7 @@ function (
         {
             this.updateHeaderClass();
             this.model.on("change", this.updateHeaderClassOnChange, this);
-            this.model.on("change", this.setBreakthroughIconState, this);
+            this.model.on("change:description", this.setBreakthroughIconState, this);
             this.setBreakthroughIconState();
             this.updateAttachmentIconState();
             this.watchForFileAttachments();

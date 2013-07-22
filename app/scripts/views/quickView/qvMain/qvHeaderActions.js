@@ -153,6 +153,8 @@ function (
                 this.model.set("description", description);
             }
 
+            this.model.save();
+
         },
 
         onTitleFocus: function()
