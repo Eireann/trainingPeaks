@@ -147,13 +147,12 @@ function (
             if (description.indexOf("BT: ") !== 0)
             {
                 this.model.set("description", "BT: " + description);
-                this.$("#breakThrough img").attr("src", "assets/images/QVImages/breakThroughFullOpac.png");
             } else
             {
-                this.$("#breakThrough img").attr("src", "assets/images/QVImages/breakthrough.png");
                 description = description.replace(/BT: /, "");
                 this.model.set("description", description);
             }
+
         },
 
         onTitleFocus: function()

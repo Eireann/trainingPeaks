@@ -12,13 +12,23 @@
 
     .workoutBarViewHeader 
     {
-        @include calc(width, "100% - 30px");
+        @include calc(width, "100% - 40px");
         margin-left: 20px;
         min-width: 570px;
 
         .workoutHeaderStats
         {
             @include calc(width, "100% - 70px");
+
+            .mapIcon
+            {
+                display: block !important;
+                height: 70px;
+                width: 70px;
+                background-color: black;
+                float: right;
+                margin: 6px 0 0 10px;
+            }
         }
 
         .title
@@ -33,15 +43,7 @@
             color: $TPGrey4;
         }
 
-        .mapIcon
-        {
-            display: block;
-            height: 70px;
-            width: 70px;
-            background-color: black;
-            float: right;
-            margin: 6px 0 0 10px;
-        }
+        
     }
 
     .day
@@ -82,14 +84,14 @@
             float: left;
             position: relative;
             top: 30px;
-            left: -30px;
+            left: -27px;
 
             .hideHalfOfArrow
             {
                 position: relative;
                 z-index: 2;
                 margin-left: 20px;
-                background-color: #ffffff;
+                background-color: $TPGrey1;
                 width: 15px;
                 height: 17px;
             }

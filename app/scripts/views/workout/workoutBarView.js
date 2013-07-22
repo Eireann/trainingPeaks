@@ -35,6 +35,8 @@ function (
         {
             this.updateHeaderClass();
             this.model.on("change", this.updateHeaderClassOnChange, this);
+            this.model.on("change", this.setBreakthroughIconState, this);
+            this.setBreakthroughIconState();
             this.updateAttachmentIconState();
             this.watchForFileAttachments();
         },
@@ -187,8 +189,20 @@ function (
 
             this.attachmentUploadMenu.render();
             this.attachmentUploadMenu.on("close", function () { uploadButton.removeClass("menuOpen"); });
-        }
+        },
 
+        setBreakthroughIconState: function()
+        {
+            var description = this.model.has("description") ? this.model.get("description") : "";
+
+            if (description.indexOf("BT: ") >= 0)
+            {
+                this.$("#breakThrough img").attr("src", "assets/images/QVImages/breakThroughFullOpac.png");
+            } else
+            {
+                this.$("#breakThrough img").attr("src", "assets/images/QVImages/breakthrough.png");
+            }       
+        }
 
     });
 });
