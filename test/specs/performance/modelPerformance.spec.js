@@ -25,7 +25,7 @@ function(
     )
 {
 
-    describe("Model Performance", function()
+    xdescribe("Model Performance", function()
     {
 
         describe("Backbone Model", function()

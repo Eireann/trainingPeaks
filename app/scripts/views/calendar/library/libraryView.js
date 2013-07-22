@@ -6,6 +6,7 @@
     "views/pageContainer/libraryContainerView",
     "views/calendar/library/exerciseLibraryView",
     "views/calendar/library/mealLibraryView",
+    "views/calendar/library/trainingPlanLibraryView",
     "hbs!templates/views/calendar/library/libraryView"
 ],
 function(
@@ -15,6 +16,7 @@ function(
     LibraryContainerView,
     ExerciseLibraryView,
     MealLibraryView,
+    TrainingPlanLibraryView,
     libraryTemplate)
 {
     return LibraryContainerView.extend(
@@ -41,7 +43,11 @@ function(
                     exerciseLibraries: options && options.collections && options.collections.exerciseLibraries ?
                         options.collections.exerciseLibraries : new TP.Collection()
                 }),
-                mealLibrary: new MealLibraryView()
+                mealLibrary: new MealLibraryView(),
+                plansLibrary: new TrainingPlanLibraryView({
+                    collection: options && options.collections && options.collections.trainingPlans ?
+                        options.collections.trainingPlans : new TP.Collection()
+                })
             };
 
         }

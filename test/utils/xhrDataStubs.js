@@ -420,7 +420,28 @@ function()
                 ]
             } // END SUPERCOACH
 
-        }
+        },
+
+        trainingPlans: [
+
+            {
+                planId: 1,
+                title: "Training Plan One",
+                planStatus: 1
+            },
+            {
+                planId: 2,
+                title: "Training Plan Two",
+                planStatus: 2
+            },
+            {
+                planId: 3,
+                title: "Training Plan Three",
+                planStatus: 3 
+            }
+
+        ]
+        
     };
 
 });
