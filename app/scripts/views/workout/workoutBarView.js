@@ -188,14 +188,14 @@ function (
             uploadButton.addClass("menuOpen");
 
             this.attachmentUploadMenu.render();
-            this.attachmentUploadMenu.on("close", function () { uploadButton.removeClass("menuOpen"); });
+            this.attachmentUploadMenu.on("close", function() { uploadButton.removeClass("menuOpen"); });
         },
 
         setBreakthroughIconState: function()
         {
             var description = this.model.has("description") ? this.model.get("description") : "";
 
-            if (description.indexOf("BT: ") >= 0)
+            if (description.indexOf("BT:") >= 0)
             {
                 this.$("#breakThrough img").attr("src", "assets/images/QVImages/breakThroughFullOpac.png");
             } else

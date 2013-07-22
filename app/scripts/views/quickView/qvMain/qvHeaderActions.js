@@ -144,12 +144,12 @@ function (
             if (!description)
                 description = "";
 
-            if (description.indexOf("BT: ") !== 0)
+            if (description.indexOf("BT:") !== 0)
             {
                 this.model.set("description", "BT: " + description);
             } else
             {
-                description = description.replace(/BT: /, "");
+                description = description.replace(/BT:/, "").trim();
                 this.model.set("description", description);
             }
 
@@ -175,7 +175,7 @@ function (
 
         titleWidth: function ()
         {
-            return (this.$(".workoutTitle").val().length + 1) * 7 + 10 + 'px';
+            return (this.$(".workoutTitle").val().length + 1) * 8 + 10 + 'px';
         },
         
         onOptionsClicked: function(e)
