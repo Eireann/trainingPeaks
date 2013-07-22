@@ -21,7 +21,12 @@ function (TP)
         {
             "planId": null,
             "title": null,
-            "planStatus": null
+            "planStatus": null,
+            "author": null,
+            "daysDuration": null,
+            "description": null,
+            "startDate": null,
+            "endDate": null
         }
     });
 

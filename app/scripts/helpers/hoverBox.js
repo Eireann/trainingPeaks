@@ -11,10 +11,12 @@ function(Handlebars, wrapTemplate, hoverBoxTemplate)
     usage:
     {{#hoverBox this }}<div>my inner content</div>{{/hoverBox}} == hover box with a bottom arrow
     {{#hoverBox this "uparrow" }}<div>my inner content</div>{{/hoverBox}} == hover box with a top arrow
+    {{#hoverBox this "leftarrow" }}<div>my inner content</div>{{/hoverBox}} == hover box with a left arrow
+    {{#hoverBox this "rightarrow" }}<div>my inner content</div>{{/hoverBox}} == hover box with a right arrow
     */
     function hoverBox()
     {
-        var uparrow, leftarrow, downarrow = false;
+        var uparrow, leftarrow, rightarrow = false;
         var context = arguments[0];
         var options = arguments[1];
         if (arguments.length === 3)

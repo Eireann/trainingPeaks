@@ -46,17 +46,14 @@ function(
 
         });
 
-        describe("Training plan tomahawk", function()
+        it("Should display plan title and status", function()
         {
-            it("Should display plan title and status", function()
-            {
-                // click on a plan
-                $mainRegion.find(".trainingPlanLibrary .trainingPlan[data-trainingplanid=1]").trigger("mouseup");
+            // click on a plan
+            $mainRegion.find(".trainingPlanLibrary .trainingPlan[data-trainingplanid=1]").trigger("mouseup");
 
-                // tomahawk opens
-                expect($body.find(".trainingPlanDetails").text()).toContain("Training Plan One");
-                expect($body.find(".trainingPlanDetails").text()).toContain("Applied");
-            });
+            // tomahawk opens
+            expect($body.find(".trainingPlanDetails").text()).toContain("Training Plan One");
+            expect($body.find(".trainingPlanDetails").text()).toContain("Applied");
         });
 
     });
