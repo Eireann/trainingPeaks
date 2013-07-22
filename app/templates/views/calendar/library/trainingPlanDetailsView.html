@@ -1,8 +1,15 @@
 {{#hoverBox this "leftarrow"}}
 <label class="title">{{ title }}</label>
 <div>Status: {{ trainingPlanStatus planStatus }}</div>
+
+{{#if applyable }}
+<div>
+<input type="text" id="applyDate" class="datepicker" value="{{ formatDate applyDate "YYYY-MM-DD" }}">
+<button class="apply">Apply</button>
+</div>
+{{/if}}
+
 <div>{{ planId }}</div>
 <div>{{ author }}</div>
 <div>{{ description }}</div>
-<div>{{ daysDuration }}</div>
 {{/hoverBox}}

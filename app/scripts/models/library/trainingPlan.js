@@ -22,13 +22,29 @@ function (TP)
             "planId": null,
             "title": null,
             "planStatus": null,
+            "planApplications": null,
             "author": null,
-            "daysDuration": null,
+            "dayCount": null,
+            "workoutCount": null,
+            "plannedWorkoutTypeDurations": null,
             "description": null,
-            "startDate": null,
-            "endDate": null
         }
     });
+
+    /*
+
+    planApplications: [
+        {startDate, endDate}
+    ]
+
+    plannedWorkoutTypeDurations: [
+        workoutTypeId,
+        duration,
+        distance,
+        raceDistance
+    ]
+
+    */
 
     return TrainingPlanModel;
 });

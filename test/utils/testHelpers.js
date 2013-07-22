@@ -166,6 +166,11 @@ function(_, $, Backbone, TP, xhrData, app)
             return request;
         },
 
+        clearRequests: function()
+        {
+            this.fakeAjaxRequests = {};
+        },
+
         setupFakeAjax: function()
         {
             _.bindAll(this, "fakeSync");

@@ -24,6 +24,10 @@ function(_)
         {
             status = Number(status);
             return planStatusById.hasOwnProperty(status) ? planStatusById[status] : planStatusById[0];
+        },
+        getStatusByName: function(name)
+        {
+            return planStatusByName.hasOwnProperty(name) ? planStatusByName[name] : planStatusByName["Unknown"];
         }
     };
 
