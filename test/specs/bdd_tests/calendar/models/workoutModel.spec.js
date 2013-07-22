@@ -263,23 +263,6 @@ function(
                     var dateToPasteTo = "2012-10-10";
                     var pastedWorkout = copiedWorkout.onPaste(dateToPasteTo);
 
-                    var attributesToCopy = [
-                        "athleteId",
-                        "title",
-                        "workoutTypeValueId",
-                        "workoutDay",
-                        "isItAnOr",
-                        "description",
-                        "distancePlanned",
-                        "totalTimePlanned",
-                        "caloriesPlanned",
-                        "tssPlanned",
-                        "ifPlanned",
-                        "velocityPlanned",
-                        "energyPlanned",
-                        "elevationGainPlanned"
-                    ];
-
                     _.each(attributesToCopy, function(attributeName)
                     {
                         if (attributeName !== "workoutDay")
