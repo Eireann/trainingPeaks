@@ -1,0 +1,27 @@
+﻿@import "globalCSS/tpstylesheet";
+@import "globalCSS/mixIn";
+
+.libraryNavigation 
+{
+    @include labels($fontFamilyRegular, $fontSizeMedium, $TPBlue, normal);
+            
+    label 
+    {
+        display: inline-block;
+        margin: 2px 15px 0 2px;
+    }
+
+     .planSearch
+    {
+        margin-top: 10px;
+        @include inputs(240px, 20px, $fontSizeSmall, $fontFamilyRegular);
+
+        input
+        {
+            margin-bottom: 5px;
+            color: $TPGrey3;
+            padding-left: 5px;
+            margin-left: 2px;
+        }
+    }
+}

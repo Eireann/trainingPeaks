@@ -3,6 +3,35 @@
 $mainTabSpriteURL: url(../../assets/images/sprite-icons-main-tabs.png);
 $mainTtabSpriteRetinaURL: url(../../assets/images/sprite-icons-main-tabs@2x.png);
 
+@mixin libraryTile()
+{
+    background-color: $TPGrey6;
+    border-color: $TPGrey6;
+    width: 240px;
+    border-style: solid;
+    border-width: 1px;
+    color: $TPGrey3;
+    position: relative;
+
+    &:hover
+    {
+        border-color:  $TPGrey11;
+    }
+
+    .selectedOverlay
+    {
+        @include selectedOverlay();
+    }
+
+    &.selected
+    {
+        .selectedOverlay
+        {
+            display: block;
+        }
+    }
+}
+
 #libraryContainer
 {
 
@@ -330,16 +359,10 @@ $mainTtabSpriteRetinaURL: url(../../assets/images/sprite-icons-main-tabs@2x.png)
 
 }
 
+
 .libraryExercise.workout.future
 {
-    background-color: $TPGrey6;
-    border-color: $TPGrey6;
-    width: 240px;
-
-    &:hover
-    {
-        border-color:  $TPGrey11;
-    }
+    @include libraryTile();
 
     .workoutDiv
     {
@@ -365,5 +388,28 @@ $mainTtabSpriteRetinaURL: url(../../assets/images/sprite-icons-main-tabs@2x.png)
                 color: $TPGrey3;
             }
         }
+    }
+}
+
+.trainingPlanLibrary
+{
+    .trainingPlan
+    {
+        @include libraryTile();
+        margin: 5px 4px 4px 2px;
+
+        .planDetails
+        {
+            min-height: 35px;
+            padding: 5px;
+            white-space: normal;
+            line-height: 1.5em;
+
+            .title
+            {
+                font-family: $fontFamilyHeavy;
+            }
+        }
+
     }
 }

@@ -92,8 +92,8 @@ function(
                 this.selectedItem.trigger("unselect", this.selectedItem);
             }
 
-            this.selectedItem = model;
             this.trigger("select");
+            this.selectedItem = model;
         },
 
         onUnSelect: function()

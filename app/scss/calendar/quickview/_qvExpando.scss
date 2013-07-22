@@ -222,6 +222,11 @@
                 {
                     border-right: none;
                     width: 56px;
+
+                    &.hidden
+                    {
+                        visibility: hidden;
+                    }
                 }
 
                 &.graphSeriesButton

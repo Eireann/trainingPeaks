@@ -227,16 +227,16 @@ function(
                 calendarView = jasmine.createSpyObj("CalendarView spy", ["on"]);
             });
 
-            it("Should bind to calendar view 'prepend' event", function()
+            it("Should bind to calendar view 'scroll:bottom' event", function()
             {
                 CalendarController.prototype.bindToCalendarViewEvents.call(context, calendarView);
-                expect(calendarView.on).toHaveBeenCalledWith("prepend", context.prependWeekToCalendar, context);
+                expect(calendarView.on).toHaveBeenCalledWith("scroll:bottom", context.appendWeekToCalendar, context);
             });
 
-            it("Should bind to calendar view 'append' event", function()
+            it("Should bind to calendar view 'scroll:top' event", function()
             {
                 CalendarController.prototype.bindToCalendarViewEvents.call(context, calendarView);
-                expect(calendarView.on).toHaveBeenCalledWith("append", context.appendWeekToCalendar, context);
+                expect(calendarView.on).toHaveBeenCalledWith("scroll:top", context.prependWeekToCalendar, context);
             });
 
             it("Should bind to calendar view 'itemDropped' event", function()
@@ -468,7 +468,7 @@ function(
                 spyOn(controller, "reset");
                 
                 var dateAsMoment = moment("2013-04-16");
-                var currentWeekModel = new TP.Model({ date: dateAsMoment });
+                var currentWeekModel = new TP.Model({ date: dateAsMoment.format(TP.utils.datetime.shortDateFormat) });
 
                 controller.views.header.trigger("request:refresh", currentWeekModel);
 

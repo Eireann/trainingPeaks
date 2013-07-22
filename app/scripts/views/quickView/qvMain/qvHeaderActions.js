@@ -7,8 +7,11 @@
     "views/quickView/qvMain/qvWorkoutTypeMenuView",
     "views/quickView/qvMain/qvContextMenuView",
     "views/quickView/qvMain/qvOptionsMenuView",
+    "views/workout/workoutBarView",
     "views/expando/commentsEditor",
-    "utilities/workout/workoutTypes"
+    "views/userMessageView",
+    "utilities/workout/workoutTypes",
+    "hbs!templates/views/userMessage/saveWorkoutBeforeAttachment"
 ],
 function (
     _,
@@ -18,8 +21,11 @@ function (
     WorkoutTypeMenuView,
     QVContextMenuView,
     QVOptionsMenuView,
+    WorkoutBarView,
     ExpandoCommentsEditorView,
-    workoutType
+    UserMessageView,
+    workoutType,
+    saveWorkoutBeforeAttachmentTemplate
 )
 {
     var qvHeaderActions =
@@ -54,51 +60,17 @@ function (
         {
             if (!this.headerInitialized)
             {
-                this.model.on("change", this.updateHeaderOnChange, this);
+                var workoutBarView = new WorkoutBarView({ model: this.model });
+                workoutBarView.turnOffRenderOnChange();
+                workoutBarView.on("before:displayAttachmentView", this.checkIfCanAddAttachments, this);
+                workoutBarView.render();
+
+                this.$(".workoutBarView").append(workoutBarView.$el);
+                this.$(".workoutTitle").css('width', this.titleWidth());
+
                 this.$("#startTimeInput").timepicker({ appendTo: this.$el, 'timeFormat': 'g:i a' });
             }
-
-            this.updateHeaderClass();
-        },
-
-        updateHeaderClass: function()
-        {
-            // first calculate it, then reset if needed
-            var tmpElement = $("<div></div>").addClass("grayHeader").addClass("workout");
-            tmpElement.addClass(this.getComplianceCssClassName());
-            tmpElement.addClass(this.getPastOrCompletedCssClassName());
-
-            var header = this.$(".grayHeader");
-            if (header.attr("class") !== tmpElement.attr("class"))
-            {
-                header.attr("class", tmpElement.attr("class"));
-            }
-            this.$(".grayHeader").addClass(this.getComplianceCssClassName());
-            this.$(".grayHeader").addClass(this.getPastOrCompletedCssClassName());
-            this.$(".grayHeader").addClass(this.getWorkoutTypeCssClassName());
-
-            this.$(".workoutTitle").css('width', this.titleWidth());
-
-        },
-
-        getWorkoutTypeCssClassName: function ()
-        {
-            return TP.utils.workout.types.getNameById(this.model.get("workoutTypeValueId")).replace(/ /g, "");
-        },
-
-        getPastOrCompletedCssClassName: function()
-        {
-            if (this.model.getCalendarDay() < this.today)
-            {
-                return "past";
-            } else if (this.model.getCalendarDay() === this.today && TP.utils.workout.determineCompletedWorkout(this.model.attributes))
-            {
-                return "past";
-            } else
-            {
-                return "future";
-            }
-        },
+        }, 
 
         onDateClicked: function(e)
         {
@@ -165,59 +137,6 @@ function (
             menu.render();
         },
 
-        removeUpdateHeaderOnChange: function()
-        {
-            this.model.off("change", this.updateHeaderOnChange);
-        },
-
-        getComplianceCssClassName: function()
-        {
-            var complianceAttributeNames =
-            {
-                totalTime: "totalTimePlanned"
-            };
-            /*
-                distance: "distancePlanned",
-                tssActual: "tssPlanned"
-            */
-            var workout = this.model;
-
-            for (var key in complianceAttributeNames)
-            {
-
-                var plannedValueAttributeName = complianceAttributeNames[key];
-                var completedValueAttributeName = key;
-                var plannedValue = this.model.get(plannedValueAttributeName) ? this.model.get(plannedValueAttributeName) : 0;
-                var completedValue = this.model.get(completedValueAttributeName) ? this.model.get(completedValueAttributeName) : 0;
-
-                if (plannedValue)
-                {
-                    if ((plannedValue * 0.8) <= completedValue && completedValue <= (plannedValue * 1.2))
-                    {
-                        return "ComplianceGreen";
-                    }
-                    else if ((plannedValue * 0.5) <= completedValue && completedValue <= (plannedValue * 1.5))
-                    {
-                        return "ComplianceYellow";
-                    }
-                    else
-                    {
-                        return "ComplianceRed";
-                    }
-                }
-            }
-
-
-            // if nothing was planned, we can't fail to complete it properly ...
-
-            return "ComplianceNone";
-        },
-
-        updateHeaderOnChange: function()
-        {
-            this.updateHeaderClass();
-        },
-
         onBreakThroughClicked: function()
         {
             var description = this.model.get("description");
@@ -225,16 +144,17 @@ function (
             if (!description)
                 description = "";
 
-            if (description.indexOf("BT: ") !== 0)
+            if (description.indexOf("BT:") !== 0)
             {
                 this.model.set("description", "BT: " + description);
-                this.$("#breakThrough img").attr("src", "assets/images/QVImages/breakThroughFullOpac.png");
             } else
             {
-                this.$("#breakThrough img").attr("src", "assets/images/QVImages/breakthrough.png");
-                description = description.replace(/BT: /, "");
+                description = description.replace(/BT:/, "").trim();
                 this.model.set("description", description);
             }
+
+            this.model.save();
+
         },
 
         onTitleFocus: function()
@@ -289,7 +209,18 @@ function (
                 this.commentsEditorView.setDirection("right");
                 this.commentsEditorView.left(offset.left + 87);
             }
+        },
+
+        checkIfCanAddAttachments: function(displayAttachmentsViewDeferred)
+        {
+            if (this.isNewWorkout && !this.model.get("workoutId"))
+            {
+                var view = new UserMessageView({ template: saveWorkoutBeforeAttachmentTemplate });
+                view.render();
+                displayAttachmentsViewDeferred.reject();
+            }
         }
+
     };
 
     return qvHeaderActions;

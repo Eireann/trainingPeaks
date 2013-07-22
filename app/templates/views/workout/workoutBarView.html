@@ -1,0 +1,35 @@
+﻿    <div class="workoutIconLarge">
+
+    </div>
+    <div class="workoutHeaderStats">
+        <div class="headerIcons">
+            <div id="breakThrough" class="icon" title="{{$ "BreakthroughTooltip" }}">
+                <img src="assets/images/QVImages/breakthrough.png"/>
+            </div>
+            <div class="icon addAttachment" title="{{$ "UploadAttachmentTooltip" }}"></div>
+            <div class="mapIcon"/>
+        </div>
+        <div class="headerWorkoutValue middleValues duration">
+            <label id="qv-header-totaltimePlanned" class="planned">{{ conversion "formatDuration" totalTimePlanned this "0:00:00" }}</label>
+            <label id="qv-header-totaltime" class="actual">{{ conversion "formatDuration" totalTime this "0:00:00" }}</label>
+        </div>
+        <div class="headerWorkoutValue distance">
+            <label id="qv-header-distancePlanned" class="planned">{{ conversion "formatDistance" distancePlanned this "0" }}</label>
+            <label id="qv-header-distance" class="actual">{{ conversion "formatDistance" distance this "0" }}</label>
+        </div>
+        <div class="headerWorkoutValueLabel distance">
+            <label>{{getUnitsLabel "distance" workoutTypeValueId}}</label>
+        </div>
+        <div class="headerWorkoutValue middleValues tss">
+            <label id="qv-header-tssPlanned" class="planned">{{ conversion "formatTSS" tssPlanned this "0" }}</label>
+            <label id="qv-header-tssactual" class="actual">{{ conversion "formatTSS" tssActual this "0" }}</label>
+        </div>
+        <div class="headerWorkoutValueLabel tss">
+            <label>TSS</label>
+        </div> 
+        <div class="title">
+            <span class="workoutTitleText">{{ title }}</span>
+            <input type="text" name="workoutTitle" class="workoutTitle" placeholder="{{$ "UntitledWorkout" }}" id="workoutTitleField" title="{{$ "SetTitleTooltip" }}" value="{{ title }}"/>
+        </div>
+    </div>
+                

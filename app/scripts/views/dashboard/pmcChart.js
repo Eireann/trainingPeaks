@@ -170,10 +170,10 @@ function(
 
         renderChart: function()
         {
-            var TSBMinimum = this.findTSBMinimum(this.pmcModel.get("data"));
-            var chartPoints = this.buildFlotPoints(this.pmcModel.get("data"), TSBMinimum);
+            var TSBRange = this.findTSBRange(this.pmcModel.get("data"));
+            var chartPoints = this.buildFlotPoints(this.pmcModel.get("data"), TSBRange.minAxisValue);
             var dataSeries = this.buildFlotDataSeries(chartPoints, chartColors);
-            var flotOptions = this.buildFlotChartOptions(TSBMinimum);
+            var flotOptions = this.buildFlotChartOptions(TSBRange);
 
             var self = this;
 
@@ -183,20 +183,35 @@ function(
                 self.renderFlotChart(dataSeries, flotOptions);
             });
         },
-
-        findTSBMinimum: function(modelData)
+        
+        findTSBRange: function(modelData)
         {
-            var min = 0;
-            _.each(modelData, function(item, index)
-            {
-                if(item.hasOwnProperty("tsb") && Number(item.tsb) < min)
-                {
-                    min = item.tsb;
-                }
-            });
-            return min;
+            var range = this.findMinMaxTSB(modelData);
+            range.minAxisValue = (range.min - 10) < 0 ? (range.min - 10) : 0;
+            range.maxAxisValue = range.max + 10;
+            return range;
         },
 
+        findMinMaxTSB: function(modelData)
+        {
+            var minMax = { min: 0, max: 0 };
+            _.each(modelData, function (item, index)
+            {
+                if (item.hasOwnProperty("tsb") && Number(item.tsb) < minMax.min)                
+                    minMax.min = item.tsb;
+
+                if (item.hasOwnProperty("tsb") && Number(item.tsb) > minMax.max)                
+                    minMax.max = item.tsb;
+
+            });
+            return minMax;
+        },
+        
+        applyMinTSBToData: function(modelData, minAxisValue)
+        {
+              
+        },
+        
         buildFlotPoints: function(modelData, TSBMinimum)
         {
             var chartPoints = {
@@ -509,7 +524,7 @@ function(
             return dataSeries;
         },
 
-        buildFlotChartOptions: function(TSBMinimum)
+        buildFlotChartOptions: function(TSBAxisRange)
         {
             var flotOptions = defaultFlotOptions.getGlobalDefaultOptions(null);
 
@@ -561,7 +576,8 @@ function(
                 tickDecimals: 0,
                 position: "right",
                 color: "transparent",
-                min: TSBMinimum,
+                min: TSBAxisRange.minAxisValue,
+                max: TSBAxisRange.maxAxisValue,
                 font: {
                     color: chartColors.pmcColors.TSB
                 }

@@ -4,7 +4,7 @@
 ],
 function(TP)
 {
-    return TP.APIModel.extend(
+    return TP.APIDeepModel.extend(
     {
         webAPIModelName: "Workout",
         validateIdAttribute: function () { },

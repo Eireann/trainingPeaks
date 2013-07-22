@@ -8,7 +8,7 @@
 ],
 function (_, moment, TP, WorkoutDetailsModel, WorkoutDetailDataModel)
 {
-    var WorkoutModel = TP.APIModel.extend(
+    var WorkoutModel = TP.APIDeepModel.extend(
     {
         cacheable: true,
 
@@ -88,13 +88,13 @@ function (_, moment, TP, WorkoutDetailsModel, WorkoutDetailDataModel)
             "detailData": null
         },
 
-        initialize: function()
+        initialize: function(attrs, options)
         {
-            TP.APIModel.prototype.initialize.apply(this, arguments);
+            this.myBackboneModelPrototype.initialize.apply(this, arguments);
             _.bindAll(this, "checkpoint", "revert");
 
-            this.set("details", new WorkoutDetailsModel({ workoutId: this.get("workoutId") }));
-            this.set("detailData", new WorkoutDetailDataModel({ workoutId: this.get("workoutId") }));
+            this.set("details", new WorkoutDetailsModel({ workoutId: this.get("workoutId") }, options));
+            this.set("detailData", new WorkoutDetailDataModel({ workoutId: this.get("workoutId") }, options));
 
             // for newly added workouts, or else opening the qv again passes null to endpoint url
             this.on("change:workoutId", function()
@@ -132,10 +132,15 @@ function (_, moment, TP, WorkoutDetailsModel, WorkoutDetailDataModel)
 
             }
         },
-        
+
         getCalendarDay: function()
         {
             return moment(this.get("workoutDay")).format(TP.utils.datetime.shortDateFormat);
+        },
+
+        getSortDate: function()
+        {
+            return this.getCalendarDay();
         },
 
         moveToDay: function(newDate, newCollection)

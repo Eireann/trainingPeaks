@@ -5,7 +5,7 @@
 ],
 function(TP, AthleteSettingsModel)
 {
-    return TP.APIModel.extend(
+    return TP.APIDeepModel.extend(
     {
         cacheable: true,
 

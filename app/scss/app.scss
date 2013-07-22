@@ -15,6 +15,7 @@
 @import "calendar/calendarWorkout";
 @import "calendar/weekSummary";
 @import "library";
+@import "calendar/tabLibraries/trainingPlans";
 @import "calendar/newItemView";
 @import "calendar/quickView/quickview";
 @import "calendar/workoutColor";
@@ -36,6 +37,9 @@
 @import "home/home";
 @import "home/coachHome";
 @import "home/athleteHome";
+@import "home/athleteActivityViewer";
+
+@import "workoutBarView";
 
 @import "touch";
 

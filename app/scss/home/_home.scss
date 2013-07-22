@@ -4,6 +4,7 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
 #homeContainer
 {
     margin: 0 5px 5px 5px;
+    overflow: hidden; // needs overflow to fully inherit the height of the floated divs inside
 }
 
 .scrollableColumnContainer
@@ -21,6 +22,7 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
 		position: relative;
 		z-index: 1;
         border-bottom: 1px solid $TPGrey2;
+        background-color: $TPGrey1;
     }
 
     .scrollable

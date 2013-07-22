@@ -388,8 +388,8 @@ function(
 
         bindToCalendarViewEvents: function(calendarView)
         {
-            calendarView.on("prepend", this.prependWeekToCalendar, this);
-            calendarView.on("append", this.appendWeekToCalendar, this);
+            calendarView.on("scroll:top", this.prependWeekToCalendar, this);
+            calendarView.on("scroll:bottom", this.appendWeekToCalendar, this);
 
             calendarView.on("autoScrollUp", this.autoScrollUp, this);
             calendarView.on("autoScrollDown", this.autoScrollDown, this);

@@ -2,6 +2,7 @@
 [
     "underscore",
     "models/library/exerciseLibrariesCollection",
+    "models/library/trainingPlanCollection",
     "models/workoutModel",
     "models/commands/addWorkoutFromExerciseLibrary",
     "views/calendar/library/libraryView"
@@ -9,6 +10,7 @@
 function(
     _,
     ExerciseLibrariesCollection,
+    TrainingPlanCollection,
     WorkoutModel,
     AddWorkoutFromExerciseLibrary,
     LibraryView)
@@ -44,7 +46,8 @@ function(
         {
             this.libraryCollections =
             {
-                exerciseLibraries: new ExerciseLibrariesCollection()
+                exerciseLibraries: new ExerciseLibrariesCollection(),
+                trainingPlans: new TrainingPlanCollection()
             };
 
             if (this.views.library)

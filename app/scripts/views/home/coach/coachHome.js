@@ -20,14 +20,14 @@ function(
             template: homeContainerTemplate
         },
 
-        initialize: function()
-        {
-            this.on("user:loaded", this.onUserLoaded, this);
-        },
-
         ui:
         {
             homeContainer: "#homeContainer"
+        },
+
+        initialize: function()
+        {
+            this.on("user:loaded", this.onUserLoaded, this);
         },
 
         onRender: function()
@@ -37,8 +37,6 @@ function(
             this.athletesView.render();
             this.ui.homeContainer.append(this.athletesView.$el);
         }
-
     };
-
     return TP.ItemView.extend(HomeView);
 });

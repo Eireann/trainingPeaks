@@ -31,7 +31,7 @@ function(
             // this className won't break anything in the javascript, but the css is depending on it
             it("Should have 'day' css class", function()
             {
-                var dayModel = new CalendarDayModel({ date: moment() });
+                var dayModel = new CalendarDayModel({ date: moment().format(TP.utils.datetime.shortDateFormat) });
                 var dayView = new CalendarDayView({ model: dayModel });
                 dayView.render();
                 expect(dayView.$el.hasClass('day')).toBeTruthy();
@@ -40,7 +40,7 @@ function(
             it("Should add a 'today' class if the date is today", function()
             {
                 var today = moment();
-                var dayModel = new CalendarDayModel({ date: today });
+                var dayModel = new CalendarDayModel({ date: today.format(TP.utils.datetime.shortDateFormat) });
                 var dayView = new CalendarDayView({ model: dayModel });
                 dayView.render();
                 expect(dayView.$el.hasClass('today')).toBeTruthy();
@@ -49,7 +49,7 @@ function(
             it("Should not add a 'today' class if the date is not today", function()
             {
                 var tomorrow = moment().add("days", 1);
-                var dayModel = new CalendarDayModel({ date: tomorrow });
+                var dayModel = new CalendarDayModel({ date: tomorrow.format(TP.utils.datetime.shortDateFormat) });
                 var dayView = new CalendarDayView({ model: dayModel });
                 dayView.render();
                 expect(dayView.$el.hasClass('today')).toBeFalsy();
@@ -58,7 +58,7 @@ function(
             it("Should render a date", function()
             {
                 var today = moment();
-                var dayModel = new CalendarDayModel({ date: today });
+                var dayModel = new CalendarDayModel({ date: today.format(TP.utils.datetime.shortDateFormat) });
                 var dayView = new CalendarDayView({ model: dayModel });
                 dayView.render();
                 expect(dayView.$el.html()).toContain(TP.utils.datetime.format(today));
@@ -69,7 +69,7 @@ function(
 
                 it("Should make $el a droppable target", function()
                 {
-                    var dayModel = new CalendarDayModel({ date: moment() });
+                    var dayModel = new CalendarDayModel({ date: moment().format(TP.utils.datetime.shortDateFormat) });
                     var dayView = new CalendarDayView({ model: dayModel });
                     spyOn(dayView.$el, "droppable");
                     dayView.setUpDroppable();
@@ -78,7 +78,7 @@ function(
 
                 it("Should trigger an itemDropped event", function()
                 {
-                    var dayModel = new CalendarDayModel({ date: moment() });
+                    var dayModel = new CalendarDayModel({ date: moment().format(TP.utils.datetime.shortDateFormat) });
                     var dayView = new CalendarDayView({ model: dayModel });
                     var uiMock = {
                         draggable: {
