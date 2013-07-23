@@ -1,34 +1,75 @@
 {{#hoverBox this "leftarrow"}}
-<label class="title">{{ title }}</label>
-<div>Status: {{ trainingPlanStatus planStatus }}</div>
-
+<div class="smallbold">
+    {{ title }}
+</div>
 
 {{# with details }}
-    <div>{{ planId }}</div>
-    <div>{{ author }}</div>
-    <div>{{ description }}</div>
-
-    {{# each planApplications }}
-    <div data-appliedplanid="{{ appliedPlanId }}">
-        {{ formatDate startDate "MM/DD/YYYY" }} - {{ formatDate endDate "MM/DD/YYYY" }}
-        <select class="alterAppliedPlan">
-            <option value="edit">{{$ "Edit" }}</option>
-            <option value="move">{{$ "Move" }}</option>
-            <option value="unapply">{{$ "Unapply" }}</option>
-        </select>
+<div>
+    <div>
+        <span class="smallbold">{{$ "Author"}}</span>
+        <span>Joe Friel</span>
     </div>
-    {{/each}}
+    <div>
+        <span>{{$ "PlanId"}}</span>
+        <span>16686</span>
+    </div>
+    <div>
+        <span>{{$ "NumberOfDays"}}</span>
+        <span>84</span>
+    </div>
+    <div>
+        <span>{{$ "NumberOfWorkouts"}}</span>
+        <span>128</span>
+    </div>
+    <div>
+        <span>{{$ "NumberOfMeals"}}</span>
+        <span>0</span>
+    </div>
+</div>
+
+<div>
+    <div>
+        <span>{{$ "PlannedDuration"}}</span>
+        <span>85.50 hours</span>
+    </div>
+    <div>
+        <div>
+            <span>{{$ "Bike"}}</span>
+            <span>35.00 hours</span>
+        </div>
+        <div>
+            <span>{{$ "Run"}}</span>
+            <span>5.00 hours</span>
+        </div>
+        <div>
+            <span>{{$ "Swim"}}</span>
+            <span>3.5 hours</span>
+        </div>
+    </div>
+</div>
+
+
+{{# each planApplications }}
+<div data-appliedplanid="{{ appliedPlanId }}">
+    {{ formatDate startDate "MM/DD/YYYY" }} - {{ formatDate endDate "MM/DD/YYYY" }}
+    <select class="alterAppliedPlan">
+        <option value="edit">{{$ "Edit" }}</option>
+        <option value="move">{{$ "Move" }}</option>
+        <option value="unapply">{{$ "Unapply" }}</option>
+    </select>
+</div>
+{{/each}}
 
 {{/with}}
 
 {{#if applyable }}
-<div>
+<div class="startEndPlan">
     <select id="applyDateType">
         <option value="start">{{$ "Start" }}</option>
         <option value="end">{{$ "End" }}</option>
         <option value="endOnEventDate">{{$ "EndOnEventDate" }}</option>
     </select>
-    {{$ "On" }}
+    <span>{{$ "On" }}</span>
     <input type="text" id="applyDate" class="datepicker" value="{{ formatDate applyDate "MM/DD/YYYY" }}">
 
     {{#if applied }}
@@ -38,6 +79,5 @@
     {{/if}}
 </div>
 {{/if}}
-
 
 {{/hoverBox}}

@@ -11,21 +11,28 @@
 
     .startEndPlan
     {
+        margin-top: 20px;
         width: 100%;
         span
         {   
             float: left;
         }
-        #startSelect
+        #applyDateType
         {
             width: 100px;
             float:left;
         }
 
-        #selectDate
+        #applyDate
         {
             width: 100px;
             padding: 0;
+            float: left;
+        }
+
+        button.apply
+        {
+            clear: both;
         }
     }
 }
