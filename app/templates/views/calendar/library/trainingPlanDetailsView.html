@@ -1,15 +1,69 @@
 {{#hoverBox this "leftarrow"}}
+<div class="smallbold">
+    {{ title }}
+</div>
+
+<div>
+    <div>
+        <span class="smallbold">{{$ "Author"}}</span>
+        <span>Joe Friel</span>
+    </div>
+    <div>
+        <span>{{$ "PlanId"}}</span>
+        <span>16686</span>
+    </div>
+    <div>
+        <span>{{$ "NumberOfDays"}}</span>
+        <span>84</span>
+    </div>
+    <div>
+        <span>{{$ "NumberOfWorkouts"}}</span>
+        <span>128</span>
+    </div>
+    <div>
+        <span>{{$ "NumberOfMeals"}}</span>
+        <span>0</span>
+    </div>
+</div>
+
+<div>
+    <div>
+        <span>{{$ "PlannedDuration"}}</span>
+        <span>85.50 hours</span>
+    </div>
+    <div>
+        <div>
+            <span>{{$ "Bike"}}</span>
+            <span>35.00 hours</span>
+        </div>
+        <div>
+            <span>{{$ "Run"}}</span>
+            <span>5.00 hours</span>
+        </div>
+        <div>
+            <span>{{$ "Swim"}}</span>
+            <span>3.5 hours</span>
+        </div>
+    </div>
+</div>
+
+<div class="startEndPlan">
+    <select name="startSelect" id="startSelect">
+        <option>Start</option>
+        <option>End</option>
+        <option>End on event date</option>
+    </select>
+    <span>on</span>
+    <input type="text" id="selectDate" class="datepicker"/>
+    <button>{{$ "Apply"}}</button>
+</div>
+
+<!--
 <label class="title">{{ title }}</label>
 <div>Status: {{ trainingPlanStatus planStatus }}</div>
-
-{{#if applyable }}
-<div>
-<input type="text" id="applyDate" class="datepicker" value="{{ formatDate applyDate "YYYY-MM-DD" }}">
-<button class="apply">Apply</button>
-</div>
-{{/if}}
-
 <div>{{ planId }}</div>
 <div>{{ author }}</div>
 <div>{{ description }}</div>
+<div>{{ daysDuration }}</div>
+-->
 {{/hoverBox}}
