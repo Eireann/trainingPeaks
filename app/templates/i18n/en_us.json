@@ -344,5 +344,12 @@
 
     "TrainingPlans": "Training Plans",
     "FindMorePlansInThe": "Find more plans in the",
-    "Store":"Store"
+    "Store":"Store",
+
+    "Author": "Author",
+    "PlanId": "Plan Id",
+    "NumberOfDays": "Number of days",
+    "NumberOfWorkouts": "Number of workouts",
+    "NumberOfMeals": "Number of meals",
+    "PlannedDuration": "Planned duration"
 }
