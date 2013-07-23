@@ -26,7 +26,7 @@ function(
                 $mainRegion = theApp.mainRegion.$el;
                 $body = theApp.getBodyElement();
                 theApp.router.navigate("calendar", true);
-                testHelpers.resolveRequest("GET", "plans/v1/athletes/426489", xhrData.trainingPlans);
+                testHelpers.resolveRequest("GET", "plans/v1/athletes/426489/plans$", xhrData.trainingPlans);
                 $mainRegion.find("#plansLibrary").trigger("click");
             });
 
@@ -89,7 +89,7 @@ function(
                 $mainRegion = theApp.mainRegion.$el;
                 $body = theApp.getBodyElement();
                 theApp.router.navigate("calendar", true);
-                testHelpers.resolveRequest("GET", "plans/v1/athletes/426489", xhrData.trainingPlans);
+                testHelpers.resolveRequest("GET", "plans/v1/athletes/426489/plans$", xhrData.trainingPlans);
                 $mainRegion.find("#plansLibrary").trigger("click");
                 $mainRegion.find(".trainingPlanLibrary .trainingPlan[data-trainingplanid=3]").trigger("mouseup");
             });
@@ -99,35 +99,43 @@ function(
                 testHelpers.stopTheApp();
             });
 
+            it("Should request the tier2 plan details after opening the tomahawk", function()
+            {
+                expect(testHelpers.hasRequest("GET", "plans/v1/athletes/426489/plans/3/details$")).toBe(true);
+            });
+
+            it("Should display the tier2 plan details in the tomahawk", function()
+            {
+                expect($body.find(".trainingPlanDetails").text()).not.toContain("Some Guy");
+                expect($body.find(".trainingPlanDetails").text()).not.toContain("Description of a training plan");
+                testHelpers.resolveRequest("GET", "plans/v1/athletes/426489/plans/3/details$", xhrData.trainingPlanDetails);
+                expect($body.find(".trainingPlanDetails").text()).toContain("Some Guy");
+                expect($body.find(".trainingPlanDetails").text()).toContain("Description of a training plan");
+            });
+
             it("Should trigger a command request when the apply button is clicked", function()
             {
-                expect(testHelpers.hasRequest(null, "plans/v1/athletes/426489/commands/apply/3")).toBe(false);
+                expect(testHelpers.hasRequest(null, "plans/v1/athletes/426489/plans/3/commands/apply")).toBe(false);
                 $body.find(".trainingPlanDetails .apply").trigger("click");
-                expect(testHelpers.hasRequest(null, "plans/v1/athletes/426489/commands/apply/3")).toBe(true);
+                expect(testHelpers.hasRequest(null, "plans/v1/athletes/426489/plans/3/commands/apply")).toBe(true);
             });
 
-            xit("Should display a confirmation after applying the plan", function()
+            it("Should refresh the plan details after applying the plan", function()
             {
                 testHelpers.clearRequests();
                 $body.find(".trainingPlanDetails .apply").trigger("click");
-                testHelpers.resolveRequest(null, "plans/v1/athletes/426489/commands/apply/3", null);
-                expect("FIX ME").toBe(true);
+                testHelpers.resolveRequest(null, "plans/v1/athletes/426489/plans/3/commands/apply", null);
+                expect(testHelpers.hasRequest("GET", "plans/v1/athletes/426489/plans/3$")).toBe(true);
+                expect(testHelpers.hasRequest("GET", "plans/v1/athletes/426489/plans/3/details$")).toBe(true);
             });
 
-            xit("Should refresh the plan library after applying the plan", function()
+            it("Should refresh the calendar after applying the plan", function()
             {
                 testHelpers.clearRequests();
+                expect(testHelpers.hasRequest("GET", "fitness/v1/athletes/426489/workouts")).toBe(false);
                 $body.find(".trainingPlanDetails .apply").trigger("click");
-                testHelpers.resolveRequest(null, "plans/v1/athletes/426489/commands/apply/3", null);
-                expect(testHelpers.hasRequest("GET", "^plans/v1/athletes/426489$")).toBe(true);
-            });
-
-            xit("Should refresh the calendar after applying the plan", function()
-            {
-                testHelpers.clearRequests();
-                $body.find(".trainingPlanDetails .apply").trigger("click");
-                testHelpers.resolveRequest(null, "plans/v1/athletes/426489/commands/apply/3", null);
-                expect("FIX ME").toBe(true);
+                testHelpers.resolveRequest(null, "plans/v1/athletes/426489/plans/3/commands/apply", {});
+                expect(testHelpers.hasRequest("GET", "fitness/v1/athletes/426489/workouts")).toBe(true);
             });
         });
 

@@ -440,7 +440,19 @@ function()
                 planStatus: 3 
             }
 
-        ]
+        ],
+
+        trainingPlanDetails: {
+            "author": "Some Guy",
+            "dayCount": 365,
+            "description": "Description of a training plan",
+            "workoutCount": 1,
+            "planId": 3,
+            "planApplications": [],
+            "planStatus": 3,
+            "plannedWorkoutTypeDurations": [],
+            "title": "Training Plan Three"
+        }
         
     };
 

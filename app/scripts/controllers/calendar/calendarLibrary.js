@@ -55,6 +55,11 @@ function(
 
             this.views.library = new LibraryView({ collections: this.libraryCollections });
             this.views.library.on("library:select", this.onLibrarySelect, this);
+
+            _.each(this.libraryCollections, function(collection)
+            {
+                collection.on("requestRefresh", this.onRequestRefresh, this);
+            }, this);
         },
 
         getExerciseLibraries: function()

@@ -8,10 +8,10 @@ function(moment, TP)
     return TP.Model.extend(
     {
 
-        urlRoot: function()
+        url: function()
         {
             return theMarsApp.apiRoot + "/plans/v1/athletes/" + theMarsApp.user.getCurrentAthleteId() +
-                "/commands/apply/" + this.get("planId") + "/" +
+                "/plans/" + this.get("planId") + "/commands/apply/" +
                 moment(this.get("applyDate")).format("YYYY-MM-DD");
         },
 
