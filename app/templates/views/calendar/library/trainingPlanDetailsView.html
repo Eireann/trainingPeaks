@@ -50,8 +50,8 @@
 
 
 {{# each planApplications }}
-<div data-appliedplanid="{{ appliedPlanId }}">
-    {{ formatDate startDate "MM/DD/YYYY" }} - {{ formatDate endDate "MM/DD/YYYY" }}
+<div data-appliedplanid="{{ appliedPlanId }}" class="appliedPlan">
+    <span class="appliedDates">{{ formatDate startDate "MM/DD/YYYY" }} - {{ formatDate endDate "MM/DD/YYYY" }}</span>
     <select class="alterAppliedPlan">
         <option value="edit">{{$ "Edit" }}</option>
         <option value="move">{{$ "Move" }}</option>

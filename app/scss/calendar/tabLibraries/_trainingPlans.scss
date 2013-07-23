@@ -6,11 +6,17 @@
     .hoverBoxContents
     {
         min-height: 300px;
-        min-width: 300px;
+        min-width: 400px;
     }
 
     .startEndPlan
     {
+
+        clear: both;
+
+        // so it inherits the height of it's floated children
+        overflow: hidden;
+
         margin-top: 20px;
         width: 100%;
         span
@@ -33,6 +39,28 @@
         button.apply
         {
             clear: both;
+            display: block;
+        }
+    }
+
+    .appliedPlan
+    {
+        clear: both;
+        margin-top: 20px;
+
+        // so it inherits the height of it's floated children
+        overflow: hidden;
+
+        .appliedDates
+        {
+            float: left;
+            width: 200px;
+        }
+
+        .alterAppliedPlan
+        {
+            float: left;
+            width: 100px;
         }
     }
 }
