@@ -35,7 +35,7 @@ function (TP)
     /*
 
     planApplications: [
-        {startDate, endDate}
+        {appliedPlanId, startDate, endDate}
     ]
 
     plannedWorkoutTypeDurations: [

@@ -130,12 +130,12 @@ function(_, TP, infiniteScroll)
             this.$el.find(".daysOfWeek").removeClass("scrollInProgress");
         },
 
-        scrollToSelector: function (selector, animationTimeout)
+        scrollToSelector: function (selector, animationTimeout, callback)
         {
             var elements = this.ui.weeksContainer.find(selector);
             if (elements && elements.length)
             {
-                this.scrollToElement(elements[0], ".week", animationTimeout);
+                this.scrollToElement(elements[0], ".week", animationTimeout, callback);
             }
             else
             {
@@ -158,7 +158,7 @@ function(_, TP, infiniteScroll)
 
         },
 
-        scrollToDate: function(targetDate, effectDuration)
+        scrollToDate: function(targetDate, effectDuration, callback)
         {
             var dateAsMoment = moment(targetDate);
 
@@ -168,7 +168,7 @@ function(_, TP, infiniteScroll)
             //theMarsApp.logger.debug(dateAsMoment.format(TP.utils.datetime.shortDateFormat));
             var dateAsString = dateAsMoment.format(TP.utils.datetime.shortDateFormat);
             var selector = '.day[data-date="' + dateAsString + '"]';
-            this.scrollToSelector(selector, effectDuration);
+            this.scrollToSelector(selector, effectDuration, callback);
             // no need to do this as it will already update after scroll, this makes it flash twice
             //this.setCurrentDate(targetDate);
             this.snappedToWeekHeader = true;

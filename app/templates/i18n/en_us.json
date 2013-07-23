@@ -344,5 +344,11 @@
 
     "TrainingPlans": "Training Plans",
     "FindMorePlansInThe": "Find more plans in the",
-    "Store":"Store"
+    "Store":"Store",
+
+    "End": "End",
+    "EndOnEventDate": "End on Event Date",
+    "On": "On",
+    "Unapply": "Unapply",
+    "Reapply": "Reapply"
 }

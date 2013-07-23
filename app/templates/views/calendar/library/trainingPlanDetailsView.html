@@ -2,18 +2,42 @@
 <label class="title">{{ title }}</label>
 <div>Status: {{ trainingPlanStatus planStatus }}</div>
 
+
+{{# with details }}
+    <div>{{ planId }}</div>
+    <div>{{ author }}</div>
+    <div>{{ description }}</div>
+
+    {{# each planApplications }}
+    <div data-appliedplanid="{{ appliedPlanId }}">
+        {{ formatDate startDate "MM/DD/YYYY" }} - {{ formatDate endDate "MM/DD/YYYY" }}
+        <select class="alterAppliedPlan">
+            <option value="edit">{{$ "Edit" }}</option>
+            <option value="move">{{$ "Move" }}</option>
+            <option value="unapply">{{$ "Unapply" }}</option>
+        </select>
+    </div>
+    {{/each}}
+
+{{/with}}
+
 {{#if applyable }}
 <div>
-<input type="text" id="applyDate" class="datepicker" value="{{ formatDate applyDate "YYYY-MM-DD" }}">
-<button class="apply">Apply</button>
+    <select id="applyDateType">
+        <option value="start">{{$ "Start" }}</option>
+        <option value="end">{{$ "End" }}</option>
+        <option value="endOnEventDate">{{$ "EndOnEventDate" }}</option>
+    </select>
+    {{$ "On" }}
+    <input type="text" id="applyDate" class="datepicker" value="{{ formatDate applyDate "MM/DD/YYYY" }}">
+
+    {{#if applied }}
+    <button class="apply">{{$ "Reapply" }}</button>
+    {{ else }}
+    <button class="apply">{{$ "Apply" }}</button>
+    {{/if}}
 </div>
 {{/if}}
 
-<div>{{ planId }}</div>
-
-{{# with details }}
-    <div>{{ author }}</div>
-    <div>{{ description }}</div>
-{{/with}}
 
 {{/hoverBox}}

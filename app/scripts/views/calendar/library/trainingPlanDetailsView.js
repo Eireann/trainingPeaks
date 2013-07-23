@@ -1,11 +1,12 @@
 define(
 [
     "jqueryui/datepicker",
+    "jquerySelectBox",
     "TP",
     "models/commands/applyTrainingPlan",
     "hbs!templates/views/calendar/library/trainingPlanDetailsView"
 ],
-function(datepicker, TP, ApplyTrainingPlanCommand, trainingPlanDetailsViewTemplate)
+function(datepicker, jquerySelectBox, TP, ApplyTrainingPlanCommand, trainingPlanDetailsViewTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -43,6 +44,7 @@ function(datepicker, TP, ApplyTrainingPlanCommand, trainingPlanDetailsViewTempla
             {
                 self.$(".datepicker").css("position", "relative").css("z-index", self.$el.css("z-index"));
                 self.$(".datepicker").datepicker({ dateFormat: "yy-mm-dd", firstDay: theMarsApp.controllers.calendarController.startOfWeekDayIndex });
+                self.$("select").selectBoxIt({ dynamicPositioning: false });
             });
 
         },
@@ -50,7 +52,8 @@ function(datepicker, TP, ApplyTrainingPlanCommand, trainingPlanDetailsViewTempla
         serializeData: function()
         {
             var data = this.model.toJSON();
-            data.applyable = data.planStatus === TP.utils.trainingPlan.getStatusByName("Purchased") ? true : false;
+            data.applyable = data.planStatus === TP.utils.trainingPlan.getStatusByName("Purchased") || data.planStatus === TP.utils.trainingPlan.getStatusByName("Applied") ? true : false;
+            data.applied = data.planStatus === TP.utils.trainingPlan.getStatusByName("Applied") ? true : false;
             data.applyDate = moment().format("YYYY-MM-DD");
             data.details = this.model.details.toJSON();
             return data;
@@ -60,6 +63,7 @@ function(datepicker, TP, ApplyTrainingPlanCommand, trainingPlanDetailsViewTempla
         {
             var command = new ApplyTrainingPlanCommand({
                 planId: this.model.get("planId"),
+                applyDateType: this.$("#applyDateType").val(),
                 applyDate: this.$("#applyDate").val()
             });
 
@@ -68,7 +72,15 @@ function(datepicker, TP, ApplyTrainingPlanCommand, trainingPlanDetailsViewTempla
             {
                 self.model.fetch();
                 self.model.details.fetch();
-                self.model.trigger("requestRefresh");
+
+                // temporarily hide the overlay or it confuses the calendar header date detection on scroll
+                self.$overlay.hide();
+                var callback = function()
+                {
+                    self.$overlay.show();
+                };
+
+                self.model.trigger("requestRefresh", command.get("appliedPlan.startDate"), callback);
             });
         }
 

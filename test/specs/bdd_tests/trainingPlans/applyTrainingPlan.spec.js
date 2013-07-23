@@ -1,10 +1,12 @@
 requirejs(
 [
+    "moment",
     "testUtils/testHelpers",
     "testUtils/xhrDataStubs",
     "app"
 ],
 function(
+    moment,
     testHelpers,
     xhrData,
     theApp)
@@ -60,6 +62,22 @@ function(
                 expect($body.find(".trainingPlanDetails").text()).toContain("Applied");
             });
 
+            it("Should request the tier2 plan details after opening the tomahawk", function()
+            {
+                $mainRegion.find(".trainingPlanLibrary .trainingPlan[data-trainingplanid=3]").trigger("mouseup");
+                expect(testHelpers.hasRequest("GET", "plans/v1/athletes/426489/plans/3/details$")).toBe(true);
+            });
+
+            it("Should display the tier2 plan details", function()
+            {
+                $mainRegion.find(".trainingPlanLibrary .trainingPlan[data-trainingplanid=3]").trigger("mouseup");
+                expect($body.find(".trainingPlanDetails").text()).not.toContain("Some Guy");
+                expect($body.find(".trainingPlanDetails").text()).not.toContain("Description of a training plan");
+                testHelpers.resolveRequest("GET", "plans/v1/athletes/426489/plans/3/details$", xhrData.trainingPlanDetails);
+                expect($body.find(".trainingPlanDetails").text()).toContain("Some Guy");
+                expect($body.find(".trainingPlanDetails").text()).toContain("Description of a training plan");
+            });
+
             it("Should not have an apply button if it was not purchased", function()
             {
                 $mainRegion.find(".trainingPlanLibrary .trainingPlan[data-trainingplanid=1]").trigger("mouseup");
@@ -75,9 +93,27 @@ function(
                 expect($body.find(".trainingPlanDetails .apply").length).toBe(1);
             });
 
+            it("Should display applied plans", function()
+            {
+                $mainRegion.find(".trainingPlanLibrary .trainingPlan[data-trainingplanid=2]").trigger("mouseup");
+                expect($body.find(".trainingPlanDetails [data-appliedplanid=21]").length).toBe(0);
+                expect($body.find(".trainingPlanDetails [data-appliedplanid=22]").length).toBe(0);
+                testHelpers.resolveRequest("GET", "plans/v1/athletes/426489/plans/2/details$", xhrData.trainingPlanDetails);
+                expect($body.find(".trainingPlanDetails [data-appliedplanid=21]").length).toBe(1);
+                expect($body.find(".trainingPlanDetails [data-appliedplanid=22]").length).toBe(1);
+            });
+
+            it("Should display applied plan start and end dates", function()
+            {
+                $mainRegion.find(".trainingPlanLibrary .trainingPlan[data-trainingplanid=2]").trigger("mouseup");
+                testHelpers.resolveRequest("GET", "plans/v1/athletes/426489/plans/2/details$", xhrData.trainingPlanDetails);
+                expect($body.find(".trainingPlanDetails [data-appliedplanid=21]").text()).toContain("01/02/2013");
+                expect($body.find(".trainingPlanDetails [data-appliedplanid=21]").text()).toContain("09/10/2013");
+            });
+
         });
 
-        describe("Tomahawk", function()
+        describe("Apply", function()
         {
 
             var $mainRegion;
@@ -99,20 +135,6 @@ function(
                 testHelpers.stopTheApp();
             });
 
-            it("Should request the tier2 plan details after opening the tomahawk", function()
-            {
-                expect(testHelpers.hasRequest("GET", "plans/v1/athletes/426489/plans/3/details$")).toBe(true);
-            });
-
-            it("Should display the tier2 plan details in the tomahawk", function()
-            {
-                expect($body.find(".trainingPlanDetails").text()).not.toContain("Some Guy");
-                expect($body.find(".trainingPlanDetails").text()).not.toContain("Description of a training plan");
-                testHelpers.resolveRequest("GET", "plans/v1/athletes/426489/plans/3/details$", xhrData.trainingPlanDetails);
-                expect($body.find(".trainingPlanDetails").text()).toContain("Some Guy");
-                expect($body.find(".trainingPlanDetails").text()).toContain("Description of a training plan");
-            });
-
             it("Should trigger a command request when the apply button is clicked", function()
             {
                 expect(testHelpers.hasRequest(null, "plans/v1/athletes/426489/plans/3/commands/apply")).toBe(false);
@@ -120,11 +142,44 @@ function(
                 expect(testHelpers.hasRequest(null, "plans/v1/athletes/426489/plans/3/commands/apply")).toBe(true);
             });
 
+            it("Should trigger an end on date apply command", function()
+            {
+                expect(testHelpers.hasRequest(null, "plans/v1/athletes/426489/plans/3/commands/apply")).toBe(false);
+
+                var tomorrow = moment().add("days", 1);
+                $body.find("#applyDateType").val("end");
+                $body.find("#applyDate").val(tomorrow.format("MM/DD/YYYY"));
+                $body.find(".trainingPlanDetails .apply").trigger("click");
+                expect(testHelpers.hasRequest(null, "plans/v1/athletes/426489/plans/3/commands/apply/end/" + tomorrow.format("YYYY-MM-DD") + "$")).toBe(true);
+            });
+
+            it("Should trigger a start on date apply command", function()
+            {
+                expect(testHelpers.hasRequest(null, "plans/v1/athletes/426489/plans/3/commands/apply")).toBe(false);
+
+                var tomorrow = moment().add("days", 1);
+                $body.find("#applyDateType").val("start");
+                $body.find("#applyDate").val(tomorrow.format("MM/DD/YYYY"));
+                $body.find(".trainingPlanDetails .apply").trigger("click");
+                expect(testHelpers.hasRequest(null, "plans/v1/athletes/426489/plans/3/commands/apply/start/" + tomorrow.format("YYYY-MM-DD") + "$")).toBe(true);
+            });
+
+            it("Should trigger an end on event date apply command", function()
+            {
+                expect(testHelpers.hasRequest(null, "plans/v1/athletes/426489/plans/3/commands/apply")).toBe(false);
+
+                var tomorrow = moment().add("days", 1);
+                $body.find("#applyDateType").val("endOnEventDate");
+                $body.find("#applyDate").val(tomorrow.format("MM/DD/YYYY"));
+                $body.find(".trainingPlanDetails .apply").trigger("click");
+                expect(testHelpers.hasRequest(null, "plans/v1/athletes/426489/plans/3/commands/apply/endOnEventDate/" + tomorrow.format("YYYY-MM-DD") + "$")).toBe(true);
+            });
+
             it("Should refresh the plan details after applying the plan", function()
             {
                 testHelpers.clearRequests();
                 $body.find(".trainingPlanDetails .apply").trigger("click");
-                testHelpers.resolveRequest(null, "plans/v1/athletes/426489/plans/3/commands/apply", null);
+                testHelpers.resolveRequest(null, "plans/v1/athletes/426489/plans/3/commands/apply", { startDate: "2010-01-01", endDate: "2014-12-31", appliedPlanId: 11 });
                 expect(testHelpers.hasRequest("GET", "plans/v1/athletes/426489/plans/3$")).toBe(true);
                 expect(testHelpers.hasRequest("GET", "plans/v1/athletes/426489/plans/3/details$")).toBe(true);
             });
@@ -134,7 +189,7 @@ function(
                 testHelpers.clearRequests();
                 expect(testHelpers.hasRequest("GET", "fitness/v1/athletes/426489/workouts")).toBe(false);
                 $body.find(".trainingPlanDetails .apply").trigger("click");
-                testHelpers.resolveRequest(null, "plans/v1/athletes/426489/plans/3/commands/apply", {});
+                testHelpers.resolveRequest(null, "plans/v1/athletes/426489/plans/3/commands/apply", { startDate: "2010-01-01", endDate: "2014-12-31", appliedPlanId: 11 });
                 expect(testHelpers.hasRequest("GET", "fitness/v1/athletes/426489/workouts")).toBe(true);
             });
         });
