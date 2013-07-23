@@ -63,8 +63,7 @@ function(TP, TrainingPlanDetailsView, trainingPlanItemViewTemplate)
             }
             this.detailsView = new TrainingPlanDetailsView({ model: this.model });
             this.detailsView.on("close", this.onDetailsClose, this);
-            var myPosition = this.$el.offset();
-            this.detailsView.render().top(myPosition.top).left(myPosition.left + this.$el.width() + 15);
+            this.detailsView.render().alignArrowTo(this.$el);
         },
 
         onDetailsClose: function()

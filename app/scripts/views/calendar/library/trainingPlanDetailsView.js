@@ -2,11 +2,19 @@ define(
 [
     "jqueryui/datepicker",
     "jquerySelectBox",
+    "setImmediate",
     "TP",
     "models/commands/applyTrainingPlan",
     "hbs!templates/views/calendar/library/trainingPlanDetailsView"
 ],
-function(datepicker, jquerySelectBox, TP, ApplyTrainingPlanCommand, trainingPlanDetailsViewTemplate)
+function(
+    datepicker,
+    jquerySelectBox,
+    setImmediate,
+    TP,
+    ApplyTrainingPlanCommand,
+    trainingPlanDetailsViewTemplate
+    )
 {
     return TP.ItemView.extend(
     {
@@ -47,6 +55,10 @@ function(datepicker, jquerySelectBox, TP, ApplyTrainingPlanCommand, trainingPlan
                 self.$("select").selectBoxIt({ dynamicPositioning: false });
             });
 
+            if(this.alignedTo)
+            {
+                this.alignArrowTo(this.alignedTo);
+            }
         },
 
         serializeData: function()
@@ -82,6 +94,23 @@ function(datepicker, jquerySelectBox, TP, ApplyTrainingPlanCommand, trainingPlan
 
                 self.model.trigger("requestRefresh", command.get("appliedPlan.startDate"), callback);
             });
+        },
+
+        alignArrowTo: function($element)
+        {
+            this.alignedTo = $element;
+            this.left($element.offset().left + $element.width() + 15);
+            var targetTop = $element.offset().top;
+            this.top(targetTop);
+
+            var windowHeight = $(window).height();
+            if ((this.$el.offset().top + this.$el.height()) >= (windowHeight - 30))
+            {
+                this.top(windowHeight - this.$el.height() - 30);
+                var myTop = this.$el.offset().top;
+                var arrowTop = Math.round((targetTop - myTop) + 40);
+                this.$(".arrow").css("top", arrowTop + "px");
+            }
         }
 
     });
