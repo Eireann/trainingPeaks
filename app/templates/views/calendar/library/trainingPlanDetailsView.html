@@ -3,15 +3,19 @@
     {{ title }}
 </div>
 
+<div>
+    {{$ "Status" }}: {{ trainingPlanStatus planStatus }}
+</div>
+
 {{# with details }}
 <div>
     <div>
         <span class="smallbold">{{$ "Author"}}</span>
-        <span>Joe Friel</span>
+        <span>{{ author }}</span>
     </div>
     <div>
         <span>{{$ "PlanId"}}</span>
-        <span>16686</span>
+        <span>{{ planId }}</span>
     </div>
     <div>
         <span>{{$ "NumberOfDays"}}</span>
@@ -47,6 +51,8 @@
         </div>
     </div>
 </div>
+
+<div>{{ description }}</div>
 
 
 {{# each planApplications }}
