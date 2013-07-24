@@ -84,6 +84,7 @@ function(TP, SaveToLibraryConfirmationView, WorkoutQuickViewMenuTemplate)
             window.open(url);
             */
             this.trigger("print");
+            this.close();
         },
 
         canFitAbove: function(positionTop)
