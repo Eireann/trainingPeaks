@@ -11,6 +11,66 @@
         margin: 2px 15px 0 2px;
     }
 
+
+    .infoResults
+    {
+        height: 15px;
+    }
+
+    .planTitle
+    {
+        margin-top: 14px;
+    }
+
+    .planInfo
+    {
+        padding-top: 10px;
+    }
+
+    .planInfoTitle
+    {
+        width: 60%;
+        float: left;
+        height: 15px;
+    }
+
+    .plannedDuration
+    {
+        padding-top: 15px;
+
+        .durationDetails
+        {
+            padding-left: 7px;
+        }
+
+        .durationTitle
+        {
+            float: left;
+            height: 15px;
+            @include calc(width, "60% - 3px");
+        } 
+        
+        .plannedInfoResults
+        {
+            height: 15px;
+        }  
+    }
+
+    hr
+    {
+        width: 100%;
+    }
+
+    .dottedLine
+    {
+        float: left;
+        border-bottom: 1px dotted #000000;
+    }
+
+    .startEndPlan
+  }
+    }
+
      .planSearch
     {
         margin-top: 10px;
