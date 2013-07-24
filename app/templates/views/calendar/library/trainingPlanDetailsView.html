@@ -11,30 +11,26 @@
 <div class="planInfo">
     <div>
         <div class="smallbold planInfoTitle">{{$ "Author"}}</div>
-        <div class="small infoResults">Joe Friel</div>
+        <div class="small infoResults">{{ author }}</div>
     </div>
     <div>
         <div class="smallbold planInfoTitle">{{$ "PlanId"}}</div>
-        <div class="small infoResults">12345</div>
+        <div class="small infoResults">{{ planId }}</div>
     </div>
     <div>
         <div class="smallbold planInfoTitle">{{$ "NumberOfDays"}}</div>
-        <div class="small infoResults">84</div>
-    </div>
-    <div>
-        <div class="smallbold planInfoTitle">{{$ "NumberOfWorkouts"}}</div>
-        <div class="small infoResults">128</div>
+        <div class="small infoResults">{{ dayCount }}</div>
     </div>
     <div>
         <div class="smallbold planInfoTitle">{{$ "NumberOfMeals"}}</div>
-        <div class="small infoResults">0</div>
+        <div class="small infoResults">{{ workoutCount }}</div>
     </div>
 </div>
 
 <div class="plannedDuration">
     <div>
         <div class="smallbold planInfoTitle">{{$ "PlannedDuration"}}</div>
-        <div class="small infoResults">85.50 hours</div>
+        <div class="small infoResults">85.50 hours FIXME</div>
     </div>
     <div class="durationDetails">
         {{#each plannedWorkoutTypeDurations}}
