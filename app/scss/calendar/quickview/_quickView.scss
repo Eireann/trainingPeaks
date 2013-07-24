@@ -387,3 +387,190 @@ input[disabled='disabled']
         }
     }
 }
+
+
+
+
+
+@media print {
+
+    ::-webkit-input-placeholder { /* WebKit browsers */
+      color: transparent;
+    }
+    
+    :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+        color: transparent;
+    }
+    
+    ::-moz-placeholder { /* Mozilla Firefox 19+ */
+        color: transparent;
+    }
+      
+    :-ms-input-placeholder { /* Internet Explorer 10+ */
+        color: transparent;
+    }
+
+    #navigation,#main,.tabNavigation,.closeAndSettings,.uploadExpandButtons,.headerIcons,.quickviewFooter  {
+        display:none;
+    }
+
+    .workoutQuickView {
+        top:0 !important;
+        left:0 !important;
+        width:100%;
+        // border:1px solid blue;
+        margin-top:25px;
+        border-bottom:1pt solid #ccc;
+    }
+
+    .modalOverlayMask + .modalShadow {
+        box-shadow:none;
+    }
+
+    #workOutQuickView {
+        background:none;
+        height:100% !important;
+        width:100% !important;
+        // border:1px solid red;
+    }
+
+    .QVHeader {
+        background-color:#fff;
+        box-shadow:none;
+        padding:0;
+        margin:0;
+        height:auto;
+        width:100%;
+       // border:1px solid red;
+    }
+
+    .workoutBarView {
+       // width:800px;       
+    }
+
+    .workout.future,.workout.past {
+        width:100%;
+        background-color:none;
+        // border:1px solid red;
+   }
+
+    #quickViewContent {
+        background:none;
+        height:100%;
+        width:750px;
+        overflow-y:auto;
+        float:left;
+        margin:10px 0;
+    }
+
+    input[type="text"], input[type="password"], input[type="date"], input[type="datetime"], input[type="datetime-local"], input[type="month"], input[type="week"], input[type="email"], input[type="number"], input[type="search"], input[type="tel"], input[type="time"], input[type="url"], textarea {
+        border:none;
+        padding:0;
+    }
+
+    textarea {
+        resize:none !important;
+    }
+
+    .workoutStatsCompleted, #workoutMinMaxAvgStats, .columnLabelsMinMaxAvg {
+        // display:none;
+    }
+
+    #commentsContainer .comments {
+        // border: 1px solid red;
+        padding: 0 0 0 10px;
+        // width: 420px;
+        width:49%;
+        border-left:1pt solid #ccc;
+    }
+
+    textarea#descriptionInput, 
+    textarea#preActivityCommentsInput {
+        margin:0 0 10px 0;
+        // min-height:none;
+        width:95%;
+        border:1pt solid red;
+        padding:0 !important;
+    }
+
+    #postActivityCommentsList {
+        display:none;
+    }
+
+    .workoutBarViewHeader {
+        width:735px;
+        height:95px;
+        margin:0;
+        padding-left:0;
+    }
+
+    .workoutBarViewHeader .workoutHeaderStats {
+        width:85%;
+    }
+
+    .QVHeader .dateAndTime {
+        padding: 10px 12px 0 0;
+    }
+
+    .columnLabelsPlannedCompleted {
+        padding-top:0;
+        // background-color:blue !important;
+        width:300px;
+        float:left;
+    }
+
+    .columnLabelsMinMaxAvg {
+        // background-color:blue !important;
+        float:left;
+        padding-top:10px;
+        margin-top:10px;
+        border-top:1pt solid #ccc;
+    }
+
+    .stats {
+        padding:0 5px 0 0;
+        // width:720px;
+        width:325px;
+        width:50%;
+        // border:1px solid green;
+    }
+
+    .workoutPlannedCompletedStats {
+        width:100px;
+        float:left;
+        clear:right;
+    }
+
+    .workoutMinMaxAvgStats {
+        float:left;
+    }
+
+    .workoutBarViewHeader .workoutHeaderStats .headerWorkoutValue.duration {
+        padding-left: 0 !important;
+        // margin-left: -5px !important;
+        margin-left:5px;
+    }
+
+    .workoutHeaderStats {
+        margin:0;
+        padding:0;
+    }
+
+    .workoutBarViewHeader .workoutHeaderStats .title input {
+        padding-left:0px !important;
+        //  margin-left: -10px !important;
+    }
+
+    .workoutBarViewHeader .workoutIconLarge {
+        // border:1px solid #ccc;
+        // text-align:center;
+        display:none;
+    }
+
+    .workoutBarViewHeader.Bike .workoutIconLarge:before {
+        // content: "Bike";
+        // color: #000;
+    }
+
+
+}
