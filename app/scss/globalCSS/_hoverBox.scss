@@ -44,6 +44,11 @@
 			// line-height:$fontSizeXXLarge;
             padding: 4px 0;
             margin:0;
+
+            a, 
+            a:visited {
+                color: $TPGrey3;
+            }
         }
 
         #closeIcon {
