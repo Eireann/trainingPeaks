@@ -107,7 +107,8 @@ function(_, Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmedia
 
         waitingOn: function()
         {
-            this.$el.addClass('waiting');
+            var $waitEl = this.modal && this.$(".hoverBoxContents").length ? this.$(".hoverBoxContents") : this.$el;
+            $waitEl.addClass('waiting');
         },
 
         onWaitStop: function()
@@ -120,7 +121,8 @@ function(_, Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmedia
 
         waitingOff: function()
         {
-            this.$el.removeClass('waiting');
+            var $waitEl = this.modal && this.$(".hoverBoxContents").length ? this.$(".hoverBoxContents") : this.$el;
+            $waitEl.removeClass('waiting');
         },
 
         notImplemented: function()

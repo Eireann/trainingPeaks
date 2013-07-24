@@ -47,16 +47,18 @@
 <div>{{ stripHtml description 200 }}</div>
 
 
-{{# each planApplications }}
-<div data-appliedplanid="{{ appliedPlanId }}" class="appliedPlan">
-    <span class="appliedDates">{{ formatDate startDate "MM/DD/YYYY" }} - {{ formatDate endDate "MM/DD/YYYY" }}</span>
-    <select class="alterAppliedPlan">
-        <option value="edit">{{$ "Edit" }}</option>
-        <option value="move">{{$ "Move" }}</option>
-        <option value="unapply">{{$ "Unapply" }}</option>
-    </select>
-</div>
-{{/each}}
+{{#if planApplications }}
+    {{# each planApplications }}
+    <div data-appliedplanid="{{ appliedPlanId }}" class="appliedPlan">
+        <span class="appliedDates">{{ formatDate startDate "MM/DD/YYYY" }} - {{ formatDate endDate "MM/DD/YYYY" }}</span>
+        <select class="alterAppliedPlan">
+            <option value="edit">{{$ "Edit" }}</option>
+            <option value="move">{{$ "Move" }}</option>
+            <option value="unapply">{{$ "Unapply" }}</option>
+        </select>
+    </div>
+    {{/each}}
+{{/if}}
 
 {{/with}}
 
