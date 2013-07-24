@@ -98,7 +98,7 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
             color: $TPGrey3;
         }
 
-        @include inputs(50px, 20px, $fontSizeSmall, $fontFamilyRegular);
+        @include inputs(60px, 20px, $fontSizeSmall, $fontFamilyRegular);
         input#startTimeInput
         {
             color: $TPGrey3;
