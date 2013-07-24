@@ -1,3 +1,6 @@
+// QL: This is really a CalendarPageController, beacuse it does much more than controll the calendar.
+// 1. Create collections it cares about 2. Create views and pass them the collections
+
 define(
 [
     "underscore",
@@ -53,6 +56,7 @@ function(
 
             this.layout.on("close", this.onLayoutClose, this);
 
+            // QL: Doesn't impact calendar specifically, just finding start of week that's passed in. Move to date helper
             this.startDate = this.createStartDay().subtract("weeks", 4);
             this.endDate = this.createEndDay().add("weeks", 6);
 
@@ -81,13 +85,19 @@ function(
                 return;
             }
 
+            // QL: this shouldn't be mixed in to the calendar object itself. Initialize the header and pass in what it needs to control
             this.initializeHeader();
             this.initializeCalendar();
+            // QL: this shouldn't be mixed in to the calendar object itself. Initialize the library and pass in what it needs to control.
+            // in this case it probably doesn't need to control anything. Calendar should agnostically receive any dropped item. 
+            // Layout changes should propogate through the new CalendarPageView
             this.initializeLibrary();
 
+            // QL: this is layout logic and might belong in the layout itself. So this would read this.layout.renderRegions();
             this.showViewsInRegions();
 
             // load the calendar, and aggregate all of the deferreds from each workout request
+            // QL: this is more like `moveToDate()`. This should be a responsibility of this.views.calendar
             var today = moment();
             this.showDate(today);
 
@@ -284,6 +294,7 @@ function(
 
             if (dateAsMoment.day() !== this.startOfWeekDayIndex)
             {
+                // QL: this should go in the new date utility object
                 var newDateAsMoment = this.createStartDay(dateAsMoment);
                 if (newDateAsMoment.format(TP.utils.datetime.shortDateFormat) > dateAsMoment.format(TP.utils.datetime.shortDateFormat))
                 {
@@ -339,6 +350,8 @@ function(
 
         initializeCalendar: function()
         {
+            // QL: this doesn't need to be a model, it can be passed into CalendarContainerView as an attribute on that view
+            // might be used in calendarContainerView.js in modelEvents
             var weekDaysModel = new TP.Model({ startOfWeekDayIndex: this.startOfWeekDayIndex });
             
             if (this.views.calendar)
@@ -350,8 +363,9 @@ function(
                 startOfWeekDayIndex: this.startOfWeekDayIndex
             });
 
+            // QL: this should happen in the CalendarContainerView
             this.bindToCalendarViewEvents(this.views.calendar);
-
+            // QL: this can be part of the function in the previous line
             this.views.calendar.on("calendar:select", this.onCalendarSelect, this);
         },
 
