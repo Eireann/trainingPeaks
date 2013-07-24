@@ -37,22 +37,16 @@
         <span>85.50 hours</span>
     </div>
     <div>
+        {{#each plannedWorkoutTypeDurations}}
         <div>
-            <span>{{$ "Bike"}}</span>
-            <span>35.00 hours</span>
+            <span>{{ workoutTypeName workoutTypeId }}</span>
+            <span>{{ conversion "formatDuration" duration this "0:00" }}</span>
         </div>
-        <div>
-            <span>{{$ "Run"}}</span>
-            <span>5.00 hours</span>
-        </div>
-        <div>
-            <span>{{$ "Swim"}}</span>
-            <span>3.5 hours</span>
-        </div>
+        {{/each}}
     </div>
 </div>
 
-<div>{{ description }}</div>
+<div>{{{ description }}}</div>
 
 
 {{# each planApplications }}
@@ -71,9 +65,13 @@
 {{#if applyable }}
 <div class="startEndPlan">
     <select id="applyDateType">
-        <option value="start">{{$ "Start" }}</option>
-        <option value="end">{{$ "End" }}</option>
-        <option value="endOnEventDate">{{$ "EndOnEventDate" }}</option>
+        <option value="1">{{$ "Start" }}</option>
+        <option value="3">{{$ "End" }}</option>
+        {{# with details }}
+            {{#if eventPlan }}
+                <option value="2">{{$ "EndOnEventDate" }}</option>
+            {{/if}}
+        {{/with}}
     </select>
     <span>{{$ "On" }}</span>
     <input type="text" id="applyDate" class="datepicker" value="{{ formatDate applyDate "MM/DD/YYYY" }}">

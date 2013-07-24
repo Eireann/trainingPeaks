@@ -8,20 +8,17 @@ function(moment, TP)
     return TP.Model.extend(
     {
 
-        url: function()
+        urlRoot: function()
         {
             return theMarsApp.apiRoot + "/plans/v1/athletes/" + theMarsApp.user.getCurrentAthleteId() +
-                "/plans/" + this.get("planId") + "/commands/apply/" +
-                this.get("applyDateType") + "/" +
-                moment(this.get("applyDate")).format("YYYY-MM-DD");
+                "/plans/commands/apply/";
         },
 
         defaults:
         {
             planId: null,
-            applyDate: null,
-            applyDateType: null,
-            appliedPlan: null
+            targetDate: null,
+            startType: null
         },
 
         execute: function()

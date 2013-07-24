@@ -18,6 +18,14 @@ function(_)
         Available: 2,
         Purchased: 3
     };
+    
+    var startTypeEnum =
+    {
+        StartDate: 1,
+        Event: 2,
+        EndDate: 3,
+        Live: 4
+    };
 
     var trainingPlanUtils = {
         getNameByStatus: function(status)
@@ -28,7 +36,8 @@ function(_)
         getStatusByName: function(name)
         {
             return planStatusByName.hasOwnProperty(name) ? planStatusByName[name] : planStatusByName["Unknown"];
-        }
+        },
+        startTypeEnum: startTypeEnum
     };
 
     return trainingPlanUtils;

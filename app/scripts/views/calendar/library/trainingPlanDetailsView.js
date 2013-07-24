@@ -31,7 +31,8 @@ function(
 
         events:
         {
-            "click .apply": "onApply"    
+            "click .apply": "onApply",
+            "change #applyDateType": "onApplyDateTypeChange"
         },
 
         initialize: function()
@@ -51,7 +52,7 @@ function(
             setImmediate(function()
             {
                 self.$(".datepicker").css("position", "relative").css("z-index", self.$el.css("z-index"));
-                self.$(".datepicker").datepicker({ dateFormat: "yy-mm-dd", firstDay: theMarsApp.controllers.calendarController.startOfWeekDayIndex });
+                self.$(".datepicker").datepicker({ dateFormat: "mm/dd/yy", firstDay: theMarsApp.controllers.calendarController.startOfWeekDayIndex });
                 self.$("select").selectBoxIt({ dynamicPositioning: false });
             });
 
@@ -73,10 +74,14 @@ function(
 
         onApply: function()
         {
+
+            var startType = Number(this.$("#applyDateType").val());
+            var targetDate = (this.model.details.get("eventPlan") && startType === TP.utils.trainingPlan.startTypeEnum.Event) ?
+                this.model.details.get("eventDate") : this.$("#applyDate").val();
             var command = new ApplyTrainingPlanCommand({
                 planId: this.model.get("planId"),
-                applyDateType: this.$("#applyDateType").val(),
-                applyDate: this.$("#applyDate").val()
+                startType: startType,
+                targetDate: targetDate
             });
 
             var self = this;
@@ -110,6 +115,17 @@ function(
                 var myTop = this.$el.offset().top;
                 var arrowTop = Math.round((targetTop - myTop) + 40);
                 this.$(".arrow").css("top", arrowTop + "px");
+            }
+        },
+
+        onApplyDateTypeChange: function()
+        {
+            if (this.$("#applyDateType").val() === "3")
+            {
+                this.$("#applyDate").hide();
+            } else
+            {
+                this.$("#applyDate").show();
             }
         }
 

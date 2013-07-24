@@ -19,15 +19,18 @@ function (TP)
 
         defaults:
         {
-            "author": null,
-            "dayCount": null,
-            "description": null,
-            "workoutCount": null,
-            "planId": null,
-            "planApplications": null,
-            "planStatus": null,
-            "plannedWorkoutTypeDurations": null,
-            "title": null
+            author: null,
+            dayCount: null,
+            description: null,
+            eventDate: null,
+            eventName: null,
+            eventPlan: false,
+            workoutCount: null,
+            planId: null,
+            planApplications: null,
+            planStatus: null,
+            plannedWorkoutTypeDurations: null,
+            title: null
         }
 
     });

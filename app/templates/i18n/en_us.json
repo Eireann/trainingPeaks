@@ -357,5 +357,6 @@
     "NumberOfWorkouts": "Number of workouts",
     "NumberOfMeals": "Number of meals",
     "PlannedDuration": "Planned duration",
-    "Status": "Status"
+    "Status": "Status",
+    "Edit": "Edit"
 }
