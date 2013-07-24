@@ -33,7 +33,7 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
             cursor: pointer;
         }
 
-        .workoutHeaderStats
+       .workoutHeaderStats
         {
             .title
             {
@@ -46,6 +46,16 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
                     display: inline;
                 }
             }
+            
+            .headerIcons
+            {
+                #breakThrough
+                {
+                    cursor: pointer;
+                }
+            }
+
+ 
         }
     }
 

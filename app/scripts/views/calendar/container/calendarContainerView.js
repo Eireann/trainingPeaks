@@ -232,6 +232,12 @@ function(
         onKeyDown: function(e)
         {
 
+            // no keyboard copy/paste on calendar when quickview is open
+            if ($(".workoutQuickView").length)
+            {
+                return;
+            }
+
             // prevent autorepeat
             if (this.keyDownWasProcessed)
                 return;

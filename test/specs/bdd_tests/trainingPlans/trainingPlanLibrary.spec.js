@@ -46,14 +46,14 @@ function(
 
         it("Should request the training plan library data on calendar load", function()
         {
-            expect(testHelpers.hasRequest("GET", "plans/v1/athletes/426489")).toBe(true);
+            expect(testHelpers.hasRequest("GET", "plans/v1/athletes/426489/plans$")).toBe(true);
         });
 
         it("Should resolve the training plan library data request without errors", function()
         {
             var resolvePlans = function()
             {
-                testHelpers.resolveRequest("GET", "plans/v1/athletes/426489", xhrData.trainingPlans);
+                testHelpers.resolveRequest("GET", "plans/v1/athletes/426489/plans$", xhrData.trainingPlans);
             };
             expect(resolvePlans).not.toThrow();
         });
@@ -61,14 +61,14 @@ function(
         it("Should display the training plans", function()
         {
             expect($mainRegion.find(".trainingPlanLibrary .trainingPlan").length).toBe(0);
-            testHelpers.resolveRequest("GET", "plans/v1/athletes/426489", xhrData.trainingPlans);
+            testHelpers.resolveRequest("GET", "plans/v1/athletes/426489/plans$", xhrData.trainingPlans);
             expect($mainRegion.find(".trainingPlanLibrary .trainingPlan").length).toBe(3);
         });
 
         it("Should make the plans accessible by plan id", function()
         {
             expect($mainRegion.find(".trainingPlanLibrary .trainingPlan[data-trainingplanid=1]").length).toBe(0);
-            testHelpers.resolveRequest("GET", "plans/v1/athletes/426489", xhrData.trainingPlans);
+            testHelpers.resolveRequest("GET", "plans/v1/athletes/426489/plans$", xhrData.trainingPlans);
             expect($mainRegion.find(".trainingPlanLibrary .trainingPlan[data-trainingplanid=1]").length).toBe(1);
             expect($mainRegion.find(".trainingPlanLibrary .trainingPlan[data-trainingplanid=2]").length).toBe(1);
             expect($mainRegion.find(".trainingPlanLibrary .trainingPlan[data-trainingplanid=3]").length).toBe(1);
@@ -77,7 +77,7 @@ function(
         it("Should display the training plan titles", function()
         {
             expect($mainRegion.find(".trainingPlanLibrary").text()).not.toContain("Training Plan One");
-            testHelpers.resolveRequest("GET", "plans/v1/athletes/426489", xhrData.trainingPlans);
+            testHelpers.resolveRequest("GET", "plans/v1/athletes/426489/plans$", xhrData.trainingPlans);
             var libraryContainerText = $mainRegion.find(".trainingPlanLibrary").text();
             expect(libraryContainerText).toContain("Training Plan One");
             expect(libraryContainerText).toContain("Training Plan Two");
@@ -86,7 +86,7 @@ function(
 
         it("Should display the training plan status", function()
         {
-            testHelpers.resolveRequest("GET", "plans/v1/athletes/426489", xhrData.trainingPlans);
+            testHelpers.resolveRequest("GET", "plans/v1/athletes/426489/plans$", xhrData.trainingPlans);
             expect($mainRegion.find(".trainingPlanLibrary .trainingPlan[data-trainingplanid=1]").text()).toContain("Applied");
             expect($mainRegion.find(".trainingPlanLibrary .trainingPlan[data-trainingplanid=2]").text()).toContain("Available");
             expect($mainRegion.find(".trainingPlanLibrary .trainingPlan[data-trainingplanid=3]").text()).toContain("Purchased");

@@ -1,9 +1,10 @@
 define(
 [
     "TP",
+    "./trainingPlanDetailsView",
     "hbs!templates/views/calendar/library/trainingPlanItemView"
 ],
-function(TP, trainingPlanItemViewTemplate)
+function(TP, TrainingPlanDetailsView, trainingPlanItemViewTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -26,7 +27,8 @@ function(TP, trainingPlanItemViewTemplate)
 
         events:
         {
-            mousedown: "onMouseDown"
+            mousedown: "onMouseDown",
+            mouseup: "openPlanDetailsOnClick"
         },
 
         initialize: function(options)
@@ -51,6 +53,23 @@ function(TP, trainingPlanItemViewTemplate)
         onItemUnSelect: function()
         {
             this.$el.removeClass("selected");
+        },
+
+        openPlanDetailsOnClick: function()
+        {
+            if(this.detailsView)
+            {
+                return;
+            }
+            this.detailsView = new TrainingPlanDetailsView({ model: this.model });
+            this.detailsView.on("close", this.onDetailsClose, this);
+            this.detailsView.render().alignArrowTo(this.$el);
+        },
+
+        onDetailsClose: function()
+        {
+            this.detailsView.off("close", this.onDetailsClose, this);
+            this.detailsView = null;
         }
 
     });

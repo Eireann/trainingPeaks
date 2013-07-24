@@ -1,4 +1,5 @@
 {{#hoverBox this "leftarrow"}}
+
 <div id="closeIcon" />
 <h3 class="subheadbold planTitle">{{ title }}</h3>
 
@@ -36,24 +37,18 @@
         <div class="small infoResults">85.50 hours</div>
     </div>
     <div class="durationDetails">
+        {{#each plannedWorkoutTypeDurations}}
         <div>
-            <div class="smallbold durationTitle">{{$ "Bike"}}</div>
-            <div class="small plannedInfoResults">35.00 hours</div>
+            <span class="smallbold durationTitle">{{ workoutTypeName workoutTypeId }}</span>
+            <span class="small plannedInfoResults">{{ conversion "formatDuration" duration this "0:00" }}</span>
         </div>
-        <div>
-            <div class="smallbold durationTitle">{{$ "Run"}}</div>
-            <div class="small plannedInfoResults">5.00 hours</div>
-        </div>
-        <div>
-            <div class="smallbold durationTitle">{{$ "Swim"}}</div>
-            <div class="small plannedInfoResults">3.5 hours</div>
-        </div>
+        {{/each}}
     </div>
 </div>
 
 <hr class="horizontalDevider"/>
 
-<div>{{ description }}</div>
+<div>{{ stripHtml description 200 }}</div>
 
 
 {{# each planApplications }}
@@ -72,9 +67,13 @@
 {{#if applyable }}
 <div class="startEndPlan">
     <select id="applyDateType">
-        <option value="start">{{$ "Start" }}</option>
-        <option value="end">{{$ "End" }}</option>
-        <option value="endOnEventDate">{{$ "EndOnEventDate" }}</option>
+        <option value="1">{{$ "Start" }}</option>
+        <option value="3">{{$ "End" }}</option>
+        {{# with details }}
+            {{#if eventPlan }}
+                <option value="2">{{$ "EndOnEventDate" }}</option>
+            {{/if}}
+        {{/with}}
     </select>
     <span>{{$ "On" }}</span>
     <input type="text" id="applyDate" class="datepicker" value="{{ formatDate applyDate "MM/DD/YYYY" }}">
