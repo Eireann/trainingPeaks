@@ -224,11 +224,11 @@ function (
 
         print: function()
         {
-            /*(this.$("textarea").each(function()
+            this.$("textarea").each(function()
             {
                 var $self = $(this);
                 $self.text($self.val());
-            });*/
+            });
             window.print();
         }
 

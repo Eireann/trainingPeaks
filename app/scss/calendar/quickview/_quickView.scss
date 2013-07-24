@@ -409,8 +409,14 @@ input[disabled='disabled']
     }
 
     // hides page elements behind QV
-    #navigation, #main  {
-        display:none;
+    body
+    {
+        &.qvOpen
+        {
+            #navigation, #main  {
+                display:none;
+            }
+        }
     }
 
     // hides QV modal shadow
