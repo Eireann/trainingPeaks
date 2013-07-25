@@ -1,322 +1,326 @@
 ﻿@import "globalCSS/tpstylesheet";
 
-#userControlsContainer
-{
-    &.row
+@media screen {
+
+    #userControlsContainer
     {
-        max-width: 100%;
-    }
-
-    #userControlsBackground
-    {
-
-	    height: 35px;
-    	background-color: $black;
-
-        .upgradeButton
+        &.row
         {
-            border: none;
+            max-width: 100%;
         }
 
-        &.coachBanner
+        #userControlsBackground
         {
-            height: 61px;
 
-            .personHeaderLogo
-            {
-                img
-                {
-                    height: 61px;
-                }
-            }
-
-            .rightNavigation
-            {
-                margin-top: 13px;
-
-                .upgradeButton
-                {
-                    border-width: 1px;
-                    border-style: solid;
-                }
-            }
-
-        }
-
-        &.lightBackground
-        {
-            .rightNavigation
-            {
-                .personHeaderButtons:not(.upgradeButton)
-                {
-                    label
-                    {
-                        color: rgba(64, 64, 64, 0.8);
-                    }
-                }
-
-                .headerPipe
-                {
-                        color: rgba(64, 64, 64, 0.8);
-                }
-
-                .headerRollOver
-                {
-                    &:hover label
-                    {
-                        color: rgba(0, 0, 0, 0.9);
-                    }
-                }
-
-                .personHeaderMailIcon
-                {
-                    background-image: url(../../assets/images/calendarImages/messagesIcon.png);
-                }
-
-                .upgradeButton
-                {
-                    border-color: rgba(192, 192, 192, 0.8);
-                }
-            }
-        }
- 
-         &.darkBackground
-        {
-            .rightNavigation
-            {
-                .personHeaderButtons:not(.upgradeButton)
-                {
-                    label
-                    {
-                        color: rgba(192, 192, 192, 0.8);
-                    }
-                }
-
-                .headerPipe
-                {
-                        color: rgba(192, 192, 192, 0.8);
-                }
-
-                .headerRollOver
-                {
-                    &:hover label
-                    {
-                        color: rgba(255, 255, 255, 0.9);
-                    }
-                }
-
-                .personHeaderMailIcon
-                {
-                    background-image: url(../../assets/images/calendarImages/messagesIcon.png);
-                }
-
-                .upgradeButton
-                {
-                    border-color: rgba(192, 192, 192, 0.8);
-                }
-            }
-        }       
-
-        .row
-        {
-            width: 100%;
-        }
-
-        .personHeaderLogo
-        {
-            min-width: 375px;
-            min-height: 47px;
-            position:absolute;
-            left: 0px;
-            top: 0px;
-            z-index: 99;
-            cursor: default;
-            background-image: url(../../assets/images/calendarImages/tpLogo.png);
-            background-position-x: right;
-            background-repeat: no-repeat;
-        }
-
-        .rightNavigation
-        {
-            float: right;
-            padding-right: 12px;
-            margin-right: 42px;
-
-            .headerPipe
-            {
-                float: left;
-                height: 30px;
-                padding: 9px 10px 0px 10px;
-                font-size: $fontSizeMedium;
-                cursor: default;
-            }
-
-            .personHeaderButtons {
-                text-align: center;
-                //&:hover { background-color: $TPBlue; }
-                float:left;
-
-                // note that the color here gets overridden by darkBackground and lightBackground above 
-                @include labels($fontFamilyRegular, $fontSizeSmall, $TPGrey2, normal);
-
-				#usernameLabel {
-					padding: 11px 0 12px 0;
-					margin:0;
-			
-				}
-				label {
-					padding: 11px 0 12px 0;
-				}
-				
-            }
-
-
-            .headerRollOver
-            {
-                cursor: default;
-                label
-                {
-                    cursor: pointer;
-                }
-            }
+    	    height: 35px;
+        	background-color: $black;
 
             .upgradeButton
             {
-                margin: 0px 0px 0px 10px;
-                padding: 11px 25px 12px;
-                @include linearGradient(bottom, rgb(34,97,143), rgba(59,125,193, 1)); 
-                cursor: pointer;
-			
-                label
+                border: none;
+            }
+
+            &.coachBanner
+            {
+                height: 61px;
+
+                .personHeaderLogo
                 {
-                    color: $white;
-                    font-size: $fontSizeSmall;
-                    font-family: $fontFamilyRegular;
-					padding:0;
-					margin:0;
-					cursor: pointer;
+                    img
+                    {
+                        height: 61px;
+                    }
+                }
+
+                .rightNavigation
+                {
+                    margin-top: 13px;
+
+                    .upgradeButton
+                    {
+                        border-width: 1px;
+                        border-style: solid;
+                    }
+                }
+
+            }
+
+            &.lightBackground
+            {
+                .rightNavigation
+                {
+                    .personHeaderButtons:not(.upgradeButton)
+                    {
+                        label
+                        {
+                            color: rgba(64, 64, 64, 0.8);
+                        }
+                    }
+
+                    .headerPipe
+                    {
+                            color: rgba(64, 64, 64, 0.8);
+                    }
+
+                    .headerRollOver
+                    {
+                        &:hover label
+                        {
+                            color: rgba(0, 0, 0, 0.9);
+                        }
+                    }
+
+                    .personHeaderMailIcon
+                    {
+                        background-image: url(../../assets/images/calendarImages/messagesIcon.png);
+                    }
+
+                    .upgradeButton
+                    {
+                        border-color: rgba(192, 192, 192, 0.8);
+                    }
+                }
+            }
+     
+             &.darkBackground
+            {
+                .rightNavigation
+                {
+                    .personHeaderButtons:not(.upgradeButton)
+                    {
+                        label
+                        {
+                            color: rgba(192, 192, 192, 0.8);
+                        }
+                    }
+
+                    .headerPipe
+                    {
+                            color: rgba(192, 192, 192, 0.8);
+                    }
+
+                    .headerRollOver
+                    {
+                        &:hover label
+                        {
+                            color: rgba(255, 255, 255, 0.9);
+                        }
+                    }
+
+                    .personHeaderMailIcon
+                    {
+                        background-image: url(../../assets/images/calendarImages/messagesIcon.png);
+                    }
+
+                    .upgradeButton
+                    {
+                        border-color: rgba(192, 192, 192, 0.8);
+                    }
+                }
+            }       
+
+            .row
+            {
+                width: 100%;
+            }
+
+            .personHeaderLogo
+            {
+                min-width: 375px;
+                min-height: 47px;
+                position:absolute;
+                left: 0px;
+                top: 0px;
+                z-index: 99;
+                cursor: default;
+                background-image: url(../../assets/images/calendarImages/tpLogo.png);
+                background-position-x: right;
+                background-repeat: no-repeat;
+            }
+
+            .rightNavigation
+            {
+                float: right;
+                padding-right: 12px;
+                margin-right: 42px;
+
+                .headerPipe
+                {
+                    float: left;
+                    height: 30px;
+                    padding: 9px 10px 0px 10px;
+                    font-size: $fontSizeMedium;
+                    cursor: default;
+                }
+
+                .personHeaderButtons {
+                    text-align: center;
+                    //&:hover { background-color: $TPBlue; }
+                    float:left;
+
+                    // note that the color here gets overridden by darkBackground and lightBackground above 
+                    @include labels($fontFamilyRegular, $fontSizeSmall, $TPGrey2, normal);
+
+    				#usernameLabel {
+    					padding: 11px 0 12px 0;
+    					margin:0;
+    			
+    				}
+    				label {
+    					padding: 11px 0 12px 0;
+    				}
+    				
+                }
+
+
+                .headerRollOver
+                {
+                    cursor: default;
+                    label
+                    {
+                        cursor: pointer;
+                    }
+                }
+
+                .upgradeButton
+                {
+                    margin: 0px 0px 0px 10px;
+                    padding: 11px 25px 12px;
+                    @include linearGradient(bottom, rgb(34,97,143), rgba(59,125,193, 1)); 
+                    cursor: pointer;
+    			
+                    label
+                    {
+                        color: $white;
+                        font-size: $fontSizeSmall;
+                        font-family: $fontFamilyRegular;
+    					padding:0;
+    					margin:0;
+    					cursor: pointer;
+                    }
+                }
+
+                .personHeaderMailIcon
+                {
+                    padding-right: 13px;
+                    float: left;
+                    display: block;
+                    width: 33px;
+                    height: 26px;
+                    background-repeat: no-repeat;
+                    background-position-x: 0px;
+                    margin-top: 11px;
+                }
+            }
+    	}
+    }
+
+    #navigationContainer
+    {
+    	background-color: $white;
+
+    	.row 
+        {
+    		width: 100%;
+    	}
+
+    	.appNavigation 
+        {
+    		text-align: center;
+
+    		.centered 
+            {
+                display: inline-block;
+            }
+
+    		span 
+            {
+    			float: left;
+    			text-align: center;
+    			&:hover label{color: $TPBlue; }
+    			&:hover label{border-bottom-style:solid; border-bottom-width:2px; border-color:$TPBlue;}
+    		}
+    	
+    		@include labels($fontFamilyRegular, $fontSizeMedium, $TPGrey3, normal);
+    		label {
+    			padding: 0px 7px 0px 7px;
+    			height:20px;
+    			cursor:pointer;
+    		}
+
+            &.home
+            {
+                label.home
+                {
+                    color: $TPBlue; 
+    			    border-bottom-style:solid; border-bottom-width:2px; border-color:$TPBlue;
+                }
+            }
+            
+            &.calendar
+            {
+                label.calendar
+                {
+                    color: $TPBlue; 
+    			    border-bottom-style:solid; border-bottom-width:2px; border-color:$TPBlue;
                 }
             }
 
-            .personHeaderMailIcon
+            &.dashboard
             {
-                padding-right: 13px;
-                float: left;
-                display: block;
-                width: 33px;
-                height: 26px;
-                background-repeat: no-repeat;
-                background-position-x: 0px;
-                margin-top: 11px;
+                label.dashboard
+                {
+                    color: $TPBlue; 
+    			    border-bottom-style:solid; border-bottom-width:2px; border-color:$TPBlue;
+                }
             }
-        }
-	}
-}
-
-#navigationContainer
-{
-	background-color: $white;
-
-	.row 
-    {
-		width: 100%;
-	}
-
-	.appNavigation 
-    {
-		text-align: center;
-
-		.centered 
-        {
-            display: inline-block;
-        }
-
-		span 
-        {
-			float: left;
-			text-align: center;
-			&:hover label{color: $TPBlue; }
-			&:hover label{border-bottom-style:solid; border-bottom-width:2px; border-color:$TPBlue;}
-		}
-	
-		@include labels($fontFamilyRegular, $fontSizeMedium, $TPGrey3, normal);
-		label {
-			padding: 0px 7px 0px 7px;
-			height:20px;
-			cursor:pointer;
-		}
-
-        &.home
-        {
-            label.home
+            
+            &.tools
             {
-                color: $TPBlue; 
-			    border-bottom-style:solid; border-bottom-width:2px; border-color:$TPBlue;
-            }
-        }
-        
-        &.calendar
-        {
-            label.calendar
-            {
-                color: $TPBlue; 
-			    border-bottom-style:solid; border-bottom-width:2px; border-color:$TPBlue;
-            }
-        }
-
-        &.dashboard
-        {
-            label.dashboard
-            {
-                color: $TPBlue; 
-			    border-bottom-style:solid; border-bottom-width:2px; border-color:$TPBlue;
-            }
-        }
-        
-        &.tools
-        {
-            label.tools
-            {
-                color: $TPBlue; 
-			    border-bottom-style:solid; border-bottom-width:2px; border-color:$TPBlue;
-            }
-        }	
-	}
-}
-
-.mainNavigationButtons {
-	margin-left: 6px;
-	margin-right: 6px;
-}
-
-#loginHeader, #calendarHeader
-{
-    span
-    {
-        font-family: $fontFamilyRegular;
-        font-size: $fontSizeHeader;
+                label.tools
+                {
+                    color: $TPBlue; 
+    			    border-bottom-style:solid; border-bottom-width:2px; border-color:$TPBlue;
+                }
+            }	
+    	}
     }
-}
 
-.accountSettings
-{
-    .hoverBox.uparrow
+    .mainNavigationButtons {
+    	margin-left: 6px;
+    	margin-right: 6px;
+    }
+
+    #loginHeader, #calendarHeader
     {
-        .arrow 
+        span
         {
-		
+            font-family: $fontFamilyRegular;
+            font-size: $fontSizeHeader;
         }
     }
-}
 
-
-#headerShadow
-{
-    height: 17px;
-
-    img
+    .accountSettings
     {
-        width: 663px;
-        @include calc(margin-left, "50% - 331px"); 
+        .hoverBox.uparrow
+        {
+            .arrow 
+            {
+    		
+            }
+        }
     }
+
+
+    #headerShadow
+    {
+        height: 17px;
+
+        img
+        {
+            width: 663px;
+            @include calc(margin-left, "50% - 331px"); 
+        }
+    }
+
 }
