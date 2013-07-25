@@ -138,22 +138,22 @@ function(
 
             it("Should trigger a command request when the apply button is clicked", function()
             {
-                expect(testHelpers.hasRequest(null, "plans/v1/athletes/426489/plans/commands/apply")).toBe(false);
+                expect(testHelpers.hasRequest(null, "plans/v1/athletes/426489/commands/applyplan")).toBe(false);
                 $body.find(".trainingPlanDetails .apply").trigger("click");
-                expect(testHelpers.hasRequest(null, "plans/v1/athletes/426489/plans/commands/apply")).toBe(true);
+                expect(testHelpers.hasRequest(null, "plans/v1/athletes/426489/commands/applyplan")).toBe(true);
             });
 
             it("Should trigger an end on date apply command", function()
             {
-                expect(testHelpers.hasRequest(null, "plans/v1/athletes/426489/plans/commands/apply")).toBe(false);
+                expect(testHelpers.hasRequest(null, "plans/v1/athletes/426489/commands/applyplan")).toBe(false);
 
                 var tomorrow = moment().add("days", 1);
                 $body.find("#applyDateType").val("3");
                 $body.find("#applyDate").val(tomorrow.format("MM/DD/YYYY"));
                 $body.find(".trainingPlanDetails .apply").trigger("click");
-                expect(testHelpers.hasRequest(null, "plans/v1/athletes/426489/plans/commands/apply")).toBe(true);
+                expect(testHelpers.hasRequest(null, "plans/v1/athletes/426489/commands/applyplan")).toBe(true);
 
-                var applyRequest = testHelpers.findRequest(null, "plans/v1/athletes/426489/plans/commands/apply");
+                var applyRequest = testHelpers.findRequest(null, "plans/v1/athletes/426489/commands/applyplan");
                 expect(applyRequest.model.attributes.planId).toBe(3);
                 expect(applyRequest.model.attributes.startType).toBe(3);
                 expect(applyRequest.model.attributes.targetDate).toBe(tomorrow.format("MM/DD/YYYY"));
@@ -161,15 +161,15 @@ function(
 
             it("Should trigger a start on date apply command", function()
             {
-                expect(testHelpers.hasRequest(null, "plans/v1/athletes/426489/plans/commands/apply")).toBe(false);
+                expect(testHelpers.hasRequest(null, "plans/v1/athletes/426489/commands/applyplan")).toBe(false);
 
                 var tomorrow = moment().add("days", 1);
                 $body.find("#applyDateType").val("1");
                 $body.find("#applyDate").val(tomorrow.format("MM/DD/YYYY"));
                 $body.find(".trainingPlanDetails .apply").trigger("click");
-                expect(testHelpers.hasRequest(null, "plans/v1/athletes/426489/plans/commands/apply")).toBe(true);
+                expect(testHelpers.hasRequest(null, "plans/v1/athletes/426489/commands/applyplan")).toBe(true);
 
-                var applyRequest = testHelpers.findRequest(null, "plans/v1/athletes/426489/plans/commands/apply");
+                var applyRequest = testHelpers.findRequest(null, "plans/v1/athletes/426489/commands/applyplan");
                 expect(applyRequest.model.attributes.planId).toBe(3);
                 expect(applyRequest.model.attributes.startType).toBe(1);
                 expect(applyRequest.model.attributes.targetDate).toBe(tomorrow.format("MM/DD/YYYY"));
@@ -177,26 +177,25 @@ function(
 
             it("Should trigger an end on event date apply command", function()
             {
-                expect(testHelpers.hasRequest(null, "plans/v1/athletes/426489/plans/commands/apply")).toBe(false);
+                expect(testHelpers.hasRequest(null, "plans/v1/athletes/426489/commands/applyplan")).toBe(false);
 
                 var tomorrow = moment().add("days", 1);
                 $body.find("#applyDateType").val("2");
                 $body.find(".trainingPlanDetails .apply").trigger("click");
-                expect(testHelpers.hasRequest(null, "plans/v1/athletes/426489/plans/commands/apply")).toBe(true);
+                expect(testHelpers.hasRequest(null, "plans/v1/athletes/426489/commands/applyplan")).toBe(true);
 
-                var applyRequest = testHelpers.findRequest(null, "plans/v1/athletes/426489/plans/commands/apply");
+                var applyRequest = testHelpers.findRequest(null, "plans/v1/athletes/426489/commands/applyplan");
                 expect(applyRequest.model.attributes.planId).toBe(3);
                 expect(applyRequest.model.attributes.startType).toBe(2);
                 expect(applyRequest.model.attributes.targetDate).toBe(xhrData.trainingPlanDetails.eventDate);
             });
 
-            it("Should refresh the plan details after applying the plan", function()
+            it("Should refresh the plan after applying the plan", function()
             {
                 testHelpers.clearRequests();
                 $body.find(".trainingPlanDetails .apply").trigger("click");
-                testHelpers.resolveRequest(null, "plans/v1/athletes/426489/plans/commands/apply", { startDate: "2010-01-01", endDate: "2014-12-31", appliedPlanId: 11 });
+                testHelpers.resolveRequest(null, "plans/v1/athletes/426489/commands/applyplan", { startDate: "2010-01-01", endDate: "2014-12-31", appliedPlanId: 11 });
                 expect(testHelpers.hasRequest("GET", "plans/v1/athletes/426489/plans/3$")).toBe(true);
-                expect(testHelpers.hasRequest("GET", "plans/v1/athletes/426489/plans/3/details$")).toBe(true);
             });
 
             it("Should refresh the calendar after applying the plan", function()
@@ -204,7 +203,7 @@ function(
                 testHelpers.clearRequests();
                 expect(testHelpers.hasRequest("GET", "fitness/v1/athletes/426489/workouts")).toBe(false);
                 $body.find(".trainingPlanDetails .apply").trigger("click");
-                testHelpers.resolveRequest(null, "plans/v1/athletes/426489/plans/commands/apply", { startDate: "2010-01-01", endDate: "2014-12-31", appliedPlanId: 11 });
+                testHelpers.resolveRequest(null, "plans/v1/athletes/426489/commands/applyplan", { startDate: "2010-01-01", endDate: "2014-12-31", appliedPlanId: 11 });
                 expect(testHelpers.hasRequest("GET", "fitness/v1/athletes/426489/workouts")).toBe(true);
             });
         });

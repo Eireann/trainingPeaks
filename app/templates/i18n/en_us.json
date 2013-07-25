@@ -358,5 +358,7 @@
     "NumberOfMeals": "Number of meals",
     "PlannedDuration": "Planned duration",
     "Status": "Status",
-    "Edit": "Edit"
+    "Edit": "Edit",
+
+    "ErrorApplyingPlan": "An error has occurred while applying your training plan"
 }
