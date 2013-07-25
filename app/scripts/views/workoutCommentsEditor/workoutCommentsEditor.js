@@ -103,7 +103,7 @@ function(_, TP, WorkoutCommentsCollectionView, stickitMixin, workoutCommentsEdit
             this.postActivityCommentsView.on("item:removed", this.saveComments, this);
             this.postActivityCommentsView.on("itemview:commentedited", this.saveComments, this);
             
-            if (theMarsApp.user.get("settings.account.isCoach") || this.model.get("coachComments"))
+            if (!theMarsApp.user.get("settings.account.isAthlete") || this.model.get("coachComments"))
             {
                 this.$("#preActivityComments").css("display", "block");
             }
