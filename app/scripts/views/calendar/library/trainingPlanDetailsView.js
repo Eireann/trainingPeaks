@@ -50,7 +50,7 @@ function(
         {
             this.waitingOn();
             var self = this;
-            this.model.details.fetch().done(function() { self.waitingOff(); });;
+            this.model.details.fetch().done(function() { self.waitingOff(); });
         },
 
         onClose: function()
@@ -107,18 +107,6 @@ function(
             {
                 self.model.fetch();
                 self.close();
-                /*
-                self.model.details.fetch();
-    
-                // temporarily hide the overlay or it confuses the calendar header date detection on scroll
-                self.$overlay.hide();
-                var callback = function()
-                {
-                    self.$overlay.show();
-                };
-
-                self.model.trigger("requestRefresh", command.get("appliedPlan.startDate"), callback);
-                */
                 self.model.trigger("requestRefresh", command.get("appliedPlan.startDate"));
             }).fail(function()
             {
