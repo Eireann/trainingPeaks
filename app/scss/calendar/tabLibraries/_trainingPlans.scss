@@ -134,16 +134,17 @@
     {
         border: 1px $TPGrey2 solid;
         margin-top: 5px;
+        padding-top: 10px;
     }
     .appliedPlans
     {
-        margin-top: 5px
+        margin-top: 5px;
+        
     }
 
     .appliedPlan
     {
-        clear: both;
-        margin-top: 20px;
+        margin-bottom: 10px;
 
         // so it inherits the height of it's floated children
         overflow: hidden;
@@ -151,13 +152,15 @@
         .appliedDates
         {
             float: left;
-            width: 200px;
+            width: 130px;
+            padding-top: 5px;
         }
 
         .alterAppliedPlan
         {
-            float: left;
+            float: right;
             width: 100px;
+            margin-right: 10px;
         }
     }
 
@@ -169,7 +172,6 @@
     input[type=radio] 
     {
         float: left;
-        margin: 0 5px;
+        margin: 4px 5px 0 5px;
     }
-}
 }

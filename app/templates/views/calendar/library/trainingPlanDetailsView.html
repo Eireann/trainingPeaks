@@ -2,41 +2,35 @@
 
 <div id="closeIcon" />
 <h3 class="subheadbold planTitle">{{ title }}</h3>
-
-<!--<div>
-    {{$ "Status" }}: {{ trainingPlanStatus planStatus }}
+{{# with details }}
+<div class="planInfo">
+    <div class="small">{{$ "By"}}</div>
+    <div class="authorName small">{{ author }},</div>
+    <div class="planDuration small">12 weeks</div>
+    <div class="planId small">{{$ "ID"}} {{ planId }}</div>
 </div>
 
+<div class="planDescription small">{{ stripHtml description 200 }}</div>
 
-<div>
-    <div>
-        <div class="smallbold planInfoTitle">{{$ "NumberOfDays"}}</div>
-        <div class="small infoResults">{{ dayCount }}</div>
+
+<div class="planDetails">
+    <div class="smallbold">Weekly Averages</div>
+    <div class="smallbold">{{$ "Duration"}}</div>
+    <div class="smallbold">{{$ "Distance"}}</div>
+</div>
+<div class="durationDetails">
+    {{#each plannedWorkoutTypeDurations}}
+    <div class="plannedWorkoutTypes">
+        <span class="small workoutType">{{ workoutTypeName workoutTypeId }}</span>
+        <span class="small duration">{{ conversion "formatDuration" duration this "0:00" }}</span>
+        <span class="small distance">{{ distance }}</span>
     </div>
-    <div>
-        <div class="smallbold planInfoTitle">{{$ "NumberOfMeals"}}</div>
-        <div class="small infoResults">{{ workoutCount }}</div>
-    </div>
+    {{/each}}
 </div>
 
-<div class="plannedDuration">
-    <div>
-        <div class="smallbold planInfoTitle">{{$ "PlannedDuration"}}</div>
-        <div class="small infoResults">85.50 hours FIXME</div>
-    </div>
-    <div class="durationDetails">
-        {{#each plannedWorkoutTypeDurations}}
-        <div>
-            <span class="smallbold durationTitle">{{ workoutTypeName workoutTypeId }}</span>
-            <span class="small plannedInfoResults">{{ conversion "formatDuration" duration this "0:00" }}</span>
-        </div>
-        {{/each}}
-    </div>
+<div class="applyPlan">
+    <div class="smallbold">{{$ "ApplyPlan"}}</div>
 </div>
-
-<hr class="horizontalDevider"/>
-    -->
-
 
 {{#if applyable }}
 <div class="startEndPlan">
@@ -69,7 +63,7 @@
             {{# each planApplications }}
                 <div data-appliedplanid="{{ appliedPlanId }}" class="appliedPlan">
                     <input type="radio" name="appliedPlan" value="{{ appliedPlanId }}">
-                    <span class="appliedDates">{{ formatDate startDate "MM/DD/YYYY" }} - {{ formatDate endDate "MM/DD/YYYY" }}</span>
+                    <span class="appliedDates small">{{ formatDate startDate "MM/DD/YYYY" }} - {{ formatDate endDate "MM/DD/YYYY" }}</span>
                     <select class="alterAppliedPlan">
                         <option value="edit">{{$ "Edit" }}</option>
                         <option value="move">{{$ "Move" }}</option>
