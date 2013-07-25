@@ -49,7 +49,6 @@ function (_, TP, DeleteWorkoutsCommand)
     {
         model: TP.Model,
 
-        // huge batches take forever on api, so batch them into reasonable chunks
         deleteSelectedWorkouts: function()
         {
             var maxWorkoutsPerBatch = 100;
