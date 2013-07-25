@@ -344,5 +344,19 @@
 
     "TrainingPlans": "Training Plans",
     "FindMorePlansInThe": "Find more plans in the",
-    "Store":"Store"
+    "Store":"Store",
+
+    "End": "End",
+    "EndOnEventDate": "End on Event Date",
+    "On": "On",
+    "Unapply": "Unapply",
+    "Reapply": "Reapply",
+    "Author": "Author",
+    "PlanId": "Plan Id",
+    "NumberOfDays": "Number of days",
+    "NumberOfWorkouts": "Number of workouts",
+    "NumberOfMeals": "Number of meals",
+    "PlannedDuration": "Planned duration",
+    "Status": "Status",
+    "Edit": "Edit"
 }

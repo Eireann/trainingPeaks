@@ -35,11 +35,13 @@ function(TP, moment, coachAndAffiliateCustomizations, calendarHeaderTemplate)
 
         stickitOnRender: function()
         {
-            if (!this.stickitInitialized)
+            if (this.stickitInitialized)
             {
-                this.stickit();
-                this.stickitInitialized = true;
+                this.unstickit();
             }
+
+            this.stickit();
+            this.stickitInitialized = true;
         },
 
         bindings:
@@ -170,7 +172,7 @@ function(TP, moment, coachAndAffiliateCustomizations, calendarHeaderTemplate)
         
         onRefreshButtonClicked: function()
         {
-            this.trigger("request:refresh", this.model);
+            this.trigger("request:refresh", this.model.get("date"));
         }
     };
 

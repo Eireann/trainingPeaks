@@ -1,36 +1,122 @@
 ﻿@import "globalCSS/tpstylesheet";
 @import "globalCSS/mixIn";
 
-.libraryNavigation 
-{
-    @include labels($fontFamilyRegular, $fontSizeMedium, $TPBlue, normal);
-            
-    label 
-    {
-        display: inline-block;
-        margin: 2px 15px 0 2px;
-    }
-
-     .planSearch
-    {
-        margin-top: 10px;
-        @include inputs(240px, 20px, $fontSizeSmall, $fontFamilyRegular);
-
-        input
-        {
-            margin-bottom: 5px;
-            color: $TPGrey3;
-            padding-left: 5px;
-            margin-left: 2px;
-        }
-    }
-}
-
 .trainingPlanDetails
 {
     .hoverBoxContents
     {
         min-height: 300px;
-        min-width: 300px;
+        width: 300px;
+    }
+
+
+    .infoResults
+    {
+        height: 15px;
+    }
+
+    .planTitle
+    {
+        margin-top: 14px;
+    }
+
+    .planInfo
+    {
+        padding-top: 10px;
+    }
+
+    .planInfoTitle
+    {
+        width: 60%;
+        float: left;
+        height: 15px;
+    }
+
+    .plannedDuration
+    {
+        padding-top: 15px;
+
+        .durationDetails
+        {
+            padding-left: 7px;
+        }
+
+        .durationTitle
+        {
+            float: left;
+            height: 15px;
+            @include calc(width, "60% - 3px");
+        } 
+        
+        .plannedInfoResults
+        {
+            height: 15px;
+        }  
+    }
+
+    hr
+    {
+        width: 100%;
+    }
+
+    .dottedLine
+    {
+        float: left;
+        border-bottom: 1px dotted #000000;
+    }
+
+    .startEndPlan
+    {
+
+        clear: both;
+
+        // so it inherits the height of it's floated children
+        overflow: hidden;
+
+        margin-top: 20px;
+        width: 100%;
+        span
+        {   
+            float: left;
+        }
+        #applyDateType
+        {
+            width: 100px;
+            float:left;
+        }
+
+        #applyDate
+        {
+            width: 100px;
+            padding: 0;
+            float: left;
+        }
+
+        button.apply
+        {
+            clear: both;
+            display: block;
+        }
+    }
+
+    .appliedPlan
+    {
+        clear: both;
+        margin-top: 20px;
+
+        // so it inherits the height of it's floated children
+        overflow: hidden;
+
+        .appliedDates
+        {
+            float: left;
+            width: 200px;
+        }
+
+        .alterAppliedPlan
+        {
+            float: left;
+            width: 100px;
+        }
     }
 }
