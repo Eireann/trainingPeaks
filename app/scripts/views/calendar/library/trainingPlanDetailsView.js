@@ -118,6 +118,16 @@ function(
             });
         },
 
+        onMoveAppliedPlan: function()
+        {
+            //call moveTrainingPlan.execute
+        },
+
+        onDeleteAppliedPlan: function()
+        {
+            //destroy appliedPlan
+        },
+
         alignArrowTo: function($element)
         {
             this.alignedTo = $element;
