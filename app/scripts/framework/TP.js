@@ -107,7 +107,8 @@ function(_, Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmedia
 
         waitingOn: function()
         {
-            this.$el.addClass('waiting');
+            var $waitEl = this.modal && this.$(".hoverBoxContents").length ? this.$(".hoverBoxContents") : this.$el;
+            $waitEl.addClass('waiting');
         },
 
         onWaitStop: function()
@@ -120,7 +121,8 @@ function(_, Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmedia
 
         waitingOff: function()
         {
-            this.$el.removeClass('waiting');
+            var $waitEl = this.modal && this.$(".hoverBoxContents").length ? this.$(".hoverBoxContents") : this.$el;
+            $waitEl.removeClass('waiting');
         },
 
         notImplemented: function()
@@ -193,6 +195,7 @@ function(_, Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmedia
             this.watchForWindowResize();
 
             this.enableEscapeKey();
+            this.closeOnRouteChange();
 
             // set on top of other modals
             if(existingModal.length)
@@ -279,6 +282,11 @@ function(_, Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmedia
             if (this.positionAttributes.hasOwnProperty("bottom"))
                 this.bottom(startOffset.top + this.positionAttributes.bottom);
 
+        },
+
+        closeOnRouteChange: function()
+        {
+            theMarsApp.router.once("route", this.close, this);
         },
 
         enableEscapeKey: function()

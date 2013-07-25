@@ -200,7 +200,7 @@
         {{#if minMaxSpeed }}
         <div class="minMaxAvgRow statsRow" id="minMaxSpeed">
             <label>{{$ "Speed" }}</label>
-            <span class="value">{{ conversion "formatSpeed" minimumSpeed this }}</span>
+            <span class="value">{{ conversion "formatSpeed" minimumSpeed this "0"}}</span>
             <span class="separator" />
             <span class="value">{{ conversion "formatSpeed" averageSpeed this }}</span>
             <span class="separator" />
@@ -212,7 +212,7 @@
         {{#if minMaxSpeed }}
         <div class="minMaxAvgRow statsRow" id="minMaxPace">
             <label>{{$ "Pace" }}</label>
-            <span class="value">{{ conversion "formatPace" minimumSpeed this }}</span>
+            <span class="value">{{ conversion "formatPace" minimumSpeed this "--"}}</span>
             <span class="separator" />
             <span class="value">{{ conversion "formatPace" averageSpeed this }}</span>
             <span class="separator" />
