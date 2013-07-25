@@ -195,6 +195,7 @@ function(_, Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmedia
             this.watchForWindowResize();
 
             this.enableEscapeKey();
+            this.closeOnRouteChange();
 
             // set on top of other modals
             if(existingModal.length)
@@ -281,6 +282,11 @@ function(_, Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmedia
             if (this.positionAttributes.hasOwnProperty("bottom"))
                 this.bottom(startOffset.top + this.positionAttributes.bottom);
 
+        },
+
+        closeOnRouteChange: function()
+        {
+            theMarsApp.router.once("route", this.close, this);
         },
 
         enableEscapeKey: function()
