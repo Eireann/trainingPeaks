@@ -187,3 +187,177 @@
     }
 
 }
+
+@media print {
+    .workout
+    {
+        margin: 5px 4px 4px 2px;
+        border-width: 1px;
+        border-style: solid;
+        border-color: $TPGrey2;
+       // @include box-shadow(0 1px 1.5px 0 #2c2c2c);
+
+        &.dragHelper
+        {
+            opacity: 0.6;
+            min-width: 150px;
+
+            .workoutSelected
+            {
+                display: block;
+            }
+        }
+
+        &.dragging
+        {
+            opacity:0.8;
+        }
+
+        .workoutSettings  
+        {
+            display: none;
+            button
+            {   
+                display:none;
+            }
+        }
+
+        &:hover
+        {
+            .workoutSettings
+            {
+                display: block;
+            }
+        }
+
+        &.menuOpen
+        {
+            .workoutSettings
+            {
+                display: block;
+            }
+        }
+
+        .workoutDiv {
+            min-height: 35px;
+          
+            .workoutHeader
+            {
+                padding: 0px 3px 3px 3px;
+                height: 32px;
+                position: relative;
+                top: -1px;
+                .workoutIcon {
+                    display:none;
+                }
+
+                .workoutDistanceTime
+                {
+                    padding: 5px 0px 0px 0px;
+
+                    @include labels($fontFamilyRegular, $fontSizeXLarge, $TPGrey4, normal);
+                    label
+                    {
+                        display:inline-block;
+                        cursor: inherit;
+                    }
+                    
+                    .units
+                    {
+                        font-size: 0.88em;
+                        margin-left: 0.15em;
+                    }
+                }
+
+            }
+            .workoutBody
+            {
+
+                color: $TPGrey4;
+                padding: 2px 3px 3px 3px;
+                @include labels($fontFamilyHeavy, $fontSizeXSmall, $TPGrey4, normal);
+                label
+                {
+                    cursor: inherit;
+                    white-space: pre-wrap;
+                
+                }
+                
+                p
+                {
+                    margin-bottom: 0px;
+                    font-size: $fontSizeXSmall;
+                    color: $TPGrey4;
+                    font-family: $fontFamilyRegular;
+                    text-align: left;
+                    line-height: 12px;
+                    cursor: inherit;
+                    white-space: pre-wrap;
+                }
+            }
+        }
+
+    } // end .workout
+
+    #workoutSettingsDiv {
+       
+        padding-left: 10px;
+        padding-bottom: 20px;
+
+        @include labels($fontFamilyRegular, $fontSizeSmall, $TPGrey3, normal);
+        label
+        {
+            cursor: pointer;
+        }
+
+        .hoverBoxContents {
+            min-width: 75px;
+        }
+
+    }
+
+
+    #daySettingsDiv {
+        .hoverBoxContents {
+            min-width: 76px;
+        }
+        .hoverBox {
+            .arrow {
+                margin-left:28px;
+                }
+        }   
+    }
+
+    #summarySettingsDiv {
+        .hoverBox {
+            .arrow {
+                margin-left:50px;
+                }
+        }
+    }
+
+    .workout
+    {
+        
+        .workoutDiv
+        {
+            position: relative;
+        }
+
+        .workoutSelected
+        {
+            @include selectedOverlay();
+        }
+
+        &.selected
+        {
+            .workoutSelected
+            {
+                display: block;
+            }
+        }
+    }
+
+
+
+}
