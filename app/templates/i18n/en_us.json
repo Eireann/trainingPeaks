@@ -348,15 +348,20 @@
 
     "End": "End",
     "EndOnEventDate": "End on Event Date",
-    "On": "On",
+    "on": "on",
     "Unapply": "Unapply",
     "Reapply": "Reapply",
     "Author": "Author",
-    "PlanId": "Plan Id",
+    "ID": "ID",
     "NumberOfDays": "Number of days",
     "NumberOfWorkouts": "Number of workouts",
     "NumberOfMeals": "Number of meals",
     "PlannedDuration": "Planned duration",
     "Status": "Status",
-    "Edit": "Edit"
+    "Edit": "Edit",
+    "ApplyPlan": "Apply Plan",
+    "AppliedPlans": "Applied Plans",
+
+    "ErrorApplyingPlan": "An error has occurred while applying your training plan",
+    "By": "By"
 }

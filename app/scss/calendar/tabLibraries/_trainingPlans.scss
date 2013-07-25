@@ -6,7 +6,7 @@
     .hoverBoxContents
     {
         min-height: 300px;
-        width: 300px;
+        max-width: 300px;
     }
 
 
@@ -17,53 +17,75 @@
 
     .planTitle
     {
-        margin-top: 14px;
+        margin-top: 30px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     .planInfo
     {
-        padding-top: 10px;
+        div
+        {
+            float: left;
+            margin-right: 4px;
+
+        }
+        .authorName
+        {
+            color: $TPBlue;
+        }
+
+
+        .planId
+        {
+            float: right;
+        }
     }
 
-    .planInfoTitle
+    .planDescription
     {
-        width: 60%;
-        float: left;
-        height: 15px;
+        margin-top: 30px;
     }
 
-    .plannedDuration
+    .planDetails
     {
         padding-top: 15px;
 
-        .durationDetails
-        {
-            padding-left: 7px;
-        }
-
-        .durationTitle
+        div
         {
             float: left;
-            height: 15px;
-            @include calc(width, "60% - 3px");
-        } 
-        
-        .plannedInfoResults
+            padding-right: 30px;
+        }
+    }
+
+    .plannedWorkoutTypes
+    {
+        padding-left: 5px;
+
+        span
         {
-            height: 15px;
-        }  
+            float: left;
+            width: 90px;
+        }
+
+        .duration
+        {
+            padding-left: 24px
+        }
+
+        .distance
+        {
+            padding-left: 12px;
+        }
     }
 
-    hr
+    
+    .applyPlan
     {
-        width: 100%;
+        margin-top: 35px;
     }
-
-    .dottedLine
-    {
-        float: left;
-        border-bottom: 1px dotted #000000;
-    }
+    
 
     .startEndPlan
     {
@@ -73,11 +95,16 @@
         // so it inherits the height of it's floated children
         overflow: hidden;
 
-        margin-top: 20px;
+        margin-top: 5px;
         width: 100%;
         span
         {   
             float: left;
+        }
+
+        .on
+        {
+            padding: 4px 5px 0 5px;
         }
         #applyDateType
         {
@@ -87,16 +114,30 @@
 
         #applyDate
         {
-            width: 100px;
+            width: 70px;
             padding: 0;
+            height: 22px;
             float: left;
+            padding-left: 2px;
         }
 
         button.apply
         {
-            clear: both;
             display: block;
+            float: left;
+            height: 22px;
+            margin-left: 15px;
         }
+    }
+
+    .appliedPlansContainer
+    {
+        border: 1px $TPGrey2 solid;
+        margin-top: 5px;
+    }
+    .appliedPlans
+    {
+        margin-top: 5px
     }
 
     .appliedPlan
@@ -119,4 +160,16 @@
             width: 100px;
         }
     }
+
+    .selectboxit-container .selectboxit 
+    {
+        width: 100px !important;
+    }
+
+    input[type=radio] 
+    {
+        float: left;
+        margin: 0 5px;
+    }
+}
 }

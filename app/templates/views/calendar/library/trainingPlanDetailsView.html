@@ -5,18 +5,10 @@
 
 <!--<div>
     {{$ "Status" }}: {{ trainingPlanStatus planStatus }}
-</div>-->
+</div>
 
-{{# with details }}
-<div class="planInfo">
-    <div>
-        <div class="smallbold planInfoTitle">{{$ "Author"}}</div>
-        <div class="small infoResults">{{ author }}</div>
-    </div>
-    <div>
-        <div class="smallbold planInfoTitle">{{$ "PlanId"}}</div>
-        <div class="small infoResults">{{ planId }}</div>
-    </div>
+
+<div>
     <div>
         <div class="smallbold planInfoTitle">{{$ "NumberOfDays"}}</div>
         <div class="small infoResults">{{ dayCount }}</div>
@@ -43,20 +35,7 @@
 </div>
 
 <hr class="horizontalDevider"/>
-
-<div>{{ stripHtml description 200 }}</div>
-
-
-{{# each planApplications }}
-<div data-appliedplanid="{{ appliedPlanId }}" class="appliedPlan">
-    <span class="appliedDates">{{ formatDate startDate "MM/DD/YYYY" }} - {{ formatDate endDate "MM/DD/YYYY" }}</span>
-    <select class="alterAppliedPlan">
-        <option value="edit">{{$ "Edit" }}</option>
-        <option value="move">{{$ "Move" }}</option>
-        <option value="unapply">{{$ "Unapply" }}</option>
-    </select>
-</div>
-{{/each}}
+    -->
 
 {{/with}}
 
@@ -71,7 +50,7 @@
             {{/if}}
         {{/with}}
     </select>
-    <span>{{$ "On" }}</span>
+    <span class="small on">{{$ "on" }}</span>
     <input type="text" id="applyDate" class="datepicker" value="{{ formatDate applyDate "MM/DD/YYYY" }}">
 
     {{#if applied }}
@@ -81,5 +60,27 @@
     {{/if}}
 </div>
 {{/if}}
+
+
+{{# with details }}
+{{#if planApplications }}
+    <div class="appliedPlans">
+        <div class="smallbold">{{$ "AppliedPlans"}}</div>
+        <div class="appliedPlansContainer">
+            {{# each planApplications }}
+                <div data-appliedplanid="{{ appliedPlanId }}" class="appliedPlan">
+                    <input type="radio" name="appliedPlan" value="{{ appliedPlanId }}">
+                    <span class="appliedDates">{{ formatDate startDate "MM/DD/YYYY" }} - {{ formatDate endDate "MM/DD/YYYY" }}</span>
+                    <select class="alterAppliedPlan">
+                        <option value="edit">{{$ "Edit" }}</option>
+                        <option value="move">{{$ "Move" }}</option>
+                        <option value="unapply">{{$ "Unapply" }}</option>
+                    </select>
+                </div>
+            {{/each}}
+{{/if}}
+        </div>
+    </div>
+{{/with}}
 
 {{/hoverBox}}
