@@ -42,8 +42,8 @@ function(
         {
             "click .apply": "onApply",
             "change #applyDateType": "onApplyDateTypeChange",
-            "change .alterAppliedPlan" : "onAlterAppliedPlan",
-            "click #closeIcon": "close"
+            "click #closeIcon": "close",
+            "change .alterAppliedPlan" : "onAppliedPlanOptionChange"
         },
 
         initialize: function()
@@ -92,6 +92,14 @@ function(
             {
                 data.details.planApplications = null;
             }
+            else
+            {
+                _.each(data.details.planApplications, function(planApplication, index) {
+                    planApplication.eventPlan = data.details.eventPlan;
+                }, this);
+            }
+
+
             return data;
         },
 
@@ -124,13 +132,25 @@ function(
             });
         },
 
-        onAlterAppliedPlan: function(e)
+        onAppliedPlanOptionChange: function(e)
         {
-            var selection = e.target.selectedOptions[0].value;
+            var selection = $(e.target).val();
             if (selection === "move")
-                this.moveAppliedPlan(e);
-            else if (selection === "unapply")
+            {
+                this.$(e.target).closest(".appliedPlan").find(".startEndPlan").removeClass("optionsDisabled");
+            }   
+            else
+            {
+                this.$(e.target).closest(".appliedPlan").find(".startEndPlan").addClass("optionsDisabled");
+            } 
+
+            if (selection === "unapply")
                 this.deleteAppliedPlan(e);
+        },
+
+        showMoveOptions: function(e)
+        {
+            
         },
 
         moveAppliedPlan: function(e)

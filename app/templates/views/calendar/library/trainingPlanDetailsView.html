@@ -58,13 +58,27 @@
                 <div class="appliedPlansContainer">
                     {{# each planApplications }}
                         <div data-appliedplanid="{{ appliedPlanId }}" class="appliedPlan">
-                            <input type="radio" name="appliedPlan" value="{{ appliedPlanId }}">
-                            <span class="appliedDates small">{{ formatDate startDate "MM/DD/YYYY" }} - {{ formatDate endDate "MM/DD/YYYY" }}</span>
-                            <select class="alterAppliedPlan">
-                                <option value="edit">{{$ "Edit" }}</option>
-                                <option value="move">{{$ "Move" }}</option>
-                                <option value="unapply">{{$ "Unapply" }}</option>
-                            </select>
+                            <div>
+                                <input type="radio" name="appliedPlan" value="{{ appliedPlanId }}" />
+                                <span class="appliedDates small">{{ formatDate startDate "MM/DD/YYYY" }} - {{ formatDate endDate "MM/DD/YYYY" }}</span>
+                                <select class="alterAppliedPlan">
+                                    <option value="select">{{$ "Select" }}</option>
+                                    <option value="move">{{$ "Move" }}</option>
+                                    <option value="unapply">{{$ "Unapply" }}</option>
+                                </select>
+                            </div>
+                            <div class="startEndPlan optionsDisabled">
+                                <select id="applyDateType">
+                                    <option value="1">{{$ "Start" }}</option>
+                                    <option value="3">{{$ "End" }}</option>
+                                    {{#if eventPlan }}
+                                        <option value="2">{{$ "EndOnEventDate" }}</option>
+                                    {{/if}}
+                                </select>
+                                <span class="small on">{{$ "on" }}</span>
+                                <input type="text" id="applyDate" class="datepicker" value="{{ formatDate applyDate "MM/DD/YYYY" }}">
+                                <button class="apply">{{$ "Move" }}</button>
+                            </div>
                         </div>
                     {{/each}}
                 </div>
