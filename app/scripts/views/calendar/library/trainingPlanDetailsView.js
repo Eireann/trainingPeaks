@@ -103,6 +103,15 @@ function(
                 }, this);
             }
 
+            var plannedWorkoutTypeDurations = [];
+            _.each(data.details.plannedWorkoutTypeDurations, function(workoutTypeDetails)
+            {
+                if(workoutTypeDetails.duration || workoutTypeDetails.distance)
+                {
+                    plannedWorkoutTypeDurations.push(workoutTypeDetails);
+                }
+            })
+            data.details.plannedWorkoutTypeDurations = plannedWorkoutTypeDurations;
 
             return data;
         },
