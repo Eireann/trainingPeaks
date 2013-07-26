@@ -135,6 +135,12 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
                 background-position: -17px -17px;
             }
 
+            &.disabled
+            {
+                background-position: -17px 0px;
+                cursor: default;
+            }
+
         }
 
         #collapseIcon

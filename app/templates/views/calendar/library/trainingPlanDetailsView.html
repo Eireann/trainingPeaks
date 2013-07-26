@@ -32,6 +32,7 @@
     <div class="smallbold">{{$ "ApplyPlan"}}</div>
 </div>
 {{/with}}
+
 {{#if applyable }}
 <div class="startEndPlan">
     <select id="applyDateType">
@@ -54,26 +55,27 @@
 </div>
 {{/if}}
 
-
-{{# with details }}
-{{#if planApplications }}
-    <div class="appliedPlans">
-        <div class="smallbold">{{$ "AppliedPlans"}}</div>
-        <div class="appliedPlansContainer">
-            {{# each planApplications }}
-                <div data-appliedplanid="{{ appliedPlanId }}" class="appliedPlan">
-                    <input type="radio" name="appliedPlan" value="{{ appliedPlanId }}">
-                    <span class="appliedDates small">{{ formatDate startDate "MM/DD/YYYY" }} - {{ formatDate endDate "MM/DD/YYYY" }}</span>
-                    <select class="alterAppliedPlan">
-                        <option value="edit">{{$ "Edit" }}</option>
-                        <option value="move">{{$ "Move" }}</option>
-                        <option value="unapply">{{$ "Unapply" }}</option>
-                    </select>
+{{#if applied}}
+    {{# with details }}
+        {{#if planApplications }}
+            <div class="appliedPlans">
+                <div class="smallbold">{{$ "AppliedPlans"}}</div>
+                <div class="appliedPlansContainer">
+                    {{# each planApplications }}
+                        <div data-appliedplanid="{{ appliedPlanId }}" class="appliedPlan">
+                            <input type="radio" name="appliedPlan" value="{{ appliedPlanId }}">
+                            <span class="appliedDates small">{{ formatDate startDate "MM/DD/YYYY" }} - {{ formatDate endDate "MM/DD/YYYY" }}</span>
+                            <select class="alterAppliedPlan">
+                                <option value="edit">{{$ "Edit" }}</option>
+                                <option value="move">{{$ "Move" }}</option>
+                                <option value="unapply">{{$ "Unapply" }}</option>
+                            </select>
+                        </div>
+                    {{/each}}
                 </div>
-            {{/each}}
+            </div>
+        {{/if}}
+    {{/with}}
 {{/if}}
-        </div>
-    </div>
-{{/with}}
 
 {{/hoverBox}}

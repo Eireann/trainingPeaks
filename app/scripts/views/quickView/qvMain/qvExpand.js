@@ -202,9 +202,11 @@ function (_, TP, ExpandoController)
             if(this.model.get("detailData").hasSensorData())
             {
                 this.$("#quickViewExpandDiv").removeClass("disabled");
+                this.$("#expandIcon").removeClass("disabled");
             } else
             {
                 this.$("#quickViewExpandDiv").addClass("disabled");
+                this.$("#expandIcon").addClass("disabled");
             }
         }
     };
