@@ -90,6 +90,7 @@ function(
             data.applied = data.planStatus === TP.utils.trainingPlan.getStatusByName("Applied") ? true : false;
             data.applyDate = moment().day(1).format(this.dateFormat);
             data.details = this.model.details.toJSON();
+            data.details.weekcount = Math.ceil(data.details.dayCount / 7);
 
             if (data.details.planApplications && !data.details.planApplications.length)
             {
