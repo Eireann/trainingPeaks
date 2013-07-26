@@ -135,6 +135,8 @@
         border: 1px $TPGrey2 solid;
         margin-top: 5px;
         padding-top: 10px;
+
+        
     }
     .appliedPlans
     {
@@ -161,6 +163,14 @@
             float: right;
             width: 100px;
             margin-right: 10px;
+        }
+
+        .startEndPlan
+        {
+            &.optionsDisabled
+            {
+                display: none;
+            }
         }
     }
 
