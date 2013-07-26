@@ -364,5 +364,6 @@
     "AppliedPlans": "Applied Plans",
 
     "ErrorApplyingPlan": "An error has occurred while applying your training plan",
-    "By": "By"
+    "By": "By",
+    "Remove": "Remove"
 }

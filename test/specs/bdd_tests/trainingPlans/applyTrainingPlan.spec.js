@@ -84,7 +84,7 @@ function(
                 expect($body.find(".trainingPlanDetails button.apply").length).toBe(0);
             });
 
-            it("Should have a reapply button if it was already applied", function()
+            it("Should have an apply button if it was already applied", function()
             {
                 $mainRegion.find(".trainingPlanLibrary .trainingPlan[data-trainingplanid=1]").trigger("mouseup");
                 testHelpers.resolveRequest("GET", "plans/v1/athletes/426489/plans/1/details$", xhrData.trainingPlanDetails);
@@ -147,7 +147,7 @@ function(
                 expect(testHelpers.hasRequest(null, "plans/v1/athletes/426489/commands/applyplan")).toBe(true);
             });
 
-            it("Should trigger an end on date apply command", function()
+            it("Should trigger an end on date apply command, ending on a sunday", function()
             {
                 expect(testHelpers.hasRequest(null, "plans/v1/athletes/426489/commands/applyplan")).toBe(false);
 
@@ -160,10 +160,10 @@ function(
                 var applyRequest = testHelpers.findRequest(null, "plans/v1/athletes/426489/commands/applyplan");
                 expect(applyRequest.model.attributes.planId).toBe(1);
                 expect(applyRequest.model.attributes.startType).toBe(3);
-                expect(applyRequest.model.attributes.targetDate).toBe(tomorrow.format("MM/DD/YYYY"));
+                expect(applyRequest.model.attributes.targetDate).toBe(tomorrow.day(7).format("MM/DD/YYYY"));
             });
 
-            it("Should trigger a start on date apply command", function()
+            it("Should trigger a start on date apply command, starting on a monday", function()
             {
                 expect(testHelpers.hasRequest(null, "plans/v1/athletes/426489/commands/applyplan")).toBe(false);
 
@@ -176,7 +176,7 @@ function(
                 var applyRequest = testHelpers.findRequest(null, "plans/v1/athletes/426489/commands/applyplan");
                 expect(applyRequest.model.attributes.planId).toBe(1);
                 expect(applyRequest.model.attributes.startType).toBe(1);
-                expect(applyRequest.model.attributes.targetDate).toBe(tomorrow.format("MM/DD/YYYY"));
+                expect(applyRequest.model.attributes.targetDate).toBe(tomorrow.day(1).format("MM/DD/YYYY"));
             });
 
             it("Should trigger an end on event date apply command", function()

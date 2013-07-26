@@ -8,6 +8,7 @@ define(
     "models/library/appliedPlan",
     "views/userConfirmationView",
     "utilities/trainingPlan/trainingPlan",
+    "hbs!templates/views/confirmationViews/deleteConfirmationView",
     "hbs!templates/views/calendar/library/applyTrainingPlanErrorView",
     "hbs!templates/views/calendar/library/trainingPlanDetailsView"
 ],
@@ -20,6 +21,7 @@ function(
     AppliedPlan,
     UserConfirmationView,
     trainingPlanUtility,
+    deleteConfirmationTemplate,
     trainingPlanErrorTemplate,
     trainingPlanDetailsViewTemplate
     )
@@ -43,7 +45,8 @@ function(
             "click .apply": "onApply",
             "change #applyDateType": "onApplyDateTypeChange",
             "click #closeIcon": "close",
-            "change .alterAppliedPlan" : "onAppliedPlanOptionChange"
+            "click .removePlan": "confirmDeleteAppliedPlan"
+            //"change .alterAppliedPlan" : "onAppliedPlanOptionChange"
         },
 
         initialize: function()
@@ -107,8 +110,22 @@ function(
         {
 
             var startType = Number(this.$("#applyDateType").val());
-            var targetDate = (this.model.details.get("eventPlan") && startType === TP.utils.trainingPlan.startTypeEnum.Event) ?
-                this.model.details.get("eventDate") : this.$("#applyDate").val();
+
+            var targetDate = this.$("#applyDate").val();
+
+            if(this.model.details.get("eventPlan") && startType === TP.utils.trainingPlan.startTypeEnum.Event)
+            {
+                targetDate = this.model.details.get("eventDate");
+            }
+            else if (startType === TP.utils.trainingPlan.startTypeEnum.StartDate) 
+            {
+                targetDate = moment(targetDate).day(1).format(this.dateFormat);
+            }
+            else if (startType === TP.utils.trainingPlan.startTypeEnum.EndDate) 
+            {
+                targetDate = moment(targetDate).day(7).format(this.dateFormat);
+            }
+
             var command = new ApplyTrainingPlanCommand({
                 planId: this.model.get("planId"),
                 startType: startType,
@@ -119,9 +136,7 @@ function(
             self.waitingOn();
             command.execute().done(function()
             {
-                self.model.fetch();
-                self.close();
-                self.model.trigger("requestRefresh", command.get("appliedPlan.startDate"));
+                self.refreshPlanAndCalendar(command.get("appliedPlan.startDate")); 
             }).fail(function()
             {
                 var errorMessageView = new UserConfirmationView({ template: trainingPlanErrorTemplate });
@@ -132,48 +147,30 @@ function(
             });
         },
 
-        onAppliedPlanOptionChange: function(e)
+        refreshPlanAndCalendar: function(calendarDate)
         {
-            var selection = $(e.target).val();
-            if (selection === "move")
-            {
-                this.$(e.target).closest(".appliedPlan").find(".startEndPlan").removeClass("optionsDisabled");
-            }   
-            else
-            {
-                this.$(e.target).closest(".appliedPlan").find(".startEndPlan").addClass("optionsDisabled");
-            } 
-
-            if (selection === "unapply")
-                this.deleteAppliedPlan(e);
+            this.model.fetch();
+            this.close();
+            this.model.trigger("requestRefresh", calendarDate);
         },
 
-        showMoveOptions: function(e)
-        {
-            
-        },
-
-        moveAppliedPlan: function(e)
+        confirmDeleteAppliedPlan: function(e)
         {
             var appliedPlanId = this.$(e.target).closest(".appliedPlan").data("appliedplanid");
-            var startType = trainingPlanUtility.startTypeEnum["StartDate"];
-            var targetDate;
-
-
+            this.deleteConfirmationView = new UserConfirmationView({ template: deleteConfirmationTemplate, appliedPlanId: appliedPlanId });
+            this.deleteConfirmationView.render();
+            this.deleteConfirmationView.on("userConfirmed", this.deleteAppliedPlan, this);
         },
 
-        deleteAppliedPlan: function(e)
+        deleteAppliedPlan: function(options)
         {
-            var appliedPlanId = this.$(e.target).closest(".appliedPlan").data("appliedplanid");
-            var appliedPlan = new AppliedPlan({appliedPlanId: appliedPlanId});
+            var appliedPlan = new AppliedPlan({appliedPlanId: options.appliedPlanId});
 
             var self = this;
             self.waitingOn();
             appliedPlan.destroy().done(function()
             {
-                self.model.fetch();
-                self.close();
-                self.model.trigger("requestRefresh");
+                self.refreshPlanAndCalendar(); 
             }).fail(function()
             {
                 var errorMessageView = new UserConfirmationView({ template: trainingPlanErrorTemplate });
@@ -217,6 +214,34 @@ function(
                 this.$("#applyDate").val(moment().day(1).format(this.dateFormat)).show();
             }
         }
+
+        /*
+        onAppliedPlanOptionChange: function(e)
+        {
+            var selection = $(e.target).val();
+            if (selection === "move")
+            {
+                this.$(e.target).closest(".appliedPlan").find(".startEndPlan").removeClass("optionsDisabled");
+            }   
+            else
+            {
+                this.$(e.target).closest(".appliedPlan").find(".startEndPlan").addClass("optionsDisabled");
+            } 
+
+            if (selection === "unapply")
+                this.deleteAppliedPlan(e);
+        },
+
+        moveAppliedPlan: function(e)
+        {
+            var appliedPlanId = this.$(e.target).closest(".appliedPlan").data("appliedplanid");
+            var startType = trainingPlanUtility.startTypeEnum["StartDate"];
+            var targetDate;
+
+
+        },
+        */
+
 
     });
 });
