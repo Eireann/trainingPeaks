@@ -7,6 +7,7 @@ define(
     "models/commands/applyTrainingPlan",
     "models/library/appliedPlan",
     "views/userConfirmationView",
+    "utilities/trainingPlan/trainingPlan",
     "hbs!templates/views/calendar/library/applyTrainingPlanErrorView",
     "hbs!templates/views/calendar/library/trainingPlanDetailsView"
 ],
@@ -18,6 +19,7 @@ function(
     ApplyTrainingPlanCommand,
     AppliedPlan,
     UserConfirmationView,
+    trainingPlanUtility,
     trainingPlanErrorTemplate,
     trainingPlanDetailsViewTemplate
     )
@@ -133,7 +135,10 @@ function(
         moveAppliedPlan: function(e)
         {
             var appliedPlanId = this.$(e.target).closest(".appliedPlan").data("appliedplanid");
-            //call moveTrainingPlan.execute
+            var startType = trainingPlanUtility.startTypeEnum["StartDate"];
+            var targetDate;
+
+
         },
 
         deleteAppliedPlan: function(e)
