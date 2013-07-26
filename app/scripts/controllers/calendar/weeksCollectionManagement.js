@@ -21,6 +21,7 @@ function(CalendarCollection
             //console.log("Weeks collection init took " + (+new Date() - startTime) + "ms");
         },
 
+        // Deprecated
         appendWeekToCalendar: function ()
         {
             var startDate = moment(this.endDate).add("days", 1);
@@ -31,6 +32,7 @@ function(CalendarCollection
             this.weeksCollection.requestWorkouts(startDate, endDate);
         },
 
+        // Deprecated
         prependWeekToCalendar: function()
         {
             var endDate = moment(this.startDate).subtract("days", 1);

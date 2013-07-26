@@ -36,6 +36,7 @@ function(moment, setImmediate, TP, CalendarDayView, WeekSummaryView, CalendarWee
             if (!this.model)
                 throw "CalendarWeekView requires a model";
 
+            this.collection = this.collection || this.model.get("week");
             if (!this.collection)
                 throw "CalendarWeekView requires a collection";
             this.waiting = $('<div class="calendarWeekView waiting"> </div>');

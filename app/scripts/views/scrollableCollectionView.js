@@ -151,6 +151,8 @@ function(
             TP.CollectionView.prototype.constructor.apply(this, arguments);
 
             this.scrollThreshold = options.scrollThreshold || 100;
+            if (options.batchSize > this.collection.maxSize) options.batchSize = null;
+            this.batchSize = options.batchSize || this.collection.maxSize / 2;
 
             this.on('before:item:added itemview:before:resize', _.bind(this._stashScrollPosition, this));
             this.on('after:item:added itemview:after:resize', _.bind(this._applyScrollPosition, this));
@@ -204,8 +206,8 @@ function(
         {
             // QL: Throttle fetchPrevious/fetchNext
             var scrollTop = this.$el.scrollTop();
-            if(scrollTop < this.scrollThreshold) this.collection.fetchPrevious();
-            else if(this.$el.height() - scrollTop < this.scrollThreshold) this.collection.fetchNext();
+            if(scrollTop < this.scrollThreshold) this.collection.fetchPrevious(this.batchSize);
+            else if(this.$el.height() - scrollTop < this.scrollThreshold) this.collection.fetchNext(this.batchSize);
         }
 
     });

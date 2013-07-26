@@ -7,6 +7,7 @@
     "views/calendar/moveItems/selectedRangeSettings",
     "views/calendar/moveItems/shiftWizzardView",
     "views/calendar/container/calendarContainerViewScrolling",
+    "views/scrollableCollectionView",
     "hbs!templates/views/calendar/container/calendarContainerView"
 ],
 function(
@@ -17,6 +18,7 @@ function(
     SelectedRangeSettingsView,
     ShiftWizzardView,
     CalendarContainerViewScrolling,
+    ScrollableCollectionView,
     calendarContainerView)
 {
     var CalendarContainerView =
@@ -47,8 +49,8 @@ function(
             // initialize the superclass
             this.constructor.__super__.initialize.call(this);
 
-            this.initializeScrolling();
-            this.initializeScrollOnDrag();
+            //this.initializeScrolling();
+            //this.initializeScrollOnDrag();
             this.on("render", this.setupKeyBindingsOnRender, this);
             this.on("render", this.addWeeksOnRender, this);
             this.on("calendar:unselect", this.onCalendarUnSelect, this);
@@ -57,6 +59,12 @@ function(
 
             this.calendarHeaderModel = options.calendarHeaderModel;
             this.startOfWeekDayIndex = options.startOfWeekDayIndex ? options.startOfWeekDayIndex : 0;
+
+            this.weeksCollectionView = new ScrollableCollectionView({itemView: CalendarWeekView, collection: this.collection, id: 'weeksContainer', className: "scrollable colorByComplianceAndWorkoutType"});
+            
+            this.weeksCollectionView.render();
+            this.$el.append(this.weeksCollectionView.$el);
+            this.ui.weekContainer = this.weeksCollectionView.$el;
         },
 
         closeChildren: function()
@@ -69,7 +77,7 @@ function(
 
         ui:
         {
-            "weeksContainer": "#weeksContainer"
+            //"weeksContainer": "#weeksContainer"
         },
 
         modelEvents:
@@ -79,7 +87,7 @@ function(
 
         collectionEvents:
         {
-            "add": "onAddWeek",
+            //"add": "onAddWeek",
             "reset": "render",
             "item:move": "onItemMoved",
             "shiftwizard:open": "onShiftWizardOpen",
@@ -149,6 +157,7 @@ function(
 
         addWeeksOnRender: function()
         {
+            return;
             var numWeeks = this.collection.length;
             var i = 0;
 

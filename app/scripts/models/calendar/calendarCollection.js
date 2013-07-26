@@ -135,12 +135,49 @@ function(
             return waiting;
         },
 
+        prepareNext: function (count)
+        {
+            var rangeStartDate = moment(this.endDate).add("days", 1);
+
+            var models = _.times(count, function()
+            {
+                var startDate = moment(this.endDate).add("days", 1);
+                var endDate = moment(startDate).add("days", 6);
+                this.endDate = moment(endDate);
+
+                return this.appendWeek(startDate); 
+            });
+
+            this.requestWorkouts(rangeStartDate, this.endDate);
+
+            return models;
+        },
+
+        preparePrevious: function(count)
+        {
+            var rangeEndDate = moment(this.startDate).subtract("days", 1);
+
+            var models = _.times(count, function()
+            {
+                var endDate = moment(this.startDate).subtract("days", 1);
+                var startDate = moment(endDate).subtract("days", 6);
+                this.startDate = moment(startDate);
+
+                var model = this.prependWeek(startDate);
+            });
+
+            this.requestWorkouts(this.startDate, rangeEndDate);
+
+            return models;
+        },
+
         appendWeek: function(startDate)
         {
             var newWeekCollection = this.createWeekCollectionStartingOn(moment(startDate));
             var newWeekModel = new TP.Model({ id: startDate.format(TP.utils.datetime.shortDateFormat), week: newWeekCollection });
 
             this.add(newWeekModel, { append: true });
+            return newWeekModel;
         },
 
         prependWeek: function(startDate)
@@ -149,6 +186,7 @@ function(
             var newWeekModel = new TP.Model({ id: startDate.format(TP.utils.datetime.shortDateFormat), week: newWeekCollection });
 
             this.add(newWeekModel, { at: 0, append: false });
+            return newWeekModel;
         },
 
         getDayModel: function(date)
