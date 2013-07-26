@@ -42,7 +42,8 @@ function(
         {
             "click .apply": "onApply",
             "change #applyDateType": "onApplyDateTypeChange",
-            "change .alterAppliedPlan" : "onAlterAppliedPlan"
+            "change .alterAppliedPlan" : "onAlterAppliedPlan",
+            "click #closeIcon": "close"
         },
 
         initialize: function()

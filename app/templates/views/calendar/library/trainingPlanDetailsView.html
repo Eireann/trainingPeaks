@@ -23,7 +23,7 @@
     <div class="plannedWorkoutTypes">
         <span class="small workoutType">{{ workoutTypeName workoutTypeId }}</span>
         <span class="small duration">{{ conversion "formatDuration" duration this "0:00" }}</span>
-        <span class="small distance">{{ distance }}</span>
+        <span class="small distance">{{ conversion "formatDistance" distance this "0"}}</span>
     </div>
     {{/each}}
 </div>
@@ -46,12 +46,7 @@
     </select>
     <span class="small on">{{$ "on" }}</span>
     <input type="text" id="applyDate" class="datepicker" value="{{ formatDate applyDate "MM/DD/YYYY" }}">
-
-    {{#if applied }}
-    <button class="apply">{{$ "Reapply" }}</button>
-    {{ else }}
-    <button class="apply">{{$ "Apply" }}</button>
-    {{/if}}
+    <button class="apply">{{$ "Go" }}</button>
 </div>
 {{/if}}
 

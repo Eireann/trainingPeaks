@@ -89,15 +89,12 @@ function(
                 $mainRegion.find(".trainingPlanLibrary .trainingPlan[data-trainingplanid=1]").trigger("mouseup");
                 testHelpers.resolveRequest("GET", "plans/v1/athletes/426489/plans/1/details$", xhrData.trainingPlanDetails);
                 expect($body.find(".trainingPlanDetails button.apply").length).toBe(1);
-                expect($body.find(".trainingPlanDetails .startEndPlan button.apply").text()).toContain("Reapply");
-                expect($body.find(".trainingPlanDetails").text()).toContain("Applied");
             });
 
             it("Should have an apply button if it was purchased", function()
             {
                 $mainRegion.find(".trainingPlanLibrary .trainingPlan[data-trainingplanid=3]").trigger("mouseup");
                 expect($body.find(".trainingPlanDetails button.apply").length).toBe(1);
-                expect($body.find(".trainingPlanDetails .startEndPlan button.apply").text()).toContain("Apply");
             });
 
             it("Should display applied plans", function()
