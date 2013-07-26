@@ -58,24 +58,35 @@
         }
     }
 
-    .plannedWorkoutTypes
+    .durationDetails
     {
-        padding-left: 5px;
+        padding-top: 15px;
 
-        span
+        .plannedWorkoutTypes
         {
-            float: left;
-            width: 90px;
+            padding: 2px 0 0 5px;
+            height: 16px;
+
+            span
+            {
+                float: left;
+                width: 90px;
+            }
+
+            .duration
+            {
+                padding-left: 24px
+            }
+
+            .distance
+            {
+                padding-left: 12px;
+            }
         }
 
-        .duration
+        .highlightRow
         {
-            padding-left: 24px
-        }
-
-        .distance
-        {
-            padding-left: 12px;
+            background-color: $TPGrey2;
         }
     }
 
@@ -182,5 +193,5 @@
     {
         float: left;
         margin: 4px 5px 0 5px;
-    }
+    }  
 }
