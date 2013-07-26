@@ -110,7 +110,7 @@ function(
                 {
                     plannedWorkoutTypeDurations.push(workoutTypeDetails);
                 }
-            })
+            });
             data.details.plannedWorkoutTypeDurations = plannedWorkoutTypeDurations;
 
             return data;

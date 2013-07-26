@@ -16,6 +16,6 @@ function(Handlebars)
         }
     };
 
-    Handlebars.registerHelper("everyOther", everyOther)
+    Handlebars.registerHelper("everyOther", everyOther);
     return everyOther;
 });
