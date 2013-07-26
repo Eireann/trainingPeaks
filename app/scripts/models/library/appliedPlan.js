@@ -20,7 +20,7 @@ function(moment, TP)
 
         defaults:
         {
-            "appliedPlanId": null,
+            "appliedPlanId": null
         }
     });
 });
