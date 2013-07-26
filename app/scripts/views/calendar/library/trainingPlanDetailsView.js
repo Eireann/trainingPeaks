@@ -5,6 +5,7 @@ define(
     "setImmediate",
     "TP",
     "models/commands/applyTrainingPlan",
+    "models/library/appliedPlan",
     "views/userConfirmationView",
     "hbs!templates/views/calendar/library/applyTrainingPlanErrorView",
     "hbs!templates/views/calendar/library/trainingPlanDetailsView"
@@ -15,6 +16,7 @@ function(
     setImmediate,
     TP,
     ApplyTrainingPlanCommand,
+    AppliedPlan,
     UserConfirmationView,
     trainingPlanErrorTemplate,
     trainingPlanDetailsViewTemplate
@@ -37,7 +39,8 @@ function(
         events:
         {
             "click .apply": "onApply",
-            "change #applyDateType": "onApplyDateTypeChange"
+            "change #applyDateType": "onApplyDateTypeChange",
+            "change .alterAppliedPlan" : "onAlterAppliedPlan"
         },
 
         initialize: function()
@@ -118,14 +121,41 @@ function(
             });
         },
 
-        onMoveAppliedPlan: function()
+        onAlterAppliedPlan: function(e)
         {
+            var selection = e.target.selectedOptions[0].value;
+            if (selection === "move")
+                this.moveAppliedPlan(e);
+            else if (selection === "unapply")
+                this.deleteAppliedPlan(e);
+        },
+
+        moveAppliedPlan: function(e)
+        {
+            var appliedPlanId = this.$(e.target).closest(".appliedPlan").data("appliedplanid");
             //call moveTrainingPlan.execute
         },
 
-        onDeleteAppliedPlan: function()
+        deleteAppliedPlan: function(e)
         {
-            //destroy appliedPlan
+            var appliedPlanId = this.$(e.target).closest(".appliedPlan").data("appliedplanid");
+            var appliedPlan = new AppliedPlan({appliedPlanId: appliedPlanId});
+
+            var self = this;
+            self.waitingOn();
+            appliedPlan.destroy().done(function()
+            {
+                self.model.fetch();
+                self.close();
+                self.model.trigger("requestRefresh");
+            }).fail(function()
+            {
+                var errorMessageView = new UserConfirmationView({ template: trainingPlanErrorTemplate });
+                errorMessageView.render();
+            }).always(function()
+            {
+                self.waitingOff();
+            });
         },
 
         alignArrowTo: function($element)
