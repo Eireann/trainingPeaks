@@ -365,5 +365,6 @@
 
     "ErrorApplyingPlan": "An error has occurred while applying your training plan",
     "By": "By",
-    "Remove": "Remove"
+    "Remove": "Remove",
+    "WorkoutTotals": "Workout Totals"
 }

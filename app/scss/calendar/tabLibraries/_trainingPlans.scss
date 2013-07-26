@@ -54,7 +54,17 @@
         div
         {
             float: left;
-            padding-right: 30px;
+            width: 90px;
+        }
+
+        .duration
+        {
+            padding-left: 26px
+        }
+
+        .distance
+        {
+            padding-left: 14px;
         }
     }
 
@@ -93,7 +103,7 @@
     
     .applyPlan
     {
-        margin-top: 35px;
+        margin-top: 15px;
     }
     
 
@@ -137,6 +147,7 @@
             float: left;
             height: 22px;
             margin-left: 15px;
+            width: 50px;
         }
     }
 
