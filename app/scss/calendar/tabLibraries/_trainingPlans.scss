@@ -25,15 +25,14 @@
 
     .planInfo
     {
-        div
+        .authorInfo
         {
             float: left;
             margin-right: 4px;
-
-        }
-        .authorName
-        {
-            color: $TPBlue;
+            max-width: 225px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
 
