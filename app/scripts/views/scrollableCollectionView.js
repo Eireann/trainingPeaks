@@ -10,12 +10,12 @@ function(
     var ScrollableCollectionViewAdapterCollection = TP.Collection.extend({
         initialize: function(models, options)
         {
-            this.sourceCollection = options.sourceCollection;
+            this.sourceCollection = options.collection;
             this.maxSize = options.maxSize || 10;
 
             this._bindSourceCollectionEvents();
 
-            this._setupCurrentRange(firstModel);
+            this._setupCurrentRange(options.firstModel);
         },
 
         fetchPrevious: function(numberToFetch)
@@ -28,11 +28,14 @@ function(
             var models = this.sourceCollection.models.slice(sourceBeginIndex - numberToCopy, sourceBeginIndex);
             this.add(models, {at: 0});
 
-            numberToFetch -= numberToCopy;
-            if(numberToFetch > 0)
+            var numberToPrepare = numberToFetch - numberToCopy;
+            if(numberToPrepare > 0)
             {
-                this.sourceCollection.fetchPrevious(numberToFetch);
+                var newModels = this.sourceCollection.preparePrevious(numberToPrepare);
+                this.add(newModels, {at: 0});
             }
+
+            this._limitSize({dropFrom: "end"});
         },
 
         fetchNext: function(numberToFetch)
@@ -45,11 +48,16 @@ function(
             var models = this.sourceCollection.models.slice(sourceEndIndex, sourceEndIndex + numberToCopy);
             this.add(models, {at: this.length});
 
-            numberToFetch -= numberToCopy;
-            if(numberToFetch > 0)
+            var numberToPrepare = numberToFetch - numberToCopy;
+            if(numberToPrepare > 0)
             {
-                this.sourceCollection.fetchNext(numberToFetch);
+                // prepareNext(): collection must immediately instantiate desired number of models, then fetch() each model
+                // collection must immediately return these new models, after adding them to its collection
+                var newModels = this.sourceCollection.prepareNext(numberToPrepare);
+                this.add(newModels, {at: this.length});
             }
+
+            this._limitSize({dropFrom: "beginning"});
         },
 
         _bindSourceCollectionEvents: function()
@@ -85,14 +93,17 @@ function(
 
             this.remove(model);
 
-            this._ensureSize({fetchFrom: isPastHalfPoint ? "end" : "beginning"})
+            this._ensureSize({fetchFrom: isPastHalfPoint ? "end" : "beginning"});
         },
 
         _setupCurrentRange: function(firstModel)
         {
             var begin = this.sourceCollection.indexOf(firstModel);
+            if (begin < 0) begin = 0;
             var currentModels = this.sourceCollection.models.slice(begin, begin + this.maxSize);
             this.set(currentModels);
+            // if passed in collection is smaller than our maxSize
+            this._ensureSize({fetchFrom: "end"});
         },
 
         _limitSize: function(options)
@@ -121,14 +132,21 @@ function(
             {
                 this.fetchNext(numberToFetch);
             }
+
+            if (options.calledRecursively) return;
+
+            // If there are none to grab from either side, try filling our collection from the opposite end
+            this._ensureSize({
+                fetchFrom: options.fetchFrom === "beginning" ? "end" : "beginning",
+                calledRecursively: true
+            });
         }
     });
 
     var ScrollableCollectionView = TP.CollectionView.extend({
         constructor: function(options)
         {
-            options.firstModel
-            options.collection = new ScrollableCollectionViewAdapterCollection({sourceCollection: options.collection});
+            options.collection = new ScrollableCollectionViewAdapterCollection(null, options);
 
             TP.CollectionView.prototype.constructor.apply(this, arguments);
 
@@ -177,7 +195,7 @@ function(
 
         appendHtml: function(collectionView, itemView, index)
         {
-            var prevEl = collectionView.$el.children()[index]
+            var prevEl = collectionView.$el.children()[index];
             if(!prevEl) collectionView.$el.prepend(itemView.$el);
             else $(prevEl).before(itemView.$el);
         },
