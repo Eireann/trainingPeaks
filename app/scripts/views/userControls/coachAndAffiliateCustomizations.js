@@ -23,18 +23,27 @@ function(_, colorUtils, affiliateUtils)
 
         setupHeader: function()
         {
-            if (theMarsApp.user.get("settings.account") && !this.affiliateHeaderLoaded)
+            if (theMarsApp.user.get("settings.account")) 
             {
                 if (affiliateUtils.isCoachedAccount())
                 {
-                    this.loadCoachLogoImageData();
                     this.$("#userControlsBackground").addClass("coachBanner");
                 } else if (affiliateUtils.isAffiliate())
                 {
-                    affiliateUtils.loadAffiliateStylesheet();
                     this.$("#userControlsBackground").addClass("affiliateBanner");
                 } 
-                this.affiliateHeaderLoaded = true;
+
+                if(!this.affiliateHeaderLoaded)
+                {
+                    if (affiliateUtils.isCoachedAccount())
+                    {
+                        this.loadCoachLogoImageData();
+                    } else if (affiliateUtils.isAffiliate())
+                    {
+                        affiliateUtils.loadAffiliateStylesheet();
+                    } 
+                    this.affiliateHeaderLoaded = true;
+                }
             }
         },
 
