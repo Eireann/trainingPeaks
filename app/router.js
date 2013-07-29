@@ -49,12 +49,16 @@ function (_, TP)
         login: function ()
         {
             theMarsApp.showController(theMarsApp.controllers.loginController);
+
+            ga("send", "pageview", { page: "login" });
         },
 
         home: function ()
         {
             this.checkAuth();
             theMarsApp.showController(theMarsApp.controllers.homeController);
+
+            ga("send", "pageview", { page: "home" });
         },
 
         calendar: function (athleteId)
@@ -74,34 +78,18 @@ function (_, TP)
             {
                 theMarsApp.showController(theMarsApp.controllers.calendarController);
             }
+
+            ga("send", "pageview", { page: "calendar" });
         },
 
         dashboard: function()
         {
             this.checkAuth();
             theMarsApp.showController(theMarsApp.controllers.dashboardController);
-        },
-        
-        tools: function()
-        {
-            this.checkAuth();
 
-            var toolsView = new TP.ItemView(
-            {
-                template:
-                {
-                    type: "handlebars",
-                    template: function ()
-                    {
-                        var top = $(document).height() / 2;
-                        var left = $(document).width() / 2 - 50;
-
-                        return "<div style='font-size:24px;position: absolute; top:" + top.toFixed(0) + "px; left:" + left.toFixed(0) + "px;'>Tools</div>";
-                    }
-                }
-            });
-            theMarsApp.mainRegion.show(toolsView);
+            ga("send", "pageview", { page: "dashboard" });
         },
+
         
         checkAuth: function()
         {
