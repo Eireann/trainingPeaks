@@ -61,10 +61,15 @@ function(
             this.startOfWeekDayIndex = options.startOfWeekDayIndex ? options.startOfWeekDayIndex : 0;
 
             this.weeksCollectionView = new ScrollableCollectionView({itemView: CalendarWeekView, collection: this.collection, id: 'weeksContainer', className: "scrollable colorByComplianceAndWorkoutType"});
-            
+        },
+        
+        render: function()
+        {
+            PrimaryContainerView.prototype.render.apply(this, arguments);
+
             this.weeksCollectionView.render();
             this.$el.append(this.weeksCollectionView.$el);
-            this.ui.weekContainer = this.weeksCollectionView.$el;
+            this.ui.weeksContainer = this.weeksCollectionView.$el;
         },
 
         closeChildren: function()

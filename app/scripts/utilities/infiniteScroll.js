@@ -21,6 +21,7 @@ function (_, TP)
 
        setupScrollingOnRender: function ()
        {
+          return;
            _.bindAll(this, "onScrollStop");
            this.scrollableContainer = this.$(".scrollable");
            var debouncedScrollStop = _.debounce(this.onScrollStop, 300);
@@ -102,6 +103,7 @@ function (_, TP)
 
        scrollToElement: function(element, snapToSelector, animationTimeout, callback)
        {
+          return;
 
             var $element = $(element);
             if (snapToSelector)

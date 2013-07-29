@@ -150,12 +150,16 @@ function(
 
             TP.CollectionView.prototype.constructor.apply(this, arguments);
 
-            this.scrollThreshold = options.scrollThreshold || 100;
+            this.scrollThreshold = options.scrollThreshold || 500;
             if (options.batchSize > this.collection.maxSize) options.batchSize = null;
             this.batchSize = options.batchSize || this.collection.maxSize / 2;
 
-            this.on('before:item:added itemview:before:resize', _.bind(this._stashScrollPosition, this));
-            this.on('after:item:added itemview:after:resize', _.bind(this._applyScrollPosition, this));
+            this.batchSize = 1;
+
+            this.on('before:item:added before:item:removed itemview:before:resize', _.bind(this._stashScrollPosition, this));
+            this.on('after:item:added after:item:removed itemview:after:resize', _.bind(this._applyScrollPosition, this));
+
+            this.$el.on('scroll', _.bind(this.onScroll, this));
 
             this.scrollAnchorCount = 0;
         },
@@ -195,10 +199,17 @@ function(
             this.$el.scrollTop(newScrollTop);
         },
 
+        removeChildView: function(view)
+        {
+            this.triggerMethod("before:item:removed", view);
+            TP.CollectionView.prototype.removeChildView.apply(this, arguments);
+            this.triggerMethod("after:item:removed", view);
+        },
+
         appendHtml: function(collectionView, itemView, index)
         {
             var prevEl = collectionView.$el.children()[index];
-            if(!prevEl) collectionView.$el.prepend(itemView.$el);
+            if(!prevEl) collectionView.$el.append(itemView.$el);
             else $(prevEl).before(itemView.$el);
         },
 
@@ -206,8 +217,11 @@ function(
         {
             // QL: Throttle fetchPrevious/fetchNext
             var scrollTop = this.$el.scrollTop();
+            var scrollBottom = scrollTop + this.$el.height();
+            var scrollHeight = this.$el.prop('scrollHeight')
+
             if(scrollTop < this.scrollThreshold) this.collection.fetchPrevious(this.batchSize);
-            else if(this.$el.height() - scrollTop < this.scrollThreshold) this.collection.fetchNext(this.batchSize);
+            else if(scrollHeight - scrollBottom < this.scrollThreshold) this.collection.fetchNext(this.batchSize);
         }
 
     });

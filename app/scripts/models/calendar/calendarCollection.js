@@ -137,15 +137,16 @@ function(
 
         prepareNext: function (count)
         {
+            var self = this;
             var rangeStartDate = moment(this.endDate).add("days", 1);
 
             var models = _.times(count, function()
             {
-                var startDate = moment(this.endDate).add("days", 1);
+                var startDate = moment(self.endDate).add("days", 1);
                 var endDate = moment(startDate).add("days", 6);
-                this.endDate = moment(endDate);
+                self.endDate = moment(endDate);
 
-                return this.appendWeek(startDate); 
+                return self.appendWeek(startDate); 
             });
 
             this.requestWorkouts(rangeStartDate, this.endDate);
@@ -155,15 +156,16 @@ function(
 
         preparePrevious: function(count)
         {
-            var rangeEndDate = moment(this.startDate).subtract("days", 1);
+            var self = this;
+            var rangeEndDate = moment(self.startDate).subtract("days", 1);
 
             var models = _.times(count, function()
             {
-                var endDate = moment(this.startDate).subtract("days", 1);
+                var endDate = moment(self.startDate).subtract("days", 1);
                 var startDate = moment(endDate).subtract("days", 6);
-                this.startDate = moment(startDate);
+                self.startDate = moment(startDate);
 
-                var model = this.prependWeek(startDate);
+                return self.prependWeek(startDate);
             });
 
             this.requestWorkouts(this.startDate, rangeEndDate);
