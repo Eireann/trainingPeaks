@@ -27,7 +27,9 @@
         wwwRoot: wwwRoots[configuration],
         apiRoot: apiRoots[configuration],
         oAuthRoot: oAuthRoots[configuration],
-        buildNumber: "local"
+        buildNumber: "local",
+        coachUpgradeURL: "https://home.dev.trainingpeaks.com/create-account-personal-edition.aspx?login=true&utm_source=tpflex&utm_medium=trigger&utm_content=premiumfeature&utm_campaign=put",
+        upgradeURL:"https://home.dev.trainingpeaks.com/account-professional-edition.aspx?s=859edf69-504e-443a-bd0a-b2c6d095b325"
     };
 
     if (typeof global !== "undefined")
