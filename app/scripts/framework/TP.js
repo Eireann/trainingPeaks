@@ -8,9 +8,10 @@ define(
     "setImmediate",
     "framework/APIModel",
     "framework/Logger",
-    "framework/utilities"
+    "framework/utilities",
+    "framework/analytics"
 ],
-function(_, Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmediate, APIModel, Logger, utilities)
+function(_, Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmediate, APIModel, Logger, utilities, analytics)
 {
     var TP = {};
 
@@ -428,6 +429,8 @@ function(_, Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmedia
     TP.Logger = Logger;
 
     TP.utils = utilities;
+
+    TP.analytics = analytics;
 
     return TP;
 });

@@ -50,7 +50,7 @@ function (_, TP)
         {
             theMarsApp.showController(theMarsApp.controllers.loginController);
 
-            ga("send", "pageview", { page: "login" });
+            TP.analytics("send", "pageview", { page: "login" });
         },
 
         home: function ()
@@ -58,7 +58,7 @@ function (_, TP)
             this.checkAuth();
             theMarsApp.showController(theMarsApp.controllers.homeController);
 
-            ga("send", "pageview", { page: "home" });
+            TP.analytics("send", "pageview", { page: "home" });
         },
 
         calendar: function (athleteId)
@@ -79,7 +79,7 @@ function (_, TP)
                 theMarsApp.showController(theMarsApp.controllers.calendarController);
             }
 
-            ga("send", "pageview", { page: "calendar" });
+            TP.analytics("send", "pageview", { page: "calendar" });
         },
 
         dashboard: function()
@@ -87,7 +87,7 @@ function (_, TP)
             this.checkAuth();
             theMarsApp.showController(theMarsApp.controllers.dashboardController);
 
-            ga("send", "pageview", { page: "dashboard" });
+            TP.analytics("send", "pageview", { page: "dashboard" });
         },
 
         
