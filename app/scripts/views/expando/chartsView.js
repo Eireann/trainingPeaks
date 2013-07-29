@@ -73,24 +73,30 @@ function (TP, timeInZonesGenerator, ThePeaksGenerator, HRTimeInZonesChartView, P
             _.each(this.getZoneChartViewsByMetricName(workoutTypeValueId), function (ChartView, metric)
             {
                 var timeInZones = timeInZonesGenerator(metric, this.zoneSettingNameByMetricName[metric], this.model.get("details"), this.model);
-                var el = this.$el.find(this.elByMetricName[metric] + " > .timeInZonesChartContainer");
-                var view = new ChartView({ timeInZones: timeInZones, el: el });
-                el.css("height", "233px");
-                el.css("width", "400px");
-                view.render();
-                this.viewListensForResize(view);
+                if(timeInZones)
+                {
+                    var el = this.$el.find(this.elByMetricName[metric] + " > .timeInZonesChartContainer");
+                    var view = new ChartView({ timeInZones: timeInZones, el: el });
+                    el.css("height", "233px");
+                    el.css("width", "400px");
+                    view.render();
+                    this.viewListensForResize(view);
+                }
             }, this);
 
             _.each(this.getPeaksChartViewsByMetricName(workoutTypeValueId), function (ChartView, metric)
             {
                 var timeInZones = timeInZonesGenerator(metric, this.zoneSettingNameByMetricName[metric], this.model.get("details"), this.model);
-                var peaks = ThePeaksGenerator.generate(metric, this.model.get("details"));
-                var el = this.$el.find(this.elByMetricName[metric] + " > .peaksChartContainer");
-                var view = new ChartView({ peaks: peaks, timeInZones: timeInZones, el: el });
-                el.css("height", "233px");
-                el.css("width", "400px");
-                view.render();
-                this.viewListensForResize(view);
+                if(timeInZones)
+                {
+                    var peaks = ThePeaksGenerator.generate(metric, this.model.get("details"));
+                    var el = this.$el.find(this.elByMetricName[metric] + " > .peaksChartContainer");
+                    var view = new ChartView({ peaks: peaks, timeInZones: timeInZones, el: el });
+                    el.css("height", "233px");
+                    el.css("width", "400px");
+                    view.render();
+                    this.viewListensForResize(view);
+                }
             }, this);
 
             this.watchForControllerEvents();

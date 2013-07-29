@@ -148,10 +148,13 @@ function(
             if (this.plot)
                 this.unbindPlotEvents();
 
-            this.plot = $.plot(this.$plot, enabledSeries, this.flotOptions);
-            this.bindToPlotEvents();
+            if($.plot)
+            {
+                this.plot = $.plot(this.$plot, enabledSeries, this.flotOptions);
+                this.bindToPlotEvents();
+                this.highlightOrZoomToPreviousSelection();
+            }
 
-            this.highlightOrZoomToPreviousSelection();
 
             this.setInitialToolbarSmoothing(this.lastFilterPeriod);
         },
