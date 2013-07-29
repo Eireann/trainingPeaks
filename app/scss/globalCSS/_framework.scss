@@ -259,6 +259,14 @@
 
 }
 
+
+
+
+
+
+
+
+
 @media print {
     .frameworkHeader {
         min-height: 64px;
@@ -270,17 +278,14 @@
     {
         @include grid-row();
         background-color: white;
-       // max-width: none;
-       width:100%;
+        width:100%;
     }
 
     .frameworkTitle
     {
         width: 265px;
         float: left;
-        padding-left: 65px;
-        //padding-top: 13px;
-        margin-top: 5px;
+        padding-left: 15px;
         @include labels($fontFamilyRegular, $fontSizeHeader, $TPBlue, normal);
         label
         {
@@ -295,27 +300,21 @@
     }
 
     .frameworkHeaderView {
-            &.withAds
-            {
-                .frameworkTitle
-                {
+            &.withAds {
+                .frameworkTitle {
                     margin-top: 30px;
                 }
-
-            
             }
 
             .navigation {
                 display:none;
             }
 
-            #athleteCalendarSelectSelectBoxIt
-            {
+            #athleteCalendarSelectSelectBoxIt {
                 width: 200px !important;
             }
 
-            #affiliateBanner
-            {
+            #affiliateBanner {
                 margin-left: 100px;
                 margin-bottom: 15px;
                 margin-top: 10px;
@@ -329,43 +328,22 @@
     .frameworkScrollableContainer {
         width:100% !important;
         @include grid-column(15);
-        // padding: 0 2px;
         background-color: $white;
         overflow-x: auto;
-        border:1px solid red;
 
-        // @include calc(width, "100% - 45px"); 
-
-        .scrollHeader
-        {
+        .scrollHeader {
             @include grid-row();
             @include calc(width, "100%"); 
-            // background-color: $TPGrey1;
             height: 27px;
             padding-top: 7px;
             padding-right: 12px;
             margin-left: 0px;
-            border: $TPGrey2;
-            border-style: solid;
-            border-width: 1px;
             position: relative;
-        //    z-index: 1;
-        //    cursor: default;
-            
             width:100%;
-
         }
 
-        .scrollable
-        {
-        //    background-color: $TPGrey1;
-        //    overflow-y: scroll;
-            // @include nice-scrollbar;
-            border-left: solid;
-            border-left-width: 1px;
-            border-left-color: $TPGrey2;
-            width:100%;
-
+        .scrollable {
+        
         }
 
     }
