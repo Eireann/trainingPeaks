@@ -172,11 +172,19 @@
         // so it inherits the height of it's floated children
         overflow: hidden;
 
+        .removePlan
+        {
+            float: left;
+            margin-left: 20px;
+            color: $TPBlue;
+            padding: 0px;
+            cursor: pointer;
+        }
+
         .appliedDates
         {
             float: left;
-            width: 130px;
-            padding-top: 5px;
+            margin-left: 15px;
         }
 
         .alterAppliedPlan

@@ -64,30 +64,8 @@
                 <div class="appliedPlansContainer">
                     {{# each planApplications }}
                         <div data-appliedplanid="{{ appliedPlanId }}" class="appliedPlan">
-                            {{#comment}}<input type="radio" name="appliedPlan" value="{{ appliedPlanId }}" />{{/comment}}
                             <span class="appliedDates small">{{ formatDate startDate "MM/DD/YYYY" }} - {{ formatDate endDate "MM/DD/YYYY" }}</span>
-                            <label class="removePlan">{{$ "Remove" }}</label>
-                            {{#comment }}
-                            <select class="alterAppliedPlan">
-                                <option value="select">{{$ "Select" }}</option>
-                                <option value="move">{{$ "Move" }}</option>
-                                <option value="unapply">{{$ "Unapply" }}</option>
-                            </select>
-                            {{/comment}}
-                            {{#comment}}
-                            <div class="startEndPlan optionsDisabled">
-                                <select class="applyDateType">
-                                    <option value="1">{{$ "Start" }}</option>
-                                    <option value="3">{{$ "End" }}</option>
-                                    {{#if eventPlan }}
-                                        <option value="2">{{$ "EndOnEventDate" }}</option>
-                                    {{/if}}
-                                </select>
-                                <span class="small on">{{$ "on" }}</span>
-                                <input type="text" class="applyDate" class="datepicker" value="{{ formatDate applyDate "MM/DD/YYYY" }}">
-                                <button class="apply">{{$ "Move" }}</button>
-                            </div>
-                            {{/comment}}
+                            <span class="removePlan small">{{$ "Remove" }}</span>
                         </div>
                     {{/each}}
                 </div>

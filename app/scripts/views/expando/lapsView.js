@@ -502,20 +502,11 @@ function(
 
         watchForControllerEvents: function()
         {
-            this.on("controller:resize", this.setViewHeight, this);
             this.on("controller:unselectall", this.onUnSelectAll, this);
             this.on("close", function()
             {
-                this.off("controller:resize", this.setViewHeight, this);
                 this.off("controller:unselectall", this.onUnSelectAll, this);
             }, this);
-        },
-
-        setViewHeight: function(containerHeight, containerWidth)
-        {
-            // assumes that stats view resizes before laps view, because of their ordering in the expandoController
-            //this.$el.parent().css("max-height", containerHeight / 2);
-            this.$el.parent().height(containerHeight - $("#expandoStatsRegion").outerHeight());
         },
 
         getEnabledPeaks: function(selectedPeakType)
