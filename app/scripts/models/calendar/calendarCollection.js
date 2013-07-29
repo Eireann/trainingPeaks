@@ -170,7 +170,7 @@ function(
 
             this.requestWorkouts(this.startDate, rangeEndDate);
 
-            return models;
+            return models.reverse();
         },
 
         appendWeek: function(startDate)

@@ -15,7 +15,8 @@ function(
 
             this._bindSourceCollectionEvents();
 
-            this._setupCurrentRange(options.firstModel);
+            // QL: Rename firstModel to ?
+            this.centerOnModel(options.firstModel);
         },
 
         fetchPrevious: function(numberToFetch)
@@ -60,6 +61,13 @@ function(
             this._limitSize({dropFrom: "beginning"});
         },
 
+        centerOnModel: function(model)
+        {
+            this.reset(model);
+            this.fetchNext(Math.ceil(this.maxSize / 2));
+            this._ensureSize({fetchFrom: "beginning"});
+        },
+
         _bindSourceCollectionEvents: function()
         {
             this.listenTo(this.sourceCollection, 'add', _.bind(this._onSourceAdd, this));
@@ -94,16 +102,6 @@ function(
             this.remove(model);
 
             this._ensureSize({fetchFrom: isPastHalfPoint ? "end" : "beginning"});
-        },
-
-        _setupCurrentRange: function(firstModel)
-        {
-            var begin = this.sourceCollection.indexOf(firstModel);
-            if (begin < 0) begin = 0;
-            var currentModels = this.sourceCollection.models.slice(begin, begin + this.maxSize);
-            this.set(currentModels);
-            // if passed in collection is smaller than our maxSize
-            this._ensureSize({fetchFrom: "end"});
         },
 
         _limitSize: function(options)
@@ -146,6 +144,8 @@ function(
     var ScrollableCollectionView = TP.CollectionView.extend({
         constructor: function(options)
         {
+            options.firstModel = options.firstModel || options.collection.last();
+
             options.collection = new ScrollableCollectionViewAdapterCollection(null, options);
 
             TP.CollectionView.prototype.constructor.apply(this, arguments);
@@ -160,6 +160,22 @@ function(
             this.$el.on('scroll', _.bind(this.onScroll, this));
 
             this.scrollAnchorCount = 0;
+
+            this.once('show', function()
+            {
+                this.scrollToModel(options.firstModel);
+            });
+        },
+
+        scrollToModel: function(model, duration)
+        {
+            var view = this.children.findByModel(model);
+            if(!view) {
+                this.collection.centerOnModel(model);
+                view = this.children.findByModel(model);
+            }
+
+            this.$el.animate({scrollTop: view.$el.position().top}, duration || 100);
         },
 
         _stashScrollPosition: function()
