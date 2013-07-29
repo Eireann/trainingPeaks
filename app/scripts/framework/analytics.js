@@ -4,7 +4,7 @@ function ()
 {
     return function ()
     {
-        if (ga !== "undefined" && typeof ga === "function")
-            ga.apply(this, arguments);
+        if (window.ga !== "undefined" && typeof window.ga === "function")
+            window.ga.apply(this, arguments);
     };
 });
