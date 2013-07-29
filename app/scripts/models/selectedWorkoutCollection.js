@@ -1,60 +1,69 @@
 ﻿define(
 [
-    "TP"
+    "underscore",
+    "TP",
+    "./commands/deleteWorkouts"
 ],
-function (TP)
+function (_, TP, DeleteWorkoutsCommand)
 {
-    var WorkoutDeleteModel = TP.Model.extend(
+    var _deleteWorkouts = function(workouts)
+    {
+        if (!workouts || !workouts.length)
         {
-            defaults:
-            {
-                workoutIdList: null
-            },
-            
-            url: function ()
-            {
-                var athleteId = theMarsApp.user.getCurrentAthleteId();
-                return theMarsApp.apiRoot + "/fitness/v1/athletes/" + athleteId + "/workouts/" + this.get("workoutIdList");
-            },
-            
-            isNew: function () { return false; }
+            return;
         }
-    );
+        var workoutsAwaitingDelete = [];
+        var workoutIds = [];
+        _.each(workouts, function(item)
+        {
+            workoutsAwaitingDelete.push(item);
+            workoutIds.push(item.id);
+            // trigger a spinner on the workout
+            item.trigger('request', item, item.collection);
+        });
+
+        var deleteCommand = new DeleteWorkoutsCommand({ workoutIds: workoutIds });
+
+        deleteCommand.execute().done(
+            // removes from all collections and views
+            function()
+            {
+                _.each(workoutsAwaitingDelete, function(item, index)
+                {
+                    item.trigger('destroy', item, item.collection);
+                });
+            }
+        ).error(
+            // turns off throbbers
+             function()
+             {
+                 _.each(workoutsAwaitingDelete, function(item, index)
+                 {
+                     item.trigger('error', item, item.collection);
+                 });
+             }
+        );
+    };
+
     return TP.Collection.extend(
     {
         model: TP.Model,
-        
-        getWorkoutsList: function()
-        {
-            var workoutIds = [];
-            this.each(function (item, index)
-            {
-                workoutIds.push(item.id);
-            });
 
-            return workoutIds.join(',');
-        },
-        
-        deleteWorkouts: function()
+        deleteSelectedWorkouts: function()
         {
-            var deleteModel = new WorkoutDeleteModel({ workoutIdList: this.getWorkoutsList() });
-
-            var trackingList = [];
-            this.each(function (item, index)
+            var maxWorkoutsPerBatch = 100;
+            var workouts = [];
+            this.each(function(item)
             {
-                trackingList.push(item);
-                item.trigger('request', item, item.collection);
-            });
-            
-            deleteModel.destroy({
-                success: function()
+                workouts.push(item);
+                if(workouts.length >= maxWorkoutsPerBatch)
                 {
-                    _.each(trackingList, function(item, index)
-                    {
-                        item.trigger('destroy', item, item.collection);
-                    });
+                    _deleteWorkouts(workouts);
+                    workouts = [];
                 }
             });
+            _deleteWorkouts(workouts);
         }
+
     });
 });

@@ -25,7 +25,6 @@ function(
         {
             this.on("controller:rangeselected", this.onRangeSelected, this);
             this.on("controller:unselectall", this.onUnSelectAll, this);
-            this.watchForControllerResize();
         },
 
         onRender: function()
@@ -36,8 +35,9 @@ function(
         serializeData: function()
         {
             var lapData = this.getLapData();
+            lapData = this.mapToMasterFieldSet(lapData);
             expandoCommon.calculateTotalAndMovingTime(lapData);
-            this.findAvailableMinMaxAvgFields(lapData);
+            this.findAvailableMinMaxAvgFieldsInThisLap(lapData);
             this.addCommonWorkoutFields(lapData);
             return lapData;
         },
@@ -55,6 +55,57 @@ function(
                 lapData.name = "Entire Workout";
                 return lapData;
             }
+        },
+
+        mapToMasterFieldSet: function(lapData)
+        {
+            // master is the list of all fields on the entire workout or individual laps that contain some data
+            var masterFieldSet = this.getAllFieldsThatHaveValues();
+
+            // pruned fields = all master fields plus any fields in lapData that have a value
+            var prunedFields = _.extend({}, masterFieldSet);
+            _.each(_.keys(lapData), function(key)
+            {
+                if(this.hasValueForKey(lapData, key))
+                {
+                    prunedFields[key] = lapData[key];
+                }
+            }, this);
+
+            return prunedFields;
+        },
+
+        getAllFieldsThatHaveValues: function()
+        {
+            if(!this.allPossibleFields)
+            {
+                var allPossibleFields = {};
+
+                // put all of our possible stats objects into an array
+                var allStats = [];
+                allStats.push(this.model.get("detailData").get("totalStats"));
+                _.each(this.model.get("detailData").get("lapsStats"), function(lapStats)
+                {
+                    allStats.push(lapStats); 
+                });
+
+                // if the stats for any lap has a value for any field, put that field into the master set
+                _.each(allStats, function(stats)
+                {
+                    _.each(_.keys(stats), function(key){
+                        if(!allPossibleFields.hasOwnProperty(key) && this.hasValueForKey(stats, key))
+                        {
+                            allPossibleFields[key] = null;
+                        }
+                    }, this);
+                }, this);
+             
+                // add minMaxAvg fields 
+                this.findAvailableMinMaxAvgFieldsInAnyLap(allPossibleFields);
+
+                this.allPossibleFields = allPossibleFields;
+            }
+            return this.allPossibleFields;
         },
         
         onRangeSelected: function (workoutStatsForRange, options, triggeringView)
@@ -108,9 +159,8 @@ function(
             this.onWaitStop();
         },
 
-        findAvailableMinMaxAvgFields: function(lapData)
+        findAvailableMinMaxAvgFieldsInThisLap: function(lapData)
         {
-            lapData.minMaxAvg = false;
 
             if (this.hasAnyNonZeroValue(lapData, ["minimumPower", "averagePower", "maximumPower"]))
                 lapData.minMaxPower = lapData.minMaxAvg = true;
@@ -134,14 +184,55 @@ function(
                 lapData.minMaxTorque = lapData.minMaxAvg = true;
         },
 
+        findAvailableMinMaxAvgFieldsInAnyLap: function(lapData)
+        {
+            lapData.minMaxAvg = false;
+
+            if (this.hasAnyKey(lapData, ["minimumPower", "averagePower", "maximumPower"]))
+                lapData.minMaxPower = lapData.minMaxAvg = true;
+
+            if (this.hasAnyKey(lapData, ["minimumSpeed", "averageSpeed", "maximumSpeed"]))
+                lapData.minMaxSpeed = lapData.minMaxAvg = true;
+
+            if (this.hasAnyKey(lapData, ["minimumHeartRate", "averageHeartRate", "maximumHeartRate"]))
+                lapData.minMaxHeartRate = lapData.minMaxAvg = true;
+
+            if (this.hasAnyKey(lapData, ["minimumCadence", "averageCadence", "maximumCadence"]))
+                lapData.minMaxCadence = lapData.minMaxAvg = true;
+
+            if (this.hasAnyKey(lapData, ["minimumElevation", "averageElevation", "maximumElevation"]))
+                lapData.minMaxElevation = lapData.minMaxAvg = true;
+
+            if (this.hasAnyKey(lapData, ["minimumTemp", "averageTemp", "maximumTemp"]))
+                lapData.minMaxTemp = lapData.minMaxAvg = true;
+
+            if (this.hasAnyKey(lapData, ["minimumTorque", "averageTorque", "maximumTorque"]))
+                lapData.minMaxTorque = lapData.minMaxAvg = true;
+        },
+
+        hasAnyKey: function(context, keys)
+        {
+            var keyInContext = _.find(keys, function(key)
+            {
+                return context.hasOwnProperty(key);
+            });
+
+            return keyInContext ? true : false;
+        },
+
         hasAnyValue: function(context, keys)
         {
             var keyWithAValue = _.find(keys, function(key)
             {
-                return !_.isUndefined(context[key]) && !_.isNull(context[key]);
-            });
+                return this.hasValueForKey(context, key);
+            }, this);
 
             return keyWithAValue ? true : false;
+        },
+
+        hasValueForKey: function(context, key)
+        {
+            return !_.isUndefined(context[key]) && !_.isNull(context[key]);
         },
 
         hasAnyNonZeroValue: function(context, keys)
@@ -152,22 +243,6 @@ function(
             });
 
             return keyWithAValue ? true : false;
-        },
-
-        watchForControllerResize: function()
-        {
-            this.on("controller:resize", this.setViewHeight, this);
-            this.on("close", function()
-            {
-                this.off("controller:resize", this.setViewHeight, this);
-            }, this);
-        },
-
-        setViewHeight: function(containerHeight)
-        {
-            // assumes that stats view resizes before laps view, because of their ordering in the expandoController
-            //this.$el.parent().height(this.$el.outerHeight() + 10);
-            this.$el.parent().css("min-height", containerHeight / 2);
         },
 
         onWaitStart: function()

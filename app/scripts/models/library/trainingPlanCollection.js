@@ -12,7 +12,7 @@ function(TP, TrainingPlanModel)
 
         url: function()
         {
-            return theMarsApp.apiRoot + "/plans/v1/athletes/" + theMarsApp.user.getCurrentAthleteId();
+            return theMarsApp.apiRoot + "/plans/v1/athletes/" + theMarsApp.user.getCurrentAthleteId() + "/plans";
         },
 
         comparator: function(item)

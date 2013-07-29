@@ -374,9 +374,9 @@ function(
             this.showDate(moment());
         },
 
-        onRequestRefresh: function(currentWeekModel)
+        onRequestRefresh: function(date, callback)
         {
-            var dateAsMoment = currentWeekModel ? moment(currentWeekModel.get("date")) : moment();
+            var dateAsMoment = date ? moment(date) : moment();
 
             if (dateAsMoment.day() !== this.startOfWeekDayIndex)
             {
@@ -396,7 +396,7 @@ function(
             var calendarView = this.views.calendar;
             setImmediate(function ()
             {
-                calendarView.scrollToDate(dateAsMoment);
+                calendarView.scrollToDate(dateAsMoment, undefined, callback);
             });
         },
 

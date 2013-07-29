@@ -39,7 +39,7 @@ function (_, TP)
            // this.checkCurrentScrollPosition();
        },
 
-       checkCurrentScrollPosition: function ()
+       checkCurrentScrollPosition: function()
        {
            this.trigger("scroll:updatePosition", this.getCurrentVisibleElement());
        },

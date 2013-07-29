@@ -349,6 +349,9 @@ function(
 
         // where to find assets dynamically
         this.assetsRoot = apiConfig.assetsRoot ? apiConfig.assetsRoot : 'assets/';
+
+        // make apiConfig available
+        this.apiConfig = apiConfig;
     };
 
     theApp.touchEnabled = false;

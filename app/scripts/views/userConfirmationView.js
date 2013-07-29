@@ -27,6 +27,7 @@ function (TP)
         initialize: function(options)
         {
             this.template.template = options.template;
+            this.options = options;
         },
 
         template:
@@ -36,13 +37,13 @@ function (TP)
 
         onConfirmed: function()
         {
-            this.trigger("userConfirmed");
+            this.trigger("userConfirmed", this.options);
             this.close();
         },
         
         onCancelled: function()
         {
-            this.trigger("userCancelled");
+            this.trigger("userCancelled", this.options);
             this.close();
         }
     });

@@ -71,6 +71,16 @@
             return datetimeUtils.format.decimalHoursAsTime(value, true);
         },
 
+        formatHours: function(value, options)
+        {
+            if (value <= 0 || value === "0")
+            {
+                return options && options.hasOwnProperty("defaultValue") ? options.defaultValue : "";
+            }
+            value = adjustFieldRange(value, "duration");
+            return Math.round(value);
+        },
+
         parseDuration: function(value, options)
         {
             var modelValue = datetimeUtils.convert.timeToDecimalHours(value);

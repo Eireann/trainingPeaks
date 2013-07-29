@@ -146,7 +146,10 @@ function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandMo
             flotOptions.zoom = { enabled: false };
             flotOptions.filter = { enabled: false };
 
-            this.plot = $.plot(this.ui.chart, series, flotOptions);
+            if($.plot)
+            {
+                this.plot = $.plot(this.ui.chart, series, flotOptions);
+            }
         },
 
         buildPlotSeries: function()

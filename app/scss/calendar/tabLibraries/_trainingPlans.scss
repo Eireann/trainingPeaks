@@ -1,36 +1,216 @@
 ﻿@import "globalCSS/tpstylesheet";
 @import "globalCSS/mixIn";
 
-.libraryNavigation 
-{
-    @include labels($fontFamilyRegular, $fontSizeMedium, $TPBlue, normal);
-            
-    label 
-    {
-        display: inline-block;
-        margin: 2px 15px 0 2px;
-    }
-
-     .planSearch
-    {
-        margin-top: 10px;
-        @include inputs(240px, 20px, $fontSizeSmall, $fontFamilyRegular);
-
-        input
-        {
-            margin-bottom: 5px;
-            color: $TPGrey3;
-            padding-left: 5px;
-            margin-left: 2px;
-        }
-    }
-}
-
 .trainingPlanDetails
 {
     .hoverBoxContents
     {
         min-height: 300px;
-        min-width: 300px;
+        max-width: 300px;
     }
+
+
+    .infoResults
+    {
+        height: 15px;
+    }
+
+    .planTitle
+    {
+        margin-top: 30px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .planInfo
+    {
+        .authorInfo
+        {
+            float: left;
+            margin-right: 4px;
+            max-width: 225px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+
+        .planId
+        {
+            float: right;
+        }
+    }
+
+    .planDescription
+    {
+        margin-top: 30px;
+    }
+
+    .planDetails
+    {
+        padding-top: 15px;
+
+        div
+        {
+            float: left;
+            width: 90px;
+        }
+
+        .duration
+        {
+            padding-left: 26px
+        }
+
+        .distance
+        {
+            padding-left: 14px;
+        }
+    }
+
+    .durationDetails
+    {
+        padding-top: 15px;
+
+        .plannedWorkoutTypes
+        {
+            padding: 2px 0 0 5px;
+            height: 16px;
+
+            span
+            {
+                float: left;
+                width: 90px;
+            }
+
+            .duration
+            {
+                padding-left: 24px
+            }
+
+            .distance
+            {
+                padding-left: 12px;
+            }
+        }
+
+        .highlightRow
+        {
+            background-color: $TPGrey2;
+        }
+    }
+
+    
+    .applyPlan
+    {
+        margin-top: 15px;
+    }
+    
+
+    .startEndPlan
+    {
+
+        clear: both;
+
+        // so it inherits the height of it's floated children
+        overflow: hidden;
+
+        margin-top: 5px;
+        width: 100%;
+        span
+        {   
+            float: left;
+        }
+
+        .on
+        {
+            padding: 4px 5px 0 5px;
+        }
+        #applyDateType
+        {
+            width: 100px;
+            float:left;
+        }
+
+        #applyDate
+        {
+            width: 70px;
+            padding: 0;
+            height: 22px;
+            float: left;
+            padding-left: 2px;
+        }
+
+        button.apply
+        {
+            display: block;
+            float: left;
+            height: 22px;
+            margin-left: 15px;
+            width: 50px;
+        }
+    }
+
+    .appliedPlansContainer
+    {
+        border: 1px $TPGrey2 solid;
+        margin-top: 5px;
+        padding-top: 10px;
+
+        
+    }
+    .appliedPlans
+    {
+        margin-top: 5px;
+        
+    }
+
+    .appliedPlan
+    {
+        margin-bottom: 10px;
+
+        // so it inherits the height of it's floated children
+        overflow: hidden;
+
+        .removePlan
+        {
+            float: left;
+            margin-left: 20px;
+            color: $TPBlue;
+            padding: 0px;
+            cursor: pointer;
+        }
+
+        .appliedDates
+        {
+            float: left;
+            margin-left: 15px;
+        }
+
+        .alterAppliedPlan
+        {
+            float: right;
+            width: 100px;
+            margin-right: 10px;
+        }
+
+        .startEndPlan
+        {
+            &.optionsDisabled
+            {
+                display: none;
+            }
+        }
+    }
+
+    .selectboxit-container .selectboxit 
+    {
+        width: 100px !important;
+    }
+
+    input[type=radio] 
+    {
+        float: left;
+        margin: 4px 5px 0 5px;
+    }  
 }

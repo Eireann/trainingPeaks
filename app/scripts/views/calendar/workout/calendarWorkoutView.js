@@ -249,6 +249,16 @@ function(
         workoutSelected: function()
         {
             this.model.trigger("select", this.model);
+        },
+
+        waitingOn: function()
+        {
+            this.$(".workoutDiv").addClass("waiting");
+        },
+
+        waitingOff: function()
+        {
+            this.$(".workoutDiv").removeClass("waiting");
         }
 
     };
