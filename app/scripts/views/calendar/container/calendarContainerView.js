@@ -163,16 +163,16 @@ function(
         addWeeksOnRender: function()
         {
             return;
-            var numWeeks = this.collection.length;
-            var i = 0;
+            // var numWeeks = this.collection.length;
+            // var i = 0;
 
-            for (; i < numWeeks; i++)
-            {
-                var weekModel = this.collection.at(i);
-                this.addWeek({ model: weekModel, collection: weekModel.get("week"), append: true });
-            }
+            // for (; i < numWeeks; i++)
+            // {
+            //     var weekModel = this.collection.at(i);
+            //     this.addWeek({ model: weekModel, collection: weekModel.get("week"), append: true });
+            // }
 
-            this.resizeContainer();
+            // this.resizeContainer();
         },
 
         // onShow happens after render finishes and dom has updated ...

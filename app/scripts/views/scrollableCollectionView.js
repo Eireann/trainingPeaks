@@ -11,7 +11,7 @@ function(
         initialize: function(models, options)
         {
             this.sourceCollection = options.collection;
-            this.maxSize = options.maxSize || 10;
+            this.maxSize = options.maxSize || 25;
 
             this._bindSourceCollectionEvents();
 
@@ -40,7 +40,7 @@ function(
 
         fetchNext: function(numberToFetch)
         {
-            var sourceEndIndex = this.sourceCollection.indexOf(this.at(0)) + this.length;
+            var sourceEndIndex = this.sourceCollection.indexOf(this.last()) + 1;
             // If availableModels is less than numberToFetch, we only pull from the source collection
             // otherwise we pull as much as we can from the source collection before fetching more
             var availableModels = this.sourceCollection.length - sourceEndIndex;
@@ -150,14 +150,12 @@ function(
 
             TP.CollectionView.prototype.constructor.apply(this, arguments);
 
-            this.scrollThreshold = options.scrollThreshold || 500;
+            this.scrollThreshold = options.scrollThreshold || 1000;
             if (options.batchSize > this.collection.maxSize) options.batchSize = null;
-            this.batchSize = options.batchSize || this.collection.maxSize / 2;
+            this.batchSize = Math.ceil(options.batchSize || this.collection.maxSize / 4);
 
-            this.batchSize = 1;
-
-            this.on('before:item:added before:item:removed itemview:before:resize', _.bind(this._stashScrollPosition, this));
-            this.on('after:item:added after:item:removed itemview:after:resize', _.bind(this._applyScrollPosition, this));
+            this.on('before:item:added before:item:removed itemview:before:render itemview:before:resize', _.bind(this._stashScrollPosition, this));
+            this.on('after:item:added after:item:removed itemview:render itemview:after:resize', _.bind(this._applyScrollPosition, this));
 
             this.$el.on('scroll', _.bind(this.onScroll, this));
 
@@ -218,12 +216,19 @@ function(
             // QL: Throttle fetchPrevious/fetchNext
             var scrollTop = this.$el.scrollTop();
             var scrollBottom = scrollTop + this.$el.height();
-            var scrollHeight = this.$el.prop('scrollHeight')
+            var scrollHeight = this.$el.prop('scrollHeight');
+           
+            if(scrollTop < this.scrollThreshold) this._fetchMore('top');
+            else if(scrollHeight - scrollBottom < this.scrollThreshold) this._fetchMore('bottom');
+        },
 
-            if(scrollTop < this.scrollThreshold) this.collection.fetchPrevious(this.batchSize);
-            else if(scrollHeight - scrollBottom < this.scrollThreshold) this.collection.fetchNext(this.batchSize);
+        _fetchMore: function(edge)
+        {
+            this._stashScrollPosition();
+            if(edge === "top") this.collection.fetchPrevious(this.batchSize);
+            else this.collection.fetchNext(this.batchSize);
+            this._applyScrollPosition();
         }
-
     });
 
     ScrollableCollectionView.ScrollableCollectionViewAdapterCollection = ScrollableCollectionViewAdapterCollection;

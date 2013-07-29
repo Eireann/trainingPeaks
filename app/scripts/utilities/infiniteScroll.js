@@ -22,21 +22,21 @@ function (_, TP)
        setupScrollingOnRender: function ()
        {
           return;
-           _.bindAll(this, "onScrollStop");
-           this.scrollableContainer = this.$(".scrollable");
-           var debouncedScrollStop = _.debounce(this.onScrollStop, 300);
-           this.scrollableContainer.on("scroll", debouncedScrollStop);
+           // _.bindAll(this, "onScrollStop");
+           // this.scrollableContainer = this.$(".scrollable");
+           // var debouncedScrollStop = _.debounce(this.onScrollStop, 300);
+           // this.scrollableContainer.on("scroll", debouncedScrollStop);
 
-           this.on("close", function ()
-           {
-               this.scrollableContainer.off("scroll", debouncedScrollStop);
-               this.scrollableContainer.off("scroll", this.onScroll);
-           }, this);
+           // this.on("close", function ()
+           // {
+           //     this.scrollableContainer.off("scroll", debouncedScrollStop);
+           //     this.scrollableContainer.off("scroll", this.onScroll);
+           // }, this);
 
-           _.bindAll(this, "onScroll");
-           this.scrollableContainer.on("scroll", this.onScroll);
+           // _.bindAll(this, "onScroll");
+           // this.scrollableContainer.on("scroll", this.onScroll);
 
-           this.checkCurrentScrollPosition();
+           // this.checkCurrentScrollPosition();
        },
 
        checkCurrentScrollPosition: function ()
@@ -105,51 +105,51 @@ function (_, TP)
        {
           return;
 
-            var $element = $(element);
-            if (snapToSelector)
-            {
-                if(!$element.is(snapToSelector))
-                {
-                    $element = $element.closest(snapToSelector);
-                }
+            // var $element = $(element);
+            // if (snapToSelector)
+            // {
+            //     if(!$element.is(snapToSelector))
+            //     {
+            //         $element = $element.closest(snapToSelector);
+            //     }
 
-                if(!$element.is(snapToSelector))
-                {
-                    return;
-                }
-            }
-
-
-            var requestedElementOffsetFromContainer = $element.position().top;
-            var scrollToOffset = Math.round(this.scrollableContainer.scrollTop() + requestedElementOffsetFromContainer - this.scrollableContainer.position().top);
+            //     if(!$element.is(snapToSelector))
+            //     {
+            //         return;
+            //     }
+            // }
 
 
-            if (typeof animationTimeout === "undefined" && requestedElementOffsetFromContainer < 300)
-            {
-                animationTimeout = 500;
-            }
-            else if (typeof animationTimeout === "undefined" && requestedElementOffsetFromContainer > 1500)
-            {
-                animationTimeout = 2000;
-            }
+            // var requestedElementOffsetFromContainer = $element.position().top;
+            // var scrollToOffset = Math.round(this.scrollableContainer.scrollTop() + requestedElementOffsetFromContainer - this.scrollableContainer.position().top);
 
-            var self = this;
 
-            if (animationTimeout)
-            {
-                this.scrollableContainer.animate(
-                    {
-                        scrollTop: scrollToOffset
-                    }, animationTimeout, function() { self.checkCurrentScrollPosition(); if (callback) { callback(); } });
-            } else
-            {
-                this.scrollableContainer.scrollTop(scrollToOffset);
-                this.checkCurrentScrollPosition();
-                if(callback)
-                {
-                    callback();
-                }
-            }
+            // if (typeof animationTimeout === "undefined" && requestedElementOffsetFromContainer < 300)
+            // {
+            //     animationTimeout = 500;
+            // }
+            // else if (typeof animationTimeout === "undefined" && requestedElementOffsetFromContainer > 1500)
+            // {
+            //     animationTimeout = 2000;
+            // }
+
+            // var self = this;
+
+            // if (animationTimeout)
+            // {
+            //     this.scrollableContainer.animate(
+            //         {
+            //             scrollTop: scrollToOffset
+            //         }, animationTimeout, function() { self.checkCurrentScrollPosition(); if (callback) { callback(); } });
+            // } else
+            // {
+            //     this.scrollableContainer.scrollTop(scrollToOffset);
+            //     this.checkCurrentScrollPosition();
+            //     if(callback)
+            //     {
+            //         callback();
+            //     }
+            // }
        }
 
    };
