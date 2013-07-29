@@ -124,7 +124,7 @@ function(
                 {
                     expect($body.find(".workoutQuickView #expandoLapsRegion").length).toBe(1);
                     expect($body.find(".workoutQuickView #expandoLapsRegion").text()).toContain("Entire Workout");
-                    expect($body.find(".workoutQuickView #expandoLapsRegion").text()).toContain("Lap #1")
+                    expect($body.find(".workoutQuickView #expandoLapsRegion").text()).toContain("Lap #1");
                 });
 
             });
@@ -173,7 +173,7 @@ function(
                     expect(expandoStatsText).toContain("TSS 473");
                     expect(expandoStatsText).not.toContain("Work --");
 
-                    expect(expandoStatsText).not.toContain("Lap #1")
+                    expect(expandoStatsText).not.toContain("Lap #1");
                     expect(expandoStatsText).not.toContain("TSS --");
 
                     $body.find(".workoutQuickView #expandoLapsRegion .lap span:first").trigger("click");
@@ -183,7 +183,7 @@ function(
                     expect(expandoStatsText).not.toContain("TSS 473");
                     expect(expandoStatsText).not.toContain("Work --");
 
-                    expect(expandoStatsText).toContain("Lap #1")
+                    expect(expandoStatsText).toContain("Lap #1");
                     expect(expandoStatsText).toContain("TSS --");
                 });
 
