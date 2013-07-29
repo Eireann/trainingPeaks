@@ -128,6 +128,66 @@ function(
                 });
 
             });
+
+            it("Should display stats if they have values, or -- if they are in the master set but have no values", function()
+            {
+
+                // open the qv
+                runs(function()
+                {
+                    $mainRegion.find("#calendarContainer .day.today .workout").trigger("mouseup");
+                });
+
+                // wait for detail data reqeust
+                waitsFor(function()
+                {
+                    return testHelpers.hasRequest("GET", "detaildata");
+                }, "Detail Data was never requested", 5000);
+                
+                runs(function()
+                {
+                    // load detaildata
+                    testHelpers.resolveRequest("GET", "detaildata", detailData);
+
+                    // click to expand
+                    $body.find(".workoutQuickView .expandButton").trigger("click");
+                });
+
+                // wait for expansion
+                waitsFor(function()
+                {
+                    return $body.find(".workoutQuickView.expanded").length === 1;
+                }, "Expando was never expanded", 5000);
+
+                // wait for Stats
+                waitsFor(function()
+                {
+                    return $body.find(".workoutQuickView #expandoStatsRegion").length === 1;
+                }, "Stats region was never rendered", 5000);
+
+                runs(function()
+                {
+                    var expandoStatsText = $body.find(".workoutQuickView #expandoStatsRegion").text().replace(/\n|\r/g," ").replace(/ +/g," ");
+                    expect($body.find(".workoutQuickView #expandoStatsRegion").length).toBe(1);
+                    expect(expandoStatsText).toContain("Entire Workout");
+                    expect(expandoStatsText).toContain("TSS 473");
+                    expect(expandoStatsText).not.toContain("Work --");
+
+                    expect(expandoStatsText).not.toContain("Lap #1")
+                    expect(expandoStatsText).not.toContain("TSS --");
+
+                    $body.find(".workoutQuickView #expandoLapsRegion .lap span:first").trigger("click");
+                    expandoStatsText = $body.find(".workoutQuickView #expandoStatsRegion").text().replace(/\n|\r/g," ").replace(/ +/g," ");
+
+                    expect(expandoStatsText).not.toContain("Entire Workout");
+                    expect(expandoStatsText).not.toContain("TSS 473");
+                    expect(expandoStatsText).not.toContain("Work --");
+
+                    expect(expandoStatsText).toContain("Lap #1")
+                    expect(expandoStatsText).toContain("TSS --");
+                });
+
+            });
         });
 
     });
