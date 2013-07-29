@@ -15,13 +15,6 @@ function (_, TP, ExpandoController)
 
             this.watchForSensorData();
 
-
-            //TODO Needs some refactor: should be initialized somewhere else?
-            this.expandoRegion = new TP.Region(
-            {
-                el: "#quickViewExpandedContent"    
-            });
-
         },
 
         watchForSensorData: function()
@@ -37,7 +30,9 @@ function (_, TP, ExpandoController)
             if (this.expandoController)
                 this.expandoController.close();
 
-            this.expandoRegion.close();
+            if(this.expandoRegion)
+                this.expandoRegion.close();
+
             this.model.get("detailData").off("changeSensorData", this.updateExpandButton, this);
         },
 
@@ -53,6 +48,13 @@ function (_, TP, ExpandoController)
         {
             if(!this.expandoController)
             {
+
+                //TODO Needs some refactor: should be initialized somewhere else?
+                this.expandoRegion = new TP.Region(
+                {
+                    el: this.$("#quickViewExpandedContent")
+                });
+
                 this.expandoController = new ExpandoController({ model: this.model, workoutModel: this.workoutModel, workoutDetailsModel: this.workoutDetailsModel, prefetchConfig: this.prefetchConfig });
                 this.expandoRegion.show(this.expandoController.getLayout());
             }

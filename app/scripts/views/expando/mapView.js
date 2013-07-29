@@ -11,13 +11,6 @@ function (
     )
 {
 
-    /*
-    TODO:
-    google maps
-    how many markers?
-    mile marker icons
-    */
-
     return TP.ItemView.extend(
     {
         template:
