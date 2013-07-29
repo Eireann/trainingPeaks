@@ -24,6 +24,7 @@ function(CalendarCollection
         // Deprecated
         appendWeekToCalendar: function ()
         {
+            return;
             var startDate = moment(this.endDate).add("days", 1);
             var endDate = moment(startDate).add("days", 6);
             this.endDate = moment(endDate);
@@ -35,6 +36,7 @@ function(CalendarCollection
         // Deprecated
         prependWeekToCalendar: function()
         {
+            return;
             var endDate = moment(this.startDate).subtract("days", 1);
             var startDate = moment(endDate).subtract("days", 6);
             this.startDate = moment(startDate);

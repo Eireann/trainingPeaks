@@ -136,9 +136,8 @@ function(_, touchPunch, draggable, droppable, moment, TP, CalendarWorkoutView, C
 
         setUpDroppable: function()
         {
-            return;
             _.bindAll(this, "onDropItem");
-            this.$el.droppable({ drop: this.onDropItem, tolerance: 'pointer', addClasses: false });
+            this.$el.droppable({ drop: this.onDropItem, tolerance: 'pointer' });
         },
 
         onDropItem: function(event, ui)

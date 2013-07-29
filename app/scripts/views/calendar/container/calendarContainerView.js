@@ -50,7 +50,7 @@ function(
             this.constructor.__super__.initialize.call(this);
 
             //this.initializeScrolling();
-            //this.initializeScrollOnDrag();
+            this.initializeScrollOnDrag();
             this.on("render", this.setupKeyBindingsOnRender, this);
             this.on("render", this.addWeeksOnRender, this);
             this.on("calendar:unselect", this.onCalendarUnSelect, this);
@@ -65,9 +65,18 @@ function(
         
         render: function()
         {
+            var self = this;
+
             PrimaryContainerView.prototype.render.apply(this, arguments);
 
+            this.listenTo(this.weeksCollectionView, 'itemview:render', function(weekView)
+            {
+                weekView.on("itemview:itemDropped", self.onItemDropped, self);
+                weekView.onWaitStart();
+            });
+
             this.weeksCollectionView.render();
+            // this.children.add(this.weeksCollectionView);
             this.$el.append(this.weeksCollectionView.$el);
             this.ui.weeksContainer = this.weeksCollectionView.$el;
         },
