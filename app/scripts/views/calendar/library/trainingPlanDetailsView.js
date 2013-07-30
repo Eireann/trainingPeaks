@@ -1,5 +1,6 @@
 define(
 [
+    "underscore",
     "jqueryui/datepicker",
     "jquerySelectBox",
     "setImmediate",
@@ -13,6 +14,7 @@ define(
     "hbs!templates/views/calendar/library/trainingPlanDetailsView"
 ],
 function(
+    _,
     datepicker,
     jquerySelectBox,
     setImmediate,
@@ -86,15 +88,18 @@ function(
         serializeData: function()
         {
             var data = this.model.toJSON();
-            data.applyable = data.planStatus === TP.utils.trainingPlan.getStatusByName("Purchased") || data.planStatus === TP.utils.trainingPlan.getStatusByName("Applied") ? true : false;
-            data.applied = data.planStatus === TP.utils.trainingPlan.getStatusByName("Applied") ? true : false;
+            data.applyable = _.contains([null, 
+                TP.utils.trainingPlan.getStatusByName("Purchased"),
+                TP.utils.trainingPlan.getStatusByName("Applied")], 
+                data.planStatus);
+
             data.applyDate = moment().day(1).format(this.dateFormat);
             data.details = this.model.details.toJSON();
             data.details.weekcount = Math.ceil(data.details.dayCount / 7);
 
-            if (data.planApplications && !data.planApplications.length)
+            if (data.details.planApplications && !data.details.planApplications.length)
             {
-                data.planApplications = null;
+                data.details.planApplications = null;
             }
 
             var plannedWorkoutTypeDurations = [];
@@ -105,7 +110,7 @@ function(
                     plannedWorkoutTypeDurations.push(workoutTypeDetails);
                 }
             });
-            data.details.plannedWorkoutTypeDurations = plannedWorkoutTypeDurations;
+            data.details.plannedWorkoutTypeDurations = plannedWorkoutTypeDurations.length ? plannedWorkoutTypeDurations : null;
 
             return data;
         },
@@ -189,19 +194,31 @@ function(
 
         alignArrowTo: function($element)
         {
+            // align the top and left of this popup to the target library item
             this.alignedTo = $element;
             this.left($element.offset().left + $element.width() + 15);
             var targetTop = $element.offset().top;
             this.top(targetTop);
 
+            // offset the arrow to line up with middle of target element
+            var arrowOffset = Math.round($element.height() / 2) + 8;
+            var arrowTop = arrowOffset;
+            
+            // if we're too close to the bottom, move the window up 
             var windowHeight = $(window).height();
             if ((this.$el.offset().top + this.$el.height()) >= (windowHeight - 30))
             {
                 this.top(windowHeight - this.$el.height() - 30);
                 var myTop = this.$el.offset().top;
-                var arrowTop = Math.round((targetTop - myTop) + 40);
-                this.$(".arrow").css("top", arrowTop + "px");
+                arrowTop = Math.round((targetTop - myTop) + arrowOffset);
             }
+
+            if(arrowTop > this.$el.height() - 10)
+            {
+                arrowTop = this.$el.height() - 10;
+            }
+                
+            this.$(".arrow").css("top", arrowTop + "px");
         },
 
         onApplyDateTypeChange: function()

@@ -19,10 +19,9 @@ function (TP, TrainingPlanDetailsModel)
 
         defaults:
         {
-            "planId": null,
-            "title": null,
-            "planStatus": null,
-            "planApplications": null
+            planId: null,
+            title: null,
+            planStatus: null
         },
 
         initialize: function()

@@ -37,6 +37,7 @@ function (
         {
             if (this.model.get("details"))
                 this.resolveShortUrl();
+
             this.enableOrDisableSharing();
 
             this.model.on("change", this.enableOrDisableSharing, this);
@@ -51,19 +52,16 @@ function (
 
         onPublicCheckboxClicked: function(e)
         {
+            TP.analytics("send", "event", "quickView", "headerPublicClicked");
+
             if (!TP.utils.workout.determineCompletedWorkout(this.model))
-            {
                 return;
-            }
 
             var checkbox = $(e.target);
             if (checkbox.is(":checked"))
-            {
                 this.model.set("publicSettingValue", PUBLIC);
-            } else
-            {
+            else
                 this.model.set("publicSettingValue", PRIVATE);
-            }
 
             this.model.save();
         },
@@ -108,7 +106,6 @@ function (
         
         getMailSubjectLine: function ()
         {
-            //return TP.utils.workout.types.getNameById(this.model.get("workoutTypeValueId")) + " on " + moment(this.model.get("workoutDay")).format("MM/DD");
             var subject = " has shared a workout with you";
             if (theMarsApp.user.get("firstName"))
             {
@@ -121,9 +118,9 @@ function (
         onTwitterIconClicked: function ()
         {
             if (!this.workoutIsShareable())
-            {
                 return;
-            }
+            
+            TP.analytics("send", "event", "quickView", "headerSharedOnTwitter");
 
             var url = this.getShortenedUrl();
             var text = this.getSharedText();
@@ -140,16 +137,15 @@ function (
         onFacebookIconClicked: function()
         {
             if (!this.workoutIsShareable())
-            {
                 return;
-            }
+
+            TP.analytics("send", "event", "quickView", "headerSharedOnFacebook");
 
             var url = this.getShortenedUrl();
             var urlOverride = theMarsApp.wwwRoot;
             var windowTitle = document.title;
             var descriptionText = this.getSharedText();
             var appID = 103295416394750;
-
             
             var redirectURL = "https://www.facebook.com";
             var pictureURL = "https://s3.amazonaws.com/storage.trainingpeaks.com/assets/images/trainingpeaks-activity-viewer.png";
@@ -168,9 +164,9 @@ function (
         onLinkIconClicked: function(e)
         {
             if (!this.workoutIsShareable() || !this.workoutHasFileData())
-            {
                 return;
-            }
+
+            TP.analytics("send", "event", "quickView", "headerSharedAsLink");
 
             var linkIcon = $(e.target);
             this.shortUrlView = new ShortUrlView({ model: this.shortUrlModel });
@@ -182,7 +178,6 @@ function (
 
         enableOrDisableEmailLink: function()
         {
-
             // this has to be an actual link for the user to click on instead of a window.open, so we just enable or disable the url as needed
             var emailLink = this.$(".emailLink");
 
