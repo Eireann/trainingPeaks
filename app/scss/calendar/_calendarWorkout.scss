@@ -202,6 +202,7 @@
     .workout {
         margin: 5px 4px 4px 2px;
         border:1px solid $TPGrey2;
+        page-break-inside:avoid;
 
         .workoutSettings {
             display: none;

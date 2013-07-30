@@ -272,6 +272,9 @@
         min-height: 64px;
         float:left;
         background-color: $white;
+
+        // hiding this since in many cases the month displayed doesn't match what shows on the calendar
+        display:none;
     }
 
     .frameworkMainWrapper
