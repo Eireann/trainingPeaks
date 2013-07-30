@@ -22,11 +22,10 @@ function(
     shiftWizzardTemplate
     )
 {
-
     var ShiftWizardModel = TP.Model.extend(
     {
-
-        defaults: {
+        defaults:
+        {
             selectionStartDate: "",
             selectionEndDate: "",
             selectItems: "itemsOnAllSelectedDays",
@@ -43,7 +42,8 @@ function(
 
     return TP.ItemView.extend(
     {
-        modal: {
+        modal:
+        {
             mask: true,
             shadow: true
         },
@@ -115,8 +115,9 @@ function(
 
         },
 
-        onRender: function()
+        onRender: function ()
         {
+            TP.analytics("send", "event", "calendar", "shiftWizard", "start");
 
             // stickit
             this.model.off("change", this.render);
@@ -198,13 +199,14 @@ function(
 
         doShift: function()
         {
-
             // show throbber
             this.onWaitStart();
 
             // setup shift command
             if (this.model.get("workouts"))
             {
+                TP.analytics("send", "event", "calendar", "shiftWizard", "shifting");
+
                 var shiftCommand = new ShiftWorkoutsCommand();
                 this.configureShiftCommand(shiftCommand);
 
@@ -217,10 +219,9 @@ function(
 
                 // pass the deferred on through an event so CalendarContainerView can act on it
                 this.trigger("shifted", deferred);
-            } else
-            {
-                this.onClose();
             }
+            else
+                this.onClose();
         },
 
         onClose: function()

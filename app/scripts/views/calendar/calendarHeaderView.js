@@ -131,20 +131,19 @@ function(TP, moment, coachAndAffiliateCustomizations, calendarHeaderTemplate)
                 self.$("#athleteCalendarSelect").selectBoxIt({
                     dynamicPositioning: false
                 });
+
                 self.$("#athleteCalendarSelectSelectBoxItContainer").css('display', "block");
-                
             });
-
-
         },
 
         onAthleteSelectBoxChange: function ()
         {
+            TP.analytics("send", "event", "calendar", "athleteChanged");
+
             var athleteId = Number(this.$("#athleteCalendarSelect").val());
 
             var athleteUrl = "calendar/athletes/" + athleteId;
             theMarsApp.router.navigate(athleteUrl, true);
-            
         },
 
         serializeData: function ()
@@ -155,23 +154,27 @@ function(TP, moment, coachAndAffiliateCustomizations, calendarHeaderTemplate)
             return headerData;
         },
 
-        onGoToTodayButtonClicked: function()
+        onGoToTodayButtonClicked: function ()
         {
+            TP.analytics("send", "event", "calendar", "todayClicked");
             this.trigger("request:today");
         },
         
         onGoToNextWeekButtonClicked: function()
         {
+            TP.analytics("send", "event", "calendar", "nextWeekClicked");
             this.trigger("request:nextweek", this.model);
         },
         
         onGoToLastWeekButtonClicked: function()
         {
+            TP.analytics("send", "event", "calendar", "lastWeekClicke");
             this.trigger("request:lastweek", this.model);
         },
         
         onRefreshButtonClicked: function()
         {
+            TP.analytics("send", "event", "calendar", "refreshClicked");
             this.trigger("request:refresh", this.model.get("date"));
         }
     };

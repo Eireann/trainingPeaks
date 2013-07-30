@@ -155,7 +155,5 @@ function(
             this.errorMessageView = new UserConfirmationView({ template: fileUploadErrorTemplate });
             this.errorMessageView.render();
         }
-
-
     });
 });
