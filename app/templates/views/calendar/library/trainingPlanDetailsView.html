@@ -33,13 +33,12 @@
         {{/everyOther}}
     {{/each}}
 </div>
-
-<div class="applyPlan">
-    <div class="smallbold">{{$ "ApplyPlan"}}</div>
-</div>
 {{/with}}
 
 {{#if applyable }}
+<div class="applyPlan">
+    <div class="smallbold">{{$ "ApplyPlan"}}</div>
+</div>
 <div class="startEndPlan">
     <select id="applyDateType">
         <option value="1">{{$ "Start" }}</option>
