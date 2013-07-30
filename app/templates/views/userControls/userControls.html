@@ -12,14 +12,16 @@
         <label class="headerPipe">|</label>
         <a>
             <span class="personHeaderButtons">
-                <label>{{$ "BasicEdition"}}</label>
+                <label>{{ userType this }}</label>
             </span>
         </a>
+        {{#ifUserIsNotPremium this}}
         <a>
             <span class="personHeaderButtons upgradeButton">
                 <label>{{$ "Upgrade"}}</label>
             </span>
         </a>
+        {{/ifUserIsNotPremium}}
     </div>
 </div>
 <div class="row" id="headerShadow">

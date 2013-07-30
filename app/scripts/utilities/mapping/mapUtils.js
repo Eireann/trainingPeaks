@@ -25,33 +25,49 @@ function(
 
         createMapOnContainer: function(container)
         {
+
             var osmLayer = new L.TileLayer(osmURL);
             var cloudmadeLayer = new L.TileLayer(cloudmadeURL);
             var leafletLayer = new L.TileLayer(leafletURL);
-            var gmapLayer = new L.Google('ROADMAP');
-            var gTerrainLayer = new L.Google("TERRAIN");
 
             // Leaflet needs to know where to find images
             L.Icon.Default.imagePath = theMarsApp.assetsRoot + "images/leaflet";
+
+            var baseMaps =
+            {
+                "OSM": osmLayer,
+                "Cloudmade": cloudmadeLayer,
+                "Leaflet": leafletLayer
+            };
 
             var mapConfig =
             {
                 scrollWheelZoom: false,
                 boxZoom: true,
-                layers: [gTerrainLayer],
+                layers: [osmLayer],
                 center: new L.LatLng(40.012369, -105.132353),
                 zoom: 8,
                 maxZoom: 15
             };
 
-            var baseMaps =
+            // if google was not loaded, don't try to draw on map, useful for testing
+            if(typeof google !== "undefined")
             {
-                "Terrain": gTerrainLayer,
-                "Google": gmapLayer,
-                "OSM": osmLayer,
-                "Cloudmade": cloudmadeLayer,
-                "Leaflet": leafletLayer
-            };
+                var gmapLayer = new L.Google('ROADMAP');
+                var gTerrainLayer = new L.Google("TERRAIN");
+
+                baseMaps =
+                {
+                    "Terrain": gTerrainLayer,
+                    "Google": gmapLayer,
+                    "OSM": osmLayer,
+                    "Cloudmade": cloudmadeLayer,
+                    "Leaflet": leafletLayer
+                };
+
+                mapConfig.layers = [gTerrainLayer];
+            }
+
 
             var map = L.map(container, mapConfig);
             L.control.layers(baseMaps).addTo(map);
