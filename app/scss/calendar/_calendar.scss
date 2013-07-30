@@ -384,6 +384,7 @@
 
         .week {
             @include grid-row();
+             page-break-inside:avoid;
         }
 
         .day {
