@@ -115,12 +115,12 @@ function(
         loadDataAfterUserLoads: function()
         {
             var self = this;
-            var onLoad = function(deferreds)
-            {
-                var today = moment();
-                self.scrollToDateAfterLoad(deferreds, today);
-            };
-            this.loadCalendarData(onLoad);
+            // var onLoad = function(deferreds)
+            // {
+            //     var today = moment();
+            //     self.scrollToDateAfterLoad(deferreds, today);
+            // };
+            this.loadCalendarData();
             this.loadLibraryData();
         },
 

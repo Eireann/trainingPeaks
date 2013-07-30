@@ -112,10 +112,11 @@ function(
 
         requestWorkouts: function(startDate, endDate)
         {
-            var workouts = new WorkoutsCollection([], { startDate: moment(startDate), endDate: moment(endDate) });
-
-            var waiting = workouts.fetch();
             var self = this;
+
+            self.setWeeksWaiting(moment(startDate), moment(endDate), true);
+            var workouts = new WorkoutsCollection([], { startDate: moment(startDate), endDate: moment(endDate) });
+            var waiting = workouts.fetch();
 
             // we trigger a sync event on each week model - whether they have workouts or not - to remove the waiting throbber
             // but we don't trigger the request event here to show the throbber, because the week model is not yet bound to a view,
@@ -130,7 +131,7 @@ function(
                 // self.trigger("after:changes");
             }).always(function()
             {
-                self.stopWeeksWaiting(moment(startDate), moment(endDate));
+                self.setWeeksWaiting(moment(startDate), moment(endDate), false);
             });
 
             // return the deferred so caller can use it
@@ -179,7 +180,6 @@ function(
         {
             var newWeekCollection = this.createWeekCollectionStartingOn(moment(startDate));
             var newWeekModel = new TP.Model({ id: startDate.format(TP.utils.datetime.shortDateFormat), week: newWeekCollection });
-
             this.add(newWeekModel, { append: true });
             return newWeekModel;
         },
@@ -188,7 +188,6 @@ function(
         {
             var newWeekCollection = this.createWeekCollectionStartingOn(startDate);
             var newWeekModel = new TP.Model({ id: startDate.format(TP.utils.datetime.shortDateFormat), week: newWeekCollection });
-
             this.add(newWeekModel, { at: 0, append: false });
             return newWeekModel;
         },
@@ -257,7 +256,7 @@ function(
             }
         },
 
-        stopWeeksWaiting: function(startDate, endDate)
+        setWeeksWaiting: function(startDate, endDate, isWaiting)
         {
             startDate = startDate.format(TP.utils.datetime.shortDateFormat);
             endDate = endDate.format(TP.utils.datetime.shortDateFormat);
@@ -266,7 +265,8 @@ function(
                 var weekDate = weekModel.id;
                 if (weekDate >= startDate && weekDate <= endDate)
                 {
-                    weekModel.trigger("sync");
+                    //weekModel.trigger("sync");
+                    weekModel.set("isWaiting", isWaiting);
                 }
             });
         },

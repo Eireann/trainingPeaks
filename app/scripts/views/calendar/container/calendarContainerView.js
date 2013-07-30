@@ -72,7 +72,7 @@ function(
             this.listenTo(this.weeksCollectionView, 'itemview:render', function(weekView)
             {
                 weekView.on("itemview:itemDropped", self.onItemDropped, self);
-                weekView.onWaitStart();
+                //weekView.onWaitStart();
             });
 
             this.weeksCollectionView.render();
