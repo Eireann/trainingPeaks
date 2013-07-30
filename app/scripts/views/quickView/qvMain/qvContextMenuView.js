@@ -25,8 +25,10 @@ function(TP, SaveToLibraryConfirmationView, WorkoutQuickViewMenuTemplate)
             "click #workoutQuickViewMenuPrintLabel": "onPrintClicked"
         },
 
-        initialize: function()
+        initialize: function ()
         {
+            TP.analytics("send", "event", "quickView", "contextMenuStart");
+            
             this.on("before:reposition", this.beforeReposition, this);
         },
 
@@ -46,12 +48,16 @@ function(TP, SaveToLibraryConfirmationView, WorkoutQuickViewMenuTemplate)
 
         onDeleteClicked: function()
         {
+            TP.analytics("send", "event", "quickView", "contextMenuDeleteWorkout");
+
             this.trigger("delete");
             this.close();
         },
 
         onCopyClicked: function()
         {
+            TP.analytics("send", "event", "quickView", "contextMenuCopyWorkout");
+
             this.model.trigger("workout:copy", this.model);
             this.trigger("copy");
             this.close();
@@ -59,6 +65,8 @@ function(TP, SaveToLibraryConfirmationView, WorkoutQuickViewMenuTemplate)
         
         onCutClicked: function()
         {
+            TP.analytics("send", "event", "quickView", "contextMenuCutWorkout");
+
             this.model.trigger("workout:cut", this.model);
             this.trigger("cut");
             this.close();
@@ -66,6 +74,8 @@ function(TP, SaveToLibraryConfirmationView, WorkoutQuickViewMenuTemplate)
 
         onSaveToLibraryClicked: function()
         {
+            TP.analytics("send", "event", "quickView", "contextMenuSaveToLibrary");
+
             this.close();
             this.saveToLibraryConfirmationView = new SaveToLibraryConfirmationView({ model: this.model, libraries: theMarsApp.controllers.calendarController.getExerciseLibraries() });
             this.saveToLibraryConfirmationView.render();

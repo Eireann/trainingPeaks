@@ -41,9 +41,10 @@ function(_,
             template: attachmentFileUploadMenuTemplate
         },
 
-
-        initialize: function(options)
+        initialize: function (options)
         {
+            TP.analytics("send", "event", "quickView", "attachmentStart");
+
             this.$el.addClass(options.direction);
             this.watchForFileChanges();
         },
@@ -96,6 +97,8 @@ function(_,
 
         onDeleteClicked: function()
         {
+            TP.analytics("send", "event", "quickView", "attachmentDelete");
+
             this.deleteConfirmationView = new UserConfirmationView({ template: deleteConfirmationTemplate });
             this.deleteConfirmationView.render();
             this.deleteConfirmationView.on("userConfirmed", this.onDeleteFileConfirmed, this);
@@ -117,6 +120,8 @@ function(_,
 
         onAttachmentFileSelected: function ()
         {
+            TP.analytics("send", "event", "quickView", "attachmentBrowse");
+
             _.bindAll(this, "uploadAttachment");
             this.waitingOn();
             var file = this.ui.attachmentinput[0].files[0];
@@ -150,6 +155,8 @@ function(_,
 
         downloadFile: function (fileInfo)
         {
+            TP.analytics("send", "event", "quickView", "attachmentDownload");
+
             var self = this;
 
             var downloadAttachmentFromServer = function()

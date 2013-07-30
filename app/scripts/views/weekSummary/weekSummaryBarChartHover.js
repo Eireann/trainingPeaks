@@ -21,10 +21,10 @@ function (TP, setImmediate, jqueryOutside, UserConfirmationView, weekSummaryBarC
             "mouseleave": "hoverBoxLeave"
         },
 
-        
-
-        initialize: function(options)
+        initialize: function (options)
         {
+            TP.analytics("send", "event", "calendar", "weekSummaryHover");
+            
             this.posX = options.left;
             this.posY = options.top;
             this.parentEl = options.parentEl;
