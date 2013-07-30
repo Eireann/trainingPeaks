@@ -29,7 +29,8 @@ function (TP)
             planId: null,
             planStatus: null,
             plannedWorkoutTypeDurations: null,
-            title: null
+            title: null,
+            planApplications: null
         }
 
     });

@@ -100,6 +100,9 @@ function(
             it("Should display applied plans", function()
             {
                 $mainRegion.find(".trainingPlanLibrary .trainingPlan[data-trainingplanid=2]").trigger("mouseup");
+                expect($body.find(".trainingPlanDetails [data-appliedplanid=21]").length).toBe(0);
+                expect($body.find(".trainingPlanDetails [data-appliedplanid=22]").length).toBe(0);
+                testHelpers.resolveRequest("GET", "plans/v1/plans/2/details$", xhrData.trainingPlanDetails);
                 expect($body.find(".trainingPlanDetails [data-appliedplanid=21]").length).toBe(1);
                 expect($body.find(".trainingPlanDetails [data-appliedplanid=22]").length).toBe(1);
             });
@@ -107,6 +110,7 @@ function(
             it("Should display applied plan start and end dates", function()
             {
                 $mainRegion.find(".trainingPlanLibrary .trainingPlan[data-trainingplanid=2]").trigger("mouseup");
+                testHelpers.resolveRequest("GET", "plans/v1/plans/2/details$", xhrData.trainingPlanDetails);
                 expect($body.find(".trainingPlanDetails [data-appliedplanid=21]").text()).toContain("01/02/2013");
                 expect($body.find(".trainingPlanDetails [data-appliedplanid=21]").text()).toContain("09/10/2013");
             });
