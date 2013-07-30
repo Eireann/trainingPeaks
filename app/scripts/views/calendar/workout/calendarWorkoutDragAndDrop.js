@@ -1,8 +1,9 @@
 define(
 [
+    "TP",
     "hbs!templates/views/calendar/workout/calendarWorkoutDragState"
 ],
-function(CalendarWorkoutTemplateDragState)
+function(TP, CalendarWorkoutTemplateDragState)
 {
     var calendarWorkoutDragAndDrop = {
 
