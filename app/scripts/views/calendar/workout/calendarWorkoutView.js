@@ -185,9 +185,9 @@ function(
                 e.preventDefault();
                 return;
             }
+
             if (e)
             {
-
                 if (e.button && e.button === 2)
                     return;
 
@@ -201,6 +201,8 @@ function(
             this.model.trigger("select", this.model);
             var view = new WorkoutQuickView({ model: this.model });
             view.render();
+
+            TP.analytics("send", "event", "calendar", "quickViewOpened");
         },
 
         workoutTouched: function(e)
