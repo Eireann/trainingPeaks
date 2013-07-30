@@ -236,8 +236,6 @@ function(_, touchPunch, draggable, droppable, moment, TP, CalendarWorkoutView, C
 
         openNewItemView: function()
         {
-            //this.model.trigger("day:click", this.model, e);
-
             this.model.trigger("day:selectAddItem");
 
             var newItemView = new NewItemView({ model: this.model });
@@ -247,6 +245,8 @@ function(_, touchPunch, draggable, droppable, moment, TP, CalendarWorkoutView, C
 
             newItemView.on("close", this.unSelectAddWorkoutIcon, this);
             newItemView.on("openQuickView", this.onOpenQuickViewFromNewItem, this);
+
+            TP.analytics("send", "event", "calendar", "newWorkout");
         },
 
         onOpenQuickViewFromNewItem: function(quickView)
@@ -303,6 +303,8 @@ function(_, touchPunch, draggable, droppable, moment, TP, CalendarWorkoutView, C
         onDragStart: function(e)
         {
             this.$el.addClass("dragging");
+
+            TP.analytics("send", "event", "calendar", "dragdrop", "day");
         },
 
         onDragStop: function()

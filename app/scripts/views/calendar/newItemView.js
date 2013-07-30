@@ -57,6 +57,7 @@ function(
             // Handle file uploads as a specific case & return
             if (e.currentTarget.name === "uploadDeviceFile")
             {
+                TP.analytics("send", "event", "calendar", "deviceFileUpload", "start");
                 this.ui.fileinput.click();
                 return;
             }
@@ -81,6 +82,8 @@ function(
 
         onFileSelected: function ()
         {
+            TP.analytics("send", "event", "calendar", "deviceFileUpload", "fileSelected");
+
             this.$el.addClass("waiting");
             this.$("#uploadingNotification").css("display", "block");
             
@@ -99,6 +102,8 @@ function(
 
         onUploadDone: function ()
         {
+            TP.analytics("send", "event", "calendar", "deviceFileUpload", "fileUploaded");
+
             this.$el.removeClass("waiting");
          
             var workoutModelJson = this.uploadedFileDataModel.get("workoutModel");

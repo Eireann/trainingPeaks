@@ -55,6 +55,8 @@ function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandMo
             this.buildElevationCorrrectionModel();
 
             this.once("render", this.onFirstRender, this);
+
+            TP.analytics("send", "event", "expando", "elevationCorrection", "opened");
         },
 
         bindCallbacks: function()
@@ -216,6 +218,8 @@ function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandMo
             this.ui.chart.addClass("waiting");
 
             elevationCorrectionCommand.execute().done(this.onElevationCorrectionApplied);
+
+            TP.analytics("send", "event", "expando", "elevationCorrection", "applied");
         },
         
         onElevationCorrectionApplied: function ()
