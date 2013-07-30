@@ -92,9 +92,9 @@ function(
             data.details = this.model.details.toJSON();
             data.details.weekcount = Math.ceil(data.details.dayCount / 7);
 
-            if (data.planApplications && !data.planApplications.length)
+            if (data.details.planApplications && !data.details.planApplications.length)
             {
-                data.planApplications = null;
+                data.details.planApplications = null;
             }
 
             var plannedWorkoutTypeDurations = [];
