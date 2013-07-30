@@ -1,4 +1,4 @@
 <div class="weekSummaryBarGraph {{ cssGraphClass }}">
-  <div class="weekSummaryBarGraphPlanned {{ cssGraphClass }} {{#if completedMoreThanPlanned }}moreThanPlanned{{/if}}" style="width:{{ plannedWidthPercent }}%;"></div>
-  <div class="weekSummaryBarGraphProgress {{ cssGraphClass }}" style="width:{{ completedWidthPercent }}%;"></div>
+  <div class="weekSummaryBarGraphPlanned {{ cssGraphClass }} {{#if completedMoreThanPlanned }}completedMoreThanPlanned{{/if}}" style="width:{{ plannedWidthPercent }}%;"></div>
+  <div class="weekSummaryBarGraphProgress {{ cssGraphClass }} {{#if completedMoreThanPlanned }}completedMoreThanPlanned{{/if}}" style="width:{{ completedWidthPercent }}%;"></div>
 </div>

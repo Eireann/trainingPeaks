@@ -23,7 +23,7 @@
 		</div>
 
 		{{#if strengthDurationPlanned }}			
-		<div class="weekSummaryBarGraphItem cf" data-type="strength">
+		<div class="weekSummaryBarGraphItem cf" data-type="strength duration">
 			<div class="weekSummaryBarGraphLabel strength">
 				Strength
 			</div>		
@@ -36,7 +36,7 @@
 		{{/if}}
 
 		{{#if bikeDurationPlanned }}	
-		<div class="weekSummaryBarGraphItem cf" data-type="bike">
+		<div class="weekSummaryBarGraphItem cf" data-type="bike duration">
 			<div class="weekSummaryBarGraphLabel bike">
 				Bike
 			</div>		
@@ -49,7 +49,7 @@
 		{{/if}}
 
 		{{#if bikeDistancePlanned }}	
-		<div class="weekSummaryBarGraphItem cf" data-type="bike">
+		<div class="weekSummaryBarGraphItem cf" data-type="bike distance">
 			<div class="weekSummaryBarGraphLabel bike">
 				Bike
 			</div>		
@@ -62,7 +62,7 @@
 		{{/if}}
 
 		{{#if runDurationPlanned }}	
-		<div class="weekSummaryBarGraphItem cf" data-type="run">
+		<div class="weekSummaryBarGraphItem cf" data-type="run duration">
 			<div class="weekSummaryBarGraphLabel run">
 				Run
 			</div>		
@@ -75,7 +75,7 @@
 		{{/if}}
 
 		{{#if runDistancePlanned }}	
-		<div class="weekSummaryBarGraphItem cf" data-type="run">
+		<div class="weekSummaryBarGraphItem cf" data-type="run distance">
 			<div class="weekSummaryBarGraphLabel run">
 				Run
 			</div>		
@@ -88,8 +88,8 @@
 		{{/if}}
 		
 		{{#if swimDurationPlanned }}	
-		<div class="weekSummaryBarGraphItem cf" data-type="swim">
-			<div class="weekSummaryBarGraphLabel swim">
+		<div class="weekSummaryBarGraphItem cf" data-type="swim duration">
+			<div class="weekSummaryBarGraphLabel swim distance">
 				Swim
 			</div>		
 			<div class="weekSummaryTimeContain">
@@ -101,7 +101,7 @@
 		{{/if}}
 
 		{{#if swimDistancePlanned }}	
-		<div class="weekSummaryBarGraphItem cf" data-type="swim">
+		<div class="weekSummaryBarGraphItem cf" data-type="swim distance">
 			<div class="weekSummaryBarGraphLabel swim">
 				Swim
 			</div>		
@@ -123,6 +123,15 @@
 			<div class="weekSummaryMetricTitle distance">
 				{{getUnitsLabel "distance"}}
 			</div>
+		</div>
+
+		<div class="weekSummaryMetricItem weekSummaryItem cf">
+			<div class="weekSummaryMetricValue tss">
+				{{conversion "formatTSS" tssCompleted this "0"}}
+			</div>
+			<div class="weekSummaryMetricTitle tss">
+				TSS
+			</div>		
 		</div>
 
 		{{#if bikeDistanceCompleted}}
@@ -164,14 +173,16 @@
 		{{/ifNot}}
 		{{/if}}
 
+		{{#ifHasValueAfterFormatted "formatElevation" totalElevationGain this}}	
 		<div class="weekSummaryMetricItem weekSummaryItem cf">
-			<div class="weekSummaryMetricValue tss">
-				{{tssCompleted}}
+			<div class="weekSummaryMetricValue elevation">
+				{{conversion "formatElevation" totalElevationGain this}}
 			</div>
-			<div class="weekSummaryMetricTitle tss">
-				TSS
+			<div class="weekSummaryMetricTitle elevation">
+				{{getUnitsLabel "elevationGain" }}
 			</div>		
 		</div>
+		{{/ifHasValueAfterFormatted}}
 
 		{{#ifHasValueAfterFormatted "formatEnergy" totalEnergyCompleted this}}	
 		<div class="weekSummaryMetricItem weekSummaryItem cf">
