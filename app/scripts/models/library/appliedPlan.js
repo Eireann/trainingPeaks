@@ -14,8 +14,7 @@ function(moment, TP)
 
         urlRoot: function()
         {
-            var athleteId = theMarsApp.user.getCurrentAthleteId();
-            return theMarsApp.apiRoot + "/plans/v1/athletes/" + athleteId + "/appliedplans";
+            return theMarsApp.apiRoot + "/plans/v1/appliedplans";
         },
 
         defaults:

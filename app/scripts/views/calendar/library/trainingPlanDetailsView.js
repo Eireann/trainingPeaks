@@ -5,7 +5,7 @@ define(
     "setImmediate",
     "TP",
     "models/commands/applyTrainingPlan",
-    "models/library/appliedPlan",
+    "models/commands/removeTrainingPlan",
     "views/userConfirmationView",
     "utilities/trainingPlan/trainingPlan",
     "hbs!templates/views/confirmationViews/deleteConfirmationView",
@@ -18,7 +18,7 @@ function(
     setImmediate,
     TP,
     ApplyTrainingPlanCommand,
-    AppliedPlan,
+    RemoveTrainingPlanCommand,
     UserConfirmationView,
     trainingPlanUtility,
     deleteConfirmationTemplate,
@@ -92,15 +92,9 @@ function(
             data.details = this.model.details.toJSON();
             data.details.weekcount = Math.ceil(data.details.dayCount / 7);
 
-            if (data.details.planApplications && !data.details.planApplications.length)
+            if (data.planApplications && !data.planApplications.length)
             {
-                data.details.planApplications = null;
-            }
-            else
-            {
-                _.each(data.details.planApplications, function(planApplication, index) {
-                    planApplication.eventPlan = data.details.eventPlan;
-                }, this);
+                data.planApplications = null;
             }
 
             var plannedWorkoutTypeDurations = [];
@@ -137,6 +131,7 @@ function(
             }
 
             var command = new ApplyTrainingPlanCommand({
+                athleteId: theMarsApp.user.getCurrentAthleteId(),
                 planId: this.model.get("planId"),
                 startType: startType,
                 targetDate: targetDate
@@ -174,11 +169,12 @@ function(
 
         deleteAppliedPlan: function(options)
         {
-            var appliedPlan = new AppliedPlan({appliedPlanId: options.appliedPlanId});
+
+            var removeAppliedPlan = new RemoveTrainingPlanCommand({appliedPlanId: options.appliedPlanId});
 
             var self = this;
             self.waitingOn();
-            appliedPlan.destroy().done(function()
+            removeAppliedPlan.execute().done(function()
             {
                 self.refreshPlanAndCalendar(); 
             }).fail(function()
@@ -224,34 +220,6 @@ function(
                 this.$("#applyDate").val(moment().day(1).format(this.dateFormat)).show();
             }
         }
-
-        /*
-        onAppliedPlanOptionChange: function(e)
-        {
-            var selection = $(e.target).val();
-            if (selection === "move")
-            {
-                this.$(e.target).closest(".appliedPlan").find(".startEndPlan").removeClass("optionsDisabled");
-            }   
-            else
-            {
-                this.$(e.target).closest(".appliedPlan").find(".startEndPlan").addClass("optionsDisabled");
-            } 
-
-            if (selection === "unapply")
-                this.deleteAppliedPlan(e);
-        },
-
-        moveAppliedPlan: function(e)
-        {
-            var appliedPlanId = this.$(e.target).closest(".appliedPlan").data("appliedplanid");
-            var startType = trainingPlanUtility.startTypeEnum["StartDate"];
-            var targetDate;
-
-
-        },
-        */
-
 
     });
 });
