@@ -73,6 +73,13 @@ function(
         {
             this.listenTo(this.sourceCollection, 'add', _.bind(this._onSourceAdd, this));
             this.listenTo(this.sourceCollection, 'remove', _.bind(this._onSourceRemove, this));
+
+            this.listenTo(this.sourceCollection, 'all', function(eventName)
+            {
+                if(_.contains(['add', 'remove'], eventName)) return;
+
+                this.trigger.apply(this, arguments);
+            });
         },
 
         _onSourceAdd: function(model, collection, options)
@@ -164,15 +171,16 @@ function(
             this.listenTo(this.collection, 'after:changes', _.bind(this._applyScrollPosition, this));
 
             this.$el.on('scroll', _.bind(this.onScroll, this));
+            this.$el.css('position', 'relative'); // QL: add this to the stylesheet once this view has a common CSS base
 
             this.scrollAnchorCount = 0;
 
             this.on('show', function()
             {
-                setTimeout(function()
-                {
-                    self.scrollToModel(options.firstModel);
-                }, 0);
+                setTimeout(function() {
+                    self.scrollToModel(options.firstModel, 0);
+                },0);
+                
             });
         },
 
@@ -183,8 +191,11 @@ function(
                 this.collection.centerOnModel(model);
                 view = this.children.findByModel(model);
             }
-
-            this.$el.animate({scrollTop: view.$el.position().top + view.$el.scrollTop()}, 1000);
+            this.$el.scrollTop(view.$el.position().top + view.$el.scrollTop());
+            this.scrollAnchor = {
+                view: view,
+                position: {top: 0}
+            };
         },
 
         _stashScrollPosition: function()

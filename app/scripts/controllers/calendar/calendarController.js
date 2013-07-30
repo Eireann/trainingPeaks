@@ -204,7 +204,6 @@ function(
             {
                 var startDate = moment(this.startDate).add("weeks", i);
                 var endDate = moment(startDate).add("days", 6);
-                console.log("request workouts from load calendar data")
                 var deferred = this.weeksCollection.requestWorkouts(startDate, endDate);
                 deferreds.push(deferred);
             }

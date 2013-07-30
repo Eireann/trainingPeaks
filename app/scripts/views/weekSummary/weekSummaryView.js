@@ -55,7 +55,6 @@ function(
 
         onBeforeRender: function()
         {
-            console.log('onBeforeRender');
             var completedValues =
             {
                 totalDistance: 0,

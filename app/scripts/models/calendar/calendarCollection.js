@@ -123,12 +123,12 @@ function(
             // so calendarView does that
             waiting.done(function ()
             {
-                // self.trigger("before:changes");
+                self.trigger("before:changes");
                 workouts.each(function (workout)
                 {
                     self.addWorkout(workout);
                 });
-                // self.trigger("after:changes");
+                self.trigger("after:changes");
             }).always(function()
             {
                 self.setWeeksWaiting(moment(startDate), moment(endDate), false);

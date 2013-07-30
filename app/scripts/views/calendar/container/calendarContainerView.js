@@ -60,7 +60,13 @@ function(
             this.calendarHeaderModel = options.calendarHeaderModel;
             this.startOfWeekDayIndex = options.startOfWeekDayIndex ? options.startOfWeekDayIndex : 0;
 
-            this.weeksCollectionView = new ScrollableCollectionView({itemView: CalendarWeekView, collection: this.collection, id: 'weeksContainer', className: "scrollable colorByComplianceAndWorkoutType"});
+            this.weeksCollectionView = new ScrollableCollectionView({
+                firstModel: this.collection.find(function(model) { return TP.utils.datetime.isThisWeek(model.id); }),
+                itemView: CalendarWeekView,
+                collection: this.collection,
+                id: 'weeksContainer',
+                className: "scrollable colorByComplianceAndWorkoutType"
+            });
         },
         
         render: function()
