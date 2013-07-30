@@ -13,7 +13,7 @@
 
 		<div class="weekSummaryBarGraphItem total cf" data-type="total">
 			<div class="weekSummaryBarGraphLabel total">
-				Total
+				Total Duration
 			</div>		
 			<div class="weekSummaryTimeContain">
                 </span> <span class="weekSummaryTimePlanned total">{{formatTime totalTimePlanned false "--:--"}}</span>
@@ -25,7 +25,7 @@
 		{{#if strengthDurationPlanned }}			
 		<div class="weekSummaryBarGraphItem cf" data-type="strength duration">
 			<div class="weekSummaryBarGraphLabel strength">
-				Strength
+				Strength Duration
 			</div>		
 			<div class="weekSummaryTimeContain">
                 <span class="weekSummaryTimePlanned strength">{{formatTime strengthDurationPlanned false "--:--"}}</span>
@@ -38,7 +38,7 @@
 		{{#if bikeDurationPlanned }}	
 		<div class="weekSummaryBarGraphItem cf" data-type="bike duration">
 			<div class="weekSummaryBarGraphLabel bike">
-				Bike
+				Bike Duration
 			</div>		
 			<div class="weekSummaryTimeContain">
                 <span class="weekSummaryTimePlanned bike">{{formatTime bikeDurationPlanned false "--:--"}}</span>
@@ -51,7 +51,7 @@
 		{{#if bikeDistancePlanned }}	
 		<div class="weekSummaryBarGraphItem cf" data-type="bike distance">
 			<div class="weekSummaryBarGraphLabel bike">
-				Bike
+				Bike Distance
 			</div>		
 			<div class="weekSummaryTimeContain">
                 <span class="weekSummaryTimePlanned bike">{{ conversion "formatDistance" bikeDistancePlanned this "--"}}</span>
@@ -64,7 +64,7 @@
 		{{#if runDurationPlanned }}	
 		<div class="weekSummaryBarGraphItem cf" data-type="run duration">
 			<div class="weekSummaryBarGraphLabel run">
-				Run
+				Run Duration
 			</div>		
 			<div class="weekSummaryTimeContain">
                 <span class="weekSummaryTimePlanned run">{{formatTime runDurationPlanned false "--:--"}}</span>
@@ -77,7 +77,7 @@
 		{{#if runDistancePlanned }}	
 		<div class="weekSummaryBarGraphItem cf" data-type="run distance">
 			<div class="weekSummaryBarGraphLabel run">
-				Run
+				Run Distance
 			</div>		
 			<div class="weekSummaryTimeContain">
                 <span class="weekSummaryTimePlanned run">{{ conversion "formatDistance" runDistancePlanned this "--:--"}}</span>
@@ -90,7 +90,7 @@
 		{{#if swimDurationPlanned }}	
 		<div class="weekSummaryBarGraphItem cf" data-type="swim duration">
 			<div class="weekSummaryBarGraphLabel swim distance">
-				Swim
+				Swim Duration
 			</div>		
 			<div class="weekSummaryTimeContain">
                 <span class="weekSummaryTimePlanned swim">{{formatTime swimDurationPlanned false "--:--"}}</span>
@@ -103,7 +103,7 @@
 		{{#if swimDistancePlanned }}	
 		<div class="weekSummaryBarGraphItem cf" data-type="swim distance">
 			<div class="weekSummaryBarGraphLabel swim">
-				Swim
+				Swim Distance
 			</div>		
 			<div class="weekSummaryTimeContain">
                 <span class="weekSummaryTimePlanned swim">{{conversion "formatSwimDistance" swimDistancePlanned this "--:--"}}</span>
