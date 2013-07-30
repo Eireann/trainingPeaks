@@ -10,7 +10,7 @@
 
 <div class="planDescription small">{{ stripHtml description 200 }}</div>
 
-
+{{#if plannedWorkoutTypeDurations }}
 <div class="planDetails">
     <div class="smallbold">{{$ "WorkoutTotals" }}</div>
     <div class="smallbold duration">{{$ "Duration"}}</div>
@@ -33,6 +33,7 @@
         {{/everyOther}}
     {{/each}}
 </div>
+{{/if}}
 {{/with}}
 
 {{#if applyable }}
