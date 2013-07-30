@@ -11,6 +11,7 @@ function(
         initialize: function(models, options)
         {
             this.sourceCollection = options.collection;
+            this.maxSize = options.minSize || 8;
             this.maxSize = options.maxSize || 25;
 
             this._bindSourceCollectionEvents();
@@ -64,7 +65,7 @@ function(
         centerOnModel: function(model)
         {
             this.reset(model);
-            this.fetchNext(Math.ceil(this.maxSize / 2));
+            this.fetchNext(Math.ceil(this.minSize / 2));
             this._ensureSize({fetchFrom: "beginning"});
         },
 
@@ -120,7 +121,7 @@ function(
 
         _ensureSize: function(options)
         {
-            var numberToFetch = this.maxSize - this.length;
+            var numberToFetch = this.minSize - this.length;
             if (numberToFetch <= 0) return;
 
             if (options.fetchFrom === "beginning")
@@ -154,6 +155,7 @@ function(
             this.scrollThreshold = options.scrollThreshold || 1000;
             if (options.batchSize > this.collection.maxSize) options.batchSize = null;
             this.batchSize = Math.ceil(options.batchSize || this.collection.maxSize / 4);
+            this.batchSize = 1;
 
             this.on('before:item:added before:item:removed itemview:before:render itemview:before:resize', _.bind(this._stashScrollPosition, this));
             this.on('after:item:added after:item:removed itemview:render itemview:after:resize', _.bind(this._applyScrollPosition, this));

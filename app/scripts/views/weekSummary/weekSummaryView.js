@@ -39,6 +39,8 @@ function(
 
             theMarsApp.user.on("change", this.render, this);
             
+            this.render = _.throttle(this.render, 100);
+
             var self = this;
             this.model.collection.each(function(item)
             {
@@ -53,6 +55,7 @@ function(
 
         onBeforeRender: function()
         {
+            console.log('onBeforeRender');
             var completedValues =
             {
                 totalDistance: 0,
