@@ -186,6 +186,10 @@
         }
     }
 
+    .printOnly
+    {
+        display: none;
+    }
 }
 
 
@@ -269,6 +273,25 @@
                     cursor: inherit;
                     white-space: pre-wrap;
                 }
+
+            }
+
+            .sportType
+            {
+                font-size: $fontSizeXSmall;
+                color: #000;
+                font-family: $fontFamilyRegular;
+                text-align: left;
+                line-height: 12px;
+            }
+
+            .description
+            {
+                font-size: $fontSizeXSmall;
+                color: #000;
+                font-family: $fontFamilyRegular;
+                text-align: left;
+                line-height: 12px;
             }
         }
 
@@ -278,4 +301,7 @@
         display:none;
     }
 
+
+
 }
+
