@@ -74,6 +74,8 @@ function (
 
         onDateClicked: function(e)
         {
+            TP.analytics("send", "event", "quickView", "headerDateClicked");
+
             _.bindAll(this, "onDateChanged");
 
             var position = [this.ui.date.offset().left, this.ui.date.offset().top + this.ui.date.height()];
@@ -93,6 +95,8 @@ function (
 
         onDateChanged: function(newDate)
         {
+            TP.analytics("send", "event", "quickView", "headerDateChanged");
+
             var newDay = moment(newDate).format(this.model.shortDateFormat);
             this.ui.date.datepicker("hide");
             var oldDay = this.model.getCalendarDay();
@@ -105,24 +109,25 @@ function (
 
         onWorkoutIconClicked: function()
         {
+            TP.analytics("send", "event", "quickView", "headerWorkoutIconClicked");
+
             var icon = this.$(".workoutIconLarge");
             var direction = this.expanded ? "right" : "left";
             var typesMenu = new WorkoutTypeMenuView({ workoutTypeId: this.model.get("workoutTypeValueId"), direction: direction });
             typesMenu.on("selectWorkoutType", this.onSelectWorkoutType, this);
 
             if (direction === "right")
-            {
                 typesMenu.setPosition({ fromElement: icon, left: icon.outerWidth() + 10, top: -15 });
-            } else
-            {
+            else
                 typesMenu.setPosition({ fromElement: icon, right: -10, top: -15 });
-            }
 
             typesMenu.render();
         },
 
         onSelectWorkoutType: function(workoutTypeId)
         {
+            TP.analytics("send", "event", "quickView", "headerWorkoutTypeChanged");
+
             this.model.set("workoutTypeValueId", workoutTypeId);
         },
 
@@ -139,6 +144,8 @@ function (
 
         onBreakThroughClicked: function()
         {
+            TP.analytics("send", "event", "quickView", "headerBreakThroughClicked");
+
             var description = this.model.get("description");
 
             if (!description)
@@ -194,8 +201,9 @@ function (
         
         onCommentsClicked: function (e)
         {
-            var offset = $(e.currentTarget).offset();
+            TP.analytics("send", "event", "quickView", "headerCommentsClicked");
 
+            var offset = $(e.currentTarget).offset();
 
             this.commentsEditorView = new ExpandoCommentsEditorView({ model: this.model, parentEl: this.$el });
             this.commentsEditorView.render().top(offset.top - 13);
@@ -204,7 +212,8 @@ function (
             {
                 this.commentsEditorView.setDirection("left");
                 this.commentsEditorView.right(offset.left - 12);
-            } else
+            }
+            else
             {
                 this.commentsEditorView.setDirection("right");
                 this.commentsEditorView.left(offset.left + 87);

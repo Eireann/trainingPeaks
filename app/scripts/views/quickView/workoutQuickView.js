@@ -342,6 +342,8 @@ function(
             if (tabIndex === null || typeof tabIndex === "undefined")
                 return;
 
+            TP.analytics("send", "event", "quickView", "tabNavigationIndex" + tabIndex + "Clicked");
+
             this.ui.tabNavigation.find("div").removeClass("tabSelected");
             $(e.currentTarget).addClass("tabSelected");
 

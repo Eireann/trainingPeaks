@@ -63,9 +63,9 @@ function (_, TP, ExpandoController)
         expandClicked: function ()
         {
             if (!this.model.get("detailData").hasSensorData())
-            {
                 return;
-            }
+
+            TP.analytics("send", "event", "quickView", "expandoStart");
 
             this.expanded = true;
             this.renderExpandedView();

@@ -58,6 +58,8 @@ function(
 
         initialize: function(options)
         {
+            TP.analytics("send", "event", "quickView", "deviceFileStart");
+
             this.$el.addClass(options.direction);
             this.watchForFileChanges();
             this.on("render", this.preDownloadFiles, this);
@@ -74,6 +76,8 @@ function(
 
         onDeviceAgentClicked: function()
         {
+            TP.analytics("send", "event", "quickView", "deviceFileDAClicked");
+
             window.open(this.deviceAgentUrl);
         },
 
@@ -105,6 +109,8 @@ function(
 
         onRecalculateClicked: function()
         {
+            TP.analytics("send", "event", "quickView", "deviceFileRecalculate");
+
             this.recalculateConfirmationView = new UserConfirmationView({ template: recalculateConfirmationTemplate });
             this.recalculateConfirmationView.render();
             this.recalculateConfirmationView.on("userConfirmed", this.onRecalculateConfirmed, this);
@@ -112,7 +118,6 @@ function(
 
         onRecalculateConfirmed: function()
         {
-
             this.waitingOn();
 
             this.recalcCommand = new RecalculateWorkoutCommand({
@@ -159,6 +164,8 @@ function(
 
         downloadFile: function(fileInfo)
         {
+            TP.analytics("send", "event", "quickView", "deviceFileDownload");
+
             var self = this;
 
             var ifLocalFileExists = function(existingLocalFileUrl)
@@ -192,6 +199,8 @@ function(
 
         onDeleteClicked: function()
         {
+            TP.analytics("send", "event", "quickView", "deviceFileDelete");
+
             this.deleteConfirmationView = new UserConfirmationView({ template: deleteConfirmationTemplate });
             this.deleteConfirmationView.render();
             this.deleteConfirmationView.on("userConfirmed", this.onDeleteFileConfirmed, this);
