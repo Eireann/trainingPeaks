@@ -1,5 +1,7 @@
 <div class="selectedOverlay"></div>
 <div class="planDetails">
     <label class="title">{{ title }}</label>
+    {{#if planStatus}}
     <div>{{$ "Status" }}: {{ trainingPlanStatus planStatus }}</div>
+    {{/if}}
 </div>

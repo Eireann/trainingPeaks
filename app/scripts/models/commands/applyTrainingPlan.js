@@ -10,12 +10,12 @@ function(moment, TP)
 
         urlRoot: function()
         {
-            return theMarsApp.apiRoot + "/plans/v1/athletes/" + theMarsApp.user.getCurrentAthleteId() +
-                "/commands/applyplan";
+            return theMarsApp.apiRoot + "/plans/v1/commands/applyplan";
         },
 
         defaults:
         {
+            athleteId: null, 
             planId: null,
             targetDate: null,
             startType: null
