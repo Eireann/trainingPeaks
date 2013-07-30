@@ -5,6 +5,20 @@ define(
 ],
 function (_, TP)
 {
+
+    var ensureUser = function(callback) 
+    {
+        return function()
+        {
+            var self = this;
+            var args = arguments;
+            theMarsApp.userFetchPromise.done(function()
+            {
+                callback.apply(self, args);
+            });
+        }
+    };
+
     return TP.Router.extend(
     {
         initialize: function ()
@@ -61,7 +75,7 @@ function (_, TP)
             TP.analytics("send", "pageview", { page: "home" });
         },
 
-        calendar: function (athleteId)
+        calendar: ensureUser(function (athleteId)
         {
 
             if (athleteId)
@@ -80,7 +94,7 @@ function (_, TP)
             }
 
             TP.analytics("send", "pageview", { page: "calendar" });
-        },
+        }),
 
         dashboard: function()
         {

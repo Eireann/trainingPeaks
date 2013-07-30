@@ -104,10 +104,12 @@ function(
             this.watchClipboard();
 
             // wait for user to load ...
-            this.setupUserFetchPromise();
+            //this.setupUserFetchPromise();
 
             // our parent class PageContainerController needs this to trigger the window resize functionality
             this.trigger("show");
+
+            this.loadDataAfterUserLoads();
         },
 
         loadDataAfterUserLoads: function()
@@ -122,14 +124,14 @@ function(
             this.loadLibraryData();
         },
 
-        setupUserFetchPromise: function()
-        {
-            var self = this;
-            theMarsApp.userFetchPromise.done(function()
-            {
-                self.loadDataAfterUserLoads();
-            });
-        },
+        // setupUserFetchPromise: function()
+        // {
+        //     var self = this;
+        //     theMarsApp.userFetchPromise.done(function()
+        //     {
+        //         self.loadDataAfterUserLoads();
+        //     });
+        // },
 
         showViewsInRegions: function()
         {
@@ -140,52 +142,53 @@ function(
 
         scrollToDateAfterLoad: function(deferreds, dateToScrollTo, each)
         {
-            var ajaxCachingDeferreds = [];
-            _.each(deferreds, function(deferred)
-            {
-                if (deferred.hasOwnProperty("ajaxCachingDeferred"))
-                {
-                    ajaxCachingDeferreds.push(deferred.ajaxCachingDeferred);
-                }
-            });
+            return;
+            // var ajaxCachingDeferreds = [];
+            // _.each(deferreds, function(deferred)
+            // {
+            //     if (deferred.hasOwnProperty("ajaxCachingDeferred"))
+            //     {
+            //         ajaxCachingDeferreds.push(deferred.ajaxCachingDeferred);
+            //     }
+            // });
 
-            var calendarController = this;
-            // check after each week loads
-            if (each)
-            {
-                var scrollItEachTime = function()
-                {
-                    setImmediate(function() { calendarController.showDate(moment(dateToScrollTo), 10); });
-                };
-                _.each(ajaxCachingDeferreds, function(deferred)
-                {
-                    deferred.done(scrollItEachTime);
-                });
-                _.each(deferreds, function(deferred)
-                {
-                    deferred.done(scrollItEachTime);
-                });
+            // var calendarController = this;
+            // // check after each week loads
+            // if (each)
+            // {
+            //     var scrollItEachTime = function()
+            //     {
+            //         setImmediate(function() { calendarController.showDate(moment(dateToScrollTo), 10); });
+            //     };
+            //     _.each(ajaxCachingDeferreds, function(deferred)
+            //     {
+            //         deferred.done(scrollItEachTime);
+            //     });
+            //     _.each(deferreds, function(deferred)
+            //     {
+            //         deferred.done(scrollItEachTime);
+            //     });
 
-                // check after they all load
-            } else
-            {
-                // once all of the data has loaded, set a timeout to allow repainting, then scroll to today
-                calendarController.wasScrolled = false;
-                var scrollItOnce = function()
-                {
-                    if (!calendarController.wasScrolled)
-                    {
-                        calendarController.wasScrolled = true;
-                        setTimeout(function() { calendarController.showDate(moment(dateToScrollTo), 500); }, 100);
-                    }
-                };
-                if (ajaxCachingDeferreds.length > 0)
-                {
-                    $.when.apply($, ajaxCachingDeferreds).then(scrollItOnce);
-                }
+            //     // check after they all load
+            // } else
+            // {
+            //     // once all of the data has loaded, set a timeout to allow repainting, then scroll to today
+            //     calendarController.wasScrolled = false;
+            //     var scrollItOnce = function()
+            //     {
+            //         if (!calendarController.wasScrolled)
+            //         {
+            //             calendarController.wasScrolled = true;
+            //             setTimeout(function() { calendarController.showDate(moment(dateToScrollTo), 500); }, 100);
+            //         }
+            //     };
+            //     if (ajaxCachingDeferreds.length > 0)
+            //     {
+            //         $.when.apply($, ajaxCachingDeferreds).then(scrollItOnce);
+            //     }
 
-                $.when.apply($, deferreds).then(scrollItOnce);
-            }
+            //     $.when.apply($, deferreds).then(scrollItOnce);
+            // }
 
 
         },
@@ -195,15 +198,17 @@ function(
 
             //theMarsApp.logger.startTimer("CalendarController", "begin request calendar data");
             // don't make requests until after we display, or else localStorage cache synchronous read blocks browser rendering
-            var diff = this.endDate.diff(this.startDate, "weeks");
-            var deferreds = [];
-            for (var i = 0; i < diff; i++)
-            {
-                var startDate = moment(this.startDate).add("weeks", i);
-                var endDate = moment(startDate).add("days", 6);
-                var deferred = this.weeksCollection.requestWorkouts(startDate, endDate);
-                deferreds.push(deferred);
-            }
+            // var diff = this.endDate.diff(this.startDate, "weeks");
+            // var deferreds = [];
+            // for (var i = 0; i < diff; i++)
+            // {
+            //     var startDate = moment(this.startDate).add("weeks", i);
+            //     var endDate = moment(startDate).add("days", 6);
+            //     var deferred = this.weeksCollection.requestWorkouts(startDate, endDate);
+            //     deferreds.push(deferred);
+            // }
+
+            var deferreds = [this.weeksCollection.requestWorkouts(this.startDate, this.endDate)];
 
             //theMarsApp.logger.logTimer("CalendarController", "finished request calendar data");
             if (callback)

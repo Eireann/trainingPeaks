@@ -52,7 +52,7 @@ function(
             //this.initializeScrolling();
             this.initializeScrollOnDrag();
             this.on("render", this.setupKeyBindingsOnRender, this);
-            this.on("render", this.addWeeksOnRender, this);
+            //this.on("render", this.addWeeksOnRender, this);
             this.on("calendar:unselect", this.onCalendarUnSelect, this);
 
             this.on("close", this.closeChildren, this);
@@ -132,30 +132,31 @@ function(
             }
         },
 
-        onAddWeek: function(model)
-        {
-            var weekCollection = model.get("week");
-            this.addWeek({ model: model, collection: weekCollection, append: arguments[2].append });
-        },
+        // onAddWeek: function(model)
+        // {
+        //     return;
+        //     var weekCollection = model.get("week");
+        //     this.addWeek({ model: model, collection: weekCollection, append: arguments[2].append });
+        // },
 
-        addWeek: function(options)
-        {
-            var weekView = new CalendarWeekView({ collection: options.collection, model: options.model });
-            weekView.on("itemview:itemDropped", this.onItemDropped, this);
+        // addWeek: function(options)
+        // {
+        //     var weekView = new CalendarWeekView({ collection: options.collection, model: options.model });
+        //     weekView.on("itemview:itemDropped", this.onItemDropped, this);
             
-            if (options.append)
-                this.ui.weeksContainer.append(weekView.render().el);
-            else
-            {
-                this.ui.weeksContainer.prepend(weekView.render().el);
-                this.ui.weeksContainer.scrollTop(this.ui.weeksContainer.scrollTop() + weekView.$el.height());
-            }
+        //     if (options.append)
+        //         this.ui.weeksContainer.append(weekView.render().el);
+        //     else
+        //     {
+        //         this.ui.weeksContainer.prepend(weekView.render().el);
+        //         this.ui.weeksContainer.scrollTop(this.ui.weeksContainer.scrollTop() + weekView.$el.height());
+        //     }
 
-            // display waiting indicator, then once controller loads the models they will turn off via sync event
-            weekView.onWaitStart();
+        //     // display waiting indicator, then once controller loads the models they will turn off via sync event
+        //     weekView.onWaitStart();
 
-            this.children.push(weekView);
-        },
+        //     this.children.push(weekView);
+        // },
 
         setupKeyBindingsOnRender: function()
         {
@@ -169,25 +170,25 @@ function(
             $(document).on('keyup', this.onKeyUp);
         },
 
-        addWeeksOnRender: function()
-        {
-            return;
-            // var numWeeks = this.collection.length;
-            // var i = 0;
+        // addWeeksOnRender: function()
+        // {
+        //     return;
+        //     // var numWeeks = this.collection.length;
+        //     // var i = 0;
 
-            // for (; i < numWeeks; i++)
-            // {
-            //     var weekModel = this.collection.at(i);
-            //     this.addWeek({ model: weekModel, collection: weekModel.get("week"), append: true });
-            // }
+        //     // for (; i < numWeeks; i++)
+        //     // {
+        //     //     var weekModel = this.collection.at(i);
+        //     //     this.addWeek({ model: weekModel, collection: weekModel.get("week"), append: true });
+        //     // }
 
-            // this.resizeContainer();
-        },
+        //     // this.resizeContainer();
+        // },
 
         // onShow happens after render finishes and dom has updated ...
         onShow: function()
         {
-            this.scrollToSelector(".today");
+            this.weeksCollectionView.triggerMethod("show");
         },
 
         onItemDropped: function(itemView, options)
@@ -208,13 +209,13 @@ function(
             }
         },
 
-        fadeIn: function(duration)
-        {
-            if (this.$el)
-            {
-                this.$el.fadeIn({ duration: duration });
-            }
-        },
+        // fadeIn: function(callback, duration)
+        // {
+        //     if (this.$el)
+        //     {
+        //         this.$el.fadeIn(duration || 500, callback);
+        //     }
+        // },
 
         onRangeSelect: function(rangeSelection, e)
         {

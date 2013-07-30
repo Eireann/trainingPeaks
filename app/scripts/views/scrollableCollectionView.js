@@ -144,7 +144,8 @@ function(
     var ScrollableCollectionView = TP.CollectionView.extend({
         constructor: function(options)
         {
-            options.firstModel = options.firstModel || options.collection.last();
+            var self = this;
+            options.firstModel = options.firstModel || options.collection.at(Math.floor(options.collection.length / 2));
 
             options.collection = new ScrollableCollectionViewAdapterCollection(null, options);
 
@@ -157,13 +158,19 @@ function(
             this.on('before:item:added before:item:removed itemview:before:render itemview:before:resize', _.bind(this._stashScrollPosition, this));
             this.on('after:item:added after:item:removed itemview:render itemview:after:resize', _.bind(this._applyScrollPosition, this));
 
+            this.listenTo(this.collection, 'before:changes', _.bind(this._stashScrollPosition, this));
+            this.listenTo(this.collection, 'after:changes', _.bind(this._applyScrollPosition, this));
+
             this.$el.on('scroll', _.bind(this.onScroll, this));
 
             this.scrollAnchorCount = 0;
 
-            this.once('show', function()
+            this.on('show', function()
             {
-                this.scrollToModel(options.firstModel);
+                setTimeout(function()
+                {
+                    self.scrollToModel(options.firstModel);
+                }, 0);
             });
         },
 
@@ -175,7 +182,7 @@ function(
                 view = this.children.findByModel(model);
             }
 
-            this.$el.animate({scrollTop: view.$el.position().top}, duration || 100);
+            this.$el.animate({scrollTop: view.$el.position().top + view.$el.scrollTop()}, 1000);
         },
 
         _stashScrollPosition: function()
