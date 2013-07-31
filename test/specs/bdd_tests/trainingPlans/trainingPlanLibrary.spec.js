@@ -92,6 +92,58 @@ function(
             expect($mainRegion.find(".trainingPlanLibrary .trainingPlan[data-trainingplanid=3]").text()).toContain("Purchased");
         });
 
+        describe("Search", function()
+        {
+
+            var $mainRegion;
+            var $library;
+            var $searchBox;
+
+            beforeEach(function()
+            {
+                testHelpers.startTheAppAndLogin(xhrData.users.barbkprem);
+                $mainRegion = theApp.mainRegion.$el;
+                theApp.router.navigate("calendar", true);
+                testHelpers.resolveRequest("GET", "plans/v1/plans$", xhrData.trainingPlans);
+                $mainRegion.find("#plansLibrary").trigger("click");
+                $library = $mainRegion.find(".trainingPlanLibrary");
+                $searchBox = $library.find("#search");
+            });
+
+            afterEach(function()
+            {
+                testHelpers.stopTheApp();
+            });
+
+            it("Should have a search box", function()
+            {
+                expect($searchBox.length).toBe(1);
+            });
+
+            it("Should filter exact matches on key up", function()
+            {
+                expect($library.find(".trainingPlan").length).toBe(3);
+                $searchBox.val("training plan one");
+                $searchBox.trigger("keyup");
+                expect($library.find(".trainingPlan").length).toBe(1);
+                var libraryContainerText = $library.text();
+                expect(libraryContainerText).toContain("Training Plan One")
+                expect(libraryContainerText).not.toContain("Training Plan Three")
+            });
+
+            it("Should match words or partial words in any order", function()
+            {
+                expect($library.find(".trainingPlan").length).toBe(3);
+                $searchBox.val("three plan train");
+                $searchBox.trigger("keyup");
+                expect($library.find(".trainingPlan").length).toBe(1);
+                var libraryContainerText = $library.text();
+                expect(libraryContainerText).toContain("Training Plan Three")
+                expect(libraryContainerText).not.toContain("Training Plan One")
+            });
+
+        });
+
     });
 
 

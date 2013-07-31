@@ -17,7 +17,7 @@ function(TP, TrainingPlanModel)
 
         comparator: function(item)
         {
-            return item.get("title");
+            return item.get("title").replace(/[^a-zA-Z0-9]/g,"").toLowerCase();
         }
 
     });

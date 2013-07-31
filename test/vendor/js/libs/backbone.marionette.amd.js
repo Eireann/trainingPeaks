@@ -1195,6 +1195,12 @@
       this.triggerMethod("composite:rendered");
       return this;
     },
+
+    // for latest marionette compatibility so our tests don't break
+    _renderChildren: function()
+    {
+      this.renderCollection();
+    },
   
     // Render the collection for the composite view
     renderCollection: function(){
