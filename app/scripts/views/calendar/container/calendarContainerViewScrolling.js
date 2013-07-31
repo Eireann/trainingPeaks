@@ -13,8 +13,8 @@ function(_, TP, infiniteScroll)
             this.watchForDragging();
             this.on("scroll:updatePosition", this.onUpdateScrollPosition, this);
 
-            this.on("scroll", this.startScrollingState, this);
-            this.on("scroll:stop", this.snapToHeader, this);
+            this.weeksCollectionView.$el.on("scroll", _.bind(this.startScrollingState, this));
+            this.weeksCollectionView.$el.on("scroll", _.bind(_.debounce(this.stopScrollingState, 500), this));
 
         },
 
@@ -55,64 +55,6 @@ function(_, TP, infiniteScroll)
                 return $lastDayOfWeek.data("date");
             }
             return null;
-        },
-
-        snapToHeader: function ()
-        {
-
-            if (typeof this.ui.weeksContainer.offset === "undefined")
-            {
-                return;
-            }
-
-            // update drop shadow of header
-            this.stopScrollingState();
-
-            // if we were already snapping to header, and browser is zoomed, it may snap a couple pixels off - ignore it and stop instead of looping
-            if (this.snappingToHeader)
-            {
-                this.snappingToHeader = false;
-                return;
-            }
-
-
-            // where are we now ...
-            var uiOffset = this.ui.weeksContainer.offset();
-            var currentWeek = $(document.elementFromPoint(uiOffset.left + 15, uiOffset.top + 15)).closest(".week");
-            var nextWeek = currentWeek.next(".week");
-            var weeksContainerTop = uiOffset.top;
-
-            // can't find the elements?
-            if (!currentWeek || !currentWeek.offset())
-                return;
-
-            // at some zoom levels we end up with a fraction of a pixel difference, due to all of the browser scaling calculations, so round down
-            var currentWeekOffset = Math.floor(Math.abs(currentWeek.offset().top - weeksContainerTop));
-            var nextWeekOffset = Math.floor(Math.abs(nextWeek.offset().top - weeksContainerTop));
-            var threshhold = 100;
-            var animationTimeout = 300;
-
-            var minimumOffset = 0;
-            if (currentWeekOffset > minimumOffset && currentWeekOffset <= threshhold)
-            {
-                this.snappingToHeader = true;
-                this.scrollToElement(currentWeek, ".week", animationTimeout);
-                this.snappedToWeekHeader = true;
-            }
-            else if (nextWeekOffset > minimumOffset && nextWeekOffset <= threshhold)
-            {
-                this.snappingToHeader = true;
-                this.scrollToElement(nextWeek, ".week", animationTimeout);
-                this.snappedToWeekHeader = true;
-            }
-            else if (nextWeekOffset <= minimumOffset || currentWeekOffset <= minimumOffset)
-            {
-                this.snappedToWeekHeader = true;
-            }
-            else
-            {
-                this.snappedToWeekHeader = false;
-            }
         },
 
         startScrollingState: function()

@@ -170,18 +170,35 @@ function(
             this.listenTo(this.collection, 'before:changes', _.bind(this._stashScrollPosition, this));
             this.listenTo(this.collection, 'after:changes', _.bind(this._applyScrollPosition, this));
 
-            this.$el.on('scroll', _.bind(this.onScroll, this));
+
             this.$el.css('position', 'relative'); // QL: add this to the stylesheet once this view has a common CSS base
 
             this.scrollAnchorCount = 0;
+
+            this.snapToChild = _.debounce(this.snapToChild, 1000);
+
+            this.$el.on('scroll', function(event)
+            {
+                if(self.scrollAnimationDeferred && self.scrollAnimationDeferred.state() === "pending") return;
+
+                // QL: Throttle fetchPrevious/fetchNext
+                var scrollTop = self.$el.scrollTop();
+                var scrollBottom = scrollTop + self.$el.height();
+                var scrollHeight = self.$el.prop('scrollHeight');
+
+                if(scrollTop < self.scrollThreshold) self._fetchMore('top');
+                else if(scrollHeight - scrollBottom < self.scrollThreshold) self._fetchMore('bottom');
+
+                self.snapToChild();
+            });
 
             this.on('show', function()
             {
                 setTimeout(function() {
                     self.scrollToModel(options.firstModel, 0);
                 },0);
-                
             });
+
         },
 
         scrollToModel: function(model, duration)
@@ -272,23 +289,6 @@ function(
             var prevEl = collectionView.$el.children()[index];
             if(!prevEl) collectionView.$el.append(itemView.$el);
             else $(prevEl).before(itemView.$el);
-        },
-
-        onScroll: function()
-        {
-            // QL: Throttle fetchPrevious/fetchNext
-            var self = this;
-            var scrollTop = this.$el.scrollTop();
-            var scrollBottom = scrollTop + this.$el.height();
-            var scrollHeight = this.$el.prop('scrollHeight');
-           
-            if(scrollTop < this.scrollThreshold) this._fetchMore('top');
-            else if(scrollHeight - scrollBottom < this.scrollThreshold) this._fetchMore('bottom');
-
-            clearTimeout(this.scrollStopTimeout);
-            this.scrollStopTimeout = setTimeout(function() {
-                self.snapToChild();
-            },1000);
         },
 
         snapToChild: function()

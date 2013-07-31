@@ -49,8 +49,6 @@ function(
             // initialize the superclass
             this.constructor.__super__.initialize.call(this);
 
-            //this.initializeScrolling();
-            this.initializeScrollOnDrag();
             this.on("render", this.setupKeyBindingsOnRender, this);
             //this.on("render", this.addWeeksOnRender, this);
             this.on("calendar:unselect", this.onCalendarUnSelect, this);
@@ -67,6 +65,8 @@ function(
                 id: 'weeksContainer',
                 className: "scrollable colorByComplianceAndWorkoutType"
             });
+
+            this.initializeScrollOnDrag();
         },
         
         render: function()
