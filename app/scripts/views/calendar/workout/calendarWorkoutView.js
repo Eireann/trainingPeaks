@@ -164,9 +164,9 @@ function(
         workoutSettingsClicked: function(e)
         {
             if (e && e.button && e.button === 2)
-            {
                 return;
-            }
+
+            TP.analytics("send", { "hitType": "event", "eventCategory": "calendar", "eventAction": "workoutSettingsClicked", "eventLabel": "" });
 
             e.preventDefault();
 
@@ -202,7 +202,7 @@ function(
             var view = new WorkoutQuickView({ model: this.model });
             view.render();
 
-            TP.analytics("send", "event", "calendar", "quickViewOpened");
+            TP.analytics("send", { "hitType": "event", "eventCategory": "calendar", "eventAction": "quickViewOpened", "eventLabel": "" });
         },
 
         workoutTouched: function(e)

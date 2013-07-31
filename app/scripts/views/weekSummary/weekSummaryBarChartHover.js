@@ -23,7 +23,7 @@ function (TP, setImmediate, jqueryOutside, UserConfirmationView, weekSummaryBarC
 
         initialize: function (options)
         {
-            TP.analytics("send", "event", "calendar", "weekSummaryHover");
+            TP.analytics("send", { "hitType": "event", "eventCategory": "calendar", "eventAction": "weekSummaryHover", "eventLabel": "" });
             
             this.posX = options.left;
             this.posY = options.top;

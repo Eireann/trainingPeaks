@@ -278,7 +278,7 @@ function(
 
         onSelectPeakType: function ()
         {
-            TP.analytics("send", "event", "expando", "peakTypeSelected");
+            TP.analytics("send", { "hitType": "event", "eventCategory": "expando", "eventAction": "peakTypeSelected", "eventLabel": "" });
             
             this.changePeakType(this.$("#peakType").val());
         },
@@ -331,7 +331,7 @@ function(
 
         selectPeak: function(peakType, peakInterval, options)
         {
-            TP.analytics("send", "event", "expando", "peakSelected");
+            TP.analytics("send", { "hitType": "event", "eventCategory": "expando", "eventAction": "peakSelected", "eventLabel": "" });
 
             var peakDataItem = this.findPeak(peakType, peakInterval);
 
@@ -366,7 +366,7 @@ function(
 
         onLapsClicked: function(e)
         {
-            TP.analytics("send", "event", "expando", "lapClicked");
+            TP.analytics("send", { "hitType": "event", "eventCategory": "expando", "eventAction": "lapClicked", "eventLabel": "" });
 
             var target = $(e.target);
             var li = target.closest("li");
@@ -422,7 +422,7 @@ function(
 
         onEntireWorkoutClicked: function(e)
         {
-            TP.analytics("send", "event", "expando", "entireWorkoutClicked");
+            TP.analytics("send", { "hitType": "event", "eventCategory": "expando", "eventAction": "entireWorkoutClicked", "eventLabel": "" });
 
             var target = $(e.target);
             var li = target.closest("li");

@@ -65,7 +65,7 @@ function (_, TP, ExpandoController)
             if (!this.model.get("detailData").hasSensorData())
                 return;
 
-            TP.analytics("send", "event", "quickView", "expandoStart");
+            TP.analytics("send", { "hitType": "event", "eventCategory": "quickView", "eventAction": "expandClicked", "eventLabel": "" });
 
             this.expanded = true;
             this.renderExpandedView();
@@ -119,6 +119,8 @@ function (_, TP, ExpandoController)
 
         collapseClicked: function ()
         {
+            TP.analytics("send", { "hitType": "event", "eventCategory": "expando", "eventAction": "collapseClicked", "eventLabel": "" });
+
             this.expanded = false;
             this.animateOneStepCollapse();
         },

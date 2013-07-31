@@ -58,7 +58,7 @@ function(
 
         initialize: function(options)
         {
-            TP.analytics("send", "event", "quickView", "deviceFileStart");
+            TP.analytics("send", { "hitType": "event", "eventCategory": "deviceFileTomahawk", "eventAction": "opened", "eventLabel": "" });
 
             this.$el.addClass(options.direction);
             this.watchForFileChanges();
@@ -76,7 +76,7 @@ function(
 
         onDeviceAgentClicked: function()
         {
-            TP.analytics("send", "event", "quickView", "deviceFileDAClicked");
+            TP.analytics("send", { "hitType": "event", "eventCategory": "deviceFileTomahawk", "eventAction": "DALinkClicked", "eventLabel": "" });
 
             window.open(this.deviceAgentUrl);
         },
@@ -109,7 +109,7 @@ function(
 
         onRecalculateClicked: function()
         {
-            TP.analytics("send", "event", "quickView", "deviceFileRecalculate");
+            TP.analytics("send", { "hitType": "event", "eventCategory": "deviceFileTomahawk", "eventAction": "recalculateClicked", "eventLabel": "" });
 
             this.recalculateConfirmationView = new UserConfirmationView({ template: recalculateConfirmationTemplate });
             this.recalculateConfirmationView.render();
@@ -164,7 +164,7 @@ function(
 
         downloadFile: function(fileInfo)
         {
-            TP.analytics("send", "event", "quickView", "deviceFileDownload");
+            TP.analytics("send", { "hitType": "event", "eventCategory": "deviceFileTomahawk", "eventAction": "downloadFileClicked", "eventLabel": "" });
 
             var self = this;
 
@@ -199,8 +199,6 @@ function(
 
         onDeleteClicked: function()
         {
-            TP.analytics("send", "event", "quickView", "deviceFileDelete");
-
             this.deleteConfirmationView = new UserConfirmationView({ template: deleteConfirmationTemplate });
             this.deleteConfirmationView.render();
             this.deleteConfirmationView.on("userConfirmed", this.onDeleteFileConfirmed, this);
@@ -208,6 +206,8 @@ function(
 
         onDeleteFileConfirmed: function()
         {
+            TP.analytics("send", { "hitType": "event", "eventCategory": "deviceFileTomahawk", "eventAction": "deleteFileClicked", "eventLabel": "" });
+
             this.waitingOn();
             var fileDataModel = new WorkoutFileDataModel({ id: this.selectedFileId, workoutId: this.model.get("workoutId") });
             var self = this;

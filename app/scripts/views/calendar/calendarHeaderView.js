@@ -138,7 +138,7 @@ function(TP, moment, coachAndAffiliateCustomizations, calendarHeaderTemplate)
 
         onAthleteSelectBoxChange: function ()
         {
-            TP.analytics("send", "event", "calendar", "athleteChanged");
+            TP.analytics("send", { "hitType": "event", "eventCategory": "calendar", "eventAction": "athleteChanged", "eventLabel": "" });
 
             var athleteId = Number(this.$("#athleteCalendarSelect").val());
 
@@ -156,25 +156,25 @@ function(TP, moment, coachAndAffiliateCustomizations, calendarHeaderTemplate)
 
         onGoToTodayButtonClicked: function ()
         {
-            TP.analytics("send", "event", "calendar", "todayClicked");
+            TP.analytics("send", { "hitType": "event", "eventCategory": "calendar", "eventAction": "todayClicked", "eventLabel": "" });
             this.trigger("request:today");
         },
         
         onGoToNextWeekButtonClicked: function()
         {
-            TP.analytics("send", "event", "calendar", "nextWeekClicked");
+            TP.analytics("send", { "hitType": "event", "eventCategory": "calendar", "eventAction": "nextWeekClicked", "eventLabel": "" });
             this.trigger("request:nextweek", this.model);
         },
         
         onGoToLastWeekButtonClicked: function()
         {
-            TP.analytics("send", "event", "calendar", "lastWeekClicke");
+            TP.analytics("send", { "hitType": "event", "eventCategory": "calendar", "eventAction": "lastWeekClicked", "eventLabel": "" });
             this.trigger("request:lastweek", this.model);
         },
         
         onRefreshButtonClicked: function()
         {
-            TP.analytics("send", "event", "calendar", "refreshClicked");
+            TP.analytics("send", { "hitType": "event", "eventCategory": "calendar", "eventAction": "refreshClicked", "eventLabel": "" });
             this.trigger("request:refresh", this.model.get("date"));
         }
     };

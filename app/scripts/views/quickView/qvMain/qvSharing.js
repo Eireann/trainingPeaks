@@ -52,7 +52,7 @@ function (
 
         onPublicCheckboxClicked: function(e)
         {
-            TP.analytics("send", "event", "quickView", "headerPublicClicked");
+            TP.analytics("send", { "hitType": "event", "eventCategory": "quickView", "eventAction": "workoutShared", "eventLabel": "Public" });
 
             if (!TP.utils.workout.determineCompletedWorkout(this.model))
                 return;
@@ -120,7 +120,7 @@ function (
             if (!this.workoutIsShareable())
                 return;
             
-            TP.analytics("send", "event", "quickView", "headerSharedOnTwitter");
+            TP.analytics("send", { "hitType": "event", "eventCategory": "quickView", "eventAction": "workoutShared", "eventLabel": "Twitter" });
 
             var url = this.getShortenedUrl();
             var text = this.getSharedText();
@@ -139,7 +139,7 @@ function (
             if (!this.workoutIsShareable())
                 return;
 
-            TP.analytics("send", "event", "quickView", "headerSharedOnFacebook");
+            TP.analytics("send", { "hitType": "event", "eventCategory": "quickView", "eventAction": "workoutShared", "eventLabel": "Facebook" });
 
             var url = this.getShortenedUrl();
             var urlOverride = theMarsApp.wwwRoot;
@@ -166,7 +166,7 @@ function (
             if (!this.workoutIsShareable() || !this.workoutHasFileData())
                 return;
 
-            TP.analytics("send", "event", "quickView", "headerSharedAsLink");
+            TP.analytics("send", { "hitType": "event", "eventCategory": "quickView", "eventAction": "workoutShared", "eventLabel": "URL" });
 
             var linkIcon = $(e.target);
             this.shortUrlView = new ShortUrlView({ model: this.shortUrlModel });

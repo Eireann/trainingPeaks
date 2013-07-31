@@ -43,7 +43,7 @@ function(_,
 
         initialize: function (options)
         {
-            TP.analytics("send", "event", "quickView", "attachmentStart");
+            TP.analytics("send", { "hitType": "event", "eventCategory": "attachmentTomahawk", "eventAction": "opened", "eventLabel": "" });
 
             this.$el.addClass(options.direction);
             this.watchForFileChanges();
@@ -97,7 +97,7 @@ function(_,
 
         onDeleteClicked: function()
         {
-            TP.analytics("send", "event", "quickView", "attachmentDelete");
+            TP.analytics("send", { "hitType": "event", "eventCategory": "attachmentTomahawk", "eventAction": "deleteClicked", "eventLabel": "" });
 
             this.deleteConfirmationView = new UserConfirmationView({ template: deleteConfirmationTemplate });
             this.deleteConfirmationView.render();
@@ -106,6 +106,8 @@ function(_,
 
         onDeleteFileConfirmed: function()
         {
+            TP.analytics("send", { "hitType": "event", "eventCategory": "attachmentTomahawk", "eventAction": "deleteConfirmed", "eventLabel": "" });
+
             this.waitingOn();
             var fileDataModel = new WorkoutFileAttachment({ id: this.selectedFileId, workoutId: this.model.get("workoutId") });
             var self = this;
@@ -120,7 +122,7 @@ function(_,
 
         onAttachmentFileSelected: function ()
         {
-            TP.analytics("send", "event", "quickView", "attachmentBrowse");
+            TP.analytics("send", { "hitType": "event", "eventCategory": "attachmentTomahawk", "eventAction": "newAttachmentFileSelected", "eventLabel": "" });
 
             _.bindAll(this, "uploadAttachment");
             this.waitingOn();
@@ -155,7 +157,7 @@ function(_,
 
         downloadFile: function (fileInfo)
         {
-            TP.analytics("send", "event", "quickView", "attachmentDownload");
+            TP.analytics("send", { "hitType": "event", "eventCategory": "attachmentTomahawk", "eventAction": "downloadFileClicked", "eventLabel": "" });
 
             var self = this;
 

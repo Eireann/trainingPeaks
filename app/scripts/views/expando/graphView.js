@@ -196,7 +196,7 @@ function(
             if (!this.plot)
                 return;
             
-            TP.analytics("send", "event", "expando", "graphZoomClicked");
+            TP.analytics("send", { "hitType": "event", "eventCategory": "expando", "eventAction": "graphZoomClicked", "eventLabel": "" });
 
             if (!this.plot.getSelection() && this.plot.hasMultiSelection())
             {
@@ -226,7 +226,7 @@ function(
             if (!this.plot)
                 return;
 
-            TP.analytics("send", "event", "expando", "graphZoomReset");
+            TP.analytics("send", { "hitType": "event", "eventCategory": "expando", "eventAction": "graphZoomReset", "eventLabel": "" });
 
             this.plot.resetZoom();
 
@@ -271,7 +271,7 @@ function(
             if (!this.plot)
                 return;
 
-            TP.analytics("send", "event", "expando", "graphSmoothingApplied");
+            TP.analytics("send", { "hitType": "event", "eventCategory": "expando", "eventAction": "graphSmoothingApplied", "eventLabel": "" });
 
             this.lastFilterPeriod = period;
             this.plot.setFilter(period);
@@ -297,7 +297,7 @@ function(
 
         onPlotSelected: function()
         {
-            TP.analytics("send", "event", "expando", "graphSelection");
+            TP.analytics("send", { "hitType": "event", "eventCategory": "expando", "eventAction": "graphSelection", "eventLabel": "" });
 
             var startOffsetMs = Math.round(this.plot.getSelection().xaxis.from);
             var endOffsetMs = Math.round(this.plot.getSelection().xaxis.to);
@@ -337,7 +337,7 @@ function(
             if (!this.plot)
                 return;
 
-            TP.analytics("send", "event", "expando", "graphSeriesEnabled", series);
+            TP.analytics("send", { "hitType": "event", "eventCategory": "expando", "eventAction": "graphSeriesEnabled", "eventLabel": series });
             
             if(_.contains(this.disabledSeries, series))
             {
@@ -351,7 +351,7 @@ function(
             if (!this.plot)
                 return;
 
-            TP.analytics("send", "event", "expando", "graphSeriesDisabled", series);
+            TP.analytics("send", { "hitType": "event", "eventCategory": "expando", "eventAction": "graphSeriesDisabled", "eventLabel": series });
 
             if (!_.contains(this.disabledSeries, series))
             {

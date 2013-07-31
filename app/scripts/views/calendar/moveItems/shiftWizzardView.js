@@ -117,7 +117,7 @@ function(
 
         onRender: function ()
         {
-            TP.analytics("send", "event", "calendar", "shiftWizard", "start");
+            TP.analytics("send", { "hitType": "event", "eventCategory": "shiftWizard", "eventAction": "opened", "eventLabel": "" });
 
             // stickit
             this.model.off("change", this.render);
@@ -205,7 +205,7 @@ function(
             // setup shift command
             if (this.model.get("workouts"))
             {
-                TP.analytics("send", "event", "calendar", "shiftWizard", "shifting");
+                TP.analytics("send", { "hitType": "event", "eventCategory": "shiftWizard", "eventAction": "shiftStarted", "eventLabel": "" });
 
                 var shiftCommand = new ShiftWorkoutsCommand();
                 this.configureShiftCommand(shiftCommand);

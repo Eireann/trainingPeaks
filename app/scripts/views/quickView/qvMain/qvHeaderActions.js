@@ -74,7 +74,7 @@ function (
 
         onDateClicked: function(e)
         {
-            TP.analytics("send", "event", "quickView", "headerDateClicked");
+            TP.analytics("send", { "hitType": "event", "eventCategory": "quickView", "eventAction": "headerDateClicked", "eventLabel": "" });
 
             _.bindAll(this, "onDateChanged");
 
@@ -95,7 +95,7 @@ function (
 
         onDateChanged: function(newDate)
         {
-            TP.analytics("send", "event", "quickView", "headerDateChanged");
+            TP.analytics("send", { "hitType": "event", "eventCategory": "quickView", "eventAction": "workoutDateChanged", "eventLabel": "" });
 
             var newDay = moment(newDate).format(this.model.shortDateFormat);
             this.ui.date.datepicker("hide");
@@ -109,7 +109,7 @@ function (
 
         onWorkoutIconClicked: function()
         {
-            TP.analytics("send", "event", "quickView", "headerWorkoutIconClicked");
+            TP.analytics("send", { "hitType": "event", "eventCategory": "quickView", "eventAction": "headerWorkoutIconClicked", "eventLabel": "" });
 
             var icon = this.$(".workoutIconLarge");
             var direction = this.expanded ? "right" : "left";
@@ -126,8 +126,7 @@ function (
 
         onSelectWorkoutType: function(workoutTypeId)
         {
-            TP.analytics("send", "event", "quickView", "headerWorkoutTypeChanged");
-
+            TP.analytics("send", { "hitType": "event", "eventCategory": "quickView", "eventAction": "workoutTypeChanged", "eventLabel": "" });
             this.model.set("workoutTypeValueId", workoutTypeId);
         },
 
@@ -144,7 +143,7 @@ function (
 
         onBreakThroughClicked: function()
         {
-            TP.analytics("send", "event", "quickView", "headerBreakThroughClicked");
+            TP.analytics("send", { "hitType": "event", "eventCategory": "quickView", "eventAction": "workoutBreakThroughChanged", "eventLabel": "" });
 
             var description = this.model.get("description");
 
@@ -152,16 +151,14 @@ function (
                 description = "";
 
             if (description.indexOf("BT:") !== 0)
-            {
                 this.model.set("description", "BT: " + description);
-            } else
+            else
             {
                 description = description.replace(/BT:/, "").trim();
                 this.model.set("description", description);
             }
 
             this.model.save();
-
         },
 
         onTitleFocus: function()
@@ -201,7 +198,7 @@ function (
         
         onCommentsClicked: function (e)
         {
-            TP.analytics("send", "event", "quickView", "headerCommentsClicked");
+            TP.analytics("send", { "hitType": "event", "eventCategory": "quickView", "eventAction": "headerCommentsClicked", "eventLabel": "" });
 
             var offset = $(e.currentTarget).offset();
 

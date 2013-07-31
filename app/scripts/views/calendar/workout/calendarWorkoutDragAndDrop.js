@@ -56,8 +56,7 @@ function(TP, CalendarWorkoutTemplateDragState)
         onDragStart: function()
         {
             this.$el.addClass("dragging");
-
-            TP.analytics("send", "event", "calendar", "dragdrop", "workout");
+            TP.analytics("send", { "hitType": "event", "eventCategory": "calendar", "eventAction": "dragDropStart", "eventLabel": "workout" });
         },
 
         onDragStop: function()

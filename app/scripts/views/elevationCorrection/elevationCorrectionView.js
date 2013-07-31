@@ -56,7 +56,7 @@ function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandMo
 
             this.once("render", this.onFirstRender, this);
 
-            TP.analytics("send", "event", "expando", "elevationCorrection", "opened");
+            TP.analytics("send", { "hitType": "event", "eventCategory": "groundControl", "eventAction": "opened", "eventLabel": "" });
         },
 
         bindCallbacks: function()
@@ -219,7 +219,7 @@ function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandMo
 
             elevationCorrectionCommand.execute().done(this.onElevationCorrectionApplied);
 
-            TP.analytics("send", "event", "expando", "elevationCorrection", "applied");
+            TP.analytics("send", { "hitType": "event", "eventCategory": "groundControl", "eventAction": "applied", "eventLabel": "" });
         },
         
         onElevationCorrectionApplied: function ()
