@@ -191,7 +191,7 @@ function(
                 this.collection.centerOnModel(model);
                 view = this.children.findByModel(model);
             }
-            this.$el.scrollTop(view.$el.position().top + view.$el.scrollTop());
+             this.$el.scrollTop(view.$el.position().top + view.$el.scrollTop());
             this.scrollAnchor = {
                 view: view,
                 position: {top: 0}
@@ -216,7 +216,7 @@ function(
                 return item.position.top;
             })
             .find(function(item) {
-                return item.position.top >= 0;
+                return item.position.top >= -20;
             })
             .value();
         },

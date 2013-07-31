@@ -92,7 +92,6 @@ function(moment, setImmediate, TP, CalendarDayView, WeekSummaryView, CalendarWee
 
         onWaitStop: function()
         {
-            return;
             if(!this.isWaiting) return;
             this.isWaiting = false;
             this.trigger("waitStop");
@@ -101,6 +100,7 @@ function(moment, setImmediate, TP, CalendarDayView, WeekSummaryView, CalendarWee
 
         onRender: function()
         {
+            this.isWaiting = false;
             this._updateWaiting();
             this.setThisWeekCss();
         },
