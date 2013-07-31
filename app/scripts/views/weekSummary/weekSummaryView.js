@@ -29,7 +29,6 @@ function(
 
             "mouseleave .weekSummaryBarGraphItem": "weekSummaryBarGraphLeave",
             "mouseenter .weekSummaryBarGraphItem": "weekSummaryBarGraphHover"
-            
         },
 
         initialize: function()
@@ -39,7 +38,7 @@ function(
 
             theMarsApp.user.on("change", this.render, this);
             
-            this.render = _.throttle(this.render, 100);
+            this.render = _.debounce(this.render, 100, {leading: true, trailing: true, maxWait: 500});
 
             var self = this;
             this.model.collection.each(function(item)

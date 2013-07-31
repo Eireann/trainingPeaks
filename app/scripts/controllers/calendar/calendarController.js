@@ -407,6 +407,8 @@ function(
 
         bindToCalendarViewEvents: function(calendarView)
         {
+            // none of this is being used anymore
+
             calendarView.on("scroll:top", this.prependWeekToCalendar, this);
             calendarView.on("scroll:bottom", this.appendWeekToCalendar, this);
 
