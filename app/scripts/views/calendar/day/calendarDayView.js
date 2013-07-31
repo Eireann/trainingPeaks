@@ -308,7 +308,7 @@ function(_, touchPunch, draggable, droppable, moment, TP, CalendarWorkoutView, C
         onDragStop: function()
         {
             this.$el.removeClass("dragging");
-        },
+        },
         appendHtml: function(collectionView, itemView, index)
         {
             itemView.$el.insertBefore(collectionView.$(".addWorkoutWrapper"));

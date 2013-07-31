@@ -75,11 +75,8 @@ function(
 
             PrimaryContainerView.prototype.render.apply(this, arguments);
 
-            this.listenTo(this.weeksCollectionView, 'itemview:render', function(weekView)
-            {
-                weekView.on("itemview:itemDropped", self.onItemDropped, self);
-                //weekView.onWaitStart();
-            });
+            // Listen for itemDroped eventd on Day View
+            this.listenTo(this.weeksCollectionView, "itemview:itemview:itemDropped", _.bind(this.onItemDropped, this));
 
             this.weeksCollectionView.render();
             // this.children.add(this.weeksCollectionView);
@@ -197,7 +194,7 @@ function(
             this.weeksCollectionView.triggerMethod("show");
         },
 
-        onItemDropped: function(itemView, options)
+        onItemDropped: function(weekView, dayView, options)
         {
             this.trigger("itemDropped", options);
         },
