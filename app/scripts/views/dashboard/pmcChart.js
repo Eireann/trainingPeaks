@@ -455,7 +455,7 @@ function(
                     fillColor: { colors: [chartColors.pmcColors.ctlGradient.dark, chartColors.pmcColors.ctlGradient.light] }
                 },
                 yaxis: 1,
-                shadowSize: 2,
+                shadowSize: 2
             };
 
             return dataSeries;
@@ -493,7 +493,7 @@ function(
                     show: true,
                     fill: true,
                     fillColor: { colors: [chartColors.pmcColors.futureCTLGradient.dark, chartColors.pmcColors.futureCTLGradient.light] },
-                    lineWidth: this.lineThickness,
+                    lineWidth: this.lineThickness
                 },
                 yaxis: 1,
                 shadowSize: 0
@@ -526,7 +526,7 @@ function(
             if (this.shouldShowTSBFill())
             {
                 dataSeries.lines.fill = true;
-                dataSeries.lines.fillColor = { colors: [chartColors.pmcColors.tsbGradient.dark, chartColors.pmcColors.tsbGradient.light] }
+                dataSeries.lines.fillColor = { colors: [chartColors.pmcColors.tsbGradient.dark, chartColors.pmcColors.tsbGradient.light] };
                 
             }
 
@@ -548,7 +548,7 @@ function(
                 dashes:
                 {
                     show: true,
-                    lineWidth: this.lineThickness,
+                    lineWidth: this.lineThickness
                 },
                 yaxis: yaxis,
                 shadowSize: 0
@@ -574,7 +574,7 @@ function(
                     show: true,
                     fill: true,
                     fillColor: { colors: [chartColors.pmcColors.tsbGradient.dark, chartColors.pmcColors.tsbGradient.light] },
-                    lineWidth: this.lineThickness,
+                    lineWidth: this.lineThickness
                 },
                 yaxis: yaxis,
                 shadowSize: 0

@@ -52,9 +52,9 @@ function(
 
         getComplianceCssClassName: function ()
         {
-            return TP.utils.workout.getComplianceCssClassName(this.model)
+            return TP.utils.workout.getComplianceCssClassName(this.model);
         },
-        
+
         getPastOrCompletedCssClassName: function()
         {
             var workout = this.model;
