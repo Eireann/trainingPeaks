@@ -127,8 +127,8 @@ function(
                 $searchBox.trigger("keyup");
                 expect($library.find(".trainingPlan").length).toBe(1);
                 var libraryContainerText = $library.text();
-                expect(libraryContainerText).toContain("Training Plan One")
-                expect(libraryContainerText).not.toContain("Training Plan Three")
+                expect(libraryContainerText).toContain("Training Plan One");
+                expect(libraryContainerText).not.toContain("Training Plan Three");
             });
 
             it("Should match words or partial words in any order", function()
@@ -138,8 +138,8 @@ function(
                 $searchBox.trigger("keyup");
                 expect($library.find(".trainingPlan").length).toBe(1);
                 var libraryContainerText = $library.text();
-                expect(libraryContainerText).toContain("Training Plan Three")
-                expect(libraryContainerText).not.toContain("Training Plan One")
+                expect(libraryContainerText).toContain("Training Plan Three");
+                expect(libraryContainerText).not.toContain("Training Plan One");
             });
 
         });

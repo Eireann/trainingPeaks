@@ -101,7 +101,7 @@ function(
                     {
                         return matcher.test(title);
                     });
-                }
+                };
 
                 this.collection = new TrainingPlanCollection(this.sourceCollection.filter(filterModel));
 
@@ -146,11 +146,6 @@ function(
 
     AnyWordOrderMatcher.prototype.test = function(title)
     {
-        if(!this.patterns)
-        {
-            this.buildPatterns;
-        }
-
         return _.every(this.patterns, function(pattern)
         {
             try {
