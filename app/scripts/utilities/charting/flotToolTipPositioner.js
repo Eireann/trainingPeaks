@@ -43,7 +43,7 @@ function()
 
             if (tooltipLocation.left + tooltipWidth > canvasLocation.left + canvasWidth - rightLimit)
             {
-                var tooltipLeft = tooltipLocation.left - tooltipWidth - 60;
+                var tooltipLeft = tooltipLocation.left - tooltipWidth - 40;
                 $tooltipEl.css("left", tooltipLeft + "px");
                 $tooltipEl.removeClass("right").addClass("left");
             }
