@@ -16,7 +16,7 @@ function (_, TP)
             {
                 callback.apply(self, args);
             });
-        }
+        };
     };
 
     return TP.Router.extend(

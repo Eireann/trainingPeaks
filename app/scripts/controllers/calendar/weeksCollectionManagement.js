@@ -21,28 +21,18 @@ function(CalendarCollection
             //console.log("Weeks collection init took " + (+new Date() - startTime) + "ms");
         },
 
-        // Deprecated
+        // QL: Deprecated
         appendWeekToCalendar: function ()
         {
+            console.warn("appendWeekToCalendar is deprecated and no longer functional");
             return;
-            var startDate = moment(this.endDate).add("days", 1);
-            var endDate = moment(startDate).add("days", 6);
-            this.endDate = moment(endDate);
-
-            this.weeksCollection.appendWeek(startDate);
-            this.weeksCollection.requestWorkouts(startDate, endDate);
         },
 
-        // Deprecated
+        // QL: Deprecated
         prependWeekToCalendar: function()
         {
+            console.warn("prependWeekToCalendar is deprecated and no longer functional");
             return;
-            var endDate = moment(this.startDate).subtract("days", 1);
-            var startDate = moment(endDate).subtract("days", 6);
-            this.startDate = moment(startDate);
-
-            this.weeksCollection.prependWeek(startDate);
-            this.weeksCollection.requestWorkouts(startDate, endDate);
         },
 
         watchClipboard: function ()
