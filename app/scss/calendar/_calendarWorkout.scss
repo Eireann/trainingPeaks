@@ -232,7 +232,7 @@
             
             .workoutHeader {
                 padding: 0px 3px 3px 3px;
-                height: 25px;
+                height: 20px;
                 position: relative;
                 
                 .workoutIcon {
@@ -240,9 +240,10 @@
                 }
 
                 .workoutDistanceTime {
-                    padding: 5px 0px 0px 0px;
+                    padding: 0px 0px 0px 0px;
 
-                    @include labels($fontFamilyRegular, $fontSizeXLarge, $TPGrey4, normal);
+                    @include labels($fontFamilyRegular, $fontSizeMedium, #000, normal);
+                    
                     label {
                         display:inline-block;
                     }
@@ -283,6 +284,7 @@
                 font-family: $fontFamilyRegular;
                 text-align: left;
                 line-height: 12px;
+                padding:3px 3px 0 3px;
             }
 
             .description
@@ -292,6 +294,7 @@
                 font-family: $fontFamilyRegular;
                 text-align: left;
                 line-height: 12px;
+                padding:0 3px 3px 3px;
             }
         }
 
