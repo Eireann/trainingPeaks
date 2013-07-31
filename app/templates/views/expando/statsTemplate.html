@@ -34,7 +34,7 @@
     <div class="statsRow" id="energy">
         <label>{{$ "Work" }}</label>
         {{#if energy }}
-        <span class="value">{{ conversion "formatEnergy" energy }}</span>
+        <span class="value">{{ conversion "formatEnergy" energy this "--"}}</span>
         <span class="units">{{ getUnitsLabel "energy" }}</span>
         {{ else }}
         <span class="value">--</span>
@@ -46,7 +46,7 @@
     <div class="statsRow" id="tss">
         <label>{{ getUnitsLabel "tss" workoutTypeValueId this }}</label>
         {{#if trainingStressScoreActual }}
-        <span class="value">{{ conversion "formatTSS" trainingStressScoreActual }}</span>
+        <span class="value">{{ conversion "formatTSS" trainingStressScoreActual this "--"}}</span>
         <span class="units"></span>
         {{ else }}
         <span class="value">--</span>
@@ -58,7 +58,7 @@
     <div class="statsRow" id="ngp">
         <label>{{$ "NGP" }}</label>
         {{#if normalizedSpeedActual }}
-        <span class="value">{{ conversion "formatPace" normalizedSpeedActual this }}</span>
+        <span class="value">{{ conversion "formatPace" normalizedSpeedActual this "--"}}</span>
         <span class="units">{{ getUnitsLabel "pace" workoutTypeValueId }}</span>
         {{ else }}
         <span class="value">--</span>
