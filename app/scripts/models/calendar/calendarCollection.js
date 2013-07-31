@@ -258,17 +258,17 @@ function(
 
         setWeeksWaiting: function(startDate, endDate, isWaiting)
         {
-            startDate = startDate.format(TP.utils.datetime.shortDateFormat);
-            endDate = endDate.format(TP.utils.datetime.shortDateFormat);
-            this.forEach(function(weekModel)
-            {
-                var weekDate = weekModel.id;
-                if (weekDate >= startDate && weekDate <= endDate)
-                {
-                    //weekModel.trigger("sync");
-                    weekModel.set("isWaiting", isWaiting);
+            var dayOfWeekIndex = this.startDate.day();
+            startDate = startDate.day(dayOfWeekIndex).format(TP.utils.datetime.shortDateFormat);
+            endDate = endDate.day(dayOfWeekIndex).format(TP.utils.datetime.shortDateFormat);
+            var cursorDate = startDate;
+
+            while (cursorDate <= endDate) {
+                if (this.get(cursorDate)) {
+                    this.get(cursorDate).set('isWaiting', isWaiting);
                 }
-            });
+                cursorDate = moment(cursorDate).add('weeks', 1).format(TP.utils.datetime.shortDateFormat);
+            }      
         },
 
         getWorkout: function(workoutId)
