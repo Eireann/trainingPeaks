@@ -19,12 +19,15 @@ function()
 
         pmcColors:
             {
-                TSS: "#e61101",
+                TSS: "#3399ff",
                 TSB: "#FFA500",
                 TSBFill: "rgba(255,165,0, 0.4)",
-                ATL: "#E38AAE",
-                CTL: "#1b82ce",
-                IF: "#6e96b9"
+                ATL: "#f945d7",
+                CTL: "#ffffff",
+                IF: "#b90807",
+                ctlGradient: { dark: "#eaebec", light: "#b5c7d4" },
+                futureCTLGradient: { dark: "#eaebec", light: "#cacbcc" },
+                tsbGradient: { dark: "rgba(234, 235, 236, 0.4)", light: "rgba(255,165,0, 0.4)" }
             },
 
         gradients:

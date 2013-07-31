@@ -37,6 +37,8 @@ function(
         tagName: "div",
         className: "dashboardChart doubleWide",
         showThrobber: true,
+        lineThickness: 1,
+        pointRadius: 1.5,
 
         template:
         {
@@ -295,6 +297,10 @@ function(
         {
             var series = [];
 
+            series.push(this.buildCTLDataSeries(chartPoints.CTL, chartColors));
+            series.push(this.buildCTLFutureDataSeries(chartPoints.CTLFuture, chartColors));
+            series.push(this.buildCTLFutureDataSeriesFill(chartPoints.CTLFuture, chartColors));
+
             series.push(this.buildTSBDataSeries(chartPoints.TSB, chartColors));
             if (this.shouldShowTSBFill())
             {
@@ -317,9 +323,6 @@ function(
             series.push(this.buildATLDataSeries(chartPoints.ATL, chartColors));
             series.push(this.buildATLFutureDataSeries(chartPoints.ATLFuture, chartColors));
 
-            series.push(this.buildCTLDataSeries(chartPoints.CTL, chartColors));
-            series.push(this.buildCTLFutureDataSeries(chartPoints.CTLFuture, chartColors));
-
             return series;
         },
 
@@ -331,9 +334,13 @@ function(
                 color: chartColors.pmcColors.TSS,
                 points:
                 {
-                    show: true
+                    
+                    show: true,
+                    fill: true,
+                    fillColor: chartColors.pmcColors.TSS,
+                    radius: this.pointRadius
                 },
-                yaxis: 1
+                yaxis: this.shouldShowIF() ? 3 : 2
             };
 
             return dataSeries;
@@ -347,9 +354,12 @@ function(
                 color: chartColors.pmcColors.TSS,
                 points:
                 {
-                    show: true
+                    show: true,
+                    fill: true,
+                    fillColor: chartColors.pmcColors.TSS,
+                    radius: this.pointRadius
                 },
-                yaxis: 1
+                yaxis: this.shouldShowIF() ? 3 : 2
             };
 
             return dataSeries;
@@ -363,9 +373,12 @@ function(
                 color: chartColors.pmcColors.IF,
                 points:
                 {
-                    show: true
+                    show: true,
+                    fill: true,
+                    fillColor: chartColors.pmcColors.IF,
+                    radius: this.pointRadius
                 },
-                yaxis: this.shouldShowTSS() ? 3 : 2
+                yaxis: this.shouldShowIF() ? 3 : 2
             };
 
             return dataSeries;
@@ -379,9 +392,12 @@ function(
                 color: chartColors.pmcColors.IF,
                 points:
                 {
-                    show: true
+                    show: true,
+                    fill: true,
+                    fillColor: chartColors.pmcColors.IF,
+                    radius: this.pointRadius
                 },
-                yaxis: this.shouldShowTSS() ? 3 : 2
+                yaxis: this.shouldShowIF() ? 3 : 2
             };
 
             return dataSeries;
@@ -395,9 +411,12 @@ function(
                 color: chartColors.pmcColors.ATL,
                 lines:
                 {
-                    show: true
+                    show: true,
+                    lineWidth: this.lineThickness,
+                    fill: false
                 },
-                yaxis: this.shouldShowTSS() ? 2 : 1
+                yaxis: 1,
+                shadowSize: 0
             };
 
             return dataSeries;
@@ -411,9 +430,11 @@ function(
                 color: chartColors.pmcColors.ATL,
                 dashes:
                 {
-                    show: true
+                    show: true,
+                    lineWidth: this.lineThickness
                 },
-                yaxis: this.shouldShowTSS() ? 2 : 1
+                yaxis: 1,
+                shadowSize: 0
             };
 
             return dataSeries;
@@ -425,11 +446,16 @@ function(
             {
                 data: chartPoints,
                 color: chartColors.pmcColors.CTL,
+                
                 lines:
                 {
-                    show: true
+                    show: true,
+                    lineWidth: this.lineThickness,
+                    fill: true,
+                    fillColor: { colors: [chartColors.pmcColors.ctlGradient.dark, chartColors.pmcColors.ctlGradient.light] }
                 },
-                yaxis: this.shouldShowTSS() ? 2 : 1
+                yaxis: 1,
+                shadowSize: 2,
             };
 
             return dataSeries;
@@ -443,9 +469,34 @@ function(
                 color: chartColors.pmcColors.CTL,
                 dashes:
                 {
-                    show: true
+                    show: true,
+                    lineWidth: this.lineThickness,
+                    fill: true,
+                    fillColor: { colors: [chartColors.pmcColors.ctlGradient.dark, chartColors.pmcColors.ctlGradient.light] }
                 },
-                yaxis: this.shouldShowTSS() ? 2 : 1
+                yaxis: 1,
+                shadowSize: 0
+
+            };
+
+            return dataSeries;
+        },
+
+        buildCTLFutureDataSeriesFill: function (chartPoints, chartColors)
+        {
+            var dataSeries =
+            {
+                data: chartPoints,
+                color: "transparent",
+                lines:
+                {
+                    show: true,
+                    fill: true,
+                    fillColor: { colors: [chartColors.pmcColors.futureCTLGradient.dark, chartColors.pmcColors.futureCTLGradient.light] },
+                    lineWidth: this.lineThickness,
+                },
+                yaxis: 1,
+                shadowSize: 0
             };
 
             return dataSeries;
@@ -465,14 +516,18 @@ function(
                 color: chartColors.pmcColors.TSB,
                 lines:
                 {
-                    show: true
+                    show: true,
+                    lineWidth: this.lineThickness
                 },
-                yaxis: yaxis
+                yaxis: yaxis,
+                shadowSize: 0
             };
 
             if (this.shouldShowTSBFill())
             {
                 dataSeries.lines.fill = true;
+                dataSeries.lines.fillColor = { colors: [chartColors.pmcColors.tsbGradient.dark, chartColors.pmcColors.tsbGradient.light] }
+                
             }
 
             return dataSeries;
@@ -492,9 +547,11 @@ function(
                 color: chartColors.pmcColors.TSB,
                 dashes:
                 {
-                    show: true
+                    show: true,
+                    lineWidth: this.lineThickness,
                 },
-                yaxis: yaxis
+                yaxis: yaxis,
+                shadowSize: 0
             };
 
             return dataSeries;
@@ -516,9 +573,11 @@ function(
                 {
                     show: true,
                     fill: true,
-                    fillColor: chartColors.pmcColors.TSBFill
+                    fillColor: { colors: [chartColors.pmcColors.tsbGradient.dark, chartColors.pmcColors.tsbGradient.light] },
+                    lineWidth: this.lineThickness,
                 },
-                yaxis: yaxis
+                yaxis: yaxis,
+                shadowSize: 0
             };
 
             return dataSeries;
@@ -531,31 +590,18 @@ function(
 
             flotOptions.yaxes = [];
 
-            // tss = axis 1
-            if (this.shouldShowTSS())
-            {
-                flotOptions.yaxes.push(
-                {
-                    tickDecimals: 0,
-                    position: "left",
-                    color: "transparent",
-                    font: {
-                        color: chartColors.pmcColors.TSS
-                    },
-                    min: 0
-                });
-            }
+            
 
-            // atl / ctl = axis 1, or 2 if we have tss
+            // atl / ctl = axis 1
             flotOptions.yaxes.push(
             {
                 tickDecimals: 0,
                 position: "left",
-                color: "transparent",
-                min: 0
+                color: "#000000",
+                min: null
             });
 
-            // IF = axis 2, or 3 if we have tss
+            // IF = axis 2
             if (this.shouldShowIF())
             {
                 flotOptions.yaxes.push(
@@ -565,6 +611,21 @@ function(
                     color: "transparent",
                     font: {
                         color: chartColors.pmcColors.IF
+                    },
+                    min: 0
+                });
+            }
+
+            // tss = axis 2 or 3 if we have IF
+            if (this.shouldShowTSS())
+            {
+                flotOptions.yaxes.push(
+                {
+                    tickDecimals: 0,
+                    position: "left",
+                    color: "transparent",
+                    font: {
+                        color: chartColors.pmcColors.TSS
                     },
                     min: 0
                 });
