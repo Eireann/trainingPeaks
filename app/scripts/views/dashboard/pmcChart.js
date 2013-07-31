@@ -521,7 +521,7 @@ function(
                 },
 
                 yaxis: yaxis,
-                shadowSize: 0,
+                shadowSize: 0
 
             };
 
