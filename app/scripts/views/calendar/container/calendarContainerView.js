@@ -236,16 +236,21 @@ function(
 
         },
 
+        onLibraryAnimateSetup: function()
+        {
+            this.weeksCollectionView.lockScrollPosition();
+        },
+
         onLibraryAnimateComplete: function()
         {
             this.resizeContainer();
             this.updateWeekHeights();
-            this.scrollToLastViewedDate(0);
+            this.weeksCollectionView.unlockScrollPosition();
         },
 
         onLibraryAnimateProgress: function()
         {
-            this.scrollToLastViewedDate(0);
+            this.weeksCollectionView.resetScrollPosition();
         },
 
         updateWeekHeights: function()

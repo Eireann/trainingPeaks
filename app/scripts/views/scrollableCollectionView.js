@@ -244,6 +244,22 @@ function(
             this.$el.scrollTop(newScrollTop);
         },
 
+        lockScrollPosition: function()
+        {
+            this._stashScrollPosition();
+        },
+
+        unlockScrollPosition: function()
+        {
+            this._applyScrollPosition();
+        },
+
+        resetScrollPosition: function()
+        {
+            this._applyScrollPosition();
+            tselihis.scrollAnchorCount++;
+        },
+
         removeChildView: function(view)
         {
             this.triggerMethod("before:item:removed", view);

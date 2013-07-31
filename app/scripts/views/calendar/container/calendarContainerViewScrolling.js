@@ -176,18 +176,20 @@ function(_, TP, infiniteScroll)
 
         // if we un-snapped from the week header because of text wrapping on library show/hide,
         // or if we scrolled into a different week, snap back to the correct week
+        // QL: Deprecated
         scrollToLastViewedDate: function (duration)
         {
-            if (typeof duration === "undefined")
-            {
-                duration = 100;
-            }
-            var headerDate = this.getHeaderDate();
-            var scrollDate = this.getCurrentScrollDate(this.getCurrentVisibleElement());
-            if (this.snappedToWeekHeader || headerDate !== scrollDate)
-            {
-                this.scrollToDate(moment(headerDate), duration);
-            }
+            return;
+            // if (typeof duration === "undefined")
+            // {
+            //     duration = 100;
+            // }
+            // var headerDate = this.getHeaderDate();
+            // var scrollDate = this.getCurrentScrollDate(this.getCurrentVisibleElement());
+            // if (this.snappedToWeekHeader || headerDate !== scrollDate)
+            // {
+            //     this.scrollToDate(moment(headerDate), duration);
+            // }
         },
 
         getHeaderDate: function()
