@@ -420,43 +420,47 @@ function(
         // need to scroll the calendar up - to next week - because we're dragging something off bottom of calendar
         autoScrollUp: function()
         {
+            return;
             this.autoScroll("autoScrollUpInterval", "onRequestNextWeek");
         },
 
         // need to scroll the calendar down - back to a previous week - because we're dragging something off top of calendar
         autoScrollDown: function()
         {
+            return;
             this.autoScroll("autoScrollDownInterval", "onRequestLastWeek");
         },
 
         autoScroll: function(intervalName, scrollMethodName)
         {
+            return;
             // already scrolling in this direction
-            if (this[intervalName])
-                return;
+            // if (this[intervalName])
+            //     return;
 
-            // else cancel all existing auto scrolls
-            this.cancelAutoScroll();
-            var self = this;
-            var currentWeekModel = this.views.header.model;
+            // // else cancel all existing auto scrolls
+            // this.cancelAutoScroll();
+            // var self = this;
+            // var currentWeekModel = this.views.header.model;
 
-            // how long between each week step
-            var intervalTime = 700;
+            // // how long between each week step
+            // var intervalTime = 700;
 
-            // using animation doesn't work well, because by the time we animate to one we may request another
-            var animationSpeed = 0;
+            // // using animation doesn't work well, because by the time we animate to one we may request another
+            // var animationSpeed = 0;
 
-            // scroll once, then set interval
-            //self[scrollMethodName](currentWeekModel, animationSpeed);
-            self[intervalName] = setInterval(function()
-            {
-                self[scrollMethodName](currentWeekModel, animationSpeed);
-            }, intervalTime);
+            // // scroll once, then set interval
+            // //self[scrollMethodName](currentWeekModel, animationSpeed);
+            // self[intervalName] = setInterval(function()
+            // {
+            //     self[scrollMethodName](currentWeekModel, animationSpeed);
+            // }, intervalTime);
 
         },
 
         cancelAutoScroll: function()
         {
+            return;
             if (this.autoScrollUpInterval)
             {
                 clearInterval(this.autoScrollUpInterval);

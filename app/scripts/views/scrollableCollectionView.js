@@ -295,7 +295,7 @@ function(
         resetScrollPosition: function()
         {
             this._applyScrollPosition();
-            tselihis.scrollAnchorCount++;
+            this.scrollAnchorCount++;
         },
 
         removeChildView: function(view)
@@ -314,6 +314,9 @@ function(
 
         snapToChild: function()
         {
+            if (this.$el.is(':animated')) {
+                return;
+            }
             clearTimeout(this.scrollStopTimeout);
             var closestChild = this._closestChildToTop();
             if (Math.abs(closestChild.position.top) > 100) {

@@ -225,6 +225,87 @@ function(
             });
         },
 
+        initializeScrollOnDrag: function()
+        {
+            this.watchForDragging();
+            //this.on("scroll:updatePosition", this.onUpdateScrollPosition, this);
+
+            // this.weeksCollectionView.$el.on("scroll", _.bind(this.startScrollingState, this));
+            // this.weeksCollectionView.$el.on("scroll", _.bind(_.debounce(this.stopScrollingState, 500), this));
+
+        },
+
+        watchForDragging: function()
+        {
+            _.bindAll(this, "onDragItem", "cancelAutoScroll");
+
+            $(document).on("drag", this.onDragItem);
+            $(document).on("mouseup", this.cancelAutoScroll);
+
+            this.on("close", function()
+            {
+                $(document).off("drag", this.onDragItem);
+                $(document).off("mouseup", this.cancelAutoScroll);
+            }, this);
+        },
+
+        onDragItem: function(e, ui)
+        {
+            var calendarContainer = this.ui.weeksContainer.closest("#calendarContainer");
+
+            var calendarPosition = {
+                top: calendarContainer.offset().top,
+                bottom: calendarContainer.offset().top + calendarContainer.height()
+            };
+
+            var uiPosition = {
+                mouse: e.pageY,
+                top: ui.helper.position().top,
+                bottom: ui.helper.position().top + ui.helper.height()
+            };
+
+            this.autoScrollIfNecessary(calendarPosition, uiPosition);
+        },
+
+        autoScrollIfNecessary: function(calendarPosition, uiPosition)
+        {
+
+            var topThreshold = calendarPosition.top + 10;
+            var bottomThreshold = calendarPosition.bottom - 20;
+            var stopThreshold = 10;
+            var self = this;
+            if (uiPosition.top <= topThreshold)
+            {
+                this.autoScroll("back");
+                
+            } else if (uiPosition.bottom >= bottomThreshold)
+            {
+                this.autoScroll("forward");
+                
+            } else if(uiPosition.top >= (topThreshold + stopThreshold) && uiPosition.bottom <= (bottomThreshold - stopThreshold))
+            {
+                this.cancelAutoScroll();
+            }
+        },
+
+
+        autoScroll: function(direction) {
+            var self = this,
+                modelOffset = direction === "forward" ? 1 : -1;
+
+            this.cancelAutoScroll();
+            this.autoScrollInterval = setInterval(function() {
+                var currentModel = self.weeksCollectionView.getCurrentModel(),
+                    nextOrPreviousModel = self.weeksCollectionView.collection.at(self.weeksCollectionView.collection.indexOf(currentModel) + modelOffset);
+                self.weeksCollectionView.scrollToModel(nextOrPreviousModel, 500)
+            },1000);
+        },
+
+        cancelAutoScroll: function()
+        {
+            clearInterval(this.autoScrollInterval);
+        },
+
         onKeyDown: function(e)
         {
 
