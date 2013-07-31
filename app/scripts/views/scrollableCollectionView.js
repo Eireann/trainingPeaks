@@ -64,12 +64,14 @@ function(
 
         centerOnModel: function(model)
         {
+            this.trigger("before:changes"); // Warn that lots of changes are comming
             model = model || this.sourceCollection.at(Math.floor(this.sourceCollection.length / 2));
             if(!model) return;
 
             this.reset(model);
             this.fetchNext(Math.ceil(this.minSize / 2));
             this._ensureSize({fetchFrom: "beginning"});
+            this.trigger("after:changes"); // Notify that batch changes are finished
         },
 
         _bindSourceCollectionEvents: function()
@@ -218,6 +220,7 @@ function(
             if(!view) {
                 this.collection.centerOnModel(model);
                 view = this.children.findByModel(model);
+                duration = 0;
             }
             this._animateScroll(view.$el, duration);
             this.scrollAnchor = {
@@ -231,11 +234,14 @@ function(
             return this._closestChildToTop().view.model;
         },
 
-        _animateScroll: function($destination_el, duration) {
+        _animateScroll: function($destinationEl, duration) {
             var self = this;
+            this.scrollAnchorCount++;
             this.scrollAnimationDeferred = new $.Deferred();
-            this.$el.animate({scrollTop: $destination_el.position().top + this.$el.scrollTop()}, duration || 0, function() {
+            this.$el.animate({scrollTop: $destinationEl.position().top + this.$el.scrollTop()}, duration || 0, function() {
                 self.scrollAnimationDeferred.resolve();
+                self.scrollAnchorCount--;
+                self.$el.trigger('scroll');
             });
         },
 
