@@ -187,15 +187,24 @@ function(
         scrollToModel: function(model, duration)
         {
             var view = this.children.findByModel(model);
+            clearTimeout(this.scrollStopTimeout);
             if(!view) {
                 this.collection.centerOnModel(model);
                 view = this.children.findByModel(model);
             }
-             this.$el.scrollTop(view.$el.position().top + view.$el.scrollTop());
+            this._animateScroll(view.$el, duration)
             this.scrollAnchor = {
                 view: view,
                 position: {top: 0}
             };
+        },
+
+        _animateScroll: function($destination_el, duration) {
+            var self = this;
+            this.scrollAnimationDeferred = new $.Deferred();
+            this.$el.animate({scrollTop: $destination_el.position().top + this.$el.scrollTop()}, duration || 0, function() {
+                self.scrollAnimationDeferred.resolve();
+            });
         },
 
         _stashScrollPosition: function()
@@ -203,7 +212,11 @@ function(
             this.scrollAnchorCount++;
             if(this.scrollAnchorCount > 1) return;
 
-            this.scrollAnchor = _.chain(this.children.toArray())
+            this.scrollAnchor = this._closestChildToTop();
+        },
+
+        _closestChildToTop: function() {
+            return _.chain(this.children.toArray())
             .map(function(child)
             {
                 return {
@@ -213,11 +226,9 @@ function(
             })
             .sortBy(function(item)
             {
-                return item.position.top;
+                return Math.abs(item.position.top);
             })
-            .find(function(item) {
-                return item.position.top >= -20;
-            })
+            .first()
             .value();
         },
 
@@ -250,20 +261,46 @@ function(
         onScroll: function()
         {
             // QL: Throttle fetchPrevious/fetchNext
+            var self = this;
             var scrollTop = this.$el.scrollTop();
             var scrollBottom = scrollTop + this.$el.height();
             var scrollHeight = this.$el.prop('scrollHeight');
            
             if(scrollTop < this.scrollThreshold) this._fetchMore('top');
             else if(scrollHeight - scrollBottom < this.scrollThreshold) this._fetchMore('bottom');
+
+            clearTimeout(this.scrollStopTimeout);
+            this.scrollStopTimeout = setTimeout(function() {
+                self.snapToChild();
+            },1000);
+        },
+
+        snapToChild: function()
+        {
+            clearTimeout(this.scrollStopTimeout);
+            var closestChild = this._closestChildToTop();
+            if (Math.abs(closestChild.position.top) > 100) {
+                return;
+            }
+            this.scrollToModel(closestChild.view.model, 500);
         },
 
         _fetchMore: function(edge)
         {
-            this._stashScrollPosition();
-            if(edge === "top") this.collection.fetchPrevious(this.batchSize);
-            else this.collection.fetchNext(this.batchSize);
-            this._applyScrollPosition();
+            var self = this;
+            var callback = function() {
+                self._stashScrollPosition();
+                if(edge === "top") self.collection.fetchPrevious(self.batchSize);
+                else self.collection.fetchNext(self.batchSize);
+                self._applyScrollPosition();
+            }
+
+            if (this.scrollAnimationDeferred) {
+                this.scrollAnimationDeferred.done(callback);
+            } else {
+                callback();
+            }
+
         }
     });
 
