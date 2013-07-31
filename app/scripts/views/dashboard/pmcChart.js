@@ -520,7 +520,10 @@ function(
                     lineWidth: this.lineThickness
                 },
                 yaxis: yaxis,
-                shadowSize: 0
+                shadowSize: 0,
+
+                margin: {left: 20}
+
             };
 
             if (this.shouldShowTSBFill())
@@ -590,7 +593,9 @@ function(
 
             flotOptions.yaxes = [];
 
-            
+            flotOptions.grid.borderWidth = { top: 0, right: 1, bottom: 1, left: 1 };
+            flotOptions.grid.borderColor = "#9a9999";
+
 
             // atl / ctl = axis 1
             flotOptions.yaxes.push(
@@ -598,7 +603,13 @@ function(
                 tickDecimals: 0,
                 position: "left",
                 color: "#000000",
-                min: null
+                tickColor: "#d7d8d9",
+                font: {
+                    family: "HelveticaNeueW01-55Roma",
+                    color: "#636569",
+                    size: "9"
+                },
+                min: 0
             });
 
             // IF = axis 2
@@ -609,9 +620,6 @@ function(
                     tickDecimals: 1,
                     position: "right",
                     color: "transparent",
-                    font: {
-                        color: chartColors.pmcColors.IF
-                    },
                     min: 0
                 });
             }
@@ -625,7 +633,9 @@ function(
                     position: "left",
                     color: "transparent",
                     font: {
-                        color: chartColors.pmcColors.TSS
+                        color: chartColors.pmcColors.TSS,
+                        family: "HelveticaNeueW01-55Roma",             
+                        size: "9"
                     },
                     min: 0
                 });
@@ -640,7 +650,9 @@ function(
                 min: TSBAxisRange.minAxisValue,
                 max: TSBAxisRange.maxAxisValue,
                 font: {
-                    color: chartColors.pmcColors.TSB
+                    color: chartColors.pmcColors.TSB,
+                    family: "HelveticaNeueW01-55Roma",
+                    size: "9"
                 }
             });
 
@@ -653,6 +665,11 @@ function(
                     var instance = moment(value);
                     //todo: base formatter on settings
                     return instance.format("MM/DD/YY");
+                },
+                font: {
+                    family: "HelveticaNeueW01-55Roma",
+                    color: "#636569",
+                    size: "9"
                 }
             }];
 
