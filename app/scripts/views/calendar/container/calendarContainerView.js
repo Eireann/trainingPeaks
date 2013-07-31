@@ -135,32 +135,6 @@ function(
             }
         },
 
-        // onAddWeek: function(model)
-        // {
-        //     return;
-        //     var weekCollection = model.get("week");
-        //     this.addWeek({ model: model, collection: weekCollection, append: arguments[2].append });
-        // },
-
-        // addWeek: function(options)
-        // {
-        //     var weekView = new CalendarWeekView({ collection: options.collection, model: options.model });
-        //     weekView.on("itemview:itemDropped", this.onItemDropped, this);
-            
-        //     if (options.append)
-        //         this.ui.weeksContainer.append(weekView.render().el);
-        //     else
-        //     {
-        //         this.ui.weeksContainer.prepend(weekView.render().el);
-        //         this.ui.weeksContainer.scrollTop(this.ui.weeksContainer.scrollTop() + weekView.$el.height());
-        //     }
-
-        //     // display waiting indicator, then once controller loads the models they will turn off via sync event
-        //     weekView.onWaitStart();
-
-        //     this.children.push(weekView);
-        // },
-
         setupKeyBindingsOnRender: function()
         {
 
@@ -173,20 +147,10 @@ function(
             $(document).on('keyup', this.onKeyUp);
         },
 
-        // addWeeksOnRender: function()
-        // {
-        //     return;
-        //     // var numWeeks = this.collection.length;
-        //     // var i = 0;
-
-        //     // for (; i < numWeeks; i++)
-        //     // {
-        //     //     var weekModel = this.collection.at(i);
-        //     //     this.addWeek({ model: weekModel, collection: weekModel.get("week"), append: true });
-        //     // }
-
-        //     // this.resizeContainer();
-        // },
+        getCurrentWeek: function()
+        {
+            return this.weeksCollectionView.getCurrentModel().id;
+        },
 
         // onShow happens after render finishes and dom has updated ...
         onShow: function()

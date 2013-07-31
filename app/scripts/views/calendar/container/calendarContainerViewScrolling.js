@@ -102,15 +102,17 @@ function(_, TP, infiniteScroll)
 
         scrollToDate: function(targetDate, effectDuration, callback)
         {
+            if(callback) console.warn("Callback not supported on scrollToDate", callback);
+
             var dateAsMoment = moment(targetDate);
 
             if (typeof effectDuration === "undefined")
                 effectDuration = 500;
 
-            //theMarsApp.logger.debug(dateAsMoment.format(TP.utils.datetime.shortDateFormat));
-            var dateAsString = dateAsMoment.format(TP.utils.datetime.shortDateFormat);
-            var selector = '.day[data-date="' + dateAsString + '"]';
-            this.scrollToSelector(selector, effectDuration, callback);
+            var id = dateAsMoment.format(TP.utils.datetime.shortDateFormat);
+            var model = this.collection.get(id);
+            this.weeksCollectionView.scrollToModel(model);
+
             // no need to do this as it will already update after scroll, this makes it flash twice
             //this.setCurrentDate(targetDate);
             this.snappedToWeekHeader = true;

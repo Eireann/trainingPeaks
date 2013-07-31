@@ -53,6 +53,25 @@ function(
             this.initializeMoveAndShift();
         },
 
+        get: function(id)
+        {
+            var model;
+            while(!(model = TP.Collection.prototype.get.apply(this, arguments)))
+            {
+                if(moment(id) < moment(this.startDate))
+                {
+                    this.preparePrevious(2);
+                } else if(moment(id) > moment(this.endDate))
+                {
+                    this.prepareNext(2);
+                } else {
+                    return undefined;
+                }
+            }
+
+            return model;
+        },
+
         setUpWeeks: function(startDate, endDate)
         {
             this.startDate = startDate;
@@ -76,9 +95,10 @@ function(
 
         resetToDates: function(startDate, endDate)
         {
-            this.reset();
+            this.reset([], {silent: true});
             this.selectedDay = this.selectedWeek = this.selectedRange = null;
             this.setUpWeeks(startDate, endDate);
+            this.trigger("reset");
         },
         
         createWeekCollectionStartingOn: function (startDate)
@@ -258,9 +278,8 @@ function(
 
         setWeeksWaiting: function(startDate, endDate, isWaiting)
         {
-            var dayOfWeekIndex = this.startDate.day();
-            startDate = startDate.day(dayOfWeekIndex).format(TP.utils.datetime.shortDateFormat);
-            endDate = endDate.day(dayOfWeekIndex).format(TP.utils.datetime.shortDateFormat);
+            startDate = startDate.format(TP.utils.datetime.shortDateFormat);
+            endDate = endDate.format(TP.utils.datetime.shortDateFormat);
             var cursorDate = startDate;
 
             while (cursorDate <= endDate) {

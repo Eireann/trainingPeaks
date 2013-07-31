@@ -64,6 +64,9 @@ function(
 
         centerOnModel: function(model)
         {
+            model = model || this.sourceCollection.at(Math.floor(this.sourceCollection.length / 2));
+            if(!model) return;
+
             this.reset(model);
             this.fetchNext(Math.ceil(this.minSize / 2));
             this._ensureSize({fetchFrom: "beginning"});
@@ -73,10 +76,14 @@ function(
         {
             this.listenTo(this.sourceCollection, 'add', _.bind(this._onSourceAdd, this));
             this.listenTo(this.sourceCollection, 'remove', _.bind(this._onSourceRemove, this));
+            this.listenTo(this.sourceCollection, 'reset', function()
+            {
+                this.reset();
+            });
 
             this.listenTo(this.sourceCollection, 'all', function(eventName)
             {
-                if(_.contains(['add', 'remove'], eventName)) return;
+                if(_.contains(['add', 'remove', 'reset'], eventName)) return;
 
                 this.trigger.apply(this, arguments);
             });
@@ -177,19 +184,22 @@ function(
 
             this.snapToChild = _.debounce(this.snapToChild, 1000);
 
-            this.$el.on('scroll', function(event)
+            this.on('render', function()
             {
-                if(self.scrollAnimationDeferred && self.scrollAnimationDeferred.state() === "pending") return;
+                this.$el.on('scroll', function(event)
+                {
+                    if(self.scrollAnimationDeferred && self.scrollAnimationDeferred.state() === "pending") return;
 
-                // QL: Throttle fetchPrevious/fetchNext
-                var scrollTop = self.$el.scrollTop();
-                var scrollBottom = scrollTop + self.$el.height();
-                var scrollHeight = self.$el.prop('scrollHeight');
+                    // QL: Throttle fetchPrevious/fetchNext
+                    var scrollTop = self.$el.scrollTop();
+                    var scrollBottom = scrollTop + self.$el.height();
+                    var scrollHeight = self.$el.prop('scrollHeight');
 
-                if(scrollTop < self.scrollThreshold) self._fetchMore('top');
-                else if(scrollHeight - scrollBottom < self.scrollThreshold) self._fetchMore('bottom');
+                    if(scrollTop < self.scrollThreshold) self._fetchMore('top');
+                    else if(scrollHeight - scrollBottom < self.scrollThreshold) self._fetchMore('bottom');
 
-                self.snapToChild();
+                    self.snapToChild();
+                });
             });
 
             this.on('show', function()
@@ -209,11 +219,16 @@ function(
                 this.collection.centerOnModel(model);
                 view = this.children.findByModel(model);
             }
-            this._animateScroll(view.$el, duration)
+            this._animateScroll(view.$el, duration);
             this.scrollAnchor = {
                 view: view,
                 position: {top: 0}
             };
+        },
+
+        getCurrentModel: function()
+        {
+            return this._closestChildToTop().view.model;
         },
 
         _animateScroll: function($destination_el, duration) {
@@ -309,7 +324,7 @@ function(
                 if(edge === "top") self.collection.fetchPrevious(self.batchSize);
                 else self.collection.fetchNext(self.batchSize);
                 self._applyScrollPosition();
-            }
+            };
 
             if (this.scrollAnimationDeferred) {
                 this.scrollAnimationDeferred.done(callback);

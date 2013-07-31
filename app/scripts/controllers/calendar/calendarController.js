@@ -275,15 +275,13 @@ function(
         {
             if (theMarsApp.ajaxCachingEnabled)
                 theMarsApp.ajaxCaching.clearCache();
+
+            var currentWeek = this.views.calendar.getCurrentWeek();
+            // QL: Should be handled by reset, not "resetToDates"
             this.weeksCollection.resetToDates(moment(this.startDate), moment(this.endDate));
-            this.views.calendar.scrollToLastViewedDate();
-            var headerDate = this.views.calendar.getHeaderDate();
-            var self = this;
-            var onLoad = function(deferreds)
-            {
-                return self.scrollToDateAfterLoad(deferreds, headerDate);
-            };
-            this.loadCalendarData(onLoad);
+            this.views.calendar.scrollToDate(currentWeek);
+
+            this.loadCalendarData();
         },
 
         showDate: function(dateAsMoment, effectDuration)
