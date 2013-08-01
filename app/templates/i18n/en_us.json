@@ -169,6 +169,7 @@
 
     "ConfirmDelete" : "Are you sure you want to delete? <br/> This cannot be undone!",
     "ConfirmDiscard": "Are you sure you want to discard changes? <br/> This cannot be undone!",
+    "ConfirmUnapply" : "Are you sure you want to un-apply this plan from your Calendar? All associated workouts and/or meals will be removed, but any logged data will remain.",
 
     "AddToCalendar": "Add To Calendar",
     "AddAWorkout": "Add a Workout",
