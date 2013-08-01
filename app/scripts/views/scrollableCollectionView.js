@@ -64,7 +64,7 @@ function(
 
         centerOnModel: function(model)
         {
-            this.trigger("before:changes"); // Warn that lots of changes are comming
+            this.trigger("before:changes"); // Warn that lots of changes are coming
             model = model || this.sourceCollection.at(Math.floor(this.sourceCollection.length / 2));
             if(!model) return;
 
@@ -158,7 +158,14 @@ function(
         }
     });
 
-    var ScrollableCollectionView = TP.CollectionView.extend({
+    var ScrollableCollectionView = TP.CompositeView.extend({
+        template: _.template('<div class="js-wrap"></div>'),
+
+        ui:
+        {
+            $wrap: ".js-wrap"
+        },
+
         constructor: function(options)
         {
             var self = this;
@@ -188,6 +195,7 @@ function(
 
             this.on('render', function()
             {
+                this.wrapMargin = 0;
                 this.$el.on('scroll', function(event)
                 {
                     if(self.scrollAnimationDeferred && self.scrollAnimationDeferred.state() === "pending") return;
@@ -236,11 +244,9 @@ function(
 
         _animateScroll: function($destinationEl, duration) {
             var self = this;
-            this.scrollAnchorCount++;
             this.scrollAnimationDeferred = new $.Deferred();
             this.$el.animate({scrollTop: $destinationEl.position().top + this.$el.scrollTop()}, duration || 0, function() {
                 self.scrollAnimationDeferred.resolve();
-                self.scrollAnchorCount--;
                 self.$el.trigger('scroll');
             });
         },
@@ -276,10 +282,27 @@ function(
             if(this.scrollAnchorCount > 0) return;
             if(!this.scrollAnchor) return;
 
+            var self = this;
             var newPosition = this.scrollAnchor.view.$el.position();
             var resizeOffset = newPosition.top - this.scrollAnchor.position.top;
-            var newScrollTop = this.$el.scrollTop() + resizeOffset;
-            this.$el.scrollTop(newScrollTop);
+
+            var animationPromise = this.$el.promise();
+            if(animationPromise.state() !== "pending") {
+                var newScrollTop = self.$el.scrollTop() + resizeOffset;
+                self.$el.scrollTop(newScrollTop);
+            } else
+            {
+                this.wrapMargin += resizeOffset;
+                this.ui.$wrap.css("margin-top", (-this.wrapMargin) + 'px');
+                this.$el.promise().done(function()
+                {
+                    if(self.wrapMaring === 0) return;
+                    var newScrollTop = self.$el.scrollTop() + self.wrapMargin;
+                    self.ui.$wrap.css("margin-top", '0px');
+                    self.$el.scrollTop(newScrollTop);
+                    self.wrapMargin = 0;
+                });
+            }
         },
 
         lockScrollPosition: function()
@@ -300,15 +323,23 @@ function(
 
         removeChildView: function(view)
         {
-            this.triggerMethod("before:item:removed", view);
-            TP.CollectionView.prototype.removeChildView.apply(this, arguments);
-            this.triggerMethod("after:item:removed", view);
+            var self = this;
+
+            var $dragging = view.$el.find('.dragging, .ui-draggable-draging');
+            if($dragging.length > 0)
+            {
+                $dragging.on("dragstop", function(event, ui) { self.removeChildView(view); });
+            } else {
+                this.triggerMethod("before:item:removed", view);
+                TP.CollectionView.prototype.removeChildView.apply(this, arguments);
+                this.triggerMethod("after:item:removed", view);
+            }
         },
 
         appendHtml: function(collectionView, itemView, index)
         {
-            var prevEl = collectionView.$el.children()[index];
-            if(!prevEl) collectionView.$el.append(itemView.$el);
+            var prevEl = collectionView.ui.$wrap.children()[index];
+            if(!prevEl) collectionView.ui.$wrap.append(itemView.$el);
             else $(prevEl).before(itemView.$el);
         },
 

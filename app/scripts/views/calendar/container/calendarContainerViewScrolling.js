@@ -89,7 +89,8 @@ function(_, TP, infiniteScroll)
             if (typeof effectDuration === "undefined")
                 effectDuration = 500;
 
-            var id = dateAsMoment.format(TP.utils.datetime.shortDateFormat);
+            // QL TODO: This works incorrectly for Sunday...
+            var id = dateAsMoment.day(1).format(TP.utils.datetime.shortDateFormat);
             var model = this.collection.get(id);
             this.weeksCollectionView.scrollToModel(model);
 
