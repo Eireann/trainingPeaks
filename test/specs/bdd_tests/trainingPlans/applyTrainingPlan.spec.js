@@ -113,7 +113,7 @@ function(
             {
                 $mainRegion.find(".trainingPlanLibrary .trainingPlan[data-trainingplanid=2]").trigger("mouseup");
                 testHelpers.resolveRequest("GET", "plans/v1/plans/2/details$", xhrData.trainingPlanDetails);
-                expect($body.find(".trainingPlanDetails [data-appliedplanid=21]").text()).toContain("1/02/2013");
+                expect($body.find(".trainingPlanDetails [data-appliedplanid=21]").text()).toContain("1/2/2013");
                 expect($body.find(".trainingPlanDetails [data-appliedplanid=21]").text()).toContain("9/10/2013");
             });
 
