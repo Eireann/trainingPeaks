@@ -55,6 +55,8 @@ function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandMo
             this.buildElevationCorrrectionModel();
 
             this.once("render", this.onFirstRender, this);
+
+            TP.analytics("send", { "hitType": "event", "eventCategory": "groundControl", "eventAction": "opened", "eventLabel": "" });
         },
 
         bindCallbacks: function()
@@ -146,7 +148,10 @@ function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandMo
             flotOptions.zoom = { enabled: false };
             flotOptions.filter = { enabled: false };
 
-            this.plot = $.plot(this.ui.chart, series, flotOptions);
+            if($.plot)
+            {
+                this.plot = $.plot(this.ui.chart, series, flotOptions);
+            }
         },
 
         buildPlotSeries: function()
@@ -213,6 +218,8 @@ function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandMo
             this.ui.chart.addClass("waiting");
 
             elevationCorrectionCommand.execute().done(this.onElevationCorrectionApplied);
+
+            TP.analytics("send", { "hitType": "event", "eventCategory": "groundControl", "eventAction": "applied", "eventLabel": "" });
         },
         
         onElevationCorrectionApplied: function ()

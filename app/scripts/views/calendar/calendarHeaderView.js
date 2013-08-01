@@ -35,11 +35,13 @@ function(TP, moment, coachAndAffiliateCustomizations, calendarHeaderTemplate)
 
         stickitOnRender: function()
         {
-            if (!this.stickitInitialized)
+            if (this.stickitInitialized)
             {
-                this.stickit();
-                this.stickitInitialized = true;
+                this.unstickit();
             }
+
+            this.stickit();
+            this.stickitInitialized = true;
         },
 
         bindings:
@@ -129,20 +131,19 @@ function(TP, moment, coachAndAffiliateCustomizations, calendarHeaderTemplate)
                 self.$("#athleteCalendarSelect").selectBoxIt({
                     dynamicPositioning: false
                 });
+
                 self.$("#athleteCalendarSelectSelectBoxItContainer").css('display', "block");
-                
             });
-
-
         },
 
         onAthleteSelectBoxChange: function ()
         {
+            TP.analytics("send", { "hitType": "event", "eventCategory": "calendar", "eventAction": "athleteChanged", "eventLabel": "" });
+
             var athleteId = Number(this.$("#athleteCalendarSelect").val());
 
             var athleteUrl = "calendar/athletes/" + athleteId;
             theMarsApp.router.navigate(athleteUrl, true);
-            
         },
 
         serializeData: function ()
@@ -153,24 +154,28 @@ function(TP, moment, coachAndAffiliateCustomizations, calendarHeaderTemplate)
             return headerData;
         },
 
-        onGoToTodayButtonClicked: function()
+        onGoToTodayButtonClicked: function ()
         {
+            TP.analytics("send", { "hitType": "event", "eventCategory": "calendar", "eventAction": "todayClicked", "eventLabel": "" });
             this.trigger("request:today");
         },
         
         onGoToNextWeekButtonClicked: function()
         {
+            TP.analytics("send", { "hitType": "event", "eventCategory": "calendar", "eventAction": "nextWeekClicked", "eventLabel": "" });
             this.trigger("request:nextweek", this.model);
         },
         
         onGoToLastWeekButtonClicked: function()
         {
+            TP.analytics("send", { "hitType": "event", "eventCategory": "calendar", "eventAction": "lastWeekClicked", "eventLabel": "" });
             this.trigger("request:lastweek", this.model);
         },
         
         onRefreshButtonClicked: function()
         {
-            this.trigger("request:refresh", this.model);
+            TP.analytics("send", { "hitType": "event", "eventCategory": "calendar", "eventAction": "refreshClicked", "eventLabel": "" });
+            this.trigger("request:refresh", this.model.get("date"));
         }
     };
 

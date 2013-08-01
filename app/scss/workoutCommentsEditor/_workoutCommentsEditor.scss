@@ -72,13 +72,6 @@
             margin-left: 4px;
         }
 
-        #preActivityComments
-        {
-            display:none;
-            textarea {
-                margin-bottom: 1em;
-            }
-        }
 
         #descriptionInput
         {
@@ -96,4 +89,13 @@
 
 
 
+}
+
+// hidden by default
+#preActivityComments
+{
+    display:none;
+    textarea {
+        margin-bottom: 1em;
+    }
 }

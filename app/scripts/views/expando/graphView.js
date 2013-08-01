@@ -148,10 +148,13 @@ function(
             if (this.plot)
                 this.unbindPlotEvents();
 
-            this.plot = $.plot(this.$plot, enabledSeries, this.flotOptions);
-            this.bindToPlotEvents();
+            if($.plot)
+            {
+                this.plot = $.plot(this.$plot, enabledSeries, this.flotOptions);
+                this.bindToPlotEvents();
+                this.highlightOrZoomToPreviousSelection();
+            }
 
-            this.highlightOrZoomToPreviousSelection();
 
             this.setInitialToolbarSmoothing(this.lastFilterPeriod);
         },
@@ -192,35 +195,38 @@ function(
         {
             if (!this.plot)
                 return;
+            
+            TP.analytics("send", { "hitType": "event", "eventCategory": "expando", "eventAction": "graphZoomClicked", "eventLabel": "" });
 
             if (!this.plot.getSelection() && this.plot.hasMultiSelection())
             {
                 var lastSelection = this.plot.getLastMultiSelection();
                 this.plot.hideActiveSelections();
                 this.plot.setSelection(lastSelection.ranges, true);
-                if (this.plot.zoomToSelection(true))
-                {
+                if (this.plot.zoomToSelection(true)) 
+                { 
                     this.plot.clearSelection(true);
                     this.zoomed = true;
                     this.graphToolbar.onGraphZoomed();
-                } else
-                {
-                    this.plot.unhideActiveSelections();
                 }
-            } else if (this.plot.getSelection() && this.plot.zoomToSelection())
+                else
+                    this.plot.unhideActiveSelections();
+            }
+            else if (this.plot.getSelection() && this.plot.zoomToSelection())
             {
                 this.zoomed = true;
                 this.graphToolbar.onGraphZoomed();
-            } else 
-            {
-                this.zoomed = false;
             }
+            else
+                this.zoomed = false;
         },
         
         resetZoom: function()
         {
             if (!this.plot)
                 return;
+
+            TP.analytics("send", { "hitType": "event", "eventCategory": "expando", "eventAction": "graphZoomReset", "eventLabel": "" });
 
             this.plot.resetZoom();
 
@@ -265,6 +271,8 @@ function(
             if (!this.plot)
                 return;
 
+            TP.analytics("send", { "hitType": "event", "eventCategory": "expando", "eventAction": "graphSmoothingApplied", "eventLabel": "" });
+
             this.lastFilterPeriod = period;
             this.plot.setFilter(period);
         },
@@ -289,6 +297,8 @@ function(
 
         onPlotSelected: function()
         {
+            TP.analytics("send", { "hitType": "event", "eventCategory": "expando", "eventAction": "graphSelection", "eventLabel": "" });
+
             var startOffsetMs = Math.round(this.plot.getSelection().xaxis.from);
             var endOffsetMs = Math.round(this.plot.getSelection().xaxis.to);
             this.selectedWorkoutStatsForRange = new WorkoutStatsForRange({ workoutId: this.model.id, begin: startOffsetMs, end: endOffsetMs, name: "Selection" });
@@ -326,6 +336,8 @@ function(
         {
             if (!this.plot)
                 return;
+
+            TP.analytics("send", { "hitType": "event", "eventCategory": "expando", "eventAction": "graphSeriesEnabled", "eventLabel": series });
             
             if(_.contains(this.disabledSeries, series))
             {
@@ -338,6 +350,8 @@ function(
         {
             if (!this.plot)
                 return;
+
+            TP.analytics("send", { "hitType": "event", "eventCategory": "expando", "eventAction": "graphSeriesDisabled", "eventLabel": series });
 
             if (!_.contains(this.disabledSeries, series))
             {

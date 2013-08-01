@@ -1,8 +1,9 @@
 ﻿define(
 [
-    "TP"
+    "TP",
+    "./trainingPlanDetails"
 ],
-function (TP)
+function (TP, TrainingPlanDetailsModel)
 {
     var TrainingPlanModel = TP.APIDeepModel.extend(
     {
@@ -13,21 +14,21 @@ function (TP)
 
         urlRoot: function()
         {
-            var athleteId = theMarsApp.user.getCurrentAthleteId();
-            return theMarsApp.apiRoot + "/plans/v1/athletes/" + athleteId;
+            return theMarsApp.apiRoot + "/plans/v1/plans";
         },
 
         defaults:
         {
-            "planId": null,
-            "title": null,
-            "planStatus": null,
-            "author": null,
-            "daysDuration": null,
-            "description": null,
-            "startDate": null,
-            "endDate": null
+            planId: null,
+            title: null,
+            planStatus: null
+        },
+
+        initialize: function()
+        {
+            this.details = new TrainingPlanDetailsModel({ planId: this.get("planId") });
         }
+
     });
 
     return TrainingPlanModel;

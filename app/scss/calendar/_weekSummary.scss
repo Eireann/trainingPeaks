@@ -24,26 +24,26 @@
             cursor: default;
         }
         
-    	.summarySettings
+        .summarySettings
         {
             display: none;
             float: right;
-    		padding: 2px 5px 0px 0px;
+            padding: 2px 5px 0px 0px;
             button
-            {	
+            {   
                 background: transparent;
                 border: none;
                 padding: 0px;
-    			cursor: pointer;
+                cursor: pointer;
                 margin-bottom: 0px;
                 box-shadow: none;
-        	}
+            }
 
             &.menuOpen
             {
                 display: block;
             }
-    	}
+        }
 
         &:hover
         {
@@ -127,49 +127,50 @@
 
     #weekSummaryContainer {
 
-    	padding:7px 10px 5px 6px;
+        padding:7px 10px 5px 6px;
 
-    	.weekSummaryBarGraphContain {
+        .weekSummaryBarGraphContain {
             font-family: $fontFamilyHeavy;
-    		width:280px;
-    		margin: 0 0 5px 0;
-    	}
+            width:280px;
+            margin: 0 0 5px 0;
+        }
 
-    	.weekSummaryBarGraphItem {
-    		height:28px;
-    		margin-bottom:3px;
-    		width:133px;
-    		float:left;
-    	}
-    	
-    	.weekSummaryBarGraphItem.right {
-    		margin-right: 3px;
-    	}
-    	
-    	.weekSummaryBarGraphItem.total {
-    		width:277px;
-    		height:35px;
-    	}
+        .weekSummaryBarGraphItem {
+            clear: both;
+            height:24px;
+            margin-bottom:3px;
+            width:277px;
+            float:left;
+        }
+        
+        .weekSummaryBarGraphItem.right {
+            margin-right: 3px;
+        }
+        
+        .weekSummaryBarGraphItem.total {
+            width:277px;
+            height:35px;
+        }
 
-    	.weekSummaryBarGraphLabel {
-    		float:left;
-    		font-size:$fontSizeXSmall;
-    	}
-    	
-    	.weekSummaryBarGraphLabel.total {
-    		text-transform: uppercase !important;
-    	}
+        .weekSummaryBarGraphLabel {
+            float:left;
+            font-size:$fontSizeXSmall;
+        }
+        
+        .weekSummaryBarGraphLabel.total {
+            text-transform: uppercase !important;
+        }
 
-    	.weekSummaryBarGraph {
-    		height:8px;
-    		float:left;
-    		width:100%;
-    		margin-top:3px;
+        .weekSummaryBarGraph {
+            height:8px;
+            float:left;
+            width:100%;
+            margin-top:3px;
             position:relative;
-    	}
+        }
         
         .weekSummaryBarGraphPlanned
-        {	
+        {   
             position:absolute;
             top:0px;
             bottom:0px;
@@ -177,12 +178,12 @@
             right:0px;
             z-index:1;
 
-            @include linearGradient(top,  #cccccc 0%,#aeaeae 100%);
+            @include linearGradient(top,  #c8c8c8 0%,#adadad 100%);
 
-            &.moreThanPlanned
+            &.completedMoreThanPlanned
             {
                 z-index:3;
-                @include linearGradient(top, #85878a 0%, #68696c 100%);
+                @include linearGradient(top,  #4F9CD6 0%, #47789D 100%);
 
                 &.bike {
                     @include linearGradient(top, #a153d8 0%, #7b4a9e 100%);
@@ -190,51 +191,73 @@
                 
                 &.strength {
                     @include linearGradient(top, #a75ca3 0%, #80507d 100%);
-                }	
+                }   
                 
                 &.run {
                     @include linearGradient(top, #5f9cb0 0%, #517885 100%);
-                }	
+                }   
 
                 &.swim {
                     @include linearGradient(top,  #53b5d8 0%, #4a889e 100%);
                 }
 
             }
-    	}
+        }
 
-    	.weekSummaryBarGraph.total {
-    		height:15px;
-    		float:left;
-    		width:100%;
-    	}
-    	
-    	.weekSummaryBarGraphProgress {
-    		height:100%;
-    		display:block;
+        .weekSummaryBarGraph.total {
+            height:15px;
+            float:left;
+            width:100%;
+        }
+        
+        .weekSummaryBarGraphProgress {
+            height:100%;
+            display:block;
             position:absolute;
             top:0px;
             left:0px;
             z-index:2;
-    	}
-    	 
+        }
+         
         .weekSummaryBarGraphProgress {
-            @include linearGradient(top,  #636569 0%, #3d3e41 100%);
+
+            @include linearGradient(top,  #4F9CD6 0%, #47789D 100%);
 
             &.bike {
-                @include linearGradient(top,  #8820d1 0%, $clrBike 100%);
+                @include linearGradient(top, #a153d8 0%, #7b4a9e 100%);
             }
             
             &.strength {
-                @include linearGradient(top, #912c8a 0%, $clrStrength 100%);
-            }	
+                @include linearGradient(top, #a75ca3 0%, #80507d 100%);
+            }   
             
             &.run {
-                @include linearGradient(top,  #30819c 0%, $clrRun 100%);
-            }	
+                @include linearGradient(top, #5f9cb0 0%, #517885 100%);
+            }   
 
             &.swim {
-                @include linearGradient(top,  #20a3d1 0%, $clrSwim 100%);
+                @include linearGradient(top,  #53b5d8 0%, #4a889e 100%);
+            }
+
+            &.completedMoreThanPlanned
+            {
+                @include linearGradient(top, #1B82CE 0%, #115282 100%);
+
+                &.bike {
+                    @include linearGradient(top,  #8820d1 0%, $clrBike 100%);
+                }
+                
+                &.strength {
+                    @include linearGradient(top, #912c8a 0%, $clrStrength 100%);
+                }   
+                
+                &.run {
+                    @include linearGradient(top,  #30819c 0%, $clrRun 100%);
+                }   
+
+                &.swim {
+                    @include linearGradient(top,  #20a3d1 0%, $clrSwim 100%);
+                }
             }
         }
 
@@ -242,12 +265,12 @@
             float:right;
             text-align:right;
             font-size:$fontSizeXSmall;
-    		width:50%;
+            width:50%;
         
             .weekSummaryTimeCompleted {
                 font-family: $fontFamilyHeavy;
                 color:#303030;
-    			margin-right: 2px;
+                margin-right: 2px;
 
                 &.run
                 {
@@ -274,7 +297,7 @@
                 color:#a5a5a5;
             }
         }
-    	
+        
         #weekSummaryMetricContain {
             width:277px;
             float:left;
@@ -344,6 +367,7 @@
 
 
     }
+
 
 }
 

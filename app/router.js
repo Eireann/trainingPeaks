@@ -9,7 +9,6 @@ function (_, TP)
     {
         initialize: function ()
         {
-
             var self = this;
 
             theMarsApp.on("api:unauthorized", function()
@@ -27,7 +26,6 @@ function (_, TP)
                 var routeParts = routeName.split("/");
                 this.currentRoute = routeParts[0];
             }, this);
-
         },
 
         getCurrentRoute: function()
@@ -42,66 +40,47 @@ function (_, TP)
             "calendar": "calendar",
             "calendar/athletes/:athleteId": "calendar",
             "dashboard": "dashboard",
-            "tools": "tools",
             "": "calendar"
         },
 
         login: function ()
         {
             theMarsApp.showController(theMarsApp.controllers.loginController);
+
+            TP.analytics("send", "pageview", { page: "login" });
         },
 
         home: function ()
         {
             this.checkAuth();
             theMarsApp.showController(theMarsApp.controllers.homeController);
+
+            TP.analytics("send", "pageview", { page: "home" });
         },
 
         calendar: function (athleteId)
         {
-
             if (athleteId)
-            {
                 theMarsApp.user.setCurrentAthleteId(athleteId);
-            }
 
             this.checkAuth();
 
             if (theMarsApp.getCurrentController() === theMarsApp.controllers.calendarController)
-            {
                 theMarsApp.controllers.calendarController.trigger("refresh");
-            } else
-            {
+            else
                 theMarsApp.showController(theMarsApp.controllers.calendarController);
-            }
+
+            TP.analytics("send", "pageview", { page: "calendar" });
         },
 
         dashboard: function()
         {
             this.checkAuth();
             theMarsApp.showController(theMarsApp.controllers.dashboardController);
-        },
-        
-        tools: function()
-        {
-            this.checkAuth();
 
-            var toolsView = new TP.ItemView(
-            {
-                template:
-                {
-                    type: "handlebars",
-                    template: function ()
-                    {
-                        var top = $(document).height() / 2;
-                        var left = $(document).width() / 2 - 50;
-
-                        return "<div style='font-size:24px;position: absolute; top:" + top.toFixed(0) + "px; left:" + left.toFixed(0) + "px;'>Tools</div>";
-                    }
-                }
-            });
-            theMarsApp.mainRegion.show(toolsView);
+            TP.analytics("send", "pageview", { page: "dashboard" });
         },
+
         
         checkAuth: function()
         {

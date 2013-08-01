@@ -58,45 +58,7 @@ function (
         
         getComplianceCssClassName: function ()
         {
-            var complianceAttributeNames =
-            {
-                totalTime: "totalTimePlanned"
-            };
-            /*
-                distance: "distancePlanned",
-                tssActual: "tssPlanned"
-            */
-            var workout = this.model;
-
-            for (var key in complianceAttributeNames)
-            {
-
-                var plannedValueAttributeName = complianceAttributeNames[key];
-                var completedValueAttributeName = key;
-                var plannedValue = this.model.get(plannedValueAttributeName) ? this.model.get(plannedValueAttributeName) : 0;
-                var completedValue = this.model.get(completedValueAttributeName) ? this.model.get(completedValueAttributeName) : 0;
-
-                if (plannedValue)
-                {
-                    if ((plannedValue * 0.8) <= completedValue && completedValue <= (plannedValue * 1.2))
-                    {
-                        return "ComplianceGreen";
-                    }
-                    else if ((plannedValue * 0.5) <= completedValue && completedValue <= (plannedValue * 1.5))
-                    {
-                        return "ComplianceYellow";
-                    }
-                    else
-                    {
-                        return "ComplianceRed";
-                    }
-                }
-            }
-
-
-            // if nothing was planned, we can't fail to complete it properly ...
-
-            return "ComplianceNone";
+            return TP.utils.workout.getComplianceCssClassName(this.model);
         },
         
         getWorkoutTypeCssClassName: function ()

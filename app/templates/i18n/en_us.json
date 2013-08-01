@@ -96,6 +96,7 @@
 	"AverageSpeed": "Average Speed",
 	"Calories": "Calories",
 	"ElevationGain": "Elevation Gain",
+    "ElGain": "El. Gain",
 	"ElevationLoss": "Elevation Loss",
 	"TSS": "TSS",
     "TSB": "TSB",
@@ -144,6 +145,7 @@
     "ByCompliance": "By Compliance",
     "Hybrid": "Hybrid",
 
+    "Select" : "Select",
     "hr": "hr",
 	"Copy": "Copy",
 	"Cut": "Cut",
@@ -167,6 +169,7 @@
 
     "ConfirmDelete" : "Are you sure you want to delete? <br/> This cannot be undone!",
     "ConfirmDiscard": "Are you sure you want to discard changes? <br/> This cannot be undone!",
+    "ConfirmUnapply" : "Are you sure you want to un-apply this plan from your Calendar? All associated workouts and/or meals will be removed, but any logged data will remain.",
 
     "AddToCalendar": "Add To Calendar",
     "AddAWorkout": "Add a Workout",
@@ -257,7 +260,7 @@
 
     "BrowseFiles": "Browse Files",
     "GetDeviceAgent": "Get Device Agent",
-    "SelectFile": "Select a file from your computer (.csv, .pwx, .fit, .tcx etc)\nor use",
+    "SelectFile": "Select a file from your computer (.fit, .tcx, .pwx, .wko, .csv, .hrm)\nor use",
     "DeviceAgent": "Device Agent",
     "UploadedFiles": "Uploaded Files",
     "Download": "Download",
@@ -344,5 +347,26 @@
 
     "TrainingPlans": "Training Plans",
     "FindMorePlansInThe": "Find more plans in the",
-    "Store":"Store"
+    "Store":"Store",
+
+    "End": "End",
+    "EndOnEventDate": "End on Event Date",
+    "on": "on",
+    "Unapply": "Unapply",
+    "Reapply": "Reapply",
+    "Author": "Author",
+    "ID": "ID",
+    "NumberOfDays": "Number of days",
+    "NumberOfWorkouts": "Number of workouts",
+    "NumberOfMeals": "Number of meals",
+    "PlannedDuration": "Planned duration",
+    "Status": "Status",
+    "Edit": "Edit",
+    "ApplyPlan": "Apply Plan",
+    "AppliedPlans": "Applied Plans",
+
+    "ErrorApplyingPlan": "An error has occurred while applying your training plan",
+    "By": "By",
+    "Remove": "Remove",
+    "WorkoutTotals": "Workout Totals"
 }

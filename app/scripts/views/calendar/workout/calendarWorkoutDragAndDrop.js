@@ -1,8 +1,9 @@
 define(
 [
+    "TP",
     "hbs!templates/views/calendar/workout/calendarWorkoutDragState"
 ],
-function(CalendarWorkoutTemplateDragState)
+function(TP, CalendarWorkoutTemplateDragState)
 {
     var calendarWorkoutDragAndDrop = {
 
@@ -55,6 +56,7 @@ function(CalendarWorkoutTemplateDragState)
         onDragStart: function()
         {
             this.$el.addClass("dragging");
+            TP.analytics("send", { "hitType": "event", "eventCategory": "calendar", "eventAction": "dragDropStart", "eventLabel": "workout" });
         },
 
         onDragStop: function()

@@ -71,6 +71,16 @@
             return datetimeUtils.format.decimalHoursAsTime(value, true);
         },
 
+        formatHours: function(value, options)
+        {
+            if (value <= 0 || value === "0")
+            {
+                return options && options.hasOwnProperty("defaultValue") ? options.defaultValue : "";
+            }
+            value = adjustFieldRange(value, "duration");
+            return Math.round(value);
+        },
+
         parseDuration: function(value, options)
         {
             var modelValue = datetimeUtils.convert.timeToDecimalHours(value);
@@ -455,6 +465,12 @@
 
             var newValue = value.replace(/\r\n/g, "\n").replace(/\n/g, "\r\n");
             return newValue;
+        },
+
+        formatSwimDistance: function(value, options)
+        {
+            var swimOptions = _.extend({}, options, {workoutTypeValueId: 1});
+            return this.formatDistance(value, swimOptions);
         }
          
     };

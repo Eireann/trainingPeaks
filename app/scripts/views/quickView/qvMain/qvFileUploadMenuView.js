@@ -58,6 +58,8 @@ function(
 
         initialize: function(options)
         {
+            TP.analytics("send", { "hitType": "event", "eventCategory": "deviceFileTomahawk", "eventAction": "opened", "eventLabel": "" });
+
             this.$el.addClass(options.direction);
             this.watchForFileChanges();
             this.on("render", this.preDownloadFiles, this);
@@ -74,6 +76,8 @@ function(
 
         onDeviceAgentClicked: function()
         {
+            TP.analytics("send", { "hitType": "event", "eventCategory": "deviceFileTomahawk", "eventAction": "DALinkClicked", "eventLabel": "" });
+
             window.open(this.deviceAgentUrl);
         },
 
@@ -105,6 +109,8 @@ function(
 
         onRecalculateClicked: function()
         {
+            TP.analytics("send", { "hitType": "event", "eventCategory": "deviceFileTomahawk", "eventAction": "recalculateClicked", "eventLabel": "" });
+
             this.recalculateConfirmationView = new UserConfirmationView({ template: recalculateConfirmationTemplate });
             this.recalculateConfirmationView.render();
             this.recalculateConfirmationView.on("userConfirmed", this.onRecalculateConfirmed, this);
@@ -112,7 +118,6 @@ function(
 
         onRecalculateConfirmed: function()
         {
-
             this.waitingOn();
 
             this.recalcCommand = new RecalculateWorkoutCommand({
@@ -159,6 +164,8 @@ function(
 
         downloadFile: function(fileInfo)
         {
+            TP.analytics("send", { "hitType": "event", "eventCategory": "deviceFileTomahawk", "eventAction": "downloadFileClicked", "eventLabel": "" });
+
             var self = this;
 
             var ifLocalFileExists = function(existingLocalFileUrl)
@@ -199,6 +206,8 @@ function(
 
         onDeleteFileConfirmed: function()
         {
+            TP.analytics("send", { "hitType": "event", "eventCategory": "deviceFileTomahawk", "eventAction": "deleteFileClicked", "eventLabel": "" });
+
             this.waitingOn();
             var fileDataModel = new WorkoutFileDataModel({ id: this.selectedFileId, workoutId: this.model.get("workoutId") });
             var self = this;

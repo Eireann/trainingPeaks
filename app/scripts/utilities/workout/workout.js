@@ -33,6 +33,32 @@
             getField: getKeyStatField,
             formatStats: formatKeyStat,
             formatUnits: formatKeyStatUnits
+        },
+
+        getComplianceCssClassName: function(workout)
+        {
+            if(workout.has("totalTimePlanned"))
+            {
+                var plannedSeconds = workout.get("totalTimePlanned") * 3600;
+                var completedSeconds = workout.get("totalTime") * 3600;
+                var ratio = completedSeconds / plannedSeconds;
+
+                if(ratio >= 0.8 && ratio <= 1.2)
+                {
+                    return "ComplianceGreen";
+                }
+                else if(ratio >= 0.5 && ratio <= 1.5)
+                {
+                    return "ComplianceYellow";
+                }
+                else
+                {
+                    return "ComplianceRed";
+                }
+            }
+
+            // default if no time planned
+            return "ComplianceNone";
         }
 
     };

@@ -122,7 +122,10 @@ function (
                 if (!this.$chartEl)
                     this.$chartEl = this.$(".chartContainer");
 
-                this.plot = $.plot(this.$chartEl, dataSeries, flotOptions);
+                if($.plot)
+                { 
+                    this.plot = $.plot(this.$chartEl, dataSeries, flotOptions);
+                }
             },
 
             onHover: function(flotItem, $tooltipEl)

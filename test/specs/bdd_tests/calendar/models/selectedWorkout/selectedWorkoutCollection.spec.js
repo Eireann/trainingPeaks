@@ -36,7 +36,7 @@ function (testHelpers, xhrData, _, app, TP, SelectedWorkoutCollection)
                     spyOn(item, "trigger");
                 }, this);
 
-                collection.deleteWorkouts();
+                collection.deleteSelectedWorkouts();
                 
                 _.each(models, function (item, index)
                 {
@@ -50,8 +50,8 @@ function (testHelpers, xhrData, _, app, TP, SelectedWorkoutCollection)
                 var models = [new TP.Model({ id: 55555 }), new TP.Model({ id: 44444 })];
                 var collection = new SelectedWorkoutCollection(models);
 
-                collection.deleteWorkouts();
-                expect(testHelpers.hasRequest(null,"55555,44444")).toBe(true);
+                collection.deleteSelectedWorkouts();
+                expect(testHelpers.hasRequest(null,"deleteworkouts")).toBe(true);
             });
             
             it("should trigger destory", function ()
@@ -64,9 +64,9 @@ function (testHelpers, xhrData, _, app, TP, SelectedWorkoutCollection)
                     spyOn(item, "trigger");
                 }, this);
 
-                collection.deleteWorkouts();
+                collection.deleteSelectedWorkouts();
 
-                testHelpers.resolveRequest(null, "55555,44444", {});
+                testHelpers.resolveRequest(null, "deleteworkouts", {});
                 
                 _.each(models, function (item, index)
                 {

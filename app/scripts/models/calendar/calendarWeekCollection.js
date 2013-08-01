@@ -20,7 +20,7 @@ function(moment, TP, CalendarDayModel, SelectedWorkoutCollection)
                     selectedWorkoutCollection.add(item.getWorkoutItems());
                 }
             });
-            selectedWorkoutCollection.deleteWorkouts();
+            selectedWorkoutCollection.deleteSelectedWorkouts();
         },
 
         copyToClipboard: function()

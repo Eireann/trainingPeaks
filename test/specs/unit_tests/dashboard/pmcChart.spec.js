@@ -511,10 +511,10 @@ function(
                 chartSeries = chart.buildFlotDataSeries(chartPoints, chartColors);
             });
 
-            // because we need an extra series for IF future fill
-            it("Should contain eleven items (five past, six future)", function()
+            // because we need an extra series for IF future fill and ATL future fill
+            it("Should contain eleven items (five past, seven future)", function()
             {
-                expect(chartSeries.length).toBe(11);
+                expect(chartSeries.length).toBe(12);
             });
         });
 

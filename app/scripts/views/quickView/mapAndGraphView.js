@@ -180,9 +180,11 @@ function(
 
             flotOptions.yaxes = yaxes;
             flotOptions.xaxes[0].tickLength = 0;
-
-            this.plot = $.plot(this.$("#quickViewGraph"), series, flotOptions);
-            this.plot.setFilter(10);
+    
+            if ($.plot) {
+                this.plot = $.plot(this.$("#quickViewGraph"), series, flotOptions);
+                this.plot.setFilter(10);
+            }
         }
 
     };

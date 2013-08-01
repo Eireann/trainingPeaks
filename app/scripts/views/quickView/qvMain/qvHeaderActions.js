@@ -74,6 +74,8 @@ function (
 
         onDateClicked: function(e)
         {
+            TP.analytics("send", { "hitType": "event", "eventCategory": "quickView", "eventAction": "headerDateClicked", "eventLabel": "" });
+
             _.bindAll(this, "onDateChanged");
 
             var position = [this.ui.date.offset().left, this.ui.date.offset().top + this.ui.date.height()];
@@ -93,6 +95,8 @@ function (
 
         onDateChanged: function(newDate)
         {
+            TP.analytics("send", { "hitType": "event", "eventCategory": "quickView", "eventAction": "workoutDateChanged", "eventLabel": "" });
+
             var newDay = moment(newDate).format(this.model.shortDateFormat);
             this.ui.date.datepicker("hide");
             var oldDay = this.model.getCalendarDay();
@@ -105,24 +109,24 @@ function (
 
         onWorkoutIconClicked: function()
         {
+            TP.analytics("send", { "hitType": "event", "eventCategory": "quickView", "eventAction": "headerWorkoutIconClicked", "eventLabel": "" });
+
             var icon = this.$(".workoutIconLarge");
             var direction = this.expanded ? "right" : "left";
             var typesMenu = new WorkoutTypeMenuView({ workoutTypeId: this.model.get("workoutTypeValueId"), direction: direction });
             typesMenu.on("selectWorkoutType", this.onSelectWorkoutType, this);
 
             if (direction === "right")
-            {
                 typesMenu.setPosition({ fromElement: icon, left: icon.outerWidth() + 10, top: -15 });
-            } else
-            {
+            else
                 typesMenu.setPosition({ fromElement: icon, right: -10, top: -15 });
-            }
 
             typesMenu.render();
         },
 
         onSelectWorkoutType: function(workoutTypeId)
         {
+            TP.analytics("send", { "hitType": "event", "eventCategory": "quickView", "eventAction": "workoutTypeChanged", "eventLabel": "" });
             this.model.set("workoutTypeValueId", workoutTypeId);
         },
 
@@ -140,22 +144,22 @@ function (
 
         onBreakThroughClicked: function()
         {
+            TP.analytics("send", { "hitType": "event", "eventCategory": "quickView", "eventAction": "workoutBreakThroughChanged", "eventLabel": "" });
+
             var description = this.model.get("description");
 
             if (!description)
                 description = "";
 
             if (description.indexOf("BT:") !== 0)
-            {
                 this.model.set("description", "BT: " + description);
-            } else
+            else
             {
                 description = description.replace(/BT:/, "").trim();
                 this.model.set("description", description);
             }
 
             this.model.save();
-
         },
 
         onTitleFocus: function()
@@ -195,8 +199,9 @@ function (
         
         onCommentsClicked: function (e)
         {
-            var offset = $(e.currentTarget).offset();
+            TP.analytics("send", { "hitType": "event", "eventCategory": "quickView", "eventAction": "headerCommentsClicked", "eventLabel": "" });
 
+            var offset = $(e.currentTarget).offset();
 
             this.commentsEditorView = new ExpandoCommentsEditorView({ model: this.model, parentEl: this.$el });
             this.commentsEditorView.render().top(offset.top - 13);
@@ -205,7 +210,8 @@ function (
             {
                 this.commentsEditorView.setDirection("left");
                 this.commentsEditorView.right(offset.left - 12);
-            } else
+            }
+            else
             {
                 this.commentsEditorView.setDirection("right");
                 this.commentsEditorView.left(offset.left + 87);

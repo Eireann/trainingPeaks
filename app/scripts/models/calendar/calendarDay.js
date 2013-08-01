@@ -73,7 +73,7 @@ function(_, moment, TP, WorkoutModel, SelectedWorkoutCollection)
         {
             var workoutItems = this.getWorkoutItems();
             var selectedWorkoutcollection = new SelectedWorkoutCollection(workoutItems);
-            selectedWorkoutcollection.deleteWorkouts();
+            selectedWorkoutcollection.deleteSelectedWorkouts();
         },
         
         getWorkoutItems: function()

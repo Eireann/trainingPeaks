@@ -145,7 +145,6 @@ function(
             this.on("close", function () { this.model.off("change:workoutTypeValueId", this.checkShowPaceViews, this); });
 
             this.model.get("detailData").on("changeSensorData", this.onSensorDataChange, this);
-
         },
         
         stopWorkoutDetailsFetch: function ()
@@ -347,6 +346,8 @@ function(
 
             if (tabIndex === null || typeof tabIndex === "undefined")
                 return;
+
+            TP.analytics("send", { "hitType": "event", "eventCategory": "quickView", "eventAction": "tabNavigationIndex" + tabIndex + "Clicked", "eventLabel": "" });
 
             this.ui.tabNavigation.find("div").removeClass("tabSelected");
             $(e.currentTarget).addClass("tabSelected");
