@@ -48,7 +48,6 @@ function(
             "change #applyDateType": "onApplyDateTypeChange",
             "click #closeIcon": "close",
             "click .removePlan": "confirmDeleteAppliedPlan"
-            //"change .alterAppliedPlan" : "onAppliedPlanOptionChange"
         },
 
         initialize: function()
@@ -128,7 +127,7 @@ function(
             }
 
             // force start/end to week start/end
-            if(this.model.details.get("forceStartOnMonday"))
+            if(this.model.details.get("hasWeeklyGoals"))
             {
                 if (startType === TP.utils.trainingPlan.startTypeEnum.StartDate) 
                 {

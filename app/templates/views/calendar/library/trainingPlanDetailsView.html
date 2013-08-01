@@ -63,7 +63,7 @@
             <div class="appliedPlansContainer">
                 {{# each planApplications }}
                     <div data-appliedplanid="{{ appliedPlanId }}" class="appliedPlan">
-                        <span class="appliedDates small">{{ formatDate startDate "MM/DD/YYYY" }} - {{ formatDate endDate "MM/DD/YYYY" }}</span>
+                        <span class="appliedDates small">{{$ "OnCalendarFrom" }} {{ formatDate startDate "M/DD/YYYY" }} {{$ "to" }} {{ formatDate endDate "M/DD/YYYY" }}</span>
                         <span class="removePlan small">{{$ "Remove" }}</span>
                     </div>
                 {{/each}}

@@ -232,7 +232,7 @@ function(
                 $mainRegion.find(".trainingPlanLibrary .trainingPlan[data-trainingplanid=1]").trigger("mouseup");
 
 
-                var trainingPlanRestrictedToWeekDates = _.extend({}, xhrData.trainingPlanDetails, { forceStartOnMonday: true });
+                var trainingPlanRestrictedToWeekDates = _.extend({}, xhrData.trainingPlanDetails, { hasWeeklyGoals: true });
 
                 testHelpers.resolveRequest("GET", "plans/v1/plans/1/details$", trainingPlanRestrictedToWeekDates);
 
