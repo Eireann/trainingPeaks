@@ -4,10 +4,11 @@ define(
     "setImmediate",
     "jqueryOutside",
     "views/userConfirmationView",
+    "utilities/printing/printUtility",
     "hbs!templates/views/calendar/day/calendarDaySettings",
     "hbs!templates/views/confirmationViews/deleteConfirmationView"
 ],
-function(TP, setImmediate, jqueryOutside, UserConfirmationView, calendarDaySettingsTemplate, deleteConfirmationView)
+function(TP, setImmediate, jqueryOutside, UserConfirmationView, printUtility, calendarDaySettingsTemplate, deleteConfirmationView)
 {
     return TP.ItemView.extend(
     {
@@ -24,7 +25,8 @@ function(TP, setImmediate, jqueryOutside, UserConfirmationView, calendarDaySetti
             "click #calendarDaySettingsCutLabel": "onCutClicked",
             "click #calendarDaySettingsCopyLabel": "onCopyClicked",
             "click #calendarDaySettingsPasteLabel": "onPasteClicked",
-            "click #calendarDaySettingsShiftLabel": "onShiftClicked"
+            "click #calendarDaySettingsShiftLabel": "onShiftClicked",
+            "click #calendarDaySettingsPrintLabel": "onPrintClicked"
         },
         
         onAddClicked: function(e)
@@ -112,6 +114,13 @@ function(TP, setImmediate, jqueryOutside, UserConfirmationView, calendarDaySetti
             this.trigger("beforeShift");
             this.hideSettings(e);
             this.model.trigger("day:shiftwizard");
+        },
+        
+        onPrintClicked: function(e)
+        {
+            var personId = theMarsApp.user.getCurrentAthleteId();
+            var date = moment(this.model.get("date"));
+            printUtility.printDay(personId, date);
         },
 
         updatePasteAvailability: function()

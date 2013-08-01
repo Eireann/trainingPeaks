@@ -9,7 +9,7 @@ define(
     "models/commands/removeTrainingPlan",
     "views/userConfirmationView",
     "utilities/trainingPlan/trainingPlan",
-    "hbs!templates/views/confirmationViews/deleteConfirmationView",
+    "hbs!templates/views/confirmationViews/unapplyConfirmationView",
     "hbs!templates/views/calendar/library/applyTrainingPlanErrorView",
     "hbs!templates/views/calendar/library/trainingPlanDetailsView"
 ],
