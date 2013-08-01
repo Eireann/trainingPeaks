@@ -95,7 +95,7 @@ function(
             it("Should have an apply button if it was purchased", function()
             {
                 $mainRegion.find(".trainingPlanLibrary .trainingPlan[data-trainingplanid=3]").trigger("mouseup");
-                testHelpers.resolveRequest("GET", "plans/v1/plans/3/details$", xhrData.trainingPlanDetails)
+                testHelpers.resolveRequest("GET", "plans/v1/plans/3/details$", xhrData.trainingPlanDetails);
                 expect($body.find(".trainingPlanDetails button.apply").length).toBe(1);
             });
 
