@@ -453,6 +453,7 @@
             text-align: center;
             overflow-y:visible !important;
 
+
             &.workoutTitle
             {
                 text-align: left;
@@ -478,6 +479,23 @@
         
         textarea {
             resize:none !important;
+        }
+    }
+
+
+    .comment {
+
+        .deleteButton
+        {
+            display: none;
+        }
+
+        &.hover
+        {
+            .deleteButton
+            {
+                display:none;
+            }
         }
     }
 }

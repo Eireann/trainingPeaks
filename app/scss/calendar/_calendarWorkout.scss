@@ -228,73 +228,82 @@
         }
 
         .workoutDiv {
-            min-height: 35px;
+           //min-height: 35px;
             
             .workoutHeader {
-                padding: 0px 3px 3px 3px;
-                height: 20px;
+                padding: 0px 3px 0px 3px;
+                // height: 20px;
                 position: relative;
+                margin-top:-2px;
                 
                 .workoutIcon {
                     display:none;
                 }
 
                 .workoutDistanceTime {
-                    padding: 0px 0px 0px 0px;
-
-                    @include labels($fontFamilyRegular, $fontSizeMedium, #000, normal);
+                    padding: 0;
+                    @include labels($fontFamilyRegular, $fontSizeSmall, #000, normal);
                     
                     label {
                         display:inline-block;
                     }
                     
                     .units {
-                        font-size: 0.88em;
+                        font-size: 0.7em;
                         margin-left: 0.15em;
                     }
                 }
 
             }
+
             .workoutBody {
                 color: $TPGrey4;
-                padding: 2px 3px 3px 3px;
-                @include labels($fontFamilyHeavy, $fontSizeXSmall, $TPGrey4, normal);
+                padding: 2px 3px 0px 3px;
+                @include labels($fontFamilyHeavy, .571em, $TPGrey4, normal);
+
                 label {
                     cursor: inherit;
                     white-space: pre-wrap;
                 }
                 
                 p {
-                    margin-bottom: 0px;
-                    font-size: $fontSizeXSmall;
+                    margin: .571em 0;
+                    font-size: .571em;
                     color: #000;
                     font-family: $fontFamilyRegular;
                     text-align: left;
-                    line-height: 12px;
-                    cursor: inherit;
+                    line-height: 10px;
                     white-space: pre-wrap;
                 }
-
             }
 
-            .sportType
-            {
-                font-size: $fontSizeXSmall;
+            .sportType {
+                font-size: .571em;
                 color: #000;
                 font-family: $fontFamilyRegular;
                 text-align: left;
-                line-height: 12px;
+                line-height: 10px;
                 padding:3px 3px 0 3px;
             }
 
             .description
             {
-                font-size: $fontSizeXSmall;
+                font-size: .571em;
                 color: #000;
                 font-family: $fontFamilyRegular;
                 text-align: left;
-                line-height: 12px;
-                padding:0 3px 3px 3px;
+                line-height: 10px;
+                // padding:0 3px 3px 3px;
+                margin: .571em 3px;
+
+                white-space: pre;           /* CSS 2.0 */
+                white-space: pre-wrap;      /* CSS 2.1 */
+                white-space: pre-line;      /* CSS 3.0 */
+                white-space: -pre-wrap;     /* Opera 4-6 */
+                white-space: -o-pre-wrap;   /* Opera 7 */
+                white-space: -moz-pre-wrap; /* Mozilla */
+                white-space: -hp-pre-wrap;  /* HP Printers */
+                word-wrap: break-word;      /* IE 5+ */
             }
         }
 

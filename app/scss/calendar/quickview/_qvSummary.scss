@@ -174,7 +174,8 @@
 		padding-left: 0px;
 		padding-right: 10px;
 	    padding-bottom: 10px;
-		width:400px;
+		width:50%;
+		font-size:$fontSizeSmaller;
 
 		background: transparent;
 		float: left;
@@ -196,14 +197,31 @@
 	            color: $TPGrey3;
 	        }
 		}
+		
 		#workoutPlannedCompletedStats {
 			float:left;
-			
 			width:100%;
+
+			.workoutStatsColumn {
+				width:25%;
+			}
 		}
+		
 		#workoutMinMaxAvgStats {
 			float:left;
 			width:100%;
+
+			.workoutStatsColumn {
+				width:25%;
+
+				&.workoutStatsMinMaxAvgLabel {
+					width:25%;
+				}
+			}
+
+			.workoutStatsColumnMinMaxAvg {
+				width:16.666%;
+			}
 		}
 	}
 
@@ -211,7 +229,6 @@
 	.workoutStatsRow
 	{
 		@include grid-row();
-		
 		clear: both;
 	    height: 23px;
 
@@ -219,13 +236,15 @@
 		{
 			float:left;
 	        padding-right: 2px;
-	 		// height: 23px;
 			
 			@include inputs(83.5px, 21px, 12px, $fontFamilyRegular);
 	       	input {
 				margin: 0;
 			  	padding: 0;
 	            color: $TPGrey4;
+	            border:1px solid #000;
+	            width:100%;
+	            font-size:$fontSizeSmaller;
 			}
 
 	        .hide
@@ -239,11 +258,14 @@
 	        height: 23px;
 			@include inputs(55px, 20px, 12px, $fontFamilyRegular);
 	        padding-right: 2px;
+
+	        input {
+	        	font-size:$fontSizeSmaller;
+	        }
 		}
 
 		label {
 			text-align: right;
-			width: 100px;
 			padding-top: 5px;
 			padding-right: 5px;
 
@@ -268,7 +290,7 @@
 	}
 
 	.columnLabelsPlannedCompleted {
-		padding-left: 105px;
+		padding-left: 25%;
 		padding-top: 14px;
 		width: 100%;
 		background: transparent;
@@ -277,10 +299,9 @@
 		label
 		{
 			float: left;
-			width: 80px;
+			width: 33.5%;
 	        text-align: center;
 	        margin-bottom:5px;
-
 	        &.ghosted
 	        {
 	            color: $TPGrey7;
@@ -289,14 +310,14 @@
 
 	    .workoutStatsCompleted
 	    {
-	        padding-left: 10px;
+	        // padding-left: 10px;
 	    }
 
 	}
 
 	.columnLabelsMinMaxAvg
 	{
-		padding-left: 105px;
+		padding-left: 25%;
 		width: 100%;
 		background: transparent;
 	    padding-top: 10px;
@@ -307,7 +328,7 @@
 		@include labels($fontFamilyHeavy, $fontSizeSmall, $TPGrey3, normal);
 		label {
 			float: left;
-			width: 56px;
+			width:22.25%;
 	        text-align: center;
 	        margin-bottom:5px;
 	        margin-top:2px;
@@ -320,13 +341,14 @@
 
 	#commentsContainer {
 		float:left;
-		width:329px;
-
+		width:50%;
+		
 		.comments {
 			width:100%;
 			float:left;
 			padding-top:14px;
 			overflow-y:visible !important;
+			font-size:$fontSizeSmaller !important;
 
 			div {
 				height:auto;
@@ -345,8 +367,20 @@
 	        textarea#postActivityCommentsInput {
 	        	overflow:visible !important;
 	        	height:none !important;
-	        	font-size:.8em;
+	        
 	        }
+	        .workoutCommentsCollection {
+	        	font-size: $fontSizeSmall !important;
+	        	line-height:$fontSizeXLarge;
+	        	margin-left:10px;
+
+	        	.commentHeader {
+	        		padding:1em 0 .25em 0;
+	        		font-family: $fontFamilyHeavy;
+	        	}
+	        }
+
+
 
 		}
 	}
