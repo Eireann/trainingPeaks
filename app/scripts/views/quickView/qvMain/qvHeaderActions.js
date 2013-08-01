@@ -137,6 +137,7 @@ function (
             menu.on("delete", this.onDeleteWorkout, this);
             menu.on("cut", this.close, this);
             menu.on("copy", this.close, this);
+            menu.on("print", this.print, this);
             menu.setPosition({ fromElement: menuIcon, bottom: 0, top: menuIcon.height(), left: -30 });
             menu.render();
         },
@@ -225,6 +226,16 @@ function (
                 view.render();
                 displayAttachmentsViewDeferred.reject();
             }
+        },
+
+        print: function()
+        {
+            this.$("textarea").each(function()
+            {
+                var $self = $(this);
+                $self.text($self.val());
+            });
+            window.print();
         }
 
     };

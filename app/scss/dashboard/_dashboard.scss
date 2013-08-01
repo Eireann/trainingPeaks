@@ -88,10 +88,17 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
         {
             text-transform: none;
 
-            &.tss
+            &.tsb
             {
                 position: absolute;
                 right: -25px;
+                -webkit-transform: rotate(90deg);
+                -moz-transform: rotate(90deg);
+                color: #FFA500;
+            }
+            &.tssd
+            {
+                color: #3399ff;
             }
         }
     }

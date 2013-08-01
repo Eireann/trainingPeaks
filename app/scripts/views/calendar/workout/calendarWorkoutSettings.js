@@ -4,10 +4,11 @@ define(
     "setImmediate",
     "jqueryOutside",
     "views/userConfirmationView",
+    "utilities/printing/printUtility",
     "hbs!templates/views/calendar/workout/calendarWorkoutSettingsHover",
     "hbs!templates/views/confirmationViews/deleteConfirmationView"
 ],
-function (TP, setImmediate, jqueryOutside, UserConfirmationView, calendarWorkoutSettingsHover, deleteConfirmationTemplate)
+function (TP, setImmediate, jqueryOutside, UserConfirmationView, printUtility, calendarWorkoutSettingsHover, deleteConfirmationTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -21,7 +22,8 @@ function (TP, setImmediate, jqueryOutside, UserConfirmationView, calendarWorkout
         {
             "click #workoutSettingsLabelDelete": "onDelete",
             "click #workoutSettingsLabelCopy": "onCopyClicked",
-            "click #workoutSettingsLabelCut": "onCutClicked"
+            "click #workoutSettingsLabelCut": "onCutClicked",
+            "click #workoutSettingsLabelPrint" : "onPrintClicked"
         },
 
         onCopyClicked: function()
@@ -34,6 +36,13 @@ function (TP, setImmediate, jqueryOutside, UserConfirmationView, calendarWorkout
         {
             this.model.trigger("workout:cut", this.model);
             this.close();
+        },
+        
+        onPrintClicked: function()
+        {
+            var personId = theMarsApp.user.getCurrentAthleteId();
+            var workoutId = this.model.id;
+            printUtility.printWorkout(personId, workoutId);
         },
 
         hideWorkoutSettings: function (e)
