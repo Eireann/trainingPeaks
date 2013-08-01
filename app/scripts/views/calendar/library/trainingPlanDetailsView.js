@@ -34,7 +34,7 @@ function(
         tagName: "div",
         className: "trainingPlanDetails",
         modal: true,
-        dateFormat: "M/DD/YYYY",
+        dateFormat: "M/D/YYYY",
         applyStartType: TP.utils.trainingPlan.startTypeEnum.StartDate,
 
         template:
@@ -81,7 +81,7 @@ function(
             setImmediate(function()
             {
                 self.$(".datepicker").css("position", "relative").css("z-index", self.$el.css("z-index"));
-                self.$(".datepicker").datepicker({ dateFormat: "mm/dd/yy", firstDay: theMarsApp.controllers.calendarController.startOfWeekDayIndex,
+                self.$(".datepicker").datepicker({ dateFormat: "m/d/yy", firstDay: theMarsApp.controllers.calendarController.startOfWeekDayIndex,
                     beforeShowDay: self.checkWhetherDayIsSelectable });
                 self.$("select").selectBoxIt({ dynamicPositioning: false });
             });

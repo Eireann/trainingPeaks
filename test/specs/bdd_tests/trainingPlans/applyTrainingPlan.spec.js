@@ -81,6 +81,7 @@ function(
             it("Should not have an apply button if it was not purchased", function()
             {
                 $mainRegion.find(".trainingPlanLibrary .trainingPlan[data-trainingplanid=2]").trigger("mouseup");
+                testHelpers.resolveRequest("GET", "plans/v1/plans/2/details$", xhrData.trainingPlanDetails);
                 expect($body.find(".trainingPlanDetails button.apply").length).toBe(0);
             });
 
@@ -94,6 +95,7 @@ function(
             it("Should have an apply button if it was purchased", function()
             {
                 $mainRegion.find(".trainingPlanLibrary .trainingPlan[data-trainingplanid=3]").trigger("mouseup");
+                testHelpers.resolveRequest("GET", "plans/v1/plans/3/details$", xhrData.trainingPlanDetails)
                 expect($body.find(".trainingPlanDetails button.apply").length).toBe(1);
             });
 
@@ -153,7 +155,7 @@ function(
 
                 var wednesday = moment().day(3);
                 $body.find("#applyDateType").val("3");
-                $body.find("#applyDate").val(wednesday.format("MM/DD/YYYY"));
+                $body.find("#applyDate").val(wednesday.format("M/D/YYYY"));
                 $body.find(".trainingPlanDetails .apply").trigger("click");
                 expect(testHelpers.hasRequest(null, "plans/v1/commands/applyplan")).toBe(true);
 
@@ -161,7 +163,7 @@ function(
                 expect(applyRequest.model.attributes.athleteId).toBe(xhrData.users.barbkprem.userId);
                 expect(applyRequest.model.attributes.planId).toBe(1);
                 expect(applyRequest.model.attributes.startType).toBe(3);
-                expect(applyRequest.model.attributes.targetDate).toBe(wednesday.format("MM/DD/YYYY"));
+                expect(applyRequest.model.attributes.targetDate).toBe(wednesday.format("M/D/YYYY"));
             });
 
             it("Should trigger a start on date apply command, starting on any day", function()
@@ -170,7 +172,7 @@ function(
 
                 var tuesday = moment().day(2);
                 $body.find("#applyDateType").val("1");
-                $body.find("#applyDate").val(tuesday.format("MM/DD/YYYY"));
+                $body.find("#applyDate").val(tuesday.format("M/D/YYYY"));
                 $body.find(".trainingPlanDetails .apply").trigger("click");
                 expect(testHelpers.hasRequest(null, "plans/v1/commands/applyplan")).toBe(true);
 
@@ -178,7 +180,7 @@ function(
                 expect(applyRequest.model.attributes.athleteId).toBe(xhrData.users.barbkprem.userId);
                 expect(applyRequest.model.attributes.planId).toBe(1);
                 expect(applyRequest.model.attributes.startType).toBe(1);
-                expect(applyRequest.model.attributes.targetDate).toBe(tuesday.format("MM/DD/YYYY"));
+                expect(applyRequest.model.attributes.targetDate).toBe(tuesday.format("M/D/YYYY"));
             });
 
             it("Should trigger an end on event date apply command, ending on the event date", function()
@@ -194,7 +196,7 @@ function(
                 expect(applyRequest.model.attributes.athleteId).toBe(xhrData.users.barbkprem.userId);
                 expect(applyRequest.model.attributes.planId).toBe(1);
                 expect(applyRequest.model.attributes.startType).toBe(2);
-                expect(applyRequest.model.attributes.targetDate).toBe(moment(xhrData.trainingPlanDetails.eventDate).format("MM/DD/YYYY"));
+                expect(applyRequest.model.attributes.targetDate).toBe(moment(xhrData.trainingPlanDetails.eventDate).format("M/D/YYYY"));
             });
 
             it("Should refresh the plan after applying the plan", function()
@@ -250,7 +252,7 @@ function(
                 var thursday = moment().day(4);
                 var monday = moment().day(1);
                 $body.find("#applyDateType").val("1");
-                $body.find("#applyDate").val(thursday.format("MM/DD/YYYY"));
+                $body.find("#applyDate").val(thursday.format("M/D/YYYY"));
                 $body.find(".trainingPlanDetails .apply").trigger("click");
                 expect(testHelpers.hasRequest(null, "plans/v1/commands/applyplan")).toBe(true);
 
@@ -258,7 +260,7 @@ function(
                 expect(applyRequest.model.attributes.athleteId).toBe(xhrData.users.barbkprem.userId);
                 expect(applyRequest.model.attributes.planId).toBe(1);
                 expect(applyRequest.model.attributes.startType).toBe(1);
-                expect(applyRequest.model.attributes.targetDate).toBe(monday.format("MM/DD/YYYY"));
+                expect(applyRequest.model.attributes.targetDate).toBe(monday.format("M/D/YYYY"));
             });
 
             it("Should trigger an end on date apply command, ending on a sunday", function()
@@ -266,9 +268,13 @@ function(
                 expect(testHelpers.hasRequest(null, "plans/v1/commands/applyplan")).toBe(false);
 
                 var sunday = moment().day(0);
+                if(sunday.format("YYYY-MM-DD") < moment().format("YYYY-MM-DD"))
+                {
+                    sunday.add("weeks", 1);
+                }
                 var tuesday = moment().day(2);
                 $body.find("#applyDateType").val("3");
-                $body.find("#applyDate").val(tuesday.format("MM/DD/YYYY"));
+                $body.find("#applyDate").val(tuesday.format("M/D/YYYY"));
                 $body.find(".trainingPlanDetails .apply").trigger("click");
                 expect(testHelpers.hasRequest(null, "plans/v1/commands/applyplan")).toBe(true);
 
@@ -276,7 +282,7 @@ function(
                 expect(applyRequest.model.attributes.athleteId).toBe(xhrData.users.barbkprem.userId);
                 expect(applyRequest.model.attributes.planId).toBe(1);
                 expect(applyRequest.model.attributes.startType).toBe(3);
-                expect(applyRequest.model.attributes.targetDate).toBe(sunday.format("MM/DD/YYYY"));
+                expect(applyRequest.model.attributes.targetDate).toBe(sunday.format("M/D/YYYY"));
             });
 
         });
@@ -317,7 +323,7 @@ function(
                 var thursday = moment().day(4);
                 var friday = moment().day(5);
                 $body.find("#applyDateType").val("1");
-                $body.find("#applyDate").val(thursday.format("MM/DD/YYYY"));
+                $body.find("#applyDate").val(thursday.format("M/D/YYYY"));
                 $body.find(".trainingPlanDetails .apply").trigger("click");
                 expect(testHelpers.hasRequest(null, "plans/v1/commands/applyplan")).toBe(true);
 
@@ -325,7 +331,7 @@ function(
                 expect(applyRequest.model.attributes.athleteId).toBe(xhrData.users.barbkprem.userId);
                 expect(applyRequest.model.attributes.planId).toBe(1);
                 expect(applyRequest.model.attributes.startType).toBe(1);
-                expect(applyRequest.model.attributes.targetDate).toBe(friday.format("MM/DD/YYYY"));
+                expect(applyRequest.model.attributes.targetDate).toBe(friday.format("M/D/YYYY"));
             });
 
             it("Should trigger an end on date apply command, ending on a thursday", function()
@@ -335,7 +341,7 @@ function(
                 var thursday = moment().day(4);
                 var tuesday = moment().day(2);
                 $body.find("#applyDateType").val("3");
-                $body.find("#applyDate").val(tuesday.format("MM/DD/YYYY"));
+                $body.find("#applyDate").val(tuesday.format("M/D/YYYY"));
                 $body.find(".trainingPlanDetails .apply").trigger("click");
                 expect(testHelpers.hasRequest(null, "plans/v1/commands/applyplan")).toBe(true);
 
@@ -343,7 +349,7 @@ function(
                 expect(applyRequest.model.attributes.athleteId).toBe(xhrData.users.barbkprem.userId);
                 expect(applyRequest.model.attributes.planId).toBe(1);
                 expect(applyRequest.model.attributes.startType).toBe(3);
-                expect(applyRequest.model.attributes.targetDate).toBe(thursday.format("MM/DD/YYYY"));
+                expect(applyRequest.model.attributes.targetDate).toBe(thursday.format("M/D/YYYY"));
             });
 
         });
