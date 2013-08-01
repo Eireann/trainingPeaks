@@ -93,7 +93,7 @@ function(
                 TP.utils.trainingPlan.getStatusByName("Applied")], 
                 data.planStatus);
 
-            data.applyDate = moment().day(1).format(this.dateFormat);
+            data.applyDate = moment().format(this.dateFormat);
             data.details = this.model.details.toJSON();
             data.details.weekcount = Math.ceil(data.details.dayCount / 7);
 
@@ -126,13 +126,18 @@ function(
             {
                 targetDate = this.model.details.get("eventDate");
             }
-            else if (startType === TP.utils.trainingPlan.startTypeEnum.StartDate) 
+
+            // force start/end to week start/end
+            if(this.model.details.get("forceStartOnMonday"))
             {
-                targetDate = moment(targetDate).day(1).format(this.dateFormat);
-            }
-            else if (startType === TP.utils.trainingPlan.startTypeEnum.EndDate) 
-            {
-                targetDate = moment(targetDate).day(7).format(this.dateFormat);
+                if (startType === TP.utils.trainingPlan.startTypeEnum.StartDate) 
+                {
+                    targetDate = moment(targetDate).day(1).format(this.dateFormat);
+                }
+                else if (startType === TP.utils.trainingPlan.startTypeEnum.EndDate) 
+                {
+                    targetDate = moment(targetDate).day(7).format(this.dateFormat);
+                }
             }
 
             var command = new ApplyTrainingPlanCommand({
