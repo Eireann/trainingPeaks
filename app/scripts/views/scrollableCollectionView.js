@@ -230,7 +230,8 @@ function(
                 view = this.children.findByModel(model);
                 duration = 0;
             }
-            this._animateScroll(view.$el, duration);
+            var scrollTop = view.$el.position().top + this.$el.scrollTop();
+            this._animateScroll(scrollTop, duration);
             this.scrollAnchor = {
                 view: view,
                 position: {top: 0}
@@ -242,10 +243,13 @@ function(
             return this._closestChildToTop().view.model;
         },
 
-        _animateScroll: function($destinationEl, duration) {
+        _animateScroll: function(scrollTop, duration) {
             var self = this;
+            var scrollDelta = Math.abs(scrollTop - this.$el.scrollTop());
+            if(scrollDelta <= 1) return;
+
             this.scrollAnimationDeferred = new $.Deferred();
-            this.$el.animate({scrollTop: $destinationEl.position().top + this.$el.scrollTop()}, duration || 0, function() {
+            this.$el.animate({scrollTop: scrollTop}, duration || 0, function() {
                 self.scrollAnimationDeferred.resolve();
                 self.$el.trigger('scroll');
             });
@@ -350,10 +354,11 @@ function(
             }
             clearTimeout(this.scrollStopTimeout);
             var closestChild = this._closestChildToTop();
-            if (Math.abs(closestChild.position.top) > 100) {
-                return;
+            var offset = Math.abs(closestChild.position.top);
+            if (offset < 100)
+            {
+                this.scrollToModel(closestChild.view.model, 500);
             }
-            this.scrollToModel(closestChild.view.model, 500);
         },
 
         _fetchMore: function(edge)

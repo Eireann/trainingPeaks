@@ -80,24 +80,6 @@ function(_, TP, infiniteScroll)
 
         },
 
-        scrollToDate: function(targetDate, effectDuration, callback)
-        {
-            if(callback) console.warn("Callback not supported on scrollToDate", callback);
-
-            var dateAsMoment = moment(targetDate);
-
-            if (typeof effectDuration === "undefined")
-                effectDuration = 500;
-
-            // QL TODO: This works incorrectly for Sunday...
-            var id = dateAsMoment.day(1).format(TP.utils.datetime.shortDateFormat);
-            var model = this.collection.get(id);
-            this.weeksCollectionView.scrollToModel(model);
-
-            // no need to do this as it will already update after scroll, this makes it flash twice
-            //this.setCurrentDate(targetDate);
-            this.snappedToWeekHeader = true;
-        },
 
         // if we un-snapped from the week header because of text wrapping on library show/hide,
         // or if we scrolled into a different week, snap back to the correct week

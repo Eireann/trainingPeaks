@@ -11,7 +11,7 @@ function(
     )
 {
 
-    return TP.ItemView.extend(
+    return TP.Layout.extend(
     {
 
         initialize: function()

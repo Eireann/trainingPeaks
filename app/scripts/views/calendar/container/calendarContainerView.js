@@ -23,9 +23,6 @@ function(
 {
     var CalendarContainerView =
     {
-        $weeksContainer: null,
-
-        children: [],
         colorizationClassNames:
         [
             "colorizationOff",
@@ -39,6 +36,13 @@ function(
             type: "handlebars",
             template: calendarContainerView
         },
+
+        regions:
+        {
+            weeksRegion: '.weeks-region'
+        },
+
+        ui: {},
 
         initialize: function(options)
         {
@@ -58,43 +62,26 @@ function(
             this.calendarHeaderModel = options.calendarHeaderModel;
             this.startOfWeekDayIndex = options.startOfWeekDayIndex ? options.startOfWeekDayIndex : 0;
 
+            this.initializeScrollOnDrag();
+
             this.weeksCollectionView = new ScrollableCollectionView({
                 firstModel: this.collection.find(function(model) { return TP.utils.datetime.isThisWeek(model.id); }),
                 itemView: CalendarWeekView,
                 collection: this.collection,
-                id: 'weeksContainer',
+                id: "weeksContainer",
                 className: "scrollable colorByComplianceAndWorkoutType"
             });
-
-            this.initializeScrollOnDrag();
-        },
-        
-        render: function()
-        {
-            var self = this;
-
-            PrimaryContainerView.prototype.render.apply(this, arguments);
-
-            // Listen for itemDroped eventd on Day View
             this.listenTo(this.weeksCollectionView, "itemview:itemview:itemDropped", _.bind(this.onItemDropped, this));
+        },
 
-            this.weeksCollectionView.render();
-            // this.children.add(this.weeksCollectionView);
-            this.$el.append(this.weeksCollectionView.$el);
+        onRender: function()
+        {
+            this.weeksRegion.show(this.weeksCollectionView);
             this.ui.weeksContainer = this.weeksCollectionView.$el;
-        },
 
-        closeChildren: function()
-        {
-            _.each(this.children, function(childView)
-            {
-                childView.close();
-            });
-        },
-
-        ui:
-        {
-            //"weeksContainer": "#weeksContainer"
+            // Show drop-shadow during scrolling.
+            this.weeksCollectionView.$el.on("scroll", _.bind(this.startScrollingState, this));
+            this.weeksCollectionView.$el.on("scroll", _.bind(_.debounce(this.stopScrollingState, 500), this));
         },
 
         modelEvents:
@@ -105,7 +92,7 @@ function(
         collectionEvents:
         {
             //"add": "onAddWeek",
-            "reset": "render",
+            // "reset": "render",
             "item:move": "onItemMoved",
             "shiftwizard:open": "onShiftWizardOpen",
             "rangeselect": "onRangeSelect",
@@ -152,10 +139,19 @@ function(
             return this.weeksCollectionView.getCurrentModel().id;
         },
 
-        // onShow happens after render finishes and dom has updated ...
-        onShow: function()
+        scrollToDate: function(targetDate, effectDuration, callback)
         {
-            this.weeksCollectionView.triggerMethod("show");
+            if(callback) console.warn("Callback not supported on scrollToDate", callback);
+
+            var dateAsMoment = moment(targetDate);
+
+            if (typeof effectDuration === "undefined")
+                effectDuration = 500;
+
+            // QL TODO: This works incorrectly for Sunday...
+            var id = dateAsMoment.day(1).format(TP.utils.datetime.shortDateFormat);
+            var model = this.collection.get(id);
+            this.weeksCollectionView.scrollToModel(model, effectDuration);
         },
 
         onItemDropped: function(weekView, dayView, options)
@@ -167,22 +163,6 @@ function(
         {
             this.trigger("itemMoved", item, movedToDate, deferredResult);
         },
-
-        fadeOut: function(duration)
-        {
-            if (this.$el)
-            {
-                this.$el.fadeOut({ duration: duration });
-            }
-        },
-
-        // fadeIn: function(callback, duration)
-        // {
-        //     if (this.$el)
-        //     {
-        //         this.$el.fadeIn(duration || 500, callback);
-        //     }
-        // },
 
         onRangeSelect: function(rangeSelection, e)
         {
@@ -228,10 +208,6 @@ function(
         initializeScrollOnDrag: function()
         {
             this.watchForDragging();
-            //this.on("scroll:updatePosition", this.onUpdateScrollPosition, this);
-
-            // this.weeksCollectionView.$el.on("scroll", _.bind(this.startScrollingState, this));
-            // this.weeksCollectionView.$el.on("scroll", _.bind(_.debounce(this.stopScrollingState, 500), this));
 
         },
 
