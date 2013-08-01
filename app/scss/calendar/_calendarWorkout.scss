@@ -204,9 +204,10 @@
 
 @media print {
     .workout {
+        width:97% !important;
         margin: 5px 4px 4px 2px;
         border:1px solid $TPGrey2;
-        page-break-inside:avoid;
+        // page-break-inside:avoid;
 
         .workoutSettings {
             display: none;
@@ -228,7 +229,7 @@
         }
 
         .workoutDiv {
-           //min-height: 35px;
+           // min-height: 35px;
             
             .workoutHeader {
                 padding: 0px 3px 0px 3px;
