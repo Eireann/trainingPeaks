@@ -166,6 +166,7 @@ function(
 
         onRender: function()
         {
+            theMarsApp.getBodyElement().addClass("qvOpen");
             if (!this.renderInitialized)
             {
                 this.initializeTabsAfterRender();
@@ -182,6 +183,11 @@ function(
             this.$(".paceTab").addClass("missingData");
 
             this.onSensorDataChange();
+        },
+
+        onClose: function()
+        {
+            theMarsApp.getBodyElement().removeClass("qvOpen");
         },
 
         onDetailsChange: function(detailModel)

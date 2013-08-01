@@ -8,6 +8,8 @@
 @import "calendar/dragAndDrop";
 @import "globalCSS/modal";
 
+@import "globalCSS/print";
+
 @import "globalCSS/framework";
 
 @import "header";
@@ -43,51 +45,55 @@
 
 @import "touch";
 
-body
-{
-    @include nice-scrollbar;
-    font-size: $baseFontSize;
-    font-family: $fontFamilyRegular;
-    color: $TPGrey4;
-}
+@media screen {
 
-a
-{
-    cursor: pointer;
-}
-
-#loginFooter, #calendarFooter
-{
-    span
+    body
     {
+        @include nice-scrollbar;
+        font-size: $baseFontSize;
         font-family: $fontFamilyRegular;
-        font-size: $fontSizeXSmall;
+        color: $TPGrey4;
     }
-}
 
-.userSettings
-{
-    background-color: $white;
-    overflow-x:visible;
-    overflow-y:auto;
-}
-
-.row
-{
-    max-width: none;
-}
-
-@include buttons(0px, auto, $fontSizeMedium);
-
-input[type="text"]
-{
-    padding-top: 0px;
-    padding-bottom: 0px;
-    cursor: text;
-    @include box-shadow(none);
-
-    &:focus
+    a
     {
-        @include box-shadow(none);
+        cursor: pointer;
     }
+
+    #loginFooter, #calendarFooter
+    {
+        span
+        {
+            font-family: $fontFamilyRegular;
+            font-size: $fontSizeXSmall;
+        }
+    }
+
+    .userSettings
+    {
+        background-color: $white;
+        overflow-x:visible;
+        overflow-y:auto;
+    }
+
+    .row
+    {
+        max-width: none;
+    }
+
+    @include buttons(0px, auto, $fontSizeMedium);
+
+    input[type="text"]
+    {
+        padding-top: 0px;
+        padding-bottom: 0px;
+        cursor: text;
+        @include box-shadow(none);
+
+        &:focus
+        {
+            @include box-shadow(none);
+        }
+    }
+
 }
