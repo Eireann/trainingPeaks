@@ -91,7 +91,7 @@ function (TP, timeInZonesGenerator, ThePeaksGenerator, HRTimeInZonesChartView, P
                 {
                     var peaks = ThePeaksGenerator.generate(metric, this.model.get("details"));
                     var el = this.$el.find(this.elByMetricName[metric] + " > .peaksChartContainer");
-                    var view = new ChartView({ peaks: peaks, timeInZones: timeInZones, el: el });
+                    var view = new ChartView({ peaks: peaks, timeInZones: timeInZones, el: el, workoutType: this.model.get("workoutTypeValueId") });
                     el.css("height", "233px");
                     el.css("width", "400px");
                     view.render();
