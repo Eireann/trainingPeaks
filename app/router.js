@@ -23,7 +23,6 @@ function (_, TP)
     {
         initialize: function ()
         {
-
             var self = this;
 
             theMarsApp.on("api:unauthorized", function()
@@ -41,7 +40,6 @@ function (_, TP)
                 var routeParts = routeName.split("/");
                 this.currentRoute = routeParts[0];
             }, this);
-
         },
 
         getCurrentRoute: function()
@@ -56,7 +54,6 @@ function (_, TP)
             "calendar": "calendar",
             "calendar/athletes/:athleteId": "calendar",
             "dashboard": "dashboard",
-            "tools": "tools",
             "": "calendar"
         },
 
@@ -77,21 +74,15 @@ function (_, TP)
 
         calendar: ensureUser(function (athleteId)
         {
-
             if (athleteId)
-            {
                 theMarsApp.user.setCurrentAthleteId(athleteId);
-            }
 
             this.checkAuth();
 
             if (theMarsApp.getCurrentController() === theMarsApp.controllers.calendarController)
-            {
                 theMarsApp.controllers.calendarController.trigger("refresh");
-            } else
-            {
+            else
                 theMarsApp.showController(theMarsApp.controllers.calendarController);
-            }
 
             TP.analytics("send", "pageview", { page: "calendar" });
         }),

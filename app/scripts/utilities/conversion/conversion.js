@@ -465,6 +465,12 @@
 
             var newValue = value.replace(/\r\n/g, "\n").replace(/\n/g, "\r\n");
             return newValue;
+        },
+
+        formatSwimDistance: function(value, options)
+        {
+            var swimOptions = _.extend({}, options, {workoutTypeValueId: 1});
+            return this.formatDistance(value, swimOptions);
         }
          
     };

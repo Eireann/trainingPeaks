@@ -46,19 +46,18 @@ function(
 
         onRender: function()
         {
-
             var self = this;
 
             setImmediate(function()
             {
                 self.styleSelectBox();
             });
-
         },
 
         styleSelectBox: function()
         {
-            this.$("#peakType").selectBoxIt({
+            this.$("#peakType").selectBoxIt(
+            {
                 dynamicPositioning: false
             });
         },
@@ -129,11 +128,8 @@ function(
 
         getPeaksData: function(detailData)
         {
-
             if (!this.selectedPeakType)
-            {
                 return [];
-            }
 
             var metric = this.modelPeakKeys[this.selectedPeakType];
             var visiblePeaks = this.getEnabledPeaks(this.selectedPeakType);
@@ -223,7 +219,8 @@ function(
             }
         },
 
-        templatePeakTypeNames: {
+        templatePeakTypeNames:
+        {
             distance: "Peak Distance",
             power: "Peak Power",
             heartrate: "Peak Heart Rate",
@@ -232,7 +229,8 @@ function(
             cadence: "Peak Cadence"
         },
 
-        modelPeakKeys: {
+        modelPeakKeys:
+        {
             distance: "peakSpeedsByDistance",
             power: "peakPowers",
             heartrate: "peakHeartRates",
@@ -257,7 +255,8 @@ function(
             return allKeys;
         },
 
-        formatMethods: {
+        formatMethods:
+        {
             pace: "formatPace",
             speed: "formatSpeed",
             distance: "formatPace"
@@ -277,8 +276,10 @@ function(
             this.render();
         },
 
-        onSelectPeakType: function()
+        onSelectPeakType: function ()
         {
+            TP.analytics("send", { "hitType": "event", "eventCategory": "expando", "eventAction": "peakTypeSelected", "eventLabel": "" });
+            
             this.changePeakType(this.$("#peakType").val());
         },
 
@@ -330,6 +331,8 @@ function(
 
         selectPeak: function(peakType, peakInterval, options)
         {
+            TP.analytics("send", { "hitType": "event", "eventCategory": "expando", "eventAction": "peakSelected", "eventLabel": "" });
+
             var peakDataItem = this.findPeak(peakType, peakInterval);
 
             if (options.updateCheckboxes)
@@ -363,6 +366,8 @@ function(
 
         onLapsClicked: function(e)
         {
+            TP.analytics("send", { "hitType": "event", "eventCategory": "expando", "eventAction": "lapClicked", "eventLabel": "" });
+
             var target = $(e.target);
             var li = target.closest("li");
             var lapIndex = li.data("lapindex");
@@ -417,6 +422,8 @@ function(
 
         onEntireWorkoutClicked: function(e)
         {
+            TP.analytics("send", { "hitType": "event", "eventCategory": "expando", "eventAction": "entireWorkoutClicked", "eventLabel": "" });
+
             var target = $(e.target);
             var li = target.closest("li");
             var options = {};
@@ -453,7 +460,6 @@ function(
             statsForRange.hasLoaded = true;
 
             this.trigger("rangeselected", statsForRange, options, this);
-
         },
 
         onPeaksClicked: function(e)

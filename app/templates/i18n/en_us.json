@@ -96,6 +96,7 @@
 	"AverageSpeed": "Average Speed",
 	"Calories": "Calories",
 	"ElevationGain": "Elevation Gain",
+    "ElGain": "El. Gain",
 	"ElevationLoss": "Elevation Loss",
 	"TSS": "TSS",
     "TSB": "TSB",
@@ -258,7 +259,7 @@
 
     "BrowseFiles": "Browse Files",
     "GetDeviceAgent": "Get Device Agent",
-    "SelectFile": "Select a file from your computer (.csv, .pwx, .fit, .tcx etc)\nor use",
+    "SelectFile": "Select a file from your computer (.fit, .tcx, .pwx, .wko, .csv, .hrm)\nor use",
     "DeviceAgent": "Device Agent",
     "UploadedFiles": "Uploaded Files",
     "Download": "Download",

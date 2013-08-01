@@ -18,7 +18,8 @@ function ()
         return userTypesByName.hasOwnProperty(userTypeName) ? userTypesByName[userTypeName] : 0;
     };
 
-    var userTypesById = {
+    var userTypesById =
+    {
         0: "Undefined", // Undefined, don't display it
         1: "Premium Athlete Paid By Coach",
         2: "Paid Coach",

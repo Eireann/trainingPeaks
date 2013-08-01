@@ -12,4 +12,7 @@
   <parameter name="OauthRoot" >
     <parameterEntry kind="TextFile" scope="apiConfig.js" match="{OAUTH_ROOT}" />
   </parameter>
+  <parameter name="GoogleAnalyticsAccount" >
+      <parameterEntry kind="TextFile" scope="apiConfig.js" match="{GA_ACCOUNT}" />
+  </parameter>
 </parameters>

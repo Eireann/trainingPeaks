@@ -14,15 +14,14 @@ function (TP, TrainingPlanDetailsModel)
 
         urlRoot: function()
         {
-            var athleteId = theMarsApp.user.getCurrentAthleteId();
-            return theMarsApp.apiRoot + "/plans/v1/athletes/" + athleteId + "/plans";
+            return theMarsApp.apiRoot + "/plans/v1/plans";
         },
 
         defaults:
         {
-            "planId": null,
-            "title": null,
-            "planStatus": null
+            planId: null,
+            title: null,
+            planStatus: null
         },
 
         initialize: function()

@@ -10,7 +10,7 @@
 
 <div class="planDescription small">{{ stripHtml description 200 }}</div>
 
-
+{{#if plannedWorkoutTypeDurations }}
 <div class="planDetails">
     <div class="smallbold">{{$ "WorkoutTotals" }}</div>
     <div class="smallbold duration">{{$ "Duration"}}</div>
@@ -33,13 +33,13 @@
         {{/everyOther}}
     {{/each}}
 </div>
-
-<div class="applyPlan">
-    <div class="smallbold">{{$ "ApplyPlan"}}</div>
-</div>
+{{/if}}
 {{/with}}
 
 {{#if applyable }}
+<div class="applyPlan">
+    <div class="smallbold">{{$ "ApplyPlan"}}</div>
+</div>
 <div class="startEndPlan">
     <select id="applyDateType">
         <option value="1">{{$ "Start" }}</option>
@@ -56,22 +56,20 @@
 </div>
 {{/if}}
 
-{{#if applied}}
-    {{# with details }}
-        {{#if planApplications }}
-            <div class="appliedPlans">
-                <div class="smallbold">{{$ "AppliedPlans"}}</div>
-                <div class="appliedPlansContainer">
-                    {{# each planApplications }}
-                        <div data-appliedplanid="{{ appliedPlanId }}" class="appliedPlan">
-                            <span class="appliedDates small">{{ formatDate startDate "MM/DD/YYYY" }} - {{ formatDate endDate "MM/DD/YYYY" }}</span>
-                            <span class="removePlan small">{{$ "Remove" }}</span>
-                        </div>
-                    {{/each}}
-                </div>
+{{#with details}}
+    {{#if planApplications }}
+        <div class="appliedPlans">
+            <div class="smallbold">{{$ "AppliedPlans"}}</div>
+            <div class="appliedPlansContainer">
+                {{# each planApplications }}
+                    <div data-appliedplanid="{{ appliedPlanId }}" class="appliedPlan">
+                        <span class="appliedDates small">{{ formatDate startDate "MM/DD/YYYY" }} - {{ formatDate endDate "MM/DD/YYYY" }}</span>
+                        <span class="removePlan small">{{$ "Remove" }}</span>
+                    </div>
+                {{/each}}
             </div>
-        {{/if}}
-    {{/with}}
-{{/if}}
+        </div>
+    {{/if}}
+{{/with}}
 
 {{/hoverBox}}

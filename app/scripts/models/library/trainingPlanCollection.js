@@ -12,12 +12,12 @@ function(TP, TrainingPlanModel)
 
         url: function()
         {
-            return theMarsApp.apiRoot + "/plans/v1/athletes/" + theMarsApp.user.getCurrentAthleteId() + "/plans";
+            return theMarsApp.apiRoot + "/plans/v1/plans";
         },
 
         comparator: function(item)
         {
-            return item.get("title");
+            return item.get("title").replace(/[^a-zA-Z0-9]/g,"").toLowerCase();
         }
 
     });

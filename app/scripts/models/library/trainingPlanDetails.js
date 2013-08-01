@@ -14,7 +14,7 @@ function (TP)
         url: function()
         {
             var athleteId = theMarsApp.user.getCurrentAthleteId();
-            return theMarsApp.apiRoot + "/plans/v1/athletes/" + athleteId + "/plans/" + this.id + "/details";
+            return theMarsApp.apiRoot + "/plans/v1/plans/" + this.id + "/details";
         },
 
         defaults:
@@ -27,28 +27,13 @@ function (TP)
             eventPlan: false,
             workoutCount: null,
             planId: null,
-            planApplications: null,
             planStatus: null,
             plannedWorkoutTypeDurations: null,
-            title: null
+            title: null,
+            planApplications: null
         }
 
     });
-
-    /*
-
-    planApplications: [
-        {appliedPlanId, startDate, endDate}
-    ]
-
-    plannedWorkoutTypeDurations: [
-        workoutTypeId,
-        duration,
-        distance,
-        raceDistance
-    ]
-
-    */
 
     return TrainingPlanDetailsModel;
 });

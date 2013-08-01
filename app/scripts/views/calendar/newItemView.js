@@ -49,6 +49,7 @@ function(
 
         initialize: function ()
         {
+            TP.analytics("send", { "hitType": "event", "eventCategory": "newItemView", "eventAction": "opened", "eventLabel": "" });
             _.bindAll(this, "onUploadDone", "onUploadFail", "close");
         },
 
@@ -57,6 +58,7 @@ function(
             // Handle file uploads as a specific case & return
             if (e.currentTarget.name === "uploadDeviceFile")
             {
+                TP.analytics("send", { "hitType": "event", "eventCategory": "newItemView", "eventAction": "deviceFileUploadClicked", "eventLabel": "" });
                 this.ui.fileinput.click();
                 return;
             }
@@ -81,6 +83,8 @@ function(
 
         onFileSelected: function ()
         {
+            TP.analytics("send", { "hitType": "event", "eventCategory": "newItemView", "eventAction": "deviceFileSelected", "eventLabel": "" });
+
             this.$el.addClass("waiting");
             this.$("#uploadingNotification").css("display", "block");
             
@@ -99,6 +103,8 @@ function(
 
         onUploadDone: function ()
         {
+            TP.analytics("send", { "hitType": "event", "eventCategory": "newItemView", "eventAction": "deviceFileUploaded", "eventLabel": "" });
+
             this.$el.removeClass("waiting");
          
             var workoutModelJson = this.uploadedFileDataModel.get("workoutModel");
@@ -150,7 +156,5 @@ function(
             this.errorMessageView = new UserConfirmationView({ template: fileUploadErrorTemplate });
             this.errorMessageView.render();
         }
-
-
     });
 });

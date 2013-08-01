@@ -59,6 +59,7 @@ function(
                 totalDistance: 0,
                 totalTime: 0,
                 totalEnergy: 0,
+                totalElevationGain: 0,
                 distanceByWorkoutType: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0 },
                 durationByWorkoutType: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0 },
                 cumulativeTss: 0,
@@ -106,7 +107,10 @@ function(
   
                     if (workout.has("energyPlanned") && workout.get("energyPlanned") !== null)
                         plannedValues.totalEnergy += Number(workout.get("energyPlanned"));
-                    
+ 
+                    if (workout.has("elevationGain") && workout.get("elevationGain") !== null)
+                        completedValues.totalElevationGain += Number(workout.get("elevationGain"));                   
+
                     if (workout.has("tssActual") && workout.get("tssActual") !== null)
                         completedValues.cumulativeTss += Number(workout.get("tssActual"));
 
@@ -173,7 +177,8 @@ function(
                 strengthDurationCompleted: completedValues.durationByWorkoutType[TP.utils.workout.types.getIdByName("Strength")],
                 strengthDaysCompleted: _.keys(completedValues.completedDaysByWorkoutType[TP.utils.workout.types.getIdByName("Strength")]).length,
                 tssPlanned: plannedValues.cumulativeTss.toFixed(0),
-                tssCompleted: completedValues.cumulativeTss.toFixed(0)
+                tssCompleted: completedValues.cumulativeTss.toFixed(0),
+                totalElevationGain: completedValues.totalElevationGain
             },
             { silent: true });
         },
@@ -258,20 +263,32 @@ function(
                     tpModel.set({ timePlanned: this.model.get("totalTimePlanned"), timeCompleted: this.model.get("totalTimeCompleted"), displayTime: true });
                     break;
 
-                case "strength":
+                case "strength duration":
                     tpModel.set({ timePlanned: this.model.get("strengthDurationPlanned"), timeCompleted: this.model.get("strengthDurationCompleted"), displayTime: true });
                     break;
 
-                case "bike":
+                case "bike duration":
                     tpModel.set({ timePlanned: this.model.get("bikeDurationPlanned"), timeCompleted: this.model.get("bikeDurationCompleted"), displayTime: true });
                     break;
 
-                case "run":
+                case "bike distance":
+                    tpModel.set({ distancePlanned: this.model.get("bikeDistancePlanned"), distanceCompleted: this.model.get("bikeDistanceCompleted"), displayTime: false });
+                    break;
+
+                case "run distance":
                     tpModel.set({ distancePlanned: this.model.get("runDistancePlanned"), distanceCompleted: this.model.get("runDistanceCompleted"), workoutTypeValueId: 3 });
                     break;
 
-                case "swim":
-                    tpModel.set({ distancePlanned: this.model.get("swimDistancePlanned"), distanceCompleted: this.model.get("swimDistanceCompleted"), workoutTypeValueId: 1 });
+                case "run duration":
+                    tpModel.set({ timePlanned: this.model.get("runDurationPlanned"), timeCompleted: this.model.get("runDurationCompleted"), workoutTypeValueId: 3, displayTime: true });
+                    break;
+
+                case "swim distance":
+                    tpModel.set({ distancePlanned: this.model.get("swimDistancePlanned"), distanceCompleted: this.model.get("swimDistanceCompleted"), workoutTypeValueId: 1, displayTime: false});
+                    break;
+
+                case "swim duration":
+                    tpModel.set({ timePlanned: this.model.get("swimDurationPlanned"), timeCompleted: this.model.get("swimDurationCompleted"), workoutTypeValueId: 1, displayTime: true});
                     break;
             }
 

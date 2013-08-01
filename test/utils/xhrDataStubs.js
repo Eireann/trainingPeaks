@@ -450,7 +450,10 @@ function()
             eventName: "Christmas Run",
             eventPlan: true,
             workoutCount: 1,
-            planId: 3,
+            planId: 3, 
+            planStatus: 3,
+            plannedWorkoutTypeDurations: [],
+            title: "Training Plan Three",
             planApplications: [
                 {
                     appliedPlanId: 21,
@@ -463,9 +466,6 @@ function()
                     endDate: "2014-09-10"
                 }
             ],
-            planStatus: 3,
-            plannedWorkoutTypeDurations: [],
-            title: "Training Plan Three"
         }
         
     };
