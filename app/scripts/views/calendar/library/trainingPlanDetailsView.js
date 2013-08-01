@@ -298,7 +298,7 @@ function(
 
         getStartDayOfWeekIndex: function()
         {
-            return this.model.details.has("startDate") ? moment(this.model.details.get("startDate")).day() : 1
+            return this.model.details.has("startDate") ? moment(this.model.details.get("startDate")).day() : 1;
         },
 
         getEndDayOfWeekIndex: function()
