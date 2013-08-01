@@ -6,7 +6,7 @@
     .hoverBoxContents
     {
         min-height: 300px;
-        max-width: 300px;
+        max-width: 330px;
     }
 
 
@@ -174,7 +174,8 @@
 
         .removePlan
         {
-            float: left;
+            float: right;
+            margin-right: 10px;
             margin-left: 20px;
             color: $TPBlue;
             padding: 0px;
@@ -184,14 +185,7 @@
         .appliedDates
         {
             float: left;
-            margin-left: 15px;
-        }
-
-        .alterAppliedPlan
-        {
-            float: right;
-            width: 100px;
-            margin-right: 10px;
+            margin-left: 10px;
         }
 
         .startEndPlan

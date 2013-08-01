@@ -368,5 +368,8 @@
     "ErrorApplyingPlan": "An error has occurred while applying your training plan",
     "By": "By",
     "Remove": "Remove",
-    "WorkoutTotals": "Workout Totals"
+    "WorkoutTotals": "Workout Totals",
+
+    "OnCalendarFrom": "On calendar from",
+    "to": "to"
 }

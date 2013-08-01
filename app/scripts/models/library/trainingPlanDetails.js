@@ -30,7 +30,10 @@ function (TP)
             planStatus: null,
             plannedWorkoutTypeDurations: null,
             title: null,
-            planApplications: null
+            planApplications: null,
+            hasWeeklyGoals: false,
+            startDate: null,
+            endDate: null
         }
 
     });
