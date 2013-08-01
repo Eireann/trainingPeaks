@@ -111,8 +111,8 @@ function(
             {
                 $mainRegion.find(".trainingPlanLibrary .trainingPlan[data-trainingplanid=2]").trigger("mouseup");
                 testHelpers.resolveRequest("GET", "plans/v1/plans/2/details$", xhrData.trainingPlanDetails);
-                expect($body.find(".trainingPlanDetails [data-appliedplanid=21]").text()).toContain("01/02/2013");
-                expect($body.find(".trainingPlanDetails [data-appliedplanid=21]").text()).toContain("09/10/2013");
+                expect($body.find(".trainingPlanDetails [data-appliedplanid=21]").text()).toContain("1/02/2013");
+                expect($body.find(".trainingPlanDetails [data-appliedplanid=21]").text()).toContain("9/10/2013");
             });
 
         });
@@ -194,7 +194,7 @@ function(
                 expect(applyRequest.model.attributes.athleteId).toBe(xhrData.users.barbkprem.userId);
                 expect(applyRequest.model.attributes.planId).toBe(1);
                 expect(applyRequest.model.attributes.startType).toBe(2);
-                expect(applyRequest.model.attributes.targetDate).toBe(xhrData.trainingPlanDetails.eventDate);
+                expect(applyRequest.model.attributes.targetDate).toBe(moment(xhrData.trainingPlanDetails.eventDate).format("MM/DD/YYYY"));
             });
 
             it("Should refresh the plan after applying the plan", function()
@@ -265,7 +265,7 @@ function(
             {
                 expect(testHelpers.hasRequest(null, "plans/v1/commands/applyplan")).toBe(false);
 
-                var sunday = moment().day(7);
+                var sunday = moment().day(0);
                 var tuesday = moment().day(2);
                 $body.find("#applyDateType").val("3");
                 $body.find("#applyDate").val(tuesday.format("MM/DD/YYYY"));
@@ -281,6 +281,72 @@ function(
 
         });
 
+        describe("Restrict to plan start / end week days", function()
+        {
+            var $mainRegion;
+            var $body;
+
+            beforeEach(function()
+            {
+                testHelpers.startTheAppAndLogin(xhrData.users.barbkprem);
+                $mainRegion = theApp.mainRegion.$el;
+                $body = theApp.getBodyElement();
+                theApp.router.navigate("calendar", true);
+                testHelpers.resolveRequest("GET", "plans/v1/plans$", xhrData.trainingPlans);
+                $mainRegion.find("#plansLibrary").trigger("click");
+                $mainRegion.find(".trainingPlanLibrary .trainingPlan[data-trainingplanid=1]").trigger("mouseup");
+
+
+                var trainingPlanRestrictedToWeekDates = _.extend({}, xhrData.trainingPlanDetails, { hasWeeklyGoals: true });
+                trainingPlanRestrictedToWeekDates.startDate = moment().day(5).format("YYYY-MM-DD");
+                trainingPlanRestrictedToWeekDates.endDate = moment().add("weeks", 12).day(4).format("YYYY-MM-DD");
+
+                testHelpers.resolveRequest("GET", "plans/v1/plans/1/details$", trainingPlanRestrictedToWeekDates);
+
+            });
+
+            afterEach(function()
+            {
+                testHelpers.stopTheApp();
+            });
+
+            it("Should trigger a start on date apply command, starting on a friday", function()
+            {
+                expect(testHelpers.hasRequest(null, "plans/v1/commands/applyplan")).toBe(false);
+
+                var thursday = moment().day(4);
+                var friday = moment().day(5);
+                $body.find("#applyDateType").val("1");
+                $body.find("#applyDate").val(thursday.format("MM/DD/YYYY"));
+                $body.find(".trainingPlanDetails .apply").trigger("click");
+                expect(testHelpers.hasRequest(null, "plans/v1/commands/applyplan")).toBe(true);
+
+                var applyRequest = testHelpers.findRequest(null, "plans/v1/commands/applyplan");
+                expect(applyRequest.model.attributes.athleteId).toBe(xhrData.users.barbkprem.userId);
+                expect(applyRequest.model.attributes.planId).toBe(1);
+                expect(applyRequest.model.attributes.startType).toBe(1);
+                expect(applyRequest.model.attributes.targetDate).toBe(friday.format("MM/DD/YYYY"));
+            });
+
+            it("Should trigger an end on date apply command, ending on a thursday", function()
+            {
+                expect(testHelpers.hasRequest(null, "plans/v1/commands/applyplan")).toBe(false);
+
+                var thursday = moment().day(4);
+                var tuesday = moment().day(2);
+                $body.find("#applyDateType").val("3");
+                $body.find("#applyDate").val(tuesday.format("MM/DD/YYYY"));
+                $body.find(".trainingPlanDetails .apply").trigger("click");
+                expect(testHelpers.hasRequest(null, "plans/v1/commands/applyplan")).toBe(true);
+
+                var applyRequest = testHelpers.findRequest(null, "plans/v1/commands/applyplan");
+                expect(applyRequest.model.attributes.athleteId).toBe(xhrData.users.barbkprem.userId);
+                expect(applyRequest.model.attributes.planId).toBe(1);
+                expect(applyRequest.model.attributes.startType).toBe(3);
+                expect(applyRequest.model.attributes.targetDate).toBe(thursday.format("MM/DD/YYYY"));
+            });
+
+        });
     });
 
 

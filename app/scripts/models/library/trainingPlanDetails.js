@@ -31,7 +31,9 @@ function (TP)
             plannedWorkoutTypeDurations: null,
             title: null,
             planApplications: null,
-            hasWeeklyGoals: false
+            hasWeeklyGoals: false,
+            startDate: null,
+            endDate: null
         }
 
     });

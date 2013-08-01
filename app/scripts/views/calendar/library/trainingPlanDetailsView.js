@@ -34,7 +34,8 @@ function(
         tagName: "div",
         className: "trainingPlanDetails",
         modal: true,
-        dateFormat: "MM/DD/YYYY",
+        dateFormat: "M/DD/YYYY",
+        applyStartType: TP.utils.trainingPlan.startTypeEnum.StartDate,
 
         template:
         {
@@ -54,6 +55,12 @@ function(
         {
             this.model.details.on("change", this.render, this);
             this.once("render", this.onInitialRender, this);
+            _.bindAll(this, "checkWhetherDayIsSelectable");
+        },
+
+        ui: {
+            applyDate: "#applyDate",
+            applyDateType: "#applyDateType" 
         },
 
         onInitialRender: function()
@@ -74,7 +81,8 @@ function(
             setImmediate(function()
             {
                 self.$(".datepicker").css("position", "relative").css("z-index", self.$el.css("z-index"));
-                self.$(".datepicker").datepicker({ dateFormat: "mm/dd/yy", firstDay: theMarsApp.controllers.calendarController.startOfWeekDayIndex });
+                self.$(".datepicker").datepicker({ dateFormat: "mm/dd/yy", firstDay: theMarsApp.controllers.calendarController.startOfWeekDayIndex,
+                    beforeShowDay: self.checkWhetherDayIsSelectable });
                 self.$("select").selectBoxIt({ dynamicPositioning: false });
             });
 
@@ -82,12 +90,14 @@ function(
             {
                 this.alignArrowTo(this.alignedTo);
             }
+
+            this.updateDateInput();
         },
 
         serializeData: function()
         {
             var data = this.model.toJSON();
-            data.applyable = _.contains([null, 
+            data.applyable = this.model.details.has("title") && _.contains([null, 
                 TP.utils.trainingPlan.getStatusByName("Purchased"),
                 TP.utils.trainingPlan.getStatusByName("Applied")], 
                 data.planStatus);
@@ -117,32 +127,14 @@ function(
         onApply: function()
         {
 
-            var startType = Number(this.$("#applyDateType").val());
+            this.applyStartType = Number(this.ui.applyDateType.val());
 
-            var targetDate = this.$("#applyDate").val();
-
-            if(this.model.details.get("eventPlan") && startType === TP.utils.trainingPlan.startTypeEnum.Event)
-            {
-                targetDate = this.model.details.get("eventDate");
-            }
-
-            // force start/end to week start/end
-            if(this.model.details.get("hasWeeklyGoals"))
-            {
-                if (startType === TP.utils.trainingPlan.startTypeEnum.StartDate) 
-                {
-                    targetDate = moment(targetDate).day(1).format(this.dateFormat);
-                }
-                else if (startType === TP.utils.trainingPlan.startTypeEnum.EndDate) 
-                {
-                    targetDate = moment(targetDate).day(7).format(this.dateFormat);
-                }
-            }
+            var targetDate = this.restrictTargetDate(this.ui.applyDate.val());
 
             var command = new ApplyTrainingPlanCommand({
                 athleteId: theMarsApp.user.getCurrentAthleteId(),
                 planId: this.model.get("planId"),
-                startType: startType,
+                startType: this.applyStartType,
                 targetDate: targetDate
             });
 
@@ -227,19 +219,91 @@ function(
 
         onApplyDateTypeChange: function()
         {
-            var startType = Number(this.$("#applyDateType").val());
-            if (startType === TP.utils.trainingPlan.startTypeEnum.Event)
+            this.applyStartType = Number(this.ui.applyDateType.val());
+            this.updateDateInput();
+            if (this.applyStartType === TP.utils.trainingPlan.startTypeEnum.Event)
             {
-                this.$("#applyDate").hide();
-            } else if(startType === TP.utils.trainingPlan.startTypeEnum.EndDate)
+                this.ui.applyDate.hide();
+            } 
+            else
             {
-                // end on last day of this week
-                this.$("#applyDate").val(moment().day(7).format(this.dateFormat)).show();
-            } else if(startType === TP.utils.trainingPlan.startTypeEnum.StartDate)
-            {
-                // start on first day of this week
-                this.$("#applyDate").val(moment().day(1).format(this.dateFormat)).show();
+                this.ui.applyDate.show();
             }
+        },
+
+        updateDateInput: function()
+        {
+            this.ui.applyDate.val(this.restrictTargetDate(this.ui.applyDate.val()));
+        },
+
+        restrictTargetDate: function(targetDate)
+        {
+            targetDate = moment(targetDate); 
+
+            if(this.model.details.get("eventPlan") && this.applyStartType === TP.utils.trainingPlan.startTypeEnum.Event)
+            {
+                targetDate = moment(this.model.details.get("eventDate"));
+            }
+
+            // force start/end to week start/end
+            if(this.model.details.get("hasWeeklyGoals"))
+            {
+
+                var startDayOfWeek = this.getStartDayOfWeekIndex();
+                var endDayOfWeek = this.getEndDayOfWeekIndex(); 
+
+                if (this.applyStartType === TP.utils.trainingPlan.startTypeEnum.StartDate && moment(targetDate).day() !== startDayOfWeek) 
+                {
+                    targetDate = moment(targetDate).day(startDayOfWeek);
+                }
+                else if (this.applyStartType === TP.utils.trainingPlan.startTypeEnum.EndDate && moment(targetDate).day() !== endDayOfWeek) 
+                {
+                    targetDate = moment(targetDate).day(endDayOfWeek);
+                    if(targetDate.format("YYYY-MM-DD") < moment().format("YYYY-MM-DD"))
+                    {
+                        targetDate.add("weeks", 1);
+                    }
+                }
+            }
+
+            return targetDate.format(this.dateFormat);
+        },
+
+        checkWhetherDayIsSelectable: function(date)
+        {
+            var day = date.getDay();
+
+            var selectable = this.canSelectDay(day);
+            var className = "";
+            return [selectable, className];
+        },
+
+        canSelectDay: function(day)
+        {
+
+            if(this.model.details.get("hasWeeklyGoals"))
+            {
+                if(this.applyStartType === TP.utils.trainingPlan.startTypeEnum.EndDate && day !== this.getEndDayOfWeekIndex())
+                {
+                    return false;
+                }
+                else if(this.applyStartType === TP.utils.trainingPlan.startTypeEnum.StartDate && day !== this.getStartDayOfWeekIndex())
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        },
+
+        getStartDayOfWeekIndex: function()
+        {
+            return this.model.details.has("startDate") ? moment(this.model.details.get("startDate")).day() : 1
+        },
+
+        getEndDayOfWeekIndex: function()
+        {
+            return this.model.details.has("endDate") ? moment(this.model.details.get("endDate")).day() : 0;
         }
 
     });
