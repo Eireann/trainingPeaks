@@ -273,7 +273,7 @@ function(
             this.autoScrollInterval = setInterval(function() {
                 var currentModel = self.weeksCollectionView.getCurrentModel(),
                     nextOrPreviousModel = self.weeksCollectionView.collection.at(self.weeksCollectionView.collection.indexOf(currentModel) + modelOffset);
-                self.weeksCollectionView.scrollToModel(nextOrPreviousModel, 500)
+                self.weeksCollectionView.scrollToModel(nextOrPreviousModel, 500);
             },1000);
         },
 

@@ -9,9 +9,6 @@ function(_, TP, infiniteScroll)
     var CalendarContainerViewScrolling =
     {
 
-
-
-
         onUpdateScrollPosition: function ($currentElement)
         {
             var scrollDate = this.getCurrentScrollDate($currentElement);
@@ -113,12 +110,7 @@ function(_, TP, infiniteScroll)
 
             if (currentDate)
                 this.calendarHeaderModel.set("date", dateAsMoment.format(TP.utils.datetime.shortDateFormat));
-        },
-
-        
-
-        
-
+        }
 
     };
 
