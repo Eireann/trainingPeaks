@@ -1,10 +1,11 @@
 ﻿// use requirejs() instead of define() here, to keep jasmine test runner happy
 requirejs(
 [
+    "app",
     "TP",
     "views/weekSummary/weekSummaryView"
 ],
-function (TP, WeekSummaryView)
+function (theMarsApp, TP, WeekSummaryView)
 {
     describe("WeekSummaryView", function ()
     {
@@ -145,14 +146,14 @@ function (TP, WeekSummaryView)
 
             view.onBeforeRender();
 
-            expect(view.model.get("bikeDistanceCompleted")).toBe(0);
-            expect(view.model.get("bikeDistancePlanned")).toBe(0);
-            expect(view.model.get("runDistanceCompleted")).toBe(0);
-            expect(view.model.get("runDistancePlanned")).toBe(0);
-            expect(view.model.get("swimDistanceCompleted")).toBe(0);
-            expect(view.model.get("swimDistancePlanned")).toBe(0);
-            expect(view.model.get("strengthDurationCompleted")).toBe(0);
-            expect(view.model.get("strengthDurationPlanned")).toBe(0);
+            expect(view.model.get("totalsByWorkoutType.2.distance.completed")).toBe(undefined);
+            expect(view.model.get("totalsByWorkoutType.2.distance.planned")).toBe(undefined);
+            expect(view.model.get("totalsByWorkoutType.3.distance.completed")).toBe(undefined);
+            expect(view.model.get("totalsByWorkoutType.3.distance.planned")).toBe(undefined);
+            expect(view.model.get("totalsByWorkoutType.1.distance.completed")).toBe(undefined);
+            expect(view.model.get("totalsByWorkoutType.1.distance.planned")).toBe(undefined);
+            expect(view.model.get("totalsByWorkoutType.9.duration.completed")).toBe(undefined);
+            expect(view.model.get("totalsByWorkoutType.9.duration.planned")).toBe(undefined);
 
             dayModel1.itemsCollection.add(bike1);
             dayModel1.itemsCollection.add(run1);
@@ -168,14 +169,15 @@ function (TP, WeekSummaryView)
             
             view.onBeforeRender();
 
-            expect(view.model.get("bikeDistanceCompleted")).toBe(3);
-            expect(view.model.get("bikeDistancePlanned")).toBe(6);
-            expect(view.model.get("runDistanceCompleted")).toBe(7);
-            expect(view.model.get("runDistancePlanned")).toBe(14);
-            expect(view.model.get("swimDistanceCompleted")).toBe(3);
-            expect(view.model.get("swimDistancePlanned")).toBe(6);
-            expect(view.model.get("strengthDurationCompleted")).toBe(7);
-            expect(view.model.get("strengthDurationPlanned")).toBe(14);
+            expect(view.model.get("totalsByWorkoutType.2.distance.completed")).toBe(3);
+            expect(view.model.get("totalsByWorkoutType.2.distance.planned")).toBe(6);
+            expect(view.model.get("totalsByWorkoutType.2.distance.planned")).toBe(6);
+            expect(view.model.get("totalsByWorkoutType.3.distance.completed")).toBe(7);
+            expect(view.model.get("totalsByWorkoutType.3.distance.planned")).toBe(14);
+            expect(view.model.get("totalsByWorkoutType.1.distance.completed")).toBe(3);
+            expect(view.model.get("totalsByWorkoutType.1.distance.planned")).toBe(6);
+            expect(view.model.get("totalsByWorkoutType.9.duration.completed")).toBe(7);
+            expect(view.model.get("totalsByWorkoutType.9.duration.planned")).toBe(14);
         });
     });
 });

@@ -59,8 +59,8 @@ function(
                 totalTime: 0,
                 totalEnergy: 0,
                 totalElevationGain: 0,
-                distanceByWorkoutType: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0 },
-                durationByWorkoutType: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0 },
+                distanceByWorkoutType: {},
+                durationByWorkoutType: {},
                 cumulativeTss: 0,
                 completedDays: {},
                 completedDaysByWorkoutType: {}
@@ -70,11 +70,12 @@ function(
                 totalDistance: 0,
                 totalTime: 0,
                 totalEnergy: 0,
-                distanceByWorkoutType: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0 },
-                durationByWorkoutType: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0 },
+                distanceByWorkoutType: {},
+                durationByWorkoutType: {},
                 cumulativeTss: 0
             };
-            
+
+          
             //iterate over calendarDayModels for the current week (associated with this weekSummaryView)
             this.model.collection.each(function(item)
             {
@@ -124,14 +125,13 @@ function(
 
                     var workoutType = workout.get("workoutTypeValueId");
 
-                    // Always aggregate total time independently of workoutType
-                    // Only aggregate specifics for Swim, Bike, Run, Strength
-                    if (!workoutType || 
-                        workoutType !== TP.utils.workout.types.getIdByName("Swim") &&
-                        workoutType !== TP.utils.workout.types.getIdByName("Bike") &&
-                        workoutType !== TP.utils.workout.types.getIdByName("Run") &&
-                        workoutType !== TP.utils.workout.types.getIdByName("Strength"))
-                        return;
+                    if(!completedValues.distanceByWorkoutType.hasOwnProperty(workoutType))
+                    {
+                        completedValues.distanceByWorkoutType[workoutType] = 0;
+                        completedValues.durationByWorkoutType[workoutType] = 0;
+                        plannedValues.distanceByWorkoutType[workoutType] = 0;
+                        plannedValues.durationByWorkoutType[workoutType] = 0;
+                    }
 
                     if (workout.has("distance") && workout.get("distance") !== null)
                         completedValues.distanceByWorkoutType[workoutType] += Number(workout.get("distance"));
@@ -147,6 +147,27 @@ function(
                 });
             });
 
+            var totalsByWorkoutType = [];
+
+            _.each(_.keys(TP.utils.workout.types.typesById), function(typeId)
+            {
+                totalsByWorkoutType[typeId] =
+                {
+                    distance: {
+                        workoutTypeId: typeId,
+                        planned: plannedValues.distanceByWorkoutType[typeId],
+                        completed: completedValues.distanceByWorkoutType[typeId],
+                        daysCompleted: 0
+                    },
+                    duration: {
+                        workoutTypeId: typeId,
+                        planned: plannedValues.durationByWorkoutType[typeId],
+                        completed: completedValues.durationByWorkoutType[typeId],
+                        daysCompleted: 0
+                    }
+                };
+            });
+
             this.model.set(
             {
                 totalTimePlanned: plannedValues.totalTime,
@@ -156,28 +177,11 @@ function(
                 totalDistanceCompleted: completedValues.totalDistance,
                 totalEnergyPlanned: plannedValues.totalEnergy.toFixed(0),
                 totalEnergyCompleted: completedValues.totalEnergy.toFixed(0),
-                bikeDistancePlanned: plannedValues.distanceByWorkoutType[TP.utils.workout.types.getIdByName("Bike")],
-                bikeDistanceCompleted: completedValues.distanceByWorkoutType[TP.utils.workout.types.getIdByName("Bike")],
-                runDistancePlanned: plannedValues.distanceByWorkoutType[TP.utils.workout.types.getIdByName("Run")],
-                runDistanceCompleted: completedValues.distanceByWorkoutType[TP.utils.workout.types.getIdByName("Run")],
-                swimDistancePlanned: plannedValues.distanceByWorkoutType[TP.utils.workout.types.getIdByName("Swim")],
-                swimDistanceCompleted: completedValues.distanceByWorkoutType[TP.utils.workout.types.getIdByName("Swim")],
-                bikeDurationPlanned: plannedValues.durationByWorkoutType[TP.utils.workout.types.getIdByName("Bike")],
-                bikeDurationCompleted: completedValues.durationByWorkoutType[TP.utils.workout.types.getIdByName("Bike")],
-                bikeDaysCompleted: _.keys(completedValues.completedDaysByWorkoutType[TP.utils.workout.types.getIdByName("Bike")]).length,
-                runDurationPlanned: plannedValues.durationByWorkoutType[TP.utils.workout.types.getIdByName("Run")],
-                runDurationCompleted: completedValues.durationByWorkoutType[TP.utils.workout.types.getIdByName("Run")],
-                runDaysCompleted: _.keys(completedValues.completedDaysByWorkoutType[TP.utils.workout.types.getIdByName("Run")]).length,
-                swimDurationPlanned: plannedValues.durationByWorkoutType[TP.utils.workout.types.getIdByName("Swim")],
-                swimDurationCompleted: completedValues.durationByWorkoutType[TP.utils.workout.types.getIdByName("Swim")],
-                swimDaysCompleted: _.keys(completedValues.completedDaysByWorkoutType[TP.utils.workout.types.getIdByName("Swim")]).length,
-                swimFormatOptions: { workoutTypeValueId: 1 },
-                strengthDurationPlanned: plannedValues.durationByWorkoutType[TP.utils.workout.types.getIdByName("Strength")],
-                strengthDurationCompleted: completedValues.durationByWorkoutType[TP.utils.workout.types.getIdByName("Strength")],
-                strengthDaysCompleted: _.keys(completedValues.completedDaysByWorkoutType[TP.utils.workout.types.getIdByName("Strength")]).length,
                 tssPlanned: plannedValues.cumulativeTss.toFixed(0),
                 tssCompleted: completedValues.cumulativeTss.toFixed(0),
-                totalElevationGain: completedValues.totalElevationGain
+                totalElevationGain: completedValues.totalElevationGain,
+                totalsByWorkoutType: totalsByWorkoutType,
+                totalsByWorkoutTypeCompacted: _.compact(totalsByWorkoutType)
             },
             { silent: true });
         },

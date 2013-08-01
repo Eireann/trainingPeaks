@@ -1,7 +1,7 @@
 {{#hoverBox this}}
     <div class="details">
     {{#each workoutTypes}}
-        <label id="workoutType{{ workoutTypeImageName typeId }}" data-workouttypeid="{{ typeId }}" {{#if selected}}class="selected"{{/if}}>{{ typeName }}</label>
+        <label id="workoutType{{ workoutTypeCssName typeId }}" data-workouttypeid="{{ typeId }}" {{#if selected}}class="selected"{{/if}}>{{ typeName }}</label>
     {{/each}}
     </div>
 {{/hoverBox}}
