@@ -47,6 +47,7 @@ function(_, TP, infiniteScroll)
         {
             this.scrolling = false;
             this.$el.find(".daysOfWeek").removeClass("scrollInProgress");
+            this.setCurrentDate(moment(this.getCurrentWeek()));
         },
 
         scrollToSelector: function (selector, animationTimeout, callback)
