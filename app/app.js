@@ -8,12 +8,14 @@ define(
     "framework/tooltips",
     "models/session",
     "models/userModel",
+    "models/buildInfo",
     "models/clientEventsCollection",
     "controllers/navigationController",
     "controllers/loginController",
     "controllers/calendar/calendarController",
     "controllers/dashboardController",
     "controllers/homeController",
+    "views/buildInfoView",
     "router",
     "hbs!templates/views/notAllowedForAlpha",
     "marionette.faderegion"
@@ -27,12 +29,14 @@ function(
     enableTooltips,
     Session,
     UserModel,
+    BuildInfoModel,
     ClientEventsCollection,
     NavigationController,
     LoginController,
     CalendarController,
     DashboardController,
     HomeController,
+    BuildInfoView,
     Router,
     notAllowedForAlphaTemplate,
     faderegion)
@@ -76,7 +80,8 @@ function(
         this.addRegions(
         {
             navRegion: "#navigation",
-            mainRegion: "#main"
+            mainRegion: "#main",
+            infoRegion: "#info"
         });
 
         // add logging first
@@ -132,6 +137,23 @@ function(
                 this.ajaxCaching = ajaxCaching.initialize();
         });
         
+        // display build info
+        this.addInitializer(function()
+        {
+            this.buildInfo = new BuildInfoModel(
+                {
+                    marsVersion: this.apiConfig.buildNumber
+                }
+            );
+
+            if(!this.isLive())
+            {
+                var buildInfoView = new BuildInfoView({ model: this.buildInfo });
+                this.infoRegion.show(buildInfoView);
+            }
+
+        });
+
         // add a session
         this.addInitializer(function()
         {
@@ -147,12 +169,18 @@ function(
             this.session.authPromise.done(function()
             {
                 self.fetchUser();
+                self.fetchBuildInfo();
             });
             this.session.authPromise.fail(function()
             {
                 self.setupAuthPromise();
             });
         };
+
+        this.fetchBuildInfo = function()
+        {
+            this.buildInfo.fetch();
+        },  
 
         this.fetchUser = function()
         {
@@ -333,7 +361,11 @@ function(
                 configuration: 'debug',
                 apiRoot: 'localhost:8905',
                 oAuthRoot: 'localhost:8901',
-                wwwRoot: 'localhost'
+                wwwRoot: 'localhost',
+                buildNumber: "local_no_config",
+                gaAccount: "",
+                coachUpgradeURL: "",
+                upgradeURL:""
             };
 
             window.apiConfig = apiConfig;
