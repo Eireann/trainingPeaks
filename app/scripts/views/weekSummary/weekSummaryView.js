@@ -70,11 +70,12 @@ function(
                 totalDistance: 0,
                 totalTime: 0,
                 totalEnergy: 0,
-                distanceByWorkoutType: {},
+                distanceByWorkoutType: {}   ,
                 durationByWorkoutType: {},
                 cumulativeTss: 0
             };
 
+            var excludeWorkoutTypes = [7]; // skip Day Off
           
             //iterate over calendarDayModels for the current week (associated with this weekSummaryView)
             this.model.collection.each(function(item)
@@ -86,14 +87,20 @@ function(
                 //iterate over items (workouts, meals, metrics) for the current day
                 item.itemsCollection.each(function(workout)
                 {
+
+                    var workoutType = workout.get("workoutTypeValueId");
+
+                    if(_.contains(excludeWorkoutTypes, workoutType))
+                        return;
+
                     if (workout.getCalendarDay && TP.utils.workout.determineCompletedWorkout(workout.attributes))
                     {
                         completedValues.completedDays[workout.getCalendarDay()] = true;
-                        if(!completedValues.completedDaysByWorkoutType[workout.get("workoutTypeValueId")])
+                        if(!completedValues.completedDaysByWorkoutType[workoutType])
                         {
-                            completedValues.completedDaysByWorkoutType[workout.get("workoutTypeValueId")] = {};
+                            completedValues.completedDaysByWorkoutType[workoutType] = {};
                         }
-                        completedValues.completedDaysByWorkoutType[workout.get("workoutTypeValueId")][workout.getCalendarDay()] = true;
+                        completedValues.completedDaysByWorkoutType[workoutType][workout.getCalendarDay()] = true;
                     }
 
                     if (workout.has("totalTime") && workout.get("totalTime") !== null)
@@ -123,7 +130,6 @@ function(
                     if (workout.has("distancePlanned") && workout.get("distancePlanned") !== null)
                         plannedValues.totalDistance += Number(workout.get("distancePlanned"));
 
-                    var workoutType = workout.get("workoutTypeValueId");
 
                     if(!completedValues.distanceByWorkoutType.hasOwnProperty(workoutType))
                     {

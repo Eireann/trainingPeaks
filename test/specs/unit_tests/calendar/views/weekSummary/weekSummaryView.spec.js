@@ -115,7 +115,7 @@ function (theMarsApp, TP, WeekSummaryView)
             expect(view.model.get("tssPlanned")).toBe('2000');
         });
 
-        it("Should aggregate weekly workout totals by workout type correctly", function()
+        it("Should aggregate weekly workout totals of duration and distance for all workout types except Day Off", function()
         {
             WeekSummaryView.prototype.render = function () { };
 
@@ -143,6 +143,8 @@ function (theMarsApp, TP, WeekSummaryView)
             var strength2 = new TP.Model({ totalTime: 4, totalTimePlanned: 8, tssActual: 400, tssPlanned: 800, workoutTypeValueId: TP.utils.workout.types.getIdByName("Strength") });
             var rowing1 = new TP.Model({ totalTime: 1, totalTimePlanned: 2, tssActual: 100, tssPlanned: 200, workoutTypeValueId: TP.utils.workout.types.getIdByName("Rowing") });
             var rowing2 = new TP.Model({ totalTime: 2, totalTimePlanned: 4, tssActual: 200, tssPlanned: 400, workoutTypeValueId: TP.utils.workout.types.getIdByName("Rowing") });
+            var dayOff1 = new TP.Model({ totalTime: 1, totalTimePlanned: 3, tssActual: 100, tssPlanned: 200, workoutTypeValueId: TP.utils.workout.types.getIdByName("Day Off") });
+            var dayOff2 = new TP.Model({ totalTime: 2, totalTimePlanned: 4, tssActual: 200, tssPlanned: 400, workoutTypeValueId: TP.utils.workout.types.getIdByName("Day Off") });
 
             view.onBeforeRender();
 
@@ -154,6 +156,10 @@ function (theMarsApp, TP, WeekSummaryView)
             expect(view.model.get("totalsByWorkoutType.1.distance.planned")).toBe(undefined);
             expect(view.model.get("totalsByWorkoutType.9.duration.completed")).toBe(undefined);
             expect(view.model.get("totalsByWorkoutType.9.duration.planned")).toBe(undefined);
+            expect(view.model.get("totalsByWorkoutType.12.duration.completed")).toBe(undefined);
+            expect(view.model.get("totalsByWorkoutType.12.duration.planned")).toBe(undefined);
+            expect(view.model.get("totalsByWorkoutType.7.duration.completed")).toBe(undefined);
+            expect(view.model.get("totalsByWorkoutType.7.duration.planned")).toBe(undefined);
 
             dayModel1.itemsCollection.add(bike1);
             dayModel1.itemsCollection.add(run1);
@@ -178,6 +184,10 @@ function (theMarsApp, TP, WeekSummaryView)
             expect(view.model.get("totalsByWorkoutType.1.distance.planned")).toBe(6);
             expect(view.model.get("totalsByWorkoutType.9.duration.completed")).toBe(7);
             expect(view.model.get("totalsByWorkoutType.9.duration.planned")).toBe(14);
+            expect(view.model.get("totalsByWorkoutType.12.duration.completed")).toBe(3);
+            expect(view.model.get("totalsByWorkoutType.12.duration.planned")).toBe(6);
+            expect(view.model.get("totalsByWorkoutType.7.duration.completed")).toBe(undefined);
+            expect(view.model.get("totalsByWorkoutType.7.duration.planned")).toBe(undefined);
         });
     });
 });
