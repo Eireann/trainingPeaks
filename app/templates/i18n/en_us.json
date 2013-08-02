@@ -369,7 +369,10 @@
     "By": "By",
     "Remove": "Remove",
     "WorkoutTotals": "Workout Totals",
+    "Total": "Total",
 
     "OnCalendarFrom": "On calendar from",
-    "to": "to"
+    "to": "to",
+
+    "Days": "Days"
 }

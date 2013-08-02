@@ -1,19 +1,20 @@
 define(
 [
+    "underscore",
     "handlebars",
     "utilities/calculations",
     "hbs!templates/views/weekSummary/weekSummaryBarGraph"
 ],
-function(Handlebars, calculations, weekSummaryBarGraphTemplate)
+function(_, Handlebars, calculations, weekSummaryBarGraphTemplate)
 {
-    var displayWeekSummaryBarGraph = function(plannedValue, completedValue, completedDays, cssGraphClass)
+    var displayWeekSummaryBarGraph = function(plannedValue, completedValue, completedDays, workoutTypeId)
     {
         var context = {
-            cssGraphClass: cssGraphClass,
             plannedValue: plannedValue,
             completedValue: completedValue,
             plannedWidthPercent: 100,
-            completedMoreThanPlanned: false
+            completedMoreThanPlanned: false,
+            workoutTypeId: workoutTypeId
         };
 
         if (plannedValue && completedValue > plannedValue)

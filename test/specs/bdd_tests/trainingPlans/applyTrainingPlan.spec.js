@@ -113,7 +113,7 @@ function(
             {
                 $mainRegion.find(".trainingPlanLibrary .trainingPlan[data-trainingplanid=2]").trigger("mouseup");
                 testHelpers.resolveRequest("GET", "plans/v1/plans/2/details$", xhrData.trainingPlanDetails);
-                expect($body.find(".trainingPlanDetails [data-appliedplanid=21]").text()).toContain("1/02/2013");
+                expect($body.find(".trainingPlanDetails [data-appliedplanid=21]").text()).toContain("1/2/2013");
                 expect($body.find(".trainingPlanDetails [data-appliedplanid=21]").text()).toContain("9/10/2013");
             });
 
@@ -339,6 +339,10 @@ function(
                 expect(testHelpers.hasRequest(null, "plans/v1/commands/applyplan")).toBe(false);
 
                 var thursday = moment().day(4);
+                if(thursday.format("YYYY-MM-DD") < moment().format("YYYY-MM-DD"))
+                {
+                    thursday.add("weeks", 1);
+                }
                 var tuesday = moment().day(2);
                 $body.find("#applyDateType").val("3");
                 $body.find("#applyDate").val(tuesday.format("M/D/YYYY"));

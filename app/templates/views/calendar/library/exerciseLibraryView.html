@@ -5,7 +5,7 @@
         <button id="add"></button> 
     </div>
     <div class="librarySearch">
-        <input type="text" name="search" id="search" placeholder="{{$ "Search" }}" />
+        <input type="text" name="exerciseLibrarySearch" id="search" placeholder="{{$ "Search" }}" />
         <select name="librarySelect" id="librarySelect">
             {{#each libraries}}
             <option value="{{ exerciseLibraryId }}" {{#if selected}}selected{{/if}}>{{ libraryName }}</option>
