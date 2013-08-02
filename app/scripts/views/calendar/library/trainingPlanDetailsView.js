@@ -46,7 +46,7 @@ function(
         events:
         {
             "click .apply": "onApply",
-            "change #applyDateType": "onApplyDateTypeChange",
+            "change #applyDateType": "updateDateInputOptions",
             "click #closeIcon": "close",
             "click .removePlan": "confirmDeleteAppliedPlan"
         },
@@ -91,7 +91,7 @@ function(
                 this.alignArrowTo(this.alignedTo);
             }
 
-            this.updateDateInput();
+            this.updateDateInputOptions();
         },
 
         serializeData: function()
@@ -217,17 +217,18 @@ function(
             this.$(".arrow").css("top", arrowTop + "px");
         },
 
-        onApplyDateTypeChange: function()
+        updateDateInputOptions: function()
         {
             this.applyStartType = Number(this.ui.applyDateType.val());
             this.updateDateInput();
             if (this.applyStartType === TP.utils.trainingPlan.startTypeEnum.Event)
             {
-                this.ui.applyDate.hide();
+                this.ui.applyDate.val(moment(this.model.details.get("eventDate")).format(this.dateFormat));
+                this.ui.applyDate.attr("disabled", true);
             } 
             else
             {
-                this.ui.applyDate.show();
+                this.ui.applyDate.attr("disabled", false);
             }
         },
 

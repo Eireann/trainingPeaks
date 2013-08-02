@@ -41,12 +41,17 @@
     <div class="smallbold">{{$ "ApplyPlan"}}</div>
 </div>
 <div class="startEndPlan">
-    <select id="applyDateType">
-        <option value="1">{{$ "Start" }}</option>
-        <option value="3">{{$ "End" }}</option>
+    <select id="applyDateType"> 
         {{# with details }}
             {{#if eventPlan }}
+                {{#ifNot forceDate}}
+                    <option value="1">{{$ "Start" }}</option>
+                    <option value="3">{{$ "End" }}</option>
+                {{/ifNot}}
                 <option value="2">{{$ "EndOnEventDate" }}</option>
+            {{ else }}
+                <option value="1">{{$ "Start" }}</option>
+                <option value="3">{{$ "End" }}</option>
             {{/if}}
         {{/with}}
     </select>

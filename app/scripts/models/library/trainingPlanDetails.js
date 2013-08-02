@@ -25,6 +25,7 @@ function (TP)
             eventDate: null,
             eventName: null,
             eventPlan: false,
+            forceDate: false,
             workoutCount: null,
             planId: null,
             planStatus: null,
