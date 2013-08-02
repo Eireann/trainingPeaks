@@ -218,6 +218,11 @@
                     border-left: none;
                 }
 
+                &.bold
+                {
+                    font-weight: bold;
+                }
+
                 &.graphResetButton
                 {
                     border-right: none;

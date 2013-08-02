@@ -55,6 +55,7 @@ function(
             this.detailDataPromise = options.detailDataPromise;
             this.dataParser = options.dataParser;
             this.lastFilterPeriod = this.getInitialFilterPeriod();
+            this.currentAxis = "time";
             this.selections = [];
 
             this.firstRender = true;
@@ -133,11 +134,11 @@ function(
 
             var onHoverHandler = function(flotItem, $tooltipEl)
             {
-                $tooltipEl.html(flotCustomToolTip(self.allSeries, enabledSeries, flotItem.series.label, flotItem.dataIndex, flotItem.datapoint[0], self.model.get("workoutTypeValueId")));
+                $tooltipEl.html(flotCustomToolTip(self.allSeries, enabledSeries, flotItem.series.label, flotItem.dataIndex, flotItem.datapoint[0], self.model.get("workoutTypeValueId"), self.currentAxis));
                 toolTipPositioner.updatePosition($tooltipEl, self.plot);
             };
             
-            this.flotOptions = defaultFlotOptions.getMultiChannelOptions(onHoverHandler);
+            this.flotOptions = defaultFlotOptions.getMultiChannelOptions(onHoverHandler, this.currentAxis);
 
             this.flotOptions.selection.mode = "x";
             this.flotOptions.yaxes = yaxes;
@@ -154,7 +155,6 @@ function(
                 this.bindToPlotEvents();
                 this.highlightOrZoomToPreviousSelection();
             }
-
 
             this.setInitialToolbarSmoothing(this.lastFilterPeriod);
         },
@@ -187,6 +187,8 @@ function(
             this.graphToolbar.on("disableSeries", this.disableSeries, this);
             this.graphToolbar.on("zoom", this.zoomGraph, this);
             this.graphToolbar.on("reset", this.resetZoom, this);
+            this.graphToolbar.on("enableTimeAxis", this.enableTimeAxis, this);
+            this.graphToolbar.on("enableDistanceAxis", this.enableDistanceAxis, this);
 
             this.$("#graphToolbar").append(this.graphToolbar.render().$el);
         },
@@ -239,14 +241,17 @@ function(
         {
             if (this.selectedWorkoutStatsForRange)
             {
-                var ranges = {
-                    xaxis: {
+                var ranges =
+                {
+                    xaxis:
+                    {
                         from: this.selectedWorkoutStatsForRange.get("begin"),
                         to: this.selectedWorkoutStatsForRange.get("end")
                     }
                 };
                 this.plot.setSelection(ranges, true);
-            } else
+            }
+            else
             {
                 this.plot.hideActiveSelections();
                 this.plot.unhideActiveSelections();
@@ -299,12 +304,31 @@ function(
         {
             TP.analytics("send", { "hitType": "event", "eventCategory": "expando", "eventAction": "graphSelection", "eventLabel": "" });
 
-            var startOffsetMs = Math.round(this.plot.getSelection().xaxis.from);
-            var endOffsetMs = Math.round(this.plot.getSelection().xaxis.to);
+            var plotSelectionFrom = this.plot.getSelection().xaxis.from;
+            var plotSelectionTo = this.plot.getSelection().xaxis.to;
+            
+            var startOffsetMs;
+            var endOffsetMs;
+            
+            if (this.currentAxis === "time")
+            {
+                startOffsetMs = Math.round(plotSelectionFrom);
+                endOffsetMs = Math.round(plotSelectionTo);
+            }
+            else
+            {
+                startOffsetMs = this.dataParser.getMsOffsetFromDistance(plotSelectionFrom);
+                endOffsetMs = this.dataParser.getMsOffsetFromDistance(plotSelectionTo);
+            }
+
             this.selectedWorkoutStatsForRange = new WorkoutStatsForRange({ workoutId: this.model.id, begin: startOffsetMs, end: endOffsetMs, name: "Selection" });
-            var options = {};
-            options.addToSelection = true;
-            options.displayStats = true;
+
+            var options =
+            {
+                addToSelection: true,
+                displayStats: true
+            };
+
             this.trigger("unselectall");
             this.trigger("rangeselected", this.selectedWorkoutStatsForRange, options, this);
         },
@@ -312,9 +336,7 @@ function(
         onPlotUnSelected: function()
         {
             if (!this.zoomed)
-            {
                 this.trigger("unselectall");
-            }
         },
 
         onPlotHover: function(event, pos, item)
@@ -360,6 +382,26 @@ function(
             }
         },
 
+        enableTimeAxis: function ()
+        {
+            if (this.currentAxis === "time")
+                return;
+
+            this.currentAxis = "time";
+            this.dataParser.setXAxis("time");
+            this.drawPlot();
+        },
+        
+        enableDistanceAxis: function ()
+        {
+            if (this.currentAxis === "distance")
+                return;
+
+            this.currentAxis = "distance";
+            this.dataParser.setXAxis("distance");
+            this.drawPlot();
+        },
+
         watchForControllerEvents: function()
         {
             this.on("controller:rangeselected", this.onRangeSelected, this);
@@ -372,7 +414,7 @@ function(
             this.off("controller:rangeselected", this.onRangeSelected, this);
         },
 
-        onRangeSelected: function(workoutStatsForRange, options, triggeringView)
+        onRangeSelected: function (workoutStatsForRange, options, triggeringView)
         {
             if (triggeringView === this || !options)
                 return;
@@ -418,10 +460,8 @@ function(
 
         createGraphSelection: function(workoutStatsForRange, options)
         {
-            var sampleStartIndex = this.dataParser.findIndexByMsOffset(workoutStatsForRange.get("begin"));
-            var sampleEndIndex = this.dataParser.findIndexByMsOffset(workoutStatsForRange.get("end"));
-
-            var selection = {
+            var selection =
+            {
                 begin: workoutStatsForRange.get("begin"),
                 end: workoutStatsForRange.get("end"),
                 dataType: options.dataType
@@ -453,12 +493,9 @@ function(
         getDesiredPlotHeight: function()
         {
             if (this.graphHeight)
-            {
                 return this.graphHeight - 50;
-            } else
-            {
+            else
                 return this.dataParser.hasLatLongData ? 365 : 565;
-            }
         },
 
         watchForControllerResize: function ()

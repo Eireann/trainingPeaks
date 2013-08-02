@@ -185,7 +185,7 @@ function(
             var latLonArray = dataParser.getLatLonArray();
             if (latLonArray)
             {
-                var distances = dataParser.dataByChannel.Distance;
+                var distances = dataParser.getDataByChannel("Distance");
                 var intervals = this.calculateMileMarkerInterval(distances[distances.length - 1][1], maxMarkers);
                 var nextMarker = intervals.distanceBetweenMarkers;
 
