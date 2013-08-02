@@ -54,65 +54,50 @@
 		{{/each}}
 	</div>
 	
-	<div id="weekSummaryMetricContain">
-		
-		<div class="weekSummaryMetricItem weekSummaryItem cf">
-			<div class="weekSummaryMetricValue distance">
-				{{conversion "formatDistance" totalDistanceCompleted this "0"}}
-			</div>
-			<div class="weekSummaryMetricTitle distance">
-				{{getUnitsLabel "distance"}}
-			</div>
-		</div>
+	<div id="weekSummaryMetricContain" class="statisticsSummary">
 
-		<div class="weekSummaryMetricItem weekSummaryItem cf">
-			<div class="weekSummaryMetricValue tss">
-				{{conversion "formatTSS" tssCompleted this "0"}}
-			</div>
-			<div class="weekSummaryMetricTitle tss">
-				TSS
-			</div>		
-		</div>
+		<div class="statsRow" id="distance">
+	        <label>{{$ "Distance" }}</label>
+	        <span class="value">{{conversion "formatDistance" totalDistanceCompleted this "0"}}</span>
+	        <span class="units">{{getUnitsLabel "distance"}}</span>
+	    </div>
+
+		<div class="statsRow" id="tss">
+	        <label>{{$ "TSS" }}</label>
+	        <span class="value">{{conversion "formatDistance" tssCompleted this "0"}}</span>
+	        <span class="units"></span>
+	    </div>
 
 		{{#each totalsByWorkoutTypeCompacted }}
 			{{#with distance}}
 				{{#if completed}}
 					{{#ifNot planned }}	
-					<div class="weekSummaryMetricItem weekSummaryItem cf">
-						<div class="weekSummaryMetricValue distance">
-							{{conversion "formatDistance" completed this workoutTypeId}}
-						</div>
-						<div class="weekSummaryMetricTitle distance">
-							{{getUnitsLabel "distance" workoutTypeId}} {{ workoutTypeName workoutTypeId }} 
-						</div>
-					</div>
+					<div class="statsRow" id="workoutType{{ workoutTypeId }}">
+				        <label>{{ workoutTypeName workoutTypeId }}</label>
+				        <span class="value">{{conversion "formatDistance" completed this workoutTypeId}}</span>
+				        <span class="units">{{getUnitsLabel "distance" workoutTypeId}}</span>
+				    </div>
 					{{/ifNot}}
 				{{/if}}
 			{{/with}}
 		{{/each}}
 
 		{{#ifHasValueAfterFormatted "formatElevation" totalElevationGain this}}	
-		<div class="weekSummaryMetricItem weekSummaryItem cf">
-			<div class="weekSummaryMetricValue elevation">
-				{{conversion "formatElevation" totalElevationGain this}}
-			</div>
-			<div class="weekSummaryMetricTitle elevation">
-				{{getUnitsLabel "elevationGain" }}
-			</div>		
-		</div>
+		<div class="statsRow" id="elevationGain">
+	        <label>{{$ "EGain" }}</label>
+	        <span class="value">{{conversion "formatElevation" totalElevationGain this "0"}}</span>
+	        <span class="units">{{getUnitsLabel "elevationGain" }}</span>
+	    </div>
 		{{/ifHasValueAfterFormatted}}
 
 		{{#ifHasValueAfterFormatted "formatEnergy" totalEnergyCompleted this}}	
-		<div class="weekSummaryMetricItem weekSummaryItem cf">
-			<div class="weekSummaryMetricValue energy">
-				{{conversion "formatEnergy" totalEnergyCompleted this}}
-			</div>
-			<div class="weekSummaryMetricTitle energy">
-				Kilojoules
-			</div>		
-		</div>
+		<div class="statsRow" id="energy">
+	        <label>{{$ "Work" }}</label>
+	        <span class="value">{{conversion "formatEnergy" totalEnergyCompleted this}}</span>
+	        <span class="units">{{getUnitsLabel "energy" }}</span>
+	    </div>
 		{{/ifHasValueAfterFormatted}}
-		
+
 	</div>
 	
 </div>

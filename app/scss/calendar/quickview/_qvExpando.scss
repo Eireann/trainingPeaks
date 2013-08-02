@@ -376,31 +376,6 @@
             padding: 10px;
             @include labels($fontFamilyRegular, $fontSizeXSmall, $TPGrey4, normal);
 
-
-            .statsRow
-            {
-
-                label
-                {
-                    display: inline-block;
-                    width: 127px;
-                    //@include calc(width, "50% - 5px"); 
-                    text-align: right;
-                    margin-right: 5px;
-                }
-
-                .value
-                {
-                    line-height: 1.5;
-                    font-size: $fontSizeXLarge; 
-                }
-
-                .units
-                {
-                    font-size: $fontSizeMedLarge;
-                }
-            }
-
             .minMaxAvg
             {
                 display: table;
@@ -566,4 +541,32 @@
 {
     @include throbber;
     z-index: 2000;
+}
+
+.statisticsSummary
+{
+    @include labels($fontFamilyRegular, $fontSizeXSmall, $TPGrey4, normal);   
+    .statsRow
+    {
+
+        label
+        {
+            display: inline-block;
+            width: 127px;
+            //@include calc(width, "50% - 5px"); 
+            text-align: right;
+            margin-right: 5px;
+        }
+
+        .value
+        {
+            line-height: 1.5;
+            font-size: $fontSizeXLarge; 
+        }
+
+        .units
+        {
+            font-size: $fontSizeMedLarge;
+        }
+    }
 }
