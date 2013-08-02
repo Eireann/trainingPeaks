@@ -119,8 +119,8 @@ function(chartColors, findIndexByMsOffset, convertToViewUnits)
             var data = [];
             if (typeof x1 !== "undefined" && typeof x2 !== "undefined")
             {
-                var startIdx = findIndexByXAxisOffset.call(this, x1);
-                var endIdx = findIndexByXAxisOffset.call(this, x2);
+                var startIdx = findIndexByXAxisOffset.call(self, x1);
+                var endIdx = findIndexByXAxisOffset.call(self, x2);
                 
                 for (var idx = startIdx; idx <= endIdx; idx++)
                     data.push(dataByChannel[channel][idx]);

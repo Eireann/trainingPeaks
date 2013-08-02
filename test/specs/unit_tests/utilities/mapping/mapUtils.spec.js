@@ -20,13 +20,18 @@ function(app, mapUtils)
 
         it("should calculate mile markers", function()
         {
-            var dataParser = {
-              getLatLonArray: function()
-              {
-                  return [[1,1],[2,2],[3,3],[4,4]];
-              },
-              dataByChannel: { Distance: [[0,0],[1000,1000],[2000,2000],[3000,3000]]}
+            var dataParser =
+            {
+                getLatLonArray: function()
+                {
+                    return [[1,1],[2,2],[3,3],[4,4]];
+                },
+                getDataByChannel: function ()
+                {
+                    return [[0, 0], [1000, 1000], [2000, 2000], [3000, 3000]];
+                }
             };
+
             spyOn(mapUtils, "calculateMileMarkerInterval").andReturn(
                 { distanceBetweenMarkers: 1000, countBy: 1 }
             );
