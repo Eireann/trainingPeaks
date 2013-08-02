@@ -77,10 +77,10 @@ function($, TP, moment, theMarsApp, CalendarView)
             it("Should trigger itemDropped event", function()
             {
                 var calendarView = new CalendarView({ collection: new TP.Collection() });
-                var itemView = {};
+                var weekView, dayView = {};
                 var options = {};
                 spyOn(calendarView, "trigger");
-                calendarView.onItemDropped(itemView, options);
+                calendarView.onItemDropped(weekView, dayView, options);
                 expect(calendarView.trigger).toHaveBeenCalledWith("itemDropped", options);
             });
         });

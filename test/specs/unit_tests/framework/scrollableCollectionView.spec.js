@@ -5,7 +5,39 @@ requirejs(
  {
      describe("ScrollableCollectionView", function()
      {
+        var view, collection;
+        beforeEach(function()
+        {
+            collection = new TP.Collection();
+            collection.prepareNext = function(){ return []; };
+            collection.preparePrevious = function(){ return []; };
 
+            view = new ScrollableCollectionView({collection: collection});
+        });
+
+        it("Should be exposed as a module", function()
+        {
+            expect(view).toBeDefined();
+        });
+
+        // pending
+        it("Should scroll to the first model when shown", null, function() {
+            spyOn(view, "scrollToModel");
+            view.render();
+            view.trigger("show"); // this causes a fatal error that aborts `grunt test`
+            expect(view.scrollToModel).toHaveBeenCalled();
+        });
+
+        // pending
+        it("Should fetch more results when scrolling above the threshhold", null, function() {
+            spyOn(view.$el, "scrollTop").andReturn(0);
+            spyOn(view, "_fetchMore");
+            view.$el.trigger('scroll');
+            expect(view._fetchMore).toHaveBeenCalled();
+        });
+
+        // pending
+        it("Should fetch more results when scrolling below the bottom threshhold");
      });
 
     describe("ScrollableCollectionView.ScrollableCollectionViewAdapterCollection", function()

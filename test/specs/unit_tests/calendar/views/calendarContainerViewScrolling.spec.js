@@ -48,17 +48,6 @@ function($, TP, moment, theMarsApp, CalendarContainerView)
             expect(prependSpy).not.toHaveBeenCalled();
         });
 
-        // not actually checking the calculations inside scrollToToday,
-        // as I was having a hard time getting the fake dom to give proper offset/position calculations
-        it("Should scroll to today on show", function()
-        {
-            var calendarView = new CalendarContainerView({ collection: new TP.Collection() });
-            spyOn(calendarView, "scrollToSelector");
-            calendarView.render();
-            calendarView.onShow();
-            expect(calendarView.scrollToSelector).toHaveBeenCalledWith(".today");
-        });
-
         it("Should scroll to a given selector", function ()
         {
             expect(CalendarContainerView.prototype.scrollToSelector).toBeDefined();

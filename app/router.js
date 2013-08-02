@@ -12,6 +12,7 @@ function (_, TP)
         {
             var self = this;
             var args = arguments;
+            this.checkAuth();
             theMarsApp.userFetchPromise.done(function()
             {
                 callback.apply(self, args);
@@ -76,8 +77,6 @@ function (_, TP)
         {
             if (athleteId)
                 theMarsApp.user.setCurrentAthleteId(athleteId);
-
-            this.checkAuth();
 
             if (theMarsApp.getCurrentController() === theMarsApp.controllers.calendarController)
                 theMarsApp.controllers.calendarController.trigger("refresh");

@@ -218,12 +218,12 @@ function(
 
         },
 
-        clearCacheAndRefresh: function()
+        clearCacheAndRefresh: function(date)
         {
             if (theMarsApp.ajaxCachingEnabled)
                 theMarsApp.ajaxCaching.clearCache();
 
-            var currentWeek = this.views.calendar.getCurrentWeek();
+            var currentWeek = date ? moment(date).format(TP.utils.datetime.shortDateFormat) : this.views.calendar.getCurrentWeek();
             // QL: Should be handled by reset, not "resetToDates"
             this.weeksCollection.resetToDates(moment(this.startDate), moment(this.endDate));
             this.views.calendar.scrollToDate(currentWeek);
@@ -269,28 +269,7 @@ function(
 
         onRequestRefresh: function(date, callback)
         {
-            var dateAsMoment = date ? moment(date) : moment();
-
-            if (dateAsMoment.day() !== this.startOfWeekDayIndex)
-            {
-                var newDateAsMoment = this.createStartDay(dateAsMoment);
-                if (newDateAsMoment.format(TP.utils.datetime.shortDateFormat) > dateAsMoment.format(TP.utils.datetime.shortDateFormat))
-                {
-                    newDateAsMoment.subtract("weeks", 1);
-                }
-                dateAsMoment = newDateAsMoment;
-            }
-            
-            var newStartDate = this.createStartDay(dateAsMoment).subtract("weeks", 4);
-            var newEndDate = this.createEndDay(dateAsMoment).add("weeks", 6);
-
-            this.reset(newStartDate, newEndDate, dateAsMoment);
-
-            var calendarView = this.views.calendar;
-            setImmediate(function ()
-            {
-                calendarView.scrollToDate(dateAsMoment, undefined, callback);
-            });
+            this.clearCacheAndRefresh(date);
         },
 
         bindToCalendarViewEvents: function(calendarView)

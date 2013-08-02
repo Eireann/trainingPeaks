@@ -17,6 +17,22 @@ function($, TP, moment, WorkoutModel, WorkoutsCollection, CalendarCollection)
             expect(CalendarCollection).toBeDefined();
         });
 
+        // QL: Add these specs
+        describe("prepareNext", function()
+        {
+            it("should request workouts");
+            it("should return the models");
+            it("should add the models to the collection (via prependWeek)");
+        });
+
+        // QL: Add these sepcs
+        describe("prepareNext", function()
+        {
+            it("should request workouts");
+            it("should return the models");
+            it("should add the models to the collection (via appendWeek)");
+        });
+
         it("should have a method to retrieve a specific day inside a Week by the day's date, when the week starts on a Sunday", function()
         {
             var weekStartDate = moment().day(0);
