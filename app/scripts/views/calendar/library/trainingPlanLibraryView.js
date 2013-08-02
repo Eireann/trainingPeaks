@@ -81,80 +81,17 @@ function(
             }
         },
 
-        filterModel: function(model)
-        {
-            return this.searchRegExp.test(model.get("title"));
-        },
-
         onSearch: function()
         {
             var searchText = this.ui.search.val().trim();
-
-            if(searchText)
-            {
-                var matchers = this.buildSearchMatchers(searchText);
-
-                var filterModel = function(model)
-                {
-                    var title = model.get("title");
-                    return _.any(matchers, function(matcher)
-                    {
-                        return matcher.test(title);
-                    });
-                };
-
-                this.collection = new TrainingPlanCollection(this.sourceCollection.filter(filterModel));
-
-            } else {
-                this.collection = this.sourceCollection;
-            }
-
-            this._renderChildren();
-        },
-
-        buildSearchMatchers: function(searchText)
-        {
-
-            var matchers = [];
-
-            // exact search
-            matchers.push(new RegExp(searchText, "i"));
-
-            // simple search, ignore special characters
-            matchers.push(new RegExp(searchText.replace(/[^a-zA-Z0-9]+/g,".*"), "i"));
-
-            // any word order
-            matchers.push(new AnyWordOrderMatcher(searchText));
-
-            return matchers;
+            this.collection = TP.utils.collections.search(
+                                                          TrainingPlanCollection,
+                                                          this.sourceCollection,
+                                                          searchText,
+                                                          ["title"]
+                                                          );
+          this._renderChildren();
         }
-
-    };
-
-    var AnyWordOrderMatcher = function(searchText)
-    {
-        this.patterns = [];
-        _.each(searchText.split(/\b/), function(word)
-        {
-            word = word.trim();
-            if(word && word.replace(/[^a-zA-Z0-9]/g,""))
-            {
-                this.patterns.push(new RegExp(word, "i"));
-            }
-        }, this);
-    };
-
-    AnyWordOrderMatcher.prototype.test = function(title)
-    {
-        return _.every(this.patterns, function(pattern)
-        {
-            try {
-                return pattern.test(title);
-            } catch(e)
-            {
-                return false;
-            }
-        });
     };
 
     return TP.CompositeView.extend(TrainingPlanLibraryView);
