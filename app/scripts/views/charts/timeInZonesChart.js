@@ -73,9 +73,14 @@
 
                     _.each(timeInZones.timeInZones, function (timeInZone, index)
                     {
-                        var minutes = timeInZone.seconds ? parseInt(timeInZone.seconds, 10) / 60 : null;
-                        var point = [index, minutes];
-                        chartPoints.push(point);
+                        if(timeInZone)
+                        {
+                            var minutes = timeInZone.seconds ? parseInt(timeInZone.seconds, 10) / 60 : null;
+                            var point = [index, minutes];
+                            chartPoints.push(point);
+                        } else {
+                            chartPoints.push(index, null);
+                        }
                     }, this);
 
                     return chartPoints;

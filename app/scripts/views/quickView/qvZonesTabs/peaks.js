@@ -97,7 +97,8 @@ function(
             }
             else if (this.metric === "Speed")
             {
-                view = new SpeedPeaksChartView({ el: this.$(".peaksChart"), peaks: peaks, timeInZones: timeInZones, workoutType: this.workoutModel.get("workoutTypeValueId") });
+                view = new SpeedPeaksChartView({ el: this.$(".peaksChart"), peaks: peaks, timeInZones: timeInZones, workoutType: this.workoutModel.get("workoutTypeValueId"),
+                                               peakType: this.graphTitle });
                 view.render();
             }
         }

@@ -175,6 +175,49 @@ $QVTabSpriteRetinaURL: url(../../assets/images/QVImages/sprite-icons-QV-Tabs@2x.
         }
     }
 
+    .speedTab
+    {
+        padding: 6px 0px 10px 2px;
+        height: 45px;
+        &:hover {
+            cursor:pointer;
+        }
+        div
+        {
+            height: 33px;
+            background: $QVTabSpriteURL no-repeat 0 -132px;
+            &:hover
+            {
+                background-position: -33px -132px;
+            }
+
+            &:active
+            {
+               // background-position: -66px -132px;
+            }
+
+         
+        }
+
+         &.tabSelected
+        {
+            div
+            {
+                background-position: -33px -132px;
+            }
+        }
+
+        &.missingData {
+            div {
+                background-position: -66px -132px;
+                
+                &:hover {
+                    background-position: -99px -132px;
+                }
+            }
+        }
+    }
+    
     .mapGraphTab
     {
         padding: 5px 0px 10px 2px;
