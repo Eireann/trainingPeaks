@@ -6,7 +6,7 @@
 ],
 function(chartColors, findIndexByMsOffset, convertToViewUnits)
 {
-    var flexChannelOrder =
+    var defaultChannelOrder =
     [
         "Cadence",
         "HeartRate",
@@ -151,7 +151,7 @@ function(chartColors, findIndexByMsOffset, convertToViewUnits)
 
         var orderedSeriesArray = [];
 
-        _.each(flexChannelOrder, function(orderedChannel)
+        _.each(defaultChannelOrder, function(orderedChannel)
         {
             var series = _.find(seriesArray, function (s) { return s.label === orderedChannel; });
             if (series)
@@ -272,7 +272,7 @@ function(chartColors, findIndexByMsOffset, convertToViewUnits)
         this.disabledSeries = [];
         this.flatSamples = null;
         this.xAxisDistanceValues = [];
-        this.dataByChannel = null;
+        this.dataByAxisAndChannel = null;
         this.minElevation = null;
         this.elevationIsAllNegative = null;
         this.latLonArray = null;
@@ -415,8 +415,15 @@ function(chartColors, findIndexByMsOffset, convertToViewUnits)
                 return this.flatSamples.msOffsetsOfSamples[index];
 
             return null;
+        },
+        
+        getDistanceFromMsOffset: function (msOffset)
+        {
+            var index = findIndexByMsOffset(this.flatSamples.msOffsetsOfSamples, msOffset);
+            if (index !== null && index < this.getDataByChannel("Distance").length)
+                return this.getDataByChannel("Distance")[index][1];
+            return null;
         }
-
     });
     
     return DataParser;

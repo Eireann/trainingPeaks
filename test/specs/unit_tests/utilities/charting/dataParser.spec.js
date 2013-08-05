@@ -17,7 +17,6 @@ function(DataParser, testData)
             var dp = new DataParser();
 
             expect(dp.flatSamples).toBe(null);
-            expect(dp.dataByChannel).toBe(null);
         });
 
         describe("Takes a flatSamples parameter and processes the data to be usable by Flot", function()
