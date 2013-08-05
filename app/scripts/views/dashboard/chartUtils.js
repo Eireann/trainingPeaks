@@ -13,33 +13,33 @@ function(
 
     return {
 
-        buildPmcParameters: function(baseSettings)
+        buildChartParameters: function(baseSettings)
         {
-            var pmcSettings = _.clone(baseSettings);
+            var chartSettings = _.clone(baseSettings);
 
-            if (!pmcSettings.quickDateSelectOption)
+            if (!chartSettings.quickDateSelectOption)
             {
-                pmcSettings.quickDateSelectOption = this.pmcDateOptions.LAST_90_DAYS_AND_NEXT_21_DAYS.id;
+                chartSettings.quickDateSelectOption = this.chartDateOptions.LAST_90_DAYS_AND_NEXT_21_DAYS.id;
             }
 
-            var dateOption = this.findPmcDateOption(pmcSettings.quickDateSelectOption);
+            var dateOption = this.findChartDateOption(chartSettings.quickDateSelectOption);
 
-            pmcSettings.startDate = dateOption.getStartDate(pmcSettings);
-            pmcSettings.endDate = dateOption.getEndDate(pmcSettings);
-            pmcSettings.customStartDate = dateOption.customStartDate ? true : false;
-            pmcSettings.customEndDate = dateOption.customEndDate ? true : false;
-            return pmcSettings;
+            chartSettings.startDate = dateOption.getStartDate(chartSettings);
+            chartSettings.endDate = dateOption.getEndDate(chartSettings);
+            chartSettings.customStartDate = dateOption.customStartDate ? true : false;
+            chartSettings.customEndDate = dateOption.customEndDate ? true : false;
+            return chartSettings;
         },
 
-        findPmcDateOption: function(selectedOptionId)
+        findChartDateOption: function(selectedOptionId)
         {
-            return _.find(this.pmcDateOptions, function(dateOption)
+            return _.find(this.chartDateOptions, function(dateOption)
             {
                 return dateOption.id === Number(selectedOptionId);
             });
         },
 
-        pmcDateOptions:
+        chartDateOptions:
         {
             CUSTOM_DATES:
             {
@@ -48,14 +48,14 @@ function(
                 customStartDate: true,
                 customEndDate: true,
 
-                getStartDate: function(pmcSettings)
+                getStartDate: function(chartSettings)
                 {
-                    return pmcSettings.startDate ? moment.utc(pmcSettings.startDate) : moment().subtract("weeks", 1);
+                    return chartSettings.startDate ? moment.utc(chartSettings.startDate) : moment().subtract("weeks", 1);
                 },
 
-                getEndDate: function(pmcSettings)
+                getEndDate: function(chartSettings)
                 {
-                    return pmcSettings.endDate ? moment.utc(pmcSettings.endDate) : moment();
+                    return chartSettings.endDate ? moment.utc(chartSettings.endDate) : moment();
                 }
             },
 
@@ -65,9 +65,9 @@ function(
                 label: TP.utils.translate("Custom date through today"),
                 customStartDate: true,
 
-                getStartDate: function(pmcSettings)
+                getStartDate: function(chartSettings)
                 {
-                    return pmcSettings.startDate ? moment.utc(pmcSettings.startDate) : moment().subtract("weeks", 1);
+                    return chartSettings.startDate ? moment.utc(chartSettings.startDate) : moment().subtract("weeks", 1);
                 },
 
                 getEndDate: function()
@@ -374,9 +374,9 @@ function(
                 label: TP.utils.translate("Custom date through next 7 days"),
                 customStartDate: true,
 
-                getStartDate: function(pmcSettings)
+                getStartDate: function(chartSettings)
                 {
-                    return pmcSettings.startDate ? moment.utc(pmcSettings.startDate) : moment().subtract("weeks", 1);
+                    return chartSettings.startDate ? moment.utc(chartSettings.startDate) : moment().subtract("weeks", 1);
                 },
 
                 getEndDate: function()

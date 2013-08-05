@@ -17,6 +17,18 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
     padding-top: 10px;
 }
 
+.datePicker
+{
+    float: left;
+    width: 220px;
+    margin-left: 10px;
+
+    .selectboxit-container .selectboxit
+    {
+        width: 220px !important;
+    }
+}
+
 .dashboardChart
 {
     float: left;
