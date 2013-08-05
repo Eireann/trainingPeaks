@@ -1,55 +1,68 @@
 ﻿<div class="elevationCorrectionContainer">
-    <div class="titleBar">
-        <span>{{$ "ElevationCorrection"}}</span>
-        <div class="close">
-            <img class="closeIcon" src="assets/images/closeX.png"/>
-        </div>
+    
+    <div class="titleBar cf">
+        <h2 class="modaltitle">{{$ "ElevationCorrection"}}</h2>
+        <div id="closeIcon"></div>
     </div>
-    <div class="elevationGraph"/>
-    <div class="elevationStats">
-        <div class="statsHeader">
-            <span class="original">{{$ "Original"}}</span>
-            <span class="corrected">{{$ "Corrected"}}</span>
+    
+        <div class="elevationContain cf">
+            <div class="elevationGraph"/>
+            <div class="elevationStats">
+                <div class="statsHeader">
+                    <span class="original">{{$ "Original"}}</span>
+                    <span class="corrected">{{$ "Corrected"}}</span>
+                </div>
+                
+                <div class="stats">
+                    <div class="statsLabel">{{$ "Min"}}</div>
+                    <div class="originalMin original">{{convertToViewUnits originalMin "groundControl"}}</div>
+                    <div class="correctedMin corrected">{{convertToViewUnits correctedMin "groundControl"}}</div>
+                    <div class="units">{{getUnitsLabel "elevation"}}</div>
+                </div>
+                
+                <div class="stats">
+                    <div class="statsLabel">{{$ "Avg"}}</div>
+                    <div class="originalAvg original">{{convertToViewUnits originalAvg "groundControl"}}</div>
+                    <div class="correctedMin corrected">{{convertToViewUnits correctedAvg "groundControl"}}</div>
+                    <div class="units">{{getUnitsLabel "elevation"}}</div>
+                </div>
+                
+                <div class="stats">
+                    <div class="statsLabel">{{$ "Max"}}</div>
+                    <div class="originalMax original">{{convertToViewUnits originalMax "groundControl"}}</div>
+                    <div class="correctedMax corrected">{{convertToViewUnits correctedMax "groundControl"}}</div>
+                    <div class="units">{{getUnitsLabel "elevation"}}</div>
+                </div>
+                
+                <div class="stats">
+                    <div class="statsLabel">{{$ "Gain"}}</div>
+                    <div class="originalGain original">{{convertToViewUnits originalGain "groundControl"}}</div>
+                    <div class="correctedGain corrected">{{convertToViewUnits correctedGain "groundControl"}}</div>
+                    <div class="units">{{getUnitsLabel "elevation"}}</div>
+                </div>
+                
+                <div class="stats">
+                    <div class="statsLabel">{{$ "Loss"}}</div>
+                    <div class="originalLoss original">{{convertToViewUnits originalLoss "groundControl"}}</div>
+                    <div class="correctedLoss corrected">{{convertToViewUnits correctedLoss "groundControl"}}</div>
+                    <div class="units">{{getUnitsLabel "elevation"}}</div>
+                </div>
+                
+                <div class="stats">
+                    <div class="statsLabel">{{$ "Grade"}}</div>
+                    <div class="originalGrade original">{{conversion "formatGrade" originalGrade "0.0"}}</div>
+                    <div class="correctedGrade corrected">{{conversion "formatGrade" correctedGrade "0.0"}}</div>
+                    <div class="units">%</div>
+                </div>
+            </div>
+
         </div>
-        <div class="stats">
-            <div class="statsLabel">{{$ "Min"}}</div>
-            <div class="originalMin original">{{convertToViewUnits originalMin "groundControl"}}</div>
-            <div class="correctedMin corrected">{{convertToViewUnits correctedMin "groundControl"}}</div>
-            <div class="units">{{getUnitsLabel "elevation"}}</div>
-        </div>
-        <div class="stats">
-            <div class="statsLabel">{{$ "Avg"}}</div>
-            <div class="originalAvg original">{{convertToViewUnits originalAvg "groundControl"}}</div>
-            <div class="correctedMin corrected">{{convertToViewUnits correctedAvg "groundControl"}}</div>
-            <div class="units">{{getUnitsLabel "elevation"}}</div>
-        </div>
-        <div class="stats">
-            <div class="statsLabel">{{$ "Max"}}</div>
-            <div class="originalMax original">{{convertToViewUnits originalMax "groundControl"}}</div>
-            <div class="correctedMax corrected">{{convertToViewUnits correctedMax "groundControl"}}</div>
-            <div class="units">{{getUnitsLabel "elevation"}}</div>
-        </div>
-        <div class="stats">
-            <div class="statsLabel">{{$ "Gain"}}</div>
-            <div class="originalGain original">{{convertToViewUnits originalGain "groundControl"}}</div>
-            <div class="correctedGain corrected">{{convertToViewUnits correctedGain "groundControl"}}</div>
-            <div class="units">{{getUnitsLabel "elevation"}}</div>
-        </div>
-        <div class="stats">
-            <div class="statsLabel">{{$ "Loss"}}</div>
-            <div class="originalLoss original">{{convertToViewUnits originalLoss "groundControl"}}</div>
-            <div class="correctedLoss corrected">{{convertToViewUnits correctedLoss "groundControl"}}</div>
-            <div class="units">{{getUnitsLabel "elevation"}}</div>
-        </div>
-        <div class="stats">
-            <div class="statsLabel">{{$ "Grade"}}</div>
-            <div class="originalGrade original">{{conversion "formatGrade" originalGrade "0.0"}}</div>
-            <div class="correctedGrade corrected">{{conversion "formatGrade" correctedGrade "0.0"}}</div>
-            <div class="units">%</div>
-        </div>
-    </div>
-	<div class="buttons">
+
+ 
+
+    <div class="buttons">
         <button type="submit">Apply</button>
         <button type="reset">Close</button>
     </div>
+
 </div>
