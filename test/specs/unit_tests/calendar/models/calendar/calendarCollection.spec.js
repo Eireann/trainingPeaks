@@ -4,34 +4,75 @@ requirejs(
     "jquery",
     "TP",
     "moment",
+    "app",
+    "testUtils/testHelpers",
+    "testUtils/xhrDataStubs",
     "models/workoutModel",
     "models/workoutsCollection",
     "models/calendar/calendarCollection"
 ],
-function($, TP, moment, WorkoutModel, WorkoutsCollection, CalendarCollection)
+function($, TP, moment, theMarsApp, testHelpers, xhrData, WorkoutModel, WorkoutsCollection, CalendarCollection)
 {
     describe("CalendarCollection ", function()
     {
+
         it("should load as a module", function()
         {
             expect(CalendarCollection).toBeDefined();
         });
 
-        // QL: Add these specs
-        describe("prepareNext", function()
-        {
-            it("should request workouts");
-            it("should return the models");
-            it("should add the models to the collection (via prependWeek)");
-        });
+        describe("prepareNext and preparePrevious", function() {
+            var collection;
+            var startDate = moment().day(0);
+            var endDate = moment().day(7).add("weeks", 2);
 
-        // QL: Add these sepcs
-        describe("prepareNext", function()
-        {
-            it("should request workouts");
-            it("should return the models");
-            it("should add the models to the collection (via appendWeek)");
+            beforeEach(function()
+            {
+                testHelpers.startTheAppAndLogin(xhrData.users.barbkprem);
+                collection = new CalendarCollection([], {
+                    startDate: startDate,
+                    endDate: endDate
+                });
+            });
+
+            afterEach(function()
+            {
+                testHelpers.stopTheApp();
+            });
+
+            describe("preparePrevious", function()
+            {
+                it("should return the models", function() {
+                    expect(collection.preparePrevious(2).length).toEqual(2);
+                });
+
+                it("should add the models to the collection (via prependWeek)", function() {
+                    spyOn(collection, "requestWorkouts").andReturn(new $.Deferred());
+                    spyOn(collection, "prependWeek");
+                    collection.preparePrevious(1);
+                    expect(collection.prependWeek).toHaveBeenCalledWith(startDate.subtract("days", 7));
+                });
+            });
+
+            describe("prepareNext", function()
+            {
+                it("should request workouts", function() {
+                    spyOn(collection, "requestWorkouts").andReturn(new $.Deferred());
+                    collection.preparePrevious(1);
+                    expect(collection.requestWorkouts).toHaveBeenCalled();
+                });
+                it("should return the models", function() {
+                    expect(collection.prepareNext(2).length).toEqual(2);
+                });
+                it("should add the models to the collection (via appendWeek)", function() {
+                    spyOn(collection, "requestWorkouts").andReturn(new $.Deferred());
+                    spyOn(collection, "appendWeek");
+                    collection.prepareNext(1);
+                    expect(collection.appendWeek).toHaveBeenCalledWith(endDate.add("days", 1));
+                });
+            });
         });
+        
 
         it("should have a method to retrieve a specific day inside a Week by the day's date, when the week starts on a Sunday", function()
         {

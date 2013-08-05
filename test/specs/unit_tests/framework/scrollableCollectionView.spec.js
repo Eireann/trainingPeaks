@@ -1,7 +1,10 @@
 requirejs(
 ["TP",
- "views/scrollableCollectionView"],
- function(TP, ScrollableCollectionView)
+ "moment",
+ "jquery",
+ "views/scrollableCollectionView",
+ "models/calendar/calendarCollection"],
+ function(TP, moment, $, ScrollableCollectionView, CalendarCollection)
  {
      describe("ScrollableCollectionView", function()
      {
@@ -21,23 +24,41 @@ requirejs(
         });
 
         // pending
-        it("Should scroll to the first model when shown", null, function() {
-            spyOn(view, "scrollToModel");
-            view.render();
-            view.trigger("show"); // this causes a fatal error that aborts `grunt test`
-            expect(view.scrollToModel).toHaveBeenCalled();
+        it("Should scroll to the correct model with scrollToModel", null, function() {
+            var collection = new CalendarCollection([new TP.Model()], {
+                    startDate: moment().day(0),
+                    endDate: moment().day(7).add("weeks", 2)
+                }),
+                view = new ScrollableCollectionView({collection: collection});
+            spyOn(collection, "requestWorkouts").andReturn(new $.Deferred());
+            collection.prepareNext(3);
+            view.scrollToModel(collection.at(2));
         });
 
-        // pending
-        it("Should fetch more results when scrolling above the threshhold", null, function() {
+        it("Should fetch more results when scrolling above the threshhold", function() {
             spyOn(view.$el, "scrollTop").andReturn(0);
+            spyOn(view.$el, "height").andReturn(100);
+            spyOn(view.$el, "prop").andReturn(200);
+            spyOn(view, "snapToChild").andReturn([]);
+
             spyOn(view, "_fetchMore");
-            view.$el.trigger('scroll');
-            expect(view._fetchMore).toHaveBeenCalled();
+            view.render();
+            view.$el.trigger('scroll'); // this passes when the spec is run alone, but breaks the full spec suite run task
+            expect(view._fetchMore).toHaveBeenCalledWith('top');
         });
 
         // pending
-        it("Should fetch more results when scrolling below the bottom threshhold");
+        it("Should fetch more results when scrolling below the bottom threshhold", function() {
+            spyOn(view.$el, "scrollTop").andReturn(2000);
+            spyOn(view.$el, "prop").andReturn(2200);
+            spyOn(view.$el, "height").andReturn(100);
+            spyOn(view, "snapToChild").andReturn([]);
+
+            spyOn(view, "_fetchMore");
+            view.render();
+            view.$el.trigger('scroll'); // this passes when the spec is run alone, but breaks the full spec suite run task
+            expect(view._fetchMore).toHaveBeenCalledWith('bottom');
+        });
      });
 
     describe("ScrollableCollectionView.ScrollableCollectionViewAdapterCollection", function()
