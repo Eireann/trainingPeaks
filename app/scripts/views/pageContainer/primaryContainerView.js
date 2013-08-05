@@ -60,7 +60,7 @@ function(
             {
                 primaryContentContainerHeight -= 28;
             }
-            this.$(".scrollable").css({ height: primaryContentContainerHeight + 'px' });
+            this.$(".scrollable").css({ height: primaryContentContainerHeight + 'px', "min-height": primaryContentContainerHeight + 'px' });
             
         },
 
