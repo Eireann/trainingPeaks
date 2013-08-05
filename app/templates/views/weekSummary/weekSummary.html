@@ -16,8 +16,10 @@
 				{{$ "Total" }} {{#ifNot totalTimePlanned}}{{$ "Days" }}{{ else }}{{$ "Duration" }}{{/ifNot}}
 			</div>		
 			<div class="weekSummaryTimeContain">
+				{{#if totalTimePlanned }}
                 <span class="weekSummaryTimePlanned total">{{formatTime totalTimePlanned false "--:--"}}</span>
 				<span class="weekSummaryTimeCompleted total">{{formatTime totalTimeCompleted false ""}}</span>
+				{{/if}}
 			</div>
             {{{ weekSummaryBarGraph totalTimePlanned totalTimeCompleted totalDaysCompleted 0 }}}
 		</div>
@@ -25,7 +27,7 @@
 		{{#each totalsByWorkoutTypeCompacted }}
 			{{#with duration}}
 				{{#if planned }}	
-				<div class="weekSummaryBarGraphItem cf" data-type="{{ workoutTypeCssName workoutTypeId}} duration">
+				<div class="weekSummaryBarGraphItem cf" data-type="{{ workoutTypeId }} {{ workoutTypeCssName workoutTypeId}} duration">
 					<div class="weekSummaryBarGraphLabel {{ workoutTypeCssName workoutTypeId}}">
 						{{ workoutTypeName workoutTypeId }} {{$ "Duration" }}
 					</div>		
@@ -39,7 +41,7 @@
 			{{/with}}
 			{{#with distance}}
 				{{#if planned }}	
-				<div class="weekSummaryBarGraphItem cf" data-type="{{ workoutTypeCssName workoutTypeId}} distance">
+				<div class="weekSummaryBarGraphItem cf" data-type="{{ workoutTypeId }} {{ workoutTypeCssName workoutTypeId}} distance">
 					<div class="weekSummaryBarGraphLabel {{ workoutTypeCssName workoutTypeId}}">
 						{{ workoutTypeName workoutTypeId }} {{$ "Distance" }}
 					</div>		
