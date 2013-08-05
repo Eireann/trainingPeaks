@@ -11,7 +11,7 @@
     "utilities/charting/jquery.flot.dashes",
     "utilities/workout/workoutTypes",
     "views/dashboard/pmcChartSettings",
-    "views/dashboard/pmcChartUtils",
+    "views/dashboard/chartUtils",
     "hbs!templates/views/dashboard/pmcChart",
     "hbs!templates/views/charts/chartTooltip"
 ],
@@ -27,7 +27,7 @@ function(
     flotDashes,
     workoutTypes,
     pmcChartSettings,
-    pmcChartUtils,
+    chartUtils,
     pmcChartTemplate,
     tooltipTemplate
     )
@@ -118,7 +118,8 @@ function(
 
             if (theMarsApp.user.has(this.settingsKey))
             {
-                this.pmcModel.setParameters(pmcChartUtils.buildPmcParameters(theMarsApp.user.get(this.settingsKey)));
+                this.pmcModel.setParameters(chartUtils.buildChartParameters(theMarsApp.user.get(this.settingsKey)));
+
             }
 
             this.pmcModel.fetch().done(function()
