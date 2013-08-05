@@ -33,22 +33,23 @@ function(formatDateTime, convertToViewUnits, unitLabels, flotToolTipTemplate)
     var shouldDisplayTooltipValue = function(seriesName, value)
     {
         if (_.contains(channelsThatDontDisplayIfZero, seriesName) && !value)
-        {
             return false;
-        }
 
         return true;
     };
 
-    return function(allDataSeries, enabledDataSeries, hoveredSeriesName, hoveredIndex, timeOffset, workoutType)
+    return function(allDataSeries, enabledDataSeries, hoveredSeriesName, hoveredIndex, xAxisOffset, workoutType, axisType)
     {
         var toolTipData =
         {
-            timeOffset: null,
+            xAxisOffset: null,
             series: []
         };
 
-        toolTipData.timeOffset = formatDateTime.decimalSecondsAsTime(timeOffset / 1000);
+        if (axisType === "distance")
+            toolTipData.xAxisOffset = convertToViewUnits(xAxisOffset, "distance", undefined, workoutType) + " " + unitLabels("distance", workoutType);
+        else
+            toolTipData.xAxisOffset = formatDateTime.decimalSecondsAsTime(xAxisOffset / 1000);
 
         var toolTipSeries = [];
 
@@ -57,9 +58,7 @@ function(formatDateTime, convertToViewUnits, unitLabels, flotToolTipTemplate)
             var value = s.data[hoveredIndex][1];
 
             if (!shouldDisplayTooltipValue(s.label, value))
-            {
                 return;
-            }
 
             if (s.label === "RightPower")
             {

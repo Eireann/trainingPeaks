@@ -25,7 +25,9 @@ function(TP, graphToolbarTemplate)
             "change input[name=filterPeriod]": "onFilterPeriodChanged",
             "click button.graphSeriesButton": "onGraphSeriesButtonClicked",
             "click button.graphZoomButton": "onZoomClicked",
-            "click button.graphResetButton": "onResetClicked"
+            "click button.graphResetButton": "onResetClicked",
+            "click button.graphTimeButton": "onGraphTimeButtonClicked",
+            "click button.graphDistanceButton": "onGraphDistanceButtonClicked"
         },
         
         ui:
@@ -80,10 +82,25 @@ function(TP, graphToolbarTemplate)
             this.ui.zoomResetButton.removeClass("hidden");
         },
 
+        onGraphTimeButtonClicked: function ()
+        {
+            this.$el.find("button.graphTimeButton").addClass("bold");
+            this.$el.find("button.graphDistanceButton").removeClass("bold");
+            this.trigger("enableTimeAxis");
+        },
+        
+        onGraphDistanceButtonClicked: function ()
+        {
+            this.$el.find("button.graphTimeButton").removeClass("bold");
+            this.$el.find("button.graphDistanceButton").addClass("bold");
+            this.trigger("enableDistanceAxis");
+        },
+
         onRender: function()
         {
             var self = this;
 			var shownButtons = [];
+
             _.each(this.dataParser.getChannelMask(), function(channel)
             {
                 if (channel === "Distance" || channel === "Latitude" || channel === "Longitude")
@@ -95,6 +112,12 @@ function(TP, graphToolbarTemplate)
             });
 			
 			this.$(".graphSeriesButton").not(shownButtons).remove();
+
+			if (_.indexOf(this.dataParser.getChannelMask(), "Distance") === -1)
+			{
+                this.$(".graphDistanceButton").remove();
+                this.$(".graphTimeButton").remove();
+			}
         }
     });
 });

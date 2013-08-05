@@ -11,190 +11,95 @@
 <div id="weekSummaryContainer" class="cf">
 	<div class="weekSummaryBarGraphContain cf">
 
-		<div class="weekSummaryBarGraphItem total cf" data-type="total">
-			<div class="weekSummaryBarGraphLabel total">
-				Total Duration
+		<div class="weekSummaryBarGraphItem cf total {{#ifNot totalTimePlanned }}noPlannedDuration{{/ifNot}}" data-type="total duration">
+			<div class="weekSummaryBarGraphLabel {{ workoutTypeCssName workoutTypeId}}">
+				{{$ "Total" }} {{#ifNot totalTimePlanned}}{{$ "Days" }}{{ else }}{{$ "Duration" }}{{/ifNot}}
 			</div>		
 			<div class="weekSummaryTimeContain">
-                </span> <span class="weekSummaryTimePlanned total">{{formatTime totalTimePlanned false "--:--"}}</span>
-				<span class="weekSummaryTimeCompleted total">{{formatTime totalTimeCompleted false}}
+				{{#if totalTimePlanned }}
+                <span class="weekSummaryTimePlanned total">{{formatTime totalTimePlanned false "--:--"}}</span>
+				<span class="weekSummaryTimeCompleted total">{{formatTime totalTimeCompleted false ""}}</span>
+				{{/if}}
 			</div>
-            {{{ weekSummaryBarGraph totalTimePlanned totalTimeCompleted totalDaysCompleted "total" }}}
+            {{{ weekSummaryBarGraph totalTimePlanned totalTimeCompleted totalDaysCompleted 0 }}}
 		</div>
 
-		{{#if strengthDurationPlanned }}			
-		<div class="weekSummaryBarGraphItem cf" data-type="strength duration">
-			<div class="weekSummaryBarGraphLabel strength">
-				Strength Duration
-			</div>		
-			<div class="weekSummaryTimeContain">
-                <span class="weekSummaryTimePlanned strength">{{formatTime strengthDurationPlanned false "--:--"}}</span>
-				<span class="weekSummaryTimeCompleted strength">{{formatTime strengthDurationCompleted false}}</span> 
-			</div>
-            {{{ weekSummaryBarGraph strengthDurationPlanned strengthDurationCompleted strengthDaysCompleted "strength" }}}
-		</div>
-		{{/if}}
-
-		{{#if bikeDurationPlanned }}	
-		<div class="weekSummaryBarGraphItem cf" data-type="bike duration">
-			<div class="weekSummaryBarGraphLabel bike">
-				Bike Duration
-			</div>		
-			<div class="weekSummaryTimeContain">
-                <span class="weekSummaryTimePlanned bike">{{formatTime bikeDurationPlanned false "--:--"}}</span>
-				<span class="weekSummaryTimeCompleted bike">{{formatTime bikeDurationCompleted false}}</span>
-			</div>
-            {{{ weekSummaryBarGraph bikeDurationPlanned bikeDurationCompleted bikeDaysCompleted "bike" }}}
-		</div>
-		{{/if}}
-
-		{{#if bikeDistancePlanned }}	
-		<div class="weekSummaryBarGraphItem cf" data-type="bike distance">
-			<div class="weekSummaryBarGraphLabel bike">
-				Bike Distance
-			</div>		
-			<div class="weekSummaryTimeContain">
-                <span class="weekSummaryTimePlanned bike">{{ conversion "formatDistance" bikeDistancePlanned this "--"}}</span>
-				<span class="weekSummaryTimeCompleted bike">{{ conversion "formatDistance" bikeDistanceCompleted this "0"}} {{ getUnitsLabel "distance" 3 }}</span>
-			</div>
-            {{{ weekSummaryBarGraph bikeDistancePlanned bikeDistanceCompleted bikeDaysCompleted "bike" }}}
-		</div>
-		{{/if}}
-
-		{{#if runDurationPlanned }}	
-		<div class="weekSummaryBarGraphItem cf" data-type="run duration">
-			<div class="weekSummaryBarGraphLabel run">
-				Run Duration
-			</div>		
-			<div class="weekSummaryTimeContain">
-                <span class="weekSummaryTimePlanned run">{{formatTime runDurationPlanned false "--:--"}}</span>
-				<span class="weekSummaryTimeCompleted run">{{formatTime runDurationCompleted false}}</span>
-			</div>
-            {{{ weekSummaryBarGraph runDurationPlanned runDurationCompleted runDaysCompleted "run" }}}
-		</div>
-		{{/if}}
-
-		{{#if runDistancePlanned }}	
-		<div class="weekSummaryBarGraphItem cf" data-type="run distance">
-			<div class="weekSummaryBarGraphLabel run">
-				Run Distance
-			</div>		
-			<div class="weekSummaryTimeContain">
-                <span class="weekSummaryTimePlanned run">{{ conversion "formatDistance" runDistancePlanned this "--:--"}}</span>
-				<span class="weekSummaryTimeCompleted run">{{ conversion "formatDistance" runDistanceCompleted this "0"}} {{ getUnitsLabel "distance" 3 }}</span>
-			</div>
-            {{{ weekSummaryBarGraph runDistancePlanned runDistanceCompleted runDaysCompleted "run" }}}
-		</div>
-		{{/if}}
-		
-		{{#if swimDurationPlanned }}	
-		<div class="weekSummaryBarGraphItem cf" data-type="swim duration">
-			<div class="weekSummaryBarGraphLabel swim distance">
-				Swim Duration
-			</div>		
-			<div class="weekSummaryTimeContain">
-                <span class="weekSummaryTimePlanned swim">{{formatTime swimDurationPlanned false "--:--"}}</span>
-				<span class="weekSummaryTimeCompleted swim">{{formatTime swimDurationCompleted false}}</span>
-			</div>
-            {{{ weekSummaryBarGraph swimDurationPlanned swimDurationCompleted swimDaysCompleted "swim" }}}
-		</div>
-		{{/if}}
-
-		{{#if swimDistancePlanned }}	
-		<div class="weekSummaryBarGraphItem cf" data-type="swim distance">
-			<div class="weekSummaryBarGraphLabel swim">
-				Swim Distance
-			</div>		
-			<div class="weekSummaryTimeContain">
-                <span class="weekSummaryTimePlanned swim">{{conversion "formatSwimDistance" swimDistancePlanned this "--:--"}}</span>
-				<span class="weekSummaryTimeCompleted swim">{{ conversion "formatSwimDistance" swimDistanceCompleted this "0"}} {{ getUnitsLabel "distance" 1 }}</span>
-			</div>
-            {{{ weekSummaryBarGraph swimDistancePlanned swimDistanceCompleted swimDaysCompleted "swim" }}}
-		</div>
-		{{/if}}
+		{{#each totalsByWorkoutTypeCompacted }}
+			{{#with duration}}
+				{{#if planned }}	
+				<div class="weekSummaryBarGraphItem cf" data-type="{{ workoutTypeId }} {{ workoutTypeCssName workoutTypeId}} duration">
+					<div class="weekSummaryBarGraphLabel {{ workoutTypeCssName workoutTypeId}}">
+						{{ workoutTypeName workoutTypeId }} {{$ "Duration" }}
+					</div>		
+					<div class="weekSummaryTimeContain">
+		                <span class="weekSummaryTimePlanned {{ workoutTypeCssName workoutTypeId}}">{{formatTime planned false "--:--"}}</span>
+						<span class="weekSummaryTimeCompleted  {{ workoutTypeCssName workoutTypeId}}">{{formatTime completed false "--:--"}}</span>
+					</div>
+		            {{{ weekSummaryBarGraph planned completed daysCompleted workoutTypeId }}}
+				</div>
+				{{/if}}
+			{{/with}}
+			{{#with distance}}
+				{{#if planned }}	
+				<div class="weekSummaryBarGraphItem cf" data-type="{{ workoutTypeId }} {{ workoutTypeCssName workoutTypeId}} distance">
+					<div class="weekSummaryBarGraphLabel {{ workoutTypeCssName workoutTypeId}}">
+						{{ workoutTypeName workoutTypeId }} {{$ "Distance" }}
+					</div>		
+					<div class="weekSummaryTimeContain">
+		                <span class="weekSummaryTimePlanned {{ workoutTypeCssName workoutTypeId}}">{{ conversion "formatDistance" planned this "--"}}</span>
+						<span class="weekSummaryTimeCompleted  {{ workoutTypeCssName workoutTypeId}}">{{ conversion "formatDistance" completed this "--"}} {{ getUnitsLabel "distance" workoutTypeId }}</span>
+					</div>
+		            {{{ weekSummaryBarGraph planned completed daysCompleted workoutTypeId }}}
+				</div>
+				{{/if}}
+			{{/with}}
+		{{/each}}
 	</div>
 	
-	<div id="weekSummaryMetricContain">
-		
-		<div class="weekSummaryMetricItem weekSummaryItem cf">
-			<div class="weekSummaryMetricValue distance">
-				{{conversion "formatDistance" totalDistanceCompleted this "0"}}
-			</div>
-			<div class="weekSummaryMetricTitle distance">
-				{{getUnitsLabel "distance"}}
-			</div>
-		</div>
+	<div id="weekSummaryMetricContain" class="statisticsSummary">
 
-		<div class="weekSummaryMetricItem weekSummaryItem cf">
-			<div class="weekSummaryMetricValue tss">
-				{{conversion "formatTSS" tssCompleted this "0"}}
-			</div>
-			<div class="weekSummaryMetricTitle tss">
-				TSS
-			</div>		
-		</div>
+		<div class="statsRow" id="distance">
+	        <label>{{$ "Distance" }}</label>
+	        <span class="value">{{conversion "formatDistance" totalDistanceCompleted this "0"}}</span>
+	        <span class="units">{{getUnitsLabel "distance"}}</span>
+	    </div>
 
-		{{#if bikeDistanceCompleted}}
-		{{#ifNot bikeDistancePlanned}}
-		<div class="weekSummaryMetricItem weekSummaryItem cf">
-			<div class="weekSummaryMetricValue distance">
-				{{conversion "formatDistance" bikeDistanceCompleted this "0"}}
-			</div>
-			<div class="weekSummaryMetricTitle distance">
-				{{getUnitsLabel "distance"}} bike
-			</div>
-		</div>
-		{{/ifNot}}
-		{{/if}}
+		<div class="statsRow" id="tss">
+	        <label>{{$ "TSS" }}</label>
+	        <span class="value">{{conversion "formatDistance" tssCompleted this "0"}}</span>
+	        <span class="units"></span>
+	    </div>
 
-		{{#if runDistanceCompleted}}	
-		{{#ifNot runDistancePlanned}}
-		<div class="weekSummaryMetricItem weekSummaryItem cf">
-			<div class="weekSummaryMetricValue distance">
-				{{conversion "formatDistance" runDistanceCompleted this "0"}}
-			</div>
-			<div class="weekSummaryMetricTitle distance">
-				{{getUnitsLabel "distance"}} run 
-			</div>
-		</div>
-		{{/ifNot}}
-		{{/if}}
-
-		{{#if swimDistanceCompleted}}
-		{{#ifNot swimDistancePlanned}}
-		<div class="weekSummaryMetricItem weekSummaryItem cf">
-			<div class="weekSummaryMetricValue distance">
-				{{conversion "formatSwimDistance" swimDistanceCompleted this "0"}}
-			</div>
-			<div class="weekSummaryMetricTitle distance">
-				{{getUnitsLabel "distance" 1}} swim
-			</div>
-		</div>
-		{{/ifNot}}
-		{{/if}}
+		{{#each totalsByWorkoutTypeCompacted }}
+			{{#with distance}}
+				{{#if completed}}
+					{{#ifNot planned }}	
+					<div class="statsRow" id="workoutType{{ workoutTypeId }}">
+				        <label>{{ workoutTypeName workoutTypeId }}</label>
+				        <span class="value">{{conversion "formatDistance" completed this workoutTypeId}}</span>
+				        <span class="units">{{getUnitsLabel "distance" workoutTypeId}}</span>
+				    </div>
+					{{/ifNot}}
+				{{/if}}
+			{{/with}}
+		{{/each}}
 
 		{{#ifHasValueAfterFormatted "formatElevation" totalElevationGain this}}	
-		<div class="weekSummaryMetricItem weekSummaryItem cf">
-			<div class="weekSummaryMetricValue elevation">
-				{{conversion "formatElevation" totalElevationGain this}}
-			</div>
-			<div class="weekSummaryMetricTitle elevation">
-				{{getUnitsLabel "elevationGain" }}
-			</div>		
-		</div>
+		<div class="statsRow" id="elevationGain">
+	        <label>{{$ "EGain" }}</label>
+	        <span class="value">{{conversion "formatElevation" totalElevationGain this "0"}}</span>
+	        <span class="units">{{getUnitsLabel "elevationGain" }}</span>
+	    </div>
 		{{/ifHasValueAfterFormatted}}
 
 		{{#ifHasValueAfterFormatted "formatEnergy" totalEnergyCompleted this}}	
-		<div class="weekSummaryMetricItem weekSummaryItem cf">
-			<div class="weekSummaryMetricValue energy">
-				{{conversion "formatEnergy" totalEnergyCompleted this}}
-			</div>
-			<div class="weekSummaryMetricTitle energy">
-				Kilojoules
-			</div>		
-		</div>
+		<div class="statsRow" id="energy">
+	        <label>{{$ "Work" }}</label>
+	        <span class="value">{{conversion "formatEnergy" totalEnergyCompleted this}}</span>
+	        <span class="units">{{getUnitsLabel "energy" }}</span>
+	    </div>
 		{{/ifHasValueAfterFormatted}}
-		
+
 	</div>
 	
 </div>

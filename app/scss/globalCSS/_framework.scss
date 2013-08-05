@@ -1,257 +1,353 @@
-﻿
-.frameworkHeader
-{
-	min-height: 64px;
-	float:left;
-	background-color: $white;
-}
+﻿@media screen {
 
-.frameworkMainWrapper
-{
-    @include grid-row();
-	background-color: white;
-    max-width: none;
-}
 
-.frameworkTitle
-{
-	width: 265px;
-	float: left;
-	padding-left: 65px;
-	//padding-top: 13px;
-    margin-top: 5px;
-	@include labels($fontFamilyRegular, $fontSizeHeader, $TPBlue, normal);
-	label
-	{
-		float: left;
-		padding-right: 10px;
-			
-	}
-	.headerYear
-	{
-		font-family: $fontFamilyLight;
-	}
-}
-
-.frameworkHeaderView
+    .frameworkHeader
     {
-
-        &.withAds
-        {
-            .frameworkTitle
-            {
-                margin-top: 30px;
-            }
-
-            .navigation
-            {
-                margin-top: 30px;
-            }
-        }
-
-	    .navigation {
-            float:left;
-            margin:7px 0 0 0;
-            
-            @include headerButtons(0px, 35px, $fontSizeMedium);
-			button {
-			 	&:active {
-					box-shadow:none;
-					}
-				}
-
-            .frameworkNavigation {
-                float:left;
-	            @include headerButtons(0px, 35px, 12px);
-				background-color:$TPGrey9;
-				&:hover {
-					background-color:$TPGrey11;
-					}
-                button {
-                	img {
-                        padding-top: 3px;
-                   	}
-                }
-
-                #goToLastWeekButton {
-                    border-right:none;
-					background: url(../../assets/images/calendarImages/sprite-header-icons.png) no-repeat 0 -20px;
-                    &:hover {
-						background: url(../../assets/images/calendarImages/sprite-header-icons.png) no-repeat -36px -20px;	
-                    }
-                    &:active {
-                        background: url(../../assets/images/calendarImages/sprite-header-icons.png) no-repeat -72px -20px;
-                    }
-                }
-
-				#goToNextWeekButton {
-					margin-left:1px;
-					border-left:none;
-					background: url(../../assets/images/calendarImages/sprite-header-icons.png) no-repeat 0 0;
-					&:hover {
-						background: url(../../assets/images/calendarImages/sprite-header-icons.png) no-repeat -36px 0px;
-	               	}
-                    &:active {
-                        background: url(../../assets/images/calendarImages/sprite-header-icons.png) no-repeat -72px 0;
-                    }
-                }
-
-				@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
-					#goToLastWeekButton,
-					#goToLastWeekButton:hover, 
-					#goToNextWeekButton,
-					#goToNextWeekButton:hover {
-						background-image: url(../../assets/images/calendarImages/sprite-header-icons@2x.png);
-						background-size: 108px 100px;
-				  	}
-				}
-                
-            }
-
-            .today {
-                float:left;
-                @include headerButtons(0px, 71px, 12px);
-				margin-left:7px;	
-            }
-
-			.today button  {
-				color:$TPGrey10;
-				padding:1px 0 2px;
-			}
-			
-			@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
-				.today button  {
-					background-image: url(../../assets/images/calendarImages/background-gradient-button@2x.png);
-					background-size: 1px 40px;
-				}
-			}
-
-			.printRefreshButtons {
-                float:left;
-                @include headerButtons(7px, 38px, $fontSizeMedium);
-
-				.printButton  {
-					background: url(../../assets/images/calendarImages/sprite-header-icons.png) no-repeat 0 -40px;
-					width: 38px;
-					height: 22px;
-					&:hover {
-						background: url(../../assets/images/calendarImages/sprite-header-icons.png) no-repeat -36px -40px;
-					}
-                    &:active {
-                        background: url(../../assets/images/calendarImages/sprite-header-icons.png) no-repeat -72px -40px;
-                    }
-				}
-                .refreshButton {
-					background: url(../../assets/images/calendarImages/sprite-header-icons.png) no-repeat 0 -80px;
-                    margin-left: 7px;
-					&:hover {
-						background: url(../../assets/images/calendarImages/sprite-header-icons.png) no-repeat -36px -80px;
-					}
-
-                    &:active {
-                        background: url(../../assets/images/calendarImages/sprite-header-icons.png) no-repeat -72px -80px;
-                    }
-                }
-                .settingsButton  {
-					background: url(../../assets/images/calendarImages/sprite-header-icons.png) no-repeat 0 -60px;
-                    margin-left: 7px;
-					width: 38px;
-					&:hover {
-						background: url(../../assets/images/calendarImages/sprite-header-icons.png) no-repeat -36px -60px;
-					}
-                    &:active {
-                        background: url(../../assets/images/calendarImages/sprite-header-icons.png) no-repeat -72px -60px;
-					}
-                }
-
-				@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
-					.printButton,
-					.printButton:hover, 
-					.refreshButton,
-					.refreshButton:hover,
-					.settingsButton,
-					.settingsButton:hover  {
-						background-image: url(../../assets/images/calendarImages/sprite-header-icons@2x.png);
-						background-size: 108px 120px;
-				  	}
-				}
-			}
-        
-			#athleteCalendarSelectSelectBoxItContainer, #athleteCalendarSelect
-            {
-                display: none;
-                margin: 0 0 0 7px;
-                float: left;
-                height: 22px;
-                font-size: 12px;
-                span
-                {
-                    height: 22px;
-                    font-size: 12px;
-                    
-                }
-            }	
-		}
-
-        #athleteCalendarSelectSelectBoxIt
-        {
-            width: 200px !important;
-        }
-
-        #affiliateBanner
-        {
-            margin-left: 100px;
-            margin-bottom: 15px;
-            margin-top: 10px;
-            height: 90px;
-            float: left;
-            display: none;
-        }
-
+    	min-height: 64px;
+    	float:left;
+    	background-color: $white;
     }
 
-.frameworkScrollableContainer
-{
-    @include grid-column(15);
-    @include nice-scrollbar;
-    user-select: none;
-    -moz-user-select: none;
-    -webkit-user-select: none;
-	padding: 0 2px;
-
-    background-color: $white;
-    overflow-x: auto;
-
-    @include calc(width, "100% - 45px"); 
-
-    .scrollHeader
+    .frameworkMainWrapper
     {
         @include grid-row();
-        @include calc(width, "100%"); 
-		background-color: $TPGrey1;
-		height: 27px;
-		padding-top: 7px;
-		padding-right: 12px;
-        margin-left: 0px;
-		border: $TPGrey2;
-		border-style: solid;
-		border-width: 1px;
-		position: relative;
-		z-index: 1;
-        cursor: default;
+    	background-color: white;
         max-width: none;
-        min-width: 1007px;
     }
 
-    .scrollable
+    .frameworkTitle
     {
-        background-color: $TPGrey1;
-        overflow-y: scroll;
+    	width: 265px;
+    	float: left;
+    	padding-left: 65px;
+    	//padding-top: 13px;
+        margin-top: 5px;
+    	@include labels($fontFamilyRegular, $fontSizeHeader, $TPBlue, normal);
+    	label
+    	{
+    		float: left;
+    		padding-right: 10px;
+    			
+    	}
+    	.headerYear
+    	{
+    		font-family: $fontFamilyLight;
+    	}
+    }
+
+    .frameworkHeaderView
+        {
+
+            &.withAds
+            {
+                .frameworkTitle
+                {
+                    margin-top: 30px;
+                }
+
+                .navigation
+                {
+                    margin-top: 30px;
+                }
+            }
+
+    	    .navigation {
+                float:left;
+                margin:7px 0 0 0;
+                
+                @include headerButtons(0px, 35px, $fontSizeMedium);
+    			button {
+    			 	&:active {
+    					box-shadow:none;
+    					}
+    				}
+
+                .frameworkNavigation {
+                    float:left;
+    	            @include headerButtons(0px, 35px, 12px);
+    				background-color:$TPGrey9;
+    				&:hover {
+    					background-color:$TPGrey11;
+    					}
+                    button {
+                    	img {
+                            padding-top: 3px;
+                       	}
+                    }
+
+                    #goToLastWeekButton {
+                        border-right:none;
+    					background: url(../../assets/images/calendarImages/sprite-header-icons.png) no-repeat 0 -20px;
+                        &:hover {
+    						background: url(../../assets/images/calendarImages/sprite-header-icons.png) no-repeat -36px -20px;	
+                        }
+                        &:active {
+                            background: url(../../assets/images/calendarImages/sprite-header-icons.png) no-repeat -72px -20px;
+                        }
+                    }
+
+    				#goToNextWeekButton {
+    					margin-left:1px;
+    					border-left:none;
+    					background: url(../../assets/images/calendarImages/sprite-header-icons.png) no-repeat 0 0;
+    					&:hover {
+    						background: url(../../assets/images/calendarImages/sprite-header-icons.png) no-repeat -36px 0px;
+    	               	}
+                        &:active {
+                            background: url(../../assets/images/calendarImages/sprite-header-icons.png) no-repeat -72px 0;
+                        }
+                    }
+
+    				@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
+    					#goToLastWeekButton,
+    					#goToLastWeekButton:hover, 
+    					#goToNextWeekButton,
+    					#goToNextWeekButton:hover {
+    						background-image: url(../../assets/images/calendarImages/sprite-header-icons@2x.png);
+    						background-size: 108px 100px;
+    				  	}
+    				}
+                    
+                }
+
+                .today {
+                    float:left;
+                    @include headerButtons(0px, 71px, 12px);
+    				margin-left:7px;	
+                }
+
+    			.today button  {
+    				color:$TPGrey10;
+    				padding:1px 0 2px;
+    			}
+    			
+    			@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
+    				.today button  {
+    					background-image: url(../../assets/images/calendarImages/background-gradient-button@2x.png);
+    					background-size: 1px 40px;
+    				}
+    			}
+
+    			.printRefreshButtons {
+                    float:left;
+                    @include headerButtons(7px, 38px, $fontSizeMedium);
+
+    				.printButton  {
+    					background: url(../../assets/images/calendarImages/sprite-header-icons.png) no-repeat 0 -40px;
+    					width: 38px;
+    					height: 22px;
+    					&:hover {
+    						background: url(../../assets/images/calendarImages/sprite-header-icons.png) no-repeat -36px -40px;
+    					}
+                        &:active {
+                            background: url(../../assets/images/calendarImages/sprite-header-icons.png) no-repeat -72px -40px;
+                        }
+    				}
+                    .refreshButton {
+    					background: url(../../assets/images/calendarImages/sprite-header-icons.png) no-repeat 0 -80px;
+                        margin-left: 7px;
+    					&:hover {
+    						background: url(../../assets/images/calendarImages/sprite-header-icons.png) no-repeat -36px -80px;
+    					}
+
+                        &:active {
+                            background: url(../../assets/images/calendarImages/sprite-header-icons.png) no-repeat -72px -80px;
+                        }
+                    }
+                    .settingsButton  {
+    					background: url(../../assets/images/calendarImages/sprite-header-icons.png) no-repeat 0 -60px;
+                        margin-left: 7px;
+    					width: 38px;
+    					&:hover {
+    						background: url(../../assets/images/calendarImages/sprite-header-icons.png) no-repeat -36px -60px;
+    					}
+                        &:active {
+                            background: url(../../assets/images/calendarImages/sprite-header-icons.png) no-repeat -72px -60px;
+    					}
+                    }
+
+    				@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
+    					.printButton,
+    					.printButton:hover, 
+    					.refreshButton,
+    					.refreshButton:hover,
+    					.settingsButton,
+    					.settingsButton:hover  {
+    						background-image: url(../../assets/images/calendarImages/sprite-header-icons@2x.png);
+    						background-size: 108px 120px;
+    				  	}
+    				}
+    			}
+            
+    			#athleteCalendarSelectSelectBoxItContainer, #athleteCalendarSelect
+                {
+                    display: none;
+                    margin: 0 0 0 7px;
+                    float: left;
+                    height: 22px;
+                    font-size: 12px;
+                    span
+                    {
+                        height: 22px;
+                        font-size: 12px;
+                        
+                    }
+                }	
+    		}
+
+            #athleteCalendarSelectSelectBoxIt
+            {
+                width: 200px !important;
+            }
+
+            #affiliateBanner
+            {
+                margin-left: 100px;
+                margin-bottom: 15px;
+                margin-top: 10px;
+                height: 90px;
+                float: left;
+                display: none;
+            }
+
+        }
+
+    .frameworkScrollableContainer
+    {
+        @include grid-column(15);
         @include nice-scrollbar;
-        border-left: solid;
-        border-left-width: 1px;
-        border-left-color: $TPGrey2;
+        user-select: none;
+        -moz-user-select: none;
+        -webkit-user-select: none;
+    	padding: 0 2px;
+
+        background-color: $white;
+        overflow-x: auto;
+
+        @include calc(width, "100% - 45px"); 
+
+        .scrollHeader
+        {
+            @include grid-row();
+            @include calc(width, "100%"); 
+    		background-color: $TPGrey1;
+    		height: 27px;
+    		padding-top: 7px;
+    		padding-right: 12px;
+            margin-left: 0px;
+    		border: $TPGrey2;
+    		border-style: solid;
+    		border-width: 1px;
+    		position: relative;
+    		z-index: 1;
+            cursor: default;
+            max-width: none;
+            min-width: 1007px;
+        }
+
+        .scrollable
+        {
+            background-color: $TPGrey1;
+            overflow-y: scroll;
+            @include nice-scrollbar;
+            border-left: solid;
+            border-left-width: 1px;
+            border-left-color: $TPGrey2;
+        }
+
     }
 
 }
 
+
+
+
+
+
+
+
+
+@media print {
+    .frameworkHeader {
+        min-height: 64px;
+        float:left;
+        background-color: $white;
+
+        // hiding this since in many cases the month displayed doesn't match what shows on the calendar
+        display:none;
+    }
+
+    .frameworkMainWrapper
+    {
+        @include grid-row();
+        background-color: white;
+        width:100%;
+    }
+
+    .frameworkTitle
+    {
+        width: 265px;
+        float: left;
+        padding-left: 15px;
+        @include labels($fontFamilyRegular, $fontSizeHeader, $TPBlue, normal);
+        label
+        {
+            float: left;
+            padding-right: 10px;
+                
+        }
+        .headerYear
+        {
+            font-family: $fontFamilyLight;
+        }
+    }
+
+    .frameworkHeaderView {
+            &.withAds {
+                .frameworkTitle {
+                    margin-top: 30px;
+                }
+            }
+
+            .navigation {
+                display:none;
+            }
+
+            #athleteCalendarSelectSelectBoxIt {
+                width: 200px !important;
+            }
+
+            #affiliateBanner {
+                margin-left: 100px;
+                margin-bottom: 15px;
+                margin-top: 10px;
+                height: 90px;
+                float: left;
+                display: none;
+            }
+
+        }
+
+    .frameworkScrollableContainer {
+        width:100% !important;
+        @include grid-column(15);
+        background-color: $white;
+        overflow-x: auto;
+
+        .scrollHeader {
+            @include grid-row();
+            @include calc(width, "100%"); 
+            height: 27px;
+            padding-top: 7px;
+            padding-right: 12px;
+            margin-left: 0px;
+            position: relative;
+            width:100%;
+        }
+
+        .scrollable {
+        
+        }
+
+    }
+}

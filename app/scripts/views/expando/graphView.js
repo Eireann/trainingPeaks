@@ -55,6 +55,7 @@ function(
             this.detailDataPromise = options.detailDataPromise;
             this.dataParser = options.dataParser;
             this.lastFilterPeriod = this.getInitialFilterPeriod();
+            this.currentAxis = "time";
             this.selections = [];
 
             this.firstRender = true;
@@ -133,11 +134,11 @@ function(
 
             var onHoverHandler = function(flotItem, $tooltipEl)
             {
-                $tooltipEl.html(flotCustomToolTip(self.allSeries, enabledSeries, flotItem.series.label, flotItem.dataIndex, flotItem.datapoint[0], self.model.get("workoutTypeValueId")));
+                $tooltipEl.html(flotCustomToolTip(self.allSeries, enabledSeries, flotItem.series.label, flotItem.dataIndex, flotItem.datapoint[0], self.model.get("workoutTypeValueId"), self.currentAxis));
                 toolTipPositioner.updatePosition($tooltipEl, self.plot);
             };
             
-            this.flotOptions = defaultFlotOptions.getMultiChannelOptions(onHoverHandler);
+            this.flotOptions = defaultFlotOptions.getMultiChannelOptions(onHoverHandler, this.currentAxis);
 
             this.flotOptions.selection.mode = "x";
             this.flotOptions.yaxes = yaxes;
@@ -155,22 +156,17 @@ function(
                 this.highlightOrZoomToPreviousSelection();
             }
 
-
             this.setInitialToolbarSmoothing(this.lastFilterPeriod);
         },
 
         getInitialFilterPeriod: function()
         {
             if (this.hasOwnProperty("lastFilterPeriod"))
-            {
                 return this.lastFilterPeriod;
-            } else if (this.model.get("workoutTypeValueId") === TP.utils.workout.types.getIdByName("Swim"))
-            {
+            else if (this.model.get("workoutTypeValueId") === TP.utils.workout.types.getIdByName("Swim"))
                 return 0;
-            } else
-            {
+            else
                 return 5;
-            }
         },
 
         setInitialToolbarSmoothing: function(period)
@@ -187,6 +183,8 @@ function(
             this.graphToolbar.on("disableSeries", this.disableSeries, this);
             this.graphToolbar.on("zoom", this.zoomGraph, this);
             this.graphToolbar.on("reset", this.resetZoom, this);
+            this.graphToolbar.on("enableTimeAxis", this.enableTimeAxis, this);
+            this.graphToolbar.on("enableDistanceAxis", this.enableDistanceAxis, this);
 
             this.$("#graphToolbar").append(this.graphToolbar.render().$el);
         },
@@ -239,14 +237,33 @@ function(
         {
             if (this.selectedWorkoutStatsForRange)
             {
-                var ranges = {
-                    xaxis: {
-                        from: this.selectedWorkoutStatsForRange.get("begin"),
-                        to: this.selectedWorkoutStatsForRange.get("end")
+                var from;
+                var to;
+
+                if (this.currentAxis === "time")
+                {
+                    from = this.selectedWorkoutStatsForRange.get("begin");
+                    to = this.selectedWorkoutStatsForRange.get("end");
+                }
+                else if (this.currentAxis === "distance")
+                {
+                    from = this.selectedWorkoutStatsForRange.get("plotSelectionFrom");
+                    to = this.selectedWorkoutStatsForRange.get("plotSelectionTo");
+                }
+                else
+                    throw "GraphView: invalid X Axis type: " + this.currentAxis;
+
+                var ranges =
+                {
+                    xaxis:
+                    {
+                        from: from,
+                        to: to 
                     }
                 };
                 this.plot.setSelection(ranges, true);
-            } else
+            }
+            else
             {
                 this.plot.hideActiveSelections();
                 this.plot.unhideActiveSelections();
@@ -299,12 +316,31 @@ function(
         {
             TP.analytics("send", { "hitType": "event", "eventCategory": "expando", "eventAction": "graphSelection", "eventLabel": "" });
 
-            var startOffsetMs = Math.round(this.plot.getSelection().xaxis.from);
-            var endOffsetMs = Math.round(this.plot.getSelection().xaxis.to);
-            this.selectedWorkoutStatsForRange = new WorkoutStatsForRange({ workoutId: this.model.id, begin: startOffsetMs, end: endOffsetMs, name: "Selection" });
-            var options = {};
-            options.addToSelection = true;
-            options.displayStats = true;
+            var plotSelectionFrom = this.plot.getSelection().xaxis.from;
+            var plotSelectionTo = this.plot.getSelection().xaxis.to;
+            
+            var startOffsetMs;
+            var endOffsetMs;
+            
+            if (this.currentAxis === "time")
+            {
+                startOffsetMs = Math.round(plotSelectionFrom);
+                endOffsetMs = Math.round(plotSelectionTo);
+            }
+            else
+            {
+                startOffsetMs = this.dataParser.getMsOffsetFromDistance(plotSelectionFrom);
+                endOffsetMs = this.dataParser.getMsOffsetFromDistance(plotSelectionTo);
+            }
+
+            this.selectedWorkoutStatsForRange = new WorkoutStatsForRange({ workoutId: this.model.id, begin: startOffsetMs, end: endOffsetMs, plotSelectionFrom: plotSelectionFrom, plotSelectionTo: plotSelectionTo, name: "Selection" });
+
+            var options =
+            {
+                addToSelection: true,
+                displayStats: true
+            };
+
             this.trigger("unselectall");
             this.trigger("rangeselected", this.selectedWorkoutStatsForRange, options, this);
         },
@@ -312,9 +348,7 @@ function(
         onPlotUnSelected: function()
         {
             if (!this.zoomed)
-            {
                 this.trigger("unselectall");
-            }
         },
 
         onPlotHover: function(event, pos, item)
@@ -360,6 +394,30 @@ function(
             }
         },
 
+        enableTimeAxis: function ()
+        {
+            if (this.currentAxis === "time")
+                return;
+
+            this.onUnSelectAll();
+            this.trigger("unselectall");
+            this.currentAxis = "time";
+            this.dataParser.setXAxis("time");
+            this.drawPlot();
+        },
+        
+        enableDistanceAxis: function ()
+        {
+            if (this.currentAxis === "distance")
+                return;
+            
+            this.onUnSelectAll();
+            this.trigger("unselectall");
+            this.currentAxis = "distance";
+            this.dataParser.setXAxis("distance");
+            this.drawPlot();
+        },
+
         watchForControllerEvents: function()
         {
             this.on("controller:rangeselected", this.onRangeSelected, this);
@@ -372,7 +430,7 @@ function(
             this.off("controller:rangeselected", this.onRangeSelected, this);
         },
 
-        onRangeSelected: function(workoutStatsForRange, options, triggeringView)
+        onRangeSelected: function (workoutStatsForRange, options, triggeringView)
         {
             if (triggeringView === this || !options)
                 return;
@@ -392,7 +450,6 @@ function(
                 selection = this.findGraphSelection(workoutStatsForRange.get("begin"), workoutStatsForRange.get("end"), options.dataType);
                 if (!selection)
                 {
-
                     this.plot.clearSelection();
                     selection = this.createGraphSelection(workoutStatsForRange, options);
                     this.addSelectionToGraph(selection);
@@ -418,10 +475,8 @@ function(
 
         createGraphSelection: function(workoutStatsForRange, options)
         {
-            var sampleStartIndex = this.dataParser.findIndexByMsOffset(workoutStatsForRange.get("begin"));
-            var sampleEndIndex = this.dataParser.findIndexByMsOffset(workoutStatsForRange.get("end"));
-
-            var selection = {
+            var selection =
+            {
                 begin: workoutStatsForRange.get("begin"),
                 end: workoutStatsForRange.get("end"),
                 dataType: options.dataType
@@ -430,9 +485,18 @@ function(
             return selection;
         },
 
-        addSelectionToGraph: function(selection)
+        addSelectionToGraph: function (selection)
         {
-            selection.selection = this.plot.addMultiSelection({ xaxis: { from: selection.begin, to: selection.end }}, {dataType: selection.dataType });
+            var from = selection.begin;
+            var to = selection.end;
+            
+            if (this.currentAxis === "distance")
+            {
+                from = this.dataParser.getDistanceFromMsOffset(from);
+                to = this.dataParser.getDistanceFromMsOffset(to);
+            }
+
+            selection.selection = this.plot.addMultiSelection({ xaxis: { from: from, to: to } }, { dataType: selection.dataType });
             this.selections.push(selection);
         },
 
@@ -453,12 +517,9 @@ function(
         getDesiredPlotHeight: function()
         {
             if (this.graphHeight)
-            {
                 return this.graphHeight - 50;
-            } else
-            {
+            else
                 return this.dataParser.hasLatLongData ? 365 : 565;
-            }
         },
 
         watchForControllerResize: function ()

@@ -41,17 +41,22 @@
     <div class="smallbold">{{$ "ApplyPlan"}}</div>
 </div>
 <div class="startEndPlan">
-    <select id="applyDateType">
-        <option value="1">{{$ "Start" }}</option>
-        <option value="3">{{$ "End" }}</option>
+    <select id="applyDateType"> 
         {{# with details }}
             {{#if eventPlan }}
+                {{#ifNot forceDate}}
+                    <option value="1">{{$ "Start" }}</option>
+                    <option value="3">{{$ "End" }}</option>
+                {{/ifNot}}
                 <option value="2">{{$ "EndOnEventDate" }}</option>
+            {{ else }}
+                <option value="1">{{$ "Start" }}</option>
+                <option value="3">{{$ "End" }}</option>
             {{/if}}
         {{/with}}
     </select>
     <span class="small on">{{$ "on" }}</span>
-    <input type="text" id="applyDate" class="datepicker" value="{{ formatDate applyDate "MM/DD/YYYY" }}">
+    <input type="text" id="applyDate" class="datepicker" value="{{ formatDate applyDate "MM/DD/YYYY" }}" readonly>
     <button class="apply">{{$ "Go" }}</button>
 </div>
 {{/if}}
@@ -63,7 +68,7 @@
             <div class="appliedPlansContainer">
                 {{# each planApplications }}
                     <div data-appliedplanid="{{ appliedPlanId }}" class="appliedPlan">
-                        <span class="appliedDates small">{{ formatDate startDate "MM/DD/YYYY" }} - {{ formatDate endDate "MM/DD/YYYY" }}</span>
+                        <span class="appliedDates small">{{$ "OnCalendarFrom" }} {{ formatDate startDate "M/D/YYYY" }} {{$ "to" }} {{ formatDate endDate "M/D/YYYY" }}</span>
                         <span class="removePlan small">{{$ "Remove" }}</span>
                     </div>
                 {{/each}}

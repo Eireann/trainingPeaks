@@ -99,7 +99,7 @@ function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandMo
         setOriginalElevation: function()
         {
             this.dataParser.loadData(this.workoutModel.get("detailData").get("flatSamples"));
-            this.originalElevation = this.dataParser.dataByChannel["Elevation"];
+            this.originalElevation = this.dataParser.getDataByChannel("Elevation");
         },
 
         onRender: function()

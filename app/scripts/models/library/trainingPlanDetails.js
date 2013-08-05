@@ -25,14 +25,14 @@ function (TP)
             eventDate: null,
             eventName: null,
             eventPlan: false,
+            forceDate: false,
             workoutCount: null,
             planId: null,
             planStatus: null,
             plannedWorkoutTypeDurations: null,
             title: null,
             planApplications: null,
-            hasWeeklyGoals: null,
-            forceDate: null,
+            hasWeeklyGoals: false,
             startDate: null,
             endDate: null
         }

@@ -14,6 +14,7 @@
     "views/quickView/hrView",
     "views/quickView/powerView",
     "views/quickView/paceView",
+    "views/quickView/speedView",
     "views/quickView/mapAndGraphView",
     "hbs!templates/views/quickView/workoutQuickView"
 ],
@@ -32,6 +33,7 @@ function(
     WorkoutQuickViewHR,
     WorkoutQuickViewPower,
     WorkoutQuickViewPace,
+    WorkoutQuickViewSpeed,
     WorkoutQuickViewMapAndGraph,
     workoutQuickViewTemplate
 )
@@ -59,7 +61,8 @@ function(
             "click .tabNavigation > .heartrateTab": "onTabNavigationClicked",
             "click .tabNavigation > .powerTab": "onTabNavigationClicked",
             "click .tabNavigation > .paceTab": "onTabNavigationClicked",
-            "click .tabNavigation > .mapGraphTab": "onTabNavigationClicked"
+            "click .tabNavigation > .mapGraphTab": "onTabNavigationClicked",
+            "click .tabNavigation > .speedTab": "onTabNavigationClicked"
         },
 
         ui:
@@ -75,6 +78,7 @@ function(
             "#quickViewMapAndGraphTab",
             "#quickViewHRTab",
             "#quickViewPowerTab",
+            "#quickViewPaceTab",
             "#quickViewSpeedTab"
         ],
 
@@ -166,6 +170,7 @@ function(
 
         onRender: function()
         {
+            theMarsApp.getBodyElement().addClass("qvOpen");
             if (!this.renderInitialized)
             {
                 this.initializeTabsAfterRender();
@@ -180,8 +185,14 @@ function(
             this.$(".heartrateTab").addClass("missingData");
             this.$(".powerTab").addClass("missingData");
             this.$(".paceTab").addClass("missingData");
+            this.$(".speedTab").addClass("missingData");
 
             this.onSensorDataChange();
+        },
+
+        onClose: function()
+        {
+            theMarsApp.getBodyElement().removeClass("qvOpen");
         },
 
         onDetailsChange: function(detailModel)
@@ -231,12 +242,14 @@ function(
                     if (hasSpeedZonesValue)
                     {
                         this.$(".paceTab").removeClass("missingData");
+                        this.$(".speedTab").removeClass("missingData");
                     }
                 }
 
                 if (hasSpeedValue)
                 {
                     this.$(".paceTab").removeClass("missingData");
+                    this.$(".speedTab").removeClass("missingData");
                 }
             }
         },
@@ -274,7 +287,8 @@ function(
                 map: new WorkoutQuickViewMapAndGraph({ model: this.model, prefetchConfig: this.prefetchConfig, el: this.$(this.tabDomIDs[1]) }),
                 hr: new WorkoutQuickViewHR({ model: this.model.get("details"), workoutModel: this.model, el: this.$(this.tabDomIDs[2]) }),
                 power: new WorkoutQuickViewPower({ model: this.model.get("details"), workoutModel: this.model, el: this.$(this.tabDomIDs[3]) }),
-                pace: new WorkoutQuickViewPace({ model: this.model.get("details"), workoutModel: this.model, el: this.$(this.tabDomIDs[4]) })
+                pace: new WorkoutQuickViewPace({ model: this.model.get("details"), workoutModel: this.model, el: this.$(this.tabDomIDs[4]) }),
+                speed: new WorkoutQuickViewSpeed({ model: this.model.get("details"), workoutModel: this.model, el: this.$(this.tabDomIDs[5]) })
             };
 
             tabViews.hr.on("change:model", this.onDetailsChange, this);
@@ -285,25 +299,39 @@ function(
                 tabViews.map,
                 tabViews.hr,
                 tabViews.power,
-                tabViews.pace
+                tabViews.pace,
+                tabViews.speed
             ];
         },
         
         checkShowPaceViews: function ()
         {
-            //Show pace for: run/walk/swim/other
+            //Show pace for: run/walk/swim/other, show speed for anything else
             var workoutTypeValueId = this.model.get("workoutTypeValueId");
 
             var showPace = _.contains([1, 3, 13, 100], workoutTypeValueId);
+            var showSpeed = !showPace;
 
             if (!showPace)
+            {
                 this.$(".paceTab").css("display", "none");
+                this.$(".speedTab").css("display", "");
+            }
             else
+            {
                 this.$(".paceTab").css("display", "");
+                this.$(".speedTab").css("display", "none");
+            }
             
             //Move off the pace tab
-            if (this.currentTabIndex === 4)
-                this.$(".tabNavigation > .summaryTab").click();
+            if (this.currentTabIndex === 4 && !showPace)
+            {
+                this.$(".tabNavigation > .speedTab").click();
+            }
+            else if (this.currentTabIndex === 5 && !showSpeed)
+            {
+                this.$(".tabNavigation > .paceTab").click();
+            }
 
         },
 
