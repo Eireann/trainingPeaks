@@ -49,8 +49,14 @@ function(
         buildDashboardCharts: function()
         {
             this.charts = [];
-            this.charts.push(new DashboardChartView());
+
+            // LOOP OVER SETTINGS OBJECT
+            // FOR EACH CHART IN USER DASHBOARD CONFIG:
+            //  IF PMC
             this.charts.push(new PmcChartView());
+            // IF ANY OTHER CHART
+            this.charts.push(new DashboardChartView()); // MODIFY TO TAKE CHART TILE PARAMETER
+            // LOOP
         },
 
         displayDashboardCharts: function()

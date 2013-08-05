@@ -23,6 +23,7 @@ function(DataParser, testData)
         describe("Takes a flatSamples parameter and processes the data to be usable by Flot", function()
         {
             var dp = new DataParser();
+
             // We do not save Lat, Lon, or Distance in the series object.
             var expectedLength = testData.channelMask.length;
             _.each(testData.channelMask, function (channel)

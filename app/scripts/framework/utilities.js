@@ -7,7 +7,8 @@
     "utilities/chartBuilder",
     "utilities/filesystem",
     "utilities/athlete/athlete",
-    "utilities/trainingPlan/trainingPlan"
+    "utilities/trainingPlan/trainingPlan",
+    "utilities/collections"
 ], function(
     datetime,
     units,
@@ -16,7 +17,8 @@
     chartBuilder,
     filesystem,
     athlete,
-    trainingPlan
+    trainingPlan,
+    collections
     )
 {
     return {
@@ -28,6 +30,7 @@
         filesystem: filesystem,
         athlete: athlete,
         trainingPlan: trainingPlan,
+        collections: collections,
 
         translate: function(textToTranslate)
         {

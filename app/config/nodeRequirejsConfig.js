@@ -44,7 +44,11 @@
         configuration: "local",
         wwwRoot: "localhost",
         apiRoot: "localhost",
-        oAuthRoot: "localhost"
+        oAuthRoot: "localhost",
+        buildNumber: "local_test",
+        gaAccount: "",
+        coachUpgradeURL: "",
+        upgradeURL:""
     };
 
     return commonConfig;

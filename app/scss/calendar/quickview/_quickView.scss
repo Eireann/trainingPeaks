@@ -397,7 +397,7 @@
 
     // hides form field placeholder text
     ::-webkit-input-placeholder { /* WebKit browsers */
-      color: transparent;
+        color: transparent;
     }
     :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
         color: transparent;
@@ -448,11 +448,9 @@
             overflow-y: visible !important;
         }
 
-         input {
-            
+        input {
             text-align: center;
             overflow-y:visible !important;
-
 
             &.workoutTitle
             {
@@ -497,6 +495,10 @@
                 display:none;
             }
         }
+    }
+
+    #workoutQuickViewMenuDiv {
+        display:none;
     }
 }
 

@@ -6,6 +6,7 @@
     "jquerySelectBox",
     "backbone.marionette",
     "TP",
+    "models/library/libraryExercisesCollection",
     "views/calendar/library/exerciseLibraryItemView",
     "views/calendar/library/exerciseLibraryAddItemView",
     "hbs!templates/views/calendar/library/exerciseLibraryView"
@@ -17,6 +18,7 @@ function(
     jquerySelectBox,
     Marionette,
     TP,
+    LibraryExercisesCollection,
     ExerciseLibraryItemView,
     ExerciseLibraryAddItemView,
     exerciseLibraryViewTemplate
@@ -47,7 +49,13 @@ function(
         events:
         {
             "click button#add": "addToLibrary",
-            "change #librarySelect": "onSelectLibrary"
+            "change #librarySelect": "onSelectLibrary",
+            "keyup #search": "onSearch",
+            "change #search": "onSearch"
+        },
+
+        ui: {
+            search: "#search"
         },
 
         onRender: function()
@@ -159,6 +167,18 @@ function(
                     self.switchLibrary(library);
                 }
             });
+        },
+
+        onSearch: function()
+        {
+            var searchText = this.ui.search.val().trim();
+            this.collection = TP.utils.collections.search(
+                                                          LibraryExercisesCollection,
+                                                          this.activeLibrary.exercises,
+                                                          searchText,
+                                                          ["itemName"]
+                                                          );
+          this._renderChildren();
         }
 
     }, { activeLibrary: null });

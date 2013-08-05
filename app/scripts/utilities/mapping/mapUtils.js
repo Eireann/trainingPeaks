@@ -14,7 +14,6 @@ function(
     chartColors
     )
 {
-
     var osmURL = "http://otile1.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.jpg";
     var cloudmadeURL = "http://b.tile.cloudmade.com/8ee2a50541944fb9bcedded5165f09d9/1/256/{z}/{x}/{y}.png";
     var leafletURL = "http://{s}.tile.osm.org/{z}/{x}/{y}.png";
@@ -22,7 +21,6 @@ function(
     L.Google = LeafletGoogleTiles(L);
 
     return {
-
         createMapOnContainer: function(container)
         {
 
@@ -185,7 +183,7 @@ function(
             var latLonArray = dataParser.getLatLonArray();
             if (latLonArray)
             {
-                var distances = dataParser.dataByChannel.Distance;
+                var distances = dataParser.getDataByChannel("Distance");
                 var intervals = this.calculateMileMarkerInterval(distances[distances.length - 1][1], maxMarkers);
                 var nextMarker = intervals.distanceBetweenMarkers;
 

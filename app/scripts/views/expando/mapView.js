@@ -94,38 +94,13 @@ function (
         {
             this.mapMouseBuffer = MapUtils.addTransparentBuffer(this.map, latLongArray);
 
-            this.mapMouseBuffer.on("mousemove", this.onMapHover, this);
             this.mapMouseBuffer.on("mouseout", this.onMapMouseOut, this);
             this.on("close", this.unbindMouseHoverEvents, this);
         },
 
         unbindMouseHoverEvents: function ()
         {
-            this.mapMouseBuffer.off("mousemove", this.onMapHover, this);
             this.mapMouseBuffer.off("mouseout", this.onMapMouseOut, this);
-        },
-
-        onMapHover: function (e)
-        {
-
-            var linePoint = this.mapMouseBuffer.closestLayerPoint(e.layerPoint);
-            var latLng = this.map.layerPointToLatLng(linePoint);
-            this.showHoverMarker(latLng.lat, latLng.lng);
-            return;
-            /*
-            close but not quite - because leaflet is converting lat lng to pixels and back, the resulting values are off by a thousandth or so,
-            so they don't map nicely to a simple lookup of our lat lng array without some calculating
-
-            var msOffset = this.dataParser.findMsOffsetByLatLng(latLng.lat, latLng.lng);
-            if (msOffset)
-            {
-                this.trigger("maphover", msOffset);
-                console.log(msOffset);
-            } else
-            {
-                console.log("No point");
-            }
-            */
         },
 
         onMapMouseOut: function (e)
@@ -220,39 +195,20 @@ function (
 
         onGraphHover: function (options)
         {
-            var msOffset = options.msOffset;
-            if (this.dataParser.hasLatLongData)
-            {
-                var index = this.dataParser.findIndexByMsOffset(msOffset);
-
-                if (index === null)
-                {
-                    return;
-                }
-
-                var lat = this.dataParser.dataByChannel.Latitude[index][1];
-                var long = this.dataParser.dataByChannel.Longitude[index][1];
-
-                if (_.isNaN(lat) || _.isNaN(long))
-                {
-                    this.hideHoverMarkerWithDelay();
-                }
-                else
-                {
-                    this.showHoverMarker(lat, long);
-                }
-            }
+            var xAxisOffset = options.msOffset;
+            var latLong = this.dataParser.getLatLongFromOffset(xAxisOffset);
+            
+            if (latLong !== null)
+                this.showHoverMarker(latLong.lat, latLong.lng);
+            else
+                this.hideHoverMarkerWithDelay();
         },
 
         onGraphLeave: function ()
         {
             if (this.dataParser.hasLatLongData)
-            {
                 this.hideHoverMarker();
-
-            }
         },
-
 
         hideHoverMarker: function ()
         {
@@ -324,7 +280,5 @@ function (
                 this.map.invalidateSize();
             }
         }
-
-
     });
 });

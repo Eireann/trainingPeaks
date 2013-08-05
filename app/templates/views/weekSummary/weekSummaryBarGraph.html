@@ -1,4 +1,14 @@
-<div class="weekSummaryBarGraph {{ cssGraphClass }}">
-  <div class="weekSummaryBarGraphPlanned {{ cssGraphClass }} {{#if completedMoreThanPlanned }}completedMoreThanPlanned{{/if}}" style="width:{{ plannedWidthPercent }}%;"></div>
-  <div class="weekSummaryBarGraphProgress {{ cssGraphClass }} {{#if completedMoreThanPlanned }}completedMoreThanPlanned{{/if}}" style="width:{{ completedWidthPercent }}%;"></div>
+<div class="weekSummaryBarGraph {{ workoutTypeCssName workoutTypeId }} {{ cssClass }}">
+    {{#comment}}
+    If completed < planned, the background bar (planned amount) is gray, and the foreground bar (completed) is a light colored gradient
+    If completed > planned, the background bar (completed amount) is a dark colored gradient, and the foreground bar (planned) is a light colored gradient
+    {{/comment}}
+    {{#if completedMoreThanPlanned }}
+      <div class="bar background completed {{ workoutTypeCssName workoutTypeId }} darkGradient" style="width:{{ completedWidthPercent }}%;"></div>
+      <div class="bar foreground planned {{ workoutTypeCssName workoutTypeId }} lightGradient" style="width:{{ plannedWidthPercent }}%;"></div>
+    {{ else }}
+      <div class="bar background planned {{ workoutTypeCssName workoutTypeId }} gray" style="width:{{ plannedWidthPercent }}%;"></div>
+      <div class="bar foreground completed {{ workoutTypeCssName workoutTypeId }} lightGradient" style="width:{{ completedWidthPercent }}%;"></div>
+    {{/if}}
+
 </div>

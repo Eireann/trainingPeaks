@@ -150,6 +150,20 @@
         .weekSummaryBarGraphItem.total {
             width:277px;
             height:35px;
+
+            .weekSummaryBarGraph
+            {
+                height: 15px;
+            }
+
+            &.noPlannedDuration
+            {
+                .bar.background
+                {
+                    background: none;
+                }
+            }
+
         }
 
         .weekSummaryBarGraphLabel {
@@ -167,100 +181,28 @@
             width:100%;
             margin-top:3px;
             position:relative;
+
+            .background
+            {
+                position:absolute;
+                top:0px;
+                bottom:0px;
+                left:0px;
+                right:0px;
+                z-index:1;
+            }
+
+            .foreground
+            {
+                height:100%;
+                display:block;
+                position:absolute;
+                top:0px;
+                left:0px;
+                z-index:2;
+            }
         }
         
-        .weekSummaryBarGraphPlanned
-        {   
-            position:absolute;
-            top:0px;
-            bottom:0px;
-            left:0px;
-            right:0px;
-            z-index:1;
-
-            @include linearGradient(top,  #c8c8c8 0%,#adadad 100%);
-
-            &.completedMoreThanPlanned
-            {
-                z-index:3;
-                @include linearGradient(top,  #4F9CD6 0%, #47789D 100%);
-
-                &.bike {
-                    @include linearGradient(top, #a153d8 0%, #7b4a9e 100%);
-                }
-                
-                &.strength {
-                    @include linearGradient(top, #a75ca3 0%, #80507d 100%);
-                }   
-                
-                &.run {
-                    @include linearGradient(top, #5f9cb0 0%, #517885 100%);
-                }   
-
-                &.swim {
-                    @include linearGradient(top,  #53b5d8 0%, #4a889e 100%);
-                }
-
-            }
-        }
-
-        .weekSummaryBarGraph.total {
-            height:15px;
-            float:left;
-            width:100%;
-        }
-        
-        .weekSummaryBarGraphProgress {
-            height:100%;
-            display:block;
-            position:absolute;
-            top:0px;
-            left:0px;
-            z-index:2;
-        }
-         
-        .weekSummaryBarGraphProgress {
-
-            @include linearGradient(top,  #4F9CD6 0%, #47789D 100%);
-
-            &.bike {
-                @include linearGradient(top, #a153d8 0%, #7b4a9e 100%);
-            }
-            
-            &.strength {
-                @include linearGradient(top, #a75ca3 0%, #80507d 100%);
-            }   
-            
-            &.run {
-                @include linearGradient(top, #5f9cb0 0%, #517885 100%);
-            }   
-
-            &.swim {
-                @include linearGradient(top,  #53b5d8 0%, #4a889e 100%);
-            }
-
-            &.completedMoreThanPlanned
-            {
-                @include linearGradient(top, #1B82CE 0%, #115282 100%);
-
-                &.bike {
-                    @include linearGradient(top,  #8820d1 0%, $clrBike 100%);
-                }
-                
-                &.strength {
-                    @include linearGradient(top, #912c8a 0%, $clrStrength 100%);
-                }   
-                
-                &.run {
-                    @include linearGradient(top,  #30819c 0%, $clrRun 100%);
-                }   
-
-                &.swim {
-                    @include linearGradient(top,  #20a3d1 0%, $clrSwim 100%);
-                }
-            }
-        }
-
         .weekSummaryTimeContain {
             float:right;
             text-align:right;
@@ -368,6 +310,197 @@
 
     }
 
+
+    .weekSummaryBarGraph
+    {
+
+        // default gray background and tpblue colors for total or undefined
+        .bar
+        {
+            @include linearGradient(top, #c8c8c8 0%,#adadad 100%);
+
+            &.lightGradient
+            {
+                @include linearGradient(top, #4F9CD6 0%, #47789D 100%);
+            }
+
+            &.darkGradient
+            {
+                @include linearGradient(top, #1B82CE 0%, #115282 100%);
+            }
+        } 
+
+        .Bike
+        {
+            &.lightGradient
+            {
+
+                @include linearGradient(top, #a153d8 0%, #7b4a9e 100%);
+            }
+
+            &.darkGradient
+            {
+                @include linearGradient(top, #8820d1 0%, $clrBike 100%);
+            }
+        }
+
+        .Strength
+        {
+            &.lightGradient
+            {
+                @include linearGradient(top, #a75ca3 0%, #80507d 100%);
+            }
+
+            &.darkGradient
+            {
+                @include linearGradient(top, #912c8a 0%, $clrStrength 100%);
+            }
+        }
+
+        .Run
+        {
+            &.lightGradient
+            {
+
+                @include linearGradient(top, #5f9cb0 0%, #517885 100%);
+            }
+
+            &.darkGradient
+            {
+                @include linearGradient(top, #30819c 0%, $clrRun 100%);
+            }
+        }
+
+        .Swim
+        {
+            &.lightGradient
+            {
+                @include linearGradient(top, #53b5d8 0%, #4a889e 100%);
+            }
+
+            &.darkGradient
+            {
+                @include linearGradient(top, #20a3d1 0%, $clrSwim 100%);
+            }
+        }
+
+        .Brick
+        {
+            &.lightGradient
+            {
+                @include linearGradient(top, #ba5b7c 0%, #9a536d 100%);
+            }
+
+            &.darkGradient
+            {
+                @include linearGradient(top, #aa2b58 0%, $clrBrick 100%);
+            }
+        }
+
+        .Crosstrain
+        {
+           &.lightGradient
+            {
+                @include linearGradient(top, #cb4bd2 0%, #a848ad 100%);
+            }
+
+            &.darkGradient
+            {
+                @include linearGradient(top, #c116c9 0%, $clrOther 100%);
+            }
+        }
+
+        .Race
+        {
+            &.lightGradient
+            {
+                @include linearGradient(top, #3bc4c5 0%, #3b9c9c 100%);
+            }
+
+            &.darkGradient
+            {
+                @include linearGradient(top, #00b7b7 0%, $clrRace 100%);
+            }
+        }
+
+        .MountainBike
+        {
+            &.lightGradient
+            {
+                @include linearGradient(top, #ad8f67 0%, #907a5c 100%);
+            }
+
+            &.darkGradient
+            {
+                @include linearGradient(top, #99703a 0%, $clrMTB 100%);
+            }
+        }
+
+        .Custom
+        {
+            &.lightGradient
+            {
+                @include linearGradient(top, #cb4bd2 0%, #a848ad 100%);
+            }
+
+            &.darkGradient
+            {
+                @include linearGradient(top, #c116c9 0%, $clrOther 100%);
+            }
+        }
+
+        .XCSki
+        {
+            &.lightGradient
+            {
+                @include linearGradient(top, #e09f86 0%, #d98565 100%);
+            }
+
+            &.darkGradient
+            {
+                @include linearGradient(top, #dd8663 0%, $clrXc-ski 100%);
+            }
+        }
+
+        .Rowing
+        {
+            &.lightGradient
+            {
+                @include linearGradient(top, #67d0ed 0%, #4cc0e0 100%);
+            }
+
+            &.darkGradient
+            {
+                @include linearGradient(top, #3bc7ed 0%, $clrRowing 100%);
+            }
+        }
+
+        .Walk
+        {
+            &.lightGradient
+            {
+                @include linearGradient(top, #e7dc3c 0%, #bfb73c 100%);
+            }
+
+            &.darkGradient
+            {
+                @include linearGradient(top, #e6d701 0%, $clrWalk 100%);
+            }
+        }
+
+        .Other
+        {
+            &.lightGradient
+            {
+                @include linearGradient(top, #cb4bd2 0%, #a848ad 100%);
+            }
+
+            &.darkGradient
+            {
+                @include linearGradient(top, #c116c9 0%, $clrOther 100%);
+            }
+        }
+    }
 
 }
 
