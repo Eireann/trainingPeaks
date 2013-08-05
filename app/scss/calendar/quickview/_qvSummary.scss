@@ -365,10 +365,19 @@
 	        textarea#descriptionInput,
 	        textarea#preActivityCommentsInput,
 	        textarea#postActivityCommentsInput {
-	        	overflow:visible !important;
-	        	height:none !important;
-	        
+	        	display: none;
 	        }
+
+	        #descriptionPrintable,
+	        #preActivityCommentsPrintable,
+	        #postActivityCommentsPrintable {
+	        	display: block;
+	        	overflow:visible;
+	        	height:auto;
+	        	margin-bottom: 20px;
+	        	white-space: pre-wrap;
+	        }
+
 	        .workoutCommentsCollection {
 	        	font-size: $fontSizeSmall !important;
 	        	line-height:$fontSizeXLarge;
@@ -377,6 +386,10 @@
 	        	.commentHeader {
 	        		padding:1em 0 .25em 0;
 	        		font-family: $fontFamilyHeavy;
+	        	}
+
+	        	.commentBody {
+	        		white-space: pre-wrap;
 	        	}
 	        }
 
