@@ -30,7 +30,7 @@ function(TP, PeaksChartView, chartColors)
 
         toolTipBuilder: function(peak, timeInZones)
         {
-            var speedFormatter = this.zoneType === "Pace" ? "formatPace" : "formatSpeed";
+            var speedFormatter = this.peakType === "Pace" ? "formatPace" : "formatSpeed";
             return {
                 tooltips:
                 [
@@ -51,7 +51,7 @@ function(TP, PeaksChartView, chartColors)
 
         formatYAxisTick: function(value, series)
         {
-            var speedFormatter = this.zoneType === "Pace" ? "formatPace" : "formatSpeed";
+            var speedFormatter = this.peakType === "Pace" ? "formatPace" : "formatSpeed";
             return TP.utils.conversion[speedFormatter](value, { workoutTypeValueId: this.workoutType });
         }
 
