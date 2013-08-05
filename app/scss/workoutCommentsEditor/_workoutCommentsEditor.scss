@@ -85,6 +85,7 @@
             max-width: 275px;
             margin-bottom:0;
         }
+
     }
 
 
@@ -98,4 +99,10 @@
     textarea {
         margin-bottom: 1em;
     }
+}
+
+div#descriptionPrintable,
+div#preActivityCommentsPrintable,
+div#postActivityCommentsPrintable {
+    display: none;
 }

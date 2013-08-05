@@ -374,7 +374,11 @@
 
 
 
-@media print {    
+@media print {
+    // hides App version overlay, for dev only
+    #info {
+        display:none;
+    }
 
     #calendarContainer {
 
