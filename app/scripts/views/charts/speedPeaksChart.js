@@ -21,15 +21,16 @@ function(TP, PeaksChartView, chartColors)
                 toolTipBuilder: this.toolTipBuilder
             });
 
+            this.peakType = options && options.hasOwnProperty("peakType") ? options.peakType : "Pace";
             this.model = new TP.Model({
-                peakType: "Pace",
+                peakType: this.peakType,
                 yAxisLabel: this.formatPeakUnitsLabel()
             });
         },
 
         toolTipBuilder: function(peak, timeInZones)
         {
-
+            var speedFormatter = this.peakType === "Pace" ? "formatPace" : "formatSpeed";
             return {
                 tooltips:
                 [
@@ -37,7 +38,7 @@ function(TP, PeaksChartView, chartColors)
                         label: peak.label
                     },
                     {
-                        value: TP.utils.conversion.formatPace(peak.value, { workoutTypeValueId: this.workoutType }) + " " + this.formatPeakUnitsLabel(peak.value)
+                        value: TP.utils.conversion[speedFormatter](peak.value, { workoutTypeValueId: this.workoutType }) + " " + this.formatPeakUnitsLabel(peak.value)
                     }
                 ]
             };
@@ -45,12 +46,13 @@ function(TP, PeaksChartView, chartColors)
 
         formatPeakUnitsLabel: function()
         {
-            return TP.utils.units.getUnitsLabel("pace", this.workoutType);
+            return TP.utils.units.getUnitsLabel(this.peakType.toLowerCase(), this.workoutType);
         },
 
         formatYAxisTick: function(value, series)
         {
-            return TP.utils.conversion.formatPace(value, { workoutTypeValueId: this.workoutType });
+            var speedFormatter = this.peakType === "Pace" ? "formatPace" : "formatSpeed";
+            return TP.utils.conversion[speedFormatter](value, { workoutTypeValueId: this.workoutType });
         }
 
     });

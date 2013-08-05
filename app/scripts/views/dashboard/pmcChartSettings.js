@@ -6,7 +6,7 @@ define(
     "setImmediate",
     "underscore",
     "TP",
-    "views/dashboard/pmcChartUtils",
+    "views/dashboard/chartUtils",
     "hbs!templates/views/dashboard/pmcChartSettings"
 ],
 function(
@@ -16,7 +16,7 @@ function(
     setImmediate,
     _,
     TP,
-    pmcChartUtils,
+    chartUtils,
     pmcChartSettingsTemplate
     )
 {
@@ -27,6 +27,7 @@ function(
         showThrobbers: false,
         tagName: "div",
         className: "pmcChartSettings",
+        podIndex: 0,
 
         template:
         {
@@ -36,9 +37,13 @@ function(
 
         initialize: function(options)
         {
-            this.model.on("change:settings.dashboard.pmc.*", this.render, this);
 
             this.$el.addClass(options.direction);
+
+            this.podIndex = options && options.hasOwnProperty("podIndex") ? options.podIndex : 0;
+            this.settingsKey = "settings.dashboard.pods." + this.podIndex;
+
+            this.model.on("change:" + this.settingsKey + ".*", this.render, this);
         },
 
         events:
@@ -85,7 +90,7 @@ function(
 
         onClose: function()
         {
-            this.model.off("change:settings.dashboard.pmc.*", this.render, this);
+            this.model.off("change:" + this.settingsKey + ".*", this.render, this);
             if(this.hasChangedSettings)
             {
                 this.saveSettings();
@@ -100,8 +105,8 @@ function(
 
         serializeData: function()
         {
-            var pmcSettings = this.model.has("settings.dashboard.pmc") ? this.model.toJSON().settings.dashboard.pmc : {};
-            pmcSettings = pmcChartUtils.buildPmcParameters(pmcSettings);
+            var pmcSettings = this.model.has(this.settingsKey) ? this.model.toJSON().settings.dashboard.pods[this.podIndex] : {};
+            pmcSettings = chartUtils.buildChartParameters(pmcSettings);
 
             var allSelected = true;
             var forceAllSelected = _.contains(pmcSettings.workoutTypeIds, 0) || _.contains(pmcSettings.workoutTypeIds, "0") ? true : false;
@@ -131,7 +136,7 @@ function(
 
             pmcSettings.dateOptions = [];
             var selectedOptionId = Number(pmcSettings.quickDateSelectOption);
-            _.each(pmcChartUtils.pmcDateOptions, function(option)
+            _.each(chartUtils.chartDateOptions, function(option)
             {
                 pmcSettings.dateOptions.push({
                     id: option.id,
@@ -163,7 +168,7 @@ function(
                 }
             } else
             {
-                workoutTypeIds = _.clone(this.model.get("settings.dashboard.pmc.workoutTypeIds"));
+                workoutTypeIds = _.clone(this.model.get(this.settingsKey + ".workoutTypeIds"));
                 var inList = _.contains(workoutTypeIds, workoutTypeId);
 
                 if (checked && !inList)
@@ -180,7 +185,7 @@ function(
                 workoutTypeIds = ["0"];
             }
 
-            this.model.set("settings.dashboard.pmc.workoutTypeIds", workoutTypeIds);
+            this.model.set(this.settingsKey + ".workoutTypeIds", workoutTypeIds);
         },
 
         onDateOptionsChanged: function(e)
@@ -195,11 +200,11 @@ function(
                 endDate: this.$("#endDate").val()
             };
 
-            pmcOptions = pmcChartUtils.buildPmcParameters(pmcOptions);
+            pmcOptions = chartUtils.buildchartParameters(pmcOptions);
 
-            this.model.set("settings.dashboard.pmc.startDate", pmcOptions.customStartDate ? moment(pmcOptions.startDate).format("YYYY-MM-DD") + "T00:00:00Z" : null, { silent: true });
-            this.model.set("settings.dashboard.pmc.endDate", pmcOptions.customEndDate ? moment(pmcOptions.endDate).format("YYYY-MM-DD") + "T00:00:00Z" : null, { silent: true });
-            this.model.set("settings.dashboard.pmc.quickDateSelectOption", optionId);
+            this.model.set(this.settingsKey + ".startDate", pmcOptions.customStartDate ? moment(pmcOptions.startDate).format("YYYY-MM-DD") + "T00:00:00Z" : null, { silent: true });
+            this.model.set(this.settingsKey + ".endDate", pmcOptions.customEndDate ? moment(pmcOptions.endDate).format("YYYY-MM-DD") + "T00:00:00Z" : null, { silent: true });
+            this.model.set(this.settingsKey + ".quickDateSelectOption", optionId);
         },
 
         onNumberOptionsChanged: function(e)
@@ -211,7 +216,7 @@ function(
                 this.focusedInputId = inputId;
             }
 
-            var modelKey = "settings.dashboard.pmc." + inputId;
+            var modelKey = this.settingsKey + "." + inputId;
             var newValue = $(e.target).val();
             var existingValue = this.model.get(modelKey);
             var adjustedValue = this.adjustNumericInput(inputId, newValue, existingValue);
@@ -276,7 +281,7 @@ function(
             var optionId = checkbox.attr("id");
             var checked = checkbox.is(":checked");
            
-            this.model.set("settings.dashboard.pmc." + optionId, checked);
+            this.model.set(this.settingsKey + "." + optionId, checked);
         },
 
         setDirection: function(direction)

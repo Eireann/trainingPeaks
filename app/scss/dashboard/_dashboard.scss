@@ -12,6 +12,21 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
 #chartsContainer
 {
     min-width: 1007px;
+    position: relative;
+
+    padding-top: 10px;
+}
+
+.datePicker
+{
+    float: left;
+    width: 220px;
+    margin-left: 10px;
+
+    .selectboxit-container .selectboxit
+    {
+        width: 220px !important;
+    }
 }
 
 .dashboardChart
@@ -20,13 +35,18 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
     position: relative;
     margin: 10px;
     padding: 15px;
-    min-width: 400px;
-    min-height: 400px;
+    width: 400px;
+    height: 400px;
     border: 1px solid transparent;
 
     &.doubleWide
     {
-        min-width: 800px;
+        width: 800px;
+    }
+
+    &.fullWidth
+    {
+        @include calc("width", "100% - 20px"); 
     }
 
     &:hover
@@ -57,13 +77,8 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
         position: absolute;
         top: 53px;
         left: 50px;
-        width: 310px;
+        @include calc("width", "100% - 90px");
         height: 300px;
-
-        &.doubleWide
-        {
-            width: 710px;
-        }
     }
 
     .chartTitle
@@ -150,6 +165,23 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
             }
         }
 
+        .collapse 
+        {
+            display: none;
+            right: 21px;
+            cursor: pointer;
+            background: transparent $chartIconsSpriteURL no-repeat -34px 0;
+
+            &:hover {
+                background-position: -34px -17px;
+            }
+
+            &:active {
+                background-position: -34px 0px;
+            }
+
+        }
+
         .close
         {
             right: 0px;
@@ -166,10 +198,26 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
         }
 
 		@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
-			.settings, .expand, .close {
+			.settings, .expand, .close, .collapse {
 				background-image: $chartIconsSpriteRetinaURL;
 				background-size: 68px 34px;
 			}
 		}
+    }
+
+    &.expanded
+    {
+        .chartButtons
+        {
+            .collapse
+            {
+                display: block;
+            }
+
+            .expand
+            {
+                display: none;
+            }
+        }
     }
 }

@@ -507,6 +507,9 @@ function(
             {
                 var modelData = buildPmcModelData(10);
                 var chart = new PmcChart();
+                spyOn(chart, "shouldShowTSS").andReturn(true);
+                spyOn(chart, "shouldShowIF").andReturn(true);
+                spyOn(chart, "shouldShowTSBFill").andReturn(true);
                 var chartPoints = chart.buildFlotPoints(modelData);
                 chartSeries = chart.buildFlotDataSeries(chartPoints, chartColors);
             });
