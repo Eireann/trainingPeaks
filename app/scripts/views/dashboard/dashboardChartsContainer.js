@@ -2,6 +2,7 @@
 [
     "underscore",
     "jqueryui/draggable",
+    "packery",
     "TP",
     "utilities/charting/dashboardChartBuilder",
     "views/pageContainer/primaryContainerView",
@@ -10,6 +11,7 @@
 function(
     _,
     jqueryDraggable,
+    packery,
     TP,
     dashboardChartBuilder,
     PrimaryContainerView,

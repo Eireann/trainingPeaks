@@ -1,3 +1,6 @@
+define([],function()
+{
+
 /*!
  * Packery PACKAGED v1.1.0
  * bin-packing layout library
@@ -3463,3 +3466,4 @@ if ( typeof define === 'function' && define.amd ) {
 }
 
 })( window );
+});
