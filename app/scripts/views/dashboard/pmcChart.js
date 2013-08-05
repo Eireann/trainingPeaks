@@ -137,6 +137,7 @@ function(
         {
             "click .settings": "pmcSettingsClicked",
             "click .expand": "expandClicked",
+            "click .collapse": "expandClicked",
             "click .close": "closeClicked"
         },
 
@@ -824,6 +825,7 @@ function(
         {
             this.$el.toggleClass("doubleWide");
             this.$el.toggleClass("fullWidth");          
+            this.$el.toggleClass("expanded");
             this.trigger("expand");
         },
 
