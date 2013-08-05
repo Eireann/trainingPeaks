@@ -115,8 +115,8 @@ function(TP, graphToolbarTemplate)
 
 			if (_.indexOf(this.dataParser.getChannelMask(), "Distance") === -1)
 			{
-			    this.$(".graphDistanceButton").remove();
-			    this.$(".graphTimeButton").remove();
+                this.$(".graphDistanceButton").remove();
+                this.$(".graphTimeButton").remove();
 			}
         }
     });
