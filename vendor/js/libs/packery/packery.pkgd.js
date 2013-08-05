@@ -84,7 +84,7 @@ var classie = {
 // transport
 if ( typeof define === 'function' && define.amd ) {
   // AMD
-  define( classie );
+  define( [], classie );
 } else {
   // browser global
   window.classie = classie;
@@ -133,7 +133,7 @@ function getStyleProperty( propName ) {
 // transport
 if ( typeof define === 'function' && define.amd ) {
   // AMD
-  define( function() {
+  define( [], function() {
     return getStyleProperty;
   });
 } else {
@@ -393,7 +393,7 @@ var eventie = {
 // transport
 if ( typeof define === 'function' && define.amd ) {
   // AMD
-  define( eventie );
+  define( [], eventie );
 } else {
   // browser global
   window.eventie = eventie;
@@ -897,7 +897,7 @@ if ( typeof define === 'function' && define.amd ) {
 
 	// Expose the class either via AMD, CommonJS or the global object
 	if (typeof define === 'function' && define.amd) {
-		define(function () {
+		define([], function () {
 			return EventEmitter;
 		});
 	}
@@ -1138,7 +1138,7 @@ if ( typeof define === 'function' && define.amd ) {
   // transport
   if ( typeof define === 'function' && define.amd ) {
     // AMD
-    define( function() {
+    define( [], function() {
       return matchesSelector;
     });
   } else {
@@ -2728,7 +2728,7 @@ return Rect;
 
 if ( typeof define === 'function' && define.amd ) {
   // AMD
-  define( rectDefinition );
+  define( [], rectDefinition );
 } else {
   // browser global
   window.Packery = window.Packery || {};

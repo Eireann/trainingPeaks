@@ -324,6 +324,7 @@ module.exports = function(grunt)
     // grunt build_debug does the same but doesn't minify, and points to local dev config
     grunt.registerTask("build_common", ["clean", "coverage", "requirejs_config", "i18n_config", "requirejs", "concat", "compass:build", "copy:build_common", "copy:build_coverage", "plato:build"]);
     grunt.registerTask("build_debug", ["build_common", "copy:build_debug", "targethtml:build_debug", "copy-i18n-files"]);
+    grunt.registerTask("build_debug_fast", ["clean", "requirejs_config", "requirejs", "concat", "compass:build", "copy:build_common", "copy:build_coverage", "copy:build_debug", "targethtml:build_debug"]);
     grunt.registerTask("build", ["build_common", "copy:build", "uglify", "deleteFiles:build", "targethtml:build", "copy-i18n-files"]);
 
     // TASKS THAT ARE USED BY OTHER TASKS
