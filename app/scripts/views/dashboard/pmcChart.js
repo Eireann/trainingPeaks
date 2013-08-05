@@ -39,6 +39,7 @@ function(
         showThrobber: true,
         lineThickness: 1,
         pointRadius: 1.5,
+        podIndex: 0,
 
         template:
         {
@@ -50,12 +51,15 @@ function(
         {
             _.bindAll(this, "onHoverToolTip");
 
+            this.podIndex = options && options.hasOwnProperty("podIndex") ? options.podIndex : 0;
+            this.settingsKey = "settings.dashboard.pods." + this.podIndex;
 
             // use zero hour to avoid time zone issues in day diff calculation
             this.today = moment().hour(0).format("YYYY-MM-DD");
 
             this.setupViewModel(options);
             this.setupDataModel(options);
+
         },
 
         setupViewModel: function(options)
@@ -104,9 +108,9 @@ function(
         {
             var self = this;
 
-            if (theMarsApp.user.has("settings.dashboard.pmc"))
+            if (theMarsApp.user.has(this.settingsKey))
             {
-                this.pmcModel.setParameters(pmcChartUtils.buildPmcParameters(theMarsApp.user.get("settings.dashboard.pmc")));
+                this.pmcModel.setParameters(pmcChartUtils.buildPmcParameters(theMarsApp.user.get(this.settingsKey)));
             }
 
             this.pmcModel.fetch().done(function()
@@ -745,7 +749,7 @@ function(
 
             var direction = (windowWidth - offset.left) > 450 ? "right" : "left";
             var icon = this.$(".settings");
-            this.pmcSettings = new pmcChartSettings({ model: theMarsApp.user, direction: direction });
+            this.pmcSettings = new pmcChartSettings({ model: theMarsApp.user, direction: direction, podIndex: this.podIndex });
 
             this.pmcSettings.render().top(offset.top - 25);
             this.pmcSettings.setDirection(direction);
@@ -762,9 +766,9 @@ function(
             this.pmcSettings.on("close", this.allowSettingsButtonToHide, this);
 
 
-            theMarsApp.user.on("change:settings.dashboard.pmc.showTSSPerDay", this.renderChart, this);
-            theMarsApp.user.on("change:settings.dashboard.pmc.showIntensityFactorPerDay", this.renderChart, this);
-            theMarsApp.user.on("change:settings.dashboard.pmc.showTSBFill", this.renderChart, this);
+            theMarsApp.user.on("change:" + this.settingsKey + ".showTSSPerDay", this.renderChart, this);
+            theMarsApp.user.on("change:" + this.settingsKey + ".showIntensityFactorPerDay", this.renderChart, this);
+            theMarsApp.user.on("change:" + this.settingsKey + ".showTSBFill", this.renderChart, this);
         },
 
         keepSettingsButtonVisible: function()
@@ -781,36 +785,36 @@ function(
         {
             this.fetchData();
 
-            theMarsApp.user.off("change:settings.dashboard.pmc.showTSSPerDay", this.renderChart, this);
-            theMarsApp.user.off("change:settings.dashboard.pmc.showIntensityFactorPerDay", this.renderChart, this);
-            theMarsApp.user.off("change:settings.dashboard.pmc.showTSBFill", this.renderChart, this);
+            theMarsApp.user.off("change:" + this.settingsKey + ".showTSSPerDay", this.renderChart, this);
+            theMarsApp.user.off("change:" + this.settingsKey + ".showIntensityFactorPerDay", this.renderChart, this);
+            theMarsApp.user.off("change:" + this.settingsKey + ".showTSBFill", this.renderChart, this);
         },
 
         shouldShowTSS: function()
         {
-            if (!theMarsApp.user.has("settings.dashboard.pmc"))
+            if (!theMarsApp.user.has(this.settingsKey))
             {
                 return true;
             }
-            return theMarsApp.user.get("settings.dashboard.pmc.showTSSPerDay") ? true : false;
+            return theMarsApp.user.get(this.settingsKey + ".showTSSPerDay") ? true : false;
         },
 
         shouldShowIF: function()
         {
-            if (!theMarsApp.user.has("settings.dashboard.pmc"))
+            if (!theMarsApp.user.has(this.settingsKey))
             {
                 return true;
             }
-            return theMarsApp.user.get("settings.dashboard.pmc.showIntensityFactorPerDay") ? true : false;
+            return theMarsApp.user.get(this.settingsKey + ".showIntensityFactorPerDay") ? true : false;
         },
 
         shouldShowTSBFill: function()
         {
-            if (!theMarsApp.user.has("settings.dashboard.pmc"))
+            if (!theMarsApp.user.has(this.settingsKey))
             {
                 return true;
             }
-            return theMarsApp.user.get("settings.dashboard.pmc.showTSBFill") ? true : false;
+            return theMarsApp.user.get(this.settingsKey + ".showTSBFill") ? true : false;
         }
 
     });
