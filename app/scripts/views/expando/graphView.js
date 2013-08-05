@@ -399,7 +399,7 @@ function(
             if (this.currentAxis === "time")
                 return;
 
-            this.selectedWorkoutStatsForRange = null
+            this.selectedWorkoutStatsForRange = null;
             this.onUnSelectAll();
             this.trigger("unselectall");
             this.resetZoom();
