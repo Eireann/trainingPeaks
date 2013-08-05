@@ -135,7 +135,9 @@ function(
 
         events:
         {
-            "mouseup .settings": "pmcSettingsClicked"
+            "click .settings": "pmcSettingsClicked",
+            "click .expand": "expandClicked",
+            "click .close": "closeClicked"
         },
 
         setChartTitle: function()
@@ -816,6 +818,19 @@ function(
         getSetting: function(settingKey)
         {
             return theMarsApp.user.get(this.settingsKey + "." + settingKey);
+        },
+
+        expandClicked: function()
+        {
+            this.$el.toggleClass("doubleWide");
+            this.$el.toggleClass("fullWidth");          
+            this.trigger("expand");
+        },
+
+        closeClicked: function()
+        {
+            this.close();
+            this.trigger("after:close");
         }
 
     });
