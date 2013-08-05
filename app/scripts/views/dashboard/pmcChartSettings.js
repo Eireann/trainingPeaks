@@ -6,7 +6,7 @@ define(
     "setImmediate",
     "underscore",
     "TP",
-    "views/dashboard/pmcChartUtils",
+    "views/dashboard/chartUtils",
     "hbs!templates/views/dashboard/pmcChartSettings"
 ],
 function(
@@ -16,7 +16,7 @@ function(
     setImmediate,
     _,
     TP,
-    pmcChartUtils,
+    chartUtils,
     pmcChartSettingsTemplate
     )
 {
@@ -106,7 +106,7 @@ function(
         serializeData: function()
         {
             var pmcSettings = this.model.has(this.settingsKey) ? this.model.toJSON().settings.dashboard.pods[this.podIndex] : {};
-            pmcSettings = pmcChartUtils.buildPmcParameters(pmcSettings);
+            pmcSettings = chartUtils.buildChartParameters(pmcSettings);
 
             var allSelected = true;
             var forceAllSelected = _.contains(pmcSettings.workoutTypeIds, 0) || _.contains(pmcSettings.workoutTypeIds, "0") ? true : false;
@@ -136,7 +136,7 @@ function(
 
             pmcSettings.dateOptions = [];
             var selectedOptionId = Number(pmcSettings.quickDateSelectOption);
-            _.each(pmcChartUtils.pmcDateOptions, function(option)
+            _.each(chartUtils.chartDateOptions, function(option)
             {
                 pmcSettings.dateOptions.push({
                     id: option.id,
@@ -200,7 +200,7 @@ function(
                 endDate: this.$("#endDate").val()
             };
 
-            pmcOptions = pmcChartUtils.buildPmcParameters(pmcOptions);
+            pmcOptions = chartUtils.buildchartParameters(pmcOptions);
 
             this.model.set(this.settingsKey + ".startDate", pmcOptions.customStartDate ? moment(pmcOptions.startDate).format("YYYY-MM-DD") + "T00:00:00Z" : null, { silent: true });
             this.model.set(this.settingsKey + ".endDate", pmcOptions.customEndDate ? moment(pmcOptions.endDate).format("YYYY-MM-DD") + "T00:00:00Z" : null, { silent: true });

@@ -2,6 +2,7 @@
 [
     "underscore",
     "jqueryui/draggable",
+    "packery",
     "TP",
     "utilities/charting/dashboardChartBuilder",
     "views/pageContainer/primaryContainerView",
@@ -10,6 +11,7 @@
 function(
     _,
     jqueryDraggable,
+    packery,
     TP,
     dashboardChartBuilder,
     PrimaryContainerView,
@@ -51,7 +53,10 @@ function(
             this.charts = [];
             _.each(theMarsApp.user.get("settings.dashboard.pods"), function(podSettings, index)
             {
-                this.charts.push(dashboardChartBuilder.buildChartView(podSettings.chartType, index));
+                var chartView = dashboardChartBuilder.buildChartView(podSettings.chartType, index);
+                this.charts.push(chartView);
+                chartView.on("expand", this.onChartExpand, this);
+                chartView.on("after:close", this.onChartClose, this);
             }, this);
         },
 
@@ -68,6 +73,8 @@ function(
         {
             _.each(this.charts, function(chartView)
             {
+                chartView.off("after:close", this.onChartClose, this);
+                chartView.off("expand", this.onChartExpand, this);
                 chartView.close();
             }, this);
         },
@@ -112,6 +119,16 @@ function(
                 var chart = this.charts[originalPodIndex];
                 // NOT IMPLEMENTED YET UNTIL WE ARE ABLE TO SAVE SETTINGS
             }, this);
+        },
+
+        onChartClose: function()
+        {
+            this.packery.layout();
+        },
+
+        onChartExpand: function()
+        {
+            this.packery.layout();
         }
 
     };
