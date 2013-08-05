@@ -12,6 +12,9 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
 #chartsContainer
 {
     min-width: 1007px;
+    position: relative;
+
+    padding-top: 10px;
 }
 
 .dashboardChart
@@ -21,7 +24,7 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
     margin: 10px;
     padding: 15px;
     min-width: 400px;
-    min-height: 400px;
+    height: 400px;
     border: 1px solid transparent;
 
     &.doubleWide
