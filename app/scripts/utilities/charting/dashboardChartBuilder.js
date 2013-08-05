@@ -20,6 +20,6 @@ function(
             }
             return new chartConstructors[chartTypeId]({ podIndex: podIndex});
         }
-    }
+    };
 
 });

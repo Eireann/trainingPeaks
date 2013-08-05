@@ -84,21 +84,24 @@ function(
         initPackery: function()
         {
 
-            this.ui.chartsContainer.packery({
-                containerStyle: null,
-                itemSelector: ".dashboardChart",
-                rowHeight: 420,
-                columnWidth: 400,
-                gutter: 10
-            });
+            if(this.ui.chartsContainer.packery)
+            {
+                this.ui.chartsContainer.packery({
+                    containerStyle: null,
+                    itemSelector: ".dashboardChart",
+                    rowHeight: 420,
+                    columnWidth: 400,
+                    gutter: 10
+                });
 
-            this.packery = this.ui.chartsContainer.data("packery");
-            _.bindAll(this, "updateChartOrder");
-            this.packery.on("dragItemPositioned", this.updateChartOrder);
+                this.packery = this.ui.chartsContainer.data("packery");
+                _.bindAll(this, "updateChartOrder");
+                this.packery.on("dragItemPositioned", this.updateChartOrder);
 
-            var $charts = this.ui.chartsContainer.find(".dashboardChart");
-            $charts.draggable({ containment: "#chartsContainer" });
-            this.ui.chartsContainer.packery("bindUIDraggableEvents", $charts);
+                var $charts = this.ui.chartsContainer.find(".dashboardChart");
+                $charts.draggable({ containment: "#chartsContainer" });
+                this.ui.chartsContainer.packery("bindUIDraggableEvents", $charts);
+            }
         },
 
         updateChartOrder: function()
