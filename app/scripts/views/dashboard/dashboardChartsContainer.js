@@ -3,18 +3,16 @@
     "underscore",
     "jqueryui/draggable",
     "TP",
+    "utilities/charting/dashboardChartBuilder",
     "views/pageContainer/primaryContainerView",
-    "views/dashboard/dashboardChart",
-    "views/dashboard/pmcChart",
     "hbs!templates/views/dashboard/dashboardChartsContainer"
 ],
 function(
     _,
     jqueryDraggable,
     TP,
+    dashboardChartBuilder,
     PrimaryContainerView,
-    DashboardChartView,
-    PmcChartView,
     dashboardContainerTemplate
     )
 {
@@ -51,14 +49,10 @@ function(
         buildDashboardCharts: function()
         {
             this.charts = [];
-
-            // LOOP OVER SETTINGS OBJECT
-            // FOR EACH CHART IN USER DASHBOARD CONFIG:
-            //  IF PMC
-            this.charts.push(new PmcChartView());
-            // IF ANY OTHER CHART
-            this.charts.push(new DashboardChartView()); // MODIFY TO TAKE CHART TILE PARAMETER
-            // LOOP
+            _.each(theMarsApp.user.get("settings.dashboard.pods"), function(podSettings, index)
+            {
+                this.charts.push(dashboardChartBuilder.buildChartView(podSettings.chartType, index));
+            }, this);
         },
 
         displayDashboardCharts: function()
@@ -91,13 +85,30 @@ function(
         {
 
             this.ui.chartsContainer.packery({
+                containerStyle: null,
                 itemSelector: ".dashboardChart",
+                rowHeight: 420,
+                columnWidth: 400,
                 gutter: 10
             });
+
+            this.packery = this.ui.chartsContainer.data("packery");
+            _.bindAll(this, "updateChartOrder");
+            this.packery.on("dragItemPositioned", this.updateChartOrder);
 
             var $charts = this.ui.chartsContainer.find(".dashboardChart");
             $charts.draggable({ containment: "#chartsContainer" });
             this.ui.chartsContainer.packery("bindUIDraggableEvents", $charts);
+        },
+
+        updateChartOrder: function()
+        {
+            var elements = this.packery.getItemElements();
+            _.each(elements, function(element, podIndex) {
+                var originalPodIndex = Number($(element).data("podindex"));
+                var chart = this.charts[originalPodIndex];
+                // NOT IMPLEMENTED YET UNTIL WE ARE ABLE TO SAVE SETTINGS
+            }, this);
         }
 
     };

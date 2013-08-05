@@ -40,11 +40,19 @@ function(
         lineThickness: 1,
         pointRadius: 1.5,
         podIndex: 0,
+        chartType: 32, // 32 = pmc chart
 
         template:
         {
             type: "handlebars",
             template: pmcChartTemplate
+        },
+
+        attributes: function()
+        {
+            return {
+                "data-podindex": this.podIndex
+            };
         },
 
         initialize: function(options)
@@ -792,29 +800,22 @@ function(
 
         shouldShowTSS: function()
         {
-            if (!theMarsApp.user.has(this.settingsKey))
-            {
-                return true;
-            }
-            return theMarsApp.user.get(this.settingsKey + ".showTSSPerDay") ? true : false;
+            return this.getSetting("showTSSPerDay") ? true : false;
         },
 
         shouldShowIF: function()
         {
-            if (!theMarsApp.user.has(this.settingsKey))
-            {
-                return true;
-            }
-            return theMarsApp.user.get(this.settingsKey + ".showIntensityFactorPerDay") ? true : false;
+            return this.getSetting("showIntensityFactorPerDay") ? true : false;
         },
 
         shouldShowTSBFill: function()
         {
-            if (!theMarsApp.user.has(this.settingsKey))
-            {
-                return true;
-            }
-            return theMarsApp.user.get(this.settingsKey + ".showTSBFill") ? true : false;
+            return this.getSetting("showTSBFill") ? true : false;
+        },
+
+        getSetting: function(settingKey)
+        {
+            return theMarsApp.user.get(this.settingsKey + "." + settingKey);
         }
 
     });
