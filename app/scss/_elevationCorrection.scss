@@ -90,13 +90,13 @@
 
             .original
             {
-                color: #fbb12b;
+                color: $clrElevOriginal;
                 background-color: $TPGrey1;
             }
 
             .corrected
             {
-                color: #fa3b3b;
+                color: $clrElevCorrected;
                 padding-left: 17px;
                 background-color: $TPGrey1;
             }
