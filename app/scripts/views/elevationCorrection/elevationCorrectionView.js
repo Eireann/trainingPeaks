@@ -123,11 +123,11 @@ function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandMo
                     show: true,
                     label: "Elevation",
                     position: "left",
-                    color: "red",
-                    tickColor: "red",
+                    color: "#303030",
+                    tickColor: "#d7d8d9",
                     font:
                     {
-                        color: "red"
+                        color: "#303030"
                     },
                     tickFormatter: function (value)
                     {
@@ -160,7 +160,7 @@ function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandMo
 
             series.push(
             {
-                color: "orange",
+                color: "#6e96b9",
                 data: this.originalElevation,
                 label: TP.utils.translate("Original"),
                 shadowSize: 0
@@ -170,7 +170,7 @@ function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandMo
             {
                 series.push(
                 {
-                    color: "red",
+                    color: "#e61101",
                     data: this.correctedElevation,
                     label: TP.utils.translate("Corrected"),
                     shadowSize: 0
