@@ -65,7 +65,7 @@ function (
                 // let the html draw first so our container has a height and width
                 setImmediate(function()
                 {
-                    self.renderpeaksFlotChart(dataSeries, flotOptions);
+                    self.renderPeaksFlotChart(dataSeries, flotOptions);
                 });
             },
 
@@ -117,7 +117,7 @@ function (
                 return flotOptions;
             },
 
-            renderpeaksFlotChart: function(dataSeries, flotOptions)
+            renderPeaksFlotChart: function(dataSeries, flotOptions)
             {
                 if (!this.$chartEl)
                     this.$chartEl = this.$(".chartContainer");
