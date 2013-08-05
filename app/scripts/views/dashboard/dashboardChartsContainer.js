@@ -1,6 +1,7 @@
 ﻿define(
 [
     "underscore",
+    "jqueryui/draggable",
     "TP",
     "views/pageContainer/primaryContainerView",
     "views/dashboard/dashboardChart",
@@ -9,6 +10,7 @@
 ],
 function(
     _,
+    jqueryDraggable,
     TP,
     PrimaryContainerView,
     DashboardChartView,
@@ -32,7 +34,6 @@ function(
         initialize: function()
         {
             this.charts = [];
-            this.on("render", this.renderDashboardCharts, this);
             this.on("close", this.closeDashboardCharts, this);
             this.on("user:loaded", this.onUserLoaded, this);
 
@@ -44,6 +45,7 @@ function(
         {
             this.buildDashboardCharts();
             this.displayDashboardCharts();
+            this.initPackery();
         },
 
         buildDashboardCharts: function()
@@ -78,10 +80,24 @@ function(
 
         onUserLoaded: function()
         {
+            this.renderDashboardCharts();
             _.each(this.charts, function(chartView)
             {
                 chartView.trigger("user:loaded");
             }, this);
+        },
+
+        initPackery: function()
+        {
+
+            this.ui.chartsContainer.packery({
+                itemSelector: ".dashboardChart",
+                gutter: 10
+            });
+
+            var $charts = this.ui.chartsContainer.find(".dashboardChart");
+            $charts.draggable({ containment: "#chartsContainer" });
+            this.ui.chartsContainer.packery("bindUIDraggableEvents", $charts);
         }
 
     };
