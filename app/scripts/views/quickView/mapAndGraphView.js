@@ -111,8 +111,8 @@ function(
                 return;
 
             this.parseData();
-            this.createAndShowGraph();
             this.createAndShowMap();
+            this.createAndShowGraph();
         },
 
         createAndShowMap: function()
@@ -146,6 +146,10 @@ function(
         createAndShowGraph: function()
         {
             var self = this;
+            if (!this.dataParser.hasLatLongData)
+            {
+                self.$("#quickViewGraph").css("height", "350px");
+            }
             
             var priority =
             [
