@@ -256,9 +256,23 @@ function(
         {
             return this._closestChildToTop().view.model;
         },
-        getLastVisibleModel: function() 
+
+        getVisibleModels: function()
         {
-            return this._furthestVisibleChildFromTop().view.model;
+            var height = this.$el.height();
+            var models = this.children.select(function(view)
+            {
+                var position = view.$el.position();
+                position.bottom = position.top + view.$el.height();
+                var isTopVisibleAtBottom = position.top > 0 && position.top < height;
+                var isBottomVisibleAtTop = position.bottom > 0 && position.bottom < height;
+                return isTopVisibleAtBottom || isBottomVisibleAtTop;
+            }).map(function(view)
+            {
+                return view.model;
+            });
+
+            return models;
         },
 
         _animateScroll: function(scrollTop, duration) {
@@ -296,25 +310,6 @@ function(
             })
             .first()
             .value();
-        },
-
-        _furthestVisibleChildFromTop: function() {
-            var height = this.$el.height();
-            return _.chain(this.children.toArray())
-                .map(function(child) {
-                    return {
-                        view: child,
-                        position: child.$el.position()
-                    };
-                })
-                .filter(function(item) {
-                    return item.position.top < height;
-                })
-                .sortBy(function(item) {
-                    return item.position.top;
-                })
-                .last()
-                .value();
         },
 
         _applyScrollPosition: function()

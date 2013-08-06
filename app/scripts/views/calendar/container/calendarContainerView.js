@@ -70,26 +70,22 @@ function(
                 collection: this.collection,
                 id: "weeksContainer",
                 className: "scrollable colorByComplianceAndWorkoutType",
-                onScrollEnd: _.bind(this.loadDataAfterScroll, this)
+                onScrollEnd: _.bind(this._loadDataAfterScroll, this)
             });
             this.listenTo(this.weeksCollectionView, "itemview:itemview:itemDropped", _.bind(this.onItemDropped, this));
         },
 
-        loadDataAfterScroll: function() {
-            // QL TODO: don't run requestWorkouts() for ranges that already have data
-            var self = this,
-                startDate = this.weeksCollectionView.getCurrentModel().get('id'),
-                endDate = this.weeksCollectionView.getLastVisibleModel().get('id');
+        _loadDataAfterScroll: function()
+        {
+            var self = this;
 
-            this.collection.forEachWeek(startDate, endDate, function(weekDate) {
-                var week = self.collection.get(weekDate),
-                    weekMoment;
-                if (week) {
-                    if (week.get('isFetched')) {
-                        return;
-                    }
-                    weekMoment = moment(week.get('id'));
-                    self.collection.requestWorkouts(weekMoment, weekMoment.clone().add("days", 7));
+            _.each(this.weeksCollectionView.getVisibleModels(), function(model)
+            {
+                if(!model.get("isFetched"))
+                {
+                    var weekStart = moment(model.id);
+                    var weekEnd = moment(model.id).add("days", 6);
+                    self.collection.requestWorkouts(weekStart, weekEnd);
                 }
             });
         },
