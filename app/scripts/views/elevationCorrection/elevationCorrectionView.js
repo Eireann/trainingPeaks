@@ -27,7 +27,7 @@ function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandMo
         {
             "click button[type=submit]": "onSubmitClicked",
             "click button[type=reset]": "onResetClicked",
-            "click .closeIcon": "onResetClicked"
+            "click #closeIcon": "onResetClicked"
         },
 
         template:
@@ -160,7 +160,7 @@ function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandMo
 
             series.push(
             {
-                color: "#6e96b9",
+                color: "#ffffff",
                 data: this.originalElevation,
                 label: TP.utils.translate("Original"),
                 shadowSize: 0
