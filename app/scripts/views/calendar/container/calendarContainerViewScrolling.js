@@ -9,6 +9,7 @@ function(_, TP, infiniteScroll)
     var CalendarContainerViewScrolling =
     {
 
+        // deprecated
         onUpdateScrollPosition: function ($currentElement)
         {
             var scrollDate = this.getCurrentScrollDate($currentElement);
@@ -19,6 +20,7 @@ function(_, TP, infiniteScroll)
             this.setCurrentDate(scrollDate);
         },
 
+        // deprecated
         getCurrentScrollDate: function ($currentElement)
         {
             if (!$currentElement)
@@ -50,19 +52,6 @@ function(_, TP, infiniteScroll)
             this.setCurrentDate(moment(this.getCurrentWeek()));
         },
 
-        scrollToSelector: function (selector, animationTimeout, callback)
-        {
-            var elements = this.ui.weeksContainer.find(selector);
-            if (elements && elements.length)
-            {
-                this.scrollToElement(elements[0], ".week", animationTimeout, callback);
-            }
-            else
-            {
-                theMarsApp.logger.debug("ScollTo Selector not found: " + selector);
-            }
-        },
-
         scrollToDateIfNotFullyVisible: function(targetDate, effectDuration)
         {
             var dateAsString = moment(targetDate).format(TP.utils.datetime.shortDateFormat);
@@ -76,25 +65,6 @@ function(_, TP, infiniteScroll)
                 this.scrollToDate(targetDate, effectDuration);
             }
 
-        },
-
-
-        // if we un-snapped from the week header because of text wrapping on library show/hide,
-        // or if we scrolled into a different week, snap back to the correct week
-        // QL: Deprecated
-        scrollToLastViewedDate: function (duration)
-        {
-            return;
-            // if (typeof duration === "undefined")
-            // {
-            //     duration = 100;
-            // }
-            // var headerDate = this.getHeaderDate();
-            // var scrollDate = this.getCurrentScrollDate(this.getCurrentVisibleElement());
-            // if (this.snappedToWeekHeader || headerDate !== scrollDate)
-            // {
-            //     this.scrollToDate(moment(headerDate), duration);
-            // }
         },
 
         getHeaderDate: function()
@@ -114,8 +84,6 @@ function(_, TP, infiniteScroll)
         }
 
     };
-
-    // _.extend(CalendarContainerViewScrolling, infiniteScroll);
-
+    
     return CalendarContainerViewScrolling;
 });

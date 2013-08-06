@@ -26,21 +26,12 @@ function($, TP, moment, theMarsApp, CalendarContainerView, ScrollableCollectionV
             calendarView.render();
         });
 
-        it("Should scroll to a given selector", function ()
-        {
-            expect(CalendarContainerView.prototype.scrollToSelector).toBeDefined();
-            expect(typeof CalendarContainerView.prototype.scrollToSelector).toBe("function");
-            
-            //TODO: More testing here
-        });
-
         it("Should scroll to a given date", function ()
         {
             expect(CalendarContainerView.prototype.scrollToDate).toBeDefined();
             expect(typeof CalendarContainerView.prototype.scrollToDate).toBe("function");
 
             var calendarContainerView = new CalendarContainerView({ calendarHeaderModel: new TP.Model(), collection: new TP.Collection() });
-            spyOn(calendarContainerView, "scrollToSelector");
             spyOn(calendarContainerView.weeksCollectionView, "scrollToModel");
             calendarContainerView.scrollToDate(moment("2013-01-01"));
             expect(calendarContainerView.weeksCollectionView.scrollToModel).toHaveBeenCalled();

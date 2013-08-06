@@ -19,26 +19,6 @@ function (_, TP)
            this.on("render", this.setupScrollingOnRender, this);
        },
 
-       setupScrollingOnRender: function ()
-       {
-          return;
-           // _.bindAll(this, "onScrollStop");
-           // this.scrollableContainer = this.$(".scrollable");
-           // var debouncedScrollStop = _.debounce(this.onScrollStop, 300);
-           // this.scrollableContainer.on("scroll", debouncedScrollStop);
-
-           // this.on("close", function ()
-           // {
-           //     this.scrollableContainer.off("scroll", debouncedScrollStop);
-           //     this.scrollableContainer.off("scroll", this.onScroll);
-           // }, this);
-
-           // _.bindAll(this, "onScroll");
-           // this.scrollableContainer.on("scroll", this.onScroll);
-
-           // this.checkCurrentScrollPosition();
-       },
-
        checkCurrentScrollPosition: function()
        {
            this.trigger("scroll:updatePosition", this.getCurrentVisibleElement());
