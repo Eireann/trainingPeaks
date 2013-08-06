@@ -162,15 +162,11 @@ function(
         getInitialFilterPeriod: function()
         {
             if (this.hasOwnProperty("lastFilterPeriod"))
-            {
                 return this.lastFilterPeriod;
-            } else if (this.model.get("workoutTypeValueId") === TP.utils.workout.types.getIdByName("Swim"))
-            {
+            else if (this.model.get("workoutTypeValueId") === TP.utils.workout.types.getIdByName("Swim"))
                 return 0;
-            } else
-            {
+            else
                 return 5;
-            }
         },
 
         setInitialToolbarSmoothing: function(period)
@@ -241,12 +237,28 @@ function(
         {
             if (this.selectedWorkoutStatsForRange)
             {
+                var from;
+                var to;
+
+                if (this.currentAxis === "time")
+                {
+                    from = this.selectedWorkoutStatsForRange.get("begin");
+                    to = this.selectedWorkoutStatsForRange.get("end");
+                }
+                else if (this.currentAxis === "distance")
+                {
+                    from = this.selectedWorkoutStatsForRange.get("plotSelectionFrom");
+                    to = this.selectedWorkoutStatsForRange.get("plotSelectionTo");
+                }
+                else
+                    throw "GraphView: invalid X Axis type: " + this.currentAxis;
+
                 var ranges =
                 {
                     xaxis:
                     {
-                        from: this.selectedWorkoutStatsForRange.get("begin"),
-                        to: this.selectedWorkoutStatsForRange.get("end")
+                        from: from,
+                        to: to 
                     }
                 };
                 this.plot.setSelection(ranges, true);
@@ -321,7 +333,7 @@ function(
                 endOffsetMs = this.dataParser.getMsOffsetFromDistance(plotSelectionTo);
             }
 
-            this.selectedWorkoutStatsForRange = new WorkoutStatsForRange({ workoutId: this.model.id, begin: startOffsetMs, end: endOffsetMs, name: "Selection" });
+            this.selectedWorkoutStatsForRange = new WorkoutStatsForRange({ workoutId: this.model.id, begin: startOffsetMs, end: endOffsetMs, plotSelectionFrom: plotSelectionFrom, plotSelectionTo: plotSelectionTo, name: "Selection" });
 
             var options =
             {
@@ -387,6 +399,11 @@ function(
             if (this.currentAxis === "time")
                 return;
 
+            this.selectedWorkoutStatsForRange = null;
+            this.onUnSelectAll();
+            this.trigger("unselectall");
+            this.resetZoom();
+            this.graphToolbar.hideZoomButton();
             this.currentAxis = "time";
             this.dataParser.setXAxis("time");
             this.drawPlot();
@@ -397,6 +414,11 @@ function(
             if (this.currentAxis === "distance")
                 return;
 
+            this.selectedWorkoutStatsForRange = null;
+            this.onUnSelectAll();
+            this.trigger("unselectall");
+            this.resetZoom();
+            this.graphToolbar.hideZoomButton();
             this.currentAxis = "distance";
             this.dataParser.setXAxis("distance");
             this.drawPlot();
@@ -434,7 +456,6 @@ function(
                 selection = this.findGraphSelection(workoutStatsForRange.get("begin"), workoutStatsForRange.get("end"), options.dataType);
                 if (!selection)
                 {
-
                     this.plot.clearSelection();
                     selection = this.createGraphSelection(workoutStatsForRange, options);
                     this.addSelectionToGraph(selection);
@@ -470,9 +491,18 @@ function(
             return selection;
         },
 
-        addSelectionToGraph: function(selection)
+        addSelectionToGraph: function (selection)
         {
-            selection.selection = this.plot.addMultiSelection({ xaxis: { from: selection.begin, to: selection.end }}, {dataType: selection.dataType });
+            var from = selection.begin;
+            var to = selection.end;
+            
+            if (this.currentAxis === "distance")
+            {
+                from = this.dataParser.getDistanceFromMsOffset(from);
+                to = this.dataParser.getDistanceFromMsOffset(to);
+            }
+
+            selection.selection = this.plot.addMultiSelection({ xaxis: { from: from, to: to } }, { dataType: selection.dataType });
             this.selections.push(selection);
         },
 

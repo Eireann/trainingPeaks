@@ -43,6 +43,21 @@ function(_, TP, WorkoutCommentsCollectionView, stickitMixin, workoutCommentsEdit
                 onGet: "formatTextField",
                 events: ["blur", "change", "keyup", "paste"],
                 updateModel: "updateModel"
+            },
+            "#descriptionPrintable":
+            {
+                observe: "description",
+                onGet: "formatTextField"
+            },
+            "#postActivityCommentsPrintable":
+            {
+                observe: "newComment",
+                onGet: "formatTextField"
+            },
+            "#preActivityCommentsPrintable": 
+            {
+                observe: "coachComments",
+                onGet: "formatTextField"
             }
         },
 

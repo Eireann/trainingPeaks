@@ -74,6 +74,11 @@ function(TP, graphToolbarTemplate)
         onResetClicked: function()
         {
             this.trigger("reset");
+            this.hideZoomButton();
+        },
+
+        hideZoomButton: function ()
+        {
             this.ui.zoomResetButton.addClass("hidden");
         },
 
@@ -84,8 +89,6 @@ function(TP, graphToolbarTemplate)
 
         onGraphTimeButtonClicked: function ()
         {
-            //this.$el.find("button.graphTimeButton").css("font-weight", "bold");
-            //this.$el.find("button.graphDistanceButton").css("font-weight", "");
             this.$el.find("button.graphTimeButton").addClass("bold");
             this.$el.find("button.graphDistanceButton").removeClass("bold");
             this.trigger("enableTimeAxis");
@@ -93,8 +96,6 @@ function(TP, graphToolbarTemplate)
         
         onGraphDistanceButtonClicked: function ()
         {
-            //this.$el.find("button.graphTimeButton").css("font-weight", "");
-            //this.$el.find("button.graphDistanceButton").css("font-weight", "bold");
             this.$el.find("button.graphTimeButton").removeClass("bold");
             this.$el.find("button.graphDistanceButton").addClass("bold");
             this.trigger("enableDistanceAxis");
@@ -104,6 +105,7 @@ function(TP, graphToolbarTemplate)
         {
             var self = this;
 			var shownButtons = [];
+
             _.each(this.dataParser.getChannelMask(), function(channel)
             {
                 if (channel === "Distance" || channel === "Latitude" || channel === "Longitude")
@@ -115,6 +117,12 @@ function(TP, graphToolbarTemplate)
             });
 			
 			this.$(".graphSeriesButton").not(shownButtons).remove();
+
+			if (_.indexOf(this.dataParser.getChannelMask(), "Distance") === -1)
+			{
+                this.$(".graphDistanceButton").remove();
+                this.$(".graphTimeButton").remove();
+			}
         }
     });
 });

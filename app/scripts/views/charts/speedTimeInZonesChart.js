@@ -20,15 +20,19 @@ function(TP, TimeInZonesChartView, chartColors)
                 toolTipBuilder: this.toolTipBuilder
             });
 
+            this.zoneType = options && options.hasOwnProperty("zoneType") ? options.zoneType : "Pace";
+
             this.model = new TP.Model({
-                zoneType: "Pace"
+                zoneType: this.zoneType
             });
         },
-                toolTipBuilder: function(timeInZone, timeInZones)
+        
+        toolTipBuilder: function(timeInZone, timeInZones)
         {
 
             var totalSeconds = TP.utils.chartBuilder.calculateTotalTimeInZones(timeInZones);
             var percentTime = TP.utils.conversion.toPercent(timeInZone.seconds, totalSeconds);
+            var speedFormatter = this.zoneType === "Pace" ? "formatPace" : "formatSpeed";
             return {       
                 tooltips: [
                     {
@@ -36,7 +40,7 @@ function(TP, TimeInZonesChartView, chartColors)
                     },
                     {
                         label: "Range",
-                        value: TP.utils.conversion.formatPace(timeInZone.minimum, { workoutTypeValueId: this.workoutType }) + "-" + TP.utils.conversion.formatPace(timeInZone.maximum, { workoutTypeValueId: this.workoutType }) + " " + this.formatPeakUnitsLabel()
+                        value: TP.utils.conversion[speedFormatter](timeInZone.minimum, { workoutTypeValueId: this.workoutType }) + "-" + TP.utils.conversion[speedFormatter](timeInZone.maximum, { workoutTypeValueId: this.workoutType }) + " " + this.formatPeakUnitsLabel()
                     },
                     {
                         label: "Time",
@@ -52,7 +56,7 @@ function(TP, TimeInZonesChartView, chartColors)
         
         formatPeakUnitsLabel: function (value, options)
         {
-            return "min/" + TP.utils.units.getUnitsLabel("distance", this.workoutType);
+            return this.zoneType === "Pace" ? "min/" + TP.utils.units.getUnitsLabel("distance", this.workoutType) : TP.utils.units.getUnitsLabel("speed", this.workoutType);
         }
     });
 });

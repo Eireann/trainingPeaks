@@ -15,7 +15,10 @@ function(
             this.bindingsLUT = {};
             _.each(this.bindings, function(value, key)
             {
-                this.bindingsLUT[value.observe] = key;
+                if(!this.bindingsLUT.hasOwnProperty(value.observe))
+                {
+                    this.bindingsLUT[value.observe] = key;
+                }
             }, this);
         },
 
