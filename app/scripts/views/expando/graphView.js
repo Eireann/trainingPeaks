@@ -145,6 +145,8 @@ function(
             this.flotOptions.zoom = { enabled: true };
             this.flotOptions.zoom.dataParser = this.dataParser;
             this.flotOptions.filter = { enabled: this.lastFilterPeriod ? true : false, period: this.lastFilterPeriod };
+            this.flotOptions.grid.borderWidth = { top: 0, right: 1, bottom: 1, left: 1 };
+            this.flotOptions.grid.borderColor = "#9a9999";
 
             if (this.plot)
                 this.unbindPlotEvents();
@@ -157,6 +159,8 @@ function(
             }
 
             this.setInitialToolbarSmoothing(this.lastFilterPeriod);
+
+            
         },
 
         getInitialFilterPeriod: function()
