@@ -223,7 +223,6 @@ function(
                             options.scrollCallback();
                         }, 400);
                     }
-
                 });
             });
 

@@ -6,6 +6,7 @@ define(
     "jqueryui/draggable",
     "jqueryui/droppable",
     "moment",
+    "setImmediate",
     "TP",
     "views/calendar/workout/calendarWorkoutView",
     "views/calendar/day/calendarDaySettings",
@@ -14,7 +15,7 @@ define(
     "hbs!templates/views/calendar/day/calendarDayHeader",
     "hbs!templates/views/calendar/day/calendarDay"
 ],
-function(_, touchPunch, draggable, droppable, moment, TP, CalendarWorkoutView, CalendarDaySettingsView, NewItemView, CalendarDayDragStateView, CalendarDayHeaderTemplate, CalendarDayTemplate)
+function(_, touchPunch, draggable, droppable, moment, setImmediate, TP, CalendarWorkoutView, CalendarDaySettingsView, NewItemView, CalendarDayDragStateView, CalendarDayHeaderTemplate, CalendarDayTemplate)
 {
 
     var today = moment().format(TP.utils.datetime.shortDateFormat);
@@ -113,7 +114,7 @@ function(_, touchPunch, draggable, droppable, moment, TP, CalendarWorkoutView, C
         {
             this.setTodayCss();
             this.makeDayDraggable();
-            this.setUpDroppable();
+            setImmediate(_.bind(this.setUpDroppable, this));
         },
 
         setTodayCss: function()

@@ -115,7 +115,7 @@ function(_, TP, infiniteScroll)
 
     };
 
-    _.extend(CalendarContainerViewScrolling, infiniteScroll);
+    // _.extend(CalendarContainerViewScrolling, infiniteScroll);
 
     return CalendarContainerViewScrolling;
 });
