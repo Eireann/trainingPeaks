@@ -60,7 +60,11 @@ function(
             {
                 primaryContentContainerHeight -= 28;
             }
-            this.$(".scrollable").css({ height: primaryContentContainerHeight + 'px', "min-height": primaryContentContainerHeight + 'px' });
+
+            // set min/max height also in case packery or something else tries to override the height
+            this.$(".scrollable").css({ height: primaryContentContainerHeight + 'px',
+                                      "min-height": primaryContentContainerHeight + 'px',
+                                      "max-height": primaryContentContainerHeight + 'px' });
             
         },
 
