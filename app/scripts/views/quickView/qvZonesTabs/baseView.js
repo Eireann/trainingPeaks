@@ -47,9 +47,7 @@ function(
         {
             if (!options["alreadyRendered" + this.metric + "Tab"])
             {
-                this.unstickit();
-                this.stickitInitialized = false;
-                this.render();
+                this.reRender();
                 options["alreadyRendered" + this.metric + "Tab"] = true;
             }
         },
@@ -65,8 +63,16 @@ function(
             // after it changes and saves, update our details
             this.workoutModel.once("sync", function()
             {
-                this.model.fetch();
+                var self = this;
+                this.model.fetch().always(function(){self.reRender();});
             }, this);
+        },
+
+        reRender: function()
+        {
+            this.unstickit();
+            this.stickitInitialized = false;
+            this.render();
         }
 
     };
