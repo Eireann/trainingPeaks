@@ -399,8 +399,11 @@ function(
             if (this.currentAxis === "time")
                 return;
 
+            this.selectedWorkoutStatsForRange = null;
             this.onUnSelectAll();
             this.trigger("unselectall");
+            this.resetZoom();
+            this.graphToolbar.hideZoomButton();
             this.currentAxis = "time";
             this.dataParser.setXAxis("time");
             this.drawPlot();
@@ -410,9 +413,12 @@ function(
         {
             if (this.currentAxis === "distance")
                 return;
-            
+
+            this.selectedWorkoutStatsForRange = null;
             this.onUnSelectAll();
             this.trigger("unselectall");
+            this.resetZoom();
+            this.graphToolbar.hideZoomButton();
             this.currentAxis = "distance";
             this.dataParser.setXAxis("distance");
             this.drawPlot();

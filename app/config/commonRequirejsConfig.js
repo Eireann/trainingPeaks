@@ -58,6 +58,10 @@
             "leaflet": "../vendor/js/libs/leaflet/leaflet-src",
             "leafletGoogleTiles": "../vendor/js/libs/leaflet/Google",
 
+            // packery
+            "packery": "../vendor/js/libs/packery/packery.pkgd.tp",
+            "gridster": "../vendor/js/libs/jquery.gridster.TP",
+
             // jasmine test utils
             "testUtils": "../test/utils"
         },

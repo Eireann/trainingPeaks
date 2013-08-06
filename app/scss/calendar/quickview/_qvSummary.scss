@@ -261,6 +261,7 @@
 
 	        input {
 	        	font-size:$fontSizeSmaller;
+	        	width:100%;
 	        }
 		}
 
@@ -299,7 +300,7 @@
 		label
 		{
 			float: left;
-			width: 33.5%;
+			width: 33%;
 	        text-align: center;
 	        margin-bottom:5px;
 	        &.ghosted
@@ -328,10 +329,11 @@
 		@include labels($fontFamilyHeavy, $fontSizeSmall, $TPGrey3, normal);
 		label {
 			float: left;
-			width:22.25%;
+			width:22%;
 	        text-align: center;
 	        margin-bottom:5px;
 	        margin-top:2px;
+
 	        &.ghosted {
 	            color: $TPGrey7;
 	        }
@@ -376,6 +378,8 @@
 	        	height:auto;
 	        	margin-bottom: 20px;
 	        	white-space: pre-wrap;
+	        	font-size: $fontSizeSmall !important;
+	        	line-height:$fontSizeXLarge;
 	        }
 
 	        .workoutCommentsCollection {

@@ -507,6 +507,9 @@ function(
             {
                 var modelData = buildPmcModelData(10);
                 var chart = new PmcChart();
+                spyOn(chart, "shouldShowTSS").andReturn(true);
+                spyOn(chart, "shouldShowIF").andReturn(true);
+                spyOn(chart, "shouldShowTSBFill").andReturn(true);
                 var chartPoints = chart.buildFlotPoints(modelData);
                 chartSeries = chart.buildFlotDataSeries(chartPoints, chartColors);
             });
@@ -523,12 +526,12 @@ function(
 
             it("Should say 'PMC - Workout Type: All' if no workout types are set", function()
             {
-                expect(PmcChart.prototype.buildWorkoutTypesTitle([0])).toEqual("PMC - Workout Type: All");
+                expect(PmcChart.prototype.buildWorkoutTypesTitle([0])).toEqual("All");
             });
 
             it("Should include workout types if set", function()
             {
-                expect(PmcChart.prototype.buildWorkoutTypesTitle([1, 2, 3])).toEqual("PMC - Workout Type: Swim, Bike, Run");
+                expect(PmcChart.prototype.buildWorkoutTypesTitle([1, 2, 3])).toEqual("Swim, Bike, Run");
             });
 
         });

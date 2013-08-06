@@ -1,44 +1,35 @@
 ﻿define(
 [
     "underscore",
-    "setImmediate",
+    "./dashboardChartBase",
     "moment",
     "TP",
     "models/reporting/pmcModel",
     "utilities/charting/flotOptions",
     "utilities/charting/chartColors",
-    "utilities/charting/flotToolTipPositioner",
     "utilities/charting/jquery.flot.dashes",
-    "utilities/workout/workoutTypes",
     "views/dashboard/pmcChartSettings",
-    "views/dashboard/pmcChartUtils",
-    "hbs!templates/views/dashboard/pmcChart",
-    "hbs!templates/views/charts/chartTooltip"
+    "hbs!templates/views/dashboard/pmcChart"
 ],
 function(
     _,
-    setImmediate,
+    DashboardChartBase,
     moment,
     TP,
     PMCModel,
     defaultFlotOptions,
     chartColors,
-    toolTipPositioner,
     flotDashes,
-    workoutTypes,
     pmcChartSettings,
-    pmcChartUtils,
-    pmcChartTemplate,
-    tooltipTemplate
+    pmcChartTemplate
     )
 {
-    var PmcChart = TP.ItemView.extend(
-    {
-        tagName: "div",
-        className: "dashboardChart doubleWide",
-        showThrobber: true,
+    var PmcChart = {
         lineThickness: 1,
         pointRadius: 1.5,
+        chartType: 32, // 32 = pmc chart
+        colspan: 2,
+        modelClass: PMCModel,
 
         template:
         {
@@ -46,134 +37,10 @@ function(
             template: pmcChartTemplate
         },
 
-        initialize: function(options)
-        {
-            _.bindAll(this, "onHoverToolTip");
-
-
-            // use zero hour to avoid time zone issues in day diff calculation
-            this.today = moment().hour(0).format("YYYY-MM-DD");
-
-            this.setupViewModel(options);
-            this.setupDataModel(options);
-        },
-
-        setupViewModel: function(options)
-        {
-            this.model = new TP.Model();
-        },
-
-        setupDataModel: function(options)
-        {
-
-            this.onWaitStart();
-
-            this.pmcModel = new PMCModel(null, null);
-
-            this.bindPmcModelEvents();
-
-            this.on("user:loaded", this.onUserLoaded, this);
-
-            this.on("close", this.unbindPmcModelEvents, this);
-        },
-
-        onUserLoaded: function()
-        {
-            this.on("render", this.renderChartAfterRender, this);
-            this.fetchData();
-        },
-
-        bindPmcModelEvents: function()
-        {
-            _.each(_.without(_.keys(this.modelEvents), "change"), function(eventName)
-            {
-                this.pmcModel.on(eventName, this[this.modelEvents[eventName]], this);
-            }, this);
-        },
-
-        unbindPmcModelEvents: function()
-        {
-            _.each(_.without(_.keys(this.modelEvents), "change"), function(eventName)
-            {
-                this.pmcModel.off(eventName, this[this.modelEvents[eventName]], this);
-            }, this);
-
-        },
-
-        fetchData: function()
-        {
-            var self = this;
-
-            if (theMarsApp.user.has("settings.dashboard.pmc"))
-            {
-                this.pmcModel.setParameters(pmcChartUtils.buildPmcParameters(theMarsApp.user.get("settings.dashboard.pmc")));
-            }
-
-            this.pmcModel.fetch().done(function()
-            {
-                self.setChartTitle();
-                self.render();
-            });
-        },
-
-        ui:
-        {
-            chartContainer: ".chartContainer"
-        },
-
-        events:
-        {
-            "mouseup .settings": "pmcSettingsClicked"
-        },
-
-        setChartTitle: function()
-        {
-            var workoutTypesTitle = this.buildWorkoutTypesTitle(this.pmcModel.workoutTypeIds);
-            this.model.set("title", workoutTypesTitle);
-        },
-
-        buildWorkoutTypesTitle: function(workoutTypeIds)
-        {
-            var workoutTypeNames = [];
-
-            if (workoutTypeIds.length === _.keys(TP.utils.workout.types.typesById).length)
-            {
-                workoutTypeNames.push("All");
-            } else
-            {
-                _.each(workoutTypeIds, function(item, index)
-                {
-                    var intItem = parseInt(item, 10);
-                    var workoutType = intItem === 0 ? "All" : workoutTypes.getNameById(intItem);
-                    if(workoutType !== "Unknown")
-                    {
-                        workoutTypeNames.push(workoutType); 
-                    }
-
-                }, this);
-            }
-
-            var types = workoutTypeNames.join(", ");
-            if (!types)
-            {
-                types = "All";
-            }
-            return "PMC - Workout Type: " + types;
-        },
-
-        renderChartAfterRender: function()
-        {
-            var self = this;
-            setImmediate(function()
-            {
-                self.renderChart();
-            });
-        },
-
         renderChart: function()
         {
-            var TSBRange = this.findTSBRange(this.pmcModel.get("data"));
-            var chartPoints = this.buildFlotPoints(this.pmcModel.get("data"), TSBRange.minAxisValue);
+            var TSBRange = this.findTSBRange(this.chartDataModel.get("data"));
+            var chartPoints = this.buildFlotPoints(this.chartDataModel.get("data"), TSBRange.minAxisValue);
             var dataSeries = this.buildFlotDataSeries(chartPoints, chartColors);
             var flotOptions = this.buildFlotChartOptions(TSBRange);
 
@@ -207,11 +74,6 @@ function(
 
             });
             return minMax;
-        },
-        
-        applyMinTSBToData: function(modelData, minAxisValue)
-        {
-              
         },
         
         buildFlotPoints: function(modelData, TSBMinimum)
@@ -678,17 +540,10 @@ function(
             return flotOptions;
         },
 
-        onHoverToolTip: function(flotItem, $tooltipEl)
-        {
-            var tooltipHTML = tooltipTemplate({ tooltips: this.buildTooltipData(flotItem.dataIndex) });
-            $tooltipEl.html(tooltipHTML);
-            toolTipPositioner.updatePosition($tooltipEl, this.plot);
-        },
-
         buildTooltipData: function(index)
         {
             var tips = [];
-            var item = this.pmcModel.get("data")[index];
+            var item = this.chartDataModel.get("data")[index];
 
             var itemDay = moment(item.workoutDay).hour(0);
             tips.push({ label: "Date", value: itemDay.format("MM/DD/YY") });
@@ -721,15 +576,7 @@ function(
             return tips;
         },
 
-        renderFlotChart: function(dataSeries, flotOptions)
-        {
-            if ($.plot)
-            {
-                this.plot = $.plot(this.ui.chartContainer, dataSeries, flotOptions);
-            }
-        },
-
-        pmcSettingsClicked: function(e)
+        settingsClicked: function(e)
         {
             if (e && e.button && e.button === 2)
             {
@@ -745,7 +592,7 @@ function(
 
             var direction = (windowWidth - offset.left) > 450 ? "right" : "left";
             var icon = this.$(".settings");
-            this.pmcSettings = new pmcChartSettings({ model: theMarsApp.user, direction: direction });
+            this.pmcSettings = new pmcChartSettings({ model: theMarsApp.user, direction: direction, index: this.index });
 
             this.pmcSettings.render().top(offset.top - 25);
             this.pmcSettings.setDirection(direction);
@@ -762,59 +609,37 @@ function(
             this.pmcSettings.on("close", this.allowSettingsButtonToHide, this);
 
 
-            theMarsApp.user.on("change:settings.dashboard.pmc.showTSSPerDay", this.renderChart, this);
-            theMarsApp.user.on("change:settings.dashboard.pmc.showIntensityFactorPerDay", this.renderChart, this);
-            theMarsApp.user.on("change:settings.dashboard.pmc.showTSBFill", this.renderChart, this);
-        },
-
-        keepSettingsButtonVisible: function()
-        {
-            this.$el.addClass("menuOpen");
-        },
-
-        allowSettingsButtonToHide: function()
-        {
-            this.$el.removeClass("menuOpen");
+            theMarsApp.user.on("change:" + this.settingsKey + ".showTSSPerDay", this.renderChart, this);
+            theMarsApp.user.on("change:" + this.settingsKey + ".showIntensityFactorPerDay", this.renderChart, this);
+            theMarsApp.user.on("change:" + this.settingsKey + ".showTSBFill", this.renderChart, this);
         },
 
         onPmcSettingsChange: function()
         {
             this.fetchData();
 
-            theMarsApp.user.off("change:settings.dashboard.pmc.showTSSPerDay", this.renderChart, this);
-            theMarsApp.user.off("change:settings.dashboard.pmc.showIntensityFactorPerDay", this.renderChart, this);
-            theMarsApp.user.off("change:settings.dashboard.pmc.showTSBFill", this.renderChart, this);
+            theMarsApp.user.off("change:" + this.settingsKey + ".showTSSPerDay", this.renderChart, this);
+            theMarsApp.user.off("change:" + this.settingsKey + ".showIntensityFactorPerDay", this.renderChart, this);
+            theMarsApp.user.off("change:" + this.settingsKey + ".showTSBFill", this.renderChart, this);
         },
 
         shouldShowTSS: function()
         {
-            if (!theMarsApp.user.has("settings.dashboard.pmc"))
-            {
-                return true;
-            }
-            return theMarsApp.user.get("settings.dashboard.pmc.showTSSPerDay") ? true : false;
+            return this.getSetting("showTSSPerDay") ? true : false;
         },
 
         shouldShowIF: function()
         {
-            if (!theMarsApp.user.has("settings.dashboard.pmc"))
-            {
-                return true;
-            }
-            return theMarsApp.user.get("settings.dashboard.pmc.showIntensityFactorPerDay") ? true : false;
+            return this.getSetting("showIntensityFactorPerDay") ? true : false;
         },
 
         shouldShowTSBFill: function()
         {
-            if (!theMarsApp.user.has("settings.dashboard.pmc"))
-            {
-                return true;
-            }
-            return theMarsApp.user.get("settings.dashboard.pmc.showTSBFill") ? true : false;
+            return this.getSetting("showTSBFill") ? true : false;
         }
 
-    });
+    };
 
+    return TP.ItemView.extend(_.extend({}, DashboardChartBase, PmcChart));
 
-    return PmcChart;
 });

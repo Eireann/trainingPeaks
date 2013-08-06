@@ -74,6 +74,11 @@ function(TP, graphToolbarTemplate)
         onResetClicked: function()
         {
             this.trigger("reset");
+            this.hideZoomButton();
+        },
+
+        hideZoomButton: function ()
+        {
             this.ui.zoomResetButton.addClass("hidden");
         },
 
