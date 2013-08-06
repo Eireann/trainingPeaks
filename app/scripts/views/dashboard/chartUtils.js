@@ -33,10 +33,17 @@ function(
 
         findChartDateOption: function(selectedOptionId)
         {
-            return _.find(this.chartDateOptions, function(dateOption)
+            var selectedOption = _.find(this.chartDateOptions, function(dateOption)
             {
                 return dateOption.id === Number(selectedOptionId);
             });
+
+            if(!selectedOption)
+            {
+                selectedOption = this.chartDateOptions.LAST_90_DAYS_AND_NEXT_21_DAYS;
+            }
+
+            return selectedOption;
         },
 
         chartDateOptions:

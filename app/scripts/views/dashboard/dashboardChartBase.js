@@ -104,11 +104,12 @@ function(
 
             }
 
+            self.waitingOn();
             this.chartDataModel.fetch().done(function()
             {
                 self.setChartTitle();
                 self.render();
-            });
+            }).always(function(){self.waitingOff();});
         },
 
         ui:
@@ -256,7 +257,18 @@ function(
 
             if(this.$el.is(".expanded"))
             {
+                this.popOut();
+            }
+            else if(this.previousPosition)
+            {
+                this.popIn();
+            }
 
+        },
+
+        popOut: function()
+        {
+                var $chartContainer = this.ui.chartContainer;
                 this.previousPosition = {
                     top: this.$el.css("top"),
                     left: this.$el.css("left"),
@@ -271,21 +283,18 @@ function(
                     right: "10px"
                 };
 
-                var $chartContainer = this.ui.chartContainer;
                 $chartContainer.hide();
                 var self = this;
                 this.$el.appendTo($("body")).animate(newPosition, 200, function(){ self.setupModalOverlay(); $chartContainer.show(); });
+        },
 
-            }
-            else if(this.previousPosition)
-            {
-                var $chartContainer = this.ui.chartContainer;
-                $chartContainer.hide();
-                this.$el.appendTo(this.chartsContainer).animate(this.previousPosition, 200, function(){ $chartContainer.show(); });
-                this.closeModal();
-                this.previousPosition = null;
-            }
-
+        popIn: function()
+        {
+            var $chartContainer = this.ui.chartContainer;
+            $chartContainer.hide();
+            this.$el.appendTo(this.chartsContainer).animate(this.previousPosition, 200, function(){ $chartContainer.show(); });
+            this.closeModal();
+            this.previousPosition = null;
         },
 
         setupModalOverlay: function()

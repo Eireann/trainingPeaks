@@ -157,7 +157,7 @@ function(_, Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmedia
             var existingModal = $(".modalOverlay:last");           
 
             // make an overlay
-            var onOverlayClick = function () { this.trigger("clickoutside"); this.close(); }
+            var onOverlayClick = function () { this.trigger("clickoutside"); this.close(); };
             this.createOverlay({ mask: this.modal.mask, noOverlay: this.modal.noOverlay, onOverlayClick: onOverlayClick});
             _.bindAll(this, "close");
 
@@ -222,7 +222,7 @@ function(_, Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmedia
                 var onOverlayClick = function()
                 {
                     modalSettings.onOverlayClick.apply(self);
-                }
+                };
                 this.$overlay.on("click", onOverlayClick);
             }
         },
