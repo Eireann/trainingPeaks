@@ -26,28 +26,6 @@ function($, TP, moment, theMarsApp, CalendarContainerView)
 
         });
 
-        it("Should trigger prepend event on scroll up past threshhold", function()
-        {
-            spyOn(calendarView, "getHiddenHeightAboveScrollArea").andReturn(0);
-            spyOn(calendarView, "getHiddenHeightBelowScrollArea").andReturn(1000);
-
-            calendarView.onScroll();
-
-            expect(prependSpy).toHaveBeenCalled();
-            expect(appendSpy).not.toHaveBeenCalled();
-        });
-
-        it("Should trigger append event on scroll down past threshhold", function()
-        {
-            spyOn(calendarView, "getHiddenHeightAboveScrollArea").andReturn(1000);
-            spyOn(calendarView, "getHiddenHeightBelowScrollArea").andReturn(0);
-
-            calendarView.onScroll();
-
-            expect(appendSpy).toHaveBeenCalled();
-            expect(prependSpy).not.toHaveBeenCalled();
-        });
-
         it("Should scroll to a given selector", function ()
         {
             expect(CalendarContainerView.prototype.scrollToSelector).toBeDefined();
@@ -58,6 +36,7 @@ function($, TP, moment, theMarsApp, CalendarContainerView)
 
         it("Should scroll to a given date", function ()
         {
+            spyOn(calendarContainerView.weeksCollectionView, "scrollToModel").andReturn([]);
             expect(CalendarContainerView.prototype.scrollToDate).toBeDefined();
             expect(typeof CalendarContainerView.prototype.scrollToDate).toBe("function");
 

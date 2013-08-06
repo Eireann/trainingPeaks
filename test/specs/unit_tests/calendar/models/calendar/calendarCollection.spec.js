@@ -56,10 +56,10 @@ function($, TP, moment, theMarsApp, testHelpers, xhrData, WorkoutModel, Workouts
 
             describe("prepareNext", function()
             {
-                it("should request workouts", function() {
+                it("should not request workouts", function() {
                     spyOn(collection, "requestWorkouts").andReturn(new $.Deferred());
                     collection.preparePrevious(1);
-                    expect(collection.requestWorkouts).toHaveBeenCalled();
+                    expect(collection.requestWorkouts).not.toHaveBeenCalled();
                 });
                 it("should return the models", function() {
                     expect(collection.prepareNext(2).length).toEqual(2);

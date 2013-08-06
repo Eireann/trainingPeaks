@@ -202,7 +202,7 @@ function(
 
                     if(self.scrollAnimationDeferred && self.scrollAnimationDeferred.state() === "pending") return;
 
-                    clearTimeout(self.scrolling_timeout)
+                    clearTimeout(self.scrollingTimeout);
 
                     // QL: Throttle fetchPrevious/fetchNext
                     var scrollTop = self.$el.scrollTop();
@@ -218,9 +218,12 @@ function(
 
                     self.snapToChild();
 
-                    self.scrolling_timeout = setTimeout(function() {
-                        options.scrollCallback();
-                    }, 400);
+                    if (options.scrollCallback) {
+                        self.scrollingTimeout = setTimeout(function() {
+                            options.scrollCallback();
+                        }, 400);
+                    }
+
                 });
             });
 

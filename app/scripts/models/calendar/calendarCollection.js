@@ -291,7 +291,7 @@ function(
                 if (self.get(weekDate)) {
                     self.get(weekDate).set(attrs);
                 }
-            })
+            });
         },
 
         getWorkout: function(workoutId)
