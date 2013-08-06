@@ -199,7 +199,13 @@ function(
 
         updateChartOrder: function()
         {
-
+            _.each(this.packery.getItemElements(), function(element, newIndex)
+            {
+                var oldIndex = $(element).data("index");
+                var chartView = this.charts[oldIndex];
+                chartView.setIndex(newIndex);
+            }, this);
+            theMarsApp.user.save();
         },
 
         onChartClose: function()

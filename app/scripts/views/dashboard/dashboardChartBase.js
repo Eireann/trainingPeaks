@@ -44,7 +44,7 @@ function(
             if(this.useGrid)
             {
                 return {
-                    "data-podindex": this.index,
+                    "data-index": this.index,
                     "data-sizey": 1,
                     "data-sizex": this.colspan,
                     "data-col": this.column,
@@ -54,7 +54,7 @@ function(
             else
             {
                 return {
-                    "data-podindex": this.index,
+                    "data-index": this.index,
                     "data-sizey": 1,
                     "data-sizex": this.colspan 
                 };
@@ -63,6 +63,7 @@ function(
 
         setGridAttributes: function(options)
         {
+            options = _.extend({}, options, { index: 0, row: 0, column: 0, useGrid: false });
             this.useGrid = options.useGrid;
             this.index = options.index;
             this.row = options.row;
@@ -271,6 +272,11 @@ function(
             return theMarsApp.user.get(this.settingsKey + "." + settingKey);
         },
 
+        setSetting: function(settingKey, value)
+        {
+            return theMarsApp.user.set(this.settingsKey + "." + settingKey, value);
+        },
+
         expandClicked: function()
         {
             this.$el.toggleClass("doubleWide");
@@ -342,6 +348,11 @@ function(
         {
             if (e.which === 27)
                 this.expandClicked();
+        },
+
+        setIndex: function(index)
+        {
+            this.setSetting("index", index);
         }
     };
 
