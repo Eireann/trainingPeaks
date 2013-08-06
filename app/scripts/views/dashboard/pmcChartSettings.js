@@ -200,7 +200,7 @@ function(
                 endDate: this.$("#endDate").val()
             };
 
-            pmcOptions = chartUtils.buildchartParameters(pmcOptions);
+            pmcOptions = chartUtils.buildChartParameters(pmcOptions);
 
             this.model.set(this.settingsKey + ".startDate", pmcOptions.customStartDate ? moment(pmcOptions.startDate).format("YYYY-MM-DD") + "T00:00:00Z" : null, { silent: true });
             this.model.set(this.settingsKey + ".endDate", pmcOptions.customEndDate ? moment(pmcOptions.endDate).format("YYYY-MM-DD") + "T00:00:00Z" : null, { silent: true });

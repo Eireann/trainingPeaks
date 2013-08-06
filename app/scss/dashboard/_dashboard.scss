@@ -44,9 +44,13 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
         width: 800px;
     }
 
-    &.fullWidth
+    &.fullScreen
     {
-        @include calc("width", "100% - 20px"); 
+        position: absolute;
+        height: auto;
+        width: auto;
+        background-color: $TPGrey1;
+        z-index: 200;
     }
 
     &:hover
@@ -78,7 +82,7 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
         top: 53px;
         left: 50px;
         @include calc("width", "100% - 90px");
-        height: 300px;
+        @include calc("height", "100% - 100px");
     }
 
     .chartTitle

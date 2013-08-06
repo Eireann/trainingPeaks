@@ -349,9 +349,12 @@ define([],function()
 
   var bind = function() {};
 
-  if ( docElem.addEventListener ) {
+  if ( _.isFunction(docElem.addEventListener) ) {
     bind = function( obj, type, fn ) {
-      obj.addEventListener( type, fn, false );
+      if(_.isFunction(obj.addEventListener))
+      {
+        obj.addEventListener( type, fn, false );
+      }
     };
   } else if ( docElem.attachEvent ) {
     bind = function( obj, type, fn ) {
@@ -1061,97 +1064,100 @@ define([],function()
   /*jshint browser: true, strict: true, undef: true, unused: true */
   /*global define: false */
 
-  ( function( global, ElemProto ) {
+  if(typeof Element !== "undefined" && typeof Element.prototype !== "undefined")
+  {
+    ( function( global, ElemProto ) {
 
-    'use strict';
+      'use strict';
 
-    var matchesMethod = ( function() {
-      // check un-prefixed
-      if ( ElemProto.matchesSelector ) {
-        return 'matchesSelector';
-      }
-      // check vendor prefixes
-      var prefixes = [ 'webkit', 'moz', 'ms', 'o' ];
-
-      for ( var i=0, len = prefixes.length; i < len; i++ ) {
-        var prefix = prefixes[i];
-        var method = prefix + 'MatchesSelector';
-        if ( ElemProto[ method ] ) {
-          return method;
+      var matchesMethod = ( function() {
+        // check un-prefixed
+        if ( ElemProto.matchesSelector ) {
+          return 'matchesSelector';
         }
-      }
-    })();
+        // check vendor prefixes
+        var prefixes = [ 'webkit', 'moz', 'ms', 'o' ];
 
-    // ----- match ----- //
-
-    function match( elem, selector ) {
-      return elem[ matchesMethod ]( selector );
-    }
-
-    // ----- appendToFragment ----- //
-
-    function checkParent( elem ) {
-      // not needed if already has parent
-      if ( elem.parentNode ) {
-        return;
-      }
-      var fragment = document.createDocumentFragment();
-      fragment.appendChild( elem );
-    }
-
-    // ----- query ----- //
-
-    // fall back to using QSA
-    // thx @jonathantneal https://gist.github.com/3062955
-    function query( elem, selector ) {
-      // append to fragment if no parent
-      checkParent( elem );
-
-      // match elem with all selected elems of parent
-      var elems = elem.parentNode.querySelectorAll( selector );
-      for ( var i=0, len = elems.length; i < len; i++ ) {
-        // return true if match
-        if ( elems[i] === elem ) {
-          return true;
+        for ( var i=0, len = prefixes.length; i < len; i++ ) {
+          var prefix = prefixes[i];
+          var method = prefix + 'MatchesSelector';
+          if ( ElemProto[ method ] ) {
+            return method;
+          }
         }
+      })();
+
+      // ----- match ----- //
+
+      function match( elem, selector ) {
+        return elem[ matchesMethod ]( selector );
       }
-      // otherwise return false
-      return false;
-    }
 
-    // ----- matchChild ----- //
+      // ----- appendToFragment ----- //
 
-    function matchChild( elem, selector ) {
-      checkParent( elem );
-      return match( elem, selector );
-    }
+      function checkParent( elem ) {
+        // not needed if already has parent
+        if ( elem.parentNode ) {
+          return;
+        }
+        var fragment = document.createDocumentFragment();
+        fragment.appendChild( elem );
+      }
 
-    // ----- matchesSelector ----- //
+      // ----- query ----- //
 
-    var matchesSelector;
+      // fall back to using QSA
+      // thx @jonathantneal https://gist.github.com/3062955
+      function query( elem, selector ) {
+        // append to fragment if no parent
+        checkParent( elem );
 
-    if ( matchesMethod ) {
-      // IE9 supports matchesSelector, but doesn't work on orphaned elems
-      // check for that
-      var div = document.createElement('div');
-      var supportsOrphans = match( div, 'div' );
-      matchesSelector = supportsOrphans ? match : matchChild;
-    } else {
-      matchesSelector = query;
-    }
+        // match elem with all selected elems of parent
+        var elems = elem.parentNode.querySelectorAll( selector );
+        for ( var i=0, len = elems.length; i < len; i++ ) {
+          // return true if match
+          if ( elems[i] === elem ) {
+            return true;
+          }
+        }
+        // otherwise return false
+        return false;
+      }
 
-    // transport
-    if (doDefine &&  typeof define === 'function' && define.amd ) {
-      // AMD
-      define( "matches-selector", [], function() {
-        return matchesSelector;
-      });
-    } else {
-      // browser global
-      window.matchesSelector = matchesSelector;
-    }
+      // ----- matchChild ----- //
 
-  })( this, Element.prototype );
+      function matchChild( elem, selector ) {
+        checkParent( elem );
+        return match( elem, selector );
+      }
+
+      // ----- matchesSelector ----- //
+
+      var matchesSelector;
+
+      if ( matchesMethod ) {
+        // IE9 supports matchesSelector, but doesn't work on orphaned elems
+        // check for that
+        var div = document.createElement('div');
+        var supportsOrphans = match( div, 'div' );
+        matchesSelector = supportsOrphans ? match : matchChild;
+      } else {
+        matchesSelector = query;
+      }
+
+      // transport
+      if (doDefine &&  typeof define === 'function' && define.amd ) {
+        // AMD
+        define( "matches-selector", [], function() {
+          return matchesSelector;
+        });
+      } else {
+        // browser global
+        window.matchesSelector = matchesSelector;
+      }
+
+    })( this, Element.prototype );
+  } 
 
   /**
    * Outlayer Item
@@ -1427,7 +1433,10 @@ define([],function()
     transitionStyle.transitionProperty = transitionValue.join(',');
     transitionStyle.transitionDuration = transitionDuration;
 
-    this.element.addEventListener( transitionEndEvent, this, false );
+    if(_.isFunction(this.element.addEventListener))
+    {
+      this.element.addEventListener( transitionEndEvent, this, false );
+    }
 
     // if there's stuff to do after the transition
     if ( args.isCleaning || args.onTransitionEnd ) {

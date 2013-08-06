@@ -53,7 +53,7 @@ function(
             this.charts = [];
             _.each(theMarsApp.user.get("settings.dashboard.pods"), function(podSettings, index)
             {
-                var chartView = dashboardChartBuilder.buildChartView(podSettings.chartType, index);
+                var chartView = dashboardChartBuilder.buildChartView(podSettings.chartType, index, podSettings.title);
                 this.charts.push(chartView);
                 chartView.on("expand", this.onChartExpand, this);
                 chartView.on("after:close", this.onChartClose, this);
@@ -96,8 +96,8 @@ function(
                 this.ui.chartsContainer.packery({
                     containerStyle: null,
                     itemSelector: ".dashboardChart",
-                    rowHeight: 420,
-                    columnWidth: 400,
+                    rowHeight: 410,
+                    columnWidth: 410,
                     gutter: 10
                 });
 
