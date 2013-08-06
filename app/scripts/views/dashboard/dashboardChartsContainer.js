@@ -22,6 +22,11 @@ function(
 {
     var DashboardView =
     {
+
+        // use grid for gridster compatible row and column positioning, or use packery for simple 'float left' positioning
+        useGrid: false,
+        usePackery: true,
+
         template:
         {
             type: "handlebars",
@@ -45,7 +50,10 @@ function(
 
         renderDashboardCharts: function()
         {
-            this.setChartGridPositions();
+            if(this.useGrid)
+            {
+                this.setChartGridPositions();
+            }
             this.buildDashboardCharts();
             this.displayDashboardCharts();
             this.initGridLayout();
@@ -90,7 +98,10 @@ function(
             this.charts = [];
             _.each(theMarsApp.user.get("settings.dashboard.pods"), function(podSettings, index)
             {
-                var chartView = dashboardChartBuilder.buildChartView(podSettings.chartType, podSettings);
+                // add some stuff to pod settings that we may not want to persist
+                podSettings = _.extend({}, podSettings, {useGrid: this.useGrid, usePackery: this.usePackery});
+
+                var chartView = dashboardChartBuilder.buildChartView(podSettings.chartType, podSettings, this.useGrid);
                 this.charts.push(chartView);
                 chartView.on("expand", this.onChartExpand, this);
                 chartView.on("after:close", this.onChartClose, this);
@@ -127,8 +138,14 @@ function(
 
         initGridLayout: function()
         {
-            //this.initPackery();
-            this.initGridster();
+            if(this.usePackery)
+            {
+                this.initPackery();
+            }
+            else if(this.useGrid)
+            {
+                this.initGridster();
+            }
         },
 
         initGridster: function()
@@ -138,12 +155,12 @@ function(
             {
                 this.ui.chartsContainer.gridster({
                     widget_margins: [10, 10],
-                    widget_base_dimensions: [400, 400],
+                    widget_base_dimensions: [300, 300],
                     widget_selector: ".dashboardChart",
                     extra_rows: 2,
                     autogenerate_stylesheet: true,
                     min_cols: 4,
-                    max_cols: 5,
+                    max_cols: 4,
                     draggable: {
                         stop: this.onDragStop
                     }

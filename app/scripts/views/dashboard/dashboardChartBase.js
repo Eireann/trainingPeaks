@@ -37,20 +37,33 @@ function(
         chartType: 0,
         modelClass: ChartDataModel,
         today: moment().hour(0).format("YYYY-MM-DD"),
+        useGrid: false,
 
         attributes: function()
         {
-            return {
-                "data-podindex": this.index,
-                "data-sizey": 1,
-                "data-sizex": this.colspan,
-                "data-col": this.column,
-                "data-row": this.row,
-            };
+            if(this.useGrid)
+            {
+                return {
+                    "data-podindex": this.index,
+                    "data-sizey": 1,
+                    "data-sizex": this.colspan,
+                    "data-col": this.column,
+                    "data-row": this.row,
+                };
+            } 
+            else
+            {
+                return {
+                    "data-podindex": this.index,
+                    "data-sizey": 1,
+                    "data-sizex": this.colspan 
+                };
+            }
         },
 
         setGridAttributes: function(options)
         {
+            this.useGrid = options.useGrid;
             this.index = options.index;
             this.row = options.row;
             this.column = options.column;
@@ -292,7 +305,7 @@ function(
 
                 var newPosition = {
                     top: "10px",
-                    bottom: "15px",
+                    bottom: "20px",
                     left: "10px",
                     right: "10px"
                 };
