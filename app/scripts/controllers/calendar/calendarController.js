@@ -56,7 +56,6 @@ function(
 
             this.layout.on("close", this.onLayoutClose, this);
 
-            // QL: Doesn't impact calendar specifically, just finding start of week that's passed in. Move to date helper
             this.startDate = this.createStartDay().subtract("weeks", 4);
             this.endDate = this.createEndDay().add("weeks", 6);
 
@@ -85,11 +84,10 @@ function(
                 return;
             }
 
-            // QL: this shouldn't be mixed in to the calendar object itself. Initialize the header and pass in what it needs to control
+            // QL: Probably shouldn't be mixed in to the calendar object itself. Initialize the header and pass in what it needs to control
             this.initializeHeader();
             this.initializeCalendar();
-            // QL: this shouldn't be mixed in to the calendar object itself. Initialize the library and pass in what it needs to control.
-            // in this case it probably doesn't need to control anything. Calendar should agnostically receive any dropped item. 
+            // QL: Calendar should agnostically receive any dropped item. 
             // Layout changes should propogate through the new CalendarPageView
             this.initializeLibrary();
 
@@ -97,14 +95,11 @@ function(
             this.showViewsInRegions();
 
             // load the calendar, and aggregate all of the deferreds from each workout request
-            // QL: this is more like `moveToDate()`. This should be a responsibility of this.views.calendar
+            // QL: Should be a responsibility of this.views.calendar
             var today = moment();
             this.showDate(today);
 
             this.watchClipboard();
-
-            // wait for user to load ...
-            //this.setupUserFetchPromise();
 
             // our parent class PageContainerController needs this to trigger the window resize functionality
             this.trigger("show");
@@ -115,23 +110,9 @@ function(
         loadDataAfterUserLoads: function()
         {
             var self = this;
-            // var onLoad = function(deferreds)
-            // {
-            //     var today = moment();
-            //     self.scrollToDateAfterLoad(deferreds, today);
-            // };
             this.loadCalendarData();
             this.loadLibraryData();
         },
-
-        // setupUserFetchPromise: function()
-        // {
-        //     var self = this;
-        //     theMarsApp.userFetchPromise.done(function()
-        //     {
-        //         self.loadDataAfterUserLoads();
-        //     });
-        // },
 
         showViewsInRegions: function()
         {
@@ -243,8 +224,7 @@ function(
 
         initializeCalendar: function()
         {
-            // QL: this doesn't need to be a model, it can be passed into CalendarContainerView as an attribute on that view
-            // might be used in calendarContainerView.js in modelEvents
+            // QL: Does this need to be a model? Could it be passed into CalendarContainerView as an attribute on that view?
             var weekDaysModel = new TP.Model({ startOfWeekDayIndex: this.startOfWeekDayIndex });
             
             if (this.views.calendar)
@@ -256,7 +236,7 @@ function(
                 startOfWeekDayIndex: this.startOfWeekDayIndex
             });
 
-            // QL: this should happen in the CalendarContainerView
+            // QL: Should happen in the CalendarContainerView
             this.bindToCalendarViewEvents(this.views.calendar);
             // QL: this can be part of the function in the previous line
             this.views.calendar.on("calendar:select", this.onCalendarSelect, this);
