@@ -65,7 +65,7 @@ function(
         createViews: function()
         {
             this.views.dashboard = new DashboardChartsContainerView();
-            this.views.header = new DashboardHeaderView();
+            this.views.header = new DashboardHeaderView({model:theMarsApp.user});
             this.views.library = new DashboardLibraryView();
         },
 
