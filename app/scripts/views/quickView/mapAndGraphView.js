@@ -149,7 +149,7 @@ function(
             if (!this.dataParser.hasLatLongData)
             {
                 self.$("#quickViewGraph").css("height", "350px");
-            };
+            }
             
             var priority =
             [
