@@ -34,7 +34,7 @@
 
         .statsHeader
         {
-            padding-left: 64px;
+            padding-left: 60px;
             padding-bottom: 7px;
             
             span
@@ -46,12 +46,22 @@
 
             .original
             {
-                padding-left: 6px;
+                // padding-left: 6px;
+                display:inline-block;
+                width:70px;
+                text-align:center;
+                padding:0;
+                margin:0;
             }
 
             .corrected
             {
-                padding-left: 10px;
+                // padding-left: 10px;
+                display:inline-block;
+                width:70px;
+                text-align:center;
+                padding:0;
+                margin:0 0 0 2px;
             }
         }
 
