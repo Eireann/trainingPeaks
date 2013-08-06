@@ -22,6 +22,7 @@ function (datepicker, spinner, jquerySelectBox, TP, chartUtils, dashboardHeaderT
 
         events:
         {
+            "click .applyDates": "applyDates",
             "change #chartDateOptions": "onDateOptionsChanged",
             "change #startDate": "onDateOptionsChanged",
             "change #endDate": "onDateOptionsChanged"
@@ -43,9 +44,7 @@ function (datepicker, spinner, jquerySelectBox, TP, chartUtils, dashboardHeaderT
 
         initialize: function (options)
         {
-
-         
-            this.settingsKey = "settings.dashboard.defaults";
+            this.settingsKey = "settings.dashboard.globalDateRange";
             if (!this.model.has(this.settingsKey))
             {
                 this.model.set(this.settingsKey, { startDate: null, endDate: null, quickDateSelectOption: null });
@@ -88,6 +87,11 @@ function (datepicker, spinner, jquerySelectBox, TP, chartUtils, dashboardHeaderT
             this.model.set(this.settingsKey + ".startDate", chartOptions.customStartDate ? moment(chartOptions.startDate).format("YYYY-MM-DD") + "T00:00:00Z" : null, { silent: true });
             this.model.set(this.settingsKey + ".endDate", chartOptions.customEndDate ? moment(chartOptions.endDate).format("YYYY-MM-DD") + "T00:00:00Z" : null, { silent: true });
             this.model.set(this.settingsKey + ".quickDateSelectOption", optionId);
+        },
+
+        applyDates: function()
+        {
+            this.model.save();
         }
     };
 

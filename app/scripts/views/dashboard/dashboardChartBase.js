@@ -63,7 +63,7 @@ function(
 
         setGridAttributes: function(options)
         {
-            options = _.extend({}, options, { index: 0, row: 0, column: 0, useGrid: false });
+            options = _.extend({}, { index: 0, row: 0, column: 0, useGrid: false }, options);
             this.useGrid = options.useGrid;
             this.index = options.index;
             this.row = options.row;
