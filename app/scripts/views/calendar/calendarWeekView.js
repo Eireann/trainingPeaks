@@ -76,9 +76,15 @@ function(moment, setImmediate, TP, CalendarDayView, WeekSummaryView, CalendarWee
 
         _updateWaiting: function()
         {
-            var isWaiting = this.model.get('isWaiting');
-            if(isWaiting) this.onWaitStart();
-            else this.onWaitStop();
+            var isWaiting = this.model.get('isWaiting') || !this.model.get('isFetched');
+            if(isWaiting)
+            {
+                this.onWaitStart();
+            }
+            else
+            {
+                this.onWaitStop();
+            }
         },
 
         onWaitStart: function()
