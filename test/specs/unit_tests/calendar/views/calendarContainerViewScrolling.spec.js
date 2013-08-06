@@ -5,9 +5,10 @@ requirejs(
     "TP",
     "moment",
     "app",
-    "views/calendar/container/calendarContainerView"
+    "views/calendar/container/calendarContainerView",
+    "views/scrollableCollectionView"
 ],
-function($, TP, moment, theMarsApp, CalendarContainerView)
+function($, TP, moment, theMarsApp, CalendarContainerView, ScrollableCollectionView)
 {
 
     describe("CalendarContainerView Scrolling", function()
@@ -23,7 +24,6 @@ function($, TP, moment, theMarsApp, CalendarContainerView)
             appendSpy = jasmine.createSpy("onAppend");
             calendarView.on("scroll:bottom", appendSpy);
             calendarView.render();
-
         });
 
         it("Should scroll to a given selector", function ()
@@ -36,15 +36,14 @@ function($, TP, moment, theMarsApp, CalendarContainerView)
 
         it("Should scroll to a given date", function ()
         {
-            spyOn(calendarContainerView.weeksCollectionView, "scrollToModel").andReturn([]);
             expect(CalendarContainerView.prototype.scrollToDate).toBeDefined();
             expect(typeof CalendarContainerView.prototype.scrollToDate).toBe("function");
 
             var calendarContainerView = new CalendarContainerView({ calendarHeaderModel: new TP.Model(), collection: new TP.Collection() });
-
             spyOn(calendarContainerView, "scrollToSelector");
-
+            spyOn(calendarContainerView.weeksCollectionView, "scrollToModel");
             calendarContainerView.scrollToDate(moment("2013-01-01"));
+            expect(calendarContainerView.weeksCollectionView.scrollToModel).toHaveBeenCalled();
         });
 
     });
