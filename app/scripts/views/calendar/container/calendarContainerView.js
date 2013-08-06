@@ -69,9 +69,17 @@ function(
                 itemView: CalendarWeekView,
                 collection: this.collection,
                 id: "weeksContainer",
-                className: "scrollable colorByComplianceAndWorkoutType"
+                className: "scrollable colorByComplianceAndWorkoutType",
+                scrollCallback: _.bind(this.scrollCallback, this)
             });
             this.listenTo(this.weeksCollectionView, "itemview:itemview:itemDropped", _.bind(this.onItemDropped, this));
+        },
+
+        scrollCallback: function() {
+            // QL TODO: don't run requestWorkouts() for ranges that already have data
+            var startDate = this.weeksCollectionView.getCurrentModel().get('id'),
+                endDate = this.weeksCollectionView.getLastVisibleModel().get('id');
+            this.collection.requestWorkouts(startDate, endDate); 
         },
 
         onRender: function()

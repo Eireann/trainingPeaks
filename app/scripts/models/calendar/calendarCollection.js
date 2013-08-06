@@ -172,8 +172,6 @@ function(
                 return self.appendWeek(startDate); 
             });
 
-            this.requestWorkouts(rangeStartDate, this.endDate);
-
             return models;
         },
 
@@ -190,8 +188,6 @@ function(
 
                 return self.prependWeek(startDate);
             });
-
-            this.requestWorkouts(this.startDate, rangeEndDate);
 
             return models.reverse();
         },

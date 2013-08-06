@@ -198,17 +198,29 @@ function(
                 this.wrapMargin = 0;
                 this.$el.on('scroll', function(event)
                 {
+
+
                     if(self.scrollAnimationDeferred && self.scrollAnimationDeferred.state() === "pending") return;
+
+                    clearTimeout(self.scrolling_timeout)
 
                     // QL: Throttle fetchPrevious/fetchNext
                     var scrollTop = self.$el.scrollTop();
                     var scrollBottom = scrollTop + self.$el.height();
                     var scrollHeight = self.$el.prop('scrollHeight');
 
-                    if(scrollTop < self.scrollThreshold) self._fetchMore('top');
-                    else if(scrollHeight - scrollBottom < self.scrollThreshold) self._fetchMore('bottom');
+                    if(scrollTop < self.scrollThreshold) {
+                        self._fetchMore('top');
+                    }
+                    else if(scrollHeight - scrollBottom < self.scrollThreshold) {
+                        self._fetchMore('bottom');
+                    }
 
                     self.snapToChild();
+
+                    self.scrolling_timeout = setTimeout(function() {
+                        options.scrollCallback();
+                    }, 300);
                 });
             });
 
@@ -241,6 +253,10 @@ function(
         getCurrentModel: function()
         {
             return this._closestChildToTop().view.model;
+        },
+        getLastVisibleModel: function() 
+        {
+            return this._furthestVisibleChildFromTop().view.model;
         },
 
         _animateScroll: function(scrollTop, duration) {
@@ -278,6 +294,25 @@ function(
             })
             .first()
             .value();
+        },
+
+        _furthestVisibleChildFromTop: function() {
+            var height_offset = this.$el.height() + this.$el.scrollTop();
+            return _.chain(this.children.toArray())
+                .map(function(child) {
+                    return {
+                        view: child,
+                        position: child.$el.position()
+                    };
+                })
+                .filter(function(item) {
+                    return item.position.top > 0 && item.position.top < height_offset
+                })
+                .sortBy(function(item) {
+                    return item.position.top;
+                })
+                .last()
+                .value();
         },
 
         _applyScrollPosition: function()
@@ -366,8 +401,13 @@ function(
             var self = this;
             var callback = function() {
                 self._stashScrollPosition();
-                if(edge === "top") self.collection.fetchPrevious(self.batchSize);
-                else self.collection.fetchNext(self.batchSize);
+                if(edge === "top")
+                {
+                    self.collection.fetchPrevious(self.batchSize);
+                } else {
+                    self.collection.fetchNext(self.batchSize);
+                }
+
                 self._applyScrollPosition();
             };
 
