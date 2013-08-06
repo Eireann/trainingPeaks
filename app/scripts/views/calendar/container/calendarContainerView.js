@@ -77,9 +77,21 @@ function(
 
         scrollCallback: function() {
             // QL TODO: don't run requestWorkouts() for ranges that already have data
-            var startDate = this.weeksCollectionView.getCurrentModel().get('id'),
+            var self = this,
+                startDate = this.weeksCollectionView.getCurrentModel().get('id'),
                 endDate = this.weeksCollectionView.getLastVisibleModel().get('id');
-            this.collection.requestWorkouts(startDate, endDate); 
+
+            this.collection.forEachWeek(startDate, endDate, function(weekDate) {
+                var week = self.collection.get(weekDate),
+                    weekMoment;
+                if (week) {
+                    if (week.get('isFetched')) {
+                        return;
+                    }
+                    weekMoment = moment(week.get('id'));
+                    self.collection.requestWorkouts(weekMoment, weekMoment.clone().add("days", 7));
+                }
+            });
         },
 
         onRender: function()

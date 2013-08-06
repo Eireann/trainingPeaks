@@ -134,7 +134,7 @@ function(
         {
             var self = this;
 
-            self.setWeeksWaiting(moment(startDate), moment(endDate), true);
+            this.setWeeksAttrs(startDate, endDate, {isWaiting: true, isFetched: true});
             var workouts = new WorkoutsCollection([], { startDate: moment(startDate), endDate: moment(endDate) });
             var waiting = workouts.fetch();
 
@@ -151,7 +151,7 @@ function(
                 self.trigger("after:changes");
             }).always(function()
             {
-                self.setWeeksWaiting(moment(startDate), moment(endDate), false);
+                self.setWeeksAttrs(startDate, endDate, {isWaiting: false});
             });
 
             // return the deferred so caller can use it
@@ -272,18 +272,26 @@ function(
             }
         },
 
-        setWeeksWaiting: function(startDate, endDate, isWaiting)
+        forEachWeek: function(startDate, endDate, callback)
         {
-            startDate = startDate.format(TP.utils.datetime.shortDateFormat);
-            endDate = endDate.format(TP.utils.datetime.shortDateFormat);
+            startDate = moment(startDate).format(TP.utils.datetime.shortDateFormat);
+            endDate = moment(endDate).format(TP.utils.datetime.shortDateFormat);
             var cursorDate = startDate;
 
             while (cursorDate <= endDate) {
-                if (this.get(cursorDate)) {
-                    this.get(cursorDate).set('isWaiting', isWaiting);
-                }
+                callback(cursorDate);
                 cursorDate = moment(cursorDate).add('weeks', 1).format(TP.utils.datetime.shortDateFormat);
-            }      
+            }   
+        },
+
+        setWeeksAttrs: function(startDate, endDate, attrs)
+        {
+            var self = this;
+            this.forEachWeek(startDate, endDate, function(weekDate) {
+                if (self.get(weekDate)) {
+                    self.get(weekDate).set(attrs);
+                }
+            })
         },
 
         getWorkout: function(workoutId)

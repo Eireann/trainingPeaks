@@ -220,7 +220,7 @@ function(
 
                     self.scrolling_timeout = setTimeout(function() {
                         options.scrollCallback();
-                    }, 300);
+                    }, 400);
                 });
             });
 
@@ -297,7 +297,7 @@ function(
         },
 
         _furthestVisibleChildFromTop: function() {
-            var height_offset = this.$el.height() + this.$el.scrollTop();
+            var height = this.$el.height();
             return _.chain(this.children.toArray())
                 .map(function(child) {
                     return {
@@ -306,7 +306,7 @@ function(
                     };
                 })
                 .filter(function(item) {
-                    return item.position.top > 0 && item.position.top < height_offset
+                    return item.position.top >= 0 && item.position.top < height;
                 })
                 .sortBy(function(item) {
                     return item.position.top;
