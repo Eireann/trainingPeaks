@@ -65,7 +65,7 @@ function(
                 {
                     this.prepareNext(2);
                 } else {
-                    return undefined;
+                    return;
                 }
             }
 

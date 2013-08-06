@@ -11,7 +11,7 @@ function(
         initialize: function(models, options)
         {
             this.sourceCollection = options.collection;
-            this.maxSize = options.minSize || 8;
+            this.minSize = options.minSize || 8;
             this.maxSize = options.maxSize || 25;
 
             this._bindSourceCollectionEvents();

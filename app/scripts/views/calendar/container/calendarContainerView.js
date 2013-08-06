@@ -169,7 +169,7 @@ function(
                 effectDuration = 500;
 
             // QL TODO: This works incorrectly for Sunday...
-            var id = dateAsMoment.day(1).format(TP.utils.datetime.shortDateFormat);
+            var id = dateAsMoment.day(this.startOfWeekDayIndex).format(TP.utils.datetime.shortDateFormat);
             var model = this.collection.get(id);
             this.weeksCollectionView.scrollToModel(model, effectDuration);
         },
