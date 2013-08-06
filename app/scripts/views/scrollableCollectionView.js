@@ -218,9 +218,9 @@ function(
 
                     self.snapToChild();
 
-                    if (options.scrollCallback) {
+                    if (options.onScrollEnd) {
                         self.scrollingTimeout = setTimeout(function() {
-                            options.scrollCallback();
+                            options.onScrollEnd();
                         }, 400);
                     }
                 });

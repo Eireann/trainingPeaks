@@ -70,12 +70,12 @@ function(
                 collection: this.collection,
                 id: "weeksContainer",
                 className: "scrollable colorByComplianceAndWorkoutType",
-                scrollCallback: _.bind(this.scrollCallback, this)
+                onScrollEnd: _.bind(this.loadDataAfterScroll, this)
             });
             this.listenTo(this.weeksCollectionView, "itemview:itemview:itemDropped", _.bind(this.onItemDropped, this));
         },
 
-        scrollCallback: function() {
+        loadDataAfterScroll: function() {
             // QL TODO: don't run requestWorkouts() for ranges that already have data
             var self = this,
                 startDate = this.weeksCollectionView.getCurrentModel().get('id'),
