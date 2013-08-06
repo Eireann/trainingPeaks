@@ -97,10 +97,31 @@ function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandMo
             this.elevationCorrectionModel.save().done(this.onElevationCorrectionFetched);
         },
 
-        setOriginalElevation: function()
-        {
-            this.dataParser.loadData(this.workoutModel.get("detailData").get("flatSamples"));
-            this.originalElevation = this.dataParser.getDataByChannel("Elevation");
+        setOriginalElevation: function() 
+        { 
+            this.dataParser.loadData(this.workoutModel.get("detailData").get("flatSamples")); 
+            this.originalElevation = this.dataParser.getDataByChannel("Elevation"); 
+            var elevationMinimum = this.findMinimumElevation(this.originalElevation); 
+            this.addMinimumElevation(this.originalElevation, elevationMinimum); 
+        }, 
+ 
+        findMinimumElevation: function (modelData) 
+        { 
+            var minimum = null; 
+            _.each(modelData, function (item, index) 
+            { 
+                if (item[1] < minimum || minimum === null) 
+                    minimum = item[1]; 
+            }); 
+            return minimum; 
+        }, 
+ 
+        addMinimumElevation: function (originalElevation, minimumElevation) 
+        { 
+            _.each(originalElevation, function (item, index) 
+            { 
+                item[2] = minimumElevation; 
+            }); 
         },
 
         onRender: function()
