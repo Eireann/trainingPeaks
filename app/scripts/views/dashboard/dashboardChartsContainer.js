@@ -74,7 +74,7 @@ function(
 
             _.each(theMarsApp.user.get("settings.dashboard.pods"), function(podSettings, index)
             {
-                var colspan = podSettings.chartType == 32 ? 2 : 1;
+                var colspan = podSettings.chartType === 32 ? 2 : 1;
 
                 // will it fit on this row?
                 if((column + colspan - 1) <= maxColumns)

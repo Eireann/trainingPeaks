@@ -24,7 +24,7 @@ function (datepicker, spinner, jquerySelectBox, TP, chartUtils, dashboardHeaderT
         {
             "change #chartDateOptions": "onDateOptionsChanged",
             "change #startDate": "onDateOptionsChanged",
-            "change #endDate": "onDateOptionsChanged",
+            "change #endDate": "onDateOptionsChanged"
         },
 
         onRender: function()
@@ -88,7 +88,7 @@ function (datepicker, spinner, jquerySelectBox, TP, chartUtils, dashboardHeaderT
             this.model.set(this.settingsKey + ".startDate", chartOptions.customStartDate ? moment(chartOptions.startDate).format("YYYY-MM-DD") + "T00:00:00Z" : null, { silent: true });
             this.model.set(this.settingsKey + ".endDate", chartOptions.customEndDate ? moment(chartOptions.endDate).format("YYYY-MM-DD") + "T00:00:00Z" : null, { silent: true });
             this.model.set(this.settingsKey + ".quickDateSelectOption", optionId);
-        },
+        }
     };
 
     return TP.ItemView.extend(DashboardHeaderView);

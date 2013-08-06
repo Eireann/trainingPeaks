@@ -48,7 +48,7 @@ function(
                     "data-sizey": 1,
                     "data-sizex": this.colspan,
                     "data-col": this.column,
-                    "data-row": this.row,
+                    "data-row": this.row
                 };
             } 
             else
