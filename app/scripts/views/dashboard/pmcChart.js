@@ -25,10 +25,10 @@ function(
     )
 {
     var PmcChart = {
-        className: "dashboardChart doubleWide",
         lineThickness: 1,
         pointRadius: 1.5,
         chartType: 32, // 32 = pmc chart
+        colspan: 2,
         modelClass: PMCModel,
 
         template:
@@ -592,7 +592,7 @@ function(
 
             var direction = (windowWidth - offset.left) > 450 ? "right" : "left";
             var icon = this.$(".settings");
-            this.pmcSettings = new pmcChartSettings({ model: theMarsApp.user, direction: direction, podIndex: this.podIndex });
+            this.pmcSettings = new pmcChartSettings({ model: theMarsApp.user, direction: direction, index: this.index });
 
             this.pmcSettings.render().top(offset.top - 25);
             this.pmcSettings.setDirection(direction);

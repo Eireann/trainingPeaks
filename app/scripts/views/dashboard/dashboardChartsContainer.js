@@ -3,6 +3,7 @@
     "underscore",
     "jqueryui/draggable",
     "packery",
+    "gridster",
     "TP",
     "utilities/charting/dashboardChartBuilder",
     "views/pageContainer/primaryContainerView",
@@ -12,6 +13,7 @@ function(
     _,
     jqueryDraggable,
     packery,
+    gridster,
     TP,
     dashboardChartBuilder,
     PrimaryContainerView,
@@ -43,9 +45,44 @@ function(
 
         renderDashboardCharts: function()
         {
+            this.setChartGridPositions();
             this.buildDashboardCharts();
             this.displayDashboardCharts();
-            this.initPackery();
+            this.initGridLayout();
+        },
+
+        setChartGridPositions: function()
+        {
+            // if the first one has saved position, assume that they've all been setup?
+            if(theMarsApp.user.get("settings.dashboard.pods.0.row") && theMarsApp.user.get("settings.dashboard.pods.0.column"))
+            {
+                return;
+            }
+
+            // else calculate
+            var column = 1;
+            var row = 1;
+            var maxColumns = 4;
+
+            _.each(theMarsApp.user.get("settings.dashboard.pods"), function(podSettings, index)
+            {
+                var colspan = podSettings.chartType == 32 ? 2 : 1;
+
+                // will it fit on this row?
+                if((column + colspan - 1) <= maxColumns)
+                {
+                    podSettings.column = column;
+                    podSettings.row = row;
+                    column+= colspan;
+                } else {
+                    row++;
+                    column = 1;
+                    podSettings.column = column;
+                    podSettings.row = row;
+                    column++;
+                }
+
+            }, this);
         },
 
         buildDashboardCharts: function()
@@ -53,7 +90,7 @@ function(
             this.charts = [];
             _.each(theMarsApp.user.get("settings.dashboard.pods"), function(podSettings, index)
             {
-                var chartView = dashboardChartBuilder.buildChartView(podSettings.chartType, index, podSettings.title);
+                var chartView = dashboardChartBuilder.buildChartView(podSettings.chartType, podSettings);
                 this.charts.push(chartView);
                 chartView.on("expand", this.onChartExpand, this);
                 chartView.on("after:close", this.onChartClose, this);
@@ -88,6 +125,38 @@ function(
             }, this);
         },
 
+        initGridLayout: function()
+        {
+            //this.initPackery();
+            this.initGridster();
+        },
+
+        initGridster: function()
+        {
+            _.bindAll(this, "onDragStop");
+            if(this.ui.chartsContainer.gridster)
+            {
+                this.ui.chartsContainer.gridster({
+                    widget_margins: [10, 10],
+                    widget_base_dimensions: [400, 400],
+                    widget_selector: ".dashboardChart",
+                    extra_rows: 2,
+                    autogenerate_stylesheet: true,
+                    min_cols: 4,
+                    max_cols: 5,
+                    draggable: {
+                        stop: this.onDragStop
+                    }
+                });
+            }
+        },
+
+        onDragStop: function()
+        {
+            var gridster = this.ui.chartsContainer.data("gridster");
+            console.log(gridster.serialize_changed());
+        },
+
         initPackery: function()
         {
 
@@ -113,12 +182,7 @@ function(
 
         updateChartOrder: function()
         {
-            var elements = this.packery.getItemElements();
-            _.each(elements, function(element, podIndex) {
-                var originalPodIndex = Number($(element).data("podindex"));
-                var chart = this.charts[originalPodIndex];
-                // NOT IMPLEMENTED YET UNTIL WE ARE ABLE TO SAVE SETTINGS
-            }, this);
+
         },
 
         onChartClose: function()

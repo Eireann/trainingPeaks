@@ -31,18 +31,18 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
 
 .dashboardChart
 {
+    /*
     float: left;
     position: relative;
     margin: 10px;
+    */
+
+    position: absolute; 
     padding: 15px;
     width: 400px;
     height: 400px;
     border: 1px solid transparent;
-
-    &.doubleWide
-    {
-        width: 800px;
-    }
+    cursor: pointer;
 
     &.fullScreen
     {
@@ -224,4 +224,32 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
             }
         }
     }
+
+    /* Gridster rows and columns */
+    &[data-sizex="1"] { width: 400px; }
+    &[data-sizex="2"] { width: 810px; }
+    &[data-sizex="3"] { width: 1220px; }
+    &[data-sizex="4"] { width: 1630px; }    
+
+    &[data-col="1"] { left: 10px; }
+    &[data-col="2"] { left: 420px; }
+    &[data-col="3"] { left: 830px; }
+    &[data-col="4"] { left: 1240px; }
+    &[data-col="5"] { left: 1650px; }
+
+    &[data-row="1"] { top: 10px; }
+    &[data-row="2"] { top: 420px; }
+    &[data-row="3"] { top: 830px; }
+    &[data-row="4"] { top: 1240px; }
+    &[data-row="5"] { top: 1650px; }
+    &[data-row="6"] { top: 2060px; }
+    &[data-row="7"] { top: 2470px; }
+    &[data-row="8"] { top: 2880px; }
+    &[data-row="9"] { top: 3290px; }
+    &[data-row="10"] { top: 3700px; }
+    &[data-row="11"] { top: 4110px; }
+    &[data-row="12"] { top: 4520px; }
+    &[data-row="13"] { top: 4930px; }
+    &[data-row="14"] { top: 5340px; }
 }
+

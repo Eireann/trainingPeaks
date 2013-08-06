@@ -30,7 +30,10 @@ function(
         tagName: "div",
         className: "dashboardChart",
         showThrobber: true,
-        podIndex: 0,
+        index: 0,
+        column: 1,
+        row: 1,
+        colspan: 1,
         chartType: 0,
         modelClass: ChartDataModel,
         today: moment().hour(0).format("YYYY-MM-DD"),
@@ -38,18 +41,29 @@ function(
         attributes: function()
         {
             return {
-                "data-podindex": this.podIndex
+                "data-podindex": this.index,
+                "data-sizey": 1,
+                "data-sizex": this.colspan,
+                "data-col": this.column,
+                "data-row": this.row,
             };
+        },
+
+        setGridAttributes: function(options)
+        {
+            this.index = options.index;
+            this.row = options.row;
+            this.column = options.column;
+            this.$el.attr(this.attributes());
         },
 
         initialize: function(options)
         {
             _.bindAll(this, "onHoverToolTip");
-            this.podIndex = options && options.hasOwnProperty("podIndex") ? options.podIndex : 0;
-            this.settingsKey = "settings.dashboard.pods." + this.podIndex;
+            this.setGridAttributes(options);
+            this.settingsKey = "settings.dashboard.pods." + this.index;
             this.setupViewModel(options);
             this.setupDataModel(options);
-
         },
 
         setupViewModel: function(options)
