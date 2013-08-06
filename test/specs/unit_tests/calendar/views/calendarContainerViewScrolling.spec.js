@@ -14,16 +14,11 @@ function($, TP, moment, theMarsApp, CalendarContainerView, ScrollableCollectionV
     describe("CalendarContainerView Scrolling", function()
     {
 
-        var calendarView, appendSpy, prependSpy;
+        var calendarView;
 
         beforeEach(function()
         {
             calendarView = new CalendarContainerView({ collection: new TP.Collection() });
-            prependSpy = jasmine.createSpy("onPrepend");
-            calendarView.on("scroll:top", prependSpy);
-            appendSpy = jasmine.createSpy("onAppend");
-            calendarView.on("scroll:bottom", appendSpy);
-            calendarView.render();
         });
 
         it("Should scroll to a given date", function ()
