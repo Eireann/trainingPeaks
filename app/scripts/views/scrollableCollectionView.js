@@ -306,7 +306,7 @@ function(
                     };
                 })
                 .filter(function(item) {
-                    return item.position.top >= 0 && item.position.top < height;
+                    return item.position.top < height;
                 })
                 .sortBy(function(item) {
                     return item.position.top;
