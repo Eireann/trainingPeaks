@@ -53,6 +53,25 @@ function(
             this.initializeMoveAndShift();
         },
 
+        get: function(id)
+        {
+            var model;
+            while(!(model = TP.Collection.prototype.get.apply(this, arguments)))
+            {
+                if(moment(id) < moment(this.startDate))
+                {
+                    this.preparePrevious(2);
+                } else if(moment(id) > moment(this.endDate))
+                {
+                    this.prepareNext(2);
+                } else {
+                    return;
+                }
+            }
+
+            return model;
+        },
+
         setUpWeeks: function(startDate, endDate)
         {
             this.startDate = startDate;
@@ -76,9 +95,10 @@ function(
 
         resetToDates: function(startDate, endDate)
         {
-            this.reset();
+            this.reset([], {silent: true});
             this.selectedDay = this.selectedWeek = this.selectedRange = null;
             this.setUpWeeks(startDate, endDate);
+            this.trigger("reset");
         },
         
         createWeekCollectionStartingOn: function (startDate)
@@ -112,43 +132,80 @@ function(
 
         requestWorkouts: function(startDate, endDate)
         {
-            var workouts = new WorkoutsCollection([], { startDate: moment(startDate), endDate: moment(endDate) });
-
-            var waiting = workouts.fetch();
             var self = this;
+
+            this.setWeeksAttrs(startDate, endDate, {isWaiting: true, isFetched: true});
+            var workouts = new WorkoutsCollection([], { startDate: moment(startDate), endDate: moment(endDate) });
+            var waiting = workouts.fetch();
 
             // we trigger a sync event on each week model - whether they have workouts or not - to remove the waiting throbber
             // but we don't trigger the request event here to show the throbber, because the week model is not yet bound to a view,
             // so calendarView does that
             waiting.done(function ()
             {
+                self.trigger("before:changes");
                 workouts.each(function (workout)
                 {
                     self.addWorkout(workout);
                 });
+                self.trigger("after:changes");
             }).always(function()
             {
-                self.stopWeeksWaiting(moment(startDate), moment(endDate));
+                self.setWeeksAttrs(startDate, endDate, {isWaiting: false});
             });
 
             // return the deferred so caller can use it
             return waiting;
         },
 
+        prepareNext: function (count)
+        {
+            var self = this;
+            var rangeStartDate = moment(this.endDate).add("days", 1);
+
+            var models = _.times(count, function()
+            {
+                var startDate = moment(self.endDate).add("days", 1);
+                var endDate = moment(startDate).add("days", 6);
+                self.endDate = moment(endDate);
+
+                return self.appendWeek(startDate); 
+            });
+
+            return models;
+        },
+
+        preparePrevious: function(count)
+        {
+            var self = this;
+            var rangeEndDate = moment(self.startDate).subtract("days", 1);
+
+            var models = _.times(count, function()
+            {
+                var endDate = moment(self.startDate).subtract("days", 1);
+                var startDate = moment(endDate).subtract("days", 6);
+                self.startDate = moment(startDate);
+
+                return self.prependWeek(startDate);
+            });
+
+            return models.reverse();
+        },
+
         appendWeek: function(startDate)
         {
             var newWeekCollection = this.createWeekCollectionStartingOn(moment(startDate));
             var newWeekModel = new TP.Model({ id: startDate.format(TP.utils.datetime.shortDateFormat), week: newWeekCollection });
-
             this.add(newWeekModel, { append: true });
+            return newWeekModel;
         },
 
         prependWeek: function(startDate)
         {
             var newWeekCollection = this.createWeekCollectionStartingOn(startDate);
             var newWeekModel = new TP.Model({ id: startDate.format(TP.utils.datetime.shortDateFormat), week: newWeekCollection });
-
             this.add(newWeekModel, { at: 0, append: false });
+            return newWeekModel;
         },
 
         getDayModel: function(date)
@@ -215,16 +272,24 @@ function(
             }
         },
 
-        stopWeeksWaiting: function(startDate, endDate)
+        forEachWeek: function(startDate, endDate, callback)
         {
-            startDate = startDate.format(TP.utils.datetime.shortDateFormat);
-            endDate = endDate.format(TP.utils.datetime.shortDateFormat);
-            this.forEach(function(weekModel)
-            {
-                var weekDate = weekModel.id;
-                if (weekDate >= startDate && weekDate <= endDate)
-                {
-                    weekModel.trigger("sync");
+            startDate = moment(startDate).format(TP.utils.datetime.shortDateFormat);
+            endDate = moment(endDate).format(TP.utils.datetime.shortDateFormat);
+            var cursorDate = startDate;
+
+            while (cursorDate <= endDate) {
+                callback(cursorDate);
+                cursorDate = moment(cursorDate).add('weeks', 1).format(TP.utils.datetime.shortDateFormat);
+            }   
+        },
+
+        setWeeksAttrs: function(startDate, endDate, attrs)
+        {
+            var self = this;
+            this.forEachWeek(startDate, endDate, function(weekDate) {
+                if (self.get(weekDate)) {
+                    self.get(weekDate).set(attrs);
                 }
             });
         },

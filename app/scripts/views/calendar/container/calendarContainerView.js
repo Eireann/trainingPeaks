@@ -7,6 +7,7 @@
     "views/calendar/moveItems/selectedRangeSettings",
     "views/calendar/moveItems/shiftWizzardView",
     "views/calendar/container/calendarContainerViewScrolling",
+    "views/scrollableCollectionView",
     "hbs!templates/views/calendar/container/calendarContainerView"
 ],
 function(
@@ -17,13 +18,11 @@ function(
     SelectedRangeSettingsView,
     ShiftWizzardView,
     CalendarContainerViewScrolling,
+    ScrollableCollectionView,
     calendarContainerView)
 {
     var CalendarContainerView =
     {
-        $weeksContainer: null,
-
-        children: [],
         colorizationClassNames:
         [
             "colorizationOff",
@@ -38,6 +37,13 @@ function(
             template: calendarContainerView
         },
 
+        regions:
+        {
+            weeksRegion: '.weeks-region'
+        },
+
+        ui: {},
+
         initialize: function(options)
         {
 
@@ -47,29 +53,51 @@ function(
             // initialize the superclass
             this.constructor.__super__.initialize.call(this);
 
-            this.initializeScrolling();
-            this.initializeScrollOnDrag();
             this.on("render", this.setupKeyBindingsOnRender, this);
-            this.on("render", this.addWeeksOnRender, this);
+            //this.on("render", this.addWeeksOnRender, this);
             this.on("calendar:unselect", this.onCalendarUnSelect, this);
 
             this.on("close", this.closeChildren, this);
 
             this.calendarHeaderModel = options.calendarHeaderModel;
             this.startOfWeekDayIndex = options.startOfWeekDayIndex ? options.startOfWeekDayIndex : 0;
+
+            this.initializeScrollOnDrag();
+
+            this.weeksCollectionView = new ScrollableCollectionView({
+                firstModel: this.collection.find(function(model) { return TP.utils.datetime.isThisWeek(model.id); }),
+                itemView: CalendarWeekView,
+                collection: this.collection,
+                id: "weeksContainer",
+                className: "scrollable colorByComplianceAndWorkoutType",
+                onScrollEnd: _.bind(this._loadDataAfterScroll, this)
+            });
+            this.listenTo(this.weeksCollectionView, "itemview:itemview:itemDropped", _.bind(this.onItemDropped, this));
         },
 
-        closeChildren: function()
+        _loadDataAfterScroll: function()
         {
-            _.each(this.children, function(childView)
+            var self = this;
+
+            _.each(this.weeksCollectionView.getVisibleModels(), function(model)
             {
-                childView.close();
+                if(!model.get("isFetched"))
+                {
+                    var weekStart = moment(model.id);
+                    var weekEnd = moment(model.id).add("days", 6);
+                    self.collection.requestWorkouts(weekStart, weekEnd);
+                }
             });
         },
 
-        ui:
+        onRender: function()
         {
-            "weeksContainer": "#weeksContainer"
+            this.weeksRegion.show(this.weeksCollectionView);
+            this.ui.weeksContainer = this.weeksCollectionView.$el;
+
+            // Show drop-shadow during scrolling.
+            this.weeksCollectionView.$el.on("scroll", _.bind(this.startScrollingState, this));
+            this.weeksCollectionView.$el.on("scroll", _.bind(_.debounce(this.stopScrollingState, 500), this));
         },
 
         modelEvents:
@@ -79,8 +107,8 @@ function(
 
         collectionEvents:
         {
-            "add": "onAddWeek",
-            "reset": "render",
+            //"add": "onAddWeek",
+            // "reset": "render",
             "item:move": "onItemMoved",
             "shiftwizard:open": "onShiftWizardOpen",
             "rangeselect": "onRangeSelect",
@@ -110,31 +138,6 @@ function(
             }
         },
 
-        onAddWeek: function(model)
-        {
-            var weekCollection = model.get("week");
-            this.addWeek({ model: model, collection: weekCollection, append: arguments[2].append });
-        },
-
-        addWeek: function(options)
-        {
-            var weekView = new CalendarWeekView({ collection: options.collection, model: options.model });
-            weekView.on("itemview:itemDropped", this.onItemDropped, this);
-            
-            if (options.append)
-                this.ui.weeksContainer.append(weekView.render().el);
-            else
-            {
-                this.ui.weeksContainer.prepend(weekView.render().el);
-                this.ui.weeksContainer.scrollTop(this.ui.weeksContainer.scrollTop() + weekView.$el.height());
-            }
-
-            // display waiting indicator, then once controller loads the models they will turn off via sync event
-            weekView.onWaitStart();
-
-            this.children.push(weekView);
-        },
-
         setupKeyBindingsOnRender: function()
         {
 
@@ -147,27 +150,27 @@ function(
             $(document).on('keyup', this.onKeyUp);
         },
 
-        addWeeksOnRender: function()
+        getCurrentWeek: function()
         {
-            var numWeeks = this.collection.length;
-            var i = 0;
-
-            for (; i < numWeeks; i++)
-            {
-                var weekModel = this.collection.at(i);
-                this.addWeek({ model: weekModel, collection: weekModel.get("week"), append: true });
-            }
-
-            this.resizeContainer();
+            return this.weeksCollectionView.getCurrentModel().id;
         },
 
-        // onShow happens after render finishes and dom has updated ...
-        onShow: function()
+        scrollToDate: function(targetDate, effectDuration, callback)
         {
-            this.scrollToSelector(".today");
+            if(callback) console.warn("Callback not supported on scrollToDate", callback);
+
+            var dateAsMoment = moment(targetDate);
+
+            if (typeof effectDuration === "undefined")
+                effectDuration = 500;
+
+            // QL TODO: This works incorrectly for Sunday...
+            var id = dateAsMoment.day(this.startOfWeekDayIndex).format(TP.utils.datetime.shortDateFormat);
+            var model = this.collection.get(id);
+            this.weeksCollectionView.scrollToModel(model, effectDuration);
         },
 
-        onItemDropped: function(itemView, options)
+        onItemDropped: function(weekView, dayView, options)
         {
             this.trigger("itemDropped", options);
         },
@@ -175,22 +178,6 @@ function(
         onItemMoved: function(item, movedToDate, deferredResult)
         {
             this.trigger("itemMoved", item, movedToDate, deferredResult);
-        },
-
-        fadeOut: function(duration)
-        {
-            if (this.$el)
-            {
-                this.$el.fadeOut({ duration: duration });
-            }
-        },
-
-        fadeIn: function(duration)
-        {
-            if (this.$el)
-            {
-                this.$el.fadeIn({ duration: duration });
-            }
         },
 
         onRangeSelect: function(rangeSelection, e)
@@ -209,16 +196,21 @@ function(
 
         },
 
+        onLibraryAnimateSetup: function()
+        {
+            this.weeksCollectionView.lockScrollPosition();
+        },
+
         onLibraryAnimateComplete: function()
         {
             this.resizeContainer();
             this.updateWeekHeights();
-            this.scrollToLastViewedDate(0);
+            this.weeksCollectionView.unlockScrollPosition();
         },
 
         onLibraryAnimateProgress: function()
         {
-            this.scrollToLastViewedDate(0);
+            this.weeksCollectionView.resetScrollPosition();
         },
 
         updateWeekHeights: function()
@@ -227,6 +219,83 @@ function(
             {
                 model.trigger("library:resize");
             });
+        },
+
+        initializeScrollOnDrag: function()
+        {
+            this.watchForDragging();
+
+        },
+
+        watchForDragging: function()
+        {
+            _.bindAll(this, "onDragItem", "cancelAutoScroll");
+
+            $(document).on("drag", this.onDragItem);
+            $(document).on("mouseup", this.cancelAutoScroll);
+
+            this.on("close", function()
+            {
+                $(document).off("drag", this.onDragItem);
+                $(document).off("mouseup", this.cancelAutoScroll);
+            }, this);
+        },
+
+        onDragItem: function(e, ui)
+        {
+            var calendarContainer = this.ui.weeksContainer.closest("#calendarContainer");
+
+            var calendarPosition = {
+                top: calendarContainer.offset().top,
+                bottom: calendarContainer.offset().top + calendarContainer.height()
+            };
+
+            var uiPosition = {
+                mouse: e.pageY,
+                top: ui.helper.position().top,
+                bottom: ui.helper.position().top + ui.helper.height()
+            };
+
+            this.autoScrollIfNecessary(calendarPosition, uiPosition);
+        },
+
+        autoScrollIfNecessary: function(calendarPosition, uiPosition)
+        {
+
+            var topThreshold = calendarPosition.top + 10;
+            var bottomThreshold = calendarPosition.bottom - 20;
+            var stopThreshold = 10;
+            var self = this;
+            if (uiPosition.top <= topThreshold)
+            {
+                this.autoScroll("back");
+                
+            } else if (uiPosition.bottom >= bottomThreshold)
+            {
+                this.autoScroll("forward");
+                
+            } else if(uiPosition.top >= (topThreshold + stopThreshold) && uiPosition.bottom <= (bottomThreshold - stopThreshold))
+            {
+                this.cancelAutoScroll();
+            }
+        },
+
+
+        autoScroll: function(direction) {
+            var self = this,
+                modelOffset = direction === "forward" ? 1 : -1;
+
+            this.cancelAutoScroll();
+            this.autoScrollInterval = setInterval(function() {
+                var currentModel = self.weeksCollectionView.getCurrentModel(),
+                    nextOrPreviousModel = self.weeksCollectionView.collection.at(self.weeksCollectionView.collection.indexOf(currentModel) + modelOffset);
+                self.weeksCollectionView.scrollToModel(nextOrPreviousModel, 500);
+            },1000);
+        },
+
+        cancelAutoScroll: function()
+        {
+            clearInterval(this.autoScrollInterval);
         },
 
         onKeyDown: function(e)

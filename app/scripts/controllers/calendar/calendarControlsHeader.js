@@ -30,22 +30,14 @@ function (_, TP, calendarHeaderView)
 
         },
 
-        onRequestLastWeek: function (currentWeekModel, animationSpeed)
+        onRequestLastWeek: function (currentWeekModel)
         {
-            if (_.isUndefined(animationSpeed))
-                animationSpeed = 200;
-
-            // header has end of week, our showDate wants start of week ...
-            this.showDate(moment(currentWeekModel.get("date")).subtract("days", 6).subtract("weeks", 1), animationSpeed);
+            this.showDate(moment(this.views.calendar.getCurrentWeek()).subtract("weeks", 1), 200);
         },
 
-        onRequestNextWeek: function(currentWeekModel, animationSpeed)
+        onRequestNextWeek: function(currentWeekModel)
         {
-            if (_.isUndefined(animationSpeed))
-                animationSpeed = 200;
-
-            // header has end of week, our showDate wants start of week ...
-            this.showDate(moment(currentWeekModel.get("date")).add("days", 1), animationSpeed);
+            this.showDate(moment(this.views.calendar.getCurrentWeek()).add("weeks", 1), 200);
         }
 
     };

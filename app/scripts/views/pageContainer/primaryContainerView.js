@@ -11,7 +11,7 @@ function(
     )
 {
 
-    return TP.ItemView.extend(
+    return TP.Layout.extend(
     {
 
         initialize: function()
@@ -100,7 +100,13 @@ function(
                 });
             };
 
+            this.onLibraryAnimateSetup();
             primaryContentContainer.animate(cssAttributes, { progress: this.onLibraryAnimateProgress, duration: duration, complete: onComplete });
+        },
+
+        onLibraryAnimateSetup: function()
+        {
+            return;
         },
 
         onLibraryAnimateProgress: function()
