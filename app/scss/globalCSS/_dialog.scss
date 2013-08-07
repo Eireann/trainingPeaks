@@ -32,19 +32,15 @@
     {
         text-align: left;
         min-height: 30px;
-        padding: 10px 0px 0px 16px;
+        // padding: 10px 0px 0px 16px;
         background-color: #eaebec;
-         @include box-shadow(2px 0px 7px 0px $TPGrey4);
+        @include box-shadow(2px 0px 7px 0px $TPGrey4);
         position: relative; 
         z-index: 99;
-        font-size: $fontSizeSmall;
-        font-family: $fontFamilyRegular;
         color: $TPGrey3;
         cursor: default;
 
-        #closeIcon {
-            margin:0 5px 0 10px;
-        }
+       
     }
 }
 

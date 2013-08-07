@@ -3,45 +3,26 @@
 .elevationCorrectionContainer
 {
     width: 800px;
-    height: 475px;
     @include filter-gradient(#ffffff, #dedcde, horizontal);
     @include background-image(radial-gradient(center, ellipse cover,  #eaebec 0%,#dedcde 100%));
+    overflow:hidden;
 
     .titleBar
     {
         text-align: left;
         min-height: 28px;
-        padding: 7px 0px 0px 16px;
         background-color: $TPGrey1;
         @include box-shadow(2px 0px 7px 0px $TPGrey4);
         position: relative; 
         z-index: 99;
         cursor: default;
-
-        span
-        {
-            font-size: $fontSizeSmall;
-            font-family: $fontFamilyRegular;
-            color: $TPGrey3;
-        }
-
-        .close
-        {
-            float: right;
-            padding-right: 10px;
-            margin-top: -2px;
-
-            img
-            {
-                cursor: pointer;
-            }
-        }
     }
 
     .elevationGraph
     {
         width: 490px;
-        margin: 27px 0 0 30px;
+        height:235px !important;
+        margin: 30px 0 0 30px;
         float: left;
     }
 
@@ -49,11 +30,11 @@
     {
         float: right;
         width: 265px;
-        margin: 100px 10px 0 0;
+        margin: 45px 10px 0 0;
 
         .statsHeader
         {
-            padding-left: 64px;
+            padding-left: 60px;
             padding-bottom: 7px;
             
             span
@@ -65,12 +46,22 @@
 
             .original
             {
-                padding-left: 6px;
+                // padding-left: 6px;
+                display:inline-block;
+                width:70px;
+                text-align:center;
+                padding:0;
+                margin:0;
             }
 
             .corrected
             {
-                padding-left: 10px;
+                // padding-left: 10px;
+                display:inline-block;
+                width:70px;
+                text-align:center;
+                padding:0;
+                margin:0 0 0 2px;
             }
         }
 
@@ -78,16 +69,17 @@
         {
             float: left;
             min-width: 200px;
-            padding: 0px 0 0px 0;
+            padding: 0;
 
             div
             {
                 float: left;
                 min-width: 70px;
-                padding: 8px 10px 0 0;
+                padding: 10px 0 0 0;
                 text-align: center;
                 height: 30px;
                 margin-right: 2px;
+
             }
             .statsLabel
             {
@@ -110,14 +102,14 @@
 
             .original
             {
-                color: #fbb12b;
+                color: $clrElevOriginal;
                 background-color: $TPGrey1;
             }
 
             .corrected
             {
-                color: #fa3b3b;
-                padding-left: 17px;
+                color: $clrElevCorrected;
+                // padding-left: 17px;
                 background-color: $TPGrey1;
             }
         }
@@ -127,7 +119,7 @@
     {
         width: 180px;
         float: right;
-        margin: 20px 47px 0 0;
+        margin:20px 16px 11px 0;
         
         button
         {

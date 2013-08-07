@@ -146,8 +146,15 @@
 		font-size: $fontSizeSmall;
 		// .857em/12px
 
+		font-family: $fontFamilyRegular;
+		font-weight:normal;
+
 		color: $TPGrey3;
 		// #636569
+
+		float:left;
+		line-height:1;
+		margin:0;
 	}
 
 	// Headline above expando right col stats

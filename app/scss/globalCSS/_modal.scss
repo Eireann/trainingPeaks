@@ -22,6 +22,16 @@
         top:100px;
         left:100px;
 
+        .titleBar {
+            h2.modaltitle {
+                margin:9px 0 0 10px;
+            }
+            
+            #closeIcon {
+                margin:8px 5px 0 10px;
+            }
+        }
+
          #menuIcon {
             cursor:pointer;
             margin:0;
@@ -36,7 +46,7 @@
 
         #closeIcon {
             cursor:pointer;
-            margin:0 0 0 10px;
+            margin:0 5px 0 10px;
             width:17px;
             height:17px;
             float:right;
