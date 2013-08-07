@@ -84,14 +84,6 @@ function(
             expect(libraryContainerText).toContain("Training Plan Three");
         });
 
-        it("Should display the training plan status", function()
-        {
-            testHelpers.resolveRequest("GET", "plans/v1/plans$", xhrData.trainingPlans);
-            expect($mainRegion.find(".trainingPlanLibrary .trainingPlan[data-trainingplanid=1]").text()).toContain("Applied");
-            expect($mainRegion.find(".trainingPlanLibrary .trainingPlan[data-trainingplanid=2]").text()).toContain("Available");
-            expect($mainRegion.find(".trainingPlanLibrary .trainingPlan[data-trainingplanid=3]").text()).toContain("Purchased");
-        });
-
         describe("Search", function()
         {
 
