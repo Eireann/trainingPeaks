@@ -239,7 +239,7 @@ function(
         {
             var view = this.children.findByModel(model);
             clearTimeout(this.scrollStopTimeout);
-            if(!view) {
+            if(!view || view.$el.css('display') === 'none') {
                 this.collection.centerOnModel(model);
                 view = this.children.findByModel(model);
                 duration = 0;
@@ -299,6 +299,10 @@ function(
 
         _closestChildToTop: function() {
             return _.chain(this.children.toArray())
+            .reject(function(child)
+            {
+                return child.$el.css('display') === 'none';
+            })
             .map(function(child)
             {
                 return {
@@ -366,6 +370,7 @@ function(
             var $dragging = view.$el.find('.dragging, .ui-draggable-draging');
             if($dragging.length > 0)
             {
+                view.$el.css('display', 'none');
                 $dragging.on("dragstop", function(event, ui) { self.removeChildView(view); });
             } else {
                 this.triggerMethod("before:item:removed", view);
