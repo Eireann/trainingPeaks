@@ -46,7 +46,7 @@ function(
 
         initialize: function(options)
         {
-
+            var self = this;
             if (!this.collection)
                 throw "CalendarView needs a Collection!";
 
@@ -78,7 +78,9 @@ function(
         _loadDataAfterScroll: function()
         {
             var self = this;
-
+            if (this.isAutoScrolling) {
+                return;
+            }
             _.each(this.weeksCollectionView.getVisibleModels(), function(model)
             {
                 if(!model.get("isFetched"))
@@ -273,40 +275,59 @@ function(
         autoScrollIfNecessary: function(calendarPosition, uiPosition)
         {
 
-            var topThreshold = calendarPosition.top + 10;
+            var topThreshold = calendarPosition.top + 20;
             var bottomThreshold = calendarPosition.bottom - 20;
             var stopThreshold = 10;
             var self = this;
-            if (uiPosition.top <= topThreshold)
+
+            if (uiPosition.mouse <= topThreshold)
             {
-                this.autoScroll("back");
-                
-            } else if (uiPosition.bottom >= bottomThreshold)
+                this.startAutoScrollInterval("back");
+
+            } else if (uiPosition.mouse >= bottomThreshold)
             {
-                this.autoScroll("forward");
-                
-            } else if(uiPosition.top >= (topThreshold + stopThreshold) && uiPosition.bottom <= (bottomThreshold - stopThreshold))
+                this.startAutoScrollInterval("forward");
+
+            } else
             {
                 this.cancelAutoScroll();
             }
+
         },
 
 
-        autoScroll: function(direction) {
-            var self = this,
-                modelOffset = direction === "forward" ? 1 : -1;
-
+        startAutoScrollInterval: function(direction)
+        {
+            var self = this;
+            
+            if (this.autoScrollDirection === direction)
+            {
+                return;
+            }
             this.cancelAutoScroll();
-            this.autoScrollInterval = setInterval(function() {
-                var currentModel = self.weeksCollectionView.getCurrentModel(),
-                    nextOrPreviousModel = self.weeksCollectionView.collection.at(self.weeksCollectionView.collection.indexOf(currentModel) + modelOffset);
-                self.weeksCollectionView.scrollToModel(nextOrPreviousModel, 500);
-            },1000);
+            this.isAutoScrolling = true;
+            this.autoScrollDirection = direction;
+            this.fireAutoScroll(direction);
+            this.autoScrollInterval = setInterval(function()
+            {
+                self.fireAutoScroll(direction);
+            },500);
+        },
+
+        fireAutoScroll: function(direction)
+        {
+            var modelOffset = direction === "forward" ? 1 : -1;
+            var currentModel = this.weeksCollectionView.getCurrentModel();
+            var targetMoment = moment(currentModel.id).add("weeks", modelOffset);
+
+            this.scrollToDate(targetMoment, 400);
         },
 
         cancelAutoScroll: function()
         {
             clearInterval(this.autoScrollInterval);
+            this.isAutoScrolling = false;
+            this.autoScrollDirection = null;
         },
 
         onKeyDown: function(e)
