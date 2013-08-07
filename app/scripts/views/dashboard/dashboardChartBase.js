@@ -86,7 +86,7 @@ function(
             {
                 mergedSettings.quickDateSelectOption = defaultDateOption;
             }
-            this.setSetting("dateOptions", mergedSettings, { silent: true })
+            this.setSetting("dateOptions", mergedSettings, { silent: true });
         },
 
         initialize: function(options)

@@ -85,7 +85,6 @@ function(
             var existingValue = this.model.get(modelKey);
             var adjustedValue = this.adjustNumericInput(inputId, newValue, existingValue);
 
-            console.log(inputId + " changed to " + adjustedValue);
             if(adjustedValue === existingValue)
             {
                 $(e.target).val(adjustedValue);
