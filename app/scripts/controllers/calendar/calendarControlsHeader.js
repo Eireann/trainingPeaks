@@ -27,9 +27,12 @@ function (_, TP, calendarHeaderView)
             this.views.header.on("request:nextweek", this.onRequestNextWeek, this);
             this.views.header.on("request:lastweek", this.onRequestLastWeek, this);
             this.views.header.on("request:refresh", this.onRequestRefresh, this);
-
+            this.views.header.on("request:date", this.onRequestDate, this);
         },
 
+        onRequestDate: function(date) {
+            this.showDate(moment(date), 200);
+        },
         onRequestLastWeek: function (currentWeekModel)
         {
             this.showDate(moment(this.views.calendar.getCurrentWeek()).subtract("weeks", 1), 200);

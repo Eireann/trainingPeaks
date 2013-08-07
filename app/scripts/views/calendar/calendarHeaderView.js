@@ -2,10 +2,11 @@ define(
 [
     "TP",
     "moment",
+    "jqueryui/datepicker",
     "views/applicationHeader/coachAndAffiliateCustomizations",
     "hbs!templates/views/calendar/calendarHeader"
 ],
-function(TP, moment, coachAndAffiliateCustomizations, calendarHeaderTemplate)
+function(TP, moment, datepicker, coachAndAffiliateCustomizations, calendarHeaderTemplate)
 {
     var calendarHeaderViewBase = {
 
@@ -23,7 +24,7 @@ function(TP, moment, coachAndAffiliateCustomizations, calendarHeaderTemplate)
             "click #goToNextWeekButton": "onGoToNextWeekButtonClicked",
             "click #goToLastWeekButton": "onGoToLastWeekButtonClicked",
             "click button.refreshButton": "onRefreshButtonClicked",
-
+            "change .datepicker": "onDateSelect",
             "change #athleteCalendarSelect": "onAthleteSelectBoxChange"
 
         },
@@ -44,6 +45,10 @@ function(TP, moment, coachAndAffiliateCustomizations, calendarHeaderTemplate)
             this.stickitInitialized = true;
         },
 
+        onRender: function()
+        {
+            this.$(".datepicker").datepicker({ dateFormat: "m/d/yy", firstDay: theMarsApp.controllers.calendarController.startOfWeekDayIndex });
+        },
         bindings:
         {
             ".headerMonth":
@@ -153,7 +158,10 @@ function(TP, moment, coachAndAffiliateCustomizations, calendarHeaderTemplate)
 
             return headerData;
         },
-
+        onDateSelect: function(e)
+        {
+            this.trigger("request:date", this.$('.datepicker').val());
+        },
         onGoToTodayButtonClicked: function ()
         {
             TP.analytics("send", { "hitType": "event", "eventCategory": "calendar", "eventAction": "todayClicked", "eventLabel": "" });
