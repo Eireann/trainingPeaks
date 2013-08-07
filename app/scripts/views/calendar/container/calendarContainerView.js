@@ -172,7 +172,10 @@ function(
             if (typeof effectDuration === "undefined")
                 effectDuration = 500;
 
-            // QL TODO: This works incorrectly for Sunday...
+            if(dateAsMoment.day() < this.startOfWeekDayIndex)
+            {
+                dateAsMoment.subtract("week", 1);
+            }
             var id = dateAsMoment.day(this.startOfWeekDayIndex).format(TP.utils.datetime.shortDateFormat);
             var model = this.collection.get(id);
             this.weeksCollectionView.scrollToModel(model, effectDuration);
