@@ -208,7 +208,7 @@ function(
             _.each(this.packery.getItemElements(), function(element, newIndex)
             {
                 var oldIndex = $(element).attr("data-index");
-                var setting = this.model.get("settings.dashboard.pods." + oldIndex)
+                var setting = this.model.get("settings.dashboard.pods." + oldIndex);
                 orderedSettings.push(setting);
             }, this);
             this.syncChartSettingsOrder(orderedSettings);
