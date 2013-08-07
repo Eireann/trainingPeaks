@@ -363,15 +363,15 @@ function(
             this.scrollAnchorCount++;
         },
 
-        removeChildView: function(view)
+        removeChildView: function(view, force)
         {
             var self = this;
 
             var $dragging = view.$el.find('.dragging, .ui-draggable-draging');
-            if($dragging.length > 0)
+            if ($dragging.length > 0 && !force)
             {
                 view.$el.css('display', 'none');
-                $dragging.on("dragstop", function(event, ui) { self.removeChildView(view); });
+                $dragging.on("dragstop", function(event, ui) { self.removeChildView(view, true); });
             } else {
                 this.triggerMethod("before:item:removed", view);
                 TP.CollectionView.prototype.removeChildView.apply(this, arguments);
