@@ -1,35 +1,22 @@
 define(
 [
-    "jqueryui/datepicker",
     "jqueryui/spinner",
-    "jquerySelectBox",
-    "setImmediate",
     "underscore",
     "TP",
-    "./dashboardDatePicker",
-    "views/dashboard/chartUtils",
+    "./dashboardChartSettingsBase",
     "hbs!templates/views/dashboard/pmcChartSettings"
 ],
 function(
-    datepicker,
     spinner,
-    jquerySelectBox,
-    setImmediate,
     _,
     TP,
-    DashboardDatePicker,
-    chartUtils,
+    DashboardChartSettingsBase,
     pmcChartSettingsTemplate
     )
 {
-    return TP.ItemView.extend(
-    {
+    var PMCChartSettings = {
 
-        modal: true,
-        showThrobbers: false,
-        tagName: "div",
         className: "pmcChartSettings",
-        index: 0,
 
         template:
         {
@@ -37,100 +24,12 @@ function(
             template: pmcChartSettingsTemplate
         },
 
-        initialize: function(options)
-        {
-            this.setTomahawkDirection(options.direction);
-            this.index = options && options.hasOwnProperty("index") ? options.index : 0;
-            this.settingsKey = "settings.dashboard.pods." + this.index;
-            this.model.on("change:" + this.settingsKey + ".*", this.onSettingsChange, this);
-
-            this.datepickerView = new DashboardDatePicker({ model: this.model, settingsKey: this.settingsKey });
-        },
-
-        events:
-        {
+        events: _.extend({}, DashboardChartSettingsBase.events, {
             "click .workoutType input[type=checkbox]": "onWorkoutTypeSelected",
             "change input[type=number]": "onNumberOptionsChanged",
             "blur input[type=number]": "onNumberOptionsChanged",
-            "click input[type=checkbox].chartSeriesOption": "onChartSeriesOptionChanged",
-            "click #closeIcon": "close"
-        },
-
-        onRender: function()
-        {
-            this.model.off("change", this.render);
-            this.datepickerView.setElement(this.$(".datepickerContainer")).render();
-
-            // setup number picker, and make sure it fires a change event
-            this.$("input[type=number]").spinner().on("spinstop", function(event, ui) { $(this).trigger("change", event, ui); });
-
-            if(this.focusedInputId)
-            {
-                var self = this;
-                setImmediate(function()
-                {
-                    self.$("#" + self.focusedInputId).focus();
-                    self.focusedInputId = null;
-                });
-            }
-
-        },
-
-        onSettingsChange: function()
-        {
-            this.hasChangedSettings = true;
-            this.render();
-        },
-
-        onClose: function()
-        {
-            this.datepickerView.close();
-            this.model.off("change:" + this.settingsKey + ".*", this.onSettingsChange, this);
-            if(this.hasChangedSettings)
-            {
-                this.saveSettings();
-                this.trigger("change:settings");
-            }
-        },
-
-        saveSettings: function()
-        {
-            this.model.save();
-        },
-
-        serializeData: function()
-        {
-            var pmcSettings = this.model.has(this.settingsKey) ? this.model.toJSON().settings.dashboard.pods[this.index] : {};
-            pmcSettings = chartUtils.buildChartParameters(pmcSettings);
-
-            var allSelected = true;
-            var forceAllSelected = _.contains(pmcSettings.workoutTypeIds, 0) || _.contains(pmcSettings.workoutTypeIds, "0") ? true : false;
-
-            pmcSettings.workoutTypes = [];
-            _.each(TP.utils.workout.types.typesById, function(typeName, typeId)
-            {
-
-                var workoutType = {
-                    id: typeId,
-                    name: typeName,
-                    selected: forceAllSelected || _.contains(pmcSettings.workoutTypeIds, typeId) ? true : false
-                };
-                pmcSettings.workoutTypes.push(workoutType);
-
-                if(!workoutType.selected)
-                {
-                    allSelected = false;
-                }
-            });
-
-            pmcSettings.workoutTypes.push({
-                id: 0,
-                name: "Select All",
-                selected: allSelected ? true : false
-            });
-
-            return pmcSettings;
-        },
+            "click input[type=checkbox].chartSeriesOption": "onChartSeriesOptionChanged"
+        }),
 
         onWorkoutTypeSelected: function(e)
         {
@@ -247,12 +146,11 @@ function(
             var checked = checkbox.is(":checked");
            
             this.model.set(this.settingsKey + "." + optionId, checked);
-        },
-
-        setTomahawkDirection: function(direction)
-        {
-            this.$el.removeClass("left").removeClass("right").addClass(direction);
         }
 
-    });
+    };
+
+    PMCChartSettings = _.extend({}, DashboardChartSettingsBase, PMCChartSettings);
+    return TP.ItemView.extend(PMCChartSettings);
+
 });

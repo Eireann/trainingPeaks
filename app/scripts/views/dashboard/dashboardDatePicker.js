@@ -87,12 +87,10 @@ function(
 
         serializeData: function()
         {
-            var dateSettings = this.model.has(this.settingsKey) ? _.clone(this.model.get(this.settingsKey)) : {};
-            
-            dateSettings = chartUtils.buildChartParameters(dateSettings);
-
-            dateSettings.dateOptions = [];
+            var dateSettings = this.model.get(this.settingsKey);
             var selectedOptionId = Number(dateSettings.quickDateSelectOption);
+            dateSettings = chartUtils.buildChartParameters(dateSettings);
+            dateSettings.dateOptions = [];
 
             _.each(chartUtils.chartDateOptions, function(option)
             {

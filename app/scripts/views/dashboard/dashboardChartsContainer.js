@@ -101,9 +101,9 @@ function(
             _.each(this.model.get("settings.dashboard.pods"), function(podSettings, index)
             {
                 // add some stuff to pod settings that we may not want to persist
-                podSettings = _.extend({}, podSettings, {useGrid: this.useGrid, usePackery: this.usePackery});
+                podSettings = _.extend({}, podSettings, {useGrid: this.useGrid, usePackery: this.usePackery, settingsModel: theMarsApp.user });
 
-                var chartView = dashboardChartBuilder.buildChartView(podSettings.chartType, podSettings, this.useGrid);
+                var chartView = dashboardChartBuilder.buildChartView(podSettings.chartType, podSettings);
                 this.charts.push(chartView);
                 chartView.on("remove", this.onChartRemove, this);
             }, this);
@@ -271,6 +271,14 @@ function(
             }
 
             return chart;
+        },
+
+        onDashboardDatesChange: function()
+        {
+            _.each(this.charts, function(chartView)
+            {
+                chartView.onDashboardDatesChange();
+            });
         }
 
 

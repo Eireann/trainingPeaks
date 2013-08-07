@@ -22,16 +22,16 @@ function(
 
             getStartDate: function(chartSettings)
             {
-                var globalSettingsOptions = theMarsApp.user.get("settings.dashboard.globalDateRange");
-                var chartSettingsHandler = chartUtils.findChartDateOption(globalSettingsOptions.quickDateSelectOption);
-                return chartSettingsHandler.getStartDate(globalSettingsOptions);
+                var globalSettings = chartUtils.findGlobalChartSettings();
+                var chartSettingsHandler = chartUtils.findGlobalChartSettingsHandler();
+                return chartSettingsHandler.getStartDate(globalSettings);
             },
 
             getEndDate: function(chartSettings)
             {
-                var globalSettingsOptions = theMarsApp.user.get("settings.dashboard.globalDateRange");
-                var chartSettingsHandler = chartUtils.findChartDateOption(globalSettingsOptions.quickDateSelectOption);
-                return chartSettingsHandler.getEndDate(globalSettingsOptions);
+                var globalSettings = chartUtils.findGlobalChartSettings();
+                var chartSettingsHandler = chartUtils.findGlobalChartSettingsHandler();
+                return chartSettingsHandler.getEndDate(globalSettings);
             }
         },
 
@@ -386,11 +386,6 @@ function(
         {
             var chartSettings = _.clone(baseSettings);
 
-            if (!chartSettings.quickDateSelectOption)
-            {
-                chartSettings.quickDateSelectOption = this.chartDateOptions.LAST_90_DAYS_AND_NEXT_21_DAYS.id;
-            }
-
             var dateOption = this.findChartDateOption(chartSettings.quickDateSelectOption);
 
             chartSettings.startDate = dateOption.getStartDate(chartSettings);
@@ -409,10 +404,33 @@ function(
 
             if(!selectedOption)
             {
-                selectedOption = this.chartDateOptions.LAST_90_DAYS_AND_NEXT_21_DAYS;
+                throw "Invalid date option for chart utils: " + selectedOptionId;
             }
 
             return selectedOption;
+        },
+
+        findGlobalChartSettings: function()
+        {
+            var globalSettingKey = "settings.dashboard.globalDateRange";
+            if(!theMarsApp.user.has(globalSettingKey))
+            {
+                theMarsApp.user.set(globalSettingKey, { startDate: null, endDate: null, quickDateSelectOption: null});
+            }
+            return theMarsApp.user.get(globalSettingKey);
+        },
+
+        findGlobalChartSettingsHandler: function()
+        {
+            // default
+            var quickDateSelectOption = chartDateOptions.LAST_90_DAYS_AND_NEXT_21_DAYS.id;
+            var globalSettings = this.findGlobalChartSettings();
+            if(globalSettings.quickDateSelectOption && globalSettings.quickDateSelectOption > 1)
+            {
+                quickDateSelectOption = globalSettings.quickDateSelectOption;
+            }
+
+            return chartUtils.findChartDateOption(quickDateSelectOption);
         },
 
         chartDateOptions: chartDateOptions

@@ -10,6 +10,7 @@
     "utilities/charting/flotToolTipPositioner",
     "utilities/workout/workoutTypes",
     "views/dashboard/chartUtils",
+    "./dashboardChartSettings",
     "hbs!templates/views/charts/chartTooltip"
 ],
 function(
@@ -23,6 +24,7 @@ function(
     toolTipPositioner,
     workoutTypes,
     chartUtils,
+    dashboardChartSettings,
     tooltipTemplate
     )
 {
@@ -75,14 +77,33 @@ function(
             this.$el.attr(this.attributes());
         },
 
+        setDefaultChartSettings: function(options)
+        {
+            var defaultDateOption = chartUtils.chartDateOptions.USE_GLOBAL_DATES.id;
+            var defaultSettings = { startDate: null, endDate: null, quickDateSelectOption: defaultDateOption };
+            var mergedSettings = _.extend(defaultSettings, this.settingsModel.get(this.settingsKey));
+            if(!mergedSettings.quickDateSelectOption)
+            {
+                mergedSettings.quickDateSelectOption = defaultDateOption;
+            }
+            this.settingsModel.set(this.settingsKey, mergedSettings, { silent: true });
+        },
+
         initialize: function(options)
         {
             options = this.buildDefaultOptions(options);
             _.bindAll(this, "onHoverToolTip");
             this.setGridAttributes(options);
             this.setSettingsIndex(options.index);
+            this.setupSettingsModel(options);
             this.setupViewModel(options);
             this.setupDataModel(options);
+        },
+
+        setupSettingsModel: function(options)
+        {
+            this.settingsModel = options && options.hasOwnProperty("settingsModel") ? options.settingsModel : theMarsApp.user;
+            this.setDefaultChartSettings(options);
         },
 
         setupViewModel: function(options)
@@ -131,9 +152,9 @@ function(
         {
             var self = this;
 
-            if (theMarsApp.user.has(this.settingsKey))
+            if (this.settingsModel.has(this.settingsKey))
             {
-                this.chartDataModel.setParameters(chartUtils.buildChartParameters(theMarsApp.user.get(this.settingsKey)));
+                this.chartDataModel.setParameters(chartUtils.buildChartParameters(this.settingsModel.get(this.settingsKey)));
 
             }
 
@@ -259,7 +280,40 @@ function(
 
         settingsClicked: function(e)
         {
+            if (e && e.button && e.button === 2)
+            {
+                return;
+            }
 
+            e.preventDefault();
+
+            this.keepSettingsButtonVisible();
+
+            var offset = $(e.currentTarget).offset();
+            var windowWidth = $(window).width();
+
+            var direction = (windowWidth - offset.left) > 450 ? "right" : "left";
+            var icon = this.$(".settings");
+            this.chartSettings = new dashboardChartSettings({ model: this.settingsModel, direction: direction, index: this.index });
+
+            this.chartSettings.render().top(offset.top - 25);
+            this.chartSettings.setTomahawkDirection(direction);
+
+            if (direction === "left")
+            {
+                this.chartSettings.right(offset.left - 15);
+            } else
+            {
+                this.chartSettings.left(offset.left + $(e.currentTarget).width() + 15);
+            }
+
+            this.chartSettings.on("change:settings", this.onChartSettingsChange, this);
+            this.chartSettings.on("close", this.allowSettingsButtonToHide, this);
+        },
+
+        onChartSettingsChange: function()
+        {
+            this.fetchData();
         },
 
         keepSettingsButtonVisible: function()
@@ -274,12 +328,12 @@ function(
 
         getSetting: function(settingKey)
         {
-            return theMarsApp.user.get(this.settingsKey + "." + settingKey);
+            return this.settingsModel.get(this.settingsKey + "." + settingKey);
         },
 
         setSetting: function(settingKey, value)
         {
-            return theMarsApp.user.set(this.settingsKey + "." + settingKey, value);
+            return this.settingsModel.set(this.settingsKey + "." + settingKey, value);
         },
 
         expandClicked: function()
@@ -360,6 +414,14 @@ function(
             this.index = index;
             this.settingsKey = "settings.dashboard.pods." + this.index;
             this.$el.attr("data-index", index);
+        },
+
+        onDashboardDatesChange: function()
+        {
+            if(this.getSetting("quickDateSelectOption") === chartUtils.chartDateOptions.USE_GLOBAL_DATES.id)
+            {
+                this.fetchData();
+            }
         }
 
     };

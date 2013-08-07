@@ -3,11 +3,13 @@
     "jqueryui/datepicker",
     "jqueryui/spinner",
     "jquerySelectBox",
+    "underscore",
     "TP",
     "./dashboardDatePicker",
+    "./chartUtils",
     "hbs!templates/views/dashboard/dashboardHeader"
 ],
-function (datepicker, spinner, jquerySelectBox, TP, DashboardDatePicker, dashboardHeaderTemplate)
+function (datepicker, spinner, jquerySelectBox, _, TP, DashboardDatePicker, chartUtils, dashboardHeaderTemplate)
 {
     var DashboardHeaderView =
     {
@@ -30,11 +32,24 @@ function (datepicker, spinner, jquerySelectBox, TP, DashboardDatePicker, dashboa
             this.settingsKey = "settings.dashboard.globalDateRange";
             this.datepickerView = new DashboardDatePicker({ model: this.model, settingsKey: this.settingsKey, includeGlobalOption: false });
             this.model.on("change:" + this.settingsKey + ".*", this.render, this);
+            this.setDefaultDateSettings();
+        },
+
+        setDefaultDateSettings: function()
+        {
+            var defaultDateOption = chartUtils.chartDateOptions.LAST_90_DAYS_AND_NEXT_21_DAYS.id;
+            var defaultSettings = { startDate: null, endDate: null, quickDateSelectOption: defaultDateOption };
+            var mergedSettings = _.extend(defaultSettings, this.model.get(this.settingsKey));
+            if(!mergedSettings.quickDateSelectOption)
+            {
+                mergedSettings.quickDateSelectOption = defaultDateOption;
+            }
+            this.model.set(this.settingsKey, mergedSettings, { silent: true });
         },
 
         onClose: function()
         {
-            this.datepickerView.close()
+            this.datepickerView.close();
         },
 
         onRender: function()
@@ -46,6 +61,7 @@ function (datepicker, spinner, jquerySelectBox, TP, DashboardDatePicker, dashboa
         applyDates: function()
         {
             this.model.save();
+            this.trigger("change:dashboardDates");
         }
     };
 
