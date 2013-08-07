@@ -85,13 +85,6 @@ function(
             this.setupDataModel(options);
         },
 
-        setSettingsIndex: function(index)
-        {
-            this.index = index;
-            this.settingsKey = "settings.dashboard.pods." + this.index;
-            this.$el.attr("data-index", index);
-        },
-
         setupViewModel: function(options)
         {
             this.model = new TP.Model();
@@ -362,10 +355,13 @@ function(
                 this.expandClicked();
         },
 
-        setPodIndex: function(index)
+        setSettingsIndex: function(index)
         {
-            this.setSetting("index", index);
+            this.index = index;
+            this.settingsKey = "settings.dashboard.pods." + this.index;
+            this.$el.attr("data-index", index);
         }
+
     };
 
 
