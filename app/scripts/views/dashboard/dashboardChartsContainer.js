@@ -178,8 +178,9 @@ function(
             if(this.packery)
             {
                 this.packery.destroy();
+                this.packery = null;
             }
-            
+
             if(this.ui.chartsContainer.packery)
             {
                 this.ui.chartsContainer.packery({
