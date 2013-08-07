@@ -6,6 +6,7 @@ define(
     "setImmediate",
     "underscore",
     "TP",
+    "./dashboardDatePicker",
     "views/dashboard/chartUtils",
     "hbs!templates/views/dashboard/pmcChartSettings"
 ],
@@ -16,6 +17,7 @@ function(
     setImmediate,
     _,
     TP,
+    DashboardDatePicker,
     chartUtils,
     pmcChartSettingsTemplate
     )
@@ -37,21 +39,17 @@ function(
 
         initialize: function(options)
         {
-
-            this.$el.addClass(options.direction);
-
+            this.setTomahawkDirection(options.direction);
             this.index = options && options.hasOwnProperty("index") ? options.index : 0;
             this.settingsKey = "settings.dashboard.pods." + this.index;
+            this.model.on("change:" + this.settingsKey + ".*", this.onSettingsChange, this);
 
-            this.model.on("change:" + this.settingsKey + ".*", this.render, this);
+            this.datepickerView = new DashboardDatePicker({ model: this.model, settingsKey: this.settingsKey });
         },
 
         events:
         {
             "click .workoutType input[type=checkbox]": "onWorkoutTypeSelected",
-            "change #dateOptions": "onDateOptionsChanged",
-            "change #startDate": "onDateOptionsChanged",
-            "change #endDate": "onDateOptionsChanged",
             "change input[type=number]": "onNumberOptionsChanged",
             "blur input[type=number]": "onNumberOptionsChanged",
             "click input[type=checkbox].chartSeriesOption": "onChartSeriesOptionChanged",
@@ -61,24 +59,14 @@ function(
         onRender: function()
         {
             this.model.off("change", this.render);
-
-            var self = this;
-            setImmediate(function()
-            {
-                self.$(".datepicker").css("position", "relative").css("z-index", self.$el.css("z-index"));
-                self.$(".datepicker").datepicker({ dateFormat: "yy-mm-dd", firstDay: theMarsApp.controllers.calendarController.startOfWeekDayIndex });
-            });
+            this.datepickerView.setElement(this.$(".datepickerContainer")).render();
 
             // setup number picker, and make sure it fires a change event
             this.$("input[type=number]").spinner().on("spinstop", function(event, ui) { $(this).trigger("change", event, ui); });
 
-            // setup dropdown styling
-            this.$("#dateOptions").selectBoxIt({
-                dynamicPositioning: false
-            });
- 
             if(this.focusedInputId)
             {
+                var self = this;
                 setImmediate(function()
                 {
                     self.$("#" + self.focusedInputId).focus();
@@ -88,9 +76,16 @@ function(
 
         },
 
+        onSettingsChange: function()
+        {
+            this.hasChangedSettings = true;
+            this.render();
+        },
+
         onClose: function()
         {
-            this.model.off("change:" + this.settingsKey + ".*", this.render, this);
+            this.datepickerView.close();
+            this.model.off("change:" + this.settingsKey + ".*", this.onSettingsChange, this);
             if(this.hasChangedSettings)
             {
                 this.saveSettings();
@@ -134,17 +129,6 @@ function(
                 selected: allSelected ? true : false
             });
 
-            pmcSettings.dateOptions = [];
-            var selectedOptionId = Number(pmcSettings.quickDateSelectOption);
-            _.each(chartUtils.chartDateOptions, function(option)
-            {
-                pmcSettings.dateOptions.push({
-                    id: option.id,
-                    label: option.label,
-                    selected: option.id === selectedOptionId
-                });
-            });
-
             return pmcSettings;
         },
 
@@ -186,25 +170,6 @@ function(
             }
 
             this.model.set(this.settingsKey + ".workoutTypeIds", workoutTypeIds);
-        },
-
-        onDateOptionsChanged: function(e)
-        {
-            this.hasChangedSettings = true;
-            this.focusedInputId = e.target.id;
-            var optionId = this.$("#dateOptions").val();
-
-            var pmcOptions = {
-                quickDateSelectOption: optionId,
-                startDate: this.$("#startDate").val(),
-                endDate: this.$("#endDate").val()
-            };
-
-            pmcOptions = chartUtils.buildChartParameters(pmcOptions);
-
-            this.model.set(this.settingsKey + ".startDate", pmcOptions.customStartDate ? moment(pmcOptions.startDate).format("YYYY-MM-DD") + "T00:00:00Z" : null, { silent: true });
-            this.model.set(this.settingsKey + ".endDate", pmcOptions.customEndDate ? moment(pmcOptions.endDate).format("YYYY-MM-DD") + "T00:00:00Z" : null, { silent: true });
-            this.model.set(this.settingsKey + ".quickDateSelectOption", optionId);
         },
 
         onNumberOptionsChanged: function(e)
@@ -284,7 +249,7 @@ function(
             this.model.set(this.settingsKey + "." + optionId, checked);
         },
 
-        setDirection: function(direction)
+        setTomahawkDirection: function(direction)
         {
             this.$el.removeClass("left").removeClass("right").addClass(direction);
         }

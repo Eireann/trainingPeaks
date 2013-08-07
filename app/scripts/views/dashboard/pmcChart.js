@@ -595,7 +595,7 @@ function(
             this.pmcSettings = new pmcChartSettings({ model: theMarsApp.user, direction: direction, index: this.index });
 
             this.pmcSettings.render().top(offset.top - 25);
-            this.pmcSettings.setDirection(direction);
+            this.pmcSettings.setTomahawkDirection(direction);
 
             if (direction === "left")
             {

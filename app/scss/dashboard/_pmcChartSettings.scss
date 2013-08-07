@@ -52,45 +52,6 @@
         margin-bottom: 5px;
     }
 
-    .dateRanges
-    {
-        height: 35px;
-        padding: 10px 0;
-
-        div
-        {
-            padding-top: 6px;
-        }
-
-        .fromTo
-        {
-            float: left;
-            padding: 2px 15px 0 0 ;
-            height: 25px;
-        }
-
-        .to
-        {
-            padding-left: 15px;
-        }
-    }
-
-    
-
-    .datePicker
-    {
-        width: 75px;
-        height: 20px;
-    }
-
-    .date
-    {
-        width: 75px;
-        float: left;
-        font-size: $fontSizeSmall;
-        color: $TPGrey3;
-    }
-
     input[type=number] 
     {
         border: none;
@@ -174,36 +135,4 @@
         }
     }
 
-    
-
-    .selectboxit-container span 
-    {
-        height: 22px;
-        font-size: 13px;
-    }
-
-    .selectboxit
-    {
-        width: 100% important;
-    }
-
-    .selectboxit-container .selectboxit 
-    {
-        width: 100% !important; /* Width of the dropdown button */
-        height: 22px;
-    }
-
-    .selectboxit-option
-    {
-        font-size: 12px;
-    }
-
 }
-
-
-
-
-
-
-
-
