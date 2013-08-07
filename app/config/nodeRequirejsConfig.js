@@ -26,7 +26,8 @@
             "backbone.marionette": "../test/vendor/js/libs/backbone.marionette.amd",
             "Backbone.Marionette.Handlebars": "../test/vendor/js/libs/backbone.marionette.handlebars.amd",
             "hbs": "../test/vendor/js/libs/hbs",
-            "packery": "../test/vendor/js/libs/packery"
+            "packery": "../test/vendor/js/libs/packery",
+            "gridster": "../test/vendor/js/libs/gridster"
         }
     );
 

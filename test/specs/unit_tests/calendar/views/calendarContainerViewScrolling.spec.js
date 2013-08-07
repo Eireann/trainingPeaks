@@ -5,66 +5,20 @@ requirejs(
     "TP",
     "moment",
     "app",
-    "views/calendar/container/calendarContainerView"
+    "views/calendar/container/calendarContainerView",
+    "views/scrollableCollectionView"
 ],
-function($, TP, moment, theMarsApp, CalendarContainerView)
+function($, TP, moment, theMarsApp, CalendarContainerView, ScrollableCollectionView)
 {
 
     describe("CalendarContainerView Scrolling", function()
     {
 
-        var calendarView, appendSpy, prependSpy;
+        var calendarView;
 
         beforeEach(function()
         {
             calendarView = new CalendarContainerView({ collection: new TP.Collection() });
-            prependSpy = jasmine.createSpy("onPrepend");
-            calendarView.on("scroll:top", prependSpy);
-            appendSpy = jasmine.createSpy("onAppend");
-            calendarView.on("scroll:bottom", appendSpy);
-            calendarView.render();
-
-        });
-
-        it("Should trigger prepend event on scroll up past threshhold", function()
-        {
-            spyOn(calendarView, "getHiddenHeightAboveScrollArea").andReturn(0);
-            spyOn(calendarView, "getHiddenHeightBelowScrollArea").andReturn(1000);
-
-            calendarView.onScroll();
-
-            expect(prependSpy).toHaveBeenCalled();
-            expect(appendSpy).not.toHaveBeenCalled();
-        });
-
-        it("Should trigger append event on scroll down past threshhold", function()
-        {
-            spyOn(calendarView, "getHiddenHeightAboveScrollArea").andReturn(1000);
-            spyOn(calendarView, "getHiddenHeightBelowScrollArea").andReturn(0);
-
-            calendarView.onScroll();
-
-            expect(appendSpy).toHaveBeenCalled();
-            expect(prependSpy).not.toHaveBeenCalled();
-        });
-
-        // not actually checking the calculations inside scrollToToday,
-        // as I was having a hard time getting the fake dom to give proper offset/position calculations
-        it("Should scroll to today on show", function()
-        {
-            var calendarView = new CalendarContainerView({ collection: new TP.Collection() });
-            spyOn(calendarView, "scrollToSelector");
-            calendarView.render();
-            calendarView.onShow();
-            expect(calendarView.scrollToSelector).toHaveBeenCalledWith(".today");
-        });
-
-        it("Should scroll to a given selector", function ()
-        {
-            expect(CalendarContainerView.prototype.scrollToSelector).toBeDefined();
-            expect(typeof CalendarContainerView.prototype.scrollToSelector).toBe("function");
-            
-            //TODO: More testing here
         });
 
         it("Should scroll to a given date", function ()
@@ -73,10 +27,9 @@ function($, TP, moment, theMarsApp, CalendarContainerView)
             expect(typeof CalendarContainerView.prototype.scrollToDate).toBe("function");
 
             var calendarContainerView = new CalendarContainerView({ calendarHeaderModel: new TP.Model(), collection: new TP.Collection() });
-
-            spyOn(calendarContainerView, "scrollToSelector");
-
+            spyOn(calendarContainerView.weeksCollectionView, "scrollToModel");
             calendarContainerView.scrollToDate(moment("2013-01-01"));
+            expect(calendarContainerView.weeksCollectionView.scrollToModel).toHaveBeenCalled();
         });
 
     });

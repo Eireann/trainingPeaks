@@ -11,6 +11,7 @@
 <div id="weekSummaryContainer" class="cf">
 	<div class="weekSummaryBarGraphContain cf">
 
+		{{#ifAny totalTimePlanned totalDaysCompleted }}
 		<div class="weekSummaryBarGraphItem cf total {{#ifNot totalTimePlanned }}noPlannedDuration{{/ifNot}}" data-type="total duration">
 			<div class="weekSummaryBarGraphLabel {{ workoutTypeCssName workoutTypeId}}">
 				{{$ "Total" }} {{#ifNot totalTimePlanned}}{{$ "Days" }}{{ else }}{{$ "Duration" }}{{/ifNot}}
@@ -23,6 +24,7 @@
 			</div>
             {{{ weekSummaryBarGraph totalTimePlanned totalTimeCompleted totalDaysCompleted 0 }}}
 		</div>
+		{{/ifAny}}
 
 		{{#each totalsByWorkoutTypeCompacted }}
 			{{#with duration}}
@@ -66,7 +68,7 @@
 
 		<div class="statsRow" id="tss">
 	        <label>{{$ "TSS" }}</label>
-	        <span class="value">{{conversion "formatDistance" tssCompleted this "0"}}</span>
+	        <span class="value">{{conversion "formatTSS" tssCompleted this "0"}}</span>
 	        <span class="units"></span>
 	    </div>
 

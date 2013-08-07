@@ -152,26 +152,14 @@ function(_, Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmedia
             // already rendered ...
             if (this.modalWasRendered())
                 return;
+ 
+             // get existing modal so we can render on top
+            var existingModal = $(".modalOverlay:last");           
 
-            // get existing modal so we can render on top
-            var existingModal = $(".modalOverlay:last");
-
-            
             // make an overlay
+            var onOverlayClick = function () { this.trigger("clickoutside"); this.close(); };
+            this.createOverlay({ mask: this.modal.mask, noOverlay: this.modal.noOverlay, onOverlayClick: onOverlayClick});
             _.bindAll(this, "close");
-            var self = this;
-            this.$overlay = $("<div></div>");
-            this.$overlay.addClass("modalOverlay");
-            this.$overlay.addClass(this.className + "ModalOverlay");
-            this.$overlay.on("click", function () { self.trigger("clickoutside"); self.close(); });
-
-            if (this.modal.mask)
-                this.$overlay.addClass("modalOverlayMask");
-
-            if (!this.modal.noOverlay)
-            {
-                theMarsApp.getBodyElement().append(this.$overlay);
-            }
 
             // make $el absolute and put it on the body
             this.$el.addClass("modal");
@@ -196,9 +184,10 @@ function(_, Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmedia
             this.watchForWindowResize();
 
             this.enableEscapeKey();
-            this.closeOnRouteChange();
+            this.closeOnRouteChange(this.close);
 
             // set on top of other modals
+
             if(existingModal.length)
             {
                 var topIndex = Number(existingModal.css("z-index"));
@@ -209,6 +198,33 @@ function(_, Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmedia
             this.trigger("modalrender");
 
             return this;
+        },
+
+        createOverlay: function(modalSettings)
+        {
+            modalSettings = _.extend({ mask: true, noOverlay: false, onOverlayClick: null}, modalSettings);
+
+            this.$overlay = $("<div></div>");
+            this.$overlay.addClass("modalOverlay");
+            this.$overlay.addClass(this.className.split(" ").shift() + "ModalOverlay");
+
+            if (modalSettings.mask)
+                this.$overlay.addClass("modalOverlayMask");
+
+            if (!modalSettings.noOverlay)
+            {
+                theMarsApp.getBodyElement().append(this.$overlay);
+            }
+
+            if(modalSettings.onOverlayClick)
+            {
+                var self = this;
+                var onOverlayClick = function()
+                {
+                    modalSettings.onOverlayClick.apply(self);
+                };
+                this.$overlay.on("click", onOverlayClick);
+            }
         },
 
         modalWasRendered: function()
@@ -285,9 +301,9 @@ function(_, Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmedia
 
         },
 
-        closeOnRouteChange: function()
+        closeOnRouteChange: function(onClose)
         {
-            theMarsApp.router.once("route", this.close, this);
+            theMarsApp.router.once("route", onClose, this);
         },
 
         enableEscapeKey: function()
@@ -311,7 +327,7 @@ function(_, Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmedia
         {
             this.disableEscapeKey();
             this.stopWatchingWindowResize();
-            if (this.modal && this.$overlay)
+            if (this.$overlay)
             {
                 this.$overlay.hide().remove();
                 this.$overlay = null;

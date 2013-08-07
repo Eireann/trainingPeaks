@@ -1,8 +1,10 @@
 ﻿define(
 [
+    "views/dashboard/defaultChart",
     "views/dashboard/pmcChart"
 ],
 function(
+    DefaultChartView,
     PmcChartView
          )
 {
@@ -12,13 +14,10 @@ function(
     };
 
     return {
-        buildChartView: function(chartTypeId, podIndex )
+        buildChartView: function(chartTypeId, options )
         {
-            if(!chartConstructors.hasOwnProperty(chartTypeId))
-            {
-                throw "Invalid dashboard chart type id: " + chartTypeId;
-            }
-            return new chartConstructors[chartTypeId]({ podIndex: podIndex});
+            var ChartView = chartConstructors.hasOwnProperty(chartTypeId) ? chartConstructors[chartTypeId] : DefaultChartView;
+            return new ChartView(options);
         }
     };
 

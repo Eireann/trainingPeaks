@@ -35,7 +35,7 @@ function(moment, setImmediate, TP, CalendarDayView, WeekSummaryView, CalendarWee
         {
             if (!this.model)
                 throw "CalendarWeekView requires a model";
-
+            this.collection = this.collection || this.model.get("week");
             if (!this.collection)
                 throw "CalendarWeekView requires a collection";
             this.waiting = $('<div class="calendarWeekView waiting"> </div>');
@@ -43,6 +43,8 @@ function(moment, setImmediate, TP, CalendarDayView, WeekSummaryView, CalendarWee
             // when any of our child views update, recalculate all of their heights
             this.on("itemview:render", this.scheduleUpdateDayCellHeights, this);
             this.model.on("library:resize", this.updateDayCellHeights, this);
+
+            this.listenTo(this.model, 'change:isWaiting', _.bind(this._updateWaiting, this));
         },
 
         scheduleUpdateDayCellHeights: function()
@@ -72,8 +74,23 @@ function(moment, setImmediate, TP, CalendarDayView, WeekSummaryView, CalendarWee
             }
         },
 
+        _updateWaiting: function()
+        {
+            var isWaiting = this.model.get('isWaiting') || !this.model.get('isFetched');
+            if(isWaiting)
+            {
+                this.onWaitStart();
+            }
+            else
+            {
+                this.onWaitStop();
+            }
+        },
+
         onWaitStart: function()
         {
+            if(this.isWaiting) return;
+            this.isWaiting = true;
             this.trigger("waitStart");
             this.$el.css("position", "relative");
             this.$el.append(this.waiting);
@@ -81,12 +98,16 @@ function(moment, setImmediate, TP, CalendarDayView, WeekSummaryView, CalendarWee
 
         onWaitStop: function()
         {
+            if(!this.isWaiting) return;
+            this.isWaiting = false;
             this.trigger("waitStop");
             this.$el.find('.calendarWeekView.waiting').remove('.waiting');
         },
 
         onRender: function()
         {
+            this.isWaiting = false;
+            this._updateWaiting();
             this.setThisWeekCss();
         },
 

@@ -93,7 +93,6 @@ function(
             {
                 controller = new CalendarController();
                 spyOn(controller, "showViewsInRegions");
-                spyOn(controller, "scrollToDateAfterLoad");
                 spyOn(controller, "showDate");
             });
 
@@ -139,14 +138,6 @@ function(
                 theMarsApp.userFetchPromise.resolve();
                 expect(controller.loadCalendarData).toHaveBeenCalled();
             });
-
-            it("Should scroll to today after loading", function()
-            {
-                controller.show();
-                theMarsApp.userFetchPromise.resolve();
-                expect(controller.scrollToDateAfterLoad).toHaveBeenCalled();
-            });
-
         });
 
         describe("initializeCalendar", function()
@@ -295,78 +286,6 @@ function(
             });
         });
 
-        describe("Prepend a week to the calendar", function()
-        {
-
-            var controller;
-            var expectedStartDate;
-            var expectedEndDate;
-            var dateFormat = "YYYY-MM-DD";
-
-            beforeEach(function()
-            {
-                controller = new CalendarController();
-                expectedEndDate = moment(controller.startDate).subtract("days", 1);
-                expectedStartDate = moment(expectedEndDate).subtract("days", 6);
-            });
-
-            it("Should request workouts with the appropriate dates", function()
-            {
-                spyOn(controller.weeksCollection, "requestWorkouts");
-                controller.prependWeekToCalendar();
-                expect(controller.weeksCollection.requestWorkouts).toHaveBeenCalled();
-                var lastCall = controller.weeksCollection.requestWorkouts.mostRecentCall;
-                expect(lastCall.args[0].format(dateFormat)).toEqual(expectedStartDate.format(dateFormat));
-                expect(lastCall.args[1].format(dateFormat)).toEqual(expectedEndDate.format(dateFormat));
-            });
-
-            it("Should call collection.prependWeek", function()
-            {
-                spyOn(controller.weeksCollection, "prependWeek");
-                controller.prependWeekToCalendar();
-                expect(controller.weeksCollection.prependWeek).toHaveBeenCalled();
-                var lastCall = controller.weeksCollection.prependWeek.mostRecentCall;
-                expect(lastCall.args[0].format(dateFormat)).toEqual(expectedStartDate.format(dateFormat));
-            });
-
-        });
-
-        describe("Append a week to the calendar", function()
-        {
-
-            var controller;
-            var expectedStartDate;
-            var expectedEndDate;
-            var dateFormat = "YYYY-MM-DD";
-
-            beforeEach(function()
-            {
-                controller = new CalendarController();
-                expectedStartDate = moment(controller.endDate).add("days", 1);
-                expectedEndDate = moment(expectedStartDate).add("days", 6);
-            });
-
-            it("Should request workouts with the appropriate dates", function()
-            {
-                spyOn(controller.weeksCollection, "requestWorkouts");
-                controller.appendWeekToCalendar();
-                expect(controller.weeksCollection.requestWorkouts).toHaveBeenCalled();
-                var lastCall = controller.weeksCollection.requestWorkouts.mostRecentCall;
-                expect(lastCall.args[0].format(dateFormat)).toEqual(expectedStartDate.format(dateFormat));
-                expect(lastCall.args[1].format(dateFormat)).toEqual(expectedEndDate.format(dateFormat));
-            });
-
-            it("Should call collection.appendWeek", function()
-            {
-                spyOn(controller.weeksCollection, "appendWeek");
-                controller.appendWeekToCalendar();
-                expect(controller.weeksCollection.appendWeek).toHaveBeenCalled();
-                var lastCall = controller.weeksCollection.appendWeek.mostRecentCall;
-                expect(lastCall.args[0].format(dateFormat)).toEqual(expectedStartDate.format(dateFormat));
-            });
-        });
-
-
         describe("Reset", function()
         {
 
@@ -405,9 +324,8 @@ function(
             {
                 controller = new CalendarController();
                 spyOn(controller, "reset");
-                spyOn(controller, "prependWeekToCalendar");
-                spyOn(controller, "appendWeekToCalendar");
                 controller.initializeCalendar();
+                spyOn(controller.views.calendar, "scrollToDate");
                 controller.views.calendar = jasmine.createSpyObj("calendar view spy", ["scrollToDate"]);
             });
 
@@ -428,7 +346,7 @@ function(
                 controller.endDate = moment().day(0).add("weeks", 3);
                 var showDate = moment().day(3).add("weeks", 16);
                 controller.showDate(showDate);
-                expect(controller.reset).toHaveBeenCalled();
+                expect(controller.views.calendar.scrollToDate).toHaveBeenCalled();
             });
 
             it("Should prepend week if date is before current range", function()
@@ -438,7 +356,8 @@ function(
                 var showDate = moment().day(3).subtract("weeks", 5);
                 controller.showDate(showDate);
                 expect(controller.reset).not.toHaveBeenCalled();
-                expect(controller.prependWeekToCalendar).toHaveBeenCalled();
+                expect(controller.views.calendar.scrollToDate).toHaveBeenCalled();
+
             });
 
             it("Should append week if date is before current range", function()
@@ -448,7 +367,7 @@ function(
                 var showDate = moment().day(3).add("weeks", 6);
                 controller.showDate(showDate);
                 expect(controller.reset).not.toHaveBeenCalled();
-                expect(controller.appendWeekToCalendar).toHaveBeenCalled();
+                expect(controller.views.calendar.scrollToDate).toHaveBeenCalled();
             });
         });
 
@@ -465,14 +384,14 @@ function(
                     }
                 };
                 
-                spyOn(controller, "reset");
+                spyOn(controller, "clearCacheAndRefresh");
                 
                 var dateAsMoment = moment("2013-04-16");
                 var currentWeekModel = new TP.Model({ date: dateAsMoment.format(TP.utils.datetime.shortDateFormat) });
 
                 controller.views.header.trigger("request:refresh", currentWeekModel);
 
-                expect(controller.reset).toHaveBeenCalled();
+                expect(controller.clearCacheAndRefresh).toHaveBeenCalled();
             });
         });
 

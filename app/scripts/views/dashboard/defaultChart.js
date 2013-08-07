@@ -1,68 +1,33 @@
 ﻿define(
 [
-    "setImmediate",
+    "underscore",
+    "./dashboardChartBase",
     "TP",
     "utilities/charting/flotOptions",
-    "utilities/charting/chartColors",
     "hbs!templates/views/dashboard/dashboardChart"
 ],
 function(
-    setImmediate,
+    _,
+    DashboardChartBase,
     TP,
     defaultFlotOptions,
-    chartColors,
-    dashboardChartTemplate
+    defaultChartTemplate
     )
 {
-    return TP.ItemView.extend({
-
-        tagName: "div",
-        className: "dashboardChart",
+    var DefaultChart = {
 
         template:
         {
             type: "handlebars",
-            template: dashboardChartTemplate
+            template: defaultChartTemplate
         },
 
-        initialize: function(options)
+        setupViewModel: function(options)
         {
-            this.on("render", this.renderChartAfterRender, this);
-
             this.model = new TP.Model({
-                title: "Chart Title",
+                title: options.title,
                 yaxisLabel: "Y Axis Label",
                 xaxisLabel: "X Axis Label"
-            });
-        },
-
-        ui: 
-        {
-            chartContainer: ".chartContainer"
-        },
-
-        renderChartAfterRender: function()
-        {
-            var self = this;
-            setImmediate(function()
-            {
-                self.renderChart();
-            });
-        },
-
-        renderChart: function()
-        {
-
-            var chartPoints = this.buildFlotPoints(this.timeInZones);
-            var dataSeries = this.buildFlotDataSeries(chartPoints, chartColors.gradients.pace);
-            var flotOptions = this.buildFlotChartOptions();
-
-            var self = this;
-
-            // let the html draw first so our container has a height and width
-            setImmediate(function()
-            {
-                self.renderFlotChart(dataSeries, flotOptions);
             });
         },
 
@@ -82,8 +47,9 @@ function(
             return chartPoints;
         },
 
-        buildFlotDataSeries: function (chartPoints, chartColor)
+        buildFlotDataSeries: function (chartPoints, chartColors)
         {
+            var chartColor = chartColors.gradients.pace;
             var dataSeries =
             {
                 data: chartPoints,
@@ -115,15 +81,14 @@ function(
             return flotOptions;
         },
 
-        renderFlotChart: function(dataSeries, flotOptions)
+        fetchData: function()
         {
-            if ($.plot)
-            {
-                this.plot = $.plot(this.ui.chartContainer, dataSeries, flotOptions);
-            }
+            this.waitingOff();
+            this.render();
         }
 
+    };
 
-    });
+    return TP.ItemView.extend(_.extend({}, DashboardChartBase, DefaultChart));
 
 });

@@ -122,6 +122,9 @@ function (
                 if (!this.$chartEl)
                     this.$chartEl = this.$(".chartContainer");
 
+                if(!this.$chartEl.is(":visible"))
+                    return;
+                
                 if($.plot)
                 { 
                     this.plot = $.plot(this.$chartEl, dataSeries, flotOptions);

@@ -27,7 +27,7 @@ function(
         showThrobbers: false,
         tagName: "div",
         className: "pmcChartSettings",
-        podIndex: 0,
+        index: 0,
 
         template:
         {
@@ -40,8 +40,8 @@ function(
 
             this.$el.addClass(options.direction);
 
-            this.podIndex = options && options.hasOwnProperty("podIndex") ? options.podIndex : 0;
-            this.settingsKey = "settings.dashboard.pods." + this.podIndex;
+            this.index = options && options.hasOwnProperty("index") ? options.index : 0;
+            this.settingsKey = "settings.dashboard.pods." + this.index;
 
             this.model.on("change:" + this.settingsKey + ".*", this.render, this);
         },
@@ -105,7 +105,7 @@ function(
 
         serializeData: function()
         {
-            var pmcSettings = this.model.has(this.settingsKey) ? this.model.toJSON().settings.dashboard.pods[this.podIndex] : {};
+            var pmcSettings = this.model.has(this.settingsKey) ? this.model.toJSON().settings.dashboard.pods[this.index] : {};
             pmcSettings = chartUtils.buildChartParameters(pmcSettings);
 
             var allSelected = true;
@@ -200,7 +200,7 @@ function(
                 endDate: this.$("#endDate").val()
             };
 
-            pmcOptions = chartUtils.buildchartParameters(pmcOptions);
+            pmcOptions = chartUtils.buildChartParameters(pmcOptions);
 
             this.model.set(this.settingsKey + ".startDate", pmcOptions.customStartDate ? moment(pmcOptions.startDate).format("YYYY-MM-DD") + "T00:00:00Z" : null, { silent: true });
             this.model.set(this.settingsKey + ".endDate", pmcOptions.customEndDate ? moment(pmcOptions.endDate).format("YYYY-MM-DD") + "T00:00:00Z" : null, { silent: true });

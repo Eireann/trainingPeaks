@@ -3,9 +3,6 @@
     <label class="headerYear">{{$ "Dashboard"}}</label>
 </div>
 <div class="navigation">
-    <div class="today">
-        <button id="range" tabindex="-1">{{$ "Range"}}</button>
-    </div>
     <div class="printRefreshButtons">
         <button class="refreshButton" title="Refresh" tabindex="-1"></button>
         <button class="settingsButton" title="Calendar Settings" tabindex="-1"></button>
@@ -16,6 +13,22 @@
             <option value="{{ id }}"{{#if selected}} selected{{/if}}>{{ label }}</option>
             {{/each}}
         </select>
+    </div>
+    <div class="dateRanges">
+        <div class="title fromTo">{{$ "From"}}:</div>
+        {{#if customStartDate }}
+        <input type="text" id="startDate" class="datepicker" value="{{ formatDate startDate "YYYY-MM-DD" }}">
+        {{ else }}
+        <input type="hidden" id="Hidden1" value="{{ formatDate startDate "YYYY-MM-DD" }}">
+        <div class="date">{{ formatDate startDate "YYYY-MM-DD" }}</div>
+        {{/if}}
+        <div class="title fromTo to">{{$ "To"}}:</div>
+        {{#if customEndDate }}
+        <input type="text" id="endDate" class="datepicker" value="{{ formatDate endDate "YYYY-MM-DD" }}">
+        {{ else }}
+        <input type="hidden" id="Hidden2" value="{{ formatDate endDate "YYYY-MM-DD" }}">
+        <div class="date">{{ formatDate endDate "YYYY-MM-DD" }}</div>
+        {{/if}}
     </div>
 </div>
 <div id="affiliateBanner"></div>

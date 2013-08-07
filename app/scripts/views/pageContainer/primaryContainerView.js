@@ -11,7 +11,7 @@ function(
     )
 {
 
-    return TP.ItemView.extend(
+    return TP.Layout.extend(
     {
 
         initialize: function()
@@ -60,7 +60,11 @@ function(
             {
                 primaryContentContainerHeight -= 28;
             }
-            this.$(".scrollable").css({ height: primaryContentContainerHeight + 'px', "min-height": primaryContentContainerHeight + 'px' });
+
+            // set min/max height also in case packery or something else tries to override the height
+            this.$(".scrollable").css({ height: primaryContentContainerHeight + 'px',
+                                      "min-height": primaryContentContainerHeight + 'px',
+                                      "max-height": primaryContentContainerHeight + 'px' });
             
         },
 
@@ -96,7 +100,13 @@ function(
                 });
             };
 
+            this.onLibraryAnimateSetup();
             primaryContentContainer.animate(cssAttributes, { progress: this.onLibraryAnimateProgress, duration: duration, complete: onComplete });
+        },
+
+        onLibraryAnimateSetup: function()
+        {
+            return;
         },
 
         onLibraryAnimateProgress: function()
