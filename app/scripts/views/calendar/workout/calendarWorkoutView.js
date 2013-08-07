@@ -95,6 +95,7 @@ function(
 
             this.model.on("select", this.setSelected, this);
             this.model.on("unselect", this.setUnSelected, this);
+            console.log(this.model)
         },
 
         events:
