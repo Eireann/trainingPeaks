@@ -316,10 +316,11 @@ function(
 
         fireAutoScroll: function(direction)
         {
-            var modelOffset = direction === "forward" ? 1 : -1,
-                currentModel = this.weeksCollectionView.getCurrentModel(),
-                nextOrPreviousModel = this.weeksCollectionView.collection.at(this.weeksCollectionView.collection.indexOf(currentModel) + modelOffset);
-            this.weeksCollectionView.scrollToModel(nextOrPreviousModel, 400);
+            var modelOffset = direction === "forward" ? 1 : -1;
+            var currentModel = this.weeksCollectionView.getCurrentModel();
+            var targetMoment = moment(currentModel.id).add("weeks", modelOffset);
+
+            this.scrollToDate(targetMoment, 400);
         },
 
         cancelAutoScroll: function()
