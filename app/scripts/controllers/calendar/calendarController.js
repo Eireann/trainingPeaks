@@ -1,3 +1,6 @@
+// QL: This is really a CalendarPageController, beacuse it does much more than controll the calendar.
+// 1. Create collections it cares about 2. Create views and pass them the collections
+
 define(
 [
     "underscore",
@@ -81,44 +84,34 @@ function(
                 return;
             }
 
+            // QL: Probably shouldn't be mixed in to the calendar object itself. Initialize the header and pass in what it needs to control
             this.initializeHeader();
             this.initializeCalendar();
+            // QL: Calendar should agnostically receive any dropped item. 
+            // Layout changes should propogate through the new CalendarPageView
             this.initializeLibrary();
 
+            // QL: this is layout logic and might belong in the layout itself. So this would read this.layout.renderRegions();
             this.showViewsInRegions();
 
             // load the calendar, and aggregate all of the deferreds from each workout request
+            // QL: Should be a responsibility of this.views.calendar
             var today = moment();
             this.showDate(today);
 
             this.watchClipboard();
 
-            // wait for user to load ...
-            this.setupUserFetchPromise();
-
             // our parent class PageContainerController needs this to trigger the window resize functionality
             this.trigger("show");
+
+            this.loadDataAfterUserLoads();
         },
 
         loadDataAfterUserLoads: function()
         {
             var self = this;
-            var onLoad = function(deferreds)
-            {
-                var today = moment();
-                self.scrollToDateAfterLoad(deferreds, today);
-            };
-            this.loadCalendarData(onLoad);
+            this.loadCalendarData();
             this.loadLibraryData();
-        },
-
-        setupUserFetchPromise: function()
-        {
-            var self = this;
-            theMarsApp.userFetchPromise.done(function()
-            {
-                self.loadDataAfterUserLoads();
-            });
         },
 
         showViewsInRegions: function()
@@ -126,58 +119,6 @@ function(
             this.showHeader();
             this.layout.calendarRegion.show(this.views.calendar);
             this.layout.libraryRegion.show(this.views.library);
-        },
-
-        scrollToDateAfterLoad: function(deferreds, dateToScrollTo, each)
-        {
-            var ajaxCachingDeferreds = [];
-            _.each(deferreds, function(deferred)
-            {
-                if (deferred.hasOwnProperty("ajaxCachingDeferred"))
-                {
-                    ajaxCachingDeferreds.push(deferred.ajaxCachingDeferred);
-                }
-            });
-
-            var calendarController = this;
-            // check after each week loads
-            if (each)
-            {
-                var scrollItEachTime = function()
-                {
-                    setImmediate(function() { calendarController.showDate(moment(dateToScrollTo), 10); });
-                };
-                _.each(ajaxCachingDeferreds, function(deferred)
-                {
-                    deferred.done(scrollItEachTime);
-                });
-                _.each(deferreds, function(deferred)
-                {
-                    deferred.done(scrollItEachTime);
-                });
-
-                // check after they all load
-            } else
-            {
-                // once all of the data has loaded, set a timeout to allow repainting, then scroll to today
-                calendarController.wasScrolled = false;
-                var scrollItOnce = function()
-                {
-                    if (!calendarController.wasScrolled)
-                    {
-                        calendarController.wasScrolled = true;
-                        setTimeout(function() { calendarController.showDate(moment(dateToScrollTo), 500); }, 100);
-                    }
-                };
-                if (ajaxCachingDeferreds.length > 0)
-                {
-                    $.when.apply($, ajaxCachingDeferreds).then(scrollItOnce);
-                }
-
-                $.when.apply($, deferreds).then(scrollItOnce);
-            }
-
-
         },
 
         loadCalendarData: function(callback)
@@ -194,6 +135,8 @@ function(
                 var deferred = this.weeksCollection.requestWorkouts(startDate, endDate);
                 deferreds.push(deferred);
             }
+
+            //var deferreds = [this.weeksCollection.requestWorkouts(this.startDate, this.endDate)];
 
             //theMarsApp.logger.logTimer("CalendarController", "finished request calendar data");
             if (callback)
@@ -256,89 +199,32 @@ function(
 
         },
 
-        clearCacheAndRefresh: function()
+        clearCacheAndRefresh: function(date)
         {
             if (theMarsApp.ajaxCachingEnabled)
                 theMarsApp.ajaxCaching.clearCache();
+
+            var currentWeek = date ? moment(date).format(TP.utils.datetime.shortDateFormat) : this.views.calendar.getCurrentWeek();
+            // QL: Should be handled by reset, not "resetToDates"
             this.weeksCollection.resetToDates(moment(this.startDate), moment(this.endDate));
-            this.views.calendar.scrollToLastViewedDate();
-            var headerDate = this.views.calendar.getHeaderDate();
-            var self = this;
-            var onLoad = function(deferreds)
-            {
-                return self.scrollToDateAfterLoad(deferreds, headerDate);
-            };
-            this.loadCalendarData(onLoad);
+            this.views.calendar.scrollToDate(currentWeek);
+
+            this.loadCalendarData();
         },
 
-        showDate: function(dateAsMoment, effectDuration)
+        // Deprecated
+        showDate: function(dateAsMoment, duration)
         {
             if (!dateAsMoment)
                 return;
 
-            if (!moment.isMoment(dateAsMoment))
-                dateAsMoment = moment(dateAsMoment);
-
-            var calendarView = this.views.calendar;
-            var i;
-
-            if (dateAsMoment.day() !== this.startOfWeekDayIndex)
-            {
-                var newDateAsMoment = this.createStartDay(dateAsMoment);
-                if (newDateAsMoment.format(TP.utils.datetime.shortDateFormat) > dateAsMoment.format(TP.utils.datetime.shortDateFormat))
-                {
-                    newDateAsMoment.subtract("weeks", 1);
-                }
-                dateAsMoment = newDateAsMoment;
-                //dateAsMoment = weekStartDay > dateAsMoment ? weekStartDay.subtract("weeks", 1) : weekStartDay;
-            }
-
-            if (dateAsMoment.unix() >= this.startDate.unix() && dateAsMoment.unix() <= this.endDate.unix())
-            {
-                // The requested date is within the currently rendered weeks.
-                // Let's scroll straight to it.
-                calendarView.scrollToDate(dateAsMoment, effectDuration);
-                return;
-            }
-            else if(dateAsMoment.diff(this.endDate, "weeks") >= 8 || dateAsMoment.diff(this.startDate, "weeks") <= -8)
-            {
-                // The requested date is too far outside the currently rendered weeks.
-                // Fade out the calendar, rerender centered on the requested date, and fade in.
-                var newStartDate = this.createStartDay(dateAsMoment).subtract("weeks", 4);
-                var newEndDate = this.createEndDay(dateAsMoment).add("weeks", 6);
-                this.reset(newStartDate, newEndDate, dateAsMoment);
-            }
-            else if(dateAsMoment < this.startDate)
-            {
-
-                // prepend only one week at a time, or else the scroll gets jumpy because we're changing the div height vs scrolltop
-                var weeksToPrepend = this.startDate.diff(dateAsMoment, "weeks") + 1;
-                for(i = 0;i<weeksToPrepend;i++)
-                {
-                    this.prependWeekToCalendar();
-                }
-                calendarView.scrollToDate(dateAsMoment, effectDuration);
-            }
-            else if (dateAsMoment > this.endDate)
-            {
-                var weeksToAppend = dateAsMoment.diff(this.endDate, "weeks") + 2;
-                for (i = 0; i < weeksToAppend; i++)
-                {
-                    this.appendWeekToCalendar();
-                }
-                calendarView.scrollToDate(dateAsMoment, effectDuration);
-            }
-
-            // is this necessary?
-            setImmediate(function()
-            {
-                calendarView.scrollToDate(dateAsMoment, effectDuration);
-            });
+            this.views.calendar.scrollToDate(dateAsMoment, duration);
 
         },
 
         initializeCalendar: function()
         {
+            // QL: Does this need to be a model? Could it be passed into CalendarContainerView as an attribute on that view?
             var weekDaysModel = new TP.Model({ startOfWeekDayIndex: this.startOfWeekDayIndex });
             
             if (this.views.calendar)
@@ -350,8 +236,9 @@ function(
                 startOfWeekDayIndex: this.startOfWeekDayIndex
             });
 
+            // QL: Should happen in the CalendarContainerView
             this.bindToCalendarViewEvents(this.views.calendar);
-
+            // QL: this can be part of the function in the previous line
             this.views.calendar.on("calendar:select", this.onCalendarSelect, this);
         },
 
@@ -362,32 +249,13 @@ function(
 
         onRequestRefresh: function(date, callback)
         {
-            var dateAsMoment = date ? moment(date) : moment();
-
-            if (dateAsMoment.day() !== this.startOfWeekDayIndex)
-            {
-                var newDateAsMoment = this.createStartDay(dateAsMoment);
-                if (newDateAsMoment.format(TP.utils.datetime.shortDateFormat) > dateAsMoment.format(TP.utils.datetime.shortDateFormat))
-                {
-                    newDateAsMoment.subtract("weeks", 1);
-                }
-                dateAsMoment = newDateAsMoment;
-            }
-            
-            var newStartDate = this.createStartDay(dateAsMoment).subtract("weeks", 4);
-            var newEndDate = this.createEndDay(dateAsMoment).add("weeks", 6);
-
-            this.reset(newStartDate, newEndDate, dateAsMoment);
-
-            var calendarView = this.views.calendar;
-            setImmediate(function ()
-            {
-                calendarView.scrollToDate(dateAsMoment, undefined, callback);
-            });
+            this.clearCacheAndRefresh(date);
         },
 
         bindToCalendarViewEvents: function(calendarView)
         {
+            // none of this is being used anymore
+
             calendarView.on("scroll:top", this.prependWeekToCalendar, this);
             calendarView.on("scroll:bottom", this.appendWeekToCalendar, this);
 
@@ -396,59 +264,6 @@ function(
             calendarView.on("cancelAutoScroll", this.cancelAutoScroll, this);
 
             this.bindToDragMoveAndShiftEvents(calendarView);
-        },
-
-        // need to scroll the calendar up - to next week - because we're dragging something off bottom of calendar
-        autoScrollUp: function()
-        {
-            this.autoScroll("autoScrollUpInterval", "onRequestNextWeek");
-        },
-
-        // need to scroll the calendar down - back to a previous week - because we're dragging something off top of calendar
-        autoScrollDown: function()
-        {
-            this.autoScroll("autoScrollDownInterval", "onRequestLastWeek");
-        },
-
-        autoScroll: function(intervalName, scrollMethodName)
-        {
-            // already scrolling in this direction
-            if (this[intervalName])
-                return;
-
-            // else cancel all existing auto scrolls
-            this.cancelAutoScroll();
-            var self = this;
-            var currentWeekModel = this.views.header.model;
-
-            // how long between each week step
-            var intervalTime = 700;
-
-            // using animation doesn't work well, because by the time we animate to one we may request another
-            var animationSpeed = 0;
-
-            // scroll once, then set interval
-            //self[scrollMethodName](currentWeekModel, animationSpeed);
-            self[intervalName] = setInterval(function()
-            {
-                self[scrollMethodName](currentWeekModel, animationSpeed);
-            }, intervalTime);
-
-        },
-
-        cancelAutoScroll: function()
-        {
-            if (this.autoScrollUpInterval)
-            {
-                clearInterval(this.autoScrollUpInterval);
-                this.autoScrollUpInterval = null;
-            }
-
-            if (this.autoScrollDownInterval)
-            {
-                clearInterval(this.autoScrollDownInterval);
-                this.autoScrollDownInterval = null;
-            }
         },
 
         onCalendarSelect: function()
