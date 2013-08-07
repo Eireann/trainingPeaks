@@ -14,10 +14,10 @@ function(
     };
 
     return {
-        buildChartView: function(chartTypeId, podIndex, title )
+        buildChartView: function(chartTypeId, options )
         {
             var ChartView = chartConstructors.hasOwnProperty(chartTypeId) ? chartConstructors[chartTypeId] : DefaultChartView;
-            return new ChartView({ podIndex: podIndex, title: title});
+            return new ChartView(options);
         }
     };
 

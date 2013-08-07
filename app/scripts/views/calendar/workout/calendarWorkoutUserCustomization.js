@@ -26,14 +26,16 @@ function(_, TP)
 
             if (layoutPreferences)
             {
-                _.each(layoutPreferences, function(layoutPreferenceId, index)
+                var fields = _.map(layoutPreferences, function(layoutPreferenceId, index)
                 {
                     var field = TP.utils.workout.layoutFormatter.calendarWorkoutLayout[layoutPreferenceId];
                     if (field)
                     {
-                        this.applyFieldLayoutPreference(field);
+                        return this.applyFieldLayoutPreference(field);
                     } 
                 }, this);
+
+                this.ui.layoutAnchor.before(fields.join(''));
             }
         },
 
@@ -55,9 +57,8 @@ function(_, TP)
                     fieldValue = TP.utils.conversion[field.conversion](fieldValue, { workoutTypeValueId: workoutTypeValueId });
                 }
                 var units = field.unitHelper ? " " + TP.utils.units.getUnitsLabel(field.unitHelper, workoutTypeValueId, this) : "";
-                //TODO: create entire list up, then do one insert into main dom
-                var element = $("<p>" + prefix + fieldValue + units + "</p>");
-                element.insertBefore(this.ui.layoutAnchor);
+
+                return "<p>" + prefix + fieldValue + units + "</p>";
             }
         }
     };

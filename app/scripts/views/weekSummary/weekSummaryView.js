@@ -29,7 +29,6 @@ function(
 
             "mouseleave .weekSummaryBarGraphItem": "weekSummaryBarGraphLeave",
             "mouseenter .weekSummaryBarGraphItem": "weekSummaryBarGraphHover"
-            
         },
 
         initialize: function()
@@ -37,16 +36,19 @@ function(
             if (!this.model || !this.model.collection)
                 throw "WeekSummaryView requires a WeekSummaryModel which in turn needs to be inside a WeekCollection";
 
+            // We would like to limit the frequency of renders, but due to the
+            // current setup of views it seems to break occasionally.
+            // this.render = _.debounce(_.bind(this.render, this), 100, {leading: true, trailing: true, maxWait: 500});
+
             theMarsApp.user.on("change", this.render, this);
             
+
             var self = this;
             this.model.collection.each(function(item)
             {
                 if (item.itemsCollection)
                 {
-                    item.itemsCollection.on("change", self.render, this);
-                    item.itemsCollection.on("add", self.render, this);
-                    item.itemsCollection.on("remove", self.render, this);
+                    item.itemsCollection.on("change add remove", self.render, this);
                 }
             });
         },

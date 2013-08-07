@@ -111,8 +111,8 @@ function(
                 return;
 
             this.parseData();
-            this.createAndShowGraph();
             this.createAndShowMap();
+            this.createAndShowGraph();
         },
 
         createAndShowMap: function()
@@ -146,6 +146,10 @@ function(
         createAndShowGraph: function()
         {
             var self = this;
+            if (!this.dataParser.hasLatLongData)
+            {
+                self.$("#quickViewGraph").css("height", "350px");
+            }
             
             var priority =
             [
@@ -180,6 +184,8 @@ function(
 
             flotOptions.yaxes = yaxes;
             flotOptions.xaxes[0].tickLength = 0;
+            flotOptions.grid.borderWidth = { top: 0, right: 1, bottom: 1, left: 1 };
+            flotOptions.grid.borderColor = "#9a9999";
     
             if ($.plot) {
                 this.plot = $.plot(this.$("#quickViewGraph"), series, flotOptions);

@@ -143,6 +143,8 @@ function (_, moment, TP, WorkoutDetailsModel, WorkoutDetailDataModel)
             return this.getCalendarDay();
         },
 
+        // QL: Should be handled by calendar collection by watching workoutDay
+        // attribute
         moveToDay: function(newDate, newCollection)
         {
 

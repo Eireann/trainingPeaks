@@ -60,6 +60,7 @@
 
             // packery
             "packery": "../vendor/js/libs/packery/packery.pkgd.tp",
+            "gridster": "../vendor/js/libs/jquery.gridster.TP",
 
             // jasmine test utils
             "testUtils": "../test/utils"

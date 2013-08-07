@@ -439,8 +439,16 @@
             display:none;
         }
 
-        .tabNavigation, .closeAndSettings, .uploadExpandButtons, .headerIcons, .quickviewFooter {
-            display:none;
+        .tabNavigation, 
+        .closeAndSettings, 
+        .uploadExpandButtons, 
+        .headerIcons, 
+        .quickviewFooter {
+            display:none !important;
+        }
+
+        .quickviewFooter {
+            border:1px solid red;
         }
         
         .tabContent {

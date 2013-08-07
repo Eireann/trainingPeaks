@@ -30,26 +30,66 @@ function(
         tagName: "div",
         className: "dashboardChart",
         showThrobber: true,
-        podIndex: 0,
+        index: 0,
+        column: 1,
+        row: 1,
+        colspan: 1,
         chartType: 0,
         modelClass: ChartDataModel,
         today: moment().hour(0).format("YYYY-MM-DD"),
+        useGrid: false,
 
         attributes: function()
         {
-            return {
-                "data-podindex": this.podIndex
-            };
+            if(this.useGrid)
+            {
+                return {
+                    "data-index": this.index,
+                    "data-sizey": 1,
+                    "data-sizex": this.colspan,
+                    "data-col": this.column,
+                    "data-row": this.row
+                };
+            } 
+            else
+            {
+                return {
+                    "data-index": this.index,
+                    "data-sizey": 1,
+                    "data-sizex": this.colspan 
+                };
+            }
+        },
+
+        buildDefaultOptions: function(options)
+        {
+            return _.extend({}, { index: 0, row: 0, column: 0, useGrid: false }, options);
+        },
+
+        setGridAttributes: function(options)
+        {
+            this.useGrid = options.useGrid;
+            this.index = options.index;
+            this.row = options.row;
+            this.column = options.column;
+            this.$el.attr(this.attributes());
         },
 
         initialize: function(options)
         {
+            options = this.buildDefaultOptions(options);
             _.bindAll(this, "onHoverToolTip");
-            this.podIndex = options && options.hasOwnProperty("podIndex") ? options.podIndex : 0;
-            this.settingsKey = "settings.dashboard.pods." + this.podIndex;
+            this.setGridAttributes(options);
+            this.setSettingsIndex(options.index);
             this.setupViewModel(options);
             this.setupDataModel(options);
+        },
 
+        setSettingsIndex: function(index)
+        {
+            this.index = index;
+            this.settingsKey = "settings.dashboard.pods." + this.index;
+            this.$el.attr("data-index", index);
         },
 
         setupViewModel: function(options)
@@ -244,6 +284,11 @@ function(
             return theMarsApp.user.get(this.settingsKey + "." + settingKey);
         },
 
+        setSetting: function(settingKey, value)
+        {
+            return theMarsApp.user.set(this.settingsKey + "." + settingKey, value);
+        },
+
         expandClicked: function()
         {
             this.$el.toggleClass("doubleWide");
@@ -278,7 +323,7 @@ function(
 
                 var newPosition = {
                     top: "10px",
-                    bottom: "15px",
+                    bottom: "20px",
                     left: "10px",
                     right: "10px"
                 };
@@ -308,13 +353,18 @@ function(
         closeClicked: function()
         {
             this.close();
-            this.trigger("after:close");
+            this.trigger("remove");
         },
 
         onEscapeKey: function(e)
         {
             if (e.which === 27)
                 this.expandClicked();
+        },
+
+        setPodIndex: function(index)
+        {
+            this.setSetting("index", index);
         }
     };
 
