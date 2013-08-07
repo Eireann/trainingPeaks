@@ -184,6 +184,8 @@ function(
 
             flotOptions.yaxes = yaxes;
             flotOptions.xaxes[0].tickLength = 0;
+            flotOptions.grid.borderWidth = { top: 0, right: 1, bottom: 1, left: 1 };
+            flotOptions.grid.borderColor = "#9a9999";
     
             if ($.plot) {
                 this.plot = $.plot(this.$("#quickViewGraph"), series, flotOptions);

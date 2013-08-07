@@ -5,6 +5,21 @@ define(
 ],
 function (_, TP)
 {
+
+    var ensureUser = function(callback) 
+    {
+        return function()
+        {
+            var self = this;
+            var args = arguments;
+            this.checkAuth();
+            theMarsApp.userFetchPromise.done(function()
+            {
+                callback.apply(self, args);
+            });
+        };
+    };
+
     return TP.Router.extend(
     {
         initialize: function ()
@@ -58,12 +73,10 @@ function (_, TP)
             TP.analytics("send", "pageview", { page: "home" });
         },
 
-        calendar: function (athleteId)
+        calendar: ensureUser(function (athleteId)
         {
             if (athleteId)
                 theMarsApp.user.setCurrentAthleteId(athleteId);
-
-            this.checkAuth();
 
             if (theMarsApp.getCurrentController() === theMarsApp.controllers.calendarController)
                 theMarsApp.controllers.calendarController.trigger("refresh");
@@ -71,7 +84,7 @@ function (_, TP)
                 theMarsApp.showController(theMarsApp.controllers.calendarController);
 
             TP.analytics("send", "pageview", { page: "calendar" });
-        },
+        }),
 
         dashboard: function()
         {

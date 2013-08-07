@@ -75,9 +75,16 @@ function(
         {
             _.bindAll(this, "onHoverToolTip");
             this.setGridAttributes(options);
-            this.settingsKey = "settings.dashboard.pods." + this.index;
+            this.setSettingsIndex(options.index);
             this.setupViewModel(options);
             this.setupDataModel(options);
+        },
+
+        setSettingsIndex: function(index)
+        {
+            this.index = index;
+            this.settingsKey = "settings.dashboard.pods." + this.index;
+            this.$el.attr("data-index", index);
         },
 
         setupViewModel: function(options)
@@ -341,7 +348,7 @@ function(
         closeClicked: function()
         {
             this.close();
-            this.trigger("after:close");
+            this.trigger("remove");
         },
 
         onEscapeKey: function(e)
@@ -350,7 +357,7 @@ function(
                 this.expandClicked();
         },
 
-        setIndex: function(index)
+        setPodIndex: function(index)
         {
             this.setSetting("index", index);
         }
