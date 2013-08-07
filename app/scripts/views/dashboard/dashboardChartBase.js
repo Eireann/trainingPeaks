@@ -77,16 +77,16 @@ function(
             this.$el.attr(this.attributes());
         },
 
-        setDefaultChartSettings: function(options)
+        setDefaultDateSettings: function(options)
         {
             var defaultDateOption = chartUtils.chartDateOptions.USE_GLOBAL_DATES.id;
             var defaultSettings = { startDate: null, endDate: null, quickDateSelectOption: defaultDateOption };
-            var mergedSettings = _.extend(defaultSettings, this.settingsModel.get(this.settingsKey));
+            var mergedSettings = _.extend(defaultSettings, this.getSetting("dateOptions"));
             if(!mergedSettings.quickDateSelectOption)
             {
                 mergedSettings.quickDateSelectOption = defaultDateOption;
             }
-            this.settingsModel.set(this.settingsKey, mergedSettings, { silent: true });
+            this.setSetting("dateOptions", mergedSettings, { silent: true })
         },
 
         initialize: function(options)
@@ -103,7 +103,7 @@ function(
         setupSettingsModel: function(options)
         {
             this.settingsModel = options && options.hasOwnProperty("settingsModel") ? options.settingsModel : theMarsApp.user;
-            this.setDefaultChartSettings(options);
+            this.setDefaultDateSettings(options);
         },
 
         setupViewModel: function(options)
@@ -150,15 +150,12 @@ function(
 
         fetchData: function()
         {
+            var myDateSettings = this.getSetting("dateOptions");
+            var chartDateParameters = chartUtils.buildChartParameters(myDateSettings);
+            this.chartDataModel.setParameters(chartDateParameters);
+
             var self = this;
-
-            if (this.settingsModel.has(this.settingsKey))
-            {
-                this.chartDataModel.setParameters(chartUtils.buildChartParameters(this.settingsModel.get(this.settingsKey)));
-
-            }
-
-            self.waitingOn();
+            this.waitingOn();
             this.chartDataModel.fetch().done(function()
             {
                 self.setChartTitle();
@@ -331,9 +328,9 @@ function(
             return this.settingsModel.get(this.settingsKey + "." + settingKey);
         },
 
-        setSetting: function(settingKey, value)
+        setSetting: function(settingKey, value, options)
         {
-            return this.settingsModel.set(this.settingsKey + "." + settingKey, value);
+            return this.settingsModel.set(this.settingsKey + "." + settingKey, value, options);
         },
 
         expandClicked: function()
@@ -418,7 +415,7 @@ function(
 
         onDashboardDatesChange: function()
         {
-            if(this.getSetting("quickDateSelectOption") === chartUtils.chartDateOptions.USE_GLOBAL_DATES.id)
+            if(this.getSetting("dateOptions.quickDateSelectOption") === chartUtils.chartDateOptions.USE_GLOBAL_DATES.id)
             {
                 this.fetchData();
             }

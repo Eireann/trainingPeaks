@@ -106,33 +106,4 @@
             width: 213px;
         }
     }
-
-    &.left
-    {
-        .arrow
-        {
-            position:absolute;
-            top: 35px;
-            right: -8px;
-        }
-    }
-
-    &.right
-    {
-        .arrow
-        {
-            position:absolute;
-            top: 35px;
-            left: -37px;
-        }
-    }
-
-    .hoverBox
-    {
-        .mainShadow
-        {
-            bottom: 0px;
-        }
-    }
-
 }

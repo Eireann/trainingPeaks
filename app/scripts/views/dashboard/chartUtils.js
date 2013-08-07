@@ -404,7 +404,7 @@ function(
 
             if(!selectedOption)
             {
-                throw "Invalid date option for chart utils: " + selectedOptionId;
+                return this.findChartDateOption(this.defaultDateOptionId);
             }
 
             return selectedOption;
@@ -412,7 +412,7 @@ function(
 
         findGlobalChartSettings: function()
         {
-            var globalSettingKey = "settings.dashboard.globalDateRange";
+            var globalSettingKey = "settings.dashboard.dateOptions";
             if(!theMarsApp.user.has(globalSettingKey))
             {
                 theMarsApp.user.set(globalSettingKey, { startDate: null, endDate: null, quickDateSelectOption: null});
@@ -433,7 +433,9 @@ function(
             return chartUtils.findChartDateOption(quickDateSelectOption);
         },
 
-        chartDateOptions: chartDateOptions
+        chartDateOptions: chartDateOptions,
+
+        defaultDateOptionId: chartDateOptions.LAST_90_DAYS_AND_NEXT_21_DAYS.id
     };
 
     return chartUtils;

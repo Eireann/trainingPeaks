@@ -37,7 +37,7 @@ function(
                 throw "Dashboard Date Picker requires a settings key";
             }
 
-            this.settingsKey = options.settingsKey;
+            this.settingsKey = options.settingsKey + ".dateOptions";
 
             if(options.hasOwnProperty("includeGlobalOption"))
             {
@@ -90,13 +90,13 @@ function(
             var dateSettings = this.model.get(this.settingsKey);
             var selectedOptionId = Number(dateSettings.quickDateSelectOption);
             dateSettings = chartUtils.buildChartParameters(dateSettings);
-            dateSettings.dateOptions = [];
+            dateSettings.dateOptionList = [];
 
             _.each(chartUtils.chartDateOptions, function(option)
             {
                 if(option.id !== 1 || this.includeGlobalOption)
                 {
-                    dateSettings.dateOptions.push({
+                    dateSettings.dateOptionList.push({
                         id: option.id,
                         label: option.label,
                         selected: option.id === selectedOptionId

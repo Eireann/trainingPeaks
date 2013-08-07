@@ -3,7 +3,7 @@
     <div class="title selectRange">{{$ "SelectDateRange" }}</div>
     <div class="dateOptionsWrapper">
         <select id="dateOptions">
-            {{#each dateOptions}}
+            {{#each dateOptionList}}
             <option value="{{ id }}"{{#if selected}} selected{{/if}}>{{ label }}</option>
             {{/each}}
         </select>

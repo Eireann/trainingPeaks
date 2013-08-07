@@ -16,7 +16,7 @@ function(
 {
     var PMCChartSettings = {
 
-        className: "pmcChartSettings",
+        className: DashboardChartSettingsBase.className + " pmcChartSettings",
 
         template:
         {

@@ -179,7 +179,7 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
 
     &.menuOpen
     {
-        background-color: $TPGrey2;
+        background-color: #e4e2e3;
         border: 1px solid $TPGrey11;
 
         .chartButtons
@@ -381,3 +381,34 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
     }
 }
 
+.dashboardChartSettings
+{
+    &.left
+    {
+        .arrow
+        {
+            position:absolute;
+            top: 35px;
+            right: -8px;
+        }
+    }
+
+    &.right
+    {
+        .arrow
+        {
+            position:absolute;
+            top: 35px;
+            left: -37px;
+        }
+    }
+
+    .hoverBox
+    {
+        .mainShadow
+        {
+            bottom: 0px;
+        }
+    }
+
+}
