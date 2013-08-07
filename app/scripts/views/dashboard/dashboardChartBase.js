@@ -61,9 +61,13 @@ function(
             }
         },
 
+        buildDefaultOptions: function(options)
+        {
+            return _.extend({}, { index: 0, row: 0, column: 0, useGrid: false }, options);
+        },
+
         setGridAttributes: function(options)
         {
-            options = _.extend({}, { index: 0, row: 0, column: 0, useGrid: false }, options);
             this.useGrid = options.useGrid;
             this.index = options.index;
             this.row = options.row;
@@ -73,6 +77,7 @@ function(
 
         initialize: function(options)
         {
+            options = this.buildDefaultOptions(options);
             _.bindAll(this, "onHoverToolTip");
             this.setGridAttributes(options);
             this.setSettingsIndex(options.index);
