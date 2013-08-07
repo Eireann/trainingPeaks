@@ -296,15 +296,14 @@ function(_, touchPunch, draggable, droppable, moment, setImmediate, TP, Calendar
             // wrap it in a week of the appropriate class
             var $helperEl = $("<div></div>");
             $helperEl.attr("class", this.$el.closest(".week").attr("class"));
+            $helperEl.css({maxHeight: $('#calendarContainer').height() - 100});
             $helperEl.append($helperViewEl);
-
             return $helperEl;
         },
 
         onDragStart: function(e)
         {
             this.$el.addClass("dragging");
-
             TP.analytics("send", { "hitType": "event", "eventCategory": "calendar", "eventAction": "dragDropStart", "eventLabel": "day" });
         },
 

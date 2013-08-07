@@ -275,46 +275,24 @@ function(
         autoScrollIfNecessary: function(calendarPosition, uiPosition)
         {
 
-            var topThreshold = calendarPosition.top + 10;
+            var topThreshold = calendarPosition.top + 20;
             var bottomThreshold = calendarPosition.bottom - 20;
             var stopThreshold = 10;
             var self = this;
 
-            var isAtTop = uiPosition.top <= topThreshold;
-            var isAtBottom = uiPosition.bottom >= bottomThreshold;
-            // It's a large element that is both above the top threshold and below the bottom threshold
-            // use uiMouse position instead
-            if (isAtTop && isAtBottom)
+            if (uiPosition.mouse <= topThreshold)
             {
-                if (uiPosition.mouse <= topThreshold)
-                {
-                    this.startAutoScrollInterval("back");
+                this.startAutoScrollInterval("back");
 
-                } else if (uiPosition.mouse >= bottomThreshold)
-                {
-                    this.startAutoScrollInterval("forward");
-
-                } else
-                {
-                    this.cancelAutoScroll();
-                }
-
-            }
-            else
+            } else if (uiPosition.mouse >= bottomThreshold)
             {
-                if (uiPosition.top <= topThreshold)
-                {
-                    this.startAutoScrollInterval("back");
-                    
-                } else if (uiPosition.bottom >= bottomThreshold)
-                {
-                    this.startAutoScrollInterval("forward");
-                    
-                } else if(uiPosition.top >= (topThreshold + stopThreshold) && uiPosition.bottom <= (bottomThreshold - stopThreshold))
-                {
-                    this.cancelAutoScroll();
-                }
+                this.startAutoScrollInterval("forward");
+
+            } else
+            {
+                this.cancelAutoScroll();
             }
+
         },
 
 
