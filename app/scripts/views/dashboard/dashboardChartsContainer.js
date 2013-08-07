@@ -103,8 +103,7 @@ function(
 
                 var chartView = dashboardChartBuilder.buildChartView(podSettings.chartType, podSettings, this.useGrid);
                 this.charts.push(chartView);
-                chartView.on("expand", this.onChartExpand, this);
-                chartView.on("after:close", this.onChartClose, this);
+                chartView.on("remove", this.onChartRemove, this);
             }, this);
         },
 
@@ -121,8 +120,7 @@ function(
         {
             _.each(this.charts, function(chartView)
             {
-                chartView.off("after:close", this.onChartClose, this);
-                chartView.off("expand", this.onChartExpand, this);
+                chartView.off("remove", this.onChartRemove, this);
                 chartView.close();
             }, this);
         },
@@ -177,6 +175,11 @@ function(
         initPackery: function()
         {
 
+            if(this.packery)
+            {
+                this.packery.destroy();
+            }
+            
             if(this.ui.chartsContainer.packery)
             {
                 this.ui.chartsContainer.packery({
@@ -201,23 +204,35 @@ function(
         {
             _.each(this.packery.getItemElements(), function(element, newIndex)
             {
-                var oldIndex = $(element).data("index");
+                var oldIndex = $(element).attr("data-index");
                 var chartView = this.charts[oldIndex];
-                chartView.setIndex(newIndex);
+                chartView.setPodIndex(newIndex);
             }, this);
             theMarsApp.user.save();
         },
 
-        onChartClose: function()
+        onChartRemove: function()
         {
-            this.packery.layout();
-        },
-
-        onChartExpand: function()
-        {
-            this.packery.layout();
+            this.initPackery();
+            var oldSettings = theMarsApp.user.get("settings.dashboard.pods");
+            var newCharts = [];
+            var newSettings = [];
+            _.each(oldSettings, function(chartSetting, index)
+            {
+                var chartView = this.charts[index];
+                if(!chartView.isClosed)
+                {
+                    var newIndex = newSettings.length;
+                    chartView.setSettingsIndex(newIndex);
+                    chartSetting.index = newIndex;
+                    newSettings.push(chartSetting);
+                    newCharts.push(chartView);
+                }
+            }, this);
+            this.charts = newCharts;
+            theMarsApp.user.set("settings.dashboard.pods", newSettings, { silent: true});
+            theMarsApp.user.save();
         }
-
     };
 
     return PrimaryContainerView.extend(DashboardView);
