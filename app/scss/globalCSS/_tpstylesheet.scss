@@ -99,6 +99,10 @@ $clrElevation: #6e96b9;
 $clrTemperature: #0A0AFF;
 $clrTorque: #BDBDBD;
 
+// elevation correction colors
+$clrElevOriginal: #6e96b9;
+$clrElevCorrected: #e61101;
+
 .helpText
 {
     font-family: $fontFamilyRegularItalic;

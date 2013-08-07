@@ -5,11 +5,12 @@
     "models/elevationCorrection",
     "models/commands/elevationCorrection",
     "utilities/charting/flotOptions",
+    "utilities/charting/chartColors",    
     "utilities/conversion/convertToViewUnits",
     "utilities/charting/flotElevationTooltip",
     "hbs!templates/views/elevationCorrection/elevationCorrectionTemplate"
 ],
-function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandModel, defaultFlotOptions, convertToViewUnits, flotElevationTooltip, elevationCorrectionTemplate)
+function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandModel, defaultFlotOptions, chartColors, convertToViewUnits, flotElevationTooltip, elevationCorrectionTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -27,7 +28,7 @@ function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandMo
         {
             "click button[type=submit]": "onSubmitClicked",
             "click button[type=reset]": "onResetClicked",
-            "click .closeIcon": "onResetClicked"
+            "click #closeIcon": "onResetClicked"
         },
 
         template:
@@ -96,10 +97,31 @@ function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandMo
             this.elevationCorrectionModel.save().done(this.onElevationCorrectionFetched);
         },
 
-        setOriginalElevation: function()
-        {
-            this.dataParser.loadData(this.workoutModel.get("detailData").get("flatSamples"));
-            this.originalElevation = this.dataParser.getDataByChannel("Elevation");
+        setOriginalElevation: function() 
+        { 
+            this.dataParser.loadData(this.workoutModel.get("detailData").get("flatSamples")); 
+            this.originalElevation = this.dataParser.getDataByChannel("Elevation"); 
+            var elevationMinimum = this.findMinimumElevation(this.originalElevation); 
+            this.addMinimumElevation(this.originalElevation, elevationMinimum); 
+        }, 
+ 
+        findMinimumElevation: function (modelData) 
+        { 
+            var minimum = null; 
+            _.each(modelData, function (item, index) 
+            { 
+                if (item[1] < minimum || minimum === null) 
+                    minimum = item[1]; 
+            }); 
+            return minimum; 
+        }, 
+ 
+        addMinimumElevation: function (originalElevation, minimumElevation) 
+        { 
+            _.each(originalElevation, function (item, index) 
+            { 
+                item[2] = minimumElevation; 
+            }); 
         },
 
         onRender: function()
@@ -123,11 +145,11 @@ function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandMo
                     show: true,
                     label: "Elevation",
                     position: "left",
-                    color: "red",
-                    tickColor: "red",
+                    color: "#303030",
+                    tickColor: "#d7d8d9",
                     font:
                     {
-                        color: "red"
+                        color: "#303030"
                     },
                     tickFormatter: function (value)
                     {
@@ -160,9 +182,18 @@ function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandMo
 
             series.push(
             {
-                color: "orange",
+                color: "#ffffff",
                 data: this.originalElevation,
                 label: TP.utils.translate("Original"),
+               
+                lines:
+                {
+                    show: true,
+                    lineWidth: 1,
+                    fill: true,
+                    fillColor: { colors: [chartColors.gradients.elevation.dark, chartColors.gradients.elevation.light] }
+                },
+                yaxis: 1,
                 shadowSize: 0
             });
 
@@ -170,7 +201,7 @@ function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandMo
             {
                 series.push(
                 {
-                    color: "red",
+                    color: "#e61101",
                     data: this.correctedElevation,
                     label: TP.utils.translate("Corrected"),
                     shadowSize: 0

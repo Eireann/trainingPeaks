@@ -97,6 +97,9 @@ function(
 
             // Show drop-shadow during scrolling.
             this.weeksCollectionView.$el.on("scroll", _.bind(this.startScrollingState, this));
+
+            this.weeksCollectionView.$el.on("scroll", _.bind(this.startScrollingState, this));
+            this.weeksCollectionView.$el.on("scroll", _.bind(_.throttle(this._updateCurrentDate, 250), this));
             this.weeksCollectionView.$el.on("scroll", _.bind(_.debounce(this.stopScrollingState, 500), this));
         },
 
@@ -113,6 +116,11 @@ function(
             "shiftwizard:open": "onShiftWizardOpen",
             "rangeselect": "onRangeSelect",
             "select": "onCalendarSelect"
+        },
+
+        _updateCurrentDate: function()
+        {
+            this.setCurrentDate(moment(this.getCurrentWeek()));
         },
 
         setWorkoutColorization: function()
@@ -164,7 +172,10 @@ function(
             if (typeof effectDuration === "undefined")
                 effectDuration = 500;
 
-            // QL TODO: This works incorrectly for Sunday...
+            if(dateAsMoment.day() < this.startOfWeekDayIndex)
+            {
+                dateAsMoment.subtract("week", 1);
+            }
             var id = dateAsMoment.day(this.startOfWeekDayIndex).format(TP.utils.datetime.shortDateFormat);
             var model = this.collection.get(id);
             this.weeksCollectionView.scrollToModel(model, effectDuration);
