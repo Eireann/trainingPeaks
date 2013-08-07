@@ -81,8 +81,10 @@ function(
             if (this.isAutoScrolling) {
                 return;
             }
+            $('.week').removeClass('inView');
             _.each(this.weeksCollectionView.getVisibleModels(), function(model)
             {
+                model.view.$el.addClass('inView');
                 if(!model.get("isFetched"))
                 {
                     var weekStart = moment(model.id);

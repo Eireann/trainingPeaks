@@ -264,11 +264,13 @@ function(
             {
                 var position = view.$el.position();
                 position.bottom = position.top + view.$el.height();
-                var isTopVisibleAtBottom = position.top > 0 && position.top < height;
-                var isBottomVisibleAtTop = position.bottom > 0 && position.bottom < height;
-                return isTopVisibleAtBottom || isBottomVisibleAtTop;
+                var isTopVisibleAtBottom = position.top >= 0 && position.top <= height;
+                var isBottomVisibleAtTop = position.bottom >= 0 && position.bottom <= height;
+                var isMiddleVisible = position.top <= 0 && position.bottom >= height;
+                return isTopVisibleAtBottom || isBottomVisibleAtTop || isMiddleVisible;
             }).map(function(view)
             {
+                view.model.view = view;
                 return view.model;
             });
 
