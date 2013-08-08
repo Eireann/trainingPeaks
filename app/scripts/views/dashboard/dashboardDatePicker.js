@@ -70,7 +70,12 @@ function(
             self.$("#dateOptions").hide();
             setImmediate(function()
             {
-                self.$(".datepicker").css("position", "relative").css("z-index", self.$el.css("z-index"));
+                var zIndex = self.$el.css("z-index");
+                if(self.$el.closest(".dashboardChartSettings").length)
+                {
+                    zIndex = self.$el.closest(".dashboardChartSettings").css("z-index");
+                }
+                self.$(".datepicker").css("position", "relative").css("z-index", zIndex);
                 self.$(".datepicker").datepicker({ dateFormat: "yy-mm-dd", firstDay: theMarsApp.controllers.calendarController.startOfWeekDayIndex });
                 self.$("#dateOptions").selectBoxIt({dynamicPositioning: false});
             });
