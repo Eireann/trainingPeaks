@@ -67,6 +67,7 @@ function(
             this.model.off("change", this.render);
 
             var self = this;
+            self.$("#dateOptions").hide();
             setImmediate(function()
             {
                 self.$(".datepicker").css("position", "relative").css("z-index", self.$el.css("z-index"));

@@ -145,6 +145,22 @@ function(
             var checked = checkbox.is(":checked");
            
             this.model.set(this.settingsKey + "." + optionId, checked);
+        },
+
+        setDefaultSettings: function()
+        {
+            var defaultSettings = {
+                atlConstant: 7,
+                atlConstant2: 14,
+                atlStartValue: 1,
+                ctlConstant: 42,
+                ctlStartValue: 1,
+                showIntensityFactorPerDay: true,
+                showTSBFill: false,
+                showTSSPerDay: true
+            };
+            var mergedSettings = _.extend(defaultSettings, this.model.get(this.settingsKey));
+            this.model.set(this.settingsKey, mergedSettings, { silent: true });
         }
 
     };

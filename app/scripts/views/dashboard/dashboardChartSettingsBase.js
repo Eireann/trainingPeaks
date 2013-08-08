@@ -47,6 +47,8 @@ function(
             this.once("render", this.stopWatchingChanges, this);
             this.on("close", this.cleanupDatePicker, this);
             this.on("close", this.saveIfSettingsHaveChanged, this);
+
+            this.setDefaultSettings();
         },
 
         events:
@@ -150,6 +152,11 @@ function(
         setTomahawkDirection: function(direction)
         {
             this.$el.removeClass("left").removeClass("right").addClass(direction);
+        },
+
+        setDefaultSettings: function()
+        {
+            return; 
         }
 
     };
