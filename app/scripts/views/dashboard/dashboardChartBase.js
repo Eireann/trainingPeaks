@@ -99,6 +99,8 @@ function(
             this.setupSettingsModel(options);
             this.setupViewModel(options);
             this.setupDataModel(options);
+            
+            this.on("render", this.renderChartAfterRender, this);
         },
 
         setupSettingsModel: function(options)
@@ -128,7 +130,6 @@ function(
 
         onUserLoaded: function()
         {
-            this.on("render", this.renderChartAfterRender, this);
             this.fetchData();
         },
 

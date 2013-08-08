@@ -205,7 +205,7 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
         opacity: 1;
     }
 
-    &:hover
+    &:hover, &.hover
     {
         background-color: #e4e2e3;
         border: 1px solid $TPGrey11;

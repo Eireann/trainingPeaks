@@ -59,6 +59,90 @@ function(
             }
         },
 
+        onShow: function()
+        {
+            var self = this;
+            var chartView;
+
+            function move(event, ui)
+            {
+                chartView.$el.offset(ui.offset);
+                var position = chartView.$el.position();
+                self.packery.itemDragMove(chartView.el,
+                                          position.left + self.ui.chartsContainer.scrollLeft(),
+                                          position.top + self.ui.chartsContainer.scrollTop());
+            }
+
+            function attach(event, ui)
+            {
+                if(ui.draggable.hasClass("chartTile"))
+                {
+                    var podSettings =
+                    {
+                        useGrid: this.useGrid,
+                        usePackery: this.usePackery,
+                        settingsModel: theMarsApp.user,
+                        index: self.charts.length
+                    };
+                    chartView = dashboardChartBuilder.buildChartView(ui.draggable.data("ChartType"), podSettings);
+                    chartView.render();
+                    chartView.fetchData();
+                    chartView.$el.addClass("hover");
+
+                    // chartView.$el.attr("data-index", self.charts.length);
+                    // chartView.index = self.charts.length;
+                    self.model.set("settings.dashboard.pods." + self.charts.length + ".index", self.charts.length);
+                    self.model.set("settings.dashboard.pods." + self.charts.length + ".chartType", ui.draggable.data("ChartType"));
+                    self.charts.push(chartView);
+
+                    self.ui.chartsContainer.append(chartView.$el);
+                    chartView.$el.css({postion: "absolute"});
+                    move(event, ui);
+
+                    ui.helper.css('visibility', 'hidden');
+
+                    self.packery.addItems(chartView.el);
+                    self.packery.itemDragStart(chartView.el);
+                    ui.draggable.on("drag", move);
+                }
+            }
+
+            function detach(event, ui)
+            {
+                if(ui.draggable && ui.draggable.hasClass("chartTile"))
+                {
+                    ui.helper.css('visibility', 'visible');
+                    chartView.$el.removeClass('hover');
+
+                    self.charts = _.without(self.charts, chartView);
+
+                    self.packery.remove(chartView.el);
+                    self.packery.itemDragEnd(chartView.el);
+                    ui.draggable.off("drag", move);
+                }
+            }
+            
+            function drop(event, ui)
+            {
+                if(ui.draggable.hasClass("chartTile"))
+                {
+                    chartView.$el.removeClass('hover');
+
+                    self.packery.itemDragEnd(chartView.el);
+                    ui.draggable.off("drag", move);
+                    self.updateChartOrder();
+                    self._addElementsToPackery(chartView.$el);
+                }
+            }
+
+            this.$el.droppable(
+            {
+                over: attach, 
+                out: detach,
+                drop: drop
+            });
+        },
+
         renderDashboardCharts: function()
         {
             this.cleanupSettingsOrder(this.model.get("settings.dashboard.pods"));
@@ -208,10 +292,14 @@ function(
                 this.packery.on("dragItemPositioned", this.updateChartOrder);
 
                 var $charts = this.ui.chartsContainer.find(".dashboardChart");
-                $charts.draggable({ containment: "#chartsContainer" });
-                this.ui.chartsContainer.packery("bindUIDraggableEvents", $charts);
-
+                this._addElementsToPackery($charts);
             }
+        },
+
+        _addElementsToPackery: function($charts)
+        {
+            $charts.draggable({ containment: "#chartsContainer" });
+            this.ui.chartsContainer.packery("bindUIDraggableEvents", $charts);
         },
 
         updateChartOrder: function()
