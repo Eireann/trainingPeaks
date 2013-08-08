@@ -449,7 +449,7 @@ function(
 
         onDashboardDatesChange: function()
         {
-            if(this.getSetting("dateOptions.quickDateSelectOption") === chartUtils.chartDateOptions.USE_GLOBAL_DATES.id)
+            if(Number(this.getSetting("dateOptions.quickDateSelectOption")) === chartUtils.chartDateOptions.USE_GLOBAL_DATES.id)
             {
                 this.fetchData();
             }

@@ -105,7 +105,7 @@ function(
 
         onDateOptionsChanged: function(e)
         {
-            var optionId = this.$("select.dateOptions").val();
+            var optionId = Number(this.$("select.dateOptions").val());
 
             var dateOptions = {
                 quickDateSelectOption: optionId,
