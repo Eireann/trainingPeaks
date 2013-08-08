@@ -152,7 +152,11 @@ function(
         {
             var myDateSettings = this.getSetting("dateOptions");
             var chartDateParameters = chartUtils.buildChartParameters(myDateSettings);
-            this.chartDataModel.setParameters(chartDateParameters);
+            var myOtherSettings = this.settingsModel.get(this.settingsKey);
+
+            var mergedSettings = _.extend({}, myOtherSettings, { dateOptions: chartDateParameters });
+
+            this.chartDataModel.setParameters(mergedSettings);
 
             var self = this;
             this.waitingOn();
@@ -178,7 +182,7 @@ function(
 
         setChartTitle: function()
         {
-            var workoutTypesTitle = this.buildWorkoutTypesTitle(this.chartDataModel.workoutTypeIds);
+            var workoutTypesTitle = this.buildWorkoutTypesTitle(this.getSetting("workoutTypeIds"));
             this.model.set("title", workoutTypesTitle);
         },
 

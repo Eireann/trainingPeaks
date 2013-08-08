@@ -10,10 +10,7 @@ function(moment, _, TP)
 
         reportName: "unknown",
 
-        parameterNames: [
-            "startDate",
-            "endDate"
-        ],
+        parameterNames: [],
 
         cacheable: false,
 
@@ -24,12 +21,14 @@ function(moment, _, TP)
 
         initialize: function (attributes, options)
         {
+            this.requestParams = {};
             this.setDefaultParameters();
             this.setParameters(options);
         },
 
         setDefaultParameters: function()
         {
+            // on this.requestParams
             return;
         },
 
@@ -38,11 +37,19 @@ function(moment, _, TP)
             if (!options)
                 return;
 
+            if(options.dateOptions)
+            {
+                _.each(["startDate", "endDate"], function(name)
+                {
+                    this.requestParams[name] = options.dateOptions[name];
+                }, this);
+            }
+
             _.each(this.parameterNames, function(name)
             {
                 if (options.hasOwnProperty(name))
                 {
-                    this[name] = options[name];
+                    this.requestParams[name] = options[name];
                 }
             }, this);
 
@@ -58,16 +65,16 @@ function(moment, _, TP)
 
         url: function ()
         {
-            return this.urlRoot() + this.buildUrlParameters();
+            return this.urlRoot() + this.buildUrlExtension();
         },
 
-        buildUrlParameters: function()
+        buildUrlExtension: function()
         {
-            if (!(this.startDate && this.endDate))
+            if (!(this.requestParams.startDate && this.requestParams.endDate))
                 throw "startDate & endDate needed for " + this.reportName;
 
-            var start = moment(this.startDate).format(TP.utils.datetime.shortDateFormat);
-            var end = moment(this.endDate).format(TP.utils.datetime.shortDateFormat);
+            var start = moment(this.requestParams.startDate).format(TP.utils.datetime.shortDateFormat);
+            var end = moment(this.requestParams.endDate).format(TP.utils.datetime.shortDateFormat);
 
             var urlExtension = "/" + start + "/" + end;
 
