@@ -115,6 +115,16 @@ function(
 
             dateOptions = chartUtils.buildChartParameters(dateOptions);
 
+            this.model.set(this.settingsKey + ".startDate", dateOptions.customStartDate ? moment(dateOptions.startDate).format("YYYY-MM-DD") + "T00:00:00Z" : null, { silent: true });
+            this.model.set(this.settingsKey + ".endDate", dateOptions.customEndDate ? moment(dateOptions.endDate).format("YYYY-MM-DD") + "T00:00:00Z" : null, { silent: true });
+            this.model.set(this.settingsKey + ".quickDateSelectOption", optionId);
+
+            this.updateViewFields(dateOptions);
+        },
+
+        updateViewFields: function(dateOptions)
+        {
+
             if(dateOptions.customStartDate)
             {
                 this.$(".dateRanges").addClass("customStartDate");
@@ -133,9 +143,12 @@ function(
                 this.$(".dateRanges").removeClass("customEndDate");
             }
 
-            this.model.set(this.settingsKey + ".startDate", dateOptions.customStartDate ? moment(dateOptions.startDate).format("YYYY-MM-DD") + "T00:00:00Z" : null, { silent: true });
-            this.model.set(this.settingsKey + ".endDate", dateOptions.customEndDate ? moment(dateOptions.endDate).format("YYYY-MM-DD") + "T00:00:00Z" : null, { silent: true });
-            this.model.set(this.settingsKey + ".quickDateSelectOption", optionId);
+            var startDate = moment(dateOptions.startDate).format("YYYY-MM-DD");
+            var endDate = moment(dateOptions.endDate).format("YYYY-MM-DD");
+            this.$("input.startDate").val(startDate);
+            this.$("div.startDate").text(startDate);
+            this.$("input.endDate").val(endDate);
+            this.$("div.endDate").text(endDate);
 
         }
 
