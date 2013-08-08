@@ -170,10 +170,10 @@ function(
 
         events:
         {
-            "click .settings": "settingsClicked",
-            "click .expand": "expandClicked",
-            "click .collapse": "expandClicked",
-            "click .close": "closeClicked"
+            "mousedown .settings": "settingsClicked",
+            "mousedown .expand": "expandClicked",
+            "mousedown .collapse": "expandClicked",
+            "mousedown .close": "closeClicked"
         },
 
         setChartTitle: function()
@@ -282,6 +282,7 @@ function(
                 return;
             }
 
+            this.disableDrag();
             e.preventDefault();
 
             this.keepSettingsButtonVisible();
@@ -305,7 +306,13 @@ function(
             }
 
             this.chartSettings.on("change:settings", this.onChartSettingsChange, this);
-            this.chartSettings.on("close", this.allowSettingsButtonToHide, this);
+            this.chartSettings.on("close", this.onSettingsClose, this);
+        },
+
+        onSettingsClose: function()
+        {
+            this.allowSettingsButtonToHide();
+            this.enableDrag();
         },
 
         onChartSettingsChange: function()
@@ -357,24 +364,26 @@ function(
 
         popOut: function()
         {
-                var $chartContainer = this.ui.chartContainer;
-                this.previousPosition = {
-                    top: this.$el.css("top"),
-                    left: this.$el.css("left"),
-                    bottom: "auto",
-                    right: "auto"
-                };
+            this.disableDrag();
+            var $chartContainer = this.ui.chartContainer;
+            this.previousPosition = {
+                top: this.$el.css("top"),
+                left: this.$el.css("left"),
+                bottom: "auto",
+                right: "auto"
+            };
 
-                var newPosition = {
-                    top: "10px",
-                    bottom: "20px",
-                    left: "10px",
-                    right: "10px"
-                };
+            var newPosition = {
+                top: "10px",
+                bottom: "20px",
+                left: "10px",
+                right: "10px"
+            };
 
-                $chartContainer.hide();
-                var self = this;
-                this.$el.appendTo($("body")).animate(newPosition, 200, function(){ self.setupModalOverlay(); $chartContainer.show(); });
+            $chartContainer.hide();
+            var self = this;
+            this.$el.appendTo($("body")).animate(newPosition, 200, function(){ self.setupModalOverlay(); $chartContainer.show(); });
+
         },
 
         popIn: function()
@@ -384,6 +393,7 @@ function(
             this.$el.appendTo(this.chartsContainer).animate(this.previousPosition, 200, function(){ $chartContainer.show(); });
             this.closeModal();
             this.previousPosition = null;
+            this.enableDrag();
         },
 
         setupModalOverlay: function()
@@ -419,6 +429,16 @@ function(
             {
                 this.fetchData();
             }
+        },
+
+        disableDrag: function()
+        {
+            this.$el.draggable("disable");
+        },
+
+        enableDrag: function()
+        {
+            this.$el.draggable("enable")
         }
 
     };
