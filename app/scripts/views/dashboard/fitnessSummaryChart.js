@@ -44,39 +44,25 @@ function(
         buildFlotPoints: function()
         {
             var chartPoints = [
-                [0, 50],
-                [1, 100],
-                [2, 25]
+                { label: "Run", data: 27, color: '#123456' },
+                { label: "bike", data: 42, color: '#654321' },
+                { label: "swim", data: 31, color: '#321654' }
             ];
-
-            /*
-                { label: "Run", data: 50, color: '#123456' },
-                { label: "bike", data: 100, color: '#654321' },
-                { label: "swim", data: 25, color: '#321654' }
-            */
 
             return chartPoints;
         },
 
         buildFlotDataSeries: function (chartPoints)
         {
-            var dataSeries =
-            {
-                data: chartPoints,
-                pie:
-                {
-                    show: true
-                }
-            };
-
-            return [dataSeries];
+            // pie charts are different than other charts in how we structure the series data
+            return chartPoints;
         },
 
         buildFlotChartOptions: function()
         {
             var flotOptions = defaultFlotOptions.getGlobalDefaultOptions(null);
 
-            // pie plugin wants series settings here in addition to in data series
+            // pie plugin wants series settings here instead of in data series
             flotOptions.series = {
                 pie: 
                 {
