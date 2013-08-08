@@ -438,7 +438,7 @@ function(
 
         enableDrag: function()
         {
-            this.$el.draggable("enable")
+            this.$el.draggable("enable");
         }
 
     };
