@@ -53,6 +53,7 @@ function(
             }
 
             this.createViews();
+            this.listenToViewEvents();
             this.displayViews();
 
             // wait for user to load ...
@@ -67,6 +68,11 @@ function(
             this.views.dashboard = new DashboardChartsContainerView();
             this.views.header = new DashboardHeaderView({model:theMarsApp.user});
             this.views.library = new DashboardLibraryView();
+        },
+
+        listenToViewEvents: function()
+        {
+            this.views.header.on("change:dashboardDates", this.views.dashboard.onDashboardDatesChange, this.views.dashboard);
         },
 
         displayViews: function()

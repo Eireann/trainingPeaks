@@ -33,6 +33,12 @@
     	{
     		font-family: $fontFamilyLight;
     	}
+        .datepicker {
+            position: relative;
+            bottom: 28px;
+            opacity: 0;
+            cursor: pointer;
+        }
     }
 
     .frameworkHeaderView

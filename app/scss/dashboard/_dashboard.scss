@@ -1,6 +1,121 @@
 ﻿$chartIconsSpriteURL: url(../../assets/images/charts/sprite-buttons-chart-modal.png);
 $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-modal@2x.png);
 
+
+.dashboardDatePicker
+{
+    .selectboxit-container
+    {
+        width: 220px !important;
+
+        /*    
+        span 
+        {
+            height: 22px;
+            font-size: 13px;
+        }
+        */
+
+        .selectboxit
+        {
+            width: 220px !important;
+            height: 22px;
+        }
+    }
+
+    /*
+    .selectboxit-option
+    {
+        font-size: 12px;
+    }
+    */
+    select.dateOptions
+    {
+        width: 220px !important;
+    }
+
+
+    .dateRanges
+    {
+        height: 35px;
+        padding: 10px 0;
+
+        div
+        {
+            padding-top: 6px;
+        }
+
+        .fromTo
+        {
+            padding: 2px 15px 0 0 ;
+            height: 25px;
+            float: left;
+        }
+
+        .to
+        {
+            padding-left: 15px;
+        }
+
+        input
+        {
+            display: none;
+        }
+
+        &.customStartDate
+        {
+            input.startDate
+            {
+                display: inline;
+            }
+
+            div.startDate
+            {
+                display: none;
+            }
+        }
+
+        &.customEndDate
+        {
+            input.endDate
+            {
+                display: inline;
+            }
+
+            div.endDate
+            {
+                display: none;
+            }
+        }
+    }
+
+    .datePicker
+    {
+        width: 75px;
+        height: 20px;
+    }
+
+    .date
+    {
+        width: 75px;
+        float: left;
+        font-size: $fontSizeSmall;
+        color: $TPGrey3;
+    }
+
+    input[type=text]
+    {
+        width: 90px;
+        height: 22px;
+        float: left;
+    }
+
+    .dateOptionsWrapper
+    {
+        height: 25px;
+    }
+}
+
 #dashboardContainer
 {
     .scrollHeader
@@ -17,72 +132,41 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
     padding-top: 10px;
 }
 
-.datePicker
+#dashboardHeader
 {
-    float: left;
-    width: 220px;
-    margin-left: 10px;
-
-    .selectboxit-container .selectboxit
-    {
-        width: 220px !important;
-    }
-}
-
-.dateRanges
-{
-    height: 35px;
-    float: left;
-    margin-left: 10px;
-
-    .fromTo
+    .datepickerContainer
     {
         float: left;
-        padding: 5px 15px 0 0 ;
-        height: 25px;
+        margin-left: 10px;
+
+        .selectRange
+        {
+            display: none;
+        }
+
+        .dateOptionsWrapper
+        {
+            display: inline-block;
+            float: left;
+        }
+
+        .dateRanges
+        {
+            float: left;
+            margin-left: 15px;
+            padding-top: 0px;
+        }
     }
 
-    .to
-    {
-        padding-left: 15px;
-    }
-
-    .date
-    {
-        float: left;
-        padding-top: 5px;
-    }
-
-    input[type=number] 
-    {
-        border: none;
-        outline: none;
-        padding: 0 0 0 5px;
-        margin: 0px;
-        width: 50px;
-        height: 22px;
-    }
-
-    input[type=text]
-    {
-        width: 90px;
-        height: 22px;
-        float: left;
-    }
-
-    .ui-spinner
-    {
-        border-radius: 0px;
-        margin-left: 20px;
-    }
-
-    .numberInput
+    .buttons
     {
         float: left;
-        width: 50%;
-        padding-bottom: 10px;
-        font-size: $fontSizeSmall;
-        color: $TPGrey3;
+        margin-left: 15px;
+
+        .applyDates
+        {
+            min-width: 60px;
+        }
     }
 }
 
@@ -115,11 +199,12 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
         width: auto;
         background-color: $TPGrey1;
         z-index: 200;
+        opacity: 1;
     }
 
     &:hover
     {
-        background-color: $TPGrey6;
+        background-color: #e4e2e3;
         border: 1px solid $TPGrey11;
 
         .chartButtons
@@ -130,13 +215,19 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
 
     &.menuOpen
     {
-        background-color: $TPGrey2;
+        background-color: #e4e2e3;
         border: 1px solid $TPGrey11;
 
         .chartButtons
         {
             display: block;
         }
+    }
+
+    &.ui-draggable-dragging
+    {
+        background-color: #e4e2e3;
+        border: 1px solid $TPGrey11;       
     }
 
     .chartContainer
@@ -330,5 +421,42 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
         &[data-row="13"] { top: 4930px; }
         &[data-row="14"] { top: 5340px; }
     }
+
+    // jquery ui adds some opacity to disabled drag state
+    &.ui-state-disabled
+    {
+        opacity: 1;
+    }
 }
 
+.dashboardChartSettings
+{
+    &.left
+    {
+        .arrow
+        {
+            position:absolute;
+            top: 30px;
+            right: -8px;
+        }
+    }
+
+    &.right
+    {
+        .arrow
+        {
+            position:absolute;
+            top: 30px;
+            left: -37px;
+        }
+    }
+
+    .hoverBox
+    {
+        .mainShadow
+        {
+            bottom: 0px;
+        }
+    }
+
+}

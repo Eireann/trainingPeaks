@@ -187,9 +187,14 @@ function(
             flotOptions.grid.borderWidth = { top: 0, right: 1, bottom: 1, left: 1 };
             flotOptions.grid.borderColor = "#9a9999";
     
-            if ($.plot) {
+            if ($.plot)
+            {
                 this.plot = $.plot(this.$("#quickViewGraph"), series, flotOptions);
-                this.plot.setFilter(10);
+                if (this.model.get("workoutTypeValueId") === TP.utils.workout.types.getIdByName("Swim"))
+                    this.plot.setFilter(0);
+                else
+                    this.plot.setFilter(10);
+                
             }
         }
 

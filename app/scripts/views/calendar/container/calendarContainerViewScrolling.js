@@ -9,33 +9,6 @@ function(_, TP, infiniteScroll)
     var CalendarContainerViewScrolling =
     {
 
-        // deprecated
-        onUpdateScrollPosition: function ($currentElement)
-        {
-            var scrollDate = this.getCurrentScrollDate($currentElement);
-            if (!scrollDate)
-            {
-                return;
-            }
-            this.setCurrentDate(scrollDate);
-        },
-
-        // deprecated
-        getCurrentScrollDate: function ($currentElement)
-        {
-            if (!$currentElement)
-                return;
-
-            var $currentWeek = $currentElement.closest(".week");
-            var $lastDayOfWeek = $currentWeek.find(".day:last");
-
-            if ($currentWeek && $lastDayOfWeek && $lastDayOfWeek.data("date"))
-            {
-                return $lastDayOfWeek.data("date");
-            }
-            return null;
-        },
-
         startScrollingState: function()
         {
             if (!this.scrolling)
@@ -49,7 +22,6 @@ function(_, TP, infiniteScroll)
         {
             this.scrolling = false;
             this.$el.find(".daysOfWeek").removeClass("scrollInProgress");
-            this.setCurrentDate(moment(this.getCurrentWeek()));
         },
 
         scrollToDateIfNotFullyVisible: function(targetDate, effectDuration)

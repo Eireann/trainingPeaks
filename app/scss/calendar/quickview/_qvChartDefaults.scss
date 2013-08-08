@@ -182,8 +182,7 @@
         padding: 0 7px 0 7px;
        
         label {
-            margin-top: 4px;
-            margin-bottom: 4px;
+            margin:0;
         }
     }
 
@@ -237,6 +236,8 @@
         }
     }
 
+    
+
     .tooltipRow
     {
         font-family: $fontFamilyRegular;
@@ -264,7 +265,6 @@
        font-size: $fontSizeSmall; 
        color: $TPGrey4;
        width: 45px;
-       // float: left;
        text-align: right;
        white-space: nowrap;
        display:inline-block;
@@ -286,7 +286,6 @@
 
     .units
     {
-        // float: left;
         font-family: $fontFamilyRegular;
         font-size: $fontSizeXSmall;
         min-width: 35px;
