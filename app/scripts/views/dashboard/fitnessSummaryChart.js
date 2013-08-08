@@ -69,7 +69,8 @@ function(
                 pie: 
                 {
                     show: true,
-                    layerSlices: true
+                    layerSlices: true,
+                    startAngle: 0.
                 }
             };
 
