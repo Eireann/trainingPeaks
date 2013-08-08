@@ -247,6 +247,20 @@ More detail and specific examples can be found in the included HTML file.
 				});
 			}
 
+			if(options.series.pie.layerSlices)
+			{
+				newdata = _.sortBy(newdata, function(slice) {
+					return 1 / slice.percent;
+				});
+
+				var radiusPercent = 100;
+				_.each(newdata, function(slice)
+				{
+					slice.radiusPercent = radiusPercent / 100;
+					radiusPercent -= 5;
+				});
+			}
+
 			return newdata;
 		}
 
@@ -393,7 +407,7 @@ More detail and specific examples can be found in the included HTML file.
 				var currentAngle = startAngle;
 				for (var i = 0; i < slices.length; ++i) {
 					slices[i].startAngle = currentAngle;
-					drawSlice(slices[i].angle, slices[i].color, true);
+					drawSlice(slices[i].angle, slices[i].color, true, slices[i]);
 				}
 				ctx.restore();
 
@@ -404,7 +418,7 @@ More detail and specific examples can be found in the included HTML file.
 					ctx.lineWidth = options.series.pie.stroke.width;
 					currentAngle = startAngle;
 					for (i = 0; i < slices.length; ++i) {
-						drawSlice(slices[i].angle, options.series.pie.stroke.color, false);
+						drawSlice(slices[i].angle, options.series.pie.stroke.color, false, slices[i]);
 					}
 					ctx.restore();
 				}
@@ -421,7 +435,7 @@ More detail and specific examples can be found in the included HTML file.
 					return drawLabels();
 				} else return true;
 
-				function drawSlice(angle, color, fill) {
+				function drawSlice(angle, color, fill, slice) {
 
 					if (angle <= 0 || isNaN(angle)) {
 						return;
@@ -440,7 +454,7 @@ More detail and specific examples can be found in the included HTML file.
 					}
 
 					//ctx.arc(0, 0, radius, 0, angle, false); // This doesn't work properly in Opera
-					var sliceRadius = calculateSliceRadius(radius, angle);
+					var sliceRadius = calculateSliceRadius(radius, angle, slice);
 					ctx.arc(0, 0, sliceRadius,currentAngle, currentAngle + angle / 2, false);
 					ctx.arc(0, 0, sliceRadius,currentAngle + angle / 2, currentAngle + angle, false);
 					ctx.closePath();
@@ -455,18 +469,16 @@ More detail and specific examples can be found in the included HTML file.
 				}
 
 				// shrink a slice's radius for a layered effect
-				function calculateSliceRadius(radius, angle)
+				function calculateSliceRadius(radius, angle, slice)
 				{
 					if(!options.series.pie.layerSlices)
 					{
 						return radius;
 					}
-
-					// this sort of works. the radius is proportionate, but the radius is too small
-					// angles are in radians, 6.28318531 radians = 360 degrees
-					var wholeCircle = 6.28318531;
-					var sliceRadius = radius * (angle / wholeCircle);
-					return sliceRadius;
+					else
+					{
+						return radius * slice.radiusPercent;
+					}
 				}
 
 				function drawLabels() {
