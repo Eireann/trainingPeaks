@@ -19,8 +19,10 @@ function (_, TP, calendarHeaderView)
             if (this.views.header)
                 this.views.header.close();
 
-            this.models.calendarHeaderModel = new TP.Model();
-
+            if (!this.models.calendarHeaderModel) {
+                this.models.calendarHeaderModel = new TP.Model();
+            }
+            
             this.views.header = new calendarHeaderView({ model: this.models.calendarHeaderModel });
 
             this.views.header.on("request:today", this.onRequestToday, this);

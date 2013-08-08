@@ -5,28 +5,30 @@ requirejs(
     "TP",
     "moment",
     "app",
+    "models/calendar/calendarCollection",
     "views/calendar/container/calendarContainerView",
     "views/scrollableCollectionView"
 ],
-function($, TP, moment, theMarsApp, CalendarContainerView, ScrollableCollectionView)
+function($, TP, moment, theMarsApp, CalendarCollection, CalendarContainerView, ScrollableCollectionView)
 {
 
     describe("CalendarContainerView Scrolling", function()
     {
 
-        var calendarView;
-
-        beforeEach(function()
-        {
-            calendarView = new CalendarContainerView({ collection: new TP.Collection() });
-        });
-
         it("Should scroll to a given date", function ()
         {
+            var collection_options = {
+                    startDate: moment(),
+                    endDate: moment().add("weeks", 2)
+                },
+                collection =  new CalendarCollection(null, collection_options);
+
+            spyOn(collection, "getWeekModelForDay").andReturn(new TP.Model());
+            
             expect(CalendarContainerView.prototype.scrollToDate).toBeDefined();
             expect(typeof CalendarContainerView.prototype.scrollToDate).toBe("function");
 
-            var calendarContainerView = new CalendarContainerView({ calendarHeaderModel: new TP.Model(), collection: new TP.Collection() });
+            var calendarContainerView = new CalendarContainerView({ calendarHeaderModel: new TP.Model(), collection: collection});
             spyOn(calendarContainerView.weeksCollectionView, "scrollToModel");
             calendarContainerView.scrollToDate(moment("2013-01-01"));
             expect(calendarContainerView.weeksCollectionView.scrollToModel).toHaveBeenCalled();

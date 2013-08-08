@@ -65,7 +65,7 @@ function(
             this.initializeScrollOnDrag();
 
             this.weeksCollectionView = new ScrollableCollectionView({
-                firstModel: this.collection.find(function(model) { return TP.utils.datetime.isThisWeek(model.id); }),
+                firstModel: this.collection.getWeekModelForDay((options.firstDate ? moment(options.firstDate) : moment()), options.startOfWeekDayIndex),
                 itemView: CalendarWeekView,
                 collection: this.collection,
                 id: "weeksContainer",
@@ -82,6 +82,7 @@ function(
                 return;
             }
             $('.week').removeClass('inView');
+            this.calendarHeaderModel.set('currentDay', this.weeksCollectionView.getCurrentModel().get('id'));
             _.each(this.weeksCollectionView.getVisibleModels(), function(model)
             {
                 model.view.$el.addClass('inView');
@@ -176,12 +177,8 @@ function(
             if (typeof effectDuration === "undefined")
                 effectDuration = 500;
 
-            if(dateAsMoment.day() < this.startOfWeekDayIndex)
-            {
-                dateAsMoment.subtract("week", 1);
-            }
-            var id = dateAsMoment.day(this.startOfWeekDayIndex).format(TP.utils.datetime.shortDateFormat);
-            var model = this.collection.get(id);
+            var model = this.collection.getWeekModelForDay(dateAsMoment, this.startOfWeekDayIndex);
+
             this.weeksCollectionView.scrollToModel(model, effectDuration);
         },
 

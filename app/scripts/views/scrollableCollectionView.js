@@ -169,7 +169,7 @@ function(
         constructor: function(options)
         {
             var self = this;
-            options.firstModel = options.firstModel || options.collection.at(Math.floor(options.collection.length / 2));
+            this.firstModel = options.firstModel || options.collection.at(Math.floor(options.collection.length / 2));
 
             options.collection = new ScrollableCollectionViewAdapterCollection(null, options);
 
@@ -229,7 +229,7 @@ function(
             this.on('show', function()
             {
                 setTimeout(function() {
-                    self.scrollToModel(options.firstModel, 0);
+                    self.scrollToModel(self.firstModel, 0);
                 },0);
             });
 

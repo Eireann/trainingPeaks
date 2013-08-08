@@ -5,9 +5,10 @@ requirejs(
     "TP",
     "moment",
     "app",
+    "models/calendar/CalendarCollection",
     "views/calendar/container/calendarContainerView"
 ],
-function($, TP, moment, theMarsApp, CalendarView)
+function($, TP, moment, theMarsApp, CalendarCollection, CalendarView)
 {
 
     describe("CalendarView ", function()
@@ -23,7 +24,14 @@ function($, TP, moment, theMarsApp, CalendarView)
 
             it("Should trigger itemDropped event", function()
             {
-                var calendarView = new CalendarView({ collection: new TP.Collection() });
+                var collection_options = {
+                    startDate: moment(),
+                    endDate: moment().add("weeks", 2)
+                };
+                var collection =  new CalendarCollection(null, collection_options);
+
+                spyOn(collection, "getWeekModelForDay").andReturn(new TP.Model());
+                var calendarView = new CalendarView({ collection: collection });
                 var weekView, dayView = {};
                 var options = {};
                 spyOn(calendarView, "trigger");
