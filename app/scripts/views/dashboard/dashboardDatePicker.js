@@ -79,16 +79,6 @@ function(
                 self.$(".datepicker").datepicker({ dateFormat: "yy-mm-dd", firstDay: theMarsApp.controllers.calendarController.startOfWeekDayIndex });
                 self.$("#dateOptions").selectBoxIt({dynamicPositioning: false});
             });
-
-            if(this.focusedInputId)
-            {
-                setImmediate(function()
-                {
-                    self.$("#" + self.focusedInputId).focus();
-                    self.focusedInputId = null;
-                });
-            }
-
         },
 
         serializeData: function()
@@ -115,7 +105,6 @@ function(
 
         onDateOptionsChanged: function(e)
         {
-            this.focusedInputId = e.target.id;
             var optionId = this.$("#dateOptions").val();
 
             var dateOptions = {
@@ -125,6 +114,24 @@ function(
             };
 
             dateOptions = chartUtils.buildChartParameters(dateOptions);
+
+            if(dateOptions.customStartDate)
+            {
+                this.$(".dateRanges").addClass("customStartDate");
+            }
+            else
+            {
+                this.$(".dateRanges").removeClass("customStartDate");
+            }
+
+            if(dateOptions.customEndDate)
+            {
+                this.$(".dateRanges").addClass("customEndDate");
+            }
+            else
+            {
+                this.$(".dateRanges").removeClass("customEndDate");
+            }
 
             this.model.set(this.settingsKey + ".startDate", dateOptions.customStartDate ? moment(dateOptions.startDate).format("YYYY-MM-DD") + "T00:00:00Z" : null, { silent: true });
             this.model.set(this.settingsKey + ".endDate", dateOptions.customEndDate ? moment(dateOptions.endDate).format("YYYY-MM-DD") + "T00:00:00Z" : null, { silent: true });

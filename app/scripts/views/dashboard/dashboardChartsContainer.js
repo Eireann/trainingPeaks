@@ -279,6 +279,15 @@ function(
             {
                 chartView.onDashboardDatesChange();
             });
+        },
+
+        onLibraryAnimateComplete: function()
+        {
+            this.resizeContainer();
+            if(this.usePackery)
+            {
+                this.packery.layout();
+            }
         }
 
 

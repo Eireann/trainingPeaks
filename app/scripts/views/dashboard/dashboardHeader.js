@@ -31,7 +31,6 @@ function (datepicker, spinner, jquerySelectBox, _, TP, DashboardDatePicker, char
         {
             this.settingsKey = "settings.dashboard.dateOptions";
             this.datepickerView = new DashboardDatePicker({ model: this.model, settingsKey: "settings.dashboard", includeGlobalOption: false });
-            this.model.on("change:" + this.settingsKey + ".*", this.render, this);
             this.on("user:loaded", this.setDefaultDateSettings, this);
             this.setDefaultDateSettings();
         },

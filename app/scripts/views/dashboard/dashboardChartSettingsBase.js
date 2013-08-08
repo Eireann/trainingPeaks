@@ -37,18 +37,13 @@ function(
 
         initialize: function(options)
         {
-            this.setTomahawkDirection(options.direction);
             this.index = options && options.hasOwnProperty("index") ? options.index : 0;
             this.settingsKey = "settings.dashboard.pods." + this.index;
-            this.model.on("change:" + this.settingsKey + ".*", this.onSettingsChange, this);
 
             this.on("render", this.setupDatePicker, this);
-            this.on("render", this.refocusLastInput, this);
-            this.once("render", this.stopWatchingChanges, this);
+            this.once("render", this.stopWatchingModelChanges, this);
             this.on("close", this.cleanupDatePicker, this);
-            this.on("close", this.saveIfSettingsHaveChanged, this);
-
-            this.setDefaultSettings();
+            this.on("close", this.saveOnClose, this);
         },
 
         events:
@@ -76,38 +71,15 @@ function(
             }
         },
 
-        stopWatchingChanges: function()
+        stopWatchingModelChanges: function()
         {
             this.model.off("change", this.render);
         },
 
-        refocusLastInput: function()
+        saveOnClose: function()
         {
-            if(this.focusedInputId)
-            {
-                var self = this;
-                setImmediate(function()
-                {
-                    self.$("#" + self.focusedInputId).focus();
-                    self.focusedInputId = null;
-                });
-            }
-        },
-
-        onSettingsChange: function()
-        {
-            this.hasChangedSettings = true;
-            this.render();
-        },
-
-        saveIfSettingsHaveChanged: function()
-        {
-            this.model.off("change:" + this.settingsKey + ".*", this.onSettingsChange, this);
-            if(this.hasChangedSettings)
-            {
-                this.saveSettings();
-                this.trigger("change:settings");
-            }
+            this.saveSettings();
+            this.trigger("change:settings");
         },
 
         saveSettings: function()
@@ -119,7 +91,12 @@ function(
         {
             var dashboardChartSettings = this.model.has(this.settingsKey) ? _.clone(this.model.get(this.settingsKey)) : {};
             dashboardChartSettings = chartUtils.buildChartParameters(dashboardChartSettings);
+            this.addWorkoutTypesToData(dashboardChartSettings);
+            return dashboardChartSettings;
+        },
 
+        addWorkoutTypesToData: function(dashboardChartSettings)
+        {
             var allSelected = true;
             var forceAllSelected = _.contains(dashboardChartSettings.workoutTypeIds, 0) || _.contains(dashboardChartSettings.workoutTypeIds, "0") ? true : false;
 
@@ -146,7 +123,6 @@ function(
                 selected: allSelected ? true : false
             });
 
-            return dashboardChartSettings;
         },
 
         setTomahawkDirection: function(direction)
@@ -154,9 +130,20 @@ function(
             this.$el.removeClass("left").removeClass("right").addClass(direction);
         },
 
-        setDefaultSettings: function()
+        alignArrowTo: function(top)
         {
-            return; 
+
+            // make sure we're fully on the screen
+            var windowBottom = $(window).height() - 10;
+            this.top(top - 25);
+            var myBottom = this.$el.offset().top + this.$el.height();
+
+            if(myBottom > windowBottom)
+            {
+                var arrowOffset = (myBottom - windowBottom) + 30;
+                this.top(windowBottom - this.$el.height());
+                this.$(".arrow").css("top", arrowOffset + "px");
+            }
         }
 
     };

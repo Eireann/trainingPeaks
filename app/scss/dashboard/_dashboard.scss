@@ -57,6 +57,36 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
             padding-left: 15px;
         }
 
+        input
+        {
+            display: none;
+        }
+
+        &.customStartDate
+        {
+            input.startDate
+            {
+                display: inline;
+            }
+
+            div.startDate
+            {
+                display: none;
+            }
+        }
+
+        &.customEndDate
+        {
+            input.endDate
+            {
+                display: inline;
+            }
+
+            div.endDate
+            {
+                display: none;
+            }
+        }
     }
 
     .datePicker
@@ -192,6 +222,12 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
         {
             display: block;
         }
+    }
+
+    &.ui-draggable-dragging
+    {
+        background-color: #e4e2e3;
+        border: 1px solid $TPGrey11;       
     }
 
     .chartContainer
@@ -385,6 +421,12 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
         &[data-row="13"] { top: 4930px; }
         &[data-row="14"] { top: 5340px; }
     }
+
+    // jquery ui adds some opacity to disabled drag state
+    &.ui-state-disabled
+    {
+        opacity: 1;
+    }
 }
 
 .dashboardChartSettings
@@ -394,7 +436,7 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
         .arrow
         {
             position:absolute;
-            top: 35px;
+            top: 30px;
             right: -8px;
         }
     }
@@ -404,7 +446,7 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
         .arrow
         {
             position:absolute;
-            top: 35px;
+            top: 30px;
             left: -37px;
         }
     }

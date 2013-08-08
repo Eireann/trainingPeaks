@@ -367,7 +367,7 @@ function(
         {
             var self = this;
 
-            var $dragging = view.$el.find('.dragging, .ui-draggable-draging');
+            var $dragging = view.$el.find('.dragging, .ui-draggable-dragging');
             if ($dragging.length > 0 && !force)
             {
                 view.$el.css('display', 'none');

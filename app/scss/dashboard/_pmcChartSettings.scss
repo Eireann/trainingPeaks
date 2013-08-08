@@ -54,12 +54,16 @@
 
     input[type=number] 
     {
-        border: none;
         outline: none;
         padding: 0 0 0 5px;
-        margin: 0px;
+        margin: 5px 0px;
         width: 50px;
         height: 22px;
+
+        &:focus
+        {
+           outline:none;
+        } 
     }
 
     input[type=text]

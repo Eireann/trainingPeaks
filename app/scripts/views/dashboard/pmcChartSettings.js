@@ -33,39 +33,45 @@ function(
 
         onWorkoutTypeSelected: function(e)
         {
-            this.hasChangedSettings = true;
-            var checkbox = $(e.target);
-
-            // the current settings are strings, but somehow checkbox.data gives us an int
-            var workoutTypeId = "" + checkbox.data("workouttypeid");
-            var checked = checkbox.is(":checked");
-            
             var workoutTypeIds = [];
-          
-            // select all
-            if (workoutTypeId === "0")
+
+            var $target = $(e.target);
+
+            // if 'select all' is checked, just keep 0 id
+            if(Number($target.data("workouttypeid")) === 0)
             {
-                if(checked)
+                if($target.is(":checked"))
                 {
                     workoutTypeIds.push("0");
+                    this.$(".workoutType input[type=checkbox]").prop("checked", true);
                 }
-            } else
-            {
-                workoutTypeIds = _.clone(this.model.get(this.settingsKey + ".workoutTypeIds"));
-                var inList = _.contains(workoutTypeIds, workoutTypeId);
-
-                if (checked && !inList)
+                else
                 {
-                    workoutTypeIds.push(workoutTypeId);
-                } else if (!checked && inList)
-                {
-                    workoutTypeIds = _.without(workoutTypeIds, workoutTypeId);
+                    this.$(".workoutType input[type=checkbox]").prop("checked", false);                   
                 }
-            }
+            } else {
 
-            if (workoutTypeIds.length === TP.utils.workout.types.typesById.length)
-            {
-                workoutTypeIds = ["0"];
+                // read all checkbox states 
+                _.each(this.$(".workoutType input[type=checkbox]"), function(checkbox)
+                {
+                    var $checkbox = $(checkbox);
+                    var workoutTypeId = "" + $checkbox.data("workouttypeid");
+                    // ignore 0 'select all' is a special case
+                    if($checkbox.is(":checked") && Number(workoutTypeId) !== 0)
+                    {
+                        workoutTypeIds.push(workoutTypeId);
+                    }
+                });
+
+                if (workoutTypeIds.length === _.keys(TP.utils.workout.types.typesById).length)
+                {
+                    workoutTypeIds = [0];
+                    this.$(".workoutType input[type=checkbox][data-workouttypeid=0]").prop("checked", true);
+                }
+                else
+                {
+                    this.$(".workoutType input[type=checkbox][data-workouttypeid=0]").prop("checked", false);
+                }
             }
 
             this.model.set(this.settingsKey + ".workoutTypeIds", workoutTypeIds);
@@ -74,11 +80,6 @@ function(
         onNumberOptionsChanged: function(e)
         {
             var inputId = e.target.id;
-
-            if (e.type !== "blur" && e.type !== "focusout")
-            {
-                this.focusedInputId = inputId;
-            }
 
             var modelKey = this.settingsKey + "." + inputId;
             var newValue = $(e.target).val();
@@ -90,7 +91,6 @@ function(
                 $(e.target).val(adjustedValue);
             } else
             {
-                this.hasChangedSettings = true;
                 this.model.set(modelKey, adjustedValue);
             }
         },
@@ -145,24 +145,7 @@ function(
             var checked = checkbox.is(":checked");
            
             this.model.set(this.settingsKey + "." + optionId, checked);
-        },
-
-        setDefaultSettings: function()
-        {
-            var defaultSettings = {
-                atlConstant: 7,
-                atlConstant2: 14,
-                atlStartValue: 1,
-                ctlConstant: 42,
-                ctlStartValue: 1,
-                showIntensityFactorPerDay: true,
-                showTSBFill: false,
-                showTSSPerDay: true
-            };
-            var mergedSettings = _.extend(defaultSettings, this.model.get(this.settingsKey));
-            this.model.set(this.settingsKey, mergedSettings, { silent: true });
         }
-
     };
 
     PMCChartSettings = _.extend({}, DashboardChartSettingsBase, PMCChartSettings);

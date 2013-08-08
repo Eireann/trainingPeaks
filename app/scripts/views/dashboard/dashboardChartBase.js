@@ -103,7 +103,7 @@ function(
         setupSettingsModel: function(options)
         {
             this.settingsModel = options && options.hasOwnProperty("settingsModel") ? options.settingsModel : theMarsApp.user;
-            this.setDefaultDateSettings(options);
+            this.setDefaultSettings(options);
         },
 
         setupViewModel: function(options)
@@ -292,11 +292,12 @@ function(
 
             var direction = (windowWidth - offset.left) > 450 ? "right" : "left";
             var icon = this.$(".settings");
-            this.chartSettings = new dashboardChartSettings({ model: this.settingsModel, direction: direction, index: this.index });
 
-            this.chartSettings.render().top(offset.top - 25);
+            this.chartSettings = this.createChartSettingsView(); 
+
             this.chartSettings.setTomahawkDirection(direction);
 
+            this.chartSettings.render();
             if (direction === "left")
             {
                 this.chartSettings.right(offset.left - 15);
@@ -305,14 +306,35 @@ function(
                 this.chartSettings.left(offset.left + $(e.currentTarget).width() + 15);
             }
 
+            this.chartSettings.alignArrowTo(offset.top + ($(e.currentTarget).height() / 2));
+
             this.chartSettings.on("change:settings", this.onChartSettingsChange, this);
-            this.chartSettings.on("close", this.onSettingsClose, this);
+            this.chartSettings.on("close", this.onChartSettingsClose, this);
+
+            this.listenToChartSettingsEvents();
         },
 
-        onSettingsClose: function()
+        createChartSettingsView: function()
         {
+            return new dashboardChartSettings({ model: this.settingsModel, index: this.index });
+        },
+
+        listenToChartSettingsEvents: function()
+        {
+            return;
+        },
+
+        stopListeningToChartSettingsEvents: function()
+        {
+            return;
+        },
+
+        onChartSettingsClose: function()
+        {
+            this.stopListeningToChartSettingsEvents();
             this.allowSettingsButtonToHide();
             this.enableDrag();
+            this.fetchData();
         },
 
         onChartSettingsChange: function()
@@ -439,6 +461,11 @@ function(
         enableDrag: function()
         {
             this.$el.draggable("enable");
+        },
+
+        setDefaultSettings: function(options)
+        {
+            this.setDefaultDateSettings(options);
         }
 
     };
