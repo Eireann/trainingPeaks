@@ -4,7 +4,6 @@
     "setImmediate",
     "moment",
     "TP",
-    "models/reporting/chartDataModel",
     "utilities/charting/flotOptions",
     "utilities/charting/chartColors",
     "utilities/charting/flotToolTipPositioner",
@@ -18,7 +17,6 @@ function(
     setImmediate,
     moment,
     TP,
-    ChartDataModel,
     defaultFlotOptions,
     chartColors,
     toolTipPositioner,
@@ -37,7 +35,7 @@ function(
         row: 1,
         colspan: 1,
         chartType: 0,
-        modelClass: ChartDataModel,
+        modelClass: TP.Model,
         today: moment().hour(0).format("YYYY-MM-DD"),
         useGrid: false,
         usePackery: true,
@@ -249,7 +247,7 @@ function(
             return series;
         },
 
-        buildFlotChartOptions: function(TSBAxisRange)
+        buildFlotChartOptions: function()
         {
             var flotOptions = defaultFlotOptions.getGlobalDefaultOptions(null);
             return flotOptions;

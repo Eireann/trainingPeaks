@@ -2,24 +2,24 @@
 [
     "moment",
     "underscore",
-    "TP"
+    "TP",
+    "./reportingModelBase"
 ],
-function(moment, _, TP)
-{
-    return TP.Model.extend(
-    {
-        cacheable: false,
+function(moment, _, TP, ReportingModelBase)
+{ 
+    var PMCModel = {
 
-        defaults:
-        {
-            data: []
-        },
+        reportName: "performancedata",
 
-        initialize: function (attributes, options)
-        {
-            this.setDefaultParameters();
-            this.setParameters(options);
-        },
+        parameterNames: [
+            "workoutTypeIds",
+            "ctlConstant",
+            "ctlStartValue",
+            "atlConstant",
+            "atlStartValue",
+            "startDate",
+            "endDate"
+        ],
 
         setDefaultParameters: function()
         {
@@ -32,32 +32,7 @@ function(moment, _, TP)
             this.endDate = moment().add('days', 21);
         },
 
-        setParameters: function(options)
-        {
-            if (!options)
-                return;
-
-            var parameterNames = ["workoutTypeIds", "ctlConstant", "ctlStartValue", "atlConstant", "atlStartValue", "startDate", "endDate"];
-
-            _.each(parameterNames, function(name)
-            {
-                if (options.hasOwnProperty(name))
-                {
-                    this[name] = options[name];
-                }
-            }, this);
-
-        },
-
-        urlRoot: function ()
-        {
-            var athleteId = theMarsApp.user.getCurrentAthleteId();
-            var apiRoot = theMarsApp.apiRoot + "/fitness/v1/athletes/" + athleteId + "/reporting/performancedata";
-
-            return apiRoot;
-        },
-
-        url: function ()
+        buildUrlParameters: function()
         {
             if (!(this.startDate && this.endDate))
                 throw "startDate & endDate needed for pmc";
@@ -80,12 +55,11 @@ function(moment, _, TP)
 
             var urlExtension = "/" + start + "/" + end + "/" + workoutTypes + "/" + this.ctlConstant + "/" + this.ctlStartValue + "/" + this.atlConstant + "/" + this.atlStartValue;
 
-            return this.urlRoot() + urlExtension;
-        },
-
-        parse: function (response)
-        {
-            return { data: response };
+            return urlExtension;
         }
-    });
+
+    };
+
+    PMCModel = _.extend({}, ReportingModelBase, PMCModel);
+    return TP.Model.extend(PMCModel);
 });

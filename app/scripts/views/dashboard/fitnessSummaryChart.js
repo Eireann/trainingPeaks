@@ -4,6 +4,7 @@
     "./dashboardChartBase",
     "TP",
     "utilities/charting/flotOptions",
+    "models/reporting/fitnessSummaryModel",
     "hbs!templates/views/dashboard/dashboardChart"
 ],
 function(
@@ -11,15 +12,26 @@ function(
     DashboardChartBase,
     TP,
     defaultFlotOptions,
+    FitnessSummaryModel,
     defaultChartTemplate
     )
 {
-    var DefaultChart = {
+    var FitnessSummaryChart = {
 
+        className: DashboardChartBase.className + " fitnessSummaryChart",
+        modelClass: FitnessSummaryModel,
+        
         template:
         {
             type: "handlebars",
             template: defaultChartTemplate
+        },
+
+        // TODO: remove this when we're actually ready to request data
+        fetchData: function()
+        {
+            this.waitingOff();
+            this.render();
         },
 
         setupViewModel: function(options)
@@ -32,10 +44,16 @@ function(
         buildFlotPoints: function()
         {
             var chartPoints = [
-                [{ label: "Run", data: 50, color: '#123456' }],
-                [{ label: "bike", data: 100, color: '#654321' }],
-                [{ label: "swim", data: 25, color: '#321654' }]
+                [0, 50],
+                [1, 100],
+                [2, 25]
             ];
+
+            /*
+                { label: "Run", data: 50, color: '#123456' },
+                { label: "bike", data: 100, color: '#654321' },
+                { label: "swim", data: 25, color: '#321654' }
+            */
 
             return chartPoints;
         },
@@ -53,8 +71,24 @@ function(
 
             return [dataSeries];
         },
+
+        buildFlotChartOptions: function()
+        {
+            var flotOptions = defaultFlotOptions.getGlobalDefaultOptions(null);
+
+            // pie plugin wants series settings here in addition to in data series
+            flotOptions.series = {
+                pie: 
+                {
+                    show: true
+                }
+            };
+
+            return flotOptions;
+        }
+
     };
 
-    return TP.ItemView.extend(_.extend({}, DashboardChartBase, DefaultChart));
+    return TP.ItemView.extend(_.extend({}, DashboardChartBase, FitnessSummaryChart));
 
 });
