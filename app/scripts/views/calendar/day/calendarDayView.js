@@ -296,7 +296,7 @@ function(_, touchPunch, draggable, droppable, moment, setImmediate, TP, Calendar
             // wrap it in a week of the appropriate class
             var $helperEl = $("<div></div>");
             $helperEl.attr("class", this.$el.closest(".week").attr("class"));
-            $helperEl.css({maxHeight: $('#calendarContainer').height() - 100});
+            $helperEl.css({maxHeight: $('#calendarContainer').height() - 100, overflow: "hidden"});
             $helperEl.append($helperViewEl);
             return $helperEl;
         },

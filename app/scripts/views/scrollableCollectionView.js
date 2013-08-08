@@ -239,7 +239,7 @@ function(
         {
             var view = this.children.findByModel(model);
             clearTimeout(this.scrollStopTimeout);
-            if(!view) {
+            if(!view || view.$el.css('display') === 'none') {
                 this.collection.centerOnModel(model);
                 view = this.children.findByModel(model);
                 duration = 0;
@@ -264,11 +264,13 @@ function(
             {
                 var position = view.$el.position();
                 position.bottom = position.top + view.$el.height();
-                var isTopVisibleAtBottom = position.top > 0 && position.top < height;
-                var isBottomVisibleAtTop = position.bottom > 0 && position.bottom < height;
-                return isTopVisibleAtBottom || isBottomVisibleAtTop;
+                var isTopVisibleAtBottom = position.top >= 0 && position.top <= height;
+                var isBottomVisibleAtTop = position.bottom >= 0 && position.bottom <= height;
+                var isMiddleVisible = position.top <= 0 && position.bottom >= height;
+                return isTopVisibleAtBottom || isBottomVisibleAtTop || isMiddleVisible;
             }).map(function(view)
             {
+                view.model.view = view;
                 return view.model;
             });
 
@@ -297,6 +299,10 @@ function(
 
         _closestChildToTop: function() {
             return _.chain(this.children.toArray())
+            .reject(function(child)
+            {
+                return child.$el.css('display') === 'none';
+            })
             .map(function(child)
             {
                 return {
@@ -357,14 +363,15 @@ function(
             this.scrollAnchorCount++;
         },
 
-        removeChildView: function(view)
+        removeChildView: function(view, force)
         {
             var self = this;
 
             var $dragging = view.$el.find('.dragging, .ui-draggable-draging');
-            if($dragging.length > 0)
+            if ($dragging.length > 0 && !force)
             {
-                $dragging.on("dragstop", function(event, ui) { self.removeChildView(view); });
+                view.$el.css('display', 'none');
+                $dragging.on("dragstop", function(event, ui) { self.removeChildView(view, true); });
             } else {
                 this.triggerMethod("before:item:removed", view);
                 TP.CollectionView.prototype.removeChildView.apply(this, arguments);
