@@ -70,7 +70,7 @@ function(
                 {
                     show: true,
                     layerSlices: true,
-                    startAngle: 0.
+                    startAngle: 0
                 }
             };
 
