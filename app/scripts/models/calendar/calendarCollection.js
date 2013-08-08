@@ -41,6 +41,9 @@ function(
             if (!options || !options.hasOwnProperty('endDate'))
                 throw "CalendarCollection requires an end date";
 
+
+            this.startOfWeekDayIndex = moment(options.startDate).day();
+
             this.summaryViewEnabled = options.hasOwnProperty("summaryViewEnabled") ? options.summaryViewEnabled : false;
 
             this.workoutsCollection = new WorkoutsCollection();
@@ -72,14 +75,17 @@ function(
             return model;
         },
 
-        getWeekModelForDay: function(dateAsMoment, startOfWeekDayIndex)
+        getWeekModelForDay: function(date)
         {
             var id, model;
-            if(dateAsMoment.day() < startOfWeekDayIndex)
+
+            var dateAsMoment = moment(date);
+
+            if(dateAsMoment.day() < this.startOfWeekDayIndex)
             {
                 dateAsMoment.subtract("week", 1);
             }
-            id = dateAsMoment.day(startOfWeekDayIndex).format(TP.utils.datetime.shortDateFormat);
+            id = dateAsMoment.day(this.startOfWeekDayIndex).format(TP.utils.datetime.shortDateFormat);
             model = this.get(id);
             return model;
         },
@@ -92,25 +98,32 @@ function(
             this.workoutsCollection.reset();
             this.daysCollection.reset();
 
-            var numOfWeeksToShow = (this.endDate.diff(this.startDate, "days") + 1) / 7;
-            var i;
-
-            for (i = 0; i < numOfWeeksToShow; i++)
-            {
-                var weekStartDate = moment(this.startDate).add("weeks", i);
-
-                // Get a CalendarWeekCollection and wrap it inside a model, with its matching ID, to be able to add it to a parent collection
-                var weekModel = new TP.Model({ id: weekStartDate.format(TP.utils.datetime.shortDateFormat), week: this.createWeekCollectionStartingOn(weekStartDate) });
-                this.add(weekModel, { silent: false, append: true });
-            }
+            this.add(this._buildWeeksForRange(startDate, endDate));
         },
 
-        resetToDates: function(startDate, endDate)
+        _buildWeeksForRange: function(startDate, endDate)
         {
-            this.reset([], {silent: true});
+            var self = this;
+            var weeks = [];
+            this.forEachWeek(startDate, endDate, function(week)
+            {
+                weeks.push(new TP.Model({ id: week, week: self.createWeekCollectionStartingOn(week) }));
+            });
+
+            return weeks;
+        },
+
+        resetToDates: function(startDate, endDate, currentDate)
+        {
+            this.startDate = startDate;
+            this.endDate = endDate;
+
+            this.workoutsCollection.reset();
+            this.daysCollection.reset();
+            var weeks = this._buildWeeksForRange(startDate, endDate);
             this.selectedDay = this.selectedWeek = this.selectedRange = null;
-            this.setUpWeeks(startDate, endDate);
-            this.trigger("reset");
+            this.reset(weeks, {silent: true});
+            this.trigger("reset", weeks, {target: currentDate ? this.getWeekModelForDay(currentDate) : null});
         },
         
         createWeekCollectionStartingOn: function (startDate)

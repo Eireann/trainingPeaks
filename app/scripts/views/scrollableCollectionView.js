@@ -1,10 +1,12 @@
 define(
 [
     "underscore",
+    "setImmediate",
     "TP"
 ],
 function(
     _,
+    setImmediate,
     TP)
 {
     var ScrollableCollectionViewAdapterCollection = TP.Collection.extend({
@@ -62,13 +64,13 @@ function(
             this._limitSize({dropFrom: "beginning"});
         },
 
-        centerOnModel: function(model)
+        centerOnModel: function(model, options)
         {
             this.trigger("before:changes"); // Warn that lots of changes are coming
             model = model || this.sourceCollection.at(Math.floor(this.sourceCollection.length / 2));
             if(!model) return;
 
-            this.reset(model);
+            this.reset(model, options);
             this.fetchNext(Math.ceil(this.minSize / 2));
             this._ensureSize({fetchFrom: "beginning"});
             this.trigger("after:changes"); // Notify that batch changes are finished
@@ -76,11 +78,12 @@ function(
 
         _bindSourceCollectionEvents: function()
         {
+            var self = this;
             this.listenTo(this.sourceCollection, 'add', _.bind(this._onSourceAdd, this));
             this.listenTo(this.sourceCollection, 'remove', _.bind(this._onSourceRemove, this));
-            this.listenTo(this.sourceCollection, 'reset', function()
+            this.listenTo(this.sourceCollection, 'reset', function(models, options)
             {
-                this.reset();
+                self.centerOnModel(options.target, options);
             });
 
             this.listenTo(this.sourceCollection, 'all', function(eventName)
@@ -228,9 +231,19 @@ function(
 
             this.on('show', function()
             {
-                setTimeout(function() {
+                setImmediate(function() {
                     self.scrollToModel(self.firstModel, 0);
-                },0);
+                });
+            });
+
+            this.collection.on("reset", function(models, options)
+            {
+                if (options.target)
+                {
+                    setImmediate(function() {
+                        self.scrollToModel(options.target, 0);
+                    }); 
+                }
             });
 
         },
@@ -283,6 +296,7 @@ function(
             if(scrollDelta <= 1) return;
 
             this.scrollAnimationDeferred = new $.Deferred();
+            this.$el.stop(true, false);
             this.$el.animate({scrollTop: scrollTop}, duration || 0, function() {
                 self.scrollAnimationDeferred.resolve();
                 self.$el.trigger('scroll');

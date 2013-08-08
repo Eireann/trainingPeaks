@@ -353,19 +353,15 @@ function($, TP, moment, theMarsApp, testHelpers, xhrData, WorkoutModel, Workouts
             expect(typeof CalendarCollection.prototype.setUpWeeks).toBe("function");
 
             var i = 0;
-            var context =
+            var context = new CalendarCollection([],
             {
-                workoutsCollection: new TP.Collection(),
-                daysCollection: new TP.Collection(),
-                add: function ()
-                {
-                    i++;
-                },
-                createWeekCollectionStartingOn: function() {}                
-            };
+                startDate: moment().day(0),
+                endDate: moment().day(6)
+            });
             
             spyOn(context.workoutsCollection, "reset");
             spyOn(context.daysCollection, "reset");
+            spyOn(context, "add");
 
             var startDate = moment("2013-01-01");
             var endDate = moment("2013-03-01");
@@ -375,7 +371,7 @@ function($, TP, moment, theMarsApp, testHelpers, xhrData, WorkoutModel, Workouts
             expect(context.endDate.unix()).toBe(endDate.unix());
             expect(context.workoutsCollection.reset).toHaveBeenCalled();
             expect(context.daysCollection.reset).toHaveBeenCalled();
-            expect(i).toBe(9);
+            expect(context.add.argsForCall[0][0].length).toBe(9);
         });
 
         describe("Cut, Copy, Paste", function()

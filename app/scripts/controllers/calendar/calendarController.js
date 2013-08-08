@@ -201,8 +201,7 @@ function(
 
             var currentWeek = date ? moment(date).format(TP.utils.datetime.shortDateFormat) : this.views.calendar.getCurrentWeek();
             // QL: Should be handled by reset, not "resetToDates"
-            this.weeksCollection.resetToDates(moment(this.startDate), moment(this.endDate));
-            this.views.calendar.scrollToDate(currentWeek);
+            this.weeksCollection.resetToDates(moment(this.startDate), moment(this.endDate), currentWeek);
 
             this.loadCalendarData();
         },
