@@ -10,6 +10,7 @@
     "utilities/charting/flotToolTipPositioner",
     "utilities/workout/workoutTypes",
     "views/dashboard/chartUtils",
+    "./dashboardChartSettings",
     "hbs!templates/views/charts/chartTooltip"
 ],
 function(
@@ -23,6 +24,7 @@ function(
     toolTipPositioner,
     workoutTypes,
     chartUtils,
+    dashboardChartSettings,
     tooltipTemplate
     )
 {
@@ -38,6 +40,7 @@ function(
         modelClass: ChartDataModel,
         today: moment().hour(0).format("YYYY-MM-DD"),
         useGrid: false,
+        usePackery: true,
 
         attributes: function()
         {
@@ -63,16 +66,29 @@ function(
 
         buildDefaultOptions: function(options)
         {
-            return _.extend({}, { index: 0, row: 0, column: 0, useGrid: false }, options);
+            return _.extend({}, { index: 0, row: 0, column: 0, useGrid: false, usePackery: true }, options);
         },
 
         setGridAttributes: function(options)
         {
             this.useGrid = options.useGrid;
+            this.usePackery = options.usePackery;
             this.index = options.index;
             this.row = options.row;
             this.column = options.column;
             this.$el.attr(this.attributes());
+        },
+
+        setDefaultDateSettings: function(options)
+        {
+            var defaultDateOption = chartUtils.chartDateOptions.USE_GLOBAL_DATES.id;
+            var defaultSettings = { startDate: null, endDate: null, quickDateSelectOption: defaultDateOption };
+            var mergedSettings = _.extend(defaultSettings, this.getSetting("dateOptions"));
+            if(!mergedSettings.quickDateSelectOption)
+            {
+                mergedSettings.quickDateSelectOption = defaultDateOption;
+            }
+            this.setSetting("dateOptions", mergedSettings, { silent: true });
         },
 
         initialize: function(options)
@@ -81,15 +97,15 @@ function(
             _.bindAll(this, "onHoverToolTip");
             this.setGridAttributes(options);
             this.setSettingsIndex(options.index);
+            this.setupSettingsModel(options);
             this.setupViewModel(options);
             this.setupDataModel(options);
         },
 
-        setSettingsIndex: function(index)
+        setupSettingsModel: function(options)
         {
-            this.index = index;
-            this.settingsKey = "settings.dashboard.pods." + this.index;
-            this.$el.attr("data-index", index);
+            this.settingsModel = options && options.hasOwnProperty("settingsModel") ? options.settingsModel : theMarsApp.user;
+            this.setDefaultSettings(options);
         },
 
         setupViewModel: function(options)
@@ -136,15 +152,12 @@ function(
 
         fetchData: function()
         {
+            var myDateSettings = this.getSetting("dateOptions");
+            var chartDateParameters = chartUtils.buildChartParameters(myDateSettings);
+            this.chartDataModel.setParameters(chartDateParameters);
+
             var self = this;
-
-            if (theMarsApp.user.has(this.settingsKey))
-            {
-                this.chartDataModel.setParameters(chartUtils.buildChartParameters(theMarsApp.user.get(this.settingsKey)));
-
-            }
-
-            self.waitingOn();
+            this.waitingOn();
             this.chartDataModel.fetch().done(function()
             {
                 self.setChartTitle();
@@ -159,10 +172,10 @@ function(
 
         events:
         {
-            "click .settings": "settingsClicked",
-            "click .expand": "expandClicked",
-            "click .collapse": "expandClicked",
-            "click .close": "closeClicked"
+            "mousedown .settings": "settingsClicked",
+            "mousedown .expand": "expandClicked",
+            "mousedown .collapse": "expandClicked",
+            "mousedown .close": "closeClicked"
         },
 
         setChartTitle: function()
@@ -266,7 +279,69 @@ function(
 
         settingsClicked: function(e)
         {
+            if (e && e.button && e.button === 2)
+            {
+                return;
+            }
 
+            this.disableDrag();
+            e.preventDefault();
+
+            this.keepSettingsButtonVisible();
+
+            var offset = $(e.currentTarget).offset();
+            var windowWidth = $(window).width();
+
+            var direction = (windowWidth - offset.left) > 450 ? "right" : "left";
+            var icon = this.$(".settings");
+
+            this.chartSettings = this.createChartSettingsView(); 
+
+            this.chartSettings.setTomahawkDirection(direction);
+
+            this.chartSettings.render();
+            if (direction === "left")
+            {
+                this.chartSettings.right(offset.left - 15);
+            } else
+            {
+                this.chartSettings.left(offset.left + $(e.currentTarget).width() + 15);
+            }
+
+            this.chartSettings.alignArrowTo(offset.top + ($(e.currentTarget).height() / 2));
+
+            this.chartSettings.on("change:settings", this.onChartSettingsChange, this);
+            this.chartSettings.on("close", this.onChartSettingsClose, this);
+
+            this.listenToChartSettingsEvents();
+        },
+
+        createChartSettingsView: function()
+        {
+            return new dashboardChartSettings({ model: this.settingsModel, index: this.index });
+        },
+
+        listenToChartSettingsEvents: function()
+        {
+            return;
+        },
+
+        stopListeningToChartSettingsEvents: function()
+        {
+            return;
+        },
+
+        onChartSettingsClose: function()
+        {
+            this.stopListeningToChartSettingsEvents();
+            this.allowSettingsButtonToHide();
+            this.enableDrag();
+            this.fetchData();
+        },
+
+        onChartSettingsChange: function()
+        {
+            this.fetchData();
         },
 
         keepSettingsButtonVisible: function()
@@ -281,12 +356,12 @@ function(
 
         getSetting: function(settingKey)
         {
-            return theMarsApp.user.get(this.settingsKey + "." + settingKey);
+            return this.settingsModel.get(this.settingsKey + "." + settingKey);
         },
 
-        setSetting: function(settingKey, value)
+        setSetting: function(settingKey, value, options)
         {
-            return theMarsApp.user.set(this.settingsKey + "." + settingKey, value);
+            return this.settingsModel.set(this.settingsKey + "." + settingKey, value, options);
         },
 
         expandClicked: function()
@@ -313,24 +388,26 @@ function(
 
         popOut: function()
         {
-                var $chartContainer = this.ui.chartContainer;
-                this.previousPosition = {
-                    top: this.$el.css("top"),
-                    left: this.$el.css("left"),
-                    bottom: "auto",
-                    right: "auto"
-                };
+            this.disableDrag();
+            var $chartContainer = this.ui.chartContainer;
+            this.previousPosition = {
+                top: this.$el.css("top"),
+                left: this.$el.css("left"),
+                bottom: "auto",
+                right: "auto"
+            };
 
-                var newPosition = {
-                    top: "10px",
-                    bottom: "20px",
-                    left: "10px",
-                    right: "10px"
-                };
+            var newPosition = {
+                top: "10px",
+                bottom: "20px",
+                left: "10px",
+                right: "10px"
+            };
 
-                $chartContainer.hide();
-                var self = this;
-                this.$el.appendTo($("body")).animate(newPosition, 200, function(){ self.setupModalOverlay(); $chartContainer.show(); });
+            $chartContainer.hide();
+            var self = this;
+            this.$el.appendTo($("body")).animate(newPosition, 200, function(){ self.setupModalOverlay(); $chartContainer.show(); });
+
         },
 
         popIn: function()
@@ -340,6 +417,7 @@ function(
             this.$el.appendTo(this.chartsContainer).animate(this.previousPosition, 200, function(){ $chartContainer.show(); });
             this.closeModal();
             this.previousPosition = null;
+            this.enableDrag();
         },
 
         setupModalOverlay: function()
@@ -362,10 +440,42 @@ function(
                 this.expandClicked();
         },
 
-        setPodIndex: function(index)
+        setSettingsIndex: function(index)
         {
-            this.setSetting("index", index);
+            this.index = index;
+            this.settingsKey = "settings.dashboard.pods." + this.index;
+            this.$el.attr("data-index", index);
+        },
+
+        onDashboardDatesChange: function()
+        {
+            if(this.getSetting("dateOptions.quickDateSelectOption") === chartUtils.chartDateOptions.USE_GLOBAL_DATES.id)
+            {
+                this.fetchData();
+            }
+        },
+
+        disableDrag: function()
+        {
+            if(this.usePackery)
+            {
+                this.$el.draggable("disable");
+            } 
+        },
+
+        enableDrag: function()
+        {
+            if(this.usePackery)
+            {
+                this.$el.draggable("enable");
+            }
+        },
+
+        setDefaultSettings: function(options)
+        {
+            this.setDefaultDateSettings(options);
         }
+
     };
 
 

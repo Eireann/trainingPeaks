@@ -212,7 +212,6 @@ function(
             this.loadCalendarData();
         },
 
-        // Deprecated
         showDate: function(dateAsMoment, duration)
         {
             if (!dateAsMoment)

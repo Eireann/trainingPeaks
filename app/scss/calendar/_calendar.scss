@@ -379,18 +379,31 @@
     #info {
         display:none;
     }
-
+    body,html, #main {
+        height:100%;
+    }
+    #main > div {
+        min-height:100%;
+    }
+    #calendarWrapper {
+        min-height:940px;
+    }
     #calendarContainer {
+
+        overflow:visible;
 
         #weeksContainer{
             width:98.6%;
+            min-height:910px !important;
         }
 
         .week {
             @include grid-row();
-             page-break-inside:avoid;
+            page-break-inside:avoid;
         }
-
+        .week:not(.inView) {
+            display:none;
+        }
         .day {
             padding: 0px;
             @include calc(width, "(100% - 294px) /7");

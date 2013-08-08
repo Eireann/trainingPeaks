@@ -31,6 +31,8 @@ function(
         colspan: 2,
         modelClass: PMCModel,
 
+        className: DashboardChartBase.className + " pmcChart",
+
         template:
         {
             type: "handlebars",
@@ -576,51 +578,23 @@ function(
             return tips;
         },
 
-        settingsClicked: function(e)
+        createChartSettingsView: function()
         {
-            if (e && e.button && e.button === 2)
-            {
-                return;
-            }
-
-            e.preventDefault();
-
-            this.keepSettingsButtonVisible();
-
-            var offset = $(e.currentTarget).offset();
-            var windowWidth = $(window).width();
-
-            var direction = (windowWidth - offset.left) > 450 ? "right" : "left";
-            var icon = this.$(".settings");
-            this.pmcSettings = new pmcChartSettings({ model: theMarsApp.user, direction: direction, index: this.index });
-
-            this.pmcSettings.render().top(offset.top - 25);
-            this.pmcSettings.setDirection(direction);
-
-            if (direction === "left")
-            {
-                this.pmcSettings.right(offset.left - 15);
-            } else
-            {
-                this.pmcSettings.left(offset.left + $(e.currentTarget).width() + 15);
-            }
-
-            this.pmcSettings.on("change:settings", this.onPmcSettingsChange, this);
-            this.pmcSettings.on("close", this.allowSettingsButtonToHide, this);
-
-
-            theMarsApp.user.on("change:" + this.settingsKey + ".showTSSPerDay", this.renderChart, this);
-            theMarsApp.user.on("change:" + this.settingsKey + ".showIntensityFactorPerDay", this.renderChart, this);
-            theMarsApp.user.on("change:" + this.settingsKey + ".showTSBFill", this.renderChart, this);
+            return new pmcChartSettings({ model: this.settingsModel, index: this.index });
         },
 
-        onPmcSettingsChange: function()
+        listenToChartSettingsEvents: function()
         {
-            this.fetchData();
+            this.settingsModel.on("change:" + this.settingsKey + ".showTSSPerDay", this.renderChart, this);
+            this.settingsModel.on("change:" + this.settingsKey + ".showIntensityFactorPerDay", this.renderChart, this);
+            this.settingsModel.on("change:" + this.settingsKey + ".showTSBFill", this.renderChart, this);
+        },
 
-            theMarsApp.user.off("change:" + this.settingsKey + ".showTSSPerDay", this.renderChart, this);
-            theMarsApp.user.off("change:" + this.settingsKey + ".showIntensityFactorPerDay", this.renderChart, this);
-            theMarsApp.user.off("change:" + this.settingsKey + ".showTSBFill", this.renderChart, this);
+        stopListeningToChartSettingsEvents: function()
+        {
+            this.settingsModel.off("change:" + this.settingsKey + ".showTSSPerDay", this.renderChart, this);
+            this.settingsModel.off("change:" + this.settingsKey + ".showIntensityFactorPerDay", this.renderChart, this);
+            this.settingsModel.off("change:" + this.settingsKey + ".showTSBFill", this.renderChart, this);
         },
 
         shouldShowTSS: function()
@@ -636,6 +610,24 @@ function(
         shouldShowTSBFill: function()
         {
             return this.getSetting("showTSBFill") ? true : false;
+        },
+
+        setDefaultSettings: function(options)
+        {
+            this.setDefaultDateSettings(options);
+            var defaultSettings = {
+                atlConstant: 7,
+                atlConstant2: 14,
+                atlStartValue: 1,
+                ctlConstant: 42,
+                ctlStartValue: 1,
+                showIntensityFactorPerDay: true,
+                showTSBFill: false,
+                showTSSPerDay: true,
+                workoutTypeIds: ["0"]
+            };
+            var mergedSettings = _.extend(defaultSettings, this.settingsModel.get(this.settingsKey));
+            this.settingsModel.set(this.settingsKey, mergedSettings, { silent: true });
         }
 
     };

@@ -38,18 +38,30 @@ function(
             chartsContainer: "#chartsContainer"
         },
 
-        initialize: function()
+        initialize: function(options)
         {
+            this.model = options && options.model ? options.model : theMarsApp.user;
             this.charts = [];
             this.on("close", this.closeDashboardCharts, this);
             this.on("user:loaded", this.onUserLoaded, this);
 
             // initialize the superclass
             this.constructor.__super__.initialize.call(this);
+
+            if(!this.$el.packery)
+            {
+                this.usePackery = false;
+            }
+
+            if(!this.$el.gridster)
+            {
+                this.useGrid = false;
+            }
         },
 
         renderDashboardCharts: function()
         {
+            this.cleanupSettingsOrder(this.model.get("settings.dashboard.pods"));
             if(this.useGrid)
             {
                 this.setChartGridPositions();
@@ -62,7 +74,7 @@ function(
         setChartGridPositions: function()
         {
             // if the first one has saved position, assume that they've all been setup?
-            if(theMarsApp.user.get("settings.dashboard.pods.0.row") && theMarsApp.user.get("settings.dashboard.pods.0.column"))
+            if(this.model.get("settings.dashboard.pods.0.row") && this.model.get("settings.dashboard.pods.0.column"))
             {
                 return;
             }
@@ -72,7 +84,7 @@ function(
             var row = 1;
             var maxColumns = 4;
 
-            _.each(theMarsApp.user.get("settings.dashboard.pods"), function(podSettings, index)
+            _.each(this.model.get("settings.dashboard.pods"), function(podSettings, index)
             {
                 var colspan = podSettings.chartType === 32 ? 2 : 1;
 
@@ -96,12 +108,12 @@ function(
         buildDashboardCharts: function()
         {
             this.charts = [];
-            _.each(theMarsApp.user.get("settings.dashboard.pods"), function(podSettings, index)
+            _.each(this.model.get("settings.dashboard.pods"), function(podSettings, index)
             {
                 // add some stuff to pod settings that we may not want to persist
-                podSettings = _.extend({}, podSettings, {useGrid: this.useGrid, usePackery: this.usePackery});
+                podSettings = _.extend({}, podSettings, {useGrid: this.useGrid, usePackery: this.usePackery, settingsModel: theMarsApp.user });
 
-                var chartView = dashboardChartBuilder.buildChartView(podSettings.chartType, podSettings, this.useGrid);
+                var chartView = dashboardChartBuilder.buildChartView(podSettings.chartType, podSettings);
                 this.charts.push(chartView);
                 chartView.on("remove", this.onChartRemove, this);
             }, this);
@@ -169,7 +181,6 @@ function(
         onDragStop: function()
         {
             var gridster = this.ui.chartsContainer.data("gridster");
-            console.log(gridster.serialize_changed());
         },
 
         initPackery: function()
@@ -203,37 +214,93 @@ function(
 
         updateChartOrder: function()
         {
+            var orderedSettings = [];
             _.each(this.packery.getItemElements(), function(element, newIndex)
             {
                 var oldIndex = $(element).attr("data-index");
-                var chartView = this.charts[oldIndex];
-                chartView.setPodIndex(newIndex);
+                var setting = this.model.get("settings.dashboard.pods." + oldIndex);
+                orderedSettings.push(setting);
             }, this);
-            theMarsApp.user.save();
+            this.syncChartSettingsOrder(orderedSettings);
         },
 
         onChartRemove: function()
         {
             this.initPackery();
-            var oldSettings = theMarsApp.user.get("settings.dashboard.pods");
+            var oldOrderedSettings = this.model.get("settings.dashboard.pods");
+            this.syncChartSettingsOrder(oldOrderedSettings);
+        },
+
+        syncChartSettingsOrder: function(orderedSettings)
+        {
             var newCharts = [];
             var newSettings = [];
-            _.each(oldSettings, function(chartSetting, index)
+            _.each(orderedSettings, function(chartSetting, index)
             {
-                var chartView = this.charts[index];
+                // lookup chart by it's original index
+                var chartView = this.findChartByIndex(chartSetting.index);
                 if(!chartView.isClosed)
                 {
-                    var newIndex = newSettings.length;
-                    chartView.setSettingsIndex(newIndex);
-                    chartSetting.index = newIndex;
                     newSettings.push(chartSetting);
                     newCharts.push(chartView);
                 }
             }, this);
+
+            this.cleanupSettingsOrder(newSettings);
+
+            _.each(newSettings, function(setting, index)
+            {
+                var chartView = newCharts[index];
+                chartView.setSettingsIndex(index);
+            });
+
             this.charts = newCharts;
-            theMarsApp.user.set("settings.dashboard.pods", newSettings, { silent: true});
-            theMarsApp.user.save();
+            this.model.set("settings.dashboard.pods", newSettings, { silent: true});
+            this.model.save();
+        },
+
+        cleanupSettingsOrder: function(orderedSettings)
+        {
+            _.each(orderedSettings, function(setting, index)
+            {
+                setting.index = index;
+            });
+
+        },
+
+        findChartByIndex: function(index)
+        {
+            var chart = _.find(this.charts, function(chart)
+            {
+                return chart.index === index;
+            });
+
+            if(!chart)
+            {
+                throw "Unable to find chart by index = " + index;
+            }
+
+            return chart;
+        },
+
+        onDashboardDatesChange: function()
+        {
+            _.each(this.charts, function(chartView)
+            {
+                chartView.onDashboardDatesChange();
+            });
+        },
+
+        onLibraryAnimateComplete: function()
+        {
+            this.resizeContainer();
+            if(this.usePackery)
+            {
+                this.packery.layout();
+            }
         }
+
+
     };
 
     return PrimaryContainerView.extend(DashboardView);

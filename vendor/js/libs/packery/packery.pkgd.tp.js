@@ -3415,9 +3415,10 @@ define([],function()
       _this.sortItemsByPosition();
 
       // emit item drag event now that everything is done
-      if ( itemNeedsPositioning ) {
+      // Micah: removed the if itemNeedsPositioning - sometimes the event wasn't firing when it seems like it should have
+      //if ( itemNeedsPositioning ) {
         _this.emitEvent( 'dragItemPositioned', [ _this, item ] );
-      }
+      //}
       // listen once
       return true;
     };
