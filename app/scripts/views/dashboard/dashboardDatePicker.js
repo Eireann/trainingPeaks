@@ -57,9 +57,9 @@ function(
 
         events:
         {
-            "change #dateOptions": "onDateOptionsChanged",
-            "change #startDate": "onDateOptionsChanged",
-            "change #endDate": "onDateOptionsChanged"
+            "change select.dateOptions": "onDateOptionsChanged",
+            "change input.startDate": "onDateOptionsChanged",
+            "change input.endDate": "onDateOptionsChanged"
         },
 
         onRender: function()
@@ -67,7 +67,7 @@ function(
             this.model.off("change", this.render);
 
             var self = this;
-            self.$("#dateOptions").hide();
+            self.$("select.dateOptions").hide();
             setImmediate(function()
             {
                 var zIndex = self.$el.css("z-index");
@@ -77,7 +77,7 @@ function(
                 }
                 self.$(".datepicker").css("position", "relative").css("z-index", zIndex);
                 self.$(".datepicker").datepicker({ dateFormat: "yy-mm-dd", firstDay: theMarsApp.controllers.calendarController.startOfWeekDayIndex });
-                self.$("#dateOptions").selectBoxIt({dynamicPositioning: false});
+                self.$("select.dateOptions").selectBoxIt({dynamicPositioning: false});
             });
         },
 
@@ -105,12 +105,12 @@ function(
 
         onDateOptionsChanged: function(e)
         {
-            var optionId = this.$("#dateOptions").val();
+            var optionId = this.$("select.dateOptions").val();
 
             var dateOptions = {
                 quickDateSelectOption: optionId,
-                startDate: this.$("#startDate").val(),
-                endDate: this.$("#endDate").val()
+                startDate: this.$("input.startDate").val(),
+                endDate: this.$("input.endDate").val()
             };
 
             dateOptions = chartUtils.buildChartParameters(dateOptions);

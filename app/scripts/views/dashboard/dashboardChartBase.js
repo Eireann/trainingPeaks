@@ -40,6 +40,7 @@ function(
         modelClass: ChartDataModel,
         today: moment().hour(0).format("YYYY-MM-DD"),
         useGrid: false,
+        usePackery: true,
 
         attributes: function()
         {
@@ -65,12 +66,13 @@ function(
 
         buildDefaultOptions: function(options)
         {
-            return _.extend({}, { index: 0, row: 0, column: 0, useGrid: false }, options);
+            return _.extend({}, { index: 0, row: 0, column: 0, useGrid: false, usePackery: true }, options);
         },
 
         setGridAttributes: function(options)
         {
             this.useGrid = options.useGrid;
+            this.usePackery = options.usePackery;
             this.index = options.index;
             this.row = options.row;
             this.column = options.column;
@@ -455,12 +457,18 @@ function(
 
         disableDrag: function()
         {
-            this.$el.draggable("disable");
+            if(this.usePackery)
+            {
+                this.$el.draggable("disable");
+            } 
         },
 
         enableDrag: function()
         {
-            this.$el.draggable("enable");
+            if(this.usePackery)
+            {
+                this.$el.draggable("enable");
+            }
         },
 
         setDefaultSettings: function(options)

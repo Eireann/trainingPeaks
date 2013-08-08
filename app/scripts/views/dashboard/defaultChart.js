@@ -16,6 +16,8 @@ function(
 {
     var DefaultChart = {
 
+        className: DashboardChartBase.className + " defaultChart",
+        
         template:
         {
             type: "handlebars",

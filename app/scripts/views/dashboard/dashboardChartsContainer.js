@@ -47,6 +47,16 @@ function(
 
             // initialize the superclass
             this.constructor.__super__.initialize.call(this);
+
+            if(!this.$el.packery)
+            {
+                this.usePackery = false;
+            }
+
+            if(!this.$el.gridster)
+            {
+                this.useGrid = false;
+            }
         },
 
         renderDashboardCharts: function()

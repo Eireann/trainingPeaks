@@ -31,6 +31,8 @@ function(
         colspan: 2,
         modelClass: PMCModel,
 
+        className: DashboardChartBase.className + " pmcChart",
+
         template:
         {
             type: "handlebars",
