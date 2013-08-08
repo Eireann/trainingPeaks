@@ -94,11 +94,6 @@ function(
             // QL: this is layout logic and might belong in the layout itself. So this would read this.layout.renderRegions();
             this.showViewsInRegions();
 
-            // load the calendar, and aggregate all of the deferreds from each workout request
-            // QL: Should be a responsibility of this.views.calendar
-            var today = moment();
-            this.showDate(today);
-
             this.watchClipboard();
 
             // our parent class PageContainerController needs this to trigger the window resize functionality
@@ -232,7 +227,8 @@ function(
             this.views.calendar = new CalendarContainerView({
                 model: weekDaysModel, collection: this.weeksCollection,
                 calendarHeaderModel: this.models.calendarHeaderModel,
-                startOfWeekDayIndex: this.startOfWeekDayIndex
+                startOfWeekDayIndex: this.startOfWeekDayIndex,
+                firstDate: this.models.calendarHeaderModel.get('currentDay')
             });
 
             // QL: Should happen in the CalendarContainerView

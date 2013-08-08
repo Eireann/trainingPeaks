@@ -72,6 +72,18 @@ function(
             return model;
         },
 
+        getWeekModelForDay: function(dateAsMoment, startOfWeekDayIndex)
+        {
+            var id, model;
+            if(dateAsMoment.day() < startOfWeekDayIndex)
+            {
+                dateAsMoment.subtract("week", 1);
+            }
+            id = dateAsMoment.day(startOfWeekDayIndex).format(TP.utils.datetime.shortDateFormat);
+            model = this.get(id);
+            return model;
+        },
+
         setUpWeeks: function(startDate, endDate)
         {
             this.startDate = startDate;

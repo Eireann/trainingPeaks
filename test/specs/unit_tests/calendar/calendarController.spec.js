@@ -98,7 +98,7 @@ function(
 
             it("Should initialize the header", function()
             {
-                spyOn(controller, "initializeHeader");
+                spyOn(controller, "initializeHeader").andCallThrough();
                 controller.show();
                 expect(controller.initializeHeader).toHaveBeenCalled();
             });
@@ -146,6 +146,7 @@ function(
             {
                 var controller = new CalendarController();
                 spyOn(CalendarView.prototype, "initialize").andCallThrough();
+                controller.initializeHeader();
                 controller.initializeCalendar();
                 expect(CalendarView.prototype.initialize).toHaveBeenCalled();
             });
@@ -154,6 +155,7 @@ function(
             {
                 var controller = new CalendarController();
                 spyOn(controller, "bindToCalendarViewEvents");
+                controller.initializeHeader();
                 controller.initializeCalendar();
                 expect(controller.bindToCalendarViewEvents).toHaveBeenCalledWith(controller.views.calendar);
             });
@@ -274,6 +276,7 @@ function(
                     }
                 };
                 var controller = new CalendarController();
+                controller.initializeHeader();
                 controller.initializeCalendar();
                 spyOn(controller.views.calendar, "scrollToDateIfNotFullyVisible");
                 var workout = jasmine.createSpyObj("Workout spy", ["save", "trigger"]);
@@ -296,6 +299,7 @@ function(
                 startDate = moment().day(0);
                 endDate = moment().day(0).add("weeks",4);
                 controller = new CalendarController();
+                controller.initializeHeader();
                 controller.initializeCalendar();
                 spyOn(controller.weeksCollection, "resetToDates");
             });
@@ -324,6 +328,7 @@ function(
             {
                 controller = new CalendarController();
                 spyOn(controller, "reset");
+                controller.initializeHeader();
                 controller.initializeCalendar();
                 spyOn(controller.views.calendar, "scrollToDate");
                 controller.views.calendar = jasmine.createSpyObj("calendar view spy", ["scrollToDate"]);
