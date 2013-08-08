@@ -113,7 +113,6 @@ module.exports = function(grunt)
                     "vendor/js/libs/flot/jquery.flot.js",
                     "vendor/js/libs/flot/jquery.flot.crosshair.js",
                     "vendor/js/libs/flot/jquery.flot.resize.js",
-                    "vendor/js/libs/flot/jquery.flot.pie.js",
                     "build/debug/single.js"
                 ],
 

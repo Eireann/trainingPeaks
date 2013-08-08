@@ -1,3 +1,12 @@
+define(
+[
+    "underscore"
+],
+function(
+    _
+    )
+{
+
 /* Flot plugin for rendering pie charts.
 
 Copyright (c) 2007-2013 IOLA and Ole Laursen.
@@ -55,7 +64,6 @@ More detail and specific examples can be found in the included HTML file.
 
 */
 
-(function($) {
 
 	// Maximum redraw attempts when fitting labels within the plot
 
@@ -431,8 +439,9 @@ More detail and specific examples can be found in the included HTML file.
 					}
 
 					//ctx.arc(0, 0, radius, 0, angle, false); // This doesn't work properly in Opera
-					ctx.arc(0, 0, radius,currentAngle, currentAngle + angle / 2, false);
-					ctx.arc(0, 0, radius,currentAngle + angle / 2, currentAngle + angle, false);
+					var sliceRadius = calculateSliceRadius(radius, angle);
+					ctx.arc(0, 0, sliceRadius,currentAngle, currentAngle + angle / 2, false);
+					ctx.arc(0, 0, sliceRadius,currentAngle + angle / 2, currentAngle + angle, false);
 					ctx.closePath();
 					//ctx.rotate(angle); // This doesn't work properly in Opera
 					currentAngle += angle;
@@ -442,6 +451,21 @@ More detail and specific examples can be found in the included HTML file.
 					} else {
 						ctx.stroke();
 					}
+				}
+
+				// shrink a slice's radius for a layered effect
+				function calculateSliceRadius(radius, angle)
+				{
+					if(!options.series.pie.layerSlices)
+					{
+						return radius;
+					}
+
+					// this sort of works. the radius is proportionate, but the radius is too small
+					// angles are in radians, 6.28318531 radians = 360 degrees
+					var wholeCircle = 6.28318531;
+					var sliceRadius = radius * (angle / wholeCircle);
+					return sliceRadius;
 				}
 
 				function drawLabels() {
@@ -760,6 +784,7 @@ More detail and specific examples can be found in the included HTML file.
 		series: {
 			pie: {
 				show: false,
+				layerSlices: false,
 				radius: "auto",	// actual radius of the visible pie (based on full calculated radius if <=1, or hard pixel value)
 				innerRadius: 0, /* for donut */
 				startAngle: 3/2,
@@ -802,11 +827,14 @@ More detail and specific examples can be found in the included HTML file.
 		}
 	};
 
-	$.plot.plugins.push({
-		init: init,
-		options: options,
-		name: "pie",
-		version: "1.1"
-	});
+	if($.plot)
+	{
+		$.plot.plugins.push({
+			init: init,
+			options: options,
+			name: "pie",
+			version: "1.1"
+		});
+	}
 
-})(jQuery);
+});

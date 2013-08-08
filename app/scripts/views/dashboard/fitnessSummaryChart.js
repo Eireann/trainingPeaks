@@ -4,6 +4,7 @@
     "./dashboardChartBase",
     "TP",
     "utilities/charting/flotOptions",
+    "utilities/charting/jquery.flot.pie",
     "models/reporting/fitnessSummaryModel",
     "hbs!templates/views/dashboard/dashboardChart"
 ],
@@ -12,6 +13,7 @@ function(
     DashboardChartBase,
     TP,
     defaultFlotOptions,
+    flotPie,
     FitnessSummaryModel,
     defaultChartTemplate
     )
@@ -66,7 +68,8 @@ function(
             flotOptions.series = {
                 pie: 
                 {
-                    show: true
+                    show: true,
+                    layerSlices: true
                 }
             };
 
