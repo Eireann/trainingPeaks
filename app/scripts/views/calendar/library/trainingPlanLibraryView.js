@@ -47,7 +47,7 @@ function(
         {
             this.on("library:unselect", this.unSelectItem, this);
             this.sourceCollection = this.collection;
-            this.model = new TP.Model({wwwRoot: theMarsApp.wwwRoot })
+            this.model = new TP.Model({wwwRoot: theMarsApp.wwwRoot });
         },
 
         getItemView: function(item)
