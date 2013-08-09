@@ -1,3 +1,13 @@
+define(
+[
+    "underscore"
+],
+function(
+    _
+    )
+{
+
+/*jshint expr: true */
 /* Flot plugin for rendering pie charts.
 
 Copyright (c) 2007-2013 IOLA and Ole Laursen.
@@ -55,7 +65,6 @@ More detail and specific examples can be found in the included HTML file.
 
 */
 
-(function($) {
 
 	// Maximum redraw attempts when fitting labels within the plot
 
@@ -88,7 +97,7 @@ More detail and specific examples can be found in the included HTML file.
 
 				// set labels.show
 
-				if (options.series.pie.label.show == "auto") {
+				if (options.series.pie.label.show === "auto") {
 					if (options.legend.show) {
 						options.series.pie.label.show = false;
 					} else {
@@ -98,7 +107,7 @@ More detail and specific examples can be found in the included HTML file.
 
 				// set radius
 
-				if (options.series.pie.radius == "auto") {
+				if (options.series.pie.radius === "auto") {
 					if (options.series.pie.label.show) {
 						options.series.pie.radius = 3/4;
 					} else {
@@ -197,17 +206,17 @@ More detail and specific examples can be found in the included HTML file.
 
 			// Sum up all the slices, so we can calculate percentages for each
 
-			for (var i = 0; i < data.length; ++i) {
+			for (i = 0; i < data.length; ++i) {
 				total += data[i].data[0][1];
 			}
 
 			// Count the number of slices with percentages below the combine
 			// threshold; if it turns out to be just one, we won't combine.
 
-			for (var i = 0; i < data.length; ++i) {
-				var value = data[i].data[0][1];
-				if (value / total <= options.series.pie.combine.threshold) {
-					combined += value;
+			for (i = 0; i < data.length; ++i) {
+				var value1 = data[i].data[0][1];
+				if (value1 / total <= options.series.pie.combine.threshold) {
+					combined += value1;
 					numCombined++;
 					if (!color) {
 						color = data[i].color;
@@ -215,15 +224,15 @@ More detail and specific examples can be found in the included HTML file.
 				}
 			}
 
-			for (var i = 0; i < data.length; ++i) {
-				var value = data[i].data[0][1];
-				if (numCombined < 2 || value / total > options.series.pie.combine.threshold) {
+			for (i = 0; i < data.length; ++i) {
+				var value2 = data[i].data[0][1];
+				if (numCombined < 2 || value2 / total > options.series.pie.combine.threshold) {
 					newdata.push({
-						data: [[1, value]],
+						data: [[1, value2]],
 						color: data[i].color,
 						label: data[i].label,
-						angle: value * Math.PI * 2 / total,
-						percent: value / (total / 100)
+						angle: value2 * Math.PI * 2 / total,
+						percent: value2 / (total / 100)
 					});
 				}
 			}
@@ -235,6 +244,20 @@ More detail and specific examples can be found in the included HTML file.
 					label: options.series.pie.combine.label,
 					angle: combined * Math.PI * 2 / total,
 					percent: combined / (total / 100)
+				});
+			}
+
+			if(options.series.pie.layerSlices)
+			{
+				newdata = _.sortBy(newdata, function(slice) {
+					return 1 / slice.percent;
+				});
+
+				var radiusPercent = 100;
+				_.each(newdata, function(slice)
+				{
+					slice.radiusPercent = radiusPercent / 100;
+					radiusPercent -= 5;
 				});
 			}
 
@@ -282,7 +305,7 @@ More detail and specific examples can be found in the included HTML file.
 			centerTop = canvasHeight / 2 + options.series.pie.offset.top;
 			centerLeft = canvasWidth / 2;
 
-			if (options.series.pie.offset.left == "auto") {
+			if (options.series.pie.offset.left === "auto") {
 				if (options.legend.position.match("w")) {
 					centerLeft += legendWidth / 2;
 				} else {
@@ -313,7 +336,7 @@ More detail and specific examples can be found in the included HTML file.
 				if (options.series.pie.tilt <= 0.8) {
 					drawShadow();
 				}
-			} while (!drawPie() && attempts < REDRAW_ATTEMPTS)
+			} while (!drawPie() && attempts < REDRAW_ATTEMPTS);
 
 			if (attempts >= REDRAW_ATTEMPTS) {
 				clear();
@@ -384,7 +407,7 @@ More detail and specific examples can be found in the included HTML file.
 				var currentAngle = startAngle;
 				for (var i = 0; i < slices.length; ++i) {
 					slices[i].startAngle = currentAngle;
-					drawSlice(slices[i].angle, slices[i].color, true);
+					drawSlice(slices[i].angle, slices[i].color, true, slices[i]);
 				}
 				ctx.restore();
 
@@ -394,8 +417,8 @@ More detail and specific examples can be found in the included HTML file.
 					ctx.save();
 					ctx.lineWidth = options.series.pie.stroke.width;
 					currentAngle = startAngle;
-					for (var i = 0; i < slices.length; ++i) {
-						drawSlice(slices[i].angle, options.series.pie.stroke.color, false);
+					for (i = 0; i < slices.length; ++i) {
+						drawSlice(slices[i].angle, options.series.pie.stroke.color, false, slices[i]);
 					}
 					ctx.restore();
 				}
@@ -412,7 +435,7 @@ More detail and specific examples can be found in the included HTML file.
 					return drawLabels();
 				} else return true;
 
-				function drawSlice(angle, color, fill) {
+				function drawSlice(angle, color, fill, slice) {
 
 					if (angle <= 0 || isNaN(angle)) {
 						return;
@@ -431,8 +454,9 @@ More detail and specific examples can be found in the included HTML file.
 					}
 
 					//ctx.arc(0, 0, radius, 0, angle, false); // This doesn't work properly in Opera
-					ctx.arc(0, 0, radius,currentAngle, currentAngle + angle / 2, false);
-					ctx.arc(0, 0, radius,currentAngle + angle / 2, currentAngle + angle, false);
+					var sliceRadius = calculateSliceRadius(radius, angle, slice);
+					ctx.arc(0, 0, sliceRadius,currentAngle, currentAngle + angle / 2, false);
+					ctx.arc(0, 0, sliceRadius,currentAngle + angle / 2, currentAngle + angle, false);
 					ctx.closePath();
 					//ctx.rotate(angle); // This doesn't work properly in Opera
 					currentAngle += angle;
@@ -441,6 +465,19 @@ More detail and specific examples can be found in the included HTML file.
 						ctx.fill();
 					} else {
 						ctx.stroke();
+					}
+				}
+
+				// shrink a slice's radius for a layered effect
+				function calculateSliceRadius(radius, angle, slice)
+				{
+					if(!options.series.pie.layerSlices)
+					{
+						return radius;
+					}
+					else
+					{
+						return radius * slice.radiusPercent;
 					}
 				}
 
@@ -462,7 +499,7 @@ More detail and specific examples can be found in the included HTML file.
 
 					function drawLabel(slice, startAngle, index) {
 
-						if (slice.data[0][1] == 0) {
+						if (slice.data[0][1] === 0) {
 							return true;
 						}
 
@@ -500,13 +537,13 @@ More detail and specific examples can be found in the included HTML file.
 							return false;
 						}
 
-						if (options.series.pie.label.background.opacity != 0) {
+						if (options.series.pie.label.background.opacity !== 0) {
 
 							// put in the transparent background separately to avoid blended labels and label boxes
 
 							var c = options.series.pie.label.background.color;
 
-							if (c == null) {
+							if (c === null) {
 								c = slice.color;
 							}
 
@@ -554,12 +591,9 @@ More detail and specific examples can be found in the included HTML file.
 		}
 
 		//-- Additional Interactive related functions --
-
 		function isPointInPoly(poly, pt) {
 			for(var c = false, i = -1, l = poly.length, j = l - 1; ++i < l; j = i)
-				((poly[i][1] <= pt[1] && pt[1] < poly[j][1]) || (poly[j][1] <= pt[1] && pt[1]< poly[i][1]))
-				&& (pt[0] < (poly[j][0] - poly[i][0]) * (pt[1] - poly[i][1]) / (poly[j][1] - poly[i][1]) + poly[i][0])
-				&& (c = !c);
+				((poly[i][1] <= pt[1] && pt[1] < poly[j][1]) || (poly[j][1] <= pt[1] && pt[1]< poly[i][1])) && (pt[0] < (poly[j][0] - poly[i][0]) * (pt[1] - poly[i][1]) / (poly[j][1] - poly[i][1]) + poly[i][0]) && (c = !c);
 			return c;
 		}
 
@@ -646,8 +680,8 @@ More detail and specific examples can be found in the included HTML file.
 		function triggerClickHoverEvent(eventname, e) {
 
 			var offset = plot.offset();
-			var canvasX = parseInt(e.pageX - offset.left);
-			var canvasY =  parseInt(e.pageY - offset.top);
+			var canvasX = parseInt(e.pageX - offset.left, 10);
+			var canvasY =  parseInt(e.pageY - offset.top, 10);
 			var item = findNearbySlice(canvasX, canvasY);
 
 			if (options.grid.autoHighlight) {
@@ -656,7 +690,7 @@ More detail and specific examples can be found in the included HTML file.
 
 				for (var i = 0; i < highlights.length; ++i) {
 					var h = highlights[i];
-					if (h.auto == eventname && !(item && h.series == item.series)) {
+					if (h.auto === eventname && !(item && h.series === item.series)) {
 						unhighlight(h.series);
 					}
 				}
@@ -675,13 +709,13 @@ More detail and specific examples can be found in the included HTML file.
 		}
 
 		function highlight(s, auto) {
-			//if (typeof s == "number") {
+			//if (typeof s === "number") {
 			//	s = series[s];
 			//}
 
 			var i = indexOfHighlight(s);
 
-			if (i == -1) {
+			if (i === -1) {
 				highlights.push({ series: s, auto: auto });
 				plot.triggerRedrawOverlay();
 			} else if (!auto) {
@@ -690,18 +724,18 @@ More detail and specific examples can be found in the included HTML file.
 		}
 
 		function unhighlight(s) {
-			if (s == null) {
+			if (s === null) {
 				highlights = [];
 				plot.triggerRedrawOverlay();
 			}
 
-			//if (typeof s == "number") {
+			//if (typeof s === "number") {
 			//	s = series[s];
 			//}
 
 			var i = indexOfHighlight(s);
 
-			if (i != -1) {
+			if (i !== -1) {
 				highlights.splice(i, 1);
 				plot.triggerRedrawOverlay();
 			}
@@ -710,7 +744,7 @@ More detail and specific examples can be found in the included HTML file.
 		function indexOfHighlight(s) {
 			for (var i = 0; i < highlights.length; ++i) {
 				var h = highlights[i];
-				if (h.series == s)
+				if (h.series === s)
 					return i;
 			}
 			return -1;
@@ -760,6 +794,7 @@ More detail and specific examples can be found in the included HTML file.
 		series: {
 			pie: {
 				show: false,
+				layerSlices: false,
 				radius: "auto",	// actual radius of the visible pie (based on full calculated radius if <=1, or hard pixel value)
 				innerRadius: 0, /* for donut */
 				startAngle: 3/2,
@@ -802,11 +837,14 @@ More detail and specific examples can be found in the included HTML file.
 		}
 	};
 
-	$.plot.plugins.push({
-		init: init,
-		options: options,
-		name: "pie",
-		version: "1.1"
-	});
+	if($.plot)
+	{
+		$.plot.plugins.push({
+			init: init,
+			options: options,
+			name: "pie",
+			version: "1.1"
+		});
+	}
 
-})(jQuery);
+});

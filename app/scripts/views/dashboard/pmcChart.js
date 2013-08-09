@@ -242,7 +242,7 @@ function(
                     fillColor: chartColors.pmcColors.IF,
                     radius: this.pointRadius
                 },
-                yaxis: this.shouldShowIF() ? 3 : 2
+                yaxis: 2
             };
 
             return dataSeries;
@@ -261,7 +261,7 @@ function(
                     fillColor: chartColors.pmcColors.IF,
                     radius: this.pointRadius
                 },
-                yaxis: this.shouldShowIF() ? 3 : 2
+                yaxis: 2
             };
 
             return dataSeries;
@@ -483,7 +483,12 @@ function(
                     tickDecimals: 1,
                     position: "right",
                     color: "transparent",
-                    min: 0
+                    min: 0,
+                    font: {
+                        color: chartColors.pmcColors.IF,
+                        family: "HelveticaNeueW01-55Roma",             
+                        size: "9"
+                    }
                 });
             }
 

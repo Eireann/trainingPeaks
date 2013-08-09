@@ -45,6 +45,7 @@ function (datepicker, spinner, jquerySelectBox, _, TP, DashboardDatePicker, char
                 mergedSettings.quickDateSelectOption = defaultDateOption;
             }
             this.model.set(this.settingsKey, mergedSettings, { silent: true });
+            this.render();
         },
 
         onClose: function()

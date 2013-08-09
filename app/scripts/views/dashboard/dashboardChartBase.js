@@ -4,7 +4,6 @@
     "setImmediate",
     "moment",
     "TP",
-    "models/reporting/chartDataModel",
     "utilities/charting/flotOptions",
     "utilities/charting/chartColors",
     "utilities/charting/flotToolTipPositioner",
@@ -18,7 +17,6 @@ function(
     setImmediate,
     moment,
     TP,
-    ChartDataModel,
     defaultFlotOptions,
     chartColors,
     toolTipPositioner,
@@ -37,7 +35,7 @@ function(
         row: 1,
         colspan: 1,
         chartType: 0,
-        modelClass: ChartDataModel,
+        modelClass: TP.Model,
         today: moment().hour(0).format("YYYY-MM-DD"),
         useGrid: false,
         usePackery: true,
@@ -154,7 +152,11 @@ function(
         {
             var myDateSettings = this.getSetting("dateOptions");
             var chartDateParameters = chartUtils.buildChartParameters(myDateSettings);
-            this.chartDataModel.setParameters(chartDateParameters);
+            var myOtherSettings = this.settingsModel.get(this.settingsKey);
+
+            var mergedSettings = _.extend({}, myOtherSettings, { dateOptions: chartDateParameters });
+
+            this.chartDataModel.setParameters(mergedSettings);
 
             var self = this;
             this.waitingOn();
@@ -180,7 +182,7 @@ function(
 
         setChartTitle: function()
         {
-            var workoutTypesTitle = this.buildWorkoutTypesTitle(this.chartDataModel.workoutTypeIds);
+            var workoutTypesTitle = this.buildWorkoutTypesTitle(this.getSetting("workoutTypeIds"));
             this.model.set("title", workoutTypesTitle);
         },
 
@@ -249,7 +251,7 @@ function(
             return series;
         },
 
-        buildFlotChartOptions: function(TSBAxisRange)
+        buildFlotChartOptions: function()
         {
             var flotOptions = defaultFlotOptions.getGlobalDefaultOptions(null);
             return flotOptions;

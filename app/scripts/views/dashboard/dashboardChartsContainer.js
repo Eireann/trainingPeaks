@@ -5,7 +5,7 @@
     "packery",
     "gridster",
     "TP",
-    "utilities/charting/dashboardChartBuilder",
+    "./dashboardChartBuilder",
     "views/pageContainer/primaryContainerView",
     "hbs!templates/views/dashboard/dashboardChartsContainer"
 ],
