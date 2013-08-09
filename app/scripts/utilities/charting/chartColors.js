@@ -41,14 +41,14 @@ function()
                     {
                         bike: { light: "#8820d1", dark: "#561484" },
                         strength: { light: "#912c8a", dark: "#551a51" },
-                        run: { ligh: "#30819c", dark: "#1e5162" },
+                        run: { light: "#30819c", dark: "#1e5162" },
                         swim: { light: "#20a3d1", dark: "#0382b1" },
                         brick: { light: "#aa2b58", dark: "#7b1f40" },
-                        crossTrain: { light: "#c116c9", dark: "#8e1094" },
+                        crosstrain: { light: "#c116c9", dark: "#8e1094" },
                         race: { light: "#00b7b7", dark: "#007c7c" },
-                        mountainBike: { light: "#99703a", dark: "#6e512a" },
+                        mountainbike: { light: "#99703a", dark: "#6e512a" },
                         custom: { light: "#c116c9", dark: "#8e1094" },
-                        xcSki: { light: "#dd8663", dark: "#d26033" },
+                        xcski: { light: "#dd8663", dark: "#d26033" },
                         rowing: { light: "#3bc7ed", dark: "#14afd9" },
                         walk: { light: "#e6d701", dark: "#aba001" },
                         other: { light: "#c116c9", dark: "#8e1094" }
