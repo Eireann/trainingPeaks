@@ -97,10 +97,11 @@ function(
         serializeData: function()
         {
             var data = this.model.toJSON();
-            data.applyable = this.model.details.has("title") && _.contains([null, 
-                TP.utils.trainingPlan.getStatusByName("Purchased"),
-                TP.utils.trainingPlan.getStatusByName("Applied")], 
-                data.planStatus);
+            // data.applyable = this.model.details.has("title") && _.contains([null, 
+            //     TP.utils.trainingPlan.getStatusByName("Purchased"),
+            //     TP.utils.trainingPlan.getStatusByName("Applied")], 
+            //     data.planStatus);
+            data.applyable = this.model.details.has("title");
 
             data.applyDate = moment().format(this.dateFormat);
             data.details = this.model.details.toJSON();

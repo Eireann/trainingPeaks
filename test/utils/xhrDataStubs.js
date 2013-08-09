@@ -434,18 +434,15 @@ function()
 
             {
                 planId: 1,
-                title: "Training Plan One",
-                planStatus: 1
+                title: "Training Plan One"
             },
             {
                 planId: 2,
-                title: "Training Plan Two",
-                planStatus: 2
+                title: "Training Plan Two"
             },
             {
                 planId: 3,
                 title: "Training Plan Three",
-                planStatus: 3 
             }
 
         ],
@@ -459,7 +456,6 @@ function()
             eventPlan: true,
             workoutCount: 1,
             planId: 3, 
-            planStatus: 3,
             plannedWorkoutTypeDurations: [],
             title: "Training Plan Three",
             planApplications: [
