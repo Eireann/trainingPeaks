@@ -150,13 +150,19 @@ function(
 
         fetchData: function()
         {
-            var myDateSettings = this.getSetting("dateOptions");
-            var chartDateParameters = chartUtils.buildChartParameters(myDateSettings);
-            var myOtherSettings = this.settingsModel.get(this.settingsKey);
+            var chartDateParameters = chartUtils.buildChartParameters(this.getSetting("dateOptions"));
+            var chartSettings = this.settingsModel.get(this.settingsKey);
 
-            var mergedSettings = _.extend({}, myOtherSettings, { dateOptions: chartDateParameters });
+            var mergedSettings = _.extend({}, 
+                                          chartSettings, 
+                                          { dateOptions: 
+                                                {
+                                                    startDate: chartDateParameters.startDate.format(TP.utils.datetime.shortDateFormat),
+                                                    endDate: chartDateParameters.endDate.format(TP.utils.datetime.shortDateFormat)
+                                                }
+                                          });
 
-            this.chartDataModel.setParameters(mergedSettings);
+            this.chartDataModel.set(mergedSettings);
 
             var self = this;
             this.waitingOn();
@@ -188,9 +194,10 @@ function(
 
         buildWorkoutTypesTitle: function(workoutTypeIds)
         {
+
             var workoutTypeNames = [];
 
-            if (workoutTypeIds.length === _.keys(TP.utils.workout.types.typesById).length)
+            if (!workoutTypeIds || !workoutTypeIds.length || workoutTypeIds.length === _.keys(TP.utils.workout.types.typesById).length)
             {
                 workoutTypeNames.push("All");
             } else

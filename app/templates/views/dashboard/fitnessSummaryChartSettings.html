@@ -1,0 +1,14 @@
+{{#hoverBox this}}
+    <div class="details">
+        <div id="closeIcon"></div>
+        <div class="datepickerContainer"></div>
+
+        <hr/>
+        <div class="title">{{$ "SelectReportType" }}</div>
+        <select class="summaryType">
+            {{#each summaryTypeList}}
+            <option value="{{ id }}"{{#if selected}} selected{{/if}}>{{ label }}</option>
+            {{/each}}
+        </select>
+    </div>
+{{/hoverBox}}

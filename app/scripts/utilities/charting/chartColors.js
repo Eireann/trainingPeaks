@@ -36,7 +36,23 @@ function()
                 power: { light: "#880add", dark: "#5a0792" },
                 pace: { light: "#1b82ce", dark: "#125689" },
                 //elevation: { light: "rgba(202, 233, 251, 0.5)", dark: "rgba(110, 150, 185, 0.6)" }
-                elevation: { light: "#cae9fb", dark: "#6e96b9" }
+                elevation: { light: "#cae9fb", dark: "#6e96b9" },
+                workoutType:
+                    {
+                        bike: { light: "#8820d1", dark: "#561484" },
+                        strength: { light: "#912c8a", dark: "#551a51" },
+                        run: { light: "#30819c", dark: "#1e5162" },
+                        swim: { light: "#20a3d1", dark: "#0382b1" },
+                        brick: { light: "#aa2b58", dark: "#7b1f40" },
+                        crosstrain: { light: "#c116c9", dark: "#8e1094" },
+                        race: { light: "#00b7b7", dark: "#007c7c" },
+                        mountainbike: { light: "#99703a", dark: "#6e512a" },
+                        custom: { light: "#c116c9", dark: "#8e1094" },
+                        xcski: { light: "#dd8663", dark: "#d26033" },
+                        rowing: { light: "#3bc7ed", dark: "#14afd9" },
+                        walk: { light: "#e6d701", dark: "#aba001" },
+                        other: { light: "#c116c9", dark: "#8e1094" }
+                    }
             },
 
         chartSelection: "#e61101",

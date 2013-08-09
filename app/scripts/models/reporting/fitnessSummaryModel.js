@@ -8,7 +8,7 @@
 function(moment, _, TP, ReportingModelBase)
 { 
     var FitnessSummaryModel = {
-        reportName: "fitness"
+        reportName: "fitnesssummary"
     };
 
     FitnessSummaryModel = _.extend({}, ReportingModelBase, FitnessSummaryModel);
