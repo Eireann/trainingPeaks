@@ -3,12 +3,14 @@ define(
     "underscore",
     "TP",
     "views/dashboard/library/chartTileView",
+    "models/dashboard/availableChartsCollection",
     "hbs!templates/views/dashboard/library/dashboardChartsLibraryView"
 ],
 function(
     _,
     TP,
     ChartTileView,
+    AvailableChartsCollection,
     DashboardChartsLibraryViewTemplate)
 {
     var DashboardChartsLibraryView = {
@@ -24,6 +26,17 @@ function(
             template: DashboardChartsLibraryViewTemplate
         },
 
+        events:
+        {
+            "change .search": "onSearch",
+            "keyup .search": "onSearch"
+        },
+
+        ui:
+        {
+            "search": ".search"
+        },
+
         collectionEvents: {
             "request": "onWaitStart",
             "sync": "onWaitStop",
@@ -37,7 +50,7 @@ function(
         initialize: function()
         {
             this.on("library:unselect", this.unSelectItem, this);
-            // this.sourceCollection = this.collection;
+            this.sourceCollection = this.collection;
         },
 
         getItemView: function(item)
@@ -70,6 +83,18 @@ function(
                 this.selectedItem = null;
                 previouslySelectedItem.trigger("unselect", previouslySelectedItem);
             }
+        },
+
+        onSearch: function()
+        {
+            var searchText = this.ui.search.val().trim();
+            this.collection = TP.utils.collections.search(
+                                                          AvailableChartsCollection,
+                                                          this.sourceCollection,
+                                                          searchText,
+                                                          ["name"]
+                                                          );
+          this._renderChildren();
         }
     };
 
