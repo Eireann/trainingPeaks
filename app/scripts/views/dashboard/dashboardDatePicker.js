@@ -67,7 +67,6 @@ function(
             this.model.off("change", this.render);
 
             var self = this;
-            self.$("select.dateOptions").hide();
             setImmediate(function()
             {
                 var zIndex = self.$el.css("z-index");

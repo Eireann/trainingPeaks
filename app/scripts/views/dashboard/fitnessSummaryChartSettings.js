@@ -1,13 +1,15 @@
 define(
 [
-    "jqueryui/spinner",
+    "setImmediate",
+    "jquerySelectBox",
     "underscore",
     "TP",
     "./dashboardChartSettingsBase",
     "hbs!templates/views/dashboard/fitnessSummaryChartSettings"
 ],
 function(
-    spinner,
+    setImmediate,    
+    jquerySelectBox,
     _,
     TP,
     DashboardChartSettingsBase,
@@ -25,14 +27,48 @@ function(
         },
 
         events: _.extend({}, DashboardChartSettingsBase.events, {
-            "change select.summaryType": "onSummaryTypeChanged"
+            "change select.summaryType": "onSummaryTypeChange"
         }),
 
         onSummaryTypeChange: function(e)
         {
-            // get value
-            // save to settings
-            // render chart - chart needs to watch for events
+            var typeId = Number(this.$("select.summaryType").val());
+            this.setSetting("summaryType", typeId);
+        },
+
+        initialize: function(options)
+        {
+            DashboardChartSettingsBase.initialize.call(this, options);
+            this.summaryTypes = options.summaryTypes;
+            this.on("render", this.selectBoxIt, this);
+        },
+
+        selectBoxIt: function()
+        {
+            setImmediate(function()
+            {
+                self.$("select.summaryType").selectBoxIt({dynamicPositioning: false});
+            });
+        },
+
+        serializeData: function()
+        {
+            var data = DashboardChartSettingsBase.serializeData.call(this);
+            data.summaryTypeList = [];
+
+            var selectedTypeId = Number(this.getSetting("summaryType"));
+
+            _.each(this.summaryTypes, function(summaryType)
+            {
+                var type = _.clone(summaryType);
+                if(type.id === selectedTypeId)
+                {
+                    type.selected = true;
+                }
+                data.summaryTypeList.push(type);
+            });
+
+            return data;
         }
 
     };

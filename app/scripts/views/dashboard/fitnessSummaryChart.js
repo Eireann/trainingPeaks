@@ -20,6 +20,14 @@ function(
     defaultChartTemplate
     )
 {
+
+    var fitnessSummaryTypes = {
+        1: { id: 1, label: "Planned Distance"},
+        2: { id: 2, label: "Completed Distance"},
+        3: { id: 3, label: "Planned Duration"},
+        4: { id: 4, label: "Completed Duration"}
+    };
+
     var FitnessSummaryChart = {
 
         className: DashboardChartBase.className + " fitnessSummaryChart",
@@ -85,14 +93,23 @@ function(
 
         createChartSettingsView: function()
         {
-            return new FitnessSummaryChartSettings({ model: this.settingsModel, index: this.index });
+            return new FitnessSummaryChartSettings({ model: this.settingsModel, index: this.index, summaryTypes: fitnessSummaryTypes });
         },
 
         setChartTitle: function()
         {
             this.model.set("title", TP.utils.translate("Fitness Summary"));
+        },
+
+        listenToChartSettingsEvents: function()
+        {
+            this.settingsModel.on("change:" + this.settingsKey + ".summaryType", this.renderChart, this);
+        },
+
+        stopListeningToChartSettingsEvents: function()
+        {
+            this.settingsModel.off("change:" + this.settingsKey + ".summaryType", this.renderChart, this)
         }
-        
     };
 
     return TP.ItemView.extend(_.extend({}, DashboardChartBase, FitnessSummaryChart));
