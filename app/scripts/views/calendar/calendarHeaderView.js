@@ -47,7 +47,13 @@ function(TP, moment, datepicker, coachAndAffiliateCustomizations, calendarHeader
 
         onRender: function()
         {
-            this.$(".datepicker").datepicker({ dateFormat: "yy-mm-dd", firstDay: theMarsApp.controllers.calendarController.startOfWeekDayIndex });
+            this.$(".datepicker").datepicker(
+            {
+                dateFormat: "yy-mm-dd",
+                firstDay: theMarsApp.controllers.calendarController.startOfWeekDayIndex,
+                changeYear: true,
+                changeMonth: true
+            });
             this.updateDatepicker();
         },
 
