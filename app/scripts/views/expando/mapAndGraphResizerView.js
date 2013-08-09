@@ -25,7 +25,7 @@ function(
 
         initialize: function(options)
         {
-
+            this.on("controller:resize", this.setPosition, this);
         },
         onRender: function()
         {
@@ -39,8 +39,11 @@ function(
         {
         	this.trigger("resizerDragStop");
         },
-        setPosition: function(mapHeight)
+        setPosition: function(containerHeight)
         {
+            var bottomMargin = 10;
+            var mapHeight = Math.floor((containerHeight - bottomMargin) * 0.50);
+
         	this.$el.attr('top', mapHeight + 'px');
         	if (!this.initialTop)
         	{

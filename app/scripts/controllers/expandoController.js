@@ -230,13 +230,8 @@ function(setImmediate, TP, DataParser, ExpandoLayout, GraphView, MapView, StatsV
                 view.on("resizerDrag", this.onResizerDrag, this);
                 view.on("resizerDragStop", this.onResizerDragStop, this);
             }, this);
-            this.views.mapView.on("heightChanged", this.mapHeightChanged, this);
             this.on("close", this.stopWatchingViewEvents, this);
 
-        },
-        mapHeightChanged: function(height)
-        {
-            this.views.mapAndGraphResizerView.setPosition(height);
         },
         stopWatchingViewEvents: function()
         {
@@ -255,8 +250,10 @@ function(setImmediate, TP, DataParser, ExpandoLayout, GraphView, MapView, StatsV
 
         onResizerDrag: function(offset)
         {
-            this.views.mapView.adjustViewSize(offset)
-            this.views.graphView.adjustViewSize(offset * -1);
+            // before and during proportion change
+            // set the height offsets caused by dragging
+            this.views.mapView.setOffset(offset);
+            this.views.graphView.setOffset(offset);
         },
         onResizerDragStop: function()
         {

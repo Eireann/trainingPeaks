@@ -264,11 +264,11 @@ function (
 
         setViewSize: function (containerHeight, containerWidth, overrideMinHeight)
         {
-            if (this.hasResizedWithResizer) {
-                return;
-            }
             var bottomMargin = 10;
             var mapHeight = Math.floor((containerHeight - bottomMargin) * 0.50);
+
+            // apply offset set by resize bar
+            mapHeight = mapHeight - (this.offset || 0);
 
             this.$el.closest("#expandoMapRegion").height(mapHeight);
             this.$el.height(mapHeight);
@@ -277,21 +277,10 @@ function (
             {
                 this.map.invalidateSize();
             }
-            this.trigger("heightChanged", this.$el.height());
         },
-        adjustViewSize: function(offset) {
-            if (!this.initialHeight)
-            {
-                this.initialHeight = this.$el.height();
-            }
-
-            var newHeight = offset + this.initialHeight;
-
-            this.$el.closest("#expandoMapRegion").height(newHeight);
-            this.$el.height(newHeight);
-            this.$("#expandoMap").height(newHeight);
-            this.map.invalidateSize();
-            this.hasResizedWithResizer = true;
-        },
+        setOffset: function(offset)
+        {
+            this.offset = offset;
+        }
     });
 });

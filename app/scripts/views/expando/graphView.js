@@ -543,19 +543,12 @@ function(
 
         setViewSize: function (containerHeight, containerWidth)
         {
-            if (this.hasResizedWithResizer)
-            {
-                return;
-            }
-
             var bottomMargin = 10;
             var heightPercent = this.dataParser.hasLatLongData ? 0.50 : 0.8;
             var graphHeight = Math.floor((containerHeight - bottomMargin) * heightPercent);
 
-            if (graphHeight < 225)
-            {
-                graphHeight = 225;
-            }
+            // apply offset set by resize bar
+            graphHeight = graphHeight + (this.offset || 0);
 
             this.graphHeight = graphHeight;
             this.$el.closest("#expandoGraphRegion").height(graphHeight);
@@ -568,25 +561,7 @@ function(
             {
                 this.$plot.height(graphHeight - topPadding - toolbarHeight);
             }
-        },
-        adjustViewSize: function(offset)
-        {
-            if (!this.initialHeight)
-            {
-                this.initialHeight = this.$el.height();
-            }
-            var newHeight = offset + this.initialHeight;
-            this.$el.closest("#expandoGraphRegion").height(newHeight);
-
-            var topPadding = 15;
-            var toolbarHeight = 35;
-            
-            this.$el.height(newHeight - topPadding);
-
-            this.plotHeight = newHeight - topPadding - toolbarHeight;  
-            this.hasResizedWithResizer = true;          
-            
-        },
+        }
         repaintHeight: function()
         {
             if (this.$plot)
