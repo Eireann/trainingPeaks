@@ -439,6 +439,7 @@ function(
 
         closeClicked: function()
         {
+            this.trigger("before:remove");
             this.close();
             this.trigger("remove");
         },
