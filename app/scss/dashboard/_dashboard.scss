@@ -23,6 +23,13 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
         }
     }
 
+    .selectboxit-options
+    {
+        height: 250px;
+        overflow-y: scroll;
+        @include nice-scrollbar; 
+    }
+
     /*
     .selectboxit-option
     {

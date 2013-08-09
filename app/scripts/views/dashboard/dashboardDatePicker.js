@@ -76,7 +76,7 @@ function(
                 }
                 self.$(".datepicker").css("position", "relative").css("z-index", zIndex);
                 self.$(".datepicker").datepicker({ dateFormat: "yy-mm-dd", firstDay: theMarsApp.controllers.calendarController.startOfWeekDayIndex });
-                self.$("select.dateOptions").selectBoxIt({dynamicPositioning: false});
+                self.$("select.dateOptions").selectBoxIt({dynamicPositioning: true});
             });
         },
 
