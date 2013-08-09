@@ -8,14 +8,6 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
     {
         width: 220px !important;
 
-        /*    
-        span 
-        {
-            height: 22px;
-            font-size: 13px;
-        }
-        */
-
         .selectboxit
         {
             width: 220px !important;
@@ -25,7 +17,7 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
 
     .selectboxit-options
     {
-        height: 250px;
+        height: 300px;
         overflow-y: scroll;
         @include nice-scrollbar; 
     }

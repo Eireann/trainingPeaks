@@ -149,6 +149,9 @@ function(
             this.$("input.endDate").val(endDate);
             this.$("div.endDate").text(endDate);
 
+            this.$("input.startDate").datepicker("option", "maxDate", endDate);
+            this.$("input.endDate").datepicker("option", "minDate", startDate)
+
         }
 
     });
