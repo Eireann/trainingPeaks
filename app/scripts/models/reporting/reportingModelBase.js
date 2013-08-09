@@ -9,50 +9,17 @@ function(moment, _, TP)
     return {
 
         reportName: "unknown",
-
-        parameterNames: [],
+        useDates: true,
 
         cacheable: false,
 
         defaults:
         {
-            data: []
-        },
-
-        initialize: function (attributes, options)
-        {
-            this.requestParams = {};
-            this.setDefaultParameters();
-            this.setParameters(options);
-        },
-
-        setDefaultParameters: function()
-        {
-            // on this.requestParams
-            return;
-        },
-
-        setParameters: function(options)
-        {
-            if (!options)
-                return;
-
-            if(options.dateOptions)
-            {
-                _.each(["startDate", "endDate"], function(name)
-                {
-                    this.requestParams[name] = options.dateOptions[name];
-                }, this);
+            data: [],
+            dateOptions: {
+                startDate: moment().subtract('days', 90),
+                endDate: moment().add('days', 21)
             }
-
-            _.each(this.parameterNames, function(name)
-            {
-                if (options.hasOwnProperty(name))
-                {
-                    this.requestParams[name] = options[name];
-                }
-            }, this);
-
         },
 
         urlRoot: function ()
@@ -65,20 +32,39 @@ function(moment, _, TP)
 
         url: function ()
         {
-            return this.urlRoot() + this.buildUrlExtension();
+            var url = this.urlRoot();
+
+            if(this.useDates)
+            {
+                url = url + "/" + this.buildDateUrlParams().join("/");
+            }
+
+            var extensionParams = this.buildUrlExtensionParams();
+
+            if(extensionParams && extensionParams.length)
+            {
+                url = url + "/" + extensionParams.join("/");
+            }
+
+            return url;
         },
 
-        buildUrlExtension: function()
+        buildDateUrlParams: function()
         {
-            if (!(this.requestParams.startDate && this.requestParams.endDate))
+            if (!this.has("dateOptions.startDate") || !this.has("dateOptions.endDate"))
+            {
                 throw "startDate & endDate needed for " + this.reportName;
+            }
 
-            var start = moment(this.requestParams.startDate).format(TP.utils.datetime.shortDateFormat);
-            var end = moment(this.requestParams.endDate).format(TP.utils.datetime.shortDateFormat);
+            var startDate = moment(this.get("dateOptions.startDate")).format(TP.utils.datetime.shortDateFormat);
+            var endDate = moment(this.get("dateOptions.endDate")).format(TP.utils.datetime.shortDateFormat);
 
-            var urlExtension = "/" + start + "/" + end;
+            return [startDate, endDate];
+        },
 
-            return urlExtension;
+        buildUrlExtensionParams: function()
+        {
+            return [];
         },
 
         parse: function (response)
