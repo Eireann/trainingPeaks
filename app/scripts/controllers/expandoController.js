@@ -228,7 +228,6 @@ function(setImmediate, TP, DataParser, ExpandoLayout, GraphView, MapView, StatsV
                 view.on("graphleave", this.onGraphLeave, this);
                 view.on("resize", this.onViewResize, this);
                 view.on("resizerDrag", this.onResizerDrag, this);
-                view.on("resizerDragStop", this.onResizerDragStop, this);
             }, this);
             this.on("close", this.stopWatchingViewEvents, this);
 
@@ -242,7 +241,6 @@ function(setImmediate, TP, DataParser, ExpandoLayout, GraphView, MapView, StatsV
                 view.off("graphhover", this.onGraphHover, this);
                 view.off("graphleave", this.onGraphLeave, this);
                 view.off("resizerDrag", this.onResizerDrag, this);
-                view.off("resizerDragStop", this.onResizerDragStop, this);
                 view.on("resize", this.onViewResize, this);
             }, this);
 
@@ -254,10 +252,8 @@ function(setImmediate, TP, DataParser, ExpandoLayout, GraphView, MapView, StatsV
             // set the height offsets caused by dragging
             this.views.mapView.setOffset(offset);
             this.views.graphView.setOffset(offset);
-        },
-        onResizerDragStop: function()
-        {
-            this.views.graphView.repaintHeight();
+            this.views.mapAndGraphResizerView.setOffset(offset);
+            this.onViewResize();
         },
 
         onRangeSelected: function (workoutStatsForRange, options, triggeringView)

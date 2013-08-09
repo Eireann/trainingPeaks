@@ -268,8 +268,7 @@ function (
             var mapHeight = Math.floor((containerHeight - bottomMargin) * 0.50);
 
             // apply offset set by resize bar
-            mapHeight = mapHeight - (this.offset || 0);
-
+            mapHeight = mapHeight + (this.offset || 0);
             this.$el.closest("#expandoMapRegion").height(mapHeight);
             this.$el.height(mapHeight);
             this.$("#expandoMap").height(mapHeight);
