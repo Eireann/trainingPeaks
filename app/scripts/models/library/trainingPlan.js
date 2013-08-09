@@ -21,7 +21,8 @@ function (TP, TrainingPlanDetailsModel)
         {
             planId: null,
             title: null,
-            author: null
+            author: null,
+            daysDuration: null
         },
 
         initialize: function()
