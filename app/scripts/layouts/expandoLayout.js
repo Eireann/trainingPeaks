@@ -19,7 +19,8 @@ function(TP, expandoLayoutTemplate)
             mapRegion: "#expandoMapRegion",
             statsRegion: "#expandoStatsRegion",
             lapsRegion: "#expandoLapsRegion",
-            chartsRegion: "#expandoChartsRegion"
+            chartsRegion: "#expandoChartsRegion",
+            mapAndGraphResizerRegion: "#mapAndGraphResizerRegion"
         },
 
         showMap: function()
