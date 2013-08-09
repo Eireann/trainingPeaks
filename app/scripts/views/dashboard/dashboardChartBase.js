@@ -194,9 +194,10 @@ function(
 
         buildWorkoutTypesTitle: function(workoutTypeIds)
         {
+
             var workoutTypeNames = [];
 
-            if (workoutTypeIds.length === _.keys(TP.utils.workout.types.typesById).length)
+            if (!workoutTypeIds || !workoutTypeIds.length || workoutTypeIds.length === _.keys(TP.utils.workout.types.typesById).length)
             {
                 workoutTypeNames.push("All");
             } else

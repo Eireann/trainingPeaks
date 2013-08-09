@@ -6,6 +6,7 @@
     "utilities/charting/flotOptions",
     "utilities/charting/jquery.flot.pie",
     "models/reporting/fitnessSummaryModel",
+    "views/dashboard/fitnessSummaryChartSettings",
     "hbs!templates/views/dashboard/dashboardChart"
 ],
 function(
@@ -15,6 +16,7 @@ function(
     defaultFlotOptions,
     flotPie,
     FitnessSummaryModel,
+    FitnessSummaryChartSettings,
     defaultChartTemplate
     )
 {
@@ -27,13 +29,6 @@ function(
         {
             type: "handlebars",
             template: defaultChartTemplate
-        },
-
-        // TODO: remove this when we're actually ready to request data
-        fetchData: function()
-        {
-            this.waitingOff();
-            this.render();
         },
 
         setupViewModel: function(options)
@@ -75,8 +70,29 @@ function(
             };
 
             return flotOptions;
-        }
+        },
 
+        setDefaultSettings: function(options)
+        {
+            this.setDefaultDateSettings(options);
+            var defaultSettings = {
+                durationUnits: 4,
+                summaryType: 1 // FIXME to use enum
+            };
+            var mergedSettings = _.extend(defaultSettings, this.settingsModel.get(this.settingsKey));
+            this.settingsModel.set(this.settingsKey, mergedSettings, { silent: true });
+        },
+
+        createChartSettingsView: function()
+        {
+            return new FitnessSummaryChartSettings({ model: this.settingsModel, index: this.index });
+        },
+
+        setChartTitle: function()
+        {
+            this.model.set("title", TP.utils.translate("Fitness Summary"));
+        }
+        
     };
 
     return TP.ItemView.extend(_.extend({}, DashboardChartBase, FitnessSummaryChart));
