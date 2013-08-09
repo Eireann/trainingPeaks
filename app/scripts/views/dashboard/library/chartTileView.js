@@ -33,11 +33,6 @@ function(
             if (!this.model)
                 throw "Cannot have a ChartTileView without a model";
 
-            // if (!options.packery)
-            //     throw "ChartTileView requires packery object/function";
-            // else
-            //     this.packery = options.packery;
-
             this.model.on("select", this.onItemSelect, this);
             this.model.on("unselect", this.onItemUnSelect, this);
         },
@@ -52,7 +47,7 @@ function(
             this.$el.data(
             {
                 ItemType: 'Chart',
-                ChartType: 32
+                ChartType: this.model.get("chartType")
             });
             this.$el.draggable(
             {
@@ -61,16 +56,6 @@ function(
                 "z-index": 100,
                 containment: "#dashboardWrapper"
             });
-            // _.result(this, "packery").bindUIDraggableEvents(this.$el);
-            // this.$el.draggable({ appendTo: theMarsApp.getBodyElement(), 'z-index': 100, helper: this.draggableHelper, start: this.onDragStart, stop: this.onDragStop, containment: "#calendarWrapper" });
-        },
-
-        _makeChart: function()
-        {
-            var view = DashboardChartBuilder.buildChartView(this.model.get("chartId"), this.model.get("chartOptions"));
-            view.render();
-            view.triggerMethod("show");
-            return view.$el;
         },
 
         onMouseDown: function()

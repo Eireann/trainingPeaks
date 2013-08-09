@@ -9,11 +9,15 @@ function(
     {
         initialize: function()
         {
-            this.add(
+            this.add([
             {
-                id: 32,
+                chartType: 32,
                 name: "PMC"
-            });
+            },
+            {
+                chartType: 3,
+                name: "Fitness Summary"
+            }]);
         }
     });
 
