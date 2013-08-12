@@ -39,10 +39,10 @@ function(
 
         onRender: function()
         {
-            this.makeDraggable();
+            this._makeDraggable();
         },
 
-        makeDraggable: function()
+        _makeDraggable: function()
         {
             this.$el.data(
             {
@@ -53,7 +53,7 @@ function(
             {
                 helper: "clone",
                 appendTo: theMarsApp.getBodyElement(),
-                "z-index": 100,
+                zIndex: 100,
                 containment: "#dashboardWrapper"
             });
         },

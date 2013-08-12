@@ -4,14 +4,14 @@
     "views/pageContainer/libraryContainerView",
     "views/dashboard/dashboardChartsLibraryView",
     "models/dashboard/availableChartsCollection",
-    "hbs!templates/views/dashboard/dashboardLibrary"
+    "hbs!templates/views/dashboard/dashboardLibraryView"
 ],
 function(
     TP,
     LibraryContainerView,
     DashboardChartsLibraryView,
     AvailableChartsCollection,
-    dashboardLibraryTemplate)
+    dashboardLibraryViewTemplate)
 {
     return LibraryContainerView.extend(
     {
@@ -19,7 +19,7 @@ function(
         template:
         {
             type: "handlebars",
-            template: dashboardLibraryTemplate
+            template: dashboardLibraryViewTemplate
         },
 
         initialize: function(options)
