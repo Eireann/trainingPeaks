@@ -226,7 +226,6 @@ function(
                     var userData = xhrData.users.barbkprem;
                     userData.settings.dashboard.pods = [fitnessSummaryPodSettings, fitnessSummaryPodSettingsTwo];
                     testHelpers.startTheAppAndLogin(userData);
-                    theMarsApp.user.on("change", function(){console.log("User changed");});
                     $mainRegion = theMarsApp.mainRegion.$el;
                     theMarsApp.router.navigate("dashboard", true);
                 });
@@ -240,12 +239,6 @@ function(
                 {
                     var fitnessSummaryRequests = testHelpers.findAllRequests(null, "reporting/fitnesssummary");
                     expect(fitnessSummaryRequests.length).toBe(1);
-                    console.log("resolved:");
-                    console.log(theMarsApp.dataManagers.reporting.resolvedRequests);
-                    console.log("pending:");
-                    console.log(theMarsApp.dataManagers.reporting.pendingRequests);
-                    console.log("Date options:");
-                    console.log(theMarsApp.user.get("settings.dashboard.dateOptions"));
                 });
 
             });
