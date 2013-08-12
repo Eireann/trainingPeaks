@@ -93,6 +93,7 @@ function(
         {
             options = this.buildDefaultOptions(options);
             _.bindAll(this, "onHoverToolTip");
+            this.dataManager = options.dataManager;
             this.setGridAttributes(options);
             this.setSettingsIndex(options.index);
             this.setupSettingsModel(options);
@@ -150,7 +151,8 @@ function(
 
         fetchData: function()
         {
-            var chartDateParameters = chartUtils.buildChartParameters(this.getSetting("dateOptions"));
+            var myDateOptions = this.getSetting("dateOptions");
+            var chartDateParameters = chartUtils.buildChartParameters(myDateOptions);
             var chartSettings = this.settingsModel.get(this.settingsKey);
 
             var mergedSettings = _.extend({}, 
@@ -161,14 +163,12 @@ function(
                                                     endDate: chartDateParameters.endDate.format(TP.utils.datetime.shortDateFormat)
                                                 }
                                           });
-
             this.chartDataModel.set(mergedSettings);
 
             var self = this;
             this.waitingOn();
-            this.chartDataModel.fetch().done(function()
+            this.dataManager.fetch(this.chartDataModel).done(function()
             {
-                self.setChartTitle();
                 self.render();
             }).always(function(){self.waitingOff();});
         },
@@ -228,6 +228,7 @@ function(
             setImmediate(function()
             {
                 self.renderChart();
+                self.setChartTitle();
             });
         },
 
@@ -266,15 +267,15 @@ function(
 
         onHoverToolTip: function(flotItem, $tooltipEl)
         {
-            var tooltipHTML = tooltipTemplate({ tooltips: this.buildTooltipData(flotItem.dataIndex) });
+            var tooltipHTML = tooltipTemplate({ tooltips: this.buildTooltipData(flotItem) });
             $tooltipEl.html(tooltipHTML);
             toolTipPositioner.updatePosition($tooltipEl, this.plot);
         },
 
-        buildTooltipData: function(index)
+        buildTooltipData: function(flotItem)
         {
             var tips = [];
-            var item = this.chartDataModel.get("data")[index];
+            var item = this.chartDataModel.get("data")[flotItem.dataIndex];
             return tips;
         },
 
@@ -319,7 +320,6 @@ function(
 
             this.chartSettings.alignArrowTo(offset.top + ($(e.currentTarget).height() / 2));
 
-            this.chartSettings.on("change:settings", this.onChartSettingsChange, this);
             this.chartSettings.on("close", this.onChartSettingsClose, this);
 
             this.listenToChartSettingsEvents();
@@ -345,11 +345,6 @@ function(
             this.stopListeningToChartSettingsEvents();
             this.allowSettingsButtonToHide();
             this.enableDrag();
-            this.fetchData();
-        },
-
-        onChartSettingsChange: function()
-        {
             this.fetchData();
         },
 

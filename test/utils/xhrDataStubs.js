@@ -201,9 +201,9 @@ function()
                         },
                     dashboard: {
                         dateOptions: {
-                        startDate: null,
-                        endDate: null,
-                        quickDateSelectOption: null
+                            startDate: null,
+                            endDate: null,
+                            quickDateSelectOption: null
                         },
                         pods: []
                     },

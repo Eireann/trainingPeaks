@@ -20,6 +20,7 @@ function(
         buildChartView: function(chartTypeId, options )
         {
             var ChartView = chartConstructors.hasOwnProperty(chartTypeId) ? chartConstructors[chartTypeId] : DefaultChartView;
+            options.dataManager = theMarsApp.dataManagers.reporting;
             return new ChartView(options);
         }
     };

@@ -135,9 +135,36 @@ function(_, $, Backbone, TP, xhrData, app)
             return jqXhr;
         },
 
+        deepClone: function(object)
+        {
+            if(_.isObject(object))
+            {
+                var newObject = {};
+                _.each(_.keys(object), function(key)
+                {
+                    newObject[key] = this.deepClone(object[key]);
+                }, this);
+                return newObject;
+            }
+            else if(_.isArray(object))
+            {
+                var newArray = [];
+                _.each(object, function(arrayItem)
+                {
+                    newArray.push(this.deepClone(arrayItem));
+                }, this);
+                return newArray;
+            }
+            else
+            {
+                return _.clone(object);
+            }
+        },
+
         resolveRequest: function(httpVerb, urlPattern, data)
         {
             var request = this.findRequest(httpVerb, urlPattern);
+
             if (request)
             {
                 //console.log("Resolving request " + request.url);
@@ -158,14 +185,33 @@ function(_, $, Backbone, TP, xhrData, app)
         findRequest: function(httpVerb, urlPattern)
         {
             var pattern = new RegExp(urlPattern);
-            var request = _.find(_.values(this.fakeAjaxRequests), function(req)
+            return _.find(_.values(this.fakeAjaxRequests), function(req)
             {
                 if(pattern.test(req.url) && (!httpVerb || req.options.type === httpVerb))
                 {
                     return true;
                 }
+                else
+                {
+                    return false;
+                }
             }, this);
-            return request;
+        },
+
+        findAllRequests: function(httpVerb, urlPattern)
+        {
+            var pattern = new RegExp(urlPattern);
+            return _.filter(_.values(this.fakeAjaxRequests), function(req)
+            {
+                if(pattern.test(req.url) && (!httpVerb || req.options.type === httpVerb))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }, this);
         },
 
         clearRequests: function()
@@ -191,6 +237,8 @@ function(_, $, Backbone, TP, xhrData, app)
         {
             if (Backbone._originalSync)
                 Backbone.sync = Backbone._originalSync;
+
+            this.clearRequests();
         },
 
         submitLogin: function(userData)
@@ -209,9 +257,14 @@ function(_, $, Backbone, TP, xhrData, app)
             }
         },
 
-        startTheAppAndLogin: function(userData)
+        startTheAppAndLogin: function(userData, doClone)
         {
             this.startTheApp();
+
+            if(doClone)
+            {
+                userData = this.deepClone(userData);                
+            }
             this.submitLogin(userData);
         }
 

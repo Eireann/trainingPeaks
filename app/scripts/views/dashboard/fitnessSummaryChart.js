@@ -43,9 +43,8 @@ function(
 
         setupViewModel: function(options)
         {
-            this.model = new TP.Model({
-                title: options.title
-            });
+            this.model = new TP.Model();
+            this.setChartTitle();
         },
 
         buildFlotPoints: function()
@@ -67,9 +66,13 @@ function(
                             data: workoutTypeData[dataKey],
                             color: {
                                 colors: [workoutTypeGradient.light, workoutTypeGradient.dark ]
-                            }
+                            },
+                            fullData: workoutTypeData
                         };
+                        if (chartPoint.data < 5)
+                        {
 
+                        }
                         chartPoints.push(chartPoint);
                     }
                 });
@@ -93,21 +96,34 @@ function(
 
         buildFlotChartOptions: function()
         {
-            var flotOptions = defaultFlotOptions.getGlobalDefaultOptions(null);
+            var flotOptions = defaultFlotOptions.getGlobalDefaultOptions(this.onHoverToolTip);
 
             // pie plugin wants series settings here instead of in data series
             flotOptions.series = {
                 pie: 
                 {
                     show: true,
+                    radius: 1,
                     layerSlices: true,
                     startAngle: 0,
                     highlight: {
                         opacity: 0
+                    },
+                    
+                    label: 
+                    {
+                        show: true,
+                        radius: 0.7,
+                        formatter: function (label, series)
+                        {
+                            return '<div class="fitnessSummartChart">' + label + '<br/>' + Math.round(series.percent) + '%</div>';
+                        },
+                        background: { opacity: 0.5 },
+                        threshold: 0.05
                     }
                 }
+                
             };
-
             return flotOptions;
         },
 
@@ -116,7 +132,7 @@ function(
             this.setDefaultDateSettings(options);
             var defaultSettings = {
                 durationUnits: 4,
-                summaryType: 1 // FIXME to use enum
+                summaryType: 1 // Planned Distance
             };
             var mergedSettings = _.extend(defaultSettings, this.settingsModel.get(this.settingsKey));
             this.settingsModel.set(this.settingsKey, mergedSettings, { silent: true });
@@ -140,6 +156,34 @@ function(
         stopListeningToChartSettingsEvents: function()
         {
             this.settingsModel.off("change:" + this.settingsKey + ".summaryType", this.render, this);
+        },
+
+        buildTooltipData: function(flotItem)
+        {
+            var tips = [];
+            //flotItem.series.raw.fullData
+            var data = flotItem.series.raw.fullData;
+
+            tips.push({ label: flotItem.series.label, value: TP.utils.conversion.formatNumber(flotItem.series.percent)  + "%"});
+
+            if(data.distancePlanned)
+            {
+                tips.push({ label: "Planned distance", value: TP.utils.conversion.formatDistance(data.distancePlanned, { workoutTypeId: data.workoutTypeId, defaultValue: "--" }) +
+                    " " + TP.utils.units.getUnitsLabel("distance", data.workoutTypeId) });
+            }
+
+            tips.push({ label: "Completed distance", value: TP.utils.conversion.formatDistance(data.distanceActual, { workoutTypeId: data.workoutTypeId, defaultValue: "--" }) +
+                    " " + TP.utils.units.getUnitsLabel("distance", data.workoutTypeId) });
+
+            if(data.totalTimePlanned)
+            {
+                tips.push({ label: "Planned duration", value: TP.utils.conversion.formatDuration(data.totalTimePlanned, { workoutTypeId: data.workoutTypeId, defaultValue: "--" }) });
+            }
+
+            tips.push({ label: "Completed duration", value: TP.utils.conversion.formatDuration(data.totalTimeActual, { workoutTypeId: data.workoutTypeId, defaultValue: "--" }) });           
+
+            tips.push({ label: "TSS", value: TP.utils.conversion.formatTSS(data.totalTSSActual, { defaultValue: "--" }) });
+            return tips;
         }
     };
 

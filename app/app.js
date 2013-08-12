@@ -6,6 +6,7 @@ define(
     "framework/ajaxCaching",
     "framework/ajaxTimezone",
     "framework/tooltips",
+    "framework/dataManager",
     "models/session",
     "models/userModel",
     "models/buildInfo",
@@ -28,6 +29,7 @@ function(
     ajaxCaching,
     initializeAjaxTimezone,
     enableTooltips,
+    DataManager,
     Session,
     UserModel,
     BuildInfoModel,
@@ -163,6 +165,14 @@ function(
             this.userFetchPromise = new $.Deferred();
             this.session = new Session();
             this.setupAuthPromise();
+        });
+
+        // add data managers
+        this.addInitializer(function()
+        {
+            this.dataManagers = {
+                reporting: new DataManager()
+            };
         });
 
         this.setupAuthPromise = function()

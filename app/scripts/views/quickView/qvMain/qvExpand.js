@@ -23,6 +23,7 @@ function (_, TP, ExpandoController)
             detailData.watchForSensorData();
             detailData.on("changeSensorData", this.updateExpandButton, this);
             this.on("render", this.updateExpandButton, this);
+            this.on("detailData:fetched", this.removeExpandWaiting, this);
         },
 
         closeExpandedView: function()
@@ -205,13 +206,18 @@ function (_, TP, ExpandoController)
         {
             if(this.model.get("detailData").hasSensorData())
             {
-                this.$("#quickViewExpandDiv").removeClass("disabled");
-                this.$("#expandIcon").removeClass("disabled");
+                this.$("#quickViewExpandDiv").removeClass("expandWaiting").removeClass("disabled");
+                this.$("#expandIcon").removeClass("expandWaiting").removeClass("disabled");
             } else
             {
                 this.$("#quickViewExpandDiv").addClass("disabled");
                 this.$("#expandIcon").addClass("disabled");
             }
+        },
+
+        removeExpandWaiting: function()
+        {
+            this.$("#quickViewExpandDiv").removeClass("expandWaiting");
         }
     };
     return workoutQVExpand;
