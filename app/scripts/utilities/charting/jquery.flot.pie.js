@@ -719,7 +719,10 @@ More detail and specific examples can be found in the included HTML file.
             // trigger any hover bind events
 
             var pos = { pageX: e.pageX, pageY: e.pageY };
-            target.trigger(eventname, [pos, item]);
+            if(target)
+            {
+                target.trigger(eventname, [pos, item]);
+            }
         }
 
         function highlight(s, auto) {

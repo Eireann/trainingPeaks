@@ -93,6 +93,7 @@ function(
         {
             options = this.buildDefaultOptions(options);
             _.bindAll(this, "onHoverToolTip");
+            this.dataManager = options.dataManager;
             this.setGridAttributes(options);
             this.setSettingsIndex(options.index);
             this.setupSettingsModel(options);
@@ -166,9 +167,8 @@ function(
 
             var self = this;
             this.waitingOn();
-            this.chartDataModel.fetch().done(function()
+            this.dataManager.fetch(this.chartDataModel).done(function()
             {
-                self.setChartTitle();
                 self.render();
             }).always(function(){self.waitingOff();});
         },
@@ -228,6 +228,7 @@ function(
             setImmediate(function()
             {
                 self.renderChart();
+                self.setChartTitle();
             });
         },
 
@@ -319,7 +320,6 @@ function(
 
             this.chartSettings.alignArrowTo(offset.top + ($(e.currentTarget).height() / 2));
 
-            this.chartSettings.on("change:settings", this.onChartSettingsChange, this);
             this.chartSettings.on("close", this.onChartSettingsClose, this);
 
             this.listenToChartSettingsEvents();
@@ -345,11 +345,6 @@ function(
             this.stopListeningToChartSettingsEvents();
             this.allowSettingsButtonToHide();
             this.enableDrag();
-            this.fetchData();
-        },
-
-        onChartSettingsChange: function()
-        {
             this.fetchData();
         },
 

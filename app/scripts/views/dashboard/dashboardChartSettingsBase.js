@@ -79,7 +79,6 @@ function(
         saveOnClose: function()
         {
             this.saveSettings();
-            this.trigger("change:settings");
         },
 
         saveSettings: function()

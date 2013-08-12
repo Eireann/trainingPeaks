@@ -158,14 +158,33 @@ function(_, $, Backbone, TP, xhrData, app)
         findRequest: function(httpVerb, urlPattern)
         {
             var pattern = new RegExp(urlPattern);
-            var request = _.find(_.values(this.fakeAjaxRequests), function(req)
+            return _.find(_.values(this.fakeAjaxRequests), function(req)
             {
                 if(pattern.test(req.url) && (!httpVerb || req.options.type === httpVerb))
                 {
                     return true;
                 }
+                else
+                {
+                    return false;
+                }
             }, this);
-            return request;
+        },
+
+        findAllRequests: function(httpVerb, urlPattern)
+        {
+            var pattern = new RegExp(urlPattern);
+            return _.filter(_.values(this.fakeAjaxRequests), function(req)
+            {
+                if(pattern.test(req.url) && (!httpVerb || req.options.type === httpVerb))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }, this);
         },
 
         clearRequests: function()
@@ -191,6 +210,8 @@ function(_, $, Backbone, TP, xhrData, app)
         {
             if (Backbone._originalSync)
                 Backbone.sync = Backbone._originalSync;
+
+            this.clearRequests();
         },
 
         submitLogin: function(userData)

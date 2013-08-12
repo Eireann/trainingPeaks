@@ -43,9 +43,8 @@ function(
 
         setupViewModel: function(options)
         {
-            this.model = new TP.Model({
-                title: options.title
-            });
+            this.model = new TP.Model();
+            this.setChartTitle();
         },
 
         buildFlotPoints: function()
@@ -116,7 +115,7 @@ function(
             this.setDefaultDateSettings(options);
             var defaultSettings = {
                 durationUnits: 4,
-                summaryType: 1 // FIXME to use enum
+                summaryType: 1 // Planned Distance
             };
             var mergedSettings = _.extend(defaultSettings, this.settingsModel.get(this.settingsKey));
             this.settingsModel.set(this.settingsKey, mergedSettings, { silent: true });

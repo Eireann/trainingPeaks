@@ -1,12 +1,14 @@
 // use requirejs() here, not define(), for jasmine compatibility
 requirejs(
 [
+    "underscore",
     "testUtils/testHelpers",
     "testUtils/xhrDataStubs",
     "app",
     "views/dashboard/chartUtils"
 ],
 function(
+    _,
     testHelpers,
     xhrData,
     theMarsApp,
@@ -18,14 +20,19 @@ function(
     {
         var $mainRegion;
 
-            describe("User has one fitness summary pod", function()
-            {
+        var fitnessSummaryPodSettings = {
+            index: 0,
+            chartType: 3,
+            title: "Fitness Summary",
+            dateOptions: {
+                quickDateSelectOption: 1,
+                startDate: null,
+                endDate: null
+            }
+        };
 
-                var fitnessSummaryPodSettings = {
-                    index: 0,
-                    chartType: 3,
-                    title: "Fitness Summary"
-                };
+            describe("One fitness summary pod", function()
+            {
 
                 beforeEach(function()
                 {
@@ -117,14 +124,14 @@ function(
                         expect(testHelpers.hasRequest(null, "user")).toBe(true);
                     });
 
-                    it("Should request new data on settings close", function()
+                    it("Should not request new data on settings close if parameters haven't changed", function()
                     {
                         var $body = theMarsApp.getBodyElement();
                         testHelpers.clearRequests();
                         $mainRegion.find(".dashboardChart.fitnessSummaryChart .settings").trigger("mousedown");
                         expect(testHelpers.hasRequest(null, "reporting/fitnesssummary")).toBe(false);
                         $body.find(".dashboardChartSettings #closeIcon").trigger("click");
-                        expect(testHelpers.hasRequest(null, "reporting/fitnesssummary")).toBe(true);
+                        expect(testHelpers.hasRequest(null, "reporting/fitnesssummary")).toBe(false);
                     });
 
                     it("Should use dates entered in settings tomahawk", function()
@@ -142,11 +149,11 @@ function(
                         $mainRegion.find(".dashboardChart.fitnessSummaryChart .settings").trigger("mousedown");
                         $body.find(".dashboardChartSettings .dashboardDatePicker select.dateOptions").val(chartUtils.chartDateOptions.CUSTOM_DATES.id).trigger("change");
                         $body.find(".dashboardChartSettings .dashboardDatePicker input.startDate").val("2012-04-01").trigger("change");
-                        $body.find(".dashboardChartSettings .dashboardDatePicker input.endDate").val("2012-12-25").trigger("change");
+                        $body.find(".dashboardChartSettings .dashboardDatePicker input.endDate").val("2012-12-24").trigger("change");
                         $body.find(".dashboardChartSettings #closeIcon").trigger("click");
 
                         // should request tomahawk dates
-                        expect(testHelpers.hasRequest(null, "reporting/fitnesssummary/2012-04-01/2012-12-25")).toBe(true);
+                        expect(testHelpers.hasRequest(null, "reporting/fitnesssummary/2012-04-01/2012-12-24")).toBe(true);
 
                         // should not request dashboard dates
                         expect(testHelpers.hasRequest(null, "reporting/fitnesssummary/2013-01-01/2013-04-15")).toBe(false);
@@ -155,15 +162,93 @@ function(
 
                 });
 
-                xdescribe("Data Manager", function()
+                describe("Report Type", function()
                 {
-                    it("Should fail", function()
+                    it("Should default to Planned Distance", function()
                     {
-                        expect("FIX ME").toBe(true);
+                        expect($mainRegion.find(".dashboardChart.fitnessSummaryChart").text()).toContain("Planned Distance");
+                    });
+
+                    it("Should update chart when settings are changed", function()
+                    {
+                        var $body = theMarsApp.getBodyElement();
+
+                        runs(function()
+                        {
+                            testHelpers.clearRequests();
+                            $mainRegion.find(".dashboardChart.fitnessSummaryChart .settings").trigger("mousedown");
+                            $body.find(".dashboardChartSettings select.summaryType").val("2").trigger("change");
+                            $body.find(".dashboardChartSettings #closeIcon").trigger("click")
+                        });
+
+                        waitsFor(function()
+                        {
+                            return $mainRegion.find(".dashboardChart.fitnessSummaryChart").text().indexOf("Completed Distance") > 0;
+                        });
+
+                        runs(function()
+                        {
+                            expect($mainRegion.find(".dashboardChart.fitnessSummaryChart").text()).toContain("Completed Distance");
+                        });
+
+                        
+                    });
+
+                    it("Should retain the selected report type in the settings tomahawk", function()
+                    {
+                        var $body = theMarsApp.getBodyElement();
+                        $mainRegion.find(".dashboardChart.fitnessSummaryChart .settings").trigger("mousedown");
+                        $body.find(".dashboardChartSettings select.summaryType").val("3").trigger("change");
+                        $body.find(".dashboardChartSettings #closeIcon").trigger("click")
+                        $mainRegion.find(".dashboardChart.fitnessSummaryChart .settings").trigger("mousedown");
+                        expect($body.find(".dashboardChartSettings select.summaryType").val()).toEqual("3");
                     });
                 });
+
             });
 
+            xdescribe("Reporting Data Manager", function()
+            {
+
+                var fitnessSummaryPodSettingsTwo = {
+                    index: 1,
+                    chartType: 3,
+                    title: "Fitness Summary",
+                    dateOptions: {
+                        quickDateSelectOption: 1,
+                        startDate: null,
+                        endDate: null
+                    }
+                };
+
+                beforeEach(function()
+                {
+                    var userData = xhrData.users.barbkprem;
+                    userData.settings.dashboard.pods = [fitnessSummaryPodSettings, fitnessSummaryPodSettingsTwo];
+                    testHelpers.startTheAppAndLogin(userData);
+                    theMarsApp.user.on("change", function(){console.log("User changed");});
+                    $mainRegion = theMarsApp.mainRegion.$el;
+                    theMarsApp.router.navigate("dashboard", true);
+                });
+
+                afterEach(function()
+                {
+                    testHelpers.stopTheApp();
+                });
+
+                it("Should share data across multiple charts if they use the same data", function()
+                {
+                    var fitnessSummaryRequests = testHelpers.findAllRequests(null, "reporting/fitnesssummary");
+                    expect(fitnessSummaryRequests.length).toBe(1);
+                    console.log("resolved:");
+                    console.log(theMarsApp.dataManagers.reporting.resolvedRequests);
+                    console.log("pending:");
+                    console.log(theMarsApp.dataManagers.reporting.pendingRequests);
+                    console.log("Date options:");
+                    console.log(theMarsApp.user.get("settings.dashboard.dateOptions"));
+                });
+
+            });
     });
 
 });
