@@ -3,14 +3,12 @@
     "setImmediate",
     "underscore",
     "TP",
-    "utilities/infiniteScroll",
     "hbs!templates/views/home/scrollableColumn"
 ],
 function(
     setImmediate,
     _,
     TP,
-    infiniteScroll,
     scrollableColumnTemplate
     )
 {
@@ -20,7 +18,12 @@ function(
         {
             this.initResizeEvents();
             this.wrapInScrollableTemplate(options.template);
-            this.initializeScrolling();
+
+            if(!this.collection)
+                this.collection = new TP.Collection();
+
+            if(!this.itemView)
+                this.itemView = TP.ItemView;
         },
 
         wrapInScrollableTemplate: function(innerTemplate)
@@ -73,7 +76,6 @@ function(
             
         }
     };
-    _.extend(scrollableContainerView, infiniteScroll);
 
     return TP.ItemView.extend(scrollableContainerView);
 });

@@ -8,6 +8,7 @@ function(moment, TP, WorkoutModel)
 {
 
     var DayModel = TP.Model.extend({
+        idAttribute: "date",
         isDay: true,
         getSortDate: function()
         {
@@ -91,50 +92,8 @@ function(moment, TP, WorkoutModel)
 
             this.startDate = options.startDate;
             this.endDate = options.endDate;
-
-            this.on("reset", function() { this.createDayModels(this.startDate, this.endDate, { silent: true }); }, this);
         },
 
-        /*
-        // fetches two weeks in the future, at the top of activity feed
-        prependWeek: function()
-        {
-            var requestStartDate = moment(this.endDate).add("days", 1);
-            var requestEndDate = moment(this.endDate).add("weeks", 2);
-            return this.requestMoreDays(requestStartDate, requestEndDate);
-        },
-
-        // fetches two weeks in the past, at the bottom of activity feed
-        appendWeek: function()
-        {
-            var requestEndDate = moment(this.startDate).subtract("days", 1);
-            var requestStartDate = moment(this.startDate).subtract("weeks", 2);
-            return this.requestMoreDays(requestStartDate, requestEndDate);
-        },
-
-        requestMoreDays: function(requestStartDate, requestEndDate)
-        {
-            var weekUrl = this.url(requestStartDate, requestEndDate);
-            //console.log("Requesting week: " + weekUrl);
-            var fetchPromise = this.fetch({ remove: false, url: weekUrl });
-            var self = this;
-            fetchPromise.done(function()
-            {
-                self.createDayModels(requestStartDate, requestEndDate);
-                if (moment(requestStartDate).diff(moment(self.startDate), "days") < 0)
-                {
-                    self.startDate = moment(requestStartDate);
-                }
-                if (moment(requestEndDate).diff(moment(self.endDate), "days") > 0)
-                {
-                    self.endDate = moment(requestEndDate);
-                }
-                //console.log("Finished week: " + weekUrl);
-            });
-
-            return fetchPromise;
-        },
-        */
         createDayModels: function(startDate, endDate, options)
         {
             var currentDate = moment(startDate);
@@ -143,7 +102,7 @@ function(moment, TP, WorkoutModel)
                 var formattedDate = currentDate.format(TP.utils.datetime.shortDateFormat);
                 if (!this.get(formattedDate))
                 {
-                    var dayModel = new DayModel({ date: formattedDate, id: formattedDate });
+                    var dayModel = new DayModel({ date: formattedDate });
                     this.add(dayModel, options);
                 }
                 currentDate.add("days", 1);
@@ -153,6 +112,24 @@ function(moment, TP, WorkoutModel)
         parse: function(response, options)
         {
             return response.workouts;
+        },
+
+        // previous is actually future, at the top of the list
+        preparePrevious: function(count)
+        {
+            var weeks = Math.ceil(count / 7);
+            var startDate = moment(this.endDate).add("days", 1);
+            this.endDate = moment(this.endDate).add("weeks", weeks);
+            this.createDayModels(startDate, this.endDate);
+        },
+
+        // prepareNext is actually past, at the end of the list
+        prepareNext: function(count)
+        {
+            var weeks = Math.ceil(count / 7);
+            var endDate = moment(this.startDate).subtract("days", 1);
+            this.startDate = moment(this.startDate).subtract("weeks", weeks);
+            this.createDayModels(this.startDate, endDate);
         }
 
     });
