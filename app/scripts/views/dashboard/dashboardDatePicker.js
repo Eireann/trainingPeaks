@@ -77,6 +77,8 @@ function(
                 self.$(".datepicker").css("position", "relative").css("z-index", zIndex);
                 self.$(".datepicker").datepicker({ dateFormat: "yy-mm-dd", firstDay: theMarsApp.controllers.calendarController.startOfWeekDayIndex });
                 self.$("select.dateOptions").selectBoxIt({dynamicPositioning: true});
+                self.$("input.startDate").datepicker("option", "maxDate", self.$("input.endDate").val());
+                self.$("input.endDate").datepicker("option", "minDate", self.$("input.startDate").val());
             });
         },
 
@@ -102,7 +104,7 @@ function(
             return dateSettings;
         },
 
-        onDateOptionsChanged: function(e)
+        onDateOptionsChanged: function()
         {
             var optionId = Number(this.$("select.dateOptions").val());
 
