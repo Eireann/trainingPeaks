@@ -168,10 +168,12 @@ function(
 
             if(data.distancePlanned)
             {
-                tips.push({ label: "Planned distance", value: TP.utils.conversion.formatDistance(data.distancePlanned, { workoutTypeId: data.workoutTypeId, defaultValue: "--" }) });
+                tips.push({ label: "Planned distance", value: TP.utils.conversion.formatDistance(data.distancePlanned, { workoutTypeId: data.workoutTypeId, defaultValue: "--" }) +
+                    " " + TP.utils.units.getUnitsLabel("distance", data.workoutTypeId) });
             }
 
-            tips.push({ label: "Completed distance", value: TP.utils.conversion.formatDistance(data.distanceActual, { workoutTypeId: data.workoutTypeId, defaultValue: "--" }) });
+            tips.push({ label: "Completed distance", value: TP.utils.conversion.formatDistance(data.distanceActual, { workoutTypeId: data.workoutTypeId, defaultValue: "--" }) +
+                    " " + TP.utils.units.getUnitsLabel("distance", data.workoutTypeId) });
 
             if(data.totalTimePlanned)
             {
