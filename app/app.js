@@ -9,6 +9,7 @@ define(
     "models/session",
     "models/userModel",
     "models/buildInfo",
+    "models/workoutMultiFileData",
     "models/clientEventsCollection",
     "controllers/navigationController",
     "controllers/loginController",
@@ -30,6 +31,7 @@ function(
     Session,
     UserModel,
     BuildInfoModel,
+    WorkoutMultiFileDataModel,
     ClientEventsCollection,
     NavigationController,
     LoginController,
@@ -331,6 +333,127 @@ function(
             this.started = true;
         });
 
+        // Initialize File Upload via Drag & Drop
+        this.addInitializer(function ()
+        {
+            var self = this;
+            var mouseEnteredWindow = false;
+            var dragging = 0;
+
+            window.addEventListener("dragenter", function(e)
+            {
+                e = e || event;
+                e.stopPropagation();
+                e.preventDefault();  
+
+                dragging++;
+
+                if(mouseEnteredWindow)
+                    return;
+
+                var $body = self.getBodyElement();
+                $body.append("<div id='fileUploadOverlay'>+</div>");
+                mouseEnteredWindow = true;
+            });
+
+            window.addEventListener("dragover", function (e)
+            {
+                e = e || event;
+                e.preventDefault();
+
+                if (mouseEnteredWindow)
+                    return;
+                
+                var $body = self.getBodyElement();
+                $body.append("<div id='fileUploadOverlay'>+</div>");
+
+                mouseEnteredWindow = true;
+
+            }, false);
+
+            window.addEventListener("dragout", function (e)
+            {
+                e = e || event;
+                e.preventDefault();
+                
+                var $body = self.getBodyElement();
+                $body.find("#fileUploadOverlay").remove();
+
+                mouseEnteredWindow = false;
+            });
+
+            window.addEventListener("dragleave", function (e)
+            {
+                e = e || event;
+                e.preventDefault();
+
+                dragging--;
+                if(dragging === 0)
+                {
+                    var $body = self.getBodyElement();
+                    $body.find("#fileUploadOverlay").remove();
+                    mouseEnteredWindow = false;
+
+                }
+            });
+
+            window.addEventListener("drop", function (e)
+            {
+                e = e || event;
+                e.stopPropagation();
+                e.preventDefault();
+
+                if (!e.dataTransfer)
+                    return;
+                
+                var files = e.dataTransfer.files;
+                var $body = self.getBodyElement();
+                $body.find("#fileUploadOverlay").remove();
+                mouseEnteredWindow = false;
+
+                var numberOfFiles = files.length;
+                var workoutReader = new TP.utils.workout.FileReader(files);
+                var workoutReaderDeferred = workoutReader.readFile();
+
+                workoutReaderDeferred.done(function()
+                {
+                    var filesRead = [];
+
+                    if(numberOfFiles === 1)
+                        filesRead.push(arguments);
+                    else
+                        filesRead = arguments;
+
+                    var multiFileUploadDeferreds = [];
+
+                    _.each(filesRead, function(file)
+                    {
+                        var uploadedFileDataModel = new WorkoutMultiFileDataModel({ data: file[1], fileName: file[0]});
+                        var singleFileDeferred = uploadedFileDataModel.save();
+                        multiFileUploadDeferreds.push(singleFileDeferred);
+                    });
+
+                    $.when.apply($, multiFileUploadDeferreds).done(function()
+                    {
+                        var workouts = [];
+                        _.each(arguments[0], function(workout)
+                        {
+                            workouts.push({ workoutId: workout.workoutId, workoutDay: workout.workoutDay });
+                        });
+
+                        var $info = $("<div data-alert class='alert-box success' style='display:none;'>Workout(s) successfully uploaded...</div>");
+
+                        $("#uploadMessageContainer").append($info);
+                        $info.fadeIn(600).fadeOut(3000, function() { $info.remove(); });
+
+                    }).fail(function()
+                    {
+                    });
+                });
+
+            }, false);
+        });
+        
         this.isLive = function()
         {
             // if we're in local or dev mode, use DEBUG log level etc

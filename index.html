@@ -16,6 +16,22 @@
   <!-- Font -->
 <style type="text/css">
 
+#fileUploadOverlay
+{
+    background-color: black;
+    filter:alpha(opacity=50); /* IE */
+    opacity: 0.5; /* Safari, Opera */
+    -moz-opacity:0.50; /* FireFox */
+    z-index: 20;
+    height: 100%;
+    width: 100%;
+    background-repeat:no-repeat;
+    background-position:center;
+    position:absolute;
+    top: 0px;
+    left: 0px;
+}
+
 @import url("http://fast.fonts.com/t/1.css?apiType=css&projectid=444b1e2c-23c4-43ca-8978-58740876bc10");
 @font-face{
 font-family:"HelveticaNeueW01-45Ligh";
@@ -121,7 +137,7 @@ src:url("assets/fonts/2daec1fd-cd45-448e-b86e-ec73aacdb4ec.eot?#iefix") format("
   <!-- Application source. -->
 
   <!--(if target dummy)><!-->
-  <script>window.apiRoot = "dev";</script>
+  <script>window.apiRoot = "local";</script>
   <script src="apiConfig.dev.js"></script>
   <script>apiConfig.assetsRoot = "build/debug/assets/";</script>
   <script data-main="./app/config/config" src="./vendor/js/libs/require.js"></script>
