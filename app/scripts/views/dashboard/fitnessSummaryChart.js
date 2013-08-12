@@ -182,7 +182,6 @@ function(
 
             tips.push({ label: "Completed duration", value: TP.utils.conversion.formatDuration(data.totalTimeActual, { workoutTypeId: data.workoutTypeId, defaultValue: "--" }) });           
 
-
             tips.push({ label: "TSS", value: TP.utils.conversion.formatTSS(data.totalTSSActual, { defaultValue: "--" }) });
             return tips;
         }

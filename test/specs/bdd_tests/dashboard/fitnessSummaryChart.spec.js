@@ -207,7 +207,7 @@ function(
 
             });
 
-            xdescribe("Reporting Data Manager", function()
+            describe("Reporting Data Manager", function()
             {
 
                 var fitnessSummaryPodSettingsTwo = {

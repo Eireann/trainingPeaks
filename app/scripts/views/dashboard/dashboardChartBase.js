@@ -151,7 +151,8 @@ function(
 
         fetchData: function()
         {
-            var chartDateParameters = chartUtils.buildChartParameters(this.getSetting("dateOptions"));
+            var myDateOptions = this.getSetting("dateOptions");
+            var chartDateParameters = chartUtils.buildChartParameters(myDateOptions);
             var chartSettings = this.settingsModel.get(this.settingsKey);
 
             var mergedSettings = _.extend({}, 
@@ -162,7 +163,6 @@ function(
                                                     endDate: chartDateParameters.endDate.format(TP.utils.datetime.shortDateFormat)
                                                 }
                                           });
-
             this.chartDataModel.set(mergedSettings);
 
             var self = this;
