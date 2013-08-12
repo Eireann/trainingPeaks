@@ -185,7 +185,7 @@ function(
 
             tips.push({ label: "TSS", value: TP.utils.conversion.formatTSS(data.totalTSSActual, { defaultValue: "--" }) });
             return tips;
-        },
+        }
     };
 
     return TP.ItemView.extend(_.extend({}, DashboardChartBase, FitnessSummaryChart));
