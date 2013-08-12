@@ -22,6 +22,7 @@ function (_, TP, ExpandoController)
             var detailData = this.model.get("detailData");
             detailData.watchForSensorData();
             detailData.on("changeSensorData", this.updateExpandButton, this);
+            detailData.on("promise:fetched", this.updateExpandButton, this);
             this.on("render", this.updateExpandButton, this);
         },
 
@@ -205,8 +206,8 @@ function (_, TP, ExpandoController)
         {
             if(this.model.get("detailData").hasSensorData())
             {
-                this.$("#quickViewExpandDiv").removeClass("disabled");
-                this.$("#expandIcon").removeClass("disabled");
+                this.$("#quickViewExpandDiv").removeClass("expandWaiting").removeClass("disabled");
+                this.$("#expandIcon").removeClass("expandWaiting").removeClass("disabled");
             } else
             {
                 this.$("#quickViewExpandDiv").addClass("disabled");

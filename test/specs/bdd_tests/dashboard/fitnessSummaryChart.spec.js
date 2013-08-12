@@ -38,7 +38,7 @@ function(
                 {
                     var userData = xhrData.users.barbkprem;
                     userData.settings.dashboard.pods = [fitnessSummaryPodSettings];
-                    testHelpers.startTheAppAndLogin(userData);
+                    testHelpers.startTheAppAndLogin(userData, true);
                     $mainRegion = theMarsApp.mainRegion.$el;
                     theMarsApp.router.navigate("dashboard", true);
                 });
@@ -225,7 +225,7 @@ function(
                 {
                     var userData = xhrData.users.barbkprem;
                     userData.settings.dashboard.pods = [fitnessSummaryPodSettings, fitnessSummaryPodSettingsTwo];
-                    testHelpers.startTheAppAndLogin(userData);
+                    testHelpers.startTheAppAndLogin(userData, true);
                     $mainRegion = theMarsApp.mainRegion.$el;
                     theMarsApp.router.navigate("dashboard", true);
                 });

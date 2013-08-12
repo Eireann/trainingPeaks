@@ -13,13 +13,19 @@ function(_, Backbone, DeepModel, moment)
 
         createPromise: function()
         {
+            var deferred;
             if(this.id)
             {
-                return this.fetch();
+                deferred = this.fetch();
             } else
             {
-                return new $.Deferred();
+                deferred = new $.Deferred();
             }
+
+            var self = this;
+            deferred.done(function(){self.trigger("promise:fetched");});
+
+            return deferred;
         }
 
     };
@@ -45,13 +51,18 @@ function(_, Backbone, DeepModel, moment)
 
         createPromise: function()
         {
+            var deferred;
             if (this.get(this.idAttribute))
             {
-                return this.fetch();
+                deferred = this.fetch();
             } else
             {
-                return new $.Deferred();
+                deferred = new $.Deferred();
             }
+
+            var self = this;
+            deferred.done(function(){self.trigger("promise:fetched");});
+            return deferred;
         },
 
         has: function(attr)

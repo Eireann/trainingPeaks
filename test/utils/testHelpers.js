@@ -165,7 +165,6 @@ function(_, $, Backbone, TP, xhrData, app)
         {
             var request = this.findRequest(httpVerb, urlPattern);
 
-            data = this.deepClone(data);
             if (request)
             {
                 //console.log("Resolving request " + request.url);
@@ -258,9 +257,14 @@ function(_, $, Backbone, TP, xhrData, app)
             }
         },
 
-        startTheAppAndLogin: function(userData)
+        startTheAppAndLogin: function(userData, doClone)
         {
             this.startTheApp();
+
+            if(doClone)
+            {
+                userData = this.deepClone(userData);                
+            }
             this.submitLogin(userData);
         }
 
