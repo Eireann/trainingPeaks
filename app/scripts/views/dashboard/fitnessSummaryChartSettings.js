@@ -45,6 +45,7 @@ function(
 
         selectBoxIt: function()
         {
+            var self = this;
             setImmediate(function()
             {
                 self.$("select.summaryType").selectBoxIt({dynamicPositioning: false});
