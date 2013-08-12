@@ -23,7 +23,7 @@ function()
                 TSB: "#FFA500",
                 TSBFill: "rgba(255,165,0, 0.4)",
                 ATL: "#f945d7",
-                CTL: "#ffffff",
+                CTL: "#b5c7d4",
                 TSS: "#b90807",
                 ctlGradient: { dark: "#eaebec", light: "#b5c7d4" },
                 futureCTLGradient: { dark: "#eaebec", light: "#cacbcc" },
