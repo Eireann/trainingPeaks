@@ -68,7 +68,10 @@ function(
                                 colors: [workoutTypeGradient.light, workoutTypeGradient.dark ]
                             }
                         };
+                        if (chartPoint.data < 5)
+                        {
 
+                        }
                         chartPoints.push(chartPoint);
                     }
                 });
@@ -99,14 +102,27 @@ function(
                 pie: 
                 {
                     show: true,
+                    radius: 1,
                     layerSlices: true,
                     startAngle: 0,
                     highlight: {
                         opacity: 0
+                    },
+                    
+                    label: 
+                    {
+                        show: true,
+                        radius: .7,
+                        formatter: function (label, series)
+                        {
+                            return '<div class="fitnessSummartChart">' + label + '<br/>' + Math.round(series.percent) + '%</div>';
+                        },
+                        background: { opacity: 0.5 },
+                        threshold: 0.05
                     }
-                }
+                },
+                
             };
-
             return flotOptions;
         },
 
