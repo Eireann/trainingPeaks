@@ -323,9 +323,7 @@ function(
         this.addInitializer(function()
         {
             if (this.historyEnabled)
-            {
                 this.history.start({ pushState: false, root: this.root });
-            }
         });
 
         this.addInitializer(function()
@@ -340,6 +338,9 @@ function(
             var mouseEnteredWindow = false;
             var dragging = 0;
 
+            var $body = self.getBodyElement();
+            var $overlay = $("<div id='fileUploadOverlay'><div id='fileUploadPlusBox' class='addWorkoutWrapper'><div class='addWorkout'><div class='addWorkoutPlus'></div></div></div></div>");
+
             window.addEventListener("dragenter", function(e)
             {
                 e = e || event;
@@ -351,8 +352,7 @@ function(
                 if(mouseEnteredWindow)
                     return;
 
-                var $body = self.getBodyElement();
-                $body.append("<div id='fileUploadOverlay'>+</div>");
+                $body.append($overlay);
                 mouseEnteredWindow = true;
             });
 
@@ -364,9 +364,7 @@ function(
                 if (mouseEnteredWindow)
                     return;
                 
-                var $body = self.getBodyElement();
-                $body.append("<div id='fileUploadOverlay'>+</div>");
-
+                $body.append($overlay);
                 mouseEnteredWindow = true;
 
             }, false);
@@ -376,8 +374,7 @@ function(
                 e = e || event;
                 e.preventDefault();
                 
-                var $body = self.getBodyElement();
-                $body.find("#fileUploadOverlay").remove();
+                $overlay.remove();
 
                 mouseEnteredWindow = false;
             });
@@ -390,10 +387,8 @@ function(
                 dragging--;
                 if(dragging === 0)
                 {
-                    var $body = self.getBodyElement();
-                    $body.find("#fileUploadOverlay").remove();
+                    $overlay.remove();
                     mouseEnteredWindow = false;
-
                 }
             });
 
@@ -407,8 +402,7 @@ function(
                     return;
                 
                 var files = e.dataTransfer.files;
-                var $body = self.getBodyElement();
-                $body.find("#fileUploadOverlay").remove();
+                $overlay.remove();
                 mouseEnteredWindow = false;
 
                 var numberOfFiles = files.length;
@@ -435,16 +429,16 @@ function(
 
                     $.when.apply($, multiFileUploadDeferreds).done(function()
                     {
-                        var workouts = [];
-                        _.each(arguments[0], function(workout)
+                        var $info = $("<div data-alert class='alert-box success' style='display:none;'><p>Workout(s) successfully uploaded...</p><ul></ul></div>");
+                        var workouts = numberOfFiles === 1 ? arguments[0] : _.map(arguments, function(argument) { return argument[0][0]; });
+
+                        _.each(workouts, function(workout)
                         {
-                            workouts.push({ workoutId: workout.workoutId, workoutDay: workout.workoutDay });
+                            $info.find("ul").append("<li>ID: " + workout.workoutId + ", Date: " + workout.workoutDay + "</li>");
                         });
 
-                        var $info = $("<div data-alert class='alert-box success' style='display:none;'>Workout(s) successfully uploaded...</div>");
-
                         $("#uploadMessageContainer").append($info);
-                        $info.fadeIn(600).fadeOut(3000, function() { $info.remove(); });
+                        $info.fadeIn(600).fadeOut(10000, function() { $info.remove(); });
 
                     }).fail(function()
                     {
