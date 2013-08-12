@@ -232,7 +232,8 @@ More detail and specific examples can be found in the included HTML file.
                         color: data[i].color,
                         label: data[i].label,
                         angle: value2 * Math.PI * 2 / total,
-                        percent: value2 / (total / 100)
+                        percent: value2 / (total / 100),
+                        raw: data[i]
                     });
                 }
             }
@@ -243,7 +244,8 @@ More detail and specific examples can be found in the included HTML file.
                     color: color,
                     label: options.series.pie.combine.label,
                     angle: combined * Math.PI * 2 / total,
-                    percent: combined / (total / 100)
+                    percent: combined / (total / 100),
+                    raw: data[i]
                 });
             }
 

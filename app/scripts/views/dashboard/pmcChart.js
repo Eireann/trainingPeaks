@@ -547,8 +547,9 @@ function(
             return flotOptions;
         },
 
-        buildTooltipData: function(index)
+        buildTooltipData: function(flotItem)
         {
+            var index = flotItem.dataIndex;
             var tips = [];
             var item = this.chartDataModel.get("data")[index];
 

@@ -267,15 +267,15 @@ function(
 
         onHoverToolTip: function(flotItem, $tooltipEl)
         {
-            var tooltipHTML = tooltipTemplate({ tooltips: this.buildTooltipData(flotItem.dataIndex) });
+            var tooltipHTML = tooltipTemplate({ tooltips: this.buildTooltipData(flotItem) });
             $tooltipEl.html(tooltipHTML);
             toolTipPositioner.updatePosition($tooltipEl, this.plot);
         },
 
-        buildTooltipData: function(index)
+        buildTooltipData: function(flotItem)
         {
             var tips = [];
-            var item = this.chartDataModel.get("data")[index];
+            var item = this.chartDataModel.get("data")[flotItem.dataIndex];
             return tips;
         },
 
