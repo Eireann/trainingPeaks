@@ -274,10 +274,6 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
                         background: url(../../assets/images/calendarImages/throbber-expando-button@2x.gif) no-repeat;
                         background-size: 86px 35px;
                     }
-                    
-                    &.disabled {
-                        background: url(../../assets/images/QVImages/sprite-buttons-expando.png) no-repeat 0 -35px;
-                    }
                 }
             
                 &:not(.disabled)
