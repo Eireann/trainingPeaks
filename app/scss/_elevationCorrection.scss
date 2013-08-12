@@ -26,7 +26,12 @@
         float: left;
         
         &.waiting:before {
-            z-index:107;
+            // z-index:107;
+            background-position:right;
+            top:70px;
+            right:-185px;
+            top: 20px;
+            left: auto;
         }
     }
 
