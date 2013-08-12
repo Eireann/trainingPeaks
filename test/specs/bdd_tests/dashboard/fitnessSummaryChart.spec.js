@@ -178,7 +178,7 @@ function(
                             testHelpers.clearRequests();
                             $mainRegion.find(".dashboardChart.fitnessSummaryChart .settings").trigger("mousedown");
                             $body.find(".dashboardChartSettings select.summaryType").val("2").trigger("change");
-                            $body.find(".dashboardChartSettings #closeIcon").trigger("click")
+                            $body.find(".dashboardChartSettings #closeIcon").trigger("click");
                         });
 
                         waitsFor(function()
@@ -199,7 +199,7 @@ function(
                         var $body = theMarsApp.getBodyElement();
                         $mainRegion.find(".dashboardChart.fitnessSummaryChart .settings").trigger("mousedown");
                         $body.find(".dashboardChartSettings select.summaryType").val("3").trigger("change");
-                        $body.find(".dashboardChartSettings #closeIcon").trigger("click")
+                        $body.find(".dashboardChartSettings #closeIcon").trigger("click");
                         $mainRegion.find(".dashboardChart.fitnessSummaryChart .settings").trigger("mousedown");
                         expect($body.find(".dashboardChartSettings select.summaryType").val()).toEqual("3");
                     });

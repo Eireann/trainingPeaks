@@ -112,7 +112,7 @@ function(
                     label: 
                     {
                         show: true,
-                        radius: .7,
+                        radius: 0.7,
                         formatter: function (label, series)
                         {
                             return '<div class="fitnessSummartChart">' + label + '<br/>' + Math.round(series.percent) + '%</div>';
@@ -120,7 +120,7 @@ function(
                         background: { opacity: 0.5 },
                         threshold: 0.05
                     }
-                },
+                }
                 
             };
             return flotOptions;
