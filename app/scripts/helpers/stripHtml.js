@@ -1,18 +1,15 @@
 define(
 [
-    "handlebars"
+    "handlebars",
+    "scripts/helpers/multilineEllipsis"
 ],
-function(Handlebars)
+function (Handlebars, multilineEllipsis)
 {
 
     var stripHtml = function(html, maxLength)
     {
-        var text = $("<div>").html(html).text();
+        var text = multilineEllipsis($("<div>").html(html).text(), maxLength);
 
-        if (typeof maxLength !== "undefined" && text.length > maxLength)
-        {
-            text = text.substr(0, maxLength - 3) + "...";
-        }
         return text;
     };
 
