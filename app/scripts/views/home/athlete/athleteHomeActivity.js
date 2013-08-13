@@ -37,6 +37,7 @@ function(
             this.endDate = moment().add("weeks", 1);
 
             this.collection = new ActivityCollection(null, { startDate: this.startDate, endDate: this.endDate });
+            this.collection.createDayModels();
 
             this.initializeScrollableCollectionView();
             this.on("render", this.showScrollableCollectionView, this);
@@ -79,7 +80,13 @@ function(
             else if (model.isDay)
                 return new DayBarView(options);
             else
-                throw "not implemented";
+                throw "unknown item view class for athlete home activity";
+                /*
+                return new TP.ItemView(options);
+                console.log(model);
+                console.trace();
+                throw "unknown item view class for athlete home activity";
+                */
         },
 
         _getFirstModel: function()

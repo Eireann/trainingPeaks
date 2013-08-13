@@ -172,6 +172,7 @@ function(
         constructor: function(options)
         {
             var self = this;
+
             this.firstModel = options.firstModel || options.collection.at(Math.floor(options.collection.length / 2));
 
             options.collection = new ScrollableCollectionViewAdapterCollection(null, options);

@@ -96,6 +96,15 @@ function(moment, TP, WorkoutModel)
 
         createDayModels: function(startDate, endDate, options)
         {
+            if(!startDate){
+                startDate = this.startDate;
+            }
+
+            if(!endDate)
+            {
+                endDate = this.endDate;
+            }
+            
             var currentDate = moment(startDate);
             while (currentDate.diff(endDate, "days") <= 0)
             {

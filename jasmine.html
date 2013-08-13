@@ -62,7 +62,8 @@
                     // we need to let requirejs load all of our tests, and then let jasmine parse all of the tests, before we run jasmine
                     // it's not foolproof, but easier than overriding requirejs
                     localStorage.clear();
-                    setTimeout(function() { jasmineEnv.execute(); }, 3000);
+                    //setTimeout(function() { jasmineEnv.execute(); }, 3000);
+                    jasmineEnv.execute();
                 });
             });
         });
