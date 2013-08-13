@@ -419,6 +419,12 @@ function(
             }
             clearTimeout(this.scrollStopTimeout);
             var closestChild = this._closestChildToTop();
+
+            if(!closestChild)
+            {
+                return;
+            }
+            
             var offset = Math.abs(closestChild.position.top);
             if (offset < 100)
             {

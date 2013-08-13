@@ -171,6 +171,15 @@ function(
             this.dataManagers = {
                 reporting: new DataManager()
             };
+
+            this.on("save:model", function()
+            {
+                _.each(this.dataManagers, function(dataManager)
+                {
+                    dataManager.reset();
+                });
+                
+            }, this);
         });
 
         this.setupAuthPromise = function()

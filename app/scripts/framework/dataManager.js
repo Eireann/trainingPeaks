@@ -8,10 +8,10 @@
 
     var DataManager = function()
     {
-        this.resetData();
+        this.reset();
     };
 
-    DataManager.prototype.resetData = function()
+    DataManager.prototype.reset = function()
     {
         this.resolvedRequests = {};
         this.pendingRequests = {};
