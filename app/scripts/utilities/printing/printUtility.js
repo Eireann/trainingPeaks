@@ -19,7 +19,7 @@ function()
         
         printWeek: function()
         {
-            throw "not implemented";
+            throw "print week not implemented";
         }
     };
 });

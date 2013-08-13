@@ -1,183 +1,159 @@
 ﻿define(
 [
     "underscore",
-    "setImmediate",
     "TP",
     "moment",
     "models/activityCollection",
-    "views/home/scrollableColumnView",
-    "views/activityFeed/activityCollectionView",
-    "hbs!templates/views/activityFeed/activityFeedContainer"
+    "models/workoutModel",
+    "views/workout/workoutBarView",
+    "views/dayBarView",
+    "views/home/scrollableColumnLayout",
+    "views/scrollableCollectionView"
 ],
 function(
     _,
-    setImmediate,
     TP,
     moment,
     ActivityCollection,
-    ScrollableColumnView,
-    ActivityCollectionView,
+    WorkoutModel,
+    WorkoutBarView,
+    DayBarView,
+    ScrollableColumnLayout,
+    ScrollableCollectionView,
     activityTemplate
     )
 {
-    return ScrollableColumnView.extend(
+    return ScrollableColumnLayout.extend(
     {
+       
+        className: "scrollableColumnContainer athleteHomeActivities",
 
-        scrollDownThresholdInPx: 500,
-        scrollUpThresholdInPx: 300,
-
-        ui:
-        {
-            activityFeedContainer: "#activityFeedContainer"
-        },
-        
         initialize: function(options)
         {
             // initialize the superclass to setup scrolling and other behaviors
-            this.constructor.__super__.initialize.call(this, { template: activityTemplate });
+            this.constructor.__super__.initialize.call(this);
 
             this.startDate = moment().subtract("weeks", 3);
             this.endDate = moment().add("weeks", 1);
 
-            _.bindAll(this, "beforeAppend", "afterAppend", "beforePrepend", "afterPrepend");
+            this.collection = new ActivityCollection(null, { startDate: this.startDate, endDate: this.endDate });
+            this.collection.createDayModels();
 
-            this.pages = [];
+            this.initializeScrollableCollectionView();
+            this.on("render", this.showScrollableCollectionView, this);
         },
 
-        onRender: function()
+        initializeScrollableCollectionView: function()
         {
-            var self = this;
-            this.requestActivities(this.startDate, this.endDate, "append").done(function() { self.afterInitialLoad(); });
+
+            this._requestActivities(this.startDate, this.endDate);
+
+            this.scrollableCollectionView = new ScrollableCollectionView({
+                firstModel: this._getFirstModel(),
+                itemView: this._createItemView,
+                collection: this.collection,
+                id: "activityFeedContainer",
+                className: "activityCollection scrollable",
+                onScrollEnd: _.bind(this._loadDataAfterScroll, this),
+                scrollThreshold: 100,
+                minSize: 30,
+                maxSize: 60,
+                filterScrollTarget: function(childView)
+                {
+                    return childView.$el.is(".day");
+                }
+            });
         },
 
-        requestActivities: function(startDate, endDate, appendOrPrepend)
+        showScrollableCollectionView: function()
+        {
+            this.$(".contents").removeClass("scrollable");
+            this.contentRegion.show(this.scrollableCollectionView);
+        },
+
+        _createItemView: function(options)
+        {
+            var model = options.model ? options.model : options;
+
+            if (model instanceof WorkoutModel)
+                return new WorkoutBarView(options);
+            else if (model.isDay)
+                return new DayBarView(options);
+            else
+                throw "unknown item view class for athlete home activity";
+        },
+
+        _getFirstModel: function()
+        {
+            var tomorrow = moment().add("days", 1).format(TP.utils.datetime.shortDateFormat);
+            return this.collection.get(tomorrow);
+        },
+
+        _loadDataAfterScroll: function()
+        {
+            var allVisibleModels = this.scrollableCollectionView.getVisibleModels();
+
+            var firstDay = null;
+            var lastDay = null;
+
+            _.each(this.scrollableCollectionView.getVisibleModels(), function(model)
+            {
+                if(model.isDay && !firstDay)
+                {
+                    firstDay = model;
+                }
+
+                if(model.isDay)
+                {
+                    lastDay = model;
+                }
+
+            }, this);
+
+            var firstDate, lastDate;
+            if(firstDay > lastDay)
+            {
+                firstDate = firstDay.get("date");
+                lastDate = lastDay.get("date");
+            }
+            else
+            {
+                firstDate = lastDay.get("date");
+                lastDate = firstDay.get("date");
+            }
+
+            firstDay = moment(firstDate);
+            lastDay = moment(lastDate);
+
+            if(firstDay < self.startDate)
+            {
+                var endDate = self.startDate.subtract("days", 1);
+                self.startDate = firstDay;
+                self._requestActivities(self.startDate, endDate);
+            }
+
+            if(lastDay > self.endDate)
+            {
+                var startDate = self.endDate.add("days", 1);
+                self.endDate = lastDay;
+                self._requestActivities(startDate, self.endDate);
+            }
+
+        },
+
+        _requestActivities: function(startDate, endDate)
         {
             var activityCollection = new ActivityCollection(null, { startDate: startDate, endDate: endDate });
             var fetchPromise = activityCollection.fetch({ reset: true });
+            this.collection.createDayModels(startDate, endDate);
 
             var self = this;
             fetchPromise.done(function()
             {
-                var activityCollectionView = new ActivityCollectionView({ collection: activityCollection });
-                if (appendOrPrepend === "append")
-                {
-                    self.appendPage(self.ui.activityFeedContainer, activityCollectionView);
-                }
-                else
-                {
-                    self.prependPage(self.ui.activityFeedContainer, activityCollectionView);
-                }
+                self.collection.add(activityCollection.models);
             });
 
             return fetchPromise;
-        },
-
-        appendPage: function(containerElement, view)
-        {
-            view.render();
-            containerElement.append(view.$el);
-            this.pages.push(view);
-        },
-
-        prependPage: function(containerElement, view)
-        {
-            view.render();
-            containerElement.prepend(view.$el);
-            this.pages.unshift(view);
-            var newCollectionHeight = view.$el.height();
-            var currentScrollTop = this.scrollableContainer.scrollTop();
-            this.scrollableContainer.scrollTop(currentScrollTop + newCollectionHeight);
-        },
-
-        afterInitialLoad: function()
-        {
-            var self = this;
-            var callback = function()
-            {
-                self.listenForScroll();
-            };
-            this.scrollToElement("#" + moment().add("days", 1).format(TP.utils.datetime.shortDateFormat), null, 300, callback);
-        },
-
-        listenForScroll: function()
-        {
-            this.on("scroll:top", this.onScrollToTop, this);
-            this.on("scroll:bottom", this.onScrollToBottom, this);
-            this.on("scroll:updatePosition", this.onUpdateScrollPosition, this);
-        },
-        
-        onScrollToTop: function()
-        {
-            if (!this.prepending)
-            {
-                this.beforePrepend();
-                var self = this;
-
-                // FIXME: may not be correct
-                var currentEndDate = this.endDate;
-
-                var requestStartDate = moment(this.endDate).add("days", 1);
-                this.endDate = moment(this.endDate).add("weeks", 1);
-                this.requestActivities(requestStartDate, this.endDate, "prepend").done(function()
-                {
-                    self.afterPrepend(moment(currentEndDate).add("days", 1));
-                });
-            }
-        },
-
-        onScrollToBottom: function()
-        {
-            if (!this.appending)
-            {
-                this.beforeAppend();
-                var self = this;
-
-                var requestEndDate = moment(this.startDate).subtract("days", 1);
-                this.startDate = moment(this.startDate).subtract("weeks", 2);
-                this.requestActivities(this.startDate, requestEndDate, "append").done(function()
-                {
-                    self.afterAppend();
-                });
-            }
-        },
-
-        beforeAppend: function()
-        {
-            this.appending = true;
-            /*
-            if (!this.$appendWait)
-            {
-                this.$appendWait = $("<div>").addClass("waitingForInfiniteScroll");
-                this.ui.activityFeedContainer.append(this.$appendWait);
-            }
-
-            this.$appendWait.show();
-            */
-        },
-
-        afterAppend: function(scrollToDate)
-        {
-            //this.$appendWait.hide();
-            this.appending = false;
-        },
-
-        beforePrepend: function()
-        {
-            this.prepending = true;
-            /*
-            if(!this.$prependWait)
-            {
-                this.$prependWait = $("<div>").addClass("waitingForInfiniteScroll");
-                this.ui.activityFeedContainer.prepend(this.$prependWait);
-            }
-            this.$prependWait.show();
-            */
-        },
-
-        afterPrepend: function(scrollToDate)
-        {
-            //this.$prependWait.hide();
-            this.prepending = false;
         }
 
     });

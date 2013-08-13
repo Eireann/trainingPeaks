@@ -11,6 +11,11 @@ function(_, Backbone, DeepModel, moment)
 
         myBackboneModelPrototype: Backbone.Model.prototype,
 
+        save: function(key, val, options) {
+            theMarsApp.trigger("save:model", this);
+            return Backbone.Model.prototype.save.call(this, key, val, options);
+        },
+
         createPromise: function()
         {
             if(this.id)
@@ -26,6 +31,11 @@ function(_, Backbone, DeepModel, moment)
 
     var APIModel = 
     {
+
+        save: function(key, val, options) {
+            theMarsApp.trigger("save:model", this);
+            return Backbone.Model.prototype.save.call(this, key, val, options);
+        },
 
         myBackboneModelPrototype: Backbone.Model.prototype,
 

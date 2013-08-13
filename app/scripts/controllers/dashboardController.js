@@ -4,7 +4,7 @@
     "controllers/pageContainerController",
     "layouts/dashboardLayout",
     "views/dashboard/dashboardHeader",
-    "views/dashboard/dashboardLibrary",
+    "views/dashboard/dashboardLibraryView",
     "views/dashboard/dashboardChartsContainer"
 ],
 function(

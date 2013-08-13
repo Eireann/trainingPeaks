@@ -58,9 +58,10 @@ function(
             // if we have a horizontal scrollbar, adjust for height
             if (this.$el.closest(".frameworkScrollableContainer").width() <= 1007)
             {
-                primaryContentContainerHeight -= 28;
+                primaryContentContainerHeight -= 37;
             }
 
+            //primaryContentContainerHeight = 200;
             // set min/max height also in case packery or something else tries to override the height
             this.$(".scrollable").css({ height: primaryContentContainerHeight + 'px',
                                       "min-height": primaryContentContainerHeight + 'px',

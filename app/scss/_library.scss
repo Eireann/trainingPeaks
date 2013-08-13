@@ -425,11 +425,16 @@ $mainTtabSpriteRetinaURL: url(../../assets/images/sprite-icons-main-tabs@2x.png)
                     max-height: 24px;
                     height: 24px;
                     line-height: 12px;
+                    text-overflow: ellipsis;
                 }
 
                 .author
                 {
                     height: 15px;
+                    max-width: 240px;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
                 }
             }
 

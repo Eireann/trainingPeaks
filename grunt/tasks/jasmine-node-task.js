@@ -79,7 +79,6 @@ module.exports = function(grunt)
                 exitCode = 0;
             } else {
                 exitCode = 1;
-
                 if (forceExit) {
                     process.exit(exitCode);
                 }

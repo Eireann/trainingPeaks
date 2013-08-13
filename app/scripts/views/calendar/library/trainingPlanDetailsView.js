@@ -83,7 +83,7 @@ function(
                 self.$(".datepicker").css("position", "relative").css("z-index", self.$el.css("z-index"));
                 self.$(".datepicker").datepicker({ dateFormat: "m/d/yy", firstDay: theMarsApp.controllers.calendarController.startOfWeekDayIndex,
                     beforeShowDay: self.checkWhetherDayIsSelectable });
-                self.$("select").selectBoxIt({ dynamicPositioning: false });
+                self.$("select.dateOptions").selectBoxIt({ dynamicPositioning: true });
             });
 
             if(this.alignedTo)

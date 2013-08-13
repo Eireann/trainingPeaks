@@ -29,7 +29,6 @@ function(_, $, Backbone, TP, xhrData, app)
 
         startTheApp: function()
         {
-
             var startTime = +new Date();
             this.stopTheApp();
 
@@ -259,12 +258,13 @@ function(_, $, Backbone, TP, xhrData, app)
 
         startTheAppAndLogin: function(userData, doClone)
         {
-            this.startTheApp();
 
+            this.startTheApp();
             if(doClone)
             {
                 userData = this.deepClone(userData);                
             }
+
             this.submitLogin(userData);
         }
 

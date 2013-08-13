@@ -172,6 +172,7 @@ function(
         constructor: function(options)
         {
             var self = this;
+
             this.firstModel = options.firstModel || options.collection.at(Math.floor(options.collection.length / 2));
 
             options.collection = new ScrollableCollectionViewAdapterCollection(null, options);
@@ -195,6 +196,8 @@ function(
             this.scrollAnchorCount = 0;
 
             this.snapToChild = _.debounce(this.snapToChild, 1000);
+
+            this.filterScrollTarget = options.filterScrollTarget ? options.filterScrollTarget : null;
 
             this.on('render', function()
             {
@@ -257,6 +260,13 @@ function(
                 view = this.children.findByModel(model);
                 duration = 0;
             }
+
+            // sometimes during unit tests we have no view
+            if(!view || !view.$el)
+            {
+                return;
+            }
+
             var scrollTop = view.$el.position().top + this.$el.scrollTop();
             this._animateScroll(scrollTop, duration);
             this.scrollAnchor = {
@@ -312,7 +322,9 @@ function(
         },
 
         _closestChildToTop: function() {
+            var filterScrollTarget = this.filterScrollTarget ? this.filterScrollTarget : function(child){return true;};
             return _.chain(this.children.toArray())
+            .filter(filterScrollTarget)
             .reject(function(child)
             {
                 return child.$el.css('display') === 'none';
@@ -407,6 +419,12 @@ function(
             }
             clearTimeout(this.scrollStopTimeout);
             var closestChild = this._closestChildToTop();
+
+            if(!closestChild)
+            {
+                return;
+            }
+            
             var offset = Math.abs(closestChild.position.top);
             if (offset < 100)
             {
