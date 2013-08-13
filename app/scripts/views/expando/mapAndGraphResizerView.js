@@ -29,11 +29,11 @@ function(
         },
         onRender: function()
         {
-        	this.$el.draggable({drag: _.bind(this.onDrag, this), scope: "expandoMapAndGraphResizerRegion", axis: "y"});
+            this.$el.draggable({drag: _.bind(this.onDrag, this), scope: "expandoMapAndGraphResizerRegion", axis: "y"});
         },
         onDrag: function(event, ui)
         {
-        	this.trigger("resizerDrag", ui.position.top - this.initialTop);
+            this.trigger("resizerDrag", ui.position.top - this.initialTop);
         },
         setPosition: function(containerHeight)
         {
@@ -41,12 +41,12 @@ function(
             var mapHeight = Math.floor((containerHeight - bottomMargin) * 0.50);
             mapHeight = mapHeight + (this.offset || 0);
 
-        	this.$el.css('top', mapHeight + 'px');
+            this.$el.css('top', mapHeight + 'px');
 
-        	if (!this.initialTop)
-        	{
-        		this.initialTop = mapHeight;
-        	} 
+            if (!this.initialTop)
+            {
+                this.initialTop = mapHeight;
+            } 
         },
         setOffset: function(offset)
         {
