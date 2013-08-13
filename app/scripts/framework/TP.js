@@ -29,7 +29,7 @@ function(_, Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmedia
     });
 
     // Marionette stuff
-    TP.Application = Marionette.Application.extend({
+    TP.Application = Backbone.Marionette.Application.extend({
 
         shutdownHandlers: [],
 
@@ -48,7 +48,7 @@ function(_, Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmedia
 
     });
 
-    TP.Controller = Marionette.Controller.extend(
+    TP.Controller = Backbone.Marionette.Controller.extend(
     {
         getLayout: function()
         {
@@ -60,7 +60,7 @@ function(_, Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmedia
             alert(msg);
         }
     });
-    TP.Layout = Marionette.Layout.extend(
+    TP.Layout = Backbone.Marionette.Layout.extend(
     {
         fadeIn: function(callback)
         {
@@ -72,7 +72,7 @@ function(_, Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmedia
             this.$el.fadeOut(300, callback);
         }
     });
-    TP.Region = Marionette.Region;
+    TP.Region = Backbone.Marionette.Region;
 
     // Common functionality for all TP View types
     var commonViewFunctions = {};
@@ -405,7 +405,7 @@ function(_, Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmedia
         constructor: function()
         {
             var args = Array.prototype.slice.apply(arguments);
-            Marionette.View.prototype.constructor.apply(this, args);
+            Backbone.Marionette.View.prototype.constructor.apply(this, args);
             if (this.initialEvents)
             {
                 this.initialEvents();
@@ -417,7 +417,7 @@ function(_, Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmedia
         constructor: function()
         {
             var args = Array.prototype.slice.apply(arguments);
-            Marionette.ItemView.prototype.constructor.apply(this, args);
+            Backbone.Marionette.ItemView.prototype.constructor.apply(this, args);
             if (this.initialEvents)
             {
                 this.initialEvents();
@@ -427,10 +427,10 @@ function(_, Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmedia
 
     TP.Events = Backbone.Events;
 
-    TP.View = Marionette.View.extend(viewConstructor);
-    TP.ItemView = Marionette.ItemView.extend(commonViewFunctions).extend(modalRendering).extend(itemViewConstructor);
-    TP.CollectionView = Marionette.CollectionView.extend(commonViewFunctions);
-    TP.CompositeView = Marionette.CompositeView.extend(commonViewFunctions);
+    TP.View = Backbone.Marionette.View.extend(viewConstructor);
+    TP.ItemView = Backbone.Marionette.ItemView.extend(commonViewFunctions).extend(modalRendering).extend(itemViewConstructor);
+    TP.CollectionView = Backbone.Marionette.CollectionView.extend(commonViewFunctions);
+    TP.CompositeView = Backbone.Marionette.CompositeView.extend(commonViewFunctions);
 
     // Backbone stuff
     TP.Collection = Backbone.Collection.extend({});

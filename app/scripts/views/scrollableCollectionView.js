@@ -260,6 +260,13 @@ function(
                 view = this.children.findByModel(model);
                 duration = 0;
             }
+
+            // sometimes during unit tests we have no view
+            if(!view || !view.$el)
+            {
+                return;
+            }
+
             var scrollTop = view.$el.position().top + this.$el.scrollTop();
             this._animateScroll(scrollTop, duration);
             this.scrollAnchor = {

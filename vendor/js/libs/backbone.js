@@ -29,6 +29,9 @@
   var Backbone;
   if (typeof exports !== 'undefined') {
     Backbone = exports;
+    // MICAH: Make Backbone available on root
+    root.Backbone = Backbone;
+    globals.Backbone = Backbone;
   } else {
     Backbone = root.Backbone = {};
   }

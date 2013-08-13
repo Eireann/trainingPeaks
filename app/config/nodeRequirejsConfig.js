@@ -18,14 +18,7 @@
             "localStorage": "../test/js_global_dependencies/localStorage",
             "browserEnvironment": "../test/js_global_dependencies/browserEnvironment",
             "jquery": "../test/vendor/js/libs/jquery_jsdom",
-            //"lawnchair": "../test/vendor/js/libs/fake_lawnchair",
-            "backbone": "../test/vendor/js/libs/backbone.amd",
-            "backbone.eventbinder": "../test/vendor/js/libs/backbone.eventbinder.amd",
-            "backbone.babysitter": "../test/vendor/js/libs/backbone.babysitter.amd",
-            "backbone.wreqr": "../test/vendor/js/libs/backbone.wreqr.amd",
-            "backbone.marionette": "../test/vendor/js/libs/backbone.marionette.amd",
             "Backbone.Marionette.Handlebars": "../test/vendor/js/libs/backbone.marionette.handlebars.amd",
-            "hbs": "../test/vendor/js/libs/hbs",
             "packery": "../test/vendor/js/libs/packery",
             "gridster": "../test/vendor/js/libs/gridster"
         }

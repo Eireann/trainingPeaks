@@ -81,12 +81,6 @@ function(
                 return new DayBarView(options);
             else
                 throw "unknown item view class for athlete home activity";
-                /*
-                return new TP.ItemView(options);
-                console.log(model);
-                console.trace();
-                throw "unknown item view class for athlete home activity";
-                */
         },
 
         _getFirstModel: function()
