@@ -467,8 +467,6 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
         margin: 14px 0 10px 0;
         color: $TPGrey3;
     }
-
-
 }
 
 .fitnessSummartChart
@@ -478,4 +476,29 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
     text-align: center;
     padding: 2px;
     color: #ffffff;
+}
+
+#libraryContainer {
+    #activeLibraryContainer {
+        .chartTile {
+            @include libraryTile();
+
+            margin:0 0 5px 0;
+            padding:3px 3px 2px 3px;
+
+            .chartTileIcon {
+                width: 25px;
+                height: 25px;
+                background-color: #fff;
+                float: left;
+            }
+
+            .chartTileName {
+                font-size: $fontSizeSmall;
+                margin-left:3px;
+                float:left;
+                margin:7px 6px;
+            }
+        }
+    }
 }
