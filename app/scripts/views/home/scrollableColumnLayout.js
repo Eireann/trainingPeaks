@@ -12,36 +12,23 @@ function(
     scrollableColumnTemplate
     )
 {
-    var scrollableContainerView = {
+
+    var scrollableContainerLayout = { 
+
+        className: "scrollableColumnContainer",
+
+        regions: {
+            contentRegion: ".contents"
+        },
 
         initialize: function(options)
         {
             this.initResizeEvents();
-            this.wrapInScrollableTemplate(options.template);
-
-            if(!this.collection)
-                this.collection = new TP.Collection();
-
-            if(!this.itemView)
-                this.itemView = TP.ItemView;
         },
 
-        wrapInScrollableTemplate: function(innerTemplate)
-        {
-
-            var wrappedTemplate = function(context)
-            {
-                var innerHtml = innerTemplate(context);
-                var $outerHtml = $(scrollableColumnTemplate());
-                $outerHtml.find(".contents").html(innerHtml);
-                return $outerHtml;
-            };
-
-            this.template = {
-                type: "handlebars",
-                template: wrappedTemplate
-            };
-
+        template: {
+            type: "handlebars",
+            template: scrollableColumnTemplate
         },
 
         initResizeEvents: function()
@@ -73,9 +60,8 @@ function(
             var primaryContentContainerHeight = windowHeight - headerHeight - 40;
 
             this.$(".scrollable").css({ height: primaryContentContainerHeight + 'px' });
-            
         }
     };
 
-    return TP.ItemView.extend(scrollableContainerView);
+    return TP.Layout.extend(scrollableContainerLayout);
 });

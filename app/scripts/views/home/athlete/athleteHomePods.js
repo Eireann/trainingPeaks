@@ -2,17 +2,16 @@
 [
     "underscore",
     "TP",
-    "views/home/scrollableColumnView",
-    "hbs!templates/views/home/athlete/athleteHomePods"
+    "views/home/scrollableColumnLayout"
 ],
 function(
     _,
     TP,
-    ScrollableColumnView,
+    ScrollableColumnLayout,
     podsTemplate
     )
 {
-    return ScrollableColumnView.extend(
+    return ScrollableColumnLayout.extend(
     {
 
         initialize: function(options)

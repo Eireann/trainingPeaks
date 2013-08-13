@@ -196,6 +196,8 @@ function(
 
             this.snapToChild = _.debounce(this.snapToChild, 1000);
 
+            this.filterScrollTarget = options.filterScrollTarget ? options.filterScrollTarget : null;
+
             this.on('render', function()
             {
                 this.wrapMargin = 0;
@@ -312,7 +314,9 @@ function(
         },
 
         _closestChildToTop: function() {
+            var filterScrollTarget = this.filterScrollTarget ? this.filterScrollTarget : function(child){return true;};
             return _.chain(this.children.toArray())
+            .filter(filterScrollTarget)
             .reject(function(child)
             {
                 return child.$el.css('display') === 'none';

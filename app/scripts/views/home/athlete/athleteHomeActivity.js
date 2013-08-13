@@ -7,9 +7,8 @@
     "models/workoutModel",
     "views/workout/workoutBarView",
     "views/dayBarView",
-    "views/home/scrollableColumnView",
-    "views/scrollableCollectionView",
-    "hbs!templates/views/activityFeed/activityFeedContainer"
+    "views/home/scrollableColumnLayout",
+    "views/scrollableCollectionView"
 ],
 function(
     _,
@@ -19,25 +18,28 @@ function(
     WorkoutModel,
     WorkoutBarView,
     DayBarView,
-    ScrollableColumnView,
+    ScrollableColumnLayout,
     ScrollableCollectionView,
     activityTemplate
     )
 {
-    return ScrollableColumnView.extend(
+    return ScrollableColumnLayout.extend(
     {
-        
+       
+        className: "scrollableColumnContainer athleteHomeActivities",
+
         initialize: function(options)
         {
             // initialize the superclass to setup scrolling and other behaviors
-            this.constructor.__super__.initialize.call(this, { template: activityTemplate });
+            this.constructor.__super__.initialize.call(this);
 
             this.startDate = moment().subtract("weeks", 3);
             this.endDate = moment().add("weeks", 1);
 
             this.collection = new ActivityCollection(null, { startDate: this.startDate, endDate: this.endDate });
 
-            this.on("render", this.initializeScrollableCollectionView, this);
+            this.initializeScrollableCollectionView();
+            this.on("render", this.showScrollableCollectionView, this);
         },
 
         initializeScrollableCollectionView: function()
@@ -46,21 +48,26 @@ function(
             this._requestActivities(this.startDate, this.endDate);
 
             this.scrollableCollectionView = new ScrollableCollectionView({
-                fistModel: this._getFirstModel(),
+                firstModel: this._getFirstModel(),
                 itemView: this._createItemView,
                 collection: this.collection,
-                id: "scrollableColumnContents",
-                className: "scrollable athleteHomeActivities",
+                id: "activityFeedContainer",
+                className: "activityCollection scrollable",
                 onScrollEnd: _.bind(this._loadDataAfterScroll, this),
                 scrollThreshold: 100,
-                minSize: 21,
-                maxSize: 35
+                minSize: 30,
+                maxSize: 60,
+                filterScrollTarget: function(childView)
+                {
+                    return childView.$el.is(".day");
+                }
             });
+        },
 
-            // TODO: use a layout here, and show after initial request loads
+        showScrollableCollectionView: function()
+        {
             this.$(".contents").removeClass("scrollable");
-            this.$("#activityFeedContainer").append(this.scrollableCollectionView.render().el);
-            this.scrollableCollectionView.trigger("show");
+            this.contentRegion.show(this.scrollableCollectionView);
         },
 
         _createItemView: function(options)
@@ -77,8 +84,8 @@ function(
 
         _getFirstModel: function()
         {
-            var lastWeek = moment().add("weeks", 1).format(TP.utils.datetime.shortDateFormat);
-            return this.collection.get(lastWeek);
+            var tomorrow = moment().add("days", 1).format(TP.utils.datetime.shortDateFormat);
+            return this.collection.get(tomorrow);
         },
 
         _loadDataAfterScroll: function()

@@ -2,17 +2,16 @@
 [
     "underscore",
     "TP",
-    "views/home/scrollableColumnView",
-    "hbs!templates/views/home/athlete/athleteHomeSummary"
+    "views/home/scrollableColumnLayout"
 ],
 function(
     _,
     TP,
-    ScrollableColumnView,
+    ScrollableColumnLayout,
     summaryTemplate
     )
 {
-    return ScrollableColumnView.extend(
+    return ScrollableColumnLayout.extend(
     {
 
         initialize: function(options)
