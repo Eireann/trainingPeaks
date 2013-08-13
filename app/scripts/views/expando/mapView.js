@@ -267,8 +267,8 @@ function (
             var bottomMargin = 10;
             var mapHeight = Math.floor((containerHeight * 0.50) - bottomMargin);
 
-            mapHeight = this.offset ? this.offset : mapHeight;
-            
+            mapHeight = this.height ? this.height : mapHeight;
+
             this.$el.closest("#expandoMapRegion").height(mapHeight);
             this.$el.height(mapHeight);
             this.$("#expandoMap").height(mapHeight);
@@ -277,9 +277,9 @@ function (
                 this.map.invalidateSize();
             }
         },
-        setOffset: function(offset)
+        stashHeight: function(height)
         {
-            this.offset = offset;
+            this.height = height;
         }
     });
 });

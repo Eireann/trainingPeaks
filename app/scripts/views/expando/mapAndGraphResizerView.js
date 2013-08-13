@@ -43,7 +43,7 @@ function(
         {
             var bottomMargin = 15;
             var mapHeight = Math.floor((containerHeight * 0.5) - bottomMargin);
-            mapHeight = this.offset ? this.offset : mapHeight;
+            mapHeight = this.top ? this.top : mapHeight;
             this.$el.css('top', mapHeight + 'px');
 
             if (!this.initialTop)
@@ -51,9 +51,9 @@ function(
                 this.initialTop = mapHeight;
             } 
         },
-        setOffset: function(offset)
+        setTop: function(top)
         {
-            this.offset = offset;
+            this.top = top;
         }
 
     });

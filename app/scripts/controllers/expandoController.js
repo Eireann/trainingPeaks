@@ -250,12 +250,10 @@ function(setImmediate, TP, DataParser, ExpandoLayout, GraphView, MapView, StatsV
         {
             // before and during proportion change
             // set the height offsets caused by dragging
-            var containerHeight = this.layout.$el.parent().height();
-            var offsetPercentage = (top / containerHeight);
 
-            this.views.mapView.setOffset(top);
-            this.views.graphView.setOffset(top);
-            this.views.mapAndGraphResizerView.setOffset(top);
+            this.views.mapView.stashHeight(top);
+            this.views.graphView.stashHeight(top);
+            this.views.mapAndGraphResizerView.setTop(top);
             this.onViewResize();
         },
 
