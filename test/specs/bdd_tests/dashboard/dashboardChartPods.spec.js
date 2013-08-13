@@ -95,7 +95,7 @@ function(
                 });
             });
 
-            describe("User has one pmc pod", function()
+            describe("Pmc pod", function()
             {
 
                 var pmcPodSettings = {
@@ -198,12 +198,23 @@ function(
                         expect(testHelpers.hasRequest(null, "user")).toBe(true);
                     });
 
-                    it("Should request new data on settings close", function()
+                    it("Should not request new data on settings close if parameters haven't changed", function()
                     {
                         var $body = theMarsApp.getBodyElement();
                         testHelpers.clearRequests();
                         $mainRegion.find(".dashboardChart.pmcChart .settings").trigger("mousedown");
                         expect(testHelpers.hasRequest(null, "reporting/performancedata")).toBe(false);
+                        $body.find(".dashboardChartSettings #closeIcon").trigger("click");
+                        expect(testHelpers.hasRequest(null, "reporting/performancedata")).toBe(false);
+                    });
+
+                    it("Should request new data on settings close if parameters have changed", function()
+                    {
+                        var $body = theMarsApp.getBodyElement();
+                        testHelpers.clearRequests();
+                        $mainRegion.find(".dashboardChart.pmcChart .settings").trigger("mousedown");
+                        expect(testHelpers.hasRequest(null, "reporting/performancedata")).toBe(false);
+                        $body.find(".dashboardChartSettings #ctlConstant").val("99").attr("value", "99").trigger("change");
                         $body.find(".dashboardChartSettings #closeIcon").trigger("click");
                         expect(testHelpers.hasRequest(null, "reporting/performancedata")).toBe(true);
                     });

@@ -79,7 +79,6 @@ function(
         saveOnClose: function()
         {
             this.saveSettings();
-            this.trigger("change:settings");
         },
 
         saveSettings: function()
@@ -90,7 +89,7 @@ function(
         serializeData: function()
         {
             var dashboardChartSettings = this.model.has(this.settingsKey) ? _.clone(this.model.get(this.settingsKey)) : {};
-            dashboardChartSettings = chartUtils.buildChartParameters(dashboardChartSettings);
+            //dashboardChartSettings = chartUtils.buildChartParameters(dashboardChartSettings);
             this.addWorkoutTypesToData(dashboardChartSettings);
             return dashboardChartSettings;
         },
@@ -144,6 +143,16 @@ function(
                 this.top(windowBottom - this.$el.height());
                 this.$(".arrow").css("top", arrowOffset + "px");
             }
+        },
+
+        setSetting: function(key, value, options)
+        {
+            return this.model.set(this.settingsKey + "." + key, value, options);
+        },
+
+        getSetting: function(key)
+        {
+            return this.model.get(this.settingsKey + "." + key);
         }
 
     };

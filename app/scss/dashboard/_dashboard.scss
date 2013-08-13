@@ -8,19 +8,18 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
     {
         width: 220px !important;
 
-        /*    
-        span 
-        {
-            height: 22px;
-            font-size: 13px;
-        }
-        */
-
         .selectboxit
         {
             width: 220px !important;
             height: 22px;
         }
+    }
+
+    .selectboxit-options
+    {
+        height: 300px;
+        overflow-y: scroll;
+        @include nice-scrollbar; 
     }
 
     /*
@@ -130,6 +129,8 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
     position: relative;
 
     padding-top: 10px;
+
+    overflow-x: hidden;
 }
 
 #dashboardHeader
@@ -166,6 +167,8 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
         .applyDates
         {
             min-width: 60px;
+            padding-top: 3px;
+            padding-bottom: 5px;
         }
     }
 }
@@ -272,7 +275,7 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
             }
             &.tssd
             {
-                color: #3399ff;
+                color: #b90807;
             }
         }
     }
@@ -459,4 +462,20 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
         }
     }
 
+    .details
+    {
+        margin: 14px 0 10px 0;
+        color: $TPGrey3;
+    }
+
+
+}
+
+.fitnessSummartChart
+{
+    font-size: $fontSizeXSmall;
+    font-family: $fontFamilyRegular;
+    text-align: center;
+    padding: 2px;
+    color: #ffffff;
 }

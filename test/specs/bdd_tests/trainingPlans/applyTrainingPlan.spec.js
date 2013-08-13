@@ -78,13 +78,6 @@ function(
                 expect($body.find(".trainingPlanDetails").text()).toContain("Description of a training plan");
             });
 
-            it("Should not have an apply button if it was not purchased", function()
-            {
-                $mainRegion.find(".trainingPlanLibrary .trainingPlan[data-trainingplanid=2]").trigger("mouseup");
-                testHelpers.resolveRequest("GET", "plans/v1/plans/2/details$", xhrData.trainingPlanDetails);
-                expect($body.find(".trainingPlanDetails button.apply").length).toBe(0);
-            });
-
             it("Should have an apply button if it was already applied", function()
             {
                 $mainRegion.find(".trainingPlanLibrary .trainingPlan[data-trainingplanid=1]").trigger("mouseup");

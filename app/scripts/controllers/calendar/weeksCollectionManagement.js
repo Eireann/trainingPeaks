@@ -15,7 +15,8 @@ function(CalendarCollection
             {
                 summaryViewEnabled: this.summaryViewEnabled,
                 startDate: moment(this.startDate),
-                endDate: moment(this.endDate)
+                endDate: moment(this.endDate),
+                startOfWeekDayIndex: this.startOfWeekDayIndex
             });
         },
 

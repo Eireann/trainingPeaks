@@ -40,6 +40,15 @@ function(TP, TrainingPlanDetailsView, trainingPlanItemViewTemplate)
             this.model.on("unselect", this.onItemUnSelect, this);
         },
 
+        serializeData: function()
+        {
+            var data = this.model.toJSON();
+            var dayCount = this.model.get("daysDuration");
+            var weekCount = Math.ceil(dayCount / 7);
+            data.weekCount = weekCount;
+            return data;
+        },
+
         onMouseDown: function()
         {
             this.model.trigger("select", this.model);

@@ -1,7 +1,6 @@
 <div class="selectedOverlay"></div>
 <div class="planDetails">
+    <div class="trainingPlansIcon"/>
     <label class="title">{{ title }}</label>
-    {{#if planStatus}}
-    <div>{{$ "Status" }}: {{ trainingPlanStatus planStatus }}</div>
-    {{/if}}
+    <div class="author default">{{$ "By"}} {{ author }} | {{weekCount}} Weeks</div>
 </div>

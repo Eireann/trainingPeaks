@@ -5,7 +5,7 @@
     "packery",
     "gridster",
     "TP",
-    "utilities/charting/dashboardChartBuilder",
+    "./dashboardChartBuilder",
     "views/pageContainer/primaryContainerView",
     "hbs!templates/views/dashboard/dashboardChartsContainer"
 ],
@@ -116,6 +116,7 @@ function(
                 var chartView = dashboardChartBuilder.buildChartView(podSettings.chartType, podSettings);
                 this.charts.push(chartView);
                 chartView.on("remove", this.onChartRemove, this);
+                chartView.on("before:remove", this.onBeforeChartRemove, this);
             }, this);
         },
 
@@ -209,6 +210,7 @@ function(
                 var $charts = this.ui.chartsContainer.find(".dashboardChart");
                 $charts.draggable({ containment: "#chartsContainer" });
                 this.ui.chartsContainer.packery("bindUIDraggableEvents", $charts);
+
             }
         },
 
@@ -224,9 +226,15 @@ function(
             this.syncChartSettingsOrder(orderedSettings);
         },
 
+        onBeforeChartRemove: function()
+        {
+            this.scrollTop = this.ui.chartsContainer.scrollTop();
+        },
+
         onChartRemove: function()
         {
             this.initPackery();
+            this.ui.chartsContainer.scrollTop(this.scrollTop);
             var oldOrderedSettings = this.model.get("settings.dashboard.pods");
             this.syncChartSettingsOrder(oldOrderedSettings);
         },

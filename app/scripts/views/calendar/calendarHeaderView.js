@@ -47,8 +47,16 @@ function(TP, moment, datepicker, coachAndAffiliateCustomizations, calendarHeader
 
         onRender: function()
         {
-            this.$(".datepicker").datepicker({ dateFormat: "m/d/yy", firstDay: theMarsApp.controllers.calendarController.startOfWeekDayIndex });
+            this.$(".datepicker").datepicker(
+            {
+                dateFormat: "yy-mm-dd",
+                firstDay: theMarsApp.controllers.calendarController.startOfWeekDayIndex,
+                changeYear: true,
+                changeMonth: true
+            });
+            this.updateDatepicker();
         },
+
         bindings:
         {
             ".headerMonth":
@@ -88,7 +96,10 @@ function(TP, moment, datepicker, coachAndAffiliateCustomizations, calendarHeader
             }
         },
 
-        modelEvents: {},
+        modelEvents: {
+            "change:date": "updateDatepicker"
+        },
+
 
         initialize: function()
         {
@@ -100,6 +111,12 @@ function(TP, moment, datepicker, coachAndAffiliateCustomizations, calendarHeader
 
             this.on("render", this.watchForAthletesChange, this);
             this.on("render", this.updateCoachAthleteList, this);
+        },
+
+        updateDatepicker: function()
+        {
+            var date = moment(this.model.get("date")).toDate();
+            this.$(".datepicker").datepicker("setDate", date);
         },
 
         watchForAthletesChange: function ()
@@ -158,10 +175,12 @@ function(TP, moment, datepicker, coachAndAffiliateCustomizations, calendarHeader
 
             return headerData;
         },
-        onDateSelect: function(e)
+
+        onDateSelect: function()
         {
             this.trigger("request:date", this.$('.datepicker').val());
         },
+
         onGoToTodayButtonClicked: function ()
         {
             TP.analytics("send", { "hitType": "event", "eventCategory": "calendar", "eventAction": "todayClicked", "eventLabel": "" });

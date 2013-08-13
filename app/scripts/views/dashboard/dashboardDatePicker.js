@@ -67,7 +67,6 @@ function(
             this.model.off("change", this.render);
 
             var self = this;
-            self.$("select.dateOptions").hide();
             setImmediate(function()
             {
                 var zIndex = self.$el.css("z-index");
@@ -77,7 +76,9 @@ function(
                 }
                 self.$(".datepicker").css("position", "relative").css("z-index", zIndex);
                 self.$(".datepicker").datepicker({ dateFormat: "yy-mm-dd", firstDay: theMarsApp.controllers.calendarController.startOfWeekDayIndex });
-                self.$("select.dateOptions").selectBoxIt({dynamicPositioning: false});
+                self.$("select.dateOptions").selectBoxIt({dynamicPositioning: true});
+                self.$("input.startDate").datepicker("option", "maxDate", self.$("input.endDate").val());
+                self.$("input.endDate").datepicker("option", "minDate", self.$("input.startDate").val());
             });
         },
 
@@ -103,9 +104,9 @@ function(
             return dateSettings;
         },
 
-        onDateOptionsChanged: function(e)
+        onDateOptionsChanged: function()
         {
-            var optionId = this.$("select.dateOptions").val();
+            var optionId = Number(this.$("select.dateOptions").val());
 
             var dateOptions = {
                 quickDateSelectOption: optionId,
@@ -149,6 +150,9 @@ function(
             this.$("div.startDate").text(startDate);
             this.$("input.endDate").val(endDate);
             this.$("div.endDate").text(endDate);
+
+            this.$("input.startDate").datepicker("option", "maxDate", endDate);
+            this.$("input.endDate").datepicker("option", "minDate", startDate);
 
         }
 

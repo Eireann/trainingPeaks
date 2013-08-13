@@ -105,6 +105,11 @@ function(
                     if (!self.model.get("workoutId"))
                         self.prefetchConfig.detailsPromise.resolve();
 
+                    self.prefetchConfig.detailsPromise.done(function()
+                    {
+                        self.trigger("details:fetched");
+                    });
+
                 }, 100);
 
                 this.prefetchConfig.workoutDetailDataFetchTimeout = setTimeout(function()
@@ -114,6 +119,11 @@ function(
                     // if we don't have a workout, just resolve the deferred to let everything render
                     if (!self.model.get("workoutId"))
                         self.prefetchConfig.detailDataPromise.resolve();
+
+                    self.prefetchConfig.detailDataPromise.done(function()
+                    {
+                        self.trigger("detailData:fetched");
+                    });
 
                 }, 400);
 
