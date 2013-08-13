@@ -172,13 +172,14 @@ function(
                 reporting: new DataManager()
             };
 
-            this.on("save:model", function()
+            this.on("save:model", function(model)
             {
+                var modelUrl = _.result(model, "url");
                 _.each(this.dataManagers, function(dataManager)
                 {
-                    dataManager.reset();
+                    dataManager.reset(modelUrl);
                 });
-                
+
             }, this);
         });
 
