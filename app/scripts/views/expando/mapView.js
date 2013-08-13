@@ -265,10 +265,10 @@ function (
         setViewSize: function (containerHeight, containerWidth, overrideMinHeight)
         {
             var bottomMargin = 10;
-            var mapHeight = Math.floor((containerHeight - bottomMargin) * 0.50);
+            var mapHeight = Math.floor((containerHeight * 0.50) - bottomMargin);
 
-            // apply offset set by resize bar
-            mapHeight = mapHeight + (this.offset || 0);
+            mapHeight = this.offset ? this.offset : mapHeight;
+            
             this.$el.closest("#expandoMapRegion").height(mapHeight);
             this.$el.height(mapHeight);
             this.$("#expandoMap").height(mapHeight);

@@ -246,13 +246,16 @@ function(setImmediate, TP, DataParser, ExpandoLayout, GraphView, MapView, StatsV
 
         },
 
-        onResizerDrag: function(offset)
+        onResizerDrag: function(top)
         {
             // before and during proportion change
             // set the height offsets caused by dragging
-            this.views.mapView.setOffset(offset);
-            this.views.graphView.setOffset(offset);
-            this.views.mapAndGraphResizerView.setOffset(offset);
+            var containerHeight = this.layout.$el.parent().height();
+            var offsetPercentage = (top / containerHeight);
+
+            this.views.mapView.setOffset(top);
+            this.views.graphView.setOffset(top);
+            this.views.mapAndGraphResizerView.setOffset(top);
             this.onViewResize();
         },
 
@@ -314,7 +317,6 @@ function(setImmediate, TP, DataParser, ExpandoLayout, GraphView, MapView, StatsV
         {
             var containerHeight = this.layout.$el.parent().height();
             var mapAndChartsContainerWidth = this.layout.$("#expandoLeftColumn").width();
-
             _.each(this.views, function(view)
             {
                 view.trigger("controller:resize", containerHeight, mapAndChartsContainerWidth);

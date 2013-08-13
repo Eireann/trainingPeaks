@@ -550,7 +550,7 @@ function(
             var graphHeight = Math.floor((containerHeight - bottomMargin) * heightPercent);
 
             // apply offset set by resize bar
-            graphHeight = graphHeight - (this.offset || 0);
+            graphHeight = this.offset ? containerHeight - (this.offset + bottomMargin) : graphHeight;
 
             this.graphHeight = graphHeight;
             this.$el.closest("#expandoGraphRegion").height(graphHeight);
