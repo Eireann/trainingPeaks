@@ -10,7 +10,6 @@ define(
     "models/session",
     "models/userModel",
     "models/buildInfo",
-    "models/workoutMultiFileData",
     "models/clientEventsCollection",
     "controllers/navigationController",
     "controllers/loginController",
@@ -19,8 +18,8 @@ define(
     "controllers/homeController",
     "views/buildInfoView",
     "router",
-    "hbs!templates/views/notAllowedForAlpha",
-    "marionette.faderegion"
+    "utilities/dragAndDropFileUploadWidget",
+    "hbs!templates/views/notAllowedForAlpha"
 ],
 function(
     _,
@@ -33,7 +32,6 @@ function(
     Session,
     UserModel,
     BuildInfoModel,
-    WorkoutMultiFileDataModel,
     ClientEventsCollection,
     NavigationController,
     LoginController,
@@ -42,8 +40,8 @@ function(
     HomeController,
     BuildInfoView,
     Router,
-    notAllowedForAlphaTemplate,
-    faderegion)
+    DragAndDropFileUploadWidget,
+    notAllowedForAlphaTemplate)
 {
 
     var theApp = new TP.Application();
@@ -338,125 +336,14 @@ function(
 
         this.addInitializer(function()
         {
+            DragAndDropFileUploadWidget.initialize(this.getBodyElement(), this.getBodyElement().find("#messages"));
+        })
+
+        this.addInitializer(function()
+        {
             this.started = true;
         });
 
-        // Initialize File Upload via Drag & Drop
-        this.addInitializer(function ()
-        {
-            var self = this;
-            var mouseEnteredWindow = false;
-            var dragging = 0;
-
-            var $body = self.getBodyElement();
-            var $overlay = $("<div id='fileUploadOverlay'><div id='fileUploadPlusBox' class='addWorkoutWrapper'><div class='addWorkout'><div class='addWorkoutPlus'></div></div></div></div>");
-
-            window.addEventListener("dragenter", function(e)
-            {
-                e = e || event;
-                e.stopPropagation();
-                e.preventDefault();  
-
-                dragging++;
-
-                if(mouseEnteredWindow)
-                    return;
-
-                $body.append($overlay);
-                mouseEnteredWindow = true;
-            });
-
-            window.addEventListener("dragover", function (e)
-            {
-                e = e || event;
-                e.preventDefault();
-
-                if (mouseEnteredWindow)
-                    return;
-                
-                $body.append($overlay);
-                mouseEnteredWindow = true;
-
-            }, false);
-
-            window.addEventListener("dragout", function (e)
-            {
-                e = e || event;
-                e.preventDefault();
-                
-                $overlay.remove();
-
-                mouseEnteredWindow = false;
-            });
-
-            window.addEventListener("dragleave", function (e)
-            {
-                e = e || event;
-                e.preventDefault();
-
-                dragging--;
-                if(dragging === 0)
-                {
-                    $overlay.remove();
-                    mouseEnteredWindow = false;
-                }
-            });
-
-            window.addEventListener("drop", function (e)
-            {
-                e = e || event;
-                e.stopPropagation();
-                e.preventDefault();
-
-                if (!e.dataTransfer)
-                    return;
-                
-                var files = e.dataTransfer.files;
-                $overlay.remove();
-                mouseEnteredWindow = false;
-
-                var numberOfFiles = files.length;
-                var workoutReader = new TP.utils.workout.FileReader(files);
-                var workoutReaderDeferred = workoutReader.readFile();
-
-                workoutReaderDeferred.done(function()
-                {
-                    var filesRead = [];
-
-                    if(numberOfFiles === 1)
-                        filesRead.push(arguments);
-                    else
-                        filesRead = arguments;
-
-                    var multiFileUploadDeferreds = [];
-
-                    _.each(filesRead, function(file)
-                    {
-                        var uploadedFileDataModel = new WorkoutMultiFileDataModel({ data: file[1], fileName: file[0]});
-                        var singleFileDeferred = uploadedFileDataModel.save();
-                        multiFileUploadDeferreds.push(singleFileDeferred);
-                    });
-
-                    $.when.apply($, multiFileUploadDeferreds).done(function()
-                    {
-                        var $info = $("<div data-alert class='alert-box success' style='display:none;'><p>Workout(s) successfully uploaded...</p><ul></ul></div>");
-                        var workouts = numberOfFiles === 1 ? arguments[0] : _.map(arguments, function(argument) { return argument[0][0]; });
-
-                        _.each(workouts, function(workout)
-                        {
-                            $info.find("ul").append("<li>ID: " + workout.workoutId + ", Date: " + workout.workoutDay + "</li>");
-                        });
-
-                        $("#uploadMessageContainer").append($info);
-                        $info.fadeIn(600).fadeOut(10000, function() { $info.remove(); });
-
-                    }).fail(function()
-                    {
-                    });
-                });
-
-            }, false);
-        });
         
         this.isLive = function()
         {
