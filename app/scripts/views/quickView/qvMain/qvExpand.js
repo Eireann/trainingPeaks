@@ -19,6 +19,10 @@ function (_, TP, ExpandoController)
 
         watchForSensorData: function()
         {
+            if(!this.isNewWorkout)
+            {
+                this.once("render", this.addExpandWaiting, this);
+            }
             var detailData = this.model.get("detailData");
             detailData.watchForSensorData();
             detailData.on("changeSensorData", this.updateExpandButton, this);
@@ -218,6 +222,11 @@ function (_, TP, ExpandoController)
         removeExpandWaiting: function()
         {
             this.$("#quickViewExpandDiv").removeClass("expandWaiting");
+        },
+
+        addExpandWaiting: function()
+        {
+            this.$("#quickViewExpandDiv").addClass("expandWaiting");
         }
     };
     return workoutQVExpand;
