@@ -70,6 +70,7 @@ function(TP, WorkoutMultiFileDataModel)
                 e.stopPropagation();
 
                 dragging--;
+                console.log(dragging);
                 if(dragging === 0)
                 {
                     console.log("last drag leave");
@@ -88,8 +89,13 @@ function(TP, WorkoutMultiFileDataModel)
                     return;
                 
                 var files = e.dataTransfer.files;
-                $overlay.remove();
+                dragging = 0;
                 mouseEnteredWindow = false;
+
+                $overlay.remove();
+
+                var $progress = $("<progress id='fileUploadProgress'></progress'>");
+                $message.append($progress);
 
                 var numberOfFiles = files.length;
                 var workoutReader = new TP.utils.workout.FileReader(files);
@@ -125,10 +131,12 @@ function(TP, WorkoutMultiFileDataModel)
 
                         var stopFadeOut = function() { $info.remove(); $info.html(""); };
 
+                        $progress.remove();
                         $info.removeClass("alert").addClass("success").text(messageString).appendTo($message).fadeIn(600).fadeOut(5000, stopFadeOut).on("mouseenter", function() { $info.stop(); $info.css({ opacity: 1 }); }).on("mouseleave", function() { $info.fadeOut(5000, stopFadeOut) });
 
                     }).fail(function()
                     {
+                        $progress.remove();
                         $info.removeClass("success").addClass("alert").text("File upload failed...").appendTo($message).fadeIn(600).fadeOut(5000, function() { $info.remove(); $info.html(""); });
                     });
                 });

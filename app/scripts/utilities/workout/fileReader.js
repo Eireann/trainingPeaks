@@ -28,6 +28,7 @@ function(_, Backbone)
             var thisFileDeferred = $.Deferred();
 
             var reader = new FileReader();
+
             reader.onload = function (event)
             {
                 function uint8ToString(buf)
@@ -52,12 +53,7 @@ function(_, Backbone)
 
         $.when.apply($, individualFilesDeferreds).done(function()
         {
-            if(numberOfFiles === 1)
                 readFileDeferred.resolveWith(self, arguments);
-            else
-            { 
-                readFileDeferred.resolveWith(self, arguments);
-            }
         });
 
         return readFileDeferred;
