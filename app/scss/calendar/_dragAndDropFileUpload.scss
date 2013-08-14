@@ -35,7 +35,19 @@
     left: calc(50% - 200px);
     border:5px dashed $TPGrey2;
     font-size:$fontSizeQVHeader;
+    font-family: $fontFamilyRegular;
     text-align: center;
     padding-top: 100px;
 
+}
+
+.alertBox
+{
+    width: 250px;
+    background-color: $TPBlue;
+    color: #ffffff;
+    font-family: $fontFamilyRegular;
+    font-size:$fontSizeSmall;
+    display:none;
+    padding: 10px;
 }

@@ -2,14 +2,15 @@ define(
 [
     "TP",
     "models/workoutMultiFileData",
-    "models/workoutModel"
+    "models/workoutModel",
+    "utilities/conversion/conversion"
 ],
-function(TP, WorkoutMultiFileDataModel, WorkoutModel)
+function(TP, WorkoutMultiFileDataModel, WorkoutModel, dateConversion)
 {
     var initialized = false;
     var $overlay = $("<div id='fileUploadOverlay'></div>");
-    var $dropTarget = $("<div class='dropTarget'>Drop Files Here</div>");
-    var $info = $("<div data-alert class='alert-box' style='display:none;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;'></div>");
+    var $dropTarget = $("<div class='dropTarget'><div class='dropText'>Drop Files Here</div><div class='uploadingText'>Uploading file(s)</div></div>");
+    var $info = $("<div data-alert class='alertBox'></div>");
 
     return {
         initialize: function ($body, $message)
@@ -24,6 +25,8 @@ function(TP, WorkoutMultiFileDataModel, WorkoutModel)
 
             var mouseEnteredWindow = false;
             var dragging = 0;
+
+            $('.uploadingText').hide();
 
             window.addEventListener("dragenter", function(e)
             {
@@ -95,12 +98,10 @@ function(TP, WorkoutMultiFileDataModel, WorkoutModel)
                 dragging = 0;
                 mouseEnteredWindow = false;
 
-                $overlay.remove();
-                $dropTarget.remove();
-
-                var $progress = $("<progress id='fileUploadProgress'></progress'>");
-                $message.append($progress);
-
+                $dropTarget.addClass("waiting");
+                $('.dropText').hide();
+                $('.uploadingText').show();
+                
                 var numberOfFiles = files.length;
                 var workoutReader = new TP.utils.workout.FileReader(files);
                 var workoutReaderDeferred = workoutReader.readFile();
@@ -123,27 +124,21 @@ function(TP, WorkoutMultiFileDataModel, WorkoutModel)
                         multiFileUploadDeferreds.push(singleFileDeferred);
                     });
 
-                    $.when.apply($, multiFileUploadDeferreds).done(function()
+                    $.when.apply($, multiFileUploadDeferreds).done(function ()
                     {
-                        var workouts = numberOfFiles === 1 ? arguments[0] : _.map(arguments, function(argument) { return argument[0][0]; });
+                        var workouts = numberOfFiles === 1 ? arguments[0] : _.map(arguments, function (argument) { return argument[0][0]; });
                         var messageString = "Workout(s) successfully uploaded: ";
 
-                        _.each(workouts, function(workout)
+                        $dropTarget.removeClass("waiting");
+                        $overlay.remove();
+                        $dropTarget.remove();
+
+                        _.each(workouts, function (workout)
                         {
-                            if(theMarsApp)
+                            if (theMarsApp)
                                 theMarsApp.controllers.calendarController.weeksCollection.addWorkout(new WorkoutModel(workout));
-                            messageString += "id: " + workout.workoutId + ", date: " + workout.workoutDay + ", ";
                         });
 
-                        var stopFadeOut = function() { $info.remove(); $info.html(""); };
-
-                        $progress.remove();
-                        $info.removeClass("alert").addClass("success").text(messageString).appendTo($message).fadeIn(600).fadeOut(5000, stopFadeOut).on("mouseenter", function() { $info.stop(); $info.css({ opacity: 1 }); }).on("mouseleave", function() { $info.fadeOut(5000, stopFadeOut); });
-
-                    }).fail(function()
-                    {
-                        $progress.remove();
-                        $info.removeClass("success").addClass("alert").text("File upload failed...").appendTo($message).fadeIn(600).fadeOut(5000, function() { $info.remove(); $info.html(""); });
                     });
                 });
 
