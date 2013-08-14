@@ -330,8 +330,8 @@ function(chartColors, findIndexByMsOffset, convertToViewUnits)
 
         getLatLonBetweenMsOffsets: function(startMsOffset, endMsOffset)
         {
-            var sampleStartIndex = findIndexByXAxisOffset.call(this, startMsOffset);
-            var sampleEndIndex = findIndexByXAxisOffset.call(this, endMsOffset);
+            var sampleStartIndex = findIndexByMsOffset(this.flatSamples.msOffsetsOfSamples, startMsOffset);
+            var sampleEndIndex = findIndexByMsOffset(this.flatSamples.msOffsetsOfSamples, endMsOffset);
 
             return generateLatLonFromDataBetweenIndexes.call(this, this.dataByAxisAndChannel[this.xaxis], sampleStartIndex, sampleEndIndex);
         },

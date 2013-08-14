@@ -125,6 +125,7 @@
 #expandoLeftColumn
 {
     float: left;
+    position:relative;
     @include
     calc(width, "100% - 335px");
     overflow-y: scroll;
@@ -170,6 +171,16 @@
 
     }
 
+    #expandoMapAndGraphResizerRegion
+    {
+        height:10px;
+        width:100%;
+        left:0;
+        background:black;
+        cursor:row-resize;
+        position:absolute;
+    }
+
     #expandoGraphRegion
     {
         padding-top: 15px;
@@ -177,7 +188,7 @@
         padding-right: 10px;
         height: 400px;
         width: 100%;
-
+        overflow:hidden;
         #graphToolbar
         {
             height: 35px;

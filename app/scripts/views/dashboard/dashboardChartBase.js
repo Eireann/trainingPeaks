@@ -412,7 +412,7 @@ function(
             $chartContainer.hide();
             var self = this;
             this.$el.appendTo($("body")).animate(newPosition, 200, function(){ self.setupModalOverlay(); $chartContainer.show(); });
-
+            this.trigger('popOut');
         },
 
         popIn: function()
@@ -423,6 +423,7 @@ function(
             this.closeModal();
             this.previousPosition = null;
             this.enableDrag();
+            this.trigger('popIn');
         },
 
         setupModalOverlay: function()

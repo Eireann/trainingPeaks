@@ -257,7 +257,12 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
 
     .yaxisLabel
     {
-        margin-top: 150px;
+        
+        position: absolute;
+        left: 17px;
+        top: 47%;
+        margin-top: 0;
+
         margin-left: -40px;
         font-size: 10px;
 
@@ -268,6 +273,7 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
             &.tsb
             {
                 position: absolute;
+                left:auto;
                 right: -25px;
                 -webkit-transform: rotate(90deg);
                 -moz-transform: rotate(90deg);

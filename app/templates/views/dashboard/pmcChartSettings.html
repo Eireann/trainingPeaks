@@ -5,7 +5,7 @@
         <div class="workoutTypes">
             {{#each workoutTypes}}
                 <div class="workoutType">
-                    <input type="checkbox" data-workouttypeid="{{ id }}" {{#if selected}}checked{{/if}} /> {{ name }}
+                    <label><input type="checkbox" data-workouttypeid="{{ id }}" {{#if selected}}checked{{/if}} /> {{ name }}</label>
                 </div>
             {{/each}}
             <div style="clear: both;"></div>
@@ -26,13 +26,13 @@
         <div style="clear:both;"></div>
 
         <div class="checkboxInput">
-            <input type="checkbox" id="showTSSPerDay" class="checkbox chartSeriesOption"{{#if showTSSPerDay }} checked{{/if}}/> {{$ "ShowTSS"}}
+            <label><input type="checkbox" id="showTSSPerDay" class="checkbox chartSeriesOption"{{#if showTSSPerDay }} checked{{/if}}/> {{$ "ShowTSS"}}</label>
         </div>
         <div class="checkboxInput">
-            <input type="checkbox" id="showIntensityFactorPerDay" class="checkbox chartSeriesOption"{{#if showIntensityFactorPerDay }} checked{{/if}}/> {{$ "ShowIntensityFactor"}}
+            <label><input type="checkbox" id="showIntensityFactorPerDay" class="checkbox chartSeriesOption"{{#if showIntensityFactorPerDay }} checked{{/if}}/> {{$ "ShowIntensityFactor"}}</label>
         </div>
         <div class="checkboxInput">
-            <input type="checkbox" id="showTSBFill" class="checkbox chartSeriesOption"{{#if showTSBFill }} checked{{/if}}/> {{$ "ShowTSBFill"}}
+            <label><input type="checkbox" id="showTSBFill" class="checkbox chartSeriesOption"{{#if showTSBFill }} checked{{/if}}/> {{$ "ShowTSBFill"}}</label>
         </div>
 
         <div style="clear:both;"></div>

@@ -32,12 +32,9 @@ function(
         getItemView: function(item)
         {
             if (item)
-            {
                 return ExerciseLibraryItemView;
-            } else
-            {
+            else     
                 return TP.ItemView;
-            }
         },
 
         template:
@@ -54,16 +51,19 @@ function(
             "change #search": "onSearch"
         },
 
-        ui: {
+        ui:
+        {
             search: "#search"
         },
 
         onRender: function()
         {
             var self = this;
+
             setImmediate(function()
             {
-                self.$("#librarySelect").selectBoxIt({
+                self.$("#librarySelect").selectBoxIt(
+                {
                     dynamicPositioning: false
                 });
             });
@@ -78,7 +78,7 @@ function(
         initialize: function(options)
         {
             this.libraries = options && options.exerciseLibraries ? options.exerciseLibraries : new TP.Collection();
-            this.libraries.on('reset', this.loadAllExercises, this);
+            this.libraries.on("reset", this.loadAllExercises, this);
             this.listenForSelection();
         },
 
@@ -96,9 +96,7 @@ function(
         onItemSelect: function(model)
         {
             if (this.selectedItem && this.selectedItem !== model)
-            {
                 this.selectedItem.trigger("unselect", this.selectedItem);
-            }
 
             this.trigger("select");
             this.selectedItem = model;
@@ -115,7 +113,6 @@ function(
 
         loadAllExercises: function()
         {
-
             this.switchLibrary(this.libraries.models[0]);
 
             var view = this;
@@ -124,7 +121,6 @@ function(
                 library.fetchExercises();
                 library.on("select", view.onItemSelect, view);
             });
-
         },
 
         switchLibrary: function(library)
@@ -138,7 +134,8 @@ function(
 
         serializeData: function()
         {
-            var data = {
+            var data =
+            {
                 libraries: []
             };
 
@@ -146,10 +143,10 @@ function(
             this.libraries.each(function(library)
             {
                 var libraryData = library.toJSON();
+               
                 if (library === self.activeLibrary)
-                {
                     libraryData.selected = true;
-                }
+
                 data.libraries.push(libraryData);
             });
 
@@ -182,6 +179,4 @@ function(
         }
 
     }, { activeLibrary: null });
-
-
 });

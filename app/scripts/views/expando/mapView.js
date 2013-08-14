@@ -262,15 +262,12 @@ function (
             }, this);
         },
 
-        setViewSize: function (containerHeight, containerWidth)
+        setViewSize: function (containerHeight, containerWidth, overrideMinHeight)
         {
             var bottomMargin = 10;
-            var mapHeight = Math.floor((containerHeight - bottomMargin) * 0.50);
+            var mapHeight = Math.floor((containerHeight * 0.50) - bottomMargin);
 
-            if (mapHeight < 275)
-            {
-                mapHeight = 275;
-            }
+            mapHeight = this.height ? this.height : mapHeight;
 
             this.$el.closest("#expandoMapRegion").height(mapHeight);
             this.$el.height(mapHeight);
@@ -279,6 +276,10 @@ function (
             {
                 this.map.invalidateSize();
             }
+        },
+        stashHeight: function(height)
+        {
+            this.height = height;
         }
     });
 });

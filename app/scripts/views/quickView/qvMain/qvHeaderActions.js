@@ -66,14 +66,23 @@ function (
                 workoutBarView.render();
 
                 this.$(".workoutBarView").append(workoutBarView.$el);
-                this.$(".workoutTitle").css('width', this.titleWidth());
+                this.$(".workoutTitle").css("width", this.titleWidth());
 
-                this.$("#startTimeInput").timepicker({ appendTo: this.$el, 'timeFormat': 'g:i a' });
+                if (!(this.isNewWorkout && !this.model.get("workoutId")))
+                    this.initializeTimePicker();
             }
-        }, 
+        },
+
+        initializeTimePicker: function()
+        {
+            this.$("#startTimeInput").timepicker({ appendTo: this.$el, "timeFormat": "g:i a" });
+        },
 
         onDateClicked: function(e)
         {
+            if (this.isNewWorkout && !this.model.get("workoutId"))
+                return;
+
             TP.analytics("send", { "hitType": "event", "eventCategory": "quickView", "eventAction": "headerDateClicked", "eventLabel": "" });
 
             _.bindAll(this, "onDateChanged");
@@ -132,6 +141,9 @@ function (
 
         onMenuIconClicked: function()
         {
+            if (this.isNewWorkout && !this.model.get("workoutId"))
+                return;
+            
             var menuIcon = this.$("#menuIcon");
             var menu = new QVContextMenuView({ model: this.model });
             menu.on("delete", this.onDeleteWorkout, this);

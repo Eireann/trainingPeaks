@@ -23,6 +23,12 @@ function(TP, LibraryExerciseModel)
         initialize: function(models, options)
         {
             this.exerciseLibraryId = options && options.exerciseLibraryId ? options.exerciseLibraryId : null;
+        },
+
+        comparator: function(model)
+        {
+            var itemName = model.get("itemName");
+            return _.isString(itemName) ? itemName.trim().toLowerCase() : itemName;
         }
 
     }, { exerciseLibraryId: null });

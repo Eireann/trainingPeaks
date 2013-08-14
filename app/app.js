@@ -105,6 +105,7 @@ function(
         this.addInitializer(function()
         {
             var self = this;
+            /*
             window.onerror = function(errorMessage, url, lineNumber)
             {
                 if (self.clientEvents)
@@ -113,11 +114,21 @@ function(
                 }
                 return self.isLive() ? true : false;
             };
+            */
             
             $(document).ajaxError(function(event, xhr)
             {
                 if (xhr.status === 400 || xhr.status === 500)
                 {
+                    try
+                    {
+                        if(Raven)
+                            Raven.captureException({event: event, xhr: xhr});
+                    }
+                    catch(e)
+                    {/* IGNORE - we are only trying to report an exception, if reporting doesn't work, we don't care */}
+
+                    /*
                     if (self.clientEvents)
                     {
                         var responseText = xhr.responseText;
@@ -125,7 +136,7 @@ function(
                         var statusText = xhr.statusText;
 
                         self.clientEvents.logEvent({ Event: { Type: "Error", Label: "AjaxError", AppContext: "ResponseText: " + responseText + ", Status: " + status + ", StatusText:" + statusText } });
-                    }
+                    }*/
                 }
             });
         });
