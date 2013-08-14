@@ -15,7 +15,7 @@ function(
     {
 
         tagName: "div",
-        className: "chartTile",
+        className: "chartTile cf",
 
         events:
         {
