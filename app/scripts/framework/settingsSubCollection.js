@@ -59,8 +59,6 @@ function(
         _resetSourceModel: function()
         {
             var mappedAttributes = this.map(function(model){ return model.attributes; });
-            console.log("Setting " + this.sourceKey);
-            console.log(mappedAttributes);
             this.sourceModel.set(this.sourceKey, 
                 mappedAttributes,
                 { changedBy: this }

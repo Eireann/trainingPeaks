@@ -84,7 +84,7 @@ function(_, Backbone, DeepModel, moment)
             {
                 if (moment.isMoment(attrs[key]))
                 {
-                    throw "Do not use moments as model attributes, due to performance issues";
+                    throw new Error("Do not use moments as model attributes, due to performance issues");
                 }
             }
         }
@@ -143,7 +143,7 @@ function(_, Backbone, DeepModel, moment)
         {
             if (!this.webAPIModelName)
             {
-                throw "TP Web API Models must have a webAPIModelName attribute";
+                throw new Error("TP Web API Models must have a webAPIModelName attribute");
             }
         },
 

@@ -4,6 +4,7 @@
     "setImmediate",
     "moment",
     "TP",
+    "framework/dataManager",
     "utilities/charting/flotOptions",
     "utilities/charting/chartColors",
     "utilities/charting/flotToolTipPositioner",
@@ -17,6 +18,7 @@ function(
     setImmediate,
     moment,
     TP,
+    DataManager,
     defaultFlotOptions,
     chartColors,
     toolTipPositioner,
@@ -57,8 +59,13 @@ function(
 
         initialize: function(options)
         {
+            if(!this.model)
+            {
+                throw "Dashboard Chart requires a settings model";
+            }
+
             _.bindAll(this, "onHoverToolTip");
-            this.dataManager = options.dataManager;
+            this.dataManager = options && options.dataManager ? options.dataManager : new DataManager();
             this.setDefaultSettings(options);
             this.setupDataModel(options);
 

@@ -41,9 +41,24 @@ function(
         return modelData;
     };
 
+    var buildPmcChart = function()
+    {
+        return new PmcChart({ 
+            model: new TP.Model({ 
+                index: 0, 
+                dateOptions: { quickDateSelectOption: 1, startDate: null, endDate: null}
+            })
+        });
+    };
+
     describe("PMC Chart View", function()
     {
 
+        beforeEach(function()
+        {
+            theMarsApp.user.setCurrentAthleteId(1);
+        });
+        
         it("Should load successfully as a module", function()
         {
             expect(PmcChart).toBeDefined();
@@ -51,7 +66,7 @@ function(
 
         it("Should render without errors", function()
         {
-            var chart = new PmcChart();
+            var chart = buildPmcChart(); 
             var renderChart = function()
             {
                 chart.render();
@@ -70,7 +85,7 @@ function(
                     beforeEach(function()
                     {
                         modelData = buildPmcModelData(10);
-                        chart = new PmcChart();
+                        chart = buildPmcChart(); 
                         chartPoints = chart.buildFlotPoints(modelData);
                     });
 
@@ -110,7 +125,7 @@ function(
                     beforeEach(function()
                     {
                         modelData = buildPmcModelData(10);
-                        chart = new PmcChart();
+                        chart = buildPmcChart();
                         chartPoints = chart.buildFlotPoints(modelData);
                     });
 
@@ -150,7 +165,7 @@ function(
                     beforeEach(function()
                     {
                         modelData = buildPmcModelData(10);
-                        chart = new PmcChart();
+                        chart = buildPmcChart();
                         chartPoints = chart.buildFlotPoints(modelData);
                     });
 
@@ -190,7 +205,7 @@ function(
                     beforeEach(function()
                     {
                         modelData = buildPmcModelData(10);
-                        chart = new PmcChart();
+                        chart = buildPmcChart();
                         chartPoints = chart.buildFlotPoints(modelData);
                     });
 
@@ -231,7 +246,7 @@ function(
                     beforeEach(function()
                     {
                         modelData = buildPmcModelData(10);
-                        chart = new PmcChart();
+                        chart = buildPmcChart();
                         chartPoints = chart.buildFlotPoints(modelData);
                     });
 
@@ -274,7 +289,7 @@ function(
                     beforeEach(function()
                     {
                         modelData = buildPmcModelData(10, true);
-                        chart = new PmcChart();
+                        chart = buildPmcChart();
                         chartPoints = chart.buildFlotPoints(modelData);
                     });
 
@@ -320,7 +335,7 @@ function(
                     beforeEach(function()
                     {
                         modelData = buildPmcModelData(10, true);
-                        chart = new PmcChart();
+                        chart = buildPmcChart();
                         chartPoints = chart.buildFlotPoints(modelData);
                     });
 
@@ -366,7 +381,7 @@ function(
                     beforeEach(function()
                     {
                         modelData = buildPmcModelData(10, true);
-                        chart = new PmcChart();
+                        chart = buildPmcChart();
                         chartPoints = chart.buildFlotPoints(modelData);
                     });
 
@@ -412,7 +427,7 @@ function(
                     beforeEach(function()
                     {
                         modelData = buildPmcModelData(10, true);
-                        chart = new PmcChart();
+                        chart = buildPmcChart();
                         chartPoints = chart.buildFlotPoints(modelData);
                     });
 
@@ -457,7 +472,7 @@ function(
                     beforeEach(function()
                     {
                         modelData = buildPmcModelData(10, true);
-                        chart = new PmcChart();
+                        chart = buildPmcChart();
                         chartPoints = chart.buildFlotPoints(modelData);
                     });
 
@@ -506,7 +521,7 @@ function(
             beforeEach(function()
             {
                 var modelData = buildPmcModelData(10);
-                var chart = new PmcChart();
+                var chart = buildPmcChart();
                 spyOn(chart, "shouldShowTSS").andReturn(true);
                 spyOn(chart, "shouldShowIF").andReturn(true);
                 spyOn(chart, "shouldShowTSBFill").andReturn(true);
