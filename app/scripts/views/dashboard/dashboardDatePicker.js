@@ -32,12 +32,7 @@ function(
 
         initialize: function(options)
         {
-            if(!options.hasOwnProperty("settingsKey"))
-            {
-                throw "Dashboard Date Picker requires a settings key";
-            }
-
-            this.settingsKey = options.settingsKey + ".dateOptions";
+            this.settingsKey = options.settingsKey ? options.settingsKey + ".dateOptions" : "dateOptions";
 
             if(options.hasOwnProperty("includeGlobalOption"))
             {

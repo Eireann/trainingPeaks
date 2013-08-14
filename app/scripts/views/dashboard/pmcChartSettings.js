@@ -74,16 +74,15 @@ function(
                 }
             }
 
-            this.model.set(this.settingsKey + ".workoutTypeIds", workoutTypeIds);
+            this.model.set("workoutTypeIds", workoutTypeIds);
         },
 
         onNumberOptionsChanged: function(e)
         {
             var inputId = e.target.id;
 
-            var modelKey = this.settingsKey + "." + inputId;
             var newValue = $(e.target).val();
-            var existingValue = this.model.get(modelKey);
+            var existingValue = this.model.get(inputId);
             var adjustedValue = this.adjustNumericInput(inputId, newValue, existingValue);
 
             if(adjustedValue === existingValue)
@@ -91,7 +90,7 @@ function(
                 $(e.target).val(adjustedValue);
             } else
             {
-                this.model.set(modelKey, adjustedValue);
+                this.model.set(inputId, adjustedValue);
             }
         },
 
@@ -144,7 +143,7 @@ function(
             var optionId = checkbox.attr("id");
             var checked = checkbox.is(":checked");
            
-            this.model.set(this.settingsKey + "." + optionId, checked);
+            this.model.set(optionId, checked);
         }
     };
 

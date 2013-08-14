@@ -136,28 +136,85 @@ function(
 
                 describe("Date ranges", function()
                 {
-                    it("Should update when dashboard dates are updated, if it is set to use dashboard dates", function()
+                    describe("Using dashboard dates", function()
                     {
-                        testHelpers.clearRequests();
-                        theMarsApp.user.set("settings.dashboard.pods.0.dateOptions.quickDateSelectOption", chartUtils.chartDateOptions.USE_GLOBAL_DATES.id);
-                        $mainRegion.find("#dashboardHeader .dashboardDatePicker select.dateOptions").val(chartUtils.chartDateOptions.CUSTOM_DATES.id).trigger("change");
-                        $mainRegion.find("#dashboardHeader .dashboardDatePicker input.startDate").val("2013-01-01").trigger("change");
-                        $mainRegion.find("#dashboardHeader .dashboardDatePicker input.endDate").val("2013-04-15").trigger("change");
-                        $mainRegion.find("#dashboardHeader .applyDates").trigger("click");                       
-                        expect(testHelpers.hasRequest(null, "reporting/performancedata")).toBe(true);   
-                        expect(testHelpers.hasRequest(null, "reporting/performancedata/2013-01-01/2013-04-15")).toBe(true);
+                        var pmcPodSettings = {
+                            index: 0,
+                            chartType: 32,
+                            title: "PMC",
+                            dateOptions: {
+                                quickDateSelectOption: chartUtils.chartDateOptions.USE_GLOBAL_DATES.id,
+                                startDate: null,
+                                endDate: null
+                            }
+                        };
+
+                        beforeEach(function()
+                        {
+                            var userData = xhrData.users.barbkprem;
+                            userData.settings.dashboard.pods = [pmcPodSettings];
+                            testHelpers.startTheAppAndLogin(userData);
+                            $mainRegion = theMarsApp.mainRegion.$el;
+                            theMarsApp.router.navigate("dashboard", true);
+                        });
+
+                        afterEach(function()
+                        {
+                            testHelpers.stopTheApp();
+                        });
+
+
+                        it("Should update when dashboard dates are updated", function()
+                        {
+                            testHelpers.clearRequests();
+                            $mainRegion.find("#dashboardHeader .dashboardDatePicker select.dateOptions").val(chartUtils.chartDateOptions.CUSTOM_DATES.id).trigger("change");
+                            $mainRegion.find("#dashboardHeader .dashboardDatePicker input.startDate").val("2013-01-01").trigger("change");
+                            $mainRegion.find("#dashboardHeader .dashboardDatePicker input.endDate").val("2013-04-15").trigger("change");
+                            $mainRegion.find("#dashboardHeader .applyDates").trigger("click");                       
+                            expect(testHelpers.hasRequest(null, "reporting/performancedata")).toBe(true);   
+                            expect(testHelpers.hasRequest(null, "reporting/performancedata/2013-01-01/2013-04-15")).toBe(true);
+                        });
+
                     });
 
-                    it("Should not update when dashboard dates are updated, if it is not set to use dashboard dates", function()
+                    describe("Using custom dates", function()
                     {
-                        testHelpers.clearRequests();
-                        theMarsApp.user.set("settings.dashboard.pods.0.dateOptions.quickDateSelectOption", chartUtils.chartDateOptions.LAST_14_DAYS.id);
-                        $mainRegion.find("#dashboardHeader .dashboardDatePicker select.dateOptions").val(chartUtils.chartDateOptions.CUSTOM_DATES.id).trigger("change");
-                        $mainRegion.find("#dashboardHeader .dashboardDatePicker input.startDate").val("2013-01-01").trigger("change");
-                        $mainRegion.find("#dashboardHeader .dashboardDatePicker input.endDate").val("2013-04-15").trigger("change");
-                        $mainRegion.find("#dashboardHeader .applyDates").trigger("click");                       
-                        expect(testHelpers.hasRequest(null, "reporting/performancedata")).toBe(false);   
-                        expect(testHelpers.hasRequest(null, "reporting/performancedata/2013-01-01/2013-04-15")).toBe(false);
+                        var pmcPodSettings = {
+                            index: 0,
+                            chartType: 32,
+                            title: "PMC",
+                            dateOptions: {
+                                quickDateSelectOption: chartUtils.chartDateOptions.LAST_14_DAYS.id,
+                                startDate: null,
+                                endDate: null
+                            }
+                        };
+
+                        beforeEach(function()
+                        {
+                            var userData = xhrData.users.barbkprem;
+                            userData.settings.dashboard.pods = [pmcPodSettings];
+                            testHelpers.startTheAppAndLogin(userData);
+                            $mainRegion = theMarsApp.mainRegion.$el;
+                            theMarsApp.router.navigate("dashboard", true);
+                        });
+
+                        afterEach(function()
+                        {
+                            testHelpers.stopTheApp();
+                        });
+                        
+
+                        it("Should not update when dashboard dates are updated", function()
+                        {
+                            testHelpers.clearRequests();
+                            $mainRegion.find("#dashboardHeader .dashboardDatePicker select.dateOptions").val(chartUtils.chartDateOptions.CUSTOM_DATES.id).trigger("change");
+                            $mainRegion.find("#dashboardHeader .dashboardDatePicker input.startDate").val("2013-01-01").trigger("change");
+                            $mainRegion.find("#dashboardHeader .dashboardDatePicker input.endDate").val("2013-04-15").trigger("change");
+                            $mainRegion.find("#dashboardHeader .applyDates").trigger("click");                       
+                            expect(testHelpers.hasRequest(null, "reporting/performancedata")).toBe(false);   
+                            expect(testHelpers.hasRequest(null, "reporting/performancedata/2013-01-01/2013-04-15")).toBe(false);
+                        });
                     });
                 });
 

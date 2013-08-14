@@ -59,34 +59,6 @@ function(
                 expect(testHelpers.hasRequest(null, "reporting/fitnesssummary")).toBe(true);
             });
 
-
-            describe("Date ranges", function()
-            {
-                it("Should update when dashboard dates are updated, if it is set to use dashboard dates", function()
-                {
-                    testHelpers.clearRequests();
-                    theMarsApp.user.set("settings.dashboard.pods.0.dateOptions.quickDateSelectOption", chartUtils.chartDateOptions.USE_GLOBAL_DATES.id);
-                    $mainRegion.find("#dashboardHeader .dashboardDatePicker select.dateOptions").val(chartUtils.chartDateOptions.CUSTOM_DATES.id).trigger("change");
-                    $mainRegion.find("#dashboardHeader .dashboardDatePicker input.startDate").val("2013-01-01").trigger("change");
-                    $mainRegion.find("#dashboardHeader .dashboardDatePicker input.endDate").val("2013-04-15").trigger("change");
-                    $mainRegion.find("#dashboardHeader .applyDates").trigger("click");                       
-                    expect(testHelpers.hasRequest(null, "reporting/fitnesssummary")).toBe(true);   
-                    expect(testHelpers.hasRequest(null, "reporting/fitnesssummary/2013-01-01/2013-04-15")).toBe(true);
-                });
-
-                it("Should not update when dashboard dates are updated, if it is not set to use dashboard dates", function()
-                {
-                    testHelpers.clearRequests();
-                    theMarsApp.user.set("settings.dashboard.pods.0.dateOptions.quickDateSelectOption", chartUtils.chartDateOptions.LAST_14_DAYS.id);
-                    $mainRegion.find("#dashboardHeader .dashboardDatePicker select.dateOptions").val(chartUtils.chartDateOptions.CUSTOM_DATES.id).trigger("change");
-                    $mainRegion.find("#dashboardHeader .dashboardDatePicker input.startDate").val("2013-01-01").trigger("change");
-                    $mainRegion.find("#dashboardHeader .dashboardDatePicker input.endDate").val("2013-04-15").trigger("change");
-                    $mainRegion.find("#dashboardHeader .applyDates").trigger("click");                       
-                    expect(testHelpers.hasRequest(null, "reporting/fitnesssummary")).toBe(false);   
-                    expect(testHelpers.hasRequest(null, "reporting/fitnesssummary/2013-01-01/2013-04-15")).toBe(false);
-                });
-            });
-
             describe("Chart date settings", function()
             {
                 it("Should open the settings tomahawk", function()

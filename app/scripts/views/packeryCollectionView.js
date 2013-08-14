@@ -70,9 +70,9 @@ function(
             {
                 var $item = $(itemEl);
                 var view = $item.data("view"); // Can we get this without working the view on the el
-                view.model.set("index", index); // TODO: Should store this differently?
-                view.$el.attr("data-index", index);
+                view.model.set("index", index, { silent: true }); // TODO: Should store this differently?
             });
+            this.trigger("reorder");
         },
 
         // Overrides CollectionView

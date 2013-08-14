@@ -30,9 +30,6 @@ function(
         tagName: "div",
         className: "dashboardChart",
         showThrobber: true,
-        index: 0,
-        column: 1,
-        row: 1,
         colspan: 1,
         chartType: 0,
         modelClass: TP.Model,
@@ -40,74 +37,31 @@ function(
 
         attributes: function()
         {
-            if(this.useGrid)
-            {
-                return {
-                    "data-index": this.index,
-                    "data-sizey": 1,
-                    "data-sizex": this.colspan,
-                    "data-col": this.column,
-                    "data-row": this.row
-                };
-            } 
-            else
-            {
-                return {
-                    "data-index": this.index,
-                    "data-sizey": 1,
-                    "data-sizex": this.colspan 
-                };
-            }
-        },
-
-        buildDefaultOptions: function(options)
-        {
-            return _.extend({}, { index: 0, row: 0, column: 0 }, options);
-        },
-
-        setGridAttributes: function(options)
-        {
-            this.index = options.index;
-            this.row = options.row;
-            this.column = options.column;
-            this.$el.attr(this.attributes());
+            return {
+                "data-sizey": 1,
+                "data-sizex": this.colspan 
+            };
         },
 
         setDefaultDateSettings: function(options)
         {
             var defaultDateOption = chartUtils.chartDateOptions.USE_GLOBAL_DATES.id;
             var defaultSettings = { startDate: null, endDate: null, quickDateSelectOption: defaultDateOption };
-            var mergedSettings = _.extend(defaultSettings, this.getSetting("dateOptions"));
+            var mergedSettings = _.extend(defaultSettings, this.model.get("dateOptions"));
             if(!mergedSettings.quickDateSelectOption)
             {
                 mergedSettings.quickDateSelectOption = defaultDateOption;
             }
-            this.setSetting("dateOptions", mergedSettings, { silent: true });
+            this.model.set("dateOptions", mergedSettings, { silent: true });
         },
 
         initialize: function(options)
         {
-            options = this.buildDefaultOptions(options);
             _.bindAll(this, "onHoverToolTip");
             this.dataManager = options.dataManager;
-            this.setGridAttributes(options);
-            this.setSettingsIndex(options.index);
-            this.setupSettingsModel(options);
-            this.setupViewModel(options);
-            this.setupDataModel(options);
-            
-            this.on("render", this.renderChartAfterRender, this);
-        },
-
-        setupSettingsModel: function(options)
-        {
-            this.settingsModel = options && options.hasOwnProperty("settingsModel") ? options.settingsModel : theMarsApp.user;
             this.setDefaultSettings(options);
-        },
-
-        setupViewModel: function(options)
-        {
-            this.model = new TP.Model();
+            this.setupDataModel(options);
+            this.on("render", this.renderChartAfterRender, this);
         },
 
         setupDataModel: function(options)
@@ -143,9 +97,9 @@ function(
 
         fetchData: function()
         {
-            var myDateOptions = this.getSetting("dateOptions");
+            var myDateOptions = this.model.get("dateOptions");
             var chartDateParameters = chartUtils.buildChartParameters(myDateOptions);
-            var chartSettings = this.settingsModel.get(this.settingsKey);
+            var chartSettings = this.model.attributes;
 
             var mergedSettings = _.extend({}, 
                                           chartSettings, 
@@ -178,10 +132,9 @@ function(
             "mousedown .close": "closeClicked"
         },
 
-        setChartTitle: function()
+        getChartTitle: function()
         {
-            var workoutTypesTitle = this.buildWorkoutTypesTitle(this.getSetting("workoutTypeIds"));
-            this.model.set("title", workoutTypesTitle);
+            return this.buildWorkoutTypesTitle(this.model.get("workoutTypeIds"));
         },
 
         buildWorkoutTypesTitle: function(workoutTypeIds)
@@ -220,7 +173,6 @@ function(
             setImmediate(function()
             {
                 self.renderChart();
-                self.setChartTitle();
             });
         },
 
@@ -319,7 +271,7 @@ function(
 
         createChartSettingsView: function()
         {
-            return new dashboardChartSettings({ model: this.settingsModel, index: this.index });
+            return new dashboardChartSettings({ model: this.model });
         },
 
         listenToChartSettingsEvents: function()
@@ -352,12 +304,12 @@ function(
 
         getSetting: function(settingKey)
         {
-            return this.settingsModel.get(this.settingsKey + "." + settingKey);
+            return this.model.get(settingKey);
         },
 
         setSetting: function(settingKey, value, options)
         {
-            return this.settingsModel.set(this.settingsKey + "." + settingKey, value, options);
+            return this.model.set(settingKey, value, options);
         },
 
         expandClicked: function()
@@ -437,16 +389,9 @@ function(
                 this.expandClicked();
         },
 
-        setSettingsIndex: function(index)
-        {
-            this.index = index;
-            this.settingsKey = "settings.dashboard.pods." + this.index;
-            this.$el.attr("data-index", index);
-        },
-
         onDashboardDatesChange: function()
         {
-            if(Number(this.getSetting("dateOptions.quickDateSelectOption")) === chartUtils.chartDateOptions.USE_GLOBAL_DATES.id)
+            if(Number(this.model.get("dateOptions.quickDateSelectOption")) === chartUtils.chartDateOptions.USE_GLOBAL_DATES.id)
             {
                 this.fetchData();
             }
@@ -471,6 +416,13 @@ function(
         setDefaultSettings: function(options)
         {
             this.setDefaultDateSettings(options);
+        },
+
+        serializeData: function()
+        {
+            var data = _.clone(this.model.attributes);
+            data.title = this.getChartTitle();
+            return data;
         }
 
     };

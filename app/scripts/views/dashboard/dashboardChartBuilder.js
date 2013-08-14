@@ -17,9 +17,11 @@ function(
     };
 
     return {
-        buildChartView: function(chartTypeId, options )
+        buildChartView: function(options)
         {
+            var chartTypeId = options.model.get("chartType");
             var ChartView = chartConstructors.hasOwnProperty(chartTypeId) ? chartConstructors[chartTypeId] : DefaultChartView;
+            // TODO: don't directly reference this data manager from here, inject it
             options.dataManager = theMarsApp.dataManagers.reporting;
             return new ChartView(options);
         }

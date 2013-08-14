@@ -41,12 +41,6 @@ function(
             template: defaultChartTemplate
         },
 
-        setupViewModel: function(options)
-        {
-            this.model = new TP.Model();
-            this.setChartTitle();
-        },
-
         buildFlotPoints: function()
         {
             var chartPoints = [];
@@ -134,28 +128,28 @@ function(
                 durationUnits: 4,
                 summaryType: 1 // Planned Distance
             };
-            var mergedSettings = _.extend(defaultSettings, this.settingsModel.get(this.settingsKey));
-            this.settingsModel.set(this.settingsKey, mergedSettings, { silent: true });
+            var mergedSettings = _.extend(defaultSettings, this.model.attributes);
+            this.model.set(mergedSettings, { silent: true });
         },
 
         createChartSettingsView: function()
         {
-            return new FitnessSummaryChartSettings({ model: this.settingsModel, index: this.index, summaryTypes: fitnessSummaryTypes });
+            return new FitnessSummaryChartSettings({ model: this.model, summaryTypes: fitnessSummaryTypes });
         },
 
-        setChartTitle: function()
+        getChartTitle: function()
         {
-            this.model.set("title", TP.utils.translate("Fitness Summary: ") + TP.utils.translate(fitnessSummaryTypes[this.getSetting("summaryType")].label));
+            return TP.utils.translate("Fitness Summary: ") + TP.utils.translate(fitnessSummaryTypes[this.getSetting("summaryType")].label);
         },
 
         listenToChartSettingsEvents: function()
         {
-            this.settingsModel.on("change:" + this.settingsKey + ".summaryType", this.render, this);
+            this.model.on("change:summaryType", this.render, this);
         },
 
         stopListeningToChartSettingsEvents: function()
         {
-            this.settingsModel.off("change:" + this.settingsKey + ".summaryType", this.render, this);
+            this.model.off("change:summaryType", this.render, this);
         },
 
         buildTooltipData: function(flotItem)

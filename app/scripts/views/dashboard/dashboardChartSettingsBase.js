@@ -26,7 +26,6 @@ function(
         showThrobbers: false,
         tagName: "div",
         className: "dashboardChartSettings",
-        index: 0,
         showDatePicker: true,
 
         template:
@@ -37,9 +36,6 @@ function(
 
         initialize: function(options)
         {
-            this.index = options && options.hasOwnProperty("index") ? options.index : 0;
-            this.settingsKey = "settings.dashboard.pods." + this.index;
-
             this.on("render", this.setupDatePicker, this);
             this.once("render", this.stopWatchingModelChanges, this);
             this.on("close", this.cleanupDatePicker, this);
@@ -57,7 +53,7 @@ function(
             {
                 if(!this.datepickerView)
                 {
-                    this.datepickerView = new DashboardDatePicker({ model: this.model, settingsKey: this.settingsKey });
+                    this.datepickerView = new DashboardDatePicker({ model: this.model });
                 }
                 this.datepickerView.setElement(this.$(".datepickerContainer")).render();
             }
@@ -88,7 +84,7 @@ function(
 
         serializeData: function()
         {
-            var dashboardChartSettings = this.model.has(this.settingsKey) ? _.clone(this.model.get(this.settingsKey)) : {};
+            var dashboardChartSettings = _.clone(this.model.attributes);
             //dashboardChartSettings = chartUtils.buildChartParameters(dashboardChartSettings);
             this.addWorkoutTypesToData(dashboardChartSettings);
             return dashboardChartSettings;
@@ -147,12 +143,12 @@ function(
 
         setSetting: function(key, value, options)
         {
-            return this.model.set(this.settingsKey + "." + key, value, options);
+            return this.model.set(key, value, options);
         },
 
         getSetting: function(key)
         {
-            return this.model.get(this.settingsKey + "." + key);
+            return this.model.get(key);
         }
 
     };

@@ -586,21 +586,21 @@ function(
 
         createChartSettingsView: function()
         {
-            return new pmcChartSettings({ model: this.settingsModel, index: this.index });
+            return new pmcChartSettings({ model: this.model });
         },
 
         listenToChartSettingsEvents: function()
         {
-            this.settingsModel.on("change:" + this.settingsKey + ".showTSSPerDay", this.renderChart, this);
-            this.settingsModel.on("change:" + this.settingsKey + ".showIntensityFactorPerDay", this.renderChart, this);
-            this.settingsModel.on("change:" + this.settingsKey + ".showTSBFill", this.renderChart, this);
+            this.model.on("change:showTSSPerDay", this.renderChart, this);
+            this.model.on("change:showIntensityFactorPerDay", this.renderChart, this);
+            this.model.on("change:showTSBFill", this.renderChart, this);
         },
 
         stopListeningToChartSettingsEvents: function()
         {
-            this.settingsModel.off("change:" + this.settingsKey + ".showTSSPerDay", this.renderChart, this);
-            this.settingsModel.off("change:" + this.settingsKey + ".showIntensityFactorPerDay", this.renderChart, this);
-            this.settingsModel.off("change:" + this.settingsKey + ".showTSBFill", this.renderChart, this);
+            this.model.off("change:showTSSPerDay", this.renderChart, this);
+            this.model.off("change:showIntensityFactorPerDay", this.renderChart, this);
+            this.model.off("change:showTSBFill", this.renderChart, this);
         },
 
         shouldShowTSS: function()
@@ -632,8 +632,8 @@ function(
                 showTSSPerDay: true,
                 workoutTypeIds: ["0"]
             };
-            var mergedSettings = _.extend(defaultSettings, this.settingsModel.get(this.settingsKey));
-            this.settingsModel.set(this.settingsKey, mergedSettings, { silent: true });
+            var mergedSettings = _.extend(defaultSettings, this.model.attributes);
+            this.model.set(mergedSettings, { silent: true });
         }
 
     };

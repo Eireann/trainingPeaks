@@ -5,6 +5,7 @@
     "packery",
     "gridster",
     "TP",
+    "framework/settingsSubCollection",
     "./dashboardChartBuilder",
     "views/pageContainer/primaryContainerView",
     "views/packeryCollectionView",
@@ -16,6 +17,7 @@ function(
     packery,
     gridster,
     TP,
+    SettingsSubCollection,
     dashboardChartBuilder,
     PrimaryContainerView,
     PackeryCollectionView,
@@ -42,36 +44,30 @@ function(
                 this.model = theMarsApp.user;
             }
 
-            this._fakeCollection();
+            this.collection = new SettingsSubCollection(null, { 
+                sourceModel: theMarsApp.user,
+                sourceKey: "settings.dashboard.pods",
+                comparator: "index"
+            });
 
             this.packeryCollectionView = new PackeryCollectionView({
-                itemView: _.bind(this.buildChartView, this),
+                itemView: dashboardChartBuilder.buildChartView,
                 collection: this.collection
             });
 
+            this.listenTo(this.packeryCollectionView, "reorder", _.bind(this._onReorderCharts, this));
             this.on("show", _.bind(this._showPackeryCollectionView, this));
-        },
-
-        buildChartView: function(options)
-        {
-            var model = options.model;
-            return dashboardChartBuilder.buildChartView(model.get("chartType"), _.clone(model.attributes));
-        },
-
-        _fakeCollection: function()
-        {
-            var self = this;
-
-            this.collection = new TP.Collection();
-            _.each(this.model.get("settings.dashboard.pods"), function(podSettings)
-            {
-                self.collection.add(new TP.Model(podSettings));
-            });
         },
 
         _showPackeryCollectionView: function()
         {
             this.chartsRegion.show(this.packeryCollectionView);
+        },
+
+        _onReorderCharts: function()
+        {
+            this.collection.sort();
+            theMarsApp.user.save();
         }
 
     });

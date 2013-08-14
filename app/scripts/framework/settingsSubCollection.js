@@ -44,7 +44,6 @@ function(
         {
             if(this !== options.changedBy)
             {
-                console.log(arguments);
                 throw new Error("Settings Sub Collection: source model should not be modified except by this collection");
             }
         },
