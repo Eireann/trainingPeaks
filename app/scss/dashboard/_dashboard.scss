@@ -241,6 +241,10 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
         left: 50px;
         @include calc("width", "100% - 90px");
         @include calc("height", "100% - 100px");
+        &.invisible
+        {
+            visibility:hidden;
+        }
     }
 
     .chartTitle
@@ -269,11 +273,11 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
         &.pmc
         {
             text-transform: none;
+            left:auto;
 
             &.tsb
             {
                 position: absolute;
-                left:auto;
                 right: -25px;
                 -webkit-transform: rotate(90deg);
                 -moz-transform: rotate(90deg);
