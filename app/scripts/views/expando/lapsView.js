@@ -40,7 +40,7 @@ function(
         onInitialRender: function()
         {
             this.watchForWorkoutTypeChange();
-            this.watchForPeakChanges();
+            this.watchForDataChanges();
             this.watchForControllerEvents();
         },
 
@@ -577,33 +577,20 @@ function(
             this.render();
         },
 
-        watchForPeakChanges: function()
+        watchForDataChanges: function()
         {
-            var statsToWatch = ["lapsStats", "peakSpeedsByDistance", "peakPowers", "peakHeartRates", "peakSpeeds", "peakCadences"];
-            var detailDataModel = this.model.get("detailData");
-
-            _.each(statsToWatch, function(stat)
-            {
-                detailDataModel.on("change:" + stat, this.onPeaksChange, this);
-            }, this);
-
-            this.on("close", this.stopWatchingPeakChanges, this);
-
+            this.model.get("detailData").on("change", this.reset, this);
+            this.on("close", this.stopWatchingDataChanges, this);
         },
 
-        stopWatchingPeakChanges: function()
+        stopWatchingDataChanges: function()
         {
-            var statsToWatch = ["lapsStats", "peakSpeedsByDistance", "peakPowers", "peakHeartRates", "peakSpeeds", "peakCadences"];
-            var detailDataModel = this.model.get("detailData");
-
-            _.each(statsToWatch, function(stat)
-            {
-                detailDataModel.off("change:" + stat, this.onPeaksChange, this);
-            }, this);
+            this.model.get("detailData").off("change", this.reset, this);
         },
 
-        onPeaksChange: function()
+        reset: function()
         {
+            this.cachedWorkoutStats = {};
             this.selectedPeakType = null;
             this.initializeCheckboxes(true);
             this.render();
