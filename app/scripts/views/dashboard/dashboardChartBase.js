@@ -123,14 +123,9 @@ function(
 
             this.bindDataModelEvents();
 
-            this.on("user:loaded", this.onUserLoaded, this);
+            this.fetchData();
 
             this.on("close", this.unbindDataModelEvents, this);
-        },
-
-        onUserLoaded: function()
-        {
-            this.fetchData();
         },
 
         bindDataModelEvents: function()

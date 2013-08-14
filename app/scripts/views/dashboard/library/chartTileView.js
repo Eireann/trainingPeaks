@@ -47,7 +47,8 @@ function(
             this.$el.data(
             {
                 ItemType: 'Chart',
-                ChartType: this.model.get("chartType")
+                ChartType: this.model.get("chartType"),
+                model: this.model
             });
             this.$el.draggable(
             {

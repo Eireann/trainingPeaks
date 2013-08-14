@@ -7,6 +7,7 @@
     "TP",
     "./dashboardChartBuilder",
     "views/pageContainer/primaryContainerView",
+    "views/packeryCollectionView",
     "hbs!templates/views/dashboard/dashboardChartsContainer"
 ],
 function(
@@ -17,9 +18,67 @@ function(
     TP,
     dashboardChartBuilder,
     PrimaryContainerView,
+    PackeryCollectionView,
     dashboardContainerTemplate
     )
 {
+    var DashboardView = PrimaryContainerView.extend({
+        template:
+        {
+            type: "handlebars",
+            template: dashboardContainerTemplate
+        },
+
+        regions: {
+            "chartsRegion": ".chartsRegion"
+        },
+
+        initialize: function(options)
+        {
+            DashboardView.__super__.initialize.apply(this, arguments);
+
+            if(!this.model)
+            {
+                this.model = theMarsApp.user;
+            }
+
+            this._fakeCollection();
+
+            this.packeryCollectionView = new PackeryCollectionView({
+                getItemView: _.bind(this.buildChartView, this),
+                collection: this.collection
+            });
+
+            this.on("show", _.bind(this._showPackeryCollectionView, this));
+        },
+
+        buildChartView: function(options)
+        {
+            var model = options.model;
+            return dashboardChartBuilder.buildChartView(model.get("chartType"), _.clone(model.attributes));
+        },
+
+        _fakeCollection: function()
+        {
+            var self = this;
+
+            this.collection = new TP.Collection();
+            _.each(this.model.get("settings.dashboard.pods"), function(podSettings)
+            {
+                self.collection.add(new TP.Model(podSettings));
+            });
+        },
+
+        _showPackeryCollectionView: function()
+        {
+            this.chartsRegion.show(this.packeryCollectionView);
+        }
+
+    });
+
+    return DashboardView;
+
+    /*
     var DashboardView =
     {
 
@@ -400,4 +459,5 @@ function(
     };
 
     return PrimaryContainerView.extend(DashboardView);
+    */
 });

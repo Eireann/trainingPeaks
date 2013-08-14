@@ -86,13 +86,13 @@ function (_, TP)
             TP.analytics("send", "pageview", { page: "calendar" });
         }),
 
-        dashboard: function()
+        dashboard: ensureUser(function()
         {
             this.checkAuth();
             theMarsApp.showController(theMarsApp.controllers.dashboardController);
 
             TP.analytics("send", "pageview", { page: "dashboard" });
-        },
+        }),
 
         
         checkAuth: function()
