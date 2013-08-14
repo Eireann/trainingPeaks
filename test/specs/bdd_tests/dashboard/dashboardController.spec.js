@@ -61,6 +61,16 @@ function(
         describe("Display controller", function()
         {
 
+            beforeEach(function()
+            {
+                theMarsApp.user.set("settings.dashboard.pods", []);
+            });
+
+            afterEach(function()
+            {
+                theMarsApp.user.set("settings.dashboard.pods", null);
+            });
+
             it("Should have a dashboard view", function()
             {
                 var controller = new DashboardController();

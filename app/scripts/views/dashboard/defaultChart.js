@@ -24,15 +24,6 @@ function(
             template: defaultChartTemplate
         },
 
-        setupViewModel: function(options)
-        {
-            this.model = new TP.Model({
-                title: options.title,
-                yaxisLabel: "Y Axis Label",
-                xaxisLabel: "X Axis Label"
-            });
-        },
-
         buildFlotPoints: function(timeInZones)
         {
             var chartPoints = [

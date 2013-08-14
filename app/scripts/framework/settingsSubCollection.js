@@ -40,6 +40,8 @@ function(
             this.listenTo(this.sourceModel, "change:" + this.sourceKey + ".*", _.bind(this._onSourceModelChanged, this));
         },
 
+        model: TP.Model,
+        
         _onSourceModelChanged: function(model, value, options)
         {
             if(this !== options.changedBy)
@@ -56,8 +58,11 @@ function(
 
         _resetSourceModel: function()
         {
+            var mappedAttributes = this.map(function(model){ return model.attributes; });
+            console.log("Setting " + this.sourceKey);
+            console.log(mappedAttributes);
             this.sourceModel.set(this.sourceKey, 
-                this.map(function(model){ return model.attributes; }),
+                mappedAttributes,
                 { changedBy: this }
             );
         },

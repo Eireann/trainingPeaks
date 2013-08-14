@@ -37,8 +37,8 @@ function(
             beforeEach(function()
             {
                 var userData = xhrData.users.barbkprem;
-                userData.settings.dashboard.pods = [fitnessSummaryPodSettings];
                 testHelpers.startTheAppAndLogin(userData, true);
+                theMarsApp.user.set("settings.dashboard.pods", [fitnessSummaryPodSettings]);
                 $mainRegion = theMarsApp.mainRegion.$el;
                 theMarsApp.router.navigate("dashboard", true);
             });
@@ -182,6 +182,17 @@ function(
         describe("Reporting Data Manager", function()
         {
 
+            var fitnessSummaryPodSettings = {
+                index: 0,
+                chartType: 3,
+                title: "Fitness Summary",
+                dateOptions: {
+                    quickDateSelectOption: 1,
+                    startDate: null,
+                    endDate: null
+                }
+            };
+
             var fitnessSummaryPodSettingsTwo = {
                 index: 1,
                 chartType: 3,
@@ -196,8 +207,8 @@ function(
             beforeEach(function()
             {
                 var userData = xhrData.users.barbkprem;
-                userData.settings.dashboard.pods = [fitnessSummaryPodSettings, fitnessSummaryPodSettingsTwo];
                 testHelpers.startTheAppAndLogin(userData, true);
+                theMarsApp.user.set("settings.dashboard.pods", [fitnessSummaryPodSettings, fitnessSummaryPodSettingsTwo]);
                 $mainRegion = theMarsApp.mainRegion.$el;
                 theMarsApp.router.navigate("dashboard", true);
             });
