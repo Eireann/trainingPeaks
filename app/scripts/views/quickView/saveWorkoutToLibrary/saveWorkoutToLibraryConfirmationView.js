@@ -39,7 +39,11 @@ function(TP, SaveWorkoutToLibraryCommand, AfterSaveView, saveWorkoutToLibraryTem
             var self = this;
             setImmediate(function ()
             {
-                self.$("#confirmationOk").attr("disabled", "disabled");
+                if(self.model.get("title"))
+                    self.$("input[name='exerciseTitle']").val(self.model.get("title"));
+                else
+                    self.$("#confirmationOk").attr("disabled", "disabled");
+
                 self.$("#selectLibrary").selectBoxIt(
                 {
                 dynamicPositioning: false
