@@ -24,6 +24,8 @@ function(
 
         initializeSaveDeleteDiscard: function()
         {
+            var self = this;
+            
             _.extend(this.events, this.saveDeleteDiscardEvents);
 
             this.on("render", this.saveDeleteDiscardOnRender, this);
@@ -36,6 +38,7 @@ function(
 
                 var onSyncNewWorkout = function()
                 {
+                    self.initializeTimePicker();
                     newWorkoutModel.off("sync", onSyncNewWorkout);
                     dayToAddTo.trigger("workout:added", newWorkoutModel);
                     newWorkoutModel.trigger("select", newWorkoutModel);
