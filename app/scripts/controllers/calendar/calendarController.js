@@ -39,7 +39,8 @@ function(
 {
 
     // base controller functionality
-    var calendarControllerBase = {
+    var calendarControllerBase =
+    {
         summaryViewEnabled: true,
 
         initialize: function()
@@ -87,6 +88,7 @@ function(
             // QL: Probably shouldn't be mixed in to the calendar object itself. Initialize the header and pass in what it needs to control
             this.initializeHeader();
             this.initializeCalendar();
+            
             // QL: Calendar should agnostically receive any dropped item. 
             // Layout changes should propogate through the new CalendarPageView
             this.initializeLibrary();

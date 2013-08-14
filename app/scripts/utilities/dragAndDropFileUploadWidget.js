@@ -1,9 +1,10 @@
 define(
 [
     "TP",
-    "models/workoutMultiFileData"
+    "models/workoutMultiFileData",
+    "models/workoutModel"
 ],
-function(TP, WorkoutMultiFileDataModel)
+function(TP, WorkoutMultiFileDataModel, WorkoutModel)
 {
     var initialized = false;
     var $overlay = $("<div id='fileUploadOverlay'><div id='fileUploadPlusBox' class='addWorkoutWrapper'><div class='addWorkout'><div class='addWorkoutPlus'></div></div></div></div>");
@@ -57,7 +58,6 @@ function(TP, WorkoutMultiFileDataModel)
                 e.preventDefault();
                 e.stopPropagation();
                 
-                console.log("dragout");
                 $overlay.remove();
 
                 mouseEnteredWindow = false;
@@ -70,10 +70,8 @@ function(TP, WorkoutMultiFileDataModel)
                 e.stopPropagation();
 
                 dragging--;
-                console.log(dragging);
                 if(dragging === 0)
                 {
-                    console.log("last drag leave");
                     $overlay.remove();
                     mouseEnteredWindow = false;
                 }
@@ -126,6 +124,8 @@ function(TP, WorkoutMultiFileDataModel)
 
                         _.each(workouts, function(workout)
                         {
+                            if(theMarsApp)
+                                theMarsApp.controllers.calendarController.weeksCollection.addWorkout(new WorkoutModel(workout));
                             messageString += "id: " + workout.workoutId + ", date: " + workout.workoutDay + ", ";
                         });
 
