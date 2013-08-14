@@ -12,15 +12,18 @@ function(
     TP
     )
 {
+
+    // because packery doesn't work with node
+    if(!$.fn.packery)
+    {
+        return TP.CollectionView;
+    }
+
     var PackeryCollectionView = TP.CollectionView.extend({
         className: "packeryCollection",
 
         initialize: function(options)
         {
-            if(options && options.getItemView)
-            {
-                this.itemView = options.getItemView;
-            }
 
             _.defaults(options, {
                 packery:

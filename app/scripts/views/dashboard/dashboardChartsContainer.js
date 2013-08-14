@@ -45,7 +45,7 @@ function(
             this._fakeCollection();
 
             this.packeryCollectionView = new PackeryCollectionView({
-                getItemView: _.bind(this.buildChartView, this),
+                itemView: _.bind(this.buildChartView, this),
                 collection: this.collection
             });
 
