@@ -19,9 +19,9 @@ function(chartColors, findIndexByMsOffset, convertToViewUnits)
         "Temperature"
     ];
 
-    var findIndexByXAxisOffset = function (xAxisOffset)
+    var findIndexByXAxisOffset = function (xAxisOffset, alreadyConvertedToMs)
     {
-        if (this.xaxis === "distance")
+        if (this.xaxis === "distance" && !alreadyConvertedToMs)
             return findIndexByMsOffset(this.xAxisDistanceValues, xAxisOffset);
 
         return findIndexByMsOffset(this.flatSamples.msOffsetsOfSamples, xAxisOffset);
@@ -330,8 +330,10 @@ function(chartColors, findIndexByMsOffset, convertToViewUnits)
 
         getLatLonBetweenMsOffsets: function(startMsOffset, endMsOffset)
         {
-            var sampleStartIndex = findIndexByXAxisOffset.call(this, startMsOffset);
-            var sampleEndIndex = findIndexByXAxisOffset.call(this, endMsOffset);
+            // at this point the start and end have already been converted from distance to miliseconds, so we don't
+            // want findIndexByXAxisOffset to do the conversion again
+            var sampleStartIndex = findIndexByXAxisOffset.call(this, startMsOffset, true);
+            var sampleEndIndex = findIndexByXAxisOffset.call(this, endMsOffset, true);
 
             return generateLatLonFromDataBetweenIndexes.call(this, this.dataByAxisAndChannel[this.xaxis], sampleStartIndex, sampleEndIndex);
         },
