@@ -8,9 +8,10 @@
     "views/expando/mapView",
     "views/expando/statsView",
     "views/expando/lapsView",
-    "views/expando/chartsView"
+    "views/expando/chartsView",
+    "views/expando/mapAndGraphResizerView"
 ],
-function(setImmediate, TP, DataParser, ExpandoLayout, GraphView, MapView, StatsView, LapsView, ChartsView)
+function(setImmediate, TP, DataParser, ExpandoLayout, GraphView, MapView, StatsView, LapsView, ChartsView, mapAndGraphResizerView)
 {
     return TP.Controller.extend(
     {
@@ -55,7 +56,7 @@ function(setImmediate, TP, DataParser, ExpandoLayout, GraphView, MapView, StatsV
             this.views.statsView = new StatsView({ model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise });
             this.views.lapsView = new LapsView({ model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise });
             this.views.chartsView = new ChartsView({ model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise });
-
+            this.views.mapAndGraphResizerView = new mapAndGraphResizerView({model: this.model});
             this.layout.$el.addClass("waiting");
 
             this.watchForModelChanges();
@@ -121,8 +122,11 @@ function(setImmediate, TP, DataParser, ExpandoLayout, GraphView, MapView, StatsV
         showMapAndGraph: function()
         {
 
-            var self = this;
-            if (this.model.get("detailData").hasSamples())
+            var self = this,
+                canShowGraph = this.model.get("detailData").hasSamples(),
+                canShowMap = this.dataParser.hasLatLongData;
+
+            if (canShowGraph)
             {
                 this.layout.showGraph();
 
@@ -134,10 +138,9 @@ function(setImmediate, TP, DataParser, ExpandoLayout, GraphView, MapView, StatsV
             } else
             {
                 this.layout.hideGraph();
-
             }
 
-            if (this.dataParser.hasLatLongData)
+            if (canShowMap)
             {
                 this.layout.showMap();
                 setImmediate(function()
@@ -147,6 +150,14 @@ function(setImmediate, TP, DataParser, ExpandoLayout, GraphView, MapView, StatsV
             } else
             {
                 this.layout.hideMap();
+            }
+
+            if (canShowGraph && canShowMap)
+            {
+                setImmediate(function()
+                {
+                    self.layout.mapAndGraphResizerRegion.show(self.views.mapAndGraphResizerView);
+                });
             }
         },
 
@@ -216,12 +227,11 @@ function(setImmediate, TP, DataParser, ExpandoLayout, GraphView, MapView, StatsV
                 view.on("graphhover", this.onGraphHover, this);
                 view.on("graphleave", this.onGraphLeave, this);
                 view.on("resize", this.onViewResize, this);
+                view.on("resizerDrag", this.onResizerDrag, this);
             }, this);
-
             this.on("close", this.stopWatchingViewEvents, this);
 
         },
-
         stopWatchingViewEvents: function()
         {
             _.each(this.views, function(view, key)
@@ -230,9 +240,21 @@ function(setImmediate, TP, DataParser, ExpandoLayout, GraphView, MapView, StatsV
                 view.off("unselectall", this.onUnSelectAll, this);
                 view.off("graphhover", this.onGraphHover, this);
                 view.off("graphleave", this.onGraphLeave, this);
+                view.off("resizerDrag", this.onResizerDrag, this);
                 view.on("resize", this.onViewResize, this);
             }, this);
 
+        },
+
+        onResizerDrag: function(top)
+        {
+            // before and during proportion change
+            // set the height offsets caused by dragging
+
+            this.views.mapView.stashHeight(top);
+            this.views.graphView.stashHeight(top);
+            this.views.mapAndGraphResizerView.setTop(top);
+            this.onViewResize();
         },
 
         onRangeSelected: function (workoutStatsForRange, options, triggeringView)

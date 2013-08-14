@@ -124,9 +124,8 @@
         formatPace: function(value, options)
         {
             if (!value)
-            {
                 return this.formatEmptyValue(value, options);
-            }
+
             var sportType = this.getMySportType(options);
             var paceAsMinutes = convertToViewUnits(value, "paceUnFormatted", undefined, sportType);
             var limitedPaceAsHours = adjustFieldRange(paceAsMinutes / 60, "pace");
@@ -137,9 +136,8 @@
         {
             // utilize datetime smart parsing, but assume we're working with minutes
             if (!value)
-            {
                 return this.formatEmptyValue(value, options);
-            }
+
             var sportType = this.getMySportType(options);
             var rawTime = datetimeUtils.convert.timeToDecimalHours(value, { assumeHours: false });
             var limitedTime = adjustFieldRange(rawTime, "pace");

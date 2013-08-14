@@ -125,6 +125,7 @@
 #expandoLeftColumn
 {
     float: left;
+    position:relative;
     @include
     calc(width, "100% - 335px");
     overflow-y: scroll;
@@ -168,6 +169,16 @@
             width: 100%;
         }
 
+    }
+
+    #expandoMapAndGraphResizerRegion
+    {
+        height:10px;
+        width:100%;
+        left:0;
+        background:black;
+        cursor:row-resize;
+        position:absolute;
     }
 
     #expandoGraphRegion
