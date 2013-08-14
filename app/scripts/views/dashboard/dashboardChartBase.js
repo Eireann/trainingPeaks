@@ -61,6 +61,8 @@ function(
             this.dataManager = options.dataManager;
             this.setDefaultSettings(options);
             this.setupDataModel(options);
+
+            this.listenTo(this.model, "dashboardDatesChange", _.bind(this._onDashboardDatesChange, this));
             this.on("render", this.renderChartAfterRender, this);
         },
 
@@ -389,7 +391,7 @@ function(
                 this.expandClicked();
         },
 
-        onDashboardDatesChange: function()
+        _onDashboardDatesChange: function()
         {
             if(Number(this.model.get("dateOptions.quickDateSelectOption")) === chartUtils.chartDateOptions.USE_GLOBAL_DATES.id)
             {

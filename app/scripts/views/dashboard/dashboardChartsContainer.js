@@ -59,6 +59,15 @@ function(
             this.on("show", _.bind(this._showPackeryCollectionView, this));
         },
 
+
+        onDashboardDatesChange: function()
+        {
+            this.collection.each(function(model)
+            {
+                model.trigger("dashboardDatesChange");
+            });
+        },
+
         _showPackeryCollectionView: function()
         {
             this.chartsRegion.show(this.packeryCollectionView);
@@ -432,14 +441,6 @@ function(
             }
 
             return chart;
-        },
-
-        onDashboardDatesChange: function()
-        {
-            _.each(this.charts, function(chartView)
-            {
-                chartView.onDashboardDatesChange();
-            });
         },
 
         onLibraryAnimateComplete: function()
