@@ -422,10 +422,11 @@ $mainTtabSpriteRetinaURL: url(../../assets/images/sprite-icons-main-tabs@2x.png)
                     color: $TPGrey8;
                     overflow: hidden;
                     margin-left: 30px;
-                    max-height: 24px;
-                    height: 24px;
+                    max-height: 25px;
+                    height: 25px;
                     line-height: 12px;
                     text-overflow: ellipsis;
+                    margin-bottom: 3px;
                 }
 
                 .author

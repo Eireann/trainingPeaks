@@ -10,9 +10,19 @@ function(moment, TP, WorkoutModel)
     var DayModel = TP.Model.extend({
         idAttribute: "date",
         isDay: true,
+        _createSortDate: function()
+        {
+            this.sortDate = moment(this.get("date")).format(TP.utils.datetime.shortDateFormat);
+        },
+
         getSortDate: function()
         {
-            return this.get("date");
+            if(!this.sortDate)
+            {
+                this._createSortDate();
+                this.on("change:date", this._createSortDate, this); 
+            }
+            return this.sortDate;
         }
     });
 
@@ -28,7 +38,7 @@ function(moment, TP, WorkoutModel)
         throw "ActivityModelFactory unknown model type";
     };
 
-    return TP.Collection.extend(
+    var ActivityCollection = TP.Collection.extend(
     {
         model: ActivityModelFactory,
 
@@ -40,17 +50,28 @@ function(moment, TP, WorkoutModel)
             if (a.getSortDate() < b.getSortDate())
             {
                 return 1;
-            } else if (a.getSortDate() > b.getSortDate())
+            }
+            else if (a.getSortDate() > b.getSortDate())
             {
                 return -1;
 
                 // days come before models
-            } else if (a.isDay && !b.isDay)
+            }
+            else if (a.isDay && !b.isDay)
             {
                 return -1;
-            } else if(b.isDay && !a.isDay)
+            }
+            else if(b.isDay && !a.isDay)
             {
                 return 1;
+            }
+            else if(a.id < b.id)
+            {
+                return 1;
+            }
+            else if(a.id > b.id)
+            {
+                return -1;
             }
 
             return 0;
@@ -104,7 +125,8 @@ function(moment, TP, WorkoutModel)
             {
                 endDate = this.endDate;
             }
-            
+        
+            var newModels = [];    
             var currentDate = moment(startDate);
             while (currentDate.diff(endDate, "days") <= 0)
             {
@@ -113,9 +135,17 @@ function(moment, TP, WorkoutModel)
                 {
                     var dayModel = new DayModel({ date: formattedDate });
                     this.add(dayModel, options);
+                    newModels.push(dayModel);
+                }
+                else
+                {
+                    newModels.push(this.get(formattedDate));
                 }
                 currentDate.add("days", 1);
             }
+
+            // return the models properly sorted 
+            return new ActivityCollection(newModels, { startDate: startDate, endDate: endDate }).toArray();
         },
         
         parse: function(response, options)
@@ -129,7 +159,7 @@ function(moment, TP, WorkoutModel)
             var weeks = Math.ceil(count / 7);
             var startDate = moment(this.endDate).add("days", 1);
             this.endDate = moment(this.endDate).add("weeks", weeks);
-            this.createDayModels(startDate, this.endDate);
+            return this.createDayModels(startDate, this.endDate);
         },
 
         // prepareNext is actually past, at the end of the list
@@ -138,8 +168,10 @@ function(moment, TP, WorkoutModel)
             var weeks = Math.ceil(count / 7);
             var endDate = moment(this.startDate).subtract("days", 1);
             this.startDate = moment(this.startDate).subtract("weeks", weeks);
-            this.createDayModels(this.startDate, endDate);
+            return this.createDayModels(this.startDate, endDate);
         }
 
     });
+
+    return ActivityCollection;
 });

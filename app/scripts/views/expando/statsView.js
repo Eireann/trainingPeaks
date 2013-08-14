@@ -25,6 +25,17 @@ function(
         {
             this.on("controller:rangeselected", this.onRangeSelected, this);
             this.on("controller:unselectall", this.onUnSelectAll, this);
+            this.model.get("detailData").on("change", this.reset, this);
+
+            this.on("close", function(){
+                this.model.get("detailData").off("change", this.reset, this);
+            });
+        },
+
+        reset: function()
+        {
+            this.selectedRangeData = null;
+            this.render();
         },
 
         onRender: function()
@@ -155,6 +166,7 @@ function(
             {
                 this.waitingFor.off("sync", this.onStatsFetched, this);
             }
+            this.currentStatsModel = this.waitingFor;
             this.waitingFor = null;
             this.onWaitStop();
         },

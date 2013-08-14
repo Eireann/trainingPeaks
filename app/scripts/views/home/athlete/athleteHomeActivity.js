@@ -1,6 +1,7 @@
 ﻿define(
 [
     "underscore",
+    "setImmediate",
     "TP",
     "moment",
     "models/activityCollection",
@@ -12,6 +13,7 @@
 ],
 function(
     _,
+    setImmediate,
     TP,
     moment,
     ActivityCollection,
@@ -34,19 +36,19 @@ function(
             this.constructor.__super__.initialize.call(this);
 
             this.startDate = moment().subtract("weeks", 3);
-            this.endDate = moment().add("weeks", 1);
+            this.endDate = moment().add("weeks", 3);
 
             this.collection = new ActivityCollection(null, { startDate: this.startDate, endDate: this.endDate });
             this.collection.createDayModels();
 
-            this.initializeScrollableCollectionView();
-            this.on("render", this.showScrollableCollectionView, this);
+            this._initializeScrollableCollectionView();
+            this.on("render", this._showScrollableCollectionView, this);
         },
 
-        initializeScrollableCollectionView: function()
+        _initializeScrollableCollectionView: function()
         {
-
-            this._requestActivities(this.startDate, this.endDate);
+            var self = this;
+            this._requestActivities(this.startDate, this.endDate).done(function(){ self._scrollToTomorrow(); });
 
             this.scrollableCollectionView = new ScrollableCollectionView({
                 firstModel: this._getFirstModel(),
@@ -55,7 +57,8 @@ function(
                 id: "activityFeedContainer",
                 className: "activityCollection scrollable",
                 onScrollEnd: _.bind(this._loadDataAfterScroll, this),
-                scrollThreshold: 100,
+                batchSize: 7,
+                scrollThreshold: 300,
                 minSize: 30,
                 maxSize: 60,
                 filterScrollTarget: function(childView)
@@ -65,10 +68,20 @@ function(
             });
         },
 
-        showScrollableCollectionView: function()
+        _showScrollableCollectionView: function()
         {
             this.$(".contents").removeClass("scrollable");
             this.contentRegion.show(this.scrollableCollectionView);
+            this._scrollToTomorrow();
+        },
+
+        _scrollToTomorrow: function()
+        {
+            var self = this;
+            setImmediate(function()
+            {
+                self.scrollableCollectionView.scrollToModel(self._getFirstModel());
+            });
         },
 
         _createItemView: function(options)
@@ -150,7 +163,9 @@ function(
             var self = this;
             fetchPromise.done(function()
             {
+                self.collection.trigger("before:changes");
                 self.collection.add(activityCollection.models);
+                self.collection.trigger("after:changes");
             });
 
             return fetchPromise;
