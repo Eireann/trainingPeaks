@@ -3,15 +3,10 @@
     "underscore",
     "TP"
 ],
-function(
-    _,
-    TP
-    )
+function(_, TP)
 {
-
     return TP.ItemView.extend(
     {
-
         widthClosed: 40,
         widthOpen: 310,
         activeLibraryName: null,

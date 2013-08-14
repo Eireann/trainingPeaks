@@ -11,7 +11,8 @@ function (TP, LibraryExercisesCollection)
         webAPIModelName: "ExerciseLibrary",
         idAttribute: "exerciseLibraryId",
 
-        defaults: {
+        defaults:
+        {
             athletePrice: 0,
             coachPrice: 0,
             dateCreated: 0,
@@ -26,7 +27,8 @@ function (TP, LibraryExercisesCollection)
             libraryName: "",
             listInDirectory: false,
             ownerId: 0,
-            priceRecursMonthly: false
+            priceRecursMonthly: false,
+            selected: false
         },
 
         initialize: function(options)
@@ -41,9 +43,8 @@ function (TP, LibraryExercisesCollection)
                 return;
 
             if (this.has("exerciseLibraryId"))
-            {
                 this.exercises.exerciseLibraryId = this.get("exerciseLibraryId");
-            }
+
             this.exercises.fetch({ reset: true });
         },
 

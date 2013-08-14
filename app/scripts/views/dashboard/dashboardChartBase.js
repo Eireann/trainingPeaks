@@ -361,20 +361,23 @@ function(
                 right: "10px"
             };
 
-            $chartContainer.hide();
+            // Can't use .hide() because the $chartContainer needs to remain in the layout
+            // so Flot can internally calculate axis label widths
+            $chartContainer.toggleClass('invisible');
             var self = this;
-            this.$el.appendTo($("body")).animate(newPosition, 200, function(){ self.setupModalOverlay(); $chartContainer.show(); });
-
+            this.$el.appendTo($("body")).animate(newPosition, 200, function(){ self.setupModalOverlay(); $chartContainer.toggleClass('invisible'); });
+            this.trigger('popOut');
         },
 
         popIn: function()
         {
             var $chartContainer = this.ui.chartContainer;
-            $chartContainer.hide();
-            this.$el.appendTo(this.chartsContainer).animate(this.previousPosition, 200, function(){ $chartContainer.show(); });
+            $chartContainer.toggleClass('invisible');
+            this.$el.appendTo(this.chartsContainer).animate(this.previousPosition, 200, function(){ $chartContainer.toggleClass('invisible'); });
             this.closeModal();
             this.previousPosition = null;
             this.enableDrag();
+            this.trigger('popIn');
         },
 
         setupModalOverlay: function()

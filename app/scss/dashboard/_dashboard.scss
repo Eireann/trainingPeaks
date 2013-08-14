@@ -241,6 +241,10 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
         left: 50px;
         @include calc("width", "100% - 90px");
         @include calc("height", "100% - 100px");
+        &.invisible
+        {
+            visibility:hidden;
+        }
     }
 
     .chartTitle
@@ -257,13 +261,19 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
 
     .yaxisLabel
     {
-        margin-top: 150px;
+        
+        position: absolute;
+        left: 17px;
+        top: 47%;
+        margin-top: 0;
+
         margin-left: -40px;
         font-size: 10px;
 
         &.pmc
         {
             text-transform: none;
+            left:auto;
 
             &.tsb
             {
@@ -467,8 +477,6 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
         margin: 14px 0 10px 0;
         color: $TPGrey3;
     }
-
-
 }
 
 .fitnessSummartChart
@@ -478,4 +486,64 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
     text-align: center;
     padding: 2px;
     color: #ffffff;
+}
+
+#libraryContainer {
+    #activeLibraryContainer {
+        .chartTile {
+            @include libraryTile();
+
+            margin:0 0 5px 0;
+            padding:3px 3px 2px 3px;
+
+            &.selected {
+                border:1px solid #0043ff;
+                background-color:#bcd1eb;
+                opacity:0.5;
+            }
+
+            .chartTileIcon {
+                width: 25px;
+                height: 25px;
+                background-color: #fff;
+                float: left;
+            }
+
+            .chartTileName {
+                font-size: $fontSizeSmall;
+                font-family: $fontFamilyHeavy;
+                margin-left:3px;
+                float:left;
+                margin:7px 6px;
+            }
+
+            
+        }
+    }
+}
+
+.chartTile {
+    @include libraryTile();
+    margin:0 0 5px 0;
+    padding:3px 3px 2px 3px;
+
+    .chartTileIcon {
+        width: 25px;
+        height: 25px;
+        background-color: #fff;
+        float: left;
+    }
+
+    .chartTileName {
+        font-size: $fontSizeSmall;
+        margin-left:3px;
+        float:left;
+        margin:7px 6px;
+    }
+    
+    &.ui-draggable-dragging {
+        border:1px solid #0043ff;
+        background-color:#bcd1eb;
+        opacity:0.5;
+    }
 }

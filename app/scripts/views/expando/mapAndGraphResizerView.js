@@ -29,15 +29,41 @@ function(
         },
         onRender: function()
         {
-            this.$el.draggable({drag: _.bind(this.onDrag, this), stop: _.bind(this.onDragStop, this), scope: "expandoMapAndGraphResizerRegion", axis: "y"});
+            this.makeDraggable();
         },
         onDrag: function(event, ui)
         {
+            var top = ui.position.top,
+                self = this;
+
+            // If we're outside our bounds, abort drag and correct resizer position
+            if (top >= this.containerHeight - 5 || top <= 0)
+            {
+                this.disableDrag();
+                setImmediate(function()
+                {
+                    self.setPosition(self.containerHeight);
+                });
+                
+                this.makeDraggable();
+                return;
+            }
+
             this.trigger("resizerDrag", ui.position.top);
         },
-        onDragStop: function(event, ui)
+        makeDraggable: function()
         {
-            this.trigger("resizerDragStop");
+            var self = this;
+            this.$el.draggable(
+            {
+                drag: _.bind(this.onDrag, this), 
+                scope: "expandoMapAndGraphResizerRegion",
+                axis: "y"
+            });
+        },
+        disableDrag: function()
+        {
+            this.$el.draggable("destroy");
         },
         setPosition: function(containerHeight)
         {
@@ -45,7 +71,7 @@ function(
             var mapHeight = Math.floor((containerHeight * 0.5) - bottomMargin);
             mapHeight = this.top ? this.top : mapHeight;
             this.$el.css('top', mapHeight + 'px');
-
+            this.containerHeight = containerHeight;
             if (!this.initialTop)
             {
                 this.initialTop = mapHeight;

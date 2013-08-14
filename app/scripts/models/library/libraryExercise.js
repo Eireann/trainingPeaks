@@ -10,7 +10,8 @@ function (TP)
         webAPIModelName: "ExerciseLibraryItem",
         idAttribute: "exerciseLibraryItemId",
 
-        defaults: {
+        defaults:
+        {
             "exerciseLibraryId": 0,
             "exerciseLibraryItemId": 0,
             "itemName": null,

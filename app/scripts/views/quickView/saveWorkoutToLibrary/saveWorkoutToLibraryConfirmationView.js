@@ -9,7 +9,8 @@ function(TP, SaveWorkoutToLibraryCommand, AfterSaveView, saveWorkoutToLibraryTem
 {
     return TP.ItemView.extend(
     {
-        modal: {
+        modal:
+        {
             mask: true,
             shadow: true
         },
@@ -23,7 +24,8 @@ function(TP, SaveWorkoutToLibraryCommand, AfterSaveView, saveWorkoutToLibraryTem
         events:
         {
             "click #confirmationOk": "onOk",
-            "click #confirmationCancel" : "onCancel"
+            "click #confirmationCancel" : "onCancel",
+            "keyup input[name='exerciseTitle']": "onTitleChanged"
         },
 
         template:
@@ -37,10 +39,24 @@ function(TP, SaveWorkoutToLibraryCommand, AfterSaveView, saveWorkoutToLibraryTem
             var self = this;
             setImmediate(function ()
             {
-                self.$("#selectLibrary").selectBoxIt({
-                    dynamicPositioning: false
+                if(self.model.get("title"))
+                    self.$("input[name='exerciseTitle']").val(self.model.get("title"));
+                else
+                    self.$("#confirmationOk").attr("disabled", "disabled");
+
+                self.$("#selectLibrary").selectBoxIt(
+                {
+                dynamicPositioning: false
                 });
             });
+        },
+
+        onTitleChanged: function()
+        {
+            if(this.$("input[name='exerciseTitle']").val().length > 0)
+                this.$("#confirmationOk").removeAttr("disabled");
+            else
+                this.$("#confirmationOk").attr("disabled", "disabled");
         },
 
         onOk: function()

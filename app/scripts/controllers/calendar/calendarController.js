@@ -118,11 +118,10 @@ function(
 
         loadCalendarData: function(callback)
         {
-
-            //theMarsApp.logger.startTimer("CalendarController", "begin request calendar data");
             // don't make requests until after we display, or else localStorage cache synchronous read blocks browser rendering
             var diff = this.endDate.diff(this.startDate, "weeks");
             var deferreds = [];
+            
             for (var i = 0; i < diff; i++)
             {
                 var startDate = moment(this.startDate).add("weeks", i);
@@ -131,9 +130,6 @@ function(
                 deferreds.push(deferred);
             }
 
-            //var deferreds = [this.weeksCollection.requestWorkouts(this.startDate, this.endDate)];
-
-            //theMarsApp.logger.logTimer("CalendarController", "finished request calendar data");
             if (callback)
                 callback(deferreds);
 
