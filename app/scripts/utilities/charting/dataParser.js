@@ -283,6 +283,9 @@ function(chartColors, findIndexByMsOffset, convertToViewUnits)
     {
         loadData:  function(flatSamples)
         {
+            // Re-initialize so array's don't double in length
+            this.xAxisDistanceValues = [];
+
             this.flatSamples = flatSamples;
             this.dataByAxisAndChannel = parseDataByAxisAndChannel.call(this, flatSamples);
 
