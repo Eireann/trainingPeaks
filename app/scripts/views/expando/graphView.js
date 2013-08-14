@@ -59,6 +59,8 @@ function(
             this.selections = [];
 
             this.firstRender = true;
+
+            this.repaintHeight = _.debounce(this.repaintHeight, 200);
         },
 
         initialEvents: function()
@@ -547,10 +549,8 @@ function(
             var heightPercent = this.dataParser.hasLatLongData ? 0.50 : 0.8;
             var graphHeight = Math.floor((containerHeight - bottomMargin) * heightPercent);
 
-            if (graphHeight < 225)
-            {
-                graphHeight = 225;
-            }
+            // apply offset set by resize bar
+            graphHeight = this.height ? containerHeight - (this.height + bottomMargin) : graphHeight;
 
             this.graphHeight = graphHeight;
             this.$el.closest("#expandoGraphRegion").height(graphHeight);
@@ -559,10 +559,19 @@ function(
             var toolbarHeight = 35;
 
             this.$el.height(graphHeight - topPadding);
+            this.plotHeight = graphHeight - topPadding - toolbarHeight;
+            this.repaintHeight();
+        },
+        repaintHeight: function()
+        {
             if (this.$plot)
             {
-                this.$plot.height(graphHeight - topPadding - toolbarHeight);
+                this.$plot.height(this.plotHeight);
             }
+        },
+        stashHeight: function(height)
+        {
+            this.height = height;
         }
 
     });
