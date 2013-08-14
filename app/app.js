@@ -347,7 +347,7 @@ function(
         this.addInitializer(function()
         {
             DragAndDropFileUploadWidget.initialize(this.getBodyElement(), this.getBodyElement().find("#messages"));
-        })
+        });
 
         this.addInitializer(function()
         {

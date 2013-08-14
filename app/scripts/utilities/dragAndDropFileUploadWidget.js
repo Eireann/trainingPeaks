@@ -13,7 +13,7 @@ function(TP, WorkoutMultiFileDataModel)
         initialize: function ($body, $message)
         {
             if(initialized)
-                throw "DragAndDropFileUploadWidget: Trying to initialize widget twice";
+                return;
 
             if(!window)
                 return;
@@ -132,7 +132,7 @@ function(TP, WorkoutMultiFileDataModel)
                         var stopFadeOut = function() { $info.remove(); $info.html(""); };
 
                         $progress.remove();
-                        $info.removeClass("alert").addClass("success").text(messageString).appendTo($message).fadeIn(600).fadeOut(5000, stopFadeOut).on("mouseenter", function() { $info.stop(); $info.css({ opacity: 1 }); }).on("mouseleave", function() { $info.fadeOut(5000, stopFadeOut) });
+                        $info.removeClass("alert").addClass("success").text(messageString).appendTo($message).fadeIn(600).fadeOut(5000, stopFadeOut).on("mouseenter", function() { $info.stop(); $info.css({ opacity: 1 }); }).on("mouseleave", function() { $info.fadeOut(5000, stopFadeOut); });
 
                     }).fail(function()
                     {
@@ -143,5 +143,5 @@ function(TP, WorkoutMultiFileDataModel)
 
             }, false);
         }
-    }
-})
+    };
+});
