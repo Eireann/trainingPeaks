@@ -7,7 +7,8 @@ define(
 function(TP, WorkoutMultiFileDataModel, WorkoutModel)
 {
     var initialized = false;
-    var $overlay = $("<div id='fileUploadOverlay'><div id='fileUploadPlusBox' class='addWorkoutWrapper'><div class='addWorkout'><div class='addWorkoutPlus'></div></div></div></div>");
+    var $overlay = $("<div id='fileUploadOverlay'></div>");
+    var $dropTarget = $("<div class='dropTarget'>Drop Files Here</div>");
     var $info = $("<div data-alert class='alert-box' style='display:none;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;'></div>");
 
     return {
@@ -36,6 +37,7 @@ function(TP, WorkoutMultiFileDataModel, WorkoutModel)
                     return;
 
                 $body.append($overlay);
+                $body.append($dropTarget);
                 mouseEnteredWindow = true;
             });
 
@@ -48,6 +50,7 @@ function(TP, WorkoutMultiFileDataModel, WorkoutModel)
                     return;
                 
                 $body.append($overlay);
+                $body.append($dropTarget);
                 mouseEnteredWindow = true;
 
             }, false);
@@ -59,6 +62,7 @@ function(TP, WorkoutMultiFileDataModel, WorkoutModel)
                 e.stopPropagation();
                 
                 $overlay.remove();
+                $dropTarget.remove();
 
                 mouseEnteredWindow = false;
             });
@@ -73,6 +77,7 @@ function(TP, WorkoutMultiFileDataModel, WorkoutModel)
                 if(dragging === 0)
                 {
                     $overlay.remove();
+                    $dropTarget.remove();
                     mouseEnteredWindow = false;
                 }
             });
@@ -91,6 +96,7 @@ function(TP, WorkoutMultiFileDataModel, WorkoutModel)
                 mouseEnteredWindow = false;
 
                 $overlay.remove();
+                $dropTarget.remove();
 
                 var $progress = $("<progress id='fileUploadProgress'></progress'>");
                 $message.append($progress);
