@@ -219,7 +219,7 @@ function(unitsConstants, workoutLayoutFormatter, workoutTypeUtils)
         }
 
         if (!unitsHash.hasOwnProperty(fieldName))
-            throw "Unknown field type (" + fieldName + ") for unit label";
+            throw new Error("Unknown field type (" + fieldName + ") for unit label");
 
         if (sportTypeName && unitsHash[fieldName].hasOwnProperty(sportTypeName) && unitsHash[fieldName][sportTypeName].hasOwnProperty(userUnitsKey))
             return unitsHash[fieldName][sportTypeName][userUnitsKey];

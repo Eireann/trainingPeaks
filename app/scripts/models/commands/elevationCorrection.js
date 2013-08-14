@@ -19,7 +19,7 @@ function(moment, TP)
         initialize: function(attributes, options)
         {
             if (!options.uploadedFileId)
-                throw "ElevationCorrectionCommandModel requires an uploadedFileId at construction";
+                throw new Error("ElevationCorrectionCommandModel requires an uploadedFileId at construction");
 
             this.uploadedFileId = options.uploadedFileId;
         },

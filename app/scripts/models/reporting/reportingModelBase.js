@@ -53,7 +53,7 @@ function(moment, _, TP)
         {
             if (!this.has("dateOptions.startDate") || !this.has("dateOptions.endDate"))
             {
-                throw "startDate & endDate needed for " + this.reportName;
+                throw new Error("startDate & endDate needed for " + this.reportName);
             }
 
             var startDate = moment(this.get("dateOptions.startDate")).format(TP.utils.datetime.shortDateFormat);

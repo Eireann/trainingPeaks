@@ -56,7 +56,7 @@ function(
         onItemsCopy: function(model)
         {
             if (!model || !model.copyToClipboard)
-                throw "Invalid copy event argument: " + model;
+                throw new Error("Invalid copy event argument: " + model);
 
             this.clipboard.set(model.copyToClipboard(), "copy");
         },
@@ -64,7 +64,7 @@ function(
         onItemsCut: function (model)
         {
             if (!model || !model.cutToClipboard)
-                throw "Invalid cut event argument: " + model;
+                throw new Error("Invalid cut event argument: " + model);
             
             this.clipboard.set(model.cutToClipboard(), "cut");
         },

@@ -77,7 +77,7 @@ function(unitsConstants, workoutTypeUtils)
         }
 
         if (!conversionFactors.hasOwnProperty(unitsType))
-            throw "Unknown units type (" + unitsType + ") for unit label";
+            throw new Error("Unknown units type (" + unitsType + ") for unit label");
 
         if (sportTypeName && conversionFactors[unitsType].hasOwnProperty(sportTypeName) && conversionFactors[unitsType][sportTypeName].hasOwnProperty(userUnitsKey))
             return conversionFactors[unitsType][sportTypeName][userUnitsKey];

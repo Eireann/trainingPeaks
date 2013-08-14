@@ -10,7 +10,7 @@ function (_, Handlebars, TP)
     var conversionHelper = function (conversionMethod, value, context, defaultValue)
     {
         if (!conversionMethod || !TP.utils.conversion[conversionMethod])
-            throw "Unknown conversion method for conversion template helper: " + conversionMethod;
+            throw new Error("Unknown conversion method for conversion template helper: " + conversionMethod);
 
         if (typeof defaultValue !== "undefined")
         {

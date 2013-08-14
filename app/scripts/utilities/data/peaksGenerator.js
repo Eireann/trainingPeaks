@@ -36,7 +36,7 @@ function(TP)
         {
             if(!_.contains(["Cadence", "HeartRate", "Power", "Speed"], metric))
             {
-                throw "ThePeaksGenerator: " + metric + " is an invalid metric";
+                throw new Error("ThePeaksGenerator: " + metric + " is an invalid metric");
             }
 
             var meanMaxes = model.get("meanMax" + metric + "s");

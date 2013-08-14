@@ -94,7 +94,7 @@
         {
             if (!this.timers.hasOwnProperty(timerName))
             {
-                throw "Invalid timer name: " + timerName;
+                throw new Error("Invalid timer name: " + timerName);
             }
             msg = "TIMER: " + timerName + " " + msg + " at " + (+new Date() - this.timers[timerName]) + "ms";
             this.debug(msg);

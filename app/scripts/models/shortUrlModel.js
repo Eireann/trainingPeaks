@@ -21,7 +21,7 @@ function (TP)
         initialize: function ()
         {
             if (!this.has("workoutId"))
-                throw "no workoutid defined";
+                throw new Error("no workoutid defined");
         },
 
         parse: function (response)

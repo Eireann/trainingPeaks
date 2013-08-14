@@ -242,7 +242,7 @@ function(
                 case "beta1":
                     return false;
             }
-            throw "Feature does not exist";
+            throw new Error("Feature does not exist");
         };
 
         this.fetchAthleteSettings = function()

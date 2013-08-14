@@ -17,7 +17,7 @@ function(moment, TP)
         url: function(options)
         {
             if (!(options.startDate && options.endDate))
-                throw "startDate & endDate needed for WorkoutsCollection";
+                throw new Error("startDate & endDate needed for WorkoutsCollection");
 
             var start = options.startDate.format(TP.utils.datetime.shortDateFormat);
             var end = moment(options.endDate).format(TP.utils.datetime.shortDateFormat);

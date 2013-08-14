@@ -36,10 +36,10 @@ function(
         {
             
             if (!options || !options.hasOwnProperty('startDate'))
-                throw "CalendarCollection requires a start date";
+                throw new Error("CalendarCollection requires a start date");
 
             if (!options || !options.hasOwnProperty('endDate'))
-                throw "CalendarCollection requires an end date";
+                throw new Error("CalendarCollection requires an end date");
 
 
             this.startOfWeekDayIndex = moment(options.startDate).day();
@@ -239,7 +239,7 @@ function(
             var dayModel = this.daysCollection.get(formattedDate);
 
             if (!dayModel)
-                throw "Could not find day in days collection";
+                throw new Error("Could not find day in days collection");
 
             return dayModel;
         },

@@ -402,7 +402,7 @@ function(chartColors, findIndexByMsOffset, convertToViewUnits)
         setXAxis: function (xaxis)
         {
             if (xaxis !== "time" && xaxis !== "distance")
-                throw "DataParser: xaxis value " + xaxis + " is invalid";
+                throw new Error("DataParser: xaxis value " + xaxis + " is invalid");
 
             this.xaxis = xaxis;
         },

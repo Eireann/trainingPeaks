@@ -36,14 +36,14 @@ function (moment, TP)
         initialize: function()
         {
             if (!this.has('Event') || !this.get('Event')) {
-                throw "ClientEvent must have Event attribute";
+                throw new Error("ClientEvent must have Event attribute");
             }
             else {
 
                 var event = this.get('Event');
 
                 if (!event.Label || !event.Type || !event.AppContext)
-                    throw "ClientEvent doesn't have all attributes of Event defined";
+                    throw new Error("ClientEvent doesn't have all attributes of Event defined");
             }
         }
     });

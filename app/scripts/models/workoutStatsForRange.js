@@ -18,13 +18,13 @@ function(TP)
         {
 
             if (!this.has("workoutId"))
-                throw "workoutId is required for WorkoutStatsForRange";
+                throw new Error("workoutId is required for WorkoutStatsForRange");
 
             if (!this.has("begin"))
-                throw "begin is required for WorkoutStatsForRange";
+                throw new Error("begin is required for WorkoutStatsForRange");
 
             if (!this.has("end"))
-                throw "end is required for WorkoutStatsForRange";
+                throw new Error("end is required for WorkoutStatsForRange");
         },
         
         parse: function(response)

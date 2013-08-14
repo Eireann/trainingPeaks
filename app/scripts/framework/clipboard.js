@@ -17,13 +17,13 @@ function(_, Backbone)
             var validActions = ['cut', 'copy'];
 
             if (!value)
-                throw "Invalid clipboard paste - value is required";
+                throw new Error("Invalid clipboard paste - value is required");
 
             if (!action)
-                throw "Invalid clipboard paste - action is required";
+                throw new Error("Invalid clipboard paste - action is required");
 
             if (!_.contains(validActions, action))
-                throw "Invalid clipboard action (" + action + "), valid actions are: " + validActions.join(',');
+                throw new Error("Invalid clipboard action (" + action + "), valid actions are: " + validActions.join(','));
 
             this.data =
             {

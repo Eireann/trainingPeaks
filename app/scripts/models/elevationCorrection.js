@@ -28,7 +28,7 @@ function(TP)
         initialize: function(attributes, options)
         {
             if (!options.latLngArray)
-                throw "ElevationCorrectionModel requires a LatLong array at construction";
+                throw new Error("ElevationCorrectionModel requires a LatLong array at construction");
             
             var serializedLatLng = "";
             _.each(options.latLngArray, function (latLong)

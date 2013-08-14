@@ -35,7 +35,7 @@ function(moment, TP, WorkoutModel)
             return model;
         }
 
-        throw "ActivityModelFactory unknown model type";
+        throw new Error("ActivityModelFactory unknown model type");
     };
 
     var ActivityCollection = TP.Collection.extend(
@@ -96,7 +96,7 @@ function(moment, TP, WorkoutModel)
             }
 
             if (!(requestStartDate && requestEndDate))
-                throw "startDate & endDate needed for ActivityCollection";
+                throw new Error("startDate & endDate needed for ActivityCollection");
 
             var start = moment(requestStartDate).format(TP.utils.datetime.shortDateFormat);
             var end = moment(requestEndDate).format(TP.utils.datetime.shortDateFormat);
@@ -109,7 +109,7 @@ function(moment, TP, WorkoutModel)
         initialize: function(models, options)
         {
             if (!options || !options.startDate || !options.endDate)
-                throw "ActivityCollection requires startDate and endDate";
+                throw new Error("ActivityCollection requires startDate and endDate");
 
             this.startDate = options.startDate;
             this.endDate = options.endDate;

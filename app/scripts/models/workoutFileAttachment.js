@@ -17,7 +17,7 @@ function (TP)
         url: function ()
         {
             if (!this.has("workoutId"))
-                throw "WorkoutFileAttachment requires a workout id";
+                throw new Error("WorkoutFileAttachment requires a workout id");
 
             var athleteId = theMarsApp.user.getCurrentAthleteId();
 

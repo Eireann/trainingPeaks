@@ -34,10 +34,10 @@ function(moment, setImmediate, TP, CalendarDayView, WeekSummaryView, CalendarWee
         initialize: function()
         {
             if (!this.model)
-                throw "CalendarWeekView requires a model";
+                throw new Error("CalendarWeekView requires a model");
             this.collection = this.collection || this.model.get("week");
             if (!this.collection)
-                throw "CalendarWeekView requires a collection";
+                throw new Error("CalendarWeekView requires a collection");
             this.waiting = $('<div class="calendarWeekView waiting"> </div>');
 
             // when any of our child views update, recalculate all of their heights

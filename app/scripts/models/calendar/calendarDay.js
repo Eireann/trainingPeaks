@@ -24,7 +24,7 @@ function(_, moment, TP, WorkoutModel, SelectedWorkoutCollection)
             // we need a date
             var date = this.get("date");
             if (!date)
-                throw "CalendarDay requires a date";
+                throw new Error("CalendarDay requires a date");
 
             // use a formatted string for date attribute and for calendar id
             this.set("date", moment(date).format(TP.utils.datetime.shortDateFormat), { silent: true });

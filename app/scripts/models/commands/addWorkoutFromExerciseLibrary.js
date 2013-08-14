@@ -24,10 +24,10 @@ function(TP)
         initialize: function(attributes, options)
         {
             if (!options.workout)
-                throw "AddWorkoutFromExerciseLibrary requires a workout model";
+                throw new Error("AddWorkoutFromExerciseLibrary requires a workout model");
 
             if (!options.exerciseLibraryItem)
-                throw "AddWorkoutFromExerciseLibrary requires an exercise library item";
+                throw new Error("AddWorkoutFromExerciseLibrary requires an exercise library item");
 
             this.workout = options.workout;
             this.exerciseLibraryItem = options.exerciseLibraryItem;
