@@ -98,8 +98,8 @@ requirejs(
             settingsCollection.comparator = "sortValue";
             settingsCollection.sort();
             expect(sourceModel.get("pods.0.b")).toBe(2);
-            expect(sourceModel.get("pods.1.a")).toBe(3)
-            expect(sourceModel.get("pods.2.a")).toBe(1)
+            expect(sourceModel.get("pods.1.a")).toBe(3);
+            expect(sourceModel.get("pods.2.a")).toBe(1);
 
         });
 
