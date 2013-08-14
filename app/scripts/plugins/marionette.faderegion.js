@@ -6,6 +6,8 @@ function(TP)
 {
     TP.Region.prototype.show = function(view)
     {
+        if(this.currentView === view) return;
+
         this.ensureEl();
         view.render();
 
