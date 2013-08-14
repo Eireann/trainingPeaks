@@ -16,6 +16,7 @@ function(
             this.minSize = options.minSize || 8;
             this.maxSize = options.maxSize || 25;
 
+            this._configureSorting();
             this._bindSourceCollectionEvents();
 
             // QL: Rename firstModel to ?
@@ -30,13 +31,14 @@ function(
             // otherwise we pull as much as we can from the source collection before fetching more
             var numberToCopy = _.min([sourceBeginIndex, numberToFetch]);
             var models = this.sourceCollection.models.slice(sourceBeginIndex - numberToCopy, sourceBeginIndex);
-            this.add(models, {at: 0});
+            var addOptions = this.comparator ? {} : {at: 0};
+            this.add(models, addOptions);
 
             var numberToPrepare = numberToFetch - numberToCopy;
             if(numberToPrepare > 0)
             {
                 var newModels = this.sourceCollection.preparePrevious(numberToPrepare);
-                this.add(newModels, {at: 0});
+                this.add(newModels, addOptions);
             }
 
             this._limitSize({dropFrom: "end"});
@@ -50,7 +52,7 @@ function(
             var availableModels = this.sourceCollection.length - sourceEndIndex;
             var numberToCopy = _.min([availableModels, numberToFetch]);
             var models = this.sourceCollection.models.slice(sourceEndIndex, sourceEndIndex + numberToCopy);
-            this.add(models, {at: this.length});
+            this.add(models, this.comparator ? {} : {at: this.length});
 
             var numberToPrepare = numberToFetch - numberToCopy;
             if(numberToPrepare > 0)
@@ -58,7 +60,7 @@ function(
                 // prepareNext(): collection must immediately instantiate desired number of models, then fetch() each model
                 // collection must immediately return these new models, after adding them to its collection
                 var newModels = this.sourceCollection.prepareNext(numberToPrepare);
-                this.add(newModels, {at: this.length});
+                this.add(newModels, this.comparator ? {} : {at: this.length});
             }
 
             this._limitSize({dropFrom: "beginning"});
@@ -74,6 +76,14 @@ function(
             this.fetchNext(Math.ceil(this.minSize / 2));
             this._ensureSize({fetchFrom: "beginning"});
             this.trigger("after:changes"); // Notify that batch changes are finished
+        },
+
+        _configureSorting: function()
+        {
+            if(!_.isUndefined(this.sourceCollection.comparator))
+            {
+                this.comparator = this.sourceCollection.comparator;
+            }
         },
 
         _bindSourceCollectionEvents: function()
@@ -106,7 +116,7 @@ function(
                 // figure out which half it's in
 
                 // add it to the appropriate place
-                var adjustedOptions = _.defaults({at: offset}, options);
+                var adjustedOptions = this.comparator ? options : _.defaults({at: offset}, options);
                 this.add(model, adjustedOptions);
 
                 // bump either the beginning or end model off
@@ -321,10 +331,13 @@ function(
             this.scrollAnchor = this._closestChildToTop();
         },
 
-        _closestChildToTop: function() {
-            var filterScrollTarget = this.filterScrollTarget ? this.filterScrollTarget : function(child){return true;};
-            return _.chain(this.children.toArray())
-            .filter(filterScrollTarget)
+        _closestChildToTop: function(filteredChildren) {
+            if(!filteredChildren)
+            {
+                filteredChildren = this.children.toArray();
+            }
+
+            return _.chain(filteredChildren)
             .reject(function(child)
             {
                 return child.$el.css('display') === 'none';
@@ -418,7 +431,10 @@ function(
                 return;
             }
             clearTimeout(this.scrollStopTimeout);
-            var closestChild = this._closestChildToTop();
+
+            // allow to animate to only certain filtered children
+            var filteredChildren = this.filterScrollTarget ? this.children.filter(this.filterScrollTarget) : this.children.toArray();
+            var closestChild = this._closestChildToTop(filteredChildren);
 
             if(!closestChild)
             {
@@ -426,7 +442,7 @@ function(
             }
             
             var offset = Math.abs(closestChild.position.top);
-            if (offset < 100)
+            if (offset && offset < 100)
             {
                 this.scrollToModel(closestChild.view.model, 500);
             }

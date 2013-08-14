@@ -138,9 +138,20 @@ function (_, moment, TP, WorkoutDetailsModel, WorkoutDetailDataModel)
             return moment(this.get("workoutDay")).format(TP.utils.datetime.shortDateFormat);
         },
 
+        _createSortDate: function()
+        {
+            this.sortDate = this.getCalendarDay();
+        },
+
         getSortDate: function()
         {
-            return this.getCalendarDay();
+            if(!this.sortDate)
+            {
+                this._createSortDate();
+                this.on("change:workoutDay", this._createSortDate, this);
+            }
+
+            return this.sortDate;
         },
 
         // QL: Should be handled by calendar collection by watching workoutDay
