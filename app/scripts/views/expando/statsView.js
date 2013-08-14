@@ -29,7 +29,7 @@ function(
 
             this.on("close", function(){
                 this.model.get("detailData").off("change", this.reset, this);
-            })
+            });
         },
 
         reset: function()
