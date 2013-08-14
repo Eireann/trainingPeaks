@@ -124,9 +124,10 @@
         formatPace: function(value, options)
         {
             if (!value)
-            {
                 return this.formatEmptyValue(value, options);
-            }
+
+            value = value.toFixed(6);
+            
             var sportType = this.getMySportType(options);
             var paceAsMinutes = convertToViewUnits(value, "paceUnFormatted", undefined, sportType);
             var limitedPaceAsHours = adjustFieldRange(paceAsMinutes / 60, "pace");
