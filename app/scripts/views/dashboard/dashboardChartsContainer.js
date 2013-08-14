@@ -201,9 +201,18 @@ function(
                 this.charts.push(chartView);
                 chartView.on("remove", this.onChartRemove, this);
                 chartView.on("before:remove", this.onBeforeChartRemove, this);
+                chartView.on("popOut", this.onChartPopOut, this);
+                chartView.on("popIn", this.onChartPopIn, this);
             }, this);
         },
-
+        onChartPopOut: function()
+        {
+            this.ui.chartsContainer.packery("unbindResize");
+        },
+        onChartPopIn: function()
+        {
+            this.ui.chartsContainer.packery("bindResize");
+        },
         displayDashboardCharts: function()
         {
             _.each(this.charts, function(chartView)
@@ -267,7 +276,7 @@ function(
         {
             var gridster = this.ui.chartsContainer.data("gridster");
         },
-
+        
         initPackery: function()
         {
 
