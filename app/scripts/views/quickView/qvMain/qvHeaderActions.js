@@ -132,6 +132,9 @@ function (
 
         onMenuIconClicked: function()
         {
+            if (this.isNewWorkout && !this.model.get("workoutId"))
+                return;
+            
             var menuIcon = this.$("#menuIcon");
             var menu = new QVContextMenuView({ model: this.model });
             menu.on("delete", this.onDeleteWorkout, this);

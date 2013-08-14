@@ -84,11 +84,15 @@ function(TP, SaveWorkoutToLibraryCommand, AfterSaveView, saveWorkoutToLibraryTem
             var data = this.model.toJSON();
             data.libraries = [];
 
+            var userId = theMarsApp.user.get("userId");
             var self = this;
             this.libraries.each(function(library)
             {
                 var libraryData = library.toJSON();
-                data.libraries.push(libraryData);
+                if (userId === libraryData.ownerId)
+                {
+                    data.libraries.push(libraryData);
+                }
             });
 
             return data;

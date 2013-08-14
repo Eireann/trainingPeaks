@@ -126,7 +126,10 @@ function(_, moment)
     {
         var formattedMinutes = format.decimalHoursAsTime(minutes / 60, showSeconds, defaultValueIfEmpty, showDecimalSeconds);
 
-        if(minutes < 60)
+        // Special handling for less than 1 hour of duration. Using 59.9999 instead of 60 minutes
+        // to deal with floating point precision issues. 0.0001 minutes is in the order of hundredths of seconds,
+        // not an issue on output.
+        if(minutes < 59.9999)
         {
             var parts = formattedMinutes.split(":");
             parts.shift();
