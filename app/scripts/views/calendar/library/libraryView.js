@@ -5,7 +5,6 @@
     "TP",
     "views/pageContainer/libraryContainerView",
     "views/calendar/library/exerciseLibraryView",
-    "views/calendar/library/mealLibraryView",
     "views/calendar/library/trainingPlanLibraryView",
     "hbs!templates/views/calendar/library/libraryView"
 ],
@@ -15,7 +14,6 @@ function(
     TP,
     LibraryContainerView,
     ExerciseLibraryView,
-    MealLibraryView,
     TrainingPlanLibraryView,
     libraryTemplate)
 {
@@ -36,7 +34,6 @@ function(
         viewConstructors:
         {
             "exerciseLibrary": ExerciseLibraryView,
-            "mealLibrary": MealLibraryView,
             "plansLibrary": TrainingPlanLibraryView
         },
 
@@ -52,15 +49,16 @@ function(
                     {
                         exerciseLibraries: options && options.collections && options.collections.exerciseLibraries ? options.collections.exerciseLibraries : new TP.Collection()
                     };
-                    break;
                 }
+                break;
                 case "plansLibrary":
                 {
                     customOptions =
                     {
                         collection: options && options.collections && options.collections.trainingPlans ? options.collections.trainingPlans : new TP.Collection()
-                    }
+                    };
                 }
+                break;
             }
 
             return new this.viewConstructors[requestedView](customOptions);
