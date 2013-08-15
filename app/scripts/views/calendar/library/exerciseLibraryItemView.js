@@ -6,7 +6,7 @@ define(
     "hbs!templates/views/calendar/library/exerciseLibraryItemView",
     "hbs!templates/views/calendar/library/exerciseLibraryItemViewDragState"
 ],
-function(TP, touchPunch, draggable, ExerciseLibraryItemViewTemplate, ExerciseLibraryItemViewTemplateDragState)
+function(TP, touchPunch, draggable, exerciseLibraryItemViewTemplate, ExerciseLibraryItemViewTemplateDragState)
 {
     return TP.ItemView.extend(
     {
@@ -29,7 +29,7 @@ function(TP, touchPunch, draggable, ExerciseLibraryItemViewTemplate, ExerciseLib
         template:
         {
             type: "handlebars",
-            template: ExerciseLibraryItemViewTemplate
+            template: exerciseLibraryItemViewTemplate
         },
 
         initialize: function(options)
@@ -37,13 +37,9 @@ function(TP, touchPunch, draggable, ExerciseLibraryItemViewTemplate, ExerciseLib
             if (!this.model)
                 throw "Cannot have a LibraryExerciseItemView without a model";
 
-
             _.bindAll(this, "draggableHelper", "onDragStart", "onDragStop");
 
             this.getIconType();
-
-            this.model.on("select", this.onItemSelect, this);
-            this.model.on("unselect", this.onItemUnSelect, this);
         },
 
         onRender: function()
@@ -94,15 +90,11 @@ function(TP, touchPunch, draggable, ExerciseLibraryItemViewTemplate, ExerciseLib
 
         onMouseDown: function()
         {
-            this.model.trigger("select", this.model);
-        },
-
-        onItemSelect: function()
-        {
             this.$el.addClass("selected");
+            this.trigger("selected");
         },
 
-        onItemUnSelect: function()
+        unSelect: function()
         {
             this.$el.removeClass("selected");
         }

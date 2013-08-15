@@ -1,6 +1,8 @@
 ﻿(function()
 {
-    window.apiConfig = {
+    window.apiConfig =
+    {
+        environment: "{DEPLOY_TARGET}",
         configuration: "{DEPLOY_TARGET}",
         wwwRoot: "{WWW_ROOT}",
         apiRoot: "{API_ROOT}",

@@ -5,7 +5,7 @@
 ],
 function(_, TP)
 {
-    return TP.ItemView.extend(
+    return TP.Layout.extend(
     {
         widthClosed: 40,
         widthOpen: 310,
@@ -14,24 +14,21 @@ function(_, TP)
         initialize: function(options)
         {
             this.initWindowResize();
-            this.buildViews(options);
-            this.listenToViewEvents();
+            //this.buildViews(options);
+            this.views = {};
+            this.buildViewOptions = options;
+            //this.listenToViewEvents();
             this.activeLibraryName = null;
             this.on("library:unselect", this.onUnSelect, this);
 
-            this.on("render", this.renderLibrariesOnRender, this);
-            this.on("show", this.resizeOnShow, this);
+            this.on("render", this._resizeContainerHeight, this);
+            this.on("show", this._resizeContainerHeight, this);
         },
 
         initWindowResize: function()
         {
-            _.bindAll(this, "resizeContainerHeight");
-            $(window).on("resize", this.resizeContainerHeight);
-        },
-
-        buildViews: function(options)
-        {
-            this.views = {};
+            _.bindAll(this, "_resizeContainerHeight");
+            $(window).on("resize", this._resizeContainerHeight);
         },
 
         listenToViewEvents: function()
@@ -42,9 +39,9 @@ function(_, TP)
             }, this);
         },
 
-        ui:
+        regions:
         {
-            "activeLibraryContainer": "#activeLibraryContainer"
+            "activeLibraryRegion": "#activeLibraryContainer"
         },
 
         events:
@@ -54,96 +51,75 @@ function(_, TP)
 
         onTabClick: function(e)
         {
-            this.toggleLibrary(e.target.id);
+            this._toggleLibrary(e.target.id);
         },
 
-        toggleLibrary: function(newLibraryName)
+        _renderLibraryView: function(libraryName)
         {
-            if (newLibraryName !== this.activeLibraryName)
+            // Create & Render library contents
+            this.currentLibraryView = this.buildView(libraryName, this.buildViewOptions);
+            this.currentLibraryView.listenTo(this.currentLibraryView, "select", this.onSelect, this);
+            this.activeLibraryRegion.show(this.currentLibraryView);
+
+            // Open the library container itself
+            this.$el.parent().removeClass("closed").addClass("open");
+            this.animate({ width: this.widthOpen });
+            this._turnOnTab(libraryName);
+            this._resizeContainerHeight();
+
+            // Reset scroll to top
+            this.$(".scrollable").scrollTop(0);
+        },
+
+        _closeLibrary: function()
+        {
+            this.$el.parent().removeClass("open").addClass("closed");
+            this.animate({ width: this.widthClosed });
+
+            if (this.activeLibraryName)
+                this._turnOffTab(this.activeLibraryName);
+        },
+
+        _toggleLibrary: function(newLibraryName)
+        {
+            if(!this.viewConstructors.hasOwnProperty(newLibraryName))
+                return;
+
+            if(this._isOpen())
             {
-                this.switchLibrary(newLibraryName);
-                this.$(".scrollable").scrollTop(0);
+                if(this.activeLibraryName === newLibraryName)
+                    this._closeLibrary();
+                else
+                {
+                    this._turnOffTab(this.activeLibraryName);
+                    this.activeLibraryName = newLibraryName;
+                    this._renderLibraryView(newLibraryName);
+                }
             }
             else
             {
-                if (this.isOpen())
-                {
-                    this.hideLibrary();
-                }
-                else
-                {
-                    this.showLibrary();
-                }
-            }
-        },
-
-        switchLibrary: function(newLibraryName)
-        {
-            if (newLibraryName && this.views.hasOwnProperty(newLibraryName))
-            {
-                if (this.activeLibraryName && newLibraryName !== this.activeLibraryName)
-                {
-                    this.views[this.activeLibraryName].$el.hide();
-                    this.turnOffTab(this.activeLibraryName);
-                }
                 this.activeLibraryName = newLibraryName;
-                this.showLibrary();
+                this._renderLibraryView(newLibraryName);                
             }
         },
 
-        turnOffTab: function(tabName)
+        _turnOffTab: function(tabName)
         {
             this.$("#tabs #" + tabName).removeClass("active");
         },
 
-        turnOnTab: function(tabName)
+        _turnOnTab: function(tabName)
         {
             this.$("#tabs #" + tabName).addClass("active");
         },
 
-        isOpen: function()
+        _isOpen: function()
         {
             return this.$el.parent().hasClass("open");
         },
 
-        showLibrary: function()
-        {
-            for (var libraryName in this.views)
-            {
-                if (libraryName !== this.activeLibraryName)
-                {
-                    this.views[libraryName].$el.hide();
-                }
-            }
-
-            var self = this;
-            this.views[this.activeLibraryName].$el.show();
-
-            this.$el.parent().removeClass("closed").addClass("open");
-            this.animate({ width: this.widthOpen });
-            this.turnOnTab(this.activeLibraryName);
-            this.resizeContainerHeight();
-
-        },
-
-        hideLibrary: function()
-        {
-            if (!this.isOpen())
-                return;
-
-            this.$el.parent().removeClass("open").addClass("closed");
-            this.animate({ width: this.widthClosed });
-            if (this.activeLibraryName)
-            {
-                var self = this;
-                this.views[this.activeLibraryName].$el.hide(200);
-                this.turnOffTab(this.activeLibraryName);
-            }
-        },
-
         animate: function(cssAttributes)
         {
-
             // allow the calendar or other listeners to hook into our animation
             var duration = 300;
             this.trigger("animate", cssAttributes, duration);
@@ -164,32 +140,15 @@ function(_, TP)
             this.ui.activeLibraryContainer.removeClass('waiting');
         },
 
-        renderLibrariesOnRender: function()
-        {
-            for (var libraryName in this.views)
-            {
-                var library = this.views[libraryName];
-                library.render();
-                this.ui.activeLibraryContainer.append(library.$el);
-                library.$el.hide();
-            }
-            this.resizeContainerHeight();
-        },
-
-        resizeOnShow: function()
-        {
-            this.resizeContainerHeight();
-        },
-
-        resizeContainerHeight: function(event)
+        _resizeContainerHeight: function(event)
         {
             var headerHeight = $("#navigation").height();
             var windowHeight = $(window).height();
             var libraryHeight = windowHeight - headerHeight - 75 + 'px';
+
             if (this.$el)
-            {
                 this.$el.height(libraryHeight);
-            }
+
             this.$("#tabs").css({ height: libraryHeight });
             this.$("#activeLibraryContainer").css({ height: libraryHeight });
         },
@@ -201,11 +160,7 @@ function(_, TP)
 
         onUnSelect: function()
         {
-            for (var libraryName in this.views)
-            {
-                var library = this.views[libraryName];
-                library.trigger("library:unselect");
-            }
+            this.currentLibraryView.unSelect();
         }
 
     });

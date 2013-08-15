@@ -21,23 +21,15 @@ function(TP, ExerciseLibraryModel)
             return _.isString(libraryName) ? libraryName.trim().toLowerCase() : libraryName;
         },
 
-        initialize: function()
+        getDefaultLibraryId: function()
         {
-            this.on("reset", this.setDefaultSelectedLibrary, this);
-        },
-
-        setDefaultSelectedLibrary: function()
-        {
-            var libraryWithOldestCreationDate = this.models[0];
-            
-            _.each(this.models, function(model)
+            var selectedLibrary = _.find(this.models, function(model)
             {
-                if(model.get("dateCreated") < libraryWithOldestCreationDate.get("dateCreated"))
-                    libraryWithOldestCreationDate = model;
+                if(model.get("libraryName") === "My Library")
+                    return true;
             });
 
-            if(libraryWithOldestCreationDate)
-                libraryWithOldestCreationDate.set("selected", true, { silent: true });
+            return selectedLibrary.id;
         }
     });
 });

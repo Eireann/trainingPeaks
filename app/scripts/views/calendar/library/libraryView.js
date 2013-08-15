@@ -21,7 +21,6 @@ function(
 {
     return LibraryContainerView.extend(
     {
-
         template:
         {
             type: "handlebars",
@@ -34,23 +33,37 @@ function(
             this.constructor.__super__.initialize.call(this, options);
         },
 
-        buildViews: function(options)
+        viewConstructors:
         {
-            this.views =
+            "exerciseLibrary": ExerciseLibraryView,
+            "mealLibrary": MealLibraryView,
+            "plansLibrary": TrainingPlanLibraryView
+        },
+
+        buildView: function(requestedView, options)
+        {
+            var customOptions = {};
+
+            switch(requestedView)
             {
-                exerciseLibrary: new ExerciseLibraryView(
+                case "exerciseLibrary":
                 {
-                    exerciseLibraries: options && options.collections && options.collections.exerciseLibraries ?
-                        options.collections.exerciseLibraries : new TP.Collection()
-                }),
-                mealLibrary: new MealLibraryView(),
-                plansLibrary: new TrainingPlanLibraryView({
-                    collection: options && options.collections && options.collections.trainingPlans ?
-                        options.collections.trainingPlans : new TP.Collection()
-                })
-            };
+                    customOptions = 
+                    {
+                        exerciseLibraries: options && options.collections && options.collections.exerciseLibraries ? options.collections.exerciseLibraries : new TP.Collection()
+                    };
+                    break;
+                }
+                case "plansLibrary":
+                {
+                    customOptions =
+                    {
+                        collection: options && options.collections && options.collections.trainingPlans ? options.collections.trainingPlans : new TP.Collection()
+                    }
+                }
+            }
 
+            return new this.viewConstructors[requestedView](customOptions);
         }
-
     });
 });

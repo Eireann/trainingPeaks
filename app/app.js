@@ -43,7 +43,6 @@ function(
     notAllowedForAlphaTemplate,
     faderegion)
 {
-
     var theApp = new TP.Application();
     theApp.ajaxCachingEnabled = false;
     theApp.historyEnabled = true;
@@ -125,19 +124,11 @@ function(
                         console.log("XHR ERROR");
                         if(Raven)
                             Raven.captureException({event: event, xhr: xhr});
+                        else if(_rollbar)
+                            _rollbar.push({ event: event, xhr: xhr });
                     }
                     catch(e)
                     {/* IGNORE - we are only trying to report an exception, if reporting doesn't work, we don't care */}
-
-                    /*
-                    if (self.clientEvents)
-                    {
-                        var responseText = xhr.responseText;
-                        var status = xhr.status;
-                        var statusText = xhr.statusText;
-
-                        self.clientEvents.logEvent({ Event: { Type: "Error", Label: "AjaxError", AppContext: "ResponseText: " + responseText + ", Status: " + status + ", StatusText:" + statusText } });
-                    }*/
                 }
             });
         });

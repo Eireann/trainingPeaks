@@ -92,6 +92,22 @@ src:url("assets/fonts/2daec1fd-cd45-448e-b86e-ec73aacdb4ec.eot?#iefix") format("
 </head>
 
 <body>
+  <!-- Load the apiConfig as the very first script since we need those variables early on -->
+
+  <!--(if target dummy)><!-->
+  <script>window.apiRoot = "dev";</script>
+  <script src="apiConfig.dev.js"></script>
+  <script>apiConfig.assetsRoot = "build/debug/assets/";</script>
+  <!--<!(endif)-->
+
+  <!--(if target build)>
+  <script src="apiConfig.js"></script>
+  <!(endif)-->
+  
+  <!--(if target build_debug)>
+  <script src="apiConfig.dev.js"></script>
+  <!(endif)-->
+
   <!-- Application container. -->
     <div id="navigation"></div>
     <div role="main" id="main"></div>
@@ -100,6 +116,33 @@ src:url("assets/fonts/2daec1fd-cd45-448e-b86e-ec73aacdb4ec.eot?#iefix") format("
   <!-- Third Party Libraries -->
   <!--(if target dummy)><!-->
   <script src="./vendor/js/libs/jquery/jquery.js"></script>
+
+  <!-- ROLLBAR ERROR LOGGING & JQUERY PLUGIN -->
+  <!--(if target build)>
+  <script>
+  var _rollbarParams =
+  {
+    "server.environment": window.apiConfig ? window.apiConfig.environment : "local",
+    "server.sha": window.apiConfig ? window.apiConfig.buildNumber : ""
+  };
+
+  _rollbarParams["notifier.snippet_version"] = "2"; var _rollbar=["3b4e2366466f45e3b643a7d6b901bf0e", _rollbarParams]; var _ratchet=_rollbar;
+  (function(w,d){w.onerror=function(e,u,l){_rollbar.push({_t:'uncaught',e:e,u:u,l:l});};var i=function(){var s=d.createElement("script");var 
+  f=d.getElementsByTagName("script")[0];s.src="//d37gvrvc0wt4s1.cloudfront.net/js/1/rollbar.min.js";s.async=!0;
+  f.parentNode.insertBefore(s,f);};if(w.addEventListener){w.addEventListener("load",i,!1);}else{w.attachEvent("onload",i);}})(window,document);
+  </script>
+
+  <script>
+  !function(r,n,e){var t={"notifier.plugins.jquery.version":"0.0.1"};n._rollbar.push({_rollbarParams:t});r(e).ajaxError(function(r,e,t,u){
+  var o=e.status;var a=t.url;n._rollbar.push({level:"warning",msg:"jQuery ajax error for url "+a,jquery_status:o,jquery_url:a,jquery_thrown_error:u,
+  jquery_ajax_error:true})});var u=r.fn.ready;r.fn.ready=function(r){return u.call(this,function(){try{r()}catch(e){n._rollbar.push(e)}})};var o={};
+  var a=r.fn.on;r.fn.on=function(r,e,t,u){var f=function(r){var e=function(){try{return r.apply(this,arguments)}catch(e){n._rollbar.push(e);
+  return null}};o[r]=e;return e};if(e&&typeof e==="function"){e=f(e)}else if(t&&typeof t==="function"){t=f(t)}else if(u&&typeof u==="function"){
+  u=f(u)}return a.call(this,r,e,t,u)};var f=r.fn.off;r.fn.off=function(r,n,e){if(n&&typeof n==="function"){n=o[n];delete o[n]}else{e=o[e];
+  delete o[e]}return f.call(this,r,n,e)}}(jQuery,window,document);
+  </script>
+  <!(endif)-->
+
   <script src="./vendor/js/libs/flot/jquery.flot.js"></script>
   <script src="./vendor/js/libs/flot/jquery.flot.crosshair.js"></script>
   <script src="./vendor/js/libs/flot/jquery.flot.resize.js"></script>
@@ -116,19 +159,13 @@ src:url("assets/fonts/2daec1fd-cd45-448e-b86e-ec73aacdb4ec.eot?#iefix") format("
   <script src="http://maps.google.com/maps/api/js?v=3.2&sensor=false"></script>
   <!(endif)-->
 
-
-
   <!-- Application source. -->
 
   <!--(if target dummy)><!-->
-  <script>window.apiRoot = "dev";</script>
-  <script src="apiConfig.dev.js"></script>
-  <script>apiConfig.assetsRoot = "build/debug/assets/";</script>
   <script data-main="./app/config/config" src="./vendor/js/libs/require.js"></script>
   <!--<!(endif)-->
 
   <!--(if target build)>
-  <script src="apiConfig.js"></script>
   <script src="single.min.js"></script>
   <script>
       requirejs(
@@ -139,7 +176,6 @@ src:url("assets/fonts/2daec1fd-cd45-448e-b86e-ec73aacdb4ec.eot?#iefix") format("
   <!(endif)-->
 
   <!--(if target build_debug)>
-  <script src="apiConfig.dev.js"></script>
   <script src="single.js"></script>
   <script>
       requirejs(

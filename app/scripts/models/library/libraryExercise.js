@@ -28,6 +28,5 @@ function (TP)
             "description": null,
             "exerciseLibraryItemFilters": null
         }
-
     });
 });

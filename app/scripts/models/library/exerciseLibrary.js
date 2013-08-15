@@ -34,7 +34,14 @@ function (TP, LibraryExercisesCollection)
         initialize: function(options)
         {
             this.exercises = new LibraryExercisesCollection();
-            this.exercises.on("select", this.onSelect, this);
+            
+            //#this.exercises.on("select", this.onSelect, this);
+
+            // Users have the ability to purchase Libraries from other users/coaches. Those might be named the same as
+            // other libraries that already exist in the User's list. Let's add the owner's name if it's not our library.
+            // TODO: Conver OwnerId to Owner Name (in API?)
+            if(this.get("ownerId") !== theMarsApp.user.get("userId"))
+                this.set("libraryName", this.get("libraryName") + " (" + this.get("ownerId") + ")", { silent: true });
         },
 
         fetchExercises: function(force)
@@ -45,13 +52,7 @@ function (TP, LibraryExercisesCollection)
             if (this.has("exerciseLibraryId"))
                 this.exercises.exerciseLibraryId = this.get("exerciseLibraryId");
 
-            this.exercises.fetch({ reset: true });
-        },
-
-        onSelect: function(model)
-        {
-            this.trigger("select", model);
+            return this.exercises.fetch({ reset: true });
         }
-
     });
 });

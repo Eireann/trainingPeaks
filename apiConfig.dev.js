@@ -2,6 +2,7 @@
 (function()
 {
     // Get environment name from index.html build target
+    var environment = "local";
     var configuration = window.hasOwnProperty('apiRoot') ? window.apiRoot : 'dev';
 
     var wwwRoots =
@@ -24,6 +25,7 @@
 
     window.apiConfig =
     {
+        environment: environment,
         configuration: configuration,
         wwwRoot: wwwRoots[configuration],
         apiRoot: apiRoots[configuration],

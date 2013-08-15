@@ -6,6 +6,7 @@
     "jquerySelectBox",
     "backbone.marionette",
     "TP",
+    "models/library/libraryExercise",
     "models/library/libraryExercisesCollection",
     "views/calendar/library/exerciseLibraryItemView",
     "views/calendar/library/exerciseLibraryAddItemView",
@@ -18,24 +19,27 @@ function(
     jquerySelectBox,
     Marionette,
     TP,
+    LibraryExerciseModel,
     LibraryExercisesCollection,
     ExerciseLibraryItemView,
     ExerciseLibraryAddItemView,
     exerciseLibraryViewTemplate
     )
 {
+    var LibraryExerciseViewAdapterCollection = TP.Collection.extend(
+    {
+        model: LibraryExerciseModel,
+        comparator: function(model)
+        {
+            var itemName = model.get("itemName");
+            return _.isString(itemName) ? itemName.trim().toLowerCase() : itemName;
+        }
+    });
+
     return TP.CompositeView.extend(
     {
         tagName: "div",
         className: "exercises",
-
-        getItemView: function(item)
-        {
-            if (item)
-                return ExerciseLibraryItemView;
-            else     
-                return TP.ItemView;
-        },
 
         template:
         {
@@ -47,13 +51,58 @@ function(
         {
             "click button#add": "addToLibrary",
             "change #librarySelect": "onSelectLibrary",
-            "keyup #search": "onSearch",
-            "change #search": "onSearch"
+            "keyup #search": "_updateCollection",
+            "change #search": "_updateCollection"
         },
 
         ui:
         {
-            search: "#search"
+            search: "#search",
+            exercisesContainer: "div.exercisesContainer"
+        },
+
+        itemViewContainer: "div.exercisesContainer",
+
+        getItemView: function(item)
+        {
+            if (item)
+                return ExerciseLibraryItemView;
+            else     
+                return TP.ItemView;
+        },
+
+        initialize: function(options)
+        {
+            this.libraries = options && options.exerciseLibraries ? options.exerciseLibraries : new TP.Collection();
+
+            this.model = new TP.Model({ selected: this.libraries.getDefaultLibraryId(), libraries: this.libraries.toJSON() });
+            this.collection = new LibraryExerciseViewAdapterCollection();
+
+            this.listenTo(this.model, "change:selected", this._onLibrariesChanged, this);
+
+            var self = this;
+            this.$el.addClass("waiting");
+
+            $.when.apply($, this._loadAllExercises(), this).done(function()
+            {
+                self.$el.removeClass("waiting");
+                self._onLibrariesChanged();
+            });
+
+            this.selectedChild = null;
+            this.on("itemview:selected", function(childView)
+            {
+                self.trigger("select");
+                if(self.selectedChild)
+                    self.selectedChild.unSelect();
+                self.selectedChild = childView;
+            });
+        },
+
+        unSelect: function()
+        {
+            if(this.selectedChild)
+                this.selectedChild.unSelect();
         },
 
         onRender: function()
@@ -62,6 +111,8 @@ function(
 
             setImmediate(function()
             {
+                self.$("#librarySelect").val(self.model.get("selected"));
+
                 self.$("#librarySelect").selectBoxIt(
                 {
                     dynamicPositioning: false
@@ -75,107 +126,34 @@ function(
             view.render();
         },
 
-        initialize: function(options)
+        _onLibrariesChanged: function(options)
         {
-            this.libraries = options && options.exerciseLibraries ? options.exerciseLibraries : new TP.Collection();
-            this.libraries.on("reset", this.loadAllExercises, this);
-            this.listenForSelection();
+            this._updateCollection();
         },
 
-        listenForSelection: function()
+        _loadAllExercises: function()
         {
-            var view = this;
+            var deferreds = [];
             this.libraries.each(function(library)
             {
-                library.on("select", view.onItemSelect, view);
+                deferreds.push(library.fetchExercises());
             });
-
-            this.on("library:unselect", this.onUnSelect, this);
-        },
-
-        onItemSelect: function(model)
-        {
-            if (this.selectedItem && this.selectedItem !== model)
-                this.selectedItem.trigger("unselect", this.selectedItem);
-
-            this.trigger("select");
-            this.selectedItem = model;
-        },
-
-        onUnSelect: function()
-        {
-            if (this.selectedItem)
-            {
-                this.selectedItem.trigger("unselect", this.selectedItem);
-                this.selectedItem = null;
-            }
-        },
-
-        loadAllExercises: function()
-        {
-            this.switchLibrary(this.libraries.models[0]);
-
-            var view = this;
-            this.libraries.each(function(library)
-            {
-                library.fetchExercises();
-                library.on("select", view.onItemSelect, view);
-            });
-        },
-
-        switchLibrary: function(library)
-        {
-            this.activeLibrary = library;
-            this.collection = library.exercises;
-            Marionette.bindEntityEvents(this, this.collection, Marionette.getOption(this, "collectionEvents"));
-            this.collection.on('reset', this.render, this);
-            this.render();
-        },
-
-        serializeData: function()
-        {
-            var data =
-            {
-                libraries: []
-            };
-
-            var self = this;
-            this.libraries.each(function(library)
-            {
-                var libraryData = library.toJSON();
-               
-                if (library === self.activeLibrary)
-                    libraryData.selected = true;
-
-                data.libraries.push(libraryData);
-            });
-
-            return data;
+            return deferreds;
         },
 
         onSelectLibrary: function()
         {
             var selectedLibraryId = Number(this.$("#librarySelect").val());
-            var self = this;
-            this.libraries.each(function(library)
-            {
-                if (library.id === selectedLibraryId)
-                {
-                    self.switchLibrary(library);
-                }
-            });
+            this.model.set("selected", selectedLibraryId);
         },
 
-        onSearch: function()
+        _updateCollection: function()
         {
-            var searchText = this.ui.search.val().trim();
-            this.collection = TP.utils.collections.search(
-                                                          LibraryExercisesCollection,
-                                                          this.activeLibrary.exercises,
-                                                          searchText,
-                                                          ["itemName"]
-                                                          );
-          this._renderChildren();
+            var selectedLibrary = this.libraries.get(this.model.get("selected"));
+            var wrapperCollection = new TP.Collection(selectedLibrary.exercises.models);
+
+            var searchText = this.ui.search.val ? this.ui.search.val().trim() : "";
+            this.collection.reset(TP.utils.collections.search(LibraryExerciseViewAdapterCollection, wrapperCollection, searchText, ["itemName"]).models);
         }
 
     }, { activeLibrary: null });
