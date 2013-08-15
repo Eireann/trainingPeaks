@@ -122,6 +122,7 @@ function(
                 {
                     try
                     {
+                        console.log("XHR ERROR");
                         if(Raven)
                             Raven.captureException({event: event, xhr: xhr});
                     }
@@ -180,7 +181,7 @@ function(
         this.addInitializer(function()
         {
             this.dataManagers = {
-                reporting: new DataManager()
+                reporting: new DataManager({ resetPatterns: [/fitness/i] })
             };
 
             this.on("save:model", function(model)
