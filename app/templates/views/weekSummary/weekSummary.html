@@ -11,20 +11,31 @@
 <div id="weekSummaryContainer" class="cf">
 	<div class="weekSummaryBarGraphContain cf">
 
-		{{#ifAny totalTimePlanned totalDaysCompleted }}
-		<div class="weekSummaryBarGraphItem cf total {{#ifNot totalTimePlanned }}noPlannedDuration{{/ifNot}}" data-type="total duration">
+		{{#if totalTimePlanned }}
+		<div class="weekSummaryBarGraphItem cf total" data-type="total duration">
 			<div class="weekSummaryBarGraphLabel {{ workoutTypeCssName workoutTypeId}}">
-				{{$ "Total" }} {{#ifNot totalTimePlanned}}{{$ "Days" }}{{ else }}{{$ "Duration" }}{{/ifNot}}
+				{{$ "Total" }} {{$ "Duration" }}
 			</div>		
 			<div class="weekSummaryTimeContain">
-				{{#if totalTimePlanned }}
                 <span class="weekSummaryTimePlanned total">{{formatTime totalTimePlanned false "--:--"}}</span>
 				<span class="weekSummaryTimeCompleted total">{{formatTime totalTimeCompleted false ""}}</span>
-				{{/if}}
 			</div>
             {{{ weekSummaryBarGraph totalTimePlanned totalTimeCompleted totalDaysCompleted 0 }}}
 		</div>
-		{{/ifAny}}
+		{{/if}}
+
+		{{#if tssPlanned }}
+		<div class="weekSummaryBarGraphItem cf tss" data-type="total tss">
+			<div class="weekSummaryBarGraphLabel">
+				{{$ "Total" }} {{$ "TSS" }}
+			</div>
+			<div class="weekSummaryTimeContain">
+				<span class="weekSummaryTSSPlanned">{{tssPlanned}}</span>
+				<span class="weekSummaryTSSCompleted">{{tssCompleted}}</span>
+			</div>
+			{{{ weekSummaryBarGraph tssPlanned tssCompleted totalDaysCompleted 0 }}}
+		</div>
+		{{/if}}
 
 		{{#each totalsByWorkoutTypeCompacted }}
 			{{#with duration}}
@@ -60,6 +71,12 @@
 	
 	<div id="weekSummaryMetricContain" class="statisticsSummary">
 
+		<div class="statsRow" id="duration">
+	        <label>{{$ "Duration" }}</label>
+	        <span class="value">{{conversion "formatDuration" totalTimeCompleted this "0"}}</span>
+	        <span class="units">{{getUnitsLabel "time"}}</span>
+	    </div>
+
 		<div class="statsRow" id="distance">
 	        <label>{{$ "Distance" }}</label>
 	        <span class="value">{{conversion "formatDistance" totalDistanceCompleted this "0"}}</span>
@@ -69,7 +86,7 @@
 		<div class="statsRow" id="tss">
 	        <label>{{$ "TSS" }}</label>
 	        <span class="value">{{conversion "formatTSS" tssCompleted this "0"}}</span>
-	        <span class="units"></span>
+	        <span class="units">{{getUnitsLabel "tss"}}</span>
 	    </div>
 
 		{{#each totalsByWorkoutTypeCompacted }}

@@ -3,32 +3,36 @@
         {{#if displayDays}}
             <div>
                 <span id="weekSummaryBarChartHoverCompletedLabel" class="plannedOrCompletedLabel">{{$ "Completed" }}</span>
-                <span id="weekSummaryBarChartHoverCompleted" class ="sumnmaryStats">{{ daysCompleted }} {{$ "Days" }}</span>
+                <span id="weekSummaryBarChartHoverCompleted" class ="summaryStats">{{ daysCompleted }} {{$ "Days" }}</span>
             </div>
         {{else}}
             <div>
                 <span id="weekSummaryBarChartHoverPlannedLabel" class="plannedOrCompletedLabel">{{$ "Planned" }}</span>
                 {{#if displayTime }}
-                    <span id="weekSummaryBarChartHoverPlanned" class ="sumnmaryStats">{{formatTime timePlanned false "--:--"}}</span>
+                    <span id="weekSummaryBarChartHoverPlanned" class ="summaryStats">{{formatTime timePlanned false "--:--"}}</span>
                 {{else}}
                     {{#if distancePlanned}}
-                    <span id="weekSummaryBarChartHoverPlanned" class ="sumnmaryStats">{{ conversion "formatDistance" distancePlanned this}}</span>
+                    <span id="weekSummaryBarChartHoverPlanned" class ="summaryStats">{{ conversion "formatDistance" distancePlanned this}}</span>
                     <span class="units">{{ getUnitsLabel "distance" workoutTypeValueId }}</span>
                     {{else}}
-                    <span id="weekSummaryBarChartHoverPlanned" class ="sumnmaryStats">--</span>
+                        {{#if displayTSS}}
+                        <span id="weekSummaryBarChartHoverPlanned" class="summaryStats">{{conversion "formatTSS" tssPlanned this "0"}}
+                        {{/if}}
                     {{/if}}
                 {{/if}}
             </div>
             <div>
                 <span id="weekSummaryBarChartHoverCompletedLabel" class="plannedOrCompletedLabel">{{$ "Completed" }}</span>
                 {{#if displayTime }}
-                    <span id="weekSummaryBarChartHoverCompleted" class ="sumnmaryStats">{{formatTime timeCompleted false "--:--"}}</span>
+                    <span id="weekSummaryBarChartHoverCompleted" class ="summaryStats">{{formatTime timeCompleted false "--:--"}}</span>
                 {{else}}
                     {{#if distanceCompleted}}
-                    <span id="weekSummaryBarChartHoverCompleted" class ="sumnmaryStats">{{ conversion "formatDistance" distanceCompleted this}}</span>
+                    <span id="weekSummaryBarChartHoverCompleted" class ="summaryStats">{{ conversion "formatDistance" distanceCompleted this}}</span>
                     <span class="units">{{ getUnitsLabel "distance" workoutTypeValueId }}</span>
                     {{else}}
-                    <span id="weekSummaryBarChartHoverCompleted" class ="sumnmaryStats">--</span>
+                        {{#if displayTSS}}
+                        <span id="weekSummaryBarChartHoverCompleted" class="summaryStats">{{conversion "formatTSS" tssCompleted this "0"}}
+                        {{/if}}
                     {{/if}}
                 {{/if}}
             </div>

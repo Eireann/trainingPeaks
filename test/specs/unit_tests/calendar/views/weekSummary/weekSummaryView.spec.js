@@ -3,9 +3,10 @@ requirejs(
 [
     "app",
     "TP",
+    "jquery",
     "views/weekSummary/weekSummaryView"
 ],
-function (theMarsApp, TP, WeekSummaryView)
+function (theMarsApp, TP, $, WeekSummaryView)
 {
     describe("WeekSummaryView", function ()
     {
@@ -91,8 +92,8 @@ function (theMarsApp, TP, WeekSummaryView)
 
             expect(view.model.get("totalTimeCompleted")).toBe(0);
             expect(view.model.get("totalTimePlanned")).toBe(0);
-            expect(view.model.get("tssCompleted")).toBe('0');
-            expect(view.model.get("tssPlanned")).toBe('0');
+            expect(view.model.get("tssCompleted")).toBe(0);
+            expect(view.model.get("tssPlanned")).toBe(0);
 
             dayModel1.itemsCollection.add(workout1);
             
@@ -100,8 +101,8 @@ function (theMarsApp, TP, WeekSummaryView)
 
             expect(view.model.get("totalTimeCompleted")).toBe(1);
             expect(view.model.get("totalTimePlanned")).toBe(2);
-            expect(view.model.get("tssCompleted")).toBe('100');
-            expect(view.model.get("tssPlanned")).toBe('200');
+            expect(view.model.get("tssCompleted")).toBe(100);
+            expect(view.model.get("tssPlanned")).toBe(200);
 
             dayModel1.itemsCollection.add(workout2);
             dayModel2.itemsCollection.add(workout3);
@@ -111,8 +112,8 @@ function (theMarsApp, TP, WeekSummaryView)
             
             expect(view.model.get("totalTimeCompleted")).toBe(10);
             expect(view.model.get("totalTimePlanned")).toBe(20);
-            expect(view.model.get("tssCompleted")).toBe('1000');
-            expect(view.model.get("tssPlanned")).toBe('2000');
+            expect(view.model.get("tssCompleted")).toBe(1000);
+            expect(view.model.get("tssPlanned")).toBe(2000);
         });
 
         it("Should aggregate weekly workout totals of duration and distance for all workout types except Day Off", function()
@@ -189,5 +190,40 @@ function (theMarsApp, TP, WeekSummaryView)
             expect(view.model.get("totalsByWorkoutType.7.duration.completed")).toBe(undefined);
             expect(view.model.get("totalsByWorkoutType.7.duration.planned")).toBe(undefined);
         });
+        describe("template logic", function()
+        {
+            var view;
+            beforeEach(function()
+            {
+                spyOn(WeekSummaryView.prototype, "onBeforeRender").andReturn("");
+                var weekCollection = new TP.Collection();
+                var dayModel1 = new TP.Model();
+                dayModel1.itemsCollection = new TP.Collection();
+                var summaryModel = new TP.Model();
+                weekCollection.add(dayModel1);
+                weekCollection.add(summaryModel);
+                view = new WeekSummaryView({ model: summaryModel });
+            });
+
+            it("Should not show the total duration bar if there is no Planned Duration", function()
+            {
+                view.model.set({totalTimePlanned: 0, totalDaysCompleted: 5}, {silent: true});
+                view.render();
+                expect(view.$el.find('.weekSummaryBarGraphItem.total').length).toBe(0);
+            });
+            it("Should list Total Duration as a numeric value if no Planned Duration for the week", function()
+            {
+                view.model.set({totalTimePlanned: 0, totalTimeCompleted: 1});
+                view.render();
+                expect(view.$el.find('.statsRow#duration .value').text()).toBe("1:00:00");
+            });
+            it("Should show a total TSS bar if any Planed TSS is entered for the week", function()
+            {
+                view.model.set({tssPlanned: 5});
+                view.render();
+                expect(view.$el.find('.weekSummaryBarGraphItem.tss').length).toBe(1);
+            });
+        });
+
     });
 });
