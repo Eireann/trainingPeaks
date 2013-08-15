@@ -25,8 +25,8 @@ function()
                 ATL: "#f945d7",
                 CTL: "#38709a",
                 TSS: "#b90807",
-                ctlGradient: { dark: "#eaebec", light: "#b5c7d4" },
-                futureCTLGradient: { dark: "#eaebec", light: "#cacbcc" },
+                ctlGradient: { dark: "#99b7cd", light: "#eaebec" },
+                futureCTLGradient: { dark: "#cccccc", light: "#f4f5f5" },
                 tsbGradient: { dark: "rgba(234, 235, 236, 0.4)", light: "rgba(255,165,0, 0.4)" }
             },
 
