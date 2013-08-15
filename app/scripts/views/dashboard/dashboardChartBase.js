@@ -59,6 +59,7 @@ function(
 
         initialize: function(options)
         {
+
             if(!this.model)
             {
                 throw "Dashboard Chart requires a settings model";
@@ -71,6 +72,13 @@ function(
 
             this.listenTo(this.model, "dashboardDatesChange", _.bind(this._onDashboardDatesChange, this));
             this.on("render", this.renderChartAfterRender, this);
+        },
+
+        modelEvents: {
+            "request": "onWaitStart",
+            "sync": "onWaitStop",
+            "error": "onWaitStop",
+            "destroy": "onWaitStop"
         },
 
         setupDataModel: function(options)

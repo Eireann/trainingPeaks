@@ -8,8 +8,10 @@
 
     var DataManager = function(options)
     {
-        this.resetPatterns = options.resetPatterns ? options.resetPatterns : [];
-        this.reset();
+        this.resetPatterns = options && options.resetPatterns ? options.resetPatterns : [];
+        this.ignoreResetPatterns = options && options.ignoreResetPatterns ? options.ignoreResetPatterns : [];
+        this._resolvedRequests = {};
+        this._pendingRequests = {};
     };
 
     _.extend(DataManager.prototype, {
@@ -56,10 +58,17 @@
                 return true;
             }
 
-            return _.any(this.resetPatterns, function(matcher)
+            var ignoreable = _.any(this.ignoreResetPatterns, function(matcher)
             {
                 return matcher.test(modelUrl);
             });
+
+            var resettable = _.any(this.resetPatterns, function(matcher)
+            {
+                return matcher.test(modelUrl);
+            });
+
+            return resettable && !ignoreable;
         },
 
         _hasResolvedData: function(requestSignature)
@@ -100,6 +109,7 @@
                 var self = this;
                 options = _.extend({}, options);
                 var originalSuccess = options.success ? options.success : null;
+
                 options.success = function(modelOrCollection, response, options)
                 {
                     var parsedData = modelOrCollection.parse(response);
@@ -112,10 +122,7 @@
 
                     self._resolveAllPendingRequests(requestSignature);
                 }; 
-                options.error = function(modelOrCollection, response, options)
-                {
-                    console.log("Request failed to resolve: " + modelOrCollection);
-                };
+
                 modelOrCollection.fetch(options);
             } else {
                 this._pendingRequests[requestSignature].push(request);

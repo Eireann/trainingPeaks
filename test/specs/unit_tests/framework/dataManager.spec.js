@@ -26,7 +26,8 @@ function(
         beforeEach(function()
         {
             dataManager = new DataManager({
-                resetPatterns: [/resetme/i]
+                resetPatterns: [/resetme/i],
+                ignoreResetPatterns: [/ignoreme/i]
             });
         });
 
@@ -89,6 +90,19 @@ function(
         it("Should not reset when a non matching model is saved", function()
         {
             var saveModelUrl = "/fitness/v1/idontmatch/";
+            var fakeModelOne = new FakeModel();
+            dataManager.fetch(fakeModelOne);
+            fakeModelOne.resolve({ valueOne: "hello", valueTwo: "world" });
+
+            dataManager.reset(saveModelUrl); 
+            var fakeModelTwo = new FakeModel();
+            var deferredTwo = dataManager.fetch(fakeModelTwo);
+            expect(deferredTwo.state()).toBe("resolved");
+        });
+
+        it("Should not reset when an ignoreable model is saved", function()
+        {
+            var saveModelUrl = "/fitness/v1/resetme/ignoreme/";
             var fakeModelOne = new FakeModel();
             dataManager.fetch(fakeModelOne);
             fakeModelOne.resolve({ valueOne: "hello", valueTwo: "world" });

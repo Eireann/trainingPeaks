@@ -66,17 +66,15 @@ function(moment, _, TP, ReportingModelBase)
             }
         },
 
-        fetch: function()
+        fetch: function(options)
         {
 
-            var options = {};
-
             var postData = {
-                workoutTypes: this._buildWorkoutTypes(),
+                workoutTypes: _.without(this._buildWorkoutTypes(), 0),
                 ctlConstant: this.get("ctlConstant"),
-                ctlStartValue: this.get("ctlStartValue"),
+                ctlStart: this.get("ctlStartValue"),
                 atlConstant: this.get("atlConstant"),
-                atlStartValue: this.get("atlStartValue")
+                atlStart: this.get("atlStartValue")
             };
 
             options.contentType='application/json';

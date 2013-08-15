@@ -181,7 +181,8 @@ function(
         this.addInitializer(function()
         {
             this.dataManagers = {
-                reporting: new DataManager({ resetPatterns: [/fitness/i] })
+                // reset reporting manager when we save workouts, ignore posts to reporting
+                reporting: new DataManager({ resetPatterns: [/fitness/i], ignoreResetPatterns: [/reporting/i] })
             };
 
             this.on("save:model", function(model)
