@@ -5,7 +5,8 @@
     "layouts/dashboardLayout",
     "views/dashboard/dashboardHeader",
     "views/dashboard/dashboardLibraryView",
-    "views/dashboard/dashboardChartsContainer"
+    "views/dashboard/dashboardChartsContainer",
+    "framework/dataManager"
 ],
 function(
     TP,
@@ -13,7 +14,8 @@ function(
     DashboardLayout,
     DashboardHeaderView,
     DashboardLibraryView,
-    DashboardChartsContainerView
+    DashboardChartsContainerView,
+    DataManager
     )
 {
     return PageContainerController.extend(
