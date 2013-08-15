@@ -85,7 +85,6 @@ function(
             this.fetchData();
 
             this.on("close", this.unbindDataModelEvents, this);
-            this.on("close", function(){this.model.destroy();});
         },
 
         bindDataModelEvents: function()
@@ -392,6 +391,7 @@ function(
         closeClicked: function()
         {
             this.trigger("before:remove");
+            this.model.destroy();
             this.close();
             this.trigger("remove");
         },

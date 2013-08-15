@@ -546,12 +546,9 @@ function(
         setViewSize: function (containerHeight, containerWidth)
         {
             var bottomMargin = 10;
-            var heightPercent = this.dataParser.hasLatLongData ? 0.50 : 0.8;
+            var heightPercent = this.offsetRatio ? 1-this.offsetRatio : 0.5;
             var graphHeight = Math.floor((containerHeight - bottomMargin) * heightPercent);
-
-            // apply offset set by resize bar
-            graphHeight = this.height ? containerHeight - (this.height + bottomMargin) : graphHeight;
-
+            
             this.graphHeight = graphHeight;
             this.$el.closest("#expandoGraphRegion").height(graphHeight);
 
@@ -569,9 +566,9 @@ function(
                 this.$plot.height(this.plotHeight);
             }
         },
-        stashHeight: function(height)
+        stashHeight: function(offsetRatio)
         {
-            this.height = height;
+            this.offsetRatio = offsetRatio;
         }
 
     });

@@ -66,6 +66,8 @@ function(
             this.listenTo(this.packeryCollectionView, "reorder", _.bind(this._onReorderCharts, this));
             this.on("show", _.bind(this._showPackeryCollectionView, this));
             this.listenTo(this.collection, "remove", _.bind(this._onRemoveChart, this));
+            this.listenTo(this.packeryCollectionView, "itemview:popIn", _.bind(this.packeryCollectionView.enablePackeryResize, this.packeryCollectionView));
+            this.listenTo(this.packeryCollectionView, "itemview:popOut", _.bind(this.packeryCollectionView.disablePackeryResize, this.packeryCollectionView));
         },
 
         onDashboardDatesChange: function()

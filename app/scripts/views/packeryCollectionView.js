@@ -16,7 +16,10 @@ function(
     // because packery doesn't work with node
     if(!$.fn.packery)
     {
-        return TP.CollectionView;
+        return TP.CollectionView.extend({
+            enablePackeryResize: function() { return; },
+            disablePackeryResize: function() { return; }
+        });
     }
 
     var PackeryCollectionView = TP.CollectionView.extend({
@@ -38,7 +41,7 @@ function(
 
             this.tmp = {}; // Placeholder for view being dragged
 
-            this._setupPackery(options);
+            this.on("show", _.bind(this._setupPackery, this, options));
             this._setupDroppable(options);
 
             _.bindAll(this, "_moveDraggableForPackery");
@@ -50,14 +53,23 @@ function(
             this._updatePackerySort();
         },
 
+        enablePackeryResize: function()
+        {
+            this.$el.packery("bindResize");
+        },
+
+        disablePackeryResize: function()
+        {
+            this.$el.packery("unbindResize");
+        },
+
         _setupPackery: function(options)
         {
             this.packery = this.$el.packery(options.packery).data("packery");
-
             this.packery.on("dragItemPositioned", _.bind(this._updatePackerySort, this));
-            this.on("show", function()
+            this.children.each(function(itemView)
             {
-                this.$el.packery("layout");
+                this._setupPackeryDraggable(itemView, this);
             }, this);
         },
 
@@ -87,7 +99,9 @@ function(
             itemView.$el.data("view", itemView);
             collectionView.$el.append(itemView.el);
 
-            if(index >= 0)
+            if (!this.packery) return;
+
+            if (index >= 0)
             {
                 this.packery.appended(itemView.$el);
                 this._setupPackeryDraggable(itemView, collectionView);
@@ -137,7 +151,7 @@ function(
                 if (this.tmp.view) return; // Just in case draggable gets confused
 
                 this.tmp.draggable = ui.draggable;
-                this.tmp.model = ui.draggable.data("model");
+                this.tmp.model = ui.draggable.data("model").clone();
                 this.addChildView(this.tmp.model, this.collection, {temporary: true});
                 this.tmp.view = this.children.last();
                 this.tmp.view.$el.addClass("hover");

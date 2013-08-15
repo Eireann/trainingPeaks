@@ -316,7 +316,7 @@ function(
                     show: true,
                     lineWidth: this.lineThickness,
                     fill: true,
-                    fillColor: { colors: [chartColors.pmcColors.ctlGradient.dark, chartColors.pmcColors.ctlGradient.light] }
+                    fillColor: { colors: [chartColors.pmcColors.ctlGradient.light, chartColors.pmcColors.ctlGradient.dark] }
                 },
                 yaxis: 1,
                 shadowSize: 2
@@ -356,7 +356,7 @@ function(
                 {
                     show: true,
                     fill: true,
-                    fillColor: { colors: [chartColors.pmcColors.futureCTLGradient.dark, chartColors.pmcColors.futureCTLGradient.light] },
+                    fillColor: { colors: [chartColors.pmcColors.futureCTLGradient.light, chartColors.pmcColors.futureCTLGradient.dark] },
                     lineWidth: this.lineThickness
                 },
                 yaxis: 1,

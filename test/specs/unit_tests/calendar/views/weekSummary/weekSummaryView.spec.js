@@ -66,7 +66,7 @@ function (theMarsApp, TP, WeekSummaryView)
 
         it("Should aggregate weekly workout data totals correctly", function()
         {
-            WeekSummaryView.prototype.render = function(){};
+            spyOn(WeekSummaryView.prototype, "render").andReturn("");
 
             var weekCollection = new TP.Collection();
             var dayModel1 = new TP.Model();
@@ -117,7 +117,7 @@ function (theMarsApp, TP, WeekSummaryView)
 
         it("Should aggregate weekly workout totals of duration and distance for all workout types except Day Off", function()
         {
-            WeekSummaryView.prototype.render = function () { };
+            spyOn(WeekSummaryView.prototype, "render").andReturn("");
 
             var weekCollection = new TP.Collection();
             var dayModel1 = new TP.Model();

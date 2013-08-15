@@ -264,10 +264,8 @@ function (
 
         setViewSize: function (containerHeight, containerWidth, overrideMinHeight)
         {
-            var bottomMargin = 10;
-            var mapHeight = Math.floor((containerHeight * 0.50) - bottomMargin);
-
-            mapHeight = this.height ? this.height : mapHeight;
+            var bottomMargin = 0;
+            var mapHeight = Math.floor((containerHeight * (this.offsetRatio || 0.5)) - bottomMargin);
 
             this.$el.closest("#expandoMapRegion").height(mapHeight);
             this.$el.height(mapHeight);
@@ -277,9 +275,9 @@ function (
                 this.map.invalidateSize();
             }
         },
-        stashHeight: function(height)
+        stashHeight: function(offsetRatio)
         {
-            this.height = height;
+            this.offsetRatio = offsetRatio;
         }
     });
 });
