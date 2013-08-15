@@ -48,9 +48,20 @@ function ()
         return workoutTypesById.hasOwnProperty(workoutTypeId) ? workoutTypesById[workoutTypeId] : "Unknown";
     };
 
+    var workoutTypeShortNamesById =
+    {
+        8: "Mtn Bike"
+    };
+    
+    var getShortNameById = function(workoutTypeId)
+    {
+        return workoutTypeShortNamesById.hasOwnProperty(workoutTypeId) ? workoutTypeShortNamesById[workoutTypeId] : getNameById(workoutTypeId);
+    };
+
     return {
         getIdByName: getIdByName,
         getNameById: getNameById,
+        getShortNameById: getShortNameById,
         typesByName: workoutTypesByName,
         typesById: workoutTypesById
     };

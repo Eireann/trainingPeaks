@@ -54,9 +54,10 @@ function(
                     if(workoutTypeData.hasOwnProperty(dataKey) && workoutTypeData[dataKey] > 0)
                     {
                         var workoutTypeName = TP.utils.workout.types.getNameById(workoutTypeData.workoutTypeId);
+                        var workoutTypeShortName = TP.utils.workout.types.getShortNameById(workoutTypeData.workoutTypeId);
                         var workoutTypeGradient = chartColors.gradients.workoutType[workoutTypeName.toLowerCase().replace(/[^a-z]/g,"")];
                         var chartPoint = {
-                            label: workoutTypeName,
+                            label: workoutTypeShortName,
                             data: workoutTypeData[dataKey],
                             color: {
                                 colors: [workoutTypeGradient.light, workoutTypeGradient.dark ]
@@ -71,13 +72,6 @@ function(
                     }
                 });
             }
-            /* 
-            var chartPoints = [
-                { label: "Run", data: 27, color: { colors: [ "rgb(190,110,110)", "rgb(60, 10, 10)" ] }},
-                { label: "bike", data: 42, color: '#654321' },
-                { label: "swim", data: 31, color: '#321654' }
-            ];
-            */
 
             return chartPoints;
         },
@@ -86,6 +80,22 @@ function(
         {
             // pie charts are different than other charts in how we structure the series data
             return chartPoints;
+        },
+
+        renderFlotChart: function(dataSeries, flotOptions)
+        {
+            if(!dataSeries || !dataSeries.length)
+            {
+                this.$el.addClass("noData");
+            }
+            else
+            {
+                this.$el.removeClass("noData");
+                if ($.plot)
+                {
+                    this.plot = $.plot(this.ui.chartContainer, dataSeries, flotOptions);
+                }
+            }
         },
 
         buildFlotChartOptions: function()
@@ -158,7 +168,8 @@ function(
             //flotItem.series.raw.fullData
             var data = flotItem.series.raw.fullData;
 
-            tips.push({ label: flotItem.series.label, value: TP.utils.conversion.formatNumber(flotItem.series.percent)  + "%"});
+            var workoutTypeName = TP.utils.workout.types.getNameById(data.workoutTypeId);
+            tips.push({ label: workoutTypeName, value: TP.utils.conversion.formatNumber(flotItem.series.percent)  + "%"});
 
             if(data.distancePlanned)
             {

@@ -259,7 +259,7 @@ More detail and specific examples can be found in the included HTML file.
                 _.each(newdata, function(slice)
                 {
                     slice.radiusPercent = radiusPercent / 100;
-                    radiusPercent -= 5;
+                    radiusPercent -= 2;
                 });
             }
 

@@ -377,5 +377,6 @@
 
     "Days": "Days",
 
-    "SelectReportType": "Select Report Type"
+    "SelectReportType": "Select Report Type",
+    "NoWorkoutsToReport": "No workouts are available to report on"
 }
