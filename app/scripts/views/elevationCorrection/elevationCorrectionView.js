@@ -256,6 +256,7 @@ function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandMo
         onElevationCorrectionApplied: function ()
         {
             this.workoutModel.get("detailData").fetch().done(this.showUpdatedElevationProfile);
+            this.workoutModel.fetch();
         },
         
         showUpdatedElevationProfile: function()
