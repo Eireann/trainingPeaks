@@ -276,7 +276,7 @@ function(
             this.controllers.navigationController = new NavigationController();
             this.controllers.loginController = new LoginController();
             this.controllers.calendarController = new CalendarController();
-            this.controllers.dashboardController = new DashboardController();
+            this.controllers.dashboardController = new DashboardController({ dataManager: this.dataManagers.reporting });
             this.controllers.homeController = new HomeController();
         });
 

@@ -20,8 +20,9 @@ function(
     {
         views: {},
 
-        initialize: function()
+        initialize: function(options)
         {
+            this.dataManager = options && options.dataManager ? options.dataManager : new DataManager();
             this.layout = new DashboardLayout();
             this.layout.on("show", this.show, this);
             this.layout.on("close", this.onLayoutClose, this);
@@ -65,7 +66,7 @@ function(
 
         createViews: function()
         {
-            this.views.dashboard = new DashboardChartsContainerView();
+            this.views.dashboard = new DashboardChartsContainerView({ dataManager: this.dataManager });
             this.views.header = new DashboardHeaderView({model:theMarsApp.user});
             this.views.library = new DashboardLibraryView();
         },

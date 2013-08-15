@@ -44,6 +44,13 @@ function(
                 this.model = theMarsApp.user;
             }
 
+            if(!options.dataManager)
+            {
+                throw new Error("Dashboard Charts Container requires a data manager");
+            }
+
+            this.dataManager = options.dataManager;
+
             this.collection = new SettingsSubCollection(null, { 
                 sourceModel: theMarsApp.user,
                 sourceKey: "settings.dashboard.pods",
@@ -52,7 +59,8 @@ function(
 
             this.packeryCollectionView = new PackeryCollectionView({
                 itemView: dashboardChartBuilder.buildChartView,
-                collection: this.collection
+                collection: this.collection,
+                itemViewOptions: { dataManager: this.dataManager }
             });
 
             this.listenTo(this.packeryCollectionView, "reorder", _.bind(this._onReorderCharts, this));
