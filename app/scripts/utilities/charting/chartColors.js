@@ -51,7 +51,8 @@ function()
                         xcski: { light: "#dd8663", dark: "#d26033" },
                         rowing: { light: "#3bc7ed", dark: "#14afd9" },
                         walk: { light: "#e6d701", dark: "#aba001" },
-                        other: { light: "#c116c9", dark: "#8e1094" }
+                        other: { light: "#c116c9", dark: "#8e1094" },
+                        dayoff: { light: "#c116c9", dark: "#8e1094" } 
                     }
             },
 
