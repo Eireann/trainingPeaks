@@ -57,6 +57,7 @@ function(
 
             this.listenTo(this.packeryCollectionView, "reorder", _.bind(this._onReorderCharts, this));
             this.on("show", _.bind(this._showPackeryCollectionView, this));
+            this.listenTo(this.collection, "remove", _.bind(this._onRemoveChart, this));
         },
 
         onDashboardDatesChange: function()
@@ -72,9 +73,19 @@ function(
             this.chartsRegion.show(this.packeryCollectionView);
         },
 
+        _onRemoveChart: function()
+        {
+            this.packeryCollectionView.layout();
+        },
+
         _onReorderCharts: function()
         {
             this.collection.sort();
+            this._saveSettings();
+        },
+
+        _saveSettings: function()
+        {
             theMarsApp.user.save();
         }
 

@@ -78,8 +78,12 @@ function(
         {
             this.waitingOff();
             this.render();
-        }
+        },
 
+        getChartTitle: function()
+        {
+            return this.model.get("title");
+        }
     };
 
     return TP.ItemView.extend(_.extend({}, DashboardChartBase, DefaultChart));

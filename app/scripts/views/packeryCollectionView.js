@@ -44,6 +44,12 @@ function(
             _.bindAll(this, "_moveDraggableForPackery");
         },
 
+        layout: function()
+        {
+            this.$el.packery("layout");
+            this._updatePackerySort();
+        },
+
         _setupPackery: function(options)
         {
             this.packery = this.$el.packery(options.packery).data("packery");
@@ -52,7 +58,7 @@ function(
             this.on("show", function()
             {
                 this.$el.packery("layout");
-            });
+            }, this);
         },
 
         _setupDroppable: function()

@@ -85,6 +85,7 @@ function(
             this.fetchData();
 
             this.on("close", this.unbindDataModelEvents, this);
+            this.on("close", function(){this.model.destroy();});
         },
 
         bindDataModelEvents: function()
