@@ -16,7 +16,10 @@ function(
     // because packery doesn't work with node
     if(!$.fn.packery)
     {
-        return TP.CollectionView;
+        return TP.CollectionView.extend({
+            enablePackeryResize: function() { return; },
+            disablePackeryResize: function() { return; }
+        });
     }
 
     var PackeryCollectionView = TP.CollectionView.extend({
