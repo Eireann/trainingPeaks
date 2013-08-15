@@ -46,7 +46,7 @@ function(
         return new PmcChart({ 
             model: new TP.Model({ 
                 index: 0, 
-                dateOptions: { quickDateSelectOption: 1, startDate: null, endDate: null}
+                dateOptions: { quickDateSelectOption: null, startDate: null, endDate: null}
             })
         });
     };
@@ -62,6 +62,21 @@ function(
         it("Should load successfully as a module", function()
         {
             expect(PmcChart).toBeDefined();
+        });
+
+        it("Should set correct default settings", function()
+        {
+            var chart = buildPmcChart();
+            var model = chart.model;
+            expect(model.get("atlConstant")).toBe(7);
+            expect(model.get("ctlConstant")).toBe(42);
+            expect(model.get("atlStartValue")).toBe(0);
+            expect(model.get("ctlStartValue")).toBe(0);
+            expect(model.get("workoutTypeIds").length).toBe(1);
+            expect(model.get("workoutTypeIds.0")).toBe("0");
+            expect(model.get("showIntensityFactorPerDay")).toBe(true);
+            expect(model.get("showTSBFill")).toBe(false);
+            expect(model.get("showTSSPerDay")).toBe(true);
         });
 
         it("Should render without errors", function()

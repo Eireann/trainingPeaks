@@ -624,9 +624,9 @@ function(
             var defaultSettings = {
                 atlConstant: 7,
                 atlConstant2: 14,
-                atlStartValue: 1,
+                atlStartValue: 0,
                 ctlConstant: 42,
-                ctlStartValue: 1,
+                ctlStartValue: 0,
                 showIntensityFactorPerDay: true,
                 showTSBFill: false,
                 showTSSPerDay: true,
