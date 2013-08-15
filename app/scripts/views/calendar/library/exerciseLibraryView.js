@@ -93,7 +93,7 @@ function(
             this.on("itemview:selected", function(childView)
             {
                 self.trigger("select");
-                if(self.selectedChild)
+                if(self.selectedChild && self.selectedChild !== childView)
                     self.selectedChild.unSelect();
                 self.selectedChild = childView;
             });
@@ -103,6 +103,7 @@ function(
         {
             if(this.selectedChild)
                 this.selectedChild.unSelect();
+            this.selectedChild = null;
         },
 
         onRender: function()

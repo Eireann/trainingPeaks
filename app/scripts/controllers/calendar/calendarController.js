@@ -258,7 +258,7 @@ function(
 
         onCalendarSelect: function()
         {
-            this.views.library.trigger("library:unselect");
+            this.views.library.clearSelection();
         },
 
         onAthleteChange: function()

@@ -13,8 +13,8 @@ function(
     TrainingPlanCollection,
     trainingPlanLibraryViewTemplate)
 {
-    var TrainingPlanLibraryView = {
-        
+    return TP.CompositeView.extend(
+    {
         className: "trainingPlanLibrary",
         searchText: null,
 
@@ -24,28 +24,31 @@ function(
             template: trainingPlanLibraryViewTemplate
         },
 
-        events: {
+        events:
+        {
             "keyup #search": "onSearch",
             "change #search": "onSearch"
         },
 
-        ui: {
+        ui:
+        {
             search: "#search"
         },
 
-        collectionEvents: {
+        collectionEvents:
+        {
             "request": "onWaitStart",
             "sync": "onWaitStop",
             "error": "onWaitStop",
             "refresh": "render",
             "destroy": "onWaitStop",
             "select": "onSelectItem",
-            "unselect": "unSelectItem"
+            "unselect": "unSelect"
         },
 
         initialize: function()
         {
-            this.on("library:unselect", this.unSelectItem, this);
+            this.on("library:unselect", this.unSelect, this);
             this.sourceCollection = this.collection;
             this.model = new TP.Model({wwwRoot: theMarsApp.wwwRoot });
         },
@@ -53,26 +56,21 @@ function(
         getItemView: function(item)
         {
             if (item)
-            {
                 return TrainingPlanItemView;
-            } else
-            {
+            else
                 return TP.ItemView;
-            }
         },
 
         onSelectItem: function(model)
         {
             if (this.selectedItem && this.selectedItem !== model)
-            {
-                this.unSelectItem();
-            }
+                this.unSelect();
 
             this.selectedItem = model;
             this.trigger("select");
         },
 
-        unSelectItem: function()
+        unSelect: function()
         {
             if (this.selectedItem)
             {
@@ -93,7 +91,5 @@ function(
                                                           );
           this._renderChildren();
         }
-    };
-
-    return TP.CompositeView.extend(TrainingPlanLibraryView);
+    });
 });

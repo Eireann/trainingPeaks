@@ -11,34 +11,6 @@ function(_, TP)
         widthOpen: 310,
         activeLibraryName: null,
 
-        initialize: function(options)
-        {
-            this.initWindowResize();
-            //this.buildViews(options);
-            this.views = {};
-            this.buildViewOptions = options;
-            //this.listenToViewEvents();
-            this.activeLibraryName = null;
-            this.on("library:unselect", this.onUnSelect, this);
-
-            this.on("render", this._resizeContainerHeight, this);
-            this.on("show", this._resizeContainerHeight, this);
-        },
-
-        initWindowResize: function()
-        {
-            _.bindAll(this, "_resizeContainerHeight");
-            $(window).on("resize", this._resizeContainerHeight);
-        },
-
-        listenToViewEvents: function()
-        {
-            _.each(_.keys(this.views), function(viewName)
-            {
-                this.views[viewName].on("select", this.onSelect, this);
-            }, this);
-        },
-
         regions:
         {
             "activeLibraryRegion": "#activeLibraryContainer"
@@ -46,10 +18,24 @@ function(_, TP)
 
         events:
         {
-            "click #tabs > div": "onTabClick"
+            "click #tabs > div": "_onTabClick"
         },
 
-        onTabClick: function(e)
+        initialize: function(options)
+        {
+            _.bindAll(this, "_resizeContainerHeight");
+            $(window).on("resize", this._resizeContainerHeight);
+
+            this.views = {};
+            this.buildViewOptions = options;
+            this.activeLibraryName = null;
+            this.on("library:unselect", this.onUnSelect, this);
+
+            this.on("render", this._resizeContainerHeight, this);
+            this.on("show", this._resizeContainerHeight, this);
+        },
+
+        _onTabClick: function(e)
         {
             this._toggleLibrary(e.target.id);
         },
@@ -58,7 +44,7 @@ function(_, TP)
         {
             // Create & Render library contents
             this.currentLibraryView = this.buildView(libraryName, this.buildViewOptions);
-            this.currentLibraryView.listenTo(this.currentLibraryView, "select", this.onSelect, this);
+            this.currentLibraryView.on("select", this.onSelect, this);
             this.activeLibraryRegion.show(this.currentLibraryView);
 
             // Open the library container itself
@@ -158,10 +144,9 @@ function(_, TP)
             this.trigger("library:select");
         },
 
-        onUnSelect: function()
+        clearSelection: function()
         {
             this.currentLibraryView.unSelect();
         }
-
     });
 });

@@ -54,11 +54,12 @@ function(
                 this.views.library.close();
 
             this.views.library = new LibraryView({ collections: this.libraryCollections });
+            //this.listenTo(this.views.library, "library:select", this.onLibrarySelect, this);
             this.views.library.on("library:select", this.onLibrarySelect, this);
 
             _.each(this.libraryCollections, function(collection)
             {
-                collection.on("requestRefresh", this.onRequestRefresh, this);
+                this.listenTo(collection, "requestRefresh", this.onRequestRefresh, this);
             }, this);
         },
 
