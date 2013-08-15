@@ -15,7 +15,6 @@ function(
 {
     return LibraryContainerView.extend(
     {
-
         template:
         {
             type: "handlebars",
@@ -26,24 +25,24 @@ function(
         {
             // initialize the superclass
             this.constructor.__super__.initialize.call(this, options);
-            this.buildViews();
-        },
 
-        buildViews: function(options)
-        {
             this.collections =
             {
                 charts: new AvailableChartsCollection()
             };
+        },
 
-            this.views =
+        viewConstructors:
+        {
+            "chartsLibrary": DashboardChartsLibraryView
+        },
+
+        buildView: function(libraryName, options)
+        {
+            return new this.viewConstructors[libraryName](
             {
-                chartsLibrary: new DashboardChartsLibraryView(
-                {
-                    collection: this.collections.charts
-                })
-            };
+                collection: this.collections.charts
+            });
         }
-
     });
 });

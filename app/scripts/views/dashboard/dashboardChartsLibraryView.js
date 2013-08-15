@@ -13,8 +13,8 @@ function(
     AvailableChartsCollection,
     DashboardChartsLibraryViewTemplate)
 {
-    var DashboardChartsLibraryView = {
-        
+    return TP.CompositeView.extend(
+    {
         id: "dashboardChartsLibrary",
         className: "dashboardChartsLibrary",
 
@@ -37,45 +37,43 @@ function(
             "search": ".search"
         },
 
-        collectionEvents: {
+        collectionEvents:
+        {
             "request": "onWaitStart",
             "sync": "onWaitStop",
             "error": "onWaitStop",
             "refresh": "render",
             "destroy": "onWaitStop",
             "select": "onSelectItem",
-            "unselect": "unSelectItem"
+            "unselect": "unSelect"
         },
 
         initialize: function()
         {
-            this.on("library:unselect", this.unSelectItem, this);
+            this.on("library:unselect", this.unSelect, this);
             this.sourceCollection = this.collection;
         },
 
         getItemView: function(item)
         {
             if (item)
-            {
                 return ChartTileView;
-            } else
-            {
+            else
                 return TP.ItemView;
-            }
         },
 
         onSelectItem: function(model)
         {
             if (this.selectedItem && this.selectedItem !== model)
             {
-                this.unSelectItem();
+                this.unSelect();
             }
 
             this.selectedItem = model;
             this.trigger("select");
         },
 
-        unSelectItem: function()
+        unSelect: function()
         {
             if (this.selectedItem)
             {
@@ -94,10 +92,8 @@ function(
                                                           searchText,
                                                           ["name"]
                                                           );
-          this._renderChildren();
+            this._renderChildren();
         }
-    };
-
-    return TP.CompositeView.extend(DashboardChartsLibraryView);
+    });
 });
 

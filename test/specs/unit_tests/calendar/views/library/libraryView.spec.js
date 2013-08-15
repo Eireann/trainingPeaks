@@ -7,10 +7,8 @@ requirejs(
 ],
 function(LibraryView, ExerciseLibraryView, LibraryTemplate)
 {
-
     describe("LibraryView ", function()
     {
-
         it("Should be loaded as a module", function()
         {
             expect(LibraryView).toBeDefined();
@@ -48,107 +46,10 @@ function(LibraryView, ExerciseLibraryView, LibraryTemplate)
             it("Should watch for tab click events", function()
             {
                 expect(LibraryView.prototype.events["click #tabs > div"]).toBeDefined();
-                expect(LibraryView.prototype.events["click #tabs > div"]).toBe("onTabClick");
-                expect(LibraryView.prototype.onTabClick).toBeDefined();
-                expect(typeof LibraryView.prototype.onTabClick).toBe('function');
+                expect(LibraryView.prototype.events["click #tabs > div"]).toBe("_onTabClick");
+                expect(LibraryView.prototype._onTabClick).toBeDefined();
+                expect(typeof LibraryView.prototype._onTabClick).toBe('function');
             });
-
-            it("Should call toggleLibrary", function()
-            {
-                var librarySpy = jasmine.createSpyObj("Library View Spy", ["toggleLibrary"]);
-                var clickEvent = {
-                    target: {
-                        id: 'someLibraryName'
-                    }
-                };
-                LibraryView.prototype.onTabClick.call(librarySpy, clickEvent);
-                expect(librarySpy.toggleLibrary).toHaveBeenCalledWith('someLibraryName');
-            });
-
-            describe("Switch Library", function()
-            {
-
-                it("Should set the active library", function()
-                {
-                    var library = new LibraryView();
-                    library.render();
-                    library.switchLibrary('exerciseLibrary');
-                    expect(library.activeLibraryName).toBeDefined();
-                    expect(library.activeLibraryName).toBe('exerciseLibrary');
-                });
-
-            });
-
-            describe("Show and hide library", function()
-            {
-
-                describe("Show library", function()
-                {
-
-                    var libraryView;
-                    beforeEach(function()
-                    {
-                        libraryView = new LibraryView();
-                        libraryView.render();
-                        libraryView.activeLibraryName = 'exerciseLibrary';
-                    });
-
-                    it("Should turn on tab", function()
-                    {
-                        spyOn(libraryView, "isOpen").andReturn(true);
-                        spyOn(libraryView, "turnOnTab");
-                        libraryView.showLibrary();
-                        expect(libraryView.turnOnTab).toHaveBeenCalledWith("exerciseLibrary");
-                    });
-
-                    it("Should remove 'closed' and add add 'open' class to el.parent", function()
-                    {
-                        spyOn(libraryView, "isOpen").andReturn(false);
-                        var parentSpy = jasmine.createSpyObj('jquery spy', ['addClass', 'removeClass']);
-                        parentSpy.removeClass.andReturn(parentSpy);
-                        spyOn(libraryView.$el, "parent").andReturn(parentSpy);
-                        libraryView.showLibrary();
-                        expect(parentSpy.removeClass).toHaveBeenCalledWith('closed');
-                        expect(parentSpy.addClass).toHaveBeenCalledWith('open');
-                    });
-
-                });
-
-                describe("Hide library", function()
-                {
-
-                    var libraryView;
-                    beforeEach(function()
-                    {
-                        libraryView = new LibraryView();
-                        libraryView.render();
-                        libraryView.activeLibraryName = 'exerciseLibrary';
-                    });
-
-                    it("Should turn off tab", function()
-                    {
-                        spyOn(libraryView, "isOpen").andReturn(true);
-                        spyOn(libraryView, "turnOffTab");
-                        libraryView.hideLibrary();
-                        expect(libraryView.turnOffTab).toHaveBeenCalledWith("exerciseLibrary");
-                    });
-
-
-                    it("Should remove 'open' and add add 'closed' class to el.parent", function()
-                    {
-                        spyOn(libraryView, "isOpen").andReturn(true);
-                        var parentSpy = jasmine.createSpyObj('jquery spy', ['addClass', 'removeClass']);
-                        parentSpy.removeClass.andReturn(parentSpy);
-                        spyOn(libraryView.$el, "parent").andReturn(parentSpy);
-                        libraryView.hideLibrary();
-                        expect(parentSpy.removeClass).toHaveBeenCalledWith('open');
-                        expect(parentSpy.addClass).toHaveBeenCalledWith('closed');
-                    });
-
-                });
-
-            });
-
         });
 
     });
