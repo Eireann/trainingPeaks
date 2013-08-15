@@ -7,6 +7,8 @@ function(
 {
     var AvailableChartsCollection = TP.Collection.extend(
     {
+        model: TP.Model,
+
         initialize: function()
         {
             this.add([
