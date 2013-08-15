@@ -146,7 +146,8 @@ function(_, TP)
 
         clearSelection: function()
         {
-            this.currentLibraryView.unSelect();
+            if(this.currentLibraryView)
+                this.currentLibraryView.unSelect();
         }
     });
 });
