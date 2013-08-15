@@ -183,10 +183,10 @@ function(
                 totalDaysCompleted: _.keys(completedValues.completedDays).length,
                 totalDistancePlanned: plannedValues.totalDistance,
                 totalDistanceCompleted: completedValues.totalDistance,
-                totalEnergyPlanned: plannedValues.totalEnergy.toFixed(0),
-                totalEnergyCompleted: completedValues.totalEnergy.toFixed(0),
-                tssPlanned: plannedValues.cumulativeTss.toFixed(0),
-                tssCompleted: completedValues.cumulativeTss.toFixed(0),
+                totalEnergyPlanned: Math.round(plannedValues.totalEnergy),
+                totalEnergyCompleted: Math.round(completedValues.totalEnergy),
+                tssPlanned: Math.round(plannedValues.cumulativeTss),
+                tssCompleted: Math.round(completedValues.cumulativeTss),
                 totalElevationGain: completedValues.totalElevationGain,
                 totalsByWorkoutType: totalsByWorkoutType,
                 totalsByWorkoutTypeCompacted: _.compact(totalsByWorkoutType)
@@ -278,6 +278,9 @@ function(
                 {
                     tpModel.set({ daysPlanned: 7, daysCompleted: this.model.get("totalDaysCompleted"), displayDays: true });
                 }
+            } else if (targetDataType === "total tss")
+            {
+                tpModel.set({tssPlanned: this.model.get("tssPlanned"), tssCompleted: this.model.get("tssCompleted"), displayTSS: true});
             } else {
                 var parts = targetDataType.split(" ");
                 var workoutTypeId = Number(parts.shift());
