@@ -37,7 +37,7 @@ function(
                 self = this;
 
             // If we're outside our bounds, abort drag and correct resizer position
-            if (top >= this.containerHeight - 5 || top <= 0)
+            if (top >= this.containerHeight || top <= 0)
             {
                 this.disableDrag();
                 setImmediate(function()
@@ -67,9 +67,9 @@ function(
         },
         setPosition: function(containerHeight)
         {
-            var bottomMargin = 15;
-            var mapHeight = Math.floor((containerHeight * 0.5) - bottomMargin);
-            mapHeight = this.top ? this.top : mapHeight;
+            var bottomMargin = 0;
+            var mapHeight = Math.floor((containerHeight * (this.top || 0.5)) - bottomMargin);
+            //mapHeight = this.top ? this.top : mapHeight;
             this.$el.css('top', mapHeight + 'px');
             this.containerHeight = containerHeight;
             if (!this.initialTop)
