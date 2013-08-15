@@ -50,6 +50,16 @@ function(
             this._updatePackerySort();
         },
 
+        enablePackeryResize: function()
+        {
+            this.$el.packery("bindResize");
+        },
+
+        disablePackeryResize: function()
+        {
+            this.$el.packery("unbindResize");
+        },
+
         _setupPackery: function(options)
         {
             this.packery = this.$el.packery(options.packery).data("packery");
