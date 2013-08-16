@@ -8,8 +8,9 @@ define(
 function(TP, WorkoutMultiFileDataModel, WorkoutModel, dateConversion)
 {
     var initialized = false;
+    var uploadInProgress = false;
     var $overlay = $("<div id='fileUploadOverlay'></div>");
-    var $dropTarget = $("<div class='dropTarget'><div class='dropText'>Drop Files Here</div><div class='uploadingText'>Uploading file(s)</div></div>");
+    var $dropTarget = $("<div class='dropTarget'><div class='dropText'>Drop Files Here</div><div class='uploadingText' style='display:none;'>Uploading file(s)</div><div class='uploadSuccess' style='display:none;'>File(s) successfully uploaded!</div><div class='uploadFail' style='display:none;'>File upload failed!</div></div>");
     var $info = $("<div data-alert class='alertBox'></div>");
 
     return {
@@ -26,18 +27,23 @@ function(TP, WorkoutMultiFileDataModel, WorkoutModel, dateConversion)
             var mouseEnteredWindow = false;
             var dragging = 0;
 
-            $('.uploadingText').hide();
-
             window.addEventListener("dragenter", function(e)
             {
                 e = e || event;
                 e.stopPropagation();
                 e.preventDefault();  
 
+                if(uploadInProgress)
+                    return;
+
                 dragging++;
 
                 if(mouseEnteredWindow)
                     return;
+
+                $overlay.show();
+                $dropTarget.find(".dropText").show();
+                $dropTarget.show();
 
                 $body.append($overlay);
                 $body.append($dropTarget);
@@ -49,8 +55,15 @@ function(TP, WorkoutMultiFileDataModel, WorkoutModel, dateConversion)
                 e = e || event;
                 e.preventDefault();
 
+                if(uploadInProgress)
+                    return;
+
                 if (mouseEnteredWindow)
                     return;
+
+                $overlay.show();
+                $dropTarget.show();
+                $dropTarget.find(".dropText").show();
                 
                 $body.append($overlay);
                 $body.append($dropTarget);
@@ -91,6 +104,11 @@ function(TP, WorkoutMultiFileDataModel, WorkoutModel, dateConversion)
                 e.stopPropagation();
                 e.preventDefault();
 
+                if(uploadInProgress)
+                    return;
+
+                uploadInProgress = true;
+
                 if (!e.dataTransfer)
                     return;
                 
@@ -99,8 +117,8 @@ function(TP, WorkoutMultiFileDataModel, WorkoutModel, dateConversion)
                 mouseEnteredWindow = false;
 
                 $dropTarget.addClass("waiting");
-                $('.dropText').hide();
-                $('.uploadingText').show();
+                $dropTarget.find(".dropText").hide();
+                $dropTarget.find(".uploadingText").show();
                 
                 var numberOfFiles = files.length;
                 var workoutReader = new TP.utils.workout.FileReader(files);
@@ -115,7 +133,7 @@ function(TP, WorkoutMultiFileDataModel, WorkoutModel, dateConversion)
                     else
                         filesRead = arguments;
 
-                    var multiFileUploadDeferreds = [];
+                    var multiFileUploadDeferreds = [];  
 
                     _.each(filesRead, function(file)
                     {
@@ -130,8 +148,8 @@ function(TP, WorkoutMultiFileDataModel, WorkoutModel, dateConversion)
                         var messageString = "Workout(s) successfully uploaded: ";
 
                         $dropTarget.removeClass("waiting");
-                        $overlay.remove();
-                        $dropTarget.remove();
+                        $dropTarget.find(".uploadingText").hide();
+                        $dropTarget.find(".uploadSuccess").show();
 
                         _.each(workouts, function (workout)
                         {
@@ -139,6 +157,11 @@ function(TP, WorkoutMultiFileDataModel, WorkoutModel, dateConversion)
                                 theMarsApp.controllers.calendarController.weeksCollection.addWorkout(new WorkoutModel(workout));
                         });
 
+                        $dropTarget.fadeOut(2000, function() { $dropTarget.find(".uploadingText").hide(); $dropTarget.find(".uploadSuccess").hide(); $dropTarget.remove(); $overlay.remove(); uploadInProgress = false; });
+                    }).fail(function()
+                    {
+                        $dropTarget.find(".uploadFail").show();
+                        $dropTarget.fadeOut(2000, function() { $dropTarget.find(".uploadingText").hide(); $dropTarget.find(".uploadFail").hide(); $dropTarget.remove(); $overlay.remove(); uploadInProgress = false; });
                     });
                 });
 
