@@ -10,7 +10,7 @@ module.exports = function(grunt)
         jasmineOptions.specFolder = "coverage/test";
         jasmineOptions.requirejs = './coverage/app/config/jasmineRequirejsConfig.js';
         // is there a reason why we were turning this teamcity reporting off during coverage?
-        //jasmineOptions.teamcity = false;
+        jasmineOptions.teamcity = true;
         grunt.config.set('jasmine_node', jasmineOptions);
     });
 
