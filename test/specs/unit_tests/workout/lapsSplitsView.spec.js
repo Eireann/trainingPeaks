@@ -74,6 +74,17 @@ function(moment, _, theMarsApp, TP, LapsSplitsView, WorkoutModel, detailDataLaps
 				serializedData = view.serializeData();
 				expect(_.contains(serializedData.headerNames, "Normalized Graded Pace")).toBeFalsy();
 			});
+			it("Should exclude Normalized Power for run and walk workouts", function()
+			{
+				model.set({workoutTypeValueId: 3});
+				serializedData = view.serializeData();
+				expect(_.contains(serializedData.headerNames, "Normalized Power")).toBeFalsy();
+			});
+			it("Should format TSS label correctly", function()
+			{
+				expect(_.contains(serializedData.headerNames, "rTSS")).toBeTruthy();
+				expect(_.contains(serializedData.headerNames, "TSS")).toBeFalsy();
+			});
 		});
 		describe("Rendering", function()
 		{
@@ -87,7 +98,7 @@ function(moment, _, theMarsApp, TP, LapsSplitsView, WorkoutModel, detailDataLaps
 			it("Should be a table with table rows", function()
 			{
 				expect(view.$el.is('table')).toBeTruthy();
-				expect(view.$el.find('th').length).toBe(17); // header cells
+				expect(view.$el.find('th').length).toBe(18); // header cells
 				expect(view.$el.find('tr').length).toBe(7); // rows including header row
 			});
 		});

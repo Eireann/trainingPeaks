@@ -33,7 +33,10 @@ function(
             _.each(lapsData, function(lap, i)
             {
                 var lapObject = {},
-                    fieldsToOmit = [];
+                    fieldsToOmit = [],
+                    canShowNGP = sportTypeID === 3 || sportTypeID === 13,
+                    canShowNP = !canShowNGP && lap.normalizedPowerActual,
+                    canShowIF = lap.intensityFactorActual;
 
                 formatLapData.calculateTotalAndMovingTime(lap);
 
@@ -47,32 +50,32 @@ function(
                     "Distance": convertToViewUnits(lap.distance, "distance", sportTypeID),
                     "Average Power": lap.averagePower,
                     "Maximum Power": lap.maximumPower,
-                    "Normalized Power": lap.normalizedPowerActual,
+                    "Normalized Power": canShowNP ? lap.normalizedPowerActual : null,
                     "Average Pace": convertToViewUnits(lap.averageSpeed, "pace", sportTypeID),
                     "Maximum Pace": convertToViewUnits(lap.maximumSpeed, "pace", sportTypeID),
-                    "Normalized Graded Pace": convertToViewUnits(lap.normalizedSpeedActual, "pace", sportTypeID),
+                    "Normalized Graded Pace": canShowNGP ? convertToViewUnits(lap.normalizedSpeedActual, "pace", sportTypeID) : null,
                     "Average Speed": convertToViewUnits(lap.averageSpeed, "speed", sportTypeID),
                     "Maximum Speed": convertToViewUnits(lap.maximumSpeed, "speed", sportTypeID),
                     "Calories": lap.calories,
                     "Maximum Cadence": lap.maximumCadence,
                     "Average Cadence": lap.averageCadence,
-                    "TSS": Math.round(lap.trainingStressScoreActual)
+                    "Intensity Factor": canShowIF ? TP.utils.conversion.formatIF(lap.intensityFactorActual) : null
                 };
 
-                // here's where we can filter out unneeded properties (depending on workout type)
-                if (sportTypeID !== 3 && sportTypeID !== 13)
+                // filter out null values
+                for (var key in lapObject)
                 {
-                    fieldsToOmit.push('Normalized Graded Pace');
+                    if (!lapObject[key])
+                    {
+                        delete lapObject[key];
+                    }
                 }
-                if (!lap.normalizedPowerActual)
+
+                // add in TSS (if available) with dynamic key name
+                if (lap.trainingStressScoreActual)
                 {
-                    fieldsToOmit.push('Normalized Power');
+                    lapObject[TP.utils.units.getUnitsLabel("tss", sportTypeID, new TP.Model(lap))] = Math.round(lap.trainingStressScoreActual);
                 }
-                if (!lap.trainingStressScoreActual)
-                {
-                    fieldsToOmit.push('TSS');
-                }
-                lapObject = _.omit(lapObject, fieldsToOmit);
 
                 rowData.push(lapObject);
             });
