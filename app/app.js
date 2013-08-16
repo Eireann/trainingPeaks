@@ -18,8 +18,8 @@ define(
     "controllers/homeController",
     "views/buildInfoView",
     "router",
-    "hbs!templates/views/notAllowedForAlpha",
-    "marionette.faderegion"
+    "utilities/dragAndDropFileUploadWidget",
+    "hbs!templates/views/notAllowedForAlpha"
 ],
 function(
     _,
@@ -40,8 +40,8 @@ function(
     HomeController,
     BuildInfoView,
     Router,
-    notAllowedForAlphaTemplate,
-    faderegion)
+    DragAndDropFileUploadWidget,
+    notAllowedForAlphaTemplate)
 {
     var theApp = new TP.Application();
     theApp.ajaxCachingEnabled = false;
@@ -345,9 +345,12 @@ function(
         this.addInitializer(function()
         {
             if (this.historyEnabled)
-            {
                 this.history.start({ pushState: false, root: this.root });
-            }
+        });
+
+        this.addInitializer(function()
+        {
+            DragAndDropFileUploadWidget.initialize(this.getBodyElement(), this.getBodyElement().find("#messages"));
         });
 
         this.addInitializer(function()
@@ -355,6 +358,7 @@ function(
             this.started = true;
         });
 
+        
         this.isLive = function()
         {
             // if we're in local or dev mode, use DEBUG log level etc

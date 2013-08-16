@@ -1,0 +1,53 @@
+﻿#fileUploadOverlay
+{
+    background-color: black;
+    filter:alpha(opacity=50); /* IE */
+    opacity: 0.5; /* Safari, Opera */
+    -moz-opacity:0.50; /* FireFox */
+    z-index: 20;
+    height: 100%;
+    width: 100%;
+    background-repeat:no-repeat;
+    background-position:center;
+    position:absolute;
+    top: 0px;
+    left: 0px;
+}
+
+#messages
+{
+  z-index:999;
+  width:400px;
+  position:absolute;
+  top: 75px;
+  left: calc(100% - 420px);
+}
+
+.dropTarget
+{
+    position: absolute;
+    color: $TPGrey5;
+    width: 400px;
+    height: 300px;
+    background-color: $TPGrey3;
+    z-index: 1000;
+    top: calc(50% - 150px);
+    left: calc(50% - 200px);
+    border:5px dashed $TPGrey2;
+    font-size:$fontSizeQVHeader;
+    font-family: $fontFamilyRegular;
+    text-align: center;
+    padding-top: 100px;
+
+}
+
+.alertBox
+{
+    width: 250px;
+    background-color: $TPBlue;
+    color: #ffffff;
+    font-family: $fontFamilyRegular;
+    font-size:$fontSizeSmall;
+    display:none;
+    padding: 10px;
+}
