@@ -405,6 +405,10 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
         &:hover {
             border: 1px solid $TPGrey11;
         }
+        
+        &.menuOpen {
+            border: 1px solid $TPGrey11;
+        }
     }
 
     &.expanded
