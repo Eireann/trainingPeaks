@@ -17,6 +17,7 @@ function(moment, _, theMarsApp, TP, LapsSplitsView, WorkoutModel, detailDataLaps
 			return new TP.Model({
 				id: 1234,
 				details: new TP.Model(),
+				workoutTypeValueId: 3,
 				detailData: new TP.Model({lapsStats: detailDataLapsStats})
 			});
 		};
@@ -57,6 +58,22 @@ function(moment, _, theMarsApp, TP, LapsSplitsView, WorkoutModel, detailDataLaps
 			it("Should serialize data correctly", function()
 			{
 				expect(serializedData.laps.length).toBe(6);
+			});
+		});
+		describe("Rendering", function()
+		{
+			var model, view;
+			beforeEach(function()
+			{
+				model = buildWorkoutModel();
+				view = new LapsSplitsView({model: model});
+				view.render();
+			});
+			it("Should be a table with table rows", function()
+			{
+				expect(view.$el.is('table')).toBeTruthy();
+				expect(view.$el.find('th').length).toBe(14); // header cells
+				expect(view.$el.find('tr').length).toBe(7); // rows including header row
 			});
 		});
 	});

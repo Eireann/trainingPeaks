@@ -377,5 +377,13 @@
 
     "Days": "Days",
 
-    "SelectReportType": "Select Report Type"
+    "SelectReportType": "Select Report Type",
+
+    "Moving Time": "Moving Time",
+    "Average Power": "Average Power",
+    "Maximum Power": "Maximum Power",
+    "Maximum Pace": "Maximum Pace",
+    "Maximum Speed": "Maximum Speed",
+    "Maximum Cadence": "Maximum Cadence",
+    "Average Cadence": "Average Cadence"
 }

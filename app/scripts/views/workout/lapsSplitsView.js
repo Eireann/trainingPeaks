@@ -1,15 +1,27 @@
 define(
 [
     "underscore",
-    "TP"
+    "TP",
+    "utilities/workout/formatLapData",
+    "utilities/conversion/convertToViewUnits",
+    "hbs!templates/views/workout/lapsSplitsView"
 ],
 function(
     _,
-    TP
+    TP,
+    formatLapData,
+    convertToViewUnits,
+    lapsSplitsTemplate
     )
 {
     return TP.ItemView.extend(
     {
+        template:
+        {
+            type: "handlebars",
+            template: lapsSplitsTemplate
+        },
+        tagName: "table",
         initialize: function(options)
         {
             if (!options.model)
@@ -19,9 +31,16 @@ function(
         },
         serializeData: function()
         {
-            //console.log(this.model.get('detailData').get('lapsStats'));
+            var lapsData = this.model.get('detailData').get('lapsStats'),
+                sportTypeID = this.model.get('workoutTypeValueId');
+            _.each(lapsData, function(lap)
+            {
+                formatLapData.calculateTotalAndMovingTime(lap);
+                lap.averagePace = convertToViewUnits(lap.averageSpeed, "paceUnFormatted", sportTypeID);
+                lap.maximumPace = convertToViewUnits(lap.maximumSpeed, "paceUnFormatted", sportTypeID);
+            });
             return {
-                laps: this.model.get('detailData').get('lapsStats')
+                laps: lapsData
             };
         }
     });
