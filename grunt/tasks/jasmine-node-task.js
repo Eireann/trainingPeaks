@@ -99,10 +99,13 @@ module.exports = function(grunt)
         };
 
         // teamcity?
+        /*
         if (options.teamcity) {
+            console.log("Using teamcity reporting");
             var jasmineNode = require('../../node_modules/jasmine-node/lib/jasmine-node/reporter').jasmineNode;
             jasmineNode.TerminalReporter = jasmine.TeamcityReporter;
         }
+        */
 
         // order is preserved in node.js
         var legacyArguments = Object.keys(options).map(function (key) {
@@ -110,17 +113,11 @@ module.exports = function(grunt)
         });
 
         try {
-            // for jasmine-node@1.0.27 individual arguments need to be passed
-            jasmine.executeSpecsInFolder.apply(this, legacyArguments);
-        }
-        catch (e) {
-            try {
-                // since jasmine-node@1.0.28 an options object need to be passed
-                jasmine.executeSpecsInFolder(options);
-            } catch (e)
-            {
-                console.log('Failed to execute "jasmine.executeSpecsInFolder": ' + e.stack);
-            }
+            // since jasmine-node@1.0.28 an options object need to be passed
+            jasmine.executeSpecsInFolder(options);
+        } catch (e)
+        {
+            console.log('Failed to execute "jasmine.executeSpecsInFolder": ' + e.stack);
         }
     });
 
