@@ -19,6 +19,22 @@ function(
             {
                 chartType: 3,
                 name: "Fitness Summary"
+            },
+            {
+                chartType: 8,
+                name: "Peak Power"
+            },
+            {
+                chartType: 28,
+                name: "Peak HR"
+            },
+            {
+                chartType: 30,
+                name: "Peak Speed"
+            },
+            {
+                chartType: 31,
+                name: "Peak Pace"
             }]);
         }
     });

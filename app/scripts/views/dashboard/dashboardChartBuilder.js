@@ -4,24 +4,36 @@
     "views/dashboard/defaultChart",
     "views/dashboard/pmcChart",
     "dashboard/views/dashboardPodView",
-    "dashboard/charts/fitnessSummaryChart"
+    "dashboard/charts/fitnessSummaryChart",
+    "dashboard/charts/peaksChart"
 ],
 function(
     TP,
     DefaultChartView,
     PmcChartView,
     DashboardPodView,
-    FitnessSummaryChart
+    FitnessSummaryChart,
+    PeaksChart
 )
 {
 
     var chartViewConstructors = {
+        3: DashboardPodView,
+        8: DashboardPodView,
+        28: DashboardPodView,
+        30: DashboardPodView,
+        31: DashboardPodView,
         32: PmcChartView,
-        3: DashboardPodView
+        36: DashboardPodView
     };
 
     var chartModelConstructors = {
-        3: FitnessSummaryChart
+        3: FitnessSummaryChart,
+        8: PeaksChart,
+        28: PeaksChart,
+        30: PeaksChart,
+        31: PeaksChart,
+        36: PeaksChart,
     };
 
     return {
