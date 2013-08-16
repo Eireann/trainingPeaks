@@ -17,37 +17,6 @@ function(
 )
 {
 
-    var ReportFetcher = {
-
-        fetchReport: function(reportName, startDate, endDate, options)
-        {
-
-            if (!startDate || !endDate)
-            {
-                throw new Error("startDate & endDate needed for ReportFetcher");
-            }
-
-            var athleteId = theMarsApp.user.getCurrentAthleteId();
-            var url = theMarsApp.apiRoot + "/fitness/v1/athletes/" + athleteId + "/reporting/" + reportName;
-            url += "/" +  moment(startDate).format(TP.utils.datetime.shortDateFormat);
-            url += "/" +  moment(endDate).format(TP.utils.datetime.shortDateFormat);
-
-            if(options)
-            {
-                return $.ajax(url, {
-                    type: "POST",
-                    contentType: "application/json",
-                    data: JSON.stringify(options)
-                });
-            }
-            else
-            {
-                return $.ajax(url, { type: "GET" });
-            }
-        }
-
-    };
-
     var FitnessSummaryChart = Chart.extend({
         
         summaryTypes: {
@@ -72,7 +41,7 @@ function(
         fetchData: function()
         {
             var dateOptions = DashboardChartUtils.buildChartParameters(this.get("dateOptions"));
-            return ReportFetcher.fetchReport("fitnesssummary", dateOptions.startDate, dateOptions.endDate);
+            return this.dataManager.fetchReport("fitnesssummary", dateOptions.startDate, dateOptions.endDate);
         },
 
         buildTooltipData: function(flotItem)
@@ -189,8 +158,7 @@ function(
                 
             };
             return flotOptions;
-        },
-
+        }
 
     });
 

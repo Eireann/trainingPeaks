@@ -29,7 +29,7 @@ function(
             this.sourceModel = options.sourceModel;
             this.sourceKey = options.sourceKey;
 
-            this.set(this.sourceModel.get(this.sourceKey)); 
+            this.set(this.sourceModel.get(this.sourceKey), options.modelOptions); 
 
             this.each(this._overrideSave, this);
 

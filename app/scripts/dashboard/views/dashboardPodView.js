@@ -25,7 +25,7 @@ function(
 
         template: {
             type: "handlebars",
-            template: podTemplate,
+            template: podTemplate
         },
 
         modelEvents: {},

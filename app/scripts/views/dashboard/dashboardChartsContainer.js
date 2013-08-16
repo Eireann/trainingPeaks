@@ -55,7 +55,10 @@ function(
                 sourceModel: theMarsApp.user,
                 sourceKey: "settings.dashboard.pods",
                 comparator: "index",
-                model: dashboardChartBuilder.buildChartModel
+                model: dashboardChartBuilder.buildChartModel,
+                modelOptions: {
+                    dataManager: this.dataManager
+                }
             });
 
             this.packeryCollectionView = new PackeryCollectionView({

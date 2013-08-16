@@ -6,7 +6,7 @@ define(
     "framework/ajaxCaching",
     "framework/ajaxTimezone",
     "framework/tooltips",
-    "framework/dataManager",
+    "dashboard/reportingDataManager",
     "models/session",
     "models/userModel",
     "models/buildInfo",
@@ -28,7 +28,7 @@ function(
     ajaxCaching,
     initializeAjaxTimezone,
     enableTooltips,
-    DataManager,
+    ReportingDataManager,
     Session,
     UserModel,
     BuildInfoModel,
@@ -173,7 +173,7 @@ function(
         {
             this.dataManagers = {
                 // reset reporting manager when we save workouts, ignore posts to reporting
-                reporting: new DataManager({ resetPatterns: [/fitness/i], ignoreResetPatterns: [/reporting/i] })
+                reporting: new ReportingDataManager({ resetPatterns: [/fitness/i], ignoreResetPatterns: [/reporting/i] })
             };
 
             this.on("save:model", function(model)

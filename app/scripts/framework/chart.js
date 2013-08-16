@@ -16,8 +16,13 @@ function(
 
         constructor: function(attributes, options)
         {
+            if(!options.dataManager)
+            {
+                throw new Error("Chart requires a reporting datamanager");    
+            }
             TP.Model.apply(this, arguments);
-            this._setDefaultDateSettings(); 
+            this._setDefaultDateSettings();
+            this.dataManager = options.dataManager;
         },
 
         createChartSettingsView: function()

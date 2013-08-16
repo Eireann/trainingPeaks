@@ -1,8 +1,10 @@
 ﻿define(
 [
-    "underscore"
+    "underscore",
+    "backbone.marionette"
 ], function(
-    _
+    _,
+    Marionette
     )
 {
 
@@ -132,6 +134,8 @@
         }
 
     });
+
+    DataManager.extend = Marionette.extend;
 
     return DataManager;
 

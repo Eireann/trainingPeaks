@@ -4,7 +4,7 @@
     "views/dashboard/defaultChart",
     "views/dashboard/pmcChart",
     "dashboard/views/dashboardPodView",
-    "dashboard/charts/fitnessSummaryChart",
+    "dashboard/charts/fitnessSummaryChart"
 ],
 function(
     TP,
