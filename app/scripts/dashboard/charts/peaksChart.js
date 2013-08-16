@@ -40,13 +40,38 @@ function(
       {
          var dateOptions = DashboardChartUtils.buildChartParameters(this.get("dateOptions"));
          var options = { workoutTypeIds: null, meanMaxBestsType: this.subType.requestType };
+
+         var mainXhr = this.dataManager.fetchReport("meanmaxbests", dateOptions.startDate, dateOptions.endDate, options);
+
+         // var dateComparisonOptions = DashboardChartUtils.buildChartParameters(this.get("dateComparisonOptions"));
+         var comparisonXhr = this.dataManager.fetchReport("meanmaxbests", moment("2012-01-01"), moment("2014-01-01"), options);
          
-         return this.dataManager.fetchReport("meanmaxbests", dateOptions.startDate, dateOptions.endDate, options);
+         return $.when(mainXhr, comparisonXhr);
       },
 
-      parseData: function(data)
+      parseData: function(mainXhr, comparisonXhr)
       {
-         console.log(data);
+         var mainPeaks = this._parsePeaks(mainXhr[0]);
+         var comparisonPeaks = this._parsePeaks(comparisonXhr[0]);
+
+         var series =
+         [{
+            data: _.map(mainPeaks, function(peak, index) { return [index, peak.value || null]; }),
+            color: "#000"
+         },
+         {
+            data: _.map(comparisonPeaks, function(peak, index) { return [index, peak.value || null]; }),
+            color: "#00f"
+         }];
+
+         return {
+            dataSeries: series,
+            flotOptions: defaultFlotOptions.getSplineOptions(null)
+         };
+      },
+
+      _parsePeaks: function(data)
+      {
          var peaks = _.map(data.meanMaxes, function(peak)
          {
             if (!peak || !_.isString(peak.label))
@@ -77,19 +102,8 @@ function(
             return _.extend({ period: period }, peak);
          });
 
-         peaks = _.sortBy(peaks, "period");
-
-         var series =
-         [{
-            data: _.map(peaks, function(peak, index) { return [index, peak.value || null]; }),
-            color: "#000"
-         }];
-
-         return {
-            dataSeries: series,
-            flotOptions: defaultFlotOptions.getSplineOptions(null)
-         };
-      } 
+         return _.sortBy(peaks, "period");
+      }
    });
 
    return PeaksChart;

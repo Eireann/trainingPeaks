@@ -42,9 +42,9 @@ function(
             var deferred = new $.Deferred();
 
             var self = this;
-            xhr.done(function(data)
+            xhr.done(function(data) // Might be more than one argument...
             {
-                deferred.resolve(self.parseData(data));
+                deferred.resolve(self.parseData.apply(self, arguments));
             }).fail(function()
             {
                 deferred.reject();
