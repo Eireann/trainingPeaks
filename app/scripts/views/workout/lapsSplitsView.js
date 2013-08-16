@@ -39,24 +39,24 @@ function(
                 lapObject = 
                 {
                     "Lap": "Lap " + (i+1),
-                    "Start": lap.begin,
-                    "Finish": lap.end,
-                    "Duration": lap.elapsedTime,
-                    "Moving Time": lap.movingTime,
-                    "Distance": lap.distance,
+                    "Start": TP.utils.datetime.format.decimalHoursAsTime(TP.utils.datetime.convert.millisecondsToDecimalHours(lap.begin)),
+                    "Finish": TP.utils.datetime.format.decimalHoursAsTime(TP.utils.datetime.convert.millisecondsToDecimalHours(lap.end)),
+                    "Duration": TP.utils.datetime.format.decimalHoursAsTime(TP.utils.datetime.convert.millisecondsToDecimalHours(lap.elapsedTime)),
+                    "Moving Time": TP.utils.datetime.format.decimalHoursAsTime(TP.utils.datetime.convert.millisecondsToDecimalHours(lap.movingTime)),
+                    "Distance": convertToViewUnits(lap.distance, "distance", sportTypeID),
                     "Average Power": lap.averagePower,
                     "Maximum Power": lap.maximumPower,
-                    "Average Pace": convertToViewUnits(lap.averageSpeed, "paceUnFormatted", sportTypeID),
-                    "Maximum Pace": convertToViewUnits(lap.maximumSpeed, "paceUnFormatted", sportTypeID),
-                    "Average Speed": lap.averageSpeed,
-                    "Maximum Speed": lap.maximumSpeed,
+                    "Average Pace": convertToViewUnits(lap.averageSpeed, "pace", sportTypeID),
+                    "Maximum Pace": convertToViewUnits(lap.maximumSpeed, "pace", sportTypeID),
+                    "Average Speed": convertToViewUnits(lap.averageSpeed, "speed", sportTypeID),
+                    "Maximum Speed": convertToViewUnits(lap.maximumSpeed, "speed", sportTypeID),
                     "Calories": lap.calories,
                     "Maximum Cadence": lap.maximumCadence,
                     "Average Cadence": lap.averageCadence
                 };
 
                 // here's where we can filter out unneeded properties (depending on workout type)
-                // lapObject = _.omit(lapObject, ['Average Pace', 'MaximumPace'])
+                // exaple: lapObject = _.omit(lapObject, ['Average Pace', 'MaximumPace'])
 
                 rowData.push(lapObject);
             });

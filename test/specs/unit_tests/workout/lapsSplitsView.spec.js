@@ -55,9 +55,13 @@ function(moment, _, theMarsApp, TP, LapsSplitsView, WorkoutModel, detailDataLaps
 				checkAttr(attr);
 			});
 
-			it("Should serialize data correctly", function()
+			it("Should serialize six rows of data", function()
 			{
 				expect(serializedData.rowData.length).toBe(6);
+			});
+			it("Should format time appropriately", function()
+			{
+				expect(serializedData.rowData[0][1]).toBe("00:00");
 			});
 		});
 		describe("Rendering", function()
