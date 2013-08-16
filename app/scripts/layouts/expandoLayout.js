@@ -21,7 +21,7 @@ function(TP, expandoLayoutTemplate)
             lapsRegion: "#expandoLapsRegion",
             chartsRegion: "#expandoChartsRegion",
             mapAndGraphResizerRegion: "#mapAndGraphResizerRegion",
-            lapsSplitsRegion: "#expandoLapsSplitsRegion"
+            lapsSplitsRegion: "#lapsSplitsTableContainer"
         },
 
         showMap: function()

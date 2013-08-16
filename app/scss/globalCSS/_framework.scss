@@ -15,6 +15,39 @@
         max-width: none;
     }
 
+    .frameworkTable
+    {
+        font-family: HelveticaNeueW01-75Bold;
+        font-size: 12px;
+        background:none;
+        border-collapse:collapse;
+        th {
+            background:none;
+            border: 1px solid #c1c1c1;
+            border-width:1px 0;
+            font-weight:normal;
+            color: $TPGrey3;
+        }
+        td
+        {
+            border-right:1px solid #c1c1c1;
+        }
+        tr
+        {
+            &:nth-of-type(even)
+            {
+                background:none;
+            }
+            &:nth-of-type(odd)
+            {
+                background: #efefef;
+            }
+            &:first-child
+            {
+                background:none;
+            }
+        }
+    }
     .frameworkTitle
     {
     	width: 265px;

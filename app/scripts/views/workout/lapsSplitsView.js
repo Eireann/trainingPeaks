@@ -50,15 +50,15 @@ function(
                     "Distance": convertToViewUnits(lap.distance, "distance", sportTypeID),
                     "Average Power": lap.averagePower,
                     "Maximum Power": lap.maximumPower,
-                    "Normalized Power": canShowNP ? lap.normalizedPowerActual : null,
                     "Average Pace": convertToViewUnits(lap.averageSpeed, "pace", sportTypeID),
                     "Maximum Pace": convertToViewUnits(lap.maximumSpeed, "pace", sportTypeID),
-                    "Normalized Graded Pace": canShowNGP ? convertToViewUnits(lap.normalizedSpeedActual, "pace", sportTypeID) : null,
                     "Average Speed": convertToViewUnits(lap.averageSpeed, "speed", sportTypeID),
                     "Maximum Speed": convertToViewUnits(lap.maximumSpeed, "speed", sportTypeID),
                     "Calories": lap.calories,
                     "Maximum Cadence": lap.maximumCadence,
                     "Average Cadence": lap.averageCadence,
+                    "Normalized Graded Pace": canShowNGP ? convertToViewUnits(lap.normalizedSpeedActual, "pace", sportTypeID) : null,
+                    "Normalized Power": canShowNP ? lap.normalizedPowerActual : null,
                     "Intensity Factor": canShowIF ? TP.utils.conversion.formatIF(lap.intensityFactorActual) : null
                 };
 

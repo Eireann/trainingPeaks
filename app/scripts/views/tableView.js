@@ -12,6 +12,7 @@ function(
 	return TP.ItemView.extend(
 	{
 		tagName: "table",
+        className: "frameworkTable",
 		template:
         {
             type: "handlebars",

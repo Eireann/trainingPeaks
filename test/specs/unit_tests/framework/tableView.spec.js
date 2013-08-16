@@ -14,5 +14,9 @@ requirejs(
 		{
 			expect(TableView.prototype.tagName).toBe("table");
 		});
+		it("Should have the right class", function()
+		{
+			expect(TableView.prototype.className).toBe("frameworkTable");
+		});
 	});
  });
