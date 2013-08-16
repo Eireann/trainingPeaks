@@ -231,6 +231,15 @@ function(
             var tooltipHTML = tooltipTemplate({ tooltips: this.buildTooltipData(flotItem) });
             $tooltipEl.html(tooltipHTML);
             toolTipPositioner.updatePosition($tooltipEl, this.plot);
+            this.$currentToolTip = $tooltipEl;
+        },
+
+        _hideToolTip: function()
+        {
+            if(this.$currentToolTip)
+            {
+                this.$currentToolTip.remove();
+            } 
         },
 
         buildTooltipData: function(flotItem)
@@ -444,6 +453,11 @@ function(
             var data = _.clone(this.model.attributes);
             data.title = this.getChartTitle();
             return data;
+        },
+
+        onClose: function()
+        {
+            this._hideToolTip();
         }
 
     };
