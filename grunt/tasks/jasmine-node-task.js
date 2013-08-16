@@ -107,6 +107,27 @@ module.exports = function(grunt)
         }
         */
 
+        if(options.teamcity)
+        {
+
+            var removeJasmineFrames = function(text) {
+              var lines = [];
+              text.split(/\n/).forEach(function(line){
+                if (line.indexOf(filename) == -1) {
+                  lines.push(line);
+                }
+              });
+              return lines.join('\n');
+            };
+
+            var jasmineEnv = jasmine.getEnv();
+
+            jasmineEnv.addReporter(new jasmine.TeamcityReporter({print:       util.print,
+                                             color:       false,
+                                             onComplete:  options.onComplete,
+                                             stackFilter: removeJasmineFrames}));
+        }
+
         // order is preserved in node.js
         var legacyArguments = Object.keys(options).map(function (key) {
             return options[key];
