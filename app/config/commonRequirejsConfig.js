@@ -16,7 +16,8 @@
             "layouts": "scripts/layouts",
             "helpers": "scripts/helpers",
             "utilities": "scripts/utilities",
-
+            "dashboard": "scripts/dashboard", 
+            
             // jQuery related, but not managed by bower yet ...
             "jqueryui": "../vendor/js/libs/jqueryui",
             "jqueryOutside": "../vendor/js/libs/jquery/jquery.ba-outside-events",

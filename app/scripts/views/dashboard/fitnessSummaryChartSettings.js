@@ -39,7 +39,7 @@ function(
         initialize: function(options)
         {
             DashboardChartSettingsBase.initialize.call(this, options);
-            this.summaryTypes = options.summaryTypes;
+            this.summaryTypes = options.summaryTypes || options.model.summaryTypes;
             this.on("render", this.selectBoxIt, this);
         },
 

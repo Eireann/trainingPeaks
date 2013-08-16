@@ -11,7 +11,18 @@ define(
     "framework/utilities",
     "framework/analytics"
 ],
-function(_, Backbone, BackboneDeepModel, BackboneStickit, Marionette, setImmediate, APIModel, Logger, utilities, analytics)
+function(
+         _,
+         Backbone,
+         BackboneDeepModel,
+         BackboneStickit,
+         Marionette,
+         setImmediate,
+         APIModel,
+         Logger,
+         utilities,
+         analytics
+)
 {
     var TP = {};
 

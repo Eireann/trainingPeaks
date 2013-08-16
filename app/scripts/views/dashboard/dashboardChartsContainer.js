@@ -54,7 +54,8 @@ function(
             this.collection = new SettingsSubCollection(null, { 
                 sourceModel: theMarsApp.user,
                 sourceKey: "settings.dashboard.pods",
-                comparator: "index"
+                comparator: "index",
+                model: dashboardChartBuilder.buildChartModel
             });
 
             this.packeryCollectionView = new PackeryCollectionView({
