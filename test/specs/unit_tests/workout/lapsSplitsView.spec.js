@@ -36,9 +36,9 @@ function(moment, _, theMarsApp, TP, LapsSplitsView, WorkoutModel, detailDataLaps
 		{
 			var requiredAttrs = 
 				[
-					"begin", "end", "elapsedTime", "movingTime", "distance", "averagePower",
-					"maximumPower", "averagePace", "maximumPace", "averageSpeed", "maximumSpeed",
-					"calories", "maximumCadence", "averageCadence"
+					"Lap", "Start", "Finish", "Duration", "Moving Time", "Distance", "Average Power",
+					"Maximum Power", "Average Pace", "Maximum Pace", "Average Speed", "Maximum Speed",
+					"Calories", "Maximum Cadence", "Average Cadence"
 				],
 				model = buildWorkoutModel(),
 				view = new LapsSplitsView({model: model}),
@@ -46,7 +46,7 @@ function(moment, _, theMarsApp, TP, LapsSplitsView, WorkoutModel, detailDataLaps
 				checkAttr = function(attr) {
 					it("Should include " + attr + " in the serialized data", function()
 					{
-						expect(serializedData.laps[0].hasOwnProperty(attr)).toBeTruthy();
+						expect(_.contains(serializedData.headerNames, attr)).toBeTruthy();
 					});
 				};
 
@@ -57,7 +57,7 @@ function(moment, _, theMarsApp, TP, LapsSplitsView, WorkoutModel, detailDataLaps
 
 			it("Should serialize data correctly", function()
 			{
-				expect(serializedData.laps.length).toBe(6);
+				expect(serializedData.rowData.length).toBe(6);
 			});
 		});
 		describe("Rendering", function()
@@ -72,7 +72,7 @@ function(moment, _, theMarsApp, TP, LapsSplitsView, WorkoutModel, detailDataLaps
 			it("Should be a table with table rows", function()
 			{
 				expect(view.$el.is('table')).toBeTruthy();
-				expect(view.$el.find('th').length).toBe(14); // header cells
+				expect(view.$el.find('th').length).toBe(15); // header cells
 				expect(view.$el.find('tr').length).toBe(7); // rows including header row
 			});
 		});
