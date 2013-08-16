@@ -239,7 +239,7 @@ function(
             var dayModel = this.daysCollection.get(formattedDate);
 
             if (!dayModel)
-                throw new Error("Could not find day in days collection");
+                return null;
 
             return dayModel;
         },
@@ -290,6 +290,10 @@ function(
             if (workoutDay)
             {
                 var dayModel = this.getDayModel(workoutDay);
+
+                if(!dayModel)
+                    return;
+                
                 dayModel.add(workout);
 
                 // so that if we move the workout, it knows which date to remove itself from

@@ -2,13 +2,10 @@ define(
 [
     "models/calendar/calendarCollection"
 ],
-function(CalendarCollection
-
-    )
+function(CalendarCollection)
 {
-
-    var calendarControllerWeeksCollectionManagement = {
-
+    var calendarControllerWeeksCollectionManagement =
+    {
         weeksCollectionInitialize: function ()
         {
             this.weeksCollection = new CalendarCollection(null,
@@ -30,9 +27,12 @@ function(CalendarCollection
         getWorkout: function(workoutId)
         {
             return this.weeksCollection.getWorkout(workoutId);
+        },
+
+        addWorkout: function(workout)
+        {
+            this.weeksCollection.addWorkout(workout);
         }
-
-
     };
 
     return calendarControllerWeeksCollectionManagement;

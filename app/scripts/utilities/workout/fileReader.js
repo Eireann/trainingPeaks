@@ -7,34 +7,54 @@ function(_, Backbone)
 {
     function WorkoutFileReader(file)
     {
-        this.file = file;
+        if(_.isArray(file))
+            this.files = file;
+        else if(typeof file.length !== "undefined")
+            this.files = file;
+        else
+            this.files = [file];
     }
 
     WorkoutFileReader.prototype.readFile = function ()
     {
         var readFileDeferred = new $.Deferred();
-        var reader = new FileReader();
-
+        
         var self = this;
-        reader.onload = function (event)
+        var numberOfFiles = this.files.length ? this.files.length : 1;
+        var individualFilesDeferreds = [];
+
+        _.each(this.files, function(file)
         {
-            function uint8ToString(buf)
+            var thisFileDeferred = $.Deferred();
+
+            var reader = new FileReader();
+
+            reader.onload = function (event)
             {
-                var i, length, out = '';
-                for (i = 0, length = buf.length; i < length; i += 1)
+                function uint8ToString(buf)
                 {
-                    out += String.fromCharCode(buf[i]);
+                    var i, length, out = '';
+                    for (i = 0, length = buf.length; i < length; i += 1)
+                    {
+                        out += String.fromCharCode(buf[i]);
+                    }
+                    return out;
                 }
-                return out;
-            }
 
-            var data = new Uint8Array(event.target.result);
-            var dataAsString = btoa(uint8ToString(data));
+                var data = new Uint8Array(event.target.result);
+                var dataAsString = btoa(uint8ToString(data));
 
-            readFileDeferred.resolveWith(this, [self.file.name, dataAsString]);
-        };
+                thisFileDeferred.resolveWith(this, [file.name, dataAsString]);
+            };
 
-        reader.readAsArrayBuffer(this.file);
+            individualFilesDeferreds.push(thisFileDeferred);
+            reader.readAsArrayBuffer(file);
+        });
+
+        $.when.apply($, individualFilesDeferreds).done(function()
+        {
+                readFileDeferred.resolveWith(self, arguments);
+        });
 
         return readFileDeferred;
     };
