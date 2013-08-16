@@ -151,7 +151,7 @@ function(
                 if (this.tmp.view) return; // Just in case draggable gets confused
 
                 this.tmp.draggable = ui.draggable;
-                this.tmp.model = new this.collection.model(ui.draggable.data("model").attributes);
+                this.tmp.model = new this.collection.model(ui.draggable.data("model").attributes, this.collection.modelOptions);
                 this.addChildView(this.tmp.model, this.collection, {temporary: true});
                 this.tmp.view = this.children.last();
                 this.tmp.view.$el.addClass("hover");
