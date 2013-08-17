@@ -73,28 +73,21 @@ function(_, $, Backbone, TP, xhrData, app)
             localStorage.clear();
         },
 
-        fakeSync: function(method, model, options)
+        fakeAjax: function(options)
         {
-            // if no url was passed in, build one from the model
-            if (!options.url)
-                options.url = _.result(model, 'url');
 
-            // fire backbone sync to get a jquery xhr deferred, and wrap it with our own deferred
-            var ajaxDeferred = this.addDeferred(method, model, options, this.backboneSync);
+            // fire backbone ajax to get a jquery xhr deferred, and wrap it with our own deferred
+            var ajaxDeferred = this.addDeferred(options, this.backboneAjax);
 
-            // this is what actually triggers Backbone models/collections to sync,
-            // and is added in Backbone.sync
+            // this is what actually triggers Backbone models/collections to ajax,
+            // and is added in Backbone.ajax
             if (options.success)
                 ajaxDeferred.done(options.success);
-
-            if (!options.type)
-                options.type = "GET";
 
             this.fakeAjaxRequests[options.url] = {
                 url: options.url,
                 jqXhr: ajaxDeferred,
-                options: options,
-                model: model
+                options: options
             };
 
             //console.log("Fake request: " + options.type + " " + options.url);
@@ -103,11 +96,10 @@ function(_, $, Backbone, TP, xhrData, app)
             return ajaxDeferred;
         },
 
-        addDeferred: function(method, model, options, backboneSync)
+        addDeferred: function(options, backboneAjax)
         {
-
             options.ajaxDeferred = new $.Deferred();
-            var jqXhr = backboneSync(method, model, options);
+            var jqXhr = backboneAjax(options);
             jqXhr.ajaxDeferred = options.ajaxDeferred;
 
             var deferredFunctionNames = ["always", "done", "fail", "pipe", "progress", "then"];
@@ -183,6 +175,10 @@ function(_, $, Backbone, TP, xhrData, app)
 
         findRequest: function(httpVerb, urlPattern)
         {
+            if(!httpVerb)
+            {
+                //console.log("testHelpers.hasRequest or testHelpers.resolveRequest, with a null http verb, will be deprecated soon");
+            }
             var pattern = new RegExp(urlPattern);
             return _.find(_.values(this.fakeAjaxRequests), function(req)
             {
@@ -220,22 +216,22 @@ function(_, $, Backbone, TP, xhrData, app)
 
         setupFakeAjax: function()
         {
-            _.bindAll(this, "fakeSync");
+            _.bindAll(this, "fakeAjax");
 
-            if (!Backbone._originalSync)
+            if (!Backbone._originalAjax)
             {
-                Backbone._originalSync = Backbone.sync;
-                this.backboneSync = Backbone.sync;
+                Backbone._originalAjax = Backbone.ajax;
+                this.backboneAjax = Backbone.ajax;
             }
 
-            Backbone.sync = this.fakeSync;
+            Backbone.ajax = this.fakeAjax;
             this.fakeAjaxRequests = {};
         },
 
         removeFakeAjax: function()
         {
-            if (Backbone._originalSync)
-                Backbone.sync = Backbone._originalSync;
+            if (Backbone._originalAjax)
+                Backbone.ajax = Backbone._originalAjax;
 
             this.clearRequests();
         },

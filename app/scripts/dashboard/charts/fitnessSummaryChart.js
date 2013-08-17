@@ -96,6 +96,11 @@ function(
             }
         },
 
+        getChartName: function()
+        {
+            return "Fitness Summary Chart";
+        },
+
         _buildFlotPoints: function(data)
         {
             var chartPoints = [];

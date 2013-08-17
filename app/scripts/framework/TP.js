@@ -459,5 +459,7 @@ function(
 
     TP.analytics = analytics;
 
+    TP.extend = Backbone.Marionette.extend;
+
     return TP;
 });

@@ -1,10 +1,10 @@
 ﻿define(
 [
     "underscore",
-    "backbone.marionette"
+    "TP"
 ], function(
     _,
-    Marionette
+    TP
     )
 {
 
@@ -29,15 +29,32 @@
 
         fetch: function(modelOrCollection, options)
         {
+            return this.fetchOnModel(modelOrCollection, options);
+        },
+        
+        fetchAjax: function(requestSignature, options)
+        {
+            if(this._hasResolvedData(requestSignature))
+            {
+                this._resolveAjaxRequestWithExistingData(requestSignature, options);
+            }
+            else
+            {
+                this._requestAjaxData(requestSignature, options);
+            }
+        },
+
+        fetchOnModel: function(modelOrCollection, options)
+        {
             var requestSignature = this._getRequestSignature(modelOrCollection);
 
             if(this._hasResolvedData(requestSignature))
             {
-                return this._resolveRequestWithExistingData(requestSignature, modelOrCollection, new $.Deferred());
+                return this._resolveRequestOnModelWithExistingData(requestSignature, modelOrCollection, new $.Deferred());
             }
             else
             {
-                return this._requestData(requestSignature, modelOrCollection, options);
+                return this._requestDataOnModel(requestSignature, modelOrCollection, options);
             }
         },
 
@@ -78,7 +95,7 @@
             return this._resolvedRequests.hasOwnProperty(requestSignature);
         },
 
-        _resolveRequestWithExistingData: function(requestSignature, modelOrCollection, deferred)
+        _resolveRequestOnModelWithExistingData: function(requestSignature, modelOrCollection, deferred)
         {
             modelOrCollection.set(this._resolvedRequests[requestSignature]);
             deferred.resolve();
@@ -91,11 +108,18 @@
             delete this._pendingRequests[requestSignature];
             _.each(requests, function(request)
             {
-                this._resolveRequestWithExistingData(requestSignature, request.modelOrCollection, request.deferred); 
+                if(request.modelOrCollection)
+                {
+                    this._resolveRequestOnModelWithExistingData(requestSignature, request.modelOrCollection, request.deferred); 
+                }
+                else
+                {
+                    this._resolveAjaxRequestWithExistingData(requestSignature, request.options);
+                }
             }, this);
         },
 
-        _requestData: function(requestSignature, modelOrCollection, options)
+        _requestDataOnModel: function(requestSignature, modelOrCollection, options)
         {
 
             var deferred = new $.Deferred();
@@ -135,7 +159,7 @@
 
     });
 
-    DataManager.extend = Marionette.extend;
+    DataManager.extend = TP.extend;
 
     return DataManager;
 

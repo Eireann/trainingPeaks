@@ -64,9 +64,9 @@ function(
             it("Should save settings when clicking on apply", function()
             {
                 testHelpers.clearRequests();
-                expect(testHelpers.hasRequest(null, "user")).toBe(false);
+                expect(testHelpers.hasRequest("PUT", "user")).toBe(false);
                 $mainRegion.find("#dashboardHeader .applyDates").trigger("click");
-                expect(testHelpers.hasRequest(null, "user")).toBe(true);
+                expect(testHelpers.hasRequest("PUT", "user")).toBe(true);
             });
 
         });
@@ -130,7 +130,7 @@ function(
                     reporting/performancedata
                     var urlExtension = "/" + start + "/" + end + "/" + workoutTypes + "/" + this.ctlConstant + "/" + this.ctlStartValue + "/" + this.atlConstant + "/" + this.atlStartValue;
                     */
-                    expect(testHelpers.hasRequest(null, "reporting/performancedata")).toBe(true);
+                    expect(testHelpers.hasRequest("POST", "reporting/performancedata")).toBe(true);
                 });
 
 
@@ -171,8 +171,8 @@ function(
                             $mainRegion.find("#dashboardHeader .dashboardDatePicker input.startDate").val("2013-01-01").trigger("change");
                             $mainRegion.find("#dashboardHeader .dashboardDatePicker input.endDate").val("2013-04-15").trigger("change");
                             $mainRegion.find("#dashboardHeader .applyDates").trigger("click");                       
-                            expect(testHelpers.hasRequest(null, "reporting/performancedata")).toBe(true);   
-                            expect(testHelpers.hasRequest(null, "reporting/performancedata/2013-01-01/2013-04-15")).toBe(true);
+                            expect(testHelpers.hasRequest("POST", "reporting/performancedata")).toBe(true);   
+                            expect(testHelpers.hasRequest("POST", "reporting/performancedata/2013-01-01/2013-04-15")).toBe(true);
                         });
 
                     });
@@ -212,8 +212,8 @@ function(
                             $mainRegion.find("#dashboardHeader .dashboardDatePicker input.startDate").val("2013-01-01").trigger("change");
                             $mainRegion.find("#dashboardHeader .dashboardDatePicker input.endDate").val("2013-04-15").trigger("change");
                             $mainRegion.find("#dashboardHeader .applyDates").trigger("click");                       
-                            expect(testHelpers.hasRequest(null, "reporting/performancedata")).toBe(false);   
-                            expect(testHelpers.hasRequest(null, "reporting/performancedata/2013-01-01/2013-04-15")).toBe(false);
+                            expect(testHelpers.hasRequest("POST", "reporting/performancedata")).toBe(false);   
+                            expect(testHelpers.hasRequest("POST", "reporting/performancedata/2013-01-01/2013-04-15")).toBe(false);
                         });
                     });
                 });
@@ -250,9 +250,9 @@ function(
                         var $body = theMarsApp.getBodyElement();
                         testHelpers.clearRequests();
                         $mainRegion.find(".dashboardChart.pmcChart .settings").trigger("mousedown");
-                        expect(testHelpers.hasRequest(null, "user")).toBe(false);
+                        expect(testHelpers.hasRequest("PUT", "user")).toBe(false);
                         $body.find(".dashboardChartSettings #closeIcon").trigger("click");
-                        expect(testHelpers.hasRequest(null, "user")).toBe(true);
+                        expect(testHelpers.hasRequest("PUT", "user")).toBe(true);
                     });
 
                     it("Should not request new data on settings close if parameters haven't changed", function()
@@ -260,9 +260,9 @@ function(
                         var $body = theMarsApp.getBodyElement();
                         testHelpers.clearRequests();
                         $mainRegion.find(".dashboardChart.pmcChart .settings").trigger("mousedown");
-                        expect(testHelpers.hasRequest(null, "reporting/performancedata")).toBe(false);
+                        expect(testHelpers.hasRequest("POST", "reporting/performancedata")).toBe(false);
                         $body.find(".dashboardChartSettings #closeIcon").trigger("click");
-                        expect(testHelpers.hasRequest(null, "reporting/performancedata")).toBe(false);
+                        expect(testHelpers.hasRequest("POST", "reporting/performancedata")).toBe(false);
                     });
 
                     it("Should request new data on settings close if parameters have changed", function()
@@ -270,10 +270,10 @@ function(
                         var $body = theMarsApp.getBodyElement();
                         testHelpers.clearRequests();
                         $mainRegion.find(".dashboardChart.pmcChart .settings").trigger("mousedown");
-                        expect(testHelpers.hasRequest(null, "reporting/performancedata")).toBe(false);
+                        expect(testHelpers.hasRequest("POST", "reporting/performancedata")).toBe(false);
                         $body.find(".dashboardChartSettings #ctlConstant").val("99").attr("value", "99").trigger("change");
                         $body.find(".dashboardChartSettings #closeIcon").trigger("click");
-                        expect(testHelpers.hasRequest(null, "reporting/performancedata")).toBe(true);
+                        expect(testHelpers.hasRequest("POST", "reporting/performancedata")).toBe(true);
                     });
 
                     it("Should use dates entered in settings tomahawk", function()
@@ -295,10 +295,10 @@ function(
                         $body.find(".dashboardChartSettings #closeIcon").trigger("click");
 
                         // should request tomahawk dates
-                        expect(testHelpers.hasRequest(null, "reporting/performancedata/2012-04-01/2012-12-25")).toBe(true);
+                        expect(testHelpers.hasRequest("POST", "reporting/performancedata/2012-04-01/2012-12-25")).toBe(true);
 
                         // should not request dashboard dates
-                        expect(testHelpers.hasRequest(null, "reporting/performancedata/2013-01-01/2013-04-15")).toBe(false);
+                        expect(testHelpers.hasRequest("POST", "reporting/performancedata/2013-01-01/2013-04-15")).toBe(false);
 
                     });
 

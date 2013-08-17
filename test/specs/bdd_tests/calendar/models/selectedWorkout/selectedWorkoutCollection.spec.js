@@ -51,7 +51,7 @@ function (testHelpers, xhrData, _, app, TP, SelectedWorkoutCollection)
                 var collection = new SelectedWorkoutCollection(models);
 
                 collection.deleteSelectedWorkouts();
-                expect(testHelpers.hasRequest(null,"deleteworkouts")).toBe(true);
+                expect(testHelpers.hasRequest("POST","deleteworkouts")).toBe(true);
             });
             
             it("should trigger destory", function ()
@@ -66,7 +66,7 @@ function (testHelpers, xhrData, _, app, TP, SelectedWorkoutCollection)
 
                 collection.deleteSelectedWorkouts();
 
-                testHelpers.resolveRequest(null, "deleteworkouts", {});
+                testHelpers.resolveRequest("POST", "deleteworkouts", {});
                 
                 _.each(models, function (item, index)
                 {

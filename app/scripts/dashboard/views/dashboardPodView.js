@@ -57,6 +57,8 @@ function(
             //trigger redraw instead of dashboardDatesChange
             //this.listenTo(this.model, "dashboardDatesChange", _.bind(this._onDashboardDatesChange, this));
             this.on("render", this._renderChartAfterRender, this);
+
+            this._setChartCssClass();
         },
 
         ui:
@@ -115,7 +117,10 @@ function(
                 this.$el.removeClass("noData");
                 if ($.plot)
                 {
-                    chartOptions.flotOptions.tooltipOpts.onHover = this._onHoverToolTip;
+                    if(chartOptions.flotOptions && chartOptions.flotOptions.tooltipOpts)
+                    {
+                        chartOptions.flotOptions.tooltipOpts.onHover = this._onHoverToolTip;
+                    }
                     this.plot = $.plot(this.ui.chartContainer, chartOptions.dataSeries, chartOptions.flotOptions);
                 }
             }
@@ -226,9 +231,9 @@ function(
         {
             var $chartContainer = this.ui.chartContainer;
             $chartContainer.toggleClass('invisible');
-            this.$el.appendTo(this.chartsContainer).animate(this.previousPosition, 200, function(){ $chartContainer.toggleClass('invisible'); });
+            this.$el.appendTo(this.chartsContainer).animate(this._previousPosition, 200, function(){ $chartContainer.toggleClass('invisible'); });
             this.closeModal();
-            this.previousPosition = null;
+            this._previousPosition = null;
             this._enableDrag();
             this.trigger('popIn');
         },
@@ -276,6 +281,13 @@ function(
         _onChartTitleChange: function()
         {
             this.ui.chartTitle.text(this.model.get("title"));
+        },
+
+        _setChartCssClass: function()
+        {
+            var className = this.model.getChartName().replace(/[^a-zA-Z]/g,"");
+            className = className.substring(0, 1).toLowerCase() + className.substring(1);
+            this.$el.addClass(className); 
         }
 
     });

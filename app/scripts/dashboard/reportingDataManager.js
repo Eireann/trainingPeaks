@@ -1,10 +1,12 @@
 ﻿define(
 [
     "underscore",
+    "backbone",
     "TP",
     "framework/dataManager" 
 ], function(
     _,
+    Backbone,
     TP,
     DataManager
     )
@@ -27,7 +29,8 @@
 
             if(options)
             {
-                return $.ajax(url, {
+                return Backbone.ajax({
+                    url: url,
                     type: "POST",
                     contentType: "application/json",
                     data: JSON.stringify(options)
@@ -35,7 +38,7 @@
             }
             else
             {
-                return $.ajax(url, { type: "GET" });
+                return Backbone.ajax({ url: url, type: "GET" });
             }
         }
 

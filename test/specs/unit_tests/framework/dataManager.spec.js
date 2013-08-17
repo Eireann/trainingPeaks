@@ -34,7 +34,7 @@ function(
         it("Should resolve a request when the source request resolves", function()
         {
             var fakeModel = new FakeModel();
-            var deferred = dataManager.fetch(fakeModel);
+            var deferred = dataManager.fetchOnModel(fakeModel);
             expect(deferred.state()).toBe("pending");
             fakeModel.resolve({ valueOne: "hello", valueTwo: "world" });
             expect(deferred.state()).toBe("resolved");
@@ -46,8 +46,8 @@ function(
         {
             var fakeModelOne = new FakeModel();
             var fakeModelTwo = new FakeModel();
-            var deferredOne = dataManager.fetch(fakeModelOne);
-            var deferredTwo = dataManager.fetch(fakeModelTwo);
+            var deferredOne = dataManager.fetchOnModel(fakeModelOne);
+            var deferredTwo = dataManager.fetchOnModel(fakeModelTwo);
             expect(deferredOne.state()).toBe("pending");
             expect(deferredTwo.state()).toBe("pending");
 
@@ -62,13 +62,13 @@ function(
         it("Should resolve new request with previously resolved data", function()
         {
             var fakeModelOne = new FakeModel();
-            var deferredOne = dataManager.fetch(fakeModelOne);
+            var deferredOne = dataManager.fetchOnModel(fakeModelOne);
             expect(deferredOne.state()).toBe("pending");
             fakeModelOne.resolve({ valueOne: "hello", valueTwo: "world" });
             expect(deferredOne.state()).toBe("resolved");
 
             var fakeModelTwo = new FakeModel();
-            var deferredTwo = dataManager.fetch(fakeModelTwo);
+            var deferredTwo = dataManager.fetchOnModel(fakeModelTwo);
             expect(deferredTwo.state()).toBe("resolved");
             expect(fakeModelTwo.get("valueOne")).toBe("hello");
             expect(fakeModelTwo.get("valueTwo")).toBe("world");
@@ -78,12 +78,12 @@ function(
         {
             var saveModelUrl = "/fitness/v1/resetme/something/";
             var fakeModelOne = new FakeModel();
-            dataManager.fetch(fakeModelOne);
+            dataManager.fetchOnModel(fakeModelOne);
             fakeModelOne.resolve({ valueOne: "hello", valueTwo: "world" });
 
             dataManager.reset(saveModelUrl); 
             var fakeModelTwo = new FakeModel();
-            var deferredTwo = dataManager.fetch(fakeModelTwo);
+            var deferredTwo = dataManager.fetchOnModel(fakeModelTwo);
             expect(deferredTwo.state()).toBe("pending");
         });
 
@@ -91,12 +91,12 @@ function(
         {
             var saveModelUrl = "/fitness/v1/idontmatch/";
             var fakeModelOne = new FakeModel();
-            dataManager.fetch(fakeModelOne);
+            dataManager.fetchOnModel(fakeModelOne);
             fakeModelOne.resolve({ valueOne: "hello", valueTwo: "world" });
 
             dataManager.reset(saveModelUrl); 
             var fakeModelTwo = new FakeModel();
-            var deferredTwo = dataManager.fetch(fakeModelTwo);
+            var deferredTwo = dataManager.fetchOnModel(fakeModelTwo);
             expect(deferredTwo.state()).toBe("resolved");
         });
 
@@ -104,12 +104,12 @@ function(
         {
             var saveModelUrl = "/fitness/v1/resetme/ignoreme/";
             var fakeModelOne = new FakeModel();
-            dataManager.fetch(fakeModelOne);
+            dataManager.fetchOnModel(fakeModelOne);
             fakeModelOne.resolve({ valueOne: "hello", valueTwo: "world" });
 
             dataManager.reset(saveModelUrl); 
             var fakeModelTwo = new FakeModel();
-            var deferredTwo = dataManager.fetch(fakeModelTwo);
+            var deferredTwo = dataManager.fetchOnModel(fakeModelTwo);
             expect(deferredTwo.state()).toBe("resolved");
         });
 
@@ -121,8 +121,8 @@ function(
                 var fakeModelWithRequestSignature = new FakeModel();
                 fakeModelWithRequestSignature.requestSignature = "iamanonstandardrequest";
 
-                var deferredOne = dataManager.fetch(fakeModelWithRegularUrl);
-                var deferredTwo = dataManager.fetch(fakeModelWithRequestSignature);
+                var deferredOne = dataManager.fetchOnModel(fakeModelWithRegularUrl);
+                var deferredTwo = dataManager.fetchOnModel(fakeModelWithRequestSignature);
                 fakeModelWithRegularUrl.resolve({ something: "string" });
                 expect(deferredOne.state()).toBe("resolved");
                 expect(deferredTwo.state()).toBe("pending");

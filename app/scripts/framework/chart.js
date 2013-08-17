@@ -58,6 +58,11 @@ function(
             return;
         },
 
+        getChartName: function()
+        {
+            return "Chart";
+        },
+
         _setDefaultDateSettings: function()
         {
             var defaultDateOption = DashboardChartUtils.chartDateOptions.USE_GLOBAL_DATES.id;
