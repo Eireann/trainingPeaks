@@ -7,6 +7,7 @@ define(
     "utilities/charting/flotOptions",
     "utilities/charting/chartColors",
     "views/dashboard/chartUtils",
+    "dashboard/views/peaksChartSettingsView"
 ],
 function(
    _,
@@ -15,11 +16,13 @@ function(
    Chart,
    defaultFlotOptions,
    chartColors,
-   DashboardChartUtils
+   DashboardChartUtils,
+   PeaksChartSettingsView
 )
 {
-   
    var PeaksChart = Chart.extend({
+      
+      settingsView: PeaksChartSettingsView,
 
       subTypes:
       {
@@ -76,15 +79,17 @@ function(
 
       fetchData: function()
       {
-         var dateOptions = DashboardChartUtils.buildChartParameters(this.get("dateOptions"));
+         return $.when(
+            this._fetchData("dateOptions"),
+            this.get("useComparison") ? this._fetchData("comparisonDateOptions") : null
+         );
+      },
+
+      _fetchData: function(key)
+      {
+         var dateOptions = DashboardChartUtils.buildChartParameters(this.get(key) || {});
          var options = { workoutTypeIds: null, meanMaxBestsType: this.subType.requestType };
-
-         var mainXhr = this.dataManager.fetchReport("meanmaxbests", dateOptions.startDate, dateOptions.endDate, options);
-
-         // var dateComparisonOptions = DashboardChartUtils.buildChartParameters(this.get("dateComparisonOptions"));
-         var comparisonXhr = this.dataManager.fetchReport("meanmaxbests", moment("2012-01-01"), moment("2014-01-01"), options);
-         
-         return $.when(mainXhr, comparisonXhr);
+         return this.dataManager.fetchReport("meanmaxbests", dateOptions.startDate, dateOptions.endDate, options);
       },
 
       parseData: function(mainXhr, comparisonXhr)
