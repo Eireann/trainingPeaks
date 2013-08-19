@@ -117,6 +117,7 @@ function(
                         label: workoutTypeShortName,
                         data: workoutTypeData[dataKey],
                         color: {
+                            stroke: "#eaebec",
                             colors: [workoutTypeGradient.light, workoutTypeGradient.dark ]
                         },
                         fullData: workoutTypeData

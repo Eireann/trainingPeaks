@@ -445,8 +445,9 @@ More detail and specific examples can be found in the included HTML file.
 
                     if (fill) {
                         ctx.fillStyle = color;
+                        ctx.strokeStyle = color.stroke ? color.stroke : color;
                     } else {
-                        ctx.strokeStyle = color;
+                        ctx.strokeStyle = color.stroke ? color.stroke : color;
                         ctx.lineJoin = "round";
                     }
 
@@ -477,6 +478,12 @@ More detail and specific examples can be found in the included HTML file.
                         }
                         //ctx.fillStyle = color;
                         ctx.fill();
+
+                        if(color.stroke)
+                        {
+                            ctx.strokeStyle = color.stroke;
+                            ctx.stroke();
+                        }
                     } else {
                         //ctx.stroke();
                         ctx.strokeStyle = color;
