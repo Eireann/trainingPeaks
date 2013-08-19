@@ -1,4 +1,6 @@
-﻿@media screen {
+﻿@import "../globalCSS/tpstylesheet";
+
+@media screen {
 
 
     .frameworkHeader
@@ -17,7 +19,7 @@
 
     .frameworkTable
     {
-        font-family: HelveticaNeueW01-75Bold;
+        font-family: $fontFamilyRegular;
         font-size: 12px;
         background:none;
         border-collapse:collapse;
@@ -25,12 +27,15 @@
             background:none;
             border: 1px solid #c1c1c1;
             border-width:1px 0;
+            font-family: $fontFamilyHeavy;
             font-weight:normal;
             color: $TPGrey3;
+            text-align:left;
         }
         td
         {
             border-right:1px solid #c1c1c1;
+            color: #636569;
         }
         tr
         {
