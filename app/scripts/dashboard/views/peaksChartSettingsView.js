@@ -6,6 +6,7 @@ define(
     "backbone",
     "dashboard/views/chartSettingsView",
     "views/dashboard/dashboardDatePicker",
+    "dashboard/views/chartWorkoutOptionsView",
     "hbs!dashboard/templates/peaksChartSettings"
 ],
 function(
@@ -15,12 +16,10 @@ function(
     Backbone,
     ChartSettingsView,
     ChartDateOptionsView,
+    ChartWorkoutOptionsView,
     peaksChartSettingsTemplate
     )
 {
-    var ChartWorkoutTypesView = TP.ItemView.extend({
-        template: _.template("World")
-    });
 
     var PeaksChartSettingsView = ChartSettingsView.extend({
 
@@ -58,16 +57,22 @@ function(
                 model: this.model,
                 key: "comparisonDateOptions"
             }));
-            this._addView(".workoutTypesRegion", new ChartWorkoutTypesView());
+            this._addView(".workoutTypesRegion", new ChartWorkoutOptionsView({
+                model: this.model
+            }));
 
             this.children.call("render");
 
-            console.log(this.model.attributes);
             this.$('input.auto[type="checkbox"]').each(function(i, el)
             {
                 var $el = $(el);
                 $el.attr("checked", self.model.get($el.attr("name")));
             });
+        },
+        
+        onShow: function()
+        {
+            this.children.call("show");
         },
 
         onClose: function()
@@ -90,8 +95,6 @@ function(
                 var $el = $(el);
                 self.model.set($el.attr("name"), $el.prop("checked"));
             });
-
-            console.log(this.model.attributes);
         }
     });
 

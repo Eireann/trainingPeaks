@@ -35,7 +35,7 @@ function(
         29: PeaksChart,
         30: PeaksChart,
         31: PeaksChart,
-        36: PeaksChart,
+        36: PeaksChart
     };
 
     return {

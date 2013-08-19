@@ -38,7 +38,7 @@ function(
       {
          "MM10Seconds":   { xvalue: 10, title: "10 seconds" },
          "MM12Seconds":   { xvalue: 12, title: "12 seconds" },
-         "MM12Seconds":   { xvalue: 20, title: "20 seconds" },
+         "MM20Seconds":   { xvalue: 20, title: "20 seconds" },
          "MM30Seconds":   { xvalue: 30, title: "30 seconds" },
          "MM1Minute":     { xvalue: 60, title: "1 minute" },
          "MM2Minutes":    { xvalue: 2 * 60, title: "2 minutes" },
@@ -88,7 +88,10 @@ function(
       _fetchData: function(key)
       {
          var dateOptions = DashboardChartUtils.buildChartParameters(this.get(key) || {});
-         var options = { workoutTypeIds: null, meanMaxBestsType: this.subType.requestType };
+         var options = {
+            workoutTypeIds: this.get("workoutTypeIds"),
+            meanMaxBestsType: this.subType.requestType
+         };
          return this.dataManager.fetchReport("meanmaxbests", dateOptions.startDate, dateOptions.endDate, options);
       },
 
