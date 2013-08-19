@@ -65,11 +65,11 @@ function(
                     maxValue = Math.abs(item.tsb);
             });
 
-            // center TSB axis range around zero, extend to nearest hundred
-            var maxToNearestHundred = Math.ceil((maxValue + 10) / 100) * 100;
+            // center TSB axis range around zero, extend to nearest ten
+            var maxToNearestTen = Math.ceil((maxValue + 10) / 10) * 10;
             var range = {
-                maxAxisValue: maxToNearestHundred,
-                minAxisValue: maxToNearestHundred * -1 
+                maxAxisValue: maxToNearestTen * 2,
+                minAxisValue: maxToNearestTen * -1 
             };
 
             return range;
