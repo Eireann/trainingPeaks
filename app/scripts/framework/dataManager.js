@@ -24,9 +24,14 @@
         {
             if(this._shouldReset(modelUrl))
             {
-                this._resolvedRequests = {};
-                this._pendingRequests = {};
+                this.forceReset();
             }
+        },
+
+        forceReset: function()
+        {
+            this._resolvedRequests = {};
+            this._pendingRequests = {};
         },
 
         fetch: function(modelOrCollection, options)

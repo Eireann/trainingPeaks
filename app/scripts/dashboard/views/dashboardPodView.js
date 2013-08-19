@@ -54,8 +54,9 @@ function(
             //this.dataManager = options && options.dataManager ? options.dataManager : new DataManager();
 
             this.listenTo(this.model, "change:title", _.bind(this._onChartTitleChange, this));
+            
             //trigger redraw instead of dashboardDatesChange
-            //this.listenTo(this.model, "dashboardDatesChange", _.bind(this._onDashboardDatesChange, this));
+            this.listenTo(this.model, "dashboardDatesChange", _.bind(this._onDashboardDatesChange, this));
             this.on("render", this._renderChartAfterRender, this);
 
             this._setChartCssClass();
@@ -288,6 +289,11 @@ function(
             var className = this.model.getChartName().replace(/[^a-zA-Z]/g,"");
             className = className.substring(0, 1).toLowerCase() + className.substring(1);
             this.$el.addClass(className); 
+        },
+
+        _onDashboardDatesChange: function()
+        {
+            this._renderChart();
         }
 
     });

@@ -388,6 +388,11 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
         border:1px solid $white;
         color:$TPGrey12;
 
+        .chartContainer
+        {
+            display: none;
+        }
+        
         .noDataMessage
         {
             display: block;

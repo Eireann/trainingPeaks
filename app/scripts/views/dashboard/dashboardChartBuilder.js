@@ -14,7 +14,8 @@ function(
     FitnessSummaryChart
 )
 {
-    
+
+    // TODO: Migrate Pmc Chart View and Default Chart View to use new format from fitness summary chart    
     var chartViewConstructors = {
         32: PmcChartView,
         3: DashboardPodView

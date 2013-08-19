@@ -14,6 +14,8 @@ function(
     defaultChartTemplate
     )
 {
+
+    // TODO: Migrate Pmc Chart View and Default Chart View to use new format from fitness summary chart    
     var DefaultChart = {
 
         className: DashboardChartBase.className + " defaultChart",

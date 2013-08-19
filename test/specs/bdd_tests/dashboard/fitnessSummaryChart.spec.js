@@ -134,6 +134,48 @@ function(
 
             });
 
+            describe("Apply dashboard dates", function()
+            {
+
+                var fitnessSummaryPodSettingsThree = {
+                    index: 0,
+                    chartType: 3,
+                    title: "Fitness Summary",
+                    dateOptions: {
+                        quickDateSelectOption: 1,
+                        startDate: null,
+                        endDate: null
+                    }
+                };
+        
+                beforeEach(function()
+                {
+                    var userData = xhrData.users.barbkprem;
+                    testHelpers.startTheAppAndLogin(userData, true);
+                    theMarsApp.user.set("settings.dashboard.pods", [fitnessSummaryPodSettingsThree]);
+                    $mainRegion = theMarsApp.mainRegion.$el;
+                    theMarsApp.router.navigate("dashboard", true);
+                });
+
+                afterEach(function()
+                {
+                    testHelpers.stopTheApp();
+                });
+
+                it("Should update when dashboard dates are updated", function()
+                {
+                    testHelpers.clearRequests();
+                    theMarsApp.dataManagers.reporting.forceReset();
+                    $mainRegion.find("#dashboardHeader .dashboardDatePicker select.dateOptions").val(chartUtils.chartDateOptions.CUSTOM_DATES.id).trigger("change");
+                    $mainRegion.find("#dashboardHeader .dashboardDatePicker input.startDate").val("2012-01-01").trigger("change");
+                    $mainRegion.find("#dashboardHeader .dashboardDatePicker input.endDate").val("2016-04-15").trigger("change");
+                    $mainRegion.find("#dashboardHeader .applyDates").trigger("click");                       
+                    expect(testHelpers.hasRequest("GET", "reporting/fitnesssummary")).toBe(true);   
+                    expect(testHelpers.hasRequest("GET", "reporting/fitnesssummary/2012-01-01/2016-04-15")).toBe(true);
+                });
+
+            });
+
             describe("Report Type", function()
             {
                 it("Should default to Planned Distance", function()

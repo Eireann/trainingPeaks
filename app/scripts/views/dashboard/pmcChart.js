@@ -24,6 +24,8 @@ function(
     pmcChartTemplate
     )
 {
+
+    // TODO: Migrate Pmc Chart View and Default Chart View to use new format from fitness summary chart    
     var PmcChart = {
         lineThickness: 1,
         pointRadius: 1.5,
