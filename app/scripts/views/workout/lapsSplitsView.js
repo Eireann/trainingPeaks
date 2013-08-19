@@ -74,7 +74,7 @@ function(
                             lapObject["Intensity Factor"] = canShowIF ? TP.utils.conversion.formatIF(lap.intensityFactorActual) : null;
                             lapObject["Average Heart Rate"] = lap.averageHeartRate;
                             lapObject["Maximum Heart Rate"] = lap.maximumHeartRate;
-                            lapObject["Minimum Heart Rate"] = String(lap.minimumHeartRate);
+                            lapObject["Minimum Heart Rate"] = lap.minimumHeartRate;
                             break;
                     }
                 }
