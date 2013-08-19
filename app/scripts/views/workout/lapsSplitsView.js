@@ -36,7 +36,8 @@ function(
                     fieldsToOmit = [],
                     canShowNGP = sportTypeID === 3 || sportTypeID === 13,
                     canShowNP = !canShowNGP && lap.normalizedPowerActual,
-                    canShowIF = lap.intensityFactorActual;
+                    canShowIF = lap.intensityFactorActual,
+                    TSStype = TP.utils.units.getUnitsLabel("tss", sportTypeID, new TP.Model(lap));
 
                 formatLapData.calculateTotalAndMovingTime(lap);
 
@@ -47,20 +48,41 @@ function(
                     "Finish": TP.utils.datetime.format.decimalHoursAsTime(TP.utils.datetime.convert.millisecondsToDecimalHours(lap.end)),
                     "Duration": TP.utils.datetime.format.decimalHoursAsTime(TP.utils.datetime.convert.millisecondsToDecimalHours(lap.elapsedTime)),
                     "Moving Time": TP.utils.datetime.format.decimalHoursAsTime(TP.utils.datetime.convert.millisecondsToDecimalHours(lap.movingTime)),
-                    "Distance": convertToViewUnits(lap.distance, "distance", sportTypeID),
-                    "Average Power": lap.averagePower,
-                    "Maximum Power": lap.maximumPower,
-                    "Average Pace": convertToViewUnits(lap.averageSpeed, "pace", sportTypeID),
-                    "Maximum Pace": convertToViewUnits(lap.maximumSpeed, "pace", sportTypeID),
-                    "Average Speed": convertToViewUnits(lap.averageSpeed, "speed", sportTypeID),
-                    "Maximum Speed": convertToViewUnits(lap.maximumSpeed, "speed", sportTypeID),
-                    "Calories": lap.calories,
-                    "Maximum Cadence": lap.maximumCadence,
-                    "Average Cadence": lap.averageCadence,
-                    "Normalized Graded Pace": canShowNGP ? convertToViewUnits(lap.normalizedSpeedActual, "pace", sportTypeID) : null,
-                    "Normalized Power": canShowNP ? lap.normalizedPowerActual : null,
-                    "Intensity Factor": canShowIF ? TP.utils.conversion.formatIF(lap.intensityFactorActual) : null
+                    "Distance": convertToViewUnits(lap.distance, "distance", sportTypeID)
                 };
+
+                // add in TSS (if available) with attendant fields based on TSS type
+                if (lap.trainingStressScoreActual)
+                {
+                    lapObject[TSStype] = Math.round(lap.trainingStressScoreActual);
+                    switch (TSStype)
+                    {
+                        case "TSS":
+                            lapObject["Normalized Power"] = canShowNP ? lap.normalizedPowerActual : null;
+                            lapObject["Intensity Factor"] = canShowIF ? TP.utils.conversion.formatIF(lap.intensityFactorActual) : null;
+                            lapObject["Average Power"] = lap.averagePower;
+                            lapObject["Maximum Power"] = lap.maximumPower;
+                            break;
+                        case "rTSS":
+                            lapObject["Normalized Graded Pace"] = canShowNGP ? convertToViewUnits(lap.normalizedSpeedActual, "pace", sportTypeID) : null;
+                            lapObject["Intensity Factor"] = canShowIF ? TP.utils.conversion.formatIF(lap.intensityFactorActual) : null;
+                            lapObject["Average Pace"] = convertToViewUnits(lap.averageSpeed, "pace", sportTypeID);
+                            lapObject["Maximum Pace"] = convertToViewUnits(lap.maximumSpeed, "pace", sportTypeID);
+                            break;
+                        case "hrTSS":
+                        case "tTSS":
+                            lapObject["Intensity Factor"] = canShowIF ? TP.utils.conversion.formatIF(lap.intensityFactorActual) : null;
+                            lapObject["Average Heart Rate"] = lap.averageHeartRate;
+                            lapObject["Maximum Heart Rate"] = lap.maximumHeartRate;
+                            lapObject["Minimum Heart Rate"] = String(lap.minimumHeartRate);
+                            break;
+                    }
+                }
+
+                lapObject["Average Heart Rate"] = lap.averageHeartRate;
+                lapObject["Average Pace"] = convertToViewUnits(lap.averageSpeed, "pace", sportTypeID);
+                lapObject["Average Cadence"] = lap.averageCadence;
+                lapObject["Calories"] = lap.calories;
 
                 // filter out null values
                 for (var key in lapObject)
@@ -69,12 +91,6 @@ function(
                     {
                         delete lapObject[key];
                     }
-                }
-
-                // add in TSS (if available) with dynamic key name
-                if (lap.trainingStressScoreActual)
-                {
-                    lapObject[TP.utils.units.getUnitsLabel("tss", sportTypeID, new TP.Model(lap))] = Math.round(lap.trainingStressScoreActual);
                 }
 
                 rowData.push(lapObject);
