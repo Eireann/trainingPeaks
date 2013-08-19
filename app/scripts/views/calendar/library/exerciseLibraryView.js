@@ -75,12 +75,17 @@ function(
         {
             this.libraries = options && options.exerciseLibraries ? options.exerciseLibraries : new TP.Collection();
 
+            var self = this;
+            this.libraries.each(function(library)
+            {
+                self.listenTo(library.exercises, "reset", self._onLibrariesChanged, self);
+            });
+
             this.model = new TP.Model({ selected: this.libraries.getDefaultLibraryId(), libraries: this.libraries.toJSON() });
             this.collection = new LibraryExerciseViewAdapterCollection();
 
             this.listenTo(this.model, "change:selected", this._onLibrariesChanged, this);
 
-            var self = this;
             this.$el.addClass("waiting");
 
             $.when.apply($, this._loadAllExercises(), this).done(function()
