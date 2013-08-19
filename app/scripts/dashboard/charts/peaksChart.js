@@ -89,8 +89,10 @@ function(
 
       parseData: function(mainXhr, comparisonXhr)
       {
-         var mainPeaks = this._parsePeaks(mainXhr[0]);
-         var comparisonPeaks = this._parsePeaks(comparisonXhr[0]);
+         var mainPeaks = this._parsePeaks(mainXhr);
+         var comparisonPeaks = this._parsePeaks(comparisonXhr);
+
+         if(!mainPeaks && !comparisonPeaks) return null;
 
          var series =
          [{
@@ -112,6 +114,8 @@ function(
 
       _makeSeries: function(peaks)
       {
+         if(!peaks) return null;
+
          return _.chain(peaks)
          .filter(function(peak) { return !!peak.value; })
          .map(function(peak) { return [Math.log(peak.xvalue), peak.value]; })
@@ -120,6 +124,8 @@ function(
 
       _parsePeaks: function(data)
       {
+         if(!data) return null;
+
          var peaks = _.map(data.meanMaxes, function(peak)
          {
             if (!peak || !_.isString(peak.label))
