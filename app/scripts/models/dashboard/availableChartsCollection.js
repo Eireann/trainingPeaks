@@ -29,12 +29,20 @@ function(
                 name: "Peak HR"
             },
             {
+                chartType: 29,
+                name: "Peak Cadence"
+            },
+            {
                 chartType: 30,
                 name: "Peak Speed"
             },
             {
                 chartType: 31,
                 name: "Peak Pace"
+            },
+            {
+                chartType: 36,
+                name: "Peak Pace by Distance"
             }]);
         }
     });
