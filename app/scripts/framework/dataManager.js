@@ -1,9 +1,11 @@
 ﻿define(
 [
     "underscore",
+    "backbone",
     "TP"
 ], function(
     _,
+    Backbone,
     TP
     )
 {
@@ -31,16 +33,16 @@
         {
             return this.fetchOnModel(modelOrCollection, options);
         },
-        
+
         fetchAjax: function(requestSignature, options)
         {
             if(this._hasResolvedData(requestSignature))
             {
-                this._resolveAjaxRequestWithExistingData(requestSignature, options);
+                return this._resolveAjaxRequestWithExistingData(requestSignature, new $.Deferred());
             }
             else
             {
-                this._requestAjaxData(requestSignature, options);
+                return this._requestAjaxData(requestSignature, options);
             }
         },
 
@@ -95,13 +97,6 @@
             return this._resolvedRequests.hasOwnProperty(requestSignature);
         },
 
-        _resolveRequestOnModelWithExistingData: function(requestSignature, modelOrCollection, deferred)
-        {
-            modelOrCollection.set(this._resolvedRequests[requestSignature]);
-            deferred.resolve();
-            return deferred;
-        },
-
         _resolveAllPendingRequests: function(requestSignature)
         {
             var requests = this._pendingRequests[requestSignature];
@@ -114,9 +109,16 @@
                 }
                 else
                 {
-                    this._resolveAjaxRequestWithExistingData(requestSignature, request.options);
+                    this._resolveAjaxRequestWithExistingData(requestSignature, request.deferred);
                 }
             }, this);
+        },
+
+        _resolveRequestOnModelWithExistingData: function(requestSignature, modelOrCollection, deferred)
+        {
+            modelOrCollection.set(this._resolvedRequests[requestSignature]);
+            deferred.resolve();
+            return deferred;
         },
 
         _requestDataOnModel: function(requestSignature, modelOrCollection, options)
@@ -150,6 +152,39 @@
                 }; 
 
                 modelOrCollection.fetch(options);
+            } else {
+                this._pendingRequests[requestSignature].push(request);
+            }
+
+            return deferred;
+        },
+
+        _resolveAjaxRequestWithExistingData: function(requestSignature, deferred)
+        {
+            var data = this._resolvedRequests[requestSignature];
+            deferred.resolve(data);
+            return deferred;
+        },
+
+        _requestAjaxData: function(requestSignature, options)
+        {
+            var deferred = new $.Deferred();
+            var request = {
+                options: options,
+                deferred: deferred
+            };
+
+            if(!this._pendingRequests.hasOwnProperty(requestSignature))
+            {
+                this._pendingRequests[requestSignature] = [];
+                this._pendingRequests[requestSignature].push(request);
+                var self = this;
+                Backbone.ajax(options).done(function(data)
+                {
+                    self._resolvedRequests[requestSignature] = data;
+                    self._resolveAllPendingRequests(requestSignature);
+                }); 
+
             } else {
                 this._pendingRequests[requestSignature].push(request);
             }
