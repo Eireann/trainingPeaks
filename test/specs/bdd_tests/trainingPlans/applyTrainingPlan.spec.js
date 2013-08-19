@@ -153,10 +153,10 @@ function(
                 expect(testHelpers.hasRequest(null, "plans/v1/commands/applyplan")).toBe(true);
 
                 var applyRequest = testHelpers.findRequest(null, "plans/v1/commands/applyplan");
-                expect(applyRequest.model.attributes.athleteId).toBe(xhrData.users.barbkprem.userId);
-                expect(applyRequest.model.attributes.planId).toBe(1);
-                expect(applyRequest.model.attributes.startType).toBe(3);
-                expect(applyRequest.model.attributes.targetDate).toBe(wednesday.format("M/D/YYYY"));
+                expect(JSON.parse(applyRequest.options.data).athleteId).toBe(xhrData.users.barbkprem.userId);
+                expect(JSON.parse(applyRequest.options.data).planId).toBe(1);
+                expect(JSON.parse(applyRequest.options.data).startType).toBe(3);
+                expect(JSON.parse(applyRequest.options.data).targetDate).toBe(wednesday.format("M/D/YYYY"));
             });
 
             it("Should trigger a start on date apply command, starting on any day", function()
@@ -170,10 +170,10 @@ function(
                 expect(testHelpers.hasRequest(null, "plans/v1/commands/applyplan")).toBe(true);
 
                 var applyRequest = testHelpers.findRequest(null, "plans/v1/commands/applyplan");
-                expect(applyRequest.model.attributes.athleteId).toBe(xhrData.users.barbkprem.userId);
-                expect(applyRequest.model.attributes.planId).toBe(1);
-                expect(applyRequest.model.attributes.startType).toBe(1);
-                expect(applyRequest.model.attributes.targetDate).toBe(tuesday.format("M/D/YYYY"));
+                expect(JSON.parse(applyRequest.options.data).athleteId).toBe(xhrData.users.barbkprem.userId);
+                expect(JSON.parse(applyRequest.options.data).planId).toBe(1);
+                expect(JSON.parse(applyRequest.options.data).startType).toBe(1);
+                expect(JSON.parse(applyRequest.options.data).targetDate).toBe(tuesday.format("M/D/YYYY"));
             });
 
             it("Should trigger an end on event date apply command, ending on the event date", function()
@@ -186,10 +186,10 @@ function(
                 expect(testHelpers.hasRequest(null, "plans/v1/commands/applyplan")).toBe(true);
 
                 var applyRequest = testHelpers.findRequest(null, "plans/v1/commands/applyplan");
-                expect(applyRequest.model.attributes.athleteId).toBe(xhrData.users.barbkprem.userId);
-                expect(applyRequest.model.attributes.planId).toBe(1);
-                expect(applyRequest.model.attributes.startType).toBe(2);
-                expect(applyRequest.model.attributes.targetDate).toBe(moment(xhrData.trainingPlanDetails.eventDate).format("M/D/YYYY"));
+                expect(JSON.parse(applyRequest.options.data).athleteId).toBe(xhrData.users.barbkprem.userId);
+                expect(JSON.parse(applyRequest.options.data).planId).toBe(1);
+                expect(JSON.parse(applyRequest.options.data).startType).toBe(2);
+                expect(JSON.parse(applyRequest.options.data).targetDate).toBe(moment(xhrData.trainingPlanDetails.eventDate).format("M/D/YYYY"));
             });
 
             it("Should refresh the plan after applying the plan", function()
@@ -250,10 +250,10 @@ function(
                 expect(testHelpers.hasRequest(null, "plans/v1/commands/applyplan")).toBe(true);
 
                 var applyRequest = testHelpers.findRequest(null, "plans/v1/commands/applyplan");
-                expect(applyRequest.model.attributes.athleteId).toBe(xhrData.users.barbkprem.userId);
-                expect(applyRequest.model.attributes.planId).toBe(1);
-                expect(applyRequest.model.attributes.startType).toBe(1);
-                expect(applyRequest.model.attributes.targetDate).toBe(monday.format("M/D/YYYY"));
+                expect(JSON.parse(applyRequest.options.data).athleteId).toBe(xhrData.users.barbkprem.userId);
+                expect(JSON.parse(applyRequest.options.data).planId).toBe(1);
+                expect(JSON.parse(applyRequest.options.data).startType).toBe(1);
+                expect(JSON.parse(applyRequest.options.data).targetDate).toBe(monday.format("M/D/YYYY"));
             });
 
             it("Should trigger an end on date apply command, ending on a sunday", function()
@@ -272,10 +272,10 @@ function(
                 expect(testHelpers.hasRequest(null, "plans/v1/commands/applyplan")).toBe(true);
 
                 var applyRequest = testHelpers.findRequest(null, "plans/v1/commands/applyplan");
-                expect(applyRequest.model.attributes.athleteId).toBe(xhrData.users.barbkprem.userId);
-                expect(applyRequest.model.attributes.planId).toBe(1);
-                expect(applyRequest.model.attributes.startType).toBe(3);
-                expect(applyRequest.model.attributes.targetDate).toBe(sunday.format("M/D/YYYY"));
+                expect(JSON.parse(applyRequest.options.data).athleteId).toBe(xhrData.users.barbkprem.userId);
+                expect(JSON.parse(applyRequest.options.data).planId).toBe(1);
+                expect(JSON.parse(applyRequest.options.data).startType).toBe(3);
+                expect(JSON.parse(applyRequest.options.data).targetDate).toBe(sunday.format("M/D/YYYY"));
             });
 
         });
@@ -321,10 +321,10 @@ function(
                 expect(testHelpers.hasRequest(null, "plans/v1/commands/applyplan")).toBe(true);
 
                 var applyRequest = testHelpers.findRequest(null, "plans/v1/commands/applyplan");
-                expect(applyRequest.model.attributes.athleteId).toBe(xhrData.users.barbkprem.userId);
-                expect(applyRequest.model.attributes.planId).toBe(1);
-                expect(applyRequest.model.attributes.startType).toBe(1);
-                expect(applyRequest.model.attributes.targetDate).toBe(friday.format("M/D/YYYY"));
+                expect(JSON.parse(applyRequest.options.data).athleteId).toBe(xhrData.users.barbkprem.userId);
+                expect(JSON.parse(applyRequest.options.data).planId).toBe(1);
+                expect(JSON.parse(applyRequest.options.data).startType).toBe(1);
+                expect(JSON.parse(applyRequest.options.data).targetDate).toBe(friday.format("M/D/YYYY"));
             });
 
             it("Should trigger an end on date apply command, ending on a thursday", function()
@@ -343,10 +343,10 @@ function(
                 expect(testHelpers.hasRequest(null, "plans/v1/commands/applyplan")).toBe(true);
 
                 var applyRequest = testHelpers.findRequest(null, "plans/v1/commands/applyplan");
-                expect(applyRequest.model.attributes.athleteId).toBe(xhrData.users.barbkprem.userId);
-                expect(applyRequest.model.attributes.planId).toBe(1);
-                expect(applyRequest.model.attributes.startType).toBe(3);
-                expect(applyRequest.model.attributes.targetDate).toBe(thursday.format("M/D/YYYY"));
+                expect(JSON.parse(applyRequest.options.data).athleteId).toBe(xhrData.users.barbkprem.userId);
+                expect(JSON.parse(applyRequest.options.data).planId).toBe(1);
+                expect(JSON.parse(applyRequest.options.data).startType).toBe(3);
+                expect(JSON.parse(applyRequest.options.data).targetDate).toBe(thursday.format("M/D/YYYY"));
             });
 
         });

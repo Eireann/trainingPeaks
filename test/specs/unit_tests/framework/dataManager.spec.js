@@ -174,7 +174,7 @@ function(
                 var dataManagerDeferredOne = dataManager.fetchAjax("requestSignature", optionsOne);
                 var dataManagerDeferredTwo = dataManager.fetchAjax("requestSignature", optionsTwo);
                 expect(dataManagerDeferredOne.state()).toBe("pending");
-                expect(dataManagerDeferredTwo.state()).toBe("pending")
+                expect(dataManagerDeferredTwo.state()).toBe("pending");
 
                 dataManagerDeferredOne.done(function(data){ optionsOne.resolvedData = data; });
                 dataManagerDeferredTwo.done(function(data){ optionsTwo.resolvedData = data; });

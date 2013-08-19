@@ -229,7 +229,6 @@ function(
                 {
                     var fitnessSummaryRequests = testHelpers.findAllRequests("GET", "reporting/fitnesssummary");
                     expect(fitnessSummaryRequests.length).toBe(1);
-                    console.log(fitnessSummaryRequests);
                 });
             });
 
