@@ -1,4 +1,4 @@
-﻿define(
+define(
 [
     "TP"
 ], function(TP)

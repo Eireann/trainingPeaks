@@ -9,9 +9,10 @@
     "views/expando/statsView",
     "views/expando/lapsView",
     "views/expando/chartsView",
-    "views/expando/mapAndGraphResizerView"
+    "views/expando/mapAndGraphResizerView",
+    "views/workout/lapsSplitsView"
 ],
-function(setImmediate, TP, DataParser, ExpandoLayout, GraphView, MapView, StatsView, LapsView, ChartsView, mapAndGraphResizerView)
+function(setImmediate, TP, DataParser, ExpandoLayout, GraphView, MapView, StatsView, LapsView, ChartsView, MapAndGraphResizerView, LapsSplitsView)
 {
     return TP.Controller.extend(
     {
@@ -56,7 +57,9 @@ function(setImmediate, TP, DataParser, ExpandoLayout, GraphView, MapView, StatsV
             this.views.statsView = new StatsView({ model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise });
             this.views.lapsView = new LapsView({ model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise });
             this.views.chartsView = new ChartsView({ model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise });
-            this.views.mapAndGraphResizerView = new mapAndGraphResizerView({model: this.model});
+            this.views.mapAndGraphResizerView = new MapAndGraphResizerView({model: this.model});
+            this.views.lapsSplitsView = new LapsSplitsView({model: this.model});
+
             this.layout.$el.addClass("waiting");
 
             this.watchForModelChanges();
@@ -97,6 +100,7 @@ function(setImmediate, TP, DataParser, ExpandoLayout, GraphView, MapView, StatsV
             setImmediate(function()
             {
                 self.layout.chartsRegion.show(self.views.chartsView);
+                self.layout.lapsSplitsRegion.show(self.views.lapsSplitsView);
             });
 
             setImmediate(function()
