@@ -1,12 +1,12 @@
 ﻿define(
 [
     "TP",
-    "./expandoCommon",
+    "utilities/workout/formatLapData",
     "hbs!templates/views/expando/statsTemplate"
 ],
 function(
     TP,
-    expandoCommon,
+    formatLapData,
     statsTemplate
     )
 {
@@ -47,7 +47,7 @@ function(
         {
             var lapData = this.getLapData();
             lapData = this.mapToMasterFieldSet(lapData);
-            expandoCommon.calculateTotalAndMovingTime(lapData);
+            formatLapData.calculateTotalAndMovingTime(lapData);
             this.findAvailableMinMaxAvgFieldsInThisLap(lapData);
             this.addCommonWorkoutFields(lapData);
             return lapData;

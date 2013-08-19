@@ -4,7 +4,7 @@
     "jqueryui/widget",
     "jquerySelectBox",
     "TP",
-    "./expandoCommon",
+    "utilities/workout/formatLapData",
     "models/workoutStatsForRange",
     "hbs!templates/views/expando/lapsTemplate"
 ],
@@ -13,7 +13,7 @@ function(
     jqueryUiWidget,
     jquerySelectBox,
     TP,
-    expandoCommon,
+    formatLapData,
     WorkoutStatsForRange,
     lapsTemplate)
 {
@@ -109,7 +109,7 @@ function(
         getTotalsData: function(detailData)
         {
             var totalData = detailData.totalStats ? detailData.totalStats : {};
-            expandoCommon.calculateTotalAndMovingTime(totalData);
+            formatLapData.calculateTotalAndMovingTime(totalData);
 
             totalData.checked = this.checkboxStates.entireWorkout;
             return totalData;
@@ -120,7 +120,7 @@ function(
             var lapsData = detailData.lapsStats ? detailData.lapsStats : [];
             _.each(lapsData, function (lapItem, index)
             {
-                expandoCommon.calculateTotalAndMovingTime(lapItem);
+                formatLapData.calculateTotalAndMovingTime(lapItem);
                 lapItem.checked = this.checkboxStates.laps[index];
             }, this);
             return lapsData;
