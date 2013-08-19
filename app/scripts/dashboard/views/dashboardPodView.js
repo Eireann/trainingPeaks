@@ -21,7 +21,6 @@ function(
     var DashboardPodView = TP.ItemView.extend({
 
         className: "dashboardChart",
-        colspan: 1,
 
         template: {
             type: "handlebars",
@@ -29,14 +28,6 @@ function(
         },
 
         modelEvents: {},
-        
-        attributes: function()
-        {
-            return {
-                "data-sizey": 1,
-                "data-sizex": this.colspan 
-            };
-        },
 
         initialize: function(options)
         {

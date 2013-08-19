@@ -30,7 +30,6 @@ function(
         lineThickness: 1,
         pointRadius: 1.5,
         chartType: 32, // 32 = pmc chart
-        colspan: 2,
         modelClass: PMCModel,
 
         className: DashboardChartBase.className + " pmcChart",
@@ -59,27 +58,23 @@ function(
         
         findTSBRange: function(modelData)
         {
-            var range = this.findMinMaxTSB(modelData);
-            range.minAxisValue = (range.min - 10) < 0 ? (range.min - 10) : 0;
-            range.maxAxisValue = range.max + 10;
+            var maxValue = 0;
+            _.each(modelData, function (item, index)
+            {
+                if (item.hasOwnProperty("tsb") && Math.abs(Number(item.tsb)) > maxValue)                
+                    maxValue = Math.abs(item.tsb);
+            });
+
+            // center TSB axis range around zero, extend to nearest hundred
+            var maxToNearestHundred = Math.ceil((maxValue + 10) / 100) * 100;
+            var range = {
+                maxAxisValue: maxToNearestHundred,
+                minAxisValue: maxToNearestHundred * -1 
+            };
+
             return range;
         },
 
-        findMinMaxTSB: function(modelData)
-        {
-            var minMax = { min: 0, max: 0 };
-            _.each(modelData, function (item, index)
-            {
-                if (item.hasOwnProperty("tsb") && Number(item.tsb) < minMax.min)                
-                    minMax.min = item.tsb;
-
-                if (item.hasOwnProperty("tsb") && Number(item.tsb) > minMax.max)                
-                    minMax.max = item.tsb;
-
-            });
-            return minMax;
-        },
-        
         buildFlotPoints: function(modelData, TSBMinimum)
         {
             var chartPoints = {
@@ -580,9 +575,9 @@ function(
                 tips.push({ label: "Intensity Factor", value: TP.utils.conversion.formatIF(intensity, { defaultValue: "--" }) });
             }
 
-            tips.push({ label: "Acute Training Load (ATL)", value: TP.utils.conversion.formatTSS(atl) });
-            tips.push({ label: "Chronic Training Load (CTL)", value: TP.utils.conversion.formatTSS(ctl) });
-            tips.push({ label: "Training Stress Balance (TSB)", value: TP.utils.conversion.formatTSB(tsb) });
+            tips.push({ label: "Acute Training Load (ATL)", value: TP.utils.conversion.formatTSS(atl, { defaultValue: "--" }) });
+            tips.push({ label: "Chronic Training Load (CTL)", value: TP.utils.conversion.formatTSS(ctl, { defaultValue: "--" }) });
+            tips.push({ label: "Training Stress Balance (TSB)", value: TP.utils.conversion.formatTSB(tsb, { defaultValue: "--" }) });
             return tips;
         },
 

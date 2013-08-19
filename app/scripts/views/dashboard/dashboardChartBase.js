@@ -28,22 +28,15 @@ function(
     tooltipTemplate
     )
 {
+
+    // TODO: Do not use this for new charts, use DashboardPodView and framework/Chart.js for model - see FitnessSummaryChart for example
     var DashboardChartBase = {
         tagName: "div",
         className: "dashboardChart",
         showThrobber: true,
-        colspan: 1,
         chartType: 0,
         modelClass: TP.Model,
         today: moment().hour(0).format("YYYY-MM-DD"),
-
-        attributes: function()
-        {
-            return {
-                "data-sizey": 1,
-                "data-sizex": this.colspan 
-            };
-        },
 
         setDefaultDateSettings: function(options)
         {
