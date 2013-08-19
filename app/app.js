@@ -19,7 +19,8 @@ define(
     "views/buildInfoView",
     "router",
     "utilities/dragAndDropFileUploadWidget",
-    "hbs!templates/views/notAllowedForAlpha"
+    "hbs!templates/views/notAllowedForAlpha",
+    "scripts/plugins/marionette.faderegion"
 ],
 function(
     _,
@@ -41,7 +42,8 @@ function(
     BuildInfoView,
     Router,
     DragAndDropFileUploadWidget,
-    notAllowedForAlphaTemplate)
+    notAllowedForAlphaTemplate,
+    fadeRegion)
 {
     var theApp = new TP.Application();
     theApp.ajaxCachingEnabled = false;
