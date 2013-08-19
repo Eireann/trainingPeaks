@@ -34,6 +34,10 @@
         }
         tr
         {
+            td:last-child
+            {
+                border-right:none;
+            }
             &:nth-of-type(even)
             {
                 background:none;
