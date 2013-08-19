@@ -51,6 +51,7 @@ function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandMo
             this.buildViewModel();
 
             this.dataParser = new DataParser();
+            this.dataParser.setXAxis("distance");
             this.setOriginalElevation();
             
             this.buildElevationCorrrectionModel();
@@ -163,7 +164,7 @@ function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandMo
                 $tooltipEl.html(flotElevationTooltip(series, flotItem.series.label, flotItem.dataIndex));
             };
 
-            var flotOptions = defaultFlotOptions.getMultiChannelOptions(onHoverHandler);
+            var flotOptions = defaultFlotOptions.getMultiChannelOptions(onHoverHandler, "distance");
 
             flotOptions.selection.mode = null;
             flotOptions.yaxes = yaxes;
