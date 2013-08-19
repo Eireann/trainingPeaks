@@ -341,7 +341,7 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
         .collapse 
         {
             display: none;
-            right: 21px;
+            right: 0px;
             cursor: pointer;
             background: transparent $chartIconsSpriteURL no-repeat -34px 0;
 
@@ -428,6 +428,16 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
             .expand
             {
                 display: none;
+            }
+
+            .close
+            {
+                display: none;
+            }
+
+            .settings
+            {
+                right: 21px;
             }
         }
     }
