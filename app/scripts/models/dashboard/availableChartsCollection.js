@@ -19,7 +19,20 @@ function(
             {
                 chartType: 3,
                 name: "Fitness Summary"
-            }]);
+            },
+            {
+                chartType: 17,
+                name: "Time In HR Zones"
+            },
+            {
+                chartType: 24,
+                name: "Time In Power Zones"
+            },
+            {
+                chartType: 26,
+                name: "Time In Speed Zones"
+            }
+            ]);
         }
     });
 

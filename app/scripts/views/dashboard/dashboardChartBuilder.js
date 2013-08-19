@@ -1,34 +1,36 @@
 ﻿define(
 [
     "TP",
-    "views/dashboard/defaultChart",
     "views/dashboard/pmcChart",
     "dashboard/views/dashboardPodView",
-    "dashboard/charts/fitnessSummaryChart"
+    "dashboard/charts/fitnessSummaryChart",
+    "dashboard/charts/timeInZonesChart"
 ],
 function(
     TP,
-    DefaultChartView,
     PmcChartView,
     DashboardPodView,
-    FitnessSummaryChart
+    FitnessSummaryChart,
+    TimeInZonesChart
 )
 {
 
     var chartViewConstructors = {
-        32: PmcChartView,
-        3: DashboardPodView
+        32: PmcChartView
     };
 
     var chartModelConstructors = {
-        3: FitnessSummaryChart
+        3: FitnessSummaryChart,
+        17: TimeInZonesChart,
+        24: TimeInZonesChart,
+        26: TimeInZonesChart
     };
 
     return {
         buildChartView: function(options)
         {
             var chartTypeId = options.model.get("chartType");
-            var ChartView = chartViewConstructors.hasOwnProperty(chartTypeId) ? chartViewConstructors[chartTypeId] : DefaultChartView;
+            var ChartView = chartViewConstructors.hasOwnProperty(chartTypeId) ? chartViewConstructors[chartTypeId] : DashboardPodView;
             return new ChartView(options);
         },
 
