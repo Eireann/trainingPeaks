@@ -63,6 +63,36 @@ function(
             return "Chart";
         },
 
+        buildWorkoutTypesTitle: function(workoutTypeIds)
+        {
+
+            var workoutTypeNames = [];
+
+            if (!workoutTypeIds || !workoutTypeIds.length || workoutTypeIds.length === _.keys(TP.utils.workout.types.typesById).length)
+            {
+                workoutTypeNames.push("All");
+            } else
+            {
+                _.each(workoutTypeIds, function(item, index)
+                {
+                    var intItem = parseInt(item, 10);
+                    var workoutType = intItem === 0 ? "All" : TP.utils.workout.types.getNameById(intItem);
+                    if(workoutType !== "Unknown")
+                    {
+                        workoutTypeNames.push(workoutType); 
+                    }
+
+                }, this);
+            }
+
+            var types = workoutTypeNames.join(", ");
+            if (!types)
+            {
+                types = "All Workout Types";
+            }
+            return types;
+        },
+        
         _setDefaultDateSettings: function()
         {
             var defaultDateOption = DashboardChartUtils.chartDateOptions.USE_GLOBAL_DATES.id;
