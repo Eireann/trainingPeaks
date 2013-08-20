@@ -45,9 +45,9 @@ function(
                 {
                     "Lap": "Lap " + (i+1),
                     "Start": TP.utils.datetime.format.decimalHoursAsTime(TP.utils.datetime.convert.millisecondsToDecimalHours(lap.begin)),
-                    "Finish": TP.utils.datetime.format.decimalHoursAsTime(TP.utils.datetime.convert.millisecondsToDecimalHours(lap.end)),
+                    "End": TP.utils.datetime.format.decimalHoursAsTime(TP.utils.datetime.convert.millisecondsToDecimalHours(lap.end)),
                     "Duration": TP.utils.datetime.format.decimalHoursAsTime(TP.utils.datetime.convert.millisecondsToDecimalHours(lap.elapsedTime)),
-                    "Moving Time": TP.utils.datetime.format.decimalHoursAsTime(TP.utils.datetime.convert.millisecondsToDecimalHours(lap.movingTime)),
+                    "Moving Duration": TP.utils.datetime.format.decimalHoursAsTime(TP.utils.datetime.convert.millisecondsToDecimalHours(lap.movingTime)),
                     "Distance": convertToViewUnits(lap.distance, "distance", sportTypeID)
                 };
 
@@ -81,7 +81,7 @@ function(
 
                 lapObject["Average Heart Rate"] = lap.averageHeartRate;
                 lapObject["Average Pace"] = convertToViewUnits(lap.averageSpeed, "pace", sportTypeID);
-                lapObject["Average Cadence"] = lap.averageCadence;
+                lapObject["Cadence"] = lap.averageCadence;
                 lapObject["Calories"] = lap.calories;
 
                 // filter out null values
