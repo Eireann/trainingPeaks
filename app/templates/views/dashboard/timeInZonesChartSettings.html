@@ -1,0 +1,19 @@
+{{#hoverBox this}}
+    <div class="details">
+        <div class="title">{{$ "SelectWorkoutType" }}</div>
+        <div id="closeIcon"></div>
+        <div class="workoutTypes">
+            {{#each workoutTypes}}
+                <div class="workoutType">
+                    <label><input type="checkbox" data-workouttypeid="{{ id }}" {{#if selected}}checked{{/if}} /> {{ name }}</label>
+                </div>
+            {{/each}}
+            <div style="clear: both;"></div>
+        </div>
+    
+        <hr/>
+
+        <div class="datepickerContainer"></div>
+
+    </div>
+{{/hoverBox}}

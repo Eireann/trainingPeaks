@@ -378,5 +378,14 @@
     "Days": "Days",
 
     "SelectReportType": "Select Report Type",
-    "NoWorkoutsToReport": "No workouts are available to report on"
+
+    "NoWorkoutsToReport": "No workouts are available to report on",
+
+    "Moving Time": "Moving Time",
+    "Average Power": "Average Power",
+    "Maximum Power": "Maximum Power",
+    "Maximum Pace": "Maximum Pace",
+    "Maximum Speed": "Maximum Speed",
+    "Maximum Cadence": "Maximum Cadence",
+    "Average Cadence": "Average Cadence"
 }

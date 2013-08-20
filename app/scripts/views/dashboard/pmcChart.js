@@ -66,7 +66,7 @@ function(
             });
 
             // center TSB axis range around zero, extend to nearest twenty
-            var paddedMaxToNearestTen = Math.ceil((maxValue + 20) / 10) * 10;
+            var paddedMaxToNearestTen = Math.round((maxValue + 15) / 10) * 10;
             var range = {
                 maxAxisValue: paddedMaxToNearestTen,
                 minAxisValue: paddedMaxToNearestTen * -1 

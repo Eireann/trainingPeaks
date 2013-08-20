@@ -251,7 +251,8 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
     .chartTitle
     {
         margin-left: 10px;
-        font-size: 14px;
+        margin-top:8px;
+        font-size: 12px;
     }
 
     .xaxisLabel
@@ -464,8 +465,21 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
 
 .dashboardChartSettings
 {
-    width: 355px;
-    top: 10px;
+    max-width: 350px;
+
+    .workoutTypes
+    {
+        min-width: 330px;
+    }    
+
+    .workoutType
+    {
+        float: left;
+        width: 33%;
+        font-size: $fontSizeSmall;
+        color: $TPGrey3;
+        height: 23px;
+    }
 
     &.left
     {

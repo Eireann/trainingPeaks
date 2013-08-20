@@ -43,7 +43,20 @@ function(
             {
                 chartType: 36,
                 name: "Peak Pace by Distance"
-            }]);
+            },
+            {
+                chartType: 17,
+                name: "Time In HR Zones"
+            },
+            {
+                chartType: 24,
+                name: "Time In Power Zones"
+            },
+            {
+                chartType: 26,
+                name: "Time In Speed Zones"
+            }
+            ]);
         }
     });
 
