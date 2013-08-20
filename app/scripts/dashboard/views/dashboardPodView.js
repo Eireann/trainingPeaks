@@ -39,11 +39,6 @@ function(
 
             _.bindAll(this, "_onHoverToolTip", "_renderFlotChart", "waitingOff");
 
-            // TODO: watch for title changes
-
-            // TODO: where should data manager go
-            //this.dataManager = options && options.dataManager ? options.dataManager : new DataManager();
-
             this.listenTo(this.model, "change:title", _.bind(this._onChartTitleChange, this));
             
             //trigger redraw instead of dashboardDatesChange
@@ -103,6 +98,8 @@ function(
             if(!chartOptions)
             {
                 this.$el.addClass("noData");
+                this.$(".xaxisLabel").text("");
+                this.$(".yaxisLabel").text("");
             }
             else
             {
