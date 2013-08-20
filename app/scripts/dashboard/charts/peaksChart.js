@@ -279,7 +279,7 @@ function(
          var workoutTypeId = this._getSingleWorkoutTypeId();
 
          return [
-            TP.utils.conversion.convertToViewUnits(value, this.subType.units, workoutTypeId),
+            TP.utils.conversion.convertToViewUnits(value, this.subType.units, undefined, workoutTypeId),
             TP.utils.units.getUnitsLabel(this.subType.units, workoutTypeId)
          ].join(" ");
       },
@@ -311,7 +311,7 @@ function(
 
       _formatYTick: function(value)
       {
-         return TP.utils.conversion.convertToViewUnits(value, this.subType.units, this._getSingleWorkoutTypeId());
+         return TP.utils.conversion.convertToViewUnits(value, this.subType.units, undefined, this._getSingleWorkoutTypeId());
       },
 
       _getSingleWorkoutTypeId: function()
