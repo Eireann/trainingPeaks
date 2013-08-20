@@ -169,12 +169,12 @@ function (TP, DataParser, ElevationCorrectionModel, defaultFlotOptions, chartCol
                 shadowSize: 0
             });
 
-            if (this.correctedElevation)
+            if (this.elevationCorrectionModel.get("elevations"))
             {
                 series.push(
                 {
                     color: "#e61101",
-                    data: this.correctedElevation,
+                    data: this.dataParser.createCorrectedElevationChannel(this.elevationCorrectionModel.get("elevations")),
                     label: TP.utils.translate("Corrected"),
                     shadowSize: 0
                 });
@@ -186,13 +186,7 @@ function (TP, DataParser, ElevationCorrectionModel, defaultFlotOptions, chartCol
         onElevationCorrectionFetched: function()
         {
             this.ui.chart.removeClass("waiting");
-            this.setCorrectedElevation();
             this.render();
-        },
-
-        setCorrectedElevation: function()
-        {
-            this.correctedElevation = this.dataParser.createCorrectedElevationChannel(this.elevationCorrectionModel.get("elevations"));
         },
 
         serializeData: function()
