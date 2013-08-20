@@ -25,6 +25,14 @@ function(
             "change input.workoutType": "_onInputsChanged"
         },
 
+        onRender: function()
+        {
+            if (_.result(this.model, "isWorkoutTypesLocked"))
+            {
+                this.$("input").attr("disabled", true);
+            }
+        },
+
         serializeData: function()
         {
             var original = ChartWorkoutOptionsView.__super__.serializeData.apply(this, arguments);

@@ -31,7 +31,10 @@ function(
         29: { requestType: 5, label: "Cadence", units: "cadence", xaxis: "time" },
         30: { requestType: 3, label: "Speed", units: "speed", xaxis: "time" },
         31: { requestType: 3, label: "Pace", units: "pace", xaxis: "time" },
-        36: { requestType: 4, label: "Pace by Distance", units: "pace", xaxis: "distance" }
+        36: { requestType: 4, label: "Pace by Distance", units: "pace", xaxis: "distance",
+           lockWorkouts: true,
+           workoutTypeIds: ["3"]
+        }
       },
 
       labelInfo:
@@ -86,6 +89,16 @@ function(
       {
          this.subType = this.subTypes[this.get("chartType")];
          this.set("title", TP.utils.translate("Peak " + this.subType.label));
+
+         if (this.subType.lockWorkouts)
+         {
+            this.set("workoutTypeIds", this.subType.workoutTypeIds);
+         }
+      },
+
+      isWorkoutTypesLocked: function()
+      {
+         return !!this.subType.lockWorkouts;
       },
 
       fetchData: function()
