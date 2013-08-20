@@ -28,7 +28,9 @@ function(
             var lapsData = this.model.get('detailData').get('lapsStats'),
                 sportTypeID = this.model.get('workoutTypeValueId'),
                 rowData = [],
-                headerNames;
+                headerNames,
+                // run, walk, swim are "Average Pace", otherwise "Average Speed"
+                averagePaceSpeedKey = _.contains([3, 13, 1], sportTypeID) ? "Average Pace" : "Average Speed";
 
             _.each(lapsData, function(lap, i)
             {
@@ -37,7 +39,8 @@ function(
                     canShowNGP = sportTypeID === 3 || sportTypeID === 13,
                     canShowNP = !canShowNGP && lap.normalizedPowerActual,
                     canShowIF = lap.intensityFactorActual,
-                    TSStype = TP.utils.units.getUnitsLabel("tss", sportTypeID, new TP.Model(lap));
+                    TSStype = TP.utils.units.getUnitsLabel("tss", sportTypeID, new TP.Model(lap)),
+                    averagePaceOrSpeedValue = averagePaceSpeedKey === "Average Pace" ? convertToViewUnits(lap.averageSpeed, "pace", sportTypeID) : TP.utils.conversion.formatSpeed(lap.averageSpeed);
 
                 formatLapData.calculateTotalAndMovingTime(lap);
 
@@ -66,7 +69,7 @@ function(
                         case "rTSS":
                             lapObject["Normalized Graded Pace"] = canShowNGP ? convertToViewUnits(lap.normalizedSpeedActual, "pace", sportTypeID) : null;
                             lapObject["Intensity Factor"] = canShowIF ? TP.utils.conversion.formatIF(lap.intensityFactorActual) : null;
-                            lapObject["Average Pace"] = convertToViewUnits(lap.averageSpeed, "pace", sportTypeID);
+                            lapObject[averagePaceSpeedKey] = convertToViewUnits(lap.averageSpeed, "pace", sportTypeID);
                             lapObject["Maximum Pace"] = convertToViewUnits(lap.maximumSpeed, "pace", sportTypeID);
                             break;
                         case "hrTSS":
@@ -80,7 +83,8 @@ function(
                 }
 
                 lapObject["Average Heart Rate"] = lap.averageHeartRate;
-                lapObject["Average Pace"] = convertToViewUnits(lap.averageSpeed, "pace", sportTypeID);
+                lapObject["Maximum Heart Rate"] = lap.maximumHeartRate;
+                lapObject[averagePaceSpeedKey] = averagePaceOrSpeedValue;
                 lapObject["Cadence"] = lap.averageCadence;
                 lapObject["Calories"] = lap.calories;
 

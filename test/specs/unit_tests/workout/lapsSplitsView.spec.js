@@ -44,7 +44,7 @@ function(moment, _, theMarsApp, TP, LapsSplitsView, WorkoutModel, detailDataLaps
 			var requiredAttrs = 
 				[
 					"Lap", "Start", "End", "Duration", "Moving Duration", "Distance", "Average Heart Rate",
-					"Average Pace", "Cadence", "Calories"
+					"Maximum Heart Rate", "Average Pace", "Cadence", "Calories"
 				],
 				model = buildWorkoutModel(),
 				view = new LapsSplitsView({model: model}),
@@ -93,12 +93,26 @@ function(moment, _, theMarsApp, TP, LapsSplitsView, WorkoutModel, detailDataLaps
 				expect(_.contains(serializedData.headerNames, "rTSS")).toBeTruthy();
 				expect(_.contains(serializedData.headerNames, "TSS")).toBeFalsy();
 			});
-			it("Should show Average Speed for rides (as opposed to Average Pace)", null, function()
+			it("Should show Average Speed for rides (as opposed to Average Pace)", function()
 			{
 				model.set({workoutTypeValueId: 2});
 				serializedData = view.serializeData();
 				expect(_.contains(serializedData.headerNames, "Average Pace")).toBeFalsy();
 				expect(_.contains(serializedData.headerNames, "Average Speed")).toBeTruthy();
+			});
+			it("Should show Average Pace for runs, walks, and swims (as opposed to Average Speed)", function()
+			{
+				model.set({workoutTypeValueId: 3});
+				serializedData = view.serializeData();
+				expect(_.contains(serializedData.headerNames, "Average Pace")).toBeTruthy();
+
+				model.set({workoutTypeValueId: 13});
+				serializedData = view.serializeData();
+				expect(_.contains(serializedData.headerNames, "Average Pace")).toBeTruthy();
+
+				model.set({workoutTypeValueId: 1});
+				serializedData = view.serializeData();
+				expect(_.contains(serializedData.headerNames, "Average Pace")).toBeTruthy();
 			});
 		});
 
