@@ -2,6 +2,7 @@
 requirejs(
 [
     "underscore",
+    "jquery",
     "testUtils/testHelpers",
     "testUtils/xhrDataStubs",
     "app",
@@ -9,6 +10,7 @@ requirejs(
 ],
 function(
     _,
+    $,
     testHelpers,
     xhrData,
     theMarsApp,
@@ -60,6 +62,7 @@ function(
                 expect(testHelpers.hasRequest("POST", "reporting/timeinzones")).toBe(true);
             });
 
+            // these checkboxes aren't behaving right here, but they're working in the app
             xdescribe("Chart workout type settings", function()
             {
 
@@ -157,7 +160,7 @@ function(
 
         });
 
-        xdescribe("Three Different Time In Zones Charts", function()
+        describe("Three Different Time In Zones Charts", function()
         {
             var timeInHeartRateZonesPodSettings = {
                 index: 0,
@@ -171,19 +174,64 @@ function(
                 workoutTypeIds: []
             };
 
+            var timeInPowerZonesPodSettings = {
+                index: 0,
+                chartType: 24,
+                title: "Time In Power Zones",
+                dateOptions: {
+                    quickDateSelectOption: 1,
+                    startDate: null,
+                    endDate: null
+                },
+                workoutTypeIds: []
+            };
+
+            var timeInSpeedZonesPodSettings = {
+                index: 0,
+                chartType: 26,
+                title: "Time In Speed Zones",
+                dateOptions: {
+                    quickDateSelectOption: 1,
+                    startDate: null,
+                    endDate: null
+                },
+                workoutTypeIds: []
+            };
+
+            beforeEach(function()
+            {
+                var userData = xhrData.users.barbkprem;
+                testHelpers.startTheAppAndLogin(userData, true);
+                theMarsApp.user.set("settings.dashboard.pods", [timeInHeartRateZonesPodSettings, timeInPowerZonesPodSettings, timeInSpeedZonesPodSettings]);
+                $mainRegion = theMarsApp.mainRegion.$el;
+                theMarsApp.router.navigate("dashboard", true);
+            });
+
+            afterEach(function()
+            {
+                testHelpers.stopTheApp();
+            });
+
             it("Should have three pods", function()
             {
-                expect("FIX ME").toBe(true);
+                expect($mainRegion.find(".dashboardChart").length).toBe(3);
+                expect($mainRegion.find(".dashboardChart.timeInZones").length).toBe(3);
             });
 
             it("Should have correct titles in pods", function()
             {
-                expect("FIX ME").toBe(true);
+                expect($($mainRegion.find(".dashboardChart.timeInZones")[0]).find(".chartTitle").text()).toContain("Heart Rate");
+                expect($($mainRegion.find(".dashboardChart.timeInZones")[1]).find(".chartTitle").text()).toContain("Power");
+                expect($($mainRegion.find(".dashboardChart.timeInZones")[2]).find(".chartTitle").text()).toContain("Speed");
             });
 
             it("Should request correct data type for each pod", function()
             {
-                expect("FIX ME").toBe(true);
+                var tizRequests = testHelpers.findAllRequests("POST", "reporting/timeinzones");
+                expect(tizRequests.length).toBe(3);
+                expect(JSON.parse(tizRequests[0].options.data).timeInZonesType).toEqual(1);
+                expect(JSON.parse(tizRequests[1].options.data).timeInZonesType).toEqual(2);
+                expect(JSON.parse(tizRequests[2].options.data).timeInZonesType).toEqual(3);
             });
 
         });
