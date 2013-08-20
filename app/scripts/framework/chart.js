@@ -88,7 +88,7 @@ function(
             var types = workoutTypeNames.join(", ");
             if (!types)
             {
-                types = "All";
+                types = "All Workout Types";
             }
             return types;
         },

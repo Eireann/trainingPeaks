@@ -71,6 +71,17 @@
             return datetimeUtils.format.decimalHoursAsTime(value, true);
         },
 
+        formatMinutes: function(minutes, options)
+        {
+            if (minutes <= 0 || minutes === "0")
+            {
+                return options && options.hasOwnProperty("defaultValue") ? options.defaultValue : "";
+            }
+            var hours = minutes / 60;
+            hours = adjustFieldRange(hours, "duration");
+            return datetimeUtils.format.decimalHoursAsTime(hours, false);
+        },
+
         formatHours: function(value, options)
         {
             if (value <= 0 || value === "0")
