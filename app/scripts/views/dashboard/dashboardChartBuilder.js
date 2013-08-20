@@ -18,7 +18,7 @@ function(
 {
 
     var chartViewConstructors = {
-        32: PmcChartView,
+        32: PmcChartView
     };
 
     var chartModelConstructors = {
@@ -28,7 +28,7 @@ function(
         29: PeaksChart,
         30: PeaksChart,
         31: PeaksChart,
-        36: PeaksChart
+        36: PeaksChart,
         17: TimeInZonesChart,
         24: TimeInZonesChart,
         26: TimeInZonesChart
