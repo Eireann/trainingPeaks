@@ -64,7 +64,7 @@ function(
 
         rePositionView: function ()
         {
-            return
+            return;
         }
     });
 });

@@ -97,7 +97,7 @@ function(
                     expect($body.find(".timeInZonesChartSettings .workoutType input[type=checkbox][data-workouttypeid=0]").is(":checked")).toBe(false);
                     console.log(theMarsApp.user.get("settings.dashboard.pods"));
                     expect(theMarsApp.user.get("settings.dashboard.pods.0.workoutTypeIds").length).toBe(1);
-                    expect(theMarsApp.user.get("settings.dashboard.pods.0.workoutTypeIds.0")).toEqual(1)
+                    expect(theMarsApp.user.get("settings.dashboard.pods.0.workoutTypeIds.0")).toEqual(1);
                     expect($body.find(".timeInZonesChartSettings .workoutType input[type=checkbox][data-workouttypeid=1]").is(":checked")).toBe(true);
                     console.log($body.find(".timeInZonesChartSettings").html());
 
@@ -121,7 +121,7 @@ function(
                 it("Should update chart title after changing workout type", function()
                 {
                     expect($mainRegion.find(".dashboardChart.timeInZones .chartTitle").text()).toContain("All");
-                    expect($mainRegion.find(".dashboardChart.timeInZones .chartTitle").text()).not.toContain("Swim")
+                    expect($mainRegion.find(".dashboardChart.timeInZones .chartTitle").text()).not.toContain("Swim");
 
                     // open settings, uncheck 'all workout types', and check swim
                     var $body = theMarsApp.getBodyElement();
@@ -134,7 +134,7 @@ function(
                     $body.find(".timeInZonesChartSettings #closeIcon").trigger("click");
                     testHelpers.resolveRequest("POST", "reporting/timeinzones", {});
                     expect($mainRegion.find(".dashboardChart.timeInZones .chartTitle").text()).not.toContain("All");
-                    expect($mainRegion.find(".dashboardChart.timeInZones .chartTitle").text()).toContain("Swim")
+                    expect($mainRegion.find(".dashboardChart.timeInZones .chartTitle").text()).toContain("Swim");
                 });
 
                 it("Should request new data after changing workout type", function()
