@@ -1,0 +1,10 @@
+<div class="title">{{$ "SelectWorkoutType" }}</div>
+<div class="workoutTypes">
+    {{#each workoutTypes}}
+    <div class="workoutType">
+        <label><input type="checkbox" value="{{ id }}"  class="workoutType"
+            {{#if selected}}checked{{/if}} /> {{ name }}</label>
+    </div>
+    {{/each}}
+    <div style="clear: both;"></div>
+</div>

@@ -37,6 +37,7 @@ function()
                 pace: { light: "#1b82ce", dark: "#125689" },
                 //elevation: { light: "rgba(202, 233, 251, 0.5)", dark: "rgba(110, 150, 185, 0.6)" }
                 elevation: { light: "#cae9fb", dark: "#6e96b9" },
+                cadence: {light: "#ffcc00", dark:"#ffa500" },
                 workoutType:
                     {
                         bike: { light: "#8820d1", dark: "#561484" },

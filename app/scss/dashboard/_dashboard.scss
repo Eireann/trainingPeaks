@@ -465,7 +465,6 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
 
 .dashboardChartSettings
 {
-
     max-width: 350px;
 
     .workoutTypes
@@ -514,6 +513,16 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
     {
         margin: 14px 0 10px 0;
         color: $TPGrey3;
+    }
+
+    
+    .workoutType
+    {
+        float: left;
+        width: 33%;
+        font-size: $fontSizeSmall;
+        color: $TPGrey3;
+        height: 23px;
     }
 }
 

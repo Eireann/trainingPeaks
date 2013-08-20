@@ -32,7 +32,7 @@ function(
 
         initialize: function(options)
         {
-            this.settingsKey = options.settingsKey ? options.settingsKey + ".dateOptions" : "dateOptions";
+            this.settingsKey = options.key || (options.settingsKey ? options.settingsKey + ".dateOptions" : "dateOptions");
 
             if(options.hasOwnProperty("includeGlobalOption"))
             {
