@@ -31,10 +31,10 @@ function(
 
         modelEvents: {},
 
-        events:
+        events: _.extend(
         {
             "change input": "_onInputsChanged"
-        },
+        }, ChartSettingsView.prototype.events),
 
         ui: {
             useComparison: ".useComparison"
