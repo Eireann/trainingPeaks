@@ -29,8 +29,6 @@ function(
             template: peaksChartSettingsTemplate
         },
 
-        modelEvents: {},
-
         events: _.extend(
         {
             "change input": "_onInputsChanged"
@@ -38,12 +36,6 @@ function(
 
         ui: {
             useComparison: ".useComparison"
-        },
-
-        initialize: function()
-        {
-            PeaksChartSettingsView.__super__.initialize.apply(this, arguments);
-            this.children = new Backbone.ChildViewContainer();
         },
 
         onRender: function()
@@ -68,22 +60,6 @@ function(
                 var $el = $(el);
                 $el.attr("checked", self.model.get($el.attr("name")));
             });
-        },
-        
-        onShow: function()
-        {
-            this.children.call("show");
-        },
-
-        onClose: function()
-        {
-            this.children.call("close");
-        },
-
-        _addView: function(selector, view)
-        {
-            this.$(selector).append(view.$el);
-            this.children.add(view);
         },
 
         _onInputsChanged: function()

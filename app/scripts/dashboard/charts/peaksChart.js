@@ -323,7 +323,7 @@ function(
 
       updateChartTitle: function()
       {
-         this.set("title", TP.utils.translate("Peak " + this.subType.label) + ": " + TP.utils.workout.formatWorkoutTypes(this.get("workoutTypeIds")));
+         this.set("title", TP.utils.translate("Peak " + this.subType.label) + ": " + TP.utils.workout.types.getListOfNames(this.get("workoutTypeIds")));
       }
    });
 

@@ -23,6 +23,8 @@ function(
         tagName: "div",
         className: "dashboardChartSettings",
 
+        modelEvents: {},
+
         template:
         {
             type: "handlebars",
@@ -34,6 +36,7 @@ function(
             this.initialEvents(); // Hook into modal display code
             this.model.off("change", this.render);
             this.on("close", this.saveOnClose, this);
+            this.children = new Backbone.ChildViewContainer();
         },
 
         events:
@@ -65,8 +68,23 @@ function(
                 this.top(windowBottom - this.$el.height());
                 this.$(".arrow").css("top", arrowOffset + "px");
             }
-        }
+        },
 
+        onShow: function()
+        {
+            this.children.call("show");
+        },
+
+        onClose: function()
+        {
+            this.children.call("close");
+        },
+
+        _addView: function(selector, view)
+        {
+            this.$(selector).append(view.$el);
+            this.children.add(view);
+        }
     });
 
     return ChartSettingsView;
