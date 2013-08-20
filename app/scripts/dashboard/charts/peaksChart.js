@@ -88,7 +88,6 @@ function(
       initialize: function(attributes, options)
       {
          this.subType = this.subTypes[this.get("chartType")];
-         this.set("title", TP.utils.translate("Peak " + this.subType.label));
 
          if (this.subType.lockWorkouts)
          {
@@ -221,8 +220,7 @@ function(
          var ticks = _.map(this._getLabelInfo(), function(tick)
          {
             var current = Math.log(tick.xvalue);
-            console.log(current, prev, current - prev, delta);
-            if (prev === null || current - prev > delta)
+            if (prev === null || current - prev >= delta)
             {
                prev = current;
                return [tick.xvalue, tick.shortTitle || tick.title];
@@ -241,6 +239,11 @@ function(
       _formatYTick: function(value)
       {
          return TP.utils.conversion.convertToViewUnits(value, this.subType.units);
+      },
+
+      updateChartTitle: function()
+      {
+         this.set("title", TP.utils.translate("Peak " + this.subType.label) + ": " + TP.utils.workout.formatWorkoutTypes(this.get("workoutTypeIds")));
       }
    });
 
