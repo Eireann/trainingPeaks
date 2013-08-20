@@ -223,6 +223,12 @@ function (theMarsApp, TP, $, WeekSummaryView)
                 view.render();
                 expect(view.$el.find('.weekSummaryBarGraphItem.tss').length).toBe(1);
             });
+            it("Should show a planned data bar but no numeric value if there is a mix of planned/completed data" ,function()
+            {
+                view.model.set({totalDistancePlanned: 1, totalDistanceCompleted: 4});
+                view.render();
+                expect(view.$el.find('.statsRow#distance').length).toBe(0);
+            });
         });
 
     });
