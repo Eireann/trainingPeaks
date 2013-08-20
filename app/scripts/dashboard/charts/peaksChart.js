@@ -220,7 +220,7 @@ function(
                   ticks: _.bind(this._generateXTicks, this)
                },
                yaxis: {
-                  label: TP.utils.units.getUnitsLabel(this.subType.units),
+                  label: TP.utils.units.getUnitsLabel(this.subType.units, this._getSingleWorkoutTypeId()),
                   tickFormatter: _.bind(this._formatYTick, this)
                }
             }, defaultFlotOptions.getSplineOptions(null))
@@ -276,9 +276,11 @@ function(
 
       _formatPeakValue: function(value)
       {
+         var workoutTypeId = this._getSingleWorkoutTypeId();
+
          return [
-            TP.utils.conversion.convertToViewUnits(value, this.subType.units),
-            TP.utils.units.getUnitsLabel(this.subType.units)
+            TP.utils.conversion.convertToViewUnits(value, this.subType.units, workoutTypeId),
+            TP.utils.units.getUnitsLabel(this.subType.units, workoutTypeId)
          ].join(" ");
       },
 
@@ -309,7 +311,14 @@ function(
 
       _formatYTick: function(value)
       {
-         return TP.utils.conversion.convertToViewUnits(value, this.subType.units);
+         return TP.utils.conversion.convertToViewUnits(value, this.subType.units, this._getSingleWorkoutTypeId());
+      },
+
+      _getSingleWorkoutTypeId: function()
+      {
+         var workoutTypeIds = this.get("workoutTypeIds");
+         var workoutTypeId = workoutTypeIds && workoutTypeIds.length === 1 ? workoutTypeIds[0] : undefined;
+         return workoutTypeId;
       },
 
       updateChartTitle: function()
