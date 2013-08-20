@@ -71,23 +71,29 @@
 	
 	<div id="weekSummaryMetricContain" class="statisticsSummary">
 
+		{{#ifNot totalTimePlanned}}
 		<div class="statsRow" id="duration">
 	        <label>{{$ "Duration" }}</label>
 	        <span class="value">{{conversion "formatDuration" totalTimeCompleted this "0"}}</span>
 	        <span class="units">{{getUnitsLabel "time"}}</span>
 	    </div>
+	    {{/ifNot}}
 
+	    {{#ifNot totalDistancePlanned}}
 		<div class="statsRow" id="distance">
 	        <label>{{$ "Distance" }}</label>
 	        <span class="value">{{conversion "formatDistance" totalDistanceCompleted this "0"}}</span>
 	        <span class="units">{{getUnitsLabel "distance"}}</span>
 	    </div>
+	    {{/ifNot}}
 
+	    {{#ifNot tssPlanned}}
 		<div class="statsRow" id="tss">
 	        <label>{{$ "TSS" }}</label>
 	        <span class="value">{{conversion "formatTSS" tssCompleted this "0"}}</span>
 	        <span class="units">{{getUnitsLabel "tss"}}</span>
 	    </div>
+	    {{/ifNot}}
 
 		{{#each totalsByWorkoutTypeCompacted }}
 			{{#with distance}}

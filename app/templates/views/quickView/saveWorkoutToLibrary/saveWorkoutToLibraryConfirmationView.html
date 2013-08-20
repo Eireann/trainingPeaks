@@ -10,9 +10,9 @@
         <div>
             <form class="selectForm"><label for="selectLibrary">{{$ "SelectLibrary" }}:</label>
             
-                <select name="selectLibrary" id="selectLibrary">
+                <select name="selectLibrary" id="selectLibrary" selected="{{defaultLibraryId}}">
                     {{#each libraries}}
-                    <option value="{{ exerciseLibraryId }}" {{#if selected}}selected{{/if}}>{{ libraryName }}</option>
+                    <option value="{{ exerciseLibraryId }}">{{ libraryName }}</option>
                     {{/each}}
                 </select>
             

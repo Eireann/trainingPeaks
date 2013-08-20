@@ -8,7 +8,9 @@ define(
     "models/commands/applyTrainingPlan",
     "models/commands/removeTrainingPlan",
     "views/userConfirmationView",
+    "./trainingPlanFullDescriptionView",
     "utilities/trainingPlan/trainingPlan",
+    "scripts/helpers/multilineEllipsis",
     "hbs!templates/views/confirmationViews/unapplyConfirmationView",
     "hbs!templates/views/calendar/library/applyTrainingPlanErrorView",
     "hbs!templates/views/calendar/library/trainingPlanDetailsView"
@@ -22,7 +24,9 @@ function(
     ApplyTrainingPlanCommand,
     RemoveTrainingPlanCommand,
     UserConfirmationView,
+    trainingPlanFullDescriptionView,
     trainingPlanUtility,
+    multilineEllipsis,
     deleteConfirmationTemplate,
     trainingPlanErrorTemplate,
     trainingPlanDetailsViewTemplate
@@ -48,7 +52,8 @@ function(
             "click .apply": "onApply",
             "change #applyDateType": "updateDateInputOptions",
             "click #closeIcon": "close",
-            "click .removePlan": "confirmDeleteAppliedPlan"
+            "click .removePlan": "confirmDeleteAppliedPlan",
+            "click .more": "moreClicked"
         },
 
         initialize: function()
@@ -121,6 +126,12 @@ function(
                 }
             });
             data.details.plannedWorkoutTypeDurations = plannedWorkoutTypeDurations.length ? plannedWorkoutTypeDurations : null;
+
+            data.details.descriptionText = $("<div>").html(data.details.description).text();
+            if(data.details.descriptionText.length > 200)
+            {
+                data.details.descriptionShort = multilineEllipsis($("<div>").html(data.details.description).text(), 200);
+            }
 
             return data;
         },
@@ -306,6 +317,23 @@ function(
         getEndDayOfWeekIndex: function()
         {
             return this.model.details.has("endDate") ? moment(this.model.details.get("endDate")).day() : 0;
+        },
+
+        moreClicked: function ()
+        {
+            if (this.fullDescriptionView)
+            {
+                return;
+            }
+            this.fullDescriptionView = new trainingPlanFullDescriptionView({ model: this.model });
+            this.fullDescriptionView.on("close", this.onDetailsClose, this);
+            this.fullDescriptionView.render().left(this.$el.offset().left + this.$el.width() + 10);
+        },
+
+        onDetailsClose: function ()
+        {
+            this.fullDescriptionView.off("close", this.onDetailsClose, this);
+            this.fullDescriptionView = null;
         }
 
     });

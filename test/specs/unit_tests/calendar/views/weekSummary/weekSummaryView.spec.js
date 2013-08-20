@@ -116,7 +116,7 @@ function (theMarsApp, TP, $, WeekSummaryView)
             expect(view.model.get("tssPlanned")).toBe(2000);
         });
 
-        it("Should aggregate weekly workout totals of duration and distance for all workout types except Day Off", function()
+        it("Should aggregate weekly workout totals of duration and distance for all workouts including Day Off", function()
         {
             spyOn(WeekSummaryView.prototype, "render").andReturn("");
 
@@ -167,12 +167,14 @@ function (theMarsApp, TP, $, WeekSummaryView)
             dayModel1.itemsCollection.add(swim1);
             dayModel1.itemsCollection.add(strength1);
             dayModel1.itemsCollection.add(rowing1);
+            dayModel1.itemsCollection.add(dayOff1);
             
             dayModel2.itemsCollection.add(bike2);
             dayModel2.itemsCollection.add(run2);
             dayModel2.itemsCollection.add(swim2);
             dayModel2.itemsCollection.add(strength2);
             dayModel1.itemsCollection.add(rowing2);
+            dayModel2.itemsCollection.add(dayOff2);
             
             view.onBeforeRender();
 
@@ -187,8 +189,8 @@ function (theMarsApp, TP, $, WeekSummaryView)
             expect(view.model.get("totalsByWorkoutType.9.duration.planned")).toBe(14);
             expect(view.model.get("totalsByWorkoutType.12.duration.completed")).toBe(3);
             expect(view.model.get("totalsByWorkoutType.12.duration.planned")).toBe(6);
-            expect(view.model.get("totalsByWorkoutType.7.duration.completed")).toBe(undefined);
-            expect(view.model.get("totalsByWorkoutType.7.duration.planned")).toBe(undefined);
+            expect(view.model.get("totalsByWorkoutType.7.duration.completed")).toBe(3);
+            expect(view.model.get("totalsByWorkoutType.7.duration.planned")).toBe(7);
         });
         describe("template logic", function()
         {
@@ -222,6 +224,12 @@ function (theMarsApp, TP, $, WeekSummaryView)
                 view.model.set({tssPlanned: 5});
                 view.render();
                 expect(view.$el.find('.weekSummaryBarGraphItem.tss').length).toBe(1);
+            });
+            it("Should show a planned data bar but no numeric value if there is a mix of planned/completed data" ,function()
+            {
+                view.model.set({totalDistancePlanned: 1, totalDistanceCompleted: 4});
+                view.render();
+                expect(view.$el.find('.statsRow#distance').length).toBe(0);
             });
         });
 

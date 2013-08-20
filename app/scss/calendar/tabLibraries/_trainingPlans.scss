@@ -210,4 +210,32 @@
         float: left;
         margin: 4px 5px 0 5px;
     }  
+
+    .more
+    {
+        margin-top: -10px;
+        margin-left: 275px;
+        color: $TPBlue;
+        font-size: 11px;
+        cursor: pointer;
+    }
+}
+
+
+.fullDescription
+{
+    background-color: white;
+    min-width: 300px;
+    padding: 15px;
+    position: absolute;
+
+    #closeIcon
+    {
+        margin: -10px -15px 0 10px;
+    }
+
+    .descriptionBody
+    {
+      overFlow: auto;  
+    }
 }
