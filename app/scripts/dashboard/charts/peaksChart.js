@@ -21,6 +21,7 @@ function(
 )
 {
    var PeaksChart = Chart.extend({
+      name: "PeaksChart",
       
       settingsView: PeaksChartSettingsView,
 
@@ -127,6 +128,11 @@ function(
          {
             this.set("workoutTypeIds", this.subType.workoutTypeIds);
          }
+      },
+
+      getChartName: function()
+      {
+         return "Peaks Chart";
       },
 
       isWorkoutTypesLocked: function()

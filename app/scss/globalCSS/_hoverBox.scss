@@ -51,7 +51,7 @@
             }
         }
 
-        #closeIcon {
+        #closeIcon, .closeIcon {
             position: absolute;
             top: 5px;
             right: 0;
@@ -65,7 +65,7 @@
         }
 
         @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
-            #closeIcon {
+            #closeIcon, .closeIcon {
                 background-image:url(../../assets/images/charts/sprite-buttons-chart-modal@2x.png);
                 background-size: 68px 34px;
             }
