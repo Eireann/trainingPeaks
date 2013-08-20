@@ -135,7 +135,8 @@ function(
             var maxZoneWithMinutes = 0;
             for(var i = 1;i<=10;i++)
             {
-                var minutes = data["zone" + i + "Minutes"];
+                var zoneKey = "zone" + i + "Minutes";
+                var minutes = data.hasOwnProperty(zoneKey) ? data[zoneKey] : 0;
                 points.push([i, minutes]);
                 if(minutes)
                 {
@@ -196,7 +197,7 @@ function(
         {
             if(!this.get("workoutTypeIds"))
             {
-                this.set("workoutTypeIds", [], { silent: true });
+                this.set("workoutTypeIds", []);
             }
         }
 
