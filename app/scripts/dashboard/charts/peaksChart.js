@@ -21,17 +21,52 @@ function(
 )
 {
    var PeaksChart = Chart.extend({
+      name: "PeaksChart",
       
       settingsView: PeaksChartSettingsView,
 
       subTypes:
       {
-        8:  { requestType: 2, label: "Power", units: "power", xaxis: "time" },
-        28: { requestType: 1, label: "Heart Rate", units: "heartrate", xaxis: "time" },
-        29: { requestType: 5, label: "Cadence", units: "cadence", xaxis: "time" },
-        30: { requestType: 3, label: "Speed", units: "speed", xaxis: "time" },
-        31: { requestType: 3, label: "Pace", units: "pace", xaxis: "time" },
-        36: { requestType: 4, label: "Pace by Distance", units: "pace", xaxis: "distance",
+        8:  {
+           requestType: 2,
+           label: "Power",
+           units: "power",
+           xaxis: "time",
+           color: chartColors.peaks.power
+        },
+        28: {
+           requestType: 1,
+           label: "Heart Rate",
+           units: "heartrate",
+           xaxis: "time",
+           color: chartColors.peaks.heartRate
+        },
+        29: {
+           requestType: 5,
+           label: "Cadence",
+           units: "cadence",
+           xaxis: "time",
+           color: chartColors.peaks.cadence
+        },
+        30: {
+           requestType: 3,
+           label: "Speed",
+           units: "speed",
+           xaxis: "time",
+           color: chartColors.peaks.pace
+        },
+        31: {
+           requestType: 3,
+           label: "Pace",
+           units: "pace",
+           xaxis: "time",
+           color: chartColors.peaks.pace
+        },
+        36: { requestType: 4,
+           label: "Pace by Distance",
+           units: "pace",
+           xaxis: "distance",
+           color: chartColors.peaks.pace,
            lockWorkouts: true,
            workoutTypeIds: ["3"]
         }
@@ -95,6 +130,11 @@ function(
          }
       },
 
+      getChartName: function()
+      {
+         return "Peaks Chart";
+      },
+
       isWorkoutTypesLocked: function()
       {
          return !!this.subType.lockWorkouts;
@@ -125,19 +165,50 @@ function(
 
          if(!mainPeaks && !comparisonPeaks) return null;
 
+         console.log(this.subType.color);
          var series =
          [
-         this._makeSeries(mainPeaks, {
-            label: this._formatDateRange(mainXhr),
-            color: "#cfc"
-         }),
-        this._makeSeries(comparisonPeaks, {
-            label: this._formatDateRange(comparisonXhr),
-            color: "#ccf"
-         })
+            this._makeSeries(comparisonPeaks, {
+               label: this._formatDateRange(comparisonXhr),
+               color: "#9c9b9c",
+               lines: {
+                  lineWidth: 0,
+                  fillColor: { colors: [chartColors.peaks.comparison.dark, chartColors.peaks.comparison.light] }
+               }
+            }),
+            this._makeSeries(mainPeaks, {
+               label: this._formatDateRange(mainXhr),
+               color: this.subType.color.dark,
+               // color: "#fff",
+               lines:
+               {
+                  lineWidth: 2,
+                  show: true,
+                  fill: true,
+                  fillColor: { colors: [this.subType.color.dark, this.subType.color.light] }
+               },
+               shadowSize: 0
+            })
          ];
 
          series = _.filter(series);
+
+         console.log({
+            dataSeries: series,
+            flotOptions: _.defaults({
+               legend: { show: true },
+               xaxis: {
+                  transform: function(x) { return Math.log(x); },
+                  inverseTransform: function(x) { return Math.exp(x); },
+                  ticks: _.bind(this._generateXTicks, this)
+               },
+               yaxis: {
+                  label: TP.utils.units.getUnitsLabel(this.subType.units),
+                  tickFormatter: _.bind(this._formatYTick, this)
+               }
+            }, defaultFlotOptions.getSplineOptions(null))
+
+         });
 
          return {
             dataSeries: series,
@@ -149,7 +220,7 @@ function(
                   ticks: _.bind(this._generateXTicks, this)
                },
                yaxis: {
-                  label: TP.utils.units.getUnitsLabel(this.subType.units),
+                  label: TP.utils.units.getUnitsLabel(this.subType.units, this._getSingleWorkoutTypeId()),
                   tickFormatter: _.bind(this._formatYTick, this)
                }
             }, defaultFlotOptions.getSplineOptions(null))
@@ -205,9 +276,11 @@ function(
 
       _formatPeakValue: function(value)
       {
+         var workoutTypeId = this._getSingleWorkoutTypeId();
+
          return [
-            TP.utils.conversion.convertToViewUnits(value, this.subType.units),
-            TP.utils.units.getUnitsLabel(this.subType.units)
+            TP.utils.conversion.convertToViewUnits(value, this.subType.units, undefined, workoutTypeId),
+            TP.utils.units.getUnitsLabel(this.subType.units, workoutTypeId)
          ].join(" ");
       },
 
@@ -238,7 +311,14 @@ function(
 
       _formatYTick: function(value)
       {
-         return TP.utils.conversion.convertToViewUnits(value, this.subType.units);
+         return TP.utils.conversion.convertToViewUnits(value, this.subType.units, undefined, this._getSingleWorkoutTypeId());
+      },
+
+      _getSingleWorkoutTypeId: function()
+      {
+         var workoutTypeIds = this.get("workoutTypeIds");
+         var workoutTypeId = workoutTypeIds && workoutTypeIds.length === 1 ? workoutTypeIds[0] : undefined;
+         return workoutTypeId;
       },
 
       updateChartTitle: function()

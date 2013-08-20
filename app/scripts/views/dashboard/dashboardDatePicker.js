@@ -21,7 +21,7 @@ function(
     return TP.ItemView.extend(
     {
         tagName: "div",
-        className: "dashboardDatePicker",
+        // className: "dashboardDatePicker",
         includeGlobalOption: true,
 
         template:

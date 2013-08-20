@@ -15,7 +15,7 @@ function(
     TP,
     Backbone,
     ChartSettingsView,
-    ChartDateOptionsView,
+    DashboardDatePicker,
     ChartWorkoutOptionsView,
     peaksChartSettingsTemplate
     )
@@ -50,10 +50,10 @@ function(
         {
             var self = this;
 
-            this._addView(".dateOptionsRegion", new ChartDateOptionsView({
+            this._addView(".dateOptionsRegion", new DashboardDatePicker({
                 model: this.model
             }));
-            this._addView(".comparisonDateOptionsRegion", new ChartDateOptionsView({
+            this._addView(".comparisonDateOptionsRegion", new DashboardDatePicker({
                 model: this.model,
                 key: "comparisonDateOptions"
             }));

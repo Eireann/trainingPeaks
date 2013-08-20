@@ -22,7 +22,7 @@ function(
 
         events:
         {
-            "change input.workoutType": "_onInputsChanged"
+            "change input.jsWorkoutType": "_onInputsChanged"
         },
 
         onRender: function()
@@ -67,15 +67,15 @@ function(
 
             if ($el.val() === "0")
             {
-                this.$("input.workoutType").prop("checked", $el.is(":checked"));
+                this.$("input.jsWorkoutType").prop("checked", $el.is(":checked"));
             }
             else
             {
-                var allChecked = this.$('input.workoutType[value!="0"]:not(:checked)').length === 0;
-                this.$('input.workoutType[value="0"]').prop("checked", allChecked);
+                var allChecked = this.$('input.jsWorkoutType[value!="0"]:not(:checked)').length === 0;
+                this.$('input.jsWorkoutType[value="0"]').prop("checked", allChecked);
             }
 
-            this.model.set("workoutTypeIds", _.filter(this.$("input.workoutType:checked").map(function(i, el) { return $(el).val(); }), function(value) { return value && value !== "0"; }));
+            this.model.set("workoutTypeIds", _.filter(this.$("input.jsWorkoutType:checked").map(function(i, el) { return $(el).val(); }), function(value) { return value && value !== "0"; }));
         }
 
     });
