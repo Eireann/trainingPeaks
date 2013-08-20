@@ -94,8 +94,9 @@ function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandMo
 
         buildElevationCorrrectionModel: function()
         {
-            this.elevationCorrectionModel = new ElevationCorrectionModel({}, { latLngArray: this.dataParser.getLatLonArray() });
-            this.elevationCorrectionModel.save().done(this.onElevationCorrectionFetched);
+            var uploadedFileId = this.workoutModel.get("details").get("workoutDeviceFileInfos")[0].fileId;
+            this.elevationCorrectionModel = new ElevationCorrectionModel({ uploadedFileId: uploadedFileId });
+            this.elevationCorrectionModel.fetch().done(this.onElevationCorrectionFetched);
         },
 
         setOriginalElevation: function() 
