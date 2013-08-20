@@ -76,8 +76,6 @@ function(
                 durationByWorkoutType: {},
                 cumulativeTss: 0
             };
-
-            var excludeWorkoutTypes = [7]; // skip Day Off
           
             //iterate over calendarDayModels for the current week (associated with this weekSummaryView)
             this.model.collection.each(function(item)
@@ -91,9 +89,6 @@ function(
                 {
 
                     var workoutType = workout.get("workoutTypeValueId");
-
-                    if(_.contains(excludeWorkoutTypes, workoutType))
-                        return;
 
                     if (workout.getCalendarDay && TP.utils.workout.determineCompletedWorkout(workout.attributes))
                     {
