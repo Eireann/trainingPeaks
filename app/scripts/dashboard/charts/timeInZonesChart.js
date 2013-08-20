@@ -59,7 +59,8 @@ function(
 
         updateChartTitle: function()
         {
-            var title = TP.utils.translate("Time In " + this._getChartName() + " Zones: ") + this.buildWorkoutTypesTitle(this.get("workoutTypeIds"));
+            var title = TP.utils.translate("Time In " + this._getChartName() + " Zones: ");
+            title += TP.utils.workout.types.getListOfNames(this.get("workoutTypeIds"), "All Workout Types");
             this.set("title", title);
         },
 

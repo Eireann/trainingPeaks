@@ -57,11 +57,43 @@ function ()
     {
         return workoutTypeShortNamesById.hasOwnProperty(workoutTypeId) ? workoutTypeShortNamesById[workoutTypeId] : getNameById(workoutTypeId);
     };
+    
+    var getListOfNames = function(workoutTypeIds, allWorkoutTypesValue)
+    {
+
+        var workoutTypeNames = [];
+        var allTypes = allWorkoutTypesValue || "All Workout Types";
+
+        if (!workoutTypeIds || !workoutTypeIds.length || workoutTypeIds.length === _.keys(workoutTypesById).length)
+        {
+            workoutTypeNames.push(allTypes);
+        } else
+        {
+            _.each(workoutTypeIds, function(item, index)
+            {
+                var intItem = parseInt(item, 10);
+                var workoutType = intItem === 0 ? allTypes : getNameById(intItem);
+                if(workoutType !== "Unknown")
+                {
+                    workoutTypeNames.push(workoutType); 
+                }
+
+            }, this);
+        }
+
+        var types = workoutTypeNames.join(", ");
+        if (!types)
+        {
+            types = allTypes;
+        }
+        return types;
+    };
 
     return {
         getIdByName: getIdByName,
         getNameById: getNameById,
         getShortNameById: getShortNameById,
+        getListOfNames: getListOfNames,
         typesByName: workoutTypesByName,
         typesById: workoutTypesById
     };
