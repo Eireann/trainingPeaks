@@ -8,7 +8,12 @@
     <div class="planId small">{{$ "ID"}} {{ planId }}</div>
 </div>
 
-<div class="planDescription small">{{ stripHtml description 200 }}</div>
+{{#if descriptionShort }}
+    <div class="planDescription small">{{descriptionShort}} <div class="more small">{{$ "More"}}</div></div>
+{{else}}
+    <div class="planDescription small">{{descriptionText}}</div>
+{{/if}}
+
 
 {{#if plannedWorkoutTypeDurations }}
 <div class="planDetails">
@@ -78,5 +83,4 @@
         </div>
     {{/if}}
 {{/with}}
-
 {{/hoverBox}}
