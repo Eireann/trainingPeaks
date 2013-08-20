@@ -3,14 +3,13 @@
     "TP",
     "utilities/charting/dataParser",
     "models/elevationCorrection",
-    "models/commands/elevationCorrection",
     "utilities/charting/flotOptions",
     "utilities/charting/chartColors",    
     "utilities/conversion/convertToViewUnits",
     "utilities/charting/flotElevationTooltip",
     "hbs!templates/views/elevationCorrection/elevationCorrectionTemplate"
 ],
-function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandModel, defaultFlotOptions, chartColors, convertToViewUnits, flotElevationTooltip, elevationCorrectionTemplate)
+function (TP, DataParser, ElevationCorrectionModel, defaultFlotOptions, chartColors, convertToViewUnits, flotElevationTooltip, elevationCorrectionTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -45,58 +44,35 @@ function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandMo
         initialize: function(options)
         {
             this.validateWorkoutModel(options);
-            this.bindCallbacks();
 
-            this.workoutModel = options.workoutModel;
-            this.buildViewModel();
+            this.buildModels(options);
+            this.listenToModelEvents();
 
             this.dataParser = new DataParser();
             this.dataParser.setXAxis("distance");
             this.setOriginalElevation();
-            
-            this.buildElevationCorrrectionModel();
-
-            this.once("render", this.onFirstRender, this);
 
             TP.analytics("send", { "hitType": "event", "eventCategory": "groundControl", "eventAction": "opened", "eventLabel": "" });
         },
 
-        bindCallbacks: function()
+        listenToModelEvents: function()
         {
-            _.bindAll(this, "onElevationCorrectionFetched", "onElevationCorrectionApplied", "showUpdatedElevationProfile", "showCorrectedElevation");
+            this.listenTo(this.elevationCorrectionModel, "update", this.onElevationCorrectionFetched);
+            this.listenTo(this.elevationCorrectionModel, "correctionSaved", this.onElevationCorrectionApplied);
+        },
+
+        buildModels: function(options)
+        {
+            this.workoutModel = options.workoutModel;
+            var uploadedFileId = this.workoutModel.get("details").get("workoutDeviceFileInfos")[0].fileId;
+            this.elevationCorrectionModel = new ElevationCorrectionModel({ uploadedFileId: uploadedFileId });
+            this.elevationCorrectionModel.fetch();
         },
 
         validateWorkoutModel: function(options)
         {
             if (!options || !options.workoutModel || !options.workoutModel.get("detailData") || !options.workoutModel.get("detailData").get("flatSamples") || !options.workoutModel.get("detailData").get("flatSamples").hasLatLngData || !_.contains(options.workoutModel.get("detailData").get("flatSamples").channelMask, "Elevation"))
                 throw "ElevationCorrectionView requires a DetailData Model with valid flatSamples, latLngData, and Elevation channel";
-        },
-
-        buildViewModel: function()
-        {
-            var stats = this.workoutModel.get("detailData").get("totalStats");
-            this.model = new TP.Model(
-            {
-                originalMin: stats.minimumElevation,
-                correctedMin: null,
-                originalAvg: stats.averageElevation,
-                correctedAvg: null,
-                originalMax: stats.maximumElevation,
-                correctedMax: null,
-                originalGain: stats.elevationGain,
-                correctedGain: null,
-                originalLoss: stats.elevationLoss,
-                correctedLoss: null,
-                originalGrade: stats.grade,
-                correctedGrade: null
-            });
-        },
-
-        buildElevationCorrrectionModel: function()
-        {
-            var uploadedFileId = this.workoutModel.get("details").get("workoutDeviceFileInfos")[0].fileId;
-            this.elevationCorrectionModel = new ElevationCorrectionModel({ uploadedFileId: uploadedFileId });
-            this.elevationCorrectionModel.fetch().done(this.onElevationCorrectionFetched);
         },
 
         setOriginalElevation: function() 
@@ -128,13 +104,7 @@ function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandMo
 
         onRender: function()
         {
-            this.ui.chart.css("height", "390px");
             this.renderPlot();
-        },
-       
-        onFirstRender: function()
-        {
-            this.ui.chart.addClass("waiting");
         },
 
         renderPlot: function()
@@ -217,7 +187,7 @@ function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandMo
         {
             this.ui.chart.removeClass("waiting");
             this.setCorrectedElevation();
-            this.showCorrectedElevation();
+            this.render();
         },
 
         setCorrectedElevation: function()
@@ -225,17 +195,23 @@ function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandMo
             this.correctedElevation = this.dataParser.createCorrectedElevationChannel(this.elevationCorrectionModel.get("elevations"));
         },
 
-        showCorrectedElevation: function()
+        serializeData: function()
         {
-            this.model.set(
-            {
+            var stats = this.workoutModel.get("detailData").get("totalStats");
+            return {
+                originalMin: stats.minimumElevation,
                 correctedMin: this.elevationCorrectionModel.get("min"),
+                originalAvg: stats.averageElevation,
                 correctedAvg: this.elevationCorrectionModel.get("avg"),
+                originalMax: stats.maximumElevation,
                 correctedMax: this.elevationCorrectionModel.get("max"),
+                originalGain: stats.elevationGain,
                 correctedGain: this.elevationCorrectionModel.get("gain"),
+                originalLoss: stats.elevationLoss,
                 correctedLoss: this.elevationCorrectionModel.get("loss"),
+                originalGrade: stats.grade,
                 correctedGrade: this.calculateGrade(this.elevationCorrectionModel.get("gain"), this.elevationCorrectionModel.get("loss"), this.workoutModel.get("distance"))
-            });
+            };
         },
 
         calculateGrade: function(gain, loss, distance)
@@ -246,18 +222,18 @@ function (TP, DataParser, ElevationCorrectionModel, ElevationCorrectionCommandMo
         onSubmitClicked: function()
         {
             var fileId = this.workoutModel.get("details").get("workoutDeviceFileInfos")[0].fileId;
-            var elevationCorrectionCommand = new ElevationCorrectionCommandModel({}, { uploadedFileId: fileId });
 
             this.ui.chart.addClass("waiting");
 
-            elevationCorrectionCommand.execute().done(this.onElevationCorrectionApplied);
+            this.elevationCorrectionModel.applyCorrection();
 
             TP.analytics("send", { "hitType": "event", "eventCategory": "groundControl", "eventAction": "applied", "eventLabel": "" });
         },
         
         onElevationCorrectionApplied: function ()
         {
-            this.workoutModel.get("detailData").fetch().done(this.showUpdatedElevationProfile);
+            // need to determine if we can listen to detailData to avoid this .done(_.bind) business.
+            this.workoutModel.get("detailData").fetch().done(_.bind(this.showUpdatedElevationProfile, this));
             this.workoutModel.fetch();
         },
         
