@@ -76,7 +76,7 @@ function(
                 _.each(workoutTypeIds, function(item, index)
                 {
                     var intItem = parseInt(item, 10);
-                    var workoutType = intItem === 0 ? "All" : workoutTypes.getNameById(intItem);
+                    var workoutType = intItem === 0 ? "All" : TP.utils.workout.types.getNameById(intItem);
                     if(workoutType !== "Unknown")
                     {
                         workoutTypeNames.push(workoutType); 

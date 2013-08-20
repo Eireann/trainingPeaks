@@ -5,7 +5,7 @@ define(
     "utilities/charting/chartColors",
     "utilities/charting/flotOptions",
     "views/dashboard/chartUtils",
-    "views/dashboard/fitnessSummaryChartSettings"
+    "dashboard/views/timeInZonesChartSettings"
 ],
 function(
     TP,
@@ -13,7 +13,7 @@ function(
     chartColors,
     defaultFlotOptions,
     DashboardChartUtils,
-    FitnessSummaryChartSettingsView
+    TimeInZonesChartSettingsView
 )
 {
 
@@ -23,7 +23,7 @@ function(
 
     var TimeInZonesChart = Chart.extend({
 
-        settingsView: FitnessSummaryChartSettingsView,
+        settingsView: TimeInZonesChartSettingsView,
 
         defaults: {
             workoutTypeIds: []
@@ -39,7 +39,7 @@ function(
         {
             var dateOptions = DashboardChartUtils.buildChartParameters(this.get("dateOptions"));
             var postData = {
-                workoutTypeIds: this.get("workoutTypeIds"),
+                workoutTypeIds: _.without(this.get("workoutTypeIds"), 0, "0", ""),
                 timeInZonesType: this._getTimeInZonesType() 
             };
             return this.dataManager.fetchReport("timeinzones", dateOptions.startDate, dateOptions.endDate, postData);
@@ -132,7 +132,7 @@ function(
         _buildPoints: function(data)
         {
             var points = [];
-            var maxZoneWithMinutes = 1;
+            var maxZoneWithMinutes = 0;
             for(var i = 1;i<=10;i++)
             {
                 var minutes = data["zone" + i + "Minutes"];
