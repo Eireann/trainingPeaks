@@ -331,7 +331,7 @@ function(
          this.set("title", TP.utils.translate("Peak " + this.subType.label) + ": " + TP.utils.workout.types.getListOfNames(this.get("workoutTypeIds")));
       },
 
-      createChartOnClickView: function(event, position, item)
+      createItemDetailView: function(item)
       {
           if(item && item.series && item.series.raw && item.series.raw[item.dataIndex] && item.series.raw[item.dataIndex].workoutId)
           {

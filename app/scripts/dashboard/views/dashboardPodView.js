@@ -124,7 +124,7 @@ function(
 
         _onPlotClick: function(event, position, item)
         {
-            var onClickView = this.model.createChartOnClickView(event, position, item);
+            var onClickView = this.model.createItemDetailView(item);
             if(onClickView)
             {
                 onClickView.render();

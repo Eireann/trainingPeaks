@@ -34,7 +34,11 @@ function(
             return new this.settingsView({ model: this });
         },
 
-        createChartOnClickView: function(event, position, item)
+        /*
+            Optional
+            Should return a modal view or other view that positions itself and closes itself as needed
+        */
+        createItemDetailView: function(item)
         {
             return null;
         },
