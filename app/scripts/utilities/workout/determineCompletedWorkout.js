@@ -14,14 +14,8 @@ function(moment, datetime)
             workout = workout.attributes;
         }
 
-        // not enough data
-        if(!workout.workoutDay)
-        {
-            return false;
-        }
-
         // not completed in future ...
-        if (moment(workout.workoutDay).format(datetime.shortDateFormat) > moment().format(datetime.shortDateFormat))
+        if (workout.workoutDay && moment(workout.workoutDay).format(datetime.shortDateFormat) > moment().format(datetime.shortDateFormat))
         {
             return false;
         }
