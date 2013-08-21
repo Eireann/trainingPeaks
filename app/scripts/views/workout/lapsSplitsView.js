@@ -63,7 +63,7 @@ function(
                 // add in TSS (if available) with attendant fields based on TSS type
                 if (hasSomeTSS)
                 {
-                    lapObject[TSStype] = Math.round(lap.trainingStressScoreActual);
+                    lapObject[TSStype] = TP.utils.conversion.formatTSS(lap.trainingStressScoreActual, {defaultValue: 0});
                     switch (TSStype)
                     {
                         case "TSS":
