@@ -32,7 +32,7 @@ function(
 
         defaults: {
             showMarkers: false,
-            dataFields: [1, 9]
+            dataFields: []
         },
 
         initialize: function(attributes, options)
@@ -85,21 +85,44 @@ function(
                 }
             }, this);
 
-            console.log(yaxes);
-
+            var dateOptions = DashboardChartUtils.buildChartParameters(this.get("dateOptions") || {});
             return {
                 dataSeries: series,
                 flotOptions: _.defaults({
                     legend: { show: true },
                     xaxis:
                     {
-                        mode: "time",
-                        timeformat: "%m/%d/%Y"
+                        min: moment(dateOptions.startDate).valueOf(),
+                        max: moment(dateOptions.endDate).valueOf(),
+                        ticks: function(axis)
+                        {
+                            var date = moment(axis.min).startOf('day');
+                            var delta = moment.duration(Math.ceil(moment.duration(axis.delta).asDays()), "days");
+
+                            var ticks = [date.valueOf()];
+
+                            while(_.last(ticks) < axis.max)
+                            {
+                                date.add(delta);
+                                ticks.push(date.valueOf());
+                            }
+
+                            return ticks;
+                        },
+                        tickFormatter: function(date)
+                        {
+                            return moment(date).format("L");
+                        }
                     },
                     yaxes: yaxes,
-                    points: {
+                    points:
+                    {
                         show: this.get("showMarkers")
-                    }
+                    },
+                    lines:
+                    {
+                        fill: false
+                    },
                 }, defaultFlotOptions.getSplineOptions(null))
 
             };
@@ -136,12 +159,11 @@ function(
 
         buildTooltipData: function(flotItem)
         {
-            // var peak = flotItem.series.raw[flotItem.dataIndex];
-            // return [
-            //     { value: moment(peak.date).format("ddd, L") },
-            //     { value: peak.title },
-            //     { value: this._formatPeakValue(peak.value) }
-            // ];
+            var details = flotItem.series.raw[flotItem.dataIndex];
+            return [
+                { value: moment(details.date).format("L LT") },
+                { value: details.value },
+            ];
         },
 
 
