@@ -20,13 +20,24 @@ function()
         },
         {
             id: 3,
-            label: "Fatigue"
+            label: "Fatigue",
+            enumeration: [
+                { value: 0, label: 'Not Selected' },
+                { value: 1, label: 'None' },
+                { value: 2, label: 'Very Low' },
+                { value: 3, label: 'Low' },
+                { value: 4, label: 'Average' },
+                { value: 5, label: 'High' },
+                { value: 6, label: 'Very High' },
+                { value: 7, label: 'Extreme' }
+            ]
         },
         {
             id: 4,
             label: "Overall Feeling",
             enumeration:
             [
+                { value: 0, label: "Not Selected" },
                 { value: 1, label: "Horrible" },
                 { value: 2, label: "Extremely Poor" },
                 { value: 3, label: "Poor" },
@@ -49,11 +60,34 @@ function()
         },
         {
             id: 7,
-            label: "Soreness"
+            label: "Soreness",
+            enumeration: [
+                { value: 0, label: 'Not Selected' },
+                { value: 1, label: 'None' },
+                { value: 2, label: 'Extremely Low' },
+                { value: 3, label: 'Very Low' },
+                { value: 4, label: 'Low' },
+                { value: 5, label: 'Moderately Low' },
+                { value: 6, label: 'Moderate' },
+                { value: 7, label: 'Moderately High' },
+                { value: 8, label: 'High' },
+                { value: 9, label: 'Very High' },
+                { value: 10, label: 'Extreme' }
+            ]
         },
         {
             id: 8,
-            label: "Stress"
+            label: "Stress",
+            enumeration: [
+                { value: 0, label: 'Not Selected' },
+                { value: 1, label: 'None' },
+                { value: 2, label: 'Very Low' },
+                { value: 3, label: 'Low' },
+                { value: 4, label: 'Average' },
+                { value: 5, label: 'High' },
+                { value: 6, label: 'Very High' },
+                { value: 7, label: 'Extreme' }
+            ]
         },
         {
             id: 9,
@@ -61,7 +95,17 @@ function()
         },
         {
             id: 10,
-            label: "Sleep Quality"
+            label: "Sleep Quality",
+            enumeration: [
+                { value: 0, label: 'Not Selected' },
+                { value: 1, label: 'Horrible' },
+                { value: 2, label: 'Poor' },
+                { value: 3, label: 'Bad' },
+                { value: 4, label: 'Average' },
+                { value: 5, label: 'Good' },
+                { value: 6, label: 'Better' },
+                { value: 7, label: 'Best' }
+            ]
         },
         {
             id: 11,
@@ -93,31 +137,107 @@ function()
         },
         {
             id: 18,
-            label: "Menstruation"
+            label: "Menstruation",
+            enumeration: [
+                { value: 0, label: 'Not Selected' },
+                { value: 1, label: 'None' },
+                { value: 2, label: 'Very Light' },
+                { value: 3, label: 'Light' },
+                { value: 4, label: 'Medium' },
+                { value: 5, label: 'Heavy' },
+                { value: 6, label: 'Very Heavy' },
+                { value: 7, label: 'Extreme' }
+            ]
         },
         {
             id: 19,
-            label: "Urine Color"
+            label: "Urine Color",
+            enumeration: [
+                { value: 0, label: 'Not Selected' },
+                { value: 1, label: 'Clear' },
+                { value: 2, label: 'Light Yellow' },
+                { value: 3, label: 'Medium Yellow' },
+                { value: 4, label: 'Yellow' },
+                { value: 5, label: 'Light Orange' },
+                { value: 6, label: 'Medium Orange' },
+                { value: 7, label: 'Orange' }
+            ]
         },
         {
             id: 20,
-            label: "Hydration Level"
+            label: "Hydration Level",
+            enumeration: [
+                { value: 0, label: 'Not Selected' },
+                { value: 1, label: 'Extremely Hydrated' },
+                { value: 2, label: 'Very Hydrated' },
+                { value: 3, label: 'Hydrated' },
+                { value: 4, label: 'Normal' },
+                { value: 5, label: 'Dehydrated' },
+                { value: 6, label: 'Very Dehydrated' },
+                { value: 7, label: 'Extremely Dehydrated' }
+            ]
         },
         {
             id: 21,
-            label: "Appetite"
+            label: "Appetite",
+            enumeration: [
+                { value: 0, label: 'Not Selected' },
+                { value: 1, label: 'Extremely hungry' },
+                { value: 2, label: 'Very hungry' },
+                { value: 3, label: 'Hungry' },
+                { value: 4, label: 'Satisfied' },
+                { value: 5, label: 'Full' },
+                { value: 6, label: 'Very Full' },
+                { value: 7, label: 'Extremely Full' }
+            ]
         },
         {
             id: 22,
-            label: "Motivation"
+            label: "Motivation",
+            enumeration: [
+                { value: 0, label: 'Not Selected' },
+                { value: 1, label: 'Extremely Unmotivated' },
+                { value: 2, label: 'Very Unmotivated' },
+                { value: 3, label: 'Unmotivated' },
+                { value: 4, label: 'Uninspired' },
+                { value: 5, label: 'Below Average' },
+                { value: 6, label: 'Above Average' },
+                { value: 7, label: 'Inspired' },
+                { value: 8, label: 'Motivated' },
+                { value: 9, label: 'Very Motivated' },
+                { value: 10, label: 'Extremely Motivated' }
+            ]
         },
         {
             id: 23,
-            label: "Injury"
+            label: "Injury",
+            enumeration: [
+                { value: 0, label: 'Not Selected' },
+                { value: 1, label: 'Extremely Injured' },
+                { value: 2, label: 'Very Injured' },
+                { value: 3, label: 'Injured' },
+                { value: 4, label: 'Slightly Injured' },
+                { value: 5, label: 'Below Average' },
+                { value: 6, label: 'Above Average' },
+                { value: 7, label: 'Well' },
+                { value: 8, label: 'Healthy' },
+                { value: 9, label: 'Very Healthy' },
+                { value: 10, label: 'Extremely Healthy' }
+            ] 
         },
         {
             id: 24,
-            label: "Sickness"
+            label: "Sickness",
+            enumeration: [
+                { value: 0, label: 'Not Selected' },
+                { value: 1, label: 'Extremely sick' },
+                { value: 2, label: 'Very sick' },
+                { value: 3, label: 'Sick' },
+                { value: 4, label: 'Slightly sick' },
+                { value: 5, label: 'Healthy' },
+                { value: 6, label: 'Very Healthy' },
+                { value: 7, label: 'Extremely Healthy' }
+            ]
         },
         {
             id: 25,
@@ -229,11 +349,24 @@ function()
         },
         {
             id: 51,
-            label: "Mood"
+            label: "Mood",
+            enumeration: [
+                { value: 0, label: 'Not Selected' },
+                { value: 1, label: 'Worse than normal' },
+                { value: 2, label: 'Normal' },
+                { value: 3, label: 'Better than normal' }
+            ]
         },
         {
             id: 52,
-            label: "Yesterdays Training"
+            label: "Yesterdays Training",
+            enumeration: [
+                { value: 0, label: 'Not Selected' },
+                { value: 1, label: 'Worse than normal' },
+                { value: 2, label: 'Normal' },
+                { value: 3, label: 'Better than normal' },
+                { value: 4, label: 'Rest day' }
+            ]
         },
         {
             id: 53,
@@ -241,7 +374,20 @@ function()
         },
         {
             id: 54,
-            label: "Restwise Score"
+            label: "Restwise Score",
+            enumeration: [
+                { value: 0, label: "0" },
+                { value: 1, label: "10" },
+                { value: 2, label: "20" },
+                { value: 3, label: "30" },
+                { value: 4, label: "40" },
+                { value: 5, label: "50" },
+                { value: 6, label: "60" },
+                { value: 7, label: "70" },
+                { value: 8, label: "80" },
+                { value: 9, label: "90" },
+                { value: 10, label: "100" }
+            ]
         },
         {
             id: 55,
@@ -267,3 +413,4 @@ function()
     
     return metricTypes;
 });
+
