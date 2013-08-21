@@ -85,6 +85,10 @@ function(
                 }
             }, this);
 
+            if (yaxes.length >= 2)
+            {
+                yaxes[1].position = 'right';
+            }
             // Check for no data
             series = _.filter(series);
             if(series.length <= 0) return null;

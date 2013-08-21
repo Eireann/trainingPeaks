@@ -2,19 +2,19 @@ define(
 [
     "underscore",
     "TP",
+    "jquerySelectBox",
     "backbone",
     "dashboard/views/chartSettingsView",
     "views/dashboard/dashboardDatePicker",
-    // "dashboard/views/chartMetricOptionsView",
     "hbs!dashboard/templates/metricsChartSettings"
 ],
 function(
     _,
     TP,
+    jquerySelectBox,
     Backbone,
     ChartSettingsView,
     DashboardDatePicker,
-    // ChartMetricOptionsView,
     metricsChartSettingsTemplate
     )
 {
@@ -30,7 +30,7 @@ function(
         events: _.extend(
         {
             "change input.auto": "_onInputsChanged",
-            "change select.auto": "_onSelectsChanged"
+            "change select.autoSeries": "_onSeriesChanged"
         }, ChartSettingsView.prototype.events),
 
         onRender: function()
@@ -41,14 +41,18 @@ function(
                 model: this.model
             }));
 
-//             this._addView(".metricTypesRegion", new ChartMetricOptionsView({
-//                 model: this.model
-//             }));
-
             this.children.call("render");
 
             this._updateInputsState();
-            this._updateSelectsState();
+            this._updateSeriesState();
+
+            setImmediate(_.bind(this._setupSelects, this));
+        },
+
+        _setupSelects: function()
+        {
+            console.log("Hello?");
+            this.$("select").selectBoxIt({dynamicPositioning: true});
         },
 
         _updateInputsState: function()
@@ -61,13 +65,13 @@ function(
             });
         },
 
-        _updateSelectsState: function()
+        _updateSeriesState: function()
         {
-            var self = this;
-            this.$('select.auto').each(function(i, el)
+            var dataFields = this.model.get("dataFields");
+            this.$('select.autoSeries').each(function(i, el)
             {
                 var $el = $(el);
-                $el.val(self.model.get($el.attr("name")));
+                $el.val(dataFields[i]);
             });
         },
 
@@ -82,15 +86,13 @@ function(
             });
         },
 
-        _onSelectsChanged: function()
+        _onSeriesChanged: function()
         {
-            var self = this;
-
-            this.$('select.auto').each(function(i, el)
+            var metricTypeIds = this.$('select.autoSeries').map(function(i, el)
             {
-                var $el = $(el);
-                self.model.set($el.attr("name"), $el.val());
+                return $(el).val();
             });
+            this.model.set("dataFields", metricTypeIds);
         },
 
         serializeData: function()

@@ -2,24 +2,30 @@
     <div class="details">
         <div class="closeIcon"></div>
 
-        <div class="metricTypesRegion"></div>
-
-        <select multiple class="auto" name="dataFields">
+        <div class="title">Left</div>
+        <select class="autoSeries">
+            <option>None</option>
             {{#each metricTypes}}
                 <option value="{{ id }}">{{ label }}</option>
             {{/each}}
         </select>
 
-        <hr>
-
-        <div class="dateOptionsRegion"></div>
-
-        <hr>
+        <div class="title">Right</div>
+        <select class="autoSeries">
+            <option>None</option>
+            {{#each metricTypes}}
+                <option value="{{ id }}">{{ label }}</option>
+            {{/each}}
+        </select>
 
         <label>
             <input type="checkbox" class="auto" name="showMarkers">
             Show Markers
         </label>
+
+        <hr>
+
+        <div class="dateOptionsRegion"></div>
 
     </div>
 {{/hoverBox}}
