@@ -1,8 +1,9 @@
 ﻿define(
 [
-    "TP"
+    "TP",
+    "models/commands/elevationCorrection"
 ],
-function(TP)
+function(TP, ElevationCorrectionCommandModel)
 {
     return TP.APIDeepModel.extend(
     {
@@ -14,7 +15,10 @@ function(TP)
         {
             return theMarsApp.apiRoot + "/groundcontrol/v1/elevations/" + this.id;
         },
-        
+        initialize: function(options)
+        {
+            this.elevationCorrectionCommandModel = new ElevationCorrectionCommandModel({}, { uploadedFileId: options.uploadedFileId });
+        },
         defaults:
         {
             uploadedFileId: null,
@@ -24,6 +28,14 @@ function(TP)
             avg: null,
             gain: null,
             loss: null
+        },
+        applyCorrection: function()
+        {
+            var self = this;
+            this.elevationCorrectionCommandModel.execute().done(function()
+            {
+                self.trigger("correctionSaved");
+            });
         }
     });
 });
