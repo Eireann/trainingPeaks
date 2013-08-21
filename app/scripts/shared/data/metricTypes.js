@@ -188,7 +188,11 @@ function()
         },
         {
             id: 45,
-            label: "Insulin"
+            label: "Insulin",
+            subMetrics:
+            [
+                { index: 0 }
+            ]
         },
         {
             id: 46,

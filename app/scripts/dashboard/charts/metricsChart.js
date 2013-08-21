@@ -85,6 +85,10 @@ function(
                 }
             }, this);
 
+            // Check for no data
+            var series = _.filter(series);
+            if(series.length <= 0) return null;
+
             var dateOptions = DashboardChartUtils.buildChartParameters(this.get("dateOptions") || {});
             return {
                 dataSeries: series,
@@ -149,6 +153,11 @@ function(
                 }
             }, this);
 
+            if(points.length <= 0)
+            {
+                return null
+            }
+
             return _.extend({
                 label: metricInfo.label,
                 data: points,
@@ -161,6 +170,7 @@ function(
         {
             var details = flotItem.series.raw[flotItem.dataIndex];
             return [
+                { label: flotItem.series.info.label },
                 { value: moment(details.date).format("L LT") },
                 { value: details.value },
             ];
