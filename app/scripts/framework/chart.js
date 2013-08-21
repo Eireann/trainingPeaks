@@ -51,7 +51,7 @@ function(
             var deferred = new $.Deferred();
 
             var self = this;
-            xhr.done(function(data) // Might be more than one argument...
+            $.when(xhr).done(function(data) // Might be more than one argument...
             {
                 deferred.resolve(self.parseData.apply(self, arguments));
             }).fail(function()
@@ -60,6 +60,21 @@ function(
             });
             
             return deferred; 
+        },
+
+        // Should be overridden to fetch data from server.
+        // Should return a jquery deferred/jqXHR.
+        fetchData: function()
+        {
+            return;
+        },
+
+        // Takes the results of fetchData.
+        // Should return the flot data and options or null if no data is
+        // available.
+        parseData: function(data)
+        {
+            return;
         },
 
         updateChartTitle: function()

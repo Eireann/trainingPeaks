@@ -182,7 +182,7 @@ function(
             this._makeSeries(mainPeaks, {
                label: this._formatDateRange(mainXhr),
                color: this.subType.color.dark,
-               // color: "#fff",
+               lineColor: "#fff",
                lines:
                {
                   lineWidth: 2,
