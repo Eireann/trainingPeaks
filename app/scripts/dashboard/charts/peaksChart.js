@@ -169,7 +169,6 @@ function(
 
          if(!mainPeaks && !comparisonPeaks) return null;
 
-         //console.log(this.subType.color);
          var series =
          [
             this._makeSeries(comparisonPeaks, {
@@ -196,24 +195,6 @@ function(
          ];
 
          series = _.filter(series);
-
-         /*console.log({
-            dataSeries: series,
-            flotOptions: _.defaults({
-               legend: { show: true },
-               xaxis: {
-                  transform: function(x) { return Math.log(x); },
-                  inverseTransform: function(x) { return Math.exp(x); },
-                  ticks: _.bind(this._generateXTicks, this)
-               },
-               yaxis: {
-                  label: TP.utils.units.getUnitsLabel(this.subType.units),
-                  tickFormatter: _.bind(this._formatYTick, this)
-               }
-            }, defaultFlotOptions.getSplineOptions(null))
-
-         });
-          */
 
          return {
             dataSeries: series,
