@@ -188,8 +188,11 @@ function(
             };
 
             flotOptions.xaxis = {
-                show: false
+                tickDecimals: 0,
+                color: "transparent"
             };
+
+            flotOptions.bars.align = "center";
 
             return flotOptions;
         },
