@@ -184,6 +184,15 @@ function(
                     }
                 };
             }
+            else if(metricInfo.formatValue)
+            {
+                return {
+                    tickFormatter: function(value)
+                    {
+                        return self._formatValue(value, metricInfo);
+                    }
+                };
+            }
             else
             {
                 return {};
@@ -194,10 +203,15 @@ function(
         {
             var metricInfo = this._getOriginalInfo(flotItem.series.info);
             var details = flotItem.series.raw[flotItem.dataIndex];
+            var formattedValue = this._formatValue(details.value, metricInfo);
+            if(metricInfo.getUnitsLabel)
+            {
+                formattedValue += " " + metricInfo.getUnitsLabel();
+            }
             return [
                 { label: flotItem.series.info.label },
                 { value: moment(details.date).format("L LT") },
-                { value: this._formatValue(details.value, metricInfo) }
+                { value: formattedValue }
             ];
         },
 
@@ -217,6 +231,10 @@ function(
                 });
 
                 return option && option.label;
+            }
+            else if(metricInfo.formatValue)
+            {
+                return metricInfo.formatValue(value);
             }
             else
             {

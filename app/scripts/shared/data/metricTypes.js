@@ -1,7 +1,12 @@
 define(
 [
+    "utilities/units/units",
+    "utilities/conversion/conversion"
 ],
-function()
+function(
+    units,
+    conversion
+         )
 {
     metricTypes =
     [
@@ -22,7 +27,6 @@ function()
             id: 3,
             label: "Fatigue",
             enumeration: [
-                { value: 0, label: 'Not Selected' },
                 { value: 1, label: 'None' },
                 { value: 2, label: 'Very Low' },
                 { value: 3, label: 'Low' },
@@ -37,7 +41,6 @@ function()
             label: "Overall Feeling",
             enumeration:
             [
-                { value: 0, label: "Not Selected" },
                 { value: 1, label: "Horrible" },
                 { value: 2, label: "Extremely Poor" },
                 { value: 3, label: "Poor" },
@@ -62,7 +65,6 @@ function()
             id: 7,
             label: "Soreness",
             enumeration: [
-                { value: 0, label: 'Not Selected' },
                 { value: 1, label: 'None' },
                 { value: 2, label: 'Extremely Low' },
                 { value: 3, label: 'Very Low' },
@@ -79,7 +81,6 @@ function()
             id: 8,
             label: "Stress",
             enumeration: [
-                { value: 0, label: 'Not Selected' },
                 { value: 1, label: 'None' },
                 { value: 2, label: 'Very Low' },
                 { value: 3, label: 'Low' },
@@ -91,13 +92,12 @@ function()
         },
         {
             id: 9,
-            label: "Weight in Kilograms"
+            label: "Weight"
         },
         {
             id: 10,
             label: "Sleep Quality",
             enumeration: [
-                { value: 0, label: 'Not Selected' },
                 { value: 1, label: 'Horrible' },
                 { value: 2, label: 'Poor' },
                 { value: 3, label: 'Bad' },
@@ -109,7 +109,15 @@ function()
         },
         {
             id: 11,
-            label: "Sleep Elevation in Meters"
+            label: "Sleep Elevation",
+            formatValue: function(value) { 
+                return conversion.formatElevation(value);
+            }, 
+            getUnitsLabel: function()
+            {
+                return units.getUnitsLabel("elevation");
+            },
+            units: "elevation"
         },
         {
             id: 12,
@@ -117,7 +125,7 @@ function()
         },
         {
             id: 13,
-            label: "Height in cm"
+            label: "Height"
         },
         {
             id: 14,
@@ -139,7 +147,6 @@ function()
             id: 18,
             label: "Menstruation",
             enumeration: [
-                { value: 0, label: 'Not Selected' },
                 { value: 1, label: 'None' },
                 { value: 2, label: 'Very Light' },
                 { value: 3, label: 'Light' },
@@ -153,7 +160,6 @@ function()
             id: 19,
             label: "Urine Color",
             enumeration: [
-                { value: 0, label: 'Not Selected' },
                 { value: 1, label: 'Clear' },
                 { value: 2, label: 'Light Yellow' },
                 { value: 3, label: 'Medium Yellow' },
@@ -167,7 +173,6 @@ function()
             id: 20,
             label: "Hydration Level",
             enumeration: [
-                { value: 0, label: 'Not Selected' },
                 { value: 1, label: 'Extremely Hydrated' },
                 { value: 2, label: 'Very Hydrated' },
                 { value: 3, label: 'Hydrated' },
@@ -181,7 +186,6 @@ function()
             id: 21,
             label: "Appetite",
             enumeration: [
-                { value: 0, label: 'Not Selected' },
                 { value: 1, label: 'Extremely hungry' },
                 { value: 2, label: 'Very hungry' },
                 { value: 3, label: 'Hungry' },
@@ -195,7 +199,6 @@ function()
             id: 22,
             label: "Motivation",
             enumeration: [
-                { value: 0, label: 'Not Selected' },
                 { value: 1, label: 'Extremely Unmotivated' },
                 { value: 2, label: 'Very Unmotivated' },
                 { value: 3, label: 'Unmotivated' },
@@ -212,7 +215,6 @@ function()
             id: 23,
             label: "Injury",
             enumeration: [
-                { value: 0, label: 'Not Selected' },
                 { value: 1, label: 'Extremely Injured' },
                 { value: 2, label: 'Very Injured' },
                 { value: 3, label: 'Injured' },
@@ -229,7 +231,6 @@ function()
             id: 24,
             label: "Sickness",
             enumeration: [
-                { value: 0, label: 'Not Selected' },
                 { value: 1, label: 'Extremely sick' },
                 { value: 2, label: 'Very sick' },
                 { value: 3, label: 'Sick' },
@@ -351,7 +352,6 @@ function()
             id: 51,
             label: "Mood",
             enumeration: [
-                { value: 0, label: 'Not Selected' },
                 { value: 1, label: 'Worse than normal' },
                 { value: 2, label: 'Normal' },
                 { value: 3, label: 'Better than normal' }
@@ -361,7 +361,6 @@ function()
             id: 52,
             label: "Yesterdays Training",
             enumeration: [
-                { value: 0, label: 'Not Selected' },
                 { value: 1, label: 'Worse than normal' },
                 { value: 2, label: 'Normal' },
                 { value: 3, label: 'Better than normal' },
@@ -376,7 +375,6 @@ function()
             id: 54,
             label: "Restwise Score",
             enumeration: [
-                { value: 0, label: "0" },
                 { value: 1, label: "10" },
                 { value: 2, label: "20" },
                 { value: 3, label: "30" },
