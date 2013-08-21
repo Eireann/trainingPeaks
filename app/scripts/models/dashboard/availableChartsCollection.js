@@ -55,6 +55,10 @@ function(
             {
                 chartType: 26,
                 name: "Time In Speed Zones"
+            },
+            {
+                chartType: 13,
+                name: "Metrics"
             }
             ]);
         }
