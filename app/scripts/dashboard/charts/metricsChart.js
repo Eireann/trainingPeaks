@@ -70,12 +70,12 @@ function(
                 var metricInfo = _.find(this.metricTypes, function(type) { return type.id === metricTypeId; });
                 if (!metricInfo) return;
 
-                yaxes.push({});
+                yaxes.push(this._createAxis(metricInfo));
                 if (metricInfo.subMetrics)
                 {
                     _.each(metricInfo.subMetrics, function(subMetricInfo)
                     {
-                        var seriesInfo = _.extend({}, metricInfo, subMetricInfo);
+                        var seriesInfo = _.extend({ original: metricInfo }, metricInfo, subMetricInfo);
                         series.push(this._makeSeries(data, seriesInfo, { yaxis: yaxes.length }));
                     }, this);
                 }
@@ -86,7 +86,7 @@ function(
             }, this);
 
             // Check for no data
-            var series = _.filter(series);
+            series = _.filter(series);
             if(series.length <= 0) return null;
 
             var dateOptions = DashboardChartUtils.buildChartParameters(this.get("dateOptions") || {});
@@ -126,7 +126,7 @@ function(
                     lines:
                     {
                         fill: false
-                    },
+                    }
                 }, defaultFlotOptions.getSplineOptions(null))
 
             };
@@ -155,7 +155,7 @@ function(
 
             if(points.length <= 0)
             {
-                return null
+                return null;
             }
 
             return _.extend({
@@ -166,13 +166,34 @@ function(
             }, options);
         },
 
+        _createAxis: function(metricInfo)
+        {
+            var self = this;
+
+            if (metricInfo.enumeration)
+            {
+                return {
+                    ticks: _.pluck(metricInfo.enumeration, "value"),
+                    tickFormatter: function(value)
+                    {
+                        return self._formatValue(value, metricInfo);
+                    }
+                };
+            }
+            else
+            {
+                return {};
+            }
+        },
+
         buildTooltipData: function(flotItem)
         {
+            var metricInfo = this._getOriginalInfo(flotItem.series.info);
             var details = flotItem.series.raw[flotItem.dataIndex];
             return [
                 { label: flotItem.series.info.label },
                 { value: moment(details.date).format("L LT") },
-                { value: details.value },
+                { value: this._formatValue(details.value, metricInfo) }
             ];
         },
 
@@ -180,6 +201,28 @@ function(
         updateChartTitle: function()
         {
             this.set("title", TP.utils.translate("Metrics"));
+        },
+
+        _formatValue: function(value, metricInfo)
+        {
+            if (metricInfo.enumeration)
+            {
+                var option = _.find(metricInfo.enumeration, function(option)
+                {
+                    return option.value === value;
+                });
+
+                return option && option.label;
+            }
+            else
+            {
+                return value;
+            }
+        },
+
+        _getOriginalInfo: function(info)
+        {
+            return info.original || info;
         }
     });
 

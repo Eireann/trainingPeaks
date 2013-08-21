@@ -24,7 +24,20 @@ function()
         },
         {
             id: 4,
-            label: "Overall Feeling"
+            label: "Overall Feeling",
+            enumeration:
+            [
+                { value: 1, label: "Horrible" },
+                { value: 2, label: "Extremely Poor" },
+                { value: 3, label: "Poor" },
+                { value: 4, label: "Bad" },
+                { value: 5, label: "Below Average" },
+                { value: 6, label: "Above Average" },
+                { value: 7, label: "Good" },
+                { value: 8, label: "Superior" },
+                { value: 9, label: "Extremely Superior" },
+                { value: 10, label: "Best" }
+            ]
         },
         {
             id: 5,
