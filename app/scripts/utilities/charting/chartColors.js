@@ -59,11 +59,11 @@ function()
 
         peaks:
         {
-            heartRate: { light: "rgba(236, 65, 43, 0.7)", dark: "rgba(184, 36, 16, 0.7)" },
-            power: { light: "rgba(136, 10, 221, 0.7)", dark: "rgba(90, 7, 146, 0.7)" },
-            pace: { light: "rgba(27, 130, 206, 0.7)", dark: "rgba(18, 86, 137, 0.7)" },
-            cadence: { light: "rgba(255, 204, 0, 0.7)", dark: "rgba(255, 165, 0, 0.7)" },
-            comparison: { light: "rgba(156, 155, 156, 0.7)", dark: "rgba(136, 135, 136, 0.7)" }
+            heartRate: { light: "rgba(236, 65, 43, 0.6)", dark: "rgba(184, 36, 16, 0.6)" },
+            power: { light: "rgba(136, 10, 221, 0.6)", dark: "rgba(90, 7, 146, 0.6)" },
+            pace: { light: "rgba(27, 130, 206, 0.6)", dark: "rgba(18, 86, 137, 0.6)" },
+            cadence: { light: "rgba(255, 204, 0, 0.6)", dark: "rgba(255, 165, 0, 0.6)" },
+            comparison: { light: "rgba(191, 189, 190, 0.8)", dark: "rgba(136, 135, 136, 0.8)" }
         },
 
         chartSelection: "#e61101",
