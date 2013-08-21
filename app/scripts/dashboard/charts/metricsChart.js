@@ -8,7 +8,7 @@ define(
     "utilities/charting/flotOptions",
     "utilities/charting/chartColors",
     "views/dashboard/chartUtils",
-    "dashboard/views/ChartSettingsView",
+    "dashboard/views/MetricsChartSettingsView",
     "shared/data/metricTypes"
 ],
 function(
@@ -20,13 +20,13 @@ function(
     defaultFlotOptions,
     chartColors,
     DashboardChartUtils,
-    ChartSettingsView,
+    MetricsChartSettingsView,
     metricTypes
 )
 {
     var MetricsChart = Chart.extend({
 
-        settingsView: ChartSettingsView,
+        settingsView: MetricsChartSettingsView,
 
         metricTypes: metricTypes,
 
@@ -93,6 +93,9 @@ function(
                     {
                         mode: "time",
                         timeformat: "%m/%d/%Y"
+                    },
+                    points: {
+                        show: this.get("showMarkers")
                     }
                 }, defaultFlotOptions.getSplineOptions(null))
 
