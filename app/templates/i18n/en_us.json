@@ -74,6 +74,7 @@
     "Country": "Country",
     "Phone": "Phone",
     "CellPhone": "Cell Phone",
+    "ProfilePicture": "Profile Picture",
 
     "AccountSettings": "Account Settings",
     "AccountType": "Account Type",
@@ -83,11 +84,15 @@
     "DateFormat": "Date Format",
     "DayFormat1": "MM/DD/YY", 
     "DayFormat2": "DD/MM/YY",
+    "TimeZone": "Time Zone",
 
     "EmailOptions": "E-mail Options",
     "emailPMNotificationSetting": "Send me an e-mail when I receive a private message",
     "postActivityNotificationSetting": "Receive post-activity comment notification",
     "newsletterNotificationSetting": "Receive occasional informational newsletter",
+    "plannedWorkoutsNotificationSetting": "Enable daily emails of planned workouts",
+    "deliveryTime": "Delivery Time",
+    "plannedWorkoutsNotificationTimeHelpText": "If delivery time is from Midnight to Noon, you will receive that day's workout. If delivery time is from Noon to Midnight, you will receive the next day's workout.",
 
     "Payments": "Payments",
     "AccountExpires": "Account Expires",

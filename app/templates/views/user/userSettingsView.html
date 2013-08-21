@@ -1,10 +1,18 @@
+{{#comment}}
+
+TO DO:
+get all settings fields in
+verify that fields are showing correct values
+compare to flex and review story
+styling
+
+{{/comment}}
+
 <div class="settingsButtons">
     <div class="close" />
 </div>
 
 <div class="title">{{$ "PersonalInfo" }}</div>
-
-{{ profilePhotoUrl }}
 
 <div>
     <label>{{$ "FirstName" }}</label>
@@ -19,6 +27,11 @@
 <div>
     <label>{{$ "Username" }}</label>
     <input type="text" readonly value="{{ userName }}" />
+</div>
+
+<div>
+    <label>{{$ "Password" }}</label>
+    <input type="password" readonly value="{{ password }}" />
 </div>
 
 <div>
@@ -78,96 +91,82 @@
 </div>
 
 <div>
-    <label>{{$ "ZipCode" }}</label>
-    <input type="text" readonly value="{{ zipCode }}" />
-</div>
-
-<div>
-    <label>{{$ "ZipCode" }}</label>
-    <input type="text" readonly value="{{ zipCode }}" />
+    <label>{{$ "ProfilePicture" }}</label>
+    <img src="{{ profilePhotoUrl }}" />
 </div>
 
 
 <div class="title">{{$ "AccountSettings" }}</div>
 
-    <div>
-        <label>{{$ "AccountType" }}</label>
-        <input type="text" readonly value="{{ userType }}" />
-    </div>
+<div>
+    <label>{{$ "AccountType" }}</label>
+    <input type="text" readonly value="{{ userType }}" />
+</div>
 
-    <div>
-        <label>{{$ "Units" }}</label>
-        <input type="text" readonly value="{{ units }}" />
-    </div>
+<div>
+    <label>{{$ "Units" }}</label>
+    <input type="text" readonly value="{{ units }}" />
+</div>
 
-    <div>
-        <label>{{$ "DateFormat" }}</label>
-        <input type="text" readonly value="{{ dateFormat }}" />
-    </div>
+<div>
+    <label>{{$ "DateFormat" }}</label>
+    <input type="text" readonly value="{{ dateFormat }}" />
+</div>
 
-    <div>
-        <label>{{$ "TimeZone" }}</label>
-        <input type="text" readonly value="{{ timeZone }}" />
-    </div>
+<div>
+    <label>{{$ "TimeZone" }}</label>
+    <input type="text" readonly value="{{ timeZone }}" />
+</div>
 
-    {{# with settings }}
-        {{#with account }}
-            <div>
-                <label>{{$ "DateFormat" }}</label>
-                <input type="text" readonly value="{{ userType }}" />
-            </div>
-        {{/with}}
+{{# with settings }}
+    {{#with account }}
+        <div>
+            <label>{{$ "AccountType" }}</label>
+            <input type="text" readonly value="{{ userType }}" />
+        </div>
     {{/with}}
+{{/with}}
+
+<div class="title">{{$ "EmailOptions" }}</div>
+
+<div>
+    <label><input type="checkbox"> {{$ "emailPMNotificationSetting" }}</label>
+</div>
+
+<div>
+    <label><input type="checkbox"> {{$ "postActivityNotificationSetting" }}</label>
+</div>
+
+<div>
+    <label><input type="checkbox"> {{$ "plannedWorkoutsNotificationSetting" }}</label>
+</div>
+
+<div>
+    <label>{{$ "DeliveryTime "}}</label>
+    <input type="text" readonly value="">
+    <div>{{$ "plannedWorkoutsNotificationTimeHelpText" }}</div>
+</div>
+
+<div>
+    <label><input type="checkbox"> {{$ "newsletterNotificationSetting" }}</label>
+</div>
+
+<div class="title">{{$ "Payments" }}</div>
 
 {{#comment}}
 
 
-Date Format
-Time Zone
-Calendar Sync links
-Email Options
-Send email on PM
-Post-activity comment notifications
-Daily emails of planned workouts
-Delivery Time
-Receive Occasional informational newsletter
-Payments Information
-Account Expiration Date
-Active Recurring Payments Info
-Payment History
+Calendar Sync links - don't have these yet
+Email Options - do we have all of these?
+    Send email on PM
+    Post-activity comment notifications
+    Daily emails of planned workouts
+    Delivery Time
+    Receive Occasional informational newsletter
+Payments Information - do we have all of these?
+    Account Expiration Date
+    Active Recurring Payments Info
+    Payment History
 
 
-units: 1
-settings: Object
-    account: Object
-        accessGroupIds: Array[0]
-        affiliateId: 596
-        allowMarketingEmails: true
-        coachType: 0
-        enablePrivateMessageNotifications: true
-        expirationDate: "2015-08-05T16:48:00"
-        headerImageUrl: "/TPWebServices/GetImageFile.aspx?t=db&i=4fda2babbc3fc714fc11de99&f=training_peaks_banner.png"
-        headerLink: "http://www.trainingpeaks.com"
-        isAthlete: true
-        isCoached: false
-        isEmailVerified: true
-        lastLogin: "2013-08-21T11:35:05"
-        numberOfVisits: 84
-        userType: 4
-    affiliate: Object
-        code: "trainingpeaks3"
-        isTrainingPeaks: true
-    calendar: Object
-        display: 3
-        numberOfWeeksToShow: 3
-        showIcons: true
-        showMeals: true
-        showMetrics: true
-        showWeekSummary: true
-        showWorkouts: true
-        workoutColorization: 0
-        workoutLabelLayout: Array[5]
-    dashboard: Object
-    metrics: Array[8]
-    workout: Object
 {{/comment}}
