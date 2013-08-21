@@ -7,7 +7,9 @@ define(
     "utilities/charting/flotOptions",
     "utilities/charting/chartColors",
     "views/dashboard/chartUtils",
-    "dashboard/views/peaksChartSettingsView"
+    "dashboard/views/peaksChartSettingsView",
+    "models/workoutModel",
+    "views/quickView/workoutQuickView"
 ],
 function(
    _,
@@ -17,7 +19,9 @@ function(
    defaultFlotOptions,
    chartColors,
    DashboardChartUtils,
-   PeaksChartSettingsView
+   PeaksChartSettingsView,
+   WorkoutModel,
+   WorkoutQuickView
 )
 {
    var PeaksChart = Chart.extend({
@@ -165,7 +169,7 @@ function(
 
          if(!mainPeaks && !comparisonPeaks) return null;
 
-         console.log(this.subType.color);
+         //console.log(this.subType.color);
          var series =
          [
             this._makeSeries(comparisonPeaks, {
@@ -193,7 +197,7 @@ function(
 
          series = _.filter(series);
 
-         console.log({
+         /*console.log({
             dataSeries: series,
             flotOptions: _.defaults({
                legend: { show: true },
@@ -209,6 +213,7 @@ function(
             }, defaultFlotOptions.getSplineOptions(null))
 
          });
+          */
 
          return {
             dataSeries: series,
@@ -324,7 +329,23 @@ function(
       updateChartTitle: function()
       {
          this.set("title", TP.utils.translate("Peak " + this.subType.label) + ": " + TP.utils.workout.types.getListOfNames(this.get("workoutTypeIds")));
+      },
+
+      createChartOnClickView: function(event, position, item)
+      {
+          if(item && item.series && item.series.raw && item.series.raw[item.dataIndex] && item.series.raw[item.dataIndex].workoutId)
+          {
+            var workoutId = item.series.raw[item.dataIndex].workoutId;
+            var workout = new WorkoutModel({ workoutId: workoutId });
+            workout.fetch();
+            return new WorkoutQuickView({model: workout});
+          }
+          else
+          {
+            return null;
+          }
       }
+
    });
 
    return PeaksChart;

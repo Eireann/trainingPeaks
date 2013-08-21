@@ -34,6 +34,11 @@ function(
             return new this.settingsView({ model: this });
         },
 
+        createChartOnClickView: function(event, position, item)
+        {
+            return null;
+        },
+
         // returns a deferred, resolves the deferred with chart options
         buildChart: function()
         {

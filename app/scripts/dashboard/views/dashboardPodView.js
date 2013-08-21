@@ -116,7 +116,18 @@ function(
                     this.$(".xaxisLabel").text(xaxisOpts && xaxisOpts.label);
                     var yaxisOpts = chartOptions.flotOptions.yaxis;
                     this.$(".yaxisLabel").text(yaxisOpts && yaxisOpts.label);
+
+                    this.ui.chartContainer.bind("plotclick", _.bind(this._onPlotClick, this));
                 }
+            }
+        },
+
+        _onPlotClick: function(event, position, item)
+        {
+            var onClickView = this.model.createChartOnClickView(event, position, item);
+            if(onClickView)
+            {
+                onClickView.render();
             }
         },
 
