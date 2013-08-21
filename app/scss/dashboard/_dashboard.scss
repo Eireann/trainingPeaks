@@ -246,6 +246,15 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
         {
             visibility:hidden;
         }
+
+        .legend {
+            table tr.even, 
+            table tr.alt, 
+            table tr:nth-of-type(even) {
+                background:none;
+            }
+        }
+
     }
 
     .chartTitle
