@@ -556,12 +556,12 @@ function(
 
             it("Should say 'PMC - Workout Type: All' if no workout types are set", function()
             {
-                expect(PmcChart.prototype.buildWorkoutTypesTitle([0])).toEqual("All");
+                expect(TP.utils.workout.types.getListOfNames([0], "All")).toEqual("All");
             });
 
             it("Should include workout types if set", function()
             {
-                expect(PmcChart.prototype.buildWorkoutTypesTitle([1, 2, 3])).toEqual("Swim, Bike, Run");
+                expect(TP.utils.workout.types.getListOfNames([1, 2, 3])).toEqual("Swim, Bike, Run");
             });
 
         });
