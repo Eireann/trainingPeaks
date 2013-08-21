@@ -91,7 +91,7 @@ function(
             var metricTypeIds = this.$('select.autoSeries').map(function(i, el)
             {
                 return $(el).val();
-            });
+            }).get();
             this.model.set("dataFields", metricTypeIds);
         },
 
