@@ -111,6 +111,8 @@ function(
             data.applyDate = moment().format(this.dateFormat);
             data.details = this.model.details.toJSON();
             data.details.weekcount = Math.ceil(data.details.dayCount / 7);
+            data.details.totalDuration = 0;
+            data.details.totalDistance = 0;
 
             if (data.details.planApplications && !data.details.planApplications.length)
             {
@@ -120,18 +122,19 @@ function(
             var plannedWorkoutTypeDurations = [];
             _.each(data.details.plannedWorkoutTypeDurations, function(workoutTypeDetails)
             {
-                if(workoutTypeDetails.duration || workoutTypeDetails.distance)
+                if (workoutTypeDetails.duration || workoutTypeDetails.distance)
                 {
+                    workoutTypeDetails.duration = Math.ceil(workoutTypeDetails.duration / data.details.weekcount);
+                    workoutTypeDetails.distance = Math.ceil(workoutTypeDetails.distance / data.details.weekcount);
+                    data.details.totalDuration += workoutTypeDetails.duration;
+                    data.details.totalDistance += workoutTypeDetails.distance;
+
                     plannedWorkoutTypeDurations.push(workoutTypeDetails);
                 }
             });
             data.details.plannedWorkoutTypeDurations = plannedWorkoutTypeDurations.length ? plannedWorkoutTypeDurations : null;
 
             data.details.descriptionText = $("<div>").html(data.details.description).text();
-            if(data.details.descriptionText.length > 200)
-            {
-                data.details.descriptionShort = multilineEllipsis($("<div>").html(data.details.description).text(), 200);
-            }
 
             return data;
         },
