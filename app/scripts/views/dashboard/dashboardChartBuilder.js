@@ -1,6 +1,7 @@
 ﻿define(
 [
     "TP",
+    "framework/chart",
     "views/dashboard/pmcChart",
     "dashboard/views/dashboardPodView",
     "dashboard/charts/fitnessSummaryChart",
@@ -9,6 +10,7 @@
 ],
 function(
     TP,
+    Chart,
     PmcChartView,
     DashboardPodView,
     FitnessSummaryChart,
@@ -47,7 +49,7 @@ function(
         buildChartModel: function(attributes, options)
         {
             var chartTypeId = attributes.chartType;
-            var Model = chartModelConstructors.hasOwnProperty(chartTypeId) ? chartModelConstructors[chartTypeId] : TP.Model;
+            var Model = chartModelConstructors.hasOwnProperty(chartTypeId) ? chartModelConstructors[chartTypeId] : Chart;
             return new Model(attributes, options); 
         }
     };

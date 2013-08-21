@@ -2314,7 +2314,7 @@ Licensed under the MIT license.
             }
 
             ctx.lineWidth = lw;
-            ctx.strokeStyle = series.color;
+            ctx.strokeStyle = series.lineColor || series.color; // **TP CHANGES**: Support a line color different than series color
             var fillStyle = getFillStyle(series.lines, series.color, 0, plotHeight);
             if (fillStyle) {
                 ctx.fillStyle = fillStyle;
