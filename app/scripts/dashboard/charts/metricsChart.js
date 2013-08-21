@@ -52,7 +52,6 @@ function(
 
         parseData: function(data)
         {
-            console.log(data);
             _.each(data, function(entry)
             {
                 entry.date = moment(entry.timeStamp).valueOf();
@@ -64,26 +63,29 @@ function(
                 });
             });
 
-            console.log(this.get("dataFields"));
-            var series = [];
+            var yaxes = [], series = [];
             _.each(this.get("dataFields"), function(metricTypeId)
             {
+                metricTypeId = _.isString(metricTypeId) ? parseInt(metricTypeId, 10) : metricTypeId;
                 var metricInfo = _.find(this.metricTypes, function(type) { return type.id === metricTypeId; });
-                if(metricInfo.subMetrics)
+                if (!metricInfo) return;
+
+                yaxes.push({});
+                if (metricInfo.subMetrics)
                 {
                     _.each(metricInfo.subMetrics, function(subMetricInfo)
                     {
                         var seriesInfo = _.extend({}, metricInfo, subMetricInfo);
-                        series.push(this._makeSeries(data, seriesInfo));
+                        series.push(this._makeSeries(data, seriesInfo, { yaxis: yaxes.length }));
                     }, this);
                 }
                 else
                 {
-                    series.push(this._makeSeries(data, metricInfo));
+                    series.push(this._makeSeries(data, metricInfo, {yaxis: yaxes.length }));
                 }
             }, this);
 
-            console.log(series);
+            console.log(yaxes);
 
             return {
                 dataSeries: series,
@@ -94,6 +96,7 @@ function(
                         mode: "time",
                         timeformat: "%m/%d/%Y"
                     },
+                    yaxes: yaxes,
                     points: {
                         show: this.get("showMarkers")
                     }

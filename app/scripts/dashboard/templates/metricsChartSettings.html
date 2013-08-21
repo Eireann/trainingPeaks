@@ -4,6 +4,12 @@
 
         <div class="metricTypesRegion"></div>
 
+        <select multiple class="auto" name="dataFields">
+            {{#each metricTypes}}
+                <option value="{{ id }}">{{ label }}</option>
+            {{/each}}
+        </select>
+
         <hr>
 
         <div class="dateOptionsRegion"></div>

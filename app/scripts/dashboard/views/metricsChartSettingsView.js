@@ -29,7 +29,8 @@ function(
 
         events: _.extend(
         {
-            "change input.auto": "_onInputsChanged"
+            "change input.auto": "_onInputsChanged",
+            "change select.auto": "_onSelectsChanged"
         }, ChartSettingsView.prototype.events),
 
         onRender: function()
@@ -46,16 +47,27 @@ function(
 
             this.children.call("render");
 
-            this._updateInputState();
+            this._updateInputsState();
+            this._updateSelectsState();
         },
 
-        _updateInputState: function()
+        _updateInputsState: function()
         {
             var self = this;
             this.$('input.auto[type="checkbox"]').each(function(i, el)
             {
                 var $el = $(el);
                 $el.attr("checked", self.model.get($el.attr("name")));
+            });
+        },
+
+        _updateSelectsState: function()
+        {
+            var self = this;
+            this.$('select.auto').each(function(i, el)
+            {
+                var $el = $(el);
+                $el.val(self.model.get($el.attr("name")));
             });
         },
 
@@ -68,6 +80,25 @@ function(
                 var $el = $(el);
                 self.model.set($el.attr("name"), $el.prop("checked"));
             });
+        },
+
+        _onSelectsChanged: function()
+        {
+            var self = this;
+
+            this.$('select.auto').each(function(i, el)
+            {
+                var $el = $(el);
+                self.model.set($el.attr("name"), $el.val());
+            });
+        },
+
+        serializeData: function()
+        {
+            var original = MetricsChartSettingsView.__super__.serializeData.apply(this, arguments);
+            return _.extend({
+                metricTypes: this.model.metricTypes
+            }, original);
         }
     });
 
