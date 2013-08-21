@@ -1,7 +1,7 @@
 ﻿define(
 [
     "TP",
-    "views/userControls/userSettingsView",
+    "user/views/userSettingsView",
     "hbs!templates/views/userControls/accountMenu"
 ],
 function (TP, UserSettingsView, accountMenuTemplate)
