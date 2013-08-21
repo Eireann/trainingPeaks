@@ -73,7 +73,7 @@ function(
             if(flotPoints && flotPoints.length)
             {
                 var series = this._buildFlotDataSeries(flotPoints, chartColor);
-                var options = this._buildFlotChartOptions();
+                var options = this._buildFlotChartOptions(flotPoints.length);
                 return { dataSeries: series, flotOptions: options };
             } else {
                 return null;
@@ -175,7 +175,7 @@ function(
             return [dataSeries];
         },
 
-        _buildFlotChartOptions: function()
+        _buildFlotChartOptions: function(numberOfColumns)
         {
             var flotOptions = defaultFlotOptions.getBarOptions();
 
@@ -187,8 +187,14 @@ function(
                 }
             };
 
+            var xTicks = [];
+            for(var i = 1; i<= numberOfColumns;i++)
+            {
+                xTicks.push(i);
+            }
+            
             flotOptions.xaxis = {
-                tickDecimals: 0,
+                ticks: xTicks,
                 color: "transparent"
             };
 
