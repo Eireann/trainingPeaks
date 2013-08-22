@@ -25,6 +25,7 @@
             "jqueryTimepicker": "../vendor/js/libs/jquery-timepicker/jquery.timepicker",
             "jqueryTextAreaResize": "../vendor/js/libs/jquery/jquery.autosize",
             "jquerySelectBox": "../vendor/js/libs/jquery/jquery.selectBoxIt.TP",
+            "jqueryHtmlClean": "../vendor/js/libs/jquery/jquery.htmlClean.TP",
 
             // Underscore & Lodash (provided by Lodash)
             "lodash": "../vendor/js/libs/lodash.TP",

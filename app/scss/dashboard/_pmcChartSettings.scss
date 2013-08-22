@@ -96,3 +96,34 @@
         }
     }
 }
+
+#flotTip
+{
+    .tooltipRow
+    {
+        &.TSS
+        {
+            color: #b90807;
+        } 
+
+        &.IF
+        {
+            color: #3399ff;
+        }
+
+        &.TSB
+        {
+            color: #FFA500;
+        }
+
+        &.ATL
+        {
+            color: #f945d7;
+        }
+
+        &.CTL
+        {
+            color: #38709a;
+        }
+    }
+}

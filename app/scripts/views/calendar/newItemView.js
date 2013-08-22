@@ -5,7 +5,7 @@
     "models/workoutFileData",
     "views/quickView/workoutQuickView",
     "views/userConfirmationView",
-    "hbs!templates/views/quickView/fileUploadErrorView",
+    "views/workout/workoutFileUploadView",
     "hbs!templates/views/calendar/newItemView"
 ],
 function(
@@ -14,7 +14,7 @@ function(
     WorkoutFileData,
     WorkoutQuickView,
     UserConfirmationView,
-    fileUploadErrorTemplate,
+    WorkoutFileUploadView,
     newItemViewTemplate)
 {
     return TP.ItemView.extend(
@@ -52,7 +52,12 @@ function(
             TP.analytics("send", { "hitType": "event", "eventCategory": "newItemView", "eventAction": "opened", "eventLabel": "" });
             _.bindAll(this, "onUploadDone", "onUploadFail", "close");
         },
-
+        onRender: function()
+        {
+            this.workoutFileUploadView = new WorkoutFileUploadView({el: this.$('#fileUploadInput'), workoutModel: this.model}); 
+            this.listenTo(this.workoutFileUploadView, "uploadDone", this.onUploadDone, this);
+            this.listenTo(this.workoutFileUploadView, "uploadFailed", this.onUploadFail, this);
+        },
         onNewWorkoutClicked: function (e)
         {
             // Handle file uploads as a specific case & return
@@ -87,34 +92,14 @@ function(
 
             this.$el.addClass("waiting");
             this.$("#uploadingNotification").css("display", "block");
-            
-            var self = this;
-            var fileList = this.ui.fileinput[0].files;
-
-            var workoutReader = new TP.utils.workout.FileReader(fileList[0]);
-            var deferred = workoutReader.readFile();
-
-            deferred.done(function(fileName, dataAsString)
-            {
-                self.uploadedFileDataModel = new WorkoutFileData({ workoutDay: moment(self.model.get("date")).format(TP.utils.datetime.longDateFormat), startTime: moment(self.model.get("date")).add("hours", 6).format(TP.utils.datetime.longDateFormat), data: dataAsString, fileName: fileName });
-                self.uploadedFileDataModel.save().done(self.onUploadDone).fail(self.onUploadFail);
-            });
         },
 
-        onUploadDone: function ()
+        onUploadDone: function (workoutModelJson)
         {
             TP.analytics("send", { "hitType": "event", "eventCategory": "newItemView", "eventAction": "deviceFileUploaded", "eventLabel": "" });
 
             this.$el.removeClass("waiting");
          
-            var workoutModelJson = this.uploadedFileDataModel.get("workoutModel");
-
-            if (!workoutModelJson)
-            {
-                this.displayUploadError();
-                return;
-            }
-
             var newModel = new WorkoutModel();
 
             var existingModel = theMarsApp.controllers.calendarController.getWorkout(workoutModelJson.workoutId);
@@ -149,12 +134,6 @@ function(
         {
             this.trigger("close");
             this.close();
-        },
-
-        displayUploadError: function()
-        {
-            this.errorMessageView = new UserConfirmationView({ template: fileUploadErrorTemplate });
-            this.errorMessageView.render();
         }
     });
 });
