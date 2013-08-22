@@ -12,7 +12,8 @@ function()
             [
                 { index: 0, label: "Systolic" },
                 { index: 1, label: "Diastolic" }
-            ]
+            ],
+            units: "mmHg"
         },
         {
             id: 2,

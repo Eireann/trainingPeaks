@@ -522,6 +522,9 @@
                 case "pace":
                     return this.formatPace(value, options);
 
+                case "heartrate":
+                    return this.formatHeartRate(value, options);
+
                 case "duration":
                     return this.formatDuration(value, options);
 
@@ -540,12 +543,24 @@
                 case "ml":
                     return this.formatMl(value, options);
 
+                case "mmHg":
+                    if(_.isArray(value))
+                    {
+                        return _.map(value, function(val) { return this.formatInteger(val, options); }, this).join("/");
+                    }
+                    else
+                    {
+                        return this.formatInteger(value, options);
+                    }
+
                 case "%":
                 case "hours":
                 case "kcal":
                 case "mm":
-                case "none":
                     return this.formatNumber(value, options);
+
+                case "none":
+                    return this.formatInteger(value, options);
 
                 default:
                     throw new Error("Unsupported units for conversion.formatUnitsValue: " + units);

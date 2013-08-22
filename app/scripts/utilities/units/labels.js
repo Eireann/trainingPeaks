@@ -167,6 +167,7 @@ function(unitsConstants, workoutLayoutFormatter, workoutTypeUtils)
             English: "oz",
             Metric: "ml"
         },
+        mmHg: "mmHg",
         hours: "hrs",
         kcal: "kcal",
         mm: "mm",
