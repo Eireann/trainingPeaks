@@ -20,7 +20,6 @@ function(
 {
     return TP.ItemView.extend(
     {
-        tagName: "div",
         // className: "dashboardDatePicker",
         includeGlobalOption: true,
 
@@ -149,6 +148,26 @@ function(
             this.$("input.startDate").datepicker("option", "maxDate", endDate);
             this.$("input.endDate").datepicker("option", "minDate", startDate);
 
+        },
+
+        enable: function()
+        {
+            var self = this;
+            setImmediate(function()
+            {
+                self.$("select.dateOptions").selectBoxIt("enable");
+                self.$("input").attr("disabled", false);
+            });
+        },
+
+        disable: function()
+        {
+            var self = this;
+            setImmediate(function()
+            {
+                self.$("select.dateOptions").selectBoxIt("disable");
+                self.$("input").attr("disabled", true);
+            });
         }
 
     });
