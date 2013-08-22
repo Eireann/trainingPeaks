@@ -408,17 +408,21 @@ API.txt for details.
 		});
 	}
 
-	$.plot.plugins.push({
-		init: init,
-		options: options,
-		name: 'time',
-		version: '1.0'
-	});
+	if($.plot)
+	{
+		$.plot.plugins.push({
+			init: init,
+			options: options,
+			name: 'time',
+			version: '1.0'
+		});
 
-	// Time-axis support used to be in Flot core, which exposed the
-	// formatDate function on the plot object.  Various plugins depend
-	// on the function, so we need to re-expose it here.
+		// Time-axis support used to be in Flot core, which exposed the
+		// formatDate function on the plot object.  Various plugins depend
+		// on the function, so we need to re-expose it here.
 
-	$.plot.formatDate = formatDate;
+		$.plot.formatDate = formatDate;
+	
+	}
 
 })(jQuery);

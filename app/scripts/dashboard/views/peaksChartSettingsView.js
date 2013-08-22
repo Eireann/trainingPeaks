@@ -31,12 +31,8 @@ function(
 
         events: _.extend(
         {
-            "change input": "_onInputsChanged"
+            "change input.auto": "_onInputsChanged"
         }, ChartSettingsView.prototype.events),
-
-        ui: {
-            useComparison: ".useComparison"
-        },
 
         onRender: function()
         {

@@ -1,0 +1,33 @@
+{{#hoverBox this}}
+    <div class="details">
+        <div class="closeIcon"></div>
+
+        <h3 class="subheadbold">Primary</h3>
+        <select class="autoSeries">
+            <option>None</option>
+            {{#each metricTypes}}
+                <option value="{{ id }}">{{ label }}</option>
+            {{/each}}
+        </select>
+
+        <h3 class="subheadbold">Secondary</h3>
+        <select class="autoSeries">
+            <option>None</option>
+            {{#each metricTypes}}
+                <option value="{{ id }}">{{ label }}</option>
+            {{/each}}
+        </select>
+
+        <label>
+            <input type="checkbox" class="auto" name="showMarkers">
+            Show Markers
+        </label>
+
+        <hr>
+
+        <div class="dateOptionsRegion"></div>
+
+    </div>
+{{/hoverBox}}
+
+
