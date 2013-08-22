@@ -1,0 +1,23 @@
+﻿
+.userSettingContainer
+{
+    padding: 10px;
+    input[type="text"]
+    {
+        width: 200px;
+        height: 20px;
+        font-size: 0.857em;
+        font-family: "HelveticaNeueW01-55Roma";
+        padding-top: 0px;
+        padding-bottom: 0px;
+        cursor: text;
+        -webkit-box-shadow: none;
+        -moz-box-shadow: none;
+        box-shadow: none;
+    }
+
+    input[type="password"]
+    {
+        @extend input[type="text"];
+    }
+}

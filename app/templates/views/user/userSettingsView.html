@@ -9,150 +9,151 @@ styling
 {{/comment}}
 
 <div class="settingsButtons">
-    <div class="close" />
+    <div id="closeIcon" />
 </div>
 
-<div class="title">{{$ "PersonalInfo" }}</div>
+<div class="userSettingContainer">
+    <div class="title">{{$ "PersonalInfo" }}</div>
 
-<div>
-    <label>{{$ "FirstName" }}</label>
-    <input type="text" readonly value="{{ firstName }}" />
-</div>
+    <div>
+        <label>{{$ "FirstName" }}</label>
+        <input type="text" readonly value="{{ firstName }}" />
+    </div>
 
-<div>
-    <label>{{$ "LastName" }}</label>
-    <input type="text" readonly value="{{ lastName }}" />
-</div>
+    <div>
+        <label>{{$ "LastName" }}</label>
+        <input type="text" readonly value="{{ lastName }}" />
+    </div>
 
-<div>
-    <label>{{$ "Username" }}</label>
-    <input type="text" readonly value="{{ userName }}" />
-</div>
+    <div>
+        <label>{{$ "Username" }}</label>
+        <input type="text" readonly value="{{ userName }}" />
+    </div>
 
-<div>
-    <label>{{$ "Password" }}</label>
-    <input type="password" readonly value="{{ password }}" />
-</div>
+    <div>
+        <label>{{$ "Password" }}</label>
+        <input type="password" readonly value="{{ password }}" />
+    </div>
 
-<div>
-    <label>{{$ "AthleteType" }}</label>
-    <input type="text" readonly value="{{ userType }}" />
-</div>
+    <div>
+        <label>{{$ "AthleteType" }}</label>
+        <input type="text" readonly value="{{ userType }}" />
+    </div>
 
-<div>
-    <label>{{$ "Birthday" }}</label>
-    <input type="text" readonly value="{{ formatDate birthday "MM/DD/YYYY" }}" />
-</div>
+    <div>
+        <label>{{$ "Birthday" }}</label>
+        <input type="text" readonly value="{{ formatDate birthday "MM/DD/YYYY" }}" />
+    </div>
 
-<div>
-    <label>{{$ "Gender" }}</label>
-    <input type="text" readonly value="{{ gender }}" />
-</div>
+    <div>
+        <label>{{$ "Gender" }}</label>
+        <input type="text" readonly value="{{ gender }}" />
+    </div>
 
-<div>
-    <label>{{$ "Email" }}</label>
-    <input type="text" readonly value="{{ email }}" />
-</div>
+    <div>
+        <label>{{$ "Email" }}</label>
+        <input type="text" readonly value="{{ email }}" />
+    </div>
 
-<div>
-    <label>{{$ "Address" }}</label>
-    <input type="text" readonly value="{{ address }}" />
-    <input type="text" readonly value="{{ address2 }}" />
-</div>
+    <div>
+        <label>{{$ "Address" }}</label>
+        <input type="text" readonly value="{{ address }}" />
+        <input type="text" readonly value="{{ address2 }}" />
+    </div>
 
-<div>
-    <label>{{$ "City" }}</label>
-    <input type="text" readonly value="{{ city }}" />
-</div>
+    <div>
+        <label>{{$ "City" }}</label>
+        <input type="text" readonly value="{{ city }}" />
+    </div>
 
-<div>
-    <label>{{$ "State" }}</label>
-    <input type="text" readonly value="{{ state }}" />
-</div>
+    <div>
+        <label>{{$ "State" }}</label>
+        <input type="text" readonly value="{{ state }}" />
+    </div>
 
-<div>
-    <label>{{$ "ZipCode" }}</label>
-    <input type="text" readonly value="{{ zipCode }}" />
-</div>
+    <div>
+        <label>{{$ "ZipCode" }}</label>
+        <input type="text" readonly value="{{ zipCode }}" />
+    </div>
 
-<div>
-    <label>{{$ "Country" }}</label>
-    <input type="text" readonly value="{{ country }}" />
-</div>
+    <div>
+        <label>{{$ "Country" }}</label>
+        <input type="text" readonly value="{{ country }}" />
+    </div>
 
-<div>
-    <label>{{$ "Phone" }}</label>
-    <input type="text" readonly value="{{ phone }}" />
-</div>
+    <div>
+        <label>{{$ "Phone" }}</label>
+        <input type="text" readonly value="{{ phone }}" />
+    </div>
 
-<div>
-    <label>{{$ "CellPhone" }}</label>
-    <input type="text" readonly value="{{ cellPhone }}" />
-</div>
+    <div>
+        <label>{{$ "CellPhone" }}</label>
+        <input type="text" readonly value="{{ cellPhone }}" />
+    </div>
 
-<div>
-    <label>{{$ "ProfilePicture" }}</label>
-    <img src="{{ profilePhotoUrl }}" />
-</div>
+    <div>
+        <label>{{$ "ProfilePicture" }}</label>
+        <img src="{{ profilePhotoUrl }}" />
+    </div>
 
 
-<div class="title">{{$ "AccountSettings" }}</div>
+    <div class="title">{{$ "AccountSettings" }}</div>
 
-<div>
-    <label>{{$ "AccountType" }}</label>
-    <input type="text" readonly value="{{ userType }}" />
-</div>
+    <div>
+        <label>{{$ "AccountType" }}</label>
+        <input type="text" readonly value="{{ userType }}" />
+    </div>
 
-<div>
-    <label>{{$ "Units" }}</label>
-    <input type="text" readonly value="{{ units }}" />
-</div>
+    <div>
+        <label>{{$ "Units" }}</label>
+        <input type="text" readonly value="{{ units }}" />
+    </div>
 
-<div>
-    <label>{{$ "DateFormat" }}</label>
-    <input type="text" readonly value="{{ dateFormat }}" />
-</div>
+    <div>
+        <label>{{$ "DateFormat" }}</label>
+        <input type="text" readonly value="{{ dateFormat }}" />
+    </div>
 
-<div>
-    <label>{{$ "TimeZone" }}</label>
-    <input type="text" readonly value="{{ timeZone }}" />
-</div>
+    <div>
+        <label>{{$ "TimeZone" }}</label>
+        <input type="text" readonly value="{{ timeZone }}" />
+    </div>
 
-{{# with settings }}
-    {{#with account }}
-        <div>
-            <label>{{$ "AccountType" }}</label>
-            <input type="text" readonly value="{{ userType }}" />
-        </div>
+    {{# with settings }}
+        {{#with account }}
+            <div>
+                <label>{{$ "AccountType" }}</label>
+                <input type="text" readonly value="{{ userType }}" />
+            </div>
+        {{/with}}
     {{/with}}
-{{/with}}
 
-<div class="title">{{$ "EmailOptions" }}</div>
+    <div class="title">{{$ "EmailOptions" }}</div>
 
-<div>
-    <label><input type="checkbox"> {{$ "emailPMNotificationSetting" }}</label>
+    <div>
+        <label><input type="checkbox"> {{$ "emailPMNotificationSetting" }}</label>
+    </div>
+
+    <div>
+        <label><input type="checkbox"> {{$ "postActivityNotificationSetting" }}</label>
+    </div>
+
+    <div>
+        <label><input type="checkbox"> {{$ "plannedWorkoutsNotificationSetting" }}</label>
+    </div>
+
+    <div>
+        <label>{{$ "DeliveryTime "}}</label>
+        <input type="text" readonly value="">
+        <div>{{$ "plannedWorkoutsNotificationTimeHelpText" }}</div>
+    </div>
+
+    <div>
+        <label><input type="checkbox"> {{$ "newsletterNotificationSetting" }}</label>
+    </div>
+
+    <div class="title">{{$ "Payments" }}</div>
 </div>
-
-<div>
-    <label><input type="checkbox"> {{$ "postActivityNotificationSetting" }}</label>
-</div>
-
-<div>
-    <label><input type="checkbox"> {{$ "plannedWorkoutsNotificationSetting" }}</label>
-</div>
-
-<div>
-    <label>{{$ "DeliveryTime "}}</label>
-    <input type="text" readonly value="">
-    <div>{{$ "plannedWorkoutsNotificationTimeHelpText" }}</div>
-</div>
-
-<div>
-    <label><input type="checkbox"> {{$ "newsletterNotificationSetting" }}</label>
-</div>
-
-<div class="title">{{$ "Payments" }}</div>
-
 {{#comment}}
 
 

@@ -24,7 +24,7 @@ function (
 
         events:
         {
-            "click .close": "close"
+            "click #closeIcon": "close"
         }
     });
 });
