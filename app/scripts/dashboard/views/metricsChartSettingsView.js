@@ -97,8 +97,12 @@ function(
         serializeData: function()
         {
             var original = MetricsChartSettingsView.__super__.serializeData.apply(this, arguments);
+            var filteredMetricTypes = _.reject(this.model.metricTypes, function(type)
+            {
+                return type.chartable === false;
+            });
             return _.extend({
-                metricTypes: this.model.metricTypes
+                metricTypes: _.sortBy(filteredMetricTypes, "label")
             }, original);
         }
     });

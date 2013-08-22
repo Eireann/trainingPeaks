@@ -552,6 +552,7 @@
                     {
                         return this.formatInteger(value, options);
                     }
+                    break;
 
                 case "%":
                 case "hours":

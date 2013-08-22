@@ -114,7 +114,8 @@ function()
         },
         {
             id: 12,
-            label: "Note"
+            label: "Note",
+            chartable: false
         },
         {
             id: 13,

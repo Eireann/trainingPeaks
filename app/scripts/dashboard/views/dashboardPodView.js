@@ -115,13 +115,14 @@ function(
                     var xaxisOpts = chartOptions.flotOptions.xaxis;
                     this.$(".xaxisLabel").text(xaxisOpts && xaxisOpts.label || "");
 
-                    var yaxisOpts, yaxesOpts;
-                    if (yaxisOpts = chartOptions.flotOptions.yaxis)
+                    var yaxisOpts = chartOptions.flotOptions.yaxis;
+                    var yaxesOpts = chartOptions.flotOptions.yaxes;
+                    if (yaxisOpts)
                     {
                         console.log("yaxis", yaxisOpts);
                         this.$(".yaxisLabel.left").text(yaxisOpts && yaxisOpts.label || "");
                     }
-                    else if (yaxesOpts = chartOptions.flotOptions.yaxes)
+                    else if (yaxesOpts)
                     {
                         console.log("yaxes", yaxesOpts);
                         this.$(".yaxisLabel.left").text(yaxesOpts && yaxesOpts[0] && yaxesOpts[0].label || "");

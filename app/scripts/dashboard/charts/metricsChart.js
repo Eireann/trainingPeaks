@@ -220,8 +220,7 @@ function(
 
                 tooltip.push({
                     label: metricInfo.label,
-                    value: this._formatValue(details.value, metricInfo, { displayUnits: true}),
-                    color: "#f00"
+                    value: this._formatValue(details.value, metricInfo, { displayUnits: true })
                 });
             }, this);
 
