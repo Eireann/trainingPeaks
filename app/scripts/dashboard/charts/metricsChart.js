@@ -166,7 +166,11 @@ function(
                 data: points,
                 raw: raw,
                 entries: entries,
-                info: metricInfo
+                info: metricInfo,
+                shadowSize: 0,
+                lines: {
+                    lineWidth: 2
+                }
             }, options);
         },
 
