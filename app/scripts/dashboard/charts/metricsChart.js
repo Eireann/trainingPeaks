@@ -66,8 +66,7 @@ function(
             var yaxes = [], series = [];
             _.each(this.get("dataFields"), function(metricTypeId)
             {
-                metricTypeId = _.isString(metricTypeId) ? parseInt(metricTypeId, 10) : metricTypeId;
-                var metricInfo = _.find(this.metricTypes, function(type) { return type.id === metricTypeId; });
+                var metricInfo = this._getMetricInfo(metricTypeId);
                 if (!metricInfo) return;
 
                 yaxes.push(this._createAxis(metricInfo));
@@ -89,10 +88,14 @@ function(
             {
                 yaxes[1].position = 'right';
             }
-            // Check for no data
-            series = _.filter(series);
-            if(series.length <= 0) return null;
 
+            var hasNoData = _.all(series, function(series)
+            {
+                return series.data.length <= 0;
+            });
+
+            if(hasNoData) return null;
+            
             var dateOptions = DashboardChartUtils.buildChartParameters(this.get("dateOptions") || {});
             return {
                 dataSeries: series,
@@ -157,11 +160,6 @@ function(
                 }
             }, this);
 
-            if(points.length <= 0)
-            {
-                return null;
-            }
-
             return _.extend({
                 label: metricInfo.label,
                 data: points,
@@ -197,6 +195,12 @@ function(
             {
                 return {};
             }
+        },
+
+        _getMetricInfo: function(metricTypeId)
+        {
+            metricTypeId = _.isString(metricTypeId) ? parseInt(metricTypeId, 10) : metricTypeId;
+            return _.find(this.metricTypes, function(type) { return type.id === metricTypeId; });
         },
 
         buildTooltipData: function(flotItem)
