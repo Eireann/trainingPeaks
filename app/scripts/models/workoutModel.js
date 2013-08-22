@@ -83,7 +83,7 @@ function (_, moment, TP, WorkoutDetailsModel, WorkoutDetailDataModel)
             "lastModifiedDate": null,
             "startTime": null,
             "startTimePlanned": null,
-            
+            "date": null,
             "details": null,
             "detailData": null
         },
