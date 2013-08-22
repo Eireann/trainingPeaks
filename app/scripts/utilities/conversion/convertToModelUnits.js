@@ -81,6 +81,8 @@ function(
                 return convertTemperature(value, userUnits);
             case "torque":
                 return (+value / modelToViewConversionFactors(fieldType, userUnits));
+            case "cm":
+                return (+value / modelToViewConversionFactors(fieldType, userUnits));
             default:
                 throw "Unknown field type for unit conversion";
         }

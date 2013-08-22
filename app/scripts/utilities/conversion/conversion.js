@@ -480,7 +480,81 @@
         {
             var swimOptions = _.extend({}, options, {workoutTypeValueId: 1});
             return this.formatDistance(value, swimOptions);
+        },
+
+        parseCm: function(value, options)
+        {
+            var limitedValue = adjustFieldRange(value, "cm");
+            return convertToModelUnits(limitedValue, "cm");
+        },
+
+        formatCm: function(value, options)
+        {
+            var convertedValue = convertToViewUnits(value, "cm");
+            var adjustedValue = adjustFieldRange(convertedValue, "cm");
+            return this.formatNumber(adjustedValue, options);
+        },
+
+        formatUnitsValue: function(units, value, options)
+        {
+            switch(units)
+            {
+                case "elevation":
+                    return this.formatElevation(value, options);
+
+                case "speed":
+                    return this.formatSpeed(value, options);
+
+                case "pace":
+                    return this.formatPace(value, options);
+
+                case "duration":
+                    return this.formatDuration(value, options);
+
+                case "distance":
+                    return this.formatDistance(value, options);
+
+                case "number":
+                    return this.formatNumber(value, options);
+
+                case "cm":
+                    return this.formatCm(value, options);
+
+                default:
+                    throw new Error("Unsupported units for conversion.formatUnitsValue: " + units);
+            }
+        },
+
+        parseUnitsValue: function(units, value, options)
+        {
+            switch(units)
+            {
+                case "elevation":
+                    return this.parseElevation(value, options);
+
+                case "speed":
+                    return this.parseSpeed(value, options);
+
+                case "pace":
+                    return this.parsePace(value, options);
+
+                case "duration":
+                    return this.parseDuration(value, options);
+
+                case "distance":
+                    return this.parseDistance(value, options);
+
+                case "number":
+                    return this.parseNumber(value, options);
+
+                case "cm":
+                    return this.parseCm(value, options);
+
+                default:
+                     new Error("Unsupported units for conversion.formatUnitsValue: " + units);
+            }
         }
          
     };
+
 });

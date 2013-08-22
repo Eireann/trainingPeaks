@@ -151,6 +151,11 @@ function(unitsConstants, workoutLayoutFormatter, workoutTypeUtils)
         {
             English: "meters/hr",
             Metric: "meters/hr"
+        },
+        cm:
+        {
+            English: "in",
+            Metric: "cm"
         }
 
     };

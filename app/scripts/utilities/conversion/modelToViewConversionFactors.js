@@ -63,6 +63,11 @@ function(unitsConstants, workoutTypeUtils)
         {
             English: 8.850745793490558,
             Metric: 1
+        },
+        "cm":
+        {
+            English: 0.393701,
+            Metric: 1
         }
     };
 

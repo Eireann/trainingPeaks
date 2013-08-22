@@ -1,12 +1,7 @@
 define(
 [
-    "utilities/units/units",
-    "utilities/conversion/conversion"
 ],
-function(
-    units,
-    conversion
-         )
+function()
 {
     metricTypes =
     [
@@ -110,13 +105,6 @@ function(
         {
             id: 11,
             label: "Sleep Elevation",
-            formatValue: function(value) { 
-                return conversion.formatElevation(value);
-            }, 
-            getUnitsLabel: function()
-            {
-                return units.getUnitsLabel("elevation");
-            },
             units: "elevation"
         },
         {
@@ -242,79 +230,98 @@ function(
         },
         {
             id: 25,
-            label: "Shoulder Circumference"
+            label: "Shoulder Circumference",
+            units: "cm"
         },
         {
             id: 26,
-            label: "Chest Circumference"
+            label: "Chest Circumference",
+            units: "cm"
         },
         {
             id: 27,
-            label: "Waist Circumference"
+            label: "Waist Circumference",
+            units: "cm"
         },
         {
             id: 28,
-            label: "Abdomen Circumference"
+            label: "Abdomen Circumference",
+            units: "cm"
         },
         {
             id: 29,
-            label: "Hips Circumference"
+            label: "Hips Circumference",
+            units: "cm"
         },
         {
             id: 30,
-            label: "Bust Circumference"
+            label: "Bust Circumference",
+            units: "cm"
         },
         {
             id: 31,
-            label: "Left Wrist Circumference"
+            label: "Left Wrist Circumference",
+            units: "cm"
         },
         {
             id: 32,
-            label: "Right Wrist Circumference"
+            label: "Right Wrist Circumference",
+            units: "cm"
         },
         {
             id: 33,
-            label: "Left Bicep Circumference"
+            label: "Left Bicep Circumference",
+            units: "cm"
         },
         {
             id: 34,
-            label: "Right Bicep Circumference"
+            label: "Right Bicep Circumference",
+            units: "cm"
         },
         {
             id: 35,
-            label: "Left Forearm Circumference"
+            label: "Left Forearm Circumference",
+            units: "cm"
         },
         {
             id: 36,
-            label: "Right Forearm Circumference"
+            label: "Right Forearm Circumference",
+            units: "cm"
         },
         {
             id: 37,
-            label: "Left Thigh Circumference"
+            label: "Left Thigh Circumference",
+            units: "cm"
         },
         {
             id: 38,
-            label: "Right Thigh Circumference"
+            label: "Right Thigh Circumference",
+            units: "cm"
         },
         {
             id: 39,
-            label: "Left Calf Circumference"
+            label: "Left Calf Circumference",
+            units: "cm"
         },
         {
             id: 40,
-            label: "Right Calf Circumference"
+            label: "Right Calf Circumference",
+            units: "cm"
         },
         {
             id: 41,
-            label: "Neck Circumference"
+            label: "Neck Circumference",
+            units: "cm"
         },
         {
             id: 42,
-            label: "Glutes Circumference"
+            label: "Glutes Circumference",
+            units: "cm"
         },
         {
             id: 43,
-            label: "Torso Circumference"
+            label: "Torso Circumference",
+            units: "cm"
         },
         {
             id: 44,

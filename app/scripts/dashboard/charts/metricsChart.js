@@ -184,7 +184,7 @@ function(
                     }
                 };
             }
-            else if(metricInfo.formatValue)
+            else if(metricInfo.units)
             {
                 return {
                     tickFormatter: function(value)
@@ -204,9 +204,9 @@ function(
             var metricInfo = this._getOriginalInfo(flotItem.series.info);
             var details = flotItem.series.raw[flotItem.dataIndex];
             var formattedValue = this._formatValue(details.value, metricInfo);
-            if(metricInfo.getUnitsLabel)
+            if(metricInfo.units)
             {
-                formattedValue += " " + metricInfo.getUnitsLabel();
+                formattedValue += " " + TP.utils.units.getUnitsLabel(metricInfo.units);
             }
             return [
                 { label: flotItem.series.info.label },
@@ -232,9 +232,9 @@ function(
 
                 return option && option.label;
             }
-            else if(metricInfo.formatValue)
+            else if(metricInfo.units)
             {
-                return metricInfo.formatValue(value);
+                return TP.utils.conversion.formatUnitsValue(metricInfo.units, value);
             }
             else
             {
