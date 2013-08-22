@@ -16,7 +16,8 @@ function()
         },
         {
             id: 2,
-            label: "Percent Fat"
+            label: "Percent Fat",
+            units: "%"
         },
         {
             id: 3,
@@ -50,11 +51,13 @@ function()
         },
         {
             id: 5,
-            label: "Pulse"
+            label: "Pulse",
+            units: "heartrate"
         },
         {
             id: 6,
-            label: "Sleep Hours"
+            label: "Sleep Hours",
+            units: "hours"
         },
         {
             id: 7,
@@ -87,7 +90,8 @@ function()
         },
         {
             id: 9,
-            label: "Weight"
+            label: "Weight",
+            units: "kg"
         },
         {
             id: 10,
@@ -113,23 +117,28 @@ function()
         },
         {
             id: 13,
-            label: "Height"
+            label: "Height",
+            units: "cm"
         },
         {
             id: 14,
-            label: "BMI"
+            label: "BMI",
+            units: "none"
         },
         {
             id: 15,
-            label: "RMR"
+            label: "RMR",
+            units: "kcal"
         },
         {
             id: 16,
-            label: "BMR"
+            label: "BMR",
+            units: "kcal"
         },
         {
             id: 17,
-            label: "Water Consumption"
+            label: "Water Consumption",
+            units: "ml"
         },
         {
             id: 18,
@@ -325,7 +334,8 @@ function()
         },
         {
             id: 44,
-            label: "Blood Glucose"
+            label: "Blood Glucose",
+            units: "mg/dL"
         },
         {
             id: 45,
@@ -337,23 +347,28 @@ function()
         },
         {
             id: 46,
-            label: "Time in Deep Sleep"
+            label: "Time in Deep Sleep",
+            units: "hours"
         },
         {
             id: 47,
-            label: "Time in Rem Sleep"
+            label: "Time in Rem Sleep",
+            units: "hours"
         },
         {
             id: 48,
-            label: "Time in Light Sleep"
+            label: "Time in Light Sleep",
+            units: "hours"
         },
         {
             id: 49,
-            label: "Number of Times Woken"
+            label: "Number of Times Woken",
+            units: "none"
         },
         {
             id: 50,
-            label: "Total Time Awake"
+            label: "Total Time Awake",
+            units: "hours"
         },
         {
             id: 51,
@@ -376,7 +391,8 @@ function()
         },
         {
             id: 53,
-            label: "SPO2"
+            label: "SPO2",
+            units: "%"
         },
         {
             id: 54,
@@ -396,23 +412,28 @@ function()
         },
         {
             id: 55,
-            label: "ZQScore"
+            label: "ZQ",
+            units: "none"
         },
         {
             id: 56,
-            label: "Water Percent"
+            label: "Water Percent",
+            units: "%"
         },
         {
             id: 57,
-            label: "Muscle Mass"
+            label: "Muscle Mass",
+            units: "kg"
         },
         {
             id: 58,
-            label: "Steps"
+            label: "Steps",
+            units: "none"
         },
         {
             id: 59,
-            label: "Skin Fold"
+            label: "Skin Fold",
+            units: "mm"
         }
     ];
     

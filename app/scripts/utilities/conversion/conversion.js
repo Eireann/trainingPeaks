@@ -495,6 +495,20 @@
             return this.formatNumber(adjustedValue, options);
         },
 
+        formatKg: function(value, options)
+        {
+            var convertedValue = convertToViewUnits(value, "kg");
+            var adjustedValue = adjustFieldRange(convertedValue, "kg");
+            return this.formatNumber(adjustedValue, options);
+        },
+        
+        formatMl: function(value, options)
+        {
+            var convertedValue = convertToViewUnits(value, "ml");
+            var adjustedValue = adjustFieldRange(convertedValue, "ml");
+            return this.formatNumber(adjustedValue, options);
+        },
+
         formatUnitsValue: function(units, value, options)
         {
             switch(units)
@@ -519,6 +533,19 @@
 
                 case "cm":
                     return this.formatCm(value, options);
+
+                case "kg":
+                    return this.formatKg(value, options);
+
+                case "ml":
+                    return this.formatMl(value, options);
+
+                case "%":
+                case "hours":
+                case "kcal":
+                case "mm":
+                case "none":
+                    return this.formatNumber(value, options);
 
                 default:
                     throw new Error("Unsupported units for conversion.formatUnitsValue: " + units);

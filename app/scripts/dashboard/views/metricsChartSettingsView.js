@@ -51,7 +51,6 @@ function(
 
         _setupSelects: function()
         {
-            console.log("Hello?");
             this.$("select").selectBoxIt({dynamicPositioning: true});
         },
 

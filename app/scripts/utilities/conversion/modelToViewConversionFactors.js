@@ -68,6 +68,16 @@ function(unitsConstants, workoutTypeUtils)
         {
             English: 0.393701,
             Metric: 1
+        },
+        "kg":
+        {
+            English: 2.20462,
+            Metric: 1
+        },
+        "ml":
+        {
+            English: 0.033814,
+            Metric: 1
         }
     };
 
@@ -82,7 +92,7 @@ function(unitsConstants, workoutTypeUtils)
         }
 
         if (!conversionFactors.hasOwnProperty(unitsType))
-            throw new Error("Unknown units type (" + unitsType + ") for unit label");
+            throw new Error("Unknown units type (" + unitsType + ") for unit conversion");
 
         if (sportTypeName && conversionFactors[unitsType].hasOwnProperty(sportTypeName) && conversionFactors[unitsType][sportTypeName].hasOwnProperty(userUnitsKey))
             return conversionFactors[unitsType][sportTypeName][userUnitsKey];

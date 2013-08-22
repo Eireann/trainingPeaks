@@ -141,7 +141,7 @@ function(
 
         _makeSeries: function(data, metricInfo, options)
         {
-            var raw = [], points = [];
+            var raw = [], entries = [], points = [];
             _.each(data, function(entry)
             {
                 var details = entry.detailsByType[metricInfo.id];
@@ -156,6 +156,7 @@ function(
                 if(yvalue)
                 {
                     raw.push(details);
+                    entries.push(entry);
                     points.push([xvalue, yvalue]);
                 }
             }, this);
@@ -164,6 +165,7 @@ function(
                 label: metricInfo.label,
                 data: points,
                 raw: raw,
+                entries: entries,
                 info: metricInfo
             }, options);
         },
@@ -206,18 +208,24 @@ function(
 
         buildTooltipData: function(flotItem)
         {
-            var metricInfo = this._getOriginalInfo(flotItem.series.info);
-            var details = flotItem.series.raw[flotItem.dataIndex];
-            var formattedValue = this._formatValue(details.value, metricInfo);
-            if(metricInfo.units)
+            var entry = flotItem.series.entries[flotItem.dataIndex];
+            var tooltip = [{ value: moment(entry.date).format("ddd, L LT") }];
+
+            _.each(this.get("dataFields"), function(metricTypeId)
             {
-                formattedValue += " " + TP.utils.units.getUnitsLabel(metricInfo.units);
-            }
-            return [
-                { label: flotItem.series.info.label },
-                { value: moment(details.date).format("L LT") },
-                { value: formattedValue }
-            ];
+                var metricInfo = this._getMetricInfo(metricTypeId);
+                var details = entry.detailsByType[metricInfo.id];
+
+                if(!details) return;
+
+                tooltip.push({
+                    label: metricInfo.label,
+                    value: this._formatValue(details.value, metricInfo, { displayUnits: true}),
+                    color: "#f00"
+                });
+            }, this);
+
+            return tooltip;
         },
 
 
@@ -226,7 +234,7 @@ function(
             this.set("title", TP.utils.translate("Metrics"));
         },
 
-        _formatValue: function(value, metricInfo)
+        _formatValue: function(value, metricInfo, options)
         {
             if (metricInfo.enumeration)
             {
@@ -239,7 +247,12 @@ function(
             }
             else if(metricInfo.units)
             {
-                return TP.utils.conversion.formatUnitsValue(metricInfo.units, value);
+                var formattedValue = TP.utils.conversion.formatUnitsValue(metricInfo.units, value);
+                if(options && options.displayUnits)
+                {
+                    formattedValue += " " + TP.utils.units.getUnitsLabel(metricInfo.units);
+                }
+                return formattedValue;
             }
             else
             {

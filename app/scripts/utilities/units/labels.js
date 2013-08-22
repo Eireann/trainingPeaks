@@ -156,8 +156,22 @@ function(unitsConstants, workoutLayoutFormatter, workoutTypeUtils)
         {
             English: "in",
             Metric: "cm"
-        }
-
+        },
+        kg:
+        {
+            English: "lbs",
+            Metric: "kg"
+        },
+        ml:
+        {
+            English: "oz",
+            Metric: "ml"
+        },
+        hours: "hrs",
+        kcal: "kcal",
+        mm: "mm",
+        "%": "%",
+        none: ""
     };
 
     var getTssLabel = function(context)
@@ -234,8 +248,17 @@ function(unitsConstants, workoutLayoutFormatter, workoutTypeUtils)
         {
             return getTssLabel(context);
         }
-        
-        return unitsHash[fieldName][userUnitsKey];
+
+       
+        var unitData = unitsHash[fieldName];
+        if (_.isString(unitData))
+        {
+            return unitData;
+        }
+        else
+        {
+            return unitData[userUnitsKey];
+        }
     };
 
     return getUnitsLabel;
