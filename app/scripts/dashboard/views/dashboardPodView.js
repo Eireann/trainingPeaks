@@ -119,12 +119,10 @@ function(
                     var yaxesOpts = chartOptions.flotOptions.yaxes;
                     if (yaxisOpts)
                     {
-                        console.log("yaxis", yaxisOpts);
                         this.$(".yaxisLabel.left").text(yaxisOpts && yaxisOpts.label || "");
                     }
                     else if (yaxesOpts)
                     {
-                        console.log("yaxes", yaxesOpts);
                         this.$(".yaxisLabel.left").text(yaxesOpts && yaxesOpts[0] && yaxesOpts[0].label || "");
                         this.$(".yaxisLabel.right").text(yaxesOpts && yaxesOpts[1] && yaxesOpts[1].label || "");
                     }

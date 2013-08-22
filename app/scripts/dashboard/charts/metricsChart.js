@@ -31,7 +31,7 @@ function(
         metricTypes: metricTypes,
 
         defaults: {
-            showMarkers: true,
+            showMarkers: true
         },
 
         initialize: function(attributes, options)
