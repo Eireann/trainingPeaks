@@ -47,6 +47,11 @@
         max-height: 100px;
         overflow: auto;
         @include nice-scrollbar;
+    
+        br
+        {
+            line-height: 25px;
+        }
     }
 
     .planDetails

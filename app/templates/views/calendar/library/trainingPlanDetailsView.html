@@ -8,14 +8,7 @@
     <div class="planId small">{{$ "ID"}} {{ planId }}</div>
 </div>
 
-<!--
-{{#if descriptionShort }}
-    <div class="planDescription small">{{descriptionShort}} <div class="more small">{{$ "More"}}</div></div>
-{{else}}
-    <div class="planDescription small">{{descriptionText}}</div>
-{{/if}} -->
-
-<div class="planDescription small"><p>{{descriptionText}}</p> <p>{{$ "PeakswareLiabality"}}</p></div>
+<div class="planDescription small"><p>{{{descriptionText}}}</p> <p>{{$ "PeakswareLiabality"}}</p></div>
 
 
 {{#if plannedWorkoutTypeDurations }}

@@ -136,7 +136,10 @@ function(
             });
             data.details.plannedWorkoutTypeDurations = plannedWorkoutTypeDurations.length ? plannedWorkoutTypeDurations : null;
 
-            data.details.descriptionText = $("<div>").html(data.details.description).text();
+            if (data.details.description)
+            {
+                data.details.descriptionText = $.htmlClean(data.details.description, { allowedTags: ["p", "br", "li", "ul", "ol"] });
+            }
 
             return data;
         },
