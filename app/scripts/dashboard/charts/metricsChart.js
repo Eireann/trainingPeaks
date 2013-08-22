@@ -105,7 +105,7 @@ function(
                         ticks: function(axis)
                         {
                             var date = moment(axis.min).startOf('day');
-                            var delta = moment.duration(Math.ceil(moment.duration(axis.delta).asDays()), "days");
+                            var delta = moment.duration(Math.ceil(moment.duration(axis.delta * 1.3).asDays()), "days");
 
                             var ticks = [date.valueOf()];
 
