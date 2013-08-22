@@ -25,8 +25,7 @@ function(
 )
 {
    var PeaksChart = Chart.extend({
-      name: "PeaksChart",
-      
+
       settingsView: PeaksChartSettingsView,
 
       subTypes:
@@ -128,6 +127,7 @@ function(
       {
          this.subType = this.subTypes[this.get("chartType")];
 
+         this.initializeDateSettings("comparisonDateOptions");
          if (this.subType.lockWorkouts)
          {
             this.set("workoutTypeIds", this.subType.workoutTypeIds);
