@@ -194,9 +194,10 @@ function(
             }
             
             flotOptions.xaxis = {
+                tickDecimals: 0,
                 ticks: xTicks,
                 color: "transparent"
-            };
+            }; 
 
             flotOptions.bars.align = "center";
 

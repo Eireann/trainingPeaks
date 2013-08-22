@@ -3,6 +3,7 @@ define(
     "underscore",
     "jqueryui/datepicker",
     "jquerySelectBox",
+    "jqueryHtmlClean",
     "setImmediate",
     "TP",
     "models/commands/applyTrainingPlan",
@@ -19,6 +20,7 @@ function(
     _,
     datepicker,
     jquerySelectBox,
+    jqueryHtmlClean,
     setImmediate,
     TP,
     ApplyTrainingPlanCommand,
@@ -111,6 +113,8 @@ function(
             data.applyDate = moment().format(this.dateFormat);
             data.details = this.model.details.toJSON();
             data.details.weekcount = Math.ceil(data.details.dayCount / 7);
+            data.details.totalDuration = 0;
+            data.details.totalDistance = 0;
 
             if (data.details.planApplications && !data.details.planApplications.length)
             {
@@ -120,17 +124,31 @@ function(
             var plannedWorkoutTypeDurations = [];
             _.each(data.details.plannedWorkoutTypeDurations, function(workoutTypeDetails)
             {
-                if(workoutTypeDetails.duration || workoutTypeDetails.distance)
+                if (workoutTypeDetails.duration || workoutTypeDetails.distance)
                 {
+                    workoutTypeDetails.duration = Math.ceil(workoutTypeDetails.duration / data.details.weekcount);
+                    workoutTypeDetails.distance = Math.ceil(workoutTypeDetails.distance / data.details.weekcount);
+                    data.details.totalDuration += workoutTypeDetails.duration;
+                    data.details.totalDistance += workoutTypeDetails.distance;
+
                     plannedWorkoutTypeDurations.push(workoutTypeDetails);
                 }
             });
             data.details.plannedWorkoutTypeDurations = plannedWorkoutTypeDurations.length ? plannedWorkoutTypeDurations : null;
 
-            data.details.descriptionText = $("<div>").html(data.details.description).text();
-            if(data.details.descriptionText.length > 200)
+            if (data.details.description)
             {
-                data.details.descriptionShort = multilineEllipsis($("<div>").html(data.details.description).text(), 200);
+                // strip most tags
+                var cleanText = $.htmlClean(data.details.description, { allowedTags: ["p", "br", "li", "ul", "ol"] });
+
+                // wrap plain text in paragraphs, at the top level only
+                var htmlContainer = $("<div>").html(cleanText);
+                htmlContainer.contents().filter(function(){return this.nodeType === 3;}).wrap("<p></p>");
+
+                // remove line break tags, at the top level only
+                htmlContainer.contents().filter("br").remove(); 
+
+                data.details.descriptionText = htmlContainer.html();
             }
 
             return data;

@@ -389,6 +389,7 @@
     "Maximum Cadence": "Maximum Cadence",
     "Average Cadence": "Average Cadence",
 
-    "PeakswareLiabality": "Peaksware is not responsible for the plan's content and the user assumes all responsibilty when using this plan",
-    "More": "More"
+    "PeakswareLiabality": "Peaksware is not responsible for the plan's content and the user assumes all responsibilty when using this plan.",
+    "More": "More",
+    "Averages": "Averages"
 }

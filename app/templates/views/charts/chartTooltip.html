@@ -2,7 +2,7 @@
 <div class="details chart">
     <div class="graphTooltip">
         {{#each tooltips }}
-            <div class="tooltipRow">
+            <div class="tooltipRow{{#if className }} {{ className }}{{/if}}">
                 {{#if label }}
                     <span class="tooltipLabel">{{ label }}{{#if value}}:{{/if}}</span>
                 {{/if}}

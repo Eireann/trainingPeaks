@@ -25,6 +25,7 @@
             "jqueryTimepicker": "../vendor/js/libs/jquery-timepicker/jquery.timepicker",
             "jqueryTextAreaResize": "../vendor/js/libs/jquery/jquery.autosize",
             "jquerySelectBox": "../vendor/js/libs/jquery/jquery.selectBoxIt.TP",
+            "jqueryHtmlClean": "../vendor/js/libs/jquery/jquery.htmlClean.TP",
 
             "flot": "../vendor/js/libs/flot",
 

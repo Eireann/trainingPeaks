@@ -91,6 +91,7 @@ function (
                     color: "#FFFFFF",
                     lines:
                     {
+                        lineWidth: 2,
                         fillColor: { colors: [chartColor.dark, chartColor.light] }
                     }
                 };

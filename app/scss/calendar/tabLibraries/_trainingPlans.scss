@@ -44,6 +44,14 @@
     .planDescription
     {
         margin-top: 30px;
+        max-height: 100px;
+        overflow: auto;
+        @include nice-scrollbar;
+    
+        br
+        {
+            line-height: 25px;
+        }
     }
 
     .planDetails
@@ -71,31 +79,36 @@
     {
         padding-top: 15px;
 
-        .plannedWorkoutTypes
+        div
         {
             padding: 2px 0 0 5px;
             height: 16px;
+        }
 
-            span
-            {
-                float: left;
-                width: 90px;
-            }
+        span
+        {
+            float: left;
+            width: 90px;
+        }
 
-            .duration
-            {
-                padding-left: 24px
-            }
+        .duration
+        {
+            padding-left: 24px
+        }
 
-            .distance
-            {
-                padding-left: 12px;
-            }
+        .distance
+        {
+            padding-left: 12px;
         }
 
         .highlightRow
         {
             background-color: $TPGrey1;
+        }
+
+        .planTotals
+        {
+            border-top: 1px solid $TPGrey2;
         }
     }
 
