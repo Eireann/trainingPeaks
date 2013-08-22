@@ -152,7 +152,7 @@ function(
             case "efficiencyfactor":
                 return convertEfficiencyFactor(value, sportType);
             case "cm":
-                return value * modelToViewConversionFactors("cm", theMarsApp.user.get("units"))
+                return value * modelToViewConversionFactors("cm", theMarsApp.user.get("units"));
             default:
                 throw +fieldType + ": Unknown field type for unit conversion";
         }
