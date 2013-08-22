@@ -299,6 +299,14 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
                 color: #b90807;
             }
         }
+
+        &.right
+        {
+            left: auto;
+            right: -17px;
+            -webkit-transform: rotate(90deg);
+            -moz-transform: rotate(90deg);
+        }
     }
 
     .chartButtons

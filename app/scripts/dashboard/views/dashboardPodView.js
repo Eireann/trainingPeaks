@@ -113,9 +113,20 @@ function(
                     this.plot = $.plot(this.ui.chartContainer, chartOptions.dataSeries, chartOptions.flotOptions);
 
                     var xaxisOpts = chartOptions.flotOptions.xaxis;
-                    this.$(".xaxisLabel").text(xaxisOpts && xaxisOpts.label);
-                    var yaxisOpts = chartOptions.flotOptions.yaxis;
-                    this.$(".yaxisLabel").text(yaxisOpts && yaxisOpts.label);
+                    this.$(".xaxisLabel").text(xaxisOpts && xaxisOpts.label || "");
+
+                    var yaxisOpts, yaxesOpts;
+                    if (yaxisOpts = chartOptions.flotOptions.yaxis)
+                    {
+                        console.log("yaxis", yaxisOpts);
+                        this.$(".yaxisLabel.left").text(yaxisOpts && yaxisOpts.label || "");
+                    }
+                    else if (yaxesOpts = chartOptions.flotOptions.yaxes)
+                    {
+                        console.log("yaxes", yaxesOpts);
+                        this.$(".yaxisLabel.left").text(yaxesOpts && yaxesOpts[0] && yaxesOpts[0].label || "");
+                        this.$(".yaxisLabel.right").text(yaxesOpts && yaxesOpts[1] && yaxesOpts[1].label || "");
+                    }
 
                     this.ui.chartContainer.bind("plotclick", _.bind(this._onPlotClick, this));
                 }

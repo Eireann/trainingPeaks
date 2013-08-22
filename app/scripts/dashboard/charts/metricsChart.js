@@ -185,6 +185,7 @@ function(
             else if(metricInfo.units)
             {
                 return {
+                    label: TP.utils.units.getUnitsLabel(metricInfo.units),
                     tickFormatter: function(value)
                     {
                         return self._formatValue(value, metricInfo);
