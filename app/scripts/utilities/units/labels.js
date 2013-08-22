@@ -11,13 +11,25 @@ function(unitsConstants, workoutLayoutFormatter, workoutTypeUtils)
     {
         distance:
         {
-            English: "mi",
-            Metric: "km",
+            English: {
+                abbreviated: "mi",
+                unabbreviated: "miles"
+            },
+            Metric: {
+                abbreviated: "km",
+                unabbreviated: "kilometers"
+            },
 
             Swim:
             {
-                English: "yds",
-                Metric: "m"
+                English: {
+                    abbreviated: "yds",
+                    unabbreviated: "yards"
+                },
+                Metric: {
+                    abbreviated: "m",
+                    unabbreviated: "meters"
+                }
             }
         },
         normalizedPace:
@@ -227,10 +239,11 @@ function(unitsConstants, workoutLayoutFormatter, workoutTypeUtils)
         }
     };
 
-    var getUnitsLabel = function(fieldName, sportTypeId, context)
+    var getUnitsLabel = function(fieldName, sportTypeId, context, options)
     {
         var userUnits = theMarsApp.user.get("units");
         var userUnitsKey = userUnits === unitsConstants.English ? "English" : "Metric";
+        var unitsVal;
 
         var sportTypeName = null;
         if (sportTypeId)
@@ -242,7 +255,15 @@ function(unitsConstants, workoutLayoutFormatter, workoutTypeUtils)
             throw new Error("Unknown field type (" + fieldName + ") for unit label");
 
         if (sportTypeName && unitsHash[fieldName].hasOwnProperty(sportTypeName) && unitsHash[fieldName][sportTypeName].hasOwnProperty(userUnitsKey))
-            return unitsHash[fieldName][sportTypeName][userUnitsKey];
+        {
+            unitsVal = unitsHash[fieldName][sportTypeName][userUnitsKey];
+            if (options && options.abbreviated === false)
+            {
+                return unitsVal["unabbreviated"];
+            }
+            return _.isString(unitsVal) ? unitsVal : unitsVal["abbreviated"];
+        }
+            
         
         //TODO: refactor
         if (fieldName === "tss")
@@ -252,13 +273,19 @@ function(unitsConstants, workoutLayoutFormatter, workoutTypeUtils)
 
        
         var unitData = unitsHash[fieldName];
+
+        if (options && options.abbreviated === false)
+        {
+            return unitData[userUnitsKey]["unabbreviated"];
+        }
+
         if (_.isString(unitData))
         {
             return unitData;
         }
         else
         {
-            return unitData[userUnitsKey];
+            return _.isString(unitData[userUnitsKey]) ? unitData[userUnitsKey] : unitData[userUnitsKey]["abbreviated"];          
         }
     };
 

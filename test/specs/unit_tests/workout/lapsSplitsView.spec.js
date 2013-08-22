@@ -43,8 +43,8 @@ function(moment, _, theMarsApp, TP, LapsSplitsView, WorkoutModel, detailDataLaps
 		{
 			var requiredAttrs = 
 				[
-					"Lap", "Start", "End", "Duration", "Moving Duration", "Distance", "Average Heart Rate",
-					"Maximum Heart Rate", "Average Pace", "Cadence", "Calories"
+					"Lap", "Start", "End", "Duration", "Moving Duration", "Kilometers", "Average Heart Rate",
+					"Maximum Heart Rate", "Average Pace", "Average Cadence", "Calories"
 				],
 				model = buildWorkoutModel(),
 				view = new LapsSplitsView({model: model}),
@@ -133,13 +133,13 @@ function(moment, _, theMarsApp, TP, LapsSplitsView, WorkoutModel, detailDataLaps
 			checkOrder("End", 2, "any tss", serializedData);
 			checkOrder("Duration", 3, "any tss", serializedData);
 			checkOrder("Moving Duration", 4, "any tss", serializedData);
-			checkOrder("Distance", 5, "any tss", serializedData);
+			checkOrder("Kilometers", 5, "any tss", serializedData);
 
 			setTSSsource(model, "PowerTss");
 			model.set({workoutTypeValueId: 1});
 			serializedData = view.serializeData();
-			checkOrder("Normalized Power", 7, "PowerTss", serializedData);
-			checkOrder("Intensity Factor", 8, "PowerTss", serializedData);
+			checkOrder("Intensity Factor", 7, "PowerTss", serializedData);
+			checkOrder("Normalized Power", 8, "PowerTss", serializedData);
 			checkOrder("Average Power", 9, "PowerTss", serializedData);
 			checkOrder("Maximum Power", 10, "PowerTss", serializedData);
 
@@ -147,38 +147,35 @@ function(moment, _, theMarsApp, TP, LapsSplitsView, WorkoutModel, detailDataLaps
 			model.set({workoutTypeValueId: 3});
 			serializedData = view.serializeData();
 			checkOrder("rTSS", 6, "RunningTss", serializedData);
-			checkOrder("Normalized Graded Pace", 7, "RunningTss", serializedData);	
-			checkOrder("Intensity Factor", 8, "RunningTss", serializedData);
+			checkOrder("Intensity Factor", 7, "RunningTss", serializedData);
+			checkOrder("Normalized Graded Pace", 8, "RunningTss", serializedData);	
 			checkOrder("Average Pace", 9, "RunningTss", serializedData);
 			checkOrder("Maximum Pace", 10, "RunningTss", serializedData);
 			checkOrder("Average Heart Rate", 11, "RunningTss", serializedData);
 			checkOrder("Maximum Heart Rate", 12, "RunningTss", serializedData);
-			checkOrder("Cadence", 13, "RunningTss", serializedData);
-			checkOrder("Calories", 14, "RunningTss", serializedData);
-			checkOrder("Average Power", 15, "RunningTss", serializedData);
-			checkOrder("Maximum Power", 16, "RunningTss", serializedData);
+			checkOrder("Calories", 13, "RunningTss", serializedData);
+			checkOrder("Average Power", 14, "RunningTss", serializedData);
+			checkOrder("Maximum Power", 15, "RunningTss", serializedData);
 
-			checkOrder("Elevation Gain", 17, "RunningTss", serializedData);
-			checkOrder("Elevation Loss", 18, "RunningTss", serializedData);
-			checkOrder("Energy", 19, "RunningTss", serializedData);
+			checkOrder("Elevation Gain", 16, "RunningTss", serializedData);
+			checkOrder("Elevation Loss", 17, "RunningTss", serializedData);
+			checkOrder("Energy", 18, "RunningTss", serializedData);
 			// min/avg/max torque would go here, but it's (intentionally) not present 
 			// in the data set so it won't be rendered
-			checkOrder("Minimum Elevation", 20, "RunningTss", serializedData);
-			checkOrder("Average Elevation", 21, "RunningTss", serializedData);
-			checkOrder("Maximum Elevation", 22, "RunningTss", serializedData);
-			checkOrder("Minimum Cadence", 23, "RunningTss", serializedData);
-			checkOrder("Average Cadence", 24, "RunningTss", serializedData);
-			checkOrder("Maximum Cadence", 25, "RunningTss", serializedData);
-			checkOrder("Minimum Temp", 26, "RunningTss", serializedData);
-			checkOrder("Average Temp", 27, "RunningTss", serializedData);
-			checkOrder("Maximum Temp", 28, "RunningTss", serializedData);
+			checkOrder("Minimum Elevation", 19, "RunningTss", serializedData);
+			checkOrder("Average Elevation", 20, "RunningTss", serializedData);
+			checkOrder("Maximum Elevation", 21, "RunningTss", serializedData);
+			checkOrder("Average Cadence", 22, "RunningTss", serializedData);
+			checkOrder("Maximum Cadence", 23, "RunningTss", serializedData);
+			checkOrder("Minimum Temp", 24, "RunningTss", serializedData);
+			checkOrder("Average Temp", 25, "RunningTss", serializedData);
+			checkOrder("Maximum Temp", 26, "RunningTss", serializedData);
 
 			setTSSsource(model, "HeartRateTss");
 			serializedData = view.serializeData();
 			checkOrder("Intensity Factor", 7, "HeartRateTss", serializedData);
 			checkOrder("Average Heart Rate", 8, "HeartRateTss", serializedData);
 			checkOrder("Maximum Heart Rate", 9, "HeartRateTss", serializedData);
-			checkOrder("Minimum Heart Rate", 10, "HeartRateTss", serializedData);
 
 		});
 
