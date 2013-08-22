@@ -429,6 +429,7 @@ $mainTtabSpriteRetinaURL: url(../../assets/images/sprite-icons-main-tabs@2x.png)
                 height: 26px;
                 line-height: 12px;
                 text-overflow: ellipsis;
+                margin-bottom: 2px;
             }
 
             .author
@@ -438,6 +439,7 @@ $mainTtabSpriteRetinaURL: url(../../assets/images/sprite-icons-main-tabs@2x.png)
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
+                margin-left: 5px;
             }
         }
     }
