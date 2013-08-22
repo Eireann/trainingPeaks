@@ -215,6 +215,8 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
             display: block;
             z-index:2;
         }
+
+        z-index: 1;
     }
 
     &.menuOpen

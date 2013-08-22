@@ -31,12 +31,15 @@ function(
         metricTypes: metricTypes,
 
         defaults: {
-            showMarkers: false,
-            dataFields: []
+            showMarkers: true,
         },
 
         initialize: function(attributes, options)
         {
+            if (!this.has("dataFields"))
+            {
+                this.set("dataFields", [9, 4]);
+            }
         },
 
         getChartName: function()
