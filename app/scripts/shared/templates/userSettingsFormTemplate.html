@@ -22,7 +22,7 @@
 
     <div>
         <label>{{$ "AthleteType" }}</label>
-        <!-- <input type="text" readonly name="userType" /> -->
+        <span>{{ userType }}</span>
     </div>
 
     <div>
@@ -32,12 +32,19 @@
 
     <div>
         <label>{{$ "Gender" }}</label>
-        <input type="text" readonly name="gender" />
+        <label>
+            <input type="radio" readonly name="gender" value="m"/>
+            Male
+        </label>
+        <label>
+            <input type="radio" readonly name="gender" value="f"/>
+            Female
+        </label>
     </div>
 
     <div>
         <label>{{$ "Email" }}</label>
-        <input type="text" readonly name="email" />
+        <input type="email" readonly name="email" />
     </div>
 
     <div>
@@ -68,12 +75,12 @@
 
     <div>
         <label>{{$ "Phone" }}</label>
-        <input type="text" readonly name="phone" />
+        <input type="tel" readonly name="phone" />
     </div>
 
     <div>
         <label>{{$ "CellPhone" }}</label>
-        <input type="text" readonly name="cellPhone" />
+        <input type="tel" readonly name="cellPhone" />
     </div>
 
     <div>
@@ -86,17 +93,31 @@
 
     <div>
         <label>{{$ "AccountType" }}</label>
-        <!-- <input type="text" readonly name="userType" /> -->
+        <span>{{ userType }}</span>
     </div>
 
     <div>
         <label>{{$ "Units" }}</label>
-        <input type="text" readonly name="units" />
+        <label>
+            <input type="radio" readonly name="units" value="1" />
+            English
+        </label>
+        <label>
+            <input type="radio" readonly name="units" value="2" />
+            Metric
+        </label>
     </div>
 
     <div>
         <label>{{$ "DateFormat" }}</label>
-        <input type="text" readonly name="dateFormat" />
+        <label>
+            <input type="radio" readonly name="dateFormat" value="mdy" />
+            MM/DD/YY
+        </label>
+        <label>
+            <input type="radio" readonly name="dateFormat" value="dmy" />
+            DD/MM/YY
+        </label>
     </div>
 
     <div>
@@ -108,7 +129,7 @@
         {{#with account }}
             <div>
                 <label>{{$ "AccountType" }}</label>
-                <!-- <input type="text" readonly name="userType" /> -->
+                <span>{{ userType }}</span>
             </div>
         {{/with}}
     {{/with}}

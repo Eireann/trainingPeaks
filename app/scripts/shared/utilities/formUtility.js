@@ -5,25 +5,50 @@ function(
 )
 {
     var FormUtility = {
-      applyValuesToForm: function($form, model, options)
-      {
-        $form.find("input, select, textarea").each(function(i, el)
+        applyValuesToForm: function($form, model, options)
         {
-            var $el = $(el);
-            var key = $el.attr("name");
-            if(!key) return;
-            var value = model.get(key);
-            $el.val(value);
-        });
-      },
+            FormUtility._processFields($form, function(key, $el)
+            {
+                var value = model.get(key);
+                var type = $el.attr("type");
+                var format = $el.data("format");
 
-      applyValuesToModel: function($form, model, options)
-      {
-        $form.find("input, select, textarea").each(function(i, el)
+                if(format === "date")
+                {
+                    value = moment(value) ? moment(value).format("L") : "";
+                }
+                else if(format)
+                {
+                    throw new Error("Unknown field format: " + format);
+                }
+
+                if(type === "radio")
+                {
+                    value = [value];
+                }
+
+                $el.val(value);
+            });
+        },
+
+        applyValuesToModel: function($form, model, options)
         {
-          console.log(el);
-        });
-      }
+            
+        },
+
+        _processFields: function($form, callback)
+        {
+            $form.find("input, select, textarea").each(function(i, el)
+            {
+                var $el = $(el);
+                var key = $el.attr("name");
+
+                if (key)
+                {
+                    callback(key, $el);
+                }
+            });
+        }
     };
 
     return FormUtility;
