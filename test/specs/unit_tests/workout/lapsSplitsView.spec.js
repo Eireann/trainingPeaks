@@ -186,9 +186,9 @@ function(moment, _, theMarsApp, TP, LapsSplitsView, WorkoutModel, detailDataLaps
 				view = new LapsSplitsView({model: model});
 				view.render();
 			});
-			it("Should be a table with table rows", function()
+			it("Should have a table with table rows", function()
 			{
-				expect(view.$el.is('table')).toBeTruthy();
+				expect(view.$el.find('table').length).toBeTruthy();
 				expect(view.$el.find('th').length).toBeGreaterThan(10); // every workout has at least 10 fields
 				expect(view.$el.find('tr').length).toBe(7); // rows including header row
 			});

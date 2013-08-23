@@ -2,19 +2,19 @@ define(
 [
     "underscore",
     "TP",
-    "views/tableView",
     "utilities/workout/formatLapData",
-    "utilities/conversion/convertToViewUnits"
+    "utilities/conversion/convertToViewUnits",
+    "hbs!templates/views/expando/lapsSplitsTemplate"
 ],
 function(
     _,
     TP,
-    TableView,
     formatLapData,
-    convertToViewUnits
+    convertToViewUnits,
+    lapsSplitsTemplate
     )
 {
-    return TableView.extend(
+    return TP.ItemView.extend(
     {        
         initialize: function(options)
         {
@@ -22,6 +22,11 @@ function(
             {
                 throw "Model is required for LapsSplitsView";
             }
+        },
+        template:
+        {
+            type: "handlebars",
+            template: lapsSplitsTemplate
         },
         serializeData: function()
         {
