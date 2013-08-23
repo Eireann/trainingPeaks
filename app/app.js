@@ -364,7 +364,7 @@ function(
 
         this.addInitializer(function ()
         {
-            $(document).on("keypress", ".numberInput", this.filterfunction)
+            $(document).on("keypress", ".numberInput", this.filterfunction);
         });
 
         this.filterfunction = function (evt)
