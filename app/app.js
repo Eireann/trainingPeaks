@@ -19,6 +19,7 @@ define(
     "views/buildInfoView",
     "router",
     "utilities/dragAndDropFileUploadWidget",
+    "utilities/textFieldNumberFilter",
     "hbs!templates/views/notAllowedForAlpha",
     "scripts/plugins/marionette.faderegion"
 ],
@@ -42,6 +43,7 @@ function(
     BuildInfoView,
     Router,
     DragAndDropFileUploadWidget,
+    TextFieldNumberFilter,
     notAllowedForAlphaTemplate,
     fadeRegion)
 {
@@ -360,6 +362,16 @@ function(
             this.started = true;
         });
 
+        this.addInitializer(function ()
+        {
+            $(document).on("keypress", ".numberInput", this.filterfunction)
+        });
+
+        this.filterfunction = function (evt)
+        {
+            TextFieldNumberFilter.isNumberKey(evt);
+        };
+
         
         this.isLive = function()
         {
@@ -455,6 +467,8 @@ function(
             this.mainRegion.show(controller.getLayout());
         }
     };
+
+
 
     theApp.resetAppToInitialState();
     window.theMarsApp = theApp;
