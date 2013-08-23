@@ -110,6 +110,7 @@ function(
                     {
                         chartOptions.flotOptions.tooltipOpts.onHover = this._onHoverToolTip;
                     }
+
                     this.plot = $.plot(this.ui.chartContainer, chartOptions.dataSeries, chartOptions.flotOptions);
 
                     var xaxisOpts = chartOptions.flotOptions.xaxis;

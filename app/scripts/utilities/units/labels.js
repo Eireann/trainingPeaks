@@ -183,6 +183,7 @@ function(unitsConstants, workoutLayoutFormatter, workoutTypeUtils)
         hours: "hrs",
         kcal: "kcal",
         mm: "mm",
+        "mg/dL": "mg/dL",
         "%": "%",
         none: ""
     };
