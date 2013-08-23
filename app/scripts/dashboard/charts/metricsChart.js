@@ -66,24 +66,43 @@ function(
                 });
             });
 
-            var yaxes = [], series = [];
+            var yaxes = [], series = [], yaxesIndexByUnit = {}, yaxesIndex;
             _.each(this.get("dataFields"), function(metricTypeId)
             {
                 var metricInfo = this._getMetricInfo(metricTypeId);
                 if (!metricInfo) return;
 
-                yaxes.push(this._createAxis(metricInfo));
+                // Generate an axis for this metric if id doesn't have
+                // particular units or if we don't have an axis for those units
+                // yet, otherwise lookup the index of the existing axis with
+                // those units
+                if (!metricInfo.units || !yaxesIndexByUnit[metricInfo.units])
+                {
+                    yaxes.push(this._createAxis(metricInfo));
+                    yaxesIndex = yaxes.length; // flot uses 1 based indices for axes...
+                    if(metricInfo.units)
+                    {
+                        yaxesIndexByUnit[metricInfo.units] = yaxes.length;
+                    }
+                }
+                else
+                {
+                    yaxesIndex = yaxesIndexByUnit[metricInfo.units];
+                }
+
+                // Generate a series for each sub metric if we have one,
+                // otherwise generate one series for the overall metric.
                 if (metricInfo.subMetrics)
                 {
                     _.each(metricInfo.subMetrics, function(subMetricInfo)
                     {
                         var seriesInfo = _.extend({ original: metricInfo }, metricInfo, subMetricInfo);
-                        series.push(this._makeSeries(data, seriesInfo, { yaxis: yaxes.length }));
+                        series.push(this._makeSeries(data, seriesInfo, { yaxis: yaxesIndex }));
                     }, this);
                 }
                 else
                 {
-                    series.push(this._makeSeries(data, metricInfo, {yaxis: yaxes.length }));
+                    series.push(this._makeSeries(data, metricInfo, { yaxis: yaxesIndex }));
                 }
             }, this);
 
