@@ -557,6 +557,7 @@
                 case "%":
                 case "hours":
                 case "kcal":
+                case "mg/dL":
                 case "mm":
                     return this.formatNumber(value, options);
 

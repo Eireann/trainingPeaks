@@ -241,97 +241,97 @@ function()
         },
         {
             id: 25,
-            label: "Shoulder Circumference",
+            label: "Shoulder",
             units: "cm"
         },
         {
             id: 26,
-            label: "Chest Circumference",
+            label: "Chest",
             units: "cm"
         },
         {
             id: 27,
-            label: "Waist Circumference",
+            label: "Waist",
             units: "cm"
         },
         {
             id: 28,
-            label: "Abdomen Circumference",
+            label: "Abdomen",
             units: "cm"
         },
         {
             id: 29,
-            label: "Hips Circumference",
+            label: "Hips",
             units: "cm"
         },
         {
             id: 30,
-            label: "Bust Circumference",
+            label: "Bust",
             units: "cm"
         },
         {
             id: 31,
-            label: "Left Wrist Circumference",
+            label: "Left Wrist",
             units: "cm"
         },
         {
             id: 32,
-            label: "Right Wrist Circumference",
+            label: "Right Wrist",
             units: "cm"
         },
         {
             id: 33,
-            label: "Left Bicep Circumference",
+            label: "Left Bicep",
             units: "cm"
         },
         {
             id: 34,
-            label: "Right Bicep Circumference",
+            label: "Right Bicep",
             units: "cm"
         },
         {
             id: 35,
-            label: "Left Forearm Circumference",
+            label: "Left Forearm",
             units: "cm"
         },
         {
             id: 36,
-            label: "Right Forearm Circumference",
+            label: "Right Forearm",
             units: "cm"
         },
         {
             id: 37,
-            label: "Left Thigh Circumference",
+            label: "Left Thigh",
             units: "cm"
         },
         {
             id: 38,
-            label: "Right Thigh Circumference",
+            label: "Right Thigh",
             units: "cm"
         },
         {
             id: 39,
-            label: "Left Calf Circumference",
+            label: "Left Calf",
             units: "cm"
         },
         {
             id: 40,
-            label: "Right Calf Circumference",
+            label: "Right Calf",
             units: "cm"
         },
         {
             id: 41,
-            label: "Neck Circumference",
+            label: "Neck",
             units: "cm"
         },
         {
             id: 42,
-            label: "Glutes Circumference",
+            label: "Glutes",
             units: "cm"
         },
         {
             id: 43,
-            label: "Torso Circumference",
+            label: "Torso",
             units: "cm"
         },
         {
@@ -364,7 +364,7 @@ function()
         },
         {
             id: 49,
-            label: "Number of Times Woken",
+            label: "Times Woken",
             units: "none"
         },
         {
