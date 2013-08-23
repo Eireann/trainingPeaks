@@ -25,16 +25,35 @@ function(
         },
         serializeData: function()
         {
+            /* /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                1. Store defaults common to all laps (workout type, english or metric units, etc)
+                2. Create an object for each lap (entries will differ FOR EACH LAP based on TSS and other data available)
+                3. Filter out null values within a lap object (but keep 0s even they are falsy, because 0s are meaningful data)
+                4. Remove key/vals from each object if data for that key is empty in ALL lap objects
+                5. Return an object like: {headerNames: ["foo", "bar"], rowData: [[1,2],[3,4]]} for the base TableView template
+            */ /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+            /* //////
+                1.
+            */ /////
             var lapsData = this.model.get('detailData').get('lapsStats'),
                 sportTypeID = this.model.get('workoutTypeValueId'),
                 useSpeedOrPace = _.contains([3, 13, 1, 12], sportTypeID) ? "pace" : "speed",  // run, walk, swim, row are "Average Pace", otherwise "Average Speed"
                 averagePaceSpeedKey = useSpeedOrPace === "pace" ? "Average Pace" : "Average Speed",
                 maximumPaceSpeedKey = useSpeedOrPace === "pace" ? "Maximum Pace" : "Maximum Speed",
+                distanceKey = TP.utils.units.getUnitsLabel("distance", sportTypeID, null, {abbreviated: false}),
                 hasSomeTSS = !!(_.compact(_.pluck(lapsData, "trainingStressScoreActual")).length), // some laps have TSS, some don't. So we need to test here at the top level
                 rowData = [],
                 headerNames,
                 empties = {};
 
+            // capitalize first letter of distance key for header row
+            // Can't do it with CSS because some headers need lower case first letters (e.g. rTSS)
+            distanceKey = distanceKey[0].toUpperCase() + distanceKey.substring(1);
+
+            /* //////
+                2.
+            */ /////
             _.each(lapsData, function(lap, i)
             {
                 var lapObject = {},
@@ -56,31 +75,30 @@ function(
                     "Start": TP.utils.datetime.format.decimalHoursAsTime(TP.utils.datetime.convert.millisecondsToDecimalHours(lap.begin)),
                     "End": TP.utils.datetime.format.decimalHoursAsTime(TP.utils.datetime.convert.millisecondsToDecimalHours(lap.end)),
                     "Duration": TP.utils.datetime.format.decimalHoursAsTime(TP.utils.datetime.convert.millisecondsToDecimalHours(lap.elapsedTime)),
-                    "Moving Duration": TP.utils.datetime.format.decimalHoursAsTime(lap.movingTime),
-                    "Distance": convertToViewUnits(lap.distance, "distance", null, sportTypeID)
+                    "Moving Duration": TP.utils.datetime.format.decimalHoursAsTime(lap.movingTime)
                 };
+
+                lapObject[distanceKey] = convertToViewUnits(lap.distance, "distance", null, sportTypeID);
 
                 // add in TSS (if available) with attendant fields based on TSS type
                 if (hasSomeTSS)
                 {
                     lapObject[TSStype] = TP.utils.conversion.formatTSS(lap.trainingStressScoreActual, {defaultValue: 0});
+                    lapObject["Intensity Factor"] = canShowIF ? TP.utils.conversion.formatIF(lap.intensityFactorActual) : null;
                     switch (TSStype)
                     {
                         case "TSS":
                             lapObject["Normalized Power"] = canShowNP ? lap.normalizedPowerActual : null;
-                            lapObject["Intensity Factor"] = canShowIF ? TP.utils.conversion.formatIF(lap.intensityFactorActual) : null;
                             lapObject["Average Power"] = lap.averagePower;
                             lapObject["Maximum Power"] = lap.maximumPower;
                             break;
                         case "rTSS":
                             lapObject["Normalized Graded Pace"] = canShowNGP ? convertToViewUnits(lap.normalizedSpeedActual, "pace", null, sportTypeID) : null;
-                            lapObject["Intensity Factor"] = canShowIF ? TP.utils.conversion.formatIF(lap.intensityFactorActual) : null;
                             lapObject[averagePaceSpeedKey] = convertToViewUnits(lap.averageSpeed, "pace", null, sportTypeID);
                             lapObject[maximumPaceSpeedKey] = maximumPaceOrSpeedValue;
                             break;
                         case "hrTSS":
                         case "tTSS":
-                            lapObject["Intensity Factor"] = canShowIF ? TP.utils.conversion.formatIF(lap.intensityFactorActual) : null;
                             lapObject["Average Heart Rate"] = lap.averageHeartRate;
                             lapObject["Maximum Heart Rate"] = lap.maximumHeartRate;
                             lapObject["Minimum Heart Rate"] = lap.minimumHeartRate;
@@ -92,12 +110,10 @@ function(
                 lapObject["Maximum Heart Rate"] = lap.maximumHeartRate;
                 lapObject[averagePaceSpeedKey] = averagePaceOrSpeedValue;
                 lapObject[maximumPaceSpeedKey] = maximumPaceOrSpeedValue;
-                lapObject["Cadence"] = lap.averageCadence;
                 lapObject["Calories"] = lap.calories;
                 lapObject["Average Power"] = lap.averagePower;
                 lapObject["Maximum Power"] = lap.maximumPower;
 
-                lapObject["Intensity Factor"] = canShowIF ? TP.utils.conversion.formatIF(lap.intensityFactorActual) : null;
                 lapObject["Elevation Gain"] = convertToViewUnits(lap.elevationGain, "elevation", null, sportTypeID);
                 lapObject["Elevation Loss"] = convertToViewUnits(lap.elevationLoss, "elevation", null, sportTypeID);
                 lapObject["Energy"] = lap.energy;
@@ -112,7 +128,6 @@ function(
                 lapObject["Average Elevation"] = convertToViewUnits(lap.averageElevation, "elevation", null, sportTypeID);
                 lapObject["Maximum Elevation"] = convertToViewUnits(lap.maximumElevation, "elevation", null, sportTypeID);
 
-                lapObject["Minimum Cadence"] = lap.minimumCadence;
                 lapObject["Average Cadence"] = lap.averageCadence;
                 lapObject["Maximum Cadence"] = lap.maximumCadence;
 
@@ -120,6 +135,9 @@ function(
                 lapObject["Average Temp"] = convertToViewUnits(lap.averageTemp, "temperature", null, sportTypeID);
                 lapObject["Maximum Temp"] = convertToViewUnits(lap.maximumTemp, "temperature", null, sportTypeID);
 
+                /* //////
+                    3.
+                */ /////
                 // filter out null values
                 for (var key in lapObject)
                 {
@@ -139,6 +157,9 @@ function(
                 rowData.push(lapObject);
             });
 
+            /* //////
+                4.
+            */ /////
             // if a column is empty in EVERY row, remove that entry from each row
             _.each(rowData, function(row)
             {
@@ -151,6 +172,9 @@ function(
                 });
             });
 
+            /* //////
+                5.
+            */ /////
             headerNames = _.map(_.keys(rowData[0], function(header_name)
                 {
                     return TP.utilities.translate(header_name);

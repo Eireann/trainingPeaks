@@ -201,7 +201,7 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
         height: auto;
         width: auto;
         background-color: $TPGrey1;
-        z-index: 200;
+        z-index: 200 !important;
         opacity: 1;
     }
 
@@ -215,6 +215,8 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
             display: block;
             z-index:2;
         }
+
+        z-index: 2;
     }
 
     &.menuOpen
@@ -231,7 +233,7 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
     &.ui-draggable-dragging
     {
         background-color: #e4e2e3;
-        border: 1px solid $TPGrey11;       
+        border: 1px solid $TPGrey11;
     }
 
     .chartContainer
@@ -298,6 +300,14 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
             {
                 color: #b90807;
             }
+        }
+
+        &.right
+        {
+            left: auto;
+            right: -17px;
+            -webkit-transform: rotate(90deg);
+            -moz-transform: rotate(90deg);
         }
     }
 
@@ -522,8 +532,19 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
     {
         margin: 14px 0 10px 0;
         color: $TPGrey3;
-    }
+        
+        h3:nth-of-type(2) {
+            margin-top:10px; 
+        }
 
+        label {
+            margin-top:5px;
+        }
+
+        input[type="checkbox"] {
+            margin-bottom:0;
+        }
+    }
     
     .workoutType
     {

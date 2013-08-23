@@ -35,6 +35,16 @@ function(TP, theMarsApp)
                 expect(TP.utils.units.getUnitsLabel("distance")).toBe("mi");
             });
 
+            it("should return the non-abbreviated unit label for distance", function()
+            {
+                expect(TP.utils.units.getUnitsLabel("distance", null, null, {abbreviated: false})).toBe("miles");
+            });
+
+            it("should return the non-abbreviated unit label for distance for swimming", function()
+            {
+                expect(TP.utils.units.getUnitsLabel("distance", 1, null, {abbreviated: false})).toBe("yards");
+            });
+
             it("should return the unit label for normalized pace", function()
             {
                 expect(TP.utils.units.getUnitsLabel("normalizedPace")).toBe("min/mi");

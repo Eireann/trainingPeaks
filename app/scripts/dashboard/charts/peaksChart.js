@@ -25,8 +25,7 @@ function(
 )
 {
    var PeaksChart = Chart.extend({
-      name: "PeaksChart",
-      
+
       settingsView: PeaksChartSettingsView,
 
       subTypes:
@@ -110,9 +109,9 @@ function(
             "MM10Kilometer":   { xvalue: 10000, title: "10 km" },
             "MM15Kilometer":   { xvalue: 15000, title: "15 km" },
             "MM10Mile":        { xvalue: 16093, title: "10 mi" },
-            "MMHalfMarathon":  { xvalue: 21097, title: "?" },
+            "MMHalfMarathon":  { xvalue: 21097, title: "Half Marathon", shortTitle: "HM" },
             "MM30Kilometer":   { xvalue: 30000, title: "30 km" },
-            "MMMarathon":      { xvalue: 42195, title: "?" },
+            "MMMarathon":      { xvalue: 42195, title: "Marathon", shortTitle: "M" },
             "MM50Kilometer":   { xvalue: 50000, title: "50 km" },
             "MM100Kilometer":  { xvalue: 100000, title: "100 km" },
             "MM100Mile":       { xvalue: 160934, title: "100 mi" }
@@ -128,6 +127,7 @@ function(
       {
          this.subType = this.subTypes[this.get("chartType")];
 
+         this.initializeDateSettings("comparisonDateOptions");
          if (this.subType.lockWorkouts)
          {
             this.set("workoutTypeIds", this.subType.workoutTypeIds);

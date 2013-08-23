@@ -18,6 +18,7 @@
             "utilities": "scripts/utilities",
             "dashboard": "scripts/dashboard", 
             "user": "scripts/user",
+            "shared": "scripts/shared", 
             
             // jQuery related, but not managed by bower yet ...
             "jqueryui": "../vendor/js/libs/jqueryui",
@@ -26,6 +27,8 @@
             "jqueryTextAreaResize": "../vendor/js/libs/jquery/jquery.autosize",
             "jquerySelectBox": "../vendor/js/libs/jquery/jquery.selectBoxIt.TP",
             "jqueryHtmlClean": "../vendor/js/libs/jquery/jquery.htmlClean.TP",
+
+            "flot": "../vendor/js/libs/flot",
 
             // Underscore & Lodash (provided by Lodash)
             "lodash": "../vendor/js/libs/lodash.TP",

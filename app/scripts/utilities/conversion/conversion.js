@@ -480,7 +480,124 @@
         {
             var swimOptions = _.extend({}, options, {workoutTypeValueId: 1});
             return this.formatDistance(value, swimOptions);
+        },
+
+        parseCm: function(value, options)
+        {
+            var limitedValue = adjustFieldRange(value, "cm");
+            return convertToModelUnits(limitedValue, "cm");
+        },
+
+        formatCm: function(value, options)
+        {
+            var convertedValue = convertToViewUnits(value, "cm");
+            var adjustedValue = adjustFieldRange(convertedValue, "cm");
+            return this.formatNumber(adjustedValue, options);
+        },
+
+        formatKg: function(value, options)
+        {
+            var convertedValue = convertToViewUnits(value, "kg");
+            var adjustedValue = adjustFieldRange(convertedValue, "kg");
+            return this.formatNumber(adjustedValue, options);
+        },
+        
+        formatMl: function(value, options)
+        {
+            var convertedValue = convertToViewUnits(value, "ml");
+            var adjustedValue = adjustFieldRange(convertedValue, "ml");
+            return this.formatNumber(adjustedValue, options);
+        },
+
+        formatUnitsValue: function(units, value, options)
+        {
+            switch(units)
+            {
+                case "elevation":
+                    return this.formatElevation(value, options);
+
+                case "speed":
+                    return this.formatSpeed(value, options);
+
+                case "pace":
+                    return this.formatPace(value, options);
+
+                case "heartrate":
+                    return this.formatHeartRate(value, options);
+
+                case "duration":
+                    return this.formatDuration(value, options);
+
+                case "distance":
+                    return this.formatDistance(value, options);
+
+                case "number":
+                    return this.formatNumber(value, options);
+
+                case "cm":
+                    return this.formatCm(value, options);
+
+                case "kg":
+                    return this.formatKg(value, options);
+
+                case "ml":
+                    return this.formatMl(value, options);
+
+                case "mmHg":
+                    if(_.isArray(value))
+                    {
+                        return _.map(value, function(val) { return this.formatInteger(val, options); }, this).join("/");
+                    }
+                    else
+                    {
+                        return this.formatInteger(value, options);
+                    }
+                    break;
+
+                case "%":
+                case "hours":
+                case "kcal":
+                case "mm":
+                    return this.formatNumber(value, options);
+
+                case "none":
+                    return this.formatInteger(value, options);
+
+                default:
+                    throw new Error("Unsupported units for conversion.formatUnitsValue: " + units);
+            }
+        },
+
+        parseUnitsValue: function(units, value, options)
+        {
+            switch(units)
+            {
+                case "elevation":
+                    return this.parseElevation(value, options);
+
+                case "speed":
+                    return this.parseSpeed(value, options);
+
+                case "pace":
+                    return this.parsePace(value, options);
+
+                case "duration":
+                    return this.parseDuration(value, options);
+
+                case "distance":
+                    return this.parseDistance(value, options);
+
+                case "number":
+                    return this.parseNumber(value, options);
+
+                case "cm":
+                    return this.parseCm(value, options);
+
+                default:
+                     new Error("Unsupported units for conversion.formatUnitsValue: " + units);
+            }
         }
          
     };
+
 });

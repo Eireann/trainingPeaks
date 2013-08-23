@@ -21,7 +21,7 @@ function(
                 throw new Error("Chart requires a reporting datamanager");    
             }
             TP.Model.apply(this, arguments);
-            this._setDefaultDateSettings();
+            this.initializeDateSettings();
             this.dataManager = options.dataManager;
         },
 
@@ -86,17 +86,18 @@ function(
         {
             return "Chart";
         },
-        
-        _setDefaultDateSettings: function()
+
+        initializeDateSettings: function(key)
         {
+            key = key || "dateOptions";
             var defaultDateOption = DashboardChartUtils.chartDateOptions.USE_GLOBAL_DATES.id;
             var defaultSettings = { startDate: null, endDate: null, quickDateSelectOption: defaultDateOption };
-            var mergedSettings = _.extend(defaultSettings, this.get("dateOptions"));
+            var mergedSettings = _.extend(defaultSettings, this.get(key));
             if(!mergedSettings.quickDateSelectOption)
             {
                 mergedSettings.quickDateSelectOption = defaultDateOption;
             }
-            this.set("dateOptions", mergedSettings, { silent: true });
+            this.set(key, mergedSettings, { silent: true });
         }
 
     });

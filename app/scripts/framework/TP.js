@@ -320,12 +320,12 @@ function(
         enableEscapeKey: function()
         {
             _.bindAll(this, "onEscapeKey");
-            $(document).on("keyup", this.onEscapeKey);
+            $(document).on("keyup.esc", this.onEscapeKey);
         },
 
         disableEscapeKey: function()
         {
-            $(document).off("keyup", this.onEscapeKey);
+            $(document).off("keyup.esc", this.onEscapeKey);
         },
 
         onEscapeKey: function(e)

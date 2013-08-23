@@ -31,12 +31,8 @@ function(
 
         events: _.extend(
         {
-            "change input": "_onInputsChanged"
+            "change input.auto": "_onInputsChanged"
         }, ChartSettingsView.prototype.events),
-
-        ui: {
-            useComparison: ".useComparison"
-        },
 
         onRender: function()
         {
@@ -45,10 +41,11 @@ function(
             this._addView(".dateOptionsRegion", new DashboardDatePicker({
                 model: this.model
             }));
-            this._addView(".comparisonDateOptionsRegion", new DashboardDatePicker({
+            this.comparisonDatePicker = new DashboardDatePicker({
                 model: this.model,
                 key: "comparisonDateOptions"
-            }));
+            });
+            this._addView(".comparisonDateOptionsRegion", this.comparisonDatePicker);
             this._addView(".workoutTypesRegion", new ChartWorkoutOptionsView({
                 model: this.model
             }));
@@ -60,6 +57,8 @@ function(
                 var $el = $(el);
                 $el.attr("checked", self.model.get($el.attr("name")));
             });
+
+            this._refreshView();
         },
 
         _onInputsChanged: function()
@@ -71,6 +70,21 @@ function(
                 var $el = $(el);
                 self.model.set($el.attr("name"), $el.prop("checked"));
             });
+
+            this._refreshView();
+        },
+
+        _refreshView: function()
+        {
+            if(this.model.get("useComparison"))
+            {
+                this.comparisonDatePicker.enable();
+            }
+            else
+            {
+                this.comparisonDatePicker.disable();
+            }
+
         }
     });
 

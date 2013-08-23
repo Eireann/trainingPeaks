@@ -6,7 +6,8 @@
     "dashboard/views/dashboardPodView",
     "dashboard/charts/fitnessSummaryChart",
     "dashboard/charts/peaksChart",
-    "dashboard/charts/timeInZonesChart"
+    "dashboard/charts/timeInZonesChart",
+    "dashboard/charts/metricsChart"
 ],
 function(
     TP,
@@ -15,7 +16,8 @@ function(
     DashboardPodView,
     FitnessSummaryChart,
     PeaksChart,
-    TimeInZonesChart
+    TimeInZonesChart,
+    MetricsChart
 )
 {
 
@@ -35,7 +37,8 @@ function(
         36: PeaksChart,
         17: TimeInZonesChart,
         24: TimeInZonesChart,
-        26: TimeInZonesChart
+        26: TimeInZonesChart,
+        13: MetricsChart
     };
 
     return {

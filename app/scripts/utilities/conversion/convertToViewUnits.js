@@ -151,6 +151,12 @@ function(
                 return threeSigFig(value);
             case "efficiencyfactor":
                 return convertEfficiencyFactor(value, sportType);
+            case "cm":
+                return value * modelToViewConversionFactors("cm", theMarsApp.user.get("units"));
+            case "kg":
+                return value * modelToViewConversionFactors("kg", theMarsApp.user.get("units"));
+            case "ml":
+                return value * modelToViewConversionFactors("ml", theMarsApp.user.get("units"));
             default:
                 throw +fieldType + ": Unknown field type for unit conversion";
         }
