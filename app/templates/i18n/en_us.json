@@ -398,5 +398,16 @@
     "PeakswareLiabality": "Peaksware is not responsible for the plan's content and the user assumes all responsibilty when using this plan.",
     "More": "More",
     "Averages": "Averages",
-    "Weeks": "Weeks"
+    "Weeks": "Weeks",
+
+    "Sku": "Sku",
+    "Transaction #": "Transaction #",
+    "Card #": "Card #",
+    "Price": "Price",
+    "Start Date": "Start Date",
+    "Paid Through": "Paid Through",
+    "Exp. Date": "Exp. Date",
+
+    "Payment History": "Payment History",
+    "Active Recurring Payments": "Active Recurring Payments"
 }
