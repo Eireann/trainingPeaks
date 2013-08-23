@@ -2,6 +2,7 @@
 [
     "TP",
     "backbone",
+    "shared/views/userSettingsFormView",
     "shared/views/paymentHistoryView",
     "shared/views/recurringPaymentsView",
     "hbs!shared/templates/userSettingsView"
@@ -9,6 +10,7 @@
 function(
     TP,
     Backbone,
+    UserSettingsFormView,
     PaymentHistoryView,
     RecurringPaymentsView,
     userSettingsViewTemplate
@@ -33,10 +35,19 @@ function(
             "click .closeIcon": "close"
         },
 
+        initialize: function()
+        {
+            UserSettingsView.__super__.initialize.apply(this, arguments);
+            this.children = new Backbone.ChildViewContainer();
+        },
+
         render: function()
         {
             UserSettingsView.__super__.render.apply(this, arguments);
-            this.children = new Backbone.ChildViewContainer();
+
+            this._addView(".userSettingsForm", UserSettingsFormView, {
+                model: this.model
+            }, "userSettingsForm");
 
             this._addView(".paymentHistory", PaymentHistoryView, {
                 collection: new TP.Collection([{ paypalDate: moment(), totalAsDollars: 42.3 }])
@@ -45,6 +56,8 @@ function(
             this._addView(".recurringPayments", RecurringPaymentsView, {
                 collection: new TP.Collection([{}])
             }, "recurringPayments");
+
+            this.rePositionView();
         },
 
         close: function()
