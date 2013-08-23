@@ -104,22 +104,10 @@
                 deps: ["backbone"],
                 exports: "Backbone"
             },
-            "jqueryOutside":
-            {
-                exports: ""
-            },
-            "setImmediate":
-            {
-                exports: "setImmediate"
-            },
-            "jqueryTextAreaResize":
-            {
-                exports: ""
-            },
-            "jquerySelectBox":
-            {
-                exports: ""
-            }
+            "jqueryOutside": [],
+            "setImmediate": { exports: "setImmediate" },
+            "jqueryTextAreaResize": [],
+            "jquerySelectBox": []
         }
 
     };

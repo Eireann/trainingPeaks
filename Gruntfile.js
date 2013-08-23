@@ -89,36 +89,22 @@ module.exports = function(grunt)
                 options:
                 {
                     baseUrl: "app",
-                    out: "build/debug/single.js",
+                    out: "build/release/single.min.js",
                     name: "main",
-                    include: ["Backbone.Marionette.Handlebars"],
-                    exclude: ["hbs", "Handlebars"],
+                    include: [
+                        "../vendor/js/libs/almond",
+                        "../vendor/js/libs/HandlebarsRuntime",
+                        "../vendor/js/libs/flot/jquery.flot",
+                        "../vendor/js/libs/flot/jquery.flot.crosshair",
+                        "../vendor/js/libs/flot/jquery.flot.resize",
+                        "Backbone.Marionette.Handlebars"
+                    ],
+                    excludeShallow: ["hbs", "Handlebars"],
                     wrap: false,
-                    optimize: "none"
+                    optimize: "uglify2",
+                    generateSourceMaps: true,
+                    preserveLicenseComments: false
                 }
-            }
-        },
-
-        concat:
-        {
-            build:
-            {
-                src:
-                [
-                    // We include AlmondJS + the compiled unified app.js file.
-                    "vendor/js/libs/almond.js",
-                    "vendor/js/libs/lodash.TP.js",
-                    "vendor/js/libs/underscore.amd.js",
-                    "vendor/js/libs/HandlebarsRuntime.js",
-                    "vendor/js/libs/flot/jquery.flot.js",
-                    "vendor/js/libs/flot/jquery.flot.crosshair.js",
-                    "vendor/js/libs/flot/jquery.flot.resize.js",
-                    "build/debug/single.js"
-                ],
-
-                dest: "build/release/single.js",
-
-                separator: ";"
             }
         },
 
@@ -133,22 +119,6 @@ module.exports = function(grunt)
             {
                 src: "index.html",
                 dest: "build/release/index.html"
-            }
-        },
-        /*
-         * The minification task uses the uglify library.
-         */
-        uglify:
-        {
-            build:
-            {
-                files:
-                {
-                    "build/release/single.min.js":
-                    [
-                        "build/release/single.js"
-                    ]
-                }
             }
         },
 
@@ -295,9 +265,7 @@ module.exports = function(grunt)
     */
     grunt.loadNpmTasks("grunt-contrib-clean");
     grunt.loadNpmTasks("grunt-contrib-jshint");
-    grunt.loadNpmTasks("grunt-contrib-concat");
     grunt.loadNpmTasks("grunt-contrib-htmlmin");
-    grunt.loadNpmTasks("grunt-contrib-uglify");
     grunt.loadNpmTasks("grunt-contrib-requirejs");
     grunt.loadNpmTasks("grunt-contrib-watch");
     grunt.loadNpmTasks("grunt-istanbul");
@@ -322,10 +290,10 @@ module.exports = function(grunt)
 
     // grunt build builds a single minified js for dev/uat/live, at build/release
     // grunt build_debug does the same but doesn't minify, and points to local dev config
-    grunt.registerTask("build_common", ["clean", "coverage", "requirejs_config", "i18n_config", "requirejs", "concat", "compass:build", "copy:build_common", "copy:build_coverage", "plato:build"]);
+    grunt.registerTask("build_common", ["clean", "coverage", "requirejs_config", "i18n_config", "requirejs", "compass:build", "copy:build_common", "copy:build_coverage", "plato:build"]);
     grunt.registerTask("build_debug", ["build_common", "copy:build_debug", "targethtml:build_debug", "copy-i18n-files"]);
-    grunt.registerTask("build_debug_fast", ["clean", "requirejs_config", "requirejs", "concat", "compass:build", "copy:build_common", "copy:build_coverage", "copy:build_debug", "targethtml:build_debug"]);
-    grunt.registerTask("build", ["build_common", "copy:build", "uglify", "deleteFiles:build", "targethtml:build", "copy-i18n-files"]);
+    grunt.registerTask("build_debug_fast", ["clean", "requirejs_config", "requirejs", "compass:build", "copy:build_common", "copy:build_coverage", "copy:build_debug", "targethtml:build_debug"]);
+    grunt.registerTask("build", ["build_common", "copy:build", "deleteFiles:build", "targethtml:build", "copy-i18n-files"]);
 
     // TASKS THAT ARE USED BY OTHER TASKS
     grunt.registerTask("bdd_test_config", "Configure for jasmine node bdd tests", function()
