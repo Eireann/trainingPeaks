@@ -43,8 +43,8 @@ function(moment, _, theMarsApp, TP, LapsSplitsView, WorkoutModel, detailDataLaps
 		{
 			var requiredAttrs = 
 				[
-					"Lap", "Start", "End", "Duration", "Moving Duration", "Kilometers", "Average Heart Rate",
-					"Maximum Heart Rate", "Average Pace", "Average Cadence", "Calories"
+					"Lap", "Start", "End", "Duration", "Moving Duration", "Kilometers", "Avg Heart Rate",
+					"Max Heart Rate", "Avg Pace", "Avg Cadence", "Calories"
 				],
 				model = buildWorkoutModel(),
 				view = new LapsSplitsView({model: model}),
@@ -84,7 +84,7 @@ function(moment, _, theMarsApp, TP, LapsSplitsView, WorkoutModel, detailDataLaps
 			{
 				model.set({workoutTypeValueId: 3});
 				serializedData = view.serializeData();
-				expect(_.contains(serializedData.headerNames, "Normalized Power")).toBeFalsy();
+				expect(_.contains(serializedData.headerNames, "NP")).toBeFalsy();
 			});
 			it("Should format TSS label correctly", function()
 			{
@@ -97,22 +97,22 @@ function(moment, _, theMarsApp, TP, LapsSplitsView, WorkoutModel, detailDataLaps
 			{
 				model.set({workoutTypeValueId: 2});
 				serializedData = view.serializeData();
-				expect(_.contains(serializedData.headerNames, "Average Pace")).toBeFalsy();
-				expect(_.contains(serializedData.headerNames, "Average Speed")).toBeTruthy();
+				expect(_.contains(serializedData.headerNames, "Avg Pace")).toBeFalsy();
+				expect(_.contains(serializedData.headerNames, "Avg Speed")).toBeTruthy();
 			});
 			it("Should show Average Pace for runs, walks, and swims (as opposed to Average Speed)", function()
 			{
 				model.set({workoutTypeValueId: 3});
 				serializedData = view.serializeData();
-				expect(_.contains(serializedData.headerNames, "Average Pace")).toBeTruthy();
+				expect(_.contains(serializedData.headerNames, "Avg Pace")).toBeTruthy();
 
 				model.set({workoutTypeValueId: 13});
 				serializedData = view.serializeData();
-				expect(_.contains(serializedData.headerNames, "Average Pace")).toBeTruthy();
+				expect(_.contains(serializedData.headerNames, "Avg Pace")).toBeTruthy();
 
 				model.set({workoutTypeValueId: 1});
 				serializedData = view.serializeData();
-				expect(_.contains(serializedData.headerNames, "Average Pace")).toBeTruthy();
+				expect(_.contains(serializedData.headerNames, "Avg Pace")).toBeTruthy();
 			});
 		});
 
@@ -138,44 +138,44 @@ function(moment, _, theMarsApp, TP, LapsSplitsView, WorkoutModel, detailDataLaps
 			setTSSsource(model, "PowerTss");
 			model.set({workoutTypeValueId: 1});
 			serializedData = view.serializeData();
-			checkOrder("Intensity Factor", 7, "PowerTss", serializedData);
-			checkOrder("Normalized Power", 8, "PowerTss", serializedData);
-			checkOrder("Average Power", 9, "PowerTss", serializedData);
-			checkOrder("Maximum Power", 10, "PowerTss", serializedData);
+			checkOrder("IF", 7, "PowerTss", serializedData);
+			checkOrder("NP", 8, "PowerTss", serializedData);
+			checkOrder("Avg Power", 9, "PowerTss", serializedData);
+			checkOrder("Max Power", 10, "PowerTss", serializedData);
 
 			setTSSsource(model, "RunningTss");
 			model.set({workoutTypeValueId: 3});
 			serializedData = view.serializeData();
 			checkOrder("rTSS", 6, "RunningTss", serializedData);
-			checkOrder("Intensity Factor", 7, "RunningTss", serializedData);
+			checkOrder("IF", 7, "RunningTss", serializedData);
 			checkOrder("Normalized Graded Pace", 8, "RunningTss", serializedData);	
-			checkOrder("Average Pace", 9, "RunningTss", serializedData);
-			checkOrder("Maximum Pace", 10, "RunningTss", serializedData);
-			checkOrder("Average Heart Rate", 11, "RunningTss", serializedData);
-			checkOrder("Maximum Heart Rate", 12, "RunningTss", serializedData);
+			checkOrder("Avg Pace", 9, "RunningTss", serializedData);
+			checkOrder("Max Pace", 10, "RunningTss", serializedData);
+			checkOrder("Avg Heart Rate", 11, "RunningTss", serializedData);
+			checkOrder("Max Heart Rate", 12, "RunningTss", serializedData);
 			checkOrder("Calories", 13, "RunningTss", serializedData);
-			checkOrder("Average Power", 14, "RunningTss", serializedData);
-			checkOrder("Maximum Power", 15, "RunningTss", serializedData);
+			checkOrder("Avg Power", 14, "RunningTss", serializedData);
+			checkOrder("Max Power", 15, "RunningTss", serializedData);
 
 			checkOrder("Elevation Gain", 16, "RunningTss", serializedData);
 			checkOrder("Elevation Loss", 17, "RunningTss", serializedData);
 			checkOrder("Energy", 18, "RunningTss", serializedData);
 			// min/avg/max torque would go here, but it's (intentionally) not present 
 			// in the data set so it won't be rendered
-			checkOrder("Minimum Elevation", 19, "RunningTss", serializedData);
-			checkOrder("Average Elevation", 20, "RunningTss", serializedData);
-			checkOrder("Maximum Elevation", 21, "RunningTss", serializedData);
-			checkOrder("Average Cadence", 22, "RunningTss", serializedData);
-			checkOrder("Maximum Cadence", 23, "RunningTss", serializedData);
-			checkOrder("Minimum Temp", 24, "RunningTss", serializedData);
-			checkOrder("Average Temp", 25, "RunningTss", serializedData);
-			checkOrder("Maximum Temp", 26, "RunningTss", serializedData);
+			checkOrder("Min Elevation", 19, "RunningTss", serializedData);
+			checkOrder("Avg Elevation", 20, "RunningTss", serializedData);
+			checkOrder("Max Elevation", 21, "RunningTss", serializedData);
+			checkOrder("Avg Cadence", 22, "RunningTss", serializedData);
+			checkOrder("Max Cadence", 23, "RunningTss", serializedData);
+			checkOrder("Min Temp", 24, "RunningTss", serializedData);
+			checkOrder("Avg Temp", 25, "RunningTss", serializedData);
+			checkOrder("Max Temp", 26, "RunningTss", serializedData);
 
 			setTSSsource(model, "HeartRateTss");
 			serializedData = view.serializeData();
-			checkOrder("Intensity Factor", 7, "HeartRateTss", serializedData);
-			checkOrder("Average Heart Rate", 8, "HeartRateTss", serializedData);
-			checkOrder("Maximum Heart Rate", 9, "HeartRateTss", serializedData);
+			checkOrder("IF", 7, "HeartRateTss", serializedData);
+			checkOrder("Avg Heart Rate", 8, "HeartRateTss", serializedData);
+			checkOrder("Max Heart Rate", 9, "HeartRateTss", serializedData);
 
 		});
 
