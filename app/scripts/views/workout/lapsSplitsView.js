@@ -133,9 +133,9 @@ function(
                 lapObject["Avg Power"] = lap.averagePower;
                 lapObject["Max Power"] = lap.maximumPower;
 
-                lapObject["Elevation Gain"] = convertToViewUnits(lap.elevationGain, "elevation", null, workoutDefaults.sportTypeID);
-                lapObject["Elevation Loss"] = convertToViewUnits(lap.elevationLoss, "elevation", null, workoutDefaults.sportTypeID);
-                lapObject["Energy"] = lap.energy;
+                lapObject["Elev Gain"] = convertToViewUnits(lap.elevationGain, "elevation", null, workoutDefaults.sportTypeID);
+                lapObject["Elev Loss"] = convertToViewUnits(lap.elevationLoss, "elevation", null, workoutDefaults.sportTypeID);
+                lapObject["Energy"] = TP.utils.conversion.formatEnergy(lap.energy);
                 lapObject["NP"] = canShowNP ? lap.normalizedPowerActual : null;
                 lapObject["Normalized Graded Pace"] = canShowNGP ? convertToViewUnits(lap.normalizedSpeedActual, "pace", null, workoutDefaults.sportTypeID) : null;
 
@@ -143,20 +143,10 @@ function(
                 lapObject["Avg Torque"] = convertToViewUnits(lap.averageTorque, "torque", null, workoutDefaults.sportTypeID);
                 lapObject["Max Torque"] = convertToViewUnits(lap.maximumTorque, "torque", null, workoutDefaults.sportTypeID);
 
-                lapObject["Min Elevation"] = convertToViewUnits(lap.minimumElevation, "elevation", null, workoutDefaults.sportTypeID);
-                lapObject["Avg Elevation"] = convertToViewUnits(lap.averageElevation, "elevation", null, workoutDefaults.sportTypeID);
-                lapObject["Max Elevation"] = convertToViewUnits(lap.maximumElevation, "elevation", null, workoutDefaults.sportTypeID);
+                lapObject["Min Elev"] = convertToViewUnits(lap.minimumElevation, "elevation", null, workoutDefaults.sportTypeID);
 
-                lapObject["Avg Cadence"] = lap.averageCadence;
-                lapObject["Max Cadence"] = lap.maximumCadence;
+                lapObject["Cad"] = lap.averageCadence;
 
-                lapObject["Min Temp"] = convertToViewUnits(lap.minimumTemp, "temperature", null, workoutDefaults.sportTypeID);
-                lapObject["Avg Temp"] = convertToViewUnits(lap.averageTemp, "temperature", null, workoutDefaults.sportTypeID);
-                lapObject["Max Temp"] = convertToViewUnits(lap.maximumTemp, "temperature", null, workoutDefaults.sportTypeID);
-
-                /* //////
-                    3.
-                */ /////
                 // filter out null values
                 for (var key in lapObject)
                 {

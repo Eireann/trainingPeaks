@@ -44,7 +44,7 @@ function(moment, _, theMarsApp, TP, LapsSplitsView, WorkoutModel, detailDataLaps
 			var requiredAttrs = 
 				[
 					"Lap", "Start", "End", "Duration", "Moving Duration", "Kilometers", "Avg Heart Rate",
-					"Max Heart Rate", "Avg Pace", "Avg Cadence", "Calories"
+					"Max Heart Rate", "Avg Pace", "Cad", "Calories"
 				],
 				model = buildWorkoutModel(),
 				view = new LapsSplitsView({model: model}),
@@ -114,6 +114,12 @@ function(moment, _, theMarsApp, TP, LapsSplitsView, WorkoutModel, detailDataLaps
 				serializedData = view.serializeData();
 				expect(_.contains(serializedData.headerNames, "Avg Pace")).toBeTruthy();
 			});
+			it("Should not show maximum cadence for swim workouts", function()
+			{
+				model.set({workoutTypeValueId: 1});
+				serializedData = view.serializeData();
+				expect(_.contains(serializedData.headerNames, "Max Cadence")).toBeFalsy();
+			});
 		});
 
 		describe("ordering data", function()
@@ -157,26 +163,19 @@ function(moment, _, theMarsApp, TP, LapsSplitsView, WorkoutModel, detailDataLaps
 			checkOrder("Avg Power", 14, "RunningTss", serializedData);
 			checkOrder("Max Power", 15, "RunningTss", serializedData);
 
-			checkOrder("Elevation Gain", 16, "RunningTss", serializedData);
-			checkOrder("Elevation Loss", 17, "RunningTss", serializedData);
+			checkOrder("Elev Gain", 16, "RunningTss", serializedData);
+			checkOrder("Elev Loss", 17, "RunningTss", serializedData);
 			checkOrder("Energy", 18, "RunningTss", serializedData);
 			// min/avg/max torque would go here, but it's (intentionally) not present 
 			// in the data set so it won't be rendered
-			checkOrder("Min Elevation", 19, "RunningTss", serializedData);
-			checkOrder("Avg Elevation", 20, "RunningTss", serializedData);
-			checkOrder("Max Elevation", 21, "RunningTss", serializedData);
-			checkOrder("Avg Cadence", 22, "RunningTss", serializedData);
-			checkOrder("Max Cadence", 23, "RunningTss", serializedData);
-			checkOrder("Min Temp", 24, "RunningTss", serializedData);
-			checkOrder("Avg Temp", 25, "RunningTss", serializedData);
-			checkOrder("Max Temp", 26, "RunningTss", serializedData);
+			checkOrder("Min Elev", 19, "RunningTss", serializedData);
+			checkOrder("Cad", 20, "RunningTss", serializedData);
 
 			setTSSsource(model, "HeartRateTss");
 			serializedData = view.serializeData();
 			checkOrder("IF", 7, "HeartRateTss", serializedData);
 			checkOrder("Avg Heart Rate", 8, "HeartRateTss", serializedData);
 			checkOrder("Max Heart Rate", 9, "HeartRateTss", serializedData);
-
 		});
 
 		describe("Rendering", function()
