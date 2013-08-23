@@ -554,6 +554,29 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
         color: $TPGrey3;
         height: 23px;
     }
+
+    .metrics {
+        .selectboxit-options
+        {
+            width: 245px;
+        }
+
+        .selectboxit-container .selectboxit 
+        {
+            width: 245px !important; /* Width of the dropdown button */
+
+        }
+
+        .selectboxit-option
+        {
+            
+        }
+
+        .selectboxit-option-icon-container 
+        {
+            
+        }
+    }
 }
 
 .fitnessSummartChart
