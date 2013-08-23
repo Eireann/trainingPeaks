@@ -143,8 +143,6 @@ function(
                 lapObject["Avg Torque"] = convertToViewUnits(lap.averageTorque, "torque", null, workoutDefaults.sportTypeID);
                 lapObject["Max Torque"] = convertToViewUnits(lap.maximumTorque, "torque", null, workoutDefaults.sportTypeID);
 
-                lapObject["Min Elev"] = convertToViewUnits(lap.minimumElevation, "elevation", null, workoutDefaults.sportTypeID);
-
                 lapObject["Cad"] = lap.averageCadence;
 
                 // filter out null values

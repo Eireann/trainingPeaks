@@ -306,13 +306,13 @@ function(setImmediate, TP, DataParser, ExpandoLayout, GraphView, MapView, StatsV
         watchForWindowResize: function()
         {
             _.bindAll(this, "onViewResize");
-            $(window).on("resize", this.onViewResize);
+            $(window).on("resize.expando", this.onViewResize);
             this.on("close", this.stopWatchingWindowResize, this);
         },
 
         stopWatchingWindowResize: function()
         {
-            $(window).off("resize", this.onViewResize);
+            $(window).off("resize.expando", this.onViewResize);
         },
 
         onViewResize: function()

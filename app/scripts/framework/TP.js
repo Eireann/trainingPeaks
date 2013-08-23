@@ -256,12 +256,12 @@ function(
         watchForWindowResize: function()
         {
             _.bindAll(this, "onWindowResize");
-            $(window).on("resize", this.onWindowResize);
+            $(window).on("resize.modal", this.onWindowResize);
         },
 
         stopWatchingWindowResize: function()
         {
-            $(window).off("resize", this.onWindowResize);
+            $(window).off("resize.modal", this.onWindowResize);
         },
 
         onWindowResize: function()

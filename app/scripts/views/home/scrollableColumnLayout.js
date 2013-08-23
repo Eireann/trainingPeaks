@@ -34,7 +34,7 @@ function(
         initResizeEvents: function()
         {
             _.bindAll(this, "resizeContainer");
-            $(window).on("resize", this.resizeContainer);
+            $(window).on("resize.scrollableColumnContainer", this.resizeContainer);
             this.on("render", this.resizeContainerAfterRender, this);
         },
 

@@ -168,8 +168,7 @@ function(moment, _, theMarsApp, TP, LapsSplitsView, WorkoutModel, detailDataLaps
 			checkOrder("Energy", 18, "RunningTss", serializedData);
 			// min/avg/max torque would go here, but it's (intentionally) not present 
 			// in the data set so it won't be rendered
-			checkOrder("Min Elev", 19, "RunningTss", serializedData);
-			checkOrder("Cad", 20, "RunningTss", serializedData);
+			checkOrder("Cad", 19, "RunningTss", serializedData);
 
 			setTSSsource(model, "HeartRateTss");
 			serializedData = view.serializeData();
