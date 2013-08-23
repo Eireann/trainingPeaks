@@ -64,10 +64,6 @@
             line-height: $fontSizeXLarge;
         }
 
-        .bigButtons {
-            text-align:center;
-        }
-
         @include buttons(0px, 150px, $fontSizeSmall);
         button {
             padding:4px 0;
