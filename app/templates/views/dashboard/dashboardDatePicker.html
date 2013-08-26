@@ -9,10 +9,10 @@
         </select>
     </div>
     <div class="dateRanges{{#if customStartDate }} customStartDate{{/if}}{{#if customEndDate }} customEndDate{{/if}}">
-        <div class="title fromTo">{{$ "From"}}:</div>
+        <span class="title fromTo">{{$ "From"}}:</span>
         <input type="text" class="datepicker startDate" value="{{ formatDate startDate "YYYY-MM-DD" }}" readonly>
         <div class="date startDate">{{ formatDate startDate "YYYY-MM-DD" }}</div>
-        <div class="title fromTo to">{{$ "To"}}:</div>
+        <span class="title fromTo to">{{$ "To"}}:</span>
         <input type="text" class="datepicker endDate" value="{{ formatDate endDate "YYYY-MM-DD" }}" readonly>
         <div class="date endDate">{{ formatDate endDate "YYYY-MM-DD" }}</div>
     </div>

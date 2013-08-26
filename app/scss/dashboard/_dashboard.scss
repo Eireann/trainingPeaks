@@ -41,14 +41,15 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
 
         div
         {
-            padding-top: 6px;
+            // padding-top: 6px;
         }
 
         .fromTo
         {
-            padding: 2px 15px 0 0 ;
-            height: 25px;
+            padding: 0 15px 0 0;
+            // height: 25px;
             float: left;
+            line-height:1;
         }
 
         .to
@@ -485,7 +486,7 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
 .dashboardChartSettings
 {
     max-width: 350px;
-
+    
     .workoutTypes
     {
         min-width: 330px;
@@ -578,6 +579,7 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
         }
     }
 }
+
 
 .fitnessSummartChart
 {

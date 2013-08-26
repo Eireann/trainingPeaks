@@ -243,6 +243,24 @@
                         
                     }
                 }	
+
+                .datepickerContainer {
+                    
+                    .dateRanges {
+                        .fromTo {
+                            padding: 5px 15px 0 0;
+                        }
+
+                        .to {
+                           padding-left:15px;
+                        }
+
+                        .date {
+                            margin-top:5px;
+                        }
+                    }
+                }
+
     		}
 
             #athleteCalendarSelectSelectBoxIt
