@@ -4,6 +4,7 @@
     "backbone",
     "shared/models/recurringPaymentsCollection",
     "shared/models/paymentHistoryCollection",
+    "shared/views/userSettingsFormView",
     "shared/views/paymentHistoryView",
     "shared/views/recurringPaymentsView",
     "hbs!shared/templates/userSettingsView"
@@ -13,6 +14,7 @@ function(
     Backbone,
     RecurringPaymentsCollection,
     PaymentHistoryCollection,
+    UserSettingsFormView,
     PaymentHistoryView,
     RecurringPaymentsView,
     userSettingsViewTemplate
@@ -43,12 +45,17 @@ function(
             this.paymentHistoryCollection = new PaymentHistoryCollection();
             this.recurringPaymentsCollection.fetch();
             this.paymentHistoryCollection.fetch();
+            UserSettingsView.__super__.initialize.apply(this, arguments);
+            this.children = new Backbone.ChildViewContainer();
         },
 
         render: function()
         {
             UserSettingsView.__super__.render.apply(this, arguments);
-            this.children = new Backbone.ChildViewContainer();
+
+            this._addView(".userSettingsForm", UserSettingsFormView, {
+                model: this.model
+            }, "userSettingsForm");
 
             this._addView(".paymentHistory", PaymentHistoryView, {
                 collection: this.paymentHistoryCollection 
@@ -57,6 +64,8 @@ function(
             this._addView(".recurringPayments", RecurringPaymentsView, {
                 collection: this.recurringPaymentsCollection
             }, "recurringPayments");
+
+            this.rePositionView();
         },
 
         close: function()

@@ -180,16 +180,6 @@ function(
 
             theMarsApp.getBodyElement().append(this.$el);
 
-            var $window = $(window);
-            if (this.$el.height() > $window.height())
-                this.$el.height($window.height() - 10);
-
-            if (this.$el.width() > $window.width())
-                this.$el.width($window.width() - 10);
-
-            // static centering
-            //this.left(($window.width() - this.$el.width()) / 2).top(($window.height() - this.$el.height()) / 2);
-
             // dynamic centering
             this.rePositionView();
             this.watchForWindowResize();
