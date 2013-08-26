@@ -123,6 +123,14 @@ function(TP, graphToolbarTemplate)
                 this.$(".graphDistanceButton").remove();
                 this.$(".graphTimeButton").remove();
 			}
+        },
+
+        serializeData: function()
+        {
+            var speedLabel = this.model ? TP.utils.units.getUnitsLabel("distance", this.model.get("workoutTypeValueId")) : "MPH";
+            return {
+                speedLabel: speedLabel
+            };
         }
     });
 });
