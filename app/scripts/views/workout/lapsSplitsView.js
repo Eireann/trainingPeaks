@@ -22,11 +22,24 @@ function(
             {
                 throw "Model is required for LapsSplitsView";
             }
+            this.detailDataPromise = options.detailDataPromise;
         },
         template:
         {
             type: "handlebars",
             template: lapsSplitsTemplate
+        },
+        onShow: function()
+        {
+            // if model has no laps/splits, tell controller to close this view
+            var self = this;
+            this.detailDataPromise.done(function()
+            {
+                if (!self.model.get('detailData').get('lapsStats'))
+                {
+                    self.trigger("requestClose", self);
+                }
+            });
         },
         serializeData: function()
         {
