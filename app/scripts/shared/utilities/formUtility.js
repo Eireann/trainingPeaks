@@ -27,8 +27,16 @@ function(
                     value = [value];
                 }
 
-                $el.val(value);
-            });
+                if(type === "checkbox")
+                {
+                    $el.prop("checked", value ? true : false);
+                }
+                else
+                {
+                    $el.val(value);
+                }
+
+            }, options);
         },
 
         applyValuesToModel: function($form, model, options)
@@ -36,9 +44,16 @@ function(
             
         },
 
-        _processFields: function($form, callback)
+        _processFields: function($form, callback, options)
         {
-            $form.find("input, select, textarea").each(function(i, el)
+            var $formElements = $form.find("input, select, textarea");
+
+            if(options && options.filterSelector)
+            {
+                $formElements = $formElements.filter(options.filterSelector);
+            }
+
+            $formElements.each(function(i, el)
             {
                 var $el = $(el);
                 var key = $el.attr("name");

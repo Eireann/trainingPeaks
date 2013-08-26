@@ -1,86 +1,97 @@
 
     <div>
         <label>{{$ "FirstName" }}</label>
-        <input type="text" readonly name="firstName" />
+        <input data-modelname="user" type="text" readonly name="firstName" />
     </div>
 
     <div>
         <label>{{$ "LastName" }}</label>
-        <input type="text" readonly name="lastName" />
+        <input data-modelname="user" type="text" readonly name="lastName" />
     </div>
 
     <div>
         <label>{{$ "Username" }}</label>
-        <input type="text" readonly name="userName" />
+        <input data-modelname="user" type="text" readonly name="userName" />
     </div>
 
     <div>
         <label>{{$ "Password" }}</label>
-        <input type="password" readonly/>
-        <!-- <input type="password" readonly name="password"/> -->
+        <input data-modelname="user" type="password" readonly/>
     </div>
 
     <div>
         <label>{{$ "AthleteType" }}</label>
-        <span>{{ userType }}</span>
+         <select data-modelname="user" name="settings.account.athleteTypeValue" >
+        {{#each athleteTypes}}
+            <option value="{{ data }}">{{ label }}</option>
+        {{/each}}
+        </select>
     </div>
 
     <div>
         <label>{{$ "Birthday" }}</label>
-        <input type="text" readonly data-format="date" name="birthday" />
+        <input data-modelname="user" type="text" readonly data-format="date" name="birthday" />
     </div>
 
     <div>
         <label>{{$ "Gender" }}</label>
         <label>
-            <input type="radio" readonly name="gender" value="m"/>
+            <input data-modelname="user" type="radio" readonly name="gender" value="m"/>
             Male
         </label>
         <label>
-            <input type="radio" readonly name="gender" value="f"/>
+            <input data-modelname="user" type="radio" readonly name="gender" value="f"/>
             Female
         </label>
     </div>
 
     <div>
         <label>{{$ "Email" }}</label>
-        <input type="email" readonly name="email" />
+        <input data-modelname="user" type="email" readonly name="email" />
     </div>
 
     <div>
         <label>{{$ "Address" }}</label>
-        <input type="text" readonly name="address" />
-        <input type="text" readonly name="address2" />
+        <input data-modelname="user" type="text" readonly name="address" />
+        <input data-modelname="user" type="text" readonly name="address2" />
     </div>
 
     <div>
         <label>{{$ "City" }}</label>
-        <input type="text" readonly name="city" />
+        <input data-modelname="user" type="text" readonly name="city" />
     </div>
 
     <div>
         <label>{{$ "State" }}</label>
-        <input type="text" readonly name="state" />
+        <select data-modelname="user" name="state">
+        {{#each states}}
+            <option value="{{ data }}">{{ label }}</option>
+        {{/each}}
+        </select>
     </div>
 
     <div>
         <label>{{$ "ZipCode" }}</label>
-        <input type="text" readonly name="zipCode" />
+        <input data-modelname="user" type="text" readonly name="zipCode" />
     </div>
 
     <div>
         <label>{{$ "Country" }}</label>
-        <input type="text" readonly name="country" />
+        <select data-modelname="user" name="country" >
+        {{#each countries}}
+            <option value="{{ data }}">{{ label }}</option>
+        {{/each}}
+        </select>
     </div>
 
     <div>
         <label>{{$ "Phone" }}</label>
-        <input type="tel" readonly name="phone" />
+        <input data-modelname="user" type="tel" readonly name="phone" />
     </div>
 
     <div>
         <label>{{$ "CellPhone" }}</label>
-        <input type="tel" readonly name="cellPhone" />
+        <input data-modelname="user" type="tel" readonly name="cellPhone" />
     </div>
 
     <div>
@@ -99,11 +110,11 @@
     <div>
         <label>{{$ "Units" }}</label>
         <label>
-            <input type="radio" readonly name="units" value="1" />
+            <input data-modelname="user" type="radio" readonly name="units" value="1" />
             English
         </label>
         <label>
-            <input type="radio" readonly name="units" value="2" />
+            <input data-modelname="user" type="radio" readonly name="units" value="2" />
             Metric
         </label>
     </div>
@@ -111,50 +122,49 @@
     <div>
         <label>{{$ "DateFormat" }}</label>
         <label>
-            <input type="radio" readonly name="dateFormat" value="mdy" />
+            <input data-modelname="user" type="radio" readonly name="dateFormat" value="mdy" />
             MM/DD/YY
         </label>
         <label>
-            <input type="radio" readonly name="dateFormat" value="dmy" />
+            <input data-modelname="user" type="radio" readonly name="dateFormat" value="dmy" />
             DD/MM/YY
         </label>
     </div>
 
     <div>
         <label>{{$ "TimeZone" }}</label>
-        <input type="text" readonly name="timeZone" />
+        <select data-modelname="user" name="timeZone" >
+        {{#each timeZones }}
+            <option value="{{ key }}">{{ value }}</option>
+        {{/each}}
+        </select>
     </div>
-
-    {{# with settings }}
-        {{#with account }}
-            <div>
-                <label>{{$ "AccountType" }}</label>
-                <span>{{ userType }}</span>
-            </div>
-        {{/with}}
-    {{/with}}
 
     <div class="title">{{$ "EmailOptions" }}</div>
 
     <div>
-        <label><input type="checkbox"> {{$ "emailPMNotificationSetting" }}</label>
+        <label><input value="true" data-modelname="user" type="checkbox" name="settings.account.enablePrivateMessageNotifications"> {{$ "emailPMNotificationSetting" }}</label>
     </div>
 
     <div>
-        <label><input type="checkbox"> {{$ "postActivityNotificationSetting" }}</label>
+        <label><input value="true" data-modelname="athlete" type="checkbox" name="enableWorkoutCommentNotification"> {{$ "postActivityNotificationSetting" }}</label>
     </div>
 
     <div>
-        <label><input type="checkbox"> {{$ "plannedWorkoutsNotificationSetting" }}</label>
+        <label><input value="true" data-modelname="athlete" type="checkbox" name="enableVirtualCoachEmails"> {{$ "plannedWorkoutsNotificationSetting" }}</label>
     </div>
 
     <div>
         <label>{{$ "DeliveryTime "}}</label>
-        <input type="text" readonly value="">
+        <select data-modelname="athlete" name="virtualCoachEmailHour" >
+        {{#each hours}}
+            <option value="{{ data }}">{{ label }}</option>
+        {{/each}}
+        </select>
         <div>{{$ "plannedWorkoutsNotificationTimeHelpText" }}</div>
     </div>
 
     <div>
-        <label><input type="checkbox"> {{$ "newsletterNotificationSetting" }}</label>
+        <label><input data-modelname="user" name="settings.account.allowMarketingEmails" type="checkbox"> {{$ "newsletterNotificationSetting" }}</label>
     </div>
 
