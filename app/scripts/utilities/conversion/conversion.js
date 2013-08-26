@@ -6,8 +6,9 @@
     "utilities/workout/workoutTypes",
     "utilities/conversion/convertToModelUnits",
     "utilities/conversion/convertToViewUnits",
-    "utilities/conversion/adjustFieldRange"
-], function(_, moment, datetimeUtils, workoutTypes, convertToModelUnits, convertToViewUnits, adjustFieldRange)
+    "utilities/conversion/adjustFieldRange",
+    "utilities/threeSigFig"
+], function(_, moment, datetimeUtils, workoutTypes, convertToModelUnits, convertToViewUnits, adjustFieldRange, threeSigFig)
 {
     return {
         convertToModelUnits: convertToModelUnits,
@@ -162,7 +163,7 @@
             var sportType = this.getMySportType(options);
             var convertedSpeed = convertToViewUnits(value, "speed", undefined, sportType);
             var limitedSpeed = adjustFieldRange(convertedSpeed, "speed");
-            return this.formatEmptyValue(limitedSpeed, options);
+            return threeSigFig(this.formatEmptyValue(limitedSpeed, options));
         },
 
         parseSpeed: function(value, options)
