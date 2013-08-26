@@ -4,9 +4,6 @@ module.exports = function (grunt) {
     var fs = require('fs');
     var path = require('path');
 
-    // this needs to be in a config file
-    var locales = ["en_us", "fr_fr", "it_it"];
-
     function getLocalePath(target, localeName)
     {
         return "build/" + target + "/" + localeName;
@@ -15,6 +12,7 @@ module.exports = function (grunt) {
     // INTERNATIONALIZATION
     grunt.registerTask("i18n_config", "Compile one single.js file for each supported language", function()
     {
+        var locales = grunt.config('locales');
 
         // modify properties of the requirejs grunt config
         function addLocaleToRequirejs(localeName, localeSingleFile)
@@ -87,6 +85,9 @@ module.exports = function (grunt) {
     // Copies css, assets, index.html files into locale folders
     grunt.registerTask("copy-i18n-files", "Copy i18n app files", function()
     {
+        var locales = grunt.config('locales');
+
+
         function copyFileSync(srcPath, destPath)
         {
 

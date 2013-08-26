@@ -33,7 +33,7 @@
         buildNumber: "local",
         gaAccount: "",
         coachUpgradeURL: "",
-        upgradeURL:""
+        upgradeURL: ""
     };
 
     if (typeof global !== "undefined")

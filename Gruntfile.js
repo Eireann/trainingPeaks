@@ -6,6 +6,8 @@ module.exports = function(grunt)
 {
     grunt.initConfig(
     {
+        locales: ["en_us", "fr_fr", "it_it"],
+
         jshint:
         {
             all:
