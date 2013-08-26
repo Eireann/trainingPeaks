@@ -174,7 +174,7 @@
             height: 22px;
             margin-left: 8px;
             width: 50px;
-            font-size: 13px;
+            font-size: $fontSizeSmall;
         }
     }
 
@@ -196,17 +196,23 @@
     {
         margin-bottom: 10px;
 
-        // so it inherits the height of it's floated children
+        // so it inherits the height of its floated children
         overflow: hidden;
 
         .removePlan
         {
             float: right;
             margin-right: 10px;
-            color: #2795b6;
+            color: $TPLinkBlue;
             padding: 0px;
             cursor: pointer;
+            
+            &:hover {
+                color:$TPLinkBlueHover;
+            }
         }
+
+
 
         .appliedDates
         {
