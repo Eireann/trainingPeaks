@@ -41,7 +41,7 @@ function(
         { data: 20, label: "8:00 PM - 8:59 PM"},               
         { data: 21, label: "9:00 PM - 9:59 PM"},               
         { data: 22, label: "10:00 PM - 10:59 PM"},               
-        { data: 23, label: "11:00 PM - 11:59 PM"},               
+        { data: 23, label: "11:00 PM - 11:59 PM"}
     ];
 
     var UserSettingsFormView = TP.ItemView.extend(
