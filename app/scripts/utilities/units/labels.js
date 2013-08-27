@@ -185,6 +185,7 @@ function(unitsConstants, workoutLayoutFormatter, workoutTypeUtils)
         mm: "mm",
         "mg/dL": "mg/dL",
         "%": "%",
+        "units": "units",
         none: ""
     };
 
