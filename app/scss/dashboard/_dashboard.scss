@@ -568,29 +568,6 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
         color: $TPGrey3;
         height: 23px;
     }
-
-    .metrics {
-        .selectboxit-options
-        {
-            width: 245px;
-        }
-
-        .selectboxit-container .selectboxit 
-        {
-            width: 245px !important; /* Width of the dropdown button */
-
-        }
-
-        .selectboxit-option
-        {
-            
-        }
-
-        .selectboxit-option-icon-container 
-        {
-            
-        }
-    }
 }
 
 
@@ -636,6 +613,64 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
         }
     }
 }
+
+.timeInZonesChartSettings {
+    .workoutTypesRegion {
+        border-bottom: 1px solid $TPGrey6;
+        padding-bottom: 10px;
+        margin-bottom: 10px;
+    }
+}
+
+.fitnessSummaryChartSettings {
+    .datepickerContainer {
+        border-bottom: 1px solid $TPGrey6;
+        padding-bottom: 10px;
+        margin-bottom: 10px;
+    }
+}
+
+.pmcChartSettings {
+    .workoutTypes,
+    .datepickerContainer,
+    .selectParameters {
+        border-bottom: 1px solid $TPGrey6;
+        padding-bottom: 10px;
+        margin-bottom: 10px;
+    }
+}
+
+.peaksChartSettings {
+    .workoutTypesRegion,
+    .dashboardDatePicker {
+        border-bottom: 1px solid $TPGrey6;
+        padding-bottom: 10px;
+        margin-bottom: 10px;
+    }
+    .comparisonDateOptionsRegion {
+        .dashboardDatePicker {
+            border-bottom: none;
+            padding-bottom:0;
+            margin-bottom:0;
+        }
+    }
+}
+
+.metricsChartSettings {
+    .selectboxit-options {
+        width: 245px;
+    }
+    .selectboxit-container .selectboxit {
+        width: 245px !important; /* Width of the dropdown button */
+    }
+
+    .metricSelection {
+        border-bottom: 1px solid $TPGrey6;
+        padding-bottom: 10px;
+        margin-bottom: 10px;
+    }
+}
+
 
 .chartTile {
     @include libraryTile();
