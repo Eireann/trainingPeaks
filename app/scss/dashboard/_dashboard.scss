@@ -498,11 +498,11 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
 
 .dashboardChartSettings
 {
-    max-width: 350px;
+     max-width: 350px;
     
     .workoutTypes
     {
-        min-width: 330px;
+        // min-width: 330px;
     }    
 
     .workoutType
@@ -615,51 +615,42 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
 }
 
 .timeInZonesChartSettings {
+    width:325px;
+
     .workoutTypesRegion {
         border-bottom: 1px solid $TPGrey6;
         padding-bottom: 10px;
         margin-bottom: 10px;
     }
+
+    .selectboxit-options {
+        width: 301px;
+    }
+    .selectboxit-container .selectboxit {
+        width: 301px !important; /* Width of the dropdown button */
+    }
 }
 
 .fitnessSummaryChartSettings {
+    width:300px;
+    
     .datepickerContainer {
         border-bottom: 1px solid $TPGrey6;
         padding-bottom: 10px;
         margin-bottom: 10px;
     }
-}
 
-.pmcChartSettings {
-    .workoutTypes,
-    .datepickerContainer,
-    .selectParameters {
-        border-bottom: 1px solid $TPGrey6;
-        padding-bottom: 10px;
-        margin-bottom: 10px;
+    .selectboxit-options {
+        width: 276px;
     }
-
-    .numberInputLabel {
-        display: inline-block;
-        float: left;
-        margin-right: 5px;
-        margin-top: 10px;
-        width: 85px;
-    }
-
-    .numberInput {
-        &.start {
-            margin-left:10px;
-            float:right;
-
-            .numberInputLabel {
-                width:60px;
-            }
-        }
+    .selectboxit-container .selectboxit {
+        width: 276px !important; /* Width of the dropdown button */
     }
 }
 
 .peaksChartSettings {
+    width:325px;
+
     .workoutTypesRegion,
     .dashboardDatePicker {
         border-bottom: 1px solid $TPGrey6;
@@ -673,14 +664,23 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
             margin-bottom:0;
         }
     }
+
+    .selectboxit-options {
+        width: 301px;
+    }
+    .selectboxit-container .selectboxit {
+        width: 301px !important; /* Width of the dropdown button */
+    }
 }
 
 .metricsChartSettings {
+    width:300px;
+
     .selectboxit-options {
-        width: 245px;
+        width: 276px;
     }
     .selectboxit-container .selectboxit {
-        width: 245px !important; /* Width of the dropdown button */
+        width: 276px !important; /* Width of the dropdown button */
     }
 
     .metricSelection {
