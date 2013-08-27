@@ -217,6 +217,11 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
         background-color: $TPGrey1;
         z-index: 200 !important;
         opacity: 1;
+
+         &:hover, &.hover {
+            background-color: $TPGrey1;
+            border: 1px solid transparent;
+         }
     }
 
     &:hover, &.hover
