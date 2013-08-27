@@ -96,7 +96,7 @@
 
     <div>
         <label>{{$ "ProfilePicture" }}</label>
-        <img src="{{ profilePhotoUrl }}" />
+        <img src="{{ wwwRoot }}{{ profilePhotoUrl }}" />
     </div>
 
 
@@ -146,17 +146,17 @@
 
         <div>
             <label>{{$ "WorkoutsOnly" }}</label>
-            <input type="text" readonly name="iCalendarKeys.workoutsOnly" value="webcal://{{ wwwRoot }}/ical/{{ workoutsOnly }}.ics" />
+            <input class="ical" type="text" readonly name="iCalendarKeys.workoutsOnly" value="webcal://{{ wwwRoot }}/ical/{{ workoutsOnly }}.ics" />
         </div>
      
         <div>
             <label>{{$ "MealsOnly" }}</label>
-            <input type="text" readonly name="iCalendarKeys.mealsOnly" value="webcal://{{ wwwRoot }}/ical/{{ mealsOnly }}.ics" />
+            <input class="ical" type="text" readonly name="iCalendarKeys.mealsOnly" value="webcal://{{ wwwRoot }}/ical/{{ mealsOnly }}.ics" />
         </div>       
 
         <div>
             <label>{{$ "WorkoutsAndMeals" }}</label>
-            <input type="text" readonly name="iCalendarKeys.workoutsAndMeals" value="webcal://{{ wwwRoot }}/ical/{{ workoutsAndMeals }}.ics" />
+            <input class="ical" type="text" readonly name="iCalendarKeys.workoutsAndMeals" value="webcal://{{ wwwRoot }}/ical/{{ workoutsAndMeals }}.ics" />
         </div>
 
         <div>{{$ "ICalHelpText" }}</div>

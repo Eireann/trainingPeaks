@@ -21,6 +21,11 @@
         @extend input[type="text"];
     }
 
+    select
+    {
+        width: 300px;
+    }
+
     .recurringPayments, .paymentHistory
     {
         &:not(.empty)

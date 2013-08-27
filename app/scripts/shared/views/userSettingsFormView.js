@@ -1,6 +1,8 @@
 define(
 [
     "underscore",
+    "setImmediate",
+    "jquerySelectBox",
     "TP",
     "shared/data/athleteTypes",
     "shared/data/countriesAndStates",
@@ -9,6 +11,8 @@ define(
 ],
 function(
     _,
+    setImmediate,
+    jquerySelectBox,
     TP,
     athleteTypes,
     countriesAndStates,
@@ -55,7 +59,7 @@ function(
 
         events:
         {
-            "change input select": "onChange"
+            "click .ical": "onICalFocus"
         },
 
         initialize: function()
@@ -66,6 +70,11 @@ function(
         {
             FormUtility.applyValuesToForm(this.$el, this.model, { filterSelector: "[data-modelname=user]" });
             FormUtility.applyValuesToForm(this.$el, this.model.getAthleteSettings(), { filterSelector: "[data-modelname=athlete]" });
+            var self = this;
+            setImmediate(function()
+            {
+                self.$("select").selectBoxIt();
+            });
         },
 
         serializeData: function()
@@ -77,12 +86,18 @@ function(
                 states: countriesAndStates.states,
                 hours: hours,
                 timeZones: theMarsApp.timeZones.get("zonesWithLabels"),
-                iCalendarKeys: this.model.getAthleteSettings().get("iCalendarKeys")
+                iCalendarKeys: this.model.getAthleteSettings().get("iCalendarKeys"),
+                wwwRoot: theMarsApp.apiConfig.wwwRoot
             });
 
             data.iCalendarKeys.wwwRoot = theMarsApp.apiConfig.wwwRoot.replace("http://","");
 
             return data;
+        },
+
+        onICalFocus: function(e)
+        {
+            $(e.target).select();
         },
 
         _save: function()
