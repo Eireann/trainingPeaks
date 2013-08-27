@@ -38,11 +38,11 @@
 
     <div class="row">
         <label>{{$ "Gender" }}</label>
-        <label class="gender">
+        <label class="radioButtonRow genderRadioButtonRow">
             <input data-modelname="user" type="radio" readonly name="gender" value="m"/>
             Male
         </label>
-        <label class="gender">
+        <label class="radioButtonRow genderRadioButtonRow">
             <input data-modelname="user" type="radio" readonly name="gender" value="f"/>
             Female
         </label>
@@ -103,31 +103,31 @@
         <label class="textCopy small">{{ userType }}</label>
     </div>
 
-    <div>
+    <div class="row">
         <label>{{$ "Units" }}</label>
-        <label>
+        <label class="radioButtonRow">
             <input data-modelname="user" type="radio" readonly name="units" value="1" />
             English
         </label>
-        <label>
+        <label class="radioButtonRow">
             <input data-modelname="user" type="radio" readonly name="units" value="2" />
             Metric
         </label>
     </div>
 
-    <div>
+    <div class="row">
         <label>{{$ "DateFormat" }}</label>
-        <label>
+        <label class="radioButtonRow">
             <input data-modelname="user" type="radio" readonly name="dateFormat" value="mdy" />
             MM/DD/YY
         </label>
-        <label>
+        <label class="radioButtonRow">
             <input data-modelname="user" type="radio" readonly name="dateFormat" value="dmy" />
             DD/MM/YY
         </label>
     </div>
 
-    <div>
+    <div class="row">
         <label>{{$ "TimeZone" }}</label>
         <select data-modelname="user" name="timeZone" >
         {{#each timeZones }}
@@ -138,51 +138,52 @@
 
 
     {{#with iCalendarKeys }}
-        <div class="title">{{$ "CalendarSync" }}</div>
+        <h3 class="title accountSettings subheadbold">{{$ "CalendarSync" }}</h3>
 
-        <div>
+        <div class="row">
             <label>{{$ "WorkoutsOnly" }}</label>
-            <input class="ical" type="text" readonly name="iCalendarKeys.workoutsOnly" value="webcal://{{ wwwRoot }}/ical/{{ workoutsOnly }}.ics" />
+            <input class="ical" type="text" readonly name="iCalendarKeys.workoutsOnly" value="webcal://{{ wwwRoot }}/ical/{{ workoutsOnly }}.ics"/>
         </div>
      
-        <div>
+        <div class="row">
             <label>{{$ "MealsOnly" }}</label>
             <input class="ical" type="text" readonly name="iCalendarKeys.mealsOnly" value="webcal://{{ wwwRoot }}/ical/{{ mealsOnly }}.ics" />
         </div>       
 
-        <div>
+        <div class="row">
             <label>{{$ "WorkoutsAndMeals" }}</label>
             <input class="ical" type="text" readonly name="iCalendarKeys.workoutsAndMeals" value="webcal://{{ wwwRoot }}/ical/{{ workoutsAndMeals }}.ics" />
         </div>
 
-        <div>{{$ "ICalHelpText" }}</div>
+        <p class="small">{{$ "ICalHelpText" }}</p>
     {{/with}}
 
-    <div class="title">{{$ "EmailOptions" }}</div>
+    <h3 class="subheadbold title accountSettings">{{$ "EmailOptions" }}</h3>
 
-    <div>
-        <label><input value="true" data-modelname="user" type="checkbox" name="settings.account.enablePrivateMessageNotifications"> {{$ "emailPMNotificationSetting" }}</label>
+    <div class="row">
+        <label class="checkBoxRow"> {{$ "emailPMNotificationSetting" }}<input value="true" data-modelname="user" type="checkbox" name="settings.account.enablePrivateMessageNotifications"> </label>
     </div>
 
-    <div>
-        <label><input value="true" data-modelname="athlete" type="checkbox" name="enableWorkoutCommentNotification"> {{$ "postActivityNotificationSetting" }}</label>
+    <div class="row">
+        <label class="checkBoxRow"> {{$ "postActivityNotificationSetting" }}<input value="true" data-modelname="athlete" type="checkbox" name="enableWorkoutCommentNotification"> </label>
     </div>
 
-    <div>
-        <label><input value="true" data-modelname="athlete" type="checkbox" name="enableVirtualCoachEmails"> {{$ "plannedWorkoutsNotificationSetting" }}</label>
+    <div class="row">
+        <label class="checkBoxRow">{{$ "plannedWorkoutsNotificationSetting" }}<input value="true" data-modelname="athlete" type="checkbox" name="enableVirtualCoachEmails"></label>
     </div>
 
-    <div>
-        <label>{{$ "DeliveryTime "}}</label>
+    <div class="row">
+        <label>{{$ "deliveryTime"}}</label>
         <select data-modelname="athlete" name="virtualCoachEmailHour" >
         {{#each hours}}
             <option value="{{ data }}">{{ label }}</option>
         {{/each}}
         </select>
-        <div>{{$ "plannedWorkoutsNotificationTimeHelpText" }}</div>
     </div>
+    
+    <p class="small deliveryTimeHelpText">{{$ "plannedWorkoutsNotificationTimeHelpText" }}</p>
 
-    <div>
-        <label><input data-modelname="user" name="settings.account.allowMarketingEmails" type="checkbox"> {{$ "newsletterNotificationSetting" }}</label>
+    <div class="row">
+        <label class="checkBoxRow"><input data-modelname="user" name="settings.account.allowMarketingEmails" type="checkbox"> {{$ "newsletterNotificationSetting" }}</label>
     </div>
 

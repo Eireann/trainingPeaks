@@ -3,14 +3,14 @@
 {
     padding: 12px;
     max-width: 800px;
-    max-height: 600px;
+    max-height: 500px;
 
     label
     {
         float: left;   
         padding: 4px 5px 0 0; 
-        width: 100px;
-        max-width: 100px;
+        width: 110px;
+        max-width: 110px;
         text-align: right;
     }
             
@@ -23,6 +23,22 @@
         color: $TPGrey3;
     }
 
+    input[type="radio"]
+    {
+        width: 20px;
+        margin: -4px 0 0 0;
+    }
+
+    input[type="checkbox"]
+    {
+        width: 20px;
+        margin: -4px 0 0 0;
+    }
+
+    p
+    {
+        margin: 0 15px;
+    }
     select
     {
         width: 300px;
@@ -53,24 +69,22 @@
         margin-bottom: 10px;
     }
 
-    .gender
+    .radioButtonRow
     {
         text-align: left;
         padding-left: 5px;
-        width: 75px;
+    }
 
-        input[type="radio"]
-        {
-            width: 20px;
-            margin: -4px 0 0 0;
-        }
+    .genderRadioButtonRow
+    {
+        width: 75px;
     }
 
     .profilePicture
     {
         max-height: 200px;
         max-width: 200px;
-        margin-left: 100px;
+        margin-left: 110px;
     }
 
     .accountSettings
@@ -80,8 +94,34 @@
 
     .textCopy
     {
-        padding-top: 4px; 
+        text-align: left;
     }
 
+    .checkBoxRow
+    {
+        max-width: 350px;
+        width: 350px;
+        text-align: left;
+        margin-left: 50px;
+    }
+
+    .deliveryTimeHelpText
+    {
+        margin-bottom: 10px;
+    }
+
+    .nopaymentText
+    {
+        margin-left: 5px;
+    }
+
+    .ical
+    {
+        width: 270px;
+    }
 }
 
+.closeIcon
+{
+    margin: 5px 0 0 0 !important;
+}
