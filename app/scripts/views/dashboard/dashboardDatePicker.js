@@ -20,8 +20,7 @@ function(
 {
     return TP.ItemView.extend(
     {
-        tagName: "div",
-        className: "dashboardDatePicker",
+        // className: "dashboardDatePicker",
         includeGlobalOption: true,
 
         template:
@@ -32,7 +31,7 @@ function(
 
         initialize: function(options)
         {
-            this.settingsKey = options.settingsKey ? options.settingsKey + ".dateOptions" : "dateOptions";
+            this.settingsKey = options.key || (options.settingsKey ? options.settingsKey + ".dateOptions" : "dateOptions");
 
             if(options.hasOwnProperty("includeGlobalOption"))
             {
@@ -149,6 +148,26 @@ function(
             this.$("input.startDate").datepicker("option", "maxDate", endDate);
             this.$("input.endDate").datepicker("option", "minDate", startDate);
 
+        },
+
+        enable: function()
+        {
+            var self = this;
+            setImmediate(function()
+            {
+                self.$("select.dateOptions").selectBoxIt("enable");
+                self.$("input").attr("disabled", false);
+            });
+        },
+
+        disable: function()
+        {
+            var self = this;
+            setImmediate(function()
+            {
+                self.$("select.dateOptions").selectBoxIt("disable");
+                self.$("input").attr("disabled", true);
+            });
         }
 
     });

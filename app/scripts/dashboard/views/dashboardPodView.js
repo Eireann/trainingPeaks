@@ -39,11 +39,6 @@ function(
 
             _.bindAll(this, "_onHoverToolTip", "_renderFlotChart", "waitingOff");
 
-            // TODO: watch for title changes
-
-            // TODO: where should data manager go
-            //this.dataManager = options && options.dataManager ? options.dataManager : new DataManager();
-
             this.listenTo(this.model, "change:title", _.bind(this._onChartTitleChange, this));
             
             //trigger redraw instead of dashboardDatesChange
@@ -103,6 +98,8 @@ function(
             if(!chartOptions)
             {
                 this.$el.addClass("noData");
+                this.$(".xaxisLabel").text("");
+                this.$(".yaxisLabel").text("");
             }
             else
             {
@@ -113,8 +110,35 @@ function(
                     {
                         chartOptions.flotOptions.tooltipOpts.onHover = this._onHoverToolTip;
                     }
+
                     this.plot = $.plot(this.ui.chartContainer, chartOptions.dataSeries, chartOptions.flotOptions);
+
+                    var xaxisOpts = chartOptions.flotOptions.xaxis;
+                    this.$(".xaxisLabel").text(xaxisOpts && xaxisOpts.label || "");
+
+                    var yaxisOpts = chartOptions.flotOptions.yaxis;
+                    var yaxesOpts = chartOptions.flotOptions.yaxes;
+                    if (yaxisOpts)
+                    {
+                        this.$(".yaxisLabel.left").text(yaxisOpts && yaxisOpts.label || "");
+                    }
+                    else if (yaxesOpts)
+                    {
+                        this.$(".yaxisLabel.left").text(yaxesOpts && yaxesOpts[0] && yaxesOpts[0].label || "");
+                        this.$(".yaxisLabel.right").text(yaxesOpts && yaxesOpts[1] && yaxesOpts[1].label || "");
+                    }
+
+                    this.ui.chartContainer.bind("plotclick", _.bind(this._onPlotClick, this));
                 }
+            }
+        },
+
+        _onPlotClick: function(event, position, item)
+        {
+            var onClickView = this.model.createItemDetailView(item);
+            if(onClickView)
+            {
+                onClickView.render();
             }
         },
 

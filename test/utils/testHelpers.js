@@ -84,11 +84,11 @@ function(_, $, Backbone, TP, xhrData, app)
             if (options.success)
                 ajaxDeferred.done(options.success);
 
-            this.fakeAjaxRequests[options.url] = {
+            this.fakeAjaxRequests.push({
                 url: options.url,
                 jqXhr: ajaxDeferred,
                 options: options
-            };
+            });
 
             //console.log("Fake request: " + options.type + " " + options.url);
             //console.log(options);
@@ -180,7 +180,7 @@ function(_, $, Backbone, TP, xhrData, app)
                 //console.log("testHelpers.hasRequest or testHelpers.resolveRequest, with a null http verb, will be deprecated soon");
             }
             var pattern = new RegExp(urlPattern);
-            return _.find(_.values(this.fakeAjaxRequests), function(req)
+            return _.find(this.fakeAjaxRequests, function(req)
             {
                 if(pattern.test(req.url) && (!httpVerb || req.options.type === httpVerb))
                 {
@@ -196,7 +196,7 @@ function(_, $, Backbone, TP, xhrData, app)
         findAllRequests: function(httpVerb, urlPattern)
         {
             var pattern = new RegExp(urlPattern);
-            return _.filter(_.values(this.fakeAjaxRequests), function(req)
+            return _.filter(this.fakeAjaxRequests, function(req)
             {
                 if(pattern.test(req.url) && (!httpVerb || req.options.type === httpVerb))
                 {
@@ -211,7 +211,7 @@ function(_, $, Backbone, TP, xhrData, app)
 
         clearRequests: function()
         {
-            this.fakeAjaxRequests = {};
+            this.fakeAjaxRequests = [];
         },
 
         setupFakeAjax: function()
@@ -225,7 +225,7 @@ function(_, $, Backbone, TP, xhrData, app)
             }
 
             Backbone.ajax = this.fakeAjax;
-            this.fakeAjaxRequests = {};
+            this.fakeAjaxRequests = [];
         },
 
         removeFakeAjax: function()

@@ -77,6 +77,16 @@ function(
 
         saveOnModelChange: function()
         {
+            // if this change was triggered by a fetch, don't save
+            if(arguments.length === 2)
+            {
+                var options = arguments[1];
+                if(options && options.xhr)
+                {
+                    return;
+                }
+            }
+
             if (!_.isEmpty(this.model.changed))
             {
                 // The model properties we are checking for here are not bound via StickIt, so

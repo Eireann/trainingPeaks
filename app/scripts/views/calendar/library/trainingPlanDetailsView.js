@@ -3,12 +3,15 @@ define(
     "underscore",
     "jqueryui/datepicker",
     "jquerySelectBox",
+    "jqueryHtmlClean",
     "setImmediate",
     "TP",
     "models/commands/applyTrainingPlan",
     "models/commands/removeTrainingPlan",
     "views/userConfirmationView",
+    "./trainingPlanFullDescriptionView",
     "utilities/trainingPlan/trainingPlan",
+    "scripts/helpers/multilineEllipsis",
     "hbs!templates/views/confirmationViews/unapplyConfirmationView",
     "hbs!templates/views/calendar/library/applyTrainingPlanErrorView",
     "hbs!templates/views/calendar/library/trainingPlanDetailsView"
@@ -17,12 +20,15 @@ function(
     _,
     datepicker,
     jquerySelectBox,
+    jqueryHtmlClean,
     setImmediate,
     TP,
     ApplyTrainingPlanCommand,
     RemoveTrainingPlanCommand,
     UserConfirmationView,
+    trainingPlanFullDescriptionView,
     trainingPlanUtility,
+    multilineEllipsis,
     deleteConfirmationTemplate,
     trainingPlanErrorTemplate,
     trainingPlanDetailsViewTemplate
@@ -48,7 +54,8 @@ function(
             "click .apply": "onApply",
             "change #applyDateType": "updateDateInputOptions",
             "click #closeIcon": "close",
-            "click .removePlan": "confirmDeleteAppliedPlan"
+            "click .removePlan": "confirmDeleteAppliedPlan",
+            "click .more": "moreClicked"
         },
 
         initialize: function()
@@ -106,6 +113,8 @@ function(
             data.applyDate = moment().format(this.dateFormat);
             data.details = this.model.details.toJSON();
             data.details.weekcount = Math.ceil(data.details.dayCount / 7);
+            data.details.totalDuration = 0;
+            data.details.totalDistance = 0;
 
             if (data.details.planApplications && !data.details.planApplications.length)
             {
@@ -115,12 +124,32 @@ function(
             var plannedWorkoutTypeDurations = [];
             _.each(data.details.plannedWorkoutTypeDurations, function(workoutTypeDetails)
             {
-                if(workoutTypeDetails.duration || workoutTypeDetails.distance)
+                if (workoutTypeDetails.duration || workoutTypeDetails.distance)
                 {
+                    workoutTypeDetails.duration = Math.ceil(workoutTypeDetails.duration / data.details.weekcount);
+                    workoutTypeDetails.distance = Math.ceil(workoutTypeDetails.distance / data.details.weekcount);
+                    data.details.totalDuration += workoutTypeDetails.duration;
+                    data.details.totalDistance += workoutTypeDetails.distance;
+
                     plannedWorkoutTypeDurations.push(workoutTypeDetails);
                 }
             });
             data.details.plannedWorkoutTypeDurations = plannedWorkoutTypeDurations.length ? plannedWorkoutTypeDurations : null;
+
+            if (data.details.description)
+            {
+                // strip most tags
+                var cleanText = $.htmlClean(data.details.description, { allowedTags: ["p", "br", "li", "ul", "ol"] });
+
+                // wrap plain text in paragraphs, at the top level only
+                var htmlContainer = $("<div>").html(cleanText);
+                htmlContainer.contents().filter(function(){return this.nodeType === 3;}).wrap("<p></p>");
+
+                // remove line break tags, at the top level only
+                htmlContainer.contents().filter("br").remove(); 
+
+                data.details.descriptionText = htmlContainer.html();
+            }
 
             return data;
         },
@@ -306,6 +335,23 @@ function(
         getEndDayOfWeekIndex: function()
         {
             return this.model.details.has("endDate") ? moment(this.model.details.get("endDate")).day() : 0;
+        },
+
+        moreClicked: function ()
+        {
+            if (this.fullDescriptionView)
+            {
+                return;
+            }
+            this.fullDescriptionView = new trainingPlanFullDescriptionView({ model: this.model });
+            this.fullDescriptionView.on("close", this.onDetailsClose, this);
+            this.fullDescriptionView.render().left(this.$el.offset().left + this.$el.width() + 10);
+        },
+
+        onDetailsClose: function ()
+        {
+            this.fullDescriptionView.off("close", this.onDetailsClose, this);
+            this.fullDescriptionView = null;
         }
 
     });

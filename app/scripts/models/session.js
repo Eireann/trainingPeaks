@@ -49,7 +49,7 @@ function (_, TP, UserModel)
                 username: options.username,
                 password: options.password,
                 response_type: "token",
-                scope: "fitness clientevents users athletes exerciselibrary images groundcontrol baseactivity plans sysinfo"
+                scope: "fitness clientevents users athletes exerciselibrary images groundcontrol baseactivity plans sysinfo metrics"
             };
 
             this.username = options.username;

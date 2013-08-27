@@ -48,7 +48,7 @@ function(
             var self = this;
             setImmediate(function()
             {
-                self.$("select.summaryType").selectBoxIt({dynamicPositioning: false});
+                self.$("select.summaryType").selectBoxIt();
             });
         },
 

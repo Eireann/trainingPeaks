@@ -27,7 +27,7 @@
                 margin:9px 0 0 10px;
             }
             
-            #closeIcon {
+            #closeIcon, .closeIcon {
                 margin:8px 5px 0 10px;
             }
         }
@@ -44,7 +44,7 @@
             }
         }
 
-        #closeIcon {
+        #closeIcon, .closeIcon {
             cursor:pointer;
             margin:0 5px 0 10px;
             width:17px;
@@ -58,7 +58,7 @@
 
         @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
             #menuIcon,
-            #closeIcon {
+            #closeIcon, .closeIcon {
                 background-image:url(../../assets/images/charts/sprite-buttons-chart-modal@2x.png);
                 background-size: 68px 34px;
             }

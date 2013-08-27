@@ -9,7 +9,6 @@ function (Handlebars, multilineEllipsis)
     var stripHtml = function(html, maxLength)
     {
         var text = multilineEllipsis($("<div>").html(html).text(), maxLength);
-
         return text;
     };
 

@@ -4,16 +4,16 @@
     "TP",
     "models/workoutFileData",
     "views/userConfirmationView",
-    "views/quickView/qvMain/qvFileUploadMenuView",
-    "hbs!templates/views/quickView/fileUploadErrorView"
+    "views/workout/workoutFileUploadView",
+    "views/quickView/qvMain/qvFileUploadMenuView"
 ],
 function (
     _,
     TP,
     WorkoutFileData,
     UserConfirmationView,
-    QVFileUploadMenuView,
-    fileUploadErrorTemplate
+    WorkoutFileUploadView,
+    QVFileUploadMenuView
 )
 {
     var workoutQuickViewFileUploads =
@@ -33,9 +33,14 @@ function (
 
         initializeFileUploads: function()
         {
-            _.bindAll(this, "onUploadDone", "onUploadFail");
             _.extend(this.ui, this.fileUploadUi);
             _.extend(this.events, this.fileUploadEvents);
+        },
+        setupFileUploadView: function()
+        {
+            this.workoutFileUploadView = new WorkoutFileUploadView({el: this.ui.fileinput, workoutModel: this.model}); 
+            this.listenTo(this.workoutFileUploadView, "uploadDone", this.onUploadDone, this);
+            this.listenTo(this.workoutFileUploadView, "uploadFailed", this.onUploadFail, this);
         },
 
         watchForWorkoutFiles: function()
@@ -97,36 +102,13 @@ function (
 
             this.waitingOn();
             this.isNew = this.model.get("workoutId") ? false : true;
-
-            var self = this;
-            var saveDeferral = this.model.save();
-
-            var fileList = this.ui.fileinput[0].files;
-
-            var workoutReader = new TP.utils.workout.FileReader(fileList[0]);
-            var readDeferral = workoutReader.readFile();
-            $.when(saveDeferral, readDeferral).done(function(saveArgs, readArgs)
-            {
-                var fileName = readArgs[0];
-                var dataAsString = readArgs[1];
-                self.uploadedFileDataModel = new WorkoutFileData({ workoutId: self.model.get("workoutId"), workoutDay: self.model.get("workoutDay"), startTime: self.model.get("startTime"), fileName: fileName, data: dataAsString });
-                self.uploadedFileDataModel.save().done(self.onUploadDone).fail(self.onUploadFail);
-            });
         },
 
-        onUploadDone: function()
+        onUploadDone: function(workoutModelJson)
         {
             this.waitingOff();
 
-            var updatedWorkoutModel = this.uploadedFileDataModel.get("workoutModel");
-
-            if (!updatedWorkoutModel)
-            {
-                this.displayUploadError();
-                return;
-            }
-
-            this.model.set(updatedWorkoutModel);
+            this.model.set(workoutModelJson);
             this.model.get("details").fetch();
             this.model.trigger("deviceFileUploaded");
 
@@ -137,12 +119,6 @@ function (
         onUploadFail: function()
         {
             this.waitingOff();
-        },
-
-        displayUploadError: function()
-        {
-            this.errorMessageView = new UserConfirmationView({ template: fileUploadErrorTemplate });
-            this.errorMessageView.render();
         }
 
     };

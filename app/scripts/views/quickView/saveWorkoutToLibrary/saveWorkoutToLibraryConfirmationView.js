@@ -44,9 +44,11 @@ function(TP, SaveWorkoutToLibraryCommand, AfterSaveView, saveWorkoutToLibraryTem
                 else
                     self.$("#confirmationOk").attr("disabled", "disabled");
 
+                self.$("#selectLibrary").val(self.selectedLibraryId);
+
                 self.$("#selectLibrary").selectBoxIt(
                 {
-                dynamicPositioning: false
+                    dynamicPositioning: false
                 });
             });
         },
@@ -93,11 +95,13 @@ function(TP, SaveWorkoutToLibraryCommand, AfterSaveView, saveWorkoutToLibraryTem
         initialize: function(options)
         {
             this.libraries = options && options.libraries ? options.libraries : new TP.Collection();
+            this.selectedLibraryId = this.libraries.getDefaultLibraryId();
         },
 
         serializeData: function()
         {
             var data = this.model.toJSON();
+            
             data.libraries = [];
 
             var userId = theMarsApp.user.get("userId");

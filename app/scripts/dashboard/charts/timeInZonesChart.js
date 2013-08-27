@@ -59,7 +59,8 @@ function(
 
         updateChartTitle: function()
         {
-            var title = TP.utils.translate("Time In " + this._getChartName() + " Zones: ") + this.buildWorkoutTypesTitle(this.get("workoutTypeIds"));
+            var title = TP.utils.translate("Time In " + this._getChartName() + " Zones: ");
+            title += TP.utils.workout.types.getListOfNames(this.get("workoutTypeIds"), "All Workout Types");
             this.set("title", title);
         },
 
@@ -72,7 +73,7 @@ function(
             if(flotPoints && flotPoints.length)
             {
                 var series = this._buildFlotDataSeries(flotPoints, chartColor);
-                var options = this._buildFlotChartOptions();
+                var options = this._buildFlotChartOptions(flotPoints.length);
                 return { dataSeries: series, flotOptions: options };
             } else {
                 return null;
@@ -135,7 +136,8 @@ function(
             var maxZoneWithMinutes = 0;
             for(var i = 1;i<=10;i++)
             {
-                var minutes = data["zone" + i + "Minutes"];
+                var zoneKey = "zone" + i + "Minutes";
+                var minutes = data.hasOwnProperty(zoneKey) ? data[zoneKey] : 0;
                 points.push([i, minutes]);
                 if(minutes)
                 {
@@ -173,7 +175,7 @@ function(
             return [dataSeries];
         },
 
-        _buildFlotChartOptions: function()
+        _buildFlotChartOptions: function(numberOfColumns)
         {
             var flotOptions = defaultFlotOptions.getBarOptions();
 
@@ -185,9 +187,19 @@ function(
                 }
             };
 
+            var xTicks = [];
+            for(var i = 1; i<= numberOfColumns;i++)
+            {
+                xTicks.push(i);
+            }
+            
             flotOptions.xaxis = {
-                show: false
-            };
+                tickDecimals: 0,
+                ticks: xTicks,
+                color: "transparent"
+            }; 
+
+            flotOptions.bars.align = "center";
 
             return flotOptions;
         },
@@ -196,7 +208,7 @@ function(
         {
             if(!this.get("workoutTypeIds"))
             {
-                this.set("workoutTypeIds", [], { silent: true });
+                this.set("workoutTypeIds", []);
             }
         }
 

@@ -8,7 +8,7 @@
 function (_, TP, flotFilter, chartColors)
 {
     return {
-        getMultiChannelOptions: function (onHoverHandler, xaxisType)
+        getMultiChannelOptions: function (onHoverHandler, xaxisType, workoutTypeId)
         {
             return _.extend(this.getGlobalDefaultOptions(onHoverHandler),
                 {
@@ -43,7 +43,7 @@ function (_, TP, flotFilter, chartColors)
                             tickFormatter: function (value, axis)
                             {
                                 if (typeof xaxisType !== "undefined" && xaxisType === "distance")
-                                    return TP.utils.conversion.convertToViewUnits(value, "distance") + " " + TP.utils.units.getUnitsLabel("distance");
+                                    return TP.utils.conversion.convertToViewUnits(value, "distance", null, workoutTypeId) + " " + TP.utils.units.getUnitsLabel("distance", workoutTypeId);
                                 
                                 var decimalHours = (value / (3600 * 1000));
                                 return TP.utils.datetime.format.decimalHoursAsTime(decimalHours, true, null);

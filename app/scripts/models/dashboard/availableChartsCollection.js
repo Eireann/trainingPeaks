@@ -21,6 +21,30 @@ function(
                 name: "Fitness Summary"
             },
             {
+                chartType: 8,
+                name: "Peak Power"
+            },
+            {
+                chartType: 28,
+                name: "Peak HR"
+            },
+            {
+                chartType: 29,
+                name: "Peak Cadence"
+            },
+            {
+                chartType: 30,
+                name: "Peak Speed"
+            },
+            {
+                chartType: 31,
+                name: "Peak Pace"
+            },
+            {
+                chartType: 36,
+                name: "Peak Pace by Distance"
+            },
+            {
                 chartType: 17,
                 name: "Time In HR Zones"
             },
@@ -31,6 +55,10 @@ function(
             {
                 chartType: 26,
                 name: "Time In Speed Zones"
+            },
+            {
+                chartType: 13,
+                name: "Metrics"
             }
             ]);
         }

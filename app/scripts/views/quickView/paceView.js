@@ -81,12 +81,14 @@ function(
                 bindings[minimumCssId] = {
                     observe: modelFieldName + ".minimum",
                     onGet: "formatPace",
+                    defaultValue: "00:00",
                     workoutTypeValueId: this.workoutModel.get("workoutTypeValueId")
                 };
 
                 bindings[maximumCssId] = {
                     observe: modelFieldName + ".maximum",
                     onGet: "formatPace",
+                    defaultValue: "00:00",
                     workoutTypeValueId: this.workoutModel.get("workoutTypeValueId")
                 };
 

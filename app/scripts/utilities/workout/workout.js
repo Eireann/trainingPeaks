@@ -59,6 +59,35 @@
 
             // default if no time planned
             return "ComplianceNone";
+        },
+
+        formatWorkoutTypes: function(workoutTypeIds)
+        {
+            var workoutTypeNames = [];
+
+            if (!workoutTypeIds || !workoutTypeIds.length || workoutTypeIds.length === _.keys(workoutTypes.typesById).length)
+            {
+                workoutTypeNames.push("All");
+            } else
+            {
+                _.each(workoutTypeIds, function(item, index)
+                {
+                    var intItem = parseInt(item, 10);
+                    var workoutType = intItem === 0 ? "All" : workoutTypes.getNameById(intItem);
+                    if(workoutType !== "Unknown")
+                    {
+                        workoutTypeNames.push(workoutType); 
+                    }
+
+                }, this);
+            }
+
+            var types = workoutTypeNames.join(", ");
+            if (!types)
+            {
+                types = "All";
+            }
+            return types;
         }
 
     };

@@ -24,7 +24,7 @@ function(_, TP)
         initialize: function(options)
         {
             _.bindAll(this, "_resizeContainerHeight");
-            $(window).on("resize", this._resizeContainerHeight);
+            $(window).on("resize.libraryContainer", this._resizeContainerHeight);
 
             this.views = {};
             this.buildViewOptions = options;

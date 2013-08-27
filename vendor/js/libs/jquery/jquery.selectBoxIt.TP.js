@@ -919,6 +919,11 @@
                         self._dynamicPositioning();
 
                     }
+                    else
+                    {
+                        // TP MICAH: added above/below css classes for more styling flexibility
+                        self.list.addClass("below").removeClass("above")
+                    }
 
                     // Uses `no effect`
                     if (showEffect === "none")
@@ -2348,6 +2353,8 @@
                     // Sets custom CSS properties to place the dropdown list options directly below the dropdown list
                     self.list.css("top", "auto");
 
+                    // TP MICAH: added above/below css classes for more styling flexibility
+                    self.list.addClass("below").removeClass("above")
                 }
 
                     // If there is room on the top of the viewport
@@ -2358,6 +2365,9 @@
 
                     // Sets custom CSS properties to place the dropdown list options directly above the dropdown list
                     self.list.css("top", (self.dropdown.position().top - self.list.outerHeight()));
+
+                    // TP MICAH: added above/below css classes for more styling flexibility
+                    self.list.addClass("above").removeClass("below");
 
                 }
 
@@ -2377,6 +2387,8 @@
 
                         self.list.css("top", "auto");
 
+                        // TP MICAH: added above/below css classes for more styling flexibility
+                        self.list.addClass("below").removeClass("above")
                     }
 
                         // If there is more room on the top
@@ -2388,6 +2400,8 @@
                         // Sets custom CSS properties to place the dropdown list options directly above the dropdown list
                         self.list.css("top", (self.dropdown.position().top - self.list.outerHeight()));
 
+                        // TP MICAH: added above/below css classes for more styling flexibility
+                        self.list.addClass("above").removeClass("below")
                     }
 
                 }

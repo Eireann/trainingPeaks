@@ -1,7 +1,9 @@
 ﻿<div class="dialog">
-    <div class="titleBar">{{$ "AddToLibraryConfirmationTitle" }}</div>
-    <div class="dialogContent">
+    <div class="titleBar">
+        <h2 class="modaltitle">{{$ "AddToLibraryConfirmationTitle" }}</h2>
+    </div>
 
+    <div class="dialogContent">
         <div>
             <div class="labels"><label for="exerciseTitle">{{$ "Title" }}:</label></div>
             <div class="values"><input type="text" name="exerciseTitle" id="exerciseTitle" value="{{ title }}"/></div>
@@ -10,9 +12,9 @@
         <div>
             <form class="selectForm"><label for="selectLibrary">{{$ "SelectLibrary" }}:</label>
             
-                <select name="selectLibrary" id="selectLibrary">
+                <select name="selectLibrary" id="selectLibrary" selected="{{defaultLibraryId}}">
                     {{#each libraries}}
-                    <option value="{{ exerciseLibraryId }}" {{#if selected}}selected{{/if}}>{{ libraryName }}</option>
+                    <option value="{{ exerciseLibraryId }}">{{ libraryName }}</option>
                     {{/each}}
                 </select>
             

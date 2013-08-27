@@ -58,7 +58,7 @@ function(setImmediate, TP, DataParser, ExpandoLayout, GraphView, MapView, StatsV
             this.views.lapsView = new LapsView({ model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise });
             this.views.chartsView = new ChartsView({ model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise });
             this.views.mapAndGraphResizerView = new MapAndGraphResizerView({model: this.model});
-            this.views.lapsSplitsView = new LapsSplitsView({model: this.model});
+            this.views.lapsSplitsView = new LapsSplitsView({model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise});
 
             this.layout.$el.addClass("waiting");
 
@@ -232,6 +232,7 @@ function(setImmediate, TP, DataParser, ExpandoLayout, GraphView, MapView, StatsV
                 view.on("graphleave", this.onGraphLeave, this);
                 view.on("resize", this.onViewResize, this);
                 view.on("resizerDrag", this.onResizerDrag, this);
+                view.on("requestClose", this.onRequestViewClose, this);
             }, this);
             this.on("close", this.stopWatchingViewEvents, this);
 
@@ -245,11 +246,15 @@ function(setImmediate, TP, DataParser, ExpandoLayout, GraphView, MapView, StatsV
                 view.off("graphhover", this.onGraphHover, this);
                 view.off("graphleave", this.onGraphLeave, this);
                 view.off("resizerDrag", this.onResizerDrag, this);
+                view.off("requestClose", this.onRequestViewClose, this);
                 view.on("resize", this.onViewResize, this);
             }, this);
 
         },
-
+        onRequestViewClose: function(view)
+        {
+            view.close();
+        },
         onResizerDrag: function(top)
         {
             // before and during proportion change
@@ -306,13 +311,13 @@ function(setImmediate, TP, DataParser, ExpandoLayout, GraphView, MapView, StatsV
         watchForWindowResize: function()
         {
             _.bindAll(this, "onViewResize");
-            $(window).on("resize", this.onViewResize);
+            $(window).on("resize.expando", this.onViewResize);
             this.on("close", this.stopWatchingWindowResize, this);
         },
 
         stopWatchingWindowResize: function()
         {
-            $(window).off("resize", this.onViewResize);
+            $(window).off("resize.expando", this.onViewResize);
         },
 
         onViewResize: function()

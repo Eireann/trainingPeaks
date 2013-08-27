@@ -17,13 +17,17 @@
             "helpers": "scripts/helpers",
             "utilities": "scripts/utilities",
             "dashboard": "scripts/dashboard", 
+            "shared": "scripts/shared", 
             
             // jQuery related, but not managed by bower yet ...
             "jqueryui": "../vendor/js/libs/jqueryui",
             "jqueryOutside": "../vendor/js/libs/jquery/jquery.ba-outside-events",
             "jqueryTimepicker": "../vendor/js/libs/jquery-timepicker/jquery.timepicker",
             "jqueryTextAreaResize": "../vendor/js/libs/jquery/jquery.autosize",
-            "jquerySelectBox": "../vendor/js/libs/jquery/jquery.selectBoxIt",
+            "jquerySelectBox": "../vendor/js/libs/jquery/jquery.selectBoxIt.TP",
+            "jqueryHtmlClean": "../vendor/js/libs/jquery/jquery.htmlClean.TP",
+
+            "flot": "../vendor/js/libs/flot",
 
             // Underscore & Lodash (provided by Lodash)
             "lodash": "../vendor/js/libs/lodash.TP",

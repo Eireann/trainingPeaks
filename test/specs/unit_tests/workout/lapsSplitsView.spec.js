@@ -43,8 +43,8 @@ function(moment, _, theMarsApp, TP, LapsSplitsView, WorkoutModel, detailDataLaps
 		{
 			var requiredAttrs = 
 				[
-					"Lap", "Start", "Finish", "Duration", "Moving Time", "Distance", "Average Heart Rate",
-					"Average Pace", "Average Cadence", "Calories"
+					"Lap", "Start", "End", "Duration", "Moving Duration", "Kilometers", "Avg Heart Rate",
+					"Max Heart Rate", "Avg Pace", "Cad", "Calories"
 				],
 				model = buildWorkoutModel(),
 				view = new LapsSplitsView({model: model}),
@@ -84,7 +84,7 @@ function(moment, _, theMarsApp, TP, LapsSplitsView, WorkoutModel, detailDataLaps
 			{
 				model.set({workoutTypeValueId: 3});
 				serializedData = view.serializeData();
-				expect(_.contains(serializedData.headerNames, "Normalized Power")).toBeFalsy();
+				expect(_.contains(serializedData.headerNames, "NP")).toBeFalsy();
 			});
 			it("Should format TSS label correctly", function()
 			{
@@ -92,6 +92,33 @@ function(moment, _, theMarsApp, TP, LapsSplitsView, WorkoutModel, detailDataLaps
 				serializedData = view.serializeData();
 				expect(_.contains(serializedData.headerNames, "rTSS")).toBeTruthy();
 				expect(_.contains(serializedData.headerNames, "TSS")).toBeFalsy();
+			});
+			it("Should show Average Speed for rides (as opposed to Average Pace)", function()
+			{
+				model.set({workoutTypeValueId: 2});
+				serializedData = view.serializeData();
+				expect(_.contains(serializedData.headerNames, "Avg Pace")).toBeFalsy();
+				expect(_.contains(serializedData.headerNames, "Avg Speed")).toBeTruthy();
+			});
+			it("Should show Average Pace for runs, walks, and swims (as opposed to Average Speed)", function()
+			{
+				model.set({workoutTypeValueId: 3});
+				serializedData = view.serializeData();
+				expect(_.contains(serializedData.headerNames, "Avg Pace")).toBeTruthy();
+
+				model.set({workoutTypeValueId: 13});
+				serializedData = view.serializeData();
+				expect(_.contains(serializedData.headerNames, "Avg Pace")).toBeTruthy();
+
+				model.set({workoutTypeValueId: 1});
+				serializedData = view.serializeData();
+				expect(_.contains(serializedData.headerNames, "Avg Pace")).toBeTruthy();
+			});
+			it("Should not show maximum cadence for swim workouts", function()
+			{
+				model.set({workoutTypeValueId: 1});
+				serializedData = view.serializeData();
+				expect(_.contains(serializedData.headerNames, "Max Cadence")).toBeFalsy();
 			});
 		});
 
@@ -109,34 +136,45 @@ function(moment, _, theMarsApp, TP, LapsSplitsView, WorkoutModel, detailDataLaps
 
 			checkOrder("Lap", 0, "any tss", serializedData);
 			checkOrder("Start", 1, "any tss", serializedData);
-			checkOrder("Finish", 2, "any tss", serializedData);
+			checkOrder("End", 2, "any tss", serializedData);
 			checkOrder("Duration", 3, "any tss", serializedData);
-			checkOrder("Moving Time", 4, "any tss", serializedData);
-			checkOrder("Distance", 5, "any tss", serializedData);
+			checkOrder("Moving Duration", 4, "any tss", serializedData);
+			checkOrder("Kilometers", 5, "any tss", serializedData);
 
 			setTSSsource(model, "PowerTss");
 			model.set({workoutTypeValueId: 1});
 			serializedData = view.serializeData();
-			checkOrder("Normalized Power", 7, "PowerTss", serializedData);
-			checkOrder("Intensity Factor", 8, "PowerTss", serializedData);
-			checkOrder("Average Power", 9, "PowerTss", serializedData);
-			checkOrder("Maximum Power", 10, "PowerTss", serializedData);
+			checkOrder("IF", 7, "PowerTss", serializedData);
+			checkOrder("NP", 8, "PowerTss", serializedData);
+			checkOrder("Avg Power", 9, "PowerTss", serializedData);
+			checkOrder("Max Power", 10, "PowerTss", serializedData);
 
 			setTSSsource(model, "RunningTss");
 			model.set({workoutTypeValueId: 3});
 			serializedData = view.serializeData();
-			checkOrder("Normalized Graded Pace", 7, "RunningTss", serializedData);	
-			checkOrder("Intensity Factor", 8, "RunningTss", serializedData);
-			checkOrder("Average Pace", 9, "RunningTss", serializedData);
-			checkOrder("Maximum Pace", 10, "RunningTss", serializedData);
+			checkOrder("rTSS", 6, "RunningTss", serializedData);
+			checkOrder("IF", 7, "RunningTss", serializedData);
+			checkOrder("Normalized Graded Pace", 8, "RunningTss", serializedData);	
+			checkOrder("Avg Pace", 9, "RunningTss", serializedData);
+			checkOrder("Max Pace", 10, "RunningTss", serializedData);
+			checkOrder("Avg Heart Rate", 11, "RunningTss", serializedData);
+			checkOrder("Max Heart Rate", 12, "RunningTss", serializedData);
+			checkOrder("Calories", 13, "RunningTss", serializedData);
+			checkOrder("Avg Power", 14, "RunningTss", serializedData);
+			checkOrder("Max Power", 15, "RunningTss", serializedData);
+
+			checkOrder("Elev Gain", 16, "RunningTss", serializedData);
+			checkOrder("Elev Loss", 17, "RunningTss", serializedData);
+			checkOrder("Energy", 18, "RunningTss", serializedData);
+			// min/avg/max torque would go here, but it's (intentionally) not present 
+			// in the data set so it won't be rendered
+			checkOrder("Cad", 19, "RunningTss", serializedData);
 
 			setTSSsource(model, "HeartRateTss");
 			serializedData = view.serializeData();
-			checkOrder("Intensity Factor", 7, "HeartRateTss", serializedData);
-			checkOrder("Average Heart Rate", 8, "HeartRateTss", serializedData);
-			checkOrder("Maximum Heart Rate", 9, "HeartRateTss", serializedData);
-			checkOrder("Minimum Heart Rate", 10, "HeartRateTss", serializedData);
-
+			checkOrder("IF", 7, "HeartRateTss", serializedData);
+			checkOrder("Avg Heart Rate", 8, "HeartRateTss", serializedData);
+			checkOrder("Max Heart Rate", 9, "HeartRateTss", serializedData);
 		});
 
 		describe("Rendering", function()
@@ -148,9 +186,9 @@ function(moment, _, theMarsApp, TP, LapsSplitsView, WorkoutModel, detailDataLaps
 				view = new LapsSplitsView({model: model});
 				view.render();
 			});
-			it("Should be a table with table rows", function()
+			it("Should have a table with table rows", function()
 			{
-				expect(view.$el.is('table')).toBeTruthy();
+				expect(view.$el.find('table').length).toBeTruthy();
 				expect(view.$el.find('th').length).toBeGreaterThan(10); // every workout has at least 10 fields
 				expect(view.$el.find('tr').length).toBe(7); // rows including header row
 			});

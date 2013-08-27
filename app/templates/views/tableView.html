@@ -1,12 +1,14 @@
-<tr>
+<table class="frameworkTable">
+	<tr>
 	{{#each headerNames}}
 		<th>{{ this }}</th>
 	{{/each}}
-</tr>
-{{#each rowData}}
-	<tr>
-		{{#each this}}
-			<td> {{ this }}</td>
-		{{/each}}
 	</tr>
-{{/each}}
+	{{#each rowData}}
+		<tr>
+			{{#each this}}
+				<td> {{ this }}</td>
+			{{/each}}
+		</tr>
+	{{/each}}
+</table>

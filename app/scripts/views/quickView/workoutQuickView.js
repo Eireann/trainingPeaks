@@ -392,6 +392,7 @@ function(
         {
             this.model.on("deviceFileUploaded", this.fetchDetailData, this);
             this.on("close", this.stopWatchingFileUploads, this);
+            this.setupFileUploadView();
         },
 
         fetchDetailData: function()

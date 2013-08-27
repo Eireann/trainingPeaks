@@ -16,10 +16,20 @@
 
     .planTitle
     {
-        margin-top: 30px;
+        margin-top: 12px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+    }
+
+    .small
+    {
+        font-size: 12px;
+    }
+
+    .smallbold
+    {
+        font-size: 12px;
     }
 
     .planInfo
@@ -44,13 +54,21 @@
     .planDescription
     {
         margin-top: 30px;
+        max-height: 100px;
+        overflow: auto;
+        @include nice-scrollbar;
+    
+        br
+        {
+            line-height: 25px;
+        }
     }
 
     .planDetails
     {
-        padding-top: 15px;
+        padding: 15px 0 3px 0;
 
-        div
+        h3
         {
             float: left;
             width: 90px;
@@ -71,31 +89,36 @@
     {
         padding-top: 15px;
 
-        .plannedWorkoutTypes
+        div
         {
-            padding: 2px 0 0 5px;
-            height: 16px;
+            padding: 3px 0 0 5px;
+            height: 20px;
+        }
 
-            span
-            {
-                float: left;
-                width: 90px;
-            }
+        span
+        {
+            float: left;
+            width: 90px;
+        }
 
-            .duration
-            {
-                padding-left: 24px
-            }
+        .duration
+        {
+            padding-left: 24px
+        }
 
-            .distance
-            {
-                padding-left: 12px;
-            }
+        .distance
+        {
+            padding-left: 12px;
         }
 
         .highlightRow
         {
             background-color: $TPGrey1;
+        }
+
+        .planTotals
+        {
+            border-top: 1px solid $TPGrey2;
         }
     }
 
@@ -115,12 +138,12 @@
         overflow: hidden;
 
         margin-top: 5px;
-        margin-bottom: 7px;
+        margin-bottom: 6px;
         width: 100%;
 
         .on
         {
-            padding: 4px 5px 0 5px;
+            padding: 4px 8px 0 8px;
             float: left;
         }
 
@@ -136,7 +159,7 @@
 
         #applyDate
         {
-            width: 70px;
+            width: 78px;
             padding: 0;
             height: 22px;
             float: left;
@@ -149,8 +172,9 @@
             display: block;
             float: left;
             height: 22px;
-            margin-left: 5px;
+            margin-left: 8px;
             width: 50px;
+            font-size: $fontSizeSmall;
         }
     }
 
@@ -165,25 +189,30 @@
     .appliedPlans
     {
         margin-top: 5px;
-        margin-bottom:10px;
+        margin-bottom:9px;
     }
 
     .appliedPlan
     {
         margin-bottom: 10px;
 
-        // so it inherits the height of it's floated children
+        // so it inherits the height of its floated children
         overflow: hidden;
 
         .removePlan
         {
             float: right;
             margin-right: 10px;
-            margin-left: 20px;
-            color: $TPBlue;
+            color: $TPLinkBlue;
             padding: 0px;
             cursor: pointer;
+            
+            &:hover {
+                color:$TPLinkBlueHover;
+            }
         }
+
+
 
         .appliedDates
         {
@@ -202,7 +231,7 @@
 
     .selectboxit-container .selectboxit 
     {
-        width: 100px !important;
+        width: 140px !important;
     }
 
     input[type=radio] 
@@ -210,4 +239,32 @@
         float: left;
         margin: 4px 5px 0 5px;
     }  
+
+    .more
+    {
+        margin-top: -10px;
+        margin-left: 275px;
+        color: $TPBlue;
+        font-size: 11px;
+        cursor: pointer;
+    }
+}
+
+
+.fullDescription
+{
+    background-color: white;
+    min-width: 300px;
+    padding: 15px;
+    position: absolute;
+
+    #closeIcon
+    {
+        margin: -10px -15px 0 10px;
+    }
+
+    .descriptionBody
+    {
+      overFlow: auto;  
+    }
 }

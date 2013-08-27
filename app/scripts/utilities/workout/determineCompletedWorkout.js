@@ -15,7 +15,7 @@ function(moment, datetime)
         }
 
         // not completed in future ...
-        if (moment(workout.workoutDay).format(datetime.shortDateFormat) > moment().format(datetime.shortDateFormat))
+        if (workout.workoutDay && moment(workout.workoutDay).format(datetime.shortDateFormat) > moment().format(datetime.shortDateFormat))
         {
             return false;
         }

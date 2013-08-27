@@ -140,7 +140,7 @@ function(
                 toolTipPositioner.updatePosition($tooltipEl, self.plot);
             };
             
-            this.flotOptions = defaultFlotOptions.getMultiChannelOptions(onHoverHandler, this.currentAxis);
+            this.flotOptions = defaultFlotOptions.getMultiChannelOptions(onHoverHandler, this.currentAxis, this.model.get("workoutTypeValueId"));
 
             this.flotOptions.selection.mode = "x";
             this.flotOptions.yaxes = yaxes;
@@ -182,7 +182,7 @@ function(
 
         overlayGraphToolbar: function()
         {
-            this.graphToolbar = new GraphToolbarView({ dataParser: this.dataParser });
+            this.graphToolbar = new GraphToolbarView({ dataParser: this.dataParser, model: this.model });
 
             this.graphToolbar.on("filterPeriodChanged", this.applyFilter, this);
             this.graphToolbar.on("enableSeries", this.enableSeries, this);

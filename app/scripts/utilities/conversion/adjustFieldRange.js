@@ -20,7 +20,8 @@ function ()
         heartrate: 255,
         temp: 999,
         IF: 99,
-        energy: 99999
+        energy: 99999,
+        cm: 999
     };
 
     var minimums = {

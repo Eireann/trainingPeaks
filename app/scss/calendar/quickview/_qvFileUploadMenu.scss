@@ -53,19 +53,15 @@
 
 
     .details {
-        margin: 14px 0 10px 0;
+        margin: 12px 0 9px 0;
         
         color: $TPGrey3;
 
         p {
             margin-bottom: 5px;
-            white-space: pre-wrap;
+            // white-space: pre-wrap;
             font-size: $fontSizeSmall;
             line-height: $fontSizeXLarge;
-        }
-
-        .bigButtons {
-            text-align:center;
         }
 
         @include buttons(0px, 150px, $fontSizeSmall);

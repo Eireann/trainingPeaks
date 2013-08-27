@@ -37,6 +37,7 @@ function()
                 pace: { light: "#1b82ce", dark: "#125689" },
                 //elevation: { light: "rgba(202, 233, 251, 0.5)", dark: "rgba(110, 150, 185, 0.6)" }
                 elevation: { light: "#cae9fb", dark: "#6e96b9" },
+                cadence: {light: "#ffcc00", dark:"#ffa500" },
                 workoutType:
                     {
                         bike: { light: "#8820d1", dark: "#561484" },
@@ -55,6 +56,15 @@ function()
                         dayoff: { light: "#a5b3b6", dark: "#84979c" } 
                     }
             },
+
+        peaks:
+        {
+            heartRate: { light: "rgba(236, 65, 43, 0.6)", dark: "rgba(184, 36, 16, 0.6)" },
+            power: { light: "rgba(136, 10, 221, 0.6)", dark: "rgba(90, 7, 146, 0.6)" },
+            pace: { light: "rgba(27, 130, 206, 0.6)", dark: "rgba(18, 86, 137, 0.6)" },
+            cadence: { light: "rgba(255, 204, 0, 0.6)", dark: "rgba(255, 165, 0, 0.6)" },
+            comparison: { light: "rgba(191, 189, 190, 0.8)", dark: "rgba(136, 135, 136, 0.8)" }
+        },
 
         chartSelection: "#e61101",
 

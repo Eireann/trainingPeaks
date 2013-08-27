@@ -83,7 +83,7 @@ function (_, moment, TP, WorkoutDetailsModel, WorkoutDetailDataModel)
             "lastModifiedDate": null,
             "startTime": null,
             "startTimePlanned": null,
-            
+            "date": null,
             "details": null,
             "detailData": null
         },
@@ -135,7 +135,15 @@ function (_, moment, TP, WorkoutDetailsModel, WorkoutDetailDataModel)
 
         getCalendarDay: function()
         {
-            return moment(this.get("workoutDay")).format(TP.utils.datetime.shortDateFormat);
+            var workoutDay = this.get("workoutDay");
+            if(workoutDay)
+            {
+                return moment(workoutDay).format(TP.utils.datetime.shortDateFormat);
+            }
+            else
+            {
+                return "";
+            }
         },
 
         _createSortDate: function()
