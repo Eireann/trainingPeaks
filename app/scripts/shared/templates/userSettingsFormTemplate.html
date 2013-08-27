@@ -24,11 +24,14 @@
 
     <div class="row">
         <label>{{$ "AthleteType" }}</label>
-         <select data-modelname="user" name="settings.account.athleteTypeValue" >
-        {{#each athleteTypes}}
-            <option value="{{ data }}">{{ label }}</option>
-        {{/each}}
-        </select>
+        <div class="selectBox">
+             <select data-modelname="user" name="settings.account.athleteTypeValue" >
+        
+            {{#each athleteTypes}}
+                <option value="{{ data }}">{{ label }}</option>
+            {{/each}}
+            </select>
+        </div>
     </div>
 
     <div class="row">
@@ -64,22 +67,26 @@
         <label>{{$ "City" }}</label>
         <input data-modelname="user" type="text" readonly name="city" />
         <label>{{$ "State" }}</label>
-        <select data-modelname="user" name="state">
-        {{#each states}}
-            <option value="{{ data }}">{{ label }}</option>
-        {{/each}}
-        </select>
+        <div class="selectBox">
+            <select data-modelname="user" name="state">
+            {{#each states}}
+                <option value="{{ data }}">{{ label }}</option>
+            {{/each}}
+            </select>
+        </div>
     </div>
 
     <div class=" row">
         <label>{{$ "ZipCode" }}</label>
         <input data-modelname="user" type="text" readonly name="zipCode" />
         <label>{{$ "Country" }}</label>
-        <select data-modelname="user" name="country" >
-        {{#each countries}}
-            <option value="{{ data }}">{{ label }}</option>
-        {{/each}}
-        </select>
+        <div class="selectBox country">
+            <select data-modelname="user" name="country" >
+            {{#each countries}}
+                <option value="{{ data }}">{{ label }}</option>
+            {{/each}}
+            </select>
+        </div>
     </div>
 
     <div class="row">
@@ -129,11 +136,13 @@
 
     <div class="row">
         <label>{{$ "TimeZone" }}</label>
-        <select data-modelname="user" name="timeZone" >
-        {{#each timeZones }}
-            <option value="{{ key }}">{{ value }}</option>
-        {{/each}}
-        </select>
+        <div class="selectBox">
+            <select data-modelname="user" name="timeZone" >
+            {{#each timeZones }}
+                <option value="{{ key }}">{{ value }}</option>
+            {{/each}}
+            </select>
+        </div>
     </div>
 
 
@@ -174,11 +183,13 @@
 
     <div class="row">
         <label>{{$ "deliveryTime"}}</label>
-        <select data-modelname="athlete" name="virtualCoachEmailHour" >
-        {{#each hours}}
-            <option value="{{ data }}">{{ label }}</option>
-        {{/each}}
-        </select>
+        <div class="selectBox">
+            <select data-modelname="athlete" name="virtualCoachEmailHour" >
+            {{#each hours}}
+                <option value="{{ data }}">{{ label }}</option>
+            {{/each}}
+            </select>
+        </div>
     </div>
     
     <p class="small deliveryTimeHelpText">{{$ "plannedWorkoutsNotificationTimeHelpText" }}</p>
