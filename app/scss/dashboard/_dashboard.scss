@@ -158,6 +158,18 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
             float: left;
             margin-left: 15px;
             padding-top: 0px;
+
+            .fromTo {
+                padding: 5px 15px 0 0;
+            }
+
+            .to {
+               padding-left:15px;
+            }
+
+            .date {
+                margin-top:5px;
+            }
         }
     }
 
@@ -169,8 +181,8 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
         .applyDates
         {
             min-width: 60px;
-            padding-top: 3px;
-            padding-bottom: 5px;
+            padding:3px 0;
+            font-size:$fontSizeSmall;
         }
     }
 }
