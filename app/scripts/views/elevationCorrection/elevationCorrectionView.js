@@ -57,7 +57,7 @@ function (TP, DataParser, ElevationCorrectionModel, defaultFlotOptions, chartCol
 
         listenToModelEvents: function()
         {
-            this.listenTo(this.elevationCorrectionModel, "update", this.onElevationCorrectionFetched);
+            this.listenTo(this.elevationCorrectionModel, "change", this.onElevationCorrectionFetched);
             this.listenTo(this.elevationCorrectionModel, "correctionSaved", this.onElevationCorrectionApplied);
         },
 
