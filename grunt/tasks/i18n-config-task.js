@@ -62,12 +62,24 @@ module.exports = function (grunt) {
 
         }
 
+        function addLocaleToUglify(localeName, localeSingleFile)
+        {
+            var uglifyOptions = grunt.config.get('uglify');
+            var localeOptions = _.clone(uglifyOptions.build);
+            var minFile = localeSingleFile.replace(".js", ".min.js");
+            localeOptions.files = {};
+            localeOptions.files[minFile] = [localeSingleFile];
+            uglifyOptions[localeName] = localeOptions;
+            grunt.config.set('uglify', uglifyOptions);
+        }
+
         // build options for each locale - set the single.js filename and the locale
         _.each(locales, function(localeName)
         {
             var localeFolder = getLocalePath('release', localeName);
-            var localeSingleFile = localeFolder + "/single.min.js";
+            var localeSingleFile = localeFolder + "/single.js";
             addLocaleToRequirejs(localeName, localeSingleFile);
+            addLocaleToUglify(localeName, localeSingleFile);
         });
 
     });

@@ -4,9 +4,6 @@ var fs = require("fs");
 
 module.exports = function(grunt)
 {
-
-    grunt.loadTasks("grunt/tasks");
-
     grunt.initConfig(
     {
         jshint:
@@ -89,7 +86,7 @@ module.exports = function(grunt)
                 options:
                 {
                     baseUrl: "app",
-                    out: "build/release/single.min.js",
+                    out: "build/release/single.js",
                     name: "main",
                     include: [
                         "../vendor/js/libs/almond",
@@ -101,9 +98,37 @@ module.exports = function(grunt)
                     ],
                     excludeShallow: ["hbs", "Handlebars"],
                     wrap: false,
-                    optimize: "uglify2",
-                    generateSourceMaps: true,
-                    preserveLicenseComments: false
+                    optimize: "none",
+                    useSourceUrl: true
+                }
+            }
+        },
+
+        /*
+         * The minification task uses the uglify library.
+         */
+        uglify:
+        {
+            options:
+            {
+                sourceMap: function(dest)
+                {
+                    return dest + ".map";
+                },
+                sourceMappingURL: function(dest)
+                {
+                    return path.basename(dest) + ".map";
+                },
+                sourceMapPrefix: 2
+            },
+            build:
+            {
+                files:
+                {
+                    "build/release/single.min.js":
+                    [
+                        "build/release/single.js"
+                    ]
                 }
             }
         },
@@ -263,6 +288,8 @@ module.exports = function(grunt)
     * "default" tasks manually using NPM and then need to include tem as
     * npm-tasks like this:
     */
+    grunt.loadTasks("grunt/tasks");
+    grunt.loadTasks("grunt/uglify");
     grunt.loadNpmTasks("grunt-contrib-clean");
     grunt.loadNpmTasks("grunt-contrib-jshint");
     grunt.loadNpmTasks("grunt-contrib-htmlmin");
@@ -293,7 +320,7 @@ module.exports = function(grunt)
     grunt.registerTask("build_common", ["clean", "coverage", "requirejs_config", "i18n_config", "requirejs", "compass:build", "copy:build_common", "copy:build_coverage", "plato:build"]);
     grunt.registerTask("build_debug", ["build_common", "copy:build_debug", "targethtml:build_debug", "copy-i18n-files"]);
     grunt.registerTask("build_debug_fast", ["clean", "requirejs_config", "requirejs", "compass:build", "copy:build_common", "copy:build_coverage", "copy:build_debug", "targethtml:build_debug"]);
-    grunt.registerTask("build", ["build_common", "copy:build", "deleteFiles:build", "targethtml:build", "copy-i18n-files"]);
+    grunt.registerTask("build", ["build_common", "copy:build", "uglify", "deleteFiles:build", "targethtml:build", "copy-i18n-files"]);
 
     // TASKS THAT ARE USED BY OTHER TASKS
     grunt.registerTask("bdd_test_config", "Configure for jasmine node bdd tests", function()
