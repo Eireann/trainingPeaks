@@ -638,6 +638,25 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
         padding-bottom: 10px;
         margin-bottom: 10px;
     }
+
+    .numberInputLabel {
+        display: inline-block;
+        float: left;
+        margin-right: 5px;
+        margin-top: 10px;
+        width: 85px;
+    }
+
+    .numberInput {
+        &.start {
+            margin-left:10px;
+            float:right;
+
+            .numberInputLabel {
+                width:60px;
+            }
+        }
+    }
 }
 
 .peaksChartSettings {

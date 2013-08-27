@@ -3,19 +3,13 @@
 
 .pmcChartSettings
 {
-    width: 355px;
+    // width: 355px;
+    width:325px;
     top: 10px;
 
     div
     {
         font-family: $fontFamilyRegular;
-        
-    }
-
-    hr
-    {
-        margin: 10px 0;
-        color: $TPGrey3;
     }
 
     .LearnMore
@@ -37,6 +31,18 @@
         margin-bottom: 5px;
     }
 
+    .workoutTypes {
+        min-width:inherit;
+    }
+
+   .selectboxit-options {
+        width: 301px;
+    }
+
+    .selectboxit-container .selectboxit {
+        width: 301px !important;
+    }
+    
     input[type=number] 
     {
         outline: none;
@@ -44,6 +50,7 @@
         margin: 5px 0px;
         width: 50px;
         height: 22px;
+        float:right;
 
         &:focus
         {
@@ -67,8 +74,6 @@
     .numberInput
     {
         float: left;
-        width: 50%;
-        padding-bottom: 10px;
         font-size: $fontSizeSmall;
         color: $TPGrey3;
     }
@@ -78,8 +83,10 @@
         float: left;
         width: 50%;
         height: 23px;
-        font-size: $fontSizeSmall;
         color: $TPGrey3;
+        &.right {
+            text-align:right;
+        }
     }
 
     .missingData
