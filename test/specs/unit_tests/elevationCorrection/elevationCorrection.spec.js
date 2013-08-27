@@ -19,7 +19,6 @@
 
         describe("Elevation Correction", function ()
         {
-
             describe("Initialization", function()
             {
                 it("Should throw an exception because ElevationCorrectionView requires a DetailData Model with valid flatSamples, latLngData, and Elevation channel", function()
@@ -48,7 +47,7 @@
                     expect(constructorWithOptions).not.toThrow();
                 });
 
-                it("Should build a model for template rendering", function()
+                xit("Should build a model for template rendering", function()
                 {
                     var stats = {
                         minimumElevation: 5,
@@ -74,13 +73,12 @@
                     expect(viewContext.model.get("originalLoss")).toEqual(stats.elevationLoss);
                     expect(viewContext.model.get("originalGrade")).toEqual(stats.grade);
                 });
-
             });
 
             describe("Plot Rendering", function()
             {
                 
-                it("Should contain original elevation", function()
+                xit("Should contain original elevation", function()
                 {
                     var originalElevation = [100, 102, 110];
                     var viewContext = {
@@ -92,7 +90,7 @@
                     expect(series[0].data).toBe(originalElevation);
                 });
  
-                it("Should contain corrected elevation if it is available", function()
+                xit("Should contain corrected elevation if it is available", function()
                 {
                     var originalElevation = [100, 102, 110];
                     var correctedElevation = [103, 105, 114];
@@ -108,7 +106,7 @@
                 });
             });
 
-            describe("Show corrected elevation", function()
+            xdescribe("Show corrected elevation", function()
             {
 
                 var viewModel, workoutModel, elevationCorrectionModel, viewContext;
