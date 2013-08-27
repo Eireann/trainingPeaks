@@ -4,7 +4,7 @@
     <dt>{{$ "Paid Through" }}:</dt>
     <dl>{{ formatDate paidThrough "L" }}</dl>
     <dt>{{$ "Description" }}:</dt>
-    <dl></dl>
+    <dl>{{ lookupSharedData "accounting.recurringPaymentProfileTypes" profileType }}</dl>
     <dt>{{$ "Card #" }}:</dt>
     <dl>{{ defaultValue accountNumber "--" }}</dl>
     <dt>{{$ "Exp. Date" }}:</dt>

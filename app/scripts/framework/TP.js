@@ -9,7 +9,8 @@ define(
     "framework/APIModel",
     "framework/Logger",
     "framework/utilities",
-    "framework/analytics"
+    "framework/analytics",
+    "shared/data/tpSharedData"
 ],
 function(
          _,
@@ -21,7 +22,8 @@ function(
          APIModel,
          Logger,
          utilities,
-         analytics
+         analytics,
+         sharedData
 )
 {
     var TP = {};
@@ -450,6 +452,8 @@ function(
     TP.analytics = analytics;
 
     TP.extend = Backbone.Marionette.extend;
+
+    TP.sharedData = sharedData;
 
     return TP;
 });

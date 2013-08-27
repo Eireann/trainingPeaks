@@ -26,12 +26,15 @@ function(
             if(!this.collection.length)
             {
                 this.$el.addClass("empty");
-                var self = this;
-                this.listenToOnce(this.collection, "add", function()
-                {
-                    self.$el.removeClass("empty");
-                });
+                this.listenToOnce(this.collection, "add", _.bind(this._onAddFirstItem, this));
             }
+        },
+
+        _onAddFirstItem: function(item)
+        {
+            this.$el.removeClass("empty");
+            this.model.set(item.attributes);
+            this.render();
         }
 
     });

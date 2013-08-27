@@ -40,6 +40,14 @@
                 display: none;
             }
         }
+
+        &.empty
+        {
+            .withpayments
+            {
+                display: none;
+            }
+        }
     }
 
     .row

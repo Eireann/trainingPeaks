@@ -64,7 +64,7 @@ function(
 
             this._addView(".recurringPayments", RecurringPaymentsView, {
                 collection: this.recurringPaymentsCollection,
-                model: this.model
+                model: new TP.Model({ expireDate: this.model.get("expireDate")})
             }, "recurringPayments");
 
             this.rePositionView();
