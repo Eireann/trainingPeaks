@@ -166,54 +166,54 @@ function(TP, theMarsApp)
                 expect(function() { TP.utils.conversion.convertToViewUnits(1234, "unknownType"); }).toThrow();
             });
 
-            it("should convert a distance in meters to miles and cut off after 2 decimal places", function()
+            it("should convert a distance in meters to miles", function()
             {
-                expect(TP.utils.conversion.convertToViewUnits(0, "distance")).toBe("");
-                expect(TP.utils.conversion.convertToViewUnits(1609, "distance")).toBe("1.00");
-                expect(TP.utils.conversion.convertToViewUnits(3218, "distance")).toBe("2.00");
-                expect(TP.utils.conversion.convertToViewUnits(1234567890, "distance")).toBe(767125);
-                expect(TP.utils.conversion.convertToViewUnits("notANumber", "distance")).toBe("");
-                expect(TP.utils.conversion.convertToViewUnits(-1609, "distance")).toBe("-1.00");
+                expect(TP.utils.conversion.convertToViewUnits(0, "distance")).toBe(0);
+                expect(TP.utils.conversion.convertToViewUnits(1609, "distance")).toBeCloseTo(1, 0);
+                expect(TP.utils.conversion.convertToViewUnits(3218, "distance")).toBeCloseTo(2, 0);
+                expect(TP.utils.conversion.convertToViewUnits(1234567890, "distance")).toBeCloseTo(767125, 0);
+                expect(TP.utils.conversion.convertToViewUnits("notANumber", "distance")).toBe(0);
+                expect(TP.utils.conversion.convertToViewUnits(-1609, "distance")).toBeCloseTo(-1, 0);
             });
 
-            it("should convert an elevation in meters to ft and cut off after 2 decimal places", function()
+            it("should convert an elevation in meters to ft", function()
             {
-                expect(TP.utils.conversion.convertToViewUnits(0, "elevation")).toBe("");
-                expect(TP.utils.conversion.convertToViewUnits(1000, "elevation")).toBe(3281);
-                expect(TP.utils.conversion.convertToViewUnits(1000000, "elevation")).toBe(3280840);
-                expect(TP.utils.conversion.convertToViewUnits(-1000, "elevation")).toBe(-3281);
+                expect(TP.utils.conversion.convertToViewUnits(0, "elevation")).toBe(0);
+                expect(TP.utils.conversion.convertToViewUnits(1000, "elevation")).toBeCloseTo(3281, 0);
+                expect(TP.utils.conversion.convertToViewUnits(1000000, "elevation")).toBeCloseTo(3280840, 0);
+                expect(TP.utils.conversion.convertToViewUnits(-1000, "elevation")).toBeCloseTo(-3281, 0);
             });
 
             it("should convert a pace value in meters per second to min/mile, properly formated", function()
             {
                 expect(TP.utils.conversion.convertToViewUnits(1, "pace")).toBe("26:49");
                 expect(TP.utils.conversion.convertToViewUnits(3, "pace")).toBe("08:56");
-                expect(TP.utils.conversion.convertToViewUnits("notAnumber", "pace")).toBe("");
+                expect(TP.utils.conversion.convertToViewUnits("notAnumber", "pace")).toBe(0);
                 expect(TP.utils.conversion.convertToViewUnits(0.0005, "pace")).toBe("99:59:59.99");
                 expect(TP.utils.conversion.convertToViewUnits(-1, "pace")).toBe("99:59:59.99");
             });
 
 
-            it("should return empty string for non numeric values", function()
+            it("should return zero for non numeric values", function()
             {
-                expect(TP.utils.conversion.convertToViewUnits("", "distance")).toBe("");
-                expect(TP.utils.conversion.convertToViewUnits("some string", "distance")).toBe("");
+                expect(TP.utils.conversion.convertToViewUnits("", "distance")).toBe(0);
+                expect(TP.utils.conversion.convertToViewUnits("some string", "distance")).toBe(0);
             });
 
             it("Should convert temperatures", function()
             {
-                expect(TP.utils.conversion.convertToViewUnits(0, "temperature")).toBe('32');
-                expect(TP.utils.conversion.convertToViewUnits(100, "temperature")).toBe('212');
+                expect(TP.utils.conversion.convertToViewUnits(0, "temperature")).toBe(32);
+                expect(TP.utils.conversion.convertToViewUnits(100, "temperature")).toBe(212);
             });
 
             it("should convert and format efficiency factor values for run", function()
             {
-                expect(TP.utils.conversion.convertToViewUnits(0.016512562392295274, "efficiencyfactor", null, 3)).toBe('1.08');
+                expect(TP.utils.conversion.convertToViewUnits(0.016512562392295274, "efficiencyfactor", null, 3)).toBeCloseTo(1.08, 2);
             });
  
             it("should format efficiency factor values for other sport types", function()
             {
-                expect(TP.utils.conversion.convertToViewUnits(0.016512562392295274, "efficiencyfactor", null, 10)).toBe('0.02');
+                expect(TP.utils.conversion.convertToViewUnits(0.016512562392295274, "efficiencyfactor", null, 10)).toBeCloseTo(0.02, 2);
             });           
         });
 
@@ -378,14 +378,14 @@ function(TP, theMarsApp)
                 theMarsApp.user.set("units", TP.utils.units.constants.Metric);
             });
 
-            it("should convert a distance in meters to yards and cut off after 2 decimal places", function()
+            it("should convert a distance in meters to yards", function()
             {
-                expect(TP.utils.conversion.convertToViewUnits(0, "distance", undefined, swimTypeId)).toEqual("");
-                expect(TP.utils.conversion.convertToViewUnits(1, "distance", undefined, swimTypeId)).toEqual('1.09');
-                expect(TP.utils.conversion.convertToViewUnits(10, "distance", undefined, swimTypeId)).toEqual("10.9");
-                expect(TP.utils.conversion.convertToViewUnits(100, "distance", undefined, swimTypeId)).toEqual(109);
-                expect(TP.utils.conversion.convertToViewUnits(1000, "distance", undefined, swimTypeId)).toEqual(1094);
-                expect(TP.utils.conversion.convertToViewUnits(1125, "distance", undefined, swimTypeId)).toEqual(1230);
+                expect(TP.utils.conversion.convertToViewUnits(0, "distance", undefined, swimTypeId)).toBe(0);
+                expect(TP.utils.conversion.convertToViewUnits(1, "distance", undefined, swimTypeId)).toBeCloseTo(1.09, 2);
+                expect(TP.utils.conversion.convertToViewUnits(10, "distance", undefined, swimTypeId)).toBeCloseTo(10.9, 1);
+                expect(TP.utils.conversion.convertToViewUnits(100, "distance", undefined, swimTypeId)).toBeCloseTo(109, 0);
+                expect(TP.utils.conversion.convertToViewUnits(1000, "distance", undefined, swimTypeId)).toBeCloseTo(1094, 0);
+                expect(TP.utils.conversion.convertToViewUnits(1125, "distance", undefined, swimTypeId)).toBeCloseTo(1230, 0);
             });
 
             it("should convert a pace value in meters per second to sec/100y, properly formated", function()
@@ -397,8 +397,8 @@ function(TP, theMarsApp)
 
             it("Should convert a speed in meters per second to yards per minute, properly formatted", function()
             {
-                expect(TP.utils.conversion.convertToViewUnits(1, "speed", undefined, swimTypeId)).toBe("65.6");
-                expect(TP.utils.conversion.convertToViewUnits(5, "speed", undefined, swimTypeId)).toBe(328);
+                expect(TP.utils.conversion.convertToViewUnits(1, "speed", undefined, swimTypeId)).toBeCloseTo(65.6, 1);
+                expect(TP.utils.conversion.convertToViewUnits(5, "speed", undefined, swimTypeId)).toBeCloseTo(328, 0);
             });
             
         });
@@ -412,14 +412,14 @@ function(TP, theMarsApp)
                 theMarsApp.user.set("units", TP.utils.units.constants.Metric);
             });
 
-            it("should leave distance units as meters and cut off after 2 decimal places", function()
+            it("should leave distance units as meters", function()
             {
-                expect(TP.utils.conversion.convertToViewUnits(0, "distance", undefined, swimTypeId)).toEqual("");
-                expect(TP.utils.conversion.convertToViewUnits(1, "distance", undefined, swimTypeId)).toEqual('1.00');
-                expect(TP.utils.conversion.convertToViewUnits(10, "distance", undefined, swimTypeId)).toEqual("10.0");
-                expect(TP.utils.conversion.convertToViewUnits(100, "distance", undefined, swimTypeId)).toEqual(100);
-                expect(TP.utils.conversion.convertToViewUnits(1000, "distance", undefined, swimTypeId)).toEqual(1000);
-                expect(TP.utils.conversion.convertToViewUnits(1125, "distance", undefined, swimTypeId)).toEqual(1125);
+                expect(TP.utils.conversion.convertToViewUnits(0, "distance", undefined, swimTypeId)).toBeCloseTo(0, 0);
+                expect(TP.utils.conversion.convertToViewUnits(1, "distance", undefined, swimTypeId)).toBeCloseTo(1, 0);
+                expect(TP.utils.conversion.convertToViewUnits(10, "distance", undefined, swimTypeId)).toBeCloseTo(10, 0);
+                expect(TP.utils.conversion.convertToViewUnits(100, "distance", undefined, swimTypeId)).toBeCloseTo(100, 0);
+                expect(TP.utils.conversion.convertToViewUnits(1000, "distance", undefined, swimTypeId)).toBeCloseTo(1000, 0);
+                expect(TP.utils.conversion.convertToViewUnits(1125, "distance", undefined, swimTypeId)).toBeCloseTo(1125, 0);
             });
 
             it("should convert a pace value in meters per second to sec/100m, properly formated", function()
@@ -429,9 +429,9 @@ function(TP, theMarsApp)
 
             });
 
-            it("Should convert a speed in meters per second to meters per minute, properly formatted", function()
+            it("Should convert a speed in meters per second to meters per minute", function()
             {
-                expect(TP.utils.conversion.convertToViewUnits(1, "speed", undefined, swimTypeId)).toBe("60.0");
+                expect(TP.utils.conversion.convertToViewUnits(1, "speed", undefined, swimTypeId)).toBe(60);
                 expect(TP.utils.conversion.convertToViewUnits(5, "speed", undefined, swimTypeId)).toBe(300);
             });
             
@@ -485,7 +485,7 @@ function(TP, theMarsApp)
                 theMarsApp.user.set("units", TP.utils.units.constants.Metric);
             });
 
-            it("should leave distance units as meters and cut off after 2 decimal places", function()
+            it("should leave distance units as meters", function()
             {
                 expect(TP.utils.conversion.convertToModelUnits(0, "distance", swimTypeId)).toBe(0);
                 expect(TP.utils.conversion.convertToModelUnits(1, "distance", swimTypeId)).toBeCloseTo(1, 0);

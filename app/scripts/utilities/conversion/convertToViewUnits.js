@@ -4,17 +4,15 @@ define(
     "utilities/workout/workoutTypes",
     "utilities/conversion/modelToViewConversionFactors",
     "utilities/units/constants",
-    "utilities/datetime/datetime",
-    "utilities/threeSigFig"
+    "utilities/datetime/datetime"
 ],
 function(
     _,
     workoutTypes,
     modelToViewConversionFactors,
     unitsConstants,
-    dateTimeUtils,
-    threeSigFig)
-{
+    dateTimeUtils
+){
     var minimumPace = 0.00277778; // 99:59:59.99
     var almostOneHundredHoursAsMinutes = (99 + (59 / 60) + (59.99 / 3600)) * 60;
 
@@ -65,11 +63,11 @@ function(
 
         if (workoutType && (workoutType === runType || workoutType === walkType))
         {
-            return (value * modelToViewConversionFactors("efficiencyfactor", currentUnits)).toFixed(2);
+            return value * modelToViewConversionFactors("efficiencyfactor", currentUnits);
         }
 		else
         {
-            return value.toFixed(2);
+            return value;
 		}
     };
 
@@ -83,19 +81,19 @@ function(
     {
         var conversionFactor = modelToViewConversionFactors("distance", theMarsApp.user.get("units"), sportTypeId);
         var convertedValue = value * conversionFactor;
-        return threeSigFig(convertedValue, precision);
+        return convertedValue;
     };
     
     var convertTorqueToViewUnits = function (value, precision)
     {
-        return threeSigFig(value * modelToViewConversionFactors("torque", theMarsApp.user.get("units")));
+        return value * modelToViewConversionFactors("torque", theMarsApp.user.get("units"));
     };
 
     var convertSpeedToViewUnits = function(value, sportTypeId)
     {
         var conversionFactor = modelToViewConversionFactors("speed", theMarsApp.user.get("units"), sportTypeId);
         var convertedValue = value * conversionFactor;
-        return threeSigFig(convertedValue);
+        return convertedValue;
     };
 
     return function(value, fieldType, defaultValueIfEmpty, sportType)
@@ -150,7 +148,7 @@ function(
             case "cadence":
                 return value;
             case "number":
-                return threeSigFig(value);
+                return value;
             case "efficiencyfactor":
                 return convertEfficiencyFactor(value, sportType);
             case "cm":

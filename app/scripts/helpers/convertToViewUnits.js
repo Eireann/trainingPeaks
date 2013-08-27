@@ -12,7 +12,8 @@ function(Handlebars, TP)
         {
             defaultValueIfEmpty = undefined;
         }
-        return TP.utils.conversion.convertToViewUnits(value, fieldType, defaultValueIfEmpty);
+
+        return TP.utils.conversion.formatUnitsValue(fieldType, value, {defaultValue: defaultValueIfEmpty});
     };
 
     Handlebars.registerHelper("convertToViewUnits", convertToViewUnitsHelper);

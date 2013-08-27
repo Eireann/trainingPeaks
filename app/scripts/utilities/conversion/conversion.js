@@ -254,7 +254,6 @@
         {
             var convertedValue = convertToViewUnits(value, "temperature");
             var adjustedValue = adjustFieldRange(convertedValue, "temp");
-            console.log(convertedValue + "," + adjustedValue);
             return this.formatInteger(adjustedValue, options, "0");
         },
 
