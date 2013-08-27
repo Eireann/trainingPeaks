@@ -77,14 +77,14 @@ function(
         return currentUnits === unitsConstants.English ? 9 / 5 * value + 32 : value;
     };
 
-    var convertDistanceToViewUnits = function(value, sportTypeId, precision)
+    var convertDistanceToViewUnits = function(value, sportTypeId)
     {
         var conversionFactor = modelToViewConversionFactors("distance", theMarsApp.user.get("units"), sportTypeId);
         var convertedValue = value * conversionFactor;
         return convertedValue;
     };
     
-    var convertTorqueToViewUnits = function (value, precision)
+    var convertTorqueToViewUnits = function (value)
     {
         return value * modelToViewConversionFactors("torque", theMarsApp.user.get("units"));
     };
@@ -98,7 +98,6 @@ function(
 
     return function(value, fieldType, defaultValueIfEmpty, sportType)
     {
-        var precision = null;
         if (_.isObject(value))
         {
             var parameters = value;
@@ -106,7 +105,6 @@ function(
             fieldType = parameters.fieldType;
             defaultValueIfEmpty = parameters.defaultValue;
             sportType = parameters.sportType;
-            precision = parameters.precision;
         }
 
         if (!isNumeric(value) || (Number(value) === 0 && fieldType !== "temperature") && fieldType !== "groundControl")
@@ -130,7 +128,7 @@ function(
             case "speed":
                 return convertSpeedToViewUnits(value, sportType);
             case "distance":
-                return convertDistanceToViewUnits(value, sportType, precision);
+                return convertDistanceToViewUnits(value, sportType);
             case "pace":
                 return convertToPaceFromSpeed(value, true, sportType);
             case "paceUnFormatted":

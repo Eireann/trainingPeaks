@@ -41,11 +41,6 @@
                 sportType: this.getMySportType(options)
             };
 
-            if (options && options.precision)
-            {
-                parameters.precision = options.precision;
-            }
-
             var convertedDistance = Number(convertToViewUnits(parameters));
             var limitedDistance = adjustFieldRange(convertedDistance, "distance");
             var formattedDistance = threeSigFig(limitedDistance);
@@ -326,11 +321,6 @@
                 defaultValue: options && options.hasOwnProperty("defaultValue") ? options.defaultValue : "",
                 sportType: this.getMySportType()
             };
-
-            if (options && options.precision)
-            {
-                parameters.precision = options.precision;
-            }
 
             var convertedValue = convertToViewUnits(parameters);
             var adjustedValue = adjustFieldRange(convertedValue, "torque");
