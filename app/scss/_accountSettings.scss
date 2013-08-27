@@ -20,4 +20,16 @@
     {
         @extend input[type="text"];
     }
+
+    .recurringPayments, .paymentHistory
+    {
+        &:not(.empty)
+        {
+            .nopayments
+            {
+                display: none;
+            }
+        }
+    }
+
 }

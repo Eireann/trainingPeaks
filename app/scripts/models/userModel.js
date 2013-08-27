@@ -23,6 +23,7 @@ function(TP, AthleteSettingsModel)
             country: "",
             dateFormat: "",
             email: "",
+            expireDate: "",
             firstName: "",
             gender: null,
             language: "",

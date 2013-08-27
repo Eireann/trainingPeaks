@@ -19,7 +19,20 @@ function(
             template: paymentHistoryTemplate
         },
         
-        itemView: PaymentHistoryItemView
+        itemView: PaymentHistoryItemView,
+
+        onRender: function()
+        {
+            if(!this.collection.length)
+            {
+                this.$el.addClass("empty");
+                var self = this;
+                this.listenToOnce(this.collection, "add", function()
+                {
+                    self.$el.removeClass("empty");
+                });
+            }
+        }
 
     });
 

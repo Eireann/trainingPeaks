@@ -2,15 +2,15 @@
     <dt>{{$ "Date" }}:</dt>
     <dd>{{ formatDate paypalDate "L" }}</dd>
     <dt>{{$ "Description" }}:</dt>
-    <dd>{{ skuDescription }}</dd>
+    <dd>{{ defaultValue skuDescription "--" }}</dd>
     <dt>{{$ "Sku" }}:</dt>
-    <dd>{{ sku }}</dd>
+    <dd>{{ defaultValue sku "--" }}</dd>
     <dt>{{$ "Card #" }}:</dt>
-    <dd>{{ accountNumber }}</dd>
+    <dd>{{ defaultValue accountNumber "--" }}</dd>
     <dt>{{$ "Transaction #" }}:</dt>
-    <dd>{{ originalTransId }}</dd>
+    <dd>{{ defaultValue originalTransId "--" }}</dd>
     <dt>{{$ "Price" }}:</dt>
     <dd>{{ formatDollars totalAsDollars }}</dd>
     <dt>{{$ "Type" }}</dt>
-    <dd>{{ type }}</dd>
+    <dd>{{ defaultValue type "--" }}</dd>
 </dl>

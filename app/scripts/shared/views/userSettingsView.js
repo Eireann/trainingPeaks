@@ -58,11 +58,13 @@ function(
             }, "userSettingsForm");
 
             this._addView(".paymentHistory", PaymentHistoryView, {
-                collection: this.paymentHistoryCollection 
+                collection: this.paymentHistoryCollection,
+                model: this.model
             }, "paymentHistory");
 
             this._addView(".recurringPayments", RecurringPaymentsView, {
-                collection: this.recurringPaymentsCollection
+                collection: this.recurringPaymentsCollection,
+                model: this.model
             }, "recurringPayments");
 
             this.rePositionView();

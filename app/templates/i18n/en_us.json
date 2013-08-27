@@ -407,7 +407,14 @@
     "Start Date": "Start Date",
     "Paid Through": "Paid Through",
     "Exp. Date": "Exp. Date",
+    "Type": "Type",
 
     "Payment History": "Payment History",
-    "Active Recurring Payments": "Active Recurring Payments"
+    "Active Recurring Payments": "Active Recurring Payments",
+    "CalendarSync": "Calendar Sync (.ics)",
+    "WorkoutsOnly": "Workouts Only",
+    "MealsOnly": "Meals Only",
+    "WorkoutsAndMeals": "Workouts And Meals",
+    "ICalHelpText": "This url provides a link so you can subscribe to your TrainingPeaks calendar via a 3rd party calendar application, such as Google Calendar, Microsoft Outlook, Apple's iCal.",
+    "None": "None"
 }

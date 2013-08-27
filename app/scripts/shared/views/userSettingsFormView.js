@@ -76,8 +76,12 @@ function(
                 countries: countriesAndStates.countries,
                 states: countriesAndStates.states,
                 hours: hours,
-                timeZones: theMarsApp.timeZones.get("zonesWithLabels")
+                timeZones: theMarsApp.timeZones.get("zonesWithLabels"),
+                iCalendarKeys: this.model.getAthleteSettings().get("iCalendarKeys")
             });
+
+            data.iCalendarKeys.wwwRoot = theMarsApp.apiConfig.wwwRoot.replace("http://","");
+
             return data;
         },
 
