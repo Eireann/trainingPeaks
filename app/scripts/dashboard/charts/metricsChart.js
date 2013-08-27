@@ -55,6 +55,7 @@ function(
 
         parseData: function(data)
         {
+            var self = this;
             _.each(data, function(entry)
             {
                 entry.date = moment(entry.timeStamp).valueOf();
@@ -90,20 +91,9 @@ function(
                     yaxesIndex = yaxesIndexByUnit[metricInfo.units];
                 }
 
-                // Generate a series for each sub metric if we have one,
-                // otherwise generate one series for the overall metric.
-                if (metricInfo.subMetrics)
-                {
-                    _.each(metricInfo.subMetrics, function(subMetricInfo)
-                    {
-                        var seriesInfo = _.extend({ original: metricInfo }, metricInfo, subMetricInfo);
-                        series.push(this._makeSeries(data, seriesInfo, { yaxis: yaxesIndex }));
-                    }, this);
-                }
-                else
-                {
-                    series.push(this._makeSeries(data, metricInfo, { yaxis: yaxesIndex }));
-                }
+                this._eachSubMetricInfo(metricInfo, function subMetricInfo(subMetricInfo) {
+                    series.push(self._makeSeries(data, subMetricInfo, { yaxis: yaxesIndex }));
+                });
             }, this);
 
             if (yaxes.length >= 2)
@@ -234,20 +224,28 @@ function(
 
         buildTooltipData: function(flotItem)
         {
+            var self = this;
             var entry = flotItem.series.entries[flotItem.dataIndex];
             var tooltip = [{ value: moment(entry.date).format("ddd, L LT") }];
 
             _.each(this.get("dataFields"), function(metricTypeId)
             {
                 var metricInfo = this._getMetricInfo(metricTypeId);
-                var details = entry.detailsByType[metricInfo.id];
+                var details = entry.detailsByType[metricInfo && metricInfo.id];
 
                 if(!details) return;
 
-                tooltip.push({
-                    label: metricInfo.label,
-                    value: this._formatValue(details.value, metricInfo, { displayUnits: true })
+                this._eachSubMetricInfo(metricInfo, function(subMetricInfo) {
+                    var value = subMetricInfo.index >= 0 ? details.value[subMetricInfo.index] : details.value;
+
+                    tooltip.push({
+                        label: subMetricInfo.label,
+                        value: self._formatValue(value, subMetricInfo, { displayUnits: true })
+                    });
+
                 });
+
+
             }, this);
 
             return tooltip;
@@ -288,7 +286,23 @@ function(
         _getOriginalInfo: function(info)
         {
             return info.original || info;
+        },
+
+        _eachSubMetricInfo: function(metricInfo, callback)
+        {
+            if (metricInfo && metricInfo.subMetrics)
+            {
+                _.each(metricInfo.subMetrics, function(subMetricInfo)
+                {
+                    return callback(_.extend({ original: metricInfo }, metricInfo, subMetricInfo));
+                });
+            }
+            else
+            {
+                return callback(metricInfo);
+            }
         }
+
     });
 
     return MetricsChart;
