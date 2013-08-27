@@ -1,4 +1,4 @@
-<div class="row name">
+<div class="row">
     <div class="firstName">
         <label>{{$ "FirstName" }}</label>
         <input data-modelname="user" type="text" readonly name="firstName" />
@@ -10,7 +10,7 @@
     </div>
 </div>
 
-<div class="row userNamePassword">
+<div class="row">
     <div>
         <label>{{$ "Username" }}</label>
         <input data-modelname="user" type="text" readonly name="userName" />
@@ -22,7 +22,7 @@
     </div>
 </div>
 
-    <div>
+    <div class="row">
         <label>{{$ "AthleteType" }}</label>
          <select data-modelname="user" name="settings.account.athleteTypeValue" >
         {{#each athleteTypes}}
@@ -31,40 +31,38 @@
         </select>
     </div>
 
-    <div>
+    <div class="row">
         <label>{{$ "Birthday" }}</label>
         <input data-modelname="user" type="text" readonly data-format="date" name="birthday" />
     </div>
 
-    <div>
+    <div class="row">
         <label>{{$ "Gender" }}</label>
-        <label>
+        <label class="gender">
             <input data-modelname="user" type="radio" readonly name="gender" value="m"/>
             Male
         </label>
-        <label>
+        <label class="gender">
             <input data-modelname="user" type="radio" readonly name="gender" value="f"/>
             Female
         </label>
     </div>
 
-    <div>
+    <div class="row">
         <label>{{$ "Email" }}</label>
         <input data-modelname="user" type="email" readonly name="email" />
     </div>
 
-    <div>
-        <label>{{$ "Address" }}</label>
+    <div class="row">
+        <label>{{$ "Address" }} 1</label>
         <input data-modelname="user" type="text" readonly name="address" />
+        <label>{{$ "Address" }} 2</label>
         <input data-modelname="user" type="text" readonly name="address2" />
     </div>
 
-    <div>
+    <div class="row">
         <label>{{$ "City" }}</label>
         <input data-modelname="user" type="text" readonly name="city" />
-    </div>
-
-    <div>
         <label>{{$ "State" }}</label>
         <select data-modelname="user" name="state">
         {{#each states}}
@@ -73,12 +71,9 @@
         </select>
     </div>
 
-    <div>
+    <div class=" row">
         <label>{{$ "ZipCode" }}</label>
         <input data-modelname="user" type="text" readonly name="zipCode" />
-    </div>
-
-    <div>
         <label>{{$ "Country" }}</label>
         <select data-modelname="user" name="country" >
         {{#each countries}}
@@ -87,27 +82,25 @@
         </select>
     </div>
 
-    <div>
+    <div class="row">
         <label>{{$ "Phone" }}</label>
         <input data-modelname="user" type="tel" readonly name="phone" />
-    </div>
-
-    <div>
         <label>{{$ "CellPhone" }}</label>
         <input data-modelname="user" type="tel" readonly name="cellPhone" />
     </div>
-
-    <div>
-        <label>{{$ "ProfilePicture" }}</label>
+    
+    {{#if profilePhotoUrl}}
+    <div class ="profilePicture">
         <img src="{{ wwwRoot }}{{ profilePhotoUrl }}" />
     </div>
+    {{/if}}
 
 
-    <div class="title">{{$ "AccountSettings" }}</div>
+    <h3 class="subheadbold title accountSettings">{{$ "AccountSettings" }}</h3>
 
-    <div>
+    <div class=" row">
         <label>{{$ "AccountType" }}</label>
-        <span>{{ userType }}</span>
+        <label class="textCopy small">{{ userType }}</label>
     </div>
 
     <div>
