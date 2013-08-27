@@ -1,19 +1,24 @@
 ﻿
 .userSettingContainer
 {
-    padding: 10px;
+    padding: 12px;
+    max-width: 800px;
+    max-height: 600px;
+
+    label
+    {
+        float: left;   
+        padding: 7px 5px 0 0; 
+        width: 100px;
+        max-width: 100px;
+        text-align: right;
+    }
+            
     input[type="text"]
     {
         width: 200px;
-        height: 20px;
-        font-size: 0.857em;
-        font-family: "HelveticaNeueW01-55Roma";
-        padding-top: 0px;
-        padding-bottom: 0px;
-        cursor: text;
-        -webkit-box-shadow: none;
-        -moz-box-shadow: none;
-        box-shadow: none;
+        float: left;
+        margin: 0 15px 0 0;
     }
 
     input[type="password"]
@@ -37,4 +42,17 @@
         }
     }
 
+    .name
+    {
+        height: 30px;
+        margin-bottom: 10px;
+       
+    }
+
+    .userNamePassword
+    {
+        height: 30px;
+       
+    }
 }
+
