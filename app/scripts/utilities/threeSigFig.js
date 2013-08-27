@@ -36,7 +36,7 @@ function()
 
         if (value >= 100)
         {
-            return Math.round(value);
+            return value.toFixed(0);
         } else if (value >= 10)
         {
             return value.toFixed(1);

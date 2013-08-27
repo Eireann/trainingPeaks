@@ -52,7 +52,9 @@ function(
     var convertElevation = function(value)
     {
         var currentUnits = theMarsApp.user.get("units");
-        return Math.round(parseFloat(value * modelToViewConversionFactors("elevation", currentUnits)));
+        var numValue = Number(value);
+        var returnValue = numValue * modelToViewConversionFactors("elevation", currentUnits);
+        return returnValue;
     };
 
     var convertEfficiencyFactor = function(value, workoutType)
@@ -74,7 +76,7 @@ function(
     var convertTemperature = function(value)
     {
         var currentUnits = theMarsApp.user.get("units");
-        return Math.round(currentUnits === unitsConstants.English ? 9 / 5 * value + 32 : value).toFixed(0);
+        return currentUnits === unitsConstants.English ? 9 / 5 * value + 32 : value;
     };
 
     var convertDistanceToViewUnits = function(value, sportTypeId, precision)
@@ -113,11 +115,11 @@ function(
         {
             if (!_.isUndefined(defaultValueIfEmpty))
             {
-                return defaultValueIfEmpty;
+                return Number(defaultValueIfEmpty);
             }
             else
             {
-                return "";
+                return 0;
             }
         }
 
