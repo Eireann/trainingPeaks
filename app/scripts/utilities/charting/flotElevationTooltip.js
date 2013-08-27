@@ -1,11 +1,11 @@
 ﻿define(
 [
     "utilities/datetime/format",
-    "utilities/conversion/convertToViewUnits",
+    "utilities/conversion/conversion",
     "utilities/units/labels",
     "hbs!templates/views/elevationCorrection/flotToolTip"
     ],
-function(formatDateTime, convertToViewUnits, unitLabels, flotToolTipTemplate)
+function(formatDateTime, conversion, unitLabels, flotToolTipTemplate)
 {
     return function(series, hoveredSeries, hoveredIndex)
     {
@@ -15,12 +15,12 @@ function(formatDateTime, convertToViewUnits, unitLabels, flotToolTipTemplate)
             [
                 {
                     label: "Original",
-                    value: convertToViewUnits(series[0].data[hoveredIndex][1], "elevation"),
+                    value: conversion.formatUnitsValue("elevation", series[0].data[hoveredIndex][1]),
                     current: hoveredSeries === "Original" ? true : false
                 },
                 {
                     label: "Corrected",
-                    value: series.length === 2 ? convertToViewUnits(series[1].data[hoveredIndex][1], "elevation") : "--",
+                    value: series.length === 2 ? conversion.formatUnitsValue("elevation", series[1].data[hoveredIndex][1]) : "--",
                     current: hoveredSeries === "Corrected" ? true : false
                 }
             ]

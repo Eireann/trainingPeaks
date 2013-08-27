@@ -43,7 +43,7 @@ function (_, TP, flotFilter, chartColors)
                             tickFormatter: function (value, axis)
                             {
                                 if (typeof xaxisType !== "undefined" && xaxisType === "distance")
-                                    return TP.utils.conversion.convertToViewUnits(value, "distance", null, workoutTypeId) + " " + TP.utils.units.getUnitsLabel("distance", workoutTypeId);
+                                    return TP.utils.conversion.formatUnitsValue("distance", value, { defaultValue: null, workoutTypeId: workoutTypeId }) + " " + TP.utils.units.getUnitsLabel("distance", workoutTypeId);
                                 
                                 var decimalHours = (value / (3600 * 1000));
                                 return TP.utils.datetime.format.decimalHoursAsTime(decimalHours, true, null);

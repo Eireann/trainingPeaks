@@ -34,26 +34,26 @@ function ()
     var adjustFieldRange = function (value, fieldName)
     {
 
-        value = parseFloat(value);
+        var numValue = parseFloat(value);
 
-        if (isNaN(value) || !fieldName)
+        if (isNaN(numValue) || !fieldName)
         {
             return value;
         }
         else
         {
             var min = minimums.hasOwnProperty(fieldName) ? minimums[fieldName] : 0;
-            var max = maximums.hasOwnProperty(fieldName) ? maximums[fieldName] : value;
+            var max = maximums.hasOwnProperty(fieldName) ? maximums[fieldName] : numValue;
 
-            if(value < min)
+            if(numValue < min)
             {
                 return min;
-            } else if(value > max)
+            } else if(numValue > max)
             {
                 return max;
             } else
             {
-                return value;
+                return numValue;
             }
         }
     };

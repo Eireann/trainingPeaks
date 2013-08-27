@@ -3,14 +3,12 @@ define(
     "underscore",
     "TP",
     "utilities/workout/formatLapData",
-    "utilities/conversion/convertToViewUnits",
     "hbs!templates/views/expando/lapsSplitsTemplate"
 ],
 function(
     _,
     TP,
     formatLapData,
-    convertToViewUnits,
     lapsSplitsTemplate
     )
 {
@@ -99,8 +97,8 @@ function(
                     canShowNP = !canShowNGP && lap.normalizedPowerActual,
                     canShowIF = lap.intensityFactorActual,
                     TSStype = TP.utils.units.getUnitsLabel("tss", workoutDefaults.sportTypeID, new TP.Model(lap)),
-                    averagePaceOrSpeedValue = workoutDefaults.useSpeedOrPace === "pace" ? convertToViewUnits(lap.averageSpeed, "pace", null, workoutDefaults.sportTypeID) : TP.utils.conversion.formatSpeed(lap.averageSpeed),
-                    maximumPaceOrSpeedValue = workoutDefaults.useSpeedOrPace === "pace" ? convertToViewUnits(lap.maximumSpeed, "pace", null, workoutDefaults.sportTypeID) : TP.utils.conversion.formatSpeed(lap.maximumSpeed);
+                    averagePaceOrSpeedValue = workoutDefaults.useSpeedOrPace === "pace" ? TP.utils.conversion.formatUnitsValue("pace", lap.averageSpeed, {defaultValue: null, workoutTypeId: workoutDefaults.sportTypeID}) : TP.utils.conversion.formatSpeed(lap.averageSpeed),
+                    maximumPaceOrSpeedValue = workoutDefaults.useSpeedOrPace === "pace" ? TP.utils.conversion.formatUnitsValue("pace", lap.maximumSpeed, {defaultValue: null, workoutTypeId: workoutDefaults.sportTypeID}) : TP.utils.conversion.formatSpeed(lap.maximumSpeed);
 
                 lap = _.clone(lap), // we don't want to modify the actual detailData, just format it
 
@@ -115,7 +113,7 @@ function(
                     "Moving Duration": TP.utils.datetime.format.decimalHoursAsTime(lap.movingTime)
                 };
 
-                lapObject[workoutDefaults.distanceKey] = convertToViewUnits(lap.distance, "distance", null, workoutDefaults.sportTypeID);
+                lapObject[workoutDefaults.distanceKey] = TP.utils.conversion.formatUnitsValue("distance", lap.distance, { defaultValue: null, workoutTypeId: workoutDefaults.sportTypeID});
 
                 // add in TSS (if available) with attendant fields based on TSS type
                 if (workoutDefaults.hasSomeTSS)
@@ -130,8 +128,8 @@ function(
                             lapObject["Max Power"] = lap.maximumPower;
                             break;
                         case "rTSS":
-                            lapObject["Normalized Graded Pace"] = canShowNGP ? convertToViewUnits(lap.normalizedSpeedActual, "pace", null, workoutDefaults.sportTypeID) : null;
-                            lapObject[workoutDefaults.averagePaceSpeedKey] = convertToViewUnits(lap.averageSpeed, "pace", null, workoutDefaults.sportTypeID);
+                            lapObject["Normalized Graded Pace"] = canShowNGP ? TP.utils.conversion.formatUnitsValue("pace", lap.normalizedSpeedActual, { defaultValue: null, workoutTypeId: workoutDefaults.sportTypeID }) : null;
+                            lapObject[workoutDefaults.averagePaceSpeedKey] = TP.utils.conversion.formatUnitsValue("speed", lap.averageSpeed, { defaultValue: null, workoutTypeId: workoutDefaults.sportTypeID});
                             lapObject[workoutDefaults.maximumPaceSpeedKey] = maximumPaceOrSpeedValue;
                             break;
                         case "hrTSS":
@@ -151,15 +149,15 @@ function(
                 lapObject["Avg Power"] = lap.averagePower;
                 lapObject["Max Power"] = lap.maximumPower;
 
-                lapObject["Elev Gain"] = convertToViewUnits(lap.elevationGain, "elevation", null, workoutDefaults.sportTypeID);
-                lapObject["Elev Loss"] = convertToViewUnits(lap.elevationLoss, "elevation", null, workoutDefaults.sportTypeID);
+                lapObject["Elev Gain"] = TP.utils.conversion.formatUnitsValue("elevationGain", lap.elevationGain, {defaultValue: null, workoutTypeId: workoutDefaults.sportTypeID});
+                lapObject["Elev Loss"] = TP.utils.conversion.formatUnitsValue("elevationLoss", lap.elevationLoss, {defaultValue: null, workoutTypeId: workoutDefaults.sportTypeID});
                 lapObject["Energy"] = TP.utils.conversion.formatEnergy(lap.energy);
                 lapObject["NP"] = canShowNP ? lap.normalizedPowerActual : null;
-                lapObject["Normalized Graded Pace"] = canShowNGP ? convertToViewUnits(lap.normalizedSpeedActual, "pace", null, workoutDefaults.sportTypeID) : null;
+                lapObject["Normalized Graded Pace"] = canShowNGP ? TP.utils.conversion.formatUnitsValue("pace", lap.normalizedSpeedActual, {defaultValue: null, workoutTypeId: workoutDefaults.sportTypeID}) : null;
 
-                lapObject["Min Torque"] = convertToViewUnits(lap.minimumTorque, "torque", null, workoutDefaults.sportTypeID);
-                lapObject["Avg Torque"] = convertToViewUnits(lap.averageTorque, "torque", null, workoutDefaults.sportTypeID);
-                lapObject["Max Torque"] = convertToViewUnits(lap.maximumTorque, "torque", null, workoutDefaults.sportTypeID);
+                lapObject["Min Torque"] = TP.utils.conversion.formatUnitsValue("torque", lap.minimumTorque, {defaultValue: null, workoutTypeId: workoutDefaults.sportTypeID});
+                lapObject["Avg Torque"] = TP.utils.conversion.formatUnitsValue("torque", lap.averageTorque, {defaultValue: null, workoutTypeId: workoutDefaults.sportTypeID});
+                lapObject["Max Torque"] = TP.utils.conversion.formatUnitsValue("torque", lap.maximumTorque, {defaultValue: null, workoutTypeId: workoutDefaults.sportTypeID});
 
                 lapObject["Cad"] = lap.averageCadence;
 
