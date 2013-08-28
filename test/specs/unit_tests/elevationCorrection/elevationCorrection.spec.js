@@ -3,9 +3,10 @@
     "underscore",
     "jquery",
     "TP",
-    "views/elevationCorrection/elevationCorrectionView"
+    "views/elevationCorrection/elevationCorrectionView",
+    "utilities/charting/dataParser"
 ],
-    function (_, $, TP, ElevationCorrectionView)
+    function (_, $, TP, ElevationCorrectionView, DataParser)
     {
         function buildWorkoutModel()
         {
@@ -46,43 +47,17 @@
 
                     expect(constructorWithOptions).not.toThrow();
                 });
-
-                xit("Should build a model for template rendering", function()
-                {
-                    var stats = {
-                        minimumElevation: 5,
-                        averageElevation: 10,
-                        maximumElevation: 15,
-                        elevationGain: 11,
-                        elevationLoss: 13,
-                        grade: 0.2123
-                    };
-
-                    var detailData = new TP.Model({ totalStats: stats });
-                    var viewContext = {
-                        workoutModel: new TP.Model({ detailData: detailData })
-                    };
-
-                    ElevationCorrectionView.prototype.buildViewModel.apply(viewContext);
-
-                    expect(viewContext.model).toBeDefined();
-                    expect(viewContext.model.get("originalMin")).toEqual(stats.minimumElevation);
-                    expect(viewContext.model.get("originalAvg")).toEqual(stats.averageElevation);
-                    expect(viewContext.model.get("originalMax")).toEqual(stats.maximumElevation);
-                    expect(viewContext.model.get("originalGain")).toEqual(stats.elevationGain);
-                    expect(viewContext.model.get("originalLoss")).toEqual(stats.elevationLoss);
-                    expect(viewContext.model.get("originalGrade")).toEqual(stats.grade);
-                });
             });
 
             describe("Plot Rendering", function()
             {
                 
-                xit("Should contain original elevation", function()
+                it("Should contain original elevation", function()
                 {
                     var originalElevation = [100, 102, 110];
                     var viewContext = {
-                        originalElevation: originalElevation
+                        originalElevation: originalElevation,
+                        elevationCorrectionModel: new TP.Model()
                     };
 
                     var series = ElevationCorrectionView.prototype.buildPlotSeries.apply(viewContext);
@@ -90,13 +65,18 @@
                     expect(series[0].data).toBe(originalElevation);
                 });
  
-                xit("Should contain corrected elevation if it is available", function()
+                it("Should contain corrected elevation if it is available", function()
                 {
                     var originalElevation = [100, 102, 110];
                     var correctedElevation = [103, 105, 114];
+                    var dataParser = new DataParser();
+
+                    spyOn(dataParser, "createCorrectedElevationChannel").andReturn(correctedElevation);
+
                     var viewContext = {
                         originalElevation: originalElevation,
-                        correctedElevation: correctedElevation
+                        elevationCorrectionModel: new TP.Model({elevations: correctedElevation}),
+                        dataParser: dataParser
                     };
 
                     var series = ElevationCorrectionView.prototype.buildPlotSeries.apply(viewContext);
@@ -106,17 +86,24 @@
                 });
             });
 
-            xdescribe("Show corrected elevation", function()
+            describe("Show corrected elevation", function()
             {
 
-                var viewModel, workoutModel, elevationCorrectionModel, viewContext;
+                var workoutModel, elevationCorrectionModel, viewContext;
 
                 beforeEach(function()
                 {
-                    viewModel = new TP.Model();
-
-                    workoutModel = new TP.Model({
-                        distance: 10000
+                    var workoutModel = new TP.Model({
+                        detailData: new TP.Model({
+                            totalStats: {
+                                minimumElevation: 1,
+                                averageElevation: 2,
+                                maximumElevation: 3,
+                                elevationGain: 2,
+                                elevationLoss: 0,
+                                grade: 3
+                            } 
+                        })
                     });
 
                     elevationCorrectionModel = new TP.Model({
@@ -128,27 +115,27 @@
                     });
 
                     viewContext = {
-                        model: viewModel,
                         workoutModel: workoutModel,
                         elevationCorrectionModel: elevationCorrectionModel,
-                        calculateGrade: ElevationCorrectionView.prototype.calculateGrade
+                        calculateGrade: ElevationCorrectionView.prototype.calculateGrade,
+                        serializeData: ElevationCorrectionView.prototype.serializeData
                     };
                 });
 
-                it("Should set appropriate model attributes after elevation correction data is fetched", function()
+                it("Should correctly serialize data after elevation correction data is fetched", function()
                 {
-
-                    ElevationCorrectionView.prototype.showCorrectedElevation.apply(viewContext);
                 
-                    expect(viewModel.get("correctedMin")).toEqual(elevationCorrectionModel.get("min"));
-                    expect(viewModel.get("correctedMax")).toEqual(elevationCorrectionModel.get("max"));
-                    expect(viewModel.get("correctedAvg")).toEqual(elevationCorrectionModel.get("avg"));
-                    expect(viewModel.get("correctedGain")).toEqual(elevationCorrectionModel.get("gain"));
-                    expect(viewModel.get("correctedLoss")).toEqual(elevationCorrectionModel.get("loss"));
+                    var serializedData = viewContext.serializeData();
+
+                    expect(serializedData.correctedMin).toEqual(elevationCorrectionModel.get("min"));
+                    expect(serializedData.correctedMax).toEqual(elevationCorrectionModel.get("max"));
+                    expect(serializedData.correctedAvg).toEqual(elevationCorrectionModel.get("avg"));
+                    expect(serializedData.correctedGain).toEqual(elevationCorrectionModel.get("gain"));
+                    expect(serializedData.correctedLoss).toEqual(elevationCorrectionModel.get("loss"));
 
                 });
 
-                it("Should calculate appropriate grade", function()
+                it("Should calculate appropriate grade", null, function()
                 {
                     ElevationCorrectionView.prototype.showCorrectedElevation.apply(viewContext);
                     var expectedGrade = 20.12;
