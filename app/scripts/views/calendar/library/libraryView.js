@@ -60,7 +60,6 @@ function(
                 }
                 break;
             }
-
             return new this.viewConstructors[requestedView](customOptions);
         }
     });

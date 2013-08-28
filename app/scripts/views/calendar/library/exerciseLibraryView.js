@@ -5,11 +5,13 @@
     "jqueryui/widget",
     "jquerySelectBox",
     "backbone.marionette",
+    "jqueryui/droppable",
     "TP",
     "models/library/libraryExercise",
     "models/library/libraryExercisesCollection",
     "views/calendar/library/exerciseLibraryItemView",
     "views/calendar/library/exerciseLibraryAddItemView",
+    "views/quickView/saveWorkoutToLibrary/saveWorkoutToLibraryConfirmationView",
     "hbs!templates/views/calendar/library/exerciseLibraryView"
 ],
 function(
@@ -18,11 +20,13 @@ function(
     jqueryUiWidget,
     jquerySelectBox,
     Marionette,
+    droppable,
     TP,
     LibraryExerciseModel,
     LibraryExercisesCollection,
     ExerciseLibraryItemView,
     ExerciseLibraryAddItemView,
+    SaveToLibraryConfirmationView,
     exerciseLibraryViewTemplate
     )
 {
@@ -124,6 +128,8 @@ function(
                     dynamicPositioning: false
                 });
             });
+            this.$el.droppable({drop: _.bind(this.onWorkoutDropped, this), hoverClass: 'myHoverClass'});
+            
         },
 
         addToLibrary: function()
@@ -131,7 +137,18 @@ function(
             var view = new ExerciseLibraryAddItemView({});
             view.render();
         },
+        onWorkoutDropped: function(event, ui)
+        {
+            if (!ui.draggable.data('workoutid'))
+            {
+                return;
+            }
+            var workoutid = ui.draggable.data('workoutid');
+            var workoutModel = theMarsApp.controllers.calendarController.weeksCollection.workoutsCollection.get(workoutid);
+            this.saveToLibraryConfirmationView = new SaveToLibraryConfirmationView({ model: workoutModel, libraries: this.libraries, selectedLibraryId: this.model.get('selected') });
+            this.saveToLibraryConfirmationView.render();
 
+        },
         _onLibrariesChanged: function(options)
         {
             this._updateCollection();
