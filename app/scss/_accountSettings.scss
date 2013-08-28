@@ -1,0 +1,201 @@
+﻿.userSettings
+{
+    max-height: 700px;
+    overflow-y: auto;
+    @include nice-scrollbar;
+}
+
+.userSettingContainer
+{
+    padding: 12px;
+    max-width: 800px;
+
+    label
+    {
+        float: left;   
+        padding: 4px 5px 0 0; 
+        width: 110px;
+        max-width: 110px;
+        text-align: right;
+    }
+            
+    input
+    {
+        width: 200px;
+        float: left;
+        margin: 0 15px 0 0;
+        height: 20px;
+        color: $TPGrey3;
+    }
+
+    input[type="radio"]
+    {
+        width: 20px;
+        margin: -4px 0 0 0;
+    }
+
+    input[type="checkbox"]
+    {
+        width: 20px;
+        margin: -4px 0 0 0;
+    }
+
+    p
+    {
+        margin: 0 15px;
+    }
+
+    select
+    {
+        width: 300px;
+    }
+
+    .recurringPayments, .paymentHistory
+    {
+
+        margin-top: 15px;
+
+        h3
+        {
+            margin-top: 15px;
+        }
+
+        &:not(.empty)
+        {
+            .nopayments
+            {
+                display: none;
+            }
+        }
+
+        &.empty
+        {
+            .withpayments
+            {
+                display: none;
+            }
+        }
+
+        .recurringPaymentItem, .paymentHistoryItem
+        {
+            margin: 15px 20px;
+
+            .row
+            {
+                overflow-y: visible;
+                margin-bottom: 5px;
+
+                div
+                {
+                    min-width: 150px;
+                    display: inline-block;
+                }
+            }
+        }
+
+        .recurringPaymentItem
+        {
+            .row
+            {
+                div
+                {
+                    min-width: 180px;
+                }
+            }
+        }
+    }
+
+    .row
+    {
+        height: 20px;
+        margin-bottom: 10px;
+    }
+
+    .radioButtonRow
+    {
+        text-align: left;
+        padding-left: 5px;
+    }
+
+    .genderRadioButtonRow
+    {
+        width: 75px;
+    }
+
+    .profilePicture
+    {
+        margin-left: 110px;
+
+        img
+        {
+            max-height: 200px;
+            max-width: 200px;
+        }
+
+    }
+
+    .accountSettings
+    {
+        margin: 10px 0 5px 0;
+    }
+
+    .textCopy
+    {
+        text-align: left;
+    }
+
+    .checkBoxRow
+    {
+        max-width: 350px;
+        width: 350px;
+        text-align: left;
+        margin-left: 50px;
+    }
+
+    .deliveryTimeHelpText
+    {
+        margin-bottom: 10px;
+    }
+
+    .nopaymentText
+    {
+        margin-left: 5px;
+    }
+
+    .ical
+    {
+        width: 270px;
+    }
+
+    .selectboxit-container .selectboxit 
+    {
+        width: 200px !important;
+    }
+
+    .selectBox
+    {
+        position: relative;
+        float: left;
+        width: 200px;
+    }
+
+    .country, .timeZone
+    {
+        .selectboxit-container .selectboxit 
+        {
+            width: 295px !important;
+        }
+    }
+
+    .selectboxit-list
+    {
+        max-height: 350px;
+        @include nice-scrollbar;
+    }
+
+}
+
+.closeIcon
+{
+    margin: 5px 0 0 0 !important;
+}

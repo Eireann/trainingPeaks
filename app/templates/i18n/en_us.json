@@ -74,19 +74,25 @@
     "Country": "Country",
     "Phone": "Phone",
     "CellPhone": "Cell Phone",
+    "ProfilePicture": "Profile Picture",
 
     "AccountSettings": "Account Settings",
+    "AccountType": "Account Type",
     "Units": "Units",
     "EnglishUnits": "English",
     "MetricUnits": "Metric",
     "DateFormat": "Date Format",
     "DayFormat1": "MM/DD/YY", 
     "DayFormat2": "DD/MM/YY",
+    "TimeZone": "Time Zone",
 
     "EmailOptions": "E-mail Options",
     "emailPMNotificationSetting": "Send me an e-mail when I receive a private message",
     "postActivityNotificationSetting": "Receive post-activity comment notification",
     "newsletterNotificationSetting": "Receive occasional informational newsletter",
+    "plannedWorkoutsNotificationSetting": "Enable daily emails of planned workouts",
+    "deliveryTime": "Delivery Time",
+    "plannedWorkoutsNotificationTimeHelpText": "If delivery time is from Midnight to Noon, you will receive that day's workout. If delivery time is from Noon to Midnight, you will receive the next day's workout.",
 
     "Payments": "Payments",
     "AccountExpires": "Account Expires",
@@ -392,5 +398,24 @@
     "PeakswareLiabality": "Peaksware is not responsible for the plan's content and the user assumes all responsibilty when using this plan.",
     "More": "More",
     "Averages": "Averages",
-    "Weeks": "Weeks"
+    "Weeks": "Weeks",
+
+    "Sku": "Sku",
+    "Transaction #": "Transaction #",
+    "Card #": "Card #",
+    "Price": "Price",
+    "Start Date": "Start Date",
+    "Paid Through": "Paid Through",
+    "Exp. Date": "Exp. Date",
+    "Type": "Type",
+
+    "Payment History": "Payment History",
+    "Active Recurring Payments": "Active Recurring Payments",
+    "CalendarSync": "Calendar Sync (.ics)",
+    "WorkoutsOnly": "Workouts Only",
+    "MealsOnly": "Meals Only",
+    "WorkoutsAndMeals": "Workouts & Meals",
+    "ICalHelpText": "This url provides a link so you can subscribe to your TrainingPeaks calendar via a 3rd party calendar application, such as Google Calendar, Microsoft Outlook, Apple's iCal.",
+    "None": "None",
+    "CurrentRatePlan": "Current rate plan"
 }

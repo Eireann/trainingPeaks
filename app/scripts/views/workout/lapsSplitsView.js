@@ -128,7 +128,7 @@ function(
                             lapObject["Max Power"] = lap.maximumPower;
                             break;
                         case "rTSS":
-                            lapObject["Normalized Graded Pace"] = canShowNGP ? TP.utils.conversion.formatUnitsValue("pace", lap.normalizedSpeedActual, { defaultValue: null, workoutTypeId: workoutDefaults.sportTypeID }) : null;
+                            lapObject["NGP"] = canShowNGP ? TP.utils.conversion.formatUnitsValue("pace", lap.normalizedSpeedActual, { defaultValue: null, workoutTypeId: workoutDefaults.sportTypeID }) : null;
                             lapObject[workoutDefaults.averagePaceSpeedKey] = TP.utils.conversion.formatUnitsValue("speed", lap.averageSpeed, { defaultValue: null, workoutTypeId: workoutDefaults.sportTypeID});
                             lapObject[workoutDefaults.maximumPaceSpeedKey] = maximumPaceOrSpeedValue;
                             break;
@@ -145,21 +145,23 @@ function(
                 lapObject["Max Heart Rate"] = lap.maximumHeartRate;
                 lapObject[workoutDefaults.averagePaceSpeedKey] = averagePaceOrSpeedValue;
                 lapObject[workoutDefaults.maximumPaceSpeedKey] = maximumPaceOrSpeedValue;
-                lapObject["Calories"] = lap.calories;
+                lapObject["Cad"] = lap.averageCadence;
                 lapObject["Avg Power"] = lap.averagePower;
                 lapObject["Max Power"] = lap.maximumPower;
 
                 lapObject["Elev Gain"] = TP.utils.conversion.formatUnitsValue("elevationGain", lap.elevationGain, {defaultValue: null, workoutTypeId: workoutDefaults.sportTypeID});
                 lapObject["Elev Loss"] = TP.utils.conversion.formatUnitsValue("elevationLoss", lap.elevationLoss, {defaultValue: null, workoutTypeId: workoutDefaults.sportTypeID});
-                lapObject["Energy"] = TP.utils.conversion.formatEnergy(lap.energy);
+
                 lapObject["NP"] = canShowNP ? lap.normalizedPowerActual : null;
-                lapObject["Normalized Graded Pace"] = canShowNGP ? TP.utils.conversion.formatUnitsValue("pace", lap.normalizedSpeedActual, {defaultValue: null, workoutTypeId: workoutDefaults.sportTypeID}) : null;
+                lapObject["NGP"] = canShowNGP ? TP.utils.conversion.formatUnitsValue("pace", lap.normalizedSpeedActual, {defaultValue: null, workoutTypeId: workoutDefaults.sportTypeID}) : null;
+
 
                 lapObject["Min Torque"] = TP.utils.conversion.formatUnitsValue("torque", lap.minimumTorque, {defaultValue: null, workoutTypeId: workoutDefaults.sportTypeID});
                 lapObject["Avg Torque"] = TP.utils.conversion.formatUnitsValue("torque", lap.averageTorque, {defaultValue: null, workoutTypeId: workoutDefaults.sportTypeID});
                 lapObject["Max Torque"] = TP.utils.conversion.formatUnitsValue("torque", lap.maximumTorque, {defaultValue: null, workoutTypeId: workoutDefaults.sportTypeID});
 
-                lapObject["Cad"] = lap.averageCadence;
+                lapObject["Work"] = TP.utils.conversion.formatEnergy(lap.energy);
+                lapObject["Calories"] = lap.calories;
 
                 // filter out null values
                 for (var key in lapObject)

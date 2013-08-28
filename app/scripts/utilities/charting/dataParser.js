@@ -352,28 +352,12 @@ function(chartColors, findIndexByMsOffset, conversion)
         createCorrectedElevationChannel: function (elevations)
         {
             var index = 0;
-            var badIndeces = [];
-            
-            for (var i = 0; i < this.dataByAxisAndChannel[this.xaxis]["Latitude"].length; i++)
-            {
-                if (_.isNaN(this.dataByAxisAndChannel[this.xaxis]["Latitude"][i][1]) || _.isNaN(this.dataByAxisAndChannel[this.xaxis]["Longitude"][i][1]))
-                    badIndeces.push(i);
-            }
-
-            _.each(badIndeces, function(badIndex)
-            {
-                if (badIndex === 0)
-                    elevations.unshift(null);
-                else
-                    elevations.splice(badIndex, 0, null);
-            });
-
             var corrected = _.map(this.dataByAxisAndChannel[this.xaxis]["Elevation"], function (elevationPoint)
             {
                 if (index >= (elevations.length - 1))
                     return [elevationPoint[0], null];
 
-                return [elevationPoint[0], elevations[index++]];
+                return [elevationPoint[0], elevations[index++] / 100];
             });
             return corrected;
         },

@@ -69,16 +69,16 @@ function(moment, _, theMarsApp, TP, LapsSplitsView, WorkoutModel, detailDataLaps
 			{
 				expect(serializedData.rowData[0][1]).toBe("00:00");
 			});
-			it("Should include Normalized Graded Pace for run or walk workouts", function()
+			it("Should include NGP for run or walk workouts", function()
 			{
 				model.set({workoutTypeValueId: 3});
-				expect(_.contains(serializedData.headerNames, "Normalized Graded Pace")).toBeTruthy();
+				expect(_.contains(serializedData.headerNames, "NGP")).toBeTruthy();
 			});
-			it("Should exclude Normalized Graded Pace for other workout types", function()
+			it("Should exclude NGP for other workout types", function()
 			{
 				model.set({workoutTypeValueId: 1});
 				serializedData = view.serializeData();
-				expect(_.contains(serializedData.headerNames, "Normalized Graded Pace")).toBeFalsy();
+				expect(_.contains(serializedData.headerNames, "NGP")).toBeFalsy();
 			});
 			it("Should exclude Normalized Power for run and walk workouts", function()
 			{
@@ -154,21 +154,21 @@ function(moment, _, theMarsApp, TP, LapsSplitsView, WorkoutModel, detailDataLaps
 			serializedData = view.serializeData();
 			checkOrder("rTSS", 6, "RunningTss", serializedData);
 			checkOrder("IF", 7, "RunningTss", serializedData);
-			checkOrder("Normalized Graded Pace", 8, "RunningTss", serializedData);	
+			checkOrder("NGP", 8, "RunningTss", serializedData);	
 			checkOrder("Avg Pace", 9, "RunningTss", serializedData);
 			checkOrder("Max Pace", 10, "RunningTss", serializedData);
 			checkOrder("Avg Heart Rate", 11, "RunningTss", serializedData);
 			checkOrder("Max Heart Rate", 12, "RunningTss", serializedData);
-			checkOrder("Calories", 13, "RunningTss", serializedData);
+			checkOrder("Cad", 13, "RunningTss", serializedData);
 			checkOrder("Avg Power", 14, "RunningTss", serializedData);
 			checkOrder("Max Power", 15, "RunningTss", serializedData);
 
 			checkOrder("Elev Gain", 16, "RunningTss", serializedData);
 			checkOrder("Elev Loss", 17, "RunningTss", serializedData);
-			checkOrder("Energy", 18, "RunningTss", serializedData);
+			checkOrder("Work", 18, "RunningTss", serializedData);
 			// min/avg/max torque would go here, but it's (intentionally) not present 
 			// in the data set so it won't be rendered
-			checkOrder("Cad", 19, "RunningTss", serializedData);
+			checkOrder("Calories", 19, "RunningTss", serializedData);
 
 			setTSSsource(model, "HeartRateTss");
 			serializedData = view.serializeData();

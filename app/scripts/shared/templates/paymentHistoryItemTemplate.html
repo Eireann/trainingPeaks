@@ -1,0 +1,15 @@
+    <div class="row">
+        <div class="date">{{$ "Date" }}: {{ formatDate paypalDate "L" }}</div>
+        <div class="description">{{$ "Description" }}: {{ defaultValue skuDescription "--" }}</div>
+    </div>
+
+    <div class="row">
+        <div class="sku">{{$ "Sku" }}: {{ defaultValue sku "--" }}</div>
+        <div class="card">{{$ "Card #" }}: {{ defaultValue accountNumber "--" }}</div>
+    </div>
+   
+    <div class="row thirds">
+        <div class="transaction">{{$ "Transaction #" }}: {{ defaultValue originalTransId "--" }}</div>
+        <div class="price">{{$ "Price" }}: {{ formatDollars totalAsDollars }}</div>
+        <div class="type">{{$ "Type" }}: {{ defaultValue type "--" }}</div>
+    </div>

@@ -241,7 +241,7 @@ function(
                         expect($body.find(".dashboardChartSettings").length).toBe(0);
                         $mainRegion.find(".dashboardChart.pmcChart .settings").trigger("mousedown");
                         expect($body.find(".dashboardChartSettings").length).toBe(1);
-                        $body.find(".dashboardChartSettings #closeIcon").trigger("click");
+                        $body.find(".dashboardChartSettings .closeIcon").trigger("click");
                         expect($body.find(".dashboardChartSettings").length).toBe(0);
                     });
 
@@ -251,7 +251,7 @@ function(
                         testHelpers.clearRequests();
                         $mainRegion.find(".dashboardChart.pmcChart .settings").trigger("mousedown");
                         expect(testHelpers.hasRequest("PUT", "user")).toBe(false);
-                        $body.find(".dashboardChartSettings #closeIcon").trigger("click");
+                        $body.find(".dashboardChartSettings .closeIcon").trigger("click");
                         expect(testHelpers.hasRequest("PUT", "user")).toBe(true);
                     });
 
@@ -261,7 +261,7 @@ function(
                         testHelpers.clearRequests();
                         $mainRegion.find(".dashboardChart.pmcChart .settings").trigger("mousedown");
                         expect(testHelpers.hasRequest("POST", "reporting/performancedata")).toBe(false);
-                        $body.find(".dashboardChartSettings #closeIcon").trigger("click");
+                        $body.find(".dashboardChartSettings .closeIcon").trigger("click");
                         expect(testHelpers.hasRequest("POST", "reporting/performancedata")).toBe(false);
                     });
 
@@ -272,7 +272,7 @@ function(
                         $mainRegion.find(".dashboardChart.pmcChart .settings").trigger("mousedown");
                         expect(testHelpers.hasRequest("POST", "reporting/performancedata")).toBe(false);
                         $body.find(".dashboardChartSettings #ctlConstant").val("99").attr("value", "99").trigger("change");
-                        $body.find(".dashboardChartSettings #closeIcon").trigger("click");
+                        $body.find(".dashboardChartSettings .closeIcon").trigger("click");
                         expect(testHelpers.hasRequest("POST", "reporting/performancedata")).toBe(true);
                     });
 
@@ -292,7 +292,7 @@ function(
                         $body.find(".dashboardChartSettings .dashboardDatePicker select.dateOptions").val(chartUtils.chartDateOptions.CUSTOM_DATES.id).trigger("change");
                         $body.find(".dashboardChartSettings .dashboardDatePicker input.startDate").val("2012-04-01").trigger("change");
                         $body.find(".dashboardChartSettings .dashboardDatePicker input.endDate").val("2012-12-25").trigger("change");
-                        $body.find(".dashboardChartSettings #closeIcon").trigger("click");
+                        $body.find(".dashboardChartSettings .closeIcon").trigger("click");
 
                         // should request tomahawk dates
                         expect(testHelpers.hasRequest("POST", "reporting/performancedata/2012-04-01/2012-12-25")).toBe(true);

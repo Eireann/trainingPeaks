@@ -191,6 +191,7 @@ $mainTtabSpriteRetinaURL: url(../../assets/images/sprite-icons-main-tabs@2x.png)
 
         .unimplementedLibrary {
             background-color: $TPGrey1;
+            display:none;
 
             &:hover
             {

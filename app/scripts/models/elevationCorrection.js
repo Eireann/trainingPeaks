@@ -1,60 +1,41 @@
 ﻿define(
 [
-    "TP"
+    "TP",
+    "models/commands/elevationCorrection"
 ],
-function(TP)
+function(TP, ElevationCorrectionCommandModel)
 {
     return TP.APIDeepModel.extend(
     {
         webAPIModelName: "Workout",
+        idAttribute: "uploadedFileId",
         validateIdAttribute: function () { },
 
         url: function ()
         {
-            return theMarsApp.apiRoot + "/groundcontrol/v1/elevations";
+            return theMarsApp.apiRoot + "/groundcontrol/v1/elevations/" + this.id;
         },
-        
+        initialize: function(options)
+        {
+            this.elevationCorrectionCommandModel = new ElevationCorrectionCommandModel({}, { uploadedFileId: options.uploadedFileId });
+        },
         defaults:
         {
-            latLngs: "",
-            elevations: "",
+            uploadedFileId: null,
+            elevations: null,
             min: null,
             max: null,
             avg: null,
             gain: null,
             loss: null
         },
-        
-        initialize: function(attributes, options)
+        applyCorrection: function()
         {
-            if (!options.latLngArray)
-                throw new Error("ElevationCorrectionModel requires a LatLong array at construction");
-            
-            var serializedLatLng = "";
-            _.each(options.latLngArray, function (latLong)
+            var self = this;
+            this.elevationCorrectionCommandModel.execute().done(function()
             {
-                serializedLatLng += latLong[0] + " ";
-                serializedLatLng += latLong[1] + " ";
+                self.trigger("correctionSaved");
             });
-
-            serializedLatLng = serializedLatLng.trim();
-
-            this.set("latLngs", serializedLatLng, { silent: true });
-        },
-        
-        parse: function (response)
-        {
-            if (!response || !response.elevations)
-                return null;
-
-            var parsedElevations = _.map(response.elevations.split(" "), function(elevation)
-            {
-                return (elevation !== null ? elevation / 100 : null);
-            });
-
-            response.elevations = parsedElevations;
-
-            return response;
         }
     });
 });
