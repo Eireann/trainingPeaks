@@ -121,7 +121,12 @@ module.exports = function(grunt)
                 {
                     return path.basename(dest) + ".map";
                 },
-                sourceMapPrefix: 2
+                sourceMapPrefix: 2,
+                beautify:
+                {
+                    beautify: false,
+                    semicolons: false
+                }
             },
             build:
             {
