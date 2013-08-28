@@ -49,22 +49,5 @@ function(
         return callbacks;
     };
 
-//     jQuery.ajaxPrefilter(function(options) {
-//         var keys = ["complete", "error", "success"];
-
-//         _.each(keys, function(key) {
-//             if(_.isFunction(options[key]))
-//             {
-//                 options[key] = wrap(options[key]);
-//             }
-//             else if(_.isArray(options[key]))
-//             {
-//                 options[key] = _.map(options[key], function(value)
-//                 {
-//                     return _.isFunction(value) ? wrap(value) : value;
-//                 });
-//             }
-//         });
-//     });
     return window;
 });
