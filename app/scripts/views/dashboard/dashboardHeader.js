@@ -68,15 +68,14 @@ function (datepicker, spinner, jquerySelectBox, _, TP, DashboardDatePicker, char
             this.trigger("change:dashboardDates");
         },
 
-<<<<<<< HEAD
         refresh: function()
         {
             this.trigger("refresh");
-=======
+        },
+
         headerDatePicker: function ()
         {
             console.log("hello world");
->>>>>>> 79e64105a88602ea75ce8319036dc09faa53b02a
         }
     };
 
