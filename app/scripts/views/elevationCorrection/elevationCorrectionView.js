@@ -185,8 +185,8 @@ function (TP, DataParser, ElevationCorrectionModel, defaultFlotOptions, chartCol
 
         onElevationCorrectionFetched: function()
         {
-            this.ui.chart.removeClass("waiting");
             this.render();
+            this.ui.chart.removeClass("waiting");
         },
 
         serializeData: function()
