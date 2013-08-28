@@ -104,7 +104,7 @@
                 padding-left: 7px;
             }
 
-    		#calendarDate
+    		.calendarDate
     		{
     			font-Family: $fontFamilyRegular;
     			font-size: $fontSizeMedium;
@@ -142,9 +142,11 @@
     	.summaryHeader
     	{
     		background-color: $TPGrey3;
-    		#calendarDate{
+    		.calendarDate{
                 color: white;
                 font-family: $fontFamilyLight;
+                font-size: $fontSizeSmall;
+                padding-top:4px;
             }
             cursor: default;
     	}
@@ -450,7 +452,7 @@
                 text-align: right;
                 float:left;
                 margin: 0px;
-                padding-top: 2px;
+                padding-top: 4px;
             }
         }
 
