@@ -7,7 +7,7 @@ $mainTtabSpriteRetinaURL: url(../../assets/images/sprite-icons-main-tabs@2x.png)
 {
     background-color: $TPGrey6;
     border-color: $TPGrey6;
-    width: 240px;
+    width: 238px;
     border-style: solid;
     border-width: 1px;
     color: $TPGrey3;
@@ -265,6 +265,7 @@ $mainTtabSpriteRetinaURL: url(../../assets/images/sprite-icons-main-tabs@2x.png)
                 &:active {
                     background: url(../../assets/images/calendarImages/sprite-header-icons.png) no-repeat -72px -60px;
                 }
+                margin-right:2px;
             }
 
             #add {
@@ -294,7 +295,7 @@ $mainTtabSpriteRetinaURL: url(../../assets/images/sprite-icons-main-tabs@2x.png)
         .librarySearch
         {
             margin-top: 10px;
-            @include inputs(240px, 20px, $fontSizeSmall, $fontFamilyRegular);
+            @include inputs(238px, 22px, $fontSizeSmall, $fontFamilyRegular);
 
             input
             {
@@ -315,24 +316,26 @@ $mainTtabSpriteRetinaURL: url(../../assets/images/sprite-icons-main-tabs@2x.png)
 
         .helpText
         {
-            margin-top: 5px;
-            margin-left: 8px;
 
             color: $TPGrey3;
             cursor: default;
             font-size: $fontSizeSmall;
+            
+            p {
+                margin:5px 7px 15px 9px;
+            }
         }
     }
 
     .selectboxit-options
     {
-        width: 240px;
+        width: 238px;
         margin-left: 2px;
     }
 
     .selectboxit-container .selectboxit 
     {
-        width: 240px !important; /* Width of the dropdown button */
+        width: 238px !important; /* Width of the dropdown button */
         margin-left: 2px;
     }
 
@@ -436,7 +439,7 @@ $mainTtabSpriteRetinaURL: url(../../assets/images/sprite-icons-main-tabs@2x.png)
             .author
             {
                 height: 15px;
-                max-width: 240px;
+                max-width: 238px;
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
