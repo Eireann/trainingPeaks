@@ -7,9 +7,10 @@
     "TP",
     "./dashboardDatePicker",
     "./chartUtils",
+    "./dashboardHeaderDatePicker",
     "hbs!templates/views/dashboard/dashboardHeader"
 ],
-function (datepicker, spinner, jquerySelectBox, _, TP, DashboardDatePicker, chartUtils, dashboardHeaderTemplate)
+function (datepicker, spinner, jquerySelectBox, _, TP, DashboardDatePicker, chartUtils, dashboardHeaderDatePicker, dashboardHeaderTemplate)
 {
     var DashboardHeaderView =
     {
@@ -24,7 +25,8 @@ function (datepicker, spinner, jquerySelectBox, _, TP, DashboardDatePicker, char
 
         events:
         {
-            "click .applyDates": "applyDates"
+            "click .applyDates": "applyDates",
+            "click .headerMonth": "headerDatePicker"
         },
 
         initialize: function (options)
@@ -63,6 +65,11 @@ function (datepicker, spinner, jquerySelectBox, _, TP, DashboardDatePicker, char
         {
             this.model.save();
             this.trigger("change:dashboardDates");
+        },
+
+        headerDatePicker: function ()
+        {
+            console.log("hello world");
         }
     };
 
