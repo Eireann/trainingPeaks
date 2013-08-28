@@ -19,10 +19,13 @@ function(
             }
             catch(e)
             {
-                window._rollbar && window._rollbar.push(e);
+                if (window._rollbar)
+                {
+                    window._rollbar.push(e);
+                }
                 throw e;
             }
-        }
+        };
     }
 
     var originalSetInterval = window.setInterval;
