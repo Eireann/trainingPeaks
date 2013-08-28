@@ -8,7 +8,7 @@
             {{/each}}
         </select>
     </div>
-    <div class="dateRanges{{#if customStartDate }} customStartDate{{/if}}{{#if customEndDate }} customEndDate{{/if}}">
+    <div class="dateRanges{{#if customStartDate }} customStartDate{{/if}}{{#if customEndDate }} customEndDate{{/if}} cf">
         <span class="title fromTo">{{$ "From"}}:</span>
         <input type="text" class="datepicker startDate" value="{{ formatDate startDate "YYYY-MM-DD" }}" readonly>
         <div class="date startDate">{{ formatDate startDate "YYYY-MM-DD" }}</div>

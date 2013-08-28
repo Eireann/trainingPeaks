@@ -3,7 +3,6 @@
 
 .pmcChartSettings
 {
-    // width: 355px;
     width:325px;
     top: 10px;
 
@@ -15,11 +14,16 @@
     .LearnMore
     {
         text-align: center;
+        p {
+            margin-bottom:0;
+            padding-bottom:0;
+            line-height:1;
+        }
     }
 
     .hoverBoxContents
     {
-        min-height: 460px;
+        // min-height: 460px;
     }
 
     .title
