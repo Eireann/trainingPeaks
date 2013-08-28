@@ -17,11 +17,8 @@ function(
             }
             catch(e)
             {
-                debugger;
-                console && console.log && console.error(e);
-                _rollbar && _rollbar.push(e, function(err) {
-                    console.log(err);
-                });
+                window._rollbar && window._rollbar.push(e);
+                throw e;
             }
         }
     }
