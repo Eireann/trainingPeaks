@@ -134,7 +134,9 @@ src:url("assets/fonts/2daec1fd-cd45-448e-b86e-ec73aacdb4ec.eot?#iefix") format("
   var _rollbarParams =
   {
     "server.environment": window.apiConfig ? window.apiConfig.environment : "local",
-    "server.sha": window.apiConfig ? window.apiConfig.buildNumber : ""
+    "server.sha": window.apiConfig ? window.apiConfig.buildHash : "",
+    "client.javascript.source_map_enabled": true,
+    "client.javascript.code_version": window.apiConfig ? window.apiConfig.buildHash : ""
   };
 
   _rollbarParams["notifier.snippet_version"] = "2"; var _rollbar=["3b4e2366466f45e3b643a7d6b901bf0e", _rollbarParams]; var _ratchet=_rollbar;
