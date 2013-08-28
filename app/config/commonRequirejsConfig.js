@@ -55,7 +55,8 @@
             "moment": "../vendor/js/libs/moment/moment",
 
             // thread utilities
-            "setImmediate": "../vendor/js/libs/setImmediate",
+            "originalSetImmediate": "../vendor/js/libs/setImmediate",
+            "setImmediate": "scripts/shared/patches/wrapSetImmediateForRollbar",
 
             // affiliates
             "affiliates": "scripts/affiliates",
@@ -105,7 +106,7 @@
                 exports: "Backbone"
             },
             "jqueryOutside": [],
-            "setImmediate": { exports: "setImmediate" },
+            "originalSetImmediate": [],
             "jqueryTextAreaResize": [],
             "jquerySelectBox": []
         }
