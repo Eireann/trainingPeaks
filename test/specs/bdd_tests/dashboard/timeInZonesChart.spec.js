@@ -94,7 +94,7 @@ function(
                     expect($body.find(".timeInZonesChartSettings .workoutType input[type=checkbox][data-workouttypeid=1]").is(":checked")).toBe(false);
                     $body.find(".timeInZonesChartSettings .workoutType input[type=checkbox][data-workouttypeid=1]").trigger("click");
                     expect($body.find(".timeInZonesChartSettings .workoutType input[type=checkbox][data-workouttypeid=1]").is(":checked")).toBe(true);
-                    $body.find(".timeInZonesChartSettings #closeIcon").trigger("click");
+                    $body.find(".timeInZonesChartSettings .closeIcon").trigger("click");
 
                     $mainRegion.find(".dashboardChart.timeInZones .settings").trigger("mousedown");
                     expect($body.find(".timeInZonesChartSettings .workoutType input[type=checkbox][data-workouttypeid=0]").is(":checked")).toBe(false);
@@ -117,7 +117,7 @@ function(
                         $body.find(".timeInZonesChartSettings .workoutType input[type=checkbox][data-workouttypeid=0]").trigger("click");
                     }
                     $body.find(".timeInZonesChartSettings .workoutType input[type=checkbox][data-workouttypeid=1]").trigger("click");
-                    $body.find(".timeInZonesChartSettings #closeIcon").trigger("click");
+                    $body.find(".timeInZonesChartSettings .closeIcon").trigger("click");
                     expect(testHelpers.hasRequest("PUT", "user")).toBe(true);
                 });
 
@@ -134,7 +134,7 @@ function(
                         $body.find(".timeInZonesChartSettings .workoutType input[type=checkbox][data-workouttypeid=0]").trigger("click");
                     }
                     $body.find(".timeInZonesChartSettings .workoutType input[type=checkbox][data-workouttypeid=1]").trigger("click");
-                    $body.find(".timeInZonesChartSettings #closeIcon").trigger("click");
+                    $body.find(".timeInZonesChartSettings .closeIcon").trigger("click");
                     testHelpers.resolveRequest("POST", "reporting/timeinzones", {});
                     expect($mainRegion.find(".dashboardChart.timeInZones .chartTitle").text()).not.toContain("All");
                     expect($mainRegion.find(".dashboardChart.timeInZones .chartTitle").text()).toContain("Swim");
@@ -151,7 +151,7 @@ function(
                         $body.find(".timeInZonesChartSettings .workoutType input[type=checkbox][data-workouttypeid=0]").trigger("click");
                     }
                     $body.find(".timeInZonesChartSettings .workoutType input[type=checkbox][data-workouttypeid=1]").trigger("click");
-                    $body.find(".timeInZonesChartSettings #closeIcon").trigger("click");
+                    $body.find(".timeInZonesChartSettings .closeIcon").trigger("click");
                     expect(testHelpers.hasRequest("POST", "reporting/timeinzones")).toBe(true);
                 });
 
