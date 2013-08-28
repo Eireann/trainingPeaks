@@ -1,12 +1,10 @@
-<dl>
-    <dt>{{$ "Start Date" }}:</dt>
-    <dl>{{ formatDate dateCreated "L" }}</dl>
-    <dt>{{$ "Paid Through" }}:</dt>
-    <dl>{{ formatDate paidThrough "L" }}</dl>
-    <dt>{{$ "Description" }}:</dt>
-    <dl>{{ lookupSharedData "accounting.recurringPaymentProfileTypes" profileType }}</dl>
-    <dt>{{$ "Card #" }}:</dt>
-    <dl>{{ defaultValue accountNumber "--" }}</dl>
-    <dt>{{$ "Exp. Date" }}:</dt>
-    <dl>{{ formatDate expirationDate "L" }}</dl>
-</dl>
+<div class="row thirds">
+    <div>{{$ "Start Date" }}: {{ formatDate dateCreated "L" }}</div>
+    <div>{{$ "Paid Through" }}: {{ formatDate paidThrough "L" }}</div>
+    <div>{{$ "Description" }}: {{ lookupSharedData "accounting.recurringPaymentProfileTypes" profileType }}</div>
+</div>
+
+<div class="row">
+    <div>{{$ "Card #" }}: {{ defaultValue accountNumber "--" }}</div>
+    <div>{{$ "Exp. Date" }}: {{ formatDate expirationDate "L" }}</div>
+</div>
