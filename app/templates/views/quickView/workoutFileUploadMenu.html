@@ -3,7 +3,7 @@
 
         <div id="closeIcon"></div>
 
-        <div class="header">{{$ "UploadFiles" }}</div>
+        <h3 class="subheadbold">{{$ "UploadFiles" }}</h3>
 
         <p>{{$ "SelectFile" }}&nbsp;<a class="deviceAgentButton" id="deviceAgentLink">{{$ "DeviceAgent" }}</a></p>
 
@@ -15,7 +15,7 @@
         {{#with details }}
             {{#if workoutDeviceFileInfos }}
                 <div class="deviceFiles">
-                    <div class="header">{{$ "UploadedFiles" }}</div>
+                    <h3 class="subheadbold">{{$ "UploadedFiles" }}</h3>
 
                     <div class="fileList">
                         {{#each workoutDeviceFileInfos }}

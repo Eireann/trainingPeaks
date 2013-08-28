@@ -38,6 +38,11 @@ function (
             "commentsContainer": "div#commentsContainer"  
         },
 
+        events:
+        {
+            "keydown .numberInput": "isNumberKey"
+        },
+
         initialize: function()
         {
             this.on("render", this.renderWorkoutComments, this);

@@ -1,42 +1,58 @@
 {{#hoverBox this}}
     <div class="details">
-        <div class="title">{{$ "SelectWorkoutType" }}</div>
+        <h3 class="subheadbold">{{$ "SelectWorkoutType" }}</h3>
         <div id="closeIcon"></div>
-        <div class="workoutTypes">
+        
+        <div class="workoutTypes cf">
             {{#each workoutTypes}}
                 <div class="workoutType">
                     <label><input type="checkbox" data-workouttypeid="{{ id }}" {{#if selected}}checked{{/if}} /> {{ name }}</label>
                 </div>
             {{/each}}
-            <div style="clear: both;"></div>
         </div>
-    
-        <hr/>
 
         <div class="datepickerContainer"></div>
 
-        <hr/>
+        <div class="selectParameters cf">
+            <div class="title">{{$ "SelectParameters"}}</div>
 
-        <div class="title">{{$ "SelectParameters"}}</div>
+            <div class="numberInputContain cf">
+                <div class="numberInput constant">
+                    <span class="numberInputLabel">{{$ "CTLConstant"}}</span>
+                    <input type="number" id="ctlConstant" min="7" max="200" value="{{ ctlConstant }}" class="numberInput">
+                </div>
 
-        <div class="numberInput">{{$ "CTLConstant"}}<input type="number" id="ctlConstant" min="7" max="200" value="{{ ctlConstant }}"></div>
-        <div class="numberInput">{{$ "CTLStart"}}<input type="number" id="ctlStartValue" min="0" max="500" value="{{ ctlStartValue }}"></div>
-        <div class="numberInput">{{$ "ATLConstant"}}<input type="number" id="atlConstant" min="1" max="40" value="{{ atlConstant }}"></div>
-        <div class="numberInput">{{$ "ATLStart"}}<input type="number" id="atlStartValue" min="0" max="500" value="{{ atlStartValue }}"></div>
-        <div style="clear:both;"></div>
+                <div class="numberInput start">
+                    <span class="numberInputLabel">{{$ "CTLStart"}}</span>
+                    <input type="number" id="ctlStartValue" min="0" max="500" value="{{ ctlStartValue }}" class="numberInput">
+                </div>
 
-        <div class="checkboxInput">
-            <label><input type="checkbox" id="showTSSPerDay" class="checkbox chartSeriesOption"{{#if showTSSPerDay }} checked{{/if}}/> {{$ "ShowTSS"}}</label>
+                <div class="numberInput constant">
+                    <span class="numberInputLabel">{{$ "ATLConstant"}}</span>
+                    <input type="number" id="atlConstant" min="1" max="40" value="{{ atlConstant }}" class="numberInput">
+                </div>
+
+                <div class="numberInput start">
+                    <span class="numberInputLabel">{{$ "ATLStart"}}</span>
+                    <input type="number" id="atlStartValue" min="0" max="500" value="{{ atlStartValue }}" class="numberInput">
+                </div>
+            </div>
+
+            
+
+            <div class="checkboxInput">
+                <label><input type="checkbox" id="showTSSPerDay" class="checkbox chartSeriesOption"{{#if showTSSPerDay }} checked{{/if}}/> {{$ "ShowTSS"}}</label>
+            </div>
+            
+            <div class="checkboxInput right">
+                <label><input type="checkbox" id="showIntensityFactorPerDay" class="checkbox chartSeriesOption"{{#if showIntensityFactorPerDay }} checked{{/if}}/> {{$ "ShowIntensityFactor"}}</label>
+            </div>
+            
+            <div class="checkboxInput">
+                <label><input type="checkbox" id="showTSBFill" class="checkbox chartSeriesOption"{{#if showTSBFill }} checked{{/if}}/> {{$ "ShowTSBFill"}}</label>
+            </div>
+
         </div>
-        <div class="checkboxInput">
-            <label><input type="checkbox" id="showIntensityFactorPerDay" class="checkbox chartSeriesOption"{{#if showIntensityFactorPerDay }} checked{{/if}}/> {{$ "ShowIntensityFactor"}}</label>
-        </div>
-        <div class="checkboxInput">
-            <label><input type="checkbox" id="showTSBFill" class="checkbox chartSeriesOption"{{#if showTSBFill }} checked{{/if}}/> {{$ "ShowTSBFill"}}</label>
-        </div>
-
-        <div style="clear:both;"></div>
-       <hr />
 
         {{#comment}}
         <div class="missingData">
@@ -46,7 +62,7 @@
         {{/comment}}
 
         <div class="LearnMore">
-            <a class="helpText" href="http://support.trainingpeaks.com/athlete-edition/training-stress-scores/performance-management-chart.aspx" target="_blank">{{$ "LearnMoreAboutThePMC"}}</a>
+            <p class="helpText"><a href="http://support.trainingpeaks.com/athlete-edition/training-stress-scores/performance-management-chart.aspx" target="_blank">{{$ "LearnMoreAboutThePMC"}}</a></p>
         </div>
     </div>
 {{/hoverBox}}

@@ -21,6 +21,8 @@ function(
 
     var MetricsChartSettingsView = ChartSettingsView.extend({
 
+        className: ChartSettingsView.prototype.className + " metricsChartSettings",
+
         template:
         {
             type: "handlebars",

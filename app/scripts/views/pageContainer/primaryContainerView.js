@@ -23,7 +23,7 @@ function(
         initResizeEvents: function()
         {
             _.bindAll(this, "resizeContainer");
-            $(window).on("resize", this.resizeContainer);
+            $(window).on("resize.primaryContainer", this.resizeContainer);
             this.on("render", this.resizeContainerAfterRender, this);
         },
 

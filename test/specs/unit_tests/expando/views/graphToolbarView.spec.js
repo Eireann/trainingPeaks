@@ -45,5 +45,13 @@ function($, TP, moment, theMarsApp, GraphToolbarView)
                 expect(period).toBe(50);
             });
         });
+        it("Should correctly serialize data for distance units", null,function()
+        {
+            var view = new GraphToolbarView({ dataParser: null, model: new TP.model({workoutTypeValueId: 1}) });
+            expect(view.serializeData().speedLabel).toBe("yds");
+
+            view.model.set({workoutTypeValueId: 3});
+            expect(view.serializeData().speedLabel).toBe("mph");
+        });
     });
 });
