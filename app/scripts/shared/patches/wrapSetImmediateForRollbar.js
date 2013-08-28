@@ -2,8 +2,7 @@ define(
 [
     "shared/patches/wrapForRollbar"
 ]
-, function()
+, function(wrappedForRollbar)
 {
-    // Wrapped by wrapForRollbar
-    return window.setImmediate;
+    return wrappedForRollbar.setImmediate;
 });

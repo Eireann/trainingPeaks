@@ -7,6 +7,8 @@ function(
     _
 )
 {
+    var window = this;
+
     function wrap(callback) {
         var self = this;
         return function()
@@ -64,4 +66,5 @@ function(
 //             }
 //         });
 //     });
+    return window;
 });
