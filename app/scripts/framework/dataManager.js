@@ -18,6 +18,8 @@
         this._pendingRequests = {};
     };
 
+    _.extend(DataManager.prototype, Backbone.Events);
+    
     _.extend(DataManager.prototype, {
 
         reset: function(modelUrl)
@@ -32,6 +34,7 @@
         {
             this._resolvedRequests = {};
             this._pendingRequests = {};
+            this.trigger("reset");
         },
 
         fetch: function(modelOrCollection, options)
@@ -200,7 +203,6 @@
     });
 
     DataManager.extend = TP.extend;
-
     return DataManager;
 
 });

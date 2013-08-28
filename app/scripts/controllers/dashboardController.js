@@ -75,7 +75,8 @@ function(
 
         listenToViewEvents: function()
         {
-            this.views.header.on("change:dashboardDates", this.views.dashboard.onDashboardDatesChange, this.views.dashboard);
+            this.listenTo(this.views.header, "change:dashboardDates", _.bind(this.views.dashboard.onDashboardDatesChange, this.views.dashboard));
+            this.listenTo(this.views.header, "refresh", _.bind(this.views.dashboard.onDashboardRefresh, this.views.dashboard));
         },
 
         displayViews: function()

@@ -2,10 +2,12 @@
 requirejs(
 [
     "TP",
+    "dashboard/reportingDataManager",
     "dashboard/charts/peaksChart"
 ],
 function(
     TP,
+    ReportingDataManager,
     PeaksChart
     )
 {
@@ -14,8 +16,7 @@ function(
 
         it("should automatically initialize comparisonDateOptions", function()
         {
-            var fakeDataManager = {};
-            var chart = new PeaksChart({chartType: 8}, {dataManager: fakeDataManager});
+            var chart = new PeaksChart({chartType: 8}, {dataManager: new ReportingDataManager() });
             var comparisonDateOptions = chart.get("comparisonDateOptions");
 
             expect(comparisonDateOptions.startDate).toBe(null);

@@ -12,8 +12,23 @@ function(_, Backbone, DeepModel, moment)
         myBackboneModelPrototype: Backbone.Model.prototype,
 
         save: function(key, val, options) {
-            theMarsApp.trigger("save:model", this);
-            return Backbone.Model.prototype.save.call(this, key, val, options);
+            var deferred = this.myBackboneModelPrototype.save.call(this, key, val, options);
+            var model = this;
+            deferred.always(function()
+            {
+                theMarsApp.trigger("save:model", this);
+            });
+            return deferred;
+        },
+
+        destroy: function(options) {
+            var deferred = this.myBackboneModelPrototype.destroy.call(this, options);
+            var model = this;
+            deferred.always(function()
+            {
+                theMarsApp.trigger("destroy:model", this);
+            });
+            return deferred;
         },
 
         createPromise: function()
@@ -29,13 +44,7 @@ function(_, Backbone, DeepModel, moment)
 
     };
 
-    var APIModel = 
-    {
-
-        save: function(key, val, options) {
-            theMarsApp.trigger("save:model", this);
-            return Backbone.Model.prototype.save.call(this, key, val, options);
-        },
+    var APIModel = _.extend({}, BaseModel, { 
 
         myBackboneModelPrototype: Backbone.Model.prototype,
 
@@ -68,7 +77,7 @@ function(_, Backbone, DeepModel, moment)
         {
             return this.get(attr) != null;
         }
-    };
+    });
 
     var BaseModelDevValidationExtensions =
     {

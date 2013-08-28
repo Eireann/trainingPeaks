@@ -82,6 +82,11 @@ function(
             });
         },
 
+        onDashboardRefresh: function()
+        {
+            this.dataManager.forceReset();
+        },
+
         _showPackeryCollectionView: function()
         {
             this.chartsRegion.show(this.packeryCollectionView);
