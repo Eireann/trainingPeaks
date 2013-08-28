@@ -91,7 +91,7 @@ function(
                     yaxesIndex = yaxesIndexByUnit[metricInfo.units];
                 }
 
-                this._eachSubMetricInfo(metricInfo, function subMetricInfo(subMetricInfo) {
+                this._eachSubMetricInfo(metricInfo, function subMetricInfoFunction(subMetricInfo) {
                     series.push(self._makeSeries(data, subMetricInfo, { yaxis: yaxesIndex }));
                 });
             }, this);

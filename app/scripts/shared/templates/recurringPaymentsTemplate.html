@@ -1,0 +1,7 @@
+<h3 class="title accountExpires nopayments subheadbold">{{$ "AccountExpires" }}: {{ formatDate expireDate "L" }}</h3>
+
+<h3 class="title accountExpires withpayments subheadbold">{{$ "CurrentRatePlan" }}: $ {{ defaultValue amt "--" }} - {{ lookupSharedData "accounting.payPeriods" payPeriod "--" }}. {{$ "Paid Through" }}: {{ formatDate expireDate "L" }}</h3>
+
+<h3 class="title subheadbold">{{$ "Active Recurring Payments" }}</h3>
+<div class="nopayments small nopaymentText">{{$ "None" }}</div>
+

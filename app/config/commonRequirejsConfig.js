@@ -17,6 +17,7 @@
             "helpers": "scripts/helpers",
             "utilities": "scripts/utilities",
             "dashboard": "scripts/dashboard", 
+            "user": "scripts/user",
             "shared": "scripts/shared", 
             
             // jQuery related, but not managed by bower yet ...

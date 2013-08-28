@@ -33,7 +33,15 @@ function(TP)
             timeZone: null,
             heartRateZones: null,
             powerZones: null,
-            speedZones: null
+            speedZones: null,
+            iCalendarKeys: {
+                workoutsAndMetrics: null,
+                workoutOnly: null,
+                metricsOnly: null
+            },
+            enableWorkoutCommentNotification: null,
+            enableVirtualCoachEmails: null,
+            virtualCoachEmailHour: null
         },
 
         url: function()

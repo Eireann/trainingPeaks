@@ -10,6 +10,7 @@ define(
     "models/session",
     "models/userModel",
     "models/buildInfo",
+    "models/timeZones",
     "models/clientEventsCollection",
     "controllers/navigationController",
     "controllers/loginController",
@@ -34,6 +35,7 @@ function(
     Session,
     UserModel,
     BuildInfoModel,
+    TimeZonesModel,
     ClientEventsCollection,
     NavigationController,
     LoginController,
@@ -163,6 +165,12 @@ function(
 
         });
 
+        // setup time zones
+        this.addInitializer(function()
+        {
+            this.timeZones = new TimeZonesModel();
+        });
+
         // add a session
         this.addInitializer(function()
         {
@@ -198,6 +206,7 @@ function(
             {
                 self.fetchUser();
                 self.fetchBuildInfo();
+                self.fetchTimeZones();
             });
             this.session.authPromise.fail(function()
             {
@@ -209,6 +218,11 @@ function(
         {
             this.buildInfo.fetch();
         },  
+
+        this.fetchTimeZones = function()
+        {
+            this.timeZones.fetch();
+        },
 
         this.fetchUser = function()
         {
@@ -364,7 +378,7 @@ function(
 
         this.addInitializer(function ()
         {
-            $(document).on("keypress", ".numberInput", this.filterfunction);
+            $(document).on("keypress.filterNumberInput", ".numberInput", this.filterfunction);
         });
 
         this.filterfunction = function (evt)
