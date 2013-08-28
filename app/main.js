@@ -19,10 +19,11 @@ else
 {
     define(
     [
+        "shared/patches/wrapForRollbar",
         "TP",
         "app"
     ],
-    function(TP, theApp)
+    function(rollbarPatches, TP, theApp)
     {
         //**********************************************************************
 

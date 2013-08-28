@@ -22,22 +22,29 @@ function(TP, theApp)
         {
             var workout = new TP.Model();
             workout.set({ distance: 20, totalTime: 1, tssActual: 100, distancePlanned: 20, totalTimePlanned: 1, tssPlanned: 100 });
-            expect(TP.utils.workout.keyStat.formatStats(workout)).toBe(0.01);
 
+            // distance
+            expect(TP.utils.workout.keyStat.formatStats(workout)).toBe("0.01");
+
+            // duration
             workout.set("distance", null);
             expect(TP.utils.workout.keyStat.formatStats(workout)).toBe("1:00:00");
-            
+           
+            // tss 
             workout.set("totalTime", null);
-            expect(TP.utils.workout.keyStat.formatStats(workout)).toBe(100);
-            
+            expect(TP.utils.workout.keyStat.formatStats(workout)).toBe("100.0");
+           
+            // distance 
             workout.set("tssActual", null);
-            expect(TP.utils.workout.keyStat.formatStats(workout)).toBe(0.01);
+            expect(TP.utils.workout.keyStat.formatStats(workout)).toBe("0.01");
 
+            // duration
             workout.set("distancePlanned", null);
             expect(TP.utils.workout.keyStat.formatStats(workout)).toBe("1:00:00");
 
+            // tss
             workout.set("totalTimePlanned", null);
-            expect(TP.utils.workout.keyStat.formatStats(workout)).toBe(100);
+            expect(TP.utils.workout.keyStat.formatStats(workout)).toBe("100.0");
 
             workout.set("tssPlanned", null);
             expect(TP.utils.workout.keyStat.formatStats(workout)).toBe("");
@@ -47,8 +54,9 @@ function(TP, theApp)
 
         it("Should accept a JSON object", function()
         {
+            // by distance
             var workout = { distance: 20, totalTime: 1, tssActual: 100 };
-            expect(TP.utils.workout.keyStat.formatStats(workout)).toBe(0.01);
+            expect(TP.utils.workout.keyStat.formatStats(workout)).toBe("0.01");
         });
         
         

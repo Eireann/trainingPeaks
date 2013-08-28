@@ -1,11 +1,11 @@
 ﻿define(
 [
     "utilities/datetime/format",
-    "utilities/conversion/convertToViewUnits",
+    "utilities/conversion/conversion",
     "utilities/units/labels",
     "hbs!templates/views/expando/flotToolTip"
 ],
-function(formatDateTime, convertToViewUnits, unitLabels, flotToolTipTemplate)
+function(formatDateTime, conversion, unitLabels, flotToolTipTemplate)
 {
     var flexChannelOrder =
     [
@@ -47,7 +47,7 @@ function(formatDateTime, convertToViewUnits, unitLabels, flotToolTipTemplate)
         };
 
         if (axisType === "distance")
-            toolTipData.xAxisOffset = convertToViewUnits(xAxisOffset, "distance", undefined, workoutType) + " " + unitLabels("distance", workoutType);
+            toolTipData.xAxisOffset = conversion.formatUnitsValue("distance", xAxisOffset, { defaultValue: undefined, workoutTypeId: workoutType }) + " " + unitLabels("distance", workoutType);
         else
             toolTipData.xAxisOffset = formatDateTime.decimalSecondsAsTime(xAxisOffset / 1000);
 
@@ -92,7 +92,7 @@ function(formatDateTime, convertToViewUnits, unitLabels, flotToolTipTemplate)
             var config =
             {
                 label: s.label,
-                value: convertToViewUnits(value, fieldName, undefined, workoutType),
+                value: conversion.formatUnitsValue(fieldName, value, { defaultValue: undefined, workoutTypeId: workoutType }),
                 units: unitLabels(fieldName, workoutType)
             };
 
@@ -109,7 +109,7 @@ function(formatDateTime, convertToViewUnits, unitLabels, flotToolTipTemplate)
                 config =
                 {
                     label: "Pace",
-                    value: convertToViewUnits(value, "pace", undefined, workoutType),
+                    value: conversion.formatUnitsValue("pace", value, { defaultValue: undefined, workoutTypeId: workoutType }),
                     units: unitLabels("pace", workoutType)
                 };
 

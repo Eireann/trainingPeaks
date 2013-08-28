@@ -6,12 +6,11 @@
     "utilities/workout/workoutTypes",
     "utilities/conversion/convertToModelUnits",
     "utilities/conversion/convertToViewUnits",
-    "utilities/conversion/adjustFieldRange"
-], function(_, moment, datetimeUtils, workoutTypes, convertToModelUnits, convertToViewUnits, adjustFieldRange)
+    "utilities/conversion/adjustFieldRange",
+    "utilities/threeSigFig"
+], function(_, moment, datetimeUtils, workoutTypes, convertToModelUnits, convertToViewUnits, adjustFieldRange, threeSigFig)
 {
     return {
-        convertToModelUnits: convertToModelUnits,
-        convertToViewUnits: convertToViewUnits,
 
         // works if we have extended these conversion functions onto a view like in quickview, otherwise useless ...
         getMySportType: function(options)
@@ -36,27 +35,22 @@
         formatDistance: function(value, options)
         {
             var parameters = {
-                value: value,
+                value: Number(value),
                 fieldType: "distance",
                 defaultValue: options && options.hasOwnProperty("defaultValue") ? options.defaultValue : "",
                 sportType: this.getMySportType(options)
             };
 
-            if (options && options.precision)
-            {
-                parameters.precision = options.precision;
-            }
-
-            var convertedDistance = parseFloat(convertToViewUnits(parameters));
+            var convertedDistance = Number(convertToViewUnits(parameters));
             var limitedDistance = adjustFieldRange(convertedDistance, "distance");
-            var formattedDistance = this.formatEmptyValue(limitedDistance, options);
-            return formattedDistance;
+            var formattedDistance = threeSigFig(limitedDistance);
+            return this.formatEmptyNumber(formattedDistance, options);
         },
 
         parseDistance: function(value, options)
         {
             var sportType = this.getMySportType(options);
-            var modelValue = adjustFieldRange(parseFloat(value), "distance");
+            var modelValue = adjustFieldRange(Number(value), "distance");
             modelValue = convertToModelUnits(modelValue, "distance", sportType);
             return modelValue;
         },
@@ -67,7 +61,8 @@
             {
                 return options && options.hasOwnProperty("defaultValue") ? options.defaultValue : "";
             }
-            value = adjustFieldRange(value, "duration");
+            var numValue = Number(value);
+            value = adjustFieldRange(numValue, "duration");
             return datetimeUtils.format.decimalHoursAsTime(value, true);
         },
 
@@ -77,7 +72,7 @@
             {
                 return options && options.hasOwnProperty("defaultValue") ? options.defaultValue : "";
             }
-            var hours = minutes / 60;
+            var hours = Number(minutes) / 60;
             hours = adjustFieldRange(hours, "duration");
             return datetimeUtils.format.decimalHoursAsTime(hours, false);
         },
@@ -88,8 +83,9 @@
             {
                 return options && options.hasOwnProperty("defaultValue") ? options.defaultValue : "";
             }
-            value = adjustFieldRange(value, "duration");
-            return Math.round(value);
+            var numValue = Number(value);
+            var adjustedValue = adjustFieldRange(numValue, "duration");
+            return Math.round(adjustedValue);
         },
 
         parseDuration: function(value, options)
@@ -127,16 +123,16 @@
 
         formatPower: function(value, options)
         {
-            var intPower = this.formatInteger(value, options, 0);
-            var adjustedPower = adjustFieldRange(intPower, "power");
-            return this.formatEmptyValue(adjustedPower, options);
+            var adjustedPower = adjustFieldRange(Number(value), "power");
+            return this.formatInteger(adjustedPower, options);
         },
 
         formatPace: function(value, options)
         {
             if (!value)
-                return this.formatEmptyValue(value, options);
+                return this.formatEmptyNumber(value, options);
 
+            value = Number(value);
             var sportType = this.getMySportType(options);
             var paceAsMinutes = convertToViewUnits(value, "paceUnFormatted", undefined, sportType);
             var limitedPaceAsHours = adjustFieldRange(paceAsMinutes / 60, "pace");
@@ -147,7 +143,7 @@
         {
             // utilize datetime smart parsing, but assume we're working with minutes
             if (!value)
-                return this.formatEmptyValue(value, options);
+                return this.formatEmptyNumber(value, options);
 
             var sportType = this.getMySportType(options);
             var rawTime = datetimeUtils.convert.timeToDecimalHours(value, { assumeHours: false });
@@ -160,24 +156,26 @@
         formatSpeed: function(value, options)
         {
             var sportType = this.getMySportType(options);
-            var convertedSpeed = convertToViewUnits(value, "speed", undefined, sportType);
+            var convertedSpeed = convertToViewUnits(Number(value), "speed", undefined, sportType);
             var limitedSpeed = adjustFieldRange(convertedSpeed, "speed");
-            return this.formatEmptyValue(limitedSpeed, options);
+            var formattedSpeed = threeSigFig(limitedSpeed);
+            return this.formatEmptyNumber(formattedSpeed, options);
         },
 
         parseSpeed: function(value, options)
         {
             var sportType = this.getMySportType(options);
-            var modelValue = adjustFieldRange(parseFloat(value), "speed");
+            var modelValue = adjustFieldRange(Number(value), "speed");
             modelValue = convertToModelUnits(modelValue, "speed", sportType);
             return modelValue;
         },
 
         formatElevation: function(value, options)
         {
-            var convertedValue = convertToViewUnits(value, "elevation");
+            var numValue = Number(value);
+            var convertedValue = Number(convertToViewUnits(numValue, "elevation"));
             var limitedValue = adjustFieldRange(convertedValue, "elevation");
-            return this.formatInteger(limitedValue, options, 0);
+            return this.formatInteger(limitedValue, options, "0");
         },
 
         parseElevation: function(value, options)
@@ -186,9 +184,15 @@
             return convertToModelUnits(limitedValue, "elevation");
         },
 
+        formatGroundControl: function(value, options)
+        {
+            return this.formatElevation(value, options);
+        },
+
         formatElevationGain: function(value, options)
         {
-            var convertedValue = convertToViewUnits(value, "elevation");
+            var numValue = Number(value);
+            var convertedValue = Number(convertToViewUnits(numValue, "elevation"));
             var limitedValue = adjustFieldRange(convertedValue, "elevationGain");
             return this.formatInteger(limitedValue, options);
         },
@@ -201,7 +205,8 @@
 
         formatElevationLoss: function(value, options)
         {
-            var convertedValue = convertToViewUnits(value, "elevation");
+            var numValue = Number(value);
+            var convertedValue = Number(convertToViewUnits(numValue, "elevation"));
             var limitedValue = adjustFieldRange(convertedValue, "elevationLoss");
             return this.formatInteger(limitedValue, options);
         },
@@ -224,31 +229,33 @@
 
         formatNumber: function(value, options)
         {
-            value = convertToViewUnits(value, "number");
-            return this.formatEmptyValue(value, options, 0);
+            var formattedValue = threeSigFig(value);
+            return this.formatEmptyNumber(formattedValue, options, 0);
         },
 
         formatInteger: function(value, options, defaultValue)
         {
-            value = (value === null || value === 0) ? 0 : Math.round(parseFloat(value));
-            return this.formatEmptyValue(value, options, defaultValue);
+            var numValue = Number(value);
+            var formattedValue = numValue.toFixed(0);
+            return this.formatEmptyNumber(formattedValue, options, defaultValue);
         },
 
         parseInteger: function(value, options)
         {
-            return ((value === "" || value === "0") ? null : parseInt(value, 10));
+            var numValue = Number(value);
+            return Math.round(numValue); 
         },
 
-        parseFloat: function(value, options)
+        Number: function(value, options)
         {
-            return (value === "" ? null : parseFloat(value));
+            return (value === "" ? null : Number(value));
         },
 
         formatTemperature: function(value, options)
         {
-            var convertedValue = convertToViewUnits(value, "temperature");
+            var convertedValue = convertToViewUnits(Number(value), "temperature");
             var adjustedValue = adjustFieldRange(convertedValue, "temp");
-            return this.formatEmptyValue(adjustedValue, options, 0);
+            return this.formatInteger(adjustedValue, options, "0");
         },
 
         parseTemperature: function(value, options)
@@ -264,40 +271,40 @@
 
         formatIF: function(value, options)
         {
-            var formattedValue = value ? +(Math.round(value * 100) / 100).toFixed(2) : 0;
-            var limitedValue = adjustFieldRange(formattedValue, "IF");
-            return this.formatEmptyValue(limitedValue, options);
+            var numValue = Number(value);
+            var limitedValue = adjustFieldRange(numValue, "IF");
+            return this.formatEmptyNumber(limitedValue.toFixed(2), options);
         },
 
         parseIF: function (value, options)
         {
-            return adjustFieldRange(parseFloat(value).toFixed(2), "IF");
+            return adjustFieldRange(Number(value).toFixed(2), "IF");
         },
 
         formatTSS: function(value, options)
         {
-            var formattedValue = value ? (Math.round(value * 10) / 10).toFixed(1) : 0;
-            var limitedValue = adjustFieldRange(formattedValue, "TSS");
-            return this.formatEmptyValue(limitedValue, options);
+            var numValue = Number(value);
+            var limitedValue = adjustFieldRange(numValue, "TSS");
+            return this.formatEmptyNumber(limitedValue.toFixed(1), options);
         },
 
         parseTSS: function(value, options)
         {
-            return adjustFieldRange(parseFloat(value).toFixed(1), "TSS");
+            return adjustFieldRange(Number(value).toFixed(1), "TSS");
         },
 
         formatTSB: function(value, options)
         {
-            var formattedValue = value ? (Math.round(value * 10) / 10).toFixed(1) : 0;
-            var limitedValue = adjustFieldRange(formattedValue, "TSB");
-            return this.formatEmptyValue(limitedValue, options);
+            var numValue = Number(value);
+            var limitedValue = adjustFieldRange(numValue, "TSB");
+            return this.formatEmptyNumber(limitedValue.toFixed(1), options);
         },
 
         formatEnergy: function(value, options)
         {
-            var formattedValue = value ? +(Math.round(value)) : 0;
-            var limitedValue = adjustFieldRange(formattedValue, "energy");
-            return this.formatEmptyValue(limitedValue, options);
+            var limitedValue = adjustFieldRange(Number(value), "energy");
+            var formattedValue = this.formatInteger(limitedValue);
+            return this.formatEmptyNumber(formattedValue, options);
         },
 
         parseEnergy: function(value, options)
@@ -309,20 +316,15 @@
         formatTorque: function(value, options)
         {
             var parameters = {
-                value: value,
+                value: Number(value),
                 fieldType: "torque",
                 defaultValue: options && options.hasOwnProperty("defaultValue") ? options.defaultValue : "",
                 sportType: this.getMySportType()
             };
 
-            if (options && options.precision)
-            {
-                parameters.precision = options.precision;
-            }
-
             var convertedValue = convertToViewUnits(parameters);
             var adjustedValue = adjustFieldRange(convertedValue, "torque");
-            return this.formatEmptyValue(adjustedValue, options);
+            return this.formatEmptyNumber(threeSigFig(adjustedValue), options);
         },
 
         parseTorque: function(value, options)
@@ -363,17 +365,17 @@
             if (_.isUndefined(value) || _.isNaN(value) || value === null || value === 0)
                 return options && options.hasOwnProperty("defaultValue") ? options.defaultValue : "";
             
-            var parsedValue = parseFloat(value).toFixed(1);
+            var parsedValue = Number(value);
 
             if (_.isNaN(parsedValue))
                 return options && options.hasOwnProperty("defaultValue") ? options.defaultValue : "";
             else
-                return parsedValue;
+                return parsedValue.toFixed(1);
         },
 
         formatPowerBalance: function(value, options)
         {
-            var parsedValue = (parseFloat(value) * 100).toFixed(1);
+            var parsedValue = (Number(value) * 100).toFixed(1);
 
             if (isNaN(value) || isNaN(parsedValue) || value === null || value === 0 || Number(parsedValue) === 0)
             {
@@ -386,21 +388,22 @@
 
         formatEfficiencyFactor: function(value, options)
         {
-            return convertToViewUnits(value, "efficiencyfactor", undefined, this.getMySportType(options));
+            return convertToViewUnits(Number(value), "efficiencyfactor", undefined, this.getMySportType(options));
         },
 
         formatCalories: function(value, options)
         {
-            var modelValue = this.formatInteger(value, options, 0);
-            modelValue = adjustFieldRange(modelValue, "calories");
-            return this.formatEmptyValue(modelValue, options);
+            var numValue = Number(value);
+            var limitedValue = adjustFieldRange(numValue, "calories");
+            var formattedValue = this.formatInteger(limitedValue, options, 0);
+            return this.formatEmptyNumber(formattedValue, options);
         },
 
         parseCalories: function(value, options)
         {
-            var modelValue = this.parseInteger(value, options);
-            modelValue = adjustFieldRange(parseFloat(value), "calories");
-            return modelValue;               
+            var intValue = this.parseInteger(value, options);
+            intValue = adjustFieldRange(intValue, "calories");
+            return intValue;               
         },
 
         parseHeartRate: function(value, options)
@@ -412,9 +415,8 @@
 
         formatHeartRate: function(value, options)
         {
-            var intValue = this.formatInteger(value, options, 0);
-            var adjustedValue = adjustFieldRange(intValue, "heartrate");
-            return this.formatEmptyValue(adjustedValue, options);
+            var adjustedValue = adjustFieldRange(Number(value), "heartrate");
+            return this.formatInteger(adjustedValue, options);
         },
 
         parseCadence: function(value, options)
@@ -426,12 +428,11 @@
 
         formatCadence: function(value, options)
         {
-            var intValue = this.formatInteger(value, options, 0);
-            var adjustedValue = adjustFieldRange(intValue, "cadence");
-            return this.formatEmptyValue(adjustedValue, options);
+            var adjustedValue = adjustFieldRange(Number(value), "cadence");
+            return this.formatInteger(adjustedValue, options);
         },
 
-        formatEmptyValue: function(value, options, defaultValue)
+        formatEmptyNumber: function(value, options, defaultValue)
         {
 
             if(options && options.hasOwnProperty("defaultValue"))
@@ -444,7 +445,7 @@
                 defaultValue = "";
             }
 
-            if(_.isNaN(value) || _.isUndefined(value) || _.isNull(value))
+            if(_.isNaN(value) || _.isNaN(Number(value)) || _.isUndefined(value) || _.isNull(value))
             {
                 return defaultValue;
             }
@@ -490,25 +491,30 @@
 
         formatCm: function(value, options)
         {
-            var convertedValue = convertToViewUnits(value, "cm");
+            var convertedValue = convertToViewUnits(Number(value), "cm");
             var adjustedValue = adjustFieldRange(convertedValue, "cm");
             return this.formatNumber(adjustedValue, options);
         },
 
         formatKg: function(value, options)
         {
-            var convertedValue = convertToViewUnits(value, "kg");
+            var convertedValue = convertToViewUnits(Number(value), "kg");
             var adjustedValue = adjustFieldRange(convertedValue, "kg");
             return this.formatNumber(adjustedValue, options);
         },
         
         formatMl: function(value, options)
         {
-            var convertedValue = convertToViewUnits(value, "ml");
+            var convertedValue = convertToViewUnits(Number(value), "ml");
             var adjustedValue = adjustFieldRange(convertedValue, "ml");
             return this.formatNumber(adjustedValue, options);
         },
 
+        /*
+            options:
+                defaultValue
+                workoutTypeId
+        */
         formatUnitsValue: function(units, value, options)
         {
             switch(units)
@@ -516,12 +522,30 @@
                 case "elevation":
                     return this.formatElevation(value, options);
 
+                case "groundControl":
+                    return this.formatGroundControl(value, options);
+
+                case "elevationGain":
+                    return this.formatElevationGain(value, options);
+
+                case "elevationLoss":
+                    return this.formatElevationLoss(value, options);
+
                 case "speed":
                     return this.formatSpeed(value, options);
 
                 case "pace":
                     return this.formatPace(value, options);
 
+                case "power":
+                    return this.formatPower(value, options);
+
+                case "torque":
+                    return this.formatTorque(value, options);
+
+                case "energy":
+                    return this.formatEnergy(value, options);
+                    
                 case "heartrate":
                     return this.formatHeartRate(value, options);
 
@@ -534,6 +558,18 @@
                 case "number":
                     return this.formatNumber(value, options);
 
+                case "temperature":
+                    return this.formatTemperature(value, options);
+
+                case "if":
+                    return this.formatIF(value, options);
+
+                case "tss":
+                    return this.formatTSS(value, options);
+
+                case "tsb":
+                    return this.formatTSB(value, options);
+
                 case "cm":
                     return this.formatCm(value, options);
 
@@ -542,6 +578,18 @@
 
                 case "ml":
                     return this.formatMl(value, options);
+
+                case "grade":
+                    return this.formatGrade(value, options);
+
+                case "efficiencyfactor":
+                    return this.formatEfficiencyFactor(value, options);
+
+                case "powerbalance":
+                    return this.formatPowerBalance(value, options);
+
+                case "calories":
+                    return this.formatCalories(value, options);
 
                 case "mmHg":
                     if(_.isArray(value))
@@ -565,6 +613,9 @@
                 case "none":
                     return this.formatInteger(value, options);
 
+                case "cadence":
+                    return this.formatCadence(value, options);
+                    
                 default:
                     throw new Error("Unsupported units for conversion.formatUnitsValue: " + units);
             }
