@@ -41,7 +41,7 @@ function(
 
         events:
         {
-            "click #closeIcon, .closeIcon": "close"
+            "click .closeIcon": "close"
         },
 
         saveOnClose: function()

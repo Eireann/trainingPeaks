@@ -562,6 +562,7 @@
                 case "mm":
                     return this.formatNumber(value, options);
 
+                case "units":
                 case "none":
                     return this.formatInteger(value, options);
 

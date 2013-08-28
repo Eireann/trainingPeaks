@@ -232,9 +232,9 @@ function(chartColors, findIndexByMsOffset, convertToViewUnits)
         var yaxes = [];
         var countdown = (series.length / 2).toFixed(0);
         var axisIndex = 1;
-
         _.each(series, function(s)
         {
+            var showSwimPace = s.label === "Speed" && self.workoutTypeValueId === 1;
             if (s.label === "Pace")
                 return;
             
@@ -256,9 +256,15 @@ function(chartColors, findIndexByMsOffset, convertToViewUnits)
                     // Purposefully using the closure created above to capture s.label for each given axis,
                     // in order to easily obtain the correct unit conversion for each axis.
                     // For some reason, a '0' value returns a NaN, check for it.
-                    return value === 0 ? +0 : parseInt(convertToViewUnits(value, s.label.toLowerCase()), 10);
+
+                    // Swim workouts need to format "Speed" as "Pace"
+                    if (showSwimPace)
+                    {
+                        return value === 0 ? +0 : convertToViewUnits(value, "pace", null, self.workoutTypeValueId);
+                    }
+                    return value === 0 ? +0 : parseInt(convertToViewUnits(value, s.label.toLowerCase(), null, self.workoutTypeValueId), 10);
                 },
-                labelWidth: 15
+                labelWidth: showSwimPace ? 27 : 15
             };
 
             yaxes.push(axisOptions);
@@ -352,28 +358,12 @@ function(chartColors, findIndexByMsOffset, convertToViewUnits)
         createCorrectedElevationChannel: function (elevations)
         {
             var index = 0;
-            var badIndeces = [];
-            
-            for (var i = 0; i < this.dataByAxisAndChannel[this.xaxis]["Latitude"].length; i++)
-            {
-                if (_.isNaN(this.dataByAxisAndChannel[this.xaxis]["Latitude"][i][1]) || _.isNaN(this.dataByAxisAndChannel[this.xaxis]["Longitude"][i][1]))
-                    badIndeces.push(i);
-            }
-
-            _.each(badIndeces, function(badIndex)
-            {
-                if (badIndex === 0)
-                    elevations.unshift(null);
-                else
-                    elevations.splice(badIndex, 0, null);
-            });
-
             var corrected = _.map(this.dataByAxisAndChannel[this.xaxis]["Elevation"], function (elevationPoint)
             {
                 if (index >= (elevations.length - 1))
                     return [elevationPoint[0], null];
 
-                return [elevationPoint[0], elevations[index++]];
+                return [elevationPoint[0], elevations[index++] / 100];
             });
             return corrected;
         },

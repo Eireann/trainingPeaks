@@ -342,6 +342,7 @@ function()
         {
             id: 45,
             label: "Insulin",
+            units: "units",
             subMetrics:
             [
                 { index: 0 }

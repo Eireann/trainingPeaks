@@ -129,6 +129,7 @@ function(
                 this.allSeries = this.dataParser.getSeries();
             }
 
+            this.dataParser.workoutTypeValueId = this.model.get("workoutTypeValueId");
             this.dataParser.setDisabledSeries(this.disabledSeries);
 
             var enabledSeries = this.dataParser.getSeries();

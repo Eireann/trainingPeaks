@@ -130,7 +130,7 @@ function(
                             lapObject["Max Power"] = lap.maximumPower;
                             break;
                         case "rTSS":
-                            lapObject["Normalized Graded Pace"] = canShowNGP ? convertToViewUnits(lap.normalizedSpeedActual, "pace", null, workoutDefaults.sportTypeID) : null;
+                            lapObject["NGP"] = canShowNGP ? convertToViewUnits(lap.normalizedSpeedActual, "pace", null, workoutDefaults.sportTypeID) : null;
                             lapObject[workoutDefaults.averagePaceSpeedKey] = convertToViewUnits(lap.averageSpeed, "pace", null, workoutDefaults.sportTypeID);
                             lapObject[workoutDefaults.maximumPaceSpeedKey] = maximumPaceOrSpeedValue;
                             break;
@@ -147,21 +147,22 @@ function(
                 lapObject["Max Heart Rate"] = lap.maximumHeartRate;
                 lapObject[workoutDefaults.averagePaceSpeedKey] = averagePaceOrSpeedValue;
                 lapObject[workoutDefaults.maximumPaceSpeedKey] = maximumPaceOrSpeedValue;
-                lapObject["Calories"] = lap.calories;
+                lapObject["Cad"] = lap.averageCadence;
                 lapObject["Avg Power"] = lap.averagePower;
                 lapObject["Max Power"] = lap.maximumPower;
 
                 lapObject["Elev Gain"] = convertToViewUnits(lap.elevationGain, "elevation", null, workoutDefaults.sportTypeID);
                 lapObject["Elev Loss"] = convertToViewUnits(lap.elevationLoss, "elevation", null, workoutDefaults.sportTypeID);
-                lapObject["Energy"] = TP.utils.conversion.formatEnergy(lap.energy);
+                
                 lapObject["NP"] = canShowNP ? lap.normalizedPowerActual : null;
-                lapObject["Normalized Graded Pace"] = canShowNGP ? convertToViewUnits(lap.normalizedSpeedActual, "pace", null, workoutDefaults.sportTypeID) : null;
+                lapObject["NGP"] = canShowNGP ? convertToViewUnits(lap.normalizedSpeedActual, "pace", null, workoutDefaults.sportTypeID) : null;
 
                 lapObject["Min Torque"] = convertToViewUnits(lap.minimumTorque, "torque", null, workoutDefaults.sportTypeID);
                 lapObject["Avg Torque"] = convertToViewUnits(lap.averageTorque, "torque", null, workoutDefaults.sportTypeID);
                 lapObject["Max Torque"] = convertToViewUnits(lap.maximumTorque, "torque", null, workoutDefaults.sportTypeID);
 
-                lapObject["Cad"] = lap.averageCadence;
+                lapObject["Work"] = TP.utils.conversion.formatEnergy(lap.energy);
+                lapObject["Calories"] = lap.calories;
 
                 // filter out null values
                 for (var key in lapObject)

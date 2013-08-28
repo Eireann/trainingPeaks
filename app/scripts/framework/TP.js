@@ -9,7 +9,8 @@ define(
     "framework/APIModel",
     "framework/Logger",
     "framework/utilities",
-    "framework/analytics"
+    "framework/analytics",
+    "shared/data/tpSharedData"
 ],
 function(
          _,
@@ -21,7 +22,8 @@ function(
          APIModel,
          Logger,
          utilities,
-         analytics
+         analytics,
+         sharedData
 )
 {
     var TP = {};
@@ -179,16 +181,6 @@ function(
                 this.$el.addClass("modalShadow");
 
             theMarsApp.getBodyElement().append(this.$el);
-
-            var $window = $(window);
-            if (this.$el.height() > $window.height())
-                this.$el.height($window.height() - 10);
-
-            if (this.$el.width() > $window.width())
-                this.$el.width($window.width() - 10);
-
-            // static centering
-            //this.left(($window.width() - this.$el.width()) / 2).top(($window.height() - this.$el.height()) / 2);
 
             // dynamic centering
             this.rePositionView();
@@ -460,6 +452,8 @@ function(
     TP.analytics = analytics;
 
     TP.extend = Backbone.Marionette.extend;
+
+    TP.sharedData = sharedData;
 
     return TP;
 });

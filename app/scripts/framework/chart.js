@@ -23,6 +23,9 @@ function(
             TP.Model.apply(this, arguments);
             this.initializeDateSettings();
             this.dataManager = options.dataManager;
+            this.listenTo(this.dataManager, "reset", _.bind(function(){
+                this.trigger("dataManagerReset");
+            }, this));
         },
 
         createChartSettingsView: function()

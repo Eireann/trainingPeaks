@@ -23,6 +23,8 @@ function(
 
     var PeaksChartSettingsView = ChartSettingsView.extend({
 
+        className: ChartSettingsView.prototype.className + " peaksChartSettings",
+
         template:
         {
             type: "handlebars",

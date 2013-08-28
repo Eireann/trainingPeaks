@@ -82,7 +82,7 @@ function(
                     expect($body.find(".dashboardChartSettings").length).toBe(0);
                     $mainRegion.find(".dashboardChart.fitnessSummaryChart .settings").trigger("mousedown");
                     expect($body.find(".dashboardChartSettings").length).toBe(1);
-                    $body.find(".dashboardChartSettings #closeIcon").trigger("click");
+                    $body.find(".dashboardChartSettings .closeIcon").trigger("click");
                     expect($body.find(".dashboardChartSettings").length).toBe(0);
                 });
 
@@ -92,7 +92,7 @@ function(
                     testHelpers.clearRequests();
                     $mainRegion.find(".dashboardChart.fitnessSummaryChart .settings").trigger("mousedown");
                     expect(testHelpers.hasRequest("PUT", "user")).toBe(false);
-                    $body.find(".dashboardChartSettings #closeIcon").trigger("click");
+                    $body.find(".dashboardChartSettings .closeIcon").trigger("click");
                     expect(testHelpers.hasRequest("PUT", "user")).toBe(true);
                 });
 
@@ -102,7 +102,7 @@ function(
                     testHelpers.clearRequests();
                     $mainRegion.find(".dashboardChart.fitnessSummaryChart .settings").trigger("mousedown");
                     expect(testHelpers.hasRequest("GET", "reporting/fitnesssummary")).toBe(false);
-                    $body.find(".dashboardChartSettings #closeIcon").trigger("click");
+                    $body.find(".dashboardChartSettings .closeIcon").trigger("click");
                     expect(testHelpers.hasRequest("GET", "reporting/fitnesssummary")).toBe(false);
                 });
 
@@ -122,7 +122,7 @@ function(
                     $body.find(".dashboardChartSettings .dashboardDatePicker select.dateOptions").val(chartUtils.chartDateOptions.CUSTOM_DATES.id).trigger("change");
                     $body.find(".dashboardChartSettings .dashboardDatePicker input.startDate").val("2012-04-01").trigger("change");
                     $body.find(".dashboardChartSettings .dashboardDatePicker input.endDate").val("2012-12-24").trigger("change");
-                    $body.find(".dashboardChartSettings #closeIcon").trigger("click");
+                    $body.find(".dashboardChartSettings .closeIcon").trigger("click");
 
                     // should request tomahawk dates
                     expect(testHelpers.hasRequest("GET", "reporting/fitnesssummary/2012-04-01/2012-12-24")).toBe(true);
@@ -192,7 +192,7 @@ function(
                         testHelpers.clearRequests();
                         $mainRegion.find(".dashboardChart.fitnessSummaryChart .settings").trigger("mousedown");
                         $body.find(".dashboardChartSettings select.summaryType").val("2").trigger("change");
-                        $body.find(".dashboardChartSettings #closeIcon").trigger("click");
+                        $body.find(".dashboardChartSettings .closeIcon").trigger("click");
                     });
 
                     waitsFor(function()
@@ -213,7 +213,7 @@ function(
                     var $body = theMarsApp.getBodyElement();
                     $mainRegion.find(".dashboardChart.fitnessSummaryChart .settings").trigger("mousedown");
                     $body.find(".dashboardChartSettings select.summaryType").val("3").trigger("change");
-                    $body.find(".dashboardChartSettings #closeIcon").trigger("click");
+                    $body.find(".dashboardChartSettings .closeIcon").trigger("click");
                     $mainRegion.find(".dashboardChart.fitnessSummaryChart .settings").trigger("mousedown");
                     expect($body.find(".dashboardChartSettings select.summaryType").val()).toEqual("3");
                 });
