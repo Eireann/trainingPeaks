@@ -208,9 +208,9 @@
             {
                 font-size: $fontSizeSmall;
                 font-weight: normal;
-                padding: 4px 0;
+                padding: 4px;
                 margin: 0;
-                width: 44px;
+                min-width: 44px;
                 float: left;
                 box-shadow: none;
                 @include linearGradient(top, #ffffff, #dfddde);
