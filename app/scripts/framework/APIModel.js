@@ -12,7 +12,7 @@ function(_, Backbone, DeepModel, moment)
         myBackboneModelPrototype: Backbone.Model.prototype,
 
         save: function(key, val, options) {
-            var deferred = this.myBackboneModelPrototype.save.call(this, key, val, options);
+            var deferred = Backbone.Model.prototype.save.call(this, key, val, options);
             var model = this;
             deferred.always(function()
             {
@@ -22,12 +22,18 @@ function(_, Backbone, DeepModel, moment)
         },
 
         destroy: function(options) {
-            var deferred = this.myBackboneModelPrototype.destroy.call(this, options);
+            var deferred = Backbone.Model.prototype.destroy.call(this, options);
             var model = this;
-            deferred.always(function()
+
+            // if the model is new, destroy just returns false, and we don't need to trigger anything because we haven't changed any existing data
+            if(deferred && _.isFunction(deferred.always))
             {
-                theMarsApp.trigger("destroy:model", this);
-            });
+                deferred.always(function()
+                {
+                    theMarsApp.trigger("destroy:model", this);
+                });
+            }
+
             return deferred;
         },
 
