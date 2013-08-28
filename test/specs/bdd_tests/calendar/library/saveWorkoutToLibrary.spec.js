@@ -21,12 +21,13 @@ function(
     describe("save dragged workout to library", function()
     {
         var today = moment().format("YYYY-MM-DDThh:mm:ss");
-        var workout = new WorkoutModel({ workoutDay: today});
-
+        var workout = new WorkoutModel({ workoutDay: today, workoutId: '123'});
+        
         beforeEach(function()
         {
             testHelpers.startTheAppAndLogin(xhrData.users.barbkprem);
             theMarsApp.router.navigate("calendar", true);
+            theMarsApp.controllers.calendarController.weeksCollection.workoutsCollection.add(workout);
         });
 
         afterEach(function()
@@ -34,20 +35,37 @@ function(
             testHelpers.stopTheApp();
         });
 
-        it("Should have created a droppable section in the workout library", function()
+        it("Should accept draggables in the workout library", function()
         {
-            var libraryView = theMarsApp.currentController.views.library;
-
-            theMarsApp.currentController.libraryCollections.exerciseLibraries.add(new TP.Model({libraryName: "My Library"}));
-            spyOn(ExerciseLibraryView.prototype, "listenTo").andReturn("");
-            spyOn(libraryView.$el, "droppable");
-            libraryView.$el.find("#exerciseLibrary").click();
-            expect(libraryView.$el.droppable).toHaveBeenCalled();
-
+            expect(ExerciseLibraryView.prototype.onWorkoutDropped).toBeDefined();
         });
-        it("Should create a workout library template from a dropped workout", function()
-        {
+        describe("Should open and populate the save-workout-to-library confirmation view from a dropped workout", function()
+        {   
+            var exerciseLibraryView;
+            beforeEach(function()
+            {
+                spyOn(ExerciseLibraryView.prototype, "initialize").andReturn(null);
+                exerciseLibraryView = new ExerciseLibraryView({model: new TP.Model({selected: '321'})});
+                
+                exerciseLibraryView.onWorkoutDropped(null, {
+                    draggable: {
+                        data: function()
+                        {
+                            return workout.get('workoutId');
+                        }
+                    }
+                });
 
+            });
+            
+            it("Should attach a valid confirmation view", function()
+            {
+                expect(exerciseLibraryView.saveToLibraryConfirmationView).toBeDefined();
+            });
+            it("Should send the correct model", function()
+            {
+                expect(exerciseLibraryView.saveToLibraryConfirmationView.model).toBe(workout);
+            });
         });
     });
 });

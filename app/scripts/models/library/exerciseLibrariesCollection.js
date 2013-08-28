@@ -23,7 +23,6 @@ function(TP, ExerciseLibraryModel)
 
         getDefaultLibraryId: function()
         {
-            console.log(this.models);
             var selectedLibrary = _.find(this.models, function(model)
             {
                 if(model.get("libraryName") === "My Library")
