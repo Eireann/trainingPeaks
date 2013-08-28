@@ -455,7 +455,7 @@ function(
 
             flotOptions.grid.borderWidth = { top: 0, right: 1, bottom: 1, left: 1 };
             flotOptions.grid.borderColor = "#9a9999";
-            flotOptions.grid.aboveData = true;
+            //flotOptions.grid.aboveData = true;
 
             // atl / ctl = axis 1
             flotOptions.yaxes.push(
