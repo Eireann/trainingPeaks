@@ -58,6 +58,17 @@ function(theMarsApp, TP, conversion, convertToModelUnits, dateTimeUtils)
                 expect(dateTimeUtils.format.decimalHoursAsTime(98 + (59 / 60) + (59.33 / 3600), true, "00:00:00", false)).toEqual("98:59:59");
             });
 
+            it("Should round to the hundredth second, not truncate", function()
+            {
+                var decimalHours = dateTimeUtils.convert.millisecondsToDecimalHours(179510);
+                var timeHours = dateTimeUtils.format.decimalHoursAsTime(decimalHours);
+                expect(timeHours).toEqual("0:03:00");
+
+                decimalHours = dateTimeUtils.convert.millisecondsToDecimalHours(179490);
+                timeHours = dateTimeUtils.format.decimalHoursAsTime(decimalHours);
+                expect(timeHours).toEqual("0:02:59");
+            });
+
         });
 
         describe("Duration", function()
