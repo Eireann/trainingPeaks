@@ -36,18 +36,11 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
 
     .dateRanges
     {
-        height: 35px;
-        padding: 10px 0;
-
-        div
-        {
-            // padding-top: 6px;
-        }
+        padding: 7px 0 0 0;
 
         .fromTo
         {
             padding: 5px 15px 0 0;
-            // height: 25px;
             float: left;
             line-height:1;
         }
@@ -109,6 +102,7 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
         width: 90px;
         height: 22px;
         float: left;
+        margin-bottom:0;
     }
 
     .dateOptionsWrapper
@@ -549,7 +543,7 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
 
     .details
     {
-        margin: 13px 0 10px 0;
+        margin: 12px 0 9px 0;
         color: $TPGrey3;
         
         h3:nth-of-type(2) {
@@ -637,7 +631,7 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
 }
 
 .fitnessSummaryChartSettings {
-    width:300px;
+    width:302px;
     
     .datepickerContainer {
         border-bottom: 1px solid $TPGrey6;
@@ -646,10 +640,10 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
     }
 
     .selectboxit-options {
-        width: 276px;
+        width: 278px;
     }
     .selectboxit-container .selectboxit {
-        width: 276px !important; /* Width of the dropdown button */
+        width: 278px !important; /* Width of the dropdown button */
     }
 }
 
@@ -679,13 +673,13 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
 }
 
 .metricsChartSettings {
-    width:300px;
+    width:302px;
 
     .selectboxit-options {
-        width: 276px;
+        width: 278px;
     }
     .selectboxit-container .selectboxit {
-        width: 276px !important; /* Width of the dropdown button */
+        width: 278px !important; /* Width of the dropdown button */
     }
 
     .metricSelection {
