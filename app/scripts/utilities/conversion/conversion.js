@@ -579,6 +579,18 @@
                 case "ml":
                     return this.formatMl(value, options);
 
+                case "grade":
+                    return this.formatGrade(value, options);
+
+                case "efficiencyfactor":
+                    return this.formatEfficiencyFactor(value, options);
+
+                case "powerbalance":
+                    return this.formatPowerBalance(value, options);
+
+                case "calories":
+                    return this.formatCalories(value, options);
+
                 case "mmHg":
                     if(_.isArray(value))
                     {
@@ -601,6 +613,9 @@
                 case "none":
                     return this.formatInteger(value, options);
 
+                case "cadence":
+                    return this.formatCadence(value, options);
+                    
                 default:
                     throw new Error("Unsupported units for conversion.formatUnitsValue: " + units);
             }
