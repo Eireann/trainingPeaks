@@ -1,15 +1,11 @@
 ﻿<div id="calendarMonthLabel" class="calendarMonthLabel frameworkTitle">
-    <label class="headerMonth">{{$ "My"}}</label>
-    <label class="headerYear">{{$ "Dashboard"}}</label>
+    <label class="headerMonth">{{ formatDate startDate "MMMM D YYYY" }} - </label>
+    <label class="headerYear">{{ formatDate endDate "MMMM D YYYY" }}</label>
 </div>
 <div class="navigation">
     <div class="printRefreshButtons">
         <button class="refreshButton" title="Refresh" tabindex="-1"></button>
         <button class="settingsButton" title="Calendar Settings" tabindex="-1"></button>
-    </div>
-    <div class="datepickerContainer"></div>
-    <div class="buttons">
-      <button class="applyDates" title="Apply Dates" tabindex="-1">{{$ "Apply" }}</button>
     </div>
 </div>
 <div id="affiliateBanner"></div>
