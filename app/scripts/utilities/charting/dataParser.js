@@ -232,9 +232,9 @@ function(chartColors, findIndexByMsOffset, conversion)
         var yaxes = [];
         var countdown = (series.length / 2).toFixed(0);
         var axisIndex = 1;
-
         _.each(series, function(s)
         {
+            var showSwimPace = s.label === "Speed" && self.workoutTypeValueId === 1;
             if (s.label === "Pace")
                 return;
             
@@ -256,9 +256,15 @@ function(chartColors, findIndexByMsOffset, conversion)
                     // Purposefully using the closure created above to capture s.label for each given axis,
                     // in order to easily obtain the correct unit conversion for each axis.
                     // For some reason, a '0' value returns a NaN, check for it.
+
+                    // Swim workouts need to format "Speed" as "Pace"
+                    if (showSwimPace)
+                    {
+                        return value === 0 ? +0 : conversion.formatUnitsValue("pace", value, { defaultValue: null, workoutTypeId: self.workoutTypeValueId } );
+                    }
                     return value === 0 ? +0 : parseInt(conversion.formatUnitsValue(s.label.toLowerCase(), value), 10);
                 },
-                labelWidth: 15
+                labelWidth: showSwimPace ? 27 : 15
             };
 
             yaxes.push(axisOptions);
