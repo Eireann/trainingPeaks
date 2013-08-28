@@ -40,11 +40,13 @@ function(
             _.bindAll(this, "_onHoverToolTip", "_renderFlotChart", "waitingOff");
 
             this.listenTo(this.model, "change:title", _.bind(this._onChartTitleChange, this));
-            
+
             //trigger redraw instead of dashboardDatesChange
-            this.listenTo(this.model, "dashboardDatesChange", _.bind(this._onDashboardDatesChange, this));
+            this.listenTo(this.model, "dashboardDatesChange", _.bind(this._onDashboardReset, this));
+            this.listenTo(this.model, "dataManagerReset", _.bind(this._onDashboardReset, this));
             this.on("render", this._renderChartAfterRender, this);
 
+            this.once("render", this._bindPlotClick, this);
             this._setChartCssClass();
         },
 
@@ -60,6 +62,11 @@ function(
             "mousedown .expand": "_onExpandClicked",
             "mousedown .collapse": "_onExpandClicked",
             "mousedown .close": "_onCloseClicked"
+        },
+
+        _bindPlotClick: function()
+        {
+            this.ui.chartContainer.bind("plotclick", _.bind(this._onPlotClick, this));
         },
 
         _renderChartAfterRender: function()
@@ -128,7 +135,6 @@ function(
                         this.$(".yaxisLabel.right").text(yaxesOpts && yaxesOpts[1] && yaxesOpts[1].label || "");
                     }
 
-                    this.ui.chartContainer.bind("plotclick", _.bind(this._onPlotClick, this));
                 }
             }
         },
@@ -306,7 +312,7 @@ function(
             this.$el.addClass(className); 
         },
 
-        _onDashboardDatesChange: function()
+        _onDashboardReset: function()
         {
             this._renderChart();
         }

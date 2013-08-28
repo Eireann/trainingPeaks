@@ -10,6 +10,8 @@ function(
 {
     var RecurringPaymentsItemView = TP.ItemView.extend(
     {
+        className: "recurringPaymentItem",
+
         template:
         {
             type: "handlebars",

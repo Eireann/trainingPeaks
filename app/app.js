@@ -188,7 +188,7 @@ function(
                 reporting: new ReportingDataManager({ resetPatterns: [/fitness/i], ignoreResetPatterns: [/reporting/i] })
             };
 
-            this.on("save:model", function(model)
+            this.on("save:model destroy:model", function(model)
             {
                 var modelUrl = _.result(model, "url");
                 _.each(this.dataManagers, function(dataManager)

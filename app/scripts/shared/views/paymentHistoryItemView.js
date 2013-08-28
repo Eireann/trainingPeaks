@@ -10,6 +10,9 @@ function(
 {
     var PaymentHistoryItemView = TP.ItemView.extend(
     {
+
+        className: "paymentHistoryItem",
+
         template:
         {
             type: "handlebars",
