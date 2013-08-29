@@ -5,7 +5,7 @@ define(
     "utilities/charting/chartColors",
     "utilities/charting/flotOptions",
     "views/dashboard/chartUtils",
-    "dashboard/views/chartSettingsView"
+    "dashboard/views/workoutSummaryChartSettingsView"
 ],
 function(
     TP,
@@ -161,12 +161,14 @@ function(
                 }, series.options));
             }, this);
 
-            var plannedSeries = _.map(this.subType.plannedSeries, function(series)
-            {
-                return this._buildSeries(data, series.key, _.extend({bars: {show: false}, lines: {show: true}}, series.options));
-            }, this);
-
-            console.log(series);
+            var plannedSeries = [];
+            
+            if(this.get("showPlanned")) {
+                plannedSeries = _.map(this.subType.plannedSeries, function(series)
+                {
+                    return this._buildSeries(data, series.key, _.extend({bars: {show: false}, lines: {show: true}}, series.options));
+                }, this);
+            }
 
             return {
                 dataSeries: series.concat(plannedSeries),
@@ -215,12 +217,13 @@ function(
 
         _preprocessData: function(data)
         {
-            var workoutTypeIds = this.get("workoutTypeIds");
+            var workoutTypeIds = _.map(this.get("workoutTypeIds"), function(id) { return parseInt(id, 10); });
+
             if(workoutTypeIds.length > 0)
             {
                 data = _.filter(data, function(entry)
                 {
-                    return _.include(workoutTypeIds, entry.workoutTypeId);
+                    return _.include(workoutTypeIds, parseInt(entry.workoutTypeId, 10));
                 });
             }
 
