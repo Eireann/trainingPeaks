@@ -217,15 +217,15 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
             }
 
             .uploadButton {
-                background: url(../../assets/images/QVImages/sprite-buttons-expando.png) no-repeat 0 0;
+                background: url(../../assets/images/QVImages/sprite-buttons-expando.png) no-repeat 0 -1px;
                 cursor: pointer;
                 
                 &:hover {
-                    background: url(../../assets/images/QVImages/sprite-buttons-expando.png) no-repeat -86px 0px;
+                    background: url(../../assets/images/QVImages/sprite-buttons-expando.png) no-repeat -86px -1px;
                 }
                 
                 &:active {
-                    background: url(../../assets/images/QVImages/sprite-buttons-expando.png) no-repeat -172px 0;
+                    background: url(../../assets/images/QVImages/sprite-buttons-expando.png) no-repeat -172px -1px;
                     label {
                         color: $white;
                         opacity: 0.85;
@@ -258,7 +258,7 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
 
             .expandButton {
                 margin-top: 10px;
-                background: url(../../assets/images/QVImages/sprite-buttons-expando.png) no-repeat 0 -35px;
+                background: url(../../assets/images/QVImages/sprite-buttons-expando.png) no-repeat 0 -36px;
 
                 &.disabled
                 {
@@ -271,7 +271,7 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
 
                     @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
                         background: url(../../assets/images/calendarImages/throbber-expando-button@2x.gif) no-repeat;
-                        background-size: 86px 35px;
+                        background-size: 86px 36px;
                     }
                 }
             
@@ -280,11 +280,11 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
 
                     cursor: pointer;
                     &:hover {
-                        background: url(../../assets/images/QVImages/sprite-buttons-expando.png) no-repeat -86px -35px;
+                        background: url(../../assets/images/QVImages/sprite-buttons-expando.png) no-repeat -86px -36px;
                     }
                     
                     &:active {
-                        background: url(../../assets/images/QVImages/sprite-buttons-expando.png) no-repeat -172px -35px;
+                        background: url(../../assets/images/QVImages/sprite-buttons-expando.png) no-repeat -172px -36px;
 
                         label {
                             color: $white;
@@ -300,14 +300,14 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
                 display: none;
                 padding-left: 28px;
                 cursor: pointer;
-                background: url(../../assets/images/QVImages/sprite-buttons-expando.png) no-repeat 0 -70px;
+                background: url(../../assets/images/QVImages/sprite-buttons-expando.png) no-repeat 0 -71px;
                 
                 &:hover  {
-                    background: url(../../assets/images/QVImages/sprite-buttons-expando.png) no-repeat -86px -70px;
+                    background: url(../../assets/images/QVImages/sprite-buttons-expando.png) no-repeat -86px -71px;
                 }
                 
                 &:active {
-                    background: url(../../assets/images/QVImages/sprite-buttons-expando.png) no-repeat -172px -70px;
+                    background: url(../../assets/images/QVImages/sprite-buttons-expando.png) no-repeat -172px -71px;
                     label {
                         color: $white;
                         opacity: 0.85;
