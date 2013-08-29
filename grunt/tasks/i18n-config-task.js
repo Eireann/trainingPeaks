@@ -1,6 +1,6 @@
 module.exports = function (grunt) {
 
-    var _ = require('underscore');
+    var _ = require('lodash');
     var fs = require('fs');
     var path = require('path');
 
@@ -22,7 +22,7 @@ module.exports = function (grunt) {
             var requireJsOptions = grunt.config.get('requirejs');
 
             // clone the default 'build' options
-            var localeOptions = _.clone(requireJsOptions.build.options);
+            var localeOptions = _.clone(requireJsOptions.build.options, true);
 
             // add locale specific details
             localeOptions.out = localeSingleFile;
@@ -33,9 +33,6 @@ module.exports = function (grunt) {
                 localeOptions.include = [];
             }
 
-            // add it into the requirejs options
-            requireJsOptions[localeName] = { options: localeOptions };
-
             // add the moment.js translation
             var momentLangDir = "vendor/js/libs/moment/lang/";
             var momentLocaleFile = momentLangDir + localeName.replace("_", "-") + ".js";
@@ -44,20 +41,22 @@ module.exports = function (grunt) {
             {
                 localeOptions.include.push("../vendor/js/libs/moment/dotDotMoment.js");
                 localeOptions.include.push("../" + momentLocaleFile);
-                //grunt.log.writeln("Adding " + momentLocaleFile);
+                // grunt.log.writeln("Adding " + momentLocaleFile);
             } else if (fs.existsSync(momentLangFile))
             {
                 localeOptions.include.push("../vendor/js/libs/moment/dotDotMoment.js");
                 localeOptions.include.push("../" + momentLangFile);
-                //grunt.log.writeln("Adding " + momentLangFile);
+                // grunt.log.writeln("Adding " + momentLangFile);
             } else
             {
-                //grunt.log.writeln("No language file found for moment.js: " + momentLangFile);
+                // grunt.log.writeln("No language file found for moment.js: " + momentLangFile);
             }
+
+            // add it into the requirejs options
+            requireJsOptions[localeName] = { options: localeOptions };
 
             // update grunt config with the new values
             grunt.config.set('requirejs', requireJsOptions);
-
         }
 
         function addLocaleToUglify(localeName, localeSingleFile)
