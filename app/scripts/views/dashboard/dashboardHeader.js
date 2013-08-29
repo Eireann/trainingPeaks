@@ -100,7 +100,7 @@ function (datepicker, spinner, jquerySelectBox, _, TP, DashboardDatePicker, char
                 this.dashboardHeaderDatePicker.right(offset.left - 15);
             } else
             {
-                this.dashboardHeaderDatePicker.left(offset.left + $(e.currentTarget).width() + 15);
+                this.dashboardHeaderDatePicker.left(offset.left + $(e.currentTarget).width() + 70);
             }
 
             this.dashboardHeaderDatePicker.alignArrowTo(offset.top + ($(e.currentTarget).height() / 2));
@@ -117,5 +117,5 @@ function (datepicker, spinner, jquerySelectBox, _, TP, DashboardDatePicker, char
         }
     });
 
-    return DashboardHeaderView
+    return DashboardHeaderView;
 });
