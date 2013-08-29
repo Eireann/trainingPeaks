@@ -52,7 +52,10 @@ function (datepicker, spinner, jquerySelectBox, _, TP, DashboardDatePicker, char
 
         onClose: function()
         {
-            this.datepickerView.close();
+            if(this.dashboardHeaderDatePicker)
+            {
+                this.dashboardHeaderDatePicker.close();
+            }
         },
 
         onRender: function()
