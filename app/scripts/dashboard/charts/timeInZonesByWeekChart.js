@@ -185,9 +185,9 @@ function(
                     {
                         show: true,
                         lineWidth: 0,
-                        fill: true,
+                        fill: true
                         //fillColor: { colors: [chartColor.light, chartColor.dark] }
-                    },
+                    }
                     //highlightColor: chartColor.light
                 };
 

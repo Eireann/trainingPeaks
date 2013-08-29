@@ -71,7 +71,7 @@ function(
             {
                 chartType: 27,
                 name: "Time In Speed Zones By Week"
-            },
+            }
             ]);
         }
     });
