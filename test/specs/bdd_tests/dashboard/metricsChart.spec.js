@@ -25,7 +25,7 @@ function(
         $body.find(".dashboardHeaderDatePicker .closeIcon").trigger("click");
     };
 
-    xdescribe("Metrics Chart(s)", function()
+    describe("Metrics Chart(s)", function()
     {
         var $mainRegion;
         var $body;
@@ -163,6 +163,7 @@ function(
                     theMarsApp.user.set("settings.dashboard.pods", [metricsPodSettings]);
                     $mainRegion = theMarsApp.mainRegion.$el;
                     theMarsApp.router.navigate("dashboard", true);
+                    $body = theMarsApp.getBodyElement();
                 });
 
                 afterEach(function()

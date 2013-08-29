@@ -25,7 +25,7 @@ function(
         $body.find(".dashboardHeaderDatePicker .closeIcon").trigger("click");
     };
 
-    xdescribe("Fitness Summary Chart", function()
+    describe("Fitness Summary Chart", function()
     {
         var $mainRegion;
         var $body;
@@ -163,6 +163,7 @@ function(
                     theMarsApp.user.set("settings.dashboard.pods", [fitnessSummaryPodSettingsThree]);
                     $mainRegion = theMarsApp.mainRegion.$el;
                     theMarsApp.router.navigate("dashboard", true);
+                    $body = theMarsApp.getBodyElement();
                 });
 
                 afterEach(function()
@@ -259,6 +260,7 @@ function(
                     theMarsApp.user.set("settings.dashboard.pods", [fitnessSummaryPodSettings, fitnessSummaryPodSettingsTwo]);
                     $mainRegion = theMarsApp.mainRegion.$el;
                     theMarsApp.router.navigate("dashboard", true);
+                    $body = theMarsApp.getBodyElement();
                 });
 
                 afterEach(function()
@@ -310,6 +312,7 @@ function(
                     theMarsApp.user.set("settings.dashboard.pods", [fitnessSummaryPodSettings, fitnessSummaryPodSettingsTwo]);
                     $mainRegion = theMarsApp.mainRegion.$el;
                     theMarsApp.router.navigate("dashboard", true);
+                    $body = theMarsApp.getBodyElement();
                 });
 
                 afterEach(function()

@@ -16,6 +16,7 @@ function(
 
     var applyDashboardDates = function($mainRegion, $body, dateOptionId, startDate, endDate)
     {
+        //console.log("Applying dashboard dates: " + dateOptionId + ", " + startDate + " - " + endDate);
         $mainRegion.find("#dashboardHeader .calendarMonthLabel").trigger("click");
         $body.find(".dashboardHeaderDatePicker .dashboardDatePicker select.dateOptions").val(dateOptionId).trigger("change");
         $body.find(".dashboardHeaderDatePicker .dashboardDatePicker input.startDate").val(startDate).trigger("change");
@@ -23,7 +24,7 @@ function(
         $body.find(".dashboardHeaderDatePicker .closeIcon").trigger("click");
     };
 
-    xdescribe("Dashboard Chart Container", function()
+    describe("Dashboard Chart Container", function()
     {
         var $mainRegion;
         var $body;
@@ -98,6 +99,7 @@ function(
                     testHelpers.startTheAppAndLogin(userData);
                     $mainRegion = theMarsApp.mainRegion.$el;
                     theMarsApp.router.navigate("dashboard", true);
+                    $body = theMarsApp.getBodyElement();
                 });
 
                 afterEach(function()
@@ -127,6 +129,7 @@ function(
                     testHelpers.startTheAppAndLogin(userData);
                     $mainRegion = theMarsApp.mainRegion.$el;
                     theMarsApp.router.navigate("dashboard", true);
+                    $body = theMarsApp.getBodyElement();
                 });
 
                 afterEach(function()
@@ -168,11 +171,13 @@ function(
                         beforeEach(function()
                         {
                             var userData = xhrData.users.barbkprem;
-                            console.log(userData.settings.dashboard.dateOptions);
                             userData.settings.dashboard.pods = [pmcPodSettings];
                             testHelpers.startTheAppAndLogin(userData);
                             $mainRegion = theMarsApp.mainRegion.$el;
                             theMarsApp.router.navigate("dashboard", true);
+                            //console.log(userData.settings.dashboard.pods);
+                            //console.log(theMarsApp.user.get("settings.dashboard.pods"));
+                            $body = theMarsApp.getBodyElement();
                         });
 
                         afterEach(function()
@@ -180,13 +185,17 @@ function(
                             testHelpers.stopTheApp();
                         });
 
+                        it("Should request initial pmc data", function()
+                        {
+                            expect(testHelpers.hasRequest("POST", "reporting/performancedata")).toBe(true);   
+                        });
 
                         it("Should update when dashboard dates are updated", function()
                         {
                             testHelpers.clearRequests();
+                            //console.log("Updating dashboard");
                             applyDashboardDates($mainRegion, $body, chartUtils.chartDateOptions.CUSTOM_DATES.id, "2013-01-01", "2013-04-15");
-                            console.log(testHelpers.fakeAjaxRequests);
-                            console.log($body.html());
+                            //console.log("Finished updating dashboard");
                             expect(testHelpers.hasRequest("POST", "reporting/performancedata")).toBe(true);   
                             expect(testHelpers.hasRequest("POST", "reporting/performancedata/2013-01-01/2013-04-15")).toBe(true);
                         });
@@ -213,6 +222,7 @@ function(
                             testHelpers.startTheAppAndLogin(userData);
                             $mainRegion = theMarsApp.mainRegion.$el;
                             theMarsApp.router.navigate("dashboard", true);
+                            $body = theMarsApp.getBodyElement();
                         });
 
                         afterEach(function()
