@@ -5,13 +5,15 @@ define(
     "utilities/charting/chartColors",
     "utilities/charting/flotOptions",
     "views/dashboard/chartUtils",
+    "dashboard/views/chartSettingsView"
 ],
 function(
     TP,
     Chart,
     chartColors,
     defaultFlotOptions,
-    DashboardChartUtils
+    DashboardChartUtils,
+    DashboardSettingsView
 )
 {
 
@@ -34,6 +36,8 @@ function(
     }];
 
     var WorkoutSummaryChart = Chart.extend({
+
+        settingsView: DashboardSettingsView,
 
         subTypes: [{
             chartType: 10,
@@ -60,12 +64,16 @@ function(
             title: "TSS",
             series: [{
                 key: "totalTrainingStressScoreActual",
+                widthScale: 2 * 0.7,
                 options: {
+                    color: chartColors.pmcColors.TSS,
                     yaxis: 1
                 }
             }, {
                 key: "averageIntensityFactorActual",
+                widthScale: 2 * 0.3,
                 options: {
+                    color: chartColors.pmcColors.IF,
                     yaxis: 2
                 }
             }],
@@ -130,9 +138,17 @@ function(
             var self = this;
             data = this.data = this._preprocessData(data);
 
+            var dateGrouping = this.get("workoutSummaryDateGrouping") === 1 ?"day" : "week";
+            var barWidth = moment.duration(1, dateGrouping).valueOf() * 0.7 / this.subType.series.length;
             var series = _.map(this.subType.series, function(series, i)
             {
-                return this._buildSeries(data, series.key, _.extend({bars: {order: i}}, series.options));
+                return this._buildSeries(data, series.key, _.extend({
+                    onlySeries: this.subType.series.length === 1,
+                    bars: {
+                        order: i,
+                        barWidth: barWidth  * (series.widthScale || 1),
+                    }
+                }, series.options));
             }, this);
 
             var plannedSeries = _.map(this.subType.plannedSeries, function(series)
@@ -140,8 +156,7 @@ function(
                 return this._buildSeries(data, series.key, _.extend({bars: {show: false}, lines: {show: true}}, series.options));
             }, this);
 
-            var dateGrouping = this.get("workoutSummaryDateGrouping") === 1 ?"day" : "week";
-            var barWidth = moment.duration(1, dateGrouping).valueOf() * 0.7 / series.length;
+            console.log(series);
 
             return {
                 dataSeries: series.concat(plannedSeries),
@@ -150,7 +165,8 @@ function(
                     {
                         show: true,
                         lineWidht: 1,
-                        barWidth: barWidth
+                        barWidth: barWidth,
+                        lineWidth: 0.00000001 // 0 causes flot.orderBars to default to 2 for calculations... which aren't redone on resize.
                     },
                     xaxis:
                     {
@@ -233,9 +249,15 @@ function(
 
         _buildSeries: function(data, key, options)
         {
+            var offset = 0;
+            if(options.onlySeries)
+            {
+                offset = -(options.bars.barWidth / 2);
+            }
+
             var points = _.map(data, function(entry)
             {
-                return [entry.date, entry[key] || 0];
+                return [entry.date + offset, entry[key] || 0];
             });
 
             points = _.sortBy(points, 0);
