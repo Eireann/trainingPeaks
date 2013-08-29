@@ -23,7 +23,7 @@ function(
         $body.find(".dashboardHeaderDatePicker .dashboardDatePicker input.startDate").val(startDate).trigger("change");
         $body.find(".dashboardHeaderDatePicker .dashboardDatePicker input.endDate").val(endDate).trigger("change");
         $body.find(".dashboardHeaderDatePicker .closeIcon").trigger("click");
-    }
+    };
 
     describe("Fitness Summary Chart", function()
     {

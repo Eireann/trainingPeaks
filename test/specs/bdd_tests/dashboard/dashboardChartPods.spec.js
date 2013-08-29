@@ -25,7 +25,7 @@ function(
         console.log($body.html());
         $body.find(".dashboardHeaderDatePicker .closeIcon").trigger("click");
         console.log(theMarsApp.user.get("settings.dashboard"));
-    }
+    };
 
     describe("Dashboard Chart Container", function()
     {
@@ -298,7 +298,7 @@ function(
                         var $body = theMarsApp.getBodyElement();
 
                         // set dashboard dates
-                        applyDashboardDates($mainRegion, $body, chartUtils.chartDateOptions.CUSTOM_DATES.id, "2013-01-01", "2013-04-15")
+                        applyDashboardDates($mainRegion, $body, chartUtils.chartDateOptions.CUSTOM_DATES.id, "2013-01-01", "2013-04-15");
                         $mainRegion.find("#dashboardHeader .applyDates").trigger("click");                       
                         testHelpers.clearRequests();
 
