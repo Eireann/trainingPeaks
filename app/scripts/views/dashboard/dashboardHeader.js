@@ -12,7 +12,7 @@
 ],
 function (datepicker, spinner, jquerySelectBox, _, TP, DashboardDatePicker, chartUtils, dashboardHeaderDatePicker, dashboardHeaderTemplate)
 {
-    var DashboardHeaderView =
+    var DashboardHeaderView = TP.ItemView.extend(
     {
 
         className: "frameworkHeaderView",
@@ -25,16 +25,15 @@ function (datepicker, spinner, jquerySelectBox, _, TP, DashboardDatePicker, char
 
         events:
         {
-            "click .applyDates": "applyDates",
             "click .refreshButton": "refresh",
-            "click .headerMonth": "headerDatePicker"
+            "click .calendarMonthLabel": "headerDatePicker"
         },
 
         initialize: function (options)
         {
             this.settingsKey = "settings.dashboard.dateOptions";
-            this.datepickerView = new DashboardDatePicker({ model: this.model, settingsKey: "settings.dashboard", includeGlobalOption: false });
             this.on("user:loaded", this.setDefaultDateSettings, this);
+            this.listenTo(this.model, "applyDates", _.bind(this.applyDates, this));
             this.setDefaultDateSettings();
         },
 
@@ -59,12 +58,12 @@ function (datepicker, spinner, jquerySelectBox, _, TP, DashboardDatePicker, char
         onRender: function()
         {
             this.model.off("change", this.render);
-            this.datepickerView.setElement(this.$(".datepickerContainer")).render();
         },
 
         applyDates: function()
         {
             this.model.save();
+            this.render();
             this.trigger("change:dashboardDates");
         },
 
@@ -73,11 +72,47 @@ function (datepicker, spinner, jquerySelectBox, _, TP, DashboardDatePicker, char
             this.trigger("refresh");
         },
 
-        headerDatePicker: function ()
+        headerDatePicker: function (e)
         {
-            console.log("hello world");
-        }
-    };
+            if (e && e.button && e.button === 2)
+            {
+                return;
+            }
 
-    return TP.ItemView.extend(DashboardHeaderView);
+            e.preventDefault();
+
+            var offset = $(e.currentTarget).offset();
+            var windowWidth = $(window).width();
+
+            var direction = (windowWidth - offset.left) > 450 ? "right" : "left";
+            var icon = this.$(".headerMonth");
+
+            this.dashboardHeaderDatePicker = new dashboardHeaderDatePicker({model: this.model, settingsKey: "settings.dashboard"});
+
+            this.dashboardHeaderDatePicker.setTomahawkDirection(direction);
+
+            this.dashboardHeaderDatePicker.render();
+            if (direction === "left")
+            {
+                this.dashboardHeaderDatePicker.right(offset.left - 15);
+            } else
+            {
+                this.dashboardHeaderDatePicker.left(offset.left + $(e.currentTarget).width() + 70);
+            }
+
+            this.dashboardHeaderDatePicker.alignArrowTo(offset.top + ($(e.currentTarget).height() / 2));
+
+            this.dashboardHeaderDatePicker.on("close", this._onChartSettingsClose, this);
+        },
+
+        serializeData: function ()
+        {
+            var data = DashboardHeaderView.__super__.serializeData();
+            var dateSettings = chartUtils.buildChartParameters(this.model.get(this.settingsKey));
+            _.extend(data, dateSettings);
+            return data;
+        }
+    });
+
+    return DashboardHeaderView;
 });

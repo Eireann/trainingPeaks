@@ -5,7 +5,8 @@ define(
     "underscore",
     "TP",
     "./dashboardChartSettingsBase",
-    "hbs!templates/views/dashboard/fitnessSummaryChartSettings"
+    "./dashboardDatePicker",
+    "hbs!templates/views/dashboard/dashboardChartSettings"
 ],
 function(
     setImmediate,    
@@ -13,68 +14,88 @@ function(
     _,
     TP,
     DashboardChartSettingsBase,
-    fitnessSummaryChartSettingsTemplate
+    DashboardDatePicker,
+    dashboardChartSettingsTemplate
     )
 {
-    var FitnessSummaryChartSettings = {
+    var DashboardHeaderDatePicker = {
 
-        className: DashboardChartSettingsBase.className + " fitnessSummaryChartSettings",
+        className:"dashboardChartSettings dashboardHeaderDatePicker",
 
         template:
         {
             type: "handlebars",
-            template: fitnessSummaryChartSettingsTemplate
+            template: dashboardChartSettingsTemplate
         },
 
-        events: _.extend({}, DashboardChartSettingsBase.events, {
-            "change select.summaryType": "onSummaryTypeChange"
-        }),
+        modal: true,
 
-        onSummaryTypeChange: function(e)
-        {
-            var typeId = Number(this.$("select.summaryType").val());
-            this.setSetting("summaryType", typeId);
+        events: {
+            "click .closeIcon": "close"
         },
-
+        
         initialize: function(options)
         {
-            DashboardChartSettingsBase.initialize.call(this, options);
-            this.summaryTypes = options.summaryTypes || options.model.summaryTypes;
-            this.on("render", this.selectBoxIt, this);
+            this.originalModel = this.model;
+            this.settingsKey = options.key || (options.settingsKey ? options.settingsKey + ".dateOptions" : "dateOptions");
+            this.model = new TP.Model({ dateOptions: this.originalModel.get(this.settingsKey) });
+
+            this.on("close", this.saveOnClose, this);
+            this.children = new Backbone.ChildViewContainer();
         },
 
-        selectBoxIt: function()
+        saveOnClose: function()
         {
-            var self = this;
-            setImmediate(function()
-            {
-                self.$("select.summaryType").selectBoxIt();
-            });
+            this.originalModel.set(this.settingsKey, this.model.get("dateOptions"));
+            this.originalModel.trigger("applyDates");
         },
 
-        serializeData: function()
+        onRender: function ()
         {
-            var data = DashboardChartSettingsBase.serializeData.call(this);
-            data.summaryTypeList = [];
-
-            var selectedTypeId = Number(this.getSetting("summaryType"));
-
-            _.each(this.summaryTypes, function(summaryType)
+            this.settingsKey = "settings.dashboard.dateOptions";
+            this.model.off("change", this.render);
+            if (dashboardChartSettingsTemplate)
             {
-                var type = _.clone(summaryType);
-                if(type.id === selectedTypeId)
-                {
-                    type.selected = true;
-                }
-                data.summaryTypeList.push(type);
-            });
+                this.datepickerView = new DashboardDatePicker({ model: this.model, includeGlobalOption: false });
+                this.datepickerView.setElement(this.$(".datepickerContainer")).render();
+                this.children.add(this.datepickerView);
+            }
+        },
 
-            return data;
+        alignArrowTo: function (top)
+        {
+
+            // make sure we're fully on the screen
+            var windowBottom = $(window).height() - 10;
+            this.top(top - 25);
+            var myBottom = this.$el.offset().top + this.$el.height();
+
+            if (myBottom > windowBottom)
+            {
+                var arrowOffset = (myBottom - windowBottom) + 30;
+                this.top(windowBottom - this.$el.height());
+                this.$(".arrow").css("top", arrowOffset + "px");
+            }
+        },
+
+        setTomahawkDirection: function (direction)
+        {
+            this.$el.removeClass("left").removeClass("right").addClass(direction);
+        },
+
+        onShow: function ()
+        {
+            this.children.call("show");
+        },
+
+        onClose: function ()
+        {
+            this.children.call("close");
         }
+
+        
 
     };
 
-    FitnessSummaryChartSettings = _.extend({}, DashboardChartSettingsBase, FitnessSummaryChartSettings);
-    return TP.ItemView.extend(FitnessSummaryChartSettings);
-
+    return TP.ItemView.extend(DashboardHeaderDatePicker);
 });
