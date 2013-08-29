@@ -63,7 +63,6 @@ function (datepicker, spinner, jquerySelectBox, _, TP, DashboardDatePicker, char
 
         applyDates: function()
         {
-            console.log("Applying dates");
             this.model.save();
             this.render();
             this.trigger("change:dashboardDates");
