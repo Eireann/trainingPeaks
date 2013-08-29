@@ -17,16 +17,20 @@ function(
 
     var distanceDurationTooltips = [{
         label: "Planned Distance",
-        key: "distancePlanned"
+        key: "distancePlanned",
+        units: "distance"
     }, {
         label: "Completed Distance",
-        key: "distanceActual"
+        key: "distanceActual",
+        units: "distance"
     }, {
         label: "Planned Duration",
-        key: "totalTimePlanned"
+        key: "totalTimePlanned",
+        units: "hours"
     }, {
         label: "Completed Duration",
-        key: "totalTimeActual"
+        key: "totalTimeActual",
+        units: "hours"
     }];
 
     var WorkoutSummaryChart = Chart.extend({
@@ -64,12 +68,24 @@ function(
                 options: {
                     yaxis: 2
                 }
+            }],
+            tooltips: [{
+                label: "TSS",
+                key: "totalTrainingStressScoreActual"
+            }, {
+                label: "IF",
+                key: "averageIntensityFactorActual"
             }]
         }, {
             chartType: 37,
             title: "Elevation Gain",
             series: [{
                 key: "totalElevationGainActual"
+            }],
+            tooltips: [{
+                label: "Elevation Gain",
+                key: "totalElevationGainActual",
+                units: "elevation"
             }]
         }],
 
@@ -210,7 +226,7 @@ function(
                 });
             });
 
-            _.each(mergedData, function(value, key) { value.date = key; });
+            _.each(mergedData, function(value, key) { value.date = parseInt(key, 10); });
 
             return _.sortBy(_.values(mergedData), "date");
         },
@@ -229,19 +245,54 @@ function(
 
         buildTooltipData: function(flotItem)
         {
+            var entry = this.data[flotItem.dataIndex];
             var tooltip = _.map(this.subType.tooltips, function(tooltip)
             {
+                var value = entry[tooltip.key];
+
+                var workoutTypeId = this._getSingleWorkoutTypeId();
+                if(tooltip.units) {
+                    value = TP.utils.conversion.formatUnitsValue(
+                        tooltip.units,
+                        value,
+                        {defaultValue: "--", workoutTypeId: workoutTypeId }
+                    );
+                    value += TP.utils.units.getUnitsLabel(tooltip.units, workoutTypeId);
+                }
+
                 return {
                     label: tooltip.label,
-                    value: this.data[flotItem.dataIndex][tooltip.key]
+                    value: value
                 };
             }, this);
+
+            if(this.get("workoutSummaryDateGrouping") === 1)
+            {
+                tooltip.unshift({
+                    value: moment(entry.date).format("L")
+                });
+            }
+            else
+            {
+                tooltip.unshift({
+                    value: moment(entry.date).format("L") + " - " +
+                        moment(entry.date).add(6, "days").format("L")
+                });
+            }
+
             return tooltip;
         },
 
         getChartName: function()
         {
             return "Workout Summary";
+        },
+
+        _getSingleWorkoutTypeId: function()
+        {
+            var workoutTypeIds = this.get("workoutTypeIds");
+            var workoutTypeId = workoutTypeIds && workoutTypeIds.length === 1 ? workoutTypeIds[0] : undefined;
+            return workoutTypeId;
         },
 
         _validateWorkoutTypes: function()
