@@ -59,6 +59,22 @@ function(
             {
                 chartType: 13,
                 name: "Metrics"
+            },
+            {
+                chartType: 10,
+                name: "Duration by Week/Day"
+            },
+            {
+                chartType: 11,
+                name: "Distance by Week/Day"
+            },
+            {
+                chartType: 23,
+                name: "TSS by Week/Day"
+            },
+            {
+                chartType: 37,
+                name: "Elevation Gain by Day/Week"
             }
             ]);
         }
