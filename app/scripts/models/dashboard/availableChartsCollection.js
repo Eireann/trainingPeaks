@@ -59,7 +59,19 @@ function(
             {
                 chartType: 13,
                 name: "Metrics"
-            }
+            },
+            {
+                chartType: 18,
+                name: "Time In HR Zones By Week"
+            },
+            {
+                chartType: 25,
+                name: "Time In Power Zones By Week"
+            },
+            {
+                chartType: 27,
+                name: "Time In Speed Zones By Week"
+            },
             ]);
         }
     });

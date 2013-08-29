@@ -7,6 +7,7 @@
     "dashboard/charts/fitnessSummaryChart",
     "dashboard/charts/peaksChart",
     "dashboard/charts/timeInZonesChart",
+    "dashboard/charts/timeInZonesByWeekChart",
     "dashboard/charts/metricsChart"
 ],
 function(
@@ -17,6 +18,7 @@ function(
     FitnessSummaryChart,
     PeaksChart,
     TimeInZonesChart,
+    TimeInZonesByWeekChart,
     MetricsChart
 )
 {
@@ -38,6 +40,9 @@ function(
         17: TimeInZonesChart,
         24: TimeInZonesChart,
         26: TimeInZonesChart,
+        18: TimeInZonesByWeekChart,
+        25: TimeInZonesByWeekChart,
+        27: TimeInZonesByWeekChart,
         13: MetricsChart
     };
 
