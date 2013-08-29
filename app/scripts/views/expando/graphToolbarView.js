@@ -104,7 +104,7 @@ function(TP, graphToolbarTemplate)
         onRender: function()
         {
             var self = this;
-			var shownButtons = [];
+            var shownButtons = [];
 
             _.each(this.dataParser.getChannelMask(), function(channel)
             {
@@ -112,22 +112,29 @@ function(TP, graphToolbarTemplate)
                     return;
 
                 var button = self.$(".graph" + channel + "Button");
-				button.show();
-				shownButtons.push(button[0]);
+                button.show();
+                shownButtons.push(button[0]);
             });
-			
-			this.$(".graphSeriesButton").not(shownButtons).remove();
+            
+            this.$(".graphSeriesButton").not(shownButtons).remove();
 
-			if (_.indexOf(this.dataParser.getChannelMask(), "Distance") === -1)
-			{
+            if (_.indexOf(this.dataParser.getChannelMask(), "Distance") === -1)
+            {
                 this.$(".graphDistanceButton").remove();
                 this.$(".graphTimeButton").remove();
-			}
+            }
         },
 
         serializeData: function()
         {
-            var speedLabel = this.model ? TP.utils.units.getUnitsLabel("distance", this.model.get("workoutTypeValueId")) : "MPH";
+            // Grab speed label based on model workout type
+            var speedLabel = this.model ? TP.utils.units.getUnitsLabel("speed", this.model.get("workoutTypeValueId")) : "MPH";
+
+            // Swim speeds need to be shown as "pace" units
+            if (this.model && this.model.get("workoutTypeValueId") === 1)
+            {
+                speedLabel = TP.utils.units.getUnitsLabel("pace", 1);
+            }
             return {
                 speedLabel: speedLabel
             };

@@ -33,7 +33,7 @@ function(
         events: {
             "click .closeIcon": "close"
         },
-
+        
         initialize: function(options)
         {
             this.originalModel = this.model;

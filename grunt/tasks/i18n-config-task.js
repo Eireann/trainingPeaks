@@ -1,11 +1,8 @@
 module.exports = function (grunt) {
 
-    var _ = require('underscore');
+    var _ = require('lodash');
     var fs = require('fs');
     var path = require('path');
-
-    // this needs to be in a config file
-    var locales = ["en_us", "fr_fr", "it_it"];
 
     function getLocalePath(target, localeName)
     {
@@ -15,6 +12,7 @@ module.exports = function (grunt) {
     // INTERNATIONALIZATION
     grunt.registerTask("i18n_config", "Compile one single.js file for each supported language", function()
     {
+        var locales = grunt.config('locales');
 
         // modify properties of the requirejs grunt config
         function addLocaleToRequirejs(localeName, localeSingleFile)
@@ -24,38 +22,16 @@ module.exports = function (grunt) {
             var requireJsOptions = grunt.config.get('requirejs');
 
             // clone the default 'build' options
-            var localeOptions = _.clone(requireJsOptions.build.options);
+            var localeOptions = _.clone(requireJsOptions.build.options, true);
 
             // add locale specific details
             localeOptions.out = localeSingleFile;
             localeOptions.locale = localeName;
 
-            // add it into the requirejs options
-            requireJsOptions[localeName] = { options: localeOptions };
-
-            // update grunt config with the new values
-            grunt.config.set('requirejs', requireJsOptions);
-
-        }
-
-        // modify properties of concat grunt config
-        function addLocaleToConcat(localeName, localeSingleFile)
-        {
-            // get the concat config so we can modify it 
-            var concatOptions = grunt.config.get('concat');
-
-            // clone the default 'build' options
-            var localeOptions = _.clone(concatOptions.build);
-
-            // add locale specific single.js file
-            localeOptions.dest = localeSingleFile;
-            localeOptions.src = _.clone(concatOptions.build.src);
-
-            // remove the existing single.js
-            localeOptions.src.pop();
-
-            // single file goes last
-            localeOptions.src.push(localeSingleFile);
+            if(!_.isArray(localeOptions.include))
+            {
+                localeOptions.include = [];
+            }
 
             // add the moment.js translation
             var momentLangDir = "vendor/js/libs/moment/lang/";
@@ -63,28 +39,25 @@ module.exports = function (grunt) {
             var momentLangFile = momentLangDir + localeName.split("_")[0] + ".js";
             if (fs.existsSync(momentLocaleFile))
             {
-                localeOptions.src.push("vendor/js/libs/moment/dotDotMoment.js");
-                localeOptions.src.push(momentLocaleFile);
-                //grunt.log.writeln("Adding " + momentLocaleFile);
+                localeOptions.include.push("../vendor/js/libs/moment/dotDotMoment.js");
+                localeOptions.include.push("../" + momentLocaleFile);
+                // grunt.log.writeln("Adding " + momentLocaleFile);
             } else if (fs.existsSync(momentLangFile))
             {
-                localeOptions.src.push("vendor/js/libs/moment/dotDotMoment.js");
-                localeOptions.src.push(momentLangFile);
-                //grunt.log.writeln("Adding " + momentLangFile);
+                localeOptions.include.push("../vendor/js/libs/moment/dotDotMoment.js");
+                localeOptions.include.push("../" + momentLangFile);
+                // grunt.log.writeln("Adding " + momentLangFile);
             } else
             {
-                //grunt.log.writeln("No language file found for moment.js: " + momentLangFile);
+                // grunt.log.writeln("No language file found for moment.js: " + momentLangFile);
             }
 
-
             // add it into the requirejs options
-            concatOptions[localeName] = localeOptions;
+            requireJsOptions[localeName] = { options: localeOptions };
 
             // update grunt config with the new values
-            grunt.config.set('concat', concatOptions);
+            grunt.config.set('requirejs', requireJsOptions);
         }
-
-        // modify properties of uglify grunt config
 
         function addLocaleToUglify(localeName, localeSingleFile)
         {
@@ -103,18 +76,17 @@ module.exports = function (grunt) {
             var localeFolder = getLocalePath('release', localeName);
             var localeSingleFile = localeFolder + "/single.js";
             addLocaleToRequirejs(localeName, localeSingleFile);
-            addLocaleToConcat(localeName, localeSingleFile);
             addLocaleToUglify(localeName, localeSingleFile);
         });
-
-        //console.log(grunt.config.get("compass"));
-        //console.log(grunt.config.get("concat"));
 
     });
 
     // Copies css, assets, index.html files into locale folders
     grunt.registerTask("copy-i18n-files", "Copy i18n app files", function()
     {
+        var locales = grunt.config('locales');
+
+
         function copyFileSync(srcPath, destPath)
         {
 

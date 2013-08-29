@@ -25,7 +25,7 @@ function (datepicker, spinner, jquerySelectBox, _, TP, DashboardDatePicker, char
 
         events:
         {
-            "click .applyDates": "applyDates",
+            "click .refreshButton": "refresh",
             "click .calendarMonthLabel": "headerDatePicker"
         },
 
@@ -65,6 +65,11 @@ function (datepicker, spinner, jquerySelectBox, _, TP, DashboardDatePicker, char
             this.model.save();
             this.render();
             this.trigger("change:dashboardDates");
+        },
+
+        refresh: function()
+        {
+            this.trigger("refresh");
         },
 
         headerDatePicker: function (e)

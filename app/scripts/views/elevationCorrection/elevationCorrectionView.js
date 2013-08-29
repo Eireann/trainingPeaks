@@ -5,11 +5,11 @@
     "models/elevationCorrection",
     "utilities/charting/flotOptions",
     "utilities/charting/chartColors",    
-    "utilities/conversion/convertToViewUnits",
+    "utilities/conversion/conversion",
     "utilities/charting/flotElevationTooltip",
     "hbs!templates/views/elevationCorrection/elevationCorrectionTemplate"
 ],
-function (TP, DataParser, ElevationCorrectionModel, defaultFlotOptions, chartColors, convertToViewUnits, flotElevationTooltip, elevationCorrectionTemplate)
+function (TP, DataParser, ElevationCorrectionModel, defaultFlotOptions, chartColors, conversion, flotElevationTooltip, elevationCorrectionTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -125,7 +125,7 @@ function (TP, DataParser, ElevationCorrectionModel, defaultFlotOptions, chartCol
                     },
                     tickFormatter: function (value)
                     {
-                        return value === 0 ? +0 : parseInt(convertToViewUnits(value, "elevation"), 10);
+                        return value === 0 ? +0 : parseInt(conversion.formatUnitsValue("elevation", value), 10);
                     }
                 }
             ];

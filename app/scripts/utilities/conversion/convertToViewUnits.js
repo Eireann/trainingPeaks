@@ -4,17 +4,15 @@ define(
     "utilities/workout/workoutTypes",
     "utilities/conversion/modelToViewConversionFactors",
     "utilities/units/constants",
-    "utilities/datetime/datetime",
-    "utilities/threeSigFig"
+    "utilities/datetime/datetime"
 ],
 function(
     _,
     workoutTypes,
     modelToViewConversionFactors,
     unitsConstants,
-    dateTimeUtils,
-    threeSigFig)
-{
+    dateTimeUtils
+){
     var minimumPace = 0.00277778; // 99:59:59.99
     var almostOneHundredHoursAsMinutes = (99 + (59 / 60) + (59.99 / 3600)) * 60;
 
@@ -52,7 +50,9 @@ function(
     var convertElevation = function(value)
     {
         var currentUnits = theMarsApp.user.get("units");
-        return Math.round(parseFloat(value * modelToViewConversionFactors("elevation", currentUnits)));
+        var numValue = Number(value);
+        var returnValue = numValue * modelToViewConversionFactors("elevation", currentUnits);
+        return returnValue;
     };
 
     var convertEfficiencyFactor = function(value, workoutType)
@@ -63,42 +63,41 @@ function(
 
         if (workoutType && (workoutType === runType || workoutType === walkType))
         {
-            return (value * modelToViewConversionFactors("efficiencyfactor", currentUnits)).toFixed(2);
+            return value * modelToViewConversionFactors("efficiencyfactor", currentUnits);
         }
 		else
         {
-            return value.toFixed(2);
+            return value;
 		}
     };
 
     var convertTemperature = function(value)
     {
         var currentUnits = theMarsApp.user.get("units");
-        return Math.round(currentUnits === unitsConstants.English ? 9 / 5 * value + 32 : value).toFixed(0);
+        return currentUnits === unitsConstants.English ? 9 / 5 * value + 32 : value;
     };
 
-    var convertDistanceToViewUnits = function(value, sportTypeId, precision)
+    var convertDistanceToViewUnits = function(value, sportTypeId)
     {
         var conversionFactor = modelToViewConversionFactors("distance", theMarsApp.user.get("units"), sportTypeId);
         var convertedValue = value * conversionFactor;
-        return threeSigFig(convertedValue, precision);
+        return convertedValue;
     };
     
-    var convertTorqueToViewUnits = function (value, precision)
+    var convertTorqueToViewUnits = function (value)
     {
-        return threeSigFig(value * modelToViewConversionFactors("torque", theMarsApp.user.get("units")));
+        return value * modelToViewConversionFactors("torque", theMarsApp.user.get("units"));
     };
 
     var convertSpeedToViewUnits = function(value, sportTypeId)
     {
         var conversionFactor = modelToViewConversionFactors("speed", theMarsApp.user.get("units"), sportTypeId);
         var convertedValue = value * conversionFactor;
-        return threeSigFig(convertedValue);
+        return convertedValue;
     };
 
     return function(value, fieldType, defaultValueIfEmpty, sportType)
     {
-        var precision = null;
         if (_.isObject(value))
         {
             var parameters = value;
@@ -106,18 +105,17 @@ function(
             fieldType = parameters.fieldType;
             defaultValueIfEmpty = parameters.defaultValue;
             sportType = parameters.sportType;
-            precision = parameters.precision;
         }
 
         if (!isNumeric(value) || (Number(value) === 0 && fieldType !== "temperature") && fieldType !== "groundControl")
         {
             if (!_.isUndefined(defaultValueIfEmpty))
             {
-                return defaultValueIfEmpty;
+                return Number(defaultValueIfEmpty);
             }
             else
             {
-                return "";
+                return 0;
             }
         }
 
@@ -130,7 +128,7 @@ function(
             case "speed":
                 return convertSpeedToViewUnits(value, sportType);
             case "distance":
-                return convertDistanceToViewUnits(value, sportType, precision);
+                return convertDistanceToViewUnits(value, sportType);
             case "pace":
                 return convertToPaceFromSpeed(value, true, sportType);
             case "paceUnFormatted":
@@ -148,7 +146,7 @@ function(
             case "cadence":
                 return value;
             case "number":
-                return threeSigFig(value);
+                return value;
             case "efficiencyfactor":
                 return convertEfficiencyFactor(value, sportType);
             case "cm":

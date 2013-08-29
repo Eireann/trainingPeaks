@@ -44,7 +44,7 @@ function(
 
         events:
         {
-            "click #closeIcon": "close"
+            "click .closeIcon": "close"
         },
 
         setupDatePicker: function()

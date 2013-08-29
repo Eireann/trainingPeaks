@@ -72,15 +72,15 @@ function(theMarsApp, TP, conversion, convertToModelUnits, dateTimeUtils)
 
             describeFormat("formatDistance", [
                 {
-                    output: 999999,
+                    output: "999999",
                     input: convertToModelUnits(999999, "distance")
                 },
                 {
-                    output: 999999,
+                    output: "999999",
                     input: convertToModelUnits(10000000, "distance")
                 },
                 {
-                    output: 1,
+                    output: "1.00",
                     input: convertToModelUnits(1, "distance")
                 },
                 {
@@ -90,6 +90,14 @@ function(theMarsApp, TP, conversion, convertToModelUnits, dateTimeUtils)
                 {
                     output: "",
                     input: -1
+                },
+                {
+                    output: "99.9",
+                    input: convertToModelUnits(99.88888, "distance")
+                },
+                {
+                    output: "9.99",
+                    input: convertToModelUnits(9.988888, "distance")
                 }
             ]);
         });
@@ -105,19 +113,19 @@ function(theMarsApp, TP, conversion, convertToModelUnits, dateTimeUtils)
 
             describeFormat("formatSpeed", [
                 {
-                    output: 999,
+                    output: "999",
                     input: convertToModelUnits("999", "speed")
                 },
                 {
-                    output: 999,
+                    output: "999",
                     input: convertToModelUnits("999.1", "speed")
                 },
                 {
-                    output: 999,
+                    output: "999",
                     input: convertToModelUnits("1000", "speed")
                 },
                 {
-                    output: 1,
+                    output: "1.00",
                     input: convertToModelUnits("1", "speed")
                 },
                 {
@@ -127,6 +135,14 @@ function(theMarsApp, TP, conversion, convertToModelUnits, dateTimeUtils)
                 {
                     output: "",
                     input: 0
+                },
+                {
+                    output: "99.9",
+                    input: convertToModelUnits(99.88888, "speed")
+                },
+                {
+                    output: "9.99",
+                    input: convertToModelUnits(9.988888, "speed")
                 }
             ]);
         });
@@ -182,19 +198,19 @@ function(theMarsApp, TP, conversion, convertToModelUnits, dateTimeUtils)
             describeFormat("formatCalories", [
                 {
                     input: "99999",
-                    output: 99999 
+                    output: "99999"
                 },
                 {
                     input: "99999.1",
-                    output: 99999
+                    output: "99999"
                 },
                 {
                     input: "100000",
-                    output: 99999
+                    output: "99999"
                 },
                 {
                     input: "1",
-                    output: 1
+                    output: "1"
                 },
                 {
                     input: "0",
@@ -203,6 +219,14 @@ function(theMarsApp, TP, conversion, convertToModelUnits, dateTimeUtils)
                 {
                     input: "-1",
                     output: ""
+                },
+                {
+                    input: "12.4",
+                    output: "12"
+                },
+                {
+                    input: "12.5",
+                    output: "13"
                 }
             ]);
         });
@@ -212,19 +236,19 @@ function(theMarsApp, TP, conversion, convertToModelUnits, dateTimeUtils)
             describeFormat("formatElevationGain", [
                 {
                     input: "99999",
-                    output: 99999 
+                    output: "99999"
                 },
                 {
                     input: "99999.1",
-                    output: 99999
+                    output: "99999"
                 },
                 {
                     input: "100000",
-                    output: 99999
+                    output: "99999"
                 },
                 {
                     input: "1",
-                    output: 1
+                    output: "1"
                 },
                 {
                     input: "0",
@@ -233,6 +257,10 @@ function(theMarsApp, TP, conversion, convertToModelUnits, dateTimeUtils)
                 {
                     input: "-1",
                     output: ""
+                },
+                {
+                    input: "1.23",
+                    output: "1"
                 }
             ]);
         });
@@ -242,19 +270,19 @@ function(theMarsApp, TP, conversion, convertToModelUnits, dateTimeUtils)
             describeFormat("formatElevationLoss", [
                 {
                     input: "99999",
-                    output: 99999 
+                    output: "99999"
                 },
                 {
                     input: "99999.1",
-                    output: 99999
+                    output: "99999"
                 },
                 {
                     input: "100000",
-                    output: 99999
+                    output: "99999"
                 },
                 {
                     input: "1",
-                    output: 1
+                    output: "1"
                 },
                 {
                     input: "0",
@@ -263,6 +291,10 @@ function(theMarsApp, TP, conversion, convertToModelUnits, dateTimeUtils)
                 {
                     input: "-1",
                     output: ""
+                },
+                {
+                    input: "23.45",
+                    output: "23"
                 }
             ]);
         });
@@ -272,31 +304,31 @@ function(theMarsApp, TP, conversion, convertToModelUnits, dateTimeUtils)
             describeFormat("formatElevation", [
                 {
                     input: "99999",
-                    output: 99999 
+                    output: "99999"
                 },
                 {
                     input: "99999.1",
-                    output: 99999
+                    output: "99999"
                 },
                 {
                     input: "100000",
-                    output: 99999
+                    output: "99999"
                 },
                 {
                     input: "1",
-                    output: 1
+                    output: "1"
                 },
                 {
                     input: "0",
-                    output: 0
+                    output: "0"
                 },
                 {
                     input: "-1",
-                    output: -1 
+                    output: "-1"
                 },
                 {
                     input: "-15001",
-                    output: -15000
+                    output: "-15000"
                 }
             ]);
         });
@@ -306,19 +338,19 @@ function(theMarsApp, TP, conversion, convertToModelUnits, dateTimeUtils)
             describeFormat("formatEnergy", [
                 {
                     input: "99999",
-                    output: 99999 
+                    output: "99999"
                 },
                 {
                     input: "99999.1",
-                    output: 99999
+                    output: "99999"
                 },
                 {
                     input: "100000",
-                    output: 99999
+                    output: "99999"
                 },
                 {
                     input: "1",
-                    output: 1
+                    output: "1"
                 },
                 {
                     input: "0",
@@ -336,23 +368,23 @@ function(theMarsApp, TP, conversion, convertToModelUnits, dateTimeUtils)
             describeFormat("formatTSS", [
                 {
                     input: "9999",
-                    output: 9999
+                    output: "9999.0"
                 },
                 {
                     input: "9999.1",
-                    output: 9999
+                    output: "9999.0"
                 },
                 {
                     input: "999.1",
-                    output: 999.1
+                    output: "999.1"
                 },
                 {
                     input: "10000",
-                    output: 9999
+                    output: "9999.0"
                 },
                 {
                     input: "1",
-                    output: 1
+                    output: "1.0"
                 },
                 {
                     input: "0",
@@ -360,7 +392,7 @@ function(theMarsApp, TP, conversion, convertToModelUnits, dateTimeUtils)
                 },
                 {
                     input: "0.23",
-                    output: 0.2
+                    output: "0.2"
                 },
                 {
                     input: "-1",
@@ -374,23 +406,23 @@ function(theMarsApp, TP, conversion, convertToModelUnits, dateTimeUtils)
             describeFormat("formatIF", [
                 {
                     input: "99",
-                    output: 99
+                    output: "99.00"
                 },
                 {
                     input: "99.1",
-                    output: 99
+                    output: "99.00"
                 },
                 {
                     input: "9.13",
-                    output: 9.13
+                    output: "9.13"
                 },
                 {
                     input: "100",
-                    output: 99
+                    output: "99.00"
                 },
                 {
                     input: "1",
-                    output: 1
+                    output: "1.00"
                 },
                 {
                     input: "0",
@@ -398,7 +430,7 @@ function(theMarsApp, TP, conversion, convertToModelUnits, dateTimeUtils)
                 },
                 {
                     input: "0.234",
-                    output: 0.23
+                    output: "0.23"
                 },
                 {
                     input: "-1",
@@ -412,23 +444,23 @@ function(theMarsApp, TP, conversion, convertToModelUnits, dateTimeUtils)
             describeFormat("formatPower", [
                 {
                     input: "9999",
-                    output: 9999 
+                    output: "9999"
                 },
                 {
                     input: "9999.1",
-                    output: 9999
+                    output: "9999"
                 },
                 {
                     input: "10000",
-                    output: 9999
+                    output: "9999"
                 },
                 {
                     input: "1",
-                    output: 1
+                    output: "1"
                 },
                 {
                     output: "",
-                    input: 0
+                    input: "0"
                 },
                 {
                     input: "-1",
@@ -442,27 +474,27 @@ function(theMarsApp, TP, conversion, convertToModelUnits, dateTimeUtils)
             describeFormat("formatHeartRate", [
                 {
                     input: "255",
-                    output: 255 
+                    output: "255"
                 },
                 {
                     input: "255.1",
-                    output: 255
+                    output: "255"
                 },
                 {
                     input: "100.1",
-                    output: 100
+                    output: "100"
                 },
                 {
                     input: "10000",
-                    output: 255
+                    output: "255"
                 },
                 {
                     input: "1",
-                    output: 1
+                    output: "1"
                 },
                 {
                     output: "",
-                    input: 0
+                    input: "0"
                 },
                 {
                     input: "-1",
@@ -476,18 +508,18 @@ function(theMarsApp, TP, conversion, convertToModelUnits, dateTimeUtils)
             describeFormat("formatCadence", [
                 {
                     input: "255",
-                    output: 255
+                    output: "255"
                 },
                 {
                     input: "255.1",
-                    output: 255
+                    output: "255"
                 },
                 {
                     input: "10000",
-                    output: 255
+                    output: "255"
                 },
                 {
-                    output: 1,
+                    output: "1",
                     input: 1
                 },
                 {
@@ -512,20 +544,20 @@ function(theMarsApp, TP, conversion, convertToModelUnits, dateTimeUtils)
 
             describeFormat("formatTorque", [
                 {
-                    output: 9999,
+                    output: "9999",
                     input: 9999 
                 },
                 {
                     input: "9999.1",
-                    output: 9999
+                    output: "9999"
                 },
                 {
                     input: "10000",
-                    output: 9999
+                    output: "9999"
                 },
                 {
                     input: "1",
-                    output: 1
+                    output: "1.00"
                 },
                 {
                     input: "0",
@@ -537,7 +569,11 @@ function(theMarsApp, TP, conversion, convertToModelUnits, dateTimeUtils)
                 },
                 {
                     input: "1.234",
-                    output: 1.23
+                    output: "1.23"
+                },
+                {
+                    input: 12.36,
+                    output: "12.4"
                 }
             ]);
         });
@@ -553,35 +589,39 @@ function(theMarsApp, TP, conversion, convertToModelUnits, dateTimeUtils)
 
             describeFormat("formatTemperature", [
                 {
-                    output: 999,
+                    output: "999",
                     input: 999 
                 },
                 {
-                    output: 999,
+                    output: "999",
                     input: 999.1
                 },
                 {
-                    output: 999,
+                    output: "999",
                     input: 1000
                 },
                 {
-                    output: 1,
+                    output: "1",
                     input: 1
                 },
                 {
-                    output: 0,
+                    output: "0",
                     input: 0
                 },
                 {
-                    output: -1,
+                    output: "-1",
                     input: -1
                 },
                 {
-                    output: -999,
+                    output: "-999",
                     input: -999
                 },
                 {
-                    output: -999,
+                    output: "-999",
+                    input: -998.5
+                },
+                {
+                    output: "-999",
                     input: -1000
                 }
             ]);

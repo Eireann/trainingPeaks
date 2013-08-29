@@ -17,7 +17,7 @@ function()
         return _.isNumber(asNumber) && !_.isNaN(asNumber);
     };
 
-    var roundToThreeSignificantFigures = function(value, precision)
+    var roundToThreeSignificantFigures = function(value)
     {
         if (!isNumeric(value))
         {
@@ -29,14 +29,9 @@ function()
             value = Number(value);
         }
 
-        if (_.isNumber(precision))
-        {
-            return value.toFixed(precision);
-        }
-
         if (value >= 100)
         {
-            return Math.round(value);
+            return value.toFixed(0);
         } else if (value >= 10)
         {
             return value.toFixed(1);

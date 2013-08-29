@@ -95,7 +95,7 @@ function(TP, SaveWorkoutToLibraryCommand, AfterSaveView, saveWorkoutToLibraryTem
         initialize: function(options)
         {
             this.libraries = options && options.libraries ? options.libraries : new TP.Collection();
-            this.selectedLibraryId = this.libraries.getDefaultLibraryId();
+            this.selectedLibraryId = options.selectedLibraryId || this.libraries.getDefaultLibraryId();
         },
 
         serializeData: function()
