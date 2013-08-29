@@ -89,11 +89,18 @@
     {
          .frameworkTitle
         {
-    	    width: 500px;
-            label
+    	    width: auto;
+            cursor: pointer;
+            &:hover
             {
-                color:$TPGrey3;
+                label
+                {
+                    color:$TPGrey3;
+                    cursor: pointer;
+                }
             }
+
+            
         }
     }
 

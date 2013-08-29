@@ -25,7 +25,7 @@ function(
         $body.find(".dashboardHeaderDatePicker .closeIcon").trigger("click");
     };
 
-    xdescribe("Peaks Chart(s)", function()
+    describe("Peaks Chart(s)", function()
     {
         var $mainRegion;
         var $body;
@@ -164,6 +164,7 @@ function(
                     theMarsApp.user.set("settings.dashboard.pods", [peaksPodSettings]);
                     $mainRegion = theMarsApp.mainRegion.$el;
                     theMarsApp.router.navigate("dashboard", true);
+                    $body = theMarsApp.getBodyElement();
                 });
 
                 afterEach(function()
