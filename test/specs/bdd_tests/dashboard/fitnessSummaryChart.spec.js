@@ -16,9 +16,19 @@ function(
     )
 {
 
+    var applyDashboardDates = function($mainRegion, $body, dateOptionId, startDate, endDate)
+    {
+        $mainRegion.find("#dashboardHeader .calendarMonthLabel").trigger("click");
+        $body.find(".dashboardHeaderDatePicker .dashboardDatePicker select.dateOptions").val(dateOptionId).trigger("change");
+        $body.find(".dashboardHeaderDatePicker .dashboardDatePicker input.startDate").val(startDate).trigger("change");
+        $body.find(".dashboardHeaderDatePicker .dashboardDatePicker input.endDate").val(endDate).trigger("change");
+        $body.find(".dashboardHeaderDatePicker .closeIcon").trigger("click");
+    }
+
     describe("Fitness Summary Chart", function()
     {
         var $mainRegion;
+        var $body;
 
         var fitnessSummaryPodSettings = {
             index: 0,
@@ -41,6 +51,7 @@ function(
                 theMarsApp.user.set("settings.dashboard.pods", [fitnessSummaryPodSettings]);
                 $mainRegion = theMarsApp.mainRegion.$el;
                 theMarsApp.router.navigate("dashboard", true);
+                $body = theMarsApp.getBodyElement();
             });
 
             afterEach(function()
@@ -111,10 +122,7 @@ function(
                     var $body = theMarsApp.getBodyElement();
 
                     // set dashboard dates
-                    $mainRegion.find("#dashboardHeader .dashboardDatePicker select.dateOptions").val(chartUtils.chartDateOptions.CUSTOM_DATES.id).trigger("change");
-                    $mainRegion.find("#dashboardHeader .dashboardDatePicker input.startDate").val("2013-01-01").trigger("change");
-                    $mainRegion.find("#dashboardHeader .dashboardDatePicker input.endDate").val("2013-04-15").trigger("change");
-                    $mainRegion.find("#dashboardHeader .applyDates").trigger("click");                       
+                    applyDashboardDates($mainRegion, $body, chartUtils.chartDateOptions.CUSTOM_DATES.id, "2013-01-01", "2013-04-15");
                     testHelpers.clearRequests();
 
                     // set tomahawk dates
@@ -166,10 +174,7 @@ function(
                 {
                     testHelpers.clearRequests();
                     theMarsApp.dataManagers.reporting.forceReset();
-                    $mainRegion.find("#dashboardHeader .dashboardDatePicker select.dateOptions").val(chartUtils.chartDateOptions.CUSTOM_DATES.id).trigger("change");
-                    $mainRegion.find("#dashboardHeader .dashboardDatePicker input.startDate").val("2012-01-01").trigger("change");
-                    $mainRegion.find("#dashboardHeader .dashboardDatePicker input.endDate").val("2016-04-15").trigger("change");
-                    $mainRegion.find("#dashboardHeader .applyDates").trigger("click");                       
+                    applyDashboardDates($mainRegion, $body, chartUtils.chartDateOptions.CUSTOM_DATES.id, "2012-01-01", "2016-04-15");
                     expect(testHelpers.hasRequest("GET", "reporting/fitnesssummary")).toBe(true);   
                     expect(testHelpers.hasRequest("GET", "reporting/fitnesssummary/2012-01-01/2016-04-15")).toBe(true);
                 });
