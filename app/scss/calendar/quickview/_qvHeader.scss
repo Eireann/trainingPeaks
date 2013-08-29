@@ -180,7 +180,7 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
             .buttons {
                 height: 35px;
                 @include labels($fontFamilyRegular, $fontSizeSmall, $TPGrey3, normal);
-                padding-top: 12px;
+                padding-top: 11px;
                 padding-left: 30px;
                 padding-right: 8px;
                 float: left;
@@ -235,7 +235,6 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
                 
                 label {
                     cursor: pointer;
-                    display: inline;
                 }
 
                 label.files
