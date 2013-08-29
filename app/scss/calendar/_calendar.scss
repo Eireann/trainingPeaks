@@ -156,18 +156,16 @@
 
             div
             {
-                    @include calc(width, "(100% - 288px) /7");
+                    @include calc(width, "(100% - 297px) /7");
                     float: left;
                     padding-bottom: 0px;
-                    padding-left: 5px;
+                    padding-left: 9px;
                     padding-right: 0px;
                     font-Family: $fontFamilyLight;
                     font-size: $fontSizeSmall;
                     color: $TPGrey3;
                     text-align: left;
                     height: 15px;
-                    //margin-left: -1px;
-                    
             }
         }
     }
