@@ -43,6 +43,7 @@ function(
         13: MetricsChart,
         10: WorkoutSummaryChart,
         11: WorkoutSummaryChart,
+        21: WorkoutSummaryChart,
         23: WorkoutSummaryChart,
         37: WorkoutSummaryChart
     };

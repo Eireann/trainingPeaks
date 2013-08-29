@@ -69,6 +69,10 @@ function(
                 name: "Distance by Week/Day"
             },
             {
+                chartType: 21,
+                name: "Kilojoules by Week/Day"
+            },
+            {
                 chartType: 23,
                 name: "TSS by Week/Day"
             },

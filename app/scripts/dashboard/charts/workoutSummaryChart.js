@@ -60,6 +60,16 @@ function(
             }],
             tooltips: distanceDurationTooltips
         }, {
+            chartType: 21,
+            title: "Kilojoules",
+            series: [{
+                key: "totalKilojoulesBurned"
+            }],
+            tooltips: [{
+                key: "totalKilojoulesBurned",
+                units: "energy"
+            }]
+        }, {
             chartType: 23,
             title: "TSS",
             series: [{
@@ -279,7 +289,7 @@ function(
                         value,
                         {defaultValue: "--", workoutTypeId: workoutTypeId }
                     );
-                    value += TP.utils.units.getUnitsLabel(tooltip.units, workoutTypeId);
+                    value += " " + TP.utils.units.getUnitsLabel(tooltip.units, workoutTypeId);
                 }
 
                 return {
