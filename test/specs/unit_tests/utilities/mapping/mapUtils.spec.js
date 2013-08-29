@@ -20,15 +20,20 @@ function(app, mapUtils)
 
         it("should calculate mile markers", function()
         {
+            var latLongs = [[1,1],[2,2],[3,3],[4,4]];
             var dataParser =
             {
                 getLatLonArray: function()
                 {
-                    return [[1,1],[2,2],[3,3],[4,4]];
+                    return latLongs;
                 },
                 getDataByChannel: function ()
                 {
                     return [[0, 0], [1000, 1000], [2000, 2000], [3000, 3000]];
+                },
+                getLatLongByIndex: function(i)
+                {
+                    return { lat: latLongs[i][0], lng: latLongs[i][1] };
                 }
             };
 

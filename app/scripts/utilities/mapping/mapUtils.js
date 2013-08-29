@@ -191,11 +191,12 @@ function(
                 var markerNumber = intervals.countBy;
 
                 // array index 0 = ms offset, 1 = distance (in meters?)
-                for (var i = 0; i < distances.length && i < latLonArray.length; i++)
+                for (var i = 0; i < distances.length; i++)
                 {
-                    if (distances[i][1] >= nextMarker)
+                    if (distances[i][1] >= nextMarker && dataParser.getLatLongByIndex(i))
                     {
-                        markers.push({ latLng: latLonArray[i], options: { riseOnHover: true, title: markerNumber + " " + units, number: markerNumber } });
+                        var latLong = dataParser.getLatLongByIndex(i);
+                        markers.push({ latLng: [latLong.lat, latLong.lng], options: { riseOnHover: true, title: markerNumber + " " + units, number: markerNumber } });
                         nextMarker += intervals.distanceBetweenMarkers;
                         markerNumber += intervals.countBy;
                     }

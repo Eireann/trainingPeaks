@@ -375,6 +375,11 @@ function(chartColors, findIndexByMsOffset, conversion)
             if (index === null)
                 return null;
 
+            return this.getLatLongByIndex(index);
+        },
+
+        getLatLongByIndex: function(index)
+        {
             var lat = this.dataByAxisAndChannel[this.xaxis].Latitude[index][1];
             var lng = this.dataByAxisAndChannel[this.xaxis].Longitude[index][1];
 

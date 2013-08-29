@@ -128,16 +128,8 @@ function(_, $, Backbone, TP, xhrData, app)
 
         deepClone: function(object)
         {
-            if(_.isObject(object))
-            {
-                var newObject = {};
-                _.each(_.keys(object), function(key)
-                {
-                    newObject[key] = this.deepClone(object[key]);
-                }, this);
-                return newObject;
-            }
-            else if(_.isArray(object))
+
+            if(_.isArray(object))
             {
                 var newArray = [];
                 _.each(object, function(arrayItem)
@@ -145,6 +137,15 @@ function(_, $, Backbone, TP, xhrData, app)
                     newArray.push(this.deepClone(arrayItem));
                 }, this);
                 return newArray;
+            }
+            else if(_.isObject(object))
+            {
+                var newObject = {};
+                _.each(_.keys(object), function(key)
+                {
+                    newObject[key] = this.deepClone(object[key]);
+                }, this);
+                return newObject;
             }
             else
             {
