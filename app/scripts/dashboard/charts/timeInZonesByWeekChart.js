@@ -39,19 +39,23 @@ function(
 
         fetchData: function()
         {
-            var dateOptions = DashboardChartUtils.buildChartParameters(this.get("dateOptions"));
+            this.dateOptions = DashboardChartUtils.buildChartParameters(this.get("dateOptions"));
             var postData = {
                 workoutTypeIds: _.without(this.get("workoutTypeIds"), 0, "0", ""),
                 timeInZonesType: this._getTimeInZonesType() 
             };
-            return this.dataManager.fetchReport("timeinzonesbyweek", dateOptions.startDate, dateOptions.endDate, postData);
+            return this.dataManager.fetchReport("timeinzonesbyweek", this.dateOptions.startDate, this.dateOptions.endDate, postData);
         },
 
         buildTooltipData: function(flotItem)
         {
             var zoneNumber = flotItem.seriesIndex + 1;
+            var weekStartDate = this._getWeekStartDate(flotItem.dataIndex);
+            var weekEndDate = this._getWeekEndDate(flotItem.dataIndex);
+            var dateFormat = "MM/DD/YY";
             var zoneMinutes = flotItem.series.data[flotItem.dataIndex][1];
             var tips = [];
+            tips.push({ label: weekStartDate.format(dateFormat) + " - " + weekEndDate.format(dateFormat) });
             tips.push({ label: "Zone " + zoneNumber });
             tips.push({ label: "Time", value: TP.utils.conversion.formatDuration(zoneMinutes / 60) });
             return tips;
@@ -74,7 +78,7 @@ function(
             if(flotPointsByZone && flotPointsByZone.length)
             {
                 var series = this._buildFlotDataSeries(flotPointsByZone, chartColor);
-                var options = this._buildFlotChartOptions(flotPointsByZone.length);
+                var options = this._buildFlotChartOptions(this._data.length);
                 return { dataSeries: series, flotOptions: options };
             } else {
                 return null;
@@ -84,6 +88,27 @@ function(
         getChartName: function()
         {
             return "Time In Zones";
+        },
+
+        _getWeekStartDate: function(weekNumber)
+        {
+            return moment(this.dateOptions.startDate).add("weeks", weekNumber).day(1);
+        },
+
+        _getWeekEndDate: function(weekNumber)
+        {
+            return moment(this.dateOptions.startDate).add("weeks", weekNumber).day(7);
+        },
+
+        _formatXTick: function(weekNumber)
+        {
+            var totalWeeks = this._data.length;
+            var formattedWeek = this._getWeekStartDate(weekNumber).format("MM/DD/YYYY");
+            //if(weekNumber === 1)
+            //{
+                return formattedWeek;
+            //}
+            //return ""; 
         },
 
         _getChartColor: function()
@@ -197,7 +222,7 @@ function(
             return dataSeriesByZone;
         },
 
-        _buildFlotChartOptions: function(numberOfColumns)
+        _buildFlotChartOptions: function(numberOfWeeks)
         {
             var flotOptions = defaultFlotOptions.getBarOptions();
 
@@ -208,18 +233,33 @@ function(
                     return TP.utils.conversion.formatMinutes(zoneMinutes, { defaultValue: "0:00" });
                 }
             };
-
-            var xTicks = [];
-            for(var i = 1; i<= numberOfColumns;i++)
-            {
-                xTicks.push(i);
-            }
             
             flotOptions.xaxis = {
-                tickDecimals: 0,
-                ticks: xTicks,
+                tickFormatter: _.bind(this._formatXTick, this),
                 color: "transparent"
+                /*
+                ticks: function(axis)
+                        {
+                            var index = numberOfWeeks > 4 ? 1 : 0; 
+                            var delta = Math.ceil(axis.delta * 1.3);
+
+                            var ticks = [index];
+
+                            while(_.last(ticks) < axis.max)
+                            {
+                                index += delta;
+                                ticks.push(index);
+                            }
+
+                            return ticks;
+                        },
+                */
             }; 
+
+            if(this._data.length > 4)
+            {
+                flotOptions.xaxis.ticks = [0, Math.floor(this._data.length/2), this._data.length - 1];
+            }
 
             flotOptions.bars.align = "center";
 
