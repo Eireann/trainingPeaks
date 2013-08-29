@@ -17,17 +17,13 @@ function(
     var applyDashboardDates = function($mainRegion, $body, dateOptionId, startDate, endDate)
     {
         $mainRegion.find("#dashboardHeader .calendarMonthLabel").trigger("click");
-        console.log($body.html());
         $body.find(".dashboardHeaderDatePicker .dashboardDatePicker select.dateOptions").val(dateOptionId).trigger("change");
-        console.log($body.html());
         $body.find(".dashboardHeaderDatePicker .dashboardDatePicker input.startDate").val(startDate).trigger("change");
         $body.find(".dashboardHeaderDatePicker .dashboardDatePicker input.endDate").val(endDate).trigger("change");
-        console.log($body.html());
         $body.find(".dashboardHeaderDatePicker .closeIcon").trigger("click");
-        console.log(theMarsApp.user.get("settings.dashboard"));
     };
 
-    describe("Dashboard Chart Container", function()
+    xdescribe("Dashboard Chart Container", function()
     {
         var $mainRegion;
         var $body;

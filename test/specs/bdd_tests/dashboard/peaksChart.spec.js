@@ -25,7 +25,7 @@ function(
         $body.find(".dashboardHeaderDatePicker .closeIcon").trigger("click");
     };
 
-    describe("Peaks Chart(s)", function()
+    xdescribe("Peaks Chart(s)", function()
     {
         var $mainRegion;
         var $body;

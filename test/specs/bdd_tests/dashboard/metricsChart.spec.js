@@ -25,7 +25,7 @@ function(
         $body.find(".dashboardHeaderDatePicker .closeIcon").trigger("click");
     };
 
-    describe("Metrics Chart(s)", function()
+    xdescribe("Metrics Chart(s)", function()
     {
         var $mainRegion;
         var $body;

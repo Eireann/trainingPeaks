@@ -25,7 +25,7 @@ function(
         $body.find(".dashboardHeaderDatePicker .closeIcon").trigger("click");
     };
 
-    describe("Fitness Summary Chart", function()
+    xdescribe("Fitness Summary Chart", function()
     {
         var $mainRegion;
         var $body;
