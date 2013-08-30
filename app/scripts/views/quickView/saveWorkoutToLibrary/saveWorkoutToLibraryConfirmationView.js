@@ -78,7 +78,10 @@ function(TP, SaveWorkoutToLibraryCommand, AfterSaveView, saveWorkoutToLibraryTem
             {
                 self.libraries.get(libraryId).fetchExercises(true);
                 self.close();
-                self.showConfirmation();
+                if (self.shouldShowConfirmation)
+                {
+                    self.showConfirmation();
+                }
             });
 
             deferred.fail(function()
@@ -96,6 +99,7 @@ function(TP, SaveWorkoutToLibraryCommand, AfterSaveView, saveWorkoutToLibraryTem
         {
             this.libraries = options && options.libraries ? options.libraries : new TP.Collection();
             this.selectedLibraryId = options.selectedLibraryId || this.libraries.getDefaultLibraryId();
+            this.shouldShowConfirmation = options.shouldShowConfirmation !== false;
         },
 
         serializeData: function()
