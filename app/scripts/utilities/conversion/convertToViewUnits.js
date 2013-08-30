@@ -156,7 +156,7 @@ function(
             case "ml":
                 return value * modelToViewConversionFactors("ml", theMarsApp.user.get("units"));
             default:
-                throw +fieldType + ": Unknown field type for unit conversion";
+                throw new Error(+fieldType + ": Unknown field type for unit conversion");
         }
     };
 });

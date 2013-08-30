@@ -69,22 +69,18 @@ function(
 
         switch (fieldType)
         {
-            case "elevation":
-                return (+value / modelToViewConversionFactors(fieldType, userUnits));
-            case "speed":
-                return (+value / modelToViewConversionFactors(fieldType, userUnits, workoutTypeId));
-            case "distance":
-                return (+value / modelToViewConversionFactors(fieldType, userUnits, workoutTypeId));
             case "pace":
                 return convertToSpeedFromPace(value, userUnits, workoutTypeId);
             case "temperature":
                 return convertTemperature(value, userUnits);
+            case "elevation":
+            case "speed":
+            case "distance":
             case "torque":
-                return (+value / modelToViewConversionFactors(fieldType, userUnits));
             case "cm":
-                return (+value / modelToViewConversionFactors(fieldType, userUnits));
+                return (+value / modelToViewConversionFactors(fieldType, userUnits, workoutTypeId));
             default:
-                throw "Unknown field type for unit conversion";
+                throw new Error("Unknown field type for unit conversion: " + fieldType);
         }
     };
 
