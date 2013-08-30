@@ -6,6 +6,7 @@ define(
     "framework/ajaxCaching",
     "framework/ajaxTimezone",
     "framework/tooltips",
+    "framework/dataManager",
     "dashboard/reportingDataManager",
     "models/session",
     "models/userModel",
@@ -31,6 +32,7 @@ function(
     ajaxCaching,
     initializeAjaxTimezone,
     enableTooltips,
+    DataManager,
     ReportingDataManager,
     Session,
     UserModel,
@@ -183,9 +185,11 @@ function(
         // add data managers
         this.addInitializer(function()
         {
+            // reset reporting manager when we save or delete workouts, ignore posts to reporting even if they include 'fitness'
+            var dataManagerOptions = { resetPatterns: [/fitness/i], ignoreResetPatterns: [/reporting/i] };
             this.dataManagers = {
-                // reset reporting manager when we save workouts, ignore posts to reporting
-                reporting: new ReportingDataManager({ resetPatterns: [/fitness/i], ignoreResetPatterns: [/reporting/i] })
+                reporting: new ReportingDataManager(dataManagerOptions),
+                calendar: new DataManager(dataManagerOptions)
             };
 
             this.on("save:model destroy:model", function(model)
@@ -286,7 +290,7 @@ function(
 
             this.controllers.navigationController = new NavigationController();
             this.controllers.loginController = new LoginController();
-            this.controllers.calendarController = new CalendarController();
+            this.controllers.calendarController = new CalendarController({ dataManager: this.dataManagers.calendar });
             this.controllers.dashboardController = new DashboardController({ dataManager: this.dataManagers.reporting });
             this.controllers.homeController = new HomeController();
         });

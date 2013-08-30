@@ -35,6 +35,7 @@
             this._resolvedRequests = {};
             this._pendingRequests = {};
             this.trigger("reset");
+            //console.log("Data manager was reset");
         },
 
         fetch: function(modelOrCollection, options)
@@ -60,10 +61,12 @@
 
             if(this._hasResolvedData(requestSignature))
             {
+                //console.log("Resolving existing request " + requestSignature);
                 return this._resolveRequestOnModelWithExistingData(requestSignature, modelOrCollection, new $.Deferred());
             }
             else
             {
+                //console.log("Requesting new data " + requestSignature);
                 return this._requestDataOnModel(requestSignature, modelOrCollection, options);
             }
         },

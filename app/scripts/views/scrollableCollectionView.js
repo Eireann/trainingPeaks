@@ -287,7 +287,8 @@ function(
 
         getCurrentModel: function()
         {
-            return this._closestChildToTop().view.model;
+            var topChild = this._closestChildToTop();
+            return topChild && topChild.view && topChild.view.model ? topChild.view.model : null;
         },
 
         getVisibleModels: function()

@@ -9,7 +9,6 @@ define(
     "TP",
     "controllers/pageContainerController",
     "layouts/calendarLayout",
-    "models/calendar/calendarCollection",
     "models/calendar/calendarWeekCollection",
     "models/calendar/calendarDay",
     "views/calendar/calendarHeaderView",
@@ -26,7 +25,6 @@ function(
     TP,
     PageContainerController,
     CalendarLayout,
-    CalendarCollection,
     CalendarWeekCollection,
     CalendarDayModel,
     calendarHeaderView,
@@ -43,9 +41,16 @@ function(
     {
         summaryViewEnabled: true,
 
-        initialize: function()
+        initialize: function(options)
         {
 
+            if(!options || !options.dataManager)
+            {
+                throw new Error("Calendar Controller requires a data manager");
+            }
+
+            this._dataManager = options.dataManager;
+             
             // TODO: split this into a couple different functions 
             this.models = {};
             this.views = {};
@@ -196,6 +201,8 @@ function(
         {
             if (theMarsApp.ajaxCachingEnabled)
                 theMarsApp.ajaxCaching.clearCache();
+
+            this._dataManager.forceReset();
 
             var currentWeek = date ? moment(date).format(TP.utils.datetime.shortDateFormat) : this.views.calendar.getCurrentWeek();
             // QL: Should be handled by reset, not "resetToDates"

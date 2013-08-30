@@ -60,6 +60,12 @@ function(_, moment, TP, WorkoutModel, SelectedWorkoutCollection)
             this.itemsCollection.remove(item);
         },
 
+        reset: function(models, options)
+        {
+            this.itemsCollection.reset(models, options);
+            this.hasLabel = false;
+        },
+
         //deleteDayItems: function()
         //{
         //    this.itemsCollection.each(function(item)
