@@ -54,9 +54,21 @@ function()
                         walk: { light: "#e6d701", dark: "#aba001" },
                         other: { light: "#c116c9", dark: "#8e1094" },
                         dayoff: { light: "#a5b3b6", dark: "#84979c" } 
-                    }
+                    },
+                trainingZones:
+                {
+                    1: { light: "#23d920", dark: "#23d920" },
+                    2: { light: "#238722", dark: "#238722" },
+                    3: { light: "#6b81ba", dark: "#6b81ba" },
+                    4: { light: "#5d64a4", dark: "#5d64a4" },
+                    5: { light: "#d3d739", dark: "#d3d739" },
+                    6: { light: "#bfa73c", dark: "#bfa73c" },
+                    7: { light: "#dd6c2b", dark: "#dd6c2b" },
+                    8: { light: "#fd3225", dark: "#fd3225" },
+                    9: { light: "#c02f25", dark: "#c02f25" },
+                    10: { light: "#c126ba", dark: "#c126ba" }, 
+                }
             },
-
         peaks:
         {
             heartRate: { light: "rgba(236, 65, 43, 0.6)", dark: "rgba(184, 36, 16, 0.6)" },

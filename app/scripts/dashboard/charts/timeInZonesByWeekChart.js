@@ -64,7 +64,7 @@ function(
 
         updateChartTitle: function()
         {
-            var title = TP.utils.translate("Time In " + this._getChartName() + " Zones: ");
+            var title = TP.utils.translate("Time In " + this._getChartName() + " Zones by week: ");
             title += TP.utils.workout.types.getListOfNames(this.get("workoutTypeIds"), "All Workout Types");
             this.set("title", title);
         },
@@ -72,12 +72,11 @@ function(
         parseData: function(data)
         {
             this._data = data;
-            var chartColor = this._getChartColor(); 
             var flotPointsByZone = this._buildPoints(data);
             this._totalMinutes = this._calculateTotalMinutes(flotPointsByZone);
             if(flotPointsByZone && flotPointsByZone.length)
             {
-                var series = this._buildFlotDataSeries(flotPointsByZone, chartColor);
+                var series = this._buildFlotDataSeries(flotPointsByZone);
                 var options = this._buildFlotChartOptions(this._data.length);
                 return { dataSeries: series, flotOptions: options };
             } else {
@@ -109,21 +108,6 @@ function(
                 return formattedWeek;
             //}
             //return ""; 
-        },
-
-        _getChartColor: function()
-        {
-            switch(this.get("chartType"))
-            {
-                case HR:
-                    return chartColors.gradients.heartRate;
-
-                case Power:
-                    return chartColors.gradients.power;
-
-                case Speed:
-                    return chartColors.gradients.pace;
-            }
         },
 
         _getChartName: function()
@@ -197,12 +181,13 @@ function(
             return minutes;
         },
 
-        _buildFlotDataSeries: function (chartPointsByZone, chartColor)
+        _buildFlotDataSeries: function (chartPointsByZone)
         {
             var dataSeriesByZone = [];
 
-            _.each(chartPointsByZone, function(chartPoints)
+            _.each(chartPointsByZone, function(chartPoints, index)
             {
+                var zoneColor = chartColors.gradients.trainingZones[index + 1];
                 var dataSeries =
                 {
                     data: chartPoints,
@@ -210,10 +195,10 @@ function(
                     {
                         show: true,
                         lineWidth: 0,
-                        fill: true
-                        //fillColor: { colors: [chartColor.light, chartColor.dark] }
-                    }
-                    //highlightColor: chartColor.light
+                        fill: true,
+                        fillColor: { colors: [zoneColor.light, zoneColor.dark] }
+                    },
+                    highlightColor: zoneColor.light
                 };
 
                 dataSeriesByZone.push(dataSeries);
@@ -237,28 +222,19 @@ function(
             flotOptions.xaxis = {
                 tickFormatter: _.bind(this._formatXTick, this),
                 color: "transparent"
-                /*
-                ticks: function(axis)
-                        {
-                            var index = numberOfWeeks > 4 ? 1 : 0; 
-                            var delta = Math.ceil(axis.delta * 1.3);
-
-                            var ticks = [index];
-
-                            while(_.last(ticks) < axis.max)
-                            {
-                                index += delta;
-                                ticks.push(index);
-                            }
-
-                            return ticks;
-                        },
-                */
             }; 
 
-            if(this._data.length > 4)
+            // offset the start/end ticks by larger amounts when we have more weeks
+            if(this._data.length > 5)
             {
-                flotOptions.xaxis.ticks = [0, Math.floor(this._data.length/2), this._data.length - 1];
+                var startIndex = 1;
+                var endIndex = this._data.length - Math.floor(this._data.length / 10) - 1;
+                var middleIndex = Math.floor((startIndex + endIndex) / 2);
+                flotOptions.xaxis.ticks = [startIndex, middleIndex, endIndex];
+            }
+            else if(this._data.length === 5)
+            {
+                flotOptions.xaxis.ticks = [0, 2, 4];
             }
 
             flotOptions.bars.align = "center";
