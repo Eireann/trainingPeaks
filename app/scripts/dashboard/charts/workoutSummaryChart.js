@@ -5,6 +5,7 @@ define(
     "utilities/charting/chartColors",
     "utilities/charting/flotOptions",
     "views/dashboard/chartUtils",
+    "shared/utilities/chartingAxesBuilder",
     "dashboard/views/workoutSummaryChartSettingsView"
 ],
 function(
@@ -13,6 +14,7 @@ function(
     chartColors,
     defaultFlotOptions,
     DashboardChartUtils,
+    ChartingAxesBuilder,
     DashboardSettingsView
 )
 {
@@ -75,10 +77,12 @@ function(
             endpoint: "workoutsummary",
             title: "Distance",
             series: [{
-                key: "distanceActual"
+                key: "distanceActual",
+                units: "distance"
             }],
             plannedSeries: [{
-                key: "disntancePlanned"
+                key: "disntancePlanned",
+                units: "distance"
             }],
             tooltips: distanceDurationTooltips
         }, {
@@ -86,7 +90,8 @@ function(
             endpoint: "workoutsummary",
             title: "Kilojoules",
             series: [{
-                key: "totalKilojoulesBurned"
+                key: "totalKilojoulesBurned",
+                units: "energy"
             }],
             tooltips: [{
                 key: "totalKilojoulesBurned",
@@ -98,18 +103,14 @@ function(
             title: "TSS",
             series: [{
                 key: "totalTrainingStressScoreActual",
+                units: "tss",
                 widthScale: 2 * 0.7,
-                options: {
-                    color: chartColors.pmcColors.TSS,
-                    yaxis: 1
-                }
+                color: chartColors.pmcColors.TSS,
             }, {
                 key: "averageIntensityFactorActual",
+                units: "if",
                 widthScale: 2 * 0.3,
-                options: {
-                    color: chartColors.pmcColors.IF,
-                    yaxis: 2
-                }
+                color: chartColors.pmcColors.IF,
             }],
             tooltips: [{
                 label: "TSS",
@@ -125,7 +126,8 @@ function(
             endpoint: "workoutsummary",
             title: "Elevation Gain",
             series: [{
-                key: "totalElevationGainActual"
+                key: "totalElevationGainActual",
+                units: "elevation"
             }],
             tooltips: [{
                 label: "Elevation Gain",
@@ -165,8 +167,7 @@ function(
         defaults: {
             workoutTypeIds: [],
             workoutSummaryDateGrouping: 2, // 1: Day, 2: Week
-            showPlanned: true,
-            units: ""
+            showPlanned: true
         },
 
         initialize: function(attributes, options)
@@ -221,7 +222,7 @@ function(
                         order: i,
                         barWidth: barWidth  * (series.widthScale || 1),
                     }
-                }, series.options));
+                }, series));
             }, this);
 
             var plannedSeries = [];
@@ -229,12 +230,16 @@ function(
             if(this.get("showPlanned")) {
                 plannedSeries = _.map(this.subType.plannedSeries, function(series)
                 {
-                    return this._buildSeries(data, series.key, _.extend({bars: {show: false}, lines: {show: true}}, series.options));
+                    return this._buildSeries(data, series.key, _.extend({bars: {show: false}, lines: {show: true}}, series));
                 }, this);
             }
 
+            series = series.concat(plannedSeries);
+            var yaxes = ChartingAxesBuilder.makeYaxes(series, { workoutTypeId: this._getSingleWorkoutTypeId() });
+            console.log(yaxes);
+
             return {
-                dataSeries: series.concat(plannedSeries),
+                dataSeries: series,
                 flotOptions: _.defaults({
                     bars:
                     {
@@ -243,6 +248,7 @@ function(
                         barWidth: barWidth,
                         lineWidth: 0.00000001 // 0 causes flot.orderBars to default to 2 for calculations... which aren't redone on resize.
                     },
+                    yaxes: yaxes,
                     xaxis:
                     {
                         ticks: function(axis)
