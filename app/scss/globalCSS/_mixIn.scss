@@ -2,6 +2,8 @@
 
 @mixin buttons($marginLeft, $width, $fontSize)
 {
+
+
     button, input[type=button]
 	{
 		width: $width;
@@ -12,9 +14,12 @@
 		font-weight:normal;
 		margin-left: $marginLeft;
 		color: $TPGrey10;
-		background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #ffffff), color-stop(1, #dfdfdf) );
-		background:-moz-linear-gradient( center top, #ededed 5%, #dfdfdf 100% );
-		background-color:#ededed;
+
+        background: url(../../assets/images/calendarImages/background-gradient-button.png) repeat-x 0 0; //fallback
+        background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#fefefe), to(#dfdfdf));
+        background:-moz-linear-gradient(top, #fefefe, #dfdfdf);
+
+        background-color:#dfdfdf;
 
 		border: 0px;
 		display:inline-block;
@@ -26,30 +31,27 @@
 		box-shadow:none;
         cursor: pointer;
 
-        background: url(../../assets/images/calendarImages/background-gradient-button.png) repeat-x 0 0;
-		//background-size: 100% 100%;
-
         &:hover
         {
            border-color: $TPGrey11;
            color: $TPGrey4;
-    	   //color:#3d3e41;
-          // -webkit-box-shadow: 0px 0px 3px 1px rgba($TPGrey7, .50);
-          // -moz-box-shadow: 0px 0px 3px 1px rgba($TPGrey9, .50);
-          // box-shadow: 0px 0px 3px 1px rgba($TPGrey9, .50);
         }
                 
         &:active
         {
-            background: url(../../assets/images/calendarImages/background-gradient-button.png) repeat-x 0 -20px;
-			//background-size: 100% 100%;
+            background: url(../../assets/images/calendarImages/background-gradient-button.png) repeat-x 0 -20px; //fallback
+            background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#969595), to(#4d4d4c));
+            background:-moz-linear-gradient(top, #969595, #4d4d4c); 
+            
             color: #ffffff;
         }
 
         &:disabled
-        {
-            background: url(../../assets/images/calendarImages/background-gradient-button.png) repeat-x 0 0;
-		    //background-size: 100% 22px;
+        {   
+            background: url(../../assets/images/calendarImages/background-gradient-button.png) repeat-x 0 0; //fallback
+            background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#fefefe), to(#dfdfdf));
+            background:-moz-linear-gradient(top, #fefefe, #dfdfdf);
+            
             border-color: $TPGrey9;
             border-width: 1px;
             border-style: solid;
