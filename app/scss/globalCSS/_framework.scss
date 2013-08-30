@@ -73,6 +73,15 @@
     		padding-right: 10px;
     			
     	}
+
+        &:hover
+        {
+            label
+            {
+                color:$TPGrey3;
+                cursor: pointer;
+            }
+        }
     	.headerYear
     	{
     		font-family: $fontFamilyLight;
@@ -91,18 +100,17 @@
         {
     	    width: auto;
             cursor: pointer;
-            &:hover
+        }
+        .titleActive
+        {
+            label
             {
-                label
-                {
-                    color:$TPGrey3;
-                    cursor: pointer;
-                }
+                color:$TPGrey3;
+                cursor: pointer;
             }
-
-            
         }
     }
+
 
     .frameworkHeaderView
         {

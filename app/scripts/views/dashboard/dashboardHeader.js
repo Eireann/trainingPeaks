@@ -84,6 +84,7 @@ function (datepicker, spinner, jquerySelectBox, _, TP, DashboardDatePicker, char
 
             e.preventDefault();
 
+            this.$(".frameworkTitle").addClass("titleActive");
             var offset = $(e.currentTarget).offset();
             var windowWidth = $(window).width();
 
