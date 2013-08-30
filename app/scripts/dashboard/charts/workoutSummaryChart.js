@@ -35,22 +35,44 @@ function(
         units: "hours"
     }];
 
+    var longestTooltips = [{
+        label: "Planned Distance",
+        key: "distancePlanned",
+        units: "distance"
+    }, {
+        label: "Completed Distance",
+        key: "distance",
+        units: "distance"
+    }, {
+        label: "Planned Duration",
+        key: "totalTimePlanned",
+        units: "hours"
+    }, {
+        label: "Completed Duration",
+        key: "timeTotal",
+        units: "hours"
+    }];
+
     var WorkoutSummaryChart = Chart.extend({
 
         settingsView: DashboardSettingsView,
 
         subTypes: [{
             chartType: 10,
+            endpoint: "workoutsummary",
             title: "Durration",
             series: [{
-                key: "totalTimeActual"
+                key: "totalTimeActual",
+                units: "hours"
             }],
             plannedSeries: [{
-                key: "totalTimePlanned"
+                key: "totalTimePlanned",
+                units: "hours"
             }],
             tooltips: distanceDurationTooltips
         }, {
             chartType: 11,
+            endpoint: "workoutsummary",
             title: "Distance",
             series: [{
                 key: "distanceActual"
@@ -61,6 +83,7 @@ function(
             tooltips: distanceDurationTooltips
         }, {
             chartType: 21,
+            endpoint: "workoutsummary",
             title: "Kilojoules",
             series: [{
                 key: "totalKilojoulesBurned"
@@ -71,6 +94,7 @@ function(
             }]
         }, {
             chartType: 23,
+            endpoint: "workoutsummary",
             title: "TSS",
             series: [{
                 key: "totalTrainingStressScoreActual",
@@ -98,6 +122,7 @@ function(
             }]
         }, {
             chartType: 37,
+            endpoint: "workoutsummary",
             title: "Elevation Gain",
             series: [{
                 key: "totalElevationGainActual"
@@ -107,6 +132,32 @@ function(
                 key: "totalElevationGainActual",
                 units: "elevation"
             }]
+        }, {
+            chartType: 19,
+            endpoint: "longestworkout",
+            title: "Longest Workout (Distance)",
+            series: [{
+                key: "distance",
+                units: "distance"
+            }],
+            plannedSeries: [{
+                key: "distancePlanned",
+                units: "distance"
+            }],
+            tooltips: longestTooltips
+        }, {
+            chartType: 20,
+            endpoint: "longestworkout",
+            title: "Longest Workout (Duration)",
+            series: [{
+                key: "timeTotal",
+                units: "hours"
+            }],
+            plannedSeries: [{
+                key: "totalTimePlanned",
+                units: "hours"
+            }],
+            tooltips: longestTooltips
         }],
 
         defaults: {
@@ -134,7 +185,7 @@ function(
                 groupByWorkoutType: this.get("workoutTypeIds").length !== 0 || true,
                 dateGrouping: this.get("workoutSummaryDateGrouping") || 1
             };
-            return this.dataManager.fetchReport("workoutsummary", dateOptions.startDate, dateOptions.endDate, postData);
+            return this.dataManager.fetchReport(this.subType.endpoint, dateOptions.startDate, dateOptions.endDate, postData);
         },
 
         updateChartTitle: function()
@@ -245,7 +296,7 @@ function(
 
             _.each(data, function(entry)
             {
-                var x = moment(entry.workoutDay || entry.startWorkoutDate).valueOf();
+                var x = moment(entry.workoutDay || entry.startWorkoutDate || entry.startDate).valueOf();
                 if (mergedData[x] === undefined)
                 {
                     mergedData[x] = {};

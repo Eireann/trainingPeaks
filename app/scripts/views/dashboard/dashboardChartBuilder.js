@@ -45,7 +45,9 @@ function(
         11: WorkoutSummaryChart,
         21: WorkoutSummaryChart,
         23: WorkoutSummaryChart,
-        37: WorkoutSummaryChart
+        37: WorkoutSummaryChart,
+        19: WorkoutSummaryChart,
+        20: WorkoutSummaryChart
     };
 
     return {

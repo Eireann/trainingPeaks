@@ -79,6 +79,14 @@ function(
             {
                 chartType: 37,
                 name: "Elevation Gain by Day/Week"
+            },
+            {
+                chartType: 19,
+                name: "Longest Workout (Distance)"
+            },
+            {
+                chartType: 20,
+                name: "Longest Workout (Duration)"
             }
             ]);
         }
