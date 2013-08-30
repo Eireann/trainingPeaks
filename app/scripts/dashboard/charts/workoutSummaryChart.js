@@ -139,6 +139,7 @@ function(
             endpoint: "longestworkout",
             title: "Longest Workout (Distance)",
             onlyByWeek: true,
+            prefiltered: true,
             series: [{
                 key: "distance",
                 units: "distance"
@@ -153,6 +154,7 @@ function(
             endpoint: "longestworkout",
             title: "Longest Workout (Duration)",
             onlyByWeek: true,
+            prefiltered: true,
             series: [{
                 key: "timeTotal",
                 units: "hours"
@@ -186,9 +188,18 @@ function(
             var dateOptions = DashboardChartUtils.buildChartParameters(this.get("dateOptions"));
             var postData =
             {
-                groupByWorkoutType: this.get("workoutTypeIds").length !== 0 || true,
                 dateGrouping: this.get("workoutSummaryDateGrouping") || 1
             };
+
+            if(this.subType.prefiltered)
+            {
+                postData.workoutTypeIds = this.get("workoutTypeIds");
+            }
+            else
+            {
+                postData.groupByWorkoutType = this.get("workoutTypeIds").length !== 0 || true;
+            }
+
             return this.dataManager.fetchReport(this.subType.endpoint, dateOptions.startDate, dateOptions.endDate, postData);
         },
 
@@ -235,8 +246,7 @@ function(
             }
 
             series = series.concat(plannedSeries);
-            var yaxes = ChartingAxesBuilder.makeYaxes(series, { workoutTypeId: this._getSingleWorkoutTypeId() });
-            console.log(yaxes);
+            var yaxes = ChartingAxesBuilder.makeYaxes(series, { workoutTypeId: this._getSingleWorkoutTypeId(), min: 0 });
 
             return {
                 dataSeries: series,
@@ -286,14 +296,17 @@ function(
 
         _preprocessData: function(data)
         {
-            var workoutTypeIds = _.map(this.get("workoutTypeIds"), function(id) { return parseInt(id, 10); });
-
-            if(workoutTypeIds.length > 0)
+            if(!this.subType.prefiltered)
             {
-                data = _.filter(data, function(entry)
+                var workoutTypeIds = _.map(this.get("workoutTypeIds"), function(id) { return parseInt(id, 10); });
+
+                if(workoutTypeIds.length > 0)
                 {
-                    return _.include(workoutTypeIds, parseInt(entry.workoutTypeId, 10));
-                });
+                    data = _.filter(data, function(entry)
+                    {
+                        return _.include(workoutTypeIds, parseInt(entry.workoutTypeId, 10));
+                    });
+                }
             }
 
             var mergedData = {};

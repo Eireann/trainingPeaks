@@ -30,7 +30,9 @@ function(
                 }
                 else
                 {
-                    axes.push({});
+                    axes.push({
+                        min: options.min
+                    });
                     series.yaxis = axes.length;
                 }
             });
@@ -50,7 +52,8 @@ function(
                 tickFormatter: function(value)
                 {
                     return TP.utils.conversion.formatUnitsValue(units, value, options);
-                }
+                },
+                min: options.min
             };
         }
     };
