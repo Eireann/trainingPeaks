@@ -94,7 +94,7 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
         float: left;
         font-size: $fontSizeSmall;
         color: $TPGrey3;
-        margin-top:5px;
+        margin-top: 6px;
     }
 
     input[type=text]
@@ -108,6 +108,16 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
     .dateOptionsWrapper
     {
         height: 25px;
+    }
+}
+
+.dashboardHeaderDatePicker 
+{
+    width: 303px;
+
+    .dashboardDatePicker .selectboxit-container .selectboxit 
+    {
+        width: 278px !important;
     }
 }
 

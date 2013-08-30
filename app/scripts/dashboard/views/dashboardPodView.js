@@ -5,8 +5,10 @@
     "TP",
     "framework/dataManager",
     "utilities/charting/flotToolTipPositioner",
+    "views/userConfirmationView",
     "hbs!templates/views/dashboard/dashboardChart",
-    "hbs!templates/views/charts/chartTooltip"
+    "hbs!templates/views/charts/chartTooltip",
+    "hbs!templates/views/confirmationViews/closeChartsConfirmationView"
 ],
 function(
     _,
@@ -14,8 +16,10 @@ function(
     TP,
     DataManager,
     toolTipPositioner,
+    UserConfirmationView,
     podTemplate,
-    tooltipTemplate
+    tooltipTemplate,
+    closeChartsConfirmationTemplate
     )
 {
     var DashboardPodView = TP.ItemView.extend({
@@ -269,6 +273,13 @@ function(
         },
 
         _onCloseClicked: function()
+        {
+            this.discardConfirmation = new UserConfirmationView({ template: closeChartsConfirmationTemplate });
+            this.discardConfirmation.render();
+            this.discardConfirmation.on("userConfirmed", this.onDiscardChangesConfirmed, this);
+        },
+
+        onDiscardChangesConfirmed: function()
         {
             this.model.destroy();
         },

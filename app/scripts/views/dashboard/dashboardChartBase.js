@@ -11,7 +11,9 @@
     "utilities/workout/workoutTypes",
     "views/dashboard/chartUtils",
     "./dashboardChartSettings",
-    "hbs!templates/views/charts/chartTooltip"
+    "views/userConfirmationView",
+    "hbs!templates/views/charts/chartTooltip",
+    "hbs!templates/views/confirmationViews/closeChartsConfirmationView"
 ],
 function(
     _,
@@ -25,7 +27,9 @@ function(
     workoutTypes,
     chartUtils,
     dashboardChartSettings,
-    tooltipTemplate
+    UserConfirmationView,
+    tooltipTemplate,
+    closeChartsConfirmationTemplate
     )
 {
 
@@ -370,7 +374,15 @@ function(
             this.closeOnRouteChange(this.expandClicked);
         },
 
-        closeClicked: function()
+        closeClicked: function ()
+        {
+            this.discardConfirmation = new UserConfirmationView({ template: closeChartsConfirmationTemplate });
+            this.discardConfirmation.render();
+            this.discardConfirmation.on("userConfirmed", this.onDiscardChangesConfirmed, this);
+        },
+
+
+        onDiscardChangesConfirmed: function ()
         {
             this.trigger("before:remove");
             this.model.destroy();
