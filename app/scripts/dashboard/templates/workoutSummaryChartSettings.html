@@ -3,6 +3,7 @@
         <div class="closeIcon"></div>
         <div class="workoutTypesRegion"></div>
         <div class="dateOptionsRegion"></div>
+        {{#unless subType.onlyByWeek }}
         <div>
             <label>
                 <input type="radio" class="auto"
@@ -16,10 +17,13 @@
                 By week
             </label>
         </div>
+        {{/unless}}
+        {{#if subType.hasPlanned }}
         <label>
             <input type="checkbox" class="auto" name="showPlanned">
             Show Planned
         </label>
+        {{/if}}
     </div>
 {{/hoverBox}}
 

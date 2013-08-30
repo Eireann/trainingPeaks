@@ -136,6 +136,7 @@ function(
             chartType: 19,
             endpoint: "longestworkout",
             title: "Longest Workout (Distance)",
+            onlyByWeek: true,
             series: [{
                 key: "distance",
                 units: "distance"
@@ -149,6 +150,7 @@ function(
             chartType: 20,
             endpoint: "longestworkout",
             title: "Longest Workout (Duration)",
+            onlyByWeek: true,
             series: [{
                 key: "timeTotal",
                 units: "hours"
@@ -173,6 +175,7 @@ function(
             {
                 return subType.chartType === parseInt(this.get('chartType'), 10);
             }, this);
+            this.subType.hasPlanned = this.subType.plannedSeries && this.subType.plannedSeries.length > 0;
             this._validateWorkoutTypes();
             this.updateChartTitle(); 
         },
@@ -190,8 +193,15 @@ function(
 
         updateChartTitle: function()
         {
-            var dateGrouping = this.get("workoutSummaryDateGrouping") === 1 ? "Day" : "Week";
-            var title = TP.utils.translate(this.subType.title + " by " + dateGrouping + ": ");
+            if(this.subType.onlyByWeek)
+            {
+                var title = TP.utils.translate(this.subType.title + ": ");
+            }
+            else
+            {
+                var dateGrouping = this.get("workoutSummaryDateGrouping") === 1 ? "Day" : "Week";
+                var title = TP.utils.translate(this.subType.title + " by " + dateGrouping + ": ");
+            }
             title += TP.utils.workout.types.getListOfNames(this.get("workoutTypeIds"), "All Workout Types");
             this.set("title", title);
         },

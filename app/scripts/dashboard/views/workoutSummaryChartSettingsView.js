@@ -77,6 +77,13 @@ function(
                 self.model.set($el.attr("name"), parseInt($el.val(), 10));
             });
         },
+
+        serializeData: function()
+        {
+            var data = WorkoutSummaryChartSettingsView.__super__.serializeData.apply(this, arguments);
+            data.subType = this.model.subType;
+            return data;
+        }
     });
 
     return WorkoutSummaryChartSettingsView;
