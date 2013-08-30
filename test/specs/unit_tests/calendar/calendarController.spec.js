@@ -10,6 +10,7 @@ requirejs(
     "controllers/calendar/calendarController",
     "models/workoutModel",
     "models/workoutsCollection",
+    "models/library/trainingPlan",
     "views/calendar/container/calendarContainerView",
     "views/calendar/library/libraryView"
 ],
@@ -23,6 +24,7 @@ function(
     CalendarController,
     WorkoutModel,
     WorkoutsCollection,
+    TrainingPlan,
     CalendarView,
     LibraryView
     )
@@ -286,6 +288,26 @@ function(
                 expect(controller.createNewWorkoutFromExerciseLibraryItem).toHaveBeenCalledWith(eventOptions.LibraryId, eventOptions.ItemId, eventOptions.destinationCalendarDayModel.id);
                 expect(controller.weeksCollection.addWorkout).toHaveBeenCalledWith(workout);
                 expect(workout.trigger).toHaveBeenCalledWith("select", workout);
+            });
+            it("Should drag a training plan from the library", function()
+            {
+                theMarsApp.controllers.calendarController.libraryCollections = {};
+                var trainingPlan = new TrainingPlan({planId: 123});
+                theMarsApp.controllers.calendarController.libraryCollections.trainingPlans = new TP.Collection([trainingPlan]);
+
+                spyOn(trainingPlan, "applyToDate").andCallThrough();
+
+                var eventOptions = {
+                    DropEvent: "addTrainingPlanFromLibrary",
+                    ItemId: 123,
+                    destinationCalendarDayModel: {
+                        id: '2012-01-01'
+                    }
+                };
+                var controller = new CalendarController();
+                controller.onDropItem(eventOptions);
+
+                expect(trainingPlan.applyToDate).toHaveBeenCalledWith(eventOptions.destinationCalendarDayModel.id, 1);
             });
         });
 

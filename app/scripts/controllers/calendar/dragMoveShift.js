@@ -1,6 +1,5 @@
 define(
-[
-],
+[],
 function ()
 {
     var calendarControllerDragMoveShift =
@@ -33,6 +32,16 @@ function ()
                 this.weeksCollection.addWorkout(workout);
                 this.views.calendar.scrollToDateIfNotFullyVisible(destinationDate);
                 workout.trigger("select", workout);
+            }
+            else if (options.DropEvent === "addTrainingPlanFromLibrary")
+            {            
+                var trainingPlan = theMarsApp.controllers.calendarController.libraryCollections.trainingPlans.get(options.ItemId);
+                var apply = trainingPlan.applyToDate(options.destinationCalendarDayModel.id, 1);
+
+                apply.fail(function()
+                {
+
+                });
             }
 
         },

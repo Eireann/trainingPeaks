@@ -2,9 +2,10 @@ define(
 [
     "TP",
     "./trainingPlanDetailsView",
+    "jqueryui/draggable",
     "hbs!templates/views/calendar/library/trainingPlanItemView"
 ],
-function(TP, TrainingPlanDetailsView, trainingPlanItemViewTemplate)
+function(TP, TrainingPlanDetailsView, draggable, trainingPlanItemViewTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -39,7 +40,18 @@ function(TP, TrainingPlanDetailsView, trainingPlanItemViewTemplate)
             this.model.on("select", this.onItemSelect, this);
             this.model.on("unselect", this.onItemUnSelect, this);
         },
+        onRender: function()
+        {
+            this.makeDraggable();
+        },
+        makeDraggable: function()
+        {
+            this.$el.data("ItemId", this.model.id);
+            this.$el.data("ItemType", this.model.webAPIModelName);
+            this.$el.data("DropEvent", "addTrainingPlanFromLibrary");
 
+            this.$el.draggable({containment: "#calendarWrapper", helper: 'clone', appendTo: theMarsApp.getBodyElement()});
+        },
         serializeData: function()
         {
             var data = this.model.toJSON();

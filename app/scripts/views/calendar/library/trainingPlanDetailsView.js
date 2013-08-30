@@ -161,18 +161,13 @@ function(
 
             var targetDate = this.restrictTargetDate(this.ui.applyDate.val());
 
-            var command = new ApplyTrainingPlanCommand({
-                athleteId: theMarsApp.user.getCurrentAthleteId(),
-                planId: this.model.get("planId"),
-                startType: this.applyStartType,
-                targetDate: targetDate
-            });
+            var apply = this.model.applyToDate(targetDate, this.applyStartType);
 
             var self = this;
             self.waitingOn();
-            command.execute().done(function()
+            apply.done(function()
             {
-                self.refreshPlanAndCalendar(command.get("appliedPlan.startDate")); 
+                self.close();
             }).fail(function()
             {
                 var errorMessageView = new UserConfirmationView({ template: trainingPlanErrorTemplate });
@@ -181,13 +176,6 @@ function(
             {
                 self.waitingOff();
             });
-        },
-
-        refreshPlanAndCalendar: function(calendarDate)
-        {
-            this.model.fetch();
-            this.close();
-            this.model.trigger("requestRefresh", calendarDate);
         },
 
         confirmDeleteAppliedPlan: function(e)
@@ -207,7 +195,8 @@ function(
             self.waitingOn();
             removeAppliedPlan.execute().done(function()
             {
-                self.refreshPlanAndCalendar(); 
+                self.model.refreshDependencies();
+                self.close();
             }).fail(function()
             {
                 var errorMessageView = new UserConfirmationView({ template: trainingPlanErrorTemplate });
