@@ -1,3 +1,4 @@
+define([], function(){
 /*
  * Flot plugin to order bars side by side. This is improved version of Benjamin BUFFET work
  * originally from http://en.benjaminbuffet.com/labs/flot/.
@@ -258,12 +259,16 @@
         }
     };
 
-    $.plot.plugins.push({
-        init: init,
-        options: options,
-        name: "orderBars",
-        version: "0.2"
-    });
+    if($.plot)
+    {
+        $.plot.plugins.push({
+            init: init,
+            options: options,
+            name: "orderBars",
+            version: "0.2"
+        });
+    }
 
 })(jQuery)
 
+});

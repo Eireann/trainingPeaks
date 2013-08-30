@@ -105,12 +105,12 @@ function(
                 key: "totalTrainingStressScoreActual",
                 units: "tss",
                 widthScale: 2 * 0.7,
-                color: chartColors.pmcColors.TSS,
+                color: chartColors.pmcColors.TSS
             }, {
                 key: "averageIntensityFactorActual",
                 units: "if",
                 widthScale: 2 * 0.3,
-                color: chartColors.pmcColors.IF,
+                color: chartColors.pmcColors.IF
             }],
             tooltips: [{
                 label: "TSS",
@@ -205,14 +205,15 @@ function(
 
         updateChartTitle: function()
         {
+            var title;
             if(this.subType.onlyByWeek)
             {
-                var title = TP.utils.translate(this.subType.title + ": ");
+                title = TP.utils.translate(this.subType.title + ": ");
             }
             else
             {
                 var dateGrouping = this.get("workoutSummaryDateGrouping") === 1 ? "Day" : "Week";
-                var title = TP.utils.translate(this.subType.title + " by " + dateGrouping + ": ");
+                title = TP.utils.translate(this.subType.title + " by " + dateGrouping + ": ");
             }
             title += TP.utils.workout.types.getListOfNames(this.get("workoutTypeIds"), "All Workout Types");
             this.set("title", title);
@@ -223,15 +224,17 @@ function(
             var self = this;
             data = this.data = this._preprocessData(data);
 
-            var dateGrouping = this.get("workoutSummaryDateGrouping") === 1 ?"day" : "week";
+            // Calculate the bar width
+            var dateGrouping = this.get("workoutSummaryDateGrouping") === 1 ? "day" : "week";
             var barWidth = moment.duration(1, dateGrouping).valueOf() * 0.7 / this.subType.series.length;
+
             var series = _.map(this.subType.series, function(series, i)
             {
                 return this._buildSeries(data, series.key, _.extend({
                     onlySeries: this.subType.series.length === 1,
                     bars: {
                         order: i,
-                        barWidth: barWidth  * (series.widthScale || 1),
+                        barWidth: barWidth  * (series.widthScale || 1)
                     }
                 }, series));
             }, this);
@@ -241,12 +244,23 @@ function(
             if(this.get("showPlanned")) {
                 plannedSeries = _.map(this.subType.plannedSeries, function(series)
                 {
-                    return this._buildSeries(data, series.key, _.extend({bars: {show: false}, lines: {show: true}}, series));
+                    return this._buildSeries(data, series.key, _.extend({
+                        bars:
+                        {
+                            show: false
+                        },
+                        lines: {
+                            show: true
+                        }
+                    }, series));
                 }, this);
             }
 
             series = series.concat(plannedSeries);
-            var yaxes = ChartingAxesBuilder.makeYaxes(series, { workoutTypeId: this._getSingleWorkoutTypeId(), min: 0 });
+            var yaxes = ChartingAxesBuilder.makeYaxes(series, {
+                workoutTypeId: this._getSingleWorkoutTypeId(),
+                min: 0
+            });
 
             return {
                 dataSeries: series,
@@ -261,56 +275,58 @@ function(
                     yaxes: yaxes,
                     xaxis:
                     {
-                        ticks: function(axis)
-                        {
-                            var date = self._adjustDateToWeek(axis.min);
-                            var delta = moment.duration(axis.delta * 1.3).asDays();
-
-                            if(self.get("workoutSummaryDateGrouping") === 1)
-                            {
-                                delta = Math.ceil(delta);
-                            }
-                            else
-                            {
-                                delta = Math.ceil(delta / 7) * 7;
-                            }
-
-                            var ticks = [date.valueOf()];
-
-                            while(_.last(ticks) <= axis.max)
-                            {
-                                date.add(delta, "days");
-                                ticks.push(date.valueOf());
-                            }
-
-                            return ticks;
-                        },
+                        ticks: _.bind(this._generateTimeTicks, this),
                         tickFormatter: function(date)
                         {
                             return moment(date).format("L");
                         }
                     }
-                }, defaultFlotOptions.getBarOptions(null)),
+                }, defaultFlotOptions.getBarOptions(null))
             };
         },
 
-        _preprocessData: function(data)
+        _generateTimeTicks: function(axis)
         {
-            if(!this.subType.prefiltered)
-            {
-                var workoutTypeIds = _.map(this.get("workoutTypeIds"), function(id) { return parseInt(id, 10); });
+            var date = this._adjustDateToWeek(axis.min);
+            var delta = moment.duration(axis.delta * 1.3).asDays();
 
-                if(workoutTypeIds.length > 0)
-                {
-                    data = _.filter(data, function(entry)
-                    {
-                        return _.include(workoutTypeIds, parseInt(entry.workoutTypeId, 10));
-                    });
-                }
+            if(this.get("workoutSummaryDateGrouping") === 1)
+            {
+                delta = Math.ceil(delta);
+            }
+            else
+            {
+                delta = Math.ceil(delta / 7) * 7;
             }
 
-            var mergedData = {};
+            var ticks = [date.valueOf()];
 
+            while(_.last(ticks) <= axis.max)
+            {
+                date.add(delta, "days");
+                ticks.push(date.valueOf());
+            }
+
+            return ticks;
+        },
+
+        _filterDataByWorkoutType: function(data)
+        {
+            var workoutTypeIds = _.map(this.get("workoutTypeIds"), function(id) { return parseInt(id, 10); });
+
+            if(workoutTypeIds.length > 0)
+            {
+                data = _.filter(data, function(entry)
+                {
+                    return _.include(workoutTypeIds, parseInt(entry.workoutTypeId, 10));
+                });
+            }
+
+            return data;
+        },
+
+        _augmentDataWithStartAndEndDates: function(data)
+        {
             // Force start/end date to be included in chart.
             var dateOptions = DashboardChartUtils.buildChartParameters(this.get("dateOptions"));
             var dateGrouping = this.get("workoutSummaryDateGrouping");
@@ -320,8 +336,26 @@ function(
                 dateOptions.endDate = this._adjustDateToWeek(dateOptions.endDate);
             }
 
-            mergedData[dateOptions.startDate.valueOf()] = {};
-            mergedData[dateOptions.endDate.valueOf()] = {};
+            data.push({
+                workoutDay: dateOptions.startDate
+            });
+            data.push({
+                workoutDay: dateOptions.endDate
+            });
+
+            return data;
+        },
+
+        _preprocessData: function(data)
+        {
+            if(!this.subType.prefiltered)
+            {
+                data = this._filterDataByWorkoutType(data);
+            }
+
+            data = this._augmentDataWithStartAndEndDates(data);
+
+            var mergedData = {};
 
             _.each(data, function(entry)
             {
@@ -342,14 +376,13 @@ function(
             {
                 _.each(entry, function(value, key)
                 {
-                    switch(key)
+                    if(key === "averageIntensityFactorActual")
                     {
-                        case "averageIntensityFactorActual":
-                            value = _.reduce(value, function(a, b) { return a + b; }) / value.length;
-                            break;
-                        default:
-                            value = _.reduce(value, function(a, b) { return a + b; });
-                            break;
+                        value = _.reduce(value, function(a, b) { return a + b; }) / value.length;
+                    }
+                    else
+                    {
+                        value = _.reduce(value, function(a, b) { return a + b; });
                     }
                     entry[key] = value;
                 });

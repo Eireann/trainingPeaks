@@ -3,7 +3,7 @@ define(
     "backbone.marionette",
     "TP",
     "utilities/charting/jquery.flot.pie",
-    "utilities/charting/jquery.flot.orderBars",
+    "jquery.flot.orderBars",
     "views/dashboard/chartUtils"
 ],
 function(
