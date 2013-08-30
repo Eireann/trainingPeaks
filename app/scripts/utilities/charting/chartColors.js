@@ -66,7 +66,7 @@ function()
                     7: { light: "#dd6c2b", dark: "#dd6c2b" },
                     8: { light: "#fd3225", dark: "#fd3225" },
                     9: { light: "#c02f25", dark: "#c02f25" },
-                    10: { light: "#c126ba", dark: "#c126ba" }, 
+                    10: { light: "#c126ba", dark: "#c126ba" }
                 }
             },
         peaks:
