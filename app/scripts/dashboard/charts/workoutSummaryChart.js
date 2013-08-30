@@ -89,10 +89,12 @@ function(
             }],
             tooltips: [{
                 label: "TSS",
-                key: "totalTrainingStressScoreActual"
+                key: "totalTrainingStressScoreActual",
+                units: "tss"
             }, {
                 label: "IF",
-                key: "averageIntensityFactorActual"
+                key: "averageIntensityFactorActual",
+                units: "if"
             }]
         }, {
             chartType: 37,
@@ -251,11 +253,29 @@ function(
 
                 _.each(entry, function(value, key)
                 {
-                    mergedData[x][key] = (mergedData[x][key] || 0) + value;
+                    mergedData[x][key] = (mergedData[x][key] || []);
+                    mergedData[x][key].push(value);
                 });
             });
 
-            _.each(mergedData, function(value, key) { value.date = parseInt(key, 10); });
+            _.each(mergedData, function(entry, x)
+            {
+                _.each(entry, function(value, key)
+                {
+                    switch(key)
+                    {
+                        case "averageIntensityFactorActual":
+                            value = _.reduce(value, function(a, b) { return a + b; }) / value.length;
+                            break;
+                        default:
+                            value = _.reduce(value, function(a, b) { return a + b; });
+                            break;
+                    }
+                    entry[key] = value;
+                });
+
+                entry.date = parseInt(x, 10);
+            });
 
             return _.sortBy(_.values(mergedData), "date");
         },
