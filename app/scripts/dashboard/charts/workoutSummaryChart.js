@@ -453,7 +453,7 @@ function(
 
         getChartName: function()
         {
-            return "Workout Summary";
+            return "Workout Summary Chart";
         },
 
         _getSingleWorkoutTypeId: function()
