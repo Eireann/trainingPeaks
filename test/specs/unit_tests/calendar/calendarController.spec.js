@@ -289,26 +289,6 @@ function(
                 expect(controller.weeksCollection.addWorkout).toHaveBeenCalledWith(workout);
                 expect(workout.trigger).toHaveBeenCalledWith("select", workout);
             });
-            it("Should drag a training plan from the library", function()
-            {
-                theMarsApp.controllers.calendarController.libraryCollections = {};
-                var trainingPlan = new TrainingPlan({planId: 123});
-                theMarsApp.controllers.calendarController.libraryCollections.trainingPlans = new TP.Collection([trainingPlan]);
-
-                spyOn(trainingPlan, "applyToDate").andCallThrough();
-
-                var eventOptions = {
-                    DropEvent: "addTrainingPlanFromLibrary",
-                    ItemId: 123,
-                    destinationCalendarDayModel: {
-                        id: '2012-01-01'
-                    }
-                };
-                var controller = new CalendarController();
-                controller.onDropItem(eventOptions);
-
-                expect(trainingPlan.applyToDate).toHaveBeenCalledWith(eventOptions.destinationCalendarDayModel.id, 1);
-            });
         });
 
         describe("Reset", function()

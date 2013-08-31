@@ -1,0 +1,24 @@
+<div class="dialog">
+    <div class="titleBar">
+        <h2 class="modaltitle">Add Training Plan To Calendar</h2>
+    </div>
+
+    <div class="dialogContent">
+        
+        <select>
+        	<option value="1">Start</option>
+        	<option value="2">End</option>
+        </select>
+
+        {{#if eligibleTargetDate}}
+        	<div class="date_restrictions">
+        		 The closest eligible date for this plan to start is {{eligibleTargetDate}}. This plan will be applied to that date.
+        	</div>
+        {{/if}}
+
+        <div class="dialogButtons">
+            <button id="confirmationOk">{{$ "OK" }}</button>
+            <button id="confirmationCancel">{{$ "Cancel" }}</button>
+        </div>
+    </div>
+</div>
