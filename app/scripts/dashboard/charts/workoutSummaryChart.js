@@ -348,6 +348,11 @@ function(
 
         _preprocessData: function(data)
         {
+            // TODO: Temporary patch for new API with wrapper object
+            if(data && data.hasOwnProperty("data")) {
+                var data = data.data;
+            }
+
             if(!this.subType.prefiltered)
             {
                 data = this._filterDataByWorkoutType(data);
