@@ -105,12 +105,12 @@ function(
                 key: "totalTrainingStressScoreActual",
                 units: "tss",
                 widthScale: 2 * 0.7,
-                color: chartColors.pmcColors.TSS
+                colors: chartColors.workoutSummary.tss
             }, {
                 key: "averageIntensityFactorActual",
                 units: "if",
                 widthScale: 2 * 0.3,
-                color: chartColors.pmcColors.IF
+                colors: chartColors.workoutSummary.if
             }],
             tooltips: [{
                 label: "TSS",
@@ -179,6 +179,23 @@ function(
                 return subType.chartType === parseInt(this.get('chartType'), 10);
             }, this);
             this.subType.hasPlanned = this.subType.plannedSeries && this.subType.plannedSeries.length > 0;
+
+            _.each(this.subType.series, function(serie)
+            {
+                _.defaults(serie,
+                {
+                    colors: chartColors.workoutSummary.bars
+                });
+            });
+
+            _.each(this.subType.plannedSeries, function(serie)
+            {
+                _.defaults(serie,
+                {
+                    color: chartColors.workoutSummary.planned
+                });
+            });
+
             this._validateWorkoutTypes();
             this.updateChartTitle(); 
         },
@@ -232,9 +249,11 @@ function(
             {
                 return this._buildSeries(data, series.key, _.extend({
                     onlySeries: this.subType.series.length === 1,
+                    color: series.color || series.colors.light,
                     bars: {
                         order: i,
-                        barWidth: barWidth  * (series.widthScale || 1)
+                        barWidth: barWidth  * (series.widthScale || 1),
+                        fillColor: { colors: [ series.colors.light, series.colors.dark ] }
                     }
                 }, series));
             }, this);
@@ -268,10 +287,10 @@ function(
                     bars:
                     {
                         show: true,
-                        lineWidht: 1,
                         barWidth: barWidth,
                         lineWidth: 0.00000001 // 0 causes flot.orderBars to default to 2 for calculations... which aren't redone on resize.
                     },
+                    shadowSize: 0,
                     yaxes: yaxes,
                     xaxis:
                     {
@@ -348,8 +367,11 @@ function(
 
         _preprocessData: function(data)
         {
-            // TODO: Temporary patch for new API with wrapper object
+            var dates;
+            // Temporary patch for new API with wrapper object
+            // TODO: Remove once API is consistent
             if(data && data.hasOwnProperty("data")) {
+                dates = data.dateIndices;
                 data = data.data;
             }
 
@@ -358,9 +380,13 @@ function(
                 data = this._filterDataByWorkoutType(data);
             }
 
-            data = this._augmentDataWithStartAndEndDates(data);
-
             var mergedData = {};
+
+            // Ensure entries for all dates in range
+            _.each(dates || [], function(date)
+            {
+                mergedData[moment(date).valueOf()] = {};
+            });
 
             _.each(data, function(entry)
             {
@@ -409,6 +435,10 @@ function(
             var points = _.map(data, function(entry)
             {
                 return [entry.date + offset, entry[key] || 0];
+            });
+
+            _.defaults(options, {
+                colors: chartColors.gradients.heartRate
             });
 
             points = _.sortBy(points, 0);
