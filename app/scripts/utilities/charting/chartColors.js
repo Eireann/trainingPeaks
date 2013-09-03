@@ -57,16 +57,45 @@ function()
                     },
                 trainingZones:
                 {
-                    1: { light: "#23d920", dark: "#23d920" },
-                    2: { light: "#238722", dark: "#238722" },
-                    3: { light: "#6b81ba", dark: "#6b81ba" },
-                    4: { light: "#5d64a4", dark: "#5d64a4" },
-                    5: { light: "#d3d739", dark: "#d3d739" },
-                    6: { light: "#bfa73c", dark: "#bfa73c" },
-                    7: { light: "#dd6c2b", dark: "#dd6c2b" },
-                    8: { light: "#fd3225", dark: "#fd3225" },
-                    9: { light: "#c02f25", dark: "#c02f25" },
-                    10: { light: "#c126ba", dark: "#c126ba" }
+                    heartrate:
+                    {
+                        1: { light: "rgba(184, 36, 16, 0.14)", dark: "rgba(184, 36, 16, 0.14)" },
+                        2: { light: "rgba(184, 36, 16, 0.28)", dark: "rgba(184, 36, 16, 0.28)" },
+                        3: { light: "rgba(184, 36, 16, 0.43)", dark: "rgba(184, 36, 16, 0.43)" },
+                        4: { light: "rgba(184, 36, 16, 0.57)", dark: "rgba(184, 36, 16, 0.57)" },
+                        5: { light: "rgba(184, 36, 16, 0.71)", dark: "rgba(184, 36, 16, 0.71)" },
+                        6: { light: "rgba(184, 36, 16, 0.86)", dark: "rgba(184, 36, 16, 0.86)" },
+                        7: { light: "rgba(184, 36, 16, 1.0)", dark: "rgba(184, 36, 16, 1.0)" },
+                        8: { light: "rgba(0, 0, 0, 0.25)", dark: "rgba(0, 0, 0, 0.25)" },
+                        9: { light: "rgba(0, 0, 0, 0.50)", dark: "rgba(0, 0, 0, 0.50)" },
+                        10: { light: "rgba(0, 0, 0, 0.75)", dark: "rgba(0, 0, 0, 0.75)" }
+                    },
+
+                    power:{
+                        1: { light: "rgba(90, 7, 146, 0.14)", dark: "rgba(90, 7, 146, 0.14)" },
+                        2: { light: "rgba(90, 7, 146, 0.28)", dark: "rgba(90, 7, 146, 0.28)" },
+                        3: { light: "rgba(90, 7, 146, 0.43)", dark: "rgba(90, 7, 146, 0.43)" },
+                        4: { light: "rgba(90, 7, 146, 0.57)", dark: "rgba(90, 7, 146, 0.57)" },
+                        5: { light: "rgba(90, 7, 146, 0.71)", dark: "rgba(90, 7, 146, 0.71)" },
+                        6: { light: "rgba(90, 7, 146, 0.86)", dark: "rgba(90, 7, 146, 0.86)" },
+                        7: { light: "rgba(90, 7, 146, 1.0)", dark: "rgba(90, 7, 146, 1.0)" },
+                        8: { light: "rgba(0, 0, 0, 0.25)", dark: "rgba(0, 0, 0, 0.25)" },
+                        9: { light: "rgba(0, 0, 0, 0.50)", dark: "rgba(0, 0, 0, 0.50)" },
+                        10: { light: "rgba(0, 0, 0, 0.75)", dark: "rgba(0, 0, 0, 0.75)" }
+                    },
+                    
+                    speed: {
+                        1: { light: "rgba(18, 86, 137, 0.14)", dark: "rgba(18, 86, 137, 0.14)" },
+                        2: { light: "rgba(18, 86, 137, 0.28)", dark: "rgba(18, 86, 137, 0.28)" },
+                        3: { light: "rgba(18, 86, 137, 0.43)", dark: "rgba(18, 86, 137, 0.43)" },
+                        4: { light: "rgba(18, 86, 137, 0.57)", dark: "rgba(18, 86, 137, 0.57)" },
+                        5: { light: "rgba(18, 86, 137, 0.71)", dark: "rgba(18, 86, 137, 0.71)" },
+                        6: { light: "rgba(18, 86, 137, 0.86)", dark: "rgba(18, 86, 137, 0.86)" },
+                        7: { light: "rgba(18, 86, 137, 1.0)", dark: "rgba(18, 86, 137, 1.0)" },
+                        8: { light: "rgba(0, 0, 0, 0.25)", dark: "rgba(0, 0, 0, 0.25)" },
+                        9: { light: "rgba(0, 0, 0, 0.5)", dark: "rgba(0, 0, 0, 0.5)" },
+                        10: { light: "rgba(0, 0, 0, 0.75)", dark: "rgba(0, 0, 0, 0.75)" }
+                    },
                 }
             },
         peaks:
