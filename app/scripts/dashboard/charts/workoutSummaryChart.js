@@ -62,7 +62,7 @@ function(
         subTypes: [{
             chartType: 10,
             endpoint: "workoutsummary",
-            title: "Durration",
+            title: "Duration",
             series: [{
                 key: "totalTimeActual",
                 units: "hours"
