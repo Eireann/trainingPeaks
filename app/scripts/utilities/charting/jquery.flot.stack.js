@@ -187,7 +187,7 @@ charts or filled areas).
         plot.hooks.drawSeries.push(function(plot, canvas, series) { 
             var stackSpacing = series.stackSpacing;
             if(series.stack && !series.horizontal && stackSpacing) {
-                if(!series.datapoints.original)
+                if(series.datapoints.original)
                 {
                     series.datapoints.points = series.datapoints.original.slice();
                 }

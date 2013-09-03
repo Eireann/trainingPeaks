@@ -257,6 +257,7 @@ function(
             flotOptions.bars.align = "center";
 
             flotOptions.series.stack = true;
+            flotOptions.series.stackSpacing = 1;
 
             return flotOptions;
         },
