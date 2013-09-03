@@ -225,17 +225,40 @@ function(
             }; 
 
             // offset the start/end ticks by larger amounts when we have more weeks
-            if(this._data.length > 5)
+            var self = this;
+            flotOptions.xaxis.ticks = function(axis)
             {
-                var startIndex = 1;
-                var endIndex = this._data.length - Math.floor(this._data.length / 10) - 1;
-                var middleIndex = Math.floor((startIndex + endIndex) / 2);
-                flotOptions.xaxis.ticks = [startIndex, middleIndex, endIndex];
-            }
-            else if(this._data.length === 5)
-            {
-                flotOptions.xaxis.ticks = [0, 2, 4];
-            }
+                var startIndex = self._data.length > 5 ? Math.ceil(self._data.length / 20) : 0;
+                var endIndex = self._data.length > 5 ? self._data.length - Math.floor(self._data.length / 10) - 1 : self._data.length - 1;
+
+                // pad the default flot interval by a bit
+                var interval = Math.ceil(axis.delta * 1.3);
+
+                // make sure it ends on a multiple of our interval
+                endIndex = Math.ceil((startIndex + endIndex) / interval) * interval;
+
+                // add ticks between start and end index
+                var ticks = [];
+                for(var i = startIndex; i <= endIndex; i+= interval)
+                {
+                    ticks.push(i);
+                }
+                return ticks;
+
+                /*
+                if(self._data.length > 5)
+                {
+                    var startIndex = 1;
+                    var endIndex = self._data.length - Math.floor(self._data.length / 10) - 1;
+                    var middleIndex = Math.floor((startIndex + endIndex) / 2);
+                    return [startIndex, middleIndex, endIndex];
+                }
+                else if(self._data.length === 5)
+                {
+                    return [0, 2, 4];
+                }
+                */
+            };
 
             flotOptions.bars.align = "center";
 
