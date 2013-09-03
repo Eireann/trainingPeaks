@@ -182,6 +182,32 @@ charts or filled areas).
         }
         
         plot.hooks.processDatapoints.push(stackData);
+
+        // CHANGED: Add stackSpacing option
+        plot.hooks.drawSeries.push(function(plot, canvas, series) { 
+            var stackSpacing = series.stackSpacing;
+            if(series.stack && !series.horizontal && stackSpacing) {
+                if(!series.datapoints.original)
+                {
+                    series.datapoints.points = series.datapoints.original.slice();
+                }
+                else
+                {
+                    series.datapoints.original = series.datapoints.points.slice();
+                }
+
+                var points = series.datapoints.points;
+                var pointsize = series.datapoints.pointsize;
+
+                for(var i = pointsize - 1; i < points.length; i += pointsize)
+                {
+                    if(points[i] !== 0)
+                    {
+                        points[i] = series.yaxis.c2p(series.yaxis.p2c(points[i]) - stackSpacing);
+                    }
+                }
+            }
+        });
     }
     
     if($.plot)
