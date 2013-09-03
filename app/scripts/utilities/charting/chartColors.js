@@ -75,8 +75,8 @@ function()
         {
             planned: "#adadad",
             bars: { light: "#1b82ce", dark: "#125689" },
-            tss: { light: "#df0a08", dark: "#b90807" },
-            if: { light: "#5aadff", dark: "#3399ff" }
+            TSS: { light: "#df0a08", dark: "#b90807" },
+            IF: { light: "#5aadff", dark: "#3399ff" }
         },
 
         chartSelection: "#e61101",

@@ -105,12 +105,12 @@ function(
                 key: "totalTrainingStressScoreActual",
                 units: "tss",
                 widthScale: 2 * 0.7,
-                colors: chartColors.workoutSummary.tss
+                colors: chartColors.workoutSummary.TSS
             }, {
                 key: "averageIntensityFactorActual",
                 units: "if",
                 widthScale: 2 * 0.3,
-                colors: chartColors.workoutSummary.if
+                colors: chartColors.workoutSummary.IF
             }],
             tooltips: [{
                 label: "TSS",
