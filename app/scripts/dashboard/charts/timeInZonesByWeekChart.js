@@ -245,19 +245,6 @@ function(
                 }
                 return ticks;
 
-                /*
-                if(self._data.length > 5)
-                {
-                    var startIndex = 1;
-                    var endIndex = self._data.length - Math.floor(self._data.length / 10) - 1;
-                    var middleIndex = Math.floor((startIndex + endIndex) / 2);
-                    return [startIndex, middleIndex, endIndex];
-                }
-                else if(self._data.length === 5)
-                {
-                    return [0, 2, 4];
-                }
-                */
             };
 
             flotOptions.bars.align = "center";
