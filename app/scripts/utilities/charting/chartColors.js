@@ -109,10 +109,10 @@ function()
 
         workoutSummary:
         {
-            planned: "#00f",
-            bars: { light: "#9f9", dark: "#090" },
-            tss: { light: "#f99", dark: "#900" },
-            if: { light: "#99f", dark: "#009" }
+            planned: "#adadad",
+            bars: { light: "#1b82ce", dark: "#125689" },
+            tss: { light: "#df0a08", dark: "#b90807" },
+            if: { light: "#5aadff", dark: "#3399ff" }
         },
 
         chartSelection: "#e61101",
