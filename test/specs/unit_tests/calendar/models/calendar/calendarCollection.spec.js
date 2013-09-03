@@ -5,13 +5,14 @@ requirejs(
     "TP",
     "moment",
     "app",
+    "framework/dataManager",
     "testUtils/testHelpers",
     "testUtils/xhrDataStubs",
     "models/workoutModel",
     "models/workoutsCollection",
     "models/calendar/calendarCollection"
 ],
-function($, TP, moment, theMarsApp, testHelpers, xhrData, WorkoutModel, WorkoutsCollection, CalendarCollection)
+function($, TP, moment, theMarsApp, DataManager, testHelpers, xhrData, WorkoutModel, WorkoutsCollection, CalendarCollection)
 {
     describe("CalendarCollection ", function()
     {
@@ -31,7 +32,8 @@ function($, TP, moment, theMarsApp, testHelpers, xhrData, WorkoutModel, Workouts
                 testHelpers.startTheAppAndLogin(xhrData.users.barbkprem);
                 collection = new CalendarCollection([], {
                     startDate: startDate,
-                    endDate: endDate
+                    endDate: endDate,
+                    dataManager: new DataManager()
                 });
             });
 
@@ -80,7 +82,8 @@ function($, TP, moment, theMarsApp, testHelpers, xhrData, WorkoutModel, Workouts
 
             var collection = new CalendarCollection([], {
                 startDate: weekStartDate,
-                endDate: moment().day(6).add("weeks", 2)
+                endDate: moment().day(6).add("weeks", 2),
+                dataManager: new DataManager()
             });
 
             var dayInsideOfWeek = moment().day(3);
@@ -97,7 +100,8 @@ function($, TP, moment, theMarsApp, testHelpers, xhrData, WorkoutModel, Workouts
 
             var collection = new CalendarCollection([], {
                 startDate: weekStartDate,
-                endDate: moment().day(7).add("weeks", 2)
+                endDate: moment().day(7).add("weeks", 2),
+                dataManager: new DataManager()
             });
 
             var dayInsideOfWeek = moment().day(3);
@@ -119,7 +123,8 @@ function($, TP, moment, theMarsApp, testHelpers, xhrData, WorkoutModel, Workouts
             {
                 var collection = new CalendarCollection([], {
                     startDate: moment().day(1),
-                    endDate: moment().day(7).add("weeks", 2)
+                    endDate: moment().day(7).add("weeks", 2),
+                    dataManager: new DataManager()
                 });
 
                 var workoutDate = moment().day(4).format("YYYY-MM-DD");
@@ -182,9 +187,12 @@ function($, TP, moment, theMarsApp, testHelpers, xhrData, WorkoutModel, Workouts
             it("Should call CalendarCollection.addWorkoutToCalendarDay for each workout returned", function()
             {
 
+                var dataManager = new DataManager();
+
                 var collection = new CalendarCollection([], {
                     startDate: moment().day(0),
-                    endDate: moment().day(6).add("weeks", 2)
+                    endDate: moment().day(6).add("weeks", 2),
+                    dataManager: dataManager 
                 });
 
                 // fake workout collection fetcher
@@ -195,24 +203,12 @@ function($, TP, moment, theMarsApp, testHelpers, xhrData, WorkoutModel, Workouts
                         new WorkoutModel({ workoutDay: moment().add("days", 3).format(), workoutId: '3456' })
                 ];
 
-                spyOn(WorkoutsCollection.__super__, "fetch").andCallFake(function()
+                spyOn(dataManager, "fetchOnModel").andCallFake(function(collection)
                 {
-                    // make some workouts
-                    this.models = workouts;
-
-                    // return a deferred that immediately calls callback
-                    return {
-                        done: function(callback)
-                        {
-                            callback();
-                            return this;
-                        },
-                        always: function(callback)
-                        {
-                            callback();
-                            return this;
-                        }
-                    };
+                    collection.set(workouts); 
+                    var deferred = new $.Deferred();
+                    deferred.resolve();
+                    return deferred;
                 });
 
                 spyOn(collection, "addWorkoutToCalendarDay");
@@ -246,7 +242,8 @@ function($, TP, moment, theMarsApp, testHelpers, xhrData, WorkoutModel, Workouts
             {
                 collection = new CalendarCollection([], {
                     startDate: moment().day(0),
-                    endDate: moment().day(6).add("weeks", 2)
+                    endDate: moment().day(6).add("weeks", 2),
+                    dataManager: new DataManager()
                 });
 
                 expectedEndDate = moment(collection.startDate).subtract("days", 1);
@@ -288,7 +285,8 @@ function($, TP, moment, theMarsApp, testHelpers, xhrData, WorkoutModel, Workouts
             {
                 collection = new CalendarCollection([], {
                     startDate: moment().day(0),
-                    endDate: moment().day(6).add("weeks", 2)
+                    endDate: moment().day(6).add("weeks", 2),
+                    dataManager: new DataManager()
                 });
 
                 expectedStartDate = moment(collection.endDate).add("days", 1);
@@ -330,7 +328,8 @@ function($, TP, moment, theMarsApp, testHelpers, xhrData, WorkoutModel, Workouts
             {
                 collection = new CalendarCollection([], {
                     startDate: moment().day(0),
-                    endDate: moment().day(6).add("weeks", 2)
+                    endDate: moment().day(6).add("weeks", 2),
+                    dataManager: new DataManager()
                 });
                 workout = new WorkoutModel({ workoutDay: yesterday + "T00:00:00", workoutId: workoutId });
                 collection.addWorkout(workout);
@@ -356,7 +355,8 @@ function($, TP, moment, theMarsApp, testHelpers, xhrData, WorkoutModel, Workouts
             var context = new CalendarCollection([],
             {
                 startDate: moment().day(0),
-                endDate: moment().day(6)
+                endDate: moment().day(6),
+                dataManager: new DataManager()
             });
             
             spyOn(context.workoutsCollection, "reset");
@@ -386,7 +386,8 @@ function($, TP, moment, theMarsApp, testHelpers, xhrData, WorkoutModel, Workouts
             {
                 collection = new CalendarCollection([], {
                     startDate: moment().day(0),
-                    endDate: moment().day(6).add("weeks", 2)
+                    endDate: moment().day(6).add("weeks", 2),
+                    dataManager: new DataManager()
                 });
                 fakeData = {'some':'junk'};
                 dateToPasteTo = moment().format("YYYY-MM-DD");
@@ -401,7 +402,8 @@ function($, TP, moment, theMarsApp, testHelpers, xhrData, WorkoutModel, Workouts
                 spyOn(CalendarCollection.prototype, "subscribeToCopyPasteEvents");
                 var collection = new CalendarCollection([], {
                     startDate: moment().day(0),
-                    endDate: moment().day(6).add("weeks", 2)
+                    endDate: moment().day(6).add("weeks", 2),
+                    dataManager: new DataManager()
                 });
                 expect(CalendarCollection.prototype.subscribeToCopyPasteEvents).toHaveBeenCalled();
             });
@@ -493,7 +495,8 @@ function($, TP, moment, theMarsApp, testHelpers, xhrData, WorkoutModel, Workouts
             {
                 collection = new CalendarCollection([], {
                     startDate: moment().day(0),
-                    endDate: moment().day(6).add("weeks", 2)
+                    endDate: moment().day(6).add("weeks", 2),
+                    dataManager: new DataManager()
                 });
 
                 workouts = [];

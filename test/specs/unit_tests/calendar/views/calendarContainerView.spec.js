@@ -4,11 +4,12 @@ requirejs(
     "jquery",
     "TP",
     "moment",
+    "framework/dataManager",
     "app",
     "models/calendar/CalendarCollection",
     "views/calendar/container/calendarContainerView"
 ],
-function($, TP, moment, theMarsApp, CalendarCollection, CalendarView)
+function($, TP, moment, DataManager, theMarsApp, CalendarCollection, CalendarView)
 {
 
     describe("CalendarView ", function()
@@ -26,7 +27,8 @@ function($, TP, moment, theMarsApp, CalendarCollection, CalendarView)
             {
                 var collection_options = {
                     startDate: moment(),
-                    endDate: moment().add("weeks", 2)
+                    endDate: moment().add("weeks", 2),
+                    dataManager: new DataManager()
                 };
                 var collection =  new CalendarCollection(null, collection_options);
 

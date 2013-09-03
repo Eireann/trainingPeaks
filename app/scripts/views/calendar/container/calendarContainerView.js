@@ -82,7 +82,14 @@ function(
                 return;
             }
             $('.week').removeClass('inView');
-            this.calendarHeaderModel.set('currentDay', this.weeksCollectionView.getCurrentModel().get('id'));
+
+            var currentModel = this.weeksCollectionView.getCurrentModel();
+
+            if(currentModel)
+            {
+                this.calendarHeaderModel.set('currentDay', currentModel.get('id'));
+            }
+
             _.each(this.weeksCollectionView.getVisibleModels(), function(model)
             {
                 model.view.$el.addClass('inView');
