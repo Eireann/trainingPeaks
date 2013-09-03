@@ -609,6 +609,8 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
                 height: 25px;
                 background-color: #fff;
                 float: left;
+                background: $TPGrey1 $troughIconSpriteURL no-repeat 0 -24px;
+                background-color: $TPGrey2;
             }
 
             .chartTileName {

@@ -6,6 +6,9 @@ $mainTtabSpriteRetinaURL: url(../../assets/images/sprite-icons-main-tabs@2x.png)
 $dashboardTabSpriteURL: url(../../assets/images/sprite-icons-dashboard-tabs.png);
 $dashboardTabSpriteRetinaURL: url(../../assets/images/sprite-icons-dashboard-tabs@2x.png);
 
+$troughIconSpriteURL: url(../../assets/images/sprite-icons-trough.png);
+$troughIconSpriteRetinaURL: url(../../assets/images/sprite-icons-trough@2x.png);
+
 @mixin libraryTile()
 {
     background-color: $TPGrey6;
@@ -208,6 +211,9 @@ $dashboardTabSpriteRetinaURL: url(../../assets/images/sprite-icons-dashboard-tab
                background-position: -66px 0;
             }
         }
+
+
+
 
         .unimplementedLibrary {
             background-color: $TPGrey1;
@@ -441,7 +447,7 @@ $dashboardTabSpriteRetinaURL: url(../../assets/images/sprite-icons-dashboard-tab
 
             .trainingPlansIcon
             {
-                background: $TPGrey1 $mainTabSpriteURL no-repeat -70px -70px;
+                background: $TPGrey1 $troughIconSpriteURL no-repeat 0 0;
                 background-color: $TPGrey2;
                 width: 24px;
                 height: 24px;
@@ -474,6 +480,7 @@ $dashboardTabSpriteRetinaURL: url(../../assets/images/sprite-icons-dashboard-tab
         }
     }
 }
+
 
 #activeLibraryContainer
 {
