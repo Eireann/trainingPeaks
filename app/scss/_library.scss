@@ -448,3 +448,11 @@ $mainTtabSpriteRetinaURL: url(../../assets/images/sprite-icons-main-tabs@2x.png)
         }
     }
 }
+
+#activeLibraryContainer
+{
+    .ui-droppable
+    {
+        height: 100%;
+    }
+}
