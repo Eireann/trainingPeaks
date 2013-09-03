@@ -45,7 +45,6 @@ function(
                 throw new Error("CalendarCollection requires a data manager");
 
             this._dataManager = options.dataManager;
-            this._dataManager.on("reset", this._resetWorkouts, this);
 
             this.startOfWeekDayIndex = moment(options.startDate).day();
 
@@ -332,12 +331,16 @@ function(
             return this.workoutsCollection.get(workoutId);
         },
 
-        _resetWorkouts: function()
+        resetWorkouts: function()
         {
             this.workoutsCollection.reset();
             this.daysCollection.each(function(dayModel)
             {
                 dayModel.reset();
+            });
+            this.each(function(week)
+            {
+                week.set({ isFetched: false });
             });
         }
 
