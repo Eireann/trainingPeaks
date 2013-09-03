@@ -71,6 +71,34 @@ function(
             {
                 chartType: 27,
                 name: "Time In Speed Zones By Week"
+            },
+            {
+                chartType: 10,
+                name: "Duration by Week/Day"
+            },
+            {
+                chartType: 11,
+                name: "Distance by Week/Day"
+            },
+            {
+                chartType: 21,
+                name: "Kilojoules by Week/Day"
+            },
+            {
+                chartType: 23,
+                name: "TSS by Week/Day"
+            },
+            {
+                chartType: 37,
+                name: "Elevation Gain by Day/Week"
+            },
+            {
+                chartType: 19,
+                name: "Longest Workout (Distance)"
+            },
+            {
+                chartType: 20,
+                name: "Longest Workout (Duration)"
             }
             ]);
         }
