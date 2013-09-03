@@ -11,7 +11,7 @@ function(
     theApp)
 {
 
-    describe("Home", function()
+    xdescribe("Home", function()
     {
 
         var $mainRegion;
