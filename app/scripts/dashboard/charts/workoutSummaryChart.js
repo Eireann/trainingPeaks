@@ -350,7 +350,7 @@ function(
         {
             // TODO: Temporary patch for new API with wrapper object
             if(data && data.hasOwnProperty("data")) {
-                var data = data.data;
+                data = data.data;
             }
 
             if(!this.subType.prefiltered)
