@@ -74,9 +74,10 @@ function(
             this._data = data;
             var flotPointsByZone = this._buildPoints(data);
             this._totalMinutes = this._calculateTotalMinutes(flotPointsByZone);
+            var zoneColors = this._getZoneColors();
             if(flotPointsByZone && flotPointsByZone.length)
             {
-                var series = this._buildFlotDataSeries(flotPointsByZone);
+                var series = this._buildFlotDataSeries(flotPointsByZone, zoneColors);
                 var options = this._buildFlotChartOptions(this._data.length);
                 return { dataSeries: series, flotOptions: options };
             } else {
@@ -87,6 +88,12 @@ function(
         getChartName: function()
         {
             return "Time In Zones";
+        },
+
+        _getZoneColors: function()
+        {
+            var zoneType = this._getChartName().replace(" ","").toLowerCase();
+            return chartColors.gradients.trainingZones.hasOwnProperty(zoneType) ? chartColors.gradients.trainingZones[zoneType] : chartColors.gradients.trainingZones;
         },
 
         _getWeekStartDate: function(weekNumber)
@@ -181,13 +188,13 @@ function(
             return minutes;
         },
 
-        _buildFlotDataSeries: function (chartPointsByZone)
+        _buildFlotDataSeries: function (chartPointsByZone, zoneColors)
         {
             var dataSeriesByZone = [];
 
             _.each(chartPointsByZone, function(chartPoints, index)
             {
-                var zoneColor = chartColors.gradients.trainingZones[index + 1];
+                var zoneColor = zoneColors[index + 1];
                 var dataSeries =
                 {
                     data: chartPoints,
