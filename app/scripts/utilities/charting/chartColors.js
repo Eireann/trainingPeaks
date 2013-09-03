@@ -71,6 +71,14 @@ function()
             comparison: { light: "rgba(191, 189, 190, 0.8)", dark: "rgba(136, 135, 136, 0.8)" }
         },
 
+        workoutSummary:
+        {
+            planned: "#adadad",
+            bars: { light: "#1b82ce", dark: "#125689" },
+            tss: { light: "#df0a08", dark: "#b90807" },
+            if: { light: "#5aadff", dark: "#3399ff" }
+        },
+
         chartSelection: "#e61101",
 
         mapRoute: "#005695",
