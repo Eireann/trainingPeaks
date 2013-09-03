@@ -16,7 +16,6 @@ define(
     "controllers/loginController",
     "controllers/calendar/calendarController",
     "controllers/dashboardController",
-    "controllers/homeController",
     "views/buildInfoView",
     "router",
     "utilities/dragAndDropFileUploadWidget",
@@ -41,7 +40,6 @@ function(
     LoginController,
     CalendarController,
     DashboardController,
-    HomeController,
     BuildInfoView,
     Router,
     DragAndDropFileUploadWidget,
@@ -288,7 +286,6 @@ function(
             this.controllers.loginController = new LoginController();
             this.controllers.calendarController = new CalendarController();
             this.controllers.dashboardController = new DashboardController({ dataManager: this.dataManagers.reporting });
-            this.controllers.homeController = new HomeController();
         });
 
         this.addInitializer(function()
