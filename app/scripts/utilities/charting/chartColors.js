@@ -57,45 +57,9 @@ function()
                     },
                 trainingZones:
                 {
-                    heartrate:
-                    {
-                        1: { light: "rgba(184, 36, 16, 0.14)", dark: "rgba(184, 36, 16, 0.14)" },
-                        2: { light: "rgba(184, 36, 16, 0.28)", dark: "rgba(184, 36, 16, 0.28)" },
-                        3: { light: "rgba(184, 36, 16, 0.43)", dark: "rgba(184, 36, 16, 0.43)" },
-                        4: { light: "rgba(184, 36, 16, 0.57)", dark: "rgba(184, 36, 16, 0.57)" },
-                        5: { light: "rgba(184, 36, 16, 0.71)", dark: "rgba(184, 36, 16, 0.71)" },
-                        6: { light: "rgba(184, 36, 16, 0.86)", dark: "rgba(184, 36, 16, 0.86)" },
-                        7: { light: "rgba(184, 36, 16, 1.0)", dark: "rgba(184, 36, 16, 1.0)" },
-                        8: { light: "rgba(0, 0, 0, 0.25)", dark: "rgba(0, 0, 0, 0.25)" },
-                        9: { light: "rgba(0, 0, 0, 0.50)", dark: "rgba(0, 0, 0, 0.50)" },
-                        10: { light: "rgba(0, 0, 0, 0.75)", dark: "rgba(0, 0, 0, 0.75)" }
-                    },
-
-                    power:{
-                        1: { light: "rgba(90, 7, 146, 0.14)", dark: "rgba(90, 7, 146, 0.14)" },
-                        2: { light: "rgba(90, 7, 146, 0.28)", dark: "rgba(90, 7, 146, 0.28)" },
-                        3: { light: "rgba(90, 7, 146, 0.43)", dark: "rgba(90, 7, 146, 0.43)" },
-                        4: { light: "rgba(90, 7, 146, 0.57)", dark: "rgba(90, 7, 146, 0.57)" },
-                        5: { light: "rgba(90, 7, 146, 0.71)", dark: "rgba(90, 7, 146, 0.71)" },
-                        6: { light: "rgba(90, 7, 146, 0.86)", dark: "rgba(90, 7, 146, 0.86)" },
-                        7: { light: "rgba(90, 7, 146, 1.0)", dark: "rgba(90, 7, 146, 1.0)" },
-                        8: { light: "rgba(0, 0, 0, 0.25)", dark: "rgba(0, 0, 0, 0.25)" },
-                        9: { light: "rgba(0, 0, 0, 0.50)", dark: "rgba(0, 0, 0, 0.50)" },
-                        10: { light: "rgba(0, 0, 0, 0.75)", dark: "rgba(0, 0, 0, 0.75)" }
-                    },
-                    
-                    speed: {
-                        1: { light: "rgba(18, 86, 137, 0.14)", dark: "rgba(18, 86, 137, 0.14)" },
-                        2: { light: "rgba(18, 86, 137, 0.28)", dark: "rgba(18, 86, 137, 0.28)" },
-                        3: { light: "rgba(18, 86, 137, 0.43)", dark: "rgba(18, 86, 137, 0.43)" },
-                        4: { light: "rgba(18, 86, 137, 0.57)", dark: "rgba(18, 86, 137, 0.57)" },
-                        5: { light: "rgba(18, 86, 137, 0.71)", dark: "rgba(18, 86, 137, 0.71)" },
-                        6: { light: "rgba(18, 86, 137, 0.86)", dark: "rgba(18, 86, 137, 0.86)" },
-                        7: { light: "rgba(18, 86, 137, 1.0)", dark: "rgba(18, 86, 137, 1.0)" },
-                        8: { light: "rgba(0, 0, 0, 0.25)", dark: "rgba(0, 0, 0, 0.25)" },
-                        9: { light: "rgba(0, 0, 0, 0.5)", dark: "rgba(0, 0, 0, 0.5)" },
-                        10: { light: "rgba(0, 0, 0, 0.75)", dark: "rgba(0, 0, 0, 0.75)" }
-                    },
+                    heartrate: "rgba(184, 36, 16, $$)",
+                    power: "rgba(90, 7, 146, $$)",
+                    speed: "rgba(18, 86, 137, $$)"
                 }
             },
         peaks:

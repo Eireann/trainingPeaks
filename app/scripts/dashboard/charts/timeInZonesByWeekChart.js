@@ -194,7 +194,8 @@ function(
 
             _.each(chartPointsByZone, function(chartPoints, index)
             {
-                var zoneColor = zoneColors[index + 1];
+                var opacity = 0.14 + 0.86 * (index / (chartPointsByZone.length - 1));
+                var zoneColor = zoneColors.replace(/\$\$/, opacity.toFixed(2));
                 var dataSeries =
                 {
                     data: chartPoints,
@@ -203,9 +204,10 @@ function(
                         show: true,
                         lineWidth: 0,
                         fill: true,
-                        fillColor: { colors: [zoneColor.light, zoneColor.dark] }
+                        fillColor: zoneColor
                     },
-                    highlightColor: zoneColor.light
+                    color: zoneColor,
+                    highlightColor: zoneColor
                 };
 
                 dataSeriesByZone.push(dataSeries);
