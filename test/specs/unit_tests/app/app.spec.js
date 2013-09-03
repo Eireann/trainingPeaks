@@ -45,7 +45,7 @@ function( _, theApp)
                 expect(theApp.controllers.calendarController).toBeDefined();
             });
 
-            it("Should have a home controller", function()
+            xit("Should have a home controller", function()
             {
                 expect(theApp.controllers.homeController).toBeDefined();
             });

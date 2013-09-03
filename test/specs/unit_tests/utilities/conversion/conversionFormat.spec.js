@@ -627,6 +627,71 @@ function(theMarsApp, TP, conversion, convertToModelUnits, dateTimeUtils)
             ]);
         });
 
+        describe("Efficiency Factor, for run and walk", function()
+        {
+
+            beforeEach(function()
+            {
+                // we don't want to test units conversion here, just limiting, and db is metric, so use metric user preference
+                theMarsApp.user.set("units", TP.utils.units.constants.Metric);
+            });
+
+            describeFormat("formatEfficiencyFactor", [
+                {
+                    output: "1.00",
+                    input: 1 / 60,
+                    options: { workoutTypeId: 3 }
+                },
+                {
+                    output: "4.32",
+                    input: 4.315 / 60,
+                    options: { workoutTypeId: 3 }
+                },
+                {
+                    output: "0.00",
+                    input: 0 / 60,
+                    options: { workoutTypeId: 3 } 
+                },
+                {
+                    output: "3.20",
+                    input: 3.2 / 60,
+                    options: { workoutTypeId: 3 }
+                }
+            ]);
+        });
+
+        describe("Efficiency Factor, for other workout types", function()
+        {
+
+            beforeEach(function()
+            {
+                // we don't want to test units conversion here, just limiting, and db is metric, so use metric user preference
+                theMarsApp.user.set("units", TP.utils.units.constants.Metric);
+            });
+
+            describeFormat("formatEfficiencyFactor", [
+                {
+                    output: "1.00",
+                    input: 1,
+                    options: { workoutTypeId: 1 }
+                },
+                {
+                    output: "4.32",
+                    input: 4.315,
+                    options: { workoutTypeId: 1 }
+                },
+                {
+                    output: "0.00",
+                    input: 0,
+                    options: { workoutTypeId: 1 } 
+                },
+                {
+                    output: "3.20",
+                    input: 3.2,
+                    options: { workoutTypeId: 1 }
+                }
+            ]);
+        });
     });
 
 });
