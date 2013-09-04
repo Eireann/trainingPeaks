@@ -82,15 +82,11 @@ function(TP, moment, applyTrainingPlanTemplate)
                 endDate;
 
 
-            if (requiredDateIndex > targetDateIndex)
-            {
-                endDate = moment(this.targetDate).day(requiredDateIndex); 
-            } else if (requiredDateIndex < targetDateIndex)
-            {
-                endDate = moment(this.targetDate).day(requiredDateIndex); 
-            } else if (requiredDateIndex === targetDateIndex)
+            if (requiredDateIndex === targetDateIndex)
             {
                 endDate = moment(this.targetDate);
+            } else {
+                endDate = moment(this.targetDate).day(requiredDateIndex); 
             }
 
             this.eligibleTargetDate = endDate;

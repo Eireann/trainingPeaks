@@ -47,26 +47,9 @@
     <h3 class="subheadbold">{{$ "ApplyPlan"}}</h3>
 </div>
 <div class="startEndPlan">
-    <div class="selectBoxWrapper">
-        <select id="applyDateType" class="dateOptions"> 
-            {{# with details }}
-                {{#if eventPlan }}
-                    {{#ifNot forceDate}}
-                        <option value="1">{{$ "Start" }}</option>
-                        <option value="3">{{$ "End" }}</option>
-                    {{/ifNot}}
-                    <option value="2">{{$ "EndOnEventDate" }}</option>
-                {{ else }}
-                    <option value="1">{{$ "Start" }}</option>
-                    <option value="3">{{$ "End" }}</option>
-                {{/if}}
-            {{/with}}
-        </select>
-    </div>
-    <span class="small on">{{$ "on" }}</span>
-    <input type="text" id="applyDate" class="datepicker" value="{{ formatDate applyDate "MM/DD/YYYY" }}" readonly>
-    <button class="apply">{{$ "Go" }}</button>
+
 </div>
+<button class="apply">{{$ "Go" }}</button>
 {{/if}}
 
 {{#with details}}
