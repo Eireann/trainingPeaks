@@ -11,6 +11,7 @@ requirejs(
     "controllers/calendar/calendarController",
     "models/workoutModel",
     "models/workoutsCollection",
+    "models/library/trainingPlan",
     "views/calendar/container/calendarContainerView",
     "views/calendar/library/libraryView"
 ],
@@ -25,6 +26,7 @@ function(
     CalendarController,
     WorkoutModel,
     WorkoutsCollection,
+    TrainingPlan,
     CalendarView,
     LibraryView
     )

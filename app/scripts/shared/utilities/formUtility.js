@@ -36,6 +36,18 @@ function(
                     $el.val(value);
                 }
 
+                if($el.is("select"))
+                {
+                    // Add an empty or Unknown entry if needed
+                    var valueAsString = value === undefined || value === null ? "" : value.toString();
+                    if($el.val() !== valueAsString)
+                    {
+                        var text = value ? "Unknown" : "";
+                        var $option = $("<option />").attr('value', value).text(text);
+                        $el.prepend($option).val(value);
+                    }
+                }
+
             }, options);
         },
 

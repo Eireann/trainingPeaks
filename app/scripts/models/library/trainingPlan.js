@@ -1,9 +1,10 @@
 ﻿define(
 [
     "TP",
-    "./trainingPlanDetails"
+    "./trainingPlanDetails",
+    "models/commands/applyTrainingPlan"
 ],
-function (TP, TrainingPlanDetailsModel)
+function (TP, TrainingPlanDetailsModel, ApplyTrainingPlanCommand)
 {
     var TrainingPlanModel = TP.APIDeepModel.extend(
     {
@@ -28,6 +29,27 @@ function (TP, TrainingPlanDetailsModel)
         initialize: function()
         {
             this.details = new TrainingPlanDetailsModel({ planId: this.get("planId") });
+        },
+        refreshDependencies: function(date)
+        {
+            this.fetch();
+            this.trigger('requestRefresh', date);
+        },
+        applyToDate: function(date, startType)
+        {
+            var command = new ApplyTrainingPlanCommand({
+                athleteId: theMarsApp.user.getCurrentAthleteId(),
+                planId: this.get('planId'),
+                startType: startType,
+                targetDate: date
+            });
+            var def = command.execute();
+            var self = this;
+            def.done(function()
+            {
+                self.refreshDependencies(date);
+            });
+            return def;
         }
 
     });
