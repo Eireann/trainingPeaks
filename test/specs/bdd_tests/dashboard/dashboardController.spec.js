@@ -63,12 +63,12 @@ function(
 
             beforeEach(function()
             {
-                theMarsApp.user.set("settings.dashboard.pods", []);
+                theMarsApp.user.getDashboardSettings().set("pods", []);
             });
 
             afterEach(function()
             {
-                theMarsApp.user.set("settings.dashboard.pods", null);
+                theMarsApp.user.getDashboardSettings().set("pods", null);
             });
 
             it("Should have a dashboard view", function()

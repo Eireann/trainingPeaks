@@ -426,12 +426,13 @@ function(
 
         findGlobalChartSettings: function()
         {
-            var globalSettingKey = "settings.dashboard.dateOptions";
-            if(!theMarsApp.user.has(globalSettingKey))
+            var globalSettingKey = "dateOptions";
+            var dashboardSettings = theMarsApp.user.getDashboardSettings();
+            if(!dashboardSettings.has(globalSettingKey))
             {
-                theMarsApp.user.set(globalSettingKey, { startDate: null, endDate: null, quickDateSelectOption: null});
+                dashboardSettings.set(globalSettingKey, { startDate: null, endDate: null, quickDateSelectOption: null});
             }
-            return theMarsApp.user.get(globalSettingKey);
+            return dashboardSettings.get(globalSettingKey);
         },
 
         findGlobalChartSettingsHandler: function()

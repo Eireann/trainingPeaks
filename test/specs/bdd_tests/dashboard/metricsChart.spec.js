@@ -48,7 +48,7 @@ function(
             {
                 var userData = xhrData.users.barbkprem;
                 testHelpers.startTheAppAndLogin(userData, true);
-                theMarsApp.user.set("settings.dashboard.pods", [metricPowerPodSettings]);
+                theMarsApp.user.getDashboardSettings().set("pods", [metricPowerPodSettings]);
                 $mainRegion = theMarsApp.mainRegion.$el;
                 theMarsApp.router.navigate("dashboard", true);
                 $body = theMarsApp.getBodyElement();
@@ -102,9 +102,9 @@ function(
                     var $body = theMarsApp.getBodyElement();
                     testHelpers.clearRequests();
                     $mainRegion.find(".dashboardChart.metricsChart .settings").trigger("mousedown");
-                    expect(testHelpers.hasRequest("PUT", "user")).toBe(false);
+                    expect(testHelpers.hasRequest("PUT", "settings/dashboard")).toBe(false);
                     $body.find(".dashboardChartSettings .closeIcon").trigger("click");
-                    expect(testHelpers.hasRequest("PUT", "user")).toBe(true);
+                    expect(testHelpers.hasRequest("PUT", "settings/dashboard")).toBe(true);
                 });
 
                 it("Should not request new data on settings close if parameters haven't changed", function()
@@ -160,7 +160,7 @@ function(
                 {
                     var userData = xhrData.users.barbkprem;
                     testHelpers.startTheAppAndLogin(userData, true);
-                    theMarsApp.user.set("settings.dashboard.pods", [metricsPodSettings]);
+                    theMarsApp.user.getDashboardSettings().set("pods", [metricsPodSettings]);
                     $mainRegion = theMarsApp.mainRegion.$el;
                     theMarsApp.router.navigate("dashboard", true);
                     $body = theMarsApp.getBodyElement();
