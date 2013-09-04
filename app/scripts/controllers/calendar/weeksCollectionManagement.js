@@ -13,7 +13,8 @@ function(CalendarCollection)
                 summaryViewEnabled: this.summaryViewEnabled,
                 startDate: moment(this.startDate),
                 endDate: moment(this.endDate),
-                startOfWeekDayIndex: this.startOfWeekDayIndex
+                startOfWeekDayIndex: this.startOfWeekDayIndex,
+                dataManager: this._dataManager
             });
         },
 

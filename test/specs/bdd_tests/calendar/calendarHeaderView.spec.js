@@ -5,12 +5,13 @@ requirejs(
     "TP",
     "moment",
     "app",
+    "framework/dataManager",
     "controllers/calendar/CalendarController",
     "views/calendar/calendarHeaderView",
     "testUtils/testHelpers",
     "testUtils/xhrDataStubs"
 ],
-function($, TP, moment, theMarsApp, CalendarController, CalendarHeaderView, testHelpers, xhrData)
+function($, TP, moment, theMarsApp, DataManager, CalendarController, CalendarHeaderView, testHelpers, xhrData)
 {
 
     describe("CalendarHeaderView ", function()
@@ -34,7 +35,7 @@ function($, TP, moment, theMarsApp, CalendarController, CalendarHeaderView, test
         it("Should update the calendar when a specific date is requested through the datepicker", function()
         {
 
-            var controller = new CalendarController();
+            var controller = new CalendarController({ dataManager: new DataManager() });
             controller.initializeHeader();
             controller.showHeader();
             spyOn(controller, "showDate");

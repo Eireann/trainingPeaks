@@ -56,6 +56,9 @@ function(_, $, Backbone, TP, xhrData, app)
             // start the app
             app.start();
 
+            // turn off login redirect
+            app.controllers.loginController.off("login:success");
+
             // capture ajax calls
             this.setupFakeAjax();
 
@@ -264,7 +267,6 @@ function(_, $, Backbone, TP, xhrData, app)
 
             this.submitLogin(userData);
         }
-
     };
 
 });

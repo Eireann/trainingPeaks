@@ -19,10 +19,17 @@ function(
             }
             catch(e)
             {
-                if (window._rollbar)
+                if (window._rollbar && !e._rollbared)
                 {
                     window._rollbar.push(e);
                 }
+
+                if (!e._rollbared)
+                {
+                    e._rollbared = true;
+                    e.message += " (rollbared)";
+                }
+
                 throw e;
             }
         };

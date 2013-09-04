@@ -30,6 +30,8 @@
 
             "flot": "../vendor/js/libs/flot",
 
+            "jquery.flot.orderBars": "../vendor/js/libs/jquery.flot.orderBars",
+
             // Underscore & Lodash (provided by Lodash)
             "lodash": "../vendor/js/libs/lodash.TP",
             "underscore": "../vendor/js/libs/lodash.TP",

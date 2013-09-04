@@ -38,9 +38,9 @@ function(_, moment, TP, WorkoutModel, SelectedWorkoutCollection)
 
         // gets called via onBeforeRender of calendarDayView - only add a label if we need it for render,
         // but not for copy/paste etc
-        configureDayLabel: function()
+        configureDayLabel: function(forceAdd)
         {
-            if (!this.hasLabel)
+            if (forceAdd || !this.hasLabel)
             {
                 // add a model to hold our label
                 var dayLabel = new TP.Model({ date: this.get("date") });
@@ -58,6 +58,12 @@ function(_, moment, TP, WorkoutModel, SelectedWorkoutCollection)
         remove: function(item)
         {
             this.itemsCollection.remove(item);
+        },
+
+        reset: function(models, options)
+        {
+            this.itemsCollection.reset(models, options);
+            this.configureDayLabel(true);
         },
 
         //deleteDayItems: function()

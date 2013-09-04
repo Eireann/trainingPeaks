@@ -7,6 +7,7 @@ requirejs(
     "jquery",
     "underscore",
     "backbone",
+    "framework/dataManager",
     "controllers/calendar/calendarController",
     "models/workoutModel",
     "models/workoutsCollection",
@@ -21,6 +22,7 @@ function(
     $,
     _,
     Backbone,
+    DataManager,
     CalendarController,
     WorkoutModel,
     WorkoutsCollection,
@@ -57,13 +59,13 @@ function(
             
             it("Should have a layout", function()
             {
-                var controller = new CalendarController();
+                var controller = new CalendarController({ dataManager: new DataManager() });
                 expect(controller.getLayout()).toBeDefined();
             });
 
             it("Should have a startDate set to the beginning of the week 4 weeks ago", function()
             {
-                var controller = new CalendarController();
+                var controller = new CalendarController({ dataManager: new DataManager() });
                 expect(controller.startDate).toBeDefined();
 
                 var expectedStartDate = moment().day(controller.startOfWeekDayIndex).subtract("weeks", 4);
@@ -72,7 +74,7 @@ function(
 
             it("Should have an endDate set to the end of the week six weeks from now", function()
             {
-                var controller = new CalendarController();
+                var controller = new CalendarController({ dataManager: new DataManager() });
                 expect(controller.endDate).toBeDefined();
 
                 var expectedEndDate = moment().day(6 + controller.startOfWeekDayIndex).add("weeks", 6);
@@ -81,7 +83,7 @@ function(
 
             it("Should have a weeksCollection", function()
             {
-                var controller = new CalendarController();
+                var controller = new CalendarController({ dataManager: new DataManager() });
                 expect(controller.weeksCollection).toBeDefined();
                 expect(controller.weeksCollection).not.toBeNull();
             });
@@ -93,7 +95,7 @@ function(
 
             beforeEach(function()
             {
-                controller = new CalendarController();
+                controller = new CalendarController({ dataManager: new DataManager() });
                 spyOn(controller, "showViewsInRegions");
                 spyOn(controller, "showDate");
             });
@@ -146,7 +148,7 @@ function(
         {
             it("Should create a CalendarView", function()
             {
-                var controller = new CalendarController();
+                var controller = new CalendarController({ dataManager: new DataManager() });
                 spyOn(CalendarView.prototype, "initialize").andCallThrough();
                 controller.initializeHeader();
                 controller.initializeCalendar();
@@ -155,7 +157,7 @@ function(
 
             it("Should bind to CalendarView events", function()
             {
-                var controller = new CalendarController();
+                var controller = new CalendarController({ dataManager: new DataManager() });
                 spyOn(controller, "bindToCalendarViewEvents");
                 controller.initializeHeader();
                 controller.initializeCalendar();
@@ -169,7 +171,7 @@ function(
 
             it("Should call requestWorkouts once for each week", function()
             {
-                var controller = new CalendarController();
+                var controller = new CalendarController({ dataManager: new DataManager() });
                 controller.startDate = moment().day(0);
                 controller.endDate = moment().day(0).add("weeks", 20);
                 spyOn(controller.weeksCollection, "requestWorkouts");
@@ -187,7 +189,7 @@ function(
             {
                 it("Should create an exerciseLibraries", function()
                 {
-                    var controller = new CalendarController();
+                    var controller = new CalendarController({ dataManager: new DataManager() });
                     controller.initializeLibrary();
                     expect(controller.libraryCollections.exerciseLibraries).toBeDefined();
                 });
@@ -196,7 +198,7 @@ function(
 
             it("Should fetch the exercise library", function()
             {
-                var controller = new CalendarController();
+                var controller = new CalendarController({ dataManager: new DataManager() });
                 controller.initializeLibrary();
                 spyOn(controller.libraryCollections.exerciseLibraries, "fetch");
                 controller.loadLibraryData();
@@ -245,7 +247,7 @@ function(
         {
             it("Should create a LibraryView", function()
             {
-                var controller = new CalendarController();
+                var controller = new CalendarController({ dataManager: new DataManager() });
                 spyOn(LibraryView.prototype, "initialize").andCallThrough();
                 controller.initializeLibrary();
                 expect(LibraryView.prototype.initialize).toHaveBeenCalled();
@@ -261,7 +263,7 @@ function(
                 var eventOptions = {
                     DropEvent: "itemMoved"
                 };
-                var controller = new CalendarController();
+                var controller = new CalendarController({ dataManager: new DataManager() });
                 spyOn(controller.weeksCollection, "onItemMoved");
                 controller.onDropItem(eventOptions);
                 expect(controller.weeksCollection.onItemMoved).toHaveBeenCalledWith(eventOptions);
@@ -277,7 +279,7 @@ function(
                         id: '2012-01-01'
                     }
                 };
-                var controller = new CalendarController();
+                var controller = new CalendarController({ dataManager: new DataManager() });
                 controller.initializeHeader();
                 controller.initializeCalendar();
                 spyOn(controller.views.calendar, "scrollToDateIfNotFullyVisible");
@@ -300,7 +302,7 @@ function(
             {
                 startDate = moment().day(0);
                 endDate = moment().day(0).add("weeks",4);
-                controller = new CalendarController();
+                controller = new CalendarController({ dataManager: new DataManager() });
                 controller.initializeHeader();
                 controller.initializeCalendar();
                 spyOn(controller.weeksCollection, "resetToDates");
@@ -328,7 +330,7 @@ function(
             
             beforeEach(function()
             {
-                controller = new CalendarController();
+                controller = new CalendarController({ dataManager: new DataManager() });
                 spyOn(controller, "reset");
                 controller.initializeHeader();
                 controller.initializeCalendar();
@@ -382,7 +384,7 @@ function(
         {
             it("Should reset the calendar state on the request:refresh event", function()
             {
-                var controller = new CalendarController();
+                var controller = new CalendarController({ dataManager: new DataManager() });
                 controller.initializeHeader();
                 controller.views.calendar =
                 {

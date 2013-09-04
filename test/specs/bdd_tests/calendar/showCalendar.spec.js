@@ -73,14 +73,14 @@ function(
                 expect(controller.views.calendar.weeksCollectionView.firstModel.get('id')).toBe("2013-01-28");
             });
 
-            it("Should go back to that date when navigating to home and back to calendar", function()
+            xit("Should go back to that date when navigating to home and back to calendar", function()
             {
                 theApp.router.navigate("home", {trigger: true});
                 theApp.router.navigate("calendar", {trigger: true});
                 expect(controller.views.calendar.weeksCollectionView.firstModel.get('id')).toBe("2013-01-28");
             });
 
-            it("Should go back to that date when navigating to home then dashboard then back to calendar", function()
+            xit("Should go back to that date when navigating to home then dashboard then back to calendar", function()
             {
                 theApp.router.navigate("home", {trigger: true});
                 theApp.router.navigate("dashboard", {trigger: true});

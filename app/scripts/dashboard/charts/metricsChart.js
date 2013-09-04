@@ -120,13 +120,13 @@ function(
                         ticks: function(axis)
                         {
                             var date = moment(axis.min).startOf('day');
-                            var delta = moment.duration(Math.ceil(moment.duration(axis.delta * 1.3).asDays()), "days");
+                            var delta = Math.ceil(moment.duration(axis.delta * 1.3).asDays());
 
                             var ticks = [date.valueOf()];
 
                             while(_.last(ticks) < axis.max)
                             {
-                                date.add(delta);
+                                date.add(delta, "days");
                                 ticks.push(date.valueOf());
                             }
 

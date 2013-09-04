@@ -41,6 +41,10 @@ function(
             if (!options || !options.hasOwnProperty('endDate'))
                 throw new Error("CalendarCollection requires an end date");
 
+            if (!options || !options.hasOwnProperty('dataManager'))
+                throw new Error("CalendarCollection requires a data manager");
+
+            this._dataManager = options.dataManager;
 
             this.startOfWeekDayIndex = moment(options.startDate).day();
 
@@ -48,12 +52,11 @@ function(
 
             this.workoutsCollection = new WorkoutsCollection();
             this.daysCollection = new TP.Collection();
-
-
             this.setUpWeeks(options.startDate, options.endDate);
 
             this.initializeCopyPaste();
             this.initializeMoveAndShift();
+
         },
 
         get: function(id)
@@ -161,7 +164,7 @@ function(
 
             this.setWeeksAttrs(startDate, endDate, {isWaiting: true, isFetched: true});
             var workouts = new WorkoutsCollection([], { startDate: moment(startDate), endDate: moment(endDate) });
-            var waiting = workouts.fetch();
+            var waiting = this._dataManager.fetchOnModel(workouts);
 
             // we trigger a sync event on each week model - whether they have workouts or not - to remove the waiting throbber
             // but we don't trigger the request event here to show the throbber, because the week model is not yet bound to a view,
@@ -326,6 +329,19 @@ function(
         getWorkout: function(workoutId)
         {
             return this.workoutsCollection.get(workoutId);
+        },
+
+        resetWorkouts: function()
+        {
+            this.workoutsCollection.reset();
+            this.daysCollection.each(function(dayModel)
+            {
+                dayModel.reset();
+            });
+            this.each(function(week)
+            {
+                week.set({ isFetched: false });
+            });
         }
 
     };

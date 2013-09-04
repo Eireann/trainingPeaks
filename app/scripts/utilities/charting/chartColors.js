@@ -54,9 +54,14 @@ function()
                         walk: { light: "#e6d701", dark: "#aba001" },
                         other: { light: "#c116c9", dark: "#8e1094" },
                         dayoff: { light: "#a5b3b6", dark: "#84979c" } 
-                    }
+                    },
+                trainingZones:
+                {
+                    heartrate: "rgba(184, 36, 16, $$)",
+                    power: "rgba(90, 7, 146, $$)",
+                    speed: "rgba(18, 86, 137, $$)"
+                }
             },
-
         peaks:
         {
             heartRate: { light: "rgba(236, 65, 43, 0.6)", dark: "rgba(184, 36, 16, 0.6)" },
@@ -64,6 +69,14 @@ function()
             pace: { light: "rgba(27, 130, 206, 0.6)", dark: "rgba(18, 86, 137, 0.6)" },
             cadence: { light: "rgba(255, 204, 0, 0.6)", dark: "rgba(255, 165, 0, 0.6)" },
             comparison: { light: "rgba(191, 189, 190, 0.8)", dark: "rgba(136, 135, 136, 0.8)" }
+        },
+
+        workoutSummary:
+        {
+            planned: "#adadad",
+            bars: { light: "#1b82ce", dark: "#125689" },
+            TSS: { light: "#df0a08", dark: "#b90807" },
+            IF: { light: "#5aadff", dark: "#3399ff" }
         },
 
         chartSelection: "#e61101",
