@@ -1,24 +1,24 @@
 <div class="row">
     <div class="firstName">
         <label>{{$ "FirstName" }}</label>
-        <input data-modelname="user" type="text" readonly name="firstName" />
+        <input data-modelname="user" type="text" name="firstName" />
     </div>
 
     <div class="lastName">
         <label>{{$ "LastName" }}</label>
-        <input data-modelname="user" type="text" readonly name="lastName" />
+        <input data-modelname="user" type="text" name="lastName" />
     </div>
 </div>
 
 <div class="row">
     <div>
         <label>{{$ "Username" }}</label>
-        <input data-modelname="user" type="text" readonly name="userName" />
+        <label>{{ userName }}</label>
     </div>
 
     <div>
         <label>{{$ "Password" }}</label>
-        <input data-modelname="user" type="password" readonly/>
+        <input data-modelname="user" type="password"/>
     </div>
 </div>
 
@@ -36,36 +36,36 @@
 
     <div class="row">
         <label>{{$ "Birthday" }}</label>
-        <input data-modelname="user" type="text" readonly data-format="date" name="birthday" />
+        <input data-modelname="user" type="text" data-format="date" name="birthday" />
     </div>
 
     <div class="row">
         <label>{{$ "Gender" }}</label>
         <label class="radioButtonRow genderRadioButtonRow">
-            <input data-modelname="user" type="radio" readonly name="gender" value="m"/>
+            <input data-modelname="user" type="radio" name="gender" value="m"/>
             Male
         </label>
         <label class="radioButtonRow genderRadioButtonRow">
-            <input data-modelname="user" type="radio" readonly name="gender" value="f"/>
+            <input data-modelname="user" type="radio" name="gender" value="f"/>
             Female
         </label>
     </div>
 
     <div class="row">
         <label>{{$ "Email" }}</label>
-        <input data-modelname="user" type="email" readonly name="email" />
+        <input data-modelname="user" type="email" name="email" />
     </div>
 
     <div class="row">
         <label>{{$ "Address" }} 1</label>
-        <input data-modelname="user" type="text" readonly name="address" />
+        <input data-modelname="user" type="text" name="address" />
         <label>{{$ "Address" }} 2</label>
-        <input data-modelname="user" type="text" readonly name="address2" />
+        <input data-modelname="user" type="text" name="address2" />
     </div>
 
     <div class="row">
         <label>{{$ "City" }}</label>
-        <input data-modelname="user" type="text" readonly name="city" />
+        <input data-modelname="user" type="text" name="city" />
         <label>{{$ "State" }}</label>
         <div class="selectBox">
             <select data-modelname="user" name="state">
@@ -78,7 +78,7 @@
 
     <div class=" row">
         <label>{{$ "ZipCode" }}</label>
-        <input data-modelname="user" type="text" readonly name="zipCode" />
+        <input data-modelname="user" type="text" name="zipCode" />
         <label>{{$ "Country" }}</label>
         <div class="selectBox country">
             <select data-modelname="user" name="country" >
@@ -91,9 +91,9 @@
 
     <div class="row">
         <label>{{$ "Phone" }}</label>
-        <input data-modelname="user" type="tel" readonly name="phone" />
+        <input data-modelname="user" type="tel" name="phone" />
         <label>{{$ "CellPhone" }}</label>
-        <input data-modelname="user" type="tel" readonly name="cellPhone" />
+        <input data-modelname="user" type="tel" name="cellPhone" />
     </div>
     
     {{#if profilePhotoUrl}}
@@ -113,11 +113,11 @@
     <div class="row">
         <label>{{$ "Units" }}</label>
         <label class="radioButtonRow">
-            <input data-modelname="user" type="radio" readonly name="units" value="1" />
+            <input data-modelname="user" type="radio" name="units" value="1" />
             English
         </label>
         <label class="radioButtonRow">
-            <input data-modelname="user" type="radio" readonly name="units" value="2" />
+            <input data-modelname="user" type="radio" name="units" value="2" />
             Metric
         </label>
     </div>
@@ -125,11 +125,11 @@
     <div class="row">
         <label>{{$ "DateFormat" }}</label>
         <label class="radioButtonRow">
-            <input data-modelname="user" type="radio" readonly name="dateFormat" value="mdy" />
+            <input data-modelname="user" type="radio" name="dateFormat" value="mdy" />
             MM/DD/YY
         </label>
         <label class="radioButtonRow">
-            <input data-modelname="user" type="radio" readonly name="dateFormat" value="dmy" />
+            <input data-modelname="user" type="radio" name="dateFormat" value="dmy" />
             DD/MM/YY
         </label>
     </div>
@@ -195,6 +195,6 @@
     <p class="small deliveryTimeHelpText">{{$ "plannedWorkoutsNotificationTimeHelpText" }}</p>
 
     <div class="row">
-        <label class="checkBoxRow"><input data-modelname="account" name="allowMarketingEmails" type="checkbox"> {{$ "newsletterNotificationSetting" }}</label>
+        <label class="checkBoxRow"><input data-modelname="account" name="allowMarketingEmails" type="checkbox" value="true"> {{$ "newsletterNotificationSetting" }}</label>
     </div>
 

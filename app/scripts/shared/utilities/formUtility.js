@@ -24,16 +24,15 @@ function(
 
                 if(type === "radio")
                 {
-                    value = [value];
+                    $el.val([String(value)]);
                 }
-
-                if(type === "checkbox")
+                else if(type === "checkbox")
                 {
-                    $el.prop("checked", value ? true : false);
+                    $el.prop("checked", String(value) === String($el.val()));
                 }
                 else
                 {
-                    $el.val(value);
+                    $el.val(String(value));
                 }
 
                 if($el.is("select"))
@@ -53,17 +52,54 @@ function(
 
         applyValuesToModel: function($form, model, options)
         {
-            
+            var formValues = {};
+
+             FormUtility._processFields($form, function(key, $el, $formElements)
+            {
+                var value = "";
+                var type = $el.attr("type");
+
+                if(type === "radio")
+                {
+                    var checkedRadioFilter = "input[type=radio][name=" + key + "]:checked";
+                    var $checkedRadio = $formElements.filter(checkedRadioFilter);
+                    if($checkedRadio.length)
+                    {
+                        value = $checkedRadio.val();
+                    }
+                }
+                else if(type === "checkbox")
+                {
+                    if($el.is(":checked"))
+                    {
+                        value = $el.val();
+                    }
+                }
+                else
+                {
+                    value = $el.val();
+                }
+
+                // fix booleans
+                if(value.toLowerCase() === "true")
+                {
+                    value = true;
+                }
+                else if(value.toLowerCase() === "false")
+                {
+                    value = false;
+                }
+
+                formValues[key] = value;
+
+            }, options);
+
+            model.set(formValues);
         },
 
         _processFields: function($form, callback, options)
         {
-            var $formElements = $form.find("input, select, textarea");
-
-            if(options && options.filterSelector)
-            {
-                $formElements = $formElements.filter(options.filterSelector);
-            }
+            var $formElements = FormUtility._findFormFields($form, options ? options.filterSelector : null);
 
             $formElements.each(function(i, el)
             {
@@ -72,9 +108,19 @@ function(
 
                 if (key)
                 {
-                    callback(key, $el);
+                    callback(key, $el, $formElements);
                 }
             });
+        },
+
+        _findFormFields: function($form, filterSelector)
+        {
+            var $formElements = $form.find("input, select, textarea");
+            if(filterSelector)
+            {
+                $formElements = $formElements.filter(filterSelector);
+            }
+            return $formElements;
         }
     };
 
