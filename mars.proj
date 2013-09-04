@@ -43,7 +43,7 @@
 
 		<!-- Update the release files with the current build number -->
 		<PropertyGroup>
-			<BuildHash Condition=" '$(Configuration)' == 'Release' ">$(BUILD_VCS_NUMBER_Git_Mars___UAT)</BuildHash>
+			<BuildHash Condition=" '$(Configuration)' == 'Release' ">$(BUILD_VCS_NUMBER_GitMarsRelease)</BuildHash>
 			<BuildHash Condition=" '$(BuildHash)' == '' ">$(BUILD_VCS_NUMBER_Git_Mars___Master)</BuildHash>
 			<GitHash>$(BuildHash)</GitHash>
 			<GitHash Condition=" '$(GitHash)' == '' ">DEVELOPER BUILD</GitHash>
