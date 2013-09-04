@@ -2,89 +2,53 @@
 [
     "TP",
     "backbone",
-    "shared/models/recurringPaymentsCollection",
-    "shared/models/paymentHistoryCollection",
-    "shared/views/userSettingsFormView",
-    "shared/views/paymentHistoryView",
-    "shared/views/recurringPaymentsView",
-    "hbs!shared/templates/userSettingsView"
+    "shared/views/tabbedLayout",
+    "shared/views/dialogView",
+    "shared/views/userSettings/userSettingsAccountView",
+    "shared/views/userSettings/userSettingsZonesView",
 ],
 function(
     TP,
     Backbone,
-    RecurringPaymentsCollection,
-    PaymentHistoryCollection,
-    UserSettingsFormView,
-    PaymentHistoryView,
-    RecurringPaymentsView,
-    userSettingsViewTemplate
+    TabbedLayout,
+    DialogView,
+    UserSettingsAccountView,
+    UserSettingsZonesView
 )
 {
-    var UserSettingsView = TP.ItemView.extend(
-    {
-        showThrobbers: false,
-        tagName: "div",
-        className: "userSettings",
-       
-        modal: true,
 
-        template:
-        {
-            type: "handlebars",
-            template: userSettingsViewTemplate
-        },
-
-        events:
-        {
-            "click .closeIcon": "close"
-        },
+    var UserSettingsContentView = TabbedLayout.extend({
 
         initialize: function()
         {
-            this.recurringPaymentsCollection = new RecurringPaymentsCollection();
-            this.paymentHistoryCollection = new PaymentHistoryCollection();
-            this.recurringPaymentsCollection.fetch();
-            this.paymentHistoryCollection.fetch();
-            UserSettingsView.__super__.initialize.apply(this, arguments);
-            this.children = new Backbone.ChildViewContainer();
-        },
-
-        render: function()
-        {
-            UserSettingsView.__super__.render.apply(this, arguments);
-
-            this._addView(".userSettingsForm", UserSettingsFormView, {
-                model: this.model
-            }, "userSettingsForm");
-
-            this._addView(".paymentHistory", PaymentHistoryView, {
-                collection: this.paymentHistoryCollection,
-                model: this.model
-            }, "paymentHistory");
-
-            this._addView(".recurringPayments", RecurringPaymentsView, {
-                collection: this.recurringPaymentsCollection,
-                model: new TP.Model({ expireDate: this.model.get("expireDate")})
-            }, "recurringPayments");
-
-            this.rePositionView();
-        },
-
-        close: function()
-        {
-            this.children.apply("close", arguments);
-            UserSettingsView.__super__.close.apply(this, arguments);
-        },
-
-        _addView: function(selector, klass, options, name)
-        {
-            var el = this.$(selector);
-            options = _.extend(options, { el: el });
-            var view = new klass(options);
-            this.children.add(view, name);
-            view.render();
+            this.navigation =
+            [
+                {
+                    title: "Account",
+                    view: UserSettingsAccountView,
+                    options:
+                    {
+                        model: this.model
+                    }
+                },
+                {
+                    title: "Zones",
+                    view: UserSettingsZonesView,
+                    options:
+                    {
+                        model: new TP.Model(this.model.getAthleteSettings().get("powerZones"))
+                    }
+                }
+            ];
         }
+
     });
 
-    return UserSettingsView;
+    return DialogView.extend({
+
+        className: "userSettings",
+        itemView: UserSettingsContentView
+
+    });
+
 });
