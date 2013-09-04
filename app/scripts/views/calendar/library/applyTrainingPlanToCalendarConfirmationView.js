@@ -23,7 +23,7 @@ function(TP, moment, applyTrainingPlanTemplate)
 
         onRender: function ()
         {
-
+            this.$el.find('select').selectBoxIt();
         },
 
         applyPlan: function()
