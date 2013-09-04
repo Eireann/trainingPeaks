@@ -16,7 +16,8 @@ function(ApplyTrainingPlanToCalendarConfirmationView, TrainingPlan, theMarsApp, 
 		theMarsApp.router = new TP.Router();
 		var trainingPlan = new TrainingPlan({planId: 123});
 		var today = moment().format("MM-DD-YYYY");
-		trainingPlan.details.fetch = function() { return new $.Deferred(); };
+		var baselineDate = moment("09-02-2013"); // a monday
+		trainingPlan.details.fetch = function() { return new $.Deferred().resolve(); };
 		trainingPlan.details.set({startDate: moment().format("MM-DD-YYYY")});
 
 		it("Should be loaded as a module", function()
@@ -49,45 +50,75 @@ function(ApplyTrainingPlanToCalendarConfirmationView, TrainingPlan, theMarsApp, 
 		{
 			it("Should set the eligible date correctly for target dates before the eligible date", function()
 			{
-				var monday = moment().day(1);
-				var tuesday = moment().day(2);
+				var monday = moment(baselineDate).day(1);
+				var tuesday = moment(baselineDate).day(2);
 				var nextEligibleTuesday = tuesday;
 				
 				// plan must start on a tuesday
 				trainingPlan.details.set({startDate: tuesday.format("MM-DD-YYYY")});
 
-				var view = new ApplyTrainingPlanToCalendarConfirmationView({model: trainingPlan, targetDate: monday});
+				var view = new ApplyTrainingPlanToCalendarConfirmationView({model: trainingPlan, targetDate: monday, currentDateBaseline: baselineDate});
 				view.render();
 				expect(view.eligibleTargetDate.format("MM-DD-YYYY")).toBe(nextEligibleTuesday.format("MM-DD-YYYY"));
 			});
 			it("Should set the eligible date correctly for target dates after the eligible date", function()
 			{
-				var thursday = moment().day(4);
-				nextEligibleTuesday = moment().day(7).add("days", 2);
+				var thursday = moment(baselineDate).day(4);
+				var tuesday = moment(baselineDate).day(2);
+				nextEligibleTuesday = moment(baselineDate).day(7).add("days", 2);
 
 				// plan must start on a tuesday
-				trainingPlan.details.set({startDate: moment().day(2).format("MM-DD-YYYY")});
+				trainingPlan.details.set({startDate: tuesday.format("MM-DD-YYYY")});
 
-				var view = new ApplyTrainingPlanToCalendarConfirmationView({model: trainingPlan, targetDate: thursday});
+				var view = new ApplyTrainingPlanToCalendarConfirmationView({model: trainingPlan, targetDate: thursday, currentDateBaseline: baselineDate});
 				view.render();
 				expect(view.eligibleTargetDate.format("MM-DD-YYYY")).toBe(nextEligibleTuesday.format("MM-DD-YYYY"));
 			});
-			it("Should set the eligible date correctly for target dates before the eligible date with an END date set", function()
+			it("Should set the eligible date correctly for target dates before the eligible date with an END date set",function()
 			{
-				var nextMonday = moment().day(8);
-				var monday = moment(nextMonday).day(1);
-				var tuesday = moment(nextMonday).day(2);
-				var thursday = moment(nextMonday).day(4);
+				var nextMonday = moment(baselineDate).day(8);
+				var nextTuesday = moment(nextMonday).day(2);
+				var nextThursday = moment(nextMonday).day(4);
 
-				trainingPlan.details.set({endDate: tuesday.format("MM-DD-YYYY"), dayCount: 2});
-				var view = new ApplyTrainingPlanToCalendarConfirmationView({model: trainingPlan, targetDate: thursday});
+				trainingPlan.details.set({endDate: nextTuesday.format("MM-DD-YYYY"), dayCount: 2});
+				var view = new ApplyTrainingPlanToCalendarConfirmationView({model: trainingPlan, targetDate: nextThursday, currentDateBaseline: baselineDate});
 
-				view.startOrEndRangeValue = 2;
+				view.startOrEndRangeValue = 3;
 
 				view.render();
-				expect(view.eligibleTargetDate.format("MM-DD-YYYY")).toBe(moment().day(9).format("MM-DD-YYYY"));
-
+				expect(view.eligibleTargetDate.format("MM-DD-YYYY")).toBe(nextTuesday.format("MM-DD-YYYY"));
 			});
+			it("Should set the eligible date correctly for target date in the past", function()
+			{
+				var monday = moment(baselineDate).day(1);
+				var tuesday = moment(baselineDate).day(2);
+				var lastMonday = monday.subtract("days", 7);
+				var nextEligibleTuesday = tuesday;
+				
+				// plan must start on a tuesday
+				trainingPlan.details.set({startDate: tuesday.format("MM-DD-YYYY")});
+
+				var view = new ApplyTrainingPlanToCalendarConfirmationView({model: trainingPlan, targetDate: lastMonday, currentDateBaseline: baselineDate});
+				view.render();
+				expect(view.eligibleTargetDate.format("MM-DD-YYYY")).toBe(lastMonday.add("days", 1).format("MM-DD-YYYY"));
+			});
+		});
+		it("Should apply the plan", function()
+		{
+			var monday = moment(baselineDate).day(1);
+			var tuesday = moment(baselineDate).day(2);
+			var nextEligibleTuesday = tuesday;
+			
+			// plan must start on a tuesday
+			trainingPlan.details.set({startDate: tuesday.format("MM-DD-YYYY")});
+
+			var view = new ApplyTrainingPlanToCalendarConfirmationView({model: trainingPlan, targetDate: monday, currentDateBaseline: baselineDate});
+			view.render();
+			
+			spyOn(view.model, "applyToDate").andReturn(new $.Deferred().resolve());
+			view.applyPlan();
+
+			expect(view.model.applyToDate).toHaveBeenCalledWith(view.eligibleTargetDate.format("MM-DD-YYYY"), 1);
 		});
 
 

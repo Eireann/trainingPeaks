@@ -6,13 +6,22 @@
     <div class="dialogContent">
         
         <select>
-        	<option value="1">Start</option>
-        	<option value="2">End</option>
+        	
+		<option value="1">Start</option>
+		<option value="3" {{#if endRangeSelected}} selected {{/if}}>End</option>
+        	
         </select>
 
         {{#if eligibleTargetDate}}
         	<div class="date_restrictions">
-        		 The closest eligible date for this plan to start is {{eligibleTargetDate}}. This plan will be applied to that date.
+        		 The closest eligible date for this plan to 
+        		 {{#if endRangeSelected}}
+        		 	end
+        		 {{else}}
+        		 	start
+        		 {{/if}}
+
+        		 is {{eligibleTargetDate}}. This plan will be applied to that date.
         	</div>
         {{/if}}
 

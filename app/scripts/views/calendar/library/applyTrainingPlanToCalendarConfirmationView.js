@@ -17,12 +17,24 @@ function(TP, moment, applyTrainingPlanTemplate)
             this.model = options.model;
             this.targetDate = options.targetDate;
             this.startOrEndRangeValue = 1;
-            this.model.details.fetch().done();
+            this.detailDataPromise = this.model.details.fetch();
+            this.detailDataPromise.done(this.render);
         },
 
         onRender: function ()
         {
 
+        },
+
+        applyPlan: function()
+        {
+            this.$el.addClass('waiting');
+            var apply = this.model.applyToDate(this.eligibleTargetDate.format("MM-DD-YYYY"), this.startOrEndRangeValue);
+            var self = this;
+            apply.done(function()
+            {
+                self.close();
+            });
         },
 
         _setEligibleTargetDate: function()
@@ -65,29 +77,29 @@ function(TP, moment, applyTrainingPlanTemplate)
                 requiredDateIndex = moment(this.model.details.get("endDate")).day(),
                 endDate;
 
+
             if (requiredDateIndex > targetDateIndex)
             {
                 endDate = moment(this.targetDate).day(requiredDateIndex); 
             } else if (requiredDateIndex < targetDateIndex)
             {
-                endDate = moment(this.targetDate).add("days", 7 - requiredDateIndex);
+                endDate = moment(this.targetDate).day(requiredDateIndex); 
             } else if (requiredDateIndex === targetDateIndex)
             {
                 endDate = moment(this.targetDate);
             }
-            
-            // while the training plan overlaps past days (due to its end date location)
-            // move the end date out one week
-            while(moment.duration(endDate - moment()).days() < this.model.details.get("dayCount"))
-            {
-                endDate = endDate.add("weeks", 1);
-            }
 
-            this.eligibleTargetDate = endDate.subtract("days", this.model.details.get("dayCount"));
+            this.eligibleTargetDate = endDate;
         },
 
         serializeData: function()
         {
+            if (this.detailDataPromise.state() === "pending")
+            {
+                return {
+                    eligibleTargetDate: this.targetDate
+                };
+            }
             var date;
             this._setEligibleTargetDate();
             if (this.eligibleTargetDate === this.targetDate)
@@ -97,7 +109,8 @@ function(TP, moment, applyTrainingPlanTemplate)
                 date  = this.eligibleTargetDate.format("MM-DD-YYYY");
             }
             return {
-                eligibleTargetDate: date
+                eligibleTargetDate: date,
+                endRangeSelected: this.startOrEndRangeValue === 3
             };
         },
 
@@ -115,7 +128,14 @@ function(TP, moment, applyTrainingPlanTemplate)
 
         events:
         {
+            'change select': 'updateStartOrEndRangeValue',
+            'click #confirmationOk': 'applyPlan'
+        },
 
+        updateStartOrEndRangeValue: function(e)
+        {
+            this.startOrEndRangeValue = parseInt($(e.target).val(), 10);
+            this.render();
         },
 
         template:
