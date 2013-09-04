@@ -13,6 +13,8 @@ function(
 
     var TabbedLayout = TP.Layout.extend({
 
+        className: "tabbedLayout",
+
         template:
         {
             type: "handlebars",
@@ -49,14 +51,19 @@ function(
 
                 $item.click(function()
                 {
-                    self._itemClicked(navItem);
+                    self._setCurrent(navItem);
                 });
 
                 $nav.append($item);
             }, this);
+
+            if(this.navigation.length > 0)
+            {
+                this._setCurrent(this.navigation[0]);
+            }
         },
 
-        _itemClicked: function(navItem)
+        _setCurrent: function(navItem)
         {
             var view = new navItem.view(navItem.options);
             this.tabbedLayoutBodyRegion.show(view);

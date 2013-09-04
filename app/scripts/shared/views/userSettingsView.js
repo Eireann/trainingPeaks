@@ -36,7 +36,7 @@ function(
                     view: UserSettingsZonesView,
                     options:
                     {
-                        model: new TP.Model(this.model.getAthleteSettings().get("powerZones"))
+                        model: this.model
                     }
                 }
             ];

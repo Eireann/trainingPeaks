@@ -57,8 +57,6 @@ function(
                 collection: this.recurringPaymentsCollection,
                 model: new TP.Model({ expireDate: this.model.get("expireDate")})
             }, "recurringPayments");
-
-            this.rePositionView();
         },
 
         close: function()

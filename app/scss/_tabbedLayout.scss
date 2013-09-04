@@ -1,0 +1,17 @@
+.tabbedLayoutNav
+{
+    display: block;
+    float: left;
+    width: 200px;
+}
+
+.tabbedLayoutBody
+{
+    display: block;
+    float: left;
+    width: calc(100% - 200px);
+    height: 100%;
+
+    overflow: auto;
+    @include nice-scrollbar;
+}
