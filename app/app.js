@@ -257,8 +257,8 @@ function(
             {
                 case "alpha1":
                     {
-                        //var userIsNotCoach = user.get("settings.account.isAthlete") && user.get("settings.account.coachType") === 0;
-                        var userIsInAlphaACL = _.contains(user.get("settings.account.accessGroupIds"), 999999);
+                        //var userIsNotCoach = user.getAccountSettings().get("isAthlete") && user.getAccountSettings().get("coachType") === 0;
+                        var userIsInAlphaACL = _.contains(user.getAccountSettings().get("accessGroupIds"), 999999);
                         //return userIsNotCoach && userIsInAlphaACL;
                         return userIsInAlphaACL;
                     }

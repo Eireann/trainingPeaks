@@ -42,7 +42,7 @@ function (
             this.postActivityCommentsView.on("item:removed", this.onWorkoutCommentRemoved, this);
             this.postActivityCommentsView.on("itemview:commentedited", this.onWorkoutCommentEdited, this);
             
-            if (!theMarsApp.user.get("settings.account.isAthlete") || this.model.get("coachComments"))
+            if (!theMarsApp.user.getAccountSettings().get("isAthlete") || this.model.get("coachComments"))
             {
                 this.$("#preActivityComments").css("display", "block");
             }

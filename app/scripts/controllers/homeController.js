@@ -77,7 +77,7 @@ function(
 
         showCoachHomeOrAthleteHome: function()
         {
-            if(theMarsApp.user.get("settings.account.isAthlete"))
+            if(theMarsApp.user.getAccountSettings().get("isAthlete"))
             {
                 this.layout.homeRegion.show(this.views.athleteHome.getLayout());
             } else

@@ -57,7 +57,7 @@ function (_, Handlebars, TP, userType)
     
     var userTypeHelper = function (editionType)
     {
-        var userTypeId = theMarsApp.user.get("settings.account.userType");
+        var userTypeId = theMarsApp.user.getAccountSettings().get("userType");
         return editionTypeHelper(userTypeId);
      
     };
