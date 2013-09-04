@@ -52,7 +52,7 @@ function(
 
         onRender: function ()
         {
-            this.settingsKey = "settings.dashboard.dateOptions";
+            this.settingsKey = "dateOptions";
             this.model.off("change", this.render);
             if (dashboardChartSettingsTemplate)
             {

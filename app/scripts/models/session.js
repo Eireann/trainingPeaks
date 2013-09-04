@@ -2,7 +2,7 @@ define(
 [
     "underscore",
     "TP",
-    "models/userModel"
+    "shared/models/userModel"
 ],
 function (_, TP, UserModel)
 {

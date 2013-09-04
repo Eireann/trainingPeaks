@@ -31,7 +31,7 @@ function (datepicker, spinner, jquerySelectBox, _, TP, DashboardDatePicker, char
 
         initialize: function (options)
         {
-            this.settingsKey = "settings.dashboard.dateOptions";
+            this.settingsKey = "dateOptions";
             this.on("user:loaded", this.setDefaultDateSettings, this);
             this.listenTo(this.model, "applyDates", _.bind(this.applyDates, this));
             this.setDefaultDateSettings();
@@ -91,7 +91,7 @@ function (datepicker, spinner, jquerySelectBox, _, TP, DashboardDatePicker, char
             var direction = (windowWidth - offset.left) > 450 ? "right" : "left";
             var icon = this.$(".headerMonth");
 
-            this.dashboardHeaderDatePicker = new dashboardHeaderDatePicker({model: this.model, settingsKey: "settings.dashboard"});
+            this.dashboardHeaderDatePicker = new dashboardHeaderDatePicker({model: this.model});
 
             this.dashboardHeaderDatePicker.setTomahawkDirection(direction);
 

@@ -39,11 +39,6 @@ function(
         {
             DashboardView.__super__.initialize.apply(this, arguments);
 
-            if(!this.model)
-            {
-                this.model = theMarsApp.user;
-            }
-
             if(!options.dataManager)
             {
                 throw new Error("Dashboard Charts Container requires a data manager");
@@ -52,8 +47,8 @@ function(
             this.dataManager = options.dataManager;
 
             this.collection = new SettingsSubCollection(null, { 
-                sourceModel: theMarsApp.user,
-                sourceKey: "settings.dashboard.pods",
+                sourceModel: this.model,
+                sourceKey: "pods",
                 comparator: "index",
                 model: dashboardChartBuilder.buildChartModel,
                 modelOptions: {

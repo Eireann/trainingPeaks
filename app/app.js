@@ -9,7 +9,7 @@ define(
     "framework/dataManager",
     "dashboard/reportingDataManager",
     "models/session",
-    "models/userModel",
+    "shared/models/userModel",
     "models/buildInfo",
     "models/timeZones",
     "models/clientEventsCollection",
