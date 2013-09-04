@@ -22,6 +22,7 @@ $troughIconSpriteRetinaURL: url(../../assets/images/sprite-icons-trough@2x.png);
     &:hover
     {
         border-color:  $TPGrey11;
+        cursor:pointer;
     }
 
     .selectedOverlay
