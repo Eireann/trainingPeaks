@@ -13,7 +13,6 @@ function(ApplyTrainingPlanToCalendarConfirmationView, TrainingPlan, theMarsApp, 
 
 	describe("applyTrainingPlanToCalendarConfirmationView ", function()
 	{
-		theMarsApp.router = new TP.Router();
 		var trainingPlan = new TrainingPlan({planId: 123});
 		var today = moment().format("MM-DD-YYYY");
 		var baselineDate = moment("09-02-2013"); // a monday
@@ -41,6 +40,7 @@ function(ApplyTrainingPlanToCalendarConfirmationView, TrainingPlan, theMarsApp, 
 		it("Should prompt the user to choose whether the target date is start or end", function()
 		{
 			var view = new ApplyTrainingPlanToCalendarConfirmationView({model: trainingPlan, targetDate: today});
+			view.modal = null;
 			view.render();
 			expect(view.$el.find('select').length).toBe(1);
 			expect(view.$el.find('select option').first().text()).toBe("Start");
@@ -58,6 +58,7 @@ function(ApplyTrainingPlanToCalendarConfirmationView, TrainingPlan, theMarsApp, 
 				trainingPlan.details.set({startDate: tuesday.format("MM-DD-YYYY")});
 
 				var view = new ApplyTrainingPlanToCalendarConfirmationView({model: trainingPlan, targetDate: monday, currentDateBaseline: baselineDate});
+				view.modal = null;
 				view.render();
 				expect(view.eligibleTargetDate.format("MM-DD-YYYY")).toBe(nextEligibleTuesday.format("MM-DD-YYYY"));
 			});
@@ -71,6 +72,7 @@ function(ApplyTrainingPlanToCalendarConfirmationView, TrainingPlan, theMarsApp, 
 				trainingPlan.details.set({startDate: tuesday.format("MM-DD-YYYY")});
 
 				var view = new ApplyTrainingPlanToCalendarConfirmationView({model: trainingPlan, targetDate: thursday, currentDateBaseline: baselineDate});
+				view.modal = null;
 				view.render();
 				expect(view.eligibleTargetDate.format("MM-DD-YYYY")).toBe(nextEligibleTuesday.format("MM-DD-YYYY"));
 			});
@@ -84,7 +86,7 @@ function(ApplyTrainingPlanToCalendarConfirmationView, TrainingPlan, theMarsApp, 
 				var view = new ApplyTrainingPlanToCalendarConfirmationView({model: trainingPlan, targetDate: nextThursday, currentDateBaseline: baselineDate});
 
 				view.startOrEndRangeValue = 3;
-
+				view.modal = null;
 				view.render();
 				expect(view.eligibleTargetDate.format("MM-DD-YYYY")).toBe(nextTuesday.format("MM-DD-YYYY"));
 			});
@@ -99,6 +101,7 @@ function(ApplyTrainingPlanToCalendarConfirmationView, TrainingPlan, theMarsApp, 
 				trainingPlan.details.set({startDate: tuesday.format("MM-DD-YYYY")});
 
 				var view = new ApplyTrainingPlanToCalendarConfirmationView({model: trainingPlan, targetDate: lastMonday, currentDateBaseline: baselineDate});
+				view.modal = null;
 				view.render();
 				expect(view.eligibleTargetDate.format("MM-DD-YYYY")).toBe(lastMonday.add("days", 1).format("MM-DD-YYYY"));
 			});
@@ -113,6 +116,7 @@ function(ApplyTrainingPlanToCalendarConfirmationView, TrainingPlan, theMarsApp, 
 			trainingPlan.details.set({startDate: tuesday.format("MM-DD-YYYY")});
 
 			var view = new ApplyTrainingPlanToCalendarConfirmationView({model: trainingPlan, targetDate: monday, currentDateBaseline: baselineDate});
+			view.modal = null;
 			view.render();
 			
 			spyOn(view.model, "applyToDate").andReturn(new $.Deferred().resolve());
