@@ -18,7 +18,7 @@ function(TP, theMarsApp, TrainingPlanItemView)
             itemView.render();
 
             expect(itemView.makeDraggable).toHaveBeenCalled();
-            expect(itemView.$el.draggable).toHaveBeenCalledWith({containment: "#calendarWrapper", helper: 'clone', appendTo: theMarsApp.getBodyElement()});
+            expect(itemView.$el.draggable).toHaveBeenCalled();
 
             expect(itemView.$el.data('ItemId')).toBeDefined();
             expect(itemView.$el.data('ItemType')).toBeDefined();   

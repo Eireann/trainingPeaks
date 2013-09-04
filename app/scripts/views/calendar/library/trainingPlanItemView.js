@@ -50,7 +50,11 @@ function(TP, TrainingPlanDetailsView, draggable, trainingPlanItemViewTemplate)
             this.$el.data("ItemType", this.model.webAPIModelName);
             this.$el.data("DropEvent", "addTrainingPlanFromLibrary");
 
-            this.$el.draggable({containment: "#calendarWrapper", helper: 'clone', appendTo: theMarsApp.getBodyElement()});
+            this.$el.draggable({containment: "#calendarWrapper", helper: _.bind(this.draggableHelper, this), appendTo: theMarsApp.getBodyElement()});
+        },
+        draggableHelper: function()
+        {
+            return $('<div/>', {"class": "dragging-training-plan"}).append(this.$el.clone());
         },
         serializeData: function()
         {

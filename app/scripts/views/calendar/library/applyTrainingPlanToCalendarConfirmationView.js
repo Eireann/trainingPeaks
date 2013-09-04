@@ -28,6 +28,10 @@ function(TP, moment, applyTrainingPlanTemplate)
 
         applyPlan: function()
         {
+            if (this.detailDataPromise.state() === "pending")
+            {
+                return;
+            }
             this.$el.addClass('waiting');
             var apply = this.model.applyToDate(this.eligibleTargetDate.format("MM-DD-YYYY"), this.startOrEndRangeValue);
             var self = this;
@@ -129,13 +133,19 @@ function(TP, moment, applyTrainingPlanTemplate)
         events:
         {
             'change select': 'updateStartOrEndRangeValue',
-            'click #confirmationOk': 'applyPlan'
+            'click #confirmationOk': 'applyPlan',
+            'click #confirmationCancel' : 'onCancel'
         },
 
         updateStartOrEndRangeValue: function(e)
         {
             this.startOrEndRangeValue = parseInt($(e.target).val(), 10);
             this.render();
+        },
+
+        onCancel: function()
+        {
+            this.close();
         },
 
         template:

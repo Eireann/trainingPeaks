@@ -38,18 +38,6 @@ function (ApplyTrainingPlanToCalendarConfirmationView)
                 var trainingPlan = theMarsApp.controllers.calendarController.libraryCollections.trainingPlans.get(options.ItemId);
 
                 new ApplyTrainingPlanToCalendarConfirmationView({model: trainingPlan, targetDate: options.destinationCalendarDayModel.id}).render();
-
-                // trainingPlan.details.fetch().done(function()
-                // {
-                //    //var startDayIndex 
-                // });
-
-                // var apply = trainingPlan.applyToDate(options.destinationCalendarDayModel.id, 1);
-
-                // apply.fail(function()
-                // {
-
-                // });
             }
 
         },
