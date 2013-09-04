@@ -14,7 +14,7 @@ function(
             this.add([
             {
                 chartType: 32,
-                name: "PMC"
+                name: "Performance Manager"
             },
             {
                 chartType: 3,
