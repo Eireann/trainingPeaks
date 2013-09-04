@@ -132,10 +132,17 @@
                 left: 0px;
                 top: 0px;
                 z-index: 99;
-                cursor: default;
-                background-image: url(../../assets/images/calendarImages/tpLogo.png);
+                cursor: pointer;
+                background-image: url(../../assets/images/tpLogo.png);
                 background-position-x: right;
                 background-repeat: no-repeat;
+            }
+
+            @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
+                .personHeaderLogo {
+                    background-image:url(../../assets/images/tpLogo@2x.png);
+                    background-size: 314px 47px;
+                }
             }
 
             .rightNavigation
