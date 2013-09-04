@@ -113,6 +113,33 @@ function(
             });
         },
 
+        getAccountSettings: function()
+        {
+            if(!this.accountSettings)
+            {
+                this.accountSettings = new TP.Model(this.get("settings.account"));
+            }
+            return this.accountSettings;
+        },
+
+        getAffiliateSettings: function()
+        {
+            if(!this.affiliateSettings)
+            {
+                this.affiliateSettings = new TP.Model(this.get("settings.affiliate"));
+            }
+            return this.affiliateSettings;
+        },
+
+        getCalendarSettings: function()
+        {
+            if(!this.calendarSettings)
+            {
+                this.calendarSettings = new TP.Model(this.get("settings.calendar"));
+            }
+            return this.calendarSettings;
+        },
+
         getDashboardSettings: function()
         {
             if(!this.dashboardSettings)
@@ -122,9 +149,32 @@ function(
             return this.dashboardSettings;
         },
 
+        getMetricsSettings: function()
+        {
+            if(!this.metricsSettings)
+            {
+                this.metricsSettings = new TP.Model(this.get("settings.metrics"));
+            }
+            return this.metricsSettings;
+        },
+
+        getWorkoutSettings: function()
+        {
+            if(!this.workoutSettings)
+            {
+                this.workoutSettings = new TP.Model(this.get("settings.workout"));
+            }
+            return this.workoutSettings;
+        },
+
         parse: function(resp, options)
         {
+            this.getAccountSettings().set(resp.settings.account);
+            this.getAffiliateSettings().set(resp.settings.affiliate);
+            this.getCalendarSettings().set(resp.settings.calendar);
             this.getDashboardSettings().set(resp.settings.dashboard);
+            this.getMetricsSettings().set(resp.settings.metrics);
+            this.getWorkoutSettings().set(resp.settings.workout);
             return resp;
         },
 

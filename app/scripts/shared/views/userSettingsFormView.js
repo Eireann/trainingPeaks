@@ -69,6 +69,7 @@ function(
         onRender: function()
         {
             FormUtility.applyValuesToForm(this.$el, this.model, { filterSelector: "[data-modelname=user]" });
+            FormUtility.applyValuesToForm(this.$el, this.model.getAccountSettings(), { filterSelector: "[data-modelname=account]" });
             FormUtility.applyValuesToForm(this.$el, this.model.getAthleteSettings(), { filterSelector: "[data-modelname=athlete]" });
             var self = this;
             setImmediate(function()

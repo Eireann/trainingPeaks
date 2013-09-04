@@ -105,7 +105,7 @@ function (
         applyPreferencesSort: function (statsTree, summaryTree)
         {
 
-            var workoutOrderPreferences = theMarsApp.user.get("settings").workout.layout[this.model.get("workoutTypeValueId")];
+            var workoutOrderPreferences = theMarsApp.user.getWorkoutSettings().get("layout")[this.model.get("workoutTypeValueId")];
 
             //Reset visibility
             statsTree.find(".workoutStatsRow").addClass("hide");

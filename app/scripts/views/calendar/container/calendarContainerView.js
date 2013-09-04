@@ -137,23 +137,20 @@ function(
 
         setWorkoutColorization: function()
         {
-            var settings = theMarsApp.user.get("settings");
-            if (settings && settings.calendar)
-            {
-                var colorizationCode = settings.calendar.workoutColorization;
-                var colorizationClassName = this.colorizationClassNames[colorizationCode];
+            var calendarSettings = theMarsApp.user.getCalendarSettings();
+            var colorizationCode = calendarSettings.get("workoutColorization");
+            var colorizationClassName = this.colorizationClassNames[colorizationCode];
 
-                if (!this.ui.weeksContainer.hasClass(colorizationClassName))
+            if (!this.ui.weeksContainer.hasClass(colorizationClassName))
+            {
+                var view = this;
+                _.each(this.colorizationClassNames, function(className)
                 {
-                    var view = this;
-                    _.each(this.colorizationClassNames, function(className)
-                    {
-                        view.ui.weeksContainer.removeClass(className);
-                    });
-                    if (colorizationCode > 0)
-                    {
-                        this.ui.weeksContainer.addClass(colorizationClassName);
-                    }
+                    view.ui.weeksContainer.removeClass(className);
+                });
+                if (colorizationCode > 0)
+                {
+                    this.ui.weeksContainer.addClass(colorizationClassName);
                 }
             }
         },
