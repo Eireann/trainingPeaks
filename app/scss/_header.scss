@@ -126,8 +126,11 @@
 
             .personHeaderLogo
             {
-                min-width: 375px;
-                min-height: 47px;
+                //min-width: 375px;
+                //min-height: 47px;
+                width:314px;
+                height:47px;
+                margin-left:60px;
                 position:absolute;
                 left: 0px;
                 top: 0px;
