@@ -36,7 +36,8 @@ function(
 
         events:
         {
-            "click .closeIcon": "close"
+            "click .closeIcon": "close",
+            "click .save": "save"
         },
 
         initialize: function()
@@ -74,6 +75,20 @@ function(
         {
             this.children.apply("close", arguments);
             UserSettingsView.__super__.close.apply(this, arguments);
+        },
+
+        save: function()
+        {
+            var self = this;
+            self.waitingOn();
+            $.when(
+                this.children.findByCustom("userSettingsForm").save()
+            ).done(
+                function()
+                {
+                    self.close();
+                }
+            );
         },
 
         _addView: function(selector, klass, options, name)

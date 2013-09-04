@@ -1,11 +1,13 @@
 ﻿define(
 [
     "TP",
+    "shared/models/accountSettingsModel",
     "shared/models/athleteSettingsModel",
     "shared/models/dashboardSettingsModel"
 ],
 function(
-         TP, 
+         TP,
+         AccountSettingsModel,
          AthleteSettingsModel, 
          DashboardSettingsModel
          )
@@ -117,7 +119,7 @@ function(
         {
             if(!this.accountSettings)
             {
-                this.accountSettings = new TP.Model(this.get("settings.account"));
+                this.accountSettings = new AccountSettingsModel(this.get("settings.account"));
             }
             return this.accountSettings;
         },
@@ -169,12 +171,15 @@ function(
 
         parse: function(resp, options)
         {
-            this.getAccountSettings().set(resp.settings.account);
-            this.getAffiliateSettings().set(resp.settings.affiliate);
-            this.getCalendarSettings().set(resp.settings.calendar);
-            this.getDashboardSettings().set(resp.settings.dashboard);
-            this.getMetricsSettings().set(resp.settings.metrics);
-            this.getWorkoutSettings().set(resp.settings.workout);
+            if(resp && resp.settings)
+            {
+                this.getAccountSettings().set(resp.settings.account);
+                this.getAffiliateSettings().set(resp.settings.affiliate);
+                this.getCalendarSettings().set(resp.settings.calendar);
+                this.getDashboardSettings().set(resp.settings.dashboard);
+                this.getMetricsSettings().set(resp.settings.metrics);
+                this.getWorkoutSettings().set(resp.settings.workout);
+            }
             return resp;
         },
 
@@ -183,6 +188,7 @@ function(
             var attrs = _.clone(this.attributes);
             delete attrs.settings;
             delete attrs.pods;
+            return attrs;
         }
 
     });

@@ -101,11 +101,21 @@ function(
             $(e.target).select();
         },
 
-        _save: function()
+        save: function()
         {
+
             FormUtility.applyValuesToModel(this.$el, this.model, { filterSelector: "[data-modelname=user]"});
             FormUtility.applyValuesToModel(this.$el, this.model.getAthleteSettings(), { filterSelector: "[data-modelname=athlete]" });
+            FormUtility.applyValuesToModel(this.$el, this.model.getAccountSettings(), { filterSelector: "[data-modelname=account]" });
+
+            return $.when(
+                    this.model.save(),
+                    this.model.getAthleteSettings().save(),
+                    this.model.getAccountSettings().save()
+                );
+
         }
+
     });
 
     return UserSettingsFormView;
