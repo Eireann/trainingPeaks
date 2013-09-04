@@ -33,7 +33,7 @@ function (_, TP)
 
             theMarsApp.controllers.loginController.on("login:success", function()
             {
-                self.navigate("home", { trigger: true });
+                self.navigate("calendar", { trigger: true });
             });
 
             this.on("route", function(routeName)
@@ -51,7 +51,6 @@ function (_, TP)
         routes:
         {
             "login": "login",
-            "home": "home",
             "calendar": "calendar",
             "calendar/athletes/:athleteId": "calendar",
             "dashboard": "dashboard",
@@ -63,14 +62,6 @@ function (_, TP)
             theMarsApp.showController(theMarsApp.controllers.loginController);
 
             TP.analytics("send", "pageview", { page: "login" });
-        },
-
-        home: function ()
-        {
-            this.checkAuth();
-            theMarsApp.showController(theMarsApp.controllers.homeController);
-
-            TP.analytics("send", "pageview", { page: "home" });
         },
 
         calendar: ensureUser(function (athleteId)

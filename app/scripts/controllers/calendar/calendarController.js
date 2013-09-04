@@ -9,7 +9,6 @@ define(
     "TP",
     "controllers/pageContainerController",
     "layouts/calendarLayout",
-    "models/calendar/calendarCollection",
     "models/calendar/calendarWeekCollection",
     "models/calendar/calendarDay",
     "views/calendar/calendarHeaderView",
@@ -26,7 +25,6 @@ function(
     TP,
     PageContainerController,
     CalendarLayout,
-    CalendarCollection,
     CalendarWeekCollection,
     CalendarDayModel,
     calendarHeaderView,
@@ -43,8 +41,16 @@ function(
     {
         summaryViewEnabled: true,
 
-        initialize: function()
+        initialize: function(options)
         {
+
+            if(!options || !options.dataManager)
+            {
+                throw new Error("Calendar Controller requires a data manager");
+            }
+
+            this._dataManager = options.dataManager;
+            this._dataManager.on("reset", this._onDataManagerReset, this);
 
             // TODO: split this into a couple different functions 
             this.models = {};
@@ -197,6 +203,8 @@ function(
             if (theMarsApp.ajaxCachingEnabled)
                 theMarsApp.ajaxCaching.clearCache();
 
+            this._dataManager.forceReset();
+
             var currentWeek = date ? moment(date).format(TP.utils.datetime.shortDateFormat) : this.views.calendar.getCurrentWeek();
             // QL: Should be handled by reset, not "resetToDates"
             this.weeksCollection.resetToDates(moment(this.startDate), moment(this.endDate), currentWeek);
@@ -273,6 +281,16 @@ function(
                 var newStartDate = this.createStartDay().subtract("weeks", 4);
                 var newEndDate = this.createEndDay().add("weeks", 6);
                 this.resetCollections(newStartDate, newEndDate);
+            }
+        },
+
+        // if we edited some workouts, no need to refresh all of our collections, data manager will automatically reset cached queries
+        // if another controller does some edits, then refresh ourselves for next show
+        _onDataManagerReset: function()
+        {
+            if(theMarsApp.getCurrentController() !== this)
+            {
+                this.weeksCollection.resetWorkouts(); 
             }
         }
 

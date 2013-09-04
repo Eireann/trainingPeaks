@@ -39,19 +39,33 @@
 	</Target>
 
 	<Target Name="PrePackage">
+		<RemoveDir Directories="$(PackageDir)\mapfiles" ContinueOnError="true" />
+
 		<!-- Update the release files with the current build number -->
 		<PropertyGroup>
-			<BuildHash Condition=" '$(Configuration)' == 'Release' ">$(BUILD_VCS_NUMBER_Git_Mars___UAT)</BuildHash>
+			<BuildHash Condition=" '$(Configuration)' == 'Release' ">$(BUILD_VCS_NUMBER_GitMarsRelease)</BuildHash>
 			<BuildHash Condition=" '$(BuildHash)' == '' ">$(BUILD_VCS_NUMBER_Git_Mars___Master)</BuildHash>
+			<GitHash>$(BuildHash)</GitHash>
+			<GitHash Condition=" '$(GitHash)' == '' ">DEVELOPER BUILD</GitHash>
 			<BuildHash Condition=" '$(BuildHash)' != '' ">$(BuildHash.Substring(0, 9))</BuildHash>
 			<MarsBuild Condition=" '$(MarsBuild)' == '' ">$(BUILD_NUMBER) $(BuildHash) $(Configuration)</MarsBuild>
 			<MarsBuild Condition=" '$(MarsBuild)' == '' ">DEVELOPER BUILD</MarsBuild>
 		</PropertyGroup>
 		<ItemGroup>
-			<MarsConfig Include="$(MSBuildProjectDirectory)\build\release\**\apiConfig.js" />
+			<MarsConfig Include="$(OutputDir)\**\apiConfig.js" />
+			<MapFiles Include="$(OutputDir)\**\single.min.js.map" />
 		</ItemGroup>
 
 		<FileUpdate Files="@(MarsConfig)" Regex='{BUILD_NUMBER}' Multiline="true" ReplacementText="$(MarsBuild)" ReplacementCount="1" />
+		<FileUpdate Files="@(MarsConfig)" Regex='{BUILD_HASH}' Multiline="true" ReplacementText="$(GitHash)" ReplacementCount="1" />
+		<!-- Write out the git SHA1 hash to a file -->
+		<WriteLinesToFile File="$(PackageDir)\mars-build-commit.txt" Lines="$(GitHash)" Overwrite="true" />
+
+		<MakeDir Directories="$(PackageDir)\mapfiles" Condition=" !Exists('$(PackageDir)\mapfiles') " />
+		<Copy SourceFiles="@(MapFiles)"
+			DestinationFiles="@(MapFiles->'$(PackageDir)\mapfiles\%(RecursiveDir)%(Filename)%(Extension)')" />
+		<!-- Delete all map files before deployment -->
+		<Delete Files="@(MapFiles)" TreatErrorsAsWarnings="true" />
     </Target>
 
 	<Target Name="Deploy" >

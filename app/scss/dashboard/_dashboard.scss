@@ -94,7 +94,7 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
         float: left;
         font-size: $fontSizeSmall;
         color: $TPGrey3;
-        margin-top: 6px;
+        margin-top: 5px;
     }
 
     input[type=text]
@@ -135,6 +135,7 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
     position: relative;
 
     padding-top: 10px;
+    padding-left: 10px;
 
     overflow-x: hidden;
 }
@@ -608,6 +609,8 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
                 height: 25px;
                 background-color: #fff;
                 float: left;
+                background: $TPGrey1 $troughIconSpriteURL no-repeat 0 -24px;
+                background-color: $TPGrey2;
             }
 
             .chartTileName {
@@ -699,6 +702,39 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
     }
 }
 
+
+.workoutSummaryChartSettings {
+    width:325px;
+
+    .workoutTypesRegion {
+        border-bottom: 1px solid $TPGrey6;
+        padding-bottom: 10px;
+        margin-bottom: 10px;
+    }
+
+    .selectboxit-options {
+        width: 301px;
+    }
+    .selectboxit-container .selectboxit {
+        width: 301px !important; /* Width of the dropdown button */
+    }
+
+    .weekDaySelect label {
+        float:left;
+    }
+
+    .weekDaySelect label:nth-of-type(2) {
+        margin-left:20px;
+    }
+
+    .weekDaySelect input[type="radio"] {
+        margin:0;
+    }
+
+    input[type="checkbox"] {
+        margin-top:5px;
+    }
+}
 
 .chartTile {
     @include libraryTile();

@@ -7,7 +7,9 @@
     "dashboard/charts/fitnessSummaryChart",
     "dashboard/charts/peaksChart",
     "dashboard/charts/timeInZonesChart",
-    "dashboard/charts/metricsChart"
+    "dashboard/charts/timeInZonesByWeekChart",
+    "dashboard/charts/metricsChart",
+    "dashboard/charts/workoutSummaryChart"
 ],
 function(
     TP,
@@ -17,7 +19,9 @@ function(
     FitnessSummaryChart,
     PeaksChart,
     TimeInZonesChart,
-    MetricsChart
+    TimeInZonesByWeekChart,
+    MetricsChart,
+    WorkoutSummaryChart
 )
 {
 
@@ -38,7 +42,17 @@ function(
         17: TimeInZonesChart,
         24: TimeInZonesChart,
         26: TimeInZonesChart,
-        13: MetricsChart
+        18: TimeInZonesByWeekChart,
+        25: TimeInZonesByWeekChart,
+        27: TimeInZonesByWeekChart,
+        13: MetricsChart,
+        10: WorkoutSummaryChart,
+        11: WorkoutSummaryChart,
+        21: WorkoutSummaryChart,
+        23: WorkoutSummaryChart,
+        37: WorkoutSummaryChart,
+        19: WorkoutSummaryChart,
+        20: WorkoutSummaryChart
     };
 
     return {

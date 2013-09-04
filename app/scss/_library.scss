@@ -3,6 +3,12 @@
 $mainTabSpriteURL: url(../../assets/images/sprite-icons-main-tabs.png);
 $mainTtabSpriteRetinaURL: url(../../assets/images/sprite-icons-main-tabs@2x.png);
 
+$dashboardTabSpriteURL: url(../../assets/images/sprite-icons-dashboard-tabs.png);
+$dashboardTabSpriteRetinaURL: url(../../assets/images/sprite-icons-dashboard-tabs@2x.png);
+
+$troughIconSpriteURL: url(../../assets/images/sprite-icons-trough.png);
+$troughIconSpriteRetinaURL: url(../../assets/images/sprite-icons-trough@2x.png);
+
 @mixin libraryTile()
 {
     background-color: $TPGrey6;
@@ -189,6 +195,26 @@ $mainTtabSpriteRetinaURL: url(../../assets/images/sprite-icons-main-tabs@2x.png)
             }
         }
 
+        #chartsLibrary {
+            background: $TPGrey1 $dashboardTabSpriteURL no-repeat 0 0;
+            &:hover {
+                background-position: -33px 0;
+            }
+
+            &:active {
+               background-color: $TPGrey2;
+               background-position: -66px 0;
+            }
+
+            &.active {
+               background-color: $TPGrey2;
+               background-position: -66px 0;
+            }
+        }
+
+
+
+
         .unimplementedLibrary {
             background-color: $TPGrey1;
             display:none;
@@ -214,6 +240,12 @@ $mainTtabSpriteRetinaURL: url(../../assets/images/sprite-icons-main-tabs@2x.png)
 				background-image: $mainTtabSpriteRetinaURL;
 				background-size: 99px 165px;
 			}
+
+            #chartsLibrary {
+                background-image: $dashboardTabSpriteRetinaURL;
+                background-size: 99px 33px;
+            }
+
 		}
 
         div.active
@@ -415,7 +447,7 @@ $mainTtabSpriteRetinaURL: url(../../assets/images/sprite-icons-main-tabs@2x.png)
 
             .trainingPlansIcon
             {
-                background: $TPGrey1 $mainTabSpriteURL no-repeat -70px -70px;
+                background: $TPGrey1 $troughIconSpriteURL no-repeat 0 0;
                 background-color: $TPGrey2;
                 width: 24px;
                 height: 24px;
@@ -446,5 +478,14 @@ $mainTtabSpriteRetinaURL: url(../../assets/images/sprite-icons-main-tabs@2x.png)
                 margin-left: 5px;
             }
         }
+    }
+}
+
+
+#activeLibraryContainer
+{
+    .ui-droppable
+    {
+        height: 100%;
     }
 }

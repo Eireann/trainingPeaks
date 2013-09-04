@@ -137,7 +137,7 @@ The plugin allso adds the following methods to the plot object:
             // able to whack the same handler again
             mouseUpHandler = function (e) { onMouseUp(e); };
             
-            $(document).one("mouseup", mouseUpHandler);
+            $(document).one("mouseup.flotselection", mouseUpHandler);
         }
 
         function onMouseUp(e) {
@@ -350,7 +350,7 @@ The plugin allso adds the following methods to the plot object:
             eventHolder.unbind("mousedown", onMouseDown);
             
             if (mouseUpHandler)
-                $(document).unbind("mouseup", mouseUpHandler);
+                $(document).unbind("mouseup.flotselection", mouseUpHandler);
         });
 
     }

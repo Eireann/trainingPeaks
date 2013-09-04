@@ -4,12 +4,13 @@ requirejs(
     "jquery",
     "TP",
     "moment",
+    "framework/dataManager",
     "app",
     "models/calendar/calendarCollection",
     "views/calendar/container/calendarContainerView",
     "views/scrollableCollectionView"
 ],
-function($, TP, moment, theMarsApp, CalendarCollection, CalendarContainerView, ScrollableCollectionView)
+function($, TP, moment, DataManager, theMarsApp, CalendarCollection, CalendarContainerView, ScrollableCollectionView)
 {
 
     describe("CalendarContainerView Scrolling", function()
@@ -19,7 +20,8 @@ function($, TP, moment, theMarsApp, CalendarCollection, CalendarContainerView, S
         {
             var collection_options = {
                     startDate: moment(),
-                    endDate: moment().add("weeks", 2)
+                    endDate: moment().add("weeks", 2),
+                    dataManager: new DataManager()
                 },
                 collection =  new CalendarCollection(null, collection_options);
 

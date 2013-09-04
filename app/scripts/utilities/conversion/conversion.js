@@ -388,7 +388,8 @@
 
         formatEfficiencyFactor: function(value, options)
         {
-            return convertToViewUnits(Number(value), "efficiencyfactor", undefined, this.getMySportType(options));
+            var convertedValue = convertToViewUnits(Number(value), "efficiencyfactor", undefined, this.getMySportType(options));
+            return convertedValue.toFixed(2);
         },
 
         formatCalories: function(value, options)
