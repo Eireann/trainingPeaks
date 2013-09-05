@@ -18,7 +18,7 @@
 
     <div>
         <label>{{$ "Password" }}</label>
-        <input data-modelname="user" type="password"/>
+        <input type="password" name="password"/>
     </div>
 </div>
 
@@ -36,7 +36,7 @@
 
     <div class="row">
         <label>{{$ "Birthday" }}</label>
-        <input data-modelname="user" type="text" data-format="date" name="birthday" />
+        <input data-modelname="user" type="text" data-format="date" name="birthday" class="datepicker" />
     </div>
 
     <div class="row">
@@ -95,12 +95,14 @@
         <label>{{$ "CellPhone" }}</label>
         <input data-modelname="user" type="tel" name="cellPhone" />
     </div>
-    
-    {{#if profilePhotoUrl}}
+   
     <div class ="profilePicture">
-        <img src="{{ wwwRoot }}{{ profilePhotoUrl }}" />
+        <label>{{$ "ProfilePicture" }}</label>
+        <img src="" />
+        <div class="placeholder"></div>
     </div>
-    {{/if}}
+
+    <input style="display: none" type="file" class="fileUploadInput" accept="image/gif, image/jpeg, image/png" />
 
 
     <h3 class="subheadbold title accountSettings">{{$ "AccountSettings" }}</h3>
@@ -151,17 +153,17 @@
 
         <div class="row">
             <label>{{$ "WorkoutsOnly" }}</label>
-            <input class="ical" type="text" readonly name="iCalendarKeys.workoutsOnly" value="webcal://{{ wwwRoot }}/ical/{{ workoutsOnly }}.ics"/>
+            <input class="ical" type="text" readonly name="iCalendarKeys.workoutsOnly" value="{{ webcalRoot }}{{ workoutsOnly }}.ics"/>
         </div>
      
         <div class="row">
             <label>{{$ "MealsOnly" }}</label>
-            <input class="ical" type="text" readonly name="iCalendarKeys.mealsOnly" value="webcal://{{ wwwRoot }}/ical/{{ mealsOnly }}.ics" />
+            <input class="ical" type="text" readonly name="iCalendarKeys.mealsOnly" value="{{ webcalRoot }}{{ mealsOnly }}.ics" />
         </div>       
 
         <div class="row">
             <label>{{$ "WorkoutsAndMeals" }}</label>
-            <input class="ical" type="text" readonly name="iCalendarKeys.workoutsAndMeals" value="webcal://{{ wwwRoot }}/ical/{{ workoutsAndMeals }}.ics" />
+            <input class="ical" type="text" readonly name="iCalendarKeys.workoutsAndMeals" value="{{ webcalRoot }}{{ workoutsAndMeals }}.ics" />
         </div>
 
         <p class="small">{{$ "ICalHelpText" }}</p>

@@ -3,20 +3,28 @@ define(
     "underscore",
     "setImmediate",
     "jquerySelectBox",
+    "jqueryui/datepicker",
     "TP",
     "shared/data/athleteTypes",
     "shared/data/countriesAndStates",
+    "shared/models/profilePhotoFileData",
     "shared/utilities/formUtility",
+    "views/userConfirmationView",
+    "hbs!templates/views/quickView/fileUploadErrorView",
     "hbs!shared/templates/userSettingsFormTemplate"
 ],
 function(
     _,
     setImmediate,
     jquerySelectBox,
+    datepicker,
     TP,
     athleteTypes,
     countriesAndStates,
+    ProfilePhotoFileData,
     FormUtility,
+    UserConfirmationView,
+    fileUploadErrorTemplate,
     userSettingsFormTemplate
 )
 {
@@ -61,7 +69,10 @@ function(
 
         events:
         {
-            "click .ical": "onICalFocus"
+            "click .ical": "onICalFocus",
+            "change input[name=enableVirtualCoachEmails]": "_enableOrDisableVirtualCoachHour",
+            "click .profilePicture": "_selectProfilePhoto",
+            "change .fileUploadInput": "_onProfilePhotoSelected"
         },
 
         initialize: function()
@@ -73,10 +84,21 @@ function(
             FormUtility.applyValuesToForm(this.$el, this.model, { filterSelector: "[data-modelname=user]" });
             FormUtility.applyValuesToForm(this.$el, this.model.getAccountSettings(), { filterSelector: "[data-modelname=account]" });
             FormUtility.applyValuesToForm(this.$el, this.model.getAthleteSettings(), { filterSelector: "[data-modelname=athlete]" });
+
+            this.$(".datepicker").datepicker(
+            {
+                dateFormat: "mm/dd/yy",
+                changeYear: true,
+                changeMonth: true
+            });
+
+            this._updatePhotoUrl();
+
             var self = this;
             setImmediate(function()
             {
                 self.$("select").selectBoxIt();
+                self._enableOrDisableVirtualCoachHour();
             });
         },
 
@@ -88,12 +110,11 @@ function(
                 countries: countriesAndStates.countries,
                 states: countriesAndStates.states,
                 hours: hours,
-                timeZones: theMarsApp.timeZones.get("zonesWithLabels"),
-                iCalendarKeys: this.model.getAthleteSettings().get("iCalendarKeys"),
-                wwwRoot: theMarsApp.apiConfig.wwwRoot
+                timeZones: theMarsApp.timeZones.get("zonesWithLabels")
             });
 
-            data.iCalendarKeys.wwwRoot = theMarsApp.apiConfig.wwwRoot.replace("http://","");
+            data.iCalendarKeys = this.model.getAthleteSettings().get("iCalendarKeys");
+            data.iCalendarKeys.webcalRoot = "webcal://" + theMarsApp.apiConfig.wwwRoot.replace("http://","") + "/ical/";
 
             return data;
         },
@@ -110,12 +131,103 @@ function(
             FormUtility.applyValuesToModel(this.$el, this.model.getAthleteSettings(), { filterSelector: "[data-modelname=athlete]" });
             FormUtility.applyValuesToModel(this.$el, this.model.getAccountSettings(), { filterSelector: "[data-modelname=account]" });
 
-            return $.when(
+            var deferred = $.when(
                     this.model.save(),
                     this.model.getAthleteSettings().save(),
                     this.model.getAccountSettings().save()
                 );
 
+
+            var password = this.$("input[name=password]").val().trim();
+            if(password)
+            {
+                deferred = $.when(
+                    deferred,
+                    this.model.savePassword(password)
+                );
+            }
+
+            return deferred;
+        },
+
+        _selectProfilePhoto: function()
+        {
+            this.$(".fileUploadInput").click();
+        },
+
+        _onProfilePhotoSelected: function()
+        {
+
+            var fileList = this.$(".fileUploadInput")[0].files;
+
+            if(!fileList || !fileList.length)
+            {
+                return;
+            }
+            
+            var workoutReader = new TP.utils.workout.FileReader(fileList[0]);
+            var fileReaderDeferred = workoutReader.readFile();
+
+            this.waitingOn();
+            var self = this; 
+            fileReaderDeferred.done(function(fileName, dataAsString)
+            {
+                var profilePhotoFileData = new ProfilePhotoFileData({ data: dataAsString, fileName: fileName });
+                profilePhotoFileData.save().done(function()
+                {
+                    self.model.set("profilePhotoUrl", profilePhotoFileData.get("profilePhotoUrl"));
+                    self._updatePhotoUrl();
+                }).fail(function()
+                {
+                    new UserConfirmationView({ template: fileUploadErrorTemplate }).render();
+                }).always(function()
+                {
+                    self.waitingOff(); 
+                });
+            });
+        },
+
+        _updatePhotoUrl: function()
+        {
+            var photoUrl = this._createPhotoUrl();
+            if(photoUrl)
+            {
+                this.$(".profilePicture").removeClass("nophoto");
+                this.$(".profilePicture img").attr("src", photoUrl);
+            }
+            else
+            {
+                this.$(".profilePicture").addClass("nophoto");
+                this.$(".profilePicture img").attr("src", "");
+            }
+
+        },
+
+        _createPhotoUrl: function()
+        {
+            if(!this.model.has("profilePhotoUrl"))
+            {
+                return null;
+            }
+            var wwwRoot = theMarsApp.apiConfig.devWwwRoot ? theMarsApp.apiConfig.devWwwRoot : theMarsApp.apiConfig.wwwRoot;
+            return wwwRoot + this.model.get("profilePhotoUrl");
+        },
+
+        _enableOrDisableVirtualCoachHour: function()
+        {
+            var hourSelect = this.$("select[name=virtualCoachEmailHour]");
+            var selectBox = hourSelect.data("selectBox-selectBoxIt");
+            var enable = this.$("input[name=enableVirtualCoachEmails]").is(":checked");
+            if(enable)
+            {
+                hourSelect.prop("disabled", false);
+                selectBox.enable();
+            }
+            else
+            {
+                hourSelect.prop("disabled", true);
+                selectBox.disable()
+            }
         }
 
     });

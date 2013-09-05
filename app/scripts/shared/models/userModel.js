@@ -1,11 +1,13 @@
 ﻿define(
 [
+    "backbone",
     "TP",
     "shared/models/accountSettingsModel",
     "shared/models/athleteSettingsModel",
     "shared/models/dashboardSettingsModel"
 ],
 function(
+         Backbone,
          TP,
          AccountSettingsModel,
          AthleteSettingsModel, 
@@ -189,6 +191,17 @@ function(
             delete attrs.settings;
             delete attrs.pods;
             return attrs;
+        },
+
+        savePassword: function(password)
+        {
+            var ajaxOptions = {
+                url: this.url() + "/auth",
+                type: "PUT",
+                contentType: "application/json",
+                data: JSON.stringify({ text: password })
+            };
+            return Backbone.ajax(ajaxOptions);
         }
 
     });

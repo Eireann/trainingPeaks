@@ -128,6 +128,28 @@
     {
         margin-left: 110px;
 
+        .placeholder
+        {
+            display: none;
+        }
+
+        &.nophoto
+        {
+
+            .placeholder
+            {
+                display: block;
+                height: 200px;
+                width: 200px;
+                border: 1px solid $TPGrey11;
+            }
+
+            img
+            {
+                display: none;
+            }
+        }
+
         img
         {
             max-height: 200px;

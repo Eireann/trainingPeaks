@@ -183,8 +183,8 @@ function(
         // add data managers
         this.addInitializer(function()
         {
-            // reset reporting manager when we save or delete workouts, ignore posts to reporting even if they include 'fitness'
-            var dataManagerOptions = { resetPatterns: [/fitness/i], ignoreResetPatterns: [/reporting/i] };
+            // reset reporting manager when we save or delete workouts
+            var dataManagerOptions = { resetPatterns: [/athletes\/[0-9]+\/workouts/] };
             this.dataManagers = {
                 reporting: new ReportingDataManager(dataManagerOptions),
                 calendar: new DataManager(dataManagerOptions)

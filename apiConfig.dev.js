@@ -34,7 +34,8 @@
         gaAccount: "",
         coachUpgradeURL: "",
         upgradeURL: "",
-        buildHash: ""
+        buildHash: "",
+        devWwwRoot: wwwRoots.dev
     };
 
     if (typeof global !== "undefined")
