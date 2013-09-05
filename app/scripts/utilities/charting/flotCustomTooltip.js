@@ -38,8 +38,39 @@ function(formatDateTime, conversion, unitLabels, flotToolTipTemplate)
         return true;
     };
 
+    var getSeriesWithAppropriatePowerOptions = function(allDataSeries, enabledDataSeries)
+    {
+        // make sure right power is available if power is available
+        enabledDataSeries = enabledDataSeries.slice();
+        var powerSeriesEnabled = _.find(enabledDataSeries, function(s) { return s.label === "Power"; });
+        var rightPowerSeriesEnabled = _.find(enabledDataSeries, function(s) { return s.label === "RightPower"; });
+
+        if(powerSeriesEnabled && !rightPowerSeriesEnabled)
+        {
+            var rightPowerSeries = _.find(allDataSeries, function(s) { return s.label === "RightPower"; });            
+            if(rightPowerSeries)
+            {
+                enabledDataSeries.push(rightPowerSeries);
+            }
+        }
+
+        if(rightPowerSeriesEnabled && !powerSeriesEnabled)
+        {
+            var powerSeries = _.find(allDataSeries, function(s) { return s.label === "Power"; });            
+            if(powerSeries)
+            {
+                enabledDataSeries.push(powerSeries);
+            }
+        }
+
+        return enabledDataSeries;
+    };
+
     return function(allDataSeries, enabledDataSeries, hoveredSeriesName, hoveredIndex, xAxisOffset, workoutType, axisType)
     {
+
+        enabledDataSeries = getSeriesWithAppropriatePowerOptions(allDataSeries, enabledDataSeries);
+
         var toolTipData =
         {
             xAxisOffset: null,

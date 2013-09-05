@@ -539,6 +539,7 @@
                     return this.formatPace(value, options);
 
                 case "power":
+                case "rightpower":
                     return this.formatPower(value, options);
 
                 case "torque":
