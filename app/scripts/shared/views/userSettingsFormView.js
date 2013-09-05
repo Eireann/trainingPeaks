@@ -164,7 +164,7 @@ function(
             {
                 return;
             }
-            
+
             var workoutReader = new TP.utils.workout.FileReader(fileList[0]);
             var fileReaderDeferred = workoutReader.readFile();
 
@@ -192,8 +192,8 @@ function(
             var photoUrl = this._createPhotoUrl();
             if(photoUrl)
             {
-                this.$(".profilePicture").removeClass("nophoto");
                 this.$(".profilePicture img").attr("src", photoUrl);
+                this.$(".profilePicture").removeClass("nophoto");
             }
             else
             {
@@ -226,7 +226,7 @@ function(
             else
             {
                 hourSelect.prop("disabled", true);
-                selectBox.disable()
+                selectBox.disable();
             }
         }
 

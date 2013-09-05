@@ -19,7 +19,7 @@ function (TP)
 
         parse: function(resp, options)
         {
-            return { profilePhotoUrl: resp }
+            return { profilePhotoUrl: resp };
         }
         
     });

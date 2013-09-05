@@ -216,7 +216,7 @@ function(
                 expect(model.get("key1")).toEqual("originalvalue");
                 expect(model.get("key2")).toEqual("key2value");
             });
-        })
+        });
     });
 
 });
