@@ -211,7 +211,7 @@ function(
         {
             // align the top and left of this popup to the target library item
             this.alignedTo = $element;
-            this.left($element.offset().left + $element.width() + 15);
+            this.left($element.offset().left + $element.width() + 16);
             var targetTop = $element.offset().top;
             this.top(targetTop);
 
