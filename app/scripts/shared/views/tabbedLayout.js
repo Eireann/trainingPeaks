@@ -47,26 +47,70 @@ function(
 
             _.each(this.navigation, function(navItem)
             {
-                var $item = $("<li>").text(navItem.title);
+                var $item = $("<li/>")
+                var $link = $("<span class='tabbedLayoutNavLink'/>").text(navItem.title);
 
-                $item.click(function()
+                $item.append($link);
+
+                $link.click(function()
                 {
-                    self._setCurrent(navItem);
+                    self._setCurrent(navItem, $item);
                 });
 
                 $nav.append($item);
             }, this);
 
-            if(this.navigation.length > 0)
-            {
-                this._setCurrent(this.navigation[0]);
-            }
+            this.$(".tabbedLayoutNavLink:first").click();
         },
 
-        _setCurrent: function(navItem)
+        _setCurrent: function(navItem, $item)
         {
+            var self = this;
+
+            if(this.$current)
+            {
+                this.$current.removeClass("active");
+            }
+
             var view = new navItem.view(navItem.options);
             this.tabbedLayoutBodyRegion.show(view);
+
+            $item.find("ul.tabbedLayoutSubNav").remove();
+
+            var $subNav = $("<ul class='tabbedLayoutSubNav'/>");
+
+            var subNavItems = _.result(view, "subNavigation");
+
+            console.log(subNavItems);
+
+            _.each(subNavItems, function(subNavItem)
+            {
+                var $subItem = $("<li/>");
+                var $subLink = $("<span/>").text(subNavItem.title);
+
+                $subItem.append($subLink);
+
+                $subLink.click(function()
+                {
+                    self._scrollTo(subNavItem, $subItem);
+                });
+
+                $subNav.append($subItem);
+            });
+
+            $item.append($subNav);
+
+            this.$current = $item;
+            this.$current.addClass("active");
+        },
+
+        _scrollTo: function(subNavItem, $subItem)
+        {
+            var target = this.$(".tabbedLayoutBody").find(subNavItem.target);
+            var $container = this.$(".tabbedLayoutBody");
+            $container.animate({
+                scrollTop: target.position().top + $container.scrollTop()
+            });
         }
 
     });

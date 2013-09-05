@@ -2,17 +2,17 @@ define(
 [
     "TP",
     "backbone",
-    "hbs!shared/templates/dialog"
+    "hbs!shared/templates/overlayBox"
 ],
 function(
     TP,
     Backbone,
-    dialogTemplate
+    overlayBoxTemplate
 )
 {
-    var DialogView = TP.ItemView.extend({
+    var OverlayBoxView = TP.ItemView.extend({
 
-        className: "dialogView",
+        className: "overlayBox",
 
         modal: true,
         closeOnResize: false,
@@ -28,7 +28,7 @@ function(
         template:
         {
             type: "handlebars",
-            template: dialogTemplate
+            template: overlayBoxTemplate
         },
 
         initialize: function(options)
@@ -56,13 +56,13 @@ function(
 
         render: function()
         {
-            DialogView.__super__.render.apply(this, arguments);
-            this.contentView.setElement(this.$("> .dialogBody"));
+            OverlayBoxView.__super__.render.apply(this, arguments);
+            this.contentView.setElement(this.$("> .overlayBoxBody"));
             this.contentView.render();
             this.rePositionView();
         }
 
     });
 
-    return DialogView;
+    return OverlayBoxView;
 });

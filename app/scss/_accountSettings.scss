@@ -1,7 +1,15 @@
-﻿.userSettingContainer
+﻿.userSettings
+{
+    background: white;
+    width: calc(800px + 200px + 52px);
+}
+
+.userSettingContainer
 {
     padding: 12px;
     width: 800px;
+
+    @include clearfix;
 
     label
     {

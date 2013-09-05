@@ -3,7 +3,7 @@
     "TP",
     "backbone",
     "shared/views/tabbedLayout",
-    "shared/views/dialogView",
+    "shared/views/overlayBoxView",
     "shared/views/userSettings/userSettingsAccountView",
     "shared/views/userSettings/userSettingsZonesView",
 ],
@@ -11,7 +11,7 @@ function(
     TP,
     Backbone,
     TabbedLayout,
-    DialogView,
+    OverlayBoxView,
     UserSettingsAccountView,
     UserSettingsZonesView
 )
@@ -44,7 +44,7 @@ function(
 
     });
 
-    return DialogView.extend({
+    return OverlayBoxView.extend({
 
         className: "userSettings",
         itemView: UserSettingsContentView

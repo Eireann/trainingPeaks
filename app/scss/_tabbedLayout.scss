@@ -1,5 +1,11 @@
+.tabbedLayout
+{
+    overflow: hidden;
+}
+
 .tabbedLayoutNav
 {
+    @include clearfix;
     display: block;
     float: left;
     width: 200px;
@@ -7,11 +13,30 @@
 
 .tabbedLayoutBody
 {
+    @include clearfix;
     display: block;
     float: left;
     width: calc(100% - 200px);
     height: 100%;
 
-    overflow: auto;
+    position: relative;
+
+    overflow-y: scroll;
+    overflow-x: auto;
     @include nice-scrollbar;
+}
+
+.tabbedLayoutNav .active
+{
+    color: blue;
+}
+
+.tabbedLayoutSubNav
+{
+    display: none;
+
+    .tabbedLayoutNav .active &
+    {
+        display: block;
+    }
 }

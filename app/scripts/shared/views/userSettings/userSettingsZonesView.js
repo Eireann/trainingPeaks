@@ -88,6 +88,18 @@ function(
             }));
         },
 
+        subNavigation:
+        [
+            {
+                title: "Power",
+                target: "[data-subnav='power']"
+            },
+            {
+                title: "Notifications",
+                target: "[data-subnav='notifications']"
+            }
+        ],
+
         _addView: function(selector, view)
         {
             this.children.add(view);
