@@ -28,6 +28,12 @@ function(
        
         modal: true,
 
+        modal:
+        {
+            mask: true,
+            shadow: true
+        },
+
         template:
         {
             type: "handlebars",
