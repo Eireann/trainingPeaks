@@ -217,13 +217,22 @@ function(
                 else
                     this.plot.unhideActiveSelections();
             }
-            else if (this.plot.getSelection() && this.plot.zoomToSelection())
+            else if (this.plot.getSelection())
             {
                 this.zoomed = true;
-                this.graphToolbar.onGraphZoomed();
+                if(this.plot.zoomToSelection())
+                {
+                    this.graphToolbar.onGraphZoomed();
+                }
+                else
+                {
+                    this.zoomed = false;
+                }
             }
             else
+            {
                 this.zoomed = false;
+            }
         },
         
         resetZoom: function()
