@@ -85,16 +85,6 @@ function(
                     value = $el.val();
                 }
 
-                // fix booleans
-                if(value.toLowerCase() === "true")
-                {
-                    value = true;
-                }
-                else if(value.toLowerCase() === "false")
-                {
-                    value = false;
-                }
-
                 formValues[key] = value;
 
             }, options);
