@@ -78,7 +78,7 @@ function (
                 this.fileUploadMenu.setPosition({ fromElement: uploadButton, left: uploadButton.outerWidth() + 13, top: -8 });
             } else
             {
-                this.fileUploadMenu.setPosition({ fromElement: uploadButton, right: -13, top: -8 });
+                this.fileUploadMenu.setPosition({ fromElement: uploadButton, right: -12, top: -6 });
             }
 
             uploadButton.addClass("menuOpen");
