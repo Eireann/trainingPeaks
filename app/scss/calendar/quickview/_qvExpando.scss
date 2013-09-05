@@ -173,12 +173,23 @@
 
     #expandoMapAndGraphResizerRegion
     {
-        height:10px;
+        height:11px;
         width:100%;
         left:0;
-        background:black;
+        
+        background:url(../../assets/images/QVImages/resize-indicator.png) center center no-repeat $TPGrey1;
+        
         cursor:row-resize;
         position:absolute;
+        border-top:1px solid #c2c3c4;
+        border-bottom:1px solid #c2c3c4;
+    }
+
+    @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
+        #expandoMapAndGraphResizerRegion {
+            background-image:url(../../assets/images/QVImages/resize-indicator@2x.png);
+            background-size: 22px 5px;
+        }
     }
 
     #expandoGraphRegion
