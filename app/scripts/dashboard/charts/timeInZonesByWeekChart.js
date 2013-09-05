@@ -5,6 +5,7 @@ define(
     "utilities/charting/jquery.flot.stack",
     "utilities/charting/chartColors",
     "utilities/charting/flotOptions",
+    "utilities/color",
     "views/dashboard/chartUtils",
     "dashboard/views/timeInZonesChartSettings"
 ],
@@ -14,6 +15,7 @@ function(
     flotStack,
     chartColors,
     defaultFlotOptions,
+    colorUtils,
     DashboardChartUtils,
     TimeInZonesChartSettingsView
 )
@@ -192,10 +194,20 @@ function(
         {
             var dataSeriesByZone = [];
 
+            var gray = $.color.parse("#eaebec");
+            var baseColor = new colorUtils.ColorValues(gray.r, gray.g, gray.b, 1);// #eaebec = gray chart background
+
+            var barColor = $.color.parse(zoneColors);
+            var mixColor = new colorUtils.ColorValues(barColor.r, barColor.g, barColor.b, 1);
+
             _.each(chartPointsByZone, function(chartPoints, index)
             {
-                var opacity = 0.14 + 0.86 * (index / (chartPointsByZone.length - 1));
-                var zoneColor = zoneColors.replace(/\$\$/, opacity.toFixed(2));
+                //var opacity = 0.14 + 0.86 * (index / (chartPointsByZone.length - 1));
+                var mixColorWeight = 0.14 + 0.86 * (index / (chartPointsByZone.length - 1));
+                var zoneColor = colorUtils.mix(mixColor, baseColor, mixColorWeight);
+                var highlightColor = colorUtils.mix(mixColor, zoneColor, 0.2);
+                //var zoneColor = zoneColors.replace(/\$\$/, opacity.toFixed(2));
+
                 var dataSeries =
                 {
                     data: chartPoints,
@@ -204,10 +216,10 @@ function(
                         show: true,
                         lineWidth: 0,
                         fill: true,
-                        fillColor: zoneColor
+                        fillColor: zoneColor.rgb
                     },
-                    color: zoneColor,
-                    highlightColor: zoneColor
+                    color: zoneColor.rgb,
+                    highlightColor: highlightColor.rgb
                 };
 
                 dataSeriesByZone.push(dataSeries);

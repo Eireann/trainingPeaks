@@ -57,9 +57,9 @@ function()
                     },
                 trainingZones:
                 {
-                    heartrate: "rgba(184, 36, 16, $$)",
-                    power: "rgba(90, 7, 146, $$)",
-                    speed: "rgba(18, 86, 137, $$)"
+                    heartrate: "rgb(184, 36, 16)",
+                    power: "rgb(90, 7, 146)",
+                    speed: "rgb(18, 86, 137)"
                 }
             },
         peaks:
