@@ -60,19 +60,8 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
             }
         }
 
-        div
-        {
-            cursor: default;
-        }
-
-        span
-        {
-            cursor: default;
-        }
-
         .dateAndTime
-        {
-            
+        {            
             padding-left: 2px;
             
             #dayName
@@ -82,6 +71,7 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
                 color: $TPGrey3;
                 padding-right: 14px;
                 text-transform:uppercase;
+                cursor:pointer;
             }
 
             #calendarDate
@@ -90,6 +80,7 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
                 font-size:$fontSizeSmall;
                 color: $TPGrey3;
                 padding-right: 14px;
+                cursor:pointer;
             }
 
             #time
@@ -110,6 +101,7 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
                 background-color: transparent;
                 margin: 0px;
                 padding: 0px;
+                cursor:pointer;
             }
         }
 

@@ -349,7 +349,7 @@ function(
             "label.tss":
             {
                 observe: "tssSource",
-                onGet: "formatTSSLabel"
+                onGet: "formatTssLabel"
             }
         },
 

@@ -218,7 +218,7 @@ function(
             this.keepSettingsButtonVisible(e);
 
             this.summarySettings = new WeekSummarySettings({ model: this.model });
-            this.summarySettings.render().center(offset.left - 7).bottom(offset.top + 15);
+            this.summarySettings.render().center(offset.left - 6).bottom(offset.top + 15);
             this.summarySettings.on("close", this.onSettingsClosed, this);
 
             this.summarySettings.once("beforeShift", function()

@@ -22,6 +22,7 @@ $troughIconSpriteRetinaURL: url(../../assets/images/sprite-icons-trough@2x.png);
     &:hover
     {
         border-color:  $TPGrey11;
+        cursor:pointer;
     }
 
     .selectedOverlay
@@ -430,7 +431,7 @@ $troughIconSpriteRetinaURL: url(../../assets/images/sprite-icons-trough@2x.png);
     }
 }
 
-.trainingPlanLibrary
+.trainingPlanLibrary, .dragging-training-plan
 {
     .trainingPlan
     {
@@ -479,6 +480,19 @@ $troughIconSpriteRetinaURL: url(../../assets/images/sprite-icons-trough@2x.png);
             }
         }
     }
+
+    .librarySearch {
+        margin-top:16px !important;
+    }
+}
+
+.applyTrainingPlanToCalendarConfirmation
+{
+    .date_restrictions
+    {
+        margin: 15px 0;
+    }
+    
 }
 
 
