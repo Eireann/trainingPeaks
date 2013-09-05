@@ -33,7 +33,7 @@ function(
                 }
                 else
                 {
-                    $el.val(value);
+                    $el.val(String(value));
                 }
 
                 if($el.is("select"))
