@@ -279,6 +279,10 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
             table tr:nth-of-type(even) {
                 background:none;
             }
+            table {
+                background:none;
+                border:none;
+            }
         }
 
     }
