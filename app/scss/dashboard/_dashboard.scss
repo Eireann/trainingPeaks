@@ -619,13 +619,12 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
                 margin-left:3px;
                 float:left;
                 margin:7px 6px;
-            }
-
-            
+            }   
         }
-
-        .librarySearch {
-            margin-top:16px !important;
+        .dashboardChartsLibrary {
+            .librarySearch {
+                margin-top:16px !important;
+            }
         }
     }
 }
