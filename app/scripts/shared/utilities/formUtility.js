@@ -24,15 +24,16 @@ function(
 
                 if(type === "radio")
                 {
-                    $el.val([String(value)]);
+                    $el.val([value]);
                 }
                 else if(type === "checkbox")
                 {
-                    $el.prop("checked", String(value) === String($el.val()));
+                    // assumes checkbox values are always boolean
+                    $el.prop("checked", value ? true : false);
                 }
                 else
                 {
-                    $el.val(String(value));
+                    $el.val(value);
                 }
 
                 if($el.is("select"))
@@ -72,7 +73,11 @@ function(
                 {
                     if($el.is(":checked"))
                     {
-                        value = $el.val();
+                        value = true;
+                    }
+                    else
+                    {
+                        value = false;
                     }
                 }
                 else

@@ -170,15 +170,15 @@
     <h3 class="subheadbold title accountSettings">{{$ "EmailOptions" }}</h3>
 
     <div class="row">
-        <label class="checkBoxRow"> {{$ "emailPMNotificationSetting" }}<input value="true" data-modelname="account" type="checkbox" name="enablePrivateMessageNotifications"> </label>
+        <label class="checkBoxRow"> {{$ "emailPMNotificationSetting" }}<input data-modelname="account" type="checkbox" name="enablePrivateMessageNotifications"> </label>
     </div>
 
     <div class="row">
-        <label class="checkBoxRow"> {{$ "postActivityNotificationSetting" }}<input value="true" data-modelname="athlete" type="checkbox" name="enableWorkoutCommentNotification"> </label>
+        <label class="checkBoxRow"> {{$ "postActivityNotificationSetting" }}<input data-modelname="athlete" type="checkbox" name="enableWorkoutCommentNotification"> </label>
     </div>
 
     <div class="row">
-        <label class="checkBoxRow">{{$ "plannedWorkoutsNotificationSetting" }}<input value="true" data-modelname="athlete" type="checkbox" name="enableVirtualCoachEmails"></label>
+        <label class="checkBoxRow">{{$ "plannedWorkoutsNotificationSetting" }}<input data-modelname="athlete" type="checkbox" name="enableVirtualCoachEmails"></label>
     </div>
 
     <div class="row">
@@ -195,6 +195,6 @@
     <p class="small deliveryTimeHelpText">{{$ "plannedWorkoutsNotificationTimeHelpText" }}</p>
 
     <div class="row">
-        <label class="checkBoxRow"><input data-modelname="account" name="allowMarketingEmails" type="checkbox" value="true"> {{$ "newsletterNotificationSetting" }}</label>
+        <label class="checkBoxRow"><input data-modelname="account" name="allowMarketingEmails" type="checkbox"> {{$ "newsletterNotificationSetting" }}</label>
     </div>
 
