@@ -36,10 +36,15 @@ function(_, TP, coachAndAffiliateCustomizations, AccountMenuView, userType, user
         onUsernameLabelClicked: function(e)
         {
             //document.getSelection().removeAllRanges();
-            
-            var offset = $(e.currentTarget).offset();
+           
+            var $target = $(e.currentTarget);
+            var offset = $target.offset();
+            var targetCenter = offset.left + ($target.width() / 2);
+            var arrowOffset = 35;
             this.accountMenu = new AccountMenuView({model: this.model, parentEl: this.$el });
-            this.accountMenu.render().top(offset.top + 23).left(offset.left);
+
+            // center the arrow below user name
+            this.accountMenu.render().top(offset.top + 23).left(targetCenter - arrowOffset);
         },
 
         onUpgradeClicked: function ()
