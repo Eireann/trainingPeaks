@@ -194,18 +194,15 @@ function(
         {
             var dataSeriesByZone = [];
 
-            var gray = $.color.parse("#eaebec");
-            var baseColor = new colorUtils.ColorValues(gray.r, gray.g, gray.b, 1);// #eaebec = gray chart background
-
+            var baseColor = $.color.parse("#eaebec");
             var barColor = $.color.parse(zoneColors);
-            var mixColor = new colorUtils.ColorValues(barColor.r, barColor.g, barColor.b, 1);
 
             _.each(chartPointsByZone, function(chartPoints, index)
             {
                 //var opacity = 0.14 + 0.86 * (index / (chartPointsByZone.length - 1));
-                var mixColorWeight = 0.14 + 0.86 * (index / (chartPointsByZone.length - 1));
-                var zoneColor = colorUtils.mix(mixColor, baseColor, mixColorWeight);
-                var highlightColor = colorUtils.mix(mixColor, zoneColor, 0.2);
+                var barColorWeight = 0.14 + 0.86 * (index / (chartPointsByZone.length - 1));
+                var zoneColor = colorUtils.mix(barColor, baseColor, barColorWeight);
+                var highlightColor = colorUtils.mix(barColor, zoneColor, 0.2);
                 //var zoneColor = zoneColors.replace(/\$\$/, opacity.toFixed(2));
 
                 var dataSeries =
