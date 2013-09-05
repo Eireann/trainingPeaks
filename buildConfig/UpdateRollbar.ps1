@@ -84,6 +84,7 @@ function add-rollbarOptions($opts, [string]$name, [string]$value) {
 function create-rollbarOptions([string] $url) {
     $opts = , $url
     $opts = add-rollbarOptions $opts "access_token" $rollbarApiKey
+    $opts += '--insecure'
     $opts
 }
 
