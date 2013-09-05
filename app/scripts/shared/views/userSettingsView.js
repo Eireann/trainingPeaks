@@ -40,6 +40,8 @@ function(
             "click .save": "save"
         },
 
+        modelEvents: {},
+        
         initialize: function()
         {
             this.recurringPaymentsCollection = new RecurringPaymentsCollection();

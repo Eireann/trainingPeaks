@@ -50,7 +50,9 @@ function(
 
     var UserSettingsFormView = TP.ItemView.extend(
     {
-        
+       
+        modelEvents: {},
+         
         template:
         {
             type: "handlebars",
