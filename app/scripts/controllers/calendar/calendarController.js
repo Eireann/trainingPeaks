@@ -67,7 +67,6 @@ function(
             this.endDate = this.createEndDay().add("weeks", 6);
 
             this.on("refresh", this.onRequestRefresh, this);
-            theMarsApp.user.on("athlete:change", this.onAthleteChange, this);
 
             this.weeksCollectionInitialize();
 
@@ -198,16 +197,24 @@ function(
 
         },
 
-        clearCacheAndRefresh: function(date)
+        clearCacheAndRefresh: function(targetDate)
         {
+
+            if(!targetDate)
+            {
+                targetDate = this.views.calendar.getCurrentWeek();
+            }
+
             if (theMarsApp.ajaxCachingEnabled)
                 theMarsApp.ajaxCaching.clearCache();
 
             this._dataManager.forceReset();
 
-            var currentWeek = date ? moment(date).format(TP.utils.datetime.shortDateFormat) : this.views.calendar.getCurrentWeek();
+            this.startDate = this.createStartDay(targetDate).subtract("weeks", 4);
+            this.endDate = this.createEndDay(targetDate).add("weeks", 6);
+
             // QL: Should be handled by reset, not "resetToDates"
-            this.weeksCollection.resetToDates(moment(this.startDate), moment(this.endDate), currentWeek);
+            this.weeksCollection.resetToDates(moment(this.startDate), moment(this.endDate), targetDate);
 
             this.loadCalendarData();
         },
@@ -269,19 +276,6 @@ function(
         onCalendarSelect: function()
         {
             this.views.library.clearSelection();
-        },
-
-        onAthleteChange: function()
-        {
-            if (theMarsApp.getCurrentController() === this)
-            {
-                this.trigger("refresh");
-            } else
-            {
-                var newStartDate = this.createStartDay().subtract("weeks", 4);
-                var newEndDate = this.createEndDay().add("weeks", 6);
-                this.resetCollections(newStartDate, newEndDate);
-            }
         },
 
         // if we edited some workouts, no need to refresh all of our collections, data manager will automatically reset cached queries
