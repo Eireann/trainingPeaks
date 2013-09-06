@@ -4,6 +4,7 @@ define(
     "TP",
     "backbone",
     "shared/utilities/formUtility",
+    "shared/views/userSettings/heartRateZonesView",
     "shared/views/userSettings/powerZonesView",
     "hbs!shared/templates/userSettings/userSettingsZonesTemplate"
 ],
@@ -12,6 +13,7 @@ function(
     TP,
     Backbone,
     FormUtility,
+    HeartRateZonesView,
     PowerZonesView,
     userSettingsZonesTemplate
 )
@@ -37,14 +39,24 @@ function(
         {
             UserSettingsZonesView.__super__.render.apply(this, arguments);
 
+            this._addView(".heartRateZones", new TP.CollectionView({
+                itemView: HeartRateZonesView,
+                collection: new TP.Collection(this.model.getAthleteSettings().get("heartRateZones"))
+            }));
+
             this._addView(".powerZones", new TP.CollectionView({
                 itemView: PowerZonesView,
                 collection: new TP.Collection(this.model.getAthleteSettings().get("powerZones"))
             }));
+
         },
 
         subNavigation:
         [
+            {
+                title: "Heart Rate",
+                target: "[data-subnav='heartrate']"
+            },
             {
                 title: "Power",
                 target: "[data-subnav='power']"
