@@ -36,6 +36,11 @@ function(
             "change input.auto": "_onInputsChanged"
         }, ChartSettingsView.prototype.events),
 
+        modelEvents:
+        {
+            "change": "_refreshView"
+        },
+
         onRender: function()
         {
             var self = this;
@@ -60,6 +65,12 @@ function(
                 $el.attr("checked", self.model.get($el.attr("name")));
             });
 
+            this.$('input.auto[type="text"]').each(function(i, el)
+            {
+                var $el = $(el);
+                $el.val(self.model.get($el.attr("name")));
+            });
+
             this._refreshView();
         },
 
@@ -73,7 +84,11 @@ function(
                 self.model.set($el.attr("name"), $el.prop("checked"));
             });
 
-            this._refreshView();
+            this.$('input.auto[type="text"]').each(function(i, el)
+            {
+                var $el = $(el);
+                self.model.set($el.attr("name"), $el.val());
+            });
         },
 
         _refreshView: function()
@@ -87,6 +102,7 @@ function(
                 this.comparisonDatePicker.disable();
             }
 
+            this.$(".defaultTitle").text(_.result(this.model, "defaultTitle"));
         }
     });
 

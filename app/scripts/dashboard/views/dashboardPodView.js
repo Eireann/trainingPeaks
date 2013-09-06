@@ -43,8 +43,6 @@ function(
 
             _.bindAll(this, "_onHoverToolTip", "_renderFlotChart", "waitingOff");
 
-            this.listenTo(this.model, "change:title", _.bind(this._onChartTitleChange, this));
-
             //trigger redraw instead of dashboardDatesChange
             this.listenTo(this.model, "dashboardDatesChange", _.bind(this._onDashboardReset, this));
             this.listenTo(this.model, "dataManagerReset", _.bind(this._onDashboardReset, this));
@@ -66,6 +64,18 @@ function(
             "mousedown .expand": "_onExpandClicked",
             "mousedown .collapse": "_onExpandClicked",
             "mousedown .close": "_onCloseClicked"
+        },
+
+        serializeData: function()
+        {
+            var data = DashboardPodView.__super__.serializeData.apply(this, arguments);
+            data.title = this._podTitle();
+            return data;
+        },
+
+        _podTitle: function()
+        {
+            return this.model.get("title") || _.result(this.model, "defaultTitle");
         },
 
         _bindPlotClick: function()
@@ -106,6 +116,8 @@ function(
 
         _renderFlotChart: function(chartOptions)
         {
+
+            this.$(".chartTitle").text(this._podTitle());
             if(!chartOptions)
             {
                 this.$el.addClass("noData");
@@ -309,11 +321,6 @@ function(
         onClose: function()
         {
             this._hideToolTip();
-        },
-
-        _onChartTitleChange: function()
-        {
-            this.ui.chartTitle.text(this.model.get("title"));
         },
 
         _setChartCssClass: function()
