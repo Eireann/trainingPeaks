@@ -43,9 +43,10 @@ function ()
         100: "Other"
     };
 
-    var getNameById = function (workoutTypeId)
+    var getNameById = function (workoutTypeId, defaultName)
     {
-        return workoutTypesById.hasOwnProperty(workoutTypeId) ? workoutTypesById[workoutTypeId] : "Unknown";
+        defaultName = _.isString(defaultName) ? defaultName : "Unknown";
+        return workoutTypesById.hasOwnProperty(workoutTypeId) ? workoutTypesById[workoutTypeId] : defaultName;
     };
 
     var workoutTypeShortNamesById =
