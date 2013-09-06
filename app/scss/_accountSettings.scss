@@ -45,6 +45,14 @@
         h3 {
             margin-top:0;
         }
+
+        input {
+            width:295px;
+        }
+
+        label.personalRightCol{
+            width:104px;
+        }
     }
 
     @include clearfix;
@@ -62,7 +70,8 @@
     {
         width: 200px;
         float: left;
-        margin: 0 15px 0 0;
+        // margin: 0 15px 0 0;
+        margin:0;
         height: 20px;
         color: $TPGrey3;
     }
@@ -81,7 +90,7 @@
 
     p
     {
-        margin: 0 15px;
+        margin: 0 15px 0 110px;
     }
 
     select
@@ -188,7 +197,7 @@
         max-width: 350px;
         width: 350px;
         text-align: left;
-        margin-left: 50px;
+        margin-left: 108px;
     }
 
     .deliveryTimeHelpText
@@ -208,7 +217,7 @@
 
     .selectboxit-container .selectboxit 
     {
-        width: 200px !important;
+        width: 295px !important;
     }
 
     .selectBox
