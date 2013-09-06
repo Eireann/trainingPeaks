@@ -4,10 +4,11 @@ define(
     "setImmediate",
     "jquerySelectBox",
     "jqueryui/datepicker",
+    "backbone",
     "TP",
     "shared/data/athleteTypes",
     "shared/data/countriesAndStates",
-    "shared/models/profilePhotoFileData",
+    "shared/models/userDataSource",
     "shared/utilities/formUtility",
     "views/userConfirmationView",
     "hbs!templates/views/quickView/fileUploadErrorView",
@@ -18,10 +19,11 @@ function(
     setImmediate,
     jquerySelectBox,
     datepicker,
+    Backbone,
     TP,
     athleteTypes,
     countriesAndStates,
-    ProfilePhotoFileData,
+    UserDataSource,
     FormUtility,
     UserConfirmationView,
     fileUploadErrorTemplate,
@@ -29,7 +31,7 @@ function(
 )
 {
 
-    var hours = [
+    var selectHours = [
         { data: 0, label: "12:00 AM - 12:59 AM"},
         { data: 1, label: "1:00 AM - 1:59 AM"},       
         { data: 2, label: "2:00 AM - 2:59 AM"},               
@@ -69,36 +71,29 @@ function(
 
         events:
         {
-            "click .ical": "onICalFocus",
+            "click .ical": "_onICalFocus",
             "change input[name=enableVirtualCoachEmails]": "_enableOrDisableVirtualCoachHour",
             "click .photoContainer": "_selectProfilePhoto",
             "click .removePhoto": "_removeProfilePhoto",
             "change .fileUploadInput": "_onProfilePhotoSelected"
         },
 
-        initialize: function()
+        initialize: function(options)
         {
+            this.accountSettingsModel = this.model.getAccountSettings();
+            this.athleteSettingsModel = this.model.getAthleteSettings();
         },
 
         onRender: function()
         {
-            FormUtility.applyValuesToForm(this.$el, this.model, { filterSelector: "[data-modelname=user]" });
-            FormUtility.applyValuesToForm(this.$el, this.model.getAccountSettings(), { filterSelector: "[data-modelname=account]" });
-            FormUtility.applyValuesToForm(this.$el, this.model.getAthleteSettings(), { filterSelector: "[data-modelname=athlete]" });
-
-            this.$(".datepicker").datepicker(
-            {
-                dateFormat: "mm/dd/yy",
-                changeYear: true,
-                changeMonth: true
-            });
-
+            this._applyModelValuesToForm();
+            this._setupDatePicker();
             this._updatePhotoUrl();
 
             var self = this;
             setImmediate(function()
             {
-                self.$("select").selectBoxIt();
+                self._setupSelectBox();
                 self._enableOrDisableVirtualCoachHour();
             });
         },
@@ -106,49 +101,70 @@ function(
         serializeData: function()
         {
             var data = this.model.toJSON();
+            this._addConstantsToSerializedData(data);
+            this._addICalKeysToSerializedData(data);
+            return data;
+        },
+
+        processSave: function()
+        {
+            this._applyFormValuesToModels();
+            var password = this.$("input[name=password]").val().trim();
+            return UserDataSource.saveUserSettingsAndPassword({
+                models: [this.model, this.athleteSettingsModel, this.accountSettingsModel],
+                password: password
+            });
+        },
+
+        _addConstantsToSerializedData: function(data)
+        {
             _.extend(data, {
                 athleteTypes: athleteTypes,
                 countries: countriesAndStates.countries,
                 states: countriesAndStates.states,
-                hours: hours,
+                hours: selectHours,
                 timeZones: theMarsApp.timeZones.get("zonesWithLabels")
             });
-
-            data.iCalendarKeys = this.model.getAthleteSettings().get("iCalendarKeys");
-            data.iCalendarKeys.webcalRoot = "webcal://" + theMarsApp.apiConfig.wwwRoot.replace("http://","") + "/ical/";
-
-            return data;
         },
 
-        onICalFocus: function(e)
+        _addICalKeysToSerializedData: function(data)
+        {
+            data.iCalendarKeys = this.athleteSettingsModel.get("iCalendarKeys");
+            data.iCalendarKeys.webcalRoot = "webcal://" + theMarsApp.apiConfig.wwwRoot.replace("http://","") + "/ical/";
+        },
+
+        _applyModelValuesToForm: function()
+        {
+            FormUtility.applyValuesToForm(this.$el, this.model, { filterSelector: "[data-modelname=user]" });
+            FormUtility.applyValuesToForm(this.$el, this.accountSettingsModel, { filterSelector: "[data-modelname=account]" });
+            FormUtility.applyValuesToForm(this.$el, this.athleteSettingsModel, { filterSelector: "[data-modelname=athlete]" });
+        },
+
+        _setupDatePicker: function()
+        {
+            this.$(".datepicker").datepicker(
+            {
+                dateFormat: "mm/dd/yy",
+                changeYear: true,
+                changeMonth: true
+            });
+        },
+
+        _setupSelectBox: function()
+        {
+            self.$("select").selectBoxIt();
+        },
+
+        _onICalFocus: function(e)
         {
             $(e.target).select();
         },
 
-        save: function()
+        _applyFormValuesToModels: function()
         {
-
             FormUtility.applyValuesToModel(this.$el, this.model, { filterSelector: "[data-modelname=user]"});
-            FormUtility.applyValuesToModel(this.$el, this.model.getAthleteSettings(), { filterSelector: "[data-modelname=athlete]" });
-            FormUtility.applyValuesToModel(this.$el, this.model.getAccountSettings(), { filterSelector: "[data-modelname=account]" });
-
-            var deferred = $.when(
-                    this.model.save(),
-                    this.model.getAthleteSettings().save(),
-                    this.model.getAccountSettings().save()
-                );
-
-
-            var password = this.$("input[name=password]").val().trim();
-            if(password)
-            {
-                deferred = $.when(
-                    deferred,
-                    this.model.savePassword(password)
-                );
-            }
-
-            return deferred;
+            FormUtility.applyValuesToModel(this.$el, this.athleteSettingsModel, { filterSelector: "[data-modelname=athlete]" });
+            FormUtility.applyValuesToModel(this.$el, this.accountSettingsModel, { filterSelector: "[data-modelname=account]" });
         },
 
         _selectProfilePhoto: function()
@@ -166,31 +182,24 @@ function(
                 return;
             }
 
-            var workoutReader = new TP.utils.workout.FileReader(fileList[0]);
-            var fileReaderDeferred = workoutReader.readFile();
-
             this.waitingOn();
             var self = this; 
-            fileReaderDeferred.done(function(fileName, dataAsString)
+            UserDataSource.saveProfilePhoto(fileList[0]).done(function(profilePhotoUrl)
             {
-                var profilePhotoFileData = new ProfilePhotoFileData({ data: dataAsString, fileName: fileName });
-                profilePhotoFileData.save().done(function()
-                {
-                    self.model.set("profilePhotoUrl", profilePhotoFileData.get("profilePhotoUrl"));
-                    self._updatePhotoUrl();
-                }).fail(function()
-                {
-                    new UserConfirmationView({ template: fileUploadErrorTemplate }).render();
-                }).always(function()
-                {
-                    self.waitingOff(); 
-                });
+                self.model.set("profilePhotoUrl", profilePhotoUrl);
+                self._updatePhotoUrl();
+            }).fail(function()
+            {
+                new UserConfirmationView({ template: fileUploadErrorTemplate }).render();
+            }).always(function()
+            {
+                self.waitingOff(); 
             });
         },
 
         _updatePhotoUrl: function()
         {
-            var photoUrl = this._createPhotoUrl();
+            var photoUrl = this._buildPhotoUrl();
             if(photoUrl)
             {
                 this.$(".profilePicture img").attr("src", photoUrl);
@@ -201,17 +210,32 @@ function(
                 this.$(".profilePicture").addClass("nophoto");
                 this.$(".profilePicture img").attr("src", "");
             }
-
         },
 
-        _createPhotoUrl: function()
+        _buildPhotoUrl: function()
         {
             if(!this.model.has("profilePhotoUrl"))
             {
                 return null;
             }
-            var wwwRoot = theMarsApp.apiConfig.devWwwRoot ? theMarsApp.apiConfig.devWwwRoot : theMarsApp.apiConfig.wwwRoot;
+            var wwwRoot = UserDataSource.getPhotoRootUrl();
             return wwwRoot + this.model.get("profilePhotoUrl");
+        },
+
+        _removeProfilePhoto: function()
+        {
+            this.waitingOn();
+            var self = this; 
+            UserDataSource.deleteProfilePhoto().done(function(profilePhotoUrl)
+            {
+                self._updatePhotoUrl();
+            }).fail(function()
+            {
+                new UserConfirmationView({ template: fileUploadErrorTemplate }).render();
+            }).always(function()
+            {
+                self.waitingOff(); 
+            });
         },
 
         _enableOrDisableVirtualCoachHour: function()

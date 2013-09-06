@@ -88,7 +88,7 @@ function(
             var self = this;
             self.waitingOn();
             $.when(
-                this.children.findByCustom("userSettingsForm").save()
+                this.children.findByCustom("userSettingsForm").processSave()
             ).done(
                 function()
                 {
