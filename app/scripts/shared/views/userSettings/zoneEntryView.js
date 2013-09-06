@@ -32,7 +32,7 @@ function(
 
         formatter: function(value)
         {
-            return value
+            return value;
         },
 
         setFormatter: function(formatter)

@@ -49,12 +49,12 @@ function(
             this._addView(".powerZones", new TP.CollectionView({
                 itemView: PowerZonesView,
                 collection: new TP.Collection(this.model.getAthleteSettings().get("powerZones"))
-            }))
+            }));
 
             this._addView(".speedPaceZones", new TP.CollectionView({
                 itemView: SpeedPaceZonesView,
                 collection: new TP.Collection(this.model.getAthleteSettings().get("speedZones"))
-            }));;
+            }));
 
         },
 
