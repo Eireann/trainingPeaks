@@ -38,7 +38,17 @@ function(
                 fileReaderDeferred.done(function(fileName, dataAsString)
                 {
                     var workoutDate = self.workoutModel.get("date") || self.workoutModel.get("workoutDay");
-                    self.uploadedFileDataModel = new WorkoutFileData({ workoutDay: moment(workoutDate).format(TP.utils.datetime.longDateFormat), startTime: moment(workoutDate).add("hours", 6).format(TP.utils.datetime.longDateFormat), data: dataAsString, fileName: fileName });
+                    self.uploadedFileDataModel = new WorkoutFileData({ 
+                        workoutDay: moment(workoutDate).format(TP.utils.datetime.longDateFormat), 
+                        startTime: moment(workoutDate).add("hours", 6).format(TP.utils.datetime.longDateFormat), 
+                        data: dataAsString, 
+                        fileName: fileName });
+
+                    if(self.workoutModel.has("workoutId"))
+                    {
+                        self.uploadedFileDataModel.set("workoutId", self.workoutModel.get("workoutId"));
+                    }
+                    
                     self.uploadedFileDataModel.save().done(function()
                     {
                         self.trigger("uploadDone", self.uploadedFileDataModel.get("workoutModel"));
