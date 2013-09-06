@@ -135,7 +135,7 @@ function(
 
             if(myBottom > windowBottom)
             {
-                var arrowOffset = (myBottom - windowBottom) + 30;
+                var arrowOffset = (myBottom - windowBottom) + 31;
                 this.top(windowBottom - this.$el.height());
                 this.$(".arrow").css("top", arrowOffset + "px");
             }

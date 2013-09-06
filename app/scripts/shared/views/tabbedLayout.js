@@ -81,8 +81,6 @@ function(
 
             var subNavItems = _.result(view, "subNavigation");
 
-            console.log(subNavItems);
-
             _.each(subNavItems, function(subNavItem)
             {
                 var $subItem = $("<li/>");

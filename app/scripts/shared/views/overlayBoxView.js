@@ -14,7 +14,11 @@ function(
 
         className: "overlayBox",
 
-        modal: true,
+        modal:
+        {
+            mask: true,
+            shadow: true
+        },
         closeOnResize: false,
 
         events:
