@@ -8,7 +8,34 @@
     @include clearfix;
     display: block;
     float: left;
-    width: 200px;
+    width: 200px; 
+    margin:0 0 0 12px;
+    padding:10px;
+    font-size:$fontSizeSmall;
+    background-color:$TPGrey1;
+    
+    li {
+        list-style-type:none;
+        cursor:pointer;
+        margin:2px 0 2px 0;
+        color:#76787d;
+
+        &:hover {
+            color:#303030;
+        }
+
+        ul {
+            margin-left:0;
+            cursor:default;
+
+            li {
+               margin:2px 0 2px 10px;
+               cursor:pointer;
+            }
+        }
+    }
+
+    
 }
 
 .tabbedLayoutBody
@@ -16,9 +43,11 @@
     @include clearfix;
     display: block;
     float: left;
-    width: calc(100% - 200px);
+    width: calc(100% - 212px);
     height: 100%;
 
+    padding: 0px 12px 13px 12px;
+    
     position: relative;
 
     overflow-y: scroll;
@@ -26,9 +55,14 @@
     @include nice-scrollbar;
 }
 
-.tabbedLayoutNav .active
-{
-    color: blue;
+.tabbedLayoutNav .active {
+    font-family:$fontFamilyHeavy;
+    font-weight:normal;
+    color:#303030;
+
+    ul {
+        font-family:$fontFamilyRegular;
+    }
 }
 
 .tabbedLayoutSubNav
