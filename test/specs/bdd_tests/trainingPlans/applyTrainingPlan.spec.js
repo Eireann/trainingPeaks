@@ -182,6 +182,8 @@ function(
 
                 var tomorrow = moment().add("days", 1);
                 $body.find("#applyDateType").val("2");
+                $body.find("#applyDateType").trigger("change");
+
                 $body.find(".trainingPlanDetails .apply").trigger("click");
                 expect(testHelpers.hasRequest(null, "plans/v1/commands/applyplan")).toBe(true);
 
@@ -241,11 +243,14 @@ function(
             it("Should trigger a start on date apply command, starting on a monday", function()
             {
                 expect(testHelpers.hasRequest(null, "plans/v1/commands/applyplan")).toBe(false);
-
                 var thursday = moment().day(4);
                 var monday = moment().day(1);
                 $body.find("#applyDateType").val("1");
+                $body.find("#applyDateType").change();
+
                 $body.find("#applyDate").val(thursday.format("M/D/YYYY"));
+                $body.find("#applyDate").change();
+
                 $body.find(".trainingPlanDetails .apply").trigger("click");
                 expect(testHelpers.hasRequest(null, "plans/v1/commands/applyplan")).toBe(true);
 
@@ -267,7 +272,9 @@ function(
                 }
                 var tuesday = moment().day(2);
                 $body.find("#applyDateType").val("3");
+                $body.find("#applyDateType").change();
                 $body.find("#applyDate").val(tuesday.format("M/D/YYYY"));
+                $body.find("#applyDate").change();
                 $body.find(".trainingPlanDetails .apply").trigger("click");
                 expect(testHelpers.hasRequest(null, "plans/v1/commands/applyplan")).toBe(true);
 
@@ -316,7 +323,9 @@ function(
                 var thursday = moment().day(4);
                 var friday = moment().day(5);
                 $body.find("#applyDateType").val("1");
+                $body.find("#applyDateType").change();
                 $body.find("#applyDate").val(thursday.format("M/D/YYYY"));
+                $body.find("#applyDate").change();
                 $body.find(".trainingPlanDetails .apply").trigger("click");
                 expect(testHelpers.hasRequest(null, "plans/v1/commands/applyplan")).toBe(true);
 
@@ -338,7 +347,9 @@ function(
                 }
                 var tuesday = moment().day(2);
                 $body.find("#applyDateType").val("3");
+                $body.find("#applyDateType").change();
                 $body.find("#applyDate").val(tuesday.format("M/D/YYYY"));
+                $body.find("#applyDate").change();
                 $body.find(".trainingPlanDetails .apply").trigger("click");
                 expect(testHelpers.hasRequest(null, "plans/v1/commands/applyplan")).toBe(true);
 

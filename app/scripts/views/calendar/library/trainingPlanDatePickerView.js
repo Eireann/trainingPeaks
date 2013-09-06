@@ -26,7 +26,8 @@ function(
 
         events:
         {
-            "change #applyDateType": "updateDateInputOptions"
+            "change #applyDateType": "updateDateInputOptions",
+            "change #applyDate": "updateDateInput"
         },
 
         initialize: function(options)
