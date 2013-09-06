@@ -5,25 +5,9 @@
 
     <div class="dialogContent">
         
-        <select>
-        	
-		<option value="1">Start</option>
-		<option value="3" {{#if endRangeSelected}} selected {{/if}}>End</option>
-        	
-        </select>
+        <div class="chooseDate">
 
-        {{#if eligibleTargetDate}}
-        	<div class="date_restrictions">
-        		 The closest eligible date for this plan to 
-        		 {{#if endRangeSelected}}
-        		 	end
-        		 {{else}}
-        		 	start
-        		 {{/if}}
-
-        		 is {{eligibleTargetDate}}. This plan will be applied to that date.
-        	</div>
-        {{/if}}
+        </div>
 
         <div class="dialogButtons">
             <button id="confirmationOk">{{$ "OK" }}</button>

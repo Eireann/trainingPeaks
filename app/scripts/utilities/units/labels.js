@@ -215,7 +215,7 @@ function(unitsConstants, workoutLayoutFormatter, workoutTypeUtils)
             {
                 if (ctx.hasOwnProperty(key))
                 {
-                    tssSource = ctx[key] ? ctx[key].toString() : ctx[key];
+                    tssSource = ctx[key] || ctx[key] === 0 ? ctx[key].toString() : ctx[key];
                 }
             });
         });
