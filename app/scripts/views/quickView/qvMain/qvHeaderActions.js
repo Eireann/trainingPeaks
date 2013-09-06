@@ -150,7 +150,7 @@ function (
             menu.on("cut", this.close, this);
             menu.on("copy", this.close, this);
             menu.on("print", this.print, this);
-            menu.setPosition({ fromElement: menuIcon, bottom: 7, top: menuIcon.height(), left: -32 });
+            menu.setPosition({ fromElement: menuIcon, bottom: 7, left: -32, top: 6 });
             menu.render();
         },
 

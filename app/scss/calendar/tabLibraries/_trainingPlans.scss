@@ -139,7 +139,6 @@
 
         margin-top: 5px;
         margin-bottom: 6px;
-        width: 100%;
 
         .on
         {
@@ -166,16 +165,18 @@
             padding-left: 2px;
             margin-bottom:0;
         }
-
-        button.apply
-        {
-            display: block;
-            float: left;
-            height: 22px;
-            margin-left: 8px;
-            width: 50px;
-            font-size: $fontSizeSmall;
-        }
+    }
+    button.apply
+    {
+        display: block;
+        float: left;
+        height: 22px;
+        margin-left: 8px;
+        width: 50px;
+        font-size: $fontSizeSmall;
+        float: right;
+        position: relative;
+        bottom: 31px;
     }
 
     .appliedPlansContainer
