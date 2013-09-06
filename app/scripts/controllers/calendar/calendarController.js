@@ -199,20 +199,22 @@ function(
 
         clearCacheAndRefresh: function(targetDate)
         {
+
+            if(!targetDate)
+            {
+                targetDate = this.views.calendar.getCurrentWeek();
+            }
+
             if (theMarsApp.ajaxCachingEnabled)
                 theMarsApp.ajaxCaching.clearCache();
 
             this._dataManager.forceReset();
 
-            if(targetDate)
-            {
-                this.startDate = this.createStartDay(targetDate).subtract("weeks", 4);
-                this.endDate = this.createEndDay(targetDate).add("weeks", 6);
-            }
+            this.startDate = this.createStartDay(targetDate).subtract("weeks", 4);
+            this.endDate = this.createEndDay(targetDate).add("weeks", 6);
 
-            var targetWeek = targetDate ? moment(targetDate).format(TP.utils.datetime.shortDateFormat) : this.views.calendar.getCurrentWeek();
             // QL: Should be handled by reset, not "resetToDates"
-            this.weeksCollection.resetToDates(moment(this.startDate), moment(this.endDate), targetWeek);
+            this.weeksCollection.resetToDates(moment(this.startDate), moment(this.endDate), targetDate);
 
             this.loadCalendarData();
         },
