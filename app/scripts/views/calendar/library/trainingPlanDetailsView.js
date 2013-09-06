@@ -143,7 +143,6 @@ function(
         onApply: function()
         {
 
-            // todo: change to reference this.dateView
             this.applyStartType = Number(this.dateView.ui.applyDateType.val());
             var targetDate = this.dateView.ui.applyDate.val();
 

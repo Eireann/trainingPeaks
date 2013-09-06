@@ -28,10 +28,11 @@ function(
         {
             "change #applyDateType": "updateDateInputOptions"
         },
-        
+
         initialize: function(options)
         {
             this.parentModal = options.parentModal;
+            this.defaultDate = options.defaultDate;
             _.bindAll(this, "checkWhetherDayIsSelectable");
         },
 
@@ -47,7 +48,7 @@ function(
             {
                 self.$(".datepicker").css("position", "relative").css("z-index", self.parentModal.$el.css("z-index"));
                 self.$(".datepicker").datepicker({ dateFormat: "m/d/yy", firstDay: theMarsApp.controllers.calendarController.startOfWeekDayIndex,
-                    beforeShowDay: self.checkWhetherDayIsSelectable });
+                    beforeShowDay: self.checkWhetherDayIsSelectable, defaultDate: self.defaultDate || +0 });
                 self.$("select.dateOptions").selectBoxIt({ dynamicPositioning: true });
             });
 
@@ -58,7 +59,7 @@ function(
         {
             return {
                 details: this.model.details.toJSON(),
-                applyDate: moment().format(this.dateFormat)
+                applyDate: this.restrictTargetDate(this.defaultDate || moment().format(this.dateFormat))
             };
         },
 
@@ -94,7 +95,6 @@ function(
             // force start/end to week start/end
             if(this.model.details.get("hasWeeklyGoals"))
             {
-
                 var startDayOfWeek = this.getStartDayOfWeekIndex();
                 var endDayOfWeek = this.getEndDayOfWeekIndex(); 
 
@@ -150,7 +150,7 @@ function(
         getEndDayOfWeekIndex: function()
         {
             return this.model.details.has("endDate") ? moment(this.model.details.get("endDate")).day() : 0;
-        },
+        }
 
     });
 });
