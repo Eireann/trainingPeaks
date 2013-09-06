@@ -5,7 +5,7 @@
     "shared/views/tabbedLayout",
     "shared/views/overlayBoxView",
     "shared/views/userSettings/userSettingsAccountView",
-    "shared/views/userSettings/userSettingsZonesView",
+    "shared/views/userSettings/userSettingsZonesView"
 ],
 function(
     TP,

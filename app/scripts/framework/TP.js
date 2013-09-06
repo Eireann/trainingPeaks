@@ -285,7 +285,7 @@ function(
             this.$el.css({
                 height: this.$el.height(),
                 width: this.$el.width()
-            });;
+            });
 
             if (!this.positionAttributes)
             {

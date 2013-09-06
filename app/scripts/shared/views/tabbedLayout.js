@@ -47,7 +47,7 @@ function(
 
             _.each(this.navigation, function(navItem)
             {
-                var $item = $("<li/>")
+                var $item = $("<li/>");
                 var $link = $("<span class='tabbedLayoutNavLink'/>").text(navItem.title);
 
                 $item.append($link);
@@ -74,6 +74,12 @@ function(
 
             var view = new navItem.view(navItem.options);
             this.tabbedLayoutBodyRegion.show(view);
+
+            setImmediate(function()
+            {
+                this.$(".tabbedLayoutBody").scrollTop(0);
+                this.$(".tabbedLayoutBody").scrollLeft(0);
+            });
 
             $item.find("ul.tabbedLayoutSubNav").remove();
 

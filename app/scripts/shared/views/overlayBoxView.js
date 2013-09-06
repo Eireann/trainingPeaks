@@ -42,7 +42,7 @@ function(
                 throw new Error("A DialogView requires an itemView");
             }
 
-            this.children = new Backbone.ChildViewContainer;
+            this.children = new Backbone.ChildViewContainer();
 
             this.contentView = new this.itemView(options);
             this.children.add(this.contentView);
