@@ -32,6 +32,8 @@ function(
  
     var calendarCollectionBase = {
 
+        //comparator: "id",
+
         initialize: function(models, options)
         {
             
@@ -232,7 +234,16 @@ function(
         {
             var newWeekCollection = this.createWeekCollectionStartingOn(startDate);
             var newWeekModel = new TP.Model({ id: startDate.format(TP.utils.datetime.shortDateFormat), week: newWeekCollection });
-            this.add(newWeekModel, { at: 0, append: false });
+
+            var prependOptions = { append: false };
+
+            // don't use at: index option if we're using a comparator
+            if(!this.comparator)
+            {
+                prependOptions.at = 0;
+            }
+
+            this.add(newWeekModel, prependOptions);
             return newWeekModel;
         },
 

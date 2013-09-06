@@ -8,8 +8,18 @@
 
 .userSettingContainer
 {
-    padding: 12px;
-    width: 800px;
+    padding: 19px 12px 13px 12px;
+    // width: 800px;
+
+    .userSettingsPersonalSection {
+        margin-bottom:20px;
+        padding-bottom:20px;
+        border-bottom:1px solid $TPGrey2;
+
+        h3 {
+            margin-top:0;
+        }
+    }
 
     label
     {
@@ -160,7 +170,7 @@
 
     .accountSettings
     {
-        margin: 10px 0 5px 0;
+        // margin: 10px 0 5px 0;
     }
 
     .textCopy
@@ -203,7 +213,7 @@
         width: 200px;
     }
 
-    .country, .timeZone
+    .country, .timeZone, .state
     {
         .selectboxit-container .selectboxit 
         {
