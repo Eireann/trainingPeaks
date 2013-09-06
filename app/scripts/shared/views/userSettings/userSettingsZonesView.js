@@ -6,6 +6,7 @@ define(
     "shared/utilities/formUtility",
     "shared/views/userSettings/heartRateZonesView",
     "shared/views/userSettings/powerZonesView",
+    "shared/views/userSettings/speedPaceZonesView",
     "hbs!shared/templates/userSettings/userSettingsZonesTemplate"
 ],
 function(
@@ -15,6 +16,7 @@ function(
     FormUtility,
     HeartRateZonesView,
     PowerZonesView,
+    SpeedPaceZonesView,
     userSettingsZonesTemplate
 )
 {
@@ -47,7 +49,12 @@ function(
             this._addView(".powerZones", new TP.CollectionView({
                 itemView: PowerZonesView,
                 collection: new TP.Collection(this.model.getAthleteSettings().get("powerZones"))
-            }));
+            }))
+
+            this._addView(".speedPaceZones", new TP.CollectionView({
+                itemView: SpeedPaceZonesView,
+                collection: new TP.Collection(this.model.getAthleteSettings().get("speedZones"))
+            }));;
 
         },
 
@@ -60,6 +67,10 @@ function(
             {
                 title: "Power",
                 target: "[data-subnav='power']"
+            },
+            {
+                title: "Speed/Pace",
+                target: "[data-subnav='speedPace']"
             },
             {
                 title: "Notifications",
