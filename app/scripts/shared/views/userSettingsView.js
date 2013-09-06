@@ -26,8 +26,6 @@ function(
         tagName: "div",
         className: "userSettings",
        
-        modal: true,
-
         modal:
         {
             mask: true,
