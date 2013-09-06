@@ -75,7 +75,7 @@ function (
 
             if (direction === "right")
             {
-                this.fileUploadMenu.setPosition({ fromElement: uploadButton, left: uploadButton.outerWidth() + 13, top: -8 });
+                this.fileUploadMenu.setPosition({ fromElement: uploadButton, left: uploadButton.outerWidth() + 12, top: -6 });
             } else
             {
                 this.fileUploadMenu.setPosition({ fromElement: uploadButton, right: -12, top: -6 });

@@ -1,26 +1,29 @@
-<div class="row">
-    <div class="firstName">
-        <label>{{$ "FirstName" }}</label>
-        <input data-modelname="user" type="text" readonly name="firstName" />
+<div class="userSettingsPersonalSection">
+    <h3 class="title subheadbold">{{$ "PersonalInfo" }}</h3>
+    
+    <div class="row">
+        <div class="firstName">
+            <label>{{$ "FirstName" }}</label>
+            <input data-modelname="user" type="text" readonly name="firstName" />
+        </div>
+
+        <div class="lastName">
+            <label>{{$ "LastName" }}</label>
+            <input data-modelname="user" type="text" readonly name="lastName" />
+        </div>
     </div>
 
-    <div class="lastName">
-        <label>{{$ "LastName" }}</label>
-        <input data-modelname="user" type="text" readonly name="lastName" />
-    </div>
-</div>
+    <div class="row">
+        <div>
+            <label>{{$ "Username" }}</label>
+            <input data-modelname="user" type="text" readonly name="userName" />
+        </div>
 
-<div class="row">
-    <div>
-        <label>{{$ "Username" }}</label>
-        <input data-modelname="user" type="text" readonly name="userName" />
+        <div>
+            <label>{{$ "Password" }}</label>
+            <input data-modelname="user" type="password" readonly/>
+        </div>
     </div>
-
-    <div>
-        <label>{{$ "Password" }}</label>
-        <input data-modelname="user" type="password" readonly/>
-    </div>
-</div>
 
     <div class="row">
         <label>{{$ "AthleteType" }}</label>
@@ -67,7 +70,7 @@
         <label>{{$ "City" }}</label>
         <input data-modelname="user" type="text" readonly name="city" />
         <label>{{$ "State" }}</label>
-        <div class="selectBox">
+        <div class="selectBox state">
             <select data-modelname="user" name="state">
             {{#each states}}
                 <option value="{{ data }}">{{ label }}</option>
@@ -95,14 +98,17 @@
         <label>{{$ "CellPhone" }}</label>
         <input data-modelname="user" type="tel" readonly name="cellPhone" />
     </div>
-    
+
     {{#if profilePhotoUrl}}
     <div class ="profilePicture">
         <img src="{{ wwwRoot }}{{ profilePhotoUrl }}" />
     </div>
     {{/if}}
+</div>
 
 
+
+<div class="userSettingsPersonalSection">
     <h3 class="subheadbold title accountSettings">{{$ "AccountSettings" }}</h3>
 
     <div class=" row">
@@ -144,29 +150,33 @@
             </select>
         </div>
     </div>
+</div>
 
 
-    {{#with iCalendarKeys }}
-        <h3 class="title accountSettings subheadbold">{{$ "CalendarSync" }}</h3>
+<div class="userSettingsPersonalSection">
+{{#with iCalendarKeys }}
+    <h3 class="title accountSettings subheadbold">{{$ "CalendarSync" }}</h3>
 
-        <div class="row">
-            <label>{{$ "WorkoutsOnly" }}</label>
-            <input class="ical" type="text" readonly name="iCalendarKeys.workoutsOnly" value="webcal://{{ wwwRoot }}/ical/{{ workoutsOnly }}.ics"/>
-        </div>
-     
-        <div class="row">
-            <label>{{$ "MealsOnly" }}</label>
-            <input class="ical" type="text" readonly name="iCalendarKeys.mealsOnly" value="webcal://{{ wwwRoot }}/ical/{{ mealsOnly }}.ics" />
-        </div>       
+    <div class="row">
+        <label>{{$ "WorkoutsOnly" }}</label>
+        <input class="ical" type="text" readonly name="iCalendarKeys.workoutsOnly" value="webcal://{{ wwwRoot }}/ical/{{ workoutsOnly }}.ics"/>
+    </div>
+ 
+    <div class="row">
+        <label>{{$ "MealsOnly" }}</label>
+        <input class="ical" type="text" readonly name="iCalendarKeys.mealsOnly" value="webcal://{{ wwwRoot }}/ical/{{ mealsOnly }}.ics" />
+    </div>       
 
-        <div class="row">
-            <label>{{$ "WorkoutsAndMeals" }}</label>
-            <input class="ical" type="text" readonly name="iCalendarKeys.workoutsAndMeals" value="webcal://{{ wwwRoot }}/ical/{{ workoutsAndMeals }}.ics" />
-        </div>
+    <div class="row">
+        <label>{{$ "WorkoutsAndMeals" }}</label>
+        <input class="ical" type="text" readonly name="iCalendarKeys.workoutsAndMeals" value="webcal://{{ wwwRoot }}/ical/{{ workoutsAndMeals }}.ics" />
+    </div>
 
-        <p class="small">{{$ "ICalHelpText" }}</p>
-    {{/with}}
+    <p class="small">{{$ "ICalHelpText" }}</p>
+{{/with}}
+</div>
 
+<div class="userSettingsPersonalSection">
     <h3 class="subheadbold title accountSettings">{{$ "EmailOptions" }}</h3>
 
     <div class="row">
@@ -191,10 +201,11 @@
             </select>
         </div>
     </div>
-    
+
     <p class="small deliveryTimeHelpText">{{$ "plannedWorkoutsNotificationTimeHelpText" }}</p>
 
     <div class="row">
         <label class="checkBoxRow"><input data-modelname="user" name="settings.account.allowMarketingEmails" type="checkbox"> {{$ "newsletterNotificationSetting" }}</label>
     </div>
 
+</div>
