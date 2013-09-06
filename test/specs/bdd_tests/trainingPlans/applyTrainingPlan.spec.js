@@ -361,6 +361,54 @@ function(
             });
 
         });
+
+        describe("Restrict to specific plan start date", function()
+        {
+            var $mainRegion;
+            var $body;
+
+            beforeEach(function()
+            {
+                testHelpers.startTheAppAndLogin(xhrData.users.barbkprem);
+                $mainRegion = theApp.mainRegion.$el;
+                $body = theApp.getBodyElement();
+                theApp.router.navigate("calendar", true);
+                testHelpers.resolveRequest("GET", "plans/v1/plans$", xhrData.trainingPlans);
+                $mainRegion.find("#plansLibrary").trigger("click");
+                $mainRegion.find(".trainingPlanLibrary .trainingPlan[data-trainingplanid=1]").trigger("mouseup");
+
+
+                var trainingPlanRestrictedToStartDate = _.extend({}, xhrData.trainingPlanDetails, { isDynamic: true, startDate: "2013-09-03" });
+
+                testHelpers.resolveRequest("GET", "plans/v1/plans/1/details$", trainingPlanRestrictedToStartDate);
+
+            });
+
+            afterEach(function()
+            {
+                testHelpers.stopTheApp();
+            });
+
+            it("Should trigger a start on date apply command, starting on 2013-09-03", function()
+            {
+                expect(testHelpers.hasRequest(null, "plans/v1/commands/applyplan")).toBe(false);
+
+                var thursday = moment().day(4);
+                var friday = moment().day(5);
+                $body.find("#applyDateType").val("1");
+                $body.find("#applyDateType").change();
+                $body.find("#applyDate").val(thursday.format("M/D/YYYY"));
+                $body.find("#applyDate").change();
+                $body.find(".trainingPlanDetails .apply").trigger("click");
+                expect(testHelpers.hasRequest(null, "plans/v1/commands/applyplan")).toBe(true);
+
+                var applyRequest = testHelpers.findRequest(null, "plans/v1/commands/applyplan");
+                expect(JSON.parse(applyRequest.options.data).athleteId).toBe(xhrData.users.barbkprem.userId);
+                expect(JSON.parse(applyRequest.options.data).planId).toBe(1);
+                expect(JSON.parse(applyRequest.options.data).startType).toBe(1);
+                expect(JSON.parse(applyRequest.options.data).targetDate).toBe("9/3/2013");
+            });
+        });
     });
 
 

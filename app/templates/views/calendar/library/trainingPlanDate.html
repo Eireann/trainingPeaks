@@ -3,8 +3,12 @@
         {{# with details }}
             {{#if eventPlan }}
                 {{#ifNot forceDate}}
-                    <option value="1">{{$ "Start" }}</option>
-                    <option value="3">{{$ "End" }}</option>
+                    {{#if isDynamic}}
+                        <option value="1">{{$ "Start" }}</option>
+                    {{else}}
+                        <option value="1">{{$ "Start" }}</option>
+                        <option value="3">{{$ "End" }}</option>
+                    {{/if}}
                 {{/ifNot}}
                 <option value="2">{{$ "EndOnEventDate" }}</option>
             {{ else }}

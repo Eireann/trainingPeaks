@@ -73,6 +73,10 @@ function(
                 this.ui.applyDate.val(moment(this.model.details.get("eventDate")).format(this.dateFormat));
                 this.ui.applyDate.attr("disabled", true);
             } 
+            else if (this.applyStartType === TP.utils.trainingPlan.startTypeEnum.StartDate && this.model.details.get("isDynamic"))
+            {
+                this.ui.applyDate.attr("disabled", true);
+            } 
             else
             {
                 this.ui.applyDate.attr("disabled", false);
@@ -93,8 +97,12 @@ function(
                 targetDate = moment(this.model.details.get("eventDate"));
             }
 
+            if(this.model.details.get("isDynamic"))
+            {
+                targetDate = moment(this.model.details.get("startDate"));
+
             // force start/end to week start/end
-            if(this.model.details.get("hasWeeklyGoals"))
+            } else if(this.model.details.get("hasWeeklyGoals"))
             {
                 var startDayOfWeek = this.getStartDayOfWeekIndex();
                 var endDayOfWeek = this.getEndDayOfWeekIndex(); 
