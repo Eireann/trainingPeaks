@@ -228,6 +228,7 @@ function(
             var self = this; 
             UserDataSource.deleteProfilePhoto().done(function(profilePhotoUrl)
             {
+                self.model.set("profilePhotoUrl", null);
                 self._updatePhotoUrl();
             }).fail(function()
             {
