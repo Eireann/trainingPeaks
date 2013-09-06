@@ -2,6 +2,33 @@
 {
     background: white;
     width: calc(800px + 200px + 52px);
+
+    .userSettingsContent {
+        h2 {
+            font-family:$fontFamilyRegular;
+            font-weight:normal;
+            font-size:$fontSizeXXLarge;
+            color:$TPBlue;
+            margin-top:0;
+            line-height:normal;
+        }
+
+        h3 {
+            font-family:$fontFamilyHeavy;
+            font-weight:normal;
+            font-size:$fontSizeMedium;
+            color:$TPGrey8;
+            line-height:normal;
+        }
+
+        .heartRateZones, 
+        .powerZones, 
+        .speedPaceZones {
+            border-bottom: 1px solid $TPGrey2;
+            margin-bottom:20px;
+            padding-bottom:20px;
+        }
+    }
 }
 
 .userSettingsAccountContent
