@@ -20,6 +20,7 @@ function (TP, UserSettingsView, accountMenuTemplate)
         events:
         {
             "click #accountMenuUserSettings": "onUserSettingsClicked",
+            "click #accountMenuSwitchToFlex": "onSwitchToFlex",
             "click #accountMenuLogoff": "onLogoffClicked"
         },
 
@@ -39,6 +40,12 @@ function (TP, UserSettingsView, accountMenuTemplate)
         {
             var userSettingsView = new UserSettingsView({ model: this.model });
             userSettingsView.render();
+            this.close();
+        },
+
+        onSwitchToFlex: function()
+        {
+            window.open(window.apiConfig ? window.apiConfig.wwwRoot + "/ui/flextpdefault/flextpdefault.aspx" : "");
             this.close();
         },
         

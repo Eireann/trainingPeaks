@@ -418,5 +418,7 @@
     "WorkoutsAndMeals": "Workouts & Meals",
     "ICalHelpText": "This url provides a link so you can subscribe to your TrainingPeaks calendar via a 3rd party calendar application, such as Google Calendar, Microsoft Outlook, Apple's iCal.",
     "None": "None",
-    "CurrentRatePlan": "Current rate plan"
+    "CurrentRatePlan": "Current rate plan",
+
+    "SwitchToFlex": "Switch to Flex"
 }

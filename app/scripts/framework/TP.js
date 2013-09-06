@@ -277,6 +277,16 @@ function(
 
         rePositionView: function()
         {
+            this.$el.css({
+                height: "",
+                width: ""
+            });
+            
+            this.$el.css({
+                height: this.$el.height(),
+                width: this.$el.width()
+            });
+
             if (!this.positionAttributes)
             {
                 this.centerViewInWindow();
