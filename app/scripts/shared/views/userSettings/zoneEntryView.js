@@ -27,8 +27,28 @@ function(
 
         onRender: function()
         {
+            this._updateFields();
+        },
+
+        formatter: function(value)
+        {
+            return value
+        },
+
+        setFormatter: function(formatter)
+        {
+            this.formatter = formatter;
+            this._updateFields();
+        },
+
+        _updateFields: function()
+        {
             FormUtility.applyValuesToForm(this.$el, this.model, {
-                filterSelector: "[data-scope='zoneEntry']"
+                filterSelector: "[data-scope='zoneEntry']",
+                formatters:
+                {
+                    zoneValue: this.formatter
+                }
             });
         }
 

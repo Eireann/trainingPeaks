@@ -29,7 +29,7 @@ function(
 
         events:
         {
-            "change [name='units']": "_changeUnits"
+            "change [name=units]": "_changeUnits"
         },
 
         onRender: function()
@@ -37,21 +37,29 @@ function(
             FormUtility.applyValuesToForm(this.$el, this.model, {
                 filterSelector: "[data-scope='zoneSet']"
             });
+            this._changeUnits();
         },
 
         initialize: function()
         {
             this.collection = new TP.Collection(this.model.get("zones"));
+            this.on("before:item:added", this._addedItems, this);
         },
 
-        formatValue: function(vaule)
+        formatValue: function(value)
         {
             var options = { defaultValue: "", workoutTypeId: this.model.get("workoutTypeId") };
-            return TP.utils.conversion.formatUnitsValue(this.$("[name='units]").val(), value, options);
+            return TP.utils.conversion.formatUnitsValue(this.$("[name=units]:checked").val(), value, options);
         },
 
         _changeUnits: function()
         {
+            this.children.call("render");
+        },
+
+        _addedItems: function(view)
+        {
+            view.setFormatter(_.bind(this.formatValue, this));
         }
 
     });
