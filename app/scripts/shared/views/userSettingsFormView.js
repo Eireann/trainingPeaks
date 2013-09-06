@@ -71,7 +71,8 @@ function(
         {
             "click .ical": "onICalFocus",
             "change input[name=enableVirtualCoachEmails]": "_enableOrDisableVirtualCoachHour",
-            "click .profilePicture": "_selectProfilePhoto",
+            "click .photoContainer": "_selectProfilePhoto",
+            "click .removePhoto": "_removeProfilePhoto",
             "change .fileUploadInput": "_onProfilePhotoSelected"
         },
 

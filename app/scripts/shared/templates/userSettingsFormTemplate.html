@@ -102,8 +102,11 @@
 
     <div class ="profilePicture">
         <label>{{$ "ProfilePicture" }}</label>
-        <img src="" />
-        <div class="placeholder">{{$ "NoPhoto" }}</div>
+        <div class="photoContainer">
+            <img src="" />
+            <div class="placeholder">{{$ "NoPhoto" }}</div>
+        </div>
+        <div class="removePhoto">{{$ "RemovePhoto" }}</div>
     </div>
 
     <input style="display: none" type="file" class="fileUploadInput" accept="image/gif, image/jpeg, image/png" />
