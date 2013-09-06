@@ -4,63 +4,18 @@ define(
     "TP",
     "backbone",
     "shared/utilities/formUtility",
-    "hbs!shared/templates/userSettings/userSettingsZonesTemplate",
-    "hbs!shared/templates/userSettings/powerZonesTemplate",
-    "hbs!shared/templates/userSettings/zoneEntryTemplate"
+    "shared/views/userSettings/powerZonesView",
+    "hbs!shared/templates/userSettings/userSettingsZonesTemplate"
 ],
 function(
     _,
     TP,
     Backbone,
     FormUtility,
-    userSettingsZonesTemplate,
-    powerZonesTemplate,
-    zoneEntryTemplate
+    PowerZonesView,
+    userSettingsZonesTemplate
 )
 {
-    var ZoneEntryView = TP.ItemView.extend({
-
-        template:
-        {
-            type: "handlebars",
-            template: zoneEntryTemplate
-        },
-
-        modelEvents: {},
-        collectionEvents: {},
-
-        onRender: function()
-        {
-            FormUtility.applyValuesToForm(this.$el, this.model, {
-                filterSelector: "[data-scope='zoneEntry']"
-            });
-        }
-
-    });
-
-    var PowerZonesView = TP.CompositeView.extend({
-
-        template:
-        {
-            type: "handlebars",
-            template: powerZonesTemplate
-        },
-
-        itemView: ZoneEntryView,
-
-        onRender: function()
-        {
-            FormUtility.applyValuesToForm(this.$el, this.model, {
-                filterSelector: "[data-scope='zoneSet']"
-            });
-        },
-
-        initialize: function()
-        {
-            this.collection = new TP.Collection(this.model.get("zones"));
-        }
-
-    });
 
     var UserSettingsZonesView = TP.ItemView.extend({
 
