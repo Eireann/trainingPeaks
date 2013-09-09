@@ -33,8 +33,7 @@ function(
         events:
         {
             "click .closeIcon": "close",
-            "click .save": "save",
-            "click .cancel": "close"
+            "click .save": "save"
         },
 
         initialize: function()
@@ -78,11 +77,6 @@ function(
             self.waitingOn();
             $.when(
                 this.children.findByCustom("userSettingsForm").processSave()
-            ).done(
-                function()
-                {
-                    self.close();
-                }
             ).always(
                 function()
                 {
