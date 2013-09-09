@@ -1,15 +1,20 @@
 ﻿.userSettings
 {
-    height: 700px;
-    width: 826px;
-    overflow: auto;
-    @include nice-scrollbar;
+    background: white;
+    width: calc(800px + 200px + 52px);
 }
 
-.userSettingContainer
+.userSettingsAccountContent
 {
-    padding: 19px 12px 13px 12px;
-    // width: 800px;
+    width: 816px;
+    padding-right:12px;
+
+    button
+    {
+        @include buttons(0, "auto", "1em");
+        padding: 4px 5px;
+        margin-right: 5px;
+    }
 
     .userSettingsPersonalSection {
         margin-bottom:20px;
@@ -21,6 +26,8 @@
         }
     }
 
+    @include clearfix;
+
     label
     {
         float: left;   
@@ -29,7 +36,7 @@
         max-width: 110px;
         text-align: right;
     }
-            
+
     input
     {
         width: 200px;
@@ -120,6 +127,7 @@
     {
         height: 20px;
         margin-bottom: 10px;
+        clear: both;
     }
 
     .radioButtonRow
@@ -135,12 +143,63 @@
 
     .profilePicture
     {
-        margin-left: 110px;
 
-        img
+        &.row
         {
-            max-height: 200px;
-            max-width: 200px;
+            height: auto;
+        }
+
+        .photoContainer
+        {
+
+            float: left;
+
+            .placeholder
+            {
+                display: none;
+            }
+
+            img
+            {
+                display: block;
+                clear: both;
+                max-height: 200px;
+                max-width: 200px;
+            }
+
+        }
+
+        .buttons
+        {
+            clear: both;
+            margin-left: 110px;
+            padding-top: 5px;
+        }
+
+        &.nophoto
+        {
+            .photoContainer
+            {
+                .placeholder
+                {
+                    display: block;
+                    height: 200px;
+                    width: 200px;
+                    padding: 50px 30px;
+                    border: 1px solid $TPGrey11;
+                    background-color: $TPGrey1;
+                }
+
+                img
+                {
+                    display: none;
+                }
+            }
+
+            .removePhoto
+            {
+                display: none;
+            }
         }
 
     }
@@ -202,6 +261,11 @@
     {
         max-height: 350px;
         @include nice-scrollbar;
+    }
+
+    .userSettingsButtons
+    {
+        margin-top: 10px;
     }
 
 }

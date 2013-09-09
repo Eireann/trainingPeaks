@@ -41,7 +41,7 @@ function(
             {
                 var userData = xhrData.users.barbkprem;
                 testHelpers.startTheAppAndLogin(userData, true);
-                theMarsApp.user.set("settings.dashboard.pods", [timeInHeartRateZonesPodSettings]);
+                theMarsApp.user.getDashboardSettings().set("pods", [timeInHeartRateZonesPodSettings]);
                 $mainRegion = theMarsApp.mainRegion.$el;
                 theMarsApp.router.navigate("dashboard", true);
             });
@@ -98,11 +98,9 @@ function(
 
                     $mainRegion.find(".dashboardChart.timeInZones .settings").trigger("mousedown");
                     expect($body.find(".timeInZonesChartSettings .workoutType input[type=checkbox][data-workouttypeid=0]").is(":checked")).toBe(false);
-                    console.log(theMarsApp.user.get("settings.dashboard.pods"));
-                    expect(theMarsApp.user.get("settings.dashboard.pods.0.workoutTypeIds").length).toBe(1);
-                    expect(theMarsApp.user.get("settings.dashboard.pods.0.workoutTypeIds.0")).toEqual(1);
+                    expect(theMarsApp.user.getDashboardSettings().get("pods.0.workoutTypeIds").length).toBe(1);
+                    expect(theMarsApp.user.getDashboardSettings().get("pods.0.workoutTypeIds.0")).toEqual(1);
                     expect($body.find(".timeInZonesChartSettings .workoutType input[type=checkbox][data-workouttypeid=1]").is(":checked")).toBe(true);
-                    console.log($body.find(".timeInZonesChartSettings").html());
 
                 });
 
@@ -118,7 +116,7 @@ function(
                     }
                     $body.find(".timeInZonesChartSettings .workoutType input[type=checkbox][data-workouttypeid=1]").trigger("click");
                     $body.find(".timeInZonesChartSettings .closeIcon").trigger("click");
-                    expect(testHelpers.hasRequest("PUT", "user")).toBe(true);
+                    expect(testHelpers.hasRequest("PUT", "settings/dashboard")).toBe(true);
                 });
 
                 it("Should update chart title after changing workout type", function()
@@ -202,7 +200,7 @@ function(
             {
                 var userData = xhrData.users.barbkprem;
                 testHelpers.startTheAppAndLogin(userData, true);
-                theMarsApp.user.set("settings.dashboard.pods", [timeInHeartRateZonesPodSettings, timeInPowerZonesPodSettings, timeInSpeedZonesPodSettings]);
+                theMarsApp.user.getDashboardSettings().set("pods", [timeInHeartRateZonesPodSettings, timeInPowerZonesPodSettings, timeInSpeedZonesPodSettings]);
                 $mainRegion = theMarsApp.mainRegion.$el;
                 theMarsApp.router.navigate("dashboard", true);
             });

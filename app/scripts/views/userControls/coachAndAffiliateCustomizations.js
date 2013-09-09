@@ -23,7 +23,7 @@ function(_, colorUtils, affiliateUtils)
 
         setupHeader: function()
         {
-            if (theMarsApp.user.get("settings.account")) 
+            if (theMarsApp.user.getAccountSettings()) 
             {
                 if (affiliateUtils.isCoachedAccount())
                 {

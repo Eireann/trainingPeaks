@@ -1,34 +1,35 @@
+
 <div class="userSettingsPersonalSection">
     <h3 class="title subheadbold">{{$ "PersonalInfo" }}</h3>
     
     <div class="row">
         <div class="firstName">
             <label>{{$ "FirstName" }}</label>
-            <input data-modelname="user" type="text" readonly name="firstName" />
+            <input data-modelname="user" type="text" name="firstName" />
         </div>
 
         <div class="lastName">
             <label>{{$ "LastName" }}</label>
-            <input data-modelname="user" type="text" readonly name="lastName" />
+            <input data-modelname="user" type="text" name="lastName" />
         </div>
     </div>
 
     <div class="row">
         <div>
             <label>{{$ "Username" }}</label>
-            <input data-modelname="user" type="text" readonly name="userName" />
+            <label>{{ userName }}</label>
         </div>
 
         <div>
             <label>{{$ "Password" }}</label>
-            <input data-modelname="user" type="password" readonly/>
+            <input type="password" name="password"/>
         </div>
     </div>
 
     <div class="row">
         <label>{{$ "AthleteType" }}</label>
         <div class="selectBox">
-             <select data-modelname="user" name="settings.account.athleteTypeValue" >
+             <select data-modelname="account" name="athleteTypeValue" >
         
             {{#each athleteTypes}}
                 <option value="{{ data }}">{{ label }}</option>
@@ -39,36 +40,36 @@
 
     <div class="row">
         <label>{{$ "Birthday" }}</label>
-        <input data-modelname="user" type="text" readonly data-format="date" name="birthday" />
+        <input data-modelname="user" type="text" data-format="date" name="birthday" class="datepicker" />
     </div>
 
     <div class="row">
         <label>{{$ "Gender" }}</label>
         <label class="radioButtonRow genderRadioButtonRow">
-            <input data-modelname="user" type="radio" readonly name="gender" value="m"/>
+            <input data-modelname="user" type="radio" name="gender" value="m"/>
             Male
         </label>
         <label class="radioButtonRow genderRadioButtonRow">
-            <input data-modelname="user" type="radio" readonly name="gender" value="f"/>
+            <input data-modelname="user" type="radio" name="gender" value="f"/>
             Female
         </label>
     </div>
 
     <div class="row">
         <label>{{$ "Email" }}</label>
-        <input data-modelname="user" type="email" readonly name="email" />
+        <input data-modelname="user" type="email" name="email" />
     </div>
 
     <div class="row">
         <label>{{$ "Address" }} 1</label>
-        <input data-modelname="user" type="text" readonly name="address" />
+        <input data-modelname="user" type="text" name="address" />
         <label>{{$ "Address" }} 2</label>
-        <input data-modelname="user" type="text" readonly name="address2" />
+        <input data-modelname="user" type="text" name="address2" />
     </div>
 
     <div class="row">
         <label>{{$ "City" }}</label>
-        <input data-modelname="user" type="text" readonly name="city" />
+        <input data-modelname="user" type="text" name="city" />
         <label>{{$ "State" }}</label>
         <div class="selectBox state">
             <select data-modelname="user" name="state">
@@ -81,7 +82,7 @@
 
     <div class=" row">
         <label>{{$ "ZipCode" }}</label>
-        <input data-modelname="user" type="text" readonly name="zipCode" />
+        <input data-modelname="user" type="text" name="zipCode" />
         <label>{{$ "Country" }}</label>
         <div class="selectBox country">
             <select data-modelname="user" name="country" >
@@ -94,18 +95,26 @@
 
     <div class="row">
         <label>{{$ "Phone" }}</label>
-        <input data-modelname="user" type="tel" readonly name="phone" />
+        <input data-modelname="user" type="tel" name="phone" />
         <label>{{$ "CellPhone" }}</label>
-        <input data-modelname="user" type="tel" readonly name="cellPhone" />
+        <input data-modelname="user" type="tel" name="cellPhone" />
     </div>
 
-    {{#if profilePhotoUrl}}
-    <div class ="profilePicture">
-        <img src="{{ wwwRoot }}{{ profilePhotoUrl }}" />
+    <div class ="row profilePicture">
+        <label>{{$ "ProfilePicture" }}</label>
+        <div class="photoContainer">
+            <img src="" />
+            <div class="placeholder">{{$ "NoPhoto" }}</div>
+        </div>
+        <div class="buttons">
+            <button class="uploadPhoto">{{$ "UploadPhoto" }}</button>
+            <button class="removePhoto">{{$ "RemovePhoto" }}</button>
+        </div>
     </div>
-    {{/if}}
+
+    <input style="display: none" type="file" class="fileUploadInput" accept="image/gif, image/jpeg, image/png" />
+
 </div>
-
 
 
 <div class="userSettingsPersonalSection">
@@ -119,11 +128,11 @@
     <div class="row">
         <label>{{$ "Units" }}</label>
         <label class="radioButtonRow">
-            <input data-modelname="user" type="radio" readonly name="units" value="1" />
+            <input data-modelname="user" type="radio" name="units" value="1" />
             English
         </label>
         <label class="radioButtonRow">
-            <input data-modelname="user" type="radio" readonly name="units" value="2" />
+            <input data-modelname="user" type="radio" name="units" value="2" />
             Metric
         </label>
     </div>
@@ -131,11 +140,11 @@
     <div class="row">
         <label>{{$ "DateFormat" }}</label>
         <label class="radioButtonRow">
-            <input data-modelname="user" type="radio" readonly name="dateFormat" value="mdy" />
+            <input data-modelname="user" type="radio" name="dateFormat" value="mdy" />
             MM/DD/YY
         </label>
         <label class="radioButtonRow">
-            <input data-modelname="user" type="radio" readonly name="dateFormat" value="dmy" />
+            <input data-modelname="user" type="radio" name="dateFormat" value="dmy" />
             DD/MM/YY
         </label>
     </div>
@@ -157,20 +166,20 @@
 {{#with iCalendarKeys }}
     <h3 class="title accountSettings subheadbold">{{$ "CalendarSync" }}</h3>
 
-    <div class="row">
-        <label>{{$ "WorkoutsOnly" }}</label>
-        <input class="ical" type="text" readonly name="iCalendarKeys.workoutsOnly" value="webcal://{{ wwwRoot }}/ical/{{ workoutsOnly }}.ics"/>
-    </div>
- 
-    <div class="row">
-        <label>{{$ "MealsOnly" }}</label>
-        <input class="ical" type="text" readonly name="iCalendarKeys.mealsOnly" value="webcal://{{ wwwRoot }}/ical/{{ mealsOnly }}.ics" />
-    </div>       
+        <div class="row">
+            <label>{{$ "WorkoutsOnly" }}</label>
+            <input class="ical" type="text" readonly name="iCalendarKeys.workoutsOnly" value="{{ webcalRoot }}{{ workoutsOnly }}.ics"/>
+        </div>
+     
+        <div class="row">
+            <label>{{$ "MealsOnly" }}</label>
+            <input class="ical" type="text" readonly name="iCalendarKeys.mealsOnly" value="{{ webcalRoot }}{{ mealsOnly }}.ics" />
+        </div>       
 
-    <div class="row">
-        <label>{{$ "WorkoutsAndMeals" }}</label>
-        <input class="ical" type="text" readonly name="iCalendarKeys.workoutsAndMeals" value="webcal://{{ wwwRoot }}/ical/{{ workoutsAndMeals }}.ics" />
-    </div>
+        <div class="row">
+            <label>{{$ "WorkoutsAndMeals" }}</label>
+            <input class="ical" type="text" readonly name="iCalendarKeys.workoutsAndMeals" value="{{ webcalRoot }}{{ workoutsAndMeals }}.ics" />
+        </div>
 
     <p class="small">{{$ "ICalHelpText" }}</p>
 {{/with}}
@@ -180,15 +189,15 @@
     <h3 class="subheadbold title accountSettings">{{$ "EmailOptions" }}</h3>
 
     <div class="row">
-        <label class="checkBoxRow"> {{$ "emailPMNotificationSetting" }}<input value="true" data-modelname="user" type="checkbox" name="settings.account.enablePrivateMessageNotifications"> </label>
+        <label class="checkBoxRow"> {{$ "emailPMNotificationSetting" }}<input data-modelname="account" type="checkbox" name="enablePrivateMessageNotifications"> </label>
     </div>
 
     <div class="row">
-        <label class="checkBoxRow"> {{$ "postActivityNotificationSetting" }}<input value="true" data-modelname="athlete" type="checkbox" name="enableWorkoutCommentNotification"> </label>
+        <label class="checkBoxRow"> {{$ "postActivityNotificationSetting" }}<input data-modelname="athlete" type="checkbox" name="enableWorkoutCommentNotification"> </label>
     </div>
 
     <div class="row">
-        <label class="checkBoxRow">{{$ "plannedWorkoutsNotificationSetting" }}<input value="true" data-modelname="athlete" type="checkbox" name="enableVirtualCoachEmails"></label>
+        <label class="checkBoxRow">{{$ "plannedWorkoutsNotificationSetting" }}<input data-modelname="athlete" type="checkbox" name="enableVirtualCoachEmails"></label>
     </div>
 
     <div class="row">
@@ -205,7 +214,7 @@
     <p class="small deliveryTimeHelpText">{{$ "plannedWorkoutsNotificationTimeHelpText" }}</p>
 
     <div class="row">
-        <label class="checkBoxRow"><input data-modelname="user" name="settings.account.allowMarketingEmails" type="checkbox"> {{$ "newsletterNotificationSetting" }}</label>
+        <label class="checkBoxRow"><input data-modelname="account" name="allowMarketingEmails" type="checkbox"> {{$ "newsletterNotificationSetting" }}</label>
     </div>
 
 </div>

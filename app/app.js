@@ -9,7 +9,7 @@ define(
     "framework/dataManager",
     "dashboard/reportingDataManager",
     "models/session",
-    "models/userModel",
+    "shared/models/userModel",
     "models/buildInfo",
     "models/timeZones",
     "models/clientEventsCollection",
@@ -183,8 +183,8 @@ function(
         // add data managers
         this.addInitializer(function()
         {
-            // reset reporting manager when we save or delete workouts, ignore posts to reporting even if they include 'fitness'
-            var dataManagerOptions = { resetPatterns: [/fitness/i], ignoreResetPatterns: [/reporting/i] };
+            // reset reporting manager when we save or delete workouts
+            var dataManagerOptions = { resetPatterns: [/athletes\/[0-9]+\/workouts/] };
             this.dataManagers = {
                 reporting: new ReportingDataManager(dataManagerOptions),
                 calendar: new DataManager(dataManagerOptions)
@@ -257,8 +257,8 @@ function(
             {
                 case "alpha1":
                     {
-                        //var userIsNotCoach = user.get("settings.account.isAthlete") && user.get("settings.account.coachType") === 0;
-                        var userIsInAlphaACL = _.contains(user.get("settings.account.accessGroupIds"), 999999);
+                        //var userIsNotCoach = user.getAccountSettings().get("isAthlete") && user.getAccountSettings().get("coachType") === 0;
+                        var userIsInAlphaACL = _.contains(user.getAccountSettings().get("accessGroupIds"), 999999);
                         //return userIsNotCoach && userIsInAlphaACL;
                         return userIsInAlphaACL;
                     }

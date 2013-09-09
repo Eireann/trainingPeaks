@@ -138,19 +138,19 @@ function(_, Backbone, DeepModel, moment)
         {
             if (!this.idAttribute)
             {
-                throw this.webAPIModelName + ": TP Web API Models must have an idAttribute";
+                throw new Error(this.webAPIModelName + ": TP Web API Models must have an idAttribute");
             }
 
             var defaults = _.result(this, 'defaults');
 
             if (!defaults.hasOwnProperty(this.idAttribute))
             {
-                throw this.webAPIModelName + ": TP Web API Model - idAttribute " + this.idAttribute + " is not included in the defaults list";
+                throw new Error(this.webAPIModelName + ": TP Web API Model - idAttribute " + this.idAttribute + " is not included in the defaults list");
             }
 
             if (!attrs.hasOwnProperty(this.idAttribute))
             {
-                throw this.webAPIModelName + ": idAttribute (" + this.idAttribute + ") required, but is '" + attrs[this.idAttribute] + "'";
+                throw new Error(this.webAPIModelName + ": idAttribute (" + this.idAttribute + ") required, but is '" + attrs[this.idAttribute] + "'");
             }
         },
 
@@ -174,7 +174,7 @@ function(_, Backbone, DeepModel, moment)
         {
             if (!this.defaults)
             {
-                throw this.webAPIModelName + ": TP Web API Models must have default values (this.defaults) defined";
+                throw new Error(this.webAPIModelName + ": TP Web API Models must have default values (this.defaults) defined");
             }
 
             var defaults = _.result(this, 'defaults');
@@ -189,7 +189,7 @@ function(_, Backbone, DeepModel, moment)
 
             if (!defaults.hasOwnProperty(key))
             {
-                throw this.webAPIModelName + ": Cannot access key '" + key + "' because it is not in model defaults";
+                throw new Error(this.webAPIModelName + ": Cannot access key '" + key + "' because it is not in model defaults");
             }
         },
 
@@ -199,7 +199,7 @@ function(_, Backbone, DeepModel, moment)
             {
                 if (moment.isMoment(attrs[key]))
                 {
-                    throw this.webAPIModelName + ": Do not use moments as model attributes, due to performance issues";
+                    throw new Error(this.webAPIModelName + ": Do not use moments as model attributes, due to performance issues");
                 }
             }
         }
