@@ -71,11 +71,11 @@ function(
             UserSettingsView.__super__.close.apply(this, arguments);
         },
 
-        save: function()
+        processSave: function()
         {
             var self = this;
             self.waitingOn();
-            $.when(
+            return $.when(
                 this.children.findByCustom("userSettingsForm").processSave()
             ).always(
                 function()

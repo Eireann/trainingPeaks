@@ -23,7 +23,8 @@ function(
 
         regions:
         {
-            tabbedLayoutBodyRegion: ".tabbedLayoutBody"
+            tabbedLayoutBodyRegion: ".tabbedLayoutBody",
+            tabbedLayoutFooterRegion: ".tabbedLayoutFooter"
         },
 
         constructor: function()
@@ -73,6 +74,7 @@ function(
             }
 
             var view = new navItem.view(navItem.options);
+            this.currentView = view;
             this.tabbedLayoutBodyRegion.show(view);
 
             setImmediate(function()
