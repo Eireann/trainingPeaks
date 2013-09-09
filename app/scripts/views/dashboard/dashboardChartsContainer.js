@@ -100,7 +100,7 @@ function(
 
         _saveSettings: function()
         {
-            theMarsApp.user.save();
+            theMarsApp.user.getDashboardSettings().save();
         }
 
     });
