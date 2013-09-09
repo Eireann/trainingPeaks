@@ -53,14 +53,16 @@ function(
             setImmediate(function()
             {
                 self.renderFlotChart(dataSeries, flotOptions);
-                self.ui.chartContainer.on("plotclick", self.onPlotClick);
+                self.ui.chartContainer.on("plotclick", _.bind(self.onPlotClick, self));
             });
         },
         
         onPlotClick: function(event, position, item)
         {
             console.log(event, position, item);
-            var dataIndex = item.dataIndex;
+            
+            var day = this.chartDataModel.get('data')[item.dataIndex].workoutDay
+
         },
 
         findTSBRange: function(modelData)
