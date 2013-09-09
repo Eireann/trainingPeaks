@@ -47,10 +47,12 @@
         {
             if(this._hasResolvedData(requestSignature))
             {
+                //console.log("Resolving existing request " + requestSignature);
                 return this._resolveAjaxRequestWithExistingData(requestSignature, new $.Deferred());
             }
             else
             {
+                //console.log("Requesting new data " + requestSignature);
                 return this._requestAjaxData(requestSignature, options);
             }
         },

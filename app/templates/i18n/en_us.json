@@ -421,5 +421,7 @@
     "CurrentRatePlan": "Current rate plan",
     "NoPhoto": "No Photo Available",
     "RemovePhoto": "Remove Photo",
-    "UploadPhoto": "Upload Photo"
+    "UploadPhoto": "Upload Photo",
+
+    "SwitchToFlex": "Switch to Flex"
 }

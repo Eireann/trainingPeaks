@@ -7,6 +7,8 @@ function(
     var FormUtility = {
         applyValuesToForm: function($form, model, options)
         {
+            options = options || {};
+
             FormUtility._processFields($form, function(key, $el)
             {
                 var value = model.get(key);
@@ -16,6 +18,10 @@ function(
                 if(format === "date")
                 {
                     value = moment(value) ? moment(value).format("L") : "";
+                }
+                else if(options.formatters && options.formatters.hasOwnProperty(format))
+                {
+                    value = options.formatters[format](value);
                 }
                 else if(format)
                 {
