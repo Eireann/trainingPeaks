@@ -43,7 +43,6 @@ function(TP, moment, TrainingPlanDatePickerView, UserConfirmationView, applyTrai
             var targetDate = this.dateView.ui.applyDate.val();
 
             var apply = this.model.applyToDate(targetDate, applyStartType);
-            var self = this;
             apply.done(function()
             {
                 self.close();
