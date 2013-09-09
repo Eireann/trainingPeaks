@@ -31,11 +31,6 @@ function(
             template: peaksChartSettingsTemplate
         },
 
-        events: _.extend(
-        {
-            "change input.auto": "_onInputsChanged"
-        }, ChartSettingsView.prototype.events),
-
         modelEvents:
         {
             "change": "_refreshView"
@@ -101,8 +96,6 @@ function(
             {
                 this.comparisonDatePicker.disable();
             }
-
-            this.$(".defaultTitle").text(_.result(this.model, "defaultTitle"));
         }
     });
 
