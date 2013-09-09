@@ -162,25 +162,22 @@ function (_, moment, TP, WorkoutDetailsModel, WorkoutDetailDataModel)
             return this.sortDate;
         },
 
-        // QL: Should be handled by calendar collection by watching workoutDay
-        // attribute
-        moveToDay: function(newDate, newCollection)
+        moveToDay: function(newDate)
         {
 
             var self = this;
             var originalDate = moment(this.get("workoutDay"));
             var originalCollection = this.dayCollection;
-
             this.set("workoutDay", moment(newDate).format(TP.utils.datetime.longDateFormat));
-            if (newCollection)
-            {
-                newCollection.add(this);
-                this.dayCollection = newCollection;
-            }
+
             if (originalCollection)
             {
                 originalCollection.remove(this);
             }
+
+            var newCollection = theMarsApp.controllers.calendarController.weeksCollection.getDayModel(newDate);
+            newCollection.add(this);
+            this.dayCollection = newCollection;
 
             var revertOnFailure = function()
             {

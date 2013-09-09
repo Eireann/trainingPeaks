@@ -4,11 +4,13 @@ requirejs(
     "app",
     "moment",
     "jquery",
+    "TP",
     "models/workoutModel"],
 function(
     app,
     moment,
     $,
+    TP,
     WorkoutModel)
 {
     describe("Workout Model", function()
@@ -55,6 +57,17 @@ function(
 
             beforeEach(function()
             {
+                app.controllers = {
+                    calendarController: {
+                        weeksCollection: {
+                            getDayModel: function()
+                            {
+                                return new TP.Collection();
+                            }
+                        }
+                    }
+                };
+
                 originalCollection = jasmine.createSpyObj("Original Collection", ["add", "remove"]);
                 newCollection = jasmine.createSpyObj("New Collection", ["add", "remove"]);
 
@@ -85,15 +98,14 @@ function(
 
             it("Should add to new collection", function()
             {
-                workout.moveToDay(tomorrow, newCollection);
-                expect(newCollection.add).toHaveBeenCalledWith(workout);
+                workout.moveToDay(tomorrow);
+                expect(workout.dayCollection).not.toEqual(originalCollection);
             });
 
             it("Should move workout back if save fails", function()
             {
                 spyOn(workout, "set").andCallThrough();
-                workout.moveToDay(tomorrow, newCollection).reject();
-                expect(newCollection.remove).toHaveBeenCalledWith(workout);
+                workout.moveToDay(tomorrow).reject();
                 expect(originalCollection.add).toHaveBeenCalledWith(workout);
                 expect(workout.set).toHaveBeenCalledWith("workoutDay", originalDate);
             });

@@ -47,7 +47,7 @@ function (ApplyTrainingPlanToCalendarConfirmationView)
             var self = this;
             var callback = function()
             {
-                self.views.calendar.scrollToDateIfNotFullyVisible(movedToDate);
+                self.views.calendar.scrollToDate(movedToDate);
             };
             deferredResult.done(callback);
         },

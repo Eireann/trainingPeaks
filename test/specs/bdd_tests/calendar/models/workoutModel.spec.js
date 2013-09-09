@@ -67,15 +67,13 @@ function(
 
             it("Should update workoutDay and call save", function()
             {
-                var newDate = moment("2013-01-19");
-                workout.moveToDay(newDate);
-                expect(workout.getCalendarDay()).toEqual(newDate.format("YYYY-MM-DD"));
+                workout.moveToDay(tomorrow);
+                expect(workout.getCalendarDay()).toEqual(tomorrow);
             });
 
             it("Should call save", function()
             {
-                var newDate = moment("2019-03-21");
-                workout.moveToDay(newDate);
+                workout.moveToDay(tomorrow);
                 expect(workout.save).toHaveBeenCalled();
             });
 
@@ -87,15 +85,14 @@ function(
 
             it("Should add to new collection", function()
             {
-                workout.moveToDay(tomorrow, newCollection);
-                expect(newCollection.add).toHaveBeenCalledWith(workout);
+                workout.moveToDay(tomorrow);
+                expect(workout.dayCollection).not.toEqual(originalCollection);
             });
 
             it("Should move workout back if save fails", function()
             {
                 spyOn(workout, "set").andCallThrough();
-                workout.moveToDay(tomorrow, newCollection).reject();
-                expect(newCollection.remove).toHaveBeenCalledWith(workout);
+                workout.moveToDay(tomorrow).reject();
                 expect(originalCollection.add).toHaveBeenCalledWith(workout);
                 expect(workout.set).toHaveBeenCalledWith("workoutDay", originalDate);
             });
