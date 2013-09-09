@@ -40,6 +40,7 @@
     "Login": "Login",
     "Username": "Username",
     "Password": "Password",
+    "RetypePassword": "Retype Password",
     "LoggingIn": "Logging in...",
     "LoginFailed": "Login Failed!",
     "Submit": "Submit",
@@ -424,5 +425,7 @@
     "RemovePhoto": "Remove Photo",
     "UploadPhoto": "Upload Photo",
 
-    "SwitchToFlex": "Switch to Flex"
+    "SwitchToFlex": "Switch to Flex",
+    "InvalidEmail": "Email address is invalid, please re-enter",
+    "InvalidPassword": "Passwords do not match, please re-enter"
 }
