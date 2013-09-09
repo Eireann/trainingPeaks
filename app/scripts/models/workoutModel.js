@@ -170,14 +170,14 @@ function (_, moment, TP, WorkoutDetailsModel, WorkoutDetailDataModel)
             var originalCollection = this.dayCollection;
             this.set("workoutDay", moment(newDate).format(TP.utils.datetime.longDateFormat));
 
-            var newCollection = theMarsApp.controllers.calendarController.weeksCollection.getDayModel(newDate);
-            newCollection.add(this);
-            this.dayCollection = newCollection;
-
             if (originalCollection)
             {
                 originalCollection.remove(this);
             }
+
+            var newCollection = theMarsApp.controllers.calendarController.weeksCollection.getDayModel(newDate);
+            newCollection.add(this);
+            this.dayCollection = newCollection;
 
             var revertOnFailure = function()
             {
