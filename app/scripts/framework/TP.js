@@ -280,20 +280,15 @@ function(
             this.$el.css({
                 height: "",
                 width: ""
-            });
-            
-            this.$el.css({
-                height: this.$el.height(),
-                width: this.$el.width()
-            });
+            }); 
+
+            this.trigger("before:reposition");
 
             if (!this.positionAttributes)
             {
                 this.centerViewInWindow();
                 return;
             }
-
-            this.trigger("before:reposition");
 
             var startOffset = this.positionAttributes.hasOwnProperty("fromElement") ? $(this.positionAttributes.fromElement).offset() : { top: 0, left: 0 };
             

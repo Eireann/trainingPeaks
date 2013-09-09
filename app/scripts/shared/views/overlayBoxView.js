@@ -56,6 +56,8 @@ function(
             {
                 this.children.call("close");
             });
+
+            this.on("before:reposition", this._beforeReposition, this);
         },
 
         render: function()
@@ -64,6 +66,14 @@ function(
             this.contentView.setElement(this.$("> .overlayBoxBody"));
             this.contentView.render();
             this.rePositionView();
+        },
+
+        _beforeReposition: function()
+        {
+            this.$el.css({
+                height: this.$el.height(),
+                width: this.$el.width()
+            });
         }
 
     });
