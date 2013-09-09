@@ -8,7 +8,7 @@ function(_, Handlebars, TP)
 {
     var ifUserIsNotPremium = function(workout, options)
     {
-        var isNotPremium = _.contains([5, 6], theMarsApp.user.get("settings.account.userType"));
+        var isNotPremium = _.contains([5, 6], theMarsApp.user.getAccountSettings().get("userType"));
 
         if (isNotPremium)
         {

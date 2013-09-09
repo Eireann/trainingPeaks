@@ -105,14 +105,16 @@ function (
         onDateChanged: function(newDate)
         {
             TP.analytics("send", { "hitType": "event", "eventCategory": "quickView", "eventAction": "workoutDateChanged", "eventLabel": "" });
-
+            var self = this;
             var newDay = moment(newDate).format(this.model.shortDateFormat);
             this.ui.date.datepicker("hide");
-            var oldDay = this.model.getCalendarDay();
+            var workout = this.model;
+            var oldDay = workout.getCalendarDay();
             if (newDay !== oldDay)
             {
-                var workout = this.model;
-                workout.trigger("workout:move", this.model, newDay);
+                // prepare our target day collection
+                theMarsApp.controllers.calendarController.views.calendar.scrollToDate(newDate);
+                workout.moveToDay(newDay);
             }
         },
 
@@ -128,7 +130,7 @@ function (
             if (direction === "right")
                 typesMenu.setPosition({ fromElement: icon, left: icon.outerWidth() + 10, top: -15 });
             else
-                typesMenu.setPosition({ fromElement: icon, right: -10, top: -15 });
+                typesMenu.setPosition({ fromElement: icon, right: -12, top: -13 });
 
             typesMenu.render();
         },
@@ -150,7 +152,7 @@ function (
             menu.on("cut", this.close, this);
             menu.on("copy", this.close, this);
             menu.on("print", this.print, this);
-            menu.setPosition({ fromElement: menuIcon, bottom: 0, top: menuIcon.height(), left: -30 });
+            menu.setPosition({ fromElement: menuIcon, bottom: 7, left: -32, top: 6 });
             menu.render();
         },
 
@@ -216,17 +218,17 @@ function (
             var offset = $(e.currentTarget).offset();
 
             this.commentsEditorView = new ExpandoCommentsEditorView({ model: this.model, parentEl: this.$el });
-            this.commentsEditorView.render().top(offset.top - 13);
+            this.commentsEditorView.render().top(offset.top - 12);
 
             if (this.$el.width() < 1380)
             {
                 this.commentsEditorView.setDirection("left");
-                this.commentsEditorView.right(offset.left - 12);
+                this.commentsEditorView.right(offset.left - 14);
             }
             else
             {
                 this.commentsEditorView.setDirection("right");
-                this.commentsEditorView.left(offset.left + 87);
+                this.commentsEditorView.left(offset.left + 89);
             }
         },
 

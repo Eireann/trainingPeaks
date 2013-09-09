@@ -142,7 +142,7 @@ function(TP, moment, datepicker, coachAndAffiliateCustomizations, calendarHeader
 
         isCoachWithAthletes: function()
         {
-            return !theMarsApp.user.get("settings.account.isAthlete") && theMarsApp.user.has("athletes") && theMarsApp.user.get("athletes").length > 0;
+            return !theMarsApp.user.getAccountSettings().get("isAthlete") && theMarsApp.user.has("athletes") && theMarsApp.user.get("athletes").length > 0;
         },
 
         customizeAthleteSelectBox: function()

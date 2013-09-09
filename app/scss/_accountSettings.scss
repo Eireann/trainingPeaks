@@ -1,15 +1,84 @@
 ﻿.userSettings
 {
-    height: 700px;
-    width: 826px;
-    overflow: auto;
-    @include nice-scrollbar;
+    background: white;
+    width: calc(800px + 200px + 52px);
+
+    .userSettingsContent {
+        h2 {
+            font-family:$fontFamilyRegular;
+            font-weight:normal;
+            font-size:$fontSizeXXLarge;
+            color:$TPBlue;
+            margin-top:0;
+            line-height:normal;
+        }
+
+        h3 {
+            font-family:$fontFamilyHeavy;
+            font-weight:normal;
+            font-size:$fontSizeMedium;
+            color:$TPGrey8;
+            line-height:normal;
+            margin-bottom:15px;
+        }
+
+        .heartRateZones, 
+        .powerZones, 
+        .speedPaceZones {
+            border-bottom: 1px solid $TPGrey2;
+            margin-bottom:20px;
+            padding-bottom:20px;
+        }
+
+        .speedPaceZones {
+            form {
+                width:100%;                
+    
+                label:nth-of-type(2),
+                label:nth-of-type(3) {
+                    float:left;
+                    margin-top:10px;
+                }
+
+                label:nth-of-type(3){
+                    margin-left:15px;
+                }
+            }
+        }
+    }
 }
 
-.userSettingContainer
+.userSettingsAccountContent
 {
-    padding: 12px;
-    width: 800px;
+    width: 816px;
+    padding-right:12px;
+
+    button
+    {
+        @include buttons(0, "auto", "1em");
+        padding: 4px 5px;
+        margin-right: 5px;
+    }
+
+    .userSettingsPersonalSection {
+        margin-bottom:20px;
+        padding-bottom:20px;
+        border-bottom:1px solid $TPGrey2;
+
+        h3 {
+            margin-top:0;
+        }
+
+        input {
+            width:295px;
+        }
+
+        label.personalRightCol{
+            width:104px;
+        }
+    }
+
+    @include clearfix;
 
     label
     {
@@ -19,12 +88,13 @@
         max-width: 110px;
         text-align: right;
     }
-            
+
     input
     {
         width: 200px;
         float: left;
-        margin: 0 15px 0 0;
+        // margin: 0 15px 0 0;
+        margin:0;
         height: 20px;
         color: $TPGrey3;
     }
@@ -43,7 +113,7 @@
 
     p
     {
-        margin: 0 15px;
+        margin: 0 15px 0 110px;
     }
 
     select
@@ -110,6 +180,7 @@
     {
         height: 20px;
         margin-bottom: 10px;
+        clear: both;
     }
 
     .radioButtonRow
@@ -125,19 +196,70 @@
 
     .profilePicture
     {
-        margin-left: 110px;
 
-        img
+        &.row
         {
-            max-height: 200px;
-            max-width: 200px;
+            height: auto;
+        }
+
+        .photoContainer
+        {
+
+            float: left;
+
+            .placeholder
+            {
+                display: none;
+            }
+
+            img
+            {
+                display: block;
+                clear: both;
+                max-height: 200px;
+                max-width: 200px;
+            }
+
+        }
+
+        .buttons
+        {
+            clear: both;
+            margin-left: 110px;
+            padding-top: 5px;
+        }
+
+        &.nophoto
+        {
+            .photoContainer
+            {
+                .placeholder
+                {
+                    display: block;
+                    height: 200px;
+                    width: 200px;
+                    padding: 50px 30px;
+                    border: 1px solid $TPGrey11;
+                    background-color: $TPGrey1;
+                }
+
+                img
+                {
+                    display: none;
+                }
+            }
+
+            .removePhoto
+            {
+                display: none;
+            }
         }
 
     }
 
     .accountSettings
     {
-        margin: 10px 0 5px 0;
+        // margin: 10px 0 5px 0;
     }
 
     .textCopy
@@ -150,7 +272,7 @@
         max-width: 350px;
         width: 350px;
         text-align: left;
-        margin-left: 50px;
+        margin-left: 108px;
     }
 
     .deliveryTimeHelpText
@@ -170,7 +292,7 @@
 
     .selectboxit-container .selectboxit 
     {
-        width: 200px !important;
+        width: 295px !important;
     }
 
     .selectBox
@@ -180,7 +302,7 @@
         width: 200px;
     }
 
-    .country, .timeZone
+    .country, .timeZone, .state
     {
         .selectboxit-container .selectboxit 
         {
@@ -192,6 +314,11 @@
     {
         max-height: 350px;
         @include nice-scrollbar;
+    }
+
+    .userSettingsButtons
+    {
+        margin-top: 10px;
     }
 
 }

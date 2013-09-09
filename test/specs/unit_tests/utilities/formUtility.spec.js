@@ -37,7 +37,7 @@ function(
                 expect($el.find("input").val()).toEqual("value");
             });
 
-            it("should apply a value to a radio button group", function()
+            it("should apply a string value to a radio button group", function()
             {
                 var $el = $("<div><input type='radio' name='key' value='1'><input type='radio' name='key' value='2'></div>");
                 var model = new TP.Model({key: "2"});
@@ -47,17 +47,33 @@ function(
                 expect($el.find("input:checked").val()).toEqual("2");
             });
 
-            it("should apply a value to a check button", function()
+            it("should apply an int value to a radio button group", function()
             {
-                var $el = $("<div><input type='checkbox' name='key' value='test'></div>");
-                var model = new TP.Model({key: true});
+                var $el = $("<div><input type='radio' name='key' value='1'><input type='radio' name='key' value='2'></div>");
+                var model = new TP.Model({key: 2});
 
                 FormUtility.applyValuesToForm($el, model);
 
-                expect($el.find("input").val()).toEqual("test");
+                expect($el.find("input:checked").val()).toEqual("2");
             });
 
-            it("should apply a value to a select box", function()
+            it("should apply checked state to a checkbox", function()
+            {
+                var $el = $("<div><input type='checkbox' name='key'></div>");
+                var model = new TP.Model({key: true});
+                FormUtility.applyValuesToForm($el, model);
+                expect($el.find("input").is(":checked")).toBe(true);
+            });
+
+            it("should apply unchecked state to a checkbox", function()
+            {
+                var $el = $("<div><input type='checkbox' name='key' checked></div>");
+                var model = new TP.Model({key: false});
+                FormUtility.applyValuesToForm($el, model);
+                expect($el.find("input").is(":checked")).toBe(false);
+            });
+
+            it("should apply a string value to a select box", function()
             {
                 var $el = $("<div><select name='key'><option value='value'>Value</option></select></div>");
                 var model = new TP.Model({key: 'value'});
@@ -65,6 +81,16 @@ function(
                 FormUtility.applyValuesToForm($el, model);
 
                 expect($el.find("select").val()).toEqual("value");
+            });
+
+            it("should apply an int value to a select box", function()
+            {
+                var $el = $("<div><select name='key'><option value='1'>Value</option><option value='2'>Two</option></select></div>");
+                var model = new TP.Model({key: 2});
+
+                FormUtility.applyValuesToForm($el, model);
+
+                expect($el.find("select").val()).toEqual("2");
             });
 
             it("should add an Unknown entry to a select box when the value is not included in the list", function()
@@ -111,8 +137,86 @@ function(
                 expect($el.has("option[value='']")).toBeTruthy();
             });
 
+            it("should support filtering options", function()
+            {
+                var $el = $("<div><input name='key1' data-modelname='model1' value='originalvalue' /><input name='key2' data-modelname='model2' value='originalvalue' /></div>");
+                var model = new TP.Model({key1: 'key1value', key2: 'key2value'});
+
+                FormUtility.applyValuesToForm($el, model, { filterSelector: "[data-modelname=model2]"});
+
+                expect($el.find("input[name=key1]").val()).toEqual("originalvalue");
+                expect($el.find("input[name=key2]").val()).toEqual("key2value");
+            });
         });
 
+        describe("applyValuesToModel", function()
+        {
+
+            it("should apply a value to model from a text box (without a type attribute)", function()
+            {
+                var $el = $("<div><input name='key' value='newvalue'></div>");
+                var model = new TP.Model({key: "oldvalue"});
+
+                FormUtility.applyValuesToModel($el, model);
+
+                expect(model.get("key")).toEqual("newvalue");
+            });
+
+            it("should apply a value to model from a text box (with a type attribute)", function()
+            {
+                var $el = $("<div><input type='text' name='key' value='newvalue'></div>");
+                var model = new TP.Model({key: "oldvalue"});
+
+                FormUtility.applyValuesToModel($el, model);
+
+                expect(model.get("key")).toEqual("newvalue");
+            });
+
+            it("should apply a value to model from a radio button group", function()
+            {
+                var $el = $("<div><input type='radio' name='key' value='1'><input type='radio' name='key' value='2' checked></div>");
+                var model = new TP.Model({key: "1"});
+
+                FormUtility.applyValuesToModel($el, model);
+                expect(model.get("key")).toEqual("2");
+            });
+
+            it("should apply a value to model from a checked checkbox", function()
+            {
+                var $el = $("<div><input type='checkbox' name='key' checked></div>");
+                var model = new TP.Model({key: false});
+                FormUtility.applyValuesToModel($el, model);
+                expect(model.get("key")).toBe(true);
+            });
+
+            it("should apply a value to model from an unchecked checkbox", function()
+            {
+                var $el = $("<div><input type='checkbox' name='key'></div>");
+                var model = new TP.Model({key: true});
+                FormUtility.applyValuesToModel($el, model);
+                expect(model.get("key")).toBe(false);
+            });
+
+            it("should apply a value to model from a select box", function()
+            {
+                var $el = $("<div><select name='key'><option value='value'>Value</option><option value='anothervalue' selected>Another Value</option></select></div>");
+                var model = new TP.Model({key: 'value'});
+
+                FormUtility.applyValuesToModel($el, model);
+                expect(model.get("key")).toEqual("anothervalue");
+            });
+
+            it("should support filtering options", function()
+            {
+                var $el = $("<div><input name='key1' data-modelname='model1' value='key1value' /><input name='key2' data-modelname='model2' value='key2value' /></div>");
+                var model = new TP.Model({key1: 'originalvalue', key2: 'originalvalue'});
+
+                FormUtility.applyValuesToModel($el, model, { filterSelector: "[data-modelname=model2]"});
+
+                expect(model.get("key1")).toEqual("originalvalue");
+                expect(model.get("key2")).toEqual("key2value");
+            });
+        });
     });
 
 });

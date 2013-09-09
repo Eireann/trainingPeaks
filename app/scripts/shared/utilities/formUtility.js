@@ -7,6 +7,8 @@ function(
     var FormUtility = {
         applyValuesToForm: function($form, model, options)
         {
+            options = options || {};
+
             FormUtility._processFields($form, function(key, $el)
             {
                 var value = model.get(key);
@@ -17,6 +19,10 @@ function(
                 {
                     value = moment(value) ? moment(value).format("L") : "";
                 }
+                else if(options.formatters && options.formatters.hasOwnProperty(format))
+                {
+                    value = options.formatters[format](value);
+                }
                 else if(format)
                 {
                     throw new Error("Unknown field format: " + format);
@@ -24,16 +30,16 @@ function(
 
                 if(type === "radio")
                 {
-                    value = [value];
+                    $el.val([value]);
                 }
-
-                if(type === "checkbox")
+                else if(type === "checkbox")
                 {
+                    // assumes checkbox values are always boolean
                     $el.prop("checked", value ? true : false);
                 }
                 else
                 {
-                    $el.val(value);
+                    $el.val(String(value));
                 }
 
                 if($el.is("select"))
@@ -53,17 +59,48 @@ function(
 
         applyValuesToModel: function($form, model, options)
         {
-            
+            var formValues = {};
+
+             FormUtility._processFields($form, function(key, $el, $formElements)
+            {
+                var value = "";
+                var type = $el.attr("type");
+
+                if(type === "radio")
+                {
+                    var checkedRadioFilter = "input[type=radio][name=" + key + "]:checked";
+                    var $checkedRadio = $formElements.filter(checkedRadioFilter);
+                    if($checkedRadio.length)
+                    {
+                        value = $checkedRadio.val();
+                    }
+                }
+                else if(type === "checkbox")
+                {
+                    if($el.is(":checked"))
+                    {
+                        value = true;
+                    }
+                    else
+                    {
+                        value = false;
+                    }
+                }
+                else
+                {
+                    value = $el.val();
+                }
+
+                formValues[key] = value;
+
+            }, options);
+
+            model.set(formValues);
         },
 
         _processFields: function($form, callback, options)
         {
-            var $formElements = $form.find("input, select, textarea");
-
-            if(options && options.filterSelector)
-            {
-                $formElements = $formElements.filter(options.filterSelector);
-            }
+            var $formElements = FormUtility._findFormFields($form, options ? options.filterSelector : null);
 
             $formElements.each(function(i, el)
             {
@@ -72,9 +109,19 @@ function(
 
                 if (key)
                 {
-                    callback(key, $el);
+                    callback(key, $el, $formElements);
                 }
             });
+        },
+
+        _findFormFields: function($form, filterSelector)
+        {
+            var $formElements = $form.find("input, select, textarea");
+            if(filterSelector)
+            {
+                $formElements = $formElements.filter(filterSelector);
+            }
+            return $formElements;
         }
     };
 

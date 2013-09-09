@@ -34,7 +34,8 @@ function (TP)
             planApplications: null,
             hasWeeklyGoals: false,
             startDate: null,
-            endDate: null
+            endDate: null,
+            isDynamic: null
         }
 
     });

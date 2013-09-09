@@ -92,6 +92,21 @@
             }
 
             return intValue;
+        },
+
+        mix: function(colorValue1, colorValue2, weight1Percent)
+        {
+            if(weight1Percent > 1 || weight1Percent < 0)
+            {
+                throw new Error("Color merge weight1Percent should be a decimal percentage between 0 and 1");
+            }
+
+            var weight2Percent = 1 - weight1Percent;
+
+            var r = Math.round((colorValue1.r * weight1Percent) + (colorValue2.r * weight2Percent));
+            var g = Math.round((colorValue1.g * weight1Percent) + (colorValue2.g * weight2Percent));
+            var b = Math.round((colorValue1.b * weight1Percent) + (colorValue2.b * weight2Percent));
+            return new colorUtils.ColorValues(r, g, b, 1);
         }
 
     };

@@ -81,9 +81,9 @@ function(
             {
                 testHelpers.clearRequests();
                 $mainRegion.find("#dashboardHeader .calendarMonthLabel").trigger("click");
-                expect(testHelpers.hasRequest("PUT", "user")).toBe(false);
+                expect(testHelpers.hasRequest("PUT", "settings/dashboard")).toBe(false);
                 $body.find(".dashboardHeaderDatePicker .closeIcon").trigger("click");
-                expect(testHelpers.hasRequest("PUT", "user")).toBe(true);
+                expect(testHelpers.hasRequest("PUT", "settings/dashboard")).toBe(true);
             });
 
         });
@@ -176,7 +176,7 @@ function(
                             $mainRegion = theMarsApp.mainRegion.$el;
                             theMarsApp.router.navigate("dashboard", true);
                             //console.log(userData.settings.dashboard.pods);
-                            //console.log(theMarsApp.user.get("settings.dashboard.pods"));
+                            //console.log(theMarsApp.user.getDashboardSettings().get("pods"));
                             $body = theMarsApp.getBodyElement();
                         });
 
@@ -273,9 +273,9 @@ function(
                         var $body = theMarsApp.getBodyElement();
                         testHelpers.clearRequests();
                         $mainRegion.find(".dashboardChart.pmcChart .settings").trigger("mousedown");
-                        expect(testHelpers.hasRequest("PUT", "user")).toBe(false);
+                        expect(testHelpers.hasRequest("PUT", "settings/dashboard")).toBe(false);
                         $body.find(".dashboardChartSettings .closeIcon").trigger("click");
-                        expect(testHelpers.hasRequest("PUT", "user")).toBe(true);
+                        expect(testHelpers.hasRequest("PUT", "settings/dashboard")).toBe(true);
                     });
 
                     it("Should not request new data on settings close if parameters haven't changed", function()

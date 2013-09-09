@@ -20,9 +20,11 @@
             "jquery": "../test/vendor/js/libs/jquery_jsdom",
             "Backbone.Marionette.Handlebars": "../test/vendor/js/libs/backbone.marionette.handlebars.amd",
             "packery": "../test/vendor/js/libs/packery",
-            "gridster": "../test/vendor/js/libs/gridster"
+            "gridster": "../test/vendor/js/libs/gridster",
+            "setImmediate": "../test/vendor/js/libs/setImmediate"
         }
     );
+
 
     commonConfig.deps = ["browserEnvironment", "jquery", "Backbone.Marionette.Handlebars"];
 

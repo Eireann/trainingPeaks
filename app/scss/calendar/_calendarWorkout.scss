@@ -68,8 +68,8 @@
             
             .workoutHeader
             {
-                padding: 0px 3px 3px 3px;
-                height: 32px;
+                padding: 0px 3px;
+                height: auto;
                 position: relative;
                 top: -1px;
                 .workoutIcon
@@ -89,6 +89,7 @@
                     {
                         display:inline-block;
                         cursor: inherit;
+                        width:100%;
                     }
                     
                     .units

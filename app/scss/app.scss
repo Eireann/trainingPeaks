@@ -55,6 +55,9 @@
 
 @import "charts";
 
+@import "tabbedLayout";
+@import "overlayBox";
+
 @media screen {
 
     body
@@ -77,13 +80,6 @@
             font-family: $fontFamilyRegular;
             font-size: $fontSizeXSmall;
         }
-    }
-
-    .userSettings
-    {
-        background-color: $white;
-        overflow-x:visible;
-        overflow-y:auto;
     }
 
     .row

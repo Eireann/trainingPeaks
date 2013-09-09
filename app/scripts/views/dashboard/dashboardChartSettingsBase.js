@@ -128,16 +128,24 @@ function(
         alignArrowTo: function(top)
         {
 
-            // make sure we're fully on the screen
-            var windowBottom = $(window).height() - 10;
-            this.top(top - 25);
-            var myBottom = this.$el.offset().top + this.$el.height();
-
-            if(myBottom > windowBottom)
+            // if we're at the top of the screen, adjust down by a couple px
+            if(top < 25)
             {
-                var arrowOffset = (myBottom - windowBottom) + 30;
-                this.top(windowBottom - this.$el.height());
-                this.$(".arrow").css("top", arrowOffset + "px");
+                this.top(2);
+                this.$(".arrow").css("top", "26px");
+            } else {
+                // make sure we're fully on the screen and align the arrow
+                this.top(top - 25);
+                
+                var myBottom = this.$el.offset().top + this.$el.height();
+
+                var windowBottom = $(window).height() - 10;
+                if(myBottom > windowBottom)
+                {
+                    var arrowOffset = (myBottom - windowBottom) + 31;
+                    this.top(windowBottom - this.$el.height());
+                    this.$(".arrow").css("top", arrowOffset + "px");
+                }
             }
         },
 

@@ -40,6 +40,7 @@
     "Login": "Login",
     "Username": "Username",
     "Password": "Password",
+    "RetypePassword": "Retype Password",
     "LoggingIn": "Logging in...",
     "LoginFailed": "Login Failed!",
     "Submit": "Submit",
@@ -139,6 +140,7 @@
 	"Apply": "Apply",
     "Discard": "Discard",
 	"Close": "Close",
+    "Save": "Save",
     "SaveClose": "Save & Close",
 	"Reset": "Reset",
     "Configure": "Configure",
@@ -418,5 +420,12 @@
     "WorkoutsAndMeals": "Workouts & Meals",
     "ICalHelpText": "This url provides a link so you can subscribe to your TrainingPeaks calendar via a 3rd party calendar application, such as Google Calendar, Microsoft Outlook, Apple's iCal.",
     "None": "None",
-    "CurrentRatePlan": "Current rate plan"
+    "CurrentRatePlan": "Current rate plan",
+    "NoPhoto": "No Photo Available",
+    "RemovePhoto": "Remove Photo",
+    "UploadPhoto": "Upload Photo",
+
+    "SwitchToFlex": "Switch to Flex",
+    "InvalidEmail": "Email address is invalid, please re-enter",
+    "InvalidPassword": "Passwords do not match, please re-enter"
 }

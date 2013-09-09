@@ -41,7 +41,7 @@ function(
             {
                 var userData = xhrData.users.barbkprem;
                 testHelpers.startTheAppAndLogin(userData, true);
-                theMarsApp.user.set("settings.dashboard.pods", [timeInHeartRateZonesPodSettings]);
+                theMarsApp.user.getDashboardSettings().set("pods", [timeInHeartRateZonesPodSettings]);
                 $mainRegion = theMarsApp.mainRegion.$el;
                 theMarsApp.router.navigate("dashboard", true);
             });
@@ -106,7 +106,7 @@ function(
             {
                 var userData = xhrData.users.barbkprem;
                 testHelpers.startTheAppAndLogin(userData, true);
-                theMarsApp.user.set("settings.dashboard.pods", [timeInHeartRateZonesPodSettings, timeInPowerZonesPodSettings, timeInSpeedZonesPodSettings]);
+                theMarsApp.user.getDashboardSettings().set("pods", [timeInHeartRateZonesPodSettings, timeInPowerZonesPodSettings, timeInSpeedZonesPodSettings]);
                 $mainRegion = theMarsApp.mainRegion.$el;
                 theMarsApp.router.navigate("dashboard", true);
             });

@@ -1,8 +1,6 @@
 define(
 [
     "underscore",
-    "jqueryui/datepicker",
-    "jquerySelectBox",
     "jqueryHtmlClean",
     "setImmediate",
     "TP",
@@ -10,16 +8,14 @@ define(
     "models/commands/removeTrainingPlan",
     "views/userConfirmationView",
     "./trainingPlanFullDescriptionView",
-    "utilities/trainingPlan/trainingPlan",
     "scripts/helpers/multilineEllipsis",
+    "views/calendar/library/trainingPlanDatePickerView",
     "hbs!templates/views/confirmationViews/unapplyConfirmationView",
     "hbs!templates/views/calendar/library/applyTrainingPlanErrorView",
     "hbs!templates/views/calendar/library/trainingPlanDetailsView"
 ],
 function(
     _,
-    datepicker,
-    jquerySelectBox,
     jqueryHtmlClean,
     setImmediate,
     TP,
@@ -27,8 +23,8 @@ function(
     RemoveTrainingPlanCommand,
     UserConfirmationView,
     trainingPlanFullDescriptionView,
-    trainingPlanUtility,
     multilineEllipsis,
+    TrainingPlanDatePickerView,
     deleteConfirmationTemplate,
     trainingPlanErrorTemplate,
     trainingPlanDetailsViewTemplate
@@ -52,29 +48,30 @@ function(
         events:
         {
             "click .apply": "onApply",
-            "change #applyDateType": "updateDateInputOptions",
             "click #closeIcon": "close",
             "click .removePlan": "confirmDeleteAppliedPlan",
             "click .more": "moreClicked"
+        },
+
+        ui: {
+            dateSection: ".startEndPlan"
         },
 
         initialize: function()
         {
             this.model.details.on("change", this.render, this);
             this.once("render", this.onInitialRender, this);
-            _.bindAll(this, "checkWhetherDayIsSelectable");
-        },
-
-        ui: {
-            applyDate: "#applyDate",
-            applyDateType: "#applyDateType" 
+            this.dateView = new TrainingPlanDatePickerView({model: this.model, el: this.$el.find('.startEndPlan'), parentModal: this});
         },
 
         onInitialRender: function()
         {
             this.waitingOn();
             var self = this;
-            this.model.details.fetch().done(function() { self.waitingOff(); });
+            this.model.details.fetch().done(function() 
+            {
+                self.waitingOff(); 
+            });
         },
 
         onClose: function()
@@ -85,32 +82,21 @@ function(
         onRender: function()
         {
             var self = this;
-            setImmediate(function()
-            {
-                self.$(".datepicker").css("position", "relative").css("z-index", self.$el.css("z-index"));
-                self.$(".datepicker").datepicker({ dateFormat: "m/d/yy", firstDay: theMarsApp.controllers.calendarController.startOfWeekDayIndex,
-                    beforeShowDay: self.checkWhetherDayIsSelectable });
-                self.$("select.dateOptions").selectBoxIt({ dynamicPositioning: true });
-            });
 
             if(this.alignedTo)
             {
                 this.alignArrowTo(this.alignedTo);
             }
 
-            this.updateDateInputOptions();
+            this.dateView.setElement(this.ui.dateSection);
+            self.dateView.render(); 
         },
 
         serializeData: function()
         {
             var data = this.model.toJSON();
-            // data.applyable = this.model.details.has("title") && _.contains([null, 
-            //     TP.utils.trainingPlan.getStatusByName("Purchased"),
-            //     TP.utils.trainingPlan.getStatusByName("Applied")], 
-            //     data.planStatus);
             data.applyable = this.model.details.has("title");
 
-            data.applyDate = moment().format(this.dateFormat);
             data.details = this.model.details.toJSON();
             data.details.weekcount = Math.ceil(data.details.dayCount / 7);
             data.details.totalDuration = 0;
@@ -157,9 +143,8 @@ function(
         onApply: function()
         {
 
-            this.applyStartType = Number(this.ui.applyDateType.val());
-
-            var targetDate = this.restrictTargetDate(this.ui.applyDate.val());
+            this.applyStartType = Number(this.dateView.ui.applyDateType.val());
+            var targetDate = this.dateView.ui.applyDate.val();
 
             var apply = this.model.applyToDate(targetDate, this.applyStartType);
 
@@ -211,7 +196,7 @@ function(
         {
             // align the top and left of this popup to the target library item
             this.alignedTo = $element;
-            this.left($element.offset().left + $element.width() + 15);
+            this.left($element.offset().left + $element.width() + 16);
             var targetTop = $element.offset().top;
             this.top(targetTop);
 
@@ -234,96 +219,6 @@ function(
             }
                 
             this.$(".arrow").css("top", arrowTop + "px");
-        },
-
-        updateDateInputOptions: function()
-        {
-            this.applyStartType = Number(this.ui.applyDateType.val());
-            this.updateDateInput();
-            if (this.applyStartType === TP.utils.trainingPlan.startTypeEnum.Event)
-            {
-                this.ui.applyDate.val(moment(this.model.details.get("eventDate")).format(this.dateFormat));
-                this.ui.applyDate.attr("disabled", true);
-            } 
-            else
-            {
-                this.ui.applyDate.attr("disabled", false);
-            }
-        },
-
-        updateDateInput: function()
-        {
-            this.ui.applyDate.val(this.restrictTargetDate(this.ui.applyDate.val()));
-        },
-
-        restrictTargetDate: function(targetDate)
-        {
-            targetDate = moment(targetDate); 
-
-            if(this.model.details.get("eventPlan") && this.applyStartType === TP.utils.trainingPlan.startTypeEnum.Event)
-            {
-                targetDate = moment(this.model.details.get("eventDate"));
-            }
-
-            // force start/end to week start/end
-            if(this.model.details.get("hasWeeklyGoals"))
-            {
-
-                var startDayOfWeek = this.getStartDayOfWeekIndex();
-                var endDayOfWeek = this.getEndDayOfWeekIndex(); 
-
-                if (this.applyStartType === TP.utils.trainingPlan.startTypeEnum.StartDate && moment(targetDate).day() !== startDayOfWeek) 
-                {
-                    targetDate = moment(targetDate).day(startDayOfWeek);
-                }
-                else if (this.applyStartType === TP.utils.trainingPlan.startTypeEnum.EndDate && moment(targetDate).day() !== endDayOfWeek) 
-                {
-                    targetDate = moment(targetDate).day(endDayOfWeek);
-                    if(targetDate.format("YYYY-MM-DD") < moment().format("YYYY-MM-DD"))
-                    {
-                        targetDate.add("weeks", 1);
-                    }
-                }
-            }
-
-            return targetDate.format(this.dateFormat);
-        },
-
-        checkWhetherDayIsSelectable: function(date)
-        {
-            var day = date.getDay();
-
-            var selectable = this.canSelectDay(day);
-            var className = "";
-            return [selectable, className];
-        },
-
-        canSelectDay: function(day)
-        {
-
-            if(this.model.details.get("hasWeeklyGoals"))
-            {
-                if(this.applyStartType === TP.utils.trainingPlan.startTypeEnum.EndDate && day !== this.getEndDayOfWeekIndex())
-                {
-                    return false;
-                }
-                else if(this.applyStartType === TP.utils.trainingPlan.startTypeEnum.StartDate && day !== this.getStartDayOfWeekIndex())
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        },
-
-        getStartDayOfWeekIndex: function()
-        {
-            return this.model.details.has("startDate") ? moment(this.model.details.get("startDate")).day() : 1;
-        },
-
-        getEndDayOfWeekIndex: function()
-        {
-            return this.model.details.has("endDate") ? moment(this.model.details.get("endDate")).day() : 0;
         },
 
         moreClicked: function ()

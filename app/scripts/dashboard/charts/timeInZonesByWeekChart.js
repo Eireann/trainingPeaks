@@ -5,6 +5,7 @@ define(
     "utilities/charting/jquery.flot.stack",
     "utilities/charting/chartColors",
     "utilities/charting/flotOptions",
+    "utilities/color",
     "views/dashboard/chartUtils",
     "dashboard/views/timeInZonesChartSettings"
 ],
@@ -14,6 +15,7 @@ function(
     flotStack,
     chartColors,
     defaultFlotOptions,
+    colorUtils,
     DashboardChartUtils,
     TimeInZonesChartSettingsView
 )
@@ -192,10 +194,17 @@ function(
         {
             var dataSeriesByZone = [];
 
+            var baseColor = $.color.parse("#eaebec");
+            var barColor = $.color.parse(zoneColors);
+
             _.each(chartPointsByZone, function(chartPoints, index)
             {
-                var opacity = 0.14 + 0.86 * (index / (chartPointsByZone.length - 1));
-                var zoneColor = zoneColors.replace(/\$\$/, opacity.toFixed(2));
+                //var opacity = 0.14 + 0.86 * (index / (chartPointsByZone.length - 1));
+                var barColorWeight = 0.14 + 0.86 * (index / (chartPointsByZone.length - 1));
+                var zoneColor = colorUtils.mix(barColor, baseColor, barColorWeight);
+                var highlightColor = colorUtils.mix(barColor, zoneColor, 0.2);
+                //var zoneColor = zoneColors.replace(/\$\$/, opacity.toFixed(2));
+
                 var dataSeries =
                 {
                     data: chartPoints,
@@ -204,10 +213,10 @@ function(
                         show: true,
                         lineWidth: 0,
                         fill: true,
-                        fillColor: zoneColor
+                        fillColor: zoneColor.rgb
                     },
-                    color: zoneColor,
-                    highlightColor: zoneColor
+                    color: zoneColor.rgb,
+                    highlightColor: highlightColor.rgb
                 };
 
                 dataSeriesByZone.push(dataSeries);

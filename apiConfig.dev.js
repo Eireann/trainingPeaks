@@ -11,6 +11,12 @@
         local: "http://localhost:8905"
     };
 
+    var homeRoots =
+    {
+        dev: "http://home.dev.trainingpeaks.com",
+        local: "http://localhost:8905"
+    };
+
     var apiRoots =
     {
         dev: "http://tpapi.dev.trainingpeaks.com",
@@ -28,13 +34,15 @@
         environment: environment,
         configuration: configuration,
         wwwRoot: wwwRoots[configuration],
+        homeRoot: homeRoots[configuration],
         apiRoot: apiRoots[configuration],
         oAuthRoot: oAuthRoots[configuration],
         buildNumber: "local",
         gaAccount: "",
         coachUpgradeURL: "",
         upgradeURL: "",
-        buildHash: ""
+        buildHash: "",
+        devWwwRoot: wwwRoots.dev
     };
 
     if (typeof global !== "undefined")

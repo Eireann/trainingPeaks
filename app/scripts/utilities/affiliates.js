@@ -21,10 +21,10 @@ function(_, ImageData)
 
         isCoachedAccount: function()
         {
-            if (!theMarsApp.user.get("settings.account.isAthlete"))
+            if (theMarsApp.user.getAccountSettings().has("isAthlete") && !theMarsApp.user.getAccountSettings().get("isAthlete"))
                 return true;
 
-            if (theMarsApp.user.get("settings.account.isCoached"))
+            if (theMarsApp.user.getAccountSettings().get("isCoached"))
                 return true;
 
             return false;
@@ -32,7 +32,7 @@ function(_, ImageData)
 
         getAffiliateCode: function()
         {
-            return theMarsApp.user.get("settings.affiliate.code");
+            return theMarsApp.user.getAffiliateSettings().get("code");
         },
 
         loadAffiliateSettings: function()
@@ -67,8 +67,8 @@ function(_, ImageData)
 
         getLogoUrl: function()
         {
-            var logoUrl = theMarsApp.user.get("settings.account.headerImageUrl");
-            if (logoUrl.indexOf("http") !== 0)
+            var logoUrl = theMarsApp.user.getAccountSettings().get("headerImageUrl");
+            if (logoUrl && logoUrl.indexOf("http") !== 0)
             {
                 logoUrl = theMarsApp.wwwRoot + logoUrl;      
             }
@@ -90,7 +90,7 @@ function(_, ImageData)
 
         getHeaderLinkUrl: function()
         {
-            return theMarsApp.user.get("settings.account.headerLink");
+            return theMarsApp.user.getAccountSettings().get("headerLink");
         }
 
     };

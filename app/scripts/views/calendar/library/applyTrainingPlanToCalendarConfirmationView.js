@@ -2,9 +2,12 @@ define(
 [
     "TP",
     "moment",
-    "hbs!templates/views/calendar/library/applyTrainingPlanToCalendarConfirmation"
+    "views/calendar/library/trainingPlanDatePickerView",
+    "views/userConfirmationView",
+    "hbs!templates/views/calendar/library/applyTrainingPlanToCalendarConfirmation",
+    "hbs!templates/views/calendar/library/applyTrainingPlanErrorView"
 ],
-function(TP, moment, applyTrainingPlanTemplate)
+function(TP, moment, TrainingPlanDatePickerView, UserConfirmationView, applyTrainingPlanTemplate, trainingPlanErrorTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -16,106 +19,39 @@ function(TP, moment, applyTrainingPlanTemplate)
             }
             this.model = options.model;
             this.targetDate = options.targetDate;
-            this.startOrEndRangeValue = 1;
+            this.dateView = new TrainingPlanDatePickerView({model: this.model, el: this.$el.find('.chooseDate'), parentModal: this, defaultDate: this.targetDate});
             this.detailDataPromise = this.model.details.fetch();
             this.detailDataPromise.done(this.render);
         },
 
         onRender: function ()
         {
-            this.$el.find('select').selectBoxIt();
+            this.dateView.setElement(this.$el.find('.chooseDate'));
+            this.dateView.render();
         },
 
         applyPlan: function()
         {
+            var self = this;
             if (this.detailDataPromise.state() === "pending")
             {
                 return;
             }
             this.$el.addClass('waiting');
-            var apply = this.model.applyToDate(this.eligibleTargetDate.format("MM-DD-YYYY"), this.startOrEndRangeValue);
-            var self = this;
+
+            var applyStartType = Number(this.dateView.ui.applyDateType.val());
+            var targetDate = this.dateView.ui.applyDate.val();
+
+            var apply = this.model.applyToDate(targetDate, applyStartType);
             apply.done(function()
             {
                 self.close();
+            }).fail(function()
+            {
+                var errorMessageView = new UserConfirmationView({ template: trainingPlanErrorTemplate });
+                errorMessageView.render();
+                self.$el.removeClass('waiting');
             });
-        },
-
-        _setEligibleTargetDate: function()
-        {
-            var targetDateIndex = moment(this.targetDate).day(),
-                requiredDateIndex;
-
-            if (this.startOrEndRangeValue === 1)
-            {
-                this._setEligibleTargetDateFromStartDate();
-            }
-            else {
-                this._setEligibleTargetDateFromEndDate();
-            }
-        },
-
-        _setEligibleTargetDateFromStartDate: function()
-        {
-            // start date chosen
-            var targetDateIndex = moment(this.targetDate).day(),
-                requiredDateIndex = moment(this.model.details.get("startDate")).day();
-
-            if (targetDateIndex !== requiredDateIndex)
-            {
-                if (requiredDateIndex > targetDateIndex)
-                {
-                    this.eligibleTargetDate = moment(this.targetDate).day(requiredDateIndex);
-                } else {
-                    this.eligibleTargetDate = moment(this.targetDate).add("days", 7 - requiredDateIndex);
-                }
-            }
-            else {
-                this.eligibleTargetDate = this.targetDate;
-            }
-        },
-
-        _setEligibleTargetDateFromEndDate: function()
-        {
-            var targetDateIndex = moment(this.targetDate).day(),
-                requiredDateIndex = moment(this.model.details.get("endDate")).day(),
-                endDate;
-
-
-            if (requiredDateIndex > targetDateIndex)
-            {
-                endDate = moment(this.targetDate).day(requiredDateIndex); 
-            } else if (requiredDateIndex < targetDateIndex)
-            {
-                endDate = moment(this.targetDate).day(requiredDateIndex); 
-            } else if (requiredDateIndex === targetDateIndex)
-            {
-                endDate = moment(this.targetDate);
-            }
-
-            this.eligibleTargetDate = endDate;
-        },
-
-        serializeData: function()
-        {
-            if (this.detailDataPromise.state() === "pending")
-            {
-                return {
-                    eligibleTargetDate: this.targetDate
-                };
-            }
-            var date;
-            this._setEligibleTargetDate();
-            if (this.eligibleTargetDate === this.targetDate)
-            {
-                date = null;
-            } else {
-                date  = this.eligibleTargetDate.format("MM-DD-YYYY");
-            }
-            return {
-                eligibleTargetDate: date,
-                endRangeSelected: this.startOrEndRangeValue === 3
-            };
         },
 
         modal:
@@ -132,15 +68,8 @@ function(TP, moment, applyTrainingPlanTemplate)
 
         events:
         {
-            'change select': 'updateStartOrEndRangeValue',
             'click #confirmationOk': 'applyPlan',
             'click #confirmationCancel' : 'onCancel'
-        },
-
-        updateStartOrEndRangeValue: function(e)
-        {
-            this.startOrEndRangeValue = parseInt($(e.target).val(), 10);
-            this.render();
         },
 
         onCancel: function()
