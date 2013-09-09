@@ -83,10 +83,12 @@ function(
                 {
                     self.close();
                 }
-            ).always()
-            {
+            ).always(
+                function()
+                {
                 self.waitingOff();
-            };
+                }
+            );
         },
 
         _addView: function(selector, klass, options, name)
