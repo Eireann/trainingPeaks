@@ -420,5 +420,6 @@
     "None": "None",
     "CurrentRatePlan": "Current rate plan",
     "NoPhoto": "No Photo Available",
-    "RemovePhoto": "Remove Photo"
+    "RemovePhoto": "Remove Photo",
+    "UploadPhoto": "Upload Photo"
 }

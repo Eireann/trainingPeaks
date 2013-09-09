@@ -41,7 +41,8 @@ function(
         events:
         {
             "click .closeIcon": "close",
-            "click .save": "save"
+            "click .save": "save",
+            "click .cancel": "close"
         },
 
         modelEvents: {},
@@ -94,7 +95,10 @@ function(
                 {
                     self.close();
                 }
-            );
+            ).always()
+            {
+                self.waitingOff();
+            };
         },
 
         _addView: function(selector, klass, options, name)

@@ -74,6 +74,7 @@ function(
             "click .ical": "_onICalFocus",
             "change input[name=enableVirtualCoachEmails]": "_enableOrDisableVirtualCoachHour",
             "click .photoContainer": "_selectProfilePhoto",
+            "click .uploadPhoto": "_selectProfilePhoto",
             "click .removePhoto": "_removeProfilePhoto",
             "change .fileUploadInput": "_onProfilePhotoSelected"
         },
@@ -182,9 +183,14 @@ function(
                 return;
             }
 
+            var filePath = fileList[0];
+
+            // clear it in case they select the same file twice in a row
+            this.$(".fileUploadInput").val('');
+            
             this.waitingOn();
             var self = this; 
-            UserDataSource.saveProfilePhoto(fileList[0]).done(function(profilePhotoUrl)
+            UserDataSource.saveProfilePhoto(filePath).done(function(profilePhotoUrl)
             {
                 self.model.set("profilePhotoUrl", profilePhotoUrl);
                 self._updatePhotoUrl();

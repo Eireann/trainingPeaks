@@ -11,6 +11,13 @@
     padding: 19px 12px 13px 12px;
     // width: 800px;
 
+    button
+    {
+        @include buttons(0, "auto", "1em");
+        padding: 4px 5px;
+        margin-right: 5px;
+    }
+
     .userSettingsPersonalSection {
         margin-bottom:20px;
         padding-bottom:20px;
@@ -136,10 +143,17 @@
 
     .profilePicture
     {
-        margin-left: 110px;
+
+        &.row
+        {
+            height: auto;
+        }
 
         .photoContainer
         {
+
+            float: left;
+
             .placeholder
             {
                 display: none;
@@ -152,8 +166,15 @@
                 max-height: 200px;
                 max-width: 200px;
             }
+
         }
 
+        .buttons
+        {
+            clear: both;
+            margin-left: 110px;
+            padding-top: 5px;
+        }
 
         &.nophoto
         {
@@ -164,7 +185,9 @@
                     display: block;
                     height: 200px;
                     width: 200px;
+                    padding: 50px 30px;
                     border: 1px solid $TPGrey11;
+                    background-color: $TPGrey1;
                 }
 
                 img
@@ -238,6 +261,11 @@
     {
         max-height: 350px;
         @include nice-scrollbar;
+    }
+
+    .userSettingsButtons
+    {
+        margin-top: 10px;
     }
 
 }

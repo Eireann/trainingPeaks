@@ -100,13 +100,16 @@
         <input data-modelname="user" type="tel" name="cellPhone" />
     </div>
 
-    <div class ="profilePicture">
+    <div class ="row profilePicture">
         <label>{{$ "ProfilePicture" }}</label>
         <div class="photoContainer">
             <img src="" />
             <div class="placeholder">{{$ "NoPhoto" }}</div>
         </div>
-        <div class="removePhoto">{{$ "RemovePhoto" }}</div>
+        <div class="buttons">
+            <button class="uploadPhoto">{{$ "UploadPhoto" }}</button>
+            <button class="removePhoto">{{$ "RemovePhoto" }}</button>
+        </div>
     </div>
 
     <input style="display: none" type="file" class="fileUploadInput" accept="image/gif, image/jpeg, image/png" />
