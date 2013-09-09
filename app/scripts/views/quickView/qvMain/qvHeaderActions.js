@@ -128,7 +128,7 @@ function (
             typesMenu.on("selectWorkoutType", this.onSelectWorkoutType, this);
 
             if (direction === "right")
-                typesMenu.setPosition({ fromElement: icon, left: icon.outerWidth() + 10, top: -15 });
+                typesMenu.setPosition({ fromElement: icon, left: icon.outerWidth() + 10, top: -13 });
             else
                 typesMenu.setPosition({ fromElement: icon, right: -12, top: -13 });
 
