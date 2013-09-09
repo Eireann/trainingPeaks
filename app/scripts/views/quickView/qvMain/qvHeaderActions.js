@@ -105,14 +105,16 @@ function (
         onDateChanged: function(newDate)
         {
             TP.analytics("send", { "hitType": "event", "eventCategory": "quickView", "eventAction": "workoutDateChanged", "eventLabel": "" });
-
+            var self = this;
             var newDay = moment(newDate).format(this.model.shortDateFormat);
             this.ui.date.datepicker("hide");
-            var oldDay = this.model.getCalendarDay();
+            var workout = this.model;
+            var oldDay = workout.getCalendarDay();
             if (newDay !== oldDay)
             {
-                var workout = this.model;
-                workout.trigger("workout:move", this.model, newDay);
+                // prepare our target day collection
+                theMarsApp.controllers.calendarController.views.calendar.scrollToDate(newDate);
+                workout.moveToDay(newDay);
             }
         },
 
