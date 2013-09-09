@@ -153,7 +153,7 @@ function(
 
         _setupSelectBox: function()
         {
-            self.$("select").selectBoxIt();
+            this.$("select").selectBoxIt();
         },
 
         _onICalFocus: function(e)
