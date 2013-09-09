@@ -4,7 +4,6 @@
     "framework/chart",
     "moment",
     "TP",
-    "models/reporting/pmcModel",
     "utilities/charting/flotOptions",
     "utilities/charting/chartColors",
     "utilities/charting/jquery.flot.dashes",
@@ -17,7 +16,6 @@ function(
     Chart,
     moment,
     TP,
-    PMCModel,
     defaultFlotOptions,
     chartColors,
     flotDashes,
@@ -32,6 +30,9 @@ function(
         pointRadius: 1.5,
 
         settingsView: pmcChartSettings,
+
+        // Why is this set at LOAD time?
+        today: moment().hour(0).format("YYYY-MM-DD"), 
 
         defaults: {
                 atlConstant: 7,
@@ -60,7 +61,7 @@ function(
 
         getChartName: function()
         {
-            return "Pmc Chart"
+            return "Pmc Chart";
         },
 
         fetchData: function()
