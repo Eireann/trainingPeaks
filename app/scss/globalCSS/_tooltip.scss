@@ -13,7 +13,8 @@
 
     &.ui-widget
     {
-        font-size: $fontSizeSmall;
+        font-size: $fontSizeMedium;
+        font-family:$fontFamilyRegular;
     }
     
     &.ui-widget-content
