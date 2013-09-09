@@ -53,9 +53,16 @@ function(
             setImmediate(function()
             {
                 self.renderFlotChart(dataSeries, flotOptions);
+                self.ui.chartContainer.on("plotclick", self.onPlotClick);
             });
         },
         
+        onPlotClick: function(event, position, item)
+        {
+            console.log(event, position, item);
+            var dataIndex = item.dataIndex;
+        },
+
         findTSBRange: function(modelData)
         {
             var maxValue = 0;
