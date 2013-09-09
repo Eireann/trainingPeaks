@@ -24,7 +24,8 @@
 
         .heartRateZones, 
         .powerZones, 
-        .speedPaceZones {
+        .speedPaceZones,
+        .userSettingsPayments {
             border-bottom: 1px solid $TPGrey2;
             margin-bottom:20px;
             padding-bottom:20px;
@@ -45,6 +46,13 @@
                 }
             }
         }
+
+        .userSettingsButtons {
+            text-align:center;
+            .save {
+                margin:10px 0 20px 0;
+            }
+        }
     }
 }
 
@@ -53,9 +61,9 @@
     width: 816px;
     padding-right:12px;
 
+    @include buttons(0, "auto", $fontSizeSmall);
     button
     {
-        @include buttons(0, "auto", "1em");
         padding: 4px 5px;
         margin-right: 5px;
     }
@@ -73,8 +81,44 @@
             width:295px;
         }
 
-        label.personalRightCol{
-            width:104px;
+        .personalLeftCol {
+            float:left;
+
+            input {
+                width:285px;
+            }
+            .selectboxit-container .selectboxit {
+                width: 285px !important;
+            }
+
+            .selectBox {
+                position: relative;
+                float: left;
+            }
+
+            label.username {
+                text-align:left;
+                margin-left:5px;
+                font-family:$fontFamilyHeavy;
+            }
+        }
+
+        .personalRightCol{
+            float:right;
+
+            label {
+                width:104px;
+            }
+
+            selectboxit-container .selectboxit {
+                width: 285px !important;
+            }
+
+            .selectBox {
+                position: relative;
+                float: left;
+                width:295px;
+            }
         }
     }
 
@@ -192,6 +236,7 @@
     .genderRadioButtonRow
     {
         width: 75px;
+        margin-bottom:10px;
     }
 
     .profilePicture
@@ -238,9 +283,12 @@
                     display: block;
                     height: 200px;
                     width: 200px;
-                    padding: 50px 30px;
+                    padding: 90px 0 0 0;
                     border: 1px solid $TPGrey11;
                     background-color: $TPGrey1;
+                    text-align:center;
+                    font-family:$fontFamilyRegular;
+                    font-size:$fontSizeSmall;
                 }
 
                 img
@@ -319,6 +367,10 @@
     .userSettingsButtons
     {
         margin-top: 10px;
+
+        .save {
+            width:65px;
+        }
     }
 
 }
