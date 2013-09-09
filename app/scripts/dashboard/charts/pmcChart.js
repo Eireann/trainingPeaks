@@ -1,38 +1,49 @@
 ﻿define(
 [
     "underscore",
-    "./dashboardChartBase",
+    "framework/chart",
     "moment",
     "TP",
     "models/reporting/pmcModel",
     "utilities/charting/flotOptions",
     "utilities/charting/chartColors",
     "utilities/charting/jquery.flot.dashes",
-    "views/dashboard/pmcChartSettings",
-    "hbs!templates/views/dashboard/pmcChart"
+    "views/dashboard/chartUtils",
+    "dashboard/views/pmcChartSettings",
+    "hbs!dashboard/templates/pmcChart"
 ],
 function(
     _,
-    DashboardChartBase,
+    Chart,
     moment,
     TP,
     PMCModel,
     defaultFlotOptions,
     chartColors,
     flotDashes,
+    DashboardChartUtils,
     pmcChartSettings,
     pmcChartTemplate
     )
 {
 
-    // TODO: Migrate Pmc Chart View and Default Chart View to use new format from fitness summary chart    
-    var PmcChart = {
+    var PmcChart = Chart.extend({
         lineThickness: 1,
         pointRadius: 1.5,
-        chartType: 32, // 32 = pmc chart
-        modelClass: PMCModel,
 
-        className: DashboardChartBase.className + " pmcChart",
+        settingsView: pmcChartSettings,
+
+        defaults: {
+                atlConstant: 7,
+                atlConstant2: 14,
+                atlStartValue: 0,
+                ctlConstant: 42,
+                ctlStartValue: 0,
+                showIntensityFactorPerDay: true,
+                showTSBFill: false,
+                showTSSPerDay: true,
+                workoutTypeIds: ["0"]
+        },
 
         template:
         {
@@ -40,20 +51,63 @@ function(
             template: pmcChartTemplate
         },
 
-        renderChart: function()
+        defaultTitle: function()
         {
-            var TSBRange = this.findTSBRange(this.chartDataModel.get("data"));
-            var chartPoints = this.buildFlotPoints(this.chartDataModel.get("data"), TSBRange.minAxisValue);
+            var title = TP.utils.translate("Performance Manager - Workout Type: ");
+            title += TP.utils.workout.types.getListOfNames(this.get("workoutTypeIds"), "All Workout Types");
+            return title;
+        },
+
+        getChartName: function()
+        {
+            return "Pmc Chart"
+        },
+
+        fetchData: function()
+        {
+            var dateOptions = DashboardChartUtils.buildChartParameters(this.get("dateOptions") || {});
+
+            var postData = {
+                workoutTypes: _.without(this._buildWorkoutTypes(), 0),
+                ctlConstant: this.get("ctlConstant"),
+                ctlStart: this.get("ctlStartValue"),
+                atlConstant: this.get("atlConstant"),
+                atlStart: this.get("atlStartValue")
+            };
+
+            return this.dataManager.fetchReport("performancedata", dateOptions.startDate, dateOptions.endDate, postData);
+        },
+
+        _buildWorkoutTypes: function()
+        {
+            // 0 == all
+            var requestedWorkoutTypes = this.has("workoutTypeIds") ? this.get("workoutTypeIds") : [];
+            requestedWorkoutTypes = _.filter(requestedWorkoutTypes, function(type)
+            {
+                return type.trim() !== "" && Number(type) !== 0;
+            });
+
+            if (requestedWorkoutTypes.length && requestedWorkoutTypes.length < _.keys(TP.utils.workout.types.typesById).length)
+            {
+                return _.map(requestedWorkoutTypes, function(typeId){return Number(typeId);});
+            } else {
+                return [0];
+            }
+        },
+
+        parseData: function(data)
+        {
+            this.rawData = data;
+
+            var TSBRange = this.findTSBRange(data);
+            var chartPoints = this.buildFlotPoints(data, TSBRange.minAxisValue);
             var dataSeries = this.buildFlotDataSeries(chartPoints, chartColors);
             var flotOptions = this.buildFlotChartOptions(TSBRange);
 
-            var self = this;
-
-            // let the html draw first so our container has a height and width
-            setImmediate(function()
-            {
-                self.renderFlotChart(dataSeries, flotOptions);
-            });
+            return {
+                dataSeries: dataSeries,
+                flotOptions: flotOptions
+            };
         },
         
         findTSBRange: function(modelData)
@@ -548,7 +602,7 @@ function(
         {
             var index = flotItem.dataIndex;
             var tips = [];
-            var item = this.chartDataModel.get("data")[index];
+            var item = this.rawData[index];
 
             var itemDay = moment(item.workoutDay).hour(0);
             tips.push({ label: "Date", value: itemDay.format("MM/DD/YY") });
@@ -581,60 +635,23 @@ function(
             return tips;
         },
 
-        createChartSettingsView: function()
-        {
-            return new pmcChartSettings({ model: this.model });
-        },
-
-        listenToChartSettingsEvents: function()
-        {
-            this.model.on("change:showTSSPerDay", this.renderChart, this);
-            this.model.on("change:showIntensityFactorPerDay", this.renderChart, this);
-            this.model.on("change:showTSBFill", this.renderChart, this);
-        },
-
-        stopListeningToChartSettingsEvents: function()
-        {
-            this.model.off("change:showTSSPerDay", this.renderChart, this);
-            this.model.off("change:showIntensityFactorPerDay", this.renderChart, this);
-            this.model.off("change:showTSBFill", this.renderChart, this);
-        },
-
         shouldShowTSS: function()
         {
-            return this.getSetting("showTSSPerDay") ? true : false;
+            return this.get("showTSSPerDay") ? true : false;
         },
 
         shouldShowIF: function()
         {
-            return this.getSetting("showIntensityFactorPerDay") ? true : false;
+            return this.get("showIntensityFactorPerDay") ? true : false;
         },
 
         shouldShowTSBFill: function()
         {
-            return this.getSetting("showTSBFill") ? true : false;
-        },
-
-        setDefaultSettings: function(options)
-        {
-            this.setDefaultDateSettings(options);
-            var defaultSettings = {
-                atlConstant: 7,
-                atlConstant2: 14,
-                atlStartValue: 0,
-                ctlConstant: 42,
-                ctlStartValue: 0,
-                showIntensityFactorPerDay: true,
-                showTSBFill: false,
-                showTSSPerDay: true,
-                workoutTypeIds: ["0"]
-            };
-            var mergedSettings = _.extend(defaultSettings, this.model.attributes);
-            this.model.set(mergedSettings, { silent: true });
+            return this.get("showTSBFill") ? true : false;
         }
 
-    };
+    });
 
-    return TP.ItemView.extend(_.extend({}, DashboardChartBase, PmcChart));
+    return PmcChart;
 
 });

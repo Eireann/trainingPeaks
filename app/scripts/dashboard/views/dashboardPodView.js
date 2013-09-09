@@ -41,6 +41,11 @@ function(
                 throw "Dashboard Chart requires a settings model";
             }
 
+            if(this.model.template)
+            {
+                this.template = this.model.template;
+            }
+
             _.bindAll(this, "_onHoverToolTip", "_renderFlotChart", "waitingOff");
 
             //trigger redraw instead of dashboardDatesChange

@@ -1,17 +1,12 @@
 {{#hoverBox this}}
     <div class="details">
-        <h3 class="subheadbold">{{$ "SelectWorkoutType" }}</h3>
         <div class="closeIcon"></div>
-        
-        <div class="workoutTypes cf">
-            {{#each workoutTypes}}
-                <div class="workoutType">
-                    <label><input type="checkbox" data-workouttypeid="{{ id }}" {{#if selected}}checked{{/if}} /> {{ name }}</label>
-                </div>
-            {{/each}}
-        </div>
 
-        <div class="datepickerContainer"></div>
+        {{> dashboard_templates_chartTitleSettings }}
+
+        <div class="workoutTypesRegion"></div>
+
+        <div class="dateOptionsRegion"></div>
 
         <div class="selectParameters cf">
             <div class="title">{{$ "SelectParameters"}}</div>
