@@ -3,9 +3,11 @@ define(
     "TP",
     "moment",
     "views/calendar/library/trainingPlanDatePickerView",
-    "hbs!templates/views/calendar/library/applyTrainingPlanToCalendarConfirmation"
+    "views/userConfirmationView",
+    "hbs!templates/views/calendar/library/applyTrainingPlanToCalendarConfirmation",
+    "hbs!templates/views/calendar/library/applyTrainingPlanErrorView"
 ],
-function(TP, moment, TrainingPlanDatePickerView, applyTrainingPlanTemplate)
+function(TP, moment, TrainingPlanDatePickerView, UserConfirmationView, applyTrainingPlanTemplate, trainingPlanErrorTemplate)
 {
     return TP.ItemView.extend(
     {
@@ -30,6 +32,7 @@ function(TP, moment, TrainingPlanDatePickerView, applyTrainingPlanTemplate)
 
         applyPlan: function()
         {
+            var self = this;
             if (this.detailDataPromise.state() === "pending")
             {
                 return;
@@ -44,6 +47,11 @@ function(TP, moment, TrainingPlanDatePickerView, applyTrainingPlanTemplate)
             apply.done(function()
             {
                 self.close();
+            }).fail(function()
+            {
+                var errorMessageView = new UserConfirmationView({ template: trainingPlanErrorTemplate });
+                errorMessageView.render();
+                self.$el.removeClass('waiting');
             });
         },
 
