@@ -136,7 +136,7 @@ function(
             this.keepSettingsButtonVisible();
             var offset = $(e.currentTarget).offset();
             this.workoutSettings = new CalendarWorkoutSettingsView({ model: this.model });
-            this.workoutSettings.render().bottom(offset.top + 12).center(offset.left - 4);
+            this.workoutSettings.render().bottom(offset.top - 8).center(offset.left - 8);
             this.workoutSettings.on("close", this.allowSettingsButtonToHide, this);
             this.workoutSettings.on("mouseleave", this.onMouseLeave, this);
         },
