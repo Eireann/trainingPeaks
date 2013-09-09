@@ -12,6 +12,8 @@ define(
     "shared/utilities/formUtility",
     "views/userConfirmationView",
     "hbs!templates/views/quickView/fileUploadErrorView",
+    "hbs!templates/views/errors/passwordValidationErrorView",
+    "hbs!templates/views/errors/emailValidationErrorView",
     "hbs!shared/templates/userSettingsFormTemplate"
 ],
 function(
@@ -27,6 +29,8 @@ function(
     FormUtility,
     UserConfirmationView,
     fileUploadErrorTemplate,
+    passwordValidationErrorTemplate,
+    emailValidationErrorTemplate,
     userSettingsFormTemplate
 )
 {
@@ -110,11 +114,41 @@ function(
         processSave: function()
         {
             this._applyFormValuesToModels();
-            var password = this.$("input[name=password]").val().trim();
-            return UserDataSource.saveUserSettingsAndPassword({
-                models: [this.model, this.athleteSettingsModel, this.accountSettingsModel],
-                password: password
-            });
+            var self = this;
+            return this._validateSave().done(
+                function()
+                {
+                    var password = self.$("input[name=password]").val().trim();
+                    UserDataSource.saveUserSettingsAndPassword({
+                        models: [self.model, self.athleteSettingsModel, self.accountSettingsModel],
+                        password: password
+                    });
+                }
+            );
+        },
+
+        _validateSave: function()
+        {
+            var password = self.$("input[name=password]").val().trim();
+            var confirmPassword = self.$("input[name=retypePassword]").val().trim();
+
+            var email = self.$("input[name=email]").val().trim();
+
+            var validateDeferred = new $.Deferred();
+            var validEmail = new RegExp(/^[A-Z0-9._%+\-]+@[A-Z0-9.\-]+\.[A-Z]{2,4}$/i);
+
+            if((password || confirmPassword) && (password !== confirmPassword))
+            {
+                new UserConfirmationView({ template: passwordValidationErrorTemplate }).render();
+                return validateDeferred.reject();
+            }
+            else if(!validEmail.test(email))
+            {
+                new UserConfirmationView({ template: emailValidationErrorTemplate }).render();
+                return validateDeferred.reject();
+            }
+
+            return validateDeferred.resolve();
         },
 
         _addConstantsToSerializedData: function(data)
