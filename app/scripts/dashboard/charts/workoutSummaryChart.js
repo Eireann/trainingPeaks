@@ -197,7 +197,6 @@ function(
             });
 
             this._validateWorkoutTypes();
-            this.updateChartTitle(); 
         },
 
         fetchData: function()
@@ -220,7 +219,7 @@ function(
             return this.dataManager.fetchReport(this.subType.endpoint, dateOptions.startDate, dateOptions.endDate, postData);
         },
 
-        updateChartTitle: function()
+        defaultTitle: function()
         {
             var title;
             if(this.subType.onlyByWeek)
@@ -233,7 +232,8 @@ function(
                 title = TP.utils.translate(this.subType.title + " by " + dateGrouping + ": ");
             }
             title += TP.utils.workout.types.getListOfNames(this.get("workoutTypeIds"), "All Workout Types");
-            this.set("title", title);
+
+            return title;
         },
 
         parseData: function(data)

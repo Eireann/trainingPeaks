@@ -32,7 +32,6 @@ function(
         initialize: function(attributes, options)
         {
             this._validateWorkoutTypes();
-            this.updateChartTitle(); 
         },
 
         fetchData: function()
@@ -57,11 +56,11 @@ function(
             return tips;
         },
 
-        updateChartTitle: function()
+        defaultTitle: function()
         {
             var title = TP.utils.translate("Time In " + this._getChartName() + " Zones: ");
             title += TP.utils.workout.types.getListOfNames(this.get("workoutTypeIds"), "All Workout Types");
-            this.set("title", title);
+            return title;
         },
 
         parseData: function(data)
