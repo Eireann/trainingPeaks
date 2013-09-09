@@ -81,7 +81,7 @@ function(
                 units: "distance"
             }],
             plannedSeries: [{
-                key: "disntancePlanned",
+                key: "distancePlanned",
                 units: "distance"
             }],
             tooltips: distanceDurationTooltips
@@ -168,7 +168,7 @@ function(
 
         defaults: {
             workoutTypeIds: [],
-            workoutSummaryDateGrouping: 2, // 1: Day, 2: Week
+            dateGrouping: 2, // 1: Day, 2: Week
             showPlanned: true
         },
 
@@ -205,7 +205,7 @@ function(
             var dateOptions = DashboardChartUtils.buildChartParameters(this.get("dateOptions"));
             var postData =
             {
-                dateGrouping: this.get("workoutSummaryDateGrouping") || 1
+                dateGrouping: this.get("dateGrouping") || 1
             };
 
             if(this.subType.prefiltered)
@@ -229,7 +229,7 @@ function(
             }
             else
             {
-                var dateGrouping = this.get("workoutSummaryDateGrouping") === 1 ? "Day" : "Week";
+                var dateGrouping = this.get("dateGrouping") === 1 ? "Day" : "Week";
                 title = TP.utils.translate(this.subType.title + " by " + dateGrouping + ": ");
             }
             title += TP.utils.workout.types.getListOfNames(this.get("workoutTypeIds"), "All Workout Types");
@@ -242,7 +242,7 @@ function(
             data = this.data = this._preprocessData(data);
 
             // Calculate the bar width
-            var dateGrouping = this.get("workoutSummaryDateGrouping") === 1 ? "day" : "week";
+            var dateGrouping = this.get("dateGrouping") === 1 ? "day" : "week";
             var barWidth = moment.duration(1, dateGrouping).valueOf() * 0.7 / this.subType.series.length;
 
             var series = _.map(this.subType.series, function(series, i)
@@ -309,7 +309,7 @@ function(
             var date = this._adjustDateToWeek(axis.min);
             var delta = moment.duration(axis.delta * 1.3).asDays();
 
-            if(this.get("workoutSummaryDateGrouping") === 1)
+            if(this.get("dateGrouping") === 1)
             {
                 delta = Math.ceil(delta);
             }
@@ -348,7 +348,7 @@ function(
         {
             // Force start/end date to be included in chart.
             var dateOptions = DashboardChartUtils.buildChartParameters(this.get("dateOptions"));
-            var dateGrouping = this.get("workoutSummaryDateGrouping");
+            var dateGrouping = this.get("dateGrouping");
             if(dateGrouping === 2) // Week
             {
                 dateOptions.startDate = this._adjustDateToWeek(dateOptions.startDate);
@@ -469,7 +469,7 @@ function(
                 };
             }, this);
 
-            if(this.get("workoutSummaryDateGrouping") === 1)
+            if(this.get("dateGrouping") === 1)
             {
                 tooltip.unshift({
                     value: moment(entry.date).format("L")
