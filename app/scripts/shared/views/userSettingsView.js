@@ -41,20 +41,14 @@ function(
 
         events:
         {
-            "click .cancel": "triggerCancel",
-            "click .save": "triggerSave"
+            "click button": "triggerButton"
         },
 
-        triggerCancel: function()
+        triggerButton: function(e)
         {
-            this.trigger("cancel");
-        },
-
-        triggerSave: function()
-        {
-            this.trigger("save");
+            var actionName = $(e.currentTarget).attr("class");
+            this.trigger(actionName);
         }
-
     });
 
     var UserSettingsContentView = TabbedLayout.extend({
@@ -103,6 +97,7 @@ function(
             this.on("render", this._showFooter, this);
             this.listenTo(this.footerView, "cancel", _.bind(this._cancel, this));
             this.listenTo(this.footerView, "save", _.bind(this._save, this));
+            this.listenTo(this.footerView, "saveAndClose", _.bind(this._saveAndClose, this));
         },
 
         _showFooter: function()
@@ -132,15 +127,30 @@ function(
             {
                 this.$el.addClass("waiting");
                 var self = this;
-                $.when(
+                return $.when(
                     this._saveUser()
                 ).done(
                     function()
                     {
-                        self.close();
+                        self.$el.removeClass("waiting");
                     }
                 );
             }
+            else
+            {
+                return new $.Deferred().reject();
+            }
+        },
+
+        _saveAndClose: function()
+        {
+            var self = this;
+            this._save().done(
+                function()
+                {
+                    self.close();
+                }
+            );
         },
 
         _saveUser: function()
