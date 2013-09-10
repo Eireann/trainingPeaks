@@ -171,6 +171,15 @@ function(
             return this.workoutSettings;
         },
 
+        getPasswordSettings: function()
+        {
+            if(!this.passwordSettings)
+            {
+                this.passwordSettings = new TP.Model();
+            }
+            return this.passwordSettings;
+        },
+
         parse: function(resp, options)
         {
             if(resp && resp.settings)

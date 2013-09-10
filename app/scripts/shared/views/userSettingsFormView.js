@@ -85,8 +85,24 @@ function(
 
         initialize: function(options)
         {
-            this.accountSettingsModel = this.model.getAccountSettings();
-            this.athleteSettingsModel = this.model.getAthleteSettings();
+            if(!options || !options.accountSettingsModel)
+            {
+                throw new Error("UserSettingsFormView requires an account settings model");
+            }
+
+            if(!options || !options.athleteSettingsModel)
+            {
+                throw new Error("UserSettingsFormView requires an athlete settings model");
+            }
+
+            if(!options || !options.passwordSettingsModel)
+            {
+                throw new Error("UserSettingsFormView requires a password settings model");
+            }
+
+            this.accountSettingsModel = options.accountSettingsModel;
+            this.athleteSettingsModel = options.athleteSettingsModel;
+            this.passwordSettingsModel = options.passwordModel;
         },
 
         onRender: function()
@@ -111,44 +127,53 @@ function(
             return data;
         },
 
+        applyFormValuesToModels: function()
+        {
+            FormUtility.applyValuesToModel(this.$el, this.model, { filterSelector: "[data-modelname=user]"});
+            FormUtility.applyValuesToModel(this.$el, this.athleteSettingsModel, { filterSelector: "[data-modelname=athlete]" });
+            FormUtility.applyValuesToModel(this.$el, this.accountSettingsModel, { filterSelector: "[data-modelname=account]" });
+            FormUtility.applyValuesToModel(this.$el, this.passwordSettingsModel, { filterSelector: "[data-modelname=password]" });
+        },
+        
         processSave: function()
         {
-            this._applyFormValuesToModels();
+            this.applyFormValuesToModels();
             var self = this;
             return this._validateSave().done(
                 function()
                 {
-                    var password = self.$("input[name=password]").val().trim();
                     UserDataSource.saveUserSettingsAndPassword({
                         models: [self.model, self.athleteSettingsModel, self.accountSettingsModel],
-                        password: password
+                        password: self.passwordSettingsModel.get("password")
                     });
                 }
             );
         },
 
-        _validateSave: function()
+        _validatePassword: function()
         {
-            var password = self.$("input[name=password]").val().trim();
-            var confirmPassword = self.$("input[name=retypePassword]").val().trim();
+            var password = this.passwordSettingsModel.get("password");
+            var retypePassword = this.passwordSettingsModel.get("retypePassword"); 
 
-            var email = self.$("input[name=email]").val().trim();
-
-            var validateDeferred = new $.Deferred();
-            var validEmail = new RegExp(/^[A-Z0-9._%+\-]+@[A-Z0-9.\-]+\.[A-Z]{2,4}$/i);
-
-            if((password || confirmPassword) && (password !== confirmPassword))
+            if((password || retypePassword) && (password !== retypePassword))
             {
                 new UserConfirmationView({ template: passwordValidationErrorTemplate }).render();
-                return validateDeferred.reject();
-            }
-            else if(!validEmail.test(email))
-            {
-                new UserConfirmationView({ template: emailValidationErrorTemplate }).render();
-                return validateDeferred.reject();
+                return false;
             }
 
-            return validateDeferred.resolve();
+            return true;
+        },
+
+        _validateEmail: function()
+        {
+            var email = self.accountSettingsModel.get("email");
+            var validEmail = new RegExp(/^[A-Z0-9._%+\-]+@[A-Z0-9.\-]+\.[A-Z]{2,4}$/i);
+
+            if(!validEmail.test(email))
+            {
+                new UserConfirmationView({ template: emailValidationErrorTemplate }).render();
+                return false;
+            }
         },
 
         _addConstantsToSerializedData: function(data)
@@ -193,13 +218,6 @@ function(
         _onICalFocus: function(e)
         {
             $(e.target).select();
-        },
-
-        _applyFormValuesToModels: function()
-        {
-            FormUtility.applyValuesToModel(this.$el, this.model, { filterSelector: "[data-modelname=user]"});
-            FormUtility.applyValuesToModel(this.$el, this.athleteSettingsModel, { filterSelector: "[data-modelname=athlete]" });
-            FormUtility.applyValuesToModel(this.$el, this.accountSettingsModel, { filterSelector: "[data-modelname=account]" });
         },
 
         _selectProfilePhoto: function()

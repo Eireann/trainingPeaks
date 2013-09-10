@@ -66,7 +66,9 @@ function(
                     view: UserSettingsAccountView,
                     options:
                     {
-                        model: this.model
+                        accountSettingsModel: this.model.getAccountSettings(),
+                        athleteSettingsModel: this.model.getAthleteSettings(),
+                        passwordSettingsModel: this.model.getPasswordSettings()
                     }
                 },
                 {
@@ -85,7 +87,7 @@ function(
             this.footerView = new UserSettingsFooterView();
             this.on("render", this._showFooter, this);
             this.listenTo(this.footerView, "cancel", _.bind(this._cancel, this));
-            this.listenTo(this.footerView, "save", _.bind(this._save, this))
+            this.listenTo(this.footerView, "save", _.bind(this._save, this));
         },
 
         _showFooter: function()

@@ -71,6 +71,7 @@ function(
             if(this.$current)
             {
                 this.$current.removeClass("active");
+                this.$current.trigger("switchTab");
             }
 
             var view = new navItem.view(navItem.options);
