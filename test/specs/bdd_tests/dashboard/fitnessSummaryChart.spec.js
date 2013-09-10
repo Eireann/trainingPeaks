@@ -33,7 +33,6 @@ function(
         var fitnessSummaryPodSettings = {
             index: 0,
             chartType: 3,
-            title: "Fitness Summary",
             dateOptions: {
                 quickDateSelectOption: 1,
                 startDate: null,
@@ -148,7 +147,6 @@ function(
                 var fitnessSummaryPodSettingsThree = {
                     index: 0,
                     chartType: 3,
-                    title: "Fitness Summary",
                     dateOptions: {
                         quickDateSelectOption: 1,
                         startDate: null,
@@ -234,7 +232,6 @@ function(
                 var fitnessSummaryPodSettings = {
                     index: 0,
                     chartType: 3,
-                    title: "Fitness Summary",
                     dateOptions: {
                         quickDateSelectOption: 1,
                         startDate: null,
@@ -245,7 +242,6 @@ function(
                 var fitnessSummaryPodSettingsTwo = {
                     index: 1,
                     chartType: 3,
-                    title: "Fitness Summary",
                     dateOptions: {
                         quickDateSelectOption: 1,
                         startDate: null,
@@ -286,7 +282,6 @@ function(
                 var fitnessSummaryPodSettings = {
                     index: 0,
                     chartType: 3,
-                    title: "Fitness Summary",
                     dateOptions: {
                         quickDateSelectOption: 1,
                         startDate: null,
@@ -297,7 +292,6 @@ function(
                 var fitnessSummaryPodSettingsTwo = {
                     index: 1,
                     chartType: 3,
-                    title: "Fitness Summary",
                     dateOptions: {
                         quickDateSelectOption: 8,
                         startDate: null,
