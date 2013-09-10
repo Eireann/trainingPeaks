@@ -24,9 +24,9 @@ function(
         },
 
         events:
-        {
+        _.extend({
             "change [name=units]": "_changeUnits"
-        },
+        }, ZonesTypeView.prototype.events),
 
         onRender: function()
         {

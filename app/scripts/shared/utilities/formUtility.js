@@ -14,7 +14,7 @@ function(
             }
             else if(format === "number")
             {
-                value = Number(value);
+                value = Number(value).toString();
             }
             else if(options && options.formatters && options.formatters.hasOwnProperty(format))
             {
@@ -25,7 +25,7 @@ function(
                 throw new Error("Unknown field format: " + format);
             }
 
-            return value;
+            return value || "";
         },
 
         parseValue: function(value, format, options)

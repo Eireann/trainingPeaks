@@ -29,6 +29,8 @@ function(
             template: userSettingsZonesTemplate
         },
 
+        modelEvents: {},
+
         initialize: function()
         {
             var self = this;

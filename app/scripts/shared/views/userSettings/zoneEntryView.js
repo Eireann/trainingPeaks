@@ -25,6 +25,18 @@ function(
         modelEvents: {},
         collectionEvents: {},
 
+        events:
+        {
+            "click .removeZone": "_remove"
+        },
+
+        attributes: function()
+        {
+            return {
+                "data-mcid": this.model.cid
+            };
+        },
+
         onRender: function()
         {
             this._updateFields();
@@ -71,6 +83,11 @@ function(
                     zoneValue: this.formatter
                 }
             });
+        },
+
+        _remove: function()
+        {
+            this.model.destroy();
         }
 
     });
