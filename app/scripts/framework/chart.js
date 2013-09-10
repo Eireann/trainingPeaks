@@ -51,7 +51,6 @@ function(
         // returns a deferred, resolves the deferred with chart options
         buildChart: function()
         {
-            this.updateChartTitle();
             var xhr = this.fetchData();
             var deferred = new $.Deferred();
 
@@ -82,9 +81,9 @@ function(
             return;
         },
 
-        updateChartTitle: function()
+        defaultTitle: function()
         {
-            return;
+            return "";
         },
 
         getChartName: function()

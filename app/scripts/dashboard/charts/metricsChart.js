@@ -251,10 +251,9 @@ function(
             return tooltip;
         },
 
-
-        updateChartTitle: function()
+        defaultTitle: function()
         {
-            this.set("title", TP.utils.translate("Metrics"));
+            return TP.utils.translate("Metrics");
         },
 
         _formatValue: function(value, metricInfo, options)
