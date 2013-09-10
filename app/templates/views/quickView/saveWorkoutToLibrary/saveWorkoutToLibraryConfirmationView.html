@@ -4,19 +4,23 @@
     </div>
 
     <div class="dialogContent">
-        <div>
+        <div class="excerciseTitle cf">
             <div class="labels"><label for="exerciseTitle">{{$ "Title" }}:</label></div>
             <div class="values"><input type="text" name="exerciseTitle" id="exerciseTitle" value="{{ title }}"/></div>
         </div>
 
-        <div>
-            <form class="selectForm"><label for="selectLibrary">{{$ "SelectLibrary" }}:</label>
+        <div class="selectLibrary cf">
+            <form class="selectForm">
+
+                <div class="labels"><label for="selectLibrary">{{$ "SelectLibrary" }}:</label></div>
             
-                <select name="selectLibrary" id="selectLibrary" selected="{{defaultLibraryId}}">
-                    {{#each libraries}}
-                    <option value="{{ exerciseLibraryId }}">{{ libraryName }}</option>
-                    {{/each}}
-                </select>
+                <div class="selectContain">
+                    <select name="selectLibrary" id="selectLibrary" selected="{{defaultLibraryId}}">
+                        {{#each libraries}}
+                        <option value="{{ exerciseLibraryId }}">{{ libraryName }}</option>
+                        {{/each}}
+                    </select>
+                </div>
             
             </form>
         </div>
