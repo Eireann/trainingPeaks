@@ -40,7 +40,7 @@ function(
             // current setup of views it seems to break occasionally.
             // this.render = _.debounce(_.bind(this.render, this), 100, {leading: true, trailing: true, maxWait: 500});
 
-            theMarsApp.user.on("change", this.render, this);
+            theMarsApp.user.on("change:units", this.render, this);
             
 
             var self = this;

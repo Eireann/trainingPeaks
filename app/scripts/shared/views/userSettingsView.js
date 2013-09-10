@@ -48,6 +48,16 @@ function(
         {
             var actionName = $(e.currentTarget).attr("class");
             this.trigger(actionName);
+        },
+
+        disableCancel: function(enable)
+        {
+            this.$("button.cancel").prop("disabled", true);
+        },
+
+        enableCancel: function(enable)
+        {
+            this.$("button.cancel").prop("disabled", false);
         }
     });
 
@@ -61,7 +71,9 @@ function(
             this._initializeNavigation();
             this._initializeFooter();
             this.on("render", this._fetchPaymentHistory, this);
-            this.on("switchTab", this._applyFormValuesToModels, this);
+            this.on("before:switchTab", this._applyFormValuesToModels, this);
+            this.on("after:switchTab", this._listenForFormChanges, this);
+            this.on("render", this._listenForFormChanges, this);
         },
 
         _initializeNavigation: function()
@@ -112,6 +124,21 @@ function(
             return copiedModel;
         },
 
+        _listenForFormChanges: function()
+        {
+            var self = this;
+            this.$(".tabbedLayoutBody").find("input, select, textarea").off("change.userSettingsView");
+            this.$(".tabbedLayoutBody").find("input, select, textarea").on("change.userSettingsView", function()
+            {
+                self._onChange();
+            });
+        },
+
+        _onChange: function()
+        {
+            this.footerView.enableCancel();
+        },
+
         _applyCopiedModelsToRealModels: function()
         {
             _.each(this._copiesOfModels, function(copiedModel)
@@ -132,6 +159,7 @@ function(
         _showFooter: function()
         {
             this.tabbedLayoutFooterRegion.show(this.footerView);
+            this.footerView.disableCancel(false);
         },
 
         _fetchPaymentHistory: function()
@@ -163,6 +191,7 @@ function(
                     function()
                     {
                         self.$el.removeClass("waiting");
+                        self.footerView.disableCancel();
                     }
                 );
             }
