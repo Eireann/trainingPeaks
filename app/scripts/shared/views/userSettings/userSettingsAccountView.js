@@ -2,8 +2,6 @@
 [
     "TP",
     "backbone",
-    "shared/models/recurringPaymentsCollection",
-    "shared/models/paymentHistoryCollection",
     "shared/views/userSettingsFormView",
     "shared/views/paymentHistoryView",
     "shared/views/recurringPaymentsView",
@@ -12,8 +10,6 @@
 function(
     TP,
     Backbone,
-    RecurringPaymentsCollection,
-    PaymentHistoryCollection,
     UserSettingsFormView,
     PaymentHistoryView,
     RecurringPaymentsView,
@@ -36,32 +32,60 @@ function(
             "click .save": "save"
         },
 
-        initialize: function()
-        {
-            this.recurringPaymentsCollection = new RecurringPaymentsCollection();
-            this.paymentHistoryCollection = new PaymentHistoryCollection();
-            this.recurringPaymentsCollection.fetch();
-            this.paymentHistoryCollection.fetch();
+        initialize: function(options)
+        { 
+            if(!options || !options.userModel)
+            {
+                throw new Error("UserSettingsFormView requires a user model");
+            }
+
+            if(!options || !options.recurringPaymentsCollection)
+            {
+                throw new Error("UserSettingsFormView requires a recurring payments collection");
+            }
+
+            if(!options || !options.paymentHistoryCollection)
+            {
+                throw new Error("UserSettingsFormView requires a payment history collection");
+            }
+
             UserSettingsView.__super__.initialize.apply(this, arguments);
+
+            this.userModel = options.userModel;
+            this.recurringPaymentsCollection = options.recurringPaymentsCollection; 
+            this.paymentHistoryCollection = options.paymentHistoryCollection; 
             this.children = new Backbone.ChildViewContainer();
+            this.options = options;
+
+            this.on("render", this._addChildViews, this);
+            this.on("render", this._fetchPaymentHistory, this);
+
+            this.on("switchTab", this._onSwitchTab, this);
         },
 
-        render: function()
+        _onSwitchTab: function()
         {
-            UserSettingsView.__super__.render.apply(this, arguments);
+            this.children.call("applyFormValuesToModels");
+        },
 
-            this._addView(".userSettingsForm", UserSettingsFormView, {
-                model: this.model
-            }, "userSettingsForm");
+        _fetchPaymentHistory: function()
+        {
+            this.recurringPaymentsCollection.fetch();
+            this.paymentHistoryCollection.fetch();
+        },
+
+        _addChildViews: function()
+        {
+            this._addView(".userSettingsForm", UserSettingsFormView, this.options, "userSettingsForm");
 
             this._addView(".paymentHistory", PaymentHistoryView, {
                 collection: this.paymentHistoryCollection,
-                model: this.model
+                model: this.userModel
             }, "paymentHistory");
 
             this._addView(".recurringPayments", RecurringPaymentsView, {
                 collection: this.recurringPaymentsCollection,
-                model: new TP.Model({ expireDate: this.model.get("expireDate")})
+                model: new TP.Model({ expireDate: this.userModel.get("expireDate")})
             }, "recurringPayments");
         },
 
@@ -69,20 +93,6 @@ function(
         {
             this.children.apply("close", arguments);
             UserSettingsView.__super__.close.apply(this, arguments);
-        },
-
-        processSave: function()
-        {
-            var self = this;
-            self.waitingOn();
-            return $.when(
-                this.children.findByCustom("userSettingsForm").processSave()
-            ).always(
-                function()
-                {
-                self.waitingOff();
-                }
-            );
         },
 
         _addView: function(selector, klass, options, name)

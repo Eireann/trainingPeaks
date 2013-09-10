@@ -3,20 +3,28 @@
     "underscore",
     "TP",
     "backbone",
+    "shared/models/userDataSource",
     "shared/views/tabbedLayout",
     "shared/views/overlayBoxView",
     "shared/views/userSettings/userSettingsAccountView",
     "shared/views/userSettings/userSettingsZonesView",
+    "views/userConfirmationView",
+    "hbs!templates/views/errors/passwordValidationErrorView",
+    "hbs!templates/views/errors/emailValidationErrorView",
     "hbs!shared/templates/userSettings/userSettingsFooterTemplate"
 ],
 function(
     _,
     TP,
     Backbone,
+    UserDataSource,
     TabbedLayout,
     OverlayBoxView,
     UserSettingsAccountView,
     UserSettingsZonesView,
+    UserConfirmationView,
+    passwordValidationErrorTemplate,
+    emailValidationErrorTemplate,
     userSettingsFooterTemplate
 )
 {
@@ -66,9 +74,12 @@ function(
                     view: UserSettingsAccountView,
                     options:
                     {
+                        userModel: this.model,
                         accountSettingsModel: this.model.getAccountSettings(),
                         athleteSettingsModel: this.model.getAthleteSettings(),
-                        passwordSettingsModel: this.model.getPasswordSettings()
+                        passwordSettingsModel: this.model.getPasswordSettings(),
+                        recurringPaymentsCollection: this.model.getRecurringPaymentsCollection(),
+                        paymentHistoryCollection: this.model.getPaymentHistoryCollection()
                     }
                 },
                 {
@@ -97,22 +108,68 @@ function(
 
         _save: function()
         {
-            if(this.currentView && _.isFunction(this.currentView.processSave))
+
+            if(this.currentView && _.isFunction(this.currentView.applyFormValuesToModels))
             {
+                this.currentView.applyFormValuesToModels();
+            }
+
+            if(this._validatePassword && this._validateEmail)
+            {
+                this.$(".tabbedLayoutBody").addClass("waiting");
                 var self = this;
-                this.currentView.processSave().done(
+                $.when(
+                    this._saveUser()
+                ).done(
                     function()
                     {
-                        self.close();
+                        self.$(".tabbedLayoutBody").removeClass("waiting");
                     }
                 );
             }
         },
 
+        _saveUser: function()
+        {
+            return UserDataSource.saveUserSettingsAndPassword({
+                models: [this.model, this.model.getAthleteSettings(), this.model.getAccountSettings()],
+                password: this.model.getPasswordSettings().get("password")
+            });
+        },
+
         _cancel: function()
         {
-            alert("Not Implemented");
+            this.close(); 
+        },
+
+        _validatePassword: function()
+        {
+            var password = this.model.getPasswordSettings().get("password");
+            var retypePassword = this.model.getPasswordSettings().get("retypePassword"); 
+
+            if((password || retypePassword) && (password !== retypePassword))
+            {
+                new UserConfirmationView({ template: passwordValidationErrorTemplate }).render();
+                return false;
+            }
+
+            return true;
+        },
+
+        _validateEmail: function()
+        {
+            var email = this.model.get("email");
+            var validEmail = new RegExp(/^[A-Z0-9._%+\-]+@[A-Z0-9.\-]+\.[A-Z]{2,4}$/i);
+
+            if(!validEmail.test(email))
+            {
+                new UserConfirmationView({ template: emailValidationErrorTemplate }).render();
+                return false;
+            }
+
+            return true;
         }
+
     });
 
     return OverlayBoxView.extend({

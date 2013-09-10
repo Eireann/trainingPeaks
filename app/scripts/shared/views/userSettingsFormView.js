@@ -12,8 +12,6 @@ define(
     "shared/utilities/formUtility",
     "views/userConfirmationView",
     "hbs!templates/views/quickView/fileUploadErrorView",
-    "hbs!templates/views/errors/passwordValidationErrorView",
-    "hbs!templates/views/errors/emailValidationErrorView",
     "hbs!shared/templates/userSettingsFormTemplate"
 ],
 function(
@@ -28,9 +26,7 @@ function(
     UserDataSource,
     FormUtility,
     UserConfirmationView,
-    fileUploadErrorTemplate,
-    passwordValidationErrorTemplate,
-    emailValidationErrorTemplate,
+    fileUploadErrorTemplate, 
     userSettingsFormTemplate
 )
 {
@@ -85,6 +81,11 @@ function(
 
         initialize: function(options)
         {
+            if(!options || !options.userModel)
+            {
+                throw new Error("UserSettingsFormView requires a user model");
+            }
+
             if(!options || !options.accountSettingsModel)
             {
                 throw new Error("UserSettingsFormView requires an account settings model");
@@ -100,9 +101,10 @@ function(
                 throw new Error("UserSettingsFormView requires a password settings model");
             }
 
+            this.userModel = options.userModel;
             this.accountSettingsModel = options.accountSettingsModel;
             this.athleteSettingsModel = options.athleteSettingsModel;
-            this.passwordSettingsModel = options.passwordModel;
+            this.passwordSettingsModel = options.passwordSettingsModel;
         },
 
         onRender: function()
@@ -121,7 +123,7 @@ function(
 
         serializeData: function()
         {
-            var data = this.model.toJSON();
+            var data = this.userModel.toJSON();
             this._addConstantsToSerializedData(data);
             this._addICalKeysToSerializedData(data);
             return data;
@@ -129,51 +131,10 @@ function(
 
         applyFormValuesToModels: function()
         {
-            FormUtility.applyValuesToModel(this.$el, this.model, { filterSelector: "[data-modelname=user]"});
+            FormUtility.applyValuesToModel(this.$el, this.userModel, { filterSelector: "[data-modelname=user]"});
             FormUtility.applyValuesToModel(this.$el, this.athleteSettingsModel, { filterSelector: "[data-modelname=athlete]" });
             FormUtility.applyValuesToModel(this.$el, this.accountSettingsModel, { filterSelector: "[data-modelname=account]" });
             FormUtility.applyValuesToModel(this.$el, this.passwordSettingsModel, { filterSelector: "[data-modelname=password]" });
-        },
-        
-        processSave: function()
-        {
-            this.applyFormValuesToModels();
-            var self = this;
-            return this._validateSave().done(
-                function()
-                {
-                    UserDataSource.saveUserSettingsAndPassword({
-                        models: [self.model, self.athleteSettingsModel, self.accountSettingsModel],
-                        password: self.passwordSettingsModel.get("password")
-                    });
-                }
-            );
-        },
-
-        _validatePassword: function()
-        {
-            var password = this.passwordSettingsModel.get("password");
-            var retypePassword = this.passwordSettingsModel.get("retypePassword"); 
-
-            if((password || retypePassword) && (password !== retypePassword))
-            {
-                new UserConfirmationView({ template: passwordValidationErrorTemplate }).render();
-                return false;
-            }
-
-            return true;
-        },
-
-        _validateEmail: function()
-        {
-            var email = self.accountSettingsModel.get("email");
-            var validEmail = new RegExp(/^[A-Z0-9._%+\-]+@[A-Z0-9.\-]+\.[A-Z]{2,4}$/i);
-
-            if(!validEmail.test(email))
-            {
-                new UserConfirmationView({ template: emailValidationErrorTemplate }).render();
-                return false;
-            }
         },
 
         _addConstantsToSerializedData: function(data)
@@ -195,7 +156,7 @@ function(
 
         _applyModelValuesToForm: function()
         {
-            FormUtility.applyValuesToForm(this.$el, this.model, { filterSelector: "[data-modelname=user]" });
+            FormUtility.applyValuesToForm(this.$el, this.userModel, { filterSelector: "[data-modelname=user]" });
             FormUtility.applyValuesToForm(this.$el, this.accountSettingsModel, { filterSelector: "[data-modelname=account]" });
             FormUtility.applyValuesToForm(this.$el, this.athleteSettingsModel, { filterSelector: "[data-modelname=athlete]" });
         },
@@ -272,12 +233,12 @@ function(
 
         _buildPhotoUrl: function()
         {
-            if(!this.model.has("profilePhotoUrl"))
+            if(!this.userModel.has("profilePhotoUrl"))
             {
                 return null;
             }
             var wwwRoot = UserDataSource.getPhotoRootUrl();
-            return wwwRoot + this.model.get("profilePhotoUrl");
+            return wwwRoot + this.userModel.get("profilePhotoUrl");
         },
 
         _removeProfilePhoto: function()

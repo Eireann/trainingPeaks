@@ -4,14 +4,18 @@
     "TP",
     "shared/models/accountSettingsModel",
     "shared/models/athleteSettingsModel",
-    "shared/models/dashboardSettingsModel"
+    "shared/models/dashboardSettingsModel",
+    "shared/models/recurringPaymentsCollection",
+    "shared/models/paymentHistoryCollection"
 ],
 function(
-         Backbone,
-         TP,
-         AccountSettingsModel,
-         AthleteSettingsModel, 
-         DashboardSettingsModel
+    Backbone,
+    TP,
+    AccountSettingsModel,
+    AthleteSettingsModel, 
+    DashboardSettingsModel,
+    RecurringPaymentsCollection,
+    PaymentHistoryCollection
          )
 {
     return TP.APIDeepModel.extend(
@@ -179,6 +183,24 @@ function(
                 this.passwordSettings = new TP.Model();
             }
             return this.passwordSettings;
+        },
+
+        getPaymentHistoryCollection: function()
+        {
+            if(!this.paymentHistoryCollection)
+            {
+                this.paymentHistoryCollection = new PaymentHistoryCollection();
+            }
+            return this.paymentHistoryCollection;
+        },
+
+        getRecurringPaymentsCollection: function()
+        {
+            if(!this.recurringPaymentsCollection)
+            {
+                this.recurringPaymentsCollection = new RecurringPaymentsCollection();
+            }
+            return this.recurringPaymentsCollection;
         },
 
         parse: function(resp, options)
