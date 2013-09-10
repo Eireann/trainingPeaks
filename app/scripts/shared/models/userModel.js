@@ -48,6 +48,7 @@ function(
             userId: 0,
             userName: "",
             zipCode: "",
+            zuoraAccountNumber: null,
 
             settings: {},
             athletes: []
