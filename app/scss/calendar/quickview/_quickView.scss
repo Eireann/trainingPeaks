@@ -241,17 +241,19 @@
             .labels {
                 float:left;
                 width:120px;
-                text-align:right;
+                text-align:left;
                 padding-right:10px;
 
+
                 label {
-                    margin-top:3px;
+                    color:$TPGrey3;
                 }
             }
 
             .values {
                 input {
                     float:right;
+                    height:22px;
                 }
             }
 
@@ -261,12 +263,12 @@
             .labels {
                 float:left;
                 width:120px;
-                text-align:right;
+                text-align:left;
                 padding-right:10px;
                 
                 label {
-                    margin-top:3px;
                     margin-bottom:0;
+                    color:$TPGrey3;
                 }
             }
 

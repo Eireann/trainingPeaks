@@ -236,7 +236,8 @@
     "UploadAttachmentTooltip": "Upload attachment",
     "SetTitleTooltip": "Click to set title",
 
-    "AddToLibraryConfirmationTitle": "Add a new workout, routine, or exercise to your library",
+    "AddToLibraryConfirmationTitle": "Save to library",
+    "AddToLibraryConfirmationBodyText": "Add a new workout, routine, or exercise to your library",
     "SelectLibrary": "Select Library",
 
     "Title": "Title",

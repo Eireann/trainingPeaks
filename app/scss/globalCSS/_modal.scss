@@ -28,8 +28,11 @@
         max-width: calc(100% - 26px);
 
         .titleBar {
+            width:110%;
+            margin-left:-5px;
+
             h2.modaltitle {
-                margin:9px 0 0 10px;
+                margin:9px 0 0 15px;
             }
             
             #closeIcon, .closeIcon {
@@ -67,6 +70,16 @@
                 background-image:url(../../assets/images/charts/sprite-buttons-chart-modal@2x.png);
                 background-size: 68px 34px;
             }
+        }
+
+        h3 {
+            font-size:$fontSizeSmall;
+            font-family: $fontFamilyHeavy;
+            font-weight:normal;
+            line-height:normal;
+            color:$TPGrey3;
+            margin-top:0;
+            margin-bottom:20px;
         }
     }
 
