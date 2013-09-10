@@ -5,6 +5,29 @@ function(
 )
 {
     var FormUtility = {
+
+        formatValue: function(value, format, options)
+        {
+            if(format === "date")
+            {
+                value = moment(value) ? moment(value).format("L") : "";
+            }
+            else if(format === "number")
+            {
+                value = Number(value);
+            }
+            else if(options && options.formatters && options.formatters.hasOwnProperty(format))
+            {
+                value = options.formatters[format](value);
+            }
+            else if(format)
+            {
+                throw new Error("Unknown field format: " + format);
+            }
+
+            return value;
+        },
+
         applyValuesToForm: function($form, model, options)
         {
             options = options || {};
@@ -14,19 +37,7 @@ function(
                 var value = model.get(key);
                 var type = $el.attr("type");
                 var format = $el.data("format");
-
-                if(format === "date")
-                {
-                    value = moment(value) ? moment(value).format("L") : "";
-                }
-                else if(options.formatters && options.formatters.hasOwnProperty(format))
-                {
-                    value = options.formatters[format](value);
-                }
-                else if(format)
-                {
-                    throw new Error("Unknown field format: " + format);
-                }
+                value = FormUtility.formatValue(value, format, options);
 
                 if(type === "radio")
                 {
@@ -65,6 +76,7 @@ function(
             {
                 var value = "";
                 var type = $el.attr("type");
+                var format = $el.data("format");
 
                 if(type === "radio")
                 {
@@ -90,6 +102,8 @@ function(
                 {
                     value = $el.val();
                 }
+
+                value = FormUtility.formatValue(value, format, options);
 
                 formValues[key] = value;
 

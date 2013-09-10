@@ -68,7 +68,7 @@ function(
         {
             var self = this;
 
-            this.trigger("switchTab");
+            this.trigger("before:switchTab");
             
             if(this.$current)
             {
@@ -110,6 +110,8 @@ function(
 
             this.$current = $item;
             this.$current.addClass("active");
+
+            this.trigger("after:switchTab");
         },
 
         _scrollTo: function(subNavItem, $subItem)

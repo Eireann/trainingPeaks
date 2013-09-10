@@ -95,6 +95,8 @@ function(
 
             this.model.on("select", this.setSelected, this);
             this.model.on("unselect", this.setUnSelected, this);
+
+            this.listenTo(theMarsApp.user, "change:units", _.bind(this.render, this));
         },
 
         events:

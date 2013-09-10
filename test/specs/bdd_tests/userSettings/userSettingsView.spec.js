@@ -50,7 +50,7 @@ function(
 
             expect(view.$("input[name=firstName]").length).toBe(1);
             expect(view.$("input[name=firstName]").val()).toBe("Original First Name");
-            view.$("input[name=firstName]").val("New First Name");
+            view.$("input[name=firstName]").val("New First Name").trigger("change");
             expect(view.$("input[name=firstName]").val()).toBe("New First Name");
 
             view.$(".tabbedLayoutNav li:not(.active):first .tabbedLayoutNavLink").trigger("click");
@@ -68,7 +68,7 @@ function(
             var view = new UserSettingsView({ model: theMarsApp.user });
             view.render();
 
-            view.$("input[name=firstName]").val("New First Name");
+            view.$("input[name=firstName]").val("New First Name").trigger("change");
             expect(theMarsApp.user.get("firstName")).toBe("Original First Name");
             view.$("button.save").trigger("click");
             expect(theMarsApp.user.get("firstName")).toBe("New First Name");
@@ -82,7 +82,7 @@ function(
             var view = new UserSettingsView({ model: theMarsApp.user });
             view.render();
 
-            view.$("input[name=firstName]").val("New First Name");
+            view.$("input[name=firstName]").val("New First Name").trigger("change");
             expect(theMarsApp.user.get("firstName")).toBe("Original First Name");
             view.$("button.cancel").trigger("click");
             expect(theMarsApp.user.get("firstName")).toBe("Original First Name");
@@ -95,7 +95,7 @@ function(
             var view = new UserSettingsView({ model: theMarsApp.user });
             view.render();
 
-            view.$("input[name=firstName]").val("New First Name");
+            view.$("input[name=firstName]").val("New First Name").trigger("change");
             view.$(".tabbedLayoutNav li:not(.active):first .tabbedLayoutNavLink").trigger("click");
             view.$(".tabbedLayoutNav li:not(.active):first .tabbedLayoutNavLink").trigger("click");
             expect(theMarsApp.user.get("firstName")).toBe("Original First Name");
