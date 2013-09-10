@@ -30,11 +30,11 @@ function(
     }, {
         label: "Planned Duration",
         key: "totalTimePlanned",
-        units: "hours"
+        units: "duration"
     }, {
         label: "Completed Duration",
         key: "totalTimeActual",
-        units: "hours"
+        units: "duration"
     }];
 
     var longestTooltips = [{
@@ -48,11 +48,11 @@ function(
     }, {
         label: "Planned Duration",
         key: "totalTimePlanned",
-        units: "hours"
+        units: "duration"
     }, {
         label: "Completed Duration",
         key: "timeTotal",
-        units: "hours"
+        units: "duration"
     }];
 
     var WorkoutSummaryChart = Chart.extend({
@@ -65,11 +65,11 @@ function(
             title: "Duration",
             series: [{
                 key: "totalTimeActual",
-                units: "hours"
+                units: "duration"
             }],
             plannedSeries: [{
                 key: "totalTimePlanned",
-                units: "hours"
+                units: "duration"
             }],
             tooltips: distanceDurationTooltips
         }, {
@@ -157,11 +157,11 @@ function(
             prefiltered: true,
             series: [{
                 key: "timeTotal",
-                units: "hours"
+                units: "duration"
             }],
             plannedSeries: [{
                 key: "totalTimePlanned",
-                units: "hours"
+                units: "duration"
             }],
             tooltips: longestTooltips
         }],
@@ -214,7 +214,7 @@ function(
             }
             else
             {
-                postData.groupByWorkoutType = this.get("workoutTypeIds").length !== 0 || true;
+                postData.groupByWorkoutType = this.get("workoutTypeIds").length !== 0;
             }
 
             return this.dataManager.fetchReport(this.subType.endpoint, dateOptions.startDate, dateOptions.endDate, postData);
@@ -409,6 +409,7 @@ function(
                 {
                     if(key === "averageIntensityFactorActual")
                     {
+                        value = _.reject(value, function(x) { return x === 0; });
                         value = _.reduce(value, function(a, b) { return a + b; }) / value.length;
                     }
                     else
