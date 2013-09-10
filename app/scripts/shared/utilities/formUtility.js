@@ -28,6 +28,20 @@ function(
             return value;
         },
 
+        parseValue: function(value, format, options)
+        {
+            if(format === "number")
+            {
+                value = Number(value);
+            }
+            else if(options && options.parsers && options.parsers.hasOwnProperty(format))
+            {
+                value = options.parsers[format](value);
+            }
+
+            return value;
+        },
+
         applyValuesToForm: function($form, model, options)
         {
             options = options || {};
@@ -103,9 +117,7 @@ function(
                     value = $el.val();
                 }
 
-                value = FormUtility.formatValue(value, format, options);
-
-                formValues[key] = value;
+                formValues[key] = FormUtility.parseValue(value, format, options);
 
             }, options);
 

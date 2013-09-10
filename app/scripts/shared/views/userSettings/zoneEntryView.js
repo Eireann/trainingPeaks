@@ -30,15 +30,36 @@ function(
             this._updateFields();
         },
 
+        applyFormValuesToModels: function()
+        {
+            FormUtility.applyValuesToModel(this.$el, this.model, {
+                filterSelector: "[data-scope='zoneEntry']",
+                parsers:
+                {
+                    zoneValue: this.parser
+                }
+            });
+        },
+
         formatter: function(value)
         {
             return value;
+        },
+
+        parser: function(value)
+        {
+            return parseFloat(value);
         },
 
         setFormatter: function(formatter)
         {
             this.formatter = formatter;
             this._updateFields();
+        },
+
+        setParser: function(parser)
+        {
+            this.parser = parser;
         },
 
         _updateFields: function()

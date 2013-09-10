@@ -78,6 +78,10 @@ function(
 
         _initializeNavigation: function()
         {
+            var models = {
+                athleteSettings: this._copyModel(this.model.getAthleteSettings())
+            };
+
             this.navigation =
             [
                 {
@@ -87,7 +91,7 @@ function(
                     {
                         userModel: this._copyModel(this.model, { changesToApplyImmediately: ["profilePhotoUrl"] }),
                         accountSettingsModel: this._copyModel(this.model.getAccountSettings()),
-                        athleteSettingsModel: this._copyModel(this.model.getAthleteSettings()),
+                        athleteSettingsModel: models.athleteSettings,
                         passwordSettingsModel: this.model.getPasswordSettings(),
                         recurringPaymentsCollection: this.model.getRecurringPaymentsCollection(),
                         paymentHistoryCollection: this.model.getPaymentHistoryCollection()
@@ -98,7 +102,7 @@ function(
                     view: UserSettingsZonesView,
                     options:
                     {
-                        model: this.model.getAthleteSettings()
+                        model: models.athleteSettings
                     }
                 }
             ];
@@ -186,7 +190,8 @@ function(
                 this.$el.addClass("waiting");
                 var self = this;
                 return $.when(
-                    this._saveUser()
+                    this._saveUser(),
+                    this._saveZones()
                 ).done(
                     function()
                     {
@@ -218,6 +223,11 @@ function(
                 models: [this.model, this.model.getAthleteSettings(), this.model.getAccountSettings()],
                 password: this.model.getPasswordSettings().get("password")
             });
+        },
+
+        _saveZones: function()
+        {
+            return UserDataSource.saveZones(this.model.getAthleteSettings());
         },
 
         _cancel: function()

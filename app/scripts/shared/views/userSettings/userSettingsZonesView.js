@@ -41,21 +41,23 @@ function(
         {
             UserSettingsZonesView.__super__.render.apply(this, arguments);
 
+            this.heartRateZonesCollection = new TP.Collection(this.model.get("heartRateZones"));
             this._addView(".heartRateZones", new TP.CollectionView({
                 itemView: HeartRateZonesView,
-                collection: new TP.Collection(this.model.get("heartRateZones"))
+                collection: this.heartRateZonesCollection
             }));
 
+            this.powerZonesCollection = new TP.Collection(this.model.get("powerZones"));
             this._addView(".powerZones", new TP.CollectionView({
                 itemView: PowerZonesView,
-                collection: new TP.Collection(this.model.get("powerZones"))
+                collection: this.powerZonesCollection
             }));
 
+            this.speedPaceZonesCollection = new TP.Collection(this.model.get("speedZones"));
             this._addView(".speedPaceZones", new TP.CollectionView({
                 itemView: SpeedPaceZonesView,
-                collection: new TP.Collection(this.model.get("speedZones"))
+                collection: this.speedPaceZonesCollection
             }));
-
         },
 
         subNavigation:
@@ -77,6 +79,18 @@ function(
                 target: "[data-subnav='notifications']"
             }
         ],
+
+        applyFormValuesToModels: function()
+        {
+            this.children.each(function(child)
+            {
+                child.children.call("applyFormValuesToModels");
+            });
+
+            this.model.set("heartRateZones", this.heartRateZonesCollection.toJSON());
+            this.model.set("powerZones", this.powerZonesCollection.toJSON());
+            this.model.set("speedZones", this.speedPaceZonesCollection.toJSON());
+        },
 
         _addView: function(selector, view)
         {
