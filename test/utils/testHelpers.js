@@ -127,34 +127,7 @@ function(_, $, Backbone, TP, xhrData, app)
             };
 
             return jqXhr;
-        },
-
-        deepClone: function(object)
-        {
-
-            if(_.isArray(object))
-            {
-                var newArray = [];
-                _.each(object, function(arrayItem)
-                {
-                    newArray.push(this.deepClone(arrayItem));
-                }, this);
-                return newArray;
-            }
-            else if(_.isObject(object))
-            {
-                var newObject = {};
-                _.each(_.keys(object), function(key)
-                {
-                    newObject[key] = this.deepClone(object[key]);
-                }, this);
-                return newObject;
-            }
-            else
-            {
-                return _.clone(object);
-            }
-        },
+        }, 
 
         resolveRequest: function(httpVerb, urlPattern, data)
         {
@@ -262,7 +235,7 @@ function(_, $, Backbone, TP, xhrData, app)
             this.startTheApp();
             if(doClone)
             {
-                userData = this.deepClone(userData);                
+                userData = TP.utils.deepClone(userData);                
             }
 
             this.submitLogin(userData);
