@@ -14,6 +14,7 @@
     &.ui-widget
     {
         font-size: $fontSizeMedium;
+        font-family:$fontFamilyRegular;
     }
     
     &.ui-widget-content
@@ -26,10 +27,9 @@
     {
         background-color: rgba(99, 101, 105, 1);
         font-size: $fontSizeSmall;
+        line-height:normal;
         color: $white;
-        padding: 6px;
-        padding-left: 10px;
-        padding-right: 10px;
+        padding: 10px 12px;
     }
 
     .arrow

@@ -3,11 +3,63 @@
     background: white;
     width: calc(800px + 200px + 52px);
 
+    @include buttons(0, "auto", $fontSizeSmall);
     button
     {
-        @include buttons(0, "auto", "1em");
         padding: 4px 5px;
         margin-right: 5px;
+    }
+
+    .userSettingsContent {
+        h2 {
+            font-family:$fontFamilyRegular;
+            font-weight:normal;
+            font-size:$fontSizeXXLarge;
+            color:$TPBlue;
+            margin-top:0;
+            line-height:normal;
+        }
+
+        h3 {
+            font-family:$fontFamilyHeavy;
+            font-weight:normal;
+            font-size:$fontSizeMedium;
+            color:$TPGrey8;
+            line-height:normal;
+            margin-bottom:15px;
+        }
+
+        .heartRateZones, 
+        .powerZones, 
+        .speedPaceZones,
+        .userSettingsPayments {
+            border-bottom: 1px solid $TPGrey2;
+            margin-bottom:20px;
+            padding-bottom:20px;
+        }
+
+        .speedPaceZones {
+            form {
+                width:100%;                
+    
+                label:nth-of-type(2),
+                label:nth-of-type(3) {
+                    float:left;
+                    margin-top:10px;
+                }
+
+                label:nth-of-type(3){
+                    margin-left:15px;
+                }
+            }
+        }
+
+        .userSettingsButtons {
+            text-align:center;
+            .save {
+                margin:10px 0 20px 0;
+            }
+        }
     }
 }
 
@@ -23,6 +75,50 @@
 
         h3 {
             margin-top:0;
+        }
+
+        input {
+            width:295px;
+        }
+
+        .personalLeftCol {
+            float:left;
+
+            input {
+                width:285px;
+            }
+            .selectboxit-container .selectboxit {
+                width: 285px !important;
+            }
+
+            .selectBox {
+                position: relative;
+                float: left;
+            }
+
+            label.username {
+                text-align:left;
+                margin-left:5px;
+                font-family:$fontFamilyHeavy;
+            }
+        }
+
+        .personalRightCol{
+            float:right;
+
+            label {
+                width:104px;
+            }
+
+            selectboxit-container .selectboxit {
+                width: 285px !important;
+            }
+
+            .selectBox {
+                position: relative;
+                float: left;
+                width:295px;
+            }
         }
     }
 
@@ -41,7 +137,8 @@
     {
         width: 200px;
         float: left;
-        margin: 0 15px 0 0;
+        // margin: 0 15px 0 0;
+        margin:0;
         height: 20px;
         color: $TPGrey3;
     }
@@ -60,7 +157,7 @@
 
     p
     {
-        margin: 0 15px;
+        margin: 0 15px 0 110px;
     }
 
     select
@@ -139,6 +236,7 @@
     .genderRadioButtonRow
     {
         width: 75px;
+        margin-bottom:10px;
     }
 
     .profilePicture
@@ -185,9 +283,12 @@
                     display: block;
                     height: 200px;
                     width: 200px;
-                    padding: 50px 30px;
+                    padding: 90px 0 0 0;
                     border: 1px solid $TPGrey11;
                     background-color: $TPGrey1;
+                    text-align:center;
+                    font-family:$fontFamilyRegular;
+                    font-size:$fontSizeSmall;
                 }
 
                 img
@@ -219,7 +320,7 @@
         max-width: 350px;
         width: 350px;
         text-align: left;
-        margin-left: 50px;
+        margin-left: 108px;
     }
 
     .deliveryTimeHelpText
@@ -239,7 +340,7 @@
 
     .selectboxit-container .selectboxit 
     {
-        width: 200px !important;
+        width: 295px !important;
     }
 
     .selectBox
@@ -266,6 +367,10 @@
     .userSettingsButtons
     {
         margin-top: 10px;
+
+        .save {
+            width:65px;
+        }
     }
 
 }
