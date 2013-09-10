@@ -64,6 +64,12 @@ function(
                 var $el = $(el);
                 $el.attr("checked", self.model.get($el.attr("name")));
             });
+
+            this.$('input.auto[type="text"]').each(function(i, el)
+            {
+                var $el = $(el);
+                $el.val(self.model.get($el.attr("name")));
+            });
         },
 
         _updateSeriesState: function()
@@ -84,6 +90,12 @@ function(
             {
                 var $el = $(el);
                 self.model.set($el.attr("name"), $el.prop("checked"));
+            });
+
+            this.$('input.auto[type="text"]').each(function(i, el)
+            {
+                var $el = $(el);
+                self.model.set($el.attr("name"), $el.val());
             });
         },
 

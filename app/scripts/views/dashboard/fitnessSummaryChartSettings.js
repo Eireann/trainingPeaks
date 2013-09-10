@@ -4,7 +4,8 @@ define(
     "jquerySelectBox",
     "underscore",
     "TP",
-    "./dashboardChartSettingsBase",
+    "dashboard/views/chartSettingsView",
+    "views/dashboard/dashboardDatePicker",
     "hbs!templates/views/dashboard/fitnessSummaryChartSettings"
 ],
 function(
@@ -12,13 +13,14 @@ function(
     jquerySelectBox,
     _,
     TP,
-    DashboardChartSettingsBase,
+    ChartSettingsView,
+    DashboardDatePicker,
     fitnessSummaryChartSettingsTemplate
     )
 {
-    var FitnessSummaryChartSettings = {
+    var FitnessSummaryChartSettings = ChartSettingsView.extend({
 
-        className: DashboardChartSettingsBase.className + " fitnessSummaryChartSettings",
+        className: ChartSettingsView.className + " dashboardChartSettings fitnessSummaryChartSettings",
 
         template:
         {
@@ -26,21 +28,30 @@ function(
             template: fitnessSummaryChartSettingsTemplate
         },
 
-        events: _.extend({}, DashboardChartSettingsBase.events, {
+        events: _.extend({}, ChartSettingsView.prototype.events, {
             "change select.summaryType": "onSummaryTypeChange"
         }),
 
         onSummaryTypeChange: function(e)
         {
             var typeId = Number(this.$("select.summaryType").val());
-            this.setSetting("summaryType", typeId);
+            this.model.set("summaryType", typeId);
         },
 
         initialize: function(options)
         {
-            DashboardChartSettingsBase.initialize.call(this, options);
+            FitnessSummaryChartSettings.__super__.initialize.apply(this, arguments);
             this.summaryTypes = options.summaryTypes || options.model.summaryTypes;
-            this.on("render", this.selectBoxIt, this);
+        },
+
+        onRender: function()
+        {
+            this.selectBoxIt();
+            this._addView(".dateOptionsRegion", new DashboardDatePicker({
+                model: this.model
+            }));
+
+            this.children.call("render");
         },
 
         selectBoxIt: function()
@@ -54,10 +65,10 @@ function(
 
         serializeData: function()
         {
-            var data = DashboardChartSettingsBase.serializeData.call(this);
+            var data = FitnessSummaryChartSettings.__super__.serializeData.apply(this, arguments);
             data.summaryTypeList = [];
 
-            var selectedTypeId = Number(this.getSetting("summaryType"));
+            var selectedTypeId = Number(this.model.get("summaryType"));
 
             _.each(this.summaryTypes, function(summaryType)
             {
@@ -72,9 +83,8 @@ function(
             return data;
         }
 
-    };
+    });
 
-    FitnessSummaryChartSettings = _.extend({}, DashboardChartSettingsBase, FitnessSummaryChartSettings);
-    return TP.ItemView.extend(FitnessSummaryChartSettings);
+    return FitnessSummaryChartSettings;
 
 });

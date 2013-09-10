@@ -31,7 +31,7 @@ function(
 
         events: _.extend(
         {
-            "change input.auto": "_onInputsChanged"
+            "change input[type=radio].auto": "_onRadioInputsChanged"
         }, ChartSettingsView.prototype.events),
 
         onRender: function()
@@ -60,17 +60,10 @@ function(
             });
         },
 
-        _onInputsChanged: function()
+        _onRadioInputsChanged: function()
         {
             var self = this;
 
-            this.$('input.auto[type="checkbox"]').each(function(i, el)
-            {
-                var $el = $(el);
-                self.model.set($el.attr("name"), $el.prop("checked"));
-            });
-
-            
             this.$('input.auto[type="radio"]:checked').each(function(i, el)
             {
                 var $el = $(el);

@@ -1,7 +1,10 @@
 {{#hoverBox this}}
     <div class="details">
         <div class="closeIcon"></div>
-        <div class="datepickerContainer"></div>
+
+        {{> dashboard_templates_chartTitleSettings }}
+
+        <div class="datepickerContainer dateOptionsRegion"></div>
         <h3 class="subheadbold">{{$ "SelectReportType" }}</h3>
         <select class="summaryType">
             {{#each summaryTypeList}}

@@ -307,9 +307,9 @@ function(
          return workoutTypeId;
       },
 
-      updateChartTitle: function()
+      defaultTitle: function()
       {
-         this.set("title", TP.utils.translate("Peak " + this.subType.label) + ": " + TP.utils.workout.types.getListOfNames(this.get("workoutTypeIds")));
+         return TP.utils.translate("Peak " + this.subType.label) + ": " + TP.utils.workout.types.getListOfNames(this.get("workoutTypeIds"));
       },
 
       createItemDetailView: function(item)
