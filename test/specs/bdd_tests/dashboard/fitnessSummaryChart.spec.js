@@ -182,6 +182,7 @@ function(
 
             describe("Report Type", function()
             {
+
                 it("Should default to Planned Distance", function()
                 {
                     expect($mainRegion.find(".dashboardChart.fitnessSummaryChart").text()).toContain("Planned Distance");
@@ -191,25 +192,14 @@ function(
                 {
                     var $body = theMarsApp.getBodyElement();
 
-                    runs(function()
-                    {
-                        testHelpers.clearRequests();
-                        $mainRegion.find(".dashboardChart.fitnessSummaryChart .settings").trigger("mousedown");
-                        $body.find(".dashboardChartSettings select.summaryType").val("2").trigger("change");
-                        $body.find(".dashboardChartSettings .closeIcon").trigger("click");
-                    });
+                    $mainRegion.find(".dashboardChart.fitnessSummaryChart .settings").trigger("mousedown");
+                    $body.find(".dashboardChartSettings select.summaryType").val("2").trigger("change");
+                    $body.find(".dashboardChartSettings .closeIcon").trigger("click");
 
-                    waitsFor(function()
-                    {
-                        return $mainRegion.find(".dashboardChart.fitnessSummaryChart").text().indexOf("Completed Distance") > 0;
-                    });
+                    testHelpers.resolveRequest("GET", "reporting/fitnesssummary", []);
 
-                    runs(function()
-                    {
-                        expect($mainRegion.find(".dashboardChart.fitnessSummaryChart").text()).toContain("Completed Distance");
-                    });
+                    expect($mainRegion.find(".dashboardChart.fitnessSummaryChart").text()).toContain("Completed Distance");
 
-                    
                 });
 
                 it("Should retain the selected report type in the settings tomahawk", function()
@@ -221,6 +211,7 @@ function(
                     $mainRegion.find(".dashboardChart.fitnessSummaryChart .settings").trigger("mousedown");
                     expect($body.find(".dashboardChartSettings select.summaryType").val()).toEqual("3");
                 });
+
             });
 
         });
