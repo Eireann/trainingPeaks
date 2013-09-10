@@ -71,26 +71,6 @@
                 background-size: 68px 34px;
             }
         }
-
-        h3 {
-            font-size:$fontSizeSmall;
-            font-family: $fontFamilyHeavy;
-            font-weight:normal;
-            color:$TPGrey3;
-            margin-top:0;
-            margin-bottom:0;
-        }
-
-        p {
-            font-size:$fontSizeSmall;
-            font-family: $fontFamilyRegular;
-            font-weight:normal;
-            color:$TPGrey3;
-
-            &:last-of-type {
-                margin-bottom:0;
-            }
-        }
     }
 
     .modalOverlayMask

@@ -178,7 +178,7 @@
 
     "ConfirmDelete" : "Are you sure you want to delete? <br/> This cannot be undone!",
     "ConfirmDiscard": "Are you sure you want to discard changes? <br/> This cannot be undone!",
-    "ConfirmUnapply" : "Are you sure you want to un-apply this plan from your Calendar? All associated workouts and/or meals will be removed, but any logged data will remain.",
+    "ConfirmUnapply" : "Are you sure you want to un-apply this plan from your Calendar?\nAll associated workouts and/or meals will be removed, but any logged data will remain.",
     "ConfirmRemoveChart" : "Are you sure you want to remove this chart?",
 
     "AddToCalendar": "Add To Calendar",

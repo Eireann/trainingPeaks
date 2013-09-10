@@ -87,4 +87,25 @@
     .dialogButtons {
         padding-top:20px;
     }
+
+     h3 {
+            font-size:$fontSizeSmall;
+            font-family: $fontFamilyHeavy;
+            font-weight:normal;
+            color:$TPGrey3;
+            margin-top:0;
+            margin-bottom:0;
+        }
+
+        p {
+            font-size:$fontSizeSmall;
+            font-family: $fontFamilyRegular;
+            font-weight:normal;
+            color:$TPGrey3;
+            white-space:pre-wrap;
+
+            &:last-of-type {
+                margin-bottom:0;
+            }
+        }
 }
