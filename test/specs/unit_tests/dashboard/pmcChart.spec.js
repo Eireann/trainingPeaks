@@ -6,7 +6,8 @@ requirejs(
     "TP",
     "app",
     "utilities/charting/chartColors",
-    "views/dashboard/pmcChart"
+    "dashboard/reportingDataManager",
+    "dashboard/charts/pmcChart"
 ],
 function(
     $,
@@ -14,6 +15,7 @@ function(
     TP,
     theMarsApp,
     chartColors,
+    ReportingDataManager,
     PmcChart
     )
 {
@@ -43,11 +45,10 @@ function(
 
     var buildPmcChart = function()
     {
-        return new PmcChart({ 
-            model: new TP.Model({ 
-                index: 0, 
-                dateOptions: { quickDateSelectOption: null, startDate: null, endDate: null}
-            })
+        return new PmcChart({
+            dateOptions: { quickDateSelectOption: null, startDate: null, endDate: null}
+        }, {
+            dataManager: new ReportingDataManager()
         });
     };
 
@@ -67,26 +68,15 @@ function(
         it("Should set correct default settings", function()
         {
             var chart = buildPmcChart();
-            var model = chart.model;
-            expect(model.get("atlConstant")).toBe(7);
-            expect(model.get("ctlConstant")).toBe(42);
-            expect(model.get("atlStartValue")).toBe(0);
-            expect(model.get("ctlStartValue")).toBe(0);
-            expect(model.get("workoutTypeIds").length).toBe(1);
-            expect(model.get("workoutTypeIds.0")).toBe("0");
-            expect(model.get("showIntensityFactorPerDay")).toBe(true);
-            expect(model.get("showTSBFill")).toBe(false);
-            expect(model.get("showTSSPerDay")).toBe(true);
-        });
-
-        it("Should render without errors", function()
-        {
-            var chart = buildPmcChart(); 
-            var renderChart = function()
-            {
-                chart.render();
-            };
-            expect(renderChart).not.toThrow();
+            expect(chart.get("atlConstant")).toBe(7);
+            expect(chart.get("ctlConstant")).toBe(42);
+            expect(chart.get("atlStartValue")).toBe(0);
+            expect(chart.get("ctlStartValue")).toBe(0);
+            expect(chart.get("workoutTypeIds").length).toBe(1);
+            expect(chart.get("workoutTypeIds.0")).toBe("0");
+            expect(chart.get("showIntensityFactorPerDay")).toBe(true);
+            expect(chart.get("showTSBFill")).toBe(false);
+            expect(chart.get("showTSSPerDay")).toBe(true);
         });
 
         describe("Data parsing", function()

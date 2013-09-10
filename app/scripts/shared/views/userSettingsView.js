@@ -57,6 +57,7 @@ function(
 
         initialize: function()
         {
+            this._copiesOfModels = [];
             this._initializeNavigation();
             this._initializeFooter();
             this.on("render", this._fetchPaymentHistory, this);
@@ -72,9 +73,9 @@ function(
                     view: UserSettingsAccountView,
                     options:
                     {
-                        userModel: this.model,
-                        accountSettingsModel: this.model.getAccountSettings(),
-                        athleteSettingsModel: this.model.getAthleteSettings(),
+                        userModel: this._copyModel(this.model, { changesToApplyImmediately: ["profilePhotoUrl"] }),
+                        accountSettingsModel: this._copyModel(this.model.getAccountSettings()),
+                        athleteSettingsModel: this._copyModel(this.model.getAthleteSettings()),
                         passwordSettingsModel: this.model.getPasswordSettings(),
                         recurringPaymentsCollection: this.model.getRecurringPaymentsCollection(),
                         paymentHistoryCollection: this.model.getPaymentHistoryCollection()
@@ -89,6 +90,34 @@ function(
                     }
                 }
             ];
+        },
+
+        _copyModel: function(originalModel, options)
+        {
+            var copiedModel = new TP.Model(TP.utils.deepClone(originalModel.attributes));
+            copiedModel.originalModel = originalModel;
+            this._copiesOfModels.push(copiedModel);
+
+            if(options && options.changesToApplyImmediately)
+            {
+                _.each(options.changesToApplyImmediately, function(attributeName)
+                {
+                    originalModel.listenTo(copiedModel, "change:" + attributeName, function()
+                    {
+                        originalModel.set(attributeName, copiedModel.get(attributeName));
+                    });
+                });
+            }
+
+            return copiedModel;
+        },
+
+        _applyCopiedModelsToRealModels: function()
+        {
+            _.each(this._copiesOfModels, function(copiedModel)
+            {
+                copiedModel.originalModel.set(TP.utils.deepClone(copiedModel.attributes));
+            });
         },
 
         _initializeFooter: function()
@@ -122,6 +151,7 @@ function(
         _save: function()
         {
             this._applyFormValuesToModels();
+            this._applyCopiedModelsToRealModels();
 
             if(this._validateForSave())
             {

@@ -3,20 +3,24 @@ define(
     "jqueryui/spinner",
     "underscore",
     "TP",
-    "./dashboardChartSettingsBase",
-    "hbs!templates/views/dashboard/pmcChartSettings"
+    "dashboard/views/chartSettingsView",
+    "views/dashboard/dashboardDatePicker",
+    "dashboard/views/chartWorkoutOptionsView",
+    "hbs!dashboard/templates/pmcChartSettings"
 ],
 function(
     spinner,
     _,
     TP,
-    DashboardChartSettingsBase,
+    ChartSettingsView,
+    DashboardDatePicker,
+    ChartWorkoutOptionsView,
     pmcChartSettingsTemplate
     )
 {
-    var PMCChartSettings = {
+    var PMCChartSettings = ChartSettingsView.extend({
 
-        className: DashboardChartSettingsBase.className + " pmcChartSettings",
+        className: ChartSettingsView.prototype.className + " pmcChartSettings",
 
         template:
         {
@@ -24,57 +28,24 @@ function(
             template: pmcChartSettingsTemplate
         },
 
-        events: _.extend({}, DashboardChartSettingsBase.events, {
-            "click .workoutType input[type=checkbox]": "onWorkoutTypeSelected",
+        events: _.extend({}, ChartSettingsView.prototype.events, {
             "change input[type=number]": "onNumberOptionsChanged",
             "blur input[type=number]": "onNumberOptionsChanged",
             "click input[type=checkbox].chartSeriesOption": "onChartSeriesOptionChanged"
         }),
 
-        onWorkoutTypeSelected: function(e)
+        onRender: function()
         {
-            var workoutTypeIds = [];
+            var self = this;
 
-            var $target = $(e.target);
+            this._addView(".dateOptionsRegion", new DashboardDatePicker({
+                model: this.model
+            }));
+            this._addView(".workoutTypesRegion", new ChartWorkoutOptionsView({
+                model: this.model
+            }));
 
-            // if 'select all' is checked, just keep 0 id
-            if(Number($target.data("workouttypeid")) === 0)
-            {
-                if($target.is(":checked"))
-                {
-                    workoutTypeIds.push("0");
-                    this.$(".workoutType input[type=checkbox]").prop("checked", true);
-                }
-                else
-                {
-                    this.$(".workoutType input[type=checkbox]").prop("checked", false);                   
-                }
-            } else {
-
-                // read all checkbox states 
-                _.each(this.$(".workoutType input[type=checkbox]"), function(checkbox)
-                {
-                    var $checkbox = $(checkbox);
-                    var workoutTypeId = "" + $checkbox.data("workouttypeid");
-                    // ignore 0 'select all' is a special case
-                    if($checkbox.is(":checked") && Number(workoutTypeId) !== 0)
-                    {
-                        workoutTypeIds.push(workoutTypeId);
-                    }
-                });
-
-                if (workoutTypeIds.length === _.keys(TP.utils.workout.types.typesById).length)
-                {
-                    workoutTypeIds = [0];
-                    this.$(".workoutType input[type=checkbox][data-workouttypeid=0]").prop("checked", true);
-                }
-                else
-                {
-                    this.$(".workoutType input[type=checkbox][data-workouttypeid=0]").prop("checked", false);
-                }
-            }
-
-            this.model.set("workoutTypeIds", workoutTypeIds);
+            this.children.call("render");
         },
 
         onNumberOptionsChanged: function(e)
@@ -145,9 +116,8 @@ function(
            
             this.model.set(optionId, checked);
         }
-    };
+    });
 
-    PMCChartSettings = _.extend({}, DashboardChartSettingsBase, PMCChartSettings);
-    return TP.ItemView.extend(PMCChartSettings);
+    return PMCChartSettings;
 
 });
