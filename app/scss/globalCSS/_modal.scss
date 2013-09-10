@@ -76,10 +76,20 @@
             font-size:$fontSizeSmall;
             font-family: $fontFamilyHeavy;
             font-weight:normal;
-            line-height:normal;
             color:$TPGrey3;
             margin-top:0;
             margin-bottom:20px;
+        }
+
+        p {
+            font-size:$fontSizeSmall;
+            font-family: $fontFamilyRegular;
+            font-weight:normal;
+            color:$TPGrey3;
+
+            &:last-of-type {
+                margin-bottom:0;
+            }
         }
     }
 
