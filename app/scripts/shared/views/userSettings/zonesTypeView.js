@@ -26,7 +26,8 @@ function(
 
         events:
         {
-            "click .addZone": "_addZone"
+            "click .addZone": "_addZone",
+            "click .removeWorkoutType": "_removeWorkoutType"
         },
 
         _applyZoneSetDataOnRender: function()
@@ -84,6 +85,11 @@ function(
         _addZone: function()
         {
             this.collection.add({});
+        },
+
+        _removeWorkoutType: function()
+        {
+            this.model.destroy();
         },
 
         _refreshView: function()

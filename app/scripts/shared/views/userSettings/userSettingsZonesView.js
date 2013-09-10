@@ -31,35 +31,43 @@ function(
 
         modelEvents: {},
 
+        events:
+        {
+            "click .addWorkoutType": "_addWorkoutType"
+        },
+
         initialize: function()
         {
             var self = this;
 
             this.children = new Backbone.ChildViewContainer();
             this.on("close", function() { self.children.call("close"); });
+
+            this.heartRateZonesCollection = this._createCollection(this.model.get("heartRateZones"));
+            this.powerZonesCollection = this._createCollection(this.model.get("powerZones"));
+            this.speedPaceZonesCollection = this._createCollection(this.model.get("speedZones"));
         },
 
         render: function()
         {
             UserSettingsZonesView.__super__.render.apply(this, arguments);
 
-            this.heartRateZonesCollection = new TP.Collection(this.model.get("heartRateZones"));
             this._addView(".heartRateZones", new TP.CollectionView({
                 itemView: HeartRateZonesView,
                 collection: this.heartRateZonesCollection
             }));
 
-            this.powerZonesCollection = new TP.Collection(this.model.get("powerZones"));
             this._addView(".powerZones", new TP.CollectionView({
                 itemView: PowerZonesView,
                 collection: this.powerZonesCollection
             }));
 
-            this.speedPaceZonesCollection = new TP.Collection(this.model.get("speedZones"));
             this._addView(".speedPaceZones", new TP.CollectionView({
                 itemView: SpeedPaceZonesView,
                 collection: this.speedPaceZonesCollection
             }));
+
+            this._updateSelects();
         },
 
         subNavigation:
@@ -99,6 +107,80 @@ function(
             this.children.add(view);
             this.$(selector).append(view.el);
             view.render();
+        },
+
+        _createCollection: function(items)
+        {
+            var collection =  new TP.Collection(items,
+            {
+                comparator: "workoutTypeId"
+            });
+
+            this.listenTo(collection, "add remove reset", _.bind(this._updateSelects, this));
+
+            return collection;
+        },
+
+        _updateSelects: function()
+        {
+            var self = this;
+
+            this.$("select[data-zone-type]").each(function(i, el)
+            {
+                var $el = $(el);
+                var type = $el.data("zone-type");
+                var collection = self._getCollection(type);
+
+                var workoutTypeIds = _.values(TP.utils.workout.types.typesByName);
+                var usedWorkoutTypeIds = collection.pluck("workoutTypeId");
+
+                console.log(workoutTypeIds, usedWorkoutTypeIds);
+                
+                workoutTypeIds = _.difference(workoutTypeIds, usedWorkoutTypeIds);
+
+                var visible = workoutTypeIds.length > 0;
+                $el.toggle(visible);
+                self.$(".addWorkoutType[data-zone-type='" + type + "']").toggle(visible);
+
+                $el.empty();
+
+                _.each(workoutTypeIds, function(workoutTypeId)
+                {
+                    $("<option/>")
+                    .attr({ value: workoutTypeId })
+                    .text(TP.utils.workout.types.getNameById(workoutTypeId))
+                    .appendTo($el);
+                });
+            });
+        },
+
+        _addWorkoutType: function(e)
+        {
+            var type = $(e.target).data("zone-type");
+            var workoutType = parseInt(this.$("select[data-zone-type='" + type + "']").val());
+            this._getCollection(type).add({ workoutTypeId: workoutType });
+        },
+
+        _getCollection: function(type)
+        {
+            var collection;
+
+            switch(type)
+            {
+                case "heartRate": 
+                    collection = this.heartRateZonesCollection;
+                    break;
+                case "power":
+                    collection = this.powerZonesCollection;
+                    break;
+                case "speedPace":
+                    collection = this.speedPaceZonesCollection;
+                    break;
+                default:
+                    throw new Error("Unknown zone type: " + type);
+            }
+
+            return collection;
         }
 
     });
