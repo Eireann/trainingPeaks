@@ -43,17 +43,17 @@ function(
 
             this._addView(".heartRateZones", new TP.CollectionView({
                 itemView: HeartRateZonesView,
-                collection: new TP.Collection(this.model.getAthleteSettings().get("heartRateZones"))
+                collection: new TP.Collection(this.model.get("heartRateZones"))
             }));
 
             this._addView(".powerZones", new TP.CollectionView({
                 itemView: PowerZonesView,
-                collection: new TP.Collection(this.model.getAthleteSettings().get("powerZones"))
+                collection: new TP.Collection(this.model.get("powerZones"))
             }));
 
             this._addView(".speedPaceZones", new TP.CollectionView({
                 itemView: SpeedPaceZonesView,
-                collection: new TP.Collection(this.model.getAthleteSettings().get("speedZones"))
+                collection: new TP.Collection(this.model.get("speedZones"))
             }));
 
         },

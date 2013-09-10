@@ -98,7 +98,7 @@ function(
                     view: UserSettingsZonesView,
                     options:
                     {
-                        model: this.model
+                        model: this.model.getAthleteSettings()
                     }
                 }
             ];

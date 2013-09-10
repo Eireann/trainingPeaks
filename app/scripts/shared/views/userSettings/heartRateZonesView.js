@@ -3,40 +3,24 @@ define(
     "underscore",
     "TP",
     "backbone",
-    "shared/utilities/formUtility",
-    "shared/views/userSettings/zoneEntryView",
+    "shared/views/userSettings/zonesTypeView",
     "hbs!shared/templates/userSettings/heartRateZonesTemplate"
 ],
 function(
     _,
     TP,
     Backbone,
-    FormUtility,
-    ZoneEntryView,
+    ZonesTypeView,
     heartRateZonesTemplate
 )
 {
 
-    var PowerZonesView = TP.CompositeView.extend({
+    var PowerZonesView = ZonesTypeView.extend({
 
         template:
         {
             type: "handlebars",
             template: heartRateZonesTemplate
-        },
-
-        itemView: ZoneEntryView,
-
-        onRender: function()
-        {
-            FormUtility.applyValuesToForm(this.$el, this.model, {
-                filterSelector: "[data-scope='zoneSet']"
-            });
-        },
-
-        initialize: function()
-        {
-            this.collection = new TP.Collection(this.model.get("zones"));
         }
 
     });

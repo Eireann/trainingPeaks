@@ -3,29 +3,25 @@ define(
     "underscore",
     "TP",
     "backbone",
-    "shared/utilities/formUtility",
-    "shared/views/userSettings/zoneEntryView",
+    "shared/views/userSettings/zonesTypeView",
     "hbs!shared/templates/userSettings/speedPaceZonesTemplate"
 ],
 function(
     _,
     TP,
     Backbone,
-    FormUtility,
-    ZoneEntryView,
+    ZonesTypeView,
     speedPaceZonesTemplate
 )
 {
 
-    var SpeedPaceZonesView = TP.CompositeView.extend({
+    var SpeedPaceZonesView = ZonesTypeView.extend({
 
         template:
         {
             type: "handlebars",
             template: speedPaceZonesTemplate
         },
-
-        itemView: ZoneEntryView,
 
         events:
         {
@@ -34,15 +30,11 @@ function(
 
         onRender: function()
         {
-            FormUtility.applyValuesToForm(this.$el, this.model, {
-                filterSelector: "[data-scope='zoneSet']"
-            });
             this._changeUnits();
         },
 
         initialize: function()
         {
-            this.collection = new TP.Collection(this.model.get("zones"));
             this.on("before:item:added", this._addedItems, this);
         },
 
