@@ -205,7 +205,7 @@ function(
             var self = this; 
             UserDataSource.saveProfilePhoto(filePath).done(function(profilePhotoUrl)
             {
-                self.model.set("profilePhotoUrl", profilePhotoUrl);
+                self.userModel.set("profilePhotoUrl", profilePhotoUrl);
                 self._updatePhotoUrl();
             }).fail(function()
             {
@@ -247,7 +247,7 @@ function(
             var self = this; 
             UserDataSource.deleteProfilePhoto().done(function(profilePhotoUrl)
             {
-                self.model.set("profilePhotoUrl", null);
+                self.userModel.set("profilePhotoUrl", null);
                 self._updatePhotoUrl();
             }).fail(function()
             {

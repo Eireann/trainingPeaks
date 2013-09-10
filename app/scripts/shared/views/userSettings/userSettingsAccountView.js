@@ -60,10 +60,9 @@ function(
             this.options = options;
 
             this.on("render", this._addChildViews, this);
-            this.on("switchTab", this._onSwitchTab, this);
         },
 
-        _onSwitchTab: function()
+        applyFormValuesToModels: function()
         {
             this.children.call("applyFormValuesToModels");
         },

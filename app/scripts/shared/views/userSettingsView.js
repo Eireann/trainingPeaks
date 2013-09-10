@@ -31,6 +31,8 @@ function(
 
     var UserSettingsFooterView = TP.ItemView.extend({
 
+        className: "userSettingsButtons",
+        
         template:
         {
             type: "handlebars",
@@ -64,6 +66,7 @@ function(
             this._initializeNavigation();
             this._initializeFooter();
             this.on("render", this._fetchPaymentHistory, this);
+            this.on("switchTab", this._applyFormValuesToModels, this);
         },
 
         _initializeNavigation: function()
@@ -113,15 +116,19 @@ function(
             this.model.getPaymentHistoryCollection().fetch();
         },
 
-        _save: function()
+        _applyFormValuesToModels: function()
         {
-
             if(this.currentView && _.isFunction(this.currentView.applyFormValuesToModels))
             {
                 this.currentView.applyFormValuesToModels();
             }
+        },
 
-            if(this._validatePassword && this._validateEmail)
+        _save: function()
+        {
+            this._applyFormValuesToModels();
+
+            if(this._validateForSave())
             {
                 this.$el.addClass("waiting");
                 var self = this;
@@ -130,7 +137,7 @@ function(
                 ).done(
                     function()
                     {
-                        self.$el.removeClass("waiting");
+                        self.close();
                     }
                 );
             }
@@ -149,28 +156,41 @@ function(
             this.close(); 
         },
 
-        _validatePassword: function()
+        _validateForSave: function()
         {
-            var password = this.model.getPasswordSettings().get("password");
-            var retypePassword = this.model.getPasswordSettings().get("retypePassword"); 
-
-            if((password || retypePassword) && (password !== retypePassword))
+            if(!this._isPasswordValid())
             {
                 new UserConfirmationView({ template: passwordValidationErrorTemplate }).render();
+                return false;
+            }
+
+            if(!this._isEmailValid())
+            {
+                new UserConfirmationView({ template: emailValidationErrorTemplate }).render();
                 return false;
             }
 
             return true;
         },
 
-        _validateEmail: function()
+        _isPasswordValid: function()
+        {
+            var password = this.model.getPasswordSettings().get("password");
+            var retypePassword = this.model.getPasswordSettings().get("retypePassword"); 
+            if((password || retypePassword) && (password !== retypePassword))
+            {
+                return false;
+            }
+            return true;
+        },
+
+        _isEmailValid: function()
         {
             var email = this.model.get("email");
             var validEmail = new RegExp(/^[A-Z0-9._%+\-]+@[A-Z0-9.\-]+\.[A-Z]{2,4}$/i);
 
             if(!validEmail.test(email))
             {
-                new UserConfirmationView({ template: emailValidationErrorTemplate }).render();
                 return false;
             }
 
