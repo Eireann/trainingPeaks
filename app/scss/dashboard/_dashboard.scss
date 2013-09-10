@@ -287,11 +287,18 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
 
     }
 
-    .chartTitle
-    {
-        margin-left: 10px;
-        margin-top:8px;
-        font-size: 12px;
+    .chartTitle {
+        display: block; /* Fallback for non-webkit */
+        display: -webkit-box;
+        max-width: 100%;
+        height: 32px; /* Fallback for non-webkit */
+        margin: 5px auto;
+        font-size: $fontSizeSmall;
+        line-height: normal;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     .xaxisLabel
@@ -514,6 +521,13 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
 {
      max-width: 350px;
     
+     h4 {
+        font-weight:normal;
+        font-family:$fontFamilyRegular;
+        font-size:$fontSizeSmall;
+        margin-bottom:5px;
+     }
+
     .workoutTypes
     {
         // min-width: 330px;
@@ -571,6 +585,10 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
 
         input[type="checkbox"] {
             margin-bottom:0;
+        }
+
+        input[type="text"] {
+            height:22px;
         }
     }
     
