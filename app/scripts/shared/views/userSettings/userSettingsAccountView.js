@@ -20,6 +20,8 @@ function(
     var UserSettingsView = TP.ItemView.extend(
     {
 
+        modelEvents: {},
+        
         template:
         {
             type: "handlebars",
@@ -58,20 +60,12 @@ function(
             this.options = options;
 
             this.on("render", this._addChildViews, this);
-            this.on("render", this._fetchPaymentHistory, this);
-
             this.on("switchTab", this._onSwitchTab, this);
         },
 
         _onSwitchTab: function()
         {
             this.children.call("applyFormValuesToModels");
-        },
-
-        _fetchPaymentHistory: function()
-        {
-            this.recurringPaymentsCollection.fetch();
-            this.paymentHistoryCollection.fetch();
         },
 
         _addChildViews: function()

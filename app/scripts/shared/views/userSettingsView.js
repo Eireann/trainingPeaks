@@ -63,6 +63,7 @@ function(
         {
             this._initializeNavigation();
             this._initializeFooter();
+            this.on("render", this._fetchPaymentHistory, this);
         },
 
         _initializeNavigation: function()
@@ -106,6 +107,12 @@ function(
             this.tabbedLayoutFooterRegion.show(this.footerView);
         },
 
+        _fetchPaymentHistory: function()
+        {
+            this.model.getRecurringPaymentsCollection().fetch();
+            this.model.getPaymentHistoryCollection().fetch();
+        },
+
         _save: function()
         {
 
@@ -116,14 +123,14 @@ function(
 
             if(this._validatePassword && this._validateEmail)
             {
-                this.$(".tabbedLayoutBody").addClass("waiting");
+                this.$el.addClass("waiting");
                 var self = this;
                 $.when(
                     this._saveUser()
                 ).done(
                     function()
                     {
-                        self.$(".tabbedLayoutBody").removeClass("waiting");
+                        self.$el.removeClass("waiting");
                     }
                 );
             }
