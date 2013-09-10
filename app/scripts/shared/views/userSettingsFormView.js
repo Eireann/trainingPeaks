@@ -12,8 +12,6 @@ define(
     "shared/utilities/formUtility",
     "views/userConfirmationView",
     "hbs!templates/views/quickView/fileUploadErrorView",
-    "hbs!templates/views/errors/passwordValidationErrorView",
-    "hbs!templates/views/errors/emailValidationErrorView",
     "hbs!shared/templates/userSettingsFormTemplate"
 ],
 function(
@@ -28,9 +26,7 @@ function(
     UserDataSource,
     FormUtility,
     UserConfirmationView,
-    fileUploadErrorTemplate,
-    passwordValidationErrorTemplate,
-    emailValidationErrorTemplate,
+    fileUploadErrorTemplate, 
     userSettingsFormTemplate
 )
 {
@@ -85,8 +81,30 @@ function(
 
         initialize: function(options)
         {
-            this.accountSettingsModel = this.model.getAccountSettings();
-            this.athleteSettingsModel = this.model.getAthleteSettings();
+            if(!options || !options.userModel)
+            {
+                throw new Error("UserSettingsFormView requires a user model");
+            }
+
+            if(!options || !options.accountSettingsModel)
+            {
+                throw new Error("UserSettingsFormView requires an account settings model");
+            }
+
+            if(!options || !options.athleteSettingsModel)
+            {
+                throw new Error("UserSettingsFormView requires an athlete settings model");
+            }
+
+            if(!options || !options.passwordSettingsModel)
+            {
+                throw new Error("UserSettingsFormView requires a password settings model");
+            }
+
+            this.userModel = options.userModel;
+            this.accountSettingsModel = options.accountSettingsModel;
+            this.athleteSettingsModel = options.athleteSettingsModel;
+            this.passwordSettingsModel = options.passwordSettingsModel;
         },
 
         onRender: function()
@@ -105,50 +123,18 @@ function(
 
         serializeData: function()
         {
-            var data = this.model.toJSON();
+            var data = this.userModel.toJSON();
             this._addConstantsToSerializedData(data);
             this._addICalKeysToSerializedData(data);
             return data;
         },
 
-        processSave: function()
+        applyFormValuesToModels: function()
         {
-            this._applyFormValuesToModels();
-            var self = this;
-            return this._validateSave().done(
-                function()
-                {
-                    var password = self.$("input[name=password]").val().trim();
-                    UserDataSource.saveUserSettingsAndPassword({
-                        models: [self.model, self.athleteSettingsModel, self.accountSettingsModel],
-                        password: password
-                    });
-                }
-            );
-        },
-
-        _validateSave: function()
-        {
-            var password = self.$("input[name=password]").val().trim();
-            var confirmPassword = self.$("input[name=retypePassword]").val().trim();
-
-            var email = self.$("input[name=email]").val().trim();
-
-            var validateDeferred = new $.Deferred();
-            var validEmail = new RegExp(/^[A-Z0-9._%+\-]+@[A-Z0-9.\-]+\.[A-Z]{2,4}$/i);
-
-            if((password || confirmPassword) && (password !== confirmPassword))
-            {
-                new UserConfirmationView({ template: passwordValidationErrorTemplate }).render();
-                return validateDeferred.reject();
-            }
-            else if(!validEmail.test(email))
-            {
-                new UserConfirmationView({ template: emailValidationErrorTemplate }).render();
-                return validateDeferred.reject();
-            }
-
-            return validateDeferred.resolve();
+            FormUtility.applyValuesToModel(this.$el, this.userModel, { filterSelector: "[data-modelname=user]"});
+            FormUtility.applyValuesToModel(this.$el, this.athleteSettingsModel, { filterSelector: "[data-modelname=athlete]" });
+            FormUtility.applyValuesToModel(this.$el, this.accountSettingsModel, { filterSelector: "[data-modelname=account]" });
+            FormUtility.applyValuesToModel(this.$el, this.passwordSettingsModel, { filterSelector: "[data-modelname=password]" });
         },
 
         _addConstantsToSerializedData: function(data)
@@ -170,7 +156,7 @@ function(
 
         _applyModelValuesToForm: function()
         {
-            FormUtility.applyValuesToForm(this.$el, this.model, { filterSelector: "[data-modelname=user]" });
+            FormUtility.applyValuesToForm(this.$el, this.userModel, { filterSelector: "[data-modelname=user]" });
             FormUtility.applyValuesToForm(this.$el, this.accountSettingsModel, { filterSelector: "[data-modelname=account]" });
             FormUtility.applyValuesToForm(this.$el, this.athleteSettingsModel, { filterSelector: "[data-modelname=athlete]" });
         },
@@ -193,13 +179,6 @@ function(
         _onICalFocus: function(e)
         {
             $(e.target).select();
-        },
-
-        _applyFormValuesToModels: function()
-        {
-            FormUtility.applyValuesToModel(this.$el, this.model, { filterSelector: "[data-modelname=user]"});
-            FormUtility.applyValuesToModel(this.$el, this.athleteSettingsModel, { filterSelector: "[data-modelname=athlete]" });
-            FormUtility.applyValuesToModel(this.$el, this.accountSettingsModel, { filterSelector: "[data-modelname=account]" });
         },
 
         _selectProfilePhoto: function()
@@ -226,7 +205,7 @@ function(
             var self = this; 
             UserDataSource.saveProfilePhoto(filePath).done(function(profilePhotoUrl)
             {
-                self.model.set("profilePhotoUrl", profilePhotoUrl);
+                self.userModel.set("profilePhotoUrl", profilePhotoUrl);
                 self._updatePhotoUrl();
             }).fail(function()
             {
@@ -254,12 +233,12 @@ function(
 
         _buildPhotoUrl: function()
         {
-            if(!this.model.has("profilePhotoUrl"))
+            if(!this.userModel.has("profilePhotoUrl"))
             {
                 return null;
             }
             var wwwRoot = UserDataSource.getPhotoRootUrl();
-            return wwwRoot + this.model.get("profilePhotoUrl");
+            return wwwRoot + this.userModel.get("profilePhotoUrl");
         },
 
         _removeProfilePhoto: function()
@@ -268,7 +247,7 @@ function(
             var self = this; 
             UserDataSource.deleteProfilePhoto().done(function(profilePhotoUrl)
             {
-                self.model.set("profilePhotoUrl", null);
+                self.userModel.set("profilePhotoUrl", null);
                 self._updatePhotoUrl();
             }).fail(function()
             {

@@ -1,27 +1,69 @@
 ﻿define(
 [
+    "underscore",
     "TP",
     "backbone",
+    "shared/models/userDataSource",
     "shared/views/tabbedLayout",
     "shared/views/overlayBoxView",
     "shared/views/userSettings/userSettingsAccountView",
-    "shared/views/userSettings/userSettingsZonesView"
+    "shared/views/userSettings/userSettingsZonesView",
+    "views/userConfirmationView",
+    "hbs!templates/views/errors/passwordValidationErrorView",
+    "hbs!templates/views/errors/emailValidationErrorView",
+    "hbs!shared/templates/userSettings/userSettingsFooterTemplate"
 ],
 function(
+    _,
     TP,
     Backbone,
+    UserDataSource,
     TabbedLayout,
     OverlayBoxView,
     UserSettingsAccountView,
-    UserSettingsZonesView
+    UserSettingsZonesView,
+    UserConfirmationView,
+    passwordValidationErrorTemplate,
+    emailValidationErrorTemplate,
+    userSettingsFooterTemplate
 )
 {
+
+    var UserSettingsFooterView = TP.ItemView.extend({
+
+        className: "userSettingsButtons",
+        
+        template:
+        {
+            type: "handlebars",
+            template: userSettingsFooterTemplate
+        },
+
+        events:
+        {
+            "click button": "triggerButton"
+        },
+
+        triggerButton: function(e)
+        {
+            var actionName = $(e.currentTarget).attr("class");
+            this.trigger(actionName);
+        }
+    });
 
     var UserSettingsContentView = TabbedLayout.extend({
 
         modelEvents: {},
-        
+
         initialize: function()
+        {
+            this._initializeNavigation();
+            this._initializeFooter();
+            this.on("render", this._fetchPaymentHistory, this);
+            this.on("switchTab", this._applyFormValuesToModels, this);
+        },
+
+        _initializeNavigation: function()
         {
             this.navigation =
             [
@@ -30,7 +72,12 @@ function(
                     view: UserSettingsAccountView,
                     options:
                     {
-                        model: this.model
+                        userModel: this.model,
+                        accountSettingsModel: this.model.getAccountSettings(),
+                        athleteSettingsModel: this.model.getAthleteSettings(),
+                        passwordSettingsModel: this.model.getPasswordSettings(),
+                        recurringPaymentsCollection: this.model.getRecurringPaymentsCollection(),
+                        paymentHistoryCollection: this.model.getPaymentHistoryCollection()
                     }
                 },
                 {
@@ -42,6 +89,122 @@ function(
                     }
                 }
             ];
+        },
+
+        _initializeFooter: function()
+        {
+            this.footerView = new UserSettingsFooterView();
+            this.on("render", this._showFooter, this);
+            this.listenTo(this.footerView, "cancel", _.bind(this._cancel, this));
+            this.listenTo(this.footerView, "save", _.bind(this._save, this));
+            this.listenTo(this.footerView, "saveAndClose", _.bind(this._saveAndClose, this));
+        },
+
+        _showFooter: function()
+        {
+            this.tabbedLayoutFooterRegion.show(this.footerView);
+        },
+
+        _fetchPaymentHistory: function()
+        {
+            this.model.getRecurringPaymentsCollection().fetch();
+            this.model.getPaymentHistoryCollection().fetch();
+        },
+
+        _applyFormValuesToModels: function()
+        {
+            if(this.currentView && _.isFunction(this.currentView.applyFormValuesToModels))
+            {
+                this.currentView.applyFormValuesToModels();
+            }
+        },
+
+        _save: function()
+        {
+            this._applyFormValuesToModels();
+
+            if(this._validateForSave())
+            {
+                this.$el.addClass("waiting");
+                var self = this;
+                return $.when(
+                    this._saveUser()
+                ).done(
+                    function()
+                    {
+                        self.$el.removeClass("waiting");
+                    }
+                );
+            }
+            else
+            {
+                return new $.Deferred().reject();
+            }
+        },
+
+        _saveAndClose: function()
+        {
+            var self = this;
+            this._save().done(
+                function()
+                {
+                    self.close();
+                }
+            );
+        },
+
+        _saveUser: function()
+        {
+            return UserDataSource.saveUserSettingsAndPassword({
+                models: [this.model, this.model.getAthleteSettings(), this.model.getAccountSettings()],
+                password: this.model.getPasswordSettings().get("password")
+            });
+        },
+
+        _cancel: function()
+        {
+            this.close(); 
+        },
+
+        _validateForSave: function()
+        {
+            if(!this._isPasswordValid())
+            {
+                new UserConfirmationView({ template: passwordValidationErrorTemplate }).render();
+                return false;
+            }
+
+            if(!this._isEmailValid())
+            {
+                new UserConfirmationView({ template: emailValidationErrorTemplate }).render();
+                return false;
+            }
+
+            return true;
+        },
+
+        _isPasswordValid: function()
+        {
+            var password = this.model.getPasswordSettings().get("password");
+            var retypePassword = this.model.getPasswordSettings().get("retypePassword"); 
+            if((password || retypePassword) && (password !== retypePassword))
+            {
+                return false;
+            }
+            return true;
+        },
+
+        _isEmailValid: function()
+        {
+            var email = this.model.get("email");
+            var validEmail = new RegExp(/^[A-Z0-9._%+\-]+@[A-Z0-9.\-]+\.[A-Z]{2,4}$/i);
+
+            if(!validEmail.test(email))
+            {
+                return false;
+            }
+
+            return true;
         }
 
     });
