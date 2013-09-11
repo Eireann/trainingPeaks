@@ -14,7 +14,6 @@ function(
             }
             else if(format === "number")
             {
-                value = Number(value).toString();
             }
             else if(options && options.formatters && options.formatters.hasOwnProperty(format))
             {
