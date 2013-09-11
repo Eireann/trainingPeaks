@@ -164,6 +164,7 @@ function(
                 });
 
                 var visible = workoutTypeIds.length > 0;
+                $el.toggle(visible);
                 self.$(".addWorkoutType[data-zone-type='" + type + "']").toggle(visible);
                 if($el.data("selectBox-selectBoxIt"))
                 {
