@@ -96,7 +96,7 @@
     }
 
     .dialogButtons {
-        padding-top:20px;
+        padding-top:16px;
     }
 
     h3 {
@@ -106,6 +106,10 @@
         color:$TPGrey3;
         margin-top:0;
         margin-bottom:0;
+
+        &:last-of-type {
+            margin-bottom:0;
+        }
     }
 
     p {
@@ -113,6 +117,7 @@
         font-family: $fontFamilyRegular;
         font-weight:normal;
         color:$TPGrey3;
+        line-height:1.4;
 
         &:last-of-type {
             margin-bottom:0;
