@@ -39,6 +39,9 @@ function(
         	this.left(this.position.x + 20);
 
         	this.ensureInView();
+
+            // hide hover modal
+            $('#flotTip').hide();
         },
 
         ensureInView: function()

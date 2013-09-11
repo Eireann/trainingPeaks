@@ -121,7 +121,16 @@ function(
             {
                 return;
             }
-            var day = this.rawData[item.dataIndex].workoutDay;
+
+            var dataItem = this.rawData[item.dataIndex];
+
+            // only return this view if IF or TSS values are defined
+            if (!(dataItem.ifActual || dataItem.tssActual))
+            {
+                return;
+            }
+            
+            var day = dataItem.workoutDay;
             var workouts = new WorkoutsCollection([], {startDate: moment(day), endDate: moment(day)});
             var dataPromise = this.dataManager.fetchOnModel(workouts);
             var position = {
