@@ -97,7 +97,7 @@ function(
             {
                 spyOn(featureAuthorizer, "showUpgradeMessage");
                 var callback = jasmine.createSpy("the callback");
-                var featureChecker = function(){return false;}
+                var featureChecker = function(){return false;};
                 featureAuthorizer.runCallbackOrShowUpgradeMessage(featureChecker, callback);
                 expect(callback).not.toHaveBeenCalled();
                 expect(featureAuthorizer.showUpgradeMessage).toHaveBeenCalled();
