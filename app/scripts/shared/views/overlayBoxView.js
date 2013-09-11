@@ -57,6 +57,8 @@ function(
                 this.children.call("close");
             });
 
+            this.contentView.on("close", this.close, this);
+            
             this.on("before:reposition", this._beforeReposition, this);
         },
 

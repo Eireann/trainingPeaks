@@ -33,11 +33,6 @@ function(
             summaryType: 1 // Planned Distance
         },
 
-        initialize: function(attributes, options)
-        {
-            this.updateChartTitle(); 
-        },
-
         fetchData: function()
         {
             var dateOptions = DashboardChartUtils.buildChartParameters(this.get("dateOptions"));
@@ -73,10 +68,9 @@ function(
             return tips;
         },
 
-        updateChartTitle: function()
+        defaultTitle: function()
         {
-            var title = TP.utils.translate("Fitness Summary: ") + TP.utils.translate(this.summaryTypes[this.get("summaryType")].label);
-            this.set("title", title);
+            return TP.utils.translate("Fitness Summary: ") + TP.utils.translate(this.summaryTypes[this.get("summaryType")].label);
         },
 
         parseData: function(data)

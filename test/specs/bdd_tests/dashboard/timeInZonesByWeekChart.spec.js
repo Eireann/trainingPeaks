@@ -25,7 +25,6 @@ function(
         var timeInHeartRateZonesPodSettings = {
             index: 0,
             chartType: 18,
-            title: "Time In HR Zones by Week",
             dateOptions: {
                 quickDateSelectOption: 1,
                 startDate: null,
@@ -69,7 +68,6 @@ function(
             var timeInHeartRateZonesPodSettings = {
                 index: 0,
                 chartType: 18,
-                title: "Time In HR Zones by week",
                 dateOptions: {
                     quickDateSelectOption: 1,
                     startDate: null,
@@ -81,7 +79,6 @@ function(
             var timeInPowerZonesPodSettings = {
                 index: 0,
                 chartType: 25,
-                title: "Time In Power Zones by week",
                 dateOptions: {
                     quickDateSelectOption: 1,
                     startDate: null,
@@ -93,7 +90,6 @@ function(
             var timeInSpeedZonesPodSettings = {
                 index: 0,
                 chartType: 27,
-                title: "Time In Speed Zones by week",
                 dateOptions: {
                     quickDateSelectOption: 1,
                     startDate: null,

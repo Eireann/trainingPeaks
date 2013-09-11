@@ -13,6 +13,8 @@ function(
     var RecurringPaymentsView = TP.CompositeView.extend(
     {
 
+        modelEvents: {},
+        
         template:
         {
             type: "handlebars",

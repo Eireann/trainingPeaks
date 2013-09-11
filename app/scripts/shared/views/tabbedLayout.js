@@ -23,7 +23,8 @@ function(
 
         regions:
         {
-            tabbedLayoutBodyRegion: ".tabbedLayoutBody"
+            tabbedLayoutBodyRegion: ".tabbedLayoutBody",
+            tabbedLayoutFooterRegion: ".tabbedLayoutFooter"
         },
 
         constructor: function()
@@ -67,12 +68,15 @@ function(
         {
             var self = this;
 
+            this.trigger("before:switchTab");
+            
             if(this.$current)
             {
                 this.$current.removeClass("active");
             }
 
             var view = new navItem.view(navItem.options);
+            this.currentView = view;
             this.tabbedLayoutBodyRegion.show(view);
 
             setImmediate(function()
@@ -106,6 +110,8 @@ function(
 
             this.$current = $item;
             this.$current.addClass("active");
+
+            this.trigger("after:switchTab");
         },
 
         _scrollTo: function(subNavItem, $subItem)
