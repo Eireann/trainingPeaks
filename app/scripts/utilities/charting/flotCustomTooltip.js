@@ -146,7 +146,7 @@ function(formatDateTime, conversion, unitLabels, flotToolTipTemplate)
 
                 // Swim workouts use "pace" as their speed axis, even though the channelName remains "Speed" from the dataParser/API
                 // Mark this pace label as 'current' and remove 'current' from the speed label
-                if (s.label === hoveredSeriesName && workoutType === 1)
+                if (s.label === hoveredSeriesName && _.contains([1,3,13], workoutType))
                 {
                     config.current = true;
                     _.each(toolTipSeries, function(config)
