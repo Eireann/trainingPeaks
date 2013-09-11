@@ -1,11 +1,13 @@
 <h3>Power Zones - {{ workoutTypeName workoutTypeId "All" }}</h3>
 {{#if workoutTypeId }}<a class="removeWorkoutType">Remove</a>{{/if}}
 
-<label>
-    Threshold
-    <input name="threshold" class="numberInput" data-scope="zoneSet"
-    data-format="zoneValue">
-</label>
+<div class="zoneSetContain power">
+	<label>
+	    <span class="zoneSetTitle">Threshold</span>
+	    <input name="threshold" class="numberInput" data-scope="zoneSet"
+	    data-format="zoneValue">
+	</label>
+</div>
 
 <div class="zones"></div>
 <button class="addZone">Add Zone</button>
