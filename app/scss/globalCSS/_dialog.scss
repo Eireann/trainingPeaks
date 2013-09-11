@@ -5,18 +5,21 @@
 {
     text-align: center;
     min-width: 400px;
+    max-width:650px;
     font-family: $fontFamilyRegular;
     @include buttons(0px, 60px, 14px);
 
+    // prevents double shadow
+    overflow:hidden; 
 
     button
     {
-        margin-right: 1em;
+        margin-right: 8px;
         font-size: 12px;
         font-family: $fontFamilyRegular;
         color: $TPGrey3;
 
-        &:last
+        &:last-of-type
         {
             margin-right:0px;
         }
@@ -39,7 +42,17 @@
         color: $TPGrey3;
         cursor: default;
 
-       
+
+        // same as h2.modaltitle
+        h2 {
+            font-size: $fontSizeSmall; 
+            font-family: $fontFamilyRegular;
+            font-weight:normal;
+            color: $TPGrey3;
+            float:left;
+            line-height:1;
+            margin: 9px 0 0 15px;
+        }
     }
 }
 
@@ -59,15 +72,15 @@
 
 .dialogContent
 {
-    min-height: 150px;
+    min-height: 140px;
     padding-top: 40px;
     padding-bottom: 40px;
+    
     @include filter-gradient(#ffffff, #dedcde, horizontal);
     @include background-image(radial-gradient(center, ellipse cover,  #eaebec 0%,#dedcde 100%));
     @include buttons(0px, 65px, 12px);
 
     line-height: 1.5em;
-    font-size: $fontSizeSmall;
     color: $TPGrey4;
     padding-left: 40px;
     padding-right: 40px;
@@ -83,8 +96,32 @@
         cursor: default;
     }
 
-    .dialogButtons
-    {
-        margin-left: 10px;
+    .dialogButtons {
+        padding-top:16px;
+    }
+
+    h3 {
+        font-size:$fontSizeSmall;
+        font-family: $fontFamilyHeavy;
+        font-weight:normal;
+        color:$TPGrey3;
+        margin-top:0;
+        margin-bottom:0;
+
+        &:last-of-type {
+            margin-bottom:0;
+        }
+    }
+
+    p {
+        font-size:$fontSizeSmall;
+        font-family: $fontFamilyRegular;
+        font-weight:normal;
+        color:$TPGrey3;
+        line-height:1.4;
+
+        &:last-of-type {
+            margin-bottom:0;
+        }
     }
 }

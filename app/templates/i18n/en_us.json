@@ -178,7 +178,7 @@
 
     "ConfirmDelete" : "Are you sure you want to delete? <br/> This cannot be undone!",
     "ConfirmDiscard": "Are you sure you want to discard changes? <br/> This cannot be undone!",
-    "ConfirmUnapply" : "Are you sure you want to un-apply this plan from your Calendar? All associated workouts and/or meals will be removed, but any logged data will remain.",
+    "ConfirmUnapply" : "Are you sure you want to un-apply this plan from your Calendar? <br/>All associated workouts and/or meals will be removed, but any logged data will remain.",
     "ConfirmRemoveChart" : "Are you sure you want to remove this chart?",
 
     "AddToCalendar": "Add To Calendar",
@@ -236,7 +236,8 @@
     "UploadAttachmentTooltip": "Upload attachment",
     "SetTitleTooltip": "Click to set title",
 
-    "AddToLibraryConfirmationTitle": "Add a new workout, routine, or exercise to your library",
+    "AddToLibraryConfirmationTitle": "Save to library",
+    "AddToLibraryConfirmationBodyText": "Add a new workout, routine, or exercise to your library",
     "SelectLibrary": "Select Library",
 
     "Title": "Title",
@@ -275,7 +276,7 @@
     "UploadedFiles": "Uploaded Files",
     "Download": "Download",
     "Recalculate": "Recalculate",
-    "ConfirmRecalculate": "Are you sure you would like to recalculate all summary data on the workout from this file?\nThis may overwrite data you have manually made changes to.",
+    "ConfirmRecalculate": "Are you sure you would like to recalculate all summary data on the workout from this file?\n<br />This may overwrite data you have manually made changes to.",
 
     "Zoom": "Zoom",
     "Dist": "Dist",
