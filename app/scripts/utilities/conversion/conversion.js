@@ -246,7 +246,7 @@
             return Math.round(numValue); 
         },
 
-        Number: function(value, options)
+        parseNumber: function(value, options)
         {
             return (value === "" ? null : Number(value));
         },
@@ -645,11 +645,17 @@
                 case "number":
                     return this.parseNumber(value, options);
 
+                case "heartrate":
+                    return this.parseHeartRate(value, options)
+
+                case "power":
+                    return this.parsePower(value, options);;
+
                 case "cm":
                     return this.parseCm(value, options);
 
                 default:
-                     new Error("Unsupported units for conversion.formatUnitsValue: " + units);
+                     throw new Error("Unsupported units for conversion.parseUnitsValue: " + units);
             }
         }
          

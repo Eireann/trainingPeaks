@@ -37,7 +37,6 @@ function(
         initialize: function()
         {
             this.units = "speed";
-            this.on("before:item:added", this._addedItems, this);
         },
 
         formatValue: function(value)
@@ -56,14 +55,7 @@ function(
         {
             this.applyFormValuesToModels();
             this.units = this.$("[name=units]:checked").val();
-            this._applyZoneSetDataOnRender();
-            this.children.call("render");
-        },
-
-        _addedItems: function(view)
-        {
-            view.setFormatter(_.bind(this.formatValue, this));
-            view.setParser(_.bind(this.parseValue, this));
+            this.applyModelValuesToForm();
         }
 
     });

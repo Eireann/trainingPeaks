@@ -39,7 +39,7 @@ function(
 
         onRender: function()
         {
-            this._updateFields();
+            this.applyModelValuesToForm();
         },
 
         applyFormValuesToModels: function()
@@ -49,6 +49,17 @@ function(
                 parsers:
                 {
                     zoneValue: this.parser
+                }
+            });
+        },
+
+        applyModelValuesToForm: function()
+        {
+            FormUtility.applyValuesToForm(this.$el, this.model, {
+                filterSelector: "[data-scope='zoneEntry']",
+                formatters:
+                {
+                    zoneValue: this.formatter
                 }
             });
         },
@@ -66,23 +77,12 @@ function(
         setFormatter: function(formatter)
         {
             this.formatter = formatter;
-            this._updateFields();
+            this.applyModelValuesToForm();
         },
 
         setParser: function(parser)
         {
             this.parser = parser;
-        },
-
-        _updateFields: function()
-        {
-            FormUtility.applyValuesToForm(this.$el, this.model, {
-                filterSelector: "[data-scope='zoneEntry']",
-                formatters:
-                {
-                    zoneValue: this.formatter
-                }
-            });
         },
 
         _remove: function()

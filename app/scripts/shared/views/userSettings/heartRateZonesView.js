@@ -32,7 +32,7 @@ function(
         parseValue: function(value)
         {
             var options = { workoutTypeId: this.model.get("workoutTypeId") };
-            return TP.utils.conversion.parseUnitsValue("heartrate", value, options);
+            return TP.utils.conversion.parseUnitsValue("number", value, options);
         }
 
     });

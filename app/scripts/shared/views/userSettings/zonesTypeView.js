@@ -27,11 +27,13 @@ function(
         events:
         {
             "click .addZone": "_addZone",
-            "click .removeWorkoutType": "_removeWorkoutType"
+            "click .removeWorkoutType": "_removeWorkoutType",
+            "change input[data-format=zoneValue]": "_refreshValues"
         },
 
-        _applyZoneSetDataOnRender: function()
+        applyModelValuesToForm: function()
         {
+            this.children.call("applyModelValuesToForm");
             FormUtility.applyValuesToForm(this.$el, this.model, {
                 filterSelector: "[data-scope='zoneSet']",
                 formatters: this.getFormatters()
@@ -42,8 +44,9 @@ function(
         {
             this.collection = new TP.Collection(options.model.get("zones"));
             ZonesTypeView.__super__.constructor.apply(this, arguments);
-            this.on("render", this._applyZoneSetDataOnRender, this);
+            this.on("render", this.applyModelValuesToForm, this);
             this.on("render", this._makeSortable, this);
+            this.on("before:item:added", this._addedItems, this);
             this.listenTo(this.collection, "add remove reset", _.bind(this._refreshView, this));
         },
 
@@ -65,6 +68,7 @@ function(
 
         parseValue: function(value)
         {
+            console.log("Parsing: ", value);
             var options = { workoutTypeId: this.model.get("workoutTypeId") };
             return TP.utils.conversion.parseUnitsValue("number", value, options);
         },
@@ -111,6 +115,18 @@ function(
         _refreshView: function()
         {
             this.$(".addZone").toggle(this.collection.length < 10);
+        },
+
+        _refreshValues: function()
+        {
+            this.applyFormValuesToModels();
+            this.applyModelValuesToForm();
+        },
+
+        _addedItems: function(view)
+        {
+            view.setFormatter(_.bind(this.formatValue, this));
+            view.setParser(_.bind(this.parseValue, this));
         }
 
     });
