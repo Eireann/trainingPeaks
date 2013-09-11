@@ -66,6 +66,13 @@ function(moment, datetimeUtils)
                     expect(datetimeUtils.convert.timeToDecimalHours("9", { assumeHours: false })).toEqual(9 / 60);
                 });
 
+                it("Should treat integers 1-9 as seconds if assumeSeconds is true", function()
+                {
+                    expect(datetimeUtils.convert.timeToDecimalHours("1", { assumeHours: false, assumeSeconds: true })).toEqual((1/60)/60);
+                    expect(datetimeUtils.convert.timeToDecimalHours("3", { assumeHours: false, assumeSeconds: true })).toEqual((3/60)/60);
+                    expect(datetimeUtils.convert.timeToDecimalHours("9", { assumeHours: false, assumeSeconds: true })).toEqual((9/60)/60);
+                });
+
                 it("Should treat integers greater than 9 as minutes", function()
                 {
                     expect(datetimeUtils.convert.timeToDecimalHours("10")).toEqual(10 / 60);
@@ -75,6 +82,17 @@ function(moment, datetimeUtils)
                     expect(datetimeUtils.convert.timeToDecimalHours("90")).toEqual(1.5);
                     expect(datetimeUtils.convert.timeToDecimalHours("75")).toEqual(1.25);
                     expect(datetimeUtils.convert.timeToDecimalHours("120")).toEqual(2);
+                });
+
+                it("Should treat integers greater than 9 as seconds if assumeSeconds is true", function()
+                {
+                    expect(datetimeUtils.convert.timeToDecimalHours("10", { assumeHours: false, assumeSeconds: true }).toFixed(5)).toEqual(((10 / 60)/60).toFixed(5));
+                    expect(datetimeUtils.convert.timeToDecimalHours("12", { assumeHours: false, assumeSeconds: true })).toEqual((12 / 60)/60);
+                    expect(datetimeUtils.convert.timeToDecimalHours("30", { assumeHours: false, assumeSeconds: true })).toEqual((30 / 60)/60);
+                    expect(datetimeUtils.convert.timeToDecimalHours("60", { assumeHours: false, assumeSeconds: true }).toFixed(5)).toEqual((1/60).toFixed(5));
+                    expect(datetimeUtils.convert.timeToDecimalHours("90", { assumeHours: false, assumeSeconds: true }).toFixed(5)).toEqual((1.5/60).toFixed(5));
+                    expect(datetimeUtils.convert.timeToDecimalHours("75", { assumeHours: false, assumeSeconds: true }).toFixed(5)).toEqual((1.25/60).toFixed(5));
+                    expect(datetimeUtils.convert.timeToDecimalHours("120", { assumeHours: false, assumeSeconds: true })).toEqual(2/60);
                 });
 
                 it("Should treat hh:mm values less than 10:00 as hours and minutes", function()
