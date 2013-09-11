@@ -41,7 +41,10 @@ function(TP)
             },
             enableWorkoutCommentNotification: null,
             enableVirtualCoachEmails: null,
-            virtualCoachEmailHour: null
+            virtualCoachEmailHour: null,
+            thresholdsAutoApply: false,
+            thresholdsNotifyAthlete: false,
+            thresholdsNotifyCoach: false
         },
 
         url: function()
