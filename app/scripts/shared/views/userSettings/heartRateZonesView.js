@@ -21,6 +21,18 @@ function(
         {
             type: "handlebars",
             template: heartRateZonesTemplate
+        },
+        
+        formatValue: function(value)
+        {
+            var options = { defaultValue: "0", workoutTypeId: this.model.get("workoutTypeId") };
+            return TP.utils.conversion.formatUnitsValue("heartrate", value, options);
+        },
+
+        parseValue: function(value)
+        {
+            var options = { workoutTypeId: this.model.get("workoutTypeId") };
+            return TP.utils.conversion.parseUnitsValue("heartrate", value, options);
         }
 
     });

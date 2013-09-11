@@ -134,8 +134,6 @@ function(
                 var workoutTypeIds = _.values(TP.utils.workout.types.typesByName);
                 var usedWorkoutTypeIds = collection.pluck("workoutTypeId");
 
-                console.log(workoutTypeIds, usedWorkoutTypeIds);
-                
                 workoutTypeIds = _.difference(workoutTypeIds, usedWorkoutTypeIds);
 
                 var visible = workoutTypeIds.length > 0;

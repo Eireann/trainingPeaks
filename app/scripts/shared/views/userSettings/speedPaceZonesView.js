@@ -42,28 +42,14 @@ function(
 
         formatValue: function(value)
         {
-            var options = { defaultValue: "", workoutTypeId: this.model.get("workoutTypeId") };
+            var options = { defaultValue: this.units === "pace" ? "" : "0", workoutTypeId: this.model.get("workoutTypeId") };
             return TP.utils.conversion.formatUnitsValue(this.units, value, options);
         },
 
         parseValue: function(value)
         {
-            var options = { defaultValue: "", workoutTypeId: this.model.get("workoutTypeId") };
+            var options = { workoutTypeId: this.model.get("workoutTypeId") };
             return TP.utils.conversion.parseUnitsValue(this.units, value, options);
-        },
-
-        getFormatters: function()
-        {
-            return {
-                zoneValue: _.bind(this.formatValue, this)
-            };
-        },
-
-        getParsers: function()
-        {
-            return {
-                zoneValue: _.bind(this.parseValue, this)
-            };
         },
 
         _changeUnits: function()

@@ -55,7 +55,7 @@ function(
 
         formatter: function(value)
         {
-            return value;
+            return Number(value || 0).toString();
         },
 
         parser: function(value)

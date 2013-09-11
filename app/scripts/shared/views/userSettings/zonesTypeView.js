@@ -57,14 +57,30 @@ function(
             });
         },
 
+        formatValue: function(value)
+        {
+            var options = { defaultValue: "0", workoutTypeId: this.model.get("workoutTypeId") };
+            return TP.utils.conversion.formatUnitsValue("number", value, options);
+        },
+
+        parseValue: function(value)
+        {
+            var options = { workoutTypeId: this.model.get("workoutTypeId") };
+            return TP.utils.conversion.parseUnitsValue("number", value, options);
+        },
+
         getFormatters: function()
         {
-            return {};
+            return {
+                zoneValue: _.bind(this.formatValue, this)
+            };
         },
 
         getParsers: function()
         {
-            return {};
+            return {
+                zoneValue: _.bind(this.parseValue, this)
+            };
         },
 
         _makeSortable: function()
