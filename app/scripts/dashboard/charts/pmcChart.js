@@ -129,15 +129,15 @@ function(
             {
                 return;
             }
-            
+
             var day = dataItem.workoutDay;
             var workouts = new WorkoutsCollection([], {startDate: moment(day), endDate: moment(day)});
             var dataPromise = this.dataManager.fetchOnModel(workouts);
-            var position = {
+            var screenPosition = {
                 x: position.pageX,
                 y: position.pageY
             };
-            var view = new PmcWorkoutsListView({collection: workouts, dataPromise: dataPromise, position: position});
+            var view = new PmcWorkoutsListView({collection: workouts, dataPromise: dataPromise, position: screenPosition});
             return view;
         },
 
