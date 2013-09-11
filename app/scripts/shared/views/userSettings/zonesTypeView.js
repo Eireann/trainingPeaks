@@ -91,7 +91,8 @@ function(
         {
             this.$(".zones").sortable({
                 axis: "y",
-                stop: _.bind(this._updateSort, this)
+                stop: _.bind(this._updateSort, this),
+                scope: "zonesSettingsList"
             });
         },
 
