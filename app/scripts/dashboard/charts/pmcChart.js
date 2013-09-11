@@ -55,7 +55,11 @@ function(
         defaultTitle: function()
         {
             var title = TP.utils.translate("Performance Manager - Workout Type: ");
-            title += TP.utils.workout.types.getListOfNames(this.get("workoutTypeIds"), "All Workout Types");
+            var workoutTypeIds = _.reject(this.get("workoutTypeIds"), function(id)
+            {
+                return id === 0 || id === "0";
+            });
+            title += TP.utils.workout.types.getListOfNames(workoutTypeIds);
             return title;
         },
 
