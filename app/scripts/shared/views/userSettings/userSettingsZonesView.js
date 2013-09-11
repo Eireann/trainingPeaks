@@ -73,7 +73,13 @@ function(
                 model: this.model
             }));
 
+            this.$("select[data-zone-type]").selectBoxIt();
             this._updateSelects();
+        },
+
+        onShow: function()
+        {
+            this.$("select[data-zone-type]").selectBoxIt("refresh");
         },
 
         subNavigation:
@@ -162,6 +168,8 @@ function(
                     .text(TP.utils.workout.types.getNameById(workoutTypeId))
                     .appendTo($el);
                 });
+
+                $el.selectBoxIt("refresh");
             });
         },
 
