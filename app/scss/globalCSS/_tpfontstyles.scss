@@ -146,7 +146,7 @@
 	// Modal Window/Dialog Box Title Headline (Add Workout Menu)
 	h2.modaltitle {
 		font-size: $fontSizeSmall;
-		//
+		// .857em/12px	
 
 		font-family: $fontFamilyRegular;
 		font-weight:normal;
@@ -156,7 +156,7 @@
 
 		float:left;
 		line-height:1;
-		margin:0;
+		margin:9px 0 0 15px;
 	}
 
 	// Headline above expando right col stats
