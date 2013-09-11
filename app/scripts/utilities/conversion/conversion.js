@@ -646,10 +646,10 @@
                     return this.parseNumber(value, options);
 
                 case "heartrate":
-                    return this.parseHeartRate(value, options)
+                    return this.parseHeartRate(value, options);
 
                 case "power":
-                    return this.parsePower(value, options);;
+                    return this.parsePower(value, options);
 
                 case "cm":
                     return this.parseCm(value, options);
