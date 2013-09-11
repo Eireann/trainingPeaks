@@ -261,17 +261,16 @@ function(
         _enableOrDisableVirtualCoachHour: function()
         {
             var hourSelect = this.$("select[name=virtualCoachEmailHour]");
-            var selectBox = hourSelect.data("selectBox-selectBoxIt");
             var enable = this.$("input[name=enableVirtualCoachEmails]").is(":checked");
             if(enable)
             {
                 hourSelect.prop("disabled", false);
-                selectBox.enable();
+                hourSelect.selectBoxIt("enable");
             }
             else
             {
                 hourSelect.prop("disabled", true);
-                selectBox.disable();
+                hourSelect.selectBoxIt("disable");
             }
         }
 

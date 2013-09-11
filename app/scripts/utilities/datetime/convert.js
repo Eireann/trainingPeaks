@@ -105,7 +105,7 @@
         treatIntegersLessThanTenAsHours: function()
         {
 
-            if (this.timeString.match(/^[0-9]+$/) && this.timeString >= 0 && this.timeString <= 9)
+            if (!this.options.assumeSeconds && this.timeString.match(/^[0-9]+$/) && this.timeString >= 0 && this.timeString <= 9)
             {
                 if (this.options.assumeHours)
                 {
@@ -123,7 +123,7 @@
 
         treatIntegersTenAndGreaterAsMinutes: function()
         {
-            if (this.timeString.match(/^[0-9]+$/) && this.timeString >= 0 && this.timeString > 9)
+            if (!this.options.assumeSeconds && this.timeString.match(/^[0-9]+$/) && this.timeString >= 0 && this.timeString > 9)
             {
                 this.minutes = Number(this.timeString);
                 this.hours = 0;

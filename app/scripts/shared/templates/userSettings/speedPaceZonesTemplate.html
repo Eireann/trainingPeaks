@@ -1,18 +1,24 @@
 <h3>Speed/Pace Zones - {{ workoutTypeName workoutTypeId "All" }}</h3>
+{{#if workoutTypeId }}<a class="removeWorkoutType">Remove</a>{{/if}}
 
-<form class="cf">
-    <label>
-	Threshold
-	<input name="threshold" readonly data-scope="zoneSet">
-    </label>
+<div class="zoneSetContain pace">
+	<form class="cf">
+	    <label>
+		<span class="zoneSetTitle">Threshold</span>
+		<input name="threshold" class="numberInput" data-scope="zoneSet" data-format="zoneValue">
+	    </label>
 
-    <label>
-	<input type="radio" value="speed" name="units" checked>
-	{{ getUnitsLabel "speed" workoutTypeId }}
-    </label>
+	    <label>
+		<input type="radio" value="speed" name="units">
+		{{ getUnitsLabel "speed" workoutTypeId }}
+	    </label>
 
-    <label>
-	<input type="radio" value="pace" name="units">
-	{{ getUnitsLabel "pace" workoutTypeId }}
-    </label>
-</form>
+	    <label>
+		<input type="radio" value="pace" name="units" checked>
+		{{ getUnitsLabel "pace" workoutTypeId }}
+	    </label>
+	</form>
+</div>
+
+<div class="zones"></div>
+<button class="addZone">Add Zone</button>

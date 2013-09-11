@@ -119,7 +119,7 @@ function(
             };
         },
 
-        createItemDetailView: function(event, position, item)
+        createItemDetailView: function(item, position)
         {            
             if (!item)
             {

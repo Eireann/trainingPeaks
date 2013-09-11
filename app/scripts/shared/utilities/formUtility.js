@@ -14,7 +14,7 @@ function(
             }
             else if(format === "number")
             {
-                value = Number(value);
+                value = Number(value || 0).toString();
             }
             else if(options && options.formatters && options.formatters.hasOwnProperty(format))
             {
@@ -23,6 +23,20 @@ function(
             else if(format)
             {
                 throw new Error("Unknown field format: " + format);
+            }
+
+            return value || "";
+        },
+
+        parseValue: function(value, format, options)
+        {
+            if(format === "number")
+            {
+                value = Number(value);
+            }
+            else if(options && options.parsers && options.parsers.hasOwnProperty(format))
+            {
+                value = options.parsers[format](value);
             }
 
             return value;
@@ -103,9 +117,7 @@ function(
                     value = $el.val();
                 }
 
-                value = FormUtility.formatValue(value, format, options);
-
-                formValues[key] = value;
+                formValues[key] = FormUtility.parseValue(value, format, options);
 
             }, options);
 

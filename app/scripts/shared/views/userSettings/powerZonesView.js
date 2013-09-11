@@ -3,21 +3,19 @@ define(
     "underscore",
     "TP",
     "backbone",
-    "shared/utilities/formUtility",
-    "shared/views/userSettings/zoneEntryView",
+    "shared/views/userSettings/zonesConfigGroupView",
     "hbs!shared/templates/userSettings/powerZonesTemplate"
 ],
 function(
     _,
     TP,
     Backbone,
-    FormUtility,
-    ZoneEntryView,
+    ZonesConfigGroupView,
     powerZonesTemplate
 )
 {
 
-    var PowerZonesView = TP.CompositeView.extend({
+    var PowerZonesView = ZonesConfigGroupView.extend({
 
         template:
         {
@@ -25,18 +23,16 @@ function(
             template: powerZonesTemplate
         },
 
-        itemView: ZoneEntryView,
-
-        onRender: function()
+        formatValue: function(value)
         {
-            FormUtility.applyValuesToForm(this.$el, this.model, {
-                filterSelector: "[data-scope='zoneSet']"
-            });
+            var options = { defaultValue: "0", workoutTypeId: this.model.get("workoutTypeId") };
+            return TP.utils.conversion.formatUnitsValue("power", value, options);
         },
 
-        initialize: function()
+        parseValue: function(value)
         {
-            this.collection = new TP.Collection(this.model.get("zones"));
+            var options = { workoutTypeId: this.model.get("workoutTypeId") };
+            return TP.utils.conversion.parseUnitsValue("power", value, options);
         }
 
     });
