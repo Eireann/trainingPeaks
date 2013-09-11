@@ -5,6 +5,7 @@
 {
     text-align: center;
     min-width: 400px;
+    max-width:650px;
     font-family: $fontFamilyRegular;
     @include buttons(0px, 60px, 14px);
 
