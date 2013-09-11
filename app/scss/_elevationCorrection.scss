@@ -2,7 +2,7 @@
 
 .elevationCorrectionContainer
 {
-    width: 800px;
+    width: 810px;
     @include filter-gradient(#ffffff, #dedcde, horizontal);
     @include background-image(radial-gradient(center, ellipse cover,  #eaebec 0%,#dedcde 100%));
     overflow:hidden;
@@ -20,9 +20,9 @@
 
     .elevationGraph
     {
-        width: 490px;
+        width: 500px;
         height:235px;
-        margin: 30px 0 0 30px;
+        margin: 40px 0 0 40px;
         float: left;
         
         &.waiting:before {
@@ -39,7 +39,7 @@
     {
         float: right;
         width: 265px;
-        margin: 45px 10px 0 0;
+        margin: 40px 0 0 0;
 
         .statsHeader
         {
@@ -124,17 +124,18 @@
         }
     }
 
-    .buttons
-    {
-        width: 180px;
-        float: right;
-        margin:20px 16px 11px 0;
+    .buttons {
+        text-align:center;
+        width: 100%;
+        margin:19px 16px 40px 0;
         
-        button
-        {
+        button {
             width: 77px;
             font-size: $fontSizeSmall;
             margin-right: 8px;
+            &:last-of-type {
+                margin-right:0;
+            }
         }
     }
 }
