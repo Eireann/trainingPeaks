@@ -146,7 +146,8 @@
                 return this.formatEmptyNumber(value, options);
 
             var sportType = this.getMySportType(options);
-            var rawTime = datetimeUtils.convert.timeToDecimalHours(value, { assumeHours: false });
+            var assumeSeconds = sportType === 1;
+            var rawTime = datetimeUtils.convert.timeToDecimalHours(value, { assumeHours: false, assumeSeconds: assumeSeconds });
             var limitedTime = adjustFieldRange(rawTime, "pace");
             var formattedLimitedTime = datetimeUtils.format.decimalHoursAsTime(limitedTime, true);
             var convertedPace = convertToModelUnits(formattedLimitedTime, "pace", sportType);

@@ -155,14 +155,13 @@ function(
                         this.$(".yaxisLabel.left").text(yaxesOpts && yaxesOpts[0] && yaxesOpts[0].label || "");
                         this.$(".yaxisLabel.right").text(yaxesOpts && yaxesOpts[1] && yaxesOpts[1].label || "");
                     }
-
                 }
             }
         },
 
         _onPlotClick: function(event, position, item)
         {
-            var onClickView = this.model.createItemDetailView(item);
+            var onClickView = this.model.createItemDetailView(item, position);
             if(onClickView)
             {
                 onClickView.render();

@@ -1,0 +1,10 @@
+{{#hoverBox this}}
+	<h6>Workouts on {{date}}</h6>
+    <ul>
+    	{{#each workouts}}
+    		<li>
+    			<a data-id="{{workoutId}}" href="#">{{{workoutTypeName workoutTypeValueId}}}</a>
+    		</li>
+    	{{/each}}
+    </ul>
+{{/hoverBox}}
