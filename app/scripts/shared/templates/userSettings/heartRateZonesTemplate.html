@@ -1,15 +1,23 @@
 <h3>Heart Rate Zones - {{ workoutTypeName workoutTypeId "All" }}</h3>
+{{#if workoutTypeId }}<a class="removeWorkoutType">Remove</a>{{/if}}
 
-<label>
-    Threshold Heart Rate
-    <input name="threshold" readonly data-scope="zoneSet">
-</label>
-<label>
-    Max Heart Rate
-    <input name="maximumHeartRate" readonly data-scope="zoneSet">
-</label>
-<label>
-    Resting Heart Rate
-    <input name="restingHeartRate" readonly data-scope="zoneSet">
-</label>
+<div class="zoneSetContain heartrate">
+	<label>
+	    <span class="zoneSetTitle">Threshold Heart Rate</span>
+	    <input name="threshold" class="numberInput" data-scope="zoneSet"
+	    data-format="zoneValue">
+	</label>
+	<label>
+	   <span class="zoneSetTitle"> Max Heart Rate</span>
+	    <input name="maximumHeartRate" class="numberInput" data-scope="zoneSet"
+	    data-format="zoneValue">
+	</label>
+	<label>
+	    <span class="zoneSetTitle">Resting Heart Rate</span>
+	    <input name="restingHeartRate" class="numberInput" data-scope="zoneSet"
+	    data-format="zoneValue">
+	</label>
+</div>
 
+<div class="zones"></div>
+<button class="addZone">Add Zone</button>

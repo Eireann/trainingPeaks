@@ -12,6 +12,76 @@
     }
 
     .userSettingsContent {
+        .addWorkoutType, .removeZone {
+            font-size:$fontSizeSmall;
+        }
+
+        .addZone {
+            margin-top:10px;
+        }
+
+        .addZoneContain {
+            margin-bottom:10px;
+
+            .selectboxit-container {
+                float:left;
+            }
+
+            .addWorkoutType {
+                float:left;
+                margin:5px 0 0 10px;
+            }
+
+        }
+
+        .zonesConfigGroup {
+            margin-top:25px;
+
+            .zoneEntry {
+                padding:3px 0 3px 25px;
+
+                &:hover {
+                    background-color:$TPGrey1;
+                    cursor: all-scroll;
+                }
+
+                .zoneEntryTo {
+                    font-size:$fontSizeSmall;
+                }
+            }
+
+            .zoneSetContain {
+                border:1px solid $TPGrey1;
+                padding:10px;
+                margin-bottom:10px;
+
+                label {
+                    cursor:auto;
+
+                    input[type="radio"] {
+                        margin:0;
+                    }
+                }
+
+                form {
+                    margin:0;
+                }
+
+                .zoneSetTitle {
+                    display:inline-block;
+                    width:136px;
+                    font-family:$fontFamilyHeavy;
+                }
+
+                &.power, 
+                &.pace {
+                    .zoneSetTitle {
+                        width:71px;
+                    }
+                }
+            }
+        }
+
         h2 {
             font-family:$fontFamilyRegular;
             font-weight:normal;

@@ -72,12 +72,15 @@ function(
             this._initializeFooter();
             this.on("render", this._fetchPaymentHistory, this);
             this.on("before:switchTab", this._applyFormValuesToModels, this);
-            this.on("after:switchTab", this._listenForFormChanges, this);
             this.on("render", this._listenForFormChanges, this);
         },
 
         _initializeNavigation: function()
         {
+            var models = {
+                athleteSettings: this._copyModel(this.model.getAthleteSettings())
+            };
+
             this.navigation =
             [
                 {
@@ -87,7 +90,7 @@ function(
                     {
                         userModel: this._copyModel(this.model, { changesToApplyImmediately: ["profilePhotoUrl"] }),
                         accountSettingsModel: this._copyModel(this.model.getAccountSettings()),
-                        athleteSettingsModel: this._copyModel(this.model.getAthleteSettings()),
+                        athleteSettingsModel: models.athleteSettings,
                         passwordSettingsModel: this.model.getPasswordSettings(),
                         recurringPaymentsCollection: this.model.getRecurringPaymentsCollection(),
                         paymentHistoryCollection: this.model.getPaymentHistoryCollection()
@@ -98,7 +101,7 @@ function(
                     view: UserSettingsZonesView,
                     options:
                     {
-                        model: this.model
+                        model: models.athleteSettings
                     }
                 }
             ];
@@ -127,8 +130,7 @@ function(
         _listenForFormChanges: function()
         {
             var self = this;
-            this.$(".tabbedLayoutBody").find("input, select, textarea").off("change.userSettingsView");
-            this.$(".tabbedLayoutBody").find("input, select, textarea").on("change.userSettingsView", function()
+            this.$el.on("change.userSettingsView", function()
             {
                 self._onChange();
             });
@@ -186,7 +188,8 @@ function(
                 this.$el.addClass("waiting");
                 var self = this;
                 return $.when(
-                    this._saveUser()
+                    this._saveUser(),
+                    this._saveZones()
                 ).done(
                     function()
                     {
@@ -218,6 +221,11 @@ function(
                 models: [this.model, this.model.getAthleteSettings(), this.model.getAccountSettings()],
                 password: this.model.getPasswordSettings().get("password")
             });
+        },
+
+        _saveZones: function()
+        {
+            return UserDataSource.saveZones(this.model.getAthleteSettings());
         },
 
         _cancel: function()
