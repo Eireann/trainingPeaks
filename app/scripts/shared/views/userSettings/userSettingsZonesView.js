@@ -7,6 +7,7 @@ define(
     "shared/views/userSettings/heartRateZonesView",
     "shared/views/userSettings/powerZonesView",
     "shared/views/userSettings/speedPaceZonesView",
+    "shared/views/userSettings/zonesNotificationsView",
     "hbs!shared/templates/userSettings/userSettingsZonesTemplate"
 ],
 function(
@@ -17,6 +18,7 @@ function(
     HeartRateZonesView,
     PowerZonesView,
     SpeedPaceZonesView,
+    ZonesNotificationsView,
     userSettingsZonesTemplate
 )
 {
@@ -67,6 +69,10 @@ function(
                 collection: this.speedPaceZonesCollection
             }));
 
+            this._addView(".zonesNotifications", new ZonesNotificationsView({
+                model: this.model
+            }));
+
             this._updateSelects();
         },
 
@@ -94,7 +100,14 @@ function(
         {
             this.children.each(function(child)
             {
-                child.children.call("applyFormValuesToModels");
+                if(child.children)
+                {
+                    child.children.call("applyFormValuesToModels");
+                }
+                else
+                {
+                    child.applyFormValuesToModels();
+                }
             });
 
             this.model.set("heartRateZones", this.heartRateZonesCollection.toJSON());
