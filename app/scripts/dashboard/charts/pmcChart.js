@@ -124,7 +124,11 @@ function(
             var day = this.rawData[item.dataIndex].workoutDay;
             var workouts = new WorkoutsCollection([], {startDate: moment(day), endDate: moment(day)});
             var dataPromise = this.dataManager.fetchOnModel(workouts);
-            var view = new PmcWorkoutsListView({collection: workouts, dataPromise: dataPromise});
+            var position = {
+                x: position.pageX,
+                y: position.pageY
+            };
+            var view = new PmcWorkoutsListView({collection: workouts, dataPromise: dataPromise, position: position});
             return view;
         },
 

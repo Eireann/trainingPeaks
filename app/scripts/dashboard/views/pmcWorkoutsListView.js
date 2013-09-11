@@ -27,26 +27,30 @@ function(
 
         initialize: function(options)
         {
+        	this.position = options.position;
         	this.dataPromise = options.dataPromise;
-        	this.dataPromise.done(_.bind(this.render, this));
+        	this.dataPromise.done(_.bind(this.render, this));        	
         },
 
         onRender: function()
         {
         	this.$el.find('.hoverBox').addClass('leftarrow');
+        	this.top(this.position.y - 33);
+        	this.left(this.position.x + 20);
+
+        	this.ensureInView();
         },
 
-        alignArrowTo: function(top)
+        ensureInView: function()
         {
 
             // make sure we're fully on the screen
             var windowBottom = $(window).height() - 10;
-            this.top(top - 25);
-            var myBottom = this.$el.offset().top + this.$el.height();
+            var myBottom = this.$el.position().top + this.$el.height();
 
             if(myBottom > windowBottom)
             {
-                var arrowOffset = (myBottom - windowBottom) + 30;
+                var arrowOffset = (myBottom - windowBottom) + 40;
                 this.top(windowBottom - this.$el.height());
                 this.$(".arrow").css("top", arrowOffset + "px");
             }
@@ -54,9 +58,9 @@ function(
 
         serializeData: function()
         {
-        	console.log({workouts: this.collection.toJSON()});
         	return {
-        		workouts: this.collection.toJSON()
+        		workouts: this.collection.toJSON(),
+        		date: this.collection.startDate.format("MM-DD-YYYY")
         	};
         },
 

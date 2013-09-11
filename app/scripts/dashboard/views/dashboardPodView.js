@@ -167,6 +167,9 @@ function(
             {
                 onClickView.render();
             }
+
+            // kill hover modal
+            $('#flotTip').hide();
         },
 
         _onSettingsClicked: function(e)
