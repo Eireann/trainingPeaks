@@ -129,14 +129,15 @@ function(TP, graphToolbarTemplate)
         {
             // Grab speed label based on model workout type
             var speedLabel = this.model ? TP.utils.units.getUnitsLabel("speed", this.model.get("workoutTypeValueId")) : "MPH";
-
+            var elevationlabel = this.model ? TP.utils.units.getUnitsLabel("elevation") : "FT";
             // Swim speeds need to be shown as "pace" units
             if (this.model && this.model.get("workoutTypeValueId") === 1)
             {
                 speedLabel = TP.utils.units.getUnitsLabel("pace", 1);
             }
             return {
-                speedLabel: speedLabel
+                speedLabel: speedLabel,
+                elevationLabel: elevationlabel
             };
         }
     });

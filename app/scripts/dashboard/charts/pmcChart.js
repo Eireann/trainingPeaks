@@ -8,7 +8,9 @@
     "utilities/charting/chartColors",
     "utilities/charting/jquery.flot.dashes",
     "views/dashboard/chartUtils",
+    "models/workoutsCollection",
     "dashboard/views/pmcChartSettings",
+    "dashboard/views/PmcWorkoutsListView",
     "hbs!dashboard/templates/pmcChart"
 ],
 function(
@@ -20,7 +22,9 @@ function(
     chartColors,
     flotDashes,
     DashboardChartUtils,
+    WorkoutsCollection,
     pmcChartSettings,
+    PmcWorkoutsListView,
     pmcChartTemplate
     )
 {
@@ -114,7 +118,33 @@ function(
                 flotOptions: flotOptions
             };
         },
-        
+
+        createItemDetailView: function(event, position, item)
+        {            
+            if (!item)
+            {
+                return;
+            }
+
+            var dataItem = this.rawData[item.dataIndex];
+
+            // only return this view if IF or TSS values are defined
+            if (!(dataItem.ifActual || dataItem.tssActual))
+            {
+                return;
+            }
+
+            var day = dataItem.workoutDay;
+            var workouts = new WorkoutsCollection([], {startDate: moment(day), endDate: moment(day)});
+            var dataPromise = this.dataManager.fetchOnModel(workouts);
+            var screenPosition = {
+                x: position.pageX,
+                y: position.pageY
+            };
+            var view = new PmcWorkoutsListView({collection: workouts, dataPromise: dataPromise, position: screenPosition});
+            return view;
+        },
+
         findTSBRange: function(modelData)
         {
             var maxValue = 0;
