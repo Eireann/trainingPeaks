@@ -562,7 +562,7 @@ function(
             var chart = buildPmcChart();
             chart.rawData = modelData;
             spyOn(chart.dataManager, "fetchOnModel").andReturn(new $.Deferred().resolve());
-            var tomahawkView = chart.createItemDetailView(null, {pageX: 10, pageY: 10}, {dataIndex: 2});
+            var tomahawkView = chart.createItemDetailView({dataIndex: 2},{pageX: 10, pageY: 10});
 
             it("Should instantiate a PmcWorkoutsListView", function()
             {
