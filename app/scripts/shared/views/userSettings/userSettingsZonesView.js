@@ -155,7 +155,7 @@ function(
         _addWorkoutType: function(e)
         {
             var type = $(e.target).data("zone-type");
-            var workoutType = parseInt(this.$("select[data-zone-type='" + type + "']").val());
+            var workoutType = parseInt(this.$("select[data-zone-type='" + type + "']").val(), 10);
             this._getCollection(type).add({ workoutTypeId: workoutType });
         },
 
