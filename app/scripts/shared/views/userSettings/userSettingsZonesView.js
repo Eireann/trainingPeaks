@@ -72,14 +72,11 @@ function(
             this._addView(".zonesNotifications", new ZonesNotificationsView({
                 model: this.model
             }));
-
-            this.$("select[data-zone-type]").selectBoxIt();
-            this._updateSelects();
         },
 
         onShow: function()
         {
-            this.$("select[data-zone-type]").selectBoxIt("refresh");
+            this._updateSelects();
         },
 
         subNavigation:
@@ -155,9 +152,6 @@ function(
 
                 workoutTypeIds = _.difference(workoutTypeIds, usedWorkoutTypeIds);
 
-                var visible = workoutTypeIds.length > 0;
-                $el.toggle(visible);
-                self.$(".addWorkoutType[data-zone-type='" + type + "']").toggle(visible);
 
                 $el.empty();
 
@@ -169,7 +163,18 @@ function(
                     .appendTo($el);
                 });
 
-                $el.selectBoxIt("refresh");
+                var visible = workoutTypeIds.length > 0;
+                self.$(".addWorkoutType[data-zone-type='" + type + "']").toggle(visible);
+                if($el.data("selectBox-selectBoxIt"))
+                {
+                    $el.selectBoxIt("destroy");
+                    $el.hide();
+                }
+                if(visible)
+                {
+                    $el.show();
+                    $el.selectBoxIt();
+                }
             });
         },
 
