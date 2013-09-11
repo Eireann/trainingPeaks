@@ -21,6 +21,7 @@ define(
     "router",
     "utilities/dragAndDropFileUploadWidget",
     "utilities/textFieldNumberFilter",
+    "shared/utilities/featureAuthorizer",
     "hbs!templates/views/notAllowedForAlpha",
     "scripts/plugins/marionette.faderegion"
 ],
@@ -46,6 +47,7 @@ function(
     Router,
     DragAndDropFileUploadWidget,
     TextFieldNumberFilter,
+    FeatureAuthorizer,
     notAllowedForAlphaTemplate,
     fadeRegion)
 {
@@ -198,6 +200,16 @@ function(
                     dataManager.reset(modelUrl);
                 });
 
+            }, this);
+        });
+
+        // add feature authorizer
+        this.addInitializer(function()
+        {
+            this.featureAuthorizer = new FeatureAuthorizer(this.user);
+            this.on("api:paymentrequired", function()
+            {
+                this.featureAuthorizer.showUpgradeMessage();
             }, this);
         });
 
