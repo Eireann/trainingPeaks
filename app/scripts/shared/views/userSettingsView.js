@@ -72,7 +72,6 @@ function(
             this._initializeFooter();
             this.on("render", this._fetchPaymentHistory, this);
             this.on("before:switchTab", this._applyFormValuesToModels, this);
-            this.on("after:switchTab", this._listenForFormChanges, this);
             this.on("render", this._listenForFormChanges, this);
         },
 
@@ -131,8 +130,7 @@ function(
         _listenForFormChanges: function()
         {
             var self = this;
-            this.$(".tabbedLayoutBody").find("input, select, textarea").off("change.userSettingsView");
-            this.$(".tabbedLayoutBody").find("input, select, textarea").on("change.userSettingsView", function()
+            this.$el.on("change.userSettingsView", function()
             {
                 self._onChange();
             });
