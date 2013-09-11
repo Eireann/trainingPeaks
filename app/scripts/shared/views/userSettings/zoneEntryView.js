@@ -16,6 +16,8 @@ function(
 {
     var ZoneEntryView = TP.ItemView.extend({
 
+        className: "zoneEntry",
+
         template:
         {
             type: "handlebars",

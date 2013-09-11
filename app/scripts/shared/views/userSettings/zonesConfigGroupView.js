@@ -17,7 +17,9 @@ function(
 )
 {
 
-    var ZonesTypeView = TP.CompositeView.extend({
+    var ZonesConfigGroupView = TP.CompositeView.extend({
+
+        className: "zonesConfigGroup",
 
         itemView: ZoneEntryView,
         itemViewContainer: ".zones",
@@ -43,7 +45,7 @@ function(
         constructor: function(options)
         {
             this.collection = new TP.Collection(options.model.get("zones"));
-            ZonesTypeView.__super__.constructor.apply(this, arguments);
+            ZonesConfigGroupView.__super__.constructor.apply(this, arguments);
             this.on("render", this.applyModelValuesToForm, this);
             this.on("render", this._makeSortable, this);
             this.on("before:item:added", this._addedItems, this);
@@ -132,7 +134,7 @@ function(
 
     });
 
-    return ZonesTypeView;
+    return ZonesConfigGroupView;
 
 });
 

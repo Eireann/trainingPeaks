@@ -3,19 +3,19 @@ define(
     "underscore",
     "TP",
     "backbone",
-    "shared/views/userSettings/zonesTypeView",
+    "shared/views/userSettings/zonesConfigGroupView",
     "hbs!shared/templates/userSettings/speedPaceZonesTemplate"
 ],
 function(
     _,
     TP,
     Backbone,
-    ZonesTypeView,
+    ZonesConfigGroupView,
     speedPaceZonesTemplate
 )
 {
 
-    var SpeedPaceZonesView = ZonesTypeView.extend({
+    var SpeedPaceZonesView = ZonesConfigGroupView.extend({
 
         template:
         {
@@ -26,7 +26,7 @@ function(
         events:
         _.extend({
             "change [name=units]": "_changeUnits"
-        }, ZonesTypeView.prototype.events),
+        }, ZonesConfigGroupView.prototype.events),
 
         onRender: function()
         {

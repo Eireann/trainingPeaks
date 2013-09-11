@@ -3,19 +3,19 @@ define(
     "underscore",
     "TP",
     "backbone",
-    "shared/views/userSettings/zonesTypeView",
+    "shared/views/userSettings/zonesConfigGroupView",
     "hbs!shared/templates/userSettings/heartRateZonesTemplate"
 ],
 function(
     _,
     TP,
     Backbone,
-    ZonesTypeView,
+    ZonesConfigGroupView,
     heartRateZonesTemplate
 )
 {
 
-    var PowerZonesView = ZonesTypeView.extend({
+    var PowerZonesView = ZonesConfigGroupView.extend({
 
         template:
         {
