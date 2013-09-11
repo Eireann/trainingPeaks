@@ -3,11 +3,13 @@ requirejs(
 [
     "TP",
     "shared/models/userModel",
+    "shared/models/userAccessRightsModel",
     "shared/utilities/featureAuthorization/featureAuthorizer"
 ],
 function(
     TP,
     UserModel,
+    UserAccessRightsModel,
     FeatureAuthorizer
     )
 {
@@ -16,15 +18,17 @@ function(
     {
 
         var user;
+        var userAccessRights;
         var featureAuthorizer;
 
         beforeEach(function()
         {
+            var userAccessRights = new UserAccessRightsModel();
             var user = new UserModel({ userId: 1 });
             var athlete = new TP.Model({ athleteId: 1 });
             user.set("athletes", [athlete]);
             user.setCurrentAthleteId(1);
-            featureAuthorizer = new FeatureAuthorizer(user);
+            featureAuthorizer = new FeatureAuthorizer(user, userAccessRights);
         });
 
         it("Should have a list of features", function()

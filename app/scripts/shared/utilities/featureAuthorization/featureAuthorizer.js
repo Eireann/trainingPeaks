@@ -1,3 +1,11 @@
+/*
+
+FeatureAuthorizer
+
+usage: theMarsApp.featureAuthorizer.canAccessFeature(theMarsApp.featureAuthorizer.features.PlanFutureWorkouts, attributes, options);
+
+*/
+
 define(
 [
     "underscore",
@@ -9,16 +17,17 @@ function(
          )
 {
 
-    function FeatureAuthorizer(user)
+    function FeatureAuthorizer(user, userAccessRights)
     {
         this.user = user;
+        this.userAccessRights = userAccessRights;
     }
 
     _.extend(FeatureAuthorizer.prototype, {
 
         features: {
 
-            PlanFutureWorkouts: function(user, attributes, options)
+            PlanFutureWorkouts: function(user, userAccess, attributes, options)
             {
                 return true;
             }
@@ -29,7 +38,7 @@ function(
         {
             if(_.isFunction(featureChecker))
             {
-                var returnValue = featureChecker(this.user, attributes, options);
+                var returnValue = featureChecker(this.user, this.userAccessRights, attributes, options);
                 if(typeof returnValue !== "boolean")
                 {
                     throw new Error("Feature checker should return a boolean");
@@ -62,5 +71,4 @@ function(
     });
 
     return FeatureAuthorizer;
-
 });
