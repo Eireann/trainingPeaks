@@ -162,7 +162,7 @@ function(
 
         _onPlotClick: function(event, position, item)
         {
-            var onClickView = this.model.createItemDetailView(item);
+            var onClickView = this.model.createItemDetailView(event, position, item);
             if(onClickView)
             {
                 onClickView.render();

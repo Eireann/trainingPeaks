@@ -8,7 +8,9 @@
     "utilities/charting/chartColors",
     "utilities/charting/jquery.flot.dashes",
     "views/dashboard/chartUtils",
+    "models/workoutsCollection",
     "dashboard/views/pmcChartSettings",
+    "dashboard/views/PmcWorkoutsListView",
     "hbs!dashboard/templates/pmcChart"
 ],
 function(
@@ -20,7 +22,9 @@ function(
     chartColors,
     flotDashes,
     DashboardChartUtils,
+    WorkoutsCollection,
     pmcChartSettings,
+    PmcWorkoutsListView,
     pmcChartTemplate
     )
 {
@@ -85,12 +89,7 @@ function(
             var requestedWorkoutTypes = this.has("workoutTypeIds") ? this.get("workoutTypeIds") : [];
             requestedWorkoutTypes = _.filter(requestedWorkoutTypes, function(type)
             {
-<<<<<<< HEAD:app/scripts/views/dashboard/pmcChart.js
-                self.renderFlotChart(dataSeries, flotOptions);
-                self.ui.chartContainer.on("plotclick", _.bind(self.onPlotClick, self));
-=======
                 return type.trim() !== "" && Number(type) !== 0;
->>>>>>> master:app/scripts/dashboard/charts/pmcChart.js
             });
 
             if (requestedWorkoutTypes.length && requestedWorkoutTypes.length < _.keys(TP.utils.workout.types.typesById).length)
@@ -115,13 +114,18 @@ function(
                 flotOptions: flotOptions
             };
         },
-        
-        onPlotClick: function(event, position, item)
-        {
-            console.log(event, position, item);
-            
-            var day = this.chartDataModel.get('data')[item.dataIndex].workoutDay
 
+        createItemDetailView: function(event, position, item)
+        {            
+            if (!item)
+            {
+                return;
+            }
+            var day = this.rawData[item.dataIndex].workoutDay;
+            var workouts = new WorkoutsCollection([], {startDate: moment(day), endDate: moment(day)});
+            var dataPromise = this.dataManager.fetchOnModel(workouts);
+            var view = new PmcWorkoutsListView({collection: workouts, dataPromise: dataPromise});
+            return view;
         },
 
         findTSBRange: function(modelData)
