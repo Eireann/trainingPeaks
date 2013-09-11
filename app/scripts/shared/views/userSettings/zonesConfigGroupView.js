@@ -70,7 +70,6 @@ function(
 
         parseValue: function(value)
         {
-            console.log("Parsing: ", value);
             var options = { workoutTypeId: this.model.get("workoutTypeId") };
             return TP.utils.conversion.parseUnitsValue("number", value, options);
         },
