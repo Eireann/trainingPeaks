@@ -1,6 +1,6 @@
 ﻿<div id="newItemViewContainer" class="dialog">
     <div class="titleBar">
-        <h2 class="modaltitle">{{formatDate date "dddd, MMMM D, YYYY"}}</h2>
+        <h2>{{formatDate date "dddd, MMMM D, YYYY"}}</h2>
         <div id="closeIcon"></div>
     </div>
     <div class="addItemButtonsContainer dialogContent">
@@ -35,7 +35,7 @@
                             <legend> or &nbsp;&nbsp;</legend>
                             <button type="button" name="uploadDeviceFile" title="{{$ "FileUploadTooltip" }}" >{{$ "UploadFile"}}</button>
                             <div class="textDiv">
-                                <a href="http://support.trainingpeaks.com/device-agent.aspx?utm_source=tpflex&utm_medium=wktdetails&utm_campaign=deviceagent" class="helpText">{{$ "FileUploadHelp" }} &rsaquo;</a>
+                                <a href="http://support.trainingpeaks.com/device-agent.aspx?utm_source=tpflex&utm_medium=wktdetails&utm_campaign=deviceagent" class="helpText" target="_blank">{{$ "FileUploadHelp" }} &rsaquo;</a>
                             </div>
                             <input style="display: none" type="file" id="fileUploadInput"/>
                         </fieldset>
