@@ -1,24 +1,25 @@
 ﻿// use requirejs() here, not define(), for jasmine compatibility
 requirejs(
 [
+    "moment",
     "TP",
     "shared/models/userModel",
     "shared/models/userAccessRightsModel",
-    "shared/utilities/featureAuthorization/featureAuthorizer"
+    "shared/utilities/featureAuthorization/featureAuthorizer",
+    "testUtils/xhrDataStubs"
 ],
 function(
+    moment,
     TP,
     UserModel,
     UserAccessRightsModel,
-    FeatureAuthorizer
+    FeatureAuthorizer,
+    xhrData
     )
 {
 
     describe("Feature Authorizer", function ()
     {
-
-        var user;
-        var userAccessRights;
         var featureAuthorizer;
 
         beforeEach(function()
@@ -109,6 +110,68 @@ function(
                 expect(callback).not.toHaveBeenCalled();
                 expect(featureAuthorizer.showUpgradeMessage).toHaveBeenCalled();
             });
+        });
+
+    
+        describe("features", function()
+        {
+            describe("SaveWorkoutToDate", function()
+            {
+
+                var authorizedFeatureAuthorizer;
+                var unauthorizedFeatureAuthorizer;
+
+                beforeEach(function()
+                {
+                    var userAccessRights = new UserAccessRightsModel();
+                    userAccessRights.set({
+                    "rights":[xhrData.accessRights.planFutureWorkouts]
+                    });
+                    var user = new UserModel(xhrData.users.barbkprem);
+                    user.setCurrentAthleteId(xhrData.users.barbkprem.userId);
+
+                    authorizedFeatureAuthorizer = new FeatureAuthorizer(user, userAccessRights);
+
+                    var userAccessRights2 = new UserAccessRightsModel();
+                    var user2 = new UserModel({ userId: 1 });
+                    var athlete = new TP.Model({ athleteId: 1 });
+                    user2.set("athletes", [athlete]);
+                    user2.setCurrentAthleteId(1);
+
+                    unauthorizedFeatureAuthorizer = new FeatureAuthorizer(user2, userAccessRights2);
+                });
+
+                it("Should allow any user to save workout to a past date", function()
+                {
+                    var attributes = { targetDate: moment().subtract("days", 1)};
+                    expect(unauthorizedFeatureAuthorizer.canAccessFeature(
+                           unauthorizedFeatureAuthorizer.features.SaveWorkoutToDate,
+                           attributes
+                           )
+                    ).toBe(true);
+                    expect(authorizedFeatureAuthorizer.canAccessFeature(
+                           unauthorizedFeatureAuthorizer.features.SaveWorkoutToDate,
+                           attributes
+                           )
+                    ).toBe(true);
+                });
+
+                it("Should allow only an authorized user to save workout to a future date", function()
+                {
+                    var attributes = { targetDate: moment().add("days", 1)};
+                    expect(unauthorizedFeatureAuthorizer.canAccessFeature(
+                           unauthorizedFeatureAuthorizer.features.SaveWorkoutToDate,
+                           attributes
+                           )
+                    ).toBe(false);
+                    expect(authorizedFeatureAuthorizer.canAccessFeature(
+                           unauthorizedFeatureAuthorizer.features.SaveWorkoutToDate,
+                           attributes
+                           )
+                    ).toBe(true);
+                });
+            });
+
         });
 
     });
