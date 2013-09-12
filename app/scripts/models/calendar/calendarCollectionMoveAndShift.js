@@ -63,11 +63,9 @@ function(
                 self.trigger("shiftwizard:open");
             };
 
-            // any future date will do to check this feature ...
             theMarsApp.featureAuthorizer.runCallbackOrShowUpgradeMessage(
-                theMarsApp.featureAuthorizer.features.SaveWorkoutToDate, 
-                openTheWizard, 
-                {targetDate: moment().add("days", 1) }
+                theMarsApp.featureAuthorizer.features.ShiftWorkouts, 
+                openTheWizard
             );
             
         }

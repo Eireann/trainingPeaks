@@ -32,6 +32,7 @@ function(
     _.extend(FeatureAuthorizer.prototype, {
 
         features: {
+
             SaveWorkoutToDate: function(user, userAccess, attributes, options)
             {
                 if(!attributes || !attributes.targetDate)
@@ -51,7 +52,15 @@ function(
                 {
                     return true;
                 }
+            },
+
+            ShiftWorkouts: function(user, userAccess, attributes, options)
+            {
+                var allowedUserTypes = userAccess.getNumericList(accessRights.ids.CanPlanForUserTypes);
+                var currentAthleteType = user.getAthleteDetails().get("userType");
+                return _.contains(allowedUserTypes, currentAthleteType);
             }
+
         },
 
         canAccessFeature: function(featureChecker, attributes, options)

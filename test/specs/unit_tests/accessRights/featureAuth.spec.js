@@ -163,8 +163,47 @@ function(
                                 attributes
                             )
                     ).toBe(false);
-                    
+
                      expect(featureAuthorizer.features.SaveWorkoutToDate(
+                                user,
+                                authorizedUserAccessRights,
+                                attributes
+                            )
+                    ).toBe(true);
+                });
+            });
+
+            describe("ShiftWorkouts", function()
+            {
+                var user;
+                var authorizedUserAccessRights;
+                var unauthorizedUserAccessRights;
+
+                beforeEach(function()
+                {
+                    user = new UserModel(xhrData.users.barbkprem);
+                    user.setCurrentAthleteId(xhrData.users.barbkprem.userId);
+
+                    authorizedUserAccessRights = new UserAccessRightsModel();
+                    authorizedUserAccessRights.set({
+                    "rights":[xhrData.accessRights.planFutureWorkouts]
+                    });
+
+                    unauthorizedUserAccessRights = new UserAccessRightsModel();
+                    
+                });
+
+                it("Should allow only an authorized user to shift workouts", function()
+                {
+                    var attributes = { targetDate: moment().add("days", 1)};
+                    expect(featureAuthorizer.features.ShiftWorkouts(
+                                user,
+                                unauthorizedUserAccessRights,
+                                attributes
+                            )
+                    ).toBe(false);
+                    
+                     expect(featureAuthorizer.features.ShiftWorkouts(
                                 user,
                                 authorizedUserAccessRights,
                                 attributes
