@@ -156,7 +156,25 @@ function(_, touchPunch, draggable, droppable, moment, setImmediate, TP, Calendar
             }
 
             options.destinationCalendarDayModel = this.model;
-            this.trigger("itemDropped", options);
+
+            // check if we can drop in future
+            if(this.model.get("date") > today)
+            {
+                var auth = theMarsApp.featureAuthorizer;
+                if(auth.canAccessFeature(auth.features.PlanFutureWorkouts))
+                {
+                    this.trigger("itemDropped", options);
+                }
+                else
+                {
+                    auth.showUpgradeMessage(); 
+                }
+            }
+            else
+            {
+                this.trigger("itemDropped", options);
+            }
+
         },
 
         keepSettingsButtonVisible: function()

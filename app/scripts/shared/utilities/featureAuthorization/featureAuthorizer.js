@@ -65,7 +65,7 @@ function(
 
         showUpgradeMessage: function()
         {
-            alert("Not Implemented");
+            alert("Beautiful marketing message not yet implemented. Upgrade your account to use this feature.");
         }
 
     });

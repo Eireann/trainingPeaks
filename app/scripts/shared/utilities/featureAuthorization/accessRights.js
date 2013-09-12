@@ -6,14 +6,54 @@ function(
     _
          )
 {
+    var ids =
+    {
+        //CanPlan: 0,
+        CanUsePerspectives: 1,
+        CanViewPods: 2,
+        CanUsePods: 3,
+        CanSeeSecondCalendar: 4,
+        CanSeeDashboardAndCalendar: 5,
+        HideAdvertisements: 6,
+        //AllowedFileTypes: 7,
+        CanPlanForUserTypes: 8,
+        CanAddAthlete: 9,
+        CanRemoveAthlete: 10,
+        CanChangePassword: 11,
+        CanApplyPlan: 12,
+        CanUseExerciseLibrary: 13,
+        HidePlanStoreForCoachedByAthletes: 14,
+        MaximumRoutes: 15,
+        CanGroupBulkExportForUserTypes: 16,
+        MaximumExerciseLibrariesOwned: 17,
+        MaximumExercisesInOwnedLibrary: 18,
+        MaximumExerciseRoutinesInOwnedLibrary: 19,
+        MaximumWorkoutTemplatesInOwnedLibrary: 20,
+        HideStoresForUserTypes: 21,
+        CanViewReportsForCoach: 22,
+        CanViewReportsForAffiliate: 23,
+        CanUseAtp: 24,
+        CanUseAtpAndVirtualCoach: 25
+    };
 
-    var AccessRight = function(id, dataType)
+    var dataTypes =
+    {
+        String: 0,
+        Boolean: 1,
+        Numeric: 2,
+        NumericList: 3,
+        GuidList: 4,
+        StringList: 5,
+        StringDictionary: 6
+    };
+
+    function AccessRight(id, dataType)
     {
         this.id = id;
         this.dataType = dataType;
-    };
+    }
 
-    var createAccessRights = function()
+    function createAccessRights()
     {
         var rights = [];
 
@@ -56,50 +96,10 @@ function(
         rights.push(new AccessRight(ids.CanUseAtpAndVirtualCoach, dataTypes.Boolean));
 
         return rights;
-    };
-
-    var ids =
-    {
-        //CanPlan: 0,
-        CanUsePerspectives: 1,
-        CanViewPods: 2,
-        CanUsePods: 3,
-        CanSeeSecondCalendar: 4,
-        CanSeeDashboardAndCalendar: 5,
-        HideAdvertisements: 6,
-        //AllowedFileTypes: 7,
-        CanPlanForUserTypes: 8,
-        CanAddAthlete: 9,
-        CanRemoveAthlete: 10,
-        CanChangePassword: 11,
-        CanApplyPlan: 12,
-        CanUseExerciseLibrary: 13,
-        HidePlanStoreForCoachedByAthletes: 14,
-        MaximumRoutes: 15,
-        CanGroupBulkExportForUserTypes: 16,
-        MaximumExerciseLibrariesOwned: 17,
-        MaximumExercisesInOwnedLibrary: 18,
-        MaximumExerciseRoutinesInOwnedLibrary: 19,
-        MaximumWorkoutTemplatesInOwnedLibrary: 20,
-        HideStoresForUserTypes: 21,
-        CanViewReportsForCoach: 22,
-        CanViewReportsForAffiliate: 23,
-        CanUseAtp: 24,
-        CanUseAtpAndVirtualCoach: 25
-    };
-
-    var dataTypes =
-    {
-        String: 0,
-        Boolean: 1,
-        Numeric: 2,
-        NumericList: 3,
-        GuidList: 4,
-        StringList: 5,
-        StringDictionary: 6
-    };
+    }
 
     return {
+
         ids: ids,
         dataTypes: dataTypes,
         accessRights: createAccessRights(),
@@ -118,4 +118,5 @@ function(
             return ret;
         }
     };
+
 });

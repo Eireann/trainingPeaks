@@ -116,10 +116,14 @@ function(
         getAthleteDetails: function()
         {
             var athleteId = this.getCurrentAthleteId();
-            return new TP.Model(_.find(this.get("athletes"), function(athlete)
+            if(!this.athleteDetailsModel || this.athleteDetailsModel.get("athleteId") !== athleteId)
             {
-                return athlete.athleteId === athleteId;
-            }));
+                this.athleteDetailsModel = new TP.Model(_.find(this.get("athletes"), function(athlete)
+                {
+                    return athlete.athleteId === athleteId;
+                }));
+            }
+            return this.athleteDetailsModel;
         },
 
         getAccountSettings: function()
