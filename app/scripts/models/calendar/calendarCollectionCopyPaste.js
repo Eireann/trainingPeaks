@@ -105,11 +105,49 @@ function(
             if (!this.canPasteTo(dateToPasteTo))
                 return;
 
-            var pastedItems = this.clipboard.getValue().onPaste(dateToPasteTo);
-            this.addItems(pastedItems);
+            var pasteEndDate = this.getPasteEndDate(this.clipboard.getValue(), dateToPasteTo);
 
-            if (this.clipboard.getAction() === "cut")
-                this.clipboard.empty();
+            var self = this;
+            var handlePaste = function()
+            {
+                var pastedItems = self.clipboard.getValue().onPaste(dateToPasteTo);
+                self.addItems(pastedItems);
+
+                if (self.clipboard.getAction() === "cut")
+                    self.clipboard.empty();
+            };
+
+            theMarsApp.featureAuthorizer.runCallbackOrShowUpgradeMessage(
+                theMarsApp.featureAuthorizer.features.PlanFutureWorkouts, 
+                handlePaste, 
+                {targetDate: pasteEndDate }
+            );
+
+        },
+
+        getPasteEndDate: function(clipboardData, dateToPasteTo)
+        {
+
+            // pasting a range of days, calculate last day that actually contains an item
+            if (clipboardData instanceof CalendarWeekCollection)
+            {
+                var daysWithItems = clipboardData.filter(function(day){return day.length() > 0;});
+                if(daysWithItems.length)
+                {
+                    var lastDayWithItems = daysWithItems.pop();
+                    daysToAdd = clipboardData.indexOf(lastDayWithItems);
+                    return moment(dateToPasteTo).add("days", daysToAdd).format(TP.utils.datetime.shortDateFormat); 
+                } 
+                else
+                {
+                    return dateToPasteTo;
+                }
+            }
+            else
+            {
+                // simple move of an item or day from one day to another
+                return dateToPasteTo;
+            }
 
         },
 

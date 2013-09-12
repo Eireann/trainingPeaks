@@ -73,7 +73,10 @@ function(
 
             it("Should return a boolean if a valid feature is used", function()
             {
-                var userCanPlanWorkouts = featureAuthorizer.canAccessFeature(featureAuthorizer.features.PlanFutureWorkouts);
+                var userCanPlanWorkouts = featureAuthorizer.canAccessFeature(
+                    featureAuthorizer.features.PlanFutureWorkouts,
+                    {targetDate: "2013-01-01"}
+                );
                 expect(typeof userCanPlanWorkouts).toBe("boolean");
             });
 
@@ -91,8 +94,8 @@ function(
             {
                 spyOn(featureAuthorizer, "showUpgradeMessage");
                 var callback = jasmine.createSpy("the callback");
-                var featureChecker = function(){return true;};
-                featureAuthorizer.runCallbackOrShowUpgradeMessage(featureChecker, callback);
+                var myFeatureCheckerReturnsTrue = function(){return true;};
+                featureAuthorizer.runCallbackOrShowUpgradeMessage(myFeatureCheckerReturnsTrue, callback);
                 expect(callback).toHaveBeenCalled();
                 expect(featureAuthorizer.showUpgradeMessage).not.toHaveBeenCalled();
             });
@@ -101,8 +104,8 @@ function(
             {
                 spyOn(featureAuthorizer, "showUpgradeMessage");
                 var callback = jasmine.createSpy("the callback");
-                var featureChecker = function(){return false;};
-                featureAuthorizer.runCallbackOrShowUpgradeMessage(featureChecker, callback);
+                var myFeatureCheckerReturnsFalse = function(){return false;};
+                featureAuthorizer.runCallbackOrShowUpgradeMessage(myFeatureCheckerReturnsFalse, callback);
                 expect(callback).not.toHaveBeenCalled();
                 expect(featureAuthorizer.showUpgradeMessage).toHaveBeenCalled();
             });

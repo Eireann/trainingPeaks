@@ -9,10 +9,14 @@ usage: theMarsApp.featureAuthorizer.canAccessFeature(theMarsApp.featureAuthorize
 define(
 [
     "underscore",
+    "moment",
+    "TP",
     "shared/utilities/featureAuthorization/accessRights"
 ],
 function(
     _,
+    moment,
+    TP,
     accessRights
          )
 {
@@ -28,9 +32,23 @@ function(
         features: {
             PlanFutureWorkouts: function(user, userAccess, attributes, options)
             {
-                var allowedUserTypes = userAccess.getNumericList(accessRights.ids.CanPlanForUserTypes);
-                var currentAthleteType = user.getAthleteDetails().get("userType");
-                return _.contains(allowedUserTypes, currentAthleteType);
+                if(!attributes || !attributes.targetDate)
+                {
+                    throw new Error("PlanFutureWorkouts requires a targetDate attribute");
+                }
+                var today = moment().format(TP.utils.datetime.shortDateFormat);
+                var newDate = moment(attributes.targetDate).format(TP.utils.datetime.shortDateFormat);
+
+                if(newDate > today)
+                {
+                    var allowedUserTypes = userAccess.getNumericList(accessRights.ids.CanPlanForUserTypes);
+                    var currentAthleteType = user.getAthleteDetails().get("userType");
+                    return _.contains(allowedUserTypes, currentAthleteType);
+                }
+                else
+                {
+                    return true;
+                }
             }
         },
 

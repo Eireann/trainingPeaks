@@ -57,7 +57,19 @@ function(
 
         onShiftWizardOpen: function()
         {
-            this.trigger("shiftwizard:open");
+            var self = this;
+            var openTheWizard = function()
+            {
+                self.trigger("shiftwizard:open");
+            };
+
+            // any future date will do to check this feature ...
+            theMarsApp.featureAuthorizer.runCallbackOrShowUpgradeMessage(
+                theMarsApp.featureAuthorizer.features.PlanFutureWorkouts, 
+                openTheWizard, 
+                {targetDate: moment().add("days", 1) }
+            );
+            
         }
     };
 

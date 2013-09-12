@@ -157,25 +157,24 @@ function(_, touchPunch, draggable, droppable, moment, setImmediate, TP, Calendar
 
             options.destinationCalendarDayModel = this.model;
 
-            // check if we can drop in future
-            if(this.model.get("date") > today)
+            var self = this;
+            var callback = function()
             {
-                var auth = theMarsApp.featureAuthorizer;
-                if(auth.canAccessFeature(auth.features.PlanFutureWorkouts))
-                {
-                    this.trigger("itemDropped", options);
-                }
-                else
-                {
-                    auth.showUpgradeMessage(); 
-                }
-            }
-            else
-            {
-                this.trigger("itemDropped", options);
-            }
+                self.trigger("itemDropped", options);
+            };
 
+            this._runCallbackIfCanPlanFuture(callback);
         },
+
+        _runCallbackIfCanPlanFuture: function(callback)
+        {
+            theMarsApp.featureAuthorizer.runCallbackOrShowUpgradeMessage(
+                theMarsApp.featureAuthorizer.features.PlanFutureWorkouts, 
+                callback, 
+                {targetDate: this.model.get("date")}
+            );
+        },
+
 
         keepSettingsButtonVisible: function()
         {
@@ -230,7 +229,7 @@ function(_, touchPunch, draggable, droppable, moment, setImmediate, TP, Calendar
         {
             this.allowSettingsButtonToHide();
             e.preventDefault();
-            this.openNewItemView();
+            this.openNewItemViewIfAuthorized();
         },
 
         onDayClicked: function(e)
@@ -251,6 +250,11 @@ function(_, touchPunch, draggable, droppable, moment, setImmediate, TP, Calendar
             }
 
             this.clearSelection(e);
+        },
+
+        openNewItemViewIfAuthorized: function()
+        {
+            this._runCallbackIfCanPlanFuture(_.bind(this.openNewItemView, this));
         },
 
         openNewItemView: function()
@@ -373,7 +377,7 @@ function(_, touchPunch, draggable, droppable, moment, setImmediate, TP, Calendar
 
             if (theMarsApp.isTouchEnabled() && !$(e.target).is(".dayHeader"))
             {
-                this.openNewItemView(e);
+                this.openNewItemViewIfAuthorized(e);
             }
         },
 
