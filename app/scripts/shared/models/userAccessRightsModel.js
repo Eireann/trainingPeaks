@@ -1,4 +1,10 @@
-﻿define(
+﻿/*
+This model contains the access right values for the current user.
+You should not use this model directly to check access rights.
+For actual feature access checking please use theMarsApp.featureAuthorizer.canAccessFeature
+
+*/
+define(
 [
     "underscore",
     "shared/utilities/featureAuthorization/accessRights",

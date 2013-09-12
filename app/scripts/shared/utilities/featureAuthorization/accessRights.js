@@ -1,3 +1,9 @@
+/*
+This module contains the list of access rights definitions - id's and types
+
+For actual feature access checking please use theMarsApp.featureAuthorizer.canAccessFeature
+
+*/
 define(
 [
     "underscore"
