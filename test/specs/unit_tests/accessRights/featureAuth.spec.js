@@ -126,7 +126,7 @@ function(
                 {
                     user = new UserModel(xhrData.users.barbkprem);
                     user.setCurrentAthleteId(xhrData.users.barbkprem.userId);
-                    
+
                     authorizedUserAccessRights = new UserAccessRightsModel();
                     authorizedUserAccessRights.set({
                     "rights":[xhrData.accessRights.planFutureWorkouts]
@@ -163,6 +163,13 @@ function(
                                 attributes
                             )
                     ).toBe(false);
+                    
+                     expect(featureAuthorizer.features.SaveWorkoutToDate(
+                                user,
+                                authorizedUserAccessRights,
+                                attributes
+                            )
+                    ).toBe(true);
                 });
             });
 
