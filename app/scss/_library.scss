@@ -424,12 +424,18 @@ $troughIconSpriteRetinaURL: url(../../assets/images/sprite-icons-trough@2x.png);
             {
                 color: $TPGrey3;
                 display:inline-block;
+                float:left;
                 cursor: inherit;
                 font-size: $fontSizeLarge;
                 margin-right: 4px;
-                margin-left: 1px;
-
+                margin-left: 6px;
+                margin-bottom:0;
                 text-align:left;
+                width:auto;
+
+                &:first-of-type {
+                    margin-left:1px;
+                }
             }
         }
 
@@ -439,6 +445,7 @@ $troughIconSpriteRetinaURL: url(../../assets/images/sprite-icons-trough@2x.png);
             {
                 text-align:left;
                 color: $TPGrey3;
+                line-height:normal;
             }
         }
     }
@@ -451,14 +458,10 @@ $troughIconSpriteRetinaURL: url(../../assets/images/sprite-icons-trough@2x.png);
         @include libraryTile();
         margin: 5px 4px 4px 2px;
 
-        .planDetails
-        {
-            
+        .planDetails {
             height: 50px;
             padding: 3px;
-            
             white-space: normal;
-            line-height: 1.5em;
 
             .planIconTitle {
                 margin-bottom:4px;
@@ -478,8 +481,8 @@ $troughIconSpriteRetinaURL: url(../../assets/images/sprite-icons-trough@2x.png);
                     display: table; 
 
                     h3 {
-                        font-size: $fontSizeSmaller;
-                        font-family: $fontFamilyRegular;
+                        font-size: $fontSizeXSmall;
+                        font-family: $fontFamilyHeavy;
                         font-weight:normal;
                         color:$TPGrey4;
                         line-height:normal;
@@ -497,7 +500,7 @@ $troughIconSpriteRetinaURL: url(../../assets/images/sprite-icons-trough@2x.png);
 
             // Author and Duration
             p {
-                font-size: $fontSizeSmaller;
+                font-size: $fontSizeXSmall;
                 color:$TPGrey10;
                 margin:0 0 0 3px;
                 padding:0;

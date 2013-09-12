@@ -649,8 +649,10 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
             }
 
             .chartTileName {
-                font-size: $fontSizeSmall;
+                font-size: $fontSizeSmaller;
                 font-family: $fontFamilyHeavy;
+                font-weight:normal;
+                color:$TPGrey4;
                 margin-left:3px;
                 float:left;
                 margin:7px 6px;
