@@ -26,12 +26,12 @@ function(
     _.extend(FeatureAuthorizer.prototype, {
 
         features: {
-
             PlanFutureWorkouts: function(user, userAccess, attributes, options)
             {
-                return true;
+                var allowedUserTypes = userAccess.getNumericList(accessRights.ids.CanPlanForUserTypes);
+                var currentAthleteType = user.getAthleteDetails().get("userType");
+                return _.contains(allowedUserTypes, currentAthleteType);
             }
-
         },
 
         canAccessFeature: function(featureChecker, attributes, options)
