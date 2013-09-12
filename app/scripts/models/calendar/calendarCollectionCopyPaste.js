@@ -118,7 +118,7 @@ function(
             };
 
             theMarsApp.featureAuthorizer.runCallbackOrShowUpgradeMessage(
-                theMarsApp.featureAuthorizer.features.PlanFutureWorkouts, 
+                theMarsApp.featureAuthorizer.features.SaveWorkoutToDate, 
                 handlePaste, 
                 {targetDate: pasteEndDate }
             );

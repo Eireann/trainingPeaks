@@ -2,7 +2,7 @@
 
 FeatureAuthorizer
 
-usage: theMarsApp.featureAuthorizer.canAccessFeature(theMarsApp.featureAuthorizer.features.PlanFutureWorkouts, attributes, options);
+usage: theMarsApp.featureAuthorizer.canAccessFeature(theMarsApp.featureAuthorizer.features.SaveWorkoutToDate, attributes, options);
 
 */
 
@@ -11,13 +11,15 @@ define(
     "underscore",
     "moment",
     "TP",
-    "shared/utilities/featureAuthorization/accessRights"
+    "shared/utilities/featureAuthorization/accessRights",
+    "shared/views/userUpgradeView"
 ],
 function(
     _,
     moment,
     TP,
-    accessRights
+    accessRights,
+    userUpgradeView
          )
 {
 
@@ -30,11 +32,11 @@ function(
     _.extend(FeatureAuthorizer.prototype, {
 
         features: {
-            PlanFutureWorkouts: function(user, userAccess, attributes, options)
+            SaveWorkoutToDate: function(user, userAccess, attributes, options)
             {
                 if(!attributes || !attributes.targetDate)
                 {
-                    throw new Error("PlanFutureWorkouts requires a targetDate attribute");
+                    throw new Error("SaveWorkoutToDate requires a targetDate attribute");
                 }
                 var today = moment().format(TP.utils.datetime.shortDateFormat);
                 var newDate = moment(attributes.targetDate).format(TP.utils.datetime.shortDateFormat);
@@ -83,7 +85,7 @@ function(
 
         showUpgradeMessage: function()
         {
-            alert("Beautiful marketing message not yet implemented. Upgrade your account to use this feature.");
+            new userUpgradeView().render();
         }
 
     });

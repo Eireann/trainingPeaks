@@ -470,7 +470,16 @@ function()
                     endDate: "2014-09-10"
                 }
             ],
-        } 
+        },
+
+        accessRights: {
+            planFutureWorkouts: {
+                "accessRightItemDataValue": {"data":"4"},
+                "accessRightIdValue":8,
+                "accessRightItemDataTypeValue":3,
+                "accessRightData":[4]
+            }
+        }
         
     };
 

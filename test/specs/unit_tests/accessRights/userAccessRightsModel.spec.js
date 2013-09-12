@@ -3,12 +3,14 @@ requirejs(
 [
     "underscore",
     "shared/utilities/featureAuthorization/accessRights",
-    "shared/models/userAccessRightsModel"
+    "shared/models/userAccessRightsModel",
+    "testUtils/xhrDataStubs"
 ],
 function(
     _,
     accessRights,
-    UserAccessRightsModel
+    UserAccessRightsModel,
+    xhrData
     )
 {
 
@@ -39,14 +41,7 @@ function(
             {
                 var model = new UserAccessRightsModel();
                 model.set({
-                    "rights":[
-                        {
-                            "accessRightItemDataValue": {"data":"4"},
-                            "accessRightIdValue":8,
-                            "accessRightItemDataTypeValue":3,
-                            "accessRightData":[4]
-                        }
-                    ]
+                    "rights":[xhrData.accessRights.planFutureWorkouts]
                 });
                 var accessRightsValue = model.getNumericList(accessRights.ids.CanPlanForUserTypes);
                 expect(_.isArray(accessRightsValue)).toBe(true);

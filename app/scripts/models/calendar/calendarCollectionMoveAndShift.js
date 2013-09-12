@@ -65,7 +65,7 @@ function(
 
             // any future date will do to check this feature ...
             theMarsApp.featureAuthorizer.runCallbackOrShowUpgradeMessage(
-                theMarsApp.featureAuthorizer.features.PlanFutureWorkouts, 
+                theMarsApp.featureAuthorizer.features.SaveWorkoutToDate, 
                 openTheWizard, 
                 {targetDate: moment().add("days", 1) }
             );

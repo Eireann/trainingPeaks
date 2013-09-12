@@ -427,5 +427,8 @@
 
     "SwitchToFlex": "Switch to Flex",
     "InvalidEmail": "Email address is invalid, please re-enter",
-    "InvalidPassword": "Passwords do not match, please re-enter"
+    "InvalidPassword": "Passwords do not match, please re-enter",
+
+    "PremiumFeature": "Premium Feature",
+    "UpgradeMessage": "You must upgrade your account to use this feature"
 }

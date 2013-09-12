@@ -163,18 +163,12 @@ function(_, touchPunch, draggable, droppable, moment, setImmediate, TP, Calendar
                 self.trigger("itemDropped", options);
             };
 
-            this._runCallbackIfCanPlanFuture(callback);
-        },
-
-        _runCallbackIfCanPlanFuture: function(callback)
-        {
             theMarsApp.featureAuthorizer.runCallbackOrShowUpgradeMessage(
-                theMarsApp.featureAuthorizer.features.PlanFutureWorkouts, 
+                theMarsApp.featureAuthorizer.features.SaveWorkoutToDate, 
                 callback, 
                 {targetDate: this.model.get("date")}
             );
         },
-
 
         keepSettingsButtonVisible: function()
         {
@@ -254,7 +248,11 @@ function(_, touchPunch, draggable, droppable, moment, setImmediate, TP, Calendar
 
         openNewItemViewIfAuthorized: function()
         {
-            this._runCallbackIfCanPlanFuture(_.bind(this.openNewItemView, this));
+            theMarsApp.featureAuthorizer.runCallbackOrShowUpgradeMessage(
+                theMarsApp.featureAuthorizer.features.SaveWorkoutToDate, 
+                _.bind(this.openNewItemView, this),
+                {targetDate: this.model.get("date")}
+            );
         },
 
         openNewItemView: function()

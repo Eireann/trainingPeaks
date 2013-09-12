@@ -38,7 +38,7 @@ function(
 
         it("Should have some features in the list of features", function()
         {
-            expect(featureAuthorizer.features.PlanFutureWorkouts).toBeDefined();
+            expect(featureAuthorizer.features.SaveWorkoutToDate).toBeDefined();
         });
 
         describe("canAccessFeature", function()
@@ -74,7 +74,7 @@ function(
             it("Should return a boolean if a valid feature is used", function()
             {
                 var userCanPlanWorkouts = featureAuthorizer.canAccessFeature(
-                    featureAuthorizer.features.PlanFutureWorkouts,
+                    featureAuthorizer.features.SaveWorkoutToDate,
                     {targetDate: "2013-01-01"}
                 );
                 expect(typeof userCanPlanWorkouts).toBe("boolean");
