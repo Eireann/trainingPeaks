@@ -7,17 +7,28 @@
     button
     {
         padding: 4px 5px;
-        margin-right: 5px;
+        margin-right: 8px;
         min-width: 77px;
     }
 
     .userSettingsContent {
-        .addWorkoutType, .removeZone {
+        .addWorkoutType, 
+        .removeZone,
+        .removeWorkoutType {
             font-size:$fontSizeSmall;
         }
 
         .addZone {
             margin-top:10px;
+        }
+
+        .removeZone {
+            margin-left:4px;
+        }
+
+        .removeWorkoutType {
+            display:inline-block;
+            margin-left:4px;
         }
 
         .addZoneContain {
@@ -54,6 +65,7 @@
                 border:1px solid $TPGrey1;
                 padding:10px;
                 margin-bottom:10px;
+                margin-top:15px;
 
                 label {
                     cursor:auto;
@@ -97,7 +109,8 @@
             font-size:$fontSizeMedium;
             color:$TPGrey8;
             line-height:normal;
-            margin-bottom:15px;
+            display:inline-block;
+            margin:0;
         }
 
         .heartRateZones, 
