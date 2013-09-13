@@ -445,11 +445,6 @@ function(
             this.on("controller:rangeselected", this.onRangeSelected, this);
             this.on("controller:unselectall", this.onUnSelectAll, this);
             this.on("close", this.stopWatchingControllerEvents, this);
-            this.on("controller:expandCollapse", this.onExpandCollapse, this);
-        },
-        onExpandCollapse: function(direction)
-        {
-            this.disableRepaintHeight = direction === "collapse";
         },
 
         stopWatchingControllerEvents: function()
@@ -576,10 +571,6 @@ function(
         },
         repaintHeight: function()
         {
-            if (this.disableRepaintHeight) 
-            {
-                return;
-            }
             if (this.$plot)
             {
                 this.$plot.height(this.plotHeight);

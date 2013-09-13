@@ -181,11 +181,13 @@ function(setImmediate, TP, DataParser, ExpandoLayout, GraphView, MapView, StatsV
 
         collapse: function()
         {
+            this.disableViewsResize = true;
             this.views.graphView.trigger("controller:expandCollapse", "collapse");
             this.layout.$el.parent().hide();
         },
         expand: function()
         {
+            this.disableViewsResize = false;
             if (this.views.graphView)
             {
                 this.views.graphView.trigger("controller:expandCollapse", "expand");
@@ -333,6 +335,10 @@ function(setImmediate, TP, DataParser, ExpandoLayout, GraphView, MapView, StatsV
 
         onViewResize: function()
         {
+            if (this.disableViewsResize)
+            {
+                return;
+            }
             var containerHeight = this.layout.$el.parent().height();
             var mapAndChartsContainerWidth = this.layout.$("#expandoLeftColumn").width();
             _.each(this.views, function(view)
