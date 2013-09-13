@@ -556,6 +556,20 @@ function(
 
         });
 
+        describe("Click on a data point", function()
+        {
+            var modelData = buildPmcModelData(10);
+            var chart = buildPmcChart();
+            chart.rawData = modelData;
+            spyOn(chart.dataManager, "fetchOnModel").andReturn(new $.Deferred().resolve());
+            var tomahawkView = chart.createItemDetailView({dataIndex: 2},{pageX: 10, pageY: 10});
+
+            it("Should instantiate a PmcWorkoutsListView", function()
+            {
+                expect(tomahawkView).toBeDefined();
+            });
+
+        });
 
     });
 

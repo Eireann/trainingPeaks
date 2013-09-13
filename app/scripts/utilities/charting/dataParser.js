@@ -234,7 +234,7 @@ function(chartColors, findIndexByMsOffset, conversion)
         var axisIndex = 1;
         _.each(series, function(s)
         {
-            var showSwimPace = s.label === "Speed" && self.workoutTypeValueId === 1;
+            var showSpeedAsPace = s.label === "Speed" && _.contains([1,3,13], self.workoutTypeValueId);
             if (s.label === "Pace")
                 return;
             
@@ -258,13 +258,13 @@ function(chartColors, findIndexByMsOffset, conversion)
                     // For some reason, a '0' value returns a NaN, check for it.
 
                     // Swim workouts need to format "Speed" as "Pace"
-                    if (showSwimPace)
+                    if (showSpeedAsPace)
                     {
                         return value === 0 ? +0 : conversion.formatUnitsValue("pace", value, { defaultValue: null, workoutTypeId: self.workoutTypeValueId } );
                     }
                     return value === 0 ? +0 : parseInt(conversion.formatUnitsValue(s.label.toLowerCase(), value), 10);
                 },
-                labelWidth: showSwimPace ? 27 : 15
+                labelWidth: showSpeedAsPace ? 27 : 15
             };
 
             yaxes.push(axisOptions);

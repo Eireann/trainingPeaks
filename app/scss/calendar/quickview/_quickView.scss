@@ -214,71 +214,22 @@
     .saveWorkoutToLibraryConfirmation
     {
         z-index: 103;
-        min-width: 450px;
 
-        .labels
-        {
-            text-align: right;
-            width: 35%;
-            display: inline-block;
-            margin-right: 10px;
-            margin-left: 20px;
-        }
-
-        .selectForm
-        {
-            text-align: right;
-            width: 100%;
-            display: inline-block;
-            margin-right: 10px;
-            margin-left: 20px;
-
-            label
-            {
-                float: left;
-                margin: 0 13px 0 68px;
-            }
-        }
-
-        .values
-        {
-            text-align: left;
-            width: 45%;
-            display: inline-block;
-            margin-right: 20px;
-        }
-
-        label
-        {
-            display:inline-block;
+        label {
+         
             font-family: $fontFamilyHeavy;
         }
 
-
-
-        .selectboxit-options
-        {
+        .selectboxit-options {
             width: 200px;
         }
 
-        #selectLibrarySelectBoxItOptions
-        {
-            margin-left: 153px;
+        #selectLibrarySelectBoxItOptions {
+       
         }
 
-        .selectboxit-container .selectboxit 
-        {
+        .selectboxit-container .selectboxit {
             width: 200px !important; /* Width of the dropdown button */
-        }
-
-        .selectboxit-option
-        {
-            text-indent: 3px;
-        }
-
-        .selectboxit-option-icon-container 
-        {
-            margin-left: 0px;
         }
 
         input
@@ -286,10 +237,51 @@
             width: 200px;
         }
 
-        .dialogButtons
-        {
-            margin-top: 20px;
+        .excerciseTitle {
+            margin-top:20px;
+
+            .labels {
+                float:left;
+                width:120px;
+                text-align:left;
+                padding-right:10px;
+
+
+                label {
+                    color:$TPGrey3;
+                }
+            }
+
+            .values {
+                input {
+                    float:right;
+                    height:22px;
+                }
+            }
+
         }
+
+        .selectLibrary {
+            margin-bottom:4px;
+
+            .labels {
+                float:left;
+                width:120px;
+                text-align:left;
+                padding-right:10px;
+                
+                label {
+                    margin-bottom:0;
+                    color:$TPGrey3;
+                }
+            }
+
+            .selectContain {
+                float:right;
+            }
+        }
+
+
     }
 
     .workoutComments

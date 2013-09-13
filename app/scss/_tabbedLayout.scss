@@ -13,6 +13,11 @@
     padding:10px;
     font-size:$fontSizeSmall;
     background-color:$TPGrey1;
+
+    span {
+        display: block;
+        width: 100%;
+    }
     
     li {
         list-style-type:none;

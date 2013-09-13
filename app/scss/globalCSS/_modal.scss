@@ -28,8 +28,22 @@
         max-width: calc(100% - 26px);
 
         .titleBar {
+            width:110%;
+            margin-left:-5px;
+
             h2.modaltitle {
-                margin:9px 0 0 10px;
+                margin:9px 0 0 15px;
+            }
+
+            // same as h2.modaltitle
+            h2 {
+                font-size: $fontSizeSmall; 
+                font-family: $fontFamilyRegular;
+                font-weight:normal;
+                color: $TPGrey3;
+                float:left;
+                line-height:1;
+                margin: 9px 0 0 15px;
             }
             
             #closeIcon, .closeIcon {
