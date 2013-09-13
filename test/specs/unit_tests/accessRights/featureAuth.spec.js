@@ -212,6 +212,137 @@ function(
                 });
             });
 
+            describe("ViewPod", function()
+            {
+                var user;
+                var authorizedUserAccessRights;
+                var unauthorizedUserAccessRights;
+
+                beforeEach(function()
+                {
+                    user = new UserModel(xhrData.users.barbkprem);
+                    user.setCurrentAthleteId(xhrData.users.barbkprem.userId);
+
+                    authorizedUserAccessRights = new UserAccessRightsModel();
+                    authorizedUserAccessRights.set({
+                    "rights":[xhrData.accessRights.canViewPods]
+                    });
+
+                    unauthorizedUserAccessRights = new UserAccessRightsModel();
+                    
+                });
+
+                it("Should only allow authorized user to view chart", function()
+                {
+                    var attributes = { podTypeId: 3 }; // fitness summary
+                    expect(featureAuthorizer.features.ViewPod(
+                                user,
+                                unauthorizedUserAccessRights,
+                                attributes
+                            )
+                    ).toBe(false);
+                    
+                     expect(featureAuthorizer.features.ViewPod(
+                                user,
+                                authorizedUserAccessRights,
+                                attributes
+                            )
+                    ).toBe(true);
+                });
+
+                it("Should not allow unknown pod types if option is not set", function()
+                {
+                    var attributes = { podTypeId: 9999 }; 
+                    var checkPodAccess = function()
+                    {
+                        return featureAuthorizer.features.ViewPod(
+                            user,
+                            authorizedUserAccessRights,
+                            attributes
+                        );
+                    };
+                    expect(checkPodAccess).toThrow();
+                });
+
+                it("Should allow unknown pod types if option is set", function()
+                {
+                    var attributes = { podTypeId: 9999 }; 
+                    var options = { allowUnknownPodTypes: true };
+                    expect(featureAuthorizer.features.ViewPod(
+                        user,
+                        authorizedUserAccessRights,
+                        attributes,
+                        options
+                    )).toBe(true);
+                });
+
+            });
+
+            describe("UsePod", function()
+            {
+                var user;
+                var authorizedUserAccessRights;
+                var unauthorizedUserAccessRights;
+
+                beforeEach(function()
+                {
+                    user = new UserModel(xhrData.users.barbkprem);
+                    user.setCurrentAthleteId(xhrData.users.barbkprem.userId);
+
+                    authorizedUserAccessRights = new UserAccessRightsModel();
+                    authorizedUserAccessRights.set({
+                    "rights":[xhrData.accessRights.canUsePods]
+                    });
+
+                    unauthorizedUserAccessRights = new UserAccessRightsModel();
+                    
+                });
+
+                it("Should only allow authorized user to use chart", function()
+                {
+                    var attributes = { podTypeId: 3 }; // fitness summary
+                    expect(featureAuthorizer.features.UsePod(
+                                user,
+                                unauthorizedUserAccessRights,
+                                attributes
+                            )
+                    ).toBe(false);
+                    
+                     expect(featureAuthorizer.features.UsePod(
+                                user,
+                                authorizedUserAccessRights,
+                                attributes
+                            )
+                    ).toBe(true);
+                });
+
+                it("Should not allow unknown pod types if option is not set", function()
+                {
+                    var attributes = { podTypeId: 9999 }; 
+                    var checkPodAccess = function()
+                    {
+                        return featureAuthorizer.features.UsePod(
+                            user,
+                            authorizedUserAccessRights,
+                            attributes
+                        );
+                    };
+                    expect(checkPodAccess).toThrow();
+                });
+
+                it("Should allow unknown pod types if option is set", function()
+                {
+                    var attributes = { podTypeId: 9999 }; 
+                    var options = { allowUnknownPodTypes: true };
+                    expect(featureAuthorizer.features.UsePod(
+                        user,
+                        authorizedUserAccessRights,
+                        attributes,
+                        options
+                    )).toBe(true);
+                });
+
+            });
         });
 
     });

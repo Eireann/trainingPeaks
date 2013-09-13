@@ -11,6 +11,7 @@ define(
     "underscore",
     "moment",
     "TP",
+    "shared/data/podTypes",
     "shared/utilities/featureAuthorization/accessRights",
     "shared/views/userUpgradeView"
 ],
@@ -18,6 +19,7 @@ function(
     _,
     moment,
     TP,
+    podTypes,
     accessRights,
     UserUpgradeView
          )
@@ -33,6 +35,10 @@ function(
 
         features: {
 
+            /*
+            attributes: { targetDate: date } // the date to try to save to
+            options: none
+            */
             SaveWorkoutToDate: function(user, userAccess, attributes, options)
             {
                 if(!attributes || !attributes.targetDate)
@@ -54,11 +60,74 @@ function(
                 }
             },
 
+            /*
+            attributes: none
+            options: none
+            */
             ShiftWorkouts: function(user, userAccess, attributes, options)
             {
                 var allowedUserTypes = userAccess.getNumericList(accessRights.ids.CanPlanForUserTypes);
                 var currentAthleteType = user.getAthleteDetails().get("userType");
                 return _.contains(allowedUserTypes, currentAthleteType);
+            },
+
+            /*
+            attributes: { podTypeId: int } // matches types in dashboard charts and shared/data/podTypes
+            options: { allowUnknownPodTypes: boolean } // allow pod without permission if not defined in podTypes
+            */
+            ViewPod: function(user, userAccess, attributes, options)
+            {
+                if(!attributes || !attributes.podTypeId)
+                {
+                    throw new Error("ViewPod requires a podTypeId attribute");
+                }
+
+                try {
+                    var podType = podTypes.findById(attributes.podTypeId);
+                    var viewablePods = userAccess.getStringList(accessRights.ids.CanViewPods);
+                    return _.contains(viewablePods, podType.podAccessString);
+                }
+                catch(e)
+                {
+                    if(options && options.allowUnknownPodTypes)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        throw e;
+                    }
+                }
+
+            },
+
+            /*
+            attributes: { podTypeId: int } // matches types in dashboard charts and shared/data/podTypes
+            options: { allowUnknownPodTypes: boolean } // allow pod without permission if not defined in podTypes
+            */
+            UsePod: function(user, userAccess, attributes, options)
+            {
+                if(!attributes || !attributes.podTypeId)
+                {
+                    throw new Error("UsePod requires a podTypeId attribute");
+                }
+
+                try {
+                    var podType = podTypes.findById(attributes.podTypeId);
+                    var useablePods = userAccess.getStringList(accessRights.ids.CanUsePods);
+                    return _.contains(useablePods, podType.podAccessString);
+                }
+                catch(e)
+                {
+                    if(options && options.allowUnknownPodTypes)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        throw e;
+                    }
+                }
             }
 
         },

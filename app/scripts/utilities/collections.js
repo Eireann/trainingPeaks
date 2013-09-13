@@ -6,7 +6,7 @@ function(_)
 {
     var CollectionUtils = {
         
-        search: function(CollectionConstructor, sourceCollection, searchText, attributeNames)
+        search: function(CollectionConstructor, sourceCollection, searchText, attributeNames, collectionOptions)
         {
             searchText = searchText.trim();
 
@@ -26,10 +26,10 @@ function(_)
                     });
                 };
 
-                return new CollectionConstructor(sourceCollection.filter(filterModel));
+                return new CollectionConstructor(sourceCollection.filter(filterModel), collectionOptions);
 
             } else {
-                return new CollectionConstructor(sourceCollection.models);
+                return new CollectionConstructor(sourceCollection.models, collectionOptions);
             }
 
         },

@@ -57,6 +57,28 @@ function(
 
         },
 
+        getStringList: function(accessRightId)
+        {
+            var accessRightDefinition = accessRights.find(accessRightId);
+
+            if(accessRightDefinition.dataType !== accessRights.dataTypes.StringList)
+            {
+                throw new Error("Requested string list, but data type for access right id " + accessRightId + " is not string list");
+            }
+
+            var accessRightForUser = this._findAccessRightValueById(accessRightId);
+
+            if(!accessRightForUser || !accessRightForUser.accessRightData)
+            {
+                return [];
+            }
+            else
+            {
+                return accessRightForUser.accessRightData;
+            }
+
+        },
+
         _findAccessRightValueById: function(accessRightId)
         {
             return _.find(this.get("rights"), function(right)

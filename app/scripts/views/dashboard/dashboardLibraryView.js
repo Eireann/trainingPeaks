@@ -28,7 +28,7 @@ function(
 
             this.collections =
             {
-                charts: new AvailableChartsCollection()
+                charts: new AvailableChartsCollection(null, { featureAuthorizer: theMarsApp.featureAuthorizer })
             };
         },
 
