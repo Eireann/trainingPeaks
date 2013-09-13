@@ -57,7 +57,17 @@ function(
 
         onShiftWizardOpen: function()
         {
-            this.trigger("shiftwizard:open");
+            var self = this;
+            var openTheWizard = function()
+            {
+                self.trigger("shiftwizard:open");
+            };
+
+            theMarsApp.featureAuthorizer.runCallbackOrShowUpgradeMessage(
+                theMarsApp.featureAuthorizer.features.ShiftWorkouts, 
+                openTheWizard
+            );
+            
         }
     };
 

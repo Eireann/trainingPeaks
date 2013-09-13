@@ -10,6 +10,7 @@ define(
     "dashboard/reportingDataManager",
     "models/session",
     "shared/models/userModel",
+    "shared/models/userAccessRightsModel",
     "models/buildInfo",
     "models/timeZones",
     "models/clientEventsCollection",
@@ -21,6 +22,7 @@ define(
     "router",
     "utilities/dragAndDropFileUploadWidget",
     "utilities/textFieldNumberFilter",
+    "shared/utilities/featureAuthorization/featureAuthorizer",
     "hbs!templates/views/notAllowedForAlpha",
     "scripts/plugins/marionette.faderegion"
 ],
@@ -35,6 +37,7 @@ function(
     ReportingDataManager,
     Session,
     UserModel,
+    UserAccessRightsModel,
     BuildInfoModel,
     TimeZonesModel,
     ClientEventsCollection,
@@ -46,6 +49,7 @@ function(
     Router,
     DragAndDropFileUploadWidget,
     TextFieldNumberFilter,
+    FeatureAuthorizer,
     notAllowedForAlphaTemplate,
     fadeRegion)
 {
@@ -81,6 +85,7 @@ function(
     {
 
         this.user = new UserModel();
+        this.userAccessRights = new UserAccessRightsModel();
         this.session = new Session();
         this.addAllShutdowns();
 
@@ -201,6 +206,16 @@ function(
             }, this);
         });
 
+        // add feature authorizer
+        this.addInitializer(function()
+        {
+            this.featureAuthorizer = new FeatureAuthorizer(this.user, this.userAccessRights);
+            this.on("api:paymentrequired", function()
+            {
+                this.featureAuthorizer.showUpgradeMessage();
+            }, this);
+        });
+
         this.setupAuthPromise = function()
         {
             var self = this;
@@ -219,12 +234,12 @@ function(
         this.fetchBuildInfo = function()
         {
             this.buildInfo.fetch();
-        },  
+        };
 
         this.fetchTimeZones = function()
         {
             this.timeZones.fetch();
-        },
+        };
 
         this.fetchUser = function()
         {
@@ -236,6 +251,7 @@ function(
                 {
                     self.session.saveUserToLocalStorage(self.user);
                     self.fetchAthleteSettings();
+                    self.fetchUserAccessRights();
                     self.userFetchPromise.resolve();
                 }
                 else
@@ -244,6 +260,11 @@ function(
             {
                 self.userFetchPromise.reject();
             });
+        };
+
+        this.fetchUserAccessRights = function()
+        {
+            this.userAccessRights.fetch();
         };
 
         this.featureAllowedForUser = function(feature, user)

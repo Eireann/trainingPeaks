@@ -174,19 +174,12 @@ function(
 
         initialize: function(attributes, options)
         {
+            var self = this;
             this.subType = _.find(this.subTypes, function(subType)
             {
                 return subType.chartType === parseInt(this.get('chartType'), 10);
             }, this);
             this.subType.hasPlanned = this.subType.plannedSeries && this.subType.plannedSeries.length > 0;
-
-            _.each(this.subType.series, function(serie)
-            {
-                _.defaults(serie,
-                {
-                    colors: chartColors.workoutSummary.bars
-                });
-            });
 
             _.each(this.subType.plannedSeries, function(serie)
             {
@@ -197,6 +190,21 @@ function(
             });
 
             this._validateWorkoutTypes();
+        },
+
+        _getColorForWorkoutType: function()
+        {
+            var workoutTypeIds = this.get('workoutTypeIds'),
+                workoutTypeName;
+            if (workoutTypeIds.length > 1)
+            {
+                return chartColors.workoutSummary.bars;
+            }
+            else
+            {
+                workoutTypeName = TP.utils.workout.types.getNameById(workoutTypeIds[0]);
+                return chartColors.gradients.workoutType[workoutTypeName.toLowerCase().replace(/[^a-z]/g,"")];
+            }
         },
 
         fetchData: function()
@@ -247,13 +255,15 @@ function(
 
             var series = _.map(this.subType.series, function(series, i)
             {
+                var colors = series.colors || self._getColorForWorkoutType();
+
                 return this._buildSeries(data, series.key, _.extend({
                     onlySeries: this.subType.series.length === 1,
-                    color: series.color || series.colors.light,
+                    color: colors.light,
                     bars: {
                         order: i,
                         barWidth: barWidth  * (series.widthScale || 1),
-                        fillColor: { colors: [ series.colors.light, series.colors.dark ] }
+                        fillColor: { colors: [ colors.light, colors.dark ] }
                     }
                 }, series));
             }, this);

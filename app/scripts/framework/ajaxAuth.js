@@ -24,7 +24,13 @@ function()
         $(document).ajaxError(function(event, xhr)
         {
             if (xhr.status === 401)
+            {
                 app.trigger("api:unauthorized");
+            }
+            else if(xhr.status === 402)
+            {
+                app.trigger("api:paymentrequired");
+            }
         });
     };
 });

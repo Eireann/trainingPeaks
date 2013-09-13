@@ -28,6 +28,7 @@ function (
     saveWorkoutBeforeAttachmentTemplate
 )
 {
+
     var qvHeaderActions =
     {
         headerEvents:
@@ -104,17 +105,29 @@ function (
 
         onDateChanged: function(newDate)
         {
-            TP.analytics("send", { "hitType": "event", "eventCategory": "quickView", "eventAction": "workoutDateChanged", "eventLabel": "" });
+
             var self = this;
+
+            TP.analytics("send", { "hitType": "event", "eventCategory": "quickView", "eventAction": "workoutDateChanged", "eventLabel": "" });
             var newDay = moment(newDate).format(this.model.shortDateFormat);
             this.ui.date.datepicker("hide");
             var workout = this.model;
             var oldDay = workout.getCalendarDay();
             if (newDay !== oldDay)
             {
-                // prepare our target day collection
-                theMarsApp.controllers.calendarController.views.calendar.scrollToDate(newDate);
-                workout.moveToDay(newDay);
+                var moveWorkout = function()
+                {
+                    // prepare our target day collection
+                    theMarsApp.controllers.calendarController.views.calendar.scrollToDate(newDate);
+                    workout.moveToDay(newDay);
+                };
+
+                theMarsApp.featureAuthorizer.runCallbackOrShowUpgradeMessage(
+                    theMarsApp.featureAuthorizer.features.SaveWorkoutToDate, 
+                    moveWorkout, 
+                    {targetDate: newDay}
+                );
+
             }
         },
 

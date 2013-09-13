@@ -156,7 +156,18 @@ function(_, touchPunch, draggable, droppable, moment, setImmediate, TP, Calendar
             }
 
             options.destinationCalendarDayModel = this.model;
-            this.trigger("itemDropped", options);
+
+            var self = this;
+            var callback = function()
+            {
+                self.trigger("itemDropped", options);
+            };
+
+            theMarsApp.featureAuthorizer.runCallbackOrShowUpgradeMessage(
+                theMarsApp.featureAuthorizer.features.SaveWorkoutToDate, 
+                callback, 
+                {targetDate: this.model.get("date")}
+            );
         },
 
         keepSettingsButtonVisible: function()
@@ -212,7 +223,7 @@ function(_, touchPunch, draggable, droppable, moment, setImmediate, TP, Calendar
         {
             this.allowSettingsButtonToHide();
             e.preventDefault();
-            this.openNewItemView();
+            this.openNewItemViewIfAuthorized();
         },
 
         onDayClicked: function(e)
@@ -233,6 +244,15 @@ function(_, touchPunch, draggable, droppable, moment, setImmediate, TP, Calendar
             }
 
             this.clearSelection(e);
+        },
+
+        openNewItemViewIfAuthorized: function()
+        {
+            theMarsApp.featureAuthorizer.runCallbackOrShowUpgradeMessage(
+                theMarsApp.featureAuthorizer.features.SaveWorkoutToDate, 
+                _.bind(this.openNewItemView, this),
+                {targetDate: this.model.get("date")}
+            );
         },
 
         openNewItemView: function()
@@ -355,7 +375,7 @@ function(_, touchPunch, draggable, droppable, moment, setImmediate, TP, Calendar
 
             if (theMarsApp.isTouchEnabled() && !$(e.target).is(".dayHeader"))
             {
-                this.openNewItemView(e);
+                this.openNewItemViewIfAuthorized(e);
             }
         },
 
