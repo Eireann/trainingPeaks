@@ -151,7 +151,7 @@ function(
         _addICalKeysToSerializedData: function(data)
         {
             data.iCalendarKeys = this.athleteSettingsModel.get("iCalendarKeys");
-            data.iCalendarKeys.webcalRoot = "webcal://" + theMarsApp.apiConfig.wwwRoot.replace("http://","") + "/ical/";
+            data.iCalendarKeys.webcalRoot = "webcal://" + theMarsApp.apiConfig.wwwRoot.replace(/https?:\/\//,"") + "/ical/";
         },
 
         _applyModelValuesToForm: function()
