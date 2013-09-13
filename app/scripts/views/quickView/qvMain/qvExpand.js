@@ -63,6 +63,7 @@ function (_, TP, ExpandoController)
                 this.expandoController = new ExpandoController({ model: this.model, workoutModel: this.workoutModel, workoutDetailsModel: this.workoutDetailsModel, prefetchConfig: this.prefetchConfig });
                 this.expandoRegion.show(this.expandoController.getLayout());
             }
+            this.expandoController.expand();
         },
 
         expandClicked: function ()
