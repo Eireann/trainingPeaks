@@ -137,6 +137,7 @@ function(setImmediate, TP, DataParser, ExpandoLayout, GraphView, MapView, StatsV
                 setImmediate(function()
                 {
                     self.layout.graphRegion.show(self.views.graphView);
+                    self.expand();
                 });
                 
             } else
@@ -163,6 +164,8 @@ function(setImmediate, TP, DataParser, ExpandoLayout, GraphView, MapView, StatsV
                     self.layout.mapAndGraphResizerRegion.show(self.views.mapAndGraphResizerView);
                 });
             }
+
+
         },
 
         preFetchDetailData: function()
@@ -178,7 +181,15 @@ function(setImmediate, TP, DataParser, ExpandoLayout, GraphView, MapView, StatsV
 
         collapse: function()
         {
+            this.views.graphView.trigger("controller:expandCollapse", "collapse");
             this.layout.$el.parent().hide();
+        },
+        expand: function()
+        {
+            if (this.views.graphView)
+            {
+                this.views.graphView.trigger("controller:expandCollapse", "expand");
+            }
         },
 
         closeViews: function()
