@@ -33,7 +33,7 @@ function(
                 charts: new AvailableChartsCollection([], { featureAuthorizer: theMarsApp.featureAuthorizer })
             };
 
-            this.listenTo(theMarsApp.featureAuthorizer, "access:change", _.bind(this.collections.charts.addAllAvailableCharts, this.collections.charts));
+            this.on("user:loaded", _.bind(this.collections.charts.addAllAvailableCharts, this.collections.charts));
         },
 
         viewConstructors:

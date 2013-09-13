@@ -244,18 +244,34 @@ function(
         this.fetchUser = function()
         {
             var self = this;
-            
-            self.user.fetch().done(function()
+          
+            // fetch user and access rights in parallel ,
+            // but fetch athlete settings later because they depend on user
+            $.when(
+                self.user.fetch(),
+                self.fetchUserAccessRights()
+            ).done(function()
             {
                 if (self.featureAllowedForUser("alpha1", self.user))
                 {
                     self.session.saveUserToLocalStorage(self.user);
-                    self.fetchAthleteSettings();
-                    self.fetchUserAccessRights();
-                    self.userFetchPromise.resolve();
+
+                    self.fetchAthleteSettings().done(
+                        function()
+                        {
+                            self.userFetchPromise.resolve();
+                        }
+                    ).fail(
+                        function()
+                        {
+                            self.userFetchPromise.reject();
+                        }
+                    );
                 }
                 else
+                {
                     self.session.logout(notAllowedForAlphaTemplate);
+                }
             }).fail(function()
             {
                 self.userFetchPromise.reject();
@@ -264,7 +280,7 @@ function(
 
         this.fetchUserAccessRights = function()
         {
-            this.userAccessRights.fetch();
+            return this.userAccessRights.fetch();
         };
 
         this.featureAllowedForUser = function(feature, user)
@@ -292,7 +308,7 @@ function(
 
         this.fetchAthleteSettings = function()
         {
-            this.user.getAthleteSettings().fetch();
+            return this.user.getAthleteSettings().fetch();
         };
 
         // add event tracking
