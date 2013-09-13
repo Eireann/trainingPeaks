@@ -10,6 +10,7 @@ define(
 [
     "underscore",
     "moment",
+    "backbone",
     "TP",
     "shared/data/podTypes",
     "shared/utilities/featureAuthorization/accessRights",
@@ -18,6 +19,7 @@ define(
 function(
     _,
     moment,
+    Backbone,
     TP,
     podTypes,
     accessRights,
@@ -29,7 +31,12 @@ function(
     {
         this.user = user;
         this.userAccessRights = userAccessRights;
+        this.userAccessRights.on("change", function(){
+            this.trigger("access:change");
+        }, this);
     }
+   
+    _.extend(FeatureAuthorizer.prototype, Backbone.Events);
 
     _.extend(FeatureAuthorizer.prototype, {
 

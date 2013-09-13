@@ -15,7 +15,15 @@ function(
     {
 
         tagName: "div",
-        className: "chartTile cf",
+        className: function()
+        {
+            var className = "chartTile cf";
+            if(this.model.get("premium"))
+            {
+                className += " premium";
+            }
+            return className;
+        },
 
         events:
         {
