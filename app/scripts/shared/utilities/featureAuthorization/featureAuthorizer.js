@@ -19,7 +19,7 @@ function(
     moment,
     TP,
     accessRights,
-    userUpgradeView
+    UserUpgradeView
          )
 {
 
@@ -94,7 +94,11 @@ function(
 
         showUpgradeMessage: function()
         {
-            new userUpgradeView().render();
+            if(!this.upgradeView || this.upgradeView.isClosed)
+            {
+                this.upgradeView = new UserUpgradeView();
+                this.upgradeView.render();
+            }
         }
 
     });
