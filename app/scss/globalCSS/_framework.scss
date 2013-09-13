@@ -152,6 +152,12 @@
                             border-left: 1px solid $TPGrey9;
                             margin-left: 0;
                         }
+                        
+                        &:hover {
+                            color: $TPGrey4;
+                            border-color: $TPGrey11;
+                            z-index: 5;
+                        }
                     }
 
                     #goToLastWeekButton {
@@ -183,6 +189,8 @@
     						background-size: 108px 100px;
     				  	}
     				}
+
+                   
                 }
 
                 .today {
