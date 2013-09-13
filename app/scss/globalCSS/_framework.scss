@@ -133,28 +133,28 @@
                 float:left;
                 margin:7px 0 0 0;
                 
-                @include headerButtons(0px, 35px, $fontSizeMedium);
+                @include headerButtons(0px, 38px, $fontSizeMedium);
     			button {
     			 	&:active {
     					box-shadow:none;
-    					}
     				}
+    			}
 
                 .frameworkNavigation {
                     float:left;
-    	            @include headerButtons(0px, 35px, 12px);
-    				background-color:$TPGrey9;
-    				&:hover {
-    					background-color:$TPGrey11;
-    					}
+
                     button {
-                    	img {
-                            padding-top: 3px;
-                       	}
+                        border: 1px solid $TPGrey9;
+                        position: relative;
+                        margin-left: -1px;
+                        
+                        &:first-of-type {
+                            border-left: 1px solid $TPGrey9;
+                            margin-left: 0;
+                        }
                     }
 
                     #goToLastWeekButton {
-                        border-right:none;
     					background: url(../../assets/images/calendarImages/sprite-header-icons.png) no-repeat 0 -20px;
                         &:hover {
     						background: url(../../assets/images/calendarImages/sprite-header-icons.png) no-repeat -36px -20px;	
@@ -165,8 +165,6 @@
                     }
 
     				#goToNextWeekButton {
-    					margin-left:1px;
-    					border-left:none;
     					background: url(../../assets/images/calendarImages/sprite-header-icons.png) no-repeat 0 0;
     					&:hover {
     						background: url(../../assets/images/calendarImages/sprite-header-icons.png) no-repeat -36px 0px;
@@ -185,7 +183,6 @@
     						background-size: 108px 100px;
     				  	}
     				}
-                    
                 }
 
                 .today {
@@ -196,7 +193,6 @@
 
     			.today button  {
     				color:$TPGrey10;
-    				padding:1px 0 2px;
     			}
     			
     			@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {

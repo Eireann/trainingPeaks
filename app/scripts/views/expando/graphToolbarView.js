@@ -7,7 +7,7 @@ function(TP, graphToolbarTemplate)
 {
     return TP.ItemView.extend(
     {
-        className: "graphToolbar",
+        className: "graphToolbar cf",
         
         template:
         {
