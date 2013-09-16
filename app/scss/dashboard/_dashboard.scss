@@ -223,24 +223,29 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
         z-index: 200 !important;
         opacity: 1;
 
+        .chartButtons
+        {
+            display: block;
+            z-index:2;
+        }
          &:hover, &.hover {
             background-color: $TPGrey1;
             border: 1px solid transparent;
          }
     }
 
+
+
     &:hover, &.hover
     {
         background-color: #e4e2e3;
         border: 1px solid $TPGrey11;
-
+        z-index: 2;
         .chartButtons
         {
             display: block;
             z-index:2;
         }
-
-        z-index: 2;
     }
 
     &.menuOpen
@@ -348,7 +353,7 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
 
     .chartButtons
     {
-        display: none;
+        display:none;
         position: absolute;
         top: 5px;
         right: 5px;

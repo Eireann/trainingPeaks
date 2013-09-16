@@ -134,7 +134,7 @@ function(
                         },
                         tickFormatter: function(date)
                         {
-                            return moment(date).format("L");
+                            return moment(date).format("MM/DD/YY");
                         }
                     },
                     yaxes: yaxes,
