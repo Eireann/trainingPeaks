@@ -144,6 +144,17 @@ function(
                 return _.contains(useablePods, "journal_GroundControl");
             },
 
+
+            /*
+            attributes: none
+            options: none 
+            */
+            ViewGraphRanges: function(user, userAccess, attributes, options)
+            {   
+                var useablePods = userAccess.getStringList(accessRights.ids.CanUsePods);
+                return _.contains(useablePods, "view_Ranges");
+            },
+
             /*
             attributes: { collection: libraryExercisesCollection } // collection to add to
             options: none 

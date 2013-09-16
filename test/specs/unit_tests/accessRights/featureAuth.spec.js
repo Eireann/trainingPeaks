@@ -383,6 +383,43 @@ function(
 
             });
 
+            describe("ViewGraphRanges", function()
+            {
+                var user;
+                var authorizedUserAccessRights;
+                var unauthorizedUserAccessRights;
+
+                beforeEach(function()
+                {
+                    user = new UserModel(xhrData.users.barbkprem);
+                    user.setCurrentAthleteId(xhrData.users.barbkprem.userId);
+
+                    authorizedUserAccessRights = new UserAccessRightsModel();
+                    authorizedUserAccessRights.set({
+                    "rights":[xhrData.accessRights.canUsePodsFull]
+                    });
+
+                    unauthorizedUserAccessRights = new UserAccessRightsModel();
+                    
+                });
+
+                it("Should only allow authorized user to use graph ranges", function()
+                {
+                    expect(featureAuthorizer.features.ViewGraphRanges(
+                                user,
+                                unauthorizedUserAccessRights
+                            )
+                    ).toBe(false);
+                    
+                     expect(featureAuthorizer.features.ViewGraphRanges(
+                                user,
+                                authorizedUserAccessRights
+                            )
+                    ).toBe(true);
+                });
+
+            });
+
             describe("AddExerciseToLibrary", function()
             {
                 var user;
@@ -441,63 +478,6 @@ function(
             });
         });
 
-        describe("Jquery when", function()
-        {
-            it("Should not call callbacks until initial deferreds are resolved", function()
-            {
-                var spy = jasmine.createSpyObj("My spy", ["onDone", "onFail"]);
-
-                var deferred1 = new $.Deferred();
-                var deferred2 = new $.Deferred();
-
-                $.when(
-                       deferred1,
-                       deferred2
-                ).done(spy.onDone).fail(spy.onFail);
-
-                expect(spy.onDone).not.toHaveBeenCalled();
-                expect(spy.onFail).not.toHaveBeenCalled();
-            });
-
-            it("Should call onDone", function()
-            {
-                var spy = jasmine.createSpyObj("My spy", ["onDone", "onFail"]);
-
-                var deferred1 = new $.Deferred();
-                var deferred2 = new $.Deferred();
-
-                $.when(
-                       deferred1,
-                       deferred2
-                ).done(spy.onDone).fail(spy.onFail);
-
-                deferred1.resolve();
-                deferred2.resolve();
-
-                expect(spy.onDone).toHaveBeenCalled();
-                expect(spy.onFail).not.toHaveBeenCalled();
-            });
-
-            it("Should call onFail", function()
-            {
-                var spy = jasmine.createSpyObj("My spy", ["onDone", "onFail"]);
-
-                var deferred1 = new $.Deferred();
-                var deferred2 = new $.Deferred();
-
-                $.when(
-                       deferred1,
-                       deferred2
-                ).done(spy.onDone).fail(spy.onFail);
-
-                deferred1.reject();
-                deferred2.resolve();
-                 
-                expect(spy.onDone).not.toHaveBeenCalled();
-                expect(spy.onFail).toHaveBeenCalled();
-
-            });
-        });
 
     });
 

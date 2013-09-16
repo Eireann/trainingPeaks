@@ -128,6 +128,13 @@ function(
 
         getPeaksData: function(detailData)
         {
+            if(!theMarsApp.featureAuthorizer.canAccessFeature(
+                theMarsApp.featureAuthorizer.features.ViewGraphRanges
+                )
+            ){
+                return [];
+            }
+
             if (!this.selectedPeakType)
                 return [];
 
@@ -168,6 +175,13 @@ function(
 
         getSelectOptions: function (detailData)
         {
+            if(!theMarsApp.featureAuthorizer.canAccessFeature(
+                theMarsApp.featureAuthorizer.features.ViewGraphRanges
+                )
+            ){
+                return [];
+            }
+
             var selectOptions = [];
             _.each(this.getPeakTypes(), function(peakName)
             {
@@ -366,6 +380,18 @@ function(
 
         onLapsClicked: function(e)
         {
+            var self = this;
+            theMarsApp.featureAuthorizer.runCallbackOrShowUpgradeMessage(
+                theMarsApp.featureAuthorizer.features.ViewGraphRanges,
+                function()
+                {
+                    self.handleLapsClicked(e);
+                }
+            );
+        },
+
+        handleLapsClicked: function(e)
+        {
             TP.analytics("send", { "hitType": "event", "eventCategory": "expando", "eventAction": "lapClicked", "eventLabel": "" });
 
             var target = $(e.target);
@@ -396,6 +422,18 @@ function(
         },
 
         onLapsCheckboxClicked: function(e)
+        {
+            var self = this;
+            theMarsApp.featureAuthorizer.runCallbackOrShowUpgradeMessage(
+                theMarsApp.featureAuthorizer.features.ViewGraphRanges,
+                function()
+                {
+                    self.handleLapsCheckboxClicked(e);
+                }
+            );
+        },
+
+        handleLapsCheckboxClicked: function(e)
         {
             var target = $(e.target);
             var li = target.closest("li");
@@ -433,6 +471,18 @@ function(
 
         onEntireWorkoutCheckboxClicked: function(e)
         {
+            var self = this;
+            theMarsApp.featureAuthorizer.runCallbackOrShowUpgradeMessage(
+                theMarsApp.featureAuthorizer.features.ViewGraphRanges,
+                function()
+                {
+                    self.handleEntireWorkoutCheckboxClicked(e);
+                }
+            );
+        },
+
+        handleEntireWorkoutCheckboxClicked: function(e)
+        {
             var target = $(e.target);
 
             var options = {};
@@ -463,6 +513,18 @@ function(
         },
 
         onPeaksClicked: function(e)
+        {
+            var self = this;
+            theMarsApp.featureAuthorizer.runCallbackOrShowUpgradeMessage(
+                theMarsApp.featureAuthorizer.features.ViewGraphRanges,
+                function()
+                {
+                    self.handlePeaksClicked(e);
+                }
+            );
+        },
+
+        handlePeaksClicked: function(e)
         {
             var target = $(e.target);
             var li = target.closest("li");
