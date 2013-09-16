@@ -23,7 +23,7 @@ function(
         beforeEach(function()
         {
             var userData = xhrData.users.barbkprem;
-            testHelpers.startTheAppAndLogin(userData, true);
+            testHelpers.startTheAppAndLogin(testHelpers.deepClone(userData));
             spyOn($.fn, 'selectBoxIt'); // selectBoxIt freezes...
         });
 

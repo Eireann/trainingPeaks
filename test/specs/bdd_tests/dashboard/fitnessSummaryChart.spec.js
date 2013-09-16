@@ -46,7 +46,7 @@ function(
             beforeEach(function()
             {
                 var userData = xhrData.users.barbkprem;
-                testHelpers.startTheAppAndLogin(userData, true);
+                testHelpers.startTheAppAndLogin(testHelpers.deepClone(userData));
                 theMarsApp.user.getDashboardSettings().set("pods", [fitnessSummaryPodSettings]);
                 $mainRegion = theMarsApp.mainRegion.$el;
                 theMarsApp.router.navigate("dashboard", true);
@@ -157,7 +157,7 @@ function(
                 beforeEach(function()
                 {
                     var userData = xhrData.users.barbkprem;
-                    testHelpers.startTheAppAndLogin(userData, true);
+                    testHelpers.startTheAppAndLogin(testHelpers.deepClone(userData));
                     theMarsApp.user.getDashboardSettings().set("pods", [fitnessSummaryPodSettingsThree]);
                     $mainRegion = theMarsApp.mainRegion.$el;
                     theMarsApp.router.navigate("dashboard", true);
@@ -243,7 +243,7 @@ function(
                 beforeEach(function()
                 {
                     var userData = xhrData.users.barbkprem;
-                    testHelpers.startTheAppAndLogin(userData, true);
+                    testHelpers.startTheAppAndLogin(testHelpers.deepClone(userData));
                     theMarsApp.user.getDashboardSettings().set("pods", [fitnessSummaryPodSettings, fitnessSummaryPodSettingsTwo]);
                     $mainRegion = theMarsApp.mainRegion.$el;
                     theMarsApp.router.navigate("dashboard", true);
@@ -293,7 +293,7 @@ function(
                 beforeEach(function()
                 {
                     var userData = xhrData.users.barbkprem;
-                    testHelpers.startTheAppAndLogin(userData, true);
+                    testHelpers.startTheAppAndLogin(testHelpers.deepClone(userData));
                     theMarsApp.user.getDashboardSettings().set("pods", [fitnessSummaryPodSettings, fitnessSummaryPodSettingsTwo]);
                     $mainRegion = theMarsApp.mainRegion.$el;
                     theMarsApp.router.navigate("dashboard", true);

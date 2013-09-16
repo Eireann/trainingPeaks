@@ -47,12 +47,21 @@ function (TP, LibraryExercisesCollection)
         fetchExercises: function(force)
         {
             if (this.exercises && this.exercises.length && !force)
-                return;
+            {
+                var deferred = new $.Deferred();
+                deferred.resolve();
+                return deferred;
+            }
 
             if (this.has("exerciseLibraryId"))
                 this.exercises.exerciseLibraryId = this.get("exerciseLibraryId");
 
             return this.exercises.fetch({ reset: true });
+        },
+
+        length: function()
+        {
+            return this.exercises.length;
         }
     });
 });

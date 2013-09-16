@@ -2,7 +2,7 @@ define(
 [],
 function()
 {
-    return {
+    var xhrData = {
 
         token:
         {
@@ -771,8 +771,23 @@ function()
                     "pod_meanMaxDistanceBests",
                     "pod_meanMaxDistance"
                 ]
+            },
+            maximumExercisesInOwnedLibrary: {
+                "accessRightItemDataValue": {"data":5},
+                "accessRightIdValue": 18,
+                "accessRightItemDataTypeValue": 2,
+                "accessRightData": 5
             }
         }
     };
+
+    xhrData.defaultTestUserAccessRights = [
+        xhrData.accessRights.planFutureWorkouts,
+        xhrData.accessRights.maximumExercisesInOwnedLibrary,
+        xhrData.accessRights.canViewPods,
+        xhrData.accessRights.canUsePodsFull
+    ];
+
+    return xhrData;
 
 });

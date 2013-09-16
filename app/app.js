@@ -246,41 +246,61 @@ function(
             var self = this;
           
             // fetch user and access rights in parallel ,
-            // but fetch athlete settings later because they depend on user
-            $.when(
-                self.user.fetch(),
-                self.fetchUserAccessRights()
-            ).done(function()
-            {
-                if (self.featureAllowedForUser("alpha1", self.user))
-                {
-                    self.session.saveUserToLocalStorage(self.user);
+            // but fetch athlete settings later because they depend on user,
+            // still fetch athlete settings before we resolve user fetch promise
 
-                    self.fetchAthleteSettings().done(
-                        function()
-                        {
-                            self.userFetchPromise.resolve();
-                        }
-                    ).fail(
-                        function()
-                        {
-                            self.userFetchPromise.reject();
-                        }
-                    );
-                }
-                else
-                {
-                    self.session.logout(notAllowedForAlphaTemplate);
-                }
+            // HACK: for some reason $.when fails in testing when we directly pass in our xhr deferreds,
+            // but works when we pass in separate deferreds and resolve or reject them via our xhr deferreds.
+            // WTF?
+            var deferred1 = new $.Deferred();
+            var deferred2 = new $.Deferred();
+            self.user.fetch().done(function()
+            {
+                deferred1.resolve();
             }).fail(function()
+            {
+                def1.reject();
+            });
+
+            self.userAccessRights.fetch().done(function()
+            {
+                deferred2.resolve();
+            }).fail(function()
+            {
+                deferred2.reject();
+            });
+            // END HACK
+
+            $.when(
+                deferred1,
+                deferred2
+            ).done(
+                function()
+                {
+                    if (self.featureAllowedForUser("alpha1", self.user))
+                    {
+                        self.session.saveUserToLocalStorage(self.user);
+                        self.fetchAthleteSettings().done(
+                            function()
+                            {
+                                self.userFetchPromise.resolve();
+                            }
+                        ).fail(
+                            function()
+                            {
+                                self.userFetchPromise.reject();
+                            }
+                        );
+                    }
+                    else
+                    {
+                        self.session.logout(notAllowedForAlphaTemplate);
+                    }
+                }
+            ).fail(function()
             {
                 self.userFetchPromise.reject();
             });
-        };
-
-        this.fetchUserAccessRights = function()
-        {
-            return this.userAccessRights.fetch();
         };
 
         this.featureAllowedForUser = function(feature, user)

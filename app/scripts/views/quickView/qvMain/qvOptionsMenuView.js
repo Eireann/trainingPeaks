@@ -69,7 +69,7 @@ function(TP, ElevationCorrectionView, optionsMenuTemplate)
             { 
                 var view = new ElevationCorrectionView({ workoutModel: workoutModel });
                 view.render();
-            }
+            };
 
             theMarsApp.featureAuthorizer.runCallbackOrShowUpgradeMessage(
                 theMarsApp.featureAuthorizer.features.ElevationCorrection,

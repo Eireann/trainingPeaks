@@ -64,6 +64,24 @@ function(TP, SaveWorkoutToLibraryCommand, AfterSaveView, saveWorkoutToLibraryTem
         onOk: function()
         {
             var libraryId = this.$("#selectLibrary").val();
+            var libraryExercisesCollection = this.libraries.get(libraryId);
+
+            // the exercises may not have been fetched yet, so fetch to see if we can add more 
+            this.waitingOn();
+            var self = this;
+            libraryExercisesCollection.fetchExercises().done(function()
+            {
+                self.waitingOff();
+                theMarsApp.featureAuthorizer.runCallbackOrShowUpgradeMessage(
+                    theMarsApp.featureAuthorizer.features.AddExerciseToLibrary,
+                    self.doSaveToLibrary(libraryId),
+                    {collection: libraryExercisesCollection}
+                ); 
+            });
+        },
+
+        doSaveToLibrary: function(libraryId)
+        {
             var saveToLibraryCommand = new SaveWorkoutToLibraryCommand({
                 exerciseName: this.$("#exerciseTitle").val(),
                 exerciseLibraryId: libraryId,
@@ -72,8 +90,8 @@ function(TP, SaveWorkoutToLibraryCommand, AfterSaveView, saveWorkoutToLibraryTem
 
             this.waitingOn();
             var deferred = saveToLibraryCommand.execute();
-            var self = this;
 
+            var self = this;
             deferred.done(function()
             {
                 self.libraries.get(libraryId).fetchExercises(true);

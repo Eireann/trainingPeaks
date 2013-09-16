@@ -35,6 +35,28 @@ function(
             };
         },
 
+        getNumber: function(accessRightId)
+        {
+            var accessRightDefinition = accessRights.find(accessRightId);
+
+            if(accessRightDefinition.dataType !== accessRights.dataTypes.Numeric)
+            {
+                throw new Error("Requested numeric list, but data type for access right id " + accessRightId + " is not numeric");
+            }
+
+            var accessRightForUser = this._findAccessRightValueById(accessRightId);
+
+            if(!accessRightForUser || !accessRightForUser.accessRightData)
+            {
+                return null;
+            }
+            else
+            {
+                return accessRightForUser.accessRightData;
+            }
+
+        },
+
         getNumericList: function(accessRightId)
         {
             var accessRightDefinition = accessRights.find(accessRightId);

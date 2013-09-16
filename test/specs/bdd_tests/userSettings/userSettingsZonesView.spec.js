@@ -23,7 +23,7 @@ function(
         beforeEach(function()
         {
             var userData = xhrData.users.barbkprem;
-            testHelpers.startTheAppAndLogin(userData, true);
+            testHelpers.startTheAppAndLogin(testHelpers.deepClone(userData));
             testHelpers.resolveRequest("GET", "fitness/v1/athletes/426489/settings", xhrData.athleteSettings.barbkprem);
             spyOn($.fn, 'selectBoxIt'); // selectBoxIt freezes...
         });
