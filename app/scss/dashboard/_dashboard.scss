@@ -209,7 +209,7 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
     */
 
     position: absolute; 
-    padding: 15px;
+    padding: 15px 0 0 0;
 
     border: 1px solid transparent;
     cursor: pointer;
@@ -264,10 +264,10 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
     {
         margin: 0px 0px 0px 0px;
         position: absolute;
-        top: 53px;
-        left: 50px;
-        @include calc("width", "100% - 90px");
-        @include calc("height", "100% - 100px");
+        top: 52px;
+        left: 26px;
+        @include calc("width", "100% - 73px");
+        @include calc("height", "100% - 99px");
         &.invisible
         {
             visibility:hidden;
@@ -311,22 +311,20 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
     {
         
         position: absolute;
-        left: 17px;
+        left: 2px;
         top: 47%;
         margin-top: 0;
 
-        margin-left: -40px;
+        margin-left: -39px;
         font-size: 10px;
 
-        &.pmc
-        {
+        &.pmc {
             text-transform: none;
             left:auto;
 
-            &.tsb
-            {
+            &.tsb {
                 position: absolute;
-                right: -25px;
+                right: -36px;
                 -webkit-transform: rotate(90deg);
                 -moz-transform: rotate(90deg);
                 color: #FFA500;
@@ -504,9 +502,21 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
         width: 400px;
         height: 400px;
 
-        &.pmcChart
-        {
+        &.pmcChart {
             width: 810px;
+
+            .chartContainer {
+                width:calc(100% - 76px);
+                width: -moz-calc(100% - 76px);
+                width: -o-calc(100% - 76px);
+                
+                height:calc(100% - 103px);
+                height: -moz-calc(100% - 103px);
+                height: -o-calc(100% - 103px);
+
+                top:60px;
+                left:37px;
+            }
         }
     }
 
