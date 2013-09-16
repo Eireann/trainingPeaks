@@ -7,7 +7,9 @@
     button, input[type=button]
 	{
 		width: $width;
-		padding:4px 0;
+		// padding:4px 0;
+        padding:0;
+        line-height:20px;
         
 		font-family: $fontFamilyRegular;
 		font-size: $fontSize;
@@ -61,6 +63,12 @@
         }
 
 	}
+
+    // Fix for firefox which adds 2px exta height to any button
+    button::-moz-focus-inner {
+        padding: 0;
+        border: 0
+    }
 }
 
  
