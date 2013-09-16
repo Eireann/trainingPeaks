@@ -46,19 +46,24 @@ function(
         {
             this.collection = new TP.Collection(options.model.get("zones"));
             ZonesConfigGroupView.__super__.constructor.apply(this, arguments);
-            this.on("render", this.applyModelValuesToForm, this);
+            this.on("render", this.bindFormValuesToModels, this);
             this.on("render", this._makeSortable, this);
             this.on("before:item:added", this._addedItems, this);
-            this.listenTo(this.collection, "add remove reset", _.bind(this._refreshView, this));
         },
 
-        applyFormValuesToModels: function()
+        bindFormValuesToModels: function()
         {
-            this.children.call("applyFormValuesToModels");
-            this.model.set("zones", this.collection.toJSON());
-            FormUtility.applyValuesToModel(this.$el, this.model, {
+            var self = this;
+            this.listenTo(this.collection, "add remove reset change", function()
+            {
+                self._refreshView();
+                self.model.set("zones", this.collection.toJSON());
+            });
+
+            FormUtility.bindFormToModel(this.$el, this.model, {
                 filterSelector: "[data-scope='zoneSet']",
-                parsers: this.getParsers()
+                parsers: this.getParsers(),
+                formatters: this.getFormatters()
             });
         },
 
@@ -119,12 +124,6 @@ function(
             this.$(".addZone").toggle(this.collection.length < 10);
         },
 
-        _refreshValues: function()
-        {
-            this.applyFormValuesToModels();
-            this.applyModelValuesToForm();
-        },
-
         _addedItems: function(view)
         {
             view.setFormatter(_.bind(this.formatValue, this));
@@ -136,6 +135,3 @@ function(
     return ZonesConfigGroupView;
 
 });
-
-
-

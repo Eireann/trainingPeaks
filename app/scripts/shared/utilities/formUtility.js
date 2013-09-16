@@ -46,108 +46,136 @@ function(
         {
             options = options || {};
 
-            FormUtility._processFields($form, function(key, $el)
+            FormUtility._processFields($form, function(key, $field, $fields)
             {
-                var value = model.get(key);
-                var type = $el.attr("type");
-                var format = $el.data("format");
-                value = FormUtility.formatValue(value, format, options);
+                FormUtility.applyValueToField(key, $field, $fields, model, options);
+            },
+            options);
+        },
 
-                if(type === "radio")
-                {
-                    $el.val([value]);
-                }
-                else if(type === "checkbox")
-                {
-                    // assumes checkbox values are always boolean
-                    $el.prop("checked", value ? true : false);
-                }
-                else
-                {
-                    $el.val(String(value));
-                }
+        applyValueToField: function(key, $field, $fields,  model, options)
+        {
+            var value = model.get(key);
+            var type = $field.attr("type");
+            var format = $field.data("format");
+            value = FormUtility.formatValue(value, format, options);
 
-                if($el.is("select"))
-                {
-                    // Add an empty or Unknown entry if needed
-                    var valueAsString = value === undefined || value === null ? "" : value.toString();
-                    if($el.val() !== valueAsString)
-                    {
-                        var text = value ? "Unknown" : "";
-                        var $option = $("<option />").attr('value', value).text(text);
-                        $el.prepend($option).val(value);
-                    }
-                }
+            if(type === "radio")
+            {
+                $field.val([value]);
+            }
+            else if(type === "checkbox")
+            {
+                // assumes checkbox values are always boolean
+                $field.prop("checked", value ? true : false);
+            }
+            else
+            {
+                $field.val(String(value));
+            }
 
-            }, options);
+            if($field.is("select"))
+            {
+                // Add an empty or Unknown entry if needed
+                var valueAsString = value === undefined || value === null ? "" : value.toString();
+                if($field.val() !== valueAsString)
+                {
+                    var text = value ? "Unknown" : "";
+                    var $option = $("<option />").attr('value', value).text(text);
+                    $field.prepend($option).val(value);
+                }
+            }
         },
 
         applyValuesToModel: function($form, model, options)
         {
             var formValues = {};
 
-             FormUtility._processFields($form, function(key, $el, $formElements)
+             FormUtility._processFields($form, function(key, $field, $fields)
             {
-                var value = "";
-                var type = $el.attr("type");
-                var format = $el.data("format");
-
-                if(type === "radio")
-                {
-                    var checkedRadioFilter = "input[type=radio][name=" + key + "]:checked";
-                    var $checkedRadio = $formElements.filter(checkedRadioFilter);
-                    if($checkedRadio.length)
-                    {
-                        value = $checkedRadio.val();
-                    }
-                }
-                else if(type === "checkbox")
-                {
-                    if($el.is(":checked"))
-                    {
-                        value = true;
-                    }
-                    else
-                    {
-                        value = false;
-                    }
-                }
-                else
-                {
-                    value = $el.val();
-                }
-
-                formValues[key] = FormUtility.parseValue(value, format, options);
-
-            }, options);
+                formValues[key] = FormUtility.extractValueFromField(key, $field, $fields, model, options);
+            },
+            options);
 
             model.set(formValues);
         },
 
+        extractValueFromField: function(key, $field, $fields, model, options)
+        {
+            var value = "";
+            var type = $field.attr("type");
+            var format = $field.data("format");
+
+            if(type === "radio")
+            {
+                var checkedRadioFilter = "input[type=radio][name=" + key + "]:checked";
+                var $checkedRadio = $fields.filter(checkedRadioFilter);
+                if($checkedRadio.length)
+                {
+                    value = $checkedRadio.val();
+                }
+            }
+            else if(type === "checkbox")
+            {
+                if($field.is(":checked"))
+                {
+                    value = true;
+                }
+                else
+                {
+                    value = false;
+                }
+            }
+            else
+            {
+                value = $field.val();
+            }
+
+            return FormUtility.parseValue(value, format, options);
+        },
+
+        bindFormToModel: function($form, model, options)
+        {
+            FormUtility.applyValuesToForm($form, model, options);
+            var filterSelector = options ? options.filterSelector : null;
+            $form.on("change", "input, select, textarea", function(event) {
+                var $field = $(event.target);
+
+                // Skip fields not matching the filterSelector
+                if(filterSelector && !$field.is(filterSelector)) return;
+
+                var $fields = FormUtility._findFormFields($form, options);
+                var key = $field.attr("name");
+                model.set(key, FormUtility.extractValueFromField(key, $field, $fields, model, options));
+                FormUtility.applyValueToField(key, $field, $fields, model, options);
+            });
+        },
+
         _processFields: function($form, callback, options)
         {
-            var $formElements = FormUtility._findFormFields($form, options ? options.filterSelector : null);
+            var $fields = FormUtility._findFormFields($form, options);
 
-            $formElements.each(function(i, el)
+            $fields.each(function(i, field)
             {
-                var $el = $(el);
-                var key = $el.attr("name");
+                var $field = $(field);
+                var key = $field.attr("name");
 
                 if (key)
                 {
-                    callback(key, $el, $formElements);
+                    callback(key, $field, $fields);
                 }
             });
         },
 
-        _findFormFields: function($form, filterSelector)
+        _findFormFields: function($form, options)
         {
-            var $formElements = $form.find("input, select, textarea");
+            var filterSelector = options ? options.filterSelector : null;
+            var $fields = $form.find("input, select, textarea");
             if(filterSelector)
             {
-                $formElements = $formElements.filter(filterSelector);
+                $fields = $fields.filter(filterSelector);
             }
-            return $formElements;
+            return $fields;
         }
     };
 

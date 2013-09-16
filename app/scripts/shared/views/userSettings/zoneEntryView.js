@@ -41,16 +41,20 @@ function(
 
         onRender: function()
         {
-            this.applyModelValuesToForm();
+            this.bindFormValuesToModels();
         },
 
-        applyFormValuesToModels: function()
+        bindFormValuesToModels: function()
         {
-            FormUtility.applyValuesToModel(this.$el, this.model, {
+            FormUtility.bindFormToModel(this.$el, this.model, {
                 filterSelector: "[data-scope='zoneEntry']",
                 parsers:
                 {
                     zoneValue: this.parser
+                },
+                formatters:
+                {
+                    zoneValue: this.formatter
                 }
             });
         },
