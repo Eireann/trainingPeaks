@@ -53,7 +53,6 @@ function(
 
         _changeUnits: function()
         {
-            this.applyFormValuesToModels();
             this.units = this.$("[name=units]:checked").val();
             this.applyModelValuesToForm();
         }
