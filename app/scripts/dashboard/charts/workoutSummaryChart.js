@@ -196,7 +196,7 @@ function(
         {
             var workoutTypeIds = this.get('workoutTypeIds'),
                 workoutTypeName;
-            if (workoutTypeIds.length > 1)
+            if (workoutTypeIds.length !== 1)
             {
                 return chartColors.workoutSummary.bars;
             }
