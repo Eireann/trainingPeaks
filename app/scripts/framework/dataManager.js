@@ -12,7 +12,8 @@
 
     var DataManager = function(options)
     {
-        this.identityMap = options && options.identityMap || (throw new Error("Data manager requires an identity map"));
+        this.identityMap = options && options.identityMap;
+        if(!this.identityMap) throw new Error("Data manager requires an identity map");
         this.resetPatterns = options && options.resetPatterns ? options.resetPatterns : [];
         this.ignoreResetPatterns = options && options.ignoreResetPatterns ? options.ignoreResetPatterns : [];
         this._resolvedRequests = {};
@@ -36,16 +37,16 @@
             this._resolvedRequests = {};
             this._pendingRequests = {};
             this.trigger("reset");
-            //console.log("Data manager was reset");
         },
 
         loadCollection: function(klass, options)
         {
+            var self = this;
             var temporaryCollection = new klass([], options);
             var collection = new klass([], options);
 
             var promise = this._fetch(temporaryCollection, options).then(function() {
-                var models = temporaryCollection.map(_.bind(this.identityMap.getSharedInstance, this.identityMap));
+                var models = temporaryCollection.map(_.bind(self.identityMap.updateSharedInstance, self.identityMap));
                 collection.set(models);
             });
 
@@ -59,20 +60,21 @@
             var model = new klass(attributes, options);
             var sharedModel = this.identityMap.getSharedInstance(model);
 
+            var promise;
+
             if (model === sharedModel)
             {
                 // Identity map did not have this model
-                var promise = this._fetch(sharedModel, options);
-                promise.model = sharedModel;
-                return promise;
+                promise = this._fetch(sharedModel, options);
             }
             else
             {
                 // Identity map had a shared version of this model
-                var deferred = new $.Deferred();
-                deferred.model = sharedModel;
-                return deferred.resolve().promise();
+                promise = new $.Deferred().resolve().promise();
             }
+
+            promise.model = sharedModel;
+            return promise;
         },
 
         fetchAjax: function(requestSignature, options)

@@ -135,8 +135,10 @@ function(
             }
 
             var day = dataItem.workoutDay;
-            var workouts = new WorkoutsCollection([], {startDate: moment(day), endDate: moment(day)});
-            var dataPromise = this.dataManager.fetchOnModel(workouts);
+
+            var dataPromise = this.dataManager.loadCollection(WorkoutsCollection, {startDate: moment(day), endDate: moment(day)});
+            var workouts = dataPromise.collection;
+
             var screenPosition = {
                 x: position.pageX,
                 y: position.pageY
