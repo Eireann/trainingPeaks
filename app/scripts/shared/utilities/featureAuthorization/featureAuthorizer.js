@@ -132,6 +132,16 @@ function(
                         throw e;
                     }
                 }
+            },
+
+            /*
+            attributes: none
+            options: none 
+            */
+            ElevationCorrection: function(user, userAccess, attributes, options)
+            {   
+                var useablePods = userAccess.getStringList(accessRights.ids.CanUsePods);
+                return _.contains(useablePods, "journal_GroundControl");
             }
 
         },

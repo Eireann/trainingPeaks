@@ -291,7 +291,7 @@ function(
 
                     authorizedUserAccessRights = new UserAccessRightsModel();
                     authorizedUserAccessRights.set({
-                    "rights":[xhrData.accessRights.canUsePods]
+                    "rights":[xhrData.accessRights.canUsePodsLimited]
                     });
 
                     unauthorizedUserAccessRights = new UserAccessRightsModel();
@@ -343,6 +343,44 @@ function(
                 });
 
             });
+
+            describe("ElevationCorrection", function()
+            {
+                var user;
+                var authorizedUserAccessRights;
+                var unauthorizedUserAccessRights;
+
+                beforeEach(function()
+                {
+                    user = new UserModel(xhrData.users.barbkprem);
+                    user.setCurrentAthleteId(xhrData.users.barbkprem.userId);
+
+                    authorizedUserAccessRights = new UserAccessRightsModel();
+                    authorizedUserAccessRights.set({
+                    "rights":[xhrData.accessRights.canUsePodsFull]
+                    });
+
+                    unauthorizedUserAccessRights = new UserAccessRightsModel();
+                    
+                });
+
+                it("Should only allow authorized user to use elevation correction", function()
+                {
+                    expect(featureAuthorizer.features.ElevationCorrection(
+                                user,
+                                unauthorizedUserAccessRights
+                            )
+                    ).toBe(false);
+                    
+                     expect(featureAuthorizer.features.ElevationCorrection(
+                                user,
+                                authorizedUserAccessRights
+                            )
+                    ).toBe(true);
+                });
+
+            });
+
         });
 
     });

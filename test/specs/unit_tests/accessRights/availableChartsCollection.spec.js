@@ -32,7 +32,7 @@ function(
             var viewablePods = xhrData.accessRights.canViewPods;
             viewablePods.accessRightData = _.without(viewablePods.accessRightData, "pod_PerformanceManagerChart");
             userAccessRights.set({
-            "rights":[viewablePods, xhrData.accessRights.canUsePods]
+            "rights":[viewablePods, xhrData.accessRights.canUsePodsLimited]
             });
 
             featureAuthorizer = new FeatureAuthorizer(user, userAccessRights);
