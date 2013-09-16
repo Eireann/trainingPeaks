@@ -12,6 +12,7 @@
 
     var DataManager = function(options)
     {
+        this.identityMap = options && options.identityMap || (throw new Error("Data manager requires an identity map"));
         this.resetPatterns = options && options.resetPatterns ? options.resetPatterns : [];
         this.ignoreResetPatterns = options && options.ignoreResetPatterns ? options.ignoreResetPatterns : [];
         this._resolvedRequests = {};
@@ -38,9 +39,40 @@
             //console.log("Data manager was reset");
         },
 
-        fetch: function(modelOrCollection, options)
+        loadCollection: function(klass, options)
         {
-            return this.fetchOnModel(modelOrCollection, options);
+            var temporaryCollection = new klass([], options);
+            var collection = new klass([], options);
+
+            var promise = this._fetch(temporaryCollection, options).then(function() {
+                var models = temporaryCollection.map(_.bind(this.identityMap.getSharedInstance, this.identityMap));
+                collection.set(models);
+            });
+
+            promise.collection = collection;
+
+            return promise;
+        },
+
+        loadModel: function(klass, attributes, options)
+        {
+            var model = new klass(attributes, options);
+            var sharedModel = this.identityMap.getSharedInstance(model);
+
+            if (model === sharedModel)
+            {
+                // Identity map did not have this model
+                var promise = this._fetch(sharedModel, options);
+                promise.model = sharedModel;
+                return promise;
+            }
+            else
+            {
+                // Identity map had a shared version of this model
+                var deferred = new $.Deferred();
+                deferred.model = sharedModel;
+                return deferred.resolve().promise();
+            }
         },
 
         fetchAjax: function(requestSignature, options)
@@ -57,7 +89,7 @@
             }
         },
 
-        fetchOnModel: function(modelOrCollection, options)
+        _fetch: function(modelOrCollection, options)
         {
             var requestSignature = this._getRequestSignature(modelOrCollection);
 
