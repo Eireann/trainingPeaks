@@ -36,7 +36,7 @@ function(
 
         initialize: function()
         {
-            this.units = "speed";
+            this.units = "pace";
         },
 
         formatValue: function(value)
