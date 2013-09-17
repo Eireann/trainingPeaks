@@ -112,35 +112,6 @@ function($, TP, moment, theMarsApp, DataManager, testHelpers, xhrData, WorkoutMo
 
         });
 
-        it("should have a method to add a workout to a day in the collection", function()
-        {
-            expect(typeof CalendarCollection.prototype.addWorkoutToCalendarDay).toBe("function");
-        });
-
-        describe("addWorkoutToCalendarDay", function()
-        {
-            it("should add a workout (with a workoutDate inside the collection's date range) to the correct day", function()
-            {
-                var collection = new CalendarCollection([], {
-                    startDate: moment().day(1),
-                    endDate: moment().day(7).add("weeks", 2),
-                    dataManager: new DataManager()
-                });
-
-                var workoutDate = moment().day(4).format("YYYY-MM-DD");
-                var workoutId = 'workout1';
-                var workout = {
-                    getCalendarDay: function() { return workoutDate; },
-                    id: workoutId
-                };
-
-                var dayModel = collection.getDayModel(workoutDate);
-                spyOn(dayModel, "add").andCallThrough();
-                collection.addWorkoutToCalendarDay(workout);
-                expect(dayModel.add).toHaveBeenCalledWith(workout);
-            });
-        });
-
         describe("createWeekCollectionStartingOn", function()
         {
             it("Should create a Backbone.Collection with seven DayModels without WeekSummary", function()
@@ -178,54 +149,6 @@ function($, TP, moment, theMarsApp, DataManager, testHelpers, xhrData, WorkoutMo
                 var weekCollection = CalendarCollection.prototype.createWeekCollectionStartingOn.call(context, moment(startDate));
                 expect(daysSpy.add).toHaveBeenCalled();
                 expect(daysSpy.add.calls.length).toEqual(7);
-            });
-
-        });
-
-        describe("Request workouts", function()
-        {
-            it("Should call CalendarCollection.addWorkoutToCalendarDay for each workout returned", function()
-            {
-
-                var dataManager = new DataManager();
-
-                var collection = new CalendarCollection([], {
-                    startDate: moment().day(0),
-                    endDate: moment().day(6).add("weeks", 2),
-                    dataManager: dataManager 
-                });
-
-                // fake workout collection fetcher
-                var workouts =
-                [
-                        new WorkoutModel({ workoutDay: moment().add("days", 1).format(), workoutId: '1234' }),
-                        new WorkoutModel({ workoutDay: moment().add("days", 2).format(), workoutId: '2345' }),
-                        new WorkoutModel({ workoutDay: moment().add("days", 3).format(), workoutId: '3456' })
-                ];
-
-                spyOn(dataManager, "fetchOnModel").andCallFake(function(collection)
-                {
-                    collection.set(workouts); 
-                    var deferred = new $.Deferred();
-                    deferred.resolve();
-                    return deferred;
-                });
-
-                spyOn(collection, "addWorkoutToCalendarDay");
-                spyOn(collection.workoutsCollection, "add");
-
-                var startDate = moment();
-                var endDate = moment().add("days", 3);
-                collection.requestWorkouts(startDate, endDate);
-
-                expect(collection.addWorkoutToCalendarDay).toHaveBeenCalled();
-
-                _.each(workouts, function(workout)
-                {
-                    expect(collection.addWorkoutToCalendarDay).toHaveBeenCalledWith(workout);
-                    expect(collection.workoutsCollection.add).toHaveBeenCalledWith(workout);
-                });
-
             });
 
         });
@@ -552,6 +475,49 @@ function($, TP, moment, theMarsApp, DataManager, testHelpers, xhrData, WorkoutMo
                 {
                     expect(collection.addItem).toHaveBeenCalledWith(workout);
                 });
+            });
+
+        });
+
+        describe("Auto index by day", function()
+        {
+            var collection, workout;
+            var origDate = moment().format("YYYY-MM-DD");
+            var newDate = moment().add(1, "day").format("YYYY-MM-DD");
+            
+            beforeEach(function()
+            {
+                testHelpers.setupFakeAjax();
+                collection = new CalendarCollection([], {
+                    startDate: moment(),
+                    endDate: moment(),
+                    dataManager: new DataManager()
+                });
+                workout = new WorkoutModel({ workoutId: 42, workoutDay: origDate });
+                collection.addItem(workout);
+            });
+
+            afterEach(function()
+            {
+                testHelpers.removeFakeAjax();
+            });
+
+            it("should be in the correct day collection", function()
+            {
+                expect(collection.getDayModel(origDate).itemsCollection.contains(workout)).toBe(true);
+            });
+
+            it("moving the workout should move to the correct day collection immediately", function()
+            {
+                workout.moveToDay(newDate);
+                expect(collection.getDayModel(newDate).itemsCollection.contains(workout)).toBe(true);
+            });
+
+            it("moving the workout should remove the workout from the old collection", function()
+            {
+                workout.moveToDay(newDate);
+                testHelpers.rejectRequest("PUT", "");
+                expect(collection.getDayModel(origDate).itemsCollection.contains(workout)).toBe(false);
             });
 
         });

@@ -144,6 +144,20 @@ function(_, $, Backbone, TP, xhrData, app)
             }
         },
 
+        rejectRequest: function(httpVerb, urlPattern)
+        {
+            var request = this.findRequest(httpVerb, urlPattern);
+
+            if (request)
+            {
+                request.jqXhr.ajaxDeferred.rejectWith(request.options, ['error', request.jqXhr]);
+            } else
+            {
+                //console.log(this.fakeAjaxRequests);
+                throw "Cannot find request to resolve: " + httpVerb + " " + urlPattern;
+            }
+        },
+
         hasRequest: function(httpVerb, urlPattern)
         {
             var request = this.findRequest(httpVerb, urlPattern);
