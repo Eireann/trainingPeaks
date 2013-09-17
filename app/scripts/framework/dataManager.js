@@ -2,18 +2,19 @@
 [
     "underscore",
     "backbone",
-    "TP"
+    "TP",
+    "framework/identityMap"
 ], function(
     _,
     Backbone,
-    TP
+    TP,
+    IdentityMap
     )
 {
 
     var DataManager = function(options)
     {
-        this.identityMap = options && options.identityMap;
-        if(!this.identityMap) throw new Error("Data manager requires an identity map");
+        this.identityMap = options && options.identityMap || new IdentityMap();
         this.resetPatterns = options && options.resetPatterns ? options.resetPatterns : [];
         this.ignoreResetPatterns = options && options.ignoreResetPatterns ? options.ignoreResetPatterns : [];
         this._resolvedRequests = {};
@@ -93,7 +94,7 @@
 
         _fetch: function(modelOrCollection, options)
         {
-            var requestSignature = this._getRequestSignature(modelOrCollection);
+            var requestSignature = _.result(modelOrCollection, "url");
 
             if(this._hasResolvedData(requestSignature))
             {
@@ -104,18 +105,6 @@
             {
                 //console.log("Requesting new data " + requestSignature);
                 return this._requestDataOnModel(requestSignature, modelOrCollection, options);
-            }
-        },
-
-        _getRequestSignature: function(modelOrCollection)
-        {
-            if(!_.isUndefined(modelOrCollection.requestSignature))
-            {
-                return _.result(modelOrCollection, "requestSignature");
-            }
-            else
-            {
-                return _.result(modelOrCollection, "url");
             }
         },
 

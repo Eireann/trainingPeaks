@@ -7,7 +7,8 @@ requirejs(
     "app",
     "utilities/charting/chartColors",
     "dashboard/reportingDataManager",
-    "dashboard/charts/pmcChart"
+    "dashboard/charts/pmcChart",
+    "models/workoutsCollection"
 ],
 function(
     $,
@@ -16,7 +17,8 @@ function(
     theMarsApp,
     chartColors,
     ReportingDataManager,
-    PmcChart
+    PmcChart,
+    WorkoutsCollection
     )
 {
 
@@ -558,11 +560,20 @@ function(
 
         describe("Click on a data point", function()
         {
-            var modelData = buildPmcModelData(10);
-            var chart = buildPmcChart();
-            chart.rawData = modelData;
-            spyOn(chart.dataManager, "fetchOnModel").andReturn(new $.Deferred().resolve());
-            var tomahawkView = chart.createItemDetailView({dataIndex: 2},{pageX: 10, pageY: 10});
+            var modelData;
+            var chart;
+            var workoutsCollection;
+            var tomahawkView;
+
+            beforeEach(function()
+            {
+                modelData = buildPmcModelData(10);
+                chart = buildPmcChart();
+                chart.rawData = modelData;
+                workoutsCollection = new WorkoutsCollection([], { startDate: moment(), endDate: moment() });
+                spyOn(chart.dataManager, "loadCollection").andReturn(_.extend(new $.Deferred().resolve(), { collection: workoutsCollection }));
+                tomahawkView = chart.createItemDetailView({dataIndex: 2},{pageX: 10, pageY: 10});
+            });
 
             it("Should instantiate a PmcWorkoutsListView", function()
             {
