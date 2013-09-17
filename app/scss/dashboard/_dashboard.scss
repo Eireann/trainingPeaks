@@ -133,10 +133,7 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
 {
     min-width: 1007px;
     position: relative;
-
-    padding-top: 10px;
-    padding-left: 10px;
-
+    padding:10px 0px 25px 10px;
     overflow-x: hidden;
 }
 
@@ -209,7 +206,7 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
     */
 
     position: absolute; 
-    padding: 15px;
+    padding: 15px 0 0 0;
 
     border: 1px solid transparent;
     cursor: pointer;
@@ -223,24 +220,29 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
         z-index: 200 !important;
         opacity: 1;
 
+        .chartButtons
+        {
+            display: block;
+            z-index:2;
+        }
          &:hover, &.hover {
             background-color: $TPGrey1;
             border: 1px solid transparent;
          }
     }
 
+
+
     &:hover, &.hover
     {
         background-color: #e4e2e3;
         border: 1px solid $TPGrey11;
-
+        z-index: 2;
         .chartButtons
         {
             display: block;
             z-index:2;
         }
-
-        z-index: 2;
     }
 
     &.menuOpen
@@ -264,10 +266,10 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
     {
         margin: 0px 0px 0px 0px;
         position: absolute;
-        top: 53px;
-        left: 50px;
-        @include calc("width", "100% - 90px");
-        @include calc("height", "100% - 100px");
+        top: 52px;
+        left: 26px;
+        @include calc("width", "100% - 73px");
+        @include calc("height", "100% - 99px");
         &.invisible
         {
             visibility:hidden;
@@ -311,36 +313,35 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
     {
         
         position: absolute;
-        left: 17px;
+        left: 3px;
         top: 47%;
         margin-top: 0;
 
-        margin-left: -40px;
+        margin-left: -39px;
         font-size: 10px;
 
-        &.pmc
-        {
+        &.pmc {
             text-transform: none;
             left:auto;
 
-            &.tsb
-            {
+            &.tsb {
                 position: absolute;
-                right: -25px;
+                right: -36px;
                 -webkit-transform: rotate(90deg);
                 -moz-transform: rotate(90deg);
                 color: #FFA500;
             }
-            &.tssd
-            {
+            
+            &.tssd {
                 color: #b90807;
+                left:3px;
             }
         }
 
         &.right
         {
             left: auto;
-            right: -17px;
+            right: -36px;
             -webkit-transform: rotate(90deg);
             -moz-transform: rotate(90deg);
         }
@@ -348,7 +349,7 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
 
     .chartButtons
     {
-        display: none;
+        display:none;
         position: absolute;
         top: 5px;
         right: 5px;
@@ -504,10 +505,55 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
         width: 400px;
         height: 400px;
 
-        &.pmcChart
-        {
-            width: 810px;
+        &.peaksChart {
+            .chartContainer {
+                @include calc("width", "100% - 73px");
+                left:26px;
+            }
         }
+
+        &.pmcChart {
+            width: 810px;
+
+            .chartContainer {
+                @include calc("width", "100% - 76px");
+                @include calc("height", "100% - 103px");
+                top:60px;
+                left:37px;
+            }
+        }
+
+        &.timeInZones {
+            .chartContainer {
+                @include calc("width", "100% - 60px");
+                @include calc("height", "100% - 108px");
+                top:60px;
+                left:23px;
+            }
+        }
+
+        &.workoutSummaryChart {
+            .chartContainer {
+                @include calc("width", "100% - 63px");
+                @include calc("height", "100% - 99px");
+                top:52px;
+                left:26px;
+
+                .yaxisLabel {
+                    &.right {
+                        right:-36px;
+                    }
+                }
+            }
+        }
+
+        &.fitnessSummaryChart {
+            .chartContainer {
+                left:33px;
+                top:50px;
+            }
+        }
+
     }
 
     // jquery ui adds some opacity to disabled drag state

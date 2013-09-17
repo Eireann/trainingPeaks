@@ -196,7 +196,7 @@ function(
         {
             var workoutTypeIds = this.get('workoutTypeIds'),
                 workoutTypeName;
-            if (workoutTypeIds.length > 1)
+            if (workoutTypeIds.length !== 1)
             {
                 return chartColors.workoutSummary.bars;
             }
@@ -307,7 +307,7 @@ function(
                         ticks: _.bind(this._generateTimeTicks, this),
                         tickFormatter: function(date)
                         {
-                            return moment(date).format("L");
+                            return moment(date).format("MM/DD/YY");
                         }
                     }
                 }, defaultFlotOptions.getBarOptions(null))
