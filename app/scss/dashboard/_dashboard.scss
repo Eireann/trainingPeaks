@@ -133,10 +133,7 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
 {
     min-width: 1007px;
     position: relative;
-
-    padding-top: 10px;
-    padding-left: 10px;
-
+    padding:10px 0px 25px 10px;
     overflow-x: hidden;
 }
 
@@ -311,7 +308,7 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
     {
         
         position: absolute;
-        left: 2px;
+        left: 3px;
         top: 47%;
         margin-top: 0;
 
@@ -329,16 +326,17 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
                 -moz-transform: rotate(90deg);
                 color: #FFA500;
             }
-            &.tssd
-            {
+            
+            &.tssd {
                 color: #b90807;
+                left:3px;
             }
         }
 
         &.right
         {
             left: auto;
-            right: -17px;
+            right: -36px;
             -webkit-transform: rotate(90deg);
             -moz-transform: rotate(90deg);
         }
@@ -535,6 +533,12 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
                 @include calc("height", "100% - 99px");
                 top:52px;
                 left:26px;
+
+                .yaxisLabel {
+                    &.right {
+                        right:-36px;
+                    }
+                }
             }
         }
 
