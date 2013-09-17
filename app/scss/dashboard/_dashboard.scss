@@ -502,22 +502,49 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
         width: 400px;
         height: 400px;
 
+        &.peaksChart {
+            .chartContainer {
+                @include calc("width", "100% - 73px");
+                left:26px;
+            }
+        }
+
         &.pmcChart {
             width: 810px;
 
             .chartContainer {
-                width:calc(100% - 76px);
-                width: -moz-calc(100% - 76px);
-                width: -o-calc(100% - 76px);
-                
-                height:calc(100% - 103px);
-                height: -moz-calc(100% - 103px);
-                height: -o-calc(100% - 103px);
-
+                @include calc("width", "100% - 76px");
+                @include calc("height", "100% - 103px");
                 top:60px;
                 left:37px;
             }
         }
+
+        &.timeInZones {
+            .chartContainer {
+                @include calc("width", "100% - 60px");
+                @include calc("height", "100% - 108px");
+                top:60px;
+                left:23px;
+            }
+        }
+
+        &.workoutSummaryChart {
+            .chartContainer {
+                @include calc("width", "100% - 63px");
+                @include calc("height", "100% - 99px");
+                top:52px;
+                left:26px;
+            }
+        }
+
+        &.fitnessSummaryChart {
+            .chartContainer {
+                left:33px;
+                top:50px;
+            }
+        }
+
     }
 
     // jquery ui adds some opacity to disabled drag state
