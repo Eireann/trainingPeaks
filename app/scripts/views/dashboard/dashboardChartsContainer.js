@@ -29,11 +29,9 @@ function(
     function userCanUsePod(chartModel)
     {
         var featureAttributes = { podTypeId: chartModel.get("chartType") };
-        var featureOptions = { allowUnknownPodTypes: true };
         return theMarsApp.featureAuthorizer.canAccessFeature(
             theMarsApp.featureAuthorizer.features.UsePod,
-            featureAttributes,
-            featureOptions
+            featureAttributes
         );
     }
 

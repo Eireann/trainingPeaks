@@ -135,6 +135,10 @@ function(
         {
             podId: 36,
             podAccessString: "pod_meanMaxDistanceBests"
+        },
+        {
+            podId: 37,
+            podAccessString: "pod_WorkoutSummaryReportDistance" // elevation gain by day/week doesn't exist
         }
     ];
 

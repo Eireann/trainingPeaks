@@ -254,32 +254,6 @@ function(
                     ).toBe(true);
                 });
 
-                it("Should not allow unknown pod types if option is not set", function()
-                {
-                    var attributes = { podTypeId: 9999 }; 
-                    var checkPodAccess = function()
-                    {
-                        return featureAuthorizer.features.ViewPod(
-                            user,
-                            authorizedUserAccessRights,
-                            attributes
-                        );
-                    };
-                    expect(checkPodAccess).toThrow();
-                });
-
-                it("Should allow unknown pod types if option is set", function()
-                {
-                    var attributes = { podTypeId: 9999 }; 
-                    var options = { allowUnknownPodTypes: true };
-                    expect(featureAuthorizer.features.ViewPod(
-                        user,
-                        authorizedUserAccessRights,
-                        attributes,
-                        options
-                    )).toBe(true);
-                });
-
             });
 
             describe("UsePod", function()
@@ -318,32 +292,6 @@ function(
                                 attributes
                             )
                     ).toBe(true);
-                });
-
-                it("Should not allow unknown pod types if option is not set", function()
-                {
-                    var attributes = { podTypeId: 9999 }; 
-                    var checkPodAccess = function()
-                    {
-                        return featureAuthorizer.features.UsePod(
-                            user,
-                            authorizedUserAccessRights,
-                            attributes
-                        );
-                    };
-                    expect(checkPodAccess).toThrow();
-                });
-
-                it("Should allow unknown pod types if option is set", function()
-                {
-                    var attributes = { podTypeId: 9999 }; 
-                    var options = { allowUnknownPodTypes: true };
-                    expect(featureAuthorizer.features.UsePod(
-                        user,
-                        authorizedUserAccessRights,
-                        attributes,
-                        options
-                    )).toBe(true);
                 });
 
             });

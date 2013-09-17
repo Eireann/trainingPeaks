@@ -124,13 +124,12 @@ function(
         _checkPremiumAccess: function(model)
         {
             var featureAttributes = { podTypeId: model.get("chartType") };
-            var featureOptions = { allowUnknownPodTypes: true };
 
             // this collection should only contain items the user is allowed to view 
             if(!this.featureAuthorizer.canAccessFeature(
                this.featureAuthorizer.features.ViewPod,
-               featureAttributes,
-               featureOptions)
+               featureAttributes
+               )
             )
             {
                 this.remove(model);
@@ -140,8 +139,8 @@ function(
             // mark items the user is not allowed to use 
             if(!this.featureAuthorizer.canAccessFeature(
                this.featureAuthorizer.features.UsePod,
-               featureAttributes,
-               featureOptions)
+               featureAttributes
+               )
             )
             {
                 model.set("premium", true);

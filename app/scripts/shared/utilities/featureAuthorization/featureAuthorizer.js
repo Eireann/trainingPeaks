@@ -77,7 +77,7 @@ function(
 
             /*
             attributes: { podTypeId: int } // matches types in dashboard charts and shared/data/podTypes
-            options: { allowUnknownPodTypes: boolean } // allow pod without permission if not defined in podTypes
+            options: none 
             */
             ViewPod: function(user, userAccess, attributes, options)
             {
@@ -86,28 +86,14 @@ function(
                     throw new Error("ViewPod requires a podTypeId attribute");
                 }
 
-                try {
-                    var podType = podTypes.findById(attributes.podTypeId);
-                    var viewablePods = userAccess.getStringList(accessRights.ids.CanViewPods);
-                    return _.contains(viewablePods, podType.podAccessString);
-                }
-                catch(e)
-                {
-                    if(options && options.allowUnknownPodTypes)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        throw e;
-                    }
-                }
-
+                var podType = podTypes.findById(attributes.podTypeId);
+                var viewablePods = userAccess.getStringList(accessRights.ids.CanViewPods);
+                return _.contains(viewablePods, podType.podAccessString);
             },
 
             /*
             attributes: { podTypeId: int } // matches types in dashboard charts and shared/data/podTypes
-            options: { allowUnknownPodTypes: boolean } // allow pod without permission if not defined in podTypes
+            options: none 
             */
             UsePod: function(user, userAccess, attributes, options)
             {
@@ -116,22 +102,9 @@ function(
                     throw new Error("UsePod requires a podTypeId attribute");
                 }
 
-                try {
-                    var podType = podTypes.findById(attributes.podTypeId);
-                    var useablePods = userAccess.getStringList(accessRights.ids.CanUsePods);
-                    return _.contains(useablePods, podType.podAccessString);
-                }
-                catch(e)
-                {
-                    if(options && options.allowUnknownPodTypes)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        throw e;
-                    }
-                }
+                var podType = podTypes.findById(attributes.podTypeId);
+                var useablePods = userAccess.getStringList(accessRights.ids.CanUsePods);
+                return _.contains(useablePods, podType.podAccessString);
             },
 
             /*
