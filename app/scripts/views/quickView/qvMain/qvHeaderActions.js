@@ -118,7 +118,7 @@ function (
                 var moveWorkout = function()
                 {
                     // prepare our target day collection
-                    theMarsApp.controllers.calendarController.views.calendar.scrollToDate(newDate);
+                    // theMarsApp.controllers.calendarController.views.calendar.scrollToDate(newDate);
                     workout.moveToDay(newDay);
                 };
 

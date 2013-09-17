@@ -17,6 +17,10 @@ function(
 
         var FakeModel = TP.Model.extend({
             url: "fakeModelUrl",
+            initialize: function(attributes, options)
+            {
+                this.requestSignature = options && options.requestSignature;
+            },
             fetch: function(options)
             {
                 this.fetchOptions = options;
@@ -35,13 +39,13 @@ function(
             });
         });
 
-        describe("Fetch on model", function()
+        describe("Load Model", function()
         {
 
             it("Should resolve a request when the source request resolves", function()
             {
-                var fakeModel = new FakeModel();
-                var deferred = dataManager.fetchOnModel(fakeModel);
+                var deferred = dataManager.loadModel(FakeModel);
+                var fakeModel = deferred.model;
                 expect(deferred.state()).toBe("pending");
                 fakeModel.resolve({ valueOne: "hello", valueTwo: "world" });
                 expect(deferred.state()).toBe("resolved");
@@ -49,14 +53,14 @@ function(
                 expect(fakeModel.get("valueTwo")).toBe("world");
             });
 
-            it("Should resolve multiple pending requests with the same data", function()
+            it("Should return a common model instance", function()
             {
-                var fakeModelOne = new FakeModel();
-                var fakeModelTwo = new FakeModel();
-                var deferredOne = dataManager.fetchOnModel(fakeModelOne);
-                var deferredTwo = dataManager.fetchOnModel(fakeModelTwo);
-                expect(deferredOne.state()).toBe("pending");
-                expect(deferredTwo.state()).toBe("pending");
+                var deferredOne = dataManager.loadModel(FakeModel);
+                var deferredTwo = dataManager.loadModel(FakeModel);
+                var fakeModelOne = deferredOne.model;
+                var fakeModelTwo = deferredTwo.model;
+
+                expect(fakeModelOne).toEqual(fakeModelTwo);
 
                 fakeModelOne.resolve({ valueOne: "hello", valueTwo: "world" });
 
@@ -68,30 +72,18 @@ function(
 
             it("Should resolve new request with previously resolved data", function()
             {
-                var fakeModelOne = new FakeModel();
-                var deferredOne = dataManager.fetchOnModel(fakeModelOne);
+                var deferredOne = dataManager.loadModel(FakeModel);
+                var fakeModelOne = deferredOne.model;
+
                 expect(deferredOne.state()).toBe("pending");
                 fakeModelOne.resolve({ valueOne: "hello", valueTwo: "world" });
                 expect(deferredOne.state()).toBe("resolved");
 
-                var fakeModelTwo = new FakeModel();
-                var deferredTwo = dataManager.fetchOnModel(fakeModelTwo);
+                var deferredTwo = dataManager.loadModel(FakeModel);
+                var fakeModelTwo = deferredTwo.model;
                 expect(deferredTwo.state()).toBe("resolved");
                 expect(fakeModelTwo.get("valueOne")).toBe("hello");
                 expect(fakeModelTwo.get("valueTwo")).toBe("world");
-            });
-
-            it("Should use the requestSignature attribute or method if it exists", function()
-            {
-                var fakeModelWithRegularUrl = new FakeModel();
-                var fakeModelWithRequestSignature = new FakeModel();
-                fakeModelWithRequestSignature.requestSignature = "iamanonstandardrequest";
-
-                var deferredOne = dataManager.fetchOnModel(fakeModelWithRegularUrl);
-                var deferredTwo = dataManager.fetchOnModel(fakeModelWithRequestSignature);
-                fakeModelWithRegularUrl.resolve({ something: "string" });
-                expect(deferredOne.state()).toBe("resolved");
-                expect(deferredTwo.state()).toBe("pending");
             });
 
         });
@@ -101,41 +93,32 @@ function(
 
             it("Should reset when a matching model is saved", function()
             {
-                var saveModelUrl = "/fitness/v1/resetme/something/";
-                var fakeModelOne = new FakeModel();
-                dataManager.fetchOnModel(fakeModelOne);
-                fakeModelOne.resolve({ valueOne: "hello", valueTwo: "world" });
-
+                var saveModelUrl = "/fitness/v1/resetme/";
+                var resetSpy = jasmine.createSpy();
+                dataManager.on("reset", resetSpy);
                 dataManager.reset(saveModelUrl); 
-                var fakeModelTwo = new FakeModel();
-                var deferredTwo = dataManager.fetchOnModel(fakeModelTwo);
-                expect(deferredTwo.state()).toBe("pending");
+
+                expect(resetSpy).toHaveBeenCalled();
             });
 
             it("Should not reset when a non matching model is saved", function()
             {
                 var saveModelUrl = "/fitness/v1/idontmatch/";
-                var fakeModelOne = new FakeModel();
-                dataManager.fetchOnModel(fakeModelOne);
-                fakeModelOne.resolve({ valueOne: "hello", valueTwo: "world" });
-
-                dataManager.reset(saveModelUrl); 
-                var fakeModelTwo = new FakeModel();
-                var deferredTwo = dataManager.fetchOnModel(fakeModelTwo);
-                expect(deferredTwo.state()).toBe("resolved");
+                var resetSpy = jasmine.createSpy();
+                dataManager.on("reset", resetSpy);
+                dataManager.reset(saveModelUrl);
+                
+                expect(resetSpy).not.toHaveBeenCalled();
             });
 
             it("Should not reset when an ignoreable model is saved", function()
             {
                 var saveModelUrl = "/fitness/v1/resetme/ignoreme/";
-                var fakeModelOne = new FakeModel();
-                dataManager.fetchOnModel(fakeModelOne);
-                fakeModelOne.resolve({ valueOne: "hello", valueTwo: "world" });
-
-                dataManager.reset(saveModelUrl); 
-                var fakeModelTwo = new FakeModel();
-                var deferredTwo = dataManager.fetchOnModel(fakeModelTwo);
-                expect(deferredTwo.state()).toBe("resolved");
+                var resetSpy = jasmine.createSpy();
+                dataManager.on("reset", resetSpy);
+                dataManager.reset(saveModelUrl);
+                
+                expect(resetSpy).not.toHaveBeenCalled();
             });
 
         });

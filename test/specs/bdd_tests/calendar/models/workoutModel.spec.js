@@ -52,49 +52,17 @@ function(
             var workout;
             var originalDate = moment().format("YYYY-MM-DDThh:mm:ss");
             var tomorrow = moment().add("days", 1).format("YYYY-MM-DD");
-            var originalCollection;
-            var newCollection;
 
             beforeEach(function()
             {
-                originalCollection = jasmine.createSpyObj("Original Collection", ["add", "remove"]);
-                newCollection = jasmine.createSpyObj("New Collection", ["add", "remove"]);
-
                 workout = new WorkoutModel({ workoutId: "12345", workoutDay: originalDate });
-                workout.dayCollection = originalCollection;
                 spyOn(workout, "save").andReturn($.Deferred());
-            });
-
-            it("Should update workoutDay and call save", function()
-            {
-                workout.moveToDay(tomorrow);
-                expect(workout.getCalendarDay()).toEqual(tomorrow);
             });
 
             it("Should call save", function()
             {
                 workout.moveToDay(tomorrow);
                 expect(workout.save).toHaveBeenCalled();
-            });
-
-            it("Should remove from original collection", function()
-            {
-                workout.moveToDay(tomorrow);
-                expect(originalCollection.remove).toHaveBeenCalledWith(workout);
-            });
-
-            it("Should add to new collection", function()
-            {
-                workout.moveToDay(tomorrow);
-                expect(workout.dayCollection).not.toEqual(originalCollection);
-            });
-
-            it("Should move workout back if save fails", function()
-            {
-                spyOn(workout, "set").andCallThrough();
-                workout.moveToDay(tomorrow).reject();
-                expect(originalCollection.add).toHaveBeenCalledWith(workout);
-                expect(workout.set).toHaveBeenCalledWith("workoutDay", originalDate);
             });
         });
 

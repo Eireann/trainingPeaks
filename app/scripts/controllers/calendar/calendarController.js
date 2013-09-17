@@ -50,7 +50,6 @@ function(
             }
 
             this._dataManager = options.dataManager;
-            this._dataManager.on("reset", this._onDataManagerReset, this);
 
             // TODO: split this into a couple different functions 
             this.models = {};
@@ -276,16 +275,6 @@ function(
         onCalendarSelect: function()
         {
             this.views.library.clearSelection();
-        },
-
-        // if we edited some workouts, no need to refresh all of our collections, data manager will automatically reset cached queries
-        // if another controller does some edits, then refresh ourselves for next show
-        _onDataManagerReset: function()
-        {
-            if(theMarsApp.getCurrentController() !== this)
-            {
-                this.weeksCollection.resetWorkouts(); 
-            }
         }
 
     };

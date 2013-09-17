@@ -111,11 +111,16 @@ function(
             "destroy": "onWaitStop"
         },
 
-        onWaitStart: function()
+        onWaitStart: function(model, xhr, options)
         {
             if (this.showThrobbers)
             {
                 this.waitingOn();
+
+                if (xhr)
+                {
+                    xhr.always(_.bind(this.waitingOff, this));
+                }
             }
         },
 

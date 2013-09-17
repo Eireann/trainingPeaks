@@ -6,6 +6,7 @@ define(
     "framework/ajaxCaching",
     "framework/ajaxTimezone",
     "framework/tooltips",
+    "framework/identityMap",
     "framework/dataManager",
     "dashboard/reportingDataManager",
     "models/session",
@@ -33,6 +34,7 @@ function(
     ajaxCaching,
     initializeAjaxTimezone,
     enableTooltips,
+    IdentityMap,
     DataManager,
     ReportingDataManager,
     Session,
@@ -188,13 +190,17 @@ function(
         // add data managers
         this.addInitializer(function()
         {
-            // reset reporting manager when we save or delete workouts
-            var dataManagerOptions = { resetPatterns: [/athletes\/[0-9]+\/workouts/] };
+            var dataManagerOptions = {
+                identityMap: new IdentityMap(),
+                resetPatterns: [/athletes\/[0-9]+\/workouts/]
+            };
+
             this.dataManagers = {
                 reporting: new ReportingDataManager(dataManagerOptions),
                 calendar: new DataManager(dataManagerOptions)
             };
 
+            // reset reporting manager when we save or delete workouts
             this.on("save:model destroy:model", function(model)
             {
                 var modelUrl = _.result(model, "url");
