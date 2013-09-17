@@ -6,7 +6,7 @@
     @include buttons(0, "auto", $fontSizeSmall);
     button
     {
-        padding: 4px 5px;
+        padding: 0 5px;
         margin-right: 8px;
         min-width: 77px;
     }
@@ -465,7 +465,7 @@
 
     .userSettingsButtons
     {
-        margin: 15px 20px;
+        margin: 14px 20px;
         float: right;
     }
 }
