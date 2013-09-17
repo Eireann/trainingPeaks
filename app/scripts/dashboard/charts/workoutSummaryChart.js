@@ -307,7 +307,7 @@ function(
                         ticks: _.bind(this._generateTimeTicks, this),
                         tickFormatter: function(date)
                         {
-                            return moment(date).format("L");
+                            return moment(date).format("MM/DD/YY");
                         }
                     }
                 }, defaultFlotOptions.getBarOptions(null))

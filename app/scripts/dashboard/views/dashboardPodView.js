@@ -68,7 +68,8 @@ function(
             "mousedown .settings": "_onSettingsClicked",
             "mousedown .expand": "_onExpandClicked",
             "mousedown .collapse": "_onExpandClicked",
-            "mousedown .close": "_onCloseClicked"
+            "mousedown .close": "_onCloseClicked",
+            "dblclick": "_onExpandClicked"
         },
 
         serializeData: function()
@@ -255,10 +256,10 @@ function(
             };
 
             var newPosition = {
-                top: "10px",
-                bottom: "20px",
-                left: "10px",
-                right: "10px"
+                top: "30px",
+                bottom: "40px",
+                left: "30px",
+                right: "30px"
             };
 
             // Can't use .hide() because the $chartContainer needs to remain in the layout
@@ -282,10 +283,11 @@ function(
 
         setupModalOverlay: function()
         {
-            this.createOverlay({ onOverlayClick: this.expandClicked });
+            
+            this.createOverlay({ onOverlayClick: this._onExpandClicked });
             this.$overlay.css("z-index", this.$el.css("z-index") - 1);
             this.enableEscapeKey();
-            this.closeOnRouteChange(this.expandClicked);
+            this.closeOnRouteChange(this._onExpandClicked);
         },
 
         _onCloseClicked: function()
