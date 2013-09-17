@@ -212,6 +212,7 @@ function(
             var dateOptions = DashboardChartUtils.buildChartParameters(this.get("dateOptions"));
             var postData =
             {
+                chartType: this.get("chartType"),
                 dateGrouping: this.get("dateGrouping") || 1
             };
 
