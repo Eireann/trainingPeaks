@@ -73,8 +73,11 @@ function(TP, SaveWorkoutToLibraryCommand, AfterSaveView, saveWorkoutToLibraryTem
             {
                 self.waitingOff();
                 theMarsApp.featureAuthorizer.runCallbackOrShowUpgradeMessage(
-                    theMarsApp.featureAuthorizer.features.AddExerciseToLibrary,
-                    self.doSaveToLibrary(libraryId),
+                    theMarsApp.featureAuthorizer.features.AddWorkoutTemplateToLibrary,
+                    function()
+                    {
+                        self.doSaveToLibrary(libraryId);
+                    },
                     {collection: libraryExercisesCollection}
                 ); 
             });

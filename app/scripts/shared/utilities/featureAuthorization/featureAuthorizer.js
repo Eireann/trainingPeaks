@@ -159,16 +159,19 @@ function(
             attributes: { collection: libraryExercisesCollection } // collection to add to
             options: none 
             */
-            AddExerciseToLibrary: function(user, userAccess, attributes, options)
+            AddWorkoutTemplateToLibrary: function(user, userAccess, attributes, options)
             {
                 if(!attributes || !attributes.collection)
                 {
-                    throw new Error("AddExerciseToLibrary requires a collection attribute");
+                    throw new Error("AddWorkoutTemplateToLibrary requires a collection attribute");
                 }
 
-                var maximumExercises = userAccess.getNumber(accessRights.ids.MaximumExercisesInOwnedLibrary);
+                var filteredCollection = attributes.collection.filter(function(model)
+                {
+                    return model.get("itemType") === model.itemTypeIds.WorkoutTemplate;
+                });
 
-                return _.result(attributes.collection, "length") < maximumExercises ? true : false;
+                return _.result(filteredCollection, "length") < userAccess.getNumber(accessRights.ids.MaximumWorkoutTemplatesInOwnedLibrary);
             }
 
         },

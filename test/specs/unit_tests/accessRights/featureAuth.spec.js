@@ -7,6 +7,7 @@ requirejs(
     "shared/models/userModel",
     "shared/models/userAccessRightsModel",
     "shared/utilities/featureAuthorization/featureAuthorizer",
+    "models/library/libraryExercise",
     "testUtils/xhrDataStubs"
 ],
 function(
@@ -16,6 +17,7 @@ function(
     UserModel,
     UserAccessRightsModel,
     FeatureAuthorizer,
+    ExerciseLibraryItem,
     xhrData
     )
 {
@@ -420,7 +422,7 @@ function(
 
             });
 
-            describe("AddExerciseToLibrary", function()
+            describe("AddWorkoutTemplateToLibrary", function()
             {
                 var user;
                 var authorizedUserAccessRights;
@@ -432,7 +434,7 @@ function(
 
                     authorizedUserAccessRights = new UserAccessRightsModel();
                     authorizedUserAccessRights.set({
-                        "rights":[xhrData.accessRights.maximumExercisesInOwnedLibrary]
+                        "rights":[xhrData.accessRights.maximumWorkoutTemplatesInOwnedLibrary]
                     });
                     authorizedUserAccessRights.set("rights.0.accessRightData", 5);
 
@@ -441,21 +443,28 @@ function(
                 it("Should only allow users to add up to maximum exercises in library", function()
                 {
                     var collectionUnderLimit = new TP.Collection([
-                        {something: "something"},
-                        {something: "something"},
-                        {something: "something"},
-                        {something: "something"}
-                    ]);
+                        { itemName: "exercise one", itemType: 0, exerciseLibraryItemId: 1 },
+                        { itemName: "exercise two", itemType: 0, exerciseLibraryItemId: 2 },
+                        { itemName: "exercise routine", itemType: 1, exerciseLibraryItemId: 3 },
+                        { itemName: "exercise routine two", itemType: 1, exerciseLibraryItemId: 4 },
+                        { itemName: "exercise routine three", itemType: 1, exerciseLibraryItemId: 5 },
+                        { itemName: "workout template one", itemType: 2, exerciseLibraryItemId: 6 }
+                    ], { model: ExerciseLibraryItem });
 
                     var collectionOverLimit = new TP.Collection([
-                        {something: "something"},
-                        {something: "something"},
-                        {something: "something"},
-                        {something: "something"},
-                        {something: "something"}
-                    ]);
+                        { itemName: "exercise one", itemType: 0, exerciseLibraryItemId: 1 },
+                        { itemName: "exercise two", itemType: 0, exerciseLibraryItemId: 2 },
+                        { itemName: "exercise routine one", itemType: 1, exerciseLibraryItemId: 3 },
+                        { itemName: "exercise routine two", itemType: 1, exerciseLibraryItemId: 4 },
+                        { itemName: "exercise routine three", itemType: 1, exerciseLibraryItemId: 5 },
+                        { itemName: "workout template one", itemType: 2, exerciseLibraryItemId: 6 },
+                        { itemName: "workout template two", itemType: 2, exerciseLibraryItemId: 7 },
+                        { itemName: "workout template three", itemType: 2, exerciseLibraryItemId: 8 },
+                        { itemName: "workout template four", itemType: 2, exerciseLibraryItemId: 9 },
+                        { itemName: "workout template five", itemType: 2, exerciseLibraryItemId: 10 }
+                    ], { model: ExerciseLibraryItem });
 
-                    expect(featureAuthorizer.features.AddExerciseToLibrary(
+                    expect(featureAuthorizer.features.AddWorkoutTemplateToLibrary(
                                 user,
                                 authorizedUserAccessRights,
                                 {
@@ -464,7 +473,7 @@ function(
                             )
                     ).toBe(true);
 
-                    expect(featureAuthorizer.features.AddExerciseToLibrary(
+                    expect(featureAuthorizer.features.AddWorkoutTemplateToLibrary(
                                 user,
                                 authorizedUserAccessRights,
                                 {

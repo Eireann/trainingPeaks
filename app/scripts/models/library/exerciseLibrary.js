@@ -62,6 +62,11 @@ function (TP, LibraryExercisesCollection)
         length: function()
         {
             return this.exercises.length;
+        },
+
+        filter: function(filterFunction)
+        {
+            return this.exercises.filter(filterFunction);
         }
     });
 });

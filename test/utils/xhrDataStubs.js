@@ -772,9 +772,9 @@ function()
                     "pod_meanMaxDistance"
                 ]
             },
-            maximumExercisesInOwnedLibrary: {
+            maximumWorkoutTemplatesInOwnedLibrary: {
                 "accessRightItemDataValue": {"data":5},
-                "accessRightIdValue": 18,
+                "accessRightIdValue": 20,
                 "accessRightItemDataTypeValue": 2,
                 "accessRightData": 5
             }
@@ -783,7 +783,7 @@ function()
 
     xhrData.defaultTestUserAccessRights = [
         xhrData.accessRights.planFutureWorkouts,
-        xhrData.accessRights.maximumExercisesInOwnedLibrary,
+        xhrData.accessRights.maximumWorkoutTemplatesInOwnedLibrary,
         xhrData.accessRights.canViewPods,
         xhrData.accessRights.canUsePodsFull
     ];
