@@ -317,9 +317,9 @@ function(
           if(item && item.series && item.series.raw && item.series.raw[item.dataIndex] && item.series.raw[item.dataIndex].workoutId)
           {
             var workoutId = item.series.raw[item.dataIndex].workoutId;
-            var workout = new WorkoutModel({ workoutId: workoutId });
-            workout.fetch();
-            return new WorkoutQuickView({model: workout});
+            var workoutPromise = this.dataManager.loadModel(WorkoutModel, { workoutId: workoutId });
+            console.log(workoutPromise.model);
+            return new WorkoutQuickView({model: workoutPromise.model});
           }
           else
           {

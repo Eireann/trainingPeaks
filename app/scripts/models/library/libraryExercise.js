@@ -10,6 +10,13 @@ function (TP)
         webAPIModelName: "ExerciseLibraryItem",
         idAttribute: "exerciseLibraryItemId",
 
+        itemTypeIds: 
+        {
+            Exercise: 0,
+            ExerciseRoutine: 1,
+            WorkoutTemplate: 2
+        },
+
         defaults:
         {
             "exerciseLibraryId": 0,

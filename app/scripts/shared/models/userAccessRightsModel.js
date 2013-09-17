@@ -35,6 +35,28 @@ function(
             };
         },
 
+        getNumber: function(accessRightId)
+        {
+            var accessRightDefinition = accessRights.find(accessRightId);
+
+            if(accessRightDefinition.dataType !== accessRights.dataTypes.Numeric)
+            {
+                throw new Error("Requested numeric list, but data type for access right id " + accessRightId + " is not numeric");
+            }
+
+            var accessRightForUser = this._findAccessRightValueById(accessRightId);
+
+            if(!accessRightForUser || !accessRightForUser.accessRightData)
+            {
+                return null;
+            }
+            else
+            {
+                return accessRightForUser.accessRightData;
+            }
+
+        },
+
         getNumericList: function(accessRightId)
         {
             var accessRightDefinition = accessRights.find(accessRightId);
@@ -42,6 +64,28 @@ function(
             if(accessRightDefinition.dataType !== accessRights.dataTypes.NumericList)
             {
                 throw new Error("Requested numeric list, but data type for access right id " + accessRightId + " is not numeric list");
+            }
+
+            var accessRightForUser = this._findAccessRightValueById(accessRightId);
+
+            if(!accessRightForUser || !accessRightForUser.accessRightData)
+            {
+                return [];
+            }
+            else
+            {
+                return accessRightForUser.accessRightData;
+            }
+
+        },
+
+        getStringList: function(accessRightId)
+        {
+            var accessRightDefinition = accessRights.find(accessRightId);
+
+            if(accessRightDefinition.dataType !== accessRights.dataTypes.StringList)
+            {
+                throw new Error("Requested string list, but data type for access right id " + accessRightId + " is not string list");
             }
 
             var accessRightForUser = this._findAccessRightValueById(accessRightId);

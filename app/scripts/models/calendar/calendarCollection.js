@@ -52,9 +52,13 @@ function(
 
             this.summaryViewEnabled = options.hasOwnProperty("summaryViewEnabled") ? options.summaryViewEnabled : false;
 
+
             this.workoutsCollection = new WorkoutsCollection();
             this.daysCollection = new TP.Collection();
             this.setUpWeeks(options.startDate, options.endDate);
+
+            this.listenTo(this.workoutsCollection, "request sync error add change:workoutDay", _.bind(this.indexWorkoutByDay, this));
+            this.listenTo(this.workoutsCollection, "remove", _.bind(this.unindexWorkoutByDay, this));
 
             this.initializeCopyPaste();
             this.initializeMoveAndShift();
@@ -165,8 +169,11 @@ function(
             var self = this;
 
             this.setWeeksAttrs(startDate, endDate, {isWaiting: true, isFetched: true});
-            var workouts = new WorkoutsCollection([], { startDate: moment(startDate), endDate: moment(endDate) });
-            var waiting = this._dataManager.fetchOnModel(workouts);
+            var waiting = this._dataManager.loadCollection(WorkoutsCollection, {
+                startDate: moment(startDate),
+                endDate: moment(endDate)
+            });
+            var workouts = waiting.collection;
 
             // we trigger a sync event on each week model - whether they have workouts or not - to remove the waiting throbber
             // but we don't trigger the request event here to show the throbber, because the week model is not yet bound to a view,
@@ -295,23 +302,36 @@ function(
         addWorkout: function(workout)
         {
             this.workoutsCollection.add(workout);
-            this.addWorkoutToCalendarDay(workout);
         },
 
-        addWorkoutToCalendarDay: function(workout)
+        indexWorkoutByDay: function(workout)
         {
+            var oldDay, newDay;
+            if(workout.dayCollection)
+            {
+                oldDay = workout.dayCollection.remove(workout);
+            }
+
             var workoutDay = workout.getCalendarDay();
             if (workoutDay)
             {
-                var dayModel = this.getDayModel(workoutDay);
+                newDay = this.getDayModel(workoutDay);
+            }
 
-                if(!dayModel)
-                    return;
-                
-                dayModel.add(workout);
+            if(oldDay !== newDay)
+            {
+                if (oldDay) oldDay.remove(workout);
+                if (newDay) newDay.add(workout);
 
-                // so that if we move the workout, it knows which date to remove itself from
-                workout.dayCollection = dayModel;
+                workout.dayCollection = newDay;
+            }
+        },
+
+        unindexWorkoutByDay: function(workout)
+        {
+            if(workout.dayCollection)
+            {
+                workout.dayCollection.remove(workout);
             }
         },
 

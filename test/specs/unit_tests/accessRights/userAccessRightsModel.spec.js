@@ -50,6 +50,76 @@ function(
 
         });
 
+        describe("String List Types", function()
+        {
+
+            it("Should throw an exception if the datatype for the requested key is not string list", function()
+            {
+                var model = new UserAccessRightsModel();
+                var requestNonStringType = function()
+                {
+                    return model.getStringList(accessRights.accessRightIds.CanUsePerspectives);
+                };
+                expect(requestNonStringType).toThrow();
+            });
+
+            it("Should return an empty array if no value is present for the key", function()
+            {
+                var model = new UserAccessRightsModel();
+                var accessRightsValue = model.getStringList(accessRights.ids.CanViewPods);
+                expect(_.isArray(accessRightsValue)).toBe(true);
+                expect(accessRightsValue.length).toBe(0);
+            });
+
+            it("Should return an array of strings if a value is present", function()
+            {
+                var model = new UserAccessRightsModel();
+                model.set({
+                    "rights":[xhrData.accessRights.canViewPods]
+                });
+                var accessRightsValue = model.getStringList(accessRights.ids.CanViewPods);
+                expect(_.isArray(accessRightsValue)).toBe(true);
+                expect(accessRightsValue[0]).toBe("journal_GroundControl");
+            });
+
+        });
+
+        describe("Numeric Types", function()
+        {
+
+            it("Should throw an exception if the datatype for the requested key is not numeric", function()
+            {
+                var model = new UserAccessRightsModel();
+                var requestNonNumericType = function()
+                {
+                    return model.getNumber(accessRights.accessRightIds.CanViewPods);
+                };
+                expect(requestNonNumericType).toThrow();
+            });
+
+            it("Should return null if no value is present for the key", function()
+            {
+                var model = new UserAccessRightsModel();
+                var accessRightsValue = model.getNumber(accessRights.ids.MaximumExercisesInOwnedLibrary);
+                expect(accessRightsValue).toBeNull();
+            });
+
+            it("Should return a numeric value if present", function()
+            {
+                var model = new UserAccessRightsModel();
+                model.set({
+                    "rights":[{
+                        "accessRightItemDataValue": {"data":5},
+                        "accessRightIdValue": 18,
+                        "accessRightItemDataTypeValue": 2,
+                        "accessRightData": 5
+                    }]
+                });
+                var accessRightsValue = model.getNumber(accessRights.ids.MaximumExercisesInOwnedLibrary);
+                expect(accessRightsValue).toBe(5);
+            });
+
+        });
     });
 
 });

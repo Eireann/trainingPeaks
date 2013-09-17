@@ -47,7 +47,7 @@ function(
             beforeEach(function()
             {
                 var userData = xhrData.users.barbkprem;
-                testHelpers.startTheAppAndLogin(userData, true);
+                testHelpers.startTheAppAndLogin(testHelpers.deepClone(userData));
                 theMarsApp.user.getDashboardSettings().set("pods", [metricPowerPodSettings]);
                 $mainRegion = theMarsApp.mainRegion.$el;
                 theMarsApp.router.navigate("dashboard", true);
@@ -159,7 +159,7 @@ function(
                 beforeEach(function()
                 {
                     var userData = xhrData.users.barbkprem;
-                    testHelpers.startTheAppAndLogin(userData, true);
+                    testHelpers.startTheAppAndLogin(testHelpers.deepClone(userData));
                     theMarsApp.user.getDashboardSettings().set("pods", [metricsPodSettings]);
                     $mainRegion = theMarsApp.mainRegion.$el;
                     theMarsApp.router.navigate("dashboard", true);

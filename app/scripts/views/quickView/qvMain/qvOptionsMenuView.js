@@ -63,9 +63,18 @@ function(TP, ElevationCorrectionView, optionsMenuTemplate)
         {
             if (!(this.hasLatLngData()))
                 return;
-            
-            var view = new ElevationCorrectionView({ workoutModel: this.model });
-            view.render();
+          
+            var workoutModel = this.model;
+            var openElevationCorrection = function()
+            { 
+                var view = new ElevationCorrectionView({ workoutModel: workoutModel });
+                view.render();
+            };
+
+            theMarsApp.featureAuthorizer.runCallbackOrShowUpgradeMessage(
+                theMarsApp.featureAuthorizer.features.ElevationCorrection,
+                openElevationCorrection);
+
             this.close();
         },
 

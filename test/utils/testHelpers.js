@@ -144,6 +144,20 @@ function(_, $, Backbone, TP, xhrData, app)
             }
         },
 
+        rejectRequest: function(httpVerb, urlPattern)
+        {
+            var request = this.findRequest(httpVerb, urlPattern);
+
+            if (request)
+            {
+                request.jqXhr.ajaxDeferred.rejectWith(request.options, ['error', request.jqXhr]);
+            } else
+            {
+                //console.log(this.fakeAjaxRequests);
+                throw "Cannot find request to resolve: " + httpVerb + " " + urlPattern;
+            }
+        },
+
         hasRequest: function(httpVerb, urlPattern)
         {
             var request = this.findRequest(httpVerb, urlPattern);
@@ -213,32 +227,47 @@ function(_, $, Backbone, TP, xhrData, app)
             this.clearRequests();
         },
 
-        submitLogin: function(userData)
+        submitLogin: function(userData, accessRights, athleteSettings)
         {
             app.router.navigate("login", true);
             app.mainRegion.$el.find("input[name=Submit]").trigger("click");
             this.resolveRequest("POST", "Token", xhrData.token);
-            this.loadUser(userData);
+            this.loadUser(userData, accessRights, athleteSettings);
         },
 
-        loadUser: function(userData)
+        loadUser: function(userData, accessRights, athleteSettings)
         {
-            if (userData)
+            this.resolveRequest("GET", "users/v1/user$", userData);
+            this.resolveRequest("GET", "users/v1/user/accessrights", accessRights);
+            this.resolveRequest("GET", "fitness/v1/athletes/[0-9]+/settings", athleteSettings);
+        },
+
+        startTheAppAndLogin: function(userData, accessRights, athleteSettings)
+        {
+
+            if(_.isBoolean(accessRights))
             {
-                this.resolveRequest("GET", "users/v1/user", userData);
+                throw new Error("Deprecated: startTheAppAndLogin(userData, doClone)");
             }
-        },
-
-        startTheAppAndLogin: function(userData, doClone)
-        {
-
+            
             this.startTheApp();
-            if(doClone)
+
+            if(!_.isArray(accessRights))
             {
-                userData = TP.utils.deepClone(userData);                
+                accessRights = this.deepClone(xhrData.defaultTestUserAccessRights);
             }
 
-            this.submitLogin(userData);
+            if(!_.isObject(athleteSettings))
+            {
+                athleteSettings = this.deepClone(xhrData.athleteSettings.barbkprem);
+            }
+
+            this.submitLogin(userData, accessRights, athleteSettings);
+        },
+
+        deepClone: function(obj)
+        {
+            return TP.utils.deepClone(obj);
         }
     };
 
