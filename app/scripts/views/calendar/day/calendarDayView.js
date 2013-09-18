@@ -328,39 +328,27 @@ function(
 
         makeDayDraggable: function()
         {
-            _.bindAll(this, "draggableHelper", "onDragStart", "onDragStop");
-            this.draggableOptions = { appendTo: theMarsApp.getBodyElement(), helper: this.draggableHelper, start: this.onDragStart, stop: this.onDragStop, containment: "#calendarContainer" };
-            this.makeElementDraggable(this.$(".dayHeader"), this.draggableOptions);
-            this.makeElementDraggable(this.$(".daySelected"), this.draggableOptions);
+            _.bindAll(this, "onDragStart", "onDragStop")
+            this.$el.data("ItemId", this.model.id);
+            this.$el.data("ItemType", "CalendarDay");
+            this.$el.data("DropEvent", "dayMoved");;
+            this.draggableOptions = 
+            this.$el.draggable(
+            {
+                appendTo: theMarsApp.getBodyElement(),
+                helper: "clone",
+                handle: ".dayHeader, .daySelected",
+                start: this.onDragStart,
+                stop: this.onDragStop,
+                containment: "#calendarContainer"
+            });
         },
 
-        makeElementDraggable: function($draggableElement, draggableOptions)
+        onDragStart: function(e, ui)
         {
-            $draggableElement.data("ItemId", this.model.id);
-            $draggableElement.data("ItemType", "CalendarDay");
-            $draggableElement.data("DropEvent", "dayMoved");
-            $draggableElement.draggable(draggableOptions);
-        },
-
-        draggableHelper: function(e)
-        {
-            // get a day view, with all items in drag state
-            var helperView = new CalendarDayDragStateView({ model: this.model });
-            helperView.render();
-            var $helperViewEl = helperView.$el;
-            $helperViewEl.width(this.$el.width());
-            //$helperViewEl.height(this.$el.height());
-
-            // wrap it in a week of the appropriate class
-            var $helperEl = $("<div></div>");
-            $helperEl.attr("class", this.$el.closest(".week").attr("class"));
-            $helperEl.css({maxHeight: $('#calendarContainer').height() - 100, overflow: "hidden"});
-            $helperEl.append($helperViewEl);
-            return $helperEl;
-        },
-
-        onDragStart: function(e)
-        {
+            var $helper = $(ui.helper);
+            $helper.addClass('dragHelper')
+            $helper.width(this.$el.width());
             this.$el.addClass("dragging");
             TP.analytics("send", { "hitType": "event", "eventCategory": "calendar", "eventAction": "dragDropStart", "eventLabel": "day" });
         },
@@ -369,6 +357,7 @@ function(
         {
             this.$el.removeClass("dragging");
         },
+
         appendHtml: function(collectionView, itemView, index)
         {
             itemView.$el.insertBefore(collectionView.$(".addWorkoutWrapper"));

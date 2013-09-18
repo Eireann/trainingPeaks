@@ -29,7 +29,7 @@ function(
             {
                 var subInfo = _.find(info.subMetrics, function(subMetric)
                 {
-                    return subMetric.index == details.index;
+                    return subMetric.index === details.index;
                 });
 
                 _.extend(info, subInfo);

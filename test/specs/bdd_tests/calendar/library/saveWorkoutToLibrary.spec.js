@@ -7,6 +7,7 @@ requirejs(
     "app",
     "jquery",
     "models/workoutModel",
+    "shared/models/activityModel",
     "views/calendar/library/exerciseLibraryView"],
 function(
     testHelpers,
@@ -16,6 +17,7 @@ function(
     theMarsApp,
     $,
     WorkoutModel,
+    ActivityModel,
     ExerciseLibraryView)
 {
     describe("save dragged workout to library", function()
@@ -27,7 +29,7 @@ function(
         {
             testHelpers.startTheAppAndLogin(xhrData.users.barbkprem);
             theMarsApp.router.navigate("calendar", true);
-            theMarsApp.controllers.calendarController.weeksCollection.workoutsCollection.add(workout);
+            theMarsApp.controllers.calendarController.weeksCollection.activitiesCollection.add(ActivityModel.wrap(workout));
         });
 
         afterEach(function()
