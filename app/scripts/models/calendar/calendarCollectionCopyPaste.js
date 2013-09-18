@@ -4,15 +4,17 @@
     "TP",
     "framework/clipboard",
     "models/calendar/calendarDay",
-    "models/calendar/calendarWeekCollection"
+    "models/calendar/calendarWeekCollection",
+    "shared/models/activityModel"
 ],
 function(
     moment,
     TP,
     Clipboard,
     CalendarDayModel,
-    CalendarWeekCollection
-    )
+    CalendarWeekCollection,
+    ActivityModel
+)
 {
     var calendarCollectionCopyPaste = {
 
@@ -26,8 +28,8 @@ function(
 
         subscribeToCopyPasteEvents: function()
         {
-            this.workoutsCollection.on("workout:copy", this.onItemsCopy, this);
-            this.workoutsCollection.on("workout:cut", this.onItemsCut, this);
+            this.activitiesCollection.on("workout:copy", this.onItemsCopy, this);
+            this.activitiesCollection.on("workout:cut", this.onItemsCut, this);
 
             this.daysCollection.on("day:copy", this.onItemsCopy, this);
             this.daysCollection.on("day:cut", this.onItemsCut, this);
@@ -55,6 +57,7 @@ function(
         
         onItemsCopy: function(model)
         {
+            model = ActivityModel.unwrap(model);
             if (!model || !model.copyToClipboard)
                 throw new Error("Invalid copy event argument: " + model);
 
@@ -63,6 +66,7 @@ function(
 
         onItemsCut: function (model)
         {
+            model = ActivityModel.unwrap(model);
             if (!model || !model.cutToClipboard)
                 throw new Error("Invalid cut event argument: " + model);
             
@@ -370,12 +374,13 @@ function(
         initializeSelectAndUnselectWorkouts: function()
         {
             this.selectedModel = null;
-            this.workoutsCollection.on("select", this.onSelectWorkout, this);
-            this.workoutsCollection.on("unselect", this.onUnSelectWorkout, this);
+            this.activitiesCollection.on("select", this.onSelectWorkout, this);
+            this.activitiesCollection.on("unselect", this.onUnSelectWorkout, this);
         },
 
         onSelectWorkout: function(model)
         {
+            model = ActivityModel.unwrap(model);
             if (this.selectedModel && this.selectedModel !== model)
             {
                 this.selectedModel.trigger("unselect", this.selectedModel);
@@ -404,6 +409,7 @@ function(
 
         onUnSelectWorkout: function(model)
         {
+            model = ActivityModel.unwrap(model);
             this.selectedModel = null;
             model.selected = false;
         },

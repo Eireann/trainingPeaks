@@ -29,6 +29,12 @@ function(
             "athleteId": null,
             "details": [],
             "timeStamp": null
+        },
+
+        getCalendarDay: function()
+        {
+            var timeStamp = this.get("timeStamp");
+            return timeStamp ? moment(timeStamp).format(TP.utils.datetime.shortDateFormat) : "";
         }
 
     });

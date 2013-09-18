@@ -1,6 +1,5 @@
 define(
 [
-
     "underscore",
     "jqueryui/touch-punch",
     "jqueryui/draggable",
@@ -8,14 +7,32 @@ define(
     "moment",
     "setImmediate",
     "TP",
+    "shared/models/activityModel",
     "views/calendar/workout/calendarWorkoutView",
+    "views/calendar/metrics/calendarMetricView",
     "views/calendar/day/calendarDaySettings",
     "views/calendar/newItemView",
     "views/calendar/day/calendarDayDragStateView",
     "hbs!templates/views/calendar/day/calendarDayHeader",
     "hbs!templates/views/calendar/day/calendarDay"
 ],
-function(_, touchPunch, draggable, droppable, moment, setImmediate, TP, CalendarWorkoutView, CalendarDaySettingsView, NewItemView, CalendarDayDragStateView, CalendarDayHeaderTemplate, CalendarDayTemplate)
+function(
+    _,
+    touchPunch,
+    draggable,
+    droppable,
+    moment,
+    setImmediate,
+    TP,
+    ActivityModel,
+    CalendarWorkoutView,
+    CalendarMetricView,
+    CalendarDaySettingsView,
+    NewItemView,
+    CalendarDayDragStateView,
+    CalendarDayHeaderTemplate,
+    CalendarDayTemplate
+)
 {
 
     var today = moment().format(TP.utils.datetime.shortDateFormat);
@@ -29,6 +46,18 @@ function(_, touchPunch, draggable, droppable, moment, setImmediate, TP, Calendar
         }
     });
 
+    var CalendarActivityView = TP.ItemView.extend({
+
+        modelViews:
+        {
+            Label: CalendarDayHeaderView,
+            Workout: CalendarWorkoutView,
+            Metric: CalendarMetricView
+        }
+
+
+    });
+
     return TP.CompositeView.extend(
     {
         tagName: "div",
@@ -37,7 +66,8 @@ function(_, touchPunch, draggable, droppable, moment, setImmediate, TP, Calendar
         modelViews:
         {
             Label: CalendarDayHeaderView,
-            Workout: CalendarWorkoutView
+            Workout: CalendarWorkoutView,
+            Metric: CalendarMetricView
         },
 
         template:
@@ -75,6 +105,8 @@ function(_, touchPunch, draggable, droppable, moment, setImmediate, TP, Calendar
 
         getItemView: function(item)
         {
+            var self = this;
+            item = ActivityModel.unwrap(item);
             if (!item)
             {
                 return TP.ItemView;
@@ -85,11 +117,17 @@ function(_, touchPunch, draggable, droppable, moment, setImmediate, TP, Calendar
             {
                 throw "Item has no defined view in CalendarDayView: " + item;
             }
-            return this.modelViews[modelName];
+            return function(options) {
+                var klass = self.modelViews[modelName];
+                // Use the unwrapped model to instantiate the view
+                options.model = item;
+                return new klass(options);
+            }
         },
 
         getModelName: function (item)
         {
+            item = ActivityModel.unwrap(item);
             if (item.isDateLabel)
                 return "Label";
             else if (typeof item.webAPIModelName !== 'undefined')
@@ -160,7 +198,8 @@ function(_, touchPunch, draggable, droppable, moment, setImmediate, TP, Calendar
             var self = this;
             var callback = function()
             {
-                self.trigger("itemDropped", options);
+                debugger;
+                // self.trigger("itemDropped", options);
             };
 
             theMarsApp.featureAuthorizer.runCallbackOrShowUpgradeMessage(
