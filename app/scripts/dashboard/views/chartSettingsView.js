@@ -47,12 +47,19 @@ function(
         events:
         {
             "click .closeIcon": "close",
-            "change input.auto": "_onInputsChanged"
+            "change input.auto": "_onInputsChanged",
+            "click button.apply": "apply"
         },
 
         saveOnClose: function()
         {
             this.model.save();
+        },
+
+        apply: function()
+        {
+            this.model.save();
+            this.trigger("apply");
         },
 
         setTomahawkDirection: function(direction)
@@ -112,7 +119,13 @@ function(
 
         _addView: function(selector, view)
         {
-            this.$(selector).append(view.$el);
+            if (_.isString(view))
+            {
+                this.$(selector).html(view);
+            } else
+            {
+                this.$(selector).append(view.$el);
+            }
             this.children.add(view);
         },
 

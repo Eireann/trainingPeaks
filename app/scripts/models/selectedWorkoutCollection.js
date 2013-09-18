@@ -19,7 +19,7 @@ function (_, TP, DeleteWorkoutsCommand)
             workoutsAwaitingDelete.push(item);
             workoutIds.push(item.id);
             // trigger a spinner on the workout
-            item.trigger('request', item, item.collection);
+            item.trigger('request', item);
         });
 
         var deleteCommand = new DeleteWorkoutsCommand({ workoutIds: workoutIds });
@@ -39,7 +39,7 @@ function (_, TP, DeleteWorkoutsCommand)
              {
                  _.each(workoutsAwaitingDelete, function(item, index)
                  {
-                     item.trigger('error', item, item.collection);
+                     item.trigger('error', item);
                  });
              }
         );

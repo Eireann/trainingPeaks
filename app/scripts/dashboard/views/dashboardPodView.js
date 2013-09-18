@@ -1,22 +1,26 @@
 ﻿define(
 [
+    "moment",
     "underscore",
     "setImmediate",
     "TP",
     "framework/dataManager",
     "utilities/charting/flotToolTipPositioner",
     "views/userConfirmationView",
+    "views/dashboard/chartUtils",
     "hbs!templates/views/dashboard/dashboardChart",
     "hbs!templates/views/charts/chartTooltip",
     "hbs!templates/views/confirmationViews/closeChartsConfirmationView"
 ],
 function(
+    moment,
     _,
     setImmediate,
     TP,
     DataManager,
     toolTipPositioner,
     UserConfirmationView,
+    ChartUtils,
     podTemplate,
     tooltipTemplate,
     closeChartsConfirmationTemplate
@@ -84,6 +88,25 @@ function(
             return this.model.get("title") || _.result(this.model, "defaultTitle");
         },
 
+        _dateRangeText: function()
+        {
+            // show a subtitle in the pod view that displays the currently selected Date Range, 
+            // but only if not using the Dashboard Global setting
+            var dateOptions = this.model.get('dateOptions'),
+                startDate = dateOptions.startDate,
+                endDate = dateOptions.endDate,
+                quickDateSelectOption = dateOptions.quickDateSelectOption;
+
+            if (startDate && endDate)
+            {
+                return moment(startDate).format(TP.utils.datetime.shortDateFormat) + " - " + moment(endDate).format(TP.utils.datetime.shortDateFormat);
+            } else if (quickDateSelectOption && quickDateSelectOption !== 1)
+            {
+                return ChartUtils.findChartDateOption(quickDateSelectOption).label;
+            }
+            return "";
+        },
+
         _bindPlotClick: function()
         {
             this.ui.chartContainer.bind("plotclick", _.bind(this._onPlotClick, this));
@@ -124,6 +147,7 @@ function(
         {
 
             this.$(".chartTitle").text(this._podTitle());
+            this.$(".customDateRange").text(this._dateRangeText());
             if(!chartOptions)
             {
                 this.$el.addClass("noData");
@@ -202,7 +226,8 @@ function(
 
             this.chartSettings.alignArrowTo(offset.top + ($(e.currentTarget).height() / 2));
 
-            this.chartSettings.on("close", this._onChartSettingsClose, this);
+            this.listenTo(this.chartSettings, "close", _.bind(this._onChartSettingsClose, this));
+            this.listenTo(this.chartSettings, "apply", _.bind(this._renderChart, this));
         },
 
         _onChartSettingsClose: function()

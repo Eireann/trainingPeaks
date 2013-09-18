@@ -23,12 +23,6 @@ function(
 
         className: ChartSettingsView.prototype.className + " metricsChartSettings",
 
-        template:
-        {
-            type: "handlebars",
-            template: metricsChartSettingsTemplate
-        },
-
         events: _.extend(
         {
             "change input.auto": "_onInputsChanged",
@@ -39,10 +33,11 @@ function(
         {
             var self = this;
 
+            this._addView(".customSettings", metricsChartSettingsTemplate(this.serializeData()));
             this._addView(".dateOptionsRegion", new DashboardDatePicker({
                 model: this.model
             }));
-
+            this._updateTitle();
             this.children.call("render");
 
             this._updateInputsState();
