@@ -40,7 +40,7 @@ function (testHelpers, xhrData, _, app, TP, SelectedWorkoutCollection)
                 
                 _.each(models, function (item, index)
                 {
-                    expect(item.trigger).toHaveBeenCalledWith('request', item, item.collection);
+                    expect(item.trigger).toHaveBeenCalledWith('request', item);
                     expect(item.trigger).not.toHaveBeenCalledWith('destroy', item, item.collection);
                 }, this);
             });
