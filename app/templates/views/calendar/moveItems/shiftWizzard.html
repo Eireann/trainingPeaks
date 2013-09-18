@@ -11,7 +11,7 @@
         {{/if}}
         
 		<div id="selectItems">
-			<div class="dialogHeader"><h3>{{$ "SelectShiftItemsString"}}</h3></div>        
+			<h3>{{$ "SelectShiftItemsString"}}</h3>     
 			<form>
             	<label><input type="radio" value="itemsOnAllSelectedDays" name="selectItems" id="selectItemsOnSelectedDays"/>{{$ "ItemsOnAllSelectedDays"}}</label>
             	<label><input type="radio" value="ItemsWithinSpecifiedDateRange" name="selectItems" id="selectItemsWithinDateRange"/>{{$ "ItemsWithinSpecifiedDateRange"}}</label>
@@ -38,7 +38,7 @@
 	
 
         <div id="howToShift">
-			<div class="dialogHeader"><h3>{{$ "HowDoYouWantToShiftItems"}}</h3></div>
+			<h3>{{$ "HowDoYouWantToShiftItems"}}</h3>
 			<form>
 	            <label><input type="radio" value="MoveToNewStartDate" name="shiftBy"/>{{$ "MoveNewStartDate"}}</label>
 	            <label><input type="radio" value="MoveBySpecifiedNumberOfDays" name="shiftBy"/>{{$ "MoveBySpecifiedNumberOfDays"}}</label>

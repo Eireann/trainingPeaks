@@ -44,8 +44,8 @@ function (_, TP, UserModel)
             var data =
             {
                 grant_type: "password",
-                client_id: "tpconsumer",
-                client_secret: "tpsecret",
+                client_id: "tpMars",
+                client_secret: "44Wz6Em3lcpDSzbZ5WCl2ijZqtAfDUfPU5RMawx6W00=",
                 username: options.username,
                 password: options.password,
                 response_type: "token",

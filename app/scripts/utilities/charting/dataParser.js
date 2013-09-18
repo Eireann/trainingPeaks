@@ -79,7 +79,7 @@ function(chartColors, findIndexByMsOffset, conversion)
                     previousElevation = value;
 
                 dataByAxisAndChannel.time[channelName].push([xAxisTimeOffset, parseFloat(value)]);
-
+                
                 if (xAxisDistanceOffset !== null && !(xAxisDistanceOffset === 0 && xAxisZeroAlreadySet))
                 {
                     dataByAxisAndChannel.distance[channelName].push([xAxisDistanceOffset, parseFloat(value)]);
@@ -95,7 +95,7 @@ function(chartColors, findIndexByMsOffset, conversion)
         return dataByAxisAndChannel;
     };
 
-    var generateSeriesFromData = function(channelMask, dataByChannel, elevationIsAllNegative, x1, x2)
+    var generateSeriesFromData = function(channelMask, dataByChannel, minElevation, x1, x2)
     {
         var self = this;
         var seriesArray = [];
@@ -109,9 +109,6 @@ function(chartColors, findIndexByMsOffset, conversion)
                 return;
 
             if (channel === "Latitude" || channel === "Longitude")
-                return;
-
-            if (channel === "Elevation" && elevationIsAllNegative)
                 return;
 
             var fillOpacity = channel === "Elevation" ? 0.3 : null;
@@ -144,6 +141,10 @@ function(chartColors, findIndexByMsOffset, conversion)
             {
                 seriesOptions.color = "#FFFFFF";
                 seriesOptions.lines.fillColor = { colors: [chartColors.gradients.elevation.dark, chartColors.gradients.elevation.light] };
+                _.each(data, function(dataPoint)
+                {
+                    dataPoint.push(minElevation);
+                });
             }
 
             seriesArray.push(seriesOptions);
@@ -315,7 +316,7 @@ function(chartColors, findIndexByMsOffset, conversion)
 
         getSeries: function(x1, x2)
         {
-            return generateSeriesFromData.call(this, this.flatSamples.channelMask, this.dataByAxisAndChannel[this.xaxis], this.elevationIsAllNegative, x1, x2);
+            return generateSeriesFromData.call(this, this.flatSamples.channelMask, this.dataByAxisAndChannel[this.xaxis], this.minElevation, x1, x2);
         },
 
         getElevationInfo: function(x1, x2)
