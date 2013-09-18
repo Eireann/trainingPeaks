@@ -112,7 +112,13 @@ function(
 
         _addView: function(selector, view)
         {
-            this.$(selector).append(view.$el);
+            if (_.isString(view))
+            {
+                this.$(selector).html(view);
+            } else
+            {
+                this.$(selector).append(view.$el);
+            }
             this.children.add(view);
         },
 

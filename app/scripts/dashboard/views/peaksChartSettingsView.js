@@ -25,12 +25,6 @@ function(
 
         className: ChartSettingsView.prototype.className + " peaksChartSettings",
 
-        template:
-        {
-            type: "handlebars",
-            template: peaksChartSettingsTemplate
-        },
-
         modelEvents:
         {
             "change": "_refreshView"
@@ -40,6 +34,7 @@ function(
         {
             var self = this;
 
+            this._addView(".customSettings", peaksChartSettingsTemplate({}));
             this._addView(".dateOptionsRegion", new DashboardDatePicker({
                 model: this.model
             }));
@@ -51,7 +46,7 @@ function(
             this._addView(".workoutTypesRegion", new ChartWorkoutOptionsView({
                 model: this.model
             }));
-
+            this._updateTitle();
             this.children.call("render");
 
             this.$('input.auto[type="checkbox"]').each(function(i, el)
