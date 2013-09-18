@@ -19,7 +19,7 @@ function(
     return TP.DeepModel.extend(
     {
 
-        defualts: {
+        defaults: {
             rights: []
         },
 
