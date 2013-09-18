@@ -289,7 +289,7 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
 
     }
 
-    .chartTitle {
+    .chartTitle, .customDateRange {
         display: block; /* Fallback for non-webkit */
         display: -webkit-box;
         max-width: 100%;
@@ -301,6 +301,15 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
         -webkit-box-orient: vertical;
         overflow: hidden;
         text-overflow: ellipsis;
+    }
+
+    .customDateRange
+    {
+        position: absolute;
+        left: 0;
+        width: 100%;
+        top: 29px;
+        font-size: 10px;
     }
 
     .xaxisLabel
