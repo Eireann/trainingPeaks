@@ -339,7 +339,6 @@ function(
 
             if(oldDay !== newDay)
             {
-                console.log(oldDay, newDay);
                 if (oldDay) oldDay.remove(activity);
                 if (newDay) newDay.add(activity);
                 activity.dayCollection = newDay;

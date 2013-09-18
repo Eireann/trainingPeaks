@@ -198,8 +198,7 @@ function(
             var self = this;
             var callback = function()
             {
-                debugger;
-                // self.trigger("itemDropped", options);
+                self.trigger("itemDropped", options);
             };
 
             theMarsApp.featureAuthorizer.runCallbackOrShowUpgradeMessage(

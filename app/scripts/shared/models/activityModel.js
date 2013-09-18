@@ -36,7 +36,7 @@ function(
         _updatePrefixedId: function()
         {
             var model = this.unwrap();
-            this.set("id", model.webAPIModelName + ":" + model.id);
+            this.set("id", model.id ? model.webAPIModelName + ":" + model.id : null);
         },
 
         _retrigger: function()

@@ -3,10 +3,11 @@
     "underscore",
     "moment",
     "TP",
+    "shared/models/activityModel",
     "models/workoutModel",
     "models/selectedWorkoutCollection"
 ],
-function(_, moment, TP, WorkoutModel, SelectedWorkoutCollection)
+function(_, moment, TP, ActivityModel, WorkoutModel, SelectedWorkoutCollection)
 {
 
     var CalendarDay = TP.Model.extend(
@@ -52,11 +53,13 @@ function(_, moment, TP, WorkoutModel, SelectedWorkoutCollection)
 
         add: function(item, noParentReference)
         {
+            item = ActivityModel.wrap(item);
             this.itemsCollection.add(item);
         },
 
         remove: function(item)
         {
+            item = ActivityModel.wrap(item);
             this.itemsCollection.remove(item);
         },
 
@@ -65,15 +68,6 @@ function(_, moment, TP, WorkoutModel, SelectedWorkoutCollection)
             this.itemsCollection.reset(models, options);
             this.configureDayLabel(true);
         },
-
-        //deleteDayItems: function()
-        //{
-        //    this.itemsCollection.each(function(item)
-        //    {
-        //        if (!item.isDateLabel)
-        //            item.destroy({ wait: true });
-        //    });
-        //},
         
         deleteDayItems: function()
         {
@@ -85,8 +79,9 @@ function(_, moment, TP, WorkoutModel, SelectedWorkoutCollection)
         getWorkoutItems: function()
         {
             var workoutsList = [];
-            this.itemsCollection.each(function (item)
+            this.eachItem(function (item)
             {
+                item = ActivityModel.unwrap(item);
                 if (item instanceof WorkoutModel)
                     workoutsList.push(item);
             });
@@ -96,7 +91,7 @@ function(_, moment, TP, WorkoutModel, SelectedWorkoutCollection)
         copyToClipboard: function()
         {
             var calendarDay = new CalendarDay({ date: this.get("date") });
-            this.itemsCollection.each(function(item)
+            this.eachItem(function(item)
             {
                 if (typeof item.copyToClipboard === "function")
                     calendarDay.add(item.copyToClipboard());
@@ -107,7 +102,7 @@ function(_, moment, TP, WorkoutModel, SelectedWorkoutCollection)
         cutToClipboard: function()
         {
             var calendarDay = new CalendarDay({ date: this.get("date") });
-            this.itemsCollection.each(function(item)
+            this.eachItem(function(item)
             {
                 if (typeof item.cutToClipboard === "function")
                     calendarDay.add(item.cutToClipboard());
@@ -118,7 +113,7 @@ function(_, moment, TP, WorkoutModel, SelectedWorkoutCollection)
         onPaste: function(dateToPasteTo)
         {
             var pastedItems = [];
-            this.itemsCollection.each(function(item)
+            this.eachItem(function(item)
             {
                 if (typeof item.onPaste === "function")
                 {
@@ -136,7 +131,16 @@ function(_, moment, TP, WorkoutModel, SelectedWorkoutCollection)
         workoutAdded: function(newWorkout)
         {
             this.trigger("workout:added", newWorkout);
+        },
+
+        eachItem: function(callback)
+        {
+            this.itemsCollection.each(function(item)
+            {
+                callback(ActivityModel.unwrap(item));
+            });
         }
+
     }, { hasLabel: false });
 
     return CalendarDay;

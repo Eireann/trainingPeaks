@@ -28,9 +28,7 @@ function(
             }
 
             // get the item
-            console.log(options);
             var item = this.activitiesCollection.get(options.ItemType + ":" + options.ItemId);
-            console.log(item);
             item = ActivityModel.unwrap(item);
             item.moveToDay(options.destinationCalendarDayModel.id);
         },

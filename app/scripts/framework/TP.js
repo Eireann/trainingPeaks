@@ -117,7 +117,7 @@ function(
             {
                 this.waitingOn();
 
-                if (xhr)
+                if (xhr && _.isFunction(xhr.always))
                 {
                     xhr.always(_.bind(this.waitingOff, this));
                 }
