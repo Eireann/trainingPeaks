@@ -26,7 +26,7 @@
         padding: 7px 12px 6px 12px;
         //@include linearGradient(bottom, rgb(255,255,255), rgba(255,255,255,0.90)); 
         background-color: $white;
-        
+        overflow:hidden;
         .header {
             font-family: $fontFamilyHeavy;
             font-size: $fontSizeSmall;

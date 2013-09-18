@@ -47,12 +47,19 @@ function(
         events:
         {
             "click .closeIcon": "close",
-            "change input.auto": "_onInputsChanged"
+            "change input.auto": "_onInputsChanged",
+            "click button.apply": "apply"
         },
 
         saveOnClose: function()
         {
             this.model.save();
+        },
+
+        apply: function()
+        {
+            this.model.save();
+            this.trigger("apply");
         },
 
         setTomahawkDirection: function(direction)

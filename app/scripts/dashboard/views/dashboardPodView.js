@@ -226,7 +226,8 @@ function(
 
             this.chartSettings.alignArrowTo(offset.top + ($(e.currentTarget).height() / 2));
 
-            this.chartSettings.on("close", this._onChartSettingsClose, this);
+            this.listenTo(this.chartSettings, "close", _.bind(this._onChartSettingsClose, this));
+            this.listenTo(this.chartSettings, "apply", _.bind(this._renderChart, this));
         },
 
         _onChartSettingsClose: function()

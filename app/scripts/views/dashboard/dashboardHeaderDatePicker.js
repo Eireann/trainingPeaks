@@ -31,7 +31,8 @@ function(
         modal: true,
 
         events: {
-            "click .closeIcon": "close"
+            "click .closeIcon": "close",
+            "click button.apply": "apply"
         },
         
         initialize: function(options)
@@ -42,6 +43,11 @@ function(
 
             this.on("close", this.saveOnClose, this);
             this.children = new Backbone.ChildViewContainer();
+        },
+
+        apply: function()
+        {
+            this.saveOnClose();
         },
 
         saveOnClose: function()
