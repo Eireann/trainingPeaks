@@ -14,6 +14,7 @@ function(
     var CalendarMetricView = TP.ItemView.extend({
 
         showThrobbers: false,
+        className: "metric metricDiv",
 
         template:
         {

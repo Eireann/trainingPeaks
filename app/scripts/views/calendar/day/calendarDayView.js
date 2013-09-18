@@ -328,10 +328,10 @@ function(
 
         makeDayDraggable: function()
         {
-            _.bindAll(this, "onDragStart", "onDragStop")
+            _.bindAll(this, "onDragStart", "onDragStop");
             this.$el.data("ItemId", this.model.id);
             this.$el.data("ItemType", "CalendarDay");
-            this.$el.data("DropEvent", "dayMoved");;
+            this.$el.data("DropEvent", "dayMoved");
             this.draggableOptions = 
             this.$el.draggable(
             {
@@ -347,7 +347,7 @@ function(
         onDragStart: function(e, ui)
         {
             var $helper = $(ui.helper);
-            $helper.addClass('dragHelper')
+            $helper.addClass('dragHelper');
             $helper.width(this.$el.width());
             this.$el.addClass("dragging");
             TP.analytics("send", { "hitType": "event", "eventCategory": "calendar", "eventAction": "dragDropStart", "eventLabel": "day" });

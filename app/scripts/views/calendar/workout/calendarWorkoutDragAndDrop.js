@@ -56,7 +56,7 @@ function(TP, CalendarWorkoutTemplateDragState)
         onDragStart: function(e, ui)
         {
             var $helper = $(ui.helper);
-            $helper.addClass('dragHelper')
+            $helper.addClass('dragHelper');
             $helper.width(this.$el.width());
 
             this.$el.addClass("dragging");
