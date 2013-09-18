@@ -8,7 +8,8 @@
     "utilities/filesystem",
     "utilities/athlete/athlete",
     "utilities/trainingPlan/trainingPlan",
-    "utilities/collections"
+    "utilities/collections",
+    "utilities/metrics"
 ], function(
     datetime,
     units,
@@ -18,7 +19,8 @@
     filesystem,
     athlete,
     trainingPlan,
-    collections
+    collections,
+    metrics
     )
 {
     return {
@@ -31,6 +33,7 @@
         athlete: athlete,
         trainingPlan: trainingPlan,
         collections: collections,
+        metrics: metrics,
 
         translate: function(textToTranslate)
         {

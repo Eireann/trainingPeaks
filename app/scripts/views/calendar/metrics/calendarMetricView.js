@@ -1,17 +1,25 @@
 define(
 [
     "underscore",
-    "TP"
+    "TP",
+    "hbs!templates/views/calendar/metric/calendarMetric"
 ],
 function(
     _,
-    TP
+    TP,
+    calendarMetricTemplate
 )
 {
 
     var CalendarMetricView = TP.ItemView.extend({
 
-        template: _.template("METRIC!!!!")
+        showThrobbers: false,
+
+        template:
+        {
+            type: "handlebars",
+            template: calendarMetricTemplate
+        }
 
     });
 

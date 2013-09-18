@@ -122,7 +122,7 @@ function(
                 // Use the unwrapped model to instantiate the view
                 options.model = item;
                 return new klass(options);
-            }
+            };
         },
 
         getModelName: function (item)

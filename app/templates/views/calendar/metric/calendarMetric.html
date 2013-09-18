@@ -1,0 +1,16 @@
+<div class="metricTile">
+    <div class="metricSelected" />
+    <div class="metricHeader">
+        <div class="metricIcon" />
+        <div class="metricSettings">
+            <button><img src="assets/images/calendarImages/settingsButtonSmall.png"/></button>
+        </div>
+
+        <ul>
+            {{#each details}}
+            <li>{{ formatMetricDetail this true }}</li>
+            {{/each}}
+        </ul>
+    </div>
+</div>
+
