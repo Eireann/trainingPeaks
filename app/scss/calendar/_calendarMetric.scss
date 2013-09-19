@@ -25,16 +25,16 @@
             opacity:0.8;
         }
 
-        .metricSettings  
-        {
+        .metricSettings {
             display: none;
             top: 0px;
             right: 2px;
     		position: absolute;
             z-index: 2;
 
-            button
-            {	
+
+
+            button {	
                 background: transparent;
                 border: none;
                 padding: 0px;
@@ -70,12 +70,16 @@
                 height: auto;
                 position: relative;
                 top: -1px;
+                
                 .metricIcon
                 {
                     width: 25px;
                     height: 25px;
                     float: left;
                     margin-top: 4px;
+                    background: $metricPositiveSmallURL no-repeat 0 0;
+                    background-size: 25px 25px;
+                    background-color:$clrMetric;
                 }
 
                 .metricDistanceTime
@@ -98,21 +102,18 @@
                 }
 
             }
-            .metricBody
-            {
-
+            .metricBody {
                 color: $TPGrey4;
                 padding: 2px 3px 3px 3px;
                 @include labels($fontFamilyHeavy, $fontSizeXSmall, $TPGrey4, normal);
-                label
-                {
+                float:left;
+                
+                label {
                     cursor: default;
                     white-space: pre-wrap;
-                
                 }
                 
-                p
-                {
+                p {
                     margin-bottom: 0px;
                     font-size: $fontSizeXSmall;
                     color: $TPGrey4;
@@ -121,6 +122,27 @@
                     line-height: 12px;
                     cursor: default;
                     white-space: pre-wrap;
+                }
+
+                ul {
+                    margin:0 0 0 3px;
+                    
+                    li {
+                        list-style-type: none;
+                        margin: 5px 0;
+                        font-family: $fontFamilyRegular;
+                        font-size: $fontSizeXSmall;
+                        color: $TPGrey4;
+                        line-height: 12px;
+                        
+                        &:first-of-type {
+                            margin-top:1px;
+                        }
+
+                        &:last-of-type {
+                            margin-bottom:1px;
+                        }
+                    }
                 }
             }
         }

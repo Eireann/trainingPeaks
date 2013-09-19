@@ -20,7 +20,7 @@ function(
 
         modal: true,
         showThrobbers: false,
-        className: "metircTileSettings",
+        className: "metricTileSettings",
 
         template:
         {

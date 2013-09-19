@@ -70,6 +70,12 @@ $xc-skiNegativeLargeURL: url(../../assets/images/sportTypeIcons/xc_ski_neg_140.p
 $xc-skiPositiveSmallURL: url(../../assets/images/sportTypeIcons/xc_ski_pos_50.png);
 $xc-skiPositiveLargeURL: url(../../assets/images/sportTypeIcons/xc_ski_pos_140.png);
 
+$metricNegativeSmallURL: url(../../assets/images/sportTypeIcons/metric_neg_50.png);
+$metricNegativeLargeURL: url(../../assets/images/sportTypeIcons/metric_neg_140.png);
+
+$metricPositiveSmallURL: url(../../assets/images/sportTypeIcons/metric_pos_50.png);
+$metricPositiveLargeURL: url(../../assets/images/sportTypeIcons/metric_pos_140.png);
+
 @mixin workoutIcons($pastWorkoutIconSmallURL, $pastWorkoutIconLargeURL, $futureWorkoutIconSmallURL, $futureWorkoutIconLargeURL, $futureBackgroundColor) 
 {
     .workoutIcon
@@ -101,6 +107,7 @@ $xc-skiPositiveLargeURL: url(../../assets/images/sportTypeIcons/xc_ski_pos_140.p
         }
     }
 }
+
 
 .Bike
 {
@@ -161,3 +168,4 @@ $xc-skiPositiveLargeURL: url(../../assets/images/sportTypeIcons/xc_ski_pos_140.p
 {
     @include workoutIcons($walkNegativeSmallURL, $walkNegativeLargeURL, $walkPositiveSmallURL, $walkPositiveLargeURL, $clrWalk);
 }
+
