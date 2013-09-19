@@ -9,7 +9,10 @@
 
             <ul>
                 {{#each details}}
-                <li>{{ formatMetricDetail this true }}</li>
+                <li>
+                    {{ formatMetricLabel this }}:
+                    {{ formatMetricValue this true }}
+                </li>
                 {{/each}}
             </ul>
         </div>
