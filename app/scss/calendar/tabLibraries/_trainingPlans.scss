@@ -1,13 +1,12 @@
 ﻿@import "globalCSS/tpstylesheet";
 @import "globalCSS/mixIn";
 
-.trainingPlanDetails
-{
-    .hoverBoxContents
-    {
+.trainingPlanDetails {
+    
+    .hoverBoxContents {
         max-width: 330px;
+        overflow:visible !important;
     }
-
 
     .infoResults
     {
