@@ -265,7 +265,7 @@ function(
                 deferred1.resolve();
             }).fail(function()
             {
-                def1.reject();
+                deferred1.reject();
             });
 
             self.userAccessRights.fetch().done(function()

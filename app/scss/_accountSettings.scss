@@ -58,6 +58,9 @@
 
                 .zoneEntryTo {
                     font-size:$fontSizeSmall;
+                    display:inline-block;
+                    text-align:center;
+                    width:15px;
                 }
             }
 
@@ -110,8 +113,19 @@
             font-size:$fontSizeMedium;
             color:$TPGrey8;
             line-height:normal;
-            display:inline-block;
             margin:0;
+            margin-bottom:12px;
+        }
+
+
+        h4 {
+            font-family:$fontFamilyHeavy;
+            font-weight:normal;
+            font-size:$fontSizeSmall;
+            color:$TPGrey8;
+            line-height:normal;
+            margin:0;
+            margin-bottom:12px;
         }
 
         .heartRateZones, 
@@ -121,6 +135,26 @@
             border-bottom: 1px solid $TPGrey2;
             margin-bottom:20px;
             padding-bottom:20px;
+        }
+
+        .heartRateZones,
+        .powerZones,
+        .speedPaceZones {
+            .zones {
+                .zoneEntry {
+                    .zoneName {
+                        width:400px;
+                    }
+                    .min,
+                    .max {
+                        width:50px;
+                    }
+
+                    .min {
+                        margin-left:25px;
+                    }
+                }
+            }
         }
 
         .speedPaceZones {
@@ -145,6 +179,15 @@
                 margin:10px 0 20px 0;
             }
         }
+
+        .userSettingsPayments {
+            p {
+                margin:1em 0 1em 5px;
+                font-family:$fontFamilyRegular;
+                color:$TPGrey3;
+                font-size:$fontSizeSmall;
+            }
+        }
     }
 
 
@@ -163,11 +206,6 @@
         margin-bottom:20px;
         padding-bottom:20px;
         border-bottom:1px solid $TPGrey2;
-
-        h3 {
-            margin-top:0;
-            margin-bottom:12px;
-        }
 
         input {
             width:295px;
@@ -211,6 +249,13 @@
                 float: left;
                 width:295px;
             }
+        }
+
+        &.calendarSync {
+            input {
+                width:694px;
+            }
+
         }
     }
 
@@ -257,15 +302,8 @@
         width: 300px;
     }
 
-    .recurringPayments, .paymentHistory
-    {
-
-        margin-top: 15px;
-
-        h3
-        {
-            margin-top: 15px;
-        }
+    .recurringPayments, 
+    .paymentHistory {
 
         &:not(.empty)
         {
@@ -283,9 +321,18 @@
             }
         }
 
-        .recurringPaymentItem, .paymentHistoryItem
+        .recurringPaymentItem, 
+        .paymentHistoryItem
         {
-            margin: 15px 20px;
+            margin: 0;
+            padding:10px 0;
+            font-family:$fontFamilyRegular;
+            color:$TPGrey3;
+
+            border:1px solid $TPGrey1;
+            padding:10px;
+            margin-bottom:10px;
+            margin-top:12px;
 
             .row
             {
@@ -294,8 +341,13 @@
 
                 div
                 {
-                    min-width: 150px;
+                    min-width: 240px;
                     display: inline-block;
+                    font-size:$fontSizeSmall;
+                }
+
+                .date,.description {
+                    font-family:$fontFamilyHeavy;
                 }
             }
         }
@@ -314,9 +366,7 @@
 
     .row
     {
-        height: 20px;
         margin-bottom: 10px;
-        clear: both;
     }
 
     .radioButtonRow
@@ -363,7 +413,7 @@
         {
             clear: both;
             margin-left: 110px;
-            padding-top: 5px;
+            padding-top: 10px;
         }
 
         &.nophoto
