@@ -4,10 +4,12 @@
     .metric
     {
         margin: 5px 4px 4px 2px;
-        border-width: 1px;
-        border-style: solid;
-        border-color: $TPGrey2;
-       // @include box-shadow(0 1px 1.5px 0 #2c2c2c);
+        border:1px solid $TPGrey2;
+        background-color: $TPGrey2;
+
+        &:hover {
+            border-color:$TPGrey11;
+        }
 
         &.dragHelper
         {
@@ -160,7 +162,6 @@
     } // end .metric
 
     #metricSettingsDiv {
-       
     	padding-left: 10px;
     	padding-bottom: 20px;
 
