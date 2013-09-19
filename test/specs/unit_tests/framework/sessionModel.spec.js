@@ -59,7 +59,7 @@ function($, moment, SessionModel)
                 _.each(expectedScopes, function(scope)
                 {
                     expect(options.data.scope).toContain(scope);
-                })
+                });
 
                 return {
                     done: function()
