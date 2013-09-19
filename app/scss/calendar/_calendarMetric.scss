@@ -81,27 +81,8 @@
                     background-size: 25px 25px;
                     background-color:$clrMetric;
                 }
-
-                .metricDistanceTime
-                {
-                    padding: 14px 0px 0px 30px;
-
-                    @include labels($fontFamilyRegular, $fontSizeXLarge, $TPGrey4, normal);
-                    label
-                    {
-                        display:inline-block;
-                        cursor: default;
-                        width:100%;
-                    }
-                    
-                    .units
-                    {
-                        font-size: 0.88em;
-                        margin-left: 0.15em;
-                    }
-                }
-
             }
+
             .metricBody {
                 color: $TPGrey4;
                 padding: 2px 3px 3px 3px;
@@ -161,7 +142,7 @@
 
     } // end .metric
 
-    #metricSettingsDiv {
+    .metricTileSettings {
     	padding-left: 10px;
     	padding-bottom: 20px;
 
@@ -177,43 +158,18 @@
 
     }
 
-
-    #daySettingsDiv {
-    	.hoverBoxContents {
-    		min-width: 76px;
-    	}
-    	.hoverBox {
-    		.arrow {
-    			margin-left:28px;
-    			}
-    	}	
-    }
-
-    #summarySettingsDiv {
-    	.hoverBox {
-    		.arrow {
-    			margin-left:50px;
-    			}
-    	}
-    }
-
-    .metric
-    {
+    .metric {
         
-        .metricDiv
-        {
+        .metricDiv {
             position: relative;
         }
 
-        .metricSelected
-        {
+        .metricSelected {
             @include selectedOverlay();
         }
 
-        &.selected
-        {
-            .metricSelected
-            {
+        &.selected {
+            .metricSelected {
                 display: block;
             }
         }
