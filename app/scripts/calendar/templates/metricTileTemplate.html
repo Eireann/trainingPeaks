@@ -3,16 +3,18 @@
         <div class="metricSelected" />
         <div class="metricHeader">
             <div class="metricIcon" />
+
             <div class="metricSettings">
                 <button><img src="assets/images/calendarImages/settingsButtonSmall.png"/></button>
             </div>
         </div>
         <div class="metricBody">
+            <div class="metricSettingsContain"></div>
             <ul>
                 {{#each details}}
                 <li>
-                    {{ formatMetricLabel this }}: <br />
-                    {{ formatMetricValue this true }}
+                    <span class="metricTitle">{{ formatMetricLabel this }}:</span> <br />
+                    <span class="metricValue">{{ formatMetricValue this true }}</span>
                 </li>
                 {{/each}}
             </ul>

@@ -32,8 +32,6 @@
     		position: absolute;
             z-index: 2;
 
-
-
             button {	
                 background: transparent;
                 border: none;
@@ -107,7 +105,15 @@
                 padding: 2px 3px 3px 3px;
                 @include labels($fontFamilyHeavy, $fontSizeXSmall, $TPGrey4, normal);
                 float:left;
+                width:calc(100% - 28px);
                 
+                // keeps text from running into settings button
+                .metricSettingsContain {
+                    float:right;
+                    width:17px;
+                    height:17px;
+                }
+
                 label {
                     cursor: default;
                     white-space: pre-wrap;
@@ -141,6 +147,10 @@
 
                         &:last-of-type {
                             margin-bottom:1px;
+                        }
+
+                        span.metricValue {
+                            font-family:$fontFamilyHeavy;
                         }
                     }
                 }
