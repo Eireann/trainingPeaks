@@ -4,10 +4,10 @@
     "moment",
     "TP",
     "shared/models/activityModel",
-    "models/workoutModel",
-    "models/selectedWorkoutCollection"
+    "shared/models/selectedActivitiesCollection",
+    "models/workoutModel"
 ],
-function(_, moment, TP, ActivityModel, WorkoutModel, SelectedWorkoutCollection)
+function(_, moment, TP, ActivityModel, SelectedActivitiesCollection, WorkoutModel)
 {
 
     var CalendarDay = TP.Model.extend(
@@ -71,9 +71,8 @@ function(_, moment, TP, ActivityModel, WorkoutModel, SelectedWorkoutCollection)
         
         deleteDayItems: function()
         {
-            var workoutItems = this.getWorkoutItems();
-            var selectedWorkoutcollection = new SelectedWorkoutCollection(workoutItems);
-            selectedWorkoutcollection.deleteSelectedWorkouts();
+            var selectedActivitiesCollection = new SelectedActivitiesCollection(this.getItems());
+            selectedActivitiesCollection.deleteSelectedItems();
         },
         
         getWorkoutItems: function()
@@ -138,6 +137,13 @@ function(_, moment, TP, ActivityModel, WorkoutModel, SelectedWorkoutCollection)
             this.itemsCollection.each(function(item)
             {
                 callback(ActivityModel.unwrap(item));
+            });
+        },
+
+        getItems: function()
+        {
+            return this.itemsCollection.filter(function(model){
+                return !model.isDateLabel;
             });
         }
 
