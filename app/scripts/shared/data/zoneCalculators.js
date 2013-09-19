@@ -62,8 +62,8 @@ function()
         },
         TimexZone: {
             id: 9,
-            label: "",
-            numberOfZones: 7,
+            label: "Timex",
+            numberOfZones: 5,
             type: heartRateZoneCalculatorTypes.MaximumHeartRate
         },
         KeenZone: {
@@ -80,23 +80,33 @@ function()
         },
         KarvonenZone: {
             id: 12,
-            label: ""
+            label: "Karvonen",
+            numberOfZones: 4,
+            type: heartRateZoneCalculatorTypes.MaxAndRestingHeartRate
         },
         ACSMZone: {
             id: 13,
-            label: ""
+            label: "ACSM",
+            numberOfZones: 1,
+            type: heartRateZoneCalculatorTypes.MaxAndRestingHeartRate
         },
         TimexManualZone: {
             id: 14,
-            label: ""
+            label: "Timex Manual Entry",
+            numberOfZones: 1,
+            type: heartRateZoneCalculatorTypes.MaximumHeartRate
         },
         CTSZone: {
             id: 17,
-            label: ""
+            label: "CTS Cycling",
+            numberOfZones: 7,
+            type: heartRateZoneCalculatorTypes.LTAndMaxHeartRate
         },
         CTSRunZone: {
             id: 18,
-            label: ""
+            label: "CTS Run",
+            numberOfZones: 6,
+            type: heartRateZoneCalculatorTypes.LTAndMaxHeartRate
         },
         DurataZone: {
             id: 19,
