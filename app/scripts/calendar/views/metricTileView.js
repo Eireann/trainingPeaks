@@ -42,8 +42,9 @@ function(
 
             var draggableOptions =
             {
+                refreshPositions: true,
                 appendTo: theMarsApp.getBodyElement(),
-                helper: "clone",
+                helper: _.bind(this._makeHelper, this),
                 start: _.bind(this._onDragStart, this),
                 stop: _.bind(this._onDragStop, this),
                 containment: "#calendarWrapper",
@@ -51,6 +52,15 @@ function(
             };
             this.$el.draggable(draggableOptions);
         },
+
+        _makeHelper: function()
+        {
+            var $helper = $("<div class='dragHelper'/>");
+            $helper.append(this.$el.clone().width(this.$el.width()));
+            return $helper;
+        },
+
+
 
         _onDragStart: function(e, ui)
         {

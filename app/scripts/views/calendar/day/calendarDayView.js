@@ -323,8 +323,9 @@ function(
             this.draggableOptions = 
             this.$el.draggable(
             {
+                refreshPositions: true,
                 appendTo: theMarsApp.getBodyElement(),
-                helper: "clone",
+                helper: _.bind(this._makeHelper, this),
                 handle: ".dayHeader, .daySelected",
                 start: this.onDragStart,
                 stop: this.onDragStop,
@@ -332,11 +333,15 @@ function(
             });
         },
 
+        _makeHelper: function()
+        {
+            var $helper = $("<div class='dragHelper'/>");
+            $helper.append(this.$el.clone().width(this.$el.width()));
+            return $helper;
+        },
+
         onDragStart: function(e, ui)
         {
-            var $helper = $(ui.helper);
-            $helper.addClass('dragHelper');
-            $helper.width(this.$el.width());
             this.$el.addClass("dragging");
             TP.analytics("send", { "hitType": "event", "eventCategory": "calendar", "eventAction": "dragDropStart", "eventLabel": "day" });
         },

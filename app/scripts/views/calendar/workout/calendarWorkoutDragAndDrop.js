@@ -23,35 +23,25 @@ function(TP, CalendarWorkoutTemplateDragState)
             this.$el.data("ItemId", this.model.id);
             this.$el.data("ItemType", this.model.webAPIModelName);
             this.$el.data("DropEvent", "itemMoved");
-            this.draggableOptions = { appendTo: theMarsApp.getBodyElement(), helper: "clone", start: this.onDragStart, stop: this.onDragStop, containment: "#calendarWrapper", addClasses: false };
+            this.draggableOptions =
+            {
+                appendTo: theMarsApp.getBodyElement(),
+                helper: _.bind(this._makeHelper, this),
+                start: this.onDragStart,
+                stop: this.onDragStop,
+                containment: "#calendarWrapper",
+                addClasses: false
+            };
             this.$el.draggable(this.draggableOptions);
         },
 
-//         makeDraggableHelperElement: function()
-//         {
-//             var $helperEl = $(CalendarWorkoutTemplateDragState(this.serializeData()));
-//             var classNames = this.className().split(" ");
-//             _.each(classNames, function(className)
-//             {
-//                 $helperEl.addClass(className);
-//             });
-//             $helperEl.width(this.$el.width());
-//             return $helperEl;
-//         },
+        _makeHelper: function()
+        {
+            var $helper = $("<div class='dragHelper'/>");
+            $helper.append(this.$el.clone().width(this.$el.width()));
+            return $helper;
+        },
 
-        // draggableHelper: function(e)
-        // {
-        //     var $helperEl = this.makeDraggableHelperElement();
-
-        //     // if they clicked further down on a long workout, set a specific cursor offset for the draggable,
-        //     // else let jqueryui handle it automagically
-        //     var offset = this.$el.offset();
-        //     if ((e.pageY - offset.top) > 50)
-        //     {
-        //         this.$el.data("ui-draggable").options.cursorAt = { top: 30, left: e.pageX - offset.left };
-        //     }
-        //     return $helperEl;
-        // },
 
         onDragStart: function(e, ui)
         {

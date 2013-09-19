@@ -3,6 +3,14 @@
 @import "workoutIcons";
 
 @media screen {
+    .dragHelper .workout
+    {
+        p
+        {
+            display: none;
+        }
+    }
+
     .workout
     {
         margin: 5px 4px 4px 2px;

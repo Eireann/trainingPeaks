@@ -3,6 +3,23 @@
 
 @media screen {
 
+    .dragHelper .day
+    {
+        min-height: 150px !important;
+        padding: 0;
+
+        .dayHeader
+        {
+            height: 27px;
+            visibility: hidden !important;
+        }
+
+        .addWorkoutWrapper
+        {
+            display: none;
+        }
+    }
+
     #calendarHeader
     {
        
@@ -37,6 +54,7 @@
             float: left;
             color: $TPGrey8;
             position: relative;
+
 
     		.daySettings
             {
