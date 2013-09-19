@@ -52,8 +52,9 @@ function(
             this.$el.draggable(draggableOptions);
         },
 
-        _onDragStart: function()
+        _onDragStart: function(e, ui)
         {
+            $(ui.helper).width(this.$el.width());
         },
 
         _onDragStop: function()
