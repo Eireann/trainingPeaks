@@ -22,12 +22,6 @@ function(
 
         className: ChartSettingsView.prototype.className + " pmcChartSettings",
 
-        template:
-        {
-            type: "handlebars",
-            template: pmcChartSettingsTemplate
-        },
-
         events: _.extend({}, ChartSettingsView.prototype.events, {
             "change input[type=number]": "onNumberOptionsChanged",
             "blur input[type=number]": "onNumberOptionsChanged",
@@ -37,14 +31,14 @@ function(
         onRender: function()
         {
             var self = this;
-
+            this._addView(".customSettings", pmcChartSettingsTemplate({}));
             this._addView(".dateOptionsRegion", new DashboardDatePicker({
                 model: this.model
             }));
             this._addView(".workoutTypesRegion", new ChartWorkoutOptionsView({
                 model: this.model
             }));
-
+            this._updateTitle();
             this.children.call("render");
         },
 

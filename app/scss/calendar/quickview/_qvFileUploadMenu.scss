@@ -64,6 +64,11 @@
             line-height: $fontSizeXLarge;
         }
 
+        .bigButtons {
+            padding-top:2px;
+        }
+
+
         @include buttons(0px, 150px, $fontSizeSmall);
         button {
             font-weight: normal;

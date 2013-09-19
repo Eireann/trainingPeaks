@@ -22,16 +22,11 @@ function(
 
         className: ChartSettingsView.prototype.className + " timeInZonesChartSettings",
 
-        template:
-        {
-            type: "handlebars",
-            template: timeInZonesChartSettingsTemplate
-        },
-
         onRender: function()
         {
             var self = this;
 
+            this._addView(".customSettings", timeInZonesChartSettingsTemplate({}));
             this._addView(".dateOptionsRegion", new DashboardDatePicker({
                 model: this.model
             }));
@@ -39,6 +34,7 @@ function(
             this._addView(".workoutTypesRegion", new ChartWorkoutOptionsView({
                 model: this.model
             }));
+            this._updateTitle();
 
             this.children.call("render");
 
