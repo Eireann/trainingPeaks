@@ -2,12 +2,14 @@ define(
 [
     "underscore",
     "TP",
-    "hbs!templates/views/calendar/metric/calendarMetric"
+    "calendar/views/metricTileSettingsView",
+    "hbs!calendar/templates/metricTileTemplate"
 ],
 function(
     _,
     TP,
-    calendarMetricTemplate
+    MetricTileSettingsView,
+    metricTileTemplate
 )
 {
 
@@ -19,7 +21,12 @@ function(
         template:
         {
             type: "handlebars",
-            template: calendarMetricTemplate
+            template: metricTileTemplate
+        },
+
+        events:
+        {
+            "click .metricSettings": "_onSettingsClicked"
         },
 
         initialize: function()
@@ -45,16 +52,19 @@ function(
             this.$el.draggable(draggableOptions);
         },
 
-        _draggableHelper: function()
-        {
-        },
-
         _onDragStart: function()
         {
         },
 
         _onDragStop: function()
         {
+        },
+
+        _onSettingsClicked: function(e)
+        {
+            var offset = $(e.currentTarget).offset();
+            var settingsView = new MetricTileSettingsView({ model: this.model });
+            settingsView.render().bottom(offset.top + 12).center(offset.left - 4);
         }
 
     });

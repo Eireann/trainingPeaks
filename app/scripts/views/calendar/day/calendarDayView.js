@@ -9,7 +9,7 @@ define(
     "TP",
     "shared/models/activityModel",
     "views/calendar/workout/calendarWorkoutView",
-    "views/calendar/metrics/calendarMetricView",
+    "calendar/views/metricTileView",
     "views/calendar/day/calendarDaySettings",
     "views/calendar/newItemView",
     "views/calendar/day/calendarDayDragStateView",
@@ -26,7 +26,7 @@ function(
     TP,
     ActivityModel,
     CalendarWorkoutView,
-    CalendarMetricView,
+    MetricTileView,
     CalendarDaySettingsView,
     NewItemView,
     CalendarDayDragStateView,
@@ -46,18 +46,6 @@ function(
         }
     });
 
-    var CalendarActivityView = TP.ItemView.extend({
-
-        modelViews:
-        {
-            Label: CalendarDayHeaderView,
-            Workout: CalendarWorkoutView,
-            Metric: CalendarMetricView
-        }
-
-
-    });
-
     return TP.CompositeView.extend(
     {
         tagName: "div",
@@ -67,7 +55,7 @@ function(
         {
             Label: CalendarDayHeaderView,
             Workout: CalendarWorkoutView,
-            Metric: CalendarMetricView
+            Metric: MetricTileView
         },
 
         template:
