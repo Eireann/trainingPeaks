@@ -3,10 +3,9 @@
 @import "workoutIcons";
 
 @media screen {
-    .dragHelper .workout
-    {
-        p
-        {
+
+    .dragHelper .workout {
+        p {
             display: none;
         }
     }
@@ -15,7 +14,6 @@
     {
         margin: 5px 4px 4px 2px;
         border:1px solid $TPGrey2;
-        // @include box-shadow(0 1px 1.5px 0 #2c2c2c);
 
         &.dragHelper
         {
@@ -307,11 +305,10 @@
 
     } // end .workout
 
-    #workoutSettingsDiv, #daySettingsDiv, #summarySettingsDiv {
+    #workoutSettingsDiv, 
+    #daySettingsDiv, 
+    #summarySettingsDiv {
         display:none;
     }
-
-
-
 }
 

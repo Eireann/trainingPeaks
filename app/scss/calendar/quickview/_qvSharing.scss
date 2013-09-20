@@ -1,25 +1,13 @@
-﻿.share
-{
-        div
-        {
-            font-size: $fontSizeSmall;
-        }
+﻿.share {
+    width: 200px;
+    float: left;
 
-        input
-        {
-            margin-bottom: 0px;
-            vertical-align: middle;
-            margin-top: -3px
-        }
-
-        .publicCheckboxContainer
-        {
-            &.disabled
-            {
-                .publicLabel
-                {
-                    opacity: .50;
-                }
+        .publicCheckboxContainer {
+            .publicCheckbox {
+                margin-bottom: 0px;
+                vertical-align: middle;
+                margin-top: -3px;
+                cursor: pointer;
             }
         }
 
@@ -30,24 +18,24 @@
             height: 21px;
             margin-top: 9px;
                         
-            div
+            .twitterIcon, .facebookIcon, .linkIcon, .emailIcon
             {
                 height: 21px;
                 width: 21px;
-                cursor: pointer;
                 float: left;
                 margin-right: 5px;
+                cursor: default;
+                opacity: .5;
             }
         }       
         
         .twitterIcon
-        {
-            cursor: pointer;
-            opacity: 1;
-            
+        {   
             background: url(../../assets/images/QVImages/sprite-share-icons.png) no-repeat 0 0;
             &:not(.disabled)
             {
+                opacity: 1;
+                cursor:pointer;
                 &:hover 
                 {
                     background: url(../../assets/images/QVImages/sprite-share-icons.png) no-repeat -21px 0;
@@ -70,12 +58,11 @@
 
         .facebookIcon
         {
-            cursor: pointer;
-            opacity: 1;
-            
             background: url(../../assets/images/QVImages/sprite-share-icons.png) no-repeat 0 -21px;
             &:not(.disabled)
             {
+                opacity: 1;
+                cursor: pointer;
                 &:hover 
                 {
        			    background: url(../../assets/images/QVImages/sprite-share-icons.png) no-repeat -21px -21px;
@@ -99,12 +86,11 @@
 
         .linkIcon
         {
-            cursor: pointer;
-            opacity: 1;
-
             background: url(../../assets/images/QVImages/sprite-share-icons.png) no-repeat 0 -63px;
             &:not(.disabled)
             {
+                opacity: 1;
+                cursor: pointer;
                 &:hover 
                 {
        			    background: url(../../assets/images/QVImages/sprite-share-icons.png) no-repeat -21px -63px;
@@ -127,12 +113,11 @@
 
         .emailIcon
         {
-            cursor: pointer;
-            opacity: 1;
-
             background: url(../../assets/images/QVImages/sprite-share-icons.png) no-repeat 0 -42px;
             &:not(.disabled)
             {
+                opacity:1;
+                cursor: pointer;
                 &:hover 
                 {
        			    background: url(../../assets/images/QVImages/sprite-share-icons.png) no-repeat -21px -42px;
@@ -152,18 +137,6 @@
                 }
             }
         }
-                
-        .shareIcons
-        {
-            div 
-            {
-                &.disabled
-                {
-                    opacity: .50;
-                    cursor: default;
-                }
-            }
-        }
     }
 
 .quickviewFooter
@@ -172,7 +145,7 @@
     {
         .publicCheckboxContainer
         {
-            display:inline;
+            display: inline;
             float: left;
             margin: 5px 7px 0 10px;
         }
@@ -187,9 +160,16 @@
 {
     .share
     {
+        width:125px;
+
         .publicCheckboxContainer
         {
-           margin-top: 11px;
+            margin-top: 11px;
+            
+            label {
+                cursor: pointer;
+                display: inline;
+            }
         }
     }
 }
