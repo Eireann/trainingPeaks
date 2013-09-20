@@ -524,3 +524,19 @@
 {
     margin: 5px 0 0 0 !important;
 }
+
+.zonesCalculator
+{
+    li
+    {
+        list-style-type: none;
+    }
+
+    .input
+    {
+        &.disabled
+        {
+            display: none;
+        } 
+    }
+}

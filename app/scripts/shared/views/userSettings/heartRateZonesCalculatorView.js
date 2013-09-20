@@ -6,7 +6,10 @@
     "shared/views/tabbedLayout",
     "shared/views/overlayBoxView",
     "shared/data/zoneCalculators",
-    "hbs!shared/templates/userSettings/heartRateZonesCalculatorTemplate"
+    "shared/utilities/formUtility",
+    "hbs!shared/templates/userSettings/heartRateZonesCalculatorZoneItemTemplate",
+    "hbs!shared/templates/userSettings/heartRateZonesCalculatorTemplate",
+    "hbs!shared/templates/userSettings/zonesCalculatorFooterTemplate"
 ],
 function(
     _,
@@ -15,15 +18,44 @@ function(
     TabbedLayout,
     OverlayBoxView,
     ZoneCalculators,
-    heartRateZonesCalculatorTemplate
+    FormUtility,
+    heartRateZoneTemplate,
+    heartRateZonesCalculatorTemplate,
+    zonesCalculatorFooterTemplate
 )
 {
 
-    var CalculatorTabView = TP.ItemView.extend({
+    var CalculatorTabView = TP.CompositeView.extend({
+
+        itemView: TP.ItemView.extend({
+            template: {
+                type: "handlebars",
+                template: heartRateZoneTemplate
+            }
+        }),
+
+        itemViewContainer: ".zones",
 
         template: {
             type: "handlebars",
             template: heartRateZonesCalculatorTemplate
+        },
+
+        constructor: function(options)
+        {
+            // start with no zones until we run calculator
+            this.collection = new TP.Collection();
+            CalculatorTabView.__super__.constructor.apply(this, arguments);
+        },
+
+        onRender: function()
+        {
+            this._applyModelValuesToForm();
+            this._showInputs();
+        },
+
+        events: {
+            "click .calculator": "calculateZones"
         },
 
         serializeData: function()
@@ -39,24 +71,109 @@ function(
             data.calculators = _.sortBy(calculators, "label");
 
             return data;
+        },
+
+        calculateZones: function(e)
+        {
+
+            FormUtility.applyValuesToModel(this.$el, this.model, { parsers: { zoneValue: _.bind(this._parseZoneValue, this) } });
+
+            if(!this._validateInputs())
+            {
+                return;
+            }
+
+            var calculatorId = Number($(e.target).data("zoneid"));
+            this.collection.reset(this.model.get("zones"));
+        },
+
+        applyZones: function()
+        {
+            alert('not implemented');
+        },
+
+        _parseZoneValue: function(value)
+        {
+            var options = { defaultValue: 0, workoutTypeId: this.model.get("workoutTypeId") };
+            return TP.utils.conversion.parseUnitsValue("heartrate", value, options);
+        },
+
+        _formatZoneValue: function(value)
+        {
+            var options = { defaultValue: "0", workoutTypeId: this.model.get("workoutTypeId") };
+            return TP.utils.conversion.formatUnitsValue("heartrate", value, options);
+        },
+
+        _applyModelValuesToForm: function()
+        {
+            FormUtility.applyValuesToForm(this.$el, this.model, { formatters: { zoneValue: _.bind(this._formatZoneValue, this) } });
+        },
+
+        _showInputs: function()
+        {
+            _.each(this.inputs, function(inputClass)
+            {
+                this.$("." + inputClass).removeClass("disabled");
+            }, this);
+        },
+
+        _validateInputs: function()
+        {
+            var success = true;
+            _.each(this.inputs, function(attr)
+            {
+                if(!this.model.get(attr))
+                {
+                    alert("Please enter a value for " + attr);
+                    success = false;
+                }
+            }, this);
+            return success;
         }
 
     });
 
-    var  LactateThresholdTabView = CalculatorTabView.extend({
-        zoneCalculatorType: ZoneCalculators.heartRateTypes.LactateThreshold
+    var  LactateThresholdTabView = CalculatorTabView.extend({  
+        zoneCalculatorType: ZoneCalculators.heartRateTypes.LactateThreshold,
+        inputs: [ "threshold" ]
     });
 
     var  MaximumHeartRateTabView = CalculatorTabView.extend({
-        zoneCalculatorType: ZoneCalculators.heartRateTypes.MaximumHeartRate
+        zoneCalculatorType: ZoneCalculators.heartRateTypes.MaximumHeartRate,
+        inputs: [ "maximumHeartRate" ]
     });
 
     var  MaximumAndRestingHeartRateTabView = CalculatorTabView.extend({
-         zoneCalculatorType: ZoneCalculators.heartRateTypes.MaxAndRestingHeartRate       
+         zoneCalculatorType: ZoneCalculators.heartRateTypes.MaxAndRestingHeartRate,
+         inputs: [ "maximumHeartRate", "restingHeartRate"]
     });
 
     var LactateThresholdAndMaximumHeartRateTabView = CalculatorTabView.extend({
-         zoneCalculatorType: ZoneCalculators.heartRateTypes.LTAndMaxHeartRate
+         zoneCalculatorType: ZoneCalculators.heartRateTypes.LTAndMaxHeartRate,
+         inputs: [ "maximumHeartRate", "testResult" ]
+    });
+
+    // todo: extract this and user settings footer into a simple button view?
+    var CalculatorFooterView = TP.ItemView.extend({
+
+        className: "userSettingsButtons",
+        
+        template:
+        {
+            type: "handlebars",
+            template: zonesCalculatorFooterTemplate
+        },
+
+        events:
+        {
+            "click button": "triggerButton"
+        },
+
+        triggerButton: function(e)
+        {
+            var actionName = $(e.currentTarget).attr("class");
+            this.trigger(actionName);
+        }
     });
 
     var HeartRateZonesCalculatorView = TabbedLayout.extend({
@@ -64,6 +181,7 @@ function(
         initialize: function()
         {
             this._initializeNavigation();
+            this._initializeFooter();
         },
 
         _initializeNavigation: function()
@@ -99,12 +217,31 @@ function(
                     }
                 }
             ];
+        },
+
+        _initializeFooter: function()
+        {
+            this.footerView = new CalculatorFooterView();
+            this.on("render", this._showFooter, this);
+            this.listenTo(this.footerView, "cancel", _.bind(this.close, this));
+            this.listenTo(this.footerView, "apply", _.bind(this._apply, this));
+        },
+
+        _showFooter: function()
+        {
+            this.tabbedLayoutFooterRegion.show(this.footerView);
+        },
+
+        _apply: function()
+        {
+            this.currentView.applyZones();
+            this.close();
         }
 
     });
 
     return OverlayBoxView.extend({
-        className: "heartRateZonesCalculator",
+        className: "heartRateZonesCalculator zonesCalculator",
         itemView: HeartRateZonesCalculatorView
     });
 
