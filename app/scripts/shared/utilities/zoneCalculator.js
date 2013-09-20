@@ -2,14 +2,12 @@ define(
 [
     "underscore",
     "Backbone",
-    "TP",
-    "shared/data/zoneCalculators"
+    "TP"
 ],
 function(
     _,
     Backbone,
-    TP,
-    zoneCalculatorDefinitions
+    TP
 )
 {
 
@@ -44,6 +42,15 @@ function(
             model.set(this.results);
         },
 
+        calculate: function(model)
+        {
+            var promise = this.update(model.attributes);
+            promise.done(function(){
+                this.apply(model); 
+            });
+            return promise;
+        },
+
         formatRequest: function(values)
         {
             return values;
@@ -71,9 +78,9 @@ function(
 
     });
 
-    HeartRateZoneCalculator = ZoneCalculator.extend({
+    ZoneCalculator.HeartRate = ZoneCalculator.extend({
 
-        zoneType: "hearrate",
+        zoneType: "heartrate",
 
         formatRequest: function(values)
         {

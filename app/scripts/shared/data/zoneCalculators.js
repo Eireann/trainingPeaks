@@ -116,9 +116,20 @@ function()
         }
     };
 
+    function indexById(zoneCalculators)
+    {
+        var byId = {};
+        _.each(zoneCalculators, function(calculator)
+        {
+            byId[calculator.id] = calculator;
+        });
+        return byId;
+    }
+
     return {
         heartRate: heartRateZoneCalculators,
-        heartRateTypes: heartRateZoneCalculatorTypes
+        heartRateTypes: heartRateZoneCalculatorTypes,
+        heartRatesById: indexById(heartRateZoneCalculators)
     };
 
 });

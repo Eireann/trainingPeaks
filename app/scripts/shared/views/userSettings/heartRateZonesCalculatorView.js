@@ -5,7 +5,8 @@
     "backbone",
     "shared/views/tabbedLayout",
     "shared/views/overlayBoxView",
-    "shared/data/zoneCalculators",
+    "shared/data/ZoneCalculatorDefinitions",
+    "shared/utilities/zoneCalculator",
     "shared/utilities/formUtility",
     "hbs!shared/templates/userSettings/heartRateZonesCalculatorZoneItemTemplate",
     "hbs!shared/templates/userSettings/heartRateZonesCalculatorTemplate",
@@ -17,7 +18,8 @@ function(
     Backbone,
     TabbedLayout,
     OverlayBoxView,
-    ZoneCalculators,
+    ZoneCalculatorDefinitions,
+    ZoneCalculator,
     FormUtility,
     heartRateZoneTemplate,
     heartRateZonesCalculatorTemplate,
@@ -63,7 +65,7 @@ function(
 
             var data = this.model.toJSON();
 
-            var calculators = _.filter(ZoneCalculators.heartRate, function(zoneCalculator)
+            var calculators = _.filter(ZoneCalculatorDefinitions.heartRate, function(zoneCalculator)
             {
                 return zoneCalculator.type === this.zoneCalculatorType;
             }, this);
@@ -84,7 +86,17 @@ function(
             }
 
             var calculatorId = Number($(e.target).data("zoneid"));
-            this.collection.reset(this.model.get("zones"));
+            var calculatorDefinition = ZoneCalculatorDefinitions.heartRatesById[calculatorId];
+
+            var zoneCalculator = new ZoneCalculator.HeartRate(calculatorDefinition);
+
+            var self = this;
+            zoneCalculator.calculate(this.model).done(function()
+            {
+                self.collection.reset(self.model.get("zones"));
+                self._applyModelValuesToForm();
+            });
+
         },
 
         applyZones: function()
@@ -134,22 +146,22 @@ function(
     });
 
     var  LactateThresholdTabView = CalculatorTabView.extend({  
-        zoneCalculatorType: ZoneCalculators.heartRateTypes.LactateThreshold,
+        zoneCalculatorType: ZoneCalculatorDefinitions.heartRateTypes.LactateThreshold,
         inputs: [ "threshold" ]
     });
 
     var  MaximumHeartRateTabView = CalculatorTabView.extend({
-        zoneCalculatorType: ZoneCalculators.heartRateTypes.MaximumHeartRate,
+        zoneCalculatorType: ZoneCalculatorDefinitions.heartRateTypes.MaximumHeartRate,
         inputs: [ "maximumHeartRate" ]
     });
 
     var  MaximumAndRestingHeartRateTabView = CalculatorTabView.extend({
-         zoneCalculatorType: ZoneCalculators.heartRateTypes.MaxAndRestingHeartRate,
+         zoneCalculatorType: ZoneCalculatorDefinitions.heartRateTypes.MaxAndRestingHeartRate,
          inputs: [ "maximumHeartRate", "restingHeartRate"]
     });
 
     var LactateThresholdAndMaximumHeartRateTabView = CalculatorTabView.extend({
-         zoneCalculatorType: ZoneCalculators.heartRateTypes.LTAndMaxHeartRate,
+         zoneCalculatorType: ZoneCalculatorDefinitions.heartRateTypes.LTAndMaxHeartRate,
          inputs: [ "maximumHeartRate", "testResult" ]
     });
 
