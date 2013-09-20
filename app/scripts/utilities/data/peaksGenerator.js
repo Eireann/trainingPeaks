@@ -53,7 +53,9 @@ function(TP)
                 var hoursCopy = shouldPluralizeHours ? " Hours " : " Hour ";
                 var minutesCopy = shouldPluralizeMinutes ? " Minutes" : " Minute";
 
-                return fullHours + hoursCopy + roundedMinutes + minutesCopy;
+                var withMinutesString = fullHours + hoursCopy + roundedMinutes + minutesCopy;
+                var withoutMinutesString = fullHours + hoursCopy;
+                return roundedMinutes === 0 ? withoutMinutesString : withMinutesString;
             }
         };
 
