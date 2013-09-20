@@ -62,6 +62,7 @@ function(
                 var monday = moment().day(1).format("YYYY-MM-DD");
                 var sunday = moment().day(7).format("YYYY-MM-DD");
                 var thisWeekWorkouts = "workouts/" + monday + "/" + sunday;
+                var thisWeekMetrics = "timedmetrics/" + monday + "/" + sunday;
                 expect(testHelpers.hasRequest("GET", thisWeekWorkouts)).toBe(true);
 
                 var workouts = [
@@ -75,6 +76,7 @@ function(
 
                 expect($mainRegion.find("#calendarContainer .day.today .workout").length).toBe(0);
                 testHelpers.resolveRequest("GET", thisWeekWorkouts, workouts);
+                testHelpers.resolveRequest("GET", thisWeekMetrics, []);
                 expect($mainRegion.find("#calendarContainer .day.today .workout").length).toBe(1);
 
                 $mainRegion.find("#calendarContainer .day.today .workout").trigger("mouseup");

@@ -1,6 +1,5 @@
 define(
 [
-
     "underscore",
     "jqueryui/touch-punch",
     "jqueryui/draggable",
@@ -8,14 +7,32 @@ define(
     "moment",
     "setImmediate",
     "TP",
+    "shared/models/activityModel",
     "views/calendar/workout/calendarWorkoutView",
+    "calendar/views/metricTileView",
     "views/calendar/day/calendarDaySettings",
     "views/calendar/newItemView",
     "views/calendar/day/calendarDayDragStateView",
     "hbs!templates/views/calendar/day/calendarDayHeader",
     "hbs!templates/views/calendar/day/calendarDay"
 ],
-function(_, touchPunch, draggable, droppable, moment, setImmediate, TP, CalendarWorkoutView, CalendarDaySettingsView, NewItemView, CalendarDayDragStateView, CalendarDayHeaderTemplate, CalendarDayTemplate)
+function(
+    _,
+    touchPunch,
+    draggable,
+    droppable,
+    moment,
+    setImmediate,
+    TP,
+    ActivityModel,
+    CalendarWorkoutView,
+    MetricTileView,
+    CalendarDaySettingsView,
+    NewItemView,
+    CalendarDayDragStateView,
+    CalendarDayHeaderTemplate,
+    CalendarDayTemplate
+)
 {
 
     var today = moment().format(TP.utils.datetime.shortDateFormat);
@@ -37,7 +54,8 @@ function(_, touchPunch, draggable, droppable, moment, setImmediate, TP, Calendar
         modelViews:
         {
             Label: CalendarDayHeaderView,
-            Workout: CalendarWorkoutView
+            Workout: CalendarWorkoutView,
+            Metric: MetricTileView
         },
 
         template:
@@ -75,6 +93,8 @@ function(_, touchPunch, draggable, droppable, moment, setImmediate, TP, Calendar
 
         getItemView: function(item)
         {
+            var self = this;
+            item = ActivityModel.unwrap(item);
             if (!item)
             {
                 return TP.ItemView;
@@ -85,11 +105,17 @@ function(_, touchPunch, draggable, droppable, moment, setImmediate, TP, Calendar
             {
                 throw "Item has no defined view in CalendarDayView: " + item;
             }
-            return this.modelViews[modelName];
+            return function(options) {
+                var klass = self.modelViews[modelName];
+                // Use the unwrapped model to instantiate the view
+                options.model = item;
+                return new klass(options);
+            };
         },
 
         getModelName: function (item)
         {
+            item = ActivityModel.unwrap(item);
             if (item.isDateLabel)
                 return "Label";
             else if (typeof item.webAPIModelName !== 'undefined')
@@ -290,38 +316,31 @@ function(_, touchPunch, draggable, droppable, moment, setImmediate, TP, Calendar
 
         makeDayDraggable: function()
         {
-            _.bindAll(this, "draggableHelper", "onDragStart", "onDragStop");
-            this.draggableOptions = { appendTo: theMarsApp.getBodyElement(), helper: this.draggableHelper, start: this.onDragStart, stop: this.onDragStop, containment: "#calendarContainer" };
-            this.makeElementDraggable(this.$(".dayHeader"), this.draggableOptions);
-            this.makeElementDraggable(this.$(".daySelected"), this.draggableOptions);
+            _.bindAll(this, "onDragStart", "onDragStop");
+            this.$el.data("ItemId", this.model.id);
+            this.$el.data("ItemType", "CalendarDay");
+            this.$el.data("DropEvent", "dayMoved");
+            this.draggableOptions = 
+            this.$el.draggable(
+            {
+                refreshPositions: true,
+                appendTo: theMarsApp.getBodyElement(),
+                helper: _.bind(this._makeHelper, this),
+                handle: ".dayHeader, .daySelected",
+                start: this.onDragStart,
+                stop: this.onDragStop,
+                containment: "#calendarContainer"
+            });
         },
 
-        makeElementDraggable: function($draggableElement, draggableOptions)
+        _makeHelper: function()
         {
-            $draggableElement.data("ItemId", this.model.id);
-            $draggableElement.data("ItemType", "CalendarDay");
-            $draggableElement.data("DropEvent", "dayMoved");
-            $draggableElement.draggable(draggableOptions);
+            var $helper = $("<div class='dragHelper'/>");
+            $helper.append(this.$el.clone().width(this.$el.width()));
+            return $helper;
         },
 
-        draggableHelper: function(e)
-        {
-            // get a day view, with all items in drag state
-            var helperView = new CalendarDayDragStateView({ model: this.model });
-            helperView.render();
-            var $helperViewEl = helperView.$el;
-            $helperViewEl.width(this.$el.width());
-            //$helperViewEl.height(this.$el.height());
-
-            // wrap it in a week of the appropriate class
-            var $helperEl = $("<div></div>");
-            $helperEl.attr("class", this.$el.closest(".week").attr("class"));
-            $helperEl.css({maxHeight: $('#calendarContainer').height() - 100, overflow: "hidden"});
-            $helperEl.append($helperViewEl);
-            return $helperEl;
-        },
-
-        onDragStart: function(e)
+        onDragStart: function(e, ui)
         {
             this.$el.addClass("dragging");
             TP.analytics("send", { "hitType": "event", "eventCategory": "calendar", "eventAction": "dragDropStart", "eventLabel": "day" });
@@ -331,6 +350,7 @@ function(_, touchPunch, draggable, droppable, moment, setImmediate, TP, Calendar
         {
             this.$el.removeClass("dragging");
         },
+
         appendHtml: function(collectionView, itemView, index)
         {
             itemView.$el.insertBefore(collectionView.$(".addWorkoutWrapper"));

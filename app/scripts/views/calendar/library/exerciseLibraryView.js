@@ -144,7 +144,7 @@ function(
                 return;
             }
             var workoutid = ui.draggable.data('workoutid');
-            var workoutModel = theMarsApp.controllers.calendarController.weeksCollection.workoutsCollection.get(workoutid);
+            var workoutModel = theMarsApp.controllers.calendarController.getWorkout(workoutid);
             this.saveToLibraryConfirmationView = new SaveToLibraryConfirmationView({ model: workoutModel, libraries: this.libraries, selectedLibraryId: this.model.get('selected'), shouldShowConfirmation: false });
             this.saveToLibraryConfirmationView.render();
 

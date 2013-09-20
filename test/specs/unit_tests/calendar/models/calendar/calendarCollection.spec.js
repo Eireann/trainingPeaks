@@ -9,10 +9,11 @@ requirejs(
     "testUtils/testHelpers",
     "testUtils/xhrDataStubs",
     "models/workoutModel",
+    "shared/models/activityModel",
     "models/workoutsCollection",
     "models/calendar/calendarCollection"
 ],
-function($, TP, moment, theMarsApp, DataManager, testHelpers, xhrData, WorkoutModel, WorkoutsCollection, CalendarCollection)
+function($, TP, moment, theMarsApp, DataManager, testHelpers, xhrData, WorkoutModel, ActivityModel, WorkoutsCollection, CalendarCollection)
 {
     describe("CalendarCollection ", function()
     {
@@ -282,7 +283,7 @@ function($, TP, moment, theMarsApp, DataManager, testHelpers, xhrData, WorkoutMo
                 dataManager: new DataManager()
             });
             
-            spyOn(context.workoutsCollection, "reset");
+            spyOn(context.activitiesCollection, "reset");
             spyOn(context.daysCollection, "reset");
             spyOn(context, "add");
 
@@ -292,7 +293,7 @@ function($, TP, moment, theMarsApp, DataManager, testHelpers, xhrData, WorkoutMo
 
             expect(context.startDate.unix()).toBe(startDate.unix());
             expect(context.endDate.unix()).toBe(endDate.unix());
-            expect(context.workoutsCollection.reset).toHaveBeenCalled();
+            expect(context.activitiesCollection.reset).toHaveBeenCalled();
             expect(context.daysCollection.reset).toHaveBeenCalled();
             expect(context.add.argsForCall[0][0].length).toBe(9);
         });
@@ -481,7 +482,7 @@ function($, TP, moment, theMarsApp, DataManager, testHelpers, xhrData, WorkoutMo
 
         describe("Auto index by day", function()
         {
-            var collection, workout;
+            var collection, workout, activity;
             var origDate = moment().format("YYYY-MM-DD");
             var newDate = moment().add(1, "day").format("YYYY-MM-DD");
             
@@ -494,6 +495,7 @@ function($, TP, moment, theMarsApp, DataManager, testHelpers, xhrData, WorkoutMo
                     dataManager: new DataManager()
                 });
                 workout = new WorkoutModel({ workoutId: 42, workoutDay: origDate });
+                activity = ActivityModel.wrap(workout);
                 collection.addItem(workout);
             });
 
@@ -504,20 +506,20 @@ function($, TP, moment, theMarsApp, DataManager, testHelpers, xhrData, WorkoutMo
 
             it("should be in the correct day collection", function()
             {
-                expect(collection.getDayModel(origDate).itemsCollection.contains(workout)).toBe(true);
+                expect(collection.getDayModel(origDate).itemsCollection.contains(activity)).toBe(true);
             });
 
             it("moving the workout should move to the correct day collection immediately", function()
             {
                 workout.moveToDay(newDate);
-                expect(collection.getDayModel(newDate).itemsCollection.contains(workout)).toBe(true);
+                expect(collection.getDayModel(newDate).itemsCollection.contains(activity)).toBe(true);
             });
 
             it("moving the workout should remove the workout from the old collection", function()
             {
                 workout.moveToDay(newDate);
                 testHelpers.rejectRequest("PUT", "");
-                expect(collection.getDayModel(origDate).itemsCollection.contains(workout)).toBe(false);
+                expect(collection.getDayModel(origDate).itemsCollection.contains(activity)).toBe(false);
             });
 
         });
