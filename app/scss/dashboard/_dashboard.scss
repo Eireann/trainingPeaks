@@ -293,12 +293,12 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
     .chartTitle, .customDateRange {
         display: block; /* Fallback for non-webkit */
         display: -webkit-box;
-        max-width: 100%;
-        max-height: 32px; /* Fallback for non-webkit */
+        @include calc("max-width", "100% - 18px");;
+        max-height: 16px; /* Fallback for non-webkit */
         margin: 5px auto;
         font-size: $fontSizeSmall;
         line-height: normal;
-        -webkit-line-clamp: 2;
+        -webkit-line-clamp: 1;
         -webkit-box-orient: vertical;
         overflow: hidden;
         text-overflow: ellipsis;
