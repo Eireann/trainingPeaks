@@ -266,7 +266,7 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
     {
         margin: 0px 0px 0px 0px;
         position: absolute;
-        top: 65px;
+        top: 62px;
         left: 26px;
         @include calc("width", "100% - 73px");
         @include calc("height", "100% - 99px");
@@ -516,7 +516,8 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
         &.peaksChart {
             .chartContainer {
                 @include calc("width", "100% - 73px");
-                left:26px;
+                @include calc("height","100% - 112px");
+                left:36px;
             }
         }
 
@@ -526,24 +527,24 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
             .chartContainer {
                 @include calc("width", "100% - 76px");
                 @include calc("height", "100% - 103px");
-                left:37px;
+                left:38px;
+                padding:0;
             }
         }
 
         &.timeInZones {
             .chartContainer {
                 @include calc("width", "100% - 60px");
-                @include calc("height", "100% - 108px");
-                top:60px;
-                left:23px;
+                @include calc("height", "100% - 109px");
+                left:30px;
             }
         }
 
         &.workoutSummaryChart {
             .chartContainer {
                 @include calc("width", "100% - 63px");
-                @include calc("height", "100% - 99px");
-                left:26px;
+                @include calc("height", "100% - 109px");
+                left:31px;
 
                 .yaxisLabel {
                     &.right {
@@ -561,7 +562,8 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
 
         &.metricsChart {
             .chartContainer {
-                left:31px;
+                @include calc("height", "100% - 109px");
+                left:36px;
             }
         }
 
