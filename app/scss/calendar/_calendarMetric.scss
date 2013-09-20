@@ -85,6 +85,7 @@
                 .metricTime {
                     float:left;
                     width:100px;
+                    @include calc("width","100% - 30px");
                     padding:14px 0px 0px 5px;
                     color:$TPGrey4;
                     font-size:$fontSizeXLarge;
