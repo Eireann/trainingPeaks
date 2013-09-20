@@ -60,8 +60,15 @@ function(TP)
         this._initializePeakDataOnModelFromTier3Data = function(metric, model)
         {
             var self = this,
+                uniquePeaks = _.uniq(_.collect(model.get('peak' + metric + "s"), function(item) { return JSON.stringify(item); })),
                 peaks = [];
-            _.each(model.get('peak' + metric + "s"), function(peak, index)
+
+            uniquePeaks = _.map(uniquePeaks, function(peak)
+            {
+                return JSON.parse(peak);
+            });
+
+            _.each(uniquePeaks, function(peak, index)
             {
                 var peakSample = {};
                 peakSample.modelArrayIndex = index;
@@ -71,6 +78,9 @@ function(TP)
 
                 peaks.push(peakSample);
             });
+
+            // sort peaks by interval time
+            peaks = _.sortBy(peaks, function(peak) { return peak.intervalInSeconds; });
 
             model.set("meanMax" + metric + "s.meanMaxes", peaks, { silent: true });
         };
