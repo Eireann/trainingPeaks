@@ -117,7 +117,8 @@ function()
     };
 
     return {
-        heartRate: heartRateZoneCalculators
+        heartRate: heartRateZoneCalculators,
+        heartRateTypes: heartRateZoneCalculatorTypes
     };
 
 });
