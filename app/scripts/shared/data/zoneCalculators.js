@@ -113,6 +113,24 @@ function()
             label: "Durata Training",
             numberOfZones: 10,
             type: heartRateZoneCalculatorTypes.LactateThreshold
+        },
+        Linear3: {
+            id: 20,
+            label: "Linear",
+            numberOfZones: 3,
+            type: heartRateZoneCalculatorTypes.MaxAndRestingHeartRate
+        },
+        Linear5: {
+            id: 21,
+            label: "Linear",
+            numberOfZones: 5,
+            type: heartRateZoneCalculatorTypes.MaxAndRestingHeartRate
+        },
+        Linear7: {
+            id: 22,
+            label: "Linear",
+            numberOfZones: 7,
+            type: heartRateZoneCalculatorTypes.MaxAndRestingHeartRate
         }
     };
 

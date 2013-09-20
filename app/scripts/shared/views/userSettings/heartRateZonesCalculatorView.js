@@ -5,7 +5,7 @@
     "backbone",
     "shared/views/tabbedLayout",
     "shared/views/overlayBoxView",
-    "shared/data/ZoneCalculatorDefinitions",
+    "shared/data/zoneCalculators",
     "shared/utilities/zoneCalculator",
     "shared/utilities/formUtility",
     "hbs!shared/templates/userSettings/heartRateZonesCalculatorZoneItemTemplate",

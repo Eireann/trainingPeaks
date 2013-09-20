@@ -1,7 +1,7 @@
 define(
 [
     "underscore",
-    "Backbone",
+    "backbone",
     "TP"
 ],
 function(
@@ -16,7 +16,7 @@ function(
         this.definition = definition;
     }
 
-    ZoneCalculator.extend = Backbone.extend;
+    ZoneCalculator.extend = TP.extend;
 
     _.extend(ZoneCalculator.prototype,
     {
@@ -45,8 +45,9 @@ function(
         calculate: function(model)
         {
             var promise = this.update(model.attributes);
+            var self = this;
             promise.done(function(){
-                this.apply(model); 
+                self.apply(model); 
             });
             return promise;
         },
@@ -64,7 +65,7 @@ function(
             {
                 if(v !== null && v !== undefined)
                 {
-                    results[k] = value;
+                    results[k] = v;
                 }
             });
 
@@ -101,7 +102,7 @@ function(
                 restingHeartRate: data.restingHR,
                 zones: data.zones
             };
-            return ZoneCalculator.parseResponse(results);
+            return ZoneCalculator.prototype.parseResponse(results);
         }
 
     });
