@@ -26,12 +26,21 @@ function(
 
         events:
         {
-            "click .metricSettings": "_onSettingsClicked"
+            "click .metricSettings": "_onSettingsClicked",
+            "mouseup": "_onMouseup",
+            "mousedown": "_onMousedown"
+        },
+
+        modelEvents:
+        {
+            "select": "_onSelected",
+            "unselect": "_onUnselected"
         },
 
         initialize: function()
         {
             this.on("render", this._setupDraggable, this);
+            this.on("render", this._presetSelected, this);
         },
 
         _setupDraggable: function()
@@ -60,15 +69,28 @@ function(
             return $helper;
         },
 
+        _presetSelected: function()
+        {
+            if (this.model.selected)
+            {
+                this._onSelected();
+            }
+        },
 
+        _select: function()
+        {
+            this.model.trigger("select", this.model);
+        },
 
         _onDragStart: function(e, ui)
         {
             $(ui.helper).width(this.$el.width());
+            this.dragging = true;
         },
 
         _onDragStop: function()
         {
+            this.dragging = false;
         },
 
         _onSettingsClicked: function(e)
@@ -76,6 +98,47 @@ function(
             var offset = $(e.currentTarget).offset();
             var settingsView = new MetricTileSettingsView({ model: this.model });
             settingsView.render().bottom(offset.top + 12).center(offset.left - 4);
+        },
+
+        _onMouseup: function(e)
+        {
+            if (this.dragging)
+            {
+                e.preventDefault();
+                return;
+            }
+
+            if (e)
+            {
+                if (e.button && e.button === 2)
+                {
+                    return;
+                }
+
+                if (e.isDefaultPrevented())
+                {
+                    return;
+                }
+
+                e.preventDefault();
+            }
+
+            this._select();
+        },
+
+        _onMousedown: function()
+        {
+            this._select();
+        },
+
+        _onSelected: function()
+        {
+            this.$el.addClass("selected");
+        },
+
+        _onUnselected: function()
+        {
+            this.$el.removeClass("selected");
         }
 
     });
