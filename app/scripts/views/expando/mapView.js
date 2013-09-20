@@ -55,13 +55,13 @@ function (
 
         watchForModelChanges: function ()
         {
-            this.model.get("detailData").on("change:flatSamples.samples", this.onModelFetched, this);
+            this.model.get("detailData").on("change:flatSamples", this.onModelFetched, this);
             this.on("close", this.stopWatchingModelChanges, this);
         },
 
         stopWatchingModelChanges: function ()
         {
-            this.model.get("detailData").off("change:flatSamples.samples", this.onModelFetched, this);
+            this.model.get("detailData").off("change:flatSamples", this.onModelFetched, this);
         },
 
         onModelFetched: function ()
