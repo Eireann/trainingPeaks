@@ -81,6 +81,19 @@
                     background-size: 25px 25px;
                     background-color:$clrMetric;
                 }
+
+                .metricTime {
+                    float:left;
+                    width:100px;
+                    padding:14px 0px 0px 5px;
+                    color:$TPGrey4;
+                    font-size:$fontSizeXLarge;
+
+                    .metricAMPM {
+                        font-size: 0.88em;
+                        margin-left: -3px;
+                    }
+                }
             }
 
             .metricBody {
@@ -88,7 +101,8 @@
                 padding: 2px 3px 3px 3px;
                 @include labels($fontFamilyHeavy, $fontSizeXSmall, $TPGrey4, normal);
                 float:left;
-                width:calc(100% - 28px);
+                clear:left;
+                width:100%;
                 
                 // keeps text from running into settings button
                 .metricSettingsContain {
