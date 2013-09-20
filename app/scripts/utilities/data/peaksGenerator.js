@@ -31,12 +31,60 @@ function(TP)
             // change 1 Minute to 60 Seconds and 1 Hour to 60 Minutes
             return label.replace(/^MM/, "").replace(/([0-9]+)/g, "$1 ").replace(/([a-z])([A-Z])/g, "$1 $2").replace(/1 Minute/, "60 Seconds").replace(/1 Hour/, "60 Minutes");
         };
+        this._formatSecondsForLabel = function(seconds)
+        {
+            if (seconds < 61)
+            {
+                return seconds + " Seconds";
+            } else if (seconds < 3601) // 1 hour and 1 second
+            {
+                var roundedMinutes = Math.round((seconds / 60));
+                var shouldPluralizeMinutes = roundedMinutes !== 1;
+                var minutesCopy = shouldPluralizeMinutes ? " Minutes" : " Minute";
+                return roundedMinutes + minutesCopy;
+            } else
+            {
+                var hours = seconds / 3600;
+                var fullHours = Math.floor(hours);
+                var exactMinutes = (hours % 1) * 60;
+                var roundedMinutes = Math.round(exactMinutes);
+                var shouldPluralizeHours = fullHours !== 1;
+                var shouldPluralizeMinutes = roundedMinutes !== 1;
+                var hoursCopy = shouldPluralizeHours ? " Hours " : " Hour ";
+                var minutesCopy = shouldPluralizeMinutes ? " Minutes" : " Minute";
+
+                return fullHours + hoursCopy + roundedMinutes + minutesCopy;
+            }
+        };
+
+        this._initializePeakDataOnModelFromTier3Data = function(metric, model)
+        {
+            var self = this,
+                peaks = [];
+            _.each(model.get('peak' + metric + "s"), function(peak, index)
+            {
+                var peakSample = {};
+                peakSample.modelArrayIndex = index;
+                peakSample.intervalInSeconds = peak.interval;
+                peakSample.label = self._formatSecondsForLabel(peak.interval);
+                peakSample.value = peak.value;
+
+                peaks.push(peakSample);
+            });
+
+            model.set("meanMax" + metric + "s.meanMaxes", peaks, { silent: true });
+        };
 
         this._initializePeakDataOnModel = function (metric, model)
         {
             if(!_.contains(["Cadence", "HeartRate", "Power", "Speed"], metric))
             {
                 throw new Error("ThePeaksGenerator: " + metric + " is an invalid metric");
+            }
+
+            if (model.attributes.hasOwnProperty('flatSamples'))
+            {
+                return this._initializePeakDataOnModelFromTier3Data(metric, model);
             }
 
             var meanMaxes = model.get("meanMax" + metric + "s");
@@ -54,7 +102,6 @@ function(TP)
                 allPeaksByLabel[peak.label] = peak;
             }, this);
 
-
             _.each(defaultPeakSettings, function (label)
             {
                 if (!allPeaksByLabel.hasOwnProperty(label))
@@ -65,13 +112,18 @@ function(TP)
                     });
                 }
 
-            }, this);
+            }, this);   
 
             model.set("meanMax" + metric + "s.meanMaxes", peaks, { silent: true });
         };
 
-        this._cleanAndFormatPeaksData = function (peaksData)
+        this._cleanAndFormatPeaksData = function (peaksData, model)
         {
+            if (model.attributes.hasOwnProperty('flatSamples'))
+            {
+                return peaksData.meanMaxes;
+            }
+
             var allPeaksByLabel = {};
             if (peaksData.meanMaxes)
             {
@@ -123,7 +175,7 @@ function(TP)
             }
             this._initializePeakDataOnModel(metric, model);
             var peaks = model.get("meanMax" + metric + "s");
-            return this._cleanAndFormatPeaksData(peaks);
+            return this._cleanAndFormatPeaksData(peaks, model);
         }
     });
 

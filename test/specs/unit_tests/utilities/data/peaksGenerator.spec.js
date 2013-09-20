@@ -50,6 +50,44 @@ function($, theMarsApp, TP, _, ThePeaksGenerator)
             expect(tpModel.get("meanMaxSpeeds.id")).toEqual(0);
         });
 
+        it("Should create meanMax metrics from tier 3 data", function()
+        {
+            var tpModel = new TP.Model({
+                flatSamples: true,
+                peakHeartRates: [
+                    {
+                        begin: 2195000,
+                        end: 2200000,
+                        interval: 2,
+                        value: 231
+                    },
+                    {
+                        begin: 2195000,
+                        end: 2200000,
+                        interval: 5,
+                        value: 231
+                    },
+                    {
+                        begin: 3220000,
+                        end: 3230000,
+                        interval: 10,
+                        value: 231
+                    }
+                ]
+            });
+
+            ThePeaksGenerator._initializePeakDataOnModel("HeartRate", tpModel);
+            expect(tpModel.has("meanMaxHeartRates")).toBeTruthy();
+            expect(_.isArray(tpModel.get("meanMaxHeartRates.meanMaxes"))).toBeTruthy();
+            //expect(tpModel.get("meanMaxHeartRates.id")).toEqual(0);
+
+            expect(tpModel.get("meanMaxHeartRates.meanMaxes")[0].label).toEqual("MM2Seconds");
+            expect(tpModel.get("meanMaxHeartRates.meanMaxes")[0].value).toEqual(231);
+
+            expect(tpModel.get("meanMaxHeartRates.meanMaxes")[1].label).toEqual("MM5Seconds");
+            expect(tpModel.get("meanMaxHeartRates.meanMaxes")[1].value).toEqual(231);
+        });
+
         it("Should have meanMaxes in the model", function ()
         {
             var tpModel = new TP.Model();

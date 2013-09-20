@@ -34,7 +34,10 @@ function (_, moment, TP)
             "peakSpeedsByDistance": null,
             "sampleRate": null,
             "totalStats": null,
-            "lapsStats": null
+            "lapsStats": null,
+            "meanMaxHeartRates": null,
+            "meanMaxPowers": null,
+            "meanMaxSpeeds": null
         },
 
         hasSensorData: function()
