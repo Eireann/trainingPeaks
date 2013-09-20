@@ -267,9 +267,10 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
         margin: 0px 0px 0px 0px;
         position: absolute;
         top: 62px;
-        left: 26px;
-        @include calc("width", "100% - 73px");
-        @include calc("height", "100% - 99px");
+        left: 29px;
+
+        @include calc("width", "100% - 58px");
+        @include calc("height", "100% - 91px");
         &.invisible
         {
             visibility:hidden;
@@ -507,45 +508,19 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
     }
 
     /* general dashboard chart sizing */
-    &:not(.fullScreen)
-    {
-
+    &:not(.fullScreen) {
         width: 400px;
         height: 400px;
 
-        &.peaksChart {
-            .chartContainer {
-                @include calc("width", "100% - 73px");
-                @include calc("height","100% - 112px");
-                left:36px;
-            }
-        }
-
         &.pmcChart {
             width: 810px;
-
             .chartContainer {
-                @include calc("width", "100% - 76px");
-                @include calc("height", "100% - 103px");
-                left:38px;
-                padding:0;
-            }
-        }
-
-        &.timeInZones {
-            .chartContainer {
-                @include calc("width", "100% - 60px");
-                @include calc("height", "100% - 109px");
-                left:30px;
+            
             }
         }
 
         &.workoutSummaryChart {
             .chartContainer {
-                @include calc("width", "100% - 63px");
-                @include calc("height", "100% - 109px");
-                left:31px;
-
                 .yaxisLabel {
                     &.right {
                         right:-36px;
@@ -553,20 +528,6 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
                 }
             }
         }
-
-        &.fitnessSummaryChart {
-            .chartContainer {
-                left:33px;
-            }
-        }
-
-        &.metricsChart {
-            .chartContainer {
-                @include calc("height", "100% - 109px");
-                left:36px;
-            }
-        }
-
     }
 
     // jquery ui adds some opacity to disabled drag state
