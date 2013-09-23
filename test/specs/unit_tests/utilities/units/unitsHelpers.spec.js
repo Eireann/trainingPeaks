@@ -42,6 +42,11 @@ function(TP, convertToViewUnits, convertToModelUnits, theMarsApp)
                 expect(TP.utils.units.getUnitsLabel("distance", null, null, {abbreviated: false})).toBe("miles");
             });
 
+            it("should return the metric unit label for rowing distance (special case for rowing)", function()
+            {
+                expect(TP.utils.units.getUnitsLabel("distance", 12)).toBe("m");
+            });
+
             it("should return the non-abbreviated unit label for distance for swimming", function()
             {
                 expect(TP.utils.units.getUnitsLabel("distance", 1, null, {abbreviated: false})).toBe("yards");
@@ -60,6 +65,11 @@ function(TP, convertToViewUnits, convertToModelUnits, theMarsApp)
             it("should return the unit label for average speed", function()
             {
                 expect(TP.utils.units.getUnitsLabel("averageSpeed")).toBe("mph");
+            });
+
+            it("should return the unit label for average speed for rowing", function()
+            {
+                expect(TP.utils.units.getUnitsLabel("averageSpeed", 12)).toBe("m/min");
             });
 
             it("should return the unit label for calories", function()
@@ -119,9 +129,19 @@ function(TP, convertToViewUnits, convertToModelUnits, theMarsApp)
                 expect(TP.utils.units.getUnitsLabel("pace")).toBe("min/mi");
             });
 
+            it("should return the unit label for pace for rowing workouts", function()
+            {
+                expect(TP.utils.units.getUnitsLabel("pace", 12)).toBe("sec/100m");
+            });
+
             it("should return the unit label for speed", function()
             {
                 expect(TP.utils.units.getUnitsLabel("speed")).toBe("mph");
+            });
+
+            it("should return the unit label for speed for rowing", function()
+            {
+                expect(TP.utils.units.getUnitsLabel("speed", 12)).toBe("m/min");
             });
 
             it("should return the unit label for cadence", function()
@@ -176,6 +196,11 @@ function(TP, convertToViewUnits, convertToModelUnits, theMarsApp)
                 expect(convertToViewUnits(1234567890, "distance")).toBeCloseTo(767125, 0);
                 expect(convertToViewUnits("notANumber", "distance")).toBe(0);
                 expect(convertToViewUnits(-1609, "distance")).toBeCloseTo(-1, 0);
+            });
+
+            it("should keep distance units in meters for rowing for all users", function()
+            {
+                expect(convertToViewUnits(1, "distance", null, 12)).toBe(1);
             });
 
             it("should convert an elevation in meters to ft", function()
@@ -245,7 +270,7 @@ function(TP, convertToViewUnits, convertToModelUnits, theMarsApp)
                 expect(convertToModelUnits(767124.68, "distance")).toBeCloseTo(1234567883, 0);
                 expect(convertToModelUnits(-1, "distance")).toBeCloseTo(-1609, 0);
             });
-            
+
             it("should convert an elevation in ft to meters", function ()
             {
                 expect(convertToModelUnits(0, "elevation")).toBe(0);
@@ -439,6 +464,20 @@ function(TP, convertToViewUnits, convertToModelUnits, theMarsApp)
             
         });
 
+        describe("convertToViewUnits template helper, for rowing workouts (always in metric units)", function()
+        {
+            it("should convert a pace value in meters per second to sec/100m, properly formated", function()
+            {
+                expect(convertToViewUnits(1, "pace", undefined, 12)).toBe("01:40");
+                expect(convertToViewUnits(5, "pace", undefined, 12)).toBe("00:20");
+            });
+            it("Should convert a speed in meters per second to meters per minute", function()
+            {
+                expect(convertToViewUnits(1, "speed", undefined, 12)).toBe(60);
+                expect(convertToViewUnits(5, "speed", undefined, 12)).toBe(300);
+            });
+        });
+
         describe("convertToModelUnits template helper, for swim workouts in english units", function()
         {
             var swimTypeId = TP.utils.workout.types.getIdByName("Swim");
@@ -477,6 +516,43 @@ function(TP, convertToViewUnits, convertToModelUnits, theMarsApp)
             });
  
         });
+
+        describe("convertToModelUnits template helper, for rowing workouts in all units", function()
+        {
+ 
+            beforeEach(function()
+            {
+                theMarsApp.user.set("units", TP.utils.units.constants.English);
+            });
+
+            afterEach(function()
+            {
+                theMarsApp.user.set("units", TP.utils.units.constants.Metric);
+            });
+
+            it("should keep distance in meters", function()
+            {
+                expect(convertToModelUnits("", "distance", 12)).toBeNull();
+                expect(convertToModelUnits('1.09', "distance", 12)).toBe(1.09);
+                expect(convertToModelUnits("10.9", "distance", 12)).toBe(10.9);
+                expect(convertToModelUnits(109, "distance", 12)).toBe(109);
+                expect(convertToModelUnits(1094, "distance", 12)).toBe(1094);
+            });
+
+            it("should convert a pace value in sec/100m to m/s, properly formated", function()
+            {
+                expect(convertToModelUnits("01:40", "pace", 12)).toBeCloseTo(1, 0);
+                expect(convertToModelUnits("00:20", "pace", 12)).toBeCloseTo(5, 0);
+            });
+
+            it("Should convert a speed in meters per second to meters per minute, properly formatted", function()
+            {
+                expect(convertToModelUnits(60, "speed", 12)).toBe(1);
+                expect(convertToModelUnits(300, "speed", 12)).toBe(5);
+            });
+ 
+        });
+
 
         describe("convertToModelUnits template helper, for swim workouts in metric units", function()
         {

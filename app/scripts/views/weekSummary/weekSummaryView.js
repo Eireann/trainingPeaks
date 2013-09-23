@@ -1,14 +1,18 @@
 define(
 [
     "TP",
+    "models/workoutModel",
     "views/weekSummary/weekSummarySettings",
     "views/weekSummary/weekSummaryBarChartHover",
+    "shared/models/activityModel",
     "hbs!templates/views/weekSummary/weekSummary"
 ],
 function(
     TP,
+    WorkoutModel,
     WeekSummarySettings,
     barChartHover,
+    ActivityModel,
     weekSummaryTemplate)
 {
     return TP.ItemView.extend(
@@ -87,6 +91,8 @@ function(
                 //iterate over items (workouts, meals, metrics) for the current day
                 item.itemsCollection.each(function(workout)
                 {
+                    // Note, you might get a metric or other model
+                    workout = ActivityModel.unwrap(workout);
 
                     var workoutType = workout.get("workoutTypeValueId");
 

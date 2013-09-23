@@ -18,6 +18,12 @@ function(unitsConstants, workoutTypeUtils)
             {
                 English: 1.0936133,
                 Metric: 1
+            },
+
+            Rowing:
+            {
+                English: 1,
+                Metric: 1
             }
         },
         "pace":
@@ -31,6 +37,12 @@ function(unitsConstants, workoutTypeUtils)
                 English: (1.0936133 / 100) * 60,
 
                 // meters per second to meters per 100 seconds, as a minute value
+                Metric: (1 / 100) * 60
+            },
+
+            Rowing:
+            {
+                English: (1 / 100) * 60,
                 Metric: (1 / 100) * 60
             }
         },
@@ -46,6 +58,11 @@ function(unitsConstants, workoutTypeUtils)
 
                 // meters per second to meters per minute
                 Metric: 60
+            },
+            Rowing:
+            {
+                English:60,
+                Metric:60
             }
 
         },
