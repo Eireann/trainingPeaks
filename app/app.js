@@ -114,6 +114,7 @@ function(
             }
         });
 
+        // add error logging
         this.addInitializer(function()
         {
             var self = this;
