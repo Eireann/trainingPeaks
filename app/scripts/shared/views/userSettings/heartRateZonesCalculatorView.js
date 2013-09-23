@@ -8,6 +8,8 @@
     "shared/data/zoneCalculators",
     "shared/utilities/zoneCalculator",
     "shared/utilities/formUtility",
+    "views/userConfirmationView",
+    "hbs!templates/views/confirmationViews/requiredFieldTemplate",
     "hbs!shared/templates/userSettings/heartRateZonesCalculatorZoneItemTemplate",
     "hbs!shared/templates/userSettings/heartRateZonesCalculatorTemplate",
     "hbs!shared/templates/userSettings/zonesCalculatorFooterTemplate"
@@ -21,6 +23,8 @@ function(
     ZoneCalculatorDefinitions,
     ZoneCalculator,
     FormUtility,
+    UserConfirmationView,
+    requiredFieldTemplate,
     heartRateZoneTemplate,
     heartRateZonesCalculatorTemplate,
     zonesCalculatorFooterTemplate
@@ -137,11 +141,31 @@ function(
             {
                 if(!this.model.get(attr))
                 {
-                    alert("Please enter a value for " + attr);
+                    this._showRequiredFieldMessage(attr);
                     success = false;
                 }
             }, this);
             return success;
+        },
+
+        _showRequiredFieldMessage: function(fieldName)
+        {
+            if(!this.confirmationView)
+            {
+                this.confirmationView = new UserConfirmationView(
+                {
+                    template: requiredFieldTemplate,
+                    model: new TP.Model({ fieldName: fieldName.replace(/([A-Z])/g, " $1").toLowerCase() })
+                });
+
+                this.confirmationView.render();
+
+                this.confirmationView.on("close", function()
+                {
+                    this.confirmationView = null;
+                    this.$("." + fieldName).focus();
+                }, this);
+            };
         }
 
     });
