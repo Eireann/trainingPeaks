@@ -278,7 +278,12 @@
                 if (!_.isUndefined(value) && !_.isNull(value) && !_.isUndefined(value.deepClone) && _.isFunction(value.deepClone))
                 {
                     value = value.deepClone();
-                } else
+                }
+                else if(value instanceof Backbone.Model || value instanceof Backbone.Collection)
+                {
+                    value = value.clone();
+                }
+                else
                 {
                     value = _.deepClone(value);
                 }
