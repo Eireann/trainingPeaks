@@ -86,7 +86,7 @@ function(
         formatRequest: function(values)
         {
             return {
-                lactateThreshold: values.threshold,
+                LTHR: values.threshold,
                 maxHR: values.maximumHeartRate,
                 restingHR: values.restingHeartRate,
                 zoneType: this.definition.id
