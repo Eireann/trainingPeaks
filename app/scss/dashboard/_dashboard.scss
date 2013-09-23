@@ -661,16 +661,9 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
             margin:0 0 5px 2px;
             padding:3px 3px 2px 3px;
 
-            &.selected {
-                border:1px solid #0043ff;
-                background-color:#bcd1eb;
-                opacity:0.5;
-            }
-
             .chartTileIcon {
                 width: 25px;
                 height: 25px;
-                background-color: #fff;
                 float: left;
                 background: $TPGrey1 $troughIconSpriteURL no-repeat 0 -24px;
                 background-color: $TPGrey2;
@@ -685,6 +678,12 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
                 float:left;
                 margin:7px 6px;
             }   
+
+            &.selected {
+                border:1px solid #0043ff;
+                background-color:#bcd1eb;
+                opacity:0.5;
+            }
         }
         .dashboardChartsLibrary {
             .librarySearch {
@@ -812,12 +811,16 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
     .chartTileIcon {
         width: 25px;
         height: 25px;
-        background-color: #fff;
         float: left;
+        background: $TPGrey1 $troughIconSpriteURL no-repeat 0 -24px;
+        background-color: $TPGrey2;
     }
 
     .chartTileName {
-        font-size: $fontSizeSmall;
+        font-size: $fontSizeSmaller;
+        font-family: $fontFamilyHeavy;
+        font-weight:normal;
+        color:$TPGrey4;
         margin-left:3px;
         float:left;
         margin:7px 6px;
