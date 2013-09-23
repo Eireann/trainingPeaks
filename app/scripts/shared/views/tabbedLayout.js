@@ -83,8 +83,8 @@ function(
 
             setImmediate(function()
             {
-                this.$(".tabbedLayoutBody").scrollTop(0);
-                this.$(".tabbedLayoutBody").scrollLeft(0);
+                self.$(".tabbedLayoutBody").scrollTop(0);
+                self.$(".tabbedLayoutBody").scrollLeft(0);
             });
 
             $item.find("ul.tabbedLayoutSubNav").remove();

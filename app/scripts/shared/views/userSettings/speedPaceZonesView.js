@@ -4,6 +4,7 @@ define(
     "TP",
     "backbone",
     "shared/views/userSettings/zonesConfigGroupView",
+    "shared/views/userSettings/speedZonesCalculatorView",
     "hbs!shared/templates/userSettings/speedPaceZonesTemplate"
 ],
 function(
@@ -11,11 +12,14 @@ function(
     TP,
     Backbone,
     ZonesConfigGroupView,
+    SpeedZonesCalculatorView,
     speedPaceZonesTemplate
 )
 {
 
     var SpeedPaceZonesView = ZonesConfigGroupView.extend({
+
+        ZonesCalculatorView: SpeedZonesCalculatorView,
 
         template:
         {
