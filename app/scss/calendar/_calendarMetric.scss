@@ -6,6 +6,7 @@
         margin: 5px 4px 4px 2px;
         border:1px solid $TPGrey2;
         background-color: $TPGrey2;
+        cursor: pointer;
 
         &:hover {
             border-color:$TPGrey11;
@@ -84,22 +85,15 @@
 
                 .metricTime {
                     float:left;
-                    width:100px;
-                    @include calc("width","100% - 30px");
-                    padding:14px 0px 0px 5px;
+                    @include calc("width","100% - 25px");    
                     color:$TPGrey4;
-                    font-size:$fontSizeXLarge;
-
-                    .metricAMPM {
-                        font-size: 0.88em;
-                        margin-left: -3px;
-                    }
+                    // size is responsive and set below
                 }
             }
 
             .metricBody {
                 color: $TPGrey4;
-                padding: 2px 3px 3px 3px;
+                padding: 4px 3px 3px 0;
                 @include labels($fontFamilyHeavy, $fontSizeXSmall, $TPGrey4, normal);
                 float:left;
                 clear:left;
@@ -198,10 +192,33 @@
 
 
 
+@media only screen and (min-width: 1115px) {
+    .metricTime {
+        font-size:$fontSizeXLarge;
+        font-family: $fontFamilyRegular;
+        line-height:11px;
+        padding:18px 0px 0px 5px;
 
+        .metricAMPM {
+            font-size: 0.88em;
+            margin-left:2px;
+        }
+    }
+}
 
-
-
+@media only screen and (max-width: 1115px) {
+    .metricTime {
+        font-size:$fontSizeSmall;
+        line-height:$fontSizeSmaller;
+        font-family: $fontFamilyHeavy;
+        padding:20px 0px 0px 5px;
+        
+        .metricAMPM {
+            font-size: 0.88em;
+            margin-left:1px;
+        }
+    }
+}
 
 
 
@@ -318,7 +335,7 @@
         display:none;
     }
 
-
-
 }
+
+
 
