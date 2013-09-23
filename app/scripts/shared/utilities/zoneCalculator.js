@@ -107,6 +107,56 @@ function(
 
     });
 
+
+    ZoneCalculator.Power = ZoneCalculator.extend({
+
+        zoneType: "power",
+
+        formatRequest: function(values)
+        {
+            return {
+                LTPower: values.threshold,
+                zoneType: this.definition.id
+            };
+        },
+
+        parseResponse: function(data)
+        {
+            var results =
+            {
+                threshold: data.lactateThreshold,
+                zones: data.zones
+            };
+            return ZoneCalculator.prototype.parseResponse(results);
+        }
+
+    });
+
+
+    ZoneCalculator.Speed = ZoneCalculator.extend({
+
+        zoneType: "speed",
+
+        formatRequest: function(values)
+        {
+            return {
+                speed: values.speed,
+                distance: values.distance,
+                zoneType: this.definition.id
+            };
+        },
+
+        parseResponse: function(data)
+        {
+            var results =
+            {
+                threshold: data.thresholdSpeed,
+                zones: data.zones
+            };
+            return ZoneCalculator.prototype.parseResponse(results);
+        }
+
+    });
     return ZoneCalculator;
 
 });
