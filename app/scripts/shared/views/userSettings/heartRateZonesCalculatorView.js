@@ -165,7 +165,7 @@ function(
                     this.confirmationView = null;
                     this.$("." + fieldName).focus();
                 }, this);
-            };
+            }
         }
 
     });
