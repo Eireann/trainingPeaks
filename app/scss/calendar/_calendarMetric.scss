@@ -1,26 +1,22 @@
 ﻿@import "../globalCSS/tpstylesheet";
-@import "workoutColor";
-@import "workoutIcons";
 
 @media screen {
-
-    .dragHelper .workout {
-        p {
-            display: none;
-        }
-    }
-
-    .workout
+    .metric
     {
         margin: 5px 4px 4px 2px;
         border:1px solid $TPGrey2;
+        background-color: $TPGrey2;
+
+        &:hover {
+            border-color:$TPGrey11;
+        }
 
         &.dragHelper
         {
             opacity: 0.6;
             min-width: 150px;
 
-            .workoutSelected
+            .metricSelected
             {
                 display: block;
             }
@@ -31,19 +27,18 @@
             opacity:0.8;
         }
 
-        .workoutSettings  
-        {
+        .metricSettings {
             display: none;
             top: 0px;
             right: 2px;
     		position: absolute;
             z-index: 2;
 
-            button
-            {	
+            button {	
                 background: transparent;
                 border: none;
                 padding: 0px;
+                cursor: pointer;
                 box-shadow: none;
                 margin: 0px;
             }
@@ -51,8 +46,7 @@
 
         &:hover
         {
-            cursor:pointer;
-            .workoutSettings
+            .metricSettings
             {
                 display: block;
             }
@@ -60,57 +54,67 @@
 
         &.menuOpen
         {
-            .workoutSettings
+            .metricSettings
             {
                 display: block;
             }
         }
 
-        .workoutDiv {
+        .metricDiv {
             min-height: 35px;
             word-wrap: break-word;
-
-            .workoutHeader
+            
+            .metricHeader
             {
                 padding: 0px 3px;
                 height: auto;
                 position: relative;
                 top: -1px;
-                .workoutIcon
+                
+                .metricIcon
                 {
                     width: 25px;
                     height: 25px;
                     float: left;
                     margin-top: 4px;
+                    background: $metricPositiveSmallURL no-repeat 0 0;
+                    background-size: 25px 25px;
+                    background-color:$clrMetric;
                 }
 
-                .workoutDistanceTime
-                {
-                    padding: 14px 0px 0px 30px;
+                .metricTime {
+                    float:left;
+                    width:100px;
+                    @include calc("width","100% - 30px");
+                    padding:14px 0px 0px 5px;
+                    color:$TPGrey4;
+                    font-size:$fontSizeXLarge;
 
-                    @include labels($fontFamilyRegular, $fontSizeXLarge, $TPGrey4, normal);
-                    label
-                    {
-                        display:inline-block;
-                        width:100%;
-                        cursor:pointer;
-                    }
-                    
-                    .units
-                    {
+                    .metricAMPM {
                         font-size: 0.88em;
-                        margin-left: 0.15em;
+                        margin-left: -3px;
                     }
                 }
-
             }
-            .workoutBody {
+
+            .metricBody {
                 color: $TPGrey4;
                 padding: 2px 3px 3px 3px;
                 @include labels($fontFamilyHeavy, $fontSizeXSmall, $TPGrey4, normal);
+                float:left;
+                clear:left;
+                width:100%;
+                
+                // keeps text from running into settings button
+                .metricSettingsContain {
+                    float:right;
+                    width:17px;
+                    height:17px;
+                }
+
                 label {
+                    cursor: default;
                     white-space: pre-wrap;
-                    cursor:pointer;
                 }
                 
                 p {
@@ -120,19 +124,48 @@
                     font-family: $fontFamilyRegular;
                     text-align: left;
                     line-height: 12px;
+                    cursor: default;
                     white-space: pre-wrap;
+                }
+
+                ul {
+                    margin:0 0 0 3px;
+                    
+                    li {
+                        list-style-type: none;
+                        margin: 5px 0;
+                        font-family: $fontFamilyRegular;
+                        font-size: $fontSizeXSmall;
+                        color: $TPGrey4;
+                        line-height: 12px;
+                        
+                        &:first-of-type {
+                            margin-top:1px;
+                        }
+
+                        &:last-of-type {
+                            margin-bottom:1px;
+                        }
+
+                        span.metricValue {
+                            font-family:$fontFamilyHeavy;
+                        }
+                    }
                 }
             }
         }
 
-    } // end .workout
+    } // end .metric
 
-    #workoutSettingsDiv {
-       
+    .metricTileSettings {
     	padding-left: 10px;
     	padding-bottom: 20px;
 
     	@include labels($fontFamilyRegular, $fontSizeSmall, $TPGrey3, normal);
+    	label
+    	{
+            cursor: pointer;
+    	}
 
     	.hoverBoxContents {
     		min-width: 75px;
@@ -140,43 +173,18 @@
 
     }
 
-
-    #daySettingsDiv {
-    	.hoverBoxContents {
-    		min-width: 76px;
-    	}
-    	.hoverBox {
-    		.arrow {
-    			margin-left:28px;
-    			}
-    	}	
-    }
-
-    #summarySettingsDiv {
-    	.hoverBox {
-    		.arrow {
-    			margin-left:50px;
-    			}
-    	}
-    }
-
-    .workout
-    {
+    .metric {
         
-        .workoutDiv
-        {
+        .metricDiv {
             position: relative;
         }
 
-        .workoutSelected
-        {
+        .metricSelected {
             @include selectedOverlay();
         }
 
-        &.selected
-        {
-            .workoutSelected
-            {
+        &.selected {
+            .metricSelected {
                 display: block;
             }
         }
@@ -199,13 +207,13 @@
 
 
 @media print {
-    .workout {
+    .metric {
         width:97% !important;
         margin: 5px 4px 4px 2px;
         border:1px solid $TPGrey2;
         // page-break-inside:avoid;
 
-        .workoutSettings {
+        .metricSettings {
             display: none;
             button {   
                 display:none;
@@ -213,34 +221,34 @@
         }
 
         &:hover {
-            .workoutSettings {
+            .metricSettings {
                 display: none;
             }
         }
 
         &.menuOpen {
-            .workoutSettings {
+            .metricSettings {
                 display: none
             }
         }
 
-        .workoutDiv {
+        .metricDiv {
            // min-height: 35px;
             
-            .workoutHeader {
+            .metricHeader {
                 padding: 0px 3px 0px 3px;
                 // height: 20px;
                 position: relative;
                 margin-top:-2px;
                 
-                .workoutIcon {
+                .metricIcon {
                     display:none;
                 }
 
-                .workoutDistanceTime {
+                .metricDistanceTime {
                     padding: 0;
                     @include labels($fontFamilyRegular, $fontSizeSmall, #000, normal);
-                                      
+                    
                     label {
                         display:inline-block;
                     }
@@ -253,12 +261,13 @@
 
             }
 
-            .workoutBody {
+            .metricBody {
                 color: $TPGrey4;
                 padding: 2px 3px 0px 3px;
                 @include labels($fontFamilyHeavy, .571em, $TPGrey4, normal);
 
                 label {
+                    cursor: inherit;
                     white-space: pre-wrap;
                 }
                 
@@ -303,12 +312,13 @@
             }
         }
 
-    } // end .workout
+    } // end .metric
 
-    #workoutSettingsDiv, 
-    #daySettingsDiv, 
-    #summarySettingsDiv {
+    #metricSettingsDiv, #daySettingsDiv, #summarySettingsDiv {
         display:none;
     }
+
+
+
 }
 

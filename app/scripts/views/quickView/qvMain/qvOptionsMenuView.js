@@ -82,11 +82,9 @@ function(TP, ElevationCorrectionView, optionsMenuTemplate)
         {
             var detailData = this.model.get("detailData");
             detailData.on("change:flatSamples", this.enableOrDisableElevationCorrection, this);
-            detailData.on("change:flatSamples.hasLatLngData", this.enableOrDisableElevationCorrection, this);
             this.on("close", function()
             {
                 detailData.off("change:flatSamples", this.enableOrDisableElevationCorrection, this);
-                detailData.off("change:flatSamples.hasLatLngData", this.enableOrDisableElevationCorrection, this);
             }, this);
         }
     });

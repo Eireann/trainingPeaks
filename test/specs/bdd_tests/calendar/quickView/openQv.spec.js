@@ -107,6 +107,7 @@ function(
                 };
 
                 testHelpers.resolveRequest("GET", "workouts/" + moment().day(1).format("YYYY-MM-DD"), [workout]);
+                testHelpers.resolveRequest("GET", "timedmetrics/" + moment().day(1).format("YYYY-MM-DD"), []);
             });
 
             afterEach(function()

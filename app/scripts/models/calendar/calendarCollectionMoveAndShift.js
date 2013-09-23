@@ -1,10 +1,10 @@
 ﻿define(
 [
-
+    "shared/models/activityModel"
 ],
 function(
-
-    )
+    ActivityModel
+)
 {
     var calendarCollectionMoveShift = {
 
@@ -28,7 +28,8 @@ function(
             }
 
             // get the item
-            var item = this.workoutsCollection.get(options.ItemId);
+            var item = this.activitiesCollection.get(options.ItemType + ":" + options.ItemId);
+            item = ActivityModel.unwrap(item);
             item.moveToDay(options.destinationCalendarDayModel.id);
         },
 
@@ -49,6 +50,7 @@ function(
             while (sourceDayModel.itemsCollection.length > 1)
             {
                 item = sourceDayModel.itemsCollection.pop();
+                item = ActivityModel.unwrap(item);
                 item.moveToDay(options.destinationCalendarDayModel.id);
             }
 

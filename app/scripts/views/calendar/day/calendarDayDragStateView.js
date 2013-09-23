@@ -2,10 +2,11 @@ define(
 [
     "moment",
     "TP",
+    "shared/models/activityModel",
     "views/calendar/workout/calendarWorkoutDragStateView",
     "hbs!templates/views/calendar/day/calendarDayDragState"
 ],
-function(moment, TP, CalendarWorkoutDragStateView, CalendarDayTemplate)
+function(moment, TP, ActivityModel, CalendarWorkoutDragStateView, CalendarDayTemplate)
 {
 
     var today = moment().format(TP.utils.datetime.shortDateFormat);
@@ -27,7 +28,8 @@ function(moment, TP, CalendarWorkoutDragStateView, CalendarDayTemplate)
         modelViews:
         {
             Label: CalendarDayLabelView,
-            Workout: CalendarWorkoutDragStateView
+            Workout: CalendarWorkoutDragStateView,
+            Metric: TP.ItemView
         },
 
         initialize: function()
@@ -40,6 +42,7 @@ function(moment, TP, CalendarWorkoutDragStateView, CalendarDayTemplate)
 
         getItemView: function(item)
         {
+            item = ActivityModel.unwrap(item);
             var modelName = this.getModelName(item);
             if (!this.modelViews.hasOwnProperty(modelName))
             {
@@ -50,6 +53,7 @@ function(moment, TP, CalendarWorkoutDragStateView, CalendarDayTemplate)
 
         getModelName: function (item)
         {
+            item = ActivityModel.unwrap(item);
             if (item.isDateLabel)
                 return "Label";
             else if (typeof item.webAPIModelName !== 'undefined')

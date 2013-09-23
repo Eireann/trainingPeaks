@@ -179,9 +179,7 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
                 float: left;
                 margin-left: 6px;
                 width: 86px;
-                border-width: 1px;
-                border-style: solid;
-                border-color: $TPGrey9;
+                border: 1px solid $TPGrey9;
                 
                 label {
                     color: $TPGrey10;
