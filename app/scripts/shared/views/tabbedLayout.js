@@ -73,10 +73,12 @@ function(
             if(this.$current)
             {
                 this.$current.removeClass("active");
+                this.stopListening(this.currentView, "all");
             }
 
             var view = new navItem.view(navItem.options);
             this.currentView = view;
+            this.listenTo(view, "all", _.bind(this._passthroughCurrentViewEvent, this));
             this.tabbedLayoutBodyRegion.show(view);
 
             setImmediate(function()
@@ -112,6 +114,13 @@ function(
             this.$current.addClass("active");
 
             this.trigger("after:switchTab");
+        },
+
+        _passthroughCurrentViewEvent: function(eventName)
+        {
+            var args = Array.prototype.slice.call(arguments, 0);
+            args[0] = "currentview:" + eventName;
+            this.trigger.apply(this, args);
         },
 
         _scrollTo: function(subNavItem, $subItem)

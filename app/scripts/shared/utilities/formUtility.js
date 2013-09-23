@@ -85,6 +85,11 @@ function(
                     $field.prepend($option).val(value);
                 }
             }
+
+            if(options.trigger)
+            {
+                $field.trigger("change");
+            }
         },
 
         applyValuesToModel: function($form, model, options)

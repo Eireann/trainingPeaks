@@ -45,8 +45,15 @@ function(
         {
             var calculatorView = new HeartRateZonesCalculatorView({ model: this.model });
             calculatorView.render();
-        }
+            this.listenTo(calculatorView, "apply", _.bind(this.applyCalculatorZones, this));
+        },
 
+        applyCalculatorZones: function(model)
+        {
+            this.model.set(model.attributes);
+            this.collection.reset(model.get("zones")); 
+            this.applyModelValuesToForm({ trigger: true });
+        }
 
     });
 

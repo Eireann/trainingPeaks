@@ -85,4 +85,12 @@
 {
     clear: both;
     width: 100%;
+
+    @include buttons(0, "auto", $fontSizeSmall);
+    button
+    {
+        padding: 0 5px;
+        margin-right: 8px;
+        min-width: 77px;
+    }
 }

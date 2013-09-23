@@ -33,13 +33,15 @@ function(
             "change input[data-format=zoneValue]": "_refreshValues"
         },
 
-        applyModelValuesToForm: function()
+        applyModelValuesToForm: function(options)
         {
-            this.children.call("applyModelValuesToForm");
-            FormUtility.applyValuesToForm(this.$el, this.model, {
+            options = _.extend({
                 filterSelector: "[data-scope='zoneSet']",
                 formatters: this.getFormatters()
-            });
+            }, options);
+            
+            this.children.call("applyModelValuesToForm");
+            FormUtility.applyValuesToForm(this.$el, this.model, options);
         },
 
         constructor: function(options)

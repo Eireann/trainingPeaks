@@ -19,6 +19,7 @@ function(
             mask: true,
             shadow: true
         },
+
         closeOnResize: false,
 
         events:
@@ -45,7 +46,8 @@ function(
             this.children = new Backbone.ChildViewContainer();
 
             this.contentView = new this.itemView(options);
-            this.children.add(this.contentView);
+
+            this._addChildView(this.contentView);
 
             this.on("show", function()
             {
@@ -60,6 +62,17 @@ function(
             this.contentView.on("close", this.close, this);
             
             this.on("before:reposition", this._beforeReposition, this);
+        },
+
+        _addChildView: function(view)
+        {
+            this.children.add(view);
+            this.listenTo(view, "all", _.bind(this._passthroughChildEvent, this));
+        },
+
+        _passthroughChildEvent: function()
+        {
+            this.trigger.apply(this, arguments);
         },
 
         render: function()

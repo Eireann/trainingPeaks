@@ -95,13 +95,14 @@ function(
             {
                 self.collection.reset(self.model.get("zones"));
                 self._applyModelValuesToForm();
+                self.trigger("calculate");
             });
 
         },
 
-        applyZones: function()
+        getZonesToApply: function()
         {
-            alert('not implemented');
+            return this.model;
         },
 
         _parseZoneValue: function(value)
@@ -185,6 +186,16 @@ function(
         {
             var actionName = $(e.currentTarget).attr("class");
             this.trigger(actionName);
+        },
+
+        disableButton: function(buttonClass)
+        {
+            this.$("button." + buttonClass).prop("disabled", true);
+        },
+
+        enableButton: function(buttonClass)
+        {
+            this.$("button." + buttonClass).prop("disabled", false);
         }
     });
 
@@ -229,6 +240,11 @@ function(
                     }
                 }
             ];
+
+            this.on("currentview:calculate", _.bind(function()
+            {
+                this.footerView.enableButton("apply");   
+            }, this));
         },
 
         _initializeFooter: function()
@@ -242,18 +258,21 @@ function(
         _showFooter: function()
         {
             this.tabbedLayoutFooterRegion.show(this.footerView);
+            this.footerView.disableButton("apply");
         },
 
         _apply: function()
         {
-            this.currentView.applyZones();
+            this.trigger("apply", this.currentView.getZonesToApply());
             this.close();
         }
 
     });
 
     return OverlayBoxView.extend({
+
         className: "heartRateZonesCalculator zonesCalculator",
+
         itemView: HeartRateZonesCalculatorView
     });
 
