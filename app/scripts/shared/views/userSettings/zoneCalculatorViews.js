@@ -29,17 +29,21 @@ function(
         {
             // start with no zones until we run calculator
             this.collection = new TP.Collection();
+            this.calculatorDefinition = null;
             CalculatorTabContentView.__super__.constructor.apply(this, arguments);
         },
 
         onRender: function()
         {
+            this._highlightSelectedZone();
             this._applyModelValuesToForm();
             this._showInputs();
+            this._enableCalculate();
         },
 
         events: {
-            "click .calculator": "calculateZones"
+            "click .calculator": "clickZoneCalculator",
+            "click .calculate": "calculateZones"
         },
 
         serializeData: function()
@@ -50,25 +54,53 @@ function(
             return data;
         },
 
-        calculateZones: function(e)
+        clickZoneCalculator: function(e)
+        {
+            this.collection.reset();
+            this._selectZoneCalculator(e);
+            this._highlightSelectedZone();
+            this._enableCalculate();
+        },
+
+        _enableCalculate: function()
+        {
+            this.$(".calculate").prop("disabled", this.calculatorDefinition ? false : true);
+        },
+
+        _selectZoneCalculator: function(e)
+        {
+            var calculatorId = Number($(e.target).data("zoneid"));
+            this.calculatorDefinition = this.zoneTypesById[calculatorId];
+        },
+
+        _highlightSelectedZone: function()
+        {
+            this.$("li.selected").removeClass("selected");
+
+            if(this.calculatorDefinition)
+            {
+                this.$("a[data-zoneid=" + this.calculatorDefinition.id + "]").closest("li").addClass("selected"); 
+            }
+        },
+
+        calculateZones: function()
         {
 
-            FormUtility.applyValuesToModel(this.$el, this.model, { parsers: { zoneValue: _.bind(this._parseZoneValue, this) } });
+            FormUtility.applyValuesToModel(this.$el, this.model, { parsers: { zoneValue: _.bind(this._parseInputValue, this) } });
 
-            if(!this._validateInputs())
+            if(!this.validateInputs())
             {
                 return;
             }
 
-            var calculatorId = Number($(e.target).data("zoneid"));
-            var calculatorDefinition = this.zoneTypesById[calculatorId];
-            var zoneCalculator = new this.zoneCalculator(calculatorDefinition);
+            var zoneCalculator = new this.zoneCalculator(this.calculatorDefinition);
 
             var self = this;
             zoneCalculator.calculate(this.model).done(function()
             {
                 self.collection.reset(self.model.get("zones"));
                 self._applyModelValuesToForm();
+                self._highlightSelectedZone();
                 self.trigger("calculate");
             });
 
@@ -79,13 +111,13 @@ function(
             return this.model;
         },
 
-        _parseZoneValue: function(value)
+        _parseInputValue: function(value)
         {
             var options = { defaultValue: 0, workoutTypeId: this.model.get("workoutTypeId") };
             return TP.utils.conversion.parseUnitsValue(this.units, value, options);
         },
 
-        _formatZoneValue: function(value)
+        _formatInputValue: function(value)
         {
             var options = { defaultValue: "0", workoutTypeId: this.model.get("workoutTypeId") };
             return TP.utils.conversion.formatUnitsValue(this.units, value, options);
@@ -93,7 +125,7 @@ function(
 
         _applyModelValuesToForm: function()
         {
-            FormUtility.applyValuesToForm(this.$el, this.model, { formatters: { zoneValue: _.bind(this._formatZoneValue, this) } });
+            FormUtility.applyValuesToForm(this.$el, this.model, { formatters: { zoneValue: _.bind(this._formatInputValue, this) } });
         },
 
         _showInputs: function()
@@ -104,28 +136,35 @@ function(
             }, this);
         },
 
-        _validateInputs: function()
+        validateInputs: function()
+        {
+            return this._validateRequiredFields();
+        },
+
+        _validateRequiredFields: function()
         {
             var success = true;
             _.each(this.inputs, function(attr)
             {
                 if(!this.model.get(attr))
                 {
-                    this._showRequiredFieldMessage(attr);
+                    this.showRequiredFieldMessage(attr);
                     success = false;
                 }
             }, this);
             return success;
         },
 
-        _showRequiredFieldMessage: function(fieldName)
+        showRequiredFieldMessage: function(fieldName, allowedValues)
         {
             if(!this.confirmationView)
             {
+                var niceFieldName = fieldName.replace(/([A-Z])/g, " $1").replace(/([0-9])([a-zA-Z])/g,"$1 $2").replace(/([a-zA-Z])([0-9])/g,"$1 $2").toLowerCase();
+
                 this.confirmationView = new UserConfirmationView(
                 {
                     template: requiredFieldTemplate,
-                    model: new TP.Model({ fieldName: fieldName.replace(/([A-Z])/g, " $1").toLowerCase() })
+                    model: new TP.Model({ fieldName: niceFieldName, allowedValues: allowedValues })
                 });
 
                 this.confirmationView.render();

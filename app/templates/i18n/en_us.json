@@ -433,5 +433,8 @@
     "PremiumFeature": "Premium Feature",
     "UpgradeMessage": "You must upgrade your account to use this feature",
 
-    "RequiredField": "Please enter a value for"
+    "RequiredField": "Please enter a value for",
+    "SelectCalculator": "Select Calculation Method",
+    "Calculate": "Calculate",
+    "EnterOptions": "Enter Calculator Options"
 }

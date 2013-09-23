@@ -1,0 +1,35 @@
+<h3>{{$ "SelectCalculator" }}</h3>
+
+<ul>
+{{#each calculators}}
+    <li><a class="calculator" data-zoneid="{{ id }}">{{ label }} ({{ numberOfZones }})</a></li>
+{{/each}}
+</ul>
+
+<h3>{{$ "EnterOptions" }}</h3>
+
+<div class="zoneSetContain speed">
+    <label class="threshold input disabled">
+        <span class="zoneSetTitle">Threshold Speed</span>
+        <input name="threshold" class="numberInput" data-format="zoneValue">
+    </label>
+    <label class="secondsPer100m input disabled">
+        <span class="zoneSetTitle">Seconds / 100m</span>
+        <input name="secondsPer100m" class="numberInput" data-format="number">
+    </label>
+    <label class="testDistance input disabled">
+        <span class="zoneSetTitle">Test Distance</span>
+        <select name="testDistance" data-format="number"></select>
+    </label>
+    <label class="speed input disabled">
+        <span class="zoneSetTitle">Speed</span>
+        <input name="speed" class="numberInput" data-format="zoneValue">
+    </label>
+</div>
+
+
+<div class="buttons">
+    <button class="calculate">{{$ "Calculate" }}</button>
+</div>
+
+<div class="zones"></div>

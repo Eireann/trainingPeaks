@@ -1,16 +1,22 @@
-<h3>{{ title }}</h3>
+<h3>{{$ "SelectCalculator" }}</h3>
 
 <ul>
 {{#each calculators}}
-	<li><a class="calculator" data-zoneid="{{ id }}">{{ label }} ({{ numberOfZones }})</a></li>
+    <li><a class="calculator" data-zoneid="{{ id }}">{{ label }} ({{ numberOfZones }})</a></li>
 {{/each}}
 </ul>
 
-<div class="zoneSetContain heartrate">
+<h3>{{$ "EnterOptions" }}</h3>
+
+<div class="zoneSetContain power">
 	<label class="threshold input disabled">
 	    <span class="zoneSetTitle">Threshold Power</span>
 	    <input name="threshold" class="numberInput" data-format="zoneValue">
 	</label>
+</div>
+
+<div class="buttons">
+    <button class="calculate">{{$ "Calculate" }}</button>
 </div>
 
 <div class="zones"></div>

@@ -136,10 +136,6 @@ function()
 
     var speedZoneCalculatorDistances = 
     {
-        Undefined: {
-            id: 0,
-            label: ""
-        },
         ThreeKm: {
             id: 1,
             label: "3 km"
@@ -158,11 +154,11 @@ function()
         },
         OneThousandMeters: {
             id: 5,
-            label: "1000 m"
+            label: "1000 m swim"
         },
         OneThousandYards: {
             id: 6,
-            label: "1000 y"
+            label: "1000 y swim"
         }
     };
 
@@ -180,7 +176,7 @@ function()
             label: "Joe Friel for Running",
             numberOfZones: 7,
             type: speedZoneCalculatorTypes.DistanceTime,
-            speeds: [
+            distances: [
                 speedZoneCalculatorDistances.FiveKm,
                 speedZoneCalculatorDistances.TenKm
             ]
@@ -196,7 +192,7 @@ function()
             label: "Joe Friel for Swimming",
             numberOfZones: 7,
             type: speedZoneCalculatorTypes.DistanceTime,
-            speeds: [
+            distances: [
                 speedZoneCalculatorDistances.OneThousandMeters,
                 speedZoneCalculatorDistances.OneThousandYards
             ]
@@ -206,7 +202,7 @@ function()
             label: "PZI",
             numberOfZones: 10,
             type: speedZoneCalculatorTypes.DistanceTime,
-            speeds: [
+            distances: [
                 speedZoneCalculatorDistances.ThreeKm,
                 speedZoneCalculatorDistances.FiveKm,
                 speedZoneCalculatorDistances.TenKm
@@ -263,6 +259,7 @@ function()
         heartRatesById: indexById(heartRateZoneCalculators),
         speed: speedZoneCalculators,
         speedTypes: speedZoneCalculatorTypes,
+        speedDistances: speedZoneCalculatorDistances,
         speedById: indexById(speedZoneCalculators),
         power: powerZoneCalculators,
         powerById: indexById(powerZoneCalculators)

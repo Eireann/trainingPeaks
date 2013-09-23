@@ -6,8 +6,8 @@
     "shared/data/zoneCalculators",
     "shared/utilities/zoneCalculator",
     "shared/views/userSettings/zoneCalculatorViews",
-    "hbs!shared/templates/userSettings/powerZonesCalculatorItemTemplate",
-    "hbs!shared/templates/userSettings/powerZonesCalculatorTemplate"
+    "hbs!shared/templates/userSettings/speedZonesCalculatorItemTemplate",
+    "hbs!shared/templates/userSettings/speedZonesCalculatorTemplate"
 ],
 function(
     _,
@@ -16,47 +16,141 @@ function(
     ZoneCalculatorDefinitions,
     ZoneCalculator,
     ZoneCalculatorViews,
-    powerZoneTemplate,
-    powerZonesCalculatorTemplate
+    speedZoneTemplate,
+    speedZonesCalculatorTemplate
     )
 {
 
-    var PowerThresholdTabView = ZoneCalculatorViews.TabContentView.extend({
+    function filterCalculators(type)
+    {
+        return _.filter(ZoneCalculatorDefinitions.speed, function(zoneCalculator) {
+            return zoneCalculator.type === type; 
+        });
+    }
 
-        zoneTypesById: ZoneCalculatorDefinitions.powerById,
+    var SpeedZoneCalculatorTabView = ZoneCalculatorViews.TabContentView.extend({
 
-        zoneCalculator: ZoneCalculator.Power,
+        zoneTypesById: ZoneCalculatorDefinitions.speedById,
 
-        calculators: ZoneCalculatorDefinitions.power,
+        zoneCalculator: ZoneCalculator.Speed,
+
+        calculators: ZoneCalculatorDefinitions.speed,
 
         inputs: [ "threshold" ],
 
-        units: "power",
+        units: "speed",
 
         itemView: TP.ItemView.extend({
             template: {
                 type: "handlebars",
-                template: powerZoneTemplate
+                template: speedZoneTemplate
             }
         }),
 
         template: {
             type: "handlebars",
-            template: powerZonesCalculatorTemplate
+            template: speedZonesCalculatorTemplate
         }
 
     });
 
+    var ThresholdSpeedTabView = SpeedZoneCalculatorTabView.extend({
+        calculators: filterCalculators(ZoneCalculatorDefinitions.speedTypes.Threshold),
+        inputs: [ "threshold" ]
+    });
 
-    var PowerZonesCalculatorTabbedLayout = ZoneCalculatorViews.TabbedLayout.extend({
+    var DistanceTimeTabView = SpeedZoneCalculatorTabView.extend({
+
+        calculators: filterCalculators(ZoneCalculatorDefinitions.speedTypes.DistanceTime),
+
+        inputs: ["testDistance", "speed"],
+
+
+        clickZoneCalculator: function(e)
+        {
+            this.collection.reset();
+            this._selectZoneCalculator(e);
+            this._highlightSelectedZone(e);
+            this._setDistanceOptions();
+            this._enableCalculate();
+        },
+
+        _showInputs: function()
+        {
+            _.each(this.inputs, function(inputClass)
+            {
+                this.$("." + inputClass).removeClass("disabled");
+            }, this);
+
+            var self = this;
+            setImmediate(function ()
+            {
+                self.$("select[name=testDistance]").selectBoxIt();
+                self._setDistanceOptions();
+            });
+        },
+
+        _setDistanceOptions: function()
+        {
+            if(this.calculatorDefinition)
+            {
+                if(!this.model.get("testDistance"))
+                {
+                    this.model.set("testDistance", this.calculatorDefinition.distances[0].id);
+                }
+
+                var $select = this.$("select[name=testDistance]"); 
+                $select.empty();
+                _.each(this.calculatorDefinition.distances, function(distance)
+                {
+                    var $option = $("<option>").val(distance.id).text(distance.label);
+                    $select.append($option);
+                });
+
+                $select.selectBoxIt("refresh");
+
+                this._applyModelValuesToForm();
+            }
+        }
+
+    });
+
+    var HundredMeterTimeTabView = SpeedZoneCalculatorTabView.extend({
+
+        calculators: filterCalculators(ZoneCalculatorDefinitions.speedTypes.SecondsPer100m),
+
+        inputs: ["secondsPer100m"],
+
+        initialize: function()
+        {
+            this.model.set("testDistance", ZoneCalculatorDefinitions.speedDistances.OneHundredMeters.id);
+            this.calculatorDefinition = ZoneCalculatorDefinitions.speed.CTSFromSecondsPer100m;
+        }
+    });
+
+    var SpeedZonesCalculatorTabbedLayout = ZoneCalculatorViews.TabbedLayout.extend({
 
         _initializeNavigation: function()
         {
             this.navigation =
             [
                 {
-                    title: "Threshold Power",
-                    view: PowerThresholdTabView,
+                    title: "Threshold Speed",
+                    view: ThresholdSpeedTabView,
+                    options: {
+                        model: new TP.Model(TP.utils.deepClone(this.model.attributes)) 
+                    }
+                },
+                {
+                    title: "Distance / Time",
+                    view: DistanceTimeTabView,
+                    options: {
+                        model: new TP.Model(TP.utils.deepClone(this.model.attributes)) 
+                    }
+                },
+                {
+                    title: "Seconds / 100m",
+                    view: HundredMeterTimeTabView,
                     options: {
                         model: new TP.Model(TP.utils.deepClone(this.model.attributes)) 
                     }
@@ -68,9 +162,9 @@ function(
 
     return OverlayBoxView.extend({
 
-        className: "powerZonesCalculator zonesCalculator",
+        className: "speedZonesCalculator zonesCalculator",
 
-        itemView: PowerZonesCalculatorTabbedLayout
+        itemView: SpeedZonesCalculatorTabbedLayout
     });
 
 });
