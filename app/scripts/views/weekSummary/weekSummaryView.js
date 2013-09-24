@@ -94,6 +94,11 @@ function(
                     // Note, you might get a metric or other model
                     workout = ActivityModel.unwrap(workout);
 
+                    if(!(workout instanceof WorkoutModel))
+                    {
+                        return;
+                    }
+
                     var workoutType = workout.get("workoutTypeValueId");
 
                     if (workout.getCalendarDay && TP.utils.workout.determineCompletedWorkout(workout.attributes))
