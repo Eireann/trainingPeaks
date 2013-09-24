@@ -8,8 +8,8 @@
   <meta name="keywords" content="training log,free workout log,free training log, training,workout log,training plan,marathon training plan, plans,training software,training devices,training schedule,training schedules,training program,training programs,cycling plans,running plans,triathlon plans,nutrition journal" />
 
   <script>
-    window.enableProfiling = window.location.search.match(/profiling=1/);
-    window.enableTimers = window.enableProfiling || window.location.search.match(/timers=1/);
+    window.enableProfiling = /profiling=1/.test(window.location.search);
+    window.enableTimers = window.enableProfiling || /timers=1/.test(window.location.search);
     if (window.enableProfiling) console && console.profile && console.profile("boot");
     if (window.enableTimers) console && console.time && console.time("boot");
   </script>
