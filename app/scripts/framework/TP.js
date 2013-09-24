@@ -433,8 +433,7 @@ function(
     var itemViewConstructor = {
         constructor: function()
         {
-            var args = Array.prototype.slice.apply(arguments);
-            Backbone.Marionette.ItemView.prototype.constructor.apply(this, args);
+            Backbone.Marionette.ItemView.prototype.constructor.apply(this, arguments);
             if (this.initialEvents)
             {
                 this.initialEvents();

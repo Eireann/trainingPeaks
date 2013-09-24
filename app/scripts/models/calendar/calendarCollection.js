@@ -177,7 +177,9 @@ function(
         {
             var self = this;
 
-            this.setWeeksAttrs(startDate, endDate, {isWaiting: true, isFetched: true});
+            self.trigger("before:changes");
+            this.setWeeksFlags(startDate, endDate, {isWaiting: true, isFetched: true});
+            self.trigger("after:changes");
 
             var workoutsPromise = this._dataManager.loadCollection(WorkoutsCollection, {
                 startDate: moment(startDate),
@@ -196,17 +198,22 @@ function(
             // we trigger a sync event on each week model - whether they have workouts or not - to remove the waiting throbber
             // but we don't trigger the request event here to show the throbber, because the week model is not yet bound to a view,
             // so calendarView does that
-            waiting.done(function ()
+            waiting.then(function ()
             {
                 self.trigger("before:changes");
 
                 workouts.each(_.bind(self.addItem, self));
                 metrics.each(_.bind(self.addItem, self));
+                self.setWeeksFlags(startDate, endDate, {isWaiting: false});
 
                 self.trigger("after:changes");
-            }).always(function()
+            }, function()
             {
-                self.setWeeksAttrs(startDate, endDate, {isWaiting: false});
+
+                self.trigger("before:changes");
+                self.setWeeksFlags(startDate, endDate, {isWaiting: false});
+                self.trigger("after:changes");
+
             });
 
             // return the deferred so caller can use it
@@ -365,12 +372,15 @@ function(
             }   
         },
 
-        setWeeksAttrs: function(startDate, endDate, attrs)
+        setWeeksFlags: function(startDate, endDate, flags)
         {
             var self = this;
-            this.forEachWeek(startDate, endDate, function(weekDate) {
-                if (self.get(weekDate)) {
-                    self.get(weekDate).set(attrs);
+            this.forEachWeek(startDate, endDate, function(weekDate)
+            {
+                var week = self.get(weekDate);
+                if (week)
+                {
+                    week.set(flags);
                 }
             });
         },
