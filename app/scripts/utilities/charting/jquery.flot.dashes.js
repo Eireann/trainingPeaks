@@ -262,7 +262,7 @@ function(
                         dashes: {
                             show: false,
                             lineWidth: 2,
-                            dashLength: 10
+                            dashLength: [ 6, 3 ]
                         }
                     }
                 },
