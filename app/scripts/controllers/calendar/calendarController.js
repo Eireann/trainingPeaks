@@ -72,6 +72,7 @@ function(
             // call parent constructor
             this.constructor.__super__.initialize.call(this);
 
+            theMarsApp.userFetchPromise.then(_.bind(this.loadDataAfterUserLoads, this));
         },
 
         onLayoutClose: function()
