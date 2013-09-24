@@ -86,7 +86,7 @@
 
                 .workoutDistanceTime
                 {
-                    padding: 14px 0px 0px 30px;
+                    padding: 15px 0px 0px 30px;
 
                     @include labels($fontFamilyRegular, $fontSizeXLarge, $TPGrey4, normal);
                     label
@@ -94,12 +94,14 @@
                         display:inline-block;
                         width:100%;
                         cursor:pointer;
+                        line-height: 1;
+                        margin-bottom:0;
                     }
                     
                     .units
                     {
                         font-size: 0.88em;
-                        margin-left: 0.15em;
+                        margin-left: 2px;
                     }
                 }
 

@@ -197,8 +197,7 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
     margin-bottom: 5px;
 }
 
-.dashboardChart
-{
+.dashboardChart {
     /*
     float: left;
     position: relative;
@@ -210,6 +209,74 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
 
     border: 1px solid transparent;
     cursor: pointer;
+
+    .chartTitle, 
+    .customDateRange {
+        display: block; /* Fallback for non-webkit */
+        display: -webkit-box;
+        @include calc("max-width", "100% - 18px");;
+        max-height: 16px; /* Fallback for non-webkit */
+        margin: 5px auto;
+        font-size: $fontSizeSmall;
+        line-height: normal;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .customDateRange {
+        left: 0;
+        width: 100%;
+        top: 29px;
+        font-size: $fontSizeXSmall;
+        font-family:$fontFamilyRegular;
+    }
+
+    .xaxisLabel
+    {
+        top: 370px;
+        left: calc(50% - 30px);
+    }
+
+    .yaxisLabel
+    {
+        
+        position: absolute;
+        left: 3px;
+        top: 47%;
+        margin-top: 0;
+
+        margin-left: -39px;
+        font-size: 10px;
+
+        &.pmc {
+            text-transform: none;
+            left:auto;
+
+            &.tsb {
+                position: absolute;
+                right: -36px;
+                -webkit-transform: rotate(90deg);
+                -moz-transform: rotate(90deg);
+                color: #FFA500;
+            }
+            
+            &.tssd {
+                color: #b90807;
+                left:3px;
+            }
+        }
+
+        &.right
+        {
+            left: auto;
+            right: -36px;
+            -webkit-transform: rotate(90deg);
+            -moz-transform: rotate(90deg);
+        }
+    }
+
 
     &.fullScreen
     {
@@ -228,6 +295,33 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
          &:hover, &.hover {
             background-color: $TPGrey1;
             border: 1px solid transparent;
+         }
+
+         .chartTitle {
+            display: block; /* Fallback for non-webkit */
+            display: -webkit-box;
+            @include calc("max-width", "100% - 18px");;
+            max-height: 21px; /* Fallback for non-webkit */
+            margin: 5px auto;
+            font-size: $fontSizeXLarge;
+            line-height: normal;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+         }
+
+         .customDateRange {
+            left: 0;
+            width: 100%;
+            top: 29px;
+            font-size: $fontSizeSmall;
+            font-family:$fontFamilyRegular;
+        }
+
+         .chartContainer {
+            top:83px;
+            @include calc("height", "100% - 112px");
          }
     }
 
@@ -290,71 +384,7 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
 
     }
 
-    .chartTitle, .customDateRange {
-        display: block; /* Fallback for non-webkit */
-        display: -webkit-box;
-        @include calc("max-width", "100% - 18px");;
-        max-height: 16px; /* Fallback for non-webkit */
-        margin: 5px auto;
-        font-size: $fontSizeSmall;
-        line-height: normal;
-        -webkit-line-clamp: 1;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
 
-    .customDateRange
-    {
-        left: 0;
-        width: 100%;
-        top: 29px;
-        font-size: 10px;
-    }
-
-    .xaxisLabel
-    {
-        top: 370px;
-        left: calc(50% - 30px);
-    }
-
-    .yaxisLabel
-    {
-        
-        position: absolute;
-        left: 3px;
-        top: 47%;
-        margin-top: 0;
-
-        margin-left: -39px;
-        font-size: 10px;
-
-        &.pmc {
-            text-transform: none;
-            left:auto;
-
-            &.tsb {
-                position: absolute;
-                right: -36px;
-                -webkit-transform: rotate(90deg);
-                -moz-transform: rotate(90deg);
-                color: #FFA500;
-            }
-            
-            &.tssd {
-                color: #b90807;
-                left:3px;
-            }
-        }
-
-        &.right
-        {
-            left: auto;
-            right: -36px;
-            -webkit-transform: rotate(90deg);
-            -moz-transform: rotate(90deg);
-        }
-    }
 
     .chartButtons
     {
@@ -661,16 +691,9 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
             margin:0 0 5px 2px;
             padding:3px 3px 2px 3px;
 
-            &.selected {
-                border:1px solid #0043ff;
-                background-color:#bcd1eb;
-                opacity:0.5;
-            }
-
             .chartTileIcon {
                 width: 25px;
                 height: 25px;
-                background-color: #fff;
                 float: left;
                 background: $TPGrey1 $troughIconSpriteURL no-repeat 0 -24px;
                 background-color: $TPGrey2;
@@ -685,6 +708,12 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
                 float:left;
                 margin:7px 6px;
             }   
+
+            &.selected {
+                border:1px solid #0043ff;
+                background-color:#bcd1eb;
+                opacity:0.5;
+            }
         }
         .dashboardChartsLibrary {
             .librarySearch {
@@ -812,12 +841,16 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
     .chartTileIcon {
         width: 25px;
         height: 25px;
-        background-color: #fff;
         float: left;
+        background: $TPGrey1 $troughIconSpriteURL no-repeat 0 -24px;
+        background-color: $TPGrey2;
     }
 
     .chartTileName {
-        font-size: $fontSizeSmall;
+        font-size: $fontSizeSmaller;
+        font-family: $fontFamilyHeavy;
+        font-weight:normal;
+        color:$TPGrey4;
         margin-left:3px;
         float:left;
         margin:7px 6px;

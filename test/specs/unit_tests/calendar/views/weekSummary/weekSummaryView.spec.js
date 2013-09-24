@@ -2,12 +2,21 @@
 requirejs(
 [
     "app",
+    "moment",
     "TP",
     "jquery",
+    "models/calendar/calendarDay",
+    "shared/models/metricModel",
+    "models/workoutModel",
     "views/weekSummary/weekSummaryView"
 ],
-function (theMarsApp, TP, $, WeekSummaryView)
+function (theMarsApp, moment, TP, $, CalendarDay, MetricModel, WorkoutModel, WeekSummaryView)
 {
+    var count = 0;
+    function DayModel() {
+        return new CalendarDay({ date: moment("2001-05-25").add(count++, "days").format("YYYY-MM-DD") });
+    }
+
     describe("WeekSummaryView", function ()
     {
         beforeEach(function ()
@@ -32,13 +41,33 @@ function (theMarsApp, TP, $, WeekSummaryView)
             expect(function() { new WeekSummaryView({ model: model }); }).not.toThrow();
         });
 
+        it("Ignores MetricModels", function()
+        {
+            var weekCollection = new TP.Collection();
+            var dayModel = new DayModel();
+
+            var summaryModel = new TP.Model();
+
+            weekCollection.add(dayModel);
+            weekCollection.add(summaryModel);
+
+            var metricModel = new MetricModel();
+            dayModel.add(metricModel);
+
+            var view = new WeekSummaryView({ model: summaryModel });
+
+            expect(function()
+            {
+                view.render();
+            }).not.toThrow();
+        });
+
         it("Rerenders itself when workouts are changed, added, or removed for the week", function()
         {
             spyOn(WeekSummaryView.prototype, "render");
 
             var weekCollection = new TP.Collection();
-            var dayModel = new TP.Model();
-            dayModel.itemsCollection = new TP.Collection();
+            var dayModel = new DayModel();
             
             var summaryModel = new TP.Model();
 
@@ -49,7 +78,7 @@ function (theMarsApp, TP, $, WeekSummaryView)
 
             expect(WeekSummaryView.prototype.render).not.toHaveBeenCalled();
 
-            dayModel.itemsCollection.add(new TP.Model());
+            dayModel.add(new TP.Model());
             
             expect(WeekSummaryView.prototype.render).toHaveBeenCalled();
 
@@ -61,7 +90,7 @@ function (theMarsApp, TP, $, WeekSummaryView)
             WeekSummaryView.prototype.render.reset();
             
             //remove
-            dayModel.itemsCollection.remove(dayModel.itemsCollection.at(0));
+            dayModel.remove(dayModel.itemsCollection.at(0));
             expect(WeekSummaryView.prototype.render).toHaveBeenCalled();
         });
 
@@ -70,10 +99,8 @@ function (theMarsApp, TP, $, WeekSummaryView)
             spyOn(WeekSummaryView.prototype, "render").andReturn("");
 
             var weekCollection = new TP.Collection();
-            var dayModel1 = new TP.Model();
-            var dayModel2 = new TP.Model();
-            dayModel1.itemsCollection = new TP.Collection();
-            dayModel2.itemsCollection = new TP.Collection();
+            var dayModel1 = new DayModel();
+            var dayModel2 = new DayModel();
 
             var summaryModel = new TP.Model();
 
@@ -83,10 +110,10 @@ function (theMarsApp, TP, $, WeekSummaryView)
 
             var view = new WeekSummaryView({ model: summaryModel });
 
-            var workout1 = new TP.Model({ totalTime: 1, totalTimePlanned: 2, tssActual: 100, tssPlanned: 200 });
-            var workout2 = new TP.Model({ totalTime: 2, totalTimePlanned: 4, tssActual: 200, tssPlanned: 400 });
-            var workout3 = new TP.Model({ totalTime: 3, totalTimePlanned: 6, tssActual: 300, tssPlanned: 600 });
-            var workout4 = new TP.Model({ totalTime: 4, totalTimePlanned: 8, tssActual: 400, tssPlanned: 800 });
+            var workout1 = new WorkoutModel({ totalTime: 1, totalTimePlanned: 2, tssActual: 100, tssPlanned: 200 });
+            var workout2 = new WorkoutModel({ totalTime: 2, totalTimePlanned: 4, tssActual: 200, tssPlanned: 400 });
+            var workout3 = new WorkoutModel({ totalTime: 3, totalTimePlanned: 6, tssActual: 300, tssPlanned: 600 });
+            var workout4 = new WorkoutModel({ totalTime: 4, totalTimePlanned: 8, tssActual: 400, tssPlanned: 800 });
 
             view.onBeforeRender();
 
@@ -95,7 +122,7 @@ function (theMarsApp, TP, $, WeekSummaryView)
             expect(view.model.get("tssCompleted")).toBe(0);
             expect(view.model.get("tssPlanned")).toBe(0);
 
-            dayModel1.itemsCollection.add(workout1);
+            dayModel1.add(workout1);
             
             view.onBeforeRender();
 
@@ -104,9 +131,9 @@ function (theMarsApp, TP, $, WeekSummaryView)
             expect(view.model.get("tssCompleted")).toBe(100);
             expect(view.model.get("tssPlanned")).toBe(200);
 
-            dayModel1.itemsCollection.add(workout2);
-            dayModel2.itemsCollection.add(workout3);
-            dayModel2.itemsCollection.add(workout4);
+            dayModel1.add(workout2);
+            dayModel2.add(workout3);
+            dayModel2.add(workout4);
 
             view.onBeforeRender();
             
@@ -121,10 +148,8 @@ function (theMarsApp, TP, $, WeekSummaryView)
             spyOn(WeekSummaryView.prototype, "render").andReturn("");
 
             var weekCollection = new TP.Collection();
-            var dayModel1 = new TP.Model();
-            var dayModel2 = new TP.Model();
-            dayModel1.itemsCollection = new TP.Collection();
-            dayModel2.itemsCollection = new TP.Collection();
+            var dayModel1 = new DayModel();
+            var dayModel2 = new DayModel();
 
             var summaryModel = new TP.Model();
 
@@ -134,18 +159,18 @@ function (theMarsApp, TP, $, WeekSummaryView)
 
             var view = new WeekSummaryView({ model: summaryModel });
 
-            var bike1 = new TP.Model({ distance: 1, distancePlanned: 2, tssActual: 100, tssPlanned: 200, workoutTypeValueId: TP.utils.workout.types.getIdByName("Bike")});
-            var bike2 = new TP.Model({ distance: 2, distancePlanned: 4, tssActual: 200, tssPlanned: 400, workoutTypeValueId: TP.utils.workout.types.getIdByName("Bike")});
-            var run1 = new TP.Model({ distance: 3, distancePlanned: 6, tssActual: 300, tssPlanned: 600, workoutTypeValueId: TP.utils.workout.types.getIdByName("Run")});
-            var run2 = new TP.Model({ distance: 4, distancePlanned: 8, tssActual: 400, tssPlanned: 800, workoutTypeValueId: TP.utils.workout.types.getIdByName("Run") });
-            var swim1 = new TP.Model({ distance: 1, distancePlanned: 2, tssActual: 100, tssPlanned: 200, workoutTypeValueId: TP.utils.workout.types.getIdByName("Swim") });
-            var swim2 = new TP.Model({ distance: 2, distancePlanned: 4, tssActual: 200, tssPlanned: 400, workoutTypeValueId: TP.utils.workout.types.getIdByName("Swim") });
-            var strength1 = new TP.Model({ totalTime: 3, totalTimePlanned: 6, tssActual: 300, tssPlanned: 600, workoutTypeValueId: TP.utils.workout.types.getIdByName("Strength") });
-            var strength2 = new TP.Model({ totalTime: 4, totalTimePlanned: 8, tssActual: 400, tssPlanned: 800, workoutTypeValueId: TP.utils.workout.types.getIdByName("Strength") });
-            var rowing1 = new TP.Model({ totalTime: 1, totalTimePlanned: 2, tssActual: 100, tssPlanned: 200, workoutTypeValueId: TP.utils.workout.types.getIdByName("Rowing") });
-            var rowing2 = new TP.Model({ totalTime: 2, totalTimePlanned: 4, tssActual: 200, tssPlanned: 400, workoutTypeValueId: TP.utils.workout.types.getIdByName("Rowing") });
-            var dayOff1 = new TP.Model({ totalTime: 1, totalTimePlanned: 3, tssActual: 100, tssPlanned: 200, workoutTypeValueId: TP.utils.workout.types.getIdByName("Day Off") });
-            var dayOff2 = new TP.Model({ totalTime: 2, totalTimePlanned: 4, tssActual: 200, tssPlanned: 400, workoutTypeValueId: TP.utils.workout.types.getIdByName("Day Off") });
+            var bike1 = new WorkoutModel({ distance: 1, distancePlanned: 2, tssActual: 100, tssPlanned: 200, workoutTypeValueId: TP.utils.workout.types.getIdByName("Bike")});
+            var bike2 = new WorkoutModel({ distance: 2, distancePlanned: 4, tssActual: 200, tssPlanned: 400, workoutTypeValueId: TP.utils.workout.types.getIdByName("Bike")});
+            var run1 =  new WorkoutModel({ distance: 3, distancePlanned: 6, tssActual: 300, tssPlanned: 600, workoutTypeValueId: TP.utils.workout.types.getIdByName("Run")});
+            var run2 =  new WorkoutModel({ distance: 4, distancePlanned: 8, tssActual: 400, tssPlanned: 800, workoutTypeValueId: TP.utils.workout.types.getIdByName("Run") });
+            var swim1 = new WorkoutModel({ distance: 1, distancePlanned: 2, tssActual: 100, tssPlanned: 200, workoutTypeValueId: TP.utils.workout.types.getIdByName("Swim") });
+            var swim2 = new WorkoutModel({ distance: 2, distancePlanned: 4, tssActual: 200, tssPlanned: 400, workoutTypeValueId: TP.utils.workout.types.getIdByName("Swim") });
+            var strength1 = new WorkoutModel({ totalTime: 3, totalTimePlanned: 6, tssActual: 300, tssPlanned: 600, workoutTypeValueId: TP.utils.workout.types.getIdByName("Strength") });
+            var strength2 = new WorkoutModel({ totalTime: 4, totalTimePlanned: 8, tssActual: 400, tssPlanned: 800, workoutTypeValueId: TP.utils.workout.types.getIdByName("Strength") });
+            var rowing1 = new WorkoutModel({ totalTime: 1, totalTimePlanned: 2, tssActual: 100, tssPlanned: 200, workoutTypeValueId: TP.utils.workout.types.getIdByName("Rowing") });
+            var rowing2 = new WorkoutModel({ totalTime: 2, totalTimePlanned: 4, tssActual: 200, tssPlanned: 400, workoutTypeValueId: TP.utils.workout.types.getIdByName("Rowing") });
+            var dayOff1 = new WorkoutModel({ totalTime: 1, totalTimePlanned: 3, tssActual: 100, tssPlanned: 200, workoutTypeValueId: TP.utils.workout.types.getIdByName("Day Off") });
+            var dayOff2 = new WorkoutModel({ totalTime: 2, totalTimePlanned: 4, tssActual: 200, tssPlanned: 400, workoutTypeValueId: TP.utils.workout.types.getIdByName("Day Off") });
 
             view.onBeforeRender();
 
@@ -162,19 +187,19 @@ function (theMarsApp, TP, $, WeekSummaryView)
             expect(view.model.get("totalsByWorkoutType.7.duration.completed")).toBe(undefined);
             expect(view.model.get("totalsByWorkoutType.7.duration.planned")).toBe(undefined);
 
-            dayModel1.itemsCollection.add(bike1);
-            dayModel1.itemsCollection.add(run1);
-            dayModel1.itemsCollection.add(swim1);
-            dayModel1.itemsCollection.add(strength1);
-            dayModel1.itemsCollection.add(rowing1);
-            dayModel1.itemsCollection.add(dayOff1);
+            dayModel1.add(bike1);
+            dayModel1.add(run1);
+            dayModel1.add(swim1);
+            dayModel1.add(strength1);
+            dayModel1.add(rowing1);
+            dayModel1.add(dayOff1);
             
-            dayModel2.itemsCollection.add(bike2);
-            dayModel2.itemsCollection.add(run2);
-            dayModel2.itemsCollection.add(swim2);
-            dayModel2.itemsCollection.add(strength2);
-            dayModel1.itemsCollection.add(rowing2);
-            dayModel2.itemsCollection.add(dayOff2);
+            dayModel2.add(bike2);
+            dayModel2.add(run2);
+            dayModel2.add(swim2);
+            dayModel2.add(strength2);
+            dayModel1.add(rowing2);
+            dayModel2.add(dayOff2);
             
             view.onBeforeRender();
 
@@ -199,8 +224,7 @@ function (theMarsApp, TP, $, WeekSummaryView)
             {
                 spyOn(WeekSummaryView.prototype, "onBeforeRender").andReturn("");
                 var weekCollection = new TP.Collection();
-                var dayModel1 = new TP.Model();
-                dayModel1.itemsCollection = new TP.Collection();
+                var dayModel1 = new DayModel();
                 var summaryModel = new TP.Model();
                 weekCollection.add(dayModel1);
                 weekCollection.add(summaryModel);
