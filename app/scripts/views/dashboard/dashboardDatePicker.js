@@ -110,8 +110,8 @@ function(
 
             dateOptions = chartUtils.buildChartParameters(dateOptions);
 
-            this.model.set(this.settingsKey + ".startDate", dateOptions.customStartDate ? moment(dateOptions.startDate).format("YYYY-MM-DD") + "T00:00:00Z" : null);
-            this.model.set(this.settingsKey + ".endDate", dateOptions.customEndDate ? moment(dateOptions.endDate).format("YYYY-MM-DD") + "T00:00:00Z" : null);
+            this.model.set(this.settingsKey + ".startDate", dateOptions.customStartDate ? moment(dateOptions.startDate).format("YYYY-MM-DD") : null);
+            this.model.set(this.settingsKey + ".endDate", dateOptions.customEndDate ? moment(dateOptions.endDate).format("YYYY-MM-DD") : null);
             this.model.set(this.settingsKey + ".quickDateSelectOption", optionId);
 
             this.updateViewFields(dateOptions);
