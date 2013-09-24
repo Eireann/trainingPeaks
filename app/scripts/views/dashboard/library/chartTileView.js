@@ -17,7 +17,7 @@ function(
         tagName: "div",
         className: function()
         {
-            var className = "chartTile cf";
+            var className = "chartTile cf chartType-" + this.model.get("chartType");
             if(this.model.get("premium"))
             {
                 className += " premium";
