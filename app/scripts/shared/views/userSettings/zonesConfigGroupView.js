@@ -30,16 +30,19 @@ function(
         {
             "click .addZone": "_addZone",
             "click .removeWorkoutType": "_removeWorkoutType",
-            "change input[data-format=zoneValue]": "_refreshValues"
+            "change input[data-format=zoneValue]": "_refreshValues",
+            "click .calculate": "showCalculator"
         },
 
-        applyModelValuesToForm: function()
+        applyModelValuesToForm: function(options)
         {
-            this.children.call("applyModelValuesToForm");
-            FormUtility.applyValuesToForm(this.$el, this.model, {
+            options = _.extend({
                 filterSelector: "[data-scope='zoneSet']",
                 formatters: this.getFormatters()
-            });
+            }, options);
+            
+            this.children.call("applyModelValuesToForm");
+            FormUtility.applyValuesToForm(this.$el, this.model, options);
         },
 
         constructor: function(options)
@@ -91,6 +94,25 @@ function(
             return {
                 zoneValue: _.bind(this.parseValue, this)
             };
+        },
+
+        showCalculator: function()
+        {
+            var calculatorView = this.getZonesCalculatorView();
+            calculatorView.render();
+            this.listenTo(calculatorView, "apply", _.bind(this.applyCalculatorZones, this));
+        },
+
+        getZonesCalculatorView: function()
+        {
+            return new this.ZonesCalculatorView({ model: this.model });
+        },
+
+        applyCalculatorZones: function(model)
+        {
+            this.model.set(model.attributes);
+            this.collection.reset(model.get("zones")); 
+            this.applyModelValuesToForm({ trigger: true });
         },
 
         _makeSortable: function()

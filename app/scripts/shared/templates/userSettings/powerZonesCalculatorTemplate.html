@@ -1,0 +1,27 @@
+<h3>{{$ "SelectCalculator" }}</h3>
+
+<ul>
+{{#each calculators}}
+    <li><a class="calculator" data-zoneid="{{ id }}">{{ label }} ({{ numberOfZones }})</a></li>
+{{/each}}
+</ul>
+
+<h3>{{$ "EnterOptions" }}</h3>
+
+<div class="zoneSetContain power">
+    <form class="cf">
+    	<label class="threshold input disabled">
+    	    <span class="zoneSetTitle">Threshold Power</span>
+    	    <input name="threshold" class="numberInput" data-format="zoneValue">
+    	</label>
+    </form>
+
+    <div class="buttons">
+        <button class="calculate">{{$ "Calculate" }}</button>
+    </div>
+    
+</div>
+
+
+
+<div class="zones"></div>

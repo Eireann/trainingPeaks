@@ -4,6 +4,7 @@ define(
     "TP",
     "backbone",
     "shared/views/userSettings/zonesConfigGroupView",
+    "shared/views/userSettings/speedZonesCalculatorView",
     "hbs!shared/templates/userSettings/speedPaceZonesTemplate"
 ],
 function(
@@ -11,11 +12,14 @@ function(
     TP,
     Backbone,
     ZonesConfigGroupView,
+    SpeedZonesCalculatorView,
     speedPaceZonesTemplate
 )
 {
 
     var SpeedPaceZonesView = ZonesConfigGroupView.extend({
+
+        ZonesCalculatorView: SpeedZonesCalculatorView,
 
         template:
         {
@@ -49,6 +53,11 @@ function(
         {
             var options = { workoutTypeId: this.model.get("workoutTypeId") };
             return TP.utils.conversion.parseUnitsValue(this.units, value, options);
+        },
+
+        getZonesCalculatorView: function()
+        {
+            return new this.ZonesCalculatorView({ model: this.model, units: this.units });
         },
 
         _changeUnits: function()

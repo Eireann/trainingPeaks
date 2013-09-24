@@ -1,9 +1,11 @@
 .overlayBoxHeader
 {
     height: 26px;
+    background-color: $white;
 }
 
 .overlayBoxBody
 {
     height: calc(100% - 26px);
+    background-color: $white;
 }

@@ -6,6 +6,7 @@ requirejs(
 ],
 function( _, theApp)
 {
+    
     describe("The Mars App", function()
     {
 

@@ -28,7 +28,10 @@ function(unitsConstants, workoutTypeUtils)
         },
         "pace":
         {
+            // yards per second
             English: 2.236936 / 60,
+
+            // meters per second
             Metric: 3.6 / 60,
 
             Swim:

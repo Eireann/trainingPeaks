@@ -215,7 +215,6 @@ function(
                 this.$el.on('scroll', function(event)
                 {
 
-
                     if(self.scrollAnimationDeferred && self.scrollAnimationDeferred.state() === "pending") return;
 
                     clearTimeout(self.scrollingTimeout);
@@ -239,6 +238,7 @@ function(
                             options.onScrollEnd();
                         }, 400);
                     }
+
                 });
             });
 

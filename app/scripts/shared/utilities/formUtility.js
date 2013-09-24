@@ -18,7 +18,7 @@ function(
             }
             else if(options && options.formatters && options.formatters.hasOwnProperty(format))
             {
-                value = options.formatters[format](value);
+                value = options.formatters[format](value, options.formatterOptions);
             }
             else if(format)
             {
@@ -36,7 +36,7 @@ function(
             }
             else if(options && options.parsers && options.parsers.hasOwnProperty(format))
             {
-                value = options.parsers[format](value);
+                value = options.parsers[format](value, options.parserOptions);
             }
 
             return value;
@@ -84,6 +84,11 @@ function(
                     var $option = $("<option />").attr('value', value).text(text);
                     $field.prepend($option).val(value);
                 }
+            }
+
+            if(options.trigger)
+            {
+                $field.trigger("change");
             }
         },
 

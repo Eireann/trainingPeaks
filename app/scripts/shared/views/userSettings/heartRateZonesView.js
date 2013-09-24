@@ -4,6 +4,7 @@ define(
     "TP",
     "backbone",
     "shared/views/userSettings/zonesConfigGroupView",
+    "shared/views/userSettings/heartRateZonesCalculatorView",
     "hbs!shared/templates/userSettings/heartRateZonesTemplate"
 ],
 function(
@@ -11,11 +12,14 @@ function(
     TP,
     Backbone,
     ZonesConfigGroupView,
+    HeartRateZonesCalculatorView,
     heartRateZonesTemplate
 )
 {
 
     var PowerZonesView = ZonesConfigGroupView.extend({
+
+        ZonesCalculatorView: HeartRateZonesCalculatorView,
 
         template:
         {
