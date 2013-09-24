@@ -6,6 +6,7 @@
     "shared/utilities/formUtility",
     "views/userConfirmationView",
     "hbs!templates/views/confirmationViews/requiredFieldTemplate",
+    "hbs!shared/templates/userSettings/unableToCalculateZonesTemplate",
     "hbs!shared/templates/userSettings/zonesCalculatorFooterTemplate"
 ],
 function(
@@ -15,6 +16,7 @@ function(
     FormUtility,
     UserConfirmationView,
     requiredFieldTemplate,
+    unableToCalculateZonesTemplate,
     zonesCalculatorFooterTemplate
 )
 {
@@ -45,6 +47,8 @@ function(
             "click .calculator": "clickZoneCalculator",
             "click .calculate": "calculateZones"
         },
+
+        modelEvents: {},
 
         serializeData: function()
         {
@@ -86,7 +90,7 @@ function(
         calculateZones: function()
         {
 
-            FormUtility.applyValuesToModel(this.$el, this.model, { parsers: { zoneValue: _.bind(this._parseInputValue, this) } });
+            this._applyFormValuesToModel();
 
             if(!this.validateInputs())
             {
@@ -102,13 +106,48 @@ function(
                 self._applyModelValuesToForm();
                 self._highlightSelectedZone();
                 self.trigger("calculate");
-            });
+            }).fail(function()
+            {
+                 this.confirmationView = new UserConfirmationView(
+                {
+                    template: unableToCalculateZonesTemplate
+                });               
 
+                this.confirmationView.render();
+
+                this.confirmationView.on("close", function()
+                {
+                    this.confirmationView = null;
+                }, this);
+            });
         },
 
         getZonesToApply: function()
         {
             return this.model;
+        },
+
+        getParsers: function()
+        {
+            return { zoneValue: _.bind(this._parseInputValue, this) };
+        },
+
+        getParserOptions: function()
+        {
+            return {workoutTypeId: this.model.get("workoutTypeId")};
+        },
+
+        getFormatters: function()
+        {
+            return { zoneValue: _.bind(this._formatInputValue, this) };
+        },
+
+        getFormatterOptions: function()
+        {
+            return {
+                defaultValue: "",
+                workoutTypeId: this.model.get("workoutTypeId")
+            };
         },
 
         _parseInputValue: function(value)
@@ -125,7 +164,24 @@ function(
 
         _applyModelValuesToForm: function()
         {
-            FormUtility.applyValuesToForm(this.$el, this.model, { formatters: { zoneValue: _.bind(this._formatInputValue, this) } });
+            FormUtility.applyValuesToForm(this.$el, this.model, 
+                                            { 
+                                                formatters: this.getFormatters(),
+                                                formatterOptions: this.getFormatterOptions(),
+                                                filterSelector: this.formUtilsFilterSelector
+                                            }
+                                        );
+        },
+
+        _applyFormValuesToModel: function()
+        {
+            FormUtility.applyValuesToModel(this.$el, this.model, 
+                                            { 
+                                                parsers: this.getParsers(),
+                                                parserOptions: this.getParserOptions(),
+                                                filterSelector: this.formUtilsFilterSelector
+                                            }
+                                        );
         },
 
         _showInputs: function()
@@ -144,7 +200,7 @@ function(
         _validateRequiredFields: function()
         {
             var success = true;
-            _.each(this.inputs, function(attr)
+            _.each(this._getRequiredInputs(), function(attr)
             {
                 if(!this.model.get(attr))
                 {
@@ -153,6 +209,11 @@ function(
                 }
             }, this);
             return success;
+        },
+
+        _getRequiredInputs: function()
+        {
+            return this.inputs;
         },
 
         showRequiredFieldMessage: function(fieldName, allowedValues)

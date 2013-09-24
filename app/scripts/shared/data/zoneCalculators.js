@@ -138,27 +138,33 @@ function()
     {
         ThreeKm: {
             id: 1,
-            label: "3 km"
+            label: "3 km",
+            distanceInMeters: 3000
         },
         FiveKm: {
             id: 2,
-            label: "5 km"
+            label: "5 km",
+            distanceInMeters: 5000
         },
         TenKm: {
             id: 3,
-            label: "10 km"
+            label: "10 km",
+            distanceInMeters: 10000
         },
         OneHundredMeters: {
             id: 4,
-            label: "100 m"
+            label: "100 m",
+            distanceInMeters: 100
         },
         OneThousandMeters: {
             id: 5,
-            label: "1000 m swim"
+            label: "1000 m swim",
+            distanceInMeters: 1000
         },
         OneThousandYards: {
             id: 6,
-            label: "1000 y swim"
+            label: "1000 y swim",
+            distanceInMeters: 914.4
         }
     };
 

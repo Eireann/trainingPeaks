@@ -26,7 +26,9 @@ function(
             var endpoint = theMarsApp.apiRoot + "/zonescalculator/v1/" + this.zoneType;
             var data = this.formatRequest(values);
 
-            var promise = Backbone.ajax(
+            this.promise = new $.Deferred();
+
+            var ajaxPromise = Backbone.ajax(
             {
                 url:  endpoint,
                 method: "POST",
@@ -34,7 +36,7 @@ function(
                 success: _.bind(this._success, this)
             });
 
-            return promise;
+            return this.promise;
         },
 
         apply: function(model)
@@ -74,7 +76,15 @@ function(
 
         _success: function(data)
         {
-            this.results = this.parseResponse(data);
+            if(data)
+            {
+                this.results = this.parseResponse(data);
+                this.promise.resolve();
+            }
+            else
+            {
+                this.promise.reject();
+            }
         }
 
     });
