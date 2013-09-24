@@ -117,7 +117,7 @@ function(
             var self = this;
             var calendarPromises = this.loadCalendarData();
             var libraryPromises = this.loadLibraryData();
-            return calendarPromises.concat(libraryPromises);
+            return [].concat(calendarPromises, libraryPromises);
         },
 
         showViewsInRegions: function()
