@@ -83,7 +83,7 @@ function(
 
         preload: function()
         {
-            this.initializeLibrary(); // Here so that the first loadDataAfterUserLoads will grab libraries
+            this.setupLibrary();
             this.loadDataAfterUserLoads();
         },
 
@@ -98,6 +98,7 @@ function(
             this.initializeHeader();
             this.initializeCalendar();
             
+            this.initializeLibrary(); // Here so that the first loadDataAfterUserLoads will grab libraries
 
             // QL: this is layout logic and might belong in the layout itself. So this would read this.layout.renderRegions();
             this.showViewsInRegions();
@@ -154,7 +155,6 @@ function(
             var deferreds = [];
             for (var libraryName in this.libraryCollections)
             {
-                console.log(libraryName);
                 deferreds.push(this._dataManager.fetchModel(this.libraryCollections[libraryName], { reset: true }));
             }
             return deferreds;

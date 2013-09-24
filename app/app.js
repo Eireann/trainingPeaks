@@ -135,7 +135,6 @@ function(
                 {
                     try
                     {
-                        console.log("XHR ERROR");
                         if(Raven)
                             Raven.captureException({event: event, xhr: xhr});
                         else if(_rollbar)
@@ -253,61 +252,52 @@ function(
             var self = this;
           
             // fetch user and access rights in parallel ,
-            // but fetch athlete settings later because they depend on user,
-            // still fetch athlete settings before we resolve user fetch promise
+            // fetch athlete settings after user (since we need the athlete id),
+            // wait for all three before resolving
+            // Order is important since user is hopefully cached.
 
-            // HACK: for some reason $.when fails in testing when we directly pass in our xhr deferreds,
-            // but works when we pass in separate deferreds and resolve or reject them via our xhr deferreds.
-            // WTF?
-            var deferred1 = new $.Deferred();
-            var deferred2 = new $.Deferred();
-            self.user.fetch().done(function()
+            var userPromise = self.user.fetch();
+            var userAccessPromise = self.userAccessRights.fetch();
+
+            userAccessPromise.fail(function()
             {
-                deferred1.resolve();
-            }).fail(function()
-            {
-                deferred1.reject();
+                console.log("access", arguments);
             });
 
-            self.userAccessRights.fetch().done(function()
+            userPromise.done(function()
             {
-                deferred2.resolve();
-            }).fail(function()
-            {
-                deferred2.reject();
-            });
-            // END HACK
 
-            $.when(
-                deferred1,
-                deferred2
-            ).done(
-                function()
+                var athletePromise = self.fetchAthleteSettings();
+                athletePromise.fail(function()
+                {
+                    console.log("athlete", arguments);
+                });
+
+                $.when(userAccessPromise, athletePromise)
+                .done(function()
                 {
                     if (self.featureAllowedForUser("alpha1", self.user))
                     {
-                        self.session.saveUserToLocalStorage(self.user);
-                        self.fetchAthleteSettings().done(
-                            function()
-                            {
-                                self.userFetchPromise.resolve();
-                            }
-                        ).fail(
-                            function()
-                            {
-                                self.userFetchPromise.reject();
-                            }
-                        );
+                        self.userFetchPromise.resolve();
                     }
                     else
                     {
                         self.session.logout(notAllowedForAlphaTemplate);
                     }
-                }
-            ).fail(function()
+                })
+                .fail(function()
+                {
+                    // console.log("Failed access or athelete", arguments[2].stack, arguments);
+                    self.userFetchPromise.reject();
+                });
+
+            })
+            .fail(function()
             {
+                // console.log("Failed user", arguments[2].stack, arguments);
                 self.userFetchPromise.reject();
             });
+
         };
 
         this.featureAllowedForUser = function(feature, user)
