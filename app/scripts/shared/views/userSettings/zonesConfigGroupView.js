@@ -98,9 +98,14 @@ function(
 
         showCalculator: function()
         {
-            var calculatorView = new this.ZonesCalculatorView({ model: this.model });
+            var calculatorView = this.getZonesCalculatorView();
             calculatorView.render();
             this.listenTo(calculatorView, "apply", _.bind(this.applyCalculatorZones, this));
+        },
+
+        getZonesCalculatorView: function()
+        {
+            return new this.ZonesCalculatorView({ model: this.model });
         },
 
         applyCalculatorZones: function(model)

@@ -55,6 +55,11 @@ function(
             return TP.utils.conversion.parseUnitsValue(this.units, value, options);
         },
 
+        getZonesCalculatorView: function()
+        {
+            return new this.ZonesCalculatorView({ model: this.model, units: this.units });
+        },
+
         _changeUnits: function()
         {
             this.units = this.$("[name=units]:checked").val();

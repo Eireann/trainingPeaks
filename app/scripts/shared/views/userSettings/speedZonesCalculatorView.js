@@ -103,12 +103,11 @@ function(
             "change input[name=paceOrSpeed]": "selectPaceOrSpeed"
         }, ZoneCalculatorViews.TabContentView.prototype.events),
 
-        initialize: function()
+        initialize: function(options)
         {
-            this.model.set("paceOrSpeed", "speed");
+            this.model.set("paceOrSpeed", options && options.units && options.units === "speed" ? "speed" : "pace");
             this.model.set("speedUnits", TP.utils.units.getUnitsLabel("speed", this.model.get("workoutTypeId")));
             this.model.set("paceUnits", TP.utils.units.getUnitsLabel("pace", this.model.get("workoutTypeId")));
-            this.calculatorDefinition = this.calculators[0];
 
             this.itemView.prototype.parentModel = this.model;
         },
@@ -184,9 +183,25 @@ function(
             SpeedZoneCalculatorTabView.prototype.initialize.apply(this, arguments);   
             this.model.set("paceOrSpeed", "pace");
             this.model.set("testDistance", ZoneCalculatorDefinitions.speedDistances.OneHundredMeters.id);
+        },
+
+        _applyFormValuesToModel: function()
+        {
+            ZoneCalculatorViews.TabContentView.prototype._applyFormValuesToModel.call(this);
+            this._calculateSpeed();
+        },
+
+        _calculateSpeed: function()
+        {
+            var secondsPer100m = this.model.get("secondsPer100m");
+            var metersPerSecond = 100 / secondsPer100m;
+
+            // threshold speed is what the calculator actually uses
+            this.model.set("threshold", metersPerSecond);
         }
+
     });
-    
+
     var DistanceTimeTabView = SpeedZoneCalculatorTabView.extend({
 
         calculators: filterCalculators(ZoneCalculatorDefinitions.speedTypes.DistanceTime),
@@ -204,7 +219,6 @@ function(
             SpeedZoneCalculatorTabView.prototype.initialize.apply(this, arguments);
             this.model.set("speedOrDuration", "speed");
             this.model.set("duration", 0);
-            this.calculators = filterCalculators(ZoneCalculatorDefinitions.speedTypes.DistanceTime, this.model.get("workoutTypeId"));
         },
 
         clickZoneCalculator: function(e)
@@ -324,7 +338,7 @@ function(
             if(this.model.get("speedOrDuration") === "speed")
             {
                 speedInMetersPerSecond = this.model.get("speed");
-                
+
                 if(speedInMetersPerSecond >= 0.1)
                 {
                     durationInSeconds = distanceDefinition.distanceInMeters / speedInMetersPerSecond;
@@ -351,6 +365,9 @@ function(
                     this.model.set("speed", 0);
                 }
             }
+
+            // threshold speed is what the calculator actually uses
+            this.model.set("threshold", this.model.get("speed"));
         }
 
 
@@ -365,23 +382,23 @@ function(
                 {
                     title: "Threshold Speed",
                     view: ThresholdSpeedTabView,
-                    options: {
+                    options: _.defaults({
                         model: new TP.Model(TP.utils.deepClone(this.model.attributes)) 
-                    }
+                    }, this.options)
                 },
                 {
                     title: "Distance / Time",
                     view: DistanceTimeTabView,
-                    options: {
+                    options: _.defaults({
                         model: new TP.Model(TP.utils.deepClone(this.model.attributes)) 
-                    }
+                    }, this.options)
                 },
                 {
                     title: "Seconds / 100m",
                     view: HundredMeterTimeTabView,
-                    options: {
+                    options: _.defaults({
                         model: new TP.Model(TP.utils.deepClone(this.model.attributes)) 
-                    }
+                    }, this.options)
                 }
             ];
         }

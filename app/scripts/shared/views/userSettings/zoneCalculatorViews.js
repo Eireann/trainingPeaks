@@ -31,7 +31,7 @@ function(
         {
             // start with no zones until we run calculator
             this.collection = new TP.Collection();
-            this.calculatorDefinition = null;
+            this.calculatorDefinition = _.sortBy(this.calculators, "label")[0];
             CalculatorTabContentView.__super__.constructor.apply(this, arguments);
         },
 
@@ -242,9 +242,9 @@ function(
 
     var TabbedZonesCalculatorView = TabbedLayout.extend({
 
-        initialize: function()
+        initialize: function(options)
         {
-            this._initializeNavigation();
+            this._initializeNavigation(options);
             this._initializeFooter();
         },
 

@@ -9,39 +9,48 @@
 <h3>{{$ "EnterOptions" }}</h3>
 
 <div class="zoneSetContain speed">
-    <label class="input">
-        <span class="paceOrSpeed">
-            <label><input type="radio" name="paceOrSpeed" value="speed" class="hundredMeterTab thresholdTab distanceTab" />{{ speedUnits }}</label>
-            <label><input type="radio" name="paceOrSpeed" value="pace" class="hundredMeterTab thresholdTab distanceTab" />{{ paceUnits }}</label>
-        </span>
-    </label>
-    <label class="threshold input disabled">
-        <span class="zoneSetTitle">Threshold</span>
-        <input name="threshold" class="numberInput thresholdTab" data-format="paceOrSpeed" />
-    </label>
-    <label class="secondsPer100m input disabled">
-        <span class="zoneSetTitle">Seconds / 100m</span>
-        <input name="secondsPer100m" class="numberInput hundredMeterTab" data-format="number">
-    </label>
-    <label class="testDistance input disabled">
-        <span class="zoneSetTitle">Test Distance</span>
-        <div class="testDistance"><select name="testDistance" data-format="number" class="distanceTab"></select></div>
-    </label>
-    <label class="speed input disabled">
-        <span><input type="radio" class="speedOrDuration distanceTab" name="speedOrDuration" value="speed"/></span>
-        <span class="zoneSetTitle">Speed / Pace</span>
-        <input name="speed" class="numberInput distanceTab" data-format="paceOrSpeed">
-    </label>
-    <label class="duration input disabled">
-        <span><input type="radio" class="speedOrDuration distanceTab" name="speedOrDuration" value="duration"/></span>
-        <span class="zoneSetTitle">Duration</span>
-        <input name="duration" class="numberInput distanceTab" data-format="duration">
-    </label>
+
+    <form class="cf">
+
+        <label class="float clickable"><input type="radio" name="paceOrSpeed" value="speed" class="hundredMeterTab thresholdTab distanceTab" />{{ speedUnits }}</label>
+        <label class="float clickable"><input type="radio" name="paceOrSpeed" value="pace" class="hundredMeterTab thresholdTab distanceTab" />{{ paceUnits }}</label>
+
+        <label class="threshold input disabled">
+            <span class="zoneSetTitle">Threshold</span>
+            <input name="threshold" class="numberInput thresholdTab" data-format="paceOrSpeed" />
+        </label>
+        <label class="secondsPer100m input disabled">
+            <span class="zoneSetTitle">Seconds / 100m</span>
+            <input name="secondsPer100m" class="numberInput hundredMeterTab" data-format="number">
+        </label>
+        <label class="testDistance input disabled">
+            <span class="zoneSetTitle">Test Distance</span>
+            <div class="testDistance"><select name="testDistance" data-format="number" class="distanceTab"></select></div>
+        </label>
+        <label class="speed input disabled clickable">
+            <div class="zoneSetTitle">
+                <input type="radio" class="speedOrDuration distanceTab" name="speedOrDuration" value="speed"/>
+                Speed / Pace
+            </div>
+            <input name="speed" class="numberInput distanceTab" data-format="paceOrSpeed">
+        </label>
+        <label class="duration input disabled clickable">
+            <div class="zoneSetTitle">
+                <input type="radio" class="speedOrDuration distanceTab" name="speedOrDuration" value="duration"/>
+                Duration
+            </div>
+            <input name="duration" class="numberInput distanceTab" data-format="duration">
+        </label>
+
+    </form>
+
+    <div class="buttons">
+        <button class="calculate">{{$ "Calculate" }}</button>
+    </div>
+
 </div>
 
 
-<div class="buttons">
-    <button class="calculate">{{$ "Calculate" }}</button>
-</div>
+
 
 <div class="zones"></div>

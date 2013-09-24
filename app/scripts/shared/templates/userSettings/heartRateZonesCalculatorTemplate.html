@@ -9,26 +9,28 @@
 <h3>{{$ "EnterOptions" }}</h3>
 
 <div class="zoneSetContain heartrate">
-	<label class="threshold input disabled">
-	    <span class="zoneSetTitle">Threshold Heart Rate</span>
-	    <input name="threshold" class="numberInput" data-format="zoneValue">
-	</label>
-	<label class="maximumHeartRate input disabled">
-	   <span class="zoneSetTitle"> Max Heart Rate</span>
-	    <input name="maximumHeartRate" class="numberInput" data-format="zoneValue">
-	</label>
-	<label class="restingHeartRate input disabled">
-	    <span class="zoneSetTitle">Resting Heart Rate</span>
-	    <input name="restingHeartRate" class="numberInput" data-format="zoneValue">
-	</label>
-	<label class="testResult input disabled">
-	    <span class="zoneSetTitle">Test Result</span>
-	    <input name="testResult" class="numberInput" data-format="zoneValue">
-	</label>
-</div>
+	<form class="cf">
+		<label class="threshold input disabled">
+		    <span class="zoneSetTitle">Threshold Heart Rate</span>
+		    <input name="threshold" class="numberInput" data-format="zoneValue">
+		</label>
+		<label class="maximumHeartRate input disabled">
+		   <span class="zoneSetTitle"> Max Heart Rate</span>
+		    <input name="maximumHeartRate" class="numberInput" data-format="zoneValue">
+		</label>
+		<label class="restingHeartRate input disabled">
+		    <span class="zoneSetTitle">Resting Heart Rate</span>
+		    <input name="restingHeartRate" class="numberInput" data-format="zoneValue">
+		</label>
+		<label class="testResult input disabled">
+		    <span class="zoneSetTitle">Test Result</span>
+		    <input name="testResult" class="numberInput" data-format="zoneValue">
+		</label>
+	</form>
 
-<div class="buttons">
-    <button class="calculate">{{$ "Calculate" }}</button>
+	<div class="buttons">
+	    <button class="calculate">{{$ "Calculate" }}</button>
+	</div>
 </div>
 
 <div class="zones"></div>
