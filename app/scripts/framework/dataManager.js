@@ -46,7 +46,7 @@
             var temporaryCollection = new klass([], options);
             var collection = new klass([], options);
 
-            var promise = this._fetch(temporaryCollection, options).then(function() {
+            var promise = this.fetchModel(temporaryCollection, options).then(function() {
                 var models = temporaryCollection.map(_.bind(self.identityMap.updateSharedInstance, self.identityMap));
                 collection.set(models);
             });
@@ -66,7 +66,7 @@
             if (model === sharedModel)
             {
                 // Identity map did not have this model
-                promise = this._fetch(sharedModel, options);
+                promise = this.fetchModel(sharedModel, options);
             }
             else
             {
@@ -92,7 +92,7 @@
             }
         },
 
-        _fetch: function(modelOrCollection, options)
+        fetchModel: function(modelOrCollection, options)
         {
             var requestSignature = _.result(modelOrCollection, "url");
 

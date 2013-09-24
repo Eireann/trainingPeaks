@@ -71,8 +71,6 @@ function(
 
             // call parent constructor
             this.constructor.__super__.initialize.call(this);
-
-            theMarsApp.userFetchPromise.then(_.bind(this.loadDataAfterUserLoads, this));
         },
 
         onLayoutClose: function()
@@ -81,6 +79,12 @@ function(
             {
                 view.close();
             }, this);
+        },
+
+        preload: function()
+        {
+            this.initializeLibrary(); // Here so that the first loadDataAfterUserLoads will grab libraries
+            this.loadDataAfterUserLoads();
         },
 
         show: function()
@@ -94,9 +98,6 @@ function(
             this.initializeHeader();
             this.initializeCalendar();
             
-            // QL: Calendar should agnostically receive any dropped item. 
-            // Layout changes should propogate through the new CalendarPageView
-            this.initializeLibrary();
 
             // QL: this is layout logic and might belong in the layout itself. So this would read this.layout.renderRegions();
             this.showViewsInRegions();
@@ -153,7 +154,8 @@ function(
             var deferreds = [];
             for (var libraryName in this.libraryCollections)
             {
-                deferreds.push(this.libraryCollections[libraryName].fetch({ reset: true }));
+                console.log(libraryName);
+                deferreds.push(this._dataManager.fetchModel(this.libraryCollections[libraryName], { reset: true }));
             }
             return deferreds;
         },

@@ -542,6 +542,10 @@ function(
     {
         if (controller !== this.currentController)
         {
+            if(_.isFunction(controller.preload))
+            {
+                controller.preload();
+            }
             this.currentController = controller;
             this.mainRegion.show(controller.getLayout());
         }
