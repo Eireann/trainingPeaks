@@ -10,6 +10,7 @@ define(
     "framework/Logger",
     "framework/utilities",
     "framework/analytics",
+    "framework/profiling",
     "shared/data/tpSharedData"
 ],
 function(
@@ -23,10 +24,13 @@ function(
          Logger,
          utilities,
          analytics,
+         profiling,
          sharedData
 )
 {
     var TP = {};
+
+    _.extend(TP, profiling);
 
     // Override default "input" handling
     Backbone.Stickit.addHandler(

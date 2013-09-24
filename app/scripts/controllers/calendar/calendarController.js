@@ -105,14 +105,19 @@ function(
             // our parent class PageContainerController needs this to trigger the window resize functionality
             this.trigger("show");
 
-            this.loadDataAfterUserLoads();
+            $.when.apply($, this.loadDataAfterUserLoads()).then(function()
+            {
+                TP.timeEnd("boot");
+                TP.profileEnd("boot");
+            });
         },
 
         loadDataAfterUserLoads: function()
         {
             var self = this;
-            this.loadCalendarData();
-            this.loadLibraryData();
+            var calendarPromises = this.loadCalendarData();
+            var libraryPromises = this.loadLibraryData();
+            return calendarPromises.concat(libraryPromises);
         },
 
         showViewsInRegions: function()
@@ -144,8 +149,12 @@ function(
 
         loadLibraryData: function()
         {
+            var deferreds = [];
             for (var libraryName in this.libraryCollections)
-                this.libraryCollections[libraryName].fetch({ reset: true });
+            {
+                deferreds.push(this.libraryCollections[libraryName].fetch({ reset: true }));
+            }
+            return deferreds;
         },
 
         onPasteEnabled: function()

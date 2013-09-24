@@ -7,6 +7,13 @@
   <meta name="description" content="Free training log, training plans and food diary for running, cycling, triathlon and general fitness" />
   <meta name="keywords" content="training log,free workout log,free training log, training,workout log,training plan,marathon training plan, plans,training software,training devices,training schedule,training schedules,training program,training programs,cycling plans,running plans,triathlon plans,nutrition journal" />
 
+  <script>
+    window.enableProfiling = window.location.search.match(/profiling=1/);
+    window.enableTimers = window.enableProfiling || window.location.search.match(/timers=1/);
+    if (window.enableProfiling) console && console.profile && console.profile("boot");
+    if (window.enableTimers) console && console.time && console.time("boot");
+  </script>
+
   <title>Free Training Log, Training Plans and Food Diary | TrainingPeaks</title>
     
   <!-- Refresh favicon -->
