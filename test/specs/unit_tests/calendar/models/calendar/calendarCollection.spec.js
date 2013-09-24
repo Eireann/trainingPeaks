@@ -518,8 +518,15 @@ function($, TP, moment, theMarsApp, DataManager, testHelpers, xhrData, WorkoutMo
             it("moving the workout should remove the workout from the old collection", function()
             {
                 workout.moveToDay(newDate);
-                testHelpers.rejectRequest("PUT", "");
                 expect(collection.getDayModel(origDate).itemsCollection.contains(activity)).toBe(false);
+            });
+
+            it("if moving the workout fails it should revert to the original date", function()
+            {
+                workout.moveToDay(newDate);
+                testHelpers.rejectRequest("PUT", "/workouts/");
+                expect(collection.getDayModel(origDate).itemsCollection.contains(activity)).toBe(true);
+                expect(collection.getDayModel(newDate).itemsCollection.contains(activity)).toBe(false);
             });
 
         });

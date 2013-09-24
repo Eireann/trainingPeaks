@@ -71,7 +71,7 @@ function(
                     var ajaxFetch = TP.APIDeepModel.prototype.fetch.call(self);
                     ajaxFetch.done(function()
                     {
-                        localStorage.setItem('app_user', self.toJSON());
+                        theMarsApp.session.saveUserToLocalStorage(self);
                     });
                     return ajaxFetch;
                 };

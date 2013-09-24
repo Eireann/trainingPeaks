@@ -129,9 +129,9 @@ function(
             {
                 var tizRequests = testHelpers.findAllRequests("POST", "reporting/timeinzonesbyweek");
                 expect(tizRequests.length).toBe(3);
-                expect(JSON.parse(tizRequests[0].options.data).timeInZonesType).toEqual(1);
-                expect(JSON.parse(tizRequests[1].options.data).timeInZonesType).toEqual(2);
-                expect(JSON.parse(tizRequests[2].options.data).timeInZonesType).toEqual(3);
+                expect(JSON.parse(tizRequests[0].requestBody).timeInZonesType).toEqual(1);
+                expect(JSON.parse(tizRequests[1].requestBody).timeInZonesType).toEqual(2);
+                expect(JSON.parse(tizRequests[2].requestBody).timeInZonesType).toEqual(3);
             });
 
         });

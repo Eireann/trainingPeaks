@@ -23,6 +23,9 @@ function(moment, setImmediate, TP, CalendarDayView, WeekSummaryView, CalendarWee
                 return CalendarDayView;
         },
 
+        // Prevent render on changes
+        modelEvents: {},
+
         template:
         {
            type: "handlebars",

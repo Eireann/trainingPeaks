@@ -5,10 +5,10 @@ define(
     "backbone",
     "TP",
     "testUtils/xhrDataStubs",
-    "app",
-
+    "testUtils/sinon",
+    "app"
 ],
-function(_, $, Backbone, TP, xhrData, app)
+function(_, $, Backbone, TP, xhrData, sinon_, app)
 {
 
     return {
@@ -76,70 +76,16 @@ function(_, $, Backbone, TP, xhrData, app)
             localStorage.clear();
         },
 
-        fakeAjax: function(options)
-        {
-
-            // fire backbone ajax to get a jquery xhr deferred, and wrap it with our own deferred
-            var ajaxDeferred = this.addDeferred(options, this.backboneAjax);
-
-            // this is what actually triggers Backbone models/collections to ajax,
-            // and is added in Backbone.ajax
-            if (options.success)
-                ajaxDeferred.done(options.success);
-
-            this.fakeAjaxRequests.push({
-                url: options.url,
-                jqXhr: ajaxDeferred,
-                options: options
-            });
-
-            //console.log("Fake request: " + options.type + " " + options.url);
-            //console.log(options);
-
-            return ajaxDeferred;
-        },
-
-        addDeferred: function(options, backboneAjax)
-        {
-            options.ajaxDeferred = new $.Deferred();
-            var jqXhr = backboneAjax(options);
-            jqXhr.ajaxDeferred = options.ajaxDeferred;
-
-            var deferredFunctionNames = ["always", "done", "fail", "pipe", "progress", "then"];
-
-            _.each(deferredFunctionNames, function(methodName)
-            {
-                var ajaxDeferredMethod = options.ajaxDeferred[methodName];
-                jqXhr[methodName] = function()
-                {
-                    // apply on our cached data first
-                    ajaxDeferredMethod.apply(options.ajaxDeferred, arguments);
-                    return this;
-                };
-            }, this);
-
-            var ajaxDeferredDone = options.ajaxDeferred.done;
-            jqXhr.error = function()
-            {
-                // apply on our cached data first
-                ajaxDeferredDone.apply(options.ajaxDeferred, arguments);
-                return this;
-            };
-
-            return jqXhr;
-        }, 
-
         resolveRequest: function(httpVerb, urlPattern, data)
         {
             var request = this.findRequest(httpVerb, urlPattern);
 
             if (request)
             {
-                //console.log("Resolving request " + request.url);
-                request.jqXhr.ajaxDeferred.resolveWith(request.options, [data, 'success', request.jqXhr]);
-            } else
+                request.respond(200, {}, _.isString(data) ? data : JSON.stringify(data));
+            }
+            else
             {
-                //console.log(this.fakeAjaxRequests);
                 throw "Cannot find request to resolve: " + httpVerb + " " + urlPattern;
             }
         },
@@ -150,10 +96,10 @@ function(_, $, Backbone, TP, xhrData, app)
 
             if (request)
             {
-                request.jqXhr.ajaxDeferred.rejectWith(request.options, ['error', request.jqXhr]);
-            } else
+                request.respond(500, null, null);
+            }
+            else
             {
-                //console.log(this.fakeAjaxRequests);
                 throw "Cannot find request to resolve: " + httpVerb + " " + urlPattern;
             }
         },
@@ -173,7 +119,7 @@ function(_, $, Backbone, TP, xhrData, app)
             var pattern = new RegExp(urlPattern);
             return _.find(this.fakeAjaxRequests, function(req)
             {
-                if(pattern.test(req.url) && (!httpVerb || req.options.type === httpVerb))
+                if(pattern.test(req.url) && (!httpVerb || req.method === httpVerb))
                 {
                     return true;
                 }
@@ -189,7 +135,7 @@ function(_, $, Backbone, TP, xhrData, app)
             var pattern = new RegExp(urlPattern);
             return _.filter(this.fakeAjaxRequests, function(req)
             {
-                if(pattern.test(req.url) && (!httpVerb || req.options.type === httpVerb))
+                if(pattern.test(req.url) && (!httpVerb || req.method === httpVerb))
                 {
                     return true;
                 }
@@ -207,23 +153,29 @@ function(_, $, Backbone, TP, xhrData, app)
 
         setupFakeAjax: function()
         {
-            _.bindAll(this, "fakeAjax");
+            var self = this;
 
-            if (!Backbone._originalAjax)
+            if(this.xhr)
             {
-                Backbone._originalAjax = Backbone.ajax;
-                this.backboneAjax = Backbone.ajax;
+                return;
             }
 
-            Backbone.ajax = this.fakeAjax;
             this.fakeAjaxRequests = [];
+            this.xhr = sinon.useFakeXMLHttpRequest();
+            this.xhr.onCreate = function(xhr)
+            {
+                self.fakeAjaxRequests.push(xhr);
+            };
+
         },
 
         removeFakeAjax: function()
         {
-            if (Backbone._originalAjax)
-                Backbone.ajax = Backbone._originalAjax;
-
+            if(this.xhr)
+            {
+                this.xhr.restore();
+                this.xhr = null;
+            }
             this.clearRequests();
         },
 

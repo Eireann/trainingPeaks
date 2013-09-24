@@ -42,13 +42,20 @@ function(
             return workout;
         },
 
-        initializeLibrary: function ()
+        setupLibrary: function()
         {
+            if(this.libraryCollections) return;
+
             this.libraryCollections =
             {
                 exerciseLibraries: new ExerciseLibrariesCollection(),
                 trainingPlans: new TrainingPlanCollection()
             };
+        },
+
+        initializeLibrary: function ()
+        {
+            this.setupLibrary();
 
             if (this.views.library)
                 this.views.library.close();
