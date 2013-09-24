@@ -23,11 +23,19 @@ function(
     )
 {
 
-    function filterCalculators(type)
+    function filterCalculators(calculatorType, workoutTypeId)
     {
-        return _.filter(ZoneCalculatorDefinitions.speed, function(zoneCalculator) {
-            return zoneCalculator.type === type; 
+        var filteredCalculators = _.filter(ZoneCalculatorDefinitions.speed, function(zoneCalculator) {
+            return zoneCalculator.type === calculatorType; 
         });
+
+        if(!_.isUndefined(workoutTypeId))
+        {
+            filteredCalculators = _.filter(filteredCalculators, function(zoneCalculator) {
+                return !zoneCalculator.workoutTypeIds || _.contains(zoneCalculator.workoutTypeIds, workoutTypeId);
+            }); 
+        }
+        return filteredCalculators;
     }
 
     var SpeedZoneItemView = TP.ItemView.extend({
@@ -71,8 +79,6 @@ function(
         zoneCalculator: ZoneCalculator.Speed,
 
         calculators: ZoneCalculatorDefinitions.speed,
-
-        inputs: [ "threshold" ],
 
         units: "speed",
 
@@ -162,11 +168,25 @@ function(
     var ThresholdSpeedTabView = SpeedZoneCalculatorTabView.extend({
         calculators: filterCalculators(ZoneCalculatorDefinitions.speedTypes.Threshold),
         inputs: [ "threshold" ],
-
         formUtilsFilterSelector: ".thresholdTab"
-
     });
 
+    var HundredMeterTimeTabView = SpeedZoneCalculatorTabView.extend({
+
+        calculators: filterCalculators(ZoneCalculatorDefinitions.speedTypes.SecondsPer100m),
+
+        inputs: ["secondsPer100m"],
+
+        formUtilsFilterSelector: ".hundredMeterTab",
+
+        initialize: function()
+        {
+            SpeedZoneCalculatorTabView.prototype.initialize.apply(this, arguments);   
+            this.model.set("paceOrSpeed", "pace");
+            this.model.set("testDistance", ZoneCalculatorDefinitions.speedDistances.OneHundredMeters.id);
+        }
+    });
+    
     var DistanceTimeTabView = SpeedZoneCalculatorTabView.extend({
 
         calculators: filterCalculators(ZoneCalculatorDefinitions.speedTypes.DistanceTime),
@@ -184,6 +204,7 @@ function(
             SpeedZoneCalculatorTabView.prototype.initialize.apply(this, arguments);
             this.model.set("speedOrDuration", "speed");
             this.model.set("duration", 0);
+            this.calculators = filterCalculators(ZoneCalculatorDefinitions.speedTypes.DistanceTime, this.model.get("workoutTypeId"));
         },
 
         clickZoneCalculator: function(e)
@@ -303,7 +324,7 @@ function(
             if(this.model.get("speedOrDuration") === "speed")
             {
                 speedInMetersPerSecond = this.model.get("speed");
-
+                
                 if(speedInMetersPerSecond >= 0.1)
                 {
                     durationInSeconds = distanceDefinition.distanceInMeters / speedInMetersPerSecond;
@@ -333,22 +354,6 @@ function(
         }
 
 
-    });
-
-    var HundredMeterTimeTabView = SpeedZoneCalculatorTabView.extend({
-
-        calculators: filterCalculators(ZoneCalculatorDefinitions.speedTypes.SecondsPer100m),
-
-        inputs: ["secondsPer100m"],
-
-        formUtilsFilterSelector: ".hundredMeterTab",
-
-        initialize: function()
-        {
-            SpeedZoneCalculatorTabView.prototype.initialize.apply(this, arguments);   
-            this.model.set("paceOrSpeed", "pace");
-            this.model.set("testDistance", ZoneCalculatorDefinitions.speedDistances.OneHundredMeters.id);
-        }
     });
 
     var SpeedZonesCalculatorTabbedLayout = ZoneCalculatorViews.TabbedLayout.extend({

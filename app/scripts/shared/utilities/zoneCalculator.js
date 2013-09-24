@@ -150,7 +150,7 @@ function(
         formatRequest: function(values)
         {
             return {
-                speed: values.threshold,
+                speed: values.speed,
                 distance: values.testDistance ? values.testDistance : 0,
                 zoneType: this.definition.id
             };

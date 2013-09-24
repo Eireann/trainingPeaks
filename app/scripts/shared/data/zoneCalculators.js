@@ -202,6 +202,7 @@ function()
                 speedZoneCalculatorDistances.OneThousandMeters,
                 speedZoneCalculatorDistances.OneThousandYards
             ]
+            //workoutTypeIds: [1]
         },
         PZIFromTestDistance: {
             id: 4,
