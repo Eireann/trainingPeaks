@@ -178,12 +178,14 @@ function(
             }
         },
 
-        showUpgradeMessage: function()
+        showUpgradeMessage: function(onClose)
         {
             if(!this.upgradeView || this.upgradeView.isClosed)
             {
                 this.upgradeView = new UserUpgradeView();
                 this.upgradeView.render();
+
+                this.upgradeView.once("close", onClose);
             }
         }
 

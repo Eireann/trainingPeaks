@@ -21,8 +21,14 @@ function()
                 window.lastAjaxRequest = { settings: settings, xhr: xhr };
         });
 
-        $(document).ajaxError(function(event, xhr)
+        $(document).ajaxError(function(event, xhr, options)
         {
+            if(options && options.errorHandlers && options.errorHandlers[xhr.status])
+            {
+                options.errorHandlers[xhr.status](xhr, options);
+                return;
+            }
+
             if (xhr.status === 401)
             {
                 app.trigger("api:unauthorized");
