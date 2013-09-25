@@ -71,7 +71,7 @@ function(TP)
             // sort peaks by interval time
             peaks = _.sortBy(peaks, function(peak) { return peak.intervalInSeconds; });
 
-            model.set("meanMax" + metric + "s.meanMaxes", peaks, { silent: true });
+            model.set("meanMax" + metric + "s", {meanMaxes: peaks}, { silent: true });
         };
 
         this._initializePeakDataOnModel = function (metric, model)
