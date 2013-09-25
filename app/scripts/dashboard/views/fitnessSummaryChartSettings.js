@@ -6,7 +6,7 @@ define(
     "TP",
     "dashboard/views/chartSettingsView",
     "views/dashboard/dashboardDatePicker",
-    "hbs!templates/views/dashboard/fitnessSummaryChartSettings"
+    "hbs!dashboard/templates/fitnessSummaryChartSettings"
 ],
 function(
     setImmediate,    
@@ -21,12 +21,6 @@ function(
     var FitnessSummaryChartSettings = ChartSettingsView.extend({
 
         className: ChartSettingsView.className + " dashboardChartSettings fitnessSummaryChartSettings",
-
-        template:
-        {
-            type: "handlebars",
-            template: fitnessSummaryChartSettingsTemplate
-        },
 
         events: _.extend({}, ChartSettingsView.prototype.events, {
             "change select.summaryType": "onSummaryTypeChange"
@@ -47,6 +41,7 @@ function(
         onRender: function()
         {
             this.selectBoxIt();
+            this._addView(".customSettings", fitnessSummaryChartSettingsTemplate(this.serializeData()));
             this._addView(".dateOptionsRegion", new DashboardDatePicker({
                 model: this.model
             }));
