@@ -221,7 +221,6 @@ function(
 
         onLibraryAnimateComplete: function()
         {
-            this.resizeContainer();
             this.updateWeekHeights();
             this.weeksCollectionView.unlockScrollPosition();
         },

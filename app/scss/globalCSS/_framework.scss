@@ -1,10 +1,13 @@
 ﻿@import "../globalCSS/tpstylesheet";
+@import "compass/css3/box";
 
 @media screen {
 
     html, body
     {
         height: 100%;
+        width: 100%;
+        overflow: hidden;
     }
 
     #navigation
@@ -28,6 +31,7 @@
     .frameworkMainWrapper
     {
         @include grid-row();
+        @include display-box;
         background-color: white;
         max-width: none;
         height: 100%;
@@ -320,7 +324,9 @@
         user-select: none;
         -moz-user-select: none;
         -webkit-user-select: none;
-    	padding: 0 2px;
+        padding: 0 2px;
+
+        @include box-flex(1);
 
         background-color: $white;
         overflow-x: auto;
