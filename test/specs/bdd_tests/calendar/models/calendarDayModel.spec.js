@@ -64,7 +64,6 @@ function(
             {
                 workouts = [];
                 calendarDay = new CalendarDay({ date: "2011-03-02" });
-                calendarDay.configureDayLabel();
                 for (var i = 0; i < 10; i++)
                 {
                     var workout = new WorkoutModel({ workoutDay: "2011-03-02T00:00:00", workoutId: "12345" + Number(i).toString() });

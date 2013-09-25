@@ -1,4 +1,5 @@
 ﻿@import "../globalCSS/tpstylesheet";
+@import "compass/css3/box";
 
 
 @media screen {
@@ -31,6 +32,7 @@
         .week
         {
             @include grid-row();
+            @include display-box();
     		background-color: $TPGrey1;
             padding-left: 4px;
             max-width: none;
@@ -38,14 +40,13 @@
 
         .day
         {
+            width: 10px; // Fixed with to ensure flex box distributes width evenly between days
+            @include box-flex(1);
             min-height:150px;
-    		background-color: $TPGrey1;
-            //padding: 0px 0px 5px;
+            background-color: $TPGrey1;
             padding: 0px;
-            @include calc(width, "(100% - 294px) /7");
             overflow-x: hidden;
             overflow-y: visible;
-            float: left;
             color: $TPGrey8;
             position: relative;
             cursor: default;
@@ -325,6 +326,8 @@
         right: 1px;
         top: 0px;
         bottom: 1px;
+        box-sizing: border-box;
+        height: 100%;
         position: absolute;
         z-index: 1;
     }

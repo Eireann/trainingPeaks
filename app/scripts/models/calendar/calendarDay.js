@@ -37,19 +37,6 @@ function(_, moment, TP, ActivityModel, SelectedActivitiesCollection, WorkoutMode
             this.itemsCollection = new TP.Collection();
         },
 
-        // gets called via onBeforeRender of calendarDayView - only add a label if we need it for render,
-        // but not for copy/paste etc
-        configureDayLabel: function(forceAdd)
-        {
-            if (forceAdd || !this.hasLabel)
-            {
-                // add a model to hold our label
-                var dayLabel = new TP.Model({ date: this.get("date") });
-                dayLabel.isDateLabel = true;
-                this.itemsCollection.unshift(dayLabel);
-                this.hasLabel = true;
-            }
-        },
 
         add: function(item, noParentReference)
         {
@@ -66,7 +53,6 @@ function(_, moment, TP, ActivityModel, SelectedActivitiesCollection, WorkoutMode
         reset: function(models, options)
         {
             this.itemsCollection.reset(models, options);
-            this.configureDayLabel(true);
         },
         
         deleteDayItems: function()
