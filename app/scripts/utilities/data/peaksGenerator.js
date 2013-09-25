@@ -33,29 +33,16 @@ function(TP)
         };
         this._formatSecondsForLabel = function(seconds)
         {
+            var roundedMinutes, shouldPluralizeMinutes, minutesUnit;
             if (seconds < 61)
             {
                 return seconds + " Seconds";
-            } else if (seconds < 3601) // 1 hour and 1 second
-            {
-                var roundedMinutes = Math.round((seconds / 60));
-                var shouldPluralizeMinutes = roundedMinutes !== 1;
-                var minutesCopy = shouldPluralizeMinutes ? " Minutes" : " Minute";
-                return roundedMinutes + minutesCopy;
             } else
             {
-                var hours = seconds / 3600;
-                var fullHours = Math.floor(hours);
-                var exactMinutes = (hours % 1) * 60;
-                var roundedMinutes = Math.round(exactMinutes);
-                var shouldPluralizeHours = fullHours !== 1;
-                var shouldPluralizeMinutes = roundedMinutes !== 1;
-                var hoursCopy = shouldPluralizeHours ? " Hours " : " Hour ";
-                var minutesCopy = shouldPluralizeMinutes ? " Minutes" : " Minute";
-
-                var withMinutesString = fullHours + hoursCopy + roundedMinutes + minutesCopy;
-                var withoutMinutesString = fullHours + hoursCopy;
-                return roundedMinutes === 0 ? withoutMinutesString : withMinutesString;
+                roundedMinutes = Math.round((seconds / 60));
+                shouldPluralizeMinutes = roundedMinutes !== 1;
+                minutesUnit = shouldPluralizeMinutes ? " Minutes" : " Minute";
+                return roundedMinutes + minutesUnit;
             }
         };
 

@@ -79,12 +79,11 @@ function($, theMarsApp, TP, _, ThePeaksGenerator)
             ThePeaksGenerator._initializePeakDataOnModel("HeartRate", tpModel);
             expect(tpModel.has("meanMaxHeartRates")).toBeTruthy();
             expect(_.isArray(tpModel.get("meanMaxHeartRates.meanMaxes"))).toBeTruthy();
-            //expect(tpModel.get("meanMaxHeartRates.id")).toEqual(0);
 
-            expect(tpModel.get("meanMaxHeartRates.meanMaxes")[0].label).toEqual("MM2Seconds");
+            expect(tpModel.get("meanMaxHeartRates.meanMaxes")[0].label).toEqual("2 Seconds");
             expect(tpModel.get("meanMaxHeartRates.meanMaxes")[0].value).toEqual(231);
 
-            expect(tpModel.get("meanMaxHeartRates.meanMaxes")[1].label).toEqual("MM5Seconds");
+            expect(tpModel.get("meanMaxHeartRates.meanMaxes")[1].label).toEqual("5 Seconds");
             expect(tpModel.get("meanMaxHeartRates.meanMaxes")[1].value).toEqual(231);
         });
 
