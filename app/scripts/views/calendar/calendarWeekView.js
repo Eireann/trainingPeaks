@@ -43,38 +43,7 @@ function(moment, setImmediate, TP, CalendarDayView, WeekSummaryView, CalendarWee
                 throw new Error("CalendarWeekView requires a collection");
             this.waiting = $('<div class="calendarWeekView waiting"> </div>');
 
-            // when any of our child views update, recalculate all of their heights
-            this.on("itemview:render", this.scheduleUpdateDayCellHeights, this);
-            this.model.on("library:resize", this.updateDayCellHeights, this);
-
             this.listenTo(this.model, 'change:isWaiting', _.bind(this._updateWaiting, this));
-        },
-
-        scheduleUpdateDayCellHeights: function()
-        {
-            // as a timeout, because on the initial render of weeksummary, and probably some other elements, height is not calculated until it's painted,
-            var theView = this;
-            setImmediate(function()
-            {
-                theView.updateDayCellHeights();
-            });
-        },
-
-        updateDayCellHeights: function()
-        {
-            var absoluteMinHeight = 150;
-            var padding = 0;
-
-            // start by resetting to min-height 150 in case cell height needs to shrink because we removed content
-            this.$(".day").css("min-height", absoluteMinHeight);
-
-            // then check if actual height of week div is taller, and stretch days to fit
-            var myHeight = this.$el.height() + padding;
-            if (myHeight > absoluteMinHeight)
-            {
-                // use min-height instead of height, or else some days get scrollbars?
-                this.$(".day").css("min-height", myHeight);
-            }
         },
 
         _updateWaiting: function()
