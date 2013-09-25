@@ -31,6 +31,8 @@ function(
             "colorByComplianceAndWorkoutType"
         ],
 
+        attributes: { style: "height: 100%;" },
+
         template:
         {
             type: "handlebars",

@@ -50,6 +50,7 @@ function(
 
         resizeContainerHeight: function()
         {
+            return;
             var $window = $(window);
             var headerHeight = $("#navigation").height();
             var windowHeight = $window.height();

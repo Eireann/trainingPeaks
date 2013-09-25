@@ -24,9 +24,15 @@
     #calendarContainer
     {
 
+        .weeks-region
+        {
+            @include calc(height, "100% - 27px");
+        }
+
         #weeksContainer
         {
             min-width: 1007px;
+            height: 100%;
         }
 
         .week

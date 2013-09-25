@@ -2,6 +2,20 @@
 
 @media screen {
 
+    html, body
+    {
+        height: 100%;
+    }
+
+    #navigation
+    {
+        height: 76px;
+    }
+
+    #main
+    {
+        @include calc(height, "100% - 76px");
+    }
 
     .frameworkHeader
     {
@@ -14,8 +28,9 @@
     .frameworkMainWrapper
     {
         @include grid-row();
-    	background-color: white;
+        background-color: white;
         max-width: none;
+        height: 100%;
     }
 
     .frameworkTable
@@ -299,6 +314,7 @@
 
     .frameworkScrollableContainer
     {
+        @include calc(height, "100% - 75px");
         @include grid-column(15);
         @include nice-scrollbar;
         user-select: none;
