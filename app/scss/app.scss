@@ -64,6 +64,9 @@
     html
     {
         height: 100%;
+        &.wf-loading {
+            opacity:0;
+        }
     }
 
     body
