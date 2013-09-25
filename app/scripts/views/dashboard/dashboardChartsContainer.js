@@ -35,7 +35,11 @@ function(
         );
     }
 
-    var DashboardView = PrimaryContainerView.extend({
+    var DashboardView = PrimaryContainerView.extend(
+    {
+
+        attributes: { style: "height: 100%;" },
+
         template:
         {
             type: "handlebars",

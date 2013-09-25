@@ -2,6 +2,11 @@
 $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-modal@2x.png);
 
 
+.chartsRegion
+{
+    @include calc(height, "100% - 27px");
+}
+
 .dashboardDatePicker
 {
     .selectboxit-container
