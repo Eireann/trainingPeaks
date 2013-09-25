@@ -6,7 +6,8 @@ requirejs(
     "testUtils/testHelpers",
     "testUtils/xhrDataStubs",
     "app",
-    "views/dashboard/chartUtils"
+    "views/dashboard/chartUtils",
+    "testUtils/sharedSpecs/sharedChartSpecs"
 ],
 function(
     _,
@@ -14,9 +15,29 @@ function(
     testHelpers,
     xhrData,
     theMarsApp,
-    chartUtils
+    chartUtils,
+    SharedChartSpecs
     )
 {
+
+    describe("Time In Zones Charts", function()
+    {
+        var chartTypes =
+        [
+            17, // HR Zones
+            24, // Power Zones
+            26  // Speed Zones
+        ];
+
+        _.each(chartTypes, function(chartType)
+        {
+            describe("chart type: " + chartType, function() {
+                SharedChartSpecs.chartSettings({
+                    chartType: chartType
+                });
+            });
+        });
+    });
 
     describe("Time In Zones Chart", function()
     {
