@@ -320,7 +320,10 @@ function(
 
         closeOnRouteChange: function(onClose)
         {
-            theMarsApp.router.once("route", onClose, this);
+            if(theMarsApp.router)
+            {
+                theMarsApp.router.once("route", onClose, this);
+            }
         },
 
         enableEscapeKey: function()

@@ -28,13 +28,15 @@ function(
 
             this.promise = new $.Deferred();
 
-            var ajaxPromise = Backbone.ajax(
+            var ajaxPromise = this._ajax(
             {
                 url:  endpoint,
                 method: "POST",
-                data: data,
-                success: _.bind(this._success, this)
+                data: data
             });
+
+            ajaxPromise.done(_.bind(this._success, this));
+            ajaxPromise.fail(_.bind(this._failure, this));
 
             return this.promise;
         },
@@ -74,17 +76,29 @@ function(
             return results;
         },
 
+        _ajax: function(options)
+        {
+            return Backbone.ajax(options);
+        },
+
         _success: function(data)
         {
             if(data)
             {
+                console.log("SUCCESS");
+                console.log(data);
                 this.results = this.parseResponse(data);
                 this.promise.resolve();
             }
             else
             {
-                this.promise.reject();
+                this._failure();
             }
+        },
+
+        _failure: function()
+        {
+            this.promise.reject();
         }
 
     });

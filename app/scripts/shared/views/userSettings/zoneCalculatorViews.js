@@ -31,7 +31,7 @@ function(
         {
             // start with no zones until we run calculator
             this.collection = new TP.Collection();
-            this.calculatorDefinition = _.sortBy(this.calculators, "label")[0];
+            this.calculatorDefinition = this.calculators[0];
             CalculatorTabContentView.__super__.constructor.apply(this, arguments);
         },
 
@@ -41,6 +41,7 @@ function(
             this._applyModelValuesToForm();
             this._showInputs();
             this._enableCalculate();
+            this._calculateIfAllInputsAreValid();
         },
 
         events: {
@@ -54,16 +55,19 @@ function(
         {
 
             var data = this.model.toJSON();
-            data.calculators = _.sortBy(this.calculators, "label");
+            data.calculators = this.calculators;
             return data;
         },
 
         clickZoneCalculator: function(e)
         {
             this.collection.reset();
+            this._applyFormValuesToModel();
             this._selectZoneCalculator(e);
-            this._highlightSelectedZone();
+            this._highlightSelectedZone(e);
             this._enableCalculate();
+            this._calculateIfAllInputsAreValid();
+            this.trigger("selectZoneCalculator");
         },
 
         _enableCalculate: function()
@@ -87,12 +91,20 @@ function(
             }
         },
 
+        _calculateIfAllInputsAreValid: function()
+        {
+            if(this._validateInputs(false))
+            {
+                this.calculateZones();
+            }
+        },
+
         calculateZones: function()
         {
 
             this._applyFormValuesToModel();
 
-            if(!this.validateInputs())
+            if(!this._validateInputs(true))
             {
                 return;
             }
@@ -186,25 +198,33 @@ function(
 
         _showInputs: function()
         {
-            _.each(this.inputs, function(inputClass)
+            _.each(this._getInitialEnabledInputs(), function(inputClass)
             {
                 this.$("." + inputClass).removeClass("disabled");
             }, this);
         },
 
-        validateInputs: function()
+        _getInitialEnabledInputs: function()
         {
-            return this._validateRequiredFields();
+            return this.inputs;
         },
 
-        _validateRequiredFields: function()
+        _validateInputs: function(showMessage)
+        {
+            return this._validateRequiredFields(showMessage);
+        },
+
+        _validateRequiredFields: function(showMessage)
         {
             var success = true;
             _.each(this._getRequiredInputs(), function(attr)
             {
                 if(!this.model.get(attr))
                 {
-                    this.showRequiredFieldMessage(attr);
+                    if(showMessage)
+                    {
+                        this.showRequiredFieldMessage(attr);
+                    }
                     success = false;
                 }
             }, this);
