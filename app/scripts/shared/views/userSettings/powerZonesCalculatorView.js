@@ -27,9 +27,9 @@ function(
 
         zoneCalculator: ZoneCalculator.Power,
 
-        calculators: ZoneCalculatorDefinitions.power,
+        calculators: _.values(ZoneCalculatorDefinitions.power),
 
-        inputs: [ "threshold" ],
+        inputs: [ "threshold", "testResult" ],
 
         units: "power",
 
@@ -43,6 +43,52 @@ function(
         template: {
             type: "handlebars",
             template: powerZonesCalculatorTemplate
+        },
+
+        initialize: function(options)
+        {
+            ZoneCalculatorViews.TabContentView.prototype.initialize.apply(this, arguments);
+            this.on("selectZoneCalculator", this._enableTestResultOrThreshold, this);
+        },
+
+        _getInitialEnabledInputs: function()
+        {
+            return this._getRequiredInputs();
+        },
+
+        _enableTestResultOrThreshold: function()
+        {
+            if(this.calculatorDefinition === ZoneCalculatorDefinitions.power.CharmichaelTrainingSystemsZone)
+            {
+                this.$(".threshold").addClass("disabled");
+                this.$(".testResult").removeClass("disabled");
+            }
+            else
+            {
+                this.$(".threshold").removeClass("disabled");
+                this.$(".testResult").addClass("disabled");
+            }
+        },
+
+        _applyFormValuesToModel: function()
+        {
+            ZoneCalculatorViews.TabContentView.prototype._applyFormValuesToModel.call(this);
+            if(this.model.get("testResult"))
+            {
+                this.model.set("threshold", this.model.get("testResult"));
+            }
+        },
+
+        _getRequiredInputs: function()
+        {
+            if(this.calculatorDefinition === ZoneCalculatorDefinitions.power.CharmichaelTrainingSystemsZone)
+            {
+                return ["testResult"];
+            }
+            else
+            {
+                return ["threshold"];
+            }
         }
 
     });

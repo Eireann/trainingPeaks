@@ -78,7 +78,7 @@ function(
 
         zoneCalculator: ZoneCalculator.Speed,
 
-        calculators: ZoneCalculatorDefinitions.speed,
+        calculators: _.values(ZoneCalculatorDefinitions.speed),
 
         units: "speed",
 
@@ -230,6 +230,8 @@ function(
             this._setDistanceOptions();
             this._enableSpeedOrDuration();
             this._enableCalculate();
+            this._calculateIfAllInputsAreValid();
+            this.trigger("selectZoneCalculator");
         },
 
         selectSpeedOrDuration: function()

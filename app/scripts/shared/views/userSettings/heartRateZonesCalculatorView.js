@@ -67,7 +67,16 @@ function(
 
     var LactateThresholdAndMaximumHeartRateTabView = HeartRateCalculatorTabView.extend({
         calculators: filterCalculators(ZoneCalculatorDefinitions.heartRateTypes.LTAndMaxHeartRate),
-        inputs: [ "maximumHeartRate", "testResult" ]
+        inputs: [ "maximumHeartRate", "testResult" ],
+
+        _applyFormValuesToModel: function()
+        {
+            ZoneCalculatorViews.TabContentView.prototype._applyFormValuesToModel.call(this);
+            if(this.model.get("testResult"))
+            {
+                this.model.set("threshold", this.model.get("testResult"));
+            }
+        }
     });
 
     var HeartRateZonesCalculatorTabbedLayout = ZoneCalculatorViews.TabbedLayout.extend({
