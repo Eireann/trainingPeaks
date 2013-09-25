@@ -1,8 +1,19 @@
-﻿
-<div class="graphSliderContain">
-	<input type="range" class="slider" name="filterPeriod" title="Smoothing" min="0" max="60" step="5" value="5"/>
+﻿<div class="graphButtonContain left cf">
+	<div class="timeDistButtons">
+		<button class="graphTimeButton bold">{{$ "Time"}}</button>
+		<button class="graphDistanceButton">{{$ "Dist"}}</button>
+	</div>
+
+
+	<div class="zoomButtons">
+		<button class="graphZoomButton">{{$ "Zoom"}}</button>
+		<button class="graphResetButton hidden">{{$ "Unzoom"}}</button>
+	</div>
 </div>
 
+<div class="graphSliderContain cf">
+	<input type="range" class="slider" name="filterPeriod" title="Smoothing" min="0" max="60" step="5" value="5"/>
+</div>
 
 <div class="graphButtonContain cf">
 	<div class="seriesButtons">
@@ -14,16 +25,5 @@
 		<button class="graphSeriesButton graphTorqueButton">FT-LBS</button>
 		<button class="graphSeriesButton graphCadenceButton">CAD</button>
 		<button class="graphSeriesButton graphTemperatureButton">F</button>
-	</div>
-
-	<div class="timeDistButtons">
-		<button class="graphTimeButton bold">{{$ "Time"}}</button>
-		<button class="graphDistanceButton">{{$ "Dist"}}</button>
-	</div>
-
-
-	<div class="zoomButtons">
-		<button class="graphResetButton hidden">{{$ "Unzoom"}}</button>
-		<button class="graphZoomButton">{{$ "Zoom"}}</button>
 	</div>
 </div>

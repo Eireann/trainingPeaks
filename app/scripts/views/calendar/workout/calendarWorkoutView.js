@@ -101,8 +101,8 @@ function(
 
         events:
         {
-            "mousedown": "workoutSelected",
-            "mouseup": "workoutClicked",
+            "mousedown": "workoutMousedown",
+            "mouseup": "workoutMouseup",
             "click": "workoutTouched",
             "mouseup .workoutSettings": "workoutSettingsClicked",
             "click .workoutSettings": "workoutSettingsTouched"
@@ -143,7 +143,7 @@ function(
             this.workoutSettings.on("mouseleave", this.onMouseLeave, this);
         },
 
-        workoutClicked: function(e)
+        workoutMouseup: function(e)
         {
             if (this.$el.hasClass("dragging"))
             {
@@ -213,7 +213,7 @@ function(
             }
         },
 
-        workoutSelected: function()
+        workoutMousedown: function()
         {
             this.model.trigger("select", this.model);
         },

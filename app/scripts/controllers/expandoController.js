@@ -86,16 +86,16 @@ function(setImmediate, TP, DataParser, ExpandoLayout, GraphView, MapView, StatsV
         {
             this.layout.$el.removeClass("waiting");
 
-            // use some setImmediate's to allow everything to paint nicely
-            this.layout.statsRegion.show(this.views.statsView);
-            this.layout.lapsRegion.show(this.views.lapsView);
-
             var self = this;
 
             var flatSamples = this.model.get("detailData").get("flatSamples");
             this.dataParser.loadData(flatSamples);
 
             this.showMapAndGraph();
+
+            // use some setImmediate's to allow everything to paint nicely
+            this.layout.statsRegion.show(this.views.statsView);
+            this.layout.lapsRegion.show(this.views.lapsView);
 
             setImmediate(function()
             {
@@ -130,6 +130,18 @@ function(setImmediate, TP, DataParser, ExpandoLayout, GraphView, MapView, StatsV
                 canShowGraph = this.model.get("detailData").hasSamples(),
                 canShowMap = this.dataParser.hasLatLongData;
 
+            if (canShowMap)
+            {
+                this.layout.showMap();
+                setImmediate(function()
+                {
+                    self.layout.mapRegion.show(self.views.mapView);
+                });
+            } else
+            {
+                this.layout.hideMap();
+            }
+
             if (canShowGraph)
             {
                 this.layout.showGraph();
@@ -145,18 +157,6 @@ function(setImmediate, TP, DataParser, ExpandoLayout, GraphView, MapView, StatsV
                 this.layout.hideGraph();
             }
 
-            if (canShowMap)
-            {
-                this.layout.showMap();
-                setImmediate(function()
-                {
-                    self.layout.mapRegion.show(self.views.mapView);
-                });
-            } else
-            {
-                this.layout.hideMap();
-            }
-
             if (canShowGraph && canShowMap)
             {
                 setImmediate(function()
@@ -164,8 +164,6 @@ function(setImmediate, TP, DataParser, ExpandoLayout, GraphView, MapView, StatsV
                     self.layout.mapAndGraphResizerRegion.show(self.views.mapAndGraphResizerView);
                 });
             }
-
-
         },
 
         preFetchDetailData: function()

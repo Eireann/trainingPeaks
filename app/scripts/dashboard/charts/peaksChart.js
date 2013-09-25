@@ -318,7 +318,6 @@ function(
           {
             var workoutId = item.series.raw[item.dataIndex].workoutId;
             var workoutPromise = this.dataManager.loadModel(WorkoutModel, { workoutId: workoutId });
-            console.log(workoutPromise.model);
             return new WorkoutQuickView({model: workoutPromise.model});
           }
           else

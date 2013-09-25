@@ -54,7 +54,6 @@
 
     .details {
         margin: 12px 0 9px 0;
-        
         color: $TPGrey3;
 
         p {
@@ -65,12 +64,19 @@
         }
 
         @include buttons(0px, 150px, $fontSizeSmall);
-        button {
-            font-weight: normal;
-            @include calc(width, "50% - 3px"); 
-            &:first {
-                margin-right: 6px; 
+
+        .bigButtons {
+            padding-top:2px;
+
+            button {
+                font-weight: normal;
+                @include calc(width, "50% - 6px"); 
+                
+                &:first-of-type {
+                    margin-right: 8px; 
+                }
             }
+
         }
 
         #deviceAgentLink {
@@ -89,17 +95,14 @@
                 overflow-y: auto;
             }
 
-            .file
-            {
+            .file {
                 margin: 4px 0px;
 
-                .fileSelect
-                {
+                .fileSelect {
                     margin: 0px;
                 }
 
-                label
-                {
+                label {
                     font-size: $fontSizeSmaller;
                     line-height: 1;
                     display: inline-block;
@@ -107,49 +110,39 @@
                     margin-left: 5px;
                 }
 
-                &.selected
-                {
-                    .download
-                    {
+                &.selected {
+                    .download {
                         font-family: $fontFamilyHeavy;
                     }
                 }
 
-                .download
-                {
+                .download {
                     padding-left:2px;
-                    &.disabled
-                    {
+                    
+                    &.disabled {
                         color: $TPGrey3;
                     }
                 }
             }
 
-            .fileButtons
-            {
+            .fileButtons {
                 margin-top: 10px;
 
-                button 
-                {
+                button {
                     font-weight: normal;
                     padding-left: 5px;
                     padding-right: 5px;
                     @include calc(width, "33% - 5px"); 
-                    margin-right: 5px;
-                    &.delete
-                    {
-                        margin-right: 0px; 
+                    
+                    &.recalculate {
+                        margin-right: 8px;
                     }
                 }
             }
-       } 
-
+        } 
     }
-
-
 }
 
-.radioButtonWrapper
-{
+.radioButtonWrapper {
     white-space: nowrap;    
 }

@@ -67,6 +67,8 @@ function(
                 }
             });
 
+            this.on("close", this.collection.releaseSourceModel, this.collection);
+
             this.filteredCollection = new FilteredSubCollection(null, {
                 sourceCollection: this.collection,
                 filterFunction: userCanUsePod

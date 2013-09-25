@@ -1,4 +1,11 @@
-﻿.ui-draggable
+﻿.dragHelper
+{
+    margin: 0;
+    padding: 0;
+    z-index: 9999;
+}
+
+.ui-draggable
 {
     cursor: pointer;
 }

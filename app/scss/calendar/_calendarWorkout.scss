@@ -3,13 +3,17 @@
 @import "workoutIcons";
 
 @media screen {
+
+    .dragHelper .workout {
+        p {
+            display: none;
+        }
+    }
+
     .workout
     {
         margin: 5px 4px 4px 2px;
-        border-width: 1px;
-        border-style: solid;
-        border-color: $TPGrey2;
-       // @include box-shadow(0 1px 1.5px 0 #2c2c2c);
+        border:1px solid $TPGrey2;
 
         &.dragHelper
         {
@@ -40,7 +44,6 @@
                 background: transparent;
                 border: none;
                 padding: 0px;
-                cursor: pointer;
                 box-shadow: none;
                 margin: 0px;
             }
@@ -48,6 +51,7 @@
 
         &:hover
         {
+            cursor:pointer;
             .workoutSettings
             {
                 display: block;
@@ -65,7 +69,7 @@
         .workoutDiv {
             min-height: 35px;
             word-wrap: break-word;
-            
+
             .workoutHeader
             {
                 padding: 0px 3px;
@@ -82,46 +86,42 @@
 
                 .workoutDistanceTime
                 {
-                    padding: 14px 0px 0px 30px;
+                    padding: 15px 0px 0px 30px;
 
                     @include labels($fontFamilyRegular, $fontSizeXLarge, $TPGrey4, normal);
                     label
                     {
                         display:inline-block;
-                        cursor: default;
                         width:100%;
+                        cursor:pointer;
+                        line-height: 1;
+                        margin-bottom:0;
                     }
                     
                     .units
                     {
                         font-size: 0.88em;
-                        margin-left: 0.15em;
+                        margin-left: 2px;
                     }
                 }
 
             }
-            .workoutBody
-            {
-
+            .workoutBody {
                 color: $TPGrey4;
                 padding: 2px 3px 3px 3px;
                 @include labels($fontFamilyHeavy, $fontSizeXSmall, $TPGrey4, normal);
-                label
-                {
-                    cursor: default;
+                label {
                     white-space: pre-wrap;
-                
+                    cursor:pointer;
                 }
                 
-                p
-                {
+                p {
                     margin-bottom: 0px;
                     font-size: $fontSizeXSmall;
                     color: $TPGrey4;
                     font-family: $fontFamilyRegular;
                     text-align: left;
                     line-height: 12px;
-                    cursor: default;
                     white-space: pre-wrap;
                 }
             }
@@ -135,10 +135,6 @@
     	padding-bottom: 20px;
 
     	@include labels($fontFamilyRegular, $fontSizeSmall, $TPGrey3, normal);
-    	label
-    	{
-            cursor: pointer;
-    	}
 
     	.hoverBoxContents {
     		min-width: 75px;
@@ -246,7 +242,7 @@
                 .workoutDistanceTime {
                     padding: 0;
                     @include labels($fontFamilyRegular, $fontSizeSmall, #000, normal);
-                    
+                                      
                     label {
                         display:inline-block;
                     }
@@ -265,7 +261,6 @@
                 @include labels($fontFamilyHeavy, .571em, $TPGrey4, normal);
 
                 label {
-                    cursor: inherit;
                     white-space: pre-wrap;
                 }
                 
@@ -312,11 +307,10 @@
 
     } // end .workout
 
-    #workoutSettingsDiv, #daySettingsDiv, #summarySettingsDiv {
+    #workoutSettingsDiv, 
+    #daySettingsDiv, 
+    #summarySettingsDiv {
         display:none;
     }
-
-
-
 }
 

@@ -129,7 +129,7 @@ function(
 
             it("Should load the library data after user loads", function()
             {
-                spyOn(controller, "loadLibraryData");
+                spyOn(controller, "loadLibraryData").andReturn([]);
                 controller.show();
                 theMarsApp.userFetchPromise.resolve();
                 expect(controller.loadLibraryData).toHaveBeenCalled();
@@ -137,7 +137,7 @@ function(
 
             it("Should load the calendar data after user loads", function()
             {
-                spyOn(controller, "loadCalendarData");
+                spyOn(controller, "loadCalendarData").andReturn([]);
                 controller.show();
                 theMarsApp.userFetchPromise.resolve();
                 expect(controller.loadCalendarData).toHaveBeenCalled();

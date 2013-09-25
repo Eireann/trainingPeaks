@@ -92,13 +92,13 @@ function(
         
         watchForModelChanges: function()
         {
-            this.model.get("detailData").on("change:flatSamples.samples", this.createFlotGraph, this);
+            this.model.get("detailData").on("change:flatSamples", this.createFlotGraph, this);
             this.on("close", this.stopWatchingModelChanges, this);
         },
 
         stopWatchingModelChanges: function()
         {
-            this.model.get("detailData").off("change:flatSamples.samples", this.createFlotGraph, this);
+            this.model.get("detailData").off("change:flatSamples", this.createFlotGraph, this);
         },
 
         onFirstRender: function()

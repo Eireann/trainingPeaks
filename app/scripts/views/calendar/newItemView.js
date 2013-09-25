@@ -32,7 +32,8 @@ function(
         events:
         {
             "change input[type='file']": "onFileSelected",
-            "click button": "onNewWorkoutClicked",
+            "click button[data-workoutid]": "onNewWorkoutClicked",
+            "click button[name=uploadDeviceFile]": "onUploadFileClicked",
             "click #closeIcon": "onCloseClicked"
         },
 
@@ -58,16 +59,16 @@ function(
             this.listenTo(this.workoutFileUploadView, "uploadDone", this.onUploadDone, this);
             this.listenTo(this.workoutFileUploadView, "uploadFailed", this.onUploadFail, this);
         },
+
+        onUploadFileClicked: function(e)
+        {
+            TP.analytics("send", { "hitType": "event", "eventCategory": "newItemView", "eventAction": "deviceFileUploadClicked", "eventLabel": "" });
+            this.ui.fileinput.click();
+            return;
+        },
+
         onNewWorkoutClicked: function (e)
         {
-            // Handle file uploads as a specific case & return
-            if (e.currentTarget.name === "uploadDeviceFile")
-            {
-                TP.analytics("send", { "hitType": "event", "eventCategory": "newItemView", "eventAction": "deviceFileUploadClicked", "eventLabel": "" });
-                this.ui.fileinput.click();
-                return;
-            }
-
             // Handle a specific workout/metric/meal type creation
             var workoutTypeId = $(e.currentTarget).data("workoutid");
             this.newWorkout = new WorkoutModel(

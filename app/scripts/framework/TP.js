@@ -10,6 +10,7 @@ define(
     "framework/Logger",
     "framework/utilities",
     "framework/analytics",
+    "framework/profiling",
     "shared/data/tpSharedData"
 ],
 function(
@@ -23,10 +24,13 @@ function(
          Logger,
          utilities,
          analytics,
+         profiling,
          sharedData
 )
 {
     var TP = {};
+
+    _.extend(TP, profiling);
 
     // Override default "input" handling
     Backbone.Stickit.addHandler(
@@ -117,7 +121,7 @@ function(
             {
                 this.waitingOn();
 
-                if (xhr)
+                if (xhr && _.isFunction(xhr.always))
                 {
                     xhr.always(_.bind(this.waitingOff, this));
                 }
@@ -429,8 +433,7 @@ function(
     var itemViewConstructor = {
         constructor: function()
         {
-            var args = Array.prototype.slice.apply(arguments);
-            Backbone.Marionette.ItemView.prototype.constructor.apply(this, args);
+            Backbone.Marionette.ItemView.prototype.constructor.apply(this, arguments);
             if (this.initialEvents)
             {
                 this.initialEvents();

@@ -1,0 +1,341 @@
+﻿@import "../globalCSS/tpstylesheet";
+
+@media screen {
+    .metric
+    {
+        margin: 5px 4px 4px 2px;
+        border:1px solid $TPGrey2;
+        background-color: $TPGrey2;
+        cursor: pointer;
+
+        &:hover {
+            border-color:$TPGrey11;
+        }
+
+        &.dragHelper
+        {
+            opacity: 0.6;
+            min-width: 150px;
+
+            .metricSelected
+            {
+                display: block;
+            }
+        }
+
+        &.dragging
+        {
+            opacity:0.8;
+        }
+
+        .metricSettings {
+            display: none;
+            top: 0px;
+            right: 2px;
+    		position: absolute;
+            z-index: 2;
+
+            button {	
+                background: transparent;
+                border: none;
+                padding: 0px;
+                cursor: pointer;
+                box-shadow: none;
+                margin: 0px;
+            }
+        }
+
+        &:hover
+        {
+            .metricSettings
+            {
+                display: block;
+            }
+        }
+
+        &.menuOpen
+        {
+            .metricSettings
+            {
+                display: block;
+            }
+        }
+
+        .metricDiv {
+            min-height: 35px;
+            word-wrap: break-word;
+            
+            .metricHeader
+            {
+                padding: 0px 3px;
+                height: auto;
+                position: relative;
+                top: -1px;
+                
+                .metricIcon
+                {
+                    width: 25px;
+                    height: 25px;
+                    float: left;
+                    margin-top: 4px;
+                    background: $metricPositiveSmallURL no-repeat 0 0;
+                    background-size: 25px 25px;
+                    background-color:$clrMetric;
+                }
+
+                .metricTime {
+                    float:left;
+                    @include calc("width","100% - 25px");    
+                    color:$TPGrey4;
+                    // size is responsive and set below
+                }
+            }
+
+            .metricBody {
+                color: $TPGrey4;
+                padding: 4px 3px 3px 0;
+                @include labels($fontFamilyHeavy, $fontSizeXSmall, $TPGrey4, normal);
+                float:left;
+                clear:left;
+                width:100%;
+                
+                // keeps text from running into settings button
+                .metricSettingsContain {
+                    float:right;
+                    width:17px;
+                    height:17px;
+                }
+
+                label {
+                    cursor: default;
+                    white-space: pre-wrap;
+                }
+                
+                p {
+                    margin-bottom: 0px;
+                    font-size: $fontSizeXSmall;
+                    color: $TPGrey4;
+                    font-family: $fontFamilyRegular;
+                    text-align: left;
+                    line-height: 12px;
+                    cursor: default;
+                    white-space: pre-wrap;
+                }
+
+                ul {
+                    margin:0 0 0 3px;
+                    
+                    li {
+                        list-style-type: none;
+                        margin: 5px 0;
+                        font-family: $fontFamilyRegular;
+                        font-size: $fontSizeXSmall;
+                        color: $TPGrey4;
+                        line-height: 12px;
+                        
+                        &:first-of-type {
+                            margin-top:1px;
+                        }
+
+                        &:last-of-type {
+                            margin-bottom:1px;
+                        }
+
+                        span.metricValue {
+                            font-family:$fontFamilyHeavy;
+                        }
+                    }
+                }
+            }
+        }
+
+    } // end .metric
+
+    .metricTileSettings {
+    	padding-left: 10px;
+    	padding-bottom: 20px;
+
+    	@include labels($fontFamilyRegular, $fontSizeSmall, $TPGrey3, normal);
+    	label
+    	{
+            cursor: pointer;
+    	}
+
+    	.hoverBoxContents {
+    		min-width: 75px;
+    	}
+
+    }
+
+    .metric {
+        
+        .metricDiv {
+            position: relative;
+        }
+
+        .metricSelected {
+            @include selectedOverlay();
+        }
+
+        &.selected {
+            .metricSelected {
+                display: block;
+            }
+        }
+    }
+
+    .printOnly
+    {
+        display: none;
+    }
+}
+
+
+
+@media only screen and (min-width: 1115px) {
+    .metricTime {
+        font-size:$fontSizeXLarge;
+        font-family: $fontFamilyRegular;
+        line-height:11px;
+        padding:18px 0px 0px 5px;
+
+        .metricAMPM {
+            font-size: 0.88em;
+            margin-left:2px;
+        }
+    }
+}
+
+@media only screen and (max-width: 1115px) {
+    .metricTime {
+        font-size:$fontSizeSmall;
+        line-height:$fontSizeSmaller;
+        font-family: $fontFamilyHeavy;
+        padding:20px 0px 0px 5px;
+        
+        .metricAMPM {
+            font-size: 0.88em;
+            margin-left:1px;
+        }
+    }
+}
+
+
+
+
+@media print {
+    .metric {
+        width:97% !important;
+        margin: 5px 4px 4px 2px;
+        border:1px solid $TPGrey2;
+        // page-break-inside:avoid;
+
+        .metricSettings {
+            display: none;
+            button {   
+                display:none;
+            }
+        }
+
+        &:hover {
+            .metricSettings {
+                display: none;
+            }
+        }
+
+        &.menuOpen {
+            .metricSettings {
+                display: none
+            }
+        }
+
+        .metricDiv {
+           // min-height: 35px;
+            
+            .metricHeader {
+                padding: 0px 3px 0px 3px;
+                // height: 20px;
+                position: relative;
+                margin-top:-2px;
+                
+                .metricIcon {
+                    display:none;
+                }
+
+                .metricDistanceTime {
+                    padding: 0;
+                    @include labels($fontFamilyRegular, $fontSizeSmall, #000, normal);
+                    
+                    label {
+                        display:inline-block;
+                    }
+                    
+                    .units {
+                        font-size: 0.7em;
+                        margin-left: 0.15em;
+                    }
+                }
+
+            }
+
+            .metricBody {
+                color: $TPGrey4;
+                padding: 2px 3px 0px 3px;
+                @include labels($fontFamilyHeavy, .571em, $TPGrey4, normal);
+
+                label {
+                    cursor: inherit;
+                    white-space: pre-wrap;
+                }
+                
+                p {
+                    margin: .571em 0;
+                    font-size: .571em;
+                    color: #000;
+                    font-family: $fontFamilyRegular;
+                    text-align: left;
+                    line-height: 10px;
+                    white-space: pre-wrap;
+                }
+            }
+
+            .sportType {
+                font-size: .571em;
+                color: #000;
+                font-family: $fontFamilyRegular;
+                text-align: left;
+                line-height: 10px;
+                padding:3px 3px 0 3px;
+            }
+
+            .description
+            {
+                font-size: .571em;
+                color: #000;
+                font-family: $fontFamilyRegular;
+                text-align: left;
+                line-height: 10px;
+                // padding:0 3px 3px 3px;
+                margin: .571em 3px;
+
+                white-space: pre;           /* CSS 2.0 */
+                white-space: pre-wrap;      /* CSS 2.1 */
+                white-space: pre-line;      /* CSS 3.0 */
+                white-space: -pre-wrap;     /* Opera 4-6 */
+                white-space: -o-pre-wrap;   /* Opera 7 */
+                white-space: -moz-pre-wrap; /* Mozilla */
+                white-space: -hp-pre-wrap;  /* HP Printers */
+                word-wrap: break-word;      /* IE 5+ */
+            }
+        }
+
+    } // end .metric
+
+    #metricSettingsDiv, #daySettingsDiv, #summarySettingsDiv {
+        display:none;
+    }
+
+}
+
+
+

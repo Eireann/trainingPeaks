@@ -63,6 +63,43 @@ function(
             return theMarsApp.apiRoot + "/users/v1/user";
         },
 
+        fetch: function()
+        {
+            var self = this,
+                superFetch = function()
+                {
+                    var ajaxFetch = TP.APIDeepModel.prototype.fetch.call(self);
+                    ajaxFetch.done(function()
+                    {
+                        theMarsApp.session.saveUserToLocalStorage(self);
+                    });
+                    return ajaxFetch;
+                };
+
+            // If the user is saved in localStorage, immediately set that data
+            // to this model and return a resolved deferred.
+            // Then do the actual AJAX fetch
+            var localStorageUser = localStorage.getItem('app_user'),
+                returnDeferred;
+            if (localStorageUser)
+            {
+                returnDeferred = superFetch();
+                try {
+                    this.set(JSON.parse(localStorageUser));
+                    returnDeferred = $.Deferred().resolve();
+                } catch(e) {
+                    // if the user refreshes the page while the user is being written to localStorage, it will break the next time you try to read that key.
+                    // Here, we return superFetch() deferred because parsing localStorage didn't work
+                }
+                
+                return returnDeferred;
+            }
+            else
+            {
+                return superFetch();
+            }
+        },
+
         initialize: function(options)
         {
             Backbone.Model.prototype.initialize.apply(this, arguments);

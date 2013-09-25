@@ -22,6 +22,17 @@ function(
     shiftWizzardTemplate
     )
 {
+
+    function formatGetDate(value)
+    {
+        return value ? moment(value).format("MM-DD-YYYY") : value;
+    }
+
+    function formatSetDate(value)
+    {
+        return value ? moment(value).format("YYYY-MM-DD") : value;
+    }
+
     var ShiftWizardModel = TP.Model.extend(
     {
         defaults:
@@ -78,12 +89,26 @@ function(
                 events: ["change"]
             },
 
-            "#fromDate": "fromDate",
-            "#toDate": "toDate",
+            "#fromDate":
+            {
+                observe: "fromDate",
+                onGet: formatGetDate,
+                onSet: formatSetDate
+            },
+
+            "#toDate":
+            {
+                observe: "toDate",
+                onGet: formatGetDate,
+                onSet: formatSetDate
+            },
+
             "#moveToStartDate":
             {
                 observe: "moveToStartDate",
-                events: ["change"]
+                events: ["change"],
+                onGet: formatGetDate,
+                onSet: formatSetDate
             },
 
             "#moveByNumberOfDays": "moveByNumberOfDays",
@@ -131,7 +156,7 @@ function(
             this.model.on("change:shiftBy", this.updateShiftByOptions, this);
 
             // date picker
-            this.$(".datepicker").datepicker({ dateFormat: "yy-mm-dd", firstDay: theMarsApp.controllers.calendarController.startOfWeekDayIndex });
+            this.$(".datepicker").datepicker({ dateFormat: "mm-dd-yy", firstDay: theMarsApp.controllers.calendarController.startOfWeekDayIndex });
 
             // number picker, and make sure it fires a change event
             this.$(".numberpicker").spinner().on("spinstop", function(event, ui) { $(this).trigger("change", event, ui); });

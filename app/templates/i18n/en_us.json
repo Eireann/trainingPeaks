@@ -431,5 +431,11 @@
     "InvalidPassword": "Passwords do not match, please re-enter",
 
     "PremiumFeature": "Premium Feature",
-    "UpgradeMessage": "You must upgrade your account to use this feature"
+    "UpgradeMessage": "You must upgrade your account to use this feature",
+
+    "RequiredField": "Please enter a value for",
+    "SelectCalculator": "Select Calculation Method",
+    "Calculate": "Calculate",
+    "EnterOptions": "Enter Calculator Options",
+    "UnableToCalculateZones": "We could not calculate zones based on the information you provided.  Please try again with different values, or select a different calculation method"
 }

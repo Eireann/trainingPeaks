@@ -134,6 +134,7 @@ function(
             {
                 self._onChange();
             });
+
         },
 
         _onChange: function()

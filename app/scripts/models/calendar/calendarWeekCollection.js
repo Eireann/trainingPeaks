@@ -3,24 +3,26 @@ define(
     "moment",
     "TP",
     "models/calendar/calendarDay",
-    "models/selectedWorkoutCollection"
+    "shared/models/selectedActivitiesCollection"
 ],
-function(moment, TP, CalendarDayModel, SelectedWorkoutCollection)
+function(moment, TP, CalendarDayModel, SelectedActivitiesCollection)
 {
     var CalendarWeekCollection = TP.Collection.extend(
     {
         
         deleteWeekItems: function()
         {
-            var selectedWorkoutCollection = new SelectedWorkoutCollection();
+            var selectedActivitiesCollection = new SelectedActivitiesCollection();
+
             this.each(function(item)
             {
                 if (item instanceof CalendarDayModel)
                 {
-                    selectedWorkoutCollection.add(item.getWorkoutItems());
+                    selectedActivitiesCollection.add(item.getItems());
                 }
             });
-            selectedWorkoutCollection.deleteSelectedWorkouts();
+
+            selectedActivitiesCollection.deleteSelectedItems();
         },
 
         copyToClipboard: function()
