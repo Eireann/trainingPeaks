@@ -85,8 +85,6 @@ function(
         {
             if(data)
             {
-                console.log("SUCCESS");
-                console.log(data);
                 this.results = this.parseResponse(data);
                 this.promise.resolve();
             }

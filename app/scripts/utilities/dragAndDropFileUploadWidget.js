@@ -26,14 +26,17 @@ function(TP, WorkoutMultiFileDataModel, WorkoutModel, dateConversion)
 
             var mouseEnteredWindow = false;
             var dragging = 0;
+            var isFile = function(e)
+            {
+                return _.contains(e.dataTransfer.types, "Files");
+            };
 
             window.addEventListener("dragenter", function(e)
             {
                 e = e || event;
                 e.stopPropagation();
                 e.preventDefault();  
-
-                if(uploadInProgress)
+                if(uploadInProgress || !isFile(e))
                     return;
 
                 dragging++;
@@ -54,8 +57,7 @@ function(TP, WorkoutMultiFileDataModel, WorkoutModel, dateConversion)
             {
                 e = e || event;
                 e.preventDefault();
-
-                if(uploadInProgress)
+                if(uploadInProgress || !isFile(e))
                     return;
 
                 if (mouseEnteredWindow)

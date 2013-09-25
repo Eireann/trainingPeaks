@@ -29,6 +29,8 @@ function (datepicker, spinner, jquerySelectBox, _, TP, DashboardDatePicker, char
             "click .calendarMonthLabel": "headerDatePicker"
         },
 
+        modelEvents: {},
+
         initialize: function (options)
         {
             this.settingsKey = "dateOptions";
@@ -56,11 +58,6 @@ function (datepicker, spinner, jquerySelectBox, _, TP, DashboardDatePicker, char
             {
                 this.dashboardHeaderDatePicker.close();
             }
-        },
-
-        onRender: function()
-        {
-            this.model.off("change", this.render);
         },
 
         applyDates: function()

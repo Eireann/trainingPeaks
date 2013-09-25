@@ -12,8 +12,6 @@ define(
     "calendar/views/metricTileView",
     "views/calendar/day/calendarDaySettings",
     "views/calendar/newItemView",
-    "views/calendar/day/calendarDayDragStateView",
-    "hbs!templates/views/calendar/day/calendarDayHeader",
     "hbs!templates/views/calendar/day/calendarDay"
 ],
 function(
@@ -29,22 +27,11 @@ function(
     MetricTileView,
     CalendarDaySettingsView,
     NewItemView,
-    CalendarDayDragStateView,
-    CalendarDayHeaderTemplate,
     CalendarDayTemplate
 )
 {
 
     var today = moment().format(TP.utils.datetime.shortDateFormat);
-
-    var CalendarDayHeaderView = TP.ItemView.extend(
-    {
-        template:
-        {
-            type: "handlebars",
-            template: CalendarDayHeaderTemplate
-        }
-    });
 
     return TP.CompositeView.extend(
     {
@@ -53,7 +40,6 @@ function(
 
         modelViews:
         {
-            Label: CalendarDayHeaderView,
             Workout: CalendarWorkoutView,
             Metric: MetricTileView
         },
@@ -64,6 +50,8 @@ function(
             template: CalendarDayTemplate
         },
 
+        itemViewContainer: ".activities",
+
         initialize: function()
         {
             if (theMarsApp)
@@ -72,10 +60,11 @@ function(
             this.collection = this.model.itemsCollection;
 
             this.on("after:item:added", this.makeItemsDraggable, this);
-            this.model.on("day:select", this.select, this);
-            this.model.on("day:unselect", this.unselect, this);
+            this.listenTo(this.model, "day:select", _.bind(this.select, this));
+            this.listenTo(this.model, "day:unselect", _.bind(this.unselect, this));
 
-            this.collection.on("select", this.onItemSelect, this);
+            this.listenTo(this.collection, "select", _.bind(this.onItemSelect, this));
+            this.listenTo(this.collection, "sort", _.bind(this.onItemSort, this));
         },
 
         events:
@@ -89,6 +78,16 @@ function(
             "mousedown .daySettings": "daySettingsClicked",
             "click .daySelected": "onDayUnClicked",
             "click": "onDayTouched"
+        },
+
+        onItemSort: function()
+        {
+            var self = this;
+            this.collection.each(function(item, index)
+            {
+                var view = self.children.findByModel(item);
+                self.appendHtml(self, view, index);
+            });
         },
 
         getItemView: function(item)
@@ -129,11 +128,6 @@ function(
             return {
                 "data-date": this.model.id
             };
-        },
-
-        onBeforeRender: function()
-        {
-            this.model.configureDayLabel();
         },
 
         onRender: function()
@@ -349,11 +343,6 @@ function(
         onDragStop: function()
         {
             this.$el.removeClass("dragging");
-        },
-
-        appendHtml: function(collectionView, itemView, index)
-        {
-            itemView.$el.insertBefore(collectionView.$(".addWorkoutWrapper"));
         },
 
         onDayHeaderMouseEnter: function(e)

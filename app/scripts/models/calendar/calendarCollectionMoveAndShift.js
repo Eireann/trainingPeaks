@@ -46,8 +46,7 @@ function(
             var sourceDayModel = this.getDayModel(options.ItemId);
             var item = null;
 
-            // first model is day label ...
-            while (sourceDayModel.itemsCollection.length > 1)
+            while (sourceDayModel.itemsCollection.length > 0)
             {
                 item = sourceDayModel.itemsCollection.pop();
                 item = ActivityModel.unwrap(item);

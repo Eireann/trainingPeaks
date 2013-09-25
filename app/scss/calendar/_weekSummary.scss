@@ -500,6 +500,20 @@
                 @include linearGradient(top, #c116c9 0%, $clrOther 100%);
             }
         }
+
+        .DayOff
+        {
+            &.lightGradient
+            {
+                @include linearGradient(top, #b6c1c4 0%, #a0aeb2 100%);
+            }
+
+            &.darkGradient
+            {
+                @include linearGradient(top, #a5b3b6 0%, #84979c 100%);
+            }
+        }
+
     }
 
 }
