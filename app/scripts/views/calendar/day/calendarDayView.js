@@ -60,10 +60,11 @@ function(
             this.collection = this.model.itemsCollection;
 
             this.on("after:item:added", this.makeItemsDraggable, this);
-            this.model.on("day:select", this.select, this);
-            this.model.on("day:unselect", this.unselect, this);
+            this.listenTo(this.model, "day:select", _.bind(this.select, this));
+            this.listenTo(this.model, "day:unselect", _.bind(this.unselect, this));
 
-            this.collection.on("select", this.onItemSelect, this);
+            this.listenTo(this.collection, "select", _.bind(this.onItemSelect, this));
+            this.listenTo(this.collection, "sort", _.bind(this.onItemSort, this));
         },
 
         events:
@@ -77,6 +78,16 @@ function(
             "mousedown .daySettings": "daySettingsClicked",
             "click .daySelected": "onDayUnClicked",
             "click": "onDayTouched"
+        },
+
+        onItemSort: function()
+        {
+            var self = this;
+            this.collection.each(function(item, index)
+            {
+                var view = self.children.findByModel(item);
+                self.appendHtml(self, view, index);
+            });
         },
 
         getItemView: function(item)

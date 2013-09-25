@@ -4,10 +4,11 @@
     "moment",
     "TP",
     "shared/models/activityModel",
+    "shared/models/metricModel",
     "shared/models/selectedActivitiesCollection",
     "models/workoutModel"
 ],
-function(_, moment, TP, ActivityModel, SelectedActivitiesCollection, WorkoutModel)
+function(_, moment, TP, ActivityModel, MetricModel, SelectedActivitiesCollection, WorkoutModel)
 {
 
     var CalendarDay = TP.Model.extend(
@@ -35,6 +36,32 @@ function(_, moment, TP, ActivityModel, SelectedActivitiesCollection, WorkoutMode
         {
             // empty collection to store our collection
             this.itemsCollection = new TP.Collection();
+            this.itemsCollection.comparator = function(model)
+            {
+                model = ActivityModel.unwrap(model);
+
+                var key, date, time;
+
+                if(model instanceof WorkoutModel)
+                {
+                    date = model.get("startTime");
+                    time = date ? date.replace(/.*T/, "") : null;
+                    key = [1, time];
+                }
+                else if(model instanceof MetricModel)
+                {
+                    date = model.get("timeStamp");
+                    time = date ? date.replace(/.*T/, "") : null;
+                    key = [2, time];
+                }
+                else
+                {
+                    key = [99];
+                }
+
+                return key;
+            };
+            this.itemsCollection.on("change:startTime change:timeStamp", this.itemsCollection.sort, this.itemsCollection);
         },
 
 
