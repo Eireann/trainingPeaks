@@ -37,12 +37,25 @@ function(TP)
             if (seconds < 61)
             {
                 return seconds + " Seconds";
-            } else
+            } else if (seconds < 7201) // if under 2 hrs 1 second
             {
                 roundedMinutes = Math.round((seconds / 60));
                 shouldPluralizeMinutes = roundedMinutes !== 1;
                 minutesUnit = shouldPluralizeMinutes ? " Minutes" : " Minute";
                 return roundedMinutes + minutesUnit;
+            } else {
+                var hours = seconds / 3600;
+                var fullHours = Math.floor(hours);
+                var exactMinutes = (hours % 1) * 60;
+                roundedMinutes = Math.round(exactMinutes);
+                var shouldPluralizeHours = fullHours !== 1;
+                shouldPluralizeMinutes = roundedMinutes !== 1;
+                var hoursCopy = shouldPluralizeHours ? " Hours " : " Hour ";
+                minutesUnit = shouldPluralizeMinutes ? " Minutes" : " Minute";
+
+                var withMinutesString = fullHours + hoursCopy + roundedMinutes + minutesUnit;
+                var withoutMinutesString = fullHours + hoursCopy;
+                return roundedMinutes === 0 ? withoutMinutesString : withMinutesString;
             }
         };
 
