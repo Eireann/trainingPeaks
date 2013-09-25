@@ -10,6 +10,8 @@
         {
             background-image: none;
             background-color: $white;
+            padding-top: 20px;
+            padding-right:0;
         }
 
         .arrow
@@ -49,6 +51,12 @@
         }
     }
 
+    .editorContainer.details {
+        overflow-y:auto;
+        overflow-x:hidden;
+        @include nice-scrollbar;
+        padding-right:14px;
+    }
     .comments {
         // float: left;
         float: none;
@@ -57,8 +65,8 @@
         @include labels($fontFamilyHeavy, $fontSizeSmall, $TPGrey3, normal);
         width: 275px;
         height: 100%;
-        margin: 14px 0 10px 0;
-
+        margin: 0 0 10px 0;
+        
         textarea
         {
             color: $TPGrey4;

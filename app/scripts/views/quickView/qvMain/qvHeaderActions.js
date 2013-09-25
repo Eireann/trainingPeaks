@@ -226,11 +226,13 @@ function (
         
         onCommentsClicked: function (e)
         {
+            
             TP.analytics("send", { "hitType": "event", "eventCategory": "quickView", "eventAction": "headerCommentsClicked", "eventLabel": "" });
 
-            var offset = $(e.currentTarget).offset();
+            var offset = $(e.currentTarget).offset(),
+                maxHeight = (this.expandoController.layout.$el.parent().height() / 2) + 64;
 
-            this.commentsEditorView = new ExpandoCommentsEditorView({ model: this.model, parentEl: this.$el });
+            this.commentsEditorView = new ExpandoCommentsEditorView({ model: this.model, parentEl: this.$el, maxHeight: maxHeight});
             this.commentsEditorView.render().top(offset.top - 12);
 
             if (this.$el.width() < 1380)
