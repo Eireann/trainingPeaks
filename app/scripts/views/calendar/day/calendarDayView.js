@@ -12,8 +12,6 @@ define(
     "calendar/views/metricTileView",
     "views/calendar/day/calendarDaySettings",
     "views/calendar/newItemView",
-    "views/calendar/day/calendarDayDragStateView",
-    "hbs!templates/views/calendar/day/calendarDayHeader",
     "hbs!templates/views/calendar/day/calendarDay"
 ],
 function(
@@ -29,22 +27,11 @@ function(
     MetricTileView,
     CalendarDaySettingsView,
     NewItemView,
-    CalendarDayDragStateView,
-    CalendarDayHeaderTemplate,
     CalendarDayTemplate
 )
 {
 
     var today = moment().format(TP.utils.datetime.shortDateFormat);
-
-    var CalendarDayHeaderView = TP.ItemView.extend(
-    {
-        template:
-        {
-            type: "handlebars",
-            template: CalendarDayHeaderTemplate
-        }
-    });
 
     return TP.CompositeView.extend(
     {
@@ -53,7 +40,6 @@ function(
 
         modelViews:
         {
-            Label: CalendarDayHeaderView,
             Workout: CalendarWorkoutView,
             Metric: MetricTileView
         },
@@ -63,6 +49,8 @@ function(
             type: "handlebars",
             template: CalendarDayTemplate
         },
+
+        itemViewContainer: ".activities",
 
         initialize: function()
         {
@@ -129,11 +117,6 @@ function(
             return {
                 "data-date": this.model.id
             };
-        },
-
-        onBeforeRender: function()
-        {
-            this.model.configureDayLabel();
         },
 
         onRender: function()
@@ -349,11 +332,6 @@ function(
         onDragStop: function()
         {
             this.$el.removeClass("dragging");
-        },
-
-        appendHtml: function(collectionView, itemView, index)
-        {
-            itemView.$el.insertBefore(collectionView.$(".addWorkoutWrapper"));
         },
 
         onDayHeaderMouseEnter: function(e)
