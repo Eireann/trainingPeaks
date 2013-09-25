@@ -26,15 +26,18 @@ function (_, moment, TP)
         {
             "workoutId": null, //x, duh
             "flatSamples": null,
-            "rangesStats": null, //x
-            "peakCadences": null, //x
-            "peakHeartRates": null, //x
-            "peakPowers": null, //x
-            "peakSpeeds": null, //x
-            "peakSpeedsByDistance": null, //x
-            "sampleRate": null, //x
-            "totalStats": null, //x
-            "lapsStats": null //x
+            "rangesStats": null,
+            "peakCadences": null,
+            "peakHeartRates": null,
+            "peakPowers": null,
+            "peakSpeeds": null,
+            "peakSpeedsByDistance": null,
+            "sampleRate": null,
+            "totalStats": null,
+            "lapsStats": null,
+            "meanMaxHeartRates": null,
+            "meanMaxPowers": null,
+            "meanMaxSpeeds": null
         },
 
         hasSensorData: function()

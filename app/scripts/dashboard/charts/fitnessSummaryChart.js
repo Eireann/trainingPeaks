@@ -5,7 +5,7 @@ define(
     "utilities/charting/chartColors",
     "utilities/charting/flotOptions",
     "views/dashboard/chartUtils",
-    "views/dashboard/fitnessSummaryChartSettings"
+    "dashboard/views/fitnessSummaryChartSettings"
 ],
 function(
     TP,

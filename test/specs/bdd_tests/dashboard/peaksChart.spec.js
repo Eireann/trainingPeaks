@@ -5,17 +5,41 @@ requirejs(
     "testUtils/testHelpers",
     "testUtils/xhrDataStubs",
     "app",
-    "views/dashboard/chartUtils"
+    "views/dashboard/chartUtils",
+    "testUtils/sharedSpecs/sharedChartSpecs"
 ],
 function(
     _,
     testHelpers,
     xhrData,
     theMarsApp,
-    chartUtils
+    chartUtils,
+    SharedChartSpecs
     )
 {
-    
+
+    describe("Peaks Charts", function()
+    {
+        var chartTypes =
+        [
+            8, // Power
+            28, // HR
+            29, // Cadence
+            30, // Speed
+            31, // Pace
+            36 // Pace by Distance
+        ];
+
+        _.each(chartTypes, function(chartType)
+        {
+            describe("chart type: " + chartType, function() {
+                SharedChartSpecs.chartSettings({
+                    chartType: chartType
+                });
+            });
+        });
+    });
+
     var applyDashboardDates = function($mainRegion, $body, dateOptionId, startDate, endDate)
     {
         $mainRegion.find("#dashboardHeader .calendarMonthLabel").trigger("click");

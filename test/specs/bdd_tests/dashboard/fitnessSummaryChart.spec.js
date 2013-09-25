@@ -5,16 +5,28 @@ requirejs(
     "testUtils/testHelpers",
     "testUtils/xhrDataStubs",
     "app",
-    "views/dashboard/chartUtils"
+    "views/dashboard/chartUtils",
+    "testUtils/sharedSpecs/sharedChartSpecs"
 ],
 function(
     _,
     testHelpers,
     xhrData,
     theMarsApp,
-    chartUtils
+    chartUtils,
+    SharedChartSpecs
     )
 {
+
+    describe("Fitness Summary Chart", function()
+    {
+
+        SharedChartSpecs.chartSettings(
+        {
+            chartType: 3
+        });
+
+    });
 
     var applyDashboardDates = function($mainRegion, $body, dateOptionId, startDate, endDate)
     {

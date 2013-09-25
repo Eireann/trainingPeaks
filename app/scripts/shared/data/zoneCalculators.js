@@ -36,15 +36,15 @@ function()
             numberOfZones: 5,
             type: heartRateZoneCalculatorTypes.LactateThreshold
         },
-        CycleSmartZone: {
-            id: 5,
-            label: "CycleSmart",
-            numberOfZones: 5,
-            type: heartRateZoneCalculatorTypes.LactateThreshold
-        },
         USACZone: {
             id: 6,
             label: "USAC",
+            numberOfZones: 5,
+            type: heartRateZoneCalculatorTypes.LactateThreshold
+        },
+        CycleSmartZone: {
+            id: 5,
+            label: "CycleSmart",
             numberOfZones: 5,
             type: heartRateZoneCalculatorTypes.LactateThreshold
         },
@@ -52,18 +52,6 @@ function()
             id: 7,
             label: "BCF/ABCC/WCPP Revised",
             numberOfZones: 7,
-            type: heartRateZoneCalculatorTypes.MaximumHeartRate
-        },
-        EdwardsZone: {
-            id: 8,
-            label: "Sally Edwards",
-            numberOfZones: 5,
-            type: heartRateZoneCalculatorTypes.MaximumHeartRate
-        },
-        TimexZone: {
-            id: 9,
-            label: "Timex",
-            numberOfZones: 5,
             type: heartRateZoneCalculatorTypes.MaximumHeartRate
         },
         KeenZone: {
@@ -78,6 +66,18 @@ function()
             numberOfZones: 7,
             type: heartRateZoneCalculatorTypes.MaximumHeartRate
         },
+        EdwardsZone: {
+            id: 8,
+            label: "Sally Edwards",
+            numberOfZones: 5,
+            type: heartRateZoneCalculatorTypes.MaximumHeartRate
+        },
+        TimexZone: {
+            id: 9,
+            label: "Timex",
+            numberOfZones: 5,
+            type: heartRateZoneCalculatorTypes.MaximumHeartRate
+        }, 
         KarvonenZone: {
             id: 12,
             label: "Karvonen",
