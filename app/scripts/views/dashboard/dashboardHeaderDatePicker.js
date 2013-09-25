@@ -4,18 +4,16 @@ define(
     "jquerySelectBox",
     "underscore",
     "TP",
-    "./dashboardChartSettingsBase",
     "./dashboardDatePicker",
-    "hbs!templates/views/dashboard/dashboardChartSettings"
+    "hbs!templates/views/dashboard/dashboardHeaderDatePicker"
 ],
 function(
     setImmediate,    
     jquerySelectBox,
     _,
     TP,
-    DashboardChartSettingsBase,
     DashboardDatePicker,
-    dashboardChartSettingsTemplate
+    dashboardHeaderDatePickerTemplate
     )
 {
     var DashboardHeaderDatePicker = {
@@ -25,7 +23,7 @@ function(
         template:
         {
             type: "handlebars",
-            template: dashboardChartSettingsTemplate
+            template: dashboardHeaderDatePickerTemplate
         },
 
         modal: true,
@@ -34,6 +32,8 @@ function(
             "click .closeIcon": "close",
             "click button.apply": "apply"
         },
+
+        modelEvents: {},
         
         initialize: function(options)
         {
@@ -60,12 +60,10 @@ function(
         {
             this.settingsKey = "dateOptions";
             this.model.off("change", this.render);
-            if (dashboardChartSettingsTemplate)
-            {
-                this.datepickerView = new DashboardDatePicker({ model: this.model, includeGlobalOption: false });
-                this.datepickerView.setElement(this.$(".datepickerContainer")).render();
-                this.children.add(this.datepickerView);
-            }
+
+            this.datepickerView = new DashboardDatePicker({ model: this.model, includeGlobalOption: false });
+            this.datepickerView.setElement(this.$(".datepickerContainer")).render();
+            this.children.add(this.datepickerView);
         },
 
         alignArrowTo: function (top)

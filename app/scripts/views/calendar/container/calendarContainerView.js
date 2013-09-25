@@ -259,7 +259,7 @@ function(
 
         onDragItem: function(e, ui)
         {
-            if(!this.ui || !this.ui.weeksContainer)
+            if(!ui || !this.ui || !this.ui.weeksContainer)
                 return;
             
             var calendarContainer = this.ui.weeksContainer.closest("#calendarContainer");
