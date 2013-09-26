@@ -35,7 +35,7 @@ function(
             setTimeout(function()
             {
                 clearInterval(interval);
-                self.onLibraryAnimateComplete()
+                self.onLibraryAnimateComplete();
             }, duration);
         },
 
