@@ -9,8 +9,9 @@ function(
     TP,
     ReportingDataManager,
     PeaksChart
-    )
+)
 {
+
     describe("PeaksChart", function()
     {
 

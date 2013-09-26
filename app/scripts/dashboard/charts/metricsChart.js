@@ -9,7 +9,8 @@ define(
     "utilities/charting/chartColors",
     "views/dashboard/chartUtils",
     "dashboard/views/MetricsChartSettingsView",
-    "shared/data/metricTypes"
+    "shared/data/metricTypes",
+    "shared/models/metricsCollection"
 ],
 function(
     _,
@@ -21,7 +22,8 @@ function(
     chartColors,
     DashboardChartUtils,
     MetricsChartSettingsView,
-    metricTypes
+    metricTypes,
+    MetricsCollection
 )
 {
     var MetricsChart = Chart.extend({
@@ -50,12 +52,16 @@ function(
         fetchData: function()
         {
             var dateOptions = DashboardChartUtils.buildChartParameters(this.get("dateOptions") || {});
-            return this.dataManager.fetchMetrics(dateOptions.startDate, dateOptions.endDate);
+            var promise = this.dataManager.loadCollection(MetricsCollection, _.pick(dateOptions, "startDate", "endDate"));
+            this.metrics = promise.collection;
+            return promise;
         },
 
-        parseData: function(data)
+        parseData: function()
         {
             var self = this;
+
+            var data = this.metrics.toJSON();
             _.each(data, function(entry)
             {
                 entry.date = moment(entry.timeStamp).valueOf();
@@ -134,7 +140,7 @@ function(
                         },
                         tickFormatter: function(date)
                         {
-                            return moment(date).format("L");
+                            return moment(date).format("MM/DD/YY");
                         }
                     },
                     yaxes: yaxes,
@@ -251,10 +257,9 @@ function(
             return tooltip;
         },
 
-
-        updateChartTitle: function()
+        defaultTitle: function()
         {
-            this.set("title", TP.utils.translate("Metrics"));
+            return TP.utils.translate("Metrics");
         },
 
         _formatValue: function(value, metricInfo, options)

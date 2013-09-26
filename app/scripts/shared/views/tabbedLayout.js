@@ -23,7 +23,8 @@ function(
 
         regions:
         {
-            tabbedLayoutBodyRegion: ".tabbedLayoutBody"
+            tabbedLayoutBodyRegion: ".tabbedLayoutBody",
+            tabbedLayoutFooterRegion: ".tabbedLayoutFooter"
         },
 
         constructor: function()
@@ -67,18 +68,23 @@ function(
         {
             var self = this;
 
+            this.trigger("before:switchTab");
+            
             if(this.$current)
             {
                 this.$current.removeClass("active");
+                this.stopListening(this.currentView, "all");
             }
 
             var view = new navItem.view(navItem.options);
+            this.currentView = view;
+            this.listenTo(view, "all", _.bind(this._passthroughCurrentViewEvent, this));
             this.tabbedLayoutBodyRegion.show(view);
 
             setImmediate(function()
             {
-                this.$(".tabbedLayoutBody").scrollTop(0);
-                this.$(".tabbedLayoutBody").scrollLeft(0);
+                self.$(".tabbedLayoutBody").scrollTop(0);
+                self.$(".tabbedLayoutBody").scrollLeft(0);
             });
 
             $item.find("ul.tabbedLayoutSubNav").remove();
@@ -106,6 +112,15 @@ function(
 
             this.$current = $item;
             this.$current.addClass("active");
+
+            this.trigger("after:switchTab");
+        },
+
+        _passthroughCurrentViewEvent: function(eventName)
+        {
+            var args = Array.prototype.slice.call(arguments, 0);
+            args[0] = "currentview:" + eventName;
+            this.trigger.apply(this, args);
         },
 
         _scrollTo: function(subNavItem, $subItem)

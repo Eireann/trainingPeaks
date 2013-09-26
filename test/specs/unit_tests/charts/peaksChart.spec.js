@@ -11,7 +11,7 @@ function(
     TP,
     ThePeaksGenerator,
     PeaksChartView
-    )
+)
 {
 
 
@@ -35,6 +35,7 @@ function(
 
         return peaks;
     };
+
 
     describe("Base PeaksChartView", function()
     {

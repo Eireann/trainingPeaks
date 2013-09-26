@@ -17,6 +17,7 @@
             "helpers": "scripts/helpers",
             "utilities": "scripts/utilities",
             "dashboard": "scripts/dashboard", 
+            "calendar": "scripts/calendar", 
             "user": "scripts/user",
             "shared": "scripts/shared", 
             

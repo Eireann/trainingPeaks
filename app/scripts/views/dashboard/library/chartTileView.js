@@ -15,7 +15,15 @@ function(
     {
 
         tagName: "div",
-        className: "chartTile cf",
+        className: function()
+        {
+            var className = "chartTile cf chartType-" + this.model.get("chartType");
+            if(this.model.get("premium"))
+            {
+                className += " premium";
+            }
+            return className;
+        },
 
         events:
         {
@@ -39,7 +47,10 @@ function(
 
         onRender: function()
         {
-            this._makeDraggable();
+            if(!this.model.get("premium"))
+            {
+                this._makeDraggable();
+            }
         },
 
         _makeDraggable: function()
@@ -62,6 +73,11 @@ function(
         onMouseDown: function()
         {
             this.model.trigger("select", this.model);
+
+            if(this.model.get("premium"))
+            {
+                theMarsApp.featureAuthorizer.showUpgradeMessage();
+            }
         },
 
         onItemSelect: function()

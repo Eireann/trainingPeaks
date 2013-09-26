@@ -3,21 +3,23 @@ define(
     "underscore",
     "TP",
     "backbone",
-    "shared/utilities/formUtility",
-    "shared/views/userSettings/zoneEntryView",
+    "shared/views/userSettings/zonesConfigGroupView",
+    "shared/views/userSettings/speedZonesCalculatorView",
     "hbs!shared/templates/userSettings/speedPaceZonesTemplate"
 ],
 function(
     _,
     TP,
     Backbone,
-    FormUtility,
-    ZoneEntryView,
+    ZonesConfigGroupView,
+    SpeedZonesCalculatorView,
     speedPaceZonesTemplate
 )
 {
 
-    var SpeedPaceZonesView = TP.CompositeView.extend({
+    var SpeedPaceZonesView = ZonesConfigGroupView.extend({
+
+        ZonesCalculatorView: SpeedZonesCalculatorView,
 
         template:
         {
@@ -25,41 +27,43 @@ function(
             template: speedPaceZonesTemplate
         },
 
-        itemView: ZoneEntryView,
-
         events:
-        {
+        _.extend({
             "change [name=units]": "_changeUnits"
-        },
+        }, ZonesConfigGroupView.prototype.events),
 
         onRender: function()
         {
-            FormUtility.applyValuesToForm(this.$el, this.model, {
-                filterSelector: "[data-scope='zoneSet']"
-            });
+            this.units = this.$("[name=units]:checked").val();
             this._changeUnits();
         },
 
         initialize: function()
         {
-            this.collection = new TP.Collection(this.model.get("zones"));
-            this.on("before:item:added", this._addedItems, this);
+            this.units = "pace";
         },
 
         formatValue: function(value)
         {
-            var options = { defaultValue: "", workoutTypeId: this.model.get("workoutTypeId") };
-            return TP.utils.conversion.formatUnitsValue(this.$("[name=units]:checked").val(), value, options);
+            var options = { defaultValue: this.units === "pace" ? "" : "0", workoutTypeId: this.model.get("workoutTypeId") };
+            return TP.utils.conversion.formatUnitsValue(this.units, value, options);
+        },
+
+        parseValue: function(value)
+        {
+            var options = { workoutTypeId: this.model.get("workoutTypeId") };
+            return TP.utils.conversion.parseUnitsValue(this.units, value, options);
+        },
+
+        getZonesCalculatorView: function()
+        {
+            return new this.ZonesCalculatorView({ model: this.model, units: this.units });
         },
 
         _changeUnits: function()
         {
-            this.children.call("render");
-        },
-
-        _addedItems: function(view)
-        {
-            view.setFormatter(_.bind(this.formatValue, this));
+            this.units = this.$("[name=units]:checked").val();
+            this.applyModelValuesToForm();
         }
 
     });

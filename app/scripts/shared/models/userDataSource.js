@@ -81,6 +81,25 @@ function(
             return deferred;
         },
 
+        saveZones: function(athleteModel)
+        {
+            var requests = _.map(["heartRate", "power", "speed"], function(zoneType)
+            {
+                var zones = athleteModel.get(zoneType + "Zones");
+                var ajaxOptions = {
+                    url: theMarsApp.apiRoot + "/fitness/v1/athletes/" + athleteModel.id + "/" + zoneType.toLowerCase() + "zones",
+                    type: "PUT",
+                    contentType: "application/json",
+                    data: JSON.stringify(zones)
+                };
+
+                return Backbone.ajax(ajaxOptions);
+            },
+            this);
+
+            return $.when.apply($, requests);
+        },
+
         deleteProfilePhoto: function()
         {
             var ajaxOptions = {

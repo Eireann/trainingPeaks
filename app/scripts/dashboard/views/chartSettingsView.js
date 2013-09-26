@@ -23,7 +23,9 @@ function(
         tagName: "div",
         className: "dashboardChartSettings",
 
-        modelEvents: {},
+        modelEvents: {
+            "change": "_updateTitle"
+        },
 
         template:
         {
@@ -35,18 +37,29 @@ function(
         {
             this.initialEvents(); // Hook into modal display code
             this.model.off("change", this.render);
+            this.on("render", this._updateTitle, this);
+            this.on("render", this._fillInputs, this);
             this.on("close", this.saveOnClose, this);
             this.children = new Backbone.ChildViewContainer();
+            this.on("close", _.bind(this.children.call, this.children, "close"));
         },
 
         events:
         {
-            "click .closeIcon": "close"
+            "click .closeIcon": "close",
+            "change input.auto": "_onInputsChanged",
+            "click button.apply": "apply"
         },
 
         saveOnClose: function()
         {
             this.model.save();
+        },
+
+        apply: function()
+        {
+            this.model.save();
+            this.trigger("apply");
         },
 
         setTomahawkDirection: function(direction)
@@ -70,20 +83,55 @@ function(
             }
         },
 
-        onShow: function()
+        _fillInputs: function()
         {
-            this.children.call("show");
+            var self = this;
+
+            this.$('input.auto[type="checkbox"]').each(function(i, el)
+            {
+                var $el = $(el);
+                $el.attr("checked", self.model.get($el.attr("name")));
+            });
+
+            this.$('input.auto[type="text"]').each(function(i, el)
+            {
+                var $el = $(el);
+                $el.val(self.model.get($el.attr("name")));
+            });
         },
 
-        onClose: function()
+        _onInputsChanged: function()
         {
-            this.children.call("close");
+            var self = this;
+
+            this.$('input.auto[type="checkbox"]').each(function(i, el)
+            {
+                var $el = $(el);
+                self.model.set($el.attr("name"), $el.prop("checked"));
+            });
+
+            this.$('input.auto[type="text"]').each(function(i, el)
+            {
+                var $el = $(el);
+                self.model.set($el.attr("name"), $el.val());
+            });
         },
 
         _addView: function(selector, view)
         {
-            this.$(selector).append(view.$el);
+            if (_.isString(view))
+            {
+                this.$(selector).html(view);
+            } else
+            {
+                this.$(selector).append(view.$el);
+            }
             this.children.add(view);
+        },
+
+        _updateTitle: function()
+        {
+            this.$(".defaultTitle").text(_.result(this.model, "defaultTitle"));
         }
     });
 

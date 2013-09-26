@@ -89,7 +89,7 @@ function (TP, timeInZonesGenerator, ThePeaksGenerator, HRTimeInZonesChartView, P
                 var timeInZones = timeInZonesGenerator(metric, this.zoneSettingNameByMetricName[metric], this.model.get("details"), this.model);
                 if(timeInZones)
                 {
-                    var peaks = ThePeaksGenerator.generate(metric, this.model.get("details"));
+                    var peaks = ThePeaksGenerator.generate(metric, this.model.get("detailData"));
                     var el = this.$el.find(this.elByMetricName[metric] + " > .peaksChartContainer");
                     var view = new ChartView({ peaks: peaks, timeInZones: timeInZones, el: el, workoutType: this.model.get("workoutTypeValueId") });
                     el.css("height", "233px");
@@ -118,9 +118,8 @@ function (TP, timeInZonesGenerator, ThePeaksGenerator, HRTimeInZonesChartView, P
 
         setViewHeightAndWidth: function (containerHeight, containerWidth)
         {
-
             var width = (containerWidth / 2) * 0.95;
-            var height = width * 0.5825;
+            var height = width * 0.65;
             this.$(".timeInZonesChartContainer").width(width).height(height);
             this.$(".peaksChartContainer").width(width).height(height);
         }

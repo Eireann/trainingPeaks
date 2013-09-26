@@ -3,11 +3,13 @@ requirejs(
 [
     "app",
     "models/workoutModel",
+    "shared/models/activityModel",
     "models/calendar/calendarDay"
 ],
 function(
     app,
     WorkoutModel,
+    ActivityModel,
     CalendarDay)
 {
     describe("Calendar Day Model", function()
@@ -46,7 +48,7 @@ function(
                 calendarDay.add(workout);
                 var workouts = calendarDay.itemsCollection;
                 expect(workouts).not.toBeNull();
-                expect(workouts.get(workout.id)).toBe(workout);
+                expect(ActivityModel.unwrap(workouts.get("Workout:" + workout.id))).toBe(workout);
             });
 
         });
@@ -61,7 +63,6 @@ function(
             {
                 workouts = [];
                 calendarDay = new CalendarDay({ date: "2011-03-02" });
-                calendarDay.configureDayLabel();
                 for (var i = 0; i < 10; i++)
                 {
                     var workout = new WorkoutModel({ workoutDay: "2011-03-02T00:00:00", workoutId: "12345" + Number(i).toString() });
@@ -171,12 +172,12 @@ function(
                 {
                     var dateToPasteTo = "2030-12-25";
                     var copiedItems = calendarDay.copyToClipboard();
-                    copiedItems.itemsCollection.each(function(item)
+                    copiedItems.eachItem(function(item)
                     {
                         spyOn(item, "onPaste").andCallThrough();
                     });
                     var pastedItems = copiedItems.onPaste(dateToPasteTo);
-                    copiedItems.itemsCollection.each(function(item)
+                    copiedItems.eachItem(function(item)
                     {
                         expect(item.onPaste).toHaveBeenCalledWith(dateToPasteTo);
                     });

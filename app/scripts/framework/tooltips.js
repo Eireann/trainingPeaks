@@ -48,13 +48,17 @@
                     position.left = position.left + (targetElement.outerWidth() / 2) - (self.outerWidth() / 2);
                 }
 
+                // move the tooltip a little further away from the element
+                var extraOffset = 1;
 
                 if (self.hasClass("above"))
                 {
                     position.top -= self.outerHeight();
+                    position.top -= extraOffset;
                 } else
                 {
                     position.top += targetElement.outerHeight();
+                    position.top += extraOffset;
                 }
 
                 self.css(position);

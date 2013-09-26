@@ -258,6 +258,14 @@ $troughIconSpriteRetinaURL: url(../../assets/images/sprite-icons-trough@2x.png);
         }
     }
 
+    .activeLibraryTopBorder {
+        border-top:1px solid  $TPGrey2;
+        position:absolute;
+        left:40px;
+        width:264px;
+        z-index: 1;
+    }
+
     #activeLibraryContainer
     {
 
@@ -281,11 +289,14 @@ $troughIconSpriteRetinaURL: url(../../assets/images/sprite-icons-trough@2x.png);
         border-left: 3px solid $TPBlue;
 
         .libraryNavigation {
+            width:241px;
+
             @include labels($fontFamilyRegular, $fontSizeMedium, $TPBlue, normal);
             
             label {
-                display: inline-block;
                 margin: 2px 15px 0 2px;
+                float:left;
+                text-align:left;
             }
 
             @include headerButtons(0px, 38px, $fontSizeMedium);
@@ -353,6 +364,7 @@ $troughIconSpriteRetinaURL: url(../../assets/images/sprite-icons-trough@2x.png);
             color: $TPGrey3;
             cursor: default;
             font-size: $fontSizeSmall;
+            text-align:left;
             
             p {
                 margin:5px 7px 15px 9px;
@@ -382,6 +394,12 @@ $troughIconSpriteRetinaURL: url(../../assets/images/sprite-icons-trough@2x.png);
         margin-left: 0px;
     }
 }
+
+
+.exercisesContainer {
+    float:left;
+}
+
 
 #exerciseLibraryAddItemView
 {
@@ -414,10 +432,18 @@ $troughIconSpriteRetinaURL: url(../../assets/images/sprite-icons-trough@2x.png);
             {
                 color: $TPGrey3;
                 display:inline-block;
+                float:left;
                 cursor: inherit;
                 font-size: $fontSizeLarge;
                 margin-right: 4px;
-                margin-left: 1px;
+                margin-left: 6px;
+                margin-bottom:0;
+                text-align:left;
+                width:auto;
+
+                &:first-of-type {
+                    margin-left:1px;
+                }
             }
         }
 
@@ -425,7 +451,9 @@ $troughIconSpriteRetinaURL: url(../../assets/images/sprite-icons-trough@2x.png);
         {
             label
             {
+                text-align:left;
                 color: $TPGrey3;
+                line-height:normal;
             }
         }
     }
@@ -438,46 +466,62 @@ $troughIconSpriteRetinaURL: url(../../assets/images/sprite-icons-trough@2x.png);
         @include libraryTile();
         margin: 5px 4px 4px 2px;
 
-        .planDetails
-        {
-            
+        .planDetails {
             height: 50px;
-            padding: 5px;
+            padding: 3px;
             white-space: normal;
-            line-height: 1.5em;
 
-            .trainingPlansIcon
-            {
-                background: $TPGrey1 $troughIconSpriteURL no-repeat 0 0;
-                background-color: $TPGrey2;
-                width: 24px;
-                height: 24px;
-                float: left;
+            .planIconTitle {
+                margin-bottom:4px;
+
+                .trainingPlansIcon {
+                    background: $TPGrey1 $troughIconSpriteURL no-repeat 0 0;
+                    background-color: $TPGrey2;
+                    width: 24px;
+                    height: 24px;
+                    float: left;
+                }
+                
+                .planTitleContain {
+                    height:24px;
+
+                    // For vertical centering
+                    display: table; 
+
+                    h3 {
+                        font-size: $fontSizeXSmall;
+                        font-family: $fontFamilyHeavy;
+                        font-weight:normal;
+                        color:$TPGrey4;
+                        line-height:normal;
+                        padding-left:5px;
+
+                        //prevents text from jumping to right align when closing libary
+                        text-align:left;
+
+                        // for vertical centering
+                        display: table-cell; 
+                        vertical-align: middle;
+                    }
+                }
             }
 
-            .title
-            {
-                font-family: $fontFamilyHeavy;
-                font-size: $fontSizeSmall;
-                color: $TPGrey8;
-                overflow: hidden;
-                margin-left: 30px;
-                max-height: 26px;
-                height: 26px;
-                line-height: 12px;
-                text-overflow: ellipsis;
-                margin-bottom: 2px;
-            }
+            // Author and Duration
+            p {
+                font-size: $fontSizeXSmall;
+                color:$TPGrey10;
+                margin:0 0 0 3px;
+                padding:0;
 
-            .author
-            {
-                height: 15px;
-                max-width: 238px;
+                max-width:228px;
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
-                margin-left: 5px;
+
+                // prevents jump when library is closed
+                text-align:left;
             }
+
         }
     }
 

@@ -6,10 +6,12 @@ define(
     "framework/ajaxCaching",
     "framework/ajaxTimezone",
     "framework/tooltips",
+    "framework/identityMap",
     "framework/dataManager",
     "dashboard/reportingDataManager",
     "models/session",
     "shared/models/userModel",
+    "shared/models/userAccessRightsModel",
     "models/buildInfo",
     "models/timeZones",
     "models/clientEventsCollection",
@@ -21,6 +23,7 @@ define(
     "router",
     "utilities/dragAndDropFileUploadWidget",
     "utilities/textFieldNumberFilter",
+    "shared/utilities/featureAuthorization/featureAuthorizer",
     "hbs!templates/views/notAllowedForAlpha",
     "scripts/plugins/marionette.faderegion"
 ],
@@ -31,10 +34,12 @@ function(
     ajaxCaching,
     initializeAjaxTimezone,
     enableTooltips,
+    IdentityMap,
     DataManager,
     ReportingDataManager,
     Session,
     UserModel,
+    UserAccessRightsModel,
     BuildInfoModel,
     TimeZonesModel,
     ClientEventsCollection,
@@ -46,6 +51,7 @@ function(
     Router,
     DragAndDropFileUploadWidget,
     TextFieldNumberFilter,
+    FeatureAuthorizer,
     notAllowedForAlphaTemplate,
     fadeRegion)
 {
@@ -81,6 +87,7 @@ function(
     {
 
         this.user = new UserModel();
+        this.userAccessRights = new UserAccessRightsModel();
         this.session = new Session();
         this.addAllShutdowns();
 
@@ -107,6 +114,7 @@ function(
             }
         });
 
+        // add error logging
         this.addInitializer(function()
         {
             var self = this;
@@ -127,7 +135,6 @@ function(
                 {
                     try
                     {
-                        console.log("XHR ERROR");
                         if(Raven)
                             Raven.captureException({event: event, xhr: xhr});
                         else if(_rollbar)
@@ -183,13 +190,17 @@ function(
         // add data managers
         this.addInitializer(function()
         {
-            // reset reporting manager when we save or delete workouts
-            var dataManagerOptions = { resetPatterns: [/athletes\/[0-9]+\/workouts/] };
+            var dataManagerOptions = {
+                identityMap: new IdentityMap(),
+                resetPatterns: [/athletes\/[0-9]+\/workouts/]
+            };
+
             this.dataManagers = {
                 reporting: new ReportingDataManager(dataManagerOptions),
                 calendar: new DataManager(dataManagerOptions)
             };
 
+            // reset reporting manager when we save or delete workouts
             this.on("save:model destroy:model", function(model)
             {
                 var modelUrl = _.result(model, "url");
@@ -198,6 +209,16 @@ function(
                     dataManager.reset(modelUrl);
                 });
 
+            }, this);
+        });
+
+        // add feature authorizer
+        this.addInitializer(function()
+        {
+            this.featureAuthorizer = new FeatureAuthorizer(this.user, this.userAccessRights);
+            this.on("api:paymentrequired", function()
+            {
+                this.featureAuthorizer.showUpgradeMessage();
             }, this);
         });
 
@@ -219,31 +240,64 @@ function(
         this.fetchBuildInfo = function()
         {
             this.buildInfo.fetch();
-        },  
+        };
 
         this.fetchTimeZones = function()
         {
             this.timeZones.fetch();
-        },
+        };
 
         this.fetchUser = function()
         {
             var self = this;
-            
-            self.user.fetch().done(function()
+          
+            // fetch user and access rights in parallel ,
+            // fetch athlete settings after user (since we need the athlete id),
+            // wait for all three before resolving
+            // Order is important since user is hopefully cached.
+
+            var userPromise = self.user.fetch();
+            var userAccessPromise = self.userAccessRights.fetch();
+
+            userAccessPromise.fail(function()
             {
-                if (self.featureAllowedForUser("alpha1", self.user))
+                console.log("access", arguments);
+            });
+
+            userPromise.done(function()
+            {
+
+                var athletePromise = self.fetchAthleteSettings();
+                athletePromise.fail(function()
                 {
-                    self.session.saveUserToLocalStorage(self.user);
-                    self.fetchAthleteSettings();
-                    self.userFetchPromise.resolve();
-                }
-                else
-                    self.session.logout(notAllowedForAlphaTemplate);
-            }).fail(function()
+                    console.log("athlete", arguments);
+                });
+
+                $.when(userAccessPromise, athletePromise)
+                .done(function()
+                {
+                    if (self.featureAllowedForUser("alpha1", self.user))
+                    {
+                        self.userFetchPromise.resolve();
+                    }
+                    else
+                    {
+                        self.session.logout(notAllowedForAlphaTemplate);
+                    }
+                })
+                .fail(function()
+                {
+                    // console.log("Failed access or athelete", arguments[2].stack, arguments);
+                    self.userFetchPromise.reject();
+                });
+
+            })
+            .fail(function()
             {
+                // console.log("Failed user", arguments[2].stack, arguments);
                 self.userFetchPromise.reject();
             });
+
         };
 
         this.featureAllowedForUser = function(feature, user)
@@ -271,7 +325,7 @@ function(
 
         this.fetchAthleteSettings = function()
         {
-            this.user.getAthleteSettings().fetch();
+            return this.user.getAthleteSettings().fetch();
         };
 
         // add event tracking
@@ -478,6 +532,10 @@ function(
     {
         if (controller !== this.currentController)
         {
+            if(_.isFunction(controller.preload))
+            {
+                controller.preload();
+            }
             this.currentController = controller;
             this.mainRegion.show(controller.getLayout());
         }

@@ -2,16 +2,19 @@
 [
     "underscore",
     "backbone",
-    "TP"
+    "TP",
+    "framework/identityMap"
 ], function(
     _,
     Backbone,
-    TP
+    TP,
+    IdentityMap
     )
 {
 
     var DataManager = function(options)
     {
+        this.identityMap = options && options.identityMap || new IdentityMap();
         this.resetPatterns = options && options.resetPatterns ? options.resetPatterns : [];
         this.ignoreResetPatterns = options && options.ignoreResetPatterns ? options.ignoreResetPatterns : [];
         this._resolvedRequests = {};
@@ -35,12 +38,44 @@
             this._resolvedRequests = {};
             this._pendingRequests = {};
             this.trigger("reset");
-            //console.log("Data manager was reset");
         },
 
-        fetch: function(modelOrCollection, options)
+        loadCollection: function(klass, options)
         {
-            return this.fetchOnModel(modelOrCollection, options);
+            var self = this;
+            var temporaryCollection = new klass([], options);
+            var collection = new klass([], options);
+
+            var promise = this.fetchModel(temporaryCollection, options).then(function() {
+                var models = temporaryCollection.map(_.bind(self.identityMap.updateSharedInstance, self.identityMap));
+                collection.set(models);
+            });
+
+            promise.collection = collection;
+
+            return promise;
+        },
+
+        loadModel: function(klass, attributes, options)
+        {
+            var model = new klass(attributes, options);
+            var sharedModel = this.identityMap.getSharedInstance(model);
+
+            var promise;
+
+            if (model === sharedModel)
+            {
+                // Identity map did not have this model
+                promise = this.fetchModel(sharedModel, options);
+            }
+            else
+            {
+                // Identity map had a shared version of this model
+                promise = new $.Deferred().resolve().promise();
+            }
+
+            promise.model = sharedModel;
+            return promise;
         },
 
         fetchAjax: function(requestSignature, options)
@@ -57,9 +92,9 @@
             }
         },
 
-        fetchOnModel: function(modelOrCollection, options)
+        fetchModel: function(modelOrCollection, options)
         {
-            var requestSignature = this._getRequestSignature(modelOrCollection);
+            var requestSignature = _.result(modelOrCollection, "url");
 
             if(this._hasResolvedData(requestSignature))
             {
@@ -70,18 +105,6 @@
             {
                 //console.log("Requesting new data " + requestSignature);
                 return this._requestDataOnModel(requestSignature, modelOrCollection, options);
-            }
-        },
-
-        _getRequestSignature: function(modelOrCollection)
-        {
-            if(!_.isUndefined(modelOrCollection.requestSignature))
-            {
-                return _.result(modelOrCollection, "requestSignature");
-            }
-            else
-            {
-                return _.result(modelOrCollection, "url");
             }
         },
 

@@ -1,6 +1,11 @@
 ﻿$chartIconsSpriteURL: url(../../assets/images/charts/sprite-buttons-chart-modal.png);
 $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-modal@2x.png);
+// $troughIconSpriteURL and $troughIconRetinaSpriteURL set in _library.scss
 
+.chartsRegion
+{
+    @include calc(height, "100% - 27px");
+}
 
 .dashboardDatePicker
 {
@@ -133,10 +138,7 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
 {
     min-width: 1007px;
     position: relative;
-
-    padding-top: 10px;
-    padding-left: 10px;
-
+    padding:10px 0px 0px 10px;
     overflow-x: hidden;
 }
 
@@ -200,8 +202,7 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
     margin-bottom: 5px;
 }
 
-.dashboardChart
-{
+.dashboardChart {
     /*
     float: left;
     position: relative;
@@ -209,10 +210,78 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
     */
 
     position: absolute; 
-    padding: 15px;
+    padding: 15px 0 0 0;
 
     border: 1px solid transparent;
     cursor: pointer;
+
+    .chartTitle, 
+    .customDateRange {
+        display: block; /* Fallback for non-webkit */
+        display: -webkit-box;
+        @include calc("max-width", "100% - 18px");;
+        max-height: 16px; /* Fallback for non-webkit */
+        margin: 5px auto;
+        font-size: $fontSizeSmall;
+        line-height: normal;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .customDateRange {
+        left: 0;
+        width: 100%;
+        top: 29px;
+        font-size: $fontSizeXSmall;
+        font-family:$fontFamilyRegular;
+    }
+
+    .xaxisLabel
+    {
+        top: 370px;
+        left: calc(50% - 30px);
+    }
+
+    .yaxisLabel
+    {
+        
+        position: absolute;
+        left: 3px;
+        top: 47%;
+        margin-top: 0;
+
+        margin-left: -39px;
+        font-size: 10px;
+
+        &.pmc {
+            text-transform: none;
+            left:auto;
+
+            &.tsb {
+                position: absolute;
+                right: -36px;
+                -webkit-transform: rotate(90deg);
+                -moz-transform: rotate(90deg);
+                color: #FFA500;
+            }
+            
+            &.tssd {
+                color: #b90807;
+                left:3px;
+            }
+        }
+
+        &.right
+        {
+            left: auto;
+            right: -36px;
+            -webkit-transform: rotate(90deg);
+            -moz-transform: rotate(90deg);
+        }
+    }
+
 
     &.fullScreen
     {
@@ -223,24 +292,56 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
         z-index: 200 !important;
         opacity: 1;
 
-         &:hover, &.hover {
-            background-color: $TPGrey1;
-            border: 1px solid transparent;
-         }
-    }
-
-    &:hover, &.hover
-    {
-        background-color: #e4e2e3;
-        border: 1px solid $TPGrey11;
-
         .chartButtons
         {
             display: block;
             z-index:2;
         }
+         &:hover, &.hover {
+            background-color: $TPGrey1;
+            border: 1px solid transparent;
+         }
 
+         .chartTitle {
+            display: block; /* Fallback for non-webkit */
+            display: -webkit-box;
+            @include calc("max-width", "100% - 18px");;
+            max-height: 21px; /* Fallback for non-webkit */
+            margin: 5px auto;
+            font-size: $fontSizeXLarge;
+            line-height: normal;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+         }
+
+         .customDateRange {
+            left: 0;
+            width: 100%;
+            top: 29px;
+            font-size: $fontSizeSmall;
+            font-family:$fontFamilyRegular;
+        }
+
+         .chartContainer {
+            top:83px;
+            @include calc("height", "100% - 112px");
+         }
+    }
+
+
+
+    &:hover, &.hover
+    {
+        background-color: #e4e2e3;
+        border: 1px solid $TPGrey11;
         z-index: 2;
+        .chartButtons
+        {
+            display: block;
+            z-index:2;
+        }
     }
 
     &.menuOpen
@@ -264,10 +365,11 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
     {
         margin: 0px 0px 0px 0px;
         position: absolute;
-        top: 53px;
-        left: 50px;
-        @include calc("width", "100% - 90px");
-        @include calc("height", "100% - 100px");
+        top: 62px;
+        left: 29px;
+
+        @include calc("width", "100% - 58px");
+        @include calc("height", "100% - 91px");
         &.invisible
         {
             visibility:hidden;
@@ -287,67 +389,17 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
 
     }
 
-    .chartTitle
-    {
-        margin-left: 10px;
-        margin-top:8px;
-        font-size: 12px;
-    }
 
-    .xaxisLabel
-    {
-        top: 370px;
-        left: calc(50% - 30px);
-    }
-
-    .yaxisLabel
-    {
-        
-        position: absolute;
-        left: 17px;
-        top: 47%;
-        margin-top: 0;
-
-        margin-left: -40px;
-        font-size: 10px;
-
-        &.pmc
-        {
-            text-transform: none;
-            left:auto;
-
-            &.tsb
-            {
-                position: absolute;
-                right: -25px;
-                -webkit-transform: rotate(90deg);
-                -moz-transform: rotate(90deg);
-                color: #FFA500;
-            }
-            &.tssd
-            {
-                color: #b90807;
-            }
-        }
-
-        &.right
-        {
-            left: auto;
-            right: -17px;
-            -webkit-transform: rotate(90deg);
-            -moz-transform: rotate(90deg);
-        }
-    }
 
     .chartButtons
     {
-        display: none;
+        display:none;
         position: absolute;
         top: 5px;
         right: 5px;
         width: 100px;
 
-        div
+        .settings, .expand, .close, .collapse
         {
             width: 12px;
             height: 12px;
@@ -491,15 +543,25 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
     }
 
     /* general dashboard chart sizing */
-    &:not(.fullScreen)
-    {
-
+    &:not(.fullScreen) {
         width: 400px;
         height: 400px;
 
-        &.pmcChart
-        {
+        &.pmcChart {
             width: 810px;
+            .chartContainer {
+            
+            }
+        }
+
+        &.workoutSummaryChart {
+            .chartContainer {
+                .yaxisLabel {
+                    &.right {
+                        right:-36px;
+                    }
+                }
+            }
         }
     }
 
@@ -510,10 +572,31 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
     }
 }
 
+.pmcWorkoutsList
+{
+    ul {
+        list-style:none;
+    }
+
+    h6 {
+        font-family: $fontFamilyHeavy;
+        font-size: $fontSizeSmall;
+        color: $TPGrey3;
+        font-weight: normal;
+    }
+}
+
 .dashboardChartSettings
 {
      max-width: 350px;
     
+     h4 {
+        font-weight: normal;
+        font-family:$fontFamilyRegular;
+        font-size:$fontSizeSmall;
+        margin-bottom:5px;
+     }
+
     .workoutTypes
     {
         // min-width: 330px;
@@ -548,10 +631,11 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
         }
     }
 
-    .hoverBox
-    {
-        .mainShadow
-        {
+    .hoverBox {
+        .hoverBoxContents {
+             overflow:visible;
+        }
+        .mainShadow {
             bottom: 0px;
         }
     }
@@ -560,9 +644,15 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
     {
         margin: 12px 0 9px 0;
         color: $TPGrey3;
-        
+
         h3:nth-of-type(2) {
             margin-top:10px; 
+        }
+
+        @include buttons(0, 50px, $fontSizeSmall);
+        button.apply {
+            margin-top:10px;
+            float: right;
         }
 
         label {
@@ -571,6 +661,10 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
 
         input[type="checkbox"] {
             margin-bottom:0;
+        }
+
+        input[type="text"] {
+            height:22px;
         }
     }
     
@@ -602,28 +696,93 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
             margin:0 0 5px 2px;
             padding:3px 3px 2px 3px;
 
+            .chartTileIcon {
+                width: 25px;
+                height: 25px;
+                float: left;
+                background: $TPGrey2 $troughIconSpriteURL no-repeat 0 -25px;
+            }
+
+            // Performance Manager
+            &.chartType-32 {
+                .chartTileIcon {
+                    background: $TPGrey2 $troughIconSpriteURL no-repeat 0 -125px;
+                }
+            }
+
+            // TSS by Week/Day
+            &.chartType-23 {
+                .chartTileIcon {
+                    background: $TPGrey2 $troughIconSpriteURL no-repeat 0 -75px;
+                }
+            }
+
+            // Fitness Summary/Pie
+            &.chartType-3 {
+                .chartTileIcon {
+                    background: $TPGrey2 $troughIconSpriteURL no-repeat 0 -150px;
+                }
+            }
+
+            // Peaks
+            &.chartType-8,
+            &.chartType-28,
+            &.chartType-29,
+            &.chartType-30,
+            &.chartType-31,
+            &.chartType-36 {
+                .chartTileIcon {
+                    background: $TPGrey2 $troughIconSpriteURL no-repeat 0 -100px;
+                }
+            }
+
+            // Time in Zones/Bar
+            &.chartType-17,
+            &.chartType-24,
+            &.chartType-26 {
+                .chartTileIcon {
+                    background: $TPGrey2 $troughIconSpriteURL no-repeat 0 -25px;
+                }
+            }
+
+            // Metrics
+            &.chartType-13 {
+                .chartTileIcon {
+                    background: $TPGrey2 $troughIconSpriteURL no-repeat 0 -175px;
+                }
+            }
+
+            // Time in Zones by Week/Stacked Bar
+            &.chartType-18,
+            &.chartType-25,
+            &.chartType-27 {
+                .chartTileIcon {
+                    background: $TPGrey2 $troughIconSpriteURL no-repeat 0 -50px;
+                }
+            }
+
+            @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
+                .chartTileIcon {
+                    background-image: $troughIconSpriteRetinaURL;
+                    background-size: 25px 200px;
+                }
+            }
+
+            .chartTileName {
+                font-size: $fontSizeSmaller;
+                font-family: $fontFamilyHeavy;
+                font-weight:normal;
+                color:$TPGrey4;
+                margin-left:3px;
+                float:left;
+                margin:7px 6px;
+            }   
+
             &.selected {
                 border:1px solid #0043ff;
                 background-color:#bcd1eb;
                 opacity:0.5;
             }
-
-            .chartTileIcon {
-                width: 25px;
-                height: 25px;
-                background-color: #fff;
-                float: left;
-                background: $TPGrey1 $troughIconSpriteURL no-repeat 0 -24px;
-                background-color: $TPGrey2;
-            }
-
-            .chartTileName {
-                font-size: $fontSizeSmall;
-                font-family: $fontFamilyHeavy;
-                margin-left:3px;
-                float:left;
-                margin:7px 6px;
-            }   
         }
         .dashboardChartsLibrary {
             .librarySearch {
@@ -751,12 +910,16 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
     .chartTileIcon {
         width: 25px;
         height: 25px;
-        background-color: #fff;
         float: left;
+        background: $TPGrey1 $troughIconSpriteURL no-repeat 0 -24px;
+        background-color: $TPGrey2;
     }
 
     .chartTileName {
-        font-size: $fontSizeSmall;
+        font-size: $fontSizeSmaller;
+        font-family: $fontFamilyHeavy;
+        font-weight:normal;
+        color:$TPGrey4;
         margin-left:3px;
         float:left;
         margin:7px 6px;

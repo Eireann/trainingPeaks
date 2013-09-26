@@ -1,0 +1,25 @@
+<div class="metricDiv">
+    <div class="metricTile cf">
+        <div class="metricSelected" />
+        <div class="metricHeader">
+            <div class="metricIcon" />
+
+            <div class="metricSettings">
+                <button><img src="assets/images/calendarImages/settingsButtonSmall.png"/></button>
+            </div>
+
+            <span class="metricTime">{{ formatDate timeStamp "h:mm" }}<span class="metricAMPM">{{ formatDate timeStamp "a" }}</span></span>
+        </div>
+        <div class="metricBody">
+            <div class="metricSettingsContain"></div>
+            <ul>
+                {{#each details}}
+                <li>
+                    <span class="metricTitle">{{ formatMetricLabel this }}:</span>
+                    <span class="metricValue"> {{ formatMetricValue this true }}</span>
+                </li>
+                {{/each}}
+            </ul>
+        </div>
+    </div>
+</div>

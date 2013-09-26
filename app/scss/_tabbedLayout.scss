@@ -13,6 +13,11 @@
     padding:10px;
     font-size:$fontSizeSmall;
     background-color:$TPGrey1;
+
+    span {
+        display: block;
+        width: 100%;
+    }
     
     li {
         list-style-type:none;
@@ -53,6 +58,7 @@
     overflow-y: scroll;
     overflow-x: auto;
     @include nice-scrollbar;
+    background-color: $white;
 }
 
 .tabbedLayoutNav .active {
@@ -72,5 +78,19 @@
     .tabbedLayoutNav .active &
     {
         display: block;
+    }
+}
+
+.tabbedLayoutFooter
+{
+    clear: both;
+    width: 100%;
+
+    @include buttons(0, "auto", $fontSizeSmall);
+    button
+    {
+        padding: 0 5px;
+        margin-right: 8px;
+        min-width: 77px;
     }
 }

@@ -25,21 +25,16 @@ function(
 
         className: ChartSettingsView.prototype.className + " peaksChartSettings",
 
-        template:
+        modelEvents:
         {
-            type: "handlebars",
-            template: peaksChartSettingsTemplate
+            "change": "_refreshView"
         },
-
-        events: _.extend(
-        {
-            "change input.auto": "_onInputsChanged"
-        }, ChartSettingsView.prototype.events),
 
         onRender: function()
         {
             var self = this;
 
+            this._addView(".customSettings", peaksChartSettingsTemplate({}));
             this._addView(".dateOptionsRegion", new DashboardDatePicker({
                 model: this.model
             }));
@@ -51,13 +46,19 @@ function(
             this._addView(".workoutTypesRegion", new ChartWorkoutOptionsView({
                 model: this.model
             }));
-
+            this._updateTitle();
             this.children.call("render");
 
             this.$('input.auto[type="checkbox"]').each(function(i, el)
             {
                 var $el = $(el);
                 $el.attr("checked", self.model.get($el.attr("name")));
+            });
+
+            this.$('input.auto[type="text"]').each(function(i, el)
+            {
+                var $el = $(el);
+                $el.val(self.model.get($el.attr("name")));
             });
 
             this._refreshView();
@@ -73,7 +74,11 @@ function(
                 self.model.set($el.attr("name"), $el.prop("checked"));
             });
 
-            this._refreshView();
+            this.$('input.auto[type="text"]').each(function(i, el)
+            {
+                var $el = $(el);
+                self.model.set($el.attr("name"), $el.val());
+            });
         },
 
         _refreshView: function()
@@ -86,7 +91,6 @@ function(
             {
                 this.comparisonDatePicker.disable();
             }
-
         }
     });
 

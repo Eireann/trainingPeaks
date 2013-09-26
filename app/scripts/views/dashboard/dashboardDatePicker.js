@@ -69,7 +69,7 @@ function(
                     zIndex = self.$el.closest(".dashboardChartSettings").css("z-index");
                 }
                 self.$(".datepicker").css("position", "relative").css("z-index", zIndex);
-                self.$(".datepicker").datepicker({ dateFormat: "yy-mm-dd", firstDay: theMarsApp.controllers.calendarController.startOfWeekDayIndex });
+                self.$(".datepicker").datepicker({ dateFormat: "mm-dd-yy", firstDay: theMarsApp.controllers.calendarController.startOfWeekDayIndex });
                 self.$("select.dateOptions").selectBoxIt({dynamicPositioning: true});
                 self.$("input.startDate").datepicker("option", "maxDate", self.$("input.endDate").val());
                 self.$("input.endDate").datepicker("option", "minDate", self.$("input.startDate").val());
@@ -110,8 +110,8 @@ function(
 
             dateOptions = chartUtils.buildChartParameters(dateOptions);
 
-            this.model.set(this.settingsKey + ".startDate", dateOptions.customStartDate ? moment(dateOptions.startDate).format("YYYY-MM-DD") + "T00:00:00Z" : null);
-            this.model.set(this.settingsKey + ".endDate", dateOptions.customEndDate ? moment(dateOptions.endDate).format("YYYY-MM-DD") + "T00:00:00Z" : null);
+            this.model.set(this.settingsKey + ".startDate", dateOptions.customStartDate ? moment(dateOptions.startDate).format("YYYY-MM-DD") : null);
+            this.model.set(this.settingsKey + ".endDate", dateOptions.customEndDate ? moment(dateOptions.endDate).format("YYYY-MM-DD") : null);
             this.model.set(this.settingsKey + ".quickDateSelectOption", optionId);
 
             this.updateViewFields(dateOptions);
@@ -138,8 +138,8 @@ function(
                 this.$(".dateRanges").removeClass("customEndDate");
             }
 
-            var startDate = moment(dateOptions.startDate).format("YYYY-MM-DD");
-            var endDate = moment(dateOptions.endDate).format("YYYY-MM-DD");
+            var startDate = moment(dateOptions.startDate).format("MM-DD-YYYY");
+            var endDate = moment(dateOptions.endDate).format("MM-DD-YYYY");
             this.$("input.startDate").val(startDate);
             this.$("div.startDate").text(startDate);
             this.$("input.endDate").val(endDate);

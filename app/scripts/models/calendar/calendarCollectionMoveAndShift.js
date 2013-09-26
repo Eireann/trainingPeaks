@@ -1,10 +1,10 @@
 ﻿define(
 [
-
+    "shared/models/activityModel"
 ],
 function(
-
-    )
+    ActivityModel
+)
 {
     var calendarCollectionMoveShift = {
 
@@ -28,7 +28,8 @@ function(
             }
 
             // get the item
-            var item = this.workoutsCollection.get(options.ItemId);
+            var item = this.activitiesCollection.get(options.ItemType + ":" + options.ItemId);
+            item = ActivityModel.unwrap(item);
             item.moveToDay(options.destinationCalendarDayModel.id);
         },
 
@@ -45,10 +46,10 @@ function(
             var sourceDayModel = this.getDayModel(options.ItemId);
             var item = null;
 
-            // first model is day label ...
-            while (sourceDayModel.itemsCollection.length > 1)
+            while (sourceDayModel.itemsCollection.length > 0)
             {
                 item = sourceDayModel.itemsCollection.pop();
+                item = ActivityModel.unwrap(item);
                 item.moveToDay(options.destinationCalendarDayModel.id);
             }
 
@@ -57,7 +58,17 @@ function(
 
         onShiftWizardOpen: function()
         {
-            this.trigger("shiftwizard:open");
+            var self = this;
+            var openTheWizard = function()
+            {
+                self.trigger("shiftwizard:open");
+            };
+
+            theMarsApp.featureAuthorizer.runCallbackOrShowUpgradeMessage(
+                theMarsApp.featureAuthorizer.features.ShiftWorkouts, 
+                openTheWizard
+            );
+            
         }
     };
 

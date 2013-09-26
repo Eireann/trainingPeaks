@@ -1,5 +1,5 @@
 ﻿<div id="shiftItems" class="dialog">
-    <div class="titleBar cf"><h2 class="modaltitle">{{$ "ShiftItems"}}</h2></div>
+    <div class="titleBar cf"><h2>{{$ "ShiftItems"}}</h2></div>
     <div class="shiftItemsBody dialogContent">
         {{! hide checkboxes for now ... }}
         {{#if false}}
@@ -11,7 +11,7 @@
         {{/if}}
         
 		<div id="selectItems">
-			<div class="dialogHeader"><h3>{{$ "SelectShiftItemsString"}}</h3></div>        
+			<h3>{{$ "SelectShiftItemsString"}}</h3>     
 			<form>
             	<label><input type="radio" value="itemsOnAllSelectedDays" name="selectItems" id="selectItemsOnSelectedDays"/>{{$ "ItemsOnAllSelectedDays"}}</label>
             	<label><input type="radio" value="ItemsWithinSpecifiedDateRange" name="selectItems" id="selectItemsWithinDateRange"/>{{$ "ItemsWithinSpecifiedDateRange"}}</label>
@@ -38,7 +38,7 @@
 	
 
         <div id="howToShift">
-			<div class="dialogHeader"><h3>{{$ "HowDoYouWantToShiftItems"}}</h3></div>
+			<h3>{{$ "HowDoYouWantToShiftItems"}}</h3>
 			<form>
 	            <label><input type="radio" value="MoveToNewStartDate" name="shiftBy"/>{{$ "MoveNewStartDate"}}</label>
 	            <label><input type="radio" value="MoveBySpecifiedNumberOfDays" name="shiftBy"/>{{$ "MoveBySpecifiedNumberOfDays"}}</label>

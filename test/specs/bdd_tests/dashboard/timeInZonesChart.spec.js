@@ -6,7 +6,8 @@ requirejs(
     "testUtils/testHelpers",
     "testUtils/xhrDataStubs",
     "app",
-    "views/dashboard/chartUtils"
+    "views/dashboard/chartUtils",
+    "testUtils/sharedSpecs/sharedChartSpecs"
 ],
 function(
     _,
@@ -14,9 +15,29 @@ function(
     testHelpers,
     xhrData,
     theMarsApp,
-    chartUtils
+    chartUtils,
+    SharedChartSpecs
     )
 {
+
+    describe("Time In Zones Charts", function()
+    {
+        var chartTypes =
+        [
+            17, // HR Zones
+            24, // Power Zones
+            26  // Speed Zones
+        ];
+
+        _.each(chartTypes, function(chartType)
+        {
+            describe("chart type: " + chartType, function() {
+                SharedChartSpecs.chartSettings({
+                    chartType: chartType
+                });
+            });
+        });
+    });
 
     describe("Time In Zones Chart", function()
     {
@@ -25,7 +46,6 @@ function(
         var timeInHeartRateZonesPodSettings = {
             index: 0,
             chartType: 17,
-            title: "Time In HR Zones",
             dateOptions: {
                 quickDateSelectOption: 1,
                 startDate: null,
@@ -40,7 +60,7 @@ function(
             beforeEach(function()
             {
                 var userData = xhrData.users.barbkprem;
-                testHelpers.startTheAppAndLogin(userData, true);
+                testHelpers.startTheAppAndLogin(testHelpers.deepClone(userData));
                 theMarsApp.user.getDashboardSettings().set("pods", [timeInHeartRateZonesPodSettings]);
                 $mainRegion = theMarsApp.mainRegion.$el;
                 theMarsApp.router.navigate("dashboard", true);
@@ -163,7 +183,6 @@ function(
             var timeInHeartRateZonesPodSettings = {
                 index: 0,
                 chartType: 17,
-                title: "Time In HR Zones",
                 dateOptions: {
                     quickDateSelectOption: 1,
                     startDate: null,
@@ -175,7 +194,6 @@ function(
             var timeInPowerZonesPodSettings = {
                 index: 0,
                 chartType: 24,
-                title: "Time In Power Zones",
                 dateOptions: {
                     quickDateSelectOption: 1,
                     startDate: null,
@@ -187,7 +205,6 @@ function(
             var timeInSpeedZonesPodSettings = {
                 index: 0,
                 chartType: 26,
-                title: "Time In Speed Zones",
                 dateOptions: {
                     quickDateSelectOption: 1,
                     startDate: null,
@@ -199,7 +216,7 @@ function(
             beforeEach(function()
             {
                 var userData = xhrData.users.barbkprem;
-                testHelpers.startTheAppAndLogin(userData, true);
+                testHelpers.startTheAppAndLogin(testHelpers.deepClone(userData));
                 theMarsApp.user.getDashboardSettings().set("pods", [timeInHeartRateZonesPodSettings, timeInPowerZonesPodSettings, timeInSpeedZonesPodSettings]);
                 $mainRegion = theMarsApp.mainRegion.$el;
                 theMarsApp.router.navigate("dashboard", true);
@@ -227,9 +244,9 @@ function(
             {
                 var tizRequests = testHelpers.findAllRequests("POST", "reporting/timeinzones");
                 expect(tizRequests.length).toBe(3);
-                expect(JSON.parse(tizRequests[0].options.data).timeInZonesType).toEqual(1);
-                expect(JSON.parse(tizRequests[1].options.data).timeInZonesType).toEqual(2);
-                expect(JSON.parse(tizRequests[2].options.data).timeInZonesType).toEqual(3);
+                expect(JSON.parse(tizRequests[0].requestBody).timeInZonesType).toEqual(1);
+                expect(JSON.parse(tizRequests[1].requestBody).timeInZonesType).toEqual(2);
+                expect(JSON.parse(tizRequests[2].requestBody).timeInZonesType).toEqual(3);
             });
 
         });

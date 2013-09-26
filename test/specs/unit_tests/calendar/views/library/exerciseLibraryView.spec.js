@@ -30,16 +30,17 @@ function(TP, ExerciseLibraryView, ExerciseLibraryItemView, ExerciseLibraryAddIte
             });
         });
 
-        describe("add item", function()
-        {
-            it("Should subscribe to add click events", function()
-            {
-                expect(ExerciseLibraryView.prototype.events["click button#add"]).toBeDefined();
-                expect(ExerciseLibraryView.prototype.events["click button#add"]).toBe("addToLibrary");
-                expect(typeof ExerciseLibraryView.prototype.addToLibrary).toBe("function");
-            });
+// Test for incomplete feature that was disabled
+//         describe("add item", function()
+//         {
+//             it("Should subscribe to add click events", function()
+//             {
+//                 expect(ExerciseLibraryView.prototype.events["click button#add"]).toBeDefined();
+//                 expect(ExerciseLibraryView.prototype.events["click button#add"]).toBe("addToLibrary");
+//                 expect(typeof ExerciseLibraryView.prototype.addToLibrary).toBe("function");
+//             });
 
-        });
+//         });
 
     });
 

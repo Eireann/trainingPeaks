@@ -79,7 +79,7 @@ function(chartColors, findIndexByMsOffset, conversion)
                     previousElevation = value;
 
                 dataByAxisAndChannel.time[channelName].push([xAxisTimeOffset, parseFloat(value)]);
-
+                
                 if (xAxisDistanceOffset !== null && !(xAxisDistanceOffset === 0 && xAxisZeroAlreadySet))
                 {
                     dataByAxisAndChannel.distance[channelName].push([xAxisDistanceOffset, parseFloat(value)]);
@@ -95,7 +95,7 @@ function(chartColors, findIndexByMsOffset, conversion)
         return dataByAxisAndChannel;
     };
 
-    var generateSeriesFromData = function(channelMask, dataByChannel, elevationIsAllNegative, x1, x2)
+    var generateSeriesFromData = function(channelMask, dataByChannel, minElevation, x1, x2)
     {
         var self = this;
         var seriesArray = [];
@@ -109,9 +109,6 @@ function(chartColors, findIndexByMsOffset, conversion)
                 return;
 
             if (channel === "Latitude" || channel === "Longitude")
-                return;
-
-            if (channel === "Elevation" && elevationIsAllNegative)
                 return;
 
             var fillOpacity = channel === "Elevation" ? 0.3 : null;
@@ -144,6 +141,10 @@ function(chartColors, findIndexByMsOffset, conversion)
             {
                 seriesOptions.color = "#FFFFFF";
                 seriesOptions.lines.fillColor = { colors: [chartColors.gradients.elevation.dark, chartColors.gradients.elevation.light] };
+                _.each(data, function(dataPoint)
+                {
+                    dataPoint.push(minElevation);
+                });
             }
 
             seriesArray.push(seriesOptions);
@@ -234,7 +235,7 @@ function(chartColors, findIndexByMsOffset, conversion)
         var axisIndex = 1;
         _.each(series, function(s)
         {
-            var showSwimPace = s.label === "Speed" && self.workoutTypeValueId === 1;
+            var showSpeedAsPace = s.label === "Speed" && _.contains([1,3,13], self.workoutTypeValueId);
             if (s.label === "Pace")
                 return;
             
@@ -258,13 +259,13 @@ function(chartColors, findIndexByMsOffset, conversion)
                     // For some reason, a '0' value returns a NaN, check for it.
 
                     // Swim workouts need to format "Speed" as "Pace"
-                    if (showSwimPace)
+                    if (showSpeedAsPace)
                     {
                         return value === 0 ? +0 : conversion.formatUnitsValue("pace", value, { defaultValue: null, workoutTypeId: self.workoutTypeValueId } );
                     }
                     return value === 0 ? +0 : parseInt(conversion.formatUnitsValue(s.label.toLowerCase(), value), 10);
                 },
-                labelWidth: showSwimPace ? 27 : 15
+                labelWidth: showSpeedAsPace ? 27 : 15
             };
 
             yaxes.push(axisOptions);
@@ -315,7 +316,7 @@ function(chartColors, findIndexByMsOffset, conversion)
 
         getSeries: function(x1, x2)
         {
-            return generateSeriesFromData.call(this, this.flatSamples.channelMask, this.dataByAxisAndChannel[this.xaxis], this.elevationIsAllNegative, x1, x2);
+            return generateSeriesFromData.call(this, this.flatSamples.channelMask, this.dataByAxisAndChannel[this.xaxis], this.minElevation, x1, x2);
         },
 
         getElevationInfo: function(x1, x2)

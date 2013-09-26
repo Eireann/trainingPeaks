@@ -4,6 +4,7 @@
     "jqueryui/datepicker",
     "jqueryTimepicker",
     "TP",
+    "framework/notYetImplemented",
     "views/quickView/qvMain/qvWorkoutTypeMenuView",
     "views/quickView/qvMain/qvContextMenuView",
     "views/quickView/qvMain/qvOptionsMenuView",
@@ -18,6 +19,7 @@ function (
     datepicker,
     timepicker,
     TP,
+    notYetImplemented,
     WorkoutTypeMenuView,
     QVContextMenuView,
     QVOptionsMenuView,
@@ -28,6 +30,7 @@ function (
     saveWorkoutBeforeAttachmentTemplate
 )
 {
+
     var qvHeaderActions =
     {
         headerEvents:
@@ -40,7 +43,9 @@ function (
             "blur input.workoutTitle": "onTitleBlur",
             "keyup input.workoutTitle": "onTitleChanged",
             "click button#options": "onOptionsClicked",
-            "click button#comment": "onCommentsClicked"
+            "click button#comment": "onCommentsClicked",
+            "click .expandedViewsButtons .view": notYetImplemented,
+            "click .charts button": notYetImplemented
         },
 
         headerUi:
@@ -104,17 +109,29 @@ function (
 
         onDateChanged: function(newDate)
         {
-            TP.analytics("send", { "hitType": "event", "eventCategory": "quickView", "eventAction": "workoutDateChanged", "eventLabel": "" });
+
             var self = this;
+
+            TP.analytics("send", { "hitType": "event", "eventCategory": "quickView", "eventAction": "workoutDateChanged", "eventLabel": "" });
             var newDay = moment(newDate).format(this.model.shortDateFormat);
             this.ui.date.datepicker("hide");
             var workout = this.model;
             var oldDay = workout.getCalendarDay();
             if (newDay !== oldDay)
             {
-                // prepare our target day collection
-                theMarsApp.controllers.calendarController.views.calendar.scrollToDate(newDate);
-                workout.moveToDay(newDay);
+                var moveWorkout = function()
+                {
+                    // prepare our target day collection
+                    // theMarsApp.controllers.calendarController.views.calendar.scrollToDate(newDate);
+                    workout.moveToDay(newDay);
+                };
+
+                theMarsApp.featureAuthorizer.runCallbackOrShowUpgradeMessage(
+                    theMarsApp.featureAuthorizer.features.SaveWorkoutToDate, 
+                    moveWorkout, 
+                    {targetDate: newDay}
+                );
+
             }
         },
 
@@ -128,7 +145,7 @@ function (
             typesMenu.on("selectWorkoutType", this.onSelectWorkoutType, this);
 
             if (direction === "right")
-                typesMenu.setPosition({ fromElement: icon, left: icon.outerWidth() + 10, top: -15 });
+                typesMenu.setPosition({ fromElement: icon, left: icon.outerWidth() + 10, top: -13 });
             else
                 typesMenu.setPosition({ fromElement: icon, right: -12, top: -13 });
 
@@ -213,11 +230,13 @@ function (
         
         onCommentsClicked: function (e)
         {
+            
             TP.analytics("send", { "hitType": "event", "eventCategory": "quickView", "eventAction": "headerCommentsClicked", "eventLabel": "" });
 
-            var offset = $(e.currentTarget).offset();
+            var offset = $(e.currentTarget).offset(),
+                maxHeight = (this.expandoController.layout.$el.parent().height() / 2) + 64;
 
-            this.commentsEditorView = new ExpandoCommentsEditorView({ model: this.model, parentEl: this.$el });
+            this.commentsEditorView = new ExpandoCommentsEditorView({ model: this.model, parentEl: this.$el, maxHeight: maxHeight});
             this.commentsEditorView.render().top(offset.top - 12);
 
             if (this.$el.width() < 1380)

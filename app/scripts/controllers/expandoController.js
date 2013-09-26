@@ -86,16 +86,16 @@ function(setImmediate, TP, DataParser, ExpandoLayout, GraphView, MapView, StatsV
         {
             this.layout.$el.removeClass("waiting");
 
-            // use some setImmediate's to allow everything to paint nicely
-            this.layout.statsRegion.show(this.views.statsView);
-            this.layout.lapsRegion.show(this.views.lapsView);
-
             var self = this;
 
             var flatSamples = this.model.get("detailData").get("flatSamples");
             this.dataParser.loadData(flatSamples);
 
             this.showMapAndGraph();
+
+            // use some setImmediate's to allow everything to paint nicely
+            this.layout.statsRegion.show(this.views.statsView);
+            this.layout.lapsRegion.show(this.views.lapsView);
 
             setImmediate(function()
             {
@@ -130,20 +130,6 @@ function(setImmediate, TP, DataParser, ExpandoLayout, GraphView, MapView, StatsV
                 canShowGraph = this.model.get("detailData").hasSamples(),
                 canShowMap = this.dataParser.hasLatLongData;
 
-            if (canShowGraph)
-            {
-                this.layout.showGraph();
-
-                setImmediate(function()
-                {
-                    self.layout.graphRegion.show(self.views.graphView);
-                });
-                
-            } else
-            {
-                this.layout.hideGraph();
-            }
-
             if (canShowMap)
             {
                 this.layout.showMap();
@@ -154,6 +140,21 @@ function(setImmediate, TP, DataParser, ExpandoLayout, GraphView, MapView, StatsV
             } else
             {
                 this.layout.hideMap();
+            }
+
+            if (canShowGraph)
+            {
+                this.layout.showGraph();
+
+                setImmediate(function()
+                {
+                    self.layout.graphRegion.show(self.views.graphView);
+                    self.expand();
+                });
+                
+            } else
+            {
+                this.layout.hideGraph();
             }
 
             if (canShowGraph && canShowMap)
@@ -178,7 +179,17 @@ function(setImmediate, TP, DataParser, ExpandoLayout, GraphView, MapView, StatsV
 
         collapse: function()
         {
+            this.disableViewsResize = true;
+            this.views.graphView.trigger("controller:expandCollapse", "collapse");
             this.layout.$el.parent().hide();
+        },
+        expand: function()
+        {
+            this.disableViewsResize = false;
+            if (this.views.graphView)
+            {
+                this.views.graphView.trigger("controller:expandCollapse", "expand");
+            }
         },
 
         closeViews: function()
@@ -322,6 +333,10 @@ function(setImmediate, TP, DataParser, ExpandoLayout, GraphView, MapView, StatsV
 
         onViewResize: function()
         {
+            if (this.disableViewsResize)
+            {
+                return;
+            }
             var containerHeight = this.layout.$el.parent().height();
             var mapAndChartsContainerWidth = this.layout.$("#expandoLeftColumn").width();
             _.each(this.views, function(view)

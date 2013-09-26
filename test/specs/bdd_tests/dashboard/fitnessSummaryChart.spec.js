@@ -5,16 +5,28 @@ requirejs(
     "testUtils/testHelpers",
     "testUtils/xhrDataStubs",
     "app",
-    "views/dashboard/chartUtils"
+    "views/dashboard/chartUtils",
+    "testUtils/sharedSpecs/sharedChartSpecs"
 ],
 function(
     _,
     testHelpers,
     xhrData,
     theMarsApp,
-    chartUtils
+    chartUtils,
+    SharedChartSpecs
     )
 {
+
+    describe("Fitness Summary Chart", function()
+    {
+
+        SharedChartSpecs.chartSettings(
+        {
+            chartType: 3
+        });
+
+    });
 
     var applyDashboardDates = function($mainRegion, $body, dateOptionId, startDate, endDate)
     {
@@ -33,7 +45,6 @@ function(
         var fitnessSummaryPodSettings = {
             index: 0,
             chartType: 3,
-            title: "Fitness Summary",
             dateOptions: {
                 quickDateSelectOption: 1,
                 startDate: null,
@@ -47,7 +58,7 @@ function(
             beforeEach(function()
             {
                 var userData = xhrData.users.barbkprem;
-                testHelpers.startTheAppAndLogin(userData, true);
+                testHelpers.startTheAppAndLogin(testHelpers.deepClone(userData));
                 theMarsApp.user.getDashboardSettings().set("pods", [fitnessSummaryPodSettings]);
                 $mainRegion = theMarsApp.mainRegion.$el;
                 theMarsApp.router.navigate("dashboard", true);
@@ -148,7 +159,6 @@ function(
                 var fitnessSummaryPodSettingsThree = {
                     index: 0,
                     chartType: 3,
-                    title: "Fitness Summary",
                     dateOptions: {
                         quickDateSelectOption: 1,
                         startDate: null,
@@ -159,7 +169,7 @@ function(
                 beforeEach(function()
                 {
                     var userData = xhrData.users.barbkprem;
-                    testHelpers.startTheAppAndLogin(userData, true);
+                    testHelpers.startTheAppAndLogin(testHelpers.deepClone(userData));
                     theMarsApp.user.getDashboardSettings().set("pods", [fitnessSummaryPodSettingsThree]);
                     $mainRegion = theMarsApp.mainRegion.$el;
                     theMarsApp.router.navigate("dashboard", true);
@@ -184,6 +194,7 @@ function(
 
             describe("Report Type", function()
             {
+
                 it("Should default to Planned Distance", function()
                 {
                     expect($mainRegion.find(".dashboardChart.fitnessSummaryChart").text()).toContain("Planned Distance");
@@ -193,25 +204,14 @@ function(
                 {
                     var $body = theMarsApp.getBodyElement();
 
-                    runs(function()
-                    {
-                        testHelpers.clearRequests();
-                        $mainRegion.find(".dashboardChart.fitnessSummaryChart .settings").trigger("mousedown");
-                        $body.find(".dashboardChartSettings select.summaryType").val("2").trigger("change");
-                        $body.find(".dashboardChartSettings .closeIcon").trigger("click");
-                    });
+                    $mainRegion.find(".dashboardChart.fitnessSummaryChart .settings").trigger("mousedown");
+                    $body.find(".dashboardChartSettings select.summaryType").val("2").trigger("change");
+                    $body.find(".dashboardChartSettings .closeIcon").trigger("click");
 
-                    waitsFor(function()
-                    {
-                        return $mainRegion.find(".dashboardChart.fitnessSummaryChart").text().indexOf("Completed Distance") > 0;
-                    });
+                    testHelpers.resolveRequest("GET", "reporting/fitnesssummary", []);
 
-                    runs(function()
-                    {
-                        expect($mainRegion.find(".dashboardChart.fitnessSummaryChart").text()).toContain("Completed Distance");
-                    });
+                    expect($mainRegion.find(".dashboardChart.fitnessSummaryChart").text()).toContain("Completed Distance");
 
-                    
                 });
 
                 it("Should retain the selected report type in the settings tomahawk", function()
@@ -223,6 +223,7 @@ function(
                     $mainRegion.find(".dashboardChart.fitnessSummaryChart .settings").trigger("mousedown");
                     expect($body.find(".dashboardChartSettings select.summaryType").val()).toEqual("3");
                 });
+
             });
 
         });
@@ -234,7 +235,6 @@ function(
                 var fitnessSummaryPodSettings = {
                     index: 0,
                     chartType: 3,
-                    title: "Fitness Summary",
                     dateOptions: {
                         quickDateSelectOption: 1,
                         startDate: null,
@@ -245,7 +245,6 @@ function(
                 var fitnessSummaryPodSettingsTwo = {
                     index: 1,
                     chartType: 3,
-                    title: "Fitness Summary",
                     dateOptions: {
                         quickDateSelectOption: 1,
                         startDate: null,
@@ -256,7 +255,7 @@ function(
                 beforeEach(function()
                 {
                     var userData = xhrData.users.barbkprem;
-                    testHelpers.startTheAppAndLogin(userData, true);
+                    testHelpers.startTheAppAndLogin(testHelpers.deepClone(userData));
                     theMarsApp.user.getDashboardSettings().set("pods", [fitnessSummaryPodSettings, fitnessSummaryPodSettingsTwo]);
                     $mainRegion = theMarsApp.mainRegion.$el;
                     theMarsApp.router.navigate("dashboard", true);
@@ -286,7 +285,6 @@ function(
                 var fitnessSummaryPodSettings = {
                     index: 0,
                     chartType: 3,
-                    title: "Fitness Summary",
                     dateOptions: {
                         quickDateSelectOption: 1,
                         startDate: null,
@@ -297,7 +295,6 @@ function(
                 var fitnessSummaryPodSettingsTwo = {
                     index: 1,
                     chartType: 3,
-                    title: "Fitness Summary",
                     dateOptions: {
                         quickDateSelectOption: 8,
                         startDate: null,
@@ -308,7 +305,7 @@ function(
                 beforeEach(function()
                 {
                     var userData = xhrData.users.barbkprem;
-                    testHelpers.startTheAppAndLogin(userData, true);
+                    testHelpers.startTheAppAndLogin(testHelpers.deepClone(userData));
                     theMarsApp.user.getDashboardSettings().set("pods", [fitnessSummaryPodSettings, fitnessSummaryPodSettingsTwo]);
                     $mainRegion = theMarsApp.mainRegion.$el;
                     theMarsApp.router.navigate("dashboard", true);

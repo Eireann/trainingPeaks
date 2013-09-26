@@ -1,29 +1,23 @@
-{{#hoverBox this}}
-    <div class="details">
-        <div class="closeIcon"></div>
-        <div class="workoutTypesRegion"></div>
-        <div class="dateOptionsRegion"></div>
-        {{#unless subType.onlyByWeek }}
-        <div class="weekDaySelect cf">
-            <label>
-                <input type="radio" class="auto"
-                name="dateGrouping" value="1">
-                By day
-            </label>
-            
-            <label>
-                <input type="radio" class="auto"
-                name="dateGrouping" value="2">
-                By week
-            </label>
-        </div>
-        {{/unless}}
-        {{#if subType.hasPlanned }}
-        <label>
-            <input type="checkbox" class="auto" name="showPlanned">
-            Show Planned
-        </label>
-        {{/if}}
-    </div>
-{{/hoverBox}}
-
+<div class="workoutTypesRegion"></div>
+<div class="dateOptionsRegion"></div>
+{{#unless subType.onlyByWeek }}
+<div class="weekDaySelect cf">
+    <label>
+        <input type="radio" class="auto"
+        name="dateGrouping" value="1">
+        By day
+    </label>
+    
+    <label>
+        <input type="radio" class="auto"
+        name="dateGrouping" value="2">
+        By week
+    </label>
+</div>
+{{/unless}}
+{{#if subType.hasPlanned }}
+<label>
+    <input type="checkbox" class="auto" name="showPlanned">
+    Show Planned
+</label>
+{{/if}}

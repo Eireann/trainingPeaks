@@ -1,5 +1,6 @@
 ﻿define(
 [
+    "underscore",
     "TP",
     "views/pageContainer/libraryContainerView",
     "views/dashboard/dashboardChartsLibraryView",
@@ -7,6 +8,7 @@
     "hbs!templates/views/dashboard/dashboardLibraryView"
 ],
 function(
+    _,
     TP,
     LibraryContainerView,
     DashboardChartsLibraryView,
@@ -28,8 +30,10 @@ function(
 
             this.collections =
             {
-                charts: new AvailableChartsCollection()
+                charts: new AvailableChartsCollection([], { featureAuthorizer: theMarsApp.featureAuthorizer })
             };
+
+            this.on("user:loaded", _.bind(this.collections.charts.addAllAvailableCharts, this.collections.charts));
         },
 
         viewConstructors:

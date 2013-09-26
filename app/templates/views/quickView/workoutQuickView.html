@@ -8,7 +8,7 @@
             <span id="menuIcon"></span>
         </div>
 
-        <div>
+        <div class="QVHeaderItemsContain cf">
             <div class="dateAndTime">
                 <span id="date">
                     <span id="dayName">{{formatDate workoutDay "dddd"}}</span> 
@@ -66,7 +66,7 @@
                 <div class="share">
                     <label>{{$ "Share"}}</label>
                     <div class="publicCheckboxContainer">
-                        <input type="checkbox" class="publicCheckbox"/> <span class="publicLabel" title="{{$ "PublicTooltip" }}">{{$ "Public" }}</span>
+                        <label><input type="checkbox" class="publicCheckbox"/> <span class="publicLabel" title="{{$ "PublicTooltip" }}">{{$ "Public" }}</span></label>
                     </div>
                     <div class="shareIcons">
                         <div class="twitterIcon disabled" title="{{$ "PublicTooltipTwitter" }}"/>
@@ -114,9 +114,9 @@
     <div class="quickviewFooter">
         <div class="share">
             <div class="publicCheckboxContainer">
-                <input type="checkbox" class="publicCheckbox"/> <span class="publicLabel" title="{{$ "PublicTooltip" }}">{{$ "Public" }}</span>
+                <label><input type="checkbox" class="publicCheckbox"/> <span class="publicLabel" title="{{$ "PublicTooltip" }}">{{$ "Public" }}</span></label>
             </div>
-            <div class="shareIcons">
+            <div class="shareIcons cf">
                 <div class="twitterIcon disabled" title="{{$ "PublicTooltipTwitter" }}"/>
                 <div class="facebookIcon disabled" title="{{$ "PublicTooltipFacebook" }}"/>
                 <div class="linkIcon disabled" title="{{$ "PublicTooltipLink" }}"/>

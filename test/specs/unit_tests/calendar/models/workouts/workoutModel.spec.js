@@ -5,13 +5,17 @@ requirejs(
     "moment",
     "jquery",
     "TP",
-    "models/workoutModel"],
+    "models/workoutModel",
+    "testUtils/testHelpers"
+],
 function(
     app,
     moment,
     $,
     TP,
-    WorkoutModel)
+    WorkoutModel,
+    testHelpers
+)
 {
     describe("Workout Model", function()
     {
@@ -50,64 +54,32 @@ function(
         describe("moveToDay", function()
         {
             var workout;
-            var originalDate = moment().format("YYYY-MM-DDThh:mm:ss");
+            var originalDate = moment().format("YYYY-MM-DD");
             var tomorrow = moment().add("days", 1).format("YYYY-MM-DD");
-            var originalCollection;
-            var newCollection;
 
             beforeEach(function()
             {
-                app.controllers = {
-                    calendarController: {
-                        weeksCollection: {
-                            getDayModel: function()
-                            {
-                                return new TP.Collection();
-                            }
-                        }
-                    }
-                };
-
-                originalCollection = jasmine.createSpyObj("Original Collection", ["add", "remove"]);
-                newCollection = jasmine.createSpyObj("New Collection", ["add", "remove"]);
-
+                testHelpers.setupFakeAjax();
                 workout = new WorkoutModel({ workoutId: "12345", workoutDay: originalDate });
-                workout.dayCollection = originalCollection;
-                spyOn(workout, "save").andReturn($.Deferred());
             });
 
-            it("Should update workoutDay and call save", function()
+            afterEach(function()
             {
-                var newDate = moment("2013-01-19");
-                workout.moveToDay(newDate);
-                expect(workout.getCalendarDay()).toEqual(newDate.format("YYYY-MM-DD"));
+                testHelpers.removeFakeAjax();
             });
 
-            it("Should call save", function()
-            {
-                var newDate = moment("2019-03-21");
-                workout.moveToDay(newDate);
-                expect(workout.save).toHaveBeenCalled();
-            });
-
-            it("Should remove from original collection", function()
+            it("Should update workoutDay on success", function()
             {
                 workout.moveToDay(tomorrow);
-                expect(originalCollection.remove).toHaveBeenCalledWith(workout);
+                testHelpers.resolveRequest("PUT", "", {});
+                expect(workout.getCalendarDay()).toEqual(tomorrow);
             });
 
-            it("Should add to new collection", function()
+            it("Should not update workoutDay on failure", function()
             {
                 workout.moveToDay(tomorrow);
-                expect(workout.dayCollection).not.toEqual(originalCollection);
-            });
-
-            it("Should move workout back if save fails", function()
-            {
-                spyOn(workout, "set").andCallThrough();
-                workout.moveToDay(tomorrow).reject();
-                expect(originalCollection.add).toHaveBeenCalledWith(workout);
-                expect(workout.set).toHaveBeenCalledWith("workoutDay", originalDate);
+                testHelpers.rejectRequest("PUT", "");
+                expect(workout.getCalendarDay()).toEqual(originalDate);
             });
         });
 

@@ -307,9 +307,9 @@ function(
          return workoutTypeId;
       },
 
-      updateChartTitle: function()
+      defaultTitle: function()
       {
-         this.set("title", TP.utils.translate("Peak " + this.subType.label) + ": " + TP.utils.workout.types.getListOfNames(this.get("workoutTypeIds")));
+         return TP.utils.translate("Peak " + this.subType.label) + ": " + TP.utils.workout.types.getListOfNames(this.get("workoutTypeIds"));
       },
 
       createItemDetailView: function(item)
@@ -317,9 +317,8 @@ function(
           if(item && item.series && item.series.raw && item.series.raw[item.dataIndex] && item.series.raw[item.dataIndex].workoutId)
           {
             var workoutId = item.series.raw[item.dataIndex].workoutId;
-            var workout = new WorkoutModel({ workoutId: workoutId });
-            workout.fetch();
-            return new WorkoutQuickView({model: workout});
+            var workoutPromise = this.dataManager.loadModel(WorkoutModel, { workoutId: workoutId });
+            return new WorkoutQuickView({model: workoutPromise.model});
           }
           else
           {

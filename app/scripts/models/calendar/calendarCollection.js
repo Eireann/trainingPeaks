@@ -4,6 +4,8 @@
     "moment",
     "TP",
     "models/workoutsCollection",
+    "shared/models/metricsCollection",
+    "shared/models/activityModel",
     "models/calendar/calendarWeekCollection",
     "models/calendar/calendarDay",
     "models/calendar/calendarCollectionCopyPaste",
@@ -14,6 +16,8 @@ function(
     moment,
     TP,
     WorkoutsCollection,
+    MetricsCollection,
+    ActivityModel,
     CalendarWeekCollection,
     CalendarDayModel,
     calendarCollectionCopyPaste,
@@ -52,9 +56,13 @@ function(
 
             this.summaryViewEnabled = options.hasOwnProperty("summaryViewEnabled") ? options.summaryViewEnabled : false;
 
-            this.workoutsCollection = new WorkoutsCollection();
+
+            this.activitiesCollection = new TP.Collection();
             this.daysCollection = new TP.Collection();
             this.setUpWeeks(options.startDate, options.endDate);
+
+            this.listenTo(this.activitiesCollection, "request sync error add change:workoutDay change:timeStamp", _.bind(this.indexActivityByDay, this));
+            this.listenTo(this.activitiesCollection, "remove", _.bind(this.unindexActivityByDay, this));
 
             this.initializeCopyPaste();
             this.initializeMoveAndShift();
@@ -100,7 +108,7 @@ function(
             this.startDate = startDate;
             this.endDate = endDate;
 
-            this.workoutsCollection.reset();
+            this.activitiesCollection.reset();
             this.daysCollection.reset();
 
             this.add(this._buildWeeksForRange(startDate, endDate));
@@ -123,7 +131,7 @@ function(
             this.startDate = startDate;
             this.endDate = endDate;
 
-            this.workoutsCollection.reset();
+            this.activitiesCollection.reset();
             this.daysCollection.reset();
             var weeks = this._buildWeeksForRange(startDate, endDate);
             this.selectedDay = this.selectedWeek = this.selectedRange = null;
@@ -162,26 +170,50 @@ function(
 
         requestWorkouts: function(startDate, endDate)
         {
+            return this.loadActivities(startDate, endDate);
+        },
+
+        loadActivities: function(startDate, endDate)
+        {
             var self = this;
 
-            this.setWeeksAttrs(startDate, endDate, {isWaiting: true, isFetched: true});
-            var workouts = new WorkoutsCollection([], { startDate: moment(startDate), endDate: moment(endDate) });
-            var waiting = this._dataManager.fetchOnModel(workouts);
+            self.trigger("before:changes");
+            this.setWeeksFlags(startDate, endDate, {isWaiting: true, isFetched: true});
+            self.trigger("after:changes");
+
+            var workoutsPromise = this._dataManager.loadCollection(WorkoutsCollection, {
+                startDate: moment(startDate),
+                endDate: moment(endDate)
+            });
+            var workouts = workoutsPromise.collection;
+
+            var metricsPromise = this._dataManager.loadCollection(MetricsCollection, {
+                startDate: moment(startDate),
+                endDate: moment(endDate)
+            });
+            var metrics = metricsPromise.collection;
+
+            var waiting = $.when(workoutsPromise, metricsPromise);
 
             // we trigger a sync event on each week model - whether they have workouts or not - to remove the waiting throbber
             // but we don't trigger the request event here to show the throbber, because the week model is not yet bound to a view,
             // so calendarView does that
-            waiting.done(function ()
+            waiting.then(function ()
             {
                 self.trigger("before:changes");
-                workouts.each(function (workout)
-                {
-                    self.addWorkout(workout);
-                });
+
+                workouts.each(_.bind(self.addItem, self));
+                metrics.each(_.bind(self.addItem, self));
+                self.setWeeksFlags(startDate, endDate, {isWaiting: false});
+
                 self.trigger("after:changes");
-            }).always(function()
+            }, function()
             {
-                self.setWeeksAttrs(startDate, endDate, {isWaiting: false});
+
+                self.trigger("before:changes");
+                self.setWeeksFlags(startDate, endDate, {isWaiting: false});
+                self.trigger("after:changes");
+
             });
 
             // return the deferred so caller can use it
@@ -260,7 +292,8 @@ function(
 
         addItem: function(item)
         {
-            this.addWorkout(item);
+            item = ActivityModel.wrap(item);
+            this.activitiesCollection.add(item);
         },
 
         addItems: function(items)
@@ -294,24 +327,36 @@ function(
 
         addWorkout: function(workout)
         {
-            this.workoutsCollection.add(workout);
-            this.addWorkoutToCalendarDay(workout);
+            this.addItem(workout);
         },
 
-        addWorkoutToCalendarDay: function(workout)
+        indexActivityByDay: function(activity)
         {
-            var workoutDay = workout.getCalendarDay();
-            if (workoutDay)
+            var oldDay, newDay;
+            if(activity.dayCollection)
             {
-                var dayModel = this.getDayModel(workoutDay);
+                oldDay = activity.dayCollection;
+            }
 
-                if(!dayModel)
-                    return;
-                
-                dayModel.add(workout);
+            var activityDay = activity.getCalendarDay();
+            if (activityDay)
+            {
+                newDay = this.getDayModel(activityDay);
+            }
 
-                // so that if we move the workout, it knows which date to remove itself from
-                workout.dayCollection = dayModel;
+            if(oldDay !== newDay)
+            {
+                if (oldDay) oldDay.remove(activity);
+                if (newDay) newDay.add(activity);
+                activity.dayCollection = newDay;
+            }
+        },
+
+        unindexActivityByDay: function(activity)
+        {
+            if(activity.dayCollection)
+            {
+                activity.dayCollection.remove(activity);
             }
         },
 
@@ -327,24 +372,27 @@ function(
             }   
         },
 
-        setWeeksAttrs: function(startDate, endDate, attrs)
+        setWeeksFlags: function(startDate, endDate, flags)
         {
             var self = this;
-            this.forEachWeek(startDate, endDate, function(weekDate) {
-                if (self.get(weekDate)) {
-                    self.get(weekDate).set(attrs);
+            this.forEachWeek(startDate, endDate, function(weekDate)
+            {
+                var week = self.get(weekDate);
+                if (week)
+                {
+                    week.set(flags);
                 }
             });
         },
 
         getWorkout: function(workoutId)
         {
-            return this.workoutsCollection.get(workoutId);
+            return ActivityModel.unwrap(this.activitiesCollection.get("Workout:" + workoutId));
         },
 
         resetWorkouts: function()
         {
-            this.workoutsCollection.reset();
+            this.activitiesCollection.reset();
             this.daysCollection.each(function(dayModel)
             {
                 dayModel.reset();

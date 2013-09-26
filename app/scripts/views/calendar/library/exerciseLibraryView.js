@@ -7,6 +7,7 @@
     "backbone.marionette",
     "jqueryui/droppable",
     "TP",
+    "framework/notYetImplemented",
     "models/library/libraryExercise",
     "models/library/libraryExercisesCollection",
     "views/calendar/library/exerciseLibraryItemView",
@@ -22,6 +23,7 @@ function(
     Marionette,
     droppable,
     TP,
+    notYetImplemented,
     LibraryExerciseModel,
     LibraryExercisesCollection,
     ExerciseLibraryItemView,
@@ -53,7 +55,8 @@ function(
 
         events:
         {
-            "click button#add": "addToLibrary",
+            "click button#add": notYetImplemented, // "addToLibrary",
+            "click .settingsBtn": notYetImplemented,
             "change #librarySelect": "onSelectLibrary",
             "keyup #search": "_updateCollection",
             "change #search": "_updateCollection"
@@ -144,7 +147,7 @@ function(
                 return;
             }
             var workoutid = ui.draggable.data('workoutid');
-            var workoutModel = theMarsApp.controllers.calendarController.weeksCollection.workoutsCollection.get(workoutid);
+            var workoutModel = theMarsApp.controllers.calendarController.getWorkout(workoutid);
             this.saveToLibraryConfirmationView = new SaveToLibraryConfirmationView({ model: workoutModel, libraries: this.libraries, selectedLibraryId: this.model.get('selected'), shouldShowConfirmation: false });
             this.saveToLibraryConfirmationView.render();
 

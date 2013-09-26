@@ -35,12 +35,31 @@ function($, moment, SessionModel)
                 expect(options.type).toBe("POST");
                 expect(options.dataType).toBe("json");
                 expect(options.data.grant_type).toBe("password");
-                expect(options.data.client_id).toBe("tpconsumer");
-                expect(options.data.client_secret).toBe("tpsecret");
+                expect(options.data.client_id).toBe("tpMars");
+                expect(options.data.client_secret).toBe("44Wz6Em3lcpDSzbZ5WCl2ijZqtAfDUfPU5RMawx6W00=");
                 expect(options.data.username).toBe("myusername");
                 expect(options.data.password).toBe("mypassword");
                 expect(options.data.response_type).toBe("token");
-                expect(options.data.scope).toBe("fitness clientevents users athletes exerciselibrary images groundcontrol baseactivity plans sysinfo metrics");
+
+                var expectedScopes = [
+                    "fitness",
+                    "clientevents",
+                    "users",
+                    "athletes",
+                    "exerciselibrary",
+                    "images",
+                    "groundcontrol",
+                    "baseactivity",
+                    "plans",
+                    "sysinfo",
+                    "metrics",
+                    "zonescalculator"
+                    ];
+
+                _.each(expectedScopes, function(scope)
+                {
+                    expect(options.data.scope).toContain(scope);
+                });
 
                 return {
                     done: function()

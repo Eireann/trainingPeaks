@@ -1,28 +1,86 @@
 ﻿define(
 [
+    "underscore",
     "TP",
     "backbone",
+    "shared/models/userDataSource",
     "shared/views/tabbedLayout",
     "shared/views/overlayBoxView",
     "shared/views/userSettings/userSettingsAccountView",
-    "shared/views/userSettings/userSettingsZonesView"
+    "shared/views/userSettings/userSettingsZonesView",
+    "views/userConfirmationView",
+    "hbs!templates/views/errors/passwordValidationErrorView",
+    "hbs!templates/views/errors/emailValidationErrorView",
+    "hbs!shared/templates/userSettings/userSettingsFooterTemplate"
 ],
 function(
+    _,
     TP,
     Backbone,
+    UserDataSource,
     TabbedLayout,
     OverlayBoxView,
     UserSettingsAccountView,
-    UserSettingsZonesView
+    UserSettingsZonesView,
+    UserConfirmationView,
+    passwordValidationErrorTemplate,
+    emailValidationErrorTemplate,
+    userSettingsFooterTemplate
 )
 {
+
+    var UserSettingsFooterView = TP.ItemView.extend({
+
+        className: "userSettingsButtons",
+        
+        template:
+        {
+            type: "handlebars",
+            template: userSettingsFooterTemplate
+        },
+
+        events:
+        {
+            "click button": "triggerButton"
+        },
+
+        triggerButton: function(e)
+        {
+            var actionName = $(e.currentTarget).attr("class");
+            this.trigger(actionName);
+        },
+
+        disableCancel: function(enable)
+        {
+            this.$("button.cancel").prop("disabled", true);
+        },
+
+        enableCancel: function(enable)
+        {
+            this.$("button.cancel").prop("disabled", false);
+        }
+    });
 
     var UserSettingsContentView = TabbedLayout.extend({
 
         modelEvents: {},
-        
+
         initialize: function()
         {
+            this._copiesOfModels = [];
+            this._initializeNavigation();
+            this._initializeFooter();
+            this.on("render", this._fetchPaymentHistory, this);
+            this.on("before:switchTab", this._applyFormValuesToModels, this);
+            this.on("render", this._listenForFormChanges, this);
+        },
+
+        _initializeNavigation: function()
+        {
+            var models = {
+                athleteSettings: this._copyModel(this.model.getAthleteSettings())
+            };
+
             this.navigation =
             [
                 {
@@ -30,7 +88,12 @@ function(
                     view: UserSettingsAccountView,
                     options:
                     {
-                        model: this.model
+                        userModel: this._copyModel(this.model, { changesToApplyImmediately: ["profilePhotoUrl"] }),
+                        accountSettingsModel: this._copyModel(this.model.getAccountSettings()),
+                        athleteSettingsModel: models.athleteSettings,
+                        passwordSettingsModel: this.model.getPasswordSettings(),
+                        recurringPaymentsCollection: this.model.getRecurringPaymentsCollection(),
+                        paymentHistoryCollection: this.model.getPaymentHistoryCollection()
                     }
                 },
                 {
@@ -38,10 +101,178 @@ function(
                     view: UserSettingsZonesView,
                     options:
                     {
-                        model: this.model
+                        model: models.athleteSettings
                     }
                 }
             ];
+        },
+
+        _copyModel: function(originalModel, options)
+        {
+            var copiedModel = new TP.Model(TP.utils.deepClone(originalModel.attributes));
+            copiedModel.originalModel = originalModel;
+            this._copiesOfModels.push(copiedModel);
+
+            if(options && options.changesToApplyImmediately)
+            {
+                _.each(options.changesToApplyImmediately, function(attributeName)
+                {
+                    originalModel.listenTo(copiedModel, "change:" + attributeName, function()
+                    {
+                        originalModel.set(attributeName, copiedModel.get(attributeName));
+                    });
+                });
+            }
+
+            return copiedModel;
+        },
+
+        _listenForFormChanges: function()
+        {
+            var self = this;
+            this.$el.on("change.userSettingsView", function()
+            {
+                self._onChange();
+            });
+
+        },
+
+        _onChange: function()
+        {
+            this.footerView.enableCancel();
+        },
+
+        _applyCopiedModelsToRealModels: function()
+        {
+            _.each(this._copiesOfModels, function(copiedModel)
+            {
+                copiedModel.originalModel.set(TP.utils.deepClone(copiedModel.attributes));
+            });
+        },
+
+        _initializeFooter: function()
+        {
+            this.footerView = new UserSettingsFooterView();
+            this.on("render", this._showFooter, this);
+            this.listenTo(this.footerView, "cancel", _.bind(this._cancel, this));
+            this.listenTo(this.footerView, "save", _.bind(this._save, this));
+            this.listenTo(this.footerView, "saveAndClose", _.bind(this._saveAndClose, this));
+        },
+
+        _showFooter: function()
+        {
+            this.tabbedLayoutFooterRegion.show(this.footerView);
+            this.footerView.disableCancel(false);
+        },
+
+        _fetchPaymentHistory: function()
+        {
+            this.model.getRecurringPaymentsCollection().fetch();
+            this.model.getPaymentHistoryCollection().fetch();
+        },
+
+        _applyFormValuesToModels: function()
+        {
+            if(this.currentView && _.isFunction(this.currentView.applyFormValuesToModels))
+            {
+                this.currentView.applyFormValuesToModels();
+            }
+        },
+
+        _save: function()
+        {
+            this._applyFormValuesToModels();
+            this._applyCopiedModelsToRealModels();
+
+            if(this._validateForSave())
+            {
+                this.$el.addClass("waiting");
+                var self = this;
+                return $.when(
+                    this._saveUser(),
+                    this._saveZones()
+                ).done(
+                    function()
+                    {
+                        self.$el.removeClass("waiting");
+                        self.footerView.disableCancel();
+                    }
+                );
+            }
+            else
+            {
+                return new $.Deferred().reject();
+            }
+        },
+
+        _saveAndClose: function()
+        {
+            var self = this;
+            this._save().done(
+                function()
+                {
+                    self.close();
+                }
+            );
+        },
+
+        _saveUser: function()
+        {
+            return UserDataSource.saveUserSettingsAndPassword({
+                models: [this.model, this.model.getAthleteSettings(), this.model.getAccountSettings()],
+                password: this.model.getPasswordSettings().get("password")
+            });
+        },
+
+        _saveZones: function()
+        {
+            return UserDataSource.saveZones(this.model.getAthleteSettings());
+        },
+
+        _cancel: function()
+        {
+            this.close(); 
+        },
+
+        _validateForSave: function()
+        {
+            if(!this._isPasswordValid())
+            {
+                new UserConfirmationView({ template: passwordValidationErrorTemplate }).render();
+                return false;
+            }
+
+            if(!this._isEmailValid())
+            {
+                new UserConfirmationView({ template: emailValidationErrorTemplate }).render();
+                return false;
+            }
+
+            return true;
+        },
+
+        _isPasswordValid: function()
+        {
+            var password = this.model.getPasswordSettings().get("password");
+            var retypePassword = this.model.getPasswordSettings().get("retypePassword"); 
+            if((password || retypePassword) && (password !== retypePassword))
+            {
+                return false;
+            }
+            return true;
+        },
+
+        _isEmailValid: function()
+        {
+            var email = this.model.get("email");
+            var validEmail = new RegExp(/^[A-Z0-9._%+\-]+@[A-Z0-9.\-]+\.[A-Z]{2,4}$/i);
+
+            if(!validEmail.test(email))
+            {
+                return false;
+            }
+
+            return true;
         }
 
     });

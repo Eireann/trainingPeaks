@@ -50,8 +50,11 @@ function(TP, LoginLayout, LoginView, UserMessageView)
 
         onLoginSuccess: function ()
         {
+            theMarsApp.userFetchPromise.done(function()
+            {
+                theMarsApp.clientEvents.logEvent({ Event: { Type: "Login", Label: "Login", AppContext: "Login" } });
+            });
             this.trigger("login:success");
-            theMarsApp.clientEvents.logEvent({ Event: { Type: "Login", Label: "Login", AppContext: "Login" } });
         },
 
         onLogout: function(message)

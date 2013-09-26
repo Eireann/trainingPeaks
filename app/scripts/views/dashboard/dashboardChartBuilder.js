@@ -2,8 +2,8 @@
 [
     "TP",
     "framework/chart",
-    "views/dashboard/pmcChart",
     "dashboard/views/dashboardPodView",
+    "dashboard/charts/pmcChart",
     "dashboard/charts/fitnessSummaryChart",
     "dashboard/charts/peaksChart",
     "dashboard/charts/timeInZonesChart",
@@ -14,8 +14,8 @@
 function(
     TP,
     Chart,
-    PmcChartView,
     DashboardPodView,
+    PmcChart,
     FitnessSummaryChart,
     PeaksChart,
     TimeInZonesChart,
@@ -27,11 +27,11 @@ function(
 
     // Defaults to DashboardPodView
     var chartViewConstructors = {
-        32: PmcChartView
     };
 
     // Defaults to TP.Model
     var chartModelConstructors = {
+        32: PmcChart,
         3: FitnessSummaryChart,
         8: PeaksChart,
         28: PeaksChart,

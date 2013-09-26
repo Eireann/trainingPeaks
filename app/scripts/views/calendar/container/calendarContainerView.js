@@ -31,6 +31,8 @@ function(
             "colorByComplianceAndWorkoutType"
         ],
 
+        attributes: { style: "height: 100%;" },
+
         template:
         {
             type: "handlebars",
@@ -219,7 +221,6 @@ function(
 
         onLibraryAnimateComplete: function()
         {
-            this.resizeContainer();
             this.updateWeekHeights();
             this.weeksCollectionView.unlockScrollPosition();
         },
@@ -259,14 +260,19 @@ function(
 
         onDragItem: function(e, ui)
         {
+            if(!ui || !this.ui || !this.ui.weeksContainer)
+                return;
+            
             var calendarContainer = this.ui.weeksContainer.closest("#calendarContainer");
 
-            var calendarPosition = {
+            var calendarPosition =
+            {
                 top: calendarContainer.offset().top,
                 bottom: calendarContainer.offset().top + calendarContainer.height()
             };
 
-            var uiPosition = {
+            var uiPosition =
+            {
                 mouse: e.pageY,
                 top: ui.helper.position().top,
                 bottom: ui.helper.position().top + ui.helper.height()

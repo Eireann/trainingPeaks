@@ -5,16 +5,28 @@ requirejs(
     "testUtils/testHelpers",
     "testUtils/xhrDataStubs",
     "app",
-    "views/dashboard/chartUtils"
+    "views/dashboard/chartUtils",
+    "testUtils/sharedSpecs/sharedChartSpecs"
 ],
 function(
     _,
     testHelpers,
     xhrData,
     theMarsApp,
-    chartUtils
+    chartUtils,
+    SharedChartSpecs
     )
 {
+
+    describe("Metrics Chart", function()
+    {
+
+        SharedChartSpecs.chartSettings(
+        {
+            chartType: 13
+        });
+
+    });
 
     var applyDashboardDates = function($mainRegion, $body, dateOptionId, startDate, endDate)
     {
@@ -47,7 +59,7 @@ function(
             beforeEach(function()
             {
                 var userData = xhrData.users.barbkprem;
-                testHelpers.startTheAppAndLogin(userData, true);
+                testHelpers.startTheAppAndLogin(testHelpers.deepClone(userData));
                 theMarsApp.user.getDashboardSettings().set("pods", [metricPowerPodSettings]);
                 $mainRegion = theMarsApp.mainRegion.$el;
                 theMarsApp.router.navigate("dashboard", true);
@@ -159,7 +171,7 @@ function(
                 beforeEach(function()
                 {
                     var userData = xhrData.users.barbkprem;
-                    testHelpers.startTheAppAndLogin(userData, true);
+                    testHelpers.startTheAppAndLogin(testHelpers.deepClone(userData));
                     theMarsApp.user.getDashboardSettings().set("pods", [metricsPodSettings]);
                     $mainRegion = theMarsApp.mainRegion.$el;
                     theMarsApp.router.navigate("dashboard", true);

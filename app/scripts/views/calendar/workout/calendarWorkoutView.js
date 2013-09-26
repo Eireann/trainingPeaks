@@ -95,12 +95,14 @@ function(
 
             this.model.on("select", this.setSelected, this);
             this.model.on("unselect", this.setUnSelected, this);
+
+            this.listenTo(theMarsApp.user, "change:units", _.bind(this.render, this));
         },
 
         events:
         {
-            "mousedown": "workoutSelected",
-            "mouseup": "workoutClicked",
+            "mousedown": "workoutMousedown",
+            "mouseup": "workoutMouseup",
             "click": "workoutTouched",
             "mouseup .workoutSettings": "workoutSettingsClicked",
             "click .workoutSettings": "workoutSettingsTouched"
@@ -141,7 +143,7 @@ function(
             this.workoutSettings.on("mouseleave", this.onMouseLeave, this);
         },
 
-        workoutClicked: function(e)
+        workoutMouseup: function(e)
         {
             if (this.$el.hasClass("dragging"))
             {
@@ -211,7 +213,7 @@ function(
             }
         },
 
-        workoutSelected: function()
+        workoutMousedown: function()
         {
             this.model.trigger("select", this.model);
         },

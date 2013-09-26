@@ -13,6 +13,8 @@ function(
     var PaymentHistoryView = TP.CompositeView.extend(
     {
 
+        modelEvents: {},
+        
         template:
         {
             type: "handlebars",

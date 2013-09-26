@@ -23,28 +23,22 @@ function(
 
         className: ChartSettingsView.prototype.className + " workoutSummaryChartSettings",
 
-        template:
-        {
-            type: "handlebars",
-            template: workoutSummaryChartSettingsTemplate
-        },
-
         events: _.extend(
         {
-            "change input.auto": "_onInputsChanged"
+            "change input[type=radio].auto": "_onRadioInputsChanged"
         }, ChartSettingsView.prototype.events),
 
         onRender: function()
         {
             var self = this;
-
+            this._addView(".customSettings", workoutSummaryChartSettingsTemplate(this.serializeData()));
             this._addView(".dateOptionsRegion", new DashboardDatePicker({
                 model: this.model
             }));
             this._addView(".workoutTypesRegion", new ChartWorkoutOptionsView({
                 model: this.model
             }));
-
+            this._updateTitle();
             this.children.call("render");
 
             this.$('input.auto[type="checkbox"]').each(function(i, el)
@@ -60,17 +54,10 @@ function(
             });
         },
 
-        _onInputsChanged: function()
+        _onRadioInputsChanged: function()
         {
             var self = this;
 
-            this.$('input.auto[type="checkbox"]').each(function(i, el)
-            {
-                var $el = $(el);
-                self.model.set($el.attr("name"), $el.prop("checked"));
-            });
-
-            
             this.$('input.auto[type="radio"]:checked').each(function(i, el)
             {
                 var $el = $(el);

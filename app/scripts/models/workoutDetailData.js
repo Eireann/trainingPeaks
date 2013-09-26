@@ -6,7 +6,7 @@
 ],
 function (_, moment, TP)
 {
-    var WorkoutDetailData = TP.APIDeepModel.extend(
+    var WorkoutDetailData = TP.APIBaseModel.extend(
     {
         cacheable: false,
 
@@ -24,7 +24,7 @@ function (_, moment, TP)
 
         defaults:
         {
-            "workoutId": null,
+            "workoutId": null, //x, duh
             "flatSamples": null,
             "rangesStats": null,
             "peakCadences": null,
@@ -34,7 +34,10 @@ function (_, moment, TP)
             "peakSpeedsByDistance": null,
             "sampleRate": null,
             "totalStats": null,
-            "lapsStats": null
+            "lapsStats": null,
+            "meanMaxHeartRates": null,
+            "meanMaxPowers": null,
+            "meanMaxSpeeds": null
         },
 
         hasSensorData: function()
@@ -44,7 +47,8 @@ function (_, moment, TP)
 
         hasSamples: function()
         {
-            return this.has("flatSamples.samples") && this.get("flatSamples.samples").length > 0;
+            // return this.has("flatSamples.samples") && this.get("flatSamples.samples").length > 0;
+            return this.has("flatSamples") && this.get("flatSamples").samples && this.get("flatSamples").samples.length > 0;
         },
 
         hasLaps: function()
@@ -54,8 +58,8 @@ function (_, moment, TP)
 
         watchForSensorData: function()
         {
-            this.on("change:flatSamples.*", this.triggerSensorDataChange, this);
-            this.on("change:lapsStats.*", this.triggerSensorDataChange, this);
+            this.on("change:flatSamples", this.triggerSensorDataChange, this);
+            this.on("change:lapsStats", this.triggerSensorDataChange, this);
         },
 
         triggerSensorDataChange: function()

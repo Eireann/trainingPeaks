@@ -5,16 +5,41 @@ requirejs(
     "testUtils/testHelpers",
     "testUtils/xhrDataStubs",
     "app",
-    "views/dashboard/chartUtils"
+    "views/dashboard/chartUtils",
+    "testUtils/sharedSpecs/sharedChartSpecs"
 ],
 function(
     _,
     testHelpers,
     xhrData,
     theMarsApp,
-    chartUtils
+    chartUtils,
+    SharedChartSpecs
     )
 {
+
+    describe("Workout Summary Charts", function()
+    {
+        var chartTypes =
+        [
+            10,
+            11,
+            21,
+            23,
+            37,
+            19,
+            20
+        ];
+
+        _.each(chartTypes, function(chartType)
+        {
+            describe("chart type: " + chartType, function() {
+                SharedChartSpecs.chartSettings({
+                    chartType: chartType
+                });
+            });
+        });
+    });
 
     var applyDashboardDates = function($mainRegion, $body, dateOptionId, startDate, endDate)
     {
@@ -38,7 +63,7 @@ function(
                 beforeEach(function()
                 {
                     var userData = xhrData.users.barbkprem;
-                    testHelpers.startTheAppAndLogin(userData, true);
+                    testHelpers.startTheAppAndLogin(testHelpers.deepClone(userData));
                     theMarsApp.user.getDashboardSettings().set("pods", [podSettings]);
                     $mainRegion = theMarsApp.mainRegion.$el;
                     theMarsApp.router.navigate("dashboard", true);
@@ -80,7 +105,7 @@ function(
             beforeEach(function()
             {
                 var userData = xhrData.users.barbkprem;
-                testHelpers.startTheAppAndLogin(userData, true);
+                testHelpers.startTheAppAndLogin(testHelpers.deepClone(userData));
                 theMarsApp.user.getDashboardSettings().set("pods", [workoutSummaryPodSettings]);
                 $mainRegion = theMarsApp.mainRegion.$el;
                 theMarsApp.router.navigate("dashboard", true);
@@ -192,7 +217,7 @@ function(
                 beforeEach(function()
                 {
                     var userData = xhrData.users.barbkprem;
-                    testHelpers.startTheAppAndLogin(userData, true);
+                    testHelpers.startTheAppAndLogin(testHelpers.deepClone(userData));
                     theMarsApp.user.getDashboardSettings().set("pods", [workoutSummaryPodSettings]);
                     $mainRegion = theMarsApp.mainRegion.$el;
                     theMarsApp.router.navigate("dashboard", true);

@@ -5,7 +5,7 @@ define(
     "utilities/charting/chartColors",
     "utilities/charting/flotOptions",
     "views/dashboard/chartUtils",
-    "views/dashboard/fitnessSummaryChartSettings"
+    "dashboard/views/fitnessSummaryChartSettings"
 ],
 function(
     TP,
@@ -31,11 +31,6 @@ function(
         defaults: {
             durationUnits: 4,
             summaryType: 1 // Planned Distance
-        },
-
-        initialize: function(attributes, options)
-        {
-            this.updateChartTitle(); 
         },
 
         fetchData: function()
@@ -73,10 +68,9 @@ function(
             return tips;
         },
 
-        updateChartTitle: function()
+        defaultTitle: function()
         {
-            var title = TP.utils.translate("Fitness Summary: ") + TP.utils.translate(this.summaryTypes[this.get("summaryType")].label);
-            this.set("title", title);
+            return TP.utils.translate("Fitness Summary: ") + TP.utils.translate(this.summaryTypes[this.get("summaryType")].label);
         },
 
         parseData: function(data)

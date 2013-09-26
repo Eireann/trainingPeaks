@@ -30,6 +30,18 @@ function(unitsConstants, workoutLayoutFormatter, workoutTypeUtils)
                     abbreviated: "m",
                     unabbreviated: "meters"
                 }
+            },
+
+            Rowing:
+            {
+                English: {
+                    abbreviated: "m",
+                    unabbreviated: "meters"
+                },
+                Metric: {
+                    abbreviated: "m",
+                    unabbreviated: "meters"
+                }
             }
         },
         normalizedPace:
@@ -62,6 +74,12 @@ function(unitsConstants, workoutLayoutFormatter, workoutTypeUtils)
             Swim:
             {
                 English: "yds/min",
+                Metric: "m/min"
+            },
+
+            Rowing:
+            {
+                English: "m/min",
                 Metric: "m/min"
             }
         },
@@ -116,6 +134,11 @@ function(unitsConstants, workoutLayoutFormatter, workoutTypeUtils)
             {
                 English: "sec/100y",
                 Metric: "sec/100m"
+            },
+            Rowing:
+            {
+                English: "sec/100m",
+                Metric: "sec/100m"
             }
         },
         speed:
@@ -126,6 +149,11 @@ function(unitsConstants, workoutLayoutFormatter, workoutTypeUtils)
             Swim:
             {
                 English: "yds/min",
+                Metric: "m/min"
+            },
+            Rowing:
+            {
+                English: "m/min",
                 Metric: "m/min"
             }
         },
@@ -179,6 +207,7 @@ function(unitsConstants, workoutLayoutFormatter, workoutTypeUtils)
             English: "oz",
             Metric: "ml"
         },
+        duration: "",
         mmHg: "mmHg",
         hours: "hrs",
         kcal: "kcal",

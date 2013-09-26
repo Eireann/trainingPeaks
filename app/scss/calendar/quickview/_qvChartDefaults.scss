@@ -1,46 +1,69 @@
 ﻿@import "../../globalCSS/tpstylesheet";
 
-.chartContainer
-{
-
-    position: absolute;
-    top: 25px;
-
-    .flot-base
-    {
-       margin-left: 3px;
-    }
-
-    .flot-overlay
-    {
-        margin-left: 3px;
-    }
+.chartTitle, 
+.customDateRange {
+    font-family: $fontFamilyHeavy;
+    font-size: $fontSizeSmall;
+    color: $TPGrey4;
+    text-align: center;
+    margin-top: 22px;
 }
 
-.qvZonesTab
-{
+.xaxisLabel {   
+    font-family: $fontFamilyHeavy;
+    font-size: $fontSizeXSmall;
+    color: $TPGrey4;
+    text-align: center;
+    position: absolute;
+    text-transform: uppercase;
+    @include calc("top","100% - 22px");
+    width:100%;
+}
+
+.yaxisLabel {
+    position: absolute;
+    left: -36px;
+    top: 50%;
+    margin-top: 0;
+    font-family: $fontFamilyHeavy;
+    font-size: $fontSizeXSmall;
+    color: $TPGrey4;
+    text-align: center;
+    -webkit-transform: rotate(-90deg); 
+    -moz-transform: rotate(-90deg); 
+    width: 100px;
+    text-transform: uppercase;
+}
+
+.qvZonesTab {
     position:relative;
+    
+    .chartContainer {
+        @include calc("width","100% - 58px");    
+        @include calc("height","100% - 82px");
+        left: 30px;
+        top: 21px;
+    }   
 
-    .zonesChart
-    {
+    .zonesChart {
         position: absolute;
-        top: 14px;
         left: 14px;
-        width: 290px;
+        width: 298px;
         height: 220px;
+
+        .xaxisLabel {
+            @include calc("top","100% - 19px");
+        }
     }
 
-    .peaksChart
-    {
+    .peaksChart {
         position: absolute;
-        top: 14px;
-        left: 330px;
-        width: 290px;
+        left: 328px;
+        width: 298px;
         height: 220px;
     }
 
-    .zonesTable
-    {
+    .zonesTable {
         position: absolute;
         top: 250px;
         left: 30px;
@@ -49,31 +72,24 @@
         min-height: 200px;
     }
 
-    .peaksTable
-    {
+    .peaksTable {
         position: absolute;
         top: 250px;
         left: 350px;
         width: 265px;
         height: auto;
         min-height: 200px;
-
     }
-
-    .highcharts-series
-    {
-        
-    }
-
 }
 
-.zonesTable
-{
-    .zoneRow
-    {
+.zonesTable {
+    padding-bottom:20px;
 
-        .zoneText
-        {
+    .zoneRow {
+
+        padding:3px 0 4px 0;
+
+        .zoneText {
             @include calc(width, "100% - 80px"); 
             display: inline-block;
             overflow: hidden;
@@ -81,80 +97,78 @@
             vertical-align: top;
         }
 
-        .zoneRange
-        {
+        .zoneRange {
             @include labels($fontFamilyRegular, $fontSizeSmaller, $TPGrey3, normal);
+            label {
+                margin:0;
+            }
         }
 
-        .zoneName
-        {
+        .zoneName {
             @include labels($fontFamilyRegular, $fontSizeSmall, $TPGrey4, normal);
-            label
-            {
+            label {
                 white-space: nowrap;
             }
         }
 
-        .zoneInput
-        {
+        .zoneInput {
             width: 70px;
             display: inline-block;
-            margin-left: 5px;
             vertical-align: top;
-            @include inputs(70px, 26px, $fontSizeSmall, $fontFamilyRegular);
-            input
-            {
+            @include inputs(70px, 22px, $fontSizeSmall, $fontFamilyRegular);
+            
+            input {
                 color: $TPGrey3;
+                margin: 2px 0 0 5px;
             }
         }
 
     }
 }
 
-.peaksTable
-{
-    .peakRow
-    {
-        height: 24px;
+.peaksTable {
+    padding-bottom:20px;
+
+    .peakRow {
+        padding:4px 0 5px 0;
 
         .peakName
         {
             display: inline-block;
-            @include calc(width, "100% - 100px"); 
+            @include calc(width, "100% - 120px"); 
             text-align: right;
             vertical-align: top;
             @include labels($fontFamilyRegular, $fontSizeSmall, $TPGrey4, normal);
-            label
-            {
+            margin-right: 5px;
+
+            label {
                 margin-top: 5px;
                 white-space: nowrap;
                 overflow: hidden;
             }
         }
 
-        .peakInput
-        {
+        .peakInput {
             display: inline-block;
-            margin-left: 10px;
             vertical-align: top;
-            @include inputs(45px, 20px, 12px, $fontFamilyRegular);
-            input
-            {
+            @include inputs(70px, 22px, 12px, $fontFamilyRegular);
+            
+            input {
                 text-align: right;
                 color: $TPGrey3;
+                margin: 0;
             }
         }
 
-        .peakRange
-        {
+        .peakRange {
             display: inline-block;
-            margin-left: 5px;
             width: 25px;
             vertical-align: top;
+            margin-left:5px;
+            
             @include labels($fontFamilyRegular, $fontSizeXSmall, $TPGrey3, normal);
-            label
-            {
-                margin-top: 5px;
+            label {
+                margin-top: 6px;
             }
         }
     }
@@ -196,7 +210,6 @@
                 @include transform(translateX(8px) rotate(45deg));
                 position: absolute;
                 top: 20px;
-
             }
         }
     }
@@ -227,7 +240,6 @@
         }
     }
 
-
     .details {
         padding: 4px 0;
 
@@ -235,8 +247,6 @@
             padding:4px 5px;
         }
     }
-
-    
 
     .tooltipRow
     {
@@ -257,7 +267,6 @@
        font-family: $fontFamilyRegular;
        font-size: $fontSizeLarge; 
        text-align: center;
-       
     }
 
     .value
@@ -358,67 +367,6 @@
         {
             color: $clrTorque;
         }
-    }
-}
-
-.chartTitle
-{
-    font-family: HelveticaNeueW01-75Bold;
-    font-size: 12px;
-    color: $TPGrey3;
-    text-align: center;
-    margin-left: -10px;
-}
-
-.xaxisLabel
-{   
-    font-family: HelveticaNeueW01-75Bold;
-    font-size: 12px;
-    color: $TPGrey3;
-    text-align: center;
-    position: absolute;
-    top: 195px;
-    left: calc(50% + 10px);
-    text-transform: uppercase;
-}
-
-.yaxisLabel
-{
-    font-family: HelveticaNeueW01-75Bold;
-    font-size: 12px;
-    color: $TPGrey3;
-    text-align: center;
-    float: left;
-    -webkit-transform: rotate(-90deg); 
-    -moz-transform: rotate(-90deg);	
-    width: 100px;
-    margin-left: -30px;
-    margin-top: calc(27% - 50px);
-    text-transform: uppercase;
-}
-
-.chartContainer
-{
-    height: 160px;
-    width: 250px;
-    margin-left: 40px;
-}
-
-.qvZonesTab
-{
-
-    .yaxisLabel
-    {
-        margin-top: calc(45% - 50px);
-    }
-
-    .chartTitle
-    {
-        margin-left: 60px;
-    }
-
-    .xaxisLabel
-    {   
     }
 }
 

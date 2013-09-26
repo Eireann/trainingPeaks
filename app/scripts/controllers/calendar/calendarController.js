@@ -50,7 +50,6 @@ function(
             }
 
             this._dataManager = options.dataManager;
-            this._dataManager.on("reset", this._onDataManagerReset, this);
 
             // TODO: split this into a couple different functions 
             this.models = {};
@@ -72,7 +71,6 @@ function(
 
             // call parent constructor
             this.constructor.__super__.initialize.call(this);
-
         },
 
         onLayoutClose: function()
@@ -81,6 +79,12 @@ function(
             {
                 view.close();
             }, this);
+        },
+
+        preload: function()
+        {
+            this.setupLibrary();
+            this.loadDataAfterUserLoads();
         },
 
         show: function()
@@ -94,9 +98,7 @@ function(
             this.initializeHeader();
             this.initializeCalendar();
             
-            // QL: Calendar should agnostically receive any dropped item. 
-            // Layout changes should propogate through the new CalendarPageView
-            this.initializeLibrary();
+            this.initializeLibrary(); // Here so that the first loadDataAfterUserLoads will grab libraries
 
             // QL: this is layout logic and might belong in the layout itself. So this would read this.layout.renderRegions();
             this.showViewsInRegions();
@@ -106,14 +108,19 @@ function(
             // our parent class PageContainerController needs this to trigger the window resize functionality
             this.trigger("show");
 
-            this.loadDataAfterUserLoads();
+            $.when.apply($, this.loadDataAfterUserLoads()).then(function()
+            {
+                TP.timeEnd("boot");
+                TP.profileEnd("boot");
+            });
         },
 
         loadDataAfterUserLoads: function()
         {
             var self = this;
-            this.loadCalendarData();
-            this.loadLibraryData();
+            var calendarPromises = this.loadCalendarData();
+            var libraryPromises = this.loadLibraryData();
+            return [].concat(calendarPromises, libraryPromises);
         },
 
         showViewsInRegions: function()
@@ -145,8 +152,12 @@ function(
 
         loadLibraryData: function()
         {
+            var deferreds = [];
             for (var libraryName in this.libraryCollections)
-                this.libraryCollections[libraryName].fetch({ reset: true });
+            {
+                deferreds.push(this._dataManager.fetchModel(this.libraryCollections[libraryName], { reset: true }));
+            }
+            return deferreds;
         },
 
         onPasteEnabled: function()
@@ -276,16 +287,6 @@ function(
         onCalendarSelect: function()
         {
             this.views.library.clearSelection();
-        },
-
-        // if we edited some workouts, no need to refresh all of our collections, data manager will automatically reset cached queries
-        // if another controller does some edits, then refresh ourselves for next show
-        _onDataManagerReset: function()
-        {
-            if(theMarsApp.getCurrentController() !== this)
-            {
-                this.weeksCollection.resetWorkouts(); 
-            }
         }
 
     };

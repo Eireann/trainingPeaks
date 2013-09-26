@@ -4,14 +4,18 @@
     "TP",
     "shared/models/accountSettingsModel",
     "shared/models/athleteSettingsModel",
-    "shared/models/dashboardSettingsModel"
+    "shared/models/dashboardSettingsModel",
+    "shared/models/recurringPaymentsCollection",
+    "shared/models/paymentHistoryCollection"
 ],
 function(
-         Backbone,
-         TP,
-         AccountSettingsModel,
-         AthleteSettingsModel, 
-         DashboardSettingsModel
+    Backbone,
+    TP,
+    AccountSettingsModel,
+    AthleteSettingsModel, 
+    DashboardSettingsModel,
+    RecurringPaymentsCollection,
+    PaymentHistoryCollection
          )
 {
     return TP.APIDeepModel.extend(
@@ -48,6 +52,7 @@ function(
             userId: 0,
             userName: "",
             zipCode: "",
+            zuoraAccountNumber: null,
 
             settings: {},
             athletes: []
@@ -56,6 +61,57 @@ function(
         url: function()
         {
             return theMarsApp.apiRoot + "/users/v1/user";
+        },
+
+        onUserFetchFail: function()
+        {
+            theMarsApp.featureAuthorizer.showUpgradeMessage(function()
+            {
+                theMarsApp.session.logout();
+            });
+        },
+
+        fetch: function()
+        {
+            var self = this,
+                superFetch = function()
+                {
+                    var options = {
+                        errorHandlers: {
+                            402: _.bind(self.onUserFetchFail, self)
+                        }
+                    };
+
+                    var ajaxFetch = TP.APIDeepModel.prototype.fetch.call(self, options);
+                    ajaxFetch.done(function()
+                    {
+                        theMarsApp.session.saveUserToLocalStorage(self);
+                    });
+                    return ajaxFetch;
+                };
+
+            // If the user is saved in localStorage, immediately set that data
+            // to this model and return a resolved deferred.
+            // Then do the actual AJAX fetch
+            var localStorageUser = localStorage.getItem('app_user'),
+                returnDeferred;
+            if (localStorageUser)
+            {
+                returnDeferred = superFetch();
+                try {
+                    this.set(JSON.parse(localStorageUser));
+                    returnDeferred = $.Deferred().resolve();
+                } catch(e) {
+                    // if the user refreshes the page while the user is being written to localStorage, it will break the next time you try to read that key.
+                    // Here, we return superFetch() deferred because parsing localStorage didn't work
+                }
+                
+                return returnDeferred;
+            }
+            else
+            {
+                return superFetch();
+            }
         },
 
         initialize: function(options)
@@ -111,10 +167,14 @@ function(
         getAthleteDetails: function()
         {
             var athleteId = this.getCurrentAthleteId();
-            return _.find(this.get("athletes"), function(athlete)
+            if(!this.athleteDetailsModel || this.athleteDetailsModel.get("athleteId") !== athleteId)
             {
-                return athlete.athleteId === athleteId;
-            });
+                this.athleteDetailsModel = new TP.Model(_.find(this.get("athletes"), function(athlete)
+                {
+                    return athlete.athleteId === athleteId;
+                }));
+            }
+            return this.athleteDetailsModel;
         },
 
         getAccountSettings: function()
@@ -169,6 +229,33 @@ function(
                 this.workoutSettings = new TP.Model(this.get("settings.workout"));
             }
             return this.workoutSettings;
+        },
+
+        getPasswordSettings: function()
+        {
+            if(!this.passwordSettings)
+            {
+                this.passwordSettings = new TP.Model();
+            }
+            return this.passwordSettings;
+        },
+
+        getPaymentHistoryCollection: function()
+        {
+            if(!this.paymentHistoryCollection)
+            {
+                this.paymentHistoryCollection = new PaymentHistoryCollection();
+            }
+            return this.paymentHistoryCollection;
+        },
+
+        getRecurringPaymentsCollection: function()
+        {
+            if(!this.recurringPaymentsCollection)
+            {
+                this.recurringPaymentsCollection = new RecurringPaymentsCollection();
+            }
+            return this.recurringPaymentsCollection;
         },
 
         parse: function(resp, options)

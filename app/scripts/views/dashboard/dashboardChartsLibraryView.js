@@ -90,7 +90,10 @@ function(
                                                           AvailableChartsCollection,
                                                           this.sourceCollection,
                                                           searchText,
-                                                          ["name"]
+                                                          ["name"],
+                                                          {
+                                                            featureAuthorizer: theMarsApp.featureAuthorizer
+                                                          }
                                                           );
             this._renderChildren();
         }

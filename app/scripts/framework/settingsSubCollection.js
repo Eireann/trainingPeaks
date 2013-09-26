@@ -45,6 +45,10 @@ function(
             this.listenTo(this.sourceModel, "change:" + this.sourceKey + ".*", _.bind(this._onSourceModelChanged, this));
         },
 
+        releaseSourceModel: function() {
+            this.stopListening(this.sourceModel, "change:" + this.sourceKey + ".*");
+        },
+
         model: TP.Model,
         
         _onSourceModelChanged: function(model, value, options)

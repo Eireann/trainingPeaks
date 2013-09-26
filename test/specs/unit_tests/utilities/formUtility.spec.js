@@ -172,6 +172,26 @@ function(
                 expect(model.get("key")).toEqual("newvalue");
             });
 
+            it("should apply a numeric value to model from a text box (without a number format attribute)", function()
+            {
+                var $el = $("<div><input type='text' name='key' value='2'></div>");
+                var model = new TP.Model({key: 1});
+
+                FormUtility.applyValuesToModel($el, model);
+
+                expect(model.get("key")).toBe("2");
+            });
+
+            it("should apply a numeric value to model from a text box (with a number format attribute)", function()
+            {
+                var $el = $("<div><input data-format='number' type='text' name='key' value='2'></div>");
+                var model = new TP.Model({key: 1});
+
+                FormUtility.applyValuesToModel($el, model);
+
+                expect(model.get("key")).toBe(2);
+            });
+
             it("should apply a value to model from a radio button group", function()
             {
                 var $el = $("<div><input type='radio' name='key' value='1'><input type='radio' name='key' value='2' checked></div>");

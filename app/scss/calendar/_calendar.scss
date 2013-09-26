@@ -1,42 +1,60 @@
 ﻿@import "../globalCSS/tpstylesheet";
-
+@import "flex";
 
 @media screen {
 
-    #calendarHeader
+    .dragHelper .day
     {
-       
+        min-height: 150px !important;
+        padding: 0;
 
+        .dayHeader
+        {
+            height: 27px;
+            visibility: hidden !important;
+        }
+
+        .addWorkoutWrapper
+        {
+            display: none;
+        }
     }
 
     #calendarContainer
     {
 
+        .weeks-region
+        {
+            @include calc(height, "100% - 27px");
+        }
+
         #weeksContainer
         {
             min-width: 1007px;
+            height: 100%;
         }
 
         .week
         {
             @include grid-row();
-    		background-color: $TPGrey1;
+            @include display-flex();
+            background-color: $TPGrey1;
             padding-left: 4px;
             max-width: none;
         }
 
         .day
         {
+            width: 10px; // Fixed with to ensure flex box distributes width evenly between days
+            @include flex(1);
             min-height:150px;
-    		background-color: $TPGrey1;
-            //padding: 0px 0px 5px;
+            background-color: $TPGrey1;
             padding: 0px;
-            @include calc(width, "(100% - 294px) /7");
             overflow-x: hidden;
             overflow-y: visible;
-            float: left;
             color: $TPGrey8;
             position: relative;
+            cursor: default;
 
     		.daySettings
             {
@@ -139,33 +157,32 @@
     		}
     	}
 
-    	.summaryHeader
-    	{
+    	.summaryHeader {
     		background-color: $TPGrey3;
-    		.calendarDate{
+    		cursor: default;
+
+            .calendarDate{
                 color: white;
                 font-family: $fontFamilyLight;
                 font-size: $fontSizeSmall;
                 padding-top:4px;
             }
-            cursor: default;
     	}
 
-        .daysOfWeek
-        {
+        .daysOfWeek {
 
-            div
-            {
-                    @include calc(width, "(100% - 297px) /7");
-                    float: left;
-                    padding-bottom: 0px;
-                    padding-left: 9px;
-                    padding-right: 0px;
-                    font-Family: $fontFamilyLight;
-                    font-size: $fontSizeSmall;
-                    color: $TPGrey3;
-                    text-align: left;
-                    height: 15px;
+            .hide-for-small, 
+            .show-for-small {
+                @include calc(width, "(100% - 297px) /7");
+                float: left;
+                padding-bottom: 0px;
+                padding-left: 9px;
+                padding-right: 0px;
+                font-Family: $fontFamilyLight;
+                font-size: $fontSizeSmall;
+                color: $TPGrey3;
+                text-align: left;
+                height: 15px;
             }
         }
     }
@@ -176,15 +193,13 @@
         @include box-shadow(0px 3px 8px -4px $TPGrey3);
     }
 
-    body.clipboardEmpty
-    {
-        .paste
-        {
+    .clipboardEmpty {
+        .paste {
             color:$TPGrey2;
         }
     }
 
-    body.pasteDisabled
+    .pasteDisabled
     {
         label.paste
         {
@@ -192,7 +207,7 @@
         }
     }
 
-    body.clipboardFull
+    .clipboardFull
     {
         .paste
         {
@@ -246,6 +261,7 @@
             visibility: hidden;
             position: relative;
             width: 100%;
+            cursor:pointer;
 
     		.addWorkoutPlus {
     			background: url(../../assets/images/calendarImages/sprite-calendar-plus.png) 0 0 no-repeat; 
@@ -315,6 +331,8 @@
         right: 1px;
         top: 0px;
         bottom: 1px;
+        box-sizing: border-box;
+        height: 100%;
         position: absolute;
         z-index: 1;
     }

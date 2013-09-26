@@ -1,6 +1,6 @@
 ﻿<div id="newItemViewContainer" class="dialog">
     <div class="titleBar">
-        <h2 class="modaltitle">{{formatDate date "dddd, MMMM D, YYYY"}}</h2>
+        <h2>{{formatDate date "dddd, MMMM D, YYYY"}}</h2>
         <div id="closeIcon"></div>
     </div>
     <div class="addItemButtonsContainer dialogContent">
@@ -35,7 +35,7 @@
                             <legend> or &nbsp;&nbsp;</legend>
                             <button type="button" name="uploadDeviceFile" title="{{$ "FileUploadTooltip" }}" >{{$ "UploadFile"}}</button>
                             <div class="textDiv">
-                                <a href="http://support.trainingpeaks.com/device-agent.aspx?utm_source=tpflex&utm_medium=wktdetails&utm_campaign=deviceagent" class="helpText">{{$ "FileUploadHelp" }} &rsaquo;</a>
+                                <a href="http://support.trainingpeaks.com/device-agent.aspx?utm_source=tpflex&utm_medium=wktdetails&utm_campaign=deviceagent" class="helpText" target="_blank">{{$ "FileUploadHelp" }} &rsaquo;</a>
                             </div>
                             <input style="display: none" type="file" id="fileUploadInput"/>
                         </fieldset>
@@ -45,15 +45,15 @@
                     <td class="dialogHeader">{{$ "AddAMeal"}}</td>
                 </tr>
                 <tr>
-                    <td><button type="button">{{$ "Breakfast"}}</button></td>
-                    <td><button type="button">{{$ "Brunch"}}</button></td>
-                    <td><button type="button">{{$ "Lunch"}}</button></td>
-                    <td><button type="button">{{$ "Dinner"}}</button></td>
-                    <td><button type="button">{{$ "Snack"}}</button></td>
+                    <td><button type="button" data-meal>{{$ "Breakfast"}}</button></td>
+                    <td><button type="button" data-meal>{{$ "Brunch"}}</button></td>
+                    <td><button type="button" data-meal>{{$ "Lunch"}}</button></td>
+                    <td><button type="button" data-meal>{{$ "Dinner"}}</button></td>
+                    <td><button type="button" data-meal>{{$ "Snack"}}</button></td>
                 </tr>
                 <tr>
-                    <td><button type="button">{{$ "Special"}}</button></td>
-                    <td><button type="button">{{$ "Unknown"}}</button></td>
+                    <td><button type="button" data-meal>{{$ "Special"}}</button></td>
+                    <td><button type="button" data-meal>{{$ "Unknown"}}</button></td>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
@@ -63,7 +63,7 @@
                     <td class="dialogHeader">{{$ "AddOther"}}</td>
                 </tr>
                 <tr>
-                    <td colspan="6"><button type="button" name="chooseMetricBtn" >{{$ "ChooseMetric"}}</button></td>
+                    <td colspan="6"><button type="button" name="chooseMetricBtn" data-metric>{{$ "ChooseMetric"}}</button></td>
                 </tr>
             </table>
     </div>

@@ -23,8 +23,9 @@ function(TP, WorkoutCommentsEditorView, commentsEditorTemplate)
         {
         },
 
-        initialize: function()
+        initialize: function(options)
         {
+            this.maxHeight = options.maxHeight;
         },
 
         template:
@@ -36,7 +37,9 @@ function(TP, WorkoutCommentsEditorView, commentsEditorTemplate)
         onRender: function()
         {
             var view = new WorkoutCommentsEditorView({ model: this.model });
-            this.$el.find(".editorContainer").html(view.render().$el);
+            this.$el.find(".editorContainer")
+                .html(view.render().$el)
+                .css('max-height', this.maxHeight);
         },
 
         setDirection: function(direction)

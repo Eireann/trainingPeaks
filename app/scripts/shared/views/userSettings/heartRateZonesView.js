@@ -3,40 +3,40 @@ define(
     "underscore",
     "TP",
     "backbone",
-    "shared/utilities/formUtility",
-    "shared/views/userSettings/zoneEntryView",
+    "shared/views/userSettings/zonesConfigGroupView",
+    "shared/views/userSettings/heartRateZonesCalculatorView",
     "hbs!shared/templates/userSettings/heartRateZonesTemplate"
 ],
 function(
     _,
     TP,
     Backbone,
-    FormUtility,
-    ZoneEntryView,
+    ZonesConfigGroupView,
+    HeartRateZonesCalculatorView,
     heartRateZonesTemplate
 )
 {
 
-    var PowerZonesView = TP.CompositeView.extend({
+    var PowerZonesView = ZonesConfigGroupView.extend({
+
+        ZonesCalculatorView: HeartRateZonesCalculatorView,
 
         template:
         {
             type: "handlebars",
             template: heartRateZonesTemplate
         },
-
-        itemView: ZoneEntryView,
-
-        onRender: function()
+        
+        formatValue: function(value)
         {
-            FormUtility.applyValuesToForm(this.$el, this.model, {
-                filterSelector: "[data-scope='zoneSet']"
-            });
+            var options = { defaultValue: "0", workoutTypeId: this.model.get("workoutTypeId") };
+            return TP.utils.conversion.formatUnitsValue("heartrate", value, options);
         },
 
-        initialize: function()
+        parseValue: function(value)
         {
-            this.collection = new TP.Collection(this.model.get("zones"));
+            var options = { workoutTypeId: this.model.get("workoutTypeId") };
+            return TP.utils.conversion.parseUnitsValue("number", value, options);
         }
 
     });

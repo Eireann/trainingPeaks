@@ -1,22 +1,26 @@
 ﻿define(
 [
+    "moment",
     "underscore",
     "setImmediate",
     "TP",
     "framework/dataManager",
     "utilities/charting/flotToolTipPositioner",
     "views/userConfirmationView",
+    "views/dashboard/chartUtils",
     "hbs!templates/views/dashboard/dashboardChart",
     "hbs!templates/views/charts/chartTooltip",
     "hbs!templates/views/confirmationViews/closeChartsConfirmationView"
 ],
 function(
+    moment,
     _,
     setImmediate,
     TP,
     DataManager,
     toolTipPositioner,
     UserConfirmationView,
+    ChartUtils,
     podTemplate,
     tooltipTemplate,
     closeChartsConfirmationTemplate
@@ -41,9 +45,12 @@ function(
                 throw "Dashboard Chart requires a settings model";
             }
 
-            _.bindAll(this, "_onHoverToolTip", "_renderFlotChart", "waitingOff");
+            if(this.model.template)
+            {
+                this.template = this.model.template;
+            }
 
-            this.listenTo(this.model, "change:title", _.bind(this._onChartTitleChange, this));
+            _.bindAll(this, "_onHoverToolTip", "_renderFlotChart", "waitingOff");
 
             //trigger redraw instead of dashboardDatesChange
             this.listenTo(this.model, "dashboardDatesChange", _.bind(this._onDashboardReset, this));
@@ -65,7 +72,39 @@ function(
             "mousedown .settings": "_onSettingsClicked",
             "mousedown .expand": "_onExpandClicked",
             "mousedown .collapse": "_onExpandClicked",
-            "mousedown .close": "_onCloseClicked"
+            "mousedown .close": "_onCloseClicked",
+            "dblclick": "_onExpandClicked"
+        },
+
+        serializeData: function()
+        {
+            var data = DashboardPodView.__super__.serializeData.apply(this, arguments);
+            data.title = this._podTitle();
+            return data;
+        },
+
+        _podTitle: function()
+        {
+            return this.model.get("title") || _.result(this.model, "defaultTitle");
+        },
+
+        _dateRangeText: function()
+        {
+            // show a subtitle in the pod view that displays the currently selected Date Range, 
+            // but only if not using the Dashboard Global setting
+            var dateOptions = this.model.get('dateOptions'),
+                startDate = dateOptions.startDate,
+                endDate = dateOptions.endDate,
+                quickDateSelectOption = dateOptions.quickDateSelectOption;
+
+            if (startDate && endDate)
+            {
+                return moment(startDate).utc().format(TP.utils.datetime.shortDateFormat) + " - " + moment(endDate).utc().format(TP.utils.datetime.shortDateFormat);
+            } else if (quickDateSelectOption && quickDateSelectOption !== 1)
+            {
+                return ChartUtils.findChartDateOption(quickDateSelectOption).label;
+            }
+            return "";
         },
 
         _bindPlotClick: function()
@@ -106,6 +145,9 @@ function(
 
         _renderFlotChart: function(chartOptions)
         {
+
+            this.$(".chartTitle").text(this._podTitle());
+            this.$(".customDateRange").text(this._dateRangeText());
             if(!chartOptions)
             {
                 this.$el.addClass("noData");
@@ -138,14 +180,13 @@ function(
                         this.$(".yaxisLabel.left").text(yaxesOpts && yaxesOpts[0] && yaxesOpts[0].label || "");
                         this.$(".yaxisLabel.right").text(yaxesOpts && yaxesOpts[1] && yaxesOpts[1].label || "");
                     }
-
                 }
             }
         },
 
         _onPlotClick: function(event, position, item)
         {
-            var onClickView = this.model.createItemDetailView(item);
+            var onClickView = this.model.createItemDetailView(item, position);
             if(onClickView)
             {
                 onClickView.render();
@@ -185,7 +226,8 @@ function(
 
             this.chartSettings.alignArrowTo(offset.top + ($(e.currentTarget).height() / 2));
 
-            this.chartSettings.on("close", this._onChartSettingsClose, this);
+            this.listenTo(this.chartSettings, "close", _.bind(this._onChartSettingsClose, this));
+            this.listenTo(this.chartSettings, "apply", _.bind(this._renderChart, this));
         },
 
         _onChartSettingsClose: function()
@@ -239,10 +281,10 @@ function(
             };
 
             var newPosition = {
-                top: "10px",
-                bottom: "20px",
-                left: "10px",
-                right: "10px"
+                top: "30px",
+                bottom: "40px",
+                left: "30px",
+                right: "30px"
             };
 
             // Can't use .hide() because the $chartContainer needs to remain in the layout
@@ -266,10 +308,11 @@ function(
 
         setupModalOverlay: function()
         {
-            this.createOverlay({ onOverlayClick: this.expandClicked });
+            
+            this.createOverlay({ onOverlayClick: this._onExpandClicked });
             this.$overlay.css("z-index", this.$el.css("z-index") - 1);
             this.enableEscapeKey();
-            this.closeOnRouteChange(this.expandClicked);
+            this.closeOnRouteChange(this._onExpandClicked);
         },
 
         _onCloseClicked: function()
@@ -309,11 +352,6 @@ function(
         onClose: function()
         {
             this._hideToolTip();
-        },
-
-        _onChartTitleChange: function()
-        {
-            this.ui.chartTitle.text(this.model.get("title"));
         },
 
         _setChartCssClass: function()

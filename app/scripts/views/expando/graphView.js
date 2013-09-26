@@ -92,13 +92,13 @@ function(
         
         watchForModelChanges: function()
         {
-            this.model.get("detailData").on("change:flatSamples.samples", this.createFlotGraph, this);
+            this.model.get("detailData").on("change:flatSamples", this.createFlotGraph, this);
             this.on("close", this.stopWatchingModelChanges, this);
         },
 
         stopWatchingModelChanges: function()
         {
-            this.model.get("detailData").off("change:flatSamples.samples", this.createFlotGraph, this);
+            this.model.get("detailData").off("change:flatSamples", this.createFlotGraph, this);
         },
 
         onFirstRender: function()
@@ -188,12 +188,20 @@ function(
             this.graphToolbar.on("filterPeriodChanged", this.applyFilter, this);
             this.graphToolbar.on("enableSeries", this.enableSeries, this);
             this.graphToolbar.on("disableSeries", this.disableSeries, this);
-            this.graphToolbar.on("zoom", this.zoomGraph, this);
+            this.graphToolbar.on("zoom", this.onToolbarZoom, this);
             this.graphToolbar.on("reset", this.resetZoom, this);
             this.graphToolbar.on("enableTimeAxis", this.enableTimeAxis, this);
             this.graphToolbar.on("enableDistanceAxis", this.enableDistanceAxis, this);
 
             this.$("#graphToolbar").append(this.graphToolbar.render().$el);
+        },
+
+        onToolbarZoom: function()
+        {
+            theMarsApp.featureAuthorizer.runCallbackOrShowUpgradeMessage(
+                theMarsApp.featureAuthorizer.features.ViewGraphRanges,
+                _.bind(this.zoomGraph, this)
+            );
         },
 
         zoomGraph: function()
@@ -329,6 +337,14 @@ function(
         },
 
         onPlotSelected: function()
+        {
+            theMarsApp.featureAuthorizer.runCallbackOrShowUpgradeMessage(
+                theMarsApp.featureAuthorizer.features.ViewGraphRanges,
+                _.bind(this.handlePlotSelected, this)
+            );
+        },
+
+        handlePlotSelected: function()
         {
             TP.analytics("send", { "hitType": "event", "eventCategory": "expando", "eventAction": "graphSelection", "eventLabel": "" });
 

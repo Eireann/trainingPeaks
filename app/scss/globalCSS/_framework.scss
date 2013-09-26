@@ -1,12 +1,28 @@
 ﻿@import "../globalCSS/tpstylesheet";
+@import "flex";
 
 @media screen {
 
+    html, body
+    {
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
+    }
+
+    #navigation
+    {
+        height: 76px;
+    }
+
+    #main
+    {
+        @include calc(height, "100% - 76px");
+    }
 
     .frameworkHeader
     {
     	// min-height: 64px;
-    	float:left;
     	background-color: $white;
         height:75px;
     }
@@ -14,8 +30,10 @@
     .frameworkMainWrapper
     {
         @include grid-row();
-    	background-color: white;
+        @include display-flex();
+        background-color: white;
         max-width: none;
+        @include calc(height, "100% - 75px");
     }
 
     .frameworkTable
@@ -133,28 +151,34 @@
                 float:left;
                 margin:7px 0 0 0;
                 
-                @include headerButtons(0px, 35px, $fontSizeMedium);
+                @include headerButtons(0px, 38px, $fontSizeMedium);
     			button {
     			 	&:active {
     					box-shadow:none;
-    					}
     				}
+    			}
 
                 .frameworkNavigation {
                     float:left;
-    	            @include headerButtons(0px, 35px, 12px);
-    				background-color:$TPGrey9;
-    				&:hover {
-    					background-color:$TPGrey11;
-    					}
+
                     button {
-                    	img {
-                            padding-top: 3px;
-                       	}
+                        border: 1px solid $TPGrey9;
+                        position: relative;
+                        margin-left: -1px;
+                        
+                        &:first-of-type {
+                            border-left: 1px solid $TPGrey9;
+                            margin-left: 0;
+                        }
+                        
+                        &:hover {
+                            color: $TPGrey4;
+                            border-color: $TPGrey11;
+                            z-index: 5;
+                        }
                     }
 
                     #goToLastWeekButton {
-                        border-right:none;
     					background: url(../../assets/images/calendarImages/sprite-header-icons.png) no-repeat 0 -20px;
                         &:hover {
     						background: url(../../assets/images/calendarImages/sprite-header-icons.png) no-repeat -36px -20px;	
@@ -165,8 +189,6 @@
                     }
 
     				#goToNextWeekButton {
-    					margin-left:1px;
-    					border-left:none;
     					background: url(../../assets/images/calendarImages/sprite-header-icons.png) no-repeat 0 0;
     					&:hover {
     						background: url(../../assets/images/calendarImages/sprite-header-icons.png) no-repeat -36px 0px;
@@ -185,7 +207,8 @@
     						background-size: 108px 100px;
     				  	}
     				}
-                    
+
+                   
                 }
 
                 .today {
@@ -196,7 +219,6 @@
 
     			.today button  {
     				color:$TPGrey10;
-    				padding:1px 0 2px;
     			}
     			
     			@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
@@ -295,12 +317,15 @@
 
     .frameworkScrollableContainer
     {
+        height: 100%;
         @include grid-column(15);
         @include nice-scrollbar;
         user-select: none;
         -moz-user-select: none;
         -webkit-user-select: none;
-    	padding: 0 2px;
+        padding: 0 2px;
+
+        @include flex(1);
 
         background-color: $white;
         overflow-x: auto;

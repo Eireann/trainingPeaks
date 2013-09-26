@@ -63,9 +63,18 @@ function(TP, ElevationCorrectionView, optionsMenuTemplate)
         {
             if (!(this.hasLatLngData()))
                 return;
-            
-            var view = new ElevationCorrectionView({ workoutModel: this.model });
-            view.render();
+          
+            var workoutModel = this.model;
+            var openElevationCorrection = function()
+            { 
+                var view = new ElevationCorrectionView({ workoutModel: workoutModel });
+                view.render();
+            };
+
+            theMarsApp.featureAuthorizer.runCallbackOrShowUpgradeMessage(
+                theMarsApp.featureAuthorizer.features.ElevationCorrection,
+                openElevationCorrection);
+
             this.close();
         },
 
@@ -73,11 +82,9 @@ function(TP, ElevationCorrectionView, optionsMenuTemplate)
         {
             var detailData = this.model.get("detailData");
             detailData.on("change:flatSamples", this.enableOrDisableElevationCorrection, this);
-            detailData.on("change:flatSamples.hasLatLngData", this.enableOrDisableElevationCorrection, this);
             this.on("close", function()
             {
                 detailData.off("change:flatSamples", this.enableOrDisableElevationCorrection, this);
-                detailData.off("change:flatSamples.hasLatLngData", this.enableOrDisableElevationCorrection, this);
             }, this);
         }
     });

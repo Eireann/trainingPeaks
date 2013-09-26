@@ -7,7 +7,9 @@
     button, input[type=button]
 	{
 		width: $width;
-		padding:4px 0;
+		// padding:4px 0;
+        padding:0;
+        line-height:20px;
         
 		font-family: $fontFamilyRegular;
 		font-size: $fontSize;
@@ -61,6 +63,12 @@
         }
 
 	}
+
+    // Fix for firefox which adds 2px exta height to any button
+    button::-moz-focus-inner {
+        padding: 0;
+        border: 0
+    }
 }
 
  
@@ -224,13 +232,13 @@
 
 @mixin radialGradient($color1, $color2)
 {
-    background: #1e5799;
-    background: -moz-radial-gradient(center, ellipse cover, #1e5799 0%, $color1 0%, $color2 100%);
+    background: $color2;
+    background: -moz-radial-gradient(center, ellipse cover, $color2 0%, $color1 0%, $color2 100%);
     background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,#1e5799), color-stop(0%, $color1), color-stop(100%, $color2));
-    background: -webkit-radial-gradient(center, ellipse cover, #1e5799 0%, $color1 0%, $color2 100%);
-    background: -o-radial-gradient(center, ellipse cover, #1e5799 0%, $color1 0%, $color2 100%);
-    background: -ms-radial-gradient(center, ellipse cover, #1e5799 0%, $color1 0%, $color2 100%);
-    background: radial-gradient(ellipse at center, #1e5799 0%, $color1 0%, $color2 100%);
+    background: -webkit-radial-gradient(center, ellipse cover, $color2 0%, $color1 0%, $color2 100%);
+    background: -o-radial-gradient(center, ellipse cover, $color2 0%, $color1 0%, $color2 100%);
+    background: -ms-radial-gradient(center, ellipse cover, $color2 0%, $color1 0%, $color2 100%);
+    background: radial-gradient(ellipse at center, $color2 0%, $color1 0%, $color2 100%);
 }
 
 @mixin placeholders($color)

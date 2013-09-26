@@ -1,14 +1,18 @@
 define(
 [
     "TP",
+    "models/workoutModel",
     "views/weekSummary/weekSummarySettings",
     "views/weekSummary/weekSummaryBarChartHover",
+    "shared/models/activityModel",
     "hbs!templates/views/weekSummary/weekSummary"
 ],
 function(
     TP,
+    WorkoutModel,
     WeekSummarySettings,
     barChartHover,
+    ActivityModel,
     weekSummaryTemplate)
 {
     return TP.ItemView.extend(
@@ -40,7 +44,7 @@ function(
             // current setup of views it seems to break occasionally.
             // this.render = _.debounce(_.bind(this.render, this), 100, {leading: true, trailing: true, maxWait: 500});
 
-            theMarsApp.user.on("change", this.render, this);
+            theMarsApp.user.on("change:units", this.render, this);
             
 
             var self = this;
@@ -87,6 +91,13 @@ function(
                 //iterate over items (workouts, meals, metrics) for the current day
                 item.itemsCollection.each(function(workout)
                 {
+                    // Note, you might get a metric or other model
+                    workout = ActivityModel.unwrap(workout);
+
+                    if(!(workout instanceof WorkoutModel))
+                    {
+                        return;
+                    }
 
                     var workoutType = workout.get("workoutTypeValueId");
 

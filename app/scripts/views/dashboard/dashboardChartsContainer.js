@@ -5,6 +5,7 @@
     "packery",
     "gridster",
     "TP",
+    "framework/filteredSubCollection",
     "framework/settingsSubCollection",
     "./dashboardChartBuilder",
     "views/pageContainer/primaryContainerView",
@@ -17,6 +18,7 @@ function(
     packery,
     gridster,
     TP,
+    FilteredSubCollection,
     SettingsSubCollection,
     dashboardChartBuilder,
     PrimaryContainerView,
@@ -24,7 +26,20 @@ function(
     dashboardContainerTemplate
     )
 {
-    var DashboardView = PrimaryContainerView.extend({
+    function userCanUsePod(chartModel)
+    {
+        var featureAttributes = { podTypeId: chartModel.get("chartType") };
+        return theMarsApp.featureAuthorizer.canAccessFeature(
+            theMarsApp.featureAuthorizer.features.UsePod,
+            featureAttributes
+        );
+    }
+
+    var DashboardView = PrimaryContainerView.extend(
+    {
+
+        attributes: { style: "height: 100%;" },
+
         template:
         {
             type: "handlebars",
@@ -56,14 +71,21 @@ function(
                 }
             });
 
+            this.on("close", this.collection.releaseSourceModel, this.collection);
+
+            this.filteredCollection = new FilteredSubCollection(null, {
+                sourceCollection: this.collection,
+                filterFunction: userCanUsePod
+            });
+
             this.packeryCollectionView = new PackeryCollectionView({
                 itemView: dashboardChartBuilder.buildChartView,
-                collection: this.collection,
+                collection: this.filteredCollection,
                 itemViewOptions: { dataManager: this.dataManager }
             });
 
             this.listenTo(this.packeryCollectionView, "reorder", _.bind(this._onReorderCharts, this));
-            this.on("show", _.bind(this._showPackeryCollectionView, this));
+            this.on("user:loaded", _.bind(this._showPackeryCollectionView, this));
             this.listenTo(this.collection, "remove", _.bind(this._onRemoveChart, this));
             this.listenTo(this.packeryCollectionView, "itemview:popIn", _.bind(this.packeryCollectionView.enablePackeryResize, this.packeryCollectionView));
             this.listenTo(this.packeryCollectionView, "itemview:popOut", _.bind(this.packeryCollectionView.disablePackeryResize, this.packeryCollectionView));

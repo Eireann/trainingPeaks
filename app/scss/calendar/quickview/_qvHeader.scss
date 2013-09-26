@@ -24,6 +24,9 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
         position: relative;
         z-index: 2; // otherwise maps/charts overlay it and kill the drop shadow
 
+        .QVHeaderItemsContain {
+            min-width: 1150px;
+        }
 
         .workoutBarViewHeader
         {
@@ -45,6 +48,7 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
                     input#workoutTitleField
                     {
                         display: inline;
+                        font-family: $fontFamilyHeavy;
                     }
                 }
                 
@@ -178,9 +182,7 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
                 float: left;
                 margin-left: 6px;
                 width: 86px;
-                border-width: 1px;
-                border-style: solid;
-                border-color: $TPGrey9;
+                border: 1px solid $TPGrey9;
                 
                 label {
                     color: $TPGrey10;
