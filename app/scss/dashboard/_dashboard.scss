@@ -1,6 +1,6 @@
 ﻿$chartIconsSpriteURL: url(../../assets/images/charts/sprite-buttons-chart-modal.png);
 $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-modal@2x.png);
-
+// $troughIconSpriteURL and $troughIconRetinaSpriteURL set in _library.scss
 
 .chartsRegion
 {
@@ -700,8 +700,72 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
                 width: 25px;
                 height: 25px;
                 float: left;
-                background: $TPGrey1 $troughIconSpriteURL no-repeat 0 -24px;
-                background-color: $TPGrey2;
+                background: $TPGrey2 $troughIconSpriteURL no-repeat 0 -25px;
+            }
+
+            // Performance Manager
+            &.chartType-32 {
+                .chartTileIcon {
+                    background: $TPGrey2 $troughIconSpriteURL no-repeat 0 -125px;
+                }
+            }
+
+            // TSS by Week/Day
+            &.chartType-23 {
+                .chartTileIcon {
+                    background: $TPGrey2 $troughIconSpriteURL no-repeat 0 -75px;
+                }
+            }
+
+            // Fitness Summary/Pie
+            &.chartType-3 {
+                .chartTileIcon {
+                    background: $TPGrey2 $troughIconSpriteURL no-repeat 0 -150px;
+                }
+            }
+
+            // Peaks
+            &.chartType-8,
+            &.chartType-28,
+            &.chartType-29,
+            &.chartType-30,
+            &.chartType-31,
+            &.chartType-36 {
+                .chartTileIcon {
+                    background: $TPGrey2 $troughIconSpriteURL no-repeat 0 -100px;
+                }
+            }
+
+            // Time in Zones/Bar
+            &.chartType-17,
+            &.chartType-24,
+            &.chartType-26 {
+                .chartTileIcon {
+                    background: $TPGrey2 $troughIconSpriteURL no-repeat 0 -25px;
+                }
+            }
+
+            // Metrics
+            &.chartType-13 {
+                .chartTileIcon {
+                    background: $TPGrey2 $troughIconSpriteURL no-repeat 0 -175px;
+                }
+            }
+
+            // Time in Zones by Week/Stacked Bar
+            &.chartType-18,
+            &.chartType-25,
+            &.chartType-27 {
+                .chartTileIcon {
+                    background: $TPGrey2 $troughIconSpriteURL no-repeat 0 -50px;
+                }
+            }
+
+            @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
+                .chartTileIcon {
+                    background-image: $troughIconSpriteRetinaURL;
+                    background-size: 25px 200px;
+                }
             }
 
             .chartTileName {
