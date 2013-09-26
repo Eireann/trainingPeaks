@@ -63,12 +63,26 @@ function(
             return theMarsApp.apiRoot + "/users/v1/user";
         },
 
+        onUserFetchFail: function()
+        {
+            theMarsApp.featureAuthorizer.showUpgradeMessage(function()
+            {
+                theMarsApp.session.logout();
+            });
+        },
+
         fetch: function()
         {
             var self = this,
                 superFetch = function()
                 {
-                    var ajaxFetch = TP.APIDeepModel.prototype.fetch.call(self);
+                    var options = {
+                        errorHandlers: {
+                            402: _.bind(self.onUserFetchFail, self)
+                        }
+                    };
+
+                    var ajaxFetch = TP.APIDeepModel.prototype.fetch.call(self, options);
                     ajaxFetch.done(function()
                     {
                         theMarsApp.session.saveUserToLocalStorage(self);
