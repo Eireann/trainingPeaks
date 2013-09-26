@@ -1,12 +1,28 @@
 ﻿@import "../globalCSS/tpstylesheet";
+@import "flex";
 
 @media screen {
 
+    html, body
+    {
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
+    }
+
+    #navigation
+    {
+        height: 76px;
+    }
+
+    #main
+    {
+        @include calc(height, "100% - 76px");
+    }
 
     .frameworkHeader
     {
     	// min-height: 64px;
-    	float:left;
     	background-color: $white;
         height:75px;
     }
@@ -14,8 +30,10 @@
     .frameworkMainWrapper
     {
         @include grid-row();
-    	background-color: white;
+        @include display-flex();
+        background-color: white;
         max-width: none;
+        @include calc(height, "100% - 75px");
     }
 
     .frameworkTable
@@ -299,12 +317,15 @@
 
     .frameworkScrollableContainer
     {
+        height: 100%;
         @include grid-column(15);
         @include nice-scrollbar;
         user-select: none;
         -moz-user-select: none;
         -webkit-user-select: none;
-    	padding: 0 2px;
+        padding: 0 2px;
+
+        @include flex(1);
 
         background-color: $white;
         overflow-x: auto;
