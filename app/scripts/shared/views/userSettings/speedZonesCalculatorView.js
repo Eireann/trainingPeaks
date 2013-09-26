@@ -140,6 +140,7 @@ function(
 
         formatPaceOrSpeed: function(value, options)
         {
+            options.defaultValue = "";
             if(this.model.get("paceOrSpeed") === "speed")
             {
                 return TP.utils.conversion.formatSpeed(value, options);

@@ -1,12 +1,13 @@
 define(
 [
     "TP",
+    "framework/notYetImplemented",
     "moment",
     "jqueryui/datepicker",
     "views/applicationHeader/coachAndAffiliateCustomizations",
     "hbs!templates/views/calendar/calendarHeader"
 ],
-function(TP, moment, datepicker, coachAndAffiliateCustomizations, calendarHeaderTemplate)
+function(TP, notYetImplemented, moment, datepicker, coachAndAffiliateCustomizations, calendarHeaderTemplate)
 {
     var calendarHeaderViewBase = {
 
@@ -25,7 +26,8 @@ function(TP, moment, datepicker, coachAndAffiliateCustomizations, calendarHeader
             "click #goToLastWeekButton": "onGoToLastWeekButtonClicked",
             "click button.refreshButton": "onRefreshButtonClicked",
             "change .datepicker": "onDateSelect",
-            "change #athleteCalendarSelect": "onAthleteSelectBoxChange"
+            "change #athleteCalendarSelect": "onAthleteSelectBoxChange",
+            "click .settingsButton": notYetImplemented
 
         },
 

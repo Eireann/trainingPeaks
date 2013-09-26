@@ -11,7 +11,9 @@ function(TP, theMarsApp, TrainingPlanItemView)
     {
         it("Should be draggable", function()
         {
-            var itemView = new TrainingPlanItemView({model: new TP.Model({title: "Foobar", id: 123, webAPIModelName: "TrainingPlan"})});
+            var itemView = new TrainingPlanItemView({model: new TP.Model({title: "Foobar", id: 123 })});
+            itemView.model.webAPIModelName = "TrainingPlan";
+
             spyOn(itemView, "makeDraggable").andCallThrough();
             spyOn(itemView.$el, "draggable");
 

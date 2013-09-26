@@ -35,6 +35,7 @@ function(
             CalculatorTabContentView.__super__.constructor.apply(this, arguments);
             this.originalModel = options.model.clone();
             this.modelsById = {};
+            this.model = this._getModelForCurrentCalculator(); 
         },
 
         onRender: function()
@@ -79,14 +80,22 @@ function(
 
         _selectZoneCalculator: function(e)
         {
-            this.modelsById[this.calculatorDefinition.id] = this.model;
-
             var calculatorId = Number($(e.target).data("zoneid"));
             this.calculatorDefinition = this.zoneTypesById[calculatorId];
 
-            this.model = this.modelsById[calculatorId] || this.originalModel.clone();
+            this.model = this._getModelForCurrentCalculator(); 
 
             this._applyModelValuesToForm();
+        },
+
+        _getModelForCurrentCalculator: function()
+        {
+            var calculatorId = this.calculatorDefinition.id;
+            if(!this.modelsById[calculatorId])
+            {
+                this.modelsById[calculatorId] = this.originalModel.clone();
+            }
+            return this.modelsById[calculatorId];
         },
 
         _highlightSelectedZone: function()
@@ -144,7 +153,8 @@ function(
 
         getZonesToApply: function()
         {
-            return this.model;
+            this._applyValuesToOriginalModel();
+            return this.originalModel;
         },
 
         getParsers: function()
@@ -170,6 +180,17 @@ function(
             };
         },
 
+        _applyValuesToOriginalModel: function()
+        {
+            var attributesInCalculatorModel = _.keys(this.model.attributes);
+            var attributesInOriginalModel = _.keys(this.originalModel.attributes);
+            var attributesInBothModels = _.intersection(attributesInCalculatorModel, attributesInOriginalModel);
+
+            _.each(attributesInBothModels, function(key) {
+                this.originalModel.set(key, this.model.get(key));
+            }, this);
+        },
+
         _parseInputValue: function(value)
         {
             var options = { defaultValue: 0, workoutTypeId: this.model.get("workoutTypeId") };
@@ -178,7 +199,7 @@ function(
 
         _formatInputValue: function(value)
         {
-            var options = { defaultValue: "0", workoutTypeId: this.model.get("workoutTypeId") };
+            var options = { defaultValue: "", workoutTypeId: this.model.get("workoutTypeId") };
             return TP.utils.conversion.formatUnitsValue(this.units, value, options);
         },
 
