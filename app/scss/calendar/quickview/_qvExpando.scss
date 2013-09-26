@@ -457,7 +457,7 @@
     
     #expandoChartsRegion {
         width: 100%;
-        padding-left: 1.8%;
+        padding: 0 10px;
         float: left;
 
         .chartContainer {
@@ -465,6 +465,7 @@
             top: 21px;
             @include calc("width","100% - 58px");    
             @include calc("height","100% - 85px");    
+            
             margin: 0 auto;
             position: relative;
             background-color: #cccccc;
@@ -499,6 +500,7 @@
     float: right;
     width: 335px;
     overflow-y: scroll;
+    // test
     @include nice-scrollbar;
 
     #expandoStatsRegion

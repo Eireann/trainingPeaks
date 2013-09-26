@@ -3,6 +3,11 @@
 .qvZonesTab
 {
     position:relative;
+    
+    .chartContainer {
+        @include calc("width","100% - 58px");    
+        @include calc("height","100% - 85px");
+    }   
 
     .zonesChart
     {
