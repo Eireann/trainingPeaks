@@ -146,7 +146,7 @@
                 return conversion.formatEmptyNumber(value, options);
 
             var sportType = conversion.getMySportType(options);
-            var assumeSeconds = sportType === 1;
+            var assumeSeconds = sportType === 1 || sportType === 12; // Swim or Rowing
             var rawTime = datetimeUtils.convert.timeToDecimalHours(value, { assumeHours: false, assumeSeconds: assumeSeconds });
             var limitedTime = adjustFieldRange(rawTime, "pace");
             var formattedLimitedTime = datetimeUtils.format.decimalHoursAsTime(limitedTime, true);
