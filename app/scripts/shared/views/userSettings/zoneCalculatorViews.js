@@ -33,6 +33,8 @@ function(
             this.collection = new TP.Collection();
             this.calculatorDefinition = this.calculators[0];
             CalculatorTabContentView.__super__.constructor.apply(this, arguments);
+            this.originalModel = options.model.clone();
+            this.modelsById = {};
         },
 
         onRender: function()
@@ -77,8 +79,14 @@ function(
 
         _selectZoneCalculator: function(e)
         {
+            this.modelsById[this.calculatorDefinition.id] = this.model;
+
             var calculatorId = Number($(e.target).data("zoneid"));
             this.calculatorDefinition = this.zoneTypesById[calculatorId];
+
+            this.model = this.modelsById[calculatorId] || this.originalModel.clone();
+
+            this._applyModelValuesToForm();
         },
 
         _highlightSelectedZone: function()
