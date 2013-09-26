@@ -2,6 +2,11 @@
 $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-modal@2x.png);
 // $troughIconSpriteURL and $troughIconRetinaSpriteURL set in _library.scss
 
+.chartsRegion
+{
+    @include calc(height, "100% - 27px");
+}
+
 .dashboardDatePicker
 {
     .selectboxit-container
@@ -133,7 +138,7 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
 {
     min-width: 1007px;
     position: relative;
-    padding:10px 0px 25px 10px;
+    padding:10px 0px 0px 10px;
     overflow-x: hidden;
 }
 

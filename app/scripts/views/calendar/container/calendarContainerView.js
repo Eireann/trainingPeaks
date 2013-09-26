@@ -31,6 +31,8 @@ function(
             "colorByComplianceAndWorkoutType"
         ],
 
+        attributes: { style: "height: 100%;" },
+
         template:
         {
             type: "handlebars",
@@ -219,7 +221,6 @@ function(
 
         onLibraryAnimateComplete: function()
         {
-            this.resizeContainer();
             this.updateWeekHeights();
             this.weeksCollectionView.unlockScrollPosition();
         },
