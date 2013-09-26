@@ -82,13 +82,12 @@
     }
 }
 
-.zonesTable
-{
-    .zoneRow
-    {
+.zonesTable {
+    .zoneRow {
 
-        .zoneText
-        {
+        padding:3px 0 4px 0;
+
+        .zoneText {
             @include calc(width, "100% - 80px"); 
             display: inline-block;
             overflow: hidden;
@@ -96,80 +95,76 @@
             vertical-align: top;
         }
 
-        .zoneRange
-        {
+        .zoneRange {
             @include labels($fontFamilyRegular, $fontSizeSmaller, $TPGrey3, normal);
+            label {
+                margin:0;
+            }
         }
 
-        .zoneName
-        {
+        .zoneName {
             @include labels($fontFamilyRegular, $fontSizeSmall, $TPGrey4, normal);
-            label
-            {
+            label {
                 white-space: nowrap;
             }
         }
 
-        .zoneInput
-        {
+        .zoneInput {
             width: 70px;
             display: inline-block;
-            margin-left: 5px;
             vertical-align: top;
-            @include inputs(70px, 26px, $fontSizeSmall, $fontFamilyRegular);
-            input
-            {
+            @include inputs(70px, 22px, $fontSizeSmall, $fontFamilyRegular);
+            
+            input {
                 color: $TPGrey3;
+                margin: 2px 0 0 5px;
             }
         }
 
     }
 }
 
-.peaksTable
-{
-    .peakRow
-    {
-        height: 24px;
+.peaksTable {
+    .peakRow {
+        padding:4px 0 5px 0;
 
         .peakName
         {
             display: inline-block;
-            @include calc(width, "100% - 100px"); 
+            @include calc(width, "100% - 120px"); 
             text-align: right;
             vertical-align: top;
             @include labels($fontFamilyRegular, $fontSizeSmall, $TPGrey4, normal);
-            label
-            {
+            margin-right: 5px;
+
+            label {
                 margin-top: 5px;
                 white-space: nowrap;
                 overflow: hidden;
             }
         }
 
-        .peakInput
-        {
+        .peakInput {
             display: inline-block;
-            margin-left: 10px;
             vertical-align: top;
-            @include inputs(45px, 20px, 12px, $fontFamilyRegular);
-            input
-            {
+            @include inputs(70px, 22px, 12px, $fontFamilyRegular);
+            
+            input {
                 text-align: right;
                 color: $TPGrey3;
+                margin: 0;
             }
         }
 
-        .peakRange
-        {
+        .peakRange {
             display: inline-block;
-            margin-left: 5px;
             width: 25px;
             vertical-align: top;
+            margin-left:5px;
+            
             @include labels($fontFamilyRegular, $fontSizeXSmall, $TPGrey3, normal);
-            label
-            {
-                margin-top: 5px;
+            label {
+                margin-top: 6px;
             }
         }
     }

@@ -390,14 +390,12 @@
 
             .graphSliderContain {
                 float:left;
-                // width:40%;
                 text-align: left;
                 padding: 12px 0 0 0;
 
                 input[type=range]
                 {
                     float: left;
-                    // margin-right: 30px;
                 }
 
                 input.slider[type=range]
@@ -449,7 +447,7 @@
         .lapsSplitsTitle {
             font-family: $fontFamilyHeavy;
             font-size: $fontSizeSmall;
-            color: $TPGrey3;
+            color: $TPGrey4;
             text-align: center;
             margin-bottom: 20px;
         }
@@ -457,18 +455,16 @@
     
     #expandoChartsRegion {
         width: 100%;
-        padding: 0 10px;
+        padding: 0 12px;
         float: left;
 
         .chartContainer {
-            position: absolute;
-            top: 21px;
             @include calc("width","100% - 58px");    
             @include calc("height","100% - 85px");    
-            
+            position: absolute;
+            top: 21px;
             margin: 0 auto;
             position: relative;
-            background-color: #cccccc;
 
             .flot-base {
                margin-left: 3px;
@@ -482,15 +478,11 @@
         .timeInZonesChartContainer {
             float: left;
             position: relative;
-            background-color:#bbbbbb;
-            outline: 1px solid red;
         }
 
         .peaksChartContainer {
-            float: left;
+            float: right;
             position: relative;
-            background-color:#aaaaaa;
-            outline: 1px solid blue;
         }
     }
 }
@@ -500,7 +492,6 @@
     float: right;
     width: 335px;
     overflow-y: scroll;
-    // test
     @include nice-scrollbar;
 
     #expandoStatsRegion
@@ -509,7 +500,6 @@
         overflow-y: visible;
         font-size: $fontSizeMedium;
         color: $TPGrey4;
-        //border-bottom: 1px solid $TPGrey7;
 
         .rangeTitle
         {
