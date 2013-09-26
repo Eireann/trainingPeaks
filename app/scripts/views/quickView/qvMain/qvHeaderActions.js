@@ -4,6 +4,7 @@
     "jqueryui/datepicker",
     "jqueryTimepicker",
     "TP",
+    "framework/notYetImplemented",
     "views/quickView/qvMain/qvWorkoutTypeMenuView",
     "views/quickView/qvMain/qvContextMenuView",
     "views/quickView/qvMain/qvOptionsMenuView",
@@ -18,6 +19,7 @@ function (
     datepicker,
     timepicker,
     TP,
+    notYetImplemented,
     WorkoutTypeMenuView,
     QVContextMenuView,
     QVOptionsMenuView,
@@ -41,7 +43,9 @@ function (
             "blur input.workoutTitle": "onTitleBlur",
             "keyup input.workoutTitle": "onTitleChanged",
             "click button#options": "onOptionsClicked",
-            "click button#comment": "onCommentsClicked"
+            "click button#comment": "onCommentsClicked",
+            "click .expandedViewsButtons .view": notYetImplemented,
+            "click .charts button": notYetImplemented
         },
 
         headerUi:

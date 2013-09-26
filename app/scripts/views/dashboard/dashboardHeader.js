@@ -5,12 +5,13 @@
     "jquerySelectBox",
     "underscore",
     "TP",
+    "framework/notYetImplemented",
     "./dashboardDatePicker",
     "./chartUtils",
     "./dashboardHeaderDatePicker",
     "hbs!templates/views/dashboard/dashboardHeader"
 ],
-function (datepicker, spinner, jquerySelectBox, _, TP, DashboardDatePicker, chartUtils, dashboardHeaderDatePicker, dashboardHeaderTemplate)
+function (datepicker, spinner, jquerySelectBox, _, TP, notYetImplemented, DashboardDatePicker, chartUtils, dashboardHeaderDatePicker, dashboardHeaderTemplate)
 {
     var DashboardHeaderView = TP.ItemView.extend(
     {
@@ -26,7 +27,8 @@ function (datepicker, spinner, jquerySelectBox, _, TP, DashboardDatePicker, char
         events:
         {
             "click .refreshButton": "refresh",
-            "click .calendarMonthLabel": "headerDatePicker"
+            "click .calendarMonthLabel": "headerDatePicker",
+            "click .settingsButton": notYetImplemented
         },
 
         modelEvents: {},
