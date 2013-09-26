@@ -29,17 +29,14 @@ function(
         onLibraryAnimate: function(libraryAnimationCssAttributes, duration)
         {
             var self = this;
-            var onComplete = function()
-            {
-                setImmediate(function()
-                {
-                    self.onLibraryAnimateComplete();
-                });
-            };
 
             this.onLibraryAnimateSetup();
-            setInterval(_.bind(this.onLibraryAnimateProgress, this), 20);
-            setTimeout(_.bind(this.onLibraryAnimateComplete, this), duration);
+            var interval = setInterval(_.bind(this.onLibraryAnimateProgress, this), 20);
+            setTimeout(function()
+            {
+                clearInterval(interval);
+                self.onLibraryAnimateComplete()
+            }, duration);
         },
 
         onLibraryAnimateSetup: function()

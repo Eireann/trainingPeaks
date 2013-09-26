@@ -1,5 +1,5 @@
 ﻿@import "../globalCSS/tpstylesheet";
-@import "compass/css3/box";
+@import "flex";
 
 @media screen {
 
@@ -23,7 +23,6 @@
     .frameworkHeader
     {
     	// min-height: 64px;
-    	float:left;
     	background-color: $white;
         height:75px;
     }
@@ -31,10 +30,10 @@
     .frameworkMainWrapper
     {
         @include grid-row();
-        @include display-box;
+        @include display-flex();
         background-color: white;
         max-width: none;
-        height: 100%;
+        @include calc(height, "100% - 75px");
     }
 
     .frameworkTable
@@ -318,7 +317,7 @@
 
     .frameworkScrollableContainer
     {
-        @include calc(height, "100% - 75px");
+        height: 100%;
         @include grid-column(15);
         @include nice-scrollbar;
         user-select: none;
@@ -326,7 +325,7 @@
         -webkit-user-select: none;
         padding: 0 2px;
 
-        @include box-flex(1);
+        @include flex(1);
 
         background-color: $white;
         overflow-x: auto;
