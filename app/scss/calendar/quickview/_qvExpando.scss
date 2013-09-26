@@ -436,8 +436,7 @@
         }
     }
     
-    #expandoLapsSplitsRegion
-    {
+    #expandoLapsSplitsRegion {
         float:left;
         padding:55px 20px;
         width:100%;
@@ -447,51 +446,50 @@
             border-right:none;
         }
 
-        .lapsSplitsTitle
-        {
-            font-family: HelveticaNeueW01-75Bold;
+        .lapsSplitsTitle {
+            font-family: $fontFamilyHeavy;
             font-size: $fontSizeSmall;
-            color: #636569;
+            color: $TPGrey3;
             text-align: center;
             margin-bottom: 20px;
         }
     }
     
-    #expandoChartsRegion
-    {
+    #expandoChartsRegion {
         width: 100%;
-        margin-top: 30px;
+        padding-left: 1.8%;
+        float: left;
 
-        .timeInZonesChartContainer
-        {
-            float: left;
-            margin-bottom: 20px;
+        .chartContainer {
+            position: absolute;
+            top: 21px;
+            @include calc("width","100% - 58px");    
+            @include calc("height","100% - 85px");    
+            margin: 0 auto;
             position: relative;
+            background-color: #cccccc;
 
-            .chartContainer
-            {
-                height: 70%;
-                width: 80%;
+            .flot-base {
+               margin-left: 3px;
             }
 
-            .xaxisLabel
-            {
-                top: calc(70% + 30px);
-                left: calc(50% - 35px);
+            .flot-overlay {
+                margin-left: 3px;
             }
         }
 
-        .peaksChartContainer
-        {
+        .timeInZonesChartContainer {
             float: left;
-            margin-bottom: 20px;
             position: relative;
+            background-color:#bbbbbb;
+            outline: 1px solid red;
+        }
 
-            .chartContainer
-            {
-                height: 70%;
-                width: 80%;
-            }
+        .peaksChartContainer {
+            float: left;
+            position: relative;
+            background-color:#aaaaaa;
+            outline: 1px solid blue;
         }
     }
 }
