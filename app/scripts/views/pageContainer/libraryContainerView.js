@@ -1,9 +1,10 @@
 ﻿define(
 [
     "underscore",
-    "TP"
+    "TP",
+    "framework/notYetImplemented"
 ],
-function(_, TP)
+function(_, TP, notYetImplemented)
 {
     return TP.Layout.extend(
     {
@@ -69,7 +70,10 @@ function(_, TP)
         _toggleLibrary: function(newLibraryName)
         {
             if(!this.viewConstructors.hasOwnProperty(newLibraryName))
+            {
+                notYetImplemented();
                 return;
+            }
 
             if(this._isOpen())
             {

@@ -1,6 +1,7 @@
 ﻿define(
 [
     "TP",
+    "framework/notYetImplemented",
     "models/workoutModel",
     "models/workoutFileData",
     "views/quickView/workoutQuickView",
@@ -10,6 +11,7 @@
 ],
 function(
     TP,
+    notYetImplemented,
     WorkoutModel,
     WorkoutFileData,
     WorkoutQuickView,
@@ -33,6 +35,8 @@ function(
         {
             "change input[type='file']": "onFileSelected",
             "click button[data-workoutid]": "onNewWorkoutClicked",
+            "click button[data-meal]": notYetImplemented,
+            "click button[data-metric]": notYetImplemented,
             "click button[name=uploadDeviceFile]": "onUploadFileClicked",
             "click #closeIcon": "onCloseClicked"
         },
