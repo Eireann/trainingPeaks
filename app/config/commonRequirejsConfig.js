@@ -19,6 +19,7 @@
             "dashboard": "scripts/dashboard", 
             "calendar": "scripts/calendar", 
             "user": "scripts/user",
+            "quickview": "scripts/quickview",
             "shared": "scripts/shared", 
             
             // jQuery related, but not managed by bower yet ...

@@ -9,7 +9,7 @@
 @import "qvSharing";
 
 @media screen {
-    #workOutQuickView
+    #workOutQuickView, .QVShell
     {
         overflow:hidden;
         width: 690px;
@@ -54,7 +54,7 @@
         cursor: default;
     }
 
-    #quickViewContent
+    #quickViewContent, .QVBody
     {
         height: 360px;
         overflow-y:scroll; 
@@ -68,7 +68,12 @@
         }
     }
 
-    .quickviewFooter
+    .QVBody
+    {
+        width: 690px;
+    }
+
+    .quickviewFooter, .QVFooter
     {
         height:45px;
         background-color: $TPGrey5;

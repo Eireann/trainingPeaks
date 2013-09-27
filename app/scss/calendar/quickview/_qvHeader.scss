@@ -115,7 +115,7 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
             width:80px;
             height:17px;
 
-            #expandIcon
+            #expandIcon, .expandIcon
             {
                 float: right;
                 margin-left: 10px;
@@ -140,7 +140,7 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
 
             }
 
-            #collapseIcon
+            #collapseIcon, .collapseIcon
             {
                 display: none;
                 float: right;
@@ -162,7 +162,7 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
             }
 
             @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
-                #expandIcon {
+                #expandIcon, .expandIcon {
                     background-image: $chartIconsSpriteRetinaURL;
                     background-size: 68px 34px;
                 }

@@ -3,12 +3,14 @@ define(
     "underscore",
     "TP",
     "calendar/views/metricTileSettingsView",
+    "quickview/metric/views/metricQuickView",
     "hbs!calendar/templates/metricTileTemplate"
 ],
 function(
     _,
     TP,
     MetricTileSettingsView,
+    MetricQuickView,
     metricTileTemplate
 )
 {
@@ -124,6 +126,9 @@ function(
             }
 
             this._select();
+
+            var view = new MetricQuickView({ model: this.model });
+            view.render();
         },
 
         _onMousedown: function()
