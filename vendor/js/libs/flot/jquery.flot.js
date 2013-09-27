@@ -521,6 +521,7 @@ Licensed under the MIT license.
                     labelMargin: 5, // in pixels
                     axisMargin: 8, // in pixels
                     borderWidth: 2, // in pixels
+                    borderOffset: { top: 0, left: 0, bottom: 0, right: 0 }, // top/left/bottom/right object
                     minBorderMargin: null, // in pixels, null means taken from points radius
                     markings: null, // array of ranges or fn: axes -> array of ranges
                     markingsColor: "#f4f4f4",
@@ -656,6 +657,12 @@ Licensed under the MIT license.
                 options.grid.borderColor = options.grid.color;
             if (options.grid.tickColor == null)
                 options.grid.tickColor = $.color.parse(options.grid.color).scale('a', 0.22).toString();
+
+            if(typeof options.grid.borderWidth === "object" && typeof options.grid.borderOffset !== "object")
+            {
+            	var borderOffset = options.grid.borderOffset;
+            	options.grid.borderOffset = { top: borderOffset, left: borderOffset, right: borderOffset, bottom: borderOffset };
+            }
 
             // Fill in defaults for axis options, including any unspecified
             // font-spec fields, if a font-spec was provided.
@@ -1427,14 +1434,15 @@ Licensed under the MIT license.
 
             executeHooks(hooks.processOffset, [plotOffset]);
 
-            // If the grid is visible, add its border width to the offset
-
+            // If the grid is visible, add its border width and offsets to the offset
             for (var a in plotOffset) {
                 if(typeof(options.grid.borderWidth) == "object") {
                     plotOffset[a] += showGrid ? options.grid.borderWidth[a] : 0;
+                    plotOffset[a] += showGrid ? options.grid.borderOffset[a] : 0;
                 }
                 else {
                     plotOffset[a] += showGrid ? options.grid.borderWidth : 0;
+                    plotOffset[a] += showGrid ? options.grid.borderOffset : 0;
                 }
             }
 
@@ -1963,7 +1971,11 @@ Licensed under the MIT license.
                 // If either borderWidth or borderColor is an object, then draw the border
                 // line by line instead of as one rectangle
                 bc = options.grid.borderColor;
-                if(typeof bw == "object" || typeof bc == "object") {
+
+                // TP Micah added border offset ...
+                bo = options.grid.borderOffset;
+
+                if(typeof bw == "object" || typeof bc == "object" || typeof bo == "object") {
                     if (typeof bw !== "object") {
                         bw = {top: bw, right: bw, bottom: bw, left: bw};
                     }
@@ -1971,12 +1983,16 @@ Licensed under the MIT license.
                         bc = {top: bc, right: bc, bottom: bc, left: bc};
                     }
 
+                    if(typeof bo !== "object") {
+                    	bo = {top: bo, right: bo, bottom: bo, left: bo};
+                    }
+
                     if (bw.top > 0) {
                         ctx.strokeStyle = bc.top;
                         ctx.lineWidth = bw.top;
                         ctx.beginPath();
-                        ctx.moveTo(0 - bw.left, 0 - bw.top/2);
-                        ctx.lineTo(plotWidth, 0 - bw.top/2);
+                        ctx.moveTo(0 - bw.left - bo.left, 0 - bw.top/2 - bw.top);
+                        ctx.lineTo(plotWidth, 0 - bw.top/2 - bw.top);
                         ctx.stroke();
                     }
 
@@ -1984,8 +2000,8 @@ Licensed under the MIT license.
                         ctx.strokeStyle = bc.right;
                         ctx.lineWidth = bw.right;
                         ctx.beginPath();
-                        ctx.moveTo(plotWidth + bw.right / 2, 0 - bw.top);
-                        ctx.lineTo(plotWidth + bw.right / 2, plotHeight);
+                        ctx.moveTo(plotWidth + bw.right / 2 + bo.right, 0 - bw.top - bo.top);
+                        ctx.lineTo(plotWidth + bw.right / 2 + bo.right, plotHeight);
                         ctx.stroke();
                     }
 
@@ -1993,8 +2009,8 @@ Licensed under the MIT license.
                         ctx.strokeStyle = bc.bottom;
                         ctx.lineWidth = bw.bottom;
                         ctx.beginPath();
-                        ctx.moveTo(plotWidth + bw.right, plotHeight + bw.bottom / 2);
-                        ctx.lineTo(0, plotHeight + bw.bottom / 2);
+                        ctx.moveTo(plotWidth + bw.right + bo.right, plotHeight + bw.bottom / 2 + bo.bottom);
+                        ctx.lineTo(0 - bo.left, plotHeight + bw.bottom / 2 + bo.bottom);
                         ctx.stroke();
                     }
 
@@ -2002,8 +2018,8 @@ Licensed under the MIT license.
                         ctx.strokeStyle = bc.left;
                         ctx.lineWidth = bw.left;
                         ctx.beginPath();
-                        ctx.moveTo(0 - bw.left/2, plotHeight + bw.bottom);
-                        ctx.lineTo(0- bw.left/2, 0);
+                        ctx.moveTo(0 - bw.left/2 - bo.left, plotHeight + bw.bottom + bo.bottom);
+                        ctx.lineTo(0- bw.left/2 - bo.left, 0);
                         ctx.stroke();
                     }
                 }
