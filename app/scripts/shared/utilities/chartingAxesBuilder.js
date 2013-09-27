@@ -48,7 +48,7 @@ function(
         makeAxisForUnits: function(units, options)
         {
             return {
-                label: TP.utils.units.getUnitsLabel(units),
+                label: TP.utils.units.getUnitsLabel(units, options.workoutTypeId),
                 tickFormatter: function(value)
                 {
                     return TP.utils.conversion.formatUnitsValue(units, value, options);

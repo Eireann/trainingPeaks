@@ -120,8 +120,9 @@ src:url("assets/fonts/2daec1fd-cd45-448e-b86e-ec73aacdb4ec.eot?#iefix") format("
 
   <!--(if target dummy)><!-->
   <script>
-    var match = window.location.search.match(/(\?|&)env=([^&]*)/);
-    window.apiRoot = match ? match[2] : "dev";
+    // set ?env=local to use local server instead of dev
+    var envParam = window.location.search.match(/(\?|&)env=([^&]*)/);
+    window.apiRoot = envParam ? envParam[2] : "dev";
   </script>
   <script src="apiConfig.dev.js"></script>
   <script>apiConfig.assetsRoot = "build/debug/assets/";</script>
@@ -140,8 +141,10 @@ src:url("assets/fonts/2daec1fd-cd45-448e-b86e-ec73aacdb4ec.eot?#iefix") format("
   <!(endif)-->
 
   <!-- Application container. -->
-  <div id="navigation"></div>
-  <div role="main" id="main"></div>
+  <div id="wrapper">
+    <div id="navigation"></div>
+    <div id="outerMain"><div role="main" id="main"></div></div>
+  </div>
   <div id="info"></div>
     
   <!-- Third Party Libraries -->
@@ -165,38 +168,57 @@ src:url("assets/fonts/2daec1fd-cd45-448e-b86e-ec73aacdb4ec.eot?#iefix") format("
   <!(endif)-->
 
   <!-- ROLLBAR ERROR LOGGING & JQUERY PLUGIN -->
-  <!--(if target dummy)>
-  The rollbar snippet bellow was modified to filter onerror exceptions by
-  looking for the string "(rollbared)" in the exception message (indicating that
-  the exception was already submitted to rollbar.
-  <!(endif)-->
-
-  <!--(if target build)>
-  <script>
-  var _rollbarParams =
+ <script>
+  window._rollbarParams =
   {
     "server.environment": window.apiConfig ? window.apiConfig.environment : "local",
     "server.sha": window.apiConfig ? window.apiConfig.buildHash : "",
     "client.javascript.source_map_enabled": true,
     "client.javascript.code_version": window.apiConfig ? window.apiConfig.buildHash : ""
   };
-
-  _rollbarParams["notifier.snippet_version"] = "2"; var _rollbar=["3b4e2366466f45e3b643a7d6b901bf0e", _rollbarParams]; var _ratchet=_rollbar;
-  (function(w,d){w.onerror=function(e,u,l){if(/\(rollbared\)/.test(e))return;_rollbar.push({_t:'uncaught',e:e,u:u,l:l});};var i=function(){var s=d.createElement("script");var 
-  f=d.getElementsByTagName("script")[0];s.src="//d37gvrvc0wt4s1.cloudfront.net/js/1/rollbar.min.js";s.async=!0;
-  f.parentNode.insertBefore(s,f);};if(w.addEventListener){w.addEventListener("load",i,!1);}else{w.attachEvent("onload",i);}})(window,document);
   </script>
 
+  <!--(if target dummy)><!-->
   <script>
-  !function(r,n,e){var t={"notifier.plugins.jquery.version":"0.0.1"};n._rollbar.push({_rollbarParams:t});r(e).ajaxError(function(r,e,t,u){
-  var o=e.status;var a=t.url;n._rollbar.push({level:"warning",msg:"jQuery ajax error for url "+a,jquery_status:o,jquery_url:a,jquery_thrown_error:u,
-  jquery_ajax_error:true})});var u=r.fn.ready;r.fn.ready=function(r){return u.call(this,function(){try{r()}catch(e){n._rollbar.push(e)}})};var o={};
-  var a=r.fn.on;r.fn.on=function(r,e,t,u,z){var f=function(r){var e=function(){try{return r.apply(this,arguments)}catch(e){n._rollbar.push(e);
-  return null}};o[r]=e;return e};if(e&&typeof e==="function"){e=f(e)}else if(t&&typeof t==="function"){t=f(t)}else if(u&&typeof u==="function"){
-  u=f(u)}return a.call(this,r,e,t,u,z)};var f=r.fn.off;r.fn.off=function(r,n,e){if(n&&typeof n==="function"){n=o[n];delete o[n]}else{e=o[e];
-  delete o[e]}return f.call(this,r,n,e)}}(jQuery,window,document);
+  var rollbarEnvironmentParamMatch = window.location.search.match(/(\?|&)rollbar=([^&]*)/);
+  var rollbarEnvironmentParam = rollbarEnvironmentParamMatch ? rollbarEnvironmentParamMatch[2] : null;
+  switch(rollbarEnvironmentParam)
+  {
+    case 'dummy':
+      // wrap for rollbar, but just log errors to console instead of actually sending
+      window._rollbarEnvironment = 'dummy';
+      break;
+    case 'live':
+      // send local errors to rollbar
+      window._rollbarEnvironment = 'live';
+      break;
+    case null:
+      // nothing supplied, so no rollbar
+      break; 
+    default:
+      // something invalid supplied
+      throw new Error("Invalid rollbar environment param (" + rollbarEnvironmentParam + "), should be either dummy or live");
+  }
+  </script>
+  <!--<!(endif)-->
+
+  <!--(if target build)>
+  <script>
+  window._rollbarEnvironment = 'live';
   </script>
   <!(endif)-->
+
+  <!--(if target build_debug)>
+  <script>
+  window._rollbarEnvironment = 'live';
+  </script>
+  <!(endif)-->
+ 
+  <!--(if target build_debug_min)>
+  <script>
+  window._rollbarEnvironment = 'live';
+  </script>
+  <!(endif)--> 
   
   <!--(if target dummy)><!-->
   <script src="./vendor/js/libs/flot/jquery.flot.js"></script>
