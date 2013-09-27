@@ -7,8 +7,8 @@ function(_)
 
     var RollbarManager =
     {
-        _rollbarParams: null,
-        win: null,
+
+        window: null,
 
         initRollbar: function(_rollbarParams, $, win, doc)
         {
@@ -28,23 +28,30 @@ function(_)
                 id: user.get("userId"),
                 username: user.get("userName")
             };
-
-            this.win._rollbar.push({_rollbarParams: { person: person }});
+            this._setRollbarParams({ person: person });
         },
 
         setRoute: function(route)
         {
-            this.win._rollbar.push({_rollbarParams: { context: route }});
+            this._setRollbarParams({ context: route });
+        },
+
+        _setRollbarParams: function(params)
+        {
+            if(!this.window || !this.window._rollbar)
+            {
+                return;
+            }
+            this.window._rollbar.push({_rollbarParams: params});
         },
 
         _commonInit: function(_rollbarParams, $, win, doc)
         {
-            this.win = win;
-            this._rollbarParams = _rollbarParams;
             this._setRollbarParamsOnWindow(_rollbarParams, win);
             this._addErrorHandlerToWindow(win);
             this._addErrorHandlerToAjax($, win, doc); 
             this._addErrorHandlerToJqueryEvents($, win, doc); 
+            this._rollbar = win._rollbar;
         },
 
         _setRollbarParamsOnWindow: function(_rollbarParams, win)
