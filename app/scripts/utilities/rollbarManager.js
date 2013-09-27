@@ -1,25 +1,41 @@
 ﻿define(
 [
-    "jquery"
+    "underscore"
 ],
-function()
+function(_)
 {
 
-    var RollbarManager
+    var RollbarManager =
     {
 
         initRollbar: function(_rollbarParams, win, doc)
         {
-            this._loadRollbarScript(_rollbarParams, win, doc);
+            this._commonInit(_rollbarParams, win, doc);
+            this._loadRollbarJavascript(_rollbarParams, win, doc);
+        },
+
+        initFakeRollbarToConsole: function(_rollbarParams, win, doc)
+        {
+            this._commonInit(_rollbarParams, win, doc); 
+            this._pushRollbarToConsole(win);
+        },
+
+        _commonInit: function(_rollbarParams, win, doc)
+        {
+            this._setRollbarParamsOnWindow(_rollbarParams, win);
             this._addErrorHandlerToWindow(win);
             this._addErrorHandlingToJquery($, win, doc); 
         },
 
-        _loadRollbarScript: function(_rollbarParams, win, doc)
+        _setRollbarParamsOnWindow: function(_rollbarParams, win)
         {
             _rollbarParams["notifier.snippet_version"] = "2";
             win._rollbar=["3b4e2366466f45e3b643a7d6b901bf0e", _rollbarParams];
             win._ratchet=_rollbar;
+        },
+
+        _loadRollbarJavascript: function(_rollbarParams, win, doc)
+        {
 
             var loadRollbarOnLoad = function(){
                 var rollbarScriptTag = doc.createElement("script");
@@ -47,7 +63,7 @@ function()
                 // if they were already wrapped, skip 
                 if(/\(rollbared\)/.test(e)) {
                     return;
-                };
+                }
                
                 // push them to rollbar array or rollbar client
                 this._rollbar.push({_t:'uncaught',e:e,u:u,l:l});
@@ -55,20 +71,20 @@ function()
         },
 
         // r = jquery, n = window, e = document
-        _addErrorHandlingToJquery: function(r, n, e)
+        _addErrorHandlingToJquery: function($, win, doc)
         {
             // why did the jquery snippet have ! in front of it?
 
             // add jquery notifier version to rollbar params
             var t={"notifier.plugins.jquery.version":"0.0.1"};
-            n._rollbar.push({_rollbarParams:t});
+            win._rollbar.push({_rollbarParams:t});
 
             // listen for ajax errors
-            r(e).ajaxError(
+            $(doc).ajaxError(
                 function(r,e,t,u){
                     var o=e.status;
                     var a=t.url;
-                    n._rollbar.push({level:"warning",
+                    win._rollbar.push({level:"warning",
                                     msg:"jQuery ajax error for url "+a,
                                     jquery_status:o,
                                     jquery_url:a,
@@ -77,66 +93,94 @@ function()
                 }
             );
 
-            var u=r.fn.ready;
-            r.fn.ready= function(r){
-                return u.call(this,
+            var originalJqueryReady=$.fn.ready;
+            $.fn.ready= function(callback){
+                return originalJqueryReady.call(this,
                               function(){
                                 try {
-                                    r();
-                                } catch(e) {
-                                    n._rollbar.push(e);
+                                    callback();
+                                } catch(err) {
+                                    win._rollbar.push(err);
                                 }
                             }
                         );
             };
-            var o={};
-  
-            var a=r.fn.on;
 
-            r.fn.on=function(r,e,t,u,z){
-                var f=function(r){
-                    var e=function(){
+            var wrappedFunctionRegistry={};
+ 
+            // replace jquery.on with a wrollbar wrapping version 
+            var originalJqueryOn = $.fn.on;
+            $.fn.on=function(events,e,t,u,z){
+
+                // wrap a function with a try catch to log errors to rollbar
+                var wrapWithRollbar =function(callback){
+                    var wrappedFunction=function(){
                         try{
-                            return r.apply(this,arguments);
-                        } catch(e){
-                            n._rollbar.push(e);
+                            return callback.apply(this,arguments);
+                        } catch(err){
+                            win._rollbar.push(err);
                             return null;
                         }
                     };
-                    o[r]=e;
-                    return e;
+                    wrappedFunctionRegistry[callback]=wrappedFunction;
+                    return wrappedFunction;
                 };
 
+                // figure out which of the jquery.on arguments is the actual callback and wrap it
                 if(e&&typeof e==="function")
                 {
-                    e=f(e);
+                    e=wrapWithRollbar(e);
                 }
                 else if(t&&typeof t==="function")
                 {
-                    t=f(t);
+                    t=wrapWithRollbar(t);
                 }
                 else if(u&&typeof u==="function")
                 {
-                    u=f(u);
+                    u=wrapWithRollbar(u);
                 }
 
-                return a.call(this,r,e,t,u,z);
+                // call the original jquery.on with the now wrapped callback
+                return originalJqueryOn.call(this,events,e,t,u,z);
             };
 
-            var f=r.fn.off;
-            r.fn.off=function(r,n,e){
+            // unwrap the wrapped callbacks and call jquery off
+            var originalJqueryOff = $.fn.off;
+            $.fn.off=function(events,n,e){
                 if(n&&typeof n==="function"){
-                    n=o[n];
-                    delete o[n];
+                    n=wrappedFunctionRegistry[n];
+                    delete wrappedFunctionRegistry[n];
                 }
                 else
                 {
-                    e=o[e];
-                    delete o[e];
+                    e=wrappedFunctionRegistry[e];
+                    delete wrappedFunctionRegistry[e];
                 }
-                return f.call(this,r,n,e);
+                return originalJqueryOff.call(this,events,n,e);
             };
-        } 
+        },
+
+        // logs all rollbars to console, and keeps them in window._rollbar array so we can inspect them
+        _pushRollbarToConsole: function(win)
+        {
+            var logToConsole = function()
+            {
+                console.log("Rollbar: ");
+                console.log(arguments);
+            };
+
+            win._rollbar.push = function()
+            {
+                Array.prototype.push.apply(this, arguments);
+                logToConsole(arguments);
+            };
+
+            // log anything that was already on rollbar array
+            _.each(win._rollbar, function(item)
+            {
+                logToConsole(item);
+            });
+        }
 
     };
 

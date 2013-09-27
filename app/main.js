@@ -19,12 +19,23 @@ else
 {
     define(
     [
+        "utilities/rollbarManager",
         "shared/patches/wrapForRollbar",
         "TP",
         "app"
     ],
-    function(rollbarPatches, TP, theApp)
+    function(RollbarManager, rollbarPatches, TP, theApp)
     {
+
+        if(window._rollbarEnvironment && window._rollbarEnvironment === 'dummy')
+        {
+            RollbarManager.initFakeRollbarToConsole(window._rollbarParams, window, document);
+        }        
+        else if(window._rollbarEnvironment && window._rollbarEnvironment === 'live')
+        {
+            RollbarManager.initRollbar(window._rollbarParams, window, document);
+        }
+
         //**********************************************************************
 
         // All navigation that is relative should be passed through the navigate
