@@ -43,6 +43,7 @@ function(
             "click .closeIcon": "close",
             "click .date": "_onDateClicked",
             "click .okButton": "saveAndClose",
+            "click .deleteButton": "destroyAndClose",
             "change .timeInput": "_onTimeChanged"
         },
 
@@ -54,8 +55,31 @@ function(
 
         saveAndClose: function()
         {
+            var self = this;
             var promise = this.originalModel.save(this.model.attributes, { wait: true });
-            promise.then(_.bind(this.close, this));
+            promise.then(function()
+            {
+                if(self.model.isNew())
+                {
+                    // TODO: Remove coupling
+                    theMarsApp.controllers.calendarController.weeksCollection.addItem(self.model);
+                }
+
+                self.close();
+            });
+        },
+
+        destroyAndClose: function()
+        {
+            var promise = this.originalModel.destroy();
+            if(promise)
+            {
+                promise.then(_.bind(this.close, this));
+            }
+            else
+            {
+                this.close();
+            }
         },
 
         serializeData: function()
