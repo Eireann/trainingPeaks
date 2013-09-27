@@ -51,7 +51,7 @@ function(_)
             this._addErrorHandlerToWindow(win);
             this._addErrorHandlerToAjax($, win, doc); 
             this._addErrorHandlerToJqueryEvents($, win, doc); 
-            this._rollbar = win._rollbar;
+            this.window = win;
         },
 
         _setRollbarParamsOnWindow: function(_rollbarParams, win)

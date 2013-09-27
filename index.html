@@ -205,6 +205,18 @@ src:url("assets/fonts/2daec1fd-cd45-448e-b86e-ec73aacdb4ec.eot?#iefix") format("
   window._rollbarEnvironment = 'live';
   </script>
   <!(endif)-->
+
+  <!--(if target build_debug)>
+  <script>
+  window._rollbarEnvironment = 'live';
+  </script>
+  <!(endif)-->
+ 
+  <!--(if target build_debug_min)>
+  <script>
+  window._rollbarEnvironment = 'live';
+  </script>
+  <!(endif)--> 
   
   <!--(if target dummy)><!-->
   <script src="./vendor/js/libs/flot/jquery.flot.js"></script>
