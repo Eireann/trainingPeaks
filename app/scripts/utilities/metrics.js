@@ -70,6 +70,32 @@ function(
             {
                 return value;
             }
+        },
+
+        parseValueFor: function(details, value)
+        {
+            var info = metricsUtils.infoFor(details);
+            if (info.units)
+            {
+                return conversionUtils.parseUnitsValue(info.units, value);
+            }
+            else
+            {
+                throw new Error("Parsing for metrics without units not yet implemented");
+            }
+        },
+        
+        formatUnitsFor: function(details, options)
+        {
+            var info = metricsUtils.infoFor(details);
+            if(info.units)
+            {
+                return unitsUtils.getUnitsLabel(info.units);
+            }
+            else
+            {
+                return "";
+            }
         }
 
     };

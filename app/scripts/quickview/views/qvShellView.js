@@ -23,6 +23,7 @@ function(
             options.model = options.model.clone();
             TP.ItemView.apply(this, arguments);
             this.on("render", this._onRenderShell, this);
+            this.children = new Backbone.ChildViewContainer();
         },
 
         template:
@@ -70,6 +71,16 @@ function(
         _onRenderShell: function()
         {
             this.$(".timeInput").timepicker({ appendTo: this.$el, timeFormat: "g:i a" });
+            var qvBody = this.$(".QVBody");
+
+            this.children.add(new this.bodyView({ model: this.model, el: qvBody }));
+
+            this.children.call("render");
+        },
+
+        onClose: function()
+        {
+            this.children.call("close");
         },
 
         _onDateClicked: function()

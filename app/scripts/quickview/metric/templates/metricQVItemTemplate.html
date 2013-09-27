@@ -1,0 +1,11 @@
+{{#if supported}}
+    <label>
+        {{ formatMetricLabel . }}:
+        <input type="text" name="value" data-format="metric">
+        {{ formatMetricUnits . }}
+    </label>
+{{else}}
+    <label>
+        {{ formatMetricLabel . }}: {{ formatMetricValue . true }}
+    </label>
+{{/if}}

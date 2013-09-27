@@ -78,6 +78,7 @@ function(
             case "distance":
             case "torque":
             case "cm":
+            case "kg":
                 return (+value / modelToViewConversionFactors(fieldType, userUnits, workoutTypeId));
             default:
                 throw new Error("Unknown field type for unit conversion: " + fieldType);

@@ -504,6 +504,12 @@
             var adjustedValue = adjustFieldRange(convertedValue, "kg");
             return conversion.formatNumber(adjustedValue, options);
         },
+
+        parseKg: function(value, options)
+        {
+            var limitedValue = adjustFieldRange(value, "kg");
+            return convertToModelUnits(limitedValue, "kg");
+        },
         
         formatMl: function(value, options)
         {
@@ -654,6 +660,9 @@
 
                 case "cm":
                     return conversion.parseCm(value, options);
+
+                case "kg":
+                    return conversion.parseKg(value, options);
 
                 default:
                      throw new Error("Unsupported units for conversion.parseUnitsValue: " + units);
