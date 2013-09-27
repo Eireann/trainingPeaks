@@ -127,41 +127,6 @@ $troughIconSpriteRetinaURL: url(../../assets/images/sprite-icons-trough@2x.png);
                 background-position: -66px 0;
             }
         }
-
-        #mealLibrary {
-            background: $TPGrey1 $mainTabSpriteURL no-repeat 0 -33px;
-            &:hover {
-                background-position: -33px -33px;
-            }
-
-            &:active {
-               background-color: $TPGrey2;
-               background-position: -66px -33px;
-            }
-
-			&.active {
-               background-color: $TPGrey2;
-               background-position: -66px -33px;
-            }
-        }
-
-        #foodLibrary {
-            background: $TPGrey1 $mainTabSpriteURL no-repeat 0 -132px;
-            &:hover {
-                background-position: -33px -132px;
-            }
-
-            &:active {
-               background-color: $TPGrey2;
-               background-position: -66px -132px;
-            }
-
-			&.active {
-               background-color: $TPGrey2;
-               background-position: -66px -132px;
-            }
-        }
-
         #plansLibrary {
             background: $TPGrey1 $mainTabSpriteURL no-repeat 0 -66px;
             &:hover {
@@ -176,23 +141,6 @@ $troughIconSpriteRetinaURL: url(../../assets/images/sprite-icons-trough@2x.png);
 			&.active {
                background-color: $TPGrey2;
                background-position: -66px -66px;
-            }
-        }
-
-        #routesLibrary {
-            background: $TPGrey1 $mainTabSpriteURL no-repeat 0 -99px;
-            &:hover {
-                background-position: -33px -99px;
-            }
-
-            &:active {
-               background-color: $TPGrey2;
-               background-position: -66px -99px;
-            }
-
-			&.active {
-               background-color: $TPGrey2;
-               background-position: -66px -99px;
             }
         }
 
@@ -237,7 +185,7 @@ $troughIconSpriteRetinaURL: url(../../assets/images/sprite-icons-trough@2x.png);
         }
 
 		@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
-			#exerciseLibrary, #mealLibrary, #foodLibrary, #plansLibrary, #routesLibrary {
+			#exerciseLibrary, #plansLibrary {
 				background-image: $mainTtabSpriteRetinaURL;
 				background-size: 99px 165px;
 			}
@@ -262,7 +210,7 @@ $troughIconSpriteRetinaURL: url(../../assets/images/sprite-icons-trough@2x.png);
         border-top:1px solid  $TPGrey2;
         position:absolute;
         left:40px;
-        width:252px;
+        width:264px;
         z-index: 1;
     }
 

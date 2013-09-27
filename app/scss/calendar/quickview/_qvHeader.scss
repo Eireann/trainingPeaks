@@ -24,6 +24,9 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
         position: relative;
         z-index: 2; // otherwise maps/charts overlay it and kill the drop shadow
 
+        .QVHeaderItemsContain {
+            min-width: 1150px;
+        }
 
         .workoutBarViewHeader
         {

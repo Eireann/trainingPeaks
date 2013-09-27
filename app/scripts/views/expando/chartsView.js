@@ -119,7 +119,7 @@ function (TP, timeInZonesGenerator, ThePeaksGenerator, HRTimeInZonesChartView, P
         setViewHeightAndWidth: function (containerHeight, containerWidth)
         {
             var width = (containerWidth / 2) * 0.95;
-            var height = width * 0.5825;
+            var height = width * 0.65;
             this.$(".timeInZonesChartContainer").width(width).height(height);
             this.$(".peaksChartContainer").width(width).height(height);
         }
