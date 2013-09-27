@@ -120,8 +120,9 @@ src:url("assets/fonts/2daec1fd-cd45-448e-b86e-ec73aacdb4ec.eot?#iefix") format("
 
   <!--(if target dummy)><!-->
   <script>
-    var match = window.location.search.match(/(\?|&)env=([^&]*)/);
-    window.apiRoot = match ? match[2] : "dev";
+    // set ?env=local to use local server instead of dev
+    var envParam = window.location.search.match(/(\?|&)env=([^&]*)/);
+    window.apiRoot = envParam ? envParam[2] : "dev";
   </script>
   <script src="apiConfig.dev.js"></script>
   <script>apiConfig.assetsRoot = "build/debug/assets/";</script>
@@ -175,11 +176,29 @@ src:url("assets/fonts/2daec1fd-cd45-448e-b86e-ec73aacdb4ec.eot?#iefix") format("
   };
   </script>
 
-  <!--(if target dummy)>
+  <!--(if target dummy)><!-->
   <script>
-  window._rollbarEnvironment = 'dummy';
+  var rollbarEnvironmentParamMatch = window.location.search.match(/(\?|&)rollbar=([^&]*)/);
+  var rollbarEnvironmentParam = rollbarEnvironmentParamMatch ? rollbarEnvironmentParamMatch[2] : null;
+  switch(rollbarEnvironmentParam)
+  {
+    case 'dummy':
+      // wrap for rollbar, but just log errors to console instead of actually sending
+      window._rollbarEnvironment = 'dummy';
+      break;
+    case 'live':
+      // send local errors to rollbar
+      window._rollbarEnvironment = 'live';
+      break;
+    case null:
+      // nothing supplied, so no rollbar
+      break; 
+    default:
+      // something invalid supplied
+      throw new Error("Invalid rollbar environment param (" + rollbarEnvironmentParam + "), should be either dummy or live");
+  }
   </script>
-  <!(endif)-->
+  <!--<!(endif)-->
 
   <!--(if target build)>
   <script>

@@ -29,11 +29,11 @@ else
 
         if(window._rollbarEnvironment && window._rollbarEnvironment === 'dummy')
         {
-            RollbarManager.initFakeRollbarToConsole(window._rollbarParams, window, document);
+            RollbarManager.initFakeRollbarToConsole(window._rollbarParams, $, window, document);
         }        
         else if(window._rollbarEnvironment && window._rollbarEnvironment === 'live')
         {
-            RollbarManager.initRollbar(window._rollbarParams, window, document);
+            RollbarManager.initRollbar(window._rollbarParams, $, window, document);
         }
 
         //**********************************************************************

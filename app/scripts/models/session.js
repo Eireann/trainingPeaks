@@ -60,7 +60,8 @@ function (_, TP, UserModel)
             {
                 data: data,
                 type: "POST",
-                contentType: "application/x-www-form-urlencoded"
+                contentType: "application/x-www-form-urlencoded",
+                rollbarIgnore: true
             }).done(this.onAuthenticationSuccess).error(this.onAuthenticationFailure);
 
         },

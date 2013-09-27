@@ -7,29 +7,50 @@ function(_)
 
     var RollbarManager =
     {
+        _rollbarParams: null,
+        win: null,
 
-        initRollbar: function(_rollbarParams, win, doc)
+        initRollbar: function(_rollbarParams, $, win, doc)
         {
-            this._commonInit(_rollbarParams, win, doc);
+            this._commonInit(_rollbarParams, $, win, doc);
             this._loadRollbarJavascript(_rollbarParams, win, doc);
         },
 
-        initFakeRollbarToConsole: function(_rollbarParams, win, doc)
+        initFakeRollbarToConsole: function(_rollbarParams, $, win, doc)
         {
-            this._commonInit(_rollbarParams, win, doc); 
+            this._commonInit(_rollbarParams, $, win, doc); 
             this._pushRollbarToConsole(win);
         },
 
-        _commonInit: function(_rollbarParams, win, doc)
+        setUser: function(user)
         {
+            var person = {
+                id: user.get("userId"),
+                username: user.get("userName")
+            };
+
+            this.win._rollbar.push({_rollbarParams: { person: person }});
+        },
+
+        setRoute: function(route)
+        {
+            this.win._rollbar.push({_rollbarParams: { context: route }});
+        },
+
+        _commonInit: function(_rollbarParams, $, win, doc)
+        {
+            this.win = win;
+            this._rollbarParams = _rollbarParams;
             this._setRollbarParamsOnWindow(_rollbarParams, win);
             this._addErrorHandlerToWindow(win);
-            this._addErrorHandlingToJquery($, win, doc); 
+            this._addErrorHandlerToAjax($, win, doc); 
+            this._addErrorHandlerToJqueryEvents($, win, doc); 
         },
 
         _setRollbarParamsOnWindow: function(_rollbarParams, win)
         {
             _rollbarParams["notifier.snippet_version"] = "2";
+            _rollbarParams["notifier.plugins.jquery.version"] = "0.0.1";
             win._rollbar=["3b4e2366466f45e3b643a7d6b901bf0e", _rollbarParams];
             win._ratchet=_rollbar;
         },
@@ -56,7 +77,6 @@ function(_)
 
         _addErrorHandlerToWindow: function(win)
         {
-
             // catch all errors at the window error 
             win.onerror = function(e,u,l){
                
@@ -70,29 +90,46 @@ function(_)
             };
         },
 
-        // r = jquery, n = window, e = document
-        _addErrorHandlingToJquery: function($, win, doc)
+        _addErrorHandlerToAjax: function($, win, doc)
         {
-            // why did the jquery snippet have ! in front of it?
-
-            // add jquery notifier version to rollbar params
-            var t={"notifier.plugins.jquery.version":"0.0.1"};
-            win._rollbar.push({_rollbarParams:t});
-
             // listen for ajax errors
             $(doc).ajaxError(
-                function(r,e,t,u){
-                    var o=e.status;
-                    var a=t.url;
+                function(event,xhr,options,error){
+
+                    // ignore auth events
+                    if(_.contains([204, 401, 402], xhr.status))
+                    {
+                        return;
+                    } 
+
+                    // allow to ignore certain request errors
+                    if(options.rollbarIgnore)
+                    {
+                        return;
+                    }
+
+                    // else log it
+                    var request = {
+                        url: options.url,
+                        type: options.type,
+                        body: options.data ? options.data : ""
+                    };
+
                     win._rollbar.push({level:"warning",
-                                    msg:"jQuery ajax error for url "+a,
-                                    jquery_status:o,
-                                    jquery_url:a,
-                                    jquery_thrown_error:u,
-                                    jquery_ajax_error:true});
+                                    msg: "jQuery ajax error for url "+ options.url,
+                                    jquery_status: xhr.status,
+                                    jquery_url: options.url,
+                                    jquery_thrown_error: error,
+                                    jquery_ajax_error: true,
+                                    request: request,
+                                    custom: xhr.responseText
+                                });
                 }
             );
+        },
 
+        _addErrorHandlerToJqueryEvents: function($, win, doc)
+        {
             var originalJqueryReady=$.fn.ready;
             $.fn.ready= function(callback){
                 return originalJqueryReady.call(this,
@@ -166,13 +203,26 @@ function(_)
             var logToConsole = function()
             {
                 console.log("Rollbar: ");
-                console.log(arguments);
+                 _.each(arguments, function(item)
+                {
+                    console.log(item);
+                    if(item.hasOwnProperty("stack"))
+                    {
+                        console.log(item.stack);
+                    }
+                });
+
             };
 
             win._rollbar.push = function()
             {
                 Array.prototype.push.apply(this, arguments);
-                logToConsole(arguments);
+                logToConsole.apply(this, arguments);
+            };
+
+            win._rollbar.last = function()
+            {
+                return this[this.length - 1];
             };
 
             // log anything that was already on rollbar array
