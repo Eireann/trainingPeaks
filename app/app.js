@@ -23,6 +23,7 @@ define(
     "router",
     "utilities/dragAndDropFileUploadWidget",
     "utilities/textFieldNumberFilter",
+    "utilities/rollbarManager",
     "shared/utilities/featureAuthorization/featureAuthorizer",
     "hbs!templates/views/notAllowedForAlpha",
     "scripts/plugins/marionette.faderegion"
@@ -51,6 +52,7 @@ function(
     Router,
     DragAndDropFileUploadWidget,
     TextFieldNumberFilter,
+    RollbarManager,
     FeatureAuthorizer,
     notAllowedForAlphaTemplate,
     fadeRegion)
@@ -266,6 +268,8 @@ function(
 
             userPromise.done(function()
             {
+
+                RollbarManager.setUser(self.user);
 
                 var athletePromise = self.fetchAthleteSettings();
                 athletePromise.fail(function()

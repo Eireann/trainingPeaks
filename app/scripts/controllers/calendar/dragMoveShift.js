@@ -13,6 +13,7 @@ function (ApplyTrainingPlanToCalendarConfirmationView)
 
         onDropItem: function(options)
         {
+
             if (options.DropEvent === "itemMoved")
             {
                 this.weeksCollection.onItemMoved(options);        
