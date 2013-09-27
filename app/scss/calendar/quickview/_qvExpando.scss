@@ -455,7 +455,7 @@
     
     #expandoChartsRegion {
         width: 100%;
-        padding: 0 12px;
+        padding-left: 1.5%;
         float: left;
 
         .chartContainer {
@@ -475,13 +475,20 @@
             }
         }
 
+        .heartRateContainer,
+        .powerContainer,
+        .speedContainer {
+            margin-bottom: 57px;
+        }
+
         .timeInZonesChartContainer {
             float: left;
             position: relative;
+            @include calc("margin-right", "2% - 11px")
         }
 
         .peaksChartContainer {
-            float: right;
+            float: left;
             position: relative;
         }
     }
