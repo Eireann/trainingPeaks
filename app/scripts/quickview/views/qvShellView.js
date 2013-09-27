@@ -43,6 +43,7 @@ function(
             "click .closeIcon": "close",
             "click .date": "_onDateClicked",
             "click .okButton": "saveAndClose",
+            "click .discardButton": "revertAndClose",
             "click .deleteButton": "destroyAndClose",
             "change .timeInput": "_onTimeChanged"
         },
@@ -53,8 +54,21 @@ function(
 
         showThrobbers: false,
 
+        close: function()
+        {
+            if(this.closing)
+            {
+                QVShellView.__super__.close.apply(this, arguments);
+            }
+            else
+            {
+                this.saveAndClose();
+            }
+        },
+
         saveAndClose: function()
         {
+            this.closing = true;
             var self = this;
             var promise = this.originalModel.save(this.model.attributes, { wait: true });
             promise.then(function()
@@ -71,6 +85,7 @@ function(
 
         destroyAndClose: function()
         {
+            this.closing = true;
             var promise = this.originalModel.destroy();
             if(promise)
             {
@@ -80,6 +95,12 @@ function(
             {
                 this.close();
             }
+        },
+
+        revertAndClose: function()
+        {
+            this.closing = true;
+            this.close();
         },
 
         serializeData: function()
