@@ -10,11 +10,11 @@
 
         <div>
             <div class="dateAndTime">
-                <span id="date">
-                    <span id="dayName">{{formatDate activityTimestamp "dddd"}}</span> 
-                    <span id="calendarDate">{{formatDate activityTimestamp "MMMM DD, YYYY"}}</span>
+                <span class="date">
+                    <span id="dayName">{{formatDate activityDate "dddd"}}</span> 
+                    <span id="calendarDate">{{formatDate activityDate "MMMM DD, YYYY"}}</span>
                 </span> 
-                <input type="text" id="startTimeInput" value="{{formatDate activityTimestamp 'h:mm a' }}" placeholder="Enter Time" />
+                <input type="text" class="timeInput" value="{{formatDate activityTime 'h:mm a' }}" placeholder="Enter Time" />
             </div>
 
             <div class="QVBarView"></div>
@@ -27,6 +27,7 @@
     <div class="QVBody"></div>
     
     <div class="QVFooter">
+        <!--
         <div class="share">
             <div class="publicCheckboxContainer">
                 <label><input type="checkbox" class="publicCheckbox"/> <span class="publicLabel" title="{{$ "PublicTooltip" }}">{{$ "Public" }}</span></label>
@@ -38,10 +39,11 @@
                 <a class="emailLink"><div class="emailIcon disabled" title="{{$ "PublicTooltipEmail" }}"/></a>
             </div>
         </div>
+        -->
         <div class="saveCloseButtons">
-            <button id="delete">{{$ "Delete"}}</button>
-            <button id="discard" disabled>{{$ "Cancel"}}</button>
-            <button id="close">{{$ "OK"}}</button>
+            <button class="deleteButton">{{$ "Delete"}}</button>
+            <button class="discardButton" disabled>{{$ "Cancel"}}</button>
+            <button class="okButton">{{$ "OK"}}</button>
         </div>
     </div>
 </div>

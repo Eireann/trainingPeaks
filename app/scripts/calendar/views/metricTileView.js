@@ -35,6 +35,7 @@ function(
 
         modelEvents:
         {
+            "change": "render",
             "select": "_onSelected",
             "unselect": "_onUnselected"
         },

@@ -95,7 +95,8 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
             }
 
             @include inputs(60px, 20px, $fontSizeSmall, $fontFamilyRegular);
-            input#startTimeInput
+            input#startTimeInput,
+            .timeInput
             {
                 color: $TPGrey3;
                 display: inline-block;
@@ -370,7 +371,7 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
             }
 
             @include inputs(200px, 20px, $fontSizeSmall, $fontFamilyRegular);
-            input#startTimeInput {
+            input#startTimeInput, .timeInput {
                 color: $TPGrey3;
                 display: inline-block;
                 outline: none;

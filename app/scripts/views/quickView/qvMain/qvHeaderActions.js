@@ -80,7 +80,7 @@ function (
 
         initializeTimePicker: function()
         {
-            this.$("#startTimeInput").timepicker({ appendTo: this.$el, "timeFormat": "g:i a" });
+            this.$("#startTimeInput").timepicker({ appendTo: this.$el, timeFormat: "g:i a" });
         },
 
         onDateClicked: function(e)

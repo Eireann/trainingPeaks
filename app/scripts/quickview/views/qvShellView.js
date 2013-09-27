@@ -17,6 +17,14 @@ function(
 
     var QVShellView = TP.ItemView.extend({
 
+        constructor: function(options)
+        {
+            this.originalModel = options.model;
+            options.model = options.model.clone();
+            TP.ItemView.apply(this, arguments);
+            this.on("render", this._onRenderShell, this);
+        },
+
         template:
         {
             template: qvShellTemplate,
@@ -29,11 +37,81 @@ function(
             shadow: true
         },
 
+        events:
+        {
+            "click .closeIcon": "close",
+            "click .date": "_onDateClicked",
+            "click .okButton": "saveAndClose",
+            "change .timeInput": "_onTimeChanged"
+        },
+
         closeOnResize: false,
 
         className: "qvShell",
 
-        showThrobbers: false
+        showThrobbers: false,
+
+        saveAndClose: function()
+        {
+            var promise = this.originalModel.save(this.model.attributes, { wait: true });
+            promise.then(_.bind(this.close, this));
+        },
+
+        serializeData: function()
+        {
+            var data = QVShellView.__super__.serializeData.apply(this, arguments);
+
+            data.activityDate = this.model.getCalendarDay();
+            data.activityTime = this.model.getTimestamp();
+
+            return data;
+        },
+
+        _onRenderShell: function()
+        {
+            this.$(".timeInput").timepicker({ appendTo: this.$el, timeFormat: "g:i a" });
+        },
+
+        _onDateClicked: function()
+        {
+
+            var offset = this.$(".date").offset();
+            var position = [offset.left, offset.top + this.$(".date").height()];
+
+            var settings = {
+                dateFormat: "yy-mm-dd",
+                firstDay: theMarsApp.controllers.calendarController.startOfWeekDayIndex
+            };
+
+            var widget = this.$(".date").datepicker(
+                "dialog",
+                this.model.getCalendarDay(),
+                _.bind(this._onDateChanged, this),
+                settings,
+                position
+            ).datepicker("widget");
+
+            // hide then show, or else it flashes for some reason
+            widget.hide();
+
+            // because jqueryui sets useless values for these ...
+            widget.css("z-index", Number(this.$el.css("z-index") + 1));
+            widget.css("opacity", 1);
+
+            // animate instead of just show directly, or else it flashes for some reason
+            widget.show(100);
+        },
+
+        _onDateChanged: function(date)
+        {
+            this.$(".date").datepicker("hide");
+            this.model.setCalendarDay(date);
+        },
+
+        _onTimeChanged: function()
+        {
+            this.model.setTimestamp(this.$(".timeInput").val());
+        }
 
     });
 
