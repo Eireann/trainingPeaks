@@ -164,6 +164,12 @@ function(
                         chartOptions.flotOptions.tooltipOpts.onHover = this._onHoverToolTip;
                     }
 
+                    var lastYaxis = _.last(chartOptions.flotOptions.yaxes);
+                    if (lastYaxis)
+                    {
+                        lastYaxis.tickLength = 1;
+                    }
+
                     this.plot = $.plot(this.ui.chartContainer, chartOptions.dataSeries, chartOptions.flotOptions);
 
                     var xaxisOpts = chartOptions.flotOptions.xaxis;

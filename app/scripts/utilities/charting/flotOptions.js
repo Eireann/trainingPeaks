@@ -131,7 +131,8 @@ function (_, TP, flotFilter, chartColors)
                 grid:
                 {
                     show: true,
-                    borderWidth: 0,
+                    borderWidth: 1,
+                    borderColor: "#c4c2c3",
                     hoverable: true,
                     clickable: true
                 },
