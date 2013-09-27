@@ -10,10 +10,10 @@
         <label>{{$ "Duration" }}</label>
         {{#if movingTime}}
             {{#if hasStoppedTime }}
-            <span class="value movingTime">{{ formatTime movingTime }}</span>
+            <span class="value movingTime">{{ formatTimeToHundredths movingTime }}</span>
             <span class="units totalTime">({{ formatTime totalTime }})</span>
             {{ else }}
-            <span class="value movingTime">{{ formatTime movingTime }}</span>
+            <span class="value movingTime">{{ formatTimeToHundredths movingTime }}</span>
             {{/if}}
         {{ else }}
             <span class="value movingTime">--</span>
