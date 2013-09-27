@@ -235,7 +235,7 @@ function(chartColors, findIndexByMsOffset, conversion)
         var axisIndex = 1;
         _.each(series, function(s)
         {
-            var showSpeedAsPace = s.label === "Speed" && _.contains([1,3,13], self.workoutTypeValueId);
+            var showSpeedAsPace = s.label === "Speed" && _.contains([1,3,12,13], self.workoutTypeValueId);
             if (s.label === "Pace")
                 return;
             
