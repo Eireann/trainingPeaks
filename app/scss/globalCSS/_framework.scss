@@ -10,14 +10,30 @@
         overflow: hidden;
     }
 
+    #wrapper
+    {
+        height: 100%;
+        @include display-flex-column();
+    }
+
     #navigation
     {
-        height: 76px;
+        overflow: hidden;
+    }
+
+    #outerMain
+    {
+        @include flex(1);
+        position: relative;
     }
 
     #main
     {
-        @include calc(height, "100% - 76px");
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
     }
 
     .frameworkHeader

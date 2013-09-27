@@ -2,6 +2,7 @@
 {
     display: -ms-flexbox;
     -ms-box-orient: horizontal;
+    -webkit-box-orient: horizontal;
 
     display: -webkit-box;
     display: -webkit-flex;
@@ -13,6 +14,40 @@
     -moz-flex-flow: row nowrap;
     -ms-flex-flow: row nowrap;
     flex-flow: row nowrap;
+
+    -moz-flex-direction: row;
+    flex-direction: row;
+
+    -webkit-align-items: stretch;
+    -moz-align-items: stretch;
+    -ms-align-items: stretch;
+    align-items: stretch;
+    
+    -webkit-align-content: stretch;
+    -moz-align-content: stretch;
+    -ms-align-content: stretch;
+    align-content: stretch;
+}
+
+@mixin display-flex-column()
+{
+    display: -ms-flexbox;
+    -ms-box-orient: vertical;
+    -webkit-box-orient: vertical;
+
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-flex;
+    display: -ms-flex;
+    display: flex;
+
+    -webkit-flex-flow: column nowrap;
+    -moz-flex-flow: column nowrap;
+    -ms-flex-flow: column nowrap;
+    flex-flow: column nowrap;
+
+    -moz-flex-direction: column;
+    flex-direction: column;
 
     -webkit-align-items: stretch;
     -moz-align-items: stretch;
