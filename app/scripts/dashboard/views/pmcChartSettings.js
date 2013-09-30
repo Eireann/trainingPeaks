@@ -25,13 +25,13 @@ function(
         events: _.extend({}, ChartSettingsView.prototype.events, {
             "change input[type=number]": "onNumberOptionsChanged",
             "blur input[type=number]": "onNumberOptionsChanged",
-            "click input[type=checkbox].chartSeriesOption": "onChartSeriesOptionChanged"
+            "change input[type=checkbox].chartSeriesOption": "onChartSeriesOptionChanged"
         }),
 
         onRender: function()
         {
             var self = this;
-            this._addView(".customSettings", pmcChartSettingsTemplate({}));
+            this._addView(".customSettings", pmcChartSettingsTemplate(this.serializeData()));
             this._addView(".dateOptionsRegion", new DashboardDatePicker({
                 model: this.model
             }));
