@@ -100,7 +100,7 @@ function(
                     averagePaceOrSpeedValue = workoutDefaults.useSpeedOrPace === "pace" ? TP.utils.conversion.formatUnitsValue("pace", lap.averageSpeed, {defaultValue: null, workoutTypeId: workoutDefaults.sportTypeID}) : TP.utils.conversion.formatSpeed(lap.averageSpeed),
                     maximumPaceOrSpeedValue = workoutDefaults.useSpeedOrPace === "pace" ? TP.utils.conversion.formatUnitsValue("pace", lap.maximumSpeed, {defaultValue: null, workoutTypeId: workoutDefaults.sportTypeID}) : TP.utils.conversion.formatSpeed(lap.maximumSpeed);
 
-                lap = _.clone(lap), // we don't want to modify the actual detailData, just format it
+                lap = _.clone(lap); // we don't want to modify the actual detailData, just format it
 
                 formatLapData.calculateTotalAndMovingTime(lap);
 

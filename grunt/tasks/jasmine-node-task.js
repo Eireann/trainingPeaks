@@ -88,7 +88,7 @@ module.exports = function(grunt)
         };
 
         var options = {
-            specFolder: specFolder,
+            specFolders: [specFolder],
             onComplete: onComplete,
             isVerbose: isVerbose,
             showColors: showColors,
