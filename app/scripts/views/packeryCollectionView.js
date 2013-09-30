@@ -125,7 +125,9 @@ function(
         removeChildView: function(view)
         {
             this.packery.remove(view.el);
-            return PackeryCollectionView.__super__.removeChildView.apply(this, arguments);
+            PackeryCollectionView.__super__.removeChildView.apply(this, arguments);
+            this.layout();
+            return this;
         },
 
         _setupPackeryDraggable: function(itemView, collectionView)
