@@ -98,40 +98,23 @@ module.exports = function(grunt)
             junitreport: jUnit
         };
 
-        // teamcity?
-        /*
-        if (options.teamcity) {
-            console.log("Using teamcity reporting");
-            var jasmineNode = require('../../node_modules/jasmine-node/lib/jasmine-node/reporter').jasmineNode;
-            jasmineNode.TerminalReporter = jasmine.TeamcityReporter;
-        }
-        */
-
         if(options.teamcity)
         {
-
-            var removeJasmineFrames = function(text) {
-              var lines = [];
-              text.split(/\n/).forEach(function(line){
-                if (line.indexOf(filename) == -1) {
-                  lines.push(line);
-                }
-              });
-              return lines.join('\n');
-            };
-
             var jasmineEnv = jasmine.getEnv();
+            jasmineEnv.addReporter(new jasmine.TeamcityReporter());
 
-            jasmineEnv.addReporter(new jasmine.TeamcityReporter({print:       util.print,
-                                             color:       false,
-                                             onComplete:  options.onComplete,
-                                             stackFilter: removeJasmineFrames}));
+            // dummy reporter exists just to call our onComplete function, because TeamCity reporter doesn't do it
+            var DummyReporter = function() {};
+            _.extend(DummyReporter.prototype, {
+                reportRunnerResults: function(runner){ onComplete(runner); },
+                reportRunnerStarting: function(runner) { },
+                reportSpecResults: function(spec) { },
+                reportSpecStarting: function(spec) { },
+                reportSuiteResults: function(suite) {}
+            });
+
+            jasmineEnv.addReporter(new DummyReporter());
         }
-
-        // order is preserved in node.js
-        var legacyArguments = Object.keys(options).map(function (key) {
-            return options[key];
-        });
 
         try {
             // since jasmine-node@1.0.28 an options object need to be passed
