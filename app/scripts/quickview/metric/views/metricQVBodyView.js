@@ -15,6 +15,8 @@ function(
 
         itemView: MetricQVItemView,
 
+        className: "metricQVBody",
+
         initialize: function()
         {
             var types = [9];

@@ -3,16 +3,16 @@
   
         <div class="closeAndSettings cf">
             <span class="closeIcon"></span>
-            <span class="expandIcon" class="disabled"></span>
-            <span class="collapseIcon"></span>
-            <span class="menuIcon"></span>
+            <!-- <span class="expandIcon" class="disabled"></span> -->
+            <!-- <span class="collapseIcon"></span> -->
+            <!-- <span class="menuIcon"></span> -->
         </div>
 
         <div>
             <div class="dateAndTime">
                 <span class="date">
-                    <span id="dayName">{{formatDate activityDate "dddd"}}</span> 
-                    <span id="calendarDate">{{formatDate activityDate "MMMM DD, YYYY"}}</span>
+                    <span class="dayName">{{formatDate activityDate "dddd"}}</span> 
+                    <span class="calendarDate">{{formatDate activityDate "MMMM DD, YYYY"}}</span>
                 </span> 
                 <input type="text" class="timeInput" value="{{formatDate activityTime 'h:mm a' }}" placeholder="Enter Time" />
             </div>

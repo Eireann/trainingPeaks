@@ -15,6 +15,8 @@ function(
 
     var MetricQVItemView = TP.ItemView.extend({
 
+        className: "metricQVItem",
+
         template:
         {
             type: "handlebars",

@@ -68,7 +68,7 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
         {            
             padding-left: 2px;
             
-            #dayName
+            #dayName, .dayName
             {
                 font-family: $fontFamilyRegular;
                 font-size:$fontSizeMedium;
@@ -78,7 +78,7 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
                 cursor:pointer;
             }
 
-            #calendarDate
+            #calendarDate, .calendarDate
             {
                 font-family: $fontFamilyRegular;
                 font-size:$fontSizeSmall;
@@ -349,7 +349,8 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
         .dateAndTime {
             padding-left: 2px;
         
-            #dayName {
+            #dayName, .dayName
+            {
                 font-family: $fontFamilyRegular;
                 font-size:$fontSizeMedium;
                 color: $TPGrey3;
@@ -357,7 +358,8 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
                 text-transform:uppercase;
             }
 
-            #calendarDate {
+            #calendarDate, .calendarDate
+            {
                 font-family: $fontFamilyRegular;
                 font-size:$fontSizeSmall;
                 color: $TPGrey3;
