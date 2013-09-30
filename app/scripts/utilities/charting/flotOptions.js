@@ -131,7 +131,7 @@ function (_, TP, flotFilter, chartColors)
                 grid:
                 {
                     show: true,
-                    borderWidth: { left: 1.5, bottom: 1.5, top: 0, right: 0 },
+                    borderWidth: { left: 1, bottom: 1, top: 0, right: 0 },
                     borderOffset: { left: 2, bottom: 2, top: 0, right: 0 },
                     axisOffset: { left: 2, bottom: 2, top: 0, right: 0},
                     borderColor: "#c4c2c3",

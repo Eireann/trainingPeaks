@@ -2339,7 +2339,10 @@ Licensed under the MIT license.
             }
 
             if (lw > 0)
-                plotLine(series.datapoints, 0, 0, series.xaxis, series.yaxis);
+            {
+            	// offset vertically by half of line width, so bottom of line aligns cleanly with bars or other elements when there is a border offset
+                plotLine(series.datapoints, 0, -1 * Math.floor(lw / 2), series.xaxis, series.yaxis);
+            }
             ctx.restore();
         }
 
