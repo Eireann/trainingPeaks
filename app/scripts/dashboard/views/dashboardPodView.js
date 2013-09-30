@@ -99,7 +99,7 @@ function(
 
             if (startDate && endDate)
             {
-                return moment(startDate).utc().format(TP.utils.datetime.shortDateFormat) + " - " + moment(endDate).utc().format(TP.utils.datetime.shortDateFormat);
+                return moment(startDate).utc().format("MM-DD-YYYY") + " - " + moment(endDate).utc().format("MM-DD-YYYY");
             } else if (quickDateSelectOption && quickDateSelectOption !== 1)
             {
                 return ChartUtils.findChartDateOption(quickDateSelectOption).label;

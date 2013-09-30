@@ -436,7 +436,7 @@
     
     #expandoLapsSplitsRegion {
         float:left;
-        padding:55px 20px;
+        padding:55px 10px;
         width:100%;
         
         table {
@@ -455,8 +455,21 @@
     
     #expandoChartsRegion {
         width: 100%;
-        padding-left: 1.5%;
+        padding: 0 12px;
         float: left;
+
+
+        // slightly different measurement than QV to end up centered
+        .yaxisLabel {
+            @include calc("top","50% + 8px");
+        }
+
+
+        .heartRateContainer,
+        .powerContainer,
+        .speedContainer {
+            margin-bottom: 56px;
+        }
 
         .chartContainer {
             @include calc("width","100% - 58px");    
@@ -475,20 +488,13 @@
             }
         }
 
-        .heartRateContainer,
-        .powerContainer,
-        .speedContainer {
-            margin-bottom: 57px;
-        }
-
         .timeInZonesChartContainer {
             float: left;
             position: relative;
-            @include calc("margin-right", "2% - 11px")
         }
 
         .peaksChartContainer {
-            float: left;
+            float: right;
             position: relative;
         }
     }

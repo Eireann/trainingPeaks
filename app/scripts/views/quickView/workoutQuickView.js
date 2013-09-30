@@ -316,10 +316,10 @@ function(
         
         checkShowPaceViews: function ()
         {
-            //Show pace for: run/walk/swim/other, show speed for anything else
+            //Show pace for: run/walk/swim/row/other, show speed for anything else
             var workoutTypeValueId = this.model.get("workoutTypeValueId");
 
-            var showPace = _.contains([1, 3, 13, 100], workoutTypeValueId);
+            var showPace = _.contains([1, 3, 12, 13, 100], workoutTypeValueId);
             var showSpeed = !showPace;
 
             if (!showPace)

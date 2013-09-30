@@ -21,7 +21,6 @@ function(TP, TimeInZonesChartView, chartColors)
             });
 
             this.zoneType = options && options.hasOwnProperty("zoneType") ? options.zoneType : "Pace";
-
             this.model = new TP.Model({
                 zoneType: this.zoneType
             });
@@ -56,7 +55,7 @@ function(TP, TimeInZonesChartView, chartColors)
         
         formatPeakUnitsLabel: function (value, options)
         {
-            return this.zoneType === "Pace" ? "min/" + TP.utils.units.getUnitsLabel("distance", this.workoutType) : TP.utils.units.getUnitsLabel("speed", this.workoutType);
+            return this.zoneType === "Pace" ? TP.utils.units.getUnitsLabel("pace", this.workoutType) : TP.utils.units.getUnitsLabel("speed", this.workoutType);
         }
     });
 });
