@@ -173,10 +173,17 @@
 
         formatElevation: function(value, options)
         {
+            if(this.valueIsEmpty(value))
+            {
+                return this.getDefaultValue(options, "");
+            }
+
             var numValue = Number(value);
             var convertedValue = Number(convertToViewUnits(numValue, "elevation"));
             var limitedValue = adjustFieldRange(convertedValue, "elevation");
-            return conversion.formatInteger(limitedValue, options, "0");
+
+            options = _.defaults({ allowZero: true}, options);
+            return conversion.formatInteger(limitedValue, options);
         },
 
         parseElevation: function(value, options)
@@ -254,9 +261,15 @@
 
         formatTemperature: function(value, options)
         {
+            if(this.valueIsEmpty(value))
+            {
+                return this.getDefaultValue(options, "");
+            }
             var convertedValue = convertToViewUnits(Number(value), "temperature");
             var adjustedValue = adjustFieldRange(convertedValue, "temp");
-            return conversion.formatInteger(adjustedValue, options, "0");
+
+            options = _.defaults({ allowZero: true}, options);
+            return conversion.formatInteger(adjustedValue, options);
         },
 
         parseTemperature: function(value, options)
@@ -437,6 +450,28 @@
         formatEmptyNumber: function(value, options, defaultValue)
         {
 
+            defaultValue = this.getDefaultValue(options, defaultValue);
+
+            if(this.valueIsEmpty(value))
+            {
+                return defaultValue;
+            }
+
+            if(this.valueIsNotANumber(value))
+            {
+                return defaultValue;
+            }
+
+            if (this.valueIsZero(value) && (!options || !options.allowZero))
+            {
+                return defaultValue;
+            }
+
+            return value;
+        },
+
+        getDefaultValue: function(options, defaultValue)
+        {
             if(options && options.hasOwnProperty("defaultValue"))
             {
                 defaultValue = options.defaultValue;
@@ -447,17 +482,22 @@
                 defaultValue = "";
             }
 
-            if(_.isNaN(value) || _.isNaN(Number(value)) || _.isUndefined(value) || _.isNull(value))
-            {
-                return defaultValue;
-            }
+            return defaultValue;
+        },
 
-            if (value === 0 || value === "0" || Number(value) === 0)
-            {
-                return defaultValue;
-            }
+        valueIsEmpty: function(value)
+        {
+            return _.isUndefined(value) || _.isNull(value) || ("" + value).trim() === "" || (Number(value) === 0 && !this.valueIsZero(value));
+        },
 
-            return value;
+        valueIsNotANumber: function(value)
+        {
+            return _.isNaN(value) || _.isNaN(Number(value)) || _.isUndefined(value) || _.isNull(value);
+        },
+
+        valueIsZero: function(value)
+        {
+            return value === 0 || value === "0";
         },
 
         parseTextField: function(value, options)
