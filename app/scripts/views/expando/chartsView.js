@@ -71,7 +71,7 @@ function (TP, timeInZonesGenerator, ThePeaksGenerator, HRTimeInZonesChartView, P
                 var timeInZones = timeInZonesGenerator(metric, this.zoneSettingNameByMetricName[metric], this.model.get("details"), this.model);
                 if(timeInZones)
                 {
-                    var zoneType = _.contains([3,13,12], this.model.get("workoutTypeValueId")) ? "Pace" : "Speed";
+                    var zoneType = _.contains([1,3,13,12], this.model.get("workoutTypeValueId")) ? "Pace" : "Speed";
                     var el = this.$el.find(this.elByMetricName[metric] + " > .timeInZonesChartContainer");
                     var view = new ChartView({ timeInZones: timeInZones, el: el, workoutType: this.model.get("workoutTypeValueId"), zoneType: zoneType });
                     el.css("height", "233px");
@@ -87,7 +87,7 @@ function (TP, timeInZonesGenerator, ThePeaksGenerator, HRTimeInZonesChartView, P
                 if(timeInZones)
                 {
                     var peaks = ThePeaksGenerator.generate(metric, this.model.get("detailData"));
-                    var peakType = _.contains([3,13,12], this.model.get("workoutTypeValueId")) ? "Pace" : "Speed";
+                    var peakType = _.contains([1,3,13,12], this.model.get("workoutTypeValueId")) ? "Pace" : "Speed";
                     var el = this.$el.find(this.elByMetricName[metric] + " > .peaksChartContainer");
                     var view = new ChartView({ peaks: peaks, timeInZones: timeInZones, el: el, workoutType: this.model.get("workoutTypeValueId"), peakType: peakType });
                     el.css("height", "233px");
