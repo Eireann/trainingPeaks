@@ -520,6 +520,7 @@ Licensed under the MIT license.
                     margin: 0, // distance from the canvas edge to the grid
                     labelMargin: 5, // in pixels
                     axisMargin: 8, // in pixels
+                    axisOffset: { top: 0, left: 0, bottom: 0, right: 0 }, // top/left/bottom/right object
                     borderWidth: 2, // in pixels
                     borderOffset: { top: 0, left: 0, bottom: 0, right: 0 }, // top/left/bottom/right object
                     minBorderMargin: null, // in pixels, null means taken from points radius
@@ -1349,10 +1350,10 @@ Licensed under the MIT license.
 
                 if (pos == "bottom") {
                     plotOffset.bottom += lh + axisMargin;
-                    axis.box = { top: surface.height - plotOffset.bottom, height: lh };
+                    axis.box = { top: surface.height - plotOffset.bottom + options.grid.borderOffset.bottom + options.grid.axisOffset.bottom, height: lh };
                 }
                 else {
-                    axis.box = { top: plotOffset.top + axisMargin, height: lh };
+                    axis.box = { top: plotOffset.top - options.grid.borderOffset.top - options.grid.axisOffset.top + axisMargin, height: lh };
                     plotOffset.top += lh + axisMargin;
                 }
             }
@@ -1360,12 +1361,12 @@ Licensed under the MIT license.
                 lw += padding;
 
                 if (pos == "left") {
-                    axis.box = { left: plotOffset.left + axisMargin, width: lw };
+                    axis.box = { left: plotOffset.left - options.grid.borderOffset.left - options.grid.axisOffset.left + axisMargin, width: lw };
                     plotOffset.left += lw + axisMargin;
                 }
                 else {
                     plotOffset.right += lw + axisMargin;
-                    axis.box = { left: surface.width - plotOffset.right, width: lw };
+                    axis.box = { left: surface.width - plotOffset.right + options.grid.borderOffset.right + options.grid.axisOffset.right, width: lw };
                 }
             }
 
@@ -1437,8 +1438,8 @@ Licensed under the MIT license.
             // If the grid is visible, add its border width and offsets to the offset
             for (var a in plotOffset) {
                 if(typeof(options.grid.borderWidth) == "object") {
-                    plotOffset[a] += showGrid ? options.grid.borderWidth[a] : 0;
-                    plotOffset[a] += showGrid ? options.grid.borderOffset[a] : 0;
+                    plotOffset[a] += showGrid ? Math.ceil(options.grid.borderWidth[a]) : 0;
+                    plotOffset[a] += showGrid ? Math.ceil(options.grid.borderOffset[a]) : 0;
                 }
                 else {
                     plotOffset[a] += showGrid ? options.grid.borderWidth : 0;
