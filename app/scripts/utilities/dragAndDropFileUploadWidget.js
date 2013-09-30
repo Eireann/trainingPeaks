@@ -163,7 +163,7 @@ function(TP, WorkoutMultiFileDataModel, WorkoutModel, dateConversion)
                     }).fail(function()
                     {
                         $dropTarget.find(".uploadFail").show();
-                        $dropTarget.fadeOut(2000, function() { $dropTarget.find(".uploadingText").hide(); $dropTarget.find(".uploadFail").hide(); $dropTarget.remove(); $overlay.remove(); uploadInProgress = false; });
+                        $dropTarget.fadeOut(5000, function() { $dropTarget.find(".uploadingText").hide(); $dropTarget.find(".uploadFail").hide(); $dropTarget.remove(); $overlay.remove(); uploadInProgress = false; });
                     });
                 });
 
