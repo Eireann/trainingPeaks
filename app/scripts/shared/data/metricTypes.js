@@ -10,8 +10,8 @@ function()
             label: "Blood Pressure",
             subMetrics:
             [
-                { index: 0, label: "Systolic" },
-                { index: 1, label: "Diastolic" }
+                { index: 0, label: "Systolic", min: 50, max: 230 },
+                { index: 1, label: "Diastolic", min: 10, max: 140 }
             ],
             units: "mmHg"
         },
@@ -58,7 +58,9 @@ function()
         {
             id: 6,
             label: "Sleep Hours",
-            units: "hours"
+            units: "hours",
+            min: 0,
+            max: 24
         },
         {
             id: 7,
@@ -135,7 +137,9 @@ function()
         {
             id: 16,
             label: "BMR",
-            units: "kcal"
+            units: "kcal",
+            min: 500,
+            max: 20000
         },
         {
             id: 17,
@@ -337,7 +341,8 @@ function()
         {
             id: 44,
             label: "Blood Glucose",
-            units: "mg/dL"
+            units: "mg/dL",
+
         },
         {
             id: 45,
@@ -346,32 +351,44 @@ function()
             subMetrics:
             [
                 { index: 0 }
-            ]
+            ],
+            min: .1,
+            max: 1000
         },
         {
             id: 46,
             label: "Time in Deep Sleep",
-            units: "hours"
+            units: "hours",
+            min: 0,
+            max: 24
         },
         {
             id: 47,
             label: "Time in Rem Sleep",
-            units: "hours"
+            units: "hours",
+            min: 0,
+            max: 24
         },
         {
             id: 48,
             label: "Time in Light Sleep",
-            units: "hours"
+            units: "hours",
+            min: 0,
+            max: 24
         },
         {
             id: 49,
             label: "Times Woken",
-            units: "none"
+            units: "none",
+            min: 1,
+            max: 1000
         },
         {
             id: 50,
             label: "Total Time Awake",
-            units: "hours"
+            units: "hours",
+            min: 0,
+            max: 24
         },
         {
             id: 51,
@@ -416,7 +433,9 @@ function()
         {
             id: 55,
             label: "ZQ",
-            units: "none"
+            units: "none",
+            min: 1,
+            max: 120
         },
         {
             id: 56,

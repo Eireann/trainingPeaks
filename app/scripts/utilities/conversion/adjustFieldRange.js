@@ -21,14 +21,16 @@ function ()
         temp: 999,
         IF: 99,
         energy: 99999,
-        cm: 999
+        cm: 999,
+        "%": 100
     };
 
     var minimums = {
         pace: 1 / (60 * 60),
         elevation: -15000,
         temp: -999,
-        TSB: -9999
+        TSB: -9999,
+        "%": 0
     };
 
     var adjustFieldRange = function (value, fieldName)

@@ -40,24 +40,28 @@ function(
             {
                 formatters:
                 {
-                    metric: _.bind(this.formatMetric, this)
+                    metric: _.bind(this.formatMetric, this, null),
+                    metric0: _.bind(this.formatMetric, this, 0),
+                    metric1: _.bind(this.formatMetric, this, 1),
                 },
 
                 parsers:
                 {
-                    metric: _.bind(this.parseMetric, this)
+                    metric: _.bind(this.parseMetric, this, null),
+                    metric0: _.bind(this.parseMetric, this, 0),
+                    metric1: _.bind(this.parseMetric, this, 1)
                 }
             });
         },
 
-        formatMetric: function(value)
+        formatMetric: function(index, value)
         {
-            return TP.utils.metrics.formatValueFor(this.model.attributes, { value: value });
+            return TP.utils.metrics.formatValueFor(_.extend({ index: index }, this.model.attributes), { value: value });
         },
 
-        parseMetric: function(value)
+        parseMetric: function(index, value)
         {
-            return TP.utils.metrics.parseValueFor(this.model.attributes, value);
+            return TP.utils.metrics.parseValueFor(_.extend({ index: index }, this.model.attributes), value);
         },
 
         serializeData: function()

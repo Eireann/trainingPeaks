@@ -25,7 +25,7 @@ function(
         infoFor: function(details)
         {
             var info = metricTypeById[details.type];
-            if(info.subMetrics && details.index)
+            if(info.subMetrics && details.hasOwnProperty("index"))
             {
                 var subInfo = _.find(info.subMetrics, function(subMetric)
                 {
@@ -46,7 +46,14 @@ function(
         formatValueFor: function(details, options)
         {
             var info = metricsUtils.infoFor(details);
-            var value = (options && options.value) || details.value;
+            var value = details.value;
+
+            if(options && options.hasOwnProperty("value"))
+            {
+                value = options.value;
+            }
+
+            value = metricsUtils.limitValue(details, value);
 
             if (info.enumeration)
             {
@@ -77,7 +84,8 @@ function(
             var info = metricsUtils.infoFor(details);
             if (info.units)
             {
-                return conversionUtils.parseUnitsValue(info.units, value);
+                var value = conversionUtils.parseUnitsValue(info.units, value);
+                return metricsUtils.limitValue(details, value);
             }
             else
             {
@@ -96,6 +104,17 @@ function(
             {
                 return "";
             }
+        },
+
+        limitValue: function(details, value)
+        {
+            var info = metricsUtils.infoFor(details);
+            if(value)
+            {
+                if(info.hasOwnProperty("min") && value < info.min) return info.min;
+                if(info.hasOwnProperty("max") && value > info.max) return info.max;
+            }
+            return value;
         }
 
     };

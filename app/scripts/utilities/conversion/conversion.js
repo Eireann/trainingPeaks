@@ -564,6 +564,18 @@
             return convertToModelUnits(limitedValue, "ml");
         },
 
+        formatPercent: function(value, options)
+        {
+            var adjustedValue = adjustFieldRange(value, "%");
+            return conversion.formatNumber(adjustedValue, options);
+        },
+
+        parsePercent: function(value, options)
+        {
+            value = conversion.parseNumber(value, options);
+            return adjustFieldRange(value, "%");
+        },
+
         /*
             options:
                 defaultValue
@@ -657,7 +669,6 @@
                     }
                     break;
 
-                case "%":
                 case "hours":
                 case "kcal":
                 case "mg/dL":
@@ -673,6 +684,9 @@
                     }
                     str += conversion.formatInteger(value, options);
                     return str;
+
+                case "%":
+                    return conversion.formatPercent(value, options);
 
                 case "none":
                     return conversion.formatInteger(value, options);
@@ -722,12 +736,14 @@
                 case "ml":
                     return conversion.parseMl(value, options);
 
+                case "%":
+                    return conversion.parsePercent(value, options);
+
                 case "units":
                 case "none":
                 case "mmHg":
                     return conversion.parseInteger(value, options);
 
-                case "%":
                 case "hours":
                 case "kcal":
                 case "mg/dL":

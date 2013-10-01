@@ -1,8 +1,8 @@
 {{#if special.bloodPressure }}
     <span class="metricLabel">{{ formatMetricLabel . }}:</span>
-    <input type="text" name="value.0" data-format="metric">
+    <input type="text" class="numberInput" name="value.0" data-format="metric0">
     <span class="metricUnit">/</span>
-    <input type="text" name="value.1" data-format="metric">
+    <input type="text" class="numberInput" name="value.1" data-format="metric1">
     <span class="metricUnit">{{ formatMetricUnits . }}</span>
 {{/if}}
 
@@ -10,7 +10,7 @@
     <span class="metricLabel">{{ formatMetricLabel . }}:</span>
     <input type="text" name="value.1">
     <span class="metricUnit">type</span>
-    <input type="text" name="value.0" data-format="metric">
+    <input type="text" class="numberInput" name="value.0" data-format="metric0">
     <span class="metricUnit">units</span>
 {{/if}}
 
@@ -33,7 +33,7 @@
             {{/each}}
         </select>
     {{else}}
-        <input type="text" name="value" data-format="metric">
+        <input type="text" class="numberInput" name="value" data-format="metric">
     {{/if}}
 
     <span class="metricUnit">{{ formatMetricUnits . }}</span>
