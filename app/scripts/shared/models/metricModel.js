@@ -52,7 +52,6 @@ function(
         setTimestamp: function(time)
         {
             time = moment(time, "h:mm a");
-            console.log(time.hour());
             var timeStamp = moment(this.get("timeStamp"));
             timeStamp.hour(time.hour()).minute(time.minute()).second(time.second());
             this.set("timeStamp", timeStamp.format(TP.utils.datetime.longDateFormat));

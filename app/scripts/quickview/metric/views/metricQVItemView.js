@@ -62,7 +62,6 @@ function(
 
         parseMetric: function(index, value)
         {
-            console.log("parse", this._metricDetails(index), value);
             return TP.utils.metrics.parseValueFor(this._metricDetails(index), value);
         },
 

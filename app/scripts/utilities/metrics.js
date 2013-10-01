@@ -108,21 +108,17 @@ function(
 
         _limitValue: function(info, value)
         {
-            console.log("limit", info, value);
             if(_.isNull(value) || _.isUndefined(value) || (_.isArray(value) && _.isEmpty(value)))
             {
-                console.log("empty");
                 return value;
             }
 
             if(info.hasOwnProperty("min") && (value < info.min))
             {
-                console.log("< min");
                 return info.min;
             }
             if(info.hasOwnProperty("max") && (value > info.max))
             {
-                console.log("> max");
                 return info.max;
             }
             return value;
