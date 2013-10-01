@@ -609,6 +609,8 @@ function(
                 return true;
             if (workoutTypeId === TP.utils.workout.types.getIdByName("Other"))
                 return true;
+            if (workoutTypeId === TP.utils.workout.types.getIdByName("Rowing"))
+                return true;
             return false;
         },
 

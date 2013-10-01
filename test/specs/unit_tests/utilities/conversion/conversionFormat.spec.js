@@ -329,6 +329,10 @@ function(theMarsApp, TP, conversion, convertToModelUnits, dateTimeUtils)
                 {
                     input: "-15001",
                     output: "-15000"
+                },
+                {
+                    input: null,
+                    output: ""
                 }
             ]);
         });
@@ -623,6 +627,10 @@ function(theMarsApp, TP, conversion, convertToModelUnits, dateTimeUtils)
                 {
                     output: "-999",
                     input: -1000
+                },
+                {
+                    input: null,
+                    output: ""
                 }
             ]);
         });

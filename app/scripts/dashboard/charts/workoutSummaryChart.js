@@ -301,14 +301,15 @@ function(
                         lineWidth: 0.00000001 // 0 causes flot.orderBars to default to 2 for calculations... which aren't redone on resize.
                     },
                     shadowSize: 0,
-                    yaxes: yaxes,
+                    yaxis: yaxes[0],
                     xaxis:
                     {
                         ticks: _.bind(this._generateTimeTicks, this),
                         tickFormatter: function(date)
                         {
                             return moment(date).format("MM/DD/YY");
-                        }
+                        },
+                        color: "transparent"
                     }
                 }, defaultFlotOptions.getBarOptions(null))
             };

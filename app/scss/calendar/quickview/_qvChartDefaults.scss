@@ -23,7 +23,7 @@
 .yaxisLabel {
     position: absolute;
     left: -36px;
-    top: 50%;
+    @include calc("top","50% + 10px");
     margin-top: 0;
     font-family: $fontFamilyHeavy;
     font-size: $fontSizeXSmall;

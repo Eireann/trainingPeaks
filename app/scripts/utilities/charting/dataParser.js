@@ -235,7 +235,7 @@ function(chartColors, findIndexByMsOffset, conversion)
         var axisIndex = 1;
         _.each(series, function(s)
         {
-            var showSpeedAsPace = s.label === "Speed" && _.contains([1,3,13], self.workoutTypeValueId);
+            var showSpeedAsPace = s.label === "Speed" && _.contains([1,3,12,13], self.workoutTypeValueId);
             if (s.label === "Pace")
                 return;
             
@@ -263,7 +263,7 @@ function(chartColors, findIndexByMsOffset, conversion)
                     {
                         return value === 0 ? +0 : conversion.formatUnitsValue("pace", value, { defaultValue: null, workoutTypeId: self.workoutTypeValueId } );
                     }
-                    return value === 0 ? +0 : parseInt(conversion.formatUnitsValue(s.label.toLowerCase(), value), 10);
+                    return value === 0 ? +0 : parseInt(conversion.formatUnitsValue(s.label.toLowerCase(), value, {workoutTypeValueId: self.workoutTypeValueId}), 10);
                 },
                 labelWidth: showSpeedAsPace ? 27 : 15
             };

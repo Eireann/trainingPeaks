@@ -23,6 +23,7 @@ define(
     "router",
     "utilities/dragAndDropFileUploadWidget",
     "utilities/textFieldNumberFilter",
+    "utilities/rollbarManager",
     "shared/utilities/featureAuthorization/featureAuthorizer",
     "hbs!templates/views/notAllowedForAlpha",
     "scripts/plugins/marionette.faderegion"
@@ -51,6 +52,7 @@ function(
     Router,
     DragAndDropFileUploadWidget,
     TextFieldNumberFilter,
+    RollbarManager,
     FeatureAuthorizer,
     notAllowedForAlphaTemplate,
     fadeRegion)
@@ -267,6 +269,8 @@ function(
             userPromise.done(function()
             {
 
+                RollbarManager.setUser(self.user);
+
                 var athletePromise = self.fetchAthleteSettings();
                 athletePromise.fail(function()
                 {
@@ -433,13 +437,17 @@ function(
 
         this.addInitializer(function ()
         {
-            $(document).on("keypress.filterNumberInput", ".numberInput", this.filterfunction);
+            
+            $(document).on("keypress.filterNumberInput", ".numberInput", function (evt)
+                {
+                    var charCode = (evt.which) ? evt.which : evt.keyCode;
+                    if(!TextFieldNumberFilter.isNumberKey(charCode))
+                    {
+                        evt.preventDefault();
+                    }
+                }
+            );
         });
-
-        this.filterfunction = function (evt)
-        {
-            TextFieldNumberFilter.isNumberKey(evt);
-        };
 
         
         this.isLive = function()

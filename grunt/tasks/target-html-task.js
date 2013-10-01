@@ -13,11 +13,13 @@ module.exports = function(grunt)
         // Warn if a source file/pattern was invalid.
         var invalidSrc = this.files.some(function(filepath)
         {
-            if (!grunt.file.exists(filepath))
-            {
-                grunt.log.error('Source file "' + filepath + '" not found.');
-                return true;
-            }
+            _.each(filepath.src, function(filepath) {
+                if (!grunt.file.exists(filepath))
+                {
+                    grunt.log.error('Source file "' + filepath + '" not found.');
+                    return true;
+                }
+            });
         });
         
         if (invalidSrc)

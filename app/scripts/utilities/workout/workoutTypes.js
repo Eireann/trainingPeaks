@@ -43,6 +43,9 @@ function ()
         100: "Other"
     };
 
+    // the order used in new item view and workout type selector
+    var orderedWorkoutTypeIds = [3,2,1,4,5,6,7,8,9,10,11,12,100,13];
+
     var getNameById = function (workoutTypeId, defaultName)
     {
         defaultName = _.isString(defaultName) ? defaultName : "Unknown";
@@ -96,6 +99,7 @@ function ()
         getShortNameById: getShortNameById,
         getListOfNames: getListOfNames,
         typesByName: workoutTypesByName,
-        typesById: workoutTypesById
+        typesById: workoutTypesById,
+        orderedWorkoutTypeIds: orderedWorkoutTypeIds
     };
 });

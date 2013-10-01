@@ -37,7 +37,12 @@ function (TP, UserConfirmationView, deleteConfirmationTemplate, workoutCommentsT
                 template: workoutCommentsTemplate
             };
         },
-        
+
+        onRender: function()
+        {
+            //?
+        },
+
         onMouseOver: function ()
         {
             this.$el.addClass("hover");
@@ -94,7 +99,7 @@ function (TP, UserConfirmationView, deleteConfirmationTemplate, workoutCommentsT
             {
                 if (this.ui.editedComment.val() !== this.model.get("comment"))
                 {
-                    this.model.set("comment", this.ui.editedComment.val(), { silent: true });
+                    this.model.set("comment", this.ui.editedComment.val());
                     this.trigger("commentedited");
                 }
                 
@@ -116,7 +121,7 @@ function (TP, UserConfirmationView, deleteConfirmationTemplate, workoutCommentsT
                 //console.debug("check for save");
                 if (self.ui.editedComment.val() !== self.model.get("comment"))
                 {
-                    self.model.set("comment", self.ui.editedComment.val(), { silent: true });
+                    self.model.set("comment", self.ui.editedComment.val());
                     self.trigger("commentedited");
                 }
             }, 2000);
