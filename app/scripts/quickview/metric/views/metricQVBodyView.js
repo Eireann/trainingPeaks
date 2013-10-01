@@ -17,6 +17,8 @@ function(
 
         className: "metricQVBody",
 
+        modelEvents: {},
+
         initialize: function()
         {
             var types = _.pluck(theMarsApp.user.getMetricsSettings().attributes, "type");
@@ -51,7 +53,11 @@ function(
 
             this.collection.each(function(model)
             {
-                detailsByType[model.get("type")] = model.attributes;
+                var value = model.get("value");
+                if(!_.isNull(value) && !_.isUndefined(value))
+                {
+                    detailsByType[model.get("type")] = model.attributes;
+                }
             });
 
             this.model.set("details", _.values(detailsByType));

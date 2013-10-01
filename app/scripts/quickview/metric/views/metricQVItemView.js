@@ -53,12 +53,16 @@ function(
 
         _isSupportedMetric: function()
         {
-            return _.contains([9], this.model.get("type"));
+            var info = TP.utils.metrics.infoFor(this.model.attributes);
+            if(info.hasOwnProperty("subMetrics")) return false;
+            if(info.hasOwnProperty("chartable") && !info.chartable) return false;
+            return true;
         },
 
         serializeData: function()
         {
             var data = MetricQVItemView.__super__.serializeData.apply(this, arguments);
+            data.info = TP.utils.metrics.infoFor(this.model.attributes);
             data.supported = this._isSupportedMetric();
             return data;
         }

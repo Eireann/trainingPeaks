@@ -1,7 +1,19 @@
 {{#if supported}}
+
     <label>
         <span class="metricLabel">{{ formatMetricLabel . }}:</span>
-        <input type="text" name="value" data-format="metric">
+
+        {{#if info.enumeration}}
+            <select name="value">
+                <option value=""></option>
+                {{#each info.enumeration}}
+                    <option value="{{ value }}">{{ label }}</option>
+                {{/each}}
+            </select>
+        {{else}}
+            <input type="text" name="value" data-format="metric">
+        {{/if}}
+
         <span class="metricUnit">{{ formatMetricUnits . }}</span>
     </label>
 {{else}}

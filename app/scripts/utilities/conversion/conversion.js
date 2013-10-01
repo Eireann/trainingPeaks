@@ -558,6 +558,12 @@
             return conversion.formatNumber(adjustedValue, options);
         },
 
+        parseMl: function(value, options)
+        {
+            var limitedValue = adjustFieldRange(value, "ml");
+            return convertToModelUnits(limitedValue, "ml");
+        },
+
         /*
             options:
                 defaultValue
@@ -703,6 +709,20 @@
 
                 case "kg":
                     return conversion.parseKg(value, options);
+
+                case "ml":
+                    return conversion.parseMl(value, options);
+
+                case "units":
+                case "none":
+                    return conversion.parseInteger(value, options);
+
+                case "%":
+                case "hours":
+                case "kcal":
+                case "mg/dL":
+                case "mm":
+                    return conversion.parseNumber(value, options);
 
                 default:
                      throw new Error("Unsupported units for conversion.parseUnitsValue: " + units);
