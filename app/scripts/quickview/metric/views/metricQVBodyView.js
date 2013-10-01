@@ -19,7 +19,7 @@ function(
 
         initialize: function()
         {
-            var types = [9];
+            var types = _.pluck(theMarsApp.user.getMetricsSettings().attributes, "type");
 
             var details = _.map(types, function(type) { return { type: type }; });
 
