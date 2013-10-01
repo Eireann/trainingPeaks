@@ -38,7 +38,10 @@ function(
                 }
             });
 
-            this.collection = new TP.Collection(details);
+            this.collection = new TP.Collection(details,
+            {
+                model: TP.DeepModel
+            });
             this.listenTo(this.collection, "change", _.bind(this.persistToModel, this));
         },
 
@@ -54,7 +57,7 @@ function(
             this.collection.each(function(model)
             {
                 var value = model.get("value");
-                if(!_.isNull(value) && !_.isUndefined(value))
+                if(!_.isNull(value) && !_.isUndefined(value) && !_.isEmpty(value))
                 {
                     detailsByType[model.get("type")] = model.attributes;
                 }

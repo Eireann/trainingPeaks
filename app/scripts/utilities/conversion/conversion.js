@@ -665,6 +665,15 @@
                     return conversion.formatNumber(value, options);
 
                 case "units":
+                    var str = "";
+                    if(_.isArray(value))
+                    {
+                        str += value[1] + " ";
+                        value = value[0];
+                    }
+                    str += conversion.formatInteger(value, options);
+                    return str;
+
                 case "none":
                     return conversion.formatInteger(value, options);
 
@@ -715,6 +724,7 @@
 
                 case "units":
                 case "none":
+                case "mmHg":
                     return conversion.parseInteger(value, options);
 
                 case "%":

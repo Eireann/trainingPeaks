@@ -46,7 +46,7 @@ function(
         formatValueFor: function(details, options)
         {
             var info = metricsUtils.infoFor(details);
-            var value = details.value;
+            var value = (options && options.value) || details.value;
 
             if (info.enumeration)
             {
@@ -62,7 +62,7 @@ function(
                 var formattedValue = conversionUtils.formatUnitsValue(info.units, value);
                 if(options && options.displayUnits)
                 {
-                    formattedValue += " " + unitsUtils.getUnitsLabel(info.units);
+                    formattedValue += " " + metricsUtils.formatUnitsFor(details, options);
                 }
                 return formattedValue;
             }

@@ -23,10 +23,19 @@ function(
             template: metricQVItemTemplate
         },
 
+        modelEvents: {},
+
+        initialize: function()
+        {
+            var info = TP.utils.metrics.infoFor(this.model.attributes);
+            if(info.subMetrics && !_.isArray(this.model.get("value")))
+            {
+                this.model.set("value", []);
+            }
+        },
+
         onRender: function()
         {
-            if(!this._isSupportedMetric()) return;
-
             FormUtility.bindFormToModel(this.$el, this.model,
             {
                 formatters:
@@ -41,9 +50,9 @@ function(
             });
         },
 
-        formatMetric: function()
+        formatMetric: function(value)
         {
-            return TP.utils.metrics.formatValueFor(this.model.attributes);
+            return TP.utils.metrics.formatValueFor(this.model.attributes, { value: value });
         },
 
         parseMetric: function(value)
@@ -51,19 +60,26 @@ function(
             return TP.utils.metrics.parseValueFor(this.model.attributes, value);
         },
 
-        _isSupportedMetric: function()
-        {
-            var info = TP.utils.metrics.infoFor(this.model.attributes);
-            if(info.hasOwnProperty("subMetrics")) return false;
-            if(info.hasOwnProperty("chartable") && !info.chartable) return false;
-            return true;
-        },
-
         serializeData: function()
         {
             var data = MetricQVItemView.__super__.serializeData.apply(this, arguments);
             data.info = TP.utils.metrics.infoFor(this.model.attributes);
-            data.supported = this._isSupportedMetric();
+            data.special = {};
+            switch(data.info.id)
+            {
+                case 1:
+                    data.special.bloodPressure = true;
+                    break;
+                case 12:
+                    data.special.note = true;
+                    break;
+                case 45:
+                    data.special.insulin = true;
+                    break;
+                default:
+                    data.special = false;
+            }
+
             return data;
         }
 
