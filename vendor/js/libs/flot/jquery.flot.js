@@ -1906,9 +1906,15 @@ Licensed under the MIT license.
                     ctx.beginPath();
                     xoff = yoff = 0;
                     if (axis.direction == "x")
+                    {
                         xoff = plotWidth + 1;
+                        x = x + plotOffset.left;
+                    }
                     else
+                    {
                         yoff = plotHeight + 1;
+                        y = y - plotOffset.bottom;
+                    }
 
                     if (ctx.lineWidth == 1) {
                         if (axis.direction == "x") {
