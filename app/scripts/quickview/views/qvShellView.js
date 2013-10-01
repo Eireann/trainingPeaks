@@ -38,6 +38,12 @@ function(
             type: "handlebars"
         },
 
+        ui:
+        {
+            qvBody: ".QVBody",
+            qvBar: ".QVBar"
+        },
+
         modal:
         {
             mask: true,
@@ -136,11 +142,10 @@ function(
         _onRenderShell: function()
         {
             this.$(".timeInput").timepicker({ appendTo: this.$el, timeFormat: "g:i a" });
-            var qvBody = this.$(".QVBody");
-
             this._updateDate();
 
-            this.children.add(new this.bodyView({ model: this.model, el: qvBody }));
+            this.children.add(new this.bodyView({ model: this.model, el: this.ui.qvBody }));
+            this.children.add(new this.barView({ model: this.model, el: this.ui.qvBar }));
 
             this.children.call("render");
         },

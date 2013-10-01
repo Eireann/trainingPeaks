@@ -37,7 +37,7 @@ function(
 
         it("Should use id as model id", function()
         {
-            var today = moment().format("YYYY-MM-DDThh:mm:ss");
+            var today = moment().format("YYYY-MM-DDTHH:mm:ss");
             var id = "098765";
             var metric = new MetricModel({ timeStamp: today, id: id });
             expect(metric.id).toEqual(id);
@@ -54,8 +54,8 @@ function(
         describe("moveToDay", function()
         {
             var metric;
-            var originalTimestamp = moment().format();
-            var modifiedTimestamp = moment(originalTimestamp).add("days", 1).format();
+            var originalTimestamp = moment().format(TP.utils.datetime.longDateFormat);
+            var modifiedTimestamp = moment(originalTimestamp).add("days", 1).format(TP.utils.datetime.longDateFormat);
             var originalDate = moment(originalTimestamp).format("YYYY-MM-DD");
             var modifiedDate = moment(modifiedTimestamp).format("YYYY-MM-DD");
 
@@ -93,7 +93,7 @@ function(
             var metricAttributes = {
                 "id": 12345,
                 "athleteId": 67890,
-                "timeStamp": moment().format(),
+                "timeStamp": moment().format("YYYY-MM-DDTHH:mm:ss"),
                 "details": []
             };
             var attributesToCopy = [

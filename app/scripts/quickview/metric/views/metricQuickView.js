@@ -4,14 +4,16 @@ define(
     "moment",
     "TP",
     "quickview/views/qvShellView",
-    "quickview/metric/views/metricQVBodyView"
+    "quickview/metric/views/metricQVBodyView",
+    "quickview/metric/views/metricQVBarView"
 ],
 function(
     _,
     moment,
     TP,
     QVShellView,
-    MetricQVBodyView
+    MetricQVBodyView,
+    MetricQVBarView
 )
 {
 
@@ -28,7 +30,8 @@ function(
             return data;
         },
 
-        bodyView: MetricQVBodyView
+        bodyView: MetricQVBodyView,
+        barView: MetricQVBarView
 
     });
 

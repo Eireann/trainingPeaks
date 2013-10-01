@@ -13,8 +13,8 @@ function (_, moment, TP)
         webAPIModelName: "WorkoutDetailData",
         idAttribute: "workoutId",
         shortDateFormat: "YYYY-MM-DD",
-        timeFormat: "Thh:mm:ss",
-        longDateFormat: "YYYY-MM-DDThh:mm:ss",
+        timeFormat: "THH:mm:ss",
+        longDateFormat: "YYYY-MM-DDTHH:mm:ss",
 
         url: function()
         {

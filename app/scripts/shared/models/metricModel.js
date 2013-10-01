@@ -86,7 +86,7 @@ function(
             if(this.isNew())
             {
                 var target = this.clone();
-                target.set("timeStamp", moment(date).format());
+                target.set("timeStamp", moment(date).format(TP.utils.datetime.longDateFormat));
                 target.save();
                 return target;
             }
