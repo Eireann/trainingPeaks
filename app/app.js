@@ -437,13 +437,17 @@ function(
 
         this.addInitializer(function ()
         {
-            $(document).on("keypress.filterNumberInput", ".numberInput", this.filterfunction);
+            
+            $(document).on("keypress.filterNumberInput", ".numberInput", function (evt)
+                {
+                    var charCode = (evt.which) ? evt.which : evt.keyCode;
+                    if(!TextFieldNumberFilter.isNumberKey(charCode))
+                    {
+                        evt.preventDefault();
+                    }
+                }
+            );
         });
-
-        this.filterfunction = function (evt)
-        {
-            TextFieldNumberFilter.isNumberKey(evt);
-        };
 
         
         this.isLive = function()
