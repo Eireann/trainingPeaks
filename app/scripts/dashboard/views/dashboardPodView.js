@@ -57,6 +57,8 @@ function(
             this.listenTo(this.model, "dataManagerReset", _.bind(this._onDashboardReset, this));
             this.on("render", this._renderChartAfterRender, this);
 
+            this.listenTo(theMarsApp.user, "change:units", _.bind(this._renderChart, this));
+
             this.once("render", this._bindPlotClick, this);
             this._setChartCssClass();
         },
