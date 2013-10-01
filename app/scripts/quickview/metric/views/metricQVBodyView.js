@@ -57,7 +57,7 @@ function(
             this.collection.each(function(model)
             {
                 var value = model.get("value");
-                if(!_.isNull(value) && !_.isUndefined(value) && !_.isEmpty(value))
+                if(!_.isNull(value) && !_.isUndefined(value) && !(_.isArray(value) && _.isEmpty(value)))
                 {
                     detailsByType[model.get("type")] = model.attributes;
                 }

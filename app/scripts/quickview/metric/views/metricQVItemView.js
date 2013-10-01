@@ -56,12 +56,14 @@ function(
 
         formatMetric: function(index, value)
         {
-            return TP.utils.metrics.formatValueFor(_.extend({ index: index }, this.model.attributes), { value: value });
+
+            return TP.utils.metrics.formatValueFor(this._metricDetails(index), { value: value });
         },
 
         parseMetric: function(index, value)
         {
-            return TP.utils.metrics.parseValueFor(_.extend({ index: index }, this.model.attributes), value);
+            console.log("parse", this._metricDetails(index), value);
+            return TP.utils.metrics.parseValueFor(this._metricDetails(index), value);
         },
 
         serializeData: function()
@@ -85,6 +87,16 @@ function(
             }
 
             return data;
+        },
+
+        _metricDetails: function(index)
+        {
+            var details = this.model.attributes;
+            if(!_.isNull(index) && !_.isUndefined(index))
+            {
+                details = _.extend({ index: index }, details);
+            }
+            return details;
         }
 
     });

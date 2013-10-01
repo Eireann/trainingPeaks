@@ -53,7 +53,7 @@ function(
                 value = options.value;
             }
 
-            value = metricsUtils.limitValue(details, value);
+            value = metricsUtils._limitValue(info, value);
 
             if (info.enumeration)
             {
@@ -84,8 +84,8 @@ function(
             var info = metricsUtils.infoFor(details);
             if (info.units)
             {
-                var value = conversionUtils.parseUnitsValue(info.units, value);
-                return metricsUtils.limitValue(details, value);
+                value = conversionUtils.parseUnitsValue(info.units, value);
+                return metricsUtils._limitValue(info, value);
             }
             else
             {
@@ -106,13 +106,24 @@ function(
             }
         },
 
-        limitValue: function(details, value)
+        _limitValue: function(info, value)
         {
-            var info = metricsUtils.infoFor(details);
-            if(value)
+            console.log("limit", info, value);
+            if(_.isNull(value) || _.isUndefined(value) || (_.isArray(value) && _.isEmpty(value)))
             {
-                if(info.hasOwnProperty("min") && value < info.min) return info.min;
-                if(info.hasOwnProperty("max") && value > info.max) return info.max;
+                console.log("empty");
+                return value;
+            }
+
+            if(info.hasOwnProperty("min") && (value < info.min))
+            {
+                console.log("< min");
+                return info.min;
+            }
+            if(info.hasOwnProperty("max") && (value > info.max))
+            {
+                console.log("> max");
+                return info.max;
             }
             return value;
         }
