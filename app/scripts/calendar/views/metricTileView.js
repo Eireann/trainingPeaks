@@ -44,6 +44,7 @@ function(
         {
             this.on("render", this._setupDraggable, this);
             this.on("render", this._presetSelected, this);
+            this.listenTo(theMarsApp.user, "change:units", _.bind(this.render, this));
         },
 
         _setupDraggable: function()
