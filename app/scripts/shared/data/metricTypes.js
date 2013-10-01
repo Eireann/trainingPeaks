@@ -352,7 +352,7 @@ function()
             [
                 { index: 0 }
             ],
-            min: .1,
+            min: 0.1,
             max: 1000
         },
         {
