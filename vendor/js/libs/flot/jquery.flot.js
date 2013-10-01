@@ -1909,11 +1909,27 @@ Licensed under the MIT license.
                     {
                         xoff = plotWidth + 1;
                         x = x + plotOffset.left;
+                        if(axis.position === "bottom")
+                        {
+	                        y = y + options.grid.axisOffset.bottom;
+                        }
+                        else
+                        {
+ 	                        y = y - options.grid.axisOffset.top;                       	
+                        }
                     }
                     else
                     {
                         yoff = plotHeight + 1;
                         y = y - plotOffset.bottom;
+                        if(axis.position === "right")
+                        {
+	                        x = x + options.grid.axisOffset.right;
+                        }
+                        else
+                        {
+ 	                        x = x - options.grid.axisOffset.left;                       	
+                        }
                     }
 
                     if (ctx.lineWidth == 1) {
