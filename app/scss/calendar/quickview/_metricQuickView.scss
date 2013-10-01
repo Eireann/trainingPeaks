@@ -1,7 +1,64 @@
-@media screen
-{
-    .metricQVItem input
-    {
-        display: inline-block;
+@media screen {
+	.QVShell {
+		.QVHeader {
+			.QVBar {
+				width: 666px;
+
+				.metricIconLarge {
+					background: $metricPositiveLargeURL no-repeat 0 0;
+					background-color: $TPGrey3;
+					background-size:70px 70px;
+				}
+			}
+		}
+
+		.QVBody {
+			padding: 20px;
+
+			.metricQVItem {
+				.metricLabel {
+					width:125px;
+					display: inline-block;
+					text-align: right;
+					font-size: $fontSizeSmaller;
+					font-family:$fontFamilyRegular;
+				}
+				.metricUnit {
+					display: inline-block;
+					font-size: $fontSizeSmaller;
+					font-family:$fontFamilyRegular;
+				}
+				.metricValue {
+					display:inline-block;
+					width:84px;
+					height:22px;
+					text-align: center;
+					font-family:$fontFamilyRegular;
+					font-size:$fontSizeSmall;
+					padding:4px 0;
+					border:1px solid $TPGrey2;
+				}
+
+				input {
+					width:84px;
+					height:22px;
+					display: inline-block;
+					margin:0;
+				}
+			}
+
+			label {
+				cursor:text;
+
+				// important to keep font sizes within label proportional
+				font-size: 1em;
+			}
+		}
+
+
+
+	    .metricQVItem input {
+	        display: inline-block;
+	    }
     }
 }
