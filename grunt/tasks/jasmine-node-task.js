@@ -101,7 +101,7 @@ module.exports = function(grunt)
         if(options.teamcity)
         {
             var jasmineEnv = jasmine.getEnv();
-            jasmineEnv.addReporter(new jasmine.TeamcityReporter());
+            //jasmineEnv.addReporter(new jasmine.TeamcityReporter());
 
             // dummy reporter exists just to call our onComplete function, because TeamCity reporter doesn't do it
             var DummyReporter = function() {};
