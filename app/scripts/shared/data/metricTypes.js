@@ -132,7 +132,9 @@ function()
         {
             id: 14,
             label: "BMI",
-            units: "none"
+            units: "none",
+            min: 10,
+            max: 50
         },
         {
             id: 15,
