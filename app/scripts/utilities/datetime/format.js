@@ -5,21 +5,61 @@
 ],
 function(_, moment)
 {
+
+    var defaultUserDateFormat = "mdy";
+    var defaultDateFormatString = "M/D/YYYY";
+
+    function getAppUserDateFormat()
+    {
+        if(!theMarsApp || !theMarsApp.user || !theMarsApp.user.has("dateFormat"))
+        {
+            return defaultUserDateFormat;
+        } 
+
+        var userDateFormat = theMarsApp.user.get("dateFormat");
+
+        if(!_.contains(["mdy", "dmy"], userDateFormat))
+        {
+            return defaultUserDateFormat;
+        }
+
+        return userDateFormat;
+    };
+
+    function getCalendarDayFormatStringForMoment(momentDate)
+    {
+        if (momentDate.dayOfYear() === 1) // firstday of year
+            return "MMM DD YYYY";
+        else if (momentDate.date() === 1) // firstday of month
+            return "MMM DD";
+        else
+            return "DD";
+    }
+
+    function getNamedDateFormatString(formatString, momentDate)
+    {
+        if (!formatString || typeof formatString !== "string")
+        {
+            formatString = defaultDateFormatString;
+        }
+
+        switch(formatString)
+        {
+            case "calendarDay":
+                return getCalendarDayFormatStringForMoment(momentDate);
+            default:
+                return formatString; 
+        } 
+    }
+
     // TP.utils.datetime.format() ...
     var format = function(momentParseableDate, formatString)
     {
         if(momentParseableDate)
         {
             var momentDate = moment(momentParseableDate);
-            if (!formatString || typeof formatString !== "string")
-            {
-                if (momentDate.dayOfYear() === 1) // firstday of year
-                    formatString = "MMM DD YYYY";
-                else if (momentDate.date() === 1) // firstday of month
-                    formatString = "MMM DD";
-                else
-                    formatString = "DD";
-            }
+            formatString = getNamedDateFormatString(formatString, momentDate);
+            formatString = format.convertFormatStringToUserPreferredDateFormat(formatString);
 
             return momentDate.format(formatString);
         }
@@ -27,6 +67,55 @@ function(_, moment)
         {
             return "";
         }
+    };
+
+    // convert based on user preferences
+    // converts "L" date format to appropriate MM/DD/YYYY format
+    // converts separators - to /
+    // swaps order of M and D units if both are present
+    format.convertFormatStringToUserPreferredDateFormat = function(formatString)
+    {
+
+        // any year-first dates - YYYY-MM-DD etc, are most likely used as sortable keys, so don't reorder them
+        if(formatString.indexOf("YY") === 0)
+        {
+            return formatString;
+        }
+
+        // convert - separators to / instead
+        formatString = formatString.replace(/ *- */g,"/");
+
+        // split on any word type characters
+        var formatParts = formatString.split(/\b/);
+        var monthIndex = -1;
+        var dayIndex = -1;
+        _.each(formatParts, function(part, index)
+        {
+            if(monthIndex === -1 && /^M+$/.test(part))
+            {
+                monthIndex = index;
+            }
+
+            if(dayIndex === -1 && /^D+$/.test(part))
+            {
+                dayIndex = index;
+            }
+        });
+
+        if(dayIndex >= 0 && monthIndex >= 0)
+        {
+            var userDateFormat = getAppUserDateFormat();
+            if((userDateFormat === "mdy" && monthIndex > dayIndex) || (userDateFormat === "dmy" && dayIndex > monthIndex))
+            {
+                var monthPart = formatParts[monthIndex];
+                var dayPart = formatParts[dayIndex];
+                formatParts[monthIndex] = dayPart;
+                formatParts[dayIndex] = monthPart;
+                return formatParts.join('');
+            }
+        }
+
+        return formatString;
     };
 
     // TP.utils.datetime.format.decimalSecondsAsTime

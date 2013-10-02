@@ -138,8 +138,8 @@ function(
                 this.$(".dateRanges").removeClass("customEndDate");
             }
 
-            var startDate = moment(dateOptions.startDate).format("MM-DD-YYYY");
-            var endDate = moment(dateOptions.endDate).format("MM-DD-YYYY");
+            var startDate = TP.utils.datetime.format(dateOptions.startDate);
+            var endDate = TP.utils.datetime.format(dateOptions.endDate);
             this.$("input.startDate").val(startDate);
             this.$("div.startDate").text(startDate);
             this.$("input.endDate").val(endDate);

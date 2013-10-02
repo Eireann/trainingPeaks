@@ -1,6 +1,6 @@
-<p>{{$ "AccountExpires" }}: {{ formatDate expireDate "L" }}</p>
+<p>{{$ "AccountExpires" }}: {{ formatDate expireDate }}</p>
 
-<p>{{$ "CurrentRatePlan" }}: $ {{ defaultValue amt "--" }} - {{ lookupSharedData "accounting.payPeriods" payPeriod "--" }}. {{$ "Paid Through" }}: {{ formatDate expireDate "L" }}</p>
+<p>{{$ "CurrentRatePlan" }}: $ {{ defaultValue amt "--" }} - {{ lookupSharedData "accounting.payPeriods" payPeriod "--" }}. {{$ "Paid Through" }}: {{ formatDate expireDate }}</p>
 
 <h4>{{$ "Active Recurring Payments" }}</h4>
 <p>{{$ "None" }}</p>

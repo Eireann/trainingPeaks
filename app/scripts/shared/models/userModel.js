@@ -34,7 +34,7 @@ function(
             cellPhone: "",
             city: "",
             country: "",
-            dateFormat: "",
+            dateFormat: "mdy",
             email: "",
             expireDate: "",
             firstName: "",
