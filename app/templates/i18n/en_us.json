@@ -441,5 +441,7 @@
     "EnterOptions": "Enter Calculator Options",
     "UnableToCalculateZones": "We could not calculate zones based on the information you provided.  Please try again with different values, or select a different calculation method",
 
-    "Not Yet Implemented": "Not Yet Implemented"
+    "Not Yet Implemented": "Not Yet Implemented",
+
+    "Failed To Save Metric": "Failed To Save Metric"
 }

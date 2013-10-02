@@ -7,7 +7,8 @@
     "views/userConfirmationView",
     "hbs!quickview/templates/qvShellTemplate",
     "hbs!templates/views/confirmationViews/deleteConfirmationView",
-    "hbs!templates/views/confirmationViews/discardConfirmationView"
+    "hbs!templates/views/confirmationViews/discardConfirmationView",
+    "hbs!quickview/metric/templates/failedToSaveTemplate"
 ],
 function(
     setImmediate,
@@ -17,7 +18,8 @@ function(
     UserConfirmationView,
     qvShellTemplate,
     deleteConfirmationTemplate,
-    discardConfirmationTemplate
+    discardConfirmationTemplate,
+    failedToSaveTemplate
 )
 {
 
@@ -80,7 +82,6 @@ function(
 
         saveAndClose: function()
         {
-            this.closing = true;
             var self = this;
             var promise = this.originalModel.save(this.model.attributes, { wait: true });
             promise.then(function()
@@ -91,7 +92,12 @@ function(
                     theMarsApp.controllers.calendarController.weeksCollection.addItem(self.model);
                 }
 
+                self.closing = true;
                 self.close();
+            }, function()
+            {
+                var dialog = new UserConfirmationView({ template: failedToSaveTemplate });
+                dialog.render();
             });
         },
 
@@ -104,16 +110,9 @@ function(
 
         destroyAndClose: function()
         {
+            this.originalModel.destroy();
             this.closing = true;
-            var promise = this.originalModel.destroy({ wait: true });
-            if(promise)
-            {
-                promise.then(_.bind(this.close, this));
-            }
-            else
-            {
-                this.close();
-            }
+            this.close();
         },
 
         _onDiscardClicked: function()
