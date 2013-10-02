@@ -15,12 +15,13 @@ function(
             this.sourceCollection = options.collection;
             this.minSize = options.minSize || 8;
             this.maxSize = options.maxSize || 25;
+            this.minBeforeCurrentModel = options.minBeforeCurrentModel || 4;
 
             this._configureSorting();
             this._bindSourceCollectionEvents();
 
             // QL: Rename firstModel to ?
-            this.centerOnModel(options.firstModel);
+            this.beginOnModel(options.firstModel);
         },
 
         fetchPrevious: function(numberToFetch)
@@ -66,16 +67,20 @@ function(
             this._limitSize({dropFrom: "beginning"});
         },
 
-        centerOnModel: function(model, options)
+        beginOnModel: function(model, options)
         {
             this.trigger("before:changes"); // Warn that lots of changes are coming
             model = model || this.sourceCollection.at(Math.floor(this.sourceCollection.length / 2));
             if(!model) return;
 
             this.reset(model, options);
-            this.fetchNext(Math.ceil(this.minSize / 2));
-            this._ensureSize({fetchFrom: "beginning"});
+            this._ensureSize({ fetchFrom: "end" });
             this.trigger("after:changes"); // Notify that batch changes are finished
+        },
+
+        fillBeforeFirstModel: function()
+        {
+            this._ensureSize({fetchFrom: "beginning", minimumNumberToFetch: this.minBeforeCurrentModel });
         },
 
         _configureSorting: function()
@@ -93,7 +98,8 @@ function(
             this.listenTo(this.sourceCollection, 'remove', _.bind(this._onSourceRemove, this));
             this.listenTo(this.sourceCollection, 'reset', function(models, options)
             {
-                self.centerOnModel(options.target, options);
+                self.reset();
+                self.beginOnModel(options.target, options);
             });
 
             this.listenTo(this.sourceCollection, 'all', function(eventName)
@@ -151,7 +157,12 @@ function(
         _ensureSize: function(options)
         {
             var numberToFetch = this.minSize - this.length;
-            if (numberToFetch <= 0) return;
+
+            if(numberToFetch <= 0 && options.minimumNumberToFetch)
+                numberToFetch = options.minimumNumberToFetch;
+
+            if (numberToFetch <= 0)
+                return;
 
             if (options.fetchFrom === "beginning")
             {
@@ -245,7 +256,7 @@ function(
             this.on('show', function()
             {
                 setImmediate(function() {
-                    self.scrollToModel(self.firstModel, 0);
+                    self.lockAndFillBeforeFirstModel();
                 });
             });
 
@@ -254,11 +265,20 @@ function(
                 if (options.target)
                 {
                     setImmediate(function() {
-                        self.scrollToModel(options.target, 0);
+                        self.firstModel = options.target;
+                        self.lockAndFillBeforeFirstModel();
+                        //self.scrollToModel(options.target, 0);
                     }); 
                 }
             });
 
+        },
+
+        lockAndFillBeforeFirstModel: function()
+        {
+            this.lockScrollPosition();
+            this.collection.fillBeforeFirstModel();
+            this.unlockScrollPosition();
         },
 
         scrollToModel: function(model, duration)
@@ -266,7 +286,7 @@ function(
             var view = this.children.findByModel(model);
             clearTimeout(this.scrollStopTimeout);
             if(!view || view.$el.css('display') === 'none') {
-                this.collection.centerOnModel(model);
+                this.collection.beginOnModel(model);
                 view = this.children.findByModel(model);
                 duration = 0;
             }
@@ -278,7 +298,16 @@ function(
             }
 
             var scrollTop = view.$el.position().top + this.$el.scrollTop();
-            this._animateScroll(scrollTop, duration);
+
+            if(duration > 0)
+            {
+                this._animateScroll(scrollTop, duration);
+            }
+            else
+            {
+                this.$el.scrollTop(scrollTop);
+            }
+
             this.scrollAnchor = {
                 view: view,
                 position: {top: 0}
