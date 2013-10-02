@@ -56,7 +56,6 @@ function(
 
         formatMetric: function(index, value)
         {
-
             return TP.utils.metrics.formatValueFor(this._metricDetails(index), { value: value });
         },
 

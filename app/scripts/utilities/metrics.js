@@ -55,6 +55,11 @@ function(
 
             value = metricsUtils._limitValue(info, value);
 
+            if(value === null || value === undefined)
+            {
+                return value;
+            }
+
             if (info.enumeration)
             {
                 var option = _.find(info.enumeration, function(option)
@@ -66,7 +71,8 @@ function(
             }
             else if(info.units)
             {
-                var formattedValue = conversionUtils.formatUnitsValue(info.units, value);
+                options = _.extend({ defaultValue: "0" }, options);
+                var formattedValue = conversionUtils.formatUnitsValue(info.units, value, options);
                 if(options && options.displayUnits)
                 {
                     formattedValue += " " + metricsUtils.formatUnitsFor(details, options);
