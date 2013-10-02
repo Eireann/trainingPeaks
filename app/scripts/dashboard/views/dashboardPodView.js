@@ -58,6 +58,7 @@ function(
             this.on("render", this._renderChartAfterRender, this);
 
             this.listenTo(theMarsApp.user, "change:units", _.bind(this._renderChart, this));
+            this.listenTo(theMarsApp.user, "change:dateFormat", _.bind(this._renderChart, this));
 
             this.once("render", this._bindPlotClick, this);
             this._setChartCssClass();
@@ -95,16 +96,17 @@ function(
             // show a subtitle in the pod view that displays the currently selected Date Range, 
             // but only if not using the Dashboard Global setting
             var dateOptions = this.model.get('dateOptions'),
-                startDate = dateOptions.startDate,
-                endDate = dateOptions.endDate,
                 quickDateSelectOption = dateOptions.quickDateSelectOption;
 
-            if (startDate && endDate)
+            var chartDateOption = ChartUtils.findChartDateOption(quickDateSelectOption);
+
+            if (chartDateOption.customStartDate)
             {
-                return moment(startDate).utc().format("MM-DD-YYYY") + " - " + moment(endDate).utc().format("MM-DD-YYYY");
+                dateOptions = ChartUtils.buildChartParameters(dateOptions);
+                return TP.utils.datetime.format(moment(dateOptions.startDate).utc()) + " - " + TP.utils.datetime.format(moment(dateOptions.endDate).utc());
             } else if (quickDateSelectOption && quickDateSelectOption !== 1)
             {
-                return ChartUtils.findChartDateOption(quickDateSelectOption).label;
+                return chartDateOption.label;
             }
             return "";
         },

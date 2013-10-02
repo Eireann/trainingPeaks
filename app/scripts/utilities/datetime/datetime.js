@@ -11,6 +11,7 @@
         longDateFormat: "YYYY-MM-DDThh:mm:ss",
 
         format: format,
+        parse: format.parse,
         convert: convert,
 
         isThisWeek: function(dateToCheck)

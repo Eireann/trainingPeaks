@@ -33,10 +33,7 @@ function(
         lineThickness: 1,
         pointRadius: 1.5,
 
-        settingsView: pmcChartSettings,
-
-        // Why is this set at LOAD time?
-        today: moment().hour(0).format("YYYY-MM-DD"), 
+        settingsView: pmcChartSettings, 
 
         defaults: {
                 atlConstant: 7,
@@ -168,6 +165,8 @@ function(
 
         buildFlotPoints: function(modelData, TSBMinimum)
         {
+            var today = moment().hour(0).format("YYYY-MM-DD");
+
             var chartPoints = {
                 TSS: [],
                 ATL: [],
@@ -191,7 +190,7 @@ function(
 
                 // for today, overlap the atl/ctl/csb lines so there is not a gap between present and future,
                 // but don't duplicate TSS
-                if (itemDate === this.today)
+                if (itemDate === today)
                 {
 
                     //console.log(itemDate + " is today");
@@ -210,7 +209,7 @@ function(
                     chartPoints.TSB.push([dayMomentValue, item.tsb, TSBMinimum]);
 
                     // put all future value into the Future points arrays
-                } else if (itemDate > this.today)
+                } else if (itemDate > today)
                 {
                     //console.log(itemDate + " is future");
                     chartPoints.TSSFuture.push([dayMomentValue, item.tssPlanned]);
@@ -615,9 +614,7 @@ function(
 
                 tickFormatter: function(value, axis)
                 {
-                    var instance = moment(value);
-                    //todo: base formatter on settings
-                    return instance.format("MM/DD/YY");
+                    return TP.utils.datetime.format(value);
                 },
                 font: {
                     family: "HelveticaNeueW01-55Roma",
@@ -633,12 +630,13 @@ function(
 
         buildTooltipData: function(flotItem)
         {
+            var today = moment().hour(0).format("YYYY-MM-DD");
             var index = flotItem.dataIndex;
             var tips = [];
             var item = this.rawData[index];
 
             var itemDay = moment(item.workoutDay).hour(0);
-            tips.push({ label: "Date", value: itemDay.format("MM/DD/YY") });
+            tips.push({ label: "Date", value: TP.utils.datetime.format(itemDay) });
 
             var tss = item.tssActual;
             var intensity = item.ifActual;
@@ -646,7 +644,7 @@ function(
             var atl = item.atl;
             var tsb = item.tsb;
 
-            if (itemDay.diff(this.today) > 0)
+            if (itemDay.diff(today) > 0)
             {
                 tss = item.tssPlanned;
                 intensity = item.ifPlanned;

@@ -1,11 +1,12 @@
 requirejs(
 [
+    "moment",
     "app",
     "TP"
 ],
-function(theMarsApp, TP)
+function(moment, theMarsApp, TP)
 {
-    describe("TP.utils.datetime.format template helper", function()
+    describe("TP.utils.datetime.format", function()
     {
 
         it("Should print a formated date from a unix epoch integer", function()
@@ -93,6 +94,27 @@ function(theMarsApp, TP)
 
             });
 
+            describe("Parse", function()
+            {
+
+                it("Should return a moment", function()
+                {
+                    var d = TP.utils.datetime.format.parse("1/4/2013");
+                    expect(moment.isMoment(d)).toBeTruthy();
+                });
+
+                it("Should parse dates as M/D/Y by default", function()
+                {
+                    var d = TP.utils.datetime.format.parse("4/1/2013");
+                    expect(d.format("YYYY-MM-DD")).toBe("2013-04-01");
+                });
+
+                it("Should parse formatted dates", function()
+                {
+                    var d = TP.utils.datetime.format.parse("Apr 1, 2013", "MMM D, YYYY");
+                    expect(d.format("YYYY-MM-DD")).toBe("2013-04-01");
+                });
+            });
         });
 
         describe("dmy", function()
@@ -159,6 +181,27 @@ function(theMarsApp, TP)
 
             });
 
+            describe("Parse", function()
+            {
+
+                it("Should return a moment", function()
+                {
+                    var d = TP.utils.datetime.format.parse("1/4/2013");
+                    expect(moment.isMoment(d)).toBeTruthy();
+                });
+
+                it("Should parse dates as D/M/Y by default", function()
+                {
+                    var d = TP.utils.datetime.format.parse("1/4/2013");
+                    expect(d.format("YYYY-MM-DD")).toBe("2013-04-01");
+                });
+
+                it("Should parse formatted dates", function()
+                {
+                    var d = TP.utils.datetime.format.parse("1 Apr, 2013", "MMM D, YYYY");
+                    expect(d.format("YYYY-MM-DD")).toBe("2013-04-01");
+                });
+            });
         });
     });
 });

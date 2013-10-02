@@ -230,7 +230,7 @@ function(
       _formatDateRange: function(xhr)
       {
          if(!xhr) return;
-         return moment(xhr.startDate).format("L") + " - " + moment(xhr.endDate).format("L");
+         return TP.utils.datetime.format(xhr.startDate) + " - " + TP.utils.datetime.format(xhr.endDate);
       },
 
       _parsePeaks: function(data)
@@ -254,7 +254,7 @@ function(
       {
          var peak = flotItem.series.raw[flotItem.dataIndex];
          return [
-            { value: moment(peak.date).format("ddd, L") },
+            { value: TP.utils.datetime.format(peak.date, "ddd, M/D/YYYY") },
             { value: peak.title },
             { value: this._formatPeakValue(peak.value) }
          ];

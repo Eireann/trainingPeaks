@@ -140,7 +140,7 @@ function(
                         },
                         tickFormatter: function(date)
                         {
-                            return moment(date).format("MM/DD/YY");
+                            return TP.utils.datetime.format(date);
                         }
                     },
                     yaxes: yaxes,

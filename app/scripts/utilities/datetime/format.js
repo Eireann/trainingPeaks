@@ -69,6 +69,29 @@ function(_, moment)
         }
     };
 
+    // TP.utils.datetime.format.parse
+    format.parse = function(momentParseableDate, parseFormat)
+    {
+        if(!parseFormat)
+        {
+            parseFormat = defaultDateFormatString;
+        }
+        parseFormat = format.convertFormatStringToUserPreferredDateFormat(parseFormat);
+        return moment(momentParseableDate, parseFormat);
+    };
+
+    format.getFormatForDatepicker = function()
+    {
+        var userFormat = getAppUserDateFormat();
+        if(userFormat === "mdy")
+        {
+            return "m/d/yy";
+        }
+        else
+        {
+            return "d/m/yy";
+        }
+    }
     // convert based on user preferences
     // converts "L" date format to appropriate MM/DD/YYYY format
     // converts separators - to /

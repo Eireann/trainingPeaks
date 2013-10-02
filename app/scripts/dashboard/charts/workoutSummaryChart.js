@@ -307,7 +307,7 @@ function(
                         ticks: _.bind(this._generateTimeTicks, this),
                         tickFormatter: function(date)
                         {
-                            return moment(date).format("MM/DD/YY");
+                            return TP.utils.datetime.format(date); 
                         },
                         color: "transparent"
                     }
@@ -484,14 +484,14 @@ function(
             if(this.get("dateGrouping") === 1)
             {
                 tooltip.unshift({
-                    value: moment(entry.date).format("L")
+                    value: TP.utils.datetime.format(entry.date)
                 });
             }
             else
             {
                 tooltip.unshift({
-                    value: moment(entry.date).format("L") + " - " +
-                        moment(entry.date).add(6, "days").format("L")
+                    value: TP.utils.datetime.format(entry.date) + " - " +
+                        TP.utils.datetime.format(moment(entry.date).add(6, "days"))
                 });
             }
 

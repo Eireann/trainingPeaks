@@ -110,7 +110,7 @@ function(
         _formatXTick: function(weekNumber)
         {
             var totalWeeks = this._data.length;
-            var formattedWeek = this._getWeekStartDate(weekNumber).format("MM/DD/YYYY");
+            var formattedWeek = TP.utils.datetime.format(this._getWeekStartDate(weekNumber));
             //if(weekNumber === 1)
             //{
                 return formattedWeek;
