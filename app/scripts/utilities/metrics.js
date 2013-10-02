@@ -106,9 +106,14 @@ function(
             }
         },
 
+        isBlank: function(value)
+        {
+            return (!value && value !== 0) || (_.isArray(value) && (_.isEmpty(value) || _.all(value, metricsUtils.isBlank)))
+        },
+
         _limitValue: function(info, value)
         {
-            if(_.isNull(value) || _.isUndefined(value) || (_.isArray(value) && _.isEmpty(value)))
+            if(metricsUtils.isBlank(value))
             {
                 return value;
             }
@@ -121,6 +126,7 @@ function(
             {
                 return info.max;
             }
+
             return value;
         }
 

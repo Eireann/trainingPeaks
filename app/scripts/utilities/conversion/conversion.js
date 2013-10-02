@@ -250,8 +250,8 @@
 
         parseInteger: function(value, options)
         {
-            var numValue = Number(value);
-            return Math.round(numValue); 
+            var numValue = conversion.parseNumber(value, options);
+            return numValue ? Math.round(numValue) : numValue;
         },
 
         parseNumber: function(value, options)

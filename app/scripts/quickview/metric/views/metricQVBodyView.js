@@ -56,10 +56,14 @@ function(
 
             this.collection.each(function(model)
             {
-                var value = model.get("value");
-                if(!_.isNull(value) && !_.isUndefined(value) && !(_.isArray(value) && _.isEmpty(value)))
+                var value = model.get("value"), type = model.get("type");
+                if(TP.utils.metrics.isBlank(value))
                 {
-                    detailsByType[model.get("type")] = model.attributes;
+                    delete detailsByType[type]
+                }
+                else
+                {
+                    detailsByType[type] = model.attributes;
                 }
             });
 

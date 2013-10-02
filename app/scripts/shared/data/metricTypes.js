@@ -18,7 +18,8 @@ function()
         {
             id: 2,
             label: "Percent Fat",
-            units: "%"
+            units: "%",
+            max: 80
         },
         {
             id: 3,
@@ -53,7 +54,9 @@ function()
         {
             id: 5,
             label: "Pulse",
-            units: "heartrate"
+            units: "heartrate",
+            min: 10,
+            max: 200
         },
         {
             id: 6,
@@ -112,7 +115,9 @@ function()
         {
             id: 11,
             label: "Sleep Elevation",
-            units: "elevation"
+            units: "elevation",
+            min: -457,
+            max: 9144
         },
         {
             id: 12,
@@ -132,7 +137,9 @@ function()
         {
             id: 15,
             label: "RMR",
-            units: "kcal"
+            units: "kcal",
+            min: 500,
+            max: 5000
         },
         {
             id: 16,
@@ -144,7 +151,9 @@ function()
         {
             id: 17,
             label: "Water Consumption",
-            units: "ml"
+            units: "ml",
+            min: 0,
+            max: 29573
         },
         {
             id: 18,
@@ -246,102 +255,149 @@ function()
         {
             id: 25,
             label: "Shoulder",
-            units: "cm"
+            units: "cm",
+            min: 0,
+            max: 127
         },
         {
             id: 26,
             label: "Chest",
-            units: "cm"
+            units: "cm",
+            min: 0,
+            max: 1270
         },
         {
             id: 27,
             label: "Waist",
-            units: "cm"
+            units: "cm",
+            min: 0,
+            max: 1270
         },
         {
             id: 28,
             label: "Abdomen",
-            units: "cm"
+            units: "cm",
+            min: 0,
+            max: 1270
         },
         {
             id: 29,
             label: "Hips",
-            units: "cm"
+            units: "cm",
+            min: 0,
+            max: 1270
         },
         {
             id: 30,
             label: "Bust",
-            units: "cm"
+            units: "cm",
+            min: 0,
+            max: 127
+
         },
         {
             id: 31,
             label: "Left Wrist",
-            units: "cm"
+            units: "cm",
+            min: 0,
+            max: 127
+
         },
         {
             id: 32,
             label: "Right Wrist",
-            units: "cm"
+            units: "cm",
+            min: 0,
+            max: 127
+
         },
         {
             id: 33,
             label: "Left Bicep",
-            units: "cm"
+            units: "cm",
+            min: 0,
+            max: 127
+
         },
         {
             id: 34,
             label: "Right Bicep",
-            units: "cm"
+            units: "cm",
+            min: 0,
+            max: 127
+
         },
         {
             id: 35,
             label: "Left Forearm",
-            units: "cm"
+            units: "cm",
+            min: 0,
+            max: 127
+
         },
         {
             id: 36,
             label: "Right Forearm",
-            units: "cm"
+            units: "cm",
+            min: 0,
+            max: 127
+
         },
         {
             id: 37,
             label: "Left Thigh",
-            units: "cm"
+            units: "cm",
+            min: 0,
+            max: 508
         },
         {
             id: 38,
             label: "Right Thigh",
-            units: "cm"
+            units: "cm",
+            min: 0,
+            max: 508
         },
         {
             id: 39,
             label: "Left Calf",
-            units: "cm"
+            units: "cm",
+            min: 0,
+            max: 254
         },
         {
             id: 40,
             label: "Right Calf",
-            units: "cm"
+            units: "cm",
+            min: 0,
+            max: 254
         },
         {
             id: 41,
             label: "Neck",
-            units: "cm"
+            units: "cm",
+            min: 0,
+            max: 127
         },
         {
             id: 42,
             label: "Glutes",
-            units: "cm"
+            units: "cm",
+            min: 0,
+            max: 127
         },
         {
             id: 43,
             label: "Torso",
-            units: "cm"
+            units: "cm",
+            min: 0,
+            max: 254
         },
         {
             id: 44,
             label: "Blood Glucose",
             units: "mg/dL",
+            min: 0,
+            max: 500
 
         },
         {
@@ -352,7 +408,7 @@ function()
             [
                 { index: 0 }
             ],
-            min: 0.1,
+            min: 0,
             max: 1000
         },
         {
@@ -450,7 +506,8 @@ function()
         {
             id: 58,
             label: "Steps",
-            units: "none"
+            units: "none",
+            min: 0
         },
         {
             id: 59,
