@@ -24,7 +24,7 @@ function(
             });
             view = new MetricQVItemView({ model: model });
             view.render();
-        };
+        }
 
         // Basic Numeric Metrics
         _.each(metricTypes, function(metricInfo)
