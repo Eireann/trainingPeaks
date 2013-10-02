@@ -39,6 +39,7 @@ function(TP, touchPunch, draggable, exerciseLibraryItemViewTemplate, ExerciseLib
 
             _.bindAll(this, "draggableHelper", "onDragStart", "onDragStop");
 
+            this.listenTo(theMarsApp.user, "change:units", _.bind(this.render, this));
             this.getIconType();
         },
 

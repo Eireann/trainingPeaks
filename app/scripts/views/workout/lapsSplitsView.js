@@ -71,7 +71,8 @@ function(
                 sportTypeID = this.model.get('workoutTypeValueId'),
                 useSpeedOrPace = _.contains([3, 13, 1, 12], sportTypeID) ? "pace" : "speed",  // run, walk, swim, row are "Avg Pace", otherwise "Avg Speed"
                 distanceKey = TP.utils.units.getUnitsLabel("distance", sportTypeID, null, {abbreviated: false}),
-                hasSomeTSS = !!(_.compact(_.pluck(lapsData, "trainingStressScoreActual")).length); // some laps have TSS, some don't. So we need to test here at the top level
+                hasSomeTSS = !!(_.compact(_.pluck(lapsData, "trainingStressScoreActual")).length), // some laps have TSS, some don't. So we need to test here at the top level
+                TSStype = TP.utils.units.getUnitsLabel("tss", sportTypeID, new TP.Model(lapsData[0])); // get tss type from first model as some laps may have different tss source
 
             return {
                 lapsData: lapsData,
@@ -82,7 +83,8 @@ function(
                 // capitalize first letter of distance key for header row
                 // Can't do it with CSS because some headers need lower case first letters (e.g. rTSS)
                 distanceKey: distanceKey[0].toUpperCase() + distanceKey.substring(1),
-                hasSomeTSS: !!(_.compact(_.pluck(lapsData, "trainingStressScoreActual")).length) // some laps have TSS, some don't. So we need to test here at the top level
+                hasSomeTSS: hasSomeTSS,
+                TSStype: TSStype
             };
         },
         _buildLapObjects: function(workoutDefaults)
@@ -96,7 +98,8 @@ function(
                     canShowNGP = workoutDefaults.sportTypeID === 3 || workoutDefaults.sportTypeID === 13,
                     canShowNP = !canShowNGP && lap.normalizedPowerActual,
                     canShowIF = lap.intensityFactorActual,
-                    TSStype = TP.utils.units.getUnitsLabel("tss", workoutDefaults.sportTypeID, new TP.Model(lap)),
+                    TSStype = workoutDefaults.TSStype,
+                    //TSStype = TP.utils.units.getUnitsLabel("tss", workoutDefaults.sportTypeID, new TP.Model(lap)),
                     averagePaceOrSpeedValue = workoutDefaults.useSpeedOrPace === "pace" ? TP.utils.conversion.formatUnitsValue("pace", lap.averageSpeed, {defaultValue: null, workoutTypeId: workoutDefaults.sportTypeID}) : TP.utils.conversion.formatSpeed(lap.averageSpeed),
                     maximumPaceOrSpeedValue = workoutDefaults.useSpeedOrPace === "pace" ? TP.utils.conversion.formatUnitsValue("pace", lap.maximumSpeed, {defaultValue: null, workoutTypeId: workoutDefaults.sportTypeID}) : TP.utils.conversion.formatSpeed(lap.maximumSpeed);
 

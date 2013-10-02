@@ -20,7 +20,7 @@
 			@include selectionBox(168px);
 	        width: 168px;
 	        padding-top: 5px;
-	        
+
 	        select
 	        {
 	            margin-bottom: 3px;
@@ -32,7 +32,7 @@
 	.workoutStatsRow
 	{
 		@include grid-row();
-		
+
 		clear: both;
 	    height: 23px;
 
@@ -41,7 +41,7 @@
 			float:left;
 	        padding-right: 2px;
 	 		// height: 23px;
-			
+
 			@include inputs(83.5px, 21px, 12px, $fontFamilyRegular);
 	       	input {
 				margin: 0;
@@ -55,7 +55,7 @@
 	        }
 		}
 
-		
+
 
 		.workoutStatsColumnMinMaxAvg
 		{
@@ -79,7 +79,7 @@
 	        }
 
 		}
-		
+
 		@include labels($fontFamilyRegular, $fontSizeSmaller, $TPGrey3, normal);
 
 		.workoutStatsUnitLabel
@@ -149,25 +149,28 @@
 	}
 
 
-	#commentsContainer {
-		.comments {
-			width:275px;
-			float:left;
-			padding-top:14px;
-			.header {
-	            font-family: $fontFamilyHeavy;
-	            font-size: $fontSizeSmall;
-	            margin-bottom: 5px;
-	            color: $TPGrey3;
-	        }
+  #commentsContainer {
+    .comments {
+      width:275px;
+      float:left;
+      padding-top:14px;
+      .header {
+        font-family: $fontFamilyHeavy;
+        font-size: $fontSizeSmall;
+        margin-bottom: 5px;
+        color: $TPGrey3;
+      }
+
+      textarea#descriptionInput,
+      textarea#preActivityCommentsInput,
+      textarea#postActivityCommentsInput {
+        max-width: 275px;
+        resize: vertical;
+      }
 		}
 	}
 
 }
-
-
-
-
 
 @media print {
 	.stats {
@@ -191,13 +194,13 @@
 			@include selectionBox(168px);
 	        width: 168px;
 	        padding-top: 5px;
-	        
+
 	        select {
 	            margin-bottom: 3px;
 	            color: $TPGrey3;
 	        }
 		}
-		
+
 		#workoutPlannedCompletedStats {
 			float:left;
 			width:100%;
@@ -206,7 +209,7 @@
 				width:25%;
 			}
 		}
-		
+
 		#workoutMinMaxAvgStats {
 			float:left;
 			width:100%;
@@ -236,7 +239,7 @@
 		{
 			float:left;
 	        padding-right: 2px;
-			
+
 			@include inputs(83.5px, 21px, 12px, $fontFamilyRegular);
 	       	input {
 				margin: 0;
@@ -275,7 +278,7 @@
 	        }
 
 		}
-		
+
 		@include labels($fontFamilyRegular, $fontSizeSmaller, $TPGrey3, normal);
 
 		.workoutStatsUnitLabel
@@ -316,8 +319,7 @@
 
 	}
 
-	.columnLabelsMinMaxAvg
-	{
+	.columnLabelsMinMaxAvg {
 		padding-left: 25%;
 		width: 100%;
 		background: transparent;
@@ -330,21 +332,21 @@
 		label {
 			float: left;
 			width:22%;
-	        text-align: center;
-	        margin-bottom:5px;
-	        margin-top:2px;
+      text-align: center;
+      margin-bottom:5px;
+      margin-top:2px;
 
-	        &.ghosted {
-	            color: $TPGrey7;
-	        }
-		}
-	}
+      &.ghosted {
+          color: $TPGrey7;
+      }
+    }
+  }
 
 
 	#commentsContainer {
 		float:left;
 		width:50%;
-		
+
 		.comments {
 			width:100%;
 			float:left;
@@ -356,49 +358,40 @@
 				height:auto;
 				overflow-y:visible !important;
 			}
-			
-			.header {
-	            font-family: $fontFamilyHeavy;
-	            font-size: $fontSizeSmall;
-	            margin-bottom: 5px;
-	            color: $TPGrey3;
-	        }
 
-	        textarea#descriptionInput,
-	        textarea#preActivityCommentsInput,
-	        textarea#postActivityCommentsInput {
-	        	display: none;
-	        }
+      .header {
+        font-family: $fontFamilyHeavy;
+        font-size: $fontSizeSmall;
+        margin-bottom: 5px;
+        color: $TPGrey3;
+      }
 
-	        #descriptionPrintable,
-	        #preActivityCommentsPrintable,
-	        #postActivityCommentsPrintable {
-	        	display: block;
-	        	overflow:visible;
-	        	height:auto;
-	        	margin-bottom: 20px;
-	        	white-space: pre-wrap;
-	        	font-size: $fontSizeSmall !important;
-	        	line-height:$fontSizeXLarge;
-	        }
+      #descriptionPrintable,
+      #preActivityCommentsPrintable,
+      #postActivityCommentsPrintable {
+        display: block;
+        overflow: visible;
+        height: auto;
+        margin-bottom: 20px;
+        white-space: pre-wrap;
+        font-size: $fontSizeSmall !important;
+        line-height: $fontSizeXLarge;
+      }
 
-	        .workoutCommentsCollection {
-	        	font-size: $fontSizeSmall !important;
-	        	line-height:$fontSizeXLarge;
-	        	margin-left:10px;
+      .workoutCommentsCollection {
+        font-size: $fontSizeSmall !important;
+        line-height:$fontSizeXLarge;
+        margin-left:10px;
 
-	        	.commentHeader {
-	        		padding:1em 0 .25em 0;
-	        		font-family: $fontFamilyHeavy;
-	        	}
+        .commentHeader {
+          padding:1em 0 .25em 0;
+          font-family: $fontFamilyHeavy;
+        }
 
-	        	.commentBody {
-	        		white-space: pre-wrap;
-	        	}
-	        }
-
-
-
-		}
-	}
+        .commentBody {
+          white-space: pre-wrap;
+        }
+      }
+    }
+  }
 }
