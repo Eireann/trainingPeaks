@@ -70,6 +70,8 @@ function(
             var $mainRegion;
             var $body;
             
+            var metric;
+
             beforeEach(function()
             {
                 testHelpers.startTheAppAndLogin(xhrData.users.barbkprem);
@@ -77,7 +79,7 @@ function(
                 $body = theApp.getBodyElement();
                 theApp.router.navigate("calendar", true);
 
-                var metric = {
+                metric = {
                     id: 1,
                     timeStamp: moment().format("YYYY-MM-DDTHH:mm:ss"),
                     athleteId: 426489,
@@ -105,6 +107,56 @@ function(
             {
                 $mainRegion.find("#calendarContainer .day.today .metric").trigger("mouseup");
                 expect($body.find(".metricQuickView").length).toBe(1);
+            });
+
+            it("Should save the metrics and close the quickview when OK is clicked", function()
+            {
+                $mainRegion.find("#calendarContainer .day.today .metric").trigger("mouseup");
+                expect($body.find(".metricQuickView").length).toBe(1);
+                $body.find(".okButton").click();
+
+                var request = testHelpers.findRequest("PUT", "timedmetrics/1");
+                expect(JSON.parse(request.requestBody)).toEqual(metric);
+
+                testHelpers.resolveRequest("PUT", "timedmetrics/1");
+                expect($body.find(".metricQuickView").length).toBe(0);
+            });
+
+            it("Should ask, then not save the metrics and close the quickview when CANCEL is clicked", function()
+            {
+                $mainRegion.find("#calendarContainer .day.today .metric").trigger("mouseup");
+                expect($body.find(".metricQuickView").length).toBe(1);
+
+                $body.find(".discardButton").click();
+                $body.find("#userConfirm").click();
+
+                expect(testHelpers.hasRequest("PUT", "timedmetrics/1")).toBe(false);
+                expect($body.find(".metricQuickView").length).toBe(0);
+            });
+
+            it("Should not destroy the metrics and close the quickview when DELETE is clicked", function()
+            {
+                $mainRegion.find("#calendarContainer .day.today .metric").trigger("mouseup");
+                expect($body.find(".metricQuickView").length).toBe(1);
+
+                $body.find(".deleteButton").click();
+                $body.find("#userConfirm").click();
+
+                expect(testHelpers.hasRequest("DELETE", "timedmetrics/1")).toBe(true);
+                expect($body.find(".metricQuickView").length).toBe(0);
+            });
+
+            it("Should save and close when the user clicks outside the quickview", function()
+            {
+                $mainRegion.find("#calendarContainer .day.today .metric").trigger("mouseup");
+                expect($body.find(".metricQuickView").length).toBe(1);
+                $body.find(".modalOverlay").click();
+
+                var request = testHelpers.findRequest("PUT", "timedmetrics/1");
+                expect(JSON.parse(request.requestBody)).toEqual(metric);
+
+                testHelpers.resolveRequest("PUT", "timedmetrics/1");
+                expect($body.find(".metricQuickView").length).toBe(0);
             });
 
         });
