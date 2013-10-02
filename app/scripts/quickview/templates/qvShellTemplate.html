@@ -1,0 +1,49 @@
+﻿<div class="QVShell">
+    <div class="QVHeader">
+  
+        <div class="closeAndSettings cf">
+            <span class="closeIcon"></span>
+            <!-- <span class="expandIcon" class="disabled"></span> -->
+            <!-- <span class="collapseIcon"></span> -->
+            <!-- <span class="menuIcon"></span> -->
+        </div>
+
+        <div>
+            <div class="dateAndTime">
+                <span class="date">
+                    <span class="dayName">{{formatDate activityDate "dddd"}}</span> 
+                    <span class="calendarDate">{{formatDate activityDate "MMMM DD, YYYY"}}</span>
+                </span> 
+                <input type="text" class="timeInput" value="{{formatDate activityTime 'h:mm a' }}" placeholder="Enter Time" />
+            </div>
+
+            <div class="QVBar"></div>
+
+            <div class="QVActions"></div>
+            <div class="ExpandoActions"></div>
+        </div>
+    </div>
+
+    <div class="QVBody"></div>
+    
+    <div class="QVFooter">
+        <!--
+        <div class="share">
+            <div class="publicCheckboxContainer">
+                <label><input type="checkbox" class="publicCheckbox"/> <span class="publicLabel" title="{{$ "PublicTooltip" }}">{{$ "Public" }}</span></label>
+            </div>
+            <div class="shareIcons cf">
+                <div class="twitterIcon disabled" title="{{$ "PublicTooltipTwitter" }}"/>
+                <div class="facebookIcon disabled" title="{{$ "PublicTooltipFacebook" }}"/>
+                <div class="linkIcon disabled" title="{{$ "PublicTooltipLink" }}"/>
+                <a class="emailLink"><div class="emailIcon disabled" title="{{$ "PublicTooltipEmail" }}"/></a>
+            </div>
+        </div>
+        -->
+        <div class="saveCloseButtons">
+            <button class="deleteButton">{{$ "Delete"}}</button>
+            <button class="discardButton">{{$ "Cancel"}}</button>
+            <button class="okButton">{{$ "OK"}}</button>
+        </div>
+    </div>
+</div>

@@ -22,7 +22,7 @@ function(
 {
     describe("save dragged workout to library", function()
     {
-        var today = moment().format("YYYY-MM-DDThh:mm:ss");
+        var today = moment().format("YYYY-MM-DDTHH:mm:ss");
         var workout = new WorkoutModel({ workoutDay: today, workoutId: '123'});
         
         beforeEach(function()

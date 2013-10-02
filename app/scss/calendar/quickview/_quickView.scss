@@ -8,8 +8,10 @@
 @import "qvFileUploadMenu";
 @import "qvSharing";
 
+@import "metricQuickView";
+
 @media screen {
-    #workOutQuickView
+    #workOutQuickView, .QVShell
     {
         overflow:hidden;
         width: 690px;
@@ -40,7 +42,7 @@
                 color: $TPGrey4;
             }
 
-            &#startTimeInput
+            &#startTimeInput, &.timeInput
             {
                 text-align: left;
             }
@@ -54,7 +56,7 @@
         cursor: default;
     }
 
-    #quickViewContent
+    #quickViewContent, .QVBody
     {
         height: 360px;
         overflow-y:scroll;
@@ -68,7 +70,12 @@
         }
     }
 
-    .quickviewFooter
+    .QVBody
+    {
+        width: 690px;
+    }
+
+    .quickviewFooter, .QVFooter
     {
         height:45px;
         background-color: $TPGrey5;
@@ -458,7 +465,7 @@
                 color: $TPGrey4;
             }
 
-            &#startTimeInput
+            &#startTimeInput, &.timeInput
             {
                 text-align: left;
             }

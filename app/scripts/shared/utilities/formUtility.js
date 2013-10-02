@@ -113,7 +113,7 @@ function(
 
             if(type === "radio")
             {
-                var checkedRadioFilter = "input[type=radio][name=" + key + "]:checked";
+                var checkedRadioFilter = "input[type=radio][name='" + key + "']:checked";
                 var $checkedRadio = $fields.filter(checkedRadioFilter);
                 if($checkedRadio.length)
                 {

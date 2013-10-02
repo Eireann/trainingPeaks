@@ -37,12 +37,32 @@ function(
             return timeStamp ? moment(timeStamp).format(TP.utils.datetime.shortDateFormat) : "";
         },
 
+        setCalendarDay: function(date)
+        {
+            date = moment(date);
+            var timeStamp = moment(this.get("timeStamp")).year(date.year()).month(date.month()).date(date.date());
+            this.set("timeStamp", timeStamp.format(TP.utils.datetime.longDateFormat));
+        },
+
+        getTimestamp: function()
+        {
+            return this.get("timeStamp");
+        },
+
+        setTimestamp: function(time)
+        {
+            time = moment(time, "h:mm a");
+            var timeStamp = moment(this.get("timeStamp"));
+            timeStamp.hour(time.hour()).minute(time.minute()).second(time.second());
+            this.set("timeStamp", timeStamp.format(TP.utils.datetime.longDateFormat));
+        },
+
         moveToDay: function(date)
         {
             date = moment(date);
             var attrs =
             {
-                timeStamp: moment(this.get("timeStamp")).year(date.year()).month(date.month()).date(date.date()).format()
+                timeStamp: moment(this.get("timeStamp")).year(date.year()).month(date.month()).date(date.date()).format(TP.utils.datetime.longDateFormat)
             };
 
             return this.save(attrs, { wait: true });
@@ -65,7 +85,7 @@ function(
             if(this.isNew())
             {
                 var target = this.clone();
-                target.set("timeStamp", moment(date).format());
+                target.set("timeStamp", moment(date).format(TP.utils.datetime.longDateFormat));
                 target.save();
                 return target;
             }
