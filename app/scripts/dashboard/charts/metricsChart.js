@@ -232,7 +232,7 @@ function(
         {
             var self = this;
             var entry = flotItem.series.entries[flotItem.dataIndex];
-            var tooltip = [{ value: moment(entry.date).format("ddd, L LT") }];
+            var tooltip = [{ value: TP.utils.datetime.format(entry.date, "ddd, M/D/YYYY h:mm a") }];
 
             _.each(this.get("dataFields"), function(metricTypeId)
             {

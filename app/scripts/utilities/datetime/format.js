@@ -24,7 +24,7 @@ function(_, moment)
         }
 
         return userDateFormat;
-    };
+    }
 
     function getCalendarDayFormatStringForMoment(momentDate)
     {
@@ -91,7 +91,8 @@ function(_, moment)
         {
             return "d/m/yy";
         }
-    }
+    };
+    
     // convert based on user preferences
     // converts "L" date format to appropriate MM/DD/YYYY format
     // converts separators - to /
