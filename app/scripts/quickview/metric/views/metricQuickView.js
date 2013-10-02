@@ -19,6 +19,8 @@ function(
 
     var MetricQuickView = QVShellView.extend({
 
+        className: QVShellView.prototype.className + " metricQuickView",
+
         modelEvents: {},
 
         serializeData: function()
