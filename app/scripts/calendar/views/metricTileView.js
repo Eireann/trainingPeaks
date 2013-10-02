@@ -28,7 +28,7 @@ function(
 
         events:
         {
-            "click .metricSettings": "_onSettingsClicked",
+            "mouseup .metricSettings": "_onSettingsClicked",
             "mouseup": "_onMouseup",
             "mousedown": "_onMousedown"
         },
@@ -97,11 +97,26 @@ function(
             this.dragging = false;
         },
 
+        _keepSettingsButtonVisible: function()
+        {
+            this.$el.addClass("menuOpen");
+        },
+
+        _allowSettingsButtonToHide: function(e)
+        {
+            this.$el.removeClass("menuOpen");
+        },
+
         _onSettingsClicked: function(e)
         {
             var offset = $(e.currentTarget).offset();
             var settingsView = new MetricTileSettingsView({ model: this.model });
             settingsView.render().bottom(offset.top + 12).center(offset.left - 4);
+
+            e.preventDefault();
+
+            this._keepSettingsButtonVisible();
+            this.listenTo(settingsView, "close", _.bind(this._allowSettingsButtonToHide, this));
         },
 
         _onMouseup: function(e)
@@ -126,6 +141,8 @@ function(
 
                 e.preventDefault();
             }
+
+            this._allowSettingsButtonToHide();
 
             this._select();
 
