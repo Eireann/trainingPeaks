@@ -59,7 +59,7 @@ function(
                 var value = model.get("value"), type = model.get("type");
                 if(TP.utils.metrics.isBlank(value))
                 {
-                    delete detailsByType[type]
+                    delete detailsByType[type];
                 }
                 else
                 {

@@ -108,7 +108,7 @@ function(
 
         isBlank: function(value)
         {
-            return (!value && value !== 0) || (_.isArray(value) && (_.isEmpty(value) || _.all(value, metricsUtils.isBlank)))
+            return (!value && value !== 0) || (_.isArray(value) && (_.isEmpty(value) || _.all(value, metricsUtils.isBlank)));
         },
 
         _limitValue: function(info, value)
