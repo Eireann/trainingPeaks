@@ -25,7 +25,7 @@ function(
 
     function formatGetDate(value)
     {
-        return value ? moment(value).format("MM-DD-YYYY") : value;
+        return value ? TP.utils.datetime.format(value) : value;
     }
 
     function formatSetDate(value)
@@ -156,7 +156,7 @@ function(
             this.model.on("change:shiftBy", this.updateShiftByOptions, this);
 
             // date picker
-            this.$(".datepicker").datepicker({ dateFormat: "mm-dd-yy", firstDay: theMarsApp.controllers.calendarController.startOfWeekDayIndex });
+            this.$(".datepicker").datepicker({ dateFormat: TP.utils.datetime.format.getFormatForDatepicker(), firstDay: theMarsApp.controllers.calendarController.startOfWeekDayIndex });
 
             // number picker, and make sure it fires a change event
             this.$(".numberpicker").spinner().on("spinstop", function(event, ui) { $(this).trigger("change", event, ui); });

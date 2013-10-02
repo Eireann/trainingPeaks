@@ -92,6 +92,11 @@ function(moment, theMarsApp, TP)
                     expect(TP.utils.datetime.format("2013-01-01T19:13:00", "h:mm a")).toBe("7:13 pm");
                 });
 
+                it("Should support L and LT formats", function()
+                {
+                    expect(TP.utils.datetime.format("2013-04-01T19:13:00", "ddd, L LT")).toBe("Mon, 4/1/2013 7:13 pm");
+                });
+
             });
 
             describe("Parse", function()
@@ -177,6 +182,11 @@ function(moment, theMarsApp, TP)
                     expect(TP.utils.datetime.format(testDate, "dddd, MMM D, YYYY")).toBe("Monday, 1 Apr, 2019");
                     expect(TP.utils.datetime.format(testDate, "dddd DD MMM, YYYY")).toBe("Monday 01 Apr, 2019");
                     expect(TP.utils.datetime.format("2013-01-01T19:13:00", "h:mm a")).toBe("7:13 pm");
+                });
+
+                it("Should support L and LT formats", function()
+                {
+                    expect(TP.utils.datetime.format("2013-04-01T19:13:00", "ddd, L LT")).toBe("Mon, 1/4/2013 7:13 pm");
                 });
 
             });

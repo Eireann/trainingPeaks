@@ -109,6 +109,9 @@ function(_, moment)
         // convert - separators to / instead
         formatString = formatString.replace(/ *- */g,"/");
 
+        // convert L and LT to more verbose formats
+        formatString = formatString.replace(/\bL\b/g,defaultDateFormatString).replace(/\bLT\b/g,"h:mm a");
+
         // split on any word type characters
         var formatParts = formatString.split(/\b/);
         var monthIndex = -1;

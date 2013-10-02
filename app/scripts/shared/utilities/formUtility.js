@@ -1,7 +1,9 @@
 define(
 [
+    "TP"
 ],
 function(
+    TP
 )
 {
     var FormUtility = {
@@ -10,7 +12,7 @@ function(
         {
             if(format === "date")
             {
-                value = moment(value) ? moment(value).format("L") : "";
+                value = moment(value) ? TP.utils.datetime.format(value) : "";
             }
             else if(format === "number")
             {

@@ -165,7 +165,7 @@ function(
         {
             this.$(".datepicker").datepicker(
             {
-                dateFormat: "mm/dd/yy",
+                dateFormat: TP.utils.datetime.format.getFormatForDatepicker(),
                 changeYear: true,
                 changeMonth: true
             });
