@@ -156,7 +156,7 @@ function(
                 expect(JSON.parse(applyRequest.requestBody).athleteId).toBe(xhrData.users.barbkprem.userId);
                 expect(JSON.parse(applyRequest.requestBody).planId).toBe(1);
                 expect(JSON.parse(applyRequest.requestBody).startType).toBe(3);
-                expect(JSON.parse(applyRequest.requestBody).targetDate).toBe(wednesday.format("M/D/YYYY"));
+                expect(JSON.parse(applyRequest.requestBody).targetDate).toBe(wednesday.format("YYYY-MM-DD"));
             });
 
             it("Should trigger a start on date apply command, starting on any day", function()
@@ -173,7 +173,7 @@ function(
                 expect(JSON.parse(applyRequest.requestBody).athleteId).toBe(xhrData.users.barbkprem.userId);
                 expect(JSON.parse(applyRequest.requestBody).planId).toBe(1);
                 expect(JSON.parse(applyRequest.requestBody).startType).toBe(1);
-                expect(JSON.parse(applyRequest.requestBody).targetDate).toBe(tuesday.format("M/D/YYYY"));
+                expect(JSON.parse(applyRequest.requestBody).targetDate).toBe(tuesday.format("YYYY-MM-DD"));
             });
 
             it("Should trigger an end on event date apply command, ending on the event date", function()
@@ -191,7 +191,7 @@ function(
                 expect(JSON.parse(applyRequest.requestBody).athleteId).toBe(xhrData.users.barbkprem.userId);
                 expect(JSON.parse(applyRequest.requestBody).planId).toBe(1);
                 expect(JSON.parse(applyRequest.requestBody).startType).toBe(2);
-                expect(JSON.parse(applyRequest.requestBody).targetDate).toBe(moment(xhrData.trainingPlanDetails.eventDate).format("M/D/YYYY"));
+                expect(JSON.parse(applyRequest.requestBody).targetDate).toBe(moment(xhrData.trainingPlanDetails.eventDate).format("YYYY-MM-DD"));
             });
 
             it("Should refresh the plan after applying the plan", function()
@@ -258,7 +258,7 @@ function(
                 expect(JSON.parse(applyRequest.requestBody).athleteId).toBe(xhrData.users.barbkprem.userId);
                 expect(JSON.parse(applyRequest.requestBody).planId).toBe(1);
                 expect(JSON.parse(applyRequest.requestBody).startType).toBe(1);
-                expect(JSON.parse(applyRequest.requestBody).targetDate).toBe(monday.format("M/D/YYYY"));
+                expect(JSON.parse(applyRequest.requestBody).targetDate).toBe(monday.format("YYYY-MM-DD"));
             });
 
             it("Should trigger an end on date apply command, ending on a sunday", function()
@@ -282,7 +282,7 @@ function(
                 expect(JSON.parse(applyRequest.requestBody).athleteId).toBe(xhrData.users.barbkprem.userId);
                 expect(JSON.parse(applyRequest.requestBody).planId).toBe(1);
                 expect(JSON.parse(applyRequest.requestBody).startType).toBe(3);
-                expect(JSON.parse(applyRequest.requestBody).targetDate).toBe(sunday.format("M/D/YYYY"));
+                expect(JSON.parse(applyRequest.requestBody).targetDate).toBe(sunday.format("YYYY-MM-DD"));
             });
 
         });
@@ -333,7 +333,7 @@ function(
                 expect(JSON.parse(applyRequest.requestBody).athleteId).toBe(xhrData.users.barbkprem.userId);
                 expect(JSON.parse(applyRequest.requestBody).planId).toBe(1);
                 expect(JSON.parse(applyRequest.requestBody).startType).toBe(1);
-                expect(JSON.parse(applyRequest.requestBody).targetDate).toBe(friday.format("M/D/YYYY"));
+                expect(JSON.parse(applyRequest.requestBody).targetDate).toBe(friday.format("YYYY-MM-DD"));
             });
 
             it("Should trigger an end on date apply command, ending on a thursday", function()
@@ -357,7 +357,7 @@ function(
                 expect(JSON.parse(applyRequest.requestBody).athleteId).toBe(xhrData.users.barbkprem.userId);
                 expect(JSON.parse(applyRequest.requestBody).planId).toBe(1);
                 expect(JSON.parse(applyRequest.requestBody).startType).toBe(3);
-                expect(JSON.parse(applyRequest.requestBody).targetDate).toBe(thursday.format("M/D/YYYY"));
+                expect(JSON.parse(applyRequest.requestBody).targetDate).toBe(thursday.format("YYYY-MM-DD"));
             });
 
         });
@@ -406,7 +406,7 @@ function(
                 expect(JSON.parse(applyRequest.requestBody).athleteId).toBe(xhrData.users.barbkprem.userId);
                 expect(JSON.parse(applyRequest.requestBody).planId).toBe(1);
                 expect(JSON.parse(applyRequest.requestBody).startType).toBe(1);
-                expect(JSON.parse(applyRequest.requestBody).targetDate).toBe("9/3/2013");
+                expect(JSON.parse(applyRequest.requestBody).targetDate).toBe("2013-09-03");
             });
         });
     });

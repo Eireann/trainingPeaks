@@ -122,7 +122,7 @@ function(
                 }
             }
 
-            return TP.utils.datetime.format(targetDate);
+            return targetDate;
         },
 
         checkWhetherDayIsSelectable: function(date)
