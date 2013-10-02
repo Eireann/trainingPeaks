@@ -140,7 +140,7 @@ function(
 
         _onRenderShell: function()
         {
-            this.$(".timeInput").timepicker({ appendTo: this.$el, timeFormat: "g:i a" });
+            this.$(".timeInput").timepicker({ appendTo: this.$el, timeFormat: "g:i a", step: 15 });
             this._updateDate();
 
             this.children.add(new this.bodyView({ model: this.model, el: this.ui.qvBody }));
