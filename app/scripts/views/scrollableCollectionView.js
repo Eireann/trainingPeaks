@@ -15,6 +15,7 @@ function(
             this.sourceCollection = options.collection;
             this.minSize = options.minSize || 8;
             this.maxSize = options.maxSize || 25;
+            this.minBeforeCurrentModel = options.minBeforeCurrentModel || 4;
 
             this._configureSorting();
             this._bindSourceCollectionEvents();
@@ -79,7 +80,7 @@ function(
 
         fillBeforeFirstModel: function()
         {
-            this._ensureSize({fetchFrom: "beginning", minimumNumberToFetch: 3});
+            this._ensureSize({fetchFrom: "beginning", minimumNumberToFetch: this.minBeforeCurrentModel });
         },
 
         _configureSorting: function()
