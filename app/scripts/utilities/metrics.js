@@ -24,7 +24,7 @@ function(
 
         infoFor: function(details)
         {
-            var info = metricTypeById[details.type];
+            var info = _.clone(metricTypeById[details.type]);
             if(info.subMetrics && details.hasOwnProperty("index"))
             {
                 var subInfo = _.find(info.subMetrics, function(subMetric)
