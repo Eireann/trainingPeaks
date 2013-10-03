@@ -39,7 +39,7 @@ function(
             // Skip enumeration type metrics
             if(metricInfo.hasOwnProperty("enumeration")) return;
 
-            describe("for metric type: " + metricInfo.type + " (" + metricInfo.label + ")", function()
+            describe("for metric type: " + metricInfo.id + " (" + metricInfo.label + ")", function()
             {
 
                 beforeEach(function() {
@@ -97,7 +97,7 @@ function(
 
             if(!metricInfo.hasOwnProperty("enumeration")) return;
 
-            describe("for metric type: " + metricInfo + " (" + metricInfo.label + ")", function()
+            describe("for metric type: " + metricInfo.id + " (" + metricInfo.label + ")", function()
             {
 
                 beforeEach(function() {
