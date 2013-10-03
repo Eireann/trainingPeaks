@@ -105,19 +105,23 @@ function(
                 key: "totalTrainingStressScoreActual",
                 units: "tss",
                 widthScale: 2 * 0.7,
-                colors: chartColors.workoutSummary.TSS
+                colors: chartColors.workoutSummary.TSS,
+                yaxisExtraInfo: { font: { color: chartColors.workoutSummary.TSS.dark } }
             }, {
                 key: "averageIntensityFactorActual",
                 units: "if",
                 widthScale: 2 * 0.3,
-                colors: chartColors.workoutSummary.IF
+                colors: chartColors.workoutSummary.IF,
+                yaxisExtraInfo: { font: { color: chartColors.workoutSummary.IF.dark } }
             }],
             tooltips: [{
                 label: "TSS",
+                className: "TSS",
                 key: "totalTrainingStressScoreActual",
                 units: "tss"
             }, {
                 label: "IF",
+                className: "IF",
                 key: "averageIntensityFactorActual",
                 units: "if"
             }]
@@ -301,7 +305,7 @@ function(
                         lineWidth: 0.00000001 // 0 causes flot.orderBars to default to 2 for calculations... which aren't redone on resize.
                     },
                     shadowSize: 0,
-                    yaxis: yaxes[0],
+                    yaxes: yaxes,
                     xaxis:
                     {
                         ticks: _.bind(this._generateTimeTicks, this),
@@ -477,6 +481,7 @@ function(
 
                 return {
                     label: tooltip.label,
+                    className: tooltip.className,
                     value: value
                 };
             }, this);

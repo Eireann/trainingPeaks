@@ -185,8 +185,12 @@ function(
                     }
                     else if (yaxesOpts)
                     {
-                        this.$(".yaxisLabel.left").text(yaxesOpts && yaxesOpts[0] && yaxesOpts[0].label || "");
-                        this.$(".yaxisLabel.right").text(yaxesOpts && yaxesOpts[1] && yaxesOpts[1].label || "");
+                        this.$(".yaxisLabel.left")
+                        .text(yaxesOpts && yaxesOpts[0] && yaxesOpts[0].label || "")
+                        .css("color", yaxesOpts && yaxesOpts[0] && yaxesOpts[0].font && yaxesOpts[0].font.color);
+                        this.$(".yaxisLabel.right")
+                        .text(yaxesOpts && yaxesOpts[1] && yaxesOpts[1].label || "")
+                        .css("color", yaxesOpts && yaxesOpts[1] && yaxesOpts[1].font && yaxesOpts[1].font.color);
                     }
                 }
             }
