@@ -325,7 +325,6 @@ function(
                 handle: ".dayHeader, .daySelected",
                 start: this.onDragStart,
                 stop: this.onDragStop,
-                containment: "#calendarContainer"
             });
         },
 

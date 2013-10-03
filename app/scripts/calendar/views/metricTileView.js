@@ -60,7 +60,6 @@ function(
                 helper: _.bind(this._makeHelper, this),
                 start: _.bind(this._onDragStart, this),
                 stop: _.bind(this._onDragStop, this),
-                containment: "#calendarWrapper",
                 addClasses: false
             };
             this.$el.draggable(draggableOptions);

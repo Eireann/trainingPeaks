@@ -54,7 +54,13 @@ function(TP, touchPunch, draggable, exerciseLibraryItemViewTemplate, ExerciseLib
             this.$el.data("ItemId", this.model.id);
             this.$el.data("ItemType", this.model.webAPIModelName);
             this.$el.data("DropEvent", "addExerciseFromLibrary");
-            this.$el.draggable({ appendTo: theMarsApp.getBodyElement(), 'z-index': 100, helper: this.draggableHelper, start: this.onDragStart, stop: this.onDragStop, containment: "#calendarWrapper" });
+            this.$el.draggable({
+                appendTo: theMarsApp.getBodyElement(),
+                'z-index': 100,
+                helper: this.draggableHelper,
+                start: this.onDragStart,
+                stop: this.onDragStop
+            });
         },
 
         draggableHelper: function()
