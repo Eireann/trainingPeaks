@@ -52,6 +52,11 @@ function(
                     metric1: _.bind(this.parseMetric, this, 1)
                 }
             });
+
+            setImmediate(function()
+            {
+                this.$("select").selectBoxIt();
+            });
         },
 
         formatMetric: function(index, value)

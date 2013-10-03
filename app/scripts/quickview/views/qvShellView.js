@@ -52,6 +52,8 @@ function(
             shadow: true
         },
 
+        modelEvents: {},
+
         events:
         {
             "click .closeIcon": "close",
