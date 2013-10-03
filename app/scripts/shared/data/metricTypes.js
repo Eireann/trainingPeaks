@@ -503,18 +503,23 @@ function()
         {
             id: 57,
             label: "Muscle Mass",
-            units: "kg"
+            units: "kg",
+            min: 0,
+            max: 227
         },
         {
             id: 58,
             label: "Steps",
             units: "none",
-            min: 0
+            min: 0,
+            max: 1000000000
         },
         {
             id: 59,
             label: "Skin Fold",
-            units: "mm"
+            units: "mm",
+            min: 0,
+            max: 500
         }
     ];
     
