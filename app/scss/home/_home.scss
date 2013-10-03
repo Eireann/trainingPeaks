@@ -1,7 +1,4 @@
-﻿$chartIconsSpriteURL: url(../../assets/images/charts/sprite-buttons-chart-modal.png);
-$chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-modal@2x.png);
-
-#homeContainer
+﻿#homeContainer
 {
     margin: 0 5px 5px 5px;
     overflow: hidden; // needs overflow to fully inherit the height of the floated divs inside
@@ -40,7 +37,8 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
         right: 10px;
         width: 16px;
         height: 12px;
-        background: transparent $chartIconsSpriteURL no-repeat 0 0;
+        background: transparent no-repeat 0 0;
+        @extend %chartIconsSpriteBG;
 
         &:hover {
             background-position: 0 -17px;
@@ -48,13 +46,6 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
 
         &:active {
             background-position: 0 -17px;
-        }
-    }
-
-    @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
-        .settings {
-            background-image: $chartIconsSpriteRetinaURL;
-            background-size: 16px 12px;
         }
     }
 

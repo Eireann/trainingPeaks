@@ -17,7 +17,8 @@
 		margin-left: $marginLeft;
 		color: $TPGrey10;
 
-        background: url(../../assets/images/calendarImages/background-gradient-button.png) repeat-x 0 0; //fallback
+        background: repeat-x 0 0; //fallback
+        @extend %backgroundGradientButtonBG;
         background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#fefefe), to(#dfdfdf));
         background:-moz-linear-gradient(top, #fefefe, #dfdfdf);
 
@@ -41,7 +42,7 @@
                 
         &:active
         {
-            background: url(../../assets/images/calendarImages/background-gradient-button.png) repeat-x 0 -20px; //fallback
+            background-position: 0 -20px; //fallback
             background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#969595), to(#4d4d4c));
             background:-moz-linear-gradient(top, #969595, #4d4d4c); 
             
@@ -50,7 +51,7 @@
 
         &:disabled
         {   
-            background: url(../../assets/images/calendarImages/background-gradient-button.png) repeat-x 0 0; //fallback
+            background-position: 0 0; //fallback
             background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#fefefe), to(#dfdfdf));
             background:-moz-linear-gradient(top, #fefefe, #dfdfdf);
             
@@ -179,7 +180,7 @@
 
 @mixin throbber($backgroundColor: $TPGrey1) {
     opacity:0.7;
-    background-image: url(../../assets/images/throbber.gif);
+    @extend %throbberBG;
     background-repeat: no-repeat;
     background-position: center;
     position:absolute;

@@ -1,14 +1,5 @@
 ﻿@import "globalCSS/tpstylesheet";
 
-$mainTabSpriteURL: url(../../assets/images/sprite-icons-main-tabs.png);
-$mainTtabSpriteRetinaURL: url(../../assets/images/sprite-icons-main-tabs@2x.png);
-
-$dashboardTabSpriteURL: url(../../assets/images/sprite-icons-dashboard-tabs.png);
-$dashboardTabSpriteRetinaURL: url(../../assets/images/sprite-icons-dashboard-tabs@2x.png);
-
-$troughIconSpriteURL: url(../../assets/images/sprite-icons-trough.png);
-$troughIconSpriteRetinaURL: url(../../assets/images/sprite-icons-trough@2x.png);
-
 @mixin libraryTile()
 {
     background-color: $TPGrey6;
@@ -112,7 +103,8 @@ $troughIconSpriteRetinaURL: url(../../assets/images/sprite-icons-trough@2x.png);
         }
 
         #exerciseLibrary {
-            background: $TPGrey1 $mainTabSpriteURL no-repeat 0 0;
+            background: $TPGrey1 no-repeat 0 0;
+            @extend %mainTabSpriteBG;
             &:hover {
                 background-position: -33px 0;
             }
@@ -128,7 +120,8 @@ $troughIconSpriteRetinaURL: url(../../assets/images/sprite-icons-trough@2x.png);
             }
         }
         #plansLibrary {
-            background: $TPGrey1 $mainTabSpriteURL no-repeat 0 -66px;
+            background: $TPGrey1 no-repeat 0 -66px;
+            @extend %mainTabSpriteBG;
             &:hover {
                 background-position: -33px -66px;
             }
@@ -145,7 +138,8 @@ $troughIconSpriteRetinaURL: url(../../assets/images/sprite-icons-trough@2x.png);
         }
 
         #chartsLibrary {
-            background: $TPGrey1 $dashboardTabSpriteURL no-repeat 0 0;
+            background: $TPGrey1 no-repeat 0 0;
+            @extend %dashboardTabSpriteBG;
             &:hover {
                 background-position: -33px 0;
             }
@@ -183,19 +177,6 @@ $troughIconSpriteRetinaURL: url(../../assets/images/sprite-icons-trough@2x.png);
                background-color: $TPGrey2;
             }
         }
-
-		@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
-			#exerciseLibrary, #plansLibrary {
-				background-image: $mainTtabSpriteRetinaURL;
-				background-size: 99px 165px;
-			}
-
-            #chartsLibrary {
-                background-image: $dashboardTabSpriteRetinaURL;
-                background-size: 99px 33px;
-            }
-
-		}
 
         div.active
         {
@@ -250,31 +231,21 @@ $troughIconSpriteRetinaURL: url(../../assets/images/sprite-icons-trough@2x.png);
             @include headerButtons(0px, 38px, $fontSizeMedium);
 
             .settingsBtn {
-                background: url(../../assets/images/calendarImages/sprite-header-icons.png) no-repeat 0 -60px;
-                &:hover {
-                        background: url(../../assets/images/calendarImages/sprite-header-icons.png) no-repeat -36px -60px;
-                    }
-                &:active {
-                    background: url(../../assets/images/calendarImages/sprite-header-icons.png) no-repeat -72px -60px;
-                }
+                background: no-repeat 0 -60px;
+                @extend %spriteHeaderIconsBG;
+                &:hover { background-position: -36px -60px; }
+                &:active { background-position: -72px -60px; }
                 margin-right:2px;
             }
 
             #add {
-                background: url(../../assets/images/calendarImages/sprite-header-icons.png) no-repeat 0 -100px;
+                background: no-repeat 0 -100px;
+                @extend %spriteHeaderIconsBG;
                 &:hover {
-                    background: url(../../assets/images/calendarImages/sprite-header-icons.png) no-repeat -36px -100px;
+                    background-position: -36px -100px;
                 }
                 &:active {
-                    background: url(../../assets/images/calendarImages/sprite-header-icons.png) no-repeat -72px -100px;
-                }
-            }
-
-            @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
-                .settingsBtn,
-                #add  {
-                    background-image: url(../../assets/images/calendarImages/sprite-header-icons@2x.png);
-                    background-size: 108px 120px;
+                    background-position: -72px -100px;
                 }
             }
 
@@ -423,7 +394,8 @@ $troughIconSpriteRetinaURL: url(../../assets/images/sprite-icons-trough@2x.png);
                 margin-bottom:4px;
 
                 .trainingPlansIcon {
-                    background: $TPGrey1 $troughIconSpriteURL no-repeat 0 0;
+                    background: $TPGrey1 no-repeat 0 0;
+                    @extend %troughIconSpriteBG;
                     background-color: $TPGrey2;
                     width: 24px;
                     height: 24px;

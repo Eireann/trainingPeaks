@@ -1,193 +1,192 @@
 ﻿@import "../globalCSS/tpstylesheet";
 
-@media screen {
-    .metric
+.metric
+{
+    margin: 5px 4px 4px 2px;
+    border:1px solid $TPGrey2;
+    background-color: $TPGrey2;
+    cursor: pointer;
+
+    &:hover {
+        border-color:$TPGrey11;
+    }
+
+    &.dragHelper
     {
-        margin: 5px 4px 4px 2px;
-        border:1px solid $TPGrey2;
-        background-color: $TPGrey2;
-        cursor: pointer;
+        opacity: 0.6;
+        min-width: 150px;
 
-        &:hover {
-            border-color:$TPGrey11;
-        }
-
-        &.dragHelper
+        .metricSelected
         {
-            opacity: 0.6;
-            min-width: 150px;
-
-            .metricSelected
-            {
-                display: block;
-            }
+            display: block;
         }
+    }
 
-        &.dragging
+    &.dragging
+    {
+        opacity:0.8;
+    }
+
+    .metricSettings {
+        display: none;
+        top: 0px;
+        right: 2px;
+    position: absolute;
+        z-index: 2;
+
+        button {	
+            background: transparent;
+            border: none;
+            padding: 0px;
+            cursor: pointer;
+            box-shadow: none;
+            margin: 0px;
+        }
+    }
+
+    &:hover
+    {
+        .metricSettings
         {
-            opacity:0.8;
+            display: block;
         }
+    }
 
-        .metricSettings {
-            display: none;
-            top: 0px;
-            right: 2px;
-    		position: absolute;
-            z-index: 2;
-
-            button {	
-                background: transparent;
-                border: none;
-                padding: 0px;
-                cursor: pointer;
-                box-shadow: none;
-                margin: 0px;
-            }
-        }
-
-        &:hover
+    &.menuOpen
+    {
+        .metricSettings
         {
-            .metricSettings
-            {
-                display: block;
-            }
+            display: block;
         }
+    }
 
-        &.menuOpen
+    .metricDiv {
+        min-height: 35px;
+        word-wrap: break-word;
+        
+        .metricHeader
         {
-            .metricSettings
-            {
-                display: block;
-            }
-        }
-
-        .metricDiv {
-            min-height: 35px;
-            word-wrap: break-word;
+            padding: 0px 3px;
+            height: auto;
+            position: relative;
+            top: -1px;
             
-            .metricHeader
+            .metricIcon
             {
-                padding: 0px 3px;
-                height: auto;
-                position: relative;
-                top: -1px;
-                
-                .metricIcon
-                {
-                    width: 25px;
-                    height: 25px;
-                    float: left;
-                    margin-top: 4px;
-                    background: $metricPositiveSmallURL no-repeat 0 0;
-                    background-size: 25px 25px;
-                    background-color:$clrMetric;
-                }
-
-                .metricTime {
-                    float:left;
-                    @include calc("width","100% - 25px");    
-                    color:$TPGrey4;
-                    // size is responsive and set below
-                }
+                width: 25px;
+                height: 25px;
+                float: left;
+                margin-top: 4px;
+                background: no-repeat 0 0;
+                background-size: 25px 25px;
+                background-color:$clrMetric;
+                @extend %metricPositiveSmallBG;
             }
 
-            .metricBody {
-                color: $TPGrey4;
-                padding: 4px 3px 3px 0;
-                @include labels($fontFamilyHeavy, $fontSizeXSmall, $TPGrey4, normal);
+            .metricTime {
                 float:left;
-                clear:left;
-                width:100%;
-                
-                // keeps text from running into settings button
-                .metricSettingsContain {
-                    float:right;
-                    width:17px;
-                    height:17px;
-                }
+                @include calc("width","100% - 25px");    
+                color:$TPGrey4;
+                // size is responsive and set below
+            }
+        }
 
-                label {
-                    cursor: default;
-                    white-space: pre-wrap;
-                }
+        .metricBody {
+            color: $TPGrey4;
+            padding: 4px 3px 3px 0;
+            @include labels($fontFamilyHeavy, $fontSizeXSmall, $TPGrey4, normal);
+            float:left;
+            clear:left;
+            width:100%;
+            
+            // keeps text from running into settings button
+            .metricSettingsContain {
+                float:right;
+                width:17px;
+                height:17px;
+            }
+
+            label {
+                cursor: default;
+                white-space: pre-wrap;
+            }
+            
+            p {
+                margin-bottom: 0px;
+                font-size: $fontSizeXSmall;
+                color: $TPGrey4;
+                font-family: $fontFamilyRegular;
+                text-align: left;
+                line-height: 12px;
+                cursor: default;
+                white-space: pre-wrap;
+            }
+
+            ul {
+                margin:0 0 0 3px;
                 
-                p {
-                    margin-bottom: 0px;
+                li {
+                    list-style-type: none;
+                    margin: 3px 0;
+                    font-family: $fontFamilyRegular;
                     font-size: $fontSizeXSmall;
                     color: $TPGrey4;
-                    font-family: $fontFamilyRegular;
-                    text-align: left;
                     line-height: 12px;
-                    cursor: default;
-                    white-space: pre-wrap;
-                }
-
-                ul {
-                    margin:0 0 0 3px;
                     
-                    li {
-                        list-style-type: none;
-                        margin: 3px 0;
-                        font-family: $fontFamilyRegular;
-                        font-size: $fontSizeXSmall;
-                        color: $TPGrey4;
-                        line-height: 12px;
-                        
-                        &:first-of-type {
-                            margin-top:1px;
-                        }
+                    &:first-of-type {
+                        margin-top:1px;
+                    }
 
-                        &:last-of-type {
-                            margin-bottom:1px;
-                        }
+                    &:last-of-type {
+                        margin-bottom:1px;
+                    }
 
-                        span.metricValue {
-                            font-family:$fontFamilyHeavy;
-                        }
+                    span.metricValue {
+                        font-family:$fontFamilyHeavy;
                     }
                 }
             }
         }
-
-    } // end .metric
-
-    .metricTileSettings {
-    	padding-left: 10px;
-    	padding-bottom: 20px;
-
-    	@include labels($fontFamilyRegular, $fontSizeSmall, $TPGrey3, normal);
-    	label
-    	{
-            cursor: pointer;
-    	}
-
-    	.hoverBoxContents {
-    		min-width: 75px;
-    	}
-
     }
 
-    .metric {
-        
-        .metricDiv {
-            position: relative;
-        }
+} // end .metric
 
-        .metricSelected {
-            @include selectedOverlay();
-        }
+.metricTileSettings {
+    padding-left: 10px;
+    padding-bottom: 20px;
 
-        &.selected {
-            .metricSelected {
-                display: block;
-            }
-        }
-    }
-
-    .printOnly
+    @include labels($fontFamilyRegular, $fontSizeSmall, $TPGrey3, normal);
+    label
     {
-        display: none;
+        cursor: pointer;
     }
+
+    .hoverBoxContents {
+    min-width: 75px;
+    }
+
+}
+
+.metric {
+    
+    .metricDiv {
+        position: relative;
+    }
+
+    .metricSelected {
+        @include selectedOverlay();
+    }
+
+    &.selected {
+        .metricSelected {
+            display: block;
+        }
+    }
+}
+
+.printOnly
+{
+    display: none;
 }
 
 

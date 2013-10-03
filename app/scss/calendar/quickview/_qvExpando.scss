@@ -176,19 +176,13 @@
         width:100%;
         left:0;
         
-        background:url(../../assets/images/QVImages/resize-indicator.png) center center no-repeat $TPGrey1;
+        background: center center no-repeat $TPGrey1;
+        @extend %resizeIndicatorBG;
         
         cursor:row-resize;
         position:absolute;
         border-top:1px solid #c2c3c4;
         border-bottom:1px solid #c2c3c4;
-    }
-
-    @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
-        #expandoMapAndGraphResizerRegion {
-            background-image:url(../../assets/images/QVImages/resize-indicator@2x.png);
-            background-size: 22px 5px;
-        }
     }
 
     #expandoGraphRegion
@@ -253,9 +247,10 @@
                     box-shadow: none;
                     @include linearGradient(top, #ffffff, #dfddde);
                     
-                    background: url(../../assets/images/calendarImages/background-gradient-button.png) repeat-x 0 0; //fallback
-                    background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#fefefe), to(#dfdfdf));
-                    background:-moz-linear-gradient(top, #fefefe, #dfdfdf);
+                    background: repeat-x 0 0; //fallback
+                    @extend %backgroundGradientButtonBG;
+                    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fefefe), to(#dfdfdf));
+                    background: -moz-linear-gradient(top, #fefefe, #dfdfdf);
 
                     background-color:#dfdfdf;
                     color: $TPGrey10;
@@ -370,13 +365,13 @@
                     &.bold
                     {
                         opacity: 1;
-                        background: url(../../assets/images/calendarImages/background-gradient-button.png) repeat-x 0 -20px;
+                        background-position: 0 -20px;
                         color: $white;
                     }
                             
                     &:active
                     {
-                        background: url(../../assets/images/calendarImages/background-gradient-button.png) repeat-x 0 -20px;
+                        background-position: 0 -20px;
                         color: $white;
                     }
                 }
@@ -412,7 +407,8 @@
                     background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #ffffff), color-stop(1, #dfdfdf) );
                     background:-moz-linear-gradient( center top, #ededed 5%, #dfdfdf 100% );
                     background-color:#ededed;
-                    background: url(../../assets/images/calendarImages/background-gradient-button.png) repeat-x 0 0;
+                    background: repeat-x 0 0;
+                    @extend %backgroundGradientButtonBG;
                     border: 1px solid $TPGrey9;
                     height: 20px;
                     width: 10px;
@@ -424,7 +420,7 @@
                             
                     &:active
                     {
-                        background: url(../../assets/images/calendarImages/background-gradient-button.png) repeat-x 0 -20px;
+                        background-position: 0 -20px;
                     }
                 }
             }
@@ -524,7 +520,7 @@
 
         .shadow
         {
-            background-image: url(../../assets/images/QVImages/expandoStatsShadow.png);
+            @extend %expandoStatsShadowBG;
             height: 13px;
         }
 
@@ -642,7 +638,8 @@
 
                 cursor: pointer;
 
-                background: url(../../assets/images/calendarImages/background-gradient-button.png) repeat-x 0 0;
+                background: repeat-x 0 0;
+                @extend %backgroundGradientButtonBG;
 
                 visibility: hidden;
 

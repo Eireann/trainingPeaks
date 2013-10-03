@@ -1,522 +1,519 @@
 @import "../globalCSS/tpstylesheet";
 @import "../globalCSS/hoverBox";
 
-@media screen {
+.weekSummary
+{
+    @include grid-column(3);
+    min-height: 150px;
+    background-color: $TPGrey1;
+    overflow: hidden;
+    margin-bottom: 10px;
+    width: 293px;
+    min-width: 293px;
+    padding: 0px 5px 0px 0px;
 
-    .weekSummary
+    div
     {
-        @include grid-column(3);
-        min-height: 150px;
-        background-color: $TPGrey1;
-        overflow: hidden;
-        margin-bottom: 10px;
-        width: 293px;
-        min-width: 293px;
-        padding: 0px 5px 0px 0px;
+        cursor:default;
+    }
 
-        div
-        {
-            cursor:default;
+    span
+    {
+        cursor: default;
+    }
+    
+    .summarySettings
+    {
+        display: none;
+        float: right;
+        padding: 2px 5px 0px 0px;
+        button
+        {   
+            background: transparent;
+            border: none;
+            padding: 0px;
+            cursor: pointer;
+            margin-bottom: 0px;
+            box-shadow: none;
         }
 
-        span
+        &.menuOpen
         {
-            cursor: default;
+            display: block;
         }
-        
+    }
+
+    &:hover
+    {
         .summarySettings
         {
-            display: none;
-            float: right;
-            padding: 2px 5px 0px 0px;
-            button
-            {   
-                background: transparent;
-                border: none;
-                padding: 0px;
-                cursor: pointer;
-                margin-bottom: 0px;
-                box-shadow: none;
-            }
-
-            &.menuOpen
-            {
-                display: block;
-            }
+            display:block;
         }
+    }
 
-        &:hover
+    .weekSummaryTableContainer
+    {
+        margin: 0 5px 0 0px;
+        @include box-shadow(2px 2px 4px 1px #888888);
+
+        .weekSummaryTable
         {
-            .summarySettings
+            width: 100%;
+            border-collapse: collapse;
+
+            th
             {
-                display:block;
+                padding: 8px 5px 0 5px;
+                background-color: $white;
+                font-size: $fontSizeXSmall;
+                text-align: right;
             }
-        }
 
-        .weekSummaryTableContainer
-        {
-            margin: 0 5px 0 0px;
-            @include box-shadow(2px 2px 4px 1px #888888);
-
-            .weekSummaryTable
+            tr:nth-child(odd)
             {
-                width: 100%;
-                border-collapse: collapse;
+                background-color: $TPGrey1;
+            }   
+                        
+            tr:nth-child(even)
+            {
+                background-color: $white;
+            }   
 
-                th
+            td
+            {
+                margin: 0 0 0 0;
+                padding: 5px 5px 5px 5px;
+                border: 0 0 0 0;
+                cell-spacing: 0 0 0 0;
+
+                &.weekSummaryValue
                 {
-                    padding: 8px 5px 0 5px;
-                    background-color: $white;
-                    font-size: $fontSizeXSmall;
+                    font-size: $fontSizeSmall;
                     text-align: right;
+
+                    .planned
+                    {
+                        color: $TPGrey3;
+                    }
+
+                    .completed
+                    {
+                        color: $thisWeekBlue;
+                    }
+
+                    .units
+                    {
+                        color: $thisWeekBlue;
+                        margin-left: 0.2em;
+                    }
+
                 }
 
-                tr:nth-child(odd)
+                &.weekSummaryRowLabel
                 {
-                    background-color: $TPGrey1;
-                }   
-                         
-                tr:nth-child(even)
-                {
-                    background-color: $white;
-                }   
-
-                td
-                {
-                    margin: 0 0 0 0;
-                    padding: 5px 5px 5px 5px;
-                    border: 0 0 0 0;
-                    cell-spacing: 0 0 0 0;
-
-                    &.weekSummaryValue
-                    {
-                        font-size: $fontSizeSmall;
-                        text-align: right;
-
-                        .planned
-                        {
-                            color: $TPGrey3;
-                        }
-
-                        .completed
-                        {
-                            color: $thisWeekBlue;
-                        }
-
-                        .units
-                        {
-                            color: $thisWeekBlue;
-                            margin-left: 0.2em;
-                        }
-
-                    }
-
-                    &.weekSummaryRowLabel
-                    {
-                        padding-left: 10px;
-                        text-align: left;
-                        font-size: $fontSizeSmall;
-                    }
+                    padding-left: 10px;
+                    text-align: left;
+                    font-size: $fontSizeSmall;
                 }
             }
         }
     }
+}
 
 
 
 
-    #weekSummaryContainer {
+#weekSummaryContainer {
 
-        padding:7px 10px 5px 6px;
+    padding:7px 10px 5px 6px;
 
-        .weekSummaryBarGraphContain {
-            font-family: $fontFamilyHeavy;
-            width:280px;
-            margin: 0 0 5px 0;
-        }
+    .weekSummaryBarGraphContain {
+        font-family: $fontFamilyHeavy;
+        width:280px;
+        margin: 0 0 5px 0;
+    }
 
-        .weekSummaryBarGraphItem {
-            clear: both;
-            height:24px;
-            margin-bottom:3px;
-            width:277px;
-            float:left;
-        }
-        
-        .weekSummaryBarGraphItem.right {
-            margin-right: 3px;
-        }
-        
-        .weekSummaryBarGraphItem.total {
-            width:277px;
-            height:35px;
+    .weekSummaryBarGraphItem {
+        clear: both;
+        height:24px;
+        margin-bottom:3px;
+        width:277px;
+        float:left;
+    }
+    
+    .weekSummaryBarGraphItem.right {
+        margin-right: 3px;
+    }
+    
+    .weekSummaryBarGraphItem.total {
+        width:277px;
+        height:35px;
 
-            .weekSummaryBarGraph
-            {
-                height: 15px;
-            }
-
-            &.noPlannedDuration
-            {
-                .bar.background
-                {
-                    background: none;
-                }
-            }
-
-        }
-
-        .weekSummaryBarGraphLabel {
-            float:left;
-            font-size:$fontSizeXSmall;
-        }
-        
-        .weekSummaryBarGraphLabel.total {
-            text-transform: uppercase !important;
-        }
-
-        .weekSummaryBarGraph {
-            height:8px;
-            float:left;
-            width:100%;
-            margin-top:3px;
-            position:relative;
-
-            .background
-            {
-                position:absolute;
-                top:0px;
-                bottom:0px;
-                left:0px;
-                right:0px;
-                z-index:1;
-            }
-
-            .foreground
-            {
-                height:100%;
-                display:block;
-                position:absolute;
-                top:0px;
-                left:0px;
-                z-index:2;
-            }
-        }
-        
-        .weekSummaryTimeContain {
-            float:right;
-            text-align:right;
-            font-size:$fontSizeXSmall;
-            width:50%;
-        
-            .weekSummaryTimeCompleted {
-                font-family: $fontFamilyHeavy;
-                color:#303030;
-                margin-right: 2px;
-
-                &.run
-                {
-                    color: #30819c;
-                }
-
-                &.bike
-                {
-                    color:#8c2edc;
-                }
-
-                &.swim
-                {
-                    color: #20a3d1; 
-                }
-
-                &.strength
-                {
-                    color:#912c8a
-                }
-            }
-
-            .weekSummaryTimePlanned, .weekSummaryTSSPlanned {
-                color:#a5a5a5;
-            }
-        }
-        
-        #weekSummaryMetricContain {
-            width:277px;
-            float:left;
-        }
-
-        .weekSummaryMetricItem {
-            padding:2px 0 2px 0;
-        }
-
-        .weekSummaryItem
+        .weekSummaryBarGraph
         {
-            border-bottom:1px solid #dbdbdc;
-            &.last
+            height: 15px;
+        }
+
+        &.noPlannedDuration
+        {
+            .bar.background
             {
-                border-bottom:none;
+                background: none;
             }
         }
-            
-        #weekSummaryATPContain {
-            width:277px;
-            float:left;
+
+    }
+
+    .weekSummaryBarGraphLabel {
+        float:left;
+        font-size:$fontSizeXSmall;
+    }
+    
+    .weekSummaryBarGraphLabel.total {
+        text-transform: uppercase !important;
+    }
+
+    .weekSummaryBarGraph {
+        height:8px;
+        float:left;
+        width:100%;
+        margin-top:3px;
+        position:relative;
+
+        .background
+        {
+            position:absolute;
+            top:0px;
+            bottom:0px;
+            left:0px;
+            right:0px;
+            z-index:1;
         }
 
-        .weekSummaryATPItem {
-            padding:0 0 4px 0;
+        .foreground
+        {
+            height:100%;
+            display:block;
+            position:absolute;
+            top:0px;
+            left:0px;
+            z-index:2;
+        }
+    }
+    
+    .weekSummaryTimeContain {
+        float:right;
+        text-align:right;
+        font-size:$fontSizeXSmall;
+        width:50%;
+    
+        .weekSummaryTimeCompleted {
+            font-family: $fontFamilyHeavy;
+            color:#303030;
+            margin-right: 2px;
+
+            &.run
+            {
+                color: #30819c;
+            }
+
+            &.bike
+            {
+                color:#8c2edc;
+            }
+
+            &.swim
+            {
+                color: #20a3d1; 
+            }
+
+            &.strength
+            {
+                color:#912c8a
+            }
         }
 
-        .weekSummaryATPItem.last {
+        .weekSummaryTimePlanned, .weekSummaryTSSPlanned {
+            color:#a5a5a5;
+        }
+    }
+    
+    #weekSummaryMetricContain {
+        width:277px;
+        float:left;
+    }
+
+    .weekSummaryMetricItem {
+        padding:2px 0 2px 0;
+    }
+
+    .weekSummaryItem
+    {
+        border-bottom:1px solid #dbdbdc;
+        &.last
+        {
             border-bottom:none;
         }
+    }
+        
+    #weekSummaryATPContain {
+        width:277px;
+        float:left;
+    }
 
-        .weekSummaryMetricValue, 
-        .weekSummaryATPValue, {
-            width:133px;
-            display:inline-block;
-        }
+    .weekSummaryATPItem {
+        padding:0 0 4px 0;
+    }
 
-        .weekSummaryATPValue
-        {
-            font-size: 1em; 
-        }
+    .weekSummaryATPItem.last {
+        border-bottom:none;
+    }
 
-        .weekSummaryMetricValue {
-            text-align:right;
-            font-size:$fontSizeXLarge;
-            font-weight:normal;
-        }
+    .weekSummaryMetricValue, 
+    .weekSummaryATPValue, {
+        width:133px;
+        display:inline-block;
+    }
 
-        .weekSummaryMetricTitle, 
-        .weekSummaryATPTitle {
-            width:133px;
-            margin:0 0 0 6px;
-            font-size:$fontSizeXSmall;
-            font-family: $fontFamilyHeavy;
-            display:inline-block;
-        }
+    .weekSummaryATPValue
+    {
+        font-size: 1em; 
+    }
 
-        .weekSummaryMetricTitle {
-            padding-top:5px;
-            line-height:normal;
-        }
+    .weekSummaryMetricValue {
+        text-align:right;
+        font-size:$fontSizeXLarge;
+        font-weight:normal;
+    }
 
-        .weekSummaryATPValue {
-            text-align:right;
-            font-size:$fontSizeXSmall;
-        }
+    .weekSummaryMetricTitle, 
+    .weekSummaryATPTitle {
+        width:133px;
+        margin:0 0 0 6px;
+        font-size:$fontSizeXSmall;
+        font-family: $fontFamilyHeavy;
+        display:inline-block;
+    }
 
+    .weekSummaryMetricTitle {
+        padding-top:5px;
+        line-height:normal;
+    }
 
+    .weekSummaryATPValue {
+        text-align:right;
+        font-size:$fontSizeXSmall;
     }
 
 
-    .weekSummaryBarGraph
+}
+
+
+.weekSummaryBarGraph
+{
+
+    // default gray background and tpblue colors for total or undefined
+    .bar
     {
+        @include linearGradient(top, #c8c8c8 0%,#adadad 100%);
 
-        // default gray background and tpblue colors for total or undefined
-        .bar
+        &.lightGradient
         {
-            @include linearGradient(top, #c8c8c8 0%,#adadad 100%);
-
-            &.lightGradient
-            {
-                @include linearGradient(top, #4F9CD6 0%, #47789D 100%);
-            }
-
-            &.darkGradient
-            {
-                @include linearGradient(top, #1B82CE 0%, #115282 100%);
-            }
-        } 
-
-        .Bike
-        {
-            &.lightGradient
-            {
-
-                @include linearGradient(top, #a153d8 0%, #7b4a9e 100%);
-            }
-
-            &.darkGradient
-            {
-                @include linearGradient(top, #8820d1 0%, $clrBike 100%);
-            }
+            @include linearGradient(top, #4F9CD6 0%, #47789D 100%);
         }
 
-        .Strength
+        &.darkGradient
         {
-            &.lightGradient
-            {
-                @include linearGradient(top, #a75ca3 0%, #80507d 100%);
-            }
+            @include linearGradient(top, #1B82CE 0%, #115282 100%);
+        }
+    } 
 
-            &.darkGradient
-            {
-                @include linearGradient(top, #912c8a 0%, $clrStrength 100%);
-            }
+    .Bike
+    {
+        &.lightGradient
+        {
+
+            @include linearGradient(top, #a153d8 0%, #7b4a9e 100%);
         }
 
-        .Run
+        &.darkGradient
         {
-            &.lightGradient
-            {
+            @include linearGradient(top, #8820d1 0%, $clrBike 100%);
+        }
+    }
 
-                @include linearGradient(top, #5f9cb0 0%, #517885 100%);
-            }
-
-            &.darkGradient
-            {
-                @include linearGradient(top, #30819c 0%, $clrRun 100%);
-            }
+    .Strength
+    {
+        &.lightGradient
+        {
+            @include linearGradient(top, #a75ca3 0%, #80507d 100%);
         }
 
-        .Swim
+        &.darkGradient
         {
-            &.lightGradient
-            {
-                @include linearGradient(top, #53b5d8 0%, #4a889e 100%);
-            }
+            @include linearGradient(top, #912c8a 0%, $clrStrength 100%);
+        }
+    }
 
-            &.darkGradient
-            {
-                @include linearGradient(top, #20a3d1 0%, $clrSwim 100%);
-            }
+    .Run
+    {
+        &.lightGradient
+        {
+
+            @include linearGradient(top, #5f9cb0 0%, #517885 100%);
         }
 
-        .Brick
+        &.darkGradient
         {
-            &.lightGradient
-            {
-                @include linearGradient(top, #ba5b7c 0%, #9a536d 100%);
-            }
+            @include linearGradient(top, #30819c 0%, $clrRun 100%);
+        }
+    }
 
-            &.darkGradient
-            {
-                @include linearGradient(top, #aa2b58 0%, $clrBrick 100%);
-            }
+    .Swim
+    {
+        &.lightGradient
+        {
+            @include linearGradient(top, #53b5d8 0%, #4a889e 100%);
         }
 
-        .Crosstrain
+        &.darkGradient
         {
-           &.lightGradient
-            {
-                @include linearGradient(top, #cb4bd2 0%, #a848ad 100%);
-            }
+            @include linearGradient(top, #20a3d1 0%, $clrSwim 100%);
+        }
+    }
 
-            &.darkGradient
-            {
-                @include linearGradient(top, #c116c9 0%, $clrOther 100%);
-            }
+    .Brick
+    {
+        &.lightGradient
+        {
+            @include linearGradient(top, #ba5b7c 0%, #9a536d 100%);
         }
 
-        .Race
+        &.darkGradient
         {
-            &.lightGradient
-            {
-                @include linearGradient(top, #3bc4c5 0%, #3b9c9c 100%);
-            }
+            @include linearGradient(top, #aa2b58 0%, $clrBrick 100%);
+        }
+    }
 
-            &.darkGradient
-            {
-                @include linearGradient(top, #00b7b7 0%, $clrRace 100%);
-            }
+    .Crosstrain
+    {
+        &.lightGradient
+        {
+            @include linearGradient(top, #cb4bd2 0%, #a848ad 100%);
         }
 
-        .MountainBike
+        &.darkGradient
         {
-            &.lightGradient
-            {
-                @include linearGradient(top, #ad8f67 0%, #907a5c 100%);
-            }
+            @include linearGradient(top, #c116c9 0%, $clrOther 100%);
+        }
+    }
 
-            &.darkGradient
-            {
-                @include linearGradient(top, #99703a 0%, $clrMTB 100%);
-            }
+    .Race
+    {
+        &.lightGradient
+        {
+            @include linearGradient(top, #3bc4c5 0%, #3b9c9c 100%);
         }
 
-        .Custom
+        &.darkGradient
         {
-            &.lightGradient
-            {
-                @include linearGradient(top, #cb4bd2 0%, #a848ad 100%);
-            }
+            @include linearGradient(top, #00b7b7 0%, $clrRace 100%);
+        }
+    }
 
-            &.darkGradient
-            {
-                @include linearGradient(top, #c116c9 0%, $clrOther 100%);
-            }
+    .MountainBike
+    {
+        &.lightGradient
+        {
+            @include linearGradient(top, #ad8f67 0%, #907a5c 100%);
         }
 
-        .XCSki
+        &.darkGradient
         {
-            &.lightGradient
-            {
-                @include linearGradient(top, #e09f86 0%, #d98565 100%);
-            }
+            @include linearGradient(top, #99703a 0%, $clrMTB 100%);
+        }
+    }
 
-            &.darkGradient
-            {
-                @include linearGradient(top, #dd8663 0%, $clrXc-ski 100%);
-            }
+    .Custom
+    {
+        &.lightGradient
+        {
+            @include linearGradient(top, #cb4bd2 0%, #a848ad 100%);
         }
 
-        .Rowing
+        &.darkGradient
         {
-            &.lightGradient
-            {
-                @include linearGradient(top, #67d0ed 0%, #4cc0e0 100%);
-            }
+            @include linearGradient(top, #c116c9 0%, $clrOther 100%);
+        }
+    }
 
-            &.darkGradient
-            {
-                @include linearGradient(top, #3bc7ed 0%, $clrRowing 100%);
-            }
+    .XCSki
+    {
+        &.lightGradient
+        {
+            @include linearGradient(top, #e09f86 0%, #d98565 100%);
         }
 
-        .Walk
+        &.darkGradient
         {
-            &.lightGradient
-            {
-                @include linearGradient(top, #e7dc3c 0%, #bfb73c 100%);
-            }
+            @include linearGradient(top, #dd8663 0%, $clrXc-ski 100%);
+        }
+    }
 
-            &.darkGradient
-            {
-                @include linearGradient(top, #e6d701 0%, $clrWalk 100%);
-            }
+    .Rowing
+    {
+        &.lightGradient
+        {
+            @include linearGradient(top, #67d0ed 0%, #4cc0e0 100%);
         }
 
-        .Other
+        &.darkGradient
         {
-            &.lightGradient
-            {
-                @include linearGradient(top, #cb4bd2 0%, #a848ad 100%);
-            }
+            @include linearGradient(top, #3bc7ed 0%, $clrRowing 100%);
+        }
+    }
 
-            &.darkGradient
-            {
-                @include linearGradient(top, #c116c9 0%, $clrOther 100%);
-            }
+    .Walk
+    {
+        &.lightGradient
+        {
+            @include linearGradient(top, #e7dc3c 0%, #bfb73c 100%);
         }
 
-        .DayOff
+        &.darkGradient
         {
-            &.lightGradient
-            {
-                @include linearGradient(top, #b6c1c4 0%, #a0aeb2 100%);
-            }
+            @include linearGradient(top, #e6d701 0%, $clrWalk 100%);
+        }
+    }
 
-            &.darkGradient
-            {
-                @include linearGradient(top, #a5b3b6 0%, #84979c 100%);
-            }
+    .Other
+    {
+        &.lightGradient
+        {
+            @include linearGradient(top, #cb4bd2 0%, #a848ad 100%);
         }
 
+        &.darkGradient
+        {
+            @include linearGradient(top, #c116c9 0%, $clrOther 100%);
+        }
+    }
+
+    .DayOff
+    {
+        &.lightGradient
+        {
+            @include linearGradient(top, #b6c1c4 0%, #a0aeb2 100%);
+        }
+
+        &.darkGradient
+        {
+            @include linearGradient(top, #a5b3b6 0%, #84979c 100%);
+        }
     }
 
 }
+
 
 
 

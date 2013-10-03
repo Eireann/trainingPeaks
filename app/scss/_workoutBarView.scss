@@ -1,173 +1,155 @@
-﻿@media screen {
-    
-    .workoutBarViewHeader,
-    .QVBar 
+﻿.workoutBarViewHeader,
+.QVBar 
+{
+    width: 570px;
+    height: 80px;
+    padding: 5px 0px 5px 4px;
+    background-color: $TPGrey2;
+    margin-top: 0px;
+    border: 1px solid $TPGrey9;
+
+    .workoutIconLarge,
+    .metricIconLarge
     {
-        width: 570px;
-        height: 80px;
-        padding: 5px 0px 5px 4px;
-        background-color: $TPGrey2;
-        margin-top: 0px;
-        border: 1px solid $TPGrey9;
-
-        .workoutIconLarge,
-        .metricIconLarge
-        {
-            width: 70px;
-            height: 70px;
-            float: left;
-            margin-top: -1px;
-        }
-
-        .workoutHeaderStats
-        {
-            float: left;
-            width: 490px;
-
-            label
-            {
-                margin-bottom: 0em;
-            }
-
-            .headerIcons
-            {
-                float: right;
-                margin-top: -7px;
-                margin-right: 5px;
-
-                #breakThrough
-                {
-                    margin-right: 5px;
-                    cursor: auto;
-                }
-
-                .icon
-                {
-                    float: left;
-                    //padding-right: 5px;
-                    cursor: pointer;
-                }
-
-                .mapIcon
-                {
-                    display: none;
-                }
-
-                .addAttachment
-                {
-                    margin-top: -1px;
-                    cursor: pointer;
-                    width: 13px;
-                    height: 34px;
-                    background: url(../../assets/images/QVImages/sprite-paperclip.png) no-repeat -13px 0;
-
-                    &:hover {
-                        background: url(../../assets/images/QVImages/sprite-paperclip.png) no-repeat -26px 0;
-                    }
-
-                    &.withAttachments
-                    {
-                        background: url(../../assets/images/QVImages/sprite-paperclip.png) no-repeat -26px 0;
-                    }
-
-                    @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
-
-                        background-size:13px 34px;
-
-                        background: url(../../assets/images/QVImages/sprite-paperclip@2x.png) no-repeat -13px 0;
-
-                        &:hover {
-                            background: url(../../assets/images/QVImages/sprite-paperclip@2x.png) no-repeat -26px 0;
-                        }
-
-                        &.withAttachments
-                        {
-                            background: url(../../assets/images/QVImages/sprite-paperclip@2x.png) no-repeat -26px 0;
-                        }
-                    }
-
-                }
-        
-            }
-
-            .headerWorkoutValue
-            {
-                float: left;
-                padding: 10px 0px 0px 10px;
-                @include labels($fontFamilyLight, $fontSizeQVHeader, $TPGrey4, normal);
-
-                &.duration
-                {
-                    margin-right: 10px;
-                }
-            }
-            .headerWorkoutValueLabel
-            {
-                float: left;
-                padding: 18px 0px 0px 0px;
-                @include labels($fontFamilyLight, $fontSizeXXLarge, $TPGrey4, normal);
-
-                &.distance
-                {
-                    margin-right: 10px;
-                }
-            }
-
-            .title
-            {
-                clear: left;
-                padding-left: 11px;
-                @include inputs(10px, 20px, $fontSizeLarge, $fontFamilyRegular);
-                span.workoutTitleText
-                {
-                    display: inline;
-                }
-                input#workoutTitleField
-                {
-                    display: none;
-                    background:transparent;
-                    outline: none;
-                    border: none;
-                    box-shadow: inset 0 0px 0px rgba(0, 0, 0, 0.0);
-                    color: $TPGrey4;
-                    min-width: 145px;
-                    max-width: 100%;
-                    //width: auto;
-                    //overflow-x: visible;
-                    padding-left: 0px;
-
-                    &:focus
-                    {
-                        background-color: rgba(255, 255, 255, 0.5);
-                    }
-                }
-                @include placeholders($TPGrey3);
-
-            }
-        }
-
-        &.past
-        {
-            .headerWorkoutValue
-            {
-                .planned
-                {
-                   display:none;
-                }
-            }
-        } 
-
-        &.future
-        {
-            .headerWorkoutValue
-            {
-                .actual
-                {
-                   display:none;
-                }
-            }
-        } 
+        width: 70px;
+        height: 70px;
+        float: left;
+        margin-top: -1px;
     }
+
+    .workoutHeaderStats
+    {
+        float: left;
+        width: 490px;
+
+        label
+        {
+            margin-bottom: 0em;
+        }
+
+        .headerIcons
+        {
+            float: right;
+            margin-top: -7px;
+            margin-right: 5px;
+
+            #breakThrough
+            {
+                margin-right: 5px;
+                cursor: auto;
+            }
+
+            .icon
+            {
+                float: left;
+                //padding-right: 5px;
+                cursor: pointer;
+            }
+
+            .mapIcon
+            {
+                display: none;
+            }
+
+            .addAttachment
+            {
+                margin-top: -1px;
+                cursor: pointer;
+                width: 13px;
+                height: 34px;
+                background: no-repeat -13px 0;
+                @extend %spritePaperclipBG;
+
+                &:hover {
+                    background-position: -26px 0;
+                }
+
+                &.withAttachments
+                {
+                    background-position: -26px 0;
+                }
+
+            }
+    
+        }
+
+        .headerWorkoutValue
+        {
+            float: left;
+            padding: 10px 0px 0px 10px;
+            @include labels($fontFamilyLight, $fontSizeQVHeader, $TPGrey4, normal);
+
+            &.duration
+            {
+                margin-right: 10px;
+            }
+        }
+        .headerWorkoutValueLabel
+        {
+            float: left;
+            padding: 18px 0px 0px 0px;
+            @include labels($fontFamilyLight, $fontSizeXXLarge, $TPGrey4, normal);
+
+            &.distance
+            {
+                margin-right: 10px;
+            }
+        }
+
+        .title
+        {
+            clear: left;
+            padding-left: 11px;
+            @include inputs(10px, 20px, $fontSizeLarge, $fontFamilyRegular);
+            span.workoutTitleText
+            {
+                display: inline;
+            }
+            input#workoutTitleField
+            {
+                display: none;
+                background:transparent;
+                outline: none;
+                border: none;
+                box-shadow: inset 0 0px 0px rgba(0, 0, 0, 0.0);
+                color: $TPGrey4;
+                min-width: 145px;
+                max-width: 100%;
+                //width: auto;
+                //overflow-x: visible;
+                padding-left: 0px;
+
+                &:focus
+                {
+                    background-color: rgba(255, 255, 255, 0.5);
+                }
+            }
+            @include placeholders($TPGrey3);
+
+        }
+    }
+
+    &.past
+    {
+        .headerWorkoutValue
+        {
+            .planned
+            {
+                display:none;
+            }
+        }
+    } 
+
+    &.future
+    {
+        .headerWorkoutValue
+        {
+            .actual
+            {
+                display:none;
+            }
+        }
+    } 
 }
 
 

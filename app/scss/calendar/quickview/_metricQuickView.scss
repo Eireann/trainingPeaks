@@ -1,123 +1,122 @@
-@media screen {
-    .QVShell {
-        .QVHeader {
-            h2 {
-                font-family: $fontFamilyLight;
-                font-size:$fontSizeQVHeader;
-                color:$TPGrey4;
-                font-weight: normal;
-                margin:13px 10px 10px 10px;
-                float:left;
-            }
-
-            .QVBar {
-                width: 666px;
-
-                .metricIconLarge {
-                    background: $metricPositiveLargeURL no-repeat 0 0;
-                    background-color: $TPGrey3;
-                    background-size:70px 70px;
-                }
-            }
+.QVShell {
+    .QVHeader {
+        h2 {
+            font-family: $fontFamilyLight;
+            font-size:$fontSizeQVHeader;
+            color:$TPGrey4;
+            font-weight: normal;
+            margin:13px 10px 10px 10px;
+            float:left;
         }
 
-        .QVBody {
-            padding: 20px 30px;
-            position: relative;
+        .QVBar {
+            width: 666px;
 
-            .metricQVItem {
-                width:50%;
-                float:left;
-                min-height: 30px;
-
-                .metricLabel {
-                    width:115px;
-                    display: inline-block;
-                    text-align: right;
-                    font-size: $fontSizeSmaller;
-                    font-family:$fontFamilyRegular;
-                    color:$TPGrey3;
-
-                    &.select {
-                        line-height: 22px;
-                    }
-
-                    &.textarea {
-                        // Align label with the text in the textarea by matching
-                        // line-height, padding, and border
-                        border-top: solid 1px transparent;
-                        padding: (0.5em * ($fontSizeSmall / $fontSizeSmaller)) 0;
-                        line-height: (1.214em) * ($fontSizeSmall / $fontSizeSmaller);
-                    }
-                }
-
-                .metricUnit {
-                    display: inline-block;
-                    font-size: $fontSizeSmaller;
-                    font-family:$fontFamilyRegular;
-                    color:$TPGrey3;
-                }
-
-                .metricValue {
-                    display:inline-block;
-                    // width:84px;
-                    // height:22px;
-                    text-align: center;
-                    font-family:$fontFamilyRegular;
-                    font-size:$fontSizeSmall;
-                    padding:4px 0;
-                    color:$TPGrey3;
-                    // border:1px solid $TPGrey2;
-                }
-
-                input {
-                    // width:84px;
-                    width:60px;
-                    height:22px;
-                    display: inline-block;
-                    margin:0;
-                }
-
-                select, .selectBox {
-                    width:175px;
-                    margin:0;
-                    display: inline-block;
-                    vertical-align: top;
-                }
-
-                textarea {
-                    width:175px;
-                    max-width:175px;
-                    display: inline-block;
-                    margin:0;
-                    vertical-align: top;
-                }
-
-                .selectBox {
-                    position: relative;
-                    
-                    .selectboxit-container {
-                        width: 175px !important;
-
-                        .selectboxit-options {
-                            width: 170px;
-                        }
-                    }
-                }
-
-                
-            }
-
-            label {
-                cursor:text;
-
-                // important to keep font sizes within label proportional
-                font-size: 1em;
+            .metricIconLarge {
+                background: no-repeat 0 0;
+                @extend %metricPositiveLargeBG;
+                background-color: $TPGrey3;
+                background-size:70px 70px;
             }
         }
+    }
 
-        .metricQVItem input {
-            display: inline-block;
+    .QVBody {
+        padding: 20px 30px;
+        position: relative;
+
+        .metricQVItem {
+            width:50%;
+            float:left;
+            min-height: 30px;
+
+            .metricLabel {
+                width:115px;
+                display: inline-block;
+                text-align: right;
+                font-size: $fontSizeSmaller;
+                font-family:$fontFamilyRegular;
+                color:$TPGrey3;
+
+                &.select {
+                    line-height: 22px;
+                }
+
+                &.textarea {
+                    // Align label with the text in the textarea by matching
+                    // line-height, padding, and border
+                    border-top: solid 1px transparent;
+                    padding: (0.5em * ($fontSizeSmall / $fontSizeSmaller)) 0;
+                    line-height: (1.214em) * ($fontSizeSmall / $fontSizeSmaller);
+                }
+            }
+
+            .metricUnit {
+                display: inline-block;
+                font-size: $fontSizeSmaller;
+                font-family:$fontFamilyRegular;
+                color:$TPGrey3;
+            }
+
+            .metricValue {
+                display:inline-block;
+                // width:84px;
+                // height:22px;
+                text-align: center;
+                font-family:$fontFamilyRegular;
+                font-size:$fontSizeSmall;
+                padding:4px 0;
+                color:$TPGrey3;
+                // border:1px solid $TPGrey2;
+            }
+
+            input {
+                // width:84px;
+                width:60px;
+                height:22px;
+                display: inline-block;
+                margin:0;
+            }
+
+            select, .selectBox {
+                width:175px;
+                margin:0;
+                display: inline-block;
+                vertical-align: top;
+            }
+
+            textarea {
+                width:175px;
+                max-width:175px;
+                display: inline-block;
+                margin:0;
+                vertical-align: top;
+            }
+
+            .selectBox {
+                position: relative;
+
+                .selectboxit-container {
+                    width: 175px !important;
+
+                    .selectboxit-options {
+                        width: 170px;
+                    }
+                }
+            }
+
+
         }
+
+        label {
+            cursor:text;
+
+            // important to keep font sizes within label proportional
+            font-size: 1em;
+        }
+    }
+
+    .metricQVItem input {
+        display: inline-block;
     }
 }
