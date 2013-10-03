@@ -105,6 +105,8 @@ function(
             this.accountSettingsModel = options.accountSettingsModel;
             this.athleteSettingsModel = options.athleteSettingsModel;
             this.passwordSettingsModel = options.passwordSettingsModel;
+
+            this.listenTo(theMarsApp.user, "change:dateFormat", _.bind(this._updateDatePickerFormat, this));
         },
 
         onRender: function()
@@ -272,6 +274,11 @@ function(
                 hourSelect.prop("disabled", true);
                 hourSelect.selectBoxIt("disable");
             }
+        },
+
+        _updateDatePickerFormat: function()
+        {
+            this.$(".datepicker").datepicker("option", "dateFormat", TP.utils.datetime.format.getFormatForDatepicker());
         }
 
     });

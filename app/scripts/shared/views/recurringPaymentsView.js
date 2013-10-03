@@ -21,6 +21,11 @@ function(
             template: recurringPaymentsTemplate
         },
         
+        initialize: function()
+        {
+            this.listenTo(theMarsApp.user, "change:dateFormat", _.bind(this.render, this));
+        },
+        
         itemView: RecurringPaymentsItemView,
 
         onRender: function()

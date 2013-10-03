@@ -363,7 +363,7 @@
         
         formatDateToCalendarDate: function (value, options)
         {
-            return datetimeUtils.format(value, "MMM DD, YYYY");
+            return datetimeUtils.format(value, "MMM D, YYYY");
         },
 
         toPercent: function(numerator, denominator)

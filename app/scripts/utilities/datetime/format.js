@@ -29,11 +29,11 @@ function(_, moment)
     function getCalendarDayFormatStringForMoment(momentDate)
     {
         if (momentDate.dayOfYear() === 1) // firstday of year
-            return "MMM DD YYYY";
+            return "MMM D YYYY";
         else if (momentDate.date() === 1) // firstday of month
-            return "MMM DD";
+            return "MMM D";
         else
-            return "DD";
+            return "D";
     }
 
     function getNamedDateFormatString(formatString, momentDate)

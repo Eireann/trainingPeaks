@@ -152,7 +152,7 @@ function(
         _updateDate: function()
         {
             var date = moment(this.model.getCalendarDay());
-            this.$(".calendarDate").text(TP.utils.datetime.format(date, "MMMM DD, YYYY"));
+            this.$(".calendarDate").text(TP.utils.datetime.format(date, "MMMM D, YYYY"));
             this.$(".dayName").text(TP.utils.datetime.format(date, "dddd"));
         },
 

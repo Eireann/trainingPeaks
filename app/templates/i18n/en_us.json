@@ -83,8 +83,6 @@
     "EnglishUnits": "English",
     "MetricUnits": "Metric",
     "DateFormat": "Date Format",
-    "DayFormat1": "MM/DD/YY", 
-    "DayFormat2": "DD/MM/YY",
     "TimeZone": "Time Zone",
 
     "EmailOptions": "E-mail Options",
