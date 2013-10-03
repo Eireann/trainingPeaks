@@ -23,14 +23,16 @@ function(
     )
 {
 
+    // convert from model YYYY-MM-DD format to user mdy or dmy format
     function formatGetDate(value)
     {
         return value ? TP.utils.datetime.format(value) : value;
     }
 
+    // convert from user mdy or dmy format to model YYYY-MM-DD format
     function formatSetDate(value)
     {
-        return value ? moment(value).format("YYYY-MM-DD") : value;
+        return value ? TP.utils.datetime.parse(value).format("YYYY-MM-DD") : value;
     }
 
     var ShiftWizardModel = TP.Model.extend(
