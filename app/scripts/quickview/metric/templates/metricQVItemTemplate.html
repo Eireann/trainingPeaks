@@ -26,12 +26,14 @@
     <span class="metricLabel">{{ formatMetricLabel . }}:</span>
 
     {{#if info.enumeration}}
-        <select name="value">
-            <option value=""></option>
-            {{#each info.enumeration}}
-                <option value="{{ value }}">{{ label }}</option>
-            {{/each}}
-        </select>
+        <div class="selectBox">
+            <select name="value">
+                <option value=""></option>
+                {{#each info.enumeration}}
+                    <option value="{{ value }}">{{ label }}</option>
+                {{/each}}
+            </select>
+        </div>
     {{else}}
         <input type="text" class="numberInput" name="value" data-format="metric">
     {{/if}}
