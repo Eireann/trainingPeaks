@@ -61,7 +61,7 @@ function(
                 var dayModel = new CalendarDayModel({ date: today.format(TP.utils.datetime.shortDateFormat) });
                 var dayView = new CalendarDayView({ model: dayModel });
                 dayView.render();
-                expect(dayView.$el.html()).toContain(TP.utils.datetime.format(today));
+                expect(dayView.$el.html()).toContain(TP.utils.datetime.format(today, "calendarDay"));
             });
 
             describe("Drag and drop", function()

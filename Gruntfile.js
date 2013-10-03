@@ -260,7 +260,7 @@ module.exports = function(grunt)
         {
             specFolder: "test/specs",
             extensions: "spec.js",
-            requirejs: './app/config/jasmineRequirejsConfig.js',
+            useRequireJs: './app/config/jasmineRequirejsConfig.js',
             forceExit: true
         },
 

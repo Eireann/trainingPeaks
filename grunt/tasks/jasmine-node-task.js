@@ -31,7 +31,9 @@ module.exports = function(grunt)
 
 
         var options = {};
-        readCommonJasmineOptions(options);
+        // pass through anything we don't care about specifically
+        var options = _.clone(grunt.config("jasmine_node"));
+        addDefaultOptions(options, _);
         readSpecMatcherOptions(options);
         addCompleteCallback(options, this.async(), util);
         detectTeamcity(options, _);
@@ -41,8 +43,7 @@ module.exports = function(grunt)
             addProgressReporter(options, _);
         }
 
-        // pass through anything we don't care about specifically
-        options = _.defaults(options, grunt.config("jasmine_node"));
+
 
         // what are we testing?
         console.log("testing specs in folder: " + options.specFolders.join(",") + ", matching pattern " + options.regExpSpec);
@@ -108,7 +109,7 @@ module.exports = function(grunt)
                 if(!this.currentSuite || suiteName.indexOf(this.currentSuite) !== 0)
                 {
                     this.currentSuite = suiteName;
-                    this.log("Testing suite " + spec.suite.getFullName() + "...");
+                    this.log(spec.suite.getFullName() + "...");
                 }
             },
             reportSuiteResults: function(suite) {},
@@ -194,17 +195,12 @@ module.exports = function(grunt)
         return folders.length ? folders : null;
     }
 
-    function readCommonJasmineOptions(options)
+    function addDefaultOptions(options, _)
     {
-        options.useRequireJs = grunt.config("jasmine_node.requirejs") || false;
-        options.isVerbose = grunt.config("jasmine_node.verbose") || true;
-        options.showColors = grunt.config("jasmine_node.colors") || true;
-        options.junitreport = grunt.config("jasmine_node.jUnit") || {
-                report: false,
-                savePath: "./reports/",
-                useDotNotation: true,
-                consolidate: true
-            };
+        _.defaults(options, {
+            isVerbose: true,
+            showColors: true
+        });
     }
 
     function readSpecMatcherOptions(options)
