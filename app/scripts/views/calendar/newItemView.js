@@ -3,8 +3,10 @@
     "TP",
     "framework/notYetImplemented",
     "models/workoutModel",
+    "shared/models/metricModel",
     "models/workoutFileData",
     "views/quickView/workoutQuickView",
+    "quickview/metric/views/metricQuickView",
     "views/userConfirmationView",
     "views/workout/workoutFileUploadView",
     "hbs!templates/views/calendar/newItemView"
@@ -13,8 +15,10 @@ function(
     TP,
     notYetImplemented,
     WorkoutModel,
+    MetricModel,
     WorkoutFileData,
     WorkoutQuickView,
+    MetricQuickView,
     UserConfirmationView,
     WorkoutFileUploadView,
     newItemViewTemplate)
@@ -36,7 +40,7 @@ function(
             "change input[type='file']": "onFileSelected",
             "click button[data-workoutid]": "onNewWorkoutClicked",
             "click button[data-meal]": notYetImplemented,
-            "click button[data-metric]": notYetImplemented,
+            "click button[data-metric]": "onNewMetricClicked",
             "click button[name=uploadDeviceFile]": "onUploadFileClicked",
             "click #closeIcon": "onCloseClicked"
         },
@@ -89,6 +93,21 @@ function(
 
             this.close();
             this.trigger("openQuickView", quickView);
+        },
+
+        onNewMetricClicked: function(e)
+        {
+            var newMetric = new MetricModel(
+            {
+                athleteId: theMarsApp.user.getCurrentAthleteId(),
+                timeStamp: moment(this.model.get("date")).format(TP.utils.datetime.longDateFormat)
+            });
+
+            var view = new MetricQuickView({ model: newMetric });
+            view.render();
+
+            this.close();
+            this.trigger("openQuickView", view);
         },
 
         onFileSelected: function ()

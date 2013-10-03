@@ -1,6 +1,7 @@
 ﻿@media screen {
     
-    .workoutBarViewHeader
+    .workoutBarViewHeader,
+    .QVBar 
     {
         width: 570px;
         height: 80px;
@@ -9,7 +10,8 @@
         margin-top: 0px;
         border: 1px solid $TPGrey9;
 
-        .workoutIconLarge
+        .workoutIconLarge,
+        .metricIconLarge
         {
             width: 70px;
             height: 70px;

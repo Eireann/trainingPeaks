@@ -206,7 +206,7 @@
     "Snack": "Snack",
     "Special": "Special",
     "Unknown": "Unknown",
-    "ChooseMetric": "Choose Metric",
+    "ChooseMetric": "Metrics",
     "UploadFile": "Upload File",
     "UploadFiles": "Upload Device Files",
     "FileUploadHelp": "Learn more about device file upload options",
@@ -241,6 +241,8 @@
     "SelectLibrary": "Select Library",
 
     "Title": "Title",
+
+    "Metrics": "Metrics",
 
     "WorkoutAddedToLibrary": "The workout has been added to your workout library. Click on 'Workouts' to access it.",
 
@@ -439,5 +441,7 @@
     "EnterOptions": "Enter Calculator Options",
     "UnableToCalculateZones": "We could not calculate zones based on the information you provided.  Please try again with different values, or select a different calculation method",
 
-    "Not Yet Implemented": "Not Yet Implemented"
+    "Not Yet Implemented": "Not Yet Implemented",
+
+    "Failed To Save Metric": "Failed To Save Metric"
 }

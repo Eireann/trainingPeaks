@@ -261,21 +261,12 @@ function(
             var userPromise = self.user.fetch();
             var userAccessPromise = self.userAccessRights.fetch();
 
-            userAccessPromise.fail(function()
-            {
-                console.log("access", arguments);
-            });
-
             userPromise.done(function()
             {
 
                 RollbarManager.setUser(self.user);
 
                 var athletePromise = self.fetchAthleteSettings();
-                athletePromise.fail(function()
-                {
-                    console.log("athlete", arguments);
-                });
 
                 $.when(userAccessPromise, athletePromise)
                 .done(function()
@@ -291,14 +282,12 @@ function(
                 })
                 .fail(function()
                 {
-                    // console.log("Failed access or athelete", arguments[2].stack, arguments);
                     self.userFetchPromise.reject();
                 });
 
             })
             .fail(function()
             {
-                // console.log("Failed user", arguments[2].stack, arguments);
                 self.userFetchPromise.reject();
             });
 

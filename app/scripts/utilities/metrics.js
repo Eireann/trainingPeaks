@@ -24,8 +24,8 @@ function(
 
         infoFor: function(details)
         {
-            var info = metricTypeById[details.type];
-            if(info.subMetrics && details.index)
+            var info = _.clone(metricTypeById[details.type]);
+            if(info.subMetrics && details.hasOwnProperty("index"))
             {
                 var subInfo = _.find(info.subMetrics, function(subMetric)
                 {
@@ -48,6 +48,18 @@ function(
             var info = metricsUtils.infoFor(details);
             var value = details.value;
 
+            if(options && options.hasOwnProperty("value"))
+            {
+                value = options.value;
+            }
+
+            value = metricsUtils._limitValue(info, value);
+
+            if(value === null || value === undefined)
+            {
+                return value;
+            }
+
             if (info.enumeration)
             {
                 var option = _.find(info.enumeration, function(option)
@@ -59,10 +71,11 @@ function(
             }
             else if(info.units)
             {
-                var formattedValue = conversionUtils.formatUnitsValue(info.units, value);
+                options = _.extend({ defaultValue: "0" }, options);
+                var formattedValue = conversionUtils.formatUnitsValue(info.units, value, options);
                 if(options && options.displayUnits)
                 {
-                    formattedValue += " " + unitsUtils.getUnitsLabel(info.units);
+                    formattedValue += " " + metricsUtils.formatUnitsFor(details, options);
                 }
                 return formattedValue;
             }
@@ -70,6 +83,57 @@ function(
             {
                 return value;
             }
+        },
+
+        parseValueFor: function(details, value)
+        {
+            var info = metricsUtils.infoFor(details);
+            if (info.units)
+            {
+                value = conversionUtils.parseUnitsValue(info.units, value);
+                return metricsUtils._limitValue(info, value);
+            }
+            else
+            {
+                throw new Error("Parsing for metrics without units not yet implemented");
+            }
+        },
+        
+        formatUnitsFor: function(details, options)
+        {
+            var info = metricsUtils.infoFor(details);
+            if(info.units)
+            {
+                return unitsUtils.getUnitsLabel(info.units);
+            }
+            else
+            {
+                return "";
+            }
+        },
+
+        isBlank: function(value)
+        {
+            return (!value && value !== 0) || (_.isArray(value) && (_.isEmpty(value) || _.all(value, metricsUtils.isBlank)));
+        },
+
+        _limitValue: function(info, value)
+        {
+            if(metricsUtils.isBlank(value))
+            {
+                return value;
+            }
+
+            if(info.hasOwnProperty("min") && (value < info.min))
+            {
+                return info.min;
+            }
+            if(info.hasOwnProperty("max") && (value > info.max))
+            {
+                return info.max;
+            }
+
+            return value;
         }
 
     };
