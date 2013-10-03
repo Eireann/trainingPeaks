@@ -14,7 +14,9 @@ module.exports = function(grunt)
     var fs = require('fs');
     var Path = require('path');
 
+    // command line options grunt jasmine_node --dir=pattern --spec=pattern
     grunt.registerTask("jasmine_node", "Runs jasmine-node.", function () {
+
 
         var util;
         // TODO: ditch this when grunt v0.4 is released
@@ -27,52 +29,57 @@ module.exports = function(grunt)
             util = require('sys');
         }
 
-        var projectRoot = grunt.config("jasmine_node.projectRoot") || ".";
-        var specFolder = findSpecFolder(grunt.config("jasmine_node.specFolder"));
 
-        console.log("testing specs in folder: " + specFolder);
+        var options = {};
+        readCommonJasmineOptions(options);
+        readSpecMatcherOptions(options);
+        addCompleteCallback(options, this.async(), util);
+        detectTeamcity(options, _);
 
-        var source = grunt.config("jasmine_node.source") || "src";
-        var specNameMatcher = grunt.config("jasmine_node.specNameMatcher") || "spec";
+        // what are we testing?
+        console.log("testing specs in folder: " + options.specFolders.join() + ", matching pattern " + options.regExpSpec);
+
+        try {
+            // since jasmine-node@1.0.28 an options object need to be passed
+            jasmine.executeSpecsInFolder(options);
+        } catch (e)
+        {
+            console.log('Failed to execute "jasmine.executeSpecsInFolder": ' + e.stack);
+        }
+    });
+
+    function detectTeamcity(options, _)
+    {
+        // get teamcity from environment variable, or set manually with config flag
         var teamcity = process.env.TEAMCITY_PROJECT_NAME || grunt.config("jasmine_node.teamcity") || false;
         if (grunt.config("jasmine_node").hasOwnProperty("teamcity"))
         {
             teamcity = grunt.config("jasmine_node.teamcity");
         }
+        if(teamcity)
+        {
+            options.teamcity = true;
+            var jasmineEnv = jasmine.getEnv();
 
-        var useRequireJs = grunt.config("jasmine_node.requirejs") || false;
-        var extensions = grunt.config("jasmine_node.extensions") || "js";
-        var match = grunt.config("jasmine_node.match") || ".";
-        var matchall = grunt.config("jasmine_node.matchall") || false;
-        var autotest = grunt.config("jasmine_node.autotest") || false;
-        var useHelpers = grunt.config("jasmine_node.useHelpers") || false;
+            // dummy reporter exists just to call our onComplete function, because TeamCity reporter doesn't do it
+            var DummyReporter = function() {};
+            _.extend(DummyReporter.prototype, {
+                reportRunnerResults: function(runner){ options.onComplete(runner); },
+                reportRunnerStarting: function(runner) { },
+                reportSpecResults: function(spec) { },
+                reportSpecStarting: function(spec) { },
+                reportSuiteResults: function(suite) {}
+            });
+
+            jasmineEnv.addReporter(new DummyReporter());
+        }
+    }
+
+    function addCompleteCallback(options, done, util)
+    {
+
         var forceExit = grunt.config("jasmine_node.forceExit") || false;
-
-        var isVerbose = grunt.config("jasmine_node.verbose");
-        var showColors = grunt.config("jasmine_node.colors");
-
-        if (_.isUndefined(isVerbose)) {
-            isVerbose = true;
-        }
-
-        if (_.isUndefined(showColors)) {
-            showColors = true;
-        }
-
-        var junitreport = {
-            report: false,
-            savePath: "./reports/",
-            useDotNotation: true,
-            consolidate: true
-        };
-
-        var jUnit = grunt.config("jasmine_node.jUnit") || junitreport;
-
-        // Tell grunt this task is asynchronous.
-        var done = this.async();
-
-        var regExpSpec = new RegExp(match + (matchall ? "" : specNameMatcher + "\\.") + "(" + extensions + ")$", 'i');
-        var onComplete = function (runner, log) {
+        options.onComplete = function (runner, log) {
             var exitCode;
             util.print('\n');
             if (runner.results().failedCount === 0) {
@@ -86,44 +93,7 @@ module.exports = function(grunt)
 
             done();
         };
-
-        var options = {
-            specFolders: [specFolder],
-            onComplete: onComplete,
-            isVerbose: isVerbose,
-            showColors: showColors,
-            teamcity: teamcity,
-            useRequireJs: useRequireJs,
-            regExpSpec: regExpSpec,
-            junitreport: jUnit
-        };
-
-        if(options.teamcity)
-        {
-            var jasmineEnv = jasmine.getEnv();
-            //jasmineEnv.addReporter(new jasmine.TeamcityReporter());
-
-            // dummy reporter exists just to call our onComplete function, because TeamCity reporter doesn't do it
-            var DummyReporter = function() {};
-            _.extend(DummyReporter.prototype, {
-                reportRunnerResults: function(runner){ onComplete(runner); },
-                reportRunnerStarting: function(runner) { },
-                reportSpecResults: function(spec) { },
-                reportSpecStarting: function(spec) { },
-                reportSuiteResults: function(suite) {}
-            });
-
-            jasmineEnv.addReporter(new DummyReporter());
-        }
-
-        try {
-            // since jasmine-node@1.0.28 an options object need to be passed
-            jasmine.executeSpecsInFolder(options);
-        } catch (e)
-        {
-            console.log('Failed to execute "jasmine.executeSpecsInFolder": ' + e.stack);
-        }
-    });
+    }
 
     // match command line folder option
     function findSpecFolder(specsFolder)
@@ -170,5 +140,40 @@ module.exports = function(grunt)
         // no match in this tree
         return null;
     }
+
+    function readCommonJasmineOptions(options)
+    {
+
+        options.useRequireJs = grunt.config("jasmine_node.requirejs") || false;
+        options.isVerbose = grunt.config("jasmine_node.verbose") || true;
+        options.showColors = grunt.config("jasmine_node.colors") || true;
+        options.junitreport = grunt.config("jasmine_node.jUnit") || {
+                report: false,
+                savePath: "./reports/",
+                useDotNotation: true,
+                consolidate: true
+            };
+
+    }
+
+    function readSpecMatcherOptions(options)
+    {
+
+        // what folders to look in
+        var specFolder = findSpecFolder(grunt.config("jasmine_node.specFolder"));
+        options.specFolders = [specFolder];
+
+        // what file names to match
+        var specNameMatcher = grunt.option("spec") || grunt.config("jasmine_node.specNameMatcher") || null;
+        if(specNameMatcher)
+        {
+            specNameMatcher = ".*" + specNameMatcher.replace("^","").replace("$","") + ".*";
+        }
+
+        var extensions = grunt.config("jasmine_node.extensions") || "js";
+
+        options.regExpSpec = new RegExp((specNameMatcher ? specNameMatcher : ".*") + "\\." + "(" + extensions + ")$", 'i');
+    }
+
 };
 

@@ -4,6 +4,7 @@ requirejs(
     "underscore",
     "testUtils/testHelpers",
     "testUtils/xhrDataStubs",
+    "TP",
     "app",
     "views/dashboard/chartUtils",
     "testUtils/sharedSpecs/sharedChartSpecs"
@@ -12,6 +13,7 @@ function(
     _,
     testHelpers,
     xhrData,
+    TP,
     theMarsApp,
     chartUtils,
     SharedChartSpecs
@@ -30,6 +32,8 @@ function(
 
     var applyDashboardDates = function($mainRegion, $body, dateOptionId, startDate, endDate)
     {
+        startDate = TP.utils.datetime.format(startDate);
+        endDate = TP.utils.datetime.format(endDate);
         $mainRegion.find("#dashboardHeader .calendarMonthLabel").trigger("click");
         $body.find(".dashboardHeaderDatePicker .dashboardDatePicker select.dateOptions").val(dateOptionId).trigger("change");
         $body.find(".dashboardHeaderDatePicker .dashboardDatePicker input.startDate").val(startDate).trigger("change");

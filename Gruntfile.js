@@ -258,18 +258,10 @@ module.exports = function(grunt)
         // jasmine testsuites
         jasmine_node:
         {
-            specNameMatcher: ".spec",
-            specFolder: "test",
-            projectRoot: ".",
+            specFolder: "test/specs",
+            extensions: "spec.js",
             requirejs: './app/config/jasmineRequirejsConfig.js',
-            forceExit: true,
-            watchfiles: ['app/**/*.js', 'test/specs/**/*.js', 'app/**/*.html'],
-            jUnit: {
-                report: false,
-                savePath: "./junit_reports/",
-                useDotNotation: false,
-                consolidate: true
-            }
+            forceExit: true
         },
 
         instrument: {

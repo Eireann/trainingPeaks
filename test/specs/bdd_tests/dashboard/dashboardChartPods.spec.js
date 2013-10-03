@@ -3,12 +3,14 @@ requirejs(
 [
     "testUtils/testHelpers",
     "testUtils/xhrDataStubs",
+    "TP",
     "app",
     "views/dashboard/chartUtils"
 ],
 function(
     testHelpers,
     xhrData,
+    TP, 
     theMarsApp,
     chartUtils
     )
@@ -16,6 +18,8 @@ function(
 
     var applyDashboardDates = function($mainRegion, $body, dateOptionId, startDate, endDate)
     {
+        startDate = TP.utils.datetime.format(startDate);
+        endDate = TP.utils.datetime.format(endDate);
         //console.log("Applying dashboard dates: " + dateOptionId + ", " + startDate + " - " + endDate);
         $mainRegion.find("#dashboardHeader .calendarMonthLabel").trigger("click");
         $body.find(".dashboardHeaderDatePicker .dashboardDatePicker select.dateOptions").val(dateOptionId).trigger("change");
@@ -196,6 +200,7 @@ function(
                             //console.log("Updating dashboard");
                             applyDashboardDates($mainRegion, $body, chartUtils.chartDateOptions.CUSTOM_DATES.id, "2013-01-01", "2013-04-15");
                             //console.log("Finished updating dashboard");
+                            console.log(testHelpers.fakeAjaxRequests); 
                             expect(testHelpers.hasRequest("POST", "reporting/performancedata")).toBe(true);   
                             expect(testHelpers.hasRequest("POST", "reporting/performancedata/2013-01-01/2013-04-15")).toBe(true);
                         });
