@@ -358,12 +358,14 @@
         
         formatDateToDayName: function (value, options)
         {
-            return datetimeUtils.format(value, "dddd");
+            options.dateFormat = "dddd";
+            return this.formatDate(value, options);
         },
         
         formatDateToCalendarDate: function (value, options)
         {
-            return datetimeUtils.format(value, "MMM D, YYYY");
+            options.dateFormat = "MMM D, YYYY";
+            return this.formatDate(value, options);
         },
 
         toPercent: function(numerator, denominator)
@@ -576,6 +578,24 @@
             return adjustFieldRange(value, "%");
         },
 
+        formatDate: function(value, options)
+        {
+            if(conversion.valueIsEmpty(value))
+            {
+                return conversion.formatEmptyNumber(value);
+            }
+            return datetimeUtils.format(value, options.dateFormat);
+        },
+
+        parseDate: function(value, options)
+        {
+            if(conversion.valueIsEmpty(value))
+            {
+                return null;
+            }
+            return datetimeUtils.parse(value, options.dateFormat);
+        },
+
         /*
             options:
                 defaultValue
@@ -693,6 +713,9 @@
 
                 case "cadence":
                     return conversion.formatCadence(value, options);
+
+                case "date":
+                    return conversion.formatDate(value, options);
                     
                 default:
                     throw new Error("Unsupported units for conversion.formatUnitsValue: " + units);
@@ -749,6 +772,9 @@
                 case "mg/dL":
                 case "mm":
                     return conversion.parseNumber(value, options);
+
+                case "date":
+                    return conversion.parseDate(value, options);
 
                 default:
                      throw new Error("Unsupported units for conversion.parseUnitsValue: " + units);

@@ -69,7 +69,7 @@ function(_, moment)
         }
     };
 
-    // TP.utils.datetime.format.parse
+    // TP.utils.datetime.parse
     format.parse = function(momentParseableDate, parseFormat)
     {
         if(!parseFormat)
