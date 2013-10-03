@@ -36,6 +36,16 @@
                     font-size: $fontSizeSmaller;
                     font-family:$fontFamilyRegular;
                     color:$TPGrey3;
+
+                    &.select {
+                        position:relative;
+                        top:-7px;
+                    }
+
+                    &.textarea {
+                        position:relative;
+                        top:-22px;
+                    }
                 }
 
                 .metricUnit {
@@ -76,6 +86,20 @@
                     display: inline-block;
                     margin:0;
                 }
+
+                .selectBox {
+                    position: relative;
+                    
+                    .selectboxit-container {
+                        width: 175px !important;
+
+                        .selectboxit-options {
+                            width: 170px;
+                        }
+                    }
+                }
+
+                
             }
 
             label {
@@ -85,8 +109,6 @@
                 font-size: 1em;
             }
         }
-
-
 
         .metricQVItem input {
             display: inline-block;

@@ -16,16 +16,16 @@
 
 {{#if special.note }}
     <label>
-        <span class="metricLabel">{{ formatMetricLabel . }}:</span>
+        <span class="metricLabel textarea">{{ formatMetricLabel . }}:</span>
         <textarea name="value" maxlength="200"></textarea>
     </label>
 {{/if}}
 
 {{#unless special}}
 <label>
-    <span class="metricLabel">{{ formatMetricLabel . }}:</span>
 
     {{#if info.enumeration}}
+        <span class="metricLabel select">{{ formatMetricLabel . }}:</span>
         <div class="selectBox">
             <select name="value">
                 <option value=""></option>
@@ -34,7 +34,9 @@
                 {{/each}}
             </select>
         </div>
+ 
     {{else}}
+        <span class="metricLabel">{{ formatMetricLabel . }}:</span>
         <input type="text" class="numberInput" name="value" data-format="metric">
     {{/if}}
 
