@@ -22,7 +22,7 @@ function(
                 {
                     if(!axesIndexByUnits[series.units])
                     {
-                        axes.push(ChartingAxesBuilder.makeAxisForUnits(series.units, options));
+                        axes.push(ChartingAxesBuilder.makeAxisForUnits(series.units, options, series.yaxisExtraInfo));
                         axesIndexByUnits[series.units] = axes.length;
                     }
 
@@ -40,14 +40,19 @@ function(
             if(axes.length > 1)
             {
                 axes[1].position = "right";
+                _.each(axes.slice(1), function(axes)
+                {
+                    axes.color = axes.color || "transparent";
+                });
             }
 
             return axes;
         },
 
-        makeAxisForUnits: function(units, options)
+        makeAxisForUnits: function(units, options, extraInfo)
         {
-            return {
+            var axis =
+            {
                 label: TP.utils.units.getUnitsLabel(units, options.workoutTypeId),
                 tickFormatter: function(value)
                 {
@@ -55,6 +60,10 @@ function(
                 },
                 min: options.min
             };
+
+            _.extend(axis, extraInfo);
+
+            return axis;
         }
     };
 
