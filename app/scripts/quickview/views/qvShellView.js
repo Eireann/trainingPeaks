@@ -152,8 +152,8 @@ function(
         _updateDate: function()
         {
             var date = moment(this.model.getCalendarDay());
-            this.$(".calendarDate").text(date.format("MMMM DD, YYYY"));
-            this.$(".dayName").text(date.format("dddd"));
+            this.$(".calendarDate").text(TP.utils.datetime.format(date, "MMMM DD, YYYY"));
+            this.$(".dayName").text(TP.utils.datetime.format(date, "dddd"));
         },
 
         onClose: function()
