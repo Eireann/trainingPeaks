@@ -140,13 +140,13 @@ function(moment, theMarsApp, TP)
                 it("Should print a formatted year, month, and day on the first of the year if no format is passed", function()
                 {
                     var testDate = "Jan 1, 2013";
-                    expect(TP.utils.datetime.format(testDate, "calendarDay")).toBe("01 Jan 2013");
+                    expect(TP.utils.datetime.format(testDate, "calendarDay")).toBe("1 Jan 2013");
                 });
 
                 it("Should print a formatted month and day on the first of the month if no format is passed", function()
                 {
                     var testDate = "Feb 1, 2013";
-                    expect(TP.utils.datetime.format(testDate, "calendarDay")).toBe("01 Feb");
+                    expect(TP.utils.datetime.format(testDate, "calendarDay")).toBe("1 Feb");
                 });
             });
 

@@ -65,6 +65,8 @@ function(
 
             this.listenTo(this.collection, "select", _.bind(this.onItemSelect, this));
             this.listenTo(this.collection, "sort", _.bind(this.onItemSort, this));
+
+            this._refreshOnUserDateFormatChangeIfNecessary();
         },
 
         events:
@@ -408,6 +410,14 @@ function(
             if (e.isDefaultPrevented())
                 return;
             this.model.trigger("day:unselectall");
+        },
+
+        _refreshOnUserDateFormatChangeIfNecessary: function()
+        {
+            if(moment(this.model.get("date")).date() === 1)
+            {
+                this.listenTo(theMarsApp.user, "change:dateFormat", _.bind(this.render, this));
+            }
         }
 
     });
