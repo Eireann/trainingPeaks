@@ -634,6 +634,11 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
     .hoverBox {
         .hoverBoxContents {
              overflow:visible;
+
+             .closeIcon {
+                top: 5px;
+                right: 0;
+             }
         }
         .mainShadow {
             bottom: 0px;
