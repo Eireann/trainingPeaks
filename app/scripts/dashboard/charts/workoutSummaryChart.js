@@ -106,13 +106,29 @@ function(
                 units: "tss",
                 widthScale: 2 * 0.7,
                 colors: chartColors.workoutSummary.TSS,
-                yaxisExtraInfo: { font: { color: chartColors.workoutSummary.TSS.dark } }
+                yaxisExtraInfo:
+                {
+                    font:
+                    {
+                        color: chartColors.workoutSummary.TSS.dark,
+                        family: "HelveticaNeueW01-55Roma",             
+                        size: "9"
+                    }
+                }
             }, {
                 key: "averageIntensityFactorActual",
                 units: "if",
                 widthScale: 2 * 0.3,
                 colors: chartColors.workoutSummary.IF,
-                yaxisExtraInfo: { font: { color: chartColors.workoutSummary.IF.dark } }
+                yaxisExtraInfo:
+                {
+                    font:
+                    {
+                        color: chartColors.workoutSummary.IF.dark,
+                        family: "HelveticaNeueW01-55Roma",             
+                        size: "9"
+                    }
+                }
             }],
             tooltips: [{
                 label: "TSS",
