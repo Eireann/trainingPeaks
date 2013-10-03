@@ -43,6 +43,8 @@
                     }
 
                     &.textarea {
+                        // Align label with the text in the textarea by matching
+                        // line-height, padding, and border
                         border-top: solid 1px transparent;
                         padding: (0.5em * ($fontSizeSmall / $fontSizeSmaller)) 0;
                         line-height: (1.214em) * ($fontSizeSmall / $fontSizeSmaller);
