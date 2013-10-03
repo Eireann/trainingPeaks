@@ -1,13 +1,29 @@
 // use requirejs() instead of define() here, to keep jasmine test runner happy
 requirejs(
 [
+    "app",
+    "TP",
     "views/dashboard/dashboardLibraryView"
 ],
-function(DashboardLibraryView)
+function(app, TP, DashboardLibraryView)
 {
 
     describe("DashboardLibraryView ", function()
     {
+
+        var viewOptions;
+
+        beforeEach(function()
+        {
+            viewOptions = {
+                collections: {
+                    charts: new TP.Collection()
+                }
+            };
+
+            viewOptions.collections.charts.addAllAvailableCharts = jasmine.createSpy("addAllAvailableCharts");
+        });
+
         it("Should be loaded as a module", function()
         {
             expect(DashboardLibraryView).toBeDefined();
@@ -17,20 +33,20 @@ function(DashboardLibraryView)
         {
             it("Should render without errors", function()
             {
-                var library = new DashboardLibraryView();
+                var library = new DashboardLibraryView(viewOptions);
                 library.render();
             });
 
              it("Should have an #activeLibraryContainer element", function()
              {
-                 var library = new DashboardLibraryView();
+                 var library = new DashboardLibraryView(viewOptions);
                  library.render();
                  expect(library.$("#activeLibraryContainer").length).toEqual(1);
              });
 
              it("Should have an #tabs element", function()
              {
-                 var library = new DashboardLibraryView();
+                 var library = new DashboardLibraryView(viewOptions);
                  library.render();
                  expect(library.$("#tabs").length).toEqual(1);
              });

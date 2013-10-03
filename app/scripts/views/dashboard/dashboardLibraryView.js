@@ -28,10 +28,17 @@ function(
             // initialize the superclass
             this.constructor.__super__.initialize.call(this, options);
 
-            this.collections =
+            if(options && options.collections)
             {
-                charts: new AvailableChartsCollection([], { featureAuthorizer: theMarsApp.featureAuthorizer })
-            };
+                this.collections = options.collections;
+            }
+            else
+            {
+                this.collections = 
+                {
+                    charts: new AvailableChartsCollection([], { featureAuthorizer: theMarsApp.featureAuthorizer })
+                };
+            }
 
             this.on("user:loaded", _.bind(this.collections.charts.addAllAvailableCharts, this.collections.charts));
         },

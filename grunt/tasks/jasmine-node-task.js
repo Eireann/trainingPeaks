@@ -36,8 +36,16 @@ module.exports = function(grunt)
         addCompleteCallback(options, this.async(), util);
         detectTeamcity(options, _);
 
+        if(!options.teamcity)
+        {
+            addProgressReporter(options, _);
+        }
+
+        // pass through anything we don't care about specifically
+        options = _.defaults(options, grunt.config("jasmine_node"));
+
         // what are we testing?
-        console.log("testing specs in folder: " + options.specFolders.join() + ", matching pattern " + options.regExpSpec);
+        console.log("testing specs in folder: " + options.specFolders.join(",") + ", matching pattern " + options.regExpSpec);
 
         try {
             // since jasmine-node@1.0.28 an options object need to be passed
@@ -75,6 +83,43 @@ module.exports = function(grunt)
         }
     }
 
+    function addProgressReporter(options, _)
+    {
+        var jasmineEnv = jasmine.getEnv();
+
+        // progress reporter gives us some ongoing status so we can be more entertained while waiting for specs to run 
+        // it also groups log lines under the appropriate test suite name
+        var ProgressReporter = function() {
+            this.currentSuite = null;
+        };
+        _.extend(ProgressReporter.prototype, {
+            reportRunnerResults: function(runner){ },
+            reportRunnerStarting: function(runner) { },
+            reportSpecResults: function(spec) { 
+                if(!spec.results().passed())
+                {
+                    console.log(spec.getFullName() + " Failed:");
+                    console.log("    " + spec.results().getItems().join("\n    "));
+                }
+            },
+            reportSpecStarting: function(spec) { 
+                // don't log every single suite/spec as the console gets too cluttered and slow. just log when starting a new top level suite
+                var suiteName = spec.suite.getFullName();
+                if(!this.currentSuite || suiteName.indexOf(this.currentSuite) !== 0)
+                {
+                    this.currentSuite = suiteName;
+                    this.log("Testing suite " + spec.suite.getFullName() + "...");
+                }
+            },
+            reportSuiteResults: function(suite) {},
+            log: function(str) {
+                console.log(str);
+            }
+        });
+
+        jasmineEnv.addReporter(new ProgressReporter());
+    }
+
     function addCompleteCallback(options, done, util)
     {
 
@@ -96,54 +141,61 @@ module.exports = function(grunt)
     }
 
     // match command line folder option
-    function findSpecFolder(specsFolder)
+    function findSpecFolders(specFolderMatcher, rootFolder)
     {
-        var dirOption = grunt.option("dir");
 
-        if(dirOption)
+        var pattern = new RegExp(specFolderMatcher, "i");
+        var matchedFolders = findFolders(pattern, rootFolder);
+        if(matchedFolders)
         {
-            var pattern = new RegExp(dirOption, "i");
-            var matchedFolder = findFolder(pattern, specsFolder);
-            if(matchedFolder)
-            {
-                return matchedFolder;
-            }
+            return matchedFolders;
         }
 
-        return specsFolder;
+        // default if our find fails
+        return [specFolderMatcher];
     }
 
-    function findFolder(pattern, folder)
+    function findFolders(pattern, folder)
     {
 
-        // top level directory matches
-        if (fs.statSync(folder).isDirectory() && folder.match(pattern))
-        {
-            return folder;
+        var folders = [];
 
-        // sub directory matches
-        } else if (fs.statSync(folder).isDirectory())
+        // only look at directories
+        if (fs.statSync(folder).isDirectory())
         {
+
+            // if top level folder matches, push it and return
+            if(pattern.test(folder))
+            {
+                folders.push(folder);
+                return folders;
+            }
+
+            // else check subdirectories
             var files = fs.readdirSync(folder);
             for (var i = 0; i < files.length; i++)
             {
-                var path = folder + "/" + files[i];
-                if (fs.statSync(path).isDirectory())
+                var subFolderPath = folder + "/" + files[i];
+                if (fs.statSync(subFolderPath).isDirectory())
                 {
-                    var matchingSubfolder = findFolder(pattern, path);
-                    if(matchingSubfolder)
-                        return matchingSubfolder;
+                    var matchingChildFolders = findFolders(pattern, subFolderPath);
+                    if(matchingChildFolders)
+                    {
+                        for(var j = 0;j<matchingChildFolders.length;j++)
+                        {
+                            folders.push(matchingChildFolders[j]);
+                        }
+                    }
                 }
             }
         }
 
         // no match in this tree
-        return null;
+        return folders.length ? folders : null;
     }
 
     function readCommonJasmineOptions(options)
     {
-
         options.useRequireJs = grunt.config("jasmine_node.requirejs") || false;
         options.isVerbose = grunt.config("jasmine_node.verbose") || true;
         options.showColors = grunt.config("jasmine_node.colors") || true;
@@ -153,15 +205,15 @@ module.exports = function(grunt)
                 useDotNotation: true,
                 consolidate: true
             };
-
     }
 
     function readSpecMatcherOptions(options)
     {
 
         // what folders to look in
-        var specFolder = findSpecFolder(grunt.config("jasmine_node.specFolder"));
-        options.specFolders = [specFolder];
+        var specFolderMatcher = grunt.option("dir") || grunt.config("jasmine_node.specFolder");
+        var rootFolder = grunt.config("jasmine_node.specFolder");
+        options.specFolders = findSpecFolders(specFolderMatcher, rootFolder);
 
         // what file names to match
         var specNameMatcher = grunt.option("spec") || grunt.config("jasmine_node.specNameMatcher") || null;
