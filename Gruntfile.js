@@ -200,7 +200,7 @@ module.exports = function(grunt)
             {
                 files:
                 {
-                    "build/debug": ["assets/fonts/**", "assets/images/**", "app/scripts/affiliates/**", "!app/scripts/affiliates/**/*.js"]
+                    "build/debug": ["vendor/js/libs/leaflet/*.css", "vendor/js/libs/leaflet/images/*", "assets/fonts/**", "assets/images/**", "app/scripts/affiliates/**", "!app/scripts/affiliates/**/*.js"]
                 }
             },
 
@@ -208,7 +208,7 @@ module.exports = function(grunt)
             {
                 files:
                 {
-                    "build/release": ["assets/fonts/**", "assets/images/**", "app/scripts/affiliates/**", "!app/scripts/affiliates/**/*.js"]
+                    "build/release": ["vendor/js/libs/leaflet/*.css", "vendor/js/libs/leaflet/images/*", "assets/fonts/**", "assets/images/**", "app/scripts/affiliates/**", "!app/scripts/affiliates/**/*.js"]
                 }
             },
 
@@ -301,7 +301,7 @@ module.exports = function(grunt)
     grunt.loadNpmTasks("grunt-contrib-watch");
     grunt.loadNpmTasks("grunt-istanbul");
 
-    
+
     // TESTING:
     // NOTE: grunt test --dir=some/pattern will limit tests to a subfolder
     grunt.registerTask("test", ["clean:coverage", "jshint", "setup-spec-list", "jasmine_node"]);
