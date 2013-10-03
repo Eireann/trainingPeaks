@@ -353,6 +353,11 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
         {
             display: block;
         }
+
+        &.fullScreen {
+            background-color: $TPGrey1;
+            border: 1px solid transparent;
+        }
     }
 
     &.ui-draggable-dragging
