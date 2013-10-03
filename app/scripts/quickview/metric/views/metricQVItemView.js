@@ -53,7 +53,10 @@ function(
                 }
             });
 
-            this.$("select").selectBoxIt();
+            setImmediate(function()
+            {
+                this.$("select").selectBoxIt();
+            });
         },
 
         formatMetric: function(index, value)
