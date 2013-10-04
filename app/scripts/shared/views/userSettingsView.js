@@ -71,7 +71,7 @@ function(
             this._initializeNavigation();
             this._initializeFooter();
             this.on("render", this._fetchPaymentHistory, this);
-            this.on("before:switchTab", this._applyFormValuesToModels, this);
+            this.on("before:switchView", this._applyFormValuesToModels, this);
             this.on("render", this._listenForFormChanges, this);
         },
 
@@ -161,7 +161,7 @@ function(
 
         _showFooter: function()
         {
-            this.tabbedLayoutFooterRegion.show(this.footerView);
+            this.footerRegion.show(this.footerView);
             this.footerView.disableCancel(false);
         },
 

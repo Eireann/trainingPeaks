@@ -11,7 +11,80 @@ function(
 )
 {
 
-    var TabbedLayout = TP.Layout.extend({
+    var SelectableMultiView = TP.Layout.extend({
+
+        className: "selectableMultiView",
+
+        template: function(){return "<div class='navigationRegion'></div><div class='bodyRegion'></div>";},
+
+        regions:
+        {
+            bodyRegion: ".bodyRegion"
+        },
+
+        ui: {
+            navigationContainer: ".navigationRegion"
+        },
+
+        currentView: null,
+
+        constructor: function()
+        {
+            TP.Layout.apply(this, arguments);
+            this.on("render", this._renderNavigation, this);
+            this.on("render", this._displayDefaultView, this);            
+        },
+
+        _renderNavigation: function()
+        {
+            this.ui.navigationContainer.empty();
+            _.each(this._getNavigationElements(), function($item)
+            {
+                this.ui.navigationContainer.append($item);
+            }, this);
+        },
+
+        _getNavigationElements: function()
+        {
+            return [];
+        },
+
+        _selectView: function(navItem, $uiElement)
+        {
+            this.trigger("before:switchView", navItem, $uiElement);
+            if(this.currentView)
+            {
+                this.stopListening(this.currentView, "all");
+            }            
+            var view = new navItem.view(navItem.options);
+            navItem.viewInstance = view;
+            this.currentView = view;
+            this.listenTo(view, "all", _.bind(this._passthroughCurrentViewEvent, this));
+            this._displayCurrentView();
+
+            this.trigger("after:switchView", navItem, $uiElement);
+        },
+
+        _displayCurrentView: function()
+        {
+            this.bodyRegion.show(this.currentView);
+        },
+
+        _displayDefaultView: function()
+        {
+            this._selectView(this.navigation[0]);
+        },
+
+        _passthroughCurrentViewEvent: function(eventName)
+        {
+            var args = Array.prototype.slice.call(arguments, 0);
+            args[0] = "itemView:" + eventName;
+            this.trigger.apply(this, args);
+        }
+
+    });
+
+    var TabbedLayout = SelectableMultiView.extend({
 
         className: "tabbedLayout",
 
@@ -23,29 +96,24 @@ function(
 
         regions:
         {
-            tabbedLayoutBodyRegion: ".tabbedLayoutBody",
-            tabbedLayoutFooterRegion: ".tabbedLayoutFooter"
+            bodyRegion: ".tabbedLayoutBody",
+            footerRegion: ".tabbedLayoutFooter"
+        },
+
+        ui: {
+            navigationContainer: ".tabbedLayoutNav"
         },
 
         constructor: function()
         {
-            TP.Layout.apply(this, arguments);
-            this.on("render", this.renderNav, this);
+            SelectableMultiView.apply(this, arguments);
+            this.on("after:switchView", this._updateNavigation, this);
         },
 
-        renderNav: function()
+        _getNavigationElements: function()
         {
+            var navElements = [];
             var self = this;
-
-            if(!this.navigation)
-            {
-                throw new Error("Tabbed Layout requires a navigation config array");
-            }
-
-            var $nav = this.$(".tabbedLayoutNav");
-
-            $nav.empty();
-
             _.each(this.navigation, function(navItem)
             {
                 var $item = $("<li/>");
@@ -55,31 +123,30 @@ function(
 
                 $link.click(function()
                 {
-                    self._setCurrent(navItem, $item);
+                    self._selectView(navItem, $item);
                 });
 
-                $nav.append($item);
+                navElements.push($item);
             }, this);
 
-            this.$(".tabbedLayoutNavLink:first").click();
+            return navElements;
         },
 
-        _setCurrent: function(navItem, $item)
+        _displayDefaultView: function()
         {
-            var self = this;
+            this.$(".tabbedLayoutNavLink:first").trigger("click");
+        },
 
-            this.trigger("before:switchTab");
-            
+        _updateNavigation: function(navItem, $item)
+        {
+
+            // before
             if(this.$current)
             {
                 this.$current.removeClass("active");
-                this.stopListening(this.currentView, "all");
             }
 
-            var view = new navItem.view(navItem.options);
-            this.currentView = view;
-            this.listenTo(view, "all", _.bind(this._passthroughCurrentViewEvent, this));
-            this.tabbedLayoutBodyRegion.show(view);
+            var self = this;
 
             setImmediate(function()
             {
@@ -91,7 +158,7 @@ function(
 
             var $subNav = $("<ul class='tabbedLayoutSubNav'/>");
 
-            var subNavItems = _.result(view, "subNavigation");
+            var subNavItems = _.result(this.currentView, "subNavigation");
 
             _.each(subNavItems, function(subNavItem)
             {
@@ -111,16 +178,8 @@ function(
             $item.append($subNav);
 
             this.$current = $item;
+
             this.$current.addClass("active");
-
-            this.trigger("after:switchTab");
-        },
-
-        _passthroughCurrentViewEvent: function(eventName)
-        {
-            var args = Array.prototype.slice.call(arguments, 0);
-            args[0] = "currentview:" + eventName;
-            this.trigger.apply(this, args);
         },
 
         _scrollTo: function(subNavItem, $subItem)

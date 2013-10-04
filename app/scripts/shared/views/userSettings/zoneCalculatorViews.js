@@ -364,13 +364,13 @@ function(
             this.on("render", this._showFooter, this);
             this.listenTo(this.footerView, "cancel", _.bind(this._cancel, this));
             this.listenTo(this.footerView, "apply", _.bind(this._apply, this));
-            this.on("before:switchTab", this.resetFooter, this);
-            this.on("currentview:calculate", this.enableFooter, this);
+            this.on("before:switchView", this.resetFooter, this);
+            this.on("itemView:calculate", this.enableFooter, this);
         },
 
         _showFooter: function()
         {
-            this.tabbedLayoutFooterRegion.show(this.footerView);
+            this.footerRegion.show(this.footerView);
             this.resetFooter();
         },
 
