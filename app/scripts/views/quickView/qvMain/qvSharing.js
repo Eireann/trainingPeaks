@@ -87,7 +87,7 @@ function (
 
             if(this.model.get("workoutDay"))
             {
-                textArray.push("on " + moment(this.model.get("workoutDay")).format("MM/DD"));
+                textArray.push("on " + TP.utils.datetime.format(this.model.get("workoutDay"),"M/D"));
             }
 
             if(this.model.get("totalTime"))
