@@ -91,12 +91,6 @@
 
             @include blueButton();
         }
-
-        button[name="chooseMetricBtn"]
-        {
-            width: 200px;
-            margin-right: 1em;
-        }
     }
 
     .addItemSectionHeader

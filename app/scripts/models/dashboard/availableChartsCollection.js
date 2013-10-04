@@ -9,6 +9,8 @@ function(
     {
         model: TP.Model,
 
+        comparator: "name",
+
         initialize: function(models, options)
         {
 

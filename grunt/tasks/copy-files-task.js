@@ -3,7 +3,7 @@ module.exports = function(grunt)
 
     var _ = require('underscore');
     var path = require('path');
-    var fs = require('fs');
+    var fs = require('fs-extra');
 
     // FILE COPYING - a highly simplified version grunt-contrib-copy
     grunt.registerMultiTask('copy', 'Copy files.', function()
@@ -41,13 +41,13 @@ module.exports = function(grunt)
                 if (fs.statSync(srcPath).isDirectory() && !fs.existsSync(destPath))
                 {
 
-                    //console.log("mkdir: " + destPath);
+                    // console.log("mkdir: " + destPath);
                     var pathParts = destPath.split(path.sep);
                     var dir = "";
                     while (pathParts.length > 0)
                     {
                         dir = path.join(dir, pathParts.shift());
-                        //grunt.log.writeln("Mkdir " + dir);
+                        // grunt.log.writeln("Mkdir " + dir);
                         if (!fs.existsSync(dir))
                         {
                             fs.mkdirSync(dir);
@@ -57,7 +57,11 @@ module.exports = function(grunt)
                 }
                 else if (fs.statSync(srcPath).isFile())
                 {
-                    //grunt.log.writeln("Copy " + srcPath + " to " + destPath);
+                    if(!fs.existsSync(path.dirname(destPath)))
+                    {
+                        fs.mkdirsSync(path.dirname(destPath));
+                    }
+                    // grunt.log.writeln("Copy " + srcPath + " to " + destPath);
                     copyFileSync(srcPath, destPath);
                     //fs.createReadStream(srcPath).pipe(fs.createWriteStream(destPath));
                 }

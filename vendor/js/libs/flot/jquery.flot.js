@@ -1328,13 +1328,16 @@ Licensed under the MIT license.
             if ($.inArray(axis, samePosition) == samePosition.length - 1)
                 axisMargin = 0; // outermost
 
+            // determine innermost separately of tickLength as we use it elsewhere
+            var sameDirection = $.grep(all, function (a) {
+                return a && a.reserveSpace;
+            });
+
+            innermost = $.inArray(axis, sameDirection) == 0;
+
             // determine tick length - if we're innermost, we can use "full"
             if (tickLength == null) {
-                var sameDirection = $.grep(all, function (a) {
-                    return a && a.reserveSpace;
-                });
 
-                innermost = $.inArray(axis, sameDirection) == 0;
                 if (innermost)
                     tickLength = "full";
                 else
@@ -1883,14 +1886,14 @@ Licensed under the MIT license.
 
                 // find the edges
                 if (axis.direction == "x") {
-                    x = 0;
+                    x = 0 + plotOffset.left;
                     if (t == "full")
                         y = (axis.position == "top" ? 0 : plotHeight);
                     else
                         y = box.top - plotOffset.top + (axis.position == "top" ? box.height : 0);
                 }
                 else {
-                    y = 0;
+                    y = 0 + plotOffset.bottom;
                     if (t == "full")
                         x = (axis.position == "left" ? 0 : plotWidth);
                     else
@@ -1903,9 +1906,31 @@ Licensed under the MIT license.
                     ctx.beginPath();
                     xoff = yoff = 0;
                     if (axis.direction == "x")
+                    {
                         xoff = plotWidth + 1;
+                        x = x + plotOffset.left;
+                        if(axis.position === "bottom")
+                        {
+	                        y = y + options.grid.axisOffset.bottom;
+                        }
+                        else
+                        {
+ 	                        y = y - options.grid.axisOffset.top;                       	
+                        }
+                    }
                     else
+                    {
                         yoff = plotHeight + 1;
+                        y = y - plotOffset.bottom;
+                        if(axis.position === "right")
+                        {
+	                        x = x + options.grid.axisOffset.right;
+                        }
+                        else
+                        {
+ 	                        x = x - options.grid.axisOffset.left;                       	
+                        }
+                    }
 
                     if (ctx.lineWidth == 1) {
                         if (axis.direction == "x") {

@@ -4,6 +4,7 @@ requirejs(
     "underscore",
     "testUtils/testHelpers",
     "testUtils/xhrDataStubs",
+    "TP",
     "app",
     "views/dashboard/chartUtils",
     "testUtils/sharedSpecs/sharedChartSpecs"
@@ -12,6 +13,7 @@ function(
     _,
     testHelpers,
     xhrData,
+    TP,
     theMarsApp,
     chartUtils,
     SharedChartSpecs
@@ -42,6 +44,8 @@ function(
 
     var applyDashboardDates = function($mainRegion, $body, dateOptionId, startDate, endDate)
     {
+        startDate = TP.utils.datetime.format(startDate);
+        endDate = TP.utils.datetime.format(endDate);
         $mainRegion.find("#dashboardHeader .calendarMonthLabel").trigger("click");
         $body.find(".dashboardHeaderDatePicker .dashboardDatePicker select.dateOptions").val(dateOptionId).trigger("change");
         $body.find(".dashboardHeaderDatePicker .dashboardDatePicker input.startDate").val(startDate).trigger("change");
@@ -153,8 +157,8 @@ function(
                     // set tomahawk dates
                     $mainRegion.find(".dashboardChart.peaksChart .settings").trigger("mousedown");
                     $body.find(".dashboardChartSettings .dateOptionsRegion .dashboardDatePicker select.dateOptions").val(chartUtils.chartDateOptions.CUSTOM_DATES.id).trigger("change");
-                    $body.find(".dashboardChartSettings .dateOptionsRegion .dashboardDatePicker input.startDate").val("2012-04-01").trigger("change");
-                    $body.find(".dashboardChartSettings .dateOptionsRegion .dashboardDatePicker input.endDate").val("2012-12-24").trigger("change");
+                    $body.find(".dashboardChartSettings .dateOptionsRegion .dashboardDatePicker input.startDate").val(TP.utils.datetime.format("2012-04-01")).trigger("change");
+                    $body.find(".dashboardChartSettings .dateOptionsRegion .dashboardDatePicker input.endDate").val(TP.utils.datetime.format("2012-12-24")).trigger("change");
                     $body.find(".dashboardChartSettings .closeIcon").trigger("click");
 
                     // should request tomahawk dates

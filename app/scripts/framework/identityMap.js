@@ -28,7 +28,8 @@ function(
             }
             else
             {
-                return this.modelsByUrl[url] = model;
+                this.modelsByUrl[url] = model;
+                return this.modelsByUrl[url];
             }
         },
 

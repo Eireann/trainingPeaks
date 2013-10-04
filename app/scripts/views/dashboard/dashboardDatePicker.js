@@ -69,7 +69,7 @@ function(
                     zIndex = self.$el.closest(".dashboardChartSettings").css("z-index");
                 }
                 self.$(".datepicker").css("position", "relative").css("z-index", zIndex);
-                self.$(".datepicker").datepicker({ dateFormat: "mm-dd-yy", firstDay: theMarsApp.controllers.calendarController.startOfWeekDayIndex });
+                self.$(".datepicker").datepicker({ dateFormat: TP.utils.datetime.format.getFormatForDatepicker(), firstDay: theMarsApp.controllers.calendarController.startOfWeekDayIndex });
                 self.$("select.dateOptions").selectBoxIt({dynamicPositioning: true});
                 self.$("input.startDate").datepicker("option", "maxDate", self.$("input.endDate").val());
                 self.$("input.endDate").datepicker("option", "minDate", self.$("input.startDate").val());
@@ -104,8 +104,8 @@ function(
 
             var dateOptions = {
                 quickDateSelectOption: optionId,
-                startDate: this.$("input.startDate").val(),
-                endDate: this.$("input.endDate").val()
+                startDate: TP.utils.datetime.parse(this.$("input.startDate").val()),
+                endDate: TP.utils.datetime.parse(this.$("input.endDate").val())
             };
 
             dateOptions = chartUtils.buildChartParameters(dateOptions);
@@ -138,8 +138,8 @@ function(
                 this.$(".dateRanges").removeClass("customEndDate");
             }
 
-            var startDate = moment(dateOptions.startDate).format("MM-DD-YYYY");
-            var endDate = moment(dateOptions.endDate).format("MM-DD-YYYY");
+            var startDate = TP.utils.datetime.format(dateOptions.startDate);
+            var endDate = TP.utils.datetime.format(dateOptions.endDate);
             this.$("input.startDate").val(startDate);
             this.$("div.startDate").text(startDate);
             this.$("input.endDate").val(endDate);

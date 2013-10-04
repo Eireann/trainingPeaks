@@ -291,6 +291,7 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
         background-color: $TPGrey1;
         z-index: 200 !important;
         opacity: 1;
+        cursor: default;
 
         .chartButtons
         {
@@ -352,6 +353,11 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
         .chartButtons
         {
             display: block;
+        }
+
+        &.fullScreen {
+            background-color: $TPGrey1;
+            border: 1px solid transparent;
         }
     }
 
@@ -634,6 +640,11 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
     .hoverBox {
         .hoverBoxContents {
              overflow:visible;
+
+             .closeIcon {
+                top: 5px;
+                right: 0;
+             }
         }
         .mainShadow {
             bottom: 0px;

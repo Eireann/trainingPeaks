@@ -1,0 +1,45 @@
+{{#if special.bloodPressure }}
+    <span class="metricLabel">{{ formatMetricLabel . }}:</span>
+    <input type="text" class="numberInput" name="value.0" data-format="metric0">
+    <span class="metricUnit">/</span>
+    <input type="text" class="numberInput" name="value.1" data-format="metric1">
+    <span class="metricUnit">{{ formatMetricUnits . }}</span>
+{{/if}}
+
+{{#if special.insulin }}
+    <span class="metricLabel">{{ formatMetricLabel . }}:</span>
+    <input type="text" name="value.1">
+    <span class="metricUnit">type</span>
+    <input type="text" class="numberInput" name="value.0" data-format="metric0">
+    <span class="metricUnit">units</span>
+{{/if}}
+
+{{#if special.note }}
+    <label>
+        <span class="metricLabel textarea">{{ formatMetricLabel . }}:</span>
+        <textarea name="value" maxlength="200"></textarea>
+    </label>
+{{/if}}
+
+{{#unless special}}
+<label>
+
+    {{#if info.enumeration}}
+        <span class="metricLabel select">{{ formatMetricLabel . }}:</span>
+        <div class="selectBox">
+            <select name="value">
+                <option value=""></option>
+                {{#each info.enumeration}}
+                    <option value="{{ value }}">{{ label }}</option>
+                {{/each}}
+            </select>
+        </div>
+ 
+    {{else}}
+        <span class="metricLabel">{{ formatMetricLabel . }}:</span>
+        <input type="text" class="numberInput" name="value" data-format="metric">
+    {{/if}}
+
+    <span class="metricUnit">{{ formatMetricUnits . }}</span>
+</label>
+{{/unless}}

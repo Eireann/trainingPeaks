@@ -51,6 +51,8 @@ function (datepicker, spinner, jquerySelectBox, _, TP, notYetImplemented, Dashbo
                 mergedSettings.quickDateSelectOption = defaultDateOption;
             }
             this.model.set(this.settingsKey, mergedSettings, { silent: true });
+
+            this.listenTo(theMarsApp.user, "change:dateFormat", _.bind(this.render, this));
             this.render();
         },
 

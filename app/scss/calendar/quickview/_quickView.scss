@@ -8,8 +8,10 @@
 @import "qvFileUploadMenu";
 @import "qvSharing";
 
+@import "metricQuickView";
+
 @media screen {
-    #workOutQuickView
+    #workOutQuickView, .QVShell
     {
         overflow:hidden;
         width: 690px;
@@ -21,7 +23,7 @@
             @include box-shadow(none);
             color: $TPGrey3;
             line-height:$fontSizeXLarge;
-            &:focus 
+            &:focus
             {
                 background-color: #FFFFFF;
             }
@@ -31,7 +33,7 @@
 
         input
         {
-            
+
             text-align: center;
 
             &.workoutTitle
@@ -40,7 +42,7 @@
                 color: $TPGrey4;
             }
 
-            &#startTimeInput
+            &#startTimeInput, &.timeInput
             {
                 text-align: left;
             }
@@ -54,10 +56,10 @@
         cursor: default;
     }
 
-    #quickViewContent
+    #quickViewContent, .QVBody
     {
         height: 360px;
-        overflow-y:scroll; 
+        overflow-y:scroll;
         overflow-x:hidden;
         @include radialGradient(#e6e4e4, #dedcdc);
         width: 653px;
@@ -68,7 +70,12 @@
         }
     }
 
-    .quickviewFooter
+    .QVBody
+    {
+        width: 690px;
+    }
+
+    .quickviewFooter, .QVFooter
     {
         height:45px;
         background-color: $TPGrey5;
@@ -80,7 +87,7 @@
             width: 130px;
             float:left;
             // @include selectionBox(130px);
-            
+
             select {
                 margin-top:1px;
                 padding:0;
@@ -157,7 +164,7 @@
 
             .hoverBoxContents
             {
-            
+
                 .details
                 {
                     min-width: 120px;
@@ -189,7 +196,7 @@
 
     .workoutQuickViewMenu {
         z-index: 103;
-        
+
         .hoverBox {
             .hoverBoxContents .details label {
                 font-weight:normal;
@@ -197,7 +204,7 @@
                 }
             .mainShadow {
                 box-shadow: 0 2px 3px 0 #444444;
-            }   
+            }
             .arrow {
                 box-shadow: 0 2px 3px 0 #444444;
             }
@@ -215,7 +222,7 @@
         z-index: 103;
 
         label {
-         
+
             font-family: $fontFamilyHeavy;
         }
 
@@ -224,7 +231,7 @@
         }
 
         #selectLibrarySelectBoxItOptions {
-       
+
         }
 
         .selectboxit-container .selectboxit {
@@ -268,7 +275,7 @@
                 width:120px;
                 text-align:left;
                 padding-right:10px;
-                
+
                 label {
                     margin-bottom:0;
                     color:$TPGrey3;
@@ -396,7 +403,7 @@
     }
     ::-moz-placeholder { /* Mozilla Firefox 19+ */
         color: transparent;
-    } 
+    }
     :-ms-input-placeholder { /* Internet Explorer 10+ */
         color: transparent;
     }
@@ -431,10 +438,10 @@
             display:none;
         }
 
-        .tabNavigation, 
-        .closeAndSettings, 
-        .uploadExpandButtons, 
-        .headerIcons, 
+        .tabNavigation,
+        .closeAndSettings,
+        .uploadExpandButtons,
+        .headerIcons,
         .quickviewFooter {
             display:none !important;
         }
@@ -442,7 +449,7 @@
         .quickviewFooter {
             border:1px solid red;
         }
-        
+
         .tabContent {
             overflow-x: hidden;
             overflow-y: visible !important;
@@ -458,7 +465,7 @@
                 color: $TPGrey4;
             }
 
-            &#startTimeInput
+            &#startTimeInput, &.timeInput
             {
                 text-align: left;
             }
@@ -474,7 +481,7 @@
             border:none;
             padding:0;
         }
-        
+
         textarea {
             resize:none !important;
         }

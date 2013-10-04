@@ -10,15 +10,16 @@ function()
             label: "Blood Pressure",
             subMetrics:
             [
-                { index: 0, label: "Systolic" },
-                { index: 1, label: "Diastolic" }
+                { index: 0, label: "Systolic", min: 50, max: 230 },
+                { index: 1, label: "Diastolic", min: 10, max: 140 }
             ],
             units: "mmHg"
         },
         {
             id: 2,
             label: "Percent Fat",
-            units: "%"
+            units: "%",
+            max: 80
         },
         {
             id: 3,
@@ -53,12 +54,16 @@ function()
         {
             id: 5,
             label: "Pulse",
-            units: "heartrate"
+            units: "heartrate",
+            min: 10,
+            max: 200
         },
         {
             id: 6,
             label: "Sleep Hours",
-            units: "hours"
+            units: "hours",
+            min: 0,
+            max: 24
         },
         {
             id: 7,
@@ -110,7 +115,9 @@ function()
         {
             id: 11,
             label: "Sleep Elevation",
-            units: "elevation"
+            units: "elevation",
+            min: -457,
+            max: 9144
         },
         {
             id: 12,
@@ -125,22 +132,30 @@ function()
         {
             id: 14,
             label: "BMI",
-            units: "none"
+            units: "none",
+            min: 10,
+            max: 50
         },
         {
             id: 15,
             label: "RMR",
-            units: "kcal"
+            units: "kcal",
+            min: 500,
+            max: 5000
         },
         {
             id: 16,
             label: "BMR",
-            units: "kcal"
+            units: "kcal",
+            min: 500,
+            max: 20000
         },
         {
             id: 17,
             label: "Water Consumption",
-            units: "ml"
+            units: "ml",
+            min: 0,
+            max: 29573
         },
         {
             id: 18,
@@ -242,102 +257,150 @@ function()
         {
             id: 25,
             label: "Shoulder",
-            units: "cm"
+            units: "cm",
+            min: 0,
+            max: 127
         },
         {
             id: 26,
             label: "Chest",
-            units: "cm"
+            units: "cm",
+            min: 0,
+            max: 1270
         },
         {
             id: 27,
             label: "Waist",
-            units: "cm"
+            units: "cm",
+            min: 0,
+            max: 1270
         },
         {
             id: 28,
             label: "Abdomen",
-            units: "cm"
+            units: "cm",
+            min: 0,
+            max: 1270
         },
         {
             id: 29,
             label: "Hips",
-            units: "cm"
+            units: "cm",
+            min: 0,
+            max: 1270
         },
         {
             id: 30,
             label: "Bust",
-            units: "cm"
+            units: "cm",
+            min: 0,
+            max: 127
+
         },
         {
             id: 31,
             label: "Left Wrist",
-            units: "cm"
+            units: "cm",
+            min: 0,
+            max: 127
+
         },
         {
             id: 32,
             label: "Right Wrist",
-            units: "cm"
+            units: "cm",
+            min: 0,
+            max: 127
+
         },
         {
             id: 33,
             label: "Left Bicep",
-            units: "cm"
+            units: "cm",
+            min: 0,
+            max: 127
+
         },
         {
             id: 34,
             label: "Right Bicep",
-            units: "cm"
+            units: "cm",
+            min: 0,
+            max: 127
+
         },
         {
             id: 35,
             label: "Left Forearm",
-            units: "cm"
+            units: "cm",
+            min: 0,
+            max: 127
+
         },
         {
             id: 36,
             label: "Right Forearm",
-            units: "cm"
+            units: "cm",
+            min: 0,
+            max: 127
+
         },
         {
             id: 37,
             label: "Left Thigh",
-            units: "cm"
+            units: "cm",
+            min: 0,
+            max: 508
         },
         {
             id: 38,
             label: "Right Thigh",
-            units: "cm"
+            units: "cm",
+            min: 0,
+            max: 508
         },
         {
             id: 39,
             label: "Left Calf",
-            units: "cm"
+            units: "cm",
+            min: 0,
+            max: 254
         },
         {
             id: 40,
             label: "Right Calf",
-            units: "cm"
+            units: "cm",
+            min: 0,
+            max: 254
         },
         {
             id: 41,
             label: "Neck",
-            units: "cm"
+            units: "cm",
+            min: 0,
+            max: 127
         },
         {
             id: 42,
             label: "Glutes",
-            units: "cm"
+            units: "cm",
+            min: 0,
+            max: 127
         },
         {
             id: 43,
             label: "Torso",
-            units: "cm"
+            units: "cm",
+            min: 0,
+            max: 254
         },
         {
             id: 44,
             label: "Blood Glucose",
-            units: "mg/dL"
+            units: "mg/dL",
+            min: 0,
+            max: 500
+
         },
         {
             id: 45,
@@ -346,32 +409,44 @@ function()
             subMetrics:
             [
                 { index: 0 }
-            ]
+            ],
+            min: 0,
+            max: 1000
         },
         {
             id: 46,
             label: "Time in Deep Sleep",
-            units: "hours"
+            units: "hours",
+            min: 0,
+            max: 24
         },
         {
             id: 47,
             label: "Time in Rem Sleep",
-            units: "hours"
+            units: "hours",
+            min: 0,
+            max: 24
         },
         {
             id: 48,
             label: "Time in Light Sleep",
-            units: "hours"
+            units: "hours",
+            min: 0,
+            max: 24
         },
         {
             id: 49,
             label: "Times Woken",
-            units: "none"
+            units: "none",
+            min: 1,
+            max: 1000
         },
         {
             id: 50,
             label: "Total Time Awake",
-            units: "hours"
+            units: "hours",
+            min: 0,
+            max: 24
         },
         {
             id: 51,
@@ -416,7 +491,9 @@ function()
         {
             id: 55,
             label: "ZQ",
-            units: "none"
+            units: "none",
+            min: 1,
+            max: 120
         },
         {
             id: 56,
@@ -426,17 +503,23 @@ function()
         {
             id: 57,
             label: "Muscle Mass",
-            units: "kg"
+            units: "kg",
+            min: 0,
+            max: 227
         },
         {
             id: 58,
             label: "Steps",
-            units: "none"
+            units: "none",
+            min: 0,
+            max: 1000000000
         },
         {
             id: 59,
             label: "Skin Fold",
-            units: "mm"
+            units: "mm",
+            min: 0,
+            max: 500
         }
     ];
     

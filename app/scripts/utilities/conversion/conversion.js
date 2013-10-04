@@ -250,8 +250,8 @@
 
         parseInteger: function(value, options)
         {
-            var numValue = Number(value);
-            return Math.round(numValue); 
+            var numValue = conversion.parseNumber(value, options);
+            return numValue ? Math.round(numValue) : numValue;
         },
 
         parseNumber: function(value, options)
@@ -358,12 +358,14 @@
         
         formatDateToDayName: function (value, options)
         {
-            return datetimeUtils.format(value, "dddd");
+            options.dateFormat = "dddd";
+            return this.formatDate(value, options);
         },
         
         formatDateToCalendarDate: function (value, options)
         {
-            return datetimeUtils.format(value, "MMM DD, YYYY");
+            options.dateFormat = "MMM D, YYYY";
+            return this.formatDate(value, options);
         },
 
         toPercent: function(numerator, denominator)
@@ -544,12 +546,54 @@
             var adjustedValue = adjustFieldRange(convertedValue, "kg");
             return conversion.formatNumber(adjustedValue, options);
         },
+
+        parseKg: function(value, options)
+        {
+            var limitedValue = adjustFieldRange(value, "kg");
+            return convertToModelUnits(limitedValue, "kg");
+        },
         
         formatMl: function(value, options)
         {
             var convertedValue = convertToViewUnits(Number(value), "ml");
             var adjustedValue = adjustFieldRange(convertedValue, "ml");
             return conversion.formatNumber(adjustedValue, options);
+        },
+
+        parseMl: function(value, options)
+        {
+            var limitedValue = adjustFieldRange(value, "ml");
+            return convertToModelUnits(limitedValue, "ml");
+        },
+
+        formatPercent: function(value, options)
+        {
+            var adjustedValue = adjustFieldRange(value, "%");
+            return conversion.formatNumber(adjustedValue, options);
+        },
+
+        parsePercent: function(value, options)
+        {
+            value = conversion.parseNumber(value, options);
+            return adjustFieldRange(value, "%");
+        },
+
+        formatDate: function(value, options)
+        {
+            if(conversion.valueIsEmpty(value))
+            {
+                return conversion.formatEmptyNumber(value);
+            }
+            return datetimeUtils.format(value, options.dateFormat);
+        },
+
+        parseDate: function(value, options)
+        {
+            if(conversion.valueIsEmpty(value))
+            {
+                return null;
+            }
+            return datetimeUtils.parse(value, options.dateFormat);
         },
 
         /*
@@ -645,7 +689,6 @@
                     }
                     break;
 
-                case "%":
                 case "hours":
                 case "kcal":
                 case "mg/dL":
@@ -653,11 +696,26 @@
                     return conversion.formatNumber(value, options);
 
                 case "units":
+                    var str = "";
+                    if(_.isArray(value))
+                    {
+                        str += value[1] + " ";
+                        value = value[0];
+                    }
+                    str += conversion.formatInteger(value, options);
+                    return str;
+
+                case "%":
+                    return conversion.formatPercent(value, options);
+
                 case "none":
                     return conversion.formatInteger(value, options);
 
                 case "cadence":
                     return conversion.formatCadence(value, options);
+
+                case "date":
+                    return conversion.formatDate(value, options);
                     
                 default:
                     throw new Error("Unsupported units for conversion.formatUnitsValue: " + units);
@@ -694,6 +752,29 @@
 
                 case "cm":
                     return conversion.parseCm(value, options);
+
+                case "kg":
+                    return conversion.parseKg(value, options);
+
+                case "ml":
+                    return conversion.parseMl(value, options);
+
+                case "%":
+                    return conversion.parsePercent(value, options);
+
+                case "units":
+                case "none":
+                case "mmHg":
+                    return conversion.parseInteger(value, options);
+
+                case "hours":
+                case "kcal":
+                case "mg/dL":
+                case "mm":
+                    return conversion.parseNumber(value, options);
+
+                case "date":
+                    return conversion.parseDate(value, options);
 
                 default:
                      throw new Error("Unsupported units for conversion.parseUnitsValue: " + units);

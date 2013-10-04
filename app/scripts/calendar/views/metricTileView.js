@@ -3,12 +3,14 @@ define(
     "underscore",
     "TP",
     "calendar/views/metricTileSettingsView",
+    "quickview/metric/views/metricQuickView",
     "hbs!calendar/templates/metricTileTemplate"
 ],
 function(
     _,
     TP,
     MetricTileSettingsView,
+    MetricQuickView,
     metricTileTemplate
 )
 {
@@ -26,13 +28,14 @@ function(
 
         events:
         {
-            "click .metricSettings": "_onSettingsClicked",
+            "mouseup .metricSettings": "_onSettingsClicked",
             "mouseup": "_onMouseup",
             "mousedown": "_onMousedown"
         },
 
         modelEvents:
         {
+            "change": "render",
             "select": "_onSelected",
             "unselect": "_onUnselected"
         },
@@ -41,6 +44,7 @@ function(
         {
             this.on("render", this._setupDraggable, this);
             this.on("render", this._presetSelected, this);
+            this.listenTo(theMarsApp.user, "change:units", _.bind(this.render, this));
         },
 
         _setupDraggable: function()
@@ -56,7 +60,6 @@ function(
                 helper: _.bind(this._makeHelper, this),
                 start: _.bind(this._onDragStart, this),
                 stop: _.bind(this._onDragStop, this),
-                containment: "#calendarWrapper",
                 addClasses: false
             };
             this.$el.draggable(draggableOptions);
@@ -93,11 +96,26 @@ function(
             this.dragging = false;
         },
 
+        _keepSettingsButtonVisible: function()
+        {
+            this.$el.addClass("menuOpen");
+        },
+
+        _allowSettingsButtonToHide: function(e)
+        {
+            this.$el.removeClass("menuOpen");
+        },
+
         _onSettingsClicked: function(e)
         {
             var offset = $(e.currentTarget).offset();
             var settingsView = new MetricTileSettingsView({ model: this.model });
             settingsView.render().bottom(offset.top + 12).center(offset.left - 4);
+
+            e.preventDefault();
+
+            this._keepSettingsButtonVisible();
+            this.listenTo(settingsView, "close", _.bind(this._allowSettingsButtonToHide, this));
         },
 
         _onMouseup: function(e)
@@ -123,7 +141,12 @@ function(
                 e.preventDefault();
             }
 
+            this._allowSettingsButtonToHide();
+
             this._select();
+
+            var view = new MetricQuickView({ model: this.model });
+            view.render();
         },
 
         _onMousedown: function()

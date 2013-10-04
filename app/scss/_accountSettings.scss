@@ -3,6 +3,11 @@
     background: white;
     width: calc(800px + 200px + 52px);
 
+    .closeIcon
+    {
+        margin: 5px 0 0 0 !important;
+    }
+
     @include buttons(0, "auto", $fontSizeSmall);
     button
     {
@@ -518,11 +523,6 @@
         margin: 14px 20px;
         float: right;
     }
-}
-
-.closeIcon
-{
-    margin: 5px 0 0 0 !important;
 }
 
 .zonesCalculator
