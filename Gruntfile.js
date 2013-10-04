@@ -326,7 +326,7 @@ module.exports = function(grunt)
     grunt.registerTask("build_debug", ["build_common", "copy:build_debug", "targethtml:build_debug", "copy-i18n-files"]);
     grunt.registerTask("build_debug_fast", ["clean", "requirejs_config", "requirejs", "compass:build", "copy:build_common", "copy:build_coverage", "copy:build_debug", "targethtml:build_debug"]);
     grunt.registerTask("build_debug_min", ["build_debug_fast", "targethtml:build_debug_min", "uglify"]);
-    grunt.registerTask("build", ["build_common", "copy:build", "uglify", "deleteFiles:build", "targethtml:build", "copy-i18n-files"]);
+    grunt.registerTask("build", ["build_common", "copy:build", "uglify", "deleteFiles:build", "targethtml:build", "copy-i18n-files", "revision"]);
 
     // TASKS THAT ARE USED BY OTHER TASKS
     grunt.registerTask("bdd_test_config", "Configure for jasmine node bdd tests", function()
