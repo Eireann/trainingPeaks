@@ -32,13 +32,6 @@ function (
                 expect(view.$el.text()).toContain("Joe Friel for Cycling");
             });
 
-            it("Should have an input box for threshold", function()
-            {
-                $threshold = view.$("input[name=threshold]");
-                expect($threshold.length).toBe(1);
-                expect($threshold.val()).toBe("150");
-            });
-
             it("Should have a calculate button", function()
             {
                 $calculate = view.$("button.calculate");
