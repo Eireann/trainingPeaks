@@ -2,7 +2,6 @@
 [
     "underscore",
     "TP",
-    "shared/views/overlayBoxView",
     "shared/data/zoneCalculators",
     "shared/utilities/zoneCalculator",
     "shared/views/userSettings/zoneCalculatorViews",
@@ -12,7 +11,6 @@
 function(
     _,
     TP,
-    OverlayBoxView,
     ZoneCalculatorDefinitions,
     ZoneCalculator,
     ZoneCalculatorViews,
@@ -29,6 +27,8 @@ function(
     }
 
     var HeartRateCalculatorTabView = ZoneCalculatorViews.TabContentView.extend({
+
+        fieldsToCopyFromParentModel: ["threshold", "minimumHeartRate", "maximumHeartRate"],
 
         zoneTypesById: ZoneCalculatorDefinitions.heartRatesById,
 
@@ -81,6 +81,8 @@ function(
 
     var HeartRateZonesCalculatorTabbedLayout = ZoneCalculatorViews.TabbedLayout.extend({
 
+        className: "tabbedLayout zonesCalculator heartRateZonesCalculator",
+
         _initializeNavigation: function()
         {
             this.navigation =
@@ -119,11 +121,5 @@ function(
 
     });
 
-    return OverlayBoxView.extend({
-
-        className: "heartRateZonesCalculator zonesCalculator",
-
-        itemView: HeartRateZonesCalculatorTabbedLayout
-    });
-
+    return HeartRateZonesCalculatorTabbedLayout;
 });

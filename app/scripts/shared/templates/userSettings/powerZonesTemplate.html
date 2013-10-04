@@ -1,5 +1,4 @@
 <h3>Power Zones - {{ workoutTypeName workoutTypeId "All" }}</h3>
-<a class="calculate">Calculate</a>
 {{#if workoutTypeId }}<a class="removeWorkoutType">Remove</a>{{/if}}
 
 <div class="zoneSetContain power">
@@ -9,6 +8,8 @@
 	    data-format="zoneValue">
 	</label>
 </div>
+
+<div class="calculator"></div>
 
 <div class="zones"></div>
 <button class="addZone">Add Zone</button>

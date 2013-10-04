@@ -2,7 +2,6 @@
 [
     "underscore",
     "TP",
-    "shared/views/overlayBoxView",
     "shared/data/zoneCalculators",
     "shared/utilities/zoneCalculator",
     "shared/views/userSettings/zoneCalculatorViews",
@@ -12,7 +11,6 @@
 function(
     _,
     TP,
-    OverlayBoxView,
     ZoneCalculatorDefinitions,
     ZoneCalculator,
     ZoneCalculatorViews,
@@ -96,6 +94,8 @@ function(
 
     var PowerZonesCalculatorTabbedLayout = ZoneCalculatorViews.TabbedLayout.extend({
 
+        className: "tabbedLayout zonesCalculator powerZonesCalculator",
+
         _initializeNavigation: function()
         {
             this.navigation =
@@ -112,11 +112,6 @@ function(
 
     });
 
-    return OverlayBoxView.extend({
-
-        className: "powerZonesCalculator zonesCalculator",
-
-        itemView: PowerZonesCalculatorTabbedLayout
-    });
+    return PowerZonesCalculatorTabbedLayout;
 
 });

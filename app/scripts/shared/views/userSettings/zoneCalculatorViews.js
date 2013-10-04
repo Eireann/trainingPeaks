@@ -27,6 +27,8 @@ function(
 
         units: "number",
 
+        fieldsToCopyFromParentModel: ["threshold"],
+
         constructor: function(options)
         {
             // start with no zones until we run calculator
@@ -116,10 +118,21 @@ function(
             }
         },
 
+        _applyOriginalModelValuesToModel: function()
+        {
+            _.each(this.fieldsToCopyFromParentModel, function(key)
+            {
+                this.model.set(key, this.originalModel.get(key));
+            }, this);
+        },
+
         calculateZones: function()
         {
 
             this._applyFormValuesToModel();
+
+            // because the original model could be changed outside the calculator view
+            this._applyOriginalModelValuesToModel();
 
             if(!this._validateInputs(true))
             {

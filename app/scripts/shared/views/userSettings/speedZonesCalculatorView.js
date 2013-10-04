@@ -2,7 +2,6 @@
 [
     "underscore",
     "TP",
-    "shared/views/overlayBoxView",
     "shared/data/zoneCalculators",
     "shared/utilities/zoneCalculator",
     "shared/views/userSettings/zoneCalculatorViews",
@@ -13,7 +12,6 @@
 function(
     _,
     TP,
-    OverlayBoxView,
     ZoneCalculatorDefinitions,
     ZoneCalculator,
     ZoneCalculatorViews,
@@ -378,6 +376,8 @@ function(
 
     var SpeedZonesCalculatorTabbedLayout = ZoneCalculatorViews.TabbedLayout.extend({
 
+        className: "tabbedLayout zonesCalculator speedZonesCalculator",
+
         _initializeNavigation: function()
         {
             this.navigation =
@@ -408,11 +408,6 @@ function(
 
     });
 
-    return OverlayBoxView.extend({
-
-        className: "speedZonesCalculator zonesCalculator",
-
-        itemView: SpeedZonesCalculatorTabbedLayout
-    });
+    return SpeedZonesCalculatorTabbedLayout;
 
 });
