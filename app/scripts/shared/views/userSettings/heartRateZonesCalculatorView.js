@@ -28,7 +28,7 @@ function(
 
     var HeartRateCalculatorTabView = ZoneCalculatorViews.TabContentView.extend({
 
-        fieldsToCopyFromParentModel: ["threshold", "minimumHeartRate", "maximumHeartRate"],
+        fieldsToCopyFromThresholdSourceModel: ["threshold", "minimumHeartRate", "maximumHeartRate"],
 
         zoneTypesById: ZoneCalculatorDefinitions.heartRatesById,
 
@@ -36,7 +36,7 @@ function(
 
         units: "heartrate",
 
-        itemView: TP.ItemView.extend({
+        zoneItemView: TP.ItemView.extend({
             template: {
                 type: "handlebars",
                 template: heartRateZoneTemplate
@@ -91,28 +91,32 @@ function(
                     title: "Lactate Threshold",
                     view: LactateThresholdTabView,
                     options: {
-                        model: new TP.Model(TP.utils.deepClone(this.model.attributes)) 
+                        model: new TP.Model(TP.utils.deepClone(this.model.attributes)),
+                        thresholdSourceModel: this.model
                     }
                 },
                 {
                     title: "Maximum Heart Rate",
                     view: MaximumHeartRateTabView,
                     options: {
-                        model: new TP.Model(TP.utils.deepClone(this.model.attributes)) 
+                        model: new TP.Model(TP.utils.deepClone(this.model.attributes)),
+                        thresholdSourceModel: this.model
                     }
                 },
                 {
                     title: "Max and Resting Heart Rate",
                     view: MaximumAndRestingHeartRateTabView,
                     options: {
-                        model: new TP.Model(TP.utils.deepClone(this.model.attributes)) 
+                        model: new TP.Model(TP.utils.deepClone(this.model.attributes)),
+                        thresholdSourceModel: this.model
                     }
                 },
                 {
                     title: "LT and Maximum Heart Rate",
                     view: LactateThresholdAndMaximumHeartRateTabView,
                     options: {
-                        model: new TP.Model(TP.utils.deepClone(this.model.attributes)) 
+                        model: new TP.Model(TP.utils.deepClone(this.model.attributes)),
+                        thresholdSourceModel: this.model
                     }
                 }
             ];

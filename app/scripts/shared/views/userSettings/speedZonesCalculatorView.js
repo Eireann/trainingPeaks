@@ -61,14 +61,6 @@ function(
 
     });
 
-    var PaceZoneItemView = SpeedZoneItemView.extend({
-
-        template: {
-            type: "handlebars",
-            template: paceZoneItemTemplate
-        }
-
-    });
 
     var SpeedZoneCalculatorTabView = ZoneCalculatorViews.TabContentView.extend({
 
@@ -90,33 +82,40 @@ function(
             };
         },
 
-        itemView: SpeedZoneItemView,
+        zoneItemView: SpeedZoneItemView,
 
         template: {
             type: "handlebars",
             template: speedZonesCalculatorTemplate
         },
 
-        events: _.extend({
-            "change input[name=paceOrSpeed]": "selectPaceOrSpeed"
-        }, ZoneCalculatorViews.TabContentView.prototype.events),
-
         initialize: function(options)
         {
-            this.model.set("paceOrSpeed", options && options.units && options.units === "speed" ? "speed" : "pace");
+            if(options.unitsModel)
+            {
+                this.unitsModel = options.unitsModel;
+            }
+            else
+            {
+                this.unitsModel = new TP.Model({ units: "speed" });
+            }
+            this.units = this.unitsModel.get("units");
+            this.model.set("paceOrSpeed", this.unitsModel.get("units"));
             this.model.set("speedUnits", TP.utils.units.getUnitsLabel("speed", this.model.get("workoutTypeId")));
             this.model.set("paceUnits", TP.utils.units.getUnitsLabel("pace", this.model.get("workoutTypeId")));
 
-            this.itemView.prototype.parentModel = this.model;
+            this.unitsModel.on("change:units", this.selectPaceOrSpeed, this);
         },
 
         selectPaceOrSpeed: function()
         {
             this._applyFormValuesToModel();
+            this.model.set("paceOrSpeed", this.unitsModel.get("units")); 
+            this.units = this.unitsModel.get("units");
             this._applyModelValuesToForm();
             if(this.collection.length)
             {
-                this.collection.reset(this.model.get("zones"));
+                this.setZonesOnCollection();
             }
         },
 
@@ -159,6 +158,16 @@ function(
             {
                 return TP.utils.conversion.parsePace(value, options);
             }
+        },
+
+        _applySourceValuesToModel: function()
+        {
+            _.each(this.fieldsToCopyFromThresholdSourceModel, function(key)
+            {
+                this.model.set(key, this.thresholdSourceModel.get(key));
+            }, this);
+
+            this.model.set("paceOrSpeed", this.unitsModel.get("units"));
         }
 
     });
@@ -386,21 +395,24 @@ function(
                     title: "Threshold Speed",
                     view: ThresholdSpeedTabView,
                     options: _.defaults({
-                        model: new TP.Model(TP.utils.deepClone(this.model.attributes)) 
+                        model: new TP.Model(TP.utils.deepClone(this.model.attributes)),
+                        thresholdSourceModel: this.model
                     }, this.options)
                 },
                 {
                     title: "Distance / Time",
                     view: DistanceTimeTabView,
                     options: _.defaults({
-                        model: new TP.Model(TP.utils.deepClone(this.model.attributes)) 
+                        model: new TP.Model(TP.utils.deepClone(this.model.attributes)),
+                        thresholdSourceModel: this.model
                     }, this.options)
                 },
                 {
                     title: "Seconds / 100m",
                     view: HundredMeterTimeTabView,
                     options: _.defaults({
-                        model: new TP.Model(TP.utils.deepClone(this.model.attributes)) 
+                        model: new TP.Model(TP.utils.deepClone(this.model.attributes)),
+                        thresholdSourceModel: this.model
                     }, this.options)
                 }
             ];

@@ -3,6 +3,16 @@
     background: white;
     width: calc(800px + 200px + 52px);
 
+    label
+    {
+        cursor: auto;
+        
+        &.clickable
+        {
+            cursor: pointer;
+        }
+    }
+
     .closeIcon
     {
         margin: 5px 0 0 0 !important;
@@ -76,7 +86,6 @@
                 margin-top:12px;
 
                 label {
-                    cursor:auto;
 
                     input[type="radio"] {
                         margin:0;
@@ -580,15 +589,9 @@
         margin-top:12px;
 
         label {
-            cursor:auto;
             margin-bottom: 10px;
             clear: left;
-
-            &.clickable
-            {
-                cursor: pointer;
-            }
-            
+          
             input[type="radio"] {
                 margin: 0px;
                 margin-right: 5px;
@@ -624,6 +627,14 @@
         div
         {
             margin-bottom: 10px;
+        }
+    }
+
+    .userSettingsButtons
+    {
+        button[disabled]
+        {
+            display: none;
         }
     }
 }

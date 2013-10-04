@@ -31,7 +31,7 @@ function(
 
         units: "power",
 
-        itemView: TP.ItemView.extend({
+        zoneItemView: TP.ItemView.extend({
             template: {
                 type: "handlebars",
                 template: powerZoneTemplate
@@ -104,7 +104,8 @@ function(
                     title: "Threshold Power",
                     view: PowerThresholdTabView,
                     options: {
-                        model: new TP.Model(TP.utils.deepClone(this.model.attributes)) 
+                        model: new TP.Model(TP.utils.deepClone(this.model.attributes)),
+                        thresholdSourceModel: this.model
                     }
                 }
             ];

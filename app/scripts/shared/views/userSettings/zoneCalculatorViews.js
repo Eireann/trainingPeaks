@@ -7,7 +7,8 @@
     "views/userConfirmationView",
     "hbs!templates/views/confirmationViews/requiredFieldTemplate",
     "hbs!shared/templates/userSettings/unableToCalculateZonesTemplate",
-    "hbs!shared/templates/userSettings/zonesCalculatorFooterTemplate"
+    "hbs!shared/templates/userSettings/zonesCalculatorFooterTemplate",
+    "hbs!shared/templates/userSettings/zoneThresholdTemplate"
 ],
 function(
     _,
@@ -17,7 +18,8 @@ function(
     UserConfirmationView,
     requiredFieldTemplate,
     unableToCalculateZonesTemplate,
-    zonesCalculatorFooterTemplate
+    zonesCalculatorFooterTemplate,
+    zoneThresholdTemplate
 )
 {
 
@@ -27,17 +29,46 @@ function(
 
         units: "number",
 
-        fieldsToCopyFromParentModel: ["threshold"],
+        fieldsToCopyFromThresholdSourceModel: ["threshold"],
+
+        zoneItemView: TP.ItemView,
+
+        thresholdItemView: TP.ItemView.extend({
+            template: {
+                type: "handlebars",
+                template: zoneThresholdTemplate
+            }
+        }),
 
         constructor: function(options)
         {
+
+            if(!options.thresholdSourceModel)
+            {
+                throw new Error("ZonesCalculatorView requires a thresholdSourceModel");
+            }
+
             // start with no zones until we run calculator
             this.collection = new TP.Collection();
             this.calculatorDefinition = this.calculators[0];
             CalculatorTabContentView.__super__.constructor.apply(this, arguments);
-            this.originalModel = options.model.clone();
+            this.thresholdSourceModel = options.thresholdSourceModel;
+            this.originalModelClone = options.model.clone();
             this.modelsById = {};
             this.model = this._getModelForCurrentCalculator(); 
+            this.createItemViewFactory();
+        },
+
+        createItemViewFactory: function()
+        {
+            this.itemView = function(options)
+            {
+                var ViewClass = options.model.has("threshold") ? this.thresholdItemView : this.zoneItemView;
+                return new ViewClass(options);
+            };
+
+            this.itemView.prototype.thresholdItemView = this.thresholdItemView;
+            this.itemView.prototype.zoneItemView = this.zoneItemView;
         },
 
         onRender: function()
@@ -46,7 +77,7 @@ function(
             this._applyModelValuesToForm();
             this._showInputs();
             this._enableCalculate();
-            this._calculateIfAllInputsAreValid();
+            //this._calculateIfAllInputsAreValid();
         },
 
         events: {
@@ -75,6 +106,11 @@ function(
             this.trigger("selectZoneCalculator");
         },
 
+        reset: function()
+        {
+            this.collection.reset();
+        },
+
         _enableCalculate: function()
         {
             this.$(".calculate").prop("disabled", this.calculatorDefinition ? false : true);
@@ -95,7 +131,7 @@ function(
             var calculatorId = this.calculatorDefinition.id;
             if(!this.modelsById[calculatorId])
             {
-                this.modelsById[calculatorId] = this.originalModel.clone();
+                this.modelsById[calculatorId] = this.originalModelClone.clone();
             }
             return this.modelsById[calculatorId];
         },
@@ -112,17 +148,20 @@ function(
 
         _calculateIfAllInputsAreValid: function()
         {
+            // because the original model could be changed outside the calculator view
+            this._applySourceValuesToModel();
+
             if(this._validateInputs(false))
             {
                 this.calculateZones();
             }
         },
 
-        _applyOriginalModelValuesToModel: function()
+        _applySourceValuesToModel: function()
         {
-            _.each(this.fieldsToCopyFromParentModel, function(key)
+            _.each(this.fieldsToCopyFromThresholdSourceModel, function(key)
             {
-                this.model.set(key, this.originalModel.get(key));
+                this.model.set(key, this.thresholdSourceModel.get(key));
             }, this);
         },
 
@@ -132,8 +171,8 @@ function(
             this._applyFormValuesToModel();
 
             // because the original model could be changed outside the calculator view
-            this._applyOriginalModelValuesToModel();
-
+            this._applySourceValuesToModel();
+            
             if(!this._validateInputs(true))
             {
                 return;
@@ -144,10 +183,11 @@ function(
             var self = this;
             zoneCalculator.calculate(this.model).done(function()
             {
-                self.collection.reset(self.model.get("zones"));
+                self.setZonesOnCollection(); 
                 self._applyModelValuesToForm();
                 self._highlightSelectedZone();
                 self.trigger("calculate");
+
             }).fail(function()
             {
                  this.confirmationView = new UserConfirmationView(
@@ -164,10 +204,18 @@ function(
             });
         },
 
+        setZonesOnCollection: function()
+        {
+            var zones = _.clone(this.model.get("zones"));
+            var threshold = new TP.Model({ threshold: this.model.get("threshold"), units: this.units, workoutTypeId: this.model.get("workoutTypeId") });
+            zones.unshift(threshold);
+            this.collection.reset(zones);
+        },
+
         getZonesToApply: function()
         {
-            this._applyValuesToOriginalModel();
-            return this.originalModel;
+            this._applyValuesTooriginalModelClone();
+            return this.originalModelClone;
         },
 
         getParsers: function()
@@ -193,14 +241,14 @@ function(
             };
         },
 
-        _applyValuesToOriginalModel: function()
+        _applyValuesTooriginalModelClone: function()
         {
             var attributesInCalculatorModel = _.keys(this.model.attributes);
-            var attributesInOriginalModel = _.keys(this.originalModel.attributes);
-            var attributesInBothModels = _.intersection(attributesInCalculatorModel, attributesInOriginalModel);
+            var attributesInoriginalModelClone = _.keys(this.originalModelClone.attributes);
+            var attributesInBothModels = _.intersection(attributesInCalculatorModel, attributesInoriginalModelClone);
 
             _.each(attributesInBothModels, function(key) {
-                this.originalModel.set(key, this.model.get(key));
+                this.originalModelClone.set(key, this.model.get(key));
             }, this);
         },
 
@@ -314,25 +362,45 @@ function(
         {
             this.footerView = new CalculatorFooterView();
             this.on("render", this._showFooter, this);
-            this.listenTo(this.footerView, "cancel", _.bind(this.close, this));
+            this.listenTo(this.footerView, "cancel", _.bind(this._cancel, this));
             this.listenTo(this.footerView, "apply", _.bind(this._apply, this));
-
-            this.on("currentview:calculate", _.bind(function()
-            {
-                this.footerView.enableButton("apply");   
-            }, this));
+            this.on("before:switchTab", this.resetFooter, this);
+            this.on("currentview:calculate", this.enableFooter, this);
         },
 
         _showFooter: function()
         {
             this.tabbedLayoutFooterRegion.show(this.footerView);
-            this.footerView.disableButton("apply");
+            this.resetFooter();
         },
 
         _apply: function()
         {
             this.trigger("apply", this.currentView.getZonesToApply());
-            this.close();
+            this.reset();
+        },
+
+        _cancel: function()
+        {
+            this.reset();
+        },
+
+        reset: function()
+        {
+            this.currentView.reset();
+            this.resetFooter();
+        },
+
+        resetFooter: function()
+        {
+            this.footerView.disableButton("apply");
+            this.footerView.disableButton("cancel");
+        },
+
+        enableFooter: function()
+        {
+            this.footerView.enableButton("apply");
+            this.footerView.enableButton("cancel");
         }
         
     });
