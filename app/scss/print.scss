@@ -10,6 +10,10 @@
     display:none;
 }
 
+.ui-tooltip {
+    display: none !important;
+}
+
 // Workout Bar
 .workout.future, 
 .workout.past {
@@ -249,11 +253,8 @@ body,html, #main {
     }
 
     .metricDiv {
-        // min-height: 35px;
-
         .metricHeader {
-            padding: 0px 3px 0px 3px;
-            // height: 20px;
+            padding: 3px 3px 0px 3px;
             position: relative;
             margin-top:-2px;
 
@@ -261,71 +262,37 @@ body,html, #main {
                 display:none;
             }
 
-            .metricDistanceTime {
+            .metricTime {
                 padding: 0;
-                @include labels($fontFamilyRegular, $fontSizeSmall, #000, normal);
+                font-size: $fontSizeSmall;
+                font-family: $fontFamilyRegular;
+                color:#000;
 
-                label {
-                    display:inline-block;
-                }
-
-                .units {
+                .metricAMPM {
                     font-size: 0.7em;
                     margin-left: 0.15em;
                 }
             }
-
         }
 
         .metricBody {
             color: $TPGrey4;
             padding: 2px 3px 0px 3px;
-            @include labels($fontFamilyHeavy, .571em, $TPGrey4, normal);
 
-            label {
-                cursor: inherit;
-                white-space: pre-wrap;
-            }
+            ul {
+                margin:0;
+                padding:0;
 
-            p {
-                margin: .571em 0;
-                font-size: .571em;
-                color: #000;
-                font-family: $fontFamilyRegular;
-                text-align: left;
-                line-height: 10px;
-                white-space: pre-wrap;
+                li {
+                    margin: .2855em 0;
+                    font-size: .571em;
+                    color: #000;
+                    font-family: $fontFamilyRegular;
+                    line-height: normal;
+                }
             }
         }
 
-        .sportType {
-            font-size: .571em;
-            color: #000;
-            font-family: $fontFamilyRegular;
-            text-align: left;
-            line-height: 10px;
-            padding:3px 3px 0 3px;
-        }
-
-        .description
-        {
-            font-size: .571em;
-            color: #000;
-            font-family: $fontFamilyRegular;
-            text-align: left;
-            line-height: 10px;
-            // padding:0 3px 3px 3px;
-            margin: .571em 3px;
-
-            white-space: pre;           /* CSS 2.0 */
-            white-space: pre-wrap;      /* CSS 2.1 */
-            white-space: pre-line;      /* CSS 3.0 */
-            white-space: -pre-wrap;     /* Opera 4-6 */
-            white-space: -o-pre-wrap;   /* Opera 7 */
-            white-space: -moz-pre-wrap; /* Mozilla */
-            white-space: -hp-pre-wrap;  /* HP Printers */
-            word-wrap: break-word;      /* IE 5+ */
-        }
     }
 
 } // end .metric
@@ -335,10 +302,7 @@ body,html, #main {
 }
 
 
-
 // Calendar Workout
-
-
 .workout {
     width:97% !important;
     margin: 5px 4px 4px 2px;
@@ -445,17 +409,12 @@ body,html, #main {
 
 } // end .workout
 
-#workoutSettingsDiv, 
-#daySettingsDiv, 
-#summarySettingsDiv {
+#workoutSettingsDiv, #daySettingsDiv, #summarySettingsDiv {
     display:none;
 }
 
+
 // Quick View
-
-
-
-
 
 // hides form field placeholder text
 ::-webkit-input-placeholder { /* WebKit browsers */
@@ -617,6 +576,11 @@ body
             background-color: transparent;
             margin: 0px;
             padding: 0px;
+        }
+    }
+    .QVHeaderItemsContain {
+        .expandedViewsButtons {
+            display: none;
         }
     }
 }
@@ -818,7 +782,6 @@ body
             color: $TPGrey3;
         }
 
-        #descriptionPrintable,
         #preActivityCommentsPrintable,
         #postActivityCommentsPrintable {
             display: block;
@@ -828,6 +791,10 @@ body
             white-space: pre-wrap;
             font-size: $fontSizeSmall !important;
             line-height: $fontSizeXLarge;
+        }
+
+        #descriptionPrintable {
+            display: none;
         }
 
         .workoutCommentsCollection {
