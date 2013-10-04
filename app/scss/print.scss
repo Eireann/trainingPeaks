@@ -1,0 +1,933 @@
+@import "settings";
+@import "foundation";
+
+@import "compass/css3/box-shadow";
+
+@import "globalCSS/print";
+@import "globalCSS/mixIn";
+
+#navigation, #libraryContainer, .weekSummary {
+    display:none;
+}
+
+// Workout Bar
+.workout.future, 
+.workout.past {
+    width:100%;
+}
+
+.workoutBarViewHeader {
+    width:99% !important;
+
+    &.future .headerWorkoutValue .actual {
+        display:none;
+    }
+
+    .workoutHeaderStats {
+        width:100%;
+
+        .headerWorkoutValue {
+            float: left;
+            padding: 5px 0px 0px 10px;
+            @include labels($fontFamilyLight, $fontSizeQVHeader, $TPGrey4, normal);
+
+            &.duration
+            {
+                margin-right: 10px;
+            }
+        }
+
+        .headerWorkoutValueLabel {
+            float: left;
+            padding: 15px 0px 0px 0px;
+            @include labels($fontFamilyLight, $fontSizeXXLarge, $TPGrey4, normal);
+
+            &.distance {
+                margin-right: 10px;
+            }
+        }
+
+        .title {
+            @include inputs(10px, 20px, $fontSizeLarge, $fontFamilyRegular);
+            padding-left:5px;
+            padding-bottom:5px;
+            color:#000;
+            clear:left;
+
+            span.workoutTitleText {
+                display:inline;
+                margin-left:5px;
+            }
+
+            input#workoutTitleField {
+                display: none;
+                background:transparent;
+                outline: none;
+                border: none;
+                color: $TPGrey4;
+                min-width: 145px;
+                max-width: 100%;
+                margin:0;
+                padding:0;
+            }
+        }
+    }
+
+    .workoutIconLarge {
+        display:none;
+    }
+
+    &.past {
+        .headerWorkoutValue {
+            .planned {
+                display:none;
+            }
+        }
+    } 
+
+    &.future {
+        .headerWorkoutValue {
+            .actual {
+                display:none;
+            }
+        }
+    }
+}
+
+
+
+// Calendar
+
+// hides App version overlay, for dev only
+#info {
+    display:none;
+}
+body,html, #main {
+    height:100%;
+}
+#main > div {
+    min-height:100%;
+}
+#calendarWrapper {
+    min-height:940px;
+}
+#calendarContainer {
+
+    overflow:visible;
+
+    #weeksContainer{
+        width:98.6%;
+        min-height:910px !important;
+    }
+
+    .week {
+        @include grid-row();
+        page-break-inside:avoid;
+    }
+    .week:not(.inView) {
+        display:none;
+    }
+    .day {
+        padding: 0px;
+        @include calc(width, "(100% - 294px) /7");
+        overflow-x: hidden;
+        overflow-y: visible;
+        float: left;
+        color: #000;
+        position: relative;
+        width:14.2857143%;
+        min-height:0px !important;
+
+        .daySettings {
+            display:none;
+        }
+
+        &:hover {
+            .daySettings {
+                display:none;
+            }
+        }
+
+    }
+
+    .weekSelected {
+        display: none;
+    }
+
+    .dayHeader {
+        width: 100%;
+        height: 27px;
+        margin-bottom: 2px;
+        border-bottom:1px solid #000;
+        padding-left: 5px;
+        page-break-inside:avoid;
+
+        &.summaryHeader {
+            padding-left: 7px;
+        }
+
+        #calendarDate {
+            font-Family: $fontFamilyRegular;
+            font-size: $fontSizeMedium;
+            color: #000;
+            text-align: right;
+            float:left;
+            margin: 0px;
+            padding-top: 4px;
+        }
+    }
+
+    .daysOfWeek {
+        width:100%;
+
+        div {
+            float: left;
+            padding-bottom: 0px;
+            padding-left: 5px;
+            padding-right: 0px;
+            font-Family: $fontFamilyLight;
+            font-size: $fontSizeSmall;
+            color: #000;
+            text-align: left;
+            height: 15px;
+            width:14.2857143%;
+        }
+    }
+}
+
+.day {
+
+    .addWorkoutWrapper {
+        position: relative;
+        margin: 5px 4px 4px 2px;
+        height:35px;
+    }
+
+    .addWorkout {
+        display:none;
+    }
+}
+
+.day {
+
+    .daySelected {
+        display: none;
+    }
+
+    &.selected {
+        .daySelected {
+            display: block;
+        }
+    }
+}
+
+
+// Metric Tile
+.metric {
+    width:97% !important;
+    margin: 5px 4px 4px 2px;
+    border:1px solid $TPGrey2;
+    // page-break-inside:avoid;
+
+    .metricSettings {
+        display: none;
+        button {   
+            display:none;
+        }
+    }
+
+    &:hover {
+        .metricSettings {
+            display: none;
+        }
+    }
+
+    &.menuOpen {
+        .metricSettings {
+            display: none
+        }
+    }
+
+    .metricDiv {
+        // min-height: 35px;
+
+        .metricHeader {
+            padding: 0px 3px 0px 3px;
+            // height: 20px;
+            position: relative;
+            margin-top:-2px;
+
+            .metricIcon {
+                display:none;
+            }
+
+            .metricDistanceTime {
+                padding: 0;
+                @include labels($fontFamilyRegular, $fontSizeSmall, #000, normal);
+
+                label {
+                    display:inline-block;
+                }
+
+                .units {
+                    font-size: 0.7em;
+                    margin-left: 0.15em;
+                }
+            }
+
+        }
+
+        .metricBody {
+            color: $TPGrey4;
+            padding: 2px 3px 0px 3px;
+            @include labels($fontFamilyHeavy, .571em, $TPGrey4, normal);
+
+            label {
+                cursor: inherit;
+                white-space: pre-wrap;
+            }
+
+            p {
+                margin: .571em 0;
+                font-size: .571em;
+                color: #000;
+                font-family: $fontFamilyRegular;
+                text-align: left;
+                line-height: 10px;
+                white-space: pre-wrap;
+            }
+        }
+
+        .sportType {
+            font-size: .571em;
+            color: #000;
+            font-family: $fontFamilyRegular;
+            text-align: left;
+            line-height: 10px;
+            padding:3px 3px 0 3px;
+        }
+
+        .description
+        {
+            font-size: .571em;
+            color: #000;
+            font-family: $fontFamilyRegular;
+            text-align: left;
+            line-height: 10px;
+            // padding:0 3px 3px 3px;
+            margin: .571em 3px;
+
+            white-space: pre;           /* CSS 2.0 */
+            white-space: pre-wrap;      /* CSS 2.1 */
+            white-space: pre-line;      /* CSS 3.0 */
+            white-space: -pre-wrap;     /* Opera 4-6 */
+            white-space: -o-pre-wrap;   /* Opera 7 */
+            white-space: -moz-pre-wrap; /* Mozilla */
+            white-space: -hp-pre-wrap;  /* HP Printers */
+            word-wrap: break-word;      /* IE 5+ */
+        }
+    }
+
+} // end .metric
+
+#metricSettingsDiv, #daySettingsDiv, #summarySettingsDiv {
+    display:none;
+}
+
+
+
+// Calendar Workout
+
+
+.workout {
+    width:97% !important;
+    margin: 5px 4px 4px 2px;
+    border:1px solid $TPGrey2;
+    // page-break-inside:avoid;
+
+    .workoutSettings {
+        display: none;
+        button {   
+            display:none;
+        }
+    }
+
+    &:hover {
+        .workoutSettings {
+            display: none;
+        }
+    }
+
+    &.menuOpen {
+        .workoutSettings {
+            display: none
+        }
+    }
+
+    .workoutDiv {
+        // min-height: 35px;
+
+        .workoutHeader {
+            padding: 0px 3px 0px 3px;
+            // height: 20px;
+            position: relative;
+            margin-top:-2px;
+
+            .workoutIcon {
+                display:none;
+            }
+
+            .workoutDistanceTime {
+                padding: 0;
+                @include labels($fontFamilyRegular, $fontSizeSmall, #000, normal);
+
+                label {
+                    display:inline-block;
+                }
+
+                .units {
+                    font-size: 0.7em;
+                    margin-left: 0.15em;
+                }
+            }
+
+        }
+
+        .workoutBody {
+            color: $TPGrey4;
+            padding: 2px 3px 0px 3px;
+            @include labels($fontFamilyHeavy, .571em, $TPGrey4, normal);
+
+            label {
+                white-space: pre-wrap;
+            }
+
+            p {
+                margin: .571em 0;
+                font-size: .571em;
+                color: #000;
+                font-family: $fontFamilyRegular;
+                text-align: left;
+                line-height: 10px;
+                white-space: pre-wrap;
+            }
+        }
+
+        .sportType {
+            font-size: .571em;
+            color: #000;
+            font-family: $fontFamilyRegular;
+            text-align: left;
+            line-height: 10px;
+            padding:3px 3px 0 3px;
+        }
+
+        .description
+        {
+            font-size: .571em;
+            color: #000;
+            font-family: $fontFamilyRegular;
+            text-align: left;
+            line-height: 10px;
+            // padding:0 3px 3px 3px;
+            margin: .571em 3px;
+
+            white-space: pre;           /* CSS 2.0 */
+            white-space: pre-wrap;      /* CSS 2.1 */
+            white-space: pre-line;      /* CSS 3.0 */
+            white-space: -pre-wrap;     /* Opera 4-6 */
+            white-space: -o-pre-wrap;   /* Opera 7 */
+            white-space: -moz-pre-wrap; /* Mozilla */
+            white-space: -hp-pre-wrap;  /* HP Printers */
+            word-wrap: break-word;      /* IE 5+ */
+        }
+    }
+
+} // end .workout
+
+#workoutSettingsDiv, 
+#daySettingsDiv, 
+#summarySettingsDiv {
+    display:none;
+}
+
+// Quick View
+
+
+
+
+
+// hides form field placeholder text
+::-webkit-input-placeholder { /* WebKit browsers */
+    color: transparent;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color: transparent;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color: transparent;
+}
+:-ms-input-placeholder { /* Internet Explorer 10+ */
+    color: transparent;
+}
+
+// hides page elements behind QV
+body
+{
+    &.qvOpen
+    {
+        #navigation, #main  {
+            display:none;
+        }
+    }
+}
+
+// hides QV modal shadow
+.modalOverlayMask + .modalShadow {
+    box-shadow:none;
+}
+
+#workOutQuickView {
+    overflow-y: visible !important;
+    height: auto !important;
+    margin-top:25px;
+}
+
+.workoutQuickView {
+    overflow-y:visible !important;
+
+    // hides QV tomahawk containing print link
+    #workoutQuickViewMenuDiv {
+        display:none;
+    }
+
+    .tabNavigation,
+    .closeAndSettings,
+    .uploadExpandButtons,
+    .headerIcons,
+    .quickviewFooter {
+        display:none !important;
+    }
+
+    .quickviewFooter {
+        border:1px solid red;
+    }
+
+    .tabContent {
+        overflow-x: hidden;
+        overflow-y: visible !important;
+    }
+
+    input {
+        text-align: center;
+        overflow-y:visible !important;
+
+        &.workoutTitle
+        {
+            text-align: left;
+            color: $TPGrey4;
+        }
+
+        &#startTimeInput, &.timeInput
+        {
+            text-align: left;
+        }
+    }
+
+    #quickViewContent {
+        float:left;
+        margin:10px 0;
+        overflow-y:visible !important;
+    }
+
+    input[type="text"], input[type="password"], input[type="date"], input[type="datetime"], input[type="datetime-local"], input[type="month"], input[type="week"], input[type="email"], input[type="number"], input[type="search"], input[type="tel"], input[type="time"], input[type="url"], textarea {
+        border:none;
+        padding:0;
+    }
+
+    textarea {
+        resize:none !important;
+    }
+}
+
+
+.comment {
+
+    .deleteButton
+    {
+        display: none;
+    }
+
+    &.hover
+    {
+        .deleteButton
+        {
+            display:none;
+        }
+    }
+}
+
+#workoutQuickViewMenuDiv {
+    display:none;
+}
+
+// Quick View Header
+
+
+.QVHeader {
+    box-shadow:none;
+    padding:0;
+    margin:0;
+    height:auto;
+    width:100%;
+
+    .dateAndTime {
+        padding-left: 2px;
+
+        #dayName, .dayName
+        {
+            font-family: $fontFamilyRegular;
+            font-size:$fontSizeMedium;
+            color: $TPGrey3;
+            padding-right: 14px;
+            text-transform:uppercase;
+        }
+
+        #calendarDate, .calendarDate
+        {
+            font-family: $fontFamilyRegular;
+            font-size:$fontSizeSmall;
+            color: $TPGrey3;
+            padding-right: 14px;
+        }
+
+        #time {
+            font-family: $fontFamilyRegular;
+            font-size:$fontSizeSmall;
+            color: $TPGrey3;
+        }
+
+        @include inputs(200px, 20px, $fontSizeSmall, $fontFamilyRegular);
+        input#startTimeInput, .timeInput {
+            color: $TPGrey3;
+            display: inline-block;
+            outline: none;
+            @include box-shadow(none);
+            border: none;
+            background-color: transparent;
+            margin: 0px;
+            padding: 0px;
+        }
+    }
+}
+
+
+
+// Quick View Summary
+
+.stats {
+    padding-left: 0px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+    width:50%;
+    font-size:$fontSizeSmaller;
+
+    background: transparent;
+    float: left;
+
+    label
+    {
+        color: $TPGrey3;
+    }
+
+    .selectionBox
+    {
+        padding-left: 102px;
+        @include selectionBox(168px);
+        width: 168px;
+        padding-top: 5px;
+
+        select {
+            margin-bottom: 3px;
+            color: $TPGrey3;
+        }
+    }
+
+    #workoutPlannedCompletedStats {
+        float:left;
+        width:100%;
+
+        .workoutStatsColumn {
+            width:25%;
+        }
+    }
+
+    #workoutMinMaxAvgStats {
+        float:left;
+        width:100%;
+
+        .workoutStatsColumn {
+            width:25%;
+
+            &.workoutStatsMinMaxAvgLabel {
+                width:25%;
+            }
+        }
+
+        .workoutStatsColumnMinMaxAvg {
+            width:16.666%;
+        }
+    }
+}
+
+
+.workoutStatsRow
+{
+    @include grid-row();
+    clear: both;
+    height: 23px;
+
+    .workoutStatsColumn
+    {
+        float:left;
+        padding-right: 2px;
+
+        @include inputs(83.5px, 21px, 12px, $fontFamilyRegular);
+        input {
+            margin: 0;
+            padding: 0;
+            color: $TPGrey4;
+            border:1px solid #000;
+            width:100%;
+            font-size:$fontSizeSmaller;
+        }
+
+        .hide
+        {
+            display:none;
+        }
+    }
+
+    .workoutStatsColumnMinMaxAvg {
+        float:left;
+        height: 23px;
+        @include inputs(55px, 20px, 12px, $fontFamilyRegular);
+        padding-right: 2px;
+
+        input {
+            font-size:$fontSizeSmaller;
+            width:100%;
+        }
+    }
+
+    label {
+        text-align: right;
+        padding-top: 5px;
+        padding-right: 5px;
+
+        &.ghosted {
+            color: $TPGrey7;
+        }
+
+    }
+
+    @include labels($fontFamilyRegular, $fontSizeSmaller, $TPGrey3, normal);
+
+    .workoutStatsUnitLabel
+    {
+        label
+        {
+            text-align: left;
+            width: 45px;
+            padding-top: 5px;
+            padding-left: 5px;
+        }
+    }
+}
+
+.columnLabelsPlannedCompleted {
+    padding-left: 25%;
+    padding-top: 14px;
+    width: 100%;
+    background: transparent;
+
+    @include labels($fontFamilyHeavy, $fontSizeSmall, $TPGrey3, normal);
+    label
+    {
+        float: left;
+        width: 33%;
+        text-align: center;
+        margin-bottom:5px;
+        &.ghosted
+        {
+            color: $TPGrey7;
+        }
+    }
+
+    .workoutStatsCompleted
+    {
+        // padding-left: 10px;
+    }
+
+}
+
+.columnLabelsMinMaxAvg {
+    padding-left: 25%;
+    width: 100%;
+    background: transparent;
+    padding-top: 10px;
+    float:left;
+    border-top:1px solid #000;
+    margin-top:10px;
+
+    @include labels($fontFamilyHeavy, $fontSizeSmall, $TPGrey3, normal);
+    label {
+        float: left;
+        width:22%;
+        text-align: center;
+        margin-bottom:5px;
+        margin-top:2px;
+
+        &.ghosted {
+            color: $TPGrey7;
+        }
+    }
+}
+
+
+#commentsContainer {
+    float:left;
+    width:50%;
+
+    .comments {
+        width:100%;
+        float:left;
+        padding-top:14px;
+        overflow-y:visible !important;
+        font-size:$fontSizeSmaller !important;
+
+        div {
+            height:auto;
+            overflow-y:visible !important;
+        }
+
+        .header {
+            font-family: $fontFamilyHeavy;
+            font-size: $fontSizeSmall;
+            margin-bottom: 5px;
+            color: $TPGrey3;
+        }
+
+        #descriptionPrintable,
+        #preActivityCommentsPrintable,
+        #postActivityCommentsPrintable {
+            display: block;
+            overflow: visible;
+            height: auto;
+            margin-bottom: 20px;
+            white-space: pre-wrap;
+            font-size: $fontSizeSmall !important;
+            line-height: $fontSizeXLarge;
+        }
+
+        .workoutCommentsCollection {
+            font-size: $fontSizeSmall !important;
+            line-height:$fontSizeXLarge;
+            margin-left:10px;
+
+            .commentHeader {
+                padding:1em 0 .25em 0;
+                font-family: $fontFamilyHeavy;
+            }
+
+            .commentBody {
+                white-space: pre-wrap;
+            }
+        }
+    }
+}
+
+// Framework
+
+.frameworkHeader {
+    min-height: 64px;
+    float:left;
+    background-color: $white;
+
+    // hiding this since in many cases the month displayed doesn't match what shows on the calendar
+    display:none;
+}
+
+.frameworkMainWrapper
+{
+    @include grid-row();
+    background-color: white;
+    width:100%;
+}
+
+.frameworkTitle
+{
+    width: 265px;
+    float: left;
+    padding-left: 15px;
+    @include labels($fontFamilyRegular, $fontSizeHeader, $TPBlue, normal);
+    label
+    {
+        float: left;
+        padding-right: 10px;
+
+    }
+    .headerYear
+    {
+        font-family: $fontFamilyLight;
+    }
+}
+
+.frameworkHeaderView {
+    &.withAds {
+        .frameworkTitle {
+            margin-top: 30px;
+        }
+    }
+
+    .navigation {
+        display:none;
+    }
+
+    #athleteCalendarSelectSelectBoxIt {
+        width: 200px !important;
+    }
+
+    #affiliateBanner {
+        margin-left: 100px;
+        margin-bottom: 15px;
+        margin-top: 10px;
+        height: 90px;
+        float: left;
+        display: none;
+    }
+
+}
+
+.frameworkScrollableContainer {
+    width:100% !important;
+    @include grid-column(15);
+    background-color: $white;
+    overflow-x: auto;
+
+    .scrollHeader {
+        @include grid-row();
+        @include calc(width, "100%"); 
+        height: 27px;
+        padding-top: 7px;
+        padding-right: 12px;
+        margin-left: 0px;
+        position: relative;
+        width:100%;
+    }
+
+    .scrollable {
+
+    }
+
+}

@@ -34,10 +34,6 @@
 #libraryContainer
 {
 
-    @media print {
-        display:none;
-    }
-
     margin-top:0px;
     @include grid-column(1);
     padding: 0 0 0 5px;
