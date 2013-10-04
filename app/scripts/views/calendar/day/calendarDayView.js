@@ -324,7 +324,7 @@ function(
                 helper: _.bind(this._makeHelper, this),
                 handle: ".dayHeader, .daySelected",
                 start: this.onDragStart,
-                stop: this.onDragStop,
+                stop: this.onDragStop
             });
         },
 
