@@ -54,21 +54,21 @@
         position: relative;
         cursor: default;
 
-    .daySettings
+        .daySettings
         {
             position: absolute;
             top: 0px;
             right: 2px;
             z-index: 2;
             display: none;
-        padding: 2px 4px 0px 0px;
+            padding: 2px 4px 0px 0px;
 
             button
             {	
                 background: transparent;
                 border: none;
                 padding: 0px;
-        cursor: pointer;
+                cursor: pointer;
                 margin-bottom: 0px;
                 box-shadow: none
             }
@@ -94,70 +94,70 @@
 
     .weekSelected
     {
-    display: none;
-    background-color: white;
-    left: 0px;
-    right: 0px;
-    height: 100%;
-    position: absolute;
-    opacity: .35;
-    z-index: 99;
+        display: none;
+        background-color: white;
+        left: 0px;
+        right: 0px;
+        height: 100%;
+        position: absolute;
+        opacity: .35;
+        z-index: 99;
     }
 
     .dayHeader 
     {
-    background-color: $TPGrey2;
-    width: 100%;
-    height: 27px;
-    margin-bottom: 2px;
-    border-bottom: 1px;
-    border-bottom-color: $TPGrey3;
-    border-bottom-style: solid;
-    padding-left: 5px;
+        background-color: $TPGrey2;
+        width: 100%;
+        height: 27px;
+        margin-bottom: 2px;
+        border-bottom: 1px;
+        border-bottom-color: $TPGrey3;
+        border-bottom-style: solid;
+        padding-left: 5px;
 
         &.summaryHeader
         {
             padding-left: 7px;
         }
 
-    .calendarDate
-    {
-        font-Family: $fontFamilyRegular;
-        font-size: $fontSizeMedium;
-        color: $TPGrey8;
-        text-align: right;
-        float:left;
-        margin: 0px;
-        padding-top: 2px;
-    }
+        .calendarDate
+        {
+            font-Family: $fontFamilyRegular;
+            font-size: $fontSizeMedium;
+            color: $TPGrey8;
+            text-align: right;
+            float:left;
+            margin: 0px;
+            padding-top: 2px;
+        }
 
     }
 
     .thisWeek
     {
-    .dayHeader
-    {
-        background-color: $thisWeekBlue;
-            cursor: pointer;
-    }
-
-    .today
-        {
         .dayHeader
         {
+            background-color: $thisWeekBlue;
+            cursor: pointer;
+        }
+
+        .today
+        {
+            .dayHeader
+            {
                 background-color: $todayBlue;
             }
         }
-    .summaryHeader
-    {
-        background-color: #206193;
+        .summaryHeader
+        {
+            background-color: #206193;
             cursor: default;
-    }
+        }
     }
 
     .summaryHeader {
-    background-color: $TPGrey3;
-    cursor: default;
+        background-color: $TPGrey3;
+        cursor: default;
 
         .calendarDate{
             color: white;
@@ -167,10 +167,11 @@
         }
     }
 
-    .daysOfWeek {
-
+    .daysOfWeek
+    {
         .hide-for-small, 
-        .show-for-small {
+        .show-for-small
+        {
             @include calc(width, "(100% - 297px) /7");
             float: left;
             padding-bottom: 0px;
@@ -184,15 +185,17 @@
         }
     }
 }
-    
+
 .scrollInProgress
 {
     @include single-transition(all, 200ms, ease-out);
     @include box-shadow(0px 3px 8px -4px $TPGrey3);
 }
 
-.clipboardEmpty {
-    .paste {
+.clipboardEmpty
+{
+    .paste
+    {
         color:$TPGrey2;
     }
 }
@@ -227,12 +230,12 @@
     {
         opacity: 0.6;
         min-height: 250px;
-    
+
         .daySelected
         {
             display: block; 
         }
-                
+
         .dayHeader
         {
             background-color: transparent; 
@@ -261,21 +264,22 @@
         width: 100%;
         cursor:pointer;
 
-    .addWorkoutPlus {
-        @extend %calendarPlusBG;
-        width:20px; 
-        height:20px; 
-        position:relative; 
-        left:50%; 
-        margin-left:-10px; 
-        top:50%; 
-        margin-top:-10px;
-    }
+        .addWorkoutPlus {
+            @extend %calendarPlusBG;
+            width:20px;
+            height:20px;
+            position:relative;
+            left:50%;
+            margin-left:-10px;
+            top:50%;
+            margin-top:-10px;
+        }
+
         &.active
         {
             background: #bcd1eb;
-        border:1px solid #0043ff; 
-        opacity: 0.5;
+            border: 1px solid #0043ff;
+            opacity: 0.5;
             visibility: visible;
             .addWorkoutPlus {
                 @extend %calendarPlusBG;
@@ -334,7 +338,7 @@
 
     .daySelected
     {
-    display: none;
+        display: none;
     }
 
     &.selected
@@ -351,17 +355,17 @@
 {
     .workout:hover
     {
-        border-color:  $TPGrey11;
+        border-color: $TPGrey11;
     }
 
     .workout.past:hover
     {
-        border-color:  $TPGrey11;
+        border-color: $TPGrey11;
     }
 
     .workout.future:hover
     {
-        border-color:  $TPGrey11;
+        border-color: $TPGrey11;
     }
 }
 
