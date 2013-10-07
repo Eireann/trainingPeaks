@@ -10,7 +10,7 @@ function (TP)
         webAPIModelName: "ExerciseLibraryItem",
         idAttribute: "exerciseLibraryItemId",
 
-        itemTypeIds: 
+        itemTypeIds:
         {
             Exercise: 0,
             ExerciseRoutine: 1,
@@ -34,6 +34,11 @@ function (TP)
             "elevationGainPlanned": null,
             "description": null,
             "exerciseLibraryItemFilters": null
+        },
+
+        urlRoot: function()
+        {
+            return theMarsApp.apiRoot + "/exerciselibrary/v1/libraryitems/";
         }
     });
 });
