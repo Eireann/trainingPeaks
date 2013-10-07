@@ -3,10 +3,11 @@
 $black: #000000;
 $white: #ffffff;
 $TPBlue: #005695;
+$TPBlue2: #3c7fc4;
 $TPPurple: #873794;
 
-$TPLinkBlue:#2ba6cb;
-$TPLinkBlueHover:#2795b6;
+$TPLinkBlue: #3c7fc4;
+$TPLinkBlueHover: #326ca6;
 
 $TPGrey1: #eaebec;
 $TPGrey2: #cccccc;
@@ -110,4 +111,13 @@ $clrElevCorrected: #e61101;
 {
     font-family: $fontFamilyRegularItalic;
     font-size: $fontSizeSmall;
+}
+
+
+a {
+	color: $TPLinkBlue;
+}
+
+a:hover, a:focus {
+	color: $TPLinkBlueHover;
 }
