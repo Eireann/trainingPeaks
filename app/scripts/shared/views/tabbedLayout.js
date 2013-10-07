@@ -37,6 +37,7 @@ function(
         {
             SelectableLayout.apply(this, arguments);
             this.on("after:switchView", this._updateNavigation, this);
+            this.onScroll = _.bind(_.debounce(this._onScroll, 100), this);
         },
 
         _getNavigationElements: function()
@@ -92,6 +93,7 @@ function(
             _.each(subNavItems, function(subNavItem)
             {
                 var $subItem = $("<li/>");
+                $subItem.data("target", subNavItem.target);
                 var $subLink = $("<span/>").text(subNavItem.title);
 
                 $subItem.append($subLink);
@@ -99,6 +101,8 @@ function(
                 $subLink.click(function()
                 {
                     self._scrollTo(subNavItem, $subItem);
+                    $item.find("ul.tabbedLayoutSubNav .active").removeClass("active");
+                    $subItem.addClass("active");
                 });
 
                 $subNav.append($subItem);
@@ -109,17 +113,58 @@ function(
             this.$current = $item;
 
             this.$current.addClass("active");
+
+            $subNav.find("li:first").addClass("active");
+
+            this._listenToScroll();
         },
 
         _scrollTo: function(subNavItem, $subItem)
         {
-            var target = this.$(".tabbedLayoutBody").find(subNavItem.target);
+            var target = this.$(".tabbedLayoutBody [data-target=" + subNavItem.target + "]");
             var $container = this.$(".tabbedLayoutBody");
+            var self = this;
+            self.scrolling = true;
             $container.animate({
                 scrollTop: target.position().top + $container.scrollTop()
+            }, {
+                done: function(){self.scrolling = false;}
             });
-        }
+        },
 
+        _listenToScroll: function()
+        {
+            this.$(".tabbedLayoutBody").on("scroll.tabbedLayout", this.onScroll);
+        },
+
+        _stopListeningToScroll: function()
+        {
+            this.$(".tabbedLayoutBody").off("scroll.tabbedLayout");
+        },
+
+        _onScroll: function()
+        {
+            if(this.scrolling)
+            {
+                return;
+            }
+
+            var bodyPosition = this.$(".tabbedLayoutBody").offset();
+            var margin = 15;
+            var topElement = document.elementFromPoint(bodyPosition.left + margin, bodyPosition.top + margin);
+            var scrollTarget = topElement ? $(topElement).closest(".scrollTarget") : null;
+            if(scrollTarget)
+            {
+                var targetName = scrollTarget.data("target");
+                if(targetName)
+                {
+                    this.$("ul.tabbedLayoutSubNav .active").removeClass("active");
+                    this.$("ul.tabbedLayoutSubNav li").filter(function(){
+                        return $(this).data("target") === targetName;
+                    }).addClass("active");
+                }
+            }
+        }
     });
 
     return TabbedLayout;

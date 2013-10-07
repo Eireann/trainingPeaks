@@ -53,6 +53,7 @@ function(
         _renderNavigation: function()
         {
             var $nav = this.$("select[name=calculatorType]");
+            $nav.empty();
             _.each(this._getNavigationElements(), function($item)
             {
                 $nav.append($item);
