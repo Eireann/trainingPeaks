@@ -172,6 +172,12 @@ function(
 
     });
 
+    var EmptySpeedTabView = SpeedZoneCalculatorTabView.extend({
+        calculators: [],
+        inputs: [],
+        formUtilsFilterSelector: ".thresholdTab"
+    });
+
     var ThresholdSpeedTabView = SpeedZoneCalculatorTabView.extend({
         calculators: filterCalculators(ZoneCalculatorDefinitions.speedTypes.Threshold),
         inputs: [ "threshold" ],
@@ -234,7 +240,6 @@ function(
             this.collection.reset();
             this._applyFormValuesToModel();
             this._selectZoneCalculator(e);
-            this._highlightSelectedZone(e);
             this._setDistanceOptions();
             this._enableSpeedOrDuration();
             this._enableCalculate();
@@ -391,6 +396,14 @@ function(
         {
             this.navigation =
             [
+                {
+                    title: "Choose Type",
+                    view: EmptySpeedTabView,
+                    options: _.defaults({
+                        model: new TP.Model(TP.utils.deepClone(this.model.attributes)),
+                        thresholdSourceModel: this.model
+                    }, this.options)
+                },
                 {
                     title: "Threshold Speed",
                     view: ThresholdSpeedTabView,

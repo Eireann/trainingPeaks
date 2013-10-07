@@ -536,8 +536,6 @@
 
 .zonesCalculator
 {
-    min-height: 500px;
-    min-width: 600px;
  
     @include buttons(0, "auto", $fontSizeSmall);
     button

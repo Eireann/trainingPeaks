@@ -50,6 +50,11 @@ function(
 
     });
 
+    var EmptyTabView = HeartRateCalculatorTabView.extend({
+        calculators: [],
+        inputs: []
+    });
+
     var LactateThresholdTabView = HeartRateCalculatorTabView.extend({
         calculators: filterCalculators(ZoneCalculatorDefinitions.heartRateTypes.LactateThreshold),
         inputs: [ "threshold" ]
@@ -87,6 +92,14 @@ function(
         {
             this.navigation =
             [
+                {
+                    title: "Choose Type",
+                    view: EmptyTabView,
+                    options: {
+                        model: new TP.Model(TP.utils.deepClone(this.model.attributes)),
+                        thresholdSourceModel: this.model
+                    }
+                },
                 {
                     title: "Lactate Threshold",
                     view: LactateThresholdTabView,

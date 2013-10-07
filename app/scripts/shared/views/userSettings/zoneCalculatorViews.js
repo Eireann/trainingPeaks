@@ -2,27 +2,104 @@
 [
     "underscore",
     "TP",
-    "shared/views/tabbedLayout",
+    "jquerySelectBox",
+    "shared/views/selectableLayout",
     "shared/utilities/formUtility",
     "views/userConfirmationView",
     "hbs!templates/views/confirmationViews/requiredFieldTemplate",
     "hbs!shared/templates/userSettings/unableToCalculateZonesTemplate",
     "hbs!shared/templates/userSettings/zonesCalculatorFooterTemplate",
-    "hbs!shared/templates/userSettings/zoneThresholdTemplate"
+    "hbs!shared/templates/userSettings/zoneThresholdTemplate",
+    "hbs!shared/templates/userSettings/zonesCalculatorLayout"
 ],
 function(
     _,
     TP,
-    TabbedLayout,
+    jquerySelectBox,
+    SelectableLayout,
     FormUtility,
     UserConfirmationView,
     requiredFieldTemplate,
     unableToCalculateZonesTemplate,
     zonesCalculatorFooterTemplate,
-    zoneThresholdTemplate
+    zoneThresholdTemplate,
+    zonesCalculatorLayoutTemplate
 )
 {
 
+    var ZoneCalculatorLayout = SelectableLayout.extend({
+
+        className: "zoneCalculatorLayout",
+
+        template:
+        {
+            type: "handlebars",
+            template: zonesCalculatorLayoutTemplate
+        },
+
+        regions:
+        {
+            bodyRegion: ".zoneCalculatorLayoutBody",
+            footerRegion: ".zoneCalculatorLayoutFooter"
+        },
+
+        constructor: function()
+        {
+            SelectableLayout.apply(this, arguments);
+            this.off("render", this._renderNavigation, this);
+            this.on("after:switchView", this._renderNavigation, this);
+        },
+
+        _renderNavigation: function()
+        {
+            var $nav = this.$("select[name=calculatorType]");
+            _.each(this._getNavigationElements(), function($item)
+            {
+                $nav.append($item);
+            }, this);
+            $nav.change(_.bind(this._onCalculatorTypeSelect, this));
+        },
+
+        _onCalculatorTypeSelect: function()
+        {
+            var selectedTitle = this.$("select[name=calculatorType]").val();
+            var navItem = _.find(this.navigation, function(item)
+            {
+                return item.title === selectedTitle;
+            });
+            if(navItem)
+            {
+                this._selectView(navItem);
+            }
+        },
+
+        _getNavigationElements: function()
+        {
+            var navElements = [];
+            var self = this;
+            _.each(this.navigation, function(navItem)
+            {
+                var $item = $("<option>").text(navItem.title);
+                if(navItem === this.currentNavItem)
+                {
+                    $item.prop("selected", true);
+                }
+                navElements.push($item);
+            }, this);
+
+            return navElements;
+        },
+
+        _scrollTo: function(subNavItem, $subItem)
+        {
+            var target = this.$(".zoneCalculatorLayoutBody").find(subNavItem.target);
+            var $container = this.$(".zoneCalculatorLayoutBody");
+            $container.animate({
+                scrollTop: target.position().top + $container.scrollTop()
+            });
+        }
+
+    })
     var CalculatorTabContentView = TP.CompositeView.extend({
 
         itemViewContainer: ".zones",
@@ -50,7 +127,7 @@ function(
 
             // start with no zones until we run calculator
             this.collection = new TP.Collection();
-            this.calculatorDefinition = this.calculators[0];
+            //this.calculatorDefinition = this.calculators[0];
             CalculatorTabContentView.__super__.constructor.apply(this, arguments);
             this.thresholdSourceModel = options.thresholdSourceModel;
             this.originalModelClone = options.model.clone();
@@ -73,15 +150,18 @@ function(
 
         onRender: function()
         {
-            this._highlightSelectedZone();
             this._applyModelValuesToForm();
             this._showInputs();
             this._enableCalculate();
             //this._calculateIfAllInputsAreValid();
+            setImmediate(function()
+            {
+                this.$("select").selectBoxIt();
+            });
         },
 
         events: {
-            "click .calculator": "clickZoneCalculator",
+            "change select[name=calculatorDefinitionId]": "clickZoneCalculator",
             "click .calculate": "calculateZones"
         },
 
@@ -92,6 +172,11 @@ function(
 
             var data = this.model.toJSON();
             data.calculators = this.calculators;
+            data.calculatorTypes = this.calculatorTypes;
+            _.each(data.calculators, function(calc)
+            {
+                calc.selected = calc === this.calculatorDefinition;
+            }, this);
             return data;
         },
 
@@ -100,7 +185,6 @@ function(
             this.collection.reset();
             this._applyFormValuesToModel();
             this._selectZoneCalculator(e);
-            this._highlightSelectedZone(e);
             this._enableCalculate();
             this._calculateIfAllInputsAreValid();
             this.trigger("selectZoneCalculator");
@@ -118,8 +202,8 @@ function(
 
         _selectZoneCalculator: function(e)
         {
-            var calculatorId = Number($(e.target).data("zoneid"));
-            this.calculatorDefinition = this.zoneTypesById[calculatorId];
+            var calculatorId = Number($(e.target).val());
+            this.calculatorDefinition = calculatorId ? this.zoneTypesById[calculatorId] : null;
 
             this.model = this._getModelForCurrentCalculator(); 
 
@@ -128,22 +212,17 @@ function(
 
         _getModelForCurrentCalculator: function()
         {
+            if(!this.calculatorDefinition)
+            {
+                return this.originalModelClone.clone();
+            }
+
             var calculatorId = this.calculatorDefinition.id;
             if(!this.modelsById[calculatorId])
             {
                 this.modelsById[calculatorId] = this.originalModelClone.clone();
             }
             return this.modelsById[calculatorId];
-        },
-
-        _highlightSelectedZone: function()
-        {
-            this.$("li.selected").removeClass("selected");
-
-            if(this.calculatorDefinition)
-            {
-                this.$("a[data-zoneid=" + this.calculatorDefinition.id + "]").closest("li").addClass("selected"); 
-            }
         },
 
         _calculateIfAllInputsAreValid: function()
@@ -185,7 +264,6 @@ function(
             {
                 self.setZonesOnCollection(); 
                 self._applyModelValuesToForm();
-                self._highlightSelectedZone();
                 self.trigger("calculate");
 
             }).fail(function()
@@ -350,7 +428,7 @@ function(
 
     });
 
-    var TabbedZonesCalculatorView = TabbedLayout.extend({
+    var TabbedZonesCalculatorView = ZoneCalculatorLayout.extend({
 
         initialize: function(options)
         {

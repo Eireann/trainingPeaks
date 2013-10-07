@@ -91,6 +91,11 @@ function(
 
     });
 
+    var EmptyPowerTabView = PowerThresholdTabView.extend({
+        calculators: [],
+        inputs: []
+    });
+
 
     var PowerZonesCalculatorTabbedLayout = ZoneCalculatorViews.TabbedLayout.extend({
 
@@ -100,6 +105,14 @@ function(
         {
             this.navigation =
             [
+                {
+                    title: "Choose Type",
+                    view: EmptyPowerTabView,
+                    options: {
+                        model: new TP.Model(TP.utils.deepClone(this.model.attributes)),
+                        thresholdSourceModel: this.model
+                    }
+                },
                 {
                     title: "Threshold Power",
                     view: PowerThresholdTabView,
