@@ -68,13 +68,20 @@ function(
             exercisesContainer: "div.exercisesContainer"
         },
 
+        collectionEvents:
+        {
+            "destroy": "onWaitStop",
+            "select": "onSelectItem",
+            "unselect": "unSelect"
+        },
+
         itemViewContainer: "div.exercisesContainer",
 
         getItemView: function(item)
         {
             if (item)
                 return ExerciseLibraryItemView;
-            else     
+            else
                 return TP.ItemView;
         },
 
@@ -101,21 +108,25 @@ function(
                 self._onLibrariesChanged();
             });
 
-            this.selectedChild = null;
-            this.on("itemview:selected", function(childView)
-            {
-                self.trigger("select");
-                if(self.selectedChild && self.selectedChild !== childView)
-                    self.selectedChild.unSelect();
-                self.selectedChild = childView;
-            });
+            this.selectedItem = null;
+        },
+
+        onSelectItem: function(model)
+        {
+            if (this.selectedItem && this.selectedItem !== model)
+                this.unSelect();
+
+            this.selectedItem = model;
         },
 
         unSelect: function()
         {
-            if(this.selectedChild)
-                this.selectedChild.unSelect();
-            this.selectedChild = null;
+            if (this.selectedItem)
+            {
+                var previouslySelectedItem = this.selectedItem;
+                this.selectedItem = null;
+                previouslySelectedItem.trigger("unselect", previouslySelectedItem);
+            }
         },
 
         onRender: function()
@@ -132,7 +143,7 @@ function(
                 });
             });
             this.$el.droppable({drop: _.bind(this.onWorkoutDropped, this), hoverClass: 'myHoverClass'});
-            
+
         },
 
         addToLibrary: function()
