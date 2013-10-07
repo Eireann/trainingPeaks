@@ -1,40 +1,35 @@
 
-<div class="userSettingsPersonalSection">
+<div class="userSettingsPersonalSection cf">
     <h3>{{$ "PersonalInfo" }}</h3>
     
-    <div class="row cf">
-        <div class="firstName personalLeftCol">
+    <div class="personalLeftCol">
+        
+        <div class="fieldContain">
             <label>{{$ "FirstName" }}</label>
             <input data-modelname="user" type="text" name="firstName" />
         </div>
 
-        <div class="lastName personalRightCol">
+        <div class="fieldContain">
             <label>{{$ "LastName" }}</label>
             <input data-modelname="user" type="text" name="lastName" />
         </div>
-    </div>
 
-    <div class="row cf">
-        <div class="personalLeftCol">
+        <div class="fieldContain">
             <label>{{$ "Username" }}</label>
             <label class="username">{{ userName }}</label>
         </div>
-    </div>
 
-    <div class="row cf">
-        <div class="personalLeftCol">
+        <div class="fieldContain">
             <label>{{$ "Password" }}</label>
             <input type="password" name="password" data-modelname="password" />
         </div>
 
-        <div class="personalRightCol">
+        <div class="fieldContain">
             <label>{{$ "RetypePassword" }}</label>
             <input type="password" name="retypePassword" data-modelname="password" />
         </div>
-    </div>
 
-    <div class="row cf">
-        <div class="personalLeftCol">
+        <div class="fieldContain">
             <label>{{$ "AthleteType" }}</label>
             <div class="selectBox">
                  <select data-modelname="account" name="athleteTypeValue" >
@@ -45,52 +40,47 @@
                 </select>
             </div>
         </div>
-    </div>
 
-    <div class="row cf">
-        <div class="personalLeftCol">
+        <div class="fieldContain">
             <label>{{$ "Birthday" }}</label>
             <input data-modelname="user" type="text" data-format="date" name="birthday" class="datepicker" />
         </div>
-    </div>
 
-    <div class="row cf">
-        <label>{{$ "Gender" }}</label>
-        <label class="radioButtonRow genderRadioButtonRow">
-            <input data-modelname="user" type="radio" name="gender" value="m"/>
-            Male
-        </label>
-        <label class="radioButtonRow genderRadioButtonRow">
-            <input data-modelname="user" type="radio" name="gender" value="f"/>
-            Female
-        </label>
-    </div>
+        <div class="fieldContain">
+            <label>{{$ "Gender" }}</label>
+            <label class="radioButtonRow genderRadioButtonRow">
+                <input data-modelname="user" type="radio" name="gender" value="m"/>
+                Male
+            </label>
+            
+            <label class="radioButtonRow genderRadioButtonRow">
+                <input data-modelname="user" type="radio" name="gender" value="f"/>
+                Female
+            </label>
+        </div>
 
-    <div class="row cf">
-        <div class="personalLeftCol">
+        <div class="fieldContain">
             <label>{{$ "Email" }}</label>
             <input data-modelname="user" type="email" name="email" />
         </div>
-    </div>
 
-    <div class="row cf">
-        <div class="personalLeftCol">
+        <div class="fieldContain">
             <label>{{$ "Address" }} 1</label>
             <input data-modelname="user" type="text" name="address" />
         </div>
-        <div class="personalRightCol">
+
+        <div class="fieldContain">
             <label>{{$ "Address" }} 2</label>
             <input data-modelname="user" type="text" name="address2" />
         </div>
-    </div>
 
-    <div class="row cf">
-        <div class="personalLeftCol">
+        <div class="fieldContain">
             <label>{{$ "City" }}</label>
             <input data-modelname="user" type="text" name="city" />
         </div>
-        <div class="personalRightCol">
-        <label>{{$ "State" }}</label>
+  
+        <div class="fieldContain">
+            <label>{{$ "State" }}</label>
             <div class="selectBox state cf">
                 <select data-modelname="user" name="state">
                 {{#each states}}
@@ -99,15 +89,13 @@
                 </select>
             </div>
         </div>
-    </div>
-
-    <div class="row cf">
-        <div class="personalLeftCol">
+  
+        <div class="fieldContain">
             <label>{{$ "ZipCode" }}</label>
             <input data-modelname="user" type="text" name="zipCode" />
         </div>
-        
-        <div class="personalRightCol">
+
+        <div class="fieldContain">
             <label>{{$ "Country" }}</label>
             <div class="selectBox country cf">
                 <select data-modelname="user" name="country" >
@@ -117,35 +105,32 @@
                 </select>
             </div>
         </div>
-    </div>
 
-    <div class="row cf">
-        <div class="personalLeftCol">
+        <div class="fieldContain">
             <label>{{$ "Phone" }}</label>
             <input data-modelname="user" type="tel" name="phone" />
         </div>
 
-        <div class="personalRightCol">
+        <div class="fieldContain">
             <label>{{$ "CellPhone" }}</label>
             <input data-modelname="user" type="tel" name="cellPhone" />
         </div>
     </div>
 
-    <div class ="row profilePicture cf">
-        <div class="personalLeftCol">
-            <label>{{$ "ProfilePicture" }}</label>
-            <div class="photoContainer">
-                <img src="" />
-                <div class="placeholder">{{$ "NoPhoto" }}</div>
-            </div>
-            <div class="buttons">
-                <button class="uploadPhoto">{{$ "UploadPhoto" }}</button>
-                <button class="removePhoto">{{$ "RemovePhoto" }}</button>
-            </div>
+    <div class="personalRightCol">
+        <label>{{$ "ProfilePicture" }}</label>
+        <div class="photoContainer">
+            <img src="" />
+            <div class="placeholder">{{$ "NoPhoto" }}</div>
         </div>
+        
+        <div class="buttons">
+            <button class="uploadPhoto">{{$ "UploadPhoto" }}</button>
+            <button class="removePhoto">{{$ "RemovePhoto" }}</button>
+        </div>
+         
+        <input style="display: none" type="file" class="fileUploadInput" accept="image/gif, image/jpeg, image/png" />
     </div>
-
-    <input style="display: none" type="file" class="fileUploadInput" accept="image/gif, image/jpeg, image/png" />
 
 </div>
 
