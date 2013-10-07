@@ -99,7 +99,8 @@ function(
             });
         }
 
-    })
+    });
+
     var CalculatorTabContentView = TP.CompositeView.extend({
 
         itemViewContainer: ".zones",
