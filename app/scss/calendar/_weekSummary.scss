@@ -35,6 +35,9 @@
             cursor: pointer;
             margin-bottom: 0px;
             box-shadow: none;
+            width: 15px;
+            height: 21px;
+            @extend %settingsButtonWhiteBG;
         }
 
         &.menuOpen

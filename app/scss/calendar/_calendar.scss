@@ -70,7 +70,10 @@
                 padding: 0px;
                 cursor: pointer;
                 margin-bottom: 0px;
-                box-shadow: none
+                box-shadow: none;
+                width: 15px;
+                height: 21px;
+                @extend %settingsButtonBG;
             }
         }
 

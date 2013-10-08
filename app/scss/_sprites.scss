@@ -46,6 +46,12 @@
 
 %spriteButtonsChartModal { @include inlineBG("../../assets/images/charts/sprite-buttons-chart-modal.png"); }
 
+// Settings Icons
+
+%settingsButtonBG { @include inlineBG("../../assets/images/calendarImages/settingsButton.png"); }
+%settingsButtonSmallBG { @include inlineBG("../../assets/images/calendarImages/settingsButtonSmall.png"); }
+%settingsButtonWhiteBG { @include inlineBG("../../assets/images/calendarImages/settingsButtonWhite.png"); }
+
 // Misc Icons
 
 %spriteSelectBoxItBG { @include inlineBG("../../assets/images/QVImages/sprite-selectboxit.png"); }
