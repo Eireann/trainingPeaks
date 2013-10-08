@@ -31,7 +31,7 @@
         display: none;
         top: 0px;
         right: 2px;
-    position: absolute;
+        position: absolute;
         z-index: 2;
 
         button {	
@@ -41,6 +41,11 @@
             cursor: pointer;
             box-shadow: none;
             margin: 0px;
+            width: 14px;
+            height: 20px;
+            @extend %settingsButtonSmallBG;
+            background-repeat: no-repeat;
+            background-position-y: 7px;
         }
     }
 
