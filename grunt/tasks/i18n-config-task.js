@@ -171,7 +171,7 @@ module.exports = function (grunt) {
 
         function readAsJSON(filepath)
         {
-            return JSON.parse(fs.readFileSync(filepath, { encoding: "utf8" }));
+            return JSON.parse(fs.readFileSync(filepath, "utf-8"));
         }
         var locales = grunt.config('locales');
         var englishJson = readAsJSON("app/templates/i18n/en_us.json");
