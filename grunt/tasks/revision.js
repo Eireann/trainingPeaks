@@ -7,6 +7,8 @@ module.exports = function(grunt)
 
   var _ = grunt.util._;
 
+  var cacheable = [];
+
   function versionFile(file)
   {
     var content = fs.readFileSync(file);
@@ -17,10 +19,12 @@ module.exports = function(grunt)
 
     var newFile = path.join(path.dirname(file), rev + "." + path.basename(file))
     fs.renameSync(file, newFile);
+    cacheable.push(newFile);
 
     if(fs.existsSync(file + ".map"))
     {
       fs.renameSync(file + ".map", newFile + ".map");
+      cacheable.push(newFile + ".map");
     }
 
     return rev;
@@ -49,6 +53,15 @@ module.exports = function(grunt)
       .replace('"single.min.js"', '"' + versions.singleJs + '.single.min.js"');
       
       fs.writeFileSync(indexFile, content);
+
+      var cacheConfig = _.map(cacheable, function(file)
+      {
+        return '<location path="' + file.replace("build/release/", "") + '"><system.webServer><staticContent><clientCache cacheControlCustom="public" cacheControlMode="UseMaxAge" cacheControlMaxAge="365.00:00:00" /></staticContent></system.webServer></location>';
+      }).join();
+
+      var webConfig = fs.readFileSync('build/release/web.config', "utf-8");
+      webConfig = webConfig.replace('<!--AUTOGENERATE_JS_CSS_CACHE_CONTROL_HEADERS-->', cacheConfig);
+      fs.writeFileSync('build/release/web.config', webConfig);
 
     });
 
