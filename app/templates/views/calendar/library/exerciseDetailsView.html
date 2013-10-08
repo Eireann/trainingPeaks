@@ -1,0 +1,163 @@
+{{#hoverBox this "leftarrow"}}
+
+<div id="closeIcon" />
+<h3 class="subheadbold">Exercise & Intervals</h3>
+
+<div class="small">
+    <p>{{itemName}}</p>
+</div>
+
+<h3 class="subheadbold">Stats</h3>
+
+<div class="workoutStatsRow durationStatsRow">
+    <div class="workoutStatsColumn workoutStatsLabel">
+        <label>{{$ "Duration"}}</label>
+    </div>
+    <div class="workoutStatsColumn ">
+        <input type="text" id="totalTimePlannedField" class="numberInput"
+        {{#if totalTimePlanned }}
+            value={{ conversion "formatDuration" totalTimePlanned }}
+        {{/if}}
+        />
+    </div>
+    <div class="workoutStatsColumn workoutStatsUnitLabel">
+        <label class="time ghosted">{{$ "hms"}}</label>
+    </div>
+</div>
+
+<div class="workoutStatsRow distanceStatsRow">
+    <div class="workoutStatsColumn workoutStatsLabel">
+        <label>{{$ "Distance"}}</label>
+    </div>
+    <div class="workoutStatsColumn">
+        <input type="text" id="distancePlannedField" class="numberInput"
+            {{#if distancePlanned}}
+                value='{{ conversion "formatDistance" distancePlanned this }}'
+            {{/if}}
+        />
+    </div>
+    <div class="workoutStatsColumn workoutStatsUnitLabel">
+        <label class="distance ghosted">{{getUnitsLabel "distance" workoutTypeId }}</label>
+    </div>
+</div>
+
+<div class="workoutStatsRow paceStatsRow">
+    <div class="workoutStatsColumn workoutStatsLabel">
+        <label>{{$ "Pace"}}</label>
+    </div>
+    <div class="workoutStatsColumn">
+        <input type="text" id="pacePlannedField" class="numberInput"
+            {{#if velocityPlanned}}
+                value='{{ conversion "formatPace" velocityPlanned this }}'
+            {{/if}}
+        />
+    </div>
+    <div class="workoutStatsColumn workoutStatsUnitLabel">
+        <label class="pace ghosted">{{getUnitsLabel "pace" workoutTypeId}}</label>
+    </div>
+</div>
+
+<div class="workoutStatsRow speedStatsRow">
+    <div class="workoutStatsColumn workoutStatsLabel">
+        <label>{{$ "Speed"}}</label>
+    </div>
+    <div class="workoutStatsColumn">
+        <input type="text" id="velocityPlannedField" class="numberInput"
+            {{#if velocityPlanned}}
+                value='{{ conversion "formatSpeed" velocityPlanned this }}'
+            {{/if}}
+        />
+    </div>
+    <div class="workoutStatsColumn workoutStatsUnitLabel">
+        <label class="speed ghosted">{{getUnitsLabel "speed" workoutTypeId}}</label>
+    </div>
+</div>
+
+<div class="workoutStatsRow caloriesStatsRow">
+    <div class="workoutStatsColumn workoutStatsLabel">
+        <label>{{$ "Calories"}}</label>
+    </div>
+    <div class="workoutStatsColumn">
+        <input type="text" id="caloriesPlannedField" class="numberInput"
+        {{#if caloriesPlanned}}
+            value='{{ conversion "formatCalories" caloriesPlanned }}'
+        {{/if}}
+        />
+    </div>
+    <div class="workoutStatsColumn workoutStatsUnitLabel">
+        <label class="calories ghosted">{{getUnitsLabel "calories" workoutTypeId}}</label>
+    </div>
+</div>
+
+<div class="workoutStatsRow elevationGainStatsRow">
+    <div class="workoutStatsColumn workoutStatsLabel">
+        <label>{{$ "ElevationGain"}}</label>
+    </div>
+    <div class="workoutStatsColumn">
+        <input type="text" id="elevationGainPlannedField" class="numberInput"
+        {{#if elevationGainPlanned}}
+            value='{{ conversion "formatElevationGain" elevationGainPlanned }}'
+        {{/if}}
+        />
+    </div>
+    <div class="workoutStatsColumn workoutStatsUnitLabel">
+        <label class="elevationGain ghosted">{{getUnitsLabel "elevationGain" workoutTypeId}}</label>
+    </div>
+</div>
+
+<div class="workoutStatsRow TSSStatsRow">
+    <div class="workoutStatsColumn workoutStatsLabel">
+        <label>{{$ "TSS"}}</label>
+    </div>
+    <div class="workoutStatsColumn">
+        <input type="text" id="tssPlannedField" class="numberInput"
+        {{#if tssPlanned}}
+            value='{{ conversion "formatTSS" tssPlanned}}'
+        {{/if}}
+        />
+    </div>
+    <div class="workoutStatsColumn workoutStatsUnitLabel">
+        <label class="tss ghosted">{{getUnitsLabel "tss" workoutTypeId this}}</label>
+    </div>
+</div>
+
+<div class="workoutStatsRow IFStatsRow">
+    <div class="workoutStatsColumn workoutStatsLabel">
+        <label>{{$ "IF"}}</label>
+    </div>
+    <div class="workoutStatsColumn">
+        <input type="text" id="ifPlannedField" class="numberInput"
+        {{#if ifPlanned}}
+            value='{{ conversion "formatIF" ifPlanned }}'
+        {{/if}}
+        />
+    </div>
+    <div class="workoutStatsColumn workoutStatsUnitLabel">
+        <label class="ghosted">{{getUnitsLabel "if" workoutTypeId}}</label>
+    </div>
+</div>
+
+<div class="workoutStatsRow energyStatsRow">
+    <div class="workoutStatsColumn workoutStatsLabel">
+        <label>{{$ "Energy"}}</label>
+    </div>
+    <div class="workoutStatsColumn">
+        <input type="text" id="energyPlannedField" class="numberInput"
+        {{#if energyPlanned}}
+            value='{{ conversion "formatEnergy" energyPlanned }}'
+        {{/if}}
+        />
+    </div>
+    <div class="workoutStatsColumn workoutStatsUnitLabel">
+        <label class="ghosted">{{getUnitsLabel "energy" workoutTypeId}}</label>
+    </div>
+</div>
+
+<h3 class="subheadbold">Description</h3>
+<div class="description small">
+    <p>{{description}}</p>
+</div>
+<button class="edit">Edit</button>
+<button class="delete">Delete</button>
+
+{{/hoverBox}}

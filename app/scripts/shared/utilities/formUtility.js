@@ -12,7 +12,7 @@ function(
         {
             if(format === "date")
             {
-                value = moment(value).isValid() ? TP.utils.datetime.format(value) : "";
+                value = value && moment(value).isValid() ? TP.utils.datetime.format(value) : "";
             }
             else if(format === "number")
             {
@@ -40,7 +40,7 @@ function(
             {
                 // parse the input based on user preference,
                 // make sure the model is in consistent format regardless of user preference
-                value = TP.utils.datetime.parse(value).format("YYYY-MM-DD");
+                value = value ? TP.utils.datetime.parse(value).format("YYYY-MM-DD") : null;
             }
             else if(options && options.parsers && options.parsers.hasOwnProperty(format))
             {
