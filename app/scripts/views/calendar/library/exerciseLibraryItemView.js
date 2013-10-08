@@ -138,6 +138,7 @@ function(
         onDetailsClose: function()
         {
             this.detailsView.off("close", this.onDetailsClose, this);
+            this.onItemUnSelect();
             this.detailsView = null;
         }
 
