@@ -55,6 +55,22 @@ module.exports = function(grunt)
             }
         },
 
+        webfont:
+        {
+            icons:
+            {
+                src: "assets/icons-src/*.svg",
+                dest: "assets/icons",
+                options:
+                {
+                    stylesheet: "scss",
+                    types: ["woff"],
+                    relativeFontPath: "../../assets/icons/",
+                    demoHtml: false
+                }
+            }
+        },
+
         compass: //SASS/SCSS
         {
             debug:
@@ -200,7 +216,7 @@ module.exports = function(grunt)
             {
                 files:
                 {
-                    "build/debug": ["vendor/js/libs/leaflet/*.css", "vendor/js/libs/leaflet/images/*", "assets/fonts/**", "assets/images/**", "app/scripts/affiliates/**", "!app/scripts/affiliates/**/*.js"]
+                    "build/debug": ["vendor/js/libs/leaflet/*.css", "vendor/js/libs/leaflet/images/*", "assets/fonts/**", "assets/icons/**", "assets/images/**", "app/scripts/affiliates/**", "!app/scripts/affiliates/**/*.js"]
                 }
             },
 
@@ -208,7 +224,7 @@ module.exports = function(grunt)
             {
                 files:
                 {
-                    "build/release": ["vendor/js/libs/leaflet/*.css", "vendor/js/libs/leaflet/images/*", "assets/fonts/**", "assets/images/**", "app/scripts/affiliates/**", "!app/scripts/affiliates/**/*.js"]
+                    "build/release": ["vendor/js/libs/leaflet/*.css", "vendor/js/libs/leaflet/images/*", "assets/fonts/**", "assets/icons/**", "assets/images/**", "app/scripts/affiliates/**", "!app/scripts/affiliates/**/*.js"]
                 }
             },
 
@@ -300,6 +316,7 @@ module.exports = function(grunt)
     grunt.loadNpmTasks("grunt-contrib-requirejs");
     grunt.loadNpmTasks("grunt-contrib-watch");
     grunt.loadNpmTasks("grunt-istanbul");
+    grunt.loadNpmTasks("grunt-webfont");
 
 
     // TESTING:

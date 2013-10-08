@@ -13,10 +13,11 @@
             width: 666px;
 
             .metricIconLarge {
-                background: no-repeat 0 0;
-                @extend %metricPositiveLargeBG;
-                background-color: $TPGrey3;
-                background-size:70px 70px;
+                color: $TPGrey3;
+                background: #fff;
+                @extend .icon;
+                @extend .icon_metric;
+                font-size: 70px;
             }
         }
     }

@@ -1,58 +1,28 @@
-﻿.WorkoutIcons
+﻿@mixin workoutIcons($name, $futureBackgroundColor) 
 {
-    .workoutIcon
+    .workoutIcon > .theIcon,
+    .workoutIconLarge > .theIcon,
     {
-        background: no-repeat 0 0;
-        background-size: 25px 25px;
+        display: inline;
+        @extend .icon;
+        @extend .icon_#{$name};
+        color: #fff;
+
+        font-size: 25px;
     }
 
-    .workoutIconLarge
+    .workoutIconLarge > .theIcon
     {
-        background: no-repeat 0 0;
-        background-size: 70px 70px;
+        font-size: 70px;
     }
 
     &.future, &.past.ComplianceNone
     {
-        .workoutIcon
+        .workoutIcon > .theIcon,
+        .workoutIconLarge > .theIcon
         {
-            background: no-repeat 0 0;
-            background-size: 25px 25px;
-        }
-
-        .workoutIconLarge
-        {
-            background: no-repeat 0 0;
-            background-size: 70px 70px;
-        }
-    }
-}
-
-@mixin workoutIcons($name, $futureBackgroundColor) 
-{
-    @extend .WorkoutIcons;
-    .workoutIcon
-    {
-        @extend %#{$name}NegativeSmallBG;
-    }
-
-    .workoutIconLarge
-    {
-        @extend %#{$name}NegativeLargeBG;
-    }
-
-    &.future, &.past.ComplianceNone
-    {
-        .workoutIcon
-        {
-            @extend %#{$name}PositiveSmallBG;
-            background-color: $futureBackgroundColor;
-        }
-
-        .workoutIconLarge
-        {
-            @extend %#{$name}PositiveLargeBG;
-            background-color: $futureBackgroundColor;
+            color: $futureBackgroundColor;
+            background-color: #fff;
         }
     }
 }

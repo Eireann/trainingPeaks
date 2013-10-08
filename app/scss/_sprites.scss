@@ -1,3 +1,5 @@
+@import "../../assets/icons/icons";
+
 @mixin inlineBG($url)
 {
     background-image: inline-image($url);
@@ -9,85 +11,13 @@
     background-size: (image-width($url) / $scale) (image-height($url) / $scale);
 }
 
-// Workout Icons
-
-%bikeNegativeSmallBG { @include inlineBG("../../assets/images/sportTypeIcons/bike_neg_50.png"); }
-%bikeNegativeLargeBG { @include inlineBG("../../assets/images/sportTypeIcons/bike_neg_140.png"); }
-
-%bikePositiveSmallBG { @include inlineBG("../../assets/images/sportTypeIcons/bike_pos_50.png"); }
-%bikePositiveLargeBG { @include inlineBG("../../assets/images/sportTypeIcons/bike_pos_140.png"); }
-
-%runNegativeSmallBG { @include inlineBG("../../assets/images/sportTypeIcons/run_neg_50.png"); }
-%runNegativeLargeBG { @include inlineBG("../../assets/images/sportTypeIcons/run_neg_140.png"); }
-
-%runPositiveSmallBG { @include inlineBG("../../assets/images/sportTypeIcons/run_pos_50.png"); }
-%runPositiveLargeBG { @include inlineBG("../../assets/images/sportTypeIcons/run_pos_140.png"); }
-
-%swimNegativeSmallBG { @include inlineBG("../../assets/images/sportTypeIcons/swim_neg_50.png"); }
-%swimNegativeLargeBG { @include inlineBG("../../assets/images/sportTypeIcons/swim_neg_140.png"); }
-
-%swimPositiveSmallBG { @include inlineBG("../../assets/images/sportTypeIcons/swim_pos_50.png"); }
-%swimPositiveLargeBG { @include inlineBG("../../assets/images/sportTypeIcons/swim_pos_140.png"); }
-
-%brickNegativeSmallBG { @include inlineBG("../../assets/images/sportTypeIcons/brick_neg_50.png"); }
-%brickNegativeLargeBG { @include inlineBG("../../assets/images/sportTypeIcons/brick_neg_140.png"); }
-
-%brickPositiveSmallBG { @include inlineBG("../../assets/images/sportTypeIcons/brick_pos_50.png"); }
-%brickPositiveLargeBG { @include inlineBG("../../assets/images/sportTypeIcons/brick_pos_140.png"); }
-
-%mtbNegativeSmallBG { @include inlineBG("../../assets/images/sportTypeIcons/mtb_neg_50.png"); }
-%mtbNegativeLargeBG { @include inlineBG("../../assets/images/sportTypeIcons/mtb_neg_140.png"); }
-
-%mtbPositiveSmallBG { @include inlineBG("../../assets/images/sportTypeIcons/mtb_pos_50.png"); }
-%mtbPositiveLargeBG { @include inlineBG("../../assets/images/sportTypeIcons/mtb_pos_140.png"); }
-
-%otherNegativeSmallBG { @include inlineBG("../../assets/images/sportTypeIcons/other_neg_50.png"); }
-%otherNegativeLargeBG { @include inlineBG("../../assets/images/sportTypeIcons/other_neg_140.png"); }
-
-%otherPositiveSmallBG { @include inlineBG("../../assets/images/sportTypeIcons/other_pos_50.png"); }
-%otherPositiveLargeBG { @include inlineBG("../../assets/images/sportTypeIcons/other_pos_140.png"); }
-
-%raceNegativeSmallBG { @include inlineBG("../../assets/images/sportTypeIcons/race_neg_50.png"); }
-%raceNegativeLargeBG { @include inlineBG("../../assets/images/sportTypeIcons/race_neg_140.png"); }
-
-%racePositiveSmallBG { @include inlineBG("../../assets/images/sportTypeIcons/race_pos_50.png"); }
-%racePositiveLargeBG { @include inlineBG("../../assets/images/sportTypeIcons/race_pos_140.png"); }
-
-%restNegativeSmallBG { @include inlineBG("../../assets/images/sportTypeIcons/rest_neg_50.png"); }
-%restNegativeLargeBG { @include inlineBG("../../assets/images/sportTypeIcons/rest_neg_140.png"); }
-
-%restPositiveSmallBG { @include inlineBG("../../assets/images/sportTypeIcons/rest_pos_50.png"); }
-%restPositiveLargeBG { @include inlineBG("../../assets/images/sportTypeIcons/rest_pos_140.png"); }
-
-%rowingNegativeSmallBG { @include inlineBG("../../assets/images/sportTypeIcons/row_neg_50.png"); }
-%rowingNegativeLargeBG { @include inlineBG("../../assets/images/sportTypeIcons/row_neg_140.png"); }
-
-%rowingPositiveSmallBG { @include inlineBG("../../assets/images/sportTypeIcons/row_pos_50.png"); }
-%rowingPositiveLargeBG { @include inlineBG("../../assets/images/sportTypeIcons/row_pos_140.png"); }
-
-%strengthNegativeSmallBG { @include inlineBG("../../assets/images/sportTypeIcons/strength_neg_50.png"); }
-%strengthNegativeLargeBG { @include inlineBG("../../assets/images/sportTypeIcons/strength_neg_140.png"); }
-
-%strengthPositiveSmallBG { @include inlineBG("../../assets/images/sportTypeIcons/strength_pos_50.png"); }
-%strengthPositiveLargeBG { @include inlineBG("../../assets/images/sportTypeIcons/strength_pos_140.png"); }
-
-%walkNegativeSmallBG { @include inlineBG("../../assets/images/sportTypeIcons/walk_neg_50.png"); }
-%walkNegativeLargeBG { @include inlineBG("../../assets/images/sportTypeIcons/walk_neg_140.png"); }
-
-%walkPositiveSmallBG { @include inlineBG("../../assets/images/sportTypeIcons/walk_pos_50.png"); }
-%walkPositiveLargeBG { @include inlineBG("../../assets/images/sportTypeIcons/walk_pos_140.png"); }
-
-%xc-skiNegativeSmallBG { @include inlineBG("../../assets/images/sportTypeIcons/xc_ski_neg_50.png"); }
-%xc-skiNegativeLargeBG { @include inlineBG("../../assets/images/sportTypeIcons/xc_ski_neg_140.png"); }
-
-%xc-skiPositiveSmallBG { @include inlineBG("../../assets/images/sportTypeIcons/xc_ski_pos_50.png"); }
-%xc-skiPositiveLargeBG { @include inlineBG("../../assets/images/sportTypeIcons/xc_ski_pos_140.png"); }
-
-%metricNegativeSmallBG { @include inlineBG("../../assets/images/sportTypeIcons/metric_neg_50.png"); }
-%metricNegativeLargeBG { @include inlineBG("../../assets/images/sportTypeIcons/metric_neg_140.png"); }
-
-%metricPositiveSmallBG { @include inlineBG("../../assets/images/sportTypeIcons/metric_pos_50.png"); }
-%metricPositiveLargeBG { @include inlineBG("../../assets/images/sportTypeIcons/metric_pos_140.png"); }
+@mixin sportTypeIcon($type, $fg, $bg, $size)
+{
+    @extend .icon-#{$type};
+    color: $fg;
+    background: $bg;
+    font-size: $size;
+}
 
 // Expando/Quickview Icons
 
