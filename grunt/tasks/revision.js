@@ -35,7 +35,7 @@ module.exports = function(grunt)
     var cacheConfig = _.map(cacheable, function(file)
     {
       file = path.relative("build/release", file);
-      file = file.replace(/\\/i, "/"); // Needs to be forward slash, even on windows
+      file = file.replace(/\\/g, "/"); // Needs to be forward slash, even on windows
       return '<location path="' + file + '"><system.webServer><staticContent><clientCache cacheControlCustom="public" cacheControlMode="UseMaxAge" cacheControlMaxAge="365.00:00:00" /></staticContent></system.webServer></location>';
     }).join('');
 
