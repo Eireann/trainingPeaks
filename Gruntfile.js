@@ -64,9 +64,9 @@ module.exports = function(grunt)
                 options:
                 {
                     stylesheet: "scss",
-                    types: ["woff"],
+                    embed: true,
                     relativeFontPath: "../../assets/icons/",
-                    demoHtml: false
+                    htmlDemo: false
                 }
             }
         },
