@@ -10,6 +10,9 @@ function cookiesAreEnabled()
     return (cookieEnabled);
 }
 
+// Allow browser detection in CSS... because IE
+$("body").attr("data-useragent", navigator.userAgent);
+
 if (!cookiesAreEnabled())
 {
     alert("Cookies are disabled in your browser. Please enable your cookie support.");

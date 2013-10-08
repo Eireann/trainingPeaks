@@ -55,6 +55,22 @@ module.exports = function(grunt)
             }
         },
 
+        webfont:
+        {
+            icons:
+            {
+                src: "assets/icons-src/*.svg",
+                dest: "assets/icons",
+                options:
+                {
+                    stylesheet: "scss",
+                    embed: true,
+                    relativeFontPath: "../../assets/icons/",
+                    htmlDemo: false
+                }
+            }
+        },
+
         compass: //SASS/SCSS
         {
             debug:
@@ -200,7 +216,7 @@ module.exports = function(grunt)
             {
                 files:
                 {
-                    "build/debug": ["vendor/js/libs/leaflet/*.css", "vendor/js/libs/leaflet/images/*", "assets/fonts/**", "assets/images/**", "app/scripts/affiliates/**", "!app/scripts/affiliates/**/*.js"]
+                    "build/debug": ["vendor/js/libs/leaflet/*.css", "vendor/js/libs/leaflet/images/*", "assets/fonts/**", "assets/icons/**", "assets/images/**", "app/scripts/affiliates/**", "!app/scripts/affiliates/**/*.js"]
                 }
             },
 
@@ -208,7 +224,7 @@ module.exports = function(grunt)
             {
                 files:
                 {
-                    "build/release": ["vendor/js/libs/leaflet/*.css", "vendor/js/libs/leaflet/images/*", "assets/fonts/**", "assets/images/**", "app/scripts/affiliates/**", "!app/scripts/affiliates/**/*.js"]
+                    "build/release": ["vendor/js/libs/leaflet/*.css", "vendor/js/libs/leaflet/images/*", "assets/fonts/**", "assets/icons/**", "assets/images/**", "app/scripts/affiliates/**", "!app/scripts/affiliates/**/*.js"]
                 }
             },
 
@@ -300,6 +316,7 @@ module.exports = function(grunt)
     grunt.loadNpmTasks("grunt-contrib-requirejs");
     grunt.loadNpmTasks("grunt-contrib-watch");
     grunt.loadNpmTasks("grunt-istanbul");
+    grunt.loadNpmTasks("grunt-webfont");
 
 
     // TESTING:
@@ -326,7 +343,7 @@ module.exports = function(grunt)
     grunt.registerTask("build_debug", ["build_common", "copy:build_debug", "targethtml:build_debug", "copy-i18n-files"]);
     grunt.registerTask("build_debug_fast", ["clean", "requirejs_config", "requirejs", "compass:build", "copy:build_common", "copy:build_coverage", "copy:build_debug", "targethtml:build_debug"]);
     grunt.registerTask("build_debug_min", ["build_debug_fast", "targethtml:build_debug_min", "uglify"]);
-    grunt.registerTask("build", ["add-defaults-to-i18n-files", "build_common", "copy:build", "uglify", "deleteFiles:build", "targethtml:build", "copy-i18n-files"]);
+    grunt.registerTask("build", ["add-defaults-to-i18n-files", "build_common", "copy:build", "uglify", "deleteFiles:build", "targethtml:build", "copy-i18n-files", "revision"]);
 
     // TASKS THAT ARE USED BY OTHER TASKS
     grunt.registerTask("bdd_test_config", "Configure for jasmine node bdd tests", function()

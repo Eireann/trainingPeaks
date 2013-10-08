@@ -8,8 +8,6 @@
 @import "calendar/dragAndDrop";
 @import "globalCSS/modal";
 
-@import "globalCSS/print";
-
 @import "globalCSS/framework";
 
 @import "globalCSS/packeryCollection";
@@ -59,57 +57,56 @@
 @import "tabbedLayout";
 @import "overlayBox";
 
-@media screen {
+@import "sprites";
 
-    html
-    {
-        height: 100%;
-        &.wf-loading {
-            opacity:0;
-        }
+
+html
+{
+    height: 100%;
+    &.wf-loading {
+        opacity:0;
     }
+}
 
-    body
+body
+{
+    min-height: 100%;
+    @include nice-scrollbar;
+    font-size: $baseFontSize;
+    font-family: $fontFamilyRegular;
+    color: $TPGrey4;
+}
+
+a
+{
+    cursor: pointer;
+}
+
+#loginFooter, #calendarFooter
+{
+    span
     {
-        min-height: 100%;
-        @include nice-scrollbar;
-        font-size: $baseFontSize;
         font-family: $fontFamilyRegular;
-        color: $TPGrey4;
+        font-size: $fontSizeXSmall;
     }
+}
 
-    a
+.row
+{
+    max-width: none;
+}
+
+@include buttons(0px, auto, $fontSizeMedium);
+
+input[type="text"]
+{
+    padding-top: 0px;
+    padding-bottom: 0px;
+    cursor: text;
+    @include box-shadow(none);
+
+    &:focus
     {
-        cursor: pointer;
-    }
-
-    #loginFooter, #calendarFooter
-    {
-        span
-        {
-            font-family: $fontFamilyRegular;
-            font-size: $fontSizeXSmall;
-        }
-    }
-
-    .row
-    {
-        max-width: none;
-    }
-
-    @include buttons(0px, auto, $fontSizeMedium);
-
-    input[type="text"]
-    {
-        padding-top: 0px;
-        padding-bottom: 0px;
-        cursor: text;
         @include box-shadow(none);
-
-        &:focus
-        {
-            @include box-shadow(none);
-        }
     }
-
 }

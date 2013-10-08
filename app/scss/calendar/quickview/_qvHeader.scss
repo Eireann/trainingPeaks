@@ -1,388 +1,320 @@
 ﻿@import "../../globalCSS/tpstylesheet";
-$chartIconsSpriteURL: url(../../assets/images/charts/sprite-buttons-chart-modal.png);
-$chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-modal@2x.png);
 
-@media screen {
-    .workoutQuickView
+.workoutQuickView
+{
+    &.expanded
     {
-        &.expanded
+        #workOutQuickView
         {
-            #workOutQuickView
-            {
-                min-width: 1150px;
-            }
-        }
-    }
-
-    .QVHeader
-    {
-        width: 100%;
-        height: 125px;
-        background-color: $TPGrey1;
-        padding: 12px 0px 0px 12px;
-        @include box-shadow(2px 0px 7px 0px $TPGrey3);
-        position: relative;
-        z-index: 2; // otherwise maps/charts overlay it and kill the drop shadow
-
-        .QVHeaderItemsContain {
             min-width: 1150px;
         }
+    }
+}
 
-        .workoutBarViewHeader
+.QVHeader
+{
+    width: 100%;
+    height: 125px;
+    background-color: $TPGrey1;
+    padding: 12px 0px 0px 12px;
+    @include box-shadow(2px 0px 7px 0px $TPGrey3);
+    position: relative;
+    z-index: 2; // otherwise maps/charts overlay it and kill the drop shadow
+
+    .QVHeaderItemsContain {
+        min-width: 1150px;
+    }
+
+    .workoutBarViewHeader
+    {
+        float: left;
+
+        .workoutIconLarge
         {
-            float: left;
-
-            .workoutIconLarge
-            {
-                cursor: pointer;
-            }
-
-           .workoutHeaderStats
-            {
-                .title
-                {
-                    span.workoutTitleText
-                    {
-                        display: none;
-                    }
-                    input#workoutTitleField
-                    {
-                        display: inline;
-                        font-family: $fontFamilyHeavy;
-                    }
-                }
-                
-                .headerIcons
-                {
-                    #breakThrough
-                    {
-                        cursor: pointer;
-                    }
-                }
-
-     
-            }
+            cursor: pointer;
         }
 
-        .dateAndTime
-        {            
-            padding-left: 2px;
-            
-            #dayName, .dayName
+        .workoutHeaderStats
+        {
+            .title
             {
-                font-family: $fontFamilyRegular;
-                font-size:$fontSizeMedium;
-                color: $TPGrey3;
-                padding-right: 14px;
-                text-transform:uppercase;
-                cursor:pointer;
-            }
-
-            #calendarDate, .calendarDate
-            {
-                font-family: $fontFamilyRegular;
-                font-size:$fontSizeSmall;
-                color: $TPGrey3;
-                padding-right: 14px;
-                cursor:pointer;
-            }
-
-            #time
-            {
-                font-family: $fontFamilyRegular;
-                font-size:$fontSizeSmall;
-                color: $TPGrey3;
-            }
-
-            @include inputs(60px, 20px, $fontSizeSmall, $fontFamilyRegular);
-            input#startTimeInput,
-            .timeInput
-            {
-                color: $TPGrey3;
-                display: inline-block;
-                outline: none;
-                @include box-shadow(none);
-                border: none;
-                background-color: transparent;
-                margin: 0px;
-                padding: 0px;
-                cursor:pointer;
-            }
-        }
-
-        .closeAndSettings {
-            float: right;
-            margin: -2px 0px 0px 0px;        
-            width:80px;
-            height:17px;
-
-            #expandIcon, .expandIcon
-            {
-                float: right;
-                margin-left: 10px;
-                width: 11px;
-                height: 12px;
-                background: transparent $chartIconsSpriteURL no-repeat -17px 0;
-                cursor:pointer;
-
-                &:hover {
-                    background-position: -17px -17px;
-                }
-
-                &:active {
-                    background-position: -17px -17px;
-                }
-
-                &.disabled
-                {
-                    background-position: -17px 0px;
-                    cursor: default;
-                }
-
-            }
-
-            #collapseIcon, .collapseIcon
-            {
-                display: none;
-                float: right;
-                margin-left: 10px;
-                margin-top:-1px;
-                width: 12px;
-                height: 13px;
-                background: transparent $chartIconsSpriteURL no-repeat -34px 0;
-                cursor:pointer;
-
-                &:hover {
-                    background-position: -34px -17px;
-                }
-
-                &:active {
-                    background-position: -34px 0px;
-                }
-
-            }
-
-            @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
-                #expandIcon, .expandIcon {
-                    background-image: $chartIconsSpriteRetinaURL;
-                    background-size: 68px 34px;
-                }
-            }
-        }
-      
-        .uploadExpandButtons {
-            float: left;
-            width:86px;
-
-            .buttons {
-                height: 35px;
-                @include labels($fontFamilyRegular, $fontSizeSmall, $TPGrey3, normal);
-                padding-top: 11px;
-                padding-left: 30px;
-                padding-right: 8px;
-                float: left;
-                margin-left: 6px;
-                width: 86px;
-                border: 1px solid $TPGrey9;
-                
-                label {
-                    color: $TPGrey10;
-                }
-            
-                &:not(.disabled)
-                {   
-                    &:hover {
-                        border-color: #8d8d8d;
-                        color:#303030;
-                        label {
-                            color:#303030;
-                            cursor:pointer;
-                        }
-                    }  
-
-                    &:active
-                    {
-                        color:$white;
-                        label {
-                            color:$white;
-                            cursor:pointer;
-                        }
-                    }
-                }
-            }
-
-            .uploadButton {
-                background: url(../../assets/images/QVImages/sprite-buttons-expando.png) no-repeat 0 -1px;
-                cursor: pointer;
-                
-                &:hover {
-                    background: url(../../assets/images/QVImages/sprite-buttons-expando.png) no-repeat -86px -1px;
-                }
-                
-                &:active {
-                    background: url(../../assets/images/QVImages/sprite-buttons-expando.png) no-repeat -172px -1px;
-                    label {
-                        color: $white;
-                        opacity: 0.85;
-                        cursor: pointer;
-                    }
-                }
-                
-                label {
-                    cursor: pointer;
-                }
-
-                label.files
+                span.workoutTitleText
                 {
                     display: none;
                 }
-
-                &.withFiles
+                input#workoutTitleField
                 {
-                    label.files
-                    {
-                        display: inline;
-                    }
-
-                    label.upload
-                    {
-                        display: none;
-                    }
+                    display: inline;
+                    font-family: $fontFamilyHeavy;
                 }
             }
-
-            .expandButton {
-                margin-top: 10px;
-                background: url(../../assets/images/QVImages/sprite-buttons-expando.png) no-repeat 0 -36px;
-
-                &.disabled
-                {
-                    opacity: 0.5;
-                }
-
-                &.expandWaiting {
-                    opacity: 0.5;
-                    background: url(../../assets/images/calendarImages/throbber-expando-button.gif) no-repeat;
-
-                    @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
-                        background: url(../../assets/images/calendarImages/throbber-expando-button@2x.gif) no-repeat;
-                        background-size: 86px 36px;
-                    }
-                }
             
-                &:not(.disabled)
-                {   
-
+            .headerIcons
+            {
+                #breakThrough
+                {
                     cursor: pointer;
-                    &:hover {
-                        background: url(../../assets/images/QVImages/sprite-buttons-expando.png) no-repeat -86px -36px;
-                    }
-                    
-                    &:active {
-                        background: url(../../assets/images/QVImages/sprite-buttons-expando.png) no-repeat -172px -36px;
-
-                        label {
-                            color: $white;
-                            opacity: 0.85;
-                            cursor: pointer;
-                        }
-                    }
                 }
             }
 
-            .collapseButton {
-                margin-top: 10px;
-                display: none;
-                padding-left: 28px;
+    
+        }
+    }
+
+    .dateAndTime
+    {            
+        padding-left: 2px;
+        
+        #dayName, .dayName
+        {
+            font-family: $fontFamilyRegular;
+            font-size:$fontSizeMedium;
+            color: $TPGrey3;
+            padding-right: 14px;
+            text-transform:uppercase;
+            cursor:pointer;
+        }
+
+        #calendarDate, .calendarDate
+        {
+            font-family: $fontFamilyRegular;
+            font-size:$fontSizeSmall;
+            color: $TPGrey3;
+            padding-right: 14px;
+            cursor:pointer;
+        }
+
+        #time
+        {
+            font-family: $fontFamilyRegular;
+            font-size:$fontSizeSmall;
+            color: $TPGrey3;
+        }
+
+        @include inputs(60px, 20px, $fontSizeSmall, $fontFamilyRegular);
+        input#startTimeInput,
+        .timeInput
+        {
+            color: $TPGrey3;
+            display: inline-block;
+            outline: none;
+            @include box-shadow(none);
+            border: none;
+            background-color: transparent;
+            margin: 0px;
+            padding: 0px;
+            cursor:pointer;
+        }
+    }
+
+    .closeAndSettings {
+        float: right;
+        margin: -2px 0px 0px 0px;        
+        width:80px;
+        height:17px;
+
+        #expandIcon, .expandIcon
+        {
+            float: right;
+            margin-left: 10px;
+            width: 11px;
+            height: 12px;
+            background: transparent no-repeat -17px 0;
+            @extend %spriteButtonsChartModalBG;
+            cursor:pointer;
+
+            &:hover {
+                background-position: -17px -17px;
+            }
+
+            &:active {
+                background-position: -17px -17px;
+            }
+
+            &.disabled
+            {
+                background-position: -17px 0px;
+                cursor: default;
+            }
+
+        }
+
+        #collapseIcon, .collapseIcon
+        {
+            display: none;
+            float: right;
+            margin-left: 10px;
+            margin-top:-1px;
+            width: 12px;
+            height: 13px;
+            background: transparent no-repeat -34px 0;
+            @extend %spriteButtonsChartModalBG;
+            cursor:pointer;
+
+            &:hover {
+                background-position: -34px -17px;
+            }
+
+            &:active {
+                background-position: -34px 0px;
+            }
+
+        }
+
+    }
+    
+    .uploadExpandButtons {
+        float: left;
+        width:86px;
+
+        .buttons {
+            height: 35px;
+            @include labels($fontFamilyRegular, $fontSizeSmall, $TPGrey3, normal);
+            padding-top: 11px;
+            padding-left: 30px;
+            padding-right: 8px;
+            float: left;
+            margin-left: 6px;
+            width: 86px;
+            border: 1px solid $TPGrey9;
+            
+            label {
+                color: $TPGrey10;
+            }
+        
+            &:not(.disabled)
+            {   
+                &:hover {
+                    border-color: #8d8d8d;
+                    color:#303030;
+                    label {
+                        color:#303030;
+                        cursor:pointer;
+                    }
+                }  
+
+                &:active
+                {
+                    color:$white;
+                    label {
+                        color:$white;
+                        cursor:pointer;
+                    }
+                }
+            }
+        }
+
+        .uploadButton {
+            background: no-repeat 0 -1px;
+            @extend %spriteButtonsExpandoBG;
+            cursor: pointer;
+            
+            &:hover {
+                background-position: -86px -1px;
+            }
+            
+            &:active {
+                background-position: -172px -1px;
+                label {
+                    color: $white;
+                    opacity: 0.85;
+                    cursor: pointer;
+                }
+            }
+            
+            label {
                 cursor: pointer;
-                background: url(../../assets/images/QVImages/sprite-buttons-expando.png) no-repeat 0 -71px;
-                
-                &:hover  {
-                    background: url(../../assets/images/QVImages/sprite-buttons-expando.png) no-repeat -86px -71px;
+            }
+
+            label.files
+            {
+                display: none;
+            }
+
+            &.withFiles
+            {
+                label.files
+                {
+                    display: inline;
+                }
+
+                label.upload
+                {
+                    display: none;
+                }
+            }
+        }
+
+        .expandButton {
+            margin-top: 10px;
+            background: no-repeat 0 -36px;
+            @extend %spriteButtonsExpandoBG;
+
+            &.disabled
+            {
+                opacity: 0.5;
+            }
+
+            &.expandWaiting {
+                opacity: 0.5;
+                background: no-repeat;
+                @extend %throbberExpandoButtonBG;
+            }
+        
+            &:not(.disabled)
+            {   
+
+                @extend %spriteButtonsExpandoBG;
+
+                cursor: pointer;
+                &:hover {
+                    background-position: -86px -36px;
                 }
                 
                 &:active {
-                    background: url(../../assets/images/QVImages/sprite-buttons-expando.png) no-repeat -172px -71px;
+                    background-position: -172px -36px;
+
                     label {
                         color: $white;
                         opacity: 0.85;
                         cursor: pointer;
                     }
                 }
+            }
+        }
 
+        .collapseButton {
+            margin-top: 10px;
+            display: none;
+            padding-left: 28px;
+            cursor: pointer;
+            background: no-repeat 0 -71px;
+            @extend %spriteButtonsExpandoBG;
+            
+            &:hover  {
+                background-position: -86px -71px;
+            }
+            
+            &:active {
+                background-position: -172px -71px;
                 label {
+                    color: $white;
+                    opacity: 0.85;
                     cursor: pointer;
                 }
             }
 
-            @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
-                .uploadButton,.uploadButton:hover, 
-                .expandButton,.expandButton:hover, 
-                .collapseButton,.collapseButton:hover {
-                    background-image: url(../../assets/images/QVImages/sprite-buttons-expando@2x.png);
-                    background-size: 258px 105px;
-                }
-            }
-
-            @include labels($fontFamilyRegular, $fontSizeLarge, $TPGrey4, normal);
-            text-align: center;
-            //@include box-shadow(0px 1px 2px 0px #40403f);
-            //margin-left: 10px;
-            //@include linearGradient(top, #fefefe, #e0dddd);
-            //padding-top: 30px;
-        }
-
-       
-    }
-
-}
-
-
-@media print {
-    .QVHeader {
-        box-shadow:none;
-        padding:0;
-        margin:0;
-        height:auto;
-        width:100%;
-
-        .dateAndTime {
-            padding-left: 2px;
-        
-            #dayName, .dayName
-            {
-                font-family: $fontFamilyRegular;
-                font-size:$fontSizeMedium;
-                color: $TPGrey3;
-                padding-right: 14px;
-                text-transform:uppercase;
-            }
-
-            #calendarDate, .calendarDate
-            {
-                font-family: $fontFamilyRegular;
-                font-size:$fontSizeSmall;
-                color: $TPGrey3;
-                padding-right: 14px;
-            }
-
-            #time {
-                font-family: $fontFamilyRegular;
-                font-size:$fontSizeSmall;
-                color: $TPGrey3;
-            }
-
-            @include inputs(200px, 20px, $fontSizeSmall, $fontFamilyRegular);
-            input#startTimeInput, .timeInput {
-                color: $TPGrey3;
-                display: inline-block;
-                outline: none;
-                @include box-shadow(none);
-                border: none;
-                background-color: transparent;
-                margin: 0px;
-                padding: 0px;
+            label {
+                cursor: pointer;
             }
         }
+
+        @include labels($fontFamilyRegular, $fontSizeLarge, $TPGrey4, normal);
+        text-align: center;
+        //@include box-shadow(0px 1px 2px 0px #40403f);
+        //margin-left: 10px;
+        //@include linearGradient(top, #fefefe, #e0dddd);
+        //padding-top: 30px;
     }
+
 }

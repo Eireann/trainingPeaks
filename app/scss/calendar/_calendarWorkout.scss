@@ -2,315 +2,192 @@
 @import "workoutColor";
 @import "workoutIcons";
 
-@media screen {
-
-    .dragHelper .workout {
-        p {
-            display: none;
-        }
-    }
-
-    .workout
-    {
-        margin: 5px 4px 4px 2px;
-        border:1px solid $TPGrey2;
-
-        &.dragHelper
-        {
-            opacity: 0.6;
-            min-width: 150px;
-
-            .workoutSelected
-            {
-                display: block;
-            }
-        }
-
-        &.dragging
-        {
-            opacity:0.8;
-        }
-
-        .workoutSettings  
-        {
-            display: none;
-            top: 0px;
-            right: 2px;
-    		position: absolute;
-            z-index: 2;
-
-            button
-            {	
-                background: transparent;
-                border: none;
-                padding: 0px;
-                box-shadow: none;
-                margin: 0px;
-            }
-        }
-
-        &:hover
-        {
-            cursor:pointer;
-            .workoutSettings
-            {
-                display: block;
-            }
-        }
-
-        &.menuOpen
-        {
-            .workoutSettings
-            {
-                display: block;
-            }
-        }
-
-        .workoutDiv {
-            min-height: 35px;
-            word-wrap: break-word;
-
-            .workoutHeader
-            {
-                padding: 0px 3px;
-                height: auto;
-                position: relative;
-                top: -1px;
-                .workoutIcon
-                {
-                    width: 25px;
-                    height: 25px;
-                    float: left;
-                    margin-top: 4px;
-                }
-
-                .workoutDistanceTime
-                {
-                    padding: 15px 0px 0px 30px;
-
-                    @include labels($fontFamilyRegular, $fontSizeXLarge, $TPGrey4, normal);
-                    label
-                    {
-                        display:inline-block;
-                        width:100%;
-                        cursor:pointer;
-                        line-height: 1;
-                        margin-bottom:0;
-                    }
-                    
-                    .units
-                    {
-                        font-size: 0.88em;
-                        margin-left: 2px;
-                    }
-                }
-
-            }
-            .workoutBody {
-                color: $TPGrey4;
-                padding: 2px 3px 3px 3px;
-                @include labels($fontFamilyHeavy, $fontSizeXSmall, $TPGrey4, normal);
-                label {
-                    white-space: pre-wrap;
-                    cursor:pointer;
-                }
-                
-                p {
-                    margin-bottom: 0px;
-                    font-size: $fontSizeXSmall;
-                    color: $TPGrey4;
-                    font-family: $fontFamilyRegular;
-                    text-align: left;
-                    line-height: 12px;
-                    white-space: pre-wrap;
-                }
-            }
-        }
-
-    } // end .workout
-
-    #workoutSettingsDiv {
-       
-    	padding-left: 10px;
-    	padding-bottom: 20px;
-
-    	@include labels($fontFamilyRegular, $fontSizeSmall, $TPGrey3, normal);
-
-    	.hoverBoxContents {
-    		min-width: 75px;
-    	}
-
-    }
-
-
-    #daySettingsDiv {
-    	.hoverBoxContents {
-    		min-width: 76px;
-    	}
-    	.hoverBox {
-    		.arrow {
-    			margin-left:28px;
-    			}
-    	}	
-    }
-
-    #summarySettingsDiv {
-    	.hoverBox {
-    		.arrow {
-    			margin-left:50px;
-    			}
-    	}
-    }
-
-    .workout
-    {
-        
-        .workoutDiv
-        {
-            position: relative;
-        }
-
-        .workoutSelected
-        {
-            @include selectedOverlay();
-        }
-
-        &.selected
-        {
-            .workoutSelected
-            {
-                display: block;
-            }
-        }
-    }
-
-    .printOnly
-    {
+.dragHelper .workout {
+    p {
         display: none;
     }
 }
 
+.workout
+{
+    margin: 5px 4px 4px 2px;
+    border:1px solid $TPGrey2;
 
+    &.dragHelper
+    {
+        opacity: 0.6;
+        min-width: 150px;
 
-
-
-
-
-
-
-
-
-@media print {
-    .workout {
-        width:97% !important;
-        margin: 5px 4px 4px 2px;
-        border:1px solid $TPGrey2;
-        // page-break-inside:avoid;
-
-        .workoutSettings {
-            display: none;
-            button {   
-                display:none;
-            }
+        .workoutSelected
+        {
+            display: block;
         }
+    }
 
-        &:hover {
-            .workoutSettings {
-                display: none;
-            }
+    &.dragging
+    {
+        opacity:0.8;
+    }
+
+    .workoutSettings  
+    {
+        display: none;
+        top: 0px;
+        right: 2px;
+        position: absolute;
+        z-index: 2;
+
+        button
+        {	
+            background: transparent;
+            border: none;
+            padding: 0px;
+            box-shadow: none;
+            margin: 0px;
+            width: 14px;
+            height: 20px;
+            @extend %settingsButtonSmallBG;
+            background-repeat: no-repeat;
+            background-position-y: 7px;
         }
+    }
 
-        &.menuOpen {
-            .workoutSettings {
-                display: none
-            }
+    &:hover
+    {
+        cursor:pointer;
+        .workoutSettings
+        {
+            display: block;
         }
+    }
 
-        .workoutDiv {
-           // min-height: 35px;
-            
-            .workoutHeader {
-                padding: 0px 3px 0px 3px;
-                // height: 20px;
-                position: relative;
-                margin-top:-2px;
-                
-                .workoutIcon {
-                    display:none;
-                }
+    &.menuOpen
+    {
+        .workoutSettings
+        {
+            display: block;
+        }
+    }
 
-                .workoutDistanceTime {
-                    padding: 0;
-                    @include labels($fontFamilyRegular, $fontSizeSmall, #000, normal);
-                                      
-                    label {
-                        display:inline-block;
-                    }
-                    
-                    .units {
-                        font-size: 0.7em;
-                        margin-left: 0.15em;
-                    }
-                }
+    .workoutDiv {
+        min-height: 35px;
+        word-wrap: break-word;
 
-            }
-
-            .workoutBody {
-                color: $TPGrey4;
-                padding: 2px 3px 0px 3px;
-                @include labels($fontFamilyHeavy, .571em, $TPGrey4, normal);
-
-                label {
-                    white-space: pre-wrap;
-                }
-                
-                p {
-                    margin: .571em 0;
-                    font-size: .571em;
-                    color: #000;
-                    font-family: $fontFamilyRegular;
-                    text-align: left;
-                    line-height: 10px;
-                    white-space: pre-wrap;
-                }
-            }
-
-            .sportType {
-                font-size: .571em;
-                color: #000;
-                font-family: $fontFamilyRegular;
-                text-align: left;
-                line-height: 10px;
-                padding:3px 3px 0 3px;
-            }
-
-            .description
+        .workoutHeader
+        {
+            padding: 0px 3px;
+            height: auto;
+            position: relative;
+            top: -1px;
+            .workoutIcon
             {
-                font-size: .571em;
-                color: #000;
+                width: 25px;
+                height: 25px;
+                float: left;
+                margin-top: 4px;
+            }
+
+            .workoutDistanceTime
+            {
+                padding: 15px 0px 0px 30px;
+
+                @include labels($fontFamilyRegular, $fontSizeXLarge, $TPGrey4, normal);
+                label
+                {
+                    display:inline-block;
+                    width:100%;
+                    cursor:pointer;
+                    line-height: 1;
+                    margin-bottom:0;
+                }
+                
+                .units
+                {
+                    font-size: 0.88em;
+                    margin-left: 2px;
+                }
+            }
+
+        }
+        .workoutBody {
+            color: $TPGrey4;
+            padding: 2px 3px 3px 3px;
+            @include labels($fontFamilyHeavy, $fontSizeXSmall, $TPGrey4, normal);
+            label {
+                white-space: pre-wrap;
+                cursor:pointer;
+            }
+            
+            p {
+                margin-bottom: 0px;
+                font-size: $fontSizeXSmall;
+                color: $TPGrey4;
                 font-family: $fontFamilyRegular;
                 text-align: left;
-                line-height: 10px;
-                // padding:0 3px 3px 3px;
-                margin: .571em 3px;
-
-                white-space: pre;           /* CSS 2.0 */
-                white-space: pre-wrap;      /* CSS 2.1 */
-                white-space: pre-line;      /* CSS 3.0 */
-                white-space: -pre-wrap;     /* Opera 4-6 */
-                white-space: -o-pre-wrap;   /* Opera 7 */
-                white-space: -moz-pre-wrap; /* Mozilla */
-                white-space: -hp-pre-wrap;  /* HP Printers */
-                word-wrap: break-word;      /* IE 5+ */
+                line-height: 12px;
+                white-space: pre-wrap;
             }
         }
+    }
 
-    } // end .workout
+} // end .workout
 
-    #workoutSettingsDiv, 
-    #daySettingsDiv, 
-    #summarySettingsDiv {
-        display:none;
+#workoutSettingsDiv {
+    
+    padding-left: 10px;
+    padding-bottom: 20px;
+
+    @include labels($fontFamilyRegular, $fontSizeSmall, $TPGrey3, normal);
+
+    .hoverBoxContents {
+    min-width: 75px;
+    }
+
+}
+
+
+#daySettingsDiv {
+    .hoverBoxContents {
+    min-width: 76px;
+    }
+    .hoverBox {
+    .arrow {
+        margin-left:28px;
+        }
+    }	
+}
+
+#summarySettingsDiv {
+    .hoverBox {
+    .arrow {
+        margin-left:50px;
+        }
     }
 }
 
+.workout
+{
+    
+    .workoutDiv
+    {
+        position: relative;
+    }
+
+    .workoutSelected
+    {
+        @include selectedOverlay();
+    }
+
+    &.selected
+    {
+        .workoutSelected
+        {
+            display: block;
+        }
+    }
+}
+
+.printOnly
+{
+    display: none;
+}
