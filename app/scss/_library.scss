@@ -500,11 +500,14 @@ $troughIconSpriteRetinaURL: url(../../assets/images/sprite-icons-trough@2x.png);
     width: 310px;
     max-width: 310px;
 
-    p {
+    p, pre
+    {
+        font-family: inherit;
         word-wrap: break-word;
     }
 
     button {
+        font-size: 12px;
         width: 140px;
         &.delete {
             left: 2px;
@@ -519,7 +522,8 @@ $troughIconSpriteRetinaURL: url(../../assets/images/sprite-icons-trough@2x.png);
 
     .description {
         border-bottom: solid 1px #cccccc;
-        margin-bottom: 20px;
+        margin-bottom: 16px;
+        padding-bottom: 12px;
     }
 
     .workoutStatsRow

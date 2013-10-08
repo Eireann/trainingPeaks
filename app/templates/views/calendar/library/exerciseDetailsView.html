@@ -14,7 +14,7 @@
         <label>{{$ "Duration"}}</label>
     </div>
     <div class="workoutStatsColumn ">
-        <input type="text" id="totalTimePlannedField" class="numberInput"
+        <input type="text" id="totalTimePlannedField" class="numberInput" readonly
         {{#if totalTimePlanned }}
             value={{ conversion "formatDuration" totalTimePlanned }}
         {{/if}}
@@ -30,7 +30,7 @@
         <label>{{$ "Distance"}}</label>
     </div>
     <div class="workoutStatsColumn">
-        <input type="text" id="distancePlannedField" class="numberInput"
+        <input type="text" id="distancePlannedField" class="numberInput" readonly
             {{#if distancePlanned}}
                 value='{{ conversion "formatDistance" distancePlanned this }}'
             {{/if}}
@@ -46,7 +46,7 @@
         <label>{{$ "Pace"}}</label>
     </div>
     <div class="workoutStatsColumn">
-        <input type="text" id="pacePlannedField" class="numberInput"
+        <input type="text" id="pacePlannedField" class="numberInput" readonly
             {{#if velocityPlanned}}
                 value='{{ conversion "formatPace" velocityPlanned this }}'
             {{/if}}
@@ -62,7 +62,7 @@
         <label>{{$ "Speed"}}</label>
     </div>
     <div class="workoutStatsColumn">
-        <input type="text" id="velocityPlannedField" class="numberInput"
+        <input type="text" id="velocityPlannedField" class="numberInput" readonly
             {{#if velocityPlanned}}
                 value='{{ conversion "formatSpeed" velocityPlanned this }}'
             {{/if}}
@@ -78,7 +78,7 @@
         <label>{{$ "Calories"}}</label>
     </div>
     <div class="workoutStatsColumn">
-        <input type="text" id="caloriesPlannedField" class="numberInput"
+        <input type="text" id="caloriesPlannedField" class="numberInput" readonly
         {{#if caloriesPlanned}}
             value='{{ conversion "formatCalories" caloriesPlanned }}'
         {{/if}}
@@ -91,10 +91,10 @@
 
 <div class="workoutStatsRow elevationGainStatsRow">
     <div class="workoutStatsColumn workoutStatsLabel">
-        <label>{{$ "ElevationGain"}}</label>
+        <label>{{$ "Gain"}}</label>
     </div>
     <div class="workoutStatsColumn">
-        <input type="text" id="elevationGainPlannedField" class="numberInput"
+        <input type="text" id="elevationGainPlannedField" class="numberInput" readonly
         {{#if elevationGainPlanned}}
             value='{{ conversion "formatElevationGain" elevationGainPlanned }}'
         {{/if}}
@@ -110,7 +110,7 @@
         <label>{{$ "TSS"}}</label>
     </div>
     <div class="workoutStatsColumn">
-        <input type="text" id="tssPlannedField" class="numberInput"
+        <input type="text" id="tssPlannedField" class="numberInput" readonly
         {{#if tssPlanned}}
             value='{{ conversion "formatTSS" tssPlanned}}'
         {{/if}}
@@ -126,7 +126,7 @@
         <label>{{$ "IF"}}</label>
     </div>
     <div class="workoutStatsColumn">
-        <input type="text" id="ifPlannedField" class="numberInput"
+        <input type="text" id="ifPlannedField" class="numberInput" readonly
         {{#if ifPlanned}}
             value='{{ conversion "formatIF" ifPlanned }}'
         {{/if}}
@@ -142,7 +142,7 @@
         <label>{{$ "Energy"}}</label>
     </div>
     <div class="workoutStatsColumn">
-        <input type="text" id="energyPlannedField" class="numberInput"
+        <input type="text" id="energyPlannedField" class="numberInput" readonly
         {{#if energyPlanned}}
             value='{{ conversion "formatEnergy" energyPlanned }}'
         {{/if}}
@@ -155,7 +155,7 @@
 
 <h3 class="subheadbold">Description</h3>
 <div class="description small">
-    <p>{{description}}</p>
+    <pre>{{description}}</pre>
 </div>
 <button class="edit">Edit</button>
 <button class="delete">Delete</button>
