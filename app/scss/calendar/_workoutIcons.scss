@@ -3,23 +3,26 @@
     .workoutIcon > .theIcon,
     .workoutIconLarge > .theIcon,
     {
-        display: inline;
         @extend .icon;
         @extend .icon_#{$name};
-        color: #fff;
-
-        font-size: 25px;
     }
 
-    .workoutIconLarge > .theIcon
+    .workoutIcon,
+    .workoutIconLarge
+    {
+        font-size: 25px;
+        color: #fff;
+    }
+
+    .workoutIconLarge
     {
         font-size: 70px;
     }
 
     &.future, &.past.ComplianceNone
     {
-        .workoutIcon > .theIcon,
-        .workoutIconLarge > .theIcon
+        .workoutIcon,
+        .workoutIconLarge
         {
             color: $futureBackgroundColor;
             background-color: #fff;

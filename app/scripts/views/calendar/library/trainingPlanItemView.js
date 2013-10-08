@@ -78,7 +78,7 @@ function(TP, TrainingPlanDetailsView, draggable, trainingPlanItemViewTemplate)
             this.$el.addClass("selected");
         },
 
-        onItemUnSelect: function()
+        onItemUnSelect: function(e)
         {
             this.$el.removeClass("selected");
         },

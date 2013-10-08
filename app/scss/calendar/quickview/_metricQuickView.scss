@@ -15,9 +15,13 @@
             .metricIconLarge {
                 color: $TPGrey3;
                 background: #fff;
-                @extend .icon;
-                @extend .icon_metric;
                 font-size: 70px;
+
+                .theIcon
+                {
+                    @extend .icon;
+                    @extend .icon_metric;
+                }
             }
         }
     }
