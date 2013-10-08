@@ -163,5 +163,31 @@ module.exports = function (grunt) {
 
 
     });
+
+
+    // Copies english values as defaults to language files so the app doesn't break
+    grunt.registerTask("add-defaults-to-i18n-files", "Add defaults to i18n language files", function()
+    {
+
+        function readAsJSON(filepath)
+        {
+            return JSON.parse(fs.readFileSync(filepath, { encoding: "utf8" }));
+        }
+        var locales = grunt.config('locales');
+        var englishJson = readAsJSON("app/templates/i18n/en_us.json");
+
+        // build options for each locale - set the single.js filename and the locale
+        _.each(locales, function(localeName)
+        {
+            if(localeName !== "en_us")
+            {
+                var localeJsonFile = "app/templates/i18n/" + localeName + ".json";
+                var localeJson = readAsJSON(localeJsonFile);
+                localeJson = _.defaults(localeJson, englishJson);
+                fs.writeFileSync(localeJsonFile, JSON.stringify(localeJson, null, 4));
+            }
+        });
+    });
+
 };
 
