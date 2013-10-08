@@ -1,15 +1,10 @@
 ﻿@mixin workoutIcons($name, $futureBackgroundColor) 
 {
-    .workoutIcon > .theIcon,
-    .workoutIconLarge > .theIcon,
-    {
-        @extend .icon;
-        @extend .icon_#{$name};
-    }
-
     .workoutIcon,
     .workoutIconLarge
     {
+        @extend .icon;
+        @extend .icon_#{$name};
         font-size: 25px;
         color: #fff;
     }

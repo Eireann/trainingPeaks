@@ -86,11 +86,8 @@
                 color: $clrMetric;
                 background: #fff;
 
-                .theIcon
-                {
-                    @extend .icon;
-                    @extend .icon_metric;
-                }
+                @extend .icon;
+                @extend .icon_metric;
             }
 
             .metricTime {

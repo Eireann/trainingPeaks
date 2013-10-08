@@ -1,5 +1,10 @@
 @import "../../assets/icons/icons";
 
+body[data-useragent*="MSIE"] .icon
+{
+    line-height: normal;
+}
+
 @mixin inlineBG($url)
 {
     background-image: inline-image($url);

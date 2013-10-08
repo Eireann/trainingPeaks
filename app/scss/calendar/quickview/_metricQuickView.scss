@@ -16,12 +16,10 @@
                 color: $TPGrey3;
                 background: #fff;
                 font-size: 70px;
+                font-family: "icons";
 
-                .theIcon
-                {
-                    @extend .icon;
-                    @extend .icon_metric;
-                }
+                @extend .icon;
+                @extend .icon_metric;
             }
         }
     }
