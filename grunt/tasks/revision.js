@@ -34,7 +34,7 @@ module.exports = function(grunt)
   {
     var cacheConfig = _.map(cacheable, function(file)
     {
-      return '<location path="' + file.replace("build/release/", "") + '"><system.webServer><staticContent><clientCache cacheControlCustom="public" cacheControlMode="UseMaxAge" cacheControlMaxAge="365.00:00:00" /></staticContent></system.webServer></location>';
+      return '<location path="' + file.replace('\\', '/').replace("build/release/", "") + '"><system.webServer><staticContent><clientCache cacheControlCustom="public" cacheControlMode="UseMaxAge" cacheControlMaxAge="365.00:00:00" /></staticContent></system.webServer></location>';
     }).join('');
 
     var webConfig = fs.readFileSync('build/release/web.config', "utf-8");
