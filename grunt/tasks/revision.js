@@ -30,6 +30,20 @@ module.exports = function(grunt)
     return rev;
   }
 
+  function templateWebConfig()
+  {
+    var cacheConfig = _.map(cacheable, function(file)
+    {
+      return '<location path="' + file.replace("build/release/", "") + '"><system.webServer><staticContent><clientCache cacheControlCustom="public" cacheControlMode="UseMaxAge" cacheControlMaxAge="365.00:00:00" /></staticContent></system.webServer></location>';
+    }).join('');
+
+    var webConfig = fs.readFileSync('build/release/web.config', "utf-8");
+    webConfig = webConfig.replace('<!--AUTOGENERATE_JS_CSS_CACHE_CONTROL_HEADERS-->', cacheConfig);
+    fs.writeFileSync('build/release/web.config', webConfig);
+
+
+  }
+
   grunt.registerTask("revision", function()
   {
 
@@ -53,18 +67,9 @@ module.exports = function(grunt)
       .replace('"single.min.js"', '"' + versions.singleJs + '.single.min.js"');
       
       fs.writeFileSync(indexFile, content);
-
-      var cacheConfig = _.map(cacheable, function(file)
-      {
-        return '<location path="' + file.replace("build/release/", "") + '"><system.webServer><staticContent><clientCache cacheControlCustom="public" cacheControlMode="UseMaxAge" cacheControlMaxAge="365.00:00:00" /></staticContent></system.webServer></location>';
-      }).join();
-
-      var webConfig = fs.readFileSync('build/release/web.config', "utf-8");
-      webConfig = webConfig.replace('<!--AUTOGENERATE_JS_CSS_CACHE_CONTROL_HEADERS-->', cacheConfig);
-      fs.writeFileSync('build/release/web.config', webConfig);
-
     });
 
+    templateWebConfig();
   });
 
 }
