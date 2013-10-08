@@ -500,6 +500,10 @@ $troughIconSpriteRetinaURL: url(../../assets/images/sprite-icons-trough@2x.png);
     width: 310px;
     max-width: 310px;
 
+    p {
+        word-wrap: break-word;
+    }
+
     button {
         width: 140px;
         &.delete {
