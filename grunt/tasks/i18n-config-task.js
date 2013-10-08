@@ -18,7 +18,7 @@ module.exports = function (grunt) {
         function addLocaleToRequirejs(localeName, localeSingleFile)
         {
 
-            // get the requirejs config so we can modify it 
+            // get the requirejs config so we can modify it
             var requireJsOptions = grunt.config.get('requirejs');
 
             // clone the default 'build' options
@@ -131,11 +131,11 @@ module.exports = function (grunt) {
                 fs.closeSync(fdr);
                 return fs.closeSync(fdw);
             }
-            
+
         };
 
         var targets = ['release'];
-        var filesToCopy = ['app', 'assets', 'index.html', "apiConfig.js", "apiConfig.dev.js"];
+        var filesToCopy = ['app', 'assets', 'index.html', "apiConfig.js", "apiConfig.dev.js", "vendor/js/libs/leaflet/"];
 
         // build options for each locale - set the single.js filename and the locale
         _.each(locales, function(localeName)
@@ -145,7 +145,6 @@ module.exports = function (grunt) {
                 if (fs.existsSync('build/' + targetName))
                 {
                     var localeFolder = getLocalePath(targetName, localeName);
-
                     _.each(filesToCopy, function(fileName)
                     {
                         var srcPath = path.join("build", targetName, fileName);
