@@ -52,11 +52,11 @@
         padding: 7px 0 0 12px;
         float: left;
         
-
         .view
         {
             float: left;
-                
+            width: 30px;
+            height: 21px; 
         }
         .topViews
         {
@@ -65,14 +65,21 @@
             
             padding-top: 5px;
 
+            .oneUpView
+            {
+                @extend %expando1UpBG;
+            }
+
             .twoUpViewHorizontal
             {
-                padding-left: 9px;
+                margin-left: 9px;
+                @extend %expando2UpHorizontalBG;
             }
 
             .twoUpViewVertical
             {
-                padding-left: 10px;
+                margin-left: 10px;
+                @extend %expando2UpVerticalBG;
             }
         }
 
@@ -80,9 +87,15 @@
         {
            padding-top: 2px;
 
+           .threeUpView
+           {
+                @extend %expando3UpBG;
+           }
+
            .fourUpView
            {
-                padding-left: 9px;
+                margin-left: 9px;
+                @extend %expando4UpBG;
            }
         }
     }

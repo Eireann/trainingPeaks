@@ -159,10 +159,10 @@ function (
 
             if (description.indexOf("BT:") >= 0)
             {
-                this.$("#breakThrough img").attr("src", "assets/images/QVImages/breakThroughFullOpac.png");
+                this.$("#breakThrough").addClass("active").removeClass("inactive");
             } else
             {
-                this.$("#breakThrough img").attr("src", "assets/images/QVImages/breakthrough.png");
+                this.$("#breakThrough").addClass("inactive").removeClass("active");
             }       
         }
 

@@ -325,10 +325,12 @@
 {
     height: 17px;
 
-    img
+    .shadowBG
     {
+        height: 19px;
         width: 663px;
         @include calc(margin-left, "50% - 331px"); 
+        @extend %shadowDividerBG;
     }
 }
 

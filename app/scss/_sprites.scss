@@ -27,6 +27,13 @@
 %spriteButtonsChartModalBG { @include inlineBG("../../assets/images/charts/sprite-buttons-chart-modal.png"); }
 %spriteButtonsExpandoBG { @include inlineBG("../../assets/images/QVImages/sprite-buttons-expando.png"); }
 %throbberExpandoButtonBG { @include inlineBG("../../assets/images/calendarImages/throbber-expando-button.gif"); }
+%expando1UpBG { @include inlineBG("../../assets/images/QVImages/1UpView.jpg"); }
+%expando2UpHorizontalBG { @include inlineBG("../../assets/images/QVImages/2UpViewHorizontal.jpg"); }
+%expando2UpVerticalBG { @include inlineBG("../../assets/images/QVImages/2UpViewVertical.jpg"); }
+%expando3UpBG { @include inlineBG("../../assets/images/QVImages/3UpView.jpg"); }
+%expando4UpBG { @include inlineBG("../../assets/images/QVImages/4UpView.jpg"); }
+%qvBreakthroughInactiveBG { @include inlineBG("../../assets/images/QVImages/breakThrough.png"); }
+%qvBreakthroughActiveBG { @include inlineBG("../../assets/images/QVImages/breakThroughFullOpac.png"); }
 
 // Map Graph
 
@@ -72,6 +79,9 @@
 %spritePaperclipBG { @include inlineBG("../../assets/images/QVImages/sprite-paperclip.png"); }
 
 %throbberBG { @include inlineBG("../../assets/images/throbber.gif"); }
+
+%closeXBG { @include inlineBG("../../assets/images/closeX.png"); }
+%shadowDividerBG { @include inlineBG("../../assets/images/calendarImages/shadow-divider.png"); }
 
 // Retina
 
