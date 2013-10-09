@@ -2,12 +2,14 @@ define(
 [
     "underscore",
     "jqueryui/draggable",
+    "jqueryui/resizable",
     "packery",
     "TP"
 ],
 function(
     _,
     jqueryDraggable,
+    jqueryResizable,
     packery,
     TP
     )
@@ -36,6 +38,9 @@ function(
                     gutter: 10
                 }
             });
+
+            this.resizable = options.resizable;
+            this.packeryOptions = options.packery;
 
             PackeryCollectionView.__super__.initialize.apply(this, arguments);
 
@@ -66,6 +71,17 @@ function(
         _setupPackery: function(options)
         {
             this.packery = this.$el.packery(options.packery).data("packery");
+
+            if(options.packery.rowHeight instanceof Element)
+            {
+                this.$el.after(options.packery.rowHeight);
+            }
+
+            if(options.packery.columnWidth instanceof Element)
+            {
+                this.$el.after(options.packery.columnWidth);
+            }
+
             this.packery.on("dragItemPositioned", _.bind(this._updatePackerySort, this));
             this.children.each(function(itemView)
             {
@@ -130,10 +146,48 @@ function(
             return this;
         },
 
+        _setupResizable: function(view)
+        {
+            var self = this;
+            view.$el.resizable({
+                start: function(event, ui)
+                {
+                    var x = self.packeryOptions.columnWidth;
+                    var y = self.packeryOptions.rowHeight;
+
+                    var width = _.isNumber(x) ? x : $(x).width();
+                    var height = _.isNumber(y) ? y : $(y).height();
+
+                    view.$el.resizable("option", {
+                        grid: [ width + self.packeryOptions.gutter, height + self.packeryOptions.gutter ],
+                        minWidth: 1,
+                        minHeight: 1,
+                        maxWidth: self.$el.width(),
+                        maxHeight: self.$el.height()
+                    });
+                },
+
+                resize: function(event, ui)
+                {
+                    self.$el.packery('fit', ui.element[0]);
+                },
+
+                stop: function(event, ui)
+                {
+                    // TODO Calculate slots
+                }
+            });
+        },
+
         _setupPackeryDraggable: function(itemView, collectionView)
         {
-            itemView.$el.draggable();
+            itemView.$el.draggable({ scope: "packery" });
             collectionView.packery.bindUIDraggableEvents(itemView.$el);
+
+            if(this.resizable)
+            {
+                collectionView._setupResizable(itemView);
+            }
         },
 
         _moveDraggableForPackery: function(event, ui)

@@ -20,6 +20,7 @@
             "calendar": "scripts/calendar", 
             "user": "scripts/user",
             "quickview": "scripts/quickview",
+            "expando": "scripts/expando",
             "shared": "scripts/shared", 
             
             // jQuery related, but not managed by bower yet ...

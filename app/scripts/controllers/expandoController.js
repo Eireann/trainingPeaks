@@ -2,6 +2,7 @@
 [
     "setImmediate",
     "TP",
+    "views/packeryCollectionView",
     "utilities/charting/dataParser",
     "layouts/expandoLayout",
     "views/expando/graphView",
@@ -10,9 +11,24 @@
     "views/expando/lapsView",
     "views/expando/chartsView",
     "views/expando/mapAndGraphResizerView",
-    "views/workout/lapsSplitsView"
+    "views/workout/lapsSplitsView",
+    "expando/expandoPodBuilder"
 ],
-function(setImmediate, TP, DataParser, ExpandoLayout, GraphView, MapView, StatsView, LapsView, ChartsView, MapAndGraphResizerView, LapsSplitsView)
+function(
+    setImmediate,
+    TP,
+    PackeryCollectionView,
+    DataParser,
+    ExpandoLayout,
+    GraphView,
+    MapView,
+    StatsView,
+    LapsView,
+    ChartsView,
+    MapAndGraphResizerView,
+    LapsSplitsView,
+    expandoPodBuilder
+)
 {
     return TP.Controller.extend(
     {
@@ -56,9 +72,52 @@ function(setImmediate, TP, DataParser, ExpandoLayout, GraphView, MapView, StatsV
             this.views.mapView = new MapView({ model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise, dataParser: this.dataParser });
             this.views.statsView = new StatsView({ model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise });
             this.views.lapsView = new LapsView({ model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise });
-            this.views.chartsView = new ChartsView({ model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise });
+            // this.views.chartsView = new ChartsView({ model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise });
             this.views.mapAndGraphResizerView = new MapAndGraphResizerView({model: this.model});
             this.views.lapsSplitsView = new LapsSplitsView({model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise});
+
+            var podsCollection = new TP.Collection(
+            [{
+                podType: 4, // Time In Zones
+                variant: 1, // Heart Rate
+            }, {
+                podType: 5, // Peaks
+                variant: 1, // Heart Rate
+            }, {
+                podType: 4, // Time In Zones
+                variant: 2, // Power
+            }, {
+                podType: 5, // Peaks
+                variant: 2, // Power
+            }, {
+                podType: 4, // Time In Zones
+                variant: 3, // Speed
+            }, {
+                podType: 5, // Peaks
+                variant: 3, // Speed
+            }]);
+
+            var data =
+            {
+                workout: this.model,
+                detailDataPromise: this.prefetchConfig.detailDataPromise
+            };
+
+            var $sizer = $("<div class='sizer'></div>");
+            console.log($sizer[0]);
+
+            this.views.chartsView = new PackeryCollectionView({
+                itemView: expandoPodBuilder.buildView,
+                collection: podsCollection,
+                itemViewOptions: { data: data },
+                packery:
+                {
+                    columnWidth: $sizer[0],
+                    rowHeight: $sizer[0],
+                    gutter: 10
+                },
+                resizable: true
+            });
 
             this.layout.$el.addClass("waiting");
 
