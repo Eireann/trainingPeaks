@@ -68,6 +68,14 @@ function(
             return this.save(attrs, { wait: true });
         },
 
+        isEmpty: function()
+        {
+            return _.all(this.get("details"), function(detail)
+            {
+                return TP.utils.metrics.isBlank(detail.value);
+            });
+        },
+
         cutToClipboard: function()
         {
             return this;
