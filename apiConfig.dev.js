@@ -35,6 +35,7 @@
         configuration: configuration,
         wwwRoot: wwwRoots[configuration],
         homeRoot: homeRoots[configuration],
+        cmsRoot: "http://cms.dev.trainingpeaks.com",
         apiRoot: apiRoots[configuration],
         oAuthRoot: oAuthRoots[configuration],
         buildNumber: "local",

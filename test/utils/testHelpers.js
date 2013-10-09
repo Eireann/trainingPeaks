@@ -10,9 +10,7 @@ define(
 ],
 function(_, $, Backbone, TP, xhrData, sinon_, app)
 {
-
     return {
-
         setupRegionElements: function()
         {
             this.$body = $("<body></body>");
@@ -56,14 +54,8 @@ function(_, $, Backbone, TP, xhrData, sinon_, app)
             // start the app
             app.start();
 
-            // turn off login redirect
-            app.controllers.loginController.off("login:success");
-
             // capture ajax calls
             this.setupFakeAjax();
-
-            //console.log("StartTheApp took " + (+new Date() - startTime) + "ms");
-
         },
 
         stopTheApp: function()
@@ -162,6 +154,7 @@ function(_, $, Backbone, TP, xhrData, sinon_, app)
 
             this.fakeAjaxRequests = [];
             this.xhr = sinon.useFakeXMLHttpRequest();
+
             this.xhr.onCreate = function(xhr)
             {
                 self.fakeAjaxRequests.push(xhr);
@@ -181,9 +174,6 @@ function(_, $, Backbone, TP, xhrData, sinon_, app)
 
         submitLogin: function(userData, accessRights, athleteSettings)
         {
-            app.router.navigate("login", true);
-            app.mainRegion.$el.find("input[name=Submit]").trigger("click");
-            this.resolveRequest("POST", "Token", xhrData.token);
             this.loadUser(userData, accessRights, athleteSettings);
         },
 
@@ -196,7 +186,6 @@ function(_, $, Backbone, TP, xhrData, sinon_, app)
 
         startTheAppAndLogin: function(userData, accessRights, athleteSettings)
         {
-
             if(_.isBoolean(accessRights))
             {
                 throw new Error("Deprecated: startTheAppAndLogin(userData, doClone)");

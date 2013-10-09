@@ -89,14 +89,10 @@ function(
         setupUserFetchPromise: function()
         {
             var self = this;
-            theMarsApp.userFetchPromise.done(function()
+            _.each(self.views, function(view)
             {
-                _.each(self.views, function(view)
-                {
-                    view.trigger("user:loaded");
-                }, self);
-
-            });
+                view.trigger("user:loaded");
+            }, self);
         }
 
     });

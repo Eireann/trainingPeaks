@@ -74,21 +74,23 @@ function(
         fetch: function()
         {
             var self = this,
-                superFetch = function()
+            superFetch = function()
+            {
+                var options =
                 {
-                    var options = {
-                        errorHandlers: {
-                            402: _.bind(self.onUserFetchFail, self)
-                        }
-                    };
-
-                    var ajaxFetch = TP.APIDeepModel.prototype.fetch.call(self, options);
-                    ajaxFetch.done(function()
+                    errorHandlers:
                     {
-                        theMarsApp.session.saveUserToLocalStorage(self);
-                    });
-                    return ajaxFetch;
+                        402: _.bind(self.onUserFetchFail, self)
+                    }
                 };
+
+                var ajaxFetch = TP.APIDeepModel.prototype.fetch.call(self, options);
+                ajaxFetch.done(function()
+                {
+                    localStorage.setItem("app_user", JSON.stringify(self.attributes));
+                });
+                return ajaxFetch;
+            };
 
             // If the user is saved in localStorage, immediately set that data
             // to this model and return a resolved deferred.
@@ -98,10 +100,13 @@ function(
             if (localStorageUser)
             {
                 returnDeferred = superFetch();
-                try {
+                try
+                {
                     this.set(JSON.parse(localStorageUser));
                     returnDeferred = $.Deferred().resolve();
-                } catch(e) {
+                }
+                catch(e)
+                {
                     // if the user refreshes the page while the user is being written to localStorage, it will break the next time you try to read that key.
                     // Here, we return superFetch() deferred because parsing localStorage didn't work
                 }
