@@ -1,8 +1,4 @@
-﻿$chartIconsSpriteURL: url(../../assets/images/charts/sprite-buttons-chart-modal.png);
-$chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-modal@2x.png);
-// $troughIconSpriteURL and $troughIconRetinaSpriteURL set in _library.scss
-
-.chartsRegion
+﻿.chartsRegion
 {
     @include calc(height, "100% - 27px");
 }
@@ -417,7 +413,8 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
         {
             width: 11px;
             right: 43px;
-            background: transparent $chartIconsSpriteURL no-repeat 0 0;
+            background: transparent no-repeat 0 0;
+            @extend %chartIconsSpriteBG;
             cursor:pointer;
 
             &:hover {
@@ -432,7 +429,8 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
         .expand
         {
             right: 21px;
-            background: transparent $chartIconsSpriteURL no-repeat -17px 0;
+            background: transparent no-repeat -17px 0;
+            @extend %chartIconsSpriteBG;
             cursor:pointer;
 
             &:hover {
@@ -449,7 +447,8 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
             display: none;
             right: 0px;
             cursor: pointer;
-            background: transparent $chartIconsSpriteURL no-repeat -34px 0;
+            background: transparent no-repeat -34px 0;
+            @extend %chartIconsSpriteBG;
 
             &:hover {
                 background-position: -34px -17px;
@@ -464,7 +463,8 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
         .close
         {
             right: 0px;
-            background: transparent $chartIconsSpriteURL no-repeat -51px 0;
+            background: transparent no-repeat -51px 0;
+            @extend %chartIconsSpriteBG;
             cursor:pointer;
 
             &:hover {
@@ -475,13 +475,6 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
                 background-position: -51px 0;
             }
         }
-
-		@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
-			.settings, .expand, .close, .collapse {
-				background-image: $chartIconsSpriteRetinaURL;
-				background-size: 68px 34px;
-			}
-		}
     }
 
     .noDataMessage
@@ -711,27 +704,28 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
                 width: 25px;
                 height: 25px;
                 float: left;
-                background: $TPGrey2 $troughIconSpriteURL no-repeat 0 -25px;
+                background: $TPGrey2 no-repeat 0 -25px;
+                @extend %troughIconSpriteBG;
             }
 
             // Performance Manager
             &.chartType-32 {
                 .chartTileIcon {
-                    background: $TPGrey2 $troughIconSpriteURL no-repeat 0 -125px;
+                    background-position: 0 -125px;
                 }
             }
 
             // TSS by Week/Day
             &.chartType-23 {
                 .chartTileIcon {
-                    background: $TPGrey2 $troughIconSpriteURL no-repeat 0 -75px;
+                    background-position: 0 -75px;
                 }
             }
 
             // Fitness Summary/Pie
             &.chartType-3 {
                 .chartTileIcon {
-                    background: $TPGrey2 $troughIconSpriteURL no-repeat 0 -150px;
+                    background-position: 0 -150px;
                 }
             }
 
@@ -743,7 +737,7 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
             &.chartType-31,
             &.chartType-36 {
                 .chartTileIcon {
-                    background: $TPGrey2 $troughIconSpriteURL no-repeat 0 -100px;
+                    background-position: 0 -100px;
                 }
             }
 
@@ -752,14 +746,14 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
             &.chartType-24,
             &.chartType-26 {
                 .chartTileIcon {
-                    background: $TPGrey2 $troughIconSpriteURL no-repeat 0 -25px;
+                    background-position: 0 -25px;
                 }
             }
 
             // Metrics
             &.chartType-13 {
                 .chartTileIcon {
-                    background: $TPGrey2 $troughIconSpriteURL no-repeat 0 -175px;
+                    background-position: 0 -175px;
                 }
             }
 
@@ -768,14 +762,7 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
             &.chartType-25,
             &.chartType-27 {
                 .chartTileIcon {
-                    background: $TPGrey2 $troughIconSpriteURL no-repeat 0 -50px;
-                }
-            }
-
-            @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
-                .chartTileIcon {
-                    background-image: $troughIconSpriteRetinaURL;
-                    background-size: 25px 200px;
+                    background-position: 0 -50px;
                 }
             }
 
@@ -922,7 +909,8 @@ $chartIconsSpriteRetinaURL: url(../../assets/images/charts/sprite-buttons-chart-
         width: 25px;
         height: 25px;
         float: left;
-        background: $TPGrey1 $troughIconSpriteURL no-repeat 0 -24px;
+        background: $TPGrey1 no-repeat 0 -24px;
+        @extend %troughIconSpriteBG;
         background-color: $TPGrey2;
     }
 

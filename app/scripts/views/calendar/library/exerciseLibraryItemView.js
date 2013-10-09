@@ -1,16 +1,26 @@
 define(
 [
-    "TP",
     "jqueryui/touch-punch",
     "jqueryui/draggable",
+
+    "TP",
+    "views/calendar/library/exerciseDetailsView",
+
     "hbs!templates/views/calendar/library/exerciseLibraryItemView",
     "hbs!templates/views/calendar/library/exerciseLibraryItemViewDragState"
 ],
-function(TP, touchPunch, draggable, exerciseLibraryItemViewTemplate, ExerciseLibraryItemViewTemplateDragState)
+function(
+    touchPunch,
+    draggable,
+
+    TP,
+    ExerciseDetailsView,
+
+    exerciseLibraryItemViewTemplate,
+    exerciseLibraryItemViewTemplateDragState)
 {
     return TP.ItemView.extend(
     {
-
         tagName: "div",
         className: "libraryExercise workout",
 
@@ -23,7 +33,8 @@ function(TP, touchPunch, draggable, exerciseLibraryItemViewTemplate, ExerciseLib
 
         events:
         {
-            mousedown: "onMouseDown"
+            mousedown: "onMouseDown",
+            mouseup: "showDetails"
         },
 
         template:
@@ -36,6 +47,9 @@ function(TP, touchPunch, draggable, exerciseLibraryItemViewTemplate, ExerciseLib
         {
             if (!this.model)
                 throw "Cannot have a LibraryExerciseItemView without a model";
+
+            this.model.on("select", this.onItemSelect, this);
+            this.model.on("unselect", this.onItemUnSelect, this);
 
             _.bindAll(this, "draggableHelper", "onDragStart", "onDragStop");
 
@@ -65,7 +79,7 @@ function(TP, touchPunch, draggable, exerciseLibraryItemViewTemplate, ExerciseLib
 
         draggableHelper: function()
         {
-            var $helperEl = $(ExerciseLibraryItemViewTemplateDragState(this.serializeData()));
+            var $helperEl = $(exerciseLibraryItemViewTemplateDragState(this.serializeData()));
             $helperEl.addClass(this.className);
             $helperEl.addClass(this.getWorkoutTypeCssClassName());
             $helperEl.addClass("future");
@@ -97,13 +111,35 @@ function(TP, touchPunch, draggable, exerciseLibraryItemViewTemplate, ExerciseLib
 
         onMouseDown: function()
         {
-            this.$el.addClass("selected");
-            this.trigger("selected");
+            this.model.trigger("select", this.model);
         },
 
-        unSelect: function()
+        onItemUnSelect: function()
         {
             this.$el.removeClass("selected");
+        },
+
+        onItemSelect: function()
+        {
+            this.$el.addClass("selected");
+        },
+
+        showDetails: function()
+        {
+            if(this.detailsView)
+            {
+                return;
+            }
+            this.detailsView = new ExerciseDetailsView({ model: this.model });
+            this.detailsView.on("close", this.onDetailsClose, this);
+            this.detailsView.render().alignArrowTo(this.$el);
+        },
+
+        onDetailsClose: function()
+        {
+            this.detailsView.off("close", this.onDetailsClose, this);
+            this.onItemUnSelect();
+            this.detailsView = null;
         }
 
     });

@@ -57,9 +57,9 @@
 
         formatDuration: function(value, options)
         {
-            if (value <= 0 || value === "0")
+            if(this.valueIsEmpty(value))
             {
-                return options && options.hasOwnProperty("defaultValue") ? options.defaultValue : "";
+                return this.getDefaultValue(options);
             }
             var numValue = Number(value);
             value = adjustFieldRange(numValue, "duration");
@@ -68,9 +68,9 @@
 
         formatMinutes: function(minutes, options)
         {
-            if (minutes <= 0 || minutes === "0")
+            if(this.valueIsEmpty(minutes))
             {
-                return options && options.hasOwnProperty("defaultValue") ? options.defaultValue : "";
+                return this.getDefaultValue(options);
             }
             var hours = Number(minutes) / 60;
             hours = adjustFieldRange(hours, "duration");
@@ -175,7 +175,7 @@
         {
             if(this.valueIsEmpty(value))
             {
-                return this.getDefaultValue(options, "");
+                return this.getDefaultValue(options);
             }
 
             var numValue = Number(value);
@@ -263,7 +263,7 @@
         {
             if(this.valueIsEmpty(value))
             {
-                return this.getDefaultValue(options, "");
+                return this.getDefaultValue(options);
             }
             var convertedValue = convertToViewUnits(Number(value), "temperature");
             var adjustedValue = adjustFieldRange(convertedValue, "temp");
@@ -297,6 +297,11 @@
 
         formatTSS: function(value, options)
         {
+            if(this.valueIsEmpty(value))
+            {
+                return this.getDefaultValue(options);
+            }
+
             var numValue = Number(value);
             var limitedValue = adjustFieldRange(numValue, "TSS");
             return conversion.formatEmptyNumber(limitedValue.toFixed(1), options);
@@ -410,6 +415,10 @@
 
         formatCalories: function(value, options)
         {
+            if(this.valueIsEmpty(value))
+            {
+                return this.getDefaultValue(options);
+            }
             var numValue = Number(value);
             var limitedValue = adjustFieldRange(numValue, "calories");
             var formattedValue = conversion.formatInteger(limitedValue, options, 0);
@@ -499,7 +508,7 @@
 
         valueIsZero: function(value)
         {
-            return value === 0 || value === "0";
+            return value === 0 || value === "0" || /^0+.?0*$/.test(value);
         },
 
         parseTextField: function(value, options)
@@ -603,6 +612,12 @@
         */
         formatUnitsValue: function(units, value, options)
         {
+
+            if(this.valueIsEmpty(value))
+            {
+                return this.getDefaultValue(options);
+            }
+
             switch(units)
             {
                 case "elevation":

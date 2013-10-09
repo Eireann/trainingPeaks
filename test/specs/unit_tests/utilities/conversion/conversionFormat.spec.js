@@ -35,7 +35,7 @@ function(theMarsApp, TP, conversion, convertToModelUnits, dateTimeUtils)
             describeFormat("formatDuration", [
                 {
                     input: -1,
-                    output: ""
+                    output: "0:00:00"
                 },
                 {
                     output: "0:00:01",

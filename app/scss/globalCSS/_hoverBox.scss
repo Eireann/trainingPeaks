@@ -58,9 +58,10 @@
             width:12px;
             height:17px;
             cursor:pointer;
-            background: url(../../assets/images/charts/sprite-buttons-chart-modal.png) no-repeat -51px 0;
+            background: no-repeat -51px 0;
+            @extend %spriteButtonsChartModal;
             &:hover {
-                background: transparent url(../../assets/images/charts/sprite-buttons-chart-modal.png) no-repeat -51px -17px;
+                background: transparent no-repeat -51px -17px;
             }
         }
 
@@ -69,12 +70,6 @@
             right: 5px;
         }
 
-        @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
-            #closeIcon, .closeIcon {
-                background-image:url(../../assets/images/charts/sprite-buttons-chart-modal@2x.png);
-                background-size: 68px 34px;
-            }
-        }
     }
 
     // this is what gives the top and side shadows
