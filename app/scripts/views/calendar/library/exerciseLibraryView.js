@@ -107,7 +107,6 @@ function(
                 self.$el.removeClass("waiting");
                 self._onLibrariesChanged();
             });
-
             this.selectedItem = null;
         },
 
@@ -117,6 +116,7 @@ function(
                 this.unSelect();
 
             this.selectedItem = model;
+            this.trigger("select");
         },
 
         unSelect: function()

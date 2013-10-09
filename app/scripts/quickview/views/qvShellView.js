@@ -84,6 +84,12 @@ function(
 
         saveAndClose: function()
         {
+            if(this.model.isEmpty())
+            {
+                this.destroyAndClose();
+                return;
+            }
+
             var self = this;
             var promise = this.originalModel.save(this.model.attributes, { wait: true });
             promise.then(function()
@@ -91,7 +97,7 @@ function(
                 if(self.model.isNew())
                 {
                     // TODO: Remove coupling
-                    theMarsApp.controllers.calendarController.weeksCollection.addItem(self.model);
+                    theMarsApp.controllers.calendarController.weeksCollection.addItem(self.originalModel);
                 }
 
                 self.closing = true;
@@ -112,7 +118,10 @@ function(
 
         destroyAndClose: function()
         {
-            this.originalModel.destroy();
+            if(!this.originalModel.isNew())
+            {
+                this.originalModel.destroy();
+            }
             this.closing = true;
             this.close();
         },
