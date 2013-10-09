@@ -1,5 +1,5 @@
-
 <div class="userSettingsPersonalSection cf">
+    <h2 class="accountSettingsSectionTitle">Profile</h2>
     <h3>{{$ "PersonalInfo" }}</h3>
     
     <div class="personalLeftCol">
@@ -16,7 +16,7 @@
 
         <div class="fieldContain">
             <label>{{$ "Username" }}</label>
-            <label class="username">{{ userName }}</label>
+            <label class="labelbold">{{ userName }}</label>
         </div>
 
         <div class="fieldContain">
@@ -42,20 +42,15 @@
         </div>
 
         <div class="fieldContain">
-            <label>{{$ "Birthday" }}</label>
-            <input data-modelname="user" type="text" data-format="date" name="birthday" class="datepicker" />
-        </div>
-
-        <div class="fieldContain">
             <label>{{$ "Gender" }}</label>
             <label class="radioButtonRow genderRadioButtonRow">
                 <input data-modelname="user" type="radio" name="gender" value="m"/>
-                Male
+                <span class="radiotext">Male</span>
             </label>
             
             <label class="radioButtonRow genderRadioButtonRow">
                 <input data-modelname="user" type="radio" name="gender" value="f"/>
-                Female
+                <span class="radiotext">Female</span>
             </label>
         </div>
 
@@ -64,7 +59,7 @@
             <input data-modelname="user" type="email" name="email" />
         </div>
 
-        <div class="fieldContain">
+        <div class="fieldContain address">
             <label>{{$ "Address" }} 1</label>
             <input data-modelname="user" type="text" name="address" />
         </div>
@@ -115,20 +110,25 @@
             <label>{{$ "CellPhone" }}</label>
             <input data-modelname="user" type="tel" name="cellPhone" />
         </div>
+
+        <div class="fieldContain birthday">
+            <label>{{$ "Birthday" }}</label>
+            <input data-modelname="user" type="text" data-format="date" name="birthday" class="datepicker" />
+        </div>
     </div>
 
-    <div class="personalRightCol">
-        <label>{{$ "ProfilePicture" }}</label>
-        <div class="photoContainer">
-            <img src="" />
-            <div class="placeholder">{{$ "NoPhoto" }}</div>
-        </div>
-        
+    <div class="profilePicture">
+        <fieldset>
+            <legend>{{$ "ProfilePicture" }}</legend>
+            <div class="photoContainer">
+                <img src="" />
+                <div class="placeholder">{{$ "NoPhoto" }}</div>
+            </div>
+        </fieldset>
         <div class="buttons">
             <button class="uploadPhoto">{{$ "UploadPhoto" }}</button>
-            <button class="removePhoto">{{$ "RemovePhoto" }}</button>
+             <button class="removePhoto">{{$ "RemovePhoto" }}</button>
         </div>
-         
         <input style="display: none" type="file" class="fileUploadInput" accept="image/gif, image/jpeg, image/png" />
     </div>
 
@@ -136,22 +136,21 @@
 
 
 <div class="userSettingsPersonalSection">
-    <h3>{{$ "AccountSettings" }}</h3>
-
+    <h2 class="accountSettingsSectionTitle">{{$ "AccountSettings" }}</h2>
     <div class="row">
         <label>{{$ "AccountType" }}</label>
-        <label class="textCopy small">{{ userType }}</label>
+        <label class="labelbold">{{ userType }}</label>
     </div>
 
     <div class="row">
         <label>{{$ "Units" }}</label>
         <label class="radioButtonRow">
             <input data-modelname="user" data-format="number" type="radio" name="units" value="1" />
-            English
+            <span class="radiotext">English</span>
         </label>
         <label class="radioButtonRow">
             <input data-modelname="user" data-format="number" type="radio" name="units" value="2" />
-            Metric
+            <span class="radiotext">Metric</span>
         </label>
     </div>
 
@@ -159,11 +158,11 @@
         <label>{{$ "DateFormat" }}</label>
         <label class="radioButtonRow">
             <input data-modelname="user" type="radio" name="dateFormat" value="mdy" />
-            MM/DD/YY
+            <span class="radiotext"> MM/DD/YY</span>
         </label>
         <label class="radioButtonRow">
             <input data-modelname="user" type="radio" name="dateFormat" value="dmy" />
-            DD/MM/YY
+            <span class="radiotext">DD/MM/YY</span>
         </label>
     </div>
 
@@ -181,30 +180,32 @@
 
 
 <div class="userSettingsPersonalSection calendarSync">
-{{#with iCalendarKeys }}
-    <h3>{{$ "CalendarSync" }}</h3>
+    <h2 class="accountSettingsSectionTitle">Calendar</h2>
 
-        <div class="row">
-            <label>{{$ "WorkoutsOnly" }}</label>
-            <input class="ical" type="text" readonly name="iCalendarKeys.workoutsOnly" value="{{ webcalRoot }}{{ workoutsOnly }}.ics"/>
-        </div>
-     
-        <div class="row">
-            <label>{{$ "MealsOnly" }}</label>
-            <input class="ical" type="text" readonly name="iCalendarKeys.mealsOnly" value="{{ webcalRoot }}{{ mealsOnly }}.ics" />
-        </div>       
+    {{#with iCalendarKeys }}
+        <h3>{{$ "CalendarSync" }}</h3>
 
-        <div class="row">
-            <label>{{$ "WorkoutsAndMeals" }}</label>
-            <input class="ical" type="text" readonly name="iCalendarKeys.workoutsAndMeals" value="{{ webcalRoot }}{{ workoutsAndMeals }}.ics" />
-        </div>
+            <div class="row">
+                <label>{{$ "WorkoutsOnly" }}</label>
+                <input class="ical" type="text" readonly name="iCalendarKeys.workoutsOnly" value="{{ webcalRoot }}{{ workoutsOnly }}.ics"/>
+            </div>
+         
+            <div class="row">
+                <label>{{$ "MealsOnly" }}</label>
+                <input class="ical" type="text" readonly name="iCalendarKeys.mealsOnly" value="{{ webcalRoot }}{{ mealsOnly }}.ics" />
+            </div>       
 
-    <p class="small">{{$ "ICalHelpText" }}</p>
-{{/with}}
+            <div class="row">
+                <label>{{$ "WorkoutsAndMeals" }}</label>
+                <input class="ical" type="text" readonly name="iCalendarKeys.workoutsAndMeals" value="{{ webcalRoot }}{{ workoutsAndMeals }}.ics" />
+            </div>
+
+        <p class="small">{{$ "ICalHelpText" }}</p>
+    {{/with}}
 </div>
 
-<div class="userSettingsPersonalSection">
-    <h3>{{$ "EmailOptions" }}</h3>
+<div class="userSettingsPersonalSection email">
+    <h2 class="accountSettingsSectionTitle">{{$ "EmailOptions" }}</h2>
 
     <div class="row">
         <label class="checkBoxRow"> {{$ "emailPMNotificationSetting" }}<input data-modelname="account" type="checkbox" name="enablePrivateMessageNotifications"> </label>
