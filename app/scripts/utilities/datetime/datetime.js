@@ -7,10 +7,11 @@
     return {
 
         shortDateFormat: "YYYY-MM-DD",
-        timeFormat: "Thh:mm:ss",
-        longDateFormat: "YYYY-MM-DDThh:mm:ss",
+        timeFormat: "THH:mm:ss",
+        longDateFormat: "YYYY-MM-DDTHH:mm:ss",
 
         format: format,
+        parse: format.parse,
         convert: convert,
 
         isThisWeek: function(dateToCheck)

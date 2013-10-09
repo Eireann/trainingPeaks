@@ -52,11 +52,11 @@
         padding: 7px 0 0 12px;
         float: left;
         
-
         .view
         {
             float: left;
-                
+            width: 30px;
+            height: 21px; 
         }
         .topViews
         {
@@ -65,14 +65,21 @@
             
             padding-top: 5px;
 
+            .oneUpView
+            {
+                @extend %expando1UpBG;
+            }
+
             .twoUpViewHorizontal
             {
-                padding-left: 9px;
+                margin-left: 9px;
+                @extend %expando2UpHorizontalBG;
             }
 
             .twoUpViewVertical
             {
-                padding-left: 10px;
+                margin-left: 10px;
+                @extend %expando2UpVerticalBG;
             }
         }
 
@@ -80,9 +87,15 @@
         {
            padding-top: 2px;
 
+           .threeUpView
+           {
+                @extend %expando3UpBG;
+           }
+
            .fourUpView
            {
-                padding-left: 9px;
+                margin-left: 9px;
+                @extend %expando4UpBG;
            }
         }
     }
@@ -176,19 +189,13 @@
         width:100%;
         left:0;
         
-        background:url(../../assets/images/QVImages/resize-indicator.png) center center no-repeat $TPGrey1;
+        background: center center no-repeat $TPGrey1;
+        @extend %resizeIndicatorBG;
         
         cursor:row-resize;
         position:absolute;
         border-top:1px solid #c2c3c4;
         border-bottom:1px solid #c2c3c4;
-    }
-
-    @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
-        #expandoMapAndGraphResizerRegion {
-            background-image:url(../../assets/images/QVImages/resize-indicator@2x.png);
-            background-size: 22px 5px;
-        }
     }
 
     #expandoGraphRegion
@@ -253,9 +260,10 @@
                     box-shadow: none;
                     @include linearGradient(top, #ffffff, #dfddde);
                     
-                    background: url(../../assets/images/calendarImages/background-gradient-button.png) repeat-x 0 0; //fallback
-                    background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#fefefe), to(#dfdfdf));
-                    background:-moz-linear-gradient(top, #fefefe, #dfdfdf);
+                    background: repeat-x 0 0; //fallback
+                    @extend %backgroundGradientButtonBG;
+                    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fefefe), to(#dfdfdf));
+                    background: -moz-linear-gradient(top, #fefefe, #dfdfdf);
 
                     background-color:#dfdfdf;
                     color: $TPGrey10;
@@ -370,13 +378,13 @@
                     &.bold
                     {
                         opacity: 1;
-                        background: url(../../assets/images/calendarImages/background-gradient-button.png) repeat-x 0 -20px;
+                        background-position: 0 -20px;
                         color: $white;
                     }
                             
                     &:active
                     {
-                        background: url(../../assets/images/calendarImages/background-gradient-button.png) repeat-x 0 -20px;
+                        background-position: 0 -20px;
                         color: $white;
                     }
                 }
@@ -412,7 +420,8 @@
                     background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #ffffff), color-stop(1, #dfdfdf) );
                     background:-moz-linear-gradient( center top, #ededed 5%, #dfdfdf 100% );
                     background-color:#ededed;
-                    background: url(../../assets/images/calendarImages/background-gradient-button.png) repeat-x 0 0;
+                    background: repeat-x 0 0;
+                    @extend %backgroundGradientButtonBG;
                     border: 1px solid $TPGrey9;
                     height: 20px;
                     width: 10px;
@@ -424,7 +433,7 @@
                             
                     &:active
                     {
-                        background: url(../../assets/images/calendarImages/background-gradient-button.png) repeat-x 0 -20px;
+                        background-position: 0 -20px;
                     }
                 }
             }
@@ -436,7 +445,7 @@
     
     #expandoLapsSplitsRegion {
         float:left;
-        padding:55px 20px;
+        padding:55px 10px;
         width:100%;
         
         table {
@@ -457,6 +466,19 @@
         width: 100%;
         padding: 0 12px;
         float: left;
+
+
+        // slightly different measurement than QV to end up centered
+        .yaxisLabel {
+            @include calc("top","50% + 8px");
+        }
+
+
+        .heartRateContainer,
+        .powerContainer,
+        .speedContainer {
+            margin-bottom: 56px;
+        }
 
         .chartContainer {
             @include calc("width","100% - 58px");    
@@ -511,7 +533,7 @@
 
         .shadow
         {
-            background-image: url(../../assets/images/QVImages/expandoStatsShadow.png);
+            @extend %expandoStatsShadowBG;
             height: 13px;
         }
 
@@ -629,7 +651,8 @@
 
                 cursor: pointer;
 
-                background: url(../../assets/images/calendarImages/background-gradient-button.png) repeat-x 0 0;
+                background: repeat-x 0 0;
+                @extend %backgroundGradientButtonBG;
 
                 visibility: hidden;
 

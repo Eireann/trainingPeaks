@@ -1,102 +1,97 @@
 ﻿@import "tpstylesheet";
 @import "compass/css3/box-shadow";
 
-@media screen {
-    .modalOverlay
-    {
-        position:absolute;
-        z-index:100;
+.modalOverlay
+{
+    position:absolute;
+    z-index:100;
+    
+    top:0px;
+    bottom:0px;
+    left:0px;
+    right:0px;
+
+    background-color:transparent;
+}
+
+.modal
+{
+    position:absolute;
+    z-index:101;
+    top:100px;
+    left:100px;
+
+    max-height: 90%;
+    max-height: calc(100% - 52px);
+    max-width: 90%;
+    max-width: calc(100% - 26px);
+
+    .titleBar {
+        width:110%;
+        margin-left:-5px;
+
+        h2.modaltitle {
+            margin:9px 0 0 15px;
+        }
+
+        // same as h2.modaltitle
+        h2 {
+            font-size: $fontSizeSmall; 
+            font-family: $fontFamilyRegular;
+            font-weight:normal;
+            color: $TPGrey3;
+            float:left;
+            line-height:1;
+            margin: 9px 0 0 15px;
+        }
         
-        top:0px;
-        bottom:0px;
-        left:0px;
-        right:0px;
-
-        background-color:transparent;
-    }
-
-    .modal
-    {
-        position:absolute;
-        z-index:101;
-        top:100px;
-        left:100px;
-
-        max-height: 90%;
-        max-height: calc(100% - 52px);
-        max-width: 90%;
-        max-width: calc(100% - 26px);
-
-        .titleBar {
-            width:110%;
-            margin-left:-5px;
-
-            h2.modaltitle {
-                margin:9px 0 0 15px;
-            }
-
-            // same as h2.modaltitle
-            h2 {
-                font-size: $fontSizeSmall; 
-                font-family: $fontFamilyRegular;
-                font-weight:normal;
-                color: $TPGrey3;
-                float:left;
-                line-height:1;
-                margin: 9px 0 0 15px;
-            }
-            
-            #closeIcon, .closeIcon {
-                margin:8px 5px 0 10px;
-            }
-        }
-
-         #menuIcon {
-            cursor:pointer;
-            margin:0;
-            width:12px;
-            height:17px;
-            float:right;
-            background: transparent url(../../assets/images/charts/sprite-buttons-chart-modal.png) no-repeat 0 0;
-            &:hover {
-                background: transparent url(../../assets/images/charts/sprite-buttons-chart-modal.png) no-repeat 0 -17px;
-            }
-        }
-
         #closeIcon, .closeIcon {
-            cursor:pointer;
-            margin:0 5px 0 10px;
-            width:17px;
-            height:17px;
-            float:right;
-            background: transparent url(../../assets/images/charts/sprite-buttons-chart-modal.png) no-repeat -51px 0;
-            &:hover {
-                background: transparent url(../../assets/images/charts/sprite-buttons-chart-modal.png) no-repeat -51px -17px;
-            }
-        }
-
-        @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
-            #menuIcon,
-            #closeIcon, .closeIcon {
-                background-image:url(../../assets/images/charts/sprite-buttons-chart-modal@2x.png);
-                background-size: 68px 34px;
-            }
+            margin:8px 5px 0 10px;
         }
     }
 
-    .modalOverlayMask
-    {
-        background-color: $TPGrey4;
-        opacity: 0.6;
-    }
-
-    .modalShadow
-    {
-        @include box-shadow(0px 3px 6px 2px #888888);
-
-        .modalOverlayMask + &
+        #menuIcon, .menuIcon
         {
-            @include box-shadow(0 3px 5px 0 $TPGrey4);
+        cursor:pointer;
+        margin:0;
+        width:12px;
+        height:17px;
+        float:right;
+        background: transparent no-repeat 0 0;
+        @extend %chartIconsSpriteBG;
+
+        &:hover {
+            background-position: 0 -17px;
         }
+    }
+
+    #closeIcon, .closeIcon {
+        cursor:pointer;
+        margin:0 5px 0 10px;
+        width:17px;
+        height:17px;
+        float:right;
+        background: transparent no-repeat -51px 0;
+        @extend %chartIconsSpriteBG;
+
+        &:hover {
+            background-position: -51px -17px;
+        }
+    }
+}
+
+.modalOverlayMask
+{
+    background-color: $TPGrey4;
+    opacity: 0.6;
+}
+
+.modalShadow
+{
+    @include box-shadow(0px 3px 6px 2px #888888);
+
+    .modalOverlayMask + &
+    {
+        @include box-shadow(0 3px 5px 0 $TPGrey4);
     }
 }

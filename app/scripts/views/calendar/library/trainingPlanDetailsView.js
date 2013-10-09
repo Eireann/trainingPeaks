@@ -144,7 +144,7 @@ function(
         {
 
             this.applyStartType = Number(this.dateView.ui.applyDateType.val());
-            var targetDate = this.dateView.ui.applyDate.val();
+            var targetDate = TP.utils.datetime.parse(this.dateView.ui.applyDate.val()).format("YYYY-MM-DD");
 
             var apply = this.model.applyToDate(targetDate, this.applyStartType);
 

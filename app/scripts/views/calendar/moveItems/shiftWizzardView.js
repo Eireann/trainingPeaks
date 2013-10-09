@@ -23,14 +23,16 @@ function(
     )
 {
 
+    // convert from model YYYY-MM-DD format to user mdy or dmy format
     function formatGetDate(value)
     {
-        return value ? moment(value).format("MM-DD-YYYY") : value;
+        return value ? TP.utils.datetime.format(value) : value;
     }
 
+    // convert from user mdy or dmy format to model YYYY-MM-DD format
     function formatSetDate(value)
     {
-        return value ? moment(value).format("YYYY-MM-DD") : value;
+        return value ? TP.utils.datetime.parse(value).format("YYYY-MM-DD") : value;
     }
 
     var ShiftWizardModel = TP.Model.extend(
@@ -156,7 +158,7 @@ function(
             this.model.on("change:shiftBy", this.updateShiftByOptions, this);
 
             // date picker
-            this.$(".datepicker").datepicker({ dateFormat: "mm-dd-yy", firstDay: theMarsApp.controllers.calendarController.startOfWeekDayIndex });
+            this.$(".datepicker").datepicker({ dateFormat: TP.utils.datetime.format.getFormatForDatepicker(), firstDay: theMarsApp.controllers.calendarController.startOfWeekDayIndex });
 
             // number picker, and make sure it fires a change event
             this.$(".numberpicker").spinner().on("spinstop", function(event, ui) { $(this).trigger("change", event, ui); });

@@ -1,0 +1,136 @@
+@import "../../assets/icons/icons";
+
+body[data-useragent*="MSIE"] .icon
+{
+    line-height: normal;
+}
+
+@mixin inlineBG($url)
+{
+    background-image: inline-image($url);
+}
+
+@mixin inlineRetinaBG($url, $scale: 2)
+{
+    background-image: inline-image($url);
+    background-size: (image-width($url) / $scale) (image-height($url) / $scale);
+}
+
+@mixin sportTypeIcon($type, $fg, $bg, $size)
+{
+    @extend .icon-#{$type};
+    color: $fg;
+    background: $bg;
+    font-size: $size;
+}
+
+// Expando/Quickview Icons
+
+%resizeIndicatorBG { @include inlineBG("../../assets/images/QVImages/resize-indicator.png"); }
+%backgroundGradientButtonBG { @include inlineBG("../../assets/images/calendarImages/background-gradient-button.png"); }
+%expandoStatsShadowBG { @include inlineBG("../../assets/images/QVImages/expandoStatsShadow.png"); }
+%spriteButtonsChartModalBG { @include inlineBG("../../assets/images/charts/sprite-buttons-chart-modal.png"); }
+%spriteButtonsExpandoBG { @include inlineBG("../../assets/images/QVImages/sprite-buttons-expando.png"); }
+%throbberExpandoButtonBG { @include inlineBG("../../assets/images/calendarImages/throbber-expando-button.gif"); }
+%expando1UpBG { @include inlineBG("../../assets/images/QVImages/1UpView.jpg"); }
+%expando2UpHorizontalBG { @include inlineBG("../../assets/images/QVImages/2UpViewHorizontal.jpg"); }
+%expando2UpVerticalBG { @include inlineBG("../../assets/images/QVImages/2UpViewVertical.jpg"); }
+%expando3UpBG { @include inlineBG("../../assets/images/QVImages/3UpView.jpg"); }
+%expando4UpBG { @include inlineBG("../../assets/images/QVImages/4UpView.jpg"); }
+%qvBreakthroughInactiveBG { @include inlineBG("../../assets/images/QVImages/breakThrough.png"); }
+%qvBreakthroughActiveBG { @include inlineBG("../../assets/images/QVImages/breakThroughFullOpac.png"); }
+
+// Map Graph
+
+%mapIconStartBG { @include inlineBG("../../assets/images/leaflet/map-icon-start.png"); }
+%mapIconFinishBG { @include inlineBG("../../assets/images/leaflet/map-icon-finish.png"); }
+%spriteMapZoomBG { @include inlineBG("../../assets/images/leaflet/sprite-map-zoom.png"); }
+
+// Sharing
+
+%spriteShareIconsBG { @include inlineBG("../../assets/images/QVImages/sprite-share-icons.png"); }
+
+// QV Tabs
+
+%QVTabSpriteBG { @include inlineBG("../../assets/images/QVImages/sprite-icons-QV-Tabs.png"); }
+
+// Hover Box
+
+%spriteButtonsChartModal { @include inlineBG("../../assets/images/charts/sprite-buttons-chart-modal.png"); }
+
+// Settings Icons
+
+%settingsButtonBG { @include inlineBG("../../assets/images/calendarImages/settingsButton.png"); }
+%settingsButtonSmallBG { @include inlineBG("../../assets/images/calendarImages/settingsButtonSmall.png"); }
+%settingsButtonWhiteBG { @include inlineBG("../../assets/images/calendarImages/settingsButtonWhite.png"); }
+
+// Misc Icons
+
+%spriteSelectBoxItBG { @include inlineBG("../../assets/images/QVImages/sprite-selectboxit.png"); }
+
+%calendarPlusBG { @include inlineBG("../../assets/images/calendarImages/sprite-calendar-plus.png"); }
+
+%messagesIconBG { @include inlineBG("../../assets/images/calendarImages/messagesIcon.png"); }
+%tpLogoBG { @include inlineBG( "../../assets/images/tpLogo.png"); }
+
+%mainTabSpriteBG { @include inlineBG("../../assets/images/sprite-icons-main-tabs.png"); }
+%dashboardTabSpriteBG { @include inlineBG("../../assets/images/sprite-icons-dashboard-tabs.png"); }
+%troughIconSpriteBG { @include inlineBG("../../assets/images/sprite-icons-trough.png"); }
+
+%chartIconsSpriteBG { @include inlineBG("../../assets/images/charts/sprite-buttons-chart-modal.png"); }
+
+%spriteHeaderIconsBG { @include inlineBG("../../assets/images/calendarImages/sprite-header-icons.png"); }
+
+%spritePaperclipBG { @include inlineBG("../../assets/images/QVImages/sprite-paperclip.png"); }
+
+%throbberBG { @include inlineBG("../../assets/images/throbber.gif"); }
+
+%closeXBG { @include inlineBG("../../assets/images/closeX.png"); }
+%shadowDividerBG { @include inlineBG("../../assets/images/calendarImages/shadow-divider.png"); }
+
+// Retina
+
+@media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2)
+{
+
+    // Expando Icons
+
+    %resizeIndicatorBG { @include inlineRetinaBG("../../assets/images/QVImages/resize-indicator@2x.png"); }
+    %spriteButtonsChartModalBG { @include inlineRetinaBG("../../assets/images/charts/sprite-buttons-chart-modal@2x.png"); }
+    %throbberExpandoButtonBG { @include inlineRetinaBG("../../assets/images/calendarImages/throbber-expando-button@2x.gif"); }
+
+    // Map Graph
+
+    %mapIconStartBG { @include inlineRetinaBG("../../assets/images/leaflet/map-icon-start@2x.png"); }
+    %mapIconFinishBG { @include inlineRetinaBG("../../assets/images/leaflet/map-icon-finish@2x.png"); }
+
+    // Sharing
+
+    %spriteShareIconsBG { @include inlineRetinaBG("../../assets/images/QVImages/sprite-share-icons@2x.png"); }
+
+    // QV Tabs
+
+    %QVTabSpriteBG { @include inlineRetinaBG("../../assets/images/QVImages/sprite-icons-QV-Tabs@2x.png"); }
+
+    // Hover Box
+
+    %spriteButtonsChartModal { @include inlineRetinaBG("../../assets/images/charts/sprite-buttons-chart-modal@2x.png"); }
+
+    // Misc Retina Icons
+
+    %spriteSelectBoxItBG { @include inlineRetinaBG("../../assets/images/QVImages/sprite-selectboxit@2x.png"); }
+
+    %calendarPlusBG { @include inlineRetinaBG( "../../assets/images/calendarImages/sprite-calendar-plus@2x.png"); }
+    %tpLogoBG { @include inlineRetinaBG( "../../assets/images/tpLogo@2x.png"); }
+
+    %mainTabSpriteBG { @include inlineRetinaBG("../../assets/images/sprite-icons-main-tabs@2x.png"); }
+    %dashboardTabSpriteBG { @include inlineRetinaBG("../../assets/images/sprite-icons-dashboard-tabs@2x.png"); }
+    %troughIconSpriteBG { @include inlineRetinaBG("../../assets/images/sprite-icons-trough@2x.png"); }
+
+    %chartIconsSpriteBG { @include inlineRetinaBG("../../assets/images/charts/sprite-buttons-chart-modal@2x.png"); }
+
+    %spriteHeaderIconsBG { @include inlineRetinaBG("../../assets/images/calendarImages/sprite-header-icons@2x.png"); }
+
+    %spritePaperclipBG { @include inlineRetinaBG("../../assets/images/QVImages/sprite-paperclip@2x.png"); }
+
+}

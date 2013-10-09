@@ -1,9 +1,10 @@
 define(
 [
     "underscore",
-    "TP"
+    "TP",
+    "utilities/rollbarManager"
 ],
-function (_, TP)
+function (_, TP, RollbarManager)
 {
 
     var ensureUser = function(callback) 
@@ -40,6 +41,7 @@ function (_, TP)
             {
                 var routeParts = routeName.split("/");
                 this.currentRoute = routeParts[0];
+                RollbarManager.setRoute(this.currentRoute);
             }, this);
         },
 

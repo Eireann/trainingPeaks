@@ -1,14 +1,5 @@
 ﻿@import "globalCSS/tpstylesheet";
 
-$mainTabSpriteURL: url(../../assets/images/sprite-icons-main-tabs.png);
-$mainTtabSpriteRetinaURL: url(../../assets/images/sprite-icons-main-tabs@2x.png);
-
-$dashboardTabSpriteURL: url(../../assets/images/sprite-icons-dashboard-tabs.png);
-$dashboardTabSpriteRetinaURL: url(../../assets/images/sprite-icons-dashboard-tabs@2x.png);
-
-$troughIconSpriteURL: url(../../assets/images/sprite-icons-trough.png);
-$troughIconSpriteRetinaURL: url(../../assets/images/sprite-icons-trough@2x.png);
-
 @mixin libraryTile()
 {
     background-color: $TPGrey6;
@@ -43,10 +34,6 @@ $troughIconSpriteRetinaURL: url(../../assets/images/sprite-icons-trough@2x.png);
 #libraryContainer
 {
 
-    @media print {
-        display:none;
-    }
-
     margin-top:0px;
     @include grid-column(1);
     padding: 0 0 0 5px;
@@ -59,7 +46,7 @@ $troughIconSpriteRetinaURL: url(../../assets/images/sprite-icons-trough@2x.png);
         position:relative;
         background-color:$TPGrey1;
     }
-             
+
     &.open
     {
         padding-right:2px;
@@ -112,7 +99,8 @@ $troughIconSpriteRetinaURL: url(../../assets/images/sprite-icons-trough@2x.png);
         }
 
         #exerciseLibrary {
-            background: $TPGrey1 $mainTabSpriteURL no-repeat 0 0;
+            background: $TPGrey1 no-repeat 0 0;
+            @extend %mainTabSpriteBG;
             &:hover {
                 background-position: -33px 0;
             }
@@ -128,7 +116,8 @@ $troughIconSpriteRetinaURL: url(../../assets/images/sprite-icons-trough@2x.png);
             }
         }
         #plansLibrary {
-            background: $TPGrey1 $mainTabSpriteURL no-repeat 0 -66px;
+            background: $TPGrey1 no-repeat 0 -66px;
+            @extend %mainTabSpriteBG;
             &:hover {
                 background-position: -33px -66px;
             }
@@ -145,7 +134,8 @@ $troughIconSpriteRetinaURL: url(../../assets/images/sprite-icons-trough@2x.png);
         }
 
         #chartsLibrary {
-            background: $TPGrey1 $dashboardTabSpriteURL no-repeat 0 0;
+            background: $TPGrey1 no-repeat 0 0;
+            @extend %dashboardTabSpriteBG;
             &:hover {
                 background-position: -33px 0;
             }
@@ -184,19 +174,6 @@ $troughIconSpriteRetinaURL: url(../../assets/images/sprite-icons-trough@2x.png);
             }
         }
 
-		@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
-			#exerciseLibrary, #plansLibrary {
-				background-image: $mainTtabSpriteRetinaURL;
-				background-size: 99px 165px;
-			}
-
-            #chartsLibrary {
-                background-image: $dashboardTabSpriteRetinaURL;
-                background-size: 99px 33px;
-            }
-
-		}
-
         div.active
         {
             .arrow
@@ -230,7 +207,7 @@ $troughIconSpriteRetinaURL: url(../../assets/images/sprite-icons-trough@2x.png);
         overflow-y: scroll;
         padding: 5px;
         padding-top: 10px;
-        @include calc(width, "100% - 36px"); 
+        @include calc(width, "100% - 36px");
         white-space: nowrap;
 
         background-color: $TPGrey1;
@@ -240,7 +217,7 @@ $troughIconSpriteRetinaURL: url(../../assets/images/sprite-icons-trough@2x.png);
             width:241px;
 
             @include labels($fontFamilyRegular, $fontSizeMedium, $TPBlue, normal);
-            
+
             label {
                 margin: 2px 15px 0 2px;
                 float:left;
@@ -250,31 +227,21 @@ $troughIconSpriteRetinaURL: url(../../assets/images/sprite-icons-trough@2x.png);
             @include headerButtons(0px, 38px, $fontSizeMedium);
 
             .settingsBtn {
-                background: url(../../assets/images/calendarImages/sprite-header-icons.png) no-repeat 0 -60px;
-                &:hover {
-                        background: url(../../assets/images/calendarImages/sprite-header-icons.png) no-repeat -36px -60px;
-                    }
-                &:active {
-                    background: url(../../assets/images/calendarImages/sprite-header-icons.png) no-repeat -72px -60px;
-                }
+                background: no-repeat 0 -60px;
+                @extend %spriteHeaderIconsBG;
+                &:hover { background-position: -36px -60px; }
+                &:active { background-position: -72px -60px; }
                 margin-right:2px;
             }
 
             #add {
-                background: url(../../assets/images/calendarImages/sprite-header-icons.png) no-repeat 0 -100px;
+                background: no-repeat 0 -100px;
+                @extend %spriteHeaderIconsBG;
                 &:hover {
-                    background: url(../../assets/images/calendarImages/sprite-header-icons.png) no-repeat -36px -100px;
+                    background-position: -36px -100px;
                 }
                 &:active {
-                    background: url(../../assets/images/calendarImages/sprite-header-icons.png) no-repeat -72px -100px;
-                }
-            }
-
-            @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
-                .settingsBtn,
-                #add  {
-                    background-image: url(../../assets/images/calendarImages/sprite-header-icons@2x.png);
-                    background-size: 108px 120px;
+                    background-position: -72px -100px;
                 }
             }
 
@@ -302,7 +269,7 @@ $troughIconSpriteRetinaURL: url(../../assets/images/sprite-icons-trough@2x.png);
                 margin-top: -5px;
                 font-family: $fontFamilyRegular;
                 font-size: $fontSizeMedium;
-                
+
             }
         }
 
@@ -313,7 +280,7 @@ $troughIconSpriteRetinaURL: url(../../assets/images/sprite-icons-trough@2x.png);
             cursor: default;
             font-size: $fontSizeSmall;
             text-align:left;
-            
+
             p {
                 margin:5px 7px 15px 9px;
             }
@@ -326,7 +293,7 @@ $troughIconSpriteRetinaURL: url(../../assets/images/sprite-icons-trough@2x.png);
         margin-left: 2px;
     }
 
-    .selectboxit-container .selectboxit 
+    .selectboxit-container .selectboxit
     {
         width: 238px !important; /* Width of the dropdown button */
         margin-left: 2px;
@@ -337,7 +304,7 @@ $troughIconSpriteRetinaURL: url(../../assets/images/sprite-icons-trough@2x.png);
         text-indent: 3px;
     }
 
-    .selectboxit-option-icon-container 
+    .selectboxit-option-icon-container
     {
         margin-left: 0px;
     }
@@ -423,18 +390,19 @@ $troughIconSpriteRetinaURL: url(../../assets/images/sprite-icons-trough@2x.png);
                 margin-bottom:4px;
 
                 .trainingPlansIcon {
-                    background: $TPGrey1 $troughIconSpriteURL no-repeat 0 0;
+                    background: $TPGrey1 no-repeat 0 0;
+                    @extend %troughIconSpriteBG;
                     background-color: $TPGrey2;
                     width: 24px;
                     height: 24px;
                     float: left;
                 }
-                
+
                 .planTitleContain {
                     height:24px;
 
                     // For vertical centering
-                    display: table; 
+                    display: table;
 
                     h3 {
                         font-size: $fontSizeXSmall;
@@ -448,7 +416,7 @@ $troughIconSpriteRetinaURL: url(../../assets/images/sprite-icons-trough@2x.png);
                         text-align:left;
 
                         // for vertical centering
-                        display: table-cell; 
+                        display: table-cell;
                         vertical-align: middle;
                     }
                 }
@@ -484,7 +452,7 @@ $troughIconSpriteRetinaURL: url(../../assets/images/sprite-icons-trough@2x.png);
     {
         margin: 15px 0;
     }
-    
+
 }
 
 
@@ -493,5 +461,77 @@ $troughIconSpriteRetinaURL: url(../../assets/images/sprite-icons-trough@2x.png);
     .ui-droppable
     {
         height: 100%;
+    }
+}
+
+.workoutDetails {
+    width: 310px;
+    max-width: 310px;
+
+    p, pre
+    {
+        font-family: inherit;
+        word-wrap: break-word;
+        white-space: pre-wrap;
+    }
+
+    button {
+        font-size: 12px;
+        width: 140px;
+        &.delete {
+            left: 2px;
+        }
+    }
+
+    h3:nth-child(n + 3) {
+        border-top: solid 1px #cccccc;
+        padding-top: 12px;
+        margin-top: 12px;
+    }
+
+    .description {
+        border-bottom: solid 1px #cccccc;
+        margin-bottom: 16px;
+        padding-bottom: 12px;
+    }
+
+    .workoutStatsRow
+    {
+        @include grid-row();
+
+        clear: both;
+        height: 23px;
+
+        .workoutStatsColumn
+        {
+            float:left;
+            padding-right: 2px;
+            label
+            {
+                text-align: right;
+                width: 100px;
+                padding-top: 5px;
+                padding-right: 5px;
+
+                &.ghosted
+                {
+                    color: $TPGrey7;
+                }
+
+            }
+
+            @include labels($fontFamilyRegular, $fontSizeSmaller, $TPGrey3, normal);
+
+            &.workoutStatsUnitLabel
+            {
+                label
+                {
+                    text-align: left;
+                    width: 45px;
+                    padding-top: 5px;
+                    padding-left: 5px;
+                }
+            }
+        }
     }
 }

@@ -17,7 +17,13 @@ function(
         {
             type: "handlebars",
             template: paymentHistoryItemTemplate
+        },
+
+        initialize: function()
+        {
+            this.listenTo(theMarsApp.user, "change:dateFormat", _.bind(this.render, this));
         }
+
 
     });
 

@@ -8,7 +8,7 @@ function(
     TP
 )
 {
-    function formatMetricLabel(details, displayUnits)
+    function formatMetricLabel(details)
     {
         return TP.utils.metrics.labelFor(details);
     }

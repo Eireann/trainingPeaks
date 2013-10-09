@@ -72,7 +72,8 @@ function(
                 collection: this.collection,
                 id: "weeksContainer",
                 className: "scrollable colorByComplianceAndWorkoutType",
-                onScrollEnd: _.bind(this._loadDataAfterScroll, this)
+                onScrollEnd: _.bind(this._loadDataAfterScroll, this),
+                minSize: 12
             });
             this.listenTo(this.weeksCollectionView, "itemview:itemview:itemDropped", _.bind(this.onItemDropped, this));
         },

@@ -15,7 +15,6 @@ function(
     return TP.ItemView.extend(
     {
 
-        dateFormat: "M/D/YYYY",
         applyStartType: TP.utils.trainingPlan.startTypeEnum.StartDate,
 
         template:
@@ -48,7 +47,7 @@ function(
             setImmediate(function()
             {
                 self.$(".datepicker").css("position", "relative").css("z-index", self.parentModal.$el.css("z-index"));
-                self.$(".datepicker").datepicker({ dateFormat: "m/d/yy", firstDay: theMarsApp.controllers.calendarController.startOfWeekDayIndex,
+                self.$(".datepicker").datepicker({ dateFormat: TP.utils.datetime.format.getFormatForDatepicker(), firstDay: theMarsApp.controllers.calendarController.startOfWeekDayIndex,
                     beforeShowDay: self.checkWhetherDayIsSelectable, defaultDate: self.defaultDate || +0 });
                 self.$("select.dateOptions").selectBoxIt({ dynamicPositioning: true });
             });
@@ -60,7 +59,7 @@ function(
         {
             return {
                 details: this.model.details.toJSON(),
-                applyDate: this.restrictTargetDate(this.defaultDate || moment().format(this.dateFormat))
+                applyDate: this.restrictTargetDate(this.defaultDate || moment())
             };
         },
 
@@ -70,7 +69,7 @@ function(
             this.updateDateInput();
             if (this.applyStartType === TP.utils.trainingPlan.startTypeEnum.Event)
             {
-                this.ui.applyDate.val(moment(this.model.details.get("eventDate")).format(this.dateFormat));
+                this.ui.applyDate.val(TP.utils.datetime.format(this.model.details.get("eventDate")));
                 this.ui.applyDate.attr("disabled", true);
             } 
             else if (this.applyStartType === TP.utils.trainingPlan.startTypeEnum.StartDate && this.model.details.get("isDynamic"))
@@ -85,7 +84,9 @@ function(
 
         updateDateInput: function()
         {
-            this.ui.applyDate.val(this.restrictTargetDate(this.ui.applyDate.val()));
+            var inputDate = TP.utils.datetime.parse(this.ui.applyDate.val());
+            var limitedDate =  this.restrictTargetDate(inputDate);
+            this.ui.applyDate.val(TP.utils.datetime.format(limitedDate));
         },
 
         restrictTargetDate: function(targetDate)
@@ -121,7 +122,7 @@ function(
                 }
             }
 
-            return targetDate.format(this.dateFormat);
+            return targetDate;
         },
 
         checkWhetherDayIsSelectable: function(date)

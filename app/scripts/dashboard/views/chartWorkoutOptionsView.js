@@ -72,7 +72,10 @@ function(
 
             if ($el.val() === "0")
             {
-                this.$('input.jsWorkoutType[value!="0"]').prop("checked", !($el.is(":checked")));
+                if ($el.is(':checked'))
+                {
+                    this.$('input.jsWorkoutType[value!="0"]').prop("checked", !($el.is(":checked")));
+                }
             }
             else
             {

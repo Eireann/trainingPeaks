@@ -50,7 +50,7 @@ function(
         {
             this.on("library:unselect", this.unSelect, this);
             this.sourceCollection = this.collection;
-            this.model = new TP.Model({wwwRoot: theMarsApp.wwwRoot });
+            this.model = new TP.Model({homeRoot: theMarsApp.apiConfig.homeRoot });
         },
 
         getItemView: function(item)

@@ -23,6 +23,7 @@ define(
     "router",
     "utilities/dragAndDropFileUploadWidget",
     "utilities/textFieldNumberFilter",
+    "utilities/rollbarManager",
     "shared/utilities/featureAuthorization/featureAuthorizer",
     "hbs!templates/views/notAllowedForAlpha",
     "scripts/plugins/marionette.faderegion"
@@ -51,6 +52,7 @@ function(
     Router,
     DragAndDropFileUploadWidget,
     TextFieldNumberFilter,
+    RollbarManager,
     FeatureAuthorizer,
     notAllowedForAlphaTemplate,
     fadeRegion)
@@ -259,19 +261,12 @@ function(
             var userPromise = self.user.fetch();
             var userAccessPromise = self.userAccessRights.fetch();
 
-            userAccessPromise.fail(function()
-            {
-                console.log("access", arguments);
-            });
-
             userPromise.done(function()
             {
 
+                RollbarManager.setUser(self.user);
+
                 var athletePromise = self.fetchAthleteSettings();
-                athletePromise.fail(function()
-                {
-                    console.log("athlete", arguments);
-                });
 
                 $.when(userAccessPromise, athletePromise)
                 .done(function()
@@ -287,14 +282,12 @@ function(
                 })
                 .fail(function()
                 {
-                    // console.log("Failed access or athelete", arguments[2].stack, arguments);
                     self.userFetchPromise.reject();
                 });
 
             })
             .fail(function()
             {
-                // console.log("Failed user", arguments[2].stack, arguments);
                 self.userFetchPromise.reject();
             });
 
@@ -433,13 +426,17 @@ function(
 
         this.addInitializer(function ()
         {
-            $(document).on("keypress.filterNumberInput", ".numberInput", this.filterfunction);
+            
+            $(document).on("keypress.filterNumberInput", ".numberInput", function (evt)
+                {
+                    var charCode = (evt.which) ? evt.which : evt.keyCode;
+                    if(!TextFieldNumberFilter.isNumberKey(charCode))
+                    {
+                        evt.preventDefault();
+                    }
+                }
+            );
         });
-
-        this.filterfunction = function (evt)
-        {
-            TextFieldNumberFilter.isNumberKey(evt);
-        };
 
         
         this.isLive = function()

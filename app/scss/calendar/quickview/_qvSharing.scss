@@ -31,115 +31,69 @@
         
         .twitterIcon
         {   
-            background: url(../../assets/images/QVImages/sprite-share-icons.png) no-repeat 0 0;
+            background: no-repeat 0 0;
+            @extend %spriteShareIconsBG;
+
             &:not(.disabled)
             {
                 opacity: 1;
                 cursor:pointer;
                 &:hover 
                 {
-                    background: url(../../assets/images/QVImages/sprite-share-icons.png) no-repeat -21px 0;
-                }
-            }
-
-            @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) 
-            {
-                background-size: 42px 84px;
-                background: url(../../assets/images/QVImages/sprite-share-icons@2x.png) no-repeat 0 0;
-                &:not(.disabled)
-                {
-                    &:hover 
-                    {
-                        background: url(../../assets/images/QVImages/sprite-share-icons@2x.png) no-repeat 0 0;
-                    }
+                    background-position: -21px 0;
                 }
             }
         }
 
         .facebookIcon
         {
-            background: url(../../assets/images/QVImages/sprite-share-icons.png) no-repeat 0 -21px;
+            background: no-repeat 0 -21px;
+            @extend %spriteShareIconsBG;
             &:not(.disabled)
             {
                 opacity: 1;
                 cursor: pointer;
                 &:hover 
                 {
-       			    background: url(../../assets/images/QVImages/sprite-share-icons.png) no-repeat -21px -21px;
+       			    background-position: -21px -21px;
                 }
             }
 
-
-            @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) 
-            {
-                background-size: 42px 84px;
-                background: url(../../assets/images/QVImages/sprite-share-icons@2x.png) no-repeat 0 -21px;
-                &:not(.disabled)
-                {
-                    &:hover 
-                    {
-                        background: url(../../assets/images/QVImages/sprite-share-icons@2x.png) no-repeat -21px -21px;
-                    }
-                }
-            }
         }
 
         .linkIcon
         {
-            background: url(../../assets/images/QVImages/sprite-share-icons.png) no-repeat 0 -63px;
+            background: no-repeat 0 -63px;
+            @extend %spriteShareIconsBG;
             &:not(.disabled)
             {
                 opacity: 1;
                 cursor: pointer;
                 &:hover 
                 {
-       			    background: url(../../assets/images/QVImages/sprite-share-icons.png) no-repeat -21px -63px;
-                }
-            }
-
-            @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) 
-            {
-                background-size: 42px 84px;
-                background: url(../../assets/images/QVImages/sprite-share-icons@2x.png) no-repeat 0 -63px;
-                &:not(.disabled)
-                {
-                    &:hover 
-                    {
-                        background: url(../../assets/images/QVImages/sprite-share-icons@2x.png) no-repeat -21px -63px;
-                    }
+       			    background-position: -21px -63px;
                 }
             }
         }
 
         .emailIcon
         {
-            background: url(../../assets/images/QVImages/sprite-share-icons.png) no-repeat 0 -42px;
+            background: no-repeat 0 -42px;
+            @extend %spriteShareIconsBG;
+
             &:not(.disabled)
             {
                 opacity:1;
                 cursor: pointer;
                 &:hover 
                 {
-       			    background: url(../../assets/images/QVImages/sprite-share-icons.png) no-repeat -21px -42px;
-                }
-            }
-
-            @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) 
-            {
-                background-size: 42px 84px;
-                background: url(../../assets/images/QVImages/sprite-share-icons@2x.png) no-repeat 0 -42px;
-                &:not(.disabled)
-                {
-                    &:hover 
-                    {
-                        background: url(../../assets/images/QVImages/sprite-share-icons@2x.png) no-repeat -21px -42px;
-                    }
+       			    background-position: -21px -42px;
                 }
             }
         }
     }
 
-.quickviewFooter
+.quickviewFooter, .QVFooter
 {
     .share
     {

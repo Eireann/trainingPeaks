@@ -57,6 +57,9 @@ function(
             this.listenTo(this.model, "dataManagerReset", _.bind(this._onDashboardReset, this));
             this.on("render", this._renderChartAfterRender, this);
 
+            this.listenTo(theMarsApp.user, "change:units", _.bind(this._renderChart, this));
+            this.listenTo(theMarsApp.user, "change:dateFormat", _.bind(this._renderChart, this));
+
             this.once("render", this._bindPlotClick, this);
             this._setChartCssClass();
         },
@@ -93,16 +96,17 @@ function(
             // show a subtitle in the pod view that displays the currently selected Date Range, 
             // but only if not using the Dashboard Global setting
             var dateOptions = this.model.get('dateOptions'),
-                startDate = dateOptions.startDate,
-                endDate = dateOptions.endDate,
                 quickDateSelectOption = dateOptions.quickDateSelectOption;
 
-            if (startDate && endDate)
+            var chartDateOption = ChartUtils.findChartDateOption(quickDateSelectOption);
+
+            if (chartDateOption.customStartDate)
             {
-                return moment(startDate).utc().format(TP.utils.datetime.shortDateFormat) + " - " + moment(endDate).utc().format(TP.utils.datetime.shortDateFormat);
+                dateOptions = ChartUtils.buildChartParameters(dateOptions);
+                return TP.utils.datetime.format(moment(dateOptions.startDate).utc()) + " - " + TP.utils.datetime.format(moment(dateOptions.endDate).utc());
             } else if (quickDateSelectOption && quickDateSelectOption !== 1)
             {
-                return ChartUtils.findChartDateOption(quickDateSelectOption).label;
+                return chartDateOption.label;
             }
             return "";
         },
@@ -164,6 +168,12 @@ function(
                         chartOptions.flotOptions.tooltipOpts.onHover = this._onHoverToolTip;
                     }
 
+                    var lastYaxis = _.last(chartOptions.flotOptions.yaxes);
+                    if (lastYaxis)
+                    {
+                        lastYaxis.tickLength = 1;
+                    }
+
                     this.plot = $.plot(this.ui.chartContainer, chartOptions.dataSeries, chartOptions.flotOptions);
 
                     var xaxisOpts = chartOptions.flotOptions.xaxis;
@@ -177,8 +187,12 @@ function(
                     }
                     else if (yaxesOpts)
                     {
-                        this.$(".yaxisLabel.left").text(yaxesOpts && yaxesOpts[0] && yaxesOpts[0].label || "");
-                        this.$(".yaxisLabel.right").text(yaxesOpts && yaxesOpts[1] && yaxesOpts[1].label || "");
+                        this.$(".yaxisLabel.left")
+                        .text(yaxesOpts && yaxesOpts[0] && yaxesOpts[0].label || "")
+                        .css("color", yaxesOpts && yaxesOpts[0] && yaxesOpts[0].font && yaxesOpts[0].font.color);
+                        this.$(".yaxisLabel.right")
+                        .text(yaxesOpts && yaxesOpts[1] && yaxesOpts[1].label || "")
+                        .css("color", yaxesOpts && yaxesOpts[1] && yaxesOpts[1].font && yaxesOpts[1].font.color);
                     }
                 }
             }

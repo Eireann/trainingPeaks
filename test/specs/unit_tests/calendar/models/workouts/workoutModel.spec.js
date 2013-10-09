@@ -37,7 +37,7 @@ function(
 
         it("Should use workoutId as model id", function()
         {
-            var today = moment().format("YYYY-MM-DDThh:mm:ss");
+            var today = moment().format("YYYY-MM-DDTHH:mm:ss");
             var workoutId = "098765";
             var workout = new WorkoutModel({ workoutDay: today, workoutId: workoutId });
             expect(workout.id).toEqual(workoutId);

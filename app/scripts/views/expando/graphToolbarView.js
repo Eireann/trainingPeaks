@@ -132,7 +132,7 @@ function(TP, graphToolbarTemplate)
             var elevationlabel = this.model ? TP.utils.units.getUnitsLabel("elevation") : "FT";
             
             // Some workout type speeds need to be shown as "pace" units
-            if (this.model && _.contains([1,3,13], this.model.get("workoutTypeValueId")))
+            if (this.model && _.contains([1,3,12,13], this.model.get("workoutTypeValueId")))
             {
                 speedLabel = TP.utils.units.getUnitsLabel("pace", this.model.get("workoutTypeValueId"));
             }

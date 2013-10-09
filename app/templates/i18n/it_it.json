@@ -68,8 +68,6 @@
     "EnglishUnits": "Imperiali",
     "MetricUnits": "Metriche",
     "DateFormat": "Formato Data",
-    "DayFormat1": "MM/DD/YY", 
-    "DayFormat2": "DD/MM/YY",
 
     "EmailOptions": "Impostazioni E-Mail",
     "emailPMNotificationSetting": "Inviami un e-mail quando ricevo una notizia privata",

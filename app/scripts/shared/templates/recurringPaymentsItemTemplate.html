@@ -1,10 +1,10 @@
 <div class="row thirds">
-    <div>{{$ "Start Date" }}: {{ formatDate dateCreated "L" }}</div>
-    <div>{{$ "Paid Through" }}: {{ formatDate paidThrough "L" }}</div>
+    <div>{{$ "Start Date" }}: {{ formatDate dateCreated }}</div>
+    <div>{{$ "Paid Through" }}: {{ formatDate paidThrough }}</div>
     <div>{{$ "Description" }}: {{ lookupSharedData "accounting.recurringPaymentProfileTypes" profileType }}</div>
 </div>
 
 <div class="row">
     <div>{{$ "Card #" }}: {{ defaultValue accountNumber "--" }}</div>
-    <div>{{$ "Exp. Date" }}: {{ formatDate expirationDate "L" }}</div>
+    <div>{{$ "Exp. Date" }}: {{ formatDate expirationDate }}</div>
 </div>

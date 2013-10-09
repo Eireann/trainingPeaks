@@ -53,10 +53,9 @@ function(
             var zoneNumber = flotItem.seriesIndex + 1;
             var weekStartDate = this._getWeekStartDate(flotItem.dataIndex);
             var weekEndDate = this._getWeekEndDate(flotItem.dataIndex);
-            var dateFormat = "MM/DD/YY";
             var zoneMinutes = flotItem.series.data[flotItem.dataIndex][1];
             var tips = [];
-            tips.push({ label: weekStartDate.format(dateFormat) + " - " + weekEndDate.format(dateFormat) });
+            tips.push({ label: TP.utils.datetime.format(weekStartDate) + " - " + TP.utils.datetime.format(weekEndDate) });
             tips.push({ label: "Zone " + zoneNumber });
             tips.push({ label: "Time", value: TP.utils.conversion.formatDuration(zoneMinutes / 60) });
             return tips;
@@ -110,7 +109,7 @@ function(
         _formatXTick: function(weekNumber)
         {
             var totalWeeks = this._data.length;
-            var formattedWeek = this._getWeekStartDate(weekNumber).format("MM/DD/YYYY");
+            var formattedWeek = TP.utils.datetime.format(this._getWeekStartDate(weekNumber));
             //if(weekNumber === 1)
             //{
                 return formattedWeek;

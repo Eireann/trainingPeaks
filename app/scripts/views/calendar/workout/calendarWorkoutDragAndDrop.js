@@ -29,7 +29,6 @@ function(TP, CalendarWorkoutTemplateDragState)
                 helper: _.bind(this._makeHelper, this),
                 start: this.onDragStart,
                 stop: this.onDragStop,
-                containment: "#calendarWrapper",
                 addClasses: false
             };
             this.$el.draggable(this.draggableOptions);

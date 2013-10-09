@@ -1,7 +1,9 @@
 define(
 [
+    "TP"
 ],
 function(
+    TP
 )
 {
     var FormUtility = {
@@ -10,7 +12,7 @@ function(
         {
             if(format === "date")
             {
-                value = moment(value) ? moment(value).format("L") : "";
+                value = value && moment(value).isValid() ? TP.utils.datetime.format(value) : "";
             }
             else if(format === "number")
             {
@@ -33,6 +35,12 @@ function(
             if(format === "number")
             {
                 value = Number(value);
+            }
+            else if(format === "date")
+            {
+                // parse the input based on user preference,
+                // make sure the model is in consistent format regardless of user preference
+                value = value ? TP.utils.datetime.parse(value).format("YYYY-MM-DD") : null;
             }
             else if(options && options.parsers && options.parsers.hasOwnProperty(format))
             {
@@ -113,7 +121,7 @@ function(
 
             if(type === "radio")
             {
-                var checkedRadioFilter = "input[type=radio][name=" + key + "]:checked";
+                var checkedRadioFilter = "input[type=radio][name='" + key + "']:checked";
                 var $checkedRadio = $fields.filter(checkedRadioFilter);
                 if($checkedRadio.length)
                 {
