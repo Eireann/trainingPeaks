@@ -496,7 +496,8 @@ $troughIconSpriteRetinaURL: url(../../assets/images/sprite-icons-trough@2x.png);
     }
 }
 
-.workoutDetails {
+.workoutDetails
+{
     width: 310px;
     max-width: 310px;
 
@@ -506,24 +507,42 @@ $troughIconSpriteRetinaURL: url(../../assets/images/sprite-icons-trough@2x.png);
         word-wrap: break-word;
     }
 
-    button {
+    button
+    {
         font-size: 12px;
-        width: 140px;
-        &.delete {
-            left: 2px;
+        width: 137px;
+        &.delete
+        {
+            left: 8px;
         }
     }
 
-    h3:nth-child(n + 3) {
-        border-top: solid 1px #cccccc;
+    h3
+    {
         padding-top: 12px;
+    }
+
+    h3:nth-child(n + 3)
+    {
+        border-top: solid 1px #cccccc;
         margin-top: 12px;
     }
 
-    .description {
+    input
+    {
+        text-align: center;
+    }
+
+    .actions
+    {
+        padding-bottom: 12px;
+    }
+
+    .description
+    {
         border-bottom: solid 1px #cccccc;
         margin-bottom: 16px;
-        padding-bottom: 12px;
+        padding-bottom: 10px;
     }
 
     .workoutStatsRow
