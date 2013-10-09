@@ -12,6 +12,8 @@ function(
     var ExpandoPodView = TP.ItemView.extend(
     {
 
+        template: _.template("<div class='expandoPodContent'></div>"),
+
         className: "expandoPod",
 
         initialize: function(options)
@@ -24,6 +26,16 @@ function(
             var self = this;
             this.childView.setElement(this.$(".expandoPodContent"));
             this.childView.render();
+        },
+
+        onShow: function()
+        {
+            this.childView.triggerMethod("show");
+        },
+
+        onClose: function()
+        {
+            this.childView.close();
         }
 
     });

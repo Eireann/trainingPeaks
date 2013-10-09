@@ -1,7 +1,7 @@
 define(
 [
     "TP",
-    // "expando/views/expandoPodView",
+    "expando/views/expandoPodView",
     "utilities/data/timeInZonesGenerator",
     "utilities/data/peaksGenerator",
     "views/charts/heartRateTimeInZonesChart",
@@ -13,7 +13,7 @@ define(
 ],
 function(
     TP,
-    // ExpandoPodView,
+    ExpandoPodView,
     timeInZonesGenerator,
     ThePeaksGenerator,
     HRTimeInZonesChartView,
@@ -124,9 +124,11 @@ function(
     function buildView(options)
     {
         var ViewClass = viewsByType[options.model.get("podType")];
+
         var childView = new ViewClass(options);
-        return childView;
         var podView = new ExpandoPodView({ childView: childView });
+
+        return podView;
     }
 
     return {

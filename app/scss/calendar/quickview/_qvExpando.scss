@@ -748,15 +748,16 @@
     }
 }
 
-.timeInZonesChart, .peaksChart, .sizer
+.expandoPod
 {
-    width: calc(16.6% * 4 - 10px);
+    width: calc(16.6% * 3 - 10px);
     height: calc(16.6% * 3 - 10px);
 }
 
-.peaksChart, .sizer
+.expandoPodContent
 {
-    width: calc(16.6% * 2 - 10px);
+    height: 100%;
+    width: 100%;
 }
 
 .sizer
