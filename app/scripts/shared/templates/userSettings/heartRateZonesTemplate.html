@@ -3,22 +3,22 @@
 {{#if workoutTypeId }}<a class="removeWorkoutType">Remove</a>{{/if}}
 
 <div class="zoneSetContain heartrate">
-	<fieldset>
+	<fieldset class="zoneSetFieldset">
 		<legend>Threshold Values</legend>
 		
-		<label>
+		<label class="zoneValueContain">
 		    <span class="zoneSetTitle">Threshold Heart Rate</span>
 		    <input name="threshold" class="numberInput" data-scope="zoneSet"
 		    data-format="zoneValue">
 		</label>
 		
-		<label>
+		<label class="zoneValueContain">
 		   <span class="zoneSetTitle"> Max Heart Rate</span>
 		    <input name="maximumHeartRate" class="numberInput" data-scope="zoneSet"
 		    data-format="zoneValue">
 		</label>
 		
-		<label>
+		<label class="zoneValueContain">
 		    <span class="zoneSetTitle">Resting Heart Rate</span>
 		    <input name="restingHeartRate" class="numberInput" data-scope="zoneSet"
 		    data-format="zoneValue">
@@ -28,7 +28,7 @@
 </div>
 
 <div class="zoneSetContain">
-	<fieldset>
+	<fieldset class="zoneSetFieldset">
 		<legend>Auto Calculation</legend>
 		<div class="calculator"></div>
 	</fieldset>

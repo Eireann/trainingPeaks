@@ -1,10 +1,6 @@
-﻿.userSettings
-{
-    background: white;
+﻿.userSettings {
     width: calc(800px + 200px + 52px);
-
-    //to hide overlapping portions of titleBar
-    overflow: hidden;
+    overflow: hidden; //to hide overlapping portions of titleBar
 
     .tabbedLayoutNav {
         width: 142px; 
@@ -12,7 +8,6 @@
         padding:0;
         height:100%;
         background-color:$TPGrey2;
-
 
             li {
                 padding:5px 10px 5px 25px;
@@ -157,6 +152,10 @@
         .zonesConfigGroup {
             margin-top:25px;
 
+            .zoneSetFieldset {
+                padding:17px 12px 20px 12px;
+            }
+
             .zoneEntry {
                 padding:3px 0 3px 25px;
 
@@ -178,6 +177,7 @@
                 // padding:10px;
                 margin-bottom:10px;
                 margin-top:12px;
+                @include clearfix;
 
                 label {
                     input[type="radio"] {
@@ -191,8 +191,8 @@
 
                 .zoneSetTitle {
                     display:inline-block;
-                    width:136px;
-                    font-family:$fontFamilyHeavy;
+                    font-family:$fontFamilyRegular;
+                    margin-right:5px;
                 }
 
                 &.power, 
@@ -201,6 +201,16 @@
                         width:71px;
                     }
                 }
+
+                .zoneValueContain {
+                    float:left;
+                    margin-right:25px;
+
+                    .numberInput {
+                        width:100px;
+                    }
+                }
+
             }
         }
 
@@ -307,6 +317,14 @@
     width: 816px;
     padding-top:30px;
 
+    .userSettingsHelpText {
+        float:left;
+        margin:0 15px 10px 125px;
+        font-family: $fontFamilyRegular;
+        font-size: $fontSizeSmaller;
+        color:$TPGrey3;
+    }
+
     label {
         input[type="radio"] {
             margin:0;
@@ -333,15 +351,33 @@
             .fieldTitle {
                 float: left;   
                 padding: 4px 5px 0 0; 
-                width: 110px;
-                max-width: 110px;
+                width: 125px;
+                max-width: 125px;
                 text-align: right;
             }
+
+            &.deliveryTime1 {
+                .selectBox {
+                    width:197px;
+                }
+                .selectboxit-container .selectboxit {
+                    width: 197px !important;
+                }
+            }
+            &.units,
+            &.dateFormat {
+                .selectBox {
+                    width:197px;
+                }
+                .selectboxit-container .selectboxit {
+                    width: 197px !important;
+                }
+            } 
         }
 
         .personalLeftCol {
             float:left;
-            width:450px;
+            width:475px;
 
             input[type="text"], 
             input[type="email"], 
@@ -375,25 +411,35 @@
 
                 &.birthday {
                     .selectBox {
-                        &.birthdayYear {
-                            width:166px;
-                            // margin-left:7px;
-
+                        &.birthdayMonth {
+                            width:197px;
                             .selectboxit-container .selectboxit {
-                                width: 166px !important;
+                                width: 197px !important;
                             }
                         }
-
-                        &.birthdayMonth {
-                            width:166px;
+                        &.birthdayYear {
+                            width:135px;
                             margin-left:7px;
-
                             .selectboxit-container .selectboxit {
-                                width: 166px !important;
+                                width: 135px !important;
                             }
                         }
                     }
+                }
 
+                &.weightGender {
+                    input[type="text"] {
+                        width:197px;
+                    }
+
+                    .selectBox {
+                        width:135px;
+                        margin-left:7px;
+                    }
+
+                    .selectboxit-container .selectboxit {
+                        width: 135px !important;
+                    }
                 }
             }
         }
@@ -403,12 +449,12 @@
                 &:first-of-type {
                     margin-top:5px;
                 }
-            }
+            }          
         }
 
         .profilePicture {
             float:left;
-            margin-left: 60px;
+            margin-left: 50px;
             margin-top: -6px;
             width: 230px;
 
@@ -474,7 +520,7 @@
 
         &.calendarSync {
             input[type="text"] {
-                width:706px;
+                width:691px;
                 height:20px;
                 float: left;
             }
@@ -506,7 +552,7 @@
 
     p
     {
-        margin: 0 15px 0 110px;
+        margin: 0 15px 0 125px;
     }
 
     select
@@ -558,7 +604,8 @@
                     font-size:$fontSizeSmall;
                 }
 
-                .date,.description {
+                .date,
+                .description {
                     font-family:$fontFamilyHeavy;
                 }
             }
@@ -603,12 +650,7 @@
         max-width: 350px;
         width: 350px;
         text-align: left;
-        margin-left: 108px;
-    }
-
-    .deliveryTimeHelpText
-    {
-        margin-bottom: 10px;
+        margin-left: 122px;
     }
 
     .nopaymentText
