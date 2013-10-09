@@ -51,6 +51,11 @@
         &.clickable
         {
             cursor: pointer;
+            &.radio {
+                float:left;
+                min-width: 50px;
+                margin:3px 10px 0px 5px;
+            }
         }
     }
 
@@ -95,6 +100,22 @@
     }
 
     .userSettingsContent {
+        fieldset {
+            border: 1px solid $TPGrey2;
+            padding: 7px 12px 12px 12px;
+            margin: 0;
+
+            legend {
+                background-color: transparent;
+                font-weight: normal;
+                font-size: $fontSizeSmall; 
+                font-family: $fontFamilyRegularItalic;
+                padding-left: 5px;
+                padding-right:5px;
+                margin-left: 15px;
+                color: $TPGrey4;               
+            }
+        }
 
         .scrollTarget {
             padding-top:30px;
@@ -153,13 +174,12 @@
             }
 
             .zoneSetContain {
-                border:1px solid $TPGrey1;
-                padding:10px;
+                // border:1px solid $TPGrey1;
+                // padding:10px;
                 margin-bottom:10px;
                 margin-top:12px;
 
                 label {
-
                     input[type="radio"] {
                         margin:0;
                     }
@@ -287,88 +307,94 @@
     width: 816px;
     padding-top:30px;
 
+    label {
+        input[type="radio"] {
+            margin:0;
+        }
+    }
+
     .userSettingsPersonalSection {
         margin-bottom:49px;
         @include clearfix;
 
-        input {
-            width:325px;
-        }
-
-        fieldset {
-            border: 1px solid $TPGrey2;
-            padding: 7px 12px 12px 12px;
-            margin: 0;
-
-            legend {
-                background-color: transparent;
-                font-weight: normal;
-                font-size: $fontSizeSmall; 
-                font-family: $fontFamilyRegularItalic;
-                padding-left: 5px;
-                padding-right:5px;
-                margin-left: 15px;
-                color: $TPGrey4;               
-            }
-        }
-
         .labelbold {
-            text-align:left;
             margin-left:5px;
             font-family:$fontFamilyHeavy;
+            padding:4px 5px 0 0;
+            display: inline-block;
+        }
+
+        .fieldContain {
+            width:100%;
+            height:29px;
+            @include clearfix;
+            float:left;
+
+            .fieldTitle {
+                float: left;   
+                padding: 4px 5px 0 0; 
+                width: 110px;
+                max-width: 110px;
+                text-align: right;
+            }
         }
 
         .personalLeftCol {
             float:left;
             width:450px;
 
-            .fieldContain {
-                width:100%;
-                height:27px;
-                @include clearfix;
-                float:left;
+            input[type="text"], 
+            input[type="email"], 
+            input[type="password"],
+            input[type="tel"] {
+                width:340px;
+                height:22px;
+                float: left;
+            }
 
+            .fieldContain {
                 &.address, 
                 &.birthday {
                     margin-top:30px;
                 }
-            }
 
-            input {
-                float: left;
-                
-                &[type=radio] {
-                    width:25px;
+                &.citystate {
+                    input[type="text"] {
+                        width:197px;
+                    }
+
+                    .selectBox {
+                        width:135px;
+                        margin-left:7px;
+                    }
+
+                    .selectboxit-container .selectboxit {
+                        width: 135px !important;
+                    }
                 }
-            }
 
-            .selectboxit-container .selectboxit {
-                width: 325px !important;
-            }
+                &.birthday {
+                    .selectBox {
+                        &.birthdayYear {
+                            width:166px;
+                            // margin-left:7px;
 
-            .selectBox {
-                position: relative;
-                float: left;
-            }
-        }
+                            .selectboxit-container .selectboxit {
+                                width: 166px !important;
+                            }
+                        }
 
-        .personalRightCol{
-            float:right;
-            width:250px;
-            border:1px solid blue;
+                        &.birthdayMonth {
+                            width:166px;
+                            margin-left:7px;
 
-            label {
-                width:104px;
-            }
+                            .selectboxit-container .selectboxit {
+                                width: 166px !important;
+                            }
+                        }
+                    }
 
-            selectboxit-container .selectboxit {
-                width: 285px !important;
-            }
-
-            .selectBox {
-                position: relative;
-                float: left;
-                width:295px;
+                }
             }
         }
 
@@ -447,37 +473,29 @@
         }
 
         &.calendarSync {
-            input {
-                width:694px;
+            input[type="text"] {
+                width:706px;
+                height:20px;
+                float: left;
             }
-
         }
     }
 
     @include clearfix;
 
-    label
-    {
-        float: left;   
-        padding: 4px 5px 0 0; 
-        width: 110px;
-        max-width: 110px;
-        text-align: right;
-    }
-
     input
     {
-        width: 200px;
-        float: left;
-        margin:0;
-        height: 20px;
+       //  width: 200px;
+       // float: left;
+       //  margin:0;
+       // height: 20px;
         color: $TPGrey3;
     }
 
     input[type="radio"]
     {
-        width: 20px;
-        // margin: -4px 0 0 0;
+        // width: auto;
+       //  margin: -4px 0 0 0;
     }
 
     input[type="checkbox"]
@@ -570,19 +588,6 @@
         padding-left: 5px;
     }
 
-    .radiotext {
-        display: inline-block;
-        margin-top:3px;
-    }
-
-    .genderRadioButtonRow
-    {
-        width: 75px;
-        margin-bottom:10px;
-    }
-
-
-
     .accountSettings
     {
         // margin: 10px 0 5px 0;
@@ -611,33 +616,18 @@
         margin-left: 5px;
     }
 
-    .ical
-    {
-        width: 270px;
+
+    .selectboxit-container .selectboxit {
+        width: 340px !important;
     }
 
-    .selectboxit-container .selectboxit 
-    {
-        width: 295px !important;
-    }
-
-    .selectBox
-    {
+    .selectBox {
         position: relative;
         float: left;
         width: 200px;
     }
 
-    .country, .timeZone, .state
-    {
-        .selectboxit-container .selectboxit 
-        {
-            width: 295px !important;
-        }
-    }
-
-    .selectboxit-list
-    {
+    .selectboxit-list {
         max-height: 350px;
         @include nice-scrollbar;
     }

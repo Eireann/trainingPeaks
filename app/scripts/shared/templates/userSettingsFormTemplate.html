@@ -5,32 +5,22 @@
     <div class="personalLeftCol">
         
         <div class="fieldContain">
-            <label>{{$ "FirstName" }}</label>
+            <label class="fieldTitle">{{$ "FirstName" }}</label>
             <input data-modelname="user" type="text" name="firstName" />
         </div>
 
         <div class="fieldContain">
-            <label>{{$ "LastName" }}</label>
+            <label class="fieldTitle">{{$ "LastName" }}</label>
             <input data-modelname="user" type="text" name="lastName" />
         </div>
 
         <div class="fieldContain">
-            <label>{{$ "Username" }}</label>
-            <label class="labelbold">{{ userName }}</label>
+            <label class="fieldTitle">{{$ "Email" }}</label>
+            <input data-modelname="user" type="email" name="email" />
         </div>
 
         <div class="fieldContain">
-            <label>{{$ "Password" }}</label>
-            <input type="password" name="password" data-modelname="password" />
-        </div>
-
-        <div class="fieldContain">
-            <label>{{$ "RetypePassword" }}</label>
-            <input type="password" name="retypePassword" data-modelname="password" />
-        </div>
-
-        <div class="fieldContain">
-            <label>{{$ "AthleteType" }}</label>
+            <label class="fieldTitle">{{$ "AthleteType" }}</label>
             <div class="selectBox">
                  <select data-modelname="account" name="athleteTypeValue" >
             
@@ -42,40 +32,45 @@
         </div>
 
         <div class="fieldContain">
-            <label>{{$ "Gender" }}</label>
-            <label class="radioButtonRow genderRadioButtonRow">
-                <input data-modelname="user" type="radio" name="gender" value="m"/>
-                <span class="radiotext">Male</span>
-            </label>
-            
-            <label class="radioButtonRow genderRadioButtonRow">
-                <input data-modelname="user" type="radio" name="gender" value="f"/>
-                <span class="radiotext">Female</span>
-            </label>
+            <label class="fieldTitle"></label>
+             <div class="selectBox">
+                 <select data-modelname="user" name="gender" >
+                    <option value="m">Male</option>
+                    <option value="f">Female</option>
+                </select>
+            </div>
+        </div>
+
+
+        <div class="fieldContain">
+            <label class="fieldTitle">{{$ "Username" }}</label>
+            <label class="labelbold">{{ userName }}</label>
         </div>
 
         <div class="fieldContain">
-            <label>{{$ "Email" }}</label>
-            <input data-modelname="user" type="email" name="email" />
+            <label class="fieldTitle">{{$ "Password" }}</label>
+            <input type="password" name="password" data-modelname="password" />
+        </div>
+
+        <div class="fieldContain">
+            <label class="fieldTitle">{{$ "RetypePassword" }}</label>
+            <input type="password" name="retypePassword" data-modelname="password" />
         </div>
 
         <div class="fieldContain address">
-            <label>{{$ "Address" }} 1</label>
+            <label class="fieldTitle">{{$ "Address" }} 1</label>
             <input data-modelname="user" type="text" name="address" />
         </div>
 
         <div class="fieldContain">
-            <label>{{$ "Address" }} 2</label>
+            <label class="fieldTitle">{{$ "Address" }} 2</label>
             <input data-modelname="user" type="text" name="address2" />
         </div>
 
-        <div class="fieldContain">
-            <label>{{$ "City" }}</label>
+        <div class="fieldContain citystate">
+            <label class="fieldTitle">{{$ "City" }}</label>
             <input data-modelname="user" type="text" name="city" />
-        </div>
-  
-        <div class="fieldContain">
-            <label>{{$ "State" }}</label>
+
             <div class="selectBox state cf">
                 <select data-modelname="user" name="state">
                 {{#each states}}
@@ -86,12 +81,12 @@
         </div>
   
         <div class="fieldContain">
-            <label>{{$ "ZipCode" }}</label>
+            <label class="fieldTitle">{{$ "ZipCode" }}</label>
             <input data-modelname="user" type="text" name="zipCode" />
         </div>
 
         <div class="fieldContain">
-            <label>{{$ "Country" }}</label>
+            <label class="fieldTitle"></label>
             <div class="selectBox country cf">
                 <select data-modelname="user" name="country" >
                 {{#each countries}}
@@ -100,20 +95,43 @@
                 </select>
             </div>
         </div>
+        
+        <div class="fieldContain">
+            <label class="fieldTitle"></label>
+            <div class="selectBox timeZone">
+                <select data-modelname="user" name="timeZone" >
+                {{#each timeZones }}
+                    <option value="{{ key }}">{{ value }}</option>
+                {{/each}}
+                </select>
+            </div>
+        </div>
 
         <div class="fieldContain">
-            <label>{{$ "Phone" }}</label>
+            <label class="fieldTitle">{{$ "Phone" }}</label>
             <input data-modelname="user" type="tel" name="phone" />
         </div>
 
         <div class="fieldContain">
-            <label>{{$ "CellPhone" }}</label>
+            <label class="fieldTitle">{{$ "CellPhone" }}</label>
             <input data-modelname="user" type="tel" name="cellPhone" />
         </div>
 
         <div class="fieldContain birthday">
-            <label>{{$ "Birthday" }}</label>
-            <input data-modelname="user" type="text" data-format="date" name="birthday" class="datepicker" />
+            <label class="fieldTitle">{{$ "Birthday" }}</label>
+            <div class="selectBox birthdayYear">
+                 <select data-modelname="user" name="birthdayYear" >
+                    <option value="m">1900</option>
+                    <option value="f">1901</option>
+                </select>
+            </div>
+
+            <div class="selectBox birthdayMonth">
+                 <select data-modelname="user" name="birthdayMonth" >
+                    <option value="0">January</option>
+                    <option value="0">February</option>
+                </select>
+            </div>
         </div>
     </div>
 
@@ -137,44 +155,34 @@
 
 <div class="userSettingsPersonalSection">
     <h2 class="accountSettingsSectionTitle">{{$ "AccountSettings" }}</h2>
-    <div class="row">
-        <label>{{$ "AccountType" }}</label>
+    
+    <div class="fieldContain">
+        <label class="fieldTitle">{{$ "AccountType" }}</label>
         <label class="labelbold">{{ userType }}</label>
     </div>
 
-    <div class="row">
-        <label>{{$ "Units" }}</label>
-        <label class="radioButtonRow">
+    <div class="fieldContain">
+        <label class="fieldTitle">{{$ "Units" }}</label>
+        <label class="clickable radio">
             <input data-modelname="user" data-format="number" type="radio" name="units" value="1" />
-            <span class="radiotext">English</span>
+            English
         </label>
-        <label class="radioButtonRow">
+        <label class="clickable radio">
             <input data-modelname="user" data-format="number" type="radio" name="units" value="2" />
-            <span class="radiotext">Metric</span>
+            Metric
         </label>
     </div>
 
-    <div class="row">
-        <label>{{$ "DateFormat" }}</label>
-        <label class="radioButtonRow">
+    <div class="fieldContain">
+        <label class="fieldTitle">{{$ "DateFormat" }}</label>
+        <label class="clickable radio">
             <input data-modelname="user" type="radio" name="dateFormat" value="mdy" />
-            <span class="radiotext"> MM/DD/YY</span>
+            MM/DD/YY
         </label>
-        <label class="radioButtonRow">
+        <label class="clickable radio">
             <input data-modelname="user" type="radio" name="dateFormat" value="dmy" />
-            <span class="radiotext">DD/MM/YY</span>
+            DD/MM/YY
         </label>
-    </div>
-
-    <div class="row">
-        <label>{{$ "TimeZone" }}</label>
-        <div class="selectBox timeZone">
-            <select data-modelname="user" name="timeZone" >
-            {{#each timeZones }}
-                <option value="{{ key }}">{{ value }}</option>
-            {{/each}}
-            </select>
-        </div>
     </div>
 </div>
 
@@ -185,18 +193,18 @@
     {{#with iCalendarKeys }}
         <h3>{{$ "CalendarSync" }}</h3>
 
-            <div class="row">
-                <label>{{$ "WorkoutsOnly" }}</label>
+            <div class="fieldContain">
+                <label class="fieldTitle">{{$ "WorkoutsOnly" }}</label>
                 <input class="ical" type="text" readonly name="iCalendarKeys.workoutsOnly" value="{{ webcalRoot }}{{ workoutsOnly }}.ics"/>
             </div>
          
-            <div class="row">
-                <label>{{$ "MealsOnly" }}</label>
+            <div class="fieldContain">
+                <label class="fieldTitle">{{$ "MealsOnly" }}</label>
                 <input class="ical" type="text" readonly name="iCalendarKeys.mealsOnly" value="{{ webcalRoot }}{{ mealsOnly }}.ics" />
             </div>       
 
-            <div class="row">
-                <label>{{$ "WorkoutsAndMeals" }}</label>
+            <div class="fieldContain">
+                <label class="fieldTitle">{{$ "WorkoutsAndMeals" }}</label>
                 <input class="ical" type="text" readonly name="iCalendarKeys.workoutsAndMeals" value="{{ webcalRoot }}{{ workoutsAndMeals }}.ics" />
             </div>
 
@@ -207,20 +215,20 @@
 <div class="userSettingsPersonalSection email">
     <h2 class="accountSettingsSectionTitle">{{$ "EmailOptions" }}</h2>
 
-    <div class="row">
-        <label class="checkBoxRow"> {{$ "emailPMNotificationSetting" }}<input data-modelname="account" type="checkbox" name="enablePrivateMessageNotifications"> </label>
+    <div class="fieldContain">
+        <label class="checkBoxRow clickable"><input data-modelname="account" type="checkbox" name="enablePrivateMessageNotifications"> {{$ "emailPMNotificationSetting" }} </label>
     </div>
 
-    <div class="row">
-        <label class="checkBoxRow"> {{$ "postActivityNotificationSetting" }}<input data-modelname="athlete" type="checkbox" name="enableWorkoutCommentNotification"> </label>
+    <div class="fieldContain">
+        <label class="checkBoxRow clickable"><input data-modelname="athlete" type="checkbox" name="enableWorkoutCommentNotification"> {{$ "postActivityNotificationSetting" }}</label>
     </div>
 
-    <div class="row">
-        <label class="checkBoxRow">{{$ "plannedWorkoutsNotificationSetting" }}<input data-modelname="athlete" type="checkbox" name="enableVirtualCoachEmails"></label>
+    <div class="fieldContain">
+        <label class="checkBoxRow clickable"><input data-modelname="athlete" type="checkbox" name="enableVirtualCoachEmails"> {{$ "plannedWorkoutsNotificationSetting" }}</label>
     </div>
 
-    <div class="row">
-        <label>{{$ "deliveryTime"}}</label>
+    <div class="fieldContain">
+        <label class="fieldTitle">{{$ "deliveryTime"}}</label>
         <div class="selectBox">
             <select data-modelname="athlete" name="virtualCoachEmailHour" >
             {{#each hours}}
@@ -232,8 +240,8 @@
 
     <p class="small deliveryTimeHelpText">{{$ "plannedWorkoutsNotificationTimeHelpText" }}</p>
 
-    <div class="row">
-        <label class="checkBoxRow"><input data-modelname="account" name="allowMarketingEmails" type="checkbox"> {{$ "newsletterNotificationSetting" }}</label>
+    <div class="fieldContain">
+        <label class="checkBoxRow clickable"><input data-modelname="account" name="allowMarketingEmails" type="checkbox"> {{$ "newsletterNotificationSetting" }}</label>
     </div>
 
 </div>
