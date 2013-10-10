@@ -382,7 +382,8 @@ function(
         {
             if (!this.zoomed)
             {
-                this.stateModel.get("ranges").reset();
+                this.stateModel.get("ranges").remove(this.selectedWorkoutStatsForRange);
+                this.selectedWorkoutStatsForRange = null;
             }
         },
 

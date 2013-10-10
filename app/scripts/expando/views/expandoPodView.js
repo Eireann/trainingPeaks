@@ -30,8 +30,6 @@ function(
             template: expandoPodTemplate
         },
 
-        className: "expandoPod",
-
         initialize: function(options)
         {
             this.childView = options.childView;

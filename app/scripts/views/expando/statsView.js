@@ -21,8 +21,13 @@ function(
             template: statsTemplate
         },
 
-        initialize: function()
+        initialize: function(options)
         {
+            this.stateModel = options.stateModel;
+
+            this.listenTo(this.stateModel.get("ranges"), "add", _.bind(this._onRangeAdded, this));
+            this.listenTo(this.stateModel.get("ranges"), "reset", _.bind(this._onRangesReset, this));
+
             this.on("controller:rangeselected", this.onRangeSelected, this);
             this.on("controller:unselectall", this.onUnSelectAll, this);
             this.model.get("detailData").on("change", this.reset, this);
@@ -119,24 +124,23 @@ function(
             return this.allPossibleFields;
         },
         
-        onRangeSelected: function (workoutStatsForRange, options, triggeringView)
+        _onRangeAdded: function(range, ranges, options)
         {
-            if (!options)
-                return;
-            
+            console.log("RANGE stats", range, ranges, options);
+
             // we're trying to add or remove it from multi selection - don't show it in stats
             if ((options.addToSelection || options.removeFromSelection) && !options.displayStats)
             {
                 return;
             }
 
-            this.renderWorkoutStats(workoutStatsForRange);
+            this.renderWorkoutStats(range);
 
             // if it hasn't loaded, watch for changes
             this.stopWaitingForStats();
-            if (!workoutStatsForRange.hasLoaded)
+            if (!range.hasLoaded)
             {
-                this.waitForStats(workoutStatsForRange);
+                this.waitForStats(range);
             }
         },
 
@@ -280,11 +284,20 @@ function(
             }
         },
 
-        onUnSelectAll: function()
+        _onRangesReset: function(ranges, options)
         {
+            var self = this;
+
             this.selectedRangeData = null;
             this.stopWaitingForStats();
             this.render();
+
+            console.log("STATS RESET", ranges, options);
+
+            ranges.each(function(range)
+            {
+                self._onRangeAdded(range, ranges, options);
+            });
         },
 
         addCommonWorkoutFields: function(lapData)

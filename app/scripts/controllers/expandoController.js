@@ -297,10 +297,6 @@ function(
         {
             _.each(this.views, function(view, key)
             {
-                view.on("itemview:rangeselected", this.onRangeSelected, this);
-                view.on("itemview:unselectall", this.onUnSelectAll, this);
-                view.on("itemview:graphhover", this.onGraphHover, this);
-                view.on("itemview:graphleave", this.onGraphLeave, this);
                 view.on("itemview:resize", this.onViewResize, this);
                 view.on("itemview:resizerDrag", this.onResizerDrag, this);
                 view.on("itemview:requestClose", this.onRequestViewClose, this);
@@ -312,10 +308,6 @@ function(
         {
             _.each(this.views, function(view, key)
             {
-                view.off("itemview:rangeselected", this.onRangeSelected, this);
-                view.off("itemview:unselectall", this.onUnSelectAll, this);
-                view.off("itemview:graphhover", this.onGraphHover, this);
-                view.off("itemview:graphleave", this.onGraphLeave, this);
                 view.off("itemview:resizerDrag", this.onResizerDrag, this);
                 view.off("itemview:requestClose", this.onRequestViewClose, this);
                 view.on("resize", this.onViewResize, this);
@@ -335,48 +327,6 @@ function(
             this.views.graphView.stashHeight(offsetRatio);
             this.views.mapAndGraphResizerView.setTop(offsetRatio);
             this.onViewResize();
-        },
-
-        onRangeSelected: function (itemview, workoutStatsForRange, options, triggeringView)
-        {
-
-            this.views.packeryView.children.each(function (view, key)
-            {
-                view.trigger("controller:rangeselected", workoutStatsForRange, options, triggeringView);
-            }, this);
-
-            if (!workoutStatsForRange.hasLoaded)
-            {
-                workoutStatsForRange.fetch().done(function()
-                {
-                    workoutStatsForRange.hasLoaded = true;
-                    // don't retrigger the views, the views can decide if they want to listen or not
-                });
-            }
-        },
-        
-        onGraphHover: function (itemview, options)
-        {
-            this.views.packeryView.children.each(function(view, key)
-            {
-                view.trigger("controller:graphhover", options);
-            }, this);
-        },
-
-        onGraphLeave: function()
-        {
-            this.views.packeryView.children.each(function (view, key)
-            {
-                view.trigger("controller:graphleave");
-            }, this);
-        },
-        
-        onUnSelectAll: function()
-        {
-            this.views.packeryView.children.each(function (view, key)
-            {
-                view.trigger("controller:unselectall");
-            }, this);
         },
 
         watchForWindowResize: function()
