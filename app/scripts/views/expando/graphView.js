@@ -30,7 +30,7 @@ function(
 {
     return TP.ItemView.extend(
     {
-        className: "graphContainer",
+        className: "graphContainer expandoGraphPod",
 
         template:
         {
@@ -79,7 +79,6 @@ function(
 
                 this.watchForModelChanges();
                 this.watchForControllerEvents();
-                this.watchForControllerResize();
 
                 setImmediate(function()
                 {
@@ -116,7 +115,6 @@ function(
                 return;
             
             this.$plot = this.$("#plot");
-            this.$plot.height(this.getDesiredPlotHeight());
             this.drawPlot();
         },
 
@@ -552,46 +550,6 @@ function(
             this.selections = [];
         },
 
-        getDesiredPlotHeight: function()
-        {
-            if (this.graphHeight)
-                return this.graphHeight - 50;
-            else
-                return this.dataParser.hasLatLongData ? 365 : 565;
-        },
-
-        watchForControllerResize: function ()
-        {
-            this.on("controller:resize", this.setViewSize, this);
-            this.on("close", function ()
-            {
-                this.off("controller:resize", this.setViewSize, this);
-            }, this);
-        },
-
-        setViewSize: function (containerHeight, containerWidth)
-        {
-            var bottomMargin = 10;
-            var heightPercent = this.offsetRatio ? 1-this.offsetRatio : 0.5;
-            var graphHeight = Math.floor((containerHeight - bottomMargin) * heightPercent);
-            
-            this.graphHeight = graphHeight;
-            this.$el.closest("#expandoGraphRegion").height(graphHeight);
-
-            var topPadding = 15;
-            var toolbarHeight = 35;
-
-            this.$el.height(graphHeight - topPadding);
-            this.plotHeight = graphHeight - topPadding - toolbarHeight;
-            this.repaintHeight();
-        },
-        repaintHeight: function()
-        {
-            if (this.$plot)
-            {
-                this.$plot.height(this.plotHeight);
-            }
-        },
         stashHeight: function(offsetRatio)
         {
             this.offsetRatio = offsetRatio;

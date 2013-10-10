@@ -144,67 +144,22 @@
     @include
     nice-scrollbar;
 
-    &.graphHidden
+    .expandoMapPod
     {
-        #expandoGraphRegion
-        {
-            display: none;
-        }
-    }
-
-    &.mapHidden
-    {
-        #expandoMapRegion
-        {
-            display: none;
-        }
-
-        #expandoGraphRegion
-        {
-            height: 600px;
-
-            #plot
-            {
-                height: 565px;
-            }
-        }
-    }
-
-    #expandoMapRegion
-    {
-        height: 320px;
-        width: 100%;
 
         #expandoMap
         {
-            height: 320px;
+            height: 100%;
             width: 100%;
         }
 
     }
 
-    #expandoMapAndGraphResizerRegion
-    {
-        height:11px;
-        width:100%;
-        left:0;
-        
-        background: center center no-repeat $TPGrey1;
-        @extend %resizeIndicatorBG;
-        
-        cursor:row-resize;
-        position:absolute;
-        border-top:1px solid #c2c3c4;
-        border-bottom:1px solid #c2c3c4;
-    }
-
-    #expandoGraphRegion
+    .expandoGraphPod
     {
         padding-top: 15px;
         padding-left: 10px;
         padding-right: 10px;
-        height: 400px;
-        width: 100%;
         overflow:hidden;
         #graphToolbar
         {
@@ -213,7 +168,7 @@
 
         #plot
         {
-            height: 365px;
+            height: calc(100% - 35%);
         }
 
         .graphToolbar
@@ -443,7 +398,7 @@
         }
     }
     
-    #expandoLapsSplitsRegion {
+    .expandoLapsSplitsPod {
         float:left;
         padding:55px 10px;
         width:100%;
@@ -462,7 +417,7 @@
         }
     }
     
-    #expandoChartsRegion {
+    .expandoPackeryRegion {
         width: 100%;
         padding: 0 12px;
         float: left;
@@ -628,9 +583,6 @@
 
     #expandoLapsRegion
     {
-        overflow-y: visible;
-        //@include nice-scrollbar;
-
         .controls
         {
             margin-left: 20px;
@@ -739,7 +691,7 @@
     }
 }
 
-#expandoChartsRegion
+.expandoPackeryRegion
 {
     &, .packeryCollection
     {

@@ -21,12 +21,16 @@ function(
         initialize: function(options)
         {
             this.childView = options.childView;
+            this.on("controller:resize", _.bind(this.childView.trigger, this.childView, "controller:resize"));
         },
 
         onRender: function()
         {
             var self = this;
-            this.childView.setElement(this.$(".expandoPodContent"));
+            var $child = this.$(".expandoPodContent");
+            this.childView.setElement($child);
+            $child.addClass(this.childView.className);
+
             this.childView.render();
         },
 

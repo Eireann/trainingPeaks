@@ -68,16 +68,22 @@ function(
             this.closeViews();
             this.preFetchDetailData();
 
-            this.views.graphView = new GraphView({ model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise, dataParser: this.dataParser });
-            this.views.mapView = new MapView({ model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise, dataParser: this.dataParser });
+            // this.views.graphView = new GraphView({ model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise, dataParser: this.dataParser });
+            // this.views.mapView = new MapView({ model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise, dataParser: this.dataParser });
             this.views.statsView = new StatsView({ model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise });
             this.views.lapsView = new LapsView({ model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise });
             // this.views.chartsView = new ChartsView({ model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise });
-            this.views.mapAndGraphResizerView = new MapAndGraphResizerView({model: this.model});
-            this.views.lapsSplitsView = new LapsSplitsView({model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise});
+            // this.views.mapAndGraphResizerView = new MapAndGraphResizerView({model: this.model});
+            // this.views.lapsSplitsView = new LapsSplitsView({model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise});
 
             var podsCollection = new TP.Collection(
             [{
+                podType: 1 // Map
+            }, {
+                podType: 2 // Graph
+            }, {
+                podType: 3 // Laps & Splits
+            }, {
                 podType: 4, // Time In Zones
                 variant: 1, // Heart Rate
             }, {
@@ -100,13 +106,14 @@ function(
             var data =
             {
                 workout: this.model,
-                detailDataPromise: this.prefetchConfig.detailDataPromise
+                detailDataPromise: this.prefetchConfig.detailDataPromise,
+                dataParser: this.dataParser
             };
 
             var $sizer = $("<div class='sizer'></div>");
             console.log($sizer[0]);
 
-            this.views.chartsView = new PackeryCollectionView({
+            this.views.packeryView = new PackeryCollectionView({
                 itemView: expandoPodBuilder.buildView,
                 collection: podsCollection,
                 itemViewOptions: { data: data },
@@ -158,12 +165,7 @@ function(
 
             setImmediate(function()
             {
-                self.layout.chartsRegion.show(self.views.chartsView);
-                self.layout.lapsSplitsRegion.show(self.views.lapsSplitsView);
-            });
-
-            setImmediate(function()
-            {
+                self.layout.packeryRegion.show(self.views.packeryView);
                 self.onViewResize();
             });
         },
@@ -396,14 +398,13 @@ function(
             {
                 return;
             }
-            var containerHeight = this.layout.$el.parent().height();
-            var mapAndChartsContainerWidth = this.layout.$("#expandoLeftColumn").width();
+
             _.each(this.views, function(view)
             {
-                view.trigger("controller:resize", containerHeight, mapAndChartsContainerWidth);
+                view.trigger("controller:resize");
             }, this);
 
-            this.views.chartsView.layout();
+            this.views.packeryView.layout();
         }
     });
 });

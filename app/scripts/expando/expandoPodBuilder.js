@@ -9,7 +9,10 @@ define(
     "views/charts/speedTimeInZonesChart",
     "views/charts/heartRatePeaksChart",
     "views/charts/powerPeaksChart",
-    "views/charts/speedPeaksChart"
+    "views/charts/speedPeaksChart",
+    "views/expando/graphView",
+    "views/expando/mapView",
+    "views/workout/lapsSplitsView"
 ],
 function(
     TP,
@@ -21,12 +24,46 @@ function(
     SpeedTimeInZonesChartView,
     HRPeaksChartView,
     PowerPeaksChartView,
-    SpeedPeaksChartView
+    SpeedPeaksChartView,
+    GraphView,
+    MapView,
+    LapsSplitsView
 )
 {
 
     var viewsByType =
     {
+        1: function(options)
+        {
+            return new MapView(
+            {
+                model: options.data.workout,
+                detailDataPromise: options.data.detailDataPromise,
+                dataParser: options.data.dataParser
+            });
+
+        },
+
+        2: function(options)
+        {
+            return new GraphView(
+            {
+                model: options.data.workout,
+                detailDataPromise: options.data.detailDataPromise,
+                dataParser: options.data.dataParser
+            });
+
+        },
+
+        3: function(options)
+        {
+            return new LapsSplitsView(
+            {
+                model: options.data.workout,
+                detailDataPromise: options.data.detailDataPromise
+            });
+
+        },
 
         4: function(options)
         {

@@ -13,6 +13,9 @@ function (
 
     return TP.ItemView.extend(
     {
+
+        className: "expandoMapPod",
+
         template:
         {
             type: "handlebars",
@@ -262,14 +265,8 @@ function (
             }, this);
         },
 
-        setViewSize: function (containerHeight, containerWidth, overrideMinHeight)
+        setViewSize: function (containerHeight)
         {
-            var bottomMargin = 0;
-            var mapHeight = Math.floor((containerHeight * (this.offsetRatio || 0.5)) - bottomMargin);
-
-            this.$el.closest("#expandoMapRegion").height(mapHeight);
-            this.$el.height(mapHeight);
-            this.$("#expandoMap").height(mapHeight);
             if (this.map)
             {
                 this.map.invalidateSize();

@@ -13,7 +13,10 @@ function(
     )
 {
     return TP.ItemView.extend(
-    {        
+    {
+
+        className: "expandoLapsSplitsPod",
+
         initialize: function(options)
         {
             if (!options.model)
