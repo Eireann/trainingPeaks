@@ -12,7 +12,8 @@
     "views/expando/chartsView",
     "views/expando/mapAndGraphResizerView",
     "views/workout/lapsSplitsView",
-    "expando/expandoPodBuilder"
+    "expando/expandoPodBuilder",
+    "expando/models/expandoStateModel"
 ],
 function(
     setImmediate,
@@ -27,7 +28,8 @@ function(
     ChartsView,
     MapAndGraphResizerView,
     LapsSplitsView,
-    expandoPodBuilder
+    expandoPodBuilder,
+    ExpandoStateModel
 )
 {
     return TP.Controller.extend(
@@ -68,13 +70,10 @@ function(
             this.closeViews();
             this.preFetchDetailData();
 
-            // this.views.graphView = new GraphView({ model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise, dataParser: this.dataParser });
-            // this.views.mapView = new MapView({ model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise, dataParser: this.dataParser });
-            this.views.statsView = new StatsView({ model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise });
-            this.views.lapsView = new LapsView({ model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise });
-            // this.views.chartsView = new ChartsView({ model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise });
-            // this.views.mapAndGraphResizerView = new MapAndGraphResizerView({model: this.model});
-            // this.views.lapsSplitsView = new LapsSplitsView({model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise});
+            var stateModel = new ExpandoStateModel();
+
+            this.views.statsView = new StatsView({ model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise, stateModel: stateModel });
+            this.views.lapsView = new LapsView({ model: this.model, detailDataPromise: this.prefetchConfig.detailDataPromise, stateModel: stateModel });
 
             var podsCollection = new TP.Collection(
             [{
@@ -107,11 +106,11 @@ function(
             {
                 workout: this.model,
                 detailDataPromise: this.prefetchConfig.detailDataPromise,
-                dataParser: this.dataParser
+                dataParser: this.dataParser,
+                stateModel: stateModel
             };
 
             var $sizer = $("<div class='sizer'></div>");
-            console.log($sizer[0]);
 
             this.views.packeryView = new PackeryCollectionView({
                 itemView: expandoPodBuilder.buildView,
@@ -298,13 +297,13 @@ function(
         {
             _.each(this.views, function(view, key)
             {
-                view.on("rangeselected", this.onRangeSelected, this);
-                view.on("unselectall", this.onUnSelectAll, this);
-                view.on("graphhover", this.onGraphHover, this);
-                view.on("graphleave", this.onGraphLeave, this);
-                view.on("resize", this.onViewResize, this);
-                view.on("resizerDrag", this.onResizerDrag, this);
-                view.on("requestClose", this.onRequestViewClose, this);
+                view.on("itemview:rangeselected", this.onRangeSelected, this);
+                view.on("itemview:unselectall", this.onUnSelectAll, this);
+                view.on("itemview:graphhover", this.onGraphHover, this);
+                view.on("itemview:graphleave", this.onGraphLeave, this);
+                view.on("itemview:resize", this.onViewResize, this);
+                view.on("itemview:resizerDrag", this.onResizerDrag, this);
+                view.on("itemview:requestClose", this.onRequestViewClose, this);
             }, this);
             this.on("close", this.stopWatchingViewEvents, this);
 
@@ -313,12 +312,12 @@ function(
         {
             _.each(this.views, function(view, key)
             {
-                view.off("rangeselected", this.onRangeSelected, this);
-                view.off("unselectall", this.onUnSelectAll, this);
-                view.off("graphhover", this.onGraphHover, this);
-                view.off("graphleave", this.onGraphLeave, this);
-                view.off("resizerDrag", this.onResizerDrag, this);
-                view.off("requestClose", this.onRequestViewClose, this);
+                view.off("itemview:rangeselected", this.onRangeSelected, this);
+                view.off("itemview:unselectall", this.onUnSelectAll, this);
+                view.off("itemview:graphhover", this.onGraphHover, this);
+                view.off("itemview:graphleave", this.onGraphLeave, this);
+                view.off("itemview:resizerDrag", this.onResizerDrag, this);
+                view.off("itemview:requestClose", this.onRequestViewClose, this);
                 view.on("resize", this.onViewResize, this);
             }, this);
 
@@ -338,10 +337,10 @@ function(
             this.onViewResize();
         },
 
-        onRangeSelected: function (workoutStatsForRange, options, triggeringView)
+        onRangeSelected: function (itemview, workoutStatsForRange, options, triggeringView)
         {
 
-            _.each(this.views, function(view, key)
+            this.views.packeryView.children.each(function (view, key)
             {
                 view.trigger("controller:rangeselected", workoutStatsForRange, options, triggeringView);
             }, this);
@@ -356,9 +355,9 @@ function(
             }
         },
         
-        onGraphHover: function (options)
+        onGraphHover: function (itemview, options)
         {
-            _.each(this.views, function(view, key)
+            this.views.packeryView.children.each(function(view, key)
             {
                 view.trigger("controller:graphhover", options);
             }, this);
@@ -366,7 +365,7 @@ function(
 
         onGraphLeave: function()
         {
-            _.each(this.views, function (view, key)
+            this.views.packeryView.children.each(function (view, key)
             {
                 view.trigger("controller:graphleave");
             }, this);
@@ -374,7 +373,7 @@ function(
         
         onUnSelectAll: function()
         {
-            _.each(this.views, function (view, key)
+            this.views.packeryView.children.each(function (view, key)
             {
                 view.trigger("controller:unselectall");
             }, this);

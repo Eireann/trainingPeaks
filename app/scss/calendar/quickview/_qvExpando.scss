@@ -702,19 +702,124 @@
 
 .expandoPod
 {
-    width: calc(16.6% * 3 - 10px);
-    height: calc(16.6% * 3 - 10px);
+    background: #ccc;
+
+    > .expandoPodHeader
+    {
+        height: 27px;
+        background: #666;
+        position: relative;
+    }
+
+    > .expandoPodContent
+    {
+        height: 100%;
+        width: 100%;
+        overflow: auto;
+        @include nice-scrollbar;
+        height: calc(100% - 27px);
+    }
+
+    .expandoPodButtons
+    {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        width: 100px;
+
+        .settings, .expand, .close, .collapse
+        {
+            width: 12px;
+            height: 12px;
+            position: absolute;
+            top: 0px;
+        }
+
+        .settings
+        {
+            width: 11px;
+            right: 43px;
+            background: transparent no-repeat 0 0;
+            @extend %chartIconsSpriteBG;
+            cursor:pointer;
+
+            &:hover {
+                background-position: 0 -17px;
+            }
+
+            &:active {
+                background-position: 0 -17px;
+            }
+        }
+
+        .expand
+        {
+            right: 21px;
+            background: transparent no-repeat -17px 0;
+            @extend %chartIconsSpriteBG;
+            cursor:pointer;
+
+            &:hover {
+                background-position: -17px -17px;
+            }
+
+            &:active {
+                background-position: -17px -17px;
+            }
+        }
+
+        .collapse 
+        {
+            display: none;
+            right: 0px;
+            cursor: pointer;
+            background: transparent no-repeat -34px 0;
+            @extend %chartIconsSpriteBG;
+
+            &:hover {
+                background-position: -34px -17px;
+            }
+
+            &:active {
+                background-position: -34px 0px;
+            }
+
+        }
+
+        .close
+        {
+            right: 0px;
+            background: transparent no-repeat -51px 0;
+            @extend %chartIconsSpriteBG;
+            cursor:pointer;
+
+            &:hover {
+                background-position: -51px -17px;
+            }
+
+            &:active {
+                background-position: -51px 0;
+            }
+        }
+    }
 }
 
-.expandoPodContent
+@for $i from 1 through 6
 {
-    height: 100%;
-    width: 100%;
-    overflow: hidden;
+    .expandoPod[data-rows="#{$i}"]
+    {
+        height: calc(#{percentage($i / 6)} - 10px);
+    }
+
+    .expandoPod[data-cols="#{$i}"]
+    {
+        width: calc(#{percentage($i / 6)} - 10px);
+    }
+
 }
 
 .sizer
 {
-    width: calc(16.6% - 10px);
-    height: calc(16.6% - 10px);
+    @extend .expandoPod[data-rows="1"];
+    @extend .expandoPod[data-cols="1"];
 }

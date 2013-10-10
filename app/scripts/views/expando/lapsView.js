@@ -31,8 +31,9 @@ function(
             this.model.off("change", this.render);
         },
 
-        initialize: function()
+        initialize: function(options)
         {
+            this.stateModel = options.stateModel;
             this.initializeCheckboxes(true);
             this.once("render", this.onInitialRender, this);
         },
@@ -360,7 +361,15 @@ function(
                 peakDataItem.name = "Peak " + this.formatPeakName(peakInterval);
                 var statsForRange = this.getWorkoutStatsForRange(peakDataItem);
                 options.dataType = peakType;
-                this.trigger("rangeselected", statsForRange, options, this);
+
+                if(options.removeFromSelection)
+                {
+                    this.stateModel.get("ranges").remove(statsForRange, options);
+                }
+                else
+                {
+                    this.stateModel.get("ranges").add(statsForRange, options);
+                }
             }
         },
 
@@ -403,21 +412,20 @@ function(
             var statsForRange = this.getWorkoutStatsForRange(lapData);
             statsForRange.hasLoaded = true;
 
-            var options = {};
-
             if (target.is("input[type=checkbox]"))
             {
                 if (target.is(":checked"))
                 {
                     options.addToSelection = true;
+                    this.stateModel.get("ranges").add(statsForRange);
                     this.checkboxStates.laps[lapIndex] = true;
                 } else {
                     options.removeFromSelection = true;
+                    this.stateModel.get("ranges").remove(statsForRange);
                     this.checkboxStates.laps[lapIndex] = false;
                 }
             }
 
-            this.trigger("rangeselected", statsForRange, options, this);
             this.highlightListItem(li);
         },
 
@@ -444,18 +452,14 @@ function(
             var statsForRange = this.getWorkoutStatsForRange(lapData);
             statsForRange.hasLoaded = true;
 
-            var options = {};
-
             if (target.is(":checked"))
             {
-                options.addToSelection = true;
+                this.stateModel.get("ranges").add(statsForRange);
                 this.checkboxStates.laps[lapIndex] = true;
             } else {
-                options.removeFromSelection = true;
+                this.stateModel.get("ranges").remove(statsForRange);
                 this.checkboxStates.laps[lapIndex] = false;
             }
-
-            this.trigger("rangeselected", statsForRange, options, this);
         },
 
         onEntireWorkoutClicked: function(e)
@@ -485,22 +489,20 @@ function(
         {
             var target = $(e.target);
 
-            var options = {};
+            var range = this.getEntireWorkoutRange();
 
             if(target.is(":checked"))
             {
-                options.addToSelection = true;
+                this.stateModel.get("ranges").add(range);
                 this.checkboxStates.entireWorkout = true;
             } else
             {
-                options.removeFromSelection = true;
+                this.stateModel.get("ranges").remove(range);
                 this.checkboxStates.entireWorkout = false;
             }
-
-            this.selectEntireWorkout(options);
         },
 
-        selectEntireWorkout: function(options)
+        getEntireWorkoutRange: function()
         {
             var detailData = this.model.get("detailData").toJSON();
             var entireWorkoutData = detailData.totalStats;
@@ -509,7 +511,7 @@ function(
             var statsForRange = this.getWorkoutStatsForRange(entireWorkoutData);
             statsForRange.hasLoaded = true;
 
-            this.trigger("rangeselected", statsForRange, options, this);
+            return statsForRange;
         },
 
         onPeaksClicked: function(e)
@@ -570,11 +572,7 @@ function(
 
         watchForControllerEvents: function()
         {
-            this.on("controller:unselectall", this.onUnSelectAll, this);
-            this.on("close", function()
-            {
-                this.off("controller:unselectall", this.onUnSelectAll, this);
-            }, this);
+            this.listenTo(this.stateModel.get("ranges"), "reset", _.bind(this.onUnSelectAll, this));
         },
 
         getEnabledPeaks: function(selectedPeakType)

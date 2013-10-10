@@ -39,7 +39,8 @@ function(
             {
                 model: options.data.workout,
                 detailDataPromise: options.data.detailDataPromise,
-                dataParser: options.data.dataParser
+                dataParser: options.data.dataParser,
+                stateModel: options.data.stateModel
             });
 
         },
@@ -50,7 +51,8 @@ function(
             {
                 model: options.data.workout,
                 detailDataPromise: options.data.detailDataPromise,
-                dataParser: options.data.dataParser
+                dataParser: options.data.dataParser,
+                stateModel: options.data.stateModel
             });
 
         },
@@ -60,7 +62,8 @@ function(
             return new LapsSplitsView(
             {
                 model: options.data.workout,
-                detailDataPromise: options.data.detailDataPromise
+                detailDataPromise: options.data.detailDataPromise,
+                stateModel: options.data.stateModel
             });
 
         },

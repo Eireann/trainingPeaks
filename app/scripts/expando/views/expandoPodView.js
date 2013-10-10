@@ -1,11 +1,13 @@
 define(
 [
     "underscore",
-    "TP"
+    "TP",
+    "hbs!expando/templates/expandoPodTemplate"
 ],
 function(
     _,
-    TP
+    TP,
+    expandoPodTemplate
 )
 {
 
@@ -14,7 +16,19 @@ function(
 
         className: "expandoPod",
 
-        template: _.template("<div class='expandoPodContent'></div>"),
+        attributes: function()
+        {
+            return {
+                "data-rows": this.model.get("rows") || 3,
+                "data-cols": this.model.get("cols") || 3
+            };
+        },
+
+        template:
+        {
+            type: "handlebars",
+            template: expandoPodTemplate
+        },
 
         className: "expandoPod",
 

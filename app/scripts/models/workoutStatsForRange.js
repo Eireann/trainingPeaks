@@ -25,6 +25,7 @@ function(TP)
 
             if (!this.has("end"))
                 throw new Error("end is required for WorkoutStatsForRange");
+
         },
         
         parse: function(response)

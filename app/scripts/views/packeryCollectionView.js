@@ -187,6 +187,17 @@ function(
                     var cols = Math.round((ui.element.width() + self.packeryOptions.gutter) / width);
                     var rows = Math.round((ui.element.height() + self.packeryOptions.gutter) / height);
 
+                    ui.element.css({
+                        width: "",
+                        height: ""
+                    });
+
+                    ui.element.attr(
+                    {
+                        "data-rows": rows,
+                        "data-cols": cols
+                    });
+
                     console.log(cols, rows);
                 }
             });
