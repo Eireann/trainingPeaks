@@ -87,6 +87,7 @@ body[data-useragent*="MSIE"] .icon
 
 %closeXBG { @include inlineBG("../../assets/images/closeX.png"); }
 %shadowDividerBG { @include inlineBG("../../assets/images/calendarImages/shadow-divider.png"); }
+%dragIndicatorBG { @include inlineBG("../../assets/images/drag-indicator.png"); }
 
 // Retina
 
@@ -132,5 +133,6 @@ body[data-useragent*="MSIE"] .icon
     %spriteHeaderIconsBG { @include inlineRetinaBG("../../assets/images/calendarImages/sprite-header-icons@2x.png"); }
 
     %spritePaperclipBG { @include inlineRetinaBG("../../assets/images/QVImages/sprite-paperclip@2x.png"); }
+    %dragIndicatorBG { @include inlineBG("../../assets/images/drag-indicator@2x.png"); }
 
 }

@@ -1,13 +1,13 @@
 <h3>Speed/Pace Zones - {{ workoutTypeName workoutTypeId "All" }}</h3>
 {{#if workoutTypeId }}<a class="removeWorkoutType">Remove</a>{{/if}}
 
-<div class="zoneSetContain pace">
+<div class="zoneSetContain speed">
 	<fieldset class="zoneSetFieldset">
 		<legend>Threshold Values</legend>
 		<form class="cf">
-		    <label>
+		    <label class="zoneValueContain">
 				<span class="zoneSetTitle">Threshold</span>
-				<input name="threshold" class="numberInput" data-scope="zoneSet" data-format="zoneValue">
+				<input name="threshold" class="numberInput" data-scope="zoneSet" data-format="zoneValue" type="text">
 		    </label>
 
 		    <label class="clickable">
@@ -24,8 +24,10 @@
 </div>
 
 <div class="zoneSetContain">
-    <h3>Auto Calculation</h3>
-    <div class="calculator"></div>
+	<fieldset class="zoneSetFieldset">
+    	<legend>Auto Calculation</legend/>
+    	<div class="calculator"></div>
+	</fieldset>
 </div>
 
 <div class="zones"></div>

@@ -36,7 +36,7 @@
 
     .tabbedLayoutBody {
         width: calc(100% - 142px);
-        padding:0 12px 12px 30px;
+        padding:0 30px 12px 30px;
     }
 
     label
@@ -97,7 +97,7 @@
     .userSettingsContent {
         fieldset {
             border: 1px solid $TPGrey2;
-            padding: 7px 12px 12px 12px;
+            padding: 10px 15px 15px 15px;
             margin: 0;
 
             legend {
@@ -107,7 +107,7 @@
                 font-family: $fontFamilyRegularItalic;
                 padding-left: 5px;
                 padding-right:5px;
-                margin-left: 15px;
+                margin-left: -5px;
                 color: $TPGrey4;               
             }
         }
@@ -122,10 +122,6 @@
             font-size:$fontSizeSmall;
         }
 
-        .addZone {
-            margin-top:10px;
-        }
-
         .removeZone {
             margin-left:4px;
         }
@@ -137,6 +133,7 @@
 
         .addZoneContain {
             margin-bottom:10px;
+            margin-left:15px;
 
             .selectboxit-container {
                 float:left;
@@ -152,23 +149,79 @@
         .zonesConfigGroup {
             margin-top:25px;
 
+            .zoneName, 
+            .minimum,
+            .maximum,
+            .numberInput {
+                height:22px;
+                padding:0 5px;
+                color:$TPGrey3;
+                display: inline-block;
+                margin:0;
+                // border:1px solid red;
+            }
+
+            .zoneName, 
+            .minimum,
+            .maximum {
+                // font-size:$fontSizeSmall;
+            }
+
             .zoneSetFieldset {
-                padding:17px 12px 20px 12px;
+                padding:20px 15px 23px 15px;
+
+                input {
+                    height:22px;
+                }
+                
+                .zoneCalculatorLayoutBody {
+                    .selectBox {
+                        width:205px;
+                        // margin-left:7px;
+                    }
+
+                    .selectboxit-container .selectboxit {
+                        width: 205px !important;
+                    }
+
+                    .calculatorType,
+                    .calculatorDefinition {
+                        float:left;
+                        margin-right:25px;
+                    }
+
+                    .heartrate,
+                    .power,
+                    .speed {
+                        form {
+                            float:left;
+                            // margin-right:25px;
+                            width:auto;
+                        }
+                    }
+
+                    .buttons {
+                        float:left;
+                        margin:0;
+                    }
+                }
             }
 
             .zoneEntry {
-                padding:3px 0 3px 25px;
+                padding:4px 0 4px 16px;
+                margin-bottom: -1px;
 
                 &:hover {
-                    background-color:$TPGrey1;
                     cursor: all-scroll;
+                    background:4px center no-repeat $white;
+                    @extend %dragIndicatorBG;
                 }
 
                 .zoneEntryTo {
                     font-size:$fontSizeSmall;
                     display:inline-block;
                     text-align:center;
-                    width:15px;
+                    width:28px;
                 }
             }
 
@@ -183,6 +236,9 @@
                     input[type="radio"] {
                         margin:0;
                     }
+
+                    // reset font size
+                    font-size:14px;
                 }
 
                 form {
@@ -192,6 +248,7 @@
                 .zoneSetTitle {
                     display:inline-block;
                     font-family:$fontFamilyRegular;
+                    font-size: $fontSizeSmall;
                     margin-right:5px;
                 }
 
@@ -210,7 +267,11 @@
                         width:100px;
                     }
                 }
+            }
 
+            .addZone {
+                margin-top:10px;
+                margin-left:15px;
             }
         }
 
@@ -264,11 +325,11 @@
                     }
                     .min,
                     .max {
-                        width:50px;
+                        width:80px;
                     }
 
                     .min {
-                        margin-left:25px;
+                        margin-left:38px;
                     }
                 }
             }
