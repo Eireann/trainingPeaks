@@ -53,11 +53,11 @@ function(_, TP, coachAndAffiliateCustomizations, AccountMenuView, userType, user
 
             if (userType === 5)
             {
-                window.open(theMarsApp.apiConfig.coachUpgradeURL, '_blank');
+                window.open(theMarsApp.apiConfig.coachUpgradeURL.replace("http:","https:"), '_blank');
             }
             else if(userType === 6)
             {
-                window.open(theMarsApp.apiConfig.upgradeURL, '_blank');
+                window.open(theMarsApp.apiConfig.upgradeURL.replace("http:","https:"), '_blank');
             }
         }
 
