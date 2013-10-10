@@ -130,6 +130,11 @@ function (_, TP, UserModel, UserAccessRightsModel)
         authenticationComplete: function(callback)
         {
             this.userPromise.done(callback);
+        },
+
+        logout: function()
+        {
+            document.location = window.apiConfig.logoutUrl ? window.apiConfig.logoutUrl : window.apiConfig.cmsRoot + "/logout";
         }
     });
 });

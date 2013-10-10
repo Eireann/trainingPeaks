@@ -54,7 +54,6 @@ function (_, TP, RollbarManager)
 
         dashboard: ensureUser(function()
         {
-            this.checkAuth();
             theMarsApp.showController(theMarsApp.controllers.dashboardController);
 
             TP.analytics("send", "pageview", { page: "dashboard" });

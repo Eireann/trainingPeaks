@@ -43,7 +43,8 @@
         coachUpgradeURL: "",
         upgradeURL: "",
         buildHash: "",
-        devWwwRoot: wwwRoots.dev
+        devWwwRoot: wwwRoots.dev,
+        logoutUrl: "/login.html"
     };
 
     if (typeof global !== "undefined")
