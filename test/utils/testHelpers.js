@@ -27,6 +27,7 @@ function(_, $, Backbone, TP, xhrData, sinon_, app)
 
         startTheApp: function()
         {
+            //console.log("Starting the app");
             var startTime = +new Date();
 
             this.stopTheApp();
@@ -108,10 +109,10 @@ function(_, $, Backbone, TP, xhrData, sinon_, app)
         findRequest: function(httpVerb, urlPattern)
         {
             var pattern = new RegExp(urlPattern);
-            console.log(this.fakeAjaxRequests);
+            //console.log(this.fakeAjaxRequests);
             return _.find(this.fakeAjaxRequests, function(req)
             {
-                console.log(req);
+                //console.log(req);
                 if(pattern.test(req.url) && (!httpVerb || req.method === httpVerb))
                 {
                     return true;
@@ -146,7 +147,7 @@ function(_, $, Backbone, TP, xhrData, sinon_, app)
 
         setupFakeAjax: function()
         {
-            console.log("SETUP FAKE AJAX");
+            //console.log("SETUP FAKE AJAX");
 
             var self = this;
 
@@ -155,12 +156,13 @@ function(_, $, Backbone, TP, xhrData, sinon_, app)
                 return;
             }
 
+            $.support.cors = true;
             this.fakeAjaxRequests = [];
             this.xhr = sinon.useFakeXMLHttpRequest();
 
             this.xhr.onCreate = function(xhr)
             {
-                console.log(xhr);
+                //console.log(xhr);
                 self.fakeAjaxRequests.push(xhr);
             };
         },

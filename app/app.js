@@ -173,6 +173,12 @@ function(
             });
         });
 
+        // setup token
+        this.addInitializer(function()
+        {
+            this.session.initRefreshToken();
+        });
+
         // setup ajax auth and caching and timezone handling
         this.addInitializer(function()
         {

@@ -48,6 +48,12 @@ function (_, TP, UserModel, UserAccessRightsModel)
             this.user = new UserModel();
             this.userAccessRights =  new UserAccessRightsModel();
 
+        },
+
+        initRefreshToken: function()
+        {
+            var self = this;
+
             if(localStorage.getItem("local_access_token"))
             {
                 $(document).ajaxSend(function(event, xhr, settings)
@@ -58,10 +64,10 @@ function (_, TP, UserModel, UserAccessRightsModel)
                 this._fetchUser();
                 return;
             }
-
+            
             this._refreshToken().done(function()
             {
-                console.log("REFRESH: DONE: FETCHUSER");
+                //console.log("REFRESH: DONE: FETCHUSER");
                 self._fetchUser();
             });
         },
@@ -78,7 +84,7 @@ function (_, TP, UserModel, UserAccessRightsModel)
 
         _refreshToken: function()
         {
-            console.log("REFRESH");
+            //console.log("REFRESH");
 
             if(!(window.apiConfig && window.apiConfig.cmsRoot))
                 throw "No CMSRoot URL found!";
@@ -94,14 +100,15 @@ function (_, TP, UserModel, UserAccessRightsModel)
 
             promise.done(function(data, textStatus, jqXHR)
             {
-                console.log("REFRESH: DONE");
+                //console.log("REFRESH: DONE");
                 if(data.responseText && data.responseText !== "")
                     REDIRECT_URL = data.responseText;
                 
                 setTimeout(self._refreshToken, REFRESH_INTERVAL);
             }).fail(function(data, textStatus, jqXHR)
             {
-                console.log("REFRESH: FAIL");
+                //console.log("REFRESH: FAIL");
+                //console.log(arguments);
                 if(data.status === 400)
                 {
                     if(data.responseText && data.responseText !== "")
