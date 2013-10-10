@@ -184,8 +184,8 @@ function(
                     var width = _.isNumber(x) ? x : $(x).width();
                     var height = _.isNumber(y) ? y : $(y).height();
 
-                    var cols = Math.round((ui.element.width() + self.packeryOptions.gutter) / width);
-                    var rows = Math.round((ui.element.height() + self.packeryOptions.gutter) / height);
+                    var cols = Math.round((ui.element.width() + self.packeryOptions.gutter) / (width + self.packeryOptions.gutter));
+                    var rows = Math.round((ui.element.height() + self.packeryOptions.gutter) / (height + self.packeryOptions.gutter));
 
                     ui.element.css({
                         width: "",
@@ -198,7 +198,8 @@ function(
                         "data-cols": cols
                     });
 
-                    console.log(cols, rows);
+                    self.$el.packery('fit', ui.element[0]);
+                    ui.element.data("view").trigger("controller:resize");
                 }
             });
         },
