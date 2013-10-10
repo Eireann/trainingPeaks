@@ -12,6 +12,8 @@ function(
     var ExpandoPodView = TP.ItemView.extend(
     {
 
+        className: "expandoPod",
+
         template: _.template("<div class='expandoPodContent'></div>"),
 
         className: "expandoPod",

@@ -54,8 +54,11 @@ function(
 
         layout: function()
         {
-            this.$el.packery("layout");
-            this._updatePackerySort();
+            if(this.packery)
+            {
+                this.$el.packery("layout");
+                this._updatePackerySort();
+            }
         },
 
         enablePackeryResize: function()
@@ -174,7 +177,16 @@ function(
 
                 stop: function(event, ui)
                 {
-                    // TODO Calculate slots
+                    var x = self.packeryOptions.columnWidth;
+                    var y = self.packeryOptions.rowHeight;
+
+                    var width = _.isNumber(x) ? x : $(x).width();
+                    var height = _.isNumber(y) ? y : $(y).height();
+
+                    var cols = Math.round(ui.element.width() + self.packeryOptions.gutter) / width;
+                    var rows = Math.round(ui.element.height() + self.packeryOptions.gutter) / height;
+
+                    console.log(cols, rows);
                 }
             });
         },

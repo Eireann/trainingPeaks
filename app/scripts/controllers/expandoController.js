@@ -402,6 +402,8 @@ function(
             {
                 view.trigger("controller:resize", containerHeight, mapAndChartsContainerWidth);
             }, this);
+
+            this.views.chartsView.layout();
         }
     });
 });
