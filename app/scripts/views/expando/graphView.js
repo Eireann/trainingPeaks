@@ -371,7 +371,8 @@ function(
 
             var options =
             {
-                displayStats: true
+                displayStats: true,
+                source: this
             };
 
             this.stateModel.get("ranges").reset([this.selectedWorkoutStatsForRange], options);
@@ -462,6 +463,8 @@ function(
 
         _onRangeAdded: function(range, ranges, options)
         {
+            if(options.source === this) return;
+
             var selection = this.findGraphSelection(range.get("begin"), range.get("end"), options.dataType);
             if (!selection)
             {

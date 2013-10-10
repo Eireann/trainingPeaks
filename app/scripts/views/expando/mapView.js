@@ -153,7 +153,6 @@ function (
 
             ranges.each(function(range)
             {
-                console.log("adding range")
                 self._onRangeAdded(range, ranges, options);
             });
         },
@@ -188,8 +187,6 @@ function (
 
         removeSelectionFromMap: function (selection)
         {
-            console.log("selection removed");
-            console.trace();
             this.map.removeLayer(selection.mapLayer);
         },
 
