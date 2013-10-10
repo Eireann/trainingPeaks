@@ -17,13 +17,13 @@ function($, TP, moment, theMarsApp, DataManager, testHelpers, xhrData, WorkoutMo
 {
     describe("CalendarCollection ", function()
     {
-
         it("should load as a module", function()
         {
             expect(CalendarCollection).toBeDefined();
         });
 
-        describe("prepareNext and preparePrevious", function() {
+        describe("prepareNext and preparePrevious", function()
+        {
             var collection;
             var startDate = moment().day(0);
             var endDate = moment().day(7).add("weeks", 2);
@@ -31,7 +31,8 @@ function($, TP, moment, theMarsApp, DataManager, testHelpers, xhrData, WorkoutMo
             beforeEach(function()
             {
                 testHelpers.startTheAppAndLogin(xhrData.users.barbkprem);
-                collection = new CalendarCollection([], {
+                collection = new CalendarCollection([],
+                {
                     startDate: startDate,
                     endDate: endDate,
                     dataManager: new DataManager()
@@ -45,11 +46,13 @@ function($, TP, moment, theMarsApp, DataManager, testHelpers, xhrData, WorkoutMo
 
             describe("preparePrevious", function()
             {
-                it("should return the models", function() {
+                it("should return the models", function()
+                {
                     expect(collection.preparePrevious(2).length).toEqual(2);
                 });
 
-                it("should add the models to the collection (via prependWeek)", function() {
+                it("should add the models to the collection (via prependWeek)", function()
+                {
                     spyOn(collection, "requestWorkouts").andReturn(new $.Deferred());
                     spyOn(collection, "prependWeek");
                     collection.preparePrevious(1);
@@ -59,15 +62,18 @@ function($, TP, moment, theMarsApp, DataManager, testHelpers, xhrData, WorkoutMo
 
             describe("prepareNext", function()
             {
-                it("should not request workouts", function() {
+                it("should not request workouts", function()
+                {
                     spyOn(collection, "requestWorkouts").andReturn(new $.Deferred());
                     collection.preparePrevious(1);
                     expect(collection.requestWorkouts).not.toHaveBeenCalled();
                 });
-                it("should return the models", function() {
+                it("should return the models", function()
+                {
                     expect(collection.prepareNext(2).length).toEqual(2);
                 });
-                it("should add the models to the collection (via appendWeek)", function() {
+                it("should add the models to the collection (via appendWeek)", function()
+                {
                     spyOn(collection, "requestWorkouts").andReturn(new $.Deferred());
                     spyOn(collection, "appendWeek");
                     collection.prepareNext(1);
@@ -81,7 +87,8 @@ function($, TP, moment, theMarsApp, DataManager, testHelpers, xhrData, WorkoutMo
         {
             var weekStartDate = moment().day(0);
 
-            var collection = new CalendarCollection([], {
+            var collection = new CalendarCollection([],
+            {
                 startDate: weekStartDate,
                 endDate: moment().day(6).add("weeks", 2),
                 dataManager: new DataManager()
@@ -99,7 +106,8 @@ function($, TP, moment, theMarsApp, DataManager, testHelpers, xhrData, WorkoutMo
 
             var weekStartDate = moment().day(1);
 
-            var collection = new CalendarCollection([], {
+            var collection = new CalendarCollection([],
+            {
                 startDate: weekStartDate,
                 endDate: moment().day(7).add("weeks", 2),
                 dataManager: new DataManager()
