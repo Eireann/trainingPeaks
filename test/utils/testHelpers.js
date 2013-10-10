@@ -28,7 +28,11 @@ function(_, $, Backbone, TP, xhrData, sinon_, app)
         startTheApp: function()
         {
             var startTime = +new Date();
+
             this.stopTheApp();
+
+            // capture ajax calls
+            this.setupFakeAjax();
 
             // ajaxCaching doesn't play nicely with our fake xhr ...
             app.ajaxCachingEnabled = false;
@@ -37,6 +41,7 @@ function(_, $, Backbone, TP, xhrData, sinon_, app)
             app.historyEnabled = false;
 
             app.resetAppToInitialState();
+
             // disable window reload
             var helper = this;
             app.reloadApp = function()
@@ -53,9 +58,6 @@ function(_, $, Backbone, TP, xhrData, sinon_, app)
 
             // start the app
             app.start();
-
-            // capture ajax calls
-            this.setupFakeAjax();
         },
 
         stopTheApp: function()
@@ -64,6 +66,7 @@ function(_, $, Backbone, TP, xhrData, sinon_, app)
             {
                 app.stop();
             }
+
             this.removeFakeAjax();
             localStorage.clear();
         },
@@ -104,13 +107,11 @@ function(_, $, Backbone, TP, xhrData, sinon_, app)
 
         findRequest: function(httpVerb, urlPattern)
         {
-            if(!httpVerb)
-            {
-                //console.log("testHelpers.hasRequest or testHelpers.resolveRequest, with a null http verb, will be deprecated soon");
-            }
             var pattern = new RegExp(urlPattern);
+            console.log(this.fakeAjaxRequests);
             return _.find(this.fakeAjaxRequests, function(req)
             {
+                console.log(req);
                 if(pattern.test(req.url) && (!httpVerb || req.method === httpVerb))
                 {
                     return true;
@@ -145,6 +146,8 @@ function(_, $, Backbone, TP, xhrData, sinon_, app)
 
         setupFakeAjax: function()
         {
+            console.log("SETUP FAKE AJAX");
+
             var self = this;
 
             if(this.xhr)
@@ -157,9 +160,9 @@ function(_, $, Backbone, TP, xhrData, sinon_, app)
 
             this.xhr.onCreate = function(xhr)
             {
+                console.log(xhr);
                 self.fakeAjaxRequests.push(xhr);
             };
-
         },
 
         removeFakeAjax: function()
@@ -179,6 +182,7 @@ function(_, $, Backbone, TP, xhrData, sinon_, app)
 
         loadUser: function(userData, accessRights, athleteSettings)
         {
+            this.resolveRequest("GET", "refresh$", {});
             this.resolveRequest("GET", "users/v1/user$", userData);
             this.resolveRequest("GET", "users/v1/user/accessrights", accessRights);
             this.resolveRequest("GET", "fitness/v1/athletes/[0-9]+/settings", athleteSettings);
@@ -203,7 +207,7 @@ function(_, $, Backbone, TP, xhrData, sinon_, app)
                 athleteSettings = this.deepClone(xhrData.athleteSettings.barbkprem);
             }
 
-            this.submitLogin(userData, accessRights, athleteSettings);
+            this.loadUser(userData, accessRights, athleteSettings);
         },
 
         deepClone: function(obj)
