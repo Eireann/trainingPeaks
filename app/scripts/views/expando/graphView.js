@@ -88,7 +88,9 @@ function(
                 });
             }
             else
+            {
                 this.createFlotGraph();
+            }
         },
         
         watchForModelChanges: function()
@@ -369,13 +371,8 @@ function(
 
             this.selectedWorkoutStatsForRange = new WorkoutStatsForRange({ workoutId: this.model.id, begin: startOffsetMs, end: endOffsetMs, plotSelectionFrom: plotSelectionFrom, plotSelectionTo: plotSelectionTo, name: "Selection" });
 
-            var options =
-            {
-                displayStats: true,
-                source: this
-            };
-
-            this.stateModel.get("ranges").reset([this.selectedWorkoutStatsForRange], options);
+            this.stateModel.get("ranges").set([this.selectedWorkoutStatsForRange]);
+            this.stateModel.set("statsRange", this.selectedWorkoutStatsForRange);
         },
 
         onPlotUnSelected: function()
@@ -464,30 +461,28 @@ function(
 
         _onRangeAdded: function(range, ranges, options)
         {
-            if(options.source === this) return;
-
             var selection = this.findGraphSelection(range.get("begin"), range.get("end"), options.dataType);
             if (!selection)
             {
-                this.plot.clearSelection();
                 selection = this.createGraphSelection(range, options);
                 this.addSelectionToGraph(selection);
-
-                if (this.selectedWorkoutStatsForRange)
-                {
-                    this.stateModel.get("ranges").remove(this.selectedWorkoutStatsForRange);
-                    this.selectedWorkoutStatsForRange = null;
-                }
             }
         },
 
         _onRangeRemoved: function(range, ranges, options)
         {
-            var selection = this.findGraphSelection(range.get("begin"), range.get("end"), options.dataType);
-            if(selection)
+            if(range === this.selectedWorkoutStatsForRange)
             {
-                this.removeSelectionFromGraph(selection);
-                this.selections = _.without(this.selections, selection);
+                this.plot.clearSelection();
+            }
+            else
+            {
+                var selection = this.findGraphSelection(range.get("begin"), range.get("end"), options.dataType);
+                if(selection)
+                {
+                    this.removeSelectionFromGraph(selection);
+                    this.selections = _.without(this.selections, selection);
+                }
             }
         },
 

@@ -309,7 +309,7 @@ function(
             this.reselectAllCheckedPeaks(this.selectedPeakType);
 
             // display totals
-            this.selectEntireWorkout();
+            this.stateModel.set("statsRange", this.getEntireWorkoutRange());
         },
 
         unselectAllCheckedPeaks: function(peakType)
@@ -364,11 +364,15 @@ function(
 
                 if(options.removeFromSelection)
                 {
-                    this.stateModel.get("ranges").remove(statsForRange, options);
+                    this.stateModel.get("ranges").remove(statsForRange);
                 }
-                else
+                else if(options.addToSelection)
                 {
-                    this.stateModel.get("ranges").add(statsForRange, options);
+                    this.stateModel.get("ranges").add(statsForRange);
+                }
+                else if(options.setStatsRange)
+                {
+                    this.stateModel.set("statsRange", statsForRange);
                 }
             }
         },
@@ -412,19 +416,7 @@ function(
             var statsForRange = this.getWorkoutStatsForRange(lapData);
             statsForRange.hasLoaded = true;
 
-            if (target.is("input[type=checkbox]"))
-            {
-                if (target.is(":checked"))
-                {
-                    options.addToSelection = true;
-                    this.stateModel.get("ranges").add(statsForRange);
-                    this.checkboxStates.laps[lapIndex] = true;
-                } else {
-                    options.removeFromSelection = true;
-                    this.stateModel.get("ranges").remove(statsForRange);
-                    this.checkboxStates.laps[lapIndex] = false;
-                }
-            }
+            this.stateModel.set("statsRange", statsForRange);
 
             this.highlightListItem(li);
         },
@@ -468,8 +460,8 @@ function(
 
             var target = $(e.target);
             var li = target.closest("li");
-            var options = {};
-            this.selectEntireWorkout(options);
+            var options = { setStatsRange: true };
+            this.stateModel.set("statsRange", this.getEntireWorkoutRange());
             this.highlightListItem(li);
         },
 
@@ -532,10 +524,10 @@ function(
             var li = target.closest("li");
             var peakInterval = li.data("peakinterval");
 
-            var options = {};
-
+            var options = { setStatsRange: true };
             this.selectPeak(this.selectedPeakType, peakInterval, options);
             this.highlightListItem(li);
+
         },
         
         onPeaksCheckboxClicked: function(e)
@@ -656,7 +648,7 @@ function(
             this.selectedPeakType = null;
             this.initializeCheckboxes(true);
             this.render();
-            this.selectEntireWorkout();
+            this.stateModel.set("statsRange", this.getEntireWorkoutRange());
         },
 
         formatPeakName: function(interval)

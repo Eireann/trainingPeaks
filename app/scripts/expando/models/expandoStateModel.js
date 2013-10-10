@@ -16,16 +16,12 @@ function(
 
         initialize: function()
         {
-            this.set("ranges", new TP.Collection({ model: WorkoutStatsForRange }));
 
-            this.listenTo(this.get("ranges"), "add", _.bind(this._fetchRange, this));
-            this.listenTo(this.get("ranges"), "reset", function(ranges)
-            {
-                ranges.each(this._fetchRange, this);
-            });
+            this.set("ranges", new TP.Collection([], { model: WorkoutStatsForRange }));
+            this.on("change:statsRange", this._fetchRange, this);
         },
 
-        _fetchRange: function(range)
+        _fetchRange: function(self, range)
         {
             if(!range.hasLoaded)
             {
