@@ -35,6 +35,7 @@
         configuration: configuration,
         wwwRoot: wwwRoots[configuration],
         homeRoot: homeRoots[configuration],
+        cmsRoot: "http://cms.dev.trainingpeaks.com",
         apiRoot: apiRoots[configuration],
         oAuthRoot: oAuthRoots[configuration],
         buildNumber: "local",
@@ -42,7 +43,8 @@
         coachUpgradeURL: "",
         upgradeURL: "",
         buildHash: "",
-        devWwwRoot: wwwRoots.dev
+        devWwwRoot: wwwRoots.dev,
+        logoutUrl: "/login.html"
     };
 
     if (typeof global !== "undefined")

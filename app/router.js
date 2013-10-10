@@ -6,18 +6,11 @@ define(
 ],
 function (_, TP, RollbarManager)
 {
-
     var ensureUser = function(callback) 
     {
         return function()
         {
-            var self = this;
-            var args = arguments;
-            this.checkAuth();
-            theMarsApp.userFetchPromise.done(function()
-            {
-                callback.apply(self, args);
-            });
+            theMarsApp.session.authenticationComplete(callback);
         };
     };
 
@@ -25,18 +18,6 @@ function (_, TP, RollbarManager)
     {
         initialize: function ()
         {
-            var self = this;
-
-            theMarsApp.on("api:unauthorized", function()
-            {
-                self.navigate("login", { trigger: true });
-            });
-
-            theMarsApp.controllers.loginController.on("login:success", function()
-            {
-                self.navigate("calendar", { trigger: true });
-            });
-
             this.on("route", function(routeName)
             {
                 var routeParts = routeName.split("/");
@@ -52,18 +33,10 @@ function (_, TP, RollbarManager)
 
         routes:
         {
-            "login": "login",
             "calendar": "calendar",
             "calendar/athletes/:athleteId": "calendar",
             "dashboard": "dashboard",
             "": "calendar"
-        },
-
-        login: function ()
-        {
-            theMarsApp.showController(theMarsApp.controllers.loginController);
-
-            TP.analytics("send", "pageview", { page: "login" });
         },
 
         calendar: ensureUser(function (athleteId)
@@ -81,20 +54,9 @@ function (_, TP, RollbarManager)
 
         dashboard: ensureUser(function()
         {
-            this.checkAuth();
             theMarsApp.showController(theMarsApp.controllers.dashboardController);
 
             TP.analytics("send", "pageview", { page: "dashboard" });
-        }),
-
-        
-        checkAuth: function()
-        {
-            if (!theMarsApp.session.isAuthenticated())
-            {
-                theMarsApp.session.logout();
-                return;
-            }
-        }        
+        })
     });
 });

@@ -6,6 +6,7 @@
         configuration: "{DEPLOY_TARGET}",
         wwwRoot: "{WWW_ROOT}",
         homeRoot: "{HOME_ROOT}",
+        cmsRoot: "{CMS_ROOT}",
         apiRoot: "{API_ROOT}",
         oAuthRoot: "{OAUTH_ROOT}",
         buildNumber: "{BUILD_NUMBER}",

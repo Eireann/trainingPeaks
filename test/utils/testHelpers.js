@@ -10,9 +10,7 @@ define(
 ],
 function(_, $, Backbone, TP, xhrData, sinon_, app)
 {
-
     return {
-
         setupRegionElements: function()
         {
             this.$body = $("<body></body>");
@@ -29,8 +27,13 @@ function(_, $, Backbone, TP, xhrData, sinon_, app)
 
         startTheApp: function()
         {
+            //console.log("Starting the app");
             var startTime = +new Date();
+
             this.stopTheApp();
+
+            // capture ajax calls
+            this.setupFakeAjax();
 
             // ajaxCaching doesn't play nicely with our fake xhr ...
             app.ajaxCachingEnabled = false;
@@ -39,6 +42,7 @@ function(_, $, Backbone, TP, xhrData, sinon_, app)
             app.historyEnabled = false;
 
             app.resetAppToInitialState();
+
             // disable window reload
             var helper = this;
             app.reloadApp = function()
@@ -55,15 +59,6 @@ function(_, $, Backbone, TP, xhrData, sinon_, app)
 
             // start the app
             app.start();
-
-            // turn off login redirect
-            app.controllers.loginController.off("login:success");
-
-            // capture ajax calls
-            this.setupFakeAjax();
-
-            //console.log("StartTheApp took " + (+new Date() - startTime) + "ms");
-
         },
 
         stopTheApp: function()
@@ -72,6 +67,7 @@ function(_, $, Backbone, TP, xhrData, sinon_, app)
             {
                 app.stop();
             }
+
             this.removeFakeAjax();
             localStorage.clear();
         },
@@ -112,13 +108,11 @@ function(_, $, Backbone, TP, xhrData, sinon_, app)
 
         findRequest: function(httpVerb, urlPattern)
         {
-            if(!httpVerb)
-            {
-                //console.log("testHelpers.hasRequest or testHelpers.resolveRequest, with a null http verb, will be deprecated soon");
-            }
             var pattern = new RegExp(urlPattern);
+            //console.log(this.fakeAjaxRequests);
             return _.find(this.fakeAjaxRequests, function(req)
             {
+                //console.log(req);
                 if(pattern.test(req.url) && (!httpVerb || req.method === httpVerb))
                 {
                     return true;
@@ -153,6 +147,8 @@ function(_, $, Backbone, TP, xhrData, sinon_, app)
 
         setupFakeAjax: function()
         {
+            //console.log("SETUP FAKE AJAX");
+
             var self = this;
 
             if(this.xhr)
@@ -160,13 +156,15 @@ function(_, $, Backbone, TP, xhrData, sinon_, app)
                 return;
             }
 
+            $.support.cors = true;
             this.fakeAjaxRequests = [];
             this.xhr = sinon.useFakeXMLHttpRequest();
+
             this.xhr.onCreate = function(xhr)
             {
+                //console.log(xhr);
                 self.fakeAjaxRequests.push(xhr);
             };
-
         },
 
         removeFakeAjax: function()
@@ -181,14 +179,12 @@ function(_, $, Backbone, TP, xhrData, sinon_, app)
 
         submitLogin: function(userData, accessRights, athleteSettings)
         {
-            app.router.navigate("login", true);
-            app.mainRegion.$el.find("input[name=Submit]").trigger("click");
-            this.resolveRequest("POST", "Token", xhrData.token);
             this.loadUser(userData, accessRights, athleteSettings);
         },
 
         loadUser: function(userData, accessRights, athleteSettings)
         {
+            this.resolveRequest("GET", "refresh$", {});
             this.resolveRequest("GET", "users/v1/user$", userData);
             this.resolveRequest("GET", "users/v1/user/accessrights", accessRights);
             this.resolveRequest("GET", "fitness/v1/athletes/[0-9]+/settings", athleteSettings);
@@ -196,7 +192,6 @@ function(_, $, Backbone, TP, xhrData, sinon_, app)
 
         startTheAppAndLogin: function(userData, accessRights, athleteSettings)
         {
-
             if(_.isBoolean(accessRights))
             {
                 throw new Error("Deprecated: startTheAppAndLogin(userData, doClone)");
@@ -214,7 +209,7 @@ function(_, $, Backbone, TP, xhrData, sinon_, app)
                 athleteSettings = this.deepClone(xhrData.athleteSettings.barbkprem);
             }
 
-            this.submitLogin(userData, accessRights, athleteSettings);
+            this.loadUser(userData, accessRights, athleteSettings);
         },
 
         deepClone: function(obj)

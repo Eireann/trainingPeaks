@@ -131,7 +131,6 @@ function(
             {
                 spyOn(controller, "loadLibraryData").andReturn([]);
                 controller.show();
-                theMarsApp.userFetchPromise.resolve();
                 expect(controller.loadLibraryData).toHaveBeenCalled();
             });
 
@@ -139,7 +138,6 @@ function(
             {
                 spyOn(controller, "loadCalendarData").andReturn([]);
                 controller.show();
-                theMarsApp.userFetchPromise.resolve();
                 expect(controller.loadCalendarData).toHaveBeenCalled();
             });
         });
