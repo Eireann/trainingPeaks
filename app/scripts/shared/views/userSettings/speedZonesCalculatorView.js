@@ -37,6 +37,7 @@ function(
     }
 
     var SpeedZoneItemView = TP.ItemView.extend({
+        className: "zoneCalculatorResult zone", 
 
         template: {
             type: "handlebars",

@@ -37,6 +37,8 @@ function(
         units: "heartrate",
 
         zoneItemView: TP.ItemView.extend({
+            className: "zoneCalculatorResult zone", 
+
             template: {
                 type: "handlebars",
                 template: heartRateZoneTemplate

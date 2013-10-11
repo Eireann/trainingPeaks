@@ -862,9 +862,17 @@
 
     .zones
     {
-        div
+        clear: both;
+
+        .zoneCalculatorResult
         {
             margin-bottom: 10px;
+
+            label 
+            {
+                display: inline-block;
+                width: 400px;
+            }
         }
     }
 

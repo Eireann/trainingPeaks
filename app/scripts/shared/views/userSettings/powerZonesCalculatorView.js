@@ -32,6 +32,7 @@ function(
         units: "power",
 
         zoneItemView: TP.ItemView.extend({
+            className: "zoneCalculatorResult zone", 
             template: {
                 type: "handlebars",
                 template: powerZoneTemplate

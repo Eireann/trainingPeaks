@@ -113,6 +113,7 @@ function(
         zoneItemView: TP.ItemView,
 
         thresholdItemView: TP.ItemView.extend({
+            className: "zoneCalculatorResult threshold",
             template: {
                 type: "handlebars",
                 template: zoneThresholdTemplate
