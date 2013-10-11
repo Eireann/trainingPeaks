@@ -102,7 +102,12 @@ function(
                 returnDeferred = superFetch();
                 try
                 {
-                    this.set(JSON.parse(localStorageUser));
+                    var jsonLocalStorageUser = JSON.parse(localStorageUser);
+
+                    this.set(jsonLocalStorageUser);
+
+                    this.populateUserModels(jsonLocalStorageUser);
+
                     returnDeferred = $.Deferred().resolve();
                 }
                 catch(e)
@@ -263,16 +268,22 @@ function(
             return this.recurringPaymentsCollection;
         },
 
+        populateUserModels: function(data)
+        {
+
+            this.getAccountSettings().set(data.settings.account);
+            this.getAffiliateSettings().set(data.settings.affiliate);
+            this.getCalendarSettings().set(data.settings.calendar);
+            this.getDashboardSettings().set(data.settings.dashboard);
+            this.getMetricsSettings().set(data.settings.metrics);
+            this.getWorkoutSettings().set(data.settings.workout);
+        },
+
         parse: function(resp, options)
         {
             if(resp && resp.settings)
             {
-                this.getAccountSettings().set(resp.settings.account);
-                this.getAffiliateSettings().set(resp.settings.affiliate);
-                this.getCalendarSettings().set(resp.settings.calendar);
-                this.getDashboardSettings().set(resp.settings.dashboard);
-                this.getMetricsSettings().set(resp.settings.metrics);
-                this.getWorkoutSettings().set(resp.settings.workout);
+                this.populateUserModels(resp);
             }
             return resp;
         },

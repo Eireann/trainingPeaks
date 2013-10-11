@@ -144,7 +144,7 @@ function(TP, notYetImplemented, moment, datepicker, coachAndAffiliateCustomizati
 
         isCoachWithAthletes: function()
         {
-            return !theMarsApp.user.getAccountSettings().get("isAthlete") && theMarsApp.user.has("athletes") && theMarsApp.user.get("athletes").length > 1;
+            return !theMarsApp.user.getAccountSettings().get("isAthlete") && theMarsApp.user.has("athletes") && theMarsApp.user.get("athletes").length > 0;
         },
 
         customizeAthleteSelectBox: function()
