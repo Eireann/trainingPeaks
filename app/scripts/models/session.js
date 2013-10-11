@@ -123,7 +123,13 @@ function (_, TP, UserModel, UserAccessRightsModel)
         _redirectToLogin: function()
         {
             if(REDIRECT_URL)
+            {
                 window.location = REDIRECT_URL + "?redirect=" + window.location;
+            }
+            else if(theMarsApp.isLocal() && window.apiConfig.logoutUrl)
+            {
+                document.location = window.apiConfig.logoutUrl;
+            }
         },
 
         authenticationComplete: function(callback)
