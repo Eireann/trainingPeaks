@@ -77,11 +77,17 @@ function(
 
             var podsCollection = new TP.Collection(
             [{
-                podType: 1 // Map
+                podType: 1, // Map
+                rows: 3,
+                cols: 6
             }, {
-                podType: 2 // Graph
+                podType: 2, // Graph
+                rows: 3,
+                cols: 6
             }, {
-                podType: 3 // Laps & Splits
+                podType: 3, // Laps & Splits,
+                rows: 2,
+                cols: 6
             }, {
                 podType: 4, // Time In Zones
                 variant: 1, // Heart Rate
