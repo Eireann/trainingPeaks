@@ -45,14 +45,20 @@ function(
             this.stateModel = options.stateModel;
         },
 
+        onRender: function()
+        {
+            this._onFocusedChange();
+            this._onSelectedChange();
+        },
+
         _onFocusedChange: function()
         {
-            this.$el.toggleClass("highlight", this.model.get("isFocused"));
+            this.$el.toggleClass("highlight", !!this.model.get("isFocused"));
         },
 
         _onSelectedChange: function()
         {
-            this.$("input").attr("checked", this.model.get("isSelected"));
+            this.$("input").attr("checked", !!this.model.get("isSelected"));
         },
 
         _onClick: function(e)
@@ -95,9 +101,28 @@ function(
         initialize: function(options)
         {
 
+            var self = this;
+
             this.collection = new TP.Collection({ model: WorkoutStatsForRange });
             this.itemViewOptions = _.extend(this.itemViewOptions || {}, { stateModel: options.stateModel });
             this.stateModel = options.stateModel;
+
+
+            this.listenTo(this.stateModel.get("ranges"), "add", function(range)
+            {
+                if(range.get("temporary"))
+                {
+                    self.collection.unshift(range);
+                }
+            });
+
+            this.listenTo(this.stateModel.get("ranges"), "remove", function(range)
+            {
+                if(range.get("temporary"))
+                {
+                    self.collection.remove(range);
+                }
+            });
 
         },
 
@@ -106,6 +131,20 @@ function(
             return {
                 selectOptions: this._getSelectOptions(),
                 hasLapsOrPeaks: true
+            }
+        },
+
+        appendHtml: function(collectionView, itemView, index)
+        {
+            var model = collectionView.collection.at(index + 1);
+            var prevView = model ? collectionView.children.findByModel(model) : null;
+            if(prevView)
+            {
+                prevView.$el.before(itemView.$el);
+            }
+            else
+            {
+                LapsView.__super__.appendHtml.apply(collectionView, arguments);
             }
         },
 

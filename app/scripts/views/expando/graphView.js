@@ -369,9 +369,15 @@ function(
                 endOffsetMs = this.dataParser.getMsOffsetFromDistance(plotSelectionTo);
             }
 
-            this.selectedWorkoutStatsForRange = new WorkoutStatsForRange({ workoutId: this.model.id, begin: startOffsetMs, end: endOffsetMs, plotSelectionFrom: plotSelectionFrom, plotSelectionTo: plotSelectionTo, name: "Selection" });
+            var oldRange = this.selectedWorkoutStatsForRange;
+            this.selectedWorkoutStatsForRange = new WorkoutStatsForRange({ workoutId: this.model.id, begin: startOffsetMs, end: endOffsetMs, plotSelectionFrom: plotSelectionFrom, plotSelectionTo: plotSelectionTo, name: "Selection", temporary: true });
 
-            this.stateModel.get("ranges").set([this.selectedWorkoutStatsForRange]);
+            if(oldRange)
+            {
+                this.stateModel.get("ranges").remove(oldRange);
+            }
+
+            this.stateModel.get("ranges").add(this.selectedWorkoutStatsForRange);
             this.stateModel.set("statsRange", this.selectedWorkoutStatsForRange);
         },
 
@@ -429,7 +435,7 @@ function(
 
             this.selectedWorkoutStatsForRange = null;
             this.onUnSelectAll();
-            this.stateModel.get("ranges").reset();
+            this.stateModel.get("ranges").set([]);
             this.resetZoom();
             this.graphToolbar.hideZoomButton();
             this.currentAxis = "time";
@@ -444,7 +450,7 @@ function(
 
             this.selectedWorkoutStatsForRange = null;
             this.onUnSelectAll();
-            this.stateModel.get("ranges").reset();
+            this.stateModel.get("ranges").set([]);
             this.resetZoom();
             this.graphToolbar.hideZoomButton();
             this.currentAxis = "distance";

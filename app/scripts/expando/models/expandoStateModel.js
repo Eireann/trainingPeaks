@@ -21,8 +21,8 @@ function(
             this.set("ranges", ranges);
             this.on("change:statsRange", this._onStatsRangeChange, this);
 
-            this.listenTo(ranges, "add", function(range) { range.set("isSelected", true); });
-            this.listenTo(ranges, "remove", function(range) { range.set("isSelected", false); });
+            this.listenTo(ranges, "add", _.bind(this._onRangeAdded, this));
+            this.listenTo(ranges, "remove", _.bind(this._onRangeRemoved, this));
         },
 
         _onStatsRangeChange: function(self, range)
@@ -33,16 +33,33 @@ function(
             }
             this.statsRange = range;
 
-            range.set("isFocused", true);
-
-            console.log("focus", range);
-            if(!range.hasLoaded)
+            if(range)
             {
-                range.fetch().done(function()
+                range.set("isFocused", true);
+
+                if(!range.hasLoaded)
                 {
-                    range.hasLoaded = true;
-                });
+                    range.fetch().done(function()
+                    {
+                        range.hasLoaded = true;
+                    });
+                }
             }
+        },
+
+        _onRangeAdded: function(range)
+        {
+            range.set("isSelected", true);
+        },
+
+        _onRangeRemoved: function(range)
+        {
+            range.set("isSelected", false);
+            if(range.get("temporary") && this.get("statsRange") === range)
+            {
+                this.set("statsRange", null);
+            }
+
         }
 
     });
