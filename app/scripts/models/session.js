@@ -119,7 +119,7 @@ function (_, TP, UserModel, UserAccessRightsModel)
 
         logout: function()
         {
-            document.location = window.apiConfig.logoutUrl ? window.apiConfig.logoutUrl : window.apiConfig.cmsRoot + "/logout";
+            document.location = window.apiConfig.cmsRoot + "/logout";
         }
     });
 });
