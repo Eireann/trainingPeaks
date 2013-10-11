@@ -126,11 +126,6 @@
             margin-left:4px;
         }
 
-        .removeWorkoutType {
-            display:inline-block;
-            margin-left:4px;
-        }
-
         .addZoneContain {
             margin-bottom:10px;
             margin-left:15px;
@@ -148,6 +143,18 @@
 
         .zonesConfigGroup {
             margin-top:25px;
+
+            .zoneGroupNameContain {
+                @include clearfix;
+                width:100%;
+                h3 {
+                    display: inline-block;
+                }
+                .removeWorkoutType {
+                    display: inline-block;
+                    margin-left:5px;
+                }
+            }
 
             .zoneName, 
             .minimum,
@@ -170,8 +177,9 @@
             .zoneSetFieldset {
                 padding:20px 15px 23px 15px;
 
-                input {
+                input[type="text"] {
                     height:22px;
+                    width:100px;
                 }
                 
                 .zoneCalculatorLayoutBody {
@@ -195,7 +203,7 @@
                     .speed {
                         form {
                             float:left;
-                            // margin-right:25px;
+                            margin-right:25px;
                             width:auto;
                         }
                     }
@@ -259,6 +267,14 @@
                     }
                 }
 
+                &.speed {
+                    .zoneSetFieldset {
+                        .selectBox {
+                            float:left;
+                        }
+                    }
+                }
+
                 .zoneValueContain {
                     float:left;
                     margin-right:25px;
@@ -270,8 +286,8 @@
             }
 
             .addZone {
-                margin-top:10px;
-                margin-left:15px;
+                margin-top:4px;
+                margin-left:16px;
             }
         }
 

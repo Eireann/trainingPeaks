@@ -1,5 +1,7 @@
-<h3>Speed/Pace Zones - {{ workoutTypeName workoutTypeId "All" }}</h3>
-{{#if workoutTypeId }}<a class="removeWorkoutType">Remove</a>{{/if}}
+<div class="zoneGroupNameContain">
+	<h3>Speed/Pace Zones - {{ workoutTypeName workoutTypeId "All" }}</h3>
+	{{#if workoutTypeId }}<a class="removeWorkoutType">Remove</a>{{/if}}
+</div>
 
 <div class="zoneSetContain speed">
 	<fieldset class="zoneSetFieldset">
@@ -10,11 +12,17 @@
 				<input name="threshold" class="numberInput" data-scope="zoneSet" data-format="zoneValue" type="text">
 		    </label>
 
+		    <div class="selectBox">
+                 <select>
+                    <option value="speed" name="units">mph</option>
+                    <option value="pace" name="units">min/mi</option>
+                </select>
+            </div>
+
 		    <label class="clickable">
 				<input type="radio" value="speed" name="units">
 				{{ getUnitsLabel "speed" workoutTypeId }}
 		    </label>
-
 		    <label class="clickable">
 				<input type="radio" value="pace" name="units" checked>
 				{{ getUnitsLabel "pace" workoutTypeId }}
